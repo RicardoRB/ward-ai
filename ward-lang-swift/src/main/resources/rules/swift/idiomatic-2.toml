@@ -90,3 +90,15 @@ body = '''
 check = "swift-generic-type-name"
 message = "generic type name should be alphanumeric, start with an uppercase letter and have at most 20 characters"
 '''
+
+[[rules]]
+id = "ward:swift/duplicate-imports"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-duplicate-imports"
+message = "imports should be unique"
+'''

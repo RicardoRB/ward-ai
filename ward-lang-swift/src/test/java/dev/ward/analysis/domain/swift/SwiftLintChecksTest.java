@@ -124,4 +124,33 @@ class SwiftLintChecksTest {
     assertThat(run(check, "class A: B {\n override func foo(a: Int = 1) {\n super.foo(a: a)\n }\n}\n"))
         .isEmpty();
   }
+
+  @Test
+  void duplicateConditionsReportsRepeatedLinksAndCases() {
+    final RuleCheck check = new SwiftDuplicateConditionsCheck(MESSAGE);
+
+    assertThat(lines(run(check, "if a < 5 {\n} else if b {\n} else if a < 5 {\n}\n")))
+        .containsExactly(1, 3);
+    assertThat(run(check, "if a < 5, b {\n} else if a < 5 {\n}\n")).isEmpty();
+    assertThat(lines(run(check, "switch x {\ncase 1:\n y()\ncase 1:\n z()\n}\n"))).containsExactly(2, 4);
+  }
+
+  @Test
+  void duplicateImportsReportsRepeatsAndSubmodulesOfImportedModules() {
+    final RuleCheck check = new SwiftDuplicateImportsCheck(MESSAGE);
+
+    assertThat(lines(run(check, "import Foo\nimport Foo\n"))).containsExactly(2);
+    assertThat(lines(run(check, "import Foo\nimport Foo.Bar\n"))).containsExactly(2);
+    assertThat(run(check, "import Foo\n@testable import Foo.Bar\n")).isEmpty();
+  }
+
+  @Test
+  void blanketDisableCommandReportsRulesDisabledForTheRestOfTheFile() {
+    final RuleCheck check = new SwiftBlanketDisableCommandCheck(MESSAGE);
+
+    assertThat(lines(run(check, "// swiftlint:disable unused_import\n"))).containsExactly(1);
+    assertThat(run(check, "// swiftlint:disable unused_import\n// swiftlint:enable unused_import\n")).isEmpty();
+    assertThat(lines(run(check, "// swiftlint:enable unused_import\n"))).containsExactly(1);
+    assertThat(run(check, "// swiftlint:disable:next unused_import\n")).isEmpty();
+  }
 }

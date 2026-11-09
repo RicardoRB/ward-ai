@@ -7,7 +7,7 @@ array-init = "implemented"
 async-without-await = "implemented"
 attributes = { status = "planned", issue = "#298" }
 balanced-xctest-lifecycle = { status = "planned", issue = "#338" }
-blanket-disable-command = { status = "planned", issue = "#338" }
+blanket-disable-command = "implemented"
 block-based-kvo = "implemented"
 capture-variable = { status = "planned", issue = "#338" }
 class-delegate-protocol = "implemented"
@@ -35,9 +35,9 @@ discouraged-none-name = "implemented"
 discouraged-object-literal = { status = "planned", issue = "#338" }
 discouraged-optional-boolean = "implemented"
 discouraged-optional-collection = "implemented"
-duplicate-conditions = { status = "planned", issue = "#338" }
+duplicate-conditions = "implemented"
 duplicate-enum-cases = "implemented"
-duplicate-imports = { status = "planned", issue = "#338" }
+duplicate-imports = "implemented"
 duplicated-key-in-dictionary-literal = "implemented"
 dynamic-inline = "implemented"
 empty-collection-literal = "implemented"

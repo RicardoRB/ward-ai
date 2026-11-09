@@ -8,7 +8,10 @@ import dev.ward.analysis.domain.rule.check.ImportSortCheck;
 import dev.ward.analysis.domain.rule.check.JavadocMethodCheck;
 import dev.ward.analysis.domain.rule.check.UnusedImportCheck;
 import dev.ward.analysis.domain.rule.check.VariableDistanceCheck;
+import dev.ward.analysis.domain.swift.SwiftBlanketDisableCommandCheck;
+import dev.ward.analysis.domain.swift.SwiftDuplicateConditionsCheck;
 import dev.ward.analysis.domain.swift.SwiftDuplicateEnumCasesCheck;
+import dev.ward.analysis.domain.swift.SwiftDuplicateImportsCheck;
 import dev.ward.analysis.domain.swift.SwiftDuplicatedDictionaryKeyCheck;
 import dev.ward.analysis.domain.swift.SwiftForWhereCheck;
 import dev.ward.analysis.domain.swift.SwiftGenericTypeNameCheck;
@@ -83,6 +86,15 @@ public final class SwiftCheckProvider implements CheckProvider {
         Map.entry(
             "swift-valid-ibinspectable",
             toml -> new SwiftValidIbinspectableCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "swift-duplicate-conditions",
+            toml -> new SwiftDuplicateConditionsCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "swift-duplicate-imports",
+            toml -> new SwiftDuplicateImportsCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "swift-blanket-disable-command",
+            toml -> new SwiftBlanketDisableCommandCheck(TomlValues.required(toml, MESSAGE))),
         Map.entry(
             "swift-variable-distance",
             toml ->

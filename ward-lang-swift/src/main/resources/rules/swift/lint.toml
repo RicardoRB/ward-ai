@@ -451,3 +451,27 @@ body = '''
 check = "swift-valid-ibinspectable"
 message = "@IBInspectable should be applied to variables only, have its type explicit and be of a supported type"
 '''
+
+[[rules]]
+id = "ward:swift/duplicate-conditions"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-duplicate-conditions"
+message = "duplicate conditions in the same branch instruction should be avoided"
+'''
+
+[[rules]]
+id = "ward:swift/blanket-disable-command"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-blanket-disable-command"
+message = "swiftlint command disables a rule for the rest of the file; use next, this or previous, or re-enable it"
+'''
