@@ -1,6 +1,6 @@
 if (!(key in object)) {
   run();
 }
-if (!(a instanceof B)) {
+if (!(a.b in c)) {
   run();
 }

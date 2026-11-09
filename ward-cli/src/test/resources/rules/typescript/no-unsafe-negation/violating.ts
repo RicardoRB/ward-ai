@@ -4,3 +4,6 @@ if (!key in object) {
 if (!a instanceof B) {
   run();
 }
+if (!a.b in c) {
+  run();
+}
