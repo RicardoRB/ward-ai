@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 /** Checks loading a specification file, a missing file, and a taint rule body. */
 class TaintSpecFilesTest {
 
+  private static final String FILE = "taint/x/spec.toml";
+
   /** A valid file yields one entry per table row, with its kind, receiver and arguments. */
   @Test
   void validFileParsesEveryTable() {
@@ -30,14 +32,12 @@ class TaintSpecFilesTest {
   void memberWriteIsAcceptedAsASinkOnly() {
     final TaintSpec spec =
         TaintSpecFiles.parse(
-            "taint/x/spec.toml",
-            "[[sinks]]\nkind = \"member-write\"\nname = \"innerHTML\"\narguments = [0]\n");
+            FILE, "[[sinks]]\nkind = \"member-write\"\nname = \"innerHTML\"\narguments = [0]\n");
     assertThat(spec.sinks().get(0).kind()).isEqualTo(FlowSiteKind.MEMBER_WRITE);
     assertThatThrownBy(
             () ->
                 TaintSpecFiles.parse(
-                    "taint/x/spec.toml",
-                    "[[sources]]\nkind = \"member-write\"\nname = \"innerHTML\"\n"))
+                    FILE, "[[sources]]\nkind = \"member-write\"\nname = \"innerHTML\"\n"))
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("entry 1 of [sources] in taint/x/spec.toml")
         .hasMessageContaining("member-write");
@@ -45,7 +45,7 @@ class TaintSpecFilesTest {
 
   @Test
   void invalidTomlIsRejected() {
-    assertThatThrownBy(() -> TaintSpecFiles.parse("taint/x/spec.toml", "[[sources\n"))
+    assertThatThrownBy(() -> TaintSpecFiles.parse(FILE, "[[sources\n"))
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("not valid TOML");
   }
@@ -53,9 +53,7 @@ class TaintSpecFilesTest {
   @Test
   void unknownTableIsRejected() {
     assertThatThrownBy(
-            () ->
-                TaintSpecFiles.parse(
-                    "taint/x/spec.toml", "[[filters]]\nkind = \"call\"\nname = \"x\"\n"))
+            () -> TaintSpecFiles.parse(FILE, "[[filters]]\nkind = \"call\"\nname = \"x\"\n"))
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("unknown table 'filters'");
   }
@@ -79,5 +77,45 @@ class TaintSpecFilesTest {
             () -> DeclarativeChecks.bundled().build("check = \"taint\"\nmessage = \"x\"\n"))
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("specs must name");
+  }
+
+  /** A string sink with a pattern is a string entry, and the pattern finds an HTML tag. */
+  @Test
+  void stringSinkWithPatternIsAStringEntry() {
+    final TaintSpec spec =
+        TaintSpecFiles.parse(FILE, "[[sinks]]\nkind = \"string\"\npattern = \"<[a-zA-Z]\"\n");
+
+    assertThat(spec.sinks().get(0).kind()).isEqualTo(FlowSiteKind.STRING_BUILD);
+    assertThat(spec.sinks().get(0).pattern().orElseThrow().matcher("<p>").find()).isTrue();
+  }
+
+  /** A string sink must name its pattern. */
+  @Test
+  void stringSinkWithoutPatternIsAnError() {
+    assertThatThrownBy(() -> TaintSpecFiles.parse(FILE, "[[sinks]]\nkind = \"string\"\n"))
+        .isInstanceOf(RuleConfigurationException.class)
+        .hasMessageContaining(FILE);
+  }
+
+  /** A pattern is only for string sinks. */
+  @Test
+  void patternOnACallSinkIsAnError() {
+    assertThatThrownBy(
+            () ->
+                TaintSpecFiles.parse(
+                    FILE,
+                    "[[sinks]]\nkind = \"call\"\nname = \"run\"\narguments = [0]\n"
+                        + "pattern = \"<\"\n"))
+        .isInstanceOf(RuleConfigurationException.class)
+        .hasMessageContaining("pattern");
+  }
+
+  /** A pattern that does not compile is a configuration error naming the entry. */
+  @Test
+  void invalidPatternIsAnError() {
+    assertThatThrownBy(
+            () -> TaintSpecFiles.parse(FILE, "[[sinks]]\nkind = \"string\"\npattern = \"<[\"\n"))
+        .isInstanceOf(RuleConfigurationException.class)
+        .hasMessageContaining("invalid pattern");
   }
 }

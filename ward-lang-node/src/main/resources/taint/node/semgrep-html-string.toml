@@ -1,0 +1,6 @@
+# HTML-string sinks of the Semgrep p/javascript rules: a string built from literal and value parts whose literal text has an HTML tag.
+# Matches the flow sites that the lowering records for a + chain with a string literal, a template with a substitution, and concat on a literal.
+
+[[sinks]]
+kind = "string"
+pattern = "<[a-zA-Z]"
