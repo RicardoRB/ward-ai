@@ -10,7 +10,7 @@ consistent-return = { status = "planned", issue = "#326" }
 consistent-this = { status = "planned", issue = "#296" }
 constructor-super = "implemented"
 default-param-last = { status = "planned", issue = "#296" }
-dot-notation = { status = "planned", issue = "#296" }
+dot-notation = "implemented"
 eqeqeq = "implemented"
 for-direction = "implemented"
 func-name-matching = { status = "planned", issue = "#296" }

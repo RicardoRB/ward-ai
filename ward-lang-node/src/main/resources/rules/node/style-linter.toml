@@ -252,3 +252,18 @@ body = '''
 check = "node-useless-constructor"
 message = "useless constructor"
 '''
+[[rules]]
+id = "ward:typescript/dot-notation"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["StringLiteral"]
+parent-path = "literal>singleExpression>expressionSequence>singleExpression"
+text = '^(.)[A-Za-z_$][A-Za-z0-9_$]*\1$'
+message = "[{value}] is better written in dot notation"
+'''
+
