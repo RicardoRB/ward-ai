@@ -11,7 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /** The members of this module's classes: methods, properties, final methods and attributes. */
-final class ClassMembers {
+final class PythonClassMembers {
 
   private static final Pattern BASES =
       Pattern.compile("^(?:async\\s*)?class\\s*\\w+\\s*\\(([^)]*)\\)");
@@ -20,7 +20,7 @@ final class ClassMembers {
   private static final Pattern CLASS_NAME = Pattern.compile("^(?:async\\s*)?class\\s*(\\w+)");
   private static final Pattern FUNCTION_NAME = Pattern.compile("^def\\s*(\\w+)");
 
-  private ClassMembers() {}
+  private PythonClassMembers() {}
 
   /** The member kinds of a class: plain methods, properties, final methods, and attributes. */
   record Members(Map<String, Boolean> methods, Set<String> finalMethods, Set<String> attributes) {}

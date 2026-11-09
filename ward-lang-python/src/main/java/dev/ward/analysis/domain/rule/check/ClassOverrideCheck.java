@@ -55,14 +55,12 @@ public final class ClassOverrideCheck implements RuleCheck {
   @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
     final Map<String, List<String>> bases = new HashMap<>();
-    final Map<String, ClassMembers.Members> members = new HashMap<>();
-    final Map<String, SyntaxNode> nodes = new HashMap<>();
+    final Map<String, PythonClassMembers.Members> members = new HashMap<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, CLASSES)) {
       final String text = SyntaxWalk.text(visit.node());
-      final String name = ClassMembers.first(CLASS_NAME, text);
-      bases.put(name, ClassMembers.bases(text));
-      members.put(name, ClassMembers.members(root, name));
-      nodes.put(name, visit.node());
+      final String name = PythonClassMembers.first(CLASS_NAME, text);
+      bases.put(name, PythonClassMembers.bases(text));
+      members.put(name, PythonClassMembers.members(root, name));
     }
     return switch (problem) {
       case INVALID_OVERRIDDEN_METHOD -> overrides(root, bases, members);
@@ -75,17 +73,17 @@ public final class ClassOverrideCheck implements RuleCheck {
   private List<RuleMatch> overrides(
       final SyntaxNode root,
       final Map<String, List<String>> bases,
-      final Map<String, ClassMembers.Members> members) {
+      final Map<String, PythonClassMembers.Members> members) {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, FUNCTIONS)) {
-      final String owner = ClassMembers.owner(visit.ancestors());
-      final String name = ClassMembers.first(FUNCTION_NAME, SyntaxWalk.text(visit.node()));
+      final String owner = PythonClassMembers.owner(visit.ancestors());
+      final String name = PythonClassMembers.first(FUNCTION_NAME, SyntaxWalk.text(visit.node()));
       if (owner.isEmpty() || name.isEmpty()) {
         continue;
       }
-      final boolean property = ClassMembers.property(visit.ancestors());
+      final boolean property = PythonClassMembers.property(visit.ancestors());
       for (final String base : bases.getOrDefault(owner, List.of())) {
-        final ClassMembers.Members parent = members.get(base);
+        final PythonClassMembers.Members parent = members.get(base);
         if (parent != null
             && parent.methods().containsKey(name)
             && parent.methods().get(name) != property) {
@@ -97,12 +95,12 @@ public final class ClassOverrideCheck implements RuleCheck {
   }
 
   private List<RuleMatch> hidden(
-      final SyntaxNode root, final Map<String, ClassMembers.Members> members) {
+      final SyntaxNode root, final Map<String, PythonClassMembers.Members> members) {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, FUNCTIONS)) {
-      final String owner = ClassMembers.owner(visit.ancestors());
-      final String name = ClassMembers.first(FUNCTION_NAME, SyntaxWalk.text(visit.node()));
-      final ClassMembers.Members own = members.get(owner);
+      final String owner = PythonClassMembers.owner(visit.ancestors());
+      final String name = PythonClassMembers.first(FUNCTION_NAME, SyntaxWalk.text(visit.node()));
+      final PythonClassMembers.Members own = members.get(owner);
       if (own != null && own.attributes().contains(name)) {
         found.add(new RuleMatch(visit.node().span(), message));
       }
@@ -115,7 +113,7 @@ public final class ClassOverrideCheck implements RuleCheck {
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, CALLS)) {
       final String text = SyntaxWalk.text(visit.node());
       final Matcher call = INIT_CALL.matcher(text);
-      final String owner = ClassMembers.enclosingClass(visit.ancestors());
+      final String owner = PythonClassMembers.enclosingClass(visit.ancestors());
       if (call.find()
           && !owner.isEmpty()
           && !NON_PARENT_EXEMPT.equals(call.group(1))
@@ -129,13 +127,13 @@ public final class ClassOverrideCheck implements RuleCheck {
   private List<RuleMatch> finals(
       final SyntaxNode root,
       final Map<String, List<String>> bases,
-      final Map<String, ClassMembers.Members> members) {
+      final Map<String, PythonClassMembers.Members> members) {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, FUNCTIONS)) {
-      final String owner = ClassMembers.owner(visit.ancestors());
-      final String name = ClassMembers.first(FUNCTION_NAME, SyntaxWalk.text(visit.node()));
+      final String owner = PythonClassMembers.owner(visit.ancestors());
+      final String name = PythonClassMembers.first(FUNCTION_NAME, SyntaxWalk.text(visit.node()));
       for (final String base : bases.getOrDefault(owner, List.of())) {
-        final ClassMembers.Members parent = members.get(base);
+        final PythonClassMembers.Members parent = members.get(base);
         if (parent != null && parent.finalMethods().contains(name)) {
           found.add(new RuleMatch(visit.node().span(), message));
         }
