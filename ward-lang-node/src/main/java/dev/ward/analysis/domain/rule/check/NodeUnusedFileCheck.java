@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.SortedMap;
@@ -67,12 +68,21 @@ public final class NodeUnusedFileCheck implements RuleCheck, ProjectCheck {
         }
       }
     }
+    final Map<String, NodeManifests.Manifest> manifests = NodeManifests.byDirectory(files);
     final List<ProjectMatch> found = new ArrayList<>();
     for (final String path : trees.keySet()) {
-      if (!reached.contains(path)) {
+      if (!reached.contains(path) && !inFrameworkWorkspace(path, manifests)) {
         found.add(new ProjectMatch(path, new RuleMatch(new Span(1, 1, 1, 1, 0, 0), message)));
       }
     }
     return List.copyOf(found);
+  }
+
+  /** A file of a framework workspace is silent: its entries follow the framework's conventions. */
+  private static boolean inFrameworkWorkspace(
+      final String path, final Map<String, NodeManifests.Manifest> manifests) {
+    return NodeManifests.nearest(path, manifests)
+        .filter(NodeFrameworks::isFrameworkWorkspace)
+        .isPresent();
   }
 }

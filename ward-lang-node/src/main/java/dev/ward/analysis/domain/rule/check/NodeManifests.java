@@ -21,6 +21,7 @@ final class NodeManifests {
   private static final String MANIFEST = "package.json";
   private static final List<String> ENTRY_FIELDS =
       List.of("main", "module", "types", "typings", "bin", "exports");
+  private static final Pattern SOURCE_FILE = Pattern.compile("\\.(ts|tsx|js|jsx|mjs|cjs|mts|cts)$");
   private static final Pattern CONVENTIONAL_ENTRY =
       Pattern.compile(
           "(^|/)index\\.(ts|tsx|js|jsx|mjs|cjs|mts|cts)$"
@@ -122,6 +123,14 @@ final class NodeManifests {
     final Set<String> entries = new HashSet<>();
     paths.stream().filter(path -> CONVENTIONAL_ENTRY.matcher(path).find()).forEach(entries::add);
     for (final Manifest owner : byDirectory(files).values()) {
+      for (final String script : texts(owner.manifest(), "scripts")) {
+        for (final String token : script.trim().split("\\s+")) {
+          final String path = resolveFrom(owner.directory(), token);
+          if (SOURCE_FILE.matcher(path).find() && paths.contains(path)) {
+            entries.add(path);
+          }
+        }
+      }
       for (final String field : ENTRY_FIELDS) {
         owner
             .manifest()
