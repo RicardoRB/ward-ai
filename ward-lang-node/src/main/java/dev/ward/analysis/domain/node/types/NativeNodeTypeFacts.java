@@ -56,9 +56,8 @@ public final class NativeNodeTypeFacts implements TypeFacts {
     }
     final SyntaxNode parsed = frontend.parse(unit).tree();
     final UnitScopes unitScopes = scopes.analyze(unit, parsed);
-    final SyntaxNode tree = Reassociate.of(parsed);
-    final Module module = program.unitModule(unit.path(), DeclReader.read(tree, unit.text()));
-    final UnitModel model = new UnitModel(unit, tree, unitScopes, module);
+    final Module module = program.unitModule(unit.path(), DeclReader.read(parsed, unit.text()));
+    final UnitModel model = new UnitModel(unit, parsed, unitScopes, module);
     final ExprTyper typer = new ExprTyper(model, new Members(program));
     final FactBuilder builder = new FactBuilder(model, typer);
     final Map<String, SpanFacts> facts = new HashMap<>();

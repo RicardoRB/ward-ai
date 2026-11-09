@@ -44,6 +44,9 @@ final class EcmaTokenCollector {
   private boolean templateSpace;
   private boolean pendingSpace;
   private int errorLine = Integer.MAX_VALUE;
+  private final EcmaJsxText jsx = new EcmaJsxText();
+  private int jsxLine;
+  private boolean jsxSpace;
 
   /**
    * Binds the collector to the vocabulary of the lexer.
@@ -64,22 +67,46 @@ final class EcmaTokenCollector {
       return;
     }
     final String name = vocabulary.getSymbolicName(token.getType());
-    final String text = token.getText();
     final boolean hidden = token.getChannel() != Token.DEFAULT_CHANNEL;
+    final boolean whitespace = hidden && isWhitespace(name);
     if (UNEXPECTED.equals(name)) {
       errorLine = Math.min(errorLine, token.getLine());
     }
-    if (hidden && isWhitespace(name)) {
-      acceptWhitespace(text);
-      return;
+    if (!whitespace) {
+      final String type = hidden ? COMMENT_TYPE : vocabulary.getDisplayName(token.getType());
+      syntaxTokens.add(new FormatToken(type, token.getText(), token.getLine()));
     }
-    final String type = hidden ? COMMENT_TYPE : vocabulary.getDisplayName(token.getType());
-    syntaxTokens.add(new FormatToken(type, text, token.getLine()));
-    if (templateDepth > 0 || (!hidden && BACKTICK.equals(text))) {
+    dispatch(token, name, hidden, whitespace);
+  }
+
+  /** Routes one token to JSX, layout whitespace, a template or a plain layout token. */
+  private void dispatch(
+      final Token token, final String name, final boolean hidden, final boolean whitespace) {
+    final String text = token.getText();
+    if (jsx.active() || (templateDepth == 0 && EcmaJsxText.OPEN.equals(name))) {
+      acceptJsx(name, token);
+    } else if (whitespace) {
+      acceptWhitespace(text);
+    } else if (templateDepth > 0 || (!hidden && BACKTICK.equals(text))) {
       acceptTemplateToken(token, text);
     } else {
       tokens.add(new EcmaToken(text, token.getLine(), kind(name, hidden), pendingSpace));
       pendingSpace = false;
+    }
+  }
+
+  /**
+   * Adds the text of a JSX element, from its {@code <} to the matching end, as one token. The
+   * formatter keeps JSX as the author wrote it, so no token inside the element moves.
+   */
+  private void acceptJsx(final String name, final Token token) {
+    if (!jsx.active()) {
+      jsxLine = token.getLine();
+      jsxSpace = pendingSpace;
+      pendingSpace = false;
+    }
+    if (jsx.add(name, token.getText())) {
+      tokens.add(new EcmaToken(jsx.take(), jsxLine, Kind.CODE, jsxSpace));
     }
   }
 

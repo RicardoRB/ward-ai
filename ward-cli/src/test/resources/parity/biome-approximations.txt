@@ -1,0 +1,4 @@
+# Known differences between Ward's Biome rules and the pinned Biome 2.5.15, one per fixture: "<row>/<language> <reason>".
+# Fixtures named here are skipped by BiomeParitySmokeTest; the rest must report the same positions as Biome.
+use-default-switch-clause-last/javascript Ward reports the case clause after default (4:2); Biome reports the default clause (2:2). The order check cannot select the default clause.
+use-default-switch-clause-last/typescript Ward reports the case clause after default (4:2); Biome reports the default clause (2:2). The order check cannot select the default clause.

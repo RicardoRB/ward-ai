@@ -19,6 +19,7 @@ final class NodeAccesses implements VariableAccesses {
   private static final String VARIABLE_STATEMENT = "variableStatement";
   private static final String VARIABLE_LIST = "variableDeclarationList";
   private static final String SINGLE_VARIABLE = "singleVariableDeclaration";
+  private static final String FOR_VARIABLE_LIST = "forVariableDeclarationList";
   private static final String PROPERTY_ASSIGNMENT = "propertyAssignment";
   private static final String SINGLE = "singleExpression";
   private static final String PROPERTY_NAME = "propertyName";
@@ -119,9 +120,13 @@ final class NodeAccesses implements VariableAccesses {
     if (NAMELESS.contains(node.kind())) {
       return;
     }
+    dispatch(node, found);
+  }
+
+  private void dispatch(final SyntaxNode node, final List<VariableAccess> found) {
     switch (node.kind()) {
       case VARIABLE_STATEMENT -> declarations.variableStatement(node, found);
-      case VARIABLE_LIST, SINGLE_VARIABLE ->
+      case VARIABLE_LIST, SINGLE_VARIABLE, FOR_VARIABLE_LIST ->
           declarations.declarationList(node, NodeSyntax.modifies(node), found);
       case SINGLE -> references.singleExpression(node, found);
       case PROPERTY_ASSIGNMENT -> references.propertyAssignment(node, found);

@@ -39,6 +39,7 @@ class EcmaSyntaxFixturesTest {
   private static final Map<String, List<String>> TYPESCRIPT_KINDS =
       Map.ofEntries(
           Map.entry("accessor-field.ts", List.of("accessorModifier")),
+          Map.entry("type-assertion-cast.ts", List.of("typeArguments")),
           Map.entry("ambient-string-module.ts", List.of("namespaceDeclaration")),
           Map.entry("const-type-params.ts", List.of("constModifier")),
           Map.entry("declaration-file.ts", List.of("namespaceDeclaration", "tupleElementType")),
@@ -51,6 +52,7 @@ class EcmaSyntaxFixturesTest {
           Map.entry("import-type.ts", List.of("typeOnlyModifier")),
           Map.entry("infer-extends.ts", List.of("inferType")),
           Map.entry("optional-chain-non-null.ts", List.of("'?.'", "'!'")),
+          Map.entry("optional-call.ts", List.of("arguments")),
           Map.entry("readonly-operator.ts", List.of("readonlyType")),
           Map.entry("regex-v.ts", List.of("RegularExpressionLiteral")),
           Map.entry("satisfies.ts", List.of("satisfiesClause")),

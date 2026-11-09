@@ -28,25 +28,38 @@ final class EcmaParsing {
   private EcmaParsing() {}
 
   /**
-   * Parses a TypeScript source.
+   * Parses a TypeScript source. The formatter gets no file name, so the source is parsed without
+   * JSX first, and again with JSX when that has a syntax error. A {@code .ts} file that only parses
+   * with JSX is then formatted as TSX, which changes whitespace only.
    *
    * @param source the source text
-   * @return the parse
+   * @return the parse, with JSX when it is the one without a syntax error
    */
   static EcmaParse typeScript(final String source) {
+    final EcmaParse plain = typeScript(source, false);
+    if (!plain.errorLine().isPresent()) {
+      return plain;
+    }
+    final EcmaParse withJsx = typeScript(source, true);
+    return withJsx.errorLine().isPresent() ? plain : withJsx;
+  }
+
+  private static EcmaParse typeScript(final String source, final boolean jsx) {
     final TypeScriptLexer lexer = new TypeScriptLexer(CharStreams.fromString(source));
+    lexer.setJsx(jsx);
     final TypeScriptParser parser = new TypeScriptParser(new CommonTokenStream(lexer));
     return parse(lexer, parser, TypeScriptParser::program);
   }
 
   /**
-   * Parses a JavaScript source.
+   * Parses a JavaScript source, with JSX recognized as the grammar does for JavaScript files.
    *
    * @param source the source text
    * @return the parse
    */
   static EcmaParse javaScript(final String source) {
     final JavaScriptLexer lexer = new JavaScriptLexer(CharStreams.fromString(source));
+    lexer.setJsx(true);
     final JavaScriptParser parser = new JavaScriptParser(new CommonTokenStream(lexer));
     return parse(lexer, parser, JavaScriptParser::program);
   }
