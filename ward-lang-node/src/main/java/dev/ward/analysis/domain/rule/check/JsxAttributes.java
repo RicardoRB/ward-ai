@@ -17,12 +17,21 @@ final class JsxAttributes {
   static final String SELF_CLOSING = "jsxSelfClosingElement";
 
   private static final String ATTRIBUTE = "jsxAttribute";
+  private static final String SPREAD = "jsxSpreadAttribute";
   private static final String VALUE = "jsxAttributeValue";
   private static final String NAME = "jsxElementName";
   private static final String TOKEN = "JsxIdentifier";
   private static final String COLON = ":";
 
   private JsxAttributes() {}
+
+  /** A spread is a jsxSpreadAttribute inside an attribute node of the element. */
+  static boolean hasSpread(final SyntaxNode element) {
+    return JsxAttributes.of(element).stream()
+        .anyMatch(
+            attribute ->
+                attribute.children().stream().anyMatch(child -> SPREAD.equals(child.kind())));
+  }
 
   /** The attribute nodes of an element, in source order. */
   static List<SyntaxNode> of(final SyntaxNode element) {

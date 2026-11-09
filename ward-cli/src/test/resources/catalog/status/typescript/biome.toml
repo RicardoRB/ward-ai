@@ -142,7 +142,7 @@ no-substr = "implemented"
 no-suspicious-semicolon-in-jsx = { status = "planned", issue = "#329" }
 no-svelte-export-let = { status = "planned", issue = "#329" }
 no-svelte-unnecessary-state-wrap = { status = "planned", issue = "#329" }
-no-svg-without-title = { status = "planned", issue = "#329" }
+no-svg-without-title = "implemented"
 no-sync-scripts = { status = "planned", issue = "#329" }
 no-tailwind-arbitrary-value = { status = "planned", issue = "#329" }
 no-tailwind-raw-colors = { status = "planned", issue = "#329" }
@@ -243,7 +243,7 @@ use-jsx-key-in-iterable = { status = "planned", issue = "#329" }
 use-key-with-click-events = "implemented"
 use-key-with-mouse-events = "implemented"
 use-math-min-max = "implemented"
-use-media-caption = { status = "planned", issue = "#329" }
+use-media-caption = "implemented"
 use-modern-math-apis = "implemented"
 use-node-assert-strict = { status = "planned", issue = "#296" }
 use-nodejs-import-protocol = "implemented"
@@ -264,7 +264,7 @@ use-react-native-platform-components = { status = "planned", issue = "#329" }
 use-reduce-type-parameter = { status = "planned", issue = "#329" }
 use-regexp-test = { status = "planned", issue = "#329" }
 use-self-closing-elements = { status = "planned", issue = "#296" }
-use-semantic-elements = { status = "planned", issue = "#329" }
+use-semantic-elements = "implemented"
 use-shorthand-function-type = "implemented"
 use-simple-number-keys = "implemented"
 use-simplified-logic-expression = { status = "planned", issue = "#329" }

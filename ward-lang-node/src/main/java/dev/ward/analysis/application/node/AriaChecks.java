@@ -14,7 +14,9 @@ import dev.ward.analysis.domain.rule.check.BiomeNoRedundantRolesCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNoninteractiveElementInteractionsCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNoninteractiveTabindexCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNoninteractiveToInteractiveRoleCheck;
+import dev.ward.analysis.domain.rule.check.BiomeSemanticElementCheck;
 import dev.ward.analysis.domain.rule.check.BiomeStaticElementInteractionsCheck;
+import dev.ward.analysis.domain.rule.check.BiomeSvgTitleCheck;
 import java.util.Map;
 
 /** The checks that read Biome 2.5.15's mirrored ARIA tables, kept apart from the JSX checks. */
@@ -37,6 +39,14 @@ final class AriaChecks {
             toml ->
                 new BiomeAriaPropsSupportedByRoleCheck(
                     AriaTables.load(), TomlValues.required(toml, MESSAGE))),
+        entry(
+            "node-semantic-element",
+            toml ->
+                new BiomeSemanticElementCheck(
+                    AriaTables.load(), TomlValues.required(toml, MESSAGE))),
+        entry(
+            "node-svg-title",
+            toml -> new BiomeSvgTitleCheck(AriaTables.load(), TomlValues.required(toml, MESSAGE))),
         entry(
             "node-aria-props",
             toml -> new BiomeAriaPropsCheck(AriaTables.load(), TomlValues.required(toml, MESSAGE))),

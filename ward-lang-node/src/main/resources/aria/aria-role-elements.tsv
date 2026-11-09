@@ -1,0 +1,69 @@
+# Biome 2.5.15 element concepts of ARIA roles, mirrored as data. Tag: @biomejs/biome@2.5.15.
+# Source: crates/biome_aria_metadata/aria-data/*.json, baseConcepts and relatedConcepts of type element in an HTML-like module (dom, html, xhtml), as build.rs selects them.
+# Generated from those files by a one-off mirror script (not checked in); do not edit by hand.
+role	kind	element	attributes
+article	related	article	
+banner	related	header	
+blockquote	related	blockquote	
+button	base	button	
+caption	related	caption	
+caption	related	figcaption	
+caption	related	legend	
+cell	base	td	
+checkbox	related	input	type=checkbox
+code	related	code	
+columnheader	base	th	scope=col
+combobox	related	select	
+complementary	related	aside	
+contentinfo	related	footer	
+deletion	related	del	
+deletion	related	s	
+emphasis	related	em	
+figure	related	figure	
+form	base	form	
+generic	related	div	
+generic	related	span	
+grid	base	table	
+gridcell	base	td	
+group	related	fieldset	
+heading	related	h1	
+heading	related	h2	
+heading	related	h3	
+heading	related	h4	
+heading	related	h5	
+heading	related	h6	
+img	related	img	
+insertion	related	ins	
+link	related	a	
+link	related	link	
+list	base	ol	
+list	base	ul	
+listbox	related	select	
+listitem	base	li	
+main	related	main	
+mark	related	mark	
+meter	related	meter	
+navigation	related	nav	
+option	base	option	
+paragraph	related	p	
+radio	related	input	type=radio
+region	related	section	
+row	base	tr	
+rowgroup	base	tbody	
+rowgroup	base	tfoot	
+rowgroup	base	thead	
+rowheader	base	th	scope=row
+search	base	search	
+searchbox	base	input	type=search
+separator	related	hr	
+status	related	output	
+strong	related	strong	
+subscript	related	sub	
+subscript	related	sup	
+superscript	related	sub	
+superscript	related	sup	
+table	base	table	
+term	related	dfn	
+textbox	related	textarea	
+textbox	related	input	type=text
+time	related	time	

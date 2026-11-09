@@ -1,5 +1,6 @@
 package dev.ward.analysis.domain.rule.check;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +50,29 @@ public final class AriaTableParser {
                 row -> row[0],
                 HashMap::new,
                 Collectors.mapping(row -> row[1], Collectors.toUnmodifiableSet())));
+  }
+
+  /**
+   * Parses the element concepts of each role; lines starting with {@code #} and the header are
+   * skipped.
+   *
+   * @param lines the lines of {@code aria-role-elements.tsv}
+   * @throws IllegalArgumentException if a row has the wrong number of columns
+   */
+  public static Map<String, List<AriaRoleTable.ElementConcept>> parseSemantic(
+      final List<String> lines) {
+    final Map<String, List<AriaRoleTable.ElementConcept>> out = new HashMap<>();
+    for (final String line : data(lines)) {
+      final String[] c = columns(line, 4);
+      final Map<String, String> attributes = new HashMap<>();
+      for (final String pair : c[3].isBlank() ? new String[0] : c[3].split(" ")) {
+        final String[] kv = pair.split("=", 2);
+        attributes.put(kv[0], kv[1]);
+      }
+      out.computeIfAbsent(c[0], k -> new ArrayList<>())
+          .add(new AriaRoleTable.ElementConcept(c[2], attributes));
+    }
+    return out;
   }
 
   private AriaTableParser() {}

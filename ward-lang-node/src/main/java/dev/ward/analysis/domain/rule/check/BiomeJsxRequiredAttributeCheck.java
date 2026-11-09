@@ -69,7 +69,7 @@ public final class BiomeJsxRequiredAttributeCheck implements RuleCheck {
     return SyntaxWalk.visits(root, Set.of(JsxAttributes.OPENING, JsxAttributes.SELF_CLOSING))
         .stream()
         .filter(visit -> elements.stream().anyMatch(spec -> spec.selects(visit.node())))
-        .filter(visit -> !(rule.silentOnSpread() && hasSpread(visit.node())))
+        .filter(visit -> !(rule.silentOnSpread() && JsxAttributes.hasSpread(visit.node())))
         .flatMap(visit -> violation(visit.node()).stream())
         .map(node -> CheckSupport.at(node.span(), message))
         .toList();
@@ -95,13 +95,5 @@ public final class BiomeJsxRequiredAttributeCheck implements RuleCheck {
       return Optional.empty();
     }
     return JsxAttributes.value(present.get());
-  }
-
-  /** A spread is a jsxSpreadAttribute inside an attribute node of the element. */
-  private static boolean hasSpread(final SyntaxNode element) {
-    return JsxAttributes.of(element).stream()
-        .anyMatch(
-            attribute ->
-                attribute.children().stream().anyMatch(child -> SPREAD.equals(child.kind())));
   }
 }
