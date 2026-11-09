@@ -14,7 +14,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -26,22 +25,7 @@ import java.util.stream.Collectors;
 public final class AgentRulesTemplate {
   static final String BEGIN = "<!-- ward-owned: agent-rules v1 begin -->";
   static final String END = "<!-- ward-owned: agent-rules v1 end -->";
-  static final String CHECKSTYLE_FILE = "config/checkstyle.xml";
-  static final String PMD_FILE = "config/pmd-ruleset.xml";
   private static final int PERCENT = 100;
-  private static final String PROPERTY_MAX = ".max";
-
-  /** Checkstyle modules agents most often trip over, with the rule each one enforces. */
-  private static final Map<String, String> CHECKSTYLE_RULES =
-      Map.ofEntries(
-          Map.entry("MissingJavadocType", "Javadoc on public types and methods"),
-          Map.entry("MagicNumber", "no magic numbers (use named constants)"),
-          Map.entry("AvoidStarImport", "no star or unused imports"),
-          Map.entry("IllegalCatch", "no catch of overly broad exception types"),
-          Map.entry("EmptyCatchBlock", "no empty catch blocks"),
-          Map.entry("MissingSwitchDefault", "every `switch` has a `default`"),
-          Map.entry("OneStatementPerLine", "one declaration or statement per line"),
-          Map.entry("HiddenField", "no locals or parameters that hide fields"));
 
   private AgentRulesTemplate() {}
 
@@ -76,7 +60,7 @@ public final class AgentRulesTemplate {
     if (preset != null
         && project.toolchain() != Toolchain.PYTHON
         && project.toolchain() != Toolchain.SWIFT) {
-      lines.addAll(limits(ids, preset.rules(), owned));
+      lines.addAll(limits(ids, preset.rules()));
     }
     if (project.languages().contains(Language.JAVA)) {
       lines.add(
@@ -111,38 +95,20 @@ public final class AgentRulesTemplate {
 
   /** Returns the gates that can get a limit line, for the gate contract test. */
   static Set<String> limitGates() {
-    return limitLines(QualityPreset.STRICT.rules(), Set.of()).keySet();
+    return limitLines(QualityPreset.STRICT.rules()).keySet();
   }
 
   /** Returns one line per selected gate that has a limit worth stating, in gate order. */
-  private static List<String> limits(
-      final Set<String> ids, final PresetRules rules, final Set<String> owned) {
-    return limitLines(rules, owned).entrySet().stream()
+  private static List<String> limits(final Set<String> ids, final PresetRules rules) {
+    return limitLines(rules).entrySet().stream()
         .filter(entry -> ids.contains(entry.getKey()))
         .map(Map.Entry::getValue)
         .toList();
   }
 
   /** Returns the limit line of each gate that has one, keyed by gate ID, in gate order. */
-  private static Map<String, String> limitLines(final PresetRules rules, final Set<String> owned) {
+  private static Map<String, String> limitLines(final PresetRules rules) {
     final Map<String, String> lines = new LinkedHashMap<>();
-    lines.put(
-        "checkstyle",
-        owned.contains(CHECKSTYLE_FILE)
-            ? "- Checkstyle: follow the rules in `" + CHECKSTYLE_FILE + "`."
-            : "- Checkstyle (`" + CHECKSTYLE_FILE + "`): " + checkstyle(rules) + ".");
-    lines.put(
-        "pmd",
-        owned.contains(PMD_FILE)
-            ? "- PMD: follow the rules in `" + PMD_FILE + "`."
-            : "- PMD (`" + PMD_FILE + "`): " + pmd(rules) + ".");
-    lines.put(
-        "spotbugs",
-        "- SpotBugs: effort "
-            + rules.spotbugsEffort()
-            + ", threshold "
-            + rules.spotbugsThreshold()
-            + ". Copy mutable collections in and out of records and constructors.");
     lines.put(
         "coverage",
         "- Coverage (JaCoCo): " + coverage(rules) + ". New code needs tests that assert behavior.");
@@ -153,47 +119,6 @@ public final class AgentRulesTemplate {
     }
     lines.put("enforcer", "- Enforcer: " + String.join(", ", rules.enforcerRules()) + ".");
     return lines;
-  }
-
-  private static String checkstyle(final PresetRules rules) {
-    final Map<String, String> properties = rules.checkstyleProperties();
-    final List<String> parts = new ArrayList<>();
-    limit(parts, properties, "FileLength", "files of at most %s lines");
-    limit(parts, properties, "MethodLength", "methods of at most %s lines");
-    limit(parts, properties, "ParameterNumber", "at most %s parameters");
-    limit(parts, properties, "CyclomaticComplexity", "cyclomatic complexity of at most %s");
-    rules.checkstyleModules().stream()
-        .map(CHECKSTYLE_RULES::get)
-        .filter(Objects::nonNull)
-        .forEach(parts::add);
-    return String.join("; ", parts);
-  }
-
-  private static void limit(
-      final List<String> parts,
-      final Map<String, String> properties,
-      final String module,
-      final String format) {
-    final String max = properties.get(module + PROPERTY_MAX);
-    if (max != null) {
-      parts.add(String.format(format, max));
-    }
-  }
-
-  private static String pmd(final PresetRules rules) {
-    final List<String> parts = new ArrayList<>();
-    for (final String rule : rules.pmdRules()) {
-      final String name = rule.substring(rule.lastIndexOf('/') + 1).replace(".xml", "");
-      final String part =
-          switch (name) {
-            case "MethodArgumentCouldBeFinal" -> "final parameters";
-            case "LocalVariableCouldBeFinal" -> "final local variables";
-            case "UseExplicitTypes" -> "no `var`";
-            default -> name;
-          };
-      parts.add(part);
-    }
-    return String.join("; ", parts);
   }
 
   private static String coverage(final PresetRules rules) {

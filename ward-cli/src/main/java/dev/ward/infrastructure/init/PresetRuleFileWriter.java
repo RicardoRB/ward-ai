@@ -91,7 +91,7 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
     if (toolchain != null) {
       targets.addAll(toolchain.targets(project, preset, gates));
     } else {
-      jvmTargets(project, preset, gates)
+      enforcerTargets(project, preset, gates)
           .forEach(
               (file, content) ->
                   targets.add(
@@ -105,7 +105,7 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
     return targets;
   }
 
-  private static Map<Path, String> jvmTargets(
+  private static Map<Path, String> enforcerTargets(
       final Project project, final QualityPreset preset, final List<InitGateOption> gates) {
     if (preset == null) {
       return Map.of();
@@ -113,20 +113,6 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
     final Path config = project.root().resolve("config");
     final List<String> ids = gates.stream().map(InitGateOption::id).toList();
     final Map<Path, String> targets = new LinkedHashMap<>();
-    if (ids.contains("pmd")) {
-      targets.put(
-          config.resolve("pmd-ruleset.xml"), marked(preset, PresetRuleFileContent.pmd(preset)));
-    }
-    if (ids.contains("checkstyle")) {
-      targets.put(
-          config.resolve("checkstyle.xml"),
-          marked(preset, PresetRuleFileContent.checkstyle(preset)));
-    }
-    if (ids.contains("spotbugs") && preset == QualityPreset.STANDARD) {
-      targets.put(
-          config.resolve("spotbugs-exclude.xml"),
-          marked(preset, PresetRuleFileContent.spotbugs(preset)));
-    }
     if (ids.contains("enforcer")) {
       targets.put(
           config.resolve("enforcer-rules.xml"),

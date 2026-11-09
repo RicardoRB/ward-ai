@@ -6,8 +6,8 @@ import dev.ward.domain.init.QualityPreset;
 import java.util.List;
 
 /**
- * The gates of Java and Kotlin sources on Maven and Gradle: the shared JVM gates. The Ward rules of
- * the preset, selected in {@code ward-rules.toml}, replace Checkstyle, PMD and SpotBugs.
+ * The gates of Java and Kotlin sources on Maven and Gradle: the shared JVM gates. Style and bug
+ * rules come from the Ward {@code ward} gate, selected in {@code ward-rules.toml}.
  */
 final class JavaGates implements SourceLanguageGates<BuildToolGates> {
   private static final List<String> STANDARD = List.of("compile", "tests", "coverage");

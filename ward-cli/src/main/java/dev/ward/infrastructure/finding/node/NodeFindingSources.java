@@ -13,7 +13,7 @@ public final class NodeFindingSources {
   public NodeFindingSources(
       final EslintJsonFindings eslint,
       final TscOutputFindings tsc,
-      final BiomeCheckstyleFindings biome) {
+      final BiomeXmlFindings biome) {
     this.sources = List.of(eslint, tsc, biome);
   }
 

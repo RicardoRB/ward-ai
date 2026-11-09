@@ -3,16 +3,12 @@ package dev.ward.infrastructure.init.maven;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.infrastructure.init.LicensePolicySnippets;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 
 /** The Maven tools init can add to pom.xml, one row per gate, with their default declarations. */
 final class PomTools {
-  private static final String CHECKSTYLE = "maven-checkstyle-plugin";
-  private static final String PMD = "maven-pmd-plugin";
-  private static final String SPOTBUGS = "spotbugs-maven-plugin";
   private static final String SONAR = "sonar-maven-plugin";
   private static final String JACOCO = "jacoco-maven-plugin";
   private static final String DEPENDENCY_CHECK = "dependency-check-maven";
@@ -45,23 +41,6 @@ final class PomTools {
               </plugin>
             """;
 
-  private static final String CHECKSTYLE_PLUGIN =
-      """
-              <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.6.0</version>
-                <dependencies><dependency><groupId>com.puppycrawl.tools</groupId><artifactId>checkstyle</artifactId><version>ENGINE_VERSION</version></dependency></dependencies>
-              </plugin>
-            """;
-  private static final String SPOTBUGS_PLUGIN =
-      """
-              <plugin>
-                <groupId>com.github.spotbugs</groupId>
-                <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>4.9.7.0</version>
-              </plugin>
-            """;
   private static final String SONAR_PLUGIN =
       """
               <plugin>
@@ -135,33 +114,10 @@ final class PomTools {
                 </configuration>
               </plugin>
             """;
-  private static final String PMD_PLUGIN =
-      """
-              <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.28.0</version>
-                <configuration><analysisCache>true</analysisCache></configuration>
-              </plugin>
-            """;
-
-  /** Where an engine version goes in a snippet. */
-  static final String ENGINE_VERSION = "ENGINE_VERSION";
-
-  /** The engine each plugin carries, keyed by plugin artifact, with its default version. */
-  static final Map<String, Engine> ENGINES =
-      Map.of(CHECKSTYLE, new Engine("checkstyle", "10.20.2"));
 
   /** Tools in the order they are added to pom.xml. */
   static final List<Tool> TOOLS =
       List.of(
-          Tool.modulePlugin(
-              "checkstyle",
-              CHECKSTYLE,
-              CHECKSTYLE_PLUGIN,
-              preset -> PresetPluginSnippets.checkstyle()),
-          Tool.modulePlugin("pmd", PMD, PMD_PLUGIN, preset -> PresetPluginSnippets.pmd()),
-          Tool.modulePlugin("spotbugs", SPOTBUGS, SPOTBUGS_PLUGIN, PresetPluginSnippets::spotbugs),
           Tool.plugin("sonar", SONAR, SONAR_PLUGIN),
           Tool.modulePlugin("coverage", JACOCO, JACOCO_PLUGIN, PresetPluginSnippets::jacoco),
           Tool.plugin("dependency-check", DEPENDENCY_CHECK, DEPENDENCY_CHECK_PLUGIN),
@@ -189,9 +145,6 @@ final class PomTools {
         .map(tool -> new PomDeclarationValidator.Declaration(tool.artifact(), tool.dependency()))
         .toList();
   }
-
-  /** A tool a plugin runs, such as the Checkstyle engine, and the version pinned by default. */
-  record Engine(String name, String version) {}
 
   /**
    * A Maven tool added for a selected gate. Its preset snippet, when present, replaces the default
@@ -234,8 +187,7 @@ final class PomTools {
     }
 
     /** The plugin or dependency declaration, with the chosen versions filled in. */
-    String declaration(
-        final QualityPreset preset, final String selectedVersion, final String engineVersion) {
+    String declaration(final QualityPreset preset, final String selectedVersion) {
       final String chosen = chosen(preset);
       final String pinned =
           selectedVersion == null
@@ -243,19 +195,11 @@ final class PomTools {
               : chosen.replaceFirst(
                   "<version>[^<]+</version>",
                   Matcher.quoteReplacement("<version>" + selectedVersion + "</version>"));
-      final Engine engine = ENGINES.get(artifact);
-      return engine == null
-          ? pinned
-          : pinned.replace(
-              ENGINE_VERSION, engineVersion == null ? engine.version() : engineVersion);
+      return pinned;
     }
 
-    String addTo(
-        final String pom,
-        final QualityPreset preset,
-        final String selectedVersion,
-        final String engineVersion) {
-      final String declaration = declaration(preset, selectedVersion, engineVersion);
+    String addTo(final String pom, final QualityPreset preset, final String selectedVersion) {
+      final String declaration = declaration(preset, selectedVersion);
       return dependency
           ? PomXml.addDependency(pom, declaration)
           : PomXml.addPlugin(pom, declaration);

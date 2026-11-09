@@ -9,6 +9,7 @@ import dev.ward.domain.project.Project;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.Map;
 
 /** Gate choices that run a standalone executable, available only when it is on the path. */
@@ -67,19 +68,22 @@ record BinaryToolGates(EnvironmentInspection environment, Project project) {
         settings);
   }
 
+  /** Semgrep is offered only where a registry ruleset exists for the language. */
   private List<InitGateOption> securityGates() {
-    final String ruleset =
-        switch (project.language()) {
-          case TYPESCRIPT -> "p/typescript";
-          case JAVASCRIPT -> "p/javascript";
-          default -> "p/java";
-        };
-    return List.of(
-        option(
-            "semgrep",
-            "Runs SAST and custom security rules with Semgrep.",
-            List.of("semgrep", "scan", "--config", ruleset, "--error"),
-            "Install Semgrep (needs network access to fetch the " + ruleset + " ruleset)."),
+    final List<InitGateOption> gates = new ArrayList<>();
+    semgrepRuleset()
+        .ifPresent(
+            ruleset ->
+                gates.add(
+                    option(
+                        "semgrep",
+                        "Runs SAST and custom security rules with Semgrep.",
+                        List.of("semgrep", "scan", "--config", ruleset, "--error"),
+                        "Install Semgrep (needs network access to fetch the "
+                            + ruleset
+                            + " ruleset).")));
+    gates.addAll(
+        List.of(
         option(
             "gitleaks",
             "Detects committed secrets with Gitleaks.",
@@ -104,8 +108,20 @@ record BinaryToolGates(EnvironmentInspection environment, Project project) {
             "trivy",
             "Scans dependencies, containers, and IaC with Trivy.",
             List.of("trivy", "fs", "--exit-code", "1", "."),
-            "Install Trivy."));
+            "Install Trivy.")));
+    return gates;
   }
+
+  /** The Semgrep registry ruleset for {@code project}'s language, or empty when there is none. */
+  private Optional<String> semgrepRuleset() {
+    return switch (project.language()) {
+      case TYPESCRIPT -> Optional.of("p/typescript");
+      case JAVASCRIPT -> Optional.of("p/javascript");
+      case PYTHON -> Optional.of("p/python");
+      default -> Optional.empty();
+    };
+  }
+
 
   private InitGateOption option(
       final String id, final String description, final List<String> command, final String hint) {

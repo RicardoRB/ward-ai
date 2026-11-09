@@ -10,20 +10,8 @@ import java.util.Map;
  * see the Java compatibility matrix.
  */
 public final class GradleToolCatalog {
-  /** The SpotBugs plugin id. */
-  public static final String SPOTBUGS = "com.github.spotbugs";
-
   /** The PIT plugin id. */
   public static final String PITEST = "info.solidsoft.pitest";
-
-  /** The Checkstyle engine. */
-  public static final String CHECKSTYLE_ENGINE = "checkstyle";
-
-  /** The PMD engine. */
-  public static final String PMD_ENGINE = "pmd";
-
-  /** The SpotBugs engine. */
-  public static final String SPOTBUGS_ENGINE = "spotbugs";
 
   /** The JaCoCo engine. */
   public static final String JACOCO_ENGINE = "jacoco";
@@ -39,12 +27,6 @@ public final class GradleToolCatalog {
 
   private static final List<ManagedPluginCandidate> ROWS =
       List.of(
-          row(CHECKSTYLE_ENGINE, "9.3", JDK_8, JDK_10, ANY_GRADLE),
-          row(CHECKSTYLE_ENGINE, "10.20.2", JDK_11, JDK_25, ANY_GRADLE),
-          row(PMD_ENGINE, "7.17.0", JDK_8, JDK_25, "8.6"),
-          row(SPOTBUGS, "6.0.26", JDK_8, JDK_25, "7.1"),
-          row(SPOTBUGS_ENGINE, "4.8.6", JDK_8, JDK_10, "7.1"),
-          row(SPOTBUGS_ENGINE, "4.9.7", JDK_11, JDK_25, "7.1"),
           row(JACOCO_ENGINE, "0.8.13", JDK_8, JDK_25, ANY_GRADLE),
           row(PITEST, "1.15.0", JDK_8, JDK_10, "6.4"),
           row(PITEST, "1.19.0", JDK_11, JDK_25, "8.4"),
