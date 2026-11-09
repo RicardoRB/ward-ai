@@ -45,7 +45,10 @@ final class FactTable {
         ask(kinds, FactKind.SHAPE, () -> typeMembers.shape(typed, declaration)).orElse(null),
         ask(kinds, FactKind.CALL, () -> FactValues.call(typed).or(() -> declared(declaration)))
             .orElse(null),
-        list(kinds, FactKind.ANNOTATIONS, declaration.map(FactValues::annotations)),
+        list(
+            kinds,
+            FactKind.ANNOTATIONS,
+            Optional.of(KotlinNullness.annotations(typed, declaration))),
         list(
             kinds,
             FactKind.ANNOTATIONS,

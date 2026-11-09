@@ -44,6 +44,10 @@ final class PythonOrderChecks {
   }
 
   private static Map<String, CheckFactory> build() {
+    return CheckRegistry.union(List.of(buildFirst(), buildSecond(), PylintCheckFactories.checks()));
+  }
+
+  private static Map<String, CheckFactory> buildFirst() {
     return Map.ofEntries(
         entry("comparison-operator", PythonOrderChecks::comparisonOperator),
         entry("loop-variable", PythonOrderChecks::loopVariable),
@@ -65,7 +69,11 @@ final class PythonOrderChecks {
         entry(
             "empty-abstract-method",
             toml -> new EmptyAbstractMethodCheck(TomlValues.required(toml, MESSAGE))),
-        entry("finally-jump", toml -> new FinallyJumpCheck(TomlValues.required(toml, MESSAGE))),
+        entry("finally-jump", toml -> new FinallyJumpCheck(TomlValues.required(toml, MESSAGE))));
+  }
+
+  private static Map<String, CheckFactory> buildSecond() {
+    return Map.ofEntries(
         entry("set-duplicates", toml -> new SetDuplicatesCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "unused-annotation",

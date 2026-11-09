@@ -55,3 +55,114 @@ skip = ["modifierList", "annotation", "type", "typeParameters", "typeConstraints
 pattern = "[a-z][a-zA-Z0-9]*"
 message = "property name '{value}' does not match the name pattern of this rule"
 '''
+
+[[rules]]
+id = "ward:kotlin/constructor-parameter-naming"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "text-pattern"
+kinds = ["classParameter"]
+modifiers = ["modifierList", "annotation"]
+excluded = "override"
+name = "simpleIdentifier"
+skip = ["modifierList", "annotation", "type"]
+pattern = "[a-z][a-zA-Z0-9]*"
+message = "constructor parameter name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:kotlin/enum-naming"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "text-pattern"
+kinds = ["enumEntry"]
+modifiers = ["modifierList", "annotation"]
+name = "simpleIdentifier"
+skip = ["annotations", "annotation"]
+pattern = "[A-Z][_a-zA-Z0-9]*"
+message = "enum entry name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:kotlin/invalid-package-declaration"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.root-package = { type = "string" }
+options.require-root-in-declaration = { type = "boolean" }
+body = '''
+check = "kotlin-package-directory"
+root-package = ""
+require-root-in-declaration = false
+message = "the package declaration does not match the file location"
+'''
+
+[[rules]]
+id = "ward:kotlin/matching-declaration-name"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.must-be-first = { type = "boolean" }
+body = '''
+check = "kotlin-file-name"
+must-be-first = true
+message = "the file name '{value}' does not match the name of the single top-level declaration"
+'''
+
+[[rules]]
+id = "ward:kotlin/member-name-equals-class-name"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.ignore-overridden = { type = "boolean" }
+body = '''
+check = "kotlin-member-name"
+ignore-overridden = true
+message = "a member is named after its class or object; rename it or make it a constructor"
+'''
+
+[[rules]]
+id = "ward:kotlin/object-property-naming"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.constant-pattern = { type = "regex" }
+options.property-pattern = { type = "regex" }
+options.private-property-pattern = { type = "regex" }
+body = '''
+check = "kotlin-object-property"
+constant-pattern = "[A-Za-z][_A-Za-z0-9]*"
+property-pattern = "[A-Za-z][_A-Za-z0-9]*"
+private-property-pattern = "(_)?[A-Za-z][_A-Za-z0-9]*"
+message = "object property name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:kotlin/no-name-shadowing"
+language = "kotlin"
+capability = "SCOPES"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-name-shadowing"
+message = "name shadowed: {value}"
+'''

@@ -101,7 +101,7 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
         ConfigTarget.write(
             project.root().resolve(WARD_RULES),
             ConfigFiles.marker(ConfigFiles.TOML_MARKER, preset)
-                + PresetRuleFileContent.wardRules(preset)));
+                + PresetRuleFileContent.wardRules(preset, project.languages())));
     return targets;
   }
 

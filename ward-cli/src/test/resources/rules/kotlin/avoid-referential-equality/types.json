@@ -1,0 +1,7 @@
+{
+  "2:16": {"type": {"name": "java.lang.String"}},
+  "2:22": {"type": {"name": "java.lang.String"}},
+  "3:16": {"type": {"name": "java.lang.String"}},
+  "3:17": {"type": {"name": "java.lang.String"}},
+  "4:17": {"type": {"name": "int", "primitive": true}}
+}
