@@ -10,12 +10,14 @@ import dev.ward.analysis.domain.rule.check.BiomeConstantClampCheck;
 import dev.ward.analysis.domain.rule.check.BiomeDuplicatePropsCheck;
 import dev.ward.analysis.domain.rule.check.BiomeFinallyReturnCheck;
 import dev.ward.analysis.domain.rule.check.BiomeJsxAttributeValueCheck;
+import dev.ward.analysis.domain.rule.check.BiomeJsxHandlerPairCheck;
 import dev.ward.analysis.domain.rule.check.BiomeJsxRequiredAttributeCheck;
 import dev.ward.analysis.domain.rule.check.BiomeMemberPropertyCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNamespaceAccessCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUnreachableSuperCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUnusedParameterCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import org.tomlj.TomlParseResult;
@@ -48,6 +50,7 @@ final class BiomeChecks {
             "node-autofocus", toml -> new BiomeAutofocusCheck(TomlValues.required(toml, MESSAGE))),
         entry("node-jsx-blank-target", BiomeChecks::blankTarget),
         entry("node-jsx-required-attribute", BiomeChecks::requiredAttribute),
+        entry("node-jsx-handler-pair", BiomeChecks::handlerPair),
         entry(
             "node-jsx-duplicate-props",
             toml -> new BiomeDuplicatePropsCheck(TomlValues.required(toml, MESSAGE))),
@@ -59,6 +62,13 @@ final class BiomeChecks {
                     "expression".equals(toml.getString("at")),
                     Pattern.compile(TomlValues.required(toml, "text")),
                     TomlValues.required(toml, MESSAGE))));
+  }
+
+  private static RuleCheck handlerPair(final TomlParseResult toml) {
+    return new BiomeJsxHandlerPairCheck(
+        List.copyOf(TomlValues.optionalStrings(toml, "pairs")),
+        List.copyOf(TomlValues.optionalStrings(toml, "exempt")),
+        TomlValues.required(toml, MESSAGE));
   }
 
   private static RuleCheck requiredAttribute(final TomlParseResult toml) {

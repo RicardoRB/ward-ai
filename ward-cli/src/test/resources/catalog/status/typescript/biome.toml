@@ -240,8 +240,8 @@ use-inline-script-id = { status = "planned", issue = "#329" }
 use-is-array = "implemented"
 use-json-import-attributes = "implemented"
 use-jsx-key-in-iterable = { status = "planned", issue = "#329" }
-use-key-with-click-events = { status = "planned", issue = "#329" }
-use-key-with-mouse-events = { status = "planned", issue = "#329" }
+use-key-with-click-events = "implemented"
+use-key-with-mouse-events = "implemented"
 use-math-min-max = "implemented"
 use-media-caption = { status = "planned", issue = "#329" }
 use-modern-math-apis = "implemented"

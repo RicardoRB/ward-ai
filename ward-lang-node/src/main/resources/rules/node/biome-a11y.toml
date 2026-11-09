@@ -151,7 +151,7 @@ category = "a11y"
 presets = ["standard", "strict"]
 body = '''
 check = "node-jsx-required-attribute"
-elements = ["img", "area"]
+elements = ["img", "area", "input[type=image]"]
 attribute = "alt"
 message = "an image needs an alt text; an empty alt text marks a decorative image"
 '''
@@ -165,7 +165,7 @@ category = "a11y"
 presets = ["standard", "strict"]
 body = '''
 check = "node-jsx-required-attribute"
-elements = ["img", "area"]
+elements = ["img", "area", "input[type=image]"]
 attribute = "alt"
 message = "an image needs an alt text; an empty alt text marks a decorative image"
 '''
@@ -224,4 +224,60 @@ check = "node-jsx-required-attribute"
 elements = ["html"]
 attribute = "lang"
 message = "the html element needs a lang attribute"
+'''
+
+[[rules]]
+id = "ward:javascript/use-key-with-click-events"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-handler-pair"
+pairs = ["onClick:onKeyDown|onKeyUp|onKeyPress"]
+exempt = ["button", "input", "select", "textarea", "a[href]"]
+message = "an element with a click handler needs a keyboard handler too"
+'''
+
+[[rules]]
+id = "ward:javascript/use-key-with-mouse-events"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-handler-pair"
+pairs = ["onMouseOver:onFocus", "onMouseOut:onBlur"]
+exempt = []
+message = "a mouse handler needs the matching focus or blur handler too"
+'''
+
+[[rules]]
+id = "ward:typescript/use-key-with-click-events"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-handler-pair"
+pairs = ["onClick:onKeyDown|onKeyUp|onKeyPress"]
+exempt = ["button", "input", "select", "textarea", "a[href]"]
+message = "an element with a click handler needs a keyboard handler too"
+'''
+
+[[rules]]
+id = "ward:typescript/use-key-with-mouse-events"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-handler-pair"
+pairs = ["onMouseOver:onFocus", "onMouseOut:onBlur"]
+exempt = []
+message = "a mouse handler needs the matching focus or blur handler too"
 '''
