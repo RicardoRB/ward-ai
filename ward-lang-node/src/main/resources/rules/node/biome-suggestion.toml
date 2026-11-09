@@ -8,6 +8,6 @@ severity = "NOTE"
 category = "suggestion"
 presets = ["standard", "strict"]
 body = '''
-check = "node-base-to-string"
+check = "node-no-base-to-string"
 message = "value only has the default object representation; define toString or format it"
 '''
