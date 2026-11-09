@@ -7,10 +7,13 @@ import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.InvalidRangeCheck;
 import dev.ward.analysis.domain.rule.check.KotlinIgnoredReturnValueCheck;
 import dev.ward.analysis.domain.rule.check.KotlinMapGetNotNullCheck;
+import dev.ward.analysis.domain.rule.check.KotlinNullableOperationCheck;
+import dev.ward.analysis.domain.rule.check.KotlinNullableOperationCheck.Operation;
 import dev.ward.analysis.domain.rule.check.KotlinRedundantSuspendCheck;
 import dev.ward.analysis.domain.rule.check.KotlinReferentialEqualityCheck;
 import dev.ward.analysis.domain.rule.check.UnreachableStatementCheck;
 import dev.ward.analysis.domain.rule.check.UnusedUnaryOperatorCheck;
+import dev.ward.analysis.domain.types.Nullness;
 import java.util.Map;
 
 /**
@@ -53,6 +56,21 @@ final class KotlinBugChecks {
                     TomlValues.required(toml, MESSAGE))),
         entry(
             "kotlin-redundant-suspend",
-            toml -> new KotlinRedundantSuspendCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new KotlinRedundantSuspendCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "kotlin-unnecessary-not-null",
+            toml ->
+                new KotlinNullableOperationCheck(
+                    Operation.NOT_NULL, Nullness.NON_NULL, TomlValues.required(toml, MESSAGE))),
+        entry(
+            "kotlin-unsafe-call-nullable",
+            toml ->
+                new KotlinNullableOperationCheck(
+                    Operation.NOT_NULL, Nullness.NULLABLE, TomlValues.required(toml, MESSAGE))),
+        entry(
+            "kotlin-unnecessary-safe-call",
+            toml ->
+                new KotlinNullableOperationCheck(
+                    Operation.SAFE_CALL, Nullness.NON_NULL, TomlValues.required(toml, MESSAGE))));
   }
 }

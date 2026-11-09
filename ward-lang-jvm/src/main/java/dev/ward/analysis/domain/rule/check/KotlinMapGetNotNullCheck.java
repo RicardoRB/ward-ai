@@ -72,8 +72,9 @@ public final class KotlinMapGetNotNullCheck implements RuleCheck {
   }
 
   /**
-   * Matches two shapes of the Kotlin tree: {@code m[k]!!} is flat, with the index and the {@code !!}
-   * as siblings, while {@code m.get(k)!!} nests the {@code !!} inside the {@code .get(...)} call.
+   * Matches two shapes of the Kotlin tree: {@code m[k]!!} is flat, with the index and the {@code
+   * !!} as siblings, while {@code m.get(k)!!} nests the {@code !!} inside the {@code .get(...)}
+   * call.
    */
   private static boolean isMapLookup(final SyntaxNode lookup, final UnitTypeFacts types) {
     final List<SyntaxNode> parts = lookup.children();
@@ -84,9 +85,7 @@ public final class KotlinMapGetNotNullCheck implements RuleCheck {
   }
 
   private static boolean isFlatIndex(final List<SyntaxNode> parts) {
-    return parts.size() == PARTS
-        && isIndex(parts.get(ACCESS))
-        && isAssertion(parts.get(ASSERTION));
+    return parts.size() == PARTS && isIndex(parts.get(ACCESS)) && isAssertion(parts.get(ASSERTION));
   }
 
   private static boolean isNestedGet(final List<SyntaxNode> parts) {

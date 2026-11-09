@@ -2,19 +2,13 @@ package dev.ward.analysis.domain.rule.check;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.ward.analysis.domain.ir.AnalysisLanguage;
-import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import dev.ward.analysis.domain.types.CallTarget;
-import dev.ward.analysis.domain.types.SpanFacts;
+import dev.ward.analysis.domain.types.Nullness;
 import dev.ward.analysis.domain.types.TypeRef;
 import dev.ward.analysis.domain.types.UnitTypeFacts;
-import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
@@ -22,21 +16,27 @@ import org.junit.jupiter.api.Test;
 final class KotlinTypedChecksTest {
   private static final String MESSAGE = "message";
   private static final String STRING = "java.lang.String";
+  private static final String NON_NULL_MARKER = "dev.ward.kotlin.NonNull";
+  private static final String NULLABLE_MARKER = "dev.ward.kotlin.Nullable";
+  private static final int SECOND_LOOKUP_LINE = 3;
+  private static final int SAFE_CALL_LINE = 3;
 
   @Test
   void referentialEqualityReportsOnlyIdentityOnForbiddenOperands() {
     final String source =
         "fun f(a: String, b: String) {\n    val x = a === b\n    val y = a == b\n}\n";
-    final SyntaxNode root = parse(source);
-    final UnitTypeFacts facts = typed(root, "comparison", TypeRef.of(STRING));
+    final SyntaxNode root = KotlinTypedCheckFixtures.parse(source);
+    final UnitTypeFacts facts =
+        KotlinTypedCheckFixtures.typed(root, "comparison", TypeRef.of(STRING));
     final List<RuleMatch> found =
         new KotlinReferentialEqualityCheck(Set.of("kotlin.String"), MESSAGE)
-            .matches(root, null, null, facts, unit(source));
+            .matches(root, null, null, facts, KotlinTypedCheckFixtures.unit(source));
     assertThat(found).extracting(match -> match.span().startLine()).containsExactly(2);
-    final UnitTypeFacts ints = typed(root, "comparison", TypeRef.of("int"));
+    final UnitTypeFacts ints =
+        KotlinTypedCheckFixtures.typed(root, "comparison", TypeRef.of("int"));
     assertThat(
             new KotlinReferentialEqualityCheck(Set.of("kotlin.String"), MESSAGE)
-                .matches(root, null, null, ints, unit(source)))
+                .matches(root, null, null, ints, KotlinTypedCheckFixtures.unit(source)))
         .isEmpty();
   }
 
@@ -44,131 +44,105 @@ final class KotlinTypedChecksTest {
   void mapLookupWithNotNullOperatorReportsOnlyMaps() {
     final String source =
         "fun f(m: Map<String, String>) {\n    val a = m[\"k\"]!!\n    val b = m.get(\"k\")!!\n}\n";
-    final SyntaxNode root = parse(source);
-    final UnitTypeFacts maps = typed(root, "atomicExpression", TypeRef.of("java.util.Map"));
-    assertThat(new KotlinMapGetNotNullCheck(MESSAGE).matches(root, null, null, maps, unit(source)))
+    final SyntaxNode root = KotlinTypedCheckFixtures.parse(source);
+    final UnitTypeFacts maps =
+        KotlinTypedCheckFixtures.typed(root, "atomicExpression", TypeRef.of("java.util.Map"));
+    assertThat(
+            new KotlinMapGetNotNullCheck(MESSAGE)
+                .matches(root, null, null, maps, KotlinTypedCheckFixtures.unit(source)))
         .extracting(match -> match.span().startLine())
-        .containsExactly(2, 3);
+        .containsExactly(2, SECOND_LOOKUP_LINE);
     final UnitTypeFacts none = UnitTypeFacts.none();
-    assertThat(new KotlinMapGetNotNullCheck(MESSAGE).matches(root, null, null, none, unit(source)))
+    assertThat(
+            new KotlinMapGetNotNullCheck(MESSAGE)
+                .matches(root, null, null, none, KotlinTypedCheckFixtures.unit(source)))
         .isEmpty();
   }
 
   @Test
   void ignoredReturnValueReportsAnnotatedStatementCallsOnly() {
     final String source = "fun f(r: R) {\n    r.save()\n}\n";
-    final SyntaxNode root = parse(source);
-    final CallTarget target = target(List.of("com.x.CheckReturnValue"));
-    final UnitTypeFacts annotated = calls(root, "2:5", target);
+    final SyntaxNode root = KotlinTypedCheckFixtures.parse(source);
+    final CallTarget target = KotlinTypedCheckFixtures.target(List.of("com.x.CheckReturnValue"));
+    final UnitTypeFacts annotated = KotlinTypedCheckFixtures.calls(root, "2:5", target);
     final KotlinIgnoredReturnValueCheck check =
         new KotlinIgnoredReturnValueCheck(
             Set.of("*.CheckResult", "*.CheckReturnValue"),
             Set.of("*.CanIgnoreReturnValue"),
             MESSAGE);
-    assertThat(check.matches(root, null, null, annotated, unit(source))).hasSize(1);
+    assertThat(check.matches(root, null, null, annotated, KotlinTypedCheckFixtures.unit(source)))
+        .hasSize(1);
     final CallTarget exempt =
-        target(List.of("com.x.CheckReturnValue", "com.x.CanIgnoreReturnValue"));
-    assertThat(check.matches(root, null, null, calls(root, "2:5", exempt), unit(source))).isEmpty();
+        KotlinTypedCheckFixtures.target(
+            List.of("com.x.CheckReturnValue", "com.x.CanIgnoreReturnValue"));
+    assertThat(
+            check.matches(
+                root,
+                null,
+                null,
+                KotlinTypedCheckFixtures.calls(root, "2:5", exempt),
+                KotlinTypedCheckFixtures.unit(source)))
+        .isEmpty();
   }
 
   @Test
   void redundantSuspendReportsOnlyBodiesWithoutSuspendingCalls() {
     final String source = "suspend fun a(): Int {\n    return 1\n}\n";
-    final SyntaxNode root = parse(source);
+    final SyntaxNode root = KotlinTypedCheckFixtures.parse(source);
     final KotlinRedundantSuspendCheck check = new KotlinRedundantSuspendCheck(MESSAGE);
-    assertThat(check.matches(root, null, null, UnitTypeFacts.none(), unit(source)))
+    assertThat(
+            check.matches(
+                root, null, null, UnitTypeFacts.none(), KotlinTypedCheckFixtures.unit(source)))
         .extracting(match -> match.span().startLine())
         .containsExactly(1);
     final String withCall = "suspend fun a(): Int {\n    b()\n}\n";
-    final SyntaxNode callRoot = parse(withCall);
+    final SyntaxNode callRoot = KotlinTypedCheckFixtures.parse(withCall);
     final CallTarget suspending =
-        new CallTarget(
-            TypeRef.of("app.A"),
-            "b",
-            List.of(TypeRef.of("kotlin.coroutines.Continuation")),
-            null,
-            true,
-            false,
-            List.of(),
-            List.of(),
-            List.of(),
-            List.of(),
-            List.of(),
-            List.of(),
-            null,
-            Map.of(),
-            Map.of(),
-            null);
+        KotlinTypedCheckFixtures.callTarget(
+            "b", List.of(TypeRef.of("kotlin.coroutines.Continuation")));
     assertThat(
-            check.matches(callRoot, null, null, calls(callRoot, "2:5", suspending), unit(withCall)))
+            check.matches(
+                callRoot,
+                null,
+                null,
+                KotlinTypedCheckFixtures.calls(callRoot, "2:5", suspending),
+                KotlinTypedCheckFixtures.unit(withCall)))
         .isEmpty();
-    assertThat(check.matches(callRoot, null, null, UnitTypeFacts.none(), unit(withCall))).isEmpty();
+    assertThat(
+            check.matches(
+                callRoot,
+                null,
+                null,
+                UnitTypeFacts.none(),
+                KotlinTypedCheckFixtures.unit(withCall)))
+        .isEmpty();
   }
 
-  private static CallTarget target(final List<String> annotations) {
-    return new CallTarget(
-        TypeRef.of("app.Repo"),
-        "save",
-        List.of(),
-        null,
-        false,
-        false,
-        annotations,
-        List.of(),
-        List.of(),
-        List.of(),
-        List.of(),
-        List.of(),
-        null,
-        Map.of(),
-        Map.of(),
-        null);
-  }
-
-  /** Gives every node of {@code kind} the type {@code type}. */
-  private static UnitTypeFacts typed(final SyntaxNode root, final String kind, final TypeRef type) {
-    final Map<String, SpanFacts> facts = new HashMap<>();
-    for (final SyntaxNode node : nodes(root, kind)) {
-      facts.put(UnitTypeFacts.startKey(node.span()), facts(type, null));
-    }
-    return new UnitTypeFacts(facts);
-  }
-
-  /** Gives the postfix call starting at {@code key} the call target {@code target}. */
-  private static UnitTypeFacts calls(
-      final SyntaxNode root, final String key, final CallTarget target) {
-    final Map<String, SpanFacts> facts = new HashMap<>();
-    for (final SyntaxNode node : nodes(root, "postfixUnaryExpression")) {
-      if (key.equals(UnitTypeFacts.startKey(node.span()))) {
-        facts.put(key, facts(null, target));
-      }
-    }
-    return new UnitTypeFacts(facts);
-  }
-
-  private static SpanFacts facts(final TypeRef type, final CallTarget call) {
-    return new SpanFacts(type, null, call, List.of(), List.of(), List.of(), List.of(), null, null);
-  }
-
-  private static List<SyntaxNode> nodes(final SyntaxNode root, final String kind) {
-    final List<SyntaxNode> found = new ArrayList<>();
-    collect(root, kind, found);
-    return found;
-  }
-
-  private static void collect(
-      final SyntaxNode node, final String kind, final List<SyntaxNode> found) {
-    if (kind.equals(node.kind())) {
-      found.add(node);
-    }
-    node.children().forEach(child -> collect(child, kind, found));
-  }
-
-  private static SyntaxNode parse(final String source) {
-    return new AntlrLanguageFrontend().parse(unit(source)).tree();
-  }
-
-  private static SourceUnit unit(final String source) {
-    return new SourceUnit("a.kt", AnalysisLanguage.KOTLIN, source);
+  @Test
+  void nullableOperationReportsOnlyTheNullnessItIsAbout() {
+    final String source = "fun f(p: String) {\n    val a = p!!\n    val b = p?.length\n}\n";
+    final SyntaxNode root = KotlinTypedCheckFixtures.parse(source);
+    final UnitTypeFacts nonNull =
+        KotlinTypedCheckFixtures.marked(root, "atomicExpression", NON_NULL_MARKER);
+    assertThat(
+            new KotlinNullableOperationCheck(
+                    KotlinNullableOperationCheck.Operation.NOT_NULL, Nullness.NON_NULL, MESSAGE)
+                .matches(root, null, null, nonNull, KotlinTypedCheckFixtures.unit(source)))
+        .extracting(match -> match.span().startLine())
+        .containsExactly(2);
+    assertThat(
+            new KotlinNullableOperationCheck(
+                    KotlinNullableOperationCheck.Operation.SAFE_CALL, Nullness.NON_NULL, MESSAGE)
+                .matches(root, null, null, nonNull, KotlinTypedCheckFixtures.unit(source)))
+        .extracting(match -> match.span().startLine())
+        .containsExactly(SAFE_CALL_LINE);
+    final UnitTypeFacts nullable =
+        KotlinTypedCheckFixtures.marked(root, "atomicExpression", NULLABLE_MARKER);
+    assertThat(
+            new KotlinNullableOperationCheck(
+                    KotlinNullableOperationCheck.Operation.NOT_NULL, Nullness.NULLABLE, MESSAGE)
+                .matches(root, null, null, nullable, KotlinTypedCheckFixtures.unit(source)))
+        .extracting(match -> match.span().startLine())
+        .containsExactly(2);
   }
 }

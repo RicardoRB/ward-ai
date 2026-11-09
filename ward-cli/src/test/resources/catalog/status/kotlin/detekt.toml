@@ -145,13 +145,13 @@ unnecessary-inheritance = { status = "planned", issue = "#294" }
 unnecessary-inner-class = { status = "planned", issue = "#294" }
 unnecessary-let = { status = "planned", issue = "#294" }
 unnecessary-not-null-check = { status = "planned", issue = "#324" }
-unnecessary-not-null-operator = { status = "planned", issue = "#324" }
+unnecessary-not-null-operator = "implemented"
 unnecessary-part-of-binary-expression = { status = "planned", issue = "#324" }
-unnecessary-safe-call = { status = "planned", issue = "#324" }
+unnecessary-safe-call = "implemented"
 unnecessary-temporary-instantiation = "implemented"
 unreachable-catch-block = { status = "planned", issue = "#324" }
 unreachable-code = "implemented"
-unsafe-call-on-nullable-type = { status = "planned", issue = "#324" }
+unsafe-call-on-nullable-type = "implemented"
 unsafe-cast = { status = "planned", issue = "#324" }
 until-instead-of-range-to = { status = "planned", issue = "#294" }
 unused-parameter = { status = "planned", issue = "#294" }
