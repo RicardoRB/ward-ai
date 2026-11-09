@@ -28,6 +28,8 @@ public final class PythonCheckProvider implements CheckProvider {
                     PylintPartA2Checks.checks())));
     // A whole-run check: UnusedDefinitionFindings reports it, so no unit has a match here.
     checks.put("unused-definition", toml -> root -> List.of());
+    // A whole-run graph check: CyclicImportRule reports it, so no unit has a match here.
+    checks.put("cyclic-import", toml -> root -> List.of());
     return Map.copyOf(checks);
   }
 }
