@@ -22,6 +22,14 @@ class SwiftModuleResolverTest {
                   "ShopTests", List.of("Tests/ShopTests"), List.of(), List.of("Shop"))));
 
   @Test
+  void aFileReportsTheModuleOfItsTargetOrNothingWhenItIsImplicit() {
+    final SwiftModuleResolver resolver = new SwiftModuleResolver(LAYOUT);
+
+    assertThat(resolver.moduleOf("Sources/Shop/Cart.swift")).contains("Shop");
+    assertThat(resolver.moduleOf("Scripts/Main.swift")).isEmpty();
+  }
+
+  @Test
   void anImportIsAnEdgeToEveryFileOfTheModule() {
     final List<DependencyEdge> edges =
         new SwiftModuleResolver(LAYOUT)

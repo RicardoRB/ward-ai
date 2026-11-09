@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
@@ -27,6 +28,15 @@ public final class SwiftModuleResolver implements DependencyResolver {
    */
   public SwiftModuleResolver(final SwiftProjectLayout layout) {
     this.layout = Objects.requireNonNull(layout, "layout");
+  }
+
+  /** The module of {@code path}, or empty when the layout places it in the implicit module. */
+  @Override
+  public Optional<String> moduleOf(final String path) {
+    final String module = layout.moduleOf(path);
+    return SwiftProjectLayout.IMPLICIT_MODULE.equals(module)
+        ? Optional.empty()
+        : Optional.of(module);
   }
 
   @Override
@@ -96,7 +106,7 @@ public final class SwiftModuleResolver implements DependencyResolver {
       final Reference reference,
       final Map<String, List<String>> filesByModule,
       final List<DependencyEdge> edges) {
-    final String module = moduleOf(reference.specifier());
+    final String module = importedModule(reference.specifier());
     if (module.isEmpty() || !layout.declares(module)) {
       return;
     }
@@ -108,7 +118,7 @@ public final class SwiftModuleResolver implements DependencyResolver {
   }
 
   /** The module an import specifier names, or an empty string for any other reference. */
-  private static String moduleOf(final String specifier) {
+  private static String importedModule(final String specifier) {
     if (!specifier.startsWith(SwiftFileSummarizer.MODULE_PREFIX)) {
       return "";
     }
