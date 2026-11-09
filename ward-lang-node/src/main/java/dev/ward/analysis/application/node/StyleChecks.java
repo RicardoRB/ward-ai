@@ -10,6 +10,7 @@ import dev.ward.analysis.domain.rule.check.NodeJavadocAlignCheck;
 import dev.ward.analysis.domain.rule.check.NodeOverloadGroupingCheck;
 import dev.ward.analysis.domain.rule.check.NodePreferConstCheck;
 import dev.ward.analysis.domain.rule.check.NodeStringConcatCheck;
+import dev.ward.analysis.domain.rule.check.NodeUselessConstructorCheck;
 import dev.ward.analysis.domain.rule.check.VariableDistanceCheck;
 import java.util.Map;
 
@@ -51,6 +52,8 @@ final class StyleChecks {
                 TomlValues.required(toml, MESSAGE)),
         "node-string-concat",
         toml -> new NodeStringConcatCheck(TomlValues.required(toml, MESSAGE)),
+        "node-useless-constructor",
+        toml -> new NodeUselessConstructorCheck(TomlValues.required(toml, MESSAGE)),
         "node-prefer-const",
         toml ->
             new NodePreferConstCheck(

@@ -237,9 +237,7 @@ severity = "ERROR"
 category = "linter"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["constructorDeclaration"]
-text = '^(?:\w+)?constructor\(\)\{\}$|^(?:\w+)?constructor\(([\w$,]*)\)\{super\(\1\);?\}$|^(?:\w+)?constructor\(\.\.\.([\w$]+)\)\{super\(\.\.\.\2\);?\}$'
+check = "node-useless-constructor"
 message = "useless constructor"
 '''
 
