@@ -40,6 +40,16 @@ class NodeTypeOnlyImportCheckTest {
   }
 
   @Test
+  void mixedDeclarationIsReportedOnceNamingItsTypeOnlyBindings() {
+    final List<RuleMatch> found =
+        run(
+            "import { A, C, b } from './m';\nexport function f(x: A, y: C): number { return b(x, y); }\n");
+
+    assertThat(found).hasSize(1);
+    assertThat(found.get(0).message()).isEqualTo("partial \"A\" and \"C\"");
+  }
+
+  @Test
   void importUsedAsAValueIsNotReported() {
     assertThat(run("import { helper } from './h';\nhelper();\n")).isEmpty();
   }
@@ -59,7 +69,7 @@ class NodeTypeOnlyImportCheckTest {
     final SyntaxNode root = new AntlrLanguageFrontend().parse(unit).tree();
     final NodeScopeAnalysis analysis = new NodeScopeAnalysis(environments -> Set.of());
     final UnitScopes scopes = analysis.analyze(unit, root);
-    return new NodeTypeOnlyImportCheck("type")
+    return new NodeTypeOnlyImportCheck("type", "partial {names}")
         .matches(root, null, new ScopeView(scopes, Map.of(), Set.of(), analysis), unit);
   }
 }
