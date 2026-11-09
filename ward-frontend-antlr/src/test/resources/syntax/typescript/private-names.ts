@@ -19,4 +19,7 @@ class Counter {
     this.#bump();
     return this.#value;
   }
+  isCounter(value: unknown): boolean {
+    return #count in value;
+  }
 }

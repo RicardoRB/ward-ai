@@ -72,6 +72,7 @@ class EcmaSyntaxFixturesTest {
           Map.entry("import-attributes.js", List.of("importAttributes")),
           Map.entry("import-meta.js", List.of("importMetaExpression")),
           Map.entry("regex-v.js", List.of("RegularExpressionLiteral")),
+          Map.entry("private-names.js", List.of("privateIdentifier")),
           Map.entry("using.js", List.of("usingDeclaration")));
 
   static List<Path> typeScriptFixtures() throws IOException {

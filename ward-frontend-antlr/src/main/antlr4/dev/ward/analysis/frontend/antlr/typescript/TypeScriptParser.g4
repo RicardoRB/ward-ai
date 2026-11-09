@@ -839,6 +839,7 @@ singleExpression
     | generatorFunctionDeclaration                                    # GeneratorsFunctionExpression // ECMAScript 6
     | yieldStatement                                                  # YieldExpression              // ECMAScript 6
     | This                                                            # ThisExpression
+    | privateIdentifier                                               # PrivateNameExpression
     | importMetaExpression                                            # ImportMeta
     | identifierName                                                  # IdentifierExpression
     | Super                                                           # SuperExpression
