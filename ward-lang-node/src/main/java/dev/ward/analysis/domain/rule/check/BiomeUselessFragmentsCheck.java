@@ -5,8 +5,10 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.port.AnalysisFailedException;
 import dev.ward.analysis.domain.rule.FlowView;
 import dev.ward.analysis.domain.rule.RuleMatch;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -22,15 +24,10 @@ import java.util.Set;
 public final class BiomeUselessFragmentsCheck implements RuleCheck {
 
   private static final String FRAGMENT = "jsxFragment";
+  private static final int CONTAINER = 2;
   private static final String ELEMENT = "jsxElement";
   private static final String TEXT = "jsxText";
   private static final String EXPRESSION_CHILD = "jsxExpressionContainer";
-  private static final String EXPRESSION = "singleExpression";
-  private static final String RETURN = "returnStatement";
-  private static final String ATTRIBUTE_VALUE = "jsxAttributeValue";
-  private static final Set<String> PRESERVING =
-      Set.of("variableDeclaration", "arrowFunctionBody", "propertyAssignment");
-  private static final Set<String> LOGICAL_OPERATORS = Set.of("&&", "||", "??");
 
   private final String message;
 
@@ -58,108 +55,85 @@ public final class BiomeUselessFragmentsCheck implements RuleCheck {
         .toList();
   }
 
-  /** The context a fragment sits in, from the nearest ancestors. */
-  private enum Context {
-    PRESERVED,
-    RETURNED,
-    ATTRIBUTE,
-    LOGICAL,
-    EXPRESSION_CHILD,
-    LIST,
-    OTHER
-  }
-
   private boolean reported(
       final SyntaxNode fragment, final List<SyntaxNode> ancestors, final String source) {
-    final Context context = contextOf(ancestors);
-    if (context == Context.PRESERVED) {
+    final FragmentContext.Context context = FragmentContext.of(ancestors);
+    if (context == FragmentContext.Context.PRESERVED) {
       return false;
     }
-    final List<SyntaxNode> children =
-        fragment.children().stream().filter(child -> isSignificantKind(child.kind())).toList();
-    final List<SyntaxNode> significant = new java.util.ArrayList<>();
-    for (final SyntaxNode child : children) {
-      if (child.kind().equals(TEXT)) {
-        if (context == Context.EXPRESSION_CHILD || context == Context.LOGICAL) {
-          return false;
-        }
-        if (!isPaddingText(child, source)) {
-          significant.add(child);
-        }
-      } else if (child.kind().equals(EXPRESSION_CHILD)) {
-        if (context == Context.LOGICAL) {
-          return false;
-        }
-        significant.add(child);
-      } else {
-        significant.add(child);
-      }
+    final Optional<List<SyntaxNode>> children = significantChildren(fragment, context, source);
+    if (children.isEmpty()) {
+      return false;
     }
+    final List<SyntaxNode> significant = children.get();
     return switch (significant.size()) {
       case 0 -> true;
       case 1 -> singleChildReported(significant.get(0), context, ancestors);
-      default -> context == Context.LIST;
+      default -> context == FragmentContext.Context.LIST;
     };
   }
 
-  private static boolean singleChildReported(
-      final SyntaxNode child, final Context context, final List<SyntaxNode> ancestors) {
-    if (child.kind().equals(TEXT)) {
-      if (context == Context.ATTRIBUTE || context == Context.RETURNED) {
-        return false;
+  /**
+   * The children that count, or empty when the text or an expression inside the fragment must keep
+   * it, as Biome's loop over the children decides.
+   */
+  private static Optional<List<SyntaxNode>> significantChildren(
+      final SyntaxNode fragment, final FragmentContext.Context context, final String source) {
+    final List<SyntaxNode> significant = new ArrayList<>();
+    for (final SyntaxNode child : fragment.children()) {
+      if (keepsFragment(child, context)) {
+        return Optional.empty();
       }
-      return ancestors.get(ancestors.size() - 2).kind().equals(FRAGMENT);
+      if (counts(child, source)) {
+        significant.add(child);
+      }
     }
-    if (child.kind().equals(EXPRESSION_CHILD) && context == Context.RETURNED) {
-      return false;
-    }
-    return true;
+    return Optional.of(significant);
   }
 
-  /** A child Biome counts: an element, a fragment, an expression or text. */
-  private static boolean isSignificantKind(final String kind) {
-    return kind.equals(ELEMENT) || kind.equals(TEXT) || kind.equals(EXPRESSION_CHILD);
+  /** Text inside an expression or a logical operand, or an expression inside a logical operand. */
+  private static boolean keepsFragment(
+      final SyntaxNode child, final FragmentContext.Context context) {
+    final boolean inExpression =
+        context == FragmentContext.Context.EXPRESSION_CHILD
+            || context == FragmentContext.Context.LOGICAL;
+    return TEXT.equals(child.kind()) && inExpression
+        || EXPRESSION_CHILD.equals(child.kind()) && context == FragmentContext.Context.LOGICAL;
+  }
+
+  /** A child Biome counts: an element, an expression, or text that is not padding. */
+  private static boolean counts(final SyntaxNode child, final String source) {
+    if (TEXT.equals(child.kind())) {
+      return !isPaddingText(child, source);
+    }
+    return ELEMENT.equals(child.kind()) || EXPRESSION_CHILD.equals(child.kind());
+  }
+
+  private static boolean singleChildReported(
+      final SyntaxNode child,
+      final FragmentContext.Context context,
+      final List<SyntaxNode> ancestors) {
+    if (TEXT.equals(child.kind())) {
+      return textChildReported(context, ancestors);
+    }
+    return !(EXPRESSION_CHILD.equals(child.kind()) && context == FragmentContext.Context.RETURNED);
+  }
+
+  /**
+   * Text alone keeps the fragment in an attribute or a return, and elsewhere only in a fragment.
+   */
+  private static boolean textChildReported(
+      final FragmentContext.Context context, final List<SyntaxNode> ancestors) {
+    if (context == FragmentContext.Context.ATTRIBUTE
+        || context == FragmentContext.Context.RETURNED) {
+      return false;
+    }
+    return FRAGMENT.equals(ancestors.get(ancestors.size() - CONTAINER).kind());
   }
 
   /** Text that is only whitespace with a line break is padding, as Biome's is_padding_spaces. */
   private static boolean isPaddingText(final SyntaxNode text, final String source) {
     final String raw = source.substring(text.span().startOffset(), text.span().endOffset());
     return raw.isBlank() && raw.contains("\n");
-  }
-
-  /**
-   * The context of the fragment: its wrapper element's parent decides it. The wrapper is the
-   * jsxElement holding the fragment; the expression above it is a singleExpression.
-   */
-  private static Context contextOf(final List<SyntaxNode> ancestors) {
-    final int wrapper = ancestors.size() - 1;
-    if (wrapper < 1) {
-      return Context.OTHER;
-    }
-    final SyntaxNode parent = ancestors.get(wrapper - 1);
-    if (parent.kind().equals(ELEMENT) || parent.kind().equals(FRAGMENT)) {
-      return Context.LIST;
-    }
-    if (!parent.kind().equals(EXPRESSION) || wrapper < 2) {
-      return Context.OTHER;
-    }
-    final SyntaxNode outer = ancestors.get(wrapper - 2);
-    if (outer.kind().equals(EXPRESSION_CHILD)) {
-      final boolean inAttribute =
-          wrapper >= 3 && ancestors.get(wrapper - 3).kind().equals(ATTRIBUTE_VALUE);
-      return inAttribute ? Context.ATTRIBUTE : Context.EXPRESSION_CHILD;
-    }
-    if (outer.kind().equals(EXPRESSION) && isLogical(outer)) {
-      return Context.LOGICAL;
-    }
-    if (outer.kind().equals(RETURN)) {
-      return Context.RETURNED;
-    }
-    return PRESERVING.contains(outer.kind()) ? Context.PRESERVED : Context.OTHER;
-  }
-
-  private static boolean isLogical(final SyntaxNode expression) {
-    return expression.children().stream()
-        .anyMatch(child -> LOGICAL_OPERATORS.contains(SyntaxWalk.text(child)));
   }
 }
