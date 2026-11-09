@@ -8,9 +8,9 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Reports an {@code autoFocus} attribute on a DOM element, as Biome does: a component (a capitalized
- * or member-expression tag) is exempt, and so is an element inside a {@code dialog} or an element
- * with a {@code popover} attribute.
+ * Reports an {@code autoFocus} attribute on a DOM element, as Biome does: a component (a
+ * capitalized or member-expression tag) is exempt, and so is an element inside a {@code dialog} or
+ * an element with a {@code popover} attribute.
  */
 public final class BiomeAutofocusCheck implements RuleCheck {
 
@@ -66,9 +66,7 @@ public final class BiomeAutofocusCheck implements RuleCheck {
 
   private static boolean domElement(final SyntaxNode element) {
     final String name = elementName(element);
-    return !name.isEmpty()
-        && Character.isLowerCase(name.charAt(0))
-        && !name.contains(DOT);
+    return !name.isEmpty() && Character.isLowerCase(name.charAt(0)) && !name.contains(DOT);
   }
 
   private static boolean exemptsDescendants(final SyntaxNode element) {

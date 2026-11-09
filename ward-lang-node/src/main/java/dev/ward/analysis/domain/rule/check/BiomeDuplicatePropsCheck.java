@@ -35,8 +35,7 @@ public final class BiomeDuplicatePropsCheck implements RuleCheck {
         .map(
             attribute ->
                 CheckSupport.at(
-                    attribute.span(),
-                    CheckSupport.fill(message, SyntaxWalk.text(attribute), "")))
+                    attribute.span(), CheckSupport.fill(message, SyntaxWalk.text(attribute), "")))
         .toList();
   }
 
@@ -47,10 +46,12 @@ public final class BiomeDuplicatePropsCheck implements RuleCheck {
     final List<SyntaxNode> out = new ArrayList<>();
     for (final SyntaxNode attribute : JsxAttributes.of(element)) {
       final String name = JsxAttributes.name(attribute);
-      if (!first.containsKey(name)) {
+      if (first.containsKey(name)) {
+        if (reported.add(name)) {
+          out.add(first.get(name));
+        }
+      } else {
         first.put(name, attribute);
-      } else if (reported.add(name)) {
-        out.add(first.get(name));
       }
     }
     return out;

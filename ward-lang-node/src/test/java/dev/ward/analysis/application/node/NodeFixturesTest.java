@@ -134,7 +134,7 @@ class NodeFixturesTest {
   /** The file of a case: a TypeScript case with a {@code .tsx} file uses it, so that JSX is on. */
   private static Path source(final OwnedRule owned, final String base, final String extension) {
     final Path tsx = owned.directory().resolve(base + ".tsx");
-    if (extension.equals("ts") && Files.isRegularFile(tsx)) {
+    if ("ts".equals(extension) && Files.isRegularFile(tsx)) {
       return tsx;
     }
     return owned.directory().resolve(base + "." + extension);

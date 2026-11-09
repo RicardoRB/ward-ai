@@ -17,7 +17,8 @@ class BiomeAutofocusCheckTest {
 
   @Test
   void reportsADomElementOutsideADialogOrPopover() {
-    assertThat(reported("const a = <div><input autoFocus /></div>;\n")).containsExactly("autoFocus");
+    assertThat(reported("const a = <div><input autoFocus /></div>;\n"))
+        .containsExactly("autoFocus");
   }
 
   @Test
@@ -30,7 +31,8 @@ class BiomeAutofocusCheckTest {
 
   private static List<String> reported(final String source) {
     final SyntaxNode root = parse(source);
-    return CHECK.matches(root).stream().map(RuleMatch::span)
+    return CHECK.matches(root).stream()
+        .map(RuleMatch::span)
         .map(span -> source.substring(span.startOffset(), span.endOffset()))
         .toList();
   }

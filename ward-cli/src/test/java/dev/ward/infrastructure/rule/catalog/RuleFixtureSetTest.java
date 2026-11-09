@@ -17,8 +17,7 @@ class RuleFixtureSetTest {
   void typeScriptCaseUsesTsxWhenPresentAndTsOtherwise() throws IOException {
     Files.writeString(directory.resolve("violating.tsx"), "const a = <div />;\n");
     Files.writeString(directory.resolve("passing.ts"), "const b = 1;\n");
-    final RuleFixtureSet set =
-        new RuleFixtureSet(AnalysisLanguage.TYPESCRIPT, "rule", directory);
+    final RuleFixtureSet set = new RuleFixtureSet(AnalysisLanguage.TYPESCRIPT, "rule", directory);
 
     assertThat(set.violating("")).isEqualTo(directory.resolve("violating.tsx"));
     assertThat(set.passing("")).isEqualTo(directory.resolve("passing.ts"));
@@ -27,8 +26,7 @@ class RuleFixtureSetTest {
   @Test
   void javaScriptCaseIgnoresATsxFile() throws IOException {
     Files.writeString(directory.resolve("violating.tsx"), "const a = <div />;\n");
-    final RuleFixtureSet set =
-        new RuleFixtureSet(AnalysisLanguage.JAVASCRIPT, "rule", directory);
+    final RuleFixtureSet set = new RuleFixtureSet(AnalysisLanguage.JAVASCRIPT, "rule", directory);
 
     assertThat(set.violating("")).isEqualTo(directory.resolve("violating.js"));
   }

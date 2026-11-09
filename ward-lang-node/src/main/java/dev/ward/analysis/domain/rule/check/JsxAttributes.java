@@ -13,6 +13,7 @@ final class JsxAttributes {
 
   /** The node kinds of an element that carries attributes. */
   static final String OPENING = "jsxOpeningElement";
+
   static final String SELF_CLOSING = "jsxSelfClosingElement";
 
   private static final String ATTRIBUTE = "jsxAttribute";

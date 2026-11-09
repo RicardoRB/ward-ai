@@ -61,23 +61,31 @@ public final class BiomeBlankTargetCheck implements RuleCheck {
   /** The target attribute of a link that Biome reports, if the element is one. */
   private Optional<SyntaxNode> violation(final SyntaxNode element) {
     final List<SyntaxNode> attributes = JsxAttributes.of(element);
-    final Optional<SyntaxNode> target = named(attributes, TARGET);
+    final Optional<SyntaxNode> target =
+        named(attributes, TARGET).filter(BiomeBlankTargetCheck::isBlank);
     final Optional<SyntaxNode> href = named(attributes, HREF);
-    if (target.isEmpty() || href.isEmpty() || !isBlank(target.get())) {
+    if (target.isEmpty() || href.isEmpty() || exempt(attributes, href.get())) {
       return Optional.empty();
     }
+    return target;
+  }
+
+  /** Whether the link is safe, or Biome leaves it alone: a dynamic rel, an allowed host, or rel. */
+  private boolean exempt(final List<SyntaxNode> attributes, final SyntaxNode href) {
     final Optional<SyntaxNode> rel = named(attributes, REL);
-    if (rel.isPresent() && JsxAttributes.literal(rel.get()).isEmpty()) {
-      return Optional.empty();
-    }
-    if (isAllowedHost(JsxAttributes.literal(href.get()))) {
-      return Optional.empty();
-    }
-    final String relation =
-        rel.flatMap(JsxAttributes::literal).orElse("").toLowerCase(Locale.ROOT);
-    return relation.contains(NOOPENER) || (allowNoReferrer && relation.contains(NOREFERRER))
-        ? Optional.empty()
-        : target;
+    return isDynamic(rel)
+        || isAllowedHost(JsxAttributes.literal(href))
+        || isSafeRel(rel.flatMap(JsxAttributes::literal).orElse(""));
+  }
+
+  private static boolean isDynamic(final Optional<SyntaxNode> rel) {
+    return rel.isPresent() && JsxAttributes.literal(rel.get()).isEmpty();
+  }
+
+  /** Whether a static rel names noopener, or noreferrer when the option allows it. */
+  private boolean isSafeRel(final String rel) {
+    final String relation = rel.toLowerCase(Locale.ROOT);
+    return relation.contains(NOOPENER) || allowNoReferrer && relation.contains(NOREFERRER);
   }
 
   private static Optional<SyntaxNode> named(final List<SyntaxNode> attributes, final String name) {

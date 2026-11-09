@@ -8,8 +8,8 @@ import dev.ward.analysis.domain.rule.check.BiomeAutofocusCheck;
 import dev.ward.analysis.domain.rule.check.BiomeBlankTargetCheck;
 import dev.ward.analysis.domain.rule.check.BiomeConstantClampCheck;
 import dev.ward.analysis.domain.rule.check.BiomeDuplicatePropsCheck;
-import dev.ward.analysis.domain.rule.check.BiomeJsxAttributeValueCheck;
 import dev.ward.analysis.domain.rule.check.BiomeFinallyReturnCheck;
+import dev.ward.analysis.domain.rule.check.BiomeJsxAttributeValueCheck;
 import dev.ward.analysis.domain.rule.check.BiomeMemberPropertyCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNamespaceAccessCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUnreachableSuperCheck;
@@ -43,7 +43,8 @@ final class BiomeChecks {
         entry(
             "node-unreachable-super",
             toml -> new BiomeUnreachableSuperCheck(TomlValues.required(toml, MESSAGE))),
-        entry("node-autofocus", toml -> new BiomeAutofocusCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "node-autofocus", toml -> new BiomeAutofocusCheck(TomlValues.required(toml, MESSAGE))),
         entry("node-jsx-blank-target", BiomeChecks::blankTarget),
         entry(
             "node-jsx-duplicate-props",
