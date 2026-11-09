@@ -3,7 +3,7 @@ package dev.ward.analysis.domain.rule.check;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.node.NodeFileFacts;
 import dev.ward.analysis.domain.node.NodeManifest;
-import dev.ward.analysis.domain.node.NodeManifest.Json;
+import dev.ward.analysis.domain.node.NodeManifest.Value;
 import dev.ward.analysis.domain.rule.ProjectFiles;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,17 +35,23 @@ final class NodeManifests {
   static Map<String, Manifest> byDirectory(final ProjectFiles files) {
     final Map<String, Manifest> byDirectory = new HashMap<>();
     for (final String path : files.paths()) {
-      if (path.equals(MANIFEST) || path.endsWith("/" + MANIFEST)) {
-        files
-            .text(path)
-            .flatMap(NodeManifest::parse)
-            .ifPresent(
-                manifest ->
-                    byDirectory.put(
-                        directoryOf(path), new Manifest(path, directoryOf(path), manifest)));
+      if (isManifest(path)) {
+        parsed(files, path).ifPresent(found -> byDirectory.put(found.directory(), found));
       }
     }
     return byDirectory;
+  }
+
+  /** The manifest at {@code path}, or empty when its text does not parse. */
+  private static Optional<Manifest> parsed(final ProjectFiles files, final String path) {
+    return files
+        .text(path)
+        .flatMap(NodeManifest::parse)
+        .map(manifest -> new Manifest(path, directoryOf(path), manifest));
+  }
+
+  private static boolean isManifest(final String path) {
+    return MANIFEST.equals(path) || path.endsWith("/" + MANIFEST);
   }
 
   /** The manifest of the nearest directory at or above {@code path}, or empty when none. */
@@ -100,7 +106,7 @@ final class NodeManifests {
         .entries(section)
         .forEach(
             entry -> {
-              if (entry.value() instanceof Json.Text text) {
+              if (entry.value() instanceof Value.Text text) {
                 texts.add(text.value());
               }
             });
@@ -139,13 +145,13 @@ final class NodeManifests {
    * The text values of a JSON value, at any depth: a string, or the strings inside an object or
    * array.
    */
-  static List<String> textLeaves(final Json value) {
+  static List<String> textLeaves(final Value value) {
     final List<String> texts = new ArrayList<>();
-    if (value instanceof Json.Text text) {
+    if (value instanceof Value.Text text) {
       texts.add(text.value());
-    } else if (value instanceof Json.Array array) {
+    } else if (value instanceof Value.Array array) {
       array.items().forEach(item -> texts.addAll(textLeaves(item)));
-    } else if (value instanceof Json.Obj object) {
+    } else if (value instanceof Value.Obj object) {
       object.members().forEach(member -> texts.addAll(textLeaves(member.value())));
     }
     return texts;

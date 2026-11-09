@@ -97,24 +97,32 @@ public final class RuleEngine {
           .filter(CompiledRule::isProject)
           .ifPresent(
               rule ->
-                  findings.addAll(projectFindings(rule, prepared, units, trees, collector, files)));
+                  findings.addAll(
+                      projectFindings(
+                          rule, parsedTrees(prepared, units, trees, collector), files)));
     }
     return List.copyOf(findings);
   }
 
-  private static List<AnalysisFinding> projectFindings(
-      final CompiledRule rule,
+  /** The syntax trees of the units the rule's language runs on, by path, in path order. */
+  private static SortedMap<String, SyntaxNode> parsedTrees(
       final PreparedRule prepared,
       final List<SourceUnit> units,
       final UnitTrees trees,
-      final RuleRunCollector collector,
-      final ProjectFiles files) {
+      final RuleRunCollector collector) {
     final SortedMap<String, SyntaxNode> parsed = new TreeMap<>();
     for (final SourceUnit unit : units) {
       if (prepared.runnable().contains(unit.language())) {
         trees.parse(unit, collector).ifPresent(root -> parsed.put(unit.path(), root));
       }
     }
+    return parsed;
+  }
+
+  private static List<AnalysisFinding> projectFindings(
+      final CompiledRule rule,
+      final SortedMap<String, SyntaxNode> parsed,
+      final ProjectFiles files) {
     return rule.project(parsed, files).stream()
         .map(match -> RuleFindings.at(rule.definition(), match.path(), match.match()))
         .toList();

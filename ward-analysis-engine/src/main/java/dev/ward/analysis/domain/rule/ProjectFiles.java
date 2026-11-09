@@ -11,18 +11,19 @@ import java.util.TreeMap;
 /**
  * The text of the manifest files of a project that a project check may read, by project-relative
  * path. The map is copied on construction, so the check sees a fixed view of the run.
- *
- * @param texts the file texts, by project-relative path with {@code /} separators
  */
-public record ProjectFiles(SortedMap<String, String> texts) {
+public final class ProjectFiles {
+
+  private final SortedMap<String, String> texts;
 
   /**
    * Copies the texts into a sorted, unmodifiable map.
    *
+   * @param texts the file texts, by project-relative path with {@code /} separators
    * @throws NullPointerException if the map or one of its paths or texts is missing
    */
   public ProjectFiles(final Map<String, String> texts) {
-    this(copy(texts));
+    this.texts = copy(texts);
   }
 
   /** Returns the view of a project with no manifest files. */

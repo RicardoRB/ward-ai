@@ -3,6 +3,7 @@ package dev.ward.analysis.domain.node;
 import dev.ward.analysis.domain.ir.Reference;
 import dev.ward.analysis.domain.ir.Symbol;
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -18,13 +19,14 @@ final class NodeModuleScan {
   private static final String CLOSE_BRACE = "}";
 
   private final NodeTokens tokens;
+  private final Map<String, String> kinds = new LinkedHashMap<>();
   private final NodeExportScan exports;
   private final NodeReferenceScan references;
 
   /** Creates the scan of the tokens under {@code tree}. */
   NodeModuleScan(final SyntaxNode tree) {
     this.tokens = new NodeTokens(NodeLeaves.of(tree));
-    this.exports = new NodeExportScan(tokens);
+    this.exports = new NodeExportScan(tokens, kinds);
     this.exports.exportLists(tree);
     this.references = new NodeReferenceScan(tokens, exports);
   }
@@ -53,7 +55,7 @@ final class NodeModuleScan {
 
   /** The keyword that declares each exported declaration, by name. */
   Map<String, String> exportKinds() {
-    return exports.kinds();
+    return Map.copyOf(kinds);
   }
 
   /** Returns the exported names and the top-level declarations, without repeats. */

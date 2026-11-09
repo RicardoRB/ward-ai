@@ -14,7 +14,6 @@ import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.TypeFacts;
 import dev.ward.analysis.domain.python.PythonFileSummarizer;
 import dev.ward.analysis.domain.rule.DuplicateCodeRule;
-import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleRunResult;
@@ -50,7 +49,7 @@ final class RuleFixtureRunner {
    */
   List<AnalysisFinding> run(
       final RuleDefinition rule, final String path, final String text, final TypeFacts typeFacts) {
-    return run(rule, path, text, typeFacts, ProjectFiles.empty(), List.of());
+    return run(rule, path, text, typeFacts, FixtureProject.alone());
   }
 
   /**
@@ -62,8 +61,7 @@ final class RuleFixtureRunner {
       final String path,
       final String text,
       final TypeFacts typeFacts,
-      final ProjectFiles files,
-      final List<SourceUnit> others) {
+      final FixtureProject project) {
     final AnalysisLanguage language = rule.languages().iterator().next();
     if (DuplicateCodeRule.isDuplicateRule(rule)) {
       return DuplicateCodeFindings.findings(
@@ -78,11 +76,13 @@ final class RuleFixtureRunner {
     assertThat(result.executionErrors()).as("execution errors of %s", rule.id()).isEmpty();
     assertThat(result.notRun()).as("rules not run: %s", rule.id()).isEmpty();
     final List<AnalysisFinding> all = new ArrayList<>(result.findings());
-    final List<SourceUnit> project = new ArrayList<>(units);
-    project.addAll(others);
-    all.addAll(engine.runProject(project, frontendsFor(rule, typeFacts), List.of(rule), files));
+    final List<SourceUnit> projectUnits = new ArrayList<>(units);
+    projectUnits.addAll(project.sources());
+    all.addAll(
+        engine.runProject(
+            projectUnits, frontendsFor(rule, typeFacts), List.of(rule), project.manifests()));
     final Set<String> otherPaths =
-        others.stream().map(SourceUnit::path).collect(Collectors.toSet());
+        project.sources().stream().map(SourceUnit::path).collect(Collectors.toSet());
     return all.stream()
         .filter(finding -> finding.ruleId().equals(rule.id()))
         .filter(finding -> !otherPaths.contains(finding.file()))

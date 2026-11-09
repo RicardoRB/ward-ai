@@ -28,7 +28,9 @@ import org.junit.jupiter.api.Test;
 final class RuleEngineProjectFilesTest {
 
   private static final String RULE = "ward:typescript/project-files";
-  private static final Span AT = new Span(3, 4, 3, 9, 20, 25);
+  private static final int LINE = 3;
+  private static final int COLUMN = 4;
+  private static final Span AT = new Span(LINE, COLUMN, LINE, 9, 20, 25);
   private static final String MANIFEST = "package.json";
   private static final String SOURCE = "src/a.ts";
   private static final String TEXT = "{\"name\":\"app\"}";
@@ -43,7 +45,14 @@ final class RuleEngineProjectFilesTest {
     assertThat(findings)
         .containsExactly(
             new AnalysisFinding(
-                RULE, AnalysisSeverity.WARNING, "manifest", MANIFEST, 3, 4, null, List.of()));
+                RULE,
+                AnalysisSeverity.WARNING,
+                "manifest",
+                MANIFEST,
+                LINE,
+                COLUMN,
+                null,
+                List.of()));
   }
 
   @Test
@@ -69,7 +78,7 @@ final class RuleEngineProjectFilesTest {
     assertThat(findings)
         .containsExactly(
             new AnalysisFinding(
-                RULE, AnalysisSeverity.WARNING, "unit", SOURCE, 3, 4, null, List.of()));
+                RULE, AnalysisSeverity.WARNING, "unit", SOURCE, LINE, COLUMN, null, List.of()));
   }
 
   @Test

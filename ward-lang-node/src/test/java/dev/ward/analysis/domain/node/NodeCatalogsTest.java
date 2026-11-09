@@ -8,6 +8,14 @@ import org.junit.jupiter.api.Test;
 /** The pnpm-workspace.yaml catalog reader. */
 final class NodeCatalogsTest {
 
+  private static final int REACT_LINE = 4;
+  private static final int LODASH_ONLY_LINE = 3;
+  private static final int NAMED_REACT_LINE = 4;
+  private static final int LODASH_LINE = 5;
+  private static final int REACT17_LINE = 8;
+  private static final int REACT_DOM_LINE = 9;
+  private static final int ENTRY_COLUMN = 3;
+  private static final int NAMED_ENTRY_COLUMN = 5;
   private static final String WORKSPACE =
       """
       packages:
@@ -25,10 +33,11 @@ final class NodeCatalogsTest {
   void readsTheDefaultCatalogAndNamedCatalogsWithPositions() {
     assertThat(NodeCatalogs.parse(WORKSPACE))
         .containsExactly(
-            new CatalogEntry("default", "react", "^18.2.0", 4, 3),
-            new CatalogEntry("default", "lodash", "^4.17.21", 5, 3),
-            new CatalogEntry("react17", "react", "^17.0.2", 8, 5),
-            new CatalogEntry("react17", "react-dom", "^17.0.2", 9, 5));
+            new CatalogEntry("default", "react", "^18.2.0", REACT_LINE, ENTRY_COLUMN),
+            new CatalogEntry("default", "lodash", "^4.17.21", LODASH_LINE, ENTRY_COLUMN),
+            new CatalogEntry("react17", "react", "^17.0.2", REACT17_LINE, NAMED_ENTRY_COLUMN),
+            new CatalogEntry(
+                "react17", "react-dom", "^17.0.2", REACT_DOM_LINE, NAMED_ENTRY_COLUMN));
   }
 
   @Test
@@ -48,7 +57,8 @@ final class NodeCatalogsTest {
     final String text = "catalog:\n  react:\n  lodash: ^4\n";
 
     assertThat(NodeCatalogs.parse(text))
-        .containsExactly(new CatalogEntry("default", "lodash", "^4", 3, 3));
+        .containsExactly(
+            new CatalogEntry("default", "lodash", "^4", LODASH_ONLY_LINE, ENTRY_COLUMN));
   }
 
   @Test
@@ -56,6 +66,7 @@ final class NodeCatalogsTest {
     final String text = "catalogs:\n  wrong: no-colon-here\n  named:\n    react: ^17\n";
 
     assertThat(NodeCatalogs.parse(text))
-        .containsExactly(new CatalogEntry("named", "react", "^17", 4, 5));
+        .containsExactly(
+            new CatalogEntry("named", "react", "^17", NAMED_REACT_LINE, NAMED_ENTRY_COLUMN));
   }
 }

@@ -40,26 +40,6 @@ public record FrontendSupport(
       (unit, tree) -> new ControlFlowResult(List.of(), List.of());
 
   /**
-   * Creates a frontend with no manifest files.
-   *
-   * @param language the language the frontend parses
-   * @param frontend the parser
-   * @param capabilities the capabilities the frontend provides
-   * @param lowering the control-flow lowering
-   * @param scopes the scope analysis
-   * @param types the native type-fact source, empty for a language without one
-   */
-  public FrontendSupport(
-      final AnalysisLanguage language,
-      final LanguageFrontend frontend,
-      final Set<RuleCapability> capabilities,
-      final ControlFlowLowering lowering,
-      final ScopeAnalysis scopes,
-      final Optional<TypeFacts> types) {
-    this(language, frontend, capabilities, lowering, scopes, types, Set.of());
-  }
-
-  /**
    * Returns this frontend with the manifest names that its project checks read.
    *
    * @param names the project-relative manifest names
@@ -84,7 +64,7 @@ public record FrontendSupport(
       final Set<RuleCapability> capabilities,
       final ControlFlowLowering lowering,
       final ScopeAnalysis scopes) {
-    this(language, frontend, capabilities, lowering, scopes, Optional.empty());
+    this(language, frontend, capabilities, lowering, scopes, Optional.empty(), Set.of());
   }
 
   /**

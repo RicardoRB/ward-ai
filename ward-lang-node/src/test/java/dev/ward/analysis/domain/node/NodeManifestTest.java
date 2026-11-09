@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Test;
 /** The package.json reader: key positions and the keys dead-code rules read. */
 final class NodeManifestTest {
 
+  private static final int MAIN_LINE = 3;
+  private static final int MAIN_COLUMN = 3;
+  private static final int REACT_LINE = 6;
   private static final String PACKAGE =
       """
       {
@@ -38,8 +41,8 @@ final class NodeManifestTest {
     final NodeManifest manifest = NodeManifest.parse(PACKAGE).orElseThrow();
 
     assertThat(manifest.member("main")).isPresent();
-    assertThat(manifest.member("main").orElseThrow().line()).isEqualTo(3);
-    assertThat(manifest.member("main").orElseThrow().column()).isEqualTo(3);
+    assertThat(manifest.member("main").orElseThrow().line()).isEqualTo(MAIN_LINE);
+    assertThat(manifest.member("main").orElseThrow().column()).isEqualTo(MAIN_COLUMN);
   }
 
   @Test
@@ -49,7 +52,7 @@ final class NodeManifestTest {
     assertThat(manifest.entries("dependencies"))
         .extracting(NodeManifest.Member::key)
         .containsExactly("react");
-    assertThat(manifest.entries("dependencies").get(0).line()).isEqualTo(6);
+    assertThat(manifest.entries("dependencies").get(0).line()).isEqualTo(REACT_LINE);
     assertThat(manifest.entries("devDependencies"))
         .extracting(NodeManifest.Member::key)
         .containsExactly("vitest");

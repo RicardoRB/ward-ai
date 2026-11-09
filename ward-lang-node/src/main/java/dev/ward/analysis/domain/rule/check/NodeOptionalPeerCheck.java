@@ -3,8 +3,8 @@ package dev.ward.analysis.domain.rule.check;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.node.NodeManifest;
-import dev.ward.analysis.domain.node.NodeManifest.Json;
 import dev.ward.analysis.domain.node.NodeManifest.Member;
+import dev.ward.analysis.domain.node.NodeManifest.Value;
 import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.analysis.domain.rule.ProjectMatch;
 import dev.ward.analysis.domain.rule.RuleMatch;
@@ -68,12 +68,12 @@ public final class NodeOptionalPeerCheck implements RuleCheck, ProjectCheck {
   private static Set<String> optionalPeers(final NodeManifest manifest) {
     final Set<String> optional = new HashSet<>();
     for (final Member meta : manifest.entries("peerDependenciesMeta")) {
-      if (meta.value() instanceof Json.Obj settings
+      if (meta.value() instanceof Value.Obj settings
           && settings.members().stream()
               .anyMatch(
                   setting ->
-                      setting.key().equals("optional")
-                          && setting.value() instanceof Json.Bool flag
+                      "optional".equals(setting.key())
+                          && setting.value() instanceof Value.Bool flag
                           && flag.value())) {
         optional.add(meta.key());
       }

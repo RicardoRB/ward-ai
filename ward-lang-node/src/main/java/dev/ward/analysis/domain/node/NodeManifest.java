@@ -2,6 +2,7 @@ package dev.ward.analysis.domain.node;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -12,10 +13,26 @@ import java.util.Optional;
  */
 public final class NodeManifest {
 
-  /** One member of an object: its key, where the key is written, and its value. */
-  public record Member(String key, int line, int column, Json value) {
+  private static final int HEX_DIGITS = 4;
+  private static final int HEX_RADIX = 16;
+  private static final String LITERAL_TRUE = "true";
+  private static final String LITERAL_FALSE = "false";
+  private static final String LITERAL_NULL = "null";
 
-    /** Validates the parts. @throws NullPointerException if a part is missing */
+  private final Value.Obj root;
+
+  private NodeManifest(final Value.Obj root) {
+    this.root = root;
+  }
+
+  /** One member of an object: its key, where the key is written, and its value. */
+  public record Member(String key, int line, int column, Value value) {
+
+    /**
+     * Validates the parts.
+     *
+     * @throws NullPointerException if the key or value is missing
+     */
     public Member {
       Objects.requireNonNull(key, "key");
       Objects.requireNonNull(value, "value");
@@ -23,40 +40,54 @@ public final class NodeManifest {
   }
 
   /** A JSON value, with the members of objects kept in the order the file writes them. */
-  public sealed interface Json {
+  public sealed interface Value {
 
     /** A string value. */
-    record Text(String value) implements Json {}
+    record Text(String value) implements Value {}
 
     /** An array value. */
-    record Array(List<Json> items) implements Json {}
+    record Array(List<Value> items) implements Value {
+
+      /** Copies the items in and out. */
+      public Array {
+        items = List.copyOf(items);
+      }
+
+      @Override
+      public List<Value> items() {
+        return List.copyOf(items);
+      }
+    }
 
     /** An object value. */
-    record Obj(List<Member> members) implements Json {}
+    record Obj(List<Member> members) implements Value {
+
+      /** Copies the members in and out. */
+      public Obj {
+        members = List.copyOf(members);
+      }
+
+      @Override
+      public List<Member> members() {
+        return List.copyOf(members);
+      }
+    }
 
     /** A boolean value. */
-    record Bool(boolean value) implements Json {}
+    record Bool(boolean value) implements Value {}
 
     /** A number or null, which no dead-code rule reads. */
-    record Other() implements Json {}
-  }
-
-  private final Json.Obj root;
-
-  private NodeManifest(final Json.Obj root) {
-    this.root = root;
+    record Other() implements Value {}
   }
 
   /** Parses {@code text} as a manifest, or returns empty when it is not a JSON object. */
   public static Optional<NodeManifest> parse(final String text) {
     try {
       final Parser parser = new Parser(text);
-      final Json value = parser.value();
-      parser.skipSpace();
-      if (parser.hasMore() || !(value instanceof Json.Obj obj)) {
-        return Optional.empty();
-      }
-      return Optional.of(new NodeManifest(obj));
+      final Value value = parser.document();
+      return value instanceof Value.Obj object
+          ? Optional.of(new NodeManifest(object))
+          : Optional.empty();
     } catch (final IllegalArgumentException malformed) {
       return Optional.empty();
     }
@@ -71,8 +102,8 @@ public final class NodeManifest {
   public Optional<String> text(final String key) {
     return member(key)
         .map(Member::value)
-        .filter(Json.Text.class::isInstance)
-        .map(value -> ((Json.Text) value).value());
+        .filter(Value.Text.class::isInstance)
+        .map(value -> ((Value.Text) value).value());
   }
 
   /**
@@ -82,8 +113,8 @@ public final class NodeManifest {
   public List<Member> entries(final String key) {
     return member(key)
         .map(Member::value)
-        .filter(Json.Obj.class::isInstance)
-        .map(value -> ((Json.Obj) value).members())
+        .filter(Value.Obj.class::isInstance)
+        .map(value -> ((Value.Obj) value).members())
         .orElse(List.of());
   }
 
@@ -92,176 +123,208 @@ public final class NodeManifest {
     final List<String> strings = new ArrayList<>();
     member(key)
         .map(Member::value)
-        .filter(Json.Array.class::isInstance)
+        .filter(Value.Array.class::isInstance)
         .ifPresent(
-            value ->
-                ((Json.Array) value)
-                    .items()
-                    .forEach(
-                        item -> {
-                          if (item instanceof Json.Text text) {
-                            strings.add(text.value());
-                          }
-                        }));
+            value -> {
+              for (final Value item : ((Value.Array) value).items()) {
+                if (item instanceof Value.Text text) {
+                  strings.add(text.value());
+                }
+              }
+            });
     return List.copyOf(strings);
   }
 
-  /** The reader of one JSON document; it throws {@link IllegalArgumentException} on bad input. */
-  private static final class Parser {
-    private final String text;
-    private final int[] at = {0};
+  private static Value literalValue(final String word) {
+    return LITERAL_NULL.equals(word)
+        ? new Value.Other()
+        : new Value.Bool(LITERAL_TRUE.equals(word));
+  }
 
-    Parser(final String text) {
+  /** The character reader of one document: where it is, and the reads that move it. */
+  private static final class Cursor {
+
+    private static final char QUOTE = '"';
+    private static final char NEWLINE = '\n';
+    private static final char UNICODE_ESCAPE = 'u';
+    private static final List<String> WORDS = List.of(LITERAL_TRUE, LITERAL_FALSE, LITERAL_NULL);
+    private static final char BACKSLASH = '\\';
+    private static final String NUMBER_CHARS = "+-.0123456789eE";
+    private static final Map<Character, Character> SIMPLE_ESCAPES =
+        Map.of(
+            'n', '\n', 't', '\t', 'r', '\r', 'b', '\b', 'f', '\f', '"', '"', '\\', '\\', '/', '/');
+
+    private final String text;
+    private int at;
+
+    Cursor(final String text) {
       this.text = Objects.requireNonNull(text, "text");
     }
 
-    boolean hasMore() {
-      return at[0] < text.length();
+    boolean atEnd() {
+      return at >= text.length();
+    }
+
+    char peek() {
+      return text.charAt(at);
     }
 
     void skipSpace() {
-      while (hasMore() && Character.isWhitespace(text.charAt(at[0]))) {
-        at[0]++;
+      while (!atEnd() && Character.isWhitespace(peek())) {
+        at++;
       }
     }
 
-    Json value() {
-      skipSpace();
-      if (!hasMore()) {
-        throw new IllegalArgumentException("unexpected end");
-      }
-      final char c = text.charAt(at[0]);
-      return switch (c) {
-        case '{' -> object();
-        case '[' -> array();
-        case '"' -> new Json.Text(string());
-        default -> scalar();
-      };
-    }
-
-    private Json.Obj object() {
-      at[0]++;
-      final List<Member> members = new ArrayList<>();
-      skipSpace();
-      if (take('}')) {
-        return new Json.Obj(members);
-      }
-      do {
-        skipSpace();
-        final int[] position = position();
-        final String key = string();
-        skipSpace();
-        expect(':');
-        members.add(new Member(key, position[0], position[1], value()));
-        skipSpace();
-      } while (take(','));
-      expect('}');
-      return new Json.Obj(members);
-    }
-
-    private Json.Array array() {
-      at[0]++;
-      final List<Json> items = new ArrayList<>();
-      skipSpace();
-      if (take(']')) {
-        return new Json.Array(items);
-      }
-      do {
-        items.add(value());
-        skipSpace();
-      } while (take(','));
-      expect(']');
-      return new Json.Array(items);
-    }
-
-    private String string() {
-      expect('"');
-      final StringBuilder out = new StringBuilder();
-      while (hasMore()) {
-        final char c = text.charAt(at[0]++);
-        if (c == '"') {
-          return out.toString();
-        }
-        if (c == '\\') {
-          out.append(escape());
-        } else {
-          out.append(c);
-        }
-      }
-      throw new IllegalArgumentException("unterminated string");
-    }
-
-    private char escape() {
-      if (!hasMore()) {
-        throw new IllegalArgumentException("unterminated escape");
-      }
-      final char c = text.charAt(at[0]++);
-      return switch (c) {
-        case 'n' -> '\n';
-        case 't' -> '\t';
-        case 'r' -> '\r';
-        case 'b' -> '\b';
-        case 'f' -> '\f';
-        case 'u' -> unicode();
-        case '"', '\\', '/' -> c;
-        default -> throw new IllegalArgumentException("bad escape");
-      };
-    }
-
-    private char unicode() {
-      if (at[0] + 4 > text.length()) {
-        throw new IllegalArgumentException("bad unicode escape");
-      }
-      final char code = (char) Integer.parseInt(text.substring(at[0], at[0] + 4), 16);
-      at[0] += 4;
-      return code;
-    }
-
-    private Json scalar() {
-      for (final String literal : List.of("true", "false", "null")) {
-        if (text.startsWith(literal, at[0])) {
-          at[0] += literal.length();
-          return "null".equals(literal) ? new Json.Other() : new Json.Bool("true".equals(literal));
-        }
-      }
-      final int start = at[0];
-      while (hasMore() && "+-.0123456789eE".indexOf(text.charAt(at[0])) >= 0) {
-        at[0]++;
-      }
-      if (at[0] == start) {
-        throw new IllegalArgumentException("unexpected character");
-      }
-      return new Json.Other();
-    }
-
-    /** The 1-based line and column of the next character. */
-    private int[] position() {
-      int line = 1;
-      int column = 1;
-      for (int i = 0; i < at[0]; i++) {
-        if (text.charAt(i) == '\n') {
-          line++;
-          column = 1;
-        } else {
-          column++;
-        }
-      }
-      return new int[] {line, column};
-    }
-
-    private boolean take(final char c) {
-      if (hasMore() && text.charAt(at[0]) == c) {
-        at[0]++;
+    boolean eat(final char c) {
+      if (!atEnd() && peek() == c) {
+        at++;
         return true;
       }
       return false;
     }
 
-    private void expect(final char c) {
+    void expect(final char c) {
       skipSpace();
-      if (!take(c)) {
+      if (!eat(c)) {
         throw new IllegalArgumentException("expected " + c);
       }
+    }
+
+    /** Reads a quoted string, decoding its escapes. */
+    String string() {
+      expect(QUOTE);
+      final StringBuilder out = new StringBuilder();
+      while (!atEnd()) {
+        final char c = peek();
+        at++;
+        if (c == QUOTE) {
+          return out.toString();
+        }
+        out.append(c == BACKSLASH ? escaped() : c);
+      }
+      throw new IllegalArgumentException("unterminated string");
+    }
+
+    /** Reads the character after a backslash. */
+    private char escaped() {
+      if (atEnd()) {
+        throw new IllegalArgumentException("unterminated escape");
+      }
+      final char c = peek();
+      at++;
+      if (c == UNICODE_ESCAPE) {
+        return hex();
+      }
+      final Character simple = SIMPLE_ESCAPES.get(c);
+      if (simple == null) {
+        throw new IllegalArgumentException("bad escape");
+      }
+      return simple;
+    }
+
+    private char hex() {
+      if (at + HEX_DIGITS > text.length()) {
+        throw new IllegalArgumentException("bad unicode escape");
+      }
+      final char code = (char) Integer.parseInt(text.substring(at, at + HEX_DIGITS), HEX_RADIX);
+      at += HEX_DIGITS;
+      return code;
+    }
+
+    /** Reads {@code true}, {@code false}, {@code null}, or a number. */
+    Value literal() {
+      final Optional<String> word =
+          WORDS.stream().filter(name -> text.startsWith(name, at)).findFirst();
+      if (word.isPresent()) {
+        at += word.get().length();
+        return literalValue(word.get());
+      }
+      final int start = at;
+      while (!atEnd() && NUMBER_CHARS.indexOf(peek()) >= 0) {
+        at++;
+      }
+      if (at == start) {
+        throw new IllegalArgumentException("unexpected character");
+      }
+      return new Value.Other();
+    }
+
+    /** The 1-based line and column of the next character. */
+    int[] where() {
+      int line = 1;
+      int lineStart = 0;
+      for (int i = 0; i < at; i++) {
+        if (text.charAt(i) == NEWLINE) {
+          line++;
+          lineStart = i + 1;
+        }
+      }
+      return new int[] {line, at - lineStart + 1};
+    }
+  }
+
+  /** A recursive-descent reader over one document; bad input throws IllegalArgumentException. */
+  private static final class Parser {
+
+    private final Cursor cursor;
+
+    Parser(final String text) {
+      this.cursor = new Cursor(text);
+    }
+
+    /** Reads the whole document: one value, then nothing but space. */
+    Value document() {
+      final Value value = value();
+      cursor.skipSpace();
+      if (!cursor.atEnd()) {
+        throw new IllegalArgumentException("trailing text");
+      }
+      return value;
+    }
+
+    private Value value() {
+      cursor.skipSpace();
+      if (cursor.atEnd()) {
+        throw new IllegalArgumentException("unexpected end");
+      }
+      return switch (cursor.peek()) {
+        case '{' -> object();
+        case '[' -> array();
+        case '"' -> new Value.Text(cursor.string());
+        default -> cursor.literal();
+      };
+    }
+
+    private Value.Obj object() {
+      cursor.eat('{');
+      final List<Member> members = new ArrayList<>();
+      cursor.skipSpace();
+      if (!cursor.eat('}')) {
+        do {
+          cursor.skipSpace();
+          final int[] where = cursor.where();
+          final String key = cursor.string();
+          cursor.expect(':');
+          members.add(new Member(key, where[0], where[1], value()));
+          cursor.skipSpace();
+        } while (cursor.eat(','));
+        cursor.expect('}');
+      }
+      return new Value.Obj(members);
+    }
+
+    private Value.Array array() {
+      cursor.eat('[');
+      final List<Value> items = new ArrayList<>();
+      cursor.skipSpace();
+      if (!cursor.eat(']')) {
+        do {
+          items.add(value());
+          cursor.skipSpace();
+        } while (cursor.eat(','));
+        cursor.expect(']');
+      }
+      return new Value.Array(items);
     }
   }
 }

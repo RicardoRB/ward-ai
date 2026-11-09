@@ -4,16 +4,16 @@ import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.node.NodeCatalogs;
 import dev.ward.analysis.domain.node.NodeCatalogs.CatalogEntry;
-import dev.ward.analysis.domain.node.NodeManifest.Json;
 import dev.ward.analysis.domain.node.NodeManifest.Member;
+import dev.ward.analysis.domain.node.NodeManifest.Value;
 import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.analysis.domain.rule.ProjectMatch;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.SortedMap;
 
@@ -59,39 +59,55 @@ public final class NodeCatalogCheck implements RuleCheck, ProjectCheck {
   @Override
   public List<ProjectMatch> project(
       final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
-    final Map<String, NodeManifests.Manifest> manifests = NodeManifests.byDirectory(files);
-    final List<CatalogEntry> catalogs =
-        files.text(WORKSPACE).map(NodeCatalogs::parse).orElse(List.of());
-    if (files.text(WORKSPACE).isEmpty()) {
+    final Optional<String> workspace = files.text(WORKSPACE);
+    if (workspace.isEmpty()) {
       return List.of();
     }
+    final List<CatalogEntry> catalogs = NodeCatalogs.parse(workspace.get());
     final Set<String> referenced = new HashSet<>();
     final List<ProjectMatch> found = new ArrayList<>();
-    for (final NodeManifests.Manifest owner : manifests.values()) {
-      for (final String section : SECTIONS) {
-        for (final Member dependency : owner.manifest().entries(section)) {
-          if (dependency.value() instanceof Json.Text text && text.value().startsWith(CATALOG)) {
-            final String catalog = catalogOf(text.value());
-            referenced.add(catalog + "/" + dependency.key());
-            if (references && !defines(catalogs, catalog, dependency.key())) {
-              found.add(
-                  new ProjectMatch(
-                      owner.path(),
-                      match(dependency.line(), dependency.column(), dependency.key())));
-            }
+    NodeManifests.byDirectory(files)
+        .values()
+        .forEach(owner -> found.addAll(references(owner, catalogs, referenced)));
+    if (!references) {
+      found.addAll(unusedEntries(catalogs, referenced));
+    }
+    return List.copyOf(found);
+  }
+
+  /** The catalog references of one manifest; each is recorded as referenced. */
+  private List<ProjectMatch> references(
+      final NodeManifests.Manifest owner,
+      final List<CatalogEntry> catalogs,
+      final Set<String> referenced) {
+    final List<ProjectMatch> found = new ArrayList<>();
+    for (final String section : SECTIONS) {
+      for (final Member dependency : owner.manifest().entries(section)) {
+        if (dependency.value() instanceof Value.Text text && text.value().startsWith(CATALOG)) {
+          final String catalog = catalogOf(text.value());
+          referenced.add(catalog + "/" + dependency.key());
+          if (references && !defines(catalogs, catalog, dependency.key())) {
+            found.add(
+                new ProjectMatch(
+                    owner.path(), match(dependency.line(), dependency.column(), dependency.key())));
           }
         }
       }
     }
-    if (!references) {
-      for (final CatalogEntry entry : catalogs) {
-        if (!referenced.contains(entry.catalog() + "/" + entry.dependency())) {
-          found.add(
-              new ProjectMatch(WORKSPACE, match(entry.line(), entry.column(), entry.dependency())));
-        }
+    return found;
+  }
+
+  /** The catalog entries that no manifest references. */
+  private List<ProjectMatch> unusedEntries(
+      final List<CatalogEntry> catalogs, final Set<String> referenced) {
+    final List<ProjectMatch> found = new ArrayList<>();
+    for (final CatalogEntry entry : catalogs) {
+      if (!referenced.contains(entry.catalog() + "/" + entry.dependency())) {
+        found.add(
+            new ProjectMatch(WORKSPACE, match(entry.line(), entry.column(), entry.dependency())));
       }
     }
-    return List.copyOf(found);
+    return found;
   }
 
   private static String catalogOf(final String value) {

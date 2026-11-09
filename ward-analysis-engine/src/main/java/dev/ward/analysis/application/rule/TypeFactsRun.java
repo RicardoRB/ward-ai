@@ -41,12 +41,12 @@ public final class TypeFactsRun {
     capabilities.addAll(support.capabilities());
     capabilities.add(RuleCapability.TYPES);
     return new FrontendSupport(
-            support.language(),
-            support.frontend(),
-            capabilities,
-            support.lowering(),
-            support.scopes(),
-            facts(support.language()))
-        .withManifests(support.manifests());
+        support.language(),
+        support.frontend(),
+        capabilities,
+        support.lowering(),
+        support.scopes(),
+        facts(support.language()),
+        support.manifests());
   }
 }

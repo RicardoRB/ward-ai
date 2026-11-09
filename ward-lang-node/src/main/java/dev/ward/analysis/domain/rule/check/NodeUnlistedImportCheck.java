@@ -80,7 +80,7 @@ public final class NodeUnlistedImportCheck implements RuleCheck, ProjectCheck {
   private static Map<String, Set<String>> listedByDirectory(final ProjectFiles files) {
     final Map<String, Set<String>> listed = new HashMap<>();
     for (final String path : files.paths()) {
-      if (path.equals(MANIFEST) || path.endsWith("/" + MANIFEST)) {
+      if (MANIFEST.equals(path) || path.endsWith("/" + MANIFEST)) {
         files
             .text(path)
             .flatMap(NodeManifest::parse)

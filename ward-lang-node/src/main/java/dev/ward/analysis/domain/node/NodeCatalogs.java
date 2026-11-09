@@ -44,44 +44,56 @@ public final class NodeCatalogs {
   /** Returns the catalog entries of {@code text}, in file order. */
   public static List<CatalogEntry> parse(final String text) {
     Objects.requireNonNull(text, "text");
-    final List<CatalogEntry> entries = new ArrayList<>();
-    String top = null;
-    String named = null;
-    int childIndent = -1;
+    final Reader reader = new Reader();
     final String[] lines = text.split("\n", -1);
     for (int i = 0; i < lines.length; i++) {
-      final String raw = stripComment(lines[i]);
+      reader.line(lines[i], i + 1);
+    }
+    return List.copyOf(reader.entries);
+  }
+
+  /**
+   * The state of the reader: the section it is in, and the named catalog under {@code catalogs}.
+   */
+  private static final class Reader {
+    private final List<CatalogEntry> entries = new ArrayList<>();
+    private String top = "";
+    private String named = "";
+    private int childIndent = -1;
+
+    void line(final String rawLine, final int line) {
+      final String raw = stripComment(rawLine);
       if (raw.isBlank()) {
-        continue;
+        return;
       }
       final int indent = raw.length() - raw.stripLeading().length();
       final String content = raw.strip();
-      final int line = i + 1;
       if (indent == 0) {
         top = header(content, CATALOG, CATALOGS);
-        named = null;
+        named = "";
         childIndent = -1;
-        continue;
-      }
-      if (CATALOG.equals(top)) {
+      } else if (CATALOG.equals(top)) {
         addEntry(entries, DEFAULT, content, line, indent);
       } else if (CATALOGS.equals(top)) {
-        if (childIndent < 0) {
-          childIndent = indent;
-        }
-        if (indent == childIndent && content.endsWith(COLON)) {
-          named = unquote(content.substring(0, content.length() - 1));
-        } else if (indent > childIndent && named != null) {
-          addEntry(entries, named, content, line, indent);
-        }
+        namedLine(content, line, indent);
       }
     }
-    return List.copyOf(entries);
+
+    private void namedLine(final String content, final int line, final int indent) {
+      if (childIndent < 0) {
+        childIndent = indent;
+      }
+      if (indent == childIndent && content.endsWith(COLON)) {
+        named = unquote(content.substring(0, content.length() - 1));
+      } else if (indent > childIndent && !named.isEmpty()) {
+        addEntry(entries, named, content, line, indent);
+      }
+    }
   }
 
   private static String header(final String content, final String... names) {
     if (!content.endsWith(COLON)) {
-      return null;
+      return "";
     }
     final String key = content.substring(0, content.length() - 1);
     for (final String name : names) {
@@ -89,7 +101,7 @@ public final class NodeCatalogs {
         return name;
       }
     }
-    return null;
+    return "";
   }
 
   private static void addEntry(

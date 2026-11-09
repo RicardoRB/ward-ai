@@ -30,6 +30,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  */
 class RuleCatalogFixturesTest {
 
+  private static final String PASSING = "passing";
   private static final RuleCatalog CATALOG = new RuleCatalogReader().load();
   private static final Map<String, RuleDefinition> RULES =
       CatalogRuleDefinitions.all().stream()
@@ -109,8 +110,8 @@ class RuleCatalogFixturesTest {
             unitName(file),
             Files.readString(file),
             typeFacts,
-            manifests(file),
-            otherSources(file, rule.languages().iterator().next()));
+            new FixtureProject(
+                manifests(file), otherSources(file, rule.languages().iterator().next())));
     return FixtureComparison.problems(
         rule.id(),
         rule.languages().iterator().next(),
@@ -150,7 +151,7 @@ class RuleCatalogFixturesTest {
   private static ProjectFiles manifests(final Path file) throws IOException {
     final Path own = file.resolveSibling("passing-project");
     final boolean passing =
-        file.getFileName().toString().startsWith("passing") && Files.isDirectory(own);
+        file.getFileName().toString().startsWith(PASSING) && Files.isDirectory(own);
     final Path project = passing ? own : file.resolveSibling("project");
     if (!Files.isDirectory(project)) {
       return ProjectFiles.empty();
@@ -159,7 +160,7 @@ class RuleCatalogFixturesTest {
     try (Stream<Path> files = Files.walk(project)) {
       for (final Path manifest : files.filter(Files::isRegularFile).toList()) {
         final String name = manifest.getFileName().toString();
-        if (name.equals("package.json") || name.equals("pnpm-workspace.yaml")) {
+        if ("package.json".equals(name) || "pnpm-workspace.yaml".equals(name)) {
           texts.put(
               project.relativize(manifest).toString().replace('\\', '/'),
               Files.readString(manifest));
