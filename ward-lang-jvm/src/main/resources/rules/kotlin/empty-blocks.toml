@@ -1,0 +1,180 @@
+# Empty-block rules for Kotlin, the detekt empty-blocks set. A block is empty when it has no code
+# and no comment; a commented block is not reported. Each rule names the owner kinds it checks.
+
+[[rules]]
+id = "ward:kotlin/empty-class-block"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "empty-blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-empty-block"
+kinds = ["classDeclaration", "objectDeclaration"]
+message = "the class or object is empty and can be removed"
+'''
+
+[[rules]]
+id = "ward:kotlin/empty-default-constructor"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "empty-blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["primaryConstructor"]
+text = '^(constructor\s*)?\(\s*\)$'
+message = "an empty default constructor can be removed"
+'''
+
+[[rules]]
+id = "ward:kotlin/empty-do-while-block"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "empty-blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-empty-block"
+kinds = ["doWhileExpression"]
+after = "'do'"
+message = "this do-while block is empty and can be removed"
+'''
+
+[[rules]]
+id = "ward:kotlin/empty-else-block"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "empty-blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-empty-block"
+kinds = ["ifExpression"]
+after = "'else'"
+message = "this else block is empty and can be removed"
+'''
+
+[[rules]]
+id = "ward:kotlin/empty-finally-block"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "empty-blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-empty-block"
+kinds = ["finallyBlock"]
+after = "'finally'"
+message = "this finally block is empty and can be removed"
+'''
+
+[[rules]]
+id = "ward:kotlin/empty-for-block"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "empty-blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-empty-block"
+kinds = ["forExpression"]
+after = "RPAREN"
+message = "this for block is empty and can be removed"
+'''
+
+[[rules]]
+id = "ward:kotlin/empty-if-block"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "empty-blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-empty-block"
+kinds = ["ifExpression"]
+after = "RPAREN"
+message = "this if block is empty and can be removed"
+'''
+
+[[rules]]
+id = "ward:kotlin/empty-init-block"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "empty-blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-empty-block"
+kinds = ["anonymousInitializer"]
+message = "this init block is empty and can be removed"
+'''
+
+[[rules]]
+id = "ward:kotlin/empty-kt-file"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "empty-blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-empty-block"
+kinds = ["kotlinFile"]
+message = "the empty Kotlin file can be removed"
+'''
+
+[[rules]]
+id = "ward:kotlin/empty-secondary-constructor"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "empty-blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-empty-block"
+kinds = ["secondaryConstructor"]
+message = "this secondary constructor is empty and can be removed"
+'''
+
+[[rules]]
+id = "ward:kotlin/empty-try-block"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "empty-blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-empty-block"
+kinds = ["tryExpression"]
+after = "'try'"
+message = "this try block is empty and can be removed"
+'''
+
+[[rules]]
+id = "ward:kotlin/empty-when-block"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "empty-blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["whenExpression"]
+text = '^when\s*(\(.*\))?\s*\{\s*\}$'
+message = "this when block has no entries and can be removed"
+'''
+
+[[rules]]
+id = "ward:kotlin/empty-while-block"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "empty-blocks"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-empty-block"
+kinds = ["whileExpression"]
+after = "RPAREN"
+message = "this while block is empty and can be removed"
+'''

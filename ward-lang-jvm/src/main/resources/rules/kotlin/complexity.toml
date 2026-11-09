@@ -1,0 +1,52 @@
+# Complexity rules for Kotlin, the detekt complexity set. Thresholds are the detekt defaults; each
+# rule reports above its limit, so a detekt threshold of N is the limit N - 1 here, except complex-
+# condition, which reports at its threshold as detekt does.
+
+[[rules]]
+id = "ward:kotlin/complex-condition"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "complexity"
+presets = ["standard", "strict"]
+options.threshold = { type = "integer", min = 1 }
+body = '''
+check = "kotlin-complex-condition"
+kinds = ["ifExpression", "whileExpression", "doWhileExpression"]
+threshold = 4
+message = "condition has complexity {value}; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:kotlin/large-class"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "complexity"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
+options.count-empty = { type = "boolean" }
+body = '''
+check = "lines"
+kinds = ["classDeclaration", "objectDeclaration"]
+max = 599
+count-empty = false
+message = "class has {value} lines of code; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:kotlin/too-many-functions"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "complexity"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 0 }
+body = '''
+check = "count"
+kinds = ["kotlinFile", "classBody", "enumClassBody"]
+counted = ["functionDeclaration"]
+skip = ["classDeclaration", "objectDeclaration", "companionObject", "classBody", "enumClassBody", "functionDeclaration"]
+max = 10
+message = "file or class declares {value} functions; the limit is {max}"
+'''
