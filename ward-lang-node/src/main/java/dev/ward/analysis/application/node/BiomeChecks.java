@@ -15,6 +15,7 @@ import dev.ward.analysis.domain.rule.check.BiomeJsxHandlerPairCheck;
 import dev.ward.analysis.domain.rule.check.BiomeJsxRequiredAttributeCheck;
 import dev.ward.analysis.domain.rule.check.BiomeMemberPropertyCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNamespaceAccessCheck;
+import dev.ward.analysis.domain.rule.check.BiomeNoRedundantRolesCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUnreachableSuperCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUnusedParameterCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
@@ -52,6 +53,11 @@ final class BiomeChecks {
         entry("node-jsx-blank-target", BiomeChecks::blankTarget),
         entry("node-jsx-required-attribute", BiomeChecks::requiredAttribute),
         entry("node-jsx-handler-pair", BiomeChecks::handlerPair),
+        entry(
+            "node-no-redundant-roles",
+            toml ->
+                new BiomeNoRedundantRolesCheck(
+                    AriaTables.load(), TomlValues.required(toml, MESSAGE))),
         entry(
             "node-jsx-empty-element",
             toml ->

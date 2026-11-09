@@ -124,7 +124,7 @@ no-react-specific-props = { status = "planned", issue = "#329" }
 no-react-string-refs = { status = "planned", issue = "#329" }
 no-redundant-alt = { status = "planned", issue = "#329" }
 no-redundant-default-export = { status = "planned", issue = "#329" }
-no-redundant-roles = { status = "planned", issue = "#329" }
+no-redundant-roles = "implemented"
 no-render-return-value = "implemented"
 no-restricted-elements = { status = "planned", issue = "#329" }
 no-restricted-imports = { status = "planned", issue = "#296" }
