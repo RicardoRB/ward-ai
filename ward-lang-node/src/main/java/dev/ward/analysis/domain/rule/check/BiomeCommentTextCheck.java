@@ -6,6 +6,7 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.port.AnalysisFailedException;
 import dev.ward.analysis.domain.rule.FlowView;
 import dev.ward.analysis.domain.rule.RuleMatch;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -56,29 +57,40 @@ public final class BiomeCommentTextCheck implements RuleCheck {
   private static List<Integer> commentStarts(final SyntaxNode text, final String source) {
     final int base = text.span().startOffset();
     final String raw = source.substring(base, text.span().endOffset());
-    final List<Integer> starts = new java.util.ArrayList<>();
+    final List<Integer> starts = new ArrayList<>();
     int index = 0;
     while (index + 1 < raw.length()) {
-      if (raw.charAt(index) != SLASH) {
-        index++;
-        continue;
-      }
-      final char next = raw.charAt(index + 1);
-      if (next == SLASH && (index == 0 || raw.charAt(index - 1) != COLON)) {
-        starts.add(base + index);
-        final int newline = raw.indexOf(NEWLINE, index);
-        index = newline < 0 ? raw.length() : newline + 1;
-      } else if (next == STAR) {
-        final int end = raw.indexOf("*/", index + 2);
-        if (end >= 0) {
-          starts.add(base + index);
-        }
-        index = end < 0 ? raw.length() : end + 2;
-      } else {
-        index += 2;
-      }
+      index = raw.charAt(index) == SLASH ? commentAt(raw, index, base, starts) : index + 1;
     }
     return starts;
+  }
+
+  /** Records a comment that starts at the slash, and returns the index after it. */
+  private static int commentAt(
+      final String raw, final int index, final int base, final List<Integer> starts) {
+    final char next = raw.charAt(index + 1);
+    if (next == SLASH && (index == 0 || raw.charAt(index - 1) != COLON)) {
+      starts.add(base + index);
+      final int newline = raw.indexOf(NEWLINE, index);
+      return newline < 0 ? raw.length() : newline + 1;
+    }
+    if (next == STAR) {
+      return blockCommentEnd(raw, index, base, starts);
+    }
+    return index + 2;
+  }
+
+  /**
+   * Records a terminated block comment that starts at the slash, and returns the index after it.
+   */
+  private static int blockCommentEnd(
+      final String raw, final int index, final int base, final List<Integer> starts) {
+    final int end = raw.indexOf("*/", index + 2);
+    if (end < 0) {
+      return raw.length();
+    }
+    starts.add(base + index);
+    return end + 2;
   }
 
   private RuleMatch at(final String source, final int offset) {
