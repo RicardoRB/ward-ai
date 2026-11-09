@@ -225,7 +225,8 @@ mode TEMPLATE;
 
 BackTickInside                : '`' -> type(BackTick), popMode;
 TemplateStringStartExpression : '${' {this.processTemplateOpenBrace();} -> pushMode(DEFAULT_MODE);
-TemplateStringAtom            : ~[`];
+TemplateStringEscapeAtom      : '\\' .;
+TemplateStringAtom            : ~[`\\];
 
 // Fragment rules
 

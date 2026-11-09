@@ -656,9 +656,9 @@ classElement
     ;
 
 propertyMemberDeclaration
-    : propertyMemberBase (propertyName | privateIdentifier) '?'? typeAnnotation? initializer? SemiColon # PropertyDeclarationExpression
+    : propertyMemberBase (getAccessor | setAccessor)                                     # GetterSetterDeclarationExpression
+    | propertyMemberBase (propertyName | privateIdentifier) '?'? typeAnnotation? initializer? SemiColon # PropertyDeclarationExpression
     | propertyMemberBase (propertyName | privateIdentifier) callSignature (('{' functionBody '}') | SemiColon) # MethodDeclarationExpression
-    | propertyMemberBase (getAccessor | setAccessor)                                     # GetterSetterDeclarationExpression
     | abstractDeclaration                                                                # AbstractMemberDeclaration
     ;
 
