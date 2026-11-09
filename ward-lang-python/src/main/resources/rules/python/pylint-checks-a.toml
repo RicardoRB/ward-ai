@@ -414,3 +414,15 @@ body = '''
 check = "concat-join"
 message = "consider str.join(sequence) instead of concatenating strings in a loop"
 '''
+
+[[rules]]
+id = "ward:python/duplicate-string-formatting-argument"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "duplicate-format-argument"
+message = "duplicate string formatting argument, consider passing it as a named argument"
+'''

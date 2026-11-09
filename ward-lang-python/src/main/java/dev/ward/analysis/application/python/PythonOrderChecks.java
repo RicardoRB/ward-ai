@@ -12,6 +12,7 @@ import dev.ward.analysis.domain.rule.check.ComparisonOperatorCheck;
 import dev.ward.analysis.domain.rule.check.ConcatJoinCheck;
 import dev.ward.analysis.domain.rule.check.ConfusingWithCheck;
 import dev.ward.analysis.domain.rule.check.DuplicateArgumentNameCheck;
+import dev.ward.analysis.domain.rule.check.DuplicateFormatArgumentCheck;
 import dev.ward.analysis.domain.rule.check.DuplicateHandlerCheck;
 import dev.ward.analysis.domain.rule.check.EmptyAbstractMethodCheck;
 import dev.ward.analysis.domain.rule.check.ExceptOrderCheck;
@@ -100,6 +101,9 @@ final class PythonOrderChecks {
             "mixed-comparison-chain",
             toml -> new MixedComparisonChainCheck(TomlValues.required(toml, MESSAGE))),
         entry("swap-variables", toml -> new SwapVariablesCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "duplicate-format-argument",
+            toml -> new DuplicateFormatArgumentCheck(TomlValues.required(toml, MESSAGE))),
         entry("concat-join", toml -> new ConcatJoinCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "slots-conflict",

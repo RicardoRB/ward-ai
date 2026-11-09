@@ -362,7 +362,6 @@ pylint = ["duplicate-argument-name"]
 [[rule]]
 name = "duplicate-string-formatting-argument"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["duplicate-string-formatting-argument"]
 
 [[rule]]

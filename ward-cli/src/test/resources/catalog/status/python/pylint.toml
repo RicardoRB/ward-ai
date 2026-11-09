@@ -63,7 +63,7 @@ differing-type-doc = { status = "planned", issue = "#336" }
 disallowed-name = "implemented"
 docstring-first-line-empty = { status = "planned", issue = "#297" }
 duplicate-argument-name = "implemented"
-duplicate-string-formatting-argument = { status = "planned", issue = "#336" }
+duplicate-string-formatting-argument = "implemented"
 else-if-used = { status = "planned", issue = "#336" }
 eq-without-hash = { status = "planned", issue = "#336" }
 expression-not-assigned = "implemented"
