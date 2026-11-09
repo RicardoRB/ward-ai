@@ -155,7 +155,7 @@ category = "naming"
 presets = ["standard", "strict"]
 body = '''
 check = "identifier-pattern"
-kinds = ["expr_stmt"]
+kinds = ["expr_stmt>'='", "expr_stmt>annassign"]
 inside = ["funcdef"]
 name = "NAME"
 pattern = "^_*[a-z][a-z0-9_]*$"
