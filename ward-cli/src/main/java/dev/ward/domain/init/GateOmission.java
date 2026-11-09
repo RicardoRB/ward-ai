@@ -19,7 +19,7 @@ public record GateOmission(String gate, String reason) {
     }
   }
 
-  /** Returns the plan note, such as {@code spotbugs omitted: <reason>}. */
+  /** Returns the plan note, such as {@code mutation omitted: <reason>}. */
   public String note() {
     return gate + " omitted: " + reason;
   }

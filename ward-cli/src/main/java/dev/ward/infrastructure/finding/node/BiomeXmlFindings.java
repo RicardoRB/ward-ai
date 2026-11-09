@@ -18,15 +18,15 @@ import javax.inject.Inject;
 import javax.xml.stream.XMLStreamReader;
 
 /** Reads Biome findings from the checkstyle XML printed on standard output. */
-public final class BiomeCheckstyleFindings implements GateFindingSource {
+public final class BiomeXmlFindings implements GateFindingSource {
   static final String GATE = "biome";
-  private static final Logger LOGGER = Logger.getLogger(BiomeCheckstyleFindings.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(BiomeXmlFindings.class.getName());
   // Package managers may print lines before the report, so it starts at its XML declaration.
   private static final String DECLARATION = "<?xml";
 
   /** Creates the stateless adapter that Dagger injects. */
   @Inject
-  public BiomeCheckstyleFindings() {}
+  public BiomeXmlFindings() {}
 
   @Override
   public String gateId() {

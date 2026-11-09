@@ -19,15 +19,7 @@ import org.junit.jupiter.api.io.TempDir;
 /** Gradle accepts the generated build script, and the plugins use what init generates. */
 class GradleQualityConfigurationTest {
   private static final List<String> STRICT_GATES =
-      List.of(
-          "checkstyle",
-          "pmd",
-          "spotbugs",
-          "coverage",
-          "archunit",
-          "enforcer",
-          "mutation",
-          "dependency-check");
+      List.of("coverage", "archunit", "enforcer", "mutation", "dependency-check");
 
   @TempDir Path root;
 
@@ -37,7 +29,7 @@ class GradleQualityConfigurationTest {
         configure("build.gradle", "plugins {\n    id 'java'\n}\n\nrepositories {}\n", null);
 
     assertThat(script)
-        .startsWith("plugins {\n    " + GradlePluginsBlock.MARKER + "\n    id 'checkstyle'\n")
+        .startsWith("plugins {\n    " + GradlePluginsBlock.MARKER + "\n    id 'jacoco'\n")
         .contains("    id 'info.solidsoft.pitest' version '1.19.0'\n    id 'java'\n}\n");
     assertThat(script.indexOf("plugins {")).isEqualTo(script.lastIndexOf("plugins {"));
   }
@@ -68,12 +60,6 @@ class GradleQualityConfigurationTest {
 
     assertThat(script)
         .contains(
-            "checkstyle {\n    toolVersion = '10.20.2'\n"
-                + "    configFile = file('config/checkstyle.xml')\n"
-                + "    sourceSets = [project.sourceSets.main]\n}",
-            "pmd {\n    toolVersion = '7.17.0'\n    ruleSetFiles = files('config/pmd-ruleset.xml')\n"
-                + "    ruleSets = []\n",
-            "spotbugs {\n    toolVersion = '4.9.7'\n}",
             "jacoco {\n    toolVersion = '0.8.13'\n}\njacocoTestCoverageVerification {\n",
             "counter = 'BRANCH'\n                minimum = 0.75",
             "counter = 'LINE'\n                minimum = 0.85",
@@ -90,11 +76,6 @@ class GradleQualityConfigurationTest {
 
     assertThat(script)
         .contains(
-            "    id(\"checkstyle\")\n",
-            "configFile = file(\"config/checkstyle.xml\")",
-            "sourceSets = listOf(project.sourceSets.main.get())",
-            "ruleSets = listOf()",
-            "toolVersion = \"4.9.7\"",
             "\ntasks.jacocoTestCoverageVerification {\n",
             "minimum = \"0.85\".toBigDecimal()",
             "pitestVersion = \"1.30.1\"",
@@ -108,7 +89,7 @@ class GradleQualityConfigurationTest {
     final String script = configure("build.gradle", "plugins {\n    id 'java'\n}\n", null);
 
     assertThat(script)
-        .doesNotContain("config/checkstyle.xml", "config/pmd-ruleset.xml", "mutationThreshold")
+        .doesNotContain("mutationThreshold", "config/checkstyle.xml")
         .contains("counter = 'LINE'\n                minimum = 0.8\n");
   }
 

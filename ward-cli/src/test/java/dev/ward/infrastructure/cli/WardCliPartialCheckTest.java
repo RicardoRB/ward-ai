@@ -27,13 +27,13 @@ class WardCliPartialCheckTest extends WardCliIntegrationSupport {
         [checks.format]
         profiles = ["default", "edit"]
         command = "./mvnw spotless:check"
-        [checks.checkstyle]
-        uses = "checkstyle"
+        [checks.lint]
+        uses = "eslint"
         profiles = ["default", "edit"]
-        command = "./mvnw checkstyle:check"
-        [checks.checkstyle.paths]
+        command = "./mvnw lint:check"
+        [checks.lint.paths]
         match = ["src/**/*.java"]
-        args = ["-Dcheckstyle.includes={paths}"]
+        args = ["-Dlint.includes={paths}"]
         item = "**/{name}"
         separator = ","
         """);
@@ -69,10 +69,10 @@ class WardCliPartialCheckTest extends WardCliIntegrationSupport {
                 README))
         .isEqualTo(ExitCodes.OK);
 
-    final JsonTree checkstyle = JsonTree.parse(out.toString()).get(CHECKS).get(1);
-    assertThat(checkstyle.get(SCOPE).asString()).isEqualTo("narrowed");
-    assertThat(checkstyle.get("command").asString())
-        .isEqualTo("./mvnw checkstyle:check -Dcheckstyle.includes=**/Order.java");
+    final JsonTree lint = JsonTree.parse(out.toString()).get(CHECKS).get(1);
+    assertThat(lint.get(SCOPE).asString()).isEqualTo("narrowed");
+    assertThat(lint.get("command").asString())
+        .isEqualTo("./mvnw lint:check -Dlint.includes=**/Order.java");
     assertThat(JsonTree.parse(out.toString()).get("partial").get("paths").size()).isEqualTo(2);
   }
 
@@ -83,15 +83,14 @@ class WardCliPartialCheckTest extends WardCliIntegrationSupport {
     final JsonTree report = JsonTree.parse(out.toString());
     assertThat(report.has("partial")).isFalse();
     assertThat(report.get(CHECKS).get(1).has(SCOPE)).isFalse();
-    assertThat(report.get(CHECKS).get(1).get("command").asString())
-        .isEqualTo("./mvnw checkstyle:check");
+    assertThat(report.get(CHECKS).get(1).get("command").asString()).isEqualTo("./mvnw lint:check");
   }
 
   @Test
   void textReportShowsEveryGateAndSaysWhyOneWasSkipped() {
     assertThat(run(CHECK, "-C", project.toString(), PATH_OPTION, README)).isEqualTo(ExitCodes.OK);
 
-    assertThat(out.toString()).contains("– Checkstyle — Not affected by the edited files");
+    assertThat(out.toString()).contains("– lint — Not affected by the edited files");
   }
 
   @Test

@@ -5,15 +5,15 @@ description: Track recurring quality-gate failures.
 
 Learning is opt-in with `ward check --learn-after <n>`. It tracks the problems a gate finds, not
 the gate itself: each record is one tool rule, keyed `type:rule`, where the type is the check's built-in tool type (for example
-`pmd:UnusedLocalVariable` or `checkstyle:LineLength`). Ward stores compact metadata in
+`eslint:no-unused-vars` or `ruff:F401`). Ward stores compact metadata in
 `.ward/learning.json`: the gate and rule, one example finding message of at most 200 characters,
 occurrence count, state, timestamps, and whether a prompt has been issued. Full stdout and stderr are
 never stored.
 
-Only findings from failed gates whose tool reports specific rule IDs are learned: Checkstyle, PMD,
+Only findings from failed gates whose tool reports specific rule IDs are learned: Ward rules,
 gitleaks, ESLint (for example `eslint:no-unused-vars`), Biome (for example
 `biome:lint/suspicious/noExplicitAny`), the TypeScript compiler (for example `tsc:TS2322`), Ruff
-(for example `ruff:F401`) and mypy (for example `mypy:arg-type`). Gates without rule-level findings (tests, coverage, SpotBugs, mutation) and
+(for example `ruff:F401`) and mypy (for example `mypy:arg-type`). Gates without rule-level findings (tests, coverage, mutation) and
 catch-all findings such as formatting, javac or Swift compiler errors, or ESLint parsing errors are not
 tracked, because the only lesson they offer is to run the command again.
 

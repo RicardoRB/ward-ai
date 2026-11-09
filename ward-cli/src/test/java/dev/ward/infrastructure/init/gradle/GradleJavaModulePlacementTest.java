@@ -60,13 +60,13 @@ class GradleJavaModulePlacementTest {
     final Project project = new Project(root, Language.JAVA, BuildTool.GRADLE, Framework.NONE);
 
     new GradleToolConfigurator()
-        .apply(project, ModuleFixtures.gates("spotbugs"), null, finding -> false);
+        .apply(project, ModuleFixtures.gates("mutation"), null, finding -> false);
 
     assertThat(Files.readString(root.resolve("build.gradle.kts")))
-        .containsPattern("id\\(\"com\\.github\\.spotbugs\"\\) version \"[^\"]+\" apply false");
+        .containsPattern("id\\(\"info\\.solidsoft\\.pitest\"\\) version \"[^\"]+\" apply false");
     assertThat(Files.readString(root.resolve("api/build.gradle.kts")))
-        .contains("id(\"com.github.spotbugs\")")
-        .doesNotContain("com.github.spotbugs\") version");
+        .contains("id(\"info.solidsoft.pitest\")")
+        .doesNotContain("info.solidsoft.pitest\") version");
   }
 
   private void write(final String name, final String content) throws IOException {

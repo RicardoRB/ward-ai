@@ -32,7 +32,6 @@ final class PomModulePlacement {
     }
     final CompatibilityFinding finding = versions.plugin(tool);
     final String selectedVersion = finding == null ? null : finding.selectedVersion();
-    final String engineVersion = finding == null ? null : versions.engine(tool);
     final List<PomEdit> needing =
         aggregator.modules.stream()
             .filter(module -> !PomTools.declares(module.content, tool.artifact()))
@@ -43,6 +42,6 @@ final class PomModulePlacement {
     if (!PomTools.declares(aggregator.content, tool.artifact())) {
       aggregator.addManaged(tool, preset, selectedVersion);
     }
-    needing.forEach(module -> module.addModule(tool, preset, selectedVersion, engineVersion));
+    needing.forEach(module -> module.addModule(tool, preset, selectedVersion));
   }
 }

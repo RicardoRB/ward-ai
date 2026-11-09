@@ -17,17 +17,7 @@ public final class GradleBuildBlocks {
   private static final List<Block> BLOCKS =
       List.of(
           new Block(
-              "enforcer",
-              "checkstyle",
-              false,
-              true,
-              "checkstyleMain",
-              "gradle-enforcer",
-              "",
-              (kotlin, preset, versions, module) -> GradleQualityBlocks.enforcement(kotlin)),
-          new Block(
               "dependency-check",
-              "",
               false,
               false,
               "NVD_API_KEY",
@@ -35,41 +25,7 @@ public final class GradleBuildBlocks {
               "",
               (kotlin, preset, versions, module) -> GradleQualityBlocks.dependencyCheck(kotlin)),
           new Block(
-              "checkstyle",
-              "",
-              true,
-              true,
-              GradleQualityBlocks.CHECKSTYLE_CONFIG,
-              "checkstyle-config",
-              "",
-              (kotlin, preset, versions, module) ->
-                  GradleQualityBlocks.checkstyle(
-                      kotlin, versions.version(GradleToolCatalog.CHECKSTYLE_ENGINE), module)),
-          new Block(
-              "pmd",
-              "",
-              true,
-              true,
-              GradleQualityBlocks.PMD_RULESET,
-              "pmd-ruleset",
-              "",
-              (kotlin, preset, versions, module) ->
-                  GradleQualityBlocks.pmd(
-                      kotlin, versions.version(GradleToolCatalog.PMD_ENGINE), module)),
-          new Block(
-              "spotbugs",
-              "",
-              false,
-              true,
-              "spotbugs {",
-              "spotbugs-engine",
-              "",
-              (kotlin, preset, versions, module) ->
-                  GradleEngineBlocks.spotbugs(
-                      kotlin, versions.version(GradleToolCatalog.SPOTBUGS_ENGINE))),
-          new Block(
               "coverage",
-              "",
               false,
               true,
               GradleQualityBlocks.COVERAGE_TASK,
@@ -80,7 +36,6 @@ public final class GradleBuildBlocks {
                       kotlin, preset, versions.version(GradleToolCatalog.JACOCO_ENGINE))),
           new Block(
               "mutation",
-              "",
               false,
               true,
               GradleQualityBlocks.PITEST_JUNIT5,
@@ -91,7 +46,6 @@ public final class GradleBuildBlocks {
                       kotlin, versions.version(GradleToolCatalog.PITEST_ENGINE))),
           new Block(
               "license",
-              "",
               false,
               false,
               "licenseReport {",
@@ -115,7 +69,6 @@ public final class GradleBuildBlocks {
     final boolean kotlin = edit.buildFile().toString().endsWith(".kts");
     for (final Block block : BLOCKS) {
       if (selected.contains(block.gate())
-          && (block.requires().isEmpty() || selected.contains(block.requires()))
           && (preset != null || !block.needsPreset())
           && !edit.contains(block.present())) {
         edit.append(
@@ -127,14 +80,11 @@ public final class GradleBuildBlocks {
   }
 
   /**
-   * {@code requires} names a gate that must be selected too, such as the Checkstyle gate that the
-   * enforcement block makes {@code check} depend on, or is empty. {@code present} is text whose
-   * presence means the script already has this block, and {@code versionOf} names the catalog tool
-   * whose version the block records, or is empty.
+   * {@code present} is text whose presence means the script already has this block, and {@code
+   * versionOf} names the catalog tool whose version the block records, or is empty.
    */
   private record Block(
       String gate,
-      String requires,
       boolean needsPreset,
       boolean module,
       String present,

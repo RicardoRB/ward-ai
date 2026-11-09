@@ -67,14 +67,14 @@ class ExtendedGatesTest {
   }
 
   @Test
-  void pmdGateRunsThroughCommandExecutor() {
+  void customGateRunsThroughCommandExecutor() {
     final FakeCommandExecutor executor = new FakeCommandExecutor(0, "ok", "");
     final GateResult result =
         new QualityGateFactory(executor)
-            .create(config("pmd", List.of("mvnw", "pmd:check")))
+            .create(config("eslint", List.of("mvnw", "eslint:check")))
             .getFirst()
             .execute(PROJECT);
-    assertThat(result.name()).isEqualTo("pmd");
+    assertThat(result.name()).isEqualTo("eslint");
     assertThat(result.status()).isEqualTo(GateStatus.PASSED);
   }
 

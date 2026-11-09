@@ -28,13 +28,13 @@ class BuildFilePlanTest {
     Files.writeString(root.resolve(POM), EMPTY_POM);
 
     final PlannedFileChange plan =
-        new PomToolConfigurator().plan(maven(root), gates("pmd", "spotbugs"), null, false);
+        new PomToolConfigurator().plan(maven(root), gates("coverage", "mutation"), null, false);
 
     assertThat(plan.file()).isEqualTo(root.resolve(POM));
     assertThat(plan.action()).isEqualTo(Action.MODIFY);
     assertThat(plan.details())
-        .anyMatch(detail -> detail.matches("\\+ maven-pmd-plugin \\d+\\.\\d+\\.\\d+"))
-        .anyMatch(detail -> detail.matches("\\+ spotbugs-maven-plugin \\d+[.\\d]*"));
+        .anyMatch(detail -> detail.matches("\\+ jacoco-maven-plugin \\d+\\.\\d+\\.\\d+"))
+        .anyMatch(detail -> detail.matches("\\+ pitest-maven \\d+[.\\d]*"));
     assertThat(Files.readString(root.resolve(POM))).isEqualTo(EMPTY_POM);
   }
 
@@ -42,9 +42,9 @@ class BuildFilePlanTest {
   void mavenPlanIsUnchangedWhenToolsAreDeclared(@TempDir final Path root) throws IOException {
     Files.writeString(root.resolve(POM), EMPTY_POM);
     final PomToolConfigurator configurator = new PomToolConfigurator();
-    configurator.apply(maven(root), gates("pmd"));
+    configurator.apply(maven(root), gates("coverage"));
 
-    final PlannedFileChange plan = configurator.plan(maven(root), gates("pmd"), null, false);
+    final PlannedFileChange plan = configurator.plan(maven(root), gates("coverage"), null, false);
 
     assertThat(plan.action()).isEqualTo(Action.UNCHANGED);
     assertThat(plan.details()).isEmpty();

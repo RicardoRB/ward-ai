@@ -66,12 +66,8 @@ final class PomEdit {
         .toList();
   }
 
-  void add(
-      final Tool tool,
-      final QualityPreset preset,
-      final String selectedVersion,
-      final String engineVersion) {
-    content = tool.addTo(content, preset, selectedVersion, engineVersion);
+  void add(final Tool tool, final QualityPreset preset, final String selectedVersion) {
+    content = tool.addTo(content, preset, selectedVersion);
     record(tool, preset, selectedVersion);
   }
 
@@ -79,14 +75,9 @@ final class PomEdit {
    * Declares a module-placed tool in this module pom. Its rule files sit in the aggregator, so
    * their paths resolve from the multi-module directory instead of the module's own basedir.
    */
-  void addModule(
-      final Tool tool,
-      final QualityPreset preset,
-      final String selectedVersion,
-      final String engineVersion) {
+  void addModule(final Tool tool, final QualityPreset preset, final String selectedVersion) {
     final String declaration =
-        tool.declaration(preset, selectedVersion, engineVersion)
-            .replace(PROJECT_BASEDIR, MULTI_MODULE_DIRECTORY);
+        tool.declaration(preset, selectedVersion).replace(PROJECT_BASEDIR, MULTI_MODULE_DIRECTORY);
     content = PomXml.addPlugin(content, declaration);
     record(tool, preset, selectedVersion);
   }

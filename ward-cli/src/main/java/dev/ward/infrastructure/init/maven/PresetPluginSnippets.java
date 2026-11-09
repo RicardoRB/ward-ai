@@ -23,52 +23,6 @@ final class PresetPluginSnippets {
 
   private PresetPluginSnippets() {}
 
-  static String pmd() {
-    return """
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-pmd-plugin</artifactId>
-              <version>3.28.0</version>
-              <configuration>
-                <rulesets><ruleset>${project.basedir}/config/pmd-ruleset.xml</ruleset></rulesets>
-                <failOnViolation>true</failOnViolation>
-                <printFailingErrors>true</printFailingErrors>
-                <includeTests>false</includeTests>
-                <analysisCache>true</analysisCache>
-              </configuration>
-            </plugin>
-          """;
-  }
-
-  static String checkstyle() {
-    return """
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-checkstyle-plugin</artifactId>
-              <version>3.6.0</version>
-              <dependencies><dependency><groupId>com.puppycrawl.tools</groupId><artifactId>checkstyle</artifactId><version>ENGINE_VERSION</version></dependency></dependencies>
-              <configuration><configLocation>${project.basedir}/config/checkstyle.xml</configLocation><violationSeverity>error</violationSeverity><consoleOutput>true</consoleOutput></configuration>
-            </plugin>
-          """;
-  }
-
-  static String spotbugs(final QualityPreset preset) {
-    final String exclude =
-        preset == QualityPreset.STANDARD
-            ? "<excludeFilterFile>${project.basedir}/config/spotbugs-exclude.xml</excludeFilterFile>"
-            : "";
-    return "<plugin>\n"
-        + "  <groupId>com.github.spotbugs</groupId><artifactId>spotbugs-maven-plugin</artifactId><version>4.9.7.0</version>\n"
-        + "  <configuration><effort>"
-        + preset.rules().spotbugsEffort()
-        + "</effort><threshold>"
-        + preset.rules().spotbugsThreshold()
-        + "</threshold>"
-        + exclude
-        + "</configuration>\n"
-        + "</plugin>\n";
-  }
-
   static String jacoco(final QualityPreset preset) {
     final String limits =
         preset.rules().jacocoMinimums().entrySet().stream()

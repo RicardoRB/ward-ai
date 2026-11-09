@@ -9,10 +9,10 @@ import java.util.Set;
 /** Builds one-gate partial check plans for the plan tests. */
 final class PartialPlans {
   static final Path ROOT = Path.of("/work/shop").toAbsolutePath();
-  static final String GATE = "checkstyle";
+  static final String GATE = "lint";
   static final List<String> JAVA = List.of("src/**/*.java");
-  static final List<String> RULES = List.of("config/checkstyle.xml");
-  static final List<String> INCLUDES = List.of("-Dcheckstyle.includes={paths}");
+  static final List<String> RULES = List.of("config/lint.xml");
+  static final List<String> INCLUDES = List.of("-Dlint.includes={paths}");
   static final String ORDER = "src/main/java/com/acme/Order.java";
   static final PathExistence EVERYTHING_EXISTS = path -> true;
 

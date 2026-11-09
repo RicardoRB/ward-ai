@@ -23,10 +23,10 @@ class GradleToolConfiguratorTest {
     final GradleToolConfigurator configurator = new GradleToolConfigurator();
 
     final BuildFileChange change =
-        configurator.apply(project, List.of(gate("checkstyle")), null, finding -> false);
+        configurator.apply(project, List.of(gate("coverage")), null, finding -> false);
 
     final String updated = Files.readString(build);
-    assertThat(updated).contains("checkstyle", "user configuration");
+    assertThat(updated).contains("jacoco", "user configuration");
     assertThat(change.file()).isEqualTo(build);
     configurator.rollback(change);
     assertThat(Files.readString(build)).isEqualTo(change.originalContent());
@@ -39,14 +39,7 @@ class GradleToolConfiguratorTest {
     Files.writeString(build, "plugins { id 'java' }\n");
     final Project project = new Project(root, Language.JAVA, BuildTool.GRADLE, Framework.NONE);
     final List<String> ids =
-        List.of(
-            "spotbugs",
-            "coverage",
-            "dependency-check",
-            "mutation",
-            "sonar",
-            "license",
-            "api-compat");
+        List.of("coverage", "dependency-check", "mutation", "sonar", "license", "api-compat");
 
     new GradleToolConfigurator()
         .apply(
@@ -57,7 +50,6 @@ class GradleToolConfiguratorTest {
 
     assertThat(Files.readString(build))
         .contains(
-            "com.github.spotbugs",
             "org.owasp.dependencycheck",
             "info.solidsoft.pitest",
             "org.sonarqube",
