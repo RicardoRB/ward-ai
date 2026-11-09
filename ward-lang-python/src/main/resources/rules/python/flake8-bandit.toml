@@ -95,7 +95,7 @@ presets = ["strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["atom_expr"]
-text = "^requests\\.(get|post|put|delete|patch|head|options)\\((?![^)]*timeout=)"
+text = "^requests\\.(get|post|put|delete|patch|head|options|request)\\((?![^)]*timeout=)"
 message = "requests call without a timeout can hang; pass timeout="
 '''
 

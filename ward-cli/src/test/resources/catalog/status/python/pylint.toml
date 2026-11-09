@@ -115,7 +115,6 @@ inherit-non-class = { status = "planned", issue = "#336" }
 init-is-generator = { status = "planned", issue = "#336" }
 invalid-bool-returned = "implemented"
 invalid-bytes-returned = "implemented"
-invalid-character-carriage-return = "implemented"
 invalid-characters-in-docstring = { status = "planned", issue = "#297" }
 invalid-class-object = { status = "planned", issue = "#336" }
 invalid-enum-extension = { status = "planned", issue = "#336" }
@@ -145,10 +144,7 @@ invalid-unicode-codec = { status = "planned", issue = "#336" }
 isinstance-second-argument-not-valid-type = { status = "planned", issue = "#336" }
 keyword-arg-before-vararg = { status = "planned", issue = "#336" }
 kwarg-superseded-by-positional-arg = { status = "planned", issue = "#336" }
-logging-format-interpolation = { status = "planned", issue = "#336" }
 logging-format-truncated = { status = "planned", issue = "#336" }
-logging-fstring-interpolation = { status = "planned", issue = "#336" }
-logging-not-lazy = { status = "planned", issue = "#336" }
 logging-unsupported-format = { status = "planned", issue = "#336" }
 looping-through-iterator = { status = "planned", issue = "#336" }
 match-class-bind-self = { status = "planned", issue = "#336" }
@@ -159,9 +155,6 @@ misplaced-comparison-constant = { status = "planned", issue = "#297" }
 misplaced-format-function = { status = "planned", issue = "#336" }
 missing-any-param-doc = { status = "planned", issue = "#336" }
 missing-class-docstring = { status = "planned", issue = "#297" }
-missing-format-argument-key = { status = "planned", issue = "#336" }
-missing-format-attribute = { status = "planned", issue = "#336" }
-missing-format-string-key = { status = "planned", issue = "#336" }
 missing-function-docstring = { status = "planned", issue = "#297" }
 missing-kwoa = { status = "planned", issue = "#336" }
 missing-module-docstring = { status = "planned", issue = "#297" }
@@ -170,7 +163,6 @@ missing-parentheses-for-call-in-test = { status = "planned", issue = "#336" }
 missing-raises-doc = { status = "planned", issue = "#336" }
 missing-return-doc = { status = "planned", issue = "#336" }
 missing-return-type-doc = { status = "planned", issue = "#336" }
-missing-timeout = { status = "planned", issue = "#336" }
 missing-type-doc = { status = "planned", issue = "#336" }
 missing-yield-doc = { status = "planned", issue = "#336" }
 missing-yield-type-doc = { status = "planned", issue = "#336" }
@@ -185,7 +177,6 @@ no-else-raise = { status = "planned", issue = "#336" }
 no-member = { status = "planned", issue = "#336" }
 no-method-argument = { status = "planned", issue = "#336" }
 no-name-in-module = { status = "planned", issue = "#336" }
-no-self-argument = { status = "planned", issue = "#336" }
 no-value-for-parameter = { status = "planned", issue = "#336" }
 non-ascii-file-name = { status = "planned", issue = "#336" }
 non-ascii-module-import = { status = "planned", issue = "#297" }
@@ -197,11 +188,9 @@ not-an-iterable = { status = "planned", issue = "#336" }
 not-async-context-manager = { status = "planned", issue = "#336" }
 not-callable = { status = "planned", issue = "#336" }
 not-context-manager = { status = "planned", issue = "#336" }
-not-in-loop = { status = "planned", issue = "#336" }
 overlapping-except = { status = "planned", issue = "#336" }
 overridden-final-method = { status = "planned", issue = "#336" }
 pointless-exception-statement = { status = "planned", issue = "#336" }
-pointless-statement = { status = "planned", issue = "#336" }
 pointless-string-statement = { status = "planned", issue = "#336" }
 positional-only-arguments-expected = { status = "planned", issue = "#336" }
 possibly-unused-variable = { status = "planned", issue = "#336" }

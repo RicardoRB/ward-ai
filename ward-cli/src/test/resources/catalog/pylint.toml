@@ -691,12 +691,6 @@ category = "pylint"
 pylint = ["invalid-bytes-returned"]
 
 [[rule]]
-name = "invalid-character-carriage-return"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["invalid-character-carriage-return"]
-
-[[rule]]
 name = "invalid-characters-in-docstring"
 presets = ["standard", "strict"]
 category = "linter"
@@ -871,28 +865,10 @@ category = "pylint"
 pylint = ["kwarg-superseded-by-positional-arg"]
 
 [[rule]]
-name = "logging-format-interpolation"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["logging-format-interpolation"]
-
-[[rule]]
 name = "logging-format-truncated"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["logging-format-truncated"]
-
-[[rule]]
-name = "logging-fstring-interpolation"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["logging-fstring-interpolation"]
-
-[[rule]]
-name = "logging-not-lazy"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["logging-not-lazy"]
 
 [[rule]]
 name = "logging-unsupported-format"
@@ -955,24 +931,6 @@ category = "linter"
 pylint = ["missing-class-docstring"]
 
 [[rule]]
-name = "missing-format-argument-key"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["missing-format-argument-key"]
-
-[[rule]]
-name = "missing-format-attribute"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["missing-format-attribute"]
-
-[[rule]]
-name = "missing-format-string-key"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["missing-format-string-key"]
-
-[[rule]]
 name = "missing-function-docstring"
 presets = ["standard", "strict"]
 category = "linter"
@@ -1019,12 +977,6 @@ name = "missing-return-type-doc"
 presets = ["strict"]
 category = "pylint"
 pylint = ["missing-return-type-doc"]
-
-[[rule]]
-name = "missing-timeout"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["missing-timeout"]
 
 [[rule]]
 name = "missing-type-doc"
@@ -1111,12 +1063,6 @@ category = "pylint"
 pylint = ["no-name-in-module"]
 
 [[rule]]
-name = "no-self-argument"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["no-self-argument"]
-
-[[rule]]
 name = "no-value-for-parameter"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -1199,12 +1145,6 @@ name = "pointless-exception-statement"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["pointless-exception-statement"]
-
-[[rule]]
-name = "pointless-statement"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["pointless-statement"]
 
 [[rule]]
 name = "pointless-string-statement"
@@ -1878,8 +1818,3 @@ presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["yield-inside-async-function"]
 
-[[rule]]
-name = "not-in-loop"
-presets = ["standard", "strict"]
-category = "pylint"
-pylint = ["not-in-loop"]

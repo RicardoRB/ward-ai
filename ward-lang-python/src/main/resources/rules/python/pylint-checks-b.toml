@@ -157,16 +157,55 @@ message = "__str__ does not return str"
 '''
 
 [[rules]]
-id = "ward:python/invalid-character-carriage-return"
+id = "ward:python/logging-string-format"
 language = "python"
 capability = "SYNTAX"
 severity = "error"
-category = "pylint"
+category = "flake8-logging-format"
 presets = ["standard", "strict"]
 body = '''
-check = "text-pattern"
-target = "strings"
-kinds = ["STRING"]
-pattern = "\\r"
-message = "raw carriage return in a string literal; use the \\r escape instead"
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^(?:\\w+\\.)*(?:logging|log|logger|_logger|LOGGER|LOG)\\.(?:debug|info|warning|warn|error|exception|critical|fatal)\\(\\s*(?:\"[^\"\\n]*\"|'[^'\\n]*')\\.format\\("
+message = "logging call formats its message with str.format(); pass the arguments to the logger instead"
+'''
+
+[[rules]]
+id = "ward:python/logging-percent-format"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "flake8-logging-format"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^(?:\\w+\\.)*(?:logging|log|logger|_logger|LOGGER|LOG)\\.(?:debug|info|warning|warn|error|exception|critical|fatal)\\(\\s*(?:\"[^\"\\n]*\"|'[^'\\n]*')\\s*%(?!=)"
+message = "logging call formats its message with %; pass the arguments to the logger instead"
+'''
+
+[[rules]]
+id = "ward:python/logging-f-string"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "flake8-logging-format"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^(?:\\w+\\.)*(?:logging|log|logger|_logger|LOGGER|LOG)\\.(?:debug|info|warning|warn|error|exception|critical|fatal)\\(\\s*[fF][rRbB]?[\"']"
+message = "logging call uses an f-string; pass the arguments to the logger instead"
+'''
+
+[[rules]]
+id = "ward:python/invalid-first-argument-name-for-method"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "linter"
+presets = ["standard", "strict"]
+body = '''
+check = "first-argument"
+message = "method should have \"self\" as its first argument"
 '''

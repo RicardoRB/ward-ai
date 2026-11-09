@@ -12,6 +12,7 @@ import dev.ward.analysis.domain.rule.check.EmptyAbstractMethodCheck;
 import dev.ward.analysis.domain.rule.check.ExceptOrderCheck;
 import dev.ward.analysis.domain.rule.check.FStringDocstringCheck;
 import dev.ward.analysis.domain.rule.check.FinallyJumpCheck;
+import dev.ward.analysis.domain.rule.check.FirstArgumentCheck;
 import dev.ward.analysis.domain.rule.check.GroupbyReuseCheck;
 import dev.ward.analysis.domain.rule.check.LoopClosureCheck;
 import dev.ward.analysis.domain.rule.check.LoopVariableCheck;
@@ -76,6 +77,7 @@ final class PythonOrderChecks {
             "string-annotation",
             toml -> new StringAnnotationCheck(TomlValues.required(toml, MESSAGE))),
         entry("dunder-return", PythonOrderChecks::dunderReturn),
+        entry("first-argument", toml -> new FirstArgumentCheck(TomlValues.required(toml, MESSAGE))),
         entry("strict-call", PythonOrderChecks::strictCall));
   }
 

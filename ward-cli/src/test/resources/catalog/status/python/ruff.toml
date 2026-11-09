@@ -280,7 +280,7 @@ invalid-envvar-default = { status = "planned", issue = "#334" }
 invalid-envvar-value = { status = "planned", issue = "#332" }
 invalid-escape-sequence = "implemented"
 invalid-first-argument-name-for-class-method = { status = "planned", issue = "#297" }
-invalid-first-argument-name-for-method = { status = "planned", issue = "#297" }
+invalid-first-argument-name-for-method = "implemented"
 invalid-formatter-suppression-comment = { status = "planned", issue = "#334" }
 invalid-get-logger-argument = { status = "planned", issue = "#334" }
 invalid-hash-return-type = { status = "planned", issue = "#332" }
@@ -321,11 +321,11 @@ logging-config-insecure-listen = { status = "planned", issue = "#334" }
 logging-eager-conversion = { status = "planned", issue = "#334" }
 logging-exc-info = { status = "planned", issue = "#334" }
 logging-extra-attr-clash = { status = "planned", issue = "#334" }
-logging-f-string = { status = "planned", issue = "#334" }
-logging-percent-format = { status = "planned", issue = "#334" }
+logging-f-string = "implemented"
+logging-percent-format = "implemented"
 logging-redundant-exc-info = { status = "planned", issue = "#334" }
 logging-string-concat = { status = "planned", issue = "#334" }
-logging-string-format = { status = "planned", issue = "#334" }
+logging-string-format = "implemented"
 logging-too-few-args = "implemented"
 logging-too-many-args = "implemented"
 logging-warn = { status = "planned", issue = "#334" }

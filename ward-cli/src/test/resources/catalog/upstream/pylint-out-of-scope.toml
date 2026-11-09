@@ -40,3 +40,15 @@ rules = [
   "c-extension-no-member",
   "raw-checker-failed",
 ]
+
+[[group]]
+reason = "needs inference of the format argument's attributes: pylint checks the attribute chain of an inferred object, which Ward does not infer"
+rules = [
+  "missing-format-attribute",
+]
+
+[[group]]
+reason = "a raw carriage return cannot reach a string literal of a parsed Python unit: the tokenizer ends the line at a CR, so no fixture or unit can show the finding"
+rules = [
+  "invalid-character-carriage-return",
+]
