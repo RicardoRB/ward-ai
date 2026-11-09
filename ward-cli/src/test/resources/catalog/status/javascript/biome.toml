@@ -171,7 +171,7 @@ no-useless-lone-block-statements = "implemented"
 no-useless-string-raw = "implemented"
 no-useless-switch-case = "implemented"
 no-useless-undefined = { status = "planned", issue = "#329" }
-no-void-elements-with-children = { status = "planned", issue = "#329" }
+no-void-elements-with-children = "implemented"
 no-void-type-return = "not-applicable"
 no-vue-arrow-func-in-watch = { status = "planned", issue = "#329" }
 no-vue-data-object-declaration = { status = "planned", issue = "#329" }
@@ -227,7 +227,7 @@ use-fragment-syntax = { status = "planned", issue = "#296" }
 use-global-this = "implemented"
 use-google-font-display = { status = "planned", issue = "#329" }
 use-google-font-preconnect = { status = "planned", issue = "#329" }
-use-heading-content = { status = "planned", issue = "#329" }
+use-heading-content = "implemented"
 use-hook-at-top-level = { status = "planned", issue = "#329" }
 use-html-lang = "implemented"
 use-iframe-sandbox = { status = "planned", issue = "#329" }

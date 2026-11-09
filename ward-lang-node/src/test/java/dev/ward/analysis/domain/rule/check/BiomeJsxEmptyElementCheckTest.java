@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 class BiomeJsxEmptyElementCheckTest {
 
   private static final BiomeJsxEmptyElementCheck ANCHOR =
-      new BiomeJsxEmptyElementCheck(Set.of("a"), "message");
+      new BiomeJsxEmptyElementCheck(Set.of("a"), Set.of(), "message");
 
   @Test
   void reportsASelfClosingOrBlankAnchorAtTheElement() {

@@ -601,3 +601,31 @@ body = '''
 check = "node-aria-props-supported-by-role"
 message = "this ARIA attribute is not supported by the element"
 '''
+
+[[rules]]
+id = "ward:javascript/use-heading-content"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-empty-element"
+elements = ["h1", "h2", "h3", "h4", "h5", "h6"]
+exempt = ["aria-label"]
+message = "a heading needs content that a screen reader can announce"
+'''
+
+[[rules]]
+id = "ward:typescript/use-heading-content"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-jsx-empty-element"
+elements = ["h1", "h2", "h3", "h4", "h5", "h6"]
+exempt = ["aria-label"]
+message = "a heading needs content that a screen reader can announce"
+'''

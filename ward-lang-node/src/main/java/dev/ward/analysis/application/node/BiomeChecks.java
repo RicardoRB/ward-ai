@@ -17,6 +17,7 @@ import dev.ward.analysis.domain.rule.check.BiomeMemberPropertyCheck;
 import dev.ward.analysis.domain.rule.check.BiomeNamespaceAccessCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUnreachableSuperCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUnusedParameterCheck;
+import dev.ward.analysis.domain.rule.check.BiomeVoidElementChildrenCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import java.util.HashMap;
 import java.util.List;
@@ -60,6 +61,13 @@ final class BiomeChecks {
                 "node-jsx-empty-element",
                 toml ->
                     new BiomeJsxEmptyElementCheck(
+                        TomlValues.optionalStrings(toml, "elements"),
+                        TomlValues.optionalStrings(toml, "exempt"),
+                        TomlValues.required(toml, MESSAGE))),
+            entry(
+                "node-void-element-children",
+                toml ->
+                    new BiomeVoidElementChildrenCheck(
                         TomlValues.optionalStrings(toml, "elements"),
                         TomlValues.required(toml, MESSAGE))),
             entry(
