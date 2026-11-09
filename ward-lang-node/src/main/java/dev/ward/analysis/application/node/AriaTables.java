@@ -1,6 +1,7 @@
 package dev.ward.analysis.application.node;
 
 import dev.ward.analysis.domain.rule.check.AriaRoleTable;
+import dev.ward.analysis.domain.rule.check.AriaTableParser;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -19,9 +20,9 @@ final class AriaTables {
   /** The ARIA role table: the role rows and the implicit element-role rows. */
   static AriaRoleTable load() {
     return new AriaRoleTable(
-        AriaRoleTable.parseRoles(read(ROLES)),
-        AriaRoleTable.parseImplicit(read(IMPLICIT)),
-        AriaRoleTable.parseAttributes(read(ATTRIBUTES)));
+        AriaTableParser.parseRoles(read(ROLES)),
+        AriaTableParser.parseImplicit(read(IMPLICIT)),
+        AriaTableParser.parseAttributes(read(ATTRIBUTES)));
   }
 
   private static List<String> read(final String path) {

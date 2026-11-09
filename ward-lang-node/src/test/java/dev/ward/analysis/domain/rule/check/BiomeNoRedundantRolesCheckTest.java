@@ -35,7 +35,7 @@ class BiomeNoRedundantRolesCheckTest {
                   Set.of(),
                   Set.of(),
                   Set.of())),
-          AriaRoleTable.parseImplicit(
+          AriaTableParser.parseImplicit(
               List.of("nav\t-\tnavigation", "div\t-\tgeneric", "img\talt-blank\tpresentation")),
           Map.of());
   private static final BiomeNoRedundantRolesCheck CHECK =
