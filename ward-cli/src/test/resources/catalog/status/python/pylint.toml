@@ -35,7 +35,7 @@ confusing-with-statement = "implemented"
 consider-math-not-float = { status = "planned", issue = "#336" }
 consider-merging-isinstance = "implemented"
 consider-refactoring-into-while-condition = { status = "planned", issue = "#336" }
-consider-swap-variables = { status = "planned", issue = "#336" }
+consider-swap-variables = "implemented"
 consider-ternary-expression = { status = "planned", issue = "#336" }
 consider-using-any-or-all = { status = "planned", issue = "#297" }
 consider-using-assignment-expr = { status = "planned", issue = "#336" }
@@ -44,7 +44,7 @@ consider-using-dict-items = "implemented"
 consider-using-enumerate = "implemented"
 consider-using-f-string = "implemented"
 consider-using-from-import = "implemented"
-consider-using-get = { status = "planned", issue = "#336" }
+consider-using-get = "implemented"
 consider-using-in = "implemented"
 consider-using-join = { status = "planned", issue = "#336" }
 consider-using-max-builtin = "implemented"

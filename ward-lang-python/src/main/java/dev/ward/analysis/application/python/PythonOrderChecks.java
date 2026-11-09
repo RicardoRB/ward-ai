@@ -30,6 +30,7 @@ import dev.ward.analysis.domain.rule.check.SlotsCheck;
 import dev.ward.analysis.domain.rule.check.StarUnpackLimitCheck;
 import dev.ward.analysis.domain.rule.check.StrictCallCheck;
 import dev.ward.analysis.domain.rule.check.StringAnnotationCheck;
+import dev.ward.analysis.domain.rule.check.SwapVariablesCheck;
 import dev.ward.analysis.domain.rule.check.ThreadInstantiationCheck;
 import dev.ward.analysis.domain.rule.check.UnassignedCallExpressionCheck;
 import dev.ward.analysis.domain.rule.check.UnboundLocalCheck;
@@ -97,6 +98,7 @@ final class PythonOrderChecks {
         entry(
             "mixed-comparison-chain",
             toml -> new MixedComparisonChainCheck(TomlValues.required(toml, MESSAGE))),
+        entry("swap-variables", toml -> new SwapVariablesCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "slots-conflict",
             toml ->

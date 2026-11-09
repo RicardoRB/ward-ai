@@ -376,3 +376,29 @@ body = '''
 check = "slots-assign"
 message = "assigning to attribute {value} not defined in class slots"
 '''
+
+[[rules]]
+id = "ward:python/consider-swap-variables"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "swap-variables"
+message = "consider tuple unpacking to swap these variables"
+'''
+
+[[rules]]
+id = "ward:python/consider-using-get"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["if_stmt"]
+text = '^if(\w+)in([\w.]+):\s*([\w.]+)=\2\[\1\]\s*(else:\s*\3=\S+)?\s*$'
+message = "use dict.get() instead of an if that reads a key from a dictionary"
+'''

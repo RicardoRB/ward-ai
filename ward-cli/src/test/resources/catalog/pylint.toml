@@ -205,7 +205,6 @@ pylint = ["consider-refactoring-into-while-condition"]
 [[rule]]
 name = "consider-swap-variables"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["consider-swap-variables"]
 
 [[rule]]
@@ -258,7 +257,6 @@ pylint = ["consider-using-from-import"]
 [[rule]]
 name = "consider-using-get"
 presets = ["standard", "strict"]
-category = "pylint"
 pylint = ["consider-using-get"]
 
 [[rule]]
