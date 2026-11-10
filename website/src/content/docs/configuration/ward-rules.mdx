@@ -31,12 +31,12 @@ categories = ["naming", "sizes"]    # default: every category
 include = ["ward:java/missing-javadoc"]
 exclude = ["ward:java/star-import"]
 
-[rules."ward:java/method-length"]
+[rules.java.method-length]          # the same rule as [rules."ward:java/method-length"]
 max = 80
 severity = "warning"                # error | warning
 exclude-paths = ["src/generated/**"]
 
-[rules."ward:java/type-name"]
+[rules.java.type-name]
 pattern = "[A-Z][A-Za-z0-9]*"
 ```
 
@@ -57,6 +57,19 @@ selected is a configuration error, so a tuned rule is never silently off.
 
 ## Rule tables
 
+A rule table is named in one of two ways, and both configure the same rule:
+
+- `[rules.<language>.<rule-name>]`, such as `[rules.java.method-length]`, which is the rule
+  `ward:java/method-length`. The group can also be a non-language group such as `architecture`.
+- `[rules."ward:<language>/<rule-name>"]`, the quoted id, such as `[rules."ward:java/method-length"]`.
+
+Writing both tables for one rule is a configuration error that names both, and the file is not used
+until one of them is removed:
+
+```text
+ward-rules.toml: [rules."ward:java/method-length"] and [rules.java.method-length] configure the same rule; keep one table
+```
+
 Every rule accepts `severity` (`error` or `warning`) and `exclude-paths` (globs relative to the
 project root, applied to that rule only; other rules still check those files). The other keys are
 the rule's options. A rule has only the options it declares, and the default of each option is the
@@ -75,9 +88,13 @@ Option types are `integer` (with an allowed range), `boolean`, `string`, `regex`
 Every problem is reported, not only the first, and each names the file, the table and the key:
 
 ```text
-ward-rules.toml: [rules."ward:java/method-length"] max: expected an integer >= 1, got "sixty"
-ward-rules.toml: [rules."ward:java/nope"]: unknown rule id
+ward-rules.toml: [rules.java.method-length] max: expected an integer >= 1, got "sixty"
+ward-rules.toml: [rules.java.nope]: unknown rule id
+ward-rules.toml: [rules.cobol.method-length]: unknown rule id
+ward-rules.toml: [rules.java] max: must be a rule table
 ```
+
+Each problem names the table as it is written in the file, in either form.
 
 Unknown rule ids, unknown options, wrong types, values out of range, unknown enum values, and
 invalid globs or regular expressions are all errors. The `ward` gate then fails with an execution
