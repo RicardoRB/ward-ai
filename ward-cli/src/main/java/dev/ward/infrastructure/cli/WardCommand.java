@@ -8,6 +8,7 @@ import dev.ward.infrastructure.cli.gate.CheckCommand;
 import dev.ward.infrastructure.cli.init.InitCommand;
 import dev.ward.infrastructure.cli.loop.LoopCommand;
 import dev.ward.infrastructure.cli.project.DetectCommand;
+import dev.ward.infrastructure.cli.rules.RulesCommand;
 import dev.ward.infrastructure.cli.spec.SpecCommand;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
@@ -34,7 +35,8 @@ import picocli.CommandLine.Spec;
       SpecCommand.class,
       DoctorCommand.class,
       FormatCommand.class,
-      LoopCommand.class
+      LoopCommand.class,
+      RulesCommand.class
     },
     footer = {"", "Exit codes: 0 = ok, 1 = failed, 2 = error"})
 public class WardCommand implements Callable<Integer> {

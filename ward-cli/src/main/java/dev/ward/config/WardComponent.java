@@ -11,6 +11,7 @@ import javax.inject.Provider;
       PortBindingsModule.class,
       CommandBindingsModule.class,
       SpecCommandBindingsModule.class,
+      RulesCommandBindingsModule.class,
       WardProvidesModule.class
     })
 public interface WardComponent {
