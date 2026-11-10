@@ -12,3 +12,4 @@ no-redundant-type-constituents	typescript-eslint	no-redundant-type-constituents	
 no-unsafe-enum-comparison	typescript-eslint	no-unsafe-enum-comparison	only equality operators with a primitive operand are checked; a comparison of two different enums and of enum members is not
 no-duplicate-type-constituents	typescript-eslint	no-duplicate-type-constituents	written constituents are compared as text, so two spellings of one type are not reported
 consistent-type-exports	typescript-eslint	consistent-type-exports	an export of an import that is a type declared in another module is reported by the tool through type information; Ward reads only import type and local interface or type alias declarations, so such an export is not reported
+triple-slash-reference	typescript-eslint	triple-slash-reference	an import x = require("module") is not counted as an import for the types option; typescript-eslint counts it

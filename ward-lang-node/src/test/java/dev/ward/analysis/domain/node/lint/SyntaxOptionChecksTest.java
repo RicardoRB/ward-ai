@@ -82,4 +82,18 @@ class SyntaxOptionChecksTest {
         "ts-nocheck",
         "true");
   }
+
+  @Test
+  void tripleSlashReferencesFollowTheirOptionsAndTheImportsOfTheFile() {
+    final String text =
+        "/// <reference path=\"a.d.ts\" />\n/// <reference types=\"node\" />\n"
+            + "/// <reference types=\"vite/client\" />\nimport \"node\";\n";
+
+    assertThat(
+            positions(
+                new TripleSlashReferenceCheck("always", "never", "prefer-import", MESSAGE), text))
+        .containsExactly("1:1", "2:1");
+    assertThat(positions(new TripleSlashReferenceCheck("always", "always", "never", MESSAGE), text))
+        .containsExactly("2:1", "3:1");
+  }
 }
