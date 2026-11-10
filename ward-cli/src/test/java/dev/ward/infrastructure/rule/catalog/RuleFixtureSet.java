@@ -75,7 +75,7 @@ record RuleFixtureSet(AnalysisLanguage language, String name, Path directory) {
       files
           .map(file -> file.getFileName().toString())
           .filter(file -> file.startsWith("violating-"))
-          .map(file -> file.substring("violating-".length(), file.lastIndexOf('.')))
+          .map(file -> file.substring("violating-".length(), file.indexOf('.')))
           .sorted()
           .forEach(cases::add);
     } catch (final IOException exception) {
@@ -145,14 +145,18 @@ record RuleFixtureSet(AnalysisLanguage language, String name, Path directory) {
   }
 
   /**
-   * A TypeScript case with a {@code .tsx} file uses it, so that JSX is recognized; else {@code
-   * .ts}.
+   * A TypeScript case with a {@code .tsx} file uses it, so that JSX is recognized; a {@code .d.ts}
+   * file makes the unit a definition file; else {@code .ts}.
    */
   private Path source(final String kind, final String caseName) {
     final String base = kind + suffix(caseName);
     final Path tsx = directory.resolve(base + ".tsx");
     if (language == AnalysisLanguage.TYPESCRIPT && Files.isRegularFile(tsx)) {
       return tsx;
+    }
+    final Path definition = directory.resolve(base + ".d.ts");
+    if (language == AnalysisLanguage.TYPESCRIPT && Files.isRegularFile(definition)) {
+      return definition;
     }
     return directory.resolve(base + "." + extension(language));
   }

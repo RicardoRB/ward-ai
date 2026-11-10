@@ -108,9 +108,10 @@ class TypeScriptEslintParitySmokeTest {
     final String body = Files.readString(source, StandardCharsets.UTF_8);
     final String text = TypeScriptParityModules.text(row, body);
     final List<String> expected = "violating".equals(kind) ? lines(set.expected(name)) : List.of();
+    final String extension = source.getFileName().toString().endsWith(".d.ts") ? ".d.ts" : ".ts";
     return new Case(
         row,
-        TYPESCRIPT_DIR + "/" + row + "/" + kind + suffix + ".ts",
+        TYPESCRIPT_DIR + "/" + row + "/" + kind + suffix + extension,
         expected,
         set.options(name),
         text);

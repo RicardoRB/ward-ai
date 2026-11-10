@@ -208,3 +208,19 @@ body = '''
 check = "node-no-redundant-type-constituents"
 message = "{type} is redundant in this type: another member overrides it or it overrides the others"
 '''
+
+[[rules]]
+id = "ward:typescript/no-namespace"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+options.allow-declarations = { type = "boolean" }
+options.allow-definition-files = { type = "boolean" }
+body = '''
+check = "node-no-namespace"
+allow-declarations = false
+allow-definition-files = true
+message = "do not use TypeScript namespaces; use ES modules"
+'''
