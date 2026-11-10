@@ -6,7 +6,9 @@ import dev.ward.domain.config.WardException;
 import dev.ward.domain.format.FormatConfiguration;
 import dev.ward.domain.format.FormatSettings;
 import dev.ward.domain.format.FormatTarget;
+import dev.ward.domain.process.CommandExecutor;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
+import dev.ward.infrastructure.rule.GitIgnoredFiles;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -20,19 +22,26 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 
-/** Selects the files to format: engine-language sources that the configuration does not exclude. */
+/**
+ * Selects the files to format: engine-language sources that the configuration does not exclude and
+ * that Git does not ignore.
+ */
 public final class FormatFileSelection {
 
   private final FormatConfiguration configuration;
+  private final CommandExecutor executor;
 
   /**
    * Creates the selection over one configuration.
    *
    * @param configuration the configuration that resolves each file's settings
-   * @throws NullPointerException if the configuration is missing
+   * @param executor the command executor that asks Git which files are ignored
+   * @throws NullPointerException if an argument is missing
    */
-  public FormatFileSelection(final FormatConfiguration configuration) {
+  public FormatFileSelection(
+      final FormatConfiguration configuration, final CommandExecutor executor) {
     this.configuration = Objects.requireNonNull(configuration, "configuration");
+    this.executor = Objects.requireNonNull(executor, "executor");
   }
 
   /**
@@ -47,8 +56,9 @@ public final class FormatFileSelection {
   public List<FormatTarget> select(
       final Path root, final Map<AnalysisLanguage, List<FormatOption>> declared) {
     final Map<String, AnalysisLanguage> found = new TreeMap<>();
+    final Set<String> ignored = GitIgnoredFiles.of(root, executor);
     try {
-      Files.walkFileTree(root, new Collector(root, declared.keySet(), found));
+      Files.walkFileTree(root, new Collector(root, declared.keySet(), ignored, found));
     } catch (final IOException exception) {
       throw new WardException("Could not list the source files under " + root + ".", exception);
     }
@@ -64,19 +74,25 @@ public final class FormatFileSelection {
     return List.copyOf(targets);
   }
 
-  /** Records each source file in a wanted language, skipping build output and hidden folders. */
+  /**
+   * Records each source file in a wanted language, skipping build output, hidden folders and files
+   * that Git ignores.
+   */
   private static final class Collector extends SimpleFileVisitor<Path> {
     private final Path root;
     private final Set<AnalysisLanguage> languages;
+    private final Set<String> ignored;
     private final Map<String, AnalysisLanguage> found;
 
     Collector(
         final Path root,
         final Set<AnalysisLanguage> languages,
+        final Set<String> ignored,
         final Map<String, AnalysisLanguage> found) {
       super();
       this.root = root;
       this.languages = languages;
+      this.ignored = ignored;
       this.found = found;
     }
 
@@ -86,18 +102,27 @@ public final class FormatFileSelection {
       if (directory.equals(root)) {
         return FileVisitResult.CONTINUE;
       }
-      return FileSystemSourceUnits.skipsDirectory(nameOf(directory))
-          ? FileVisitResult.SKIP_SUBTREE
-          : FileVisitResult.CONTINUE;
+      final boolean skipped =
+          FileSystemSourceUnits.skipsDirectory(nameOf(directory))
+              || ignored.contains(relative(directory) + "/");
+      return skipped ? FileVisitResult.SKIP_SUBTREE : FileVisitResult.CONTINUE;
     }
 
     @Override
     public FileVisitResult visitFile(final Path file, final BasicFileAttributes attributes) {
       final AnalysisLanguage language = FileSystemSourceUnits.language(nameOf(file));
-      if (language != null && languages.contains(language) && Files.isRegularFile(file)) {
-        found.put(root.relativize(file).toString().replace('\\', '/'), language);
+      final String path = relative(file);
+      if (language != null
+          && languages.contains(language)
+          && !ignored.contains(path)
+          && Files.isRegularFile(file)) {
+        found.put(path, language);
       }
       return FileVisitResult.CONTINUE;
+    }
+
+    private String relative(final Path path) {
+      return root.relativize(path).toString().replace('\\', '/');
     }
 
     private static String nameOf(final Path path) {

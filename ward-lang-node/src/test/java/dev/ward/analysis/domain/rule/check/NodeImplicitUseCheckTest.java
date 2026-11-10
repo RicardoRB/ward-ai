@@ -140,4 +140,36 @@ final class NodeImplicitUseCheckTest {
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
+
+  @Test
+  void treatsTslibAsUsedWhenTheTsconfigSetsImportHelpers() {
+    final List<ProjectMatch> found =
+        new NodeUnusedDependencyCheck(MESSAGE, DEV_DEPENDENCIES)
+            .project(
+                ProjectFixtures.trees(Map.of()),
+                ProjectFixtures.manifests(
+                    Map.of(
+                        "tsconfig.json",
+                        "{\"compilerOptions\": {\"importHelpers\": true}}",
+                        PACKAGE,
+                        "{\"devDependencies\":{\"tslib\":\"^2\"}}")));
+
+    assertThat(ProjectFixtures.positions(found)).isEmpty();
+  }
+
+  @Test
+  void stillReportsTslibWhenTheTsconfigDoesNotSetImportHelpers() {
+    final List<ProjectMatch> found =
+        new NodeUnusedDependencyCheck(MESSAGE, DEV_DEPENDENCIES)
+            .project(
+                ProjectFixtures.trees(Map.of()),
+                ProjectFixtures.manifests(
+                    Map.of(
+                        "tsconfig.json",
+                        "{\"compilerOptions\": {\"importHelpers\": false}}",
+                        PACKAGE,
+                        "{\"devDependencies\":{\"tslib\":\"^2\"}}")));
+
+    assertThat(ProjectFixtures.positions(found)).containsExactly("package.json:1:21");
+  }
 }

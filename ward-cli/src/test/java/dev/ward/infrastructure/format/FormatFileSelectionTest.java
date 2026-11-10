@@ -7,6 +7,7 @@ import dev.ward.analysis.domain.format.FormatOption;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.domain.format.FormatConfigurationException;
 import dev.ward.domain.format.FormatTarget;
+import dev.ward.infrastructure.process.ProcessCommandExecutor;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -111,7 +112,8 @@ class FormatFileSelectionTest {
   }
 
   private List<FormatTarget> select(final Map<AnalysisLanguage, List<FormatOption>> declared) {
-    return new FormatFileSelection(new EditorConfigFormatConfiguration(project))
+    return new FormatFileSelection(
+            new EditorConfigFormatConfiguration(project), new ProcessCommandExecutor())
         .select(project, declared);
   }
 

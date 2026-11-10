@@ -3,7 +3,6 @@ package dev.ward.infrastructure.rule;
 import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.process.CommandExecutor;
-import dev.ward.domain.process.CommandResult;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
@@ -11,7 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -41,13 +39,12 @@ final class FileSystemManifests {
       return ProjectFiles.empty();
     }
     final Map<String, String> texts = new TreeMap<>();
+    final Set<String> ignored = GitIgnoredFiles.of(root, executor);
     try {
-      Files.walkFileTree(root, new Collector(root, names, texts));
+      Files.walkFileTree(root, new Collector(root, names, ignored, texts));
     } catch (final IOException exception) {
       throw new WardException("Could not read the manifest files under " + root + ".", exception);
     }
-    final Set<String> ignored = ignored(root, executor);
-    texts.keySet().removeIf(ignored::contains);
     addInstalled(root, texts);
     return new ProjectFiles(texts);
   }
@@ -103,26 +100,22 @@ final class FileSystemManifests {
     return name == null ? "" : name.toString();
   }
 
-  /** The untracked files that Git ignores, relative to {@code root}; empty when Git cannot say. */
-  private static Set<String> ignored(final Path root, final CommandExecutor executor) {
-    final CommandResult result =
-        executor.execute(List.of("git", "ls-files", "-o", "-i", "--exclude-standard", "-z"), root);
-    if (result.executionError() != null || result.exitCode() != 0) {
-      return Set.of();
-    }
-    return Set.of(result.stdout().split("\\u0000"));
-  }
-
   /** Reads each file whose name is wanted, skipping the folders source reads skip. */
   private static final class Collector extends SimpleFileVisitor<Path> {
     private final Path root;
     private final Set<String> names;
+    private final Set<String> ignored;
     private final Map<String, String> texts;
 
-    Collector(final Path root, final Set<String> names, final Map<String, String> texts) {
+    Collector(
+        final Path root,
+        final Set<String> names,
+        final Set<String> ignored,
+        final Map<String, String> texts) {
       super();
       this.root = root;
       this.names = names;
+      this.ignored = ignored;
       this.texts = texts;
     }
 
@@ -130,15 +123,18 @@ final class FileSystemManifests {
     public FileVisitResult preVisitDirectory(
         final Path directory, final BasicFileAttributes attributes) {
       final boolean skipped =
-          !directory.equals(root) && FileSystemSourceUnits.skipsDirectory(nameOf(directory));
+          !directory.equals(root)
+              && (FileSystemSourceUnits.skipsDirectory(nameOf(directory))
+                  || ignored.contains(relative(directory) + "/"));
       return skipped ? FileVisitResult.SKIP_SUBTREE : FileVisitResult.CONTINUE;
     }
 
     @Override
     public FileVisitResult visitFile(final Path file, final BasicFileAttributes attributes)
         throws IOException {
-      if (names.contains(nameOf(file)) && attributes.isRegularFile()) {
-        texts.put(relative(file), Files.readString(file, StandardCharsets.UTF_8));
+      final String path = relative(file);
+      if (names.contains(nameOf(file)) && attributes.isRegularFile() && !ignored.contains(path)) {
+        texts.put(path, Files.readString(file, StandardCharsets.UTF_8));
       }
       return FileVisitResult.CONTINUE;
     }
