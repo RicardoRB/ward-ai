@@ -70,7 +70,8 @@ public final class GateFrontends {
                 flow,
                 new NodeControlFlow(),
                 new CachedScopes(new NodeScopeAnalysis(ClasspathBuiltinNames.typescript())))
-            .withManifests(NODE_MANIFESTS),
+            .withManifests(NODE_MANIFESTS)
+            .withProjectLanguages(Set.of(AnalysisLanguage.JAVASCRIPT)),
         new FrontendSupport(
                 AnalysisLanguage.JAVASCRIPT,
                 frontend,

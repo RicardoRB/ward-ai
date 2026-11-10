@@ -98,6 +98,24 @@ final class NodeImplicitUseCheckTest {
   }
 
   @Test
+  void treatsAPeerOfAPeerAsUsedWhenTheFirstPeerIsInstalled() {
+    final List<ProjectMatch> found =
+        new NodeUnusedDependencyCheck(MESSAGE, DEV_DEPENDENCIES)
+            .project(
+                ProjectFixtures.trees(Map.of(INDEX, "import 'tool';\nexport const a = 1;")),
+                ProjectFixtures.manifests(
+                    Map.of(
+                        PACKAGE,
+                        "{\"devDependencies\":{\"tool\":\"^1\",\"mid\":\"^1\",\"leaf\":\"^1\"}}",
+                        "node_modules/tool/package.json",
+                        "{\"name\":\"tool\",\"peerDependencies\":{\"mid\":\"^1\"}}",
+                        "node_modules/mid/package.json",
+                        "{\"name\":\"mid\",\"peerDependencies\":{\"leaf\":\"^1\"}}")));
+
+    assertThat(ProjectFixtures.positions(found)).isEmpty();
+  }
+
+  @Test
   void stillReportsADevDependencyNothingUses() {
     final List<ProjectMatch> found =
         new NodeUnusedDependencyCheck(MESSAGE, DEV_DEPENDENCIES)

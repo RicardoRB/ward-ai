@@ -47,6 +47,7 @@ public final class TypeFactsRun {
         support.lowering(),
         support.scopes(),
         facts(support.language()),
-        support.manifests());
+        support.manifests(),
+        support.projectLanguages());
   }
 }

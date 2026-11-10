@@ -25,6 +25,8 @@ import java.util.Set;
  * @param types the native type-fact source, empty for a language without one
  * @param manifests the project-relative manifest names, such as {@code package.json}, that the
  *     language's project checks read; empty when none
+ * @param projectLanguages the other languages whose files the language's project checks read too,
+ *     as a TypeScript workspace's checks read its JavaScript files; empty when none
  */
 public record FrontendSupport(
     AnalysisLanguage language,
@@ -33,7 +35,8 @@ public record FrontendSupport(
     ControlFlowLowering lowering,
     ScopeAnalysis scopes,
     Optional<TypeFacts> types,
-    Set<String> manifests) {
+    Set<String> manifests,
+    Set<AnalysisLanguage> projectLanguages) {
 
   /** A lowering for a language that has no control-flow graphs yet. */
   private static final ControlFlowLowering NO_GRAPHS =
@@ -46,7 +49,19 @@ public record FrontendSupport(
    * @throws NullPointerException if the names are missing
    */
   public FrontendSupport withManifests(final Set<String> names) {
-    return new FrontendSupport(language, frontend, capabilities, lowering, scopes, types, names);
+    return new FrontendSupport(
+        language, frontend, capabilities, lowering, scopes, types, names, projectLanguages);
+  }
+
+  /**
+   * Returns this frontend with the other languages whose files its project checks also read.
+   *
+   * @param languages the other languages
+   * @throws NullPointerException if the languages are missing
+   */
+  public FrontendSupport withProjectLanguages(final Set<AnalysisLanguage> languages) {
+    return new FrontendSupport(
+        language, frontend, capabilities, lowering, scopes, types, manifests, languages);
   }
 
   /**
@@ -64,7 +79,7 @@ public record FrontendSupport(
       final Set<RuleCapability> capabilities,
       final ControlFlowLowering lowering,
       final ScopeAnalysis scopes) {
-    this(language, frontend, capabilities, lowering, scopes, Optional.empty(), Set.of());
+    this(language, frontend, capabilities, lowering, scopes, Optional.empty(), Set.of(), Set.of());
   }
 
   /**
@@ -109,7 +124,9 @@ public record FrontendSupport(
     Objects.requireNonNull(scopes, "scopes");
     Objects.requireNonNull(types, "types");
     Objects.requireNonNull(manifests, "manifests");
+    Objects.requireNonNull(projectLanguages, "projectLanguages");
     capabilities = Set.copyOf(capabilities);
     manifests = Set.copyOf(manifests);
+    projectLanguages = Set.copyOf(projectLanguages);
   }
 }
