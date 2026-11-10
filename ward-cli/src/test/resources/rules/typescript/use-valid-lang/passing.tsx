@@ -1,0 +1,10 @@
+const a = <html lang="en" />;
+const b = <html lang="en-US" />;
+const d = <html lang="en-Latn-US" />;
+const j = <html lang={x} />;
+const k = <html lang={"en"} />;
+const l = <html />;
+const m = <div lang="xx" />;
+const n = <html lang />;
+const o = <html lang="zh-Hans" />;
+const p = <html lang="zh-US" />;

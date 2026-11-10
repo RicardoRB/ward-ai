@@ -26,6 +26,7 @@ class ClasspathRuleSourceTest {
           "node-type-only-export",
           "node-type-only-import",
           "node-unused-parameter",
+          "node-useless-fragments",
           "node-variable-distance",
           "reassigned-binding",
           "undefined-name",
