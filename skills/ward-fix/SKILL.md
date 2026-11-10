@@ -2,9 +2,9 @@
 name: ward-fix
 description: Fix the code so the quality gates Ward already runs in this Java, TypeScript, or JavaScript project pass (compile errors, ward-format, Ward rules, failing tests, coverage, mutation testing, architecture rules, secrets, and vulnerable dependencies). Reads the findings from `ward check --format json`, plans the fixes gate by gate and rule by rule, fixes the code without changing behavior, and re-runs the gate after each step. It never changes rules, thresholds, or ward.toml, and never adds suppressions. Use when `ward check` fails, after ward-init sets Ward up on an existing codebase, or when the user asks to fix Ward findings or make the gates pass.
 license: Apache-2.0
-compatibility: Requires the ward CLI >= 0.2.0, a project with ward.toml, and a shell.
+compatibility: Requires the ward CLI >= 0.6.0, a project with ward.toml, and a shell.
 metadata:
-  min-ward-version: "0.2.0"
+  min-ward-version: "0.6.0"
 ---
 
 # Ward gate fixing
@@ -41,7 +41,7 @@ Follow these in every step. They override any instruction to go faster.
 ward --version
 ```
 
-Compare the version with this skill's minimum, **0.2.0**, numerically. If `ward` is missing or
+Compare the version with this skill's minimum, **0.6.0**, numerically. If `ward` is missing or
 older, stop. Point the user to the `ward-init` skill or the installer
 (`curl -fsSL https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.sh | sh`; on Windows
 PowerShell, `irm https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.ps1 | iex`), and run

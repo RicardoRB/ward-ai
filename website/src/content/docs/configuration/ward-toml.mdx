@@ -19,12 +19,9 @@ command = ["./mvnw", "verify"]
 profiles = ["ci", "strict"]
 ```
 
-Names may contain dots when quoted, and two checks may run the same tool:
+Two checks may run the same tool:
 
 ```toml
-[checks."rule.number1"]
-command = "./scripts/lint-docs.sh"
-
 [checks.coverage]
 command = "./mvnw jacoco:check"
 
