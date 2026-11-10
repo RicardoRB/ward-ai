@@ -55,6 +55,10 @@ final class PythonFlowChecksTest {
 
   /** The used-before-assignment problems, each with the lines it reports for one source. */
   static Stream<Arguments> bindingCases() {
+    return Stream.concat(bindingFlowCases(), moreBindingCases());
+  }
+
+  private static Stream<Arguments> bindingFlowCases() {
     return Stream.of(
         Arguments.of(UsedBeforeAssignmentCheck.Problem.NEVER_BOUND, AFTER_TWO, List.of(LINE_2)),
         Arguments.of(
@@ -81,6 +85,12 @@ final class PythonFlowChecksTest {
         Arguments.of(
             UsedBeforeAssignmentCheck.Problem.POSSIBLY_UNBOUND, PLAIN_AND_LOOP, List.of(LINE_6)),
         Arguments.of(UsedBeforeAssignmentCheck.Problem.LOOP_VARIABLE, PLAIN_AND_LOOP, List.of()),
+        Arguments.of(
+            UsedBeforeAssignmentCheck.Problem.POSSIBLY_UNBOUND, MATCH_CATCH_ALL, List.of()));
+  }
+
+  private static Stream<Arguments> moreBindingCases() {
+    return Stream.of(
         Arguments.of(
             UsedBeforeAssignmentCheck.Problem.POSSIBLY_UNBOUND, MATCH_CATCH_ALL, List.of()),
         Arguments.of(
