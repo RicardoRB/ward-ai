@@ -24,7 +24,7 @@ class RuleSelectionTest {
     final RuleSelection.Result result =
         RuleSelection.selected(
             new RuleConfigFile.Select(
-                "strict", List.of(), List.of(), List.of(), List.of(STANDARD_RULE)),
+                "strict", List.of(), List.of(), List.of(), List.of("java.standard-rule")),
             catalog);
 
     assertThat(result.ids()).containsExactly(STRICT_RULE);
@@ -36,11 +36,29 @@ class RuleSelectionTest {
     final RuleSelection.Result result =
         RuleSelection.selected(
             new RuleConfigFile.Select(
-                null, List.of(), List.of(), List.of("ward:java/missing"), List.of()),
+                null, List.of(), List.of(), List.of("java.missing"), List.of()),
             List.of(rule(STANDARD_RULE, RulePreset.STANDARD)));
 
     assertThat(result.ids()).containsExactly(STANDARD_RULE);
-    assertThat(result.problems()).anyMatch(problem -> problem.contains("ward:java/missing"));
+    assertThat(result.problems())
+        .anyMatch(problem -> problem.contains("unknown rule \"java.missing\""));
+  }
+
+  @Test
+  void aRuleWrittenAsItsIdIsReportedWithTheNameToWrite() {
+    final RuleSelection.Result result =
+        RuleSelection.selected(
+            new RuleConfigFile.Select(
+                null, List.of(), List.of(), List.of(), List.of(STANDARD_RULE)),
+            List.of(rule(STANDARD_RULE, RulePreset.STANDARD)));
+
+    assertThat(result.ids()).containsExactly(STANDARD_RULE);
+    assertThat(result.problems())
+        .singleElement()
+        .asString()
+        .endsWith(
+            "[select] exclude: \"ward:java/standard-rule\": name the rule"
+                + " <language>.<rule-name>; write \"java.standard-rule\"");
   }
 
   private static RuleDefinition rule(final String id, final RulePreset preset) {

@@ -39,8 +39,12 @@ An unknown id exits with code `2` and suggests the closest known id, for example
 
 ## enable and disable
 
-`enable` adds each id to `[select] include` in `ward-rules.toml`, and removes it from `exclude` if it
-is there. `disable` adds each id to `[select] exclude`, and removes it from `include`.
+`enable` adds each rule to `[select] include` in `ward-rules.toml`, and removes it from `exclude` if
+it is there. `disable` adds each rule to `[select] exclude`, and removes it from `include`.
+
+The command takes the id that Ward prints, `ward:<language>/<rule-name>`, and writes it into the file
+as `<language>.<rule-name>`, the name `ward-rules.toml` uses: `ward:java/method-length` becomes
+`"java.method-length"`.
 
 - With no `ward-rules.toml`, the command creates one with `version = 1` and the `[select]` table.
 - Comments, blank lines and the other keys of the file keep their place.

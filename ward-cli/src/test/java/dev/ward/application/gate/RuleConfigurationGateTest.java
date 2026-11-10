@@ -51,10 +51,24 @@ class RuleConfigurationGateTest {
   }
 
   @Test
+  void aRuleWrittenAsItsIdInExcludeFailsTheGate() throws IOException {
+    final FixtureProject f = fixture();
+    f.config("version = 1\n[select]\nexclude = [\"" + METHOD_LENGTH + "\"]\n");
+
+    final GateResult result = f.run(List.of(), null, new HashMap<>());
+
+    assertThat(result.status()).isEqualTo(GateStatus.EXECUTION_ERROR);
+    assertThat(result.stderr())
+        .contains(
+            "ward-rules.toml: [select] exclude: \"ward:java/method-length\": name the rule"
+                + " <language>.<rule-name>; write \"java.method-length\"");
+  }
+
+  @Test
   void excludeRemovesAPresetRuleAndKeepsTheOthers() throws IOException {
     final FixtureProject f = fixture();
     f.source(FixtureProject.SRC_A, "class lower", SEVENTY);
-    f.config("version = 1\n[select]\nexclude = [\"" + METHOD_LENGTH + "\"]\n");
+    f.config("version = 1\n[select]\nexclude = [\"java.method-length\"]\n");
 
     final GateResult result = f.run(List.of(), null, new HashMap<>());
 

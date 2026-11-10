@@ -26,14 +26,14 @@ class RuleConfigFileReaderTest {
   void readsTheSelectionAndTheTables() throws IOException {
     write(
         "version = 1\n[select]\npreset = \"strict\"\nlanguages = [\"java\"]\n"
-            + "include = [\"ward:java/x\"]\n[rules.java.y]\nmax = 3\nglobs = [\"a\"]\n");
+            + "include = [\"java.x\"]\n[rules.java.y]\nmax = 3\nglobs = [\"a\"]\n");
 
     final RuleConfigFile file = RuleConfigFileReader.read(root, null).orElseThrow();
 
     assertThat(file.problems()).isEmpty();
     assertThat(file.select().preset()).isEqualTo("strict");
     assertThat(file.select().languages()).containsExactly("java");
-    assertThat(file.select().include()).containsExactly("ward:java/x");
+    assertThat(file.select().include()).containsExactly("java.x");
     assertThat(file.rules().get("ward:java/y"))
         .containsEntry("max", THREE)
         .containsEntry("globs", List.of("a"));

@@ -20,11 +20,15 @@ final class RuleSchemaSelect {
   private static final String STRING = "string";
   private static final String ENUM = "enum";
   private static final String PROPERTIES = "properties";
+  private static final String RULE_PREFIX = "ward:";
   private static final String ADDITIONAL = "additionalProperties";
 
   private RuleSchemaSelect() {}
 
-  /** Returns the schema of {@code [select]}; the ids and categories come from the definitions. */
+  /**
+   * Returns the schema of {@code [select]}; the rule names and categories come from the
+   * definitions.
+   */
   static Map<String, Object> select(final List<RuleDefinition> definitions) {
     final Map<String, Object> properties = obj();
     properties.put("preset", obj(TYPE, STRING, ENUM, presetKeys()));
@@ -55,6 +59,10 @@ final class RuleSchemaSelect {
   }
 
   private static List<String> ids(final List<RuleDefinition> definitions) {
-    return definitions.stream().map(RuleDefinition::id).distinct().sorted().toList();
+    return definitions.stream()
+        .map(definition -> definition.id().substring(RULE_PREFIX.length()).replace('/', '.'))
+        .distinct()
+        .sorted()
+        .toList();
   }
 }

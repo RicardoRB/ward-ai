@@ -92,7 +92,7 @@ class RuleSchemaGeneratorTest {
     assertThat(schema).contains("\"preset\": {").contains("\"none\"").contains("\"strict\"");
     assertThat(schema).contains("\"java\"").contains("\"typescript\"");
     assertThat(schema).contains("\"naming\"").contains("\"sizes\"");
-    assertThat(schema).contains("\"include\": {").contains("\"ward:typescript/function-name\"");
+    assertThat(schema).contains("\"include\": {").contains("\"typescript.function-name\"");
   }
 
   @Test

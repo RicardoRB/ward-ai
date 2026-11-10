@@ -13,12 +13,15 @@ import java.util.stream.Collectors;
 
 /**
  * Applies the {@code [select]} table: the rules of the preset, kept to the listed languages and
- * categories, plus {@code include}, minus {@code exclude}. A value that names nothing is reported
- * to {@link RuleProblems}.
+ * categories, plus {@code include}, minus {@code exclude}. The two lists name a rule {@code
+ * <language>.<rule-name>}, as a rule table does. A value that names nothing, or a rule written as
+ * its id, is reported to {@link RuleProblems}.
  */
 final class RuleSelector {
   private static final String SELECT = "[select]";
   private static final String DEFAULT_PRESET = "standard";
+  private static final String RULE_PREFIX = "ward:";
+  private static final char ID_MARK = ':';
 
   private final RuleConfigFile.Select select;
   private final List<RuleDefinition> catalog;
@@ -110,15 +113,29 @@ final class RuleSelector {
     return categories;
   }
 
-  private List<RuleDefinition> known(final String key, final List<String> ids) {
+  private List<RuleDefinition> known(final String key, final List<String> names) {
     final List<RuleDefinition> rules = new ArrayList<>();
-    for (final String id : ids) {
+    for (final String name : names) {
+      if (name.indexOf(ID_MARK) >= 0) {
+        problems.add(SELECT, key, writeDotted(name));
+        continue;
+      }
+      final String id = RULE_PREFIX + name.replaceFirst("\\.", "/");
       catalog.stream()
           .filter(rule -> rule.id().equals(id))
           .findFirst()
           .ifPresentOrElse(
-              rules::add, () -> problems.add(SELECT, key, "unknown rule id \"" + id + "\""));
+              rules::add, () -> problems.add(SELECT, key, "unknown rule \"" + name + "\""));
     }
     return rules;
+  }
+
+  /** The problem of a rule written as its id, {@code ward:<language>/<rule-name>}. */
+  private static String writeDotted(final String id) {
+    return "\""
+        + id
+        + "\": name the rule <language>.<rule-name>; write \""
+        + id.substring(id.indexOf(ID_MARK) + 1).replace('/', '.')
+        + "\"";
   }
 }
