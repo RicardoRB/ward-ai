@@ -110,7 +110,7 @@ class NodeInitFilesTest {
         .satisfies(
             section -> {
               assertThat(section.file()).isEqualTo(ROOT.resolve(".gitignore"));
-              assertThat(section.body()).isEqualTo(".ward/reports/\ncoverage/\n.ward/cache/\n");
+              assertThat(section.body()).isEqualTo(".ward/reports/\n.ward/cache/\n");
               assertThat(section.wholeFile()).isFalse();
             });
   }

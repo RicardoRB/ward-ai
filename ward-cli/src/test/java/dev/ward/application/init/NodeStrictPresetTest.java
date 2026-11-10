@@ -90,7 +90,7 @@ class NodeStrictPresetTest {
                     catalog, project, selection, List.of(gate(project, "stryker")), List.of())
                 .getFirst()
                 .body())
-        .isEqualTo(".ward/reports/\ncoverage/\n.stryker-tmp/\nreports/mutation/\n.ward/cache/\n");
+        .isEqualTo(".ward/reports/\n.stryker-tmp/\nreports/mutation/\n.ward/cache/\n");
     assertThat(
             OwnedSections.of(
                     catalog, project, selection, List.of(gate(project, "vitest")), List.of())

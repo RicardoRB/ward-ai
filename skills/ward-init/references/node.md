@@ -122,7 +122,8 @@ Node: JavaScript (CommonJS), npm, Node 24, sources in src/, no test runner
   `INCOMPATIBLE @stryker-mutator/core` finding means Node is older than 22.
 - Init writes no dependency-cruiser config and adds no `dependency-cruiser` package. In TypeScript,
   `typescript` is added only when it is missing, as the other gates require.
-- `modify .gitignore`: a Ward section with `.ward/reports/` and `coverage/`, plus `.stryker-tmp/`
-  and `reports/mutation/` with `stryker`.
+- `modify .gitignore`: a Ward section with `.ward/reports/`, plus `coverage/` when a test gate
+  (`vitest`, `jest` or `bun-test`) is configured, and `.stryker-tmp/` and `reports/mutation/` with
+  `stryker`. Only the gates init configures add their entries.
 - If the install fails on apply, init restores `package.json` and the lock file and writes no
   `ward.toml`. Show the error and the command; do not retry without asking.

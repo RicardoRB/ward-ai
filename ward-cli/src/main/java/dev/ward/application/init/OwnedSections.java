@@ -34,22 +34,6 @@ public final class OwnedSections {
         new ArrayList<>(ciSections(catalog, project, selection, gates));
     // The ward gate always runs, so its analysis cache is always Git-ignored.
     final String analysisCache = ".ward/cache/\n";
-    if (project.toolchain() == Toolchain.NODE) {
-      sections.add(
-          new OwnedSection(
-              project.root().resolve(".gitignore"),
-              GITIGNORE_BEGIN,
-              GITIGNORE_END,
-              // Ward's formatter skips Git-ignored files, so coverage and Stryker reports are not
-              // checked.
-              ".ward/reports/\ncoverage/\n"
-                  + project.taskRunner().gitignoreEntry()
-                  + (gates.stream().anyMatch(gate -> "stryker".equals(gate.id()))
-                      ? ".stryker-tmp/\nreports/mutation/\n"
-                      : "")
-                  + analysisCache,
-              false));
-    }
     if (project.toolchain() == Toolchain.PYTHON) {
       sections.add(
           new OwnedSection(

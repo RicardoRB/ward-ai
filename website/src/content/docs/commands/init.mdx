@@ -504,8 +504,10 @@ Before writing, init checks each package it would add against the project's Node
 - These generated configs are ES modules (`.mjs`) in every project and start with a
   `// managed-by: ward preset=<id>` marker. Init rewrites them when you change the preset, and
   never touches a config you wrote.
-- **`.gitignore`** gets a Ward-owned section with `.ward/reports/` and `coverage/`, created when
-  the file does not exist. With `stryker` it also lists `.stryker-tmp/` and `reports/mutation/`.
+- **`.gitignore`** gets a Ward-owned section with `.ward/reports/`, created when the file does not
+  exist. It lists `coverage/` when a test gate (`vitest`, `jest` or `bun-test`) is configured, and
+  `.stryker-tmp/` and `reports/mutation/` with `stryker`. Only the gates init configures add
+  their entries.
   `ward-format` skips Git-ignored files, so it does not check these reports.
 
 ## Python projects
