@@ -19,11 +19,6 @@ final class RuleProblems {
     messages.add(file + ":" + where + (where.isEmpty() ? " " : ": ") + detail);
   }
 
-  /** The table header of the rule {@code id}, such as {@code [rules."ward:java/x"]}. */
-  static String ruleTable(final String id) {
-    return "[rules.\"" + id + "\"]";
-  }
-
   List<String> messages() {
     return List.copyOf(messages);
   }

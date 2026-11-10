@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -19,8 +18,10 @@ import org.tomlj.TomlTable;
 
 /**
  * Reads {@code ward-rules.toml}. It checks the shape of the file (the version, the {@code [select]}
- * keys and their types, and that every {@code [rules."<id>"]} is a table) and reports each problem
- * with the file, the table and the key. Whether the rules and options exist is checked later.
+ * keys and their types, and the rule tables) and reports each problem with the file, the table and
+ * the key. A rule table may be written {@code [rules."ward:<group>/<name>"]} or {@code
+ * [rules.<group>.<name>]}, and both name the same rule. Whether the rules and options exist is
+ * checked later.
  */
 final class RuleConfigFileReader {
   private static final Logger LOGGER = Logger.getLogger(RuleConfigFileReader.class.getName());
@@ -75,7 +76,9 @@ final class RuleConfigFileReader {
       }
     }
     version(toml);
-    return new RuleConfigFile(name, select(toml), rules(toml), problems);
+    final RuleTableReader tables = new RuleTableReader(name, problems);
+    final Map<String, Map<String, Object>> rules = tables.read(toml);
+    return new RuleConfigFile(name, select(toml), rules, tables.headers(), problems);
   }
 
   private void version(final TomlParseResult toml) {
@@ -128,24 +131,6 @@ final class RuleConfigFileReader {
     }
     problem("[select]", key, "expected a list of strings, got " + TomlTree.show(table.get(key)));
     return List.of();
-  }
-
-  private Map<String, Map<String, Object>> rules(final TomlParseResult toml) {
-    final Map<String, Map<String, Object>> rules = new LinkedHashMap<>();
-    final TomlTable table = toml.isTable(RULES) ? toml.getTable(RULES) : null;
-    if (toml.contains(RULES) && table == null) {
-      problem("", RULES, "expected a table of rule tables");
-      return rules;
-    }
-    for (final String id : table == null ? Set.<String>of() : table.keySet()) {
-      final TomlTable rule = table.isTable(List.of(id)) ? table.getTable(List.of(id)) : null;
-      if (rule == null) {
-        problem("", RULES, "[rules.\"" + id + "\"] must be a table");
-      } else {
-        rules.put(id, TomlTree.values(rule));
-      }
-    }
-    return rules;
   }
 
   private void problem(final String table, final String key, final String detail) {

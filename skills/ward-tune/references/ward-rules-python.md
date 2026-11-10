@@ -8,7 +8,7 @@ the file with `languages = ["java", "python"]` and the preset (`standard` or `st
 
 - **Ward-owned:** `ward-rules.toml`, written by init with a Ward marker. Tune it with the
   `[select]` and `[rules."<id>"]` tables described in the `ward-rules.toml` reference.
-- **User-owned:** a `ruff.toml` or a `[tool.ruff]` table is the project's own. Init leaves it
+- **User-owned:** a `mypy.ini` or a `[tool.mypy]` table is the project's own. Init leaves it
   unchanged. Ward's Python rules do not read it.
 
 ## Rules

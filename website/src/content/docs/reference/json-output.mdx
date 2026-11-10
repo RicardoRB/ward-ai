@@ -75,7 +75,7 @@ Omitted fields are intentional in schema v2.
 
 ## Findings
 
-A failed `ward`, `gitleaks`, `compile`, `ward-format`, `tsc`, `ruff`, `mypy`, `swift-build`, or `xcodebuild-test` gate lists one entry per visible
+A failed `ward`, `gitleaks`, `compile`, `ward-format`, `tsc`, `mypy`, `swift-build`, or `xcodebuild-test` gate lists one entry per visible
 violation in `findings`, in the tool's report order, so an agent can go straight to the file and
 line.
 
@@ -114,9 +114,9 @@ When learning is enabled with `--learn-after <n>`, the additive `learning` objec
 
 ```json
 { "learning": { "threshold": 3, "prompts": [{
-  "key": "ruff:F401", "gate": "ruff", "occurrences": 3,
-  "summary": "'os' imported but unused.",
-  "instruction": "Ward: the `ruff` rule `F401` was violated in 3 separate occurrences..."
+  "key": "mypy:arg-type", "gate": "mypy", "occurrences": 3,
+  "summary": "Argument 1 has incompatible type.",
+  "instruction": "Ward: the `mypy` rule `arg-type` was violated in 3 separate occurrences..."
 }] } }
 ```
 
