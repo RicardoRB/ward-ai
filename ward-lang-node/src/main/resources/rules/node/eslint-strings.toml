@@ -27,3 +27,171 @@ check = "node-no-useless-escape"
 allow-regex-characters = []
 message = 'unnecessary escape character: \{value}'
 '''
+
+[[rules]]
+id = "ward:typescript/no-irregular-whitespace"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.skip-comments = { type = "boolean" }
+options.skip-jsx-text = { type = "boolean" }
+options.skip-reg-exps = { type = "boolean" }
+options.skip-strings = { type = "boolean" }
+options.skip-templates = { type = "boolean" }
+body = '''
+check = "node-no-irregular-whitespace"
+skip-comments = false
+skip-jsx-text = false
+skip-reg-exps = false
+skip-strings = true
+skip-templates = false
+message = "Irregular whitespace not allowed."
+'''
+
+[[rules]]
+id = "ward:javascript/no-irregular-whitespace"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.skip-comments = { type = "boolean" }
+options.skip-jsx-text = { type = "boolean" }
+options.skip-reg-exps = { type = "boolean" }
+options.skip-strings = { type = "boolean" }
+options.skip-templates = { type = "boolean" }
+body = '''
+check = "node-no-irregular-whitespace"
+skip-comments = false
+skip-jsx-text = false
+skip-reg-exps = false
+skip-strings = true
+skip-templates = false
+message = "Irregular whitespace not allowed."
+'''
+
+[[rules]]
+id = "ward:typescript/prefer-promise-reject-errors"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+options.allow-empty-reject = { type = "boolean" }
+body = '''
+check = "node-prefer-promise-reject-errors"
+allow-empty-reject = false
+message = "Expected the Promise rejection reason to be an Error."
+'''
+
+[[rules]]
+id = "ward:javascript/prefer-promise-reject-errors"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+options.allow-empty-reject = { type = "boolean" }
+body = '''
+check = "node-prefer-promise-reject-errors"
+allow-empty-reject = false
+message = "Expected the Promise rejection reason to be an Error."
+'''
+
+[[rules]]
+id = "ward:typescript/no-invalid-regexp"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.allow-constructor-flags = { type = "string-list" }
+body = '''
+check = "node-no-invalid-regexp"
+allow-constructor-flags = []
+'''
+
+[[rules]]
+id = "ward:javascript/no-invalid-regexp"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.allow-constructor-flags = { type = "string-list" }
+body = '''
+check = "node-no-invalid-regexp"
+allow-constructor-flags = []
+'''
+
+[[rules]]
+id = "ward:typescript/strict"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+options.mode = { type = "enum", values = ["never", "global", "function", "safe"], parameter = "mode" }
+body = '''
+check = "node-strict-directive"
+mode = "safe"
+message-function = "Use the function form of 'use strict'."
+message-global = "Use the global form of 'use strict'."
+message-multiple = "Multiple 'use strict' directives."
+message-never = "Strict mode is not permitted."
+message-unnecessary = "Unnecessary 'use strict' directive."
+message-module = "'use strict' is unnecessary inside of modules."
+message-unnecessary-in-classes = "'use strict' is unnecessary inside of classes."
+message-non-simple-parameter-list = "'use strict' directive inside a function with non-simple parameter list throws a syntax error since ES2016."
+message-wrap = "Wrap the code in a function with 'use strict' directive."
+always-module = false
+'''
+
+[[rules]]
+id = "ward:javascript/strict"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+options.mode = { type = "enum", values = ["never", "global", "function", "safe"], parameter = "mode" }
+body = '''
+check = "node-strict-directive"
+mode = "safe"
+message-function = "Use the function form of 'use strict'."
+message-global = "Use the global form of 'use strict'."
+message-multiple = "Multiple 'use strict' directives."
+message-never = "Strict mode is not permitted."
+message-unnecessary = "Unnecessary 'use strict' directive."
+message-module = "'use strict' is unnecessary inside of modules."
+message-unnecessary-in-classes = "'use strict' is unnecessary inside of classes."
+message-non-simple-parameter-list = "'use strict' directive inside a function with non-simple parameter list throws a syntax error since ES2016."
+message-wrap = "Wrap the code in a function with 'use strict' directive."
+always-module = false
+'''
+
+[[rules]]
+id = "ward:typescript/no-misleading-character-class"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-misleading-character-class"
+message = "Unexpected misleading character class in a regular expression."
+'''
+
+[[rules]]
+id = "ward:javascript/no-misleading-character-class"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-misleading-character-class"
+message = "Unexpected misleading character class in a regular expression."
+'''

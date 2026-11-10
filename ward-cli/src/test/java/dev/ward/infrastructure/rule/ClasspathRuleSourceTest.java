@@ -16,6 +16,10 @@ class ClasspathRuleSourceTest {
   private static final List<String> SCOPE_CHECKS =
       List.of(
           "node-call-without-follow-up",
+          "node-no-label-var",
+          "node-no-redeclare",
+          "node-no-use-before-define",
+          "node-no-unassigned-vars",
           "node-hidden-field",
           "node-namespace-access",
           "node-prefer-const",

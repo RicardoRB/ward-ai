@@ -610,7 +610,7 @@ tryStatement
     ;
 
 catchProduction
-    : Catch ('(' identifier typeAnnotation? ')')? block
+    : Catch ('(' (identifier | arrayLiteral | objectLiteral) typeAnnotation? ')')? block
     ;
 
 finallyProduction
@@ -639,7 +639,7 @@ classTail
     ;
 
 classExtendsClause
-    : Extends typeReference
+    : Extends (typeReference | singleExpression)
     ;
 
 implementsClause
@@ -674,7 +674,7 @@ indexMemberDeclaration
     ;
 
 generatorMethod
-    : (Async {this.notLineTerminator()}?)? '*'? propertyName '(' formalParameterList? ')' '{' functionBody '}'
+    : (Async {this.notLineTerminator()}?)? '*'? propertyName typeParameters? '(' formalParameterList? ')' typeAnnotation? '{' functionBody '}'
     ;
 
 generatorFunctionDeclaration

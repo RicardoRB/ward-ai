@@ -57,6 +57,8 @@ class EslintParitySmokeTest {
   private static final Set<String> SCRIPT_RULES =
       Set.of(
           "no-delete-var",
+          "no-redeclare",
+          "strict",
           "no-dupe-args",
           "no-octal",
           "no-octal-escape",
@@ -179,7 +181,7 @@ class EslintParitySmokeTest {
         "  { files: [\"**/*.ts\"], languageOptions: { parser: tsParser, sourceType: \"module\", globals: %s }, rules: %s },"
             .formatted(GLOBALS, rules));
     lines.add(
-        "  { files: [\"**/*.js\"], languageOptions: { sourceType: \"module\", globals: %s }, rules: %s },"
+        "  { files: [\"**/*.js\"], languageOptions: { sourceType: \"module\", parserOptions: { ecmaFeatures: { jsx: true } }, globals: %s }, rules: %s },"
             .formatted(GLOBALS, rules));
     for (final Pair pair : pairs) {
       if (SCRIPT_RULES.contains(pair.rule())) {
@@ -190,11 +192,11 @@ class EslintParitySmokeTest {
     }
     for (final Map.Entry<String, CaseOptions> entry : caseOptions.entrySet()) {
       lines.add(
-          "  { files: [\"%s\"], rules: { \"%s\": [\"error\", %s] } },"
+          "  { files: [\"%s\"], rules: { \"%s\": [\"error\"%s] } },"
               .formatted(
                   entry.getKey(),
                   entry.getValue().rule(),
-                  EslintParityOptions.jsObject(entry.getValue().values())));
+                  EslintParityOptions.arguments(entry.getValue().values())));
     }
     lines.add("];");
     Files.writeString(workspace.resolve(CONFIG), String.join("\n", lines) + "\n");

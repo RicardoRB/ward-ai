@@ -197,6 +197,21 @@ message = "assignment to a global"
 '''
 
 [[rules]]
+id = "ward:typescript/no-global-assign"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'='"]
+text = '^(undefined|NaN|Infinity|Object|Array|String|Number|Boolean|Math|JSON|Date|Symbol|Promise|Map|Set)='
+message = "assignment to a global"
+'''
+
+[[rules]]
 id = "ward:typescript/no-delete-var"
 language = "TYPESCRIPT"
 capability = "SYNTAX"

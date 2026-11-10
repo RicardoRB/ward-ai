@@ -1,7 +1,7 @@
 # Status of the eslint rows in typescript: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
 accessor-pairs = { status = "planned", issue = "#326" }
-array-callback-return = { status = "planned", issue = "#326" }
+array-callback-return = "implemented"
 arrow-body-style = { status = "planned", issue = "#326" }
 block-scoped-var = { status = "planned", issue = "#296" }
 capitalized-comments = { status = "planned", issue = "#296" }
@@ -39,7 +39,7 @@ no-class-assign = "implemented"
 no-compare-neg-zero = "implemented"
 no-console = { status = "planned", issue = "#326" }
 no-const-assign = "implemented"
-no-constant-binary-expression = { status = "planned", issue = "#326" }
+no-constant-binary-expression = "implemented"
 no-constant-condition = "implemented"
 no-constructor-return = "implemented"
 no-continue = { status = "planned", issue = "#296" }
@@ -64,24 +64,24 @@ no-ex-assign = "implemented"
 no-extend-native = "implemented"
 no-extra-bind = { status = "planned", issue = "#326" }
 no-extra-boolean-cast = "implemented"
-no-extra-label = { status = "planned", issue = "#326" }
+no-extra-label = "implemented"
 no-func-assign = "implemented"
-no-global-assign = { status = "planned", issue = "#326" }
+no-global-assign = "implemented"
 no-implicit-coercion = { status = "planned", issue = "#296" }
 no-implicit-globals = { status = "planned", issue = "#326" }
 no-implied-eval = "implemented"
 no-import-assign = "implemented"
-no-inner-declarations = { status = "planned", issue = "#326" }
-no-invalid-regexp = { status = "planned", issue = "#326" }
+no-inner-declarations = "implemented"
+no-invalid-regexp = "implemented"
 no-invalid-this = { status = "planned", issue = "#326" }
-no-irregular-whitespace = { status = "planned", issue = "#326" }
+no-irregular-whitespace = "implemented"
 no-iterator = "implemented"
-no-label-var = { status = "planned", issue = "#326" }
+no-label-var = "implemented"
 no-labels = { status = "planned", issue = "#326" }
 no-lonely-if = { status = "planned", issue = "#296" }
 no-loop-func = { status = "planned", issue = "#326" }
-no-loss-of-precision = { status = "planned", issue = "#326" }
-no-misleading-character-class = { status = "planned", issue = "#326" }
+no-loss-of-precision = "implemented"
+no-misleading-character-class = "implemented"
 no-multi-assign = { status = "planned", issue = "#296" }
 no-multi-str = { status = "planned", issue = "#296" }
 no-negated-condition = { status = "planned", issue = "#296" }
@@ -99,7 +99,7 @@ no-plusplus = { status = "planned", issue = "#296" }
 no-promise-executor-return = { status = "planned", issue = "#326" }
 no-proto = "implemented"
 no-prototype-builtins = "implemented"
-no-redeclare = { status = "planned", issue = "#326" }
+no-redeclare = "implemented"
 no-regex-spaces = "implemented"
 no-restricted-exports = { status = "planned", issue = "#326" }
 no-restricted-globals = { status = "planned", issue = "#296" }
@@ -114,9 +114,9 @@ no-setter-return = "implemented"
 no-shadow-restricted-names = "implemented"
 no-sparse-arrays = "implemented"
 no-template-curly-in-string = "implemented"
-no-this-before-super = { status = "planned", issue = "#326" }
+no-this-before-super = "implemented"
 no-throw-literal = "implemented"
-no-unassigned-vars = { status = "planned", issue = "#326" }
+no-unassigned-vars = "implemented"
 no-undef = "implemented"
 no-undef-init = "implemented"
 no-undefined = { status = "planned", issue = "#296" }
@@ -128,12 +128,12 @@ no-unreachable = "implemented"
 no-unreachable-loop = { status = "planned", issue = "#326" }
 no-unsafe-finally = "implemented"
 no-unsafe-negation = "implemented"
-no-unsafe-optional-chaining = { status = "planned", issue = "#326" }
-no-unused-expressions = { status = "planned", issue = "#326" }
+no-unsafe-optional-chaining = "implemented"
+no-unused-expressions = "implemented"
 no-unused-labels = "implemented"
 no-unused-private-class-members = "implemented"
-no-use-before-define = { status = "planned", issue = "#326" }
-no-useless-backreference = { status = "planned", issue = "#326" }
+no-use-before-define = "implemented"
+no-useless-backreference = "implemented"
 no-useless-call = "implemented"
 no-useless-catch = "implemented"
 no-useless-computed-key = { status = "planned", issue = "#296" }
@@ -155,12 +155,12 @@ prefer-named-capture-group = { status = "planned", issue = "#326" }
 prefer-numeric-literals = "implemented"
 prefer-object-has-own = "implemented"
 prefer-object-spread = { status = "planned", issue = "#296" }
-prefer-promise-reject-errors = { status = "planned", issue = "#326" }
+prefer-promise-reject-errors = "implemented"
 prefer-regex-literals = "implemented"
 prefer-rest-params = "implemented"
 prefer-spread = "implemented"
 prefer-template = "implemented"
-preserve-caught-error = { status = "planned", issue = "#326" }
+preserve-caught-error = "implemented"
 radix = "implemented"
 require-atomic-updates = { status = "planned", issue = "#326" }
 require-await = "implemented"
@@ -168,7 +168,7 @@ require-unicode-regexp = { status = "planned", issue = "#296" }
 require-yield = "implemented"
 sort-keys = { status = "planned", issue = "#296" }
 sort-vars = { status = "planned", issue = "#296" }
-strict = { status = "planned", issue = "#326" }
+strict = "implemented"
 symbol-description = "implemented"
 use-isnan = "implemented"
 valid-typeof = "implemented"
