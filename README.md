@@ -61,7 +61,7 @@ forgets.
 Ward moves those rules out of your prompts and into your project:
 
 - **The rules live in the repository.** `ward.toml` lists the checks (tests, coverage,
-  linters such as ESLint or Ruff, architecture rules, security scanners, or any
+  linters such as ESLint or Biome, architecture rules, security scanners, or any
   command).
 - **Every agent gets the same feedback.** After each edit, Ward runs the fast checks and hands the
   exact failure back to the agent, which fixes it on its own.

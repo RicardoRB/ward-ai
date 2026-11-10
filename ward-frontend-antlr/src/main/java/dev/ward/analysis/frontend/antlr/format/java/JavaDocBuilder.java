@@ -122,6 +122,9 @@ final class JavaDocBuilder {
 
   private void openFrame(final JavaAtom atom) {
     final JavaFrame.Kind kind = JavaBreakRules.openKind(atom, facts);
+    if (kind == JavaFrame.Kind.BLOCK && !facts.expressionBlocks().contains(atom.index())) {
+      stack.current().continuations().end();
+    }
     stack.current().add(Document.text(atom.text()));
     stack.push(kind, JavaBreakRules.closingOf(atom.text()));
     separator.endCode(kind == JavaFrame.Kind.BLOCK ? JavaBreak.HARD : JavaBreak.NONE, false, false);
@@ -152,18 +155,42 @@ final class JavaDocBuilder {
       return;
     }
     switch (taken) {
-      case HARD -> {
-        blankLines(next);
-        stack.current().add(Document.hardLine());
-      }
+      case HARD -> hardBreak(next);
       case CONTINUE ->
-          stack.current().add(JavaFrame.indented(Document.hardLine(), continuationLevels));
-      case LINE -> stack.current().add(Document.line());
+          stack
+              .current()
+              .continuations()
+              .continueLine(continuationLevels, JavaBreakRules.lineKind(next.text()));
+      case LINE -> {
+        stack.current().continuations().end();
+        stack.current().add(Document.line());
+      }
       case SPACE -> stack.current().add(Document.text(SPACE));
       default -> {
         // NONE and UNSET write nothing.
       }
     }
+  }
+
+  /**
+   * Writes a line break that always happens. A comment inside a continued statement, and the code
+   * after it, stay on the statement's continuation; any other break ends the continuation. At the
+   * start of a list the list's own line break already precedes the first item, so nothing is added.
+   */
+  private void hardBreak(final JavaAtom next) {
+    final JavaFrame frame = stack.current();
+    if (frame.kind() == JavaFrame.Kind.GROUP && frame.isEmpty()) {
+      return;
+    }
+    final boolean insideStatement =
+        previous.comment() || next.comment() && !JavaBreakRules.endsStatement(previous.text());
+    if (frame.continuations().active() && insideStatement) {
+      frame.continuations().continueLine(continuationLevels, JavaBreakRules.lineKind(next.text()));
+      return;
+    }
+    frame.continuations().end();
+    blankLines(next);
+    frame.add(Document.hardLine());
   }
 
   private void blankLines(final JavaAtom next) {

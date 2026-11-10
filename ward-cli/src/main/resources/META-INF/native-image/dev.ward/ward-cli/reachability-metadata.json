@@ -13,6 +13,12 @@
       "glob": "rules/**"
     },
     {
+      "glob": "aria/**"
+    },
+    {
+      "glob": "dev/ward/analysis/lang/*/builtins/*.txt"
+    },
+    {
       "glob": "dev/ward/analysis/lang/python/stubs/*.pyi"
     },
     {

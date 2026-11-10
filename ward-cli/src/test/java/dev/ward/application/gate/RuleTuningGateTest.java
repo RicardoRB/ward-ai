@@ -40,6 +40,42 @@ class RuleTuningGateTest {
   }
 
   @Test
+  void theShortFormTunesTheSameRule() throws IOException {
+    final FixtureProject f = fixture();
+    f.source(FixtureProject.SRC_A, "class A", SEVENTY);
+    f.config(FixtureProject.VERSION + "[rules.java.method-length]\nmax = 80\n");
+
+    assertThat(FixtureProject.ids(f.run(List.of(), null, new HashMap<>())))
+        .doesNotContain(METHOD_LENGTH);
+  }
+
+  @Test
+  void bothFormsForOneRuleNameBothTables() throws IOException {
+    final FixtureProject f = fixture();
+    f.config(FixtureProject.VERSION + TABLE + "max = 80\n[rules.java.method-length]\nmax = 80\n");
+
+    final GateResult result = f.run(List.of(), null, new HashMap<>());
+
+    assertThat(result.status()).isEqualTo(GateStatus.EXECUTION_ERROR);
+    assertThat(result.stderr())
+        .contains(
+            "[rules.\"ward:java/method-length\"] and [rules.java.method-length] configure the same"
+                + " rule; keep one table");
+  }
+
+  @Test
+  void anUnknownShortRuleNameIsReportedWithItsTableAsWritten() throws IOException {
+    final FixtureProject f = fixture();
+    f.config(FixtureProject.VERSION + "[rules.java.nope]\nmax = 1\n[rules.cobol.method-length]\n");
+
+    final String stderr = f.run(List.of(), null, new HashMap<>()).stderr();
+
+    assertThat(stderr)
+        .contains("[rules.java.nope]: unknown rule id")
+        .contains("[rules.cobol.method-length]: unknown rule id");
+  }
+
+  @Test
   void severityCanBeLowered() throws IOException {
     final FixtureProject f = fixture();
     f.source(FixtureProject.SRC_A, "class A", NINETY);

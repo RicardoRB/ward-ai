@@ -1,0 +1,62 @@
+# Pylint flow checks (#464): rules that read the control-flow graph of each Python body.
+
+
+[[rules]]
+id = "ward:python/unreachable"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "unreachable-statement"
+message = "Unreachable code"
+'''
+
+[[rules]]
+id = "ward:python/used-before-assignment"
+language = "python"
+capability = "CFG"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "used-before-assignment"
+message = "Using variable '{value}' before assignment"
+'''
+
+[[rules]]
+id = "ward:python/possibly-used-before-assignment"
+language = "python"
+capability = "CFG"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "possibly-used-before-assignment"
+message = "Possibly using variable '{value}' before assignment"
+'''
+
+[[rules]]
+id = "ward:python/undefined-loop-variable"
+language = "python"
+capability = "CFG"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "undefined-loop-variable"
+message = "Using possibly undefined loop variable '{value}'"
+'''
+
+[[rules]]
+id = "ward:python/inconsistent-return-statements"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "inconsistent-return-statements"
+message = "Either all return statements in a function should return an expression, or none of them should"
+'''

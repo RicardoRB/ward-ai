@@ -17,8 +17,6 @@ class CommandTypeInferenceTest {
         "coverage|./mvnw jacoco:check",
         "coverage|./gradlew jacocoTestCoverageVerification",
         "coverage|uv run coverage report --fail-under=85",
-        "ruff|uv run ruff check .",
-        "ruff|poetry run ruff check . --output-format json",
         "mypy|uv run mypy src",
         "mypy|python -m mypy src",
         "pytest|uv run pytest -q",
@@ -63,7 +61,6 @@ class CommandTypeInferenceTest {
         "npm run lint",
         "./mvnw lint:check pmd-free:check",
         "uv run mutmut results",
-        "uv run ruff check . uv run mypy src",
         "swift format --in-place Sources",
         "xcodebuild build -scheme Shop",
         "xcrun xccov view --report --json .ward/reports/xcode/tests.xcresult"

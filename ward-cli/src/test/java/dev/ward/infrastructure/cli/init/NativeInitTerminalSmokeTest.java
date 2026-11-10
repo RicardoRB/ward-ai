@@ -35,7 +35,7 @@ class NativeInitTerminalSmokeTest {
   private static final Duration KEY_TIMEOUT = Duration.ofSeconds(10);
   private static final byte[] ARROW_DOWN = {0x1b, '[', 'B'};
   private static final byte[] ENTER = {'\r'};
-  private static final int PMD_ROW = 6;
+  private static final int COVERAGE_ROW = 3;
   private static final long POLL_MILLIS = 50;
   private static final String COMPATIBILITY_PROMPT = "Apply this Maven plugin update\\?";
 
@@ -97,7 +97,7 @@ class NativeInitTerminalSmokeTest {
               .redirectError(ProcessBuilder.Redirect.appendTo(device))
               .start();
       try {
-        answerEveryScreenUntickingPmd(terminal, process);
+        answerEveryScreenUntickingCoverage(terminal, process);
         assertThat(terminal.output())
             .contains(
                 "create     ward.toml",
@@ -115,10 +115,9 @@ class NativeInitTerminalSmokeTest {
             .doesNotContain("unexpected error")
             .doesNotContain("Exception");
         assertThat(Files.readString(project.resolve("ward.toml")))
-            .contains("version = 2", "[checks.checkstyle]")
+            .contains("version = 2", "[checks.compile]", "[checks.tests]")
             .doesNotContain("preset =")
-            .doesNotContain("[checks.pmd]");
-        assertThat(project.resolve("config/pmd-ruleset.xml")).doesNotExist();
+            .doesNotContain("[checks.coverage]");
         assertThat(Files.readString(project.resolve(".git/hooks/pre-commit")))
             .contains("ward-owned: quality-hooks");
       } finally {
@@ -127,7 +126,7 @@ class NativeInitTerminalSmokeTest {
     }
   }
 
-  private static void answerEveryScreenUntickingPmd(
+  private static void answerEveryScreenUntickingCoverage(
       final PseudoTerminal terminal, final Process process) throws InterruptedException {
     terminal.awaitOutput(process, "Choose a preset", PROMPT_TIMEOUT);
     terminal.write("1\n".getBytes(StandardCharsets.US_ASCII));
@@ -136,12 +135,12 @@ class NativeInitTerminalSmokeTest {
     terminal.awaitOutput(process, "> [x] 1) No agent integration", KEY_TIMEOUT);
     terminal.write(ENTER);
     terminal.awaitOutput(process, "Select quality gates", PROMPT_TIMEOUT);
-    for (int row = 1; row < PMD_ROW; row++) {
+    for (int row = 1; row < COVERAGE_ROW; row++) {
       terminal.write(ARROW_DOWN);
     }
-    terminal.awaitOutput(process, "> [x] 6) pmd", KEY_TIMEOUT);
+    terminal.awaitOutput(process, "> [x] 3) coverage", KEY_TIMEOUT);
     terminal.write(" ".getBytes(StandardCharsets.US_ASCII));
-    terminal.awaitOutput(process, "> [ ] 6) pmd", KEY_TIMEOUT);
+    terminal.awaitOutput(process, "> [ ] 3) coverage", KEY_TIMEOUT);
     terminal.write(ENTER);
     terminal.awaitOutput(process, "Select optional tools", PROMPT_TIMEOUT);
     terminal.write(ENTER);
@@ -250,7 +249,7 @@ class NativeInitTerminalSmokeTest {
         pom, Files.readString(pom).replace("<version>1.0.0</version>", "<version>&bad;</version>"));
     final String original = Files.readString(pom);
 
-    final Result result = run(project, "init", "--integration", "none", "--gate", "pmd");
+    final Result result = run(project, "init", "--integration", "none", "--gate", "coverage");
 
     assertThat(result.exitCode()).as(result.output()).isEqualTo(ExitCodes.ERROR);
     // The XML parser's error messages are a resource bundle that must be in the native image.

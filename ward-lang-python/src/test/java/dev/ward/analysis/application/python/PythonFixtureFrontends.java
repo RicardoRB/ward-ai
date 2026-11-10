@@ -8,8 +8,8 @@ import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.FileSummary;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.BuiltinNames;
-import dev.ward.analysis.domain.port.ControlFlowResult;
 import dev.ward.analysis.domain.port.TypeFacts;
+import dev.ward.analysis.domain.python.PythonControlFlow;
 import dev.ward.analysis.domain.python.PythonFileSummarizer;
 import dev.ward.analysis.domain.python.PythonScopes;
 import dev.ward.analysis.domain.rule.RuleCapability;
@@ -40,8 +40,13 @@ final class PythonFixtureFrontends {
         new FrontendSupport(
             language,
             new AntlrLanguageFrontend(),
-            Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS, RuleCapability.SCOPES),
-            (unit, tree) -> new ControlFlowResult(List.of(), List.of()),
+            Set.of(
+                RuleCapability.SYNTAX,
+                RuleCapability.SYMBOLS,
+                RuleCapability.CFG,
+                RuleCapability.DATAFLOW,
+                RuleCapability.SCOPES),
+            new PythonControlFlow(),
             new CachedScopes(new PythonScopes(builtins()))));
   }
 

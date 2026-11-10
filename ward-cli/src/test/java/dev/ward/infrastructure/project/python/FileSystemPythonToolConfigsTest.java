@@ -14,10 +14,10 @@ class FileSystemPythonToolConfigsTest {
 
   @Test
   void standaloneFileCountsAsUserOwned() throws IOException {
-    Files.writeString(root.resolve("ruff.toml"), "line-length = 100\n");
+    Files.writeString(root.resolve("mypy.ini"), "[mypy]\nstrict = True\n");
 
-    assertThat(new FileSystemPythonToolConfigs().userConfig(root, "ruff"))
-        .contains(root.resolve("ruff.toml"));
+    assertThat(new FileSystemPythonToolConfigs().userConfig(root, "mypy"))
+        .contains(root.resolve("mypy.ini"));
   }
 
   @Test
@@ -35,7 +35,6 @@ class FileSystemPythonToolConfigsTest {
 
     assertThat(new FileSystemPythonToolConfigs().userConfig(root, "mypy"))
         .contains(root.resolve("pyproject.toml"));
-    assertThat(new FileSystemPythonToolConfigs().userConfig(root, "ruff")).isEmpty();
   }
 
   @Test

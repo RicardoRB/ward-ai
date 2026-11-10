@@ -38,7 +38,7 @@ class InitSetupCatalogTest {
 
   /** Python gates are offered by init only for Python projects (#136). */
   private static final Set<String> PYTHON_GATES =
-      Set.of("ruff", "mypy", "pytest", "mutmut", "pip-audit", "django-check");
+      Set.of("mypy", "pytest", "mutmut", "pip-audit", "django-check");
 
   private static final Set<String> ANDROID_GATES =
       Set.of(

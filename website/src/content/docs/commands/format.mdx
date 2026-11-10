@@ -64,6 +64,23 @@ editor reads. See [EditorConfig](/configuration/editorconfig/) for the keys. A p
 `.editorconfig` gets Ward's defaults: a line width of 100, four-space indents for Java, Kotlin,
 Python and Swift, and two-space indents for TypeScript and JavaScript.
 
+## Java style
+
+The Java formatter changes only line breaks, indentation and spaces. Every token and comment stays as
+written, so imports keep their order and comments are not rewrapped.
+
+- An argument list, a parameter list, record components, annotation arguments and array values stay
+  on one line when they fit. Otherwise each item gets its own line, and the closing bracket gets its
+  own line too.
+- A line break inside a statement stays as a continuation line, including inside parentheses. Ward
+  does not join a long expression onto one line.
+- Whatever comes after a continuation line is indented from that line: a nested argument list, an
+  anonymous class body, a lambda block or a switch expression.
+- A line that starts with a call-chain dot, a binary operator or a conditional `?` or `:` goes one
+  continuation deeper than the line it continues. In order from loosest to tightest, those are
+  `?`/`:`, then binary operators, then dots. A looser line goes back to the depth of its own kind.
+  A comment inside a continued statement keeps the statement's indentation.
+
 ## Formatting in `ward check`
 
 The [`ward-format` gate](/configuration/gates/#format-gate) runs the same formatter in `ward check`,

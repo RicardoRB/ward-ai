@@ -74,7 +74,7 @@ global-variable-undefined = "implemented"
 import-outside-toplevel = "implemented"
 inconsistent-mro = "implemented"
 inconsistent-quotes = { status = "planned", issue = "#336" }
-inconsistent-return-statements = { status = "planned", issue = "#336" }
+inconsistent-return-statements = "implemented"
 inherit-non-class = "implemented"
 init-is-generator = "implemented"
 invalid-bool-returned = "implemented"
@@ -151,7 +151,7 @@ pointless-exception-statement = "implemented"
 pointless-string-statement = "implemented"
 positional-only-arguments-expected = "implemented"
 possibly-unused-variable = "implemented"
-possibly-used-before-assignment = { status = "planned", issue = "#336" }
+possibly-used-before-assignment = "implemented"
 prefer-typing-namedtuple = { status = "planned", issue = "#336" }
 raising-format-tuple = "implemented"
 raising-non-exception = "implemented"
@@ -192,7 +192,7 @@ typevar-name-incorrect-variance = "implemented"
 typevar-name-mismatch = "implemented"
 unbalanced-dict-unpacking = "implemented"
 unbalanced-tuple-unpacking = "implemented"
-undefined-loop-variable = { status = "planned", issue = "#336" }
+undefined-loop-variable = "implemented"
 unexpected-keyword-arg = "implemented"
 ungrouped-imports = "implemented"
 unhashable-member = "implemented"
@@ -200,7 +200,7 @@ unnecessary-ellipsis = "implemented"
 unnecessary-negation = "implemented"
 unnecessary-pass = "implemented"
 unpacking-non-sequence = "implemented"
-unreachable = { status = "planned", issue = "#336" }
+unreachable = "implemented"
 unsubscriptable-object = "implemented"
 unsupported-assignment-operation = "implemented"
 unsupported-delete-operation = "implemented"
@@ -214,7 +214,7 @@ use-maxsplit-arg = "implemented"
 use-sequence-for-iteration = "implemented"
 use-set-for-membership = { status = "planned", issue = "#336" }
 use-yield-from = "implemented"
-used-before-assignment = { status = "planned", issue = "#336" }
+used-before-assignment = "implemented"
 used-prior-global-declaration = "implemented"
 useless-param-doc = { status = "planned", issue = "#336" }
 useless-parent-delegation = "implemented"

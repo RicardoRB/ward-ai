@@ -10,8 +10,8 @@ public final class PythonFindingSources {
 
   /** Groups the Python finding sources that Dagger injects. */
   @Inject
-  public PythonFindingSources(final RuffJsonFindings ruff, final MypyJsonFindings mypy) {
-    this.sources = List.of(ruff, mypy);
+  public PythonFindingSources(final MypyJsonFindings mypy) {
+    this.sources = List.of(mypy);
   }
 
   /** Returns the finding sources of the Python gates. */

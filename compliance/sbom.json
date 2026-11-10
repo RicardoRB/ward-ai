@@ -56,17 +56,17 @@
     },
     "component" : {
       "type" : "application",
-      "bom-ref" : "pkg:maven/dev.ward/ward-cli@0.5.0?type=jar",
+      "bom-ref" : "pkg:maven/dev.ward/ward-parent@0.5.0?type=pom",
       "group" : "dev.ward",
-      "name" : "ward-cli",
+      "name" : "ward-parent",
       "version" : "0.5.0",
-      "description" : "Ward command-line interface: a quality gate orchestrator for AI coding agents",
-      "purl" : "pkg:maven/dev.ward/ward-cli@0.5.0?type=jar"
+      "description" : "Ward: a quality gate orchestrator for AI coding agents",
+      "purl" : "pkg:maven/dev.ward/ward-parent@0.5.0?type=pom"
     },
     "properties" : [
       {
         "name" : "maven.goal",
-        "value" : "makeBom"
+        "value" : "makeAggregateBom"
       },
       {
         "name" : "maven.scopes",
@@ -79,6 +79,324 @@
     ]
   },
   "components" : [
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/dev.ward/ward-analysis-api@0.5.0?type=jar",
+      "group" : "dev.ward",
+      "name" : "ward-analysis-api",
+      "version" : "0.5.0",
+      "description" : "Ward analysis engine API: a dependency-free intermediate representation and ports for language frontends",
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/dev.ward/ward-analysis-api@0.5.0?type=jar"
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.jspecify/jspecify@1.0.0?type=jar",
+      "group" : "org.jspecify",
+      "name" : "jspecify",
+      "version" : "1.0.0",
+      "description" : "An artifact of well-named and well-specified annotations to power static analysis checks",
+      "scope" : "required",
+      "hashes" : [
+        {
+          "alg" : "MD5",
+          "content" : "9133aba420d0ca3b001dbb6ae9992cf6"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "7425a601c1c7ec76645a78d22b8c6a627edee507"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "1fad6e6be7557781e4d33729d49ae1cdc8fdda6fe477bb0cc68ce351eafdfbab"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "efded31ef5b342f09422935076e599789076431e93a746685c0607e7de5592719ba6aacde0be670b3f064d1e85630d58d5bce6b34aed2a288fdb34f745efb7bc"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "814f860e5a44ead6c457676841eef471a8b87be31b84c60a8a4477a18a9cbcb6e3c2ae700969d5c5e52309d961e0537a"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "c8844e5b71e5ecfbb7366097ce34af2f5863d86d5ccc3f9ec384d8ade4b60ccc8124c7fc88664f1afd2b0962fc8775bf"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "4b4f08ad7606a3ac62997779484919a302267b26d26ee19125f8a7eea60e8a71"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "65c6845ebae981cb81b61107707ced39f5b377dae970b47606ef482aaf10e3729def0da40d9377c43abbfb483a5ceae039b0d51c129c50a6d36ad351a5d6b01e"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/org.jspecify/jspecify@1.0.0?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "http://jspecify.org/"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/jspecify/jspecify/"
+        }
+      ]
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/dev.ward/ward-analysis-engine@0.5.0?type=jar",
+      "group" : "dev.ward",
+      "name" : "ward-analysis-engine",
+      "version" : "0.5.0",
+      "description" : "Ward analysis rule engine: capability-gated rules over syntax trees, with deterministic findings",
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/dev.ward/ward-analysis-engine@0.5.0?type=jar"
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar",
+      "group" : "org.tomlj",
+      "name" : "tomlj",
+      "version" : "2.2.0",
+      "description" : "A parser and serializer for Tom's Obvious, Minimal Language (TOML). Bundles the ANTLR runtime it needs.",
+      "scope" : "required",
+      "hashes" : [
+        {
+          "alg" : "MD5",
+          "content" : "176322ab9b4a455e04d5337fefa46898"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "021a0249a798b11ea1e1fdb88611074054080345"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "e1fc98734f3b4285b4f87d1f1f473300c83791f2fb406feb86bca67e371896e7"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "d9d75c3e362559ce62f585814ad30d3035bc88389b6969b863153651d16d0c1578e89dfacee48240f09d52fcfd24b147c75775e1ac2336890b54814d9e14928c"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "86963a3d1bb6e7d66f7878336de3a87de4eea1cef28cbffd0a57ec6ec787aadc526735335ced3a0f53ff6c8b7c6addbd"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "f870d2b982c0a75e9edbed8f246bfdeb4acd52af7f1053c140e077deda6dd68e4d1ea4e51bca7964135e2e4ea340deeb"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "6ea07bb7748b7d4c5624c8694844fd8a1151668380f43db69dd18183f2a73a55"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "c53e37efa1cd28212eb0cd0c02f59b12d8efa954fc5b18919403016c1ebfb13d712856988c29b9600ebe52dc339d1e5a6221e1f1268063a6207a68b375350573"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/tomlj/tomlj"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/tomlj/tomlj"
+        }
+      ]
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/dev.ward/ward-frontend-antlr@0.5.0?type=jar",
+      "group" : "dev.ward",
+      "name" : "ward-frontend-antlr",
+      "version" : "0.5.0",
+      "description" : "Ward ANTLR language frontends: parses Java, Kotlin, TypeScript, JavaScript, Python and Swift into the analysis syntax tree",
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/dev.ward/ward-frontend-antlr@0.5.0?type=jar"
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.antlr/antlr4-runtime@4.13.2?type=jar",
+      "publisher" : "ANTLR",
+      "group" : "org.antlr",
+      "name" : "antlr4-runtime",
+      "version" : "4.13.2",
+      "description" : "The ANTLR 4 Runtime",
+      "scope" : "required",
+      "hashes" : [
+        {
+          "alg" : "MD5",
+          "content" : "eecf1908f0cfff10f8bb82878b5ca401"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "fc3db6d844df652a3d5db31c87fa12757f13691d"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "dd3e8a13a2d669bf84fb8d834de35ce4875f27157698d206241ec8488aadcaf7"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "1c3e47b6b5dc40ca13927a7ae2ed187f470b8f406cea325e73c7a18af8e07b9ada0484312dd611f225f030b5585924932c702fd9326c143a626e271682b2b95e"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "f49c2395e16fe71fa35622bcca225c0910609ef09626207ce4522c73c760fd232489489ea88d54c88fc21b05a03031e0"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "322345326586e3f8954e80efa80b510228a7eb06f6d7283177f04809c15aad1722c700897c8c8f405955946b63808bc0"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "2d39db66ce6dc530c7796f75d646f4d8316586e2acd0756524c25b238eb71618"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "a4cdaec49dff4a6963a0db56712a837db7300de7145335b915ffc2234b0d53d6f9fd4b1d6e82c4350e22fee9390ca643cfbf7f51ff47a11bc44561b6686be32b"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "BSD-3-Clause",
+            "url" : "https://opensource.org/licenses/BSD-3-Clause"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/org.antlr/antlr4-runtime@4.13.2?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://www.antlr.org/antlr4-runtime/"
+        },
+        {
+          "type" : "distribution-intake",
+          "url" : "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+        },
+        {
+          "type" : "issue-tracker",
+          "url" : "https://github.com/antlr/antlr4/issues"
+        },
+        {
+          "type" : "mailing-list",
+          "url" : "https://groups.google.com/forum/?fromgroups#!forum/antlr-discussion"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/antlr/antlr4/tree/master/antlr4-runtime"
+        }
+      ]
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/dev.ward/ward-lang-jvm@0.5.0?type=jar",
+      "group" : "dev.ward",
+      "name" : "ward-lang-jvm",
+      "version" : "0.5.0",
+      "description" : "Ward Java analysis: declarative rule files for the structural checks of Java sources, and the module and package resolution of Java imports",
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/dev.ward/ward-lang-jvm@0.5.0?type=jar"
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/dev.ward/ward-lang-node@0.5.0?type=jar",
+      "group" : "dev.ward",
+      "name" : "ward-lang-node",
+      "version" : "0.5.0",
+      "description" : "Ward structural rules for TypeScript and JavaScript, run by the analysis engine on the shared syntax tree",
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/dev.ward/ward-lang-node@0.5.0?type=jar"
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/dev.ward/ward-lang-python@0.5.0?type=jar",
+      "group" : "dev.ward",
+      "name" : "ward-lang-python",
+      "version" : "0.5.0",
+      "description" : "Ward Python structural rules: function length, parameter count, complexity, file length and naming, as declarative rule data",
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/dev.ward/ward-lang-python@0.5.0?type=jar"
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/dev.ward/ward-lang-swift@0.5.0?type=jar",
+      "group" : "dev.ward",
+      "name" : "ward-lang-swift",
+      "version" : "0.5.0",
+      "description" : "Ward Swift structural rules: function length, parameter count, complexity, file length, type body length and naming, as declarative rule data",
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/dev.ward/ward-lang-swift@0.5.0?type=jar"
+    },
+    {
+      "type" : "application",
+      "bom-ref" : "pkg:maven/dev.ward/ward-cli@0.5.0?type=jar",
+      "group" : "dev.ward",
+      "name" : "ward-cli",
+      "version" : "0.5.0",
+      "description" : "Ward command-line interface: a quality gate orchestrator for AI coding agents",
+      "purl" : "pkg:maven/dev.ward/ward-cli@0.5.0?type=jar"
+    },
     {
       "type" : "library",
       "bom-ref" : "pkg:maven/com.google.dagger/dagger@2.60.1?type=jar",
@@ -225,67 +543,6 @@
     },
     {
       "type" : "library",
-      "bom-ref" : "pkg:maven/org.jspecify/jspecify@1.0.0?type=jar",
-      "group" : "org.jspecify",
-      "name" : "jspecify",
-      "version" : "1.0.0",
-      "description" : "An artifact of well-named and well-specified annotations to power static analysis checks",
-      "scope" : "required",
-      "hashes" : [
-        {
-          "alg" : "MD5",
-          "content" : "9133aba420d0ca3b001dbb6ae9992cf6"
-        },
-        {
-          "alg" : "SHA-1",
-          "content" : "7425a601c1c7ec76645a78d22b8c6a627edee507"
-        },
-        {
-          "alg" : "SHA-256",
-          "content" : "1fad6e6be7557781e4d33729d49ae1cdc8fdda6fe477bb0cc68ce351eafdfbab"
-        },
-        {
-          "alg" : "SHA-512",
-          "content" : "efded31ef5b342f09422935076e599789076431e93a746685c0607e7de5592719ba6aacde0be670b3f064d1e85630d58d5bce6b34aed2a288fdb34f745efb7bc"
-        },
-        {
-          "alg" : "SHA-384",
-          "content" : "814f860e5a44ead6c457676841eef471a8b87be31b84c60a8a4477a18a9cbcb6e3c2ae700969d5c5e52309d961e0537a"
-        },
-        {
-          "alg" : "SHA3-384",
-          "content" : "c8844e5b71e5ecfbb7366097ce34af2f5863d86d5ccc3f9ec384d8ade4b60ccc8124c7fc88664f1afd2b0962fc8775bf"
-        },
-        {
-          "alg" : "SHA3-256",
-          "content" : "4b4f08ad7606a3ac62997779484919a302267b26d26ee19125f8a7eea60e8a71"
-        },
-        {
-          "alg" : "SHA3-512",
-          "content" : "65c6845ebae981cb81b61107707ced39f5b377dae970b47606ef482aaf10e3729def0da40d9377c43abbfb483a5ceae039b0d51c129c50a6d36ad351a5d6b01e"
-        }
-      ],
-      "licenses" : [
-        {
-          "license" : {
-            "id" : "Apache-2.0"
-          }
-        }
-      ],
-      "purl" : "pkg:maven/org.jspecify/jspecify@1.0.0?type=jar",
-      "externalReferences" : [
-        {
-          "type" : "website",
-          "url" : "http://jspecify.org/"
-        },
-        {
-          "type" : "vcs",
-          "url" : "https://github.com/jspecify/jspecify/"
-        }
-      ]
-    },
-    {
-      "type" : "library",
       "bom-ref" : "pkg:maven/javax.inject/javax.inject@1?type=jar",
       "group" : "javax.inject",
       "name" : "javax.inject",
@@ -403,67 +660,6 @@
         {
           "type" : "vcs",
           "url" : "https://github.com/remkop/picocli/tree/master"
-        }
-      ]
-    },
-    {
-      "type" : "library",
-      "bom-ref" : "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar",
-      "group" : "org.tomlj",
-      "name" : "tomlj",
-      "version" : "2.2.0",
-      "description" : "A parser and serializer for Tom's Obvious, Minimal Language (TOML). Bundles the ANTLR runtime it needs.",
-      "scope" : "required",
-      "hashes" : [
-        {
-          "alg" : "MD5",
-          "content" : "176322ab9b4a455e04d5337fefa46898"
-        },
-        {
-          "alg" : "SHA-1",
-          "content" : "021a0249a798b11ea1e1fdb88611074054080345"
-        },
-        {
-          "alg" : "SHA-256",
-          "content" : "e1fc98734f3b4285b4f87d1f1f473300c83791f2fb406feb86bca67e371896e7"
-        },
-        {
-          "alg" : "SHA-512",
-          "content" : "d9d75c3e362559ce62f585814ad30d3035bc88389b6969b863153651d16d0c1578e89dfacee48240f09d52fcfd24b147c75775e1ac2336890b54814d9e14928c"
-        },
-        {
-          "alg" : "SHA-384",
-          "content" : "86963a3d1bb6e7d66f7878336de3a87de4eea1cef28cbffd0a57ec6ec787aadc526735335ced3a0f53ff6c8b7c6addbd"
-        },
-        {
-          "alg" : "SHA3-384",
-          "content" : "f870d2b982c0a75e9edbed8f246bfdeb4acd52af7f1053c140e077deda6dd68e4d1ea4e51bca7964135e2e4ea340deeb"
-        },
-        {
-          "alg" : "SHA3-256",
-          "content" : "6ea07bb7748b7d4c5624c8694844fd8a1151668380f43db69dd18183f2a73a55"
-        },
-        {
-          "alg" : "SHA3-512",
-          "content" : "c53e37efa1cd28212eb0cd0c02f59b12d8efa954fc5b18919403016c1ebfb13d712856988c29b9600ebe52dc339d1e5a6221e1f1268063a6207a68b375350573"
-        }
-      ],
-      "licenses" : [
-        {
-          "license" : {
-            "id" : "Apache-2.0"
-          }
-        }
-      ],
-      "purl" : "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar",
-      "externalReferences" : [
-        {
-          "type" : "website",
-          "url" : "https://github.com/tomlj/tomlj"
-        },
-        {
-          "type" : "vcs",
-          "url" : "https://github.com/tomlj/tomlj"
         }
       ]
     },
@@ -730,285 +926,6 @@
           "url" : "https://github.com/janino-compiler/commons-compiler"
         }
       ]
-    },
-    {
-      "type" : "library",
-      "bom-ref" : "pkg:maven/dev.ward/ward-analysis-api@0.5.0?type=jar",
-      "group" : "dev.ward",
-      "name" : "ward-analysis-api",
-      "version" : "0.5.0",
-      "description" : "Ward analysis engine API: a dependency-free intermediate representation and ports for language frontends",
-      "scope" : "required",
-      "hashes" : [
-        {
-          "alg" : "MD5",
-          "content" : "b96224d5ce279c11ab5dae0bca3ac64a"
-        },
-        {
-          "alg" : "SHA-1",
-          "content" : "1ae6f90891709944f3f7a5e9823e6018dd2af6ba"
-        },
-        {
-          "alg" : "SHA-256",
-          "content" : "f47163f9584413b6c21ea71d4d43f3c38c42cd08f03494f894ca0ca226b60bf3"
-        },
-        {
-          "alg" : "SHA-512",
-          "content" : "12bdb0b5e351bf83e5ab80d357fe486c3cf2208d4f6c8e866091ff09285b999c145d09dd6cdee7441ba7906276426d20155cf39f0b28de8552032aa97a532709"
-        },
-        {
-          "alg" : "SHA-384",
-          "content" : "9808e085cacd1b27c724d6d869bd49572a1f2ee2fefb552724661095f3a0de1bd567467e2772eee5dab0e8f3739af648"
-        },
-        {
-          "alg" : "SHA3-384",
-          "content" : "1a58569dc5a01775bdf4c6674036c2c2ef3de7c5fda3972eb91b591606e36a4b34d17c680e5ccb7379243c686378048d"
-        },
-        {
-          "alg" : "SHA3-256",
-          "content" : "1b8e3545e282106165e7ed0daac9c483281987376fc9873de02864ef9d5f064a"
-        },
-        {
-          "alg" : "SHA3-512",
-          "content" : "e4c4dbb36db6f668e40d160bdc643ccac0036c930f46eeed2e6e3615fa535461952017c82df8c794c168b84b5640fb1118a4349edde9651bc919a239f5015a5e"
-        }
-      ],
-      "licenses" : [
-        {
-          "license" : {
-            "id" : "Apache-2.0"
-          }
-        }
-      ],
-      "purl" : "pkg:maven/dev.ward/ward-analysis-api@0.5.0?type=jar"
-    },
-    {
-      "type" : "library",
-      "bom-ref" : "pkg:maven/dev.ward/ward-analysis-engine@0.5.0?type=jar",
-      "group" : "dev.ward",
-      "name" : "ward-analysis-engine",
-      "version" : "0.5.0",
-      "description" : "Ward analysis rule engine: capability-gated rules over syntax trees, with deterministic findings",
-      "scope" : "required",
-      "hashes" : [
-        {
-          "alg" : "MD5",
-          "content" : "40457a92b5bf386da9fcd96a9d636972"
-        },
-        {
-          "alg" : "SHA-1",
-          "content" : "cd884d89d344457426a6509cb4ac71cb20af71cc"
-        },
-        {
-          "alg" : "SHA-256",
-          "content" : "0af366369cc416f9332d0a27c6335d420753e0bd02e18cc51da48345b6a1c8ac"
-        },
-        {
-          "alg" : "SHA-512",
-          "content" : "07d2b546ad345df93803da363fca5bfd000445c87b7f2ead9b89025139d951b093fd71f5fd9581da7254dd97015e36ec4514f7a401bbef16dc6bd089385b825a"
-        },
-        {
-          "alg" : "SHA-384",
-          "content" : "8c417d51762ff1d381e62d127ccc9d847a05247502498fe920f86e15f6d71cb50f86e50f4ffd85585cb81bc1be7673aa"
-        },
-        {
-          "alg" : "SHA3-384",
-          "content" : "237738a48792eb0fa24b49068ce19bc18a9a0da8c9841a13054ff724c957b882ff9b70daee0f4a4b867b12655b92065b"
-        },
-        {
-          "alg" : "SHA3-256",
-          "content" : "8ca35958a994ee5b9d40c36bf1a0610ccbfed44c2e9b570622fcb8c36d69fa7a"
-        },
-        {
-          "alg" : "SHA3-512",
-          "content" : "167482134b8f6f1b72129b494bdd094509a028fc61c7c461051dae49649b6883214a9a6cbb55ec2e4257888f6ee80a62f91b83fcf1329ca50b7545b18c25a74e"
-        }
-      ],
-      "licenses" : [
-        {
-          "license" : {
-            "id" : "Apache-2.0"
-          }
-        }
-      ],
-      "purl" : "pkg:maven/dev.ward/ward-analysis-engine@0.5.0?type=jar"
-    },
-    {
-      "type" : "library",
-      "bom-ref" : "pkg:maven/dev.ward/ward-frontend-antlr@0.5.0?type=jar",
-      "group" : "dev.ward",
-      "name" : "ward-frontend-antlr",
-      "version" : "0.5.0",
-      "description" : "Ward ANTLR language frontends: parses Java, Kotlin, TypeScript, JavaScript, Python and Swift into the analysis syntax tree",
-      "scope" : "required",
-      "hashes" : [
-        {
-          "alg" : "MD5",
-          "content" : "97bec2984f35fd591a2742a1cc06bf67"
-        },
-        {
-          "alg" : "SHA-1",
-          "content" : "0c4bf58608e247b2eeccfeec761742d20c62ca95"
-        },
-        {
-          "alg" : "SHA-256",
-          "content" : "4e4aeee7c90efd5501286ecaf072fa3692106269d0ad155bde59e144a947b40e"
-        },
-        {
-          "alg" : "SHA-512",
-          "content" : "e437efa220f312d8dff108141adca1146c8dca80575ef7022fff75f2e1d80d3e670c13013ce95f6e4ee1144a7abb31035dec10f583f4749caad00b50c58b3418"
-        },
-        {
-          "alg" : "SHA-384",
-          "content" : "32fb9f5c3fecd2fc35246ae5cbbce660381837e6ee9135fa28a31e570956980469c7f29bf2052b1ce783e5f036592146"
-        },
-        {
-          "alg" : "SHA3-384",
-          "content" : "d1ea646a1420c1efd78fb1b1d43ebe165ec6e20287e1de62b2137b788f6d81718c8f34f90e16db0d45c5418f458eeb51"
-        },
-        {
-          "alg" : "SHA3-256",
-          "content" : "40844599df529ef6ee7aaa1597a35ac34c774496939e8847aa18b0bb7f00f23c"
-        },
-        {
-          "alg" : "SHA3-512",
-          "content" : "f5f122a6eb819f09e628acd9e15b097c9f3cbaa2cd306afffd7114c926e80c90988ff6978464303195b7b7babee7a01e7755915ff486f03a4f1bf2631212674b"
-        }
-      ],
-      "licenses" : [
-        {
-          "license" : {
-            "id" : "Apache-2.0"
-          }
-        }
-      ],
-      "purl" : "pkg:maven/dev.ward/ward-frontend-antlr@0.5.0?type=jar"
-    },
-    {
-      "type" : "library",
-      "bom-ref" : "pkg:maven/org.antlr/antlr4-runtime@4.13.2?type=jar",
-      "publisher" : "ANTLR",
-      "group" : "org.antlr",
-      "name" : "antlr4-runtime",
-      "version" : "4.13.2",
-      "description" : "The ANTLR 4 Runtime",
-      "scope" : "required",
-      "hashes" : [
-        {
-          "alg" : "MD5",
-          "content" : "eecf1908f0cfff10f8bb82878b5ca401"
-        },
-        {
-          "alg" : "SHA-1",
-          "content" : "fc3db6d844df652a3d5db31c87fa12757f13691d"
-        },
-        {
-          "alg" : "SHA-256",
-          "content" : "dd3e8a13a2d669bf84fb8d834de35ce4875f27157698d206241ec8488aadcaf7"
-        },
-        {
-          "alg" : "SHA-512",
-          "content" : "1c3e47b6b5dc40ca13927a7ae2ed187f470b8f406cea325e73c7a18af8e07b9ada0484312dd611f225f030b5585924932c702fd9326c143a626e271682b2b95e"
-        },
-        {
-          "alg" : "SHA-384",
-          "content" : "f49c2395e16fe71fa35622bcca225c0910609ef09626207ce4522c73c760fd232489489ea88d54c88fc21b05a03031e0"
-        },
-        {
-          "alg" : "SHA3-384",
-          "content" : "322345326586e3f8954e80efa80b510228a7eb06f6d7283177f04809c15aad1722c700897c8c8f405955946b63808bc0"
-        },
-        {
-          "alg" : "SHA3-256",
-          "content" : "2d39db66ce6dc530c7796f75d646f4d8316586e2acd0756524c25b238eb71618"
-        },
-        {
-          "alg" : "SHA3-512",
-          "content" : "a4cdaec49dff4a6963a0db56712a837db7300de7145335b915ffc2234b0d53d6f9fd4b1d6e82c4350e22fee9390ca643cfbf7f51ff47a11bc44561b6686be32b"
-        }
-      ],
-      "licenses" : [
-        {
-          "license" : {
-            "id" : "BSD-3-Clause",
-            "url" : "https://opensource.org/licenses/BSD-3-Clause"
-          }
-        }
-      ],
-      "purl" : "pkg:maven/org.antlr/antlr4-runtime@4.13.2?type=jar",
-      "externalReferences" : [
-        {
-          "type" : "website",
-          "url" : "https://www.antlr.org/antlr4-runtime/"
-        },
-        {
-          "type" : "distribution-intake",
-          "url" : "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-        },
-        {
-          "type" : "issue-tracker",
-          "url" : "https://github.com/antlr/antlr4/issues"
-        },
-        {
-          "type" : "mailing-list",
-          "url" : "https://groups.google.com/forum/?fromgroups#!forum/antlr-discussion"
-        },
-        {
-          "type" : "vcs",
-          "url" : "https://github.com/antlr/antlr4/tree/master/antlr4-runtime"
-        }
-      ]
-    },
-    {
-      "type" : "library",
-      "bom-ref" : "pkg:maven/dev.ward/ward-lang-jvm@0.5.0?type=jar",
-      "group" : "dev.ward",
-      "name" : "ward-lang-jvm",
-      "version" : "0.5.0",
-      "description" : "Ward Java analysis: declarative rule files for the structural checks of Java sources, and the module and package resolution of Java imports",
-      "scope" : "required",
-      "hashes" : [
-        {
-          "alg" : "MD5",
-          "content" : "34e360dcee7ee6398d1a78083bb4ce92"
-        },
-        {
-          "alg" : "SHA-1",
-          "content" : "81d4a0dd161c012a7b1fbeffe7b5ba85c19d5532"
-        },
-        {
-          "alg" : "SHA-256",
-          "content" : "055a0ef993339741dc85d28eafdc16d9db8dfb2834a8744da8adc5892154c3b1"
-        },
-        {
-          "alg" : "SHA-512",
-          "content" : "b76ffd17756af4dc9ef23804e1251e8672b9b24a431e049f5077e397ed319e11495e9adf4981cfdb904ed45de5941f20f81cb362ba35ce62f0e5fdf997a7326d"
-        },
-        {
-          "alg" : "SHA-384",
-          "content" : "9782d31cebe6744b6f2bcfabe4b581f1b3aaaa2c4ba733e42b68b603e3379b3458bb0ad1e9bc6f4d256c390d30e88460"
-        },
-        {
-          "alg" : "SHA3-384",
-          "content" : "6f8f178d68a6d2b85d077de7a63d08b8e3352ba495ed955b93a644f05e2adec3ed03e41826903a3f59235555b0aae812"
-        },
-        {
-          "alg" : "SHA3-256",
-          "content" : "84255c41a8ebab5e884a54514f349cc4960dfc90e7dc015cbb08ca98aa09d90c"
-        },
-        {
-          "alg" : "SHA3-512",
-          "content" : "e084d88e3d765b63351317704f2110da8a5f817bd6dc6f0df85eb151fc91d8eda0c534c36346f22c1b6b9e746228e44bb08f19358f361e2030d67fe613273ca4"
-        }
-      ],
-      "licenses" : [
-        {
-          "license" : {
-            "id" : "Apache-2.0"
-          }
-        }
-      ],
-      "purl" : "pkg:maven/dev.ward/ward-lang-jvm@0.5.0?type=jar"
     },
     {
       "type" : "library",
@@ -2276,162 +2193,80 @@
           "url" : "https://github.com/eclipse-jdt/eclipse.jdt.core/tree/8634087ceb99426b43565db17d8c1456d9e4d782/org.eclipse.jdt.core.compiler.batch"
         }
       ]
-    },
-    {
-      "type" : "library",
-      "bom-ref" : "pkg:maven/dev.ward/ward-lang-node@0.5.0?type=jar",
-      "group" : "dev.ward",
-      "name" : "ward-lang-node",
-      "version" : "0.5.0",
-      "description" : "Ward structural rules for TypeScript and JavaScript, run by the analysis engine on the shared syntax tree",
-      "scope" : "required",
-      "hashes" : [
-        {
-          "alg" : "MD5",
-          "content" : "092408826fb63830d44e611111ef7ba1"
-        },
-        {
-          "alg" : "SHA-1",
-          "content" : "fe4a08d4aacf897389d601ca93170bcd2a039c98"
-        },
-        {
-          "alg" : "SHA-256",
-          "content" : "53f276c2e88d6b535e640f6c1603394408bcfab10a4f9d682c8830255ae1a4e6"
-        },
-        {
-          "alg" : "SHA-512",
-          "content" : "eb5d3b8c6f56f36eac1f5945657790f685547c5fb6b8f5cc7a1d4e81e9684df70fb12e0ecd0fbab3591a25bf558ef3403972d1393ca8d2455ea5a069b14b3eea"
-        },
-        {
-          "alg" : "SHA-384",
-          "content" : "c3c66ec2955403525bef0f0f17f71046f83d6310d3a03a25dee2eaeecfc2d76675c11ac3df160fbd113fea5e71c91516"
-        },
-        {
-          "alg" : "SHA3-384",
-          "content" : "c8e16e9e06215c7ed1d1feaa4db395eb4f9f5f7f139f2c54289b15d626120f33eba521dca200edbe81472abcb7683be2"
-        },
-        {
-          "alg" : "SHA3-256",
-          "content" : "1dc1cbf9d6eaaea903761ce4ecceaa66998eb262bf46651bff8cbf9a4e5cd87b"
-        },
-        {
-          "alg" : "SHA3-512",
-          "content" : "0f84ae8efc72950e2cd5149444eda63132cb85a18c43d277f01a111725c6090ffd06f780a3f1f38695115b9bf8eec088f2ad3df9d53e383e3568aaf81942d2a6"
-        }
-      ],
-      "licenses" : [
-        {
-          "license" : {
-            "id" : "Apache-2.0"
-          }
-        }
-      ],
-      "purl" : "pkg:maven/dev.ward/ward-lang-node@0.5.0?type=jar"
-    },
-    {
-      "type" : "library",
-      "bom-ref" : "pkg:maven/dev.ward/ward-lang-python@0.5.0?type=jar",
-      "group" : "dev.ward",
-      "name" : "ward-lang-python",
-      "version" : "0.5.0",
-      "description" : "Ward Python structural rules: function length, parameter count, complexity, file length and naming, as declarative rule data",
-      "scope" : "required",
-      "hashes" : [
-        {
-          "alg" : "MD5",
-          "content" : "9229a4d21f0d1b68f6bd10adb053daa3"
-        },
-        {
-          "alg" : "SHA-1",
-          "content" : "cf0368d86a93b5fbd9b8f56a22dd133f8ceb754a"
-        },
-        {
-          "alg" : "SHA-256",
-          "content" : "7c3d393f5a4908c533095e40ff8999a474426ea2b8f841fe4ca99e9c32808de4"
-        },
-        {
-          "alg" : "SHA-512",
-          "content" : "b7e8796dbbd561841a1c52ee7c3e0e4540d62f95874044ba80c89dd18ddba43e2e83d9bb5b0011eef0b0d64fc2499104db68a5a3f51cb16a7122b936b0977b8d"
-        },
-        {
-          "alg" : "SHA-384",
-          "content" : "a53319c692487bb7179bbf277426f25f1cc2fcc5f3fb2af4b8b2ad3d7e0462dae57d886c0fc4d0c22e3faace306a6d9f"
-        },
-        {
-          "alg" : "SHA3-384",
-          "content" : "17f2607d46aaaf8ed69106279666e8b695abd8cf5019b8580c6707e75f0aa6cce3fc83f793679f4c951d6a9f6cec21cc"
-        },
-        {
-          "alg" : "SHA3-256",
-          "content" : "d3e254a6e9606e3940f67183562a3ae884b2a5d74e4be81df5fae49c00b17194"
-        },
-        {
-          "alg" : "SHA3-512",
-          "content" : "3fa5d8f65db5decf54b509f385829c271cf69358c7c77719dea5341ea90e87da6aafda8d937971df7242422d744ef43330621ea258bd70c4b2f1ea062bca9fe8"
-        }
-      ],
-      "licenses" : [
-        {
-          "license" : {
-            "id" : "Apache-2.0"
-          }
-        }
-      ],
-      "purl" : "pkg:maven/dev.ward/ward-lang-python@0.5.0?type=jar"
-    },
-    {
-      "type" : "library",
-      "bom-ref" : "pkg:maven/dev.ward/ward-lang-swift@0.5.0?type=jar",
-      "group" : "dev.ward",
-      "name" : "ward-lang-swift",
-      "version" : "0.5.0",
-      "description" : "Ward Swift structural rules: function length, parameter count, complexity, file length, type body length and naming, as declarative rule data",
-      "scope" : "required",
-      "hashes" : [
-        {
-          "alg" : "MD5",
-          "content" : "e7ade61c0076ee40b4a97845b89ae60a"
-        },
-        {
-          "alg" : "SHA-1",
-          "content" : "3ca8eb337e5b8025bd403aa0b4ddba243a17e62a"
-        },
-        {
-          "alg" : "SHA-256",
-          "content" : "2316fc2e15cb96107c3da65625ea4df67ef09d6e4b5c4ff1fe085d74525fc071"
-        },
-        {
-          "alg" : "SHA-512",
-          "content" : "ea22e91e7b7057ca97a6173b28cd1cfb13ae4d84ebb4ad03adddb2854f3b64d8894d1b5711ffac28ef690faf6493b4a6c33547d6ecf9fade88c9baf57f59e7fb"
-        },
-        {
-          "alg" : "SHA-384",
-          "content" : "eb395fd14b3ba17a70405c259e37b421a286460b3d2335dbca587ee122a39c0e677089aa92ebc5f2ea9d240d6df0307a"
-        },
-        {
-          "alg" : "SHA3-384",
-          "content" : "0f658d268088f8229db043e14e2ea749b3c1cd7246c0492f57478216129c1d247c60e134d47e8fd4978d09c359728ffe"
-        },
-        {
-          "alg" : "SHA3-256",
-          "content" : "e1974991348be86d4f1befb2765eb32efaeb4b474c6f9bdc7d629e86b4712b39"
-        },
-        {
-          "alg" : "SHA3-512",
-          "content" : "487c7016446247fa51224e29325a234f8d9ca8290e8661008c2de8b134d56445a347c3a37c0dcaf2153455a30ac3da42f99845cbaa0e948c061fe14ebcb1f25c"
-        }
-      ],
-      "licenses" : [
-        {
-          "license" : {
-            "id" : "Apache-2.0"
-          }
-        }
-      ],
-      "purl" : "pkg:maven/dev.ward/ward-lang-swift@0.5.0?type=jar"
     }
   ],
   "dependencies" : [
+    {
+      "ref" : "pkg:maven/dev.ward/ward-parent@0.5.0?type=pom",
+      "dependsOn" : [
+        "pkg:maven/dev.ward/ward-analysis-api@0.5.0?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-engine@0.5.0?type=jar",
+        "pkg:maven/dev.ward/ward-frontend-antlr@0.5.0?type=jar",
+        "pkg:maven/dev.ward/ward-lang-jvm@0.5.0?type=jar",
+        "pkg:maven/dev.ward/ward-lang-node@0.5.0?type=jar",
+        "pkg:maven/dev.ward/ward-lang-python@0.5.0?type=jar",
+        "pkg:maven/dev.ward/ward-lang-swift@0.5.0?type=jar",
+        "pkg:maven/dev.ward/ward-cli@0.5.0?type=jar"
+      ]
+    },
+    {
+      "ref" : "pkg:maven/dev.ward/ward-analysis-api@0.5.0?type=jar",
+      "dependsOn" : [ ]
+    },
+    {
+      "ref" : "pkg:maven/dev.ward/ward-analysis-engine@0.5.0?type=jar",
+      "dependsOn" : [
+        "pkg:maven/dev.ward/ward-analysis-api@0.5.0?type=jar",
+        "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar"
+      ]
+    },
+    {
+      "ref" : "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar",
+      "dependsOn" : [ ]
+    },
+    {
+      "ref" : "pkg:maven/dev.ward/ward-frontend-antlr@0.5.0?type=jar",
+      "dependsOn" : [
+        "pkg:maven/dev.ward/ward-analysis-api@0.5.0?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-engine@0.5.0?type=jar",
+        "pkg:maven/org.antlr/antlr4-runtime@4.13.2?type=jar"
+      ]
+    },
+    {
+      "ref" : "pkg:maven/org.antlr/antlr4-runtime@4.13.2?type=jar",
+      "dependsOn" : [ ]
+    },
+    {
+      "ref" : "pkg:maven/dev.ward/ward-lang-jvm@0.5.0?type=jar",
+      "dependsOn" : [
+        "pkg:maven/dev.ward/ward-analysis-api@0.5.0?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-engine@0.5.0?type=jar",
+        "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar"
+      ]
+    },
+    {
+      "ref" : "pkg:maven/dev.ward/ward-lang-node@0.5.0?type=jar",
+      "dependsOn" : [
+        "pkg:maven/dev.ward/ward-analysis-api@0.5.0?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-engine@0.5.0?type=jar"
+      ]
+    },
+    {
+      "ref" : "pkg:maven/dev.ward/ward-lang-python@0.5.0?type=jar",
+      "dependsOn" : [
+        "pkg:maven/dev.ward/ward-analysis-api@0.5.0?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-engine@0.5.0?type=jar",
+        "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar"
+      ]
+    },
+    {
+      "ref" : "pkg:maven/dev.ward/ward-lang-swift@0.5.0?type=jar",
+      "dependsOn" : [
+        "pkg:maven/dev.ward/ward-analysis-api@0.5.0?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-engine@0.5.0?type=jar",
+        "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar"
+      ]
+    },
     {
       "ref" : "pkg:maven/dev.ward/ward-cli@0.5.0?type=jar",
       "dependsOn" : [
@@ -2475,10 +2310,6 @@
       "dependsOn" : [ ]
     },
     {
-      "ref" : "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar",
-      "dependsOn" : [ ]
-    },
-    {
       "ref" : "pkg:maven/org.apache.fory/fory-json@1.7.7?type=jar",
       "dependsOn" : [
         "pkg:maven/org.apache.fory/fory-core@1.7.7?type=jar"
@@ -2499,37 +2330,6 @@
     {
       "ref" : "pkg:maven/org.codehaus.janino/commons-compiler@3.1.12?type=jar",
       "dependsOn" : [ ]
-    },
-    {
-      "ref" : "pkg:maven/dev.ward/ward-analysis-api@0.5.0?type=jar",
-      "dependsOn" : [ ]
-    },
-    {
-      "ref" : "pkg:maven/dev.ward/ward-analysis-engine@0.5.0?type=jar",
-      "dependsOn" : [
-        "pkg:maven/dev.ward/ward-analysis-api@0.5.0?type=jar",
-        "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar"
-      ]
-    },
-    {
-      "ref" : "pkg:maven/dev.ward/ward-frontend-antlr@0.5.0?type=jar",
-      "dependsOn" : [
-        "pkg:maven/dev.ward/ward-analysis-api@0.5.0?type=jar",
-        "pkg:maven/dev.ward/ward-analysis-engine@0.5.0?type=jar",
-        "pkg:maven/org.antlr/antlr4-runtime@4.13.2?type=jar"
-      ]
-    },
-    {
-      "ref" : "pkg:maven/org.antlr/antlr4-runtime@4.13.2?type=jar",
-      "dependsOn" : [ ]
-    },
-    {
-      "ref" : "pkg:maven/dev.ward/ward-lang-jvm@0.5.0?type=jar",
-      "dependsOn" : [
-        "pkg:maven/dev.ward/ward-analysis-api@0.5.0?type=jar",
-        "pkg:maven/dev.ward/ward-analysis-engine@0.5.0?type=jar",
-        "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar"
-      ]
     },
     {
       "ref" : "pkg:maven/org.eclipse.jdt/org.eclipse.jdt.core@3.47.0?type=jar",
@@ -2663,29 +2463,6 @@
     {
       "ref" : "pkg:maven/org.eclipse.jdt/ecj@3.46.100?type=jar",
       "dependsOn" : [ ]
-    },
-    {
-      "ref" : "pkg:maven/dev.ward/ward-lang-node@0.5.0?type=jar",
-      "dependsOn" : [
-        "pkg:maven/dev.ward/ward-analysis-api@0.5.0?type=jar",
-        "pkg:maven/dev.ward/ward-analysis-engine@0.5.0?type=jar"
-      ]
-    },
-    {
-      "ref" : "pkg:maven/dev.ward/ward-lang-python@0.5.0?type=jar",
-      "dependsOn" : [
-        "pkg:maven/dev.ward/ward-analysis-api@0.5.0?type=jar",
-        "pkg:maven/dev.ward/ward-analysis-engine@0.5.0?type=jar",
-        "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar"
-      ]
-    },
-    {
-      "ref" : "pkg:maven/dev.ward/ward-lang-swift@0.5.0?type=jar",
-      "dependsOn" : [
-        "pkg:maven/dev.ward/ward-analysis-api@0.5.0?type=jar",
-        "pkg:maven/dev.ward/ward-analysis-engine@0.5.0?type=jar",
-        "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar"
-      ]
     }
   ]
 }

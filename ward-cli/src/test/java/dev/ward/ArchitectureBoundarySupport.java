@@ -39,6 +39,8 @@ final class ArchitectureBoundarySupport {
           "dev.ward.config.GateExtensionsModule",
           "dev.ward.config.FormatterBindingsModule",
           "dev.ward.config.ReportBindingsModule",
+          "dev.ward.config.RulesBindingsModule",
+          "dev.ward.config.RulesCommandBindingsModule",
           "dev.ward.config.WardProvidesModule");
 
   /** The analysis packages that every layer may hold. */
@@ -81,7 +83,8 @@ final class ArchitectureBoundarySupport {
           Map.entry("learning", Set.of("gate")),
           Map.entry("spec", Set.of()),
           Map.entry("update", Set.of()),
-          Map.entry("traceability", Set.of()));
+          Map.entry("traceability", Set.of()),
+          Map.entry("rules", Set.of()));
 
   static final Map<String, Set<String>> APPLICATION_ENTRY_POINTS =
       Map.ofEntries(
@@ -134,7 +137,16 @@ final class ArchitectureBoundarySupport {
                   "dev.ward.application.project.ProjectDetector",
                   "dev.ward.application.project.ProjectNotFoundException")),
           Map.entry("update", Set.of()),
-          Map.entry("traceability", Set.of()));
+          Map.entry("traceability", Set.of()),
+          Map.entry(
+              "rules",
+              Set.of(
+                  "dev.ward.application.gate.AnalysisRuleLoad",
+                  "dev.ward.application.gate.AnalysisRuleSource",
+                  "dev.ward.application.gate.RuleConfigFile",
+                  "dev.ward.application.gate.RuleConfigFile$Select",
+                  "dev.ward.application.gate.RuleSelection",
+                  "dev.ward.application.gate.RuleSelection$Result")));
 
   private ArchitectureBoundarySupport() {}
 

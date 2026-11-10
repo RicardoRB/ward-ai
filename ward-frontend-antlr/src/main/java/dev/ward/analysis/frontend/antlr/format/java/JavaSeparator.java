@@ -40,7 +40,7 @@ final class JavaSeparator {
    */
   JavaBreak resolve(final JavaAtom atom, final boolean blockTop, final boolean hasOutput) {
     final JavaBreak explicit = explicitBreak(atom, blockTop);
-    return explicit == JavaBreak.UNSET ? gapBreak(atom, blockTop, hasOutput) : explicit;
+    return explicit == JavaBreak.UNSET ? gapBreak(atom, hasOutput) : explicit;
   }
 
   /**
@@ -97,15 +97,15 @@ final class JavaSeparator {
     return JavaBreak.UNSET;
   }
 
-  private JavaBreak gapBreak(final JavaAtom atom, final boolean blockTop, final boolean hasOutput) {
-    final JavaBreak before = JavaBreakRules.beforeOf(atom, blockTop);
+  private JavaBreak gapBreak(final JavaAtom atom, final boolean hasOutput) {
+    final JavaBreak before = JavaBreakRules.beforeOf(atom);
     if (before != JavaBreak.UNSET) {
       return before;
     }
     if (pending == JavaBreak.SPACE) {
       return JavaBreak.SPACE;
     }
-    if (atom.newlines() > 0 && blockTop && hasOutput) {
+    if (atom.newlines() > 0 && hasOutput) {
       return JavaBreak.CONTINUE;
     }
     return previous != null && spacing.spaceBetween(previous, atom)
