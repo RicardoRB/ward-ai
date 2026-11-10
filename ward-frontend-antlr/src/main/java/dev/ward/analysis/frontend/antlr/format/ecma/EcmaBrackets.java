@@ -126,7 +126,13 @@ final class EcmaBrackets {
       return !isPropertyColon(prev);
     }
     return BLOCK_PRECEDERS.contains(word)
+        || isStringLiteral(word)
         || (EcmaText.isWord(word) && !EcmaText.OBJECT_KEYWORDS.contains(word));
+  }
+
+  /** A module name, as in {@code declare module "*.vue" {}}, precedes a block, never an object. */
+  private static boolean isStringLiteral(final String word) {
+    return word.startsWith("\"") || word.startsWith("'");
   }
 
   /** A colon after an object key, which starts an object as its value. */
