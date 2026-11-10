@@ -2,6 +2,7 @@ package dev.ward.analysis.application.node;
 
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
+import dev.ward.analysis.domain.rule.RuleConfigurationException;
 import dev.ward.analysis.domain.rule.check.NodeArrowCallbackCheck;
 import dev.ward.analysis.domain.rule.check.NodeConstructorGroupCheck;
 import dev.ward.analysis.domain.rule.check.NodeElseAfterJumpCheck;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.tomlj.TomlParseResult;
 
 /**
  * The TypeScript and JavaScript checks that only the style (Checkstyle concepts, ESLint and Biome
@@ -92,6 +94,20 @@ final class StyleChecks {
             toml -> new NodeJavadocAlignCheck(TomlValues.required(toml, MESSAGE))));
   }
 
+  /** Reads a list of numbers; an entry that is not a decimal number is a configuration error. */
+  static List<BigDecimal> numbers(final TomlParseResult toml, final String key) {
+    return TomlValues.strings(toml, key).stream().map(entry -> number(key, entry)).toList();
+  }
+
+  private static BigDecimal number(final String key, final String entry) {
+    try {
+      return new BigDecimal(entry);
+    } catch (NumberFormatException malformed) {
+      throw new RuleConfigurationException(
+          "'" + key + "' entry '" + entry + "' is not a number", malformed);
+    }
+  }
+
   private static List<Map.Entry<String, CheckFactory>> second() {
     return List.of(
         Map.entry(
@@ -123,9 +139,7 @@ final class StyleChecks {
             "node-magic-number",
             toml ->
                 new NodeMagicNumberCheck(
-                    TomlValues.strings(toml, "ignore-numbers").stream()
-                        .map(BigDecimal::new)
-                        .toList(),
+                    numbers(toml, "ignore-numbers"),
                     new NodeMagicNumberFlags(
                         toml.getBoolean("detect-objects", () -> false),
                         toml.getBoolean("ignore-array-indexes", () -> false),
