@@ -5,3 +5,4 @@ function g(p) {
 }
 var b = 1;
 var b;
+var Object = 1;

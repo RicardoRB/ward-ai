@@ -58,15 +58,11 @@ public final class NodeUnusedDependencyCheck implements RuleCheck, ProjectCheck 
   public List<ProjectMatch> project(
       final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
     final Map<String, NodeManifests.Manifest> manifests = NodeManifests.byDirectory(files);
+    final Map<String, NodeManifests.Manifest> installed = NodeInstalledPackages.installed(files);
     final Map<String, Set<String>> imports = NodeImportUsage.importsByDirectory(trees, manifests);
-    final Set<String> everywhere = new HashSet<>();
-    imports.values().forEach(everywhere::addAll);
     final List<ProjectMatch> found = new ArrayList<>();
     for (final NodeManifests.Manifest owner : manifests.values()) {
-      final Set<String> used =
-          owner.directory().isEmpty()
-              ? everywhere
-              : imports.getOrDefault(owner.directory(), Set.of());
+      final Set<String> used = usedBy(owner, imports, trees, files, installed);
       final Set<String> scripts = scriptTokens(owner.manifest());
       for (final Member dependency : owner.manifest().entries(section)) {
         if (!isUsed(dependency.key(), used, scripts)) {
@@ -75,6 +71,33 @@ public final class NodeUnusedDependencyCheck implements RuleCheck, ProjectCheck 
       }
     }
     return List.copyOf(found);
+  }
+
+  /**
+   * The packages a workspace uses: the ones its files import (the root manifest counts every file),
+   * the ones it uses without an import, and the peers of those that are installed.
+   */
+  private static Set<String> usedBy(
+      final NodeManifests.Manifest owner,
+      final Map<String, Set<String>> imports,
+      final SortedMap<String, SyntaxNode> trees,
+      final ProjectFiles files,
+      final Map<String, NodeManifests.Manifest> installed) {
+    final Set<String> used =
+        new HashSet<>(
+            owner.directory().isEmpty()
+                ? everywhere(imports)
+                : imports.getOrDefault(owner.directory(), Set.of()));
+    used.addAll(NodeImplicitUse.of(owner, trees, files, installed));
+    used.addAll(NodeImplicitUse.peersOf(used, installed));
+    return used;
+  }
+
+  /** The packages any workspace imports, which the root manifest lists as used. */
+  private static Set<String> everywhere(final Map<String, Set<String>> imports) {
+    final Set<String> all = new HashSet<>();
+    imports.values().forEach(all::addAll);
+    return all;
   }
 
   private static boolean isUsed(

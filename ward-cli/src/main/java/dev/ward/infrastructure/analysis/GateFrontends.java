@@ -24,7 +24,16 @@ import java.util.Set;
 public final class GateFrontends {
 
   /** The manifests that the TypeScript and JavaScript project checks read. */
-  private static final Set<String> NODE_MANIFESTS = Set.of("package.json", "pnpm-workspace.yaml");
+  private static final Set<String> NODE_MANIFESTS =
+      Set.of(
+          "package.json",
+          "pnpm-workspace.yaml",
+          "tsconfig.json",
+          ".eslintrc.json",
+          ".prettierrc",
+          ".prettierrc.json",
+          ".babelrc",
+          "babel.config.json");
 
   private static final ControlFlowLowering NO_GRAPHS =
       (unit, tree) -> new ControlFlowResult(List.of(), List.of());

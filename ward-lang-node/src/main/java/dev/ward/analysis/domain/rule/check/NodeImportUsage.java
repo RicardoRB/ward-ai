@@ -11,6 +11,8 @@ import java.util.SortedMap;
 /** The packages that a project's files import, by the manifest directory that owns each file. */
 final class NodeImportUsage {
 
+  private static final String NODE_TYPES = "@types/node";
+
   private NodeImportUsage() {}
 
   /**
@@ -32,8 +34,18 @@ final class NodeImportUsage {
       final Map<String, Set<String>> imports, final String directory, final SyntaxNode tree) {
     final Set<String> packages = imports.computeIfAbsent(directory, key -> new HashSet<>());
     NodeFileFacts.specifiers(tree).stream()
-        .map(module -> NodeFileFacts.packageName(module.specifier()))
+        .map(module -> packageOf(module.specifier()))
         .filter(name -> !name.isEmpty())
         .forEach(packages::add);
+  }
+
+  /**
+   * The package a specifier uses: a built-in uses {@code @types/node}, a bare specifier its
+   * package.
+   */
+  private static String packageOf(final String specifier) {
+    return NodeFileFacts.isNodeBuiltin(specifier)
+        ? NODE_TYPES
+        : NodeFileFacts.packageName(specifier);
   }
 }
