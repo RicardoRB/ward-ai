@@ -54,8 +54,6 @@ eslint = ["consistent-this"]
 
 [[rule]]
 name = "constructor-super"
-presets = ["standard", "strict"]
-category = "problem"
 eslint = ["constructor-super"]
 biome = ["noInvalidConstructorSuper"]
 
@@ -69,16 +67,12 @@ biome = ["useDefaultParameterLast"]
 
 [[rule]]
 name = "dot-notation"
-presets = ["standard", "strict"]
-category = "linter"
 typescript-eslint = ["dot-notation"]
 eslint = ["dot-notation"]
 biome = ["useLiteralKeys"]
 
 [[rule]]
 name = "eqeqeq"
-presets = ["standard", "strict"]
-category = "linter"
 eslint = ["eqeqeq"]
 biome = ["noDoubleEquals"]
 
@@ -107,8 +101,6 @@ biome = ["useConsistentFunctionStyle"]
 
 [[rule]]
 name = "getter-return"
-presets = ["standard", "strict"]
-category = "problem"
 eslint = ["getter-return"]
 biome = ["useGetterReturn"]
 
@@ -326,8 +318,6 @@ eslint = ["no-duplicate-imports"]
 
 [[rule]]
 name = "no-else-return"
-presets = ["standard", "strict"]
-category = "linter"
 eslint = ["no-else-return"]
 pylint = ["no-else-return"]
 biome = ["noUselessElse"]
@@ -366,8 +356,6 @@ eslint = ["no-eval"]
 
 [[rule]]
 name = "no-ex-assign"
-presets = ["standard", "strict"]
-category = "problem"
 eslint = ["no-ex-assign"]
 biome = ["noCatchAssign"]
 
@@ -384,8 +372,6 @@ eslint = ["no-extra-bind"]
 
 [[rule]]
 name = "no-extra-boolean-cast"
-presets = ["standard", "strict"]
-category = "linter"
 eslint = ["no-extra-boolean-cast"]
 
 [[rule]]
@@ -548,8 +534,6 @@ eslint = ["no-new-wrappers"]
 
 [[rule]]
 name = "no-nonoctal-decimal-escape"
-presets = ["standard", "strict"]
-category = "suggestion"
 eslint = ["no-nonoctal-decimal-escape"]
 biome = ["noNonoctalDecimalEscape"]
 
@@ -571,8 +555,6 @@ eslint = ["no-octal"]
 
 [[rule]]
 name = "no-octal-escape"
-presets = ["standard", "strict"]
-category = "suggestion"
 eslint = ["no-octal-escape"]
 biome = ["noOctalEscape"]
 
@@ -665,8 +647,6 @@ biome = ["noCommaOperator"]
 
 [[rule]]
 name = "no-setter-return"
-presets = ["standard", "strict"]
-category = "problem"
 eslint = ["no-setter-return"]
 biome = ["noSetterReturn"]
 
@@ -759,8 +739,6 @@ biome = ["noUnsafeFinally"]
 
 [[rule]]
 name = "no-unsafe-negation"
-presets = ["standard", "strict"]
-category = "problem"
 eslint = ["no-unsafe-negation"]
 biome = ["noUnsafeNegation"]
 
@@ -781,8 +759,6 @@ biome = ["noUnusedExpressions"]
 
 [[rule]]
 name = "no-unused-labels"
-presets = ["standard", "strict"]
-category = "suggestion"
 eslint = ["no-unused-labels"]
 biome = ["noUnusedLabels"]
 
@@ -833,8 +809,6 @@ biome = ["noUselessStringConcat"]
 
 [[rule]]
 name = "no-useless-constructor"
-presets = ["standard", "strict"]
-category = "suggestion"
 typescript-eslint = ["no-useless-constructor"]
 eslint = ["no-useless-constructor"]
 biome = ["noUselessConstructor"]
@@ -848,8 +822,6 @@ biome = ["noUselessEscapeInRegex", "noUselessEscapeInString"]
 
 [[rule]]
 name = "no-useless-rename"
-presets = ["standard", "strict"]
-category = "linter"
 eslint = ["no-useless-rename"]
 biome = ["noUselessRename"]
 
@@ -894,15 +866,11 @@ biome = ["useShorthandAssign"]
 
 [[rule]]
 name = "prefer-arrow-callback"
-presets = ["standard", "strict"]
-category = "linter"
 eslint = ["prefer-arrow-callback"]
 biome = ["useArrowFunction"]
 
 [[rule]]
 name = "prefer-const"
-presets = ["standard", "strict"]
-category = "linter"
 eslint = ["prefer-const"]
 biome = ["useConst"]
 
@@ -952,15 +920,11 @@ biome = ["usePromiseRejectErrors"]
 
 [[rule]]
 name = "prefer-regex-literals"
-presets = ["standard", "strict"]
-category = "suggestion"
 eslint = ["prefer-regex-literals"]
 biome = ["useRegexLiterals"]
 
 [[rule]]
 name = "prefer-rest-params"
-presets = ["standard", "strict"]
-category = "suggestion"
 eslint = ["prefer-rest-params"]
 biome = ["noArguments"]
 
@@ -971,8 +935,6 @@ biome = ["useSpreadOverApply"]
 
 [[rule]]
 name = "prefer-template"
-presets = ["standard", "strict"]
-category = "linter"
 eslint = ["prefer-template"]
 biome = ["useTemplate"]
 
@@ -995,8 +957,6 @@ eslint = ["require-atomic-updates"]
 
 [[rule]]
 name = "require-await"
-presets = ["standard", "strict"]
-category = "suggestion"
 typescript-eslint = ["require-await"]
 eslint = ["require-await"]
 biome = ["useAwait"]

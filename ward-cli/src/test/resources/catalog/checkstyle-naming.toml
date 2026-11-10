@@ -117,6 +117,7 @@ checkstyle = ["StaticVariableName"]
 
 [[rule]]
 name = "type-name"
+pylint = ["invalid-name"]
 detekt = ["ClassNaming"]
 pmd = ["ClassNamingConventions"]
 checkstyle = ["TypeName"]

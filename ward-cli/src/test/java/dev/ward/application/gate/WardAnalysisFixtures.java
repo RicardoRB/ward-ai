@@ -9,6 +9,7 @@ import dev.ward.domain.FakeCommandExecutor;
 import dev.ward.domain.gate.ReportDirectories;
 import dev.ward.infrastructure.config.FilePathExistence;
 import dev.ward.infrastructure.config.TomlConfigurationReader;
+import dev.ward.infrastructure.process.ProcessCommandExecutor;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
 import dev.ward.infrastructure.project.node.NodeWorkspaceMembers;
 import dev.ward.infrastructure.rule.ClasspathRuleSource;
@@ -45,7 +46,7 @@ final class WardAnalysisFixtures {
     return new AnalysisPorts(
         new ClasspathRuleSource(),
         new DeclarativeRuleMatcher(),
-        new FileSystemSourceUnits(),
+        new FileSystemSourceUnits(new ProcessCommandExecutor()),
         List.of(
             new FrontendSupport(
                 AnalysisLanguage.JAVA, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX))),

@@ -1,0 +1,10 @@
+const c = <a role="img">x</a>;
+const d = <hr role="presentation" />;
+const e = <hr role="none" />;
+const g = <div role="img" />;
+const h = <span role="img" />;
+const i = <source role="img" />;
+const j = <svg role="img" />;
+const k = <canvas role="img" />;
+const n = <button role="listbox" />;
+const o = <button role={r} />;

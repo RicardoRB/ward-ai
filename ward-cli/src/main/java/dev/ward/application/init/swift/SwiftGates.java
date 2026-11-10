@@ -9,8 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Swift's gates on SwiftPM or Xcode: SwiftLint, the build tool's test gates and coverage. Strict
- * selects the same gates, with stricter commands and a coverage minimum of 85%.
+ * Swift's gates on SwiftPM or Xcode: the build tool's test gates and coverage. Swift's lint rules
+ * come from the {@code ward} gate and {@code ward-rules.toml}. Strict selects the same gates, with
+ * stricter commands and a coverage minimum of 85%.
  */
 public final class SwiftGates implements SourceLanguageGates<SwiftTools> {
   private static final String MINIMUM = "minimum";
@@ -21,7 +22,6 @@ public final class SwiftGates implements SourceLanguageGates<SwiftTools> {
    */
   private static final List<String> STANDARD =
       List.of(
-          SwiftTools.SWIFTLINT,
           SwiftTools.SWIFT_BUILD,
           SwiftTools.SWIFT_TEST,
           SwiftTools.XCODEBUILD_TEST,
@@ -29,16 +29,7 @@ public final class SwiftGates implements SourceLanguageGates<SwiftTools> {
 
   @Override
   public List<InitGateOption> analysisGates(final SwiftTools swift) {
-    final List<InitGateOption> gates = new ArrayList<>();
-    gates.add(
-        option(
-            swift,
-            SwiftTools.SWIFTLINT,
-            "Lints sources with SwiftLint, built from the Ward-owned tools package; strict fails on"
-                + " warnings.",
-            swift.swiftLintGateCommand(),
-            Map.of()));
-    gates.addAll(testGates(swift));
+    final List<InitGateOption> gates = new ArrayList<>(testGates(swift));
     gates.add(
         option(
             swift,

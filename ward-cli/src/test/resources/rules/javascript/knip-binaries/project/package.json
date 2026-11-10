@@ -1,0 +1,10 @@
+{
+  "name": "app",
+  "scripts": {
+    "build": "tsc -p .",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

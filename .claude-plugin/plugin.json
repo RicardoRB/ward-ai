@@ -8,5 +8,5 @@
   "homepage": "https://ricardorb.github.io/ward-ai/integrations/agent-skills/",
   "repository": "https://github.com/RicardoRB/ward-ai",
   "license": "Apache-2.0",
-  "keywords": ["quality-gates", "java", "maven", "gradle", "checkstyle", "pmd", "jacoco", "archunit"]
+  "keywords": ["quality-gates", "java", "maven", "gradle", "jacoco", "archunit"]
 }

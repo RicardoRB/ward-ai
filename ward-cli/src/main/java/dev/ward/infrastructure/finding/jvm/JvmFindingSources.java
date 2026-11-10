@@ -10,11 +10,8 @@ public final class JvmFindingSources {
 
   /** Groups the JVM finding sources that Dagger injects. */
   @Inject
-  public JvmFindingSources(
-      final CheckstyleXmlFindings checkstyle,
-      final PmdXmlFindings pmd,
-      final JavacOutputFindings javac) {
-    this.sources = List.of(checkstyle, pmd, javac);
+  public JvmFindingSources(final JavacOutputFindings javac) {
+    this.sources = List.of(javac);
   }
 
   /** Returns the finding sources of the JVM gates. */

@@ -1,0 +1,14 @@
+const a = <nav role="navigation" />;
+const b = <button role="button">x</button>;
+const c = <input type="checkbox" role="checkbox" />;
+const d = <input role="textbox" />;
+const e = <img alt="x" role="img" />;
+const f = <img alt="" role="presentation" />;
+const g = <img role="img" />;
+const h = <div role="generic" />;
+const i = <ul role="list" />;
+const j = <input type="text" role="textbox" />;
+const k = <section aria-label="x" role="region" />;
+const p = <nav role="navigation banner" />;
+const q = <nav role="xyz navigation" />;
+const r = <nav role="  navigation  " />;

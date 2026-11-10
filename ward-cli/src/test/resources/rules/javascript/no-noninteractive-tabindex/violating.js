@@ -1,0 +1,11 @@
+const a = <div tabIndex="0" />;
+const c = <div tabIndex={1} />;
+const h = <div role="presentation" tabIndex="0" />;
+const k = <section tabIndex="0" />;
+const l = <section aria-label="x" tabIndex="0" />;
+const m = <input type="hidden" tabIndex="0" />;
+const q = <div tabIndex="0" role="foo" />;
+const r2 = <li tabIndex="0" />;
+const s = <span tabIndex="0" />;
+const t = <img alt="x" tabIndex="0" />;
+const u = <svg tabIndex="0" />;

@@ -14,10 +14,10 @@ class PartialCheckPlanWithoutPathsTest {
   void checksWithPathsAreSkippedAndOthersRunInFull() {
     final GateConfiguration narrowable =
         new GateConfiguration(
-            "checkstyle",
-            "checkstyle",
+            "lint",
+            "lint",
             true,
-            List.of("./mvnw", "checkstyle:check"),
+            List.of("./mvnw", "lint:check"),
             Set.of("edit"),
             new PartialGateConfiguration(
                 List.of("src/**/*.java"), List.of(), List.of("{paths}"), null, null),
@@ -34,9 +34,9 @@ class PartialCheckPlanWithoutPathsTest {
     final GateConfiguration plain = new GateConfiguration("tests", true, List.of("./mvnw", "test"));
 
     final PartialCheckPlan plan =
-        PartialCheckPlan.withoutPaths(Map.of("checkstyle", narrowable, "tests", plain));
+        PartialCheckPlan.withoutPaths(Map.of("lint", narrowable, "tests", plain));
 
-    assertThat(plan.gates().get("checkstyle").scope()).isEqualTo(PartialCheckPlan.Scope.SKIP);
+    assertThat(plan.gates().get("lint").scope()).isEqualTo(PartialCheckPlan.Scope.SKIP);
     assertThat(plan.gates().get("tests").scope()).isEqualTo(PartialCheckPlan.Scope.FULL);
     assertThat(plan.gates().get("tests").args()).isEmpty();
   }

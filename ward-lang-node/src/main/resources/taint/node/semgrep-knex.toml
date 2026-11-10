@@ -1,0 +1,29 @@
+# Knex SQL sinks of the Semgrep p/javascript rules: raw query text handed to a knex builder.
+# shortcut: matches the builder method by name on any receiver.
+
+[[sinks]]
+kind = "call"
+name = "raw"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "whereRaw"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "fromRaw"
+arguments = [0]
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+
+[[sanitizers]]
+kind = "call"
+name = "parseFloat"
+
+[[sanitizers]]
+kind = "call"
+name = "Number"

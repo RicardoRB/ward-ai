@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.BuildFileChange;
-import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
@@ -103,24 +102,13 @@ class MavenModuleConfiguratorTest {
   }
 
   @Test
-  void moduleRuleFilesResolveFromTheAggregator() throws IOException {
-    new PomToolConfigurator()
-        .apply(aggregator(), ModuleFixtures.gates("checkstyle"), QualityPreset.STANDARD);
-
-    assertThat(read("api/pom.xml"))
-        .contains("${maven.multiModuleProjectDirectory}/config/checkstyle.xml")
-        .doesNotContain("${project.basedir}/config/checkstyle.xml");
-  }
-
-  @Test
-  void moduleGatesAreTheSameAsTheGradleModuleGates() {
+  void moduleGatesMatchTheGradleModuleBlocks() {
     final List<String> maven =
         PomTools.TOOLS.stream().filter(PomTools.Tool::module).map(PomTools.Tool::gate).toList();
 
-    assertThat(maven)
-        .containsExactlyInAnyOrder(
-            "checkstyle", "pmd", "enforcer", "spotbugs", "coverage", "mutation");
-    assertThat(maven).containsExactlyInAnyOrderElementsOf(GradleBuildBlocks.moduleGates());
+    assertThat(maven).containsExactlyInAnyOrder("enforcer", "coverage", "mutation");
+    // Gradle has no enforcer block, so its module gates are the coverage and mutation blocks.
+    assertThat(GradleBuildBlocks.moduleGates()).containsExactlyInAnyOrder("coverage", "mutation");
   }
 
   /** A pom aggregator with Java modules api and domain, and a resources-only module config. */

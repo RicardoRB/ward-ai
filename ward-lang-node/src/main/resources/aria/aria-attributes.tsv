@@ -1,0 +1,58 @@
+# Biome 2.5.15 ARIA metadata, mirrored as data. Tag: @biomejs/biome@2.5.15 (commit 0b4c11f553a7e702f9851af139662e1de45dc131).
+# Source: crates/biome_aria_metadata/aria-data/{wai-aria-1-3,graphics-aria-1-0,dpub-aria-1-1}.json, merged as build.rs does,
+# and classified as crates/biome_aria_metadata/src/lib.rs (is_interactive, is_non_interactive, is_presentational, is_composite).
+# Generated from those files by a one-off mirror script (not checked in); do not edit by hand.
+attribute	type	valueType	values	deprecated
+aria-activedescendant	property	ID reference		
+aria-atomic	property	true/false	false true	
+aria-autocomplete	property	token	inline list both none	
+aria-braillelabel	property	string		
+aria-brailleroledescription	property	string		
+aria-busy	state	true/false	false true	
+aria-checked	state	tristate	false mixed true undefined	
+aria-colcount	property	integer		
+aria-colindex	property	integer		
+aria-colindextext	property	string		
+aria-colspan	property	integer		
+aria-controls	property	ID reference list		
+aria-current	state	token	page step location date time true false	
+aria-describedby	property	ID reference list		
+aria-description	property	string		
+aria-details	property	ID reference list		
+aria-disabled	state	true/false	false true	
+aria-dropeffect	property	token list	copy execute link move none popup	1.1
+aria-errormessage	property	ID reference list		
+aria-expanded	state	true/false/undefined	false true undefined	
+aria-flowto	property	ID reference list		
+aria-grabbed	state	true/false/undefined	false true undefined	1.1
+aria-haspopup	property	token	false true menu listbox tree grid dialog	
+aria-hidden	state	true/false/undefined	false true undefined	
+aria-invalid	state	token	grammar false spelling true	
+aria-keyshortcuts	property	string		
+aria-label	property	string		
+aria-labelledby	property	ID reference list		
+aria-level	property	integer		
+aria-live	property	token	assertive off polite	
+aria-modal	property	true/false	false true	
+aria-multiline	property	true/false	false true	
+aria-multiselectable	property	true/false	false true	
+aria-orientation	property	token	horizontal undefined vertical	
+aria-owns	property	ID reference list		
+aria-placeholder	property	string		
+aria-posinset	property	integer		
+aria-pressed	state	tristate	false mixed true undefined	
+aria-readonly	property	true/false	false true	
+aria-relevant	property	token list	additions additions text all removals text	
+aria-required	property	true/false	false true	
+aria-roledescription	property	string		
+aria-rowcount	property	integer		
+aria-rowindex	property	integer		
+aria-rowindextext	property	string		
+aria-rowspan	property	integer		
+aria-selected	state	true/false/undefined	false true undefined	
+aria-setsize	property	integer		
+aria-sort	property	token	ascending descending none other	
+aria-valuemax	property	number		
+aria-valuemin	property	number		
+aria-valuenow	property	number		
+aria-valuetext	property	string		

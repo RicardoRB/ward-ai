@@ -35,9 +35,6 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
   /** Plugins in declaration order; a versioned plugin takes its version from the catalog. */
   private static final List<GradlePlugin> PLUGINS =
       List.of(
-          new GradlePlugin("checkstyle", "checkstyle", false, true),
-          new GradlePlugin("pmd", "pmd", false, true),
-          new GradlePlugin("spotbugs", GradleToolCatalog.SPOTBUGS, true, true),
           new GradlePlugin("coverage", "jacoco", false, true),
           new GradlePlugin("dependency-check", "org.owasp.dependencycheck", true, false),
           new GradlePlugin("mutation", GradleToolCatalog.PITEST, true, true),
@@ -47,7 +44,7 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
 
   private static final String NO_KOTLIN_MODULE =
       "No module applies the Kotlin JVM plugin, or the Java plugin with Java sources, directly, so"
-          + " the coverage, SpotBugs and mutation gates stay in the root build script.";
+          + " the coverage and mutation gates stay in the root build script.";
 
   private final Optional<CompatibilityFindings> compatibility;
 

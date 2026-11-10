@@ -4,17 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.domain.gate.QualityGateDefinitions;
 import dev.ward.domain.project.WorkspaceMembers;
-import dev.ward.infrastructure.finding.jvm.CheckstyleXmlFindings;
 import dev.ward.infrastructure.finding.jvm.JavacOutputFindings;
-import dev.ward.infrastructure.finding.jvm.PmdXmlFindings;
-import dev.ward.infrastructure.finding.node.BiomeCheckstyleFindings;
+import dev.ward.infrastructure.finding.node.BiomeXmlFindings;
 import dev.ward.infrastructure.finding.node.EslintJsonFindings;
 import dev.ward.infrastructure.finding.node.TscOutputFindings;
 import dev.ward.infrastructure.finding.node.turbo.TurborepoFindings;
 import dev.ward.infrastructure.finding.python.MypyJsonFindings;
 import dev.ward.infrastructure.finding.python.RuffJsonFindings;
 import dev.ward.infrastructure.finding.swift.SwiftFindingSources;
-import dev.ward.infrastructure.finding.swift.SwiftLintJsonFindings;
 import dev.ward.infrastructure.json.ForyJsonCodec;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
@@ -27,21 +24,18 @@ class FindingSourceContractTest {
         new CompositeFindingExtractor(
             Stream.concat(
                     Stream.of(
-                        new CheckstyleXmlFindings(),
-                        new PmdXmlFindings(),
                         new GitleaksSarifFindings(new ForyJsonCodec()),
                         new JavacOutputFindings(),
                         new EslintJsonFindings(new ForyJsonCodec()),
                         new TscOutputFindings(),
-                        new BiomeCheckstyleFindings(),
+                        new BiomeXmlFindings(),
                         new RuffJsonFindings(new ForyJsonCodec()),
                         new MypyJsonFindings(new ForyJsonCodec())),
-                    new SwiftFindingSources(new SwiftLintJsonFindings(new ForyJsonCodec()))
-                        .sources().stream())
+                    new SwiftFindingSources().sources().stream())
                 .toList());
 
     assertThat(extractor.gates())
-        .contains("swiftlint", "swift-build", "xcodebuild-test")
+        .contains("swift-build", "xcodebuild-test")
         .allSatisfy(
             gate ->
                 assertThat(QualityGateDefinitions.find(gate))

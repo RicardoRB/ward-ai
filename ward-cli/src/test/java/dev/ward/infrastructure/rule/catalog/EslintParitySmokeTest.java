@@ -49,6 +49,26 @@ class EslintParitySmokeTest {
   private static final int LINE = 1;
   private static final int RULE = 3;
 
+  /** The rows that ESLint cannot parse for their fixtures, which the test skips. */
+  private static final Set<String> APPROXIMATED = EslintParityApproximations.parseErrorRows();
+
+  /** The fields of an approximation line: the id, the language and the reason. */
+  /** Octal escapes are only legal in sloppy mode, so these rows lint their fixtures as scripts. */
+  private static final Set<String> SCRIPT_RULES =
+      Set.of(
+          "no-delete-var",
+          "no-dupe-args",
+          "no-octal",
+          "no-octal-escape",
+          "no-nonoctal-decimal-escape",
+          "no-with");
+
+  /** Globals that the rules read as environment names; the parity fixtures use them as globals. */
+  private static final String GLOBALS = "{ setTimeout: \"readonly\", setInterval: \"readonly\" }";
+
+  /** The rule of a copied case and the option table from its options file. */
+  private record CaseOptions(String rule, Map<String, Object> values) {}
+
   /** One implemented pair with its catalog row and language. */
   private record Pair(CatalogRow row, AnalysisLanguage language) {
 
@@ -68,8 +88,9 @@ class EslintParitySmokeTest {
     final Path eslint = Path.of(binary).toRealPath();
     final Path workspace = Files.createTempDirectory("ward-eslint-parity");
     final List<Pair> pairs = implementedPairs();
-    final Map<String, List<String>> expected = copyFixtures(workspace, pairs);
-    writeConfig(workspace, eslint, pairs);
+    final Map<String, CaseOptions> caseOptions = new HashMap<>();
+    final Map<String, List<String>> expected = copyFixtures(workspace, pairs, caseOptions);
+    writeConfig(workspace, eslint, pairs, caseOptions);
     final List<String> output = run(eslint, workspace);
     assertThat(compare(pairs, expected, output)).isEmpty();
   }
@@ -77,68 +98,106 @@ class EslintParitySmokeTest {
   private static List<Pair> implementedPairs() {
     final List<Pair> pairs = new ArrayList<>();
     for (final CatalogRow row : new RuleCatalogReader().load().rows()) {
-      if (!row.counterparts().getOrDefault("eslint", List.of()).contains(row.name())) {
-        continue;
-      }
-      for (final AnalysisLanguage language : row.languages(CatalogStatus.IMPLEMENTED)) {
-        if (language == AnalysisLanguage.TYPESCRIPT || language == AnalysisLanguage.JAVASCRIPT) {
-          pairs.add(new Pair(row, language));
-        }
+      if (row.counterparts().getOrDefault("eslint", List.of()).contains(row.name())) {
+        addPairs(pairs, row);
       }
     }
     return pairs;
   }
 
-  /** Copies each violating and passing fixture; returns the expected lines of each copy. */
+  private static void addPairs(final List<Pair> pairs, final CatalogRow row) {
+    for (final AnalysisLanguage language : row.languages(CatalogStatus.IMPLEMENTED)) {
+      if (language == AnalysisLanguage.TYPESCRIPT || language == AnalysisLanguage.JAVASCRIPT) {
+        final String folder = language == AnalysisLanguage.TYPESCRIPT ? "typescript" : "javascript";
+        if (!APPROXIMATED.contains("ward:" + folder + "/" + row.name())) {
+          pairs.add(new Pair(row, language));
+        }
+      }
+    }
+  }
+
+  /**
+   * Copies each violating and passing fixture; returns the expected lines of each copy. A case's
+   * options are recorded per copied violating file, so its config applies them.
+   */
   private static Map<String, List<String>> copyFixtures(
-      final Path workspace, final List<Pair> pairs) throws IOException {
+      final Path workspace, final List<Pair> pairs, final Map<String, CaseOptions> caseOptions)
+      throws IOException {
     final Map<String, List<String>> expected = new HashMap<>();
     for (final Pair pair : pairs) {
       final RuleFixtureSet set =
           RuleFixtureSet.of(RuleFixtureSet.root(), pair.row(), pair.language());
-      final String extension = RuleFixtureSet.extension(pair.language());
       for (final String name : set.cases()) {
-        final String violating =
-            copy(workspace, pair, "violating." + extension, set.violating(name));
-        expected.put(violating, lines(set.expected(name)));
-        final String passing = copy(workspace, pair, "passing." + extension, set.passing(name));
-        expected.put(passing, List.of());
+        final String violating = copy(workspace, pair, set.violating(name));
+        expected.put(
+            violating,
+            set.expected(name).stream()
+                .map(position -> position.substring(0, position.indexOf(':')))
+                .toList());
+        recordOptions(caseOptions, pair, violating, set.options(name));
       }
+      // The passing fixture is shared by every case of the rule.
+      final String passing = copy(workspace, pair, set.passing(""));
+      expected.put(passing, List.of());
     }
     return expected;
   }
 
-  private static String copy(
-      final Path workspace, final Pair pair, final String file, final Path source)
+  private static String copy(final Path workspace, final Pair pair, final Path source)
       throws IOException {
-    final String relative = pair.folder() + "/" + pair.rule() + "/" + file;
+    final String relative =
+        pair.folder() + "/" + pair.rule() + "/" + source.getFileName().toString();
     final Path target = workspace.resolve(relative);
     Files.createDirectories(target.getParent());
     Files.copy(source, target);
     return relative;
   }
 
-  private static List<String> lines(final List<String> expected) {
-    final List<String> lines = new ArrayList<>();
-    for (final String position : expected) {
-      lines.add(position.substring(0, position.indexOf(':')));
+  /** Records a case's options against its copied violating file, for the config to apply. */
+  private static void recordOptions(
+      final Map<String, CaseOptions> caseOptions,
+      final Pair pair,
+      final String violating,
+      final Map<String, Object> options) {
+    if (!options.isEmpty()) {
+      caseOptions.put(violating, new CaseOptions(pair.rule(), options));
     }
-    return lines;
   }
 
-  private static void writeConfig(final Path workspace, final Path eslint, final List<Pair> pairs)
+  private static void writeConfig(
+      final Path workspace,
+      final Path eslint,
+      final List<Pair> pairs,
+      final Map<String, CaseOptions> caseOptions)
       throws IOException {
     final Path parser = eslint.getParent().getParent().getParent().resolve(PARSER);
     final String rules = rulesObject(pairs);
-    final String config =
-        "import tsParser from \"%s\";\n".formatted(parser.toUri())
-            + "export default [\n"
-            + "  { files: [\"**/*.ts\"], languageOptions: { parser: tsParser, sourceType: \"script\" },"
-            + " rules: %s },\n".formatted(rules)
-            + "  { files: [\"**/*.js\"], languageOptions: { sourceType: \"script\" },"
-            + " rules: %s },\n".formatted(rules)
-            + "];\n";
-    Files.writeString(workspace.resolve(CONFIG), config);
+    final List<String> lines = new ArrayList<>();
+    lines.add("import tsParser from \"%s\";".formatted(parser.toUri()));
+    lines.add("export default [");
+    lines.add(
+        "  { files: [\"**/*.ts\"], languageOptions: { parser: tsParser, sourceType: \"module\", globals: %s }, rules: %s },"
+            .formatted(GLOBALS, rules));
+    lines.add(
+        "  { files: [\"**/*.js\"], languageOptions: { sourceType: \"module\", parserOptions: { ecmaFeatures: { jsx: true } }, globals: %s }, rules: %s },"
+            .formatted(GLOBALS, rules));
+    for (final Pair pair : pairs) {
+      if (SCRIPT_RULES.contains(pair.rule())) {
+        lines.add(
+            "  { files: [\"%s/%s/**\"], languageOptions: { sourceType: \"script\" } },"
+                .formatted(pair.folder(), pair.rule()));
+      }
+    }
+    for (final Map.Entry<String, CaseOptions> entry : caseOptions.entrySet()) {
+      lines.add(
+          "  { files: [\"%s\"], rules: { \"%s\": [\"error\"%s] } },"
+              .formatted(
+                  entry.getKey(),
+                  entry.getValue().rule(),
+                  EslintParityOptions.arguments(entry.getValue().values())));
+    }
+    lines.add("];");
+    Files.writeString(workspace.resolve(CONFIG), String.join("\n", lines) + "\n");
     Files.writeString(workspace.resolve(FORMATTER), FORMATTER_SOURCE);
   }
 

@@ -13,6 +13,7 @@ import dev.ward.domain.project.Project;
 import dev.ward.domain.project.TaskRunner;
 import dev.ward.domain.project.node.PackageManifest;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -28,7 +29,10 @@ class NodePackageCatalogTest {
 
   @Test
   void everyOfferedNodeGateHasItsPackagesInTheCatalog() {
-    final Set<String> standalone = gateIds(BuildTool.MAVEN, Language.JAVA, PackageManifest.EMPTY);
+    // Semgrep is a standalone binary, so no npm package backs it.
+    final Set<String> standalone =
+        new HashSet<>(gateIds(BuildTool.MAVEN, Language.JAVA, PackageManifest.EMPTY));
+    standalone.add("semgrep");
     final PackageManifest jest = new PackageManifest(Map.of("jest", "^30.0.0"), null, null);
     for (final Language language : List.of(Language.TYPESCRIPT, Language.JAVASCRIPT)) {
       final Set<String> node =

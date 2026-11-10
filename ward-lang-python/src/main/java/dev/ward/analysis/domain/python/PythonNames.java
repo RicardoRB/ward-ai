@@ -29,7 +29,8 @@ final class PythonNames {
           "testlist_star_expr",
           "testlist",
           "exprlist",
-          "testlist_comp");
+          "testlist_comp",
+          "namedexpr_test");
 
   private static final Set<String> LISTS =
       Set.of("testlist_star_expr", "testlist", "exprlist", "testlist_comp");

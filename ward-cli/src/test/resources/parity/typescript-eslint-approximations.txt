@@ -1,0 +1,14 @@
+# rule	tool	tool id	reason. Reviewed differences between Ward and typescript-eslint 8.72.1 that the fixtures do not cover; the opt-in parity test compares the lines the fixtures expect and passes with the pinned tool.
+no-explicit-any	typescript-eslint	no-explicit-any	the fixToUnknown option only changes the autofix, which Ward does not apply to a finding; it is not declared
+no-misused-promises	typescript-eslint	no-misused-promises	checks-void-return covers call arguments, variable declarations and the returns of a function declared void; object properties need the contextual type of the object, which the facts do not give, and JSX attributes wait for the JSX work (#329)
+no-misused-promises	typescript-eslint	no-misused-promises	checks-conditionals reads only if statements; while, for, ternary and logical operands are not checked, and the object form with flagUnions is not declared
+no-misused-promises	typescript-eslint	no-misused-promises	checks-spreads reads only the spread of an object literal, not array spreads
+await-thenable	typescript-eslint	await-thenable	the promise aggregator input is checked only when the argument is an array literal; a variable or call argument is not checked
+only-throw-error	typescript-eslint	only-throw-error	a rethrow is recognised by the name of a catch parameter in the same unit, not by scope; allow lists type names only, without the from: lib and package specifiers
+restrict-plus-operands	typescript-eslint	restrict-plus-operands	an object or array operand is always reported, as the tool does; an operand of a type that is not resolved is not reported
+restrict-template-expressions	typescript-eslint	restrict-template-expressions	allow lists type names only, without the from: lib and package specifiers
+unbound-method	typescript-eslint	unbound-method	a method is found through the members of the object type; a method of an unresolved or library type is not reported
+no-redundant-type-constituents	typescript-eslint	no-redundant-type-constituents	aliases are not resolved, so only written constituents count; never in a return type is reported where the tool allows it
+no-unsafe-enum-comparison	typescript-eslint	no-unsafe-enum-comparison	only equality operators with a primitive operand are checked; a comparison of two different enums and of enum members is not
+no-duplicate-type-constituents	typescript-eslint	no-duplicate-type-constituents	written constituents are compared as text, so two spellings of one type are not reported
+consistent-type-exports	typescript-eslint	consistent-type-exports	an export of an import that is a type declared in another module is reported by the tool through type information; Ward reads only import type and local interface or type alias declarations, so such an export is not reported

@@ -5,12 +5,12 @@ import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.gate.ToolReports;
 import dev.ward.domain.init.InitGateOption;
-import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /** Gate choices that run a standalone executable, available only when it is on the path. */
 record BinaryToolGates(EnvironmentInspection environment, Project project) {
@@ -68,20 +68,20 @@ record BinaryToolGates(EnvironmentInspection environment, Project project) {
         settings);
   }
 
-  /**
-   * The security gates. Semgrep's JavaScript and TypeScript packs are not offered, since Ward's
-   * rules for those languages replace them.
-   */
+  /** Semgrep is offered only where a registry ruleset exists for the language. */
   private List<InitGateOption> securityGates() {
     final List<InitGateOption> gates = new ArrayList<>();
-    if (project.language() != Language.TYPESCRIPT && project.language() != Language.JAVASCRIPT) {
-      gates.add(
-          option(
-              "semgrep",
-              "Runs SAST and custom security rules with Semgrep.",
-              List.of("semgrep", "scan", "--config", "p/java", "--error"),
-              "Install Semgrep (needs network access to fetch the p/java ruleset)."));
-    }
+    semgrepRuleset()
+        .ifPresent(
+            ruleset ->
+                gates.add(
+                    option(
+                        "semgrep",
+                        "Runs SAST and custom security rules with Semgrep.",
+                        List.of("semgrep", "scan", "--config", ruleset, "--error"),
+                        "Install Semgrep (needs network access to fetch the "
+                            + ruleset
+                            + " ruleset).")));
     gates.addAll(
         List.of(
             option(
@@ -109,7 +109,15 @@ record BinaryToolGates(EnvironmentInspection environment, Project project) {
                 "Scans dependencies, containers, and IaC with Trivy.",
                 List.of("trivy", "fs", "--exit-code", "1", "."),
                 "Install Trivy.")));
-    return List.copyOf(gates);
+    return gates;
+  }
+
+  /** The Semgrep registry ruleset for {@code project}'s language, or empty when there is none. */
+  private Optional<String> semgrepRuleset() {
+    return switch (project.language()) {
+      case PYTHON -> Optional.of("p/python");
+      default -> Optional.empty();
+    };
   }
 
   private InitGateOption option(

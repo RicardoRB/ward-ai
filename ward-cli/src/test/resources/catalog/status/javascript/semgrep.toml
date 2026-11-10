@@ -1,74 +1,74 @@
 # Status of the semgrep rows in javascript: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-aead-no-final = { status = "planned", issue = "#446" }
-angular-bypasssecuritytrust = { status = "planned", issue = "#446" }
-aws-cdk-bucket-enforcessl = { status = "planned", issue = "#446" }
-awscdk-bucket-encryption = { status = "planned", issue = "#446" }
-awscdk-bucket-grantpublicaccessmethod = { status = "planned", issue = "#446" }
-awscdk-codebuild-project-public = { status = "planned", issue = "#446" }
-awscdk-sqs-unencryptedqueue = { status = "planned", issue = "#446" }
-bypass-tls-verification = { status = "planned", issue = "#446" }
-chrome-remote-interface-compilescript-injection = { status = "planned", issue = "#446" }
-code-string-concat = { status = "planned", issue = "#446" }
-cors-misconfiguration = { status = "planned", issue = "#446" }
-create-de-cipher-no-iv = { status = "planned", issue = "#446" }
-deno-dangerous-run = { status = "planned", issue = "#446" }
-detect-angular-element-taint = { status = "planned", issue = "#446" }
-detect-angular-sce-disabled = { status = "planned", issue = "#446" }
-detect-angular-trust-as-method = { status = "planned", issue = "#446" }
-detect-child-process = { status = "planned", issue = "#446" }
-detect-eval-with-expression = { status = "planned", issue = "#446" }
-direct-response-write = { status = "planned", issue = "#446" }
-dynamodb-request-object = { status = "planned", issue = "#446" }
-express-check-directory-listing = { status = "planned", issue = "#446" }
-express-cookie-session-default-name = { status = "planned", issue = "#446" }
-express-cookie-session-no-domain = { status = "planned", issue = "#446" }
-express-cookie-session-no-expires = { status = "planned", issue = "#446" }
-express-cookie-session-no-httponly = { status = "planned", issue = "#446" }
-express-cookie-session-no-path = { status = "planned", issue = "#446" }
-express-cookie-session-no-secure = { status = "planned", issue = "#446" }
-express-expat-xxe = { status = "planned", issue = "#446" }
-express-insecure-template-usage = { status = "planned", issue = "#446" }
-express-jwt-hardcoded-secret = { status = "planned", issue = "#446" }
-express-jwt-not-revoked = { status = "planned", issue = "#446" }
-express-libxml-noent = { status = "planned", issue = "#446" }
-express-open-redirect = { status = "planned", issue = "#446" }
-express-path-join-resolve-traversal = { status = "planned", issue = "#446" }
-express-phantom-injection = { status = "planned", issue = "#446" }
-express-puppeteer-injection = { status = "planned", issue = "#446" }
-express-res-sendfile = { status = "planned", issue = "#446" }
-express-sandbox-code-injection = { status = "planned", issue = "#446" }
-express-sequelize-injection = { status = "planned", issue = "#446" }
-express-session-hardcoded-secret = { status = "planned", issue = "#446" }
-express-ssrf = { status = "planned", issue = "#446" }
-express-third-party-object-deserialization = { status = "planned", issue = "#446" }
-express-vm-injection = { status = "planned", issue = "#446" }
-express-vm2-injection = { status = "planned", issue = "#446" }
-express-xml2json-xxe = { status = "planned", issue = "#446" }
-express-xml2json-xxe-event = { status = "planned", issue = "#446" }
-gcm-no-tag-length = { status = "planned", issue = "#446" }
-hardcoded-jwt-secret = { status = "planned", issue = "#446" }
-hardcoded-passport-secret = { status = "planned", issue = "#446" }
-intercom-settings-user-identifier-without-user-hash = { status = "planned", issue = "#446" }
-js-open-redirect = { status = "planned", issue = "#446" }
-jwt-none-alg = { status = "planned", issue = "#446" }
-jwt-simple-noverify = { status = "planned", issue = "#446" }
-knex-sqli = { status = "planned", issue = "#446" }
-mysql-sqli = { status = "planned", issue = "#446" }
-node-knex-sqli = { status = "planned", issue = "#446" }
-pg-sqli = { status = "planned", issue = "#446" }
-raw-html-concat = { status = "planned", issue = "#446" }
-raw-html-format = { status = "planned", issue = "#446" }
-react-dangerouslysetinnerhtml = { status = "planned", issue = "#446" }
-react-insecure-request = { status = "planned", issue = "#446" }
-react-unsanitized-method = { status = "planned", issue = "#446" }
-react-unsanitized-property = { status = "planned", issue = "#446" }
-require-request = { status = "planned", issue = "#446" }
-res-render-injection = { status = "planned", issue = "#446" }
-sequelize-sqli = { status = "planned", issue = "#446" }
-tainted-html-response = { status = "planned", issue = "#446" }
-tainted-html-string = { status = "planned", issue = "#446" }
-unsafe-argon2-config = { status = "planned", issue = "#446" }
-vm-runincontext-injection = { status = "planned", issue = "#446" }
-wildcard-postmessage-configuration = { status = "planned", issue = "#446" }
-x-frame-options-misconfiguration = { status = "planned", issue = "#446" }
+aead-no-final = "implemented"
+angular-bypasssecuritytrust = "implemented"
+aws-cdk-bucket-enforcessl = "implemented"
+awscdk-bucket-encryption = "implemented"
+awscdk-bucket-grantpublicaccessmethod = "implemented"
+awscdk-codebuild-project-public = "implemented"
+awscdk-sqs-unencryptedqueue = "implemented"
+bypass-tls-verification = "implemented"
+chrome-remote-interface-compilescript-injection = "implemented"
+code-string-concat = "implemented"
+cors-misconfiguration = "implemented"
+create-de-cipher-no-iv = "implemented"
+deno-dangerous-run = "implemented"
+detect-angular-element-taint = "implemented"
+detect-angular-sce-disabled = "implemented"
+detect-angular-trust-as-method = "implemented"
+detect-child-process = "implemented"
+detect-eval-with-expression = "implemented"
+direct-response-write = "implemented"
+dynamodb-request-object = "implemented"
+express-check-directory-listing = "implemented"
+express-cookie-session-default-name = "implemented"
+express-cookie-session-no-domain = "implemented"
+express-cookie-session-no-expires = "implemented"
+express-cookie-session-no-httponly = "implemented"
+express-cookie-session-no-path = "implemented"
+express-cookie-session-no-secure = "implemented"
+express-expat-xxe = "implemented"
+express-insecure-template-usage = "implemented"
+express-jwt-hardcoded-secret = "implemented"
+express-jwt-not-revoked = "implemented"
+express-libxml-noent = "implemented"
+express-open-redirect = "implemented"
+express-path-join-resolve-traversal = "implemented"
+express-phantom-injection = "implemented"
+express-puppeteer-injection = "implemented"
+express-res-sendfile = "implemented"
+express-sandbox-code-injection = "implemented"
+express-sequelize-injection = "implemented"
+express-session-hardcoded-secret = "implemented"
+express-ssrf = "implemented"
+express-third-party-object-deserialization = "implemented"
+express-vm-injection = "implemented"
+express-vm2-injection = "implemented"
+express-xml2json-xxe = "implemented"
+express-xml2json-xxe-event = "implemented"
+gcm-no-tag-length = "implemented"
+hardcoded-jwt-secret = "implemented"
+hardcoded-passport-secret = "implemented"
+intercom-settings-user-identifier-without-user-hash = "implemented"
+js-open-redirect = "implemented"
+jwt-none-alg = "implemented"
+jwt-simple-noverify = "implemented"
+knex-sqli = "implemented"
+mysql-sqli = "implemented"
+node-knex-sqli = "implemented"
+pg-sqli = "implemented"
+raw-html-concat = "implemented"
+raw-html-format = "implemented"
+react-dangerouslysetinnerhtml = "implemented"
+react-insecure-request = "implemented"
+react-unsanitized-method = "implemented"
+react-unsanitized-property = "implemented"
+require-request = "implemented"
+res-render-injection = "implemented"
+sequelize-sqli = "implemented"
+tainted-html-response = "implemented"
+tainted-html-string = "implemented"
+unsafe-argon2-config = "implemented"
+vm-runincontext-injection = "implemented"
+wildcard-postmessage-configuration = "implemented"
+x-frame-options-misconfiguration = "implemented"

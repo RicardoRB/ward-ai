@@ -22,11 +22,6 @@ class SwiftCiIntegrationTest {
   private static final long TIMEOUT_SECONDS = 300;
   private static final String MACOS_NAME = "Mac OS X";
 
-  /** Where {@code swift package resolve} leaves SwiftLint; the gate runs it from there. */
-  private static final String SWIFTLINT_BINARY =
-      ".ward/swift-tools/.build/artifacts/swiftlintplugins/SwiftLintBinary/"
-          + "SwiftLintBinary.artifactbundle/macos/swiftlint";
-
   private static final String SWIFT_STUB =
       "#!/bin/sh\n"
           + "case \"$*\" in\n"
@@ -55,7 +50,7 @@ class SwiftCiIntegrationTest {
 
   private static final String SOURCE = "Sources/Shop/Shop.swift";
 
-  /** The fixture source with a force unwrap and an unused constant, which strict must fail on. */
+  /** The fixture source with a force cast and an unused constant, which strict must fail on. */
   private static final String SEEDED_SOURCE =
       "public struct Cart {\n"
           + "    public private(set) var items: [String] = []\n"
@@ -67,9 +62,9 @@ class SwiftCiIntegrationTest {
           + "    }\n"
           + "\n"
           + "    public func first() -> String {\n"
-          + "        let user: String? = items.first\n"
+          + "        let user: Any = items.first as Any\n"
           + "        let unused = items.count\n"
-          + "        return user!\n"
+          + "        return user as! String\n"
           + "    }\n"
           + "}\n";
 
@@ -85,19 +80,6 @@ class SwiftCiIntegrationTest {
           + "      exit 1\n"
           + "    fi ;;\n"
           + "esac\n"
-          + "exit 0\n";
-
-  /** Reports a force unwrap only under {@code --strict}, as SwiftLint's opt-in rule does. */
-  private static final String SWIFTLINT_STRICT_STUB =
-      "#!/bin/sh\n"
-          + "case \"$*\" in *--strict*) ;; *) echo '[]'; exit 0 ;; esac\n"
-          + "if grep -q 'user!' Sources/Shop/Shop.swift; then\n"
-          + "  echo '[{\"file\": \"'\"$PWD\"'/Sources/Shop/Shop.swift\", \"line\": 13, "
-          + "\"character\": 16, \"severity\": \"error\", \"rule_id\": \"force_unwrapping\", "
-          + "\"reason\": \"Force unwrapping should be avoided.\"}]'\n"
-          + "  exit 2\n"
-          + "fi\n"
-          + "echo '[]'\n"
           + "exit 0\n";
 
   @TempDir Path root;
@@ -134,7 +116,6 @@ class SwiftCiIntegrationTest {
   void strictSwiftPackageFailsOnSeededViolationsAndPassesOnceFixed() throws Exception {
     final Path project = project("swift-package", "llvm-cov-export-full-coverage.json");
     stubs(project, "swift", SWIFT_STRICT_STUB);
-    Files.writeString(project.resolve(SWIFTLINT_BINARY), SWIFTLINT_STRICT_STUB);
     final String fixed = Files.readString(project.resolve(SOURCE));
     Files.writeString(project.resolve(SOURCE), SEEDED_SOURCE);
 
@@ -143,7 +124,8 @@ class SwiftCiIntegrationTest {
 
     assertThat(failing.exitCode()).isNotZero();
     assertThat(failing.output())
-        .contains("force_unwrapping", "initialization of immutable value 'unused'");
+        .contains("ward:swift/force-cast", "initialization of immutable value 'unused'")
+        .doesNotContain("swiftlint");
 
     Files.writeString(project.resolve(SOURCE), fixed);
     final Result passing = run(project, "check", "--profile", "ci");
@@ -170,10 +152,6 @@ class SwiftCiIntegrationTest {
     }
     Files.createDirectories(project.resolve(".git/hooks"));
     Files.createDirectories(project.resolve(".build/codecov"));
-    final Path swiftlint =
-        Files.createDirectories(project.resolve(SWIFTLINT_BINARY).getParent()).resolve("swiftlint");
-    Files.writeString(swiftlint, "#!/bin/sh\necho '[]'\nexit 0\n");
-    swiftlint.toFile().setExecutable(true);
     Files.copy(
         FIXTURES.resolve("swift").resolve(coverage), project.resolve(".build/codecov/shop.json"));
     Files.createDirectories(root.resolve("stubs"));

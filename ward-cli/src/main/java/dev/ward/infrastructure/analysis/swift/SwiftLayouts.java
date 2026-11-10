@@ -7,8 +7,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
@@ -23,6 +25,9 @@ public final class SwiftLayouts {
   private static final String MANIFEST = "Package.swift";
   private static final String PROJECT_SUFFIX = ".xcodeproj";
   private static final String PROJECT_FILE = "project.pbxproj";
+  private static final String SEPARATOR = "/";
+  private static final Set<String> GENERATED_FOLDERS =
+      Set.of(".build", ".ward", "DerivedData", "Pods", "Carthage");
 
   private SwiftLayouts() {}
 
@@ -37,7 +42,18 @@ public final class SwiftLayouts {
     for (final Path project : xcodeProjects(root)) {
       targets.addAll(xcodeTargets(project));
     }
-    return new SwiftProjectLayout(targets);
+    return new SwiftProjectLayout(targets.stream().map(SwiftLayouts::ownable).toList());
+  }
+
+  /** The target without the folders of build output, caches and vendored code. */
+  private static SwiftTarget ownable(final SwiftTarget target) {
+    final List<String> directories =
+        target.directories().stream().filter(directory -> !isGenerated(directory)).toList();
+    return new SwiftTarget(target.name(), directories, target.files(), target.dependencies());
+  }
+
+  private static boolean isGenerated(final String directory) {
+    return Arrays.stream(directory.split(SEPARATOR)).anyMatch(GENERATED_FOLDERS::contains);
   }
 
   private static List<SwiftTarget> packageTargets(final Path root) {

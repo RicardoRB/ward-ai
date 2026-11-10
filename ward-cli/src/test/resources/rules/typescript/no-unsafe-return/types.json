@@ -1,0 +1,18 @@
+{
+  "3:10-3:10": {
+    "type": {
+      "name": "any",
+      "primitive": false,
+      "args": [],
+      "array": 0
+    }
+  },
+  "33:10-33:10": {
+    "type": {
+      "name": "number",
+      "primitive": true,
+      "args": [],
+      "array": 0
+    }
+  }
+}

@@ -72,6 +72,7 @@ final class XcodeProjectTargets {
     for (final Object group : listOf(target.get("fileSystemSynchronizedGroups"))) {
       pathOf(String.valueOf(group)).filter(path -> !path.isEmpty()).ifPresent(folders::add);
     }
+    folders.addAll(XcodeTargetDirectories.of(files));
     return new SwiftTarget(name, folders, files, dependenciesOf(target));
   }
 

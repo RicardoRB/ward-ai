@@ -1,0 +1,158 @@
+# Web rules of the Semgrep p/javascript pack: HTML output, templates, redirects, outbound requests and file responses.
+# Each rule is a taint check from request or browser data to the sink; upstream rule ids are in catalog/semgrep.toml.
+
+[[rules]]
+id = "ward:javascript/direct-response-write"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/xss.toml"]
+message = "untrusted data from {source} reaches the response written by {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/raw-html-concat"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/xss.toml"]
+message = "untrusted data from {source} reaches the HTML written by {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/raw-html-format"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/xss.toml"]
+message = "untrusted data from {source} reaches the HTML written by {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/tainted-html-response"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/xss.toml"]
+message = "untrusted data from {source} reaches the HTML response written by {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/express-insecure-template-usage"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-template.toml"]
+message = "untrusted data from {source} reaches the template compiled by {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/res-render-injection"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-render.toml"]
+message = "untrusted data from {source} selects the view rendered by {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/express-open-redirect"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-redirect.toml"]
+message = "untrusted data from {source} reaches the redirect of {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/js-open-redirect"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-location.toml"]
+message = "untrusted data from {source} reaches the browser location set by {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/express-ssrf"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-request.toml"]
+message = "untrusted data from {source} reaches the URL requested by {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/express-res-sendfile"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-sendfile.toml"]
+message = "untrusted data from {source} reaches the file sent by {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/express-path-join-resolve-traversal"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-path-join.toml"]
+message = "untrusted data from {source} reaches the path built by {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/tainted-html-string"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/semgrep-lambda.toml", "taint/node/semgrep-html-string.toml"]
+message = "untrusted event data from {source} is built into an HTML string by {sink}"
+'''

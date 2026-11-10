@@ -30,6 +30,8 @@ final class PythonBindings {
   private static final String UNTYPED = "vfpdef";
   private static final int BRACKETED_PARTS = 3;
   private static final int ANNOTATION = 2;
+  private static final Set<ScopeKind> NAMED_EXPRESSION_SCOPES =
+      Set.of(ScopeKind.MODULE, ScopeKind.FUNCTION, ScopeKind.LAMBDA, ScopeKind.CLASS);
 
   private final ScopeBuilder builder;
   private final Set<String> exported;
@@ -86,6 +88,24 @@ final class PythonBindings {
     builder.reference(identifier, name.span(), ReferenceAccess.WRITE);
   }
 
+  /**
+   * Binds the target of an assignment expression. PEP 572 binds it in the nearest scope that is not
+   * a comprehension, so inside a comprehension the name lands in the enclosing scope.
+   */
+  void walrus(final SyntaxNode name) {
+    final int scope = builder.nearest(NAMED_EXPRESSION_SCOPES);
+    if (scope == builder.current()) {
+      assign(name, false);
+      return;
+    }
+    final String identifier = PythonNames.identifier(name);
+    if (!builder.declares(scope, identifier)) {
+      builder.declareIn(
+          scope, identifier, BindingKind.VARIABLE, name.span(), flagsIn(scope, identifier));
+    }
+    builder.referenceIn(scope, identifier, name.span(), ReferenceAccess.WRITE);
+  }
+
   /** Declares a function, class or parameter name in the current scope. */
   void define(final SyntaxNode name, final BindingKind kind) {
     final String identifier = PythonNames.identifier(name);
@@ -93,8 +113,12 @@ final class PythonBindings {
   }
 
   private Set<BindingFlag> flags(final String name) {
+    return flagsIn(builder.current(), name);
+  }
+
+  private Set<BindingFlag> flagsIn(final int scope, final String name) {
     final Set<BindingFlag> flags = EnumSet.noneOf(BindingFlag.class);
-    if (builder.current() == UnitScopes.MODULE_ID && exported.contains(name)) {
+    if (scope == UnitScopes.MODULE_ID && exported.contains(name)) {
       flags.add(BindingFlag.EXPORTED);
     }
     return flags;

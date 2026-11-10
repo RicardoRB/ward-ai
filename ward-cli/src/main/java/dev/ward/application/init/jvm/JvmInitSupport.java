@@ -2,7 +2,6 @@ package dev.ward.application.init.jvm;
 
 import dev.ward.application.init.CiWorkflowTemplate;
 import dev.ward.application.init.InitInputs;
-import dev.ward.application.init.PartialCheckDefaults;
 import dev.ward.application.init.SourceLanguageGates;
 import dev.ward.application.init.SourceLanguages;
 import dev.ward.application.init.ToolchainInitSupport;
@@ -18,14 +17,11 @@ import dev.ward.domain.project.Project;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /** Init choices for Maven and Gradle projects. */
 public final class JvmInitSupport implements ToolchainInitSupport {
   private static final JavaGates JAVA = new JavaGates();
-  private static final KotlinGates KOTLIN = new KotlinGates();
   private static final int DEFAULT_CI_JDK = 25;
   private static final String COVERAGE = "coverage";
   private static final String SKIPPED_MODULES =
@@ -36,9 +32,8 @@ public final class JvmInitSupport implements ToolchainInitSupport {
           SupportedQualityGates.ANDROID_LINT,
           SupportedQualityGates.ANDROID_UNIT_TEST,
           SupportedQualityGates.ANDROID_COVERAGE);
-  // shortcut: Kotlin gets Java's tools until Ward ships ktlint/detekt; give it its own gates then.
   private static final Map<Language, SourceLanguageGates<BuildToolGates>> LANGUAGES =
-      Map.of(Language.JAVA, JAVA, Language.KOTLIN, KOTLIN);
+      Map.of(Language.JAVA, JAVA, Language.KOTLIN, JAVA);
 
   @Override
   public Gates gates(final Project project, final QualityPreset preset, final InitInputs inputs) {
@@ -117,19 +112,5 @@ public final class JvmInitSupport implements ToolchainInitSupport {
           .presetOmissions(project, preset).stream().map(GateOmission::note).forEach(notes::add);
     }
     return notes;
-  }
-
-  @Override
-  public Set<String> partialGates() {
-    return JvmPartialTables.GATES;
-  }
-
-  @Override
-  public Optional<PartialCheckDefaults.Table> partialTable(
-      final String gate,
-      final Project project,
-      final QualityPreset preset,
-      final List<String> command) {
-    return JvmPartialTables.forGate(gate, project, preset);
   }
 }

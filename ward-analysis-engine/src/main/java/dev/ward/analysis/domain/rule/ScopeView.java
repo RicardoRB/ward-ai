@@ -38,6 +38,16 @@ public record ScopeView(
   public static final ScopeView NONE =
       new ScopeView(UnitScopes.EMPTY, Map.of(), Set.of(), NoScopes.INSTANCE);
 
+  // Members are reached through attribute access, not by a bare name in another file.
+  private static final Set<String> MEMBER_KINDS = Set.of("method", "property", "attribute");
+
+  /**
+   * The kind prefix of the public exports a Swift summary records for the accessibility rule. They
+   * are not declarations, so an import member never resolves to one; the Swift summarizer keeps the
+   * same literal.
+   */
+  private static final String PUBLIC_EXPORT_PREFIX = "public:";
+
   /**
    * Copies the imports.
    *
@@ -77,7 +87,11 @@ public record ScopeView(
     final Set<String> names = new HashSet<>();
     dependencies
         .dependencies()
-        .forEach(summary -> summary.declared().forEach(symbol -> names.add(simple(symbol))));
+        .forEach(
+            summary ->
+                summary.declared().stream()
+                    .filter(symbol -> !MEMBER_KINDS.contains(symbol.kind()))
+                    .forEach(symbol -> names.add(simple(symbol))));
     return new ScopeView(scopes, resolved, names, analysis);
   }
 
@@ -119,7 +133,10 @@ public record ScopeView(
   private static Optional<Symbol> declared(final FileSummary summary, final String member) {
     return member.isEmpty()
         ? Optional.empty()
-        : Stream.concat(summary.declared().stream(), summary.exports().stream())
+        : Stream.concat(
+                summary.declared().stream(),
+                summary.exports().stream()
+                    .filter(symbol -> !symbol.kind().startsWith(PUBLIC_EXPORT_PREFIX)))
             .filter(symbol -> symbol.name().equals(member))
             .findFirst();
   }

@@ -33,6 +33,7 @@ references
   6:15 p write -> function parameter p @6:15
   6:18 T read -> module import T @1:15
   6:21 q write -> function parameter q @6:21
+  6:25 number read -> unresolved
   6:34 R read -> function type R @6:12
   7:9 z write -> function constant z @7:9
   7:12 Array read -> unresolved

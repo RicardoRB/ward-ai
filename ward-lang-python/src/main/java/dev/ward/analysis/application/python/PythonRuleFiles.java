@@ -12,10 +12,12 @@ public final class PythonRuleFiles implements RuleFileProvider {
   private static final List<String> FILES =
       List.of(
           "rules/duplication-python.toml",
+          "rules/python-cycles.toml",
           "rules/python-structural.toml",
           "rules/python-unused.toml",
           "rules/python/bugbear.toml",
           "rules/python/checkstyle.toml",
+          "rules/python/dead-code.toml",
           "rules/python/flake8-2020.toml",
           "rules/python/flake8-bandit-blocks.toml",
           "rules/python/flake8-bandit.toml",
@@ -29,9 +31,15 @@ public final class PythonRuleFiles implements RuleFileProvider {
           "rules/python/pycodestyle.toml",
           "rules/python/pyflakes.toml",
           "rules/python/pygrep-hooks.toml",
+          "rules/python/pylint-checks-a.toml",
+          "rules/python/pylint-checks-a2.toml",
+          "rules/python/pylint-checks-b.toml",
+          "rules/python/pylint-checks-c.toml",
           "rules/python/pylint.toml",
+          "rules/python/python-style.toml",
           "rules/python/refurb-calls.toml",
-          "rules/python/refurb.toml");
+          "rules/python/refurb.toml",
+          "rules/python/ruff-pylint.toml");
 
   @Override
   public List<String> ruleFiles() {

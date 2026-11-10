@@ -14,7 +14,22 @@ import org.junit.jupiter.api.Test;
 class ClasspathRuleSourceTest {
 
   private static final List<String> SCOPE_CHECKS =
-      List.of("reassigned-binding", "undefined-name", "unused-binding");
+      List.of(
+          "node-call-without-follow-up",
+          "node-no-label-var",
+          "node-no-redeclare",
+          "node-no-use-before-define",
+          "node-no-unassigned-vars",
+          "node-hidden-field",
+          "node-namespace-access",
+          "node-prefer-const",
+          "node-type-only-export",
+          "node-type-only-import",
+          "node-unused-parameter",
+          "node-variable-distance",
+          "reassigned-binding",
+          "undefined-name",
+          "unused-binding");
 
   @Test
   void malformedFileIsReportedAndOtherFilesStillLoad() {
@@ -84,7 +99,6 @@ class ClasspathRuleSourceTest {
         .allSatisfy(
             rule -> {
               assertThat(rule.capability()).isEqualTo(capabilityOf(rule));
-              assertThat(rule.severity()).isEqualTo(AnalysisSeverity.ERROR);
               assertThat(rule.body().isEmpty() || rule.body().contains("check = ")).isTrue();
             });
     assertThat(node).extracting(RuleDefinition::id).doesNotHaveDuplicates();

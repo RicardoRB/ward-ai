@@ -39,6 +39,7 @@ class EcmaSyntaxFixturesTest {
   private static final Map<String, List<String>> TYPESCRIPT_KINDS =
       Map.ofEntries(
           Map.entry("accessor-field.ts", List.of("accessorModifier")),
+          Map.entry("type-assertion-cast.ts", List.of("typeArguments")),
           Map.entry("ambient-string-module.ts", List.of("namespaceDeclaration")),
           Map.entry("const-type-params.ts", List.of("constModifier")),
           Map.entry("declaration-file.ts", List.of("namespaceDeclaration", "tupleElementType")),
@@ -51,6 +52,11 @@ class EcmaSyntaxFixturesTest {
           Map.entry("import-type.ts", List.of("typeOnlyModifier")),
           Map.entry("infer-extends.ts", List.of("inferType")),
           Map.entry("optional-chain-non-null.ts", List.of("'?.'", "'!'")),
+          Map.entry("optional-call.ts", List.of("arguments")),
+          Map.entry("private-names.ts", List.of("privateIdentifier")),
+          Map.entry(
+              "static-accessors.ts", List.of("getAccessor", "setAccessor", "propertyMemberBase")),
+          Map.entry("template-escapes.ts", List.of("TemplateStringEscapeAtom")),
           Map.entry("readonly-operator.ts", List.of("readonlyType")),
           Map.entry("regex-v.ts", List.of("RegularExpressionLiteral")),
           Map.entry("satisfies.ts", List.of("satisfiesClause")),
@@ -69,6 +75,9 @@ class EcmaSyntaxFixturesTest {
           Map.entry("import-attributes.js", List.of("importAttributes")),
           Map.entry("import-meta.js", List.of("importMetaExpression")),
           Map.entry("regex-v.js", List.of("RegularExpressionLiteral")),
+          Map.entry("private-names.js", List.of("privateIdentifier")),
+          Map.entry("static-accessors.js", List.of("getter", "setter")),
+          Map.entry("template-escapes.js", List.of("TemplateStringEscapeAtom")),
           Map.entry("using.js", List.of("usingDeclaration")));
 
   static List<Path> typeScriptFixtures() throws IOException {

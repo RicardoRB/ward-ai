@@ -45,16 +45,12 @@ class GradleAndroidModulePlacementTest {
     final Project project = copy();
 
     new GradleToolConfigurator()
-        .apply(
-            project,
-            gates("android-coverage", "checkstyle", "pmd", "spotbugs", "coverage"),
-            null,
-            finding -> false);
+        .apply(project, gates("android-coverage", "coverage"), null, finding -> false);
 
     assertThat(read(APP))
         .contains(COVERAGE_BLOCK)
-        .doesNotContain("checkstyle", "pmd", "spotbugs", "jacoco", "com.github.spotbugs");
-    assertThat(read(CORE)).doesNotContain("checkstyle", "pmd", "spotbugs", "jacoco");
+        .doesNotContain("jacoco", "info.solidsoft.pitest");
+    assertThat(read(CORE)).doesNotContain("jacoco");
   }
 
   @Test

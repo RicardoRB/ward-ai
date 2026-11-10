@@ -14,12 +14,21 @@ final class RuleFindings {
   /** Returns the finding of {@code match}, which {@code definition} reported in {@code unit}. */
   static AnalysisFinding of(
       final RuleDefinition definition, final SourceUnit unit, final RuleMatch match) {
+    return at(definition, unit.path(), match);
+  }
+
+  /**
+   * Returns the finding of {@code match}, which {@code definition} reported in the file at {@code
+   * path}.
+   */
+  static AnalysisFinding at(
+      final RuleDefinition definition, final String path, final RuleMatch match) {
     final Span span = match.span();
     return new AnalysisFinding(
         definition.id(),
         definition.severity(),
         match.message(),
-        unit.path(),
+        path,
         span == null ? null : span.startLine(),
         span == null ? null : span.startColumn(),
         null,

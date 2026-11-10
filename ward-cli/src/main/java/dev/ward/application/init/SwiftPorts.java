@@ -2,7 +2,6 @@ package dev.ward.application.init;
 
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.project.swift.SwiftSourceDirectories;
-import dev.ward.domain.project.swift.SwiftToolConfigs;
 import dev.ward.domain.project.swift.XcodeSchemes;
 import java.nio.file.Path;
 import java.util.List;
@@ -12,11 +11,9 @@ import java.util.Optional;
  * The read ports the Swift init support uses.
  *
  * @param xcode lists the Xcode workspace, schemes and platform of an Xcode project
- * @param configs finds the Swift tool configs a project keeps itself
  * @param sources lists the source directories the formatter checks
  */
-public record SwiftPorts(
-    XcodeSchemes xcode, SwiftToolConfigs configs, SwiftSourceDirectories sources) {
+public record SwiftPorts(XcodeSchemes xcode, SwiftSourceDirectories sources) {
   /** Ports for a catalog that reads no Swift project; using them fails loudly. */
   public static final SwiftPorts NONE =
       new SwiftPorts(
@@ -36,7 +33,6 @@ public record SwiftPorts(
               throw unavailable();
             }
           },
-          (root, fileName) -> Optional.empty(),
           root -> List.of());
 
   private static WardException unavailable() {

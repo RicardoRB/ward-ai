@@ -51,7 +51,7 @@ the ids in `include` and removes the ids in `exclude`.
 | `strict` | Every rule of `standard`, and the stricter ones as they are added. |
 | `none` | No rule; build the set from `include`. |
 
-A rule belongs to one category, named after Checkstyle's groups: `sizes`, `metrics`, `naming`,
+A rule belongs to one category, named after the usual style groups: `sizes`, `metrics`, `naming`,
 `imports`, `javadoc`, `coding`, `misc` or `linter`. A `[rules."<id>"]` table for a rule that is not
 selected is a configuration error, so a tuned rule is never silently off.
 
@@ -65,7 +65,7 @@ limit it uses without the file:
 | Rule | Option | Type | Default |
 |---|---|---|---|
 | `file-length`, `*-length`, `parameter-count`, `*-complexity`, `complexity`, `nesting-depth` (every language) | `max` | integer | the limit in the [gates reference](/configuration/gates/) |
-| `type-name`, `method-name`, `member-name`, `parameter-name`, `local-variable-name` (Java); `type-name`, `function-name`, `property-name` (Kotlin) | `pattern` | regular expression | the Checkstyle default |
+| `type-name`, `method-name`, `member-name`, `parameter-name`, `local-variable-name` (Java); `type-name`, `function-name`, `property-name` (Kotlin) | `pattern` | regular expression | the default pattern |
 
 Option types are `integer` (with an allowed range), `boolean`, `string`, `regex`, `string-list` and
 `enum`. A `regex` is compiled when the file is read.

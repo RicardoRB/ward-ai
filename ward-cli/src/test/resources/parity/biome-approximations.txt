@@ -1,0 +1,7 @@
+# Known differences between Ward's Biome rules and the pinned Biome 2.5.15, one per fixture: "<row>/<language> <reason>".
+# Fixtures named here are skipped by BiomeParitySmokeTest; the rest must report the same positions as Biome.
+use-default-switch-clause-last/javascript Ward reports the case clause after default (4:2); Biome reports the default clause (2:2). The order check cannot select the default clause.
+use-default-switch-clause-last/typescript Ward reports the case clause after default (4:2); Biome reports the default clause (2:2). The order check cannot select the default clause.
+# use-valid-aria-values (not listed above, because the fixtures do not contain these inputs, so they stay compared):
+#   aria-valuenow="inf", "NaN" and "infinity" are valid in Biome (Rust f32 parse) but Ward's number rule rejects them. Shortcut: upgrade the number rule to Rust's f32 grammar.
+#   aria-hidden={"maybe"} is invalid in Biome (the expression container holds a static string) but Ward reads it as dynamic and stays silent. Shortcut: read a string literal inside braces as static.

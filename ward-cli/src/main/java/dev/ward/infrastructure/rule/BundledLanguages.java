@@ -2,6 +2,7 @@ package dev.ward.infrastructure.rule;
 
 import dev.ward.analysis.application.jvm.JvmCheckProvider;
 import dev.ward.analysis.application.jvm.JvmRuleFiles;
+import dev.ward.analysis.application.node.NodeCheckProvider;
 import dev.ward.analysis.application.node.NodeRuleFiles;
 import dev.ward.analysis.application.python.PythonCheckProvider;
 import dev.ward.analysis.application.python.PythonRuleFiles;
@@ -9,6 +10,7 @@ import dev.ward.analysis.application.rule.CheckProvider;
 import dev.ward.analysis.application.rule.CheckRegistry;
 import dev.ward.analysis.application.rule.RuleFileProvider;
 import dev.ward.analysis.application.swift.SwiftCheckProvider;
+import dev.ward.analysis.application.swift.SwiftLintCheckProvider;
 import dev.ward.analysis.application.swift.SwiftRuleFiles;
 import java.util.List;
 
@@ -32,8 +34,10 @@ public final class BundledLanguages {
     return List.of(
         new CoreCheckProvider(),
         new JvmCheckProvider(),
+        new NodeCheckProvider(),
         new PythonCheckProvider(),
-        new SwiftCheckProvider());
+        new SwiftCheckProvider(),
+        new SwiftLintCheckProvider());
   }
 
   /** Returns the registry of every bundled check. */

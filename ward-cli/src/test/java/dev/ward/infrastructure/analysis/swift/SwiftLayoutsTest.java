@@ -59,8 +59,28 @@ class SwiftLayoutsTest {
     final SwiftProjectLayout layout = SwiftLayouts.read(FIXTURES.resolve("swift-xcode-classic"));
 
     assertThat(layout.moduleOf("Core/Cart.swift")).isEqualTo("ShopKit");
+    assertThat(layout.moduleOf("Core/Unlisted.swift")).isEqualTo("ShopKit");
     assertThat(layout.moduleOf("ShopTests/ShopTests.swift")).isEqualTo("ShopTests");
     assertThat(layout.targets().get(2).dependencies()).containsExactly("ShopKit");
+  }
+
+  @Test
+  void buildOutputAndVendoredFoldersAreNeverOwned() throws IOException {
+    Files.writeString(
+        root.resolve("Package.swift"),
+        "let package = Package(name: \"X\", targets: [\n"
+            + "  .target(name: \"Gen\", path: \".build/gen\"),\n"
+            + "  .target(name: \"Lib\", path: \"Vendor/Pods/Lib\"),\n"
+            + "  .target(name: \"Shop\", path: \"Sources/Shop\")\n"
+            + "])");
+
+    final SwiftProjectLayout layout = SwiftLayouts.read(root);
+
+    assertThat(layout.moduleOf(".build/gen/Gen.swift"))
+        .isEqualTo(SwiftProjectLayout.IMPLICIT_MODULE);
+    assertThat(layout.moduleOf("Vendor/Pods/Lib/Lib.swift"))
+        .isEqualTo(SwiftProjectLayout.IMPLICIT_MODULE);
+    assertThat(layout.moduleOf("Sources/Shop/Shop.swift")).isEqualTo("Shop");
   }
 
   @Test

@@ -11,12 +11,14 @@ import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.FileSummary;
 import dev.ward.analysis.domain.ir.SourceUnit;
+import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.port.TypeFacts;
 import dev.ward.analysis.domain.python.PythonFileSummarizer;
 import dev.ward.analysis.domain.rule.DuplicateCodeRule;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleRunResult;
+import dev.ward.analysis.domain.swift.SwiftFileSummarizer;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import dev.ward.infrastructure.analysis.GateFrontends;
 import dev.ward.infrastructure.rule.BundledRuleMatchers;
@@ -24,6 +26,8 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Runs one bundled rule over one source text through the real rule engine, with the rule's default
@@ -47,6 +51,19 @@ final class RuleFixtureRunner {
    */
   List<AnalysisFinding> run(
       final RuleDefinition rule, final String path, final String text, final TypeFacts typeFacts) {
+    return run(rule, path, text, typeFacts, FixtureProject.alone());
+  }
+
+  /**
+   * Like {@link #run(RuleDefinition, String, String, TypeFacts)}, with the project's manifests and
+   * the other source files of the project, which give cross-file facts but report nothing.
+   */
+  List<AnalysisFinding> run(
+      final RuleDefinition rule,
+      final String path,
+      final String text,
+      final TypeFacts typeFacts,
+      final FixtureProject project) {
     final AnalysisLanguage language = rule.languages().iterator().next();
     if (DuplicateCodeRule.isDuplicateRule(rule)) {
       return DuplicateCodeFindings.findings(
@@ -61,20 +78,37 @@ final class RuleFixtureRunner {
     assertThat(result.executionErrors()).as("execution errors of %s", rule.id()).isEmpty();
     assertThat(result.notRun()).as("rules not run: %s", rule.id()).isEmpty();
     final List<AnalysisFinding> all = new ArrayList<>(result.findings());
-    all.addAll(engine.runProject(units, frontendsFor(rule, typeFacts), List.of(rule)));
-    return all.stream().filter(finding -> finding.ruleId().equals(rule.id())).toList();
+    final List<SourceUnit> projectUnits = new ArrayList<>(units);
+    projectUnits.addAll(project.sources());
+    all.addAll(
+        engine.runProject(
+            projectUnits, frontendsFor(rule, typeFacts), List.of(rule), project.manifests()));
+    final Set<String> otherPaths =
+        project.sources().stream().map(SourceUnit::path).collect(Collectors.toSet());
+    return all.stream()
+        .filter(finding -> finding.ruleId().equals(rule.id()))
+        .filter(finding -> !otherPaths.contains(finding.file()))
+        .toList();
+  }
+
+  /** The frontends of the {@code ward} gate, for a graph rule over a project fixture. */
+  List<FrontendSupport> frontends() {
+    return frontends;
   }
 
   /** A fixture is one file, so a definition is used when the file itself uses it. */
   private List<AnalysisFinding> unusedDefinitions(
       final RuleDefinition rule, final SourceUnit unit) {
-    final FrontendSupport python =
+    final FrontendSupport support =
         frontends.stream()
-            .filter(support -> support.language() == unit.language())
+            .filter(candidate -> candidate.language() == unit.language())
             .findFirst()
             .orElseThrow();
+    final SyntaxNode tree = support.frontend().parse(unit).tree();
     final FileSummary summary =
-        new PythonFileSummarizer().summarize(unit, python.frontend().parse(unit).tree());
+        unit.language() == AnalysisLanguage.SWIFT
+            ? new SwiftFileSummarizer().summarize(unit, tree)
+            : new PythonFileSummarizer().summarize(unit, tree);
     return UnusedDefinitionFindings.findings(List.of(rule), Map.of(unit.path(), summary));
   }
 

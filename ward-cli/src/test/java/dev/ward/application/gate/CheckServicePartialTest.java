@@ -29,21 +29,21 @@ class CheckServicePartialTest {
       [checks.format]
       profiles = ["default", "edit"]
       command = "mvn spotless:check"
-      [checks.checkstyle]
-      uses = "checkstyle"
+      [checks.lint]
+      uses = "eslint"
       profiles = ["default", "edit"]
-      command = "mvn checkstyle:check"
-      [checks.checkstyle.paths]
+      command = "mvn lint:check"
+      [checks.lint.paths]
       match = ["src/**/*.java"]
-      full = ["config/checkstyle.xml", "pom.xml"]
-      args = ["-Dcheckstyle.includes={paths}"]
+      full = ["config/lint.xml", "pom.xml"]
+      args = ["--lint-includes={paths}"]
       item = "**/{name}"
       separator = ","
-      [checks.pmd]
-      uses = "pmd"
+      [checks.style]
+      uses = "eslint"
       profiles = ["default", "edit"]
-      command = "mvn pmd:check"
-      [checks.pmd.paths]
+      command = "mvn style:check"
+      [checks.style.paths]
       match = ["src/**/*.java"]
       full = ["pom.xml"]
       [checks.tests]
@@ -58,8 +58,8 @@ class CheckServicePartialTest {
       command = "openspec validate --all"
       """;
   private static final List<String> FORMAT = List.of("mvn", "spotless:check");
-  private static final List<String> CHECKSTYLE = List.of("mvn", "checkstyle:check");
-  private static final List<String> PMD = List.of("mvn", "pmd:check");
+  private static final List<String> CHECKSTYLE = List.of("mvn", "lint:check");
+  private static final List<String> PMD = List.of("mvn", "style:check");
   private static final String ORDER = "src/main/java/com/acme/Order.java";
 
   @TempDir Path dir;
@@ -83,8 +83,8 @@ class CheckServicePartialTest {
         .extracting(GateResult::name, GateResult::status, GateResult::scope)
         .containsExactly(
             tuple("format", GateStatus.PASSED, GateScope.FULL),
-            tuple("checkstyle", GateStatus.SKIPPED, GateScope.SKIPPED),
-            tuple("pmd", GateStatus.SKIPPED, GateScope.SKIPPED));
+            tuple("lint", GateStatus.SKIPPED, GateScope.SKIPPED),
+            tuple("style", GateStatus.SKIPPED, GateScope.SKIPPED));
     assertThat(report.results().get(1).summary()).isEqualTo(PartialGates.NOT_AFFECTED);
     assertThat(report.partialPaths()).containsExactly("README.md");
   }
@@ -95,7 +95,7 @@ class CheckServicePartialTest {
 
     assertThat(executor.commands)
         .containsExactly(
-            FORMAT, List.of("mvn", "checkstyle:check", "-Dcheckstyle.includes=**/Order.java"), PMD);
+            FORMAT, List.of("mvn", "lint:check", "--lint-includes=**/Order.java"), PMD);
     assertThat(report.results())
         .extracting(GateResult::scope)
         .containsExactly(GateScope.FULL, GateScope.NARROWED, GateScope.FULL);
@@ -162,7 +162,7 @@ class CheckServicePartialTest {
                     SupportedQualityGates.specIds()));
 
     assertThat(executor.commands).containsExactly(FORMAT);
-    assertThat(finished).containsExactly("format", "checkstyle", "pmd");
+    assertThat(finished).containsExactly("format", "lint", "style");
     assertThat(report.results().get(1).status()).isEqualTo(GateStatus.SKIPPED);
   }
 

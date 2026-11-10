@@ -83,9 +83,6 @@ final class GradleToolVersions {
 
   private static Map<String, List<String>> gateTools() {
     final Map<String, List<String>> tools = new LinkedHashMap<>();
-    tools.put("checkstyle", List.of(GradleToolCatalog.CHECKSTYLE_ENGINE));
-    tools.put("pmd", List.of(GradleToolCatalog.PMD_ENGINE));
-    tools.put("spotbugs", List.of(GradleToolCatalog.SPOTBUGS, GradleToolCatalog.SPOTBUGS_ENGINE));
     tools.put("coverage", List.of(GradleToolCatalog.JACOCO_ENGINE));
     tools.put("mutation", List.of(GradleToolCatalog.PITEST, GradleToolCatalog.PITEST_ENGINE));
     tools.put("dependency-check", List.of("org.owasp.dependencycheck"));

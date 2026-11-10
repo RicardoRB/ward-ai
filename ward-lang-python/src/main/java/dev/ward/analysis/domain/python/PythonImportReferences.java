@@ -4,6 +4,7 @@ import dev.ward.analysis.domain.ir.Reference;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Reads the imports of a Python file. An {@code import a.b} is {@code abs:a.b}; a {@code from}
@@ -15,6 +16,9 @@ final class PythonImportReferences {
 
   private static final String IMPORT_NAME = "import_name";
   private static final String IMPORT_FROM = "import_from";
+  private static final String IF_STATEMENT = "if_stmt";
+  private static final String CONDITION = "namedexpr_test";
+  private static final String TYPE_CHECKING = "TYPE_CHECKING";
   private static final String ABSOLUTE = "abs:";
   private static final String FROM = "from:";
   private static final String SEPARATOR = ":";
@@ -29,34 +33,57 @@ final class PythonImportReferences {
   /** The references of every import statement under {@code tree}, in source order. */
   static List<Reference> of(final SyntaxNode tree) {
     final List<Reference> references = new ArrayList<>();
-    collect(tree, references);
+    collect(tree, false, references);
     return references;
   }
 
-  private static void collect(final SyntaxNode node, final List<Reference> references) {
+  private static void collect(
+      final SyntaxNode node, final boolean typeChecking, final List<Reference> references) {
     if (IMPORT_NAME.equals(node.kind())) {
-      importName(node, references);
+      importName(node, typeChecking, references);
     } else if (IMPORT_FROM.equals(node.kind())) {
-      importFrom(node, references);
+      importFrom(node, typeChecking, references);
     } else {
-      node.children().forEach(child -> collect(child, references));
+      final boolean guarded = typeChecking || isTypeCheckingGuard(node);
+      node.children().forEach(child -> collect(child, guarded, references));
     }
   }
 
-  private static void importName(final SyntaxNode node, final List<Reference> references) {
+  /**
+   * Whether {@code node} is an {@code if} whose condition is {@code TYPE_CHECKING} or a typing one.
+   */
+  private static boolean isTypeCheckingGuard(final SyntaxNode node) {
+    return IF_STATEMENT.equals(node.kind())
+        && node.children().stream()
+            .filter(child -> CONDITION.equals(child.kind()))
+            .findFirst()
+            .map(PythonImportReferences::spelled)
+            .filter(text -> TYPE_CHECKING.equals(text) || text.endsWith("." + TYPE_CHECKING))
+            .isPresent();
+  }
+
+  /** The source text of a rule node, joined from its tokens, since rule nodes carry no text. */
+  private static String spelled(final SyntaxNode node) {
+    return PythonSyntax.tokens(node).stream().map(PythonSyntax::text).collect(Collectors.joining());
+  }
+
+  private static void importName(
+      final SyntaxNode node, final boolean typeChecking, final List<Reference> references) {
     PythonSyntax.children(node, "dotted_as_names").stream()
         .flatMap(names -> PythonSyntax.children(names, "dotted_as_name").stream())
         .flatMap(alias -> PythonSyntax.children(alias, "dotted_name").stream())
         .forEach(
             name ->
                 references.add(
-                    new Reference(ABSOLUTE + PythonSyntax.dottedName(name), node.span())));
+                    new Reference(
+                        ABSOLUTE + PythonSyntax.dottedName(name), node.span(), typeChecking)));
   }
 
-  private static void importFrom(final SyntaxNode node, final List<Reference> references) {
+  private static void importFrom(
+      final SyntaxNode node, final boolean typeChecking, final List<Reference> references) {
     final String prefix = FROM + level(node) + SEPARATOR + module(node) + SEPARATOR;
     for (final String name : importedNames(node)) {
-      references.add(new Reference(prefix + name, node.span()));
+      references.add(new Reference(prefix + name, node.span(), typeChecking));
     }
   }
 

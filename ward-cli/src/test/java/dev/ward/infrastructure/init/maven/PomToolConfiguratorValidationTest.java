@@ -30,9 +30,10 @@ class PomToolConfiguratorValidationTest {
     Files.writeString(pom, UNDEFINED_ENTITY_POM);
     final byte[] original = Files.readAllBytes(pom);
 
-    assertThatThrownBy(() -> new PomToolConfigurator().apply(project(root), List.of(gate("pmd"))))
+    assertThatThrownBy(
+            () -> new PomToolConfigurator().apply(project(root), List.of(gate("coverage"))))
         .isInstanceOf(WardException.class)
-        .hasMessageContaining("while adding maven-pmd-plugin")
+        .hasMessageContaining("while adding jacoco-maven-plugin")
         .hasMessageContaining("not well-formed XML (line 2");
     assertThat(Files.readAllBytes(pom)).isEqualTo(original);
   }
@@ -42,10 +43,10 @@ class PomToolConfiguratorValidationTest {
     final Path pom = root.resolve("pom.xml");
     Files.writeString(pom, "<project>\n  <build/>\n</project>\n");
 
-    new PomToolConfigurator().apply(project(root), List.of(gate("pmd"), gate("mutation")));
+    new PomToolConfigurator().apply(project(root), List.of(gate("coverage"), gate("mutation")));
 
     assertThat(Files.readString(pom))
-        .contains("<artifactId>maven-pmd-plugin</artifactId>")
+        .contains("<artifactId>jacoco-maven-plugin</artifactId>")
         .contains("<artifactId>pitest-maven</artifactId>");
   }
 

@@ -1,0 +1,18 @@
+{
+  "2:11-2:11": {
+    "type": {
+      "name": "any",
+      "primitive": false,
+      "args": [],
+      "array": 0
+    }
+  },
+  "32:11-32:11": {
+    "type": {
+      "name": "{ name: string; }",
+      "primitive": false,
+      "args": [],
+      "array": 0
+    }
+  }
+}

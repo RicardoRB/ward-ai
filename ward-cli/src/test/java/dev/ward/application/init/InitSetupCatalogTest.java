@@ -18,7 +18,6 @@ import dev.ward.infrastructure.project.FileSystemProjectInspection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermissions;
-import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -49,13 +48,7 @@ class InitSetupCatalogTest {
           SupportedQualityGates.ANDROID_UNIT_TEST,
           SupportedQualityGates.ANDROID_COVERAGE);
   private static final Set<String> SWIFT_GATES =
-      Set.of(
-          "swiftlint",
-          "harmonize",
-          "swift-build",
-          "swift-test",
-          "xcodebuild-test",
-          "swift-coverage");
+      Set.of("harmonize", "swift-build", "swift-test", "xcodebuild-test", "swift-coverage");
 
   private static final double STRICT_LINE_MINIMUM = 0.85;
   private static final double STRICT_BRANCH_MINIMUM = 0.75;
@@ -111,26 +104,6 @@ class InitSetupCatalogTest {
     assertThat(QualityPreset.STRICT.rules().jacocoMinimums())
         .containsEntry("LINE", STRICT_LINE_MINIMUM)
         .containsEntry("BRANCH", STRICT_BRANCH_MINIMUM);
-    assertThat(QualityPreset.STANDARD.rules().pmdRules())
-        .containsExactly("rulesets/java/quickstart.xml");
-    assertThat(QualityPreset.STRICT.rules().pmdRules())
-        .anySatisfy(rule -> assertThat(rule).contains("bestpractices"));
-    assertThat(QualityPreset.STANDARD.rules().checkstyleModules())
-        .containsExactly(
-            "EqualsHashCode",
-            "MissingSwitchDefault",
-            "FallThrough",
-            "EmptyCatchBlock",
-            "IllegalCatch",
-            "AvoidStarImport",
-            "UnusedImports",
-            "StringLiteralEquality",
-            "OneStatementPerLine",
-            "MultipleVariableDeclarations");
-    assertThat(QualityPreset.STANDARD.rules().spotbugsEffort()).isEqualTo("Default");
-    assertThat(QualityPreset.STANDARD.rules().spotbugsThreshold()).isEqualTo("Medium");
-    assertThat(QualityPreset.STANDARD.rules().spotbugsExcludes())
-        .containsExactly("EI_EXPOSE_REP", "EI_EXPOSE_REP2");
     assertThat(QualityPreset.STRICT.rules().enforcerRules())
         .contains("requireUpperBoundDeps", "requirePluginVersions", "banDynamicVersions");
     assertThat(QualityPreset.STRICT.rules().mutationThreshold())
@@ -235,8 +208,8 @@ class InitSetupCatalogTest {
                 .filter(id -> !OPENSPEC.equals(id) && !OPENSPEC_ARCHIVED.equals(id))
                 // OpenAPI gates are offered only when the project commits a spec.
                 .filter(id -> !id.startsWith("openapi-"))
-                // Ward's Java rules replace these tools, so a Java project is not offered them.
-                .filter(id -> !List.of("checkstyle", "pmd", "spotbugs").contains(id))
+                // Semgrep has no ruleset for JVM projects, so init does not offer it to them.
+                .filter(id -> !"semgrep".equals(id))
                 // The analysis gate is written by hand in ward.toml; init does not offer it.
                 .filter(id -> !SupportedQualityGates.ANALYSIS.equals(id))
                 // Node gates are run by check only; init does not offer them for JVM projects.
@@ -276,6 +249,8 @@ class InitSetupCatalogTest {
             "--report-path",
             "target/gitleaks.sarif");
     assertThat(catalog.gate(project, "enforcer").command()).endsWith("enforcer:enforce");
-    assertThat(catalog.gate(project, "semgrep").availabilityMessage()).isNotBlank();
+    assertThat(catalog.gates(project, null))
+        .extracting(InitGateOption::id)
+        .doesNotContain("semgrep");
   }
 }

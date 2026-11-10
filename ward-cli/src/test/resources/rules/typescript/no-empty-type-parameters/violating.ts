@@ -1,0 +1,2 @@
+interface Foo<> {}
+type Bar<> = {};

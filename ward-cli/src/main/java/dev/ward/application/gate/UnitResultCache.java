@@ -24,6 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -59,7 +60,9 @@ final class UnitResultCache {
       final List<SourceUnit> units,
       final List<FrontendSupport> frontends,
       final List<RuleDefinition> rules) {
-    return analyze(cache, units, frontends, rules).result();
+    return analyze(
+            cache, units, frontends, rules, dev.ward.analysis.domain.rule.ProjectFiles.empty())
+        .result();
   }
 
   /** Like {@link #run}, and also returns the dependency graph of the whole run. */
@@ -68,6 +71,17 @@ final class UnitResultCache {
       final List<SourceUnit> units,
       final List<FrontendSupport> frontends,
       final List<RuleDefinition> rules) {
+    return analyze(
+        cache, units, frontends, rules, dev.ward.analysis.domain.rule.ProjectFiles.empty());
+  }
+
+  /** Like {@link #analyze(AnalysisCache, List, List, List)}, and gives project checks the files. */
+  CachedRun analyze(
+      final AnalysisCache cache,
+      final List<SourceUnit> units,
+      final List<FrontendSupport> frontends,
+      final List<RuleDefinition> rules,
+      final dev.ward.analysis.domain.rule.ProjectFiles files) {
     final List<RuleDefinition> unitRules =
         rules.stream()
             .filter(rule -> !GraphRules.isGraphRule(rule))
@@ -105,9 +119,21 @@ final class UnitResultCache {
                 snapshot.graph(),
                 new ProjectFiles(snapshot.summaries().keySet(), snapshot.entries())));
     wholeRunFindings.addAll(DuplicateCodeFindings.findings(rules, units, frontends));
-    wholeRunFindings.addAll(UnusedDefinitionFindings.findings(rules, snapshot.summaries()));
-    wholeRunFindings.addAll(engine.runProject(units, frontends, rules));
+    wholeRunFindings.addAll(
+        UnusedDefinitionFindings.findings(rules, snapshot.summaries(), moduleOf()));
+    wholeRunFindings.addAll(engine.runProject(units, frontends, rules, files));
     return new CachedRun(merged(reused, analyzed, wholeRunFindings), snapshot.graph());
+  }
+
+  /**
+   * The module of a file, as the first dependency adapter that knows the file's module names it.
+   */
+  private Function<String, Optional<String>> moduleOf() {
+    return path ->
+        dependencies.stream()
+            .map(support -> support.resolver().moduleOf(path))
+            .flatMap(Optional::stream)
+            .findFirst();
   }
 
   private String ruleSet(final AnalysisLanguage language, final List<RuleDefinition> rules) {

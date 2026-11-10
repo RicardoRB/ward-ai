@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 /** Which findings become rule records, and what the records and prompts carry. */
 class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
-  private static final String CHECKSTYLE = "checkstyle";
+  private static final String BIOME = "biome";
   private static final String ESLINT = "eslint";
   private static final String TSC = "tsc";
   private static final int VIOLATIONS = 12;
@@ -23,24 +23,24 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
     final LearningOutcome failure =
         LearningPolicy.apply(LearningLedger.empty(), unusedVariable(), 1, NOW);
 
-    final LearningOutcome resolved = apply(failure, passed(PMD), 1, 1);
+    final LearningOutcome resolved = apply(failure, passed(ESLINT), 1, 1);
 
     assertThat(resolved.prompts())
         .singleElement()
         .extracting(LearningPrompt::instruction)
         .asString()
-        .contains("AGENTS.md", "`pmd`", "`UnusedLocalVariable`", UNUSED_MESSAGE)
+        .contains("AGENTS.md", "`eslint`", "`UnusedLocalVariable`", UNUSED_MESSAGE)
         .contains("do not write a rule about running the gate, Ward, or any command");
   }
 
   @Test
   void manyViolationsOfOneRuleMakeOneRecordWithTheFirstMessage() {
     final List<Finding> findings =
-        Collections.nCopies(VIOLATIONS, finding(CHECKSTYLE, "FinalParameters", "first"));
+        Collections.nCopies(VIOLATIONS, finding(BIOME, "FinalParameters", "first"));
 
     final LearningOutcome outcome =
         LearningPolicy.apply(
-            LearningLedger.empty(), failed(CHECKSTYLE, findings.toArray(Finding[]::new)), 1, NOW);
+            LearningLedger.empty(), failed(BIOME, findings.toArray(Finding[]::new)), 1, NOW);
 
     assertThat(outcome.ledger().records().values())
         .singleElement()
@@ -57,16 +57,18 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
         new CheckReport(
             PROJECT,
             List.of(
-                failedResult(CHECKSTYLE, finding(CHECKSTYLE, "FinalParameters", "final")),
+                failedResult(BIOME, finding(BIOME, "FinalParameters", "final")),
                 failedResult(
-                    PMD, finding(PMD, UNUSED, UNUSED_MESSAGE), finding(PMD, PRIVATE, "private")),
+                    ESLINT,
+                    finding(ESLINT, UNUSED, UNUSED_MESSAGE),
+                    finding(ESLINT, PRIVATE, "private")),
                 failedResult("gitleaks", finding("gitleaks", "generic-api-key", "secret"))));
 
     final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
 
     assertThat(outcome.ledger().records())
         .containsOnlyKeys(
-            "checkstyle:FinalParameters", UNUSED_KEY, PRIVATE_KEY, "gitleaks:generic-api-key");
+            "biome:FinalParameters", UNUSED_KEY, PRIVATE_KEY, "gitleaks:generic-api-key");
     assertThat(outcome.ledger().records().get(UNUSED_KEY).rule()).isEqualTo(UNUSED);
   }
 
@@ -79,11 +81,11 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
                 failedResult("test"),
                 failedResult("format", finding("spotless", "format", "not formatted")),
                 failedResult("compile", finding("javac", "javac.error", "cannot find symbol")),
-                failedResult(PMD, finding(PMD, PMD, "blank rule")),
-                GateResult.builder(CHECKSTYLE, GateStatus.PASSED)
+                failedResult(ESLINT, finding(ESLINT, ESLINT, "blank rule")),
+                GateResult.builder(BIOME, GateStatus.PASSED)
                     .build()
                     .withFindings(
-                        GateFindings.of(List.of(finding(CHECKSTYLE, "MagicNumber", "warn"))))));
+                        GateFindings.of(List.of(finding(BIOME, "MagicNumber", "warn"))))));
 
     final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
 
@@ -110,12 +112,12 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
   @Test
   void recordsStoreOnlyTheFindingMessageNeverStdoutOrStderr() {
     final GateResult result =
-        GateResult.builder(PMD, GateStatus.FAILED)
+        GateResult.builder(ESLINT, GateStatus.FAILED)
             .stdout("stdout must not be stored")
             .stderr("stderr must not be stored")
             .summary("Build broke")
             .build()
-            .withFindings(GateFindings.of(List.of(finding(PMD, UNUSED, UNUSED_MESSAGE))));
+            .withFindings(GateFindings.of(List.of(finding(ESLINT, UNUSED, UNUSED_MESSAGE))));
 
     final LearningRecord record =
         LearningPolicy.apply(
@@ -149,20 +151,18 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
   }
 
   @Test
-  void swiftLintRulesAreLearnedButSwiftFormatAndCompilerErrorsAreNot() {
+  void lintRulesAreLearnedButSwiftFormatAndCompilerErrorsAreNot() {
     final CheckReport report =
         new CheckReport(
             PROJECT,
             List.of(
-                failedResult(
-                    "swiftlint",
-                    finding("swiftlint", "force_cast", "Force casts should be avoided")),
+                failedResult("eslint", finding("eslint", "no-undef", "'x' is not defined")),
                 failedResult(
                     "swift-format", finding("swift-format", "Indentation", "unindent by 2 spaces")),
                 failedResult("swift-build", finding("swift-build", "swiftc", "cannot convert"))));
 
     final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
 
-    assertThat(outcome.ledger().records()).containsOnlyKeys("swiftlint:force_cast");
+    assertThat(outcome.ledger().records()).containsOnlyKeys("eslint:no-undef");
   }
 }

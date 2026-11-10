@@ -84,16 +84,16 @@ Init assigns each gate to cumulative [profiles](/configuration/ward-toml/):
 
 | Gates | Profiles |
 |---|---|
-| Fast: `ward-format`, `checkstyle`, `pmd`, `gitleaks` | `default`, `pre-commit`, `pre-push`, `ci` |
+| Fast: `ward-format`, `ward`, `gitleaks`, `eslint`, `biome` | `default`, `pre-commit`, `pre-push`, `ci` |
 | Slower local gates, including `compile`, `tsc`, the test runners, and custom commands | `pre-push`, `ci` |
 | Environment-dependent gates | `ci` |
 
 `default` is the same fast tier as `pre-commit`, and `ci` contains every selected gate.
 
-## Ward rules for Java
+## Ward rules for Java and Kotlin
 
-For a Java project, init writes no Checkstyle, PMD or SpotBugs gate, configuration file, build plugin
-or package entry. The `ward` check applies Ward's own Java rules instead, and init writes a
+For a Java or Kotlin project, init writes no separate style or bug gate, configuration file, build plugin
+or package entry. The `ward` check applies Ward's own rules instead, and init writes a
 `ward-rules.toml` that selects the rules of the preset:
 
 ```toml
@@ -101,22 +101,24 @@ version = 1
 
 [select]
 preset = "standard"
-languages = ["java"]
+languages = ["java", "swift"]
 ```
 
 The file starts with an ownership marker, so a `ward-rules.toml` that you wrote is kept and
 reported as user-owned. With the `strict` preset the file also sets `ignore-constructor-parameter` and
-`ignore-setter` to `true` on `ward:java/hidden-field`, as the former Checkstyle configuration did.
+`ignore-setter` to `true` on `ward:java/hidden-field`, as the former style configuration did.
 See [`ward-rules.toml`](/configuration/ward-rules/) to tune the rules.
 
-`languages = ["java"]` is written for every project. Kotlin, TypeScript, JavaScript, Python and
-Swift keep their external linters until their own migration lands, so selecting their Ward rules
-would report each finding twice. A Kotlin project still gets the `checkstyle`, `pmd` and `spotbugs`
-gates, and a mixed Java and Kotlin project gets both sets.
+`languages` lists the JVM source languages the project has, Java before Kotlin, then Swift: `["java", "swift"]`
+for a Java project, `["kotlin", "swift"]` for a Kotlin-only one, and `["java", "kotlin", "swift"]` for a
+mixed one. Kotlin gets the same gates as Java. Swift's rules apply to `.swift` files only, so the Swift
+entry is harmless in a project without Swift sources. TypeScript, JavaScript and Python keep their
+external linters until their own migration lands, so selecting their Ward rules would report each
+finding twice.
 
 ## What init changes in your build
 
-For `enforcer`, `license`, `api-compat`, and, for Kotlin, `pmd`, init adds missing plugins using
+For `enforcer`, `license` and `api-compat`, init adds missing plugins using
 Ward's embedded Java compatibility catalog.
 
 - Existing compatible plugin versions are kept.
@@ -129,7 +131,7 @@ Ward's embedded Java compatibility catalog.
 ### Multi-module Java builds
 
 In a multi-module Maven build, init places the `coverage` (JaCoCo), `mutation` (PIT), and
-`enforcer` gates (and, for Kotlin, `spotbugs`, `checkstyle` and `pmd`) in each module that has Java sources, so
+`enforcer` gates in each module that has Java or Kotlin sources, so
 each module's configuration and report live with its code. Other gates stay in the aggregator. The
 module-placed gates are the same for Gradle and Maven.
 
@@ -152,8 +154,7 @@ multi-module directory.
 
 When a Gradle build has modules that apply the Kotlin JVM plugin in their own build script (for
 example `kotlin("jvm")`, `org.jetbrains.kotlin.jvm`, or a catalog `alias` for `kotlin.jvm`), init
-writes the `coverage` (JaCoCo), `spotbugs`, `mutation` (PIT), `checkstyle`, `pmd`,
-and `enforcer` plugins and blocks into each of those module scripts, in that script's DSL. Other gates
+writes the `coverage` (JaCoCo), `mutation` (PIT), and `enforcer` plugins and blocks into each of those module scripts, in that script's DSL. Other gates
 stay in the root script.
 
 - The root script declares a versioned module plugin once, with its version and `apply false`.
@@ -190,11 +191,9 @@ Each version was run on a real JDK in Ward's compatibility matrix:
 
 | Tool | JDK 8 | JDK 11 | JDK 17 | JDK 21 | JDK 25 |
 |---|---|---|---|---|---|
-| Checkstyle engine | 9.3 | 10.20.2 | 10.20.2 | 10.20.2 | 10.20.2 |
-| SpotBugs (Maven plugin / Gradle engine) | 4.8.6.6 / 4.8.6 | 4.9.7.0 / 4.9.7 | 4.9.7.0 / 4.9.7 | 4.9.7.0 / 4.9.7 | 4.9.7.0 / 4.9.7 |
 | PIT | 1.17.4 | 1.30.1 | 1.30.1 | 1.30.1 | 1.30.1 |
 
-PMD (plugin 3.28.0, engine 7.17.0), JaCoCo 0.8.13, and Enforcer 3.5.0 use the same
+JaCoCo 0.8.13 and Enforcer 3.5.0 use the same
 version on every JDK.
 
 Every strict gate runs on each LTS JDK from 8 to 25. When no version of a gate's tool runs on your
@@ -202,7 +201,7 @@ JDK, init leaves that gate out and configures the others. The plan, `--dry-run`,
 output name it:
 
 ```text
-checkstyle omitted: maven-checkstyle-plugin needs JDK 8+; this project builds on JDK 7
+mutation omitted: info.solidsoft.pitest needs JDK 8+; this project builds on JDK 7
 ```
 
 - A gate you pass with `--gate` that cannot run on your JDK stops init before it changes any file.
@@ -229,8 +228,6 @@ checkstyle omitted: maven-checkstyle-plugin needs JDK 8+; this project builds on
   was.
 - `mutation` adds `pitest-maven` 1.30.1 with `pitest-junit5-plugin` 1.2.3, which read Java 25
   class files.
-- The `maven-pmd-plugin` declaration enables `<analysisCache>true</analysisCache>`. On Ward's own
-  sources this cut a warm PMD run from about 8 s to 2 s.
 
 Before writing, Ward checks the edited `pom.xml` in-process, without running Maven or fetching
 anything. The file must be well-formed XML, and each added declaration may contain only elements
@@ -255,10 +252,6 @@ and prefers the Gradle Wrapper when one exists.
 
 Init then appends blocks that make the plugins use what it generated:
 
-- With a preset, `checkstyle { configFile = file('config/checkstyle.xml') }` and
-  `pmd { ruleSetFiles = files('config/pmd-ruleset.xml'); ruleSets = [] }`, both limited to the
-  `main` source set, as the Maven plugins are. Each is followed by a `tasks.named` block that limits
-  the task to the files in the `wardPaths` property when a partial check sets it.
 - `jacocoTestCoverageVerification` with the preset's minimums, or `LINE` `0.80` without a preset.
   The `coverage` gate runs this task, which fails below a minimum.
 - `pitest { pitestVersion = '1.30.1'; junit5PluginVersion = '1.2.3' }` for `mutation`, plus the
@@ -275,7 +268,7 @@ commercial Arcmutate history plugin.
 ### Generated files
 
 - **`ward.toml`** includes [`partial` tables](/configuration/gates/#partial-checks) for
-  `checkstyle`, `pmd`, `ward-format`, `semgrep`, and `gitleaks`. The check after each agent edit, and
+  `ward`, `ward-format`, `semgrep`, `gitleaks`, `eslint`, and `biome`. The check after each agent edit, and
   the pre-commit hook, skip gates the change cannot affect and narrow these tools to the edited or
   staged files. Other gates, `ward check` without `--path`, the pre-push hook, and CI still check
   the whole project. `gitleaks` scans those files directly, so it sees changes that are not yet
@@ -430,6 +423,51 @@ unchanged and are no longer run by Ward.
 A custom selection uses the `standard` coverage minimum, and `stryker` without `strict` reports its
 score without a minimum.
 
+#### Declared ESLint and Biome versions
+
+When `package.json` already declares `eslint` or `@biomejs/biome`, init keeps that version, as long as
+it is inside Ward's supported range. Ward tests the oldest and newest version of each range on Node 22
+and 24, with the TypeScript fixture.
+
+| Tool | Ward pins | Supported range | Tested versions |
+| --- | --- | --- | --- |
+| `eslint` | 10.12.0 | `>=9.22.0 <11.0.0` | 9.22.0, 10.13.0 |
+| `@biomejs/biome` | 2.5.15 | `>=2.3.0 <3.0.0` | 2.3.0, 2.6.3 |
+
+A declared version outside its range is an `INCOMPATIBLE` finding that names the tool and the range.
+`--dry-run` lists it, and applying the plan fails without changing any file. Pick a version inside the
+range, or skip the gate.
+
+#### Biome
+
+Init detects Biome when `package.json` declares `@biomejs/biome` or the project root has its own
+`biome.json`, `biome.jsonc`, `.biome.json`, or `.biome.jsonc`. It asks no question about Biome.
+
+- A Biome project gets one `biome` gate, which lints in one run; Biome's formatter is off, and
+  `ward-format` checks formatting. It replaces `eslint` unless the project has its own ESLint config.
+  With `strict`, warnings fail the gate too (`--error-on-warnings`).
+- A project's own ESLint config (`eslint.config.*` or `.eslintrc*`) stays, and its `eslint` gate runs
+  that config unchanged. Init writes no ESLint config for a Biome project.
+- Under `strict`, a project's own `biome.json` or `biome.jsonc` is layered (see
+  [Layered configs](#layered-configs)). A `.biome.json` or `.biome.jsonc` is kept with a warning.
+  Under `standard`, a project's own Biome config is kept unchanged and listed as user-owned, with a
+  warning that the preset's Biome rules are not applied to it. Otherwise init writes an
+  ownership-marked `biome.jsonc` with Biome's recommended rules. It also turns on Git-ignore support,
+  so Biome skips `.ward/reports/` and coverage output. `strict` sets these rules to `error`:
+  `noExplicitAny`, `noNonNullAssertion`, `useConst`, `noUnusedImports`, `noUnusedVariables`,
+  `noExcessiveCognitiveComplexity`, `noFloatingPromises`, and `noMisusedPromises`.
+- If the project does not declare `@biomejs/biome`, init adds it at 2.5.15. A declared version
+  outside `>=2.3.0 <3.0.0` is an `INCOMPATIBLE` finding, and applying changes nothing. Biome 2.3.0 is
+  the first release with the XML reporter that Ward reads, and 3.x may change the config
+  schema.
+- Edit hooks run Biome on the edited files only. An edited file that Biome ignores passes.
+
+<Aside type="caution">
+Ward's `biome.jsonc` reads the project's ignore file. In a directory that is not a Git repository
+and has no `.gitignore`, Biome reports a configuration error and the `biome` gate fails. Add a
+`.gitignore`, or set up the repository, before running the gate.
+</Aside>
+
 #### Where the thresholds live
 
 The thresholds sit in the tools' own config files, so you can see and tune them there:
@@ -524,10 +562,13 @@ projects are not supported yet, and init stops with an error that names the mana
 - Every tool is pinned at an exact version in a PEP 735 `ward` dependency group in
   `pyproject.toml`. A project without `pyproject.toml` gets `requirements-ward.txt`.
 - The gates run through the manager: `uv run --group ward`, `poetry run`, or `.venv/bin/` for pip.
-  `standard` selects `ruff`, `mypy`, `pytest`, and `coverage` (line coverage of 80%), and `ward-format`
+  `standard` selects `mypy`, `pytest`, and `coverage` (line coverage of 80%), and `ward-format`
   checks formatting.
   `pip-audit` is opt-in.
-- Ward writes `ruff.toml`, `mypy.ini`, and `.coveragerc` only where the project has none. A config the
+- Lint comes from Ward's Python rules: `ward-rules.toml` selects them for `"python"` with the
+  preset. Init does not offer, pin or configure Ruff, Pylint or vulture. A project's own `ruff.toml`
+  is left unchanged.
+- Ward writes `mypy.ini` and `.coveragerc` only where the project has none. A config the
   project keeps is never changed; its coverage threshold goes on the command instead.
 - Install runs the manager's sync or install. A failed install restores `pyproject.toml`, the lock
   file, and `requirements-ward.txt`.
@@ -537,8 +578,8 @@ projects are not supported yet, and init stops with an error that names the mana
   the package, so tests cannot import it until one is added.
 - Init refuses Python below 3.11, Poetry below 2.2, and pip below 25.1 (in a project with
   `pyproject.toml`) before it changes any file.
-- `strict` adds `mutmut`. Strict mypy, Ruff's stricter rules with complexity 10,
-  and branch coverage with an 85% total apply to Ward's own configs, or go on the commands for a
+- `strict` adds `mutmut` and selects the strict Ward rules. Strict mypy and branch coverage
+  with an 85% total apply to Ward's own configs, or go on the commands for a
   project's own. `mutmut` runs in `ci` with a 60% minimum.
 - A Django project (a declared `django` package or a `manage.py`) gets `django-stubs` with the mypy
   plugin, `pytest-django` with a Ward `pytest.ini` that names the settings module, and a `django-check`
@@ -562,7 +603,7 @@ It keeps the Gradle setup and adds the Android gates.
   `android-coverage` runs `createDebugUnitTestCoverageReport` at an 80% minimum. The JVM `coverage`
   gate is left out, since an Android root has no JaCoCo verification task.
 - **Modules.** Each Android module script gets the debug unit-test coverage block. An Android module
-  applies no JVM plugin, so init writes no Checkstyle, PMD or SpotBugs block into it.
+  applies no JVM plugin, so init writes no JVM quality block into it.
 - **Doctor.** `ward doctor` warns when neither `ANDROID_HOME` nor `ANDROID_SDK_ROOT` names an existing
   directory, and when the Android Gradle Plugin needs a newer JDK or Gradle than the build runs on.
 
@@ -575,19 +616,18 @@ error that names the generator.
 - **Blocking findings.** Init writes nothing and reports these: a machine that is not macOS, an Xcode
   older than 26.0 (or one whose version cannot be read), and an Xcode project with a `Podfile`.
   Move CocoaPods dependencies to Swift Package Manager to use Ward with that project.
-- **Gates.** `ward-format` and `swiftlint` run in every profile. A SwiftPM package adds `swift-build`
-  and `swift-test`; an Xcode project adds `xcodebuild-test`. Both end with `swift-coverage` in the
+- **Lint rules.** The `ward` check applies Ward's Swift rules that the preset selects in
+  `ward-rules.toml`, as for Java. Init writes no SwiftLint gate.
+- **Gates.** `ward-format` runs in every profile. A SwiftPM package adds `swift-build` and
+  `swift-test`; an Xcode project adds `xcodebuild-test`. Both end with `swift-coverage` in the
   `pre-push` and `ci` profiles, at an 80% minimum under `standard` and 85% under `strict`.
-- **Strict.** `strict` selects the same gates with stricter commands. It has no mutation gate: no
-  Swift mutation tool is mature enough yet, so Swift strict stops at the checks below.
-- **Proven versions.** CI proves the Swift setup on Xcode 26.0.1, Xcode 26.6, and Xcode 27.0 through 27.2, with SwiftLintPlugins
-  0.65.1. Init pins those tools for the selected Xcode, within the range Ward's
-  tools cover (Xcode 26.0 up to 28.0). When no pinned version covers the selected Xcode, init leaves out
-  the `swiftlint` gate and the plan names the Xcode versions Ward supports for it.
+- **Strict.** `strict` selects the same gates with stricter commands, and the strict Ward rules in
+  `ward-rules.toml`. It has no mutation gate: no Swift mutation tool is mature enough yet.
+- **Proven versions.** CI proves the Swift setup on Xcode 26.0.1, Xcode 26.6, and Xcode 27.0 through
+  27.2.
 
   | Gate | `standard` | `strict` |
   |---|---|---|
-  | `swiftlint` | SwiftLint defaults; warnings do not fail | `--strict` (warnings fail), without `trailing_comma` (Ward's formatter keeps trailing commas), plus the opt-in rules `force_unwrapping`, `implicitly_unwrapped_optional`, `fatal_error_message`, `empty_count`, `first_where` and `contains_over_first_not_nil`; `cyclomatic_complexity` warns above 10 |
   | `swift-build` (SwiftPM) | `swift build --build-tests` | adds `-Xswiftc -warnings-as-errors -Xswiftc -strict-concurrency=complete` |
   | `swift-test` (SwiftPM) | `swift test --enable-code-coverage` | adds the same two compiler flags |
   | `xcodebuild-test` (Xcode) | `xcodebuild test` with coverage | adds `SWIFT_TREAT_WARNINGS_AS_ERRORS=YES SWIFT_STRICT_CONCURRENCY=complete` |
@@ -601,23 +641,20 @@ error that names the generator.
   several, the wizard asks, or `--scheme <name>` chooses one; `--yes` without `--scheme` fails and
   names the schemes. The test platform is `iOS Simulator`, or `macOS` when every target builds only
   for macOS.
-- **Ward's SwiftLint.** SwiftLint is pinned in an ownership-marked `.ward/swift-tools/Package.swift`
-  and resolved with `swift package resolve`. A failed resolve removes `.ward/swift-tools/` and changes
-  nothing else. Ward never edits the project's `Package.swift` or `project.pbxproj`.
-- **Configs.** Init writes `.swiftlint.yml` only when the project has none, and `.editorconfig` when
-  the project has none. The `.editorconfig` indentation follows the project's sources, so Xcode's
-  4-space templates pass.
-  Files the project keeps are never changed. Under `strict`, Ward's `.swiftlint.yml` carries the
-  strict rules itself.
-- **Strict over your own `.swiftlint.yml`.** Strict leaves your file byte-for-byte unchanged and
-  writes an ownership-marked `.ward/swiftlint-strict.yml` with the strict rules. The `swiftlint` gate
-  then passes both files, yours first, so your `disabled_rules` and other keys still apply. Running
-  init with `standard` again removes that file.
+- **No SwiftLint files.** Init writes no SwiftLint config, tools package (`.ward/swift-tools/`), resolve
+  step or CI cache. Re-running init removes the Ward-owned SwiftLint files that an earlier init wrote:
+  `.swiftlint.yml`, `.ward/swiftlint-strict.yml` and `.ward/swift-tools/Package.swift` with its
+  `Package.resolved`. A `.swiftlint.yml` you wrote is kept as it is. A `.ward/swift-tools/.build`
+  cache from an earlier run is not removed; delete it by hand. Ward never edits the project's
+  `Package.swift` or `project.pbxproj`.
+- **Configs.** Init writes `.editorconfig` when the project has none. The `.editorconfig` indentation
+  follows the project's sources, so Xcode's 4-space templates pass. Files the project keeps are never
+  changed.
 - **Architecture rules.** Under `strict`, the wizard asks for the style, as `--architecture` answers it.
   Ward writes the layer boundaries to `ward.toml`, checked by `ward:architecture/layers`. It writes no
   Swift package or rules file for them.
-- **CI.** The generated workflow runs on `macos-26`, caches `.ward/swift-tools/.build`, and sets up no
-  JDK, Node, or Python for the Swift job.
+- **CI.** The generated workflow runs on `macos-26` and sets up no JDK, Node, or Python for the Swift
+  job.
 
 ## Tools init can install
 
@@ -683,8 +720,7 @@ Ward's marker blocks initialization as a conflict. Gates that need a running app
 ### Agent rules
 
 `--agent-rules` writes a Ward-owned section into `AGENTS.md` with the limits the selected gates
-enforce: the Ward rule preset for Java, coverage and mutation minimums, and enforcer rules (for
-Kotlin, also Checkstyle limits, PMD rule sets and SpotBugs effort).
+enforce: the Ward rule preset for Java and Kotlin, coverage and mutation minimums, and enforcer rules.
 
 - For TypeScript it names the `tsc` and test commands, the 70% line coverage minimum (85% of lines
   and 75% of branches with `strict`), Stryker (with its 60% minimum under `strict`), and the Ward

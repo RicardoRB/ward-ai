@@ -63,14 +63,6 @@ final class PomToolVersions {
     return findings.get(tool.artifact());
   }
 
-  /** The version resolved for {@code tool}'s engine, or {@code null} for the default. */
-  String engine(final Tool tool) {
-    return Optional.ofNullable(PomTools.ENGINES.get(tool.artifact()))
-        .map(engine -> findings.get(engine.name()))
-        .map(CompatibilityFinding::selectedVersion)
-        .orElse(null);
-  }
-
   /** Why {@code tool} cannot run on the runtime JDK, when its plugin or engine has no version. */
   Optional<String> unavailable(final Tool tool) {
     return names(tool)
@@ -82,8 +74,6 @@ final class PomToolVersions {
   }
 
   private static Stream<String> names(final Tool tool) {
-    return Stream.concat(
-        Stream.of(tool.artifact()),
-        Stream.ofNullable(PomTools.ENGINES.get(tool.artifact())).map(PomTools.Engine::name));
+    return Stream.of(tool.artifact());
   }
 }

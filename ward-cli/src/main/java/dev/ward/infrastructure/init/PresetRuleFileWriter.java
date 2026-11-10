@@ -13,9 +13,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 
 /**
@@ -92,7 +95,7 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
     if (toolchain != null) {
       targets.addAll(toolchain.targets(project, preset, gates));
     } else {
-      jvmTargets(project, preset, gates)
+      enforcerTargets(project, preset, gates)
           .forEach(
               (file, content) ->
                   targets.add(
@@ -107,24 +110,44 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
   }
 
   /**
-   * The languages whose Ward rules the {@code ward} gate applies: a Node project's TypeScript and
-   * JavaScript, which replace ESLint and Biome; other projects keep Java's rules.
+   * The language ids whose Ward rules the {@code ward} gate applies: a Node project's TypeScript
+   * and JavaScript, which Ward's rules replace ESLint and Biome for; other projects keep Java or
+   * Kotlin, then Python when present, then Swift.
    */
   private static List<String> wardLanguages(final Project project) {
-    if (project.toolchain() != Toolchain.NODE) {
-      return List.of("java");
+    final List<String> ids = new ArrayList<>();
+    if (project.toolchain() == Toolchain.NODE) {
+      if (project.languages().contains(Language.TYPESCRIPT)) {
+        ids.add("typescript");
+      }
+      if (project.languages().contains(Language.JAVASCRIPT)) {
+        ids.add("javascript");
+      }
+    } else {
+      ids.addAll(jvmLanguageIds(project.languages()));
     }
-    final List<String> languages = new ArrayList<>();
-    if (project.languages().contains(Language.TYPESCRIPT)) {
-      languages.add("typescript");
+    if (project.languages().contains(Language.PYTHON)) {
+      ids.add("python");
     }
-    if (project.languages().contains(Language.JAVASCRIPT)) {
-      languages.add("javascript");
-    }
-    return List.copyOf(languages);
+    ids.add("swift");
+    return List.copyOf(ids);
   }
 
-  private static Map<Path, String> jvmTargets(
+  private static List<String> jvmLanguageIds(final Set<Language> languages) {
+    final List<String> ids = new ArrayList<>();
+    if (languages.contains(Language.JAVA)) {
+      ids.add("java");
+    }
+    if (languages.contains(Language.KOTLIN)) {
+      ids.add("kotlin");
+    }
+    if (ids.isEmpty()) {
+      ids.add("java");
+    }
+    return ids;
+  }
+
+  private static Map<Path, String> enforcerTargets(
       final Project project, final QualityPreset preset, final List<InitGateOption> gates) {
     if (preset == null) {
       return Map.of();
@@ -132,20 +155,6 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
     final Path config = project.root().resolve("config");
     final List<String> ids = gates.stream().map(InitGateOption::id).toList();
     final Map<Path, String> targets = new LinkedHashMap<>();
-    if (ids.contains("pmd")) {
-      targets.put(
-          config.resolve("pmd-ruleset.xml"), marked(preset, PresetRuleFileContent.pmd(preset)));
-    }
-    if (ids.contains("checkstyle")) {
-      targets.put(
-          config.resolve("checkstyle.xml"),
-          marked(preset, PresetRuleFileContent.checkstyle(preset)));
-    }
-    if (ids.contains("spotbugs") && preset == QualityPreset.STANDARD) {
-      targets.put(
-          config.resolve("spotbugs-exclude.xml"),
-          marked(preset, PresetRuleFileContent.spotbugs(preset)));
-    }
     if (ids.contains("enforcer")) {
       targets.put(
           config.resolve("enforcer-rules.xml"),
@@ -177,14 +186,29 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
           preserved.add(file);
         }
       }
-      case REMOVE -> {
-        originals.put(file, Files.readString(file));
-        Files.delete(file);
-      }
+      case REMOVE -> remove(file, originals);
       default -> {
         // Already current.
       }
     }
+  }
+
+  /**
+   * Removes a file, recording its content for rollback, or a directory tree that Ward owns. A tree
+   * is not restored on rollback: it is a regenerable build cache.
+   */
+  private static void remove(final Path file, final Map<Path, String> originals)
+      throws IOException {
+    if (Files.isDirectory(file)) {
+      try (Stream<Path> paths = Files.walk(file)) {
+        for (final Path path : paths.sorted(Comparator.reverseOrder()).toList()) {
+          Files.delete(path);
+        }
+      }
+      return;
+    }
+    originals.put(file, Files.readString(file));
+    Files.delete(file);
   }
 
   private static String marked(final QualityPreset preset, final String body) {

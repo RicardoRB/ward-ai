@@ -41,9 +41,6 @@ class PomToolMatrixTest {
   /** Gates that add Maven declarations, matching the configurator's tool table. */
   private static final List<String> MAVEN_GATES =
       List.of(
-          "checkstyle",
-          "pmd",
-          "spotbugs",
           "sonar",
           "coverage",
           "dependency-check",

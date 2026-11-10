@@ -1,0 +1,454 @@
+# Control-flow rules of the ESLint core rules (issue #326), for TypeScript and JavaScript.
+
+[[rules]]
+id = "ward:typescript/no-constructor-return"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-constructor-return"
+message = "unexpected return value from constructor"
+'''
+
+[[rules]]
+id = "ward:javascript/no-constructor-return"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-constructor-return"
+message = "unexpected return value from constructor"
+'''
+
+[[rules]]
+id = "ward:typescript/no-dupe-else-if"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-dupe-else-if"
+message = "this branch can never execute; its condition duplicates or is covered by an earlier condition"
+'''
+
+[[rules]]
+id = "ward:javascript/no-dupe-else-if"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-dupe-else-if"
+message = "this branch can never execute; its condition duplicates or is covered by an earlier condition"
+'''
+
+
+[[rules]]
+id = "ward:typescript/no-unexpected-multiline"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-unexpected-multiline"
+'''
+
+[[rules]]
+id = "ward:javascript/no-unexpected-multiline"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-unexpected-multiline"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unused-expressions"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+options.allow-short-circuit = { type = "boolean" }
+options.allow-ternary = { type = "boolean" }
+options.allow-tagged-templates = { type = "boolean" }
+options.enforce-for-jsx = { type = "boolean" }
+options.ignore-directives = { type = "boolean" }
+body = '''
+check = "node-no-unused-expressions"
+allow-short-circuit = false
+allow-ternary = false
+allow-tagged-templates = false
+enforce-for-jsx = false
+ignore-directives = false
+message = "Expected an assignment or function call and instead saw an expression."
+'''
+
+[[rules]]
+id = "ward:javascript/no-unused-expressions"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+options.allow-short-circuit = { type = "boolean" }
+options.allow-ternary = { type = "boolean" }
+options.allow-tagged-templates = { type = "boolean" }
+options.enforce-for-jsx = { type = "boolean" }
+options.ignore-directives = { type = "boolean" }
+body = '''
+check = "node-no-unused-expressions"
+allow-short-circuit = false
+allow-ternary = false
+allow-tagged-templates = false
+enforce-for-jsx = false
+ignore-directives = false
+message = "Expected an assignment or function call and instead saw an expression."
+'''
+
+[[rules]]
+id = "ward:typescript/no-inner-declarations"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+options.declarations = { type = "enum", values = ["functions", "both"], parameter = "declarations" }
+options.block-scoped-functions = { type = "enum", values = ["allow", "disallow"], parameter = "block-scoped-functions" }
+body = '''
+check = "node-no-inner-declarations"
+declarations = "functions"
+block-scoped-functions = "allow"
+message = "Move declaration to the root of its program or function body."
+'''
+
+[[rules]]
+id = "ward:javascript/no-inner-declarations"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+options.declarations = { type = "enum", values = ["functions", "both"], parameter = "declarations" }
+options.block-scoped-functions = { type = "enum", values = ["allow", "disallow"], parameter = "block-scoped-functions" }
+body = '''
+check = "node-no-inner-declarations"
+declarations = "functions"
+block-scoped-functions = "allow"
+message = "Move declaration to the root of its program or function body."
+'''
+
+[[rules]]
+id = "ward:typescript/no-extra-label"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "node-no-extra-label"
+message = "This label '{value}' is unnecessary."
+'''
+
+[[rules]]
+id = "ward:javascript/no-extra-label"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "node-no-extra-label"
+message = "This label '{value}' is unnecessary."
+'''
+
+[[rules]]
+id = "ward:typescript/no-label-var"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "node-no-label-var"
+message = "Found identifier with same name as label."
+'''
+
+[[rules]]
+id = "ward:javascript/no-label-var"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "suggestion"
+presets = ["strict"]
+body = '''
+check = "node-no-label-var"
+message = "Found identifier with same name as label."
+'''
+
+[[rules]]
+id = "ward:typescript/no-unsafe-optional-chaining"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.disallow-arithmetic-operators = { type = "boolean" }
+body = '''
+check = "node-no-unsafe-optional-chaining"
+disallow-arithmetic-operators = false
+message = "Unsafe usage of optional chaining. If it short-circuits with 'undefined' the evaluation will throw TypeError."
+arithmetic-message = "Unsafe arithmetic operation on optional chaining. It can result in NaN."
+'''
+
+[[rules]]
+id = "ward:javascript/no-unsafe-optional-chaining"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.disallow-arithmetic-operators = { type = "boolean" }
+body = '''
+check = "node-no-unsafe-optional-chaining"
+disallow-arithmetic-operators = false
+message = "Unsafe usage of optional chaining. If it short-circuits with 'undefined' the evaluation will throw TypeError."
+arithmetic-message = "Unsafe arithmetic operation on optional chaining. It can result in NaN."
+'''
+
+[[rules]]
+id = "ward:typescript/no-this-before-super"
+language = "TYPESCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-this-before-super"
+message = "'this' is not allowed before 'super()'."
+'''
+
+[[rules]]
+id = "ward:javascript/no-this-before-super"
+language = "JAVASCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-this-before-super"
+message = "'this' is not allowed before 'super()'."
+'''
+
+[[rules]]
+id = "ward:typescript/array-callback-return"
+language = "TYPESCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.allow-implicit = { type = "boolean" }
+options.check-for-each = { type = "boolean" }
+options.allow-void = { type = "boolean" }
+body = '''
+check = "node-array-callback-return"
+allow-implicit = false
+check-for-each = false
+allow-void = false
+message = "Array callback must return a value."
+'''
+
+[[rules]]
+id = "ward:javascript/array-callback-return"
+language = "JAVASCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.allow-implicit = { type = "boolean" }
+options.check-for-each = { type = "boolean" }
+options.allow-void = { type = "boolean" }
+body = '''
+check = "node-array-callback-return"
+allow-implicit = false
+check-for-each = false
+allow-void = false
+message = "Array callback must return a value."
+'''
+
+[[rules]]
+id = "ward:typescript/no-constant-binary-expression"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-constant-binary-expression"
+operand-message = "Unexpected constant binary expression. Compares constantly with the other side of the operator."
+short-circuit-message = "Unexpected constant truthiness or nullishness on the left-hand side of a short-circuit expression."
+'''
+
+[[rules]]
+id = "ward:javascript/no-constant-binary-expression"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-constant-binary-expression"
+operand-message = "Unexpected constant binary expression. Compares constantly with the other side of the operator."
+short-circuit-message = "Unexpected constant truthiness or nullishness on the left-hand side of a short-circuit expression."
+'''
+
+[[rules]]
+id = "ward:typescript/no-redeclare"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-redeclare"
+message = "'{value}' is already defined."
+'''
+
+[[rules]]
+id = "ward:javascript/no-redeclare"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-redeclare"
+message = "'{value}' is already defined."
+'''
+
+[[rules]]
+id = "ward:typescript/no-use-before-define"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.functions = { type = "boolean" }
+options.classes = { type = "boolean" }
+options.variables = { type = "boolean" }
+body = '''
+check = "node-no-use-before-define"
+functions = true
+classes = true
+variables = true
+message = "'{value}' was used before it was defined."
+'''
+
+[[rules]]
+id = "ward:javascript/no-use-before-define"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.functions = { type = "boolean" }
+options.classes = { type = "boolean" }
+options.variables = { type = "boolean" }
+body = '''
+check = "node-no-use-before-define"
+functions = true
+classes = true
+variables = true
+message = "'{value}' was used before it was defined."
+'''
+
+[[rules]]
+id = "ward:typescript/no-useless-backreference"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-useless-backreference"
+message = "Backreference '{value}' will be ignored."
+'''
+
+[[rules]]
+id = "ward:javascript/no-useless-backreference"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-useless-backreference"
+message = "Backreference '{value}' will be ignored."
+'''
+
+[[rules]]
+id = "ward:typescript/preserve-caught-error"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+options.require-catch-parameter = { type = "boolean" }
+body = '''
+check = "node-preserve-caught-error"
+require-catch-parameter = false
+missing-cause-message = "There is no `cause` attached to the symptom error being thrown."
+partial-message = "The caught error is destructured, so the error it holds is lost."
+missing-parameter-message = "The caught error is not named, so no cause can be attached to the error being thrown."
+incorrect-cause-message = "The symptom error is being thrown with an incorrect `cause`."
+'''
+
+[[rules]]
+id = "ward:javascript/preserve-caught-error"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+options.require-catch-parameter = { type = "boolean" }
+body = '''
+check = "node-preserve-caught-error"
+require-catch-parameter = false
+missing-cause-message = "There is no `cause` attached to the symptom error being thrown."
+partial-message = "The caught error is destructured, so the error it holds is lost."
+missing-parameter-message = "The caught error is not named, so no cause can be attached to the error being thrown."
+incorrect-cause-message = "The symptom error is being thrown with an incorrect `cause`."
+'''
+
+[[rules]]
+id = "ward:typescript/no-unassigned-vars"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-unassigned-vars"
+message = "'{value}' is always 'undefined' because it's never assigned."
+'''
+
+[[rules]]
+id = "ward:javascript/no-unassigned-vars"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-unassigned-vars"
+message = "'{value}' is always 'undefined' because it's never assigned."
+'''

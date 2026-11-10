@@ -27,14 +27,10 @@ class GradleToolCompatibilityTest {
   private static final int JAVA_7 = 7;
   private static final int JAVA_11 = 11;
   private static final List<String> STRICT_GATES =
-      List.of("checkstyle", "pmd", "spotbugs", "coverage", "archunit", "enforcer", "mutation");
+      List.of("coverage", "archunit", "enforcer", "mutation");
 
   private static final List<String> STRICT_TOOLS =
       List.of(
-          GradleToolCatalog.CHECKSTYLE_ENGINE,
-          GradleToolCatalog.PMD_ENGINE,
-          GradleToolCatalog.SPOTBUGS,
-          GradleToolCatalog.SPOTBUGS_ENGINE,
           GradleToolCatalog.JACOCO_ENGINE,
           GradleToolCatalog.PITEST,
           GradleToolCatalog.PITEST_ENGINE);

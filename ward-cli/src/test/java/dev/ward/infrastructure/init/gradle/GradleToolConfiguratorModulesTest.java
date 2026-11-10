@@ -8,7 +8,6 @@ import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.BuildFileChange;
 import dev.ward.domain.init.InitGateOption;
-import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
@@ -30,17 +29,17 @@ class GradleToolConfiguratorModulesTest {
   @TempDir Path root;
 
   @Test
-  void placesCoverageAndSpotBugsInEachKotlinModule() throws IOException {
+  void placesCoverageAndMutationInEachKotlinModule() throws IOException {
     final Project project = ModuleFixtures.copy(root);
 
     new GradleToolConfigurator()
-        .apply(project, ModuleFixtures.gates(COVERAGE, "spotbugs"), null, finding -> false);
+        .apply(project, ModuleFixtures.gates(COVERAGE, "mutation"), null, finding -> false);
 
     assertThat(ModuleFixtures.read(root, API))
         .contains(
-            "id(\"jacoco\")", "jacocoTestCoverageVerification", "id(\"com.github.spotbugs\")");
+            "id(\"jacoco\")", "jacocoTestCoverageVerification", "id(\"info.solidsoft.pitest\")");
     assertThat(ModuleFixtures.read(root, DOMAIN))
-        .contains("id 'jacoco'", "id 'com.github.spotbugs'");
+        .contains("id 'jacoco'", "id 'info.solidsoft.pitest'");
     assertThat(ModuleFixtures.read(root, "build.gradle.kts"))
         .doesNotContain("jacocoTestCoverageVerification");
   }
@@ -50,16 +49,16 @@ class GradleToolConfiguratorModulesTest {
     final Project project = ModuleFixtures.copy(root);
 
     new GradleToolConfigurator()
-        .apply(project, ModuleFixtures.gates("spotbugs"), null, finding -> false);
+        .apply(project, ModuleFixtures.gates("mutation"), null, finding -> false);
 
     assertThat(ModuleFixtures.read(root, "build.gradle.kts"))
-        .containsPattern("id\\(\"com\\.github\\.spotbugs\"\\) version \"[^\"]+\" apply false");
+        .containsPattern("id\\(\"info\\.solidsoft\\.pitest\"\\) version \"[^\"]+\" apply false");
     assertThat(ModuleFixtures.read(root, API))
-        .contains("id(\"com.github.spotbugs\")")
-        .doesNotContain("com.github.spotbugs\") version");
+        .contains("id(\"info.solidsoft.pitest\")")
+        .doesNotContain("info.solidsoft.pitest\") version");
     assertThat(ModuleFixtures.read(root, DOMAIN))
-        .contains("id 'com.github.spotbugs'")
-        .doesNotContain("com.github.spotbugs' version");
+        .contains("id 'info.solidsoft.pitest'")
+        .doesNotContain("info.solidsoft.pitest' version");
   }
 
   @Test
@@ -87,29 +86,6 @@ class GradleToolConfiguratorModulesTest {
   }
 
   @Test
-  void checkstyleAndPmdAndEnforcerGoIntoEachKotlinModuleWithRootRuleFiles() throws IOException {
-    final Project project = ModuleFixtures.copy(root);
-
-    new GradleToolConfigurator()
-        .apply(
-            project,
-            ModuleFixtures.gates("checkstyle", "pmd", "enforcer"),
-            QualityPreset.STANDARD,
-            finding -> false);
-
-    assertThat(ModuleFixtures.read(root, API))
-        .contains(
-            "configFile = rootProject.file(\"config/checkstyle.xml\")",
-            "ruleSetFiles = rootProject.files(\"config/pmd-ruleset.xml\")",
-            "tasks.named(\"check\") { dependsOn(\"checkstyleMain\") }");
-    assertThat(ModuleFixtures.read(root, DOMAIN))
-        .contains("rootProject.file('config/checkstyle.xml')", "rootProject.files(")
-        .doesNotContain("configFile = file(");
-    assertThat(ModuleFixtures.read(root, "build.gradle.kts"))
-        .doesNotContain("checkstyle {", "pmd {", "sourceSets");
-  }
-
-  @Test
   void singleModuleKotlinRootKeepsEveryBlockInTheRoot() throws IOException {
     Files.writeString(root.resolve("settings.gradle.kts"), "rootProject.name = \"solo\"\n");
     Files.writeString(
@@ -129,7 +105,7 @@ class GradleToolConfiguratorModulesTest {
   void rerunChangesNoScript() throws IOException {
     final Project project = ModuleFixtures.copy(root);
     final GradleToolConfigurator configurator = new GradleToolConfigurator();
-    final List<InitGateOption> gates = ModuleFixtures.gates(COVERAGE, "spotbugs");
+    final List<InitGateOption> gates = ModuleFixtures.gates(COVERAGE, "mutation");
     configurator.apply(project, gates, null, finding -> false);
     final String api = ModuleFixtures.read(root, API);
 

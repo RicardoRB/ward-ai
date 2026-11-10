@@ -112,4 +112,13 @@ public interface CompiledRule {
   default List<ProjectMatch> project(final SortedMap<String, SyntaxNode> trees) {
     return List.of();
   }
+
+  /**
+   * Returns the whole-project matches with the manifest files of the project. By default it ignores
+   * the files and returns {@link #project(SortedMap)}.
+   */
+  default List<ProjectMatch> project(
+      final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
+    return project(trees);
+  }
 }

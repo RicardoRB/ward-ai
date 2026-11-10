@@ -45,9 +45,6 @@ public final class CommandTypeInference {
 
   private static final List<Rule> RULES =
       List.of(
-          new Rule("checkstyle", anyOf(sequence("checkstyle:check"), sequence("checkstyle*"))),
-          new Rule("pmd", anyOf(sequence("pmd:check"), sequence("pmd*"))),
-          new Rule("spotbugs", anyOf(sequence("spotbugs:check"), sequence("spotbugs*"))),
           new Rule(
               "coverage",
               anyOf(
@@ -83,12 +80,6 @@ public final class CommandTypeInference {
           new Rule("mutmut", sequence("mutmut", "run")),
           new Rule("django-check", sequence("manage.py", "check")),
           new Rule("pip-audit", sequence("pip-audit")),
-          new Rule(
-              "swiftlint",
-              anyOf(
-                  sequence("swiftlint", "lint"),
-                  sequence("*/swiftlint", "lint"),
-                  sequence("SwiftLintBinary", "lint"))),
           new Rule("swift-build", sequence("swift", "build")),
           new Rule("swift-test", sequence("swift", "test")),
           new Rule("xcodebuild-test", sequence("xcodebuild", "test")),

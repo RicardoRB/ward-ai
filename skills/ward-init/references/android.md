@@ -7,7 +7,7 @@ alias). The build tool stays Gradle, so the Gradle wrapper, JDK and module rules
 ## Inspection
 
 - Each Android module is listed with its script. Modules applying no JVM plugin get only the Android
-  gate blocks, never Checkstyle, PMD or SpotBugs.
+  gate blocks, never the JVM quality gates.
 - Note the Android SDK: `ANDROID_HOME` or `ANDROID_SDK_ROOT` should name an existing directory.
   Init does not install it; doctor warns when it is missing.
 
@@ -24,6 +24,6 @@ alias). The build tool stays Gradle, so the Gradle wrapper, JDK and module rules
 
 ## Known limits
 
-- Java and Kotlin sources in an Android module do not get Checkstyle, PMD or SpotBugs in this
-  version; those gates stay in the root, which applies no Java plugin.
+- Java and Kotlin sources in an Android module do not get the `ward` gate in this version; it stays
+  in the root, which applies no Java plugin.
 - Instrumented tests, PIT mutation testing and Kotlin Multiplatform are not covered.

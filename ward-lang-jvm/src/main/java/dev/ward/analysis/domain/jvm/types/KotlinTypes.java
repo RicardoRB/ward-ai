@@ -110,7 +110,7 @@ final class KotlinTypes {
     return found;
   }
 
-  private static Optional<JType> named(
+  static Optional<JType> named(
       final List<String> names,
       final List<JType> arguments,
       final boolean nullable,

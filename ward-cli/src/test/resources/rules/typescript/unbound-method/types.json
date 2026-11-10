@@ -1,0 +1,92 @@
+{
+  "2:15-2:21": {
+    "members": {
+      "fields": [
+        {
+          "name": "label",
+          "type": {
+            "name": "string",
+            "primitive": true
+          }
+        }
+      ],
+      "methods": [
+        {
+          "declaring": {
+            "name": "Shape"
+          },
+          "name": "reset",
+          "params": [],
+          "returns": {
+            "name": "void",
+            "primitive": true
+          }
+        }
+      ]
+    },
+    "type": {
+      "name": "{ label: string; reset(): void; }",
+      "primitive": false
+    }
+  },
+  "32:14-32:20": {
+    "members": {
+      "fields": [
+        {
+          "name": "label",
+          "type": {
+            "name": "string",
+            "primitive": true
+          }
+        }
+      ],
+      "methods": [
+        {
+          "declaring": {
+            "name": "Shape"
+          },
+          "name": "reset",
+          "params": [],
+          "returns": {
+            "name": "void",
+            "primitive": true
+          }
+        }
+      ]
+    },
+    "type": {
+      "name": "{ label: string; reset(): void; }",
+      "primitive": false
+    }
+  },
+  "33:1-33:7": {
+    "members": {
+      "fields": [
+        {
+          "name": "label",
+          "type": {
+            "name": "string",
+            "primitive": true
+          }
+        }
+      ],
+      "methods": [
+        {
+          "declaring": {
+            "name": "Shape"
+          },
+          "name": "reset",
+          "params": [],
+          "returns": {
+            "name": "void",
+            "primitive": true
+          }
+        }
+      ]
+    },
+    "type": {
+      "name": "{ label: string; reset(): void; }",
+      "primitive": false
+    }
+  }
+}

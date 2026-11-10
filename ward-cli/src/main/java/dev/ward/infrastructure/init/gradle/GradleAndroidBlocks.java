@@ -5,7 +5,7 @@ import java.util.Set;
 
 /**
  * The blocks init appends to an Android module script. An Android module applies no JVM plugin, so
- * only the Android gates' configuration goes there, never the Checkstyle, PMD or SpotBugs blocks.
+ * only the Android gates' configuration goes there.
  */
 final class GradleAndroidBlocks {
   static final String MARKER = GradleBuildBlocks.MARKER;

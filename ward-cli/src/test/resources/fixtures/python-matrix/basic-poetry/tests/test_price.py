@@ -1,5 +1,10 @@
+"""Fixture code for the Python matrix."""
+
 from shop import price
+
+EXPECTED_PRICE = 4
 
 
 def test_price() -> None:
-    assert price(2) == 4
+    """Doubling two gives four."""
+    assert price(2) == EXPECTED_PRICE

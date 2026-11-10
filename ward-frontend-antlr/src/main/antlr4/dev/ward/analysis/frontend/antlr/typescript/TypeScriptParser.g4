@@ -477,7 +477,8 @@ aliasName
     ;
 
 exportStatement
-    : Export typeOnlyModifier? Default? (exportFromBlock | declaration) eos # ExportDeclaration
+    : Export Default interfaceDeclaration                # ExportDefaultInterface
+    | Export typeOnlyModifier? Default? (exportFromBlock | declaration) eos # ExportDeclaration
     | Export Default singleExpression eos                 # ExportDefaultDeclaration
     ;
 
@@ -504,7 +505,7 @@ usingDeclaration
     ;
 variableStatement
     : bindingPattern typeAnnotation? initializer SemiColon?
-    | accessibilityModifier? varModifier? ReadOnly? variableDeclarationList SemiColon?
+    | accessibilityModifier? varModifier ReadOnly? variableDeclarationList SemiColon?
     | Declare varModifier? variableDeclarationList SemiColon?
     ;
 
@@ -513,7 +514,7 @@ variableDeclarationList
     ;
 
 variableDeclaration
-    : (identifierOrKeyWord | arrayLiteral | objectLiteral) typeAnnotation? singleExpression? (
+    : (identifierOrKeyWord | arrayLiteral | objectLiteral) typeAnnotation? (
         '=' typeParameters? singleExpression
     )? // ECMAScript 6: Array & Object Matching
     ;
@@ -534,11 +535,20 @@ iterationStatement
     : Do statement While '(' expressionSequence ')' eos                                                                     # DoStatement
     | While '(' expressionSequence ')' statement                                                                            # WhileStatement
     | For '(' expressionSequence? SemiColon expressionSequence? SemiColon expressionSequence? ')' statement                 # ForStatement
-    | For '(' varModifier variableDeclarationList SemiColon expressionSequence? SemiColon expressionSequence? ')' statement # ForVarStatement
+    | For '(' forVariableDeclarationList SemiColon expressionSequence? SemiColon expressionSequence? ')' statement # ForVarStatement
     | For '(' singleExpression In expressionSequence ')' statement                                                          # ForInStatement
-    | For '(' varModifier variableDeclaration In expressionSequence ')' statement                                           # ForVarInStatement
-    | For Await? '(' singleExpression identifier {this.p("of")}? expressionSequence (As type_)? ')' statement                            # ForOfStatement
-    | For Await? '(' varModifier variableDeclaration identifier {this.p("of")}? expressionSequence (As type_)? ')' statement             # ForVarOfStatement
+    | For '(' singleVariableDeclaration In expressionSequence ')' statement                                                 # ForVarInStatement
+    | For Await? '(' singleExpression Of expressionSequence (As type_)? ')' statement                            # ForOfStatement
+    | For Await? '(' singleVariableDeclaration Of expressionSequence (As type_)? ')' statement            # ForVarOfStatement
+    ;
+
+singleVariableDeclaration
+    : varModifier variableDeclaration
+    ;
+
+// The header of a classic for loop: the modifier belongs to the list, as in the JavaScript grammar
+forVariableDeclarationList
+    : varModifier variableDeclaration (',' variableDeclaration)*
     ;
 
 varModifier
@@ -641,13 +651,14 @@ classElement
     : constructorDeclaration
     | decoratorList? propertyMemberDeclaration
     | indexMemberDeclaration
+    | Static block
     | statement
     ;
 
 propertyMemberDeclaration
-    : propertyMemberBase propertyName '?'? typeAnnotation? initializer? SemiColon        # PropertyDeclarationExpression
-    | propertyMemberBase propertyName callSignature (('{' functionBody '}') | SemiColon) # MethodDeclarationExpression
-    | propertyMemberBase (getAccessor | setAccessor)                                     # GetterSetterDeclarationExpression
+    : propertyMemberBase (getAccessor | setAccessor)                                     # GetterSetterDeclarationExpression
+    | propertyMemberBase (propertyName | privateIdentifier) '?'? typeAnnotation? initializer? SemiColon # PropertyDeclarationExpression
+    | propertyMemberBase (propertyName | privateIdentifier) callSignature (('{' functionBody '}') | SemiColon) # MethodDeclarationExpression
     | abstractDeclaration                                                                # AbstractMemberDeclaration
     ;
 
@@ -764,8 +775,9 @@ propertyName
     | '[' singleExpression ']'
     ;
 
+// `f?.()`: the optional marker belongs to the arguments, so a call keeps its two-part shape
 arguments
-    : '(' (argumentList ','?)? ')'
+    : '?.'? '(' (argumentList ','?)? ')'
     ;
 
 argumentList
@@ -788,6 +800,7 @@ singleExpression
     | singleExpression '!'? '.' '#'? identifierName typeGeneric?  # MemberDotExpression
     | singleExpression '?'? '.' '#'? identifierName typeGeneric?  # MemberDotExpression
     // Split to try `new Date()` first, then `new Date`.
+    | New identifier typeArguments? arguments                         # NewExpression
     | New singleExpression typeArguments? arguments                   # NewExpression
     | New singleExpression typeArguments?                             # NewExpression
     | singleExpression arguments                                      # ArgumentsExpression
@@ -826,12 +839,14 @@ singleExpression
     | generatorFunctionDeclaration                                    # GeneratorsFunctionExpression // ECMAScript 6
     | yieldStatement                                                  # YieldExpression              // ECMAScript 6
     | This                                                            # ThisExpression
+    | privateIdentifier                                               # PrivateNameExpression
     | importMetaExpression                                            # ImportMeta
-    | identifierName singleExpression?                                # IdentifierExpression
+    | identifierName                                                  # IdentifierExpression
     | Super                                                           # SuperExpression
     | literal                                                         # LiteralExpression
     | arrayLiteral                                                    # ArrayLiteralExpression
     | objectLiteral                                                   # ObjectLiteralExpression
+    | {this.isJsx()}? jsxElement                                     # JsxExpression
     | '(' expressionSequence ')'                                      # ParenthesizedExpression
     | typeArguments expressionSequence?                               # GenericTypes
     | singleExpression As asExpression                                # CastAsExpression
@@ -1038,6 +1053,56 @@ keyword
     | Boolean
     | Number
     | Module
+    ;
+
+// JSX (.tsx and .jsx files only, see the JSX lexer modes)
+jsxElement
+    : jsxSelfClosingElement
+    | jsxOpeningElement (jsxText | jsxElement | jsxExpressionContainer)* jsxClosingElement
+    | jsxFragment
+    ;
+
+jsxFragment
+    : JsxOpenLt JsxTagEnd (jsxText | jsxElement | jsxExpressionContainer)* JsxClosingTagStart JsxClosingTagEnd
+    ;
+
+jsxSelfClosingElement
+    : JsxOpenLt jsxElementName jsxAttribute* JsxSelfCloseEnd
+    ;
+
+jsxOpeningElement
+    : JsxOpenLt jsxElementName jsxAttribute* JsxTagEnd
+    ;
+
+jsxClosingElement
+    : JsxClosingTagStart jsxElementName? JsxClosingTagEnd
+    ;
+
+jsxElementName
+    : JsxIdentifier ((Dot | Colon) JsxIdentifier)*
+    ;
+
+jsxAttribute
+    : JsxIdentifier (Colon JsxIdentifier)? (Assign jsxAttributeValue)?
+    | jsxSpreadAttribute
+    ;
+
+jsxSpreadAttribute
+    : OpenBrace Ellipsis singleExpression CloseBrace
+    ;
+
+jsxAttributeValue
+    : JsxStringLiteral
+    | jsxExpressionContainer
+    | jsxElement
+    ;
+
+jsxExpressionContainer
+    : OpenBrace singleExpression? CloseBrace
+    ;
+
+jsxText
+    : JsxText
     ;
 
 eos

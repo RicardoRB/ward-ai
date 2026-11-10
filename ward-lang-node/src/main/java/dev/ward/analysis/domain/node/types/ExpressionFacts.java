@@ -3,7 +3,9 @@ package dev.ward.analysis.domain.node.types;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.types.CallTarget;
 import dev.ward.analysis.domain.types.ConstantValue;
+import dev.ward.analysis.domain.types.TypeMembers;
 import dev.ward.analysis.domain.types.TypeRef;
+import dev.ward.analysis.domain.types.TypeShape;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,6 +60,20 @@ final class ExpressionFacts {
 
   private String ownerName(final CallTyper.Call call) {
     return call.owner().isEmpty() ? model.unit().path() : call.owner();
+  }
+
+  /** The methods and fields of the type of an expression, or null when the type is unknown. */
+  TypeMembers members(final SyntaxNode node) {
+    return Exprs.isExpression(node.kind()) ? MemberFacts.of(typer.typeOf(node)) : null;
+  }
+
+  /** The shape of the declaration behind the type of an expression, such as an enum. */
+  TypeShape shapeOfType(final SyntaxNode node) {
+    if (!Exprs.isExpression(node.kind())) {
+      return null;
+    }
+    final Sym sym = ShapeFacts.ofType(typer.typeOf(node));
+    return sym == null ? null : ShapeFacts.shapeOf(sym);
   }
 
   ConstantValue constant(final SyntaxNode node) {

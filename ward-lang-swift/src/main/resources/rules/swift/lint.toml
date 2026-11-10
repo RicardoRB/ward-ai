@@ -325,3 +325,209 @@ kinds = ["variable_declaration"]
 text = '^(?!.*weak)[a-z]*var\w*[dD]elegate:'
 message = "delegates should be weak to avoid reference cycles"
 '''
+
+[[rules]]
+id = "ward:swift/discouraged-direct-init"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^(UIDevice|Bundle|NSError)(\.init)?\(\)$'
+message = "discouraged direct initialization of {value}"
+'''
+
+[[rules]]
+id = "ward:swift/non-optional-string-data-conversion"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^"[^"]*"\.data\(using:\.utf8\)$'
+message = "prefer the non-optional Data(_:) initializer over data(using: .utf8) of a string"
+'''
+
+[[rules]]
+id = "ward:swift/optional-data-string-conversion"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfix_expression"]
+text = '^String(\.init)?\(decoding:.*,as:UTF8\.self\)$'
+message = "prefer the failable String(bytes:encoding:) initializer over String(decoding:as: UTF8.self)"
+'''
+
+[[rules]]
+id = "ward:swift/duplicate-enum-cases"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-duplicate-enum-cases"
+message = "enum should not contain multiple cases with the same name"
+'''
+
+[[rules]]
+id = "ward:swift/duplicated-key-in-dictionary-literal"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-duplicated-dictionary-key"
+message = "dictionary literal has a duplicated key that crashes at runtime"
+'''
+
+[[rules]]
+id = "ward:swift/nsobject-prefer-isequal"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-nsobject-prefer-isequal"
+message = "NSObject subclasses should implement isEqual instead of =="
+'''
+
+[[rules]]
+id = "ward:swift/redundant-sendable"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-redundant-sendable"
+message = "Sendable conformance is redundant on an actor-isolated type"
+'''
+
+[[rules]]
+id = "ward:swift/orphaned-doc-comment"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-orphaned-doc-comment"
+message = "a doc comment should be attached to a declaration"
+'''
+
+[[rules]]
+id = "ward:swift/unneeded-override"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-unneeded-override"
+message = "remove overridden functions that don't do anything except call their super"
+'''
+
+[[rules]]
+id = "ward:swift/valid-ibinspectable"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-valid-ibinspectable"
+message = "@IBInspectable should be applied to variables only, have its type explicit and be of a supported type"
+'''
+
+[[rules]]
+id = "ward:swift/duplicate-conditions"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-duplicate-conditions"
+message = "duplicate conditions in the same branch instruction should be avoided"
+'''
+
+[[rules]]
+id = "ward:swift/blanket-disable-command"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-blanket-disable-command"
+message = "swiftlint command disables a rule for the rest of the file; use next, this or previous, or re-enable it"
+'''
+
+[[rules]]
+id = "ward:swift/deployment-target"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+options.ios-deployment-target = { type = "string" }
+options.macos-deployment-target = { type = "string" }
+options.tvos-deployment-target = { type = "string" }
+options.watchos-deployment-target = { type = "string" }
+body = '''
+check = "swift-deployment-target"
+ios-deployment-target = ""
+macos-deployment-target = ""
+tvos-deployment-target = ""
+watchos-deployment-target = ""
+message = "availability check uses a version that the deployment target always satisfies"
+'''
+
+[[rules]]
+id = "ward:swift/capture-variable"
+language = "swift"
+capability = "SCOPES"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-capture-variable"
+message = "non-constant variables should not be listed in a closure's capture list"
+'''
+
+[[rules]]
+id = "ward:swift/typesafe-array-init"
+language = "swift"
+capability = "TYPES"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-typesafe-array-init"
+message = "use Array(sequence) instead of sequence.map { $0 }"
+'''
+
+[[rules]]
+id = "ward:swift/unused-setter-value"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "lint"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-unused-setter-value"
+message = "setter value is not used"
+'''

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
+import dev.ward.infrastructure.process.ProcessCommandExecutor;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -42,7 +43,7 @@ class FileSystemSourceUnitsTest {
   }
 
   private List<String> paths(final Set<AnalysisLanguage> languages) {
-    return new FileSystemSourceUnits()
+    return new FileSystemSourceUnits(new ProcessCommandExecutor())
         .read(root, languages).stream().map(SourceUnit::path).toList();
   }
 }

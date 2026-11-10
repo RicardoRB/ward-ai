@@ -71,12 +71,12 @@ class InitDryRunTest {
             "--integration",
             "none",
             "--gate",
-            "tests,semgrep",
+            "tests,gitleaks",
             "--install-tool",
-            "semgrep");
+            "gitleaks");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
-    assertThat(init.output()).contains("brew install semgrep").doesNotContain("openspec");
+    assertThat(init.output()).contains("brew install gitleaks").doesNotContain("openspec");
     assertThat(root.resolve(".ward")).doesNotExist();
   }
 }

@@ -84,6 +84,7 @@ At                       : '@';
 RightShiftArithmetic       : '>>';
 LeftShiftArithmetic        : '<<';
 RightShiftLogical          : '>>>';
+JsxOpenLt                  : [<] {this.isJsxStart()}? -> pushMode(JSX_TAG);
 LessThan                   : '<';
 MoreThan                   : '>';
 LessThanEquals             : '<=';
@@ -224,9 +225,38 @@ mode TEMPLATE;
 
 BackTickInside                : '`' -> type(BackTick), popMode;
 TemplateStringStartExpression : '${' {this.processTemplateOpenBrace();} -> pushMode(DEFAULT_MODE);
-TemplateStringAtom            : ~[`];
+TemplateStringEscapeAtom      : '\\' .;
+TemplateStringAtom            : ~[`\\];
 
 // Fragment rules
+
+mode JSX_TAG;
+
+JsxTagEnd             : [>] -> popMode, pushMode(JSX_CHILD);
+JsxSelfCloseEnd       : '/>' -> popMode;
+JsxTagOpenBrace       : [{] {this.processJsxOpenBrace();} -> type(OpenBrace), pushMode(DEFAULT_MODE);
+JsxTagDot             : [.] -> type(Dot);
+JsxTagColon           : [:] -> type(Colon);
+JsxTagAssign          : [=] -> type(Assign);
+JsxStringLiteral      : '"' ~["]* '"' | '\'' ~[']* '\'';
+JsxIdentifier         : [\p{L}$_] [\p{L}\p{Nd}$_\-]*;
+JsxTagWhiteSpaces     : [ \t\r\n\f]+ -> channel(HIDDEN);
+
+mode JSX_CHILD;
+
+JsxText               : ~[{<]+;
+JsxClosingTagStart    : '</' -> pushMode(JSX_CLOSE_TAG);
+JsxOpenTagStart       : [<] -> type(JsxOpenLt), pushMode(JSX_TAG);
+JsxChildOpenBrace     : [{] {this.processJsxOpenBrace();} -> type(OpenBrace), pushMode(DEFAULT_MODE);
+
+mode JSX_CLOSE_TAG;
+
+JsxClosingTagEnd      : [>] -> popMode, popMode;
+JsxCloseDot           : [.] -> type(Dot);
+JsxCloseColon         : [:] -> type(Colon);
+JsxCloseIdentifier    : [\p{L}$_] [\p{L}\p{Nd}$_\-]* -> type(JsxIdentifier);
+JsxCloseWhiteSpaces   : [ \t\r\n\f]+ -> channel(HIDDEN);
+
 
 fragment DoubleStringCharacter: ~["\\\r\n] | '\\' EscapeSequence | LineContinuation;
 

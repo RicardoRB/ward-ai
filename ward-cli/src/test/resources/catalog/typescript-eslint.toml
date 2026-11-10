@@ -2,22 +2,16 @@
 
 [[rule]]
 name = "adjacent-overload-signatures"
-presets = ["standard", "strict"]
-category = "linter"
 typescript-eslint = ["adjacent-overload-signatures"]
 biome = ["useAdjacentOverloadSignatures"]
 
 [[rule]]
 name = "await-thenable"
-presets = ["standard", "strict"]
-category = "problem"
 typescript-eslint = ["await-thenable"]
 biome = ["useAwaitThenable"]
 
 [[rule]]
 name = "ban-ts-comment"
-presets = ["standard", "strict"]
-category = "problem"
 typescript-eslint = ["ban-ts-comment"]
 biome = ["noTsIgnore"]
 
@@ -60,15 +54,11 @@ biome = ["useConsistentTypeDefinitions"]
 
 [[rule]]
 name = "consistent-type-exports"
-presets = ["standard", "strict"]
-category = "linter"
 typescript-eslint = ["consistent-type-exports"]
 biome = ["useExportType"]
 
 [[rule]]
 name = "consistent-type-imports"
-presets = ["standard", "strict"]
-category = "linter"
 typescript-eslint = ["consistent-type-imports"]
 biome = ["useImportType"]
 
@@ -113,14 +103,10 @@ biome = ["useNamingConvention"]
 
 [[rule]]
 name = "no-array-delete"
-presets = ["standard", "strict"]
-category = "problem"
 typescript-eslint = ["no-array-delete"]
 
 [[rule]]
 name = "no-base-to-string"
-presets = ["standard", "strict"]
-category = "suggestion"
 typescript-eslint = ["no-base-to-string"]
 biome = ["noBaseToString"]
 
@@ -144,15 +130,12 @@ typescript-eslint = ["no-deprecated"]
 
 [[rule]]
 name = "no-duplicate-enum-values"
-presets = ["standard", "strict"]
-category = "problem"
+not-applicable = { javascript = "TypeScript enums have no JavaScript counterpart" }
 typescript-eslint = ["no-duplicate-enum-values"]
 biome = ["noDuplicateEnumValues"]
 
 [[rule]]
 name = "no-duplicate-type-constituents"
-presets = ["standard", "strict"]
-category = "suggestion"
 typescript-eslint = ["no-duplicate-type-constituents"]
 
 [[rule]]
@@ -167,15 +150,13 @@ typescript-eslint = ["no-empty-object-type"]
 
 [[rule]]
 name = "no-explicit-any"
-presets = ["standard", "strict"]
-category = "suggestion"
+not-applicable = { javascript = "TypeScript type annotations have no JavaScript counterpart" }
 typescript-eslint = ["no-explicit-any"]
 biome = ["noExplicitAny"]
 
 [[rule]]
 name = "no-extra-non-null-assertion"
-presets = ["standard", "strict"]
-category = "problem"
+not-applicable = { javascript = "the TypeScript non-null assertion has no JavaScript counterpart" }
 typescript-eslint = ["no-extra-non-null-assertion"]
 biome = ["noExtraNonNullAssertion"]
 
@@ -187,15 +168,12 @@ typescript-eslint = ["no-extraneous-class"]
 
 [[rule]]
 name = "no-floating-promises"
-presets = ["standard", "strict"]
-category = "problem"
+not-applicable = { javascript = "the rule is type-aware TypeScript (Biome lang ts) with no JavaScript counterpart" }
 typescript-eslint = ["no-floating-promises"]
 biome = ["noFloatingPromises"]
 
 [[rule]]
 name = "no-for-in-array"
-presets = ["standard", "strict"]
-category = "problem"
 typescript-eslint = ["no-for-in-array"]
 
 [[rule]]
@@ -240,14 +218,11 @@ biome = ["noMeaninglessVoidOperator"]
 
 [[rule]]
 name = "no-misused-new"
-presets = ["standard", "strict"]
-category = "problem"
 typescript-eslint = ["no-misused-new"]
 
 [[rule]]
 name = "no-misused-promises"
-presets = ["standard", "strict"]
-category = "problem"
+not-applicable = { javascript = "the rule is type-aware TypeScript (Biome lang ts) with no JavaScript counterpart" }
 typescript-eslint = ["no-misused-promises"]
 biome = ["noMisusedPromises"]
 
@@ -277,22 +252,18 @@ typescript-eslint = ["no-non-null-asserted-nullish-coalescing"]
 
 [[rule]]
 name = "no-non-null-asserted-optional-chain"
-presets = ["standard", "strict"]
-category = "problem"
+not-applicable = { javascript = "the TypeScript non-null assertion has no JavaScript counterpart" }
 typescript-eslint = ["no-non-null-asserted-optional-chain"]
 biome = ["noNonNullAssertedOptionalChain"]
 
 [[rule]]
 name = "no-non-null-assertion"
-presets = ["standard", "strict"]
-category = "problem"
 typescript-eslint = ["no-non-null-assertion"]
 biome = ["noNonNullAssertion"]
+not-applicable = { javascript = "JavaScript has no non-null assertion syntax; the postfix ! is a TypeScript-only construct" }
 
 [[rule]]
 name = "no-redundant-type-constituents"
-presets = ["standard", "strict"]
-category = "suggestion"
 typescript-eslint = ["no-redundant-type-constituents"]
 
 [[rule]]
@@ -308,8 +279,6 @@ biome = ["noRestrictedTypes"]
 
 [[rule]]
 name = "no-this-alias"
-presets = ["standard", "strict"]
-category = "suggestion"
 typescript-eslint = ["no-this-alias"]
 biome = ["noUselessThisAlias"]
 
@@ -352,14 +321,10 @@ typescript-eslint = ["no-unnecessary-type-arguments"]
 
 [[rule]]
 name = "no-unnecessary-type-assertion"
-presets = ["standard", "strict"]
-category = "suggestion"
 typescript-eslint = ["no-unnecessary-type-assertion"]
 
 [[rule]]
 name = "no-unnecessary-type-constraint"
-presets = ["standard", "strict"]
-category = "suggestion"
 typescript-eslint = ["no-unnecessary-type-constraint"]
 biome = ["noUselessTypeConstraint"]
 
@@ -378,26 +343,19 @@ typescript-eslint = ["no-unnecessary-type-parameters"]
 
 [[rule]]
 name = "no-unsafe-argument"
-presets = ["standard", "strict"]
-category = "problem"
 typescript-eslint = ["no-unsafe-argument"]
 
 [[rule]]
 name = "no-unsafe-assignment"
-presets = ["standard", "strict"]
-category = "problem"
 typescript-eslint = ["no-unsafe-assignment"]
 
 [[rule]]
 name = "no-unsafe-call"
-presets = ["standard", "strict"]
-category = "problem"
 typescript-eslint = ["no-unsafe-call"]
 
 [[rule]]
 name = "no-unsafe-declaration-merging"
-presets = ["standard", "strict"]
-category = "problem"
+not-applicable = { javascript = "TypeScript declaration merging has no JavaScript counterpart" }
 typescript-eslint = ["no-unsafe-declaration-merging"]
 biome = ["noUnsafeDeclarationMerging"]
 
@@ -409,26 +367,18 @@ typescript-eslint = ["no-unsafe-enum-assignment"]
 
 [[rule]]
 name = "no-unsafe-enum-comparison"
-presets = ["standard", "strict"]
-category = "suggestion"
 typescript-eslint = ["no-unsafe-enum-comparison"]
 
 [[rule]]
 name = "no-unsafe-function-type"
-presets = ["standard", "strict"]
-category = "problem"
 typescript-eslint = ["no-unsafe-function-type"]
 
 [[rule]]
 name = "no-unsafe-member-access"
-presets = ["standard", "strict"]
-category = "problem"
 typescript-eslint = ["no-unsafe-member-access"]
 
 [[rule]]
 name = "no-unsafe-return"
-presets = ["standard", "strict"]
-category = "problem"
 typescript-eslint = ["no-unsafe-return"]
 
 [[rule]]
@@ -440,8 +390,6 @@ biome = ["noUnsafeTypeAssertion"]
 
 [[rule]]
 name = "no-unsafe-unary-minus"
-presets = ["standard", "strict"]
-category = "problem"
 typescript-eslint = ["no-unsafe-unary-minus"]
 
 [[rule]]
@@ -452,15 +400,12 @@ typescript-eslint = ["no-useless-default-assignment"]
 
 [[rule]]
 name = "no-useless-empty-export"
-presets = ["standard", "strict"]
-category = "suggestion"
+not-applicable = { javascript = "TypeScript export declarations have no JavaScript counterpart" }
 typescript-eslint = ["no-useless-empty-export"]
 biome = ["noUselessEmptyExport"]
 
 [[rule]]
 name = "no-wrapper-object-types"
-presets = ["standard", "strict"]
-category = "problem"
 typescript-eslint = ["no-wrapper-object-types"]
 
 [[rule]]
@@ -471,8 +416,6 @@ typescript-eslint = ["non-nullable-type-assertion-style"]
 
 [[rule]]
 name = "only-throw-error"
-presets = ["standard", "strict"]
-category = "problem"
 typescript-eslint = ["only-throw-error"]
 biome = ["useThrowOnlyError"]
 
@@ -485,8 +428,6 @@ biome = ["noParameterProperties"]
 
 [[rule]]
 name = "prefer-as-const"
-presets = ["standard", "strict"]
-category = "suggestion"
 typescript-eslint = ["prefer-as-const"]
 biome = ["useAsConstAssertion"]
 
@@ -525,8 +466,6 @@ biome = ["useIncludes"]
 
 [[rule]]
 name = "prefer-literal-enum-member"
-presets = ["standard", "strict"]
-category = "linter"
 typescript-eslint = ["prefer-literal-enum-member"]
 biome = ["useLiteralEnumMembers"]
 
@@ -544,8 +483,6 @@ biome = ["useNullishCoalescing"]
 
 [[rule]]
 name = "prefer-optional-chain"
-presets = ["standard", "strict"]
-category = "linter"
 typescript-eslint = ["prefer-optional-chain"]
 biome = ["useOptionalChain"]
 
@@ -609,15 +546,11 @@ biome = ["useArraySortCompare"]
 
 [[rule]]
 name = "restrict-plus-operands"
-presets = ["standard", "strict"]
-category = "problem"
 typescript-eslint = ["restrict-plus-operands"]
 biome = ["noUnsafePlusOperands"]
 
 [[rule]]
 name = "restrict-template-expressions"
-presets = ["standard", "strict"]
-category = "problem"
 typescript-eslint = ["restrict-template-expressions"]
 
 [[rule]]
@@ -651,8 +584,6 @@ typescript-eslint = ["triple-slash-reference"]
 
 [[rule]]
 name = "unbound-method"
-presets = ["standard", "strict"]
-category = "problem"
 typescript-eslint = ["unbound-method"]
 
 [[rule]]

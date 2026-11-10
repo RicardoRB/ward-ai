@@ -1,1 +1,3 @@
-store = 1
+"""In-memory store."""
+
+STORE = 1

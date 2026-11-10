@@ -1,0 +1,12 @@
+const a = <span onClick={go} />;
+const b = <div onClick={go} />;
+const c = <p onKeyDown={go} />;
+const d = <h1 onFocus={go} />;
+const e = <img onClick={go} />;
+const f = <img alt="x" onLoad={go} />;
+const g = <li onClick={go} />;
+const k = <div aria-hidden="false" onClick={go} />;
+const o = <section onClick={go} />;
+const p = <ul onClick={go} />;
+const q = <nav onClick={go} />;
+const u = <div onKeyDown={go} />;

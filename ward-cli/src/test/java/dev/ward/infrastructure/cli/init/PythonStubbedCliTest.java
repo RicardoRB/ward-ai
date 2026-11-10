@@ -20,7 +20,7 @@ import org.junit.jupiter.params.provider.ValueSource;
  */
 class PythonStubbedCliTest {
   private static final String PIP = "python-pip";
-  private static final int GATES_IN_STANDARD = 6;
+  private static final int GATES_IN_STANDARD = 5;
   private static final Path FIXTURES = Path.of("src/test/resources/fixtures");
   private static final Pattern STATUS =
       Pattern.compile("\"name\":\"([^\"]+)\"(?:,\"type\":\"[^\"]*\")?,\"status\":\"([A-Z]+)\"");
@@ -40,9 +40,7 @@ class PythonStubbedCliTest {
         PythonStubbedRun.ward(
             project, "init", "--preset", "standard", "--integration", "none", "--yes");
     assertThat(init.exit()).as(init.stdout() + init.stderr()).isZero();
-    assertThat(Files.readString(project.resolve("pyproject.toml")))
-        .contains("ruff==0.17.1", "mypy==2.4.0");
-    assertThat(Files.isRegularFile(project.resolve("ruff.toml"))).isTrue();
+    assertThat(Files.readString(project.resolve("pyproject.toml"))).contains("mypy==2.4.0");
     assertThat(Files.isRegularFile(project.resolve(".coveragerc"))).isTrue();
 
     final PythonStubbedRun.Result check =
@@ -63,7 +61,7 @@ class PythonStubbedCliTest {
   private static void venvWithStubTools(final Path project) throws IOException {
     final Path bin = Files.createDirectories(project.resolve(".venv/bin"));
     final Path stub = Path.of("src/test/resources/fixtures/python-project-bin/uv").toAbsolutePath();
-    for (final String tool : List.of("python", "ruff", "mypy", "coverage", "pytest", "pip-audit")) {
+    for (final String tool : List.of("python", "mypy", "coverage", "pytest", "pip-audit")) {
       Files.createSymbolicLink(bin.resolve(tool), stub);
     }
   }

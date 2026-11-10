@@ -1,0 +1,1 @@
+bucket.grantRead(role);

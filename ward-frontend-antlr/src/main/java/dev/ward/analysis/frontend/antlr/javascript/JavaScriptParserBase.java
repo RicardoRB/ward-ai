@@ -1,5 +1,6 @@
 package dev.ward.analysis.frontend.antlr.javascript;
 
+import org.antlr.v4.runtime.BufferedTokenStream;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.Token;
@@ -37,6 +38,18 @@ public abstract class JavaScriptParserBase extends Parser {
   /** Whether the next token value equals to @param str */
   protected boolean next(final String str) {
     return _input.LT(1).getText().equals(str);
+  }
+
+  /**
+   * Tells whether the lexer recognizes JSX here, so JSX alternatives may match. The lexer makes the
+   * same decision from the file extension, so the tokens and this predicate agree.
+   *
+   * @return {@code true} for a {@code .tsx} or {@code .jsx} unit
+   */
+  protected boolean isJsx() {
+    return _input instanceof BufferedTokenStream tokens
+        && tokens.getTokenSource() instanceof JavaScriptLexerBase lexer
+        && lexer.isJsx();
   }
 
   protected boolean notLineTerminator() {

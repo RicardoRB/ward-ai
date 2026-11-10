@@ -18,21 +18,31 @@ class JavaMatrixCellsTest {
 
   @Test
   void strictCellsCoverEveryLts() throws IOException {
-    assertThat(rowsEndingWith(",strict"))
-        .containsAll(LTS.stream().map(jdk -> jdk + ",maven,,strict").toList())
-        .containsAll(LTS.stream().map(jdk -> jdk + ",gradle,groovy,strict").toList());
+    assertThat(rowsEndingWith(",strict,"))
+        .containsAll(LTS.stream().map(jdk -> jdk + ",maven,,strict,").toList())
+        .containsAll(LTS.stream().map(jdk -> jdk + ",gradle,groovy,strict,").toList());
   }
 
   @Test
   void kotlinDslAndStandardCells() throws IOException {
-    assertThat(rows().stream().filter(row -> row.contains(",kotlin,")).toList())
-        .containsExactlyInAnyOrder("8,gradle,kotlin,strict", "25,gradle,kotlin,strict");
-    assertThat(rowsEndingWith(",standard"))
+    assertThat(javaRows().stream().filter(row -> row.contains(",kotlin,")).toList())
+        .containsExactlyInAnyOrder("8,gradle,kotlin,strict,", "25,gradle,kotlin,strict,");
+    assertThat(rowsEndingWith(",standard,"))
         .containsExactlyInAnyOrder(
-            "8,maven,,standard",
-            "25,maven,,standard",
-            "8,gradle,groovy,standard",
-            "25,gradle,groovy,standard");
+            "8,maven,,standard,",
+            "25,maven,,standard,",
+            "8,gradle,groovy,standard,",
+            "25,gradle,groovy,standard,");
+  }
+
+  @Test
+  void kotlinSourceCellsOnDslAndMavenForJdk17And21() throws IOException {
+    assertThat(rowsEndingWith(",kotlin-basic"))
+        .containsExactlyInAnyOrder(
+            "17,maven,,strict,kotlin-basic",
+            "21,maven,,strict,kotlin-basic",
+            "17,gradle,kotlin,strict,kotlin-basic",
+            "21,gradle,kotlin,strict,kotlin-basic");
   }
 
   @Test
@@ -47,6 +57,11 @@ class JavaMatrixCellsTest {
   /** The cell rows, without the header. */
   static List<String> rows() throws IOException {
     return Files.readAllLines(CELLS).stream().skip(1).filter(row -> !row.isBlank()).toList();
+  }
+
+  /** The cells that build the Java fixture: an empty {@code fixture} column. */
+  private static List<String> javaRows() throws IOException {
+    return rowsEndingWith(",");
   }
 
   private static List<String> rowsEndingWith(final String suffix) throws IOException {

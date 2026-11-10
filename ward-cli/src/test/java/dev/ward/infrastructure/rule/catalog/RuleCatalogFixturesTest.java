@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.port.TypeFacts;
+import dev.ward.analysis.domain.rule.GraphRules;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleOptions;
 import java.io.IOException;
@@ -100,7 +101,14 @@ class RuleCatalogFixturesTest {
       final TypeFacts typeFacts)
       throws IOException {
     final List<AnalysisFinding> findings =
-        runner.run(rule, unitName(file), Files.readString(file), typeFacts);
+        GraphRules.isGraphRule(rule)
+            ? FixtureProjects.projectFindings(runner, rule, file)
+            : runner.run(
+                rule,
+                unitName(file),
+                Files.readString(file),
+                typeFacts,
+                FixtureProjects.fixtureProject(file, rule));
     return FixtureComparison.problems(
         rule.id(),
         rule.languages().iterator().next(),

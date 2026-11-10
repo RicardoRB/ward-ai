@@ -22,8 +22,6 @@ biome = ["noAmbiguousAnchorText"]
 
 [[rule]]
 name = "no-approximative-numeric-constant"
-presets = ["standard", "strict"]
-category = "suspicious"
 biome = ["noApproximativeNumericConstant"]
 
 [[rule]]
@@ -131,6 +129,7 @@ biome = ["noConfusingLabels"]
 
 [[rule]]
 name = "no-confusing-void-type"
+not-applicable = { javascript = "TypeScript void type annotations have no JavaScript counterpart" }
 presets = ["standard", "strict"]
 category = "suspicious"
 biome = ["noConfusingVoidType"]
@@ -142,8 +141,6 @@ biome = ["noConstEnum"]
 
 [[rule]]
 name = "no-constant-math-min-max-clamp"
-presets = ["standard", "strict"]
-category = "correctness"
 biome = ["noConstantMathMinMaxClamp"]
 
 [[rule]]
@@ -226,8 +223,6 @@ biome = ["noDuplicatedSpreadProps"]
 
 [[rule]]
 name = "no-dynamic-namespace-import-access"
-presets = ["standard", "strict"]
-category = "performance"
 biome = ["noDynamicNamespaceImportAccess"]
 
 [[rule]]
@@ -243,8 +238,7 @@ biome = ["noEmptySource"]
 
 [[rule]]
 name = "no-empty-type-parameters"
-presets = ["standard", "strict"]
-category = "complexity"
+not-applicable = { javascript = "TypeScript type parameter lists have no JavaScript counterpart" }
 biome = ["noEmptyTypeParameters"]
 
 [[rule]]
@@ -359,6 +353,7 @@ biome = ["noImgElement"]
 
 [[rule]]
 name = "no-implicit-any-let"
+not-applicable = { javascript = "TypeScript variable type annotations have no JavaScript counterpart" }
 presets = ["standard", "strict"]
 category = "suspicious"
 biome = ["noImplicitAnyLet"]
@@ -441,6 +436,7 @@ biome = ["noLeakedRender"]
 
 [[rule]]
 name = "no-misleading-instantiator"
+not-applicable = { javascript = "TypeScript interfaces and type aliases have no JavaScript counterpart" }
 presets = ["standard", "strict"]
 category = "suspicious"
 biome = ["noMisleadingInstantiator"]
@@ -725,8 +721,6 @@ biome = ["noRestrictedImports"]
 
 [[rule]]
 name = "no-return-in-finally"
-presets = ["standard", "strict"]
-category = "nursery"
 biome = ["noReturnInFinally"]
 
 [[rule]]
@@ -771,8 +765,6 @@ biome = ["noStaticElementInteractions"]
 
 [[rule]]
 name = "no-static-only-class"
-presets = ["standard", "strict"]
-category = "complexity"
 biome = ["noStaticOnlyClass"]
 
 [[rule]]
@@ -889,8 +881,6 @@ biome = ["noUnnecessaryConditions"]
 
 [[rule]]
 name = "no-unreachable-super"
-presets = ["standard", "strict"]
-category = "correctness"
 biome = ["noUnreachableSuper"]
 
 [[rule]]
@@ -907,8 +897,6 @@ biome = ["noUnsafeIframeSandbox"]
 
 [[rule]]
 name = "no-unused-function-parameters"
-presets = ["standard", "strict"]
-category = "correctness"
 biome = ["noUnusedFunctionParameters"]
 
 [[rule]]
@@ -941,8 +929,6 @@ biome = ["noUselessFragments"]
 
 [[rule]]
 name = "no-useless-lone-block-statements"
-presets = ["standard", "strict"]
-category = "complexity"
 biome = ["noUselessLoneBlockStatements"]
 
 [[rule]]
@@ -967,6 +953,7 @@ biome = ["noVoidElementsWithChildren"]
 
 [[rule]]
 name = "no-void-type-return"
+not-applicable = { javascript = "TypeScript return type annotations have no JavaScript counterpart" }
 presets = ["standard", "strict"]
 category = "correctness"
 biome = ["noVoidTypeReturn"]
@@ -1165,8 +1152,6 @@ biome = ["useDefaultSwitchClause"]
 
 [[rule]]
 name = "use-default-switch-clause-last"
-presets = ["standard", "strict"]
-category = "suspicious"
 biome = ["useDefaultSwitchClauseLast"]
 
 [[rule]]
@@ -1177,8 +1162,6 @@ biome = ["useDisposables"]
 
 [[rule]]
 name = "use-dom-node-text-content"
-presets = ["standard", "strict"]
-category = "nursery"
 biome = ["useDomNodeTextContent"]
 
 [[rule]]
@@ -1253,8 +1236,6 @@ biome = ["useFlatMap"]
 
 [[rule]]
 name = "use-flat-math-min-max"
-presets = ["standard", "strict"]
-category = "nursery"
 biome = ["useFlatMathMinMax"]
 
 [[rule]]
@@ -1371,8 +1352,6 @@ biome = ["useKeyWithMouseEvents"]
 
 [[rule]]
 name = "use-math-min-max"
-presets = ["standard", "strict"]
-category = "nursery"
 biome = ["useMathMinMax"]
 
 [[rule]]
@@ -1383,8 +1362,6 @@ biome = ["useMediaCaption"]
 
 [[rule]]
 name = "use-modern-math-apis"
-presets = ["standard", "strict"]
-category = "nursery"
 biome = ["useModernMathApis"]
 
 [[rule]]
@@ -1510,8 +1487,6 @@ biome = ["useShorthandFunctionType"]
 
 [[rule]]
 name = "use-simple-number-keys"
-presets = ["standard", "strict"]
-category = "complexity"
 biome = ["useSimpleNumberKeys"]
 
 [[rule]]
