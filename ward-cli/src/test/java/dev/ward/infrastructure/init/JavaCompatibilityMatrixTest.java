@@ -114,7 +114,8 @@ class JavaCompatibilityMatrixTest {
 
     JavaMatrixProcesses.git(project, "checkout", "-q", ".");
     JavaMatrixProcesses.git(project, "clean", "-qfd");
-    JavaMatrixProcesses.copyTree(JavaMatrixFixtures.VIOLATIONS.resolve(compileError(fixture)), project);
+    JavaMatrixProcesses.copyTree(
+        JavaMatrixFixtures.VIOLATIONS.resolve(compileError(fixture)), project);
     assertThat(statuses(report(project)).get("compile"))
         .as("compile with a compile error")
         .isEqualTo(FAILED);
