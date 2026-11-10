@@ -42,6 +42,9 @@ detect_platform() {
   if [ "$os" = linux ] && [ "$arch" = aarch64 ]; then
     fail "no Linux aarch64 binary is published yet; build from source: https://github.com/$REPO#development"
   fi
+  if [ "$os" = macos ] && [ "$arch" = x86_64 ]; then
+    fail "no macOS Intel binary is published; build the JAR from source and run it on JDK 25: https://github.com/$REPO#development"
+  fi
   if [ "$os" = windows ] && [ "$arch" = aarch64 ]; then
     info "no Windows ARM64 binary is published; installing x86_64, which runs under emulation"
     arch=x86_64

@@ -22,11 +22,10 @@ jobs:
       security-events: write
     uses: ./.github/workflows/verify.yml
     with:
-      # macos-15-intel is the slowest native runner and gates the PR; release still runs it.
       # Pull requests into main run every check. Pull requests into other branches (such as
       # release branches) run the Ward ci profile and the Ubuntu native checks only; the
       # matrices, the other native runners and the agent-harness suites run on main.
-      native-runners: ${{ github.base_ref == 'main' && '["ubuntu-24.04", "macos-15-intel", "macos-15", "windows-latest"]' || '["ubuntu-24.04"]' }}
+      native-runners: ${{ github.base_ref == 'main' && '["ubuntu-24.04", "macos-15", "windows-latest"]' || '["ubuntu-24.04"]' }}
       harness-compatibility: ${{ github.base_ref == 'main' }}
       compatibility-matrices: ${{ github.base_ref == 'main' }}
 

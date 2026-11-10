@@ -12,7 +12,7 @@ on:
       native-runners:
         description: JSON array of runners for the native checks.
         type: string
-        default: '["ubuntu-24.04", "macos-15-intel", "macos-15", "windows-latest"]'
+        default: '["ubuntu-24.04", "macos-15", "windows-latest"]'
       harness-compatibility:
         description: Also run the deterministic agent-harness suites against the native executable.
         type: boolean
@@ -588,12 +588,10 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      # GraalVM Community publishes no macOS x64 build after 25.0.1, so the Intel runner uses that one.
       - name: Set up GraalVM 25.5
         uses: graalvm/setup-graalvm@v1
         with:
-          version: ${{ matrix.os != 'macos-15-intel' && '25.5' || '' }}
-          java-version: ${{ matrix.os == 'macos-15-intel' && '25.0.1' || '' }}
+          version: '25.5'
           distribution: graalvm-community
           github-token: ${{ secrets.GITHUB_TOKEN }}
           cache: maven
