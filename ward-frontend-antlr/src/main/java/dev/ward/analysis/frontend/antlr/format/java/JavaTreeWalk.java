@@ -2,13 +2,20 @@ package dev.ward.analysis.frontend.antlr.format.java;
 
 import dev.ward.analysis.domain.format.FormatRule;
 import dev.ward.analysis.frontend.antlr.java.JavaParser.AnnotationContext;
+import dev.ward.analysis.frontend.antlr.java.JavaParser.AnnotationFieldValuesContext;
+import dev.ward.analysis.frontend.antlr.java.JavaParser.AnnotationValueContext;
 import dev.ward.analysis.frontend.antlr.java.JavaParser.ArgumentsContext;
 import dev.ward.analysis.frontend.antlr.java.JavaParser.ArrayInitializerContext;
+import dev.ward.analysis.frontend.antlr.java.JavaParser.BlockContext;
+import dev.ward.analysis.frontend.antlr.java.JavaParser.ClassBodyContext;
+import dev.ward.analysis.frontend.antlr.java.JavaParser.ClassCreatorRestContext;
 import dev.ward.analysis.frontend.antlr.java.JavaParser.ElementValueArrayInitializerContext;
 import dev.ward.analysis.frontend.antlr.java.JavaParser.EnumConstantsContext;
 import dev.ward.analysis.frontend.antlr.java.JavaParser.FormalParametersContext;
+import dev.ward.analysis.frontend.antlr.java.JavaParser.LambdaBodyContext;
 import dev.ward.analysis.frontend.antlr.java.JavaParser.RecordHeaderContext;
 import dev.ward.analysis.frontend.antlr.java.JavaParser.SwitchBlockStatementGroupContext;
+import dev.ward.analysis.frontend.antlr.java.JavaParser.SwitchExpressionContext;
 import dev.ward.analysis.frontend.antlr.java.JavaParser.SwitchLabeledRuleContext;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,6 +36,8 @@ final class JavaTreeWalk {
           "typeArgumentsOrDiamond",
           "nonWildcardTypeArgumentsOrDiamond");
 
+  private static final String OPEN_BRACE = "{";
+
   private final String[] ruleNames;
   private final List<FormatRule> rules = new ArrayList<>();
   private final Set<Integer> groupOpens = new HashSet<>();
@@ -36,6 +45,7 @@ final class JavaTreeWalk {
   private final Set<Integer> hardAfter = new HashSet<>();
   private final Set<Integer> annotationEnds = new HashSet<>();
   private final Set<Integer> angleTokens = new HashSet<>();
+  private final Set<Integer> expressionBlocks = new HashSet<>();
 
   private JavaTreeWalk(final String... ruleNames) {
     this.ruleNames = ruleNames.clone();
@@ -57,7 +67,8 @@ final class JavaTreeWalk {
         walk.arrayOpens,
         walk.hardAfter,
         walk.annotationEnds,
-        walk.angleTokens);
+        walk.angleTokens,
+        walk.expressionBlocks);
   }
 
   private void visit(final ParseTree node) {
@@ -66,6 +77,7 @@ final class JavaTreeWalk {
     }
     rules.add(new FormatRule(ruleNames[context.getRuleIndex()], context.getStart().getLine()));
     classify(context);
+    markExpressionBlock(context);
     if (context.children != null) {
       for (final ParseTree child : context.children) {
         visit(child);
@@ -100,15 +112,35 @@ final class JavaTreeWalk {
   private static boolean isGroupList(final ParserRuleContext context) {
     return context instanceof ArgumentsContext
         || context instanceof FormalParametersContext
-        || context instanceof RecordHeaderContext;
+        || context instanceof RecordHeaderContext
+        || context instanceof AnnotationFieldValuesContext;
+  }
+
+  private void markExpressionBlock(final ParserRuleContext context) {
+    if (context instanceof SwitchExpressionContext) {
+      addTerminals(context, OPEN_BRACE);
+    } else if (isExpressionBody(context)) {
+      expressionBlocks.add(context.getStart().getTokenIndex());
+    }
+  }
+
+  private static boolean isExpressionBody(final ParserRuleContext context) {
+    return context instanceof ClassBodyContext
+            && context.getParent() instanceof ClassCreatorRestContext
+        || context instanceof BlockContext && context.getParent() instanceof LambdaBodyContext;
   }
 
   private static boolean isArrayInitializer(final ParserRuleContext context) {
     return context instanceof ArrayInitializerContext
-        || context instanceof ElementValueArrayInitializerContext;
+        || context instanceof ElementValueArrayInitializerContext
+        || context instanceof AnnotationValueContext
+            && OPEN_BRACE.equals(context.getStart().getText());
   }
 
   private Set<Integer> target(final String text) {
+    if (OPEN_BRACE.equals(text)) {
+      return expressionBlocks;
+    }
     return "<".equals(text) || ">".equals(text) ? angleTokens : hardAfter;
   }
 

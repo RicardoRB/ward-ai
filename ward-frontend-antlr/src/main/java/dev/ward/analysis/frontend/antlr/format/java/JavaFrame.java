@@ -26,6 +26,7 @@ final class JavaFrame {
   private final Kind kind;
   private final String close;
   private final List<Document> parts = new ArrayList<>();
+  private final JavaContinuations continuations = new JavaContinuations(parts);
 
   /**
    * Creates an empty frame.
@@ -69,12 +70,18 @@ final class JavaFrame {
     parts.add(document);
   }
 
+  JavaContinuations continuations() {
+    return continuations;
+  }
+
   Document body() {
+    continuations.end();
     return new Document.Concat(parts);
   }
 
   /** Closes a block: its documents go one level deeper, then the close text follows a break. */
   void closeBlock(final JavaFrame parent, final String closeText) {
+    continuations.end();
     if (!parts.isEmpty()) {
       parent.add(Document.indent(body()));
       parent.add(Document.hardLine());
@@ -85,6 +92,7 @@ final class JavaFrame {
   /** Closes a group: its items break together, indented by the continuation levels. */
   void closeGroup(
       final JavaFrame parent, final String closeText, final boolean hard, final int levels) {
+    continuations.end();
     if (!parts.isEmpty()) {
       final List<Document> items = new ArrayList<>();
       items.add(Document.softLine());
@@ -98,6 +106,7 @@ final class JavaFrame {
 
   /** Closes a raw scope: its documents join the parent, and a forced break precedes the close. */
   void closeRaw(final JavaFrame parent, final String closeText, final boolean hard) {
+    continuations.end();
     for (final Document part : parts) {
       parent.add(part);
     }

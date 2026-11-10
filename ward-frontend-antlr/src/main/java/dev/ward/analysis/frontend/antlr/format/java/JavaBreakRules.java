@@ -29,21 +29,78 @@ final class JavaBreakRules {
   private static final Set<String> NONE_BEFORE =
       Set.of(CLOSE_PAREN, CLOSE_BRACKET, COMMA, SEMICOLON);
 
+  private static final int PLAIN_LINE = 0;
+  private static final int CONDITIONAL_LINE = 1;
+  private static final int OPERATOR_LINE = 2;
+  private static final int CHAIN_LINE = 3;
+  private static final Set<String> CONDITIONAL = Set.of("?", COLON);
+  private static final Set<String> BINARY =
+      Set.of(
+          "+",
+          "-",
+          "*",
+          "/",
+          "%",
+          "&&",
+          "||",
+          "&",
+          "|",
+          "^",
+          "==",
+          "!=",
+          "<",
+          ">",
+          "<=",
+          ">=",
+          "<<",
+          ">>",
+          ">>>",
+          "instanceof");
+  private static final Set<String> STATEMENT_ENDS = Set.of(SEMICOLON, OPEN_BLOCK, CLOSE_BLOCK);
+
   private JavaBreakRules() {}
 
   /**
-   * Returns the break a token asks for before it, from its own text.
+   * Returns how tightly the token that starts a continuation line binds: a plain operand, a
+   * conditional {@code ?} or {@code :}, a binary operator, or a call-chain dot, from loosest to
+   * tightest.
+   *
+   * @param text the token text
+   * @return the line kind, higher for tighter
+   */
+  static int lineKind(final String text) {
+    if (DOT.equals(text)) {
+      return CHAIN_LINE;
+    }
+    if (BINARY.contains(text)) {
+      return OPERATOR_LINE;
+    }
+    return CONDITIONAL.contains(text) ? CONDITIONAL_LINE : PLAIN_LINE;
+  }
+
+  /**
+   * Tells whether a token ends a statement, so a line break after it is not a continuation.
+   *
+   * @param text the token text
+   * @return whether the token ends a statement
+   */
+  static boolean endsStatement(final String text) {
+    return STATEMENT_ENDS.contains(text);
+  }
+
+  /**
+   * Returns the break a token asks for before it, from its own text. A dot that starts a line in
+   * the source keeps its line, so a call chain stays one call per line.
    *
    * @param atom the token
-   * @param blockTop whether the enclosing scope is a block
    * @return the break, or {@code UNSET} when the token has no rule of its own
    */
-  static JavaBreak beforeOf(final JavaAtom atom, final boolean blockTop) {
+  static JavaBreak beforeOf(final JavaAtom atom) {
     if (OPEN_BLOCK.equals(atom.text())) {
       return JavaBreak.SPACE;
     }
     if (DOT.equals(atom.text())) {
-      return atom.newlines() > 0 && blockTop ? JavaBreak.UNSET : JavaBreak.NONE;
+      return atom.newlines() > 0 ? JavaBreak.UNSET : JavaBreak.NONE;
     }
     return NONE_BEFORE.contains(atom.text()) ? JavaBreak.NONE : JavaBreak.UNSET;
   }
