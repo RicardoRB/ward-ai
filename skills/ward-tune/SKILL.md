@@ -45,6 +45,10 @@ the installer only after an explicit yes.
 
 Read `ward.toml` as text. If it does not exist, stop and suggest `ward-init`.
 
+To see which rules the project selects, and what each one takes, use `ward rules list --selected
+--format json` and `ward rules show <id> --format json`. Use them instead of reading the rule
+reference. The JSON output is one document on stdout.
+
 ## Step 2: Scope the tuning
 
 List the gates with `enabled = true`. This skill tunes these:
@@ -147,6 +151,10 @@ Step 5 as usual. Never use a baseline, an "ignore existing findings" file, or a 
 the backlog. These are suppressions under the guardrails.
 
 ## Step 6: Apply approved edits
+
+To turn a rule on or off in `ward-rules.toml`, use `ward rules enable <id>...` or `ward rules
+disable <id>...` after the user approves it. They change only the `include` and `exclude` lists and
+keep the file's comments; they do not change `[rules."<id>"]` tables, which you still edit as text.
 
 Edit only the approved files, exactly as shown. Keep the file's existing formatting and indentation.
 If a managed file's ownership was transferred, the marker line is removed in this same edit.

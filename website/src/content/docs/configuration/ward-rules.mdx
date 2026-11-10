@@ -55,6 +55,10 @@ A rule belongs to one category, named after the usual style groups: `sizes`, `me
 `imports`, `javadoc`, `coding`, `misc` or `linter`. A `[rules."<id>"]` table for a rule that is not
 selected is a configuration error, so a tuned rule is never silently off.
 
+`ward rules list --selected` shows the rules the file selects, and `ward rules enable` and
+`ward rules disable` add an id to `include` or `exclude` without losing the file's comments. See the
+[`ward rules` command](/commands/rules/).
+
 ## Rule tables
 
 Every rule accepts `severity` (`error` or `warning`) and `exclude-paths` (globs relative to the
