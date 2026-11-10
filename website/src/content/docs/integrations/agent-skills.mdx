@@ -79,7 +79,7 @@ All skills follow the same rules, whatever the agent is asked:
   `ward check` on a `ward.toml` that existed before the session, the agent asks you to
   confirm the repository is trusted. See [Security](/security/).
 - **Gates are never weakened to make a check pass.** The agent does not drop gates, lower
-  thresholds, or add suppressions (`@SuppressWarnings`, inline ignore comments, suppression files, `@ArchIgnore`).
+  thresholds, or add suppressions (`@SuppressWarnings`, inline ignore comments, suppression files).
 - **Nothing is installed without a specific yes.** That covers the Ward installer and each gate
   tool, such as `brew install semgrep`. Approving a plan is not consent to install.
 - **Every answer comes from you.** `ward-init` passes each answer as an explicit
