@@ -287,7 +287,7 @@ use-valid-aria-role = "implemented"
 use-valid-aria-values = "implemented"
 use-valid-autocomplete = { status = "planned", issue = "#329" }
 use-valid-for-direction = "implemented"
-use-valid-lang = { status = "planned", issue = "#329" }
+use-valid-lang = "implemented"
 use-valid-test-title = { status = "planned", issue = "#329" }
 use-vue-base-import = { status = "planned", issue = "#329" }
 use-vue-consistent-define-props-declaration = { status = "planned", issue = "#329" }

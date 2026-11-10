@@ -90,6 +90,7 @@ class BiomeParitySmokeTest {
           Map.entry("no-header-scope", "a11y/noHeaderScope"),
           Map.entry("no-redundant-alt", "a11y/noRedundantAlt"),
           Map.entry("no-ambiguous-anchor-text", "a11y/noAmbiguousAnchorText"),
+          Map.entry("use-valid-lang", "a11y/useValidLang"),
           Map.entry("no-comment-text", "suspicious/noCommentText"),
           Map.entry("no-unsafe-iframe-sandbox", "nursery/noUnsafeIframeSandbox"),
           Map.entry(

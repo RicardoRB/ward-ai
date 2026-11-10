@@ -821,3 +821,27 @@ body = '''
 check = "node-ambiguous-anchor-text"
 message = "Ambiguous anchor text does not give screen reader users enough context. Describe where the link goes."
 '''
+
+[[rules]]
+id = "ward:javascript/use-valid-lang"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-valid-lang"
+message = "The lang attribute must be a valid language tag, such as en or en-US."
+'''
+
+[[rules]]
+id = "ward:typescript/use-valid-lang"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-valid-lang"
+message = "The lang attribute must be a valid language tag, such as en or en-US."
+'''

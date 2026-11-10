@@ -9,6 +9,7 @@ import dev.ward.analysis.domain.rule.check.BiomeCommentTextCheck;
 import dev.ward.analysis.domain.rule.check.BiomeHeaderScopeCheck;
 import dev.ward.analysis.domain.rule.check.BiomeRedundantAltCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUnsafeIframeSandboxCheck;
+import dev.ward.analysis.domain.rule.check.BiomeValidLangCheck;
 import java.util.Map;
 
 /** The JSX checks that read only the element and its text, such as sandbox, comments and alt. */
@@ -35,6 +36,9 @@ final class BiomeJsxChecks {
             toml -> new BiomeRedundantAltCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "node-ambiguous-anchor-text",
-            toml -> new BiomeAmbiguousAnchorTextCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new BiomeAmbiguousAnchorTextCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "node-valid-lang",
+            toml -> new BiomeValidLangCheck(TomlValues.required(toml, MESSAGE))));
   }
 }
