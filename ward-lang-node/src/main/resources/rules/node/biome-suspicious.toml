@@ -105,3 +105,51 @@ body = '''
 check = "node-comment-text"
 message = "a comment written as JSX text is shown on the page; use a JSX comment"
 '''
+
+[[rules]]
+id = "ward:javascript/no-suspicious-semicolon-in-jsx"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "suspicious"
+presets = ["standard", "strict"]
+body = '''
+check = "node-suspicious-semicolon"
+message = "A semicolon at the start of a JSX text line is probably a typo; remove it."
+'''
+
+[[rules]]
+id = "ward:typescript/no-suspicious-semicolon-in-jsx"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "suspicious"
+presets = ["standard", "strict"]
+body = '''
+check = "node-suspicious-semicolon"
+message = "A semicolon at the start of a JSX text line is probably a typo; remove it."
+'''
+
+[[rules]]
+id = "ward:javascript/use-google-font-display"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "suspicious"
+presets = ["standard", "strict"]
+body = '''
+check = "node-google-font-display"
+message = "A Google Fonts link needs a display parameter that is not auto, block or fallback, such as swap."
+'''
+
+[[rules]]
+id = "ward:typescript/use-google-font-display"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "suspicious"
+presets = ["standard", "strict"]
+body = '''
+check = "node-google-font-display"
+message = "A Google Fonts link needs a display parameter that is not auto, block or fallback, such as swap."
+'''

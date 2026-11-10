@@ -220,3 +220,27 @@ body = '''
 check = "node-unsafe-iframe-sandbox"
 message = "an iframe sandbox that allows scripts and same-origin access lets the frame remove its sandbox"
 '''
+
+[[rules]]
+id = "ward:javascript/no-misplaced-list-elements"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "nursery"
+presets = ["standard", "strict"]
+body = '''
+check = "node-misplaced-list-element"
+message = "A li must sit directly in a ul, ol or menu."
+'''
+
+[[rules]]
+id = "ward:typescript/no-misplaced-list-elements"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "nursery"
+presets = ["standard", "strict"]
+body = '''
+check = "node-misplaced-list-element"
+message = "A li must sit directly in a ul, ol or menu."
+'''
