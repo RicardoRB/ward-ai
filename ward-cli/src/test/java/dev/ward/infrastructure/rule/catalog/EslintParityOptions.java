@@ -13,7 +13,7 @@ final class EslintParityOptions {
   private static final Set<String> ACRONYMS = Set.of("jsx");
 
   /** The options that ESLint takes as positional arguments, before its option object. */
-  private static final Set<String> POSITIONAL = Set.of("declarations");
+  private static final Set<String> POSITIONAL = Set.of("declarations", "mode");
 
   private EslintParityOptions() {}
 

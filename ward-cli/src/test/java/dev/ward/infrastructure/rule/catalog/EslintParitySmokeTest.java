@@ -57,6 +57,8 @@ class EslintParitySmokeTest {
   private static final Set<String> SCRIPT_RULES =
       Set.of(
           "no-delete-var",
+          "no-redeclare",
+          "strict",
           "no-dupe-args",
           "no-octal",
           "no-octal-escape",

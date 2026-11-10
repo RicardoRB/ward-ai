@@ -5,7 +5,6 @@ import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.NodeConstantBinaryExpressionCheck;
 import dev.ward.analysis.domain.rule.check.NodeExtraLabelCheck;
 import dev.ward.analysis.domain.rule.check.NodeMisleadingCharacterClassCheck;
-import dev.ward.analysis.domain.rule.check.NodeStrictDirectiveCheck;
 import dev.ward.analysis.domain.rule.check.NodeThisBeforeSuperCheck;
 import dev.ward.analysis.domain.rule.check.NodeUselessBackreferenceCheck;
 import java.util.Map;
@@ -35,10 +34,7 @@ final class EslintSyntaxChecks {
             "node-no-misleading-character-class",
             (CheckFactory)
                 toml -> new NodeMisleadingCharacterClassCheck(TomlValues.required(toml, MESSAGE))),
-        Map.entry(
-            "node-strict-directive",
-            (CheckFactory)
-                toml -> new NodeStrictDirectiveCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry("node-strict-directive", EslintScriptChecks::strictDirective),
         Map.entry(
             "node-no-useless-backreference",
             (CheckFactory)

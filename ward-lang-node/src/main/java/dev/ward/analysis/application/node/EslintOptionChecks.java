@@ -77,8 +77,11 @@ final class EslintOptionChecks {
 
   static NodeUseBeforeDefineCheck useBeforeDefine(final TomlParseResult toml) {
     return new NodeUseBeforeDefineCheck(
-        new NodeUseBeforeDefineCheck.Options(
+        new NodeUseBeforeDefineCheck.Kinds(
             flag(toml, "functions"), flag(toml, "classes"), flag(toml, "variables")),
+        flag(toml, "allow-named-exports"),
+        new NodeUseBeforeDefineCheck.Types(
+            flag(toml, "enums"), flag(toml, "typedefs"), flag(toml, "ignore-type-references")),
         TomlValues.required(toml, MESSAGE));
   }
 
