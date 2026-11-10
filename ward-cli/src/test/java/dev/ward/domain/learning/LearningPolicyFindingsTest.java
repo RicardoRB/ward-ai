@@ -14,8 +14,8 @@ import org.junit.jupiter.api.Test;
 /** Which findings become rule records, and what the records and prompts carry. */
 class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
   private static final String MYPY = "mypy";
-  private static final String LINT = "tsc";
   private static final String TSC = "tsc";
+  private static final String LINT = TSC;
   private static final int VIOLATIONS = 12;
 
   @Test
@@ -103,7 +103,8 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
 
     final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
 
-    assertThat(outcome.ledger().records()).containsOnlyKeys("tsc:no-unused-vars", "tsc:TS2322");
+    assertThat(outcome.ledger().records())
+        .containsOnlyKeys(TSC + ":no-unused-vars", TSC + ":TS2322");
   }
 
   @Test
@@ -134,9 +135,9 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
             PROJECT,
             List.of(
                 failedResult(
-                    "tsc",
-                    finding("tsc", "F401", "`os` imported but unused"),
-                    finding("tsc", "tsc", "Expected a statement")),
+                    TSC,
+                    finding(TSC, "F401", "`os` imported but unused"),
+                    finding(TSC, TSC, "Expected a statement")),
                 failedResult(
                     "mypy",
                     finding("mypy", "arg-type", "Argument 1 has incompatible type"),
@@ -144,7 +145,7 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
 
     final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
 
-    assertThat(outcome.ledger().records()).containsOnlyKeys("tsc:F401", "mypy:arg-type");
+    assertThat(outcome.ledger().records()).containsOnlyKeys(TSC + ":F401", "mypy:arg-type");
   }
 
   @Test
@@ -153,13 +154,13 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
         new CheckReport(
             PROJECT,
             List.of(
-                failedResult("tsc", finding("tsc", "no-undef", "'x' is not defined")),
+                failedResult(TSC, finding(TSC, "no-undef", "'x' is not defined")),
                 failedResult(
                     "swift-format", finding("swift-format", "Indentation", "unindent by 2 spaces")),
                 failedResult("swift-build", finding("swift-build", "swiftc", "cannot convert"))));
 
     final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
 
-    assertThat(outcome.ledger().records()).containsOnlyKeys("tsc:no-undef");
+    assertThat(outcome.ledger().records()).containsOnlyKeys(TSC + ":no-undef");
   }
 }
