@@ -52,6 +52,17 @@ class FileSystemSourceUnitsTest {
   }
 
   @Test
+  void skipsSourcesInAnIgnoredDirectory() throws IOException {
+    write("src/App.js");
+    write("coverage/lcov-report/index.js");
+    final FakeCommandExecutor git =
+        new FakeCommandExecutor(
+            new CommandResult(0, "coverage/\u0000", "", FakeCommandExecutor.DURATION, null));
+
+    assertThat(paths(git, Set.of(AnalysisLanguage.JAVASCRIPT))).containsExactly("src/App.js");
+  }
+
+  @Test
   void keepsEverySourceWhenGitFails() throws IOException {
     write("src/App.js");
     final FakeCommandExecutor git = new FakeCommandExecutor(128, "", "not a git repository");
