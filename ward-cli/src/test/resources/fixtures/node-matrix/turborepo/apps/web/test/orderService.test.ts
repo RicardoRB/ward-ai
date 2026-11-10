@@ -1,21 +1,15 @@
 import { describe, expect, it } from "vitest";
 import { orderTotal, placeOrder } from "../src/orderService";
 
-const AMOUNT = 5;
+const WEB_TOTAL = 9;
 
-describe("placeOrder", () => {
-  it("stores a positive order", () => {
-    expect(placeOrder("a", AMOUNT)).toEqual({ id: "a", total: AMOUNT });
-    expect(orderTotal("a")).toBe(AMOUNT);
+describe("web order service", () => {
+  it("reads back the total of an order it placed", () => {
+    expect(placeOrder("web-1", WEB_TOTAL).total).toBe(WEB_TOTAL);
+    expect(orderTotal("web-1")).toBe(WEB_TOTAL);
   });
 
-  it("rejects a total that is not positive", () => {
-    expect(() => placeOrder("b", 0)).toThrow("total must be positive");
-  });
-});
-
-describe("orderTotal", () => {
-  it("rejects an unknown order", () => {
-    expect(() => orderTotal("missing")).toThrow("unknown order missing");
+  it("names the order when it is unknown", () => {
+    expect(() => orderTotal("web-missing")).toThrow("unknown order web-missing");
   });
 });
