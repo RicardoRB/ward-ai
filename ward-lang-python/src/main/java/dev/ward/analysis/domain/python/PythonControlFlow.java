@@ -55,7 +55,11 @@ public final class PythonControlFlow implements ControlFlowLowering {
   private static ControlFlowGraph definition(final SyntaxNode definition) {
     final SyntaxNode block = PythonSyntax.children(definition, BLOCK).get(0);
     return body(
-        nameOf(definition), block, parameters(definition), definition.span(), hasStarImport(block));
+        PythonSyntax.firstOfKind(definition, NAME).map(PythonControlFlow::text).orElse(MODULE),
+        block,
+        parameters(definition),
+        definition.span(),
+        hasStarImport(block));
   }
 
   private static ControlFlowGraph body(
@@ -126,15 +130,6 @@ public final class PythonControlFlow implements ControlFlowLowering {
     return IMPORT_FROM.equals(node.kind())
             && node.children().stream().anyMatch(child -> STAR.equals(PythonSyntax.text(child)))
         || node.children().stream().anyMatch(PythonControlFlow::hasStarImport);
-  }
-
-  private static String nameOf(final SyntaxNode definition) {
-    for (final SyntaxNode child : definition.children()) {
-      if (NAME.equals(child.kind())) {
-        return text(child);
-      }
-    }
-    return MODULE;
   }
 
   private static String text(final SyntaxNode name) {
