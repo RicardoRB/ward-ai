@@ -11,23 +11,24 @@ import java.util.Set;
 
 /**
  * Reports an anchor whose accessible text is one of the ambiguous phrases, at the opening tag, as
- * Biome 2.5.15's {@code noAmbiguousAnchorText} does with its default words. shortcut: the words
- * option is fixed to Biome's default list, upgrade when the rule declares the option.
+ * Biome 2.5.15's {@code noAmbiguousAnchorText} does, against the words it is given (by default
+ * Biome's list).
  */
 public final class BiomeAmbiguousAnchorTextCheck implements RuleCheck {
 
   private static final String ANCHOR = "a";
-  private static final Set<String> WORDS =
-      Set.of("click here", "here", "link", "a link", "learn more");
 
+  private final Set<String> words;
   private final String message;
 
   /**
    * Creates the check.
    *
+   * @param words the phrases that count as ambiguous, compared with the accessible text
    * @param message the message of each finding
    */
-  public BiomeAmbiguousAnchorTextCheck(final String message) {
+  public BiomeAmbiguousAnchorTextCheck(final Set<String> words, final String message) {
+    this.words = Set.copyOf(Objects.requireNonNull(words, "words"));
     this.message = Objects.requireNonNull(message, "message");
   }
 
@@ -45,7 +46,7 @@ public final class BiomeAmbiguousAnchorTextCheck implements RuleCheck {
         .filter(visit -> !visit.ancestors().isEmpty())
         .filter(
             visit ->
-                WORDS.contains(
+                words.contains(
                     JsxAccessibleText.ofElement(
                         visit.ancestors().get(visit.ancestors().size() - 1), unit.text())))
         .map(visit -> CheckSupport.at(visit.node().span(), message))

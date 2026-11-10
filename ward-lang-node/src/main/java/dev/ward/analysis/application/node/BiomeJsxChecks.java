@@ -41,7 +41,9 @@ final class BiomeJsxChecks {
             toml -> new BiomeRedundantAltCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "node-ambiguous-anchor-text",
-            toml -> new BiomeAmbiguousAnchorTextCheck(TomlValues.required(toml, MESSAGE))),
+            toml ->
+                new BiomeAmbiguousAnchorTextCheck(
+                    TomlValues.strings(toml, "words"), TomlValues.required(toml, MESSAGE))),
         entry(
             "node-valid-lang", toml -> new BiomeValidLangCheck(TomlValues.required(toml, MESSAGE))),
         entry(
