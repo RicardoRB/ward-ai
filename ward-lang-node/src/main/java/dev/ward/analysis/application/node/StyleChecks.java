@@ -123,7 +123,9 @@ final class StyleChecks {
             "node-magic-number",
             toml ->
                 new NodeMagicNumberCheck(
-                    TomlValues.strings(toml, "ignore").stream().map(BigDecimal::new).toList(),
+                    TomlValues.strings(toml, "ignore-numbers").stream()
+                        .map(BigDecimal::new)
+                        .toList(),
                     new NodeMagicNumberFlags(
                         toml.getBoolean("detect-objects", () -> false),
                         toml.getBoolean("ignore-array-indexes", () -> false),

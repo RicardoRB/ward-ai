@@ -4,19 +4,18 @@ import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
 /**
  * Reports each number literal that is a magic number, like ESLint's no-magic-numbers with its
- * default options. Property values and assignments to members are left alone unless {@code
- * detectObjects} is set. The initializer of a declaration is left alone; with {@code enforceConst}
- * only a number declared without {@code const} is reported, with its own message. The numbers 0, 1
- * and 2 are never reported, as in Checkstyle's defaults.
+ * default options. The radix of {@code parseInt} and the numbers that are JSX expressions are never
+ * reported. Property values and assignments to members are left alone unless {@code detectObjects}
+ * is set. The initializer of a declaration is left alone; with {@code enforceConst} only a number
+ * declared without {@code const} is reported, with its own message. The numbers 0, 1 and 2 are
+ * never reported, as in Checkstyle's defaults.
  */
 public final class NodeMagicNumberCheck implements RuleCheck {
 
@@ -27,16 +26,6 @@ public final class NodeMagicNumberCheck implements RuleCheck {
           "OctalIntegerLiteral",
           "OctalIntegerLiteral2",
           "BinaryIntegerLiteral");
-  private static final String LEGACY_OCTAL = "OctalIntegerLiteral2";
-  private static final String PREFIX_HEX = "x";
-  private static final String PREFIX_OCTAL = "o";
-  private static final String PREFIX_BINARY = "b";
-  private static final String UNDERSCORE = "_";
-  private static final int HEX = 16;
-  private static final int OCTAL = 8;
-  private static final int BINARY = 2;
-  private static final int PREFIX_LENGTH = 2;
-  private static final long MAX_INDEX = 4_294_967_294L;
   private static final List<BigDecimal> BUILT_IN =
       List.of(BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.valueOf(2));
 
@@ -83,7 +72,8 @@ public final class NodeMagicNumberCheck implements RuleCheck {
   }
 
   private Optional<RuleMatch> literal(final SyntaxNode leaf, final NodeMagicNumberRoles roles) {
-    final Optional<BigDecimal> value = value(leaf.kind(), NodeSyntax.text(leaf));
+    final Optional<BigDecimal> value =
+        NodeMagicNumberSyntax.value(leaf.kind(), NodeSyntax.text(leaf));
     if (value.isEmpty()) {
       return Optional.empty();
     }
@@ -96,7 +86,7 @@ public final class NodeMagicNumberCheck implements RuleCheck {
 
   /** The message of the usage when it is reported, empty when it is allowed. */
   private Optional<String> problem(final NodeMagicNumberRoles.Usage usage, final BigDecimal value) {
-    if (ignored(value) || skippedRole(usage, value)) {
+    if (ignored(value) || unconditional(usage.role()) || skippedRole(usage, value)) {
       return Optional.empty();
     }
     if (usage.role() == NodeMagicNumberRoles.Role.DECLARATOR) {
@@ -110,13 +100,18 @@ public final class NodeMagicNumberCheck implements RuleCheck {
     return isObjectForm(usage.role()) ? Optional.empty() : Optional.of(magic(usage));
   }
 
+  /** The radix of {@code parseInt} and the numbers in JSX are never reported, as in ESLint. */
+  private static boolean unconditional(final NodeMagicNumberRoles.Role role) {
+    return role == NodeMagicNumberRoles.Role.RADIX || role == NodeMagicNumberRoles.Role.JSX;
+  }
+
   private boolean skippedRole(final NodeMagicNumberRoles.Usage usage, final BigDecimal value) {
     final NodeMagicNumberRoles.Role role = usage.role();
     return (flags.ignoreDefaultValues() && role == NodeMagicNumberRoles.Role.DEFAULT)
         || (flags.ignoreClassFieldInitialValues() && role == NodeMagicNumberRoles.Role.CLASS_FIELD)
         || (flags.ignoreArrayIndexes()
             && role == NodeMagicNumberRoles.Role.MEMBER_INDEX
-            && validIndex(value));
+            && NodeMagicNumberSyntax.validIndex(value));
   }
 
   private static boolean isObjectForm(final NodeMagicNumberRoles.Role role) {
@@ -132,41 +127,5 @@ public final class NodeMagicNumberCheck implements RuleCheck {
     final BigDecimal magnitude = value.abs();
     return BUILT_IN.stream().anyMatch(number -> number.compareTo(magnitude) == 0)
         || ignore.stream().anyMatch(number -> number.compareTo(value) == 0);
-  }
-
-  private static boolean validIndex(final BigDecimal value) {
-    return value.signum() >= 0
-        && value.stripTrailingZeros().scale() <= 0
-        && value.compareTo(BigDecimal.valueOf(MAX_INDEX)) <= 0;
-  }
-
-  /** The value of a literal as written, or empty when it is not a number this rule reads. */
-  static Optional<BigDecimal> value(final String kind, final String written) {
-    final String digits = written.replace(UNDERSCORE, "");
-    try {
-      return Optional.of(number(kind, digits));
-    } catch (NumberFormatException malformed) {
-      return Optional.empty();
-    }
-  }
-
-  private static BigDecimal number(final String kind, final String digits) {
-    if (digits.length() > PREFIX_LENGTH && digits.charAt(0) == '0') {
-      final String prefix = digits.substring(1, 2).toLowerCase(Locale.ROOT);
-      final String body = digits.substring(PREFIX_LENGTH);
-      if (PREFIX_HEX.equals(prefix)) {
-        return new BigDecimal(new BigInteger(body, HEX));
-      }
-      if (PREFIX_OCTAL.equals(prefix)) {
-        return new BigDecimal(new BigInteger(body, OCTAL));
-      }
-      if (PREFIX_BINARY.equals(prefix)) {
-        return new BigDecimal(new BigInteger(body, BINARY));
-      }
-    }
-    if (LEGACY_OCTAL.equals(kind)) {
-      return new BigDecimal(new BigInteger(digits, OCTAL));
-    }
-    return new BigDecimal(digits);
   }
 }

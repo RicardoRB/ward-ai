@@ -12,3 +12,6 @@ export default {
   },
   mutate: { thresholds: { high: 80, low: 60, break: 50 } },
 };
+export const view = <div tabIndex={3}>{4}</div>;
+export const radix = parseInt(text, 10);
+export const hex = Number.parseInt(text, 16);

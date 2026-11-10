@@ -70,13 +70,13 @@ class NodeMagicNumberCheckTest {
 
   @Test
   void numbersWithAnyBaseAndSeparatorsAreParsed() {
-    assertThat(NodeMagicNumberCheck.value("HexIntegerLiteral", "0x1F"))
+    assertThat(NodeMagicNumberSyntax.value("HexIntegerLiteral", "0x1F"))
         .contains(BigDecimal.valueOf(HEX_VALUE));
-    assertThat(NodeMagicNumberCheck.value("BinaryIntegerLiteral", "0b101"))
+    assertThat(NodeMagicNumberSyntax.value("BinaryIntegerLiteral", "0b101"))
         .contains(BigDecimal.valueOf(BINARY_VALUE));
-    assertThat(NodeMagicNumberCheck.value("DecimalLiteral", "1_000"))
+    assertThat(NodeMagicNumberSyntax.value("DecimalLiteral", "1_000"))
         .contains(BigDecimal.valueOf(THOUSAND));
-    assertThat(NodeMagicNumberCheck.value("OctalIntegerLiteral2", "017"))
+    assertThat(NodeMagicNumberSyntax.value("OctalIntegerLiteral2", "017"))
         .contains(BigDecimal.valueOf(OCTAL_VALUE));
   }
 

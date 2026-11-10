@@ -12,3 +12,5 @@ export default {
   },
   mutate: { thresholds: { high: 80, low: 60, break: 50 } },
 };
+export const radix = parseInt(text, 10);
+export const hex = Number.parseInt(text, 16);

@@ -1,8 +1,8 @@
 package dev.ward.analysis.domain.rule.check;
 
-import static dev.ward.analysis.domain.rule.check.NodeMagicNumberTokens.firstLeaf;
-import static dev.ward.analysis.domain.rule.check.NodeMagicNumberTokens.isToken;
-import static dev.ward.analysis.domain.rule.check.NodeMagicNumberTokens.tokenBefore;
+import static dev.ward.analysis.domain.rule.check.NodeMagicNumberSyntax.firstLeaf;
+import static dev.ward.analysis.domain.rule.check.NodeMagicNumberSyntax.isAssign;
+import static dev.ward.analysis.domain.rule.check.NodeMagicNumberSyntax.tokenBefore;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.IdentityHashMap;
@@ -13,7 +13,8 @@ import java.util.Optional;
 /**
  * Finds the expression that a number literal forms in the tree, and the role it plays there,
  * following the ESTree parent that ESLint's no-magic-numbers looks at: a property value, a default
- * value, a class field, a declarator, an array index, or another expression.
+ * value, a class field, a declarator, an array index, a radix, a JSX expression, or another
+ * expression.
  */
 final class NodeMagicNumberRoles {
 
@@ -21,19 +22,13 @@ final class NodeMagicNumberRoles {
   private static final String PROPERTY_ASSIGNMENT = "propertyAssignment";
   private static final String PROPERTY_NAME = "propertyName";
   private static final String INITIALIZER = "initializer";
-  private static final String PARAMETER = "optionalParameter";
-  private static final String PARAMETER_ARGUMENT = "formalParameterArg";
-  private static final String CLASS_FIELD = "propertyMemberDeclaration";
-  private static final String FIELD = "fieldDefinition";
   private static final String DECLARATION = "variableDeclaration";
   private static final String STATEMENT = "variableStatement";
-  private static final String SEQUENCE = "expressionSequence";
-  private static final String ASSIGN = "=";
   private static final String MINUS = "-";
-  private static final String OPEN_BRACKET = "[";
   private static final String CONST = "const";
 
   private final Map<SyntaxNode, SyntaxNode> parents = new IdentityHashMap<>();
+  private final NodeMagicNumberContext context = new NodeMagicNumberContext(parents);
 
   /** The role a number literal plays: the ESTree parent that ESLint's rule reads. */
   enum Role {
@@ -43,6 +38,8 @@ final class NodeMagicNumberRoles {
     DECLARATOR,
     MEMBER_INDEX,
     ASSIGNED_MEMBER,
+    RADIX,
+    JSX,
     OTHER
   }
 
@@ -91,7 +88,9 @@ final class NodeMagicNumberRoles {
     }
     final List<SyntaxNode> parts = parent.children();
     final boolean minus =
-        parts.size() == 2 && isToken(parts.get(0), MINUS) && parts.get(1).equals(node);
+        parts.size() == 2
+            && NodeMagicNumberSyntax.isToken(parts.get(0), MINUS)
+            && parts.get(1).equals(node);
     return minus ? Optional.of(parent) : Optional.empty();
   }
 
@@ -99,61 +98,22 @@ final class NodeMagicNumberRoles {
     return switch (parent.kind()) {
       case PROPERTY_NAME -> Role.PROPERTY;
       case PROPERTY_ASSIGNMENT -> propertyRole(node, parent);
-      case INITIALIZER -> initializerRole(parent);
-      case PARAMETER_ARGUMENT ->
-          ASSIGN.equals(tokenBefore(parent, node)) ? Role.DEFAULT : Role.OTHER;
+      case INITIALIZER -> context.initializerRole(parent);
       case DECLARATION -> Role.DECLARATOR;
-      case LITERAL_EXPRESSION -> assignmentRole(node, parent);
-      case SEQUENCE -> indexRole(parent);
-      default -> Role.OTHER;
+      case LITERAL_EXPRESSION -> context.assignmentRole(node, parent);
+      default -> context.wrapperRole(node, parent);
     };
   }
 
   /** A property value after {@code :}, or a destructuring default after {@code =}. */
   private static Role propertyRole(final SyntaxNode node, final SyntaxNode property) {
-    return ASSIGN.equals(tokenBefore(property, node)) ? Role.DEFAULT : Role.PROPERTY;
+    return isAssign(tokenBefore(property, node)) ? Role.DEFAULT : Role.PROPERTY;
   }
 
-  private Role initializerRole(final SyntaxNode initializer) {
-    final SyntaxNode owner = parents.get(initializer);
-    if (owner == null) {
-      return Role.OTHER;
-    }
-    if (PARAMETER.equals(owner.kind())) {
-      return Role.DEFAULT;
-    }
-    return CLASS_FIELD.equals(owner.kind()) || FIELD.equals(owner.kind())
-        ? Role.CLASS_FIELD
-        : Role.OTHER;
-  }
-
-  /** The right side of an assignment; a target of a member is the object form. */
-  private Role assignmentRole(final SyntaxNode node, final SyntaxNode expression) {
-    if (!ASSIGN.equals(tokenBefore(expression, node))) {
-      return Role.OTHER;
-    }
-    final SyntaxNode owner = parents.get(expression);
-    if (owner != null && PROPERTY_ASSIGNMENT.equals(owner.kind())) {
-      return Role.DEFAULT;
-    }
-    final SyntaxNode target = expression.children().get(0);
-    return NodeSyntax.leaves(target).size() == 1 ? Role.OTHER : Role.ASSIGNED_MEMBER;
-  }
-
-  /** The index of a member access, which the sequence of the bracket holds. */
-  private Role indexRole(final SyntaxNode sequence) {
-    final SyntaxNode access = parents.get(sequence);
-    if (access == null || !LITERAL_EXPRESSION.equals(access.kind())) {
-      return Role.OTHER;
-    }
-    return access.children().stream().anyMatch(part -> isToken(part, OPEN_BRACKET))
-        ? Role.MEMBER_INDEX
-        : Role.OTHER;
-  }
-
-  private boolean constant(final SyntaxNode parent) {
-    return DECLARATION.equals(parent.kind())
-        && ancestor(parent, STATEMENT)
+  /** Whether the declaration is a {@code const} one, from the keyword of its statement. */
+  private boolean constant(final SyntaxNode declaration) {
+    return DECLARATION.equals(declaration.kind())
+        && ancestor(declaration, STATEMENT)
             .map(statement -> CONST.equals(firstLeaf(statement)))
             .orElse(false);
   }
