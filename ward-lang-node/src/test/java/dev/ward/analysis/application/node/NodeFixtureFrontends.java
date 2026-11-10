@@ -77,6 +77,7 @@ final class NodeFixtureFrontends {
             new CachedScopes(
                 new NodeScopeAnalysis(names(ES, TYPESCRIPT_ENVIRONMENT, BROWSER, NODE))),
             types,
+            Set.of(),
             Set.of()),
         new FrontendSupport(
             AnalysisLanguage.JAVASCRIPT,
@@ -85,6 +86,7 @@ final class NodeFixtureFrontends {
             new NodeControlFlow(),
             new CachedScopes(new NodeScopeAnalysis(names(ES, BROWSER, NODE))),
             types,
+            Set.of(),
             Set.of()));
   }
 

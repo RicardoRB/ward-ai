@@ -2,6 +2,8 @@ package dev.ward.analysis.domain.rule.check;
 
 import dev.ward.analysis.domain.node.NodeManifest;
 import dev.ward.analysis.domain.rule.ProjectFiles;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -214,18 +216,30 @@ public final class NodeImplicitUse {
     return providers;
   }
 
-  /** The peer requirements of the packages in {@code used}, when those packages are installed. */
+  /**
+   * The peer requirements of the packages in {@code used}, when those packages are installed, and
+   * the peers of those peers: a peer that is installed is used as far as it names peers in turn.
+   */
   static Set<String> peersOf(
       final Set<String> used, final Map<String, NodeManifests.Manifest> installed) {
     final Set<String> peers = new HashSet<>();
-    for (final String name : used) {
-      Optional.ofNullable(installed.get(name))
-          .ifPresent(
-              installedPackage ->
-                  peers.addAll(
-                      NodeManifests.names(
-                          installedPackage.manifest(), List.of("peerDependencies"))));
+    final Deque<String> pending = new ArrayDeque<>(used);
+    final Set<String> visited = new HashSet<>(used);
+    while (!pending.isEmpty()) {
+      final String name = pending.pop();
+      for (final String peer : peerNames(installed.get(name))) {
+        peers.add(peer);
+        if (visited.add(peer)) {
+          pending.push(peer);
+        }
+      }
     }
     return peers;
+  }
+
+  private static Set<String> peerNames(final NodeManifests.Manifest installedPackage) {
+    return installedPackage == null
+        ? Set.of()
+        : NodeManifests.names(installedPackage.manifest(), List.of("peerDependencies"));
   }
 }

@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 /**
@@ -90,33 +89,27 @@ public final class RuleEngine {
     final Map<AnalysisLanguage, FrontendSupport> support = supportByLanguage(frontends);
     final RuleRunCollector collector = new RuleRunCollector();
     final UnitTrees trees = new UnitTrees(support, Map.of());
+    final List<PreparedRule> prepared = PreparedRule.all(rules, support, matcher, collector);
     final List<AnalysisFinding> findings = new ArrayList<>();
-    for (final PreparedRule prepared : PreparedRule.all(rules, support, matcher, collector)) {
-      prepared
-          .rule()
+    for (final PreparedRule rule : prepared) {
+      rule.rule()
           .filter(CompiledRule::isProject)
+          .filter(
+              compiled ->
+                  !ProjectCheckScope.coveredByAnother(compiled.definition(), prepared, support))
           .ifPresent(
-              rule ->
+              compiled ->
                   findings.addAll(
                       projectFindings(
-                          rule, parsedTrees(prepared, units, trees, collector), files)));
+                          compiled,
+                          ProjectCheckScope.parsedTrees(
+                              ProjectCheckScope.reads(rule, compiled.definition(), support),
+                              units,
+                              trees,
+                              collector),
+                          files)));
     }
     return List.copyOf(findings);
-  }
-
-  /** The syntax trees of the units the rule's language runs on, by path, in path order. */
-  private static SortedMap<String, SyntaxNode> parsedTrees(
-      final PreparedRule prepared,
-      final List<SourceUnit> units,
-      final UnitTrees trees,
-      final RuleRunCollector collector) {
-    final SortedMap<String, SyntaxNode> parsed = new TreeMap<>();
-    for (final SourceUnit unit : units) {
-      if (prepared.runnable().contains(unit.language())) {
-        trees.parse(unit, collector).ifPresent(root -> parsed.put(unit.path(), root));
-      }
-    }
-    return parsed;
   }
 
   private static List<AnalysisFinding> projectFindings(
