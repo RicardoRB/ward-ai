@@ -10,9 +10,9 @@ import java.nio.file.attribute.PosixFilePermissions;
 import org.junit.jupiter.api.Test;
 
 class WardCliFindingsTest extends WardCliIntegrationSupport {
-  // configureFailingGates() configures biome, gitleaks, and tests; SARIF has a run per gate.
+  // configureFailingGates() configures tsc, gitleaks, and tests; SARIF has a run per gate.
   private static final int CONFIGURED_GATES = 3;
-  private static final int JAVADOC_LINE = 42;
+  private static final int TYPE_ERROR_LINE = 42;
   private static final String SARIF = "sarif";
   private static final String OUTPUT_OPTION = "--output";
   private static final String SECRET = "ghp_FAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKE1234";
@@ -25,15 +25,9 @@ class WardCliFindingsTest extends WardCliIntegrationSupport {
 
   private void configureFailingGates() throws IOException {
     script(
-        "fake-biome",
+        "fake-tsc",
         """
-        cat <<'XML'
-        <?xml version="1.0" encoding="UTF-8"?>
-        <checkstyle><file name="src/main/java/Foo.java">
-        <error line="42" column="5" severity="error" message="Missing a Javadoc comment."
-          source="lint/suspicious/missingJavadoc"/>
-        </file></checkstyle>
-        XML
+        echo "src/main/java/Foo.java(42,5): error TS2322: Type 'string' is not assignable."
         exit 1
         """);
     script(
@@ -52,9 +46,9 @@ class WardCliFindingsTest extends WardCliIntegrationSupport {
         project.resolve(WARD_TOML),
         """
         version = 2
-        [checks.biome]
-        uses = "biome"
-        command = ["./fake-biome", "--reporter=checkstyle"]
+        [checks.tsc]
+        uses = "tsc"
+        command = ["./fake-tsc"]
         [checks.gitleaks]
         uses = "gitleaks"
         command = ["./fake-gitleaks", "--report-path", "target/gitleaks.sarif"]
@@ -72,12 +66,12 @@ class WardCliFindingsTest extends WardCliIntegrationSupport {
 
     assertThat(exit).isEqualTo(ExitCodes.FAILED);
     final JsonTree checks = JsonTree.parse(out.toString()).get(CHECKS);
-    final JsonTree biome = checks.get(0);
-    assertThat(biome.get("findingsTotal").asInt()).isEqualTo(1);
-    final JsonTree finding = biome.get("findings").get(0);
-    assertThat(finding.get("rule").asString()).isEqualTo("lint/suspicious/missingJavadoc");
+    final JsonTree tsc = checks.get(0);
+    assertThat(tsc.get("findingsTotal").asInt()).isEqualTo(1);
+    final JsonTree finding = tsc.get("findings").get(0);
+    assertThat(finding.get("rule").asString()).isEqualTo("TS2322");
     assertThat(finding.get("file").asString()).isEqualTo("src/main/java/Foo.java");
-    assertThat(finding.get("line").asInt()).isEqualTo(JAVADOC_LINE);
+    assertThat(finding.get("line").asInt()).isEqualTo(TYPE_ERROR_LINE);
     final JsonTree gitleaks = checks.get(1);
     assertThat(gitleaks.get("findings").get(0).get("file").asString()).isEqualTo("config/app.yml");
     assertThat(checks.get(2).get("findings").size()).isZero();
@@ -115,7 +109,7 @@ class WardCliFindingsTest extends WardCliIntegrationSupport {
     assertThat(log.get("version").asString()).isEqualTo("2.1.0");
     assertThat(log.get("runs").size()).isEqualTo(CONFIGURED_GATES);
     assertThat(log.get("runs").get(0).get("results").get(0).get("ruleId").asString())
-        .isEqualTo("lint/suspicious/missingJavadoc");
+        .isEqualTo("TS2322");
     assertThat(log.get("runs").get(2).get("results").size()).isZero();
   }
 

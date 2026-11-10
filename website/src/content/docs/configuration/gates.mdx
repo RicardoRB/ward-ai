@@ -33,8 +33,6 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `openapi-diff` | oasdiff | Breaking changes in uncommitted spec edits. |
 | | `openapi-compat` | oasdiff | Breaking changes on the branch against `origin/main`. |
 | TypeScript & JavaScript | `tsc` | TypeScript compiler | Type-check the project. |
-| | `eslint` | ESLint | Lint TypeScript and JavaScript sources. Init no longer offers it: Ward's TypeScript and JavaScript rules replace it. |
-| | `biome` | Biome | Lint sources in one run with Biome's formatter off. Init no longer offers it: Ward's TypeScript and JavaScript rules replace it. |
 | | `vitest` / `jest` / `bun-test` | Vitest / Jest / Bun test | Run the project's automated tests. |
 | | `stryker` | StrykerJS | Run mutation testing, optionally with a `minimum` score. |
 | | `ruff` | Ruff | Lint Python sources. |
@@ -169,8 +167,6 @@ command = ["pnpm", "exec", "turbo", "run", "check-types", "--log-prefix=task", "
 - Findings are read per package. Ward splits the output at turbo's `<package>:<task>: ` prefix,
   parses each block with the gate's parser, and reports the file under the member directory, such as
   `apps/web/src/page.tsx`. Unprefixed output is read as before.
-- A narrowed lint check uses turbo's filter for the edited packages and their dependents:
-  `item = "--filter=...{package}"`; see [partial checks](#partial-checks).
 - At a Turborepo root, `minimum` on `stryker` compares the combined score of every member's report.
 
 ## Python gates
@@ -898,7 +894,7 @@ You are responsible for being authorized to scan the target.
 
 ## Structured findings
 
-When `ward`, `gitleaks`, `compile`, `ward-format`, `eslint`, `biome`, `tsc`, `ruff`, `mypy`, `swift-build`, or `xcodebuild-test` fails, Ward turns the tool's output
+When `ward`, `gitleaks`, `compile`, `ward-format`, `tsc`, `ruff`, `mypy`, `swift-build`, or `xcodebuild-test` fails, Ward turns the tool's output
 into findings with rule, severity, file, line, column, message, and a rule documentation link when
 known. They appear in [JSON](/reference/json-output/) and SARIF output.
 
@@ -907,8 +903,6 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
 | `gitleaks` | SARIF report | `target/gitleaks.sarif` | `build/gitleaks.sarif` | `.ward/reports/gitleaks.sarif` |
 | `compile` | javac messages in the output | | | |
 | `ward-format` | Ward's own findings, one per unformatted file (file only, no line) | | | |
-| `eslint` | ESLint JSON in the output; the command must pass `--format json` | | | |
-| `biome` | Checkstyle XML on standard output; the command must pass `--reporter=checkstyle`. Lint rules keep Biome's category, such as `lint/suspicious/noExplicitAny`. | | | |
 | `tsc` | Compiler diagnostics in the output; the command must pass `--pretty false` | | | |
 | `swift-build` / `xcodebuild-test` | Swift compiler errors in the output, with rule `swiftc` | | | |
 
@@ -923,8 +917,7 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
   `mypy` reads the JSON lines of `mypy -O json`. Ruff findings are errors; mypy `note` lines are
   skipped. A missing or unparseable JSON output gives no findings, and the gate result does not
   change. Only the structured formats are read: the command must pass them.
-- ESLint's default `stylish` output and `tsc`'s pretty output give no findings. The gate result
-  does not change. An ESLint parsing error is reported with the rule `eslint`.
+- `tsc`'s pretty output gives no findings. The gate result does not change.
 - Swift compiler errors are read without terminal colours, once each even when the compiler
   repeats them in a source excerpt.
 - Other gates have no findings yet.
@@ -932,8 +925,8 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
 ## Partial checks
 
 `ward init` writes a [`[checks.<name>.paths]` table](/configuration/ward-toml/#partial-checks)
-for `semgrep`, `gitleaks`, `eslint`, `biome`,
-`openapi-lint`, and `openapi-diff`. After an agent
+for `semgrep`, `gitleaks`, `openapi-lint`, and
+`openapi-diff`. After an agent
 edit, and for the files a commit stages, a gate:
 
 - is skipped when no edited file is in its `match`;
@@ -946,18 +939,10 @@ edit, and for the files a commit stages, a gate:
 | `gitleaks` | `--no-git --source=<path>` for each path, so uncommitted edits are scanned | same as Maven |
 | `openapi-lint`, `openapi-diff` | full, only when the spec is edited | full, only when the spec is edited |
 
-In a TypeScript or JavaScript project, `eslint` takes edited `.ts`, `.tsx`, `.mts`, `.cts`, `.js`,
-`.jsx`, `.mjs`, and `.cjs` files, each as its own argument. Their tables set `command` to the full
-command without its `.` target, so a narrowed check runs, for example,
-`npx eslint src/app.ts`. An edit of its config or `package.json` runs it in full.
-`biome` takes the same form: a narrowed run passes `--no-errors-on-unmatched`, so an edited file that
-Biome ignores passes. `tsc` and the test runners have no table, so they run in full in `pre-push`
+`tsc` and the test runners have no table, so they run in full in `pre-push`
 and `ci`.
 
-In a Turborepo workspace, the lint gate narrows with turbo's `--filter=...<package>` for the packages
-that contain the edited files and their dependents. Its `full` files are `turbo.json`, the root
-`package.json`, and the root lint configs; an edit that no member contains runs it in full. The
-type-check and test gates have no table and always run in full.
+In a Turborepo workspace, the type-check and test gates have no table and always run in full.
 
 
 The forms above were verified against the real tools: a path format a tool does not understand

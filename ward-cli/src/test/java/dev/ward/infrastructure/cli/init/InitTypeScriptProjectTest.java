@@ -52,7 +52,7 @@ class InitTypeScriptProjectTest {
         .doesNotContain("eslint", "biome");
     assertThat(fixture.read("package-lock.json")).contains("\"stub\": \"installed\"");
     assertThat(fixture.read("ward-rules.toml"))
-        .contains("preset = \"standard\"", "languages = [\"typescript\"]");
+        .contains("preset = \"standard\"", "languages = [\"typescript\", \"swift\"]");
     assertThat(project.resolve("eslint.config.mjs")).doesNotExist();
     assertThat(fixture.read("vitest.config.mjs"))
         .startsWith("// managed-by: ward preset=standard\n")

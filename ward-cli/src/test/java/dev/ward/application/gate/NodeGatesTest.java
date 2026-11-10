@@ -24,8 +24,7 @@ class NodeGatesTest {
   private static final Path ROOT = Path.of("/repo/web");
   private static final Project PROJECT =
       new Project(ROOT, Language.TYPESCRIPT, BuildTool.PNPM, Framework.NONE);
-  private static final List<String> ESLINT =
-      List.of("pnpm", "exec", "eslint", ".", "--format", "json");
+  private static final List<String> VUE_TSC = List.of("pnpm", "exec", "vue-tsc", "--noEmit");
   private static final List<String> TSC =
       List.of("pnpm", "exec", "tsc", "--noEmit", "--pretty", "false");
   private static final List<String> VITEST = List.of("pnpm", "exec", "vitest", "run");
@@ -40,23 +39,23 @@ class NodeGatesTest {
   void nodeGatesRunTheirConfiguredCommandFromTheProjectRoot() {
     final FakeCommandExecutor executor = new FakeCommandExecutor(0, "", "");
     final Map<String, List<String>> commands = new LinkedHashMap<>();
-    commands.put("eslint", ESLINT);
+    commands.put("vue-tsc", VUE_TSC);
     commands.put("tsc", TSC);
     commands.put("vitest", VITEST);
 
     final List<QualityGate> gates = new QualityGateFactory(executor).create(config(commands));
     final List<GateResult> results = gates.stream().map(gate -> gate.execute(PROJECT)).toList();
 
-    assertThat(results).extracting(GateResult::name).containsExactly("eslint", "tsc", "vitest");
+    assertThat(results).extracting(GateResult::name).containsExactly("vue-tsc", "tsc", "vitest");
     assertThat(results).extracting(GateResult::status).containsOnly(GateStatus.PASSED);
-    assertThat(executor.commands).containsExactly(ESLINT, TSC, VITEST);
+    assertThat(executor.commands).containsExactly(VUE_TSC, TSC, VITEST);
     assertThat(executor.workingDirectories).containsOnly(ROOT);
   }
 
   @Test
   void everyNodeGateIdentifierIsAccepted() {
     final Map<String, List<String>> commands = new LinkedHashMap<>();
-    List.of("tsc", "eslint", "vitest", "jest", "bun-test", "stryker")
+    List.of("tsc", "vue-tsc", "vitest", "jest", "bun-test", "stryker")
         .forEach(id -> commands.put(id, List.of(id)));
 
     final List<QualityGate> gates =
@@ -84,6 +83,6 @@ class NodeGatesTest {
 
     assertThatThrownBy(() -> factory.create(config(Map.of("nope", List.of("x")))))
         .isInstanceOf(WardException.class)
-        .hasMessageContaining("tsc", "eslint", "vitest", "jest", "bun-test", "stryker");
+        .hasMessageContaining("tsc", "vue-tsc", "vitest", "jest", "bun-test", "stryker");
   }
 }

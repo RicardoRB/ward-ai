@@ -8,10 +8,8 @@ fi
 echo "stub mvnw: $*"
 if [ -f FAIL ]; then
   case " $* " in
-    *" eslint:check "*)
-      cat <<'JSON'
-[{"filePath":"src/main/java/App.java","messages":[{"ruleId":"max-len","severity":2,"message":"Line is longer than 100 characters (found 120).","line":3,"column":1}]}]
-JSON
+    *" tsc:check "*)
+      echo "src/main/java/App.java(3,1): error TS2322: Type 'string' is not assignable to type 'number'."
       ;;
   esac
   echo "BUILD FAILURE" >&2

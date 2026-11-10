@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * JavaScript's gates on a Node package manager; unlike TypeScript there is no {@code tsc} gate, and
- * Ward's JavaScript rules, selected in {@code ward-rules.toml}, replace ESLint and Biome's lint.
+ * JavaScript's gates on a Node package manager; unlike TypeScript there is no {@code tsc} gate.
+ * Ward's JavaScript rules, selected in {@code ward-rules.toml}, do the linting.
  *
  * @param testGate the project's test runner gate, which both presets enable
  */

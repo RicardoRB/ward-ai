@@ -12,14 +12,14 @@ import org.junit.jupiter.api.condition.OS;
 
 @DisabledOnOs(OS.WINDOWS)
 class WardCliContract6Test extends WardCliIntegrationSupport {
-  private static final String ESLINT = "eslint";
-  private static final String LINE_LENGTH_KEY = "eslint:max-len";
+  private static final String TSC = "tsc";
+  private static final String TYPE_ERROR_KEY = "tsc:TS2322";
 
-  /** The stub mvnw prints an ESLint report for {@code eslint:check} on the failing run. */
-  private void useEslintGate() throws IOException {
+  /** The stub mvnw prints a TypeScript diagnostic for {@code tsc:check} on the failing run. */
+  private void useTscGate() throws IOException {
     Files.writeString(
         project.resolve(WARD_TOML),
-        "version = 2\n\n[checks.eslint]\nenabled = true\nuses = \"eslint\"\ncommand = \"./mvnw eslint:check\"\n");
+        "version = 2\n\n[checks.tsc]\nenabled = true\nuses = \"tsc\"\ncommand = \"./mvnw tsc:check\"\n");
   }
 
   @Test
@@ -89,7 +89,7 @@ uses = "zap"
 
   @Test
   void learningPromptEmittedAfterFailPassFailPassInJson() throws IOException {
-    useEslintGate();
+    useTscGate();
 
     fail();
     out.getBuffer().setLength(0);
@@ -115,22 +115,22 @@ uses = "zap"
     assertThat(root.get(STATUS).asString()).isEqualTo("PASSED");
     final JsonTree prompt = root.get("learning").get("prompts");
     assertThat(prompt.size()).isEqualTo(1);
-    assertThat(prompt.get(0).get("gate").asString()).isEqualTo(ESLINT);
+    assertThat(prompt.get(0).get("gate").asString()).isEqualTo(TSC);
     assertThat(prompt.get(0).get("occurrences").asInt()).isEqualTo(2);
     assertThat(prompt.get(0).get("instruction").asString())
-        .contains("AGENTS.md", "max-len", "Line is longer than 100 characters");
+        .contains("AGENTS.md", "TS2322", "Type 'string' is not assignable");
 
     final JsonTree ledger =
         JsonTree.parse(Files.readString(project.resolve(".ward/learning.json")));
     assertThat(ledger.get("formatVersion").asInt()).isEqualTo(2);
-    assertThat(ledger.get("records").get(LINE_LENGTH_KEY).get("occurrences").asInt()).isEqualTo(2);
-    assertThat(ledger.get("records").get(LINE_LENGTH_KEY).get("prompted").asBoolean()).isTrue();
+    assertThat(ledger.get("records").get(TYPE_ERROR_KEY).get("occurrences").asInt()).isEqualTo(2);
+    assertThat(ledger.get("records").get(TYPE_ERROR_KEY).get("prompted").asBoolean()).isTrue();
     assertThat(out.toString()).doesNotContain("✓", "\u001b");
   }
 
   @Test
   void learningTextReportShowsSectionAndLeavesAgentsMdUntouched() throws IOException {
-    useEslintGate();
+    useTscGate();
     final Path agents = project.resolve("AGENTS.md");
     Files.writeString(agents, "project contract\n");
 
@@ -146,7 +146,7 @@ uses = "zap"
 
     final String text = out.toString();
     assertThat(text)
-        .contains("Learning", "(2 occurrences):", "max-len", "AGENTS.md", "Quality Gate: PASSED");
+        .contains("Learning", "(2 occurrences):", "TS2322", "AGENTS.md", "Quality Gate: PASSED");
     assertThat(text.indexOf("Learning")).isGreaterThan(text.indexOf("Quality Gate"));
     assertThat(agents).hasContent("project contract\n");
   }

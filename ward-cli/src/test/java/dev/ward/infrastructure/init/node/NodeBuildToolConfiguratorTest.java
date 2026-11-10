@@ -144,7 +144,7 @@ class NodeBuildToolConfiguratorTest {
             TaskRunner.NONE,
             null);
     final Throwable thrown =
-        catchThrowable(() -> configurator.apply(angular, gates("ng-test", "eslint")));
+        catchThrowable(() -> configurator.apply(angular, gates("ng-test", "tsc")));
 
     assertThat(thrown)
         .isInstanceOf(WardException.class)

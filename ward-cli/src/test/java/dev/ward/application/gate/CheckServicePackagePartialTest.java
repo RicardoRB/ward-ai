@@ -26,7 +26,6 @@ class CheckServicePackagePartialTest {
       """
       version = 2
       [checks.lint]
-      uses = "eslint"
       profiles = ["default", "edit"]
       command = "turbo run lint"
       [checks.lint.paths]

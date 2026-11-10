@@ -7,7 +7,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class PresetRuleFileContentTest {
-  private static final String HIDDEN_FIELD = "ward:java/hidden-field\"]\nignore-constructor-parameter";
+  private static final String HIDDEN_FIELD =
+      "ward:java/hidden-field\"]\nignore-constructor-parameter";
 
   @Test
   void javaStrictSetsTheHiddenFieldOptions() {

@@ -36,7 +36,7 @@ class InitNodeStrictProjectTest {
     assertThat(fixture.read("package.json"))
         .contains("\"@stryker-mutator/core\": \"10.1.1\"", "\"@stryker-mutator/vitest-runner\"");
     assertThat(fixture.read("ward-rules.toml"))
-        .contains("preset = \"strict\"", "languages = [\"typescript\"]");
+        .contains("preset = \"strict\"", "languages = [\"typescript\", \"swift\"]");
     assertThat(project.resolve("eslint.config.mjs")).doesNotExist();
     assertThat(fixture.read("vitest.config.mjs")).contains("lines: 85,", "branches: 75,");
     assertThat(fixture.read(STRYKER_CONFIG)).contains("testRunner: \"vitest\"", "break: 60,");
@@ -69,7 +69,7 @@ class InitNodeStrictProjectTest {
         .doesNotContain("typescript", "vitest");
     assertThat(fixture.read("jest.config.mjs")).contains("lines: 85,", "branches: 75,");
     assertThat(fixture.read(STRYKER_CONFIG)).contains("testRunner: \"jest\"", "break: 60,");
-    assertThat(fixture.read("ward-rules.toml")).contains("languages = [\"javascript\"]");
+    assertThat(fixture.read("ward-rules.toml")).contains("languages = [\"javascript\", \"swift\"]");
     assertThat(project.resolve("eslint.config.mjs")).doesNotExist();
     assertThat(fixture.read(AGENTS)).contains("Tests (Jest)", "85% line").doesNotContain("tsc");
 

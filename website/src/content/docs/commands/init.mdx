@@ -84,7 +84,7 @@ Init assigns each gate to cumulative [profiles](/configuration/ward-toml/):
 
 | Gates | Profiles |
 |---|---|
-| Fast: `ward-format`, `ward`, `gitleaks`, `eslint`, `biome` | `default`, `pre-commit`, `pre-push`, `ci` |
+| Fast: `ward-format`, `ward`, `gitleaks` | `default`, `pre-commit`, `pre-push`, `ci` |
 | Slower local gates, including `compile`, `tsc`, the test runners, and custom commands | `pre-push`, `ci` |
 | Environment-dependent gates | `ci` |
 
@@ -268,8 +268,8 @@ commercial Arcmutate history plugin.
 ### Generated files
 
 - **`ward.toml`** includes [`partial` tables](/configuration/gates/#partial-checks) for
-  `ward`, `ward-format`, `semgrep`, `gitleaks`, `eslint`, and `biome`. The check after each agent edit, and
-  the pre-commit hook, skip gates the change cannot affect and narrow these tools to the edited or
+  `ward`, `ward-format`, `semgrep`, and `gitleaks`. The check after each agent edit, and the
+  pre-commit hook, skip gates the change cannot affect and narrow these tools to the edited or
   staged files. Other gates, `ward check` without `--path`, the pre-push hook, and CI still check
   the whole project. `gitleaks` scans those files directly, so it sees changes that are not yet
   committed; its full run scans the Git history.
@@ -386,16 +386,15 @@ as a local dev dependency through the package manager's runner: `npx`, `pnpm exe
 
 ### Lint and style
 
-Ward's TypeScript and JavaScript rules replace ESLint, typescript-eslint, angular-eslint, and
-Biome's lint. Init writes no ESLint or Biome config, adds none of their packages or scripts, and
-offers no gate for them. Instead it writes `ward-rules.toml` with the preset and the project's
-languages: `languages = ["typescript"]`, `["javascript"]`, or both. The `ward` gate then applies
-Ward's rules for those languages. Formatting stays with `ward-format`, and Semgrep's JavaScript and
-TypeScript packs are not offered, because Ward's rules cover those languages.
+Ward's TypeScript and JavaScript rules do the linting. Init writes no lint config, adds no lint
+packages or scripts, and offers no lint gate. It writes `ward-rules.toml` with the preset and the
+project's languages: `languages = ["typescript"]`, `["javascript"]`, or both. The `ward` gate then
+applies Ward's rules for those languages. Formatting stays with `ward-format`, and Semgrep's
+JavaScript and TypeScript packs are not offered, because Ward's rules cover those languages.
 
 If the project already has a `ward-rules.toml` that Ward did not write, init keeps it as it is and
-warns that the preset is not applied to it. Its ESLint and Biome configs, if any, are left
-unchanged and are no longer run by Ward.
+warns that the preset is not applied to it. A project's own lint config, if any, is left unchanged,
+and Ward does not run it.
 
 ### Gates
 
@@ -422,51 +421,6 @@ unchanged and are no longer run by Ward.
 
 A custom selection uses the `standard` coverage minimum, and `stryker` without `strict` reports its
 score without a minimum.
-
-#### Declared ESLint and Biome versions
-
-When `package.json` already declares `eslint` or `@biomejs/biome`, init keeps that version, as long as
-it is inside Ward's supported range. Ward tests the oldest and newest version of each range on Node 22
-and 24, with the TypeScript fixture.
-
-| Tool | Ward pins | Supported range | Tested versions |
-| --- | --- | --- | --- |
-| `eslint` | 10.12.0 | `>=9.22.0 <11.0.0` | 9.22.0, 10.13.0 |
-| `@biomejs/biome` | 2.5.15 | `>=2.3.0 <3.0.0` | 2.3.0, 2.6.3 |
-
-A declared version outside its range is an `INCOMPATIBLE` finding that names the tool and the range.
-`--dry-run` lists it, and applying the plan fails without changing any file. Pick a version inside the
-range, or skip the gate.
-
-#### Biome
-
-Init detects Biome when `package.json` declares `@biomejs/biome` or the project root has its own
-`biome.json`, `biome.jsonc`, `.biome.json`, or `.biome.jsonc`. It asks no question about Biome.
-
-- A Biome project gets one `biome` gate, which lints in one run; Biome's formatter is off, and
-  `ward-format` checks formatting. It replaces `eslint` unless the project has its own ESLint config.
-  With `strict`, warnings fail the gate too (`--error-on-warnings`).
-- A project's own ESLint config (`eslint.config.*` or `.eslintrc*`) stays, and its `eslint` gate runs
-  that config unchanged. Init writes no ESLint config for a Biome project.
-- Under `strict`, a project's own `biome.json` or `biome.jsonc` is layered (see
-  [Layered configs](#layered-configs)). A `.biome.json` or `.biome.jsonc` is kept with a warning.
-  Under `standard`, a project's own Biome config is kept unchanged and listed as user-owned, with a
-  warning that the preset's Biome rules are not applied to it. Otherwise init writes an
-  ownership-marked `biome.jsonc` with Biome's recommended rules. It also turns on Git-ignore support,
-  so Biome skips `.ward/reports/` and coverage output. `strict` sets these rules to `error`:
-  `noExplicitAny`, `noNonNullAssertion`, `useConst`, `noUnusedImports`, `noUnusedVariables`,
-  `noExcessiveCognitiveComplexity`, `noFloatingPromises`, and `noMisusedPromises`.
-- If the project does not declare `@biomejs/biome`, init adds it at 2.5.15. A declared version
-  outside `>=2.3.0 <3.0.0` is an `INCOMPATIBLE` finding, and applying changes nothing. Biome 2.3.0 is
-  the first release with the XML reporter that Ward reads, and 3.x may change the config
-  schema.
-- Edit hooks run Biome on the edited files only. An edited file that Biome ignores passes.
-
-<Aside type="caution">
-Ward's `biome.jsonc` reads the project's ignore file. In a directory that is not a Git repository
-and has no `.gitignore`, Biome reports a configuration error and the `biome` gate fails. Add a
-`.gitignore`, or set up the repository, before running the gate.
-</Aside>
 
 #### Where the thresholds live
 

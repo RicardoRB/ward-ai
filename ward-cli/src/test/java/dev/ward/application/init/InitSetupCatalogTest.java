@@ -26,8 +26,6 @@ class InitSetupCatalogTest {
   private static final Set<String> NODE_GATES =
       Set.of(
           "tsc",
-          "eslint",
-          "biome",
           "vitest",
           "jest",
           "bun-test",

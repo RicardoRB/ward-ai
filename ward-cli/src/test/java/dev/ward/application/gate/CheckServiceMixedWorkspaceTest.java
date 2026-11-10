@@ -29,7 +29,6 @@ class CheckServiceMixedWorkspaceTest {
       """
       version = 2
       [checks.lint]
-      uses = "eslint"
       profiles = ["default", "edit"]
       command = "turbo run lint"
       """;
@@ -37,7 +36,6 @@ class CheckServiceMixedWorkspaceTest {
       """
       version = 2
       [checks.lint]
-      uses = "eslint"
       profiles = ["default", "edit"]
       command = "mvn lint:check"
       """;

@@ -32,8 +32,6 @@ public final class QualityGateDefinitions {
           new Definition("astro-check", "astro check", Phase.LOCAL, true),
           new Definition("ngc", "Angular compiler", Phase.LOCAL, true),
           new Definition("ng-test", "ng test", Phase.LOCAL, false),
-          new Definition("eslint", "ESLint", Phase.FAST, true),
-          new Definition("biome", "Biome", Phase.FAST, true),
           new Definition("vitest", "Vitest", Phase.LOCAL, false),
           new Definition("jest", "Jest", Phase.LOCAL, false),
           new Definition("bun-test", "Bun test", Phase.LOCAL, false),

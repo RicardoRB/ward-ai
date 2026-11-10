@@ -59,7 +59,6 @@ class NativeHookPartialCheckTest {
         profiles = ["default", "edit"]
         command = "mvn test"
         [checks.lint]
-        uses = "eslint"
         profiles = ["default", "edit"]
         command = "mvn lint:check"
         [checks.lint.paths]

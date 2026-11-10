@@ -62,8 +62,7 @@ command = "./mvnw jacoco:check" # inferred: coverage
 command = "./mvnw -Dtest=ArchitectureBoundaryTest test" # a filtered test run is not inferred as tests
 
 [checks.lint]
-uses = "eslint"
-command = "npm run lint" # ESLint JSON output on stdout becomes findings
+command = "npm run lint" # a plain command check: its verdict comes from the exit code
 ```
 
 `ward check --format json` reports each result's `name` and `type`.
@@ -177,15 +176,15 @@ match = ["**"]
 full = [".semgrep.yml", ".semgrepignore"]
 args = ["{paths}"]
 
-[checks.eslint.paths]
+[checks.lint.paths]
 match = ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.mjs"]
-full = ["eslint.config.*", "package.json"]
+full = ["lint.config.*", "package.json"]
 args = ["{paths}"]
-command = ["npx", "eslint"]
+command = ["npx", "lint-tool"]
 ```
 
 For example, a Semgrep edit receives the root-relative path as its own
-argument. An ESLint edit of `src/app.ts` runs `npx eslint src/app.ts` instead of `npx eslint .`. Other `args` entries are appended unchanged, and nothing passes through a
+argument. A lint edit of `src/app.ts` runs `npx lint-tool src/app.ts` instead of `npx lint-tool .`. Other `args` entries are appended unchanged, and nothing passes through a
 shell.
 
 - A `full` match wins over a `match` match, and a check without `args` runs in full when an edited

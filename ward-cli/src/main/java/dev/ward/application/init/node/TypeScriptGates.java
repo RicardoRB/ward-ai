@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * TypeScript's gates on a Node package manager. Ward's TypeScript rules, selected in {@code
- * ward-rules.toml}, replace ESLint and Biome's lint.
+ * ward-rules.toml}, do the linting.
  *
  * @param framework the project's framework, whose checker replaces {@code tsc} as the type-check
  *     gate

@@ -55,8 +55,8 @@ rule files under `config/`).
   `package.json`), `stryker.conf.*`, `stryker.config.*`, `.stryker.conf.*`, `bunfig.toml`, and
   `ward-rules.toml` in the project root. A file whose first line is not `// managed-by: ward` or
   `# managed-by: ward` is the user's, and init keeps it. A project's own `eslint.config.*`,
-  `.eslintrc*`, `biome.json(c)`, or `.biome.json(c)` is not read by init: Ward's rules replace
-  those tools, and init leaves the files unchanged.
+  `.eslintrc*`, `biome.json(c)`, or `.biome.json(c)` is not read by init, and init leaves the
+  files unchanged.
 - **Lock file.** `package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `bun.lock`, or `bun.lockb`.
   Init's install updates it, and the generated CI workflow's frozen install needs it committed.
 
@@ -77,10 +77,10 @@ Node: JavaScript (CommonJS), npm, Node 24, sources in src/, no test runner
     coverage (Bun: lines only), and Stryker fails below a 60% mutation score.
   - Recommend `strict` when the project already has tests that cover most code, and runs Node 22 or
     later (Stryker 10 needs it). Offer `ward-tune` for rules that do not fit the codebase.
-- **Lint and style.** Ward's TypeScript and JavaScript rules replace ESLint, typescript-eslint,
-  angular-eslint, and Biome's lint. Init writes `ward-rules.toml` with the preset and the project's
-  languages (`"typescript"`, `"javascript"`, or both), so the `ward` gate applies them. Init offers
-  no ESLint or Biome gate and writes no lint config, and formatting stays with `ward-format`.
+- **Lint and style.** Ward's TypeScript and JavaScript rules do the linting. Init writes
+  `ward-rules.toml` with the preset and the project's languages (`"typescript"`, `"javascript"`, or
+  both), so the `ward` gate applies them. Init writes no lint config, and formatting stays with
+  `ward-format`.
 - **Gates.** Init also offers `stryker` (mutation testing, `ci` only; slow on Bun, which has no
   Stryker runner plugin), `gitleaks`, `trivy`, and `zap`. Semgrep's JavaScript and TypeScript packs
   are not offered: Ward's rules cover those languages. The layer boundaries of the architecture

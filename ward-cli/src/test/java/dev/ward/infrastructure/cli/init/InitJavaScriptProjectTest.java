@@ -42,7 +42,7 @@ class InitJavaScriptProjectTest {
             "command = \"npx vitest run --coverage\"")
         .doesNotContain("[checks.eslint]", "[checks.tsc]", "checkstyle", "mvnw");
     assertThat(fixture.read("ward-rules.toml"))
-        .contains("preset = \"standard\"", "languages = [\"javascript\"]");
+        .contains("preset = \"standard\"", "languages = [\"javascript\", \"swift\"]");
     assertThat(fixture.read("package.json"))
         .contains("\"vitest\": \"4.0.18\"")
         .doesNotContain("eslint", "globals", "typescript");

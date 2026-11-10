@@ -147,8 +147,8 @@ class ReportRendererTest {
   @Test
   void textReportShowsReportedFindingCountsOnly() {
     final GateResult counted =
-        GateResult.builder("biome", GateStatus.FAILED)
-            .command(List.of("biome"))
+        GateResult.builder("tsc", GateStatus.FAILED)
+            .command(List.of("tsc"))
             .exitCode(1)
             .duration(Duration.ZERO)
             .stdout("")
@@ -160,7 +160,7 @@ class ReportRendererTest {
     final CheckReport report = new CheckReport(project, List.of(counted));
 
     assertThat(new TextReportRenderer().render(report))
-        .contains("✗ Biome — 3 errors", "3 errors · 7 warnings");
+        .contains("✗ TypeScript compiler — 3 errors", "3 errors · 7 warnings");
   }
 
   @Test

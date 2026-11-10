@@ -111,8 +111,7 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
 
   /**
    * The language ids whose Ward rules the {@code ward} gate applies: a Node project's TypeScript
-   * and JavaScript, which Ward's rules replace ESLint and Biome for; other projects keep Java or
-   * Kotlin, then Python when present, then Swift.
+   * and JavaScript; other projects get Java or Kotlin, then Python when present, then Swift.
    */
   private static List<String> wardLanguages(final Project project) {
     final List<String> ids = new ArrayList<>();

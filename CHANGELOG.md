@@ -34,6 +34,7 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ### Removed
 
+- **BREAKING (alpha, no migration):** Ward no longer has the `eslint` and `biome` gate types, their finding sources, or the Semgrep `p/javascript` and `p/typescript` packs. A `ward.toml` that names `uses = "eslint"` or `uses = "biome"` is rejected with the list of supported types, and a `command` check that runs `eslint` or `biome` is a plain command check with no structured findings and no learning. The Semgrep gate stays for Python (#451, #455).
 - **BREAKING:** Ward no longer wires Checkstyle, PMD, SpotBugs, Error Prone, NullAway or Semgrep's `p/java` pack. Their gates, finding sources, Maven and Gradle plugin declarations, preset rule files and init defaults are gone. Java and Kotlin projects use the `ward` gate and `ward-rules.toml`; Semgrep stays for TypeScript, JavaScript and Python, each with its own pack.
 
 ### Fixed

@@ -38,7 +38,7 @@ class TurborepoInitTest {
         .contains("\"check-types\": {}", "\"mutation\": { \"outputs\": [\"reports/**\"] }")
         .contains("\"test\": { \"dependsOn\": [\"^build\"], \"outputs\": [\"coverage/**\"] }");
     assertThat(project.resolve("apps/web/eslint.config.mjs")).doesNotExist();
-    assertThat(fixture.read("ward-rules.toml")).contains("languages = [\"typescript\"]");
+    assertThat(fixture.read("ward-rules.toml")).contains("languages = [\"typescript\", \"swift\"]");
     assertThat(fixture.read("packages/ui/" + PACKAGE_JSON)).contains("\"vitest\":");
     assertThat(fixture.read("ward.toml")).contains("turbo", "run", "check-types");
   }
