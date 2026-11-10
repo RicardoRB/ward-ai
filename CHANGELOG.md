@@ -6,7 +6,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Ward is in alpha, so minor versions may
 still change behavior. Breaking changes are called out under **Changed**.
 
-## [Unreleased]
+## [0.6.0] - 2026-11-10
 
 ### Added
 
@@ -280,6 +280,7 @@ Initial release, published as `sentinel-ai`.
 - A bounded quality loop and a typed gate registry.
 - Starlight documentation site.
 
+[0.6.0]: https://github.com/RicardoRB/ward-ai/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/RicardoRB/ward-ai/compare/v0.4.1...v0.5.0
 [0.4.1]: https://github.com/RicardoRB/ward-ai/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/RicardoRB/ward-ai/compare/v0.3.0...v0.4.0
