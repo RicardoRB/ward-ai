@@ -21,7 +21,7 @@ public final class UnitScopes {
   /** The id of the module scope. */
   public static final int MODULE_ID = 1;
 
-  static final Span NOWHERE = new Span(1, 1, 1, 1, 0, 0);
+  public static final Span NOWHERE = new Span(1, 1, 1, 1, 0, 0);
 
   /** The scopes of a unit that has none: an empty built-in scope around an empty module. */
   public static final UnitScopes EMPTY =

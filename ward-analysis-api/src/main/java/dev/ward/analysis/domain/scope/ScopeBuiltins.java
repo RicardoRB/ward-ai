@@ -14,8 +14,13 @@ final class ScopeBuiltins {
 
   /** Returns {@code unit} with {@code names} declared and the unresolved uses of them resolved. */
   static UnitScopes apply(final UnitScopes unit, final Set<String> names) {
+    final Set<String> declared =
+        unit.scopes().get(UnitScopes.BUILTIN_ID).bindings().stream()
+            .map(Binding::name)
+            .collect(java.util.stream.Collectors.toSet());
     final List<Binding> builtins =
         names.stream()
+            .filter(name -> !declared.contains(name))
             .sorted()
             .map(
                 name ->
@@ -28,12 +33,14 @@ final class ScopeBuiltins {
                         Optional.empty()))
             .toList();
     final Map<String, Binding> byName = new HashMap<>();
-    builtins.forEach(binding -> byName.put(binding.name(), binding));
-    final List<Scope> replaced = new ArrayList<>(unit.scopes());
     final Scope root = unit.scopes().get(UnitScopes.BUILTIN_ID);
+    final List<Binding> all = new ArrayList<>(root.bindings());
+    all.addAll(builtins);
+    all.forEach(binding -> byName.put(binding.name(), binding));
+    final List<Scope> replaced = new ArrayList<>(unit.scopes());
     replaced.set(
         UnitScopes.BUILTIN_ID,
-        new Scope(root.id(), root.kind(), root.parent(), root.span(), builtins, root.open()));
+        new Scope(root.id(), root.kind(), root.parent(), root.span(), all, root.open()));
     return new UnitScopes(
         replaced, unit.references().stream().map(use -> bind(use, byName)).toList());
   }

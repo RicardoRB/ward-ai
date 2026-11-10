@@ -5,11 +5,13 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.port.BuiltinNames;
 import dev.ward.analysis.domain.port.ScopeAnalysis;
 import dev.ward.analysis.domain.scope.BindingFlag;
+import dev.ward.analysis.domain.scope.BindingKind;
 import dev.ward.analysis.domain.scope.ClassScopes;
 import dev.ward.analysis.domain.scope.ImportOrigin;
 import dev.ward.analysis.domain.scope.ScopeBuilder;
 import dev.ward.analysis.domain.scope.UnitScopes;
 import java.util.EnumSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -30,6 +32,12 @@ public final class NodeScopeAnalysis implements ScopeAnalysis {
   public UnitScopes analyze(final SourceUnit unit, final SyntaxNode tree) {
     final ScopeBuilder builder = new ScopeBuilder(tree.span(), ClassScopes.VISIBLE);
     final NodeImportScan imports = new NodeImportScan(tree);
+    final Set<String> globals = new LinkedHashSet<>(NodeGlobalComments.of(unit.text()));
+    globals.addAll(NodeTestGlobals.of(unit.path()));
+    globals.forEach(
+        name ->
+            builder.declareIn(
+                UnitScopes.BUILTIN_ID, name, BindingKind.BUILTIN, UnitScopes.NOWHERE, Set.of()));
     imports.bindings().forEach(binding -> declareImport(builder, binding));
     new NodeScopeWalk(builder, imports.sites()).visit(tree);
     return builder.build();
