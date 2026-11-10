@@ -47,11 +47,16 @@ final class SyntaxWalk {
   /** Returns every node below {@code node}, in source order. */
   static List<SyntaxNode> descendants(final SyntaxNode node) {
     final List<SyntaxNode> out = new ArrayList<>();
+    collectDescendants(node, out);
+    return out;
+  }
+
+  // One pass appends into the shared list; copying each subtree's list per level was quadratic.
+  private static void collectDescendants(final SyntaxNode node, final List<SyntaxNode> out) {
     for (final SyntaxNode child : node.children()) {
       out.add(child);
-      out.addAll(descendants(child));
+      collectDescendants(child, out);
     }
-    return out;
   }
 
   /** Returns the token leaves below {@code node} that carry text, in source order. */
