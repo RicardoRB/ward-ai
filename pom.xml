@@ -26,6 +26,7 @@
         <java.version>25</java.version>
         <!-- Committed THIRD-PARTY-LICENSES and sbom.json; the license gate writes its regenerated copies elsewhere. -->
         <compliance.outputDirectory>${maven.multiModuleProjectDirectory}/compliance</compliance.outputDirectory>
+        <compliance.sbomDirectory>${compliance.outputDirectory}</compliance.sbomDirectory>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <picocli.version>4.7.7</picocli.version>
         <tomlj.version>2.2.0</tomlj.version>
@@ -308,7 +309,8 @@
                   <version>2.9.3</version>
                   <configuration>
                     <projectType>application</projectType>
-                    <outputDirectory>${compliance.outputDirectory}</outputDirectory>
+                    <!-- Run as makeAggregateBom: it lists Ward's own modules without the hashes of their JARs, which change with every build. -->
+                    <outputDirectory>${compliance.sbomDirectory}</outputDirectory>
                     <outputName>sbom</outputName>
                     <outputFormat>json</outputFormat>
                     <schemaVersion>1.6</schemaVersion>
