@@ -610,7 +610,7 @@ tryStatement
     ;
 
 catchProduction
-    : Catch ('(' identifier typeAnnotation? ')')? block
+    : Catch ('(' (identifier | arrayLiteral | objectLiteral) typeAnnotation? ')')? block
     ;
 
 finallyProduction
@@ -639,7 +639,7 @@ classTail
     ;
 
 classExtendsClause
-    : Extends typeReference
+    : Extends (typeReference | singleExpression)
     ;
 
 implementsClause
