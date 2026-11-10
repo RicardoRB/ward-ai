@@ -41,6 +41,7 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ### Fixed
 
+- Learning (`ward check --learn-after`) tracks the rule findings of the `ward` gate again, as documented. Since the external Java tools were removed it recorded nothing for Java, Kotlin and Swift projects.
 - `ward init` on a Maven aggregator without its own sources places the architecture test in the module that owns them.
 
 ## [0.5.0] - 2026-11-02

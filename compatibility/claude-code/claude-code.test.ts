@@ -21,7 +21,7 @@ let session = 0;
 
 beforeAll(async () => {
   const ward = wardLauncher(process.env)!;
-  fixture = await createFixture({ harness: "claude-code", guard: true, ward, gates: ["format", "checkstyle"] });
+  fixture = await createFixture({ harness: "claude-code", guard: true, ward });
   settings = JSON.parse(readFileSync(join(fixture.root, ".claude/settings.json"), "utf8"));
   bin = join(dirname(fixture.root), "ward-bin");
   log = join(dirname(fixture.root), "ward-log");
@@ -195,18 +195,20 @@ describe("Ward responses through the generated hooks", () => {
   });
 
   test("a failure that recurs across three episodes produces learning context on the passing check", async () => {
-    // Learning counts a recurring rule finding once per failing episode, after --learn-after 3. While FAIL
-    // exists the stub mvnw writes a Checkstyle LineLength report, so the learned problem is that rule.
+    // Learning counts a recurring rule finding once per failing episode, after --learn-after 3. The edited
+    // file has an over-long line while it exists, so the learned problem is Ward's line-length rule.
+    const source = join(fixture.root, "src/A.java");
     const edit = () =>
       launch(handlers("PostToolUse")[0], payload("PostToolUse", { tool_name: "Edit", tool_input: { file_path: join(fixture.root, "src/A.java") } }), fixture.root);
     rmSync(join(fixture.root, ".ward"), { recursive: true, force: true });
     const passes = [];
     for (let episode = 0; episode < 3; episode++) {
-      writeFileSync(join(fixture.root, "FAIL"), "");
+      mkdirSync(dirname(source), { recursive: true });
+      writeFileSync(source, `package demo;\n\n// ${"x".repeat(300)}\nfinal class A {}\n`);
       try {
         expect((await edit()).result.exitCode).toBe(2);
       } finally {
-        rmSync(join(fixture.root, "FAIL"), { force: true });
+        rmSync(source, { force: true });
       }
       passes.push(await edit());
     }
@@ -215,7 +217,7 @@ describe("Ward responses through the generated hooks", () => {
     const context = JSON.parse(passes[2].result.stdout).hookSpecificOutput;
     expect(context.hookEventName).toBe("PostToolUse");
     expect(String(context.additionalContext)).toContain("AGENTS.md");
-    expect(String(context.additionalContext)).toContain("LineLength");
+    expect(String(context.additionalContext)).toContain("line-length");
   });
 
   test("a clean turn end lets Claude stop", async () => {

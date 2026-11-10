@@ -60,13 +60,18 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
                 failedResult(MYPY, finding(MYPY, "FinalParameters", "final")),
                 failedResult(
                     LINT, finding(LINT, UNUSED, UNUSED_MESSAGE), finding(LINT, PRIVATE, "private")),
-                failedResult("gitleaks", finding("gitleaks", "generic-api-key", "secret"))));
+                failedResult("gitleaks", finding("gitleaks", "generic-api-key", "secret")),
+                failedResult("ward", finding("ward", "ward:java/line-length", "long"))));
 
     final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
 
     assertThat(outcome.ledger().records())
         .containsOnlyKeys(
-            "mypy:FinalParameters", UNUSED_KEY, PRIVATE_KEY, "gitleaks:generic-api-key");
+            "mypy:FinalParameters",
+            UNUSED_KEY,
+            PRIVATE_KEY,
+            "gitleaks:generic-api-key",
+            "ward:ward:java/line-length");
     assertThat(outcome.ledger().records().get(UNUSED_KEY).rule()).isEqualTo(UNUSED);
   }
 
