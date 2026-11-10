@@ -136,6 +136,7 @@ public final class NodeFileFacts {
   }
 
   /** Returns the string literals of the file, without their quotes, in source order. */
+  /** Returns the string literal texts of a file, without their quotes, in order. */
   public static List<String> stringLiterals(final SyntaxNode tree) {
     final NodeTokens tokens = new NodeTokens(NodeLeaves.of(tree));
     final List<String> literals = new ArrayList<>();

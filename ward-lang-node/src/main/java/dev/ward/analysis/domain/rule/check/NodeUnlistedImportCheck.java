@@ -4,6 +4,7 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.node.NodeFileFacts;
 import dev.ward.analysis.domain.node.NodeFileFacts.ModuleSpecifier;
 import dev.ward.analysis.domain.node.NodeManifest;
+import dev.ward.analysis.domain.node.NodeManifest.Member;
 import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.analysis.domain.rule.ProjectMatch;
 import dev.ward.analysis.domain.rule.RuleMatch;
@@ -28,6 +29,7 @@ import java.util.SortedMap;
 public final class NodeUnlistedImportCheck implements RuleCheck, ProjectCheck {
 
   private static final String MANIFEST = "package.json";
+  private static final String NAME = "name";
   private static final String VALUE = "{value}";
   private static final List<String> SECTIONS =
       List.of("dependencies", "devDependencies", "peerDependencies", "optionalDependencies");
@@ -90,9 +92,15 @@ public final class NodeUnlistedImportCheck implements RuleCheck, ProjectCheck {
     return listed;
   }
 
+  /** The names a manifest lists, and its own name, which a file of the package may import. */
   private static Set<String> listedNames(final NodeManifest manifest) {
     final Set<String> names = new HashSet<>();
     SECTIONS.forEach(section -> manifest.entries(section).forEach(entry -> names.add(entry.key())));
+    manifest
+        .member(NAME)
+        .map(Member::value)
+        .map(NodeEntryPoints::textLeaves)
+        .ifPresent(names::addAll);
     return names;
   }
 
