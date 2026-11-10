@@ -32,7 +32,7 @@ public final class BiomeConfusingVoidTypeCheck implements RuleCheck {
   private static final Set<String> NO_REPORT_CONTEXTS =
       Set.of("typeArgument", "typeArgumentList", "typeParameter", "functionType");
   private static final Set<String> SIGNATURES =
-      Set.of("callSignature", "arrowFunctionDeclaration", "anonymousFunction");
+      Set.of("callSignature", "arrowFunctionDeclaration", "anonymousFunction", "generatorMethod");
 
   private final String message;
 
