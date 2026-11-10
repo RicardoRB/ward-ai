@@ -7,11 +7,22 @@ capability = "SYNTAX"
 severity = "ERROR"
 category = "coding"
 presets = ["standard", "strict"]
+options.detect-objects = { type = "boolean" }
+options.ignore = { type = "string-list" }
+options.ignore-array-indexes = { type = "boolean" }
+options.ignore-default-values = { type = "boolean" }
+options.ignore-class-field-initial-values = { type = "boolean" }
+options.enforce-const = { type = "boolean" }
 body = '''
-check = "forbidden-node"
-kinds = ["DecimalLiteral", "HexIntegerLiteral", "OctalIntegerLiteral", "OctalIntegerLiteral2", "BinaryIntegerLiteral"]
-text = '^(?!(?:0|1|2)(?:\.0*)?$).+$'
+check = "node-magic-number"
+detect-objects = false
+ignore = []
+ignore-array-indexes = false
+ignore-default-values = false
+ignore-class-field-initial-values = false
+enforce-const = false
 message = "'{value}' is a magic number"
+const-message = "number declared without 'const'; use 'const'"
 '''
 
 [[rules]]
@@ -21,11 +32,22 @@ capability = "SYNTAX"
 severity = "ERROR"
 category = "coding"
 presets = ["standard", "strict"]
+options.detect-objects = { type = "boolean" }
+options.ignore = { type = "string-list" }
+options.ignore-array-indexes = { type = "boolean" }
+options.ignore-default-values = { type = "boolean" }
+options.ignore-class-field-initial-values = { type = "boolean" }
+options.enforce-const = { type = "boolean" }
 body = '''
-check = "forbidden-node"
-kinds = ["DecimalLiteral", "HexIntegerLiteral", "OctalIntegerLiteral", "OctalIntegerLiteral2", "BinaryIntegerLiteral"]
-text = '^(?!(?:0|1|2)(?:\.0*)?$).+$'
+check = "node-magic-number"
+detect-objects = false
+ignore = []
+ignore-array-indexes = false
+ignore-default-values = false
+ignore-class-field-initial-values = false
+enforce-const = false
 message = "'{value}' is a magic number"
+const-message = "number declared without 'const'; use 'const'"
 '''
 
 [[rules]]
