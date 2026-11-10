@@ -3,6 +3,7 @@ package dev.ward.analysis.domain.rule.check;
 import dev.ward.analysis.domain.ir.Symbol;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.node.NodeFileFacts;
+import dev.ward.analysis.domain.node.NodeIdentifiers;
 import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.analysis.domain.rule.ProjectMatch;
 import dev.ward.analysis.domain.rule.RuleMatch;
@@ -66,10 +67,12 @@ public final class NodeUnusedExportCheck implements RuleCheck, ProjectCheck {
             return;
           }
           final Map<String, String> kinds = NodeFileFacts.exportKinds(tree);
+          final Map<String, Integer> names = NodeIdentifiers.counts(tree);
           for (final Symbol export : NodeFileFacts.exports(tree)) {
             if (isType(kinds.get(export.name())) == types
                 && !everything
-                && !imported.contains(export.name())) {
+                && !imported.contains(export.name())
+                && !(types && namedAgainIn(names, export.name()))) {
               found.add(
                   new ProjectMatch(
                       path,
@@ -78,6 +81,14 @@ public final class NodeUnusedExportCheck implements RuleCheck, ProjectCheck {
           }
         });
     return List.copyOf(found);
+  }
+
+  /**
+   * Tells whether a type is named again in its own file, past its declaration, as knip counts a
+   * type that the file itself refers to as used.
+   */
+  private static boolean namedAgainIn(final Map<String, Integer> names, final String name) {
+    return names.getOrDefault(name, 0) > 1;
   }
 
   private static boolean isType(final String keyword) {

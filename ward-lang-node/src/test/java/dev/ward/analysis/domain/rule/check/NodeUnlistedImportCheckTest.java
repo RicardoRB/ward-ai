@@ -67,4 +67,19 @@ final class NodeUnlistedImportCheckTest {
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
+
+  @Test
+  void keepsAFileImportingItsOwnPackageByName() {
+    final List<ProjectMatch> found =
+        new NodeUnlistedImportCheck(MESSAGE)
+            .project(
+                ProjectFixtures.trees(
+                    Map.of(
+                        "packages/ui/test/order.test.ts",
+                        "import { a } from '@repo/ui/order';\nexport const b = a;")),
+                ProjectFixtures.manifests(
+                    Map.of("packages/ui/package.json", "{\"name\":\"@repo/ui\"}")));
+
+    assertThat(ProjectFixtures.positions(found)).isEmpty();
+  }
 }

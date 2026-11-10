@@ -4,6 +4,7 @@ import dev.ward.analysis.domain.node.NodeManifest.Member;
 import dev.ward.analysis.domain.node.NodeManifest.Value;
 import dev.ward.analysis.domain.rule.ProjectFiles;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,6 +18,7 @@ final class NodeEntryPoints {
 
   private static final List<String> ENTRY_FIELDS =
       List.of("main", "module", "types", "typings", "bin", "exports");
+  private static final String WILDCARD = "*";
   private static final Pattern SOURCE_FILE = Pattern.compile("\\.(ts|tsx|js|jsx|mjs|cjs|mts|cts)$");
   private static final Pattern CONVENTIONAL_ENTRY =
       Pattern.compile(
@@ -76,10 +78,23 @@ final class NodeEntryPoints {
       final Set<String> entries) {
     for (final String text : textLeaves(value)) {
       final String path = resolveFrom(owner.directory(), text);
-      if (paths.contains(path)) {
+      if (text.contains(WILDCARD)) {
+        entries.addAll(matching(path, paths));
+      } else if (paths.contains(path)) {
         entries.add(path);
       }
     }
+  }
+
+  /** The project files that a wildcard target names, where {@code *} matches any text. */
+  private static Set<String> matching(final String pattern, final Set<String> paths) {
+    final Pattern regex =
+        Pattern.compile(
+            String.join(
+                ".*", Arrays.stream(pattern.split("\\*", -1)).map(Pattern::quote).toList()));
+    final Set<String> found = new HashSet<>();
+    paths.stream().filter(path -> regex.matcher(path).matches()).forEach(found::add);
+    return found;
   }
 
   /**
