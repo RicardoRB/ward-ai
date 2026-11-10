@@ -7,28 +7,28 @@ checkstyle = ["AtclauseOrder"]
 
 [[rule]]
 name = "illegal-block-tag"
-category = "javadoc"
+category = "docs"
 presets = ["strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["IllegalBlockTag"]
 
 [[rule]]
 name = "inappropriate-javadoc-block-tags-on-field"
-category = "javadoc"
+category = "docs"
 presets = ["strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["InappropriateJavadocBlockTagsOnField"]
 
 [[rule]]
 name = "inappropriate-javadoc-block-tags-on-package"
-category = "javadoc"
+category = "docs"
 presets = ["strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["InappropriateJavadocBlockTagsOnPackage"]
 
 [[rule]]
 name = "inappropriate-javadoc-block-tags-on-type"
-category = "javadoc"
+category = "docs"
 presets = ["strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["InappropriateJavadocBlockTagsOnType"]
@@ -40,7 +40,7 @@ checkstyle = ["InvalidJavadocPosition"]
 
 [[rule]]
 name = "javadoc-block-tag-location"
-category = "javadoc"
+category = "docs"
 presets = ["strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocBlockTagLocation"]
@@ -52,7 +52,7 @@ checkstyle = ["JavadocContentLocation"]
 
 [[rule]]
 name = "javadoc-end-comment-delimiter"
-category = "javadoc"
+category = "docs"
 presets = ["strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocEndCommentDelimiter"]
@@ -64,14 +64,14 @@ checkstyle = ["JavadocLeadingAsteriskAlign"]
 
 [[rule]]
 name = "javadoc-link-first-occurrence"
-category = "javadoc"
+category = "docs"
 presets = ["strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocLinkFirstOccurrence"]
 
 [[rule]]
 name = "javadoc-link-well-known-api"
-category = "javadoc"
+category = "docs"
 presets = ["strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocLinkWellKnownApi"]
@@ -88,21 +88,21 @@ checkstyle = ["JavadocMissingLeadingAsterisk"]
 
 [[rule]]
 name = "javadoc-missing-whitespace-after-asterisk"
-category = "javadoc"
+category = "docs"
 presets = ["strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocMissingWhitespaceAfterAsterisk"]
 
 [[rule]]
 name = "javadoc-no-error-in-throws-tag"
-category = "javadoc"
+category = "docs"
 presets = ["strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocNoErrorInThrowsTag"]
 
 [[rule]]
 name = "javadoc-package"
-category = "javadoc"
+category = "docs"
 presets = ["strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["JavadocPackage"]
@@ -114,21 +114,21 @@ checkstyle = ["JavadocParagraph"]
 
 [[rule]]
 name = "javadoc-param-order"
-category = "javadoc"
+category = "docs"
 presets = ["strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocParamOrder"]
 
 [[rule]]
 name = "javadoc-regexp"
-category = "javadoc"
+category = "docs"
 presets = ["strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocRegexp"]
 
 [[rule]]
 name = "javadoc-see-tag-order"
-category = "javadoc"
+category = "docs"
 presets = ["strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocSeeTagOrder"]
@@ -140,20 +140,20 @@ checkstyle = ["JavadocTagContinuationIndentation"]
 
 [[rule]]
 name = "javadoc-throws-order"
-category = "javadoc"
+category = "docs"
 presets = ["strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["JavadocThrowsOrder"]
 
 [[rule]]
 name = "javadoc-type"
-category = "javadoc"
+category = "docs"
 presets = ["strict"]
 checkstyle = ["JavadocType"]
 
 [[rule]]
 name = "javadoc-variable"
-category = "javadoc"
+category = "docs"
 presets = ["strict"]
 checkstyle = ["JavadocVariable"]
 
@@ -169,7 +169,7 @@ ruff = ["D102", "D103"]
 
 [[rule]]
 name = "missing-javadoc-package"
-category = "javadoc"
+category = "docs"
 presets = ["strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["MissingJavadocPackage"]
@@ -186,14 +186,14 @@ checkstyle = ["NonEmptyAtclauseDescription"]
 
 [[rule]]
 name = "prefer-code-or-snippet-javadoc-inline-tag"
-category = "javadoc"
+category = "docs"
 presets = ["strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["PreferCodeOrSnippetJavadocInlineTag"]
 
 [[rule]]
 name = "prefer-literal-javadoc-inline-tag"
-category = "javadoc"
+category = "docs"
 presets = ["strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["PreferLiteralJavadocInlineTag"]
@@ -215,7 +215,7 @@ checkstyle = ["SummaryJavadoc"]
 
 [[rule]]
 name = "write-tag"
-category = "javadoc"
+category = "docs"
 presets = ["strict"]
 not-applicable = { python = "Javadoc tag or structure with no counterpart in this language's doc comments", swift = "Javadoc tag or structure with no counterpart in this language's doc comments" }
 checkstyle = ["WriteTag"]

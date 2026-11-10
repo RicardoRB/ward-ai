@@ -6,7 +6,7 @@ id = "ward:java/atclause-order"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "javadoc"
+category = "docs"
 presets = ["standard", "strict"]
 options.tag-order = { type = "string-list" }
 options.target = { type = "string-list" }
@@ -24,7 +24,7 @@ id = "ward:java/non-empty-atclause-description"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "javadoc"
+category = "docs"
 presets = ["standard", "strict"]
 options.javadoc-tokens = { type = "string-list" }
 body = '''
@@ -38,7 +38,7 @@ id = "ward:java/javadoc-tag-continuation-indentation"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "javadoc"
+category = "docs"
 presets = ["standard", "strict"]
 options.offset = { type = "integer", min = 0 }
 body = '''

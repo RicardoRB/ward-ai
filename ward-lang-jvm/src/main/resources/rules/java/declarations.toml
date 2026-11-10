@@ -7,7 +7,7 @@ id = "ward:java/hidden-field"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "coding"
+category = "style"
 presets = ["strict"]
 options.ignore-constructor-parameter = { type = "boolean" }
 options.ignore-setter = { type = "boolean" }
@@ -21,7 +21,7 @@ id = "ward:java/parameter-assignment"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "coding"
+category = "style"
 presets = ["strict"]
 body = '''
 check = "parameter-assignment"
@@ -33,7 +33,7 @@ id = "ward:java/variable-declaration-usage-distance"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "coding"
+category = "style"
 presets = ["standard", "strict"]
 options.allowed-distance = { type = "integer" }
 options.ignore-finals = { type = "boolean" }

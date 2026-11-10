@@ -18,37 +18,37 @@ biome = ["noTsIgnore"]
 [[rule]]
 name = "ban-tslint-comment"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["ban-tslint-comment"]
 
 [[rule]]
 name = "class-literal-property-style"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["class-literal-property-style"]
 
 [[rule]]
 name = "consistent-generic-constructors"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["consistent-generic-constructors"]
 
 [[rule]]
 name = "consistent-indexed-object-style"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["consistent-indexed-object-style"]
 
 [[rule]]
 name = "consistent-type-assertions"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["consistent-type-assertions"]
 
 [[rule]]
 name = "consistent-type-definitions"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["consistent-type-definitions"]
 biome = ["useConsistentTypeDefinitions"]
 
@@ -65,39 +65,39 @@ biome = ["useImportType"]
 [[rule]]
 name = "explicit-function-return-type"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["explicit-function-return-type"]
 
 [[rule]]
 name = "explicit-member-accessibility"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["explicit-member-accessibility"]
 
 [[rule]]
 name = "explicit-module-boundary-types"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["explicit-module-boundary-types"]
 
 [[rule]]
 name = "max-params"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["max-params"]
 biome = ["useMaxParams"]
 
 [[rule]]
 name = "method-signature-style"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["method-signature-style"]
 biome = ["useConsistentMethodSignatures"]
 
 [[rule]]
 name = "naming-convention"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["naming-convention"]
 biome = ["useNamingConvention"]
 
@@ -113,19 +113,19 @@ biome = ["noBaseToString"]
 [[rule]]
 name = "no-confusing-non-null-assertion"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["no-confusing-non-null-assertion"]
 
 [[rule]]
 name = "no-confusing-void-expression"
 presets = ["strict"]
-category = "problem"
+category = "correctness"
 typescript-eslint = ["no-confusing-void-expression"]
 
 [[rule]]
 name = "no-deprecated"
 presets = ["strict"]
-category = "problem"
+category = "correctness"
 typescript-eslint = ["no-deprecated"]
 
 [[rule]]
@@ -141,7 +141,7 @@ typescript-eslint = ["no-duplicate-type-constituents"]
 [[rule]]
 name = "no-dynamic-delete"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["no-dynamic-delete"]
 
 [[rule]]
@@ -163,7 +163,7 @@ biome = ["noExtraNonNullAssertion"]
 [[rule]]
 name = "no-extraneous-class"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["no-extraneous-class"]
 
 [[rule]]
@@ -179,32 +179,32 @@ typescript-eslint = ["no-for-in-array"]
 [[rule]]
 name = "no-generated-empty-object-type"
 presets = ["strict"]
-category = "problem"
+category = "correctness"
 typescript-eslint = ["no-generated-empty-object-type"]
 
 [[rule]]
 name = "no-import-type-side-effects"
 presets = ["strict"]
-category = "problem"
+category = "correctness"
 typescript-eslint = ["no-import-type-side-effects"]
 
 [[rule]]
 name = "no-inferrable-types"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["no-inferrable-types"]
 biome = ["noInferrableTypes"]
 
 [[rule]]
 name = "no-invalid-void-type"
 presets = ["strict"]
-category = "problem"
+category = "correctness"
 typescript-eslint = ["no-invalid-void-type"]
 
 [[rule]]
 name = "no-magic-numbers"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["no-magic-numbers"]
 swiftlint = ["no_magic_numbers"]
 biome = ["noMagicNumbers"]
@@ -212,7 +212,7 @@ biome = ["noMagicNumbers"]
 [[rule]]
 name = "no-meaningless-void-operator"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["no-meaningless-void-operator"]
 biome = ["noMeaninglessVoidOperator"]
 
@@ -229,13 +229,13 @@ biome = ["noMisusedPromises"]
 [[rule]]
 name = "no-misused-spread"
 presets = ["strict"]
-category = "problem"
+category = "correctness"
 typescript-eslint = ["no-misused-spread"]
 
 [[rule]]
 name = "no-mixed-enums"
 presets = ["strict"]
-category = "problem"
+category = "correctness"
 typescript-eslint = ["no-mixed-enums"]
 
 [[rule]]
@@ -247,7 +247,7 @@ biome = ["noNamespace"]
 [[rule]]
 name = "no-non-null-asserted-nullish-coalescing"
 presets = ["strict"]
-category = "problem"
+category = "correctness"
 typescript-eslint = ["no-non-null-asserted-nullish-coalescing"]
 
 [[rule]]
@@ -273,7 +273,7 @@ typescript-eslint = ["no-require-imports"]
 [[rule]]
 name = "no-restricted-types"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["no-restricted-types"]
 biome = ["noRestrictedTypes"]
 
@@ -285,38 +285,38 @@ biome = ["noUselessThisAlias"]
 [[rule]]
 name = "no-unnecessary-boolean-literal-compare"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["no-unnecessary-boolean-literal-compare"]
 
 [[rule]]
 name = "no-unnecessary-condition"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["no-unnecessary-condition"]
 
 [[rule]]
 name = "no-unnecessary-parameter-property-assignment"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["no-unnecessary-parameter-property-assignment"]
 
 [[rule]]
 name = "no-unnecessary-qualifier"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["no-unnecessary-qualifier"]
 
 [[rule]]
 name = "no-unnecessary-template-expression"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["no-unnecessary-template-expression"]
 biome = ["noUnnecessaryTemplateExpression"]
 
 [[rule]]
 name = "no-unnecessary-type-arguments"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["no-unnecessary-type-arguments"]
 
 [[rule]]
@@ -331,14 +331,14 @@ biome = ["noUselessTypeConstraint"]
 [[rule]]
 name = "no-unnecessary-type-conversion"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["no-unnecessary-type-conversion"]
 biome = ["noUselessTypeConversion"]
 
 [[rule]]
 name = "no-unnecessary-type-parameters"
 presets = ["strict"]
-category = "problem"
+category = "correctness"
 typescript-eslint = ["no-unnecessary-type-parameters"]
 
 [[rule]]
@@ -362,7 +362,7 @@ biome = ["noUnsafeDeclarationMerging"]
 [[rule]]
 name = "no-unsafe-enum-assignment"
 presets = ["strict"]
-category = "problem"
+category = "correctness"
 typescript-eslint = ["no-unsafe-enum-assignment"]
 
 [[rule]]
@@ -384,7 +384,7 @@ typescript-eslint = ["no-unsafe-return"]
 [[rule]]
 name = "no-unsafe-type-assertion"
 presets = ["strict"]
-category = "problem"
+category = "correctness"
 typescript-eslint = ["no-unsafe-type-assertion"]
 biome = ["noUnsafeTypeAssertion"]
 
@@ -395,7 +395,7 @@ typescript-eslint = ["no-unsafe-unary-minus"]
 [[rule]]
 name = "no-useless-default-assignment"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["no-useless-default-assignment"]
 
 [[rule]]
@@ -411,7 +411,7 @@ typescript-eslint = ["no-wrapper-object-types"]
 [[rule]]
 name = "non-nullable-type-assertion-style"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["non-nullable-type-assertion-style"]
 
 [[rule]]
@@ -422,7 +422,7 @@ biome = ["useThrowOnlyError"]
 [[rule]]
 name = "parameter-properties"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["parameter-properties"]
 biome = ["noParameterProperties"]
 
@@ -434,33 +434,33 @@ biome = ["useAsConstAssertion"]
 [[rule]]
 name = "prefer-enum-initializers"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["prefer-enum-initializers"]
 biome = ["useEnumInitializers"]
 
 [[rule]]
 name = "prefer-find"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["prefer-find"]
 
 [[rule]]
 name = "prefer-for-of"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["prefer-for-of"]
 biome = ["useForOf"]
 
 [[rule]]
 name = "prefer-function-type"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["prefer-function-type"]
 
 [[rule]]
 name = "prefer-includes"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["prefer-includes"]
 biome = ["useIncludes"]
 
@@ -477,7 +477,7 @@ biome = ["useNamespaceKeyword"]
 [[rule]]
 name = "prefer-nullish-coalescing"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["prefer-nullish-coalescing"]
 biome = ["useNullishCoalescing"]
 
@@ -489,58 +489,58 @@ biome = ["useOptionalChain"]
 [[rule]]
 name = "prefer-readonly"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["prefer-readonly"]
 biome = ["useReadonlyClassProperties"]
 
 [[rule]]
 name = "prefer-readonly-parameter-types"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["prefer-readonly-parameter-types"]
 
 [[rule]]
 name = "prefer-reduce-type-parameter"
 presets = ["strict"]
-category = "problem"
+category = "correctness"
 typescript-eslint = ["prefer-reduce-type-parameter"]
 
 [[rule]]
 name = "prefer-regexp-exec"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["prefer-regexp-exec"]
 biome = ["useRegexpExec"]
 
 [[rule]]
 name = "prefer-return-this-type"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["prefer-return-this-type"]
 
 [[rule]]
 name = "prefer-string-starts-ends-with"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["prefer-string-starts-ends-with"]
 biome = ["useStringStartsEndsWith"]
 
 [[rule]]
 name = "promise-function-async"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["promise-function-async"]
 
 [[rule]]
 name = "related-getter-setter-pairs"
 presets = ["strict"]
-category = "problem"
+category = "correctness"
 typescript-eslint = ["related-getter-setter-pairs"]
 
 [[rule]]
 name = "require-array-sort-compare"
 presets = ["strict"]
-category = "problem"
+category = "correctness"
 typescript-eslint = ["require-array-sort-compare"]
 biome = ["useArraySortCompare"]
 
@@ -556,26 +556,26 @@ typescript-eslint = ["restrict-template-expressions"]
 [[rule]]
 name = "return-await"
 presets = ["strict"]
-category = "problem"
+category = "correctness"
 typescript-eslint = ["return-await"]
 
 [[rule]]
 name = "strict-boolean-expressions"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["strict-boolean-expressions"]
 biome = ["useStrictBooleanExpressions"]
 
 [[rule]]
 name = "strict-void-return"
 presets = ["strict"]
-category = "problem"
+category = "correctness"
 typescript-eslint = ["strict-void-return"]
 
 [[rule]]
 name = "switch-exhaustiveness-check"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["switch-exhaustiveness-check"]
 
 [[rule]]
@@ -589,12 +589,12 @@ typescript-eslint = ["unbound-method"]
 [[rule]]
 name = "unified-signatures"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["unified-signatures"]
 biome = ["useUnifiedTypeSignatures"]
 
 [[rule]]
 name = "use-unknown-in-catch-callback-variable"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["use-unknown-in-catch-callback-variable"]

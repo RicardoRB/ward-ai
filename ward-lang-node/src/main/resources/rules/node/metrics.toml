@@ -5,7 +5,7 @@ id = "ward:typescript/complexity"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
-category = "metrics"
+category = "complexity"
 presets = ["standard", "strict"]
 options.max = { type = "integer", min = 1 }
 body = ""
@@ -15,7 +15,7 @@ id = "ward:javascript/complexity"
 language = "JAVASCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
-category = "metrics"
+category = "complexity"
 presets = ["standard", "strict"]
 options.max = { type = "integer", min = 1 }
 body = ""

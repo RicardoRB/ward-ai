@@ -2,18 +2,18 @@
 
 [[rule]]
 name = "header"
-category = "header"
+category = "style"
 presets = ["strict"]
 checkstyle = ["Header"]
 
 [[rule]]
 name = "multi-file-regexp-header"
-category = "header"
+category = "style"
 presets = ["strict"]
 checkstyle = ["MultiFileRegexpHeader"]
 
 [[rule]]
 name = "regexp-header"
-category = "header"
+category = "style"
 presets = ["strict"]
 checkstyle = ["RegexpHeader"]
