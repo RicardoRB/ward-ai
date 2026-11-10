@@ -20,6 +20,8 @@ team, and Ward checks every change against them, from the first edit to producti
 [How it works](#how-it-works) ·
 [Report a bug](https://github.com/RicardoRB/ward-ai/issues)
 
+<img src="website/public/ward-layers.svg" alt="Four nested shields around your code: Edit, Commit, Push, and CI. Faster checks sit close to the code, stricter ones further out." width="720">
+
 <img src=".github/assets/ward-demo.webp" alt="An agent's change fails a quality check, the agent fixes it, and the quick check and the stricter pre-push check pass" width="900">
 <br>
 <sub>An agent's change fails a quality check, the agent fixes it, and the fast and pre-push checks pass. (<a href=".github/assets/ward-demo.webm">WebM version</a>)</sub>
@@ -34,14 +36,14 @@ team, and Ward checks every change against them, from the first edit to producti
 > with Gradle and the Android Gradle Plugin. Support for more languages is planned. The CLI
 > and configuration may change before `1.0`.
 
-| Language | Build tools | Frameworks | Quality tools |
-|---|---|---|---|
-| Java / Kotlin | Maven, Gradle | Any. Spring Boot, Quarkus, Micronaut, Helidon, Dropwizard, Javalin, and Ktor are labeled when detected | Compiler, JUnit, JaCoCo, PIT, Ward's own style and bug rules, and Ward's layer, cycle and independence rules |
-| Kotlin / Java for Android | Gradle with the Android Gradle Plugin | Android app and library modules | Android lint, Android unit tests, Android debug unit-test coverage |
-| TypeScript | npm, pnpm, Yarn, Bun | Vue, Svelte, Astro, Angular (others are checked with the same gates) | `tsc`, Vitest / Jest / `bun test`, Stryker, Ward's TypeScript and JavaScript rules |
-| JavaScript | npm, pnpm, Yarn, Bun | Same as TypeScript | Same as TypeScript, without `tsc` |
-| Python 3.11–3.14 | uv, Poetry, pip | Django, FastAPI, Flask | Ward rules (lint), mypy, pytest, coverage.py, pip-audit, mutmut |
-| Swift | SwiftPM, Xcode | Any | Ward rules (lint), `swift build`, `swift test` or `xcodebuild test`, llvm-cov / xccov |
+| Language | Build tools | Frameworks |
+|---|---|---|
+| Java / Kotlin | Maven, Gradle | Any. Spring Boot, Quarkus, Micronaut, Helidon, Dropwizard, Javalin, and Ktor are labeled when detected |
+| Kotlin / Java for Android | Gradle with the Android Gradle Plugin | Android app and library modules |
+| TypeScript | npm, pnpm, Yarn, Bun | Vue, Svelte, Astro, Angular (others are checked with the same gates) |
+| JavaScript | npm, pnpm, Yarn, Bun | Same as TypeScript |
+| Python 3.11–3.14 | uv, Poetry, pip | Django, FastAPI, Flask |
+| Swift | SwiftPM, Xcode | Any |
 
 <div align="center">
   <a href="https://youtu.be/ETuomU8HxXw">
@@ -222,7 +224,7 @@ Cline, Factory Droid, and Amp. See [integrations](https://ricardorb.github.io/wa
 
 ## Project status
 
-**Alpha** (`0.5.0`). Runs as a native binary on Linux x86_64, macOS (Apple Silicon and Intel), and
+**Alpha** (`0.6.0`). Runs as a native binary on Linux x86_64, macOS (Apple Silicon and Intel), and
 Windows x86_64, or as a JAR on JDK 25. Only the latest release receives fixes. See
 [CHANGELOG.md](CHANGELOG.md) for what changed in each release.
 
