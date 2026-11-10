@@ -102,15 +102,16 @@ public final class FormatFileSelection {
       if (directory.equals(root)) {
         return FileVisitResult.CONTINUE;
       }
-      return FileSystemSourceUnits.skipsDirectory(nameOf(directory))
-          ? FileVisitResult.SKIP_SUBTREE
-          : FileVisitResult.CONTINUE;
+      final boolean skipped =
+          FileSystemSourceUnits.skipsDirectory(nameOf(directory))
+              || ignored.contains(relative(directory) + "/");
+      return skipped ? FileVisitResult.SKIP_SUBTREE : FileVisitResult.CONTINUE;
     }
 
     @Override
     public FileVisitResult visitFile(final Path file, final BasicFileAttributes attributes) {
       final AnalysisLanguage language = FileSystemSourceUnits.language(nameOf(file));
-      final String path = root.relativize(file).toString().replace('\\', '/');
+      final String path = relative(file);
       if (language != null
           && languages.contains(language)
           && !ignored.contains(path)
@@ -118,6 +119,10 @@ public final class FormatFileSelection {
         found.put(path, language);
       }
       return FileVisitResult.CONTINUE;
+    }
+
+    private String relative(final Path path) {
+      return root.relativize(path).toString().replace('\\', '/');
     }
 
     private static String nameOf(final Path path) {

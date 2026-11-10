@@ -102,7 +102,9 @@ public final class FileSystemSourceUnits implements AnalysisSourceUnits {
     @Override
     public FileVisitResult preVisitDirectory(
         final Path directory, final BasicFileAttributes attributes) {
-      final boolean skipped = !directory.equals(root) && skipsDirectory(nameOf(directory));
+      final boolean skipped =
+          !directory.equals(root)
+              && (skipsDirectory(nameOf(directory)) || ignored.contains(relative(directory) + "/"));
       return skipped ? FileVisitResult.SKIP_SUBTREE : FileVisitResult.CONTINUE;
     }
 

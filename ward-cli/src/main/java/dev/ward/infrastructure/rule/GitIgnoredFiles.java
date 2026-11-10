@@ -12,8 +12,10 @@ public final class GitIgnoredFiles {
   private GitIgnoredFiles() {}
 
   /**
-   * Returns the untracked files that Git ignores, relative to {@code root} with {@code /}
-   * separators. When Git cannot answer, the result is empty, so no file is dropped.
+   * Returns the untracked files and folders that Git ignores, relative to {@code root} with {@code
+   * /} separators. A folder that Git ignores whole is one entry ending in {@code /}, so a large
+   * tree such as {@code node_modules} costs one entry. When Git cannot answer, the result is empty,
+   * so no file is dropped.
    *
    * @param root the project root
    * @param executor the command executor
@@ -21,7 +23,9 @@ public final class GitIgnoredFiles {
    */
   public static Set<String> of(final Path root, final CommandExecutor executor) {
     final CommandResult result =
-        executor.execute(List.of("git", "ls-files", "-o", "-i", "--exclude-standard", "-z"), root);
+        executor.execute(
+            List.of("git", "ls-files", "-o", "-i", "--exclude-standard", "--directory", "-z"),
+            root);
     if (result.executionError() != null || result.exitCode() != 0) {
       return Set.of();
     }

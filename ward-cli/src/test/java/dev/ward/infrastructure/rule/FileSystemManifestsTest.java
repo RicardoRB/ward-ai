@@ -29,7 +29,18 @@ class FileSystemManifestsTest {
 
     assertThat(FileSystemManifests.read(root, NAMES, git).paths()).containsExactly("package.json");
     assertThat(git.commands.get(0))
-        .containsExactly("git", "ls-files", "-o", "-i", "--exclude-standard", "-z");
+        .containsExactly("git", "ls-files", "-o", "-i", "--exclude-standard", "--directory", "-z");
+  }
+
+  @Test
+  void dropsManifestsInAnIgnoredDirectory() throws IOException {
+    write("package.json");
+    write("examples/old/package.json");
+    final FakeCommandExecutor git =
+        new FakeCommandExecutor(
+            new CommandResult(0, "examples/old/\u0000", "", FakeCommandExecutor.DURATION, null));
+
+    assertThat(FileSystemManifests.read(root, NAMES, git).paths()).containsExactly("package.json");
   }
 
   @Test
