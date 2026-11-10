@@ -14,8 +14,8 @@ import org.junit.jupiter.api.Test;
 /** Which findings become rule records, and what the records and prompts carry. */
 class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
   private static final String MYPY = "mypy";
-  private static final String RUFF = "ruff";
   private static final String TSC = "tsc";
+  private static final String LINT = TSC;
   private static final int VIOLATIONS = 12;
 
   @Test
@@ -23,13 +23,13 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
     final LearningOutcome failure =
         LearningPolicy.apply(LearningLedger.empty(), unusedVariable(), 1, NOW);
 
-    final LearningOutcome resolved = apply(failure, passed(RUFF), 1, 1);
+    final LearningOutcome resolved = apply(failure, passed(LINT), 1, 1);
 
     assertThat(resolved.prompts())
         .singleElement()
         .extracting(LearningPrompt::instruction)
         .asString()
-        .contains("AGENTS.md", "`ruff`", "`UnusedLocalVariable`", UNUSED_MESSAGE)
+        .contains("AGENTS.md", "`tsc`", "`UnusedLocalVariable`", UNUSED_MESSAGE)
         .contains("do not write a rule about running the gate, Ward, or any command");
   }
 
@@ -59,7 +59,7 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
             List.of(
                 failedResult(MYPY, finding(MYPY, "FinalParameters", "final")),
                 failedResult(
-                    RUFF, finding(RUFF, UNUSED, UNUSED_MESSAGE), finding(RUFF, PRIVATE, "private")),
+                    LINT, finding(LINT, UNUSED, UNUSED_MESSAGE), finding(LINT, PRIVATE, "private")),
                 failedResult("gitleaks", finding("gitleaks", "generic-api-key", "secret"))));
 
     final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
@@ -79,7 +79,7 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
                 failedResult("test"),
                 failedResult("format", finding("spotless", "format", "not formatted")),
                 failedResult("compile", finding("javac", "javac.error", "cannot find symbol")),
-                failedResult(RUFF, finding(RUFF, RUFF, "blank rule")),
+                failedResult(LINT, finding(LINT, LINT, "blank rule")),
                 GateResult.builder(MYPY, GateStatus.PASSED)
                     .build()
                     .withFindings(GateFindings.of(List.of(finding(MYPY, "MagicNumber", "warn"))))));
@@ -90,31 +90,32 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
   }
 
   @Test
-  void ruffRulesAndTscDiagnosticsAreLearnedButParsingErrorsAreNot() {
+  void lintRulesAndTscDiagnosticsAreLearnedButParsingErrorsAreNot() {
     final CheckReport report =
         new CheckReport(
             PROJECT,
             List.of(
                 failedResult(
-                    RUFF,
-                    finding(RUFF, "no-unused-vars", "x is never used"),
-                    finding(RUFF, RUFF, "Parsing error: ';' expected.")),
+                    LINT,
+                    finding(LINT, "no-unused-vars", "x is never used"),
+                    finding(LINT, LINT, "Parsing error: ';' expected.")),
                 failedResult(TSC, finding(TSC, "TS2322", "not assignable"))));
 
     final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
 
-    assertThat(outcome.ledger().records()).containsOnlyKeys("ruff:no-unused-vars", "tsc:TS2322");
+    assertThat(outcome.ledger().records())
+        .containsOnlyKeys(TSC + ":no-unused-vars", TSC + ":TS2322");
   }
 
   @Test
   void recordsStoreOnlyTheFindingMessageNeverStdoutOrStderr() {
     final GateResult result =
-        GateResult.builder(RUFF, GateStatus.FAILED)
+        GateResult.builder(LINT, GateStatus.FAILED)
             .stdout("stdout must not be stored")
             .stderr("stderr must not be stored")
             .summary("Build broke")
             .build()
-            .withFindings(GateFindings.of(List.of(finding(RUFF, UNUSED, UNUSED_MESSAGE))));
+            .withFindings(GateFindings.of(List.of(finding(LINT, UNUSED, UNUSED_MESSAGE))));
 
     final LearningRecord record =
         LearningPolicy.apply(
@@ -128,15 +129,15 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
   }
 
   @Test
-  void ruffAndMypyRulesAreLearnedButCatchAllRulesAreNot() {
+  void lintAndMypyRulesAreLearnedButCatchAllRulesAreNot() {
     final CheckReport report =
         new CheckReport(
             PROJECT,
             List.of(
                 failedResult(
-                    "ruff",
-                    finding("ruff", "F401", "`os` imported but unused"),
-                    finding("ruff", "ruff", "Expected a statement")),
+                    TSC,
+                    finding(TSC, "F401", "`os` imported but unused"),
+                    finding(TSC, TSC, "Expected a statement")),
                 failedResult(
                     "mypy",
                     finding("mypy", "arg-type", "Argument 1 has incompatible type"),
@@ -144,7 +145,7 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
 
     final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
 
-    assertThat(outcome.ledger().records()).containsOnlyKeys("ruff:F401", "mypy:arg-type");
+    assertThat(outcome.ledger().records()).containsOnlyKeys(TSC + ":F401", "mypy:arg-type");
   }
 
   @Test
@@ -153,13 +154,13 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
         new CheckReport(
             PROJECT,
             List.of(
-                failedResult("ruff", finding("ruff", "no-undef", "'x' is not defined")),
+                failedResult(TSC, finding(TSC, "no-undef", "'x' is not defined")),
                 failedResult(
                     "swift-format", finding("swift-format", "Indentation", "unindent by 2 spaces")),
                 failedResult("swift-build", finding("swift-build", "swiftc", "cannot convert"))));
 
     final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
 
-    assertThat(outcome.ledger().records()).containsOnlyKeys("ruff:no-undef");
+    assertThat(outcome.ledger().records()).containsOnlyKeys(TSC + ":no-undef");
   }
 }

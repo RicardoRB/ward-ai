@@ -19,7 +19,7 @@ version by the Python matrix. Python 3.15 waits until mutmut installs on it. Dja
   refuses a version below 3.11 as `INCOMPATIBLE`.
 - **Virtual environment.** pip installs into `.venv`. When `.venv` is missing, init stops and says
   to run `python -m venv .venv`.
-- **Own configs.** A `ruff.toml`, `mypy.ini`, `.coveragerc`, or a `[tool.mypy]`,
+- **Own configs.** A `mypy.ini`, `.coveragerc`, or a `[tool.mypy]`,
   `[tool.coverage]` table, or a `setup.cfg` or `tox.ini` section, is the project's own. Ward keeps
   it unchanged and puts the coverage threshold on the command instead.
 

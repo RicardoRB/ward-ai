@@ -14,12 +14,12 @@ import org.junit.jupiter.params.provider.EnumSource;
 class LearningPolicyTest extends LearningPolicyTestSupport {
   @Test
   void countsRecurrencesAndPromptsOnResolution() {
-    final CheckReport failure = failed(RUFF, finding(RUFF, UNUSED, "x".repeat(250)));
+    final CheckReport failure = failed(LINT, finding(LINT, UNUSED, "x".repeat(250)));
     final LearningOutcome first = LearningPolicy.apply(LearningLedger.empty(), failure, 2, NOW);
     final LearningOutcome persistent = apply(first, failure, 2, 1);
-    final LearningOutcome resolved = apply(persistent, passed(RUFF), 2, 2);
+    final LearningOutcome resolved = apply(persistent, passed(LINT), 2, 2);
     final LearningOutcome secondFailure = apply(resolved, failure, 2, 3);
-    final LearningOutcome secondResolved = apply(secondFailure, passed(RUFF), 2, 4);
+    final LearningOutcome secondResolved = apply(secondFailure, passed(LINT), 2, 4);
 
     assertThat(first.ledger().records().get(UNUSED_KEY).occurrences()).isOne();
     assertThat(persistent.ledger().records().get(UNUSED_KEY).occurrences()).isOne();
@@ -42,7 +42,7 @@ class LearningPolicyTest extends LearningPolicyTestSupport {
   void ruleFixedWhileItsGateStillFailsResolvesAndCountsItsRecurrence() {
     final LearningOutcome first =
         LearningPolicy.apply(LearningLedger.empty(), unusedVariable(), 2, NOW);
-    final LearningOutcome otherRule = apply(first, failed(RUFF, finding(RUFF, PRIVATE, "p")), 2, 1);
+    final LearningOutcome otherRule = apply(first, failed(LINT, finding(LINT, PRIVATE, "p")), 2, 1);
     final LearningOutcome recurred = apply(otherRule, unusedVariable(), 2, 2);
 
     assertThat(otherRule.ledger().records().get(UNUSED_KEY).state())
@@ -62,7 +62,7 @@ class LearningPolicyTest extends LearningPolicyTestSupport {
     final LearningLedger failing =
         LearningPolicy.apply(LearningLedger.empty(), unusedVariable(), 1, NOW).ledger();
     final CheckReport report =
-        new CheckReport(PROJECT, List.of(GateResult.builder(RUFF, status).build()));
+        new CheckReport(PROJECT, List.of(GateResult.builder(LINT, status).build()));
 
     final LearningOutcome outcome = LearningPolicy.apply(failing, report, 1, NOW.plusSeconds(1));
 
@@ -75,7 +75,7 @@ class LearningPolicyTest extends LearningPolicyTestSupport {
     final LearningLedger failing =
         LearningPolicy.apply(LearningLedger.empty(), unusedVariable(), 1, NOW).ledger();
 
-    assertThat(LearningPolicy.apply(failing, failed(RUFF), 1, NOW.plusSeconds(1)).ledger())
+    assertThat(LearningPolicy.apply(failing, failed(LINT), 1, NOW.plusSeconds(1)).ledger())
         .isEqualTo(failing);
   }
 
@@ -84,9 +84,9 @@ class LearningPolicyTest extends LearningPolicyTestSupport {
     final LearningOutcome first =
         LearningPolicy.apply(LearningLedger.empty(), unusedVariable(), 1, NOW);
     final LearningOutcome persistent = apply(first, unusedVariable(), 1, 1);
-    final LearningOutcome resolved = apply(persistent, passed(RUFF), 1, 2);
+    final LearningOutcome resolved = apply(persistent, passed(LINT), 1, 2);
     final LearningOutcome recurring = apply(resolved, unusedVariable(), 1, 3);
-    final LearningOutcome resolvedAgain = apply(recurring, passed(RUFF), 1, 4);
+    final LearningOutcome resolvedAgain = apply(recurring, passed(LINT), 1, 4);
 
     assertThat(persistent.prompts()).isEmpty();
     assertThat(persistent.ledger().records().get(UNUSED_KEY).prompted()).isFalse();
@@ -99,7 +99,7 @@ class LearningPolicyTest extends LearningPolicyTestSupport {
     final LearningOutcome failure =
         LearningPolicy.apply(LearningLedger.empty(), unusedVariable(), 3, NOW);
 
-    final LearningOutcome resolved = apply(failure, passed(RUFF), 3, 1);
+    final LearningOutcome resolved = apply(failure, passed(LINT), 3, 1);
 
     assertThat(resolved.prompts()).isEmpty();
     final LearningRecord record = resolved.ledger().records().get(UNUSED_KEY);

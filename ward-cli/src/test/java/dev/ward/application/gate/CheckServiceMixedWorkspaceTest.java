@@ -42,14 +42,13 @@ class CheckServiceMixedWorkspaceTest {
   private static final String INGEST_CONFIGURATION =
       """
       version = 2
-      [checks.ruff]
-      uses = "ruff"
+      [checks.python-check]
       profiles = ["default", "edit"]
-      command = "uv run ruff check ."
+      command = "uv run python-check ."
       """;
   private static final List<String> TURBO_LINT = List.of("turbo", "run", "lint");
   private static final List<String> CHECKSTYLE = List.of("mvn", "lint:check");
-  private static final List<String> RUFF = List.of("uv", "run", "ruff", "check", ".");
+  private static final List<String> PYTHON_CHECK = List.of("uv", "run", "python-check", ".");
   private static final String API_FILE = "apps/api/src/main/java/dev/codeja/Api.java";
   private static final String WEB_FILE = "apps/web/app/page.ts";
   private static final String INGEST_FILE = "services/ingest/app/main.py";
@@ -81,7 +80,7 @@ class CheckServiceMixedWorkspaceTest {
   void fullCheckRunsEachMemberGateInItsOwnDirectoryAndNamesItsProject() {
     final CheckReport report = check();
 
-    assertThat(executor.commands).containsExactly(TURBO_LINT, CHECKSTYLE, RUFF);
+    assertThat(executor.commands).containsExactly(TURBO_LINT, CHECKSTYLE, PYTHON_CHECK);
     assertThat(executor.workingDirectories)
         .containsExactly(dir, dir.resolve("apps/api"), dir.resolve("services/ingest"));
     assertThat(report.results())
@@ -89,7 +88,7 @@ class CheckServiceMixedWorkspaceTest {
         .containsExactly(
             tuple("lint", GateStatus.PASSED),
             tuple("apps/api: lint", GateStatus.PASSED),
-            tuple("services/ingest: ruff", GateStatus.PASSED));
+            tuple("services/ingest: python-check", GateStatus.PASSED));
   }
 
   @Test
@@ -104,7 +103,7 @@ class CheckServiceMixedWorkspaceTest {
   void editInPythonMemberRunsOnlyThatMembersGates() {
     checkPartial(INGEST_FILE);
 
-    assertThat(executor.commands).containsExactly(RUFF);
+    assertThat(executor.commands).containsExactly(PYTHON_CHECK);
     assertThat(executor.workingDirectories).containsExactly(dir.resolve("services/ingest"));
   }
 
