@@ -1,0 +1,19 @@
+{
+  "1:7-3:1": {
+    "members": {
+      "methods": [],
+      "fields": [],
+      "ancestors": [
+        {
+          "name": "app.Base"
+        }
+      ],
+      "inheritedMethods": [],
+      "inheritedFields": [
+        {
+          "name": "count"
+        }
+      ]
+    }
+  }
+}

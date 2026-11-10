@@ -1,0 +1,393 @@
+# Java rules that mirror PMD 7.17.0 codestyle rules, as generic syntax checks over the syntax tree.
+# Each is a text approximation of PMD's XPath or type-based rule; the catalog row names what differs.
+
+[[rules]]
+id = "ward:java/avoid-dollar-signs"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["identifier"]
+parent = ["classDeclaration", "interfaceDeclaration", "enumDeclaration", "recordDeclaration", "methodDeclaration", "variableDeclaratorId", "constructorDeclaration"]
+text = '\$'
+message = "the name contains a dollar sign; use letters and digits"
+'''
+
+[[rules]]
+id = "ward:java/avoid-using-native-code"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:System|Runtime\.getRuntime\(\))\.(?:loadLibrary|load)\('
+message = "native code is loaded here; it ties the program to a platform and breaks the JVM's guarantees"
+'''
+
+[[rules]]
+id = "ward:java/boolean-get-method-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^booleanget[A-Z][\w$]*\(\)'
+message = "a boolean getter is named is..., has... or similar; do not start it with get"
+'''
+
+[[rules]]
+id = "ward:java/c-style-array-declaration"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variableDeclaratorId"]
+text = '\]$'
+message = "array brackets follow the name; put them on the type"
+'''
+
+[[rules]]
+id = "ward:java/confusing-ternary"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^if\((?:[^()&|?]*!=[^()&|?]*|![^()&|?=]*)\)\{[^{}]*\}else(?!if)'
+message = "a negated condition with an else branch is hard to read; swap the branches"
+'''
+
+[[rules]]
+id = "ward:java/control-statement-braces"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^(?:(?:if|while|for)(\((?:[^()]|\([^()]*+(?:\([^()]*\)[^()]*+)*+\))*\))(?!\{)|do(?!\{)|if(\((?:[^()]|\([^()]*+(?:\([^()]*\)[^()]*+)*+\))*\))\{(?:[^{}]|\{[^{}]*\})*\}else(?!\{|if))'
+message = "this control statement has no braces; put its body in a block"
+'''
+
+[[rules]]
+id = "ward:java/extends-object"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^class[\w$]+(?:<.*>)?extendsObject(?:implements|permits|\{)'
+message = "every class extends Object; remove the extends clause"
+'''
+
+[[rules]]
+id = "ward:java/final-parameter-in-abstract-method"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration", "interfaceCommonBodyDeclaration"]
+not-modifiers = ["native"]
+text = '\((?:[^()]*,)?final[^()]*\);$'
+message = "a parameter of a method without a body is final; the modifier has no effect there"
+'''
+
+[[rules]]
+id = "ward:java/for-loop-should-be-while-loop"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["forControl"]
+text = '^;[^;]+;$'
+message = "a for loop with only a condition is a while loop"
+'''
+
+[[rules]]
+id = "ward:java/lambda-can-be-method-reference"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["lambdaExpression"]
+text = '^(?:\(\)->(?:[\w$.]+|new[\w$.]+)\(\)|\(?([\w$]+)\)?->(?:[\w$.]+\(\1\)|\1\.[\w$]+\(\)|new[\w$.]+\(\1\)))$'
+message = "the lambda only calls a method; use a method reference"
+'''
+
+[[rules]]
+id = "ward:java/linguistic-naming"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^void(?:get|is|has|can|have|will|should|to)[A-Z]'
+message = "the method name says it returns a value, but it returns void"
+'''
+
+[[rules]]
+id = "ward:java/local-home-naming-convention"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration", "interfaceDeclaration"]
+text = '^(?:class|interface)(?!(?:(?!extends|implements)[\w$])*LocalHome(?:extends|implements|\{))[^{]*(?:extends|implements|[,.])EJBLocalHome(?:implements|permits|[,{])'
+message = "the local home interface of a session bean is named with the suffix LocalHome"
+'''
+
+[[rules]]
+id = "ward:java/local-interface-session-naming-convention"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration", "interfaceDeclaration"]
+text = '^(?:class|interface)(?!(?:(?!extends|implements)[\w$])*Local(?:extends|implements|\{))[^{]*(?:extends|implements|[,.])EJBLocalObject(?:implements|permits|[,{])'
+message = "the local interface of a session bean is named with the suffix Local"
+'''
+
+[[rules]]
+id = "ward:java/remote-session-interface-naming-convention"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration", "interfaceDeclaration"]
+text = '^(?:class|interface)(?!(?:(?!extends|implements)[\w$])*Home(?:extends|implements|\{))[^{]*(?:extends|implements|[,.])EJBHome(?:implements|permits|[,{])'
+message = "the remote home interface of a session bean is named with the suffix Home"
+'''
+
+[[rules]]
+id = "ward:java/mdb-and-session-bean-naming-convention"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration", "interfaceDeclaration"]
+text = '^(?:class|interface)(?!(?:(?!extends|implements)[\w$])*Bean(?:extends|implements|\{))[^{]*(?:extends|implements|[,.])(?:SessionBean|MessageDrivenBean)(?:implements|permits|[,{])'
+message = "a session bean or message-driven bean is named with the suffix Bean"
+'''
+
+[[rules]]
+id = "ward:java/remote-interface-naming-convention"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration", "interfaceDeclaration"]
+text = '^(?:class|interface)(?=(?:(?!extends|implements)[\w$])*(?:Session|EJB|Bean)(?:extends|implements|\{))[^{]*(?:extends|implements|[,.])EJBObject(?:implements|permits|[,{])'
+message = "the remote interface of a session bean has no Session, EJB or Bean suffix"
+'''
+
+[[rules]]
+id = "ward:java/package-case"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["packageDeclaration"]
+text = '[A-Z]'
+message = "the package name has an uppercase letter; use lowercase"
+'''
+
+[[rules]]
+id = "ward:java/short-class-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["classDeclaration", "interfaceDeclaration"]
+name = "identifier"
+skip = ["annotation"]
+pattern = "[\\w$]{5,}"
+message = "class name '{value}' is too short; use at least five characters"
+'''
+
+[[rules]]
+id = "ward:java/type-parameter-naming-conventions"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["typeParameter"]
+name = "identifier"
+pattern = "[A-Z]"
+message = "type parameter '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:java/unnecessary-annotation-value-element"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["annotation"]
+text = '^@[\w$.]+\(value=(?:[^,(){}]|\([^()]*\)|\{[^{}]*\})*\)$'
+message = "the annotation has only a value element; write the value without value ="
+'''
+
+[[rules]]
+id = "ward:java/unnecessary-block"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+with-child = ["block"]
+parent = ["blockStatement"]
+text = '^\{'
+message = "this block only groups statements; remove its braces"
+'''
+
+[[rules]]
+id = "ward:java/unnecessary-return"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodBody"]
+text = '[;{}]return;\}$'
+message = "the return statement at the end of the method is unnecessary"
+'''
+
+[[rules]]
+id = "ward:java/use-diamond-operator"
+language = "java"
+min-java-release = 7
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["localVariableDeclaration", "fieldDeclaration"]
+text = '^(?!var)[^=]*=new[\w$.]+<[^<>=]+(?:<[^<>]*>)*[^<>=]*>\((?:[^(){]|\([^()]*\))*\)(?!\{)'
+message = "the type arguments of the created type can be inferred; use <>"
+'''
+
+[[rules]]
+id = "ward:java/use-explicit-types"
+language = "java"
+min-java-release = 10
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["localVariableDeclaration", "enhancedForControl"]
+with-child = ["'var'"]
+message = "declare the type of the variable instead of var"
+'''
+
+[[rules]]
+id = "ward:java/use-short-array-initializer"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["arrayCreatorRest"]
+parent-path = "creator>expression>variableInitializer"
+text = '^\[\]+\{'
+message = "the declaration can use a short array initializer; drop new and the type"
+'''
+
+[[rules]]
+id = "ward:java/use-underscores-in-numeric-literals"
+language = "java"
+min-java-release = 7
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["integerLiteral", "floatLiteral"]
+text = '^[0-9]{5,}'
+message = "the number literal has more than four digits; group them with underscores"
+'''
+
+[[rules]]
+id = "ward:java/no-package"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "required-node"
+kinds = ["compilationunit", "compactCompilationUnit"]
+child = ["packageDeclaration"]
+message = "the class is in the default package; declare a package"
+'''

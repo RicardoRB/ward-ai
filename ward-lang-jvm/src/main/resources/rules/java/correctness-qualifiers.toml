@@ -1,0 +1,105 @@
+# SpotBugs type qualifier patterns for Java, from a data-flow of the JSR-305 qualifiers a file declares.
+
+[[rules]]
+id = "ward:java/tq-always-value-used-where-never-required"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "type-qualifier"
+mode = "always-value-used-where-never-required"
+message = "a value that always has the type qualifier reaches a place that requires that it never has it"
+'''
+
+[[rules]]
+id = "ward:java/tq-never-value-used-where-always-required"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "type-qualifier"
+mode = "never-value-used-where-always-required"
+message = "a value that never has the type qualifier reaches a place that requires that it always has it"
+'''
+
+[[rules]]
+id = "ward:java/tq-unknown-value-used-where-always-strictly-required"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "type-qualifier"
+mode = "unknown-value-used-where-always-strictly-required"
+message = "a value whose type qualifier is unknown reaches a place that strictly requires it"
+'''
+
+[[rules]]
+id = "ward:java/tq-comparing-values-with-incompatible-type-qualifiers"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "type-qualifier"
+mode = "comparing-values-with-incompatible-type-qualifiers"
+message = "these two values are compared but cannot both have the same type qualifier"
+'''
+
+[[rules]]
+id = "ward:java/tq-maybe-source-value-reaches-always-sink"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "type-qualifier"
+mode = "maybe-source-value-reaches-always-sink"
+message = "a value that may have the type qualifier reaches a place that requires that it always has it"
+'''
+
+[[rules]]
+id = "ward:java/tq-maybe-source-value-reaches-never-sink"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "type-qualifier"
+mode = "maybe-source-value-reaches-never-sink"
+message = "a value that may have the type qualifier reaches a place that requires that it never has it"
+'''
+
+[[rules]]
+id = "ward:java/tq-explicit-unknown-source-value-reaches-always-sink"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "type-qualifier"
+mode = "explicit-unknown-source-value-reaches-always-sink"
+message = "a parameter marked unknown for the type qualifier reaches a place that requires that it always has it"
+'''
+
+[[rules]]
+id = "ward:java/tq-explicit-unknown-source-value-reaches-never-sink"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "type-qualifier"
+mode = "explicit-unknown-source-value-reaches-never-sink"
+message = "a parameter marked unknown for the type qualifier reaches a place that requires that it never has it"
+'''

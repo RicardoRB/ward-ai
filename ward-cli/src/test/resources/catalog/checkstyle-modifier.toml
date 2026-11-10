@@ -1,0 +1,32 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "annotated-declaration-visibility"
+not-applicable = { python = "Java-only construct with no counterpart in this language" }
+checkstyle = ["AnnotatedDeclarationVisibility"]
+
+[[rule]]
+name = "class-member-implied-modifier"
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["ClassMemberImpliedModifier"]
+
+[[rule]]
+name = "interface-member-implied-modifier"
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["InterfaceMemberImpliedModifier"]
+
+[[rule]]
+name = "modifier-order"
+not-applicable = { python = "Java declaration modifiers; Python has no modifier keywords" }
+detekt = ["ModifierOrder"]
+pmd = ["ModifierOrder"]
+checkstyle = ["ModifierOrder"]
+ktlint = ["modifier-order"]
+swiftlint = ["modifier_order"]
+
+[[rule]]
+name = "redundant-modifier"
+not-applicable = { python = "Java declaration modifiers; Python has no modifier keywords" }
+detekt = ["RedundantVisibilityModifierRule"]
+pmd = ["UnnecessaryModifier"]
+checkstyle = ["RedundantModifier"]

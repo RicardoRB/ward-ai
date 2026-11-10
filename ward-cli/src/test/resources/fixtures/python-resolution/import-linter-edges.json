@@ -1,0 +1,28 @@
+{
+  "generator": "import-linter 2.15 / grimp 3.18",
+  "roots": [
+    "shop"
+  ],
+  "edges": [
+    [
+      "src/shop/controller/clean.py",
+      "src/shop/controller/views.py"
+    ],
+    [
+      "src/shop/controller/clean.py",
+      "src/shop/price.py"
+    ],
+    [
+      "src/shop/controller/clean.py",
+      "src/shop/repository/store.py"
+    ],
+    [
+      "src/shop/repository/__init__.py",
+      "src/shop/repository/store.py"
+    ],
+    [
+      "src/shop/star.py",
+      "src/shop/price.py"
+    ]
+  ]
+}

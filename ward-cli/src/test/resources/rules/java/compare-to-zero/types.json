@@ -1,0 +1,70 @@
+{
+  "3:12-3:25": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "compareTo",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "int",
+        "primitive": true
+      }
+    }
+  },
+  "3:41-3:54": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "compareTo",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "int",
+        "primitive": true
+      }
+    }
+  },
+  "6:12-6:25": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "compareTo",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "int",
+        "primitive": true
+      }
+    }
+  },
+  "6:35-6:48": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "compareTo",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "int",
+        "primitive": true
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "unused-class"
+category = "dead-code"
+vulture = ["V102"]
+
+[[rule]]
+name = "unused-function"
+category = "dead-code"
+vulture = ["V103"]
+
+[[rule]]
+name = "unused-import"
+presets = ["standard", "strict"]
+category = "dead-code"
+pylint = ["unused-import"]
+vulture = ["V104"]
+
+[[rule]]
+name = "unused-method"
+presets = ["standard", "strict"]
+category = "dead-code"
+vulture = ["V105"]
+
+[[rule]]
+name = "unused-property"
+presets = ["standard", "strict"]
+category = "dead-code"
+vulture = ["V106"]

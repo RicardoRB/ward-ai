@@ -17,17 +17,15 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `tests` | JUnit 5 | Run the project's automated tests. |
 | | `coverage` | JaCoCo / coverage.py | Enforce or report test coverage. |
 | | `mutation` | PIT | Run mutation testing, optionally with a `minimum` score. |
-| Code Quality | `checkstyle` | Checkstyle | Check Java style rules. |
-| | `pmd` | PMD | Find common Java design and implementation problems. |
-| | `spotbugs` | SpotBugs | Run static analysis for potential bugs. |
+| Code Quality | `ward` | Ward rules | Check Java and Kotlin style and bug rules selected in `ward-rules.toml`. |
 | | `sonar` | SonarQube | Code smells, bugs, duplication, overall quality. |
-| | `format` | Spotless / google-java-format | Check source formatting. |
+| | `ward-format` | Ward's native formatter | Check source formatting against `.editorconfig`. Always selected by `ward init`. |
 | Security | `semgrep` | Semgrep | SAST and custom security rules. |
 | | `gitleaks` | Gitleaks | Detect committed secrets. |
 | | `dependency-check` | OWASP Dependency-Check | Scan dependencies for known CVEs. |
 | | `zap` | OWASP ZAP | DAST against a running application. |
 | | `trivy` | Trivy | Vulnerabilities in dependencies, containers, and IaC. |
-| Architecture | `archunit` | ArchUnit | Run architecture rules/tests. |
+| Architecture | `ward` | Ward analysis rules | Run Ward's analysis rules over source syntax trees, with stable `ward:<language>/<rule>` ids, and the layer, slice cycle and feature independence rules `ward:architecture/*`. |
 | | `enforcer` | Maven Enforcer / Gradle checks | Dependency and build rules. |
 | Dependencies & Compliance | `license` | License Maven Plugin / Gradle License Report (`checkLicense`) | Dependency license policy. |
 | | `api-compat` | japicmp | Binary/API compatibility between versions. |
@@ -35,26 +33,16 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `openapi-diff` | oasdiff | Breaking changes in uncommitted spec edits. |
 | | `openapi-compat` | oasdiff | Breaking changes on the branch against `origin/main`. |
 | TypeScript & JavaScript | `tsc` | TypeScript compiler | Type-check the project. |
-| | `eslint` | ESLint | Lint TypeScript and JavaScript sources. |
-| | `prettier` | Prettier | Check source formatting. |
-| | `biome` | Biome | Lint and check formatting of sources in one run; replaces `prettier` and `eslint` where the project uses Biome. |
 | | `vitest` / `jest` / `bun-test` | Vitest / Jest / Bun test | Run the project's automated tests. |
 | | `stryker` | StrykerJS | Run mutation testing, optionally with a `minimum` score. |
-| | `dependency-cruiser` | dependency-cruiser | Check dependency and architecture rules. |
-| Python | `ruff-format` | Ruff formatter | Check source formatting. |
-| | `ruff` | Ruff | Lint Python sources. |
 | | `mypy` | mypy | Type-check the project. |
 | | `pytest` | pytest | Run the project's automated tests. |
-| | `import-linter` | Import Linter | Check import contracts. |
 | | `pip-audit` | pip-audit | Scan dependencies for known vulnerabilities. |
 | | `mutmut` | mutmut 3 | Run mutation testing, optionally with a `minimum` score. |
-| Swift | `swift-format` | swift-format | Check source formatting with `swift format lint`. |
-| | `swiftlint` | SwiftLint | Lint Swift sources. |
 | | `swift-build` | Swift build | Compile the SwiftPM package. |
 | | `swift-test` | Swift tests | Run the SwiftPM package's tests. |
 | | `xcodebuild-test` | Xcode tests | Run an Xcode scheme's tests on an iPhone simulator or the Mac. |
 | | `swift-coverage` | llvm-cov / xccov | Fail below a `minimum` line coverage of production code. |
-| | `harmonize` | Harmonize | Check architecture rules in the generated `.ward/swift-architecture` package. |
 | Android | `android-lint` | Android Lint | Run `lintDebug` through the Gradle wrapper. |
 | | `android-unit-test` | Android unit tests | Run `testDebugUnitTest` through the Gradle wrapper. |
 | | `android-coverage` | AGP JaCoCo | Fail below a `minimum` line coverage of the debug unit tests. |
@@ -79,19 +67,20 @@ deliberately, for example in a CI-only profile with `profiles = ["ci"]`:
 
 | Preset | Gates | Minimums |
 |---|---|---|
-| `standard` | compile, tests, format, Checkstyle, PMD, SpotBugs, coverage | 70% line coverage |
-| `strict` | `standard` plus ArchUnit, Enforcer, and PIT mutation testing | 85% line, 75% branch, 60% mutation |
-| `standard` (TypeScript) | `tsc`, the test runner (`vitest`, `jest` or `bun-test`), `prettier` and `eslint`, or `biome` in a Biome project | 70% line coverage |
-| `standard` (JavaScript) | the test runner (`vitest`, `jest` or `bun-test`), `prettier` and `eslint`, or `biome` in a Biome project | 70% line coverage |
-| `strict` (TypeScript) | `standard` plus `stryker`, with `typescript-eslint` `strict-type-checked` | 85% line, 75% branch, 60% mutation |
-| `strict` (JavaScript) | `standard` plus `stryker` | 85% line, 75% branch, 60% mutation |
+| `standard` | compile, tests, coverage, `ward-format`, and the `ward` check with the standard Java rules of `ward-rules.toml` | 70% line coverage |
+| `strict` | `standard` plus the strict Java rules, the `ward` architecture tables, Enforcer, and PIT mutation testing | 85% line, 75% branch, 60% mutation |
+| `standard` (TypeScript) | `tsc`, the test runner (`vitest`, `jest` or `bun-test`), and the `ward` check with the standard TypeScript rules of `ward-rules.toml` | 70% line coverage |
+| `standard` (JavaScript) | the test runner (`vitest`, `jest` or `bun-test`), and the `ward` check with the standard JavaScript rules of `ward-rules.toml` | 70% line coverage |
+| `strict` (TypeScript) | `standard` plus `stryker`, with the strict TypeScript rules of `ward-rules.toml` | 85% line, 75% branch, 60% mutation |
+| `strict` (JavaScript) | `standard` plus `stryker`, with the strict JavaScript rules of `ward-rules.toml` | 85% line, 75% branch, 60% mutation |
 
 When Git tracks an OpenAPI spec, both presets add `openapi-lint` and `openapi-diff`, and `strict`
 also adds `openapi-compat`. A project whose framework serves HTTP (such as Spring Boot, FastAPI or Express) but has no tracked
 spec gets a note asking you to commit one, because the gates have nothing to check without it.
 
-For TypeScript and JavaScript, presets write no rule files under `config/`. Init adds the tools to
-`package.json` and writes the tools' own configs when the project has none: an ESLint flat config,
+For TypeScript and JavaScript, presets write no rule files under `config/`. Init writes
+`ward-rules.toml`, which selects the preset's Ward rules for the project's languages, and adds the
+test and mutation tools to `package.json`. It writes their configs when the project has none:
 `vitest.config.mjs` or `jest.config.mjs` with the coverage thresholds, and `stryker.config.mjs`.
 Bun checks lines only, because it does not measure branch coverage. See
 [Node projects](/commands/init/#node-projects).
@@ -102,12 +91,10 @@ writes a license allowlist instead of the GPL/AGPL denylist; see
 
 Presets may write these rule files:
 
-- `config/pmd-ruleset.xml`
-- `config/checkstyle.xml`
-- `config/spotbugs-exclude.xml` (standard)
-- `config/enforcer-rules.xml`
+- `config/enforcer-rules.xml` (strict)
+- `ward-rules.toml`, which selects the Ward rules of the preset for the Java and Kotlin sources of the project and for Python
 
-The files carry a `managed-by: ward` marker. Unmarked user files are never overwritten.
+Java and Kotlin projects get no tool rule files under `config/`; the Ward rules in `ward-rules.toml` replace them. The files carry a `managed-by: ward` marker. Unmarked user files are never overwritten.
 
 ## Build plugins
 
@@ -133,35 +120,30 @@ the Groovy or the Kotlin build script. See [what init changes](/commands/init/#w
 
 ## TypeScript and JavaScript gates
 
-`tsc`, `eslint`, `prettier`, `biome`, `vitest`, `jest`, `bun-test`, `stryker`, and `dependency-cruiser`
+`tsc`, `vitest`, `jest`, `bun-test`, and `stryker`
 run their `command` from the project root, exactly as written, and pass when it exits with code 0.
 
 - Ward does not add flags and does not choose a package manager. Put the runner in the command,
   such as `pnpm exec`, `npx`, `yarn` or `bunx`, so the project's locally installed tool runs.
-- For a TypeScript project, `ward init` offers `tsc`, `eslint`, `prettier`, the project's test
-  runner, and `semgrep` with the `p/typescript` ruleset, and writes their commands with the
-  package manager's runner; see [Node projects](/commands/init/#node-projects).
+- For a TypeScript project, `ward init` offers `tsc`, the project's test runner, and `stryker` with
+  `strict`, and writes their commands with the package manager's runner. Ward's TypeScript rules run
+  in the `ward` check, selected in `ward-rules.toml`; see [Node projects](/commands/init/#node-projects).
 - For a Vue, Svelte, or Astro project, the type-check gate is `vue-tsc`, `svelte-check`, or
   `astro-check` instead of `tsc`, because only the framework's checker reads its component files.
+  A SvelteKit project whose `check` script runs `svelte-kit sync` gets that script as its
+  `svelte-check` command, so the sync runs first.
   The framework comes from the project's declared packages; see
   [Node projects](/commands/init/#node-projects). Angular's type-check gate is `ngc`, which checks
   its templates, and its test gate is `ng-test`. A type-check configuration with no inputs fails
   the gate and names the file.
-- For a Vue, Svelte, or Astro project, `stryker` mutates only `src`, and the generated ESLint config
-  ignores `.astro/` (Astro) or `.svelte-kit/` (Svelte).
-- For a JavaScript project, it offers the same gates without `tsc`, and `semgrep` with the
-  `p/javascript` ruleset.
-- In a project that uses Biome, init offers `biome` in place of `prettier`, and offers `eslint` only
-  with the project's own ESLint config. The `biome` command is
-  `<runner> biome ci --colors=off --reporter=checkstyle .`; under `strict` it adds
-  `--error-on-warnings`. See [Node projects](/commands/init/#biome).
-- Init also offers `stryker`, in the `ci` profile, and `strict` selects it. It offers
-  `dependency-cruiser` too, which `strict` selects; see [Node projects](/commands/init/#node-projects).
+- For a Vue, Svelte, or Astro project, `stryker` mutates only `src`.
+- For a JavaScript project, it offers the same gates without `tsc`.
+- Init also offers `stryker`, in the `ci` profile, and `strict` selects it.
 
 ```toml
-[checks.eslint]
-command = ["pnpm", "exec", "eslint", ".", "--format", "json"]
-profiles = ["default"]
+[checks.vitest]
+command = ["npx", "vitest", "run", "--coverage"]
+profiles = ["pre-push"]
 
 [checks.tsc]
 command = ["npx", "tsc", "--noEmit", "--pretty", "false"]
@@ -177,39 +159,30 @@ through turbo from the root, and the repository-wide gates run once:
 [checks.tsc]
 command = ["pnpm", "exec", "turbo", "run", "check-types", "--log-prefix=task", "--log-order=grouped", "--continue=always", "--ui=stream"]
 
-[checks.eslint]
-command = ["pnpm", "exec", "turbo", "run", "lint", "--log-prefix=task", "--log-order=grouped", "--continue=always", "--ui=stream"]
 ```
 
-- `tsc`, lint, test, and `stryker` map to the `check-types`, `lint`, `test`, and `mutation` tasks.
+- `tsc`, test, and `stryker` map to the `check-types`, `test`, and `mutation` tasks. Ward's TypeScript
+  rules run from the root `ward` check, so no `lint` task is needed.
   Init writes the missing tasks and each member's script. See
   [Turborepo projects](/guides/turborepo/).
 - Findings are read per package. Ward splits the output at turbo's `<package>:<task>: ` prefix,
   parses each block with the gate's parser, and reports the file under the member directory, such as
   `apps/web/src/page.tsx`. Unprefixed output is read as before.
-- A narrowed lint check uses turbo's filter for the edited packages and their dependents:
-  `item = "--filter=...{package}"`; see [partial checks](#partial-checks).
 - At a Turborepo root, `minimum` on `stryker` compares the combined score of every member's report.
 
 ## Python gates
 
-`ruff-format`, `ruff`, `mypy`, `pytest`, `coverage`, `import-linter`, `pip-audit`, and `mutmut` run
+`mypy`, `pytest`, `coverage`, `pip-audit`, and `mutmut` run
 their `command` from the project root, exactly as written, and pass when it exits with code 0.
 
 - Ward does not add flags and does not choose a package manager. Put the runner in the command,
   such as `uv run` or `poetry run`, so the project's own environment runs the tool.
 - When `uses` is omitted, Ward infers the type from the command wherever the tool appears, so
-  `["uv", "run", "ruff", "check", "."]` is a `ruff` check. `ruff format` is `ruff-format`,
-  `coverage report` is `coverage`, `mutmut run` is `mutmut`, `lint-imports` is `import-linter`, and
-  `pytest` is `pytest`, including `coverage run -m pytest`.
-- `ruff` and `mypy` findings are read from their output; see
-  [structured findings](#structured-findings).
+  `coverage report` is `coverage`, `mutmut run` is `mutmut`, and `pytest` is `pytest`, including
+  `coverage run -m pytest`.
+- `mypy` findings are read from its output; see [structured findings](#structured-findings).
 
 ```toml
-[checks.ruff]
-command = ["uv", "run", "ruff", "check", ".", "--output-format", "json"]
-profiles = ["default"]
-
 [checks.mypy]
 command = ["uv", "run", "mypy", "-O", "json", "src"]
 profiles = ["pre-push"]
@@ -217,22 +190,19 @@ profiles = ["pre-push"]
 
 ## Swift gates
 
-`swift-format`, `swiftlint`, `swift-build` and `swift-test` run their `command` from the project
+`swift-build` and `swift-test` run their `command` from the project
 root, exactly as written, and pass when it exits with code 0. `xcodebuild-test` and
 `swift-coverage` add the steps below.
 
 - When `uses` is omitted, Ward infers the type from the command wherever the tool appears:
-  `swift format lint` is `swift-format`; `swiftlint lint`, or any path ending in `/swiftlint lint`
-  such as the binary that `swift package resolve` leaves for Ward's SwiftLint tools package, is
-  `swiftlint`; `swift build` is `swift-build`; `swift test` is
-  `swift-test`; and `xcodebuild test` is `xcodebuild-test`. `swift-coverage` is never inferred,
-  so write `uses = "swift-coverage"`.
-- `swiftlint`, `swift-format`, `swift-build` and `xcodebuild-test` findings are read from their
-  output; see [structured findings](#structured-findings).
+  `swift build` is `swift-build`; `swift test` is `swift-test`; and `xcodebuild test` is
+  `xcodebuild-test`. `swift-coverage` is never inferred, so write `uses = "swift-coverage"`.
+- `swift-build` and `xcodebuild-test` findings are read from their output; see
+  [structured findings](#structured-findings).
 
 ```toml
-[checks.swiftlint]
-command = ["swiftlint", "lint", "--reporter", "json", "--quiet"]
+[checks.swift-build]
+command = ["swift", "build", "--build-tests"]
 profiles = ["default"]
 
 [checks.swift-test]
@@ -328,14 +298,6 @@ profiles = ["pre-push", "ci"]
 - The report path, `build/reports/coverage/test/debug/report.xml`, is assumed and not yet checked
   against a live AGP build.
 
-### Harmonize architecture rules
-
-`harmonize` runs `swift test --package-path .ward/swift-architecture` from the project root and passes
-when it exits with code 0. `ward init` writes the package and its rules for the chosen style; see the
-Swift projects section of the init command. A failing rule is reported in the Swift test output, which
-Ward does not parse. Init writes `uses = "harmonize"`, because the command alone does not identify the
-gate. The first run compiles Harmonize and swift-syntax, so it is slower than later runs.
-
 ## Stryker mutation score
 
 Without `minimum`, the `stryker` gate passes or fails on Stryker's exit code alone. With
@@ -407,6 +369,372 @@ profiles = ["ci"]
   execution error, never a pass. mutmut always writes these results under `mutants/`, so Ward
   reads them there.
 - mutmut's results for source files that were deleted keep counting until mutmut rewrites them.
+
+## Format gate
+
+`uses = "ward-format"` runs Ward's native formatter over the project's engine-language sources and
+reports each file it would change. It is a `FAST` gate, so it runs on every edit.
+
+```toml
+[checks.ward-format]
+uses = "ward-format"
+profiles = ["default", "edit", "pre-push", "ci"]
+```
+
+The gate needs no `command`. It reports one error per unformatted file, at the first line that
+differs, with the rule `ward-format` and the message `file is not formatted`. A file the formatter
+refuses, or one whose `.editorconfig` is invalid, is an execution error, never a pass. The gate never
+changes a file: run [`ward format`](/commands/format/) to fix the reported files.
+
+On a partial run, such as the `edit` profile after one file changed, the gate checks only the changed
+files when its `paths` table matches them, as the analysis gate does. Results for files that are
+already formatted are cached by content and settings, so unchanged files cost nothing on the next run.
+
+## Analysis gate
+
+`ward` runs Ward's own analysis rules over the project's source files. It needs no `command`:
+
+```toml
+[checks.ward]
+enabled = true
+uses = "ward"
+profiles = ["pre-push", "ci"]
+```
+
+Each rule has a stable id of the form `ward:<language>/<rule>`. A rule runs only when the language
+frontend provides the capability the rule needs. A rule whose capability is missing is reported as
+not run, and the gate is unavailable rather than passed. A file that cannot be parsed or a rule that
+fails is an execution error, and the gate does not pass. The report then names each file or rule
+that failed, after the findings. Findings appear in the same check report, JSON and SARIF output as
+the other gates.
+
+The gate skips hidden folders, build output (`target`, `build`, `dist`, `node_modules`, `mutants`),
+and Java or Kotlin files under a `src/<set>/resources` folder, which Maven and Gradle never compile.
+
+Select rules with `rules`. Unknown rule ids and unknown keys are configuration errors:
+
+```toml
+[checks.ward]
+uses = "ward"
+rules = ["ward:java/method-length"]
+```
+
+To choose rules by preset, language or category, tune their limits and severity, and leave paths
+out, create a [`ward-rules.toml`](/configuration/ward-rules/). When that file exists, the `rules`
+list in `ward.toml` is a configuration error. `rules-file = "config/ward-rules.toml"` points the
+check at another file inside the project.
+
+### Java dependency edges
+
+The `ward` gate also resolves Java imports and type names to the project's own source files. An
+`import shop.domain.Price;`, a same-package name, a fully qualified name or a nested type each
+produce an edge to the file that declares the type, with Java's name lookup order. Ward reads the
+source roots of each Maven and Gradle module from its build file and does not run the build. Types
+from the JDK or from jars produce no edge.
+
+Names in the source are enough for most code. A type that only type inference shows, such as the
+type of a `var`, of a chained call or of a lambda parameter, needs the classpath of the project.
+Name a file that lists the classpath entries with `java-classpath`, relative to the project root.
+The file holds entries separated by the platform path separator or by newlines. Ward reads the file
+and does not write it. A missing or unreadable file is a configuration error that names the key and
+the file:
+
+```toml
+[checks.ward]
+uses = "ward"
+java-classpath = "target/classpath.txt"
+```
+
+Write the file with the build tool, for example with Maven:
+
+```bash
+./mvnw dependency:build-classpath -Dmdep.outputFile=target/classpath.txt
+```
+
+With Gradle, add a task to the build script that writes the test compile classpath:
+
+```kotlin
+tasks.register("writeClasspath") {
+    doLast {
+        layout.buildDirectory.file("classpath.txt").get().asFile
+            .writeText(sourceSets.test.get().compileClasspath.asPath)
+    }
+}
+```
+
+Then run `./gradlew writeClasspath` and set `java-classpath = "build/classpath.txt"`. Binding
+resolution uses Eclipse JDT, which is part of the `ward` binary. It parses every Java file on each
+run, so it is slower than the default; the result cache still reuses unchanged results.
+
+The same classpath file gives the type-aware rules their library types. Ward reads the class files
+of the jars and directories it lists, and the JDK's `lib/modules` image, without starting `javac`
+or any other process; an entry that is missing or unreadable makes its types unknown, not an error.
+It indexes each jar once and keeps the index under `.ward/cache/types/`, named by the SHA-256 of the
+jar's content.
+
+### Result cache
+
+The `ward` gate keeps each source file's results in `.ward/cache/analysis/`, and reuses them on the
+next run when the file, the selected rules with their options and severity, and the Ward version are
+all unchanged. Cached results
+match a full run exactly. A file that failed to parse or a rule that failed is never cached, so a
+failure is always analyzed again. The directory is git-ignored. Delete `.ward/cache/` to force a full
+run; nothing else depends on it. Entries are not pruned yet, so the directory grows as files change.
+
+The same directory also holds each file's summary (its exports, imports and declared names) and a
+reverse-dependency index, which the gate rewrites after every clean run. A rule that reads other files
+keys each file on the names of the files it imports and the files that import it, so an edit
+analyzes again only the files around the change. Deleting `.ward/cache/` still forces a full run.
+
+### Java rules
+
+Ward ships thirteen Java rules. They are the structural checks of the strict
+preset, so a Java project can run them in the same pass as the rest of its gates:
+
+| Rule | Limit or pattern |
+|---|---|
+| `ward:java/file-length` | more than 500 lines |
+| `ward:java/method-length` | method body over 60 lines |
+| `ward:java/parameter-count` | more than 5 parameters |
+| `ward:java/cyclomatic-complexity` | above 10 |
+| `ward:java/cognitive-complexity` | above 15 |
+| `ward:java/star-import` | any `.*` import |
+| `ward:java/unused-import` | a simple name used nowhere else, including Javadoc |
+| `ward:java/missing-javadoc` | public types and methods without Javadoc |
+| `ward:java/type-name` | `^[A-Z][a-zA-Z0-9]*$` |
+| `ward:java/method-name` | `^[a-z][a-zA-Z0-9]*$` |
+| `ward:java/member-name` | non-static fields matching `^[a-z][a-zA-Z0-9]*$` |
+| `ward:java/parameter-name` | `^[a-z][a-zA-Z0-9]*$` |
+| `ward:java/local-variable-name` | `^[a-z][a-zA-Z0-9]*$` |
+
+Differences from the upstream checks, by construction:
+
+- `unused-import` is textual. It does not resolve names, so a fully qualified use still counts as
+  unused and a same-named identifier from another package counts as a use.
+- `missing-javadoc` checks only the comment immediately before a declaration. It skips `@Override`
+  methods, does not check interface members, and skips public types nested in a non-public type, as
+  the upstream scope does.
+- `method-length` and the complexity rules measure methods only. Constructor bodies are not
+  measured by `method-length`, and nested classes and lambdas count toward their enclosing method.
+- `cognitive-complexity` follows the published definition in a simplified form: each `&&` and `||`
+  adds one, an `else if` chain does not nest, and a final `else` adds one.
+- Java comments are read from the syntax tree. Comments that Ward's parser cannot attach to a
+  declaration are not documentation for `missing-javadoc`.
+
+Rule ids and limits are stable across releases. A rule whose id changes is published under a new
+id.
+
+### Data-flow rules
+
+Data-flow rules read the control flow of each function and how it uses its local variables and
+parameters. They run in the `ward` gate with the other rules:
+
+| Rule | Reports |
+|---|---|
+| `ward:java/unused-assignment` | a write to a local variable or parameter that no read can observe |
+| `ward:typescript/unused-assignment` | the same check, for TypeScript |
+| `ward:javascript/unused-assignment` | the same check, for JavaScript |
+
+Differences from the upstream check, by construction:
+
+- A write is reported when a later write can replace it on some path, or when it is an assignment to
+  a name that is not exempt. The names `_`, and names that start with `ignored` or `unused`, are
+  exempt for the last assignment only. An initializer or an incoming parameter value that nothing
+  replaces is not reported, as upstream does.
+- A variable that a nested function, lambda or arrow function reads or writes is never reported.
+- Fields, object properties and array elements are not tracked, and neither are variables of another
+  function.
+- The analysis is intraprocedural. It does not follow values across calls and does not compute
+  constant values.
+- A `finally` block is entered from every exit of its `try`, so a value can seem to reach a read
+  along a path that the language cannot take. Such a write is not reported.
+
+### Scope rules
+
+Rules with the `SCOPES` capability know which declaration each name refers to. Ward builds the
+scopes of a file once, whatever the number of rules that read them, and follows each language's own
+scoping rules:
+
+| Language | Scoping rules the analysis follows |
+|---|---|
+| Python | local, enclosing function, module, built-in (LEGB); `global` and `nonlocal`; class bodies that their methods skip; comprehension scopes; `del`; names in a literal `__all__` are exported |
+| JavaScript and TypeScript | `var` and function declarations hoisted to the function; `let`, `const` and classes in their block with a temporal dead zone; `catch` and parameter scopes; type-only imports and declarations in TypeScript |
+| Java and Kotlin | members, locals, parameters, lambdas, inner and anonymous classes, static imports; Kotlin companion objects and `it` |
+| Swift | members, locals, closures, `guard let` and `if let` bindings, `switch` pattern bindings |
+
+A name that no scope declares and no built-in provides is *unresolved*. Where the analysis cannot
+see every name, it marks the scope *open*, and a rule that reports undefined names stays silent in
+it. A scope is open after a Python `from m import *`, a call of `exec`, `eval`, `locals` or `vars`,
+a JavaScript `with` or `eval`, a Java static wildcard import, and in a class that extends or
+implements something, an enum, a Kotlin extension function or receiver lambda, and a Swift
+extension. A Java, Kotlin or Swift name that starts with an upper-case letter, or that a file of
+the same package or module declares, is also left alone, because the type may come from there.
+
+Built-in names are the Python builtins, the globals of the `es2024` JavaScript environment plus
+those of `browser` and `node` by default, `java.lang`, the Kotlin standard library's default
+imports and the Swift standard library. A rule that reads JavaScript or TypeScript globals declares
+an `env` option, a list of environments added to `es2024`.
+
+A name imported from a project module resolves through the dependency graph to the file and the
+symbol it declares; an import from outside the project stays an import binding with no
+declaration.
+
+Ward ships no rule on this capability yet. The rules of the roadmap for undefined names, unused
+variables, redefinitions and shadowing build on it.
+
+## Kotlin structural rules
+
+The `ward` gate runs seven Kotlin structural rules for `.kt` files, including files in Gradle Kotlin
+modules. They read the syntax tree from the ANTLR Kotlin frontend and use the same limits as the
+Java size and naming rules.
+
+| Rule | Limit or pattern |
+|---|---|
+| `ward:kotlin/file-length` | more than 500 lines |
+| `ward:kotlin/function-length` | function body over 60 lines |
+| `ward:kotlin/parameter-count` | more than 5 value parameters |
+| `ward:kotlin/cyclomatic-complexity` | above 10 |
+| `ward:kotlin/cognitive-complexity` | cognitive complexity above 15 |
+| `ward:kotlin/type-name` | `^[A-Z][a-zA-Z0-9]*$` for classes, interfaces, objects and enums |
+| `ward:kotlin/function-name` | `^[a-z][a-zA-Z0-9]*$` |
+
+Differences from the Java rules, by construction:
+
+- Cyclomatic complexity counts `if` expressions, each `when` entry (an `else` entry counts too), `for`,
+  `while`, `do`, `catch`, each `&&` and `||`. The elvis operator `?:` does not count.
+- Cognitive complexity adds one per `if`, `when`, `for`, `while`, `do` and `catch`, plus its nesting
+  depth, and one per `&&` and `||`. An `else` adds one. An `else if` is not scored as nested, so the
+  chain is checked at the same depth. The rule is not compared with the Java rule's output.
+- `function-length` measures the function body, from its opening brace to its closing brace.
+  Expression-bodied functions are measured by the same limit.
+
+## Python structural rules
+
+The `ward` gate runs five Python structural rules for `.py` files. They read the syntax tree from
+the ANTLR Python frontend and use fixed limits. Init selects the Python rules of the preset in
+`ward-rules.toml`.
+
+| Rule | Limit | Severity |
+|---|---|---|
+| `ward:python/function-length` | more than 60 lines in a function, from the `def` line | error |
+| `ward:python/parameter-count` | more than 5 parameters; `self` and `cls` of a method are not counted | error |
+| `ward:python/complexity` | complexity above 10 | error |
+| `ward:python/file-length` | more than 500 lines in a module | error |
+| `ward:python/naming` | functions and variables `snake_case`, classes `CapWords`; dunder names skipped | warning |
+
+Complexity is one plus the decision points in a function: `if`, `elif`, `while`, `for`, `except`,
+`match` cases, comprehension `for` and `if` clauses, each `and` and `or`, and conditional
+expressions. Nested functions, classes and lambdas are measured on their own.
+
+Enable the rules by naming them in `ward.toml`:
+
+```toml
+[checks.ward]
+uses = "ward"
+rules = [
+  "ward:python/function-length",
+  "ward:python/parameter-count",
+  "ward:python/complexity",
+  "ward:python/file-length",
+  "ward:python/naming",
+]
+```
+
+A file with a syntax error is not checked by these rules. It is reported as an execution error, and
+the gate does not pass. Limits are not keys of the check: a `ward` check accepts only `uses`,
+`enabled`, `profiles`, `rules`, `rules-file`, `java-classpath`, `layers`, `cycles` and
+`independence`. Tune a limit in [`ward-rules.toml`](/configuration/ward-rules/).
+
+## Layer boundaries
+
+Each `[[checks.ward.layers]]` table forbids dependencies between layers. A file is in a layer when a
+directory in its path has the layer's name, and the rule `ward:architecture/layers` reports every
+dependency from a `from` layer to a `forbidden` layer, at the import that creates it:
+
+```toml
+[checks.ward]
+uses = "ward"
+
+[[checks.ward.layers]]
+from = ["domain", "application"]
+forbidden = ["adapter", "infrastructure"]
+```
+
+Both lists are non-empty and name plain directory names. The rule covers Java, Python, TypeScript and
+JavaScript. Java and Swift test sources are not checked. Swift is not yet covered, because its type
+name edges are not in this release. `ward init` writes this table for the chosen style.
+
+## Slice cycles and feature independence
+
+`[checks.ward.cycles]` names the source roots whose slices must not form a dependency cycle. A slice
+is the first directory below the longest root that holds a file. A file directly in a root, or
+outside every root, belongs to no slice. The rule `ward:architecture/cycles` reports each group of
+two or more slices that depend on each other in a cycle, once, at an import that leaves the group's
+alphabetically first slice. Its path lists one step per slice dependency of the shortest cycle
+through that slice. Cycles inside one slice are not reported, so a file cycle within one folder is
+not a finding under this rule.
+
+```toml
+[checks.ward.cycles]
+roots = ["src/main/java/com/acme"]
+```
+
+`[[checks.ward.independence]]` lists module directories that must not depend on each other. The rule
+`ward:architecture/independence` reports every import from a file in one listed module to a file in
+another listed module of the same table, at the line of the import. Code that both modules share
+outside the list is allowed.
+
+```toml
+[[checks.ward.independence]]
+modules = ["shop/orders", "shop/billing"]
+```
+
+Both lists are validated: `roots` is non-empty and holds project-relative directories, and each
+`modules` list has at least two entries. `ward init --preset strict` writes these tables. Init
+writes no external cycle or independence rule.
+
+## Swift structural rules
+
+The `ward` gate runs six Swift structural rules for `.swift` files. They read the syntax tree from
+the ANTLR Swift frontend and use fixed limits. They are the Swift style and lint checks; no external linter gate runs beside them.
+
+| Rule | Limit | Severity |
+|---|---|---|
+| `ward:swift/function-length` | more than 60 lines in a function, method or initializer, from the declaration line | error |
+| `ward:swift/parameter-count` | more than 5 parameters; defaulted and variadic parameters count | error |
+| `ward:swift/complexity` | complexity above 10 | error |
+| `ward:swift/file-length` | more than 500 lines in a file | error |
+| `ward:swift/type-body-length` | more than 300 lines in a `struct`, `class`, `protocol`, `extension` or enum, from the declaration line | error |
+| `ward:swift/naming` | types `UpperCamelCase`; functions, variables, constants and enum cases `lowerCamelCase`; leading underscores and backticks ignored | warning |
+
+Complexity is one plus the decision points of a function or initializer: `if`, `guard`, `else if`,
+`for ... in`, `while`, `repeat ... while`, each `catch`, each `case` label, each `?:`, and each `&&`
+and `||` operator. An `else` adds nothing. Closures are not measured as units: their decisions are
+left out of the enclosing function, as nested functions are, but a closure over the limit is not
+reported on its own.
+
+Enable the rules by naming them in `ward.toml`:
+
+```toml
+[checks.ward]
+uses = "ward"
+rules = [
+  "ward:swift/function-length",
+  "ward:swift/parameter-count",
+  "ward:swift/complexity",
+  "ward:swift/file-length",
+  "ward:swift/type-body-length",
+  "ward:swift/naming",
+]
+```
+
+The Swift frontend uses a Ward-owned Swift 5 grammar, not the Tree-sitter grammar. A file with a
+syntax error is not checked by these rules; it is reported as an execution error and the gate does
+not pass. To see which sources the grammar parses, compare your files with the parse report in the
+Ward repository (`ward-lang-swift/src/test/resources/corpus/parse-report.txt`). At the time of
+writing, the parse report lists `func run() async {` (first error at 6:18) and a freestanding macro
+declaration (2:8) as errors; the cause is not analyzed here. Limits are tuned in
+[`ward-rules.toml`](/configuration/ward-rules/), as for the Python rules.
 
 ## Traceability gate
 
@@ -559,22 +887,16 @@ You are responsible for being authorized to scan the target.
 
 ## Structured findings
 
-When `checkstyle`, `pmd`, `gitleaks`, `compile`, `format`, `eslint`, `biome`, `tsc`, `ruff`, `mypy`, `swiftlint`, `swift-format`, `swift-build`, or `xcodebuild-test` fails, Ward turns the tool's output
+When `ward`, `gitleaks`, `compile`, `ward-format`, `tsc`, `mypy`, `swift-build`, or `xcodebuild-test` fails, Ward turns the tool's output
 into findings with rule, severity, file, line, column, message, and a rule documentation link when
 known. They appear in [JSON](/reference/json-output/) and SARIF output.
 
 | Gate | Source | Maven | Gradle | TypeScript & JavaScript |
 |---|---|---|---|---|
-| `checkstyle` | XML report | `target/checkstyle-result.xml` | `build/reports/checkstyle/*.xml` | |
-| `pmd` | XML report | `target/pmd.xml` | `build/reports/pmd/*.xml` | |
 | `gitleaks` | SARIF report | `target/gitleaks.sarif` | `build/gitleaks.sarif` | `.ward/reports/gitleaks.sarif` |
 | `compile` | javac messages in the output | | | |
-| `format` | Spotless file list in the output (file only, no line) | | | |
-| `eslint` | ESLint JSON in the output; the command must pass `--format json` | | | |
-| `biome` | Checkstyle XML on standard output; the command must pass `--reporter=checkstyle`. Lint rules keep Biome's category, such as `lint/suspicious/noExplicitAny`, and `format` findings have no line. | | | |
+| `ward-format` | Ward's own findings, one per unformatted file (file only, no line) | | | |
 | `tsc` | Compiler diagnostics in the output; the command must pass `--pretty false` | | | |
-| `swiftlint` | SwiftLint JSON on standard output; the command must pass `--reporter json` | | | |
-| `swift-format` | `file:line:column: error: [Rule] message` lines on standard error | | | |
 | `swift-build` / `xcodebuild-test` | Swift compiler errors in the output, with rule `swiftc` | | | |
 
 - Only default report locations are read, and only reports written during the current run. An older
@@ -584,22 +906,18 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
   `reports/mutation/mutation.json`, because only Stryker's configuration file can move it.
 - A missing or malformed report never changes the gate result; the gate just has no findings.
 - Gitleaks findings never contain the matched secret.
-- `ruff` reads the JSON array of `ruff check --output-format json` from standard output, and
-  `mypy` reads the JSON lines of `mypy -O json`. Ruff findings are errors; mypy `note` lines are
-  skipped. A missing or unparseable JSON output gives no findings, and the gate result does not
+- `mypy` reads the JSON lines of `mypy -O json`. Mypy `note` lines are skipped. A missing or unparseable JSON output gives no findings, and the gate result does not
   change. Only the structured formats are read: the command must pass them.
-- ESLint's default `stylish` output and `tsc`'s pretty output give no findings. The gate result
-  does not change. An ESLint parsing error is reported with the rule `eslint`.
-- SwiftLint findings keep SwiftLint's severity, and a violation without a character has no column.
-  Swift compiler errors are read without terminal colours, once each even when the compiler
-  repeats them in a source excerpt. Without `--reporter json`, SwiftLint gives no findings.
+- `tsc`'s pretty output gives no findings. The gate result does not change.
+- Swift compiler errors are read without terminal colours, once each even when the compiler
+  repeats them in a source excerpt.
 - Other gates have no findings yet.
 
 ## Partial checks
 
 `ward init` writes a [`[checks.<name>.paths]` table](/configuration/ward-toml/#partial-checks)
-for `checkstyle`, `pmd`, `format`, `semgrep`, `gitleaks`, `eslint`, `prettier`, `biome`,
-`openapi-lint`, and `openapi-diff`. After an agent
+for `semgrep`, `gitleaks`, `openapi-lint`, and
+`openapi-diff`. After an agent
 edit, and for the files a commit stages, a gate:
 
 - is skipped when no edited file is in its `match`;
@@ -608,34 +926,15 @@ edit, and for the files a commit stages, a gate:
 
 | Gate | Maven | Gradle |
 |---|---|---|
-| `checkstyle` | `-Dcheckstyle.includes=**/<file name>` | `-PwardPaths=<paths>`, with a preset |
-| `pmd` | full, with PMD's analysis cache | `-PwardPaths=<paths>`, with a preset |
-| `format` | `-DspotlessFiles=.*/<path>`, a regular expression matched against the absolute path | full |
 | `semgrep` | each path as its own argument | each path as its own argument |
 | `gitleaks` | `--no-git --source=<path>` for each path, so uncommitted edits are scanned | same as Maven |
 | `openapi-lint`, `openapi-diff` | full, only when the spec is edited | full, only when the spec is edited |
 
-In a TypeScript or JavaScript project, `eslint` and `prettier` take edited `.ts`, `.tsx`, `.mts`, `.cts`, `.js`,
-`.jsx`, `.mjs`, and `.cjs` files, each as its own argument. Their tables set `command` to the full
-command without its `.` target, so a narrowed check runs, for example,
-`npx prettier --check src/app.ts`. An edit of their configs or `package.json` runs them in full.
-`biome` takes the same form: a narrowed run passes `--no-errors-on-unmatched`, so an edited file that
-Biome ignores passes. `tsc` and the test runners have no table, so they run in full in `pre-push`
+`tsc` and the test runners have no table, so they run in full in `pre-push`
 and `ci`.
 
-In a Turborepo workspace, the lint gate narrows with turbo's `--filter=...<package>` for the packages
-that contain the edited files and their dependents. Its `full` files are `turbo.json`, the root
-`package.json`, and the root lint configs; an edit that no member contains runs it in full. The
-type-check and test gates have no table and always run in full.
+In a Turborepo workspace, the type-check and test gates have no table and always run in full.
 
-Gradle notes:
-
-- With a preset, the Checkstyle and PMD blocks init writes filter their sources to `wardPaths` only
-  when the property is set, so `checkstyleMain` and `pmdMain` still check the whole `main` source set
-  otherwise.
-- Without a preset there is no filter, and those gates run in full.
-- Gradle's single-file Spotless mode applies formatting instead of checking it, so Gradle `format`
-  runs in full.
 
 The forms above were verified against the real tools: a path format a tool does not understand
 analyzes no files and passes. The full check at the end of an agent turn, Git hooks, and CI always
@@ -688,7 +987,7 @@ root = "../.."
 
 ## Legacy identifiers
 
-The legacy identifiers `architecture` (use `archunit`) and `compliance` (use `enforcer`; license
+The legacy identifiers `compliance` (use `enforcer`; license
 checks now use `license`) are still read, so existing configurations need no change.
 
 Ward validates registry identifiers; the configured command is the gate-specific part and must be

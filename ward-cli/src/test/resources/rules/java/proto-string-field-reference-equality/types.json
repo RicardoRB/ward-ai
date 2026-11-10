@@ -1,0 +1,26 @@
+{
+  "3:12-3:24": {
+    "call": {
+      "declaring": {
+        "name": "my.Msg"
+      },
+      "name": "getName",
+      "params": [],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
+  },
+  "3:12-3:14": {
+    "type": {
+      "name": "my.Msg"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "com.google.protobuf.MessageOrBuilder"
+        }
+      ]
+    }
+  }
+}

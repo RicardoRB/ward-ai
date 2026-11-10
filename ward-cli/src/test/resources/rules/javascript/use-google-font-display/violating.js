@@ -1,0 +1,10 @@
+const f1 = <link href="https://fonts.googleapis.com/css2?family=Roboto" />;
+const f2 = <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" />;
+const f3 = <link href="https://fonts.googleapis.com/css2?family=Roboto&display=auto" />;
+const f4 = <link href="https://fonts.googleapis.com/css2?family=Roboto&display=block" />;
+const f5 = <link href="https://fonts.googleapis.com/css2?family=Roboto&display=fallback" />;
+const f6 = <link href="https://fonts.googleapis.com/css2?family=Roboto&display=optional" />;
+const f7 = <link href="https://example.com/?display=auto" />;
+const f8 = <link href={"https://fonts.googleapis.com/css?family=A"} />;
+const f9 = <link href="https://fonts.googleapis.com/css?display=swap&family=A" />;
+const f10 = <link rel="stylesheet" />;

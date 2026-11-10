@@ -1,0 +1,58 @@
+# Example rules of the generic check kinds (#349), loaded from rules-examples/ in tests only.
+
+[[rule]]
+name = "example-constant-name"
+
+[[rule]]
+name = "example-inline-conditional"
+
+[[rule]]
+name = "example-switch-default"
+
+[[rule]]
+name = "example-method-count"
+
+[[rule]]
+name = "example-nested-if"
+
+[[rule]]
+name = "example-todo-comment"
+
+[[rule]]
+name = "example-modifier-order"
+
+[[rule]]
+name = "example-magic-number"
+
+[[rule]]
+name = "example-redundant-import"
+
+[[rule]]
+name = "example-overload-order"
+
+[[rule]]
+name = "example-function-name"
+
+[[rule]]
+name = "example-wildcard-import"
+
+[[rule]]
+name = "example-try-needs-except"
+
+[[rule]]
+name = "example-return-count"
+
+[[rule]]
+name = "example-trailing-whitespace"
+
+[[rule]]
+name = "example-block-order"
+
+[[rule]]
+name = "example-duplicate-import"
+
+[[rule]]
+name = "example-undefined-name"
+
+[[rule]]
+name = "example-unused-binding"

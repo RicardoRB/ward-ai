@@ -1,0 +1,150 @@
+# Example rules of the scope and binding analysis (#361): an undefined-name rule and an
+# unused-binding rule for each language. Test data, like java.toml and python.toml.
+
+[[rules]]
+id = "ward:python/example-undefined-name"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "undefined-name"
+message = "undefined name '{value}'"
+'''
+
+[[rules]]
+id = "ward:python/example-unused-binding"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "unused-binding"
+message = "local variable '{value}' is assigned to but never used"
+'''
+
+[[rules]]
+id = "ward:javascript/example-undefined-name"
+language = "javascript"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+options.env = { type = "string-list" }
+body = '''
+check = "undefined-name"
+env = ["es2024", "browser", "node"]
+message = "'{value}' is not defined"
+'''
+
+[[rules]]
+id = "ward:javascript/example-unused-binding"
+language = "javascript"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "unused-binding"
+message = "'{value}' is assigned a value but never used"
+'''
+
+[[rules]]
+id = "ward:typescript/example-undefined-name"
+language = "typescript"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+options.env = { type = "string-list" }
+body = '''
+check = "undefined-name"
+env = ["browser", "node"]
+message = "'{value}' is not defined"
+'''
+
+[[rules]]
+id = "ward:typescript/example-unused-binding"
+language = "typescript"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "unused-binding"
+message = "'{value}' is assigned a value but never used"
+'''
+
+[[rules]]
+id = "ward:java/example-undefined-name"
+language = "java"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "undefined-name"
+message = "cannot find symbol '{value}'"
+'''
+
+[[rules]]
+id = "ward:java/example-unused-binding"
+language = "java"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "unused-binding"
+message = "local variable '{value}' is never used"
+'''
+
+[[rules]]
+id = "ward:kotlin/example-undefined-name"
+language = "kotlin"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "undefined-name"
+message = "unresolved reference '{value}'"
+'''
+
+[[rules]]
+id = "ward:kotlin/example-unused-binding"
+language = "kotlin"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "unused-binding"
+message = "variable '{value}' is never used"
+'''
+
+[[rules]]
+id = "ward:swift/example-undefined-name"
+language = "swift"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "undefined-name"
+message = "cannot find '{value}' in scope"
+'''
+
+[[rules]]
+id = "ward:swift/example-unused-binding"
+language = "swift"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "unused-binding"
+message = "initialization of variable '{value}' was never used"
+'''

@@ -1,0 +1,310 @@
+# Performance checks for Java that mirror PMD 7.29.0 performance rules, as generic syntax checks
+# over the syntax tree. Each is a text approximation of PMD's rule; the catalog row and the
+# message name what differs. Strings and characters are matched as literals, so a concatenation
+# inside a larger expression is not reported twice.
+
+[[rules]]
+id = "ward:java/add-empty-string"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^""\+[^+]+$|^[^+]+\+""$'
+message = "do not add empty strings; convert the other operand with String.valueOf instead"
+'''
+
+[[rules]]
+id = "ward:java/append-character-with-char"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodCall"]
+text = '^append\("(?:[^"\\]|\\.)"\)$'
+message = "appending a one-character string; pass a char to append instead"
+'''
+
+[[rules]]
+id = "ward:java/avoid-array-loops"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement>'for'"]
+text = '^for\(.*\)\{?\w+\[(\w+)\]=\w+\[\1\];\}?$'
+message = "array elements are copied one by one; use Arrays.copyOf or System.arraycopy"
+'''
+
+[[rules]]
+id = "ward:java/avoid-calendar-date-creation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:java\.util\.)?(?:Gregorian)?Calendar\.getInstance\(\)\.(?:getTime|getTimeInMillis)\(\)$|^new(?:java\.util\.)?GregorianCalendar\(\)\.(?:getTime|getTimeInMillis)\(\)$'
+message = "a Calendar is created only to read the current time; use new Date() or java.time instead"
+'''
+
+[[rules]]
+id = "ward:java/avoid-file-stream"
+language = "java"
+min-java-release = 7
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(?:java\.io\.)?(?:File(?:Input|Output)Stream|File(?:Reader|Writer))\([^()]*+(?:\([^()]*\)[^()]*+)*+\)$'
+message = "file streams are finalized by the garbage collector; use java.nio.file.Files instead"
+'''
+
+[[rules]]
+id = "ward:java/avoid-instantiating-objects-in-loops"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["creator"]
+inside = ["statement>'for'", "statement>'while'", "statement>'do'"]
+message = "object created inside a loop; create it once before the loop"
+'''
+
+[[rules]]
+id = "ward:java/big-integer-instantiation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(?:java\.math\.)?Big(?:Integer|Decimal)\((?:"0\.?"|"1"|"10"|0|1|10)\)$'
+message = "BigInteger and BigDecimal already have constants for this value; use ZERO, ONE or TEN"
+'''
+
+[[rules]]
+id = "ward:java/consecutive-literal-appends"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.]+\.append\((?:"[^"\\]*+(?:\\.[^"\\]*+)*+"|\x27(?:[^\x27\\]|\\.)*\x27|-?\d+)\)\.append\((?:"[^"\\]*+(?:\\.[^"\\]*+)*+"|\x27(?:[^\x27\\]|\\.)*\x27|-?\d+)\)$'
+message = "consecutive appends of literals; join the literals into one append"
+'''
+
+[[rules]]
+id = "ward:java/inefficient-empty-string-check"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.]+\.trim\(\)\.(?:isEmpty\(\)|length\(\)(?:==0|>0|!=0))$'
+message = "trim() copies the string to check it is blank; use isBlank() instead"
+'''
+
+[[rules]]
+id = "ward:java/inefficient-string-buffering"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression", "methodCall"]
+text = '^(?:new(?:java\.lang\.)?String(?:Buffer|Builder)|append)\((?=[^()]*?(?:"[^"\\]*+(?:\\.[^"\\]*+)*+"\+[A-Za-z_(]|[A-Za-z_)\]]\+))[^()]*+(?:\([^()]*\)[^()]*+)*+\)$'
+message = "a non-literal is concatenated inside a StringBuffer or StringBuilder call; append each part instead"
+'''
+
+[[rules]]
+id = "ward:java/optimizable-to-array-call"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodCall"]
+text = '^toArray\(new[\w.]+\[(?!0\])[^\]]+\]\)$'
+message = "toArray with a sized array allocates it twice; pass a zero-length array instead"
+'''
+
+[[rules]]
+id = "ward:java/string-instantiation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(?:java\.lang\.)?String\([^()]*+(?:\([^()]*\)[^()]*+)*+\)$'
+message = "a String created with new is usually unnecessary; use a literal or the existing value"
+'''
+
+[[rules]]
+id = "ward:java/string-to-string"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.lang.String"]
+names = ["toString"]
+message = "toString() on a String returns the same string; use the String itself"
+'''
+
+[[rules]]
+id = "ward:java/too-few-branches-for-switch"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement>'switch'"]
+text = '^switch\((?=.*(?<=[{;}])(?:case|default)(?![A-Za-z_$]))(?:(?!(?<=[{;}])(?:case|default)(?![A-Za-z_$])).)*(?:(?<=[{;}])(?:case|default)(?![A-Za-z_$])(?:(?!(?<=[{;}])(?:case|default)(?![A-Za-z_$])).)*){0,2}\}$'
+message = "switch with fewer than three branches; use if instead"
+'''
+
+[[rules]]
+id = "ward:java/use-arrays-as-list"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement>'for'"]
+text = '^for\(int(\w+)=0;\1<\w+\.length;(?:\1\+\+|\+\+\1|\1\+=1)\)\{?\w+\.add\(\w+\[\1\]\);\}?$'
+message = "elements are copied from an array into a list in a loop; use Arrays.asList instead"
+'''
+
+[[rules]]
+id = "ward:java/use-index-of-char"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodCall"]
+text = '^(?:indexOf|lastIndexOf)\("(?:[^"\\]|\\.)"\)$'
+message = "searching for a one-character string; pass a char instead"
+'''
+
+[[rules]]
+id = "ward:java/use-io-streams-with-apache-commons-file-item"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+receiver-types = ["org.apache.commons.fileupload.FileItem"]
+names = ["get", "getString"]
+message = "FileItem.get and getString load the whole file into memory; read it with getInputStream"
+'''
+
+[[rules]]
+id = "ward:java/use-string-buffer-for-string-appends"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+inside = ["statement>'for'", "statement>'while'", "statement>'do'"]
+text = '^[\w.]+\+="[^"\\]*+(?:\\.[^"\\]*+)*+";$'
+message = "a String is extended with += inside a loop; append to a StringBuilder instead"
+'''
+
+[[rules]]
+id = "ward:java/use-string-buffer-length"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.]+\.toString\(\)\.(?:length\(\)|equals\(""\))$'
+message = "toString() only to read the length or test for emptiness; call length() on the builder instead"
+'''
+
+[[rules]]
+id = "ward:java/useless-string-value-of"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:"[^"\\]*+(?:\\.[^"\\]*+)*+"|[\w.]+)\+String\.valueOf\([^()]*+(?:\([^()]*\)[^()]*+)*+\)$'
+message = "String.valueOf is not needed when appending to a string; append the value directly"
+'''
+
+[[rules]]
+id = "ward:java/consecutive-appends-should-reuse"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "consecutive-appends-should-reuse"
+message = "append to the same builder again on the next statement; chain the appends on one statement"
+'''
+
+[[rules]]
+id = "ward:java/insufficient-string-buffer-declaration"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "insufficient-string-buffer-declaration"
+message = "the builder has the default capacity of 16 but its literal appends add more; pass the expected size to the constructor"
+'''

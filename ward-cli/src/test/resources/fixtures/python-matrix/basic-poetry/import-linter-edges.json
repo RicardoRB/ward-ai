@@ -1,0 +1,7 @@
+{
+  "generator": "import-linter 2.15 / grimp 3.18",
+  "roots": [
+    "shop"
+  ],
+  "edges": []
+}

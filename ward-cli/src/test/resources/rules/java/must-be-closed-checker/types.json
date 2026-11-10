@@ -1,0 +1,47 @@
+{
+  "3:13-3:22": {
+    "call": {
+      "declaring": {
+        "name": "Api"
+      },
+      "name": "open",
+      "params": [],
+      "returns": {
+        "name": "Res"
+      },
+      "annotations": [
+        "com.google.errorprone.annotations.MustBeClosed"
+      ]
+    }
+  },
+  "4:18-4:27": {
+    "call": {
+      "declaring": {
+        "name": "Api"
+      },
+      "name": "open",
+      "params": [],
+      "returns": {
+        "name": "Res"
+      },
+      "annotations": [
+        "com.google.errorprone.annotations.MustBeClosed"
+      ]
+    }
+  },
+  "10:12-10:21": {
+    "call": {
+      "declaring": {
+        "name": "Api"
+      },
+      "name": "open",
+      "params": [],
+      "returns": {
+        "name": "Res"
+      },
+      "annotations": [
+        "com.google.errorprone.annotations.MustBeClosed"
+      ]
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "2:13-2:29": {
+    "overrides": [
+      {
+        "declaring": {
+          "name": "Base"
+        },
+        "name": "onStart",
+        "params": [],
+        "returns": {
+          "name": "void",
+          "primitive": true
+        },
+        "annotations": [
+          "androidx.annotation.CallSuper"
+        ]
+      }
+    ]
+  },
+  "2:13-2:47": {
+    "overrides": [
+      {
+        "declaring": {
+          "name": "Base"
+        },
+        "name": "onStart",
+        "params": [],
+        "returns": {
+          "name": "void",
+          "primitive": true
+        },
+        "annotations": [
+          "androidx.annotation.CallSuper"
+        ]
+      }
+    ]
+  }
+}

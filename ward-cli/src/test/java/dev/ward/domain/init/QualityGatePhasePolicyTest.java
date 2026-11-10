@@ -1,0 +1,35 @@
+package dev.ward.domain.init;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
+import org.junit.jupiter.api.Test;
+
+class QualityGatePhasePolicyTest {
+  @Test
+  void assignsFastGatesToDefaultAndAllLocalPhases() {
+    assertThat(QualityGatePhasePolicy.profilesFor("ward-format"))
+        .containsExactly("default", "pre-commit", "pre-push", "ci", "edit");
+    assertThat(QualityGatePhasePolicy.profilesFor("compile")).containsExactly("pre-push", "ci");
+    assertThat(QualityGatePhasePolicy.profilesFor("gitleaks"))
+        .containsExactly("default", "pre-commit", "pre-push", "ci", "edit");
+  }
+
+  @Test
+  void assignsSlowerLocalGatesToPushAndCi() {
+    for (final String gate : List.of("tests", "coverage", "mypy", "enforcer", "license")) {
+      assertThat(QualityGatePhasePolicy.profilesFor(gate)).containsExactly("pre-push", "ci");
+    }
+  }
+
+  @Test
+  void assignsUnknownCostCommandsToPushAndCi() {
+    assertThat(QualityGatePhasePolicy.profilesFor("command")).containsExactly("pre-push", "ci");
+  }
+
+  @Test
+  void assignsUnclassifiedGatesToCiOnly() {
+    assertThat(QualityGatePhasePolicy.profilesFor("mutation")).containsExactly("ci");
+    assertThat(QualityGatePhasePolicy.profilesFor("future-gate")).containsExactly("ci");
+  }
+}

@@ -1,0 +1,1022 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "accessor-pairs"
+presets = ["strict"]
+category = "suggestion"
+eslint = ["accessor-pairs"]
+
+[[rule]]
+name = "array-callback-return"
+presets = ["standard", "strict"]
+category = "problem"
+eslint = ["array-callback-return"]
+biome = ["useIterableCallbackReturn"]
+
+[[rule]]
+name = "arrow-body-style"
+presets = ["strict"]
+category = "suggestion"
+eslint = ["arrow-body-style"]
+
+[[rule]]
+name = "block-scoped-var"
+presets = ["strict"]
+category = "linter"
+eslint = ["block-scoped-var"]
+
+[[rule]]
+name = "capitalized-comments"
+presets = ["strict"]
+category = "linter"
+eslint = ["capitalized-comments"]
+
+[[rule]]
+name = "class-methods-use-this"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["class-methods-use-this"]
+eslint = ["class-methods-use-this"]
+biome = ["useThisInClassMethods"]
+
+[[rule]]
+name = "consistent-return"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["consistent-return"]
+eslint = ["consistent-return"]
+
+[[rule]]
+name = "consistent-this"
+presets = ["strict"]
+category = "linter"
+eslint = ["consistent-this"]
+
+[[rule]]
+name = "constructor-super"
+eslint = ["constructor-super"]
+biome = ["noInvalidConstructorSuper"]
+
+[[rule]]
+name = "default-param-last"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["default-param-last"]
+eslint = ["default-param-last"]
+biome = ["useDefaultParameterLast"]
+
+[[rule]]
+name = "dot-notation"
+typescript-eslint = ["dot-notation"]
+eslint = ["dot-notation"]
+biome = ["useLiteralKeys"]
+
+[[rule]]
+name = "eqeqeq"
+eslint = ["eqeqeq"]
+biome = ["noDoubleEquals"]
+
+[[rule]]
+name = "for-direction"
+eslint = ["for-direction"]
+
+[[rule]]
+name = "func-name-matching"
+presets = ["strict"]
+category = "linter"
+eslint = ["func-name-matching"]
+
+[[rule]]
+name = "func-names"
+presets = ["strict"]
+category = "linter"
+eslint = ["func-names"]
+
+[[rule]]
+name = "func-style"
+presets = ["strict"]
+category = "linter"
+eslint = ["func-style"]
+biome = ["useConsistentFunctionStyle"]
+
+[[rule]]
+name = "getter-return"
+eslint = ["getter-return"]
+biome = ["useGetterReturn"]
+
+[[rule]]
+name = "grouped-accessor-pairs"
+presets = ["strict"]
+category = "linter"
+eslint = ["grouped-accessor-pairs"]
+biome = ["useGroupedAccessorPairs"]
+
+[[rule]]
+name = "guard-for-in"
+presets = ["strict"]
+category = "suggestion"
+eslint = ["guard-for-in"]
+biome = ["useGuardForIn"]
+
+[[rule]]
+name = "id-denylist"
+presets = ["strict"]
+category = "linter"
+eslint = ["id-denylist"]
+
+[[rule]]
+name = "id-length"
+presets = ["strict"]
+category = "linter"
+eslint = ["id-length"]
+
+[[rule]]
+name = "id-match"
+presets = ["strict"]
+category = "linter"
+eslint = ["id-match"]
+
+[[rule]]
+name = "init-declarations"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["init-declarations"]
+eslint = ["init-declarations"]
+
+[[rule]]
+name = "logical-assignment-operators"
+presets = ["strict"]
+category = "suggestion"
+eslint = ["logical-assignment-operators"]
+
+[[rule]]
+name = "max-classes-per-file"
+presets = ["strict"]
+category = "linter"
+eslint = ["max-classes-per-file"]
+biome = ["noExcessiveClassesPerFile"]
+
+[[rule]]
+name = "max-nested-callbacks"
+presets = ["strict"]
+category = "linter"
+eslint = ["max-nested-callbacks"]
+biome = ["noExcessiveNestedCallbacks"]
+
+[[rule]]
+name = "max-statements"
+presets = ["strict"]
+category = "linter"
+eslint = ["max-statements"]
+
+[[rule]]
+name = "new-cap"
+presets = ["strict"]
+category = "linter"
+eslint = ["new-cap"]
+
+[[rule]]
+name = "no-alert"
+eslint = ["no-alert"]
+biome = ["noAlert"]
+
+[[rule]]
+name = "no-array-constructor"
+typescript-eslint = ["no-array-constructor"]
+eslint = ["no-array-constructor"]
+biome = ["useArrayLiterals"]
+
+[[rule]]
+name = "no-async-promise-executor"
+eslint = ["no-async-promise-executor"]
+biome = ["noAsyncPromiseExecutor"]
+
+[[rule]]
+name = "no-await-in-loop"
+presets = ["strict"]
+category = "problem"
+eslint = ["no-await-in-loop"]
+biome = ["noAwaitInLoops"]
+
+[[rule]]
+name = "no-bitwise"
+presets = ["strict"]
+category = "linter"
+eslint = ["no-bitwise"]
+biome = ["noBitwiseOperators"]
+
+[[rule]]
+name = "no-caller"
+eslint = ["no-caller"]
+
+[[rule]]
+name = "no-case-declarations"
+eslint = ["no-case-declarations"]
+biome = ["noSwitchDeclarations"]
+
+[[rule]]
+name = "no-class-assign"
+eslint = ["no-class-assign"]
+biome = ["noClassAssign"]
+
+[[rule]]
+name = "no-compare-neg-zero"
+eslint = ["no-compare-neg-zero"]
+biome = ["noCompareNegZero"]
+
+[[rule]]
+name = "no-console"
+presets = ["strict"]
+category = "suggestion"
+eslint = ["no-console"]
+biome = ["noConsole"]
+
+[[rule]]
+name = "no-const-assign"
+eslint = ["no-const-assign"]
+biome = ["noConstAssign"]
+
+[[rule]]
+name = "no-constant-binary-expression"
+presets = ["standard", "strict"]
+category = "problem"
+eslint = ["no-constant-binary-expression"]
+biome = ["noConstantBinaryExpressions"]
+
+[[rule]]
+name = "no-constant-condition"
+eslint = ["no-constant-condition"]
+biome = ["noConstantCondition"]
+
+[[rule]]
+name = "no-constructor-return"
+presets = ["standard", "strict"]
+category = "problem"
+eslint = ["no-constructor-return"]
+biome = ["noConstructorReturn"]
+
+[[rule]]
+name = "no-continue"
+presets = ["strict"]
+category = "linter"
+eslint = ["no-continue"]
+biome = ["noContinue"]
+
+[[rule]]
+name = "no-control-regex"
+eslint = ["no-control-regex"]
+biome = ["noControlCharactersInRegex"]
+
+[[rule]]
+name = "no-debugger"
+eslint = ["no-debugger"]
+biome = ["noDebugger"]
+
+[[rule]]
+name = "no-delete-var"
+eslint = ["no-delete-var"]
+
+[[rule]]
+name = "no-div-regex"
+eslint = ["no-div-regex"]
+biome = ["noDivRegex"]
+
+[[rule]]
+name = "no-dupe-args"
+eslint = ["no-dupe-args"]
+biome = ["noDuplicateParameters"]
+
+[[rule]]
+name = "no-dupe-class-members"
+presets = ["standard", "strict"]
+category = "problem"
+typescript-eslint = ["no-dupe-class-members"]
+eslint = ["no-dupe-class-members"]
+biome = ["noDuplicateClassMembers"]
+
+[[rule]]
+name = "no-dupe-else-if"
+presets = ["standard", "strict"]
+category = "problem"
+eslint = ["no-dupe-else-if"]
+biome = ["noDuplicateElseIf"]
+
+[[rule]]
+name = "no-dupe-keys"
+eslint = ["no-dupe-keys"]
+
+[[rule]]
+name = "no-duplicate-case"
+eslint = ["no-duplicate-case"]
+biome = ["noDuplicateCase"]
+
+[[rule]]
+name = "no-duplicate-imports"
+presets = ["strict"]
+category = "problem"
+eslint = ["no-duplicate-imports"]
+
+[[rule]]
+name = "no-else-return"
+eslint = ["no-else-return"]
+pylint = ["no-else-return"]
+biome = ["noUselessElse"]
+
+[[rule]]
+name = "no-empty-character-class"
+eslint = ["no-empty-character-class"]
+biome = ["noEmptyCharacterClassInRegex"]
+
+[[rule]]
+name = "no-empty-function"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["no-empty-function"]
+eslint = ["no-empty-function"]
+
+[[rule]]
+name = "no-empty-pattern"
+eslint = ["no-empty-pattern"]
+biome = ["noEmptyPattern"]
+
+[[rule]]
+name = "no-empty-static-block"
+eslint = ["no-empty-static-block"]
+
+[[rule]]
+name = "no-eq-null"
+presets = ["strict"]
+category = "linter"
+eslint = ["no-eq-null"]
+biome = ["noEqualsToNull"]
+
+[[rule]]
+name = "no-eval"
+eslint = ["no-eval"]
+
+[[rule]]
+name = "no-ex-assign"
+eslint = ["no-ex-assign"]
+biome = ["noCatchAssign"]
+
+[[rule]]
+name = "no-extend-native"
+eslint = ["no-extend-native"]
+biome = ["noExtendNative"]
+
+[[rule]]
+name = "no-extra-bind"
+presets = ["strict"]
+category = "suggestion"
+eslint = ["no-extra-bind"]
+
+[[rule]]
+name = "no-extra-boolean-cast"
+eslint = ["no-extra-boolean-cast"]
+
+[[rule]]
+name = "no-extra-label"
+presets = ["standard", "strict"]
+category = "suggestion"
+eslint = ["no-extra-label"]
+biome = ["noUselessLabel"]
+
+[[rule]]
+name = "no-func-assign"
+eslint = ["no-func-assign"]
+biome = ["noFunctionAssign"]
+
+[[rule]]
+name = "no-global-assign"
+eslint = ["no-global-assign"]
+biome = ["noGlobalAssign"]
+
+[[rule]]
+name = "no-implicit-coercion"
+presets = ["strict"]
+category = "linter"
+eslint = ["no-implicit-coercion"]
+biome = ["noImplicitCoercions"]
+
+[[rule]]
+name = "no-implicit-globals"
+presets = ["strict"]
+category = "suggestion"
+eslint = ["no-implicit-globals"]
+
+[[rule]]
+name = "no-implied-eval"
+typescript-eslint = ["no-implied-eval"]
+eslint = ["no-implied-eval"]
+biome = ["noImpliedEval"]
+
+[[rule]]
+name = "no-import-assign"
+eslint = ["no-import-assign"]
+biome = ["noImportAssign"]
+
+[[rule]]
+name = "no-inner-declarations"
+presets = ["standard", "strict"]
+category = "problem"
+eslint = ["no-inner-declarations"]
+biome = ["noInnerDeclarations"]
+
+[[rule]]
+name = "no-invalid-regexp"
+presets = ["standard", "strict"]
+category = "problem"
+eslint = ["no-invalid-regexp"]
+
+[[rule]]
+name = "no-invalid-this"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["no-invalid-this"]
+eslint = ["no-invalid-this"]
+
+[[rule]]
+name = "no-irregular-whitespace"
+presets = ["standard", "strict"]
+category = "problem"
+eslint = ["no-irregular-whitespace"]
+biome = ["noIrregularWhitespace"]
+
+[[rule]]
+name = "no-iterator"
+eslint = ["no-iterator"]
+
+[[rule]]
+name = "no-label-var"
+presets = ["standard", "strict"]
+category = "suggestion"
+eslint = ["no-label-var"]
+biome = ["noLabelVar"]
+
+[[rule]]
+name = "no-labels"
+presets = ["strict"]
+category = "suggestion"
+eslint = ["no-labels"]
+
+[[rule]]
+name = "no-lonely-if"
+presets = ["strict"]
+category = "linter"
+eslint = ["no-lonely-if"]
+biome = ["useCollapsedIf", "useCollapsedElseIf"]
+
+[[rule]]
+name = "no-loop-func"
+presets = ["strict"]
+category = "suggestion"
+eslint = ["no-loop-func"]
+biome = ["noLoopFunc"]
+
+[[rule]]
+name = "no-loss-of-precision"
+presets = ["standard", "strict"]
+category = "problem"
+eslint = ["no-loss-of-precision"]
+biome = ["noPrecisionLoss"]
+
+[[rule]]
+name = "no-misleading-character-class"
+presets = ["standard", "strict"]
+category = "problem"
+eslint = ["no-misleading-character-class"]
+biome = ["noMisleadingCharacterClass"]
+
+[[rule]]
+name = "no-multi-assign"
+presets = ["strict"]
+category = "linter"
+eslint = ["no-multi-assign"]
+biome = ["noMultiAssign"]
+
+[[rule]]
+name = "no-multi-str"
+presets = ["strict"]
+category = "linter"
+eslint = ["no-multi-str"]
+
+[[rule]]
+name = "no-negated-condition"
+presets = ["strict"]
+category = "linter"
+eslint = ["no-negated-condition"]
+biome = ["noNegationElse"]
+
+[[rule]]
+name = "no-nested-ternary"
+presets = ["strict"]
+category = "linter"
+eslint = ["no-nested-ternary"]
+biome = ["noNestedTernary"]
+
+[[rule]]
+name = "no-new"
+presets = ["strict"]
+category = "suggestion"
+eslint = ["no-new"]
+
+[[rule]]
+name = "no-new-func"
+eslint = ["no-new-func"]
+
+[[rule]]
+name = "no-new-native-nonconstructor"
+eslint = ["no-new-native-nonconstructor"]
+
+[[rule]]
+name = "no-new-wrappers"
+eslint = ["no-new-wrappers"]
+
+[[rule]]
+name = "no-nonoctal-decimal-escape"
+eslint = ["no-nonoctal-decimal-escape"]
+biome = ["noNonoctalDecimalEscape"]
+
+[[rule]]
+name = "no-obj-calls"
+eslint = ["no-obj-calls"]
+biome = ["noGlobalObjectCalls"]
+
+[[rule]]
+name = "no-object-constructor"
+presets = ["strict"]
+category = "suggestion"
+eslint = ["no-object-constructor"]
+
+[[rule]]
+name = "no-octal"
+not-applicable = { typescript = "typescript-eslint rejects this literal as a syntax error, so no rule runs on it" }
+eslint = ["no-octal"]
+
+[[rule]]
+name = "no-octal-escape"
+eslint = ["no-octal-escape"]
+biome = ["noOctalEscape"]
+
+[[rule]]
+name = "no-plusplus"
+presets = ["strict"]
+category = "linter"
+eslint = ["no-plusplus"]
+biome = ["noIncrementDecrement"]
+
+[[rule]]
+name = "no-promise-executor-return"
+presets = ["strict"]
+category = "problem"
+eslint = ["no-promise-executor-return"]
+
+[[rule]]
+name = "no-proto"
+eslint = ["no-proto"]
+biome = ["noProto"]
+
+[[rule]]
+name = "no-prototype-builtins"
+eslint = ["no-prototype-builtins"]
+biome = ["noPrototypeBuiltins"]
+
+[[rule]]
+name = "no-redeclare"
+presets = ["standard", "strict"]
+category = "suggestion"
+typescript-eslint = ["no-redeclare"]
+eslint = ["no-redeclare"]
+biome = ["noRedeclare"]
+
+[[rule]]
+name = "no-regex-spaces"
+eslint = ["no-regex-spaces"]
+
+[[rule]]
+name = "no-restricted-exports"
+presets = ["strict"]
+category = "suggestion"
+eslint = ["no-restricted-exports"]
+
+[[rule]]
+name = "no-restricted-globals"
+presets = ["strict"]
+category = "suggestion"
+eslint = ["no-restricted-globals"]
+biome = ["noRestrictedGlobals"]
+
+[[rule]]
+name = "no-restricted-properties"
+presets = ["strict"]
+category = "suggestion"
+eslint = ["no-restricted-properties"]
+
+[[rule]]
+name = "no-restricted-syntax"
+presets = ["strict"]
+category = "suggestion"
+eslint = ["no-restricted-syntax"]
+
+[[rule]]
+name = "no-return-assign"
+presets = ["strict"]
+category = "suggestion"
+eslint = ["no-return-assign"]
+biome = ["noReturnAssign"]
+
+[[rule]]
+name = "no-script-url"
+eslint = ["no-script-url"]
+biome = ["noScriptUrl"]
+
+[[rule]]
+name = "no-self-assign"
+eslint = ["no-self-assign"]
+biome = ["noSelfAssign"]
+
+[[rule]]
+name = "no-self-compare"
+eslint = ["no-self-compare"]
+biome = ["noSelfCompare"]
+
+[[rule]]
+name = "no-sequences"
+eslint = ["no-sequences"]
+biome = ["noCommaOperator"]
+
+[[rule]]
+name = "no-setter-return"
+eslint = ["no-setter-return"]
+biome = ["noSetterReturn"]
+
+[[rule]]
+name = "no-shadow-restricted-names"
+eslint = ["no-shadow-restricted-names"]
+biome = ["noShadowRestrictedNames"]
+
+[[rule]]
+name = "no-sparse-arrays"
+eslint = ["no-sparse-arrays"]
+biome = ["noSparseArray"]
+
+[[rule]]
+name = "no-template-curly-in-string"
+eslint = ["no-template-curly-in-string"]
+biome = ["noTemplateCurlyInString"]
+
+[[rule]]
+name = "no-this-before-super"
+presets = ["standard", "strict"]
+category = "problem"
+eslint = ["no-this-before-super"]
+
+[[rule]]
+name = "no-throw-literal"
+eslint = ["no-throw-literal"]
+
+[[rule]]
+name = "no-unassigned-vars"
+presets = ["standard", "strict"]
+category = "problem"
+eslint = ["no-unassigned-vars"]
+
+[[rule]]
+name = "no-undef"
+eslint = ["no-undef"]
+biome = ["noUndeclaredVariables"]
+
+[[rule]]
+name = "no-undef-init"
+eslint = ["no-undef-init"]
+biome = ["noUselessUndefinedInitialization"]
+
+[[rule]]
+name = "no-undefined"
+presets = ["strict"]
+category = "linter"
+eslint = ["no-undefined"]
+
+[[rule]]
+name = "no-underscore-dangle"
+presets = ["strict"]
+category = "linter"
+eslint = ["no-underscore-dangle"]
+
+[[rule]]
+name = "no-unexpected-multiline"
+presets = ["standard", "strict"]
+category = "problem"
+eslint = ["no-unexpected-multiline"]
+
+[[rule]]
+name = "no-unmodified-loop-condition"
+presets = ["strict"]
+category = "problem"
+eslint = ["no-unmodified-loop-condition"]
+biome = ["noUnmodifiedLoopCondition"]
+
+[[rule]]
+name = "no-unneeded-ternary"
+eslint = ["no-unneeded-ternary"]
+biome = ["noUselessTernary"]
+
+[[rule]]
+name = "no-unreachable"
+eslint = ["no-unreachable"]
+biome = ["noUnreachable"]
+
+[[rule]]
+name = "no-unreachable-loop"
+presets = ["strict"]
+category = "problem"
+eslint = ["no-unreachable-loop"]
+
+[[rule]]
+name = "no-unsafe-finally"
+eslint = ["no-unsafe-finally"]
+biome = ["noUnsafeFinally"]
+
+[[rule]]
+name = "no-unsafe-negation"
+eslint = ["no-unsafe-negation"]
+biome = ["noUnsafeNegation"]
+
+[[rule]]
+name = "no-unsafe-optional-chaining"
+presets = ["standard", "strict"]
+category = "problem"
+eslint = ["no-unsafe-optional-chaining"]
+biome = ["noUnsafeOptionalChaining"]
+
+[[rule]]
+name = "no-unused-expressions"
+presets = ["standard", "strict"]
+category = "suggestion"
+typescript-eslint = ["no-unused-expressions"]
+eslint = ["no-unused-expressions"]
+biome = ["noUnusedExpressions"]
+
+[[rule]]
+name = "no-unused-labels"
+eslint = ["no-unused-labels"]
+biome = ["noUnusedLabels"]
+
+[[rule]]
+name = "no-unused-private-class-members"
+presets = ["standard", "strict"]
+category = "problem"
+typescript-eslint = ["no-unused-private-class-members"]
+eslint = ["no-unused-private-class-members"]
+biome = ["noUnusedPrivateClassMembers"]
+
+[[rule]]
+name = "no-use-before-define"
+presets = ["standard", "strict"]
+category = "problem"
+typescript-eslint = ["no-use-before-define"]
+eslint = ["no-use-before-define"]
+biome = ["noInvalidUseBeforeDeclaration"]
+
+[[rule]]
+name = "no-useless-backreference"
+presets = ["standard", "strict"]
+category = "problem"
+eslint = ["no-useless-backreference"]
+biome = ["noUselessRegexBackrefs"]
+
+[[rule]]
+name = "no-useless-call"
+eslint = ["no-useless-call"]
+
+[[rule]]
+name = "no-useless-catch"
+eslint = ["no-useless-catch"]
+biome = ["noUselessCatch"]
+
+[[rule]]
+name = "no-useless-computed-key"
+presets = ["strict"]
+category = "linter"
+eslint = ["no-useless-computed-key"]
+
+[[rule]]
+name = "no-useless-concat"
+presets = ["strict"]
+category = "linter"
+eslint = ["no-useless-concat"]
+biome = ["noUselessStringConcat"]
+
+[[rule]]
+name = "no-useless-constructor"
+typescript-eslint = ["no-useless-constructor"]
+eslint = ["no-useless-constructor"]
+biome = ["noUselessConstructor"]
+
+[[rule]]
+name = "no-useless-escape"
+presets = ["standard", "strict"]
+category = "suggestion"
+eslint = ["no-useless-escape"]
+biome = ["noUselessEscapeInRegex", "noUselessEscapeInString"]
+
+[[rule]]
+name = "no-useless-rename"
+eslint = ["no-useless-rename"]
+biome = ["noUselessRename"]
+
+[[rule]]
+name = "no-useless-return"
+presets = ["strict"]
+category = "linter"
+eslint = ["no-useless-return"]
+biome = ["noUselessReturn"]
+
+[[rule]]
+name = "no-var"
+presets = ["strict"]
+category = "linter"
+eslint = ["no-var"]
+biome = ["noVar"]
+
+[[rule]]
+name = "no-void"
+presets = ["strict"]
+category = "linter"
+eslint = ["no-void"]
+biome = ["noVoid"]
+
+[[rule]]
+name = "no-with"
+eslint = ["no-with"]
+biome = ["noWith"]
+
+[[rule]]
+name = "object-shorthand"
+presets = ["strict"]
+category = "linter"
+eslint = ["object-shorthand"]
+
+[[rule]]
+name = "operator-assignment"
+presets = ["strict"]
+category = "linter"
+eslint = ["operator-assignment"]
+biome = ["useShorthandAssign"]
+
+[[rule]]
+name = "prefer-arrow-callback"
+eslint = ["prefer-arrow-callback"]
+biome = ["useArrowFunction"]
+
+[[rule]]
+name = "prefer-const"
+eslint = ["prefer-const"]
+biome = ["useConst"]
+
+[[rule]]
+name = "prefer-destructuring"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["prefer-destructuring"]
+eslint = ["prefer-destructuring"]
+biome = ["useDestructuring"]
+
+[[rule]]
+name = "prefer-exponentiation-operator"
+eslint = ["prefer-exponentiation-operator"]
+biome = ["useExponentiationOperator"]
+
+[[rule]]
+name = "prefer-named-capture-group"
+presets = ["strict"]
+category = "suggestion"
+eslint = ["prefer-named-capture-group"]
+biome = ["useNamedCaptureGroup"]
+
+[[rule]]
+name = "prefer-numeric-literals"
+eslint = ["prefer-numeric-literals"]
+biome = ["useNumericLiterals"]
+
+[[rule]]
+name = "prefer-object-has-own"
+eslint = ["prefer-object-has-own"]
+
+[[rule]]
+name = "prefer-object-spread"
+presets = ["strict"]
+category = "linter"
+eslint = ["prefer-object-spread"]
+biome = ["useObjectSpread"]
+
+[[rule]]
+name = "prefer-promise-reject-errors"
+presets = ["standard", "strict"]
+category = "suggestion"
+typescript-eslint = ["prefer-promise-reject-errors"]
+eslint = ["prefer-promise-reject-errors"]
+biome = ["usePromiseRejectErrors"]
+
+[[rule]]
+name = "prefer-regex-literals"
+eslint = ["prefer-regex-literals"]
+biome = ["useRegexLiterals"]
+
+[[rule]]
+name = "prefer-rest-params"
+eslint = ["prefer-rest-params"]
+biome = ["noArguments"]
+
+[[rule]]
+name = "prefer-spread"
+eslint = ["prefer-spread"]
+biome = ["useSpreadOverApply"]
+
+[[rule]]
+name = "prefer-template"
+eslint = ["prefer-template"]
+biome = ["useTemplate"]
+
+[[rule]]
+name = "preserve-caught-error"
+presets = ["standard", "strict"]
+category = "suggestion"
+eslint = ["preserve-caught-error"]
+
+[[rule]]
+name = "radix"
+eslint = ["radix"]
+biome = ["useParseIntRadix"]
+
+[[rule]]
+name = "require-atomic-updates"
+presets = ["strict"]
+category = "problem"
+eslint = ["require-atomic-updates"]
+
+[[rule]]
+name = "require-await"
+typescript-eslint = ["require-await"]
+eslint = ["require-await"]
+biome = ["useAwait"]
+
+[[rule]]
+name = "require-unicode-regexp"
+presets = ["strict"]
+category = "linter"
+eslint = ["require-unicode-regexp"]
+biome = ["useUnicodeRegex"]
+
+[[rule]]
+name = "require-yield"
+eslint = ["require-yield"]
+biome = ["useYield"]
+
+[[rule]]
+name = "sort-keys"
+presets = ["strict"]
+category = "linter"
+eslint = ["sort-keys"]
+
+[[rule]]
+name = "sort-vars"
+presets = ["strict"]
+category = "linter"
+eslint = ["sort-vars"]
+
+[[rule]]
+name = "strict"
+presets = ["standard", "strict"]
+category = "suggestion"
+eslint = ["strict"]
+biome = ["noRedundantUseStrict", "useStrictMode"]
+
+[[rule]]
+name = "symbol-description"
+eslint = ["symbol-description"]
+biome = ["useSymbolDescription"]
+
+[[rule]]
+name = "use-isnan"
+eslint = ["use-isnan"]
+biome = ["useIsNan"]
+
+[[rule]]
+name = "valid-typeof"
+eslint = ["valid-typeof"]
+biome = ["useValidTypeof"]
+
+[[rule]]
+name = "vars-on-top"
+presets = ["strict"]
+category = "linter"
+eslint = ["vars-on-top"]
+biome = ["useVarsOnTop"]
+
+[[rule]]
+name = "yoda"
+presets = ["strict"]
+category = "linter"
+eslint = ["yoda"]
+biome = ["noYodaExpression"]

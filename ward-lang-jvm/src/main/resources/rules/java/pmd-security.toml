@@ -1,0 +1,31 @@
+# Security checks for Java that mirror PMD 7.29.0 security rules, as generic syntax checks over
+# the syntax tree. Each is a text approximation of PMD's rule: it matches the literal forms of a
+# hard-coded key or vector, and not values that only flow into the call.
+
+[[rules]]
+id = "ward:java/hard-coded-crypto-key"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(?:javax\.crypto\.spec\.)?SecretKeySpec\((?:"[^"]*"\.getBytes\(\)|new\w*\[\]\{)[^()]*+(?:\([^()]*\)[^()]*+)*+\)$'
+message = "the encryption key is hard-coded; load it from configuration or a key store"
+'''
+
+[[rules]]
+id = "ward:java/insecure-crypto-iv"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(?:javax\.crypto\.spec\.)?IvParameterSpec\((?:"[^"]*"\.getBytes\(\)|new\w*\[\]\{)[^()]*+(?:\([^()]*\)[^()]*+)*+\)$'
+message = "the initialization vector is hard-coded; generate a random one for each encryption"
+'''

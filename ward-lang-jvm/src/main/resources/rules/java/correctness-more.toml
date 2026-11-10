@@ -1,0 +1,176 @@
+# SpotBugs CORRECTNESS patterns for Java, standard batch 3: array types, instanceof, parameters and
+# singleton, switch and equals shapes. Node text has no separators between tokens.
+
+[[rules]]
+id = "ward:java/sio-superfluous-instanceof"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "redundant-instanceof"
+message = "the static type is already this type, so the instanceof test only checks for null"
+'''
+
+[[rules]]
+id = "ward:java/ec-array-and-nonarray"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "array-equals"
+mismatch = "array-and-non-array"
+message = "equals compares an array with a value that is not an array, so it is always false"
+'''
+
+[[rules]]
+id = "ward:java/ec-incompatible-array-compare"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "array-equals"
+mismatch = "incompatible-arrays"
+message = "equals compares arrays of different element types, so it is always false"
+'''
+
+[[rules]]
+id = "ward:java/va-primitive-array-passed-to-object-vararg"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "vararg-primitive-array"
+message = "a primitive array passed to an Object... parameter becomes a single element"
+'''
+
+[[rules]]
+id = "ward:java/ip-parameter-is-dead-but-overwritten"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "overwritten-parameter"
+message = "a parameter is overwritten before it is read, so the value passed in is never used"
+'''
+
+[[rules]]
+id = "ward:java/sing-singleton-has-nonprivate-constructor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^class(\w+)(?=[\s\S]*static\1\w*[Ii]nstance\(\))(?=[\s\S]*static(?:final|volatile)*\1\w+[=;])(?=[\s\S]*(?:(?:public|protected)\1\(|(?<=[{};])\1\())'
+message = "singleton has a constructor that is not private, so other code can create more instances"
+'''
+
+[[rules]]
+id = "ward:java/sing-singleton-getter-not-synchronized"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^class(\w+)[\s\S]*?(?<!synchronized)static(?!synchronized)\1getInstance\(\)\{if\(\w+==null\)(?!.{0,200}synchronized)'
+message = "lazy singleton getter is not synchronized, so two threads can create two instances"
+'''
+
+[[rules]]
+id = "ward:java/rp-c-repeated-conditional-test"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression", "statement"]
+text = '^([^|&()]+)(?:\|\||&&)\1$|^if\(([^()]+)\)[\s\S]*?elseif\(\2\)'
+message = "the same condition is tested twice"
+'''
+
+[[rules]]
+id = "ward:java/sf-dead-store-due-to-switch-fallthrough"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^switch\(.*?case[^:]*:(\w+)=[^;]*;case[^:]*:\1='
+message = "the value stored here is overwritten by the next case, which this case falls through to"
+'''
+
+[[rules]]
+id = "ward:java/sf-dead-store-due-to-switch-fallthrough-to-throw"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^switch\(.*?case[^:]*:(\w+)=[^;]*;(?:case[^:]*|default):throw'
+message = "the value stored here is lost because this case falls through to a throw"
+'''
+
+[[rules]]
+id = "ward:java/sic-threadlocal-deadly-embrace"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classBodyDeclaration"]
+text = '^(?:(?:public|protected|private|final|abstract)+)?class\w+extends(?:java\.lang\.)?ThreadLocal'
+message = "non-static inner class of a ThreadLocal subclass keeps its outer instance alive; make it static"
+'''
+
+[[rules]]
+id = "ward:java/im-multiplying-result-of-irem"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^\([^()%]+%[^()]+\)\*[^*]'
+message = "{value} multiplies a remainder, which is probably not what was meant; check the precedence"
+'''
+
+[[rules]]
+id = "ward:java/eq-overriding-equals-not-symmetric"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^class(\w+)extends[\w.<>,]+(?:implements[\w.<>,]+)?\{[\s\S]*booleanequals\((?:final)?Object(\w+)\)\{[^}]*\2instanceof\1'
+message = "equals of a subclass tests instanceof its own class, so x.equals(y) and y.equals(x) can differ"
+'''

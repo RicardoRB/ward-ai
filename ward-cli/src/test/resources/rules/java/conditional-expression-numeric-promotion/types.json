@@ -1,0 +1,32 @@
+{
+  "3:19-3:20": {
+    "type": {
+      "name": "java.lang.Integer"
+    }
+  },
+  "3:24-3:25": {
+    "type": {
+      "name": "java.lang.Long"
+    }
+  },
+  "3:23-3:24": {
+    "type": {
+      "name": "java.lang.Integer"
+    }
+  },
+  "3:28-3:29": {
+    "type": {
+      "name": "java.lang.Integer"
+    }
+  },
+  "4:19-4:20": {
+    "type": {
+      "name": "java.lang.Integer"
+    }
+  },
+  "4:24-4:26": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  }
+}

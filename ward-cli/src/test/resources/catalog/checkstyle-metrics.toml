@@ -1,0 +1,37 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "boolean-expression-complexity"
+checkstyle = ["BooleanExpressionComplexity"]
+
+[[rule]]
+name = "class-data-abstraction-coupling"
+not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
+checkstyle = ["ClassDataAbstractionCoupling"]
+
+[[rule]]
+name = "class-fan-out-complexity"
+not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
+pmd = ["CouplingBetweenObjects"]
+checkstyle = ["ClassFanOutComplexity"]
+
+[[rule]]
+name = "cyclomatic-complexity"
+ids = { typescript = "ward:typescript/complexity", javascript = "ward:javascript/complexity", python = "ward:python/complexity", swift = "ward:swift/complexity" }
+detekt = ["CyclomaticComplexMethod"]
+pmd = ["CyclomaticComplexity"]
+checkstyle = ["CyclomaticComplexity"]
+eslint = ["complexity"]
+swiftlint = ["cyclomatic_complexity"]
+ruff = ["C901"]
+
+[[rule]]
+name = "java-ncss"
+not-applicable = { python = "Java NCSS statement metric; Python size is covered by function-length and file-length" }
+pmd = ["NcssCount"]
+checkstyle = ["JavaNCSS"]
+
+[[rule]]
+name = "n-path-complexity"
+pmd = ["NPathComplexity"]
+checkstyle = ["NPathComplexity"]

@@ -1,0 +1,65 @@
+---
+title: Adding a language formatter
+description: How to add a native formatter for a language to the ward-format gate, and the tests that hold it to the same bar as the others.
+---
+
+The `ward-format` gate and `ward format` run one native formatter per language. A new language needs
+a formatter class, a parser for its syntax, one registry row, and fixtures. The tests that cover every
+formatter run on the new one without any new test code.
+
+## The pieces
+
+1. **Formatter** (`SourceFormatter`, `ward-analysis-api`). Implement `language()`, which names the
+   `AnalysisLanguage` constant, `options()`, which declares the options the formatter reads, and
+   `format(source, options)`, which returns a `FormatResult`. Put it in the language's package under
+   `ward-frontend-antlr/src/main/java/dev/ward/analysis/frontend/antlr/format/<language>/`, next to
+   its syntax. Keep it stateless.
+2. **Syntax** (`FormatSyntax`). `parse(source)` returns a `FormatSyntaxTree` from the vendored
+   grammar. `FormatSafety` parses the input, the output and the second format with it, so a file the
+   grammar cannot parse is refused and never written. Name the class `<Language>FormatSyntax`.
+3. **Registry row.** Add one `FormatterEntry(formatter, syntax)` to `formatterRegistry()` in
+   `ward-cli/src/main/java/dev/ward/config/FormatterBindingsModule.java`. A new `AnalysisLanguage`
+   constant has no formatter until this row exists, and `FormatterRegistryContractTest` fails the
+   build until it does.
+4. **Declared options.** Each option the formatter reads is a `FormatOption` with its type. An
+   `.editorconfig` key that the formatter does not declare is ignored, and only `ward_` keys are
+   validated. See [.editorconfig](/configuration/editorconfig/) for the keys Ward reads.
+5. **Fixtures.** Add cases under `format/<language>/<case>/` in the analysis test resources, each
+   with `input.<ext>` and `expected.<ext>`. `FormatterFixturesTest` reads every case of every
+   registered language.
+
+## Required cases
+
+Every language has these cases. `FormatterFixturesTest` checks each one for golden output,
+idempotence, the safety checks, kept comments, and that an already formatted file reports `Unchanged`.
+
+- declarations and nested blocks;
+- long call and argument lists that must break;
+- line, block, trailing and doc comments;
+- blank lines, capped by `ward_max_blank_lines`;
+- string literals that contain whitespace;
+- a file with a syntax error, which must be refused and left untouched.
+
+## Check it
+
+```bash
+./mvnw -q -pl ward-analysis-engine,ward-frontend-antlr,ward-cli -am test \
+  -Dtest='Formatter*Test,FormatterRegistryContractTest,*FormatSyntaxTest'
+```
+
+Then run the gate on a project that has the language, and check that a second run is clean:
+
+```bash
+ward format --check
+ward format
+ward format --check
+```
+
+The first `--check` reports the files the formatter would change, `ward format` writes them, and the
+last `--check` must pass.
+
+## Init
+
+`ward init` uses the registry only through the `ward-format` gate, so a new language needs no init
+change to be formatted. Ward runs no external formatter, so init never generates one: extend the
+`.editorconfig` defaults in `EditorConfigTemplate` if the language has its own indent.

@@ -1,0 +1,14 @@
+# Error Prone checks at ERROR severity for Java, A to D, final round, third batch: constant arithmetic.
+
+[[rules]]
+id = "ward:java/constant-overflow"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "constant-overflow"
+
+message = "this constant expression overflows its type; use a long literal so that it is computed in 64 bits"
+'''

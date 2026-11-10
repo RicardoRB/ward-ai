@@ -1,0 +1,55 @@
+{
+  "3:12-3:26": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.Enum"
+      },
+      "name": "ordinal",
+      "params": [],
+      "returns": {
+        "name": "int",
+        "primitive": true
+      }
+    }
+  },
+  "3:12-3:16": {
+    "type": {
+      "name": "my.Color"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "com.google.protobuf.ProtocolMessageEnum"
+        },
+        {
+          "name": "java.lang.Enum"
+        }
+      ]
+    }
+  },
+  "4:12-4:26": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.Enum"
+      },
+      "name": "ordinal",
+      "params": [],
+      "returns": {
+        "name": "int",
+        "primitive": true
+      }
+    }
+  },
+  "4:12-4:16": {
+    "type": {
+      "name": "my.Plain"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Enum"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,141 @@
+# SQL sinks: the SQL text that JDBC, JPA and Spring's JdbcTemplate run, which is argument 0.
+# Parameter values are bound by the driver and are not listed.
+[[sinks]]
+kind = "call"
+name = "execute"
+receiver = "java.sql.Statement"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "executeQuery"
+receiver = "java.sql.Statement"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "executeUpdate"
+receiver = "java.sql.Statement"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "executeLargeUpdate"
+receiver = "java.sql.Statement"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "addBatch"
+receiver = "java.sql.Statement"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "prepareStatement"
+receiver = "java.sql.Connection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "prepareCall"
+receiver = "java.sql.Connection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "nativeSQL"
+receiver = "java.sql.Connection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "createQuery"
+receiver = "javax.persistence.EntityManager"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "createNativeQuery"
+receiver = "javax.persistence.EntityManager"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "createQuery"
+receiver = "jakarta.persistence.EntityManager"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "createNativeQuery"
+receiver = "jakarta.persistence.EntityManager"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "query"
+receiver = "org.springframework.jdbc.core.JdbcTemplate"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "queryForObject"
+receiver = "org.springframework.jdbc.core.JdbcTemplate"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "queryForList"
+receiver = "org.springframework.jdbc.core.JdbcTemplate"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "queryForMap"
+receiver = "org.springframework.jdbc.core.JdbcTemplate"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "queryForRowSet"
+receiver = "org.springframework.jdbc.core.JdbcTemplate"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "update"
+receiver = "org.springframework.jdbc.core.JdbcTemplate"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute"
+receiver = "org.springframework.jdbc.core.JdbcTemplate"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "batchUpdate"
+receiver = "org.springframework.jdbc.core.JdbcTemplate"
+arguments = [0]
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "parseLong"
+receiver = "java.lang.Long"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Long"

@@ -1,0 +1,20 @@
+# URL sinks: the text that becomes the scheme, host or path of a URL.
+
+[[sinks]]
+kind = "call"
+name = "<init>"
+receiver = "java.net.URL"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "<init>"
+receiver = "java.net.URI"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "create"
+receiver = "java.net.URI"
+arguments = [0]
+

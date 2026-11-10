@@ -1,0 +1,48 @@
+{
+  "3:5-3:34": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.base.Throwables"
+      },
+      "name": "throwIfUnchecked",
+      "params": [
+        {
+          "name": "java.lang.Throwable"
+        }
+      ],
+      "returns": {
+        "name": "void",
+        "primitive": true
+      },
+      "static": true
+    }
+  },
+  "3:33-3:33": {
+    "type": {
+      "name": "java.io.IOException"
+    }
+  },
+  "4:5-4:34": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.base.Throwables"
+      },
+      "name": "throwIfUnchecked",
+      "params": [
+        {
+          "name": "java.lang.Throwable"
+        }
+      ],
+      "returns": {
+        "name": "void",
+        "primitive": true
+      },
+      "static": true
+    }
+  },
+  "4:33-4:33": {
+    "type": {
+      "name": "java.lang.Exception"
+    }
+  }
+}

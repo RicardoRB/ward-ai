@@ -1,0 +1,165 @@
+# Error Prone checks at ERROR severity for Java that read annotations and supertypes from the type facts of
+# calls and methods, or the annotations of one file. Each is on by default in Error Prone, so it belongs to the standard preset.
+
+[[rules]]
+id = "ward:java/must-be-closed-checker"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-facts"
+method-annotations = ["com.google.errorprone.annotations.MustBeClosed"]
+outside-resource = true
+message = "this method returns a resource that must be closed; call it in a try-with-resources statement or return it"
+'''
+
+[[rules]]
+id = "ward:java/protocol-buffer-ordinal"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-facts"
+names = ["ordinal"]
+receiver-ancestors = ["com.google.protobuf.ProtocolMessageEnum"]
+message = "the ordinal of a protocol buffer enum is not its number; call getNumber()"
+'''
+
+[[rules]]
+id = "ward:java/proto-builder-return-value-ignored"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-facts"
+names = ["build", "buildPartial"]
+ignored = true
+receiver-ancestors = ["com.google.protobuf.MessageLite.Builder", "com.google.protobuf.MessageLite$Builder", "com.google.protobuf.Message.Builder", "com.google.protobuf.Message$Builder"]
+message = "the message built here is dropped; use the result of build() or remove the call"
+'''
+
+[[rules]]
+id = "ward:java/set-unrecognized"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-facts"
+receiver-ancestors = ["com.google.protobuf.MessageLite.Builder", "com.google.protobuf.MessageLite$Builder", "com.google.protobuf.Message.Builder", "com.google.protobuf.Message$Builder"]
+text = '\.set\w+\((?:[\w.]*\.)?\w+\.UNRECOGNIZED\)$'
+message = "setting a protocol buffer enum field to UNRECOGNIZED throws; set a real value or the number"
+'''
+
+[[rules]]
+id = "ward:java/redundant-setter-call"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-facts"
+receiver-ancestors = ["com.google.protobuf.MessageLite.Builder", "com.google.protobuf.MessageLite$Builder", "com.google.protobuf.Message.Builder", "com.google.protobuf.Message$Builder"]
+text = '\.(?<m>set\w+)\([^()]*+(?:\([^()]*\)[^()]*+)*+\)\.\k<m>\([^()]*+(?:\([^()]*\)[^()]*+)*+\)$'
+message = "the same setter is called twice in a row, so the first call has no effect"
+'''
+
+[[rules]]
+id = "ward:java/null-argument-for-non-null-parameter"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-arguments"
+null-to-non-null = true
+message = "null is passed for a parameter that is annotated as not null"
+'''
+
+[[rules]]
+id = "ward:java/string-join"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-arguments"
+declaring-types = ["java.lang.String"]
+names = ["join"]
+vararg-element-types = ["java.lang.String", "java.lang.CharSequence"]
+message = "String.join with no elements, or with a single element, joins nothing; pass the elements as a collection or several arguments"
+'''
+
+[[rules]]
+id = "ward:java/missing-super-call"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "method-override"
+overridden-annotations = ["androidx.annotation.CallSuper", "android.support.annotation.CallSuper", "javax.annotation.OverridingMethodsMustInvokeSuper"]
+require-super-call = true
+message = "this method overrides one that requires a call to super, and does not make it"
+'''
+
+[[rules]]
+id = "ward:java/overrides-javax-injectable-method"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "method-override"
+overridden-annotations = ["javax.inject.Inject"]
+required-annotations = ["javax.inject.Inject", "jakarta.inject.Inject"]
+message = "this method overrides one annotated @Inject but is not annotated itself, so it is no longer injected"
+'''
+
+[[rules]]
+id = "ward:java/thread-safe"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "thread-safe-fields"
+message = "a field of a @ThreadSafe class can change without a guard; make it final or volatile, or annotate it @GuardedBy"
+'''
+
+[[rules]]
+id = "ward:java/required-modifiers"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "required-modifiers"
+message = "this annotation requires a modifier that the declaration does not have"
+'''
+
+[[rules]]
+id = "ward:java/proto-string-field-reference-equality"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "proto-string-equality"
+message = "a string field of a protocol buffer message is compared with ==; compare it with equals"
+'''

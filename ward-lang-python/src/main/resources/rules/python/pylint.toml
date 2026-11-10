@@ -1,0 +1,248 @@
+# Ruff's pylint error rules (PLE) that a line pattern decides.
+
+
+[[rules]]
+id = "ward:python/duplicate-bases"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classdef"]
+text = '^class[^(]*\((?:[^,()]*,)*([\w.]+),(?:[^,()]*,)*\1[,)]'
+message = "duplicate base class in the class definition"
+'''
+
+[[rules]]
+id = "ward:python/bidirectional-unicode"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "[\\u202A-\\u202E\\u2066-\\u2069]"
+message = "bidirectional control character can hide code; remove it"
+'''
+
+[[rules]]
+id = "ward:python/invalid-all-format"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = "^__all__=[\"']"
+message = "__all__ must be a tuple or a list"
+'''
+
+[[rules]]
+id = "ward:python/invalid-character-backspace"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "text-pattern"
+target = "strings"
+kinds = ["STRING"]
+pattern = "\\x08"
+message = "backspace character in a string literal; use the escape instead"
+'''
+
+[[rules]]
+id = "ward:python/invalid-character-sub"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "text-pattern"
+target = "strings"
+kinds = ["STRING"]
+pattern = "\\x1a"
+message = "SUB character in a string literal; use the escape instead"
+'''
+
+[[rules]]
+id = "ward:python/invalid-character-esc"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "text-pattern"
+target = "strings"
+kinds = ["STRING"]
+pattern = "\\x1b"
+message = "ESC character in a string literal; use the escape instead"
+'''
+
+[[rules]]
+id = "ward:python/invalid-character-nul"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "text-pattern"
+target = "strings"
+kinds = ["STRING"]
+pattern = "\\x00"
+message = "NUL character in a string literal; use the escape instead"
+'''
+
+[[rules]]
+id = "ward:python/invalid-character-zero-width-space"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "text-pattern"
+target = "strings"
+kinds = ["STRING"]
+pattern = "\\u200B"
+message = "zero-width space in a string literal; use the escape instead"
+'''
+
+[[rules]]
+id = "ward:python/logging-too-many-args"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "logging-args"
+problem = "too-many"
+message = "too many arguments for the logging format string"
+'''
+
+[[rules]]
+id = "ward:python/logging-too-few-args"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "logging-args"
+problem = "too-few"
+message = "not enough arguments for the logging format string"
+'''
+
+[[rules]]
+id = "ward:python/bad-string-format-character"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "dot-format"
+problem = "bad-character"
+message = "unsupported format character in the format spec"
+'''
+
+[[rules]]
+id = "ward:python/bad-string-format-type"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "percent-format"
+problem = "type-mismatch"
+message = "format type does not match the argument type"
+'''
+
+[[rules]]
+id = "ward:python/bad-str-strip-call"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^[\"'][^\"']*[\"']\\.(?:strip|lstrip|rstrip)\\([\"'][^\"']*(.)[^\"']*\\1"
+message = "strip call contains duplicate characters"
+'''
+
+[[rules]]
+id = "ward:python/misplaced-bare-raise"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "ancestor-check"
+kinds = ["raise_stmt"]
+allowed = ["try_stmt"]
+stop = ["funcdef", "classdef"]
+mode = "outside"
+text = "^raise$"
+message = "bare raise statement is not inside an exception handler"
+'''
+
+[[rules]]
+id = "ward:python/await-outside-async"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "ancestor-check"
+kinds = ["atom_expr"]
+allowed = ["async_stmt", "async_funcdef"]
+stop = ["funcdef", "classdef", "lambdef"]
+mode = "outside"
+text = "^await"
+message = "await should be used within an async function"
+'''
+
+[[rules]]
+id = "ward:python/yield-from-in-async-function"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "ancestor-check"
+kinds = ["yield_expr"]
+allowed = ["async_stmt", "async_funcdef"]
+stop = ["funcdef", "classdef", "lambdef"]
+mode = "inside"
+text = "^yieldfrom"
+message = "yield from statement in async function; use async for instead"
+'''
+
+[[rules]]
+id = "ward:python/named-expr-without-context"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "pylint"
+presets = ["standard", "strict"]
+body = '''
+check = "named-expr-without-context"
+message = "assignment expression used as a statement; bind the value with a plain assignment"
+'''

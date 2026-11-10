@@ -26,8 +26,8 @@ they can run constantly; outer layers are stricter and slower.
 
 After the agent edits or writes a file, its hook runs `ward check` on the edited files and returns
 the result to the agent. A failure includes the file, line, and rule, so the agent can fix it in the
-same turn without you explaining the rule. Only fast checks belong here, such as formatting,
-Checkstyle, and PMD. See [Claude Code](/integrations/claude-code/), [OpenCode](/integrations/opencode/),
+same turn without you explaining the rule. Only fast checks belong here, such as formatting
+and the Ward rules. See [Claude Code](/integrations/claude-code/), [OpenCode](/integrations/opencode/),
 and [other agents](/integrations/native-harnesses/).
 
 ### 2. Commit
@@ -40,8 +40,8 @@ can't see: files changed outside the agent, by a person, or by a tool. See
 ### 3. Push
 
 The `pre-push` hook adds slower local checks before code leaves your machine: compilation, tests,
-coverage, SpotBugs, and, with the `strict` preset, ArchUnit architecture rules and Maven Enforcer.
-For TypeScript and JavaScript projects, it adds `tsc`, the test runner, and dependency-cruiser.
+coverage, and, with the `strict` preset, Ward's architecture rules and Maven Enforcer.
+For TypeScript and JavaScript projects, it adds `tsc` and the test runner.
 
 ### 4. CI
 
@@ -56,8 +56,8 @@ layers always include the inner ones. The bare `ward check` runs the same checks
 To move a gate, edit its `profiles` list:
 
 ```toml
-[checks.spotbugs]
-command = "./mvnw spotbugs:check"
+[checks.mutation]
+command = "./mvnw pitest:mutationCoverage"
 profiles = ["pre-push", "ci"]   # not on every edit or commit
 ```
 

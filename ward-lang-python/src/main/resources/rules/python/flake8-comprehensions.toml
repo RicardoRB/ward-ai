@@ -1,0 +1,268 @@
+# Ruff's flake8-comprehensions rules (C4) for Python. Each is a text check on one node: a call
+# or a comprehension whose text shows an unnecessary wrapper, literal or comprehension.
+
+[[rules]]
+id = "ward:python/unnecessary-generator-list"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^list\((?![\[{])[^\[\]]*?for[^\[\]]*?in[^\[\]]*\)$'
+message = "list() around a generator; use a list comprehension"
+'''
+
+[[rules]]
+id = "ward:python/unnecessary-generator-set"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^set\((?![\[{])[^\[\]]*?for[^\[\]]*?in[^\[\]]*\)$'
+message = "set() around a generator; use a set comprehension"
+'''
+
+[[rules]]
+id = "ward:python/unnecessary-generator-dict"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^dict\((?![\[{])[^\[\]]*?for[^\[\]]*?in[^\[\]]*\)$'
+message = "dict() around a generator; use a dict comprehension"
+'''
+
+[[rules]]
+id = "ward:python/unnecessary-list-comprehension-set"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^set\(\[[^\]]*for[^\]]*\]\)$'
+message = "set() around a list comprehension; use a set comprehension"
+'''
+
+[[rules]]
+id = "ward:python/unnecessary-list-comprehension-dict"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^dict\(\[[^\]]*for[^\]]*\]\)$'
+message = "dict() around a list comprehension; use a dict comprehension"
+'''
+
+[[rules]]
+id = "ward:python/unnecessary-literal-set"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^set\((?![^\])]*for)(\[[^\]]+\]|\([^)]+\))\)$'
+message = "set() around a list or tuple literal; use a set literal"
+'''
+
+[[rules]]
+id = "ward:python/unnecessary-literal-dict"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^dict\(\s*\[\s*\([^\]]*\)\s*(,\s*\([^\]]*\)\s*)*\]\s*\)$'
+message = "dict() around a list of pairs; use a dict literal"
+'''
+
+[[rules]]
+id = "ward:python/unnecessary-collection-call"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^(dict|list|tuple)\(\s*\)$|^dict\(\s*\w+\s*=|^dict\(\s*\*\*'
+message = "empty or keyword collection call; use a literal"
+'''
+
+[[rules]]
+id = "ward:python/unnecessary-literal-within-tuple-call"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^tuple\((?![^\])]*for)(\[[^\]]*\]|\([^)]*\))\)$'
+message = "tuple() around a list or tuple literal; use a tuple literal"
+'''
+
+[[rules]]
+id = "ward:python/unnecessary-literal-within-list-call"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^list\((?![^\])]*for)(\[[^\]]*\]|\([^)]*\))\)$'
+message = "list() around a list or tuple literal; use a list literal"
+'''
+
+[[rules]]
+id = "ward:python/unnecessary-list-call"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^list\(\[[^\]]*for[^\]]*\]\)$'
+message = "list() around a list comprehension; drop the call"
+'''
+
+[[rules]]
+id = "ward:python/unnecessary-call-around-sorted"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^(list|reversed)\(\s*sorted\('
+message = "list() or reversed() around sorted() is redundant or reorders twice"
+'''
+
+[[rules]]
+id = "ward:python/unnecessary-double-cast-or-process"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^(sorted|list|tuple|set)\(\s*(list|tuple|set)\('
+message = "a collection call wrapped in another collection call is redundant"
+'''
+
+[[rules]]
+id = "ward:python/unnecessary-subscript-reversal"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^(reversed|set|sorted)\(\s*[\w.]+\[::-1\]\s*\)$'
+message = "reversing a sequence before reversed(), set() or sorted() is redundant"
+'''
+
+[[rules]]
+id = "ward:python/unnecessary-comprehension"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom"]
+text = '^(?:\[(\w+)for\1in(?![^\]]*if)[^\]]+\]|\{(\w+)for\2in(?![^}]*if)[^}]+\}|\{(\w+):(\w+)for\3,\4in(?![^}]*if)[^}]+\})$'
+message = "comprehension copies its iterable unchanged; use list(), set() or dict() instead"
+'''
+
+[[rules]]
+id = "ward:python/unnecessary-map"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^map\(lambda'
+message = "map() with a lambda; use a comprehension or generator"
+'''
+
+[[rules]]
+id = "ward:python/unnecessary-literal-within-dict-call"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^dict\(\s*\{[^}]*\}\s*\)$'
+message = "dict() around a dict literal; drop the call"
+'''
+
+[[rules]]
+id = "ward:python/unnecessary-comprehension-in-call"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^(any|all|sum|max|min|list|tuple)\(\[[^\]]*for[^\]]*\]\)$'
+message = "builtin call around a list comprehension; pass a generator"
+'''
+
+[[rules]]
+id = "ward:python/unnecessary-dict-comprehension-for-iterable"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom"]
+text = '^\{\w+:(None|True|False|\d+)for\w+in[^}]+\}$'
+message = "dict comprehension with a constant value; use dict.fromkeys()"
+'''

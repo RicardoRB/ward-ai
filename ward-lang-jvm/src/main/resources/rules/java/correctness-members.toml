@@ -1,0 +1,120 @@
+# SpotBugs CORRECTNESS patterns for Java that read the member facts of a class, the shapes of operands
+# and the overridden methods.
+
+[[rules]]
+id = "ward:java/sing-singleton-indirectly-implements-cloneable"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "inherited-signature"
+mode = "indirect-cloneable"
+message = "singleton inherits Cloneable from a superclass, so clone() can create a second instance"
+'''
+
+[[rules]]
+id = "ward:java/nm-wrong-package"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "inherited-signature"
+mode = "wrong-package"
+message = "method has the parameter type names of an inherited method but from other packages, so it overloads instead of overriding"
+'''
+
+[[rules]]
+id = "ward:java/he-use-of-unhashable-class"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "unhashable-key"
+use = "creation"
+message = "the key class defines equals but not hashCode, so this hashed collection hashes it by identity"
+'''
+
+[[rules]]
+id = "ward:java/he-signature-declares-hashing-of-unhashable-class"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "unhashable-key"
+use = "signature"
+message = "the key class defines equals but not hashCode, so a hashed collection of it hashes by identity"
+'''
+
+[[rules]]
+id = "ward:java/gc-unrelated-types"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "unrelated-argument"
+message = "the argument can never equal an element of this collection"
+'''
+
+[[rules]]
+id = "ward:java/ec-unrelated-class-and-interface"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "related-types"
+comparison = "equals"
+pair = "class-and-interface"
+message = "a final class never implements this interface, so equals is always false"
+'''
+
+[[rules]]
+id = "ward:java/ec-unrelated-interfaces"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "related-types"
+comparison = "equals"
+pair = "interfaces"
+message = "the two interface types are unrelated, so equals is probably always false"
+'''
+
+[[rules]]
+id = "ward:java/ec-unrelated-types-using-pointer-equality"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "related-types"
+comparison = "pointer"
+pair = "interfaces"
+message = "the two interface types are unrelated, so these references are never the same object"
+'''
+
+[[rules]]
+id = "ward:java/overriding-methods-must-invoke-super"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "must-invoke-super"
+message = "this method overrides one that must be called through super, and it does not call super"
+'''

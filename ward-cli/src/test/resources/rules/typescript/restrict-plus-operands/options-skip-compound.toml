@@ -1,0 +1,2 @@
+allow-number-and-string = false
+skip-compound-assignments = true

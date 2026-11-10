@@ -1,0 +1,173 @@
+# SpotBugs rules for Java that read where a call sits, and method and class text patterns (standard preset).
+
+[[rules]]
+id = "ward:java/sc-start-in-ctor"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.lang.Thread"]
+names = ["start"]
+inside = ["constructorDeclaration"]
+message = "thread started in a constructor; a subclass may see a partly built object"
+'''
+
+[[rules]]
+id = "ward:java/wa-await-not-in-loop"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.util.concurrent.locks.Condition"]
+names = ["await"]
+not-inside = ["statement>'while'", "statement>'for'", "statement>'do'"]
+message = "await called outside a loop that re-checks its condition"
+'''
+
+[[rules]]
+id = "ward:java/stcal-invoke-on-static-calendar-instance"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+names = ["get"]
+receiver-types = ["java.util.Calendar"]
+text = '^[A-Z][A-Z0-9_]*\.'
+message = "Calendar in a static field is not thread safe; create one per use"
+'''
+
+[[rules]]
+id = "ward:java/stcal-invoke-on-static-date-format-instance"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+names = ["format"]
+receiver-types = ["java.text.DateFormat", "java.text.SimpleDateFormat"]
+text = '^[A-Z][A-Z0-9_]*\.'
+message = "DateFormat in a static field is not thread safe; create one per use"
+'''
+
+[[rules]]
+id = "ward:java/ul-unreleased-lock"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^(?!.*\.unlock\(\)).*\.lock\(\)'
+message = "lock acquired and never released in this method; unlock it in a finally block"
+'''
+
+[[rules]]
+id = "ward:java/ul-unreleased-lock-exception-path"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^(?!.*finally\{[^}]*\.unlock\(\)).*\.lock\(\).*\.unlock\(\)'
+message = "lock released outside a finally block, so an exception leaves it held"
+'''
+
+[[rules]]
+id = "ward:java/cn-idiom"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^(?=class[^{]*implements[^{]*Cloneable)(?!.*Objectclone\()'
+message = "class implements Cloneable but does not define clone"
+'''
+
+[[rules]]
+id = "ward:java/cn-idiom-no-super-call"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^(?!.*super\.clone\()[\w.]+clone\(\)(?:throws[\w.,]+)?\{'
+message = "clone does not call super.clone()"
+'''
+
+[[rules]]
+id = "ward:java/fi-nullify-super"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^voidfinalize\(\)(?:throws[\w.,]+)?\{\}$'
+message = "empty finalize overrides and disables the superclass finalizer; call super.finalize()"
+'''
+
+[[rules]]
+id = "ward:java/it-no-such-element"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^(?!.*NoSuchElementException)class[^{]*implements[^{]*Iterator<[^{]*\{.*next\(\)'
+message = "Iterator whose next never throws NoSuchElementException"
+'''
+
+[[rules]]
+id = "ward:java/eq-compareto-use-object-equals"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^(?!.*booleanequals\()class[^{]*implements[^{]*Comparable<[^{]*\{.*intcompareTo\('
+message = "class defines compareTo but uses Object.equals; override equals consistently"
+'''
+
+[[rules]]
+id = "ward:java/de-might-drop"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["catchClause"]
+text = '^catch\((?:final)?(?:java\.lang\.)?(?:Exception|Throwable)\w+\)\{\}$'
+message = "Exception or Throwable caught and dropped; handle or rethrow it"
+'''

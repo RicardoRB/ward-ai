@@ -1,0 +1,51 @@
+# Dead-code rules for Python, replacing vulture's V101 (attribute), V104 (import), V105 (method) and
+# V106 (property). unused-import is checked per file; the other three are whole-run checks in
+# UnusedDefinitionFindings that report a member no file of the project names.
+
+[[rules]]
+id = "ward:python/unused-import"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-import-binding"
+message = "'{value}' is imported but never used"
+'''
+
+[[rules]]
+id = "ward:python/unused-method"
+language = "python"
+capability = "SYMBOLS"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-definition"
+message = "unused method"
+'''
+
+[[rules]]
+id = "ward:python/unused-property"
+language = "python"
+capability = "SYMBOLS"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-definition"
+message = "unused property"
+'''
+
+[[rules]]
+id = "ward:python/unused-attribute"
+language = "python"
+capability = "SYMBOLS"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-definition"
+message = "unused attribute"
+'''

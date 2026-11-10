@@ -1,0 +1,290 @@
+# Size and complexity rules for Java. Each rule mirrors one Checkstyle 14.3.0 check of the sizes and
+# metrics groups, with the same option names in kebab-case. The standard preset keeps the limits of
+# this repository's config/checkstyle.xml and google_checks.xml; the other defaults are Checkstyle's.
+# The body of each rule is a TOML description of one check; see DeclarativeChecks.
+
+[[rules]]
+id = "ward:java/file-length"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
+body = '''
+check = "lines"
+kinds = ["compilationunit"]
+max = 500
+message = "file has {value} lines; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/method-length"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
+options.count-empty = { type = "boolean" }
+body = '''
+check = "lines"
+kinds = ["methodBody"]
+max = 60
+count-empty = true
+message = "method body has {value} lines; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/parameter-count"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 0 }
+body = '''
+check = "descendant-count"
+kinds = ["formalParameters"]
+counted = ["formalParameter"]
+max = 5
+message = "method declares {value} parameters; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/line-length"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
+options.tab-width = { type = "integer", min = 1 }
+options.ignore-pattern = { type = "regex" }
+body = '''
+check = "line-length"
+max = 100
+tab-width = 8
+ignore-pattern = '^package.*|^import.*|href\s*=\s*"[^"]*"|http://|https://|ftp://'
+message = "line is {value} characters long; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/anon-inner-length"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "sizes"
+presets = ["strict"]
+options.max = { type = "integer", min = 1 }
+body = '''
+check = "anonymous-lines"
+max = 20
+message = "anonymous class body has {value} lines; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/executable-statement-count"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "sizes"
+presets = ["strict"]
+options.max = { type = "integer", min = 1 }
+body = '''
+check = "count"
+kinds = ["methodDeclaration", "constructorDeclaration"]
+counted = ["statement", "localVariableDeclaration"]
+skip = ["classBody"]
+max = 30
+message = "method has {value} executable statements; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/lambda-body-length"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "sizes"
+presets = ["strict"]
+options.max = { type = "integer", min = 1 }
+body = '''
+check = "lines"
+kinds = ["lambdaBody"]
+max = 10
+message = "lambda body has {value} lines; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/method-count"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "sizes"
+presets = ["strict"]
+options.max-total = { type = "integer", min = 0 }
+options.max-private = { type = "integer", min = 0 }
+options.max-package = { type = "integer", min = 0 }
+options.max-protected = { type = "integer", min = 0 }
+options.max-public = { type = "integer", min = 0 }
+body = '''
+check = "method-count"
+max-total = 100
+max-private = 100
+max-package = 100
+max-protected = 100
+max-public = 100
+message = "type declares {value} methods of one visibility; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/outer-type-number"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "sizes"
+presets = ["strict"]
+options.max = { type = "integer", min = 0 }
+body = '''
+check = "count"
+kinds = ["compilationunit"]
+counted = ["typeDeclaration"]
+max = 1
+message = "file declares {value} top-level types; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/record-component-number"
+language = "java"
+min-java-release = 16
+capability = "SYNTAX"
+severity = "error"
+category = "sizes"
+presets = ["strict"]
+options.max = { type = "integer", min = 0 }
+body = '''
+check = "count"
+kinds = ["recordHeader"]
+counted = ["recordComponent"]
+max = 8
+message = "record declares {value} components; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/cyclomatic-complexity"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "metrics"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
+body = '''
+check = "descendant-count"
+kinds = ["methodDeclaration", "constructorDeclaration"]
+counted = ["'if'", "'for'", "'while'", "'do'", "'case'", "'catch'", "'?'", "'&&'", "'||'"]
+requires-sibling = { "'?'" = "':'" }
+cancelled-by = { "'while'" = "'do'" }
+base = 1
+max = 10
+message = "cyclomatic complexity is {value}; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/boolean-expression-complexity"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "metrics"
+presets = ["strict"]
+options.max = { type = "integer", min = 0 }
+body = '''
+check = "boolean-operators"
+max = 3
+message = "boolean expression has {value} logical operators; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/class-data-abstraction-coupling"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "metrics"
+presets = ["strict"]
+options.max = { type = "integer", min = 0 }
+options.excluded-classes = { type = "string-list" }
+body = '''
+check = "class-coupling"
+types = ["createdName"]
+excluded-classes = ["ArrayIndexOutOfBoundsException", "ArrayList", "Boolean", "Byte", "Character", "Class", "Collection", "Deprecated", "Deque", "Double", "EnumSet", "Exception", "Float", "FunctionalInterface", "HashMap", "HashSet", "IllegalArgumentException", "IllegalStateException", "IndexOutOfBoundsException", "IOException", "Integer", "LinkedHashMap", "LinkedHashSet", "LinkedList", "List", "Long", "Map", "NullPointerException", "Object", "Optional", "OutOfMemoryError", "Override", "Queue", "RuntimeException", "SafeVarargs", "SecurityException", "Set", "Short", "SortedMap", "SortedSet", "Stream", "String", "StringBuffer", "StringBuilder", "SuppressWarnings", "Throwable", "TreeMap", "TreeSet", "UnsupportedOperationException", "Void", "boolean", "byte", "char", "double", "float", "int", "long", "short", "void"]
+max = 7
+message = "class instantiates {value} types; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/class-fan-out-complexity"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "metrics"
+presets = ["strict"]
+options.max = { type = "integer", min = 0 }
+options.excluded-classes = { type = "string-list" }
+body = '''
+check = "class-coupling"
+types = ["classOrInterfaceType", "createdName"]
+excluded-classes = ["ArrayIndexOutOfBoundsException", "ArrayList", "Boolean", "Byte", "Character", "Class", "Collection", "Deprecated", "Deque", "Double", "EnumSet", "Exception", "Float", "FunctionalInterface", "HashMap", "HashSet", "IllegalArgumentException", "IllegalStateException", "IndexOutOfBoundsException", "IOException", "Integer", "LinkedHashMap", "LinkedHashSet", "LinkedList", "List", "Long", "Map", "NullPointerException", "Object", "Optional", "OutOfMemoryError", "Override", "Queue", "RuntimeException", "SafeVarargs", "SecurityException", "Set", "Short", "SortedMap", "SortedSet", "Stream", "String", "StringBuffer", "StringBuilder", "SuppressWarnings", "Throwable", "TreeMap", "TreeSet", "UnsupportedOperationException", "Void", "boolean", "byte", "char", "double", "float", "int", "long", "short", "void"]
+max = 20
+message = "class depends on {value} types; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/java-ncss"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "metrics"
+presets = ["strict"]
+options.method-maximum = { type = "integer", min = 0 }
+options.class-maximum = { type = "integer", min = 0 }
+options.file-maximum = { type = "integer", min = 0 }
+body = '''
+check = "ncss"
+method-maximum = 50
+class-maximum = 1500
+file-maximum = 2000
+message = "non-commenting statements {value}; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/n-path-complexity"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "metrics"
+presets = ["strict"]
+options.max = { type = "integer", min = 0 }
+body = '''
+check = "npath"
+max = 200
+message = "NPath complexity is {value}; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/cognitive-complexity"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "metrics"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
+body = '''
+check = "cognitive-complexity"
+kinds = ["methodDeclaration", "constructorDeclaration"]
+structures = ["'if'", "'for'", "'while'", "'do'", "'switch'", "'catch'", "'?'"]
+requires-sibling = { "'?'" = "':'" }
+cancelled-by = { "'while'" = "'do'" }
+flat = ["'&&'", "'||'"]
+chaining = ["'else'"]
+max = 15
+message = "cognitive complexity is {value}; the limit is {max}"
+'''

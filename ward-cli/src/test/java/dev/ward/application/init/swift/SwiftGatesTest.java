@@ -1,0 +1,88 @@
+package dev.ward.application.init.swift;
+
+import static dev.ward.application.init.swift.SwiftGateFixtures.swiftPm;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import dev.ward.domain.init.InitGateOption;
+import dev.ward.domain.init.QualityPreset;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import org.junit.jupiter.api.Test;
+
+/** Checks the exact Swift gate commands, their platform and minimum, and their order. */
+class SwiftGatesTest {
+  private static final String COVERAGE = "swift-coverage";
+
+  @Test
+  void swiftPackageGatesRunSwiftPmInOrder() {
+    final List<InitGateOption> gates = gates(swiftPm(QualityPreset.STANDARD));
+
+    assertThat(gates.stream().map(InitGateOption::id))
+        .containsExactly("swift-build", "swift-test", COVERAGE);
+    assertThat(command(gates, "swift-build")).containsExactly("swift", "build", "--build-tests");
+    assertThat(command(gates, "swift-test"))
+        .containsExactly("swift", "test", "--enable-code-coverage");
+    assertThat(command(gates, COVERAGE)).containsExactly("swift", "test", "--show-codecov-path");
+    assertThat(setting(gates, COVERAGE, "minimum")).isEqualTo("80");
+  }
+
+  @Test
+  void xcodeGatesRunTheSchemeWithPlatformAndCoverageFromTheResultBundle() {
+    final List<InitGateOption> gates =
+        gates(SwiftGateFixtures.xcode("iOS Simulator", Optional.empty()));
+
+    assertThat(gates.stream().map(InitGateOption::id)).containsExactly("xcodebuild-test", COVERAGE);
+    assertThat(command(gates, "xcodebuild-test"))
+        .containsExactly("xcodebuild", "test", "-scheme", "Shop", "-enableCodeCoverage", "YES");
+    assertThat(setting(gates, "xcodebuild-test", "platform")).isEqualTo("iOS Simulator");
+    assertThat(command(gates, COVERAGE))
+        .containsExactly(
+            "xcrun", "xccov", "view", "--report", "--json", ".ward/reports/xcode/tests.xcresult");
+    assertThat(setting(gates, COVERAGE, "minimum")).isEqualTo("80");
+  }
+
+  @Test
+  void xcodeTestUsesTheWorkspaceWhenThereIsOne() {
+    final List<InitGateOption> gates =
+        gates(SwiftGateFixtures.xcode("macOS", Optional.of("Shop.xcworkspace")));
+
+    assertThat(command(gates, "xcodebuild-test"))
+        .containsExactly(
+            "xcodebuild",
+            "test",
+            "-workspace",
+            "Shop.xcworkspace",
+            "-scheme",
+            "Shop",
+            "-enableCodeCoverage",
+            "YES");
+    assertThat(setting(gates, "xcodebuild-test", "platform")).isEqualTo("macOS");
+  }
+
+  @Test
+  void standardPresetNamesEveryGateThatTheToolHasAndStrictAddsNothing() {
+    assertThat(new SwiftGates().presetGates(QualityPreset.STANDARD))
+        .containsExactly("swift-build", "swift-test", "xcodebuild-test", COVERAGE);
+    assertThat(new SwiftGates().presetGates(QualityPreset.STRICT))
+        .containsExactlyElementsOf(new SwiftGates().presetGates(QualityPreset.STANDARD));
+  }
+
+  /** Returns the gates the tools select, in order. */
+  private static List<InitGateOption> gates(final SwiftTools tools) {
+    return new SwiftGates().analysisGates(tools);
+  }
+
+  /** Returns the command of the gate {@code id}. */
+  private static List<String> command(final List<InitGateOption> gates, final String id) {
+    return gates.stream().filter(gate -> gate.id().equals(id)).findFirst().orElseThrow().command();
+  }
+
+  /** Returns the setting {@code key} of the gate {@code id}. */
+  private static String setting(
+      final List<InitGateOption> gates, final String id, final String key) {
+    final Map<String, String> settings =
+        gates.stream().filter(gate -> gate.id().equals(id)).findFirst().orElseThrow().settings();
+    return settings.get(key);
+  }
+}

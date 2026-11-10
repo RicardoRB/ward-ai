@@ -1,0 +1,7 @@
+class Passing {
+  int[] a = {1, 2};
+  int[] b = {
+    1,
+    2,
+  };
+}

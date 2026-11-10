@@ -72,7 +72,7 @@ export const opencodeDriver: LiveDriver = {
     {
       id: "edit-check-feedback",
       async execute(context): Promise<Assertion[]> {
-        // The fixture's only gate runs the stub mvnw; a FAIL file makes it fail deterministically.
+        // The fixture's stub command gate runs the stub mvnw; a FAIL file makes it fail deterministically.
         writeFileSync(join(context.fixture.root, "FAIL"), "");
         const result = await turn(context, "Use the write tool to create the file src/Smoke.java containing `class Smoke {}`. Then stop.");
         const checks = context.invocations().filter((i) => sameArgv(i.argv, CHECK));

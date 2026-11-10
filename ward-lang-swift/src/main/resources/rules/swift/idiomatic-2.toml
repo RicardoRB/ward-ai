@@ -1,0 +1,128 @@
+# Idiomatic rules for Swift, part 2 of SwiftLint's idiomatic rules that match a node's compact text.
+
+[[rules]]
+id = "ward:swift/unavailable-condition"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["if_statement"]
+text = '^if#(available|unavailable)\([^)]*\)\{\}'
+message = "use #unavailable or #available instead of an empty #available or #unavailable body"
+'''
+
+[[rules]]
+id = "ward:swift/pattern-matching-keywords"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["enum_case_pattern"]
+text = '\((let|var)\w+,(let|var)\w+'
+message = "combine the pattern matching keywords before the case pattern"
+'''
+
+[[rules]]
+id = "ward:swift/private-over-fileprivate"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["class_declaration", "struct_declaration", "enum_declaration", "actor_declaration", "protocol_declaration", "function_declaration", "constant_declaration", "variable_declaration", "typealias_declaration"]
+not-inside = ["class_body", "struct_body", "enum_body", "actor_body", "protocol_body", "extension_body", "code_block"]
+text = '^fileprivate(?!\(set\))'
+message = "prefer private over fileprivate for {value}"
+'''
+
+[[rules]]
+id = "ward:swift/redundant-void-return"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-redundant-void-return"
+message = "redundant Void return type; remove the return clause"
+'''
+
+[[rules]]
+id = "ward:swift/for-where"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-for-where"
+message = "prefer a where clause over a single if in a for loop"
+'''
+
+[[rules]]
+id = "ward:swift/static-over-final-class"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-static-over-final-class"
+message = "prefer static over class in a final class"
+'''
+
+[[rules]]
+id = "ward:swift/generic-type-name"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-generic-type-name"
+message = "generic type name should be alphanumeric, start with an uppercase letter and have at most 20 characters"
+'''
+
+[[rules]]
+id = "ward:swift/duplicate-imports"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-duplicate-imports"
+message = "imports should be unique"
+'''
+
+[[rules]]
+id = "ward:swift/void-function-in-ternary"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-void-function-in-ternary"
+message = "avoid a ternary to call void functions; use an if statement"
+'''
+
+[[rules]]
+id = "ward:swift/unneeded-synthesized-initializer"
+language = "swift"
+capability = "SYNTAX"
+severity = "warning"
+category = "idiomatic"
+presets = ["standard", "strict"]
+body = '''
+check = "swift-unneeded-synthesized-initializer"
+message = "explicit initializer is the same as the synthesized memberwise initializer; remove it"
+'''

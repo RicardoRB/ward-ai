@@ -1,0 +1,76 @@
+# SpotBugs patterns for Java (issue 316), standard rows left over from the other batches. Rules match the compact
+# text of a node (no separators between tokens) and so approximate SpotBugs' detectors.
+
+[[rules]]
+id = "ward:java/nm-field-naming-convention"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["fieldDeclaration"]
+not-modifiers = ["final"]
+name = "identifier"
+skip = ["annotation", "typeType"]
+pattern = '^[a-z_$].*$'
+message = "field name {value} should start with a lower-case letter"
+'''
+
+[[rules]]
+id = "ward:java/rec-catch-exception"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^try\{(?:(?!throw|new|\()[\s\S])*?\}catch\((?:java\.lang\.)?Exception\w+\)'
+message = "catches Exception although the try block throws no checked exception; catch RuntimeException or a narrower type"
+'''
+
+[[rules]]
+id = "ward:java/dmi-thread-passed-where-runnable-expected"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^newThread\(newThread\('
+message = "a Thread is passed where a Runnable is expected"
+'''
+
+[[rules]]
+id = "ward:java/int-vacuous-comparison"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+with-child = ["'<'", "'>'", "'<='", "'>='"]
+text = '(?:>=Integer\.MIN_VALUE|<Integer\.MIN_VALUE|<=Integer\.MAX_VALUE|>Integer\.MAX_VALUE)$'
+message = "this int comparison with Integer.MIN_VALUE or MAX_VALUE is always true or always false"
+'''
+
+[[rules]]
+id = "ward:java/np-equals-should-handle-null-argument"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^booleanequals\(Object(\w+)\)\{(?!.*(?:\1==null|null==\1|\1!=null|\1instanceof|Objects\.)).*\1\.(?:get|hash|equals)'
+message = "equals dereferences its argument without a null check"
+'''

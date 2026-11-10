@@ -1,0 +1,63 @@
+module
+  import List @3:18 from java.util.List
+  import max @4:30 from java.lang.Math.max
+  class Shapes @6:14
+  class @6:8
+    variable field @7:15
+    constant LIMIT @8:20 [const]
+    function measure @14:7
+    class Inner @30:9
+    function @10:3
+      parameter seed @10:14
+      block @10:20
+    function @14:3
+      parameter names @14:28
+      parameter bound @14:45
+      block @14:52
+        variable total @15:9
+        variable unused @16:9
+        variable shadow @23:9
+        block @17:5
+          variable i @17:14
+          block @17:37
+        block @20:5
+          variable name @20:17 [destructured]
+          block @20:31
+        block @24:5
+          variable shadow2 @25:11
+    class @30:3
+      variable own @31:9
+      function touch @33:10
+      function @33:5
+        block @33:18
+references
+  7:15 field write -> class variable field @7:15
+  8:20 LIMIT write -> class constant LIMIT @8:20
+  11:18 seed read -> function parameter seed @10:14
+  15:9 total write -> block variable total @15:9
+  15:17 bound read -> function parameter bound @14:45
+  15:25 field read -> class variable field @7:15
+  16:9 unused write -> block variable unused @16:9
+  17:14 i write -> block variable i @17:14
+  17:21 i read -> block variable i @17:14
+  17:25 bound read -> function parameter bound @14:45
+  17:32 i read -> block variable i @17:14
+  17:32 i write -> block variable i @17:14
+  18:7 total read -> block variable total @15:9
+  18:7 total write -> block variable total @15:9
+  18:16 i read -> block variable i @17:14
+  20:17 name write -> block variable name @20:17
+  20:24 names read -> function parameter names @14:28
+  21:7 total read -> block variable total @15:9
+  21:7 total write -> block variable total @15:9
+  21:16 name read -> block variable name @20:17
+  23:9 shadow write -> block variable shadow @23:9
+  25:11 shadow2 write -> block variable shadow2 @25:11
+  25:21 shadow read -> block variable shadow @23:9
+  27:16 total read -> block variable total @15:9
+  27:23 LIMIT read -> class constant LIMIT @8:20
+  27:32 missing read -> unresolved
+  34:7 field read -> class variable field @7:15
+  34:7 field write -> class variable field @7:15
+  35:7 own write -> class variable own @31:9
+  35:13 field read -> class variable field @7:15

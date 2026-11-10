@@ -1,0 +1,26 @@
+{
+  "3:5-3:13": {
+    "call": {
+      "declaring": {
+        "name": "java.util.concurrent.locks.Condition"
+      },
+      "name": "await",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "5:7-5:15": {
+    "call": {
+      "declaring": {
+        "name": "java.util.concurrent.locks.Condition"
+      },
+      "name": "await",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  }
+}

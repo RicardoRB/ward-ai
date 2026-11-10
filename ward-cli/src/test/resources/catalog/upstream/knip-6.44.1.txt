@@ -1,0 +1,20 @@
+# knip 6.44.1 issue types.
+# Generated with: npm i knip@6.44.1; node -e "import('knip/dist/constants.js').then(m=>console.log(m.ISSUE_TYPES))".
+# format: <rule id><TAB><group>
+binaries	issue-type
+catalog	issue-type
+catalogReferences	issue-type
+cycles	issue-type
+dependencies	issue-type
+devDependencies	issue-type
+duplicates	issue-type
+enumMembers	issue-type
+exports	issue-type
+files	issue-type
+namespaceMembers	issue-type
+nsExports	issue-type
+nsTypes	issue-type
+optionalPeerDependencies	issue-type
+types	issue-type
+unlisted	issue-type
+unresolved	issue-type

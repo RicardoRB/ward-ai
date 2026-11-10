@@ -1,0 +1,15 @@
+# Status of the ktlint rows in kotlin: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+backing-property-naming = "implemented"
+enum-entry-name-case = "implemented"
+filename = "implemented"
+function-expression-body = "implemented"
+kdoc = "implemented"
+no-consecutive-comments = "implemented"
+no-empty-file = "implemented"
+no-single-line-block-comment = "implemented"
+no-unit-return = "implemented"
+string-template = "implemented"
+unnecessary-parentheses-before-trailing-lambda = "implemented"
+value-argument-comment = "implemented"
+value-parameter-comment = "implemented"

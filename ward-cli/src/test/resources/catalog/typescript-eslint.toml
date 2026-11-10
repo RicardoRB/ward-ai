@@ -1,0 +1,600 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "adjacent-overload-signatures"
+typescript-eslint = ["adjacent-overload-signatures"]
+biome = ["useAdjacentOverloadSignatures"]
+
+[[rule]]
+name = "await-thenable"
+typescript-eslint = ["await-thenable"]
+biome = ["useAwaitThenable"]
+
+[[rule]]
+name = "ban-ts-comment"
+typescript-eslint = ["ban-ts-comment"]
+biome = ["noTsIgnore"]
+
+[[rule]]
+name = "ban-tslint-comment"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["ban-tslint-comment"]
+
+[[rule]]
+name = "class-literal-property-style"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["class-literal-property-style"]
+
+[[rule]]
+name = "consistent-generic-constructors"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["consistent-generic-constructors"]
+
+[[rule]]
+name = "consistent-indexed-object-style"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["consistent-indexed-object-style"]
+
+[[rule]]
+name = "consistent-type-assertions"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["consistent-type-assertions"]
+
+[[rule]]
+name = "consistent-type-definitions"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["consistent-type-definitions"]
+biome = ["useConsistentTypeDefinitions"]
+
+[[rule]]
+name = "consistent-type-exports"
+typescript-eslint = ["consistent-type-exports"]
+biome = ["useExportType"]
+
+[[rule]]
+name = "consistent-type-imports"
+typescript-eslint = ["consistent-type-imports"]
+biome = ["useImportType"]
+
+[[rule]]
+name = "explicit-function-return-type"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["explicit-function-return-type"]
+
+[[rule]]
+name = "explicit-member-accessibility"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["explicit-member-accessibility"]
+
+[[rule]]
+name = "explicit-module-boundary-types"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["explicit-module-boundary-types"]
+
+[[rule]]
+name = "max-params"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["max-params"]
+biome = ["useMaxParams"]
+
+[[rule]]
+name = "method-signature-style"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["method-signature-style"]
+biome = ["useConsistentMethodSignatures"]
+
+[[rule]]
+name = "naming-convention"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["naming-convention"]
+biome = ["useNamingConvention"]
+
+[[rule]]
+name = "no-array-delete"
+typescript-eslint = ["no-array-delete"]
+
+[[rule]]
+name = "no-base-to-string"
+typescript-eslint = ["no-base-to-string"]
+biome = ["noBaseToString"]
+
+[[rule]]
+name = "no-confusing-non-null-assertion"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["no-confusing-non-null-assertion"]
+
+[[rule]]
+name = "no-confusing-void-expression"
+presets = ["strict"]
+category = "problem"
+typescript-eslint = ["no-confusing-void-expression"]
+
+[[rule]]
+name = "no-deprecated"
+presets = ["strict"]
+category = "problem"
+typescript-eslint = ["no-deprecated"]
+
+[[rule]]
+name = "no-duplicate-enum-values"
+not-applicable = { javascript = "TypeScript enums have no JavaScript counterpart" }
+typescript-eslint = ["no-duplicate-enum-values"]
+biome = ["noDuplicateEnumValues"]
+
+[[rule]]
+name = "no-duplicate-type-constituents"
+typescript-eslint = ["no-duplicate-type-constituents"]
+
+[[rule]]
+name = "no-dynamic-delete"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["no-dynamic-delete"]
+
+[[rule]]
+name = "no-empty-object-type"
+typescript-eslint = ["no-empty-object-type"]
+
+[[rule]]
+name = "no-explicit-any"
+not-applicable = { javascript = "TypeScript type annotations have no JavaScript counterpart" }
+typescript-eslint = ["no-explicit-any"]
+biome = ["noExplicitAny"]
+
+[[rule]]
+name = "no-extra-non-null-assertion"
+not-applicable = { javascript = "the TypeScript non-null assertion has no JavaScript counterpart" }
+typescript-eslint = ["no-extra-non-null-assertion"]
+biome = ["noExtraNonNullAssertion"]
+
+[[rule]]
+name = "no-extraneous-class"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["no-extraneous-class"]
+
+[[rule]]
+name = "no-floating-promises"
+not-applicable = { javascript = "the rule is type-aware TypeScript (Biome lang ts) with no JavaScript counterpart" }
+typescript-eslint = ["no-floating-promises"]
+biome = ["noFloatingPromises"]
+
+[[rule]]
+name = "no-for-in-array"
+typescript-eslint = ["no-for-in-array"]
+
+[[rule]]
+name = "no-generated-empty-object-type"
+presets = ["strict"]
+category = "problem"
+typescript-eslint = ["no-generated-empty-object-type"]
+
+[[rule]]
+name = "no-import-type-side-effects"
+presets = ["strict"]
+category = "problem"
+typescript-eslint = ["no-import-type-side-effects"]
+
+[[rule]]
+name = "no-inferrable-types"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["no-inferrable-types"]
+biome = ["noInferrableTypes"]
+
+[[rule]]
+name = "no-invalid-void-type"
+presets = ["strict"]
+category = "problem"
+typescript-eslint = ["no-invalid-void-type"]
+
+[[rule]]
+name = "no-magic-numbers"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["no-magic-numbers"]
+swiftlint = ["no_magic_numbers"]
+biome = ["noMagicNumbers"]
+
+[[rule]]
+name = "no-meaningless-void-operator"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["no-meaningless-void-operator"]
+biome = ["noMeaninglessVoidOperator"]
+
+[[rule]]
+name = "no-misused-new"
+typescript-eslint = ["no-misused-new"]
+
+[[rule]]
+name = "no-misused-promises"
+not-applicable = { javascript = "the rule is type-aware TypeScript (Biome lang ts) with no JavaScript counterpart" }
+typescript-eslint = ["no-misused-promises"]
+biome = ["noMisusedPromises"]
+
+[[rule]]
+name = "no-misused-spread"
+presets = ["strict"]
+category = "problem"
+typescript-eslint = ["no-misused-spread"]
+
+[[rule]]
+name = "no-mixed-enums"
+presets = ["strict"]
+category = "problem"
+typescript-eslint = ["no-mixed-enums"]
+
+[[rule]]
+name = "no-namespace"
+not-applicable = { javascript = "JavaScript has no TypeScript namespaces" }
+typescript-eslint = ["no-namespace"]
+biome = ["noNamespace"]
+
+[[rule]]
+name = "no-non-null-asserted-nullish-coalescing"
+presets = ["strict"]
+category = "problem"
+typescript-eslint = ["no-non-null-asserted-nullish-coalescing"]
+
+[[rule]]
+name = "no-non-null-asserted-optional-chain"
+not-applicable = { javascript = "the TypeScript non-null assertion has no JavaScript counterpart" }
+typescript-eslint = ["no-non-null-asserted-optional-chain"]
+biome = ["noNonNullAssertedOptionalChain"]
+
+[[rule]]
+name = "no-non-null-assertion"
+typescript-eslint = ["no-non-null-assertion"]
+biome = ["noNonNullAssertion"]
+not-applicable = { javascript = "JavaScript has no non-null assertion syntax; the postfix ! is a TypeScript-only construct" }
+
+[[rule]]
+name = "no-redundant-type-constituents"
+typescript-eslint = ["no-redundant-type-constituents"]
+
+[[rule]]
+name = "no-require-imports"
+typescript-eslint = ["no-require-imports"]
+
+[[rule]]
+name = "no-restricted-types"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["no-restricted-types"]
+biome = ["noRestrictedTypes"]
+
+[[rule]]
+name = "no-this-alias"
+typescript-eslint = ["no-this-alias"]
+biome = ["noUselessThisAlias"]
+
+[[rule]]
+name = "no-unnecessary-boolean-literal-compare"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["no-unnecessary-boolean-literal-compare"]
+
+[[rule]]
+name = "no-unnecessary-condition"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["no-unnecessary-condition"]
+
+[[rule]]
+name = "no-unnecessary-parameter-property-assignment"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["no-unnecessary-parameter-property-assignment"]
+
+[[rule]]
+name = "no-unnecessary-qualifier"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["no-unnecessary-qualifier"]
+
+[[rule]]
+name = "no-unnecessary-template-expression"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["no-unnecessary-template-expression"]
+biome = ["noUnnecessaryTemplateExpression"]
+
+[[rule]]
+name = "no-unnecessary-type-arguments"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["no-unnecessary-type-arguments"]
+
+[[rule]]
+name = "no-unnecessary-type-assertion"
+typescript-eslint = ["no-unnecessary-type-assertion"]
+
+[[rule]]
+name = "no-unnecessary-type-constraint"
+typescript-eslint = ["no-unnecessary-type-constraint"]
+biome = ["noUselessTypeConstraint"]
+
+[[rule]]
+name = "no-unnecessary-type-conversion"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["no-unnecessary-type-conversion"]
+biome = ["noUselessTypeConversion"]
+
+[[rule]]
+name = "no-unnecessary-type-parameters"
+presets = ["strict"]
+category = "problem"
+typescript-eslint = ["no-unnecessary-type-parameters"]
+
+[[rule]]
+name = "no-unsafe-argument"
+typescript-eslint = ["no-unsafe-argument"]
+
+[[rule]]
+name = "no-unsafe-assignment"
+typescript-eslint = ["no-unsafe-assignment"]
+
+[[rule]]
+name = "no-unsafe-call"
+typescript-eslint = ["no-unsafe-call"]
+
+[[rule]]
+name = "no-unsafe-declaration-merging"
+not-applicable = { javascript = "TypeScript declaration merging has no JavaScript counterpart" }
+typescript-eslint = ["no-unsafe-declaration-merging"]
+biome = ["noUnsafeDeclarationMerging"]
+
+[[rule]]
+name = "no-unsafe-enum-assignment"
+presets = ["strict"]
+category = "problem"
+typescript-eslint = ["no-unsafe-enum-assignment"]
+
+[[rule]]
+name = "no-unsafe-enum-comparison"
+typescript-eslint = ["no-unsafe-enum-comparison"]
+
+[[rule]]
+name = "no-unsafe-function-type"
+typescript-eslint = ["no-unsafe-function-type"]
+
+[[rule]]
+name = "no-unsafe-member-access"
+typescript-eslint = ["no-unsafe-member-access"]
+
+[[rule]]
+name = "no-unsafe-return"
+typescript-eslint = ["no-unsafe-return"]
+
+[[rule]]
+name = "no-unsafe-type-assertion"
+presets = ["strict"]
+category = "problem"
+typescript-eslint = ["no-unsafe-type-assertion"]
+biome = ["noUnsafeTypeAssertion"]
+
+[[rule]]
+name = "no-unsafe-unary-minus"
+typescript-eslint = ["no-unsafe-unary-minus"]
+
+[[rule]]
+name = "no-useless-default-assignment"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["no-useless-default-assignment"]
+
+[[rule]]
+name = "no-useless-empty-export"
+not-applicable = { javascript = "TypeScript export declarations have no JavaScript counterpart" }
+typescript-eslint = ["no-useless-empty-export"]
+biome = ["noUselessEmptyExport"]
+
+[[rule]]
+name = "no-wrapper-object-types"
+typescript-eslint = ["no-wrapper-object-types"]
+
+[[rule]]
+name = "non-nullable-type-assertion-style"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["non-nullable-type-assertion-style"]
+
+[[rule]]
+name = "only-throw-error"
+typescript-eslint = ["only-throw-error"]
+biome = ["useThrowOnlyError"]
+
+[[rule]]
+name = "parameter-properties"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["parameter-properties"]
+biome = ["noParameterProperties"]
+
+[[rule]]
+name = "prefer-as-const"
+typescript-eslint = ["prefer-as-const"]
+biome = ["useAsConstAssertion"]
+
+[[rule]]
+name = "prefer-enum-initializers"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["prefer-enum-initializers"]
+biome = ["useEnumInitializers"]
+
+[[rule]]
+name = "prefer-find"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["prefer-find"]
+
+[[rule]]
+name = "prefer-for-of"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["prefer-for-of"]
+biome = ["useForOf"]
+
+[[rule]]
+name = "prefer-function-type"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["prefer-function-type"]
+
+[[rule]]
+name = "prefer-includes"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["prefer-includes"]
+biome = ["useIncludes"]
+
+[[rule]]
+name = "prefer-literal-enum-member"
+typescript-eslint = ["prefer-literal-enum-member"]
+biome = ["useLiteralEnumMembers"]
+
+[[rule]]
+name = "prefer-namespace-keyword"
+typescript-eslint = ["prefer-namespace-keyword"]
+biome = ["useNamespaceKeyword"]
+
+[[rule]]
+name = "prefer-nullish-coalescing"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["prefer-nullish-coalescing"]
+biome = ["useNullishCoalescing"]
+
+[[rule]]
+name = "prefer-optional-chain"
+typescript-eslint = ["prefer-optional-chain"]
+biome = ["useOptionalChain"]
+
+[[rule]]
+name = "prefer-readonly"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["prefer-readonly"]
+biome = ["useReadonlyClassProperties"]
+
+[[rule]]
+name = "prefer-readonly-parameter-types"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["prefer-readonly-parameter-types"]
+
+[[rule]]
+name = "prefer-reduce-type-parameter"
+presets = ["strict"]
+category = "problem"
+typescript-eslint = ["prefer-reduce-type-parameter"]
+
+[[rule]]
+name = "prefer-regexp-exec"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["prefer-regexp-exec"]
+biome = ["useRegexpExec"]
+
+[[rule]]
+name = "prefer-return-this-type"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["prefer-return-this-type"]
+
+[[rule]]
+name = "prefer-string-starts-ends-with"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["prefer-string-starts-ends-with"]
+biome = ["useStringStartsEndsWith"]
+
+[[rule]]
+name = "promise-function-async"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["promise-function-async"]
+
+[[rule]]
+name = "related-getter-setter-pairs"
+presets = ["strict"]
+category = "problem"
+typescript-eslint = ["related-getter-setter-pairs"]
+
+[[rule]]
+name = "require-array-sort-compare"
+presets = ["strict"]
+category = "problem"
+typescript-eslint = ["require-array-sort-compare"]
+biome = ["useArraySortCompare"]
+
+[[rule]]
+name = "restrict-plus-operands"
+typescript-eslint = ["restrict-plus-operands"]
+biome = ["noUnsafePlusOperands"]
+
+[[rule]]
+name = "restrict-template-expressions"
+typescript-eslint = ["restrict-template-expressions"]
+
+[[rule]]
+name = "return-await"
+presets = ["strict"]
+category = "problem"
+typescript-eslint = ["return-await"]
+
+[[rule]]
+name = "strict-boolean-expressions"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["strict-boolean-expressions"]
+biome = ["useStrictBooleanExpressions"]
+
+[[rule]]
+name = "strict-void-return"
+presets = ["strict"]
+category = "problem"
+typescript-eslint = ["strict-void-return"]
+
+[[rule]]
+name = "switch-exhaustiveness-check"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["switch-exhaustiveness-check"]
+
+[[rule]]
+name = "triple-slash-reference"
+typescript-eslint = ["triple-slash-reference"]
+
+[[rule]]
+name = "unbound-method"
+typescript-eslint = ["unbound-method"]
+
+[[rule]]
+name = "unified-signatures"
+presets = ["strict"]
+category = "linter"
+typescript-eslint = ["unified-signatures"]
+biome = ["useUnifiedTypeSignatures"]
+
+[[rule]]
+name = "use-unknown-in-catch-callback-variable"
+presets = ["strict"]
+category = "suggestion"
+typescript-eslint = ["use-unknown-in-catch-callback-variable"]

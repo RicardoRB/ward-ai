@@ -1,0 +1,36 @@
+{
+  "3:5-3:27": {
+    "call": {
+      "declaring": {
+        "name": "android.graphics.Rect"
+      },
+      "name": "intersect",
+      "params": [
+        {
+          "name": "android.graphics.Rect"
+        }
+      ],
+      "returns": {
+        "name": "boolean",
+        "primitive": true
+      }
+    }
+  },
+  "4:12-4:34": {
+    "call": {
+      "declaring": {
+        "name": "android.graphics.Rect"
+      },
+      "name": "intersect",
+      "params": [
+        {
+          "name": "android.graphics.Rect"
+        }
+      ],
+      "returns": {
+        "name": "boolean",
+        "primitive": true
+      }
+    }
+  }
+}

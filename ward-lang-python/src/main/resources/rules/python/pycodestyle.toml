@@ -1,0 +1,182 @@
+# Ruff's pycodestyle rules (E4, E7) for Python, as text and syntax checks over the ANTLR tree.
+# Regular expressions match the text of the node; a nested expression can match its enclosing
+# comparison too, which the fixtures do not exercise.
+
+[[rules]]
+id = "ward:python/multiple-imports-on-one-line"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "imports"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["import_name"]
+text = ','
+message = "multiple imports on one line"
+'''
+
+[[rules]]
+id = "ward:python/none-comparison"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["comparison"]
+text = '(==|!=)\s*None\b|\bNone\s*(==|!=)'
+message = "comparison to None should be 'is None' or 'is not None'"
+'''
+
+[[rules]]
+id = "ward:python/true-false-comparison"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["comparison"]
+text = '(==|!=)\s*(True|False)\b|\b(True|False)\s*(==|!=)'
+message = "comparison to True or False should use the value or 'is'"
+'''
+
+[[rules]]
+id = "ward:python/type-comparison"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["comparison"]
+text = '\btype\s*\([^()]*\)\s*(==|!=)|(==|!=)\s*type\s*\('
+message = "compare types with isinstance, not with =="
+'''
+
+[[rules]]
+id = "ward:python/bare-except"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["except_clause"]
+text = '^except$'
+message = "bare except catches every exception; name the exception"
+'''
+
+[[rules]]
+id = "ward:python/lambda-assignment"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = '^[A-Za-z_]\w*=lambda'
+message = "do not assign a lambda; use def"
+'''
+
+[[rules]]
+id = "ward:python/ambiguous-variable-name"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = '^(l|O|I)\s*=(?!=)'
+message = "ambiguous variable name; rename it"
+'''
+
+[[rules]]
+id = "ward:python/ambiguous-class-name"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classdef"]
+text = '^class(l|O|I)(?!\w)'
+message = "ambiguous class name; rename it"
+'''
+
+[[rules]]
+id = "ward:python/ambiguous-function-name"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["funcdef"]
+text = '^def(l|O|I)\('
+message = "ambiguous function name; rename it"
+'''
+
+[[rules]]
+id = "ward:python/invalid-escape-sequence"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom"]
+text = "^(?![rRbBfFuU]*[rR])[bBuUfF]{0,2}(?:'|\")(?:[^\\\\]|\\\\[\\s\\S])*?\\\\[^\\\\'\"abfnrtvx0-7NuU\r\n]"
+message = "invalid escape sequence in a non-raw string; use a raw string or escape the backslash"
+'''
+
+[[rules]]
+id = "ward:python/module-import-not-at-top-of-file"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "imports"
+presets = ["standard", "strict"]
+body = '''
+check = "module-order"
+problem = "import-after-code"
+message = "module level import not at top of file"
+'''
+
+[[rules]]
+id = "ward:python/not-in-test"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "comparison-operator"
+problem = "not-in"
+message = "test for membership should be 'not in'"
+'''
+
+[[rules]]
+id = "ward:python/not-is-test"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "comparison-operator"
+problem = "not-is"
+message = "test for object identity should be 'is not'"
+'''

@@ -1,0 +1,41 @@
+{
+  "3:5-3:16": {
+    "call": {
+      "declaring": {
+        "name": "Api"
+      },
+      "name": "banned",
+      "params": [],
+      "returns": {
+        "name": "void"
+      },
+      "annotations": [
+        "com.google.errorprone.annotations.DoNotCall"
+      ]
+    }
+  },
+  "4:5-4:14": {
+    "call": {
+      "declaring": {
+        "name": "Api"
+      },
+      "name": "fine",
+      "params": [],
+      "returns": {
+        "name": "void"
+      }
+    }
+  },
+  "3:5-3:14": {
+    "call": {
+      "declaring": {
+        "name": "Api"
+      },
+      "name": "fine",
+      "params": [],
+      "returns": {
+        "name": "void"
+      }
+    }
+  }
+}

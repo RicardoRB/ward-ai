@@ -1,0 +1,9 @@
+[[rules]]
+id = "ward:java/example-bad-kind"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+body = '''
+check = "forbidden-thing"
+message = "m"
+'''

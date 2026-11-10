@@ -1,0 +1,217 @@
+# Error Prone checks at ERROR severity for Java, G to L, first batch: syntax patterns over the compact
+# text of a node, a call-match over type facts, and checks of a literal argument. Each is on by default in
+# Error Prone.
+
+[[rules]]
+id = "ward:java/get-class-on-annotation"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+names = ["getClass"]
+receiver-types = ["java.lang.annotation.Annotation"]
+message = "getClass() on an annotation returns the proxy class, not the annotation type; use annotationType()"
+'''
+
+[[rules]]
+id = "ward:java/identity-hash-map-boxing"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["creator"]
+text = '^IdentityHashMap<(?:Boolean|Byte|Character|Short|Integer|Long|Float|Double)[,>]'
+message = "an IdentityHashMap keyed by a boxed type compares the boxes by reference, which fails for most values"
+'''
+
+[[rules]]
+id = "ward:java/index-of-char"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.lang.String"]
+names = ["indexOf", "lastIndexOf"]
+text = '\(-?[0-9]+,\x27[^\x27]*\x27\)$'
+message = "the arguments of indexOf are swapped; the character comes first, then the start index"
+'''
+
+[[rules]]
+id = "ward:java/infinite-recursion"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "infinite-recursion"
+message = "the method '{value}' calls itself with no condition, so it never returns"
+'''
+
+[[rules]]
+id = "ward:java/inject-more-than-one-scope-annotation-on-class"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["typeDeclaration"]
+text = '^(?:@\w+(?:\.\w+)*(?:\([^()]*\))?|public|protected|private|abstract|final|static|strictfp)*?@(?:\w+\.)*(?:Singleton|SessionScoped|RequestScoped|ApplicationScoped|ConversationScoped|ViewScoped|Dependent)(?=\(|@|public|protected|private|abstract|final|static|strictfp|class|interface|enum|record)(?:\([^()]*\))?(?:@\w+(?:\.\w+)*(?:\([^()]*\))?|public|protected|private|abstract|final|static|strictfp)*?@(?:\w+\.)*(?:Singleton|SessionScoped|RequestScoped|ApplicationScoped|ConversationScoped|ViewScoped|Dependent)(?=\(|@|public|protected|private|abstract|final|static|strictfp|class|interface|enum|record)(?:\([^()]*\))?'
+message = "the class has more than one scope annotation"
+'''
+
+[[rules]]
+id = "ward:java/insecure-crypto-usage"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["javax.crypto.Cipher"]
+names = ["getInstance"]
+text = '\("(?:DES|DESede|RC2|RC4|ARCFOUR|Blowfish|AES|[\w-]+/ECB/[\w-]+)"\)$'
+message = "the cipher is weak or uses ECB mode; use AES with GCM"
+'''
+
+[[rules]]
+id = "ward:java/invalid-java-time-constant"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:LocalDate\.of\(\d+,(?:0|1[3-9]|[2-9]\d)(?:,\d+)?\)|LocalDate\.of\(\d+,\d+,(?:0|3[2-9]|[4-9]\d)\)|LocalTime\.of\((?:2[4-9]|[3-9]\d),\d+(?:,\d+)*\)|LocalTime\.of\(\d+,[6-9]\d(?:,\d+)*\))$'
+message = "the date or time constant is out of range and throws at run time"
+'''
+
+[[rules]]
+id = "ward:java/invalid-pattern-syntax"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "invalid-literal-argument"
+mode = "regex"
+call = '^(?:java\.util\.regex\.)?Pattern\.(?:compile|matches)'
+message = "the regular expression '{value}' does not compile"
+'''
+
+[[rules]]
+id = "ward:java/invalid-time-zone-id"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "invalid-literal-argument"
+mode = "time_zone"
+call = '^(?:java\.util\.)?TimeZone\.getTimeZone'
+message = "'{value}' is not a time zone ID, so the JDK falls back to GMT"
+'''
+
+[[rules]]
+id = "ward:java/invalid-zone-id"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "invalid-literal-argument"
+mode = "zone_id"
+call = '^(?:java\.time\.)?ZoneId\.of'
+message = "'{value}' is not a valid zone ID and throws at run time"
+'''
+
+[[rules]]
+id = "ward:java/local-date-temporal-amount"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.time.LocalDate"]
+names = ["plus", "minus"]
+text = '\(Duration\.'
+message = "a Duration cannot be added to a LocalDate; use a Period or plusDays"
+'''
+
+[[rules]]
+id = "ward:java/j-unit4-set-up-not-run"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "unit-test-lifecycle"
+method = "setUp"
+annotations = ["Before", "BeforeClass"]
+message = "'{value}' is not annotated @Before or @BeforeClass, so JUnit 4 never runs it"
+'''
+
+[[rules]]
+id = "ward:java/j-unit4-tear-down-not-run"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "unit-test-lifecycle"
+method = "tearDown"
+annotations = ["After", "AfterClass"]
+message = "'{value}' is not annotated @After or @AfterClass, so JUnit 4 never runs it"
+'''
+
+[[rules]]
+id = "ward:java/j-unit4-test-not-run"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+options.test-class-pattern = { type = "regex", parameter = "class-pattern" }
+body = '''
+check = "unit-test-missing-annotation"
+class-pattern = "Test"
+message = "the public test method '{value}' has no @Test annotation, so JUnit 4 never runs it"
+'''
+
+[[rules]]
+id = "ward:java/identifier-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["methodDeclaration"]
+name = "identifier"
+skip = ["annotation", "typeType", "typeTypeOrVoid"]
+pattern = "[a-z][a-z0-9]*(?:[A-Z][a-z0-9]+)*[A-Z]?"
+message = "method name '{value}' is not lowerCamelCase"
+'''

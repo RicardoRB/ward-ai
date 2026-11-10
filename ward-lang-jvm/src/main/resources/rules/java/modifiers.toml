@@ -1,0 +1,213 @@
+# Modifier and annotation rules for Java. They mirror Checkstyle 14.3.0 checks of the modifier and
+# annotation groups, with option names in kebab-case and Checkstyle's defaults. The standard preset
+# keeps the checks of Checkstyle's google_checks.xml and of this repository's config/checkstyle.xml.
+
+[[rules]]
+id = "ward:java/modifier-order"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "modifier"
+presets = ["standard", "strict"]
+body = '''
+check = "modifier-order"
+message = "modifiers are out of the order of JLS 8.1.1, or an annotation follows a modifier"
+'''
+
+[[rules]]
+id = "ward:java/annotation-location"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "annotation"
+presets = ["standard", "strict"]
+options.allow-sameline-single-parameterless-annotation = { type = "boolean" }
+options.allow-sameline-parameterized-annotation = { type = "boolean" }
+body = '''
+check = "annotation-location"
+allow-sameline-single-parameterless-annotation = true
+allow-sameline-parameterized-annotation = false
+message = "annotation should be on a separate line from the declaration"
+'''
+
+[[rules]]
+id = "ward:java/missing-override-on-record-accessor"
+language = "java"
+min-java-release = 16
+capability = "SYNTAX"
+severity = "error"
+category = "annotation"
+presets = ["standard", "strict"]
+body = '''
+check = "missing-override-on-record-accessor"
+message = "record accessor method should have the @Override annotation"
+'''
+
+[[rules]]
+id = "ward:java/annotated-declaration-visibility"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "modifier"
+presets = ["strict"]
+options.annotations = { type = "string-list" }
+options.visibility = { type = "string-list" }
+body = '''
+check = "annotated-declaration-visibility"
+annotations = ["com.google.common.annotations.VisibleForTesting"]
+visibility = ["protected", "package"]
+message = "annotated declaration has a visibility that is not allowed"
+'''
+
+[[rules]]
+id = "ward:java/redundant-modifier"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "modifier"
+presets = ["strict"]
+body = '''
+check = "redundant-modifier"
+message = "modifier is redundant; the language implies it"
+'''
+
+[[rules]]
+id = "ward:java/suppress-warnings"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "annotation"
+presets = ["strict"]
+options.format = { type = "regex" }
+body = '''
+check = "suppress-warnings"
+format = "^\\s*+$"
+message = "suppressed warning name is not allowed"
+'''
+
+[[rules]]
+id = "ward:java/package-annotation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "annotation"
+presets = ["strict"]
+body = '''
+check = "package-annotation"
+message = "package annotation must be in package-info.java"
+'''
+
+[[rules]]
+id = "ward:java/missing-override"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "annotation"
+presets = ["strict"]
+body = '''
+check = "missing-override"
+tag = "{@inheritDoc}"
+annotation = "@Override"
+methods-only = true
+message = "method with {@inheritDoc} should have the @Override annotation"
+'''
+
+[[rules]]
+id = "ward:java/missing-deprecated"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "annotation"
+presets = ["strict"]
+body = '''
+check = "missing-deprecated"
+tag = "@deprecated"
+annotation = "@Deprecated"
+methods-only = false
+message = "Javadoc has @deprecated but the declaration lacks the @Deprecated annotation"
+'''
+
+[[rules]]
+id = "ward:java/annotation-on-same-line"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "annotation"
+body = '''
+check = "annotation-on-same-line"
+message = "annotation should be on the same line as its declaration"
+'''
+
+[[rules]]
+id = "ward:java/openjdk-annotation-location"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "annotation"
+presets = ["strict"]
+body = '''
+check = "openjdk-annotation-location"
+message = "annotations are not placed as the OpenJDK style requires"
+'''
+
+[[rules]]
+id = "ward:java/class-member-implied-modifier"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "modifier"
+presets = ["strict"]
+options.violate-implied-static-on-nested-enum = { type = "boolean" }
+options.violate-implied-static-on-nested-interface = { type = "boolean" }
+options.violate-implied-static-on-nested-record = { type = "boolean" }
+body = '''
+check = "class-member-implied-modifier"
+violate-implied-static-on-nested-enum = true
+violate-implied-static-on-nested-interface = true
+violate-implied-static-on-nested-record = true
+message = "nested type of a class should say static explicitly"
+'''
+
+[[rules]]
+id = "ward:java/interface-member-implied-modifier"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "modifier"
+presets = ["strict"]
+options.violate-implied-abstract-method = { type = "boolean" }
+options.violate-implied-final-field = { type = "boolean" }
+options.violate-implied-public-field = { type = "boolean" }
+options.violate-implied-public-method = { type = "boolean" }
+options.violate-implied-public-nested = { type = "boolean" }
+options.violate-implied-static-field = { type = "boolean" }
+options.violate-implied-static-nested = { type = "boolean" }
+body = '''
+check = "interface-member-implied-modifier"
+violate-implied-abstract-method = true
+violate-implied-final-field = true
+violate-implied-public-field = true
+violate-implied-public-method = true
+violate-implied-public-nested = true
+violate-implied-static-field = true
+violate-implied-static-nested = true
+message = "interface member should say its implied modifier explicitly"
+'''
+
+[[rules]]
+id = "ward:java/annotation-use-style"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "annotation"
+presets = ["strict"]
+options.closing-parens = { type = "enum", values = ["always", "ignore", "never"] }
+options.element-style = { type = "enum", values = ["compact", "compact-no-array", "expanded", "ignore"] }
+options.trailing-array-comma = { type = "enum", values = ["always", "ignore", "never"] }
+body = '''
+check = "annotation-use-style"
+closing-parens = "never"
+element-style = "compact-no-array"
+trailing-array-comma = "never"
+message = "annotation element is not written in the style that is configured"
+'''

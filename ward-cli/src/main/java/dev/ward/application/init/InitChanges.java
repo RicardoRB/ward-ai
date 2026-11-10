@@ -1,0 +1,117 @@
+package dev.ward.application.init;
+
+import dev.ward.domain.agent.IntegrationResult;
+import dev.ward.domain.config.WardException;
+import dev.ward.domain.init.BuildFileChange;
+import dev.ward.domain.init.CompatibilityFinding;
+import dev.ward.domain.init.InitGateOption;
+import dev.ward.domain.init.InitResult;
+import dev.ward.domain.init.InitSelection;
+import dev.ward.domain.init.OwnedSection;
+import dev.ward.domain.init.OwnedSectionChange;
+import dev.ward.domain.init.QualityHookChange;
+import dev.ward.domain.init.QualityHookGeneration;
+import dev.ward.domain.init.QualityPreset;
+import dev.ward.domain.init.RuleFileChange;
+import dev.ward.domain.project.Project;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
+
+/** Tracks one initialization transaction and rolls back its changes as a unit. */
+final class InitChanges {
+  private final Project project;
+  private final List<String> integrationIds;
+  private final InitProjectFiles files;
+  private final IntegrationInstaller installer;
+  private final InitSetupCatalog catalog;
+  private final QualityHookGeneration qualityHooks;
+  private final MemberWriter members;
+  private final List<IntegrationResult> installed = new ArrayList<>();
+  private final List<OwnedSectionChange> sectionChanges = new ArrayList<>();
+  private BuildFileChange pomChange;
+  private RuleFileChange ruleFileChange;
+  private QualityHookChange qualityHookChange;
+
+  InitChanges(
+      final Project project,
+      final List<String> integrationIds,
+      final InitProjectFiles files,
+      final IntegrationInstaller installer,
+      final InitSetupCatalog catalog) {
+    this.project = project;
+    this.integrationIds = integrationIds;
+    this.files = files;
+    this.installer = installer;
+    this.catalog = catalog;
+    this.qualityHooks = catalog.qualityHooks();
+    this.members =
+        InitToolchains.find(project)
+            .map(support -> support.memberWriter(files, catalog.inputs))
+            .orElse(MemberWriter.NONE);
+  }
+
+  void apply(
+      final InitSelection selection,
+      final List<InitGateOption> gates,
+      final boolean replaceScripts,
+      final Predicate<? super CompatibilityFinding> approval) {
+    final QualityPreset preset = selection.preset();
+    installer.install(project, selection.integrations(), installed);
+    if (selection.qualityHooks()) {
+      qualityHookChange = qualityHooks.apply(project);
+      if (qualityHookChange.result().status() == IntegrationResult.Status.CONFLICT) {
+        throw new WardException(qualityHookChange.result().message());
+      }
+    }
+    members.apply(project, gates, preset, replaceScripts, approval);
+    pomChange = files.buildTools().apply(project, gates, preset, approval);
+    ruleFileChange = files.ruleFiles().apply(project, preset, gates);
+    for (final OwnedSection section :
+        OwnedSections.withEditorConfig(
+            OwnedSections.of(catalog, project, selection, gates, ruleFileChange.preserved()),
+            project,
+            gates,
+            files.configuration().read(OwnedSections.editorConfigPath(project)))) {
+      sectionChanges.add(files.sections().apply(section));
+    }
+  }
+
+  InitResult result(
+      final Path file,
+      final boolean created,
+      final boolean overwrite,
+      final List<InitGateOption> gates,
+      final List<String> warnings) {
+    final BuildFileChange appliedPom = pomChange;
+    if (appliedPom == null) {
+      throw new IllegalStateException("Initialization changes have not been applied");
+    }
+    return new InitResult(
+        file,
+        created,
+        overwrite,
+        gates,
+        installed,
+        appliedPom.tools(),
+        ruleFileChange == null ? List.of() : ruleFileChange.preserved(),
+        Stream.of(appliedPom.warnings().stream(), warnings.stream(), members.kept().stream())
+            .flatMap(stream -> stream)
+            .toList(),
+        sectionChanges.stream()
+            .filter(OwnedSectionChange::changed)
+            .map(OwnedSectionChange::file)
+            .toList());
+  }
+
+  void rollback() {
+    sectionChanges.reversed().forEach(files.sections()::rollback);
+    files.ruleFiles().rollback(ruleFileChange);
+    files.buildTools().rollback(pomChange);
+    members.rollback();
+    qualityHooks.rollback(qualityHookChange);
+    installer.rollbackNew(project, integrationIds, installed);
+  }
+}

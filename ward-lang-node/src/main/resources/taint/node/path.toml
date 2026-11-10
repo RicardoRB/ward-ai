@@ -1,0 +1,262 @@
+# File path sinks: fs and fs/promises functions open the path they are given, as argument 0.
+# path.join and path.resolve are not sinks: they keep the untrusted segment in the result.
+
+[[sinks]]
+kind = "call"
+name = "readFile"
+receiver = "fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "readFileSync"
+receiver = "fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "writeFile"
+receiver = "fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "writeFileSync"
+receiver = "fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "appendFile"
+receiver = "fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "appendFileSync"
+receiver = "fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "createReadStream"
+receiver = "fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "createWriteStream"
+receiver = "fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "open"
+receiver = "fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "openSync"
+receiver = "fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "unlink"
+receiver = "fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "unlinkSync"
+receiver = "fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "readdir"
+receiver = "fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "readdirSync"
+receiver = "fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "rm"
+receiver = "fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "rmSync"
+receiver = "fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "stat"
+receiver = "fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "statSync"
+receiver = "fs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "readFile"
+receiver = "fs/promises"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "readFileSync"
+receiver = "fs/promises"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "writeFile"
+receiver = "fs/promises"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "writeFileSync"
+receiver = "fs/promises"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "appendFile"
+receiver = "fs/promises"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "appendFileSync"
+receiver = "fs/promises"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "createReadStream"
+receiver = "fs/promises"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "createWriteStream"
+receiver = "fs/promises"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "open"
+receiver = "fs/promises"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "openSync"
+receiver = "fs/promises"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "unlink"
+receiver = "fs/promises"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "unlinkSync"
+receiver = "fs/promises"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "readdir"
+receiver = "fs/promises"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "readdirSync"
+receiver = "fs/promises"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "rm"
+receiver = "fs/promises"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "rmSync"
+receiver = "fs/promises"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "stat"
+receiver = "fs/promises"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "statSync"
+receiver = "fs/promises"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "sendFile"
+qualifier = "res"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "sendFile"
+qualifier = "response"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "download"
+qualifier = "res"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "download"
+qualifier = "response"
+arguments = [0]
+
+# basename keeps only the last segment of a path.
+[[sanitizers]]
+kind = "call"
+name = "basename"
+receiver = "path"
+
+# Numeric conversions cannot carry markup or a path separator.
+
+[[sanitizers]]
+kind = "call"
+name = "Number"
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+
+[[sanitizers]]
+kind = "call"
+name = "parseFloat"

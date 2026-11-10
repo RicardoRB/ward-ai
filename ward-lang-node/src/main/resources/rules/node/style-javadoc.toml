@@ -1,0 +1,317 @@
+# Style rules of the "javadoc" and "misc" categories for TypeScript and JavaScript, from Checkstyle concepts at their default options. Each rule runs on the comments of the shared syntax tree.
+
+
+[[rules]]
+id = "ward:typescript/single-line-javadoc"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = '^/\*\*[^\n]*(?<!\{)@[a-zA-Z][^\n]*\*/$'
+message = "block tags are not allowed in a single-line javadoc"
+'''
+
+
+[[rules]]
+id = "ward:javascript/single-line-javadoc"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = '^/\*\*[^\n]*(?<!\{)@[a-zA-Z][^\n]*\*/$'
+message = "block tags are not allowed in a single-line javadoc"
+'''
+
+
+[[rules]]
+id = "ward:typescript/javadoc-content-location"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = '^/\*\*[ \t]*[^\s*][^\n]*\n'
+message = "javadoc content must start on the line after the opening tag"
+'''
+
+
+[[rules]]
+id = "ward:javascript/javadoc-content-location"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = '^/\*\*[ \t]*[^\s*][^\n]*\n'
+message = "javadoc content must start on the line after the opening tag"
+'''
+
+
+[[rules]]
+id = "ward:typescript/javadoc-missing-leading-asterisk"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = '^/\*\*[^\n]*\n(?:[^\n]*\n)*?[ \t]*[^ \t*\n]'
+message = "javadoc line does not start with a leading asterisk"
+'''
+
+
+[[rules]]
+id = "ward:javascript/javadoc-missing-leading-asterisk"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = '^/\*\*[^\n]*\n(?:[^\n]*\n)*?[ \t]*[^ \t*\n]'
+message = "javadoc line does not start with a leading asterisk"
+'''
+
+
+[[rules]]
+id = "ward:typescript/javadoc-paragraph"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = '\n[ \t]*\*[ \t]*[^\s*][^\n]*\n[ \t]*\*[ \t]*<p>|<p>[ \t]+\S'
+message = "<p> must follow an empty line and be followed directly by the text"
+'''
+
+
+[[rules]]
+id = "ward:javascript/javadoc-paragraph"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = '\n[ \t]*\*[ \t]*[^\s*][^\n]*\n[ \t]*\*[ \t]*<p>|<p>[ \t]+\S'
+message = "<p> must follow an empty line and be followed directly by the text"
+'''
+
+
+[[rules]]
+id = "ward:typescript/require-empty-line-before-block-tag-group"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = '\n[ \t]*\*[ \t]*[^\s*@][^\n]*\n[ \t]*\*[ \t]*@[a-zA-Z]'
+message = "block tags must follow an empty line"
+'''
+
+
+[[rules]]
+id = "ward:javascript/require-empty-line-before-block-tag-group"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = '\n[ \t]*\*[ \t]*[^\s*@][^\n]*\n[ \t]*\*[ \t]*@[a-zA-Z]'
+message = "block tags must follow an empty line"
+'''
+
+
+[[rules]]
+id = "ward:typescript/summary-javadoc"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = '^/\*\*[ \t]+[^\n@]*[^.\s@][ \t]*\*/$'
+message = "first sentence of the javadoc must end with a period"
+'''
+
+
+[[rules]]
+id = "ward:javascript/summary-javadoc"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = '^/\*\*[ \t]+[^\n@]*[^.\s@][ \t]*\*/$'
+message = "first sentence of the javadoc must end with a period"
+'''
+
+
+[[rules]]
+id = "ward:typescript/multiline-comment-leading-asterisk-presence"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "misc"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = '^/\*(?!\*)[^\n]*\n(?:[^\n]*\n)*?[ \t]*[^ \t*\n/]'
+message = "comment line does not start with a leading asterisk"
+'''
+
+
+[[rules]]
+id = "ward:javascript/multiline-comment-leading-asterisk-presence"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "misc"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "comments"
+pattern = '^/\*(?!\*)[^\n]*\n(?:[^\n]*\n)*?[ \t]*[^ \t*\n/]'
+message = "comment line does not start with a leading asterisk"
+'''
+
+[[rules]]
+id = "ward:typescript/javadoc-leading-asterisk-align"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "node-javadoc-align"
+message = "javadoc leading asterisk is not aligned with the opening slash"
+'''
+
+[[rules]]
+id = "ward:javascript/javadoc-leading-asterisk-align"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "node-javadoc-align"
+message = "javadoc leading asterisk is not aligned with the opening slash"
+'''
+
+[[rules]]
+id = "ward:typescript/invalid-javadoc-position"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "node-javadoc-position"
+message = "javadoc comment is not placed before a declaration"
+'''
+
+[[rules]]
+id = "ward:javascript/invalid-javadoc-position"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "node-javadoc-position"
+message = "javadoc comment is not placed before a declaration"
+'''
+
+[[rules]]
+id = "ward:typescript/javadoc-method"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+options.allow-missing-param-tags = { type = "boolean" }
+options.allow-missing-return-tag = { type = "boolean" }
+body = '''
+check = "node-javadoc-method"
+allow-missing-param-tags = false
+allow-missing-return-tag = false
+message = "javadoc tags do not match the method: {value}"
+'''
+
+[[rules]]
+id = "ward:javascript/javadoc-method"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+options.allow-missing-param-tags = { type = "boolean" }
+options.allow-missing-return-tag = { type = "boolean" }
+body = '''
+check = "node-javadoc-method"
+allow-missing-param-tags = false
+allow-missing-return-tag = false
+message = "javadoc tags do not match the method: {value}"
+'''
+
+[[rules]]
+id = "ward:typescript/missing-javadoc-type"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "node-missing-javadoc-type"
+required = "public"
+message = "public type has no Javadoc comment"
+'''
+
+[[rules]]
+id = "ward:javascript/missing-javadoc-type"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "javadoc"
+presets = ["standard", "strict"]
+body = '''
+check = "node-missing-javadoc-type"
+required = "public"
+message = "public type has no Javadoc comment"
+'''

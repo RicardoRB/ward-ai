@@ -1,0 +1,4 @@
+package single;
+
+class Pkg {
+}

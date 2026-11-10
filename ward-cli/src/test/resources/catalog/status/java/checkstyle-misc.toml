@@ -1,0 +1,17 @@
+# Status of the checkstyle-misc rows in java: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+array-type-style = "implemented"
+avoid-escaped-unicode-characters = "implemented"
+descendant-token = { status = "planned", issue = "#292" }
+final-parameters = { status = "planned", issue = "#292" }
+hex-literal-case = { status = "planned", issue = "#292" }
+line-ending = { status = "planned", issue = "#292" }
+multiline-comment-leading-asterisk-presence = "implemented"
+newline-at-end-of-file = { status = "planned", issue = "#292" }
+no-code-in-file = { status = "planned", issue = "#292" }
+numerical-prefixes-infixes-suffixes-character-case = { status = "planned", issue = "#292" }
+outer-type-filename = "implemented"
+todo-comment = "implemented"
+trailing-comment = { status = "planned", issue = "#292" }
+uncommented-main = { status = "planned", issue = "#292" }
+upper-ell = "implemented"

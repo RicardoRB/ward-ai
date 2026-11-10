@@ -1,0 +1,15 @@
+const b1 = <td scope="col" />;
+const b2 = <th scope="col" />;
+const b3 = <td scope />;
+const b4 = <td scope={false} />;
+const b5 = <td scope="false" />;
+const b6 = <td scope={null} />;
+const b7 = <td scope={"col"} />;
+const b8 = <Foo scope="col" />;
+const b9 = <td {...p} scope="col" />;
+const b10 = <td scope="col" {...p} />;
+const b11 = <div scope="col"></div>;
+const b12 = <td scope={x} />;
+const b13 = <td scope={undefined} />;
+const b14 = <td scope={0} />;
+const b15 = <td scope="" />;

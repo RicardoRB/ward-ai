@@ -1,0 +1,8 @@
+# The Node frontend keeps no modifier nodes yet, so modifier filters find nothing here; a rule that
+# filters on modifiers needs this table filled in with the frontend's modifier node kinds.
+kinds = []
+
+[texts]
+static = ["static"]
+final = ["readonly"]
+abstract = ["abstract"]

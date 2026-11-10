@@ -1,0 +1,153 @@
+# Java rules that mirror PMD 7.29.0 codestyle rules and read the shape of a class, a block or a file.
+# Each is an approximation of PMD's XPath or type-based rule; the catalog row names what differs.
+
+[[rules]]
+id = "ward:java/too-many-static-imports"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+options.maximum-static-imports = { type = "integer", min = 0, parameter = "max" }
+body = '''
+check = "static-import-count"
+max = 4
+message = "file has {value} static imports; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/call-super-in-constructor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "call-super-in-constructor"
+message = "the constructor does not call super(...) or this(...)"
+'''
+
+[[rules]]
+id = "ward:java/empty-method-in-abstract-class-should-be-abstract"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "empty-method-in-abstract-class"
+message = "the method of an abstract class has no behavior; make it abstract"
+'''
+
+[[rules]]
+id = "ward:java/identical-catch-branches"
+language = "java"
+min-java-release = 7
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "identical-catch-branches"
+message = "the catch branch is identical to the branch for {value}; combine them in a multi-catch if the exception types are not related by subclassing"
+'''
+
+[[rules]]
+id = "ward:java/local-variable-declaration-should-be-at-start-of-block"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+body = '''
+check = "local-declaration-order"
+message = "declare local variables together at the start of the block, without an initializer"
+'''
+
+[[rules]]
+id = "ward:java/premature-declaration"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "premature-declaration"
+message = "the declaration of '{value}' can move below the statements that may return or throw"
+'''
+
+[[rules]]
+id = "ward:java/useless-qualified-this"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "useless-qualified-this"
+message = "'{value}.this' names the class it is in; write this"
+'''
+
+[[rules]]
+id = "ward:java/variable-can-be-inlined"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "variable-can-be-inlined"
+message = "the variable '{value}' is only returned or thrown; use its value directly"
+'''
+
+[[rules]]
+id = "ward:java/unnecessary-fully-qualified-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "unnecessary-qualified-type"
+message = "type '{value}' is written fully qualified but its simple name is in scope"
+'''
+
+[[rules]]
+id = "ward:java/unnecessary-interface-declaration"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "redundant-interface"
+message = "the interface '{value}' is already provided by another declared type"
+'''
+
+[[rules]]
+id = "ward:java/unnecessary-boxing"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["localVariableDeclaration", "fieldDeclaration"]
+text = '^(?:int[\w$]+=Integer\.valueOf\([^;]*\)|Integer[\w$]+=Integer\.valueOf\((?:-?[0-9][\w.]*|\x27[^\x27]*\x27|true|false)\)|long[\w$]+=Long\.valueOf\([^;]*\)|Long[\w$]+=Long\.valueOf\((?:-?[0-9][\w.]*|\x27[^\x27]*\x27|true|false)\)|short[\w$]+=Short\.valueOf\([^;]*\)|Short[\w$]+=Short\.valueOf\((?:-?[0-9][\w.]*|\x27[^\x27]*\x27|true|false)\)|byte[\w$]+=Byte\.valueOf\([^;]*\)|Byte[\w$]+=Byte\.valueOf\((?:-?[0-9][\w.]*|\x27[^\x27]*\x27|true|false)\)|double[\w$]+=Double\.valueOf\([^;]*\)|Double[\w$]+=Double\.valueOf\((?:-?[0-9][\w.]*|\x27[^\x27]*\x27|true|false)\)|float[\w$]+=Float\.valueOf\([^;]*\)|Float[\w$]+=Float\.valueOf\((?:-?[0-9][\w.]*|\x27[^\x27]*\x27|true|false)\)|boolean[\w$]+=Boolean\.valueOf\([^;]*\)|Boolean[\w$]+=Boolean\.valueOf\((?:-?[0-9][\w.]*|\x27[^\x27]*\x27|true|false)\)|char[\w$]+=Character\.valueOf\([^;]*\)|Character[\w$]+=Character\.valueOf\((?:-?[0-9][\w.]*|\x27[^\x27]*\x27|true|false)\));?$'
+message = "explicit boxing or unboxing that the compiler does by itself"
+'''
+
+[[rules]]
+id = "ward:java/unnecessary-cast"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "codestyle"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+with-child = ["typeType"]
+text = '^(?:\(int\)-?[0-9]+|\(long\)-?[0-9]+[lL]|\(double\)-?[0-9]*\.[0-9]+|\(float\)-?[0-9.]+[fF]|\(char\)\x27[^\x27]*\x27|\(boolean\)(?:true|false)|\(String\)"[^"]*")$'
+message = "the cast changes nothing; the operand already has that type"
+'''

@@ -1,0 +1,48 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "annotation-location"
+not-applicable = { python = "Java annotation placement; Python decorators have no Checkstyle counterpart" }
+checkstyle = ["AnnotationLocation"]
+
+[[rule]]
+name = "annotation-on-same-line"
+not-applicable = { python = "Java annotation placement; Python decorators have no Checkstyle counterpart" }
+checkstyle = ["AnnotationOnSameLine"]
+
+[[rule]]
+name = "annotation-use-style"
+not-applicable = { python = "Java annotation syntax; Python decorators have no Checkstyle counterpart" }
+checkstyle = ["AnnotationUseStyle"]
+
+[[rule]]
+name = "missing-deprecated"
+not-applicable = { python = "Java @Deprecated annotation; Python uses warnings for deprecation" }
+checkstyle = ["MissingDeprecated"]
+
+[[rule]]
+name = "missing-override"
+not-applicable = { python = "Java @Override annotation; Python has no override keyword" }
+pmd = ["MissingOverride"]
+checkstyle = ["MissingOverride"]
+errorprone = ["MissingOverride"]
+
+[[rule]]
+name = "missing-override-on-record-accessor"
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["MissingOverrideOnRecordAccessor"]
+
+[[rule]]
+name = "openjdk-annotation-location"
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["OpenjdkAnnotationLocation"]
+
+[[rule]]
+name = "package-annotation"
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["PackageAnnotation"]
+
+[[rule]]
+name = "suppress-warnings"
+not-applicable = { python = "Java @SuppressWarnings annotation; Python suppression is out of scope for Ward" }
+checkstyle = ["SuppressWarnings"]

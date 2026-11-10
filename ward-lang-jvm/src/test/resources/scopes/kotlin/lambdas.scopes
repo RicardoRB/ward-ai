@@ -1,0 +1,49 @@
+module
+  function run @1:5
+  function shout @19:12
+  function @1:1
+    parameter items @1:9
+    parameter o @1:27
+    block @1:35
+      constant f @2:9
+      constant g @3:9
+      function nested @15:9
+      lambda @2:13
+        parameter x @2:15
+      lambda @3:27 open
+        parameter it @3:27
+      lambda @4:19
+        parameter item @4:21
+      lambda @5:17 open
+        parameter it @5:17
+      block @6:5
+        constant w @6:15
+      block @10:9
+      block @12:7
+        parameter e @12:14
+        block @12:28
+      function @15:5
+        parameter a @15:16
+  function @19:1 open
+references
+  2:9 f write -> block constant f @2:9
+  2:25 x read -> lambda parameter x @2:15
+  3:9 g write -> block constant g @3:9
+  3:29 it read -> lambda parameter it @3:27
+  4:5 items read -> function parameter items @1:9
+  4:29 println read -> unresolved
+  4:37 item read -> lambda parameter item @4:21
+  5:5 items read -> function parameter items @1:9
+  5:19 size read -> unresolved open
+  6:15 w write -> block constant w @6:15
+  6:19 compute read -> unresolved
+  7:14 w read -> block constant w @6:15
+  8:17 other read -> unresolved
+  11:9 risky read -> unresolved
+  13:15 e read -> block parameter e @12:14
+  15:26 a read -> function parameter a @15:16
+  15:30 f read -> block constant f @2:9
+  16:5 nested read -> block function nested @15:9
+  16:12 g read -> block constant g @3:9
+  19:22 uppercase read -> unresolved open
+  19:36 suffix read -> unresolved open

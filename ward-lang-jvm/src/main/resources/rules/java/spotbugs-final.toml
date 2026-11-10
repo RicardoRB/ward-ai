@@ -1,0 +1,626 @@
+# SpotBugs patterns for Java (issue 316), the last standard rows. Rules read the compact text of a node (no separators
+# between tokens) or the shape of a class, and so approximate SpotBugs' detectors.
+
+[[rules]]
+id = "ward:java/rv-return-value-of-putifabsent-ignored"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "put-if-absent-ignored"
+message = "the result of putIfAbsent is ignored, but {value} is used afterwards although the map may hold another value"
+'''
+
+[[rules]]
+id = "ward:java/se-no-suitable-constructor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "serial-constructor"
+mode = "super"
+message = "{value} is serializable but its non-serializable superclass has no constructor without parameters, so it cannot be deserialized"
+'''
+
+[[rules]]
+id = "ward:java/se-no-suitable-constructor-for-externalization"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "serial-constructor"
+mode = "externalizable"
+message = "{value} is Externalizable but has no public constructor without parameters"
+'''
+
+[[rules]]
+id = "ward:java/si-instance-before-finals-assigned"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "static-init-order"
+message = "an instance of this class is created before the static final field {value} is assigned"
+'''
+
+[[rules]]
+id = "ward:java/sr-not-checked"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "call-match"
+declaring-types = ["java.io.InputStream"]
+names = ["skip"]
+ignored = true
+message = "the result of skip is ignored; it may skip fewer bytes than requested"
+'''
+
+[[rules]]
+id = "ward:java/ssd-do-not-use-instance-lock-on-shared-static-data"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "static-write-from-instance"
+mode = "locked"
+message = "static field {value} is written under the lock of the instance, which does not exclude other instances"
+'''
+
+[[rules]]
+id = "ward:java/st-write-to-static-from-instance-method"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "static-write-from-instance"
+mode = "any"
+message = "an instance method writes the static field {value}"
+'''
+
+[[rules]]
+id = "ward:java/sw-swing-methods-invoked-in-swing-thread"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+text = '^voidmain\(.*?\)(?:throws[\w.,]+)?\{(?!.*(?:invokeLater|invokeAndWait|SwingUtilities|EventQueue)).*(\w+)=new(?:javax\.swing\.|java\.awt\.)?(?:JFrame|JDialog|JWindow|Frame|Dialog|Window)\(.*\1\.(?:setVisible\(true\)|show\(\)|pack\(\)|setSize\(|setBounds\(|setLocation\()'
+message = "main shows or resizes a Swing window directly; do it on the event dispatch thread"
+'''
+
+[[rules]]
+id = "ward:java/tlw-two-lock-wait"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "wait-context"
+mode = "two-locks"
+message = "wait is called while two locks are held; only one of them is released"
+'''
+
+[[rules]]
+id = "ward:java/uc-useless-condition-type"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "type-range-condition"
+message = "this comparison always gives the same result because of the range of {value}"
+'''
+
+[[rules]]
+id = "ward:java/uc-useless-object"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-collection-modified"
+message = "this object is only filled in and never used; remove it or use its contents"
+'''
+
+[[rules]]
+id = "ward:java/uc-useless-object-stack"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^new(?:java\.util\.)?(?:ArrayList|LinkedList|HashSet|LinkedHashSet|TreeSet|HashMap|LinkedHashMap|TreeMap|ArrayDeque|StringBuilder|StringBuffer)(?:<[^()]*>)?\([^;]*\)\.(?:add|addAll|put|putAll|push|offer|append|insert|addFirst|addLast)\(.*\);$'
+message = "this object is created only to be modified and is dropped"
+'''
+
+[[rules]]
+id = "ward:java/uc-useless-void-method"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "useless-void-method"
+message = "method {value} only works on its own parameters and locals, so it has no effect"
+'''
+
+[[rules]]
+id = "ward:java/ug-sync-set-unsync-get"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "sync-set-unsync-get"
+message = "the setter of {value} is synchronized but this getter is not"
+'''
+
+[[rules]]
+id = "ward:java/uw-uncond-wait"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "wait-context"
+mode = "unconditional"
+message = "wait is called with no condition tested before it"
+'''
+
+[[rules]]
+id = "ward:java/uwf-field-not-initialized-in-constructor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "uninitialized-field"
+message = "field {value} is not set by any constructor but is dereferenced without a null check"
+'''
+
+[[rules]]
+id = "ward:java/vsc-vulnerable-security-check-methods"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "overridable-security-check"
+message = "method {value} makes a security check but a subclass can override it; make it final or private"
+'''
+
+[[rules]]
+id = "ward:java/sic-inner-should-be-static-needs-this"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "inner-class-use"
+constructor-only = true
+message = "this inner class uses the instance around it only in its constructor; make it static and pass what it needs"
+'''
+
+[[rules]]
+id = "ward:java/urf-unread-public-or-protected-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "sealed-field-use"
+mode = "unread"
+message = "field {value} of a private class is written but never read"
+'''
+
+[[rules]]
+id = "ward:java/uuf-unused-public-or-protected-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "sealed-field-use"
+mode = "unused"
+message = "field {value} of a private class is never used"
+'''
+
+[[rules]]
+id = "ward:java/uwf-unwritten-public-or-protected-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "sealed-field-use"
+mode = "unwritten"
+message = "field {value} of a private class is read but never written"
+'''
+[[rules]]
+id = "ward:java/ri-redundant-interfaces"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "redundant-interface"
+message = "the class lists {value}, which its superclass already implements"
+'''
+
+[[rules]]
+id = "ward:java/mc-overridable-method-call-in-constructor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "constructor-calls-overridable-method"
+message = "constructor calls the overridable method {value}; make it private, static or final"
+'''
+
+[[rules]]
+id = "ward:java/mc-overridable-method-call-in-clone"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "constructor-calls-overridable-method"
+methods = ["clone"]
+message = "clone() calls the overridable method {value}; make it private, static or final"
+'''
+
+[[rules]]
+id = "ward:java/mc-overridable-method-call-in-read-object"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "constructor-calls-overridable-method"
+methods = ["readObject"]
+message = "readObject() calls the overridable method {value}; make it private, static or final"
+'''
+
+[[rules]]
+id = "ward:java/nm-confusing"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "class-shape"
+mode = "case-confusion"
+message = "method name differs from another method of this class only by case"
+'''
+
+[[rules]]
+id = "ward:java/perm-super-not-called-in-getpermissions"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "class-shape"
+mode = "class-loader-permissions"
+message = "getPermissions() of this class loader never calls the superclass getPermissions()"
+'''
+
+[[rules]]
+id = "ward:java/pz-dont-reuse-entry-objects-in-iterators"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "class-shape"
+mode = "entry-reuse"
+message = "next() hands out the one entry object the iterator holds; return a new entry each time"
+'''
+
+[[rules]]
+id = "ward:java/os-open-stream"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "close-resource"
+types = ["java.io.InputStream", "java.io.OutputStream", "java.io.Reader", "java.io.Writer"]
+ignored = ["java.io.ByteArrayInputStream", "java.io.ByteArrayOutputStream", "java.io.StringReader", "java.io.StringWriter"]
+created-here = true
+message = "the stream {value} is never closed; use try-with-resources or close it in a finally block"
+'''
+
+[[rules]]
+id = "ward:java/os-open-stream-exception-path"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "close-resource"
+types = ["java.io.InputStream", "java.io.OutputStream", "java.io.Reader", "java.io.Writer"]
+ignored = ["java.io.ByteArrayInputStream", "java.io.ByteArrayOutputStream", "java.io.StringReader", "java.io.StringWriter"]
+created-here = true
+exception-path = true
+message = "the stream {value} is closed only when no exception is thrown; close it in a finally block or use try-with-resources"
+'''
+
+[[rules]]
+id = "ward:java/odr-open-database-resource"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "close-resource"
+types = ["java.sql.Connection", "java.sql.Statement", "java.sql.ResultSet"]
+message = "the database resource {value} is never closed; use try-with-resources or close it in a finally block"
+'''
+
+[[rules]]
+id = "ward:java/odr-open-database-resource-exception-path"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "close-resource"
+types = ["java.sql.Connection", "java.sql.Statement", "java.sql.ResultSet"]
+exception-path = true
+message = "the database resource {value} is closed only when no exception is thrown; close it in a finally block or use try-with-resources"
+'''
+
+[[rules]]
+id = "ward:java/np-sync-and-null-check-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "synchronized-null-check"
+message = "the lock {value} is tested against null inside a block that already synchronizes on it"
+'''
+
+[[rules]]
+id = "ward:java/np-parameter-must-be-nonnull-but-marked-as-nullable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "nullable-parameter-dereferenced"
+message = "the parameter {value} is marked @Nullable but the method always dereferences it"
+'''
+
+[[rules]]
+id = "ward:java/np-load-of-known-null-value"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "known-null"
+mode = "load"
+message = "the value of {value} is known to be null here"
+'''
+
+[[rules]]
+id = "ward:java/rcn-redundant-nullcheck-of-null-value"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "known-null"
+mode = "null-recheck"
+message = "{value} is already known to be null, so this null check is redundant"
+'''
+
+[[rules]]
+id = "ward:java/rcn-redundant-comparison-of-null-and-nonnull-value"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "known-null"
+mode = "nonnull-comparison"
+message = "{value} is known to be non-null, so comparing it with null is redundant"
+'''
+
+[[rules]]
+id = "ward:java/np-method-parameter-tightens-annotation"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "override-nullness"
+mode = "parameter-tightens"
+nullable = ["javax.annotation.CheckForNull"]
+nonnull = ["javax.annotation.Nonnull", "javax.annotation.Nullable"]
+message = "this override makes a parameter @Nonnull or @Nullable where the overridden method has @CheckForNull"
+'''
+
+[[rules]]
+id = "ward:java/np-method-return-relaxing-annotation"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "override-nullness"
+mode = "return-relaxes"
+nullable = ["javax.annotation.Nullable", "javax.annotation.CheckForNull"]
+nonnull = ["javax.annotation.Nonnull"]
+message = "this override may return null, but the overridden method is annotated @Nonnull"
+'''
+
+[[rules]]
+id = "ward:java/nm-very-confusing-intentional"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "inherited-member"
+mode = "case-confusion-intentional"
+message = "method name differs only by case from another visible method, and one of the two is deprecated"
+'''
+
+[[rules]]
+id = "ward:java/nm-wrong-package-intentional"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "inherited-signature"
+mode = "wrong-package-intentional"
+message = "method takes parameter types of an inherited method's names from other packages, but the class also declares the real override"
+'''
+
+[[rules]]
+id = "ward:java/rv-return-value-ignored-inferred"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "inferred-ignored-result"
+message = "the result of this call is ignored; the method only computes a new value of its own type"
+'''
+
+[[rules]]
+id = "ward:java/np-null-on-some-path-from-return-value"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "null-return-dereference"
+message = "the result of {value} may be null and is dereferenced without a check"
+'''
+
+[[rules]]
+id = "ward:java/cwo-closed-without-opened"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "unlock-without-lock"
+types = ["java.util.concurrent.locks.Lock", "java.util.concurrent.locks.ReentrantLock"]
+message = "{value}.unlock() is called in a method that never acquires the lock"
+'''
+
+[[rules]]
+id = "ward:java/dc-partially-constructed"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "partial-construction"
+message = "the volatile field {value} is published and then still modified inside the lock; build the object fully before assigning it"
+'''
+
+[[rules]]
+id = "ward:java/np-unwritten-public-or-protected-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "unwritten-public-field"
+message = "the public or protected field {value} is dereferenced but no file of the project ever writes a non-null value to it"
+'''
+
+[[rules]]
+id = "ward:java/uc-useless-condition"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "value-range-condition"
+message = "the condition {value} is already decided by the conditions around it"
+'''
+# Source proxy for SpotBugs' bytecode window: SpotBugs reports this instead of NP_NULL_ON_SOME_PATH when
+# at least 3 null tests (IFNULL/IFNONNULL) sit in the 30 bytes before the place that makes the value
+# null. Here: at least 3 null tests (== null, != null, Objects.isNull/nonNull) of any variable among
+# the 4 statements of the same block just before the statement that holds the null source.
+[[rules]]
+id = "ward:java/np-null-on-some-path-might-be-infeasible"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "null-dataflow"
+mode = "null-on-some-path-might-be-infeasible"
+message = "a value that is null on some path is dereferenced on a branch that might be infeasible, after many null tests"
+'''
+

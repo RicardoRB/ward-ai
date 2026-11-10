@@ -1,0 +1,66 @@
+# SpotBugs CORRECTNESS patterns for Java about casts and instanceof tests that cannot succeed, from the
+# types that a data-flow analysis finds in local variables.
+
+[[rules]]
+id = "ward:java/bc-impossible-cast"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "impossible-conversion"
+mode = "cast"
+message = "the variable holds a String here, which can never be cast to this type"
+'''
+
+[[rules]]
+id = "ward:java/bc-impossible-downcast"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "impossible-conversion"
+mode = "downcast"
+message = "the variable holds exactly a Base here, which can never be cast to its subtype"
+'''
+
+[[rules]]
+id = "ward:java/bc-impossible-instanceof"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "impossible-conversion"
+mode = "instanceof"
+message = "the variable holds a String here, so this test is always false"
+'''
+
+[[rules]]
+id = "ward:java/bc-impossible-cast-primitive-array"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "impossible-conversion"
+mode = "primitive-array-cast"
+message = "the variable holds an int array here, which can never be cast to another primitive array type"
+'''
+
+[[rules]]
+id = "ward:java/bc-impossible-downcast-of-toarray"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "to-array-cast"
+message = "toArray() returns an Object[], which can never be cast to a more specific array type"
+'''

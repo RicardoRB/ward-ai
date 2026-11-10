@@ -1,0 +1,119 @@
+{
+  "1:1": {
+    "shape": {
+      "kind": "class",
+      "supertypes": [
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "Marker"
+        }
+      ]
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "Marker"
+        },
+        {
+          "name": "java.lang.annotation.Annotation"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "methods": [
+        {
+          "declaring": {
+            "name": "Impl"
+          },
+          "name": "annotationType",
+          "params": [],
+          "returns": {
+            "name": "void"
+          }
+        }
+      ]
+    }
+  },
+  "4:1": {
+    "shape": {
+      "kind": "class",
+      "supertypes": [
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "Marker"
+        }
+      ]
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "Marker"
+        },
+        {
+          "name": "java.lang.annotation.Annotation"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "methods": [
+        {
+          "declaring": {
+            "name": "Good"
+          },
+          "name": "annotationType",
+          "params": [],
+          "returns": {
+            "name": "void"
+          }
+        },
+        {
+          "declaring": {
+            "name": "Good"
+          },
+          "name": "equals",
+          "params": [
+            {
+              "name": "java.lang.Object"
+            }
+          ],
+          "returns": {
+            "name": "void"
+          }
+        },
+        {
+          "declaring": {
+            "name": "Good"
+          },
+          "name": "hashCode",
+          "params": [],
+          "returns": {
+            "name": "void"
+          }
+        }
+      ]
+    }
+  },
+  "10:1": {
+    "shape": {
+      "kind": "class",
+      "supertypes": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  }
+}

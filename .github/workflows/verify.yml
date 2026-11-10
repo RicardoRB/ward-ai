@@ -17,6 +17,10 @@ on:
         description: Also run the deterministic agent-harness suites against the native executable.
         type: boolean
         default: false
+      compatibility-matrices:
+        description: Run the Node, Python, Swift and Java compatibility matrices. Pull requests into main run them; other pull requests skip them.
+        type: boolean
+        default: true
 
 permissions:
   contents: read
@@ -85,8 +89,17 @@ jobs:
           path: |
             ~/.m2/repository
             ~/.m2/wrapper
-          key: maven-quality-${{ hashFiles('pom.xml') }}
+          key: maven-quality-${{ hashFiles('pom.xml', 'ward-*/pom.xml') }}
           restore-keys: maven-quality-
+
+      # The native compile gate needs native-image, which only GraalVM ships. Its JAVA_HOME
+      # replaces the Temurin one for the rest of this job; the Maven cache above still applies.
+      - name: Set up GraalVM 25
+        uses: graalvm/setup-graalvm@v1
+        with:
+          version: '25.5'
+          distribution: graalvm-community
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v5
@@ -111,10 +124,42 @@ jobs:
           set -eu
           curl -sSfL --retry 5 --retry-all-errors "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
             | sudo tar -xz -C /usr/local/bin gitleaks
-          curl -sSfL --retry 5 --retry-all-errors "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz" \
-            | sudo tar -xz -C /usr/local/bin trivy
+          # The install script's raw.githubusercontent.com fetch fails intermittently on runners;
+          # download the release asset with retries and verify it against the release checksums.
+          trivy_dir="$RUNNER_TEMP/trivy"
+          trivy_asset="trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz"
+          trivy_base="https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}"
+          mkdir -p "$trivy_dir"
+          curl -sSfL --retry 5 --retry-all-errors -o "$trivy_dir/$trivy_asset" "$trivy_base/$trivy_asset"
+          curl -sSfL --retry 5 --retry-all-errors -o "$trivy_dir/checksums.txt" "$trivy_base/trivy_${TRIVY_VERSION}_checksums.txt"
+          (cd "$trivy_dir" && grep " $trivy_asset\$" checksums.txt | sha256sum -c -)
+          sudo tar -xzf "$trivy_dir/$trivy_asset" -C /usr/local/bin trivy
           pip install "semgrep==${SEMGREP_VERSION}"
           npm install -g "@fission-ai/openspec@${OPENSPEC_VERSION}"
+
+      # The Kotlin reference test compiles the mixed fixture with the pinned kotlinc release. The
+      # archive is checked against its SHA-256 before it is unpacked.
+      - name: Install Kotlin compiler
+        env:
+          KOTLIN_VERSION: 2.2.21
+          KOTLIN_SHA256: a623871f1cd9c938946948b70ef9170879f0758043885bbd30c32f024e511714
+        run: |
+          set -eu
+          kotlin_dir="$RUNNER_TEMP/kotlin"
+          mkdir -p "$kotlin_dir"
+          curl -sSfL --retry 5 --retry-all-errors -o "$kotlin_dir/kotlin-compiler.zip" \
+            "https://github.com/JetBrains/kotlin/releases/download/v${KOTLIN_VERSION}/kotlin-compiler-${KOTLIN_VERSION}.zip"
+          echo "${KOTLIN_SHA256}  $kotlin_dir/kotlin-compiler.zip" | sha256sum -c -
+          unzip -q "$kotlin_dir/kotlin-compiler.zip" -d "$kotlin_dir"
+          echo "WARD_KOTLINC=$kotlin_dir/kotlinc/bin/kotlinc" >> "$GITHUB_ENV"
+
+      - name: Run the Kotlin resolution reference test
+        run: >-
+          ./mvnw -B -q -pl ward-cli -am
+          -Dtest=KotlinResolutionReferenceTest
+          -Dsurefire.failIfNoSpecifiedTests=false
+          -Dward.kotlinc.binary="$WARD_KOTLINC"
+          test
 
       - name: Read the date for the trivy cache key
         id: today
@@ -145,11 +190,12 @@ jobs:
           BASE_REF: ${{ github.base_ref }}
         run: |
           set -eu
-          targets=$(git diff --name-only --diff-filter=ACMR "origin/${BASE_REF}...HEAD" -- \
-              src/main/java/dev/ward/domain src/main/java/dev/ward/application \
-              src/test/java/dev/ward/domain src/test/java/dev/ward/application \
-            | grep '\.java$' \
-            | sed -E -e 's#^src/(main|test)/java/##' -e 's#(Test)?\.java$#*#' -e 's#/#.#g' \
+          # Renames at 100% similarity are moved files, not edits, so they are skipped. A path
+          # filter would stop Git from pairing a moved file with its old path, so none is used.
+          targets=$(git diff --name-status -M "origin/${BASE_REF}...HEAD" \
+            | awk -F'\t' '$1 ~ /^(A|M)/ || ($1 ~ /^R/ && $1 != "R100") {print $NF}' \
+            | grep -E '^(ward-cli/src/(main|test)/java/dev/ward/(domain|application)|ward-analysis-api/src/(main|test)/java/dev/ward/analysis/domain|ward-analysis-engine/src/(main|test)/java/dev/ward/analysis/(domain|application)|ward-lang-node/src/(main|test)/java/dev/ward/analysis/domain)/.*\.java$' \
+            | sed -E -e 's#^(ward-cli|ward-analysis-api|ward-analysis-engine|ward-lang-node)/src/(main|test)/java/##' -e 's#(Test)?\.java$#*#' -e 's#/#.#g' \
             | sort -u | paste -sd, - || true)
           echo "Mutation targets: ${targets:-none}"
           echo "PIT_TARGET_CLASSES=${targets:-none.changed}" >> "$GITHUB_ENV"
@@ -188,7 +234,7 @@ jobs:
           path: |
             ~/.m2/repository
             ~/.m2/wrapper
-          key: maven-quality-${{ hashFiles('pom.xml') }}
+          key: maven-quality-${{ hashFiles('pom.xml', 'ward-*/pom.xml') }}
 
       - name: Upload reports
         if: always()
@@ -196,8 +242,8 @@ jobs:
         with:
           name: quality-reports
           path: |
-            target/site/jacoco/
-            target/pit-reports/
+            ward-cli/target/site/jacoco/
+            ward-cli/target/pit-reports/
             target/ward.sarif
           if-no-files-found: ignore
 
@@ -206,7 +252,7 @@ jobs:
   node-matrix-versions:
     name: Node matrix versions
     needs: changes
-    if: needs.changes.outputs.code == 'true'
+    if: inputs.compatibility-matrices && needs.changes.outputs.code == 'true'
     runs-on: ubuntu-24.04
     outputs:
       cells: ${{ steps.versions.outputs.cells }}
@@ -217,7 +263,7 @@ jobs:
         id: versions
         run: |
           set -eu
-          cells=$(tail -n +2 src/test/resources/node-matrix/cells.csv | cut -d, -f1,2 | sort -u \
+          cells=$(tail -n +2 ward-cli/src/test/resources/node-matrix/cells.csv | cut -d, -f1,2 | sort -u \
             | jq -R -sc 'split("\n") | map(select(length > 0) | split(",") | {node: .[0], fixture: .[1]})')
           echo "cells=$cells" >> "$GITHUB_OUTPUT"
           echo "Node cells: $cells"
@@ -226,6 +272,7 @@ jobs:
   node-matrix:
     name: Node ${{ matrix.cell.node }} ${{ matrix.cell.fixture }} compatibility matrix
     needs: node-matrix-versions
+    if: inputs.compatibility-matrices
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -240,7 +287,9 @@ jobs:
           distribution: temurin
           java-version: '25'
           cache: maven
-          cache-dependency-path: pom.xml
+          cache-dependency-path: |
+            pom.xml
+            ward-*/pom.xml
 
       - name: Set up Node.js
         uses: actions/setup-node@v5
@@ -258,7 +307,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ~/.npm
-          key: npm-${{ matrix.cell.fixture }}-${{ hashFiles('src/main/java/dev/ward/infrastructure/init/node/NodePackageCatalog.java') }}
+          key: npm-${{ matrix.cell.fixture }}-${{ hashFiles('ward-cli/src/main/java/dev/ward/infrastructure/init/node/NodePackageCatalog.java') }}
 
       - name: Build Ward
         run: ./mvnw -B -q package -DskipTests
@@ -266,6 +315,7 @@ jobs:
       - name: Run ${{ matrix.cell.fixture }} cells for Node ${{ matrix.cell.node }}
         run: >-
           ./mvnw -B
+          -Dsurefire.failIfNoSpecifiedTests=false
           -Dtest=NodeCompatibilityMatrixTest
           -Dward.node.matrix=${{ matrix.cell.node }}
           -Dward.node.matrix.fixture=${{ matrix.cell.fixture }}
@@ -277,7 +327,7 @@ jobs:
   python-matrix-versions:
     name: Python matrix versions
     needs: changes
-    if: needs.changes.outputs.code == 'true'
+    if: inputs.compatibility-matrices && needs.changes.outputs.code == 'true'
     runs-on: ubuntu-24.04
     outputs:
       cells: ${{ steps.versions.outputs.cells }}
@@ -288,7 +338,7 @@ jobs:
         id: versions
         run: |
           set -eu
-          cells=$(tail -n +2 src/test/resources/python-matrix/cells.csv | cut -d, -f1,4 | sort -u \
+          cells=$(tail -n +2 ward-cli/src/test/resources/python-matrix/cells.csv | cut -d, -f1,4 | sort -u \
             | jq -R -sc 'split("\n") | map(select(length > 0) | split(",") | {python: .[0], fixture: .[1]})')
           echo "cells=$cells" >> "$GITHUB_OUTPUT"
           echo "Python cells: $cells"
@@ -297,6 +347,7 @@ jobs:
   python-matrix:
     name: Python ${{ matrix.cell.python }} ${{ matrix.cell.fixture }} compatibility matrix
     needs: python-matrix-versions
+    if: inputs.compatibility-matrices
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -311,7 +362,9 @@ jobs:
           distribution: temurin
           java-version: '25'
           cache: maven
-          cache-dependency-path: pom.xml
+          cache-dependency-path: |
+            pom.xml
+            ward-*/pom.xml
 
       # The runner's interpreter is the cell's version, so uv and Poetry pick it up on the PATH.
       - name: Set up Python
@@ -331,10 +384,47 @@ jobs:
       - name: Run ${{ matrix.cell.fixture }} cells for Python ${{ matrix.cell.python }}
         run: >-
           ./mvnw -B
+          -Dsurefire.failIfNoSpecifiedTests=false
           -Dtest=PythonCompatibilityMatrixTest
           -Dward.python.matrix=${{ matrix.cell.python }}
           -Dward.python.matrix.fixture=${{ matrix.cell.fixture }}
           -Dward.python.matrix.jar=target/ward.jar
+          test
+
+  # Runs the real Checkstyle, PMD, SpotBugs, Error Prone, NullAway and Semgrep on the fixtures of
+  # every implemented Java rule and compares them with the committed parity report
+  # (ward-cli/src/test/resources/parity/java-report.txt). Versions are pinned in resolve-tools.sh.
+  java-parity:
+    name: Java parity with the real tools
+    if: inputs.compatibility-matrices
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+          cache-dependency-path: |
+            pom.xml
+            ward-*/pom.xml
+
+      - name: Install Semgrep
+        run: pipx install semgrep==1.183.0
+
+      - name: Resolve the tools
+        run: ward-cli/src/test/resources/parity/resolve-tools.sh "$RUNNER_TEMP/parity-tools"
+
+      - name: Compare the Java rules with the tools
+        run: >-
+          ./mvnw -B
+          -pl ward-cli -am
+          -Dsurefire.failIfNoSpecifiedTests=false
+          -Dtest=JavaParitySmokeTest
+          -Dward.parity.tools="$RUNNER_TEMP/parity-tools"
+          -Dward.parity.semgrep="$(command -v semgrep)"
           test
 
   # Reads the Xcode and fixture pairs and their runners from the
@@ -343,7 +433,7 @@ jobs:
   swift-matrix-versions:
     name: Swift matrix versions
     needs: changes
-    if: needs.changes.outputs.code == 'true'
+    if: inputs.compatibility-matrices && needs.changes.outputs.code == 'true'
     runs-on: ubuntu-24.04
     outputs:
       cells: ${{ steps.versions.outputs.cells }}
@@ -354,9 +444,9 @@ jobs:
         id: versions
         run: |
           set -eu
-          cells=$(tail -n +2 src/test/resources/swift-matrix/cells.csv | cut -d, -f1,4 | sort -u \
+          cells=$(tail -n +2 ward-cli/src/test/resources/swift-matrix/cells.csv | cut -d, -f1,4 | sort -u \
             | awk -F, 'NR == FNR { runner[$1] = $2; next } { print $1 "," $2 "," runner[$1] }' \
-                src/test/resources/swift-matrix/xcodes.csv - \
+                ward-cli/src/test/resources/swift-matrix/xcodes.csv - \
             | jq -R -sc 'split("\n") | map(select(length > 0) | split(",") | {xcode: .[0], fixture: .[1], runner: .[2]})')
           echo "cells=$cells" >> "$GITHUB_OUTPUT"
           echo "Swift cells: $cells"
@@ -365,6 +455,7 @@ jobs:
   swift-matrix:
     name: Xcode ${{ matrix.cell.xcode }} ${{ matrix.cell.fixture }} compatibility matrix
     needs: swift-matrix-versions
+    if: inputs.compatibility-matrices
     runs-on: ${{ matrix.cell.runner }}
     strategy:
       fail-fast: false
@@ -379,14 +470,16 @@ jobs:
           distribution: temurin
           java-version: '25'
           cache: maven
-          cache-dependency-path: pom.xml
+          cache-dependency-path: |
+            pom.xml
+            ward-*/pom.xml
 
       # Keyed on the tool catalog so a pinned version change refetches the packages.
       - name: Restore SwiftPM cache
         uses: actions/cache@v5
         with:
           path: ~/Library/Caches/org.swift.swiftpm
-          key: swiftpm-${{ matrix.cell.xcode }}-${{ matrix.cell.fixture }}-${{ hashFiles('src/main/java/dev/ward/infrastructure/init/swift/SwiftToolCatalog.java') }}
+          key: swiftpm-${{ matrix.cell.xcode }}-${{ matrix.cell.fixture }}-${{ hashFiles('ward-cli/src/main/java/dev/ward/infrastructure/init/swift/SwiftToolCatalog.java') }}
 
       - name: Build Ward
         run: ./mvnw -B -q package -DskipTests
@@ -394,6 +487,7 @@ jobs:
       - name: Run ${{ matrix.cell.fixture }} cells for Xcode ${{ matrix.cell.xcode }}
         run: >-
           ./mvnw -B
+          -Dsurefire.failIfNoSpecifiedTests=false
           -Dtest=SwiftCompatibilityMatrixTest
           -Dward.swift.matrix=${{ matrix.cell.xcode }}
           -Dward.swift.matrix.fixture=${{ matrix.cell.fixture }}
@@ -405,7 +499,7 @@ jobs:
   java-matrix-versions:
     name: Java matrix versions
     needs: changes
-    if: needs.changes.outputs.code == 'true'
+    if: inputs.compatibility-matrices && needs.changes.outputs.code == 'true'
     runs-on: ubuntu-24.04
     outputs:
       cells: ${{ steps.versions.outputs.cells }}
@@ -416,7 +510,7 @@ jobs:
         id: versions
         run: |
           set -eu
-          cells=$(tail -n +2 src/test/resources/java-matrix/jdks.csv \
+          cells=$(tail -n +2 ward-cli/src/test/resources/java-matrix/jdks.csv \
             | jq -R -sc 'split("\n") | map(select(length > 0) | split(",") | {jdk: .[0], gradle: .[1]})')
           echo "cells=$cells" >> "$GITHUB_OUTPUT"
           echo "JDK cells: $cells"
@@ -425,6 +519,7 @@ jobs:
   java-matrix:
     name: JDK ${{ matrix.cell.jdk }} compatibility matrix
     needs: java-matrix-versions
+    if: inputs.compatibility-matrices
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -447,7 +542,9 @@ jobs:
           distribution: temurin
           java-version: '25'
           cache: maven
-          cache-dependency-path: pom.xml
+          cache-dependency-path: |
+            pom.xml
+            ward-*/pom.xml
 
       - name: Set up Gradle ${{ matrix.cell.gradle }}
         uses: gradle/actions/setup-gradle@v5
@@ -460,7 +557,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ~/.m2/wrapper
-          key: java-matrix-${{ matrix.cell.jdk }}-${{ hashFiles('src/main/java/dev/ward/domain/init/maven/ManagedPluginCatalog.java', 'src/main/java/dev/ward/domain/init/gradle/GradleToolCatalog.java') }}
+          key: java-matrix-${{ matrix.cell.jdk }}-${{ hashFiles('ward-cli/src/main/java/dev/ward/domain/init/maven/ManagedPluginCatalog.java', 'ward-cli/src/main/java/dev/ward/domain/init/gradle/GradleToolCatalog.java') }}
 
       - name: Build Ward
         run: ./mvnw -B -q package -DskipTests
@@ -468,6 +565,7 @@ jobs:
       - name: Run matrix cells for JDK ${{ matrix.cell.jdk }}
         run: >-
           ./mvnw -B
+          -Dsurefire.failIfNoSpecifiedTests=false
           -Dtest=JavaCompatibilityMatrixTest
           -Dward.java.matrix=${{ matrix.cell.jdk }}
           -Dward.java.matrix.jar=target/ward.jar
@@ -493,27 +591,33 @@ jobs:
       - name: Set up GraalVM 25.5
         uses: graalvm/setup-graalvm@v1
         with:
-          version: '25.5.5.0.3'
-          java-version: '25'
+          version: '25.5'
           distribution: graalvm-community
           github-token: ${{ secrets.GITHUB_TOKEN }}
           cache: maven
 
+      # native:test resolves its prefix per module, so ward-cli takes the analysis modules from the
+      # local repository instead of the reactor. ward-cli depends on the ANTLR frontend and the Java,
+      # TypeScript, JavaScript and Python rules, so those are installed too.
+      - name: Install the analysis modules for the native build
+        run: ./mvnw -B -q -DskipTests install -pl ward-analysis-api,ward-analysis-engine,ward-frontend-antlr,ward-lang-jvm,ward-lang-node,ward-lang-python,ward-lang-swift -am
+
       - name: Run terminal tests in a native test image
         run: >-
-          ./mvnw -B -Pnative
+          ./mvnw -B -Pnative -pl ward-cli
           -Dtest='dev/ward/infrastructure/terminal/*Test,dev/ward/infrastructure/terminal/**/*Test'
           -Dsurefire.failIfNoSpecifiedTests=false
           test native:test
 
       - name: Build native executable
-        run: ./mvnw -B -q -Pnative -DskipTests package native:compile
+        run: ./mvnw -B -q -Pnative -pl ward-cli -DskipTests package native:compile
 
-      - name: Drive init through a pseudo-terminal
+      - name: Drive init through a pseudo-terminal and run the ward gate
         if: runner.os != 'Windows'
         run: >-
           ./mvnw -B
-          -Dtest=NativeInitTerminalSmokeTest
+          -Dsurefire.failIfNoSpecifiedTests=false
+          -Dtest=NativeInitTerminalSmokeTest,NativeWardGateSmokeTest,NativeFormatSmokeTest
           -Dward.native.binary=target/ward
           test
 
@@ -521,8 +625,8 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           set -euo pipefail
-          target/ward.exe --version
-          target/ward.exe --help > /dev/null
+          ward-cli/target/ward.exe --version
+          ward-cli/target/ward.exe --help > /dev/null
 
       - name: Set up Bun
         if: inputs.harness-compatibility && runner.os != 'Windows'
@@ -532,4 +636,4 @@ jobs:
 
       - name: Verify agent integrations against the native executable
         if: inputs.harness-compatibility && runner.os != 'Windows'
-        run: compatibility/run-deterministic.sh target/ward
+        run: compatibility/run-deterministic.sh ward-cli/target/ward

@@ -112,10 +112,9 @@ installed tools the gates call are present:
 
 ### Swift projects
 
-Swift projects run the job on `macos-26`, which ships Xcode 26 or newer. The job caches
-`.ward/swift-tools/.build` and resolves Ward's SwiftLint tools package before the gates run. macOS
-runners cost about 10 times Linux minutes on private repositories, so check the usage before you
-enable the Swift workflow for a busy repository.
+Swift projects run the job on `macos-26`, which ships Xcode 26 or newer, and set up no other
+toolchain. macOS runners cost about 10 times Linux minutes on private repositories, so check the usage
+before you enable the Swift workflow for a busy repository.
 
 ### Projects in a subdirectory
 
@@ -155,7 +154,7 @@ it. `--output` keeps the readable text report in the job log:
           category: ward
 ```
 
-Findings carry file locations for `checkstyle`, `pmd`, `gitleaks`, `compile`, and `format`; other
+Findings carry file locations for `ward`, `gitleaks`, `compile`, and `ward-format`; other
 failed gates appear as one alert without a location.
 
 ## GitLab CI

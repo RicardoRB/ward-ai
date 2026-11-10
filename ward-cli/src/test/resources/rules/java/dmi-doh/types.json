@@ -1,0 +1,142 @@
+{
+  "3:12-3:65": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.base.Preconditions"
+      },
+      "name": "checkNotNull",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "6:12-6:61": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.base.Strings"
+      },
+      "name": "nullToEmpty",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
+  },
+  "9:5-9:43": {
+    "call": {
+      "declaring": {
+        "name": "org.junit.Assert"
+      },
+      "name": "assertNotNull",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "void"
+      }
+    }
+  },
+  "12:5-12:54": {
+    "call": {
+      "declaring": {
+        "name": "org.junit.Assert"
+      },
+      "name": "assertNotNull",
+      "params": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "void"
+      }
+    }
+  },
+  "4:12-4:68": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.base.Preconditions"
+      },
+      "name": "checkNotNull",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "7:12-7:79": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.base.Preconditions"
+      },
+      "name": "checkNotNull",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "10:5-10:48": {
+    "call": {
+      "declaring": {
+        "name": "org.junit.Assert"
+      },
+      "name": "assertNotNull",
+      "params": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "void"
+      }
+    }
+  },
+  "13:12-13:44": {
+    "call": {
+      "declaring": {
+        "name": "other.Strings"
+      },
+      "name": "nullToEmpty",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
+  }
+}

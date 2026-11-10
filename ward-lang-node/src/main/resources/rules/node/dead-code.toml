@@ -1,0 +1,312 @@
+# Dead-code rules for TypeScript and JavaScript, replacing knip. Each body names a check; the
+# project-wide checks read every file of the language at once.
+# shortcut: knip findings Ward does not make, so they stay silent: Svelte's generated ./$types
+# imports (no Svelte frontend), and an unlisted @angular-eslint/builder in angular.json (no check
+# reads angular.json for unlisted builders); upgrade with a Svelte frontend and that angular.json
+# read.
+
+[[rules]]
+id = "ward:typescript/knip-unresolved"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unresolved-import"
+message = "unresolved import '{value}': no file of the project matches it"
+'''
+
+[[rules]]
+id = "ward:javascript/knip-unresolved"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unresolved-import"
+message = "unresolved import '{value}': no file of the project matches it"
+'''
+
+[[rules]]
+id = "ward:typescript/knip-unlisted"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unlisted-import"
+message = "unlisted dependency '{value}': not in the package.json of this package"
+'''
+
+[[rules]]
+id = "ward:javascript/knip-unlisted"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unlisted-import"
+message = "unlisted dependency '{value}': not in the package.json of this package"
+'''
+
+[[rules]]
+id = "ward:typescript/knip-dependencies"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unused-dependency"
+section = "dependencies"
+message = "unused dependency '{value}': no file of the package imports it"
+'''
+
+[[rules]]
+id = "ward:typescript/knip-dev-dependencies"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unused-dependency"
+section = "devDependencies"
+message = "unused devDependency '{value}': no file of the package imports it"
+'''
+
+[[rules]]
+id = "ward:typescript/knip-optional-peer-dependencies"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-optional-peer"
+message = "referenced optional peer dependency '{value}': it is imported, so it is not optional"
+'''
+
+[[rules]]
+id = "ward:typescript/knip-catalog"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-catalog"
+message = "unused catalog entry '{value}': no package.json references it"
+'''
+
+[[rules]]
+id = "ward:typescript/knip-catalog-references"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-catalog-reference"
+message = "catalog reference '{value}' names an entry that pnpm-workspace.yaml does not define"
+'''
+
+[[rules]]
+id = "ward:javascript/knip-dependencies"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unused-dependency"
+section = "dependencies"
+message = "unused dependency '{value}': no file of the package imports it"
+'''
+
+[[rules]]
+id = "ward:javascript/knip-dev-dependencies"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unused-dependency"
+section = "devDependencies"
+message = "unused devDependency '{value}': no file of the package imports it"
+'''
+
+[[rules]]
+id = "ward:javascript/knip-optional-peer-dependencies"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-optional-peer"
+message = "referenced optional peer dependency '{value}': it is imported, so it is not optional"
+'''
+
+[[rules]]
+id = "ward:javascript/knip-catalog"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-catalog"
+message = "unused catalog entry '{value}': no package.json references it"
+'''
+
+[[rules]]
+id = "ward:javascript/knip-catalog-references"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-catalog-reference"
+message = "catalog reference '{value}' names an entry that pnpm-workspace.yaml does not define"
+'''
+
+[[rules]]
+id = "ward:typescript/knip-files"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unused-file"
+message = "unused file: no entry point imports it"
+'''
+
+[[rules]]
+id = "ward:typescript/knip-exports"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unused-export"
+message = "unused export '{value}': no file imports it"
+'''
+
+[[rules]]
+id = "ward:javascript/knip-files"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unused-file"
+message = "unused file: no entry point imports it"
+'''
+
+[[rules]]
+id = "ward:javascript/knip-exports"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unused-export"
+message = "unused export '{value}': no file imports it"
+'''
+
+[[rules]]
+id = "ward:typescript/knip-types"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unused-type"
+message = "unused exported type '{value}': no file imports it"
+'''
+
+[[rules]]
+id = "ward:typescript/knip-binaries"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unlisted-binary"
+message = "unlisted binary '{value}': the package that provides it is not in this package.json"
+'''
+
+[[rules]]
+id = "ward:typescript/knip-duplicates"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-duplicate-export"
+message = "'{value}' is exported under more than one name"
+'''
+
+[[rules]]
+id = "ward:typescript/knip-enum-members"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unused-enum-member"
+message = "unused enum member '{value}'"
+'''
+
+[[rules]]
+id = "ward:typescript/knip-namespace-members"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unused-namespace-member"
+message = "unused namespace member '{value}'"
+'''
+
+[[rules]]
+id = "ward:javascript/knip-binaries"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-unlisted-binary"
+message = "unlisted binary '{value}': the package that provides it is not in this package.json"
+'''
+
+[[rules]]
+id = "ward:javascript/knip-duplicates"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "error"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "node-duplicate-export"
+message = "'{value}' is exported under more than one name"
+'''
+
+

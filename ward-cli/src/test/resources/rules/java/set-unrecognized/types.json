@@ -1,0 +1,58 @@
+{
+  "3:5-3:34": {
+    "call": {
+      "declaring": {
+        "name": "my.Msg.Builder"
+      },
+      "name": "setColor",
+      "params": [
+        {
+          "name": "my.Color"
+        }
+      ],
+      "returns": {
+        "name": "my.Msg.Builder"
+      }
+    }
+  },
+  "3:5-3:5": {
+    "type": {
+      "name": "my.Msg.Builder"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "com.google.protobuf.MessageLite.Builder"
+        }
+      ]
+    }
+  },
+  "4:5-4:25": {
+    "call": {
+      "declaring": {
+        "name": "my.Msg.Builder"
+      },
+      "name": "setColor",
+      "params": [
+        {
+          "name": "my.Color"
+        }
+      ],
+      "returns": {
+        "name": "my.Msg.Builder"
+      }
+    }
+  },
+  "4:5-4:5": {
+    "type": {
+      "name": "my.Msg.Builder"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "com.google.protobuf.MessageLite.Builder"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,252 @@
+{
+  "3:12-3:95": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.truth.extensions.proto.ProtoFluentAssertion"
+      },
+      "name": "ignoringFields",
+      "params": [
+        {
+          "name": "int",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "com.google.common.truth.extensions.proto.ProtoFluentAssertion"
+      },
+      "varargs": true
+    }
+  },
+  "3:12-3:35": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.truth.extensions.proto.ProtoTruth"
+      },
+      "name": "assertThat",
+      "params": [
+        {
+          "name": "com.google.protobuf.Message"
+        }
+      ],
+      "returns": {
+        "name": "com.google.common.truth.extensions.proto.ProtoSubject"
+      },
+      "static": true
+    }
+  },
+  "7:12-7:73": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.truth.extensions.proto.ProtoFluentAssertion"
+      },
+      "name": "ignoringFields",
+      "params": [
+        {
+          "name": "int",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "com.google.common.truth.extensions.proto.ProtoFluentAssertion"
+      },
+      "varargs": true
+    }
+  },
+  "7:12-7:35": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.truth.extensions.proto.ProtoTruth"
+      },
+      "name": "assertThat",
+      "params": [
+        {
+          "name": "com.google.protobuf.Message"
+        }
+      ],
+      "returns": {
+        "name": "com.google.common.truth.extensions.proto.ProtoSubject"
+      },
+      "static": true
+    }
+  },
+  "3:52-3:56": {
+    "type": {
+      "name": "First"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "com.google.protobuf.Message"
+        }
+      ]
+    }
+  },
+  "3:74-3:79": {
+    "type": {
+      "name": "Second"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "com.google.protobuf.Message"
+        }
+      ]
+    }
+  },
+  "7:52-7:57": {
+    "type": {
+      "name": "Second"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "com.google.protobuf.Message"
+        }
+      ]
+    }
+  },
+  "3:34-3:34": {
+    "type": {
+      "name": "First"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "com.google.protobuf.Message"
+        },
+        {
+          "name": "com.google.protobuf.GeneratedMessage"
+        }
+      ]
+    }
+  },
+  "7:34-7:34": {
+    "type": {
+      "name": "First"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "com.google.protobuf.Message"
+        },
+        {
+          "name": "com.google.protobuf.GeneratedMessage"
+        }
+      ]
+    }
+  },
+  "13:12-13:72": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.truth.extensions.proto.ProtoFluentAssertion"
+      },
+      "name": "ignoringFields",
+      "params": [
+        {
+          "name": "int",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "com.google.common.truth.extensions.proto.ProtoFluentAssertion"
+      },
+      "varargs": true
+    }
+  },
+  "13:12-13:35": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.truth.extensions.proto.ProtoTruth"
+      },
+      "name": "assertThat",
+      "params": [
+        {
+          "name": "com.google.protobuf.Message"
+        }
+      ],
+      "returns": {
+        "name": "com.google.common.truth.extensions.proto.ProtoSubject"
+      },
+      "static": true
+    }
+  },
+  "17:12-17:73": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.truth.extensions.proto.ProtoFluentAssertion"
+      },
+      "name": "ignoringFields",
+      "params": [
+        {
+          "name": "int",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "com.google.common.truth.extensions.proto.ProtoFluentAssertion"
+      },
+      "varargs": true
+    }
+  },
+  "17:12-17:35": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.truth.extensions.proto.ProtoTruth"
+      },
+      "name": "assertThat",
+      "params": [
+        {
+          "name": "com.google.protobuf.Message"
+        }
+      ],
+      "returns": {
+        "name": "com.google.common.truth.extensions.proto.ProtoSubject"
+      },
+      "static": true
+    }
+  },
+  "13:52-13:56": {
+    "type": {
+      "name": "First"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "com.google.protobuf.Message"
+        }
+      ]
+    }
+  },
+  "17:52-17:57": {
+    "type": {
+      "name": "Second"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "com.google.protobuf.Message"
+        }
+      ]
+    }
+  },
+  "13:34-13:34": {
+    "type": {
+      "name": "First"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "com.google.protobuf.Message"
+        },
+        {
+          "name": "com.google.protobuf.GeneratedMessage"
+        }
+      ]
+    }
+  },
+  "17:34-17:34": {
+    "type": {
+      "name": "java.lang.Object"
+    }
+  }
+}

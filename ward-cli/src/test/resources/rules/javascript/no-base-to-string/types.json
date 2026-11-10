@@ -1,0 +1,175 @@
+{
+  "2:8": {
+    "type": {
+      "name": "{}"
+    },
+    "members": {
+      "fields": [],
+      "methods": []
+    }
+  },
+  "7:8": {
+    "type": {
+      "name": "Plain"
+    },
+    "shape": {
+      "kind": "class"
+    },
+    "members": {
+      "methods": []
+    }
+  },
+  "9:16": {
+    "type": {
+      "name": "{}"
+    },
+    "members": {
+      "fields": [],
+      "methods": []
+    }
+  },
+  "10:4": {
+    "type": {
+      "name": "Plain"
+    },
+    "shape": {
+      "kind": "class"
+    },
+    "members": {
+      "methods": []
+    }
+  },
+  "9:8": {
+    "type": {
+      "name": "CustomToString"
+    },
+    "shape": {
+      "kind": "class"
+    },
+    "members": {
+      "methods": [
+        {
+          "declaring": {
+            "name": "CustomToString"
+          },
+          "name": "toString",
+          "params": [],
+          "returns": {
+            "name": "string"
+          }
+        }
+      ]
+    }
+  },
+  "11:4": {
+    "type": {
+      "name": "CustomToString"
+    },
+    "shape": {
+      "kind": "class"
+    },
+    "members": {
+      "methods": [
+        {
+          "declaring": {
+            "name": "CustomToString"
+          },
+          "name": "toString",
+          "params": [],
+          "returns": {
+            "name": "string"
+          }
+        }
+      ]
+    }
+  },
+  "2:17-2:21": {
+    "members": {
+      "fields": [
+        {
+          "name": "x",
+          "type": {
+            "args": [],
+            "array": 0,
+            "name": "number",
+            "primitive": true
+          }
+        }
+      ],
+      "methods": []
+    },
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "{ x: number; }",
+      "primitive": false
+    }
+  },
+  "2:17-2:22": {
+    "members": {
+      "fields": [
+        {
+          "name": "x",
+          "type": {
+            "args": [],
+            "array": 0,
+            "name": "number",
+            "primitive": true
+          }
+        }
+      ],
+      "methods": [
+        {
+          "declaring": {
+            "name": "Tagged"
+          },
+          "name": "toString",
+          "params": [],
+          "returns": {
+            "args": [],
+            "array": 0,
+            "name": "string",
+            "primitive": true
+          }
+        }
+      ]
+    },
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "{ x: number; toString(): string; }",
+      "primitive": false
+    }
+  },
+  "5:8": {
+    "type": {
+      "name": "Plain"
+    },
+    "shape": {
+      "kind": "class"
+    },
+    "members": {
+      "methods": []
+    }
+  },
+  "7:16": {
+    "type": {
+      "name": "{}"
+    },
+    "members": {
+      "fields": [],
+      "methods": []
+    }
+  },
+  "8:4": {
+    "type": {
+      "name": "Plain"
+    },
+    "shape": {
+      "kind": "class"
+    },
+    "members": {
+      "methods": []
+    }
+  }
+}

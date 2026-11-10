@@ -1,0 +1,172 @@
+# Rules of pylint-4.1.3 that Ward does not implement, with the reason for each group.
+
+[[group]]
+reason = "Pylint run failure, not a check of user code"
+rules = [
+  "astroid-error",
+  "config-parse-error",
+  "fatal",
+  "method-check-failed",
+  "parse-error",
+]
+
+[[group]]
+reason = "formatting: covered by ward format"
+rules = [
+  "bad-indentation",
+  "missing-final-newline",
+  "mixed-line-endings",
+  "multiple-statements",
+  "superfluous-parens",
+  "trailing-newlines",
+  "unexpected-line-ending-format",
+]
+
+[[group]]
+reason = "suppression: Ward has no inline suppressions"
+rules = [
+  "bad-inline-option",
+  "deprecated-pragma",
+  "file-ignored",
+  "locally-disabled",
+  "suppressed-message",
+  "use-symbolic-message-instead",
+  "useless-suppression",
+]
+
+[[group]]
+reason = "informational message of the Pylint run, not a check"
+rules = [
+  "c-extension-no-member",
+  "raw-checker-failed",
+]
+
+[[group]]
+reason = "needs type inference Ward does not compute for Python (or mypy/configuration), not a source check"
+rules = [
+  "access-member-before-definition",
+  "async-context-manager-with-regular-with",
+  "impossible-comparison",
+]
+
+[[group]]
+reason = "Pylint import resolution is mypy (reports unresolved imports) in Ward"
+rules = [
+  "import-error",
+]
+
+[[group]]
+reason = "per-version deprecation tables, not a source check of the project"
+rules = [
+  "deprecated-argument",
+  "deprecated-attribute",
+  "deprecated-class",
+  "deprecated-decorator",
+  "deprecated-method",
+  "deprecated-module",
+]
+
+[[group]]
+reason = "Pylint configuration errors, not source code"
+rules = [
+  "bad-configuration-section",
+  "bad-plugin-value",
+]
+
+[[group]]
+reason = "Ward reads sources as UTF-8; a non-UTF-8 source encoding is not analyzed"
+rules = [
+  "bad-file-encoding",
+]
+
+[[group]]
+reason = "needs a spelling dictionary (pyenchant); Pylint disables it unless one is configured"
+rules = [
+  "invalid-characters-in-docstring",
+  "wrong-spelling-in-comment",
+  "wrong-spelling-in-docstring",
+]
+
+[[group]]
+reason = "needs inference of the format argument's attributes: pylint checks the attribute chain of an inferred object, which Ward does not infer"
+rules = [
+  "missing-format-attribute",
+]
+
+[[group]]
+reason = "a raw carriage return cannot reach a string literal of a parsed Python unit: the tokenizer ends the line at a CR, so no fixture or unit can show the finding"
+rules = [
+  "invalid-character-carriage-return",
+]
+
+[[group]]
+reason = "needs the type of the callee, operand, iterable, mapping or subscripted object, which Ward does not infer"
+rules = [
+  "looping-through-iterator",
+  "no-member",
+  "no-name-in-module",
+]
+
+[[group]]
+reason = "Pylint configuration and pragma checks; Ward has no Pylint configuration"
+rules = [
+  "unknown-option-value",
+  "unrecognized-inline-option",
+  "unrecognized-option",
+  "useless-option-value",
+]
+
+[[group]]
+reason = "reports only modules listed in the preferred-modules option, empty by default"
+rules = [
+  "preferred-module",
+]
+
+[[group]]
+reason = "needs operand type inference"
+rules = [
+  "unsupported-binary-operation",
+  "wrong-exception-operation",
+]
+
+[[group]]
+reason = "needs the package root"
+rules = [
+  "relative-beyond-top-level",
+]
+
+[[group]]
+reason = "the configured Python version is enforced by the type checker (mypy stays a gate)"
+rules = [
+  "using-assignment-expression-in-unsupported-version",
+  "using-comprehension-unpacking-in-unsupported-version",
+  "using-exception-groups-in-unsupported-version",
+  "using-f-string-in-unsupported-version",
+  "using-final-decorator-in-unsupported-version",
+  "using-generic-type-syntax-in-unsupported-version",
+  "using-positional-only-args-in-unsupported-version",
+]
+
+[[group]]
+reason = "parse failures are reported by Ward's analysis itself"
+rules = [
+  "syntax-error",
+]
+
+[[group]]
+reason = "needs the names exported by the imported module; avoid-star-import (F403) already reports every wildcard import"
+rules = [
+  "unused-wildcard-import",
+]
+
+[[group]]
+reason = "rule fixtures use fixed file names, so a file-name check cannot be expressed"
+rules = [
+  "non-ascii-file-name",
+]
+
+[[group]]
+reason = "a SyntaxError in CPython; Ward reports unparsable files itself"
+rules = [
+  "nonlocal-and-global",
+]

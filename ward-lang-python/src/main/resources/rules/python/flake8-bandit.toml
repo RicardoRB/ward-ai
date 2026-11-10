@@ -1,0 +1,240 @@
+# Ruff's flake8-bandit rules (S) for Python: calls, literals and assignments that a node's text
+# decides. Each is an approximation of the bandit check, as its fixture shows.
+
+[[rules]]
+id = "ward:python/exec-builtin"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^exec\\("
+message = "exec runs arbitrary code; avoid it"
+'''
+
+[[rules]]
+id = "ward:python/hardcoded-bind-all-interfaces"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["STRING"]
+text = "^[\"']0\\.0\\.0\\.0[\"']$"
+message = "string 0.0.0.0 binds every interface; bind a specific address"
+'''
+
+[[rules]]
+id = "ward:python/hardcoded-password-string"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = "^\\w*(password|passwd|pwd|secret|token)\\w*=(?!=)[\"'][^\"']+[\"']"
+message = "hardcoded password or secret in an assignment; read it from the environment"
+'''
+
+[[rules]]
+id = "ward:python/hardcoded-password-func-arg"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "(password|passwd|pwd|secret|token)\\w*=[\"'][^\"']+[\"']"
+message = "hardcoded password or secret passed as an argument; read it from the environment"
+'''
+
+[[rules]]
+id = "ward:python/hardcoded-password-default"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["parameters"]
+text = "(password|passwd|pwd|secret|token)\\w*=[\"'][^\"']+[\"']"
+message = "hardcoded password or secret as a default value; read it from the environment"
+'''
+
+[[rules]]
+id = "ward:python/hardcoded-temp-file"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["STRING"]
+text = "^[\"']/tmp/"
+message = "hardcoded /tmp path; use tempfile instead"
+'''
+
+[[rules]]
+id = "ward:python/request-without-timeout"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^requests\\.(get|post|put|delete|patch|head|options|request)\\((?![^)]*timeout=)"
+message = "requests call without a timeout can hang; pass timeout="
+'''
+
+[[rules]]
+id = "ward:python/flask-debug-true"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "\\.run\\(.*debug=True"
+message = "Flask debug mode must not run in production"
+'''
+
+[[rules]]
+id = "ward:python/suspicious-pickle-usage"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^(pickle|cPickle|dill|shelve)\\.(load|loads|Unpickler)\\("
+message = "pickle can run arbitrary code when loading untrusted data"
+'''
+
+[[rules]]
+id = "ward:python/suspicious-marshal-usage"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^marshal\\.loads?\\("
+message = "marshal can run code when loading untrusted data"
+'''
+
+[[rules]]
+id = "ward:python/suspicious-insecure-hash-usage"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^(Crypto|Cryptodome)\\w*\\.Hash\\.(MD2|MD4|MD5|SHA|SHA1)\\.new\\("
+message = "insecure hash algorithm"
+'''
+
+[[rules]]
+id = "ward:python/suspicious-eval-usage"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^eval\\("
+message = "eval runs arbitrary code; avoid it"
+'''
+
+[[rules]]
+id = "ward:python/suspicious-non-cryptographic-random-usage"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^random\\.(random|randrange|randint|choice|choices|uniform|triangular|randbytes|sample|getrandbits|shuffle)\\("
+message = "random is not for security; use secrets"
+'''
+
+[[rules]]
+id = "ward:python/hashlib-insecure-hash-function"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^hashlib\\.(md5|sha1)\\((?![^)]*usedforsecurity=False)"
+message = "insecure hash function; use sha256 or pass usedforsecurity=False"
+'''
+
+[[rules]]
+id = "ward:python/unsafe-yaml-load"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^yaml\\.load\\((?![^)]*SafeLoader)"
+message = "yaml.load without SafeLoader can build arbitrary objects; use yaml.safe_load"
+'''
+
+[[rules]]
+id = "ward:python/subprocess-popen-with-shell-equals-true"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^subprocess\\.(run|call|check_call|check_output|Popen)\\(.*shell=True"
+message = "subprocess with shell=True; pass an argument list"
+'''
+
+[[rules]]
+id = "ward:python/subprocess-without-shell-equals-true"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^subprocess\\.(run|call|check_call|check_output|Popen)\\((?![^)]*shell=True)"
+message = "subprocess call; check that its arguments are trusted"
+'''

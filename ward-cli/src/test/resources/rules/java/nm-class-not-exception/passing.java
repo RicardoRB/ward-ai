@@ -1,0 +1,2 @@
+class SampleException extends RuntimeException {
+}

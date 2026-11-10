@@ -1,0 +1,8 @@
+async-await.swift	parsed
+generics-where.swift	parsed
+macros-freestanding.swift	parsed
+opaque-existential.swift	parsed
+optional-binding.swift	parsed
+plain-types.swift	parsed
+property-wrappers.swift	parsed
+result-builders.swift	parsed

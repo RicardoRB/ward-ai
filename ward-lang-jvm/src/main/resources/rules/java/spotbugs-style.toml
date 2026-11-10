@@ -1,0 +1,453 @@
+# SpotBugs STYLE, I18N, MALICIOUS_CODE and SECURITY patterns for Java (issue 316), standard rows. Most
+# rules match the compact text of a node (no separators between tokens), so they approximate SpotBugs'
+# detectors: each one notes its limit in its message and fixtures.
+
+[[rules]]
+id = "ward:java/dm-convert-case"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "i18n"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.()\[\]]*\.(?:toLowerCase|toUpperCase)\(\)$'
+message = "locale-dependent case conversion; pass a Locale, such as Locale.ROOT"
+'''
+
+[[rules]]
+id = "ward:java/dm-default-encoding"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "i18n"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:[\w.()\[\]]*\.getBytes\(\)|new(?:FileReader|FileWriter)\([^,]*\)|new(?:InputStreamReader|OutputStreamWriter)\((?:[^,()]|\([^()]*\))*\))$'
+message = "uses the default platform encoding; pass a Charset"
+'''
+
+[[rules]]
+id = "ward:java/dmi-constant-db-password"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.]*getConnection\(.*,"[^"]+"\)$'
+message = "database password is a constant string; read it from configuration"
+'''
+
+[[rules]]
+id = "ward:java/dmi-empty-db-password"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.]*getConnection\(.*,""\)$'
+message = "database password is empty"
+'''
+
+[[rules]]
+id = "ward:java/dmi-hardcoded-absolute-filename"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(?:java\.io\.)?(?:File|FileReader|FileWriter|FileInputStream|FileOutputStream|RandomAccessFile)\("(?:/|[A-Za-z]:\\{1,2})'
+message = "absolute file name is hardcoded; resolve it against a configured directory"
+'''
+
+[[rules]]
+id = "ward:java/dmi-useless-substring"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.()\[\]]*\.substring\(0\)$'
+message = "substring(0) returns the same string"
+'''
+
+[[rules]]
+id = "ward:java/sa-local-self-assignment"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^(\w+)=\1;$'
+message = "variable is assigned to itself"
+'''
+
+[[rules]]
+id = "ward:java/sa-local-double-assignment"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^(\w+)=\1=(?!=)'
+message = "variable is assigned twice in one statement"
+'''
+
+[[rules]]
+id = "ward:java/sa-field-double-assignment"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^this\.(\w+)=this\.\1=(?!=)'
+message = "field is assigned twice in one statement"
+'''
+
+[[rules]]
+id = "ward:java/int-bad-rem-by-1"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.()\[\]]+%1[lL]?$'
+message = "remainder by 1 is always 0"
+'''
+
+[[rules]]
+id = "ward:java/im-bad-check-for-odd"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.()\[\]]+%2(?:==1|>0)$'
+message = "x % 2 == 1 is false for negative odd numbers; test x % 2 != 0"
+'''
+
+[[rules]]
+id = "ward:java/rv-rem-of-hashcode"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.()\[\]]*hashCode\(\)%\w+$'
+message = "remainder of hashCode() is negative for a negative hash code; use Math.floorMod"
+'''
+
+[[rules]]
+id = "ward:java/rv-rem-of-random-int"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.()\[\]]*nextInt\(\)%\w+$'
+message = "remainder of nextInt() is negative for a negative number; use nextInt(bound)"
+'''
+
+[[rules]]
+id = "ward:java/icast-questionable-unsigned-right-shift"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^\((?:byte|short)\)\(?\w+>>>\w+\)?$'
+message = "unsigned right shift cast to byte or short loses the shifted bits"
+'''
+
+[[rules]]
+id = "ward:java/int-vacuous-bit-operation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^\w+(?:\|0|\^0|<<0|>>>?0|&-1)[lL]?$'
+message = "bit operation leaves the value unchanged"
+'''
+
+[[rules]]
+id = "ward:java/ns-non-short-circuit"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.()]+(?:==|!=|<=|>=|<|>)[\w.()]+[&|][\w.()]+(?:==|!=|<=|>=|<|>)[\w.()]+$'
+message = "non-short-circuit & or | joins two comparisons; use && or ||"
+'''
+
+[[rules]]
+id = "ward:java/dcn-nullpointer-exception"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["catchClause"]
+text = '^catch\([^)]*NullPointerException'
+message = "catches NullPointerException; check for null instead"
+'''
+
+[[rules]]
+id = "ward:java/np-immediate-dereference-of-readline"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.()\[\]]*readLine\(\)\.\w+\([^()]*\)$'
+message = "readLine() returns null at the end of the stream; its result is dereferenced at once"
+'''
+
+[[rules]]
+id = "ward:java/rv-check-for-positive-indexof"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.()\[\]]*indexOf\([^()]*\)>0$'
+message = "indexOf(...) > 0 misses a match at index 0; compare with >= 0 or -1"
+'''
+
+[[rules]]
+id = "ward:java/ms-mutable-array"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fieldDeclaration"]
+modifiers = ["public", "static", "final"]
+text = '^[\w.]+\[\]'
+message = "public static final array is mutable; expose a copy or an unmodifiable list"
+'''
+
+[[rules]]
+id = "ward:java/ms-mutable-hashtable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fieldDeclaration"]
+modifiers = ["public", "static", "final"]
+text = '^(?:java\.util\.)?Hashtable[<A-Za-z_]'
+message = "public static final Hashtable is mutable; keep it private"
+'''
+
+[[rules]]
+id = "ward:java/ms-mutable-collection"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fieldDeclaration"]
+modifiers = ["public", "static", "final"]
+text = '^(?:java\.util\.)?(?:List|Set|Map|Collection|Queue|Deque)(?:<.*>)?\w+=new'
+message = "public static final collection is mutable; wrap it in an unmodifiable view"
+'''
+
+[[rules]]
+id = "ward:java/ms-mutable-collection-pkgprotect"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fieldDeclaration"]
+modifiers = ["protected", "static", "final"]
+text = '^(?:java\.util\.)?(?:List|Set|Map|Collection|Queue|Deque)(?:<.*>)?\w+=new'
+message = "protected static final collection is mutable; make it private or wrap it in an unmodifiable view"
+'''
+
+[[rules]]
+id = "ward:java/ms-pkgprotect"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fieldDeclaration"]
+modifiers = ["protected", "static", "final"]
+text = '^(?:[\w.]+\[\]|(?:java\.util\.)?Hashtable[<A-Za-z_])'
+message = "protected static final field is mutable; make it package-private or private"
+'''
+
+[[rules]]
+id = "ward:java/hrs-request-parameter-to-cookie"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(?:javax\.servlet\.http\.|jakarta\.servlet\.http\.)?Cookie\(.*\.getParameter\(.*\)\)$'
+message = "request parameter is used in a cookie without validation"
+'''
+
+[[rules]]
+id = "ward:java/hrs-request-parameter-to-http-header"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.()]*\.(?:setHeader|addHeader)\(.*\.getParameter\(.*\)\)$'
+message = "request parameter is written to a response header without validation"
+'''
+
+[[rules]]
+id = "ward:java/ase-assertion-with-side-effect"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^assert[^:;]*(?:\+\+|--|[^=!<>]=[^=])'
+message = "assertion changes state; it does not run when assertions are disabled"
+'''
+
+[[rules]]
+id = "ward:java/ase-assertion-with-side-effect-method"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^assert[^:;]*\.(?:add|remove|put|set|clear|push|pop|poll|offer|delete|write|append|insert|increment|decrement|reset)\w*\('
+message = "assertion calls a method that changes state; it does not run when assertions are disabled"
+'''
+
+[[rules]]
+id = "ward:java/db-duplicate-branches"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^if\(.+?\)(?:(\{.+\})else\1|([^{}]+;)else\2)$'
+message = "both branches of the if are the same"
+'''
+
+[[rules]]
+id = "ward:java/ucf-useless-control-flow"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^if\(.*\)(?:\{\}|;)$'
+message = "if statement has an empty body"
+'''
+
+[[rules]]
+id = "ward:java/sf-switch-no-default"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "missing-switch-default"
+message = "switch statement has no default label"
+'''
+
+[[rules]]
+id = "ward:java/sf-switch-fallthrough"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "fall-through"
+check-last-group = false
+message = "case group falls through to the next case"
+'''

@@ -1,0 +1,48 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "avoid-nested-blocks"
+not-applicable = { python = "Java block statements; Python has no bare nested blocks" }
+checkstyle = ["AvoidNestedBlocks"]
+eslint = ["no-lone-blocks"]
+
+[[rule]]
+name = "empty-block"
+not-applicable = { python = "Python requires a statement in every block, and pass is one; there is no empty block to report" }
+detekt = ["EmptyFunctionBlock"]
+pmd = ["EmptyControlStatement"]
+checkstyle = ["EmptyBlock"]
+ktlint = ["no-empty-class-body"]
+eslint = ["no-empty"]
+biome = ["noEmptyBlockStatements"]
+
+[[rule]]
+name = "empty-catch-block"
+detekt = ["EmptyCatchBlock"]
+pmd = ["EmptyCatchBlock"]
+checkstyle = ["EmptyCatchBlock"]
+ruff = ["S110"]
+
+[[rule]]
+name = "google-right-curly"
+not-applicable = { python = "Python blocks are indentation-based, so there are no braces to place" }
+checkstyle = ["GoogleRightCurly"]
+
+[[rule]]
+name = "left-curly"
+not-applicable = { python = "Python blocks are indentation-based, so there are no braces to place" }
+checkstyle = ["LeftCurly"]
+
+[[rule]]
+name = "need-braces"
+not-applicable = { python = "Python blocks are indentation-based, so there are no braces to omit", swift = "Swift requires braces around every block, so the compiler already enforces it" }
+detekt = ["BracesOnIfStatements"]
+checkstyle = ["NeedBraces"]
+ktlint = ["if-else-bracing"]
+eslint = ["curly"]
+biome = ["useBlockStatements"]
+
+[[rule]]
+name = "right-curly"
+not-applicable = { python = "Python blocks are indentation-based, so there are no braces to place" }
+checkstyle = ["RightCurly"]

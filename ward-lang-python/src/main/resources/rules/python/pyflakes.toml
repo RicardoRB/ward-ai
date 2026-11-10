@@ -1,0 +1,522 @@
+# Ruff's pyflakes rules (F) that a text or syntax check can decide. Undefined-name and unused-name
+# rules need the symbol tables and are not here yet.
+
+[[rules]]
+id = "ward:python/future-feature-not-defined"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "imports"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["import_from"]
+text = '^from__future__import(?!(annotations|generator_stop|nested_scopes|generators|division|absolute_import|with_statement|print_function|unicode_literals|barry_as_FLUFL))'
+message = "__future__ import of a feature that Python does not define"
+'''
+
+[[rules]]
+id = "ward:python/f-string-missing-placeholders"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom"]
+text = "^[fF][rR]?(?:'[^'{]*'|\"[^\"{]*\")$"
+message = "f-string without any placeholders; drop the f prefix"
+'''
+
+[[rules]]
+id = "ward:python/assert-tuple"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["assert_stmt"]
+text = '^assert\s*\([^()]*,[^()]*\)\s*(,[\s\S]*)?$'
+message = "assert on a non-empty tuple is always true"
+'''
+
+[[rules]]
+id = "ward:python/if-tuple"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["if_stmt"]
+text = '^if\s*\(\s*[^()]*,[^()]*\)\s*:'
+message = "if on a non-empty tuple is always true"
+'''
+
+[[rules]]
+id = "ward:python/raise-not-implemented"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["raise_stmt"]
+text = '^raiseNotImplemented(\(\))?$'
+message = "NotImplemented is not an exception; raise NotImplementedError"
+'''
+
+[[rules]]
+id = "ward:python/multi-value-repeated-key-literal"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom"]
+text = "\\{(?:[^{}]*,)*?(\"[^\"]*\"|'[^']*'):(?:[^{}]*,)*?\\1:"
+message = "dictionary key repeated; the first value is lost"
+'''
+
+[[rules]]
+id = "ward:python/invalid-print-syntax"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = '^print>>'
+message = "print >> is invalid with the print function"
+'''
+
+[[rules]]
+id = "ward:python/multiple-starred-expressions"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = '^\*[^=]*\*[^=]*='
+message = "two starred expressions in an assignment"
+'''
+
+[[rules]]
+id = "ward:python/undefined-name"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "undefined-name"
+message = "undefined name '{value}'"
+'''
+
+[[rules]]
+id = "ward:python/yield-outside-function"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "outside-scope"
+kinds = ["yield_expr"]
+within = ["FUNCTION", "LAMBDA"]
+message = "yield statement outside of a function"
+'''
+
+[[rules]]
+id = "ward:python/return-outside-function"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "outside-scope"
+kinds = ["return_stmt"]
+within = ["FUNCTION"]
+message = "return statement outside of a function"
+'''
+
+[[rules]]
+id = "ward:python/redefined-while-unused"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "redefinition"
+message = "redefinition of unused '{value}'"
+'''
+
+[[rules]]
+id = "ward:python/undefined-local-with-import-star-usage"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "star-import-usage"
+message = "'{value}' may be undefined, or defined from star imports"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-invalid-format"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "invalid"
+message = "invalid % format literal: incomplete format"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-expected-mapping"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "expected-mapping"
+message = "% format expected a mapping but got a sequence"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-extra-named-arguments"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "unused-keys"
+message = "% format has unused named argument"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-missing-argument"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "missing-keys"
+message = "% format is missing an argument for a named placeholder"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-mixed-positional-and-named"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "mixed"
+message = "% format mixes positional and named placeholders"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-positional-count-mismatch"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "count"
+message = "% format has a different number of placeholders and substitutions"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-star-requires-sequence"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "star-mapping"
+message = "% format * specifier requires a sequence"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-unsupported-format-character"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "unsupported"
+message = "% format has an unsupported format character"
+'''
+
+[[rules]]
+id = "ward:python/string-dot-format-invalid-format"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "dot-format"
+problem = "invalid"
+message = "invalid .format string: unbalanced braces"
+'''
+
+[[rules]]
+id = "ward:python/string-dot-format-extra-named-arguments"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "dot-format"
+problem = "unused-named"
+message = "unused named argument in .format call"
+'''
+
+[[rules]]
+id = "ward:python/string-dot-format-extra-positional-arguments"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "dot-format"
+problem = "unused-positional"
+message = "unused positional argument in .format call"
+'''
+
+[[rules]]
+id = "ward:python/string-dot-format-missing-arguments"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "dot-format"
+problem = "missing"
+message = "missing argument for a placeholder in .format call"
+'''
+
+[[rules]]
+id = "ward:python/string-dot-format-mixing-automatic"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "dot-format"
+problem = "mixed"
+message = ".format string mixes automatic and manual numbering"
+'''
+
+[[rules]]
+id = "ward:python/break-outside-loop"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "ancestor-check"
+kinds = ["break_stmt"]
+allowed = ["for_stmt", "while_stmt"]
+stop = ["funcdef", "classdef"]
+mode = "outside"
+message = "break outside loop"
+'''
+
+[[rules]]
+id = "ward:python/continue-outside-loop"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "ancestor-check"
+kinds = ["continue_stmt"]
+allowed = ["for_stmt", "while_stmt"]
+stop = ["funcdef", "classdef"]
+mode = "outside"
+message = "continue not properly in loop"
+'''
+
+[[rules]]
+id = "ward:python/late-future-import"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "imports"
+presets = ["standard", "strict"]
+body = '''
+check = "module-order"
+problem = "future-after-statement"
+message = "from __future__ imports must occur at the beginning of the file"
+'''
+
+[[rules]]
+id = "ward:python/is-literal"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "comparison-operator"
+problem = "is-literal"
+message = "use ==/!= to compare constant literals"
+'''
+
+[[rules]]
+id = "ward:python/default-except-not-last"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "except-order"
+message = "an except clause follows a bare except; the later clauses never run"
+'''
+
+[[rules]]
+id = "ward:python/multi-value-repeated-key-variable"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom"]
+text = '^\{(?:[^{}]*,)*?([A-Za-z_]\w*):(?:[^{}]*,)*?\1:'
+message = "dictionary key repeated; the first value is lost"
+'''
+
+[[rules]]
+id = "ward:python/import-shadowed-by-loop-var"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "loop-variable"
+problem = "shadows-import"
+message = "import shadowed by loop variable"
+'''
+
+[[rules]]
+id = "ward:python/undefined-export"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "undefined-export"
+message = "undefined name '{value}' in __all__"
+'''
+
+[[rules]]
+id = "ward:python/undefined-local"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "unbound-local"
+message = "local variable '{value}' referenced before assignment"
+'''
+
+[[rules]]
+id = "ward:python/percent-format-expected-sequence"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "percent-format"
+problem = "expected-sequence"
+message = "% format expected a sequence but got a mapping"
+'''
+
+[[rules]]
+id = "ward:python/undefined-local-with-nested-import-star-usage"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "ancestor-check"
+kinds = ["import_from"]
+allowed = ["funcdef", "classdef"]
+stop = []
+mode = "inside"
+text = '^from.*import\*$'
+message = "from ... import * is only allowed at module level"
+'''
+
+[[rules]]
+id = "ward:python/forward-annotation-syntax-error"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "string-annotation"
+message = "syntax error in forward annotation"
+'''
+
+[[rules]]
+id = "ward:python/unused-annotation"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-annotation"
+message = "local variable '{value}' is annotated but never used"
+'''

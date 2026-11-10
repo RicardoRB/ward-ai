@@ -1,0 +1,38 @@
+# Rules of spotbugs-4.9.7 that Ward does not implement, with the reason for each group.
+
+[[group]]
+reason = "SpotBugs test-harness patterns, not checks of user code"
+rules = [
+  "FB_MISSING_EXPECTED_WARNING",
+  "FB_UNEXPECTED_WARNING",
+]
+
+[[group]]
+reason = "the name is a Java keyword (assert since 1.4, enum since 5), so source that uses it as an identifier does not parse on any Java release Ward supports (8 and later)"
+rules = [
+  "NM_FUTURE_KEYWORD_USED_AS_IDENTIFIER",
+  "NM_FUTURE_KEYWORD_USED_AS_MEMBER_IDENTIFIER",
+]
+
+[[group]]
+reason = "these report unused SpotBugs @SuppressFBWarnings annotations; Ward has no suppressions (maintainer decision)"
+rules = [
+  "US_USELESS_SUPPRESSION_ON_CLASS",
+  "US_USELESS_SUPPRESSION_ON_FIELD",
+  "US_USELESS_SUPPRESSION_ON_METHOD",
+  "US_USELESS_SUPPRESSION_ON_METHOD_PARAMETER",
+  "US_USELESS_SUPPRESSION_ON_PACKAGE",
+]
+
+[[group]]
+reason = "SpotBugs lists the pattern but its detector never reports it: IS_INCONSISTENT_SYNC is deprecated in favour of IS2_INCONSISTENT_SYNC, and FindUnrelatedTypesInGenericContainer ignores unchecked arguments instead of reporting GC_UNCHECKED_TYPE_IN_GENERIC_CALL"
+rules = [
+  "GC_UNCHECKED_TYPE_IN_GENERIC_CALL",
+  "IS_INCONSISTENT_SYNC",
+]
+
+[[group]]
+reason = "SpotBugs defines the pattern but no detector emits it"
+rules = [
+  "NP_METHOD_PARAMETER_RELAXING_ANNOTATION",
+]

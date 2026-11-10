@@ -1,0 +1,45 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "cognitive-complexity"
+pmd = ["CognitiveComplexity"]
+
+[[rule]]
+name = "naming"
+eslint = ["camelcase"]
+
+[[rule]]
+name = "nesting-depth"
+detekt = ["NestedBlockDepth"]
+eslint = ["max-depth"]
+
+[[rule]]
+name = "type-body-length"
+swiftlint = ["type_body_length"]
+
+[[rule]]
+name = "unused-assignment"
+pmd = ["UnusedAssignment"]
+eslint = ["no-useless-assignment"]
+
+[[rule]]
+name = "sql-injection"
+spotbugs = ["SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE", "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING"]
+
+[[rule]]
+name = "command-injection"
+
+[[rule]]
+name = "path-traversal"
+ids = { java = "ward:java/path-injection" }
+spotbugs = ["PT_ABSOLUTE_PATH_TRAVERSAL", "PT_RELATIVE_PATH_TRAVERSAL"]
+
+[[rule]]
+name = "xss"
+spotbugs = ["XSS_REQUEST_PARAMETER_TO_SERVLET_WRITER", "XSS_REQUEST_PARAMETER_TO_JSP_WRITER", "XSS_REQUEST_PARAMETER_TO_SEND_ERROR"]
+
+[[rule]]
+name = "no-field-di"
+
+[[rule]]
+name = "no-standard-streams"

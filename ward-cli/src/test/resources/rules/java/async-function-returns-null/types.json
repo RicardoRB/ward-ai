@@ -1,0 +1,48 @@
+{
+  "3:12-3:66": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.util.concurrent.Futures"
+      },
+      "name": "transformAsync",
+      "params": [
+        {
+          "name": "ListenableFuture"
+        },
+        {
+          "name": "AsyncFunction"
+        },
+        {
+          "name": "Executor"
+        }
+      ],
+      "returns": {
+        "name": "ListenableFuture"
+      },
+      "static": true
+    }
+  },
+  "3:12-3:92": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.util.concurrent.Futures"
+      },
+      "name": "transformAsync",
+      "params": [
+        {
+          "name": "ListenableFuture"
+        },
+        {
+          "name": "AsyncFunction"
+        },
+        {
+          "name": "Executor"
+        }
+      ],
+      "returns": {
+        "name": "ListenableFuture"
+      },
+      "static": true
+    }
+  }
+}

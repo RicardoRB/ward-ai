@@ -1,0 +1,540 @@
+# Ruff's flake8-bugbear rules (B) for Python. Each is a text check on one kind of node, so a call
+# with the same text in a nested position is judged by its own text only.
+
+[[rules]]
+id = "ward:python/assignment-to-os-environ"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = '^os\.environ\s*=(?!=)'
+message = "assigning os.environ replaces the environment; set a key instead"
+'''
+
+[[rules]]
+id = "ward:python/unreliable-callable-check"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^(hasattr|getattr)\\(\\s*[^,()]+,\\s*[\"']__call__[\"']"
+message = "checking __call__ does not tell whether an object is callable; use callable()"
+'''
+
+[[rules]]
+id = "ward:python/strip-with-multi-characters"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "\\.(strip|lstrip|rstrip)\\(\\s*[\"'][^\"']*(.)[^\"']*\\2"
+message = "strip takes a set of characters, not a prefix or suffix; use removeprefix or removesuffix"
+'''
+
+[[rules]]
+id = "ward:python/mutable-argument-default"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["parameters"]
+text = '=\s*[\[{]'
+message = "mutable default argument is shared between calls; default to None"
+'''
+
+[[rules]]
+id = "ward:python/function-call-in-default-argument"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["parameters"]
+text = '=\s*(?!tuple\(|frozenset\()[A-Za-z_][\w.]*\('
+message = "function call in a default argument runs once, at definition time"
+'''
+
+[[rules]]
+id = "ward:python/get-attr-with-constant"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^getattr\\(\\s*[^,()]+,\\s*[\"'][A-Za-z_]\\w*[\"']\\s*\\)"
+message = "getattr with a constant name; use the attribute directly"
+'''
+
+[[rules]]
+id = "ward:python/set-attr-with-constant"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^setattr\\(\\s*[^,()]+,\\s*[\"'][A-Za-z_]\\w*[\"']\\s*,"
+message = "setattr with a constant name; assign the attribute directly"
+'''
+
+[[rules]]
+id = "ward:python/assert-false"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["assert_stmt"]
+text = '^assert(False)(?!\w)'
+message = "assert False is always stripped under -O; raise an exception instead"
+'''
+
+[[rules]]
+id = "ward:python/redundant-tuple-in-exception-handler"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["except_clause"]
+text = '^except\s*\(\s*[^,()]+,\s*\)'
+message = "a one-element tuple in an except clause; drop the parentheses"
+'''
+
+[[rules]]
+id = "ward:python/raise-literal"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["raise_stmt"]
+text = "^raise([\"']|\\d)"
+message = "raising a literal is a TypeError; raise an exception"
+'''
+
+[[rules]]
+id = "ward:python/assert-raises-exception"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '\.assertRaises\(\s*(Exception|BaseException)\s*\)'
+message = "assertRaises of Exception passes for any error; name a specific exception"
+'''
+
+[[rules]]
+id = "ward:python/useless-contextlib-suppress"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^(contextlib\.)?suppress\(\s*\)'
+message = "contextlib.suppress without exceptions suppresses nothing"
+'''
+
+[[rules]]
+id = "ward:python/star-arg-unpacking-after-keyword-arg"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["arglist"]
+text = '\b\w+\s*=[^,]*,\s*\*[^*]'
+message = "*args after a keyword argument; move the keyword argument last"
+'''
+
+[[rules]]
+id = "ward:python/no-explicit-stacklevel"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^warnings\.warn\((?![\s\S]*stacklevel)'
+message = "warnings.warn without stacklevel points at the wrong caller"
+'''
+
+[[rules]]
+id = "ward:python/except-with-empty-tuple"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["except_clause"]
+text = '^except\s*\(\s*\)'
+message = "an empty tuple in an except clause catches nothing"
+'''
+
+[[rules]]
+id = "ward:python/re-sub-positional-args"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^re\.(sub|subn)\((?![\s\S]*\b(count|flags)\s*=)(?:[^,()]+,){3}'
+message = "pass count and flags to re.sub as keyword arguments"
+'''
+
+[[rules]]
+id = "ward:python/zip-without-explicit-strict"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^zip\((?![\s\S]*\bstrict\s*=)'
+message = "zip without an explicit strict= argument"
+'''
+
+
+[[rules]]
+id = "ward:python/except-with-non-exception-classes"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["except_clause"]
+text = "^except[\\d\"']"
+message = "except handler names a non-exception value"
+'''
+
+[[rules]]
+id = "ward:python/static-key-dict-comprehension"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom"]
+text = "^\\{([\"'\\d]|True|False|None)[^:]*:[\\s\\S]*for\\w+in"
+message = "dict comprehension with a constant key repeats one key; use a literal value or a loop"
+'''
+
+[[rules]]
+id = "ward:python/abstract-base-class-without-abstract-method"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classdef"]
+text = '^class[^(]*\((?:[^()]*,)?(?:ABC|abc\.ABC)(?:,[^()]*)?\):(?![\s\S]*abstractmethod)'
+message = "abstract base class without an abstract method"
+'''
+
+[[rules]]
+id = "ward:python/mutable-contextvar-default"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^(contextvars\.)?ContextVar\([\s\S]*default=[\[{]'
+message = "mutable default for a ContextVar is shared by every context"
+'''
+
+[[rules]]
+id = "ward:python/useless-comparison"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = '^[^=()]*(==|!=|<=|>=|<|>)[^=]*$'
+message = "pointless comparison; assign it or remove it"
+'''
+
+[[rules]]
+id = "ward:python/useless-expression"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = "^(?![\\s\\S]*\\b(?:yield|await)\\b)(?!\\.\\.\\.\\s*$)(?![rRbBuUfF]{0,2}(?:\"\"\"|\"|\\')[\\s\\S]*(?:\"\"\"|\"|\\')\\s*$)(?![\\s\\S]*[\\w\\])]\\s*\\()(?![\\s\\S]*(?<![=!<>])=(?!=))(?!\\s*\\w+\\s*:)[\\s\\S]+$"
+message = "useless expression; assign it or remove it"
+'''
+
+[[rules]]
+id = "ward:python/raise-without-from-inside-except"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "raise-without-from"
+message = "within an except clause, raise exceptions with 'raise ... from err'"
+'''
+
+[[rules]]
+id = "ward:python/unary-prefix-increment-decrement"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr"]
+text = '^(\+\+|--)'
+message = "Python has no ++ or -- operator; use += or -="
+'''
+
+[[rules]]
+id = "ward:python/unused-loop-control-variable"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "loop-variable"
+problem = "unused"
+message = "loop control variable is not used within the loop body"
+'''
+
+[[rules]]
+id = "ward:python/loop-variable-overrides-iterator"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "loop-variable"
+problem = "overrides-iterator"
+message = "loop control variable overrides the iterable it iterates"
+'''
+
+[[rules]]
+id = "ward:python/duplicate-handler-exception"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["except_clause"]
+text = '^except\((?:[\w.]+,)*?([\w.]+),(?:[\w.]+,)*?\1[,)]'
+message = "exception handler with a duplicate exception"
+'''
+
+[[rules]]
+id = "ward:python/duplicate-try-block-exception"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "duplicate-handler"
+message = "try-except block with a duplicate exception"
+'''
+
+[[rules]]
+id = "ward:python/cached-instance-method"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "ancestor-check"
+kinds = ["decorated"]
+allowed = ["classdef"]
+stop = ["funcdef", "async_funcdef", "lambdef"]
+mode = "inside"
+text = '^@(functools\.)?(lru_cache|cache)(?!\w)'
+message = "use of functools.lru_cache or functools.cache on a method can leak memory"
+'''
+
+[[rules]]
+id = "ward:python/f-string-docstring"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "fstring-docstring"
+message = "f-string used as docstring; Python does not treat it as one"
+'''
+
+[[rules]]
+id = "ward:python/function-uses-loop-variable"
+language = "python"
+capability = "SCOPES"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "loop-closure"
+message = "function definition does not bind loop variable '{value}'"
+'''
+
+[[rules]]
+id = "ward:python/empty-method-without-abstract-decorator"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "empty-abstract-method"
+message = "empty method in an abstract base class, but has no abstract decorator"
+'''
+
+[[rules]]
+id = "ward:python/jump-statement-in-finally"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "finally-jump"
+message = "return, break or continue inside a finally block silences the exception"
+'''
+
+[[rules]]
+id = "ward:python/duplicate-value"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "set-duplicates"
+message = "set should not contain duplicate item"
+'''
+
+[[rules]]
+id = "ward:python/reuse-of-groupby-generator"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "groupby-reuse"
+message = "the generator from itertools.groupby is used more than once; the second use sees nothing"
+'''
+
+[[rules]]
+id = "ward:python/unintentional-type-annotation"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = '^[A-Za-z_]\w*(?:\.[A-Za-z_]\w*|\[[^\]]*\])+:[^=]*$'
+message = "possible unintentional type annotation (:) where an assignment (=) was meant"
+'''
+
+[[rules]]
+id = "ward:python/batched-without-explicit-strict"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+options.target-version = { type = "enum", values = ["py39", "py310", "py311", "py312", "py313", "py314", "py315"], parameter = "target" }
+body = '''
+check = "strict-call"
+call = '^(itertools\.)?batched\('
+minimum-minor = 13
+minimum-arguments = 0
+target = "py310"
+message = "itertools.batched without an explicit strict argument"
+'''
+
+[[rules]]
+id = "ward:python/map-without-explicit-strict"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+options.target-version = { type = "enum", values = ["py39", "py310", "py311", "py312", "py313", "py314", "py315"], parameter = "target" }
+body = '''
+check = "strict-call"
+call = '^map\('
+minimum-minor = 14
+minimum-arguments = 3
+target = "py310"
+message = "map with several iterables without an explicit strict argument"
+'''

@@ -1,0 +1,63 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "anon-inner-length"
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["AnonInnerLength"]
+
+[[rule]]
+name = "executable-statement-count"
+checkstyle = ["ExecutableStatementCount"]
+
+[[rule]]
+name = "file-length"
+checkstyle = ["FileLength"]
+eslint = ["max-lines"]
+swiftlint = ["file_length"]
+pylint = ["too-many-lines"]
+
+[[rule]]
+name = "lambda-body-length"
+checkstyle = ["LambdaBodyLength"]
+
+[[rule]]
+name = "line-length"
+detekt = ["MaxLineLength"]
+checkstyle = ["LineLength"]
+ktlint = ["max-line-length"]
+eslint = ["max-len"]
+swiftlint = ["line_length"]
+ruff = ["E501"]
+pylint = ["line-too-long"]
+
+[[rule]]
+name = "method-count"
+checkstyle = ["MethodCount"]
+
+[[rule]]
+name = "method-length"
+ids = { kotlin = "ward:kotlin/function-length", typescript = "ward:typescript/function-length", javascript = "ward:javascript/function-length", python = "ward:python/function-length", swift = "ward:swift/function-length" }
+detekt = ["LongMethod"]
+checkstyle = ["MethodLength"]
+eslint = ["max-lines-per-function"]
+swiftlint = ["function_body_length"]
+
+[[rule]]
+name = "outer-type-number"
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["OuterTypeNumber"]
+
+[[rule]]
+name = "parameter-number"
+ids = { java = "ward:java/parameter-count", kotlin = "ward:kotlin/parameter-count", typescript = "ward:typescript/parameter-count", javascript = "ward:javascript/parameter-count", python = "ward:python/parameter-count", swift = "ward:swift/parameter-count" }
+detekt = ["LongParameterList"]
+checkstyle = ["ParameterNumber"]
+eslint = ["max-params"]
+swiftlint = ["function_parameter_count"]
+ruff = ["PLR0913"]
+pylint = ["too-many-arguments"]
+
+[[rule]]
+name = "record-component-number"
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["RecordComponentNumber"]

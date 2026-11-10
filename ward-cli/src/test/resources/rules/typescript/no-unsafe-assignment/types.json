@@ -1,0 +1,18 @@
+{
+  "2:19-2:19": {
+    "type": {
+      "name": "any",
+      "primitive": false,
+      "args": [],
+      "array": 0
+    }
+  },
+  "32:19-32:19": {
+    "type": {
+      "name": "number",
+      "primitive": true,
+      "args": [],
+      "array": 0
+    }
+  }
+}

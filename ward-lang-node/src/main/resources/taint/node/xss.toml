@@ -1,0 +1,111 @@
+# HTML sinks: markup written to a response or the document, and code that evaluates a string.
+
+[[sinks]]
+kind = "call"
+name = "send"
+qualifier = "res"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "send"
+qualifier = "response"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "write"
+qualifier = "res"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "write"
+qualifier = "response"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "end"
+qualifier = "res"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "end"
+qualifier = "response"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "write"
+qualifier = "document"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "writeln"
+qualifier = "document"
+arguments = [0]
+
+# HTML-specific method names, matched on any receiver.
+[[sinks]]
+kind = "call"
+name = "insertAdjacentHTML"
+arguments = [1]
+
+[[sinks]]
+kind = "call"
+name = "eval"
+arguments = [0]
+
+# new Function(...args, body): the body is the last argument, so every position is guarded.
+[[sinks]]
+kind = "call"
+name = "<init>"
+qualifier = "Function"
+arguments = [0, 1, 2, 3]
+
+# Assignments to these properties write markup into the page.
+[[sinks]]
+kind = "member-write"
+name = "innerHTML"
+arguments = [0]
+
+[[sinks]]
+kind = "member-write"
+name = "outerHTML"
+arguments = [0]
+
+# Encoders that make a string safe to put in markup.
+[[sanitizers]]
+kind = "call"
+name = "encodeURIComponent"
+
+[[sanitizers]]
+kind = "call"
+name = "encodeURI"
+
+[[sanitizers]]
+kind = "call"
+name = "escape"
+receiver = "escape-html"
+
+[[sanitizers]]
+kind = "call"
+name = "escapeHtml"
+receiver = "escape-html"
+
+# Numeric conversions cannot carry markup or a path separator.
+
+[[sanitizers]]
+kind = "call"
+name = "Number"
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+
+[[sanitizers]]
+kind = "call"
+name = "parseFloat"

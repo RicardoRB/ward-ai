@@ -1,0 +1,1399 @@
+# Structural rules of the "problem" category for TypeScript and JavaScript. Each rule runs on the shared syntax tree.
+
+[[rules]]
+id = "ward:typescript/no-debugger"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["debuggerStatement"]
+message = "unexpected debugger statement"
+'''
+
+[[rules]]
+id = "ward:javascript/no-debugger"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["debuggerStatement"]
+message = "unexpected debugger statement"
+'''
+
+[[rules]]
+id = "ward:typescript/no-async-promise-executor"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'new'"]
+text = '^newPromise\(async(\(|function)'
+message = "promise executor must not be an async function"
+'''
+
+[[rules]]
+id = "ward:javascript/no-async-promise-executor"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'new'"]
+text = '^newPromise\(async(\(|function)'
+message = "promise executor must not be an async function"
+'''
+
+[[rules]]
+id = "ward:typescript/no-compare-neg-zero"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'==='", "'!=='", "'=='", "'!='", "'<='", "'>='", "'<'", "'>'"]
+text = '-0$'
+message = "do not compare against -0"
+'''
+
+[[rules]]
+id = "ward:javascript/no-compare-neg-zero"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'==='", "'!=='", "'=='", "'!='", "'<='", "'>='", "'<'", "'>'"]
+text = '-0$'
+message = "do not compare against -0"
+'''
+
+[[rules]]
+id = "ward:typescript/no-control-regex"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["RegularExpressionLiteral"]
+text = '\\x[01][0-9a-fA-F]|\\u00[01][0-9a-fA-F]'
+message = "unexpected control character in regular expression"
+'''
+
+[[rules]]
+id = "ward:javascript/no-control-regex"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["RegularExpressionLiteral"]
+text = '\\x[01][0-9a-fA-F]|\\u00[01][0-9a-fA-F]'
+message = "unexpected control character in regular expression"
+'''
+
+[[rules]]
+id = "ward:typescript/no-empty-character-class"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["RegularExpressionLiteral"]
+text = '(?<!\\)\[\]'
+message = "empty character class in regular expression"
+'''
+
+[[rules]]
+id = "ward:javascript/no-empty-character-class"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["RegularExpressionLiteral"]
+text = '(?<!\\)\[\]'
+message = "empty character class in regular expression"
+'''
+
+[[rules]]
+id = "ward:typescript/no-new-native-nonconstructor"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'new'"]
+text = '^new(Symbol|BigInt)\('
+message = "Symbol and BigInt cannot be used with new"
+'''
+
+[[rules]]
+id = "ward:javascript/no-new-native-nonconstructor"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'new'"]
+text = '^new(Symbol|BigInt)\('
+message = "Symbol and BigInt cannot be used with new"
+'''
+
+[[rules]]
+id = "ward:typescript/no-obj-calls"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["arguments"]
+text = '^(Math|JSON|Reflect|Atomics)\('
+message = "object is not a function"
+'''
+
+[[rules]]
+id = "ward:javascript/no-obj-calls"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["arguments"]
+text = '^(Math|JSON|Reflect|Atomics)\('
+message = "object is not a function"
+'''
+
+[[rules]]
+id = "ward:typescript/no-prototype-builtins"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["arguments"]
+text = '^[\w$.]+\.(hasOwnProperty|isPrototypeOf|propertyIsEnumerable)\('
+message = "do not call Object.prototype methods directly on an object"
+'''
+
+[[rules]]
+id = "ward:javascript/no-prototype-builtins"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["arguments"]
+text = '^[\w$.]+\.(hasOwnProperty|isPrototypeOf|propertyIsEnumerable)\('
+message = "do not call Object.prototype methods directly on an object"
+'''
+
+[[rules]]
+id = "ward:typescript/no-self-assign"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'='"]
+text = '^([\w$.]+)=\1$'
+message = "self-assignment of a variable"
+'''
+
+[[rules]]
+id = "ward:javascript/no-self-assign"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'='"]
+text = '^([\w$.]+)=\1$'
+message = "self-assignment of a variable"
+'''
+
+[[rules]]
+id = "ward:typescript/no-sparse-arrays"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["elementList"]
+text = '^(,|[^\x22\x27\x60\[\]]*?,,)'
+message = "unexpected comma in middle of array"
+'''
+
+[[rules]]
+id = "ward:javascript/no-sparse-arrays"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["elementList"]
+text = '^(,|[^\x22\x27\x60\[\]]*?,,)'
+message = "unexpected comma in middle of array"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unsafe-finally"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["returnStatement", "throwStatement", "breakStatement", "continueStatement"]
+inside = ["finallyProduction"]
+message = "unsafe jump out of a finally block"
+'''
+
+[[rules]]
+id = "ward:javascript/no-unsafe-finally"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["returnStatement", "throwStatement", "breakStatement", "continueStatement"]
+inside = ["finallyProduction"]
+message = "unsafe jump out of a finally block"
+'''
+
+[[rules]]
+id = "ward:typescript/use-isnan"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'==='", "'!=='", "'=='", "'!='", "'<='", "'>='", "'<'", "'>'"]
+text = '^(Number\.)?NaN(===|!==|==|!=|<=|>=|<|>)|(===|!==|==|!=|<=|>=|<|>)(Number\.)?NaN$'
+message = "use Number.isNaN() to compare with NaN"
+'''
+
+[[rules]]
+id = "ward:javascript/use-isnan"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'==='", "'!=='", "'=='", "'!='", "'<='", "'>='", "'<'", "'>'"]
+text = '^(Number\.)?NaN(===|!==|==|!=|<=|>=|<|>)|(===|!==|==|!=|<=|>=|<|>)(Number\.)?NaN$'
+message = "use Number.isNaN() to compare with NaN"
+'''
+
+[[rules]]
+id = "ward:typescript/no-dupe-keys"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "duplicate"
+kinds = ["objectLiteral"]
+items = ["propertyAssignment"]
+key = "propertyName"
+message = "duplicate key '{value}'"
+'''
+
+[[rules]]
+id = "ward:javascript/no-dupe-keys"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "duplicate"
+kinds = ["objectLiteral"]
+items = ["propertyAssignment"]
+key = "propertyName"
+message = "duplicate key '{value}'"
+'''
+
+[[rules]]
+id = "ward:typescript/no-duplicate-case"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "duplicate"
+kinds = ["caseClauses"]
+items = ["caseClause"]
+key = "singleExpression"
+message = "duplicate case label"
+'''
+
+[[rules]]
+id = "ward:javascript/no-duplicate-case"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "duplicate"
+kinds = ["caseClauses"]
+items = ["caseClause"]
+key = "singleExpression"
+message = "duplicate case label"
+'''
+
+[[rules]]
+id = "ward:typescript/no-self-compare"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'==='", "'!=='", "'=='", "'!='", "'<='", "'>='", "'<'", "'>'"]
+text = '^([\w$.]+)(===|!==|==|!=|<=|>=|<|>)\1$'
+message = "comparing a value with itself"
+'''
+
+[[rules]]
+id = "ward:javascript/no-self-compare"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'==='", "'!=='", "'=='", "'!='", "'<='", "'>='", "'<'", "'>'"]
+text = '^([\w$.]+)(===|!==|==|!=|<=|>=|<|>)\1$'
+message = "comparing a value with itself"
+'''
+
+[[rules]]
+id = "ward:typescript/no-global-is-nan"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(window\.)?isNaN\('
+message = "use Number.isNaN instead of the global isNaN"
+'''
+
+[[rules]]
+id = "ward:javascript/no-global-is-nan"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(window\.)?isNaN\('
+message = "use Number.isNaN instead of the global isNaN"
+'''
+
+[[rules]]
+id = "ward:typescript/no-global-is-finite"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(window\.)?isFinite\('
+message = "use Number.isFinite instead of the global isFinite"
+'''
+
+[[rules]]
+id = "ward:javascript/no-global-is-finite"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(window\.)?isFinite\('
+message = "use Number.isFinite instead of the global isFinite"
+'''
+
+[[rules]]
+id = "ward:typescript/no-focused-tests"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^((describe|it|test)\.only|f(describe|it|test))\('
+message = "focused test left in the code"
+'''
+
+[[rules]]
+id = "ward:javascript/no-focused-tests"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^((describe|it|test)\.only|f(describe|it|test))\('
+message = "focused test left in the code"
+'''
+
+[[rules]]
+id = "ward:typescript/no-skipped-tests"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^((describe|it|test)\.skip|x(describe|it|test))\('
+message = "skipped test left in the code"
+'''
+
+[[rules]]
+id = "ward:javascript/no-skipped-tests"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^((describe|it|test)\.skip|x(describe|it|test))\('
+message = "skipped test left in the code"
+'''
+
+[[rules]]
+id = "ward:typescript/no-then-property"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["propertyAssignment"]
+text = '^then\s*:'
+message = "do not add a then property; it makes the object look like a thenable"
+'''
+
+[[rules]]
+id = "ward:javascript/no-then-property"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["propertyAssignment"]
+text = '^then\s*:'
+message = "do not add a then property; it makes the object look like a thenable"
+'''
+
+[[rules]]
+id = "ward:typescript/no-document-cookie"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(window\.)?document\.cookie$'
+message = "use a cookie library or the Cookie Store API instead of document.cookie"
+'''
+
+[[rules]]
+id = "ward:javascript/no-document-cookie"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(window\.)?document\.cookie$'
+message = "use a cookie library or the Cookie Store API instead of document.cookie"
+'''
+
+[[rules]]
+id = "ward:typescript/no-global-dirname-filename"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(__dirname|__filename)$'
+message = "use import.meta.dirname or import.meta.filename instead of __dirname or __filename"
+'''
+
+[[rules]]
+id = "ward:javascript/no-global-dirname-filename"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(__dirname|__filename)$'
+message = "use import.meta.dirname or import.meta.filename instead of __dirname or __filename"
+'''
+
+[[rules]]
+id = "ward:typescript/use-is-array"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^[\w$.]+instanceofArray$'
+message = "use Array.isArray instead of instanceof Array"
+'''
+
+[[rules]]
+id = "ward:javascript/use-is-array"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^[\w$.]+instanceofArray$'
+message = "use Array.isArray instead of instanceof Array"
+'''
+
+[[rules]]
+id = "ward:typescript/use-number-to-fixed-digits-argument"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.toFixed\(\)$'
+message = "pass the digits argument to toFixed"
+'''
+
+[[rules]]
+id = "ward:javascript/use-number-to-fixed-digits-argument"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '\.toFixed\(\)$'
+message = "pass the digits argument to toFixed"
+'''
+
+[[rules]]
+id = "ward:typescript/no-empty-interface"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["interfaceDeclaration"]
+text = '^(export)?(declare)?interface[\w$]+(<[^{]*>)?(extends[\w$.,<>]+)?\{\};?$'
+message = "an empty interface is the same as {}; remove it or add members"
+'''
+
+[[rules]]
+id = "ward:typescript/no-invalid-builtin-instantiation"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^new(Symbol|BigInt)\([^)]*\)$'
+message = "Symbol and BigInt are functions, not constructors; drop the new keyword"
+'''
+
+[[rules]]
+id = "ward:javascript/no-invalid-builtin-instantiation"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^new(Symbol|BigInt)\([^)]*\)$'
+message = "Symbol and BigInt are functions, not constructors; drop the new keyword"
+'''
+
+[[rules]]
+id = "ward:typescript/use-valid-for-direction"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["iterationStatement"]
+text = '^for\([^;]*;[\w$]+<=?[^;]*;[\w$]+--\)|^for\([^;]*;[\w$]+>=?[^;]*;[\w$]+\+\+\)'
+message = "the loop update moves away from the condition, so the loop never ends or never runs"
+'''
+
+[[rules]]
+id = "ward:javascript/use-valid-for-direction"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["iterationStatement"]
+text = '^for\([^;]*;[\w$]+<=?[^;]*;[\w$]+--\)|^for\([^;]*;[\w$]+>=?[^;]*;[\w$]+\+\+\)'
+message = "the loop update moves away from the condition, so the loop never ends or never runs"
+'''
+
+[[rules]]
+id = "ward:typescript/no-const-assign"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["CONSTANT"]
+message = "'{value}' is constant"
+'''
+
+[[rules]]
+id = "ward:javascript/no-const-assign"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["CONSTANT"]
+message = "'{value}' is constant"
+'''
+
+[[rules]]
+id = "ward:typescript/no-func-assign"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["FUNCTION"]
+message = "'{value}' is a function"
+'''
+
+[[rules]]
+id = "ward:javascript/no-func-assign"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["FUNCTION"]
+message = "'{value}' is a function"
+'''
+
+[[rules]]
+id = "ward:typescript/no-class-assign"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["CLASS"]
+message = "'{value}' is a class"
+'''
+
+[[rules]]
+id = "ward:javascript/no-class-assign"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["CLASS"]
+message = "'{value}' is a class"
+'''
+
+[[rules]]
+id = "ward:typescript/no-import-assign"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["IMPORT"]
+message = "'{value}' is read-only"
+'''
+
+[[rules]]
+id = "ward:javascript/no-import-assign"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "reassigned-binding"
+binding-kinds = ["IMPORT"]
+message = "'{value}' is read-only"
+'''
+
+[[rules]]
+id = "ward:javascript/no-undef"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "undefined-name"
+message = "'{value}' is not defined"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unreachable"
+language = "TYPESCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "unreachable-code"
+message = "unreachable code"
+'''
+
+[[rules]]
+id = "ward:javascript/no-unreachable"
+language = "JAVASCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "unreachable-code"
+message = "unreachable code"
+'''
+
+[[rules]]
+id = "ward:typescript/no-undef"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "undefined-name"
+message = "'{value}' is not defined"
+'''
+
+[[rules]]
+id = "ward:typescript/valid-typeof"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'==='", "'!=='", "'=='", "'!='"]
+text = '^(typeof[\w$.]+(===|!==|==|!=)(?<q>["\x27])(?!(undefined|object|boolean|number|string|function|symbol|bigint)\k<q>)|(?<r>["\x27])(?!(undefined|object|boolean|number|string|function|symbol|bigint)\k<r>)[^"\x27]*\k<r>(===|!==|==|!=)typeof)'
+message = "invalid typeof comparison value"
+'''
+
+[[rules]]
+id = "ward:javascript/valid-typeof"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+with-child = ["'==='", "'!=='", "'=='", "'!='"]
+text = '^(typeof[\w$.]+(===|!==|==|!=)(?<q>["\x27])(?!(undefined|object|boolean|number|string|function|symbol|bigint)\k<q>)|(?<r>["\x27])(?!(undefined|object|boolean|number|string|function|symbol|bigint)\k<r>)[^"\x27]*\k<r>(===|!==|==|!=)typeof)'
+message = "invalid typeof comparison value"
+'''
+
+[[rules]]
+id = "ward:typescript/no-constant-condition"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["ifStatement", "iterationStatement", "singleExpression"]
+text = '^(if\((true|false|null|\d+|"[^"]*"|\x27[^\x27]*\x27)\)|while\((false|null|\d+|"[^"]*"|\x27[^\x27]*\x27)\)|(true|false|null|\d+)\?)'
+message = "unexpected constant condition"
+'''
+
+[[rules]]
+id = "ward:javascript/no-constant-condition"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["ifStatement", "iterationStatement", "singleExpression"]
+text = '^(if\((true|false|null|\d+|"[^"]*"|\x27[^\x27]*\x27)\)|while\((false|null|\d+|"[^"]*"|\x27[^\x27]*\x27)\)|(true|false|null|\d+)\?)'
+message = "unexpected constant condition"
+'''
+
+[[rules]]
+id = "ward:typescript/no-const-enum"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["enumDeclaration"]
+text = '^(declare)?constenum'
+message = "avoid const enum; use a regular enum or a union of literals"
+'''
+
+[[rules]]
+id = "ward:typescript/no-assign-in-expressions"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["ifStatement", "iterationStatement"]
+text = '^(if|while)\([\w$.]+=[^=>]'
+message = "do not assign inside a condition"
+'''
+
+[[rules]]
+id = "ward:javascript/no-assign-in-expressions"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["ifStatement", "iterationStatement"]
+text = '^(if|while)\([\w$.]+=[^=>]'
+message = "do not assign inside a condition"
+'''
+
+[[rules]]
+id = "ward:typescript/no-misrefactored-shorthand-assign"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^([\w$.]+)(\+|-|\*|/|%|&|\||\^|<<|>>)=\1\2'
+message = "the shorthand assignment repeats its target; write it without the target on the right"
+'''
+
+[[rules]]
+id = "ward:javascript/no-misrefactored-shorthand-assign"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^([\w$.]+)(\+|-|\*|/|%|&|\||\^|<<|>>)=\1\2'
+message = "the shorthand assignment repeats its target; write it without the target on the right"
+'''
+
+[[rules]]
+id = "ward:typescript/no-string-case-mismatch"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^[\w$.]+\.toLowerCase\(\)(===?|!==?)[\"\x27][^\"\x27]*[A-Z]|^[\w$.]+\.toUpperCase\(\)(===?|!==?)[\"\x27][^\"\x27]*[a-z]'
+message = "the comparison can never match because of the letter case of the literal"
+'''
+
+[[rules]]
+id = "ward:javascript/no-string-case-mismatch"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^[\w$.]+\.toLowerCase\(\)(===?|!==?)[\"\x27][^\"\x27]*[A-Z]|^[\w$.]+\.toUpperCase\(\)(===?|!==?)[\"\x27][^\"\x27]*[a-z]'
+message = "the comparison can never match because of the letter case of the literal"
+'''
+
+[[rules]]
+id = "ward:typescript/no-render-return-value"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variableDeclaration"]
+text = '^[\w$]+=ReactDOM\.render\('
+message = "do not use the return value of ReactDOM.render"
+'''
+
+[[rules]]
+id = "ward:javascript/no-render-return-value"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["variableDeclaration"]
+text = '^[\w$]+=ReactDOM\.render\('
+message = "do not use the return value of ReactDOM.render"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unused-instantiation"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expressionStatement"]
+text = '^new[\w$.]+\([^)]*\);?$'
+message = "the new object is created and thrown away; assign it or call a function"
+'''
+
+[[rules]]
+id = "ward:javascript/no-unused-instantiation"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expressionStatement"]
+text = '^new[\w$.]+\([^)]*\);?$'
+message = "the new object is created and thrown away; assign it or call a function"
+'''
+
+[[rules]]
+id = "ward:typescript/no-xor-as-exponentiation"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^\d+\^\d+$'
+message = "the ^ operator is bitwise xor; use ** for a power"
+'''
+
+[[rules]]
+id = "ward:javascript/no-xor-as-exponentiation"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^\d+\^\d+$'
+message = "the ^ operator is bitwise xor; use ** for a power"
+'''
+[[rules]]
+id = "ward:typescript/for-direction"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["iterationStatement"]
+text = '^for\((?:var|let|const)?(?<v>\w+)(?:=[^;]*)?;\k<v>(?:<|<=)[^;]*;(?:\k<v>--|--\k<v>|\k<v>-=\d+)\)|^for\((?:var|let|const)?(?<w>\w+)(?:=[^;]*)?;\k<w>(?:>|>=)[^;]*;(?:\k<w>\+\+|\+\+\k<w>|\k<w>\+=\d+)\)'
+message = "the loop counter moves away from its limit"
+'''
+
+[[rules]]
+id = "ward:typescript/no-empty-pattern"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["objectLiteral", "arrayLiteral"]
+parent = ["variableDeclaration", "bindingPattern"]
+text = '^(\{\}|\[\])$'
+message = "unexpected empty destructuring pattern"
+'''
+
+[[rules]]
+id = "ward:typescript/no-dupe-args"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "duplicate"
+kinds = ["parameterList"]
+items = ["parameter"]
+key = "identifierOrPattern"
+message = "duplicate parameter '{value}'"
+'''
+
+[[rules]]
+id = "ward:javascript/for-direction"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["iterationStatement"]
+text = '^for\((?:var|let|const)?(?<v>\w+)(?:=[^;]*)?;\k<v>(?:<|<=)[^;]*;(?:\k<v>--|--\k<v>|\k<v>-=\d+)\)|^for\((?:var|let|const)?(?<w>\w+)(?:=[^;]*)?;\k<w>(?:>|>=)[^;]*;(?:\k<w>\+\+|\+\+\k<w>|\k<w>\+=\d+)\)'
+message = "the loop counter moves away from its limit"
+'''
+
+[[rules]]
+id = "ward:javascript/no-empty-pattern"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["objectLiteral", "arrayLiteral"]
+parent = ["assignable"]
+text = '^(\{\}|\[\])$'
+message = "unexpected empty destructuring pattern"
+'''
+
+[[rules]]
+id = "ward:javascript/no-dupe-args"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "duplicate"
+kinds = ["formalParameterList"]
+items = ["formalParameterArg"]
+key = "assignable"
+message = "duplicate parameter '{value}'"
+'''
+[[rules]]
+id = "ward:typescript/no-template-curly-in-string"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["StringLiteral"]
+text = '\$\{[^}]+\}'
+message = "template placeholder in a regular string; use a template literal"
+'''
+
+[[rules]]
+id = "ward:javascript/no-template-curly-in-string"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["StringLiteral"]
+text = '\$\{[^}]+\}'
+message = "template placeholder in a regular string; use a template literal"
+'''
+
+# ESLint core rules of type "problem" (#326). Each rule reports what ESLint reports at its defaults.
+
+[[rules]]
+id = "ward:typescript/constructor-super"
+language = "TYPESCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-constructor-super"
+message = "expected to call 'super()'"
+duplicate-message = "unexpected duplicate 'super()'"
+'''
+
+[[rules]]
+id = "ward:javascript/constructor-super"
+language = "JAVASCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-constructor-super"
+message = "expected to call 'super()'"
+duplicate-message = "unexpected duplicate 'super()'"
+'''
+
+[[rules]]
+id = "ward:typescript/getter-return"
+language = "TYPESCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.allow-implicit = { type = "boolean" }
+body = '''
+check = "node-getter-return"
+allow-implicit = false
+message = "expected to return a value in getter"
+'''
+
+[[rules]]
+id = "ward:javascript/getter-return"
+language = "JAVASCRIPT"
+capability = "CFG"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.allow-implicit = { type = "boolean" }
+body = '''
+check = "node-getter-return"
+allow-implicit = false
+message = "expected to return a value in getter"
+'''
+
+[[rules]]
+id = "ward:typescript/no-setter-return"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-setter-return"
+message = "setter cannot return a value"
+'''
+
+[[rules]]
+id = "ward:javascript/no-setter-return"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-no-setter-return"
+message = "setter cannot return a value"
+'''
+
+[[rules]]
+id = "ward:typescript/no-unsafe-negation"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.enforce-for-ordering-relations = { type = "boolean" }
+body = '''
+check = "node-unsafe-negation"
+enforce-for-ordering-relations = false
+message = "unexpected negating the left operand of '{value}' operator"
+'''
+
+[[rules]]
+id = "ward:javascript/no-unsafe-negation"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+options.enforce-for-ordering-relations = { type = "boolean" }
+body = '''
+check = "node-unsafe-negation"
+enforce-for-ordering-relations = false
+message = "unexpected negating the left operand of '{value}' operator"
+'''
+
+[[rules]]
+id = "ward:typescript/no-ex-assign"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-catch-parameter-assign"
+message = "do not assign to the exception parameter"
+'''
+
+[[rules]]
+id = "ward:javascript/no-ex-assign"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "problem"
+presets = ["standard", "strict"]
+body = '''
+check = "node-catch-parameter-assign"
+message = "do not assign to the exception parameter"
+'''

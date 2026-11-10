@@ -1,0 +1,50 @@
+{
+  "233:19-233:19": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "number",
+      "primitive": true
+    }
+  },
+  "233:22-233:22": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "Promise<number>",
+      "primitive": false
+    }
+  },
+  "234:19-234:19": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "number",
+      "primitive": true
+    }
+  },
+  "234:22-234:22": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "number",
+      "primitive": true
+    }
+  },
+  "32:9-32:9": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "Promise<number>",
+      "primitive": false
+    }
+  },
+  "3:9-3:9": {
+    "type": {
+      "args": [],
+      "array": 0,
+      "name": "number",
+      "primitive": true
+    }
+  }
+}

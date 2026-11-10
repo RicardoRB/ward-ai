@@ -1,0 +1,1 @@
+let same = value == value

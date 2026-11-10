@@ -1,0 +1,25 @@
+node,fixture,preset,packages
+22,typescript,strict,
+24,typescript,strict,
+24,javascript-esm,strict,
+24,javascript-commonjs,strict,
+22,javascript-esm,strict,
+22,javascript-commonjs,strict,
+22,typescript,standard,
+24,nextjs,strict,
+24,vite-react,strict,
+24,nestjs,strict,
+24,express,strict,
+24,vue,strict,vite@7.3.7 vitest@4.0.18
+22.12,vue,standard,vue-tsc@3.3.12 typescript@5.9.3 vitest@4.1.11
+24,vue,strict,vue-tsc@3.3.13 typescript@6.0.3
+24,astro,strict,
+24,astro,strict,astro@7.3.8 @astrojs/check@0.9.12
+22.12,astro,standard,astro@7.3.8 typescript@5.0.4
+22,angular-21,standard,
+24,angular-21,strict,
+22,angular-22,standard,
+24,angular-22,strict,
+22.17,svelte,standard,svelte-check@4.7.6 typescript@6.0.3 vitest@4.1.11
+24,svelte,strict,svelte-check@4.7.7 typescript@6.0.3
+24,turborepo,strict,

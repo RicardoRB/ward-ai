@@ -1,0 +1,130 @@
+# SpotBugs STYLE and MALICIOUS_CODE patterns for Java (issue 316), standard rows, part 3. Rules match the compact
+# text of a node (no separators between tokens) and so approximate SpotBugs' detectors.
+
+[[rules]]
+id = "ward:java/dls-dead-local-store"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "unused-assignment"
+message = "the value stored in local '{value}' is never read"
+'''
+
+[[rules]]
+id = "ward:java/dls-dead-local-store-in-return"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^return\w+(?:[-+*/%&|^]|<<|>>>?)?=[^=]'
+message = "return assigns to a local that is dead after the return"
+'''
+
+[[rules]]
+id = "ward:java/dp-create-classloader-inside-do-privileged"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(?:java\.net\.)?URLClassLoader\('
+message = "a class loader is created outside doPrivileged"
+'''
+
+[[rules]]
+id = "ward:java/ms-should-be-final"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fieldDeclaration"]
+modifiers = ["public", "static"]
+not-modifiers = ["final"]
+text = '^[\w.<>\[\],?]*[a-z\]>\d][A-Z][A-Z0-9_]*(?:=|;)'
+message = "public static field looks like a constant but is not final"
+'''
+
+[[rules]]
+id = "ward:java/np-dereference-of-readline-value"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.]*readLine\(\)\.\w+\([^()]*\)$'
+message = "the line from readLine() is dereferenced and may be null"
+'''
+
+[[rules]]
+id = "ward:java/rcn-redundant-comparison-two-null-values"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^null(?:==|!=)null$'
+message = "two null values are compared"
+'''
+
+[[rules]]
+id = "ward:java/ucf-useless-control-flow-next-line"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^if\([^;]*\);$'
+message = "the if statement has an empty body"
+'''
+
+[[rules]]
+id = "ward:java/ps-public-semaphores"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+modifiers = ["public"]
+text = '\{(?:[^{}]*[;{}])?(?:this\.)?(?:wait|notify|notifyAll)\('
+message = "public method waits or notifies on this"
+'''
+
+[[rules]]
+id = "ward:java/ci-confused-inheritance"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+modifiers = ["final"]
+text = '[{;}]protected(?:[\w<>\[\],.?]+)(?:=|;)'
+message = "final class declares a protected field"
+'''

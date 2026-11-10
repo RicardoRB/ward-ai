@@ -1,0 +1,10 @@
+# Rules of jscpd-5.4.2 that Ward does not implement, with the reason for each group.
+
+[[group]]
+reason = "option of ward:<language>/duplicate-code, set in ward-rules.toml"
+rules = [
+  "ignore-case",
+  "mode-mild",
+  "mode-strict",
+  "mode-weak",
+]

@@ -1,0 +1,13 @@
+# Rules of cpd-7.29.0 that Ward does not implement, with the reason for each group.
+
+[[group]]
+reason = "option of ward:<language>/duplicate-code, set in ward-rules.toml"
+rules = [
+  "ignore-annotations",
+  "ignore-identifier-and-literal-sequences",
+  "ignore-identifiers",
+  "ignore-literal-sequences",
+  "ignore-literals",
+  "ignore-usings",
+  "skip-lexical-errors",
+]

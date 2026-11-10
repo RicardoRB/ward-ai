@@ -1,0 +1,148 @@
+package dev.ward.application.gate;
+
+import dev.ward.domain.config.GateConfiguration;
+import dev.ward.domain.config.PartialCheckPlan;
+import dev.ward.domain.config.WardConfiguration;
+import dev.ward.domain.gate.CheckReport;
+import dev.ward.domain.gate.GateResult;
+import dev.ward.domain.gate.GateScope;
+import dev.ward.domain.gate.QualityGate;
+import dev.ward.domain.gate.SkippedQualityGate;
+import dev.ward.domain.project.Project;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
+
+/** Applies a {@link PartialCheckPlan}: narrowed commands, skipped gates, and reported scopes. */
+final class PartialGates {
+  static final String NOT_AFFECTED = "Not affected by the edited files";
+
+  private PartialGates() {}
+
+  /**
+   * Creates the selected gates in configuration order. A narrowed gate runs its command followed by
+   * the plan's arguments (or the partial table's command when it sets one), and an enabled gate the
+   * plan skips runs nothing.
+   */
+  static List<QualityGate> create(
+      final WardConfiguration selected,
+      final PartialCheckPlan plan,
+      final QualityGateFactory factory,
+      final Project project) {
+    final Map<String, GateConfiguration> executed = new LinkedHashMap<>();
+    selected
+        .checks()
+        .forEach(
+            (name, gate) -> {
+              if (!skipped(name, gate, plan)) {
+                executed.put(name, narrowed(gate, plan.gates().get(name)));
+              }
+            });
+    final Iterator<QualityGate> created =
+        factory
+            .create(new WardConfiguration(selected.version(), executed), project, focus(plan))
+            .iterator();
+    final List<QualityGate> gates = new ArrayList<>(selected.checks().size());
+    selected
+        .checks()
+        .forEach(
+            (name, gate) ->
+                gates.add(
+                    skipped(name, gate, plan)
+                        ? new TypedQualityGate(
+                            gate.type(), new SkippedQualityGate(name, NOT_AFFECTED))
+                        : created.next()));
+    return gates;
+  }
+
+  /**
+   * A nested project shares agent sessions with the rest of the repository, so edits that all land
+   * outside it are none of its business.
+   */
+  static boolean outsideNestedProject(final Project project, final List<Path> paths) {
+    final Path root = project.root().toAbsolutePath().normalize();
+    return project.nested()
+        && !paths.isEmpty()
+        && paths.stream().noneMatch(path -> path.toAbsolutePath().normalize().startsWith(root));
+  }
+
+  /** Labels each result with the plan's decision and records the edited paths. */
+  static CheckReport scoped(
+      final CheckReport report, final PartialCheckPlan plan, final List<Path> paths) {
+    final List<GateResult> results =
+        report.results().stream()
+            .map(result -> result.withScope(scope(plan.gates().get(result.name()))))
+            .toList();
+    return report.withResults(results).withPartialPaths(reported(report.project().root(), paths));
+  }
+
+  /** The changed paths of each gate the plan narrows to paths rather than to arguments. */
+  private static Map<String, List<String>> focus(final PartialCheckPlan plan) {
+    final Map<String, List<String>> focus = new LinkedHashMap<>();
+    plan.gates()
+        .forEach(
+            (name, gate) -> {
+              if (!gate.focus().isEmpty()) {
+                focus.put(name, gate.focus());
+              }
+            });
+    return focus;
+  }
+
+  private static boolean skipped(
+      final String name, final GateConfiguration gate, final PartialCheckPlan plan) {
+    return gate.enabled() && plan.gates().get(name).scope() == PartialCheckPlan.Scope.SKIP;
+  }
+
+  private static GateConfiguration narrowed(
+      final GateConfiguration gate, final PartialCheckPlan.GatePlan plan) {
+    if (plan.scope() != PartialCheckPlan.Scope.NARROW) {
+      return gate;
+    }
+    final List<String> base =
+        gate.partial().command().isEmpty() ? gate.command() : gate.partial().command();
+    return new GateConfiguration(
+        gate.name(),
+        gate.type(),
+        gate.enabled(),
+        Stream.concat(base.stream(), plan.args().stream()).toList(),
+        gate.profiles(),
+        gate.partial(),
+        gate.root(),
+        gate.openApi(),
+        gate.minimum(),
+        gate.platform(),
+        gate.rules(),
+        null,
+        List.of(),
+        null,
+        null,
+        null);
+  }
+
+  private static GateScope scope(final PartialCheckPlan.GatePlan plan) {
+    return switch (plan.scope()) {
+      case SKIP -> GateScope.SKIPPED;
+      case NARROW -> GateScope.NARROWED;
+      case FULL -> GateScope.FULL;
+    };
+  }
+
+  /** Paths inside the project are reported root-relative with {@code /}, others as given. */
+  private static List<String> reported(final Path root, final List<Path> paths) {
+    final Path absoluteRoot = root.toAbsolutePath().normalize();
+    return paths.stream()
+        .map(path -> path.toAbsolutePath().normalize())
+        .distinct()
+        .map(
+            path ->
+                path.startsWith(absoluteRoot)
+                    ? absoluteRoot.relativize(path).toString().replace('\\', '/')
+                    : path.toString())
+        .toList();
+  }
+}

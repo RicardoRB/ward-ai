@@ -1,0 +1,7 @@
+# rule	tool	tool id	reason. A known difference from Semgrep at the pinned version; each rule is matched by name, not by the pattern's binding.
+express-cookie-session-default-name	semgrep	javascript.express.security.audit.express-cookie-settings.express-cookie-session-default-name	Ward matches session(...) by its conventional callee name and an object literal, not by the require that binds it
+express-jwt-hardcoded-secret	semgrep	javascript.express.security.express-jwt-hardcoded-secret.express-jwt-hardcoded-secret	Ward reads the literal in the call only; a secret held in a variable is not reported
+hardcoded-jwt-secret	semgrep	javascript.jsonwebtoken.security.jwt-hardcode.hardcoded-jwt-secret	Ward reports a literal second argument only; a variable bound to a literal is not reported
+react-dangerouslysetinnerhtml	semgrep	typescript.react.security.audit.react-dangerouslysetinnerhtml.react-dangerouslysetinnerhtml	Ward flags a non-literal __html value without tracing where it comes from
+awscdk-bucket-encryption	semgrep	typescript.aws-cdk.security.audit.awscdk-bucket-encryption.awscdk-bucket-encryption	Ward matches the Bucket constructor by name and does not require a const declaration
+tainted-html-string	semgrep	javascript.aws-lambda.security.tainted-html-string.tainted-html-string	util.format with an HTML tag in its format string is not reported: the literal text of a call argument is not on the flow site (D5)

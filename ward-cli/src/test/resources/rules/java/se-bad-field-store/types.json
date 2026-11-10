@@ -1,0 +1,59 @@
+{
+  "5:17-5:28": {
+    "type": {
+      "name": "java.lang.Thread"
+    },
+    "shape": {
+      "kind": "class"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.lang.Runnable"
+        }
+      ]
+    }
+  },
+  "7:17-7:22": {
+    "type": {
+      "name": "java.lang.String"
+    },
+    "shape": {
+      "kind": "class"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.io.Serializable"
+        },
+        {
+          "name": "java.lang.CharSequence"
+        }
+      ]
+    }
+  },
+  "8:18-8:29": {
+    "type": {
+      "name": "java.lang.Thread"
+    },
+    "shape": {
+      "kind": "class"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        },
+        {
+          "name": "java.lang.Runnable"
+        }
+      ]
+    }
+  }
+}

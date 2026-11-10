@@ -1,0 +1,403 @@
+# Naming rules for Java. They mirror Checkstyle's TypeName, MethodName, MemberName, ParameterName and
+# LocalVariableName with their default patterns. MemberName covers non-static fields only.
+
+[[rules]]
+id = "ward:java/type-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "text-pattern"
+kinds = ["classDeclaration", "interfaceDeclaration", "enumDeclaration", "recordDeclaration"]
+modifiers = ["modifier", "classOrInterfaceModifier", "variableModifier", "annotation"]
+name = "identifier"
+skip = ["annotation"]
+pattern = "[A-Z][a-zA-Z0-9]*"
+message = "type name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:java/method-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "text-pattern"
+kinds = ["methodDeclaration"]
+modifiers = ["modifier", "classOrInterfaceModifier", "variableModifier", "annotation"]
+name = "identifier"
+skip = ["annotation", "typeType", "typeTypeOrVoid"]
+pattern = "[a-z][a-zA-Z0-9]*"
+message = "method name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:java/member-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "text-pattern"
+kinds = ["fieldDeclaration"]
+modifiers = ["modifier", "classOrInterfaceModifier", "variableModifier", "annotation"]
+excluded = "static"
+name = "identifier"
+skip = ["annotation", "typeType", "typeTypeOrVoid"]
+pattern = "[a-z][a-zA-Z0-9]*"
+message = "field name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:java/parameter-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "text-pattern"
+kinds = ["formalParameter"]
+modifiers = ["modifier", "classOrInterfaceModifier", "variableModifier", "annotation"]
+name = "identifier"
+skip = ["annotation", "typeType", "typeTypeOrVoid"]
+pattern = "[a-z][a-zA-Z0-9]*"
+message = "parameter name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:java/local-variable-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "text-pattern"
+kinds = ["localVariableDeclaration"]
+modifiers = ["modifier", "classOrInterfaceModifier", "variableModifier", "annotation"]
+name = "identifier"
+skip = ["annotation", "typeType", "typeTypeOrVoid"]
+pattern = "[a-z][a-zA-Z0-9]*"
+message = "local variable name '{value}' does not match the name pattern of this rule"
+'''
+
+# Checkstyle naming checks not yet covered above. Each pattern is Checkstyle's format property;
+# where google_checks.xml sets it, the default is google's value (the standard preset), otherwise
+# Checkstyle's own default. identifier-pattern reports the first name of each declaration only.
+
+[[rules]]
+id = "ward:java/abbreviation-as-word-in-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["classDeclaration", "interfaceDeclaration", "enumDeclaration", "recordDeclaration", "methodDeclaration", "formalParameter", "localVariableDeclaration", "fieldDeclaration", "pattern"]
+not-modifiers = ["static"]
+name = "identifier"
+skip = ["annotation", "typeType", "typeTypeOrVoid"]
+pattern = "^(?!.*[A-Z]{2}).*$"
+message = "name '{value}' has more than one consecutive capital letter"
+'''
+
+[[rules]]
+id = "ward:java/abstract-class-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["classDeclaration"]
+modifiers = ["abstract"]
+name = "identifier"
+skip = ["annotation"]
+pattern = "^Abstract.+$"
+message = "abstract class name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:java/catch-parameter-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["catchClause"]
+name = "identifier"
+skip = ["annotation", "catchType"]
+pattern = "^(_|[a-z]([a-z0-9][a-zA-Z0-9]*)?)$"
+message = "catch parameter name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:java/class-type-parameter-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["typeParameter"]
+inside = ["classDeclaration"]
+not-inside = ["genericMethodDeclaration", "methodDeclaration"]
+name = "identifier"
+skip = ["annotation", "typeBound"]
+pattern = "(^[A-Z][0-9]?$)|(^[A-Z]T$)|(^([A-Z][a-z0-9]+)+T$)"
+message = "class type parameter name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:java/constant-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["fieldDeclaration"]
+modifiers = ["static", "final"]
+name = "identifier"
+skip = ["annotation", "typeType", "typeTypeOrVoid"]
+pattern = "^([A-Z][A-Z0-9]*(_[A-Z0-9]+)*|serialVersionUID|serialPersistentFields)$"
+message = "constant name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:java/google-method-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["methodDeclaration"]
+name = "identifier"
+skip = ["annotation", "typeType", "typeTypeOrVoid"]
+pattern = "^[a-z][a-z0-9]++(?:[A-Z][a-z0-9]++)*+[A-Z]?$"
+message = "method name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:java/google-non-constant-field-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["fieldDeclaration"]
+not-modifiers = ["static"]
+name = "identifier"
+skip = ["annotation", "typeType", "typeTypeOrVoid"]
+pattern = "^(?![a-z]$)(?![a-z][A-Z])[a-z][a-z0-9]*+(?:[A-Z][a-z0-9]*+)*+$"
+message = "field name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:java/illegal-identifier-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["classDeclaration", "interfaceDeclaration", "enumDeclaration", "recordDeclaration", "methodDeclaration", "formalParameter", "localVariableDeclaration", "fieldDeclaration", "pattern"]
+name = "identifier"
+skip = ["annotation", "typeType", "typeTypeOrVoid"]
+pattern = "^(?!var$|\\S*\\$)\\S+$"
+message = "identifier '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:java/interface-type-parameter-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["typeParameter"]
+inside = ["interfaceDeclaration"]
+not-inside = ["genericMethodDeclaration", "methodDeclaration"]
+name = "identifier"
+skip = ["annotation", "typeBound"]
+pattern = "(^[A-Z][0-9]?$)|(^[A-Z]T$)|(^([A-Z][a-z0-9]+)+T$)"
+message = "interface type parameter name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:java/lambda-parameter-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["lambdaParameters"]
+name = "identifier"
+skip = ["annotation", "formalParameter", "lambdaLVTIList", "typeType"]
+pattern = "^(_|[a-z]([a-z0-9][a-zA-Z0-9]*)?)$"
+message = "lambda parameter name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:java/local-final-variable-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["localVariableDeclaration"]
+modifiers = ["final"]
+name = "identifier"
+skip = ["annotation", "typeType", "typeTypeOrVoid"]
+pattern = "^(_|[a-z](?=[a-z0-9]|$)(?:[a-zA-Z]|[0-9]+(?:_[0-9]+)*)*)$"
+message = "local final variable name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:java/method-type-parameter-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["typeParameter"]
+inside = ["genericMethodDeclaration"]
+name = "identifier"
+skip = ["annotation", "typeBound"]
+pattern = "(^[A-Z][0-9]?$)|(^[A-Z]T$)|(^([A-Z][a-z0-9]+)+T$)"
+message = "method type parameter name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:java/package-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["packageDeclaration"]
+name = "qualifiedName"
+skip = ["annotation"]
+pattern = "^[a-z]+(\\.[a-z][a-z0-9]*)*$"
+message = "package name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:java/pattern-variable-name"
+language = "java"
+min-java-release = 16
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["pattern"]
+name = "identifier"
+skip = ["annotation", "typeType", "typeTypeOrVoid"]
+pattern = "^(_|[a-z]([a-z0-9][a-zA-Z0-9]*)?)$"
+message = "pattern variable name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:java/record-component-name"
+language = "java"
+min-java-release = 16
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["recordComponent"]
+name = "identifier"
+skip = ["annotation", "typeType"]
+pattern = "^[a-z]([a-z0-9][a-zA-Z0-9]*)?$"
+message = "record component name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:java/record-type-parameter-name"
+language = "java"
+min-java-release = 16
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["typeParameter"]
+inside = ["recordDeclaration"]
+not-inside = ["genericMethodDeclaration"]
+name = "identifier"
+skip = ["annotation", "typeBound"]
+pattern = "(^[A-Z][0-9]?$)|(^[A-Z]T$)|(^([A-Z][a-z0-9]+)+T$)"
+message = "record type parameter name '{value}' does not match the name pattern of this rule"
+'''
+
+[[rules]]
+id = "ward:java/static-variable-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "naming"
+presets = ["standard", "strict"]
+options.pattern = { type = "regex" }
+body = '''
+check = "identifier-pattern"
+kinds = ["fieldDeclaration"]
+modifiers = ["static"]
+not-modifiers = ["final"]
+name = "identifier"
+skip = ["annotation", "typeType", "typeTypeOrVoid"]
+pattern = "^[a-z][a-zA-Z0-9]*$"
+message = "static variable name '{value}' does not match the name pattern of this rule"
+'''

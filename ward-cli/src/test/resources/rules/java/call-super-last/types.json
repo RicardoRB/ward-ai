@@ -1,0 +1,29 @@
+{
+  "1:1": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "android.app.Service"
+        }
+      ]
+    }
+  },
+  "12:1": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "android.app.Service"
+        }
+      ]
+    }
+  },
+  "21:1": {
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  }
+}

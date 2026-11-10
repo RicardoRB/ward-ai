@@ -1,0 +1,351 @@
+# NullAway-style nullness rules for Java. They read the annotations and syntax of one file, so a
+# declaration in another file is unknown and nothing is reported about it.
+
+[[rules]]
+id = "ward:java/return-nullable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "return-nullable"
+message = "{value} may be null, but this method must not return null"
+'''
+
+[[rules]]
+id = "ward:java/unbox-nullable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "unbox-nullable"
+message = "{value} may be null and is unboxed here"
+'''
+
+[[rules]]
+id = "ward:java/assign-field-nullable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "assign-field-nullable"
+message = "{value} may be null, but the field it is assigned to must not be"
+'''
+
+[[rules]]
+id = "ward:java/pass-nullable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "pass-nullable"
+message = "{value} may be null, but the parameter it is passed for must not be"
+'''
+
+[[rules]]
+id = "ward:java/dereference-nullable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "dereference-nullable"
+message = "{value} may be null and is dereferenced without a check"
+'''
+
+[[rules]]
+id = "ward:java/assign-nullable-to-nonnull-array"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "assign-nullable-to-nonnull-array"
+message = "null is stored in {value}, whose elements must not be null"
+'''
+
+[[rules]]
+id = "ward:java/cast-to-nonnull-arg-nonnull"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "cast-to-nonnull-arg-nonnull"
+message = "{value} is never null, so castToNonNull is not needed"
+'''
+
+[[rules]]
+id = "ward:java/switch-expression-nullable"
+language = "java"
+min-java-release = 14
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "switch-expression-nullable"
+message = "this switch expression yields {value}, but the method must not return null"
+'''
+
+[[rules]]
+id = "ward:java/field-no-init"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "field-no-init"
+message = "the non-null field {value} is never initialized"
+'''
+
+[[rules]]
+id = "ward:java/method-no-init"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "method-no-init"
+message = "this constructor does not initialize the non-null fields {value}"
+'''
+
+[[rules]]
+id = "ward:java/nonnull-field-read-before-init"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "nonnull-field-read-before-init"
+message = "the non-null field {value} is read before it is initialized"
+'''
+
+[[rules]]
+id = "ward:java/wrong-override-return"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "wrong-override-return"
+message = "{value} may return null, but the method it overrides never does"
+'''
+
+[[rules]]
+id = "ward:java/wrong-override-param"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "wrong-override-param"
+message = "{value} must not be null, but the method it overrides accepts null"
+'''
+
+[[rules]]
+id = "ward:java/wrong-override-precondition"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "wrong-override-precondition"
+message = "this override requires {value} to be non-null, which the overridden method does not"
+'''
+
+[[rules]]
+id = "ward:java/wrong-override-postcondition"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "wrong-override-postcondition"
+message = "this override does not ensure {value} is non-null, which the overridden method does"
+'''
+
+[[rules]]
+id = "ward:java/annotation-value-invalid"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "annotation-value-invalid"
+message = "{value} is not a field of this class"
+'''
+
+[[rules]]
+id = "ward:java/postcondition-not-satisfied"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "postcondition-not-satisfied"
+message = "this method ensures {value} is non-null but never sets it"
+'''
+
+[[rules]]
+id = "ward:java/precondition-not-satisfied"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "precondition-not-satisfied"
+message = "this call requires {value} to be non-null, but it may be null here"
+'''
+
+[[rules]]
+id = "ward:java/nullable-on-wrong-nested-class-level"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "nullable-on-wrong-nested-class-level"
+message = "@Nullable on {value} applies to the outer class; write Outer.@Nullable Inner"
+'''
+
+[[rules]]
+id = "ward:java/nullable-varargs-unsupported"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "nullable-varargs-unsupported"
+message = "@Nullable cannot be placed before the dots of {value}"
+'''
+
+[[rules]]
+id = "ward:java/get-on-empty-optional"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "get-on-empty-optional"
+message = "get() on {value} always fails: the optional is empty"
+'''
+
+[[rules]]
+id = "ward:java/assign-generic-nullable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "assign-generic-nullable"
+message = "{value} has nullable type arguments, but the declared type allows none"
+'''
+
+[[rules]]
+id = "ward:java/pass-nullable-generic"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "pass-nullable-generic"
+message = "{value} has nullable type arguments, but the parameter type allows none"
+'''
+
+[[rules]]
+id = "ward:java/return-nullable-generic"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "return-nullable-generic"
+message = "{value} has nullable type arguments, but the return type allows none"
+'''
+
+[[rules]]
+id = "ward:java/wrong-override-return-generic"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "wrong-override-return-generic"
+message = "{value} returns nullable type arguments that the overridden method does not"
+'''
+
+[[rules]]
+id = "ward:java/wrong-override-param-generic"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "wrong-override-param-generic"
+message = "{value} does not accept the nullable type arguments that the overridden method does"
+'''
+
+[[rules]]
+id = "ward:java/type-parameter-cannot-be-nullable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "type-parameter-cannot-be-nullable"
+message = "a type argument of {value} cannot be nullable; declare its type parameter with a @Nullable bound"
+'''
+
+[[rules]]
+id = "ward:java/generic-inference-failure"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "generic-inference-failure"
+message = "{value} passes null, but the declared type arguments are non-null"
+'''
+
+[[rules]]
+id = "ward:java/unrecognized-nullness-annotation-location"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "nullness"
+presets = ["standard", "strict"]
+body = '''
+check = "unrecognized-nullness-annotation-location"
+message = "@Nullable cannot apply to the primitive type {value}"
+'''

@@ -1,0 +1,53 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "backing-property-naming"
+ktlint = ["backing-property-naming"]
+
+[[rule]]
+name = "enum-entry-name-case"
+ktlint = ["enum-entry-name-case"]
+
+[[rule]]
+name = "filename"
+ktlint = ["filename"]
+
+[[rule]]
+name = "function-expression-body"
+ktlint = ["function-expression-body"]
+
+[[rule]]
+name = "kdoc"
+ktlint = ["kdoc"]
+
+[[rule]]
+name = "no-consecutive-comments"
+ktlint = ["no-consecutive-comments"]
+
+[[rule]]
+name = "no-empty-file"
+ktlint = ["no-empty-file"]
+
+[[rule]]
+name = "no-single-line-block-comment"
+ktlint = ["no-single-line-block-comment"]
+
+[[rule]]
+name = "no-unit-return"
+ktlint = ["no-unit-return"]
+
+[[rule]]
+name = "string-template"
+ktlint = ["string-template"]
+
+[[rule]]
+name = "unnecessary-parentheses-before-trailing-lambda"
+ktlint = ["unnecessary-parentheses-before-trailing-lambda"]
+
+[[rule]]
+name = "value-argument-comment"
+ktlint = ["value-argument-comment"]
+
+[[rule]]
+name = "value-parameter-comment"
+ktlint = ["value-parameter-comment"]

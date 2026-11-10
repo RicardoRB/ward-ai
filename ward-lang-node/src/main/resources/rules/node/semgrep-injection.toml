@@ -1,0 +1,314 @@
+# Injection rules of the Semgrep p/javascript pack: code, command, module, SQL, XML and deserialization sinks.
+# Each rule is a taint check: request or event data that reaches the sink. Upstream rule ids are in catalog/semgrep.toml.
+
+[[rules]]
+id = "ward:javascript/code-string-concat"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-code.toml"]
+message = "untrusted data from {source} reaches the code evaluated by {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/detect-eval-with-expression"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-code.toml"]
+message = "untrusted data from {source} reaches the code evaluated by {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/express-vm-injection"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-vm.toml"]
+message = "untrusted data from {source} reaches the script run by {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/express-vm2-injection"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-vm.toml"]
+message = "untrusted data from {source} reaches the script run by {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/express-sandbox-code-injection"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-vm.toml"]
+message = "untrusted data from {source} reaches the script run by {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/vm-runincontext-injection"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/semgrep-lambda.toml", "taint/node/semgrep-vm.toml"]
+message = "untrusted data from {source} reaches the script run by {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/express-phantom-injection"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-browser.toml"]
+message = "untrusted data from {source} reaches the page operation {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/express-puppeteer-injection"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-browser.toml"]
+message = "untrusted data from {source} reaches the page operation {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/chrome-remote-interface-compilescript-injection"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-browser.toml"]
+message = "untrusted data from {source} reaches the page operation {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/deno-dangerous-run"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-deno.toml"]
+message = "untrusted data from {source} reaches the command run by {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/detect-child-process"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-lambda.toml", "taint/node/command.toml"]
+message = "untrusted data from {source} reaches the command of {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/require-request"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-require.toml"]
+message = "untrusted data from {source} reaches the module loaded by {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/knex-sqli"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-knex.toml"]
+message = "untrusted data from {source} reaches the SQL text of {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/node-knex-sqli"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-knex.toml"]
+message = "untrusted data from {source} reaches the SQL text of {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/mysql-sqli"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-sql.toml"]
+message = "untrusted data from {source} reaches the SQL text of {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/pg-sqli"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-sql.toml"]
+message = "untrusted data from {source} reaches the SQL text of {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/sequelize-sqli"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-sql.toml"]
+message = "untrusted data from {source} reaches the SQL text of {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/express-sequelize-injection"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-sql.toml"]
+message = "untrusted data from {source} reaches the SQL text of {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/express-third-party-object-deserialization"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-deserialize.toml"]
+message = "untrusted data from {source} reaches the object decoder {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/express-expat-xxe"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-xml.toml"]
+message = "untrusted data from {source} reaches the XML parser {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/express-xml2json-xxe"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-xml.toml"]
+message = "untrusted data from {source} reaches the XML parser {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/express-xml2json-xxe-event"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "WARNING"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-xml.toml"]
+message = "untrusted data from {source} reaches the XML parser {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/express-libxml-noent"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/semgrep-xml.toml"]
+message = "untrusted data from {source} reaches the XML parser {sink}"
+'''
+
+[[rules]]
+id = "ward:javascript/dynamodb-request-object"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/semgrep-lambda.toml", "taint/node/semgrep-dynamodb.toml"]
+message = "untrusted event data from {source} reaches the DynamoDB request of {sink}"
+'''

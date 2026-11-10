@@ -1,0 +1,142 @@
+# Ruff's flake8-2020 rules (YTT) for Python: uses of sys.version, sys.version_info and six.PY3 that
+# break on Python 3.10 and later. Text checks over the subscript, attribute and comparison nodes.
+
+[[rules]]
+id = "ward:python/sys-version-slice3"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^sys\.version\[:3\]'
+message = "sys.version[:3] is wrong from Python 3.10; use sys.version_info"
+'''
+
+[[rules]]
+id = "ward:python/sys-version2"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^sys\.version\[2\]'
+message = "sys.version[2] is wrong from Python 3.10; use sys.version_info"
+'''
+
+[[rules]]
+id = "ward:python/sys-version0"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^sys\.version\[0\]'
+message = "sys.version[0] is wrong from Python 10; use sys.version_info"
+'''
+
+[[rules]]
+id = "ward:python/sys-version-slice1"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^sys\.version\[:1\]'
+message = "sys.version[:1] is wrong from Python 10; use sys.version_info"
+'''
+
+[[rules]]
+id = "ward:python/sys-version-cmp-str3"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["comparison"]
+text = "sys\\.version(<|<=|>|>=|==|!=)[\"'][^\"']{2,}[\"']"
+message = "sys.version compared to a string of several characters; use sys.version_info"
+'''
+
+[[rules]]
+id = "ward:python/sys-version-cmp-str10"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["comparison"]
+text = "sys\\.version(<|<=|>|>=|==|!=)[\"'][^\"'][\"']"
+message = "sys.version compared to a one-character string; use sys.version_info"
+'''
+
+[[rules]]
+id = "ward:python/sys-version-info0-eq3"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["comparison"]
+text = "sys\\.version_info\\[0\\](==|!=)3(?!\\d)"
+message = "sys.version_info[0] compared to 3; use a tuple comparison"
+'''
+
+[[rules]]
+id = "ward:python/six-py3"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^six\.PY3(?!\w)'
+message = "six.PY3 is removed; the Python 3 check is always true"
+'''
+
+[[rules]]
+id = "ward:python/sys-version-info1-cmp-int"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["comparison"]
+text = "sys\\.version_info\\[1\\](<|<=|>|>=|==|!=)\\d"
+message = "sys.version_info[1] compared to an integer; compare sys.version_info to a tuple"
+'''
+
+[[rules]]
+id = "ward:python/sys-version-info-minor-cmp-int"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["comparison"]
+text = "sys\\.version_info\\.minor(<|<=|>|>=|==|!=)\\d"
+message = "sys.version_info.minor compared to an integer; compare sys.version_info to a tuple"
+'''

@@ -1,0 +1,54 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "design-for-extension"
+not-applicable = { python = "Java class extension rules; Python classes are open by default" }
+checkstyle = ["DesignForExtension"]
+
+[[rule]]
+name = "final-class"
+not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
+pmd = ["ClassWithOnlyPrivateConstructorsShouldBeFinal"]
+checkstyle = ["FinalClass"]
+
+[[rule]]
+name = "hide-utility-class-constructor"
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+pmd = ["UseUtilityClass"]
+checkstyle = ["HideUtilityClassConstructor"]
+
+[[rule]]
+name = "inner-type-last"
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["InnerTypeLast"]
+
+[[rule]]
+name = "interface-is-type"
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["InterfaceIsType"]
+
+[[rule]]
+name = "mutable-exception"
+not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
+checkstyle = ["MutableException"]
+
+[[rule]]
+name = "one-top-level-class"
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["OneTopLevelClass"]
+
+[[rule]]
+name = "sealed-should-have-permits-list"
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["SealedShouldHavePermitsList"]
+
+[[rule]]
+name = "throws-count"
+not-applicable = { typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+detekt = ["ThrowsCount"]
+checkstyle = ["ThrowsCount"]
+
+[[rule]]
+name = "visibility-modifier"
+not-applicable = { python = "Java field visibility modifiers; Python has no visibility keywords" }
+checkstyle = ["VisibilityModifier"]

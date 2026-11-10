@@ -1,0 +1,15 @@
+{
+  "3:5-3:16": {
+    "call": {
+      "declaring": {
+        "name": "java.util.List"
+      },
+      "name": "size",
+      "params": [],
+      "returns": {
+        "name": "int",
+        "primitive": true
+      }
+    }
+  }
+}

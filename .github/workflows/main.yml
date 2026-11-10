@@ -1,11 +1,12 @@
 name: Main
 
-# Pull requests can restore caches only from their own ref and from main. Running the same checks on
-# main saves every cache (Maven, GraalVM, tools, matrices) under the keys pull requests look up, so a
-# new pull request starts warm and saves nothing new unless it changes a key.
+# Pull requests can restore caches only from their own ref and from their base branch. Running the
+# same checks on the base branches saves every cache (Maven, GraalVM, tools, matrices) under the keys
+# pull requests look up, so a new pull request starts warm and saves nothing new unless it changes a
+# key.
 on:
   push:
-    branches: [main]
+    branches: [main, '0.6.0']
     # The same documentation paths that let pull requests skip the native checks and matrices; they
     # change no cache key, so a docs-only merge has nothing to warm.
     paths-ignore:
@@ -18,7 +19,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: main
+  group: main-${{ github.ref_name }}
   cancel-in-progress: true
 
 jobs:

@@ -1,0 +1,16 @@
+{
+  "name": "nextjs-fixture",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "next": "16.4.3",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "typescript": "^5"
+  }
+}

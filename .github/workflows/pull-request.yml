@@ -1,7 +1,9 @@
 name: Pull request
 
-# Every pull request must pass the JVM quality gates (including JaCoCo coverage), build the native
-# executable, and pass the native checks and agent-harness suites before it can merge.
+# Every pull request must pass the JVM quality gates (including JaCoCo coverage). Pull requests into
+# main also build the native executable on every runner, pass the native checks, run the agent-harness
+# suites and the compatibility matrices. Pull requests into other branches run the Ubuntu native checks
+# only, with no harness suites or matrices.
 on:
   pull_request:
 
@@ -21,8 +23,12 @@ jobs:
     uses: ./.github/workflows/verify.yml
     with:
       # macos-15-intel is the slowest native runner and gates the PR; release still runs it.
-      native-runners: '["ubuntu-24.04", "macos-15", "windows-latest"]'
-      harness-compatibility: true
+      # Pull requests into main run every check. Pull requests into other branches (such as
+      # release branches) run the Ward ci profile and the Ubuntu native checks only; the
+      # matrices, the other native runners and the agent-harness suites run on main.
+      native-runners: ${{ github.base_ref == 'main' && '["ubuntu-24.04", "macos-15", "windows-latest"]' || '["ubuntu-24.04"]' }}
+      harness-compatibility: ${{ github.base_ref == 'main' }}
+      compatibility-matrices: ${{ github.base_ref == 'main' }}
 
   changelog:
     runs-on: ubuntu-24.04

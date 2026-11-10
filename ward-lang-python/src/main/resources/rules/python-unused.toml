@@ -1,0 +1,26 @@
+# Unused-definition rules for Python, replacing vulture. The body names the check; the whole-run
+# UnusedDefinitionFindings reports a function or class that no file of the project uses.
+
+[[rules]]
+id = "ward:python/unused-function"
+language = "python"
+capability = "SYMBOLS"
+severity = "error"
+category = "dead-code"
+presets = ["strict"]
+body = '''
+check = "unused-definition"
+message = "unused function"
+'''
+
+[[rules]]
+id = "ward:python/unused-class"
+language = "python"
+capability = "SYMBOLS"
+severity = "error"
+category = "dead-code"
+presets = ["strict"]
+body = '''
+check = "unused-definition"
+message = "unused class"
+'''

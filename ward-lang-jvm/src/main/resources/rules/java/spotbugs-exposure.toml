@@ -1,0 +1,364 @@
+# SpotBugs MALICIOUS_CODE, BAD_PRACTICE, MT_CORRECTNESS and PERFORMANCE patterns for Java (issue 316) that read the
+# fields and nested classes of one file: what a class hands out or takes in, serialization, servlets and inner
+# classes. Each rule names its limit in the message; unknown means no finding.
+
+[[rules]]
+id = "ward:java/ms-expose-rep"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "exposed-state"
+static = true
+public-static-method = true
+types = '\[\]$|^(?:java\.util\.)?(?:ArrayList|LinkedList|HashMap|TreeMap|LinkedHashMap|HashSet|TreeSet|LinkedHashSet|Vector|Hashtable|Properties|Date|Calendar|StringBuilder|StringBuffer)(?:<.*>)?$'
+message = "public static method returns the static field '{value}', which holds mutable state; return a copy"
+'''
+
+[[rules]]
+id = "ward:java/ms-expose-buf"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "exposed-state"
+static = true
+buffers = true
+public-static-method = true
+types = '\[\]$'
+message = "public static method returns a buffer that shares the static array '{value}'; return a read-only view or a copy"
+'''
+
+[[rules]]
+id = "ward:java/ei-expose-buf"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "exposed-state"
+buffers = true
+types = '\[\]$'
+message = "returns a buffer that shares the array '{value}'; return a read-only view or a copy"
+'''
+
+[[rules]]
+id = "ward:java/ei-expose-buf2"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "exposed-state"
+store = true
+buffers = true
+types = '\[\]$'
+message = "stores a buffer that shares the array parameter into field '{value}'; wrap a copy"
+'''
+
+[[rules]]
+id = "ward:java/ei-expose-static-buf2"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "exposed-state"
+store = true
+static = true
+buffers = true
+types = '\[\]$'
+message = "stores a buffer that shares the array parameter into the static field '{value}'; wrap a copy"
+'''
+
+[[rules]]
+id = "ward:java/ei-expose-static-rep2"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "exposed-state"
+store = true
+static = true
+types = '\[\]$|^(?:java\.util\.)?(?:ArrayList|LinkedList|HashMap|TreeMap|LinkedHashMap|HashSet|TreeSet|LinkedHashSet|Vector|Hashtable|Properties|Date|Calendar|StringBuilder|StringBuffer)(?:<.*>)?$'
+message = "stores the mutable parameter into the static field '{value}' without a copy; store a copy"
+'''
+
+[[rules]]
+id = "ward:java/ms-ooi-pkgprotect"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["constDeclaration"]
+text = '^(?:[\w.]+\[\]|(?:java\.util\.)?(?:Hashtable|ArrayList|HashMap|Vector)(?:<.*>)?\w)'
+message = "a mutable array or collection declared in an interface is public and can be changed; move it to a class and keep it package-private"
+'''
+
+[[rules]]
+id = "ward:java/ms-final-pkgprotect"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "static-field-writes"
+mode = "mutable"
+types = '\[\]$|^(?:java\.util\.)?(?:ArrayList|LinkedList|HashMap|TreeMap|LinkedHashMap|HashSet|TreeSet|LinkedHashSet|Vector|Hashtable|Properties|Date|Calendar|StringBuilder|StringBuffer)(?:<.*>)?$'
+message = "public or protected static field '{value}' holds mutable state and is not final; make it final and package-private"
+'''
+
+[[rules]]
+id = "ward:java/ms-cannot-be-final"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "static-field-writes"
+mode = "outside"
+message = "public or protected static field '{value}' is not final and is written outside a static initializer, so it cannot be protected from other code"
+'''
+
+[[rules]]
+id = "ward:java/ms-should-be-refactored-to-be-final"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "static-field-writes"
+mode = "initializer"
+message = "static field '{value}' is not final but is only written in static initializers; refactor so that it can be final"
+'''
+
+[[rules]]
+id = "ward:java/pa-public-mutable-object-attribute"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "malicious-code"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["fieldDeclaration"]
+modifiers = ["public"]
+not-modifiers = ["static"]
+text = '^(?:java\.util\.)?(?:ArrayList|LinkedList|HashMap|TreeMap|LinkedHashMap|HashSet|TreeSet|LinkedHashSet|Vector|Hashtable|Properties|Date|Calendar|StringBuilder|StringBuffer)(?:<.*>)?\w'
+message = "public field holds a mutable object that any caller can change; make it private and give access through a method"
+'''
+
+[[rules]]
+id = "ward:java/se-prevent-ext-obj-overwrite"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+modifiers = ["public"]
+text = '^voidreadExternal\('
+message = "a public readExternal method lets any caller overwrite the state of the object; make it private or protect it"
+'''
+
+[[rules]]
+id = "ward:java/se-inner-class"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "inner-serializable"
+outer-serializable = true
+message = "a serializable inner class also serializes the instance around it; make it static"
+'''
+
+[[rules]]
+id = "ward:java/se-bad-field-inner-class"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "inner-serializable"
+message = "this serializable inner class belongs to a class that is not serializable, so serializing it fails; make it static"
+'''
+
+[[rules]]
+id = "ward:java/se-transient-field-not-restored"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "transient-field-not-restored"
+message = "transient field '{value}' is written in several places but not restored by readObject or readResolve, so a deserialized object keeps the default"
+'''
+
+[[rules]]
+id = "ward:java/se-bad-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "bad-serializable-field"
+message = "non-transient field of type {value} is not serializable but its class is; make it transient or give the class custom serialization"
+'''
+
+[[rules]]
+id = "ward:java/msf-mutable-servlet-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "servlet-field"
+mutable = true
+message = "servlet field {value} is a mutable object shared by every request; keep it in a local variable or make it thread safe"
+'''
+
+[[rules]]
+id = "ward:java/mtia-suspect-servlet-instance-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "servlet-field"
+message = "servlet instance field {value} is shared by every request; use a local variable"
+'''
+
+[[rules]]
+id = "ward:java/mtia-suspect-struts-instance-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "servlet-field"
+struts = true
+message = "Struts action field {value} is shared by every request; use a local variable"
+'''
+
+[[rules]]
+id = "ward:java/sic-inner-should-be-static"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "inner-class-use"
+message = "this inner class never uses the instance around it; make it static"
+'''
+
+[[rules]]
+id = "ward:java/sic-inner-should-be-static-anon"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "inner-class-use"
+anonymous = true
+message = "this anonymous class never uses the instance around it; turn it into a named static class"
+'''
+
+[[rules]]
+id = "ward:java/pi-do-not-reuse-public-identifiers-field-names"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["fieldDeclaration"]
+name = "identifier"
+skip = ["annotation", "typeType", "typeTypeOrVoid"]
+pattern = '(?!(?:Object|String|Integer|Long|Short|Byte|Character|Boolean|Double|Float|Number|Math|System|Thread|Runnable|Exception|Error|Throwable|RuntimeException|Class|ClassLoader|Enum|Record|Iterable|Comparable|CharSequence|StringBuilder|StringBuffer|Void|Process|Runtime|Override|Deprecated|List|ArrayList|LinkedList|Map|HashMap|TreeMap|LinkedHashMap|Set|HashSet|TreeSet|LinkedHashSet|Collection|Collections|Arrays|Objects|Optional|Iterator|Date|Calendar|Random|Scanner|Timer|Vector|Stack|Queue|Deque|Properties|UUID|Locale|File|Files|Path|Paths|InputStream|OutputStream|Reader|Writer|IOException|Stream|Collectors|Function|Supplier|Consumer|Predicate|Instant|Duration|LocalDate|LocalTime|LocalDateTime|Period|Currency|BitSet|Formatter|Comparator|Base64|Pattern|Matcher|Logger|Level|Executor|ExecutorService|Future|Callable|Lock|Semaphore|Annotation|Package|Module|Appendable|Cloneable|AutoCloseable|Closeable|Serializable|Readable)$).+'
+message = "field name reuses the name of a public class of the Java library; choose another name"
+'''
+
+[[rules]]
+id = "ward:java/pi-do-not-reuse-public-identifiers-method-names"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["methodDeclaration"]
+name = "identifier"
+skip = ["annotation", "typeType", "typeTypeOrVoid"]
+pattern = '(?!(?:Object|String|Integer|Long|Short|Byte|Character|Boolean|Double|Float|Number|Math|System|Thread|Runnable|Exception|Error|Throwable|RuntimeException|Class|ClassLoader|Enum|Record|Iterable|Comparable|CharSequence|StringBuilder|StringBuffer|Void|Process|Runtime|Override|Deprecated|List|ArrayList|LinkedList|Map|HashMap|TreeMap|LinkedHashMap|Set|HashSet|TreeSet|LinkedHashSet|Collection|Collections|Arrays|Objects|Optional|Iterator|Date|Calendar|Random|Scanner|Timer|Vector|Stack|Queue|Deque|Properties|UUID|Locale|File|Files|Path|Paths|InputStream|OutputStream|Reader|Writer|IOException|Stream|Collectors|Function|Supplier|Consumer|Predicate|Instant|Duration|LocalDate|LocalTime|LocalDateTime|Period|Currency|BitSet|Formatter|Comparator|Base64|Pattern|Matcher|Logger|Level|Executor|ExecutorService|Future|Callable|Lock|Semaphore|Annotation|Package|Module|Appendable|Cloneable|AutoCloseable|Closeable|Serializable|Readable)$).+'
+message = "method name reuses the name of a public class of the Java library; choose another name"
+'''
+
+[[rules]]
+id = "ward:java/pi-do-not-reuse-public-identifiers-local-variable-names"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "identifier-pattern"
+kinds = ["localVariableDeclaration"]
+name = "identifier"
+skip = ["annotation", "typeType", "typeTypeOrVoid"]
+pattern = '(?!(?:Object|String|Integer|Long|Short|Byte|Character|Boolean|Double|Float|Number|Math|System|Thread|Runnable|Exception|Error|Throwable|RuntimeException|Class|ClassLoader|Enum|Record|Iterable|Comparable|CharSequence|StringBuilder|StringBuffer|Void|Process|Runtime|Override|Deprecated|List|ArrayList|LinkedList|Map|HashMap|TreeMap|LinkedHashMap|Set|HashSet|TreeSet|LinkedHashSet|Collection|Collections|Arrays|Objects|Optional|Iterator|Date|Calendar|Random|Scanner|Timer|Vector|Stack|Queue|Deque|Properties|UUID|Locale|File|Files|Path|Paths|InputStream|OutputStream|Reader|Writer|IOException|Stream|Collectors|Function|Supplier|Consumer|Predicate|Instant|Duration|LocalDate|LocalTime|LocalDateTime|Period|Currency|BitSet|Formatter|Comparator|Base64|Pattern|Matcher|Logger|Level|Executor|ExecutorService|Future|Callable|Lock|Semaphore|Annotation|Package|Module|Appendable|Cloneable|AutoCloseable|Closeable|Serializable|Readable)$).+'
+message = "local variable name reuses the name of a public class of the Java library; choose another name"
+'''
+
+[[rules]]
+id = "ward:java/se-bad-field-store"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "non-serializable-value"
+message = "a value of type {value} is not serializable but is stored in a non-transient field of a serializable class; make the field transient or store a serializable value"
+'''
+
+[[rules]]
+id = "ward:java/j2-ee-store-of-non-serializable-object-into-session"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "bad-practice"
+presets = ["standard", "strict"]
+body = '''
+check = "non-serializable-value"
+session = true
+message = "a value of type {value} is not serializable but is stored in an HTTP session, which the container may serialize"
+'''

@@ -1,0 +1,141 @@
+# SpotBugs CORRECTNESS patterns for Java that follow how a class reads and writes its own fields.
+
+[[rules]]
+id = "ward:java/uwf-unwritten-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "field-access"
+mode = "unwritten"
+message = "field {value} is read but never written"
+'''
+
+[[rules]]
+id = "ward:java/uwf-null-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "field-access"
+mode = "null-only"
+message = "field {value} is only ever set to null"
+'''
+
+[[rules]]
+id = "ward:java/np-unwritten-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "field-access"
+mode = "dereferenced"
+message = "field {value} is never written, so selecting a member of it throws NullPointerException"
+'''
+
+[[rules]]
+id = "ward:java/ur-uninit-read"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "field-access"
+mode = "uninitialized-read"
+message = "constructor reads field {value} before it writes it"
+'''
+
+[[rules]]
+id = "ward:java/il-infinite-loop"
+language = "java"
+capability = "CFG"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "non-terminating-loop"
+message = "this loop has no way out: nothing in it breaks, returns or throws"
+'''
+
+[[rules]]
+id = "ward:java/ur-uninit-read-called-from-super-constructor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "super-constructor-read"
+message = "field {value} is read by a method that the superclass constructor calls, before the subclass has set it"
+'''
+[[rules]]
+id = "ward:java/mf-class-masks-field"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "inherited-member"
+mode = "field-masks"
+message = "class field hides an inherited field of the same name"
+'''
+
+[[rules]]
+id = "ward:java/hsm-hiding-method"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "inherited-member"
+mode = "static-hiding"
+message = "static method hides a static method of a superclass instead of overriding it"
+'''
+
+[[rules]]
+id = "ward:java/nm-very-confusing"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "inherited-member"
+mode = "case-confusion"
+message = "method name differs from another visible method only by case"
+'''
+
+[[rules]]
+id = "ward:java/boa-badly-overridden-adapter"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "inherited-member"
+mode = "adapter-overload"
+message = "method overloads an adapter method instead of overriding it, so the adapter never calls it"
+'''
+
+[[rules]]
+id = "ward:java/mf-method-masks-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "field-access"
+mode = "local-masks"
+message = "local variable hides a field that is never written"
+'''

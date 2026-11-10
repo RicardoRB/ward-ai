@@ -1,0 +1,81 @@
+{
+  "2:17-2:19": {
+    "members": {
+      "methods": [
+        {
+          "declaring": {
+            "name": "app.Key"
+          },
+          "name": "equals",
+          "params": [
+            {
+              "name": "java.lang.Object"
+            }
+          ],
+          "returns": {
+            "name": "boolean",
+            "primitive": true
+          }
+        }
+      ],
+      "inheritedMethods": [
+        {
+          "declaring": {
+            "name": "java.lang.Object"
+          },
+          "name": "hashCode",
+          "params": [],
+          "returns": {
+            "name": "int",
+            "primitive": true
+          }
+        }
+      ]
+    }
+  },
+  "3:17-3:19": {
+    "members": {
+      "methods": [
+        {
+          "declaring": {
+            "name": "app.Key"
+          },
+          "name": "equals",
+          "params": [
+            {
+              "name": "java.lang.Object"
+            }
+          ],
+          "returns": {
+            "name": "boolean",
+            "primitive": true
+          }
+        },
+        {
+          "declaring": {
+            "name": "app.Key"
+          },
+          "name": "hashCode",
+          "params": [],
+          "returns": {
+            "name": "int",
+            "primitive": true
+          }
+        }
+      ],
+      "inheritedMethods": [
+        {
+          "declaring": {
+            "name": "java.lang.Object"
+          },
+          "name": "hashCode",
+          "params": [],
+          "returns": {
+            "name": "int",
+            "primitive": true
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,57 @@
+# Performance rules for Kotlin, from detekt's performance set (standard preset).
+
+[[rules]]
+id = "ward:kotlin/array-primitive"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["type"]
+text = '^Array<(Int|Long|Short|Byte|Char|Double|Float|Boolean)>$'
+message = "boxed primitive array; use the primitive array type instead"
+'''
+
+[[rules]]
+id = "ward:kotlin/for-each-on-range"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfixUnaryExpression"]
+text = '^\([^()]*(\.\.|until|downTo)[^()]*\)\s*\.\s*forEach\b'
+message = "forEach on a range creates an iterator; use a for loop"
+'''
+
+[[rules]]
+id = "ward:kotlin/spread-operator"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["valueArgument"]
+text = '^\*'
+message = "spread operator copies the array; pass the elements or use a list"
+'''
+
+[[rules]]
+id = "ward:kotlin/unnecessary-temporary-instantiation"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfixUnaryExpression"]
+text = '^(?:Integer|Long|Short|Byte|Double|Float|Boolean|Character)\([^()]*\)\.toString\(\)$'
+message = "temporary wrapper object only to call toString; call toString on the value"
+'''

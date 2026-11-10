@@ -1,0 +1,38 @@
+{
+  "3:5": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.flogger.LoggingApi"
+      },
+      "name": "log",
+      "params": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "varargs": true
+    }
+  },
+  "9:5": {
+    "call": {
+      "declaring": {
+        "name": "com.google.common.flogger.LoggingApi"
+      },
+      "name": "log",
+      "params": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "varargs": true
+    }
+  }
+}

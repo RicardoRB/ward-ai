@@ -1,0 +1,26 @@
+# Error Prone checks at ERROR severity for Java, G to L, fifth batch: checks that read the members and
+# supertypes of types. A type whose members are unknown is never reported.
+
+[[rules]]
+id = "ward:java/impossible-null-comparison"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "proto-null-comparison"
+message = "{value}() of a protocol buffer message never returns null; test with has... or isEmpty()"
+'''
+
+[[rules]]
+id = "ward:java/is-instance-incompatible-type"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "is-instance-incompatible-type"
+message = "a {value} can never be an instance of {max}, so isInstance is always false"
+'''

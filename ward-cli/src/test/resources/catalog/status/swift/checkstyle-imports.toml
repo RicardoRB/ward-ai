@@ -1,0 +1,14 @@
+# Status of the checkstyle-imports rows in swift: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+avoid-module-import = "not-applicable"
+avoid-star-import = "not-applicable"
+avoid-static-import = { status = "planned", issue = "#298" }
+custom-import-order = "implemented"
+illegal-import = { status = "planned", issue = "#298" }
+import-control = { status = "planned", issue = "#298" }
+import-order = { status = "planned", issue = "#298" }
+module-directive-order = "not-applicable"
+module-import-order = "not-applicable"
+redundant-import = { status = "planned", issue = "#298" }
+unnecessary-fully-qualified-type = { status = "planned", issue = "#298" }
+unused-imports = "implemented"

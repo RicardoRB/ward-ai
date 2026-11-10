@@ -56,10 +56,16 @@ Each check with a [`paths` table](/configuration/ward-toml/#partial-checks) is h
 |---|---|
 | Include none relevant to the check | Is skipped and does not affect the verdict |
 | Include relevant files, and the check declares `args` | Runs on the edited files only |
+| Include relevant files, and the check is the `ward` analysis (`uses = "ward"`) | Runs on the whole project's analysis, and reports only the findings of the edited files and of the files whose edges touch them |
 | Include one of the check's `full` files | Runs in full |
 
+The `ward` check always analyzes the whole project through its incremental cache, so an unchanged
+file is not re-analyzed. A narrowed `ward` check reports the structural findings of the edited files,
+and the dependency findings of the edited files and of the files that depend on them. Each of its
+findings is one a full run reports too, and an analysis error anywhere in the project still fails it.
+
 Checks without a `paths` table run in full. Skipped checks are listed as
-`– Checkstyle — Not affected by the edited files`. The JSON report adds the edited paths and each
+`– Ward rules — Not affected by the edited files`. The JSON report adds the edited paths and each
 check's `scope`; see [JSON output](/reference/json-output/).
 
 Checks without `--path`, including Git hooks and CI, never apply `paths` settings. `--profile edit`
@@ -88,8 +94,8 @@ summary:
 ```text
 Ward 1.2.3
 
-✓ Checkstyle
-✗ SpotBugs
+✓ Ward rules
+✗ gitleaks
 
 Quality Gate: FAILED
 1 passed · 1 failed · 0 skipped
@@ -105,7 +111,7 @@ Quality Gate: FAILED
 
 Use `--format json` in scripts. Only the JSON report goes to stdout; diagnostics go to stderr.
 
-Failed `checkstyle`, `pmd`, `gitleaks`, `compile`, and `format` gates include structured findings
+Failed `ward`, `gitleaks`, `compile`, and `format` gates include structured findings
 (rule, file, line, column, message), so agents can fix them without reading raw logs. See
 [structured findings](/configuration/gates/#structured-findings) and
 [JSON output](/reference/json-output/).
@@ -152,7 +158,7 @@ ward check --profile ci --format sarif --output build/ward.sarif
 
 ## Learning
 
-Learning is opt-in. `--learn-after <n>` records recurring Checkstyle, PMD, and gitleaks rule
+Learning is opt-in. `--learn-after <n>` records recurring Ward and gitleaks rule
 findings in `.ward/learning.json`:
 
 - A rule is counted once per failing episode.

@@ -1,0 +1,46 @@
+{
+  "7:5-7:19": {
+    "call": {
+      "declaring": {
+        "name": "Check.Api"
+      },
+      "name": "take",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "void",
+        "primitive": true
+      },
+      "paramAnnotations": [
+        [
+          "javax.annotation.Nonnull"
+        ]
+      ]
+    }
+  },
+  "10:5-10:19": {
+    "call": {
+      "declaring": {
+        "name": "Check.Api"
+      },
+      "name": "take",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "void",
+        "primitive": true
+      },
+      "paramAnnotations": [
+        [
+          "javax.annotation.Nonnull"
+        ]
+      ]
+    }
+  }
+}

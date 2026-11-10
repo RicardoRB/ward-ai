@@ -1,0 +1,3 @@
+class Violating {
+  int[] a = new int[] {1, 2};
+}

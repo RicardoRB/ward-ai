@@ -1,0 +1,18 @@
+{
+  "3:12-3:15": {
+    "type": { "name": "java.lang.String" },
+    "members": { "methods": [], "fields": [], "ancestors": [{ "name": "java.lang.Object" }] }
+  },
+  "3:20-3:24": {
+    "type": { "name": "java.lang.String" },
+    "members": { "methods": [], "fields": [], "ancestors": [{ "name": "java.lang.Object" }] }
+  },
+  "7:12-7:12": {
+    "type": { "name": "app.Color" },
+    "members": { "methods": [], "fields": [], "ancestors": [{ "name": "java.lang.Enum" }, { "name": "java.lang.Object" }] }
+  },
+  "7:17-7:17": {
+    "type": { "name": "app.Color" },
+    "members": { "methods": [], "fields": [], "ancestors": [{ "name": "java.lang.Enum" }, { "name": "java.lang.Object" }] }
+  }
+}

@@ -1,0 +1,29 @@
+# Structural rules of the "regexp" category for TypeScript and JavaScript. Each rule runs on the shared syntax tree.
+
+[[rules]]
+id = "ward:typescript/regexp-singleline"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "regexp"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "\\s+$"
+message = "line has trailing whitespace"
+'''
+
+[[rules]]
+id = "ward:javascript/regexp-singleline"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "regexp"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "\\s+$"
+message = "line has trailing whitespace"
+'''

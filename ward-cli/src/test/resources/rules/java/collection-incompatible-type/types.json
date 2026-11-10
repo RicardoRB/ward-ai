@@ -1,0 +1,165 @@
+{
+  "3:12-3:28": {
+    "call": {
+      "declaring": {
+        "name": "java.util.List"
+      },
+      "name": "contains",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "boolean"
+      }
+    }
+  },
+  "3:12-3:16": {
+    "type": {
+      "name": "java.util.List",
+      "args": [
+        {
+          "name": "java.lang.String"
+        }
+      ]
+    }
+  },
+  "3:27-3:27": {
+    "type": {
+      "name": "int",
+      "primitive": true
+    }
+  },
+  "3:33-3:51": {
+    "call": {
+      "declaring": {
+        "name": "java.util.Map"
+      },
+      "name": "containsKey",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "boolean"
+      }
+    }
+  },
+  "3:33-3:35": {
+    "type": {
+      "name": "java.util.Map",
+      "args": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "java.lang.Long"
+        }
+      ]
+    }
+  },
+  "3:49-3:50": {
+    "type": {
+      "name": "long",
+      "primitive": true
+    }
+  },
+  "3:17-3:35": {
+    "call": {
+      "declaring": {
+        "name": "java.util.List"
+      },
+      "name": "contains",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "boolean"
+      }
+    }
+  },
+  "3:17-3:21": {
+    "type": {
+      "name": "java.util.List",
+      "args": [
+        {
+          "name": "java.lang.String"
+        }
+      ]
+    }
+  },
+  "3:32-3:34": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  },
+  "4:17-4:36": {
+    "call": {
+      "declaring": {
+        "name": "java.util.Map"
+      },
+      "name": "containsKey",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "boolean"
+      }
+    }
+  },
+  "4:17-4:19": {
+    "type": {
+      "name": "java.util.Map",
+      "args": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "java.lang.Long"
+        }
+      ]
+    }
+  },
+  "4:33-4:35": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  },
+  "5:22-5:40": {
+    "call": {
+      "declaring": {
+        "name": "java.util.List"
+      },
+      "name": "contains",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "returns": {
+        "name": "boolean"
+      }
+    }
+  },
+  "5:22-5:26": {
+    "type": {
+      "name": "java.util.List",
+      "args": [
+        {
+          "name": "java.lang.String"
+        }
+      ]
+    }
+  },
+  "5:37-5:39": {
+    "type": {
+      "name": "java.lang.Object"
+    }
+  }
+}

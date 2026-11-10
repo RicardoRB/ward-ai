@@ -1,0 +1,34 @@
+{
+  "3:12-3:56": {
+    "call": {
+      "declaring": {
+        "name": "java.time.Duration"
+      },
+      "name": "get",
+      "params": [
+        {
+          "name": "java.time.temporal.TemporalUnit"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "4:12-4:59": {
+    "call": {
+      "declaring": {
+        "name": "java.time.Duration"
+      },
+      "name": "get",
+      "params": [
+        {
+          "name": "java.time.temporal.TemporalUnit"
+        }
+      ],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  }
+}

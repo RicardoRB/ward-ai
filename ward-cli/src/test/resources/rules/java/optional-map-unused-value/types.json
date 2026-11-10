@@ -1,0 +1,50 @@
+{
+  "3:5-3:26": {
+    "call": {
+      "declaring": {
+        "name": "java.util.Optional"
+      },
+      "name": "map",
+      "params": [
+        {
+          "name": "java.util.function.Function"
+        }
+      ],
+      "returns": {
+        "name": "java.util.Optional"
+      }
+    }
+  },
+  "4:5-4:26": {
+    "call": {
+      "declaring": {
+        "name": "java.util.Optional"
+      },
+      "name": "map",
+      "params": [
+        {
+          "name": "java.util.function.Function"
+        }
+      ],
+      "returns": {
+        "name": "java.util.Optional"
+      }
+    }
+  },
+  "5:13-5:34": {
+    "call": {
+      "declaring": {
+        "name": "java.util.Optional"
+      },
+      "name": "map",
+      "params": [
+        {
+          "name": "java.util.function.Function"
+        }
+      ],
+      "returns": {
+        "name": "java.util.Optional"
+      }
+    }
+  }
+}

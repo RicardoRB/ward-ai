@@ -1,0 +1,13 @@
+const f1 = <div role="button" />;
+const f2 = <div role="button" tabIndex="0" />;
+const f3 = <button role="button" />;
+const f4 = <div role="presentation" />;
+const f5 = <div role={x} />;
+const f6 = <div role="link" />;
+const f7 = <div role="heading" />;
+const f8 = <div role="checkbox" />;
+const f9 = <div role="button link" />;
+const f10 = <span role="menuitem" />;
+const f11 = <div role="img" />;
+const f12 = <div role="button" tabIndex={-1} />;
+const f13 = <div role="button" tabIndex={x} />;

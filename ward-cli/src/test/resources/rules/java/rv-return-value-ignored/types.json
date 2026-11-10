@@ -1,0 +1,14 @@
+{
+  "3:5-3:15": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "trim",
+      "params": [],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
+  }
+}

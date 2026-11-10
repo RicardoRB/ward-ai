@@ -1,0 +1,101 @@
+# Error Prone checks at ERROR severity for Java, G to L, third batch: checks of annotations, modifiers,
+# imports and the members of a class. Each is on by default in Error Prone.
+
+[[rules]]
+id = "ward:java/labelled-break-target"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+with-child = ["':'"]
+text = '^[\w$]+:(?!for\(|while\(|do\{)'
+message = "a label is only for a loop; remove it or put it on the loop"
+'''
+
+[[rules]]
+id = "ward:java/j-unit4-tests-not-run-within-enclosed"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "enclosed-runner-tests"
+message = "the test '{value}' is in a class run with Enclosed, which runs only the tests of the nested classes"
+'''
+
+[[rules]]
+id = "ward:java/incompatible-modifiers"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "incompatible-modifiers"
+message = "@{value} cannot be used with the modifier {max}"
+'''
+
+[[rules]]
+id = "ward:java/iterable-path-parameter"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "iterable-path-parameter"
+message = "a Path is an Iterable<Path>, so a path could be passed here by mistake; declare a Collection<Path>"
+'''
+
+[[rules]]
+id = "ward:java/guice-assisted-parameters"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "assisted-parameters"
+message = "two @Assisted parameters of type {value} are not told apart; give each its own @Assisted value"
+'''
+
+[[rules]]
+id = "ward:java/guarded-by"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "guarded-by"
+message = "the field '{value}' is guarded by '{max}', but this method takes no lock"
+'''
+
+[[rules]]
+id = "ward:java/immutable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "errorprone-immutable"
+message = "the field '{value}' of an @Immutable class is not deeply immutable"
+'''
+
+[[rules]]
+id = "ward:java/inline-me-validator"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "inline-me"
+message = "the body of '{value}' is more than one statement, so a caller cannot be rewritten to it"
+'''

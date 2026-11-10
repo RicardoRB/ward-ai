@@ -1,0 +1,19 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "header"
+category = "header"
+presets = ["strict"]
+checkstyle = ["Header"]
+
+[[rule]]
+name = "multi-file-regexp-header"
+category = "header"
+presets = ["strict"]
+checkstyle = ["MultiFileRegexpHeader"]
+
+[[rule]]
+name = "regexp-header"
+category = "header"
+presets = ["strict"]
+checkstyle = ["RegexpHeader"]

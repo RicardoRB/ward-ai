@@ -1,0 +1,29 @@
+# SpotBugs rules for Java: unusual equals and inconsistent synchronization (standard preset).
+
+[[rules]]
+id = "ward:java/is2-inconsistent-sync"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "mt-correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "inconsistent-sync"
+message = "the field '{value}' is accessed with the lock on this held {max}% of the time, but not always"
+'''
+
+[[rules]]
+id = "ward:java/eq-unusual"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodDeclaration"]
+modifiers = ["public"]
+not-modifiers = ["static"]
+text = '(?s)^booleanequals\((?:final)?Object(\w+)\)\{(?!.*(?:instanceof|getClass\(|(?i:equals)|(?i:compare)|\(\w[\w.<>]*\)\1\b|this==\1|\1==this|this!=\1|\1!=this|return(?:true|false);\}$|super\.))'
+message = "equals does not follow a recognized shape: no instanceof or getClass test, no cast, no delegation"
+'''

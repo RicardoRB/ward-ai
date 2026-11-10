@@ -1,0 +1,297 @@
+# Status of the biome rows in typescript: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+no-access-key = "implemented"
+no-accumulating-spread = "implemented"
+no-adjacent-spaces-in-regex = "implemented"
+no-ambiguous-anchor-text = "implemented"
+no-approximative-numeric-constant = "implemented"
+no-aria-hidden-on-focusable = "implemented"
+no-aria-unsupported-elements = "implemented"
+no-array-index-key = { status = "planned", issue = "#329" }
+no-assign-in-expressions = "implemented"
+no-astro-conflicting-set-directives = { status = "planned", issue = "#329" }
+no-astro-set-html-directive = { status = "planned", issue = "#329" }
+no-autofocus = "implemented"
+no-banned-types = "implemented"
+no-barrel-file = { status = "planned", issue = "#329" }
+no-before-interactive-script-outside-document = { status = "planned", issue = "#329" }
+no-blank-target = "implemented"
+no-bun-modules = { status = "planned", issue = "#329" }
+no-children-prop = { status = "planned", issue = "#329" }
+no-comment-text = "implemented"
+no-common-js = { status = "planned", issue = "#296" }
+no-component-hook-factories = { status = "planned", issue = "#329" }
+no-conditional-expect = { status = "planned", issue = "#329" }
+no-confusing-labels = "implemented"
+no-confusing-void-type = "implemented"
+no-const-enum = "implemented"
+no-constant-math-min-max-clamp = "implemented"
+no-dangerously-set-inner-html = "implemented"
+no-dangerously-set-inner-html-with-children = { status = "planned", issue = "#329" }
+no-default-export = "implemented"
+no-delete = "implemented"
+no-deprecated-imports = { status = "planned", issue = "#329" }
+no-distracting-elements = "implemented"
+no-document-cookie = "implemented"
+no-document-import-in-page = { status = "planned", issue = "#329" }
+no-done-callback = { status = "planned", issue = "#296" }
+no-drizzle-delete-without-where = { status = "planned", issue = "#329" }
+no-drizzle-update-without-where = { status = "planned", issue = "#329" }
+no-duplicate-jsx-props = "implemented"
+no-duplicate-test-hooks = { status = "planned", issue = "#329" }
+no-duplicated-spread-props = { status = "planned", issue = "#329" }
+no-dynamic-namespace-import-access = "implemented"
+no-empty-interface = "implemented"
+no-empty-source = { status = "planned", issue = "#329" }
+no-empty-type-parameters = "implemented"
+no-enum = { status = "planned", issue = "#296" }
+no-evolving-types = { status = "planned", issue = "#329" }
+no-excessive-cognitive-complexity = { status = "planned", issue = "#329" }
+no-excessive-lines-per-file = { status = "planned", issue = "#296" }
+no-excessive-lines-per-function = { status = "planned", issue = "#329" }
+no-excessive-nested-test-suites = { status = "planned", issue = "#329" }
+no-exported-imports = { status = "planned", issue = "#296" }
+no-exports-in-test = { status = "planned", issue = "#329" }
+no-flat-map-identity = "implemented"
+no-focused-tests = "implemented"
+no-for-each = "implemented"
+no-for-in = "implemented"
+no-global-dirname-filename = "implemented"
+no-global-eval = "implemented"
+no-global-is-finite = "implemented"
+no-global-is-nan = "implemented"
+no-head-element = { status = "planned", issue = "#296" }
+no-head-import-in-document = { status = "planned", issue = "#329" }
+no-header-scope = "implemented"
+no-identical-test-title = { status = "planned", issue = "#329" }
+no-img-element = { status = "planned", issue = "#329" }
+no-implicit-any-let = "implemented"
+no-implicit-boolean = { status = "planned", issue = "#296" }
+no-import-cycles = { status = "planned", issue = "#329" }
+no-inline-styles = { status = "planned", issue = "#329" }
+no-interactive-element-to-noninteractive-role = "implemented"
+no-invalid-builtin-instantiation = "implemented"
+no-invalid-file-input-accept = { status = "planned", issue = "#329" }
+no-js-restricted-properties = { status = "planned", issue = "#329" }
+no-jsx-leaked-dollar = { status = "planned", issue = "#329" }
+no-jsx-literals = { status = "planned", issue = "#296" }
+no-jsx-namespace = "implemented"
+no-jsx-props-bind = "implemented"
+no-label-without-control = "implemented"
+no-leaked-render = { status = "planned", issue = "#329" }
+no-misleading-instantiator = "implemented"
+no-misleading-return-type = { status = "planned", issue = "#329" }
+no-misplaced-assertion = { status = "planned", issue = "#329" }
+no-misplaced-list-elements = "implemented"
+no-misrefactored-shorthand-assign = "implemented"
+no-multiline-string = { status = "planned", issue = "#296" }
+no-namespace-import = "implemented"
+no-negation-in-equality-check = { status = "planned", issue = "#329" }
+no-nested-component-definitions = { status = "planned", issue = "#329" }
+no-nested-promises = { status = "planned", issue = "#329" }
+no-next-async-client-component = { status = "planned", issue = "#329" }
+no-nodejs-modules = { status = "planned", issue = "#329" }
+no-non-scalable-viewport = { status = "planned", issue = "#329" }
+no-noninteractive-element-interactions = "implemented"
+no-noninteractive-element-to-interactive-role = "implemented"
+no-noninteractive-tabindex = "implemented"
+no-obsolete-tags = "implemented"
+no-parameter-assign = { status = "planned", issue = "#296" }
+no-parameters-only-used-in-recursion = { status = "planned", issue = "#329" }
+no-playwright-element-handle = { status = "planned", issue = "#329" }
+no-playwright-eval = { status = "planned", issue = "#329" }
+no-playwright-force-option = { status = "planned", issue = "#329" }
+no-playwright-missing-await = { status = "planned", issue = "#329" }
+no-playwright-networkidle = { status = "planned", issue = "#329" }
+no-playwright-page-pause = { status = "planned", issue = "#329" }
+no-playwright-useless-await = { status = "planned", issue = "#329" }
+no-playwright-wait-for-navigation = { status = "planned", issue = "#329" }
+no-playwright-wait-for-selector = { status = "planned", issue = "#329" }
+no-playwright-wait-for-timeout = { status = "planned", issue = "#329" }
+no-positive-tabindex = "implemented"
+no-private-imports = { status = "planned", issue = "#329" }
+no-process-env = "implemented"
+no-process-global = { status = "planned", issue = "#329" }
+no-qwik-use-visible-task = { status = "planned", issue = "#329" }
+no-re-export-all = "implemented"
+no-react-forward-ref = { status = "planned", issue = "#329" }
+no-react-native-deep-imports = { status = "planned", issue = "#329" }
+no-react-native-literal-colors = { status = "planned", issue = "#329" }
+no-react-native-raw-text = { status = "planned", issue = "#329" }
+no-react-object-type-as-default-prop = { status = "planned", issue = "#329" }
+no-react-prop-assignments = { status = "planned", issue = "#329" }
+no-react-specific-props = { status = "planned", issue = "#329" }
+no-react-string-refs = { status = "planned", issue = "#329" }
+no-redundant-alt = "implemented"
+no-redundant-default-export = { status = "planned", issue = "#329" }
+no-redundant-roles = "implemented"
+no-render-return-value = "implemented"
+no-restricted-elements = { status = "planned", issue = "#329" }
+no-restricted-imports = { status = "planned", issue = "#296" }
+no-return-in-finally = "implemented"
+no-secrets = { status = "planned", issue = "#329" }
+no-self-import = { status = "planned", issue = "#329" }
+no-shadow = { status = "planned", issue = "#329" }
+no-shouty-constants = { status = "planned", issue = "#296" }
+no-skipped-tests = "implemented"
+no-solid-destructured-props = { status = "planned", issue = "#329" }
+no-static-element-interactions = "implemented"
+no-static-only-class = "implemented"
+no-string-case-mismatch = "implemented"
+no-substr = "implemented"
+no-suspicious-semicolon-in-jsx = "implemented"
+no-svelte-export-let = { status = "planned", issue = "#329" }
+no-svelte-unnecessary-state-wrap = { status = "planned", issue = "#329" }
+no-svg-without-title = "implemented"
+no-sync-scripts = { status = "planned", issue = "#329" }
+no-tailwind-arbitrary-value = { status = "planned", issue = "#329" }
+no-tailwind-raw-colors = { status = "planned", issue = "#329" }
+no-ternary = { status = "planned", issue = "#296" }
+no-then-property = "implemented"
+no-this-in-static = "implemented"
+no-this-outside-of-class = { status = "planned", issue = "#329" }
+no-unassigned-variables = { status = "planned", issue = "#329" }
+no-undeclared-classes = { status = "planned", issue = "#329" }
+no-undeclared-custom-properties = { status = "planned", issue = "#329" }
+no-undeclared-dependencies = { status = "planned", issue = "#329" }
+no-undeclared-env-vars = { status = "planned", issue = "#329" }
+no-unknown-attribute = { status = "planned", issue = "#329" }
+no-unnecessary-conditions = { status = "planned", issue = "#329" }
+no-unreachable-super = "implemented"
+no-unresolved-imports = { status = "planned", issue = "#329" }
+no-unsafe-iframe-sandbox = "implemented"
+no-unused-function-parameters = "implemented"
+no-unused-instantiation = "implemented"
+no-unused-template-literal = "implemented"
+no-unwanted-polyfillio = { status = "planned", issue = "#329" }
+no-useless-catch-binding = "implemented"
+no-useless-continue = "implemented"
+no-useless-fragments = "implemented"
+no-useless-lone-block-statements = "implemented"
+no-useless-string-raw = "implemented"
+no-useless-switch-case = "implemented"
+no-useless-undefined = { status = "planned", issue = "#329" }
+no-void-elements-with-children = "implemented"
+no-void-type-return = "implemented"
+no-vue-arrow-func-in-watch = { status = "planned", issue = "#329" }
+no-vue-data-object-declaration = { status = "planned", issue = "#329" }
+no-vue-deprecated-scoped-slots = { status = "planned", issue = "#329" }
+no-vue-duplicate-keys = { status = "planned", issue = "#329" }
+no-vue-import-compiler-macros = { status = "planned", issue = "#329" }
+no-vue-options-api = { status = "planned", issue = "#296" }
+no-vue-ref-as-operand = { status = "planned", issue = "#329" }
+no-vue-reserved-keys = { status = "planned", issue = "#329" }
+no-vue-reserved-props = { status = "planned", issue = "#329" }
+no-vue-setup-props-reactivity-loss = { status = "planned", issue = "#329" }
+no-xor-as-exponentiation = "implemented"
+use-alt-text = "implemented"
+use-anchor-content = "implemented"
+use-aria-activedescendant-with-tabindex = "implemented"
+use-aria-props-for-role = "implemented"
+use-aria-props-supported-by-role = "implemented"
+use-array-find = "implemented"
+use-array-some = { status = "planned", issue = "#329" }
+use-at-index = { status = "planned", issue = "#296" }
+use-better-dom-traversing = { status = "planned", issue = "#329" }
+use-button-type = "implemented"
+use-component-export-only-modules = { status = "planned", issue = "#296" }
+use-consistent-array-type = { status = "planned", issue = "#296" }
+use-consistent-arrow-return = { status = "planned", issue = "#296" }
+use-consistent-builtin-instantiation = { status = "planned", issue = "#296" }
+use-consistent-curly-braces = { status = "planned", issue = "#296" }
+use-consistent-enum-value-type = { status = "planned", issue = "#296" }
+use-consistent-member-accessibility = { status = "planned", issue = "#296" }
+use-consistent-object-definitions = { status = "planned", issue = "#296" }
+use-consistent-test-it = { status = "planned", issue = "#329" }
+use-control-label = { status = "planned", issue = "#329" }
+use-date-now = "implemented"
+use-default-switch-clause = { status = "planned", issue = "#296" }
+use-default-switch-clause-last = "implemented"
+use-disposables = { status = "planned", issue = "#329" }
+use-dom-node-text-content = "implemented"
+use-dom-query-selector = { status = "planned", issue = "#329" }
+use-error-cause = { status = "planned", issue = "#296" }
+use-error-message = { status = "planned", issue = "#329" }
+use-exhaustive-dependencies = { status = "planned", issue = "#329" }
+use-exhaustive-switch-cases = { status = "planned", issue = "#329" }
+use-expect = { status = "planned", issue = "#329" }
+use-explicit-length-check = { status = "planned", issue = "#296" }
+use-explicit-return-type = { status = "planned", issue = "#329" }
+use-explicit-type = { status = "planned", issue = "#329" }
+use-exports-last = { status = "planned", issue = "#296" }
+use-filenaming-convention = { status = "planned", issue = "#296" }
+use-flat-map = "implemented"
+use-flat-math-min-max = "implemented"
+use-focusable-interactive = "implemented"
+use-fragment-syntax = { status = "planned", issue = "#296" }
+use-global-this = "implemented"
+use-google-font-display = "implemented"
+use-google-font-preconnect = { status = "planned", issue = "#329" }
+use-heading-content = "implemented"
+use-hook-at-top-level = { status = "planned", issue = "#329" }
+use-html-lang = "implemented"
+use-iframe-sandbox = { status = "planned", issue = "#329" }
+use-iframe-title = "implemented"
+use-image-size = { status = "planned", issue = "#329" }
+use-import-extensions = { status = "planned", issue = "#329" }
+use-imports-first = { status = "planned", issue = "#329" }
+use-index-of = "implemented"
+use-inline-script-id = { status = "planned", issue = "#329" }
+use-is-array = "implemented"
+use-json-import-attributes = "implemented"
+use-jsx-key-in-iterable = { status = "planned", issue = "#329" }
+use-key-with-click-events = "implemented"
+use-key-with-mouse-events = "implemented"
+use-math-min-max = "implemented"
+use-media-caption = "implemented"
+use-modern-math-apis = "implemented"
+use-node-assert-strict = { status = "planned", issue = "#296" }
+use-nodejs-import-protocol = "implemented"
+use-number-namespace = { status = "planned", issue = "#296" }
+use-number-to-fixed-digits-argument = "implemented"
+use-numeric-separators = { status = "planned", issue = "#296" }
+use-playwright-valid-describe-callback = { status = "planned", issue = "#329" }
+use-qwik-classlist = { status = "planned", issue = "#329" }
+use-qwik-loader-location = { status = "planned", issue = "#329" }
+use-qwik-method-usage = { status = "planned", issue = "#329" }
+use-qwik-valid-lexical-scope = { status = "planned", issue = "#329" }
+use-react-async-server-function = { status = "planned", issue = "#329" }
+use-react-compiler = { status = "planned", issue = "#329" }
+use-react-function-component-definition = { status = "planned", issue = "#329" }
+use-react-function-components = { status = "planned", issue = "#296" }
+use-react-naming-convention = { status = "planned", issue = "#329" }
+use-react-native-platform-components = { status = "planned", issue = "#329" }
+use-reduce-type-parameter = { status = "planned", issue = "#329" }
+use-regexp-test = { status = "planned", issue = "#329" }
+use-self-closing-elements = { status = "planned", issue = "#296" }
+use-semantic-elements = "implemented"
+use-shorthand-function-type = "implemented"
+use-simple-number-keys = "implemented"
+use-simplified-logic-expression = { status = "planned", issue = "#329" }
+use-single-js-doc-asterisk = { status = "planned", issue = "#329" }
+use-single-var-declarator = { status = "planned", issue = "#296" }
+use-solid-for-component = { status = "planned", issue = "#329" }
+use-sorted-classes = { status = "planned", issue = "#329" }
+use-static-response-methods = { status = "planned", issue = "#329" }
+use-svelte-kit-rune-imports = { status = "planned", issue = "#329" }
+use-tailwind-shorthand-classes = { status = "planned", issue = "#329" }
+use-test-hooks-in-order = { status = "planned", issue = "#329" }
+use-test-hooks-on-top = { status = "planned", issue = "#329" }
+use-throw-new-error = "implemented"
+use-top-level-regex = { status = "planned", issue = "#329" }
+use-trim-start-end = "implemented"
+use-unique-element-ids = { status = "planned", issue = "#329" }
+use-valid-anchor = "implemented"
+use-valid-aria-props = "implemented"
+use-valid-aria-role = "implemented"
+use-valid-aria-values = "implemented"
+use-valid-autocomplete = "implemented"
+use-valid-for-direction = "implemented"
+use-valid-lang = "implemented"
+use-valid-test-title = { status = "planned", issue = "#329" }
+use-vue-base-import = { status = "planned", issue = "#329" }
+use-vue-consistent-define-props-declaration = { status = "planned", issue = "#329" }
+use-vue-define-macros-order = { status = "planned", issue = "#296" }
+use-vue-multi-word-component-names = { status = "planned", issue = "#296" }
+use-vue-next-tick-promise = { status = "planned", issue = "#329" }
+use-while = "implemented"

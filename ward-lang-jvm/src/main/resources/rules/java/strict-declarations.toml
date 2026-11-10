@@ -1,0 +1,65 @@
+# Strict-preset declaration rules for Java. Each rule mirrors one Checkstyle 14.3.0 check, with the
+# same option names in kebab-case and Checkstyle's defaults.
+
+[[rules]]
+id = "ward:java/declaration-order"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "declaration-order"
+message = "declaration is out of the order of static variables, instance variables, constructors and methods"
+'''
+
+[[rules]]
+id = "ward:java/illegal-type"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+options.illegal-class-names = { type = "string-list" }
+body = '''
+check = "illegal-type"
+message = "illegal type {value}; declare the variable with an interface type"
+'''
+
+[[rules]]
+id = "ward:java/illegal-instantiation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+options.classes = { type = "string-list" }
+body = '''
+check = "illegal-instantiation"
+message = "instantiation of {value} is not allowed"
+'''
+
+[[rules]]
+id = "ward:java/final-local-variable"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "final-local-variable"
+message = "local variable {value} should be declared final"
+'''
+
+[[rules]]
+id = "ward:java/pattern-variable-assignment"
+language = "java"
+min-java-release = 16
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "pattern-variable-assignment"
+message = "pattern variable {value} should not be assigned"
+'''

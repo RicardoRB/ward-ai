@@ -1,0 +1,57 @@
+{
+  "3:12-3:16": {
+    "type": {
+      "name": "float",
+      "primitive": true
+    }
+  },
+  "7:5-7:14": {
+    "type": {
+      "name": "float",
+      "primitive": true
+    }
+  },
+  "8:12-8:20": {
+    "type": {
+      "name": "float",
+      "primitive": true
+    }
+  },
+  "4:12-4:16": {
+    "type": {
+      "name": "float",
+      "primitive": true
+    }
+  },
+  "9:12-9:16": {
+    "type": {
+      "name": "double",
+      "primitive": true
+    }
+  },
+  "12:12-12:19": {
+    "type": {
+      "name": "float",
+      "primitive": true
+    },
+    "constant": 3.0
+  },
+  "15:12-15:16": {
+    "type": {
+      "name": "int",
+      "primitive": true
+    }
+  },
+  "18:12-18:16": {
+    "type": {
+      "name": "float",
+      "primitive": true
+    }
+  },
+  "21:12-21:16": {
+    "type": {
+      "name": "float",
+      "primitive": true
+    }
+  }
+}

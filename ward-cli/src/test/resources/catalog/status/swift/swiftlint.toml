@@ -1,0 +1,208 @@
+# Status of the swiftlint rows in swift: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+accessibility-label-for-image = { status = "planned", issue = "#338" }
+accessibility-trait-for-button = { status = "planned", issue = "#338" }
+anonymous-argument-in-multiline-closure = { status = "planned", issue = "#338" }
+array-init = "implemented"
+async-without-await = "implemented"
+attributes = { status = "planned", issue = "#298" }
+balanced-xctest-lifecycle = { status = "planned", issue = "#338" }
+blanket-disable-command = "implemented"
+block-based-kvo = "implemented"
+capture-variable = "implemented"
+class-delegate-protocol = "implemented"
+closure-body-length = { status = "planned", issue = "#298" }
+closure-parameter-position = "implemented"
+comma-inheritance = { status = "planned", issue = "#298" }
+comment-spacing = "implemented"
+compiler-protocol-init = "implemented"
+computed-accessors-order = "implemented"
+conditional-returns-on-newline = { status = "planned", issue = "#298" }
+contains-over-filter-count = "implemented"
+contains-over-filter-is-empty = "implemented"
+contains-over-first-not-nil = "implemented"
+contains-over-range-nil-comparison = "implemented"
+contrasted-opening-brace = { status = "planned", issue = "#298" }
+control-statement = "implemented"
+convenience-type = { status = "planned", issue = "#338" }
+deployment-target = "implemented"
+direct-return = { status = "planned", issue = "#298" }
+discarded-notification-center-observer = { status = "planned", issue = "#338" }
+discouraged-assert = "implemented"
+discouraged-default-parameter = { status = "planned", issue = "#338" }
+discouraged-direct-init = "implemented"
+discouraged-none-name = "implemented"
+discouraged-object-literal = { status = "planned", issue = "#338" }
+discouraged-optional-boolean = "implemented"
+discouraged-optional-collection = "implemented"
+duplicate-conditions = "implemented"
+duplicate-enum-cases = "implemented"
+duplicate-imports = "implemented"
+duplicated-key-in-dictionary-literal = "implemented"
+dynamic-inline = "implemented"
+empty-collection-literal = "implemented"
+empty-count = { status = "planned", issue = "#338" }
+empty-enum-arguments = "implemented"
+empty-parameters = "implemented"
+empty-string = "implemented"
+empty-xctest-method = "implemented"
+enum-case-associated-values-count = { status = "planned", issue = "#298" }
+expiring-todo = { status = "planned", issue = "#338" }
+explicit-acl = { status = "planned", issue = "#338" }
+explicit-enum-raw-value = "implemented"
+explicit-init = { status = "planned", issue = "#338" }
+explicit-top-level-acl = "implemented"
+explicit-type-interface = { status = "planned", issue = "#338" }
+extension-access-modifier = { status = "planned", issue = "#338" }
+fallthrough = "implemented"
+fatal-error-message = "implemented"
+file-header = { status = "planned", issue = "#298" }
+file-name = { status = "planned", issue = "#338" }
+file-name-no-space = { status = "planned", issue = "#338" }
+file-types-order = { status = "planned", issue = "#298" }
+final-test-case = "implemented"
+first-where = "implemented"
+flatmap-over-map-reduce = "implemented"
+for-where = "implemented"
+force-cast = "implemented"
+force-try = "implemented"
+force-unwrapping = { status = "planned", issue = "#338" }
+function-default-parameter-at-end = { status = "planned", issue = "#338" }
+function-name-whitespace = "implemented"
+generic-type-name = "implemented"
+ibinspectable-in-extension = "implemented"
+identical-operands = "implemented"
+implicit-getter = "implemented"
+implicit-optional-initialization = "implemented"
+implicitly-unwrapped-optional = { status = "planned", issue = "#338" }
+inclusive-language = "implemented"
+incompatible-concurrency-annotation = { status = "planned", issue = "#338" }
+invalid-swiftlint-command = "implemented"
+invisible-character = "implemented"
+is-disjoint = "implemented"
+joined-default-parameter = "implemented"
+large-tuple = "implemented"
+last-where = "implemented"
+legacy-cggeometry-functions = "implemented"
+legacy-constant = "implemented"
+legacy-constructor = "implemented"
+legacy-hashing = "implemented"
+legacy-multiple = "implemented"
+legacy-nsgeometry-functions = "implemented"
+legacy-objc-type = { status = "planned", issue = "#338" }
+legacy-random = "implemented"
+legacy-swiftui-aspect-ratio = "implemented"
+legacy-uigraphics-function = "implemented"
+let-var-whitespace = { status = "planned", issue = "#298" }
+local-doc-comment = { status = "planned", issue = "#338" }
+lower-acl-than-parent = { status = "planned", issue = "#338" }
+mark = "implemented"
+multiline-call-arguments = { status = "planned", issue = "#338" }
+multiple-closures-with-trailing-closure = "implemented"
+nesting = "implemented"
+nimble-operator = "implemented"
+no-empty-block = { status = "planned", issue = "#338" }
+no-extension-access-modifier = "implemented"
+no-fallthrough-only = "implemented"
+no-grouping-extension = { status = "planned", issue = "#338" }
+non-optional-string-data-conversion = "implemented"
+non-overridable-class-declaration = { status = "planned", issue = "#298" }
+notification-center-detachment = "implemented"
+ns-number-init-as-function-reference = "implemented"
+nslocalizedstring-key = "implemented"
+nslocalizedstring-require-bundle = "implemented"
+nsobject-prefer-isequal = "implemented"
+number-separator = { status = "planned", issue = "#298" }
+object-literal = { status = "planned", issue = "#338" }
+one-declaration-per-file = { status = "planned", issue = "#338" }
+operator-usage-whitespace = { status = "planned", issue = "#298" }
+optional-data-string-conversion = "implemented"
+optional-enum-case-matching = { status = "planned", issue = "#298" }
+orphaned-doc-comment = "implemented"
+overridden-super-call = { status = "planned", issue = "#338" }
+override-in-extension = "implemented"
+pattern-matching-keywords = "implemented"
+period-spacing = "implemented"
+prefer-asset-symbols = "implemented"
+prefer-condition-list = { status = "planned", issue = "#338" }
+prefer-key-path = { status = "planned", issue = "#338" }
+prefer-nimble = "implemented"
+prefer-self-in-static-references = { status = "planned", issue = "#298" }
+prefer-self-type-over-type-of-self = { status = "planned", issue = "#298" }
+prefer-type-checking = "implemented"
+prefer-zero-over-explicit-init = "implemented"
+prefixed-toplevel-constant = { status = "planned", issue = "#298" }
+private-action = "implemented"
+private-outlet = { status = "planned", issue = "#338" }
+private-over-fileprivate = "implemented"
+private-subject = "implemented"
+private-swiftui-state = "implemented"
+private-unit-test = "implemented"
+prohibited-interface-builder = { status = "planned", issue = "#338" }
+prohibited-super-call = { status = "planned", issue = "#338" }
+protocol-property-accessors-order = "implemented"
+quick-discouraged-call = { status = "planned", issue = "#338" }
+quick-discouraged-focused-test = "implemented"
+quick-discouraged-pending-test = "implemented"
+raw-value-for-camel-cased-codable-enum = { status = "planned", issue = "#338" }
+reduce-boolean = "implemented"
+reduce-into = "implemented"
+redundant-discardable-let = "implemented"
+redundant-final = { status = "planned", issue = "#338" }
+redundant-nil-coalescing = "implemented"
+redundant-objc-attribute = "implemented"
+redundant-self = { status = "planned", issue = "#298" }
+redundant-sendable = "implemented"
+redundant-set-access-control = "implemented"
+redundant-string-enum-value = "implemented"
+redundant-type-annotation = { status = "planned", issue = "#338" }
+redundant-void-return = "implemented"
+required-deinit = { status = "planned", issue = "#338" }
+required-enum-case = { status = "planned", issue = "#338" }
+return-value-from-void-function = { status = "planned", issue = "#338" }
+self-binding = { status = "planned", issue = "#298" }
+self-in-property-initialization = "implemented"
+shorthand-argument = { status = "planned", issue = "#298" }
+shorthand-operator = "implemented"
+shorthand-optional-binding = "implemented"
+single-test-class = { status = "planned", issue = "#298" }
+sorted-enum-cases = { status = "planned", issue = "#298" }
+sorted-first-last = "implemented"
+static-operator = "implemented"
+static-over-final-class = "implemented"
+strict-fileprivate = "implemented"
+strong-iboutlet = "implemented"
+superfluous-else = { status = "planned", issue = "#298" }
+switch-case-on-newline = { status = "planned", issue = "#298" }
+syntactic-sugar = "implemented"
+test-case-accessibility = { status = "planned", issue = "#338" }
+toggle-bool = "implemented"
+trailing-closure = { status = "planned", issue = "#298" }
+trailing-semicolon = "implemented"
+type-contents-order = { status = "planned", issue = "#298" }
+typesafe-array-init = "implemented"
+unavailable-condition = "implemented"
+unavailable-function = "implemented"
+unhandled-throwing-task = { status = "planned", issue = "#338" }
+unneeded-break-in-switch = "implemented"
+unneeded-escaping = { status = "planned", issue = "#338" }
+unneeded-override = "implemented"
+unneeded-synthesized-initializer = "implemented"
+unneeded-throws-rethrows = "implemented"
+unowned-variable-capture = { status = "planned", issue = "#338" }
+untyped-error-in-catch = "implemented"
+unused-closure-parameter = "implemented"
+unused-control-flow-label = "implemented"
+unused-declaration = "implemented"
+unused-enumerated = "implemented"
+unused-optional-binding = "implemented"
+unused-setter-value = "implemented"
+valid-ibinspectable = "implemented"
+variable-shadowing = { status = "planned", issue = "#338" }
+vertical-parameter-alignment = "implemented"
+vertical-parameter-alignment-on-call = { status = "planned", issue = "#298" }
+void-function-in-ternary = "implemented"
+void-return = "implemented"
+weak-delegate = "implemented"
+xct-specific-matcher = { status = "planned", issue = "#338" }
+xctfail-message = "implemented"

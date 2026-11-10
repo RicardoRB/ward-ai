@@ -1,0 +1,126 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "abbreviation-as-word-in-name"
+checkstyle = ["AbbreviationAsWordInName"]
+
+[[rule]]
+name = "abstract-class-name"
+not-applicable = { swift = "Swift has no abstract class modifier; protocols and base classes cover that role" }
+checkstyle = ["AbstractClassName"]
+ruff = ["N818"]
+
+[[rule]]
+name = "catch-parameter-name"
+checkstyle = ["CatchParameterName"]
+
+[[rule]]
+name = "class-type-parameter-name"
+not-applicable = { javascript = "JavaScript has no type parameters", python = "Java generic type parameters; Python generics are not declared with names" }
+checkstyle = ["ClassTypeParameterName"]
+
+[[rule]]
+name = "constant-name"
+detekt = ["TopLevelPropertyNaming"]
+checkstyle = ["ConstantName"]
+ktlint = ["property-naming"]
+
+[[rule]]
+name = "google-method-name"
+not-applicable = { python = "Java lowerCamelCase method names; Python method names are covered by method-name" }
+checkstyle = ["GoogleMethodName"]
+
+[[rule]]
+name = "google-non-constant-field-name"
+not-applicable = { python = "Java field naming; Python attributes are covered by the naming rules" }
+checkstyle = ["GoogleNonConstantFieldName"]
+
+[[rule]]
+name = "illegal-identifier-name"
+not-applicable = { swift = "Swift identifiers cannot contain $, and the compiler already rejects reserved words as names" }
+checkstyle = ["IllegalIdentifierName"]
+
+[[rule]]
+name = "interface-type-parameter-name"
+not-applicable = { javascript = "JavaScript has no type parameters", python = "Java generic type parameters; Python generics are not declared with names", swift = "Swift protocols take associated types, not generic parameters" }
+checkstyle = ["InterfaceTypeParameterName"]
+
+[[rule]]
+name = "lambda-parameter-name"
+checkstyle = ["LambdaParameterName"]
+
+[[rule]]
+name = "local-final-variable-name"
+not-applicable = { python = "Java final local variables; Python has no final locals" }
+checkstyle = ["LocalFinalVariableName"]
+
+[[rule]]
+name = "local-variable-name"
+pmd = ["LocalVariableNamingConventions"]
+checkstyle = ["LocalVariableName"]
+ruff = ["N806"]
+
+[[rule]]
+name = "member-name"
+ids = { kotlin = "ward:kotlin/property-name" }
+detekt = ["VariableNaming"]
+pmd = ["FieldNamingConventions"]
+checkstyle = ["MemberName"]
+
+[[rule]]
+name = "method-name"
+ids = { kotlin = "ward:kotlin/function-name" }
+detekt = ["FunctionNaming"]
+pmd = ["MethodNamingConventions"]
+checkstyle = ["MethodName"]
+ktlint = ["function-naming"]
+ruff = ["N802"]
+
+[[rule]]
+name = "method-type-parameter-name"
+not-applicable = { javascript = "JavaScript has no type parameters", python = "Java generic type parameters; Python generics are not declared with names" }
+checkstyle = ["MethodTypeParameterName"]
+
+[[rule]]
+name = "package-name"
+not-applicable = { swift = "Swift has no package declaration; module names come from the package manifest", python = "Java package declarations; Python packages are directories and module names follow PEP 8" }
+detekt = ["PackageNaming"]
+checkstyle = ["PackageName"]
+ktlint = ["package-name"]
+
+[[rule]]
+name = "parameter-name"
+detekt = ["FunctionParameterNaming"]
+pmd = ["FormalParameterNamingConventions"]
+checkstyle = ["ParameterName"]
+errorprone = ["ParameterName"]
+ruff = ["N803"]
+
+[[rule]]
+name = "pattern-variable-name"
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["PatternVariableName"]
+
+[[rule]]
+name = "record-component-name"
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["RecordComponentName"]
+
+[[rule]]
+name = "record-type-parameter-name"
+not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
+checkstyle = ["RecordTypeParameterName"]
+
+[[rule]]
+name = "static-variable-name"
+checkstyle = ["StaticVariableName"]
+
+[[rule]]
+name = "type-name"
+pylint = ["invalid-name"]
+detekt = ["ClassNaming"]
+pmd = ["ClassNamingConventions"]
+checkstyle = ["TypeName"]
+ktlint = ["class-naming"]
+swiftlint = ["type_name"]
+ruff = ["N801"]

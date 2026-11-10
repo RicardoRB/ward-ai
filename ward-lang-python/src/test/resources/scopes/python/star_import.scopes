@@ -1,0 +1,8 @@
+module open
+  function f @6:5
+  function @6:1 open
+references
+  3:1 print read -> unresolved open
+  3:7 path read -> unresolved open
+  7:5 exec read -> unresolved open
+  8:12 x read -> unresolved open

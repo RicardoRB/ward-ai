@@ -1,0 +1,19 @@
+# Status of the knip rows in javascript: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+knip-binaries = "implemented"
+knip-catalog = "implemented"
+knip-catalog-references = "implemented"
+knip-cycles = { status = "planned", issue = "#331" }
+knip-dependencies = "implemented"
+knip-dev-dependencies = "implemented"
+knip-duplicates = "implemented"
+knip-enum-members = "not-applicable"
+knip-exports = "implemented"
+knip-files = "implemented"
+knip-namespace-members = "not-applicable"
+knip-ns-exports = { status = "planned", issue = "#331" }
+knip-ns-types = { status = "planned", issue = "#331" }
+knip-optional-peer-dependencies = "implemented"
+knip-types = "not-applicable"
+knip-unlisted = "implemented"
+knip-unresolved = "implemented"

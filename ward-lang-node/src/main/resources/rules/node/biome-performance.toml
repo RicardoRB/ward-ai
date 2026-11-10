@@ -1,0 +1,54 @@
+# Biome rules of the performance group for TypeScript and JavaScript (catalog rows of #329).
+
+[[rules]]
+id = "ward:typescript/no-dynamic-namespace-import-access"
+language = "TYPESCRIPT"
+capability = "SCOPES"
+severity = "WARNING"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "node-namespace-access"
+message = "avoid accessing a namespace import dynamically; use named imports or static access"
+'''
+
+[[rules]]
+id = "ward:javascript/no-dynamic-namespace-import-access"
+language = "JAVASCRIPT"
+capability = "SCOPES"
+severity = "WARNING"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "node-namespace-access"
+message = "avoid accessing a namespace import dynamically; use named imports or static access"
+'''
+
+
+[[rules]]
+id = "ward:javascript/no-jsx-props-bind"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "performance"
+presets = ["strict"]
+body = '''
+check = "node-jsx-attribute-value"
+at = "expression"
+text = '^\{(?:async)?(?:function|\([^()]*\)=>|[\w$]+=>|[\w$.]+\.bind\()'
+message = "avoid an arrow function, a function or bind in a JSX prop; it creates a new value on every render"
+'''
+
+[[rules]]
+id = "ward:typescript/no-jsx-props-bind"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "performance"
+presets = ["strict"]
+body = '''
+check = "node-jsx-attribute-value"
+at = "expression"
+text = '^\{(?:async)?(?:function|\([^()]*\)=>|[\w$]+=>|[\w$.]+\.bind\()'
+message = "avoid an arrow function, a function or bind in a JSX prop; it creates a new value on every render"
+'''

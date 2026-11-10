@@ -35,11 +35,13 @@ per check:
 | `project` | `OK` / `ERROR` | A supported project was detected. When none is found, only the `ward` check runs after it. |
 | `maven` / `gradle` | `OK` / `ERROR` | For Java and Kotlin projects: the detected build tool's wrapper exists in the project root, or its executable (`mvn` / `gradle`) is on `PATH`. |
 | `jdk` | `OK` / `WARNING` | For Java and Kotlin projects: the JDK that runs the build, read from `mvn --version` or the Gradle launcher JVM, as [init reads it](/commands/init/#java-compatibility). `WARNING` means the JDK is below 8 (Ward supports Java 8 to 25 and may not work with it), above 25 (not tested or supported; Ward treats it as JDK 25), or that neither the build tool nor its wrapper reported a Java version. The warning does not change the exit status. |
-| a gate id, such as `spotbugs` | `WARNING` | For each gate `ward.toml` enables whose version pinned in the build file does not run on that JDK, for example `spotbugs-maven-plugin 4.9.7.0 runs on JDK 11 to 25; this project builds on JDK 8.` Re-run `ward init` to choose a compatible version. A JDK above 25 is checked as JDK 25. Not reported when the JDK is unknown, and it does not change the exit status. |
-| `check <name>` | `OK` | For each configured check: its built-in type, such as `type checkstyle`. A check whose command Ward does not recognize reports `type command`; set `uses` to attach a type. |
+| a gate id, such as `mutation` | `WARNING` | For each gate `ward.toml` enables whose version pinned in the build file does not run on that JDK, for example `pitest-maven 1.30.1 runs on JDK 11 to 25; this project builds on JDK 8.` Re-run `ward init` to choose a compatible version. A JDK above 25 is checked as JDK 25. Not reported when the JDK is unknown, and it does not change the exit status. |
+| `check <name>` | `OK` | For each configured check: its built-in type, such as `type coverage`. A check whose command Ward does not recognize reports `type command`; set `uses` to attach a type. |
 | `node` | `OK` / `ERROR` | For TypeScript and JavaScript projects other than Bun: `node` is on `PATH`. |
 | `node-version` | `WARNING` | For TypeScript and JavaScript projects other than Bun, when the target Node version (from `.nvmrc`, `.node-version`, or `engines.node`) is below 22: Ward supports Node 22 and 24 and may not work with the declared version. The warning does not change the exit status. |
 | `npm` / `pnpm` / `yarn` / `bun` | `OK` / `ERROR` | For TypeScript and JavaScript projects: the detected package manager's executable is on `PATH`. No `maven` or `gradle` line is printed. |
+| `java-type-inputs` | `OK` / `WARNING` | For Java and Kotlin projects: a JDK with `javac` is on `PATH`, the JDK image that native Java type resolution reads. `WARNING` is a hint and does not change the exit status. See [Native type resolution](#native-type-resolution). |
+| `typescript-type-inputs` | `OK` / `WARNING` | For TypeScript and JavaScript projects, Bun included: the project's `typescript` package resolves from the project root, so `node_modules` declares the declarations that native TypeScript type resolution reads. `WARNING` is a hint and does not change the exit status. See [Native type resolution](#native-type-resolution). |
 | `python` | `OK` / `ERROR` / `WARNING` | For Python projects: `python3` or `python` is on `PATH`. For uv a missing interpreter is a `WARNING`, because uv installs its own. No `maven` or `gradle` line is printed for Python projects. |
 | `uv` / `poetry` | `OK` / `ERROR` | For uv and Poetry projects: the manager's executable is on `PATH`. |
 | `venv` | `OK` / `WARNING` | For pip projects: the project root has a `.venv`. Otherwise the warning shows how to create one, `python3 -m venv .venv`. |
@@ -54,7 +56,8 @@ per check:
 | Other build tools, such as `cargo` | `WARNING` | Ward does not check that toolchain yet. The finding is named after the build tool, and nothing about Maven is reported. |
 | `configuration` | `OK` / `ERROR` | `ward.toml` exists in the project root; otherwise run `ward init`. |
 | `integration` | `OK` / `WARNING` | Lists configured project-local agent integrations as `id=status [capabilities]`. Integrations without pre-tool support are marked `advisory-only`. `installed` means the integration's files are present and Ward-owned; it does not show that the harness has loaded them. `WARNING` means none is configured (`No supported agent integration configured.`) or one is incomplete or outdated; re-run `ward integrate <agent>` to repair it. For a project in a monorepo, agent integrations are looked up at the repository root, where `ward init` installs them. |
-| `native` | `OK` / `WARNING` | `target/ward` exists in the current directory. This is a development check for the Ward repository. |
+| `rule configuration` | `OK` / `ERROR` | For each enabled `ward` check that has a `ward-rules.toml` (or the `rules-file` it names): `OK` with the number of selected rules, or one `ERROR` per problem, each naming the file, the table and the key. The `ward` gate fails with the same problems. |
+| `native` | `OK` / `WARNING` | `target/ward` or `ward-cli/target/ward` exists in the current directory. This is a development check for the Ward repository. |
 | `openspec` / `openspec-archived` | `OK` / `WARNING` / `ERROR` | For each enabled registration, the configured executable and project-root `openspec/` directory are available. `WARNING` means Git ignores `openspec/`, so CI checkouts will not contain the specs and the gate fails there. |
 | `openspec-junit-traceability` | `OK` / `ERROR` | When enabled, `openspec/specs/` and `src/test/java/` must exist; doctor does not create them. |
 | `dependency-check-nvd-api-key` | `WARNING` | When dependency-check is enabled, `NVD_API_KEY` should be set; without it scans may be very slow or rate-limited. The value is never displayed. |
@@ -72,6 +75,35 @@ OpenSpec diagnosis is conditional and read-only:
   contents.
 - Relative executable paths are resolved against the target root. Bare names use `PATH`, and
   absolute paths are used as supplied.
+
+## Native type resolution
+
+Rules that need static types (the `TYPES` capability) read their facts from a native resolver for
+their language, which runs inside Ward with no external process. Until a language's native resolver
+is available, its `TYPES` rules are reported as not run, naming the missing resolver, and the `ward`
+gate is `UNAVAILABLE`: such a rule is never reported as passed. Syntax, scope and dependency analysis
+do not depend on native resolvers.
+
+The Java and Kotlin resolver types the project sources and reads library and JDK classes directly
+from class files: the jars and directories of the `java-classpath` file, and the JDK `lib/modules`
+image found through `JAVA_HOME` or the running JDK. It never starts `javac`. Each jar is indexed once
+and the index is kept under `.ward/cache/types/`, named by the SHA-256 of the jar.
+
+The TypeScript and JavaScript resolver types the project sources and reads declarations as text,
+with no `node` or TypeScript compiler process. The declarations come from the `.d.ts` files of the
+project, from the packages in `node_modules` (the `types` or `typings` field, the `main` file with a
+`.d.ts` extension, `index.d.ts`, and `@types/*`), and from the library of the installed `typescript`
+package (`node_modules/typescript/lib`). Without that package, library types such as `Array` and
+`Promise` are unknown. Expressions are typed from annotations, initializers, calls to declared
+functions and members of declared types; what needs full checking, such as conditional and mapped
+types or control-flow narrowing, is unknown. The declaration index of each package is kept under
+`.ward/cache/types/node/`, named by the SHA-256 of the package's manifest and declaration files.
+
+`ward doctor` hints at the inputs the resolvers read. For Java and Kotlin these are a JDK image and
+the gate's `java-classpath` file, which names the library jars; without that file, library types stay
+unknown. For TypeScript and JavaScript it is the `typescript` declarations in `node_modules`. A missing
+input is a hint, not a failure. A fact a resolver cannot resolve is unknown, and a rule never reports
+a finding that depends on one.
 
 ## Verbose diagnostics
 

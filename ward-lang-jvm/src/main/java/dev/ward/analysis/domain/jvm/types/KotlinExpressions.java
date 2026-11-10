@@ -1,0 +1,151 @@
+package dev.ward.analysis.domain.jvm.types;
+
+import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.scope.Binding;
+import dev.ward.analysis.domain.types.Nullness;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.Set;
+
+/** Types the expressions of Kotlin by their shape. */
+final class KotlinExpressions {
+  private static final String POSTFIX = "postfixUnaryExpression";
+  private static final String ATOMIC = "atomicExpression";
+  private static final String SIMPLE_IDENTIFIER = "simpleIdentifier";
+  private static final String EXPRESSION = "expression";
+  private static final String ADDITIVE = "additiveExpression";
+  private static final String TYPE_RHS = "typeRHS";
+  private static final String TYPE_OPERATION = "typeOperation";
+  private static final String AS = "as";
+  private static final int CAST_PARTS = 3;
+  private static final int CAST_OPERAND = 0;
+  private static final int CAST_OPERATOR = 1;
+  private static final int CAST_TARGET = 2;
+  private static final Set<String> BOOLEAN_OPERATIONS =
+      Set.of("comparison", "equalityComparison", "conjunction", "disjunction");
+  private static final Set<String> ARITHMETIC = Set.of(ADDITIVE, "multiplicativeExpression");
+
+  private final Session session;
+  private final KotlinTyper typer;
+  private final KotlinCalls calls;
+
+  KotlinExpressions(final Session session, final KotlinTyper typer) {
+    this.session = session;
+    this.typer = typer;
+    this.calls = new KotlinCalls(session, this, typer);
+  }
+
+  Typed expr(final SyntaxNode node, final Ctx ctx) {
+    final Typed typed = isAsCast(node) ? cast(node, ctx) : dispatch(node, ctx);
+    session.record(node, typed);
+    return typed;
+  }
+
+  private Typed dispatch(final SyntaxNode node, final Ctx ctx) {
+    if (POSTFIX.equals(node.kind())) {
+      return calls.postfix(node, Optional.empty(), ctx);
+    }
+    if (ATOMIC.equals(node.kind())) {
+      return atomic(node, ctx);
+    }
+    final boolean wrapper =
+        node.children().size() == 1 && !node.children().get(0).children().isEmpty();
+    if (wrapper) {
+      return expr(node.children().get(0), ctx);
+    }
+    final List<Typed> operands = new ArrayList<>();
+    for (final SyntaxNode child : node.children()) {
+      if (!child.children().isEmpty()) {
+        final Typed typed = expr(child, ctx);
+        if (!child.kind().toLowerCase(Locale.ROOT).contains("operat")) {
+          operands.add(typed);
+        }
+      }
+    }
+    if (BOOLEAN_OPERATIONS.contains(node.kind())) {
+      return Typed.of(new JType.Primitive("boolean"));
+    }
+    return ARITHMETIC.contains(node.kind()) ? arithmetic(node, operands) : Typed.UNKNOWN;
+  }
+
+  private static Typed arithmetic(final SyntaxNode node, final List<Typed> operands) {
+    if (operands.isEmpty() || operands.stream().anyMatch(operand -> operand.type().isEmpty())) {
+      return Typed.UNKNOWN;
+    }
+    final JType text = JType.ClassType.of(Types.STRING);
+    if (ADDITIVE.equals(node.kind())
+        && operands.stream().anyMatch(o -> text.equals(o.type().get()))) {
+      return Typed.of(text);
+    }
+    JType result = operands.get(0).type().get();
+    for (final Typed next : operands.stream().skip(1).toList()) {
+      final JType promoted = Types.promote(result, next.type().get());
+      if (promoted == null) {
+        return Typed.UNKNOWN;
+      }
+      result = promoted;
+    }
+    return Typed.of(result);
+  }
+
+  private Typed atomic(final SyntaxNode node, final Ctx ctx) {
+    final SyntaxNode head = node.children().get(0);
+    return switch (head.kind()) {
+      case "literalConstant" -> nonNullLiteral(head);
+      case SIMPLE_IDENTIFIER -> name(head, ctx);
+      case "parenthesizedExpression" ->
+          Syntax.child(head, EXPRESSION).map(inner -> expr(inner, ctx)).orElse(Typed.UNKNOWN);
+      default -> {
+        typer.walk(head, ctx);
+        yield Typed.UNKNOWN;
+      }
+    };
+  }
+
+  /** Types the operand of an {@code as} cast and records the class its target names. */
+  private Typed cast(final SyntaxNode node, final Ctx ctx) {
+    expr(node.children().get(CAST_OPERAND), ctx);
+    KotlinNamedTypes.recordCastTarget(session, node.children().get(CAST_TARGET), ctx.scope());
+    return Typed.UNKNOWN;
+  }
+
+  /** Returns whether a node is {@code operand as Target}, a cast that is not {@code as?}. */
+  private static boolean isAsCast(final SyntaxNode node) {
+    return TYPE_RHS.equals(node.kind())
+        && node.children().size() == CAST_PARTS
+        && TYPE_OPERATION.equals(node.children().get(CAST_OPERATOR).kind())
+        && AS.equals(Syntax.text(node.children().get(CAST_OPERATOR)));
+  }
+
+  /** A literal is non-null, except the literal {@code null} itself. */
+  private static Typed nonNullLiteral(final SyntaxNode literal) {
+    final Typed typed = KotlinLiterals.literal(literal);
+    return "null".equals(Syntax.text(literal)) ? typed : typed.withNullness(Nullness.NON_NULL);
+  }
+
+  private Typed name(final SyntaxNode identifier, final Ctx ctx) {
+    final String name = Syntax.text(identifier);
+    final Optional<Binding> binding = session.binding(identifier);
+    if (binding.isPresent() && ScopeIndex.isValue(binding.get())) {
+      return session
+          .variableAt(binding.get())
+          .map(Typed::of)
+          .orElse(Typed.UNKNOWN)
+          .withNullness(typer.nullness().use(binding.get(), identifier));
+    }
+    final Optional<Typed> inherited =
+        ctx.scope().enclosing().stream()
+            .map(owner -> session.hierarchy.field(session.self(owner), name))
+            .flatMap(Optional::stream)
+            .map(found -> Typed.of(Types.substitute(found.member().type(), found.bindings())))
+            .findFirst();
+    return inherited.orElseGet(
+        () ->
+            ctx.scope()
+                .resolve(List.of(name))
+                .map(binary -> Typed.naming(JType.ClassType.of(binary)))
+                .orElseGet(() -> Typed.pkg(name)));
+  }
+}

@@ -1,0 +1,30 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "regexp"
+category = "regexp"
+presets = ["strict"]
+checkstyle = ["Regexp"]
+
+[[rule]]
+name = "regexp-multiline"
+category = "regexp"
+presets = ["strict"]
+checkstyle = ["RegexpMultiline"]
+
+[[rule]]
+name = "regexp-on-filename"
+category = "regexp"
+presets = ["strict"]
+checkstyle = ["RegexpOnFilename"]
+
+[[rule]]
+name = "regexp-singleline"
+checkstyle = ["RegexpSingleline"]
+
+[[rule]]
+name = "regexp-singleline-java"
+category = "regexp"
+presets = ["strict"]
+not-applicable = { python = "Java-specific regexp check over Java source; the generic regexp-singleline covers Python" }
+checkstyle = ["RegexpSinglelineJava"]

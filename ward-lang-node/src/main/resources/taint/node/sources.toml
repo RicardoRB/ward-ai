@@ -1,0 +1,174 @@
+# Taint sources of TypeScript and JavaScript: Express request members and browser inputs.
+# A typed request (req: Request from express) names the Express receiver; an untyped one matches
+# by its name, through the qualifiers req and request.
+
+[[sources]]
+kind = "member"
+name = "query"
+qualifier = "req"
+
+[[sources]]
+kind = "member"
+name = "query"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "query"
+receiver = "express.Request"
+
+[[sources]]
+kind = "member"
+name = "params"
+qualifier = "req"
+
+[[sources]]
+kind = "member"
+name = "params"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "params"
+receiver = "express.Request"
+
+[[sources]]
+kind = "member"
+name = "body"
+qualifier = "req"
+
+[[sources]]
+kind = "member"
+name = "body"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "body"
+receiver = "express.Request"
+
+[[sources]]
+kind = "member"
+name = "headers"
+qualifier = "req"
+
+[[sources]]
+kind = "member"
+name = "headers"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "headers"
+receiver = "express.Request"
+
+[[sources]]
+kind = "member"
+name = "cookies"
+qualifier = "req"
+
+[[sources]]
+kind = "member"
+name = "cookies"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "cookies"
+receiver = "express.Request"
+
+[[sources]]
+kind = "member"
+name = "path"
+qualifier = "req"
+
+[[sources]]
+kind = "member"
+name = "path"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "path"
+receiver = "express.Request"
+
+[[sources]]
+kind = "member"
+name = "originalUrl"
+qualifier = "req"
+
+[[sources]]
+kind = "member"
+name = "originalUrl"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "originalUrl"
+receiver = "express.Request"
+
+[[sources]]
+kind = "member"
+name = "url"
+qualifier = "req"
+
+[[sources]]
+kind = "member"
+name = "url"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "url"
+receiver = "express.Request"
+
+# Process arguments.
+[[sources]]
+kind = "member"
+name = "argv"
+qualifier = "process"
+
+[[sources]]
+kind = "member"
+name = "search"
+qualifier = "location"
+
+[[sources]]
+kind = "member"
+name = "search"
+qualifier = "window.location"
+
+[[sources]]
+kind = "member"
+name = "hash"
+qualifier = "location"
+
+[[sources]]
+kind = "member"
+name = "hash"
+qualifier = "window.location"
+
+[[sources]]
+kind = "member"
+name = "href"
+qualifier = "location"
+
+[[sources]]
+kind = "member"
+name = "href"
+qualifier = "window.location"
+
+[[sources]]
+kind = "member"
+name = "URL"
+qualifier = "document"
+
+[[sources]]
+kind = "member"
+name = "referrer"
+qualifier = "document"
+
+[[sources]]
+kind = "member"
+name = "cookie"
+qualifier = "document"

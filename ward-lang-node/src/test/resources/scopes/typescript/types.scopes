@@ -1,0 +1,55 @@
+module
+  import T @1:15 [type_only] from ./t
+  import U @2:15 [type_only] from ./u
+  import V @2:18 from ./u
+  import Def @3:8 from ./all
+  import All @3:18 from ./all
+  type I @4:11 [type_only]
+  type E @5:6
+  function f @6:10 [hoisted]
+  class K @10:7 [lexical]
+  type Alias @15:13 [type_only]
+  variable typed @16:5 [lexical]
+  block @4:1
+    type P @4:13 [type_only]
+  block @5:1
+  function @6:1
+    type R @6:12 [type_only]
+    parameter p @6:15
+    parameter q @6:21
+    constant z @7:9 [const,lexical]
+  class @10:1
+    type S @10:9 [type_only]
+    function @12:3
+      parameter y @12:22
+    function @13:3
+  block @15:8
+    type Q @15:19 [type_only]
+references
+  4:24 J read -> unresolved
+  4:31 T read -> module import T @1:15
+  4:39 U read -> module import U @2:15
+  4:43 P read -> block type P @4:13
+  6:15 p write -> function parameter p @6:15
+  6:18 T read -> module import T @1:15
+  6:21 q write -> function parameter q @6:21
+  6:25 number read -> unresolved
+  6:34 R read -> function type R @6:12
+  7:9 z write -> function constant z @7:9
+  7:12 Array read -> unresolved
+  7:18 R read -> function type R @6:12
+  7:23 p read -> function parameter p @6:15
+  7:28 any read -> unresolved
+  8:10 z read -> function constant z @7:9
+  10:23 I read -> module type I @4:11
+  10:25 S read -> class type S @10:9
+  11:14 S read -> class type S @10:9
+  12:22 y write -> function parameter y @12:22
+  12:25 V read -> module import V @2:18
+  13:12 T read -> module import T @1:15
+  15:24 Q read -> block type Q @15:19
+  15:28 V read -> module import V @2:18
+  16:5 typed write -> module variable typed @16:5
+  16:12 Def read -> module import Def @3:8
+  16:22 All read -> module import All @3:18
+  17:10 E read -> module type E @5:6

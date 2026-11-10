@@ -1,0 +1,127 @@
+package dev.ward.analysis.domain.rule.check;
+
+import dev.ward.analysis.domain.ir.SourceUnit;
+import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.port.AnalysisFailedException;
+import dev.ward.analysis.domain.rule.FlowView;
+import dev.ward.analysis.domain.rule.RuleMatch;
+import dev.ward.analysis.domain.rule.ScopeView;
+import dev.ward.analysis.domain.scope.NameReference;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+
+/**
+ * Reports a fragment that holds one element or no child, or that sits in a JSX child list, at the
+ * fragment, as Biome 2.5.15's {@code noUselessFragments} decides it (its run function in
+ * crates/biome_js_analyze/src/lint/complexity/no_useless_fragments.rs). A fragment that is the
+ * value of a declaration, an arrow body or a property is kept. A {@code <Fragment>} element counts
+ * when its name resolves to React, through {@link ReactFragmentNames}.
+ */
+public final class BiomeUselessFragmentsCheck implements RuleCheck {
+
+  private static final String FRAGMENT = "jsxFragment";
+  private static final String ELEMENT = "jsxElement";
+  private static final String TEXT = "jsxText";
+  private static final String EXPRESSION_CHILD = "jsxExpressionContainer";
+  private static final int CONTAINER = 2;
+
+  private final String message;
+
+  /**
+   * Creates the check.
+   *
+   * @param message the message of each finding
+   */
+  public BiomeUselessFragmentsCheck(final String message) {
+    this.message = Objects.requireNonNull(message, "message");
+  }
+
+  /** Always fails: names resolve through the scopes and blank text through the source. */
+  @Override
+  public List<RuleMatch> matches(final SyntaxNode root) {
+    throw new AnalysisFailedException("the useless-fragments check needs the scopes and source");
+  }
+
+  @Override
+  public List<RuleMatch> matches(
+      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+    final Map<Integer, NameReference> byStart = ReactFragmentNames.referencesByStart(view.scopes());
+    return SyntaxWalk.visits(root, Set.of(FRAGMENT, ELEMENT)).stream()
+        .filter(visit -> isFragment(visit.node(), byStart))
+        .filter(visit -> reported(visit.node(), FragmentContext.chainOf(visit), unit.text()))
+        .map(visit -> CheckSupport.at(visit.node().span(), message))
+        .toList();
+  }
+
+  /** A short fragment is always one; an element is one when it names React's Fragment. */
+  private static boolean isFragment(
+      final SyntaxNode node, final Map<Integer, NameReference> byStart) {
+    return FRAGMENT.equals(node.kind()) || ReactFragmentNames.isFragmentElement(node, byStart);
+  }
+
+  private static boolean reported(
+      final SyntaxNode fragment, final List<SyntaxNode> ancestors, final String source) {
+    final FragmentContext.Context context = FragmentContext.of(ancestors);
+    if (context == FragmentContext.Context.PRESERVED) {
+      return false;
+    }
+    if (fragment.children().stream().anyMatch(child -> keepsFragment(child, context))) {
+      return false;
+    }
+    final List<SyntaxNode> significant =
+        fragment.children().stream().filter(child -> counts(child, source)).toList();
+    return switch (significant.size()) {
+      case 0 -> true;
+      case 1 -> singleChildReported(significant.get(0), context, ancestors);
+      default -> context == FragmentContext.Context.LIST;
+    };
+  }
+
+  /** Text inside an expression or a logical operand, or an expression inside a logical operand. */
+  private static boolean keepsFragment(
+      final SyntaxNode child, final FragmentContext.Context context) {
+    final boolean inExpression =
+        context == FragmentContext.Context.EXPRESSION_CHILD
+            || context == FragmentContext.Context.LOGICAL;
+    return TEXT.equals(child.kind()) && inExpression
+        || EXPRESSION_CHILD.equals(child.kind()) && context == FragmentContext.Context.LOGICAL;
+  }
+
+  /** A child Biome counts: an element, an expression, or text that is not padding. */
+  private static boolean counts(final SyntaxNode child, final String source) {
+    if (TEXT.equals(child.kind())) {
+      return !isPaddingText(child, source);
+    }
+    return ELEMENT.equals(child.kind()) || EXPRESSION_CHILD.equals(child.kind());
+  }
+
+  private static boolean singleChildReported(
+      final SyntaxNode child,
+      final FragmentContext.Context context,
+      final List<SyntaxNode> ancestors) {
+    if (TEXT.equals(child.kind())) {
+      return textChildReported(context, ancestors);
+    }
+    return !(EXPRESSION_CHILD.equals(child.kind()) && context == FragmentContext.Context.RETURNED);
+  }
+
+  /**
+   * Text alone keeps the fragment in an attribute or a return, and elsewhere only in a fragment.
+   */
+  private static boolean textChildReported(
+      final FragmentContext.Context context, final List<SyntaxNode> ancestors) {
+    if (context == FragmentContext.Context.ATTRIBUTE
+        || context == FragmentContext.Context.RETURNED) {
+      return false;
+    }
+    return FRAGMENT.equals(ancestors.get(ancestors.size() - CONTAINER).kind());
+  }
+
+  /** Text that is only whitespace with a line break is padding, as Biome's is_padding_spaces. */
+  private static boolean isPaddingText(final SyntaxNode text, final String source) {
+    final String raw = source.substring(text.span().startOffset(), text.span().endOffset());
+    return raw.isBlank() && raw.contains("\n");
+  }
+}

@@ -1,0 +1,277 @@
+# Potential-bug rules for Kotlin, from detekt's potential-bugs set (standard preset). Rules that
+# need resolved types are not here yet; they stay planned in the catalog.
+
+[[rules]]
+id = "ward:kotlin/explicit-garbage-collection-call"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfixUnaryExpression"]
+text = '^(System\s*\.\s*gc|Runtime\s*\.\s*getRuntime\s*\(\s*\)\s*\.\s*gc)\s*\(\s*\)$'
+message = "explicit garbage collection call; the JVM manages memory itself"
+'''
+
+[[rules]]
+id = "ward:kotlin/implicit-default-locale"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["postfixUnaryExpression"]
+text = '(\.\s*(toUpperCase|toLowerCase|capitalize|decapitalize)\s*\(\s*\)$)|(^String\s*\.\s*format\s*\(\s*")'
+message = "uses the default locale implicitly; pass a Locale explicitly"
+'''
+
+[[rules]]
+id = "ward:kotlin/equals-always-returns-true-or-false"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["functionDeclaration"]
+text = 'funequals\s*\([^)]*\)\s*(:\s*Boolean\s*)?(\{\s*(return\s*)?(true|false)\s*\}|=\s*(true|false)\s*$)'
+message = "equals always returns the same value"
+'''
+
+[[rules]]
+id = "ward:kotlin/iterator-has-next-calls-next-method"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["functionDeclaration"]
+text = 'funhasNext\s*\(\s*\)\s*(:\s*Boolean\s*)?\{[^}]*next\s*\('
+message = "hasNext calls next, which moves the iterator"
+'''
+
+[[rules]]
+id = "ward:kotlin/iterator-not-throwing-no-such-element-exception"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["functionDeclaration"]
+text = 'overridefunnext\s*\(\s*\)(?![\s\S]*NoSuchElementException)'
+message = "next does not throw NoSuchElementException when the iterator is exhausted"
+'''
+
+[[rules]]
+id = "ward:kotlin/wrong-equals-type-parameter"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["functionDeclaration"]
+text = 'funequals\s*\(\s*\w+\s*:\s*(?!Any\??\))[\w.?<>]+\s*\)'
+message = "equals must take Any? as its parameter to override Any.equals"
+'''
+
+[[rules]]
+id = "ward:kotlin/double-mutability-for-collection"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["propertyDeclaration"]
+not-inside = ["functionBody"]
+text = '^(?:(?:override|open|final|public)\s*)*val\w*?\s*(:\s*(MutableList|MutableMap|MutableSet|ArrayList|HashMap|HashSet|LinkedHashMap|LinkedHashSet)|=\s*(mutableListOf|mutableMapOf|mutableSetOf|arrayListOf|hashMapOf|hashSetOf|linkedMapOf|linkedSetOf))'
+message = "public val exposes a mutable collection; expose a read-only type instead"
+'''
+
+[[rules]]
+id = "ward:kotlin/lateinit-usage"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["propertyDeclaration"]
+not-inside = ["functionBody"]
+text = '^(?:(?:private|internal|protected|public|override|open)\s*)*lateinit'
+message = "lateinit property; use a nullable type or constructor injection"
+'''
+
+[[rules]]
+id = "ward:kotlin/useless-postfix-expression"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^(\w+)=\1(?:\+\+|--)$'
+message = "the postfix expression assigns the old value back; remove the assignment"
+'''
+
+[[rules]]
+id = "ward:kotlin/invalid-range"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-invalid-range"
+message = "the range is always empty"
+'''
+
+[[rules]]
+id = "ward:kotlin/unreachable-code"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-unreachable-code"
+message = "this statement can never run"
+'''
+
+[[rules]]
+id = "ward:kotlin/unused-unary-operator"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-unused-unary-operator"
+message = "unary operator on its own line; its value is unused"
+'''
+
+[[rules]]
+id = "ward:kotlin/avoid-referential-equality"
+language = "kotlin"
+capability = "TYPES"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-referential-equality"
+forbidden-types = ["kotlin.String"]
+message = "referential equality on a String; compare the values with == instead"
+'''
+
+[[rules]]
+id = "ward:kotlin/map-get-with-not-null-assertion-operator"
+language = "kotlin"
+capability = "TYPES"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-map-get-not-null"
+message = "the map lookup can return null; use getValue, getOrElse or a null check instead of !!"
+'''
+
+[[rules]]
+id = "ward:kotlin/ignored-return-value"
+language = "kotlin"
+capability = "TYPES"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-ignored-return-value"
+return-value-annotations = ["*.CheckResult", "*.CheckReturnValue"]
+ignore-return-value-annotations = ["*.CanIgnoreReturnValue"]
+message = "the return value of this call must be used"
+'''
+
+[[rules]]
+id = "ward:kotlin/unnecessary-not-null-operator"
+language = "kotlin"
+capability = "TYPES"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-unnecessary-not-null"
+message = "the !! operator is unnecessary; the value is not null"
+'''
+
+[[rules]]
+id = "ward:kotlin/unnecessary-safe-call"
+language = "kotlin"
+capability = "TYPES"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-unnecessary-safe-call"
+message = "the safe call ?. is unnecessary; the receiver is not null"
+'''
+
+[[rules]]
+id = "ward:kotlin/unsafe-call-on-nullable-type"
+language = "kotlin"
+capability = "TYPES"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-unsafe-call-nullable"
+message = "the !! operator on a nullable value can throw; check for null instead"
+'''
+
+[[rules]]
+id = "ward:kotlin/unsafe-cast"
+language = "kotlin"
+capability = "TYPES"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-unsafe-cast"
+message = "this cast can never succeed; the two types are unrelated"
+'''
+
+[[rules]]
+id = "ward:kotlin/unreachable-catch-block"
+language = "kotlin"
+capability = "TYPES"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-unreachable-catch"
+message = "this catch block is unreachable; an earlier catch already handles its exception type"
+'''
+
+[[rules]]
+id = "ward:kotlin/has-platform-type"
+language = "kotlin"
+capability = "TYPES"
+severity = "error"
+category = "potential-bugs"
+presets = ["standard", "strict"]
+body = '''
+check = "kotlin-platform-type"
+message = "the type of this public declaration is a platform type inferred from Java; declare it explicitly"
+'''

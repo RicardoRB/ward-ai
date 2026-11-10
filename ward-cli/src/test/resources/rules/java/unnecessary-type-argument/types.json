@@ -1,0 +1,72 @@
+{
+  "3:12": {
+    "call": {
+      "declaring": {
+        "name": "Util"
+      },
+      "name": "pick",
+      "params": [
+        {
+          "name": "T"
+        }
+      ],
+      "returns": {
+        "name": "T"
+      },
+      "typeParameters": [
+        "T"
+      ],
+      "static": true
+    }
+  },
+  "3:30": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  },
+  "15:12": {
+    "call": {
+      "declaring": {
+        "name": "Util"
+      },
+      "name": "pick",
+      "params": [
+        {
+          "name": "T"
+        }
+      ],
+      "returns": {
+        "name": "T"
+      },
+      "typeParameters": [
+        "T"
+      ],
+      "static": true
+    }
+  },
+  "15:30": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  },
+  "19:12": {
+    "call": {
+      "declaring": {
+        "name": "Util"
+      },
+      "name": "pick",
+      "params": [
+        {
+          "name": "T"
+        }
+      ],
+      "returns": {
+        "name": "T"
+      },
+      "typeParameters": [
+        "T"
+      ],
+      "static": true
+    }
+  }
+}

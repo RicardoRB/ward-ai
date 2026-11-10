@@ -1,0 +1,3424 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "ast-helpers-suggestions"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ASTHelpersSuggestions"]
+
+[[rule]]
+name = "add-null-marked-to-class"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["AddNullMarkedToClass"]
+
+[[rule]]
+name = "add-null-marked-to-package-info"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["AddNullMarkedToPackageInfo"]
+
+[[rule]]
+name = "address-selection"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["AddressSelection"]
+
+[[rule]]
+name = "almost-exhaustive-test-parameter"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["AlmostExhaustiveTestParameter"]
+
+[[rule]]
+name = "almost-javadoc"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["AlmostJavadoc"]
+
+[[rule]]
+name = "already-checked"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["AlreadyChecked"]
+
+[[rule]]
+name = "always-throws"
+presets = ["standard", "strict"]
+category = "severity-error"
+errorprone = ["AlwaysThrows"]
+
+[[rule]]
+name = "ambiguous-method-reference"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["AmbiguousMethodReference"]
+
+[[rule]]
+name = "android-injection-before-super"
+errorprone = ["AndroidInjectionBeforeSuper"]
+
+[[rule]]
+name = "annotate-format-method"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["AnnotateFormatMethod"]
+
+[[rule]]
+name = "annotation-mirror-to-string"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["AnnotationMirrorToString"]
+
+[[rule]]
+name = "annotation-position"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["AnnotationPosition"]
+
+[[rule]]
+name = "annotation-value-to-string"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["AnnotationValueToString"]
+
+[[rule]]
+name = "argument-selection-defect-checker"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ArgumentSelectionDefectChecker"]
+
+[[rule]]
+name = "array-equals"
+errorprone = ["ArrayEquals"]
+
+[[rule]]
+name = "array-fill-incompatible-type"
+errorprone = ["ArrayFillIncompatibleType"]
+
+[[rule]]
+name = "array-hash-code"
+errorprone = ["ArrayHashCode"]
+
+[[rule]]
+name = "array-record-component"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ArrayRecordComponent"]
+
+[[rule]]
+name = "array-to-string"
+errorprone = ["ArrayToString"]
+
+[[rule]]
+name = "arrays-as-list-primitive-array"
+errorprone = ["ArraysAsListPrimitiveArray"]
+
+[[rule]]
+name = "assert-equals-argument-order-checker"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["AssertEqualsArgumentOrderChecker"]
+
+[[rule]]
+name = "assert-false"
+category = "coding"
+errorprone = ["AssertFalse"]
+ruff = ["B011"]
+
+[[rule]]
+name = "assert-same-incompatible"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["AssertSameIncompatible"]
+
+[[rule]]
+name = "assert-throws-block-to-expression"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["AssertThrowsBlockToExpression"]
+
+[[rule]]
+name = "assert-throws-minimizer"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["AssertThrowsMinimizer"]
+
+[[rule]]
+name = "assert-throws-multiple-statements"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["AssertThrowsMultipleStatements"]
+
+[[rule]]
+name = "assertion-failure-ignored"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["AssertionFailureIgnored"]
+
+[[rule]]
+name = "assignment-expression"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["AssignmentExpression"]
+
+[[rule]]
+name = "assisted-inject-and-inject-on-constructors"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["AssistedInjectAndInjectOnConstructors"]
+
+[[rule]]
+name = "assisted-inject-and-inject-on-same-constructor"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["AssistedInjectAndInjectOnSameConstructor"]
+
+[[rule]]
+name = "async-callable-returns-null"
+errorprone = ["AsyncCallableReturnsNull"]
+
+[[rule]]
+name = "async-function-returns-null"
+errorprone = ["AsyncFunctionReturnsNull"]
+
+[[rule]]
+name = "attempted-negative-zero"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["AttemptedNegativeZero"]
+
+[[rule]]
+name = "auto-factory-at-inject"
+errorprone = ["AutoFactoryAtInject"]
+
+[[rule]]
+name = "auto-value-boxed-values"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["AutoValueBoxedValues"]
+
+[[rule]]
+name = "auto-value-builder-defaults-in-constructor"
+errorprone = ["AutoValueBuilderDefaultsInConstructor"]
+
+[[rule]]
+name = "auto-value-constructor-order-checker"
+presets = ["standard", "strict"]
+category = "severity-error"
+errorprone = ["AutoValueConstructorOrderChecker"]
+
+[[rule]]
+name = "auto-value-final-methods"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["AutoValueFinalMethods"]
+
+[[rule]]
+name = "auto-value-immutable-fields"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["AutoValueImmutableFields"]
+
+[[rule]]
+name = "auto-value-subclass-leaked"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["AutoValueSubclassLeaked"]
+
+[[rule]]
+name = "avoid-common-type-names"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["AvoidCommonTypeNames"]
+
+[[rule]]
+name = "avoid-object-arrays"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["AvoidObjectArrays"]
+
+[[rule]]
+name = "avoid-value-setter"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["AvoidValueSetter"]
+
+[[rule]]
+name = "bad-annotation-implementation"
+errorprone = ["BadAnnotationImplementation"]
+
+[[rule]]
+name = "bad-comparable"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["BadComparable"]
+
+[[rule]]
+name = "bad-import"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["BadImport"]
+
+[[rule]]
+name = "bad-instanceof"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["BadInstanceof"]
+
+[[rule]]
+name = "bad-shift-amount"
+errorprone = ["BadShiftAmount"]
+
+[[rule]]
+name = "ban-class-loader"
+errorprone = ["BanClassLoader"]
+
+[[rule]]
+name = "ban-jndi"
+errorprone = ["BanJNDI"]
+
+[[rule]]
+name = "ban-serializable-read"
+errorprone = ["BanSerializableRead"]
+
+[[rule]]
+name = "bare-dot-metacharacter"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["BareDotMetacharacter"]
+
+[[rule]]
+name = "big-decimal-equals"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["BigDecimalEquals"]
+
+[[rule]]
+name = "big-decimal-literal-double"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["BigDecimalLiteralDouble"]
+
+[[rule]]
+name = "binder-identity-restored-dangerously"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["BinderIdentityRestoredDangerously"]
+
+[[rule]]
+name = "binding-to-unqualified-common-type"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["BindingToUnqualifiedCommonType"]
+
+[[rule]]
+name = "boolean-literal"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["BooleanLiteral"]
+
+[[rule]]
+name = "boolean-parameter"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["BooleanParameter"]
+
+[[rule]]
+name = "boxed-primitive-constructor"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["BoxedPrimitiveConstructor"]
+
+[[rule]]
+name = "boxed-primitive-equality"
+errorprone = ["BoxedPrimitiveEquality"]
+
+[[rule]]
+name = "boxing-comparator"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["BoxingComparator"]
+
+[[rule]]
+name = "bug-pattern-naming"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["BugPatternNaming"]
+
+[[rule]]
+name = "builder-return-this"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["BuilderReturnThis"]
+
+[[rule]]
+name = "bundle-deserialization-cast"
+presets = ["standard", "strict"]
+category = "severity-error"
+errorprone = ["BundleDeserializationCast"]
+
+[[rule]]
+name = "byte-buffer-backing-array"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ByteBufferBackingArray"]
+
+[[rule]]
+name = "cache-loader-null"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["CacheLoaderNull"]
+
+[[rule]]
+name = "can-ignore-return-value-suggester"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["CanIgnoreReturnValueSuggester"]
+
+[[rule]]
+name = "cannot-mock-final-class"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["CannotMockFinalClass"]
+
+[[rule]]
+name = "cannot-mock-method"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["CannotMockMethod"]
+
+[[rule]]
+name = "canonical-duration"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["CanonicalDuration"]
+
+[[rule]]
+name = "catch-and-print-stack-trace"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["CatchAndPrintStackTrace"]
+
+[[rule]]
+name = "catch-fail"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["CatchFail"]
+
+[[rule]]
+name = "catching-unchecked"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["CatchingUnchecked"]
+
+[[rule]]
+name = "chained-assertion-loses-context"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ChainedAssertionLosesContext"]
+
+[[rule]]
+name = "chaining-constructor-ignores-parameter"
+presets = ["standard", "strict"]
+category = "severity-error"
+errorprone = ["ChainingConstructorIgnoresParameter"]
+
+[[rule]]
+name = "character-get-numeric-value"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["CharacterGetNumericValue"]
+
+[[rule]]
+name = "check-not-null-multiple-times"
+errorprone = ["CheckNotNullMultipleTimes"]
+
+[[rule]]
+name = "check-return-value"
+errorprone = ["CheckReturnValue"]
+
+[[rule]]
+name = "checked-exception-not-thrown"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["CheckedExceptionNotThrown"]
+
+[[rule]]
+name = "class-can-be-static"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ClassCanBeStatic"]
+
+[[rule]]
+name = "class-initialization-deadlock"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ClassInitializationDeadlock"]
+
+[[rule]]
+name = "class-name"
+errorprone = ["ClassName"]
+
+[[rule]]
+name = "class-named-like-type-parameter"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["ClassNamedLikeTypeParameter"]
+
+[[rule]]
+name = "class-new-instance"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ClassNewInstance"]
+
+[[rule]]
+name = "closeable-provides"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["CloseableProvides"]
+
+[[rule]]
+name = "closing-standard-output-streams"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ClosingStandardOutputStreams"]
+
+[[rule]]
+name = "collection-incompatible-type"
+errorprone = ["CollectionIncompatibleType"]
+
+[[rule]]
+name = "collection-to-array-safe-parameter"
+errorprone = ["CollectionToArraySafeParameter"]
+
+[[rule]]
+name = "collector-should-not-use-state"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["CollectorShouldNotUseState"]
+
+[[rule]]
+name = "comparable-and-comparator"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ComparableAndComparator"]
+
+[[rule]]
+name = "comparable-type"
+errorprone = ["ComparableType"]
+
+[[rule]]
+name = "compare-to-zero"
+errorprone = ["CompareToZero"]
+
+[[rule]]
+name = "comparing-this-with-null"
+errorprone = ["ComparingThisWithNull"]
+
+[[rule]]
+name = "comparison-contract-violated"
+errorprone = ["ComparisonContractViolated"]
+
+[[rule]]
+name = "comparison-out-of-range"
+errorprone = ["ComparisonOutOfRange"]
+
+[[rule]]
+name = "compatible-with-annotation-misuse"
+errorprone = ["CompatibleWithAnnotationMisuse"]
+
+[[rule]]
+name = "compile-time-constant"
+errorprone = ["CompileTimeConstant"]
+
+[[rule]]
+name = "complex-boolean-constant"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ComplexBooleanConstant"]
+
+[[rule]]
+name = "compute-if-absent-ambiguous-reference"
+errorprone = ["ComputeIfAbsentAmbiguousReference"]
+
+[[rule]]
+name = "conditional-expression-numeric-promotion"
+errorprone = ["ConditionalExpressionNumericPromotion"]
+
+[[rule]]
+name = "constant-field"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["ConstantField"]
+
+[[rule]]
+name = "constant-overflow"
+errorprone = ["ConstantOverflow"]
+
+[[rule]]
+name = "constant-pattern-compile"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ConstantPatternCompile"]
+
+[[rule]]
+name = "dagger-provides-null"
+errorprone = ["DaggerProvidesNull"]
+
+[[rule]]
+name = "dangerous-literal-null"
+errorprone = ["DangerousLiteralNull"]
+
+[[rule]]
+name = "date-checker"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["DateChecker"]
+
+[[rule]]
+name = "date-format-constant"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["DateFormatConstant"]
+
+[[rule]]
+name = "dead-exception"
+errorprone = ["DeadException"]
+
+[[rule]]
+name = "dead-thread"
+errorprone = ["DeadThread"]
+
+[[rule]]
+name = "deduplicate-constants"
+errorprone = ["DeduplicateConstants"]
+
+[[rule]]
+name = "deeply-nested"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["DeeplyNested"]
+
+[[rule]]
+name = "default-charset"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["DefaultCharset"]
+
+[[rule]]
+name = "default-locale"
+not-applicable = { kotlin = "the Kotlin counterpart is Android Lint, which is out of scope (maintainer decision); Error Prone checks Java only" }
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["DefaultLocale"]
+
+[[rule]]
+name = "default-package"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["DefaultPackage"]
+
+[[rule]]
+name = "dep-ann"
+errorprone = ["DepAnn"]
+
+[[rule]]
+name = "deprecated-variable"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["DeprecatedVariable"]
+
+[[rule]]
+name = "dereference-with-null-branch"
+errorprone = ["DereferenceWithNullBranch"]
+
+[[rule]]
+name = "different-name-but-same"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["DifferentNameButSame"]
+
+[[rule]]
+name = "direct-invocation-on-mock"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["DirectInvocationOnMock"]
+
+[[rule]]
+name = "discarded-postfix-expression"
+errorprone = ["DiscardedPostfixExpression"]
+
+[[rule]]
+name = "distinct-varargs-checker"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["DistinctVarargsChecker"]
+
+[[rule]]
+name = "do-not-call"
+errorprone = ["DoNotCall"]
+
+[[rule]]
+name = "do-not-call-suggester"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["DoNotCallSuggester"]
+
+[[rule]]
+name = "do-not-claim-annotations"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["DoNotClaimAnnotations"]
+
+[[rule]]
+name = "do-not-mock"
+errorprone = ["DoNotMock"]
+
+[[rule]]
+name = "do-not-mock-auto-value"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["DoNotMockAutoValue"]
+
+[[rule]]
+name = "double-brace-initialization"
+pmd = ["DoubleBraceInitialization"]
+errorprone = ["DoubleBraceInitialization"]
+checkstyle = ["AvoidDoubleBraceInitialization"]
+
+[[rule]]
+name = "duplicate-assertion"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["DuplicateAssertion"]
+
+[[rule]]
+name = "duplicate-branches"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["DuplicateBranches"]
+
+[[rule]]
+name = "duplicate-date-format-field"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["DuplicateDateFormatField"]
+
+[[rule]]
+name = "duplicate-map-keys"
+errorprone = ["DuplicateMapKeys"]
+
+[[rule]]
+name = "duration-from"
+errorprone = ["DurationFrom"]
+
+[[rule]]
+name = "duration-get-temporal-unit"
+errorprone = ["DurationGetTemporalUnit"]
+
+[[rule]]
+name = "duration-temporal-unit"
+errorprone = ["DurationTemporalUnit"]
+
+[[rule]]
+name = "duration-to-long-time-unit"
+errorprone = ["DurationToLongTimeUnit"]
+
+[[rule]]
+name = "effectively-private"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["EffectivelyPrivate"]
+
+[[rule]]
+name = "empty-block-tag"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["EmptyBlockTag"]
+
+[[rule]]
+name = "empty-catch"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["EmptyCatch"]
+
+[[rule]]
+name = "empty-if"
+errorprone = ["EmptyIf"]
+
+[[rule]]
+name = "empty-set-multibinding-contributions"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["EmptySetMultibindingContributions"]
+
+[[rule]]
+name = "empty-top-level-declaration"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["EmptyTopLevelDeclaration"]
+
+[[rule]]
+name = "enum-ordinal"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["EnumOrdinal"]
+
+[[rule]]
+name = "equals-broken-for-null"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["EqualsBrokenForNull"]
+
+[[rule]]
+name = "equals-get-class"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["EqualsGetClass"]
+
+[[rule]]
+name = "equals-incompatible-type"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["EqualsIncompatibleType"]
+
+[[rule]]
+name = "equals-missing-nullable"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["EqualsMissingNullable"]
+
+[[rule]]
+name = "equals-na-n"
+errorprone = ["EqualsNaN"]
+
+[[rule]]
+name = "equals-reference"
+errorprone = ["EqualsReference"]
+
+[[rule]]
+name = "equals-unsafe-cast"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["EqualsUnsafeCast"]
+
+[[rule]]
+name = "equals-using-hash-code"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["EqualsUsingHashCode"]
+
+[[rule]]
+name = "equals-wrong-thing"
+errorprone = ["EqualsWrongThing"]
+
+[[rule]]
+name = "erroneous-bitwise-expression"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ErroneousBitwiseExpression"]
+
+[[rule]]
+name = "erroneous-thread-pool-constructor-checker"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ErroneousThreadPoolConstructorChecker"]
+
+[[rule]]
+name = "escaped-entity"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["EscapedEntity"]
+
+[[rule]]
+name = "expected-exception-checker"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ExpectedExceptionChecker"]
+
+[[rule]]
+name = "expensive-lenient-format-string"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ExpensiveLenientFormatString"]
+
+[[rule]]
+name = "explicit-array-for-varargs"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ExplicitArrayForVarargs"]
+
+[[rule]]
+name = "exposed-private-type"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ExposedPrivateType"]
+
+[[rule]]
+name = "extending-j-unit-assert"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ExtendingJUnitAssert"]
+
+[[rule]]
+name = "extends-auto-value"
+errorprone = ["ExtendsAutoValue"]
+
+[[rule]]
+name = "field-can-be-final"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["FieldCanBeFinal"]
+
+[[rule]]
+name = "field-can-be-local"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["FieldCanBeLocal"]
+
+[[rule]]
+name = "field-can-be-static"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["FieldCanBeStatic"]
+
+[[rule]]
+name = "field-missing-nullable"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["FieldMissingNullable"]
+
+[[rule]]
+name = "finalize"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["Finalize"]
+
+[[rule]]
+name = "finally"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["Finally"]
+
+[[rule]]
+name = "float-cast"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["FloatCast"]
+
+[[rule]]
+name = "floating-point-assertion-within-epsilon"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["FloatingPointAssertionWithinEpsilon"]
+
+[[rule]]
+name = "floating-point-literal-precision"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["FloatingPointLiteralPrecision"]
+
+[[rule]]
+name = "flogger-argument-to-string"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["FloggerArgumentToString"]
+
+[[rule]]
+name = "flogger-format-string"
+errorprone = ["FloggerFormatString"]
+
+[[rule]]
+name = "flogger-log-string"
+errorprone = ["FloggerLogString"]
+
+[[rule]]
+name = "flogger-log-varargs"
+errorprone = ["FloggerLogVarargs"]
+
+[[rule]]
+name = "flogger-log-with-cause"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["FloggerLogWithCause"]
+
+[[rule]]
+name = "flogger-message-format"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["FloggerMessageFormat"]
+
+[[rule]]
+name = "flogger-per-without-rate-limit"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["FloggerPerWithoutRateLimit"]
+
+[[rule]]
+name = "flogger-redundant-is-enabled"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["FloggerRedundantIsEnabled"]
+
+[[rule]]
+name = "flogger-required-modifiers"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["FloggerRequiredModifiers"]
+
+[[rule]]
+name = "flogger-split-log-statement"
+errorprone = ["FloggerSplitLogStatement"]
+
+[[rule]]
+name = "flogger-string-concatenation"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["FloggerStringConcatenation"]
+
+[[rule]]
+name = "flogger-with-cause"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["FloggerWithCause"]
+
+[[rule]]
+name = "flogger-without-cause"
+presets = ["strict"]
+category = "severity-bug-pattern"
+errorprone = ["FloggerWithoutCause"]
+
+[[rule]]
+name = "for-each-iterable"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["ForEachIterable"]
+
+[[rule]]
+name = "for-override"
+errorprone = ["ForOverride"]
+
+[[rule]]
+name = "format-string"
+errorprone = ["FormatString"]
+
+[[rule]]
+name = "format-string-annotation"
+errorprone = ["FormatStringAnnotation"]
+
+[[rule]]
+name = "format-string-should-use-placeholders"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["FormatStringShouldUsePlaceholders"]
+
+[[rule]]
+name = "fragment-injection"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["FragmentInjection"]
+
+[[rule]]
+name = "fragment-not-instantiable"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["FragmentNotInstantiable"]
+
+[[rule]]
+name = "from-temporal-accessor"
+errorprone = ["FromTemporalAccessor"]
+
+[[rule]]
+name = "functional-interface-clash"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["FunctionalInterfaceClash"]
+
+[[rule]]
+name = "functional-interface-method-changed"
+errorprone = ["FunctionalInterfaceMethodChanged"]
+
+[[rule]]
+name = "future-return-value-ignored"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["FutureReturnValueIgnored"]
+
+[[rule]]
+name = "future-transform-async"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["FutureTransformAsync"]
+
+[[rule]]
+name = "futures-get-checked-illegal-exception-type"
+errorprone = ["FuturesGetCheckedIllegalExceptionType"]
+
+[[rule]]
+name = "fuzzy-equals-should-not-be-used-in-equals-method"
+errorprone = ["FuzzyEqualsShouldNotBeUsedInEqualsMethod"]
+
+[[rule]]
+name = "get-class-on-annotation"
+errorprone = ["GetClassOnAnnotation"]
+
+[[rule]]
+name = "get-class-on-class"
+errorprone = ["GetClassOnClass"]
+
+[[rule]]
+name = "get-class-on-enum"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["GetClassOnEnum"]
+
+[[rule]]
+name = "guarded-by"
+errorprone = ["GuardedBy"]
+
+[[rule]]
+name = "guice-assisted-inject-scoping"
+errorprone = ["GuiceAssistedInjectScoping"]
+
+[[rule]]
+name = "guice-assisted-parameters"
+errorprone = ["GuiceAssistedParameters"]
+
+[[rule]]
+name = "guice-inject-on-final-field"
+errorprone = ["GuiceInjectOnFinalField"]
+
+[[rule]]
+name = "guice-nested-combine"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["GuiceNestedCombine"]
+
+[[rule]]
+name = "hard-coded-sd-card-path"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["HardCodedSdCardPath"]
+
+[[rule]]
+name = "hash-code-in-objects-hash"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["HashCodeInObjectsHash"]
+
+[[rule]]
+name = "hashtable-contains"
+errorprone = ["HashtableContains"]
+
+[[rule]]
+name = "hiding-field"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["HidingField"]
+
+[[rule]]
+name = "icc-profile-get-instance"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ICCProfileGetInstance"]
+
+[[rule]]
+name = "identifier-name"
+swiftlint = ["identifier_name"]
+errorprone = ["IdentifierName"]
+
+[[rule]]
+name = "identity-binary-expression"
+errorprone = ["IdentityBinaryExpression"]
+
+[[rule]]
+name = "identity-hash-map-boxing"
+errorprone = ["IdentityHashMapBoxing"]
+
+[[rule]]
+name = "identity-hash-map-usage"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["IdentityHashMapUsage"]
+
+[[rule]]
+name = "if-chain-to-switch"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["IfChainToSwitch"]
+
+[[rule]]
+name = "ignored-pure-getter"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["IgnoredPureGetter"]
+
+[[rule]]
+name = "immutable"
+errorprone = ["Immutable"]
+
+[[rule]]
+name = "immutable-annotation-checker"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ImmutableAnnotationChecker"]
+
+[[rule]]
+name = "immutable-enum-checker"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ImmutableEnumChecker"]
+
+[[rule]]
+name = "immutable-member-collection"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["ImmutableMemberCollection"]
+
+[[rule]]
+name = "immutable-refactoring"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["ImmutableRefactoring"]
+
+[[rule]]
+name = "immutable-set-for-contains"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["ImmutableSetForContains"]
+
+[[rule]]
+name = "implement-assertion-with-chaining"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["ImplementAssertionWithChaining"]
+
+[[rule]]
+name = "impossible-null-comparison"
+errorprone = ["ImpossibleNullComparison"]
+
+[[rule]]
+name = "incomparable"
+errorprone = ["Incomparable"]
+
+[[rule]]
+name = "incompatible-argument-type"
+errorprone = ["IncompatibleArgumentType"]
+
+[[rule]]
+name = "incompatible-modifiers"
+errorprone = ["IncompatibleModifiers"]
+
+[[rule]]
+name = "inconsistent-capitalization"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InconsistentCapitalization"]
+
+[[rule]]
+name = "inconsistent-hash-code"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InconsistentHashCode"]
+
+[[rule]]
+name = "inconsistent-overloads"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InconsistentOverloads"]
+
+[[rule]]
+name = "incorrect-main-method"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["IncorrectMainMethod"]
+
+[[rule]]
+name = "increment-in-for-loop-and-header"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["IncrementInForLoopAndHeader"]
+
+[[rule]]
+name = "index-of-char"
+errorprone = ["IndexOfChar"]
+
+[[rule]]
+name = "inexact-varargs-conditional"
+errorprone = ["InexactVarargsConditional"]
+
+[[rule]]
+name = "infinite-recursion"
+errorprone = ["InfiniteRecursion"]
+
+[[rule]]
+name = "inherit-doc"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InheritDoc"]
+
+[[rule]]
+name = "initialize-inline"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InitializeInline"]
+
+[[rule]]
+name = "inject-invalid-targeting-on-scoping-annotation"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InjectInvalidTargetingOnScopingAnnotation"]
+
+[[rule]]
+name = "inject-more-than-one-scope-annotation-on-class"
+errorprone = ["InjectMoreThanOneScopeAnnotationOnClass"]
+
+[[rule]]
+name = "inject-on-bug-checkers"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InjectOnBugCheckers"]
+
+[[rule]]
+name = "inject-on-constructor-of-abstract-class"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InjectOnConstructorOfAbstractClass"]
+
+[[rule]]
+name = "inject-on-member-and-constructor"
+errorprone = ["InjectOnMemberAndConstructor"]
+
+[[rule]]
+name = "inject-scope-annotation-on-interface-or-abstract-class"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InjectScopeAnnotationOnInterfaceOrAbstractClass"]
+
+[[rule]]
+name = "injected-constructor-annotations"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InjectedConstructorAnnotations"]
+
+[[rule]]
+name = "inline-format-string"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InlineFormatString"]
+
+[[rule]]
+name = "inline-me-inliner"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InlineMeInliner"]
+
+[[rule]]
+name = "inline-me-suggester"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InlineMeSuggester"]
+
+[[rule]]
+name = "inline-me-validator"
+errorprone = ["InlineMeValidator"]
+
+[[rule]]
+name = "inline-trivial-constant"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InlineTrivialConstant"]
+
+[[rule]]
+name = "input-stream-slow-multibyte-read"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InputStreamSlowMultibyteRead"]
+
+[[rule]]
+name = "insecure-crypto-usage"
+errorprone = ["InsecureCryptoUsage"]
+
+[[rule]]
+name = "instance-of-and-cast-match-wrong-type"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InstanceOfAndCastMatchWrongType"]
+
+[[rule]]
+name = "instant-temporal-unit"
+errorprone = ["InstantTemporalUnit"]
+
+[[rule]]
+name = "int-float-conversion"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["IntFloatConversion"]
+
+[[rule]]
+name = "int-literal-cast"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["IntLiteralCast"]
+
+[[rule]]
+name = "int-long-math"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["IntLongMath"]
+
+[[rule]]
+name = "interface-with-only-statics"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InterfaceWithOnlyStatics"]
+
+[[rule]]
+name = "interrupted-exception-swallowed"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InterruptedExceptionSwallowed"]
+
+[[rule]]
+name = "interrupted-in-catch-block"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InterruptedInCatchBlock"]
+
+[[rule]]
+name = "interruption"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["Interruption"]
+
+[[rule]]
+name = "invalid-block-tag"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InvalidBlockTag"]
+
+[[rule]]
+name = "invalid-inline-tag"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InvalidInlineTag"]
+
+[[rule]]
+name = "invalid-java-time-constant"
+errorprone = ["InvalidJavaTimeConstant"]
+
+[[rule]]
+name = "invalid-link"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InvalidLink"]
+
+[[rule]]
+name = "invalid-param"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InvalidParam"]
+
+[[rule]]
+name = "invalid-pattern-syntax"
+errorprone = ["InvalidPatternSyntax"]
+
+[[rule]]
+name = "invalid-snippet"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InvalidSnippet"]
+
+[[rule]]
+name = "invalid-throws"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InvalidThrows"]
+
+[[rule]]
+name = "invalid-throws-link"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["InvalidThrowsLink"]
+
+[[rule]]
+name = "invalid-time-zone-id"
+errorprone = ["InvalidTimeZoneID"]
+
+[[rule]]
+name = "invalid-zone-id"
+errorprone = ["InvalidZoneId"]
+
+[[rule]]
+name = "is-instance-incompatible-type"
+errorprone = ["IsInstanceIncompatibleType"]
+
+[[rule]]
+name = "is-instance-of-class"
+errorprone = ["IsInstanceOfClass"]
+
+[[rule]]
+name = "is-loggable-tag-length"
+errorprone = ["IsLoggableTagLength"]
+
+[[rule]]
+name = "iterable-and-iterator"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["IterableAndIterator"]
+
+[[rule]]
+name = "iterable-path-parameter"
+errorprone = ["IterablePathParameter"]
+
+[[rule]]
+name = "j-unit3-floating-point-comparison-without-delta"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JUnit3FloatingPointComparisonWithoutDelta"]
+
+[[rule]]
+name = "j-unit3-test-not-run"
+errorprone = ["JUnit3TestNotRun"]
+
+[[rule]]
+name = "j-unit4-class-annotation-non-static"
+errorprone = ["JUnit4ClassAnnotationNonStatic"]
+
+[[rule]]
+name = "j-unit4-class-used-in-j-unit3"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JUnit4ClassUsedInJUnit3"]
+
+[[rule]]
+name = "j-unit4-empty-methods"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JUnit4EmptyMethods"]
+
+[[rule]]
+name = "j-unit4-set-up-not-run"
+errorprone = ["JUnit4SetUpNotRun"]
+
+[[rule]]
+name = "j-unit4-tear-down-not-run"
+errorprone = ["JUnit4TearDownNotRun"]
+
+[[rule]]
+name = "j-unit4-test-not-run"
+errorprone = ["JUnit4TestNotRun"]
+
+[[rule]]
+name = "j-unit4-tests-not-run-within-enclosed"
+errorprone = ["JUnit4TestsNotRunWithinEnclosed"]
+
+[[rule]]
+name = "j-unit-ambiguous-test-class"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JUnitAmbiguousTestClass"]
+
+[[rule]]
+name = "j-unit-assert-same-check"
+errorprone = ["JUnitAssertSameCheck"]
+
+[[rule]]
+name = "j-unit-incompatible-type"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JUnitIncompatibleType"]
+
+[[rule]]
+name = "j-unit-method-invoked"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JUnitMethodInvoked"]
+
+[[rule]]
+name = "j-unit-parameter-method-not-found"
+errorprone = ["JUnitParameterMethodNotFound"]
+
+[[rule]]
+name = "java8-api-checker"
+errorprone = ["Java8ApiChecker"]
+
+[[rule]]
+name = "java-duration-get-seconds-get-nano"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JavaDurationGetSecondsGetNano"]
+
+[[rule]]
+name = "java-duration-get-seconds-to-to-seconds"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JavaDurationGetSecondsToToSeconds"]
+
+[[rule]]
+name = "java-duration-with-nanos"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JavaDurationWithNanos"]
+
+[[rule]]
+name = "java-duration-with-seconds"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JavaDurationWithSeconds"]
+
+[[rule]]
+name = "java-instant-get-seconds-get-nano"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JavaInstantGetSecondsGetNano"]
+
+[[rule]]
+name = "java-local-date-time-get-nano"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JavaLocalDateTimeGetNano"]
+
+[[rule]]
+name = "java-local-time-get-nano"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JavaLocalTimeGetNano"]
+
+[[rule]]
+name = "java-period-get-days"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JavaPeriodGetDays"]
+
+[[rule]]
+name = "java-time-default-time-zone"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JavaTimeDefaultTimeZone"]
+
+[[rule]]
+name = "java-util-date"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JavaUtilDate"]
+
+[[rule]]
+name = "javax-inject-on-abstract-method"
+errorprone = ["JavaxInjectOnAbstractMethod"]
+
+[[rule]]
+name = "javax-inject-on-final-field"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JavaxInjectOnFinalField"]
+
+[[rule]]
+name = "jdk-obsolete"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JdkObsolete"]
+
+[[rule]]
+name = "joda-constructors"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JodaConstructors"]
+
+[[rule]]
+name = "joda-date-time-constants"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JodaDateTimeConstants"]
+
+[[rule]]
+name = "joda-duration-with-millis"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JodaDurationWithMillis"]
+
+[[rule]]
+name = "joda-instant-with-millis"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JodaInstantWithMillis"]
+
+[[rule]]
+name = "joda-new-period"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JodaNewPeriod"]
+
+[[rule]]
+name = "joda-plus-minus-long"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JodaPlusMinusLong"]
+
+[[rule]]
+name = "joda-time-converter-manager"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JodaTimeConverterManager"]
+
+[[rule]]
+name = "joda-to-self"
+errorprone = ["JodaToSelf"]
+
+[[rule]]
+name = "joda-with-duration-added-long"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["JodaWithDurationAddedLong"]
+
+[[rule]]
+name = "labelled-break-target"
+errorprone = ["LabelledBreakTarget"]
+
+[[rule]]
+name = "lambda-functional-interface"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["LambdaFunctionalInterface"]
+
+[[rule]]
+name = "lenient-format-string-validation"
+errorprone = ["LenientFormatStringValidation"]
+
+[[rule]]
+name = "list-remove-ambiguous"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ListRemoveAmbiguous"]
+
+[[rule]]
+name = "lite-byte-string-utf8"
+errorprone = ["LiteByteStringUtf8"]
+
+[[rule]]
+name = "lite-enum-value-of"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["LiteEnumValueOf"]
+
+[[rule]]
+name = "lite-proto-to-string"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["LiteProtoToString"]
+
+[[rule]]
+name = "local-date-temporal-amount"
+errorprone = ["LocalDateTemporalAmount"]
+
+[[rule]]
+name = "lock-not-before-try"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["LockNotBeforeTry"]
+
+[[rule]]
+name = "lock-on-boxed-primitive"
+errorprone = ["LockOnBoxedPrimitive"]
+
+[[rule]]
+name = "lock-on-non-enclosing-class-literal"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["LockOnNonEnclosingClassLiteral"]
+
+[[rule]]
+name = "logical-assignment"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["LogicalAssignment"]
+
+[[rule]]
+name = "long-double-conversion"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["LongDoubleConversion"]
+
+[[rule]]
+name = "long-float-conversion"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["LongFloatConversion"]
+
+[[rule]]
+name = "long-literal-lower-case-suffix"
+errorprone = ["LongLiteralLowerCaseSuffix"]
+
+[[rule]]
+name = "loop-condition-checker"
+errorprone = ["LoopConditionChecker"]
+
+[[rule]]
+name = "loop-over-char-array"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["LoopOverCharArray"]
+
+[[rule]]
+name = "loop-to-test-parameter"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["LoopToTestParameter"]
+
+[[rule]]
+name = "lossy-primitive-compare"
+errorprone = ["LossyPrimitiveCompare"]
+
+[[rule]]
+name = "malformed-inline-tag"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["MalformedInlineTag"]
+
+[[rule]]
+name = "math-absolute-negative"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["MathAbsoluteNegative"]
+
+[[rule]]
+name = "math-round-int-long"
+errorprone = ["MathRoundIntLong"]
+
+[[rule]]
+name = "memoize-constant-visitor-state-lookups"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["MemoizeConstantVisitorStateLookups"]
+
+[[rule]]
+name = "memory-segment-reference-equality"
+errorprone = ["MemorySegmentReferenceEquality"]
+
+[[rule]]
+name = "method-can-be-static"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["MethodCanBeStatic"]
+
+[[rule]]
+name = "misformatted-test-data"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["MisformattedTestData"]
+
+[[rule]]
+name = "mislabeled-android-string"
+errorprone = ["MislabeledAndroidString"]
+
+[[rule]]
+name = "misleading-empty-varargs"
+errorprone = ["MisleadingEmptyVarargs"]
+
+[[rule]]
+name = "misleading-escaped-space"
+errorprone = ["MisleadingEscapedSpace"]
+
+[[rule]]
+name = "misplaced-scope-annotations"
+errorprone = ["MisplacedScopeAnnotations"]
+
+[[rule]]
+name = "missing-braces"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["MissingBraces"]
+
+[[rule]]
+name = "missing-cases-in-enum-switch"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["MissingCasesInEnumSwitch"]
+
+[[rule]]
+name = "missing-default"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["MissingDefault"]
+
+[[rule]]
+name = "missing-fail"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["MissingFail"]
+
+[[rule]]
+name = "missing-implements-comparable"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["MissingImplementsComparable"]
+
+[[rule]]
+name = "missing-refaster-annotation"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["MissingRefasterAnnotation"]
+
+[[rule]]
+name = "missing-runtime-retention"
+errorprone = ["MissingRuntimeRetention"]
+
+[[rule]]
+name = "missing-summary"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["MissingSummary"]
+
+[[rule]]
+name = "missing-super-call"
+not-applicable = { kotlin = "the Kotlin counterpart is Android Lint, which is out of scope (maintainer decision); Error Prone checks Java only" }
+errorprone = ["MissingSuperCall"]
+
+[[rule]]
+name = "missing-test-call"
+errorprone = ["MissingTestCall"]
+
+[[rule]]
+name = "misused-day-of-year"
+errorprone = ["MisusedDayOfYear"]
+
+[[rule]]
+name = "misused-week-year"
+errorprone = ["MisusedWeekYear"]
+
+[[rule]]
+name = "mixed-array-dimensions"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["MixedArrayDimensions"]
+
+[[rule]]
+name = "mixed-descriptors"
+errorprone = ["MixedDescriptors"]
+
+[[rule]]
+name = "mixed-mutability-return-type"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["MixedMutabilityReturnType"]
+
+[[rule]]
+name = "mock-illegal-throws"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["MockIllegalThrows"]
+
+[[rule]]
+name = "mock-not-used-in-production"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["MockNotUsedInProduction"]
+
+[[rule]]
+name = "mockito-do-setup"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["MockitoDoSetup"]
+
+[[rule]]
+name = "mockito-usage"
+errorprone = ["MockitoUsage"]
+
+[[rule]]
+name = "modified-but-not-used"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ModifiedButNotUsed"]
+
+[[rule]]
+name = "modify-collection-in-enhanced-for-loop"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ModifyCollectionInEnhancedForLoop"]
+
+[[rule]]
+name = "modify-source-collection-in-stream"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ModifySourceCollectionInStream"]
+
+[[rule]]
+name = "modifying-collection-with-itself"
+errorprone = ["ModifyingCollectionWithItself"]
+
+[[rule]]
+name = "more-than-one-injectable-constructor"
+errorprone = ["MoreThanOneInjectableConstructor"]
+
+[[rule]]
+name = "more-than-one-qualifier"
+errorprone = ["MoreThanOneQualifier"]
+
+[[rule]]
+name = "multi-variable-declaration"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["MultiVariableDeclaration"]
+
+[[rule]]
+name = "multimap-keys"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["MultimapKeys"]
+
+[[rule]]
+name = "multiple-nullness-annotations"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["MultipleNullnessAnnotations"]
+
+[[rule]]
+name = "multiple-parallel-or-sequential-calls"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["MultipleParallelOrSequentialCalls"]
+
+[[rule]]
+name = "multiple-top-level-classes"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["MultipleTopLevelClasses"]
+
+[[rule]]
+name = "multiple-unary-operators-in-method-call"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["MultipleUnaryOperatorsInMethodCall"]
+
+[[rule]]
+name = "must-be-closed-checker"
+errorprone = ["MustBeClosedChecker"]
+
+[[rule]]
+name = "mutable-guice-module"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["MutableGuiceModule"]
+
+[[rule]]
+name = "mutable-public-array"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["MutablePublicArray"]
+
+[[rule]]
+name = "n-copies-of-char"
+errorprone = ["NCopiesOfChar"]
+
+[[rule]]
+name = "named-like-contextual-keyword"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["NamedLikeContextualKeyword"]
+
+[[rule]]
+name = "narrow-calculation"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["NarrowCalculation"]
+
+[[rule]]
+name = "narrowing-compound-assignment"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["NarrowingCompoundAssignment"]
+
+[[rule]]
+name = "negative-boolean"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["NegativeBoolean"]
+
+[[rule]]
+name = "negative-char-literal"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["NegativeCharLiteral"]
+
+[[rule]]
+name = "nested-instance-of-conditions"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["NestedInstanceOfConditions"]
+
+[[rule]]
+name = "new-file-system"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["NewFileSystem"]
+
+[[rule]]
+name = "no-allocation"
+errorprone = ["NoAllocation"]
+
+[[rule]]
+name = "no-can-ignore-return-value-on-classes"
+errorprone = ["NoCanIgnoreReturnValueOnClasses"]
+
+[[rule]]
+name = "non-api-type"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["NonApiType"]
+
+[[rule]]
+name = "non-atomic-volatile-update"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["NonAtomicVolatileUpdate"]
+
+[[rule]]
+name = "non-canonical-static-import"
+errorprone = ["NonCanonicalStaticImport"]
+
+[[rule]]
+name = "non-canonical-static-member-import"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["NonCanonicalStaticMemberImport"]
+
+[[rule]]
+name = "non-canonical-type"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["NonCanonicalType"]
+
+[[rule]]
+name = "non-final-compile-time-constant"
+errorprone = ["NonFinalCompileTimeConstant"]
+
+[[rule]]
+name = "non-final-static-field"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["NonFinalStaticField"]
+
+[[rule]]
+name = "non-overriding-equals"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["NonOverridingEquals"]
+
+[[rule]]
+name = "non-runtime-annotation"
+errorprone = ["NonRuntimeAnnotation"]
+
+[[rule]]
+name = "not-javadoc"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["NotJavadoc"]
+
+[[rule]]
+name = "null-argument-for-non-null-parameter"
+errorprone = ["NullArgumentForNonNullParameter"]
+
+[[rule]]
+name = "null-needs-cast-for-varargs"
+errorprone = ["NullNeedsCastForVarargs"]
+
+[[rule]]
+name = "null-optional"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["NullOptional"]
+
+[[rule]]
+name = "null-ternary"
+errorprone = ["NullTernary"]
+
+[[rule]]
+name = "nullable-constructor"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["NullableConstructor"]
+
+[[rule]]
+name = "nullable-on-containing-class"
+errorprone = ["NullableOnContainingClass"]
+
+[[rule]]
+name = "nullable-optional"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["NullableOptional"]
+
+[[rule]]
+name = "nullable-primitive"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["NullablePrimitive"]
+
+[[rule]]
+name = "nullable-primitive-array"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["NullablePrimitiveArray"]
+
+[[rule]]
+name = "nullable-type-parameter"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["NullableTypeParameter"]
+
+[[rule]]
+name = "nullable-void"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["NullableVoid"]
+
+[[rule]]
+name = "nullable-wildcard"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["NullableWildcard"]
+
+[[rule]]
+name = "object-equals-for-primitives"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ObjectEqualsForPrimitives"]
+
+[[rule]]
+name = "object-to-string"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ObjectToString"]
+
+[[rule]]
+name = "objects-hash-code-primitive"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ObjectsHashCodePrimitive"]
+
+[[rule]]
+name = "operator-precedence"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["OperatorPrecedence"]
+
+[[rule]]
+name = "optional-equality"
+errorprone = ["OptionalEquality"]
+
+[[rule]]
+name = "optional-map-to-optional"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["OptionalMapToOptional"]
+
+[[rule]]
+name = "optional-map-unused-value"
+errorprone = ["OptionalMapUnusedValue"]
+
+[[rule]]
+name = "optional-not-present"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["OptionalNotPresent"]
+
+[[rule]]
+name = "optional-of-redundant-method"
+errorprone = ["OptionalOfRedundantMethod"]
+
+[[rule]]
+name = "orphaned-format-string"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["OrphanedFormatString"]
+
+[[rule]]
+name = "outline-none"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["OutlineNone"]
+
+[[rule]]
+name = "overlapping-qualifier-and-scope-annotation"
+errorprone = ["OverlappingQualifierAndScopeAnnotation"]
+
+[[rule]]
+name = "override-throwable-to-string"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["OverrideThrowableToString"]
+
+[[rule]]
+name = "overrides"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["Overrides"]
+
+[[rule]]
+name = "overrides-guice-injectable-method"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["OverridesGuiceInjectableMethod"]
+
+[[rule]]
+name = "overrides-javax-injectable-method"
+errorprone = ["OverridesJavaxInjectableMethod"]
+
+[[rule]]
+name = "overriding-method-inconsistent-argument-names-checker"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["OverridingMethodInconsistentArgumentNamesChecker"]
+
+[[rule]]
+name = "package-info"
+errorprone = ["PackageInfo"]
+
+[[rule]]
+name = "package-location"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["PackageLocation"]
+
+[[rule]]
+name = "parameter-comment"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["ParameterComment"]
+
+[[rule]]
+name = "parameter-missing-nullable"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["ParameterMissingNullable"]
+
+[[rule]]
+name = "parameters-but-not-parameterized"
+errorprone = ["ParametersButNotParameterized"]
+
+[[rule]]
+name = "parcelable-creator"
+errorprone = ["ParcelableCreator"]
+
+[[rule]]
+name = "pattern-matching-instanceof"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["PatternMatchingInstanceof"]
+
+[[rule]]
+name = "period-from"
+errorprone = ["PeriodFrom"]
+
+[[rule]]
+name = "period-get-temporal-unit"
+errorprone = ["PeriodGetTemporalUnit"]
+
+[[rule]]
+name = "period-time-math"
+errorprone = ["PeriodTimeMath"]
+
+[[rule]]
+name = "preconditions-check-not-null-repeated"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["PreconditionsCheckNotNullRepeated"]
+
+[[rule]]
+name = "preconditions-invalid-placeholder"
+errorprone = ["PreconditionsInvalidPlaceholder"]
+
+[[rule]]
+name = "prefer-charset-overload"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["PreferCharsetOverload"]
+
+[[rule]]
+name = "prefer-instanceof-over-get-kind"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["PreferInstanceofOverGetKind"]
+
+[[rule]]
+name = "prefer-java-time-overload"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["PreferJavaTimeOverload"]
+
+[[rule]]
+name = "prefer-preconditions"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["PreferPreconditions"]
+
+[[rule]]
+name = "prefer-throws-tag"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["PreferThrowsTag"]
+
+[[rule]]
+name = "preferred-interface-type"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["PreferredInterfaceType"]
+
+[[rule]]
+name = "primitive-array-passed-to-varargs-method"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["PrimitiveArrayPassedToVarargsMethod"]
+
+[[rule]]
+name = "primitive-atomic-reference"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["PrimitiveAtomicReference"]
+
+[[rule]]
+name = "private-constructor-for-noninstantiable-module"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["PrivateConstructorForNoninstantiableModule"]
+
+[[rule]]
+name = "private-constructor-for-utility-class"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["PrivateConstructorForUtilityClass"]
+
+[[rule]]
+name = "private-security-contract-proto-access"
+errorprone = ["PrivateSecurityContractProtoAccess"]
+
+[[rule]]
+name = "protected-members-in-final-class"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ProtectedMembersInFinalClass"]
+
+[[rule]]
+name = "proto-builder-return-value-ignored"
+errorprone = ["ProtoBuilderReturnValueIgnored"]
+
+[[rule]]
+name = "proto-duration-get-seconds-get-nano"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ProtoDurationGetSecondsGetNano"]
+
+[[rule]]
+name = "proto-string-field-reference-equality"
+errorprone = ["ProtoStringFieldReferenceEquality"]
+
+[[rule]]
+name = "proto-timestamp-get-seconds-get-nano"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ProtoTimestampGetSecondsGetNano"]
+
+[[rule]]
+name = "proto-truth-mixed-descriptors"
+errorprone = ["ProtoTruthMixedDescriptors"]
+
+[[rule]]
+name = "protocol-buffer-ordinal"
+errorprone = ["ProtocolBufferOrdinal"]
+
+[[rule]]
+name = "provides-method-outside-of-module"
+errorprone = ["ProvidesMethodOutsideOfModule"]
+
+[[rule]]
+name = "public-api-named-stream-should-return-stream"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["PublicApiNamedStreamShouldReturnStream"]
+
+[[rule]]
+name = "qualifier-or-scope-on-inject-method"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["QualifierOrScopeOnInjectMethod"]
+
+[[rule]]
+name = "qualifier-with-type-use"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["QualifierWithTypeUse"]
+
+[[rule]]
+name = "random-cast"
+errorprone = ["RandomCast"]
+
+[[rule]]
+name = "random-mod-integer"
+errorprone = ["RandomModInteger"]
+
+[[rule]]
+name = "reachability-fence-usage"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ReachabilityFenceUsage"]
+
+[[rule]]
+name = "record-accessor-in-compact-constructor"
+errorprone = ["RecordAccessorInCompactConstructor"]
+
+[[rule]]
+name = "record-component-accessor-annotation-conflict"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["RecordComponentAccessorAnnotationConflict"]
+
+[[rule]]
+name = "record-component-override"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["RecordComponentOverride"]
+
+[[rule]]
+name = "rect-intersect-return-value-ignored"
+errorprone = ["RectIntersectReturnValueIgnored"]
+
+[[rule]]
+name = "redundant-control-flow"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["RedundantControlFlow"]
+
+[[rule]]
+name = "redundant-null-check"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["RedundantNullCheck"]
+
+[[rule]]
+name = "redundant-override"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["RedundantOverride"]
+
+[[rule]]
+name = "redundant-setter-call"
+errorprone = ["RedundantSetterCall"]
+
+[[rule]]
+name = "redundant-throws"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["RedundantThrows"]
+
+[[rule]]
+name = "refactor-switch"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["RefactorSwitch"]
+
+[[rule]]
+name = "reference-equality"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ReferenceEquality"]
+
+[[rule]]
+name = "refers-to-dagger-codegen"
+errorprone = ["RefersToDaggerCodegen"]
+
+[[rule]]
+name = "remove-unused-imports"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["RemoveUnusedImports"]
+
+[[rule]]
+name = "require-non-null-refactoring"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["RequireNonNullRefactoring"]
+
+[[rule]]
+name = "required-modifiers"
+errorprone = ["RequiredModifiers"]
+
+[[rule]]
+name = "restricted-api"
+not-applicable = { kotlin = "the Kotlin counterpart is Android Lint, which is out of scope (maintainer decision); Error Prone checks Java only" }
+errorprone = ["RestrictedApi"]
+
+[[rule]]
+name = "rethrow-reflective-operation-exception-as-linkage-error"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["RethrowReflectiveOperationExceptionAsLinkageError"]
+
+[[rule]]
+name = "return-at-the-end-of-void-function"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ReturnAtTheEndOfVoidFunction"]
+
+[[rule]]
+name = "return-from-void"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ReturnFromVoid"]
+
+[[rule]]
+name = "return-missing-nullable"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["ReturnMissingNullable"]
+
+[[rule]]
+name = "return-value-ignored"
+errorprone = ["ReturnValueIgnored"]
+
+[[rule]]
+name = "returns-null-collection"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["ReturnsNullCollection"]
+
+[[rule]]
+name = "robolectric-shadow-directly-on"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["RobolectricShadowDirectlyOn"]
+
+[[rule]]
+name = "rule-not-run"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["RuleNotRun"]
+
+[[rule]]
+name = "rx-return-value-ignored"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["RxReturnValueIgnored"]
+
+[[rule]]
+name = "same-name-but-different"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["SameNameButDifferent"]
+
+[[rule]]
+name = "scanner-use-delimiter"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ScannerUseDelimiter"]
+
+[[rule]]
+name = "scope-on-module"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["ScopeOnModule"]
+
+[[rule]]
+name = "self-always-returns-this"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["SelfAlwaysReturnsThis"]
+
+[[rule]]
+name = "self-assertion"
+errorprone = ["SelfAssertion"]
+
+[[rule]]
+name = "self-assignment"
+errorprone = ["SelfAssignment"]
+
+[[rule]]
+name = "self-comparison"
+errorprone = ["SelfComparison"]
+
+[[rule]]
+name = "self-equals"
+errorprone = ["SelfEquals"]
+
+[[rule]]
+name = "self-set"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["SelfSet"]
+
+[[rule]]
+name = "set-unrecognized"
+errorprone = ["SetUnrecognized"]
+
+[[rule]]
+name = "short-circuit-boolean"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ShortCircuitBoolean"]
+
+[[rule]]
+name = "should-have-even-args"
+errorprone = ["ShouldHaveEvenArgs"]
+
+[[rule]]
+name = "simplify-test-parameter"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["SimplifyTestParameter"]
+
+[[rule]]
+name = "single-test-parameter"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["SingleTestParameter"]
+
+[[rule]]
+name = "size-greater-than-or-equals-zero"
+errorprone = ["SizeGreaterThanOrEqualsZero"]
+
+[[rule]]
+name = "statement-switch-to-expression-switch"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["StatementSwitchToExpressionSwitch"]
+
+[[rule]]
+name = "static-assignment-in-constructor"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["StaticAssignmentInConstructor"]
+
+[[rule]]
+name = "static-assignment-of-throwable"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["StaticAssignmentOfThrowable"]
+
+[[rule]]
+name = "static-guarded-by-instance"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["StaticGuardedByInstance"]
+
+[[rule]]
+name = "static-mock-member"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["StaticMockMember"]
+
+[[rule]]
+name = "static-or-default-interface-method"
+errorprone = ["StaticOrDefaultInterfaceMethod"]
+
+[[rule]]
+name = "static-qualified-using-expression"
+errorprone = ["StaticQualifiedUsingExpression"]
+
+[[rule]]
+name = "stream-resource-leak"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["StreamResourceLeak"]
+
+[[rule]]
+name = "stream-to-iterable"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["StreamToIterable"]
+
+[[rule]]
+name = "stream-to-string"
+errorprone = ["StreamToString"]
+
+[[rule]]
+name = "string-builder-init-with-char"
+errorprone = ["StringBuilderInitWithChar"]
+
+[[rule]]
+name = "string-case-locale-usage"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["StringCaseLocaleUsage"]
+
+[[rule]]
+name = "string-charset"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["StringCharset"]
+
+[[rule]]
+name = "string-concat-to-text-block"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["StringConcatToTextBlock"]
+
+[[rule]]
+name = "string-format-with-literal"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["StringFormatWithLiteral"]
+
+[[rule]]
+name = "string-join"
+errorprone = ["StringJoin"]
+
+[[rule]]
+name = "string-splitter"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["StringSplitter"]
+
+[[rule]]
+name = "strongly-type-byte-string"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["StronglyTypeByteString"]
+
+[[rule]]
+name = "strongly-type-time"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["StronglyTypeTime"]
+
+[[rule]]
+name = "substring-of-zero"
+errorprone = ["SubstringOfZero"]
+
+[[rule]]
+name = "sun-api"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["SunApi"]
+
+[[rule]]
+name = "super-call-to-object-method"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["SuperCallToObjectMethod"]
+
+[[rule]]
+name = "suppress-warnings-deprecated"
+errorprone = ["SuppressWarningsDeprecated"]
+
+[[rule]]
+name = "suppress-warnings-without-explanation"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["SuppressWarningsWithoutExplanation"]
+
+[[rule]]
+name = "swig-memory-leak"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["SwigMemoryLeak"]
+
+[[rule]]
+name = "switch-default"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["SwitchDefault"]
+
+[[rule]]
+name = "symbol-to-string"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["SymbolToString"]
+
+[[rule]]
+name = "synchronize-on-non-final-field"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["SynchronizeOnNonFinalField"]
+
+[[rule]]
+name = "system-console-null"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["SystemConsoleNull"]
+
+[[rule]]
+name = "system-exit-outside-main"
+errorprone = ["SystemExitOutsideMain"]
+
+[[rule]]
+name = "system-out"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["SystemOut"]
+
+[[rule]]
+name = "temporal-accessor-get-chrono-field"
+errorprone = ["TemporalAccessorGetChronoField"]
+
+[[rule]]
+name = "test-exception-checker"
+errorprone = ["TestExceptionChecker"]
+
+[[rule]]
+name = "test-parameters-not-initialized"
+errorprone = ["TestParametersNotInitialized"]
+
+[[rule]]
+name = "theory-but-no-theories"
+errorprone = ["TheoryButNoTheories"]
+
+[[rule]]
+name = "thread-builder-name-with-placeholder"
+errorprone = ["ThreadBuilderNameWithPlaceholder"]
+
+[[rule]]
+name = "thread-join-loop"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ThreadJoinLoop"]
+
+[[rule]]
+name = "thread-local-usage"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ThreadLocalUsage"]
+
+[[rule]]
+name = "thread-priority-check"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ThreadPriorityCheck"]
+
+[[rule]]
+name = "thread-safe"
+errorprone = ["ThreadSafe"]
+
+[[rule]]
+name = "three-letter-time-zone-id"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ThreeLetterTimeZoneID"]
+
+[[rule]]
+name = "throw-if-unchecked-known-checked"
+errorprone = ["ThrowIfUncheckedKnownChecked"]
+
+[[rule]]
+name = "throw-if-unchecked-known-unchecked"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ThrowIfUncheckedKnownUnchecked"]
+
+[[rule]]
+name = "throw-null"
+errorprone = ["ThrowNull"]
+
+[[rule]]
+name = "throw-specific-exceptions"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ThrowSpecificExceptions"]
+
+[[rule]]
+name = "throwable-equals-hash-code"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ThrowableEqualsHashCode"]
+
+[[rule]]
+name = "throws-unchecked-exception"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["ThrowsUncheckedException"]
+
+[[rule]]
+name = "time-in-static-initializer"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["TimeInStaticInitializer"]
+
+[[rule]]
+name = "time-unit-conversion-checker"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["TimeUnitConversionChecker"]
+
+[[rule]]
+name = "time-unit-mismatch"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["TimeUnitMismatch"]
+
+[[rule]]
+name = "to-string-returns-null"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ToStringReturnsNull"]
+
+[[rule]]
+name = "too-many-parameters"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["TooManyParameters"]
+
+[[rule]]
+name = "traditional-javadoc-to-markdown"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["TraditionalJavadocToMarkdown"]
+
+[[rule]]
+name = "traditional-switch-expression"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["TraditionalSwitchExpression"]
+
+[[rule]]
+name = "transient-misuse"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["TransientMisuse"]
+
+[[rule]]
+name = "tree-to-string"
+errorprone = ["TreeToString"]
+
+[[rule]]
+name = "truth-assert-expected"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["TruthAssertExpected"]
+
+[[rule]]
+name = "truth-constant-asserts"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["TruthConstantAsserts"]
+
+[[rule]]
+name = "truth-contains-exactly-elements-in-usage"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["TruthContainsExactlyElementsInUsage"]
+
+[[rule]]
+name = "truth-get-or-default"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["TruthGetOrDefault"]
+
+[[rule]]
+name = "truth-incompatible-type"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["TruthIncompatibleType"]
+
+[[rule]]
+name = "try-fail-refactoring"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["TryFailRefactoring"]
+
+[[rule]]
+name = "try-fail-throwable"
+errorprone = ["TryFailThrowable"]
+
+[[rule]]
+name = "try-with-resources-variable"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["TryWithResourcesVariable"]
+
+[[rule]]
+name = "type-equals"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["TypeEquals"]
+
+[[rule]]
+name = "type-name-shadowing"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["TypeNameShadowing"]
+
+[[rule]]
+name = "type-parameter-naming"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["TypeParameterNaming"]
+
+[[rule]]
+name = "type-parameter-qualifier"
+errorprone = ["TypeParameterQualifier"]
+
+[[rule]]
+name = "type-parameter-shadowing"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["TypeParameterShadowing"]
+
+[[rule]]
+name = "type-parameter-unused-in-formals"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["TypeParameterUnusedInFormals"]
+
+[[rule]]
+name = "type-to-string"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["TypeToString"]
+
+[[rule]]
+name = "url-equals-hash-code"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["URLEqualsHashCode"]
+
+[[rule]]
+name = "undefined-equals"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UndefinedEquals"]
+
+[[rule]]
+name = "unescaped-entity"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnescapedEntity"]
+
+[[rule]]
+name = "ungrouped-overloads"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["UngroupedOverloads"]
+
+[[rule]]
+name = "unicode-directionality-characters"
+errorprone = ["UnicodeDirectionalityCharacters"]
+
+[[rule]]
+name = "unicode-escape"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnicodeEscape"]
+
+[[rule]]
+name = "unicode-in-code"
+errorprone = ["UnicodeInCode"]
+
+[[rule]]
+name = "unnamed-variable"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnnamedVariable"]
+
+[[rule]]
+name = "unnecessarily-fully-qualified"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnnecessarilyFullyQualified"]
+
+[[rule]]
+name = "unnecessarily-used-value"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnnecessarilyUsedValue"]
+
+[[rule]]
+name = "unnecessarily-visible"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnnecessarilyVisible"]
+
+[[rule]]
+name = "unnecessary-anonymous-class"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnnecessaryAnonymousClass"]
+
+[[rule]]
+name = "unnecessary-assignment"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnnecessaryAssignment"]
+
+[[rule]]
+name = "unnecessary-async"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnnecessaryAsync"]
+
+[[rule]]
+name = "unnecessary-boxed-assignment"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["UnnecessaryBoxedAssignment"]
+
+[[rule]]
+name = "unnecessary-boxed-variable"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["UnnecessaryBoxedVariable"]
+
+[[rule]]
+name = "unnecessary-break-in-switch"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnnecessaryBreakInSwitch"]
+
+[[rule]]
+name = "unnecessary-check-not-null"
+errorprone = ["UnnecessaryCheckNotNull"]
+
+[[rule]]
+name = "unnecessary-copy"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnnecessaryCopy"]
+
+[[rule]]
+name = "unnecessary-default-in-enum-switch"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnnecessaryDefaultInEnumSwitch"]
+
+[[rule]]
+name = "unnecessary-final"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnnecessaryFinal"]
+
+[[rule]]
+name = "unnecessary-lambda"
+errorprone = ["UnnecessaryLambda"]
+ruff = ["PLW0108"]
+pylint = ["unnecessary-lambda"]
+
+[[rule]]
+name = "unnecessary-long-to-int-conversion"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnnecessaryLongToIntConversion"]
+
+[[rule]]
+name = "unnecessary-method-invocation-matcher"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnnecessaryMethodInvocationMatcher"]
+
+[[rule]]
+name = "unnecessary-method-reference"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnnecessaryMethodReference"]
+
+[[rule]]
+name = "unnecessary-optional-get"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnnecessaryOptionalGet"]
+
+[[rule]]
+name = "unnecessary-qualifier"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnnecessaryQualifier"]
+
+[[rule]]
+name = "unnecessary-semicolon"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnnecessarySemicolon"]
+
+[[rule]]
+name = "unnecessary-set-default"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["UnnecessarySetDefault"]
+
+[[rule]]
+name = "unnecessary-static-import"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["UnnecessaryStaticImport"]
+
+[[rule]]
+name = "unnecessary-string-builder"
+presets = ["strict"]
+category = "severity-bug-pattern"
+errorprone = ["UnnecessaryStringBuilder"]
+
+[[rule]]
+name = "unnecessary-test-method-prefix"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnnecessaryTestMethodPrefix"]
+
+[[rule]]
+name = "unnecessary-type-argument"
+errorprone = ["UnnecessaryTypeArgument"]
+
+[[rule]]
+name = "unrecognised-javadoc-tag"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnrecognisedJavadocTag"]
+
+[[rule]]
+name = "unsafe-finalization"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnsafeFinalization"]
+
+[[rule]]
+name = "unsafe-locale-usage"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnsafeLocaleUsage"]
+
+[[rule]]
+name = "unsafe-reflective-construction-cast"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnsafeReflectiveConstructionCast"]
+
+[[rule]]
+name = "unsafe-wildcard"
+errorprone = ["UnsafeWildcard"]
+
+[[rule]]
+name = "unsynchronized-overrides-synchronized"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnsynchronizedOverridesSynchronized"]
+
+[[rule]]
+name = "unused-anonymous-class"
+errorprone = ["UnusedAnonymousClass"]
+
+[[rule]]
+name = "unused-collection-modified-in-place"
+errorprone = ["UnusedCollectionModifiedInPlace"]
+
+[[rule]]
+name = "unused-exception"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnusedException"]
+
+[[rule]]
+name = "unused-nested-class"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnusedNestedClass"]
+
+[[rule]]
+name = "unused-type-parameter"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UnusedTypeParameter"]
+
+[[rule]]
+name = "url-in-see"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UrlInSee"]
+
+[[rule]]
+name = "use-binds"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UseBinds"]
+
+[[rule]]
+name = "use-correct-assert-in-tests"
+errorprone = ["UseCorrectAssertInTests"]
+
+[[rule]]
+name = "use-enum-switch"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["UseEnumSwitch"]
+
+[[rule]]
+name = "using-jsr305-check-return-value"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["UsingJsr305CheckReturnValue"]
+
+[[rule]]
+name = "value-class-equals"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["ValueClassEquals"]
+
+[[rule]]
+name = "value-class-identity"
+errorprone = ["ValueClassIdentity"]
+
+[[rule]]
+name = "var"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["Var"]
+
+[[rule]]
+name = "var-type-name"
+errorprone = ["VarTypeName"]
+
+[[rule]]
+name = "var-with-primitive"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["VarWithPrimitive"]
+
+[[rule]]
+name = "variable-name-same-as-type"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["VariableNameSameAsType"]
+
+[[rule]]
+name = "varifier"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["Varifier"]
+
+[[rule]]
+name = "void-missing-nullable"
+presets = ["strict"]
+category = "severity-suggestion"
+errorprone = ["VoidMissingNullable"]
+
+[[rule]]
+name = "void-used"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["VoidUsed"]
+
+[[rule]]
+name = "wait-not-in-loop"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["WaitNotInLoop"]
+
+[[rule]]
+name = "wakelock-released-dangerously"
+presets = ["strict"]
+category = "severity-warning"
+errorprone = ["WakelockReleasedDangerously"]
+
+[[rule]]
+name = "wrong-oneof"
+errorprone = ["WrongOneof"]
+
+[[rule]]
+name = "xor-power"
+errorprone = ["XorPower"]
+
+[[rule]]
+name = "yoda-condition"
+presets = ["strict"]
+category = "severity-warning"
+swiftlint = ["yoda_condition"]
+errorprone = ["YodaCondition"]
+
+[[rule]]
+name = "zone-id-of-z"
+errorprone = ["ZoneIdOfZ"]

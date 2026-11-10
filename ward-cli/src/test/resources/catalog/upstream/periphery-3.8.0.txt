@@ -1,0 +1,8 @@
+# Periphery 3.8.0 result annotations.
+# Generated with: git clone --depth 1 --branch 3.8.0 https://github.com/peripheryapp/periphery, then the Annotation enum in Sources/PeripheryKit/ScanResult.swift.
+# format: <rule id><TAB><group>
+assign-only-property	annotation
+redundant-protocol	annotation
+redundant-public-accessibility	annotation
+superfluous-ignore-command	annotation
+unused	annotation

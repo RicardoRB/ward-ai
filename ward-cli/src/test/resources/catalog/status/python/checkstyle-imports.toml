@@ -1,0 +1,14 @@
+# Status of the checkstyle-imports rows in python: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+avoid-module-import = "not-applicable"
+avoid-star-import = "implemented"
+avoid-static-import = "not-applicable"
+custom-import-order = { status = "planned", issue = "#297" }
+illegal-import = { status = "planned", issue = "#297" }
+import-control = { status = "planned", issue = "#297" }
+import-order = { status = "planned", issue = "#297" }
+module-directive-order = "not-applicable"
+module-import-order = "not-applicable"
+redundant-import = { status = "planned", issue = "#297" }
+unnecessary-fully-qualified-type = "not-applicable"
+unused-imports = "not-applicable"

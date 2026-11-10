@@ -1,0 +1,187 @@
+# SpotBugs STYLE, PERFORMANCE and related patterns for Java (issue 316), standard rows, part 4. Rules match the
+# compact text of a node (no separators between tokens) and so approximate SpotBugs' detectors.
+
+[[rules]]
+id = "ward:java/sbsc-use-stringbuffer-concatenation"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+inside = ["statement>'for'", "statement>'while'", "statement>'do'"]
+text = '^\w+\+=.*"'
+message = "string is concatenated in a loop; use a StringBuilder"
+'''
+
+[[rules]]
+id = "ward:java/qf-questionable-for-loop"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement>'for'"]
+text = '^for\((?:int|long)(\w+)=[^;]*;[^;]*;(?!\1(?:\+\+|--|[-+]=))\w+(?:\+\+|--)'
+message = "for loop updates a different variable than it initializes"
+'''
+
+[[rules]]
+id = "ward:java/db-duplicate-switch-clauses"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^switch\(.*case[^:;]+:([^:]+?;)case[^:;]+:\1'
+message = "two switch clauses have the same body"
+'''
+
+[[rules]]
+id = "ward:java/nn-naked-notify"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement>'synchronized'"]
+text = '^synchronized\([^)]*\)\{(?:\w+\.)?notify(?:All)?\(\);\}$'
+message = "notify without a state change in the synchronized block"
+'''
+
+[[rules]]
+id = "ward:java/iio-inefficient-index-of"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.indexOf\("(?:[^"\\]|\\.)"(?:,\w+)?\)$'
+message = "indexOf with a one-character string; use a char"
+'''
+
+[[rules]]
+id = "ward:java/iio-inefficient-last-index-of"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.lastIndexOf\("(?:[^"\\]|\\.)"(?:,\w+)?\)$'
+message = "lastIndexOf with a one-character string; use a char"
+'''
+
+[[rules]]
+id = "ward:java/iil-pattern-compile-in-loop"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+inside = ["statement>'for'", "statement>'while'", "statement>'do'"]
+text = '^(?:java\.util\.regex\.)?Pattern\.compile\('
+message = "Pattern.compile in a loop; compile once before the loop"
+'''
+
+[[rules]]
+id = "ward:java/iil-prepare-statement-in-loop"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+inside = ["statement>'for'", "statement>'while'", "statement>'do'"]
+text = '^[\w.]*\.prepareStatement\('
+message = "prepareStatement in a loop; prepare once before the loop"
+'''
+
+[[rules]]
+id = "ward:java/dm-boxed-primitive-for-parsing"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:Integer|Long|Short|Byte|Double|Float|Boolean)\.valueOf\(.*\)\.\w+Value\(\)$'
+message = "a boxed value is built only to be unboxed; use the parse method"
+'''
+
+[[rules]]
+id = "ward:java/jua-dont-assert-instanceof-in-tests"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^assertTrue\(.*instanceof'
+message = "assertTrue on an instanceof check; use assertInstanceOf"
+'''
+
+[[rules]]
+id = "ward:java/ita-inefficient-to-array"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "performance"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '\.toArray\(new[\w.]+\[\w+(?:\.\w+)*\.size\(\)\]\)$'
+message = "toArray with a presized array is slower than a zero-length array"
+'''
+
+[[rules]]
+id = "ward:java/bit-signed-check"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^\(\w+&\w+\)>0$'
+message = "signed check of a bit mask; compare with != 0"
+'''
+
+[[rules]]
+id = "ward:java/pi-do-not-reuse-public-identifiers-class-names"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration"]
+text = '^class(?:Object|String|Integer|Long|Short|Byte|Boolean|Character|Double|Float|Number|Math|System|Thread|Runnable|Exception|Error|Throwable|Class|Enum|Record|Void|Process|Iterable|Comparable)(?:<|extends|implements|\{)'
+message = "class reuses the name of a java.lang class"
+'''

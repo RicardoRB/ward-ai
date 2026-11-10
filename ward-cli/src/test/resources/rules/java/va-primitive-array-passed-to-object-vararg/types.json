@@ -1,0 +1,30 @@
+{
+  "3:12-3:38": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "format",
+      "params": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "varargs": true,
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
+  },
+  "3:32-3:37": {
+    "type": {
+      "name": "int",
+      "primitive": true,
+      "array": 1
+    }
+  }
+}

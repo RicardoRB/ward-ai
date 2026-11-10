@@ -4,15 +4,29 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>dev.ward</groupId>
-    <artifactId>ward-ai</artifactId>
+    <artifactId>ward-parent</artifactId>
     <version>0.5.0</version>
-    <name>ward-ai</name>
+    <packaging>pom</packaging>
+    <name>ward-parent</name>
     <description>Ward: a quality gate orchestrator for AI coding agents</description>
+
+    <modules>
+        <module>ward-analysis-api</module>
+        <module>ward-frontend-antlr</module>
+        <module>ward-analysis-engine</module>
+        <module>ward-lang-jvm</module>
+        <module>ward-lang-node</module>
+        <module>ward-cli</module>
+        <module>ward-lang-python</module>
+        <module>ward-lang-swift</module>
+        <module>ward-analysis-bench</module>
+    </modules>
 
     <properties>
         <java.version>25</java.version>
-        <!-- Committed THIRD-PARTY-LICENSES and sbom.json; the license gate writes its regenerated copies to target/compliance. -->
-        <compliance.outputDirectory>${project.basedir}/compliance</compliance.outputDirectory>
+        <!-- Committed THIRD-PARTY-LICENSES and sbom.json; the license gate writes its regenerated copies elsewhere. -->
+        <compliance.outputDirectory>${maven.multiModuleProjectDirectory}/compliance</compliance.outputDirectory>
+        <compliance.sbomDirectory>${compliance.outputDirectory}</compliance.sbomDirectory>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <picocli.version>4.7.7</picocli.version>
         <tomlj.version>2.2.0</tomlj.version>
@@ -23,102 +37,294 @@
         <junit.version>6.1.3</junit.version>
         <assertj.version>3.27.7</assertj.version>
         <!-- Mutate use cases and domain logic; adapters are covered by integration tests. -->
-        <pit.targetClasses>dev.ward.domain.*,dev.ward.application.*</pit.targetClasses>
+        <pit.targetClasses>dev.ward.domain.*,dev.ward.application.*,dev.ward.analysis.domain.*,dev.ward.analysis.application.*</pit.targetClasses>
         <pit.failWhenNoMutations>true</pit.failWhenNoMutations>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.google.dagger</groupId>
-            <artifactId>dagger</artifactId>
-            <version>${dagger.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-            <version>${javax.inject.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>info.picocli</groupId>
-            <artifactId>picocli</artifactId>
-            <version>${picocli.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.tomlj</groupId>
-            <artifactId>tomlj</artifactId>
-            <version>${tomlj.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.fory</groupId>
-            <artifactId>fory-json</artifactId>
-            <version>${fory.version}</version>
-        </dependency>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.google.dagger</groupId>
+                <artifactId>dagger</artifactId>
+                <version>${dagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.inject</groupId>
+                <artifactId>javax.inject</artifactId>
+                <version>${javax.inject.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>info.picocli</groupId>
+                <artifactId>picocli</artifactId>
+                <version>${picocli.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.tomlj</groupId>
+                <artifactId>tomlj</artifactId>
+                <version>${tomlj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.fory</groupId>
+                <artifactId>fory-json</artifactId>
+                <version>${fory.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>${assertj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.tngtech.archunit</groupId>
+                <artifactId>archunit-junit5</artifactId>
+                <version>1.5.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.puppycrawl.tools</groupId>
+                <artifactId>checkstyle</artifactId>
+                <version>10.26.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-utils</artifactId>
+                <version>3.6.2</version>
+            </dependency>
+            <dependency>
+                <groupId>net.sourceforge.pmd</groupId>
+                <artifactId>pmd-java</artifactId>
+                <version>7.29.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-model</artifactId>
+                <version>3.10.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>${assertj.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.tngtech.archunit</groupId>
-            <artifactId>archunit-junit5</artifactId>
-            <version>1.5.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <!-- Loads the Checkstyle configuration init generates, at the version init pins. -->
-            <groupId>com.puppycrawl.tools</groupId>
-            <artifactId>checkstyle</artifactId>
-            <version>10.20.2</version>
-            <scope>test</scope>
-            <exclusions>
-                <!-- Saxon is a signed jar; GraalVM cannot build the native test image with its
-                     signer certificates. The generated files load without XPath support. -->
-                <exclusion>
-                    <groupId>net.sf.saxon</groupId>
-                    <artifactId>Saxon-HE</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <!-- The file matcher maven-checkstyle-plugin applies to its includes, so the narrowing
-                 arguments init writes are checked against the real matching rules. The same version
-                 maven-model brings; 4.x moved the XML classes PomToolMatrixTest reads. -->
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-utils</artifactId>
-            <version>3.6.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <!-- Loads the PMD rule set init generates with the PMD 7 rule references. -->
-            <groupId>net.sourceforge.pmd</groupId>
-            <artifactId>pmd-java</artifactId>
-            <version>7.29.0</version>
-            <scope>test</scope>
-            <exclusions>
-                <!-- Saxon is a signed jar; GraalVM cannot build the native test image with its
-                     signer certificates. The generated files load without XPath support. -->
-                <exclusion>
-                    <groupId>net.sf.saxon</groupId>
-                    <artifactId>Saxon-HE</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <!-- Strict POM reader used to check generated init declarations in tests only. -->
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-model</artifactId>
-            <version>3.9.16</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+    <build>
+        <!-- Pins the default lifecycle plugins for the enforcer requirePluginVersions rule. -->
+        <pluginManagement>
+            <plugins>
+                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-clean-plugin</artifactId><version>3.5.0</version></plugin>
+                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-resources-plugin</artifactId><version>3.5.0</version></plugin>
+                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-jar-plugin</artifactId><version>3.5.1</version></plugin>
+                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-install-plugin</artifactId><version>3.2.0</version></plugin>
+                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-deploy-plugin</artifactId><version>3.2.0</version></plugin>
+                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-site-plugin</artifactId><version>3.22.0</version></plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.16.0</version>
+                    <configuration>
+                        <release>${java.version}</release>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.6.1</version>
+                    <configuration>
+                        <!-- One test JVM per core; each class still runs alone in its fork. -->
+                        <forkCount>1C</forkCount>
+                        <reuseForks>true</reuseForks>
+                        <!-- Keeps tests offline: the real wiring would otherwise query GitHub for updates. -->
+                        <environmentVariables>
+                            <WARD_NO_UPDATE_CHECK>1</WARD_NO_UPDATE_CHECK>
+                        </environmentVariables>
+                        <!-- Git hooks export these; tests that run git in a temp repo would read this repo instead. -->
+                        <excludedEnvironmentVariables>GIT_DIR,GIT_INDEX_FILE,GIT_WORK_TREE,GIT_PREFIX</excludedEnvironmentVariables>
+                        <!-- Tests that read repository files outside the module (skills, plugin manifest, compatibility manifest). -->
+                        <systemPropertyVariables>
+                            <ward.repository.root>${maven.multiModuleProjectDirectory}</ward.repository.root>
+                        </systemPropertyVariables>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.8.16</version>
+                    <executions>
+                        <!-- Instruments the test run so the coverage gate measures the current tests. -->
+                        <execution>
+                            <id>prepare-agent</id>
+                            <goals><goal>prepare-agent</goal></goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <excludes>
+                            <exclude>**/Dagger*</exclude>
+                            <exclude>**/*_Factory</exclude>
+                            <exclude>**/*_Factory*</exclude>
+                            <exclude>**/*_*Factory</exclude>
+                            <exclude>**/*Module_*Factory*</exclude>
+                            <exclude>**/*Module_*</exclude>
+                            <exclude>**/*_MembersInjector</exclude>
+                            <exclude>**/*_MembersInjector*</exclude>
+                            <exclude>**/*_Proxy</exclude>
+                            <exclude>**/*_Proxy*</exclude>
+                        </excludes>
+                        <!-- Strict preset minimums. -->
+                        <rules>
+                            <rule>
+                                <element>BUNDLE</element>
+                                <limits>
+                                    <limit><counter>LINE</counter><value>COVEREDRATIO</value><minimum>0.85</minimum></limit>
+                                    <limit><counter>BRANCH</counter><value>COVEREDRATIO</value><minimum>0.75</minimum></limit>
+                                </limits>
+                            </rule>
+                        </rules>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.diffplug.spotless</groupId>
+                    <artifactId>spotless-maven-plugin</artifactId>
+                    <version>3.11.0</version>
+                    <configuration>
+                        <java>
+                            <googleJavaFormat>
+                                <version>1.30.0</version>
+                                <style>GOOGLE</style>
+                            </googleJavaFormat>
+                        </java>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>3.6.0</version>
+                    <configuration>
+                        <configLocation>${maven.multiModuleProjectDirectory}/config/checkstyle.xml</configLocation>
+                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                        <excludeGeneratedSources>true</excludeGeneratedSources>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-pmd-plugin</artifactId>
+                    <version>3.28.0</version>
+                    <configuration>
+                        <excludeRoots>
+                            <excludeRoot>${project.build.directory}/generated-sources/annotations</excludeRoot>
+                        </excludeRoots>
+                        <rulesets>
+                            <ruleset>${maven.multiModuleProjectDirectory}/config/pmd-ruleset.xml</ruleset>
+                        </rulesets>
+                        <includeTests>true</includeTests>
+                        <!-- Re-analyzes only changed files; the edit hook runs PMD on every edit. -->
+                        <analysisCache>true</analysisCache>
+                        <failOnViolation>true</failOnViolation>
+                        <printFailingErrors>true</printFailingErrors>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId>
+                    <version>4.10.5.0</version>
+                    <configuration>
+                        <effort>Max</effort>
+                        <threshold>Medium</threshold>
+                        <excludeFilterFile>${maven.multiModuleProjectDirectory}/spotbugs-exclude.xml</excludeFilterFile>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>3.6.2</version>
+                </plugin>
+                <plugin>
+                  <groupId>org.owasp</groupId>
+                  <artifactId>dependency-check-maven</artifactId>
+                  <version>12.2.2</version>
+                   <configuration>
+                     <failBuildOnCVSS>7</failBuildOnCVSS>
+                     <nvdApiKeyEnvironmentVariable>NVD_API_KEY</nvdApiKeyEnvironmentVariable>
+                   </configuration>
+                </plugin>
+                <plugin>
+                  <groupId>org.pitest</groupId>
+                  <artifactId>pitest-maven</artifactId>
+                  <version>1.30.1</version>
+                  <dependencies>
+                    <dependency>
+                      <groupId>org.pitest</groupId>
+                      <artifactId>pitest-junit5-plugin</artifactId>
+                      <version>1.2.3</version>
+                    </dependency>
+                  </dependencies>
+                  <configuration>
+                    <targetClasses>${pit.targetClasses}</targetClasses>
+                    <failWhenNoMutations>${pit.failWhenNoMutations}</failWhenNoMutations>
+                    <threads>4</threads>
+                    <!-- PIT forks its own JVM, so it needs the repository root that Surefire sets. -->
+                    <jvmArgs>
+                      <jvmArg>-Dward.repository.root=${maven.multiModuleProjectDirectory}</jvmArg>
+                    </jvmArgs>
+                    <environmentVariables>
+                      <WARD_NO_UPDATE_CHECK>1</WARD_NO_UPDATE_CHECK>
+                    </environmentVariables>
+                    <mutationThreshold>60</mutationThreshold>
+                  </configuration>
+                </plugin>
+                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-enforcer-plugin</artifactId><version>3.7.0</version>
+                  <configuration><rules><externalRules><location>${maven.multiModuleProjectDirectory}/config/enforcer-rules.xml</location></externalRules></rules><fail>true</fail></configuration>
+                </plugin>
+                <plugin>
+                  <groupId>org.codehaus.mojo</groupId>
+                  <artifactId>license-maven-plugin</artifactId>
+                  <version>2.7.1</version>
+                  <configuration>
+                    <!-- Allowlist: POMs spell licenses many ways, so a GPL denylist misses variants. -->
+                    <failOnBlacklist>true</failOnBlacklist>
+                    <licenseMerges>
+                      <licenseMerge>Apache-2.0|Apache 2.0|Apache License 2.0|Apache License, Version 2.0|The Apache License, Version 2.0|The Apache Software License, Version 2.0|The Apache Software License, version 2.0</licenseMerge>
+                      <licenseMerge>MIT|MIT License|The MIT License</licenseMerge>
+                      <licenseMerge>BSD|BSD-3-Clause|BSD-style</licenseMerge>
+                      <licenseMerge>EPL-2.0|Eclipse Public License v2.0</licenseMerge>
+                    </licenseMerges>
+                    <includedLicenses>
+                      <includedLicense>Apache-2.0</includedLicense>
+                      <includedLicense>MIT</includedLicense>
+                      <includedLicense>BSD</includedLicense>
+                      <includedLicense>EPL-2.0</includedLicense>
+                      <includedLicense>LGPL-2.1-or-later</includedLicense>
+                    </includedLicenses>
+                    <!-- Shipped set: compile and runtime scope, the dependencies the shaded JAR contains. -->
+                    <includedScopes>compile,runtime</includedScopes>
+                    <outputDirectory>${compliance.outputDirectory}</outputDirectory>
+                    <thirdPartyFilename>THIRD-PARTY-LICENSES</thirdPartyFilename>
+                    <!-- Adds the full text of each license in the shipped set; see licenses/. -->
+                    <fileTemplate>${maven.multiModuleProjectDirectory}/licenses/third-party-licenses.ftl</fileTemplate>
+                    <!-- Keeps the repository root out of the resource directories of the JAR. -->
+                    <addOutputDirectoryAsResourceDir>false</addOutputDirectoryAsResourceDir>
+                  </configuration>
+                </plugin>
+                <plugin>
+                  <groupId>org.cyclonedx</groupId>
+                  <artifactId>cyclonedx-maven-plugin</artifactId>
+                  <version>2.9.3</version>
+                  <configuration>
+                    <projectType>application</projectType>
+                    <!-- Run as makeAggregateBom: it lists Ward's own modules without the hashes of their JARs, which change with every build. -->
+                    <outputDirectory>${compliance.sbomDirectory}</outputDirectory>
+                    <outputName>sbom</outputName>
+                    <outputFormat>json</outputFormat>
+                    <schemaVersion>1.6</schemaVersion>
+                    <!-- A random serial number and a build time would change the file on every run. A fixed output timestamp drops the build time from the BOM. -->
+                    <includeBomSerialNumber>false</includeBomSerialNumber>
+                    <outputTimestamp>2026-01-01T00:00:00Z</outputTimestamp>
+                    <includeTestScope>false</includeTestScope>
+                    <includeProvidedScope>false</includeProvidedScope>
+                    <includeSystemScope>false</includeSystemScope>
+                  </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
     <profiles>
         <!-- Pull request CI sets PIT_TARGET_CLASSES to the classes the change touches. -->
@@ -134,334 +340,5 @@
                 <pit.failWhenNoMutations>false</pit.failWhenNoMutations>
             </properties>
         </profile>
-        <profile>
-            <id>native</id>
-            <dependencies>
-                <!-- Records the JVM-discovered test IDs that native:test compiles into a test image. -->
-                <dependency>
-                    <groupId>org.graalvm.buildtools</groupId>
-                    <artifactId>junit-platform-native</artifactId>
-                    <version>${native-build-tools.version}</version>
-                    <scope>test</scope>
-                </dependency>
-            </dependencies>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.graalvm.buildtools</groupId>
-                        <artifactId>native-maven-plugin</artifactId>
-                        <version>${native-build-tools.version}</version>
-                        <!-- Lets native:test configure Surefire to record the test IDs it compiles. -->
-                        <extensions>true</extensions>
-                        <configuration>
-                            <imageName>ward</imageName>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
     </profiles>
-
-    <build>
-        <finalName>ward</finalName>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <excludes>
-                    <exclude>dev/ward/infrastructure/cli/version.properties</exclude>
-                </excludes>
-            </resource>
-            <!-- Native images have no JAR manifest, so the CLI reads its version from this filtered resource. -->
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>dev/ward/infrastructure/cli/version.properties</include>
-                </includes>
-            </resource>
-        </resources>
-        <!-- Pins the default lifecycle plugins for the enforcer requirePluginVersions rule. -->
-        <pluginManagement>
-            <plugins>
-                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-clean-plugin</artifactId><version>3.5.0</version></plugin>
-                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-resources-plugin</artifactId><version>3.5.0</version></plugin>
-                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-jar-plugin</artifactId><version>3.5.1</version></plugin>
-                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-install-plugin</artifactId><version>3.2.0</version></plugin>
-                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-deploy-plugin</artifactId><version>3.2.0</version></plugin>
-                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-site-plugin</artifactId><version>3.22.0</version></plugin>
-            </plugins>
-        </pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.16.0</version>
-                <configuration>
-                    <release>${java.version}</release>
-                    <compilerArgs>
-                        <arg>-Aproject=dev.ward/ward-ai</arg>
-                        <arg>-Adisable.proxy.config</arg>
-                    </compilerArgs>
-                    <annotationProcessorPaths>
-                        <!-- Generates GraalVM reflection config for Picocli commands under META-INF/native-image/dev.ward/ward-ai -->
-                        <path>
-                            <groupId>info.picocli</groupId>
-                            <artifactId>picocli-codegen</artifactId>
-                            <version>${picocli.version}</version>
-                        </path>
-                        <path>
-                            <groupId>com.google.dagger</groupId>
-                            <artifactId>dagger-compiler</artifactId>
-                            <version>${dagger.version}</version>
-                        </path>
-                        <path>
-                            <groupId>org.apache.fory</groupId>
-                            <artifactId>fory-annotation-processor</artifactId>
-                            <version>${fory.version}</version>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>default-testCompile</id>
-                        <configuration>
-                            <proc>none</proc>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.6.1</version>
-                <configuration>
-                    <!-- One test JVM per core; each class still runs alone in its fork. -->
-                    <forkCount>1C</forkCount>
-                    <reuseForks>true</reuseForks>
-                    <!-- Keeps tests offline: the real wiring would otherwise query GitHub for updates. -->
-                    <environmentVariables>
-                        <WARD_NO_UPDATE_CHECK>1</WARD_NO_UPDATE_CHECK>
-                    </environmentVariables>
-                    <!-- Git hooks export these; tests that run git in a temp repo would read this repo instead. -->
-                    <excludedEnvironmentVariables>GIT_DIR,GIT_INDEX_FILE,GIT_WORK_TREE,GIT_PREFIX</excludedEnvironmentVariables>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.16</version>
-                <executions>
-                    <!-- Instruments the test run so the coverage gate measures the current tests. -->
-                    <execution>
-                        <id>prepare-agent</id>
-                        <goals><goal>prepare-agent</goal></goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <excludes>
-                        <exclude>**/Dagger*</exclude>
-                        <exclude>**/*_Factory</exclude>
-                        <exclude>**/*_Factory*</exclude>
-                        <exclude>**/*_*Factory</exclude>
-                        <exclude>**/*Module_*Factory*</exclude>
-                        <exclude>**/*Module_*</exclude>
-                        <exclude>**/*_MembersInjector</exclude>
-                        <exclude>**/*_MembersInjector*</exclude>
-                        <exclude>**/*_Proxy</exclude>
-                        <exclude>**/*_Proxy*</exclude>
-                    </excludes>
-                    <!-- Strict preset minimums. -->
-                    <rules>
-                        <rule>
-                            <element>BUNDLE</element>
-                            <limits>
-                                <limit><counter>LINE</counter><value>COVEREDRATIO</value><minimum>0.85</minimum></limit>
-                                <limit><counter>BRANCH</counter><value>COVEREDRATIO</value><minimum>0.75</minimum></limit>
-                            </limits>
-                        </rule>
-                    </rules>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.diffplug.spotless</groupId>
-                <artifactId>spotless-maven-plugin</artifactId>
-                <version>3.11.0</version>
-                <configuration>
-                    <java>
-                        <googleJavaFormat>
-                            <version>1.30.0</version>
-                            <style>GOOGLE</style>
-                        </googleJavaFormat>
-                    </java>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.6.0</version>
-                <configuration>
-                    <configLocation>config/checkstyle.xml</configLocation>
-                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                    <excludeGeneratedSources>true</excludeGeneratedSources>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.28.0</version>
-                <configuration>
-                    <excludeRoots>
-                        <excludeRoot>${project.build.directory}/generated-sources/annotations</excludeRoot>
-                    </excludeRoots>
-                    <rulesets>
-                        <ruleset>config/pmd-ruleset.xml</ruleset>
-                    </rulesets>
-                    <includeTests>true</includeTests>
-                    <!-- Re-analyzes only changed files; the edit hook runs PMD on every edit. -->
-                    <analysisCache>true</analysisCache>
-                    <failOnViolation>true</failOnViolation>
-                    <printFailingErrors>true</printFailingErrors>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.github.spotbugs</groupId>
-                <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>4.10.5.0</version>
-                <configuration>
-                    <effort>Max</effort>
-                    <threshold>Medium</threshold>
-                    <excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.6.2</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals><goal>shade</goal></goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/MANIFEST.MF</exclude>
-                                        <exclude>module-info.class</exclude>
-                                        <exclude>META-INF/versions/**/module-info.class</exclude>
-                                        <exclude>META-INF/*.SF</exclude>
-                                        <exclude>META-INF/*.RSA</exclude>
-                                        <exclude>META-INF/*.DSA</exclude>
-                                        <exclude>META-INF/LICENSE*</exclude>
-                                        <exclude>META-INF/NOTICE*</exclude>
-                                        <exclude>META-INF/licenses/**</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                            <transformers>
-                                <!-- The project NOTICE consolidates the bundled dependency notices and licenses. -->
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
-                                    <resource>META-INF/LICENSE</resource>
-                                    <file>${project.basedir}/LICENSE</file>
-                                </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
-                                    <resource>META-INF/NOTICE</resource>
-                                    <file>${project.basedir}/NOTICE</file>
-                                </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>dev.ward.WardApplication</mainClass>
-                                    <manifestEntries>
-                                        <Implementation-Version>${project.version}</Implementation-Version>
-                                        <Enable-Native-Access>ALL-UNNAMED</Enable-Native-Access>
-                                    </manifestEntries>
-                                </transformer>
-                            </transformers>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-              <groupId>org.owasp</groupId>
-              <artifactId>dependency-check-maven</artifactId>
-              <version>12.2.2</version>
-               <configuration>
-                 <failBuildOnCVSS>7</failBuildOnCVSS>
-                 <nvdApiKeyEnvironmentVariable>NVD_API_KEY</nvdApiKeyEnvironmentVariable>
-               </configuration>
-            </plugin>
-            <plugin>
-              <groupId>org.pitest</groupId>
-              <artifactId>pitest-maven</artifactId>
-              <version>1.30.1</version>
-              <dependencies>
-                <dependency>
-                  <groupId>org.pitest</groupId>
-                  <artifactId>pitest-junit5-plugin</artifactId>
-                  <version>1.2.3</version>
-                </dependency>
-              </dependencies>
-              <configuration>
-                <targetClasses>${pit.targetClasses}</targetClasses>
-                <failWhenNoMutations>${pit.failWhenNoMutations}</failWhenNoMutations>
-                <threads>4</threads>
-                <environmentVariables>
-                  <WARD_NO_UPDATE_CHECK>1</WARD_NO_UPDATE_CHECK>
-                </environmentVariables>
-                <mutationThreshold>60</mutationThreshold>
-              </configuration>
-            </plugin>
-            <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-enforcer-plugin</artifactId><version>3.7.0</version>
-              <configuration><rules><externalRules><location>${project.basedir}/config/enforcer-rules.xml</location></externalRules></rules><fail>true</fail></configuration>
-            </plugin>
-            <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>license-maven-plugin</artifactId>
-              <version>2.7.1</version>
-              <configuration>
-                <!-- Allowlist: POMs spell licenses many ways, so a GPL denylist misses variants. -->
-                <failOnBlacklist>true</failOnBlacklist>
-                <licenseMerges>
-                  <licenseMerge>Apache-2.0|Apache 2.0|Apache License 2.0|Apache License, Version 2.0|The Apache License, Version 2.0|The Apache Software License, Version 2.0|The Apache Software License, version 2.0</licenseMerge>
-                  <licenseMerge>MIT|MIT License|The MIT License</licenseMerge>
-                  <licenseMerge>BSD|BSD-3-Clause|BSD-style</licenseMerge>
-                  <licenseMerge>EPL-2.0|Eclipse Public License v2.0</licenseMerge>
-                </licenseMerges>
-                <includedLicenses>
-                  <includedLicense>Apache-2.0</includedLicense>
-                  <includedLicense>MIT</includedLicense>
-                  <includedLicense>BSD</includedLicense>
-                  <includedLicense>EPL-2.0</includedLicense>
-                  <includedLicense>LGPL-2.1-or-later</includedLicense>
-                </includedLicenses>
-                <!-- Shipped set: compile and runtime scope, the dependencies the shaded JAR contains. -->
-                <includedScopes>compile,runtime</includedScopes>
-                <outputDirectory>${compliance.outputDirectory}</outputDirectory>
-                <thirdPartyFilename>THIRD-PARTY-LICENSES</thirdPartyFilename>
-                <!-- Adds the full text of each license in the shipped set; see licenses/. -->
-                <fileTemplate>${project.basedir}/licenses/third-party-licenses.ftl</fileTemplate>
-                <!-- Keeps the repository root out of the resource directories of the JAR. -->
-                <addOutputDirectoryAsResourceDir>false</addOutputDirectoryAsResourceDir>
-              </configuration>
-            </plugin>
-            <plugin>
-              <groupId>org.cyclonedx</groupId>
-              <artifactId>cyclonedx-maven-plugin</artifactId>
-              <version>2.9.3</version>
-              <configuration>
-                <projectType>application</projectType>
-                <outputDirectory>${compliance.outputDirectory}</outputDirectory>
-                <outputName>sbom</outputName>
-                <outputFormat>json</outputFormat>
-                <schemaVersion>1.6</schemaVersion>
-                <!-- A random serial number and a build time would change the file on every run. A fixed output timestamp drops the build time from the BOM. -->
-                <includeBomSerialNumber>false</includeBomSerialNumber>
-                <outputTimestamp>2026-01-01T00:00:00Z</outputTimestamp>
-                <includeTestScope>false</includeTestScope>
-                <includeProvidedScope>false</includeProvidedScope>
-                <includeSystemScope>false</includeSystemScope>
-              </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>

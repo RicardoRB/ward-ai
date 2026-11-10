@@ -1,0 +1,100 @@
+# Ruff's refurb rules (FURB) for Python that a node's text decides: a call or class whose text has a
+# simpler standard form.
+
+[[rules]]
+id = "ward:python/print-empty-string"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^print\\((\"\"|'')(,end=(\"\"|''))?\\)$"
+message = "print of an empty string; call print() or print(end='') instead"
+'''
+
+[[rules]]
+id = "ward:python/isinstance-type-none"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^isinstance\\(.*,type\\(None\\)\\)$"
+message = "isinstance check against type(None); compare with is None"
+'''
+
+[[rules]]
+id = "ward:python/regex-flag-alias"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^re\\.(A|I|L|M|S|U|X)$"
+message = "regex flag alias; use the full flag name such as re.IGNORECASE"
+'''
+
+[[rules]]
+id = "ward:python/implicit-cwd"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "^Path\\(\\)\\.resolve\\(\\)$"
+message = "Path().resolve() is the current directory; use Path.cwd()"
+'''
+
+[[rules]]
+id = "ward:python/meta-class-abc-meta"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classdef"]
+text = "metaclass=ABCMeta\\)"
+message = "metaclass=ABCMeta; inherit from ABC instead"
+'''
+
+[[rules]]
+id = "ward:python/hashlib-digest-hex"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = "\\.digest\\(\\)\\.hex\\(\\)$"
+message = "digest().hex() is hexdigest(); call hexdigest() instead"
+'''
+
+[[rules]]
+id = "ward:python/subclass-builtin"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["classdef"]
+text = "^class\\w+\\((dict|list|str)\\)"
+message = "subclassing a builtin collection or str; subclass collections.UserDict, UserList or UserString instead"
+'''

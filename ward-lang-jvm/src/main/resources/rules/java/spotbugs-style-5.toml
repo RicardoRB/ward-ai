@@ -1,0 +1,31 @@
+# SpotBugs STYLE patterns for Java (issue 316), standard rows, part 5. Rules match the compact text of a node (no
+# separators between tokens) and so approximate SpotBugs' detectors.
+
+[[rules]]
+id = "ward:java/lg-lost-logger-due-to-weak-reference"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:java\.util\.logging\.)?Logger\.getLogger\([^()]*\)\.(?:setLevel|addHandler|setUseParentHandlers)\('
+message = "logger is configured without a strong reference and can be garbage collected"
+'''
+
+[[rules]]
+id = "ward:java/fs-bad-date-format-flag-combo"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(?:java\.text\.)?SimpleDateFormat\("[^"]*YYYY[^"]*M'
+message = "week-year YYYY is combined with a month; use yyyy"
+'''
+

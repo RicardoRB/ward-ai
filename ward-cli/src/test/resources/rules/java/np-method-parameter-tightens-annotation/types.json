@@ -1,0 +1,26 @@
+{
+  "9:3": {
+    "overrides": [
+      {
+        "declaring": {
+          "name": "Base"
+        },
+        "name": "accept",
+        "params": [
+          {
+            "name": "java.lang.String"
+          }
+        ],
+        "returns": {
+          "name": "void",
+          "primitive": true
+        },
+        "paramAnnotations": [
+          [
+            "javax.annotation.CheckForNull"
+          ]
+        ]
+      }
+    ]
+  }
+}

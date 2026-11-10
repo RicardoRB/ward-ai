@@ -1,0 +1,34 @@
+package dev.ward.config;
+
+import dagger.Binds;
+import dagger.Module;
+import dagger.Provides;
+import dev.ward.application.init.SwiftPorts;
+import dev.ward.domain.project.swift.SwiftSourceDirectories;
+import dev.ward.domain.project.swift.SwiftToolchainInspection;
+import dev.ward.domain.project.swift.XcodeSchemes;
+import dev.ward.infrastructure.project.swift.FileSystemSwiftSourceDirectories;
+import dev.ward.infrastructure.project.swift.ProcessSwiftToolchainInspection;
+import dev.ward.infrastructure.project.swift.XcodebuildSchemes;
+
+/** Binds the ports doctor and init read Swift projects and their tool chain through. */
+@Module
+abstract class SwiftBindingsModule {
+  @Binds
+  abstract SwiftToolchainInspection swiftToolchainInspection(
+      ProcessSwiftToolchainInspection implementation);
+
+  @Binds
+  abstract XcodeSchemes xcodeSchemes(XcodebuildSchemes implementation);
+
+  @Binds
+  abstract SwiftSourceDirectories swiftSourceDirectories(
+      FileSystemSwiftSourceDirectories implementation);
+
+  /** Groups the Swift read ports init takes as one binding. */
+  @Provides
+  static SwiftPorts swiftPorts(
+      final XcodeSchemes xcode, final SwiftSourceDirectories swiftSources) {
+    return new SwiftPorts(xcode, swiftSources);
+  }
+}

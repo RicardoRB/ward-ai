@@ -1,0 +1,71 @@
+package dev.ward.analysis.application.jvm;
+
+import dev.ward.analysis.application.rule.CheckFactory;
+import dev.ward.analysis.application.rule.CheckProvider;
+import dev.ward.analysis.application.rule.CheckRegistry;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * The declarative checks that only Java and Kotlin rules use. Add a Java check to one of the
+ * families here, or a new family to {@link #checks()}.
+ */
+public final class JvmCheckProvider implements CheckProvider {
+
+  @Override
+  public Map<String, CheckFactory> checks() {
+    return CheckRegistry.union(
+        List.of(
+            BlockChecks.checks(),
+            ClassDesignChecks.checks(),
+            CodestyleChecks.checks(),
+            CodingChecks.checks(),
+            ConversionChecks.checks(),
+            CorrectnessChecks.checks(),
+            CorrectnessMoreChecks.checks(),
+            FieldChecks.checks(),
+            FinalChecks.checks(),
+            MemberChecks.checks(),
+            OneOffChecks.checks(),
+            CheckstyleDesignChecks.checks(),
+            CheckstyleCodingChecks.checks(),
+            DesignChecks.checks(),
+            ErrorProneTypedChecks.checks(),
+            ErrorProneLiteralChecks.checks(),
+            ErrorProneShapeChecks.checks(),
+            ErrorProneAnnotationChecks.checks(),
+            DeclarationChecks.checks(),
+            DeclarationContextChecks.checks(),
+            ErrorProneCallChecks.checks(),
+            ErrorProneChecks.checks(),
+            ErrorProneFactChecks.checks(),
+            ExposureChecks.checks(),
+            FinalSpotbugsChecks.checks(),
+            FactCallChecks.checks(),
+            ImportChecks.checks(),
+            KotlinBugChecks.checks(),
+            KotlinLinterChecks.checks(),
+            KotlinTextChecks.checks(),
+            KotlinScopeChecks.checks(),
+            KotlinTreeChecks.checks(),
+            KotlinStyleChecks.checks(),
+            KotlinDeclarationChecks.checks(),
+            JavadocChecks.checks(),
+            JavadocContentChecks.checks(),
+            JavadocLayoutChecks.checks(),
+            MetricChecks.checks(),
+            SpotbugsChecks.checks(),
+            SpotbugsFinalChecks.checks(),
+            SpotbugsCastChecks.checks(),
+            SpotbugsThreadChecks.checks(),
+            ErrorProneLastChecks.checks(),
+            ModifierChecks.checks(),
+            NullnessChecks.checks(),
+            ObjectMethodChecks.checks(),
+            ReviewChecks.checks(),
+            StrictDeclarationChecks.checks(),
+            StringBuilderChecks.checks(),
+            ThreadChecks.checks(),
+            TypeAwareChecks.checks()));
+  }
+}

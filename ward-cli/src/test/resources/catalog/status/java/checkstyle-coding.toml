@@ -1,0 +1,68 @@
+# Status of the checkstyle-coding rows in java: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+array-trailing-comma = "implemented"
+avoid-inline-conditionals = "implemented"
+avoid-no-argument-super-constructor-call = { status = "planned", issue = "#289" }
+constructors-declaration-grouping = "implemented"
+covariant-equals = "implemented"
+declaration-order = "implemented"
+default-comes-last = { status = "planned", issue = "#288" }
+empty-statement = "implemented"
+equals-avoid-null = "implemented"
+equals-hash-code = "implemented"
+explicit-initialization = "implemented"
+expression-over-block-lambda = { status = "planned", issue = "#289" }
+fall-through = "implemented"
+final-local-variable = "implemented"
+hidden-field = "implemented"
+illegal-catch = "implemented"
+illegal-instantiation = "implemented"
+illegal-symbol = { status = "planned", issue = "#289" }
+illegal-throws = "implemented"
+illegal-token = "implemented"
+illegal-token-text = "implemented"
+illegal-type = "implemented"
+inner-assignment = { status = "planned", issue = "#288" }
+magic-number = "implemented"
+missing-ctor = { status = "planned", issue = "#289" }
+missing-null-case-in-switch = { status = "planned", issue = "#288" }
+missing-switch-default = "implemented"
+modified-control-variable = { status = "planned", issue = "#288" }
+multiple-string-literals = "implemented"
+multiple-variable-declarations = "implemented"
+nested-for-depth = "implemented"
+nested-if-depth = "implemented"
+nested-try-depth = "implemented"
+no-array-trailing-comma = "implemented"
+no-clone = "implemented"
+no-enum-trailing-comma = "implemented"
+no-finalizer = "implemented"
+one-statement-per-line = "implemented"
+overload-methods-declaration-order = "implemented"
+package-declaration = "implemented"
+parameter-assignment = "implemented"
+pattern-variable-assignment = "implemented"
+require-this = { status = "planned", issue = "#289" }
+return-count = "implemented"
+simplify-boolean-expression = { status = "planned", issue = "#288" }
+simplify-boolean-return = "implemented"
+string-literal-equality = "implemented"
+super-clone = "implemented"
+super-finalize = "implemented"
+text-block-google-style-formatting = "implemented"
+unnecessary-null-check-with-instance-of = { status = "planned", issue = "#288" }
+unnecessary-parentheses = { status = "planned", issue = "#289" }
+unnecessary-permits-clause = { status = "planned", issue = "#289" }
+unnecessary-semicolon-after-outer-type-declaration = { status = "planned", issue = "#289" }
+unnecessary-semicolon-after-type-member-declaration = { status = "planned", issue = "#289" }
+unnecessary-semicolon-in-enumeration = { status = "planned", issue = "#289" }
+unnecessary-semicolon-in-try-with-resources = { status = "planned", issue = "#289" }
+unnecessary-type-arguments-with-record-pattern = { status = "planned", issue = "#289" }
+unused-catch-parameter-should-be-unnamed = { status = "planned", issue = "#289" }
+unused-lambda-parameter-should-be-unnamed = { status = "planned", issue = "#289" }
+unused-local-variable = "implemented"
+unused-private-field = { status = "planned", issue = "#289" }
+unused-try-resource-should-be-unnamed = { status = "planned", issue = "#289" }
+use-enhanced-switch = { status = "planned", issue = "#288" }
+variable-declaration-usage-distance = "implemented"
+when-should-be-used = { status = "planned", issue = "#288" }

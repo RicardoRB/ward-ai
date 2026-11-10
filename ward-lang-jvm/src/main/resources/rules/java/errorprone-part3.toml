@@ -1,0 +1,282 @@
+# Error Prone checks at ERROR severity for Java, part 3: calls and declarations that match the
+# compact text of one node. Each is on by default in Error Prone, so it belongs to the standard preset.
+
+[[rules]]
+id = "ward:java/misleading-empty-varargs"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:java\.util\.)?Arrays\.asList\(\)$'
+message = "Arrays.asList() with no arguments is an empty-varargs call that is easy to misread; use List.of() or Collections.emptyList()"
+'''
+
+[[rules]]
+id = "ward:java/misused-day-of-year"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:new(?:java\.text\.)?SimpleDateFormat|(?:java\.time\.format\.)?DateTimeFormatter\.ofPattern)\("(?=[^"]*M)(?![^"]*d)[^"]*D[^"]*"'
+message = "date pattern uses D (day of year) together with M (month); use d for the day of the month"
+'''
+
+[[rules]]
+id = "ward:java/misused-week-year"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:new(?:java\.text\.)?SimpleDateFormat|(?:java\.time\.format\.)?DateTimeFormatter\.ofPattern)\("(?![^"]*w)[^"]*Y[^"]*"'
+message = "date pattern uses Y (week year) without a week field; use y for the calendar year"
+'''
+
+[[rules]]
+id = "ward:java/modifying-collection-with-itself"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?<v>(?:this\.)?\w+)\.(?:addAll|removeAll|retainAll|containsAll)\(\k<v>\)$'
+message = "collection passed to its own bulk method; the call is a no-op or an error"
+'''
+
+[[rules]]
+id = "ward:java/n-copies-of-char"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = "^(?:java\\.util\\.)?Collections\\.nCopies\\('(?:[^'\\\\]|\\\\.)+',"
+message = "Collections.nCopies takes a count first; a char here is widened to an int count"
+'''
+
+[[rules]]
+id = "ward:java/optional-of-redundant-method"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:java\.util\.)?Optional\.of\([^()]*+(?:\([^()]*\)[^()]*+)*+\)\.(?:isPresent|isEmpty|get|orElse|orElseGet|orElseThrow|ifPresent|ifPresentOrElse)\([^()]*+(?:\([^()]*\)[^()]*+)*+\)$'
+message = "method called on Optional.of(...) always gives the same result; use the value directly"
+'''
+
+[[rules]]
+id = "ward:java/random-cast"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^\((?:int|long)\)(?:Math\.random\(\)|\w+(?:\.\w+)*\.nextDouble\(\))$'
+message = "a random double between 0 and 1 is cast to an integer type, so the result is always 0; scale it before the cast"
+'''
+
+[[rules]]
+id = "ward:java/random-mod-integer"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:\w+\.)+nextInt\(\)%[\w.]+(?:\(\))?$'
+message = "nextInt() % n can be negative; use nextInt(n)"
+'''
+
+[[rules]]
+id = "ward:java/size-greater-than-or-equals-zero"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^[\w.]*\.(?:size\(\)|length\(\)|length)>=0$'
+message = "a size or length is never negative; this comparison is always true"
+'''
+
+[[rules]]
+id = "ward:java/xor-power"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:2|10)\^\d+$'
+message = "^ is bitwise XOR, not a power; use 1 << n or a floating-point constant"
+'''
+
+[[rules]]
+id = "ward:java/mockito-usage"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["statement"]
+text = '^(?:Mockito\.)?(?:verify|when)\([^()]*+(?:\([^()]*\)[^()]*+)*+\);$'
+message = "verify or when called without the follow-up call that completes it; the statement checks nothing"
+'''
+
+[[rules]]
+id = "ward:java/self-assertion"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:(?:Assert\.)?assert(?:Equals|Same)\((?<a>\w+),\k<a>\)|(?:Truth\.)?assertThat\((?<b>\w+)\)\.is(?:EqualTo|SameAs|SameInstanceAs)\(\k<b>\))$'
+message = "value asserted against itself; the assertion cannot fail"
+'''
+
+[[rules]]
+id = "ward:java/suppress-warnings-deprecated"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["annotation"]
+text = '^@SuppressWarnings\(.*"deprecated"'
+message = "@SuppressWarnings(\"deprecated\") does not suppress anything; the name is \"deprecation\""
+'''
+
+[[rules]]
+id = "ward:java/thread-builder-name-with-placeholder"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^Thread\.of(?:Virtual|Platform)\(\)(?:\.\w+\([^()]*\))*\.name\("[^"]*%[^"]*"\)$'
+message = "a format placeholder in a thread name is not filled in; pass a counter as the second argument"
+'''
+
+[[rules]]
+id = "ward:java/unnecessary-check-not-null"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:(?:Preconditions|Objects)\.)?(?:checkNotNull|requireNonNull)\((?:"[^"\\]*+(?:\\.[^"\\]*+)*+"|new\w+(?:<[^()]*>)?\([^()]*+(?:\([^()]*\)[^()]*+)*+\))(?:,.*)?\)$'
+message = "a string literal or a new object is never null; remove the null check"
+'''
+
+[[rules]]
+id = "ward:java/preconditions-invalid-placeholder"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:Preconditions\.)?check(?:Argument|State|NotNull)\([^",]*,"[^"]*%[^s%"]'
+message = "Guava Preconditions messages accept only %s placeholders"
+'''
+
+[[rules]]
+id = "ward:java/var-type-name"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["classDeclaration", "interfaceDeclaration", "enumDeclaration", "recordDeclaration"]
+text = '^(?:class|interface|enum|record)var(?:[<({]|extends|implements|permits)'
+message = "a type named var shadows the var keyword for local variable declarations; rename it"
+'''
+
+[[rules]]
+id = "ward:java/unicode-directionality-characters"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["literal"]
+text = '[\x{202A}-\x{202E}\x{2066}-\x{2069}]'
+message = "string contains a Unicode directionality control character that can make the code read differently from how it runs"
+'''
+
+[[rules]]
+id = "ward:java/misleading-escaped-space"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["literal"]
+text = '^"""(?:[^\\]++|\\[^s]|\\s(?=[ \t]*(?:\r?\n|""")))*+\\s(?![ \t]*(?:\r?\n|"""))'
+message = "\\s inside a text block is easy to miss when it is not at the end of a line; use a space or end the line with it"
+'''
+
+[[rules]]
+id = "ward:java/no-can-ignore-return-value-on-classes"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "errorprone"
+presets = ["standard"]
+body = '''
+check = "forbidden-node"
+kinds = ["typeDeclaration"]
+text = '^(?:@[\w.]+(?:\([^()]*\))?|public|protected|private|abstract|final|static|sealed|non-sealed|strictfp)*@(?:[\w.]*\.)?CanIgnoreReturnValue(?:\([^()]*\))?(?:@[\w.]+(?:\([^()]*\))?|public|protected|private|abstract|final|static|sealed|non-sealed|strictfp)*(?:class|interface|enum|record)'
+message = "@CanIgnoreReturnValue on a type applies to every method; annotate the methods instead"
+'''

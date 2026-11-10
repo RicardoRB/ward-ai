@@ -1,0 +1,78 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "knip-binaries"
+knip = ["binaries"]
+
+[[rule]]
+name = "knip-catalog"
+knip = ["catalog"]
+
+[[rule]]
+name = "knip-catalog-references"
+knip = ["catalogReferences"]
+
+[[rule]]
+name = "knip-cycles"
+presets = ["strict"]
+category = "dead-code"
+knip = ["cycles"]
+
+[[rule]]
+name = "knip-dependencies"
+knip = ["dependencies"]
+
+[[rule]]
+name = "knip-dev-dependencies"
+knip = ["devDependencies"]
+
+[[rule]]
+name = "knip-duplicates"
+knip = ["duplicates"]
+
+[[rule]]
+name = "knip-enum-members"
+not-applicable = { javascript = "JavaScript has no enum or namespace declarations, so there are no members to report" }
+knip = ["enumMembers"]
+
+[[rule]]
+name = "knip-exports"
+knip = ["exports"]
+
+[[rule]]
+name = "knip-files"
+knip = ["files"]
+
+[[rule]]
+name = "knip-namespace-members"
+not-applicable = { javascript = "JavaScript has no enum or namespace declarations, so there are no members to report" }
+knip = ["namespaceMembers"]
+
+[[rule]]
+name = "knip-ns-exports"
+presets = ["strict"]
+category = "dead-code"
+knip = ["nsExports"]
+
+[[rule]]
+name = "knip-ns-types"
+presets = ["strict"]
+category = "dead-code"
+knip = ["nsTypes"]
+
+[[rule]]
+name = "knip-optional-peer-dependencies"
+knip = ["optionalPeerDependencies"]
+
+[[rule]]
+name = "knip-types"
+not-applicable = { javascript = "JavaScript has no type exports; the type-only export form is a TypeScript construct" }
+knip = ["types"]
+
+[[rule]]
+name = "knip-unlisted"
+knip = ["unlisted"]
+
+[[rule]]
+name = "knip-unresolved"
+knip = ["unresolved"]

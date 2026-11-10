@@ -1,0 +1,9 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "unused-attribute"
+not-applicable = { java = "vulture V101 checks Python attributes; Java and Kotlin unused members are covered by the dead-code rows", kotlin = "vulture V101 checks Python attributes; Java and Kotlin unused members are covered by the dead-code rows" }
+presets = ["standard", "strict"]
+category = "correctness"
+vulture = ["V101"]
+

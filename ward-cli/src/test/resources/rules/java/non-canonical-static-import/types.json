@@ -1,0 +1,28 @@
+{
+  "5:5": {
+    "call": {
+      "declaring": {
+        "name": "p.Base"
+      },
+      "name": "helper",
+      "params": [],
+      "returns": {
+        "name": "void"
+      },
+      "static": true
+    }
+  },
+  "13:5": {
+    "call": {
+      "declaring": {
+        "name": "p.Sub"
+      },
+      "name": "helper",
+      "params": [],
+      "returns": {
+        "name": "void"
+      },
+      "static": true
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "3:12-3:16": {
+    "type": {
+      "name": "app.Token"
+    },
+    "shape": {
+      "kind": "class",
+      "final": true
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "3:25-3:28": {
+    "type": {
+      "name": "app.Task"
+    },
+    "shape": {
+      "kind": "interface"
+    },
+    "members": {
+      "ancestors": []
+    }
+  },
+  "4:12-4:16": {
+    "type": {
+      "name": "app.Token"
+    },
+    "shape": {
+      "kind": "class",
+      "final": true
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "app.Task"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "4:25-4:28": {
+    "type": {
+      "name": "app.Task"
+    },
+    "shape": {
+      "kind": "interface"
+    },
+    "members": {
+      "ancestors": []
+    }
+  }
+}

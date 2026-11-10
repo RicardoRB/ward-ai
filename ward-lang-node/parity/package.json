@@ -1,0 +1,13 @@
+{
+  "name": "ward-lang-node-parity",
+  "private": true,
+  "description": "Pinned ESLint core for the structural-rule parity report. Not a runtime dependency of Ward.",
+  "type": "module",
+  "dependencies": {
+    "@typescript-eslint/parser": "8.72.1",
+    "eslint": "9.39.5"
+  },
+  "overrides": {
+    "minimatch": "11.0.4"
+  }
+}

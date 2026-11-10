@@ -1,0 +1,85 @@
+# Size and complexity rules for Kotlin. They mirror the Java size rules: the same limits, and the
+# same decision points for cyclomatic complexity. The body of each rule is a TOML description of
+# one check; see DeclarativeChecks.
+
+[[rules]]
+id = "ward:kotlin/file-length"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
+body = '''
+check = "lines"
+kinds = ["kotlinFile"]
+max = 500
+message = "file has {value} lines; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:kotlin/function-length"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
+body = '''
+check = "lines"
+kinds = ["functionBody"]
+max = 60
+message = "function body has {value} lines; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:kotlin/parameter-count"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 0 }
+body = '''
+check = "descendant-count"
+kinds = ["functionValueParameters"]
+counted = ["functionValueParameter"]
+max = 5
+message = "method declares {value} parameters; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:kotlin/cyclomatic-complexity"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "metrics"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
+body = '''
+check = "descendant-count"
+kinds = ["functionDeclaration"]
+counted = ["ifExpression", "whenEntry", "forStatement", "whileStatement", "doWhileStatement", "catchBlock", "'&&'", "'||'"]
+base = 1
+max = 10
+message = "cyclomatic complexity is {value}; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:kotlin/cognitive-complexity"
+language = "kotlin"
+capability = "SYNTAX"
+severity = "error"
+category = "metrics"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
+body = '''
+check = "cognitive-complexity"
+kinds = ["functionDeclaration"]
+structures = ["'if'", "'when'", "'for'", "'while'", "'do'", "'catch'"]
+cancelled-by = { "'while'" = "'do'" }
+flat = ["'&&'", "'||'"]
+chaining = ["'else'"]
+max = 15
+message = "cognitive complexity is {value}; the limit is {max}"
+'''

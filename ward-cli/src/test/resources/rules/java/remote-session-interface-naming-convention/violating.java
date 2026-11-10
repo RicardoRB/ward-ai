@@ -1,0 +1,2 @@
+interface Violating extends EJBHome {
+}

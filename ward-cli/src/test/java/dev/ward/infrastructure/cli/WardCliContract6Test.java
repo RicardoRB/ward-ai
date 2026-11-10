@@ -1,0 +1,153 @@
+package dev.ward.infrastructure.cli;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import dev.ward.JsonTree;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
+
+@DisabledOnOs(OS.WINDOWS)
+class WardCliContract6Test extends WardCliIntegrationSupport {
+  private static final String TSC = "tsc";
+  private static final String TYPE_ERROR_KEY = "tsc:TS2322";
+
+  /** The stub mvnw prints a TypeScript diagnostic for {@code tsc:check} on the failing run. */
+  private void useTscGate() throws IOException {
+    Files.writeString(
+        project.resolve(WARD_TOML),
+        "version = 2\n\n[checks.tsc]\nenabled = true\nuses = \"tsc\"\ncommand = \"./mvnw tsc:check\"\n");
+  }
+
+  @Test
+  void checkRejectsZapWithoutTargetAsConfigurationError() throws IOException {
+    Files.writeString(
+        project.resolve(WARD_TOML),
+"""
+                version = 2
+                [checks.zap]
+uses = "zap"
+                command = ["zap-baseline.py", "-t", "<TARGET_URL>"]
+                """);
+
+    final int exit = run(CHECK, FORMAT_OPTION, JSON, "-C", project.toString());
+
+    assertThat(exit).isEqualTo(ExitCodes.ERROR);
+    assertThat(JsonTree.parse(out.toString()).get(STATUS).asString()).isEqualTo("ERROR");
+    assertThat(err.toString()).contains("requires an explicit target");
+  }
+
+  @Test
+  void doctorReportsConfigurationAndIntegrationStates() throws IOException {
+    assertThat(run("doctor", "-C", project.toString())).isEqualTo(ExitCodes.ERROR);
+    assertThat(out.toString()).contains("configuration", "ERROR", "integration", "WARNING");
+    out.getBuffer().setLength(0);
+    run(INIT, INTEGRATION_OPTION, "opencode", GATE_OPTION, TESTS, "-C", project.toString());
+    assertThat(run("doctor", "-C", project.toString())).isZero();
+    assertThat(out.toString()).contains("configuration", "OK", "integration", "OK", "POST_EDIT");
+  }
+
+  @Test
+  void directIntegrationHandlesNotFoundAndRemoval() {
+    assertThat(run("integrate", "opencode", "--remove", "-C", project.toString())).isZero();
+    assertThat(out.toString()).contains("NOT_FOUND");
+    out.getBuffer().setLength(0);
+    assertThat(run("integrate", CLAUDE_CODE, "--remove", "-C", project.toString())).isZero();
+    assertThat(out.toString()).contains("NOT_FOUND");
+  }
+
+  @Test
+  void interactiveIntegrationRejectsInvalidAndEof() {
+    assertThat(runWithInput("99\n", "-C", project.toString())).isEqualTo(ExitCodes.ERROR);
+    assertThat(err.toString()).contains("Invalid agent selection");
+    err.getBuffer().setLength(0);
+    assertThat(runWithInput("", "-C", project.toString())).isEqualTo(ExitCodes.ERROR);
+    assertThat(err.toString()).contains("No agent selected");
+  }
+
+  @Test
+  void checkWithoutLearnAfterCreatesNoWardDirectory() {
+    run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "tests", "-C", project.toString());
+    out.getBuffer().setLength(0);
+
+    assertThat(run(CHECK, "-C", project.toString())).isEqualTo(ExitCodes.OK);
+    assertThat(project.resolve(".ward/learning.json")).doesNotExist();
+  }
+
+  @Test
+  void learnAfterBelowOneIsAUsageError() {
+    run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "tests", "-C", project.toString());
+    out.getBuffer().setLength(0);
+
+    assertThat(run(CHECK, LEARN_AFTER, "0", "-C", project.toString())).isEqualTo(ExitCodes.ERROR);
+    assertThat(err.toString()).contains("--learn-after must be at least 1");
+    assertThat(project.resolve(".ward")).doesNotExist();
+  }
+
+  @Test
+  void learningPromptEmittedAfterFailPassFailPassInJson() throws IOException {
+    useTscGate();
+
+    fail();
+    out.getBuffer().setLength(0);
+    assertThat(run(CHECK, FORMAT_OPTION, JSON, LEARN_AFTER, "2", "-C", project.toString()))
+        .isEqualTo(ExitCodes.FAILED);
+
+    pass();
+    out.getBuffer().setLength(0);
+    assertThat(run(CHECK, FORMAT_OPTION, JSON, LEARN_AFTER, "2", "-C", project.toString()))
+        .isEqualTo(ExitCodes.OK);
+    assertThat(JsonTree.parse(out.toString()).get("learning").get("prompts").size()).isZero();
+
+    fail();
+    out.getBuffer().setLength(0);
+    assertThat(run(CHECK, FORMAT_OPTION, JSON, LEARN_AFTER, "2", "-C", project.toString()))
+        .isEqualTo(ExitCodes.FAILED);
+
+    pass();
+    out.getBuffer().setLength(0);
+    assertThat(run(CHECK, FORMAT_OPTION, JSON, LEARN_AFTER, "2", "-C", project.toString()))
+        .isEqualTo(ExitCodes.OK);
+    final JsonTree root = JsonTree.parse(out.toString());
+    assertThat(root.get(STATUS).asString()).isEqualTo("PASSED");
+    final JsonTree prompt = root.get("learning").get("prompts");
+    assertThat(prompt.size()).isEqualTo(1);
+    assertThat(prompt.get(0).get("gate").asString()).isEqualTo(TSC);
+    assertThat(prompt.get(0).get("occurrences").asInt()).isEqualTo(2);
+    assertThat(prompt.get(0).get("instruction").asString())
+        .contains("AGENTS.md", "TS2322", "Type 'string' is not assignable");
+
+    final JsonTree ledger =
+        JsonTree.parse(Files.readString(project.resolve(".ward/learning.json")));
+    assertThat(ledger.get("formatVersion").asInt()).isEqualTo(2);
+    assertThat(ledger.get("records").get(TYPE_ERROR_KEY).get("occurrences").asInt()).isEqualTo(2);
+    assertThat(ledger.get("records").get(TYPE_ERROR_KEY).get("prompted").asBoolean()).isTrue();
+    assertThat(out.toString()).doesNotContain("✓", "\u001b");
+  }
+
+  @Test
+  void learningTextReportShowsSectionAndLeavesAgentsMdUntouched() throws IOException {
+    useTscGate();
+    final Path agents = project.resolve("AGENTS.md");
+    Files.writeString(agents, "project contract\n");
+
+    fail();
+    assertThat(run(CHECK, LEARN_AFTER, "2", "-C", project.toString())).isEqualTo(ExitCodes.FAILED);
+    pass();
+    assertThat(run(CHECK, LEARN_AFTER, "2", "-C", project.toString())).isEqualTo(ExitCodes.OK);
+    fail();
+    assertThat(run(CHECK, LEARN_AFTER, "2", "-C", project.toString())).isEqualTo(ExitCodes.FAILED);
+    out.getBuffer().setLength(0);
+    pass();
+    assertThat(run(CHECK, LEARN_AFTER, "2", "-C", project.toString())).isEqualTo(ExitCodes.OK);
+
+    final String text = out.toString();
+    assertThat(text)
+        .contains("Learning", "(2 occurrences):", "TS2322", "AGENTS.md", "Quality Gate: PASSED");
+    assertThat(text.indexOf("Learning")).isGreaterThan(text.indexOf("Quality Gate"));
+    assertThat(agents).hasContent("project contract\n");
+  }
+}

@@ -1,0 +1,157 @@
+---
+title: ward-rules.toml
+description: Select, tune and exclude paths for the rules of the ward gate in one file, with no suppressions.
+---
+
+`ward-rules.toml` configures every rule that the [`ward` gate](/configuration/gates/#analysis-gate)
+runs: which rules are selected, their options, their severity and the paths they leave out. It is
+optional and sits at the project root. `ward.toml` keeps the gate-level settings (profiles, layers,
+cycles, independence).
+
+Without the file the `ward` check selects rules as before: the ids in its `rules` list, or all of
+them. With the file, the `rules` list in `ward.toml` is a configuration error that names both files;
+move the rules to `include` below, written as described next. To keep the file elsewhere, set `rules-file` in the check; the path
+must stay inside the project:
+
+```toml
+[checks.ward]
+uses = "ward"
+rules-file = "config/ward-rules.toml"
+```
+
+Inside `ward-rules.toml` a rule is always named `<language>.<rule-name>`, such as
+`java.method-length`: in `include`, in `exclude` and in its table `[rules.java.method-length]`.
+Wherever Ward prints a rule (findings, JSON, SARIF, `ward rules list`) it is the id
+`ward:<language>/<rule-name>`, such as `ward:java/method-length`.
+
+## Example
+
+```toml
+version = 1
+
+[select]
+preset = "standard"                 # none | standard | strict (default: standard)
+languages = ["java", "typescript"]  # default: every language
+categories = ["naming", "sizes"]    # default: every category
+include = ["java.missing-javadoc"]
+exclude = ["java.star-import"]
+
+[rules.java.method-length]          # tunes the rule ward:java/method-length
+max = 80
+severity = "warning"                # error | warning
+exclude-paths = ["src/generated/**"]
+
+[rules.java.type-name]
+pattern = "[A-Z][A-Za-z0-9]*"
+```
+
+## Selection
+
+Ward starts from the rules of the preset, keeps only the listed `languages` and `categories`, adds
+the rules in `include` and removes the rules in `exclude`.
+
+A rule written as its id in either list is a configuration error that names the form to write:
+
+```text
+ward-rules.toml: [select] exclude: "ward:java/star-import": name the rule <language>.<rule-name>; write "java.star-import"
+```
+
+| Preset | Rules |
+|---|---|
+| `standard` (default) | The structural, naming, import, documentation and data-flow rules Ward ships today. |
+| `strict` | Every rule of `standard`, and the stricter ones as they are added. |
+| `none` | No rule; build the set from `include`. |
+
+A rule belongs to one category, named after the usual style groups: `sizes`, `metrics`, `naming`,
+`imports`, `javadoc`, `coding`, `misc` or `linter`. A rule table for a rule that is not
+selected is a configuration error, so a tuned rule is never silently off.
+
+`ward rules list --selected` shows the rules the file selects, and `ward rules enable` and
+`ward rules disable` add a rule to `include` or `exclude` without losing the file's comments. See the
+[`ward rules` command](/commands/rules/).
+
+## Rule tables
+
+A rule table is named `[rules.<language>.<rule-name>]`, such as `[rules.java.method-length]`, which
+is the rule `ward:java/method-length`. The group can also be a non-language group such as
+`architecture`.
+
+A table named by the rule id is a configuration error that names the table to write, and the
+file is not used until it is renamed:
+
+```text
+ward-rules.toml: [rules."ward:java/method-length"]: name the table [rules.<language>.<rule-name>]; write [rules.java.method-length]
+```
+
+Every rule accepts `severity` (`error` or `warning`) and `exclude-paths` (globs relative to the
+project root, applied to that rule only; other rules still check those files). The other keys are
+the rule's options. A rule has only the options it declares, and the default of each option is the
+limit it uses without the file:
+
+| Rule | Option | Type | Default |
+|---|---|---|---|
+| `file-length`, `*-length`, `parameter-count`, `*-complexity`, `complexity`, `nesting-depth` (every language) | `max` | integer | the limit in the [gates reference](/configuration/gates/) |
+| `type-name`, `method-name`, `member-name`, `parameter-name`, `local-variable-name` (Java); `type-name`, `function-name`, `property-name` (Kotlin) | `pattern` | regular expression | the default pattern |
+
+Option types are `integer` (with an allowed range), `boolean`, `string`, `regex`, `string-list` and
+`enum`. A `regex` is compiled when the file is read.
+
+## Editor support
+
+A JSON Schema describes `ward-rules.toml` to TOML editors: every rule id, the options of each rule
+with their types, bounds and enum values, `severity`, `exclude-paths` and `[select]`. It lists the
+rules that ship with Ward, which are the same definitions `ward` checks the file against. It is
+published with this site as [`ward-rules.schema.json`](https://ricardorb.github.io/ward-ai/schemas/ward-rules.schema.json).
+
+Start the file with a `#:schema` line, which Taplo and Even Better TOML both read:
+
+```toml
+#:schema https://ricardorb.github.io/ward-ai/schemas/ward-rules.schema.json
+version = 1
+```
+
+Without the line, associate the file with the schema in the editor. In VS Code with Even Better
+TOML, add this to `settings.json`:
+
+```json
+"evenBetterToml.schema.associations": {
+  "ward-rules.toml": "https://ricardorb.github.io/ward-ai/schemas/ward-rules.schema.json"
+}
+```
+
+With the Taplo CLI or language server, add this to `.taplo.toml` at the project root:
+
+```toml
+[[schema]]
+path = "ward-rules.toml"
+url = "https://ricardorb.github.io/ward-ai/schemas/ward-rules.schema.json"
+```
+
+## Validation
+
+Every problem is reported, not only the first, and each names the file, the table and the key:
+
+```text
+ward-rules.toml: [rules.java.method-length] max: expected an integer >= 1, got "sixty"
+ward-rules.toml: [rules.java.nope]: unknown rule id
+ward-rules.toml: [rules.cobol.method-length]: unknown rule id
+ward-rules.toml: [rules.java] max: must be a rule table
+```
+
+Each problem names the table as it is written in the file.
+
+Unknown rule ids, unknown options, wrong types, values out of range, unknown enum values, and
+invalid globs or regular expressions are all errors. The `ward` gate then fails with an execution
+error and runs no rule, and [`ward doctor`](/commands/doctor/) reports the same problems.
+
+## No suppressions
+
+Ward has no inline ignore comment, no annotation and no suppression file. `@SuppressWarnings`,
+`// NOSONAR`, `# noqa` and similar markers have no effect on `ward` rules. To
+stop a finding, change an option, lower the severity, exclude paths for that rule, or deselect the
+rule, all in this file.
+
+## Cache
+
+The result cache key includes each rule's resolved options and severity, so changing a value re-runs
+the rule and gives the same result as a cold run. `exclude-paths` is applied after the cache.

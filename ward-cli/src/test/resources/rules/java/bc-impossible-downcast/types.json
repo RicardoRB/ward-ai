@@ -1,0 +1,71 @@
+{
+  "3:20-3:29": {
+    "type": {
+      "name": "app.Base"
+    },
+    "shape": {
+      "kind": "class"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "4:13-4:17": {
+    "type": {
+      "name": "app.Child"
+    },
+    "shape": {
+      "kind": "class"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "app.Base"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "4:20-4:30": {
+    "type": {
+      "name": "app.Child"
+    },
+    "shape": {
+      "kind": "class"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "app.Base"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "5:13-5:17": {
+    "type": {
+      "name": "app.Child"
+    },
+    "shape": {
+      "kind": "class"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "app.Base"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  }
+}

@@ -108,8 +108,8 @@ order:
 1. **Existing configuration** (only when `ward.toml` exists). Show its preset and enabled gates.
    Ask whether to reconfigure. A yes here is consent for `--overwrite`. A no ends the skill with no
    changes.
-2. **Preset.** `standard` (fast, offline gates), `strict` (adds deeper analysis such as SpotBugs,
-   coverage, ArchUnit, enforcer, and mutation testing), or a custom selection. To show exactly which
+2. **Preset.** `standard` (fast, offline gates), `strict` (adds the strict Java rules,
+   coverage, enforcer, and mutation testing), or a custom selection. To show exactly which
    gates a preset enables in this project, run a read-only preview and read its
    `Selected quality gate` lines:
 
@@ -119,16 +119,13 @@ order:
 
    Add `--overwrite` when `ward.toml` exists. For TypeScript and JavaScript, `strict` adds Stryker mutation testing and
    stricter coverage and lint rules; see [references/node.md](references/node.md#choices). A project
-   that uses Biome gets one `biome` gate in place of Prettier and ESLint, as described there. Recommend `standard` for a first setup or a large
+   gets Ward's TypeScript and JavaScript rules in `ward-rules.toml`, with no separate lint gate. Recommend `standard` for a first setup or a large
    legacy codebase. Recommend `strict` when the code already has tests and a clear structure.
    In a multi-module Gradle build where modules apply the Kotlin JVM plugin in their own build
-   script, `coverage`, `spotbugs`, `mutation`, `checkstyle`, `pmd`, `format` and `enforcer` are
+   script, `coverage`, `mutation` and `enforcer` are
    written into each of those module scripts, and the root script declares their versions with
-   `apply false`. `archunit` is not offered there, because module boundaries already enforce the
-   dependency direction; a single-module Kotlin project keeps it. Do not offer `archunit` for such
-   a build, even under `strict`.
-   In a multi-module Maven build, `coverage`, `spotbugs`, `mutation`, `checkstyle`, `pmd`, `format`
-   and `enforcer` are written into the `pom.xml` of each module that has Java sources, with their
+   `apply false`.
+   In a multi-module Maven build, `coverage`, `mutation` and `enforcer` are written into the `pom.xml` of each module that has Java sources, with their
    versions, and the aggregator pins the versions in `pluginManagement`. A module without Java sources
    is skipped, and init names it in its output. Gradle modules that apply `java` or `java-library` get
    the same gates.
@@ -168,13 +165,18 @@ order:
      spec, so first recommend committing one: a FastAPI app exports its document with `app.openapi()`
      to `openapi.json`, and a Spring project can export its document with springdoc. Then recommend
      the gates and `vacuum` as above.
-   - `archunit` when the layering checks in the inspection found violations: the gate fails on its
-     first run.
+   - Layering violations the inspection found: `ward:architecture/layers` fails on its first run.
+     Tell the user before the first check, and do not remove the boundaries to make it pass.
 
    Removing a preset gate means a custom selection. See
    [references/option-map.md](references/option-map.md#how-presets-and-gates-combine).
-4. **Architecture style** (only when `archunit` is selected and no ArchUnit tests exist). `layered`,
-   `hexagonal`, or `clean`. Recommend the style the package layout supports, and quote the packages.
+4. **Architecture style** (only when `strict` is selected and no `--architecture` was given).
+   `layered`, `hexagonal`, or `clean`. Recommend the style the package layout supports, and quote
+   the packages. Init always writes the layer boundaries of the style, the slice cycle check and the
+   feature independence table into `ward.toml`; no external tool is generated.
+   Formatting is always checked by the `ward-format` gate, which init adds to every selection.
+   Ward runs no external formatter, so do not offer one. Init writes an `.editorconfig` with
+   Ward's defaults only when the project has none; an existing one is kept unchanged.
 5. **Tool installation** (one question per selected gate that has an `install` line). Show the exact
    command from the plan, for example `brew install semgrep`. No is the default. Only a yes adds that
    gate to `--install-tool`. For `guidance` tools, give the link. They cannot be installed by init.
@@ -290,11 +292,14 @@ Tell the user:
 
 1. What is configured now: preset, gates and the profiles they run in, integration, hooks.
    Mention any CI workflow or `AGENTS.md` section init wrote (`Wrote Ward section:` lines).
-   Mention that `ward.toml` has `paths` tables for Checkstyle, PMD, format, Semgrep, and
-   Gitleaks (ESLint and Prettier, or Biome, for TypeScript and JavaScript): the check after each agent edit, and the pre-commit hook, skip gates the change does
-   not affect and narrow supported tools to the edited or staged files. Claude Code and the native
-   harnesses still run the full `default` check when the turn ends; the pre-push hook and CI always
-   check the whole project.
+   Mention that Java and Kotlin projects get no separate style or bug-finding tool gate, and Python projects get no Ruff
+   gate: init writes `ward-rules.toml`, which selects the Ward rules of the preset for the project's JVM languages and Python. Mention that `ward.toml` has `paths` tables for ward-format, Semgrep, and
+   Gitleaks, and for the `ward` analysis
+   check: the check after each agent edit, and the pre-commit hook, skip gates the change does not affect
+   and narrow supported tools, and the `ward` analysis, to the edited or staged files. Claude Code and the
+   native harnesses still run the full `default` check when the turn ends. The pre-push hook checks the
+   files changed since the branch's upstream, and runs in full without an upstream; CI always checks the
+   whole project.
 2. Every manual step still open, taken from the output. For example: tools that are still
    `UNAVAILABLE`, replacing `<TARGET_URL>` for `zap`, setting `NVD_API_KEY` for `dependency-check`
    (as a repository secret too when `--ci github` was used), committing the generated workflow, or a
@@ -302,7 +307,7 @@ Tell the user:
 3. How to run the gates: `ward check` (the `default` profile, fast gates) and
    `ward check --profile ci` (every gate). Offer to run the fast profile now. This session wrote
    the `ward.toml`, so it is trusted. Ask first anyway, because it runs the build.
-4. When `checkstyle`, `pmd`, `coverage`, `mutation`, `archunit`, `eslint`, `biome`, `vitest`, `jest`, or
+4. When `ward`, `coverage`, `mutation`, `vitest`, `jest`, or
    `bun-test` is enabled, offer the `ward-tune` skill.
    It can fit their rules and thresholds to this codebase instead of the generic preset.
    When the check fails, offer the `ward-fix` skill to fix the code rule by rule.

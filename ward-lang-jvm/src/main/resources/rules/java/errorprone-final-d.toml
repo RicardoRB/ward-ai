@@ -1,0 +1,14 @@
+# Error Prone checks at ERROR severity for Java, A to D, final round, fourth batch: conditional expressions.
+
+[[rules]]
+id = "ward:java/conditional-expression-numeric-promotion"
+language = "java"
+capability = "TYPES"
+severity = "error"
+category = "errorprone"
+presets = ["standard", "strict"]
+body = '''
+check = "conditional-promotion"
+
+message = "the two results are boxed numbers of different types, so they are unboxed and promoted to one type"
+'''

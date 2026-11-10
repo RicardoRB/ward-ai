@@ -1,0 +1,167 @@
+{
+  "3:12": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "format",
+      "params": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "java.lang.String"
+      },
+      "static": true,
+      "varargs": true
+    }
+  },
+  "7:12": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "format",
+      "params": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "java.lang.String"
+      },
+      "static": true,
+      "varargs": true
+    }
+  },
+  "7:32": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  },
+  "11:12": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "format",
+      "params": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "java.lang.String"
+      },
+      "static": true,
+      "varargs": true
+    }
+  },
+  "15:12": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "format",
+      "params": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "java.lang.String"
+      },
+      "static": true,
+      "varargs": true
+    }
+  },
+  "21:12": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "format",
+      "params": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "java.lang.String"
+      },
+      "static": true,
+      "varargs": true
+    }
+  },
+  "25:12": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "format",
+      "params": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "java.lang.String"
+      },
+      "static": true,
+      "varargs": true
+    }
+  },
+  "29:12": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "format",
+      "params": [
+        {
+          "name": "java.lang.String"
+        },
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "returns": {
+        "name": "java.lang.String"
+      },
+      "static": true,
+      "varargs": true
+    }
+  },
+  "29:35": {
+    "type": {
+      "name": "java.lang.Object",
+      "array": 1
+    }
+  }
+}

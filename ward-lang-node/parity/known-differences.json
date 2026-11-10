@@ -1,0 +1,8 @@
+{
+  "file-length:ts/file-length-violating.ts": "Same line count (301). ESLint reports the first line over the limit; Ward reports the unit's first line. Location only.",
+  "file-length:js-esm/file-length-violating.mjs": "Same line count (301). ESLint reports the first line over the limit; Ward reports the unit's first line. Location only.",
+  "file-length:js-cjs/file-length-violating.cjs": "Same line count (301). ESLint reports the first line over the limit; Ward reports the unit's first line. Location only.",
+  "naming:ts/naming-violating.ts": "ESLint camelcase also reports the later reference `void user_name`. Ward reports declarations only, as the spec requires; the declaration is the finding.",
+  "naming:js-esm/naming-violating.mjs": "ESLint camelcase also reports the later reference `void user_name`. Ward reports declarations only, as the spec requires; the declaration is the finding.",
+  "naming:js-cjs/naming-violating.cjs": "ESLint camelcase also reports the later reference `void user_name`. Ward reports declarations only, as the spec requires; the declaration is the finding."
+}

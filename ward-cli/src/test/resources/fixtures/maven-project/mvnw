@@ -1,0 +1,17 @@
+#!/bin/sh
+cd "$(dirname "$0")"
+if [ "$1" = "--version" ]; then
+  echo "Apache Maven 3.9.8"
+  echo "Java version: 25.0.5, vendor: Eclipse Adoptium, runtime: /opt/jdk"
+  exit 0
+fi
+echo "stub mvnw: $*"
+if [ -f FAIL ]; then
+  case " $* " in
+    *" tsc:check "*)
+      echo "src/main/java/App.java(3,1): error TS2322: Type 'string' is not assignable to type 'number'."
+      ;;
+  esac
+  echo "BUILD FAILURE" >&2
+  exit 1
+fi

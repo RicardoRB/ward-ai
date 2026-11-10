@@ -1,0 +1,368 @@
+package dev.ward.infrastructure.cli.gate;
+
+import dev.ward.domain.gate.CheckReport;
+import dev.ward.domain.gate.Finding;
+import dev.ward.domain.gate.FindingStep;
+import dev.ward.domain.gate.GateFindings;
+import dev.ward.domain.gate.GateResult;
+import dev.ward.domain.gate.GateStatus;
+import dev.ward.domain.gate.SeverityThreshold;
+import dev.ward.domain.json.JsonCodec;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
+import org.apache.fory.json.annotation.JsonProperty;
+import org.apache.fory.json.annotation.JsonType;
+
+/** Renders a check report as a SARIF 2.1.0 log with one run per executed gate. */
+public class SarifReportRenderer {
+  static final String SCHEMA = "https://json.schemastore.org/sarif-2.1.0.json";
+  static final String VERSION = "2.1.0";
+  private static final Map<String, String> TOOLS = Map.of("compile", "javac");
+
+  private final JsonCodec codec;
+
+  /** Creates the renderer; {@code codec} serializes the SARIF DTOs. */
+  @Inject
+  public SarifReportRenderer(final JsonCodec codec) {
+    this.codec = codec;
+  }
+
+  /** Renders {@code report} as a SARIF 2.1.0 log with warning-level findings and above. */
+  public String render(final CheckReport report) {
+    return render(report, SeverityThreshold.WARNING);
+  }
+
+  /**
+   * Renders {@code report} as a SARIF 2.1.0 log with one run per executed gate, listing findings at
+   * or above {@code threshold}.
+   */
+  public String render(final CheckReport report, final SeverityThreshold threshold) {
+    final List<RunDto> runs = new ArrayList<>();
+    // Code scanning resolves relative URIs against the repository root, not the project root.
+    final String prefix = report.project().nested() ? report.project().projectPath() + "/" : "";
+    for (final GateResult result : report.results()) {
+      if (result.status() != GateStatus.SKIPPED) {
+        runs.add(run(result, threshold, prefix));
+      }
+    }
+    return codec.toJson(new LogDto(SCHEMA, VERSION, runs));
+  }
+
+  private static RunDto run(
+      final GateResult result, final SeverityThreshold threshold, final String prefix) {
+    final GateFindings.Visible visible = result.findings().visible(threshold);
+    final List<Finding> findings = visible.items();
+    final Map<String, RuleDto> rules =
+        findings.stream()
+            .collect(
+                Collectors.toMap(
+                    Finding::ruleId,
+                    finding -> new RuleDto(finding.ruleId(), finding.helpUri()),
+                    (first, ignored) -> first,
+                    LinkedHashMap::new));
+    final List<ResultDto> results =
+        findings.stream()
+            .map(finding -> ResultDto.from(finding, prefix))
+            .collect(Collectors.toCollection(ArrayList::new));
+    final List<InvocationDto> invocations = invocations(result);
+    if (!result.passed() && findings.isEmpty() && result.prerequisite() == null) {
+      rules.putIfAbsent(result.name(), new RuleDto(result.name(), null));
+      results.add(
+          new ResultDto(
+              result.name(),
+              "error",
+              new MessageDto(
+                  "Quality gate '"
+                      + result.name()
+                      + "' did not pass (status "
+                      + result.status()
+                      + ")."),
+              List.of()));
+    }
+    final DriverDto driver =
+        new DriverDto(
+            TOOLS.getOrDefault(result.name(), result.name()), List.copyOf(rules.values()));
+    return new RunDto(
+        new ToolDto(driver),
+        results,
+        new RunPropertiesDto(
+            result.name(),
+            result.status().name(),
+            visible.total(),
+            visible.hidden(),
+            visible.truncated()),
+        invocations);
+  }
+
+  /** A gate that could not run because of its environment is a failed invocation, not a result. */
+  private static List<InvocationDto> invocations(final GateResult result) {
+    if (result.prerequisite() == null) {
+      return List.of();
+    }
+    return List.of(
+        new InvocationDto(
+            false, List.of(new NotificationDto("error", new MessageDto(result.summary())))));
+  }
+
+  /**
+   * The SARIF log root.
+   *
+   * @param schema the SARIF JSON schema URI
+   * @param version the SARIF version
+   * @param runs one run per executed gate
+   */
+  @JsonType
+  public record LogDto(@JsonProperty("$schema") String schema, String version, List<RunDto> runs) {
+    /** Copies the runs. */
+    public LogDto {
+      runs = List.copyOf(runs);
+    }
+  }
+
+  /**
+   * One gate's SARIF run.
+   *
+   * @param tool the tool that produced the results
+   * @param results the visible results
+   * @param properties gate status and truncation details
+   * @param invocations the failed invocation of a gate that could not run; omitted when empty
+   */
+  @JsonType
+  public record RunDto(
+      ToolDto tool,
+      List<ResultDto> results,
+      RunPropertiesDto properties,
+      @JsonProperty(include = JsonProperty.Include.NON_EMPTY) List<InvocationDto> invocations) {
+    /** Copies the results and invocations. */
+    public RunDto {
+      results = List.copyOf(results);
+      invocations = List.copyOf(invocations);
+    }
+  }
+
+  /**
+   * A SARIF invocation of the tool.
+   *
+   * @param executionSuccessful whether the tool ran to completion
+   * @param toolExecutionNotifications why it did not
+   */
+  @JsonType
+  public record InvocationDto(
+      boolean executionSuccessful, List<NotificationDto> toolExecutionNotifications) {
+    /** Copies the notifications. */
+    public InvocationDto {
+      toolExecutionNotifications = List.copyOf(toolExecutionNotifications);
+    }
+  }
+
+  /**
+   * A SARIF tool execution notification.
+   *
+   * @param level the severity of the notification
+   * @param message what happened
+   */
+  @JsonType
+  public record NotificationDto(String level, MessageDto message) {}
+
+  /**
+   * The SARIF tool object.
+   *
+   * @param driver the tool component
+   */
+  @JsonType
+  public record ToolDto(DriverDto driver) {}
+
+  /**
+   * The SARIF tool component.
+   *
+   * @param name the tool name
+   * @param rules the rules referenced by results
+   */
+  @JsonType
+  public record DriverDto(String name, List<RuleDto> rules) {
+    /** Copies the rules. */
+    public DriverDto {
+      rules = List.copyOf(rules);
+    }
+  }
+
+  /**
+   * A SARIF rule descriptor.
+   *
+   * @param id the rule ID
+   * @param helpUri documentation for the rule, when known
+   */
+  @JsonType
+  public record RuleDto(String id, String helpUri) {}
+
+  /**
+   * Ward properties of a run.
+   *
+   * @param gate the gate ID
+   * @param status the gate status
+   * @param findingsTotal findings the tool reported
+   * @param findingsHidden findings below the severity threshold
+   * @param findingsTruncated whether the result list was capped
+   */
+  @JsonType
+  public record RunPropertiesDto(
+      String gate,
+      String status,
+      int findingsTotal,
+      int findingsHidden,
+      boolean findingsTruncated) {}
+
+  /**
+   * A SARIF message.
+   *
+   * @param text the message text
+   */
+  @JsonType
+  public record MessageDto(String text) {}
+
+  /**
+   * One SARIF result.
+   *
+   * @param ruleId the rule that produced it
+   * @param level the SARIF level
+   * @param message the result message
+   * @param locations where it applies; empty for gate-level results
+   * @param codeFlows the path of the finding; empty when it has none
+   */
+  @JsonType
+  public record ResultDto(
+      String ruleId,
+      String level,
+      MessageDto message,
+      List<LocationDto> locations,
+      @JsonProperty(include = JsonProperty.Include.NON_EMPTY) List<CodeFlowDto> codeFlows) {
+    /** Copies the locations and code flows. */
+    public ResultDto {
+      locations = List.copyOf(locations);
+      codeFlows = List.copyOf(codeFlows);
+    }
+
+    /** Creates a result without a code flow. */
+    public ResultDto(
+        final String ruleId,
+        final String level,
+        final MessageDto message,
+        final List<LocationDto> locations) {
+      this(ruleId, level, message, locations, List.of());
+    }
+
+    static ResultDto from(final Finding finding, final String prefix) {
+      final List<LocationDto> locations =
+          finding.located()
+              ? List.of(
+                  new LocationDto(
+                      new PhysicalLocationDto(
+                          new ArtifactLocationDto(uri(finding.file(), prefix)),
+                          finding.line() == null
+                              ? null
+                              : new RegionDto(finding.line(), finding.column()))))
+              : List.of();
+      return new ResultDto(
+          finding.ruleId(),
+          finding.severity().label(),
+          new MessageDto(finding.message()),
+          locations,
+          codeFlows(finding, prefix));
+    }
+
+    /** One code flow whose single thread lists the path steps in order. */
+    private static List<CodeFlowDto> codeFlows(final Finding finding, final String prefix) {
+      if (finding.path().isEmpty()) {
+        return List.of();
+      }
+      final List<FlowLocationDto> steps =
+          finding.path().stream().map(step -> flowLocation(step, prefix)).toList();
+      return List.of(new CodeFlowDto(List.of(new ThreadFlowDto(steps))));
+    }
+
+    private static FlowLocationDto flowLocation(final FindingStep step, final String prefix) {
+      return new FlowLocationDto(
+          new PhysicalLocationDto(
+              new ArtifactLocationDto(uri(step.file(), prefix)),
+              new RegionDto(step.line(), step.column())),
+          new MessageDto(step.message()));
+    }
+
+    private static String uri(final String file, final String prefix) {
+      return file.startsWith("/") ? "file://" + file : prefix + file;
+    }
+  }
+
+  /**
+   * A SARIF code flow.
+   *
+   * @param threadFlows the threads of the flow
+   */
+  @JsonType
+  public record CodeFlowDto(List<ThreadFlowDto> threadFlows) {
+    /** Copies the thread flows. */
+    public CodeFlowDto {
+      threadFlows = List.copyOf(threadFlows);
+    }
+  }
+
+  /**
+   * A SARIF thread flow.
+   *
+   * @param locations the steps in order
+   */
+  @JsonType
+  public record ThreadFlowDto(List<FlowLocationDto> locations) {
+    /** Copies the locations. */
+    public ThreadFlowDto {
+      locations = List.copyOf(locations);
+    }
+  }
+
+  /**
+   * A SARIF thread-flow location: one step with its message.
+   *
+   * @param physicalLocation the file and region of the step
+   * @param message what happens at the step
+   */
+  @JsonType
+  public record FlowLocationDto(PhysicalLocationDto physicalLocation, MessageDto message) {}
+
+  /**
+   * A SARIF location.
+   *
+   * @param physicalLocation the file and region
+   */
+  @JsonType
+  public record LocationDto(PhysicalLocationDto physicalLocation) {}
+
+  /**
+   * A SARIF physical location.
+   *
+   * @param artifactLocation the file
+   * @param region the line and column, or {@code null} for file-level results
+   */
+  @JsonType
+  public record PhysicalLocationDto(ArtifactLocationDto artifactLocation, RegionDto region) {}
+
+  /**
+   * A SARIF artifact location.
+   *
+   * @param uri a repository-relative path, or a file URI outside the project
+   */
+  @JsonType
+  public record ArtifactLocationDto(String uri) {}
+
+  /**
+   * A SARIF region.
+   *
+   * @param startLine the 1-based line, when known
+   * @param startColumn the 1-based column, when known
+   */
+  @JsonType
+  public record RegionDto(Integer startLine, Integer startColumn) {}
+}

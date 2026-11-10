@@ -1,0 +1,2 @@
+interface ViolatingBean extends EJBObject {
+}

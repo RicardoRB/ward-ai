@@ -1,0 +1,30 @@
+# Ruff's flake8-implicit-str-concat rules (ISC) for Python, on one line: adjacent string literals and
+# an explicit + between two literals.
+
+[[rules]]
+id = "ward:python/single-line-implicit-string-concatenation"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "[\"'][ \\t]+[\"']"
+message = "adjacent string literals concatenate implicitly; join them with +, or write one literal"
+'''
+
+[[rules]]
+id = "ward:python/explicit-string-concatenation"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "[\"'][ \\t]*\\+[ \\t]*[\"']"
+message = "two string literals joined with +; write one literal"
+'''

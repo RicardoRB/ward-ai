@@ -1,0 +1,50 @@
+{
+  "1:7-5:1": {
+    "members": {
+      "methods": [],
+      "fields": [],
+      "ancestors": [
+        {
+          "name": "app.Base"
+        }
+      ],
+      "inheritedMethods": [
+        {
+          "declaring": {
+            "name": "app.Base"
+          },
+          "name": "getValue",
+          "params": [],
+          "returns": {
+            "name": "void"
+          }
+        }
+      ],
+      "inheritedFields": []
+    }
+  },
+  "1:7-4:1": {
+    "members": {
+      "methods": [],
+      "fields": [],
+      "ancestors": [
+        {
+          "name": "app.Base"
+        }
+      ],
+      "inheritedMethods": [
+        {
+          "declaring": {
+            "name": "app.Base"
+          },
+          "name": "getValue",
+          "params": [],
+          "returns": {
+            "name": "void"
+          }
+        }
+      ],
+      "inheritedFields": []
+    }
+  }
+}

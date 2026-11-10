@@ -1,0 +1,50 @@
+{
+  "3:12-3:31": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "indexOf",
+      "params": [
+        {
+          "name": "int"
+        },
+        {
+          "name": "int"
+        }
+      ],
+      "returns": {
+        "name": "int"
+      }
+    }
+  },
+  "3:12-3:15": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  },
+  "5:12-5:31": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "indexOf",
+      "params": [
+        {
+          "name": "int"
+        },
+        {
+          "name": "int"
+        }
+      ],
+      "returns": {
+        "name": "int"
+      }
+    }
+  },
+  "5:12-5:15": {
+    "type": {
+      "name": "java.lang.String"
+    }
+  }
+}

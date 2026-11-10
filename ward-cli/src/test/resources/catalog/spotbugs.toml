@@ -1,0 +1,2318 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "aa-assertion-of-arguments"
+spotbugs = ["AA_ASSERTION_OF_ARGUMENTS"]
+
+[[rule]]
+name = "am-creates-empty-jar-file-entry"
+category = "bad-practice"
+spotbugs = ["AM_CREATES_EMPTY_JAR_FILE_ENTRY"]
+
+[[rule]]
+name = "am-creates-empty-zip-file-entry"
+category = "bad-practice"
+spotbugs = ["AM_CREATES_EMPTY_ZIP_FILE_ENTRY"]
+
+[[rule]]
+name = "ase-assertion-with-side-effect"
+spotbugs = ["ASE_ASSERTION_WITH_SIDE_EFFECT"]
+
+[[rule]]
+name = "ase-assertion-with-side-effect-method"
+spotbugs = ["ASE_ASSERTION_WITH_SIDE_EFFECT_METHOD"]
+
+[[rule]]
+name = "at-nonatomic-64-bit-primitive"
+presets = ["standard", "strict"]
+category = "mt-correctness"
+spotbugs = ["AT_NONATOMIC_64BIT_PRIMITIVE"]
+
+[[rule]]
+name = "at-nonatomic-operations-on-shared-variable"
+presets = ["standard", "strict"]
+category = "mt-correctness"
+spotbugs = ["AT_NONATOMIC_OPERATIONS_ON_SHARED_VARIABLE"]
+
+[[rule]]
+name = "at-operation-sequence-on-concurrent-abstraction"
+presets = ["standard", "strict"]
+category = "mt-correctness"
+spotbugs = ["AT_OPERATION_SEQUENCE_ON_CONCURRENT_ABSTRACTION"]
+
+[[rule]]
+name = "at-stale-thread-write-of-primitive"
+presets = ["standard", "strict"]
+category = "mt-correctness"
+spotbugs = ["AT_STALE_THREAD_WRITE_OF_PRIMITIVE"]
+
+[[rule]]
+name = "at-unsafe-resource-access-in-thread"
+presets = ["standard", "strict"]
+category = "mt-correctness"
+spotbugs = ["AT_UNSAFE_RESOURCE_ACCESS_IN_THREAD"]
+
+[[rule]]
+name = "bac-bad-applet-constructor"
+category = "correctness"
+spotbugs = ["BAC_BAD_APPLET_CONSTRUCTOR"]
+
+[[rule]]
+name = "bc-bad-cast-to-abstract-collection"
+spotbugs = ["BC_BAD_CAST_TO_ABSTRACT_COLLECTION"]
+
+[[rule]]
+name = "bc-bad-cast-to-concrete-collection"
+spotbugs = ["BC_BAD_CAST_TO_CONCRETE_COLLECTION"]
+
+[[rule]]
+name = "bc-equals-method-should-work-for-all-objects"
+spotbugs = ["BC_EQUALS_METHOD_SHOULD_WORK_FOR_ALL_OBJECTS"]
+
+[[rule]]
+name = "bc-impossible-cast"
+category = "correctness"
+spotbugs = ["BC_IMPOSSIBLE_CAST"]
+
+[[rule]]
+name = "bc-impossible-cast-primitive-array"
+category = "correctness"
+spotbugs = ["BC_IMPOSSIBLE_CAST_PRIMITIVE_ARRAY"]
+
+[[rule]]
+name = "bc-impossible-downcast"
+category = "correctness"
+spotbugs = ["BC_IMPOSSIBLE_DOWNCAST"]
+
+[[rule]]
+name = "bc-impossible-downcast-of-toarray"
+category = "correctness"
+spotbugs = ["BC_IMPOSSIBLE_DOWNCAST_OF_TOARRAY"]
+
+[[rule]]
+name = "bc-impossible-instanceof"
+category = "correctness"
+spotbugs = ["BC_IMPOSSIBLE_INSTANCEOF"]
+
+[[rule]]
+name = "bc-unconfirmed-cast"
+spotbugs = ["BC_UNCONFIRMED_CAST"]
+
+[[rule]]
+name = "bc-unconfirmed-cast-of-return-value"
+spotbugs = ["BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"]
+
+[[rule]]
+name = "bc-vacuous-instanceof"
+spotbugs = ["BC_VACUOUS_INSTANCEOF"]
+
+[[rule]]
+name = "bit-add-of-signed-byte"
+category = "correctness"
+spotbugs = ["BIT_ADD_OF_SIGNED_BYTE"]
+
+[[rule]]
+name = "bit-and"
+category = "correctness"
+spotbugs = ["BIT_AND"]
+
+[[rule]]
+name = "bit-and-zz"
+category = "correctness"
+spotbugs = ["BIT_AND_ZZ"]
+
+[[rule]]
+name = "bit-ior"
+category = "correctness"
+spotbugs = ["BIT_IOR"]
+
+[[rule]]
+name = "bit-ior-of-signed-byte"
+category = "correctness"
+spotbugs = ["BIT_IOR_OF_SIGNED_BYTE"]
+
+[[rule]]
+name = "bit-signed-check"
+spotbugs = ["BIT_SIGNED_CHECK"]
+
+[[rule]]
+name = "bit-signed-check-high-bit"
+category = "correctness"
+spotbugs = ["BIT_SIGNED_CHECK_HIGH_BIT"]
+
+[[rule]]
+name = "boa-badly-overridden-adapter"
+category = "correctness"
+spotbugs = ["BOA_BADLY_OVERRIDDEN_ADAPTER"]
+
+[[rule]]
+name = "bshift-wrong-add-priority"
+category = "correctness"
+spotbugs = ["BSHIFT_WRONG_ADD_PRIORITY"]
+
+[[rule]]
+name = "bx-boxing-immediately-unboxed"
+category = "performance"
+spotbugs = ["BX_BOXING_IMMEDIATELY_UNBOXED"]
+
+[[rule]]
+name = "bx-boxing-immediately-unboxed-to-perform-coercion"
+spotbugs = ["BX_BOXING_IMMEDIATELY_UNBOXED_TO_PERFORM_COERCION"]
+
+[[rule]]
+name = "bx-unboxed-and-coerced-for-ternary-operator"
+spotbugs = ["BX_UNBOXED_AND_COERCED_FOR_TERNARY_OPERATOR"]
+
+[[rule]]
+name = "bx-unboxing-immediately-reboxed"
+category = "performance"
+spotbugs = ["BX_UNBOXING_IMMEDIATELY_REBOXED"]
+
+[[rule]]
+name = "caa-covariant-array-element-store"
+presets = ["strict"]
+category = "correctness"
+spotbugs = ["CAA_COVARIANT_ARRAY_ELEMENT_STORE"]
+
+[[rule]]
+name = "caa-covariant-array-field"
+presets = ["strict"]
+category = "style"
+spotbugs = ["CAA_COVARIANT_ARRAY_FIELD"]
+
+[[rule]]
+name = "caa-covariant-array-local"
+presets = ["strict"]
+category = "style"
+spotbugs = ["CAA_COVARIANT_ARRAY_LOCAL"]
+
+[[rule]]
+name = "caa-covariant-array-return"
+presets = ["strict"]
+category = "style"
+spotbugs = ["CAA_COVARIANT_ARRAY_RETURN"]
+
+[[rule]]
+name = "cd-circular-dependency"
+presets = ["strict"]
+category = "style"
+spotbugs = ["CD_CIRCULAR_DEPENDENCY"]
+
+[[rule]]
+name = "ci-confused-inheritance"
+spotbugs = ["CI_CONFUSED_INHERITANCE"]
+
+[[rule]]
+name = "cnt-rough-constant-value"
+category = "bad-practice"
+spotbugs = ["CNT_ROUGH_CONSTANT_VALUE"]
+
+[[rule]]
+name = "cn-idiom"
+category = "bad-practice"
+spotbugs = ["CN_IDIOM"]
+
+[[rule]]
+name = "cn-idiom-no-super-call"
+spotbugs = ["CN_IDIOM_NO_SUPER_CALL"]
+
+[[rule]]
+name = "cn-implements-clone-but-not-cloneable"
+category = "bad-practice"
+spotbugs = ["CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"]
+
+[[rule]]
+name = "co-abstract-self"
+spotbugs = ["CO_ABSTRACT_SELF"]
+
+[[rule]]
+name = "co-compareto-incorrect-floating"
+spotbugs = ["CO_COMPARETO_INCORRECT_FLOATING"]
+
+[[rule]]
+name = "co-compareto-results-min-value"
+category = "bad-practice"
+spotbugs = ["CO_COMPARETO_RESULTS_MIN_VALUE"]
+
+[[rule]]
+name = "co-self-no-object"
+spotbugs = ["CO_SELF_NO_OBJECT"]
+
+[[rule]]
+name = "ct-constructor-throw"
+spotbugs = ["CT_CONSTRUCTOR_THROW"]
+
+[[rule]]
+name = "cwo-closed-without-opened"
+spotbugs = ["CWO_CLOSED_WITHOUT_OPENED"]
+
+[[rule]]
+name = "db-duplicate-branches"
+spotbugs = ["DB_DUPLICATE_BRANCHES"]
+
+[[rule]]
+name = "db-duplicate-switch-clauses"
+spotbugs = ["DB_DUPLICATE_SWITCH_CLAUSES"]
+
+[[rule]]
+name = "dcn-nullpointer-exception"
+spotbugs = ["DCN_NULLPOINTER_EXCEPTION"]
+
+[[rule]]
+name = "dc-doublecheck"
+category = "mt-correctness"
+spotbugs = ["DC_DOUBLECHECK"]
+
+[[rule]]
+name = "dc-partially-constructed"
+spotbugs = ["DC_PARTIALLY_CONSTRUCTED"]
+
+[[rule]]
+name = "de-might-drop"
+category = "bad-practice"
+spotbugs = ["DE_MIGHT_DROP"]
+
+[[rule]]
+name = "de-might-ignore"
+category = "bad-practice"
+spotbugs = ["DE_MIGHT_IGNORE"]
+
+[[rule]]
+name = "dls-dead-local-increment-in-return"
+category = "correctness"
+spotbugs = ["DLS_DEAD_LOCAL_INCREMENT_IN_RETURN"]
+
+[[rule]]
+name = "dls-dead-local-store"
+spotbugs = ["DLS_DEAD_LOCAL_STORE"]
+
+[[rule]]
+name = "dls-dead-local-store-in-return"
+spotbugs = ["DLS_DEAD_LOCAL_STORE_IN_RETURN"]
+
+[[rule]]
+name = "dls-dead-local-store-of-null"
+spotbugs = ["DLS_DEAD_LOCAL_STORE_OF_NULL"]
+
+[[rule]]
+name = "dls-dead-local-store-shadows-field"
+spotbugs = ["DLS_DEAD_LOCAL_STORE_SHADOWS_FIELD"]
+
+[[rule]]
+name = "dls-dead-store-of-class-literal"
+category = "correctness"
+spotbugs = ["DLS_DEAD_STORE_OF_CLASS_LITERAL"]
+
+[[rule]]
+name = "dls-overwritten-increment"
+category = "correctness"
+spotbugs = ["DLS_OVERWRITTEN_INCREMENT"]
+
+[[rule]]
+name = "dl-synchronization-on-boolean"
+category = "mt-correctness"
+spotbugs = ["DL_SYNCHRONIZATION_ON_BOOLEAN"]
+
+[[rule]]
+name = "dl-synchronization-on-boxed-primitive"
+category = "mt-correctness"
+spotbugs = ["DL_SYNCHRONIZATION_ON_BOXED_PRIMITIVE"]
+
+[[rule]]
+name = "dl-synchronization-on-interned-string"
+category = "mt-correctness"
+spotbugs = ["DL_SYNCHRONIZATION_ON_INTERNED_STRING"]
+
+[[rule]]
+name = "dl-synchronization-on-shared-constant"
+category = "mt-correctness"
+spotbugs = ["DL_SYNCHRONIZATION_ON_SHARED_CONSTANT"]
+
+[[rule]]
+name = "dl-synchronization-on-unshared-boxed-primitive"
+spotbugs = ["DL_SYNCHRONIZATION_ON_UNSHARED_BOXED_PRIMITIVE"]
+
+[[rule]]
+name = "dmi-annotation-is-not-visible-to-reflection"
+category = "correctness"
+spotbugs = ["DMI_ANNOTATION_IS_NOT_VISIBLE_TO_REFLECTION"]
+
+[[rule]]
+name = "dmi-arguments-wrong-order"
+category = "correctness"
+spotbugs = ["DMI_ARGUMENTS_WRONG_ORDER"]
+
+[[rule]]
+name = "dmi-bad-month"
+category = "correctness"
+spotbugs = ["DMI_BAD_MONTH"]
+
+[[rule]]
+name = "dmi-bigdecimal-constructed-from-double"
+category = "correctness"
+spotbugs = ["DMI_BIGDECIMAL_CONSTRUCTED_FROM_DOUBLE"]
+
+[[rule]]
+name = "dmi-blocking-methods-on-url"
+category = "performance"
+spotbugs = ["DMI_BLOCKING_METHODS_ON_URL"]
+
+[[rule]]
+name = "dmi-calling-next-from-hasnext"
+category = "correctness"
+spotbugs = ["DMI_CALLING_NEXT_FROM_HASNEXT"]
+
+[[rule]]
+name = "dmi-collections-should-not-contain-themselves"
+category = "correctness"
+spotbugs = ["DMI_COLLECTIONS_SHOULD_NOT_CONTAIN_THEMSELVES"]
+
+[[rule]]
+name = "dmi-collection-of-urls"
+category = "performance"
+spotbugs = ["DMI_COLLECTION_OF_URLS"]
+
+[[rule]]
+name = "dmi-constant-db-password"
+spotbugs = ["DMI_CONSTANT_DB_PASSWORD"]
+
+[[rule]]
+name = "dmi-doh"
+category = "correctness"
+spotbugs = ["DMI_DOH"]
+
+[[rule]]
+name = "dmi-empty-db-password"
+spotbugs = ["DMI_EMPTY_DB_PASSWORD"]
+
+[[rule]]
+name = "dmi-entry-sets-may-reuse-entry-objects"
+spotbugs = ["DMI_ENTRY_SETS_MAY_REUSE_ENTRY_OBJECTS"]
+
+[[rule]]
+name = "dmi-futile-attempt-to-change-maxpool-size-of-scheduled-thread-pool-executor"
+category = "correctness"
+spotbugs = ["DMI_FUTILE_ATTEMPT_TO_CHANGE_MAXPOOL_SIZE_OF_SCHEDULED_THREAD_POOL_EXECUTOR"]
+
+[[rule]]
+name = "dmi-hardcoded-absolute-filename"
+spotbugs = ["DMI_HARDCODED_ABSOLUTE_FILENAME"]
+
+[[rule]]
+name = "dmi-invoking-hashcode-on-array"
+category = "correctness"
+spotbugs = ["DMI_INVOKING_HASHCODE_ON_ARRAY"]
+
+[[rule]]
+name = "dmi-invoking-tostring-on-anonymous-array"
+category = "correctness"
+spotbugs = ["DMI_INVOKING_TOSTRING_ON_ANONYMOUS_ARRAY"]
+
+[[rule]]
+name = "dmi-invoking-tostring-on-array"
+category = "correctness"
+spotbugs = ["DMI_INVOKING_TOSTRING_ON_ARRAY"]
+
+[[rule]]
+name = "dmi-long-bits-to-double-invoked-on-int"
+category = "correctness"
+spotbugs = ["DMI_LONG_BITS_TO_DOUBLE_INVOKED_ON_INT"]
+
+[[rule]]
+name = "dmi-misleading-substring"
+spotbugs = ["DMI_MISLEADING_SUBSTRING"]
+
+[[rule]]
+name = "dmi-nonserializable-object-written"
+spotbugs = ["DMI_NONSERIALIZABLE_OBJECT_WRITTEN"]
+
+[[rule]]
+name = "dmi-random-used-only-once"
+category = "bad-practice"
+spotbugs = ["DMI_RANDOM_USED_ONLY_ONCE"]
+
+[[rule]]
+name = "dmi-scheduled-thread-pool-executor-with-zero-core-threads"
+category = "correctness"
+spotbugs = ["DMI_SCHEDULED_THREAD_POOL_EXECUTOR_WITH_ZERO_CORE_THREADS"]
+
+[[rule]]
+name = "dmi-thread-passed-where-runnable-expected"
+spotbugs = ["DMI_THREAD_PASSED_WHERE_RUNNABLE_EXPECTED"]
+
+[[rule]]
+name = "dmi-unsupported-method"
+category = "style"
+spotbugs = ["DMI_UNSUPPORTED_METHOD"]
+
+[[rule]]
+name = "dmi-useless-substring"
+spotbugs = ["DMI_USELESS_SUBSTRING"]
+
+[[rule]]
+name = "dmi-using-removeall-to-clear-collection"
+category = "bad-practice"
+spotbugs = ["DMI_USING_REMOVEALL_TO_CLEAR_COLLECTION"]
+
+[[rule]]
+name = "dmi-vacuous-call-to-easymock-method"
+category = "correctness"
+spotbugs = ["DMI_VACUOUS_CALL_TO_EASYMOCK_METHOD"]
+
+[[rule]]
+name = "dmi-vacuous-self-collection-call"
+category = "correctness"
+spotbugs = ["DMI_VACUOUS_SELF_COLLECTION_CALL"]
+
+[[rule]]
+name = "dm-boolean-ctor"
+category = "performance"
+spotbugs = ["DM_BOOLEAN_CTOR"]
+
+[[rule]]
+name = "dm-boxed-primitive-for-compare"
+category = "performance"
+spotbugs = ["DM_BOXED_PRIMITIVE_FOR_COMPARE"]
+
+[[rule]]
+name = "dm-boxed-primitive-for-parsing"
+spotbugs = ["DM_BOXED_PRIMITIVE_FOR_PARSING"]
+
+[[rule]]
+name = "dm-boxed-primitive-tostring"
+category = "performance"
+spotbugs = ["DM_BOXED_PRIMITIVE_TOSTRING"]
+
+[[rule]]
+name = "dm-convert-case"
+spotbugs = ["DM_CONVERT_CASE"]
+
+[[rule]]
+name = "dm-default-encoding"
+spotbugs = ["DM_DEFAULT_ENCODING"]
+
+[[rule]]
+name = "dm-exit"
+category = "bad-practice"
+spotbugs = ["DM_EXIT"]
+
+[[rule]]
+name = "dm-fp-number-ctor"
+category = "performance"
+spotbugs = ["DM_FP_NUMBER_CTOR"]
+
+[[rule]]
+name = "dm-gc"
+category = "performance"
+spotbugs = ["DM_GC"]
+
+[[rule]]
+name = "dm-invalid-min-max"
+category = "correctness"
+spotbugs = ["DM_INVALID_MIN_MAX"]
+
+[[rule]]
+name = "dm-monitor-wait-on-condition"
+category = "mt-correctness"
+spotbugs = ["DM_MONITOR_WAIT_ON_CONDITION"]
+
+[[rule]]
+name = "dm-new-for-getclass"
+category = "performance"
+spotbugs = ["DM_NEW_FOR_GETCLASS"]
+
+[[rule]]
+name = "dm-nextint-via-nextdouble"
+category = "performance"
+spotbugs = ["DM_NEXTINT_VIA_NEXTDOUBLE"]
+
+[[rule]]
+name = "dm-number-ctor"
+category = "performance"
+spotbugs = ["DM_NUMBER_CTOR"]
+
+[[rule]]
+name = "dm-run-finalizers-on-exit"
+category = "bad-practice"
+spotbugs = ["DM_RUN_FINALIZERS_ON_EXIT"]
+
+[[rule]]
+name = "dm-string-ctor"
+category = "performance"
+spotbugs = ["DM_STRING_CTOR"]
+
+[[rule]]
+name = "dm-string-tostring"
+category = "performance"
+spotbugs = ["DM_STRING_TOSTRING"]
+
+[[rule]]
+name = "dm-string-void-ctor"
+category = "performance"
+spotbugs = ["DM_STRING_VOID_CTOR"]
+
+[[rule]]
+name = "dm-useless-thread"
+category = "mt-correctness"
+spotbugs = ["DM_USELESS_THREAD"]
+
+[[rule]]
+name = "dp-create-classloader-inside-do-privileged"
+spotbugs = ["DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED"]
+
+[[rule]]
+name = "dp-do-inside-do-privileged"
+spotbugs = ["DP_DO_INSIDE_DO_PRIVILEGED"]
+
+[[rule]]
+name = "ec-array-and-nonarray"
+category = "correctness"
+spotbugs = ["EC_ARRAY_AND_NONARRAY"]
+
+[[rule]]
+name = "ec-bad-array-compare"
+category = "correctness"
+spotbugs = ["EC_BAD_ARRAY_COMPARE"]
+
+[[rule]]
+name = "ec-incompatible-array-compare"
+category = "correctness"
+spotbugs = ["EC_INCOMPATIBLE_ARRAY_COMPARE"]
+
+[[rule]]
+name = "ec-null-arg"
+category = "correctness"
+spotbugs = ["EC_NULL_ARG"]
+
+[[rule]]
+name = "ec-unrelated-class-and-interface"
+category = "correctness"
+spotbugs = ["EC_UNRELATED_CLASS_AND_INTERFACE"]
+
+[[rule]]
+name = "ec-unrelated-interfaces"
+category = "correctness"
+spotbugs = ["EC_UNRELATED_INTERFACES"]
+
+[[rule]]
+name = "ec-unrelated-types"
+ids = { java = "ward:java/equals-on-unrelated-types" }
+spotbugs = ["EC_UNRELATED_TYPES"]
+
+[[rule]]
+name = "ec-unrelated-types-using-pointer-equality"
+category = "correctness"
+spotbugs = ["EC_UNRELATED_TYPES_USING_POINTER_EQUALITY"]
+
+[[rule]]
+name = "ei-expose-buf"
+spotbugs = ["EI_EXPOSE_BUF"]
+
+[[rule]]
+name = "ei-expose-buf2"
+spotbugs = ["EI_EXPOSE_BUF2"]
+
+[[rule]]
+name = "ei-expose-rep"
+spotbugs = ["EI_EXPOSE_REP"]
+
+[[rule]]
+name = "ei-expose-rep2"
+spotbugs = ["EI_EXPOSE_REP2"]
+
+[[rule]]
+name = "ei-expose-static-buf2"
+spotbugs = ["EI_EXPOSE_STATIC_BUF2"]
+
+[[rule]]
+name = "ei-expose-static-rep2"
+spotbugs = ["EI_EXPOSE_STATIC_REP2"]
+
+[[rule]]
+name = "env-use-property-instead-of-env"
+category = "bad-practice"
+spotbugs = ["ENV_USE_PROPERTY_INSTEAD_OF_ENV"]
+
+[[rule]]
+name = "eos-bad-end-of-stream-check"
+category = "correctness"
+spotbugs = ["EOS_BAD_END_OF_STREAM_CHECK"]
+
+[[rule]]
+name = "eq-abstract-self"
+category = "bad-practice"
+spotbugs = ["EQ_ABSTRACT_SELF"]
+
+[[rule]]
+name = "eq-always-false"
+category = "correctness"
+spotbugs = ["EQ_ALWAYS_FALSE"]
+
+[[rule]]
+name = "eq-always-true"
+category = "correctness"
+spotbugs = ["EQ_ALWAYS_TRUE"]
+
+[[rule]]
+name = "eq-check-for-operand-not-compatible-with-this"
+category = "bad-practice"
+spotbugs = ["EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS"]
+
+[[rule]]
+name = "eq-compareto-use-object-equals"
+spotbugs = ["EQ_COMPARETO_USE_OBJECT_EQUALS"]
+
+[[rule]]
+name = "eq-comparing-class-names"
+category = "correctness"
+spotbugs = ["EQ_COMPARING_CLASS_NAMES"]
+
+[[rule]]
+name = "eq-doesnt-override-equals"
+category = "style"
+spotbugs = ["EQ_DOESNT_OVERRIDE_EQUALS"]
+
+[[rule]]
+name = "eq-dont-define-equals-for-enum"
+category = "correctness"
+spotbugs = ["EQ_DONT_DEFINE_EQUALS_FOR_ENUM"]
+
+[[rule]]
+name = "eq-getclass-and-class-constant"
+category = "bad-practice"
+spotbugs = ["EQ_GETCLASS_AND_CLASS_CONSTANT"]
+
+[[rule]]
+name = "eq-other-no-object"
+category = "correctness"
+spotbugs = ["EQ_OTHER_NO_OBJECT"]
+
+[[rule]]
+name = "eq-overriding-equals-not-symmetric"
+category = "correctness"
+spotbugs = ["EQ_OVERRIDING_EQUALS_NOT_SYMMETRIC"]
+
+[[rule]]
+name = "eq-self-no-object"
+category = "bad-practice"
+spotbugs = ["EQ_SELF_NO_OBJECT"]
+
+[[rule]]
+name = "eq-self-use-object"
+category = "correctness"
+spotbugs = ["EQ_SELF_USE_OBJECT"]
+
+[[rule]]
+name = "eq-unusual"
+category = "style"
+spotbugs = ["EQ_UNUSUAL"]
+
+[[rule]]
+name = "es-comparing-parameter-string-with-eq"
+category = "bad-practice"
+spotbugs = ["ES_COMPARING_PARAMETER_STRING_WITH_EQ"]
+
+[[rule]]
+name = "e-sync-empty-sync"
+category = "mt-correctness"
+spotbugs = ["ESync_EMPTY_SYNC"]
+
+[[rule]]
+name = "fe-floating-point-equality"
+spotbugs = ["FE_FLOATING_POINT_EQUALITY"]
+
+[[rule]]
+name = "fe-test-if-equal-to-not-a-number"
+category = "correctness"
+spotbugs = ["FE_TEST_IF_EQUAL_TO_NOT_A_NUMBER"]
+
+[[rule]]
+name = "fi-empty"
+category = "bad-practice"
+spotbugs = ["FI_EMPTY"]
+
+[[rule]]
+name = "fi-explicit-invocation"
+category = "bad-practice"
+spotbugs = ["FI_EXPLICIT_INVOCATION"]
+
+[[rule]]
+name = "fi-finalizer-nulls-fields"
+category = "bad-practice"
+spotbugs = ["FI_FINALIZER_NULLS_FIELDS"]
+
+[[rule]]
+name = "fi-finalizer-only-nulls-fields"
+category = "bad-practice"
+spotbugs = ["FI_FINALIZER_ONLY_NULLS_FIELDS"]
+
+[[rule]]
+name = "fi-missing-super-call"
+category = "bad-practice"
+spotbugs = ["FI_MISSING_SUPER_CALL"]
+
+[[rule]]
+name = "fi-nullify-super"
+category = "bad-practice"
+spotbugs = ["FI_NULLIFY_SUPER"]
+
+[[rule]]
+name = "fi-public-should-be-protected"
+spotbugs = ["FI_PUBLIC_SHOULD_BE_PROTECTED"]
+
+[[rule]]
+name = "fi-useless"
+category = "bad-practice"
+spotbugs = ["FI_USELESS"]
+
+[[rule]]
+name = "fl-floats-as-loop-counters"
+category = "correctness"
+spotbugs = ["FL_FLOATS_AS_LOOP_COUNTERS"]
+
+[[rule]]
+name = "fl-math-using-float-precision"
+category = "correctness"
+spotbugs = ["FL_MATH_USING_FLOAT_PRECISION"]
+
+[[rule]]
+name = "fs-bad-date-format-flag-combo"
+spotbugs = ["FS_BAD_DATE_FORMAT_FLAG_COMBO"]
+
+[[rule]]
+name = "gc-unrelated-types"
+category = "correctness"
+spotbugs = ["GC_UNRELATED_TYPES"]
+
+[[rule]]
+name = "he-equals-use-hashcode"
+category = "bad-practice"
+spotbugs = ["HE_EQUALS_USE_HASHCODE"]
+
+[[rule]]
+name = "he-hashcode-no-equals"
+category = "bad-practice"
+spotbugs = ["HE_HASHCODE_NO_EQUALS"]
+
+[[rule]]
+name = "he-hashcode-use-object-equals"
+category = "bad-practice"
+spotbugs = ["HE_HASHCODE_USE_OBJECT_EQUALS"]
+
+[[rule]]
+name = "he-inherits-equals-use-hashcode"
+category = "bad-practice"
+spotbugs = ["HE_INHERITS_EQUALS_USE_HASHCODE"]
+
+[[rule]]
+name = "he-signature-declares-hashing-of-unhashable-class"
+category = "correctness"
+spotbugs = ["HE_SIGNATURE_DECLARES_HASHING_OF_UNHASHABLE_CLASS"]
+
+[[rule]]
+name = "he-use-of-unhashable-class"
+category = "correctness"
+spotbugs = ["HE_USE_OF_UNHASHABLE_CLASS"]
+
+[[rule]]
+name = "hrs-request-parameter-to-cookie"
+spotbugs = ["HRS_REQUEST_PARAMETER_TO_COOKIE"]
+
+[[rule]]
+name = "hrs-request-parameter-to-http-header"
+spotbugs = ["HRS_REQUEST_PARAMETER_TO_HTTP_HEADER"]
+
+[[rule]]
+name = "hsc-huge-shared-string-constant"
+category = "performance"
+spotbugs = ["HSC_HUGE_SHARED_STRING_CONSTANT"]
+
+[[rule]]
+name = "hsm-hiding-method"
+category = "correctness"
+spotbugs = ["HSM_HIDING_METHOD"]
+
+[[rule]]
+name = "ia-ambiguous-invocation-of-inherited-or-outer-method"
+category = "style"
+spotbugs = ["IA_AMBIGUOUS_INVOCATION_OF_INHERITED_OR_OUTER_METHOD"]
+
+[[rule]]
+name = "icast-bad-shift-amount"
+category = "correctness"
+spotbugs = ["ICAST_BAD_SHIFT_AMOUNT"]
+
+[[rule]]
+name = "icast-idiv-cast-to-double"
+category = "style"
+spotbugs = ["ICAST_IDIV_CAST_TO_DOUBLE"]
+
+[[rule]]
+name = "icast-integer-multiply-cast-to-long"
+category = "style"
+spotbugs = ["ICAST_INTEGER_MULTIPLY_CAST_TO_LONG"]
+
+[[rule]]
+name = "icast-int-2-long-as-instant"
+category = "correctness"
+spotbugs = ["ICAST_INT_2_LONG_AS_INSTANT"]
+
+[[rule]]
+name = "icast-int-cast-to-double-passed-to-ceil"
+category = "correctness"
+spotbugs = ["ICAST_INT_CAST_TO_DOUBLE_PASSED_TO_CEIL"]
+
+[[rule]]
+name = "icast-int-cast-to-float-passed-to-round"
+category = "correctness"
+spotbugs = ["ICAST_INT_CAST_TO_FLOAT_PASSED_TO_ROUND"]
+
+[[rule]]
+name = "icast-questionable-unsigned-right-shift"
+spotbugs = ["ICAST_QUESTIONABLE_UNSIGNED_RIGHT_SHIFT"]
+
+[[rule]]
+name = "ic-init-circularity"
+category = "style"
+spotbugs = ["IC_INIT_CIRCULARITY"]
+
+[[rule]]
+name = "ic-superclass-uses-subclass-during-initialization"
+category = "bad-practice"
+spotbugs = ["IC_SUPERCLASS_USES_SUBCLASS_DURING_INITIALIZATION"]
+
+[[rule]]
+name = "iil-elements-get-length-in-loop"
+presets = ["strict"]
+category = "performance"
+spotbugs = ["IIL_ELEMENTS_GET_LENGTH_IN_LOOP"]
+
+[[rule]]
+name = "iil-pattern-compile-in-loop"
+spotbugs = ["IIL_PATTERN_COMPILE_IN_LOOP"]
+
+[[rule]]
+name = "iil-pattern-compile-in-loop-indirect"
+presets = ["strict"]
+category = "performance"
+spotbugs = ["IIL_PATTERN_COMPILE_IN_LOOP_INDIRECT"]
+
+[[rule]]
+name = "iil-prepare-statement-in-loop"
+spotbugs = ["IIL_PREPARE_STATEMENT_IN_LOOP"]
+
+[[rule]]
+name = "iio-inefficient-index-of"
+spotbugs = ["IIO_INEFFICIENT_INDEX_OF"]
+
+[[rule]]
+name = "iio-inefficient-last-index-of"
+spotbugs = ["IIO_INEFFICIENT_LAST_INDEX_OF"]
+
+[[rule]]
+name = "iju-assert-method-invoked-from-run-method"
+category = "correctness"
+spotbugs = ["IJU_ASSERT_METHOD_INVOKED_FROM_RUN_METHOD"]
+
+[[rule]]
+name = "iju-bad-suite-method"
+category = "correctness"
+spotbugs = ["IJU_BAD_SUITE_METHOD"]
+
+[[rule]]
+name = "iju-no-tests"
+category = "correctness"
+spotbugs = ["IJU_NO_TESTS"]
+
+[[rule]]
+name = "iju-setup-no-super"
+category = "correctness"
+spotbugs = ["IJU_SETUP_NO_SUPER"]
+
+[[rule]]
+name = "iju-suite-not-static"
+category = "correctness"
+spotbugs = ["IJU_SUITE_NOT_STATIC"]
+
+[[rule]]
+name = "iju-teardown-no-super"
+category = "correctness"
+spotbugs = ["IJU_TEARDOWN_NO_SUPER"]
+
+[[rule]]
+name = "il-container-added-to-itself"
+category = "correctness"
+spotbugs = ["IL_CONTAINER_ADDED_TO_ITSELF"]
+
+[[rule]]
+name = "il-infinite-loop"
+category = "correctness"
+spotbugs = ["IL_INFINITE_LOOP"]
+
+[[rule]]
+name = "il-infinite-recursive-loop"
+category = "correctness"
+spotbugs = ["IL_INFINITE_RECURSIVE_LOOP"]
+
+[[rule]]
+name = "ima-inefficient-member-access"
+presets = ["strict"]
+category = "performance"
+spotbugs = ["IMA_INEFFICIENT_MEMBER_ACCESS"]
+
+[[rule]]
+name = "imse-dont-catch-imse"
+category = "bad-practice"
+spotbugs = ["IMSE_DONT_CATCH_IMSE"]
+
+[[rule]]
+name = "im-average-computation-could-overflow"
+category = "style"
+spotbugs = ["IM_AVERAGE_COMPUTATION_COULD_OVERFLOW"]
+
+[[rule]]
+name = "im-bad-check-for-odd"
+spotbugs = ["IM_BAD_CHECK_FOR_ODD"]
+
+[[rule]]
+name = "im-multiplying-result-of-irem"
+category = "correctness"
+spotbugs = ["IM_MULTIPLYING_RESULT_OF_IREM"]
+
+[[rule]]
+name = "int-bad-comparison-with-int-value"
+category = "correctness"
+spotbugs = ["INT_BAD_COMPARISON_WITH_INT_VALUE"]
+
+[[rule]]
+name = "int-bad-comparison-with-nonnegative-value"
+category = "correctness"
+spotbugs = ["INT_BAD_COMPARISON_WITH_NONNEGATIVE_VALUE"]
+
+[[rule]]
+name = "int-bad-comparison-with-signed-byte"
+category = "correctness"
+spotbugs = ["INT_BAD_COMPARISON_WITH_SIGNED_BYTE"]
+
+[[rule]]
+name = "int-bad-rem-by-1"
+spotbugs = ["INT_BAD_REM_BY_1"]
+
+[[rule]]
+name = "int-vacuous-bit-operation"
+spotbugs = ["INT_VACUOUS_BIT_OPERATION"]
+
+[[rule]]
+name = "int-vacuous-comparison"
+spotbugs = ["INT_VACUOUS_COMPARISON"]
+
+[[rule]]
+name = "io-appending-to-object-output-stream"
+category = "correctness"
+spotbugs = ["IO_APPENDING_TO_OBJECT_OUTPUT_STREAM"]
+
+[[rule]]
+name = "ip-parameter-is-dead-but-overwritten"
+category = "correctness"
+spotbugs = ["IP_PARAMETER_IS_DEAD_BUT_OVERWRITTEN"]
+
+[[rule]]
+name = "is2-inconsistent-sync"
+category = "mt-correctness"
+spotbugs = ["IS2_INCONSISTENT_SYNC"]
+
+[[rule]]
+name = "isc-instantiate-static-class"
+category = "bad-practice"
+spotbugs = ["ISC_INSTANTIATE_STATIC_CLASS"]
+
+[[rule]]
+name = "is-field-not-guarded"
+category = "mt-correctness"
+spotbugs = ["IS_FIELD_NOT_GUARDED"]
+
+[[rule]]
+name = "ita-inefficient-to-array"
+spotbugs = ["ITA_INEFFICIENT_TO_ARRAY"]
+
+[[rule]]
+name = "it-no-such-element"
+spotbugs = ["IT_NO_SUCH_ELEMENT"]
+
+[[rule]]
+name = "j2-ee-store-of-non-serializable-object-into-session"
+spotbugs = ["J2EE_STORE_OF_NON_SERIALIZABLE_OBJECT_INTO_SESSION"]
+
+[[rule]]
+name = "jcip-field-isnt-final-in-immutable-class"
+category = "bad-practice"
+spotbugs = ["JCIP_FIELD_ISNT_FINAL_IN_IMMUTABLE_CLASS"]
+
+[[rule]]
+name = "jlm-jsr166-lock-monitorenter"
+category = "mt-correctness"
+spotbugs = ["JLM_JSR166_LOCK_MONITORENTER"]
+
+[[rule]]
+name = "jlm-jsr166-utilconcurrent-monitorenter"
+category = "mt-correctness"
+spotbugs = ["JLM_JSR166_UTILCONCURRENT_MONITORENTER"]
+
+[[rule]]
+name = "jml-jsr166-calling-wait-rather-than-await"
+category = "mt-correctness"
+spotbugs = ["JML_JSR166_CALLING_WAIT_RATHER_THAN_AWAIT"]
+
+[[rule]]
+name = "jua-dont-assert-instanceof-in-tests"
+spotbugs = ["JUA_DONT_ASSERT_INSTANCEOF_IN_TESTS"]
+
+[[rule]]
+name = "lg-lost-logger-due-to-weak-reference"
+spotbugs = ["LG_LOST_LOGGER_DUE_TO_WEAK_REFERENCE"]
+
+[[rule]]
+name = "li-lazy-init-static"
+category = "mt-correctness"
+spotbugs = ["LI_LAZY_INIT_STATIC"]
+
+[[rule]]
+name = "li-lazy-init-update-static"
+category = "mt-correctness"
+spotbugs = ["LI_LAZY_INIT_UPDATE_STATIC"]
+
+[[rule]]
+name = "mc-overridable-method-call-in-clone"
+spotbugs = ["MC_OVERRIDABLE_METHOD_CALL_IN_CLONE"]
+
+[[rule]]
+name = "mc-overridable-method-call-in-constructor"
+spotbugs = ["MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR"]
+
+[[rule]]
+name = "mc-overridable-method-call-in-read-object"
+spotbugs = ["MC_OVERRIDABLE_METHOD_CALL_IN_READ_OBJECT"]
+
+[[rule]]
+name = "me-enum-field-setter"
+category = "bad-practice"
+spotbugs = ["ME_ENUM_FIELD_SETTER"]
+
+[[rule]]
+name = "me-mutable-enum-field"
+category = "bad-practice"
+spotbugs = ["ME_MUTABLE_ENUM_FIELD"]
+
+[[rule]]
+name = "mf-class-masks-field"
+category = "correctness"
+spotbugs = ["MF_CLASS_MASKS_FIELD"]
+
+[[rule]]
+name = "mf-method-masks-field"
+category = "correctness"
+spotbugs = ["MF_METHOD_MASKS_FIELD"]
+
+[[rule]]
+name = "ml-sync-on-field-to-guard-changing-that-field"
+category = "mt-correctness"
+spotbugs = ["ML_SYNC_ON_FIELD_TO_GUARD_CHANGING_THAT_FIELD"]
+
+[[rule]]
+name = "ml-sync-on-updated-field"
+category = "mt-correctness"
+spotbugs = ["ML_SYNC_ON_UPDATED_FIELD"]
+
+[[rule]]
+name = "msf-mutable-servlet-field"
+spotbugs = ["MSF_MUTABLE_SERVLET_FIELD"]
+
+[[rule]]
+name = "ms-cannot-be-final"
+spotbugs = ["MS_CANNOT_BE_FINAL"]
+
+[[rule]]
+name = "ms-expose-buf"
+spotbugs = ["MS_EXPOSE_BUF"]
+
+[[rule]]
+name = "ms-expose-rep"
+spotbugs = ["MS_EXPOSE_REP"]
+
+[[rule]]
+name = "ms-final-pkgprotect"
+spotbugs = ["MS_FINAL_PKGPROTECT"]
+
+[[rule]]
+name = "ms-mutable-array"
+spotbugs = ["MS_MUTABLE_ARRAY"]
+
+[[rule]]
+name = "ms-mutable-collection"
+spotbugs = ["MS_MUTABLE_COLLECTION"]
+
+[[rule]]
+name = "ms-mutable-collection-pkgprotect"
+spotbugs = ["MS_MUTABLE_COLLECTION_PKGPROTECT"]
+
+[[rule]]
+name = "ms-mutable-hashtable"
+spotbugs = ["MS_MUTABLE_HASHTABLE"]
+
+[[rule]]
+name = "ms-ooi-pkgprotect"
+spotbugs = ["MS_OOI_PKGPROTECT"]
+
+[[rule]]
+name = "ms-pkgprotect"
+spotbugs = ["MS_PKGPROTECT"]
+
+[[rule]]
+name = "ms-should-be-final"
+spotbugs = ["MS_SHOULD_BE_FINAL"]
+
+[[rule]]
+name = "ms-should-be-refactored-to-be-final"
+spotbugs = ["MS_SHOULD_BE_REFACTORED_TO_BE_FINAL"]
+
+[[rule]]
+name = "mtia-suspect-servlet-instance-field"
+spotbugs = ["MTIA_SUSPECT_SERVLET_INSTANCE_FIELD"]
+
+[[rule]]
+name = "mtia-suspect-struts-instance-field"
+spotbugs = ["MTIA_SUSPECT_STRUTS_INSTANCE_FIELD"]
+
+[[rule]]
+name = "mwn-mismatched-notify"
+category = "mt-correctness"
+spotbugs = ["MWN_MISMATCHED_NOTIFY"]
+
+[[rule]]
+name = "mwn-mismatched-wait"
+category = "mt-correctness"
+spotbugs = ["MWN_MISMATCHED_WAIT"]
+
+[[rule]]
+name = "nm-bad-equal"
+category = "correctness"
+spotbugs = ["NM_BAD_EQUAL"]
+
+[[rule]]
+name = "nm-class-naming-convention"
+category = "bad-practice"
+spotbugs = ["NM_CLASS_NAMING_CONVENTION"]
+
+[[rule]]
+name = "nm-class-not-exception"
+category = "bad-practice"
+spotbugs = ["NM_CLASS_NOT_EXCEPTION"]
+
+[[rule]]
+name = "nm-confusing"
+spotbugs = ["NM_CONFUSING"]
+
+[[rule]]
+name = "nm-field-naming-convention"
+spotbugs = ["NM_FIELD_NAMING_CONVENTION"]
+
+[[rule]]
+name = "nm-lcase-hashcode"
+category = "correctness"
+spotbugs = ["NM_LCASE_HASHCODE"]
+
+[[rule]]
+name = "nm-lcase-tostring"
+category = "correctness"
+spotbugs = ["NM_LCASE_TOSTRING"]
+
+[[rule]]
+name = "nm-method-constructor-confusion"
+category = "correctness"
+spotbugs = ["NM_METHOD_CONSTRUCTOR_CONFUSION"]
+
+[[rule]]
+name = "nm-method-naming-convention"
+category = "bad-practice"
+spotbugs = ["NM_METHOD_NAMING_CONVENTION"]
+
+[[rule]]
+name = "nm-same-simple-name-as-interface"
+category = "bad-practice"
+spotbugs = ["NM_SAME_SIMPLE_NAME_AS_INTERFACE"]
+
+[[rule]]
+name = "nm-same-simple-name-as-superclass"
+category = "bad-practice"
+spotbugs = ["NM_SAME_SIMPLE_NAME_AS_SUPERCLASS"]
+
+[[rule]]
+name = "nm-very-confusing"
+category = "correctness"
+spotbugs = ["NM_VERY_CONFUSING"]
+
+[[rule]]
+name = "nm-very-confusing-intentional"
+spotbugs = ["NM_VERY_CONFUSING_INTENTIONAL"]
+
+[[rule]]
+name = "nm-wrong-package"
+category = "correctness"
+spotbugs = ["NM_WRONG_PACKAGE"]
+
+[[rule]]
+name = "nm-wrong-package-intentional"
+spotbugs = ["NM_WRONG_PACKAGE_INTENTIONAL"]
+
+[[rule]]
+name = "nn-naked-notify"
+spotbugs = ["NN_NAKED_NOTIFY"]
+
+[[rule]]
+name = "noise-field-reference"
+presets = ["strict"]
+category = "noise"
+spotbugs = ["NOISE_FIELD_REFERENCE"]
+
+[[rule]]
+name = "noise-method-call"
+presets = ["strict"]
+category = "noise"
+spotbugs = ["NOISE_METHOD_CALL"]
+
+[[rule]]
+name = "noise-null-dereference"
+presets = ["strict"]
+category = "noise"
+spotbugs = ["NOISE_NULL_DEREFERENCE"]
+
+[[rule]]
+name = "noise-operation"
+presets = ["strict"]
+category = "noise"
+spotbugs = ["NOISE_OPERATION"]
+
+[[rule]]
+name = "no-notify-not-notifyall"
+category = "mt-correctness"
+spotbugs = ["NO_NOTIFY_NOT_NOTIFYALL"]
+
+[[rule]]
+name = "np-always-null"
+category = "correctness"
+spotbugs = ["NP_ALWAYS_NULL"]
+
+[[rule]]
+name = "np-always-null-exception"
+category = "correctness"
+spotbugs = ["NP_ALWAYS_NULL_EXCEPTION"]
+
+[[rule]]
+name = "np-argument-might-be-null"
+category = "correctness"
+spotbugs = ["NP_ARGUMENT_MIGHT_BE_NULL"]
+
+[[rule]]
+name = "np-boolean-return-null"
+category = "bad-practice"
+spotbugs = ["NP_BOOLEAN_RETURN_NULL"]
+
+[[rule]]
+name = "np-clone-could-return-null"
+category = "bad-practice"
+spotbugs = ["NP_CLONE_COULD_RETURN_NULL"]
+
+[[rule]]
+name = "np-closing-null"
+category = "correctness"
+spotbugs = ["NP_CLOSING_NULL"]
+
+[[rule]]
+name = "np-dereference-of-readline-value"
+spotbugs = ["NP_DEREFERENCE_OF_READLINE_VALUE"]
+
+[[rule]]
+name = "np-equals-should-handle-null-argument"
+spotbugs = ["NP_EQUALS_SHOULD_HANDLE_NULL_ARGUMENT"]
+
+[[rule]]
+name = "np-guaranteed-deref"
+category = "correctness"
+spotbugs = ["NP_GUARANTEED_DEREF"]
+
+[[rule]]
+name = "np-guaranteed-deref-on-exception-path"
+category = "correctness"
+spotbugs = ["NP_GUARANTEED_DEREF_ON_EXCEPTION_PATH"]
+
+[[rule]]
+name = "np-immediate-dereference-of-readline"
+spotbugs = ["NP_IMMEDIATE_DEREFERENCE_OF_READLINE"]
+
+[[rule]]
+name = "np-load-of-known-null-value"
+spotbugs = ["NP_LOAD_OF_KNOWN_NULL_VALUE"]
+
+[[rule]]
+name = "np-method-parameter-tightens-annotation"
+spotbugs = ["NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION"]
+
+[[rule]]
+name = "np-method-return-relaxing-annotation"
+spotbugs = ["NP_METHOD_RETURN_RELAXING_ANNOTATION"]
+
+[[rule]]
+name = "np-nonnull-field-not-initialized-in-constructor"
+category = "correctness"
+spotbugs = ["NP_NONNULL_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"]
+
+[[rule]]
+name = "np-nonnull-param-violation"
+category = "correctness"
+spotbugs = ["NP_NONNULL_PARAM_VIOLATION"]
+
+[[rule]]
+name = "np-nonnull-return-violation"
+category = "correctness"
+spotbugs = ["NP_NONNULL_RETURN_VIOLATION"]
+
+[[rule]]
+name = "np-null-instanceof"
+category = "correctness"
+spotbugs = ["NP_NULL_INSTANCEOF"]
+
+[[rule]]
+name = "np-null-on-some-path"
+category = "correctness"
+spotbugs = ["NP_NULL_ON_SOME_PATH"]
+
+[[rule]]
+name = "np-null-on-some-path-exception"
+category = "correctness"
+spotbugs = ["NP_NULL_ON_SOME_PATH_EXCEPTION"]
+
+[[rule]]
+name = "np-null-on-some-path-from-return-value"
+spotbugs = ["NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"]
+
+[[rule]]
+name = "np-null-on-some-path-might-be-infeasible"
+spotbugs = ["NP_NULL_ON_SOME_PATH_MIGHT_BE_INFEASIBLE"]
+
+[[rule]]
+name = "np-null-param-deref"
+category = "correctness"
+spotbugs = ["NP_NULL_PARAM_DEREF"]
+
+[[rule]]
+name = "np-null-param-deref-all-targets-dangerous"
+category = "correctness"
+spotbugs = ["NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS"]
+
+[[rule]]
+name = "np-null-param-deref-nonvirtual"
+category = "correctness"
+spotbugs = ["NP_NULL_PARAM_DEREF_NONVIRTUAL"]
+
+[[rule]]
+name = "np-optional-return-null"
+category = "correctness"
+spotbugs = ["NP_OPTIONAL_RETURN_NULL"]
+
+[[rule]]
+name = "np-parameter-must-be-nonnull-but-marked-as-nullable"
+spotbugs = ["NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE"]
+
+[[rule]]
+name = "np-store-into-nonnull-field"
+category = "correctness"
+spotbugs = ["NP_STORE_INTO_NONNULL_FIELD"]
+
+[[rule]]
+name = "np-sync-and-null-check-field"
+spotbugs = ["NP_SYNC_AND_NULL_CHECK_FIELD"]
+
+[[rule]]
+name = "np-tostring-could-return-null"
+category = "bad-practice"
+spotbugs = ["NP_TOSTRING_COULD_RETURN_NULL"]
+
+[[rule]]
+name = "np-unwritten-field"
+category = "correctness"
+spotbugs = ["NP_UNWRITTEN_FIELD"]
+
+[[rule]]
+name = "np-unwritten-public-or-protected-field"
+spotbugs = ["NP_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"]
+
+[[rule]]
+name = "ns-dangerous-non-short-circuit"
+spotbugs = ["NS_DANGEROUS_NON_SHORT_CIRCUIT"]
+
+[[rule]]
+name = "ns-non-short-circuit"
+spotbugs = ["NS_NON_SHORT_CIRCUIT"]
+
+[[rule]]
+name = "obl-unsatisfied-obligation"
+presets = ["strict"]
+category = "experimental"
+spotbugs = ["OBL_UNSATISFIED_OBLIGATION"]
+
+[[rule]]
+name = "obl-unsatisfied-obligation-exception-edge"
+presets = ["strict"]
+category = "experimental"
+spotbugs = ["OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE"]
+
+[[rule]]
+name = "odr-open-database-resource"
+spotbugs = ["ODR_OPEN_DATABASE_RESOURCE"]
+
+[[rule]]
+name = "odr-open-database-resource-exception-path"
+spotbugs = ["ODR_OPEN_DATABASE_RESOURCE_EXCEPTION_PATH"]
+
+[[rule]]
+name = "os-open-stream"
+spotbugs = ["OS_OPEN_STREAM"]
+
+[[rule]]
+name = "os-open-stream-exception-path"
+spotbugs = ["OS_OPEN_STREAM_EXCEPTION_PATH"]
+
+[[rule]]
+name = "overriding-methods-must-invoke-super"
+category = "correctness"
+spotbugs = ["OVERRIDING_METHODS_MUST_INVOKE_SUPER"]
+
+[[rule]]
+name = "pa-public-array-attribute"
+category = "bad-practice"
+spotbugs = ["PA_PUBLIC_ARRAY_ATTRIBUTE"]
+
+[[rule]]
+name = "pa-public-mutable-object-attribute"
+spotbugs = ["PA_PUBLIC_MUTABLE_OBJECT_ATTRIBUTE"]
+
+[[rule]]
+name = "pa-public-primitive-attribute"
+category = "bad-practice"
+spotbugs = ["PA_PUBLIC_PRIMITIVE_ATTRIBUTE"]
+
+[[rule]]
+name = "perm-super-not-called-in-getpermissions"
+spotbugs = ["PERM_SUPER_NOT_CALLED_IN_GETPERMISSIONS"]
+
+[[rule]]
+name = "pi-do-not-reuse-public-identifiers-class-names"
+spotbugs = ["PI_DO_NOT_REUSE_PUBLIC_IDENTIFIERS_CLASS_NAMES"]
+
+[[rule]]
+name = "pi-do-not-reuse-public-identifiers-field-names"
+spotbugs = ["PI_DO_NOT_REUSE_PUBLIC_IDENTIFIERS_FIELD_NAMES"]
+
+[[rule]]
+name = "pi-do-not-reuse-public-identifiers-local-variable-names"
+spotbugs = ["PI_DO_NOT_REUSE_PUBLIC_IDENTIFIERS_LOCAL_VARIABLE_NAMES"]
+
+[[rule]]
+name = "pi-do-not-reuse-public-identifiers-method-names"
+spotbugs = ["PI_DO_NOT_REUSE_PUBLIC_IDENTIFIERS_METHOD_NAMES"]
+
+[[rule]]
+name = "ps-public-semaphores"
+spotbugs = ["PS_PUBLIC_SEMAPHORES"]
+
+[[rule]]
+name = "pzla-prefer-zero-length-arrays"
+spotbugs = ["PZLA_PREFER_ZERO_LENGTH_ARRAYS"]
+
+[[rule]]
+name = "pz-dont-reuse-entry-objects-in-iterators"
+spotbugs = ["PZ_DONT_REUSE_ENTRY_OBJECTS_IN_ITERATORS"]
+
+[[rule]]
+name = "qba-questionable-boolean-assignment"
+category = "correctness"
+spotbugs = ["QBA_QUESTIONABLE_BOOLEAN_ASSIGNMENT"]
+
+[[rule]]
+name = "qf-questionable-for-loop"
+spotbugs = ["QF_QUESTIONABLE_FOR_LOOP"]
+
+[[rule]]
+name = "range-array-index"
+category = "correctness"
+spotbugs = ["RANGE_ARRAY_INDEX"]
+
+[[rule]]
+name = "range-array-length"
+category = "correctness"
+spotbugs = ["RANGE_ARRAY_LENGTH"]
+
+[[rule]]
+name = "range-array-offset"
+category = "correctness"
+spotbugs = ["RANGE_ARRAY_OFFSET"]
+
+[[rule]]
+name = "range-string-index"
+category = "correctness"
+spotbugs = ["RANGE_STRING_INDEX"]
+
+[[rule]]
+name = "rcn-redundant-comparison-of-null-and-nonnull-value"
+spotbugs = ["RCN_REDUNDANT_COMPARISON_OF_NULL_AND_NONNULL_VALUE"]
+
+[[rule]]
+name = "rcn-redundant-comparison-two-null-values"
+spotbugs = ["RCN_REDUNDANT_COMPARISON_TWO_NULL_VALUES"]
+
+[[rule]]
+name = "rcn-redundant-nullcheck-of-nonnull-value"
+spotbugs = ["RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"]
+
+[[rule]]
+name = "rcn-redundant-nullcheck-of-null-value"
+spotbugs = ["RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"]
+
+[[rule]]
+name = "rcn-redundant-nullcheck-would-have-been-a-npe"
+category = "correctness"
+spotbugs = ["RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"]
+
+[[rule]]
+name = "rc-ref-comparison"
+category = "correctness"
+spotbugs = ["RC_REF_COMPARISON"]
+
+[[rule]]
+name = "rc-ref-comparison-bad-practice"
+category = "bad-practice"
+spotbugs = ["RC_REF_COMPARISON_BAD_PRACTICE"]
+
+[[rule]]
+name = "rc-ref-comparison-bad-practice-boolean"
+category = "bad-practice"
+spotbugs = ["RC_REF_COMPARISON_BAD_PRACTICE_BOOLEAN"]
+
+[[rule]]
+name = "rec-catch-exception"
+spotbugs = ["REC_CATCH_EXCEPTION"]
+
+[[rule]]
+name = "reflc-reflection-may-increase-accessibility-of-class"
+spotbugs = ["REFLC_REFLECTION_MAY_INCREASE_ACCESSIBILITY_OF_CLASS"]
+
+[[rule]]
+name = "reflf-reflection-may-increase-accessibility-of-field"
+spotbugs = ["REFLF_REFLECTION_MAY_INCREASE_ACCESSIBILITY_OF_FIELD"]
+
+[[rule]]
+name = "re-bad-syntax-for-regular-expression"
+category = "correctness"
+spotbugs = ["RE_BAD_SYNTAX_FOR_REGULAR_EXPRESSION"]
+
+[[rule]]
+name = "re-cant-use-file-separator-as-regular-expression"
+category = "correctness"
+spotbugs = ["RE_CANT_USE_FILE_SEPARATOR_AS_REGULAR_EXPRESSION"]
+
+[[rule]]
+name = "re-possible-unintended-pattern"
+category = "correctness"
+spotbugs = ["RE_POSSIBLE_UNINTENDED_PATTERN"]
+
+[[rule]]
+name = "ri-redundant-interfaces"
+spotbugs = ["RI_REDUNDANT_INTERFACES"]
+
+[[rule]]
+name = "rr-not-checked"
+category = "bad-practice"
+spotbugs = ["RR_NOT_CHECKED"]
+
+[[rule]]
+name = "rs-readobject-sync"
+category = "mt-correctness"
+spotbugs = ["RS_READOBJECT_SYNC"]
+
+[[rule]]
+name = "ru-invoke-run"
+category = "mt-correctness"
+spotbugs = ["RU_INVOKE_RUN"]
+
+[[rule]]
+name = "rv-01-to-int"
+category = "correctness"
+spotbugs = ["RV_01_TO_INT"]
+
+[[rule]]
+name = "rv-absolute-value-of-hashcode"
+category = "correctness"
+spotbugs = ["RV_ABSOLUTE_VALUE_OF_HASHCODE"]
+
+[[rule]]
+name = "rv-absolute-value-of-random-int"
+category = "correctness"
+spotbugs = ["RV_ABSOLUTE_VALUE_OF_RANDOM_INT"]
+
+[[rule]]
+name = "rv-check-compareto-for-specific-return-value"
+category = "correctness"
+spotbugs = ["RV_CHECK_COMPARETO_FOR_SPECIFIC_RETURN_VALUE"]
+
+[[rule]]
+name = "rv-check-for-positive-indexof"
+spotbugs = ["RV_CHECK_FOR_POSITIVE_INDEXOF"]
+
+[[rule]]
+name = "rv-dont-just-null-check-readline"
+spotbugs = ["RV_DONT_JUST_NULL_CHECK_READLINE"]
+
+[[rule]]
+name = "rv-exception-not-thrown"
+category = "correctness"
+spotbugs = ["RV_EXCEPTION_NOT_THROWN"]
+
+[[rule]]
+name = "rv-negating-result-of-compareto"
+category = "bad-practice"
+spotbugs = ["RV_NEGATING_RESULT_OF_COMPARETO"]
+
+[[rule]]
+name = "rv-rem-of-hashcode"
+spotbugs = ["RV_REM_OF_HASHCODE"]
+
+[[rule]]
+name = "rv-rem-of-random-int"
+spotbugs = ["RV_REM_OF_RANDOM_INT"]
+
+[[rule]]
+name = "rv-return-value-ignored"
+category = "correctness"
+spotbugs = ["RV_RETURN_VALUE_IGNORED"]
+
+[[rule]]
+name = "rv-return-value-ignored-bad-practice"
+category = "bad-practice"
+spotbugs = ["RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"]
+
+[[rule]]
+name = "rv-return-value-ignored-inferred"
+spotbugs = ["RV_RETURN_VALUE_IGNORED_INFERRED"]
+
+[[rule]]
+name = "rv-return-value-ignored-no-side-effect"
+spotbugs = ["RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"]
+
+[[rule]]
+name = "rv-return-value-of-putifabsent-ignored"
+presets = ["standard", "strict"]
+category = "mt-correctness"
+spotbugs = ["RV_RETURN_VALUE_OF_PUTIFABSENT_IGNORED"]
+
+[[rule]]
+name = "rp-c-repeated-conditional-test"
+category = "correctness"
+spotbugs = ["RpC_REPEATED_CONDITIONAL_TEST"]
+
+[[rule]]
+name = "sa-field-double-assignment"
+spotbugs = ["SA_FIELD_DOUBLE_ASSIGNMENT"]
+
+[[rule]]
+name = "sa-field-self-assignment"
+category = "correctness"
+spotbugs = ["SA_FIELD_SELF_ASSIGNMENT"]
+
+[[rule]]
+name = "sa-field-self-comparison"
+category = "correctness"
+spotbugs = ["SA_FIELD_SELF_COMPARISON"]
+
+[[rule]]
+name = "sa-field-self-computation"
+category = "correctness"
+spotbugs = ["SA_FIELD_SELF_COMPUTATION"]
+
+[[rule]]
+name = "sa-local-double-assignment"
+spotbugs = ["SA_LOCAL_DOUBLE_ASSIGNMENT"]
+
+[[rule]]
+name = "sa-local-self-assignment"
+spotbugs = ["SA_LOCAL_SELF_ASSIGNMENT"]
+
+[[rule]]
+name = "sa-local-self-assignment-instead-of-field"
+category = "correctness"
+spotbugs = ["SA_LOCAL_SELF_ASSIGNMENT_INSTEAD_OF_FIELD"]
+
+[[rule]]
+name = "sa-local-self-comparison"
+category = "correctness"
+spotbugs = ["SA_LOCAL_SELF_COMPARISON"]
+
+[[rule]]
+name = "sa-local-self-computation"
+category = "correctness"
+spotbugs = ["SA_LOCAL_SELF_COMPUTATION"]
+
+[[rule]]
+name = "sbsc-use-stringbuffer-concatenation"
+spotbugs = ["SBSC_USE_STRINGBUFFER_CONCATENATION"]
+
+[[rule]]
+name = "sc-start-in-ctor"
+spotbugs = ["SC_START_IN_CTOR"]
+
+[[rule]]
+name = "se-bad-field"
+spotbugs = ["SE_BAD_FIELD"]
+
+[[rule]]
+name = "se-bad-field-inner-class"
+spotbugs = ["SE_BAD_FIELD_INNER_CLASS"]
+
+[[rule]]
+name = "se-bad-field-store"
+spotbugs = ["SE_BAD_FIELD_STORE"]
+
+[[rule]]
+name = "se-comparator-should-be-serializable"
+category = "bad-practice"
+spotbugs = ["SE_COMPARATOR_SHOULD_BE_SERIALIZABLE"]
+
+[[rule]]
+name = "se-inner-class"
+spotbugs = ["SE_INNER_CLASS"]
+
+[[rule]]
+name = "se-method-must-be-private"
+category = "correctness"
+spotbugs = ["SE_METHOD_MUST_BE_PRIVATE"]
+
+[[rule]]
+name = "se-nonfinal-serialversionid"
+category = "bad-practice"
+spotbugs = ["SE_NONFINAL_SERIALVERSIONID"]
+
+[[rule]]
+name = "se-nonlong-serialversionid"
+category = "bad-practice"
+spotbugs = ["SE_NONLONG_SERIALVERSIONID"]
+
+[[rule]]
+name = "se-nonstatic-serialversionid"
+category = "bad-practice"
+spotbugs = ["SE_NONSTATIC_SERIALVERSIONID"]
+
+[[rule]]
+name = "se-no-serialversionid"
+category = "bad-practice"
+spotbugs = ["SE_NO_SERIALVERSIONID"]
+
+[[rule]]
+name = "se-no-suitable-constructor"
+presets = ["standard", "strict"]
+category = "bad-practice"
+spotbugs = ["SE_NO_SUITABLE_CONSTRUCTOR"]
+
+[[rule]]
+name = "se-no-suitable-constructor-for-externalization"
+presets = ["standard", "strict"]
+category = "bad-practice"
+spotbugs = ["SE_NO_SUITABLE_CONSTRUCTOR_FOR_EXTERNALIZATION"]
+
+[[rule]]
+name = "se-prevent-ext-obj-overwrite"
+spotbugs = ["SE_PREVENT_EXT_OBJ_OVERWRITE"]
+
+[[rule]]
+name = "se-private-read-resolve-not-inherited"
+spotbugs = ["SE_PRIVATE_READ_RESOLVE_NOT_INHERITED"]
+
+[[rule]]
+name = "se-read-resolve-is-static"
+category = "correctness"
+spotbugs = ["SE_READ_RESOLVE_IS_STATIC"]
+
+[[rule]]
+name = "se-read-resolve-must-return-object"
+category = "bad-practice"
+spotbugs = ["SE_READ_RESOLVE_MUST_RETURN_OBJECT"]
+
+[[rule]]
+name = "se-transient-field-not-restored"
+spotbugs = ["SE_TRANSIENT_FIELD_NOT_RESTORED"]
+
+[[rule]]
+name = "se-transient-field-of-nonserializable-class"
+spotbugs = ["SE_TRANSIENT_FIELD_OF_NONSERIALIZABLE_CLASS"]
+
+[[rule]]
+name = "sf-dead-store-due-to-switch-fallthrough"
+category = "correctness"
+spotbugs = ["SF_DEAD_STORE_DUE_TO_SWITCH_FALLTHROUGH"]
+
+[[rule]]
+name = "sf-dead-store-due-to-switch-fallthrough-to-throw"
+category = "correctness"
+spotbugs = ["SF_DEAD_STORE_DUE_TO_SWITCH_FALLTHROUGH_TO_THROW"]
+
+[[rule]]
+name = "sf-switch-fallthrough"
+spotbugs = ["SF_SWITCH_FALLTHROUGH"]
+
+[[rule]]
+name = "sf-switch-no-default"
+spotbugs = ["SF_SWITCH_NO_DEFAULT"]
+
+[[rule]]
+name = "sic-inner-should-be-static"
+spotbugs = ["SIC_INNER_SHOULD_BE_STATIC"]
+
+[[rule]]
+name = "sic-inner-should-be-static-anon"
+spotbugs = ["SIC_INNER_SHOULD_BE_STATIC_ANON"]
+
+[[rule]]
+name = "sic-inner-should-be-static-needs-this"
+presets = ["standard", "strict"]
+category = "performance"
+spotbugs = ["SIC_INNER_SHOULD_BE_STATIC_NEEDS_THIS"]
+
+[[rule]]
+name = "sic-threadlocal-deadly-embrace"
+category = "correctness"
+spotbugs = ["SIC_THREADLOCAL_DEADLY_EMBRACE"]
+
+[[rule]]
+name = "sing-singleton-getter-not-synchronized"
+category = "correctness"
+spotbugs = ["SING_SINGLETON_GETTER_NOT_SYNCHRONIZED"]
+
+[[rule]]
+name = "sing-singleton-has-nonprivate-constructor"
+category = "correctness"
+spotbugs = ["SING_SINGLETON_HAS_NONPRIVATE_CONSTRUCTOR"]
+
+[[rule]]
+name = "sing-singleton-implements-cloneable"
+category = "correctness"
+spotbugs = ["SING_SINGLETON_IMPLEMENTS_CLONEABLE"]
+
+[[rule]]
+name = "sing-singleton-implements-clone-method"
+category = "correctness"
+spotbugs = ["SING_SINGLETON_IMPLEMENTS_CLONE_METHOD"]
+
+[[rule]]
+name = "sing-singleton-implements-serializable"
+category = "correctness"
+spotbugs = ["SING_SINGLETON_IMPLEMENTS_SERIALIZABLE"]
+
+[[rule]]
+name = "sing-singleton-indirectly-implements-cloneable"
+category = "correctness"
+spotbugs = ["SING_SINGLETON_INDIRECTLY_IMPLEMENTS_CLONEABLE"]
+
+[[rule]]
+name = "sio-superfluous-instanceof"
+category = "correctness"
+spotbugs = ["SIO_SUPERFLUOUS_INSTANCEOF"]
+
+[[rule]]
+name = "si-instance-before-finals-assigned"
+presets = ["standard", "strict"]
+category = "bad-practice"
+spotbugs = ["SI_INSTANCE_BEFORE_FINALS_ASSIGNED"]
+
+[[rule]]
+name = "skipped-class-too-big"
+presets = ["strict"]
+category = "experimental"
+spotbugs = ["SKIPPED_CLASS_TOO_BIG"]
+
+[[rule]]
+name = "sp-spin-on-field"
+category = "mt-correctness"
+spotbugs = ["SP_SPIN_ON_FIELD"]
+
+[[rule]]
+name = "sql-bad-prepared-statement-access"
+category = "correctness"
+spotbugs = ["SQL_BAD_PREPARED_STATEMENT_ACCESS"]
+
+[[rule]]
+name = "sql-bad-resultset-access"
+category = "correctness"
+spotbugs = ["SQL_BAD_RESULTSET_ACCESS"]
+
+[[rule]]
+name = "sr-not-checked"
+presets = ["standard", "strict"]
+category = "bad-practice"
+spotbugs = ["SR_NOT_CHECKED"]
+
+[[rule]]
+name = "ssd-do-not-use-instance-lock-on-shared-static-data"
+presets = ["standard", "strict"]
+category = "mt-correctness"
+spotbugs = ["SSD_DO_NOT_USE_INSTANCE_LOCK_ON_SHARED_STATIC_DATA"]
+
+[[rule]]
+name = "ss-should-be-static"
+category = "performance"
+spotbugs = ["SS_SHOULD_BE_STATIC"]
+
+[[rule]]
+name = "stcal-invoke-on-static-calendar-instance"
+spotbugs = ["STCAL_INVOKE_ON_STATIC_CALENDAR_INSTANCE"]
+
+[[rule]]
+name = "stcal-invoke-on-static-date-format-instance"
+spotbugs = ["STCAL_INVOKE_ON_STATIC_DATE_FORMAT_INSTANCE"]
+
+[[rule]]
+name = "stcal-static-calendar-instance"
+category = "mt-correctness"
+spotbugs = ["STCAL_STATIC_CALENDAR_INSTANCE"]
+
+[[rule]]
+name = "stcal-static-simple-date-format-instance"
+category = "mt-correctness"
+spotbugs = ["STCAL_STATIC_SIMPLE_DATE_FORMAT_INSTANCE"]
+
+[[rule]]
+name = "sti-interrupted-on-currentthread"
+category = "correctness"
+spotbugs = ["STI_INTERRUPTED_ON_CURRENTTHREAD"]
+
+[[rule]]
+name = "sti-interrupted-on-unknownthread"
+category = "correctness"
+spotbugs = ["STI_INTERRUPTED_ON_UNKNOWNTHREAD"]
+
+[[rule]]
+name = "st-write-to-static-from-instance-method"
+presets = ["standard", "strict"]
+category = "style"
+spotbugs = ["ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"]
+
+[[rule]]
+name = "swl-sleep-with-lock-held"
+category = "mt-correctness"
+spotbugs = ["SWL_SLEEP_WITH_LOCK_HELD"]
+
+[[rule]]
+name = "sw-swing-methods-invoked-in-swing-thread"
+presets = ["standard", "strict"]
+category = "bad-practice"
+spotbugs = ["SW_SWING_METHODS_INVOKED_IN_SWING_THREAD"]
+
+[[rule]]
+name = "testing"
+presets = ["strict"]
+category = "experimental"
+spotbugs = ["TESTING"]
+
+[[rule]]
+name = "testing1"
+presets = ["strict"]
+category = "experimental"
+spotbugs = ["TESTING1"]
+
+[[rule]]
+name = "testing2"
+presets = ["strict"]
+category = "experimental"
+spotbugs = ["TESTING2"]
+
+[[rule]]
+name = "testing3"
+presets = ["strict"]
+category = "experimental"
+spotbugs = ["TESTING3"]
+
+[[rule]]
+name = "throws-method-throws-clause-basic-exception"
+category = "bad-practice"
+spotbugs = ["THROWS_METHOD_THROWS_CLAUSE_BASIC_EXCEPTION"]
+
+[[rule]]
+name = "throws-method-throws-clause-throwable"
+category = "bad-practice"
+spotbugs = ["THROWS_METHOD_THROWS_CLAUSE_THROWABLE"]
+
+[[rule]]
+name = "throws-method-throws-runtimeexception"
+category = "bad-practice"
+spotbugs = ["THROWS_METHOD_THROWS_RUNTIMEEXCEPTION"]
+
+[[rule]]
+name = "tlw-two-lock-wait"
+presets = ["standard", "strict"]
+category = "mt-correctness"
+spotbugs = ["TLW_TWO_LOCK_WAIT"]
+
+[[rule]]
+name = "tq-always-value-used-where-never-required"
+category = "correctness"
+spotbugs = ["TQ_ALWAYS_VALUE_USED_WHERE_NEVER_REQUIRED"]
+
+[[rule]]
+name = "tq-comparing-values-with-incompatible-type-qualifiers"
+category = "correctness"
+spotbugs = ["TQ_COMPARING_VALUES_WITH_INCOMPATIBLE_TYPE_QUALIFIERS"]
+
+[[rule]]
+name = "tq-explicit-unknown-source-value-reaches-always-sink"
+category = "style"
+spotbugs = ["TQ_EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_ALWAYS_SINK"]
+
+[[rule]]
+name = "tq-explicit-unknown-source-value-reaches-never-sink"
+category = "style"
+spotbugs = ["TQ_EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_NEVER_SINK"]
+
+[[rule]]
+name = "tq-maybe-source-value-reaches-always-sink"
+category = "correctness"
+spotbugs = ["TQ_MAYBE_SOURCE_VALUE_REACHES_ALWAYS_SINK"]
+
+[[rule]]
+name = "tq-maybe-source-value-reaches-never-sink"
+category = "correctness"
+spotbugs = ["TQ_MAYBE_SOURCE_VALUE_REACHES_NEVER_SINK"]
+
+[[rule]]
+name = "tq-never-value-used-where-always-required"
+category = "correctness"
+spotbugs = ["TQ_NEVER_VALUE_USED_WHERE_ALWAYS_REQUIRED"]
+
+[[rule]]
+name = "tq-unknown-value-used-where-always-strictly-required"
+category = "correctness"
+spotbugs = ["TQ_UNKNOWN_VALUE_USED_WHERE_ALWAYS_STRICTLY_REQUIRED"]
+
+[[rule]]
+name = "ucf-useless-control-flow"
+spotbugs = ["UCF_USELESS_CONTROL_FLOW"]
+
+[[rule]]
+name = "ucf-useless-control-flow-next-line"
+spotbugs = ["UCF_USELESS_CONTROL_FLOW_NEXT_LINE"]
+
+[[rule]]
+name = "uc-useless-condition"
+presets = ["standard", "strict"]
+category = "style"
+spotbugs = ["UC_USELESS_CONDITION"]
+
+[[rule]]
+name = "uc-useless-condition-type"
+presets = ["standard", "strict"]
+category = "style"
+spotbugs = ["UC_USELESS_CONDITION_TYPE"]
+
+[[rule]]
+name = "uc-useless-object"
+presets = ["standard", "strict"]
+category = "style"
+spotbugs = ["UC_USELESS_OBJECT"]
+
+[[rule]]
+name = "uc-useless-object-stack"
+presets = ["standard", "strict"]
+category = "style"
+spotbugs = ["UC_USELESS_OBJECT_STACK"]
+
+[[rule]]
+name = "uc-useless-void-method"
+presets = ["standard", "strict"]
+category = "style"
+spotbugs = ["UC_USELESS_VOID_METHOD"]
+
+[[rule]]
+name = "ug-sync-set-unsync-get"
+presets = ["standard", "strict"]
+category = "mt-correctness"
+spotbugs = ["UG_SYNC_SET_UNSYNC_GET"]
+
+[[rule]]
+name = "ui-inheritance-unsafe-getresource"
+category = "bad-practice"
+spotbugs = ["UI_INHERITANCE_UNSAFE_GETRESOURCE"]
+
+[[rule]]
+name = "ul-unreleased-lock"
+category = "mt-correctness"
+spotbugs = ["UL_UNRELEASED_LOCK"]
+
+[[rule]]
+name = "ul-unreleased-lock-exception-path"
+category = "mt-correctness"
+spotbugs = ["UL_UNRELEASED_LOCK_EXCEPTION_PATH"]
+
+[[rule]]
+name = "umac-uncallable-method-of-anonymous-class"
+category = "correctness"
+spotbugs = ["UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS"]
+
+[[rule]]
+name = "um-unnecessary-math"
+category = "performance"
+spotbugs = ["UM_UNNECESSARY_MATH"]
+
+[[rule]]
+name = "unknown"
+presets = ["strict"]
+category = "experimental"
+spotbugs = ["UNKNOWN"]
+
+[[rule]]
+name = "upm-uncalled-private-method"
+category = "performance"
+spotbugs = ["UPM_UNCALLED_PRIVATE_METHOD"]
+
+[[rule]]
+name = "urf-unread-field"
+category = "performance"
+spotbugs = ["URF_UNREAD_FIELD"]
+
+[[rule]]
+name = "urf-unread-public-or-protected-field"
+presets = ["standard", "strict"]
+category = "style"
+spotbugs = ["URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"]
+
+[[rule]]
+name = "ur-uninit-read"
+category = "correctness"
+spotbugs = ["UR_UNINIT_READ"]
+
+[[rule]]
+name = "ur-uninit-read-called-from-super-constructor"
+category = "correctness"
+spotbugs = ["UR_UNINIT_READ_CALLED_FROM_SUPER_CONSTRUCTOR"]
+
+[[rule]]
+name = "usc-potential-security-check-based-on-untrusted-source"
+presets = ["standard", "strict"]
+category = "malicious-code"
+spotbugs = ["USC_POTENTIAL_SECURITY_CHECK_BASED_ON_UNTRUSTED_SOURCE"]
+
+[[rule]]
+name = "usm-useless-abstract-method"
+presets = ["strict"]
+category = "style"
+spotbugs = ["USM_USELESS_ABSTRACT_METHOD"]
+
+[[rule]]
+name = "usm-useless-subclass-method"
+presets = ["strict"]
+category = "style"
+spotbugs = ["USM_USELESS_SUBCLASS_METHOD"]
+
+[[rule]]
+name = "uuf-unused-field"
+category = "performance"
+spotbugs = ["UUF_UNUSED_FIELD"]
+
+[[rule]]
+name = "uuf-unused-public-or-protected-field"
+presets = ["standard", "strict"]
+category = "style"
+spotbugs = ["UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"]
+
+[[rule]]
+name = "uwf-field-not-initialized-in-constructor"
+presets = ["standard", "strict"]
+category = "style"
+spotbugs = ["UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"]
+
+[[rule]]
+name = "uwf-null-field"
+category = "correctness"
+spotbugs = ["UWF_NULL_FIELD"]
+
+[[rule]]
+name = "uwf-unwritten-field"
+category = "correctness"
+spotbugs = ["UWF_UNWRITTEN_FIELD"]
+
+[[rule]]
+name = "uwf-unwritten-public-or-protected-field"
+presets = ["standard", "strict"]
+category = "style"
+spotbugs = ["UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"]
+
+[[rule]]
+name = "uw-uncond-wait"
+presets = ["standard", "strict"]
+category = "mt-correctness"
+spotbugs = ["UW_UNCOND_WAIT"]
+
+[[rule]]
+name = "va-format-string-uses-newline"
+category = "bad-practice"
+spotbugs = ["VA_FORMAT_STRING_USES_NEWLINE"]
+
+[[rule]]
+name = "va-primitive-array-passed-to-object-vararg"
+category = "correctness"
+spotbugs = ["VA_PRIMITIVE_ARRAY_PASSED_TO_OBJECT_VARARG"]
+
+[[rule]]
+name = "vo-volatile-increment"
+category = "mt-correctness"
+spotbugs = ["VO_VOLATILE_INCREMENT"]
+
+[[rule]]
+name = "vo-volatile-reference-to-array"
+category = "mt-correctness"
+spotbugs = ["VO_VOLATILE_REFERENCE_TO_ARRAY"]
+
+[[rule]]
+name = "vr-unresolvable-reference"
+presets = ["strict"]
+category = "correctness"
+spotbugs = ["VR_UNRESOLVABLE_REFERENCE"]
+
+[[rule]]
+name = "vsc-vulnerable-security-check-methods"
+presets = ["standard", "strict"]
+category = "malicious-code"
+spotbugs = ["VSC_VULNERABLE_SECURITY_CHECK_METHODS"]
+
+[[rule]]
+name = "wa-await-not-in-loop"
+spotbugs = ["WA_AWAIT_NOT_IN_LOOP"]
+
+[[rule]]
+name = "wa-not-in-loop"
+category = "mt-correctness"
+spotbugs = ["WA_NOT_IN_LOOP"]
+
+[[rule]]
+name = "wl-using-getclass-rather-than-class-literal"
+category = "mt-correctness"
+spotbugs = ["WL_USING_GETCLASS_RATHER_THAN_CLASS_LITERAL"]
+
+[[rule]]
+name = "wmi-wrong-map-iterator"
+category = "performance"
+spotbugs = ["WMI_WRONG_MAP_ITERATOR"]
+
+[[rule]]
+name = "ws-writeobject-sync"
+category = "mt-correctness"
+spotbugs = ["WS_WRITEOBJECT_SYNC"]
+
+[[rule]]
+name = "xfb-xml-factory-bypass"
+spotbugs = ["XFB_XML_FACTORY_BYPASS"]

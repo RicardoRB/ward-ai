@@ -1,0 +1,89 @@
+# Structural rules of the "sizes" category for TypeScript and JavaScript. Each rule runs on the shared syntax tree.
+
+[[rules]]
+id = "ward:typescript/function-length"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
+body = ""
+
+[[rules]]
+id = "ward:typescript/parameter-count"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 0 }
+body = ""
+
+[[rules]]
+id = "ward:typescript/file-length"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
+body = ""
+
+[[rules]]
+id = "ward:javascript/function-length"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
+body = ""
+
+[[rules]]
+id = "ward:javascript/parameter-count"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 0 }
+body = ""
+
+[[rules]]
+id = "ward:javascript/file-length"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "sizes"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1 }
+body = ""
+
+[[rules]]
+id = "ward:typescript/line-length"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "sizes"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "^.{101,}$"
+message = "line is longer than 100 characters"
+'''
+
+[[rules]]
+id = "ward:javascript/line-length"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "sizes"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = "^.{101,}$"
+message = "line is longer than 100 characters"
+'''

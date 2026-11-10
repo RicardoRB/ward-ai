@@ -1,0 +1,30 @@
+{
+  "2:3-3:3": {
+    "overrides": [
+      {
+        "declaring": {
+          "name": "app.Base"
+        },
+        "name": "close",
+        "params": [],
+        "annotations": [
+          "javax.annotation.OverridingMethodsMustInvokeSuper"
+        ]
+      }
+    ]
+  },
+  "3:3-5:3": {
+    "overrides": [
+      {
+        "declaring": {
+          "name": "app.Base"
+        },
+        "name": "close",
+        "params": [],
+        "annotations": [
+          "javax.annotation.OverridingMethodsMustInvokeSuper"
+        ]
+      }
+    ]
+  }
+}

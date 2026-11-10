@@ -1,0 +1,62 @@
+{
+  "5:12-5:28": {
+    "call": {
+      "declaring": {
+        "name": "java.util.Optional"
+      },
+      "name": "orElseGet",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "9:12-9:30": {
+    "call": {
+      "declaring": {
+        "name": "java.util.Optional"
+      },
+      "name": "orElseThrow",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "6:12-6:25": {
+    "call": {
+      "declaring": {
+        "name": "java.util.Optional"
+      },
+      "name": "orElse",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "10:12-10:33": {
+    "call": {
+      "declaring": {
+        "name": "java.util.Optional"
+      },
+      "name": "orElseGet",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  },
+  "14:12-14:52": {
+    "call": {
+      "declaring": {
+        "name": "java.util.Optional"
+      },
+      "name": "orElseThrow",
+      "params": [],
+      "returns": {
+        "name": "java.lang.Object"
+      }
+    }
+  }
+}

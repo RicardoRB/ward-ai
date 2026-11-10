@@ -1,0 +1,68 @@
+---
+title: Java security rules
+description: The bundled Java injection rules, the untrusted sources, sensitive sinks and sanitizers they use, and their limits.
+---
+
+Ward ships three Java rules that report untrusted input which reaches a sensitive operation inside
+one method. They use the taint analysis, so each finding has a path from the source to the sink in
+[JSON](/reference/json-output/) and SARIF output.
+
+| Rule | Reports | Specifications |
+|---|---|---|
+| `ward:java/sql-injection` | untrusted data in the SQL text of a query | `sources`, `sql` |
+| `ward:java/command-injection` | untrusted data in the program or arguments of a process | `sources`, `command` |
+| `ward:java/path-injection` | untrusted data in a file path | `sources`, `path` |
+
+The rules are written as data in `taint/java/*.toml`, the same format as
+[writing taint specs](/reference/taint-specs/) describes. They need no `ward.toml` change.
+
+## Sources
+
+Untrusted values come from:
+
+- Servlet request getters on `javax.servlet` and `jakarta.servlet` `HttpServletRequest` and
+  `ServletRequest`: `getParameter`, `getParameterValues`, `getParameterMap`, `getHeader`,
+  `getHeaders`, `getQueryString`, `getCookies`, `getInputStream`, `getReader`, `getRequestURI` and
+  `getPathInfo`. A variable named `request` or `req` also matches when its type is not resolved.
+- Spring MVC handler parameters annotated `@RequestParam`, `@PathVariable`, `@RequestHeader`,
+  `@RequestBody`, `@CookieValue` or `@ModelAttribute`, when the annotation is imported by name.
+
+## Sinks
+
+- **SQL:** `java.sql.Statement` `execute`, `executeQuery`, `executeUpdate`, `executeLargeUpdate` and
+  `addBatch`; `java.sql.Connection` `prepareStatement`, `prepareCall` and `nativeSQL`; JPA
+  `EntityManager` `createQuery` and `createNativeQuery`; Spring `JdbcTemplate` `query`,
+  `queryForObject`, `queryForList`, `queryForMap`, `queryForRowSet`, `update`, `execute` and
+  `batchUpdate`. Only the SQL text, argument 0, is guarded. Bound parameters are not.
+- **Command:** `Runtime.exec`, on a variable of type `Runtime` or on `Runtime.getRuntime()`; and
+  `ProcessBuilder` construction and `command`. A `ProcessBuilder` takes its program and arguments
+  as varargs, so the first four positions are guarded.
+- **Path:** the constructors of `java.io.File`, `FileInputStream`, `FileOutputStream`, `FileReader`
+  and `FileWriter`, which guard their first two arguments; the constructor of `RandomAccessFile`,
+  which guards only its first argument, since the second is the mode; `Paths.get` and `Path.of`,
+  which guard their first four arguments; and `Path.resolve`.
+
+Each sink is a call on a resolved receiver type, so `executeQuery` on a type that is not a JDBC type
+is not reported. Constructors are named `<init>`.
+
+## Sanitizers
+
+A sanitizer's result is clean, and a read inside its argument is clean too:
+
+- `Integer.parseInt`, `Integer.valueOf`, `Long.parseLong` and `Long.valueOf`, for all three rules.
+- `org.apache.commons.io.FilenameUtils.getName`, for the path rule.
+
+## Limits
+
+- A rule works within one method. A tainted value passed to a helper method, or stored in a field
+  and read in another method, is not followed. Those cases are missed.
+- The receiver type of a call comes from a declared local, parameter or type name in the file. A
+  call on the result of another call, such as `dataSource.getConnection().prepareStatement(...)`, has
+  no receiver type and is not matched, except `Runtime.getRuntime().exec`.
+- Annotations resolve only through explicit imports. A spring annotation under a wildcard import
+  (`import org.springframework.web.bind.annotation.*`) is not matched.
+- Taint follows whole statements, so a statement that reads a tainted value and also an unrelated
+  value taints what it writes. This adds false positives, such as a whitelist that picks one of two
+  constants from a tainted choice.
+- A custom check such as `replaceAll("[^0-9]", "")` is not a sanitizer, so it is still reported.
+- Interprocedural flow, XSS, LDAP, XPath and the other injection classes are not covered.
