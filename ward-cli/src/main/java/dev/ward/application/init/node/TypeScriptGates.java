@@ -60,7 +60,7 @@ record TypeScriptGates(Framework framework, String testGate)
           node.option(
               SVELTE_CHECK,
               "Type-checks Svelte components and TypeScript with svelte-check.",
-              node.command("svelte-check"));
+              node.svelteCheckCommand());
       case ASTRO ->
           node.option(
               ASTRO_CHECK,

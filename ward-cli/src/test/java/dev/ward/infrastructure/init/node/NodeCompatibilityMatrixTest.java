@@ -39,11 +39,13 @@ class NodeCompatibilityMatrixTest {
   private static final Path FIXTURES = Path.of("src/test/resources/fixtures/node-matrix");
   private static final Path VIOLATIONS = Path.of("src/test/resources/node-matrix/violations");
   private static final String STRYKER = "stryker";
+  private static final String FAILED = "FAILED";
+  private static final String EXECUTION_ERROR = "EXECUTION_ERROR";
   private static final int PACKAGES_ARGUMENT = 3;
   // Test sources skip annotation processing, so the matrix reads each check's name and status pair
   // from the compact JSON report instead of decoding it into a DTO.
   private static final Pattern CHECK =
-      Pattern.compile("\"name\":\"([^\"]+)\"(?:,\"type\":\"[^\"]*\")?,\"status\":\"([A-Z]+)\"");
+      Pattern.compile("\"name\":\"([^\"]+)\"(?:,\"type\":\"[^\"]*\")?,\"status\":\"([A-Z_]+)\"");
 
   @ParameterizedTest(name = "node {0} {1} {2}")
   @CsvFileSource(resources = "/node-matrix/cells.csv", numLinesToSkip = 1)
@@ -90,9 +92,11 @@ class NodeCompatibilityMatrixTest {
     final Map<String, String> seeded = statuses(check(project));
     for (final String gate : clean.keySet()) {
       if (!STRYKER.equals(gate)) {
+        // A seeded syntax error makes a gate error out rather than fail, so either status catches
+        // it.
         assertThat(seeded.get(gate))
             .as("gate that runs nothing is caught: %s", gate)
-            .isEqualTo("FAILED");
+            .isIn(FAILED, EXECUTION_ERROR);
       }
     }
   }

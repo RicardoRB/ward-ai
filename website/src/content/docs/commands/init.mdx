@@ -474,12 +474,13 @@ Before writing, init checks each package it would add against the project's Node
   Vitest 4.1.11 needs npm 11.6 or later: Node 22 bundles npm 10.9, which crashes on it
   (npm/cli#9787), so a Vite 8 project on Node 22 must upgrade npm first.
 - A SvelteKit project (`@sveltejs/kit` declared) with the `svelte-check` gate needs `svelte-kit sync`
-  before the check, because `svelte-check` reads `.svelte-kit/tsconfig.json`. When the `prepare`
-  script does not run it, or is missing, the plan notes the line to add:
+  before the check, because `svelte-check` reads `.svelte-kit/tsconfig.json`. When the `check`
+  script runs `svelte-kit sync`, as the SvelteKit template's does, the gate runs that script with
+  the package manager (`npm run check`, `pnpm run check`, `yarn run check` or `bun run check`).
+  Otherwise the gate runs `svelte-check`, and the plan notes the line to add:
   `"prepare": "svelte-kit sync || echo ''"`. The note does not block init, and init does not edit
-  `scripts`.
-  npm skips `prepare` when install scripts are disabled, such as `ignore-scripts=true` in an
-  `.npmrc`. In that setup, run `svelte-kit sync` before `ward check`.
+  `scripts`. npm does not run the project's own `prepare` script on `npm install`, so run
+  `svelte-kit sync` before `ward check` in that setup.
 - Ward supports Node 22 and 24. For a project that declares an older Node version, init shows a
   warning that Ward may not work with it. The warning does not stop init or change the files it
   writes, and Bun projects do not get it.
