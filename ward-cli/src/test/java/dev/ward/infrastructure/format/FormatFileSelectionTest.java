@@ -5,8 +5,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.analysis.domain.format.FormatOption;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.domain.FakeCommandExecutor;
 import dev.ward.domain.format.FormatConfigurationException;
 import dev.ward.domain.format.FormatTarget;
+import dev.ward.domain.process.CommandExecutor;
+import dev.ward.domain.process.CommandResult;
+import dev.ward.infrastructure.process.ProcessCommandExecutor;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -44,6 +48,23 @@ class FormatFileSelectionTest {
     assertThat(targets)
         .extracting(FormatTarget::relativePath)
         .containsExactly("src/App.java", "src/web/index.ts");
+  }
+
+  @Test
+  void filesThatGitIgnoresAreNotSelected() throws IOException {
+    write("src/app.ts", "const a = 1;");
+    write("coverage/lcov-report/app.ts", "const a = 1;");
+    final FakeCommandExecutor git =
+        new FakeCommandExecutor(
+            new CommandResult(
+                0, "coverage/lcov-report/app.ts\u0000", "", FakeCommandExecutor.DURATION, null));
+
+    assertThat(
+            select(
+                git,
+                Map.of(AnalysisLanguage.TYPESCRIPT, EditorConfigTestSupport.TYPESCRIPT_OPTIONS)))
+        .extracting(FormatTarget::relativePath)
+        .containsExactly("src/app.ts");
   }
 
   @Test
@@ -111,7 +132,12 @@ class FormatFileSelectionTest {
   }
 
   private List<FormatTarget> select(final Map<AnalysisLanguage, List<FormatOption>> declared) {
-    return new FormatFileSelection(new EditorConfigFormatConfiguration(project))
+    return select(new ProcessCommandExecutor(), declared);
+  }
+
+  private List<FormatTarget> select(
+      final CommandExecutor executor, final Map<AnalysisLanguage, List<FormatOption>> declared) {
+    return new FormatFileSelection(new EditorConfigFormatConfiguration(project), executor)
         .select(project, declared);
   }
 
