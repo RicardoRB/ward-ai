@@ -16,6 +16,9 @@ final class NodeScopeStatements {
       Set.of(ScopeKind.FUNCTION, ScopeKind.LAMBDA, ScopeKind.MODULE);
   private static final String SINGLE = "singleExpression";
   private static final String IDENTIFIER = "identifier";
+  private static final String ASSIGNABLE = "assignable";
+  private static final String OBJECT_LITERAL = "objectLiteral";
+  private static final String ARRAY_LITERAL = "arrayLiteral";
 
   private static final String CONST = "const";
 
@@ -57,13 +60,21 @@ final class NodeScopeStatements {
   void catchClause(final SyntaxNode node) {
     walk.builder.open(ScopeKind.BLOCK, node.span());
     for (final SyntaxNode part : NodeFlowSyntax.parts(node)) {
-      if ("assignable".equals(part.kind()) || IDENTIFIER.equals(part.kind())) {
+      if (isCatchParameter(part)) {
         walk.names.declare(part, walk.builder.current(), BindingKind.PARAMETER, Set.of(), false);
       } else {
         walk.visit(part);
       }
     }
     walk.builder.close();
+  }
+
+  /** A catch parameter is a name or a destructuring pattern, which declares the names it binds. */
+  private static boolean isCatchParameter(final SyntaxNode part) {
+    return ASSIGNABLE.equals(part.kind())
+        || IDENTIFIER.equals(part.kind())
+        || OBJECT_LITERAL.equals(part.kind())
+        || ARRAY_LITERAL.equals(part.kind());
   }
 
   void variableStatement(final SyntaxNode node) {
