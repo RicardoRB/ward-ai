@@ -125,6 +125,11 @@ final class NodeScopeNames {
         && EQUALS.equals(NodeFlowSyntax.text(parts.get(1)));
   }
 
+  /** A shorthand property {@code { id }}: a property whose only part is the name it binds. */
+  static boolean isShorthand(final SyntaxNode node) {
+    return PROPERTY_ASSIGNMENT.equals(node.kind()) && NodeFlowSyntax.parts(node).size() == 1;
+  }
+
   private static boolean hasToken(final SyntaxNode node, final String token) {
     return NodeFlowSyntax.parts(node).stream()
         .anyMatch(part -> token.equals(NodeFlowSyntax.text(part)));
@@ -161,6 +166,8 @@ final class NodeScopeNames {
       final List<SyntaxNode> parts = NodeFlowSyntax.parts(inner);
       expression.accept(parts.get(0));
       target(parts.get(parts.size() - 1), compound);
+    } else if (isShorthand(inner)) {
+      target(NodeFlowSyntax.parts(inner).get(0), compound);
     } else if (isAssignmentWithDefault(inner)) {
       final List<SyntaxNode> parts = NodeFlowSyntax.parts(inner);
       target(parts.get(0), compound);
