@@ -90,10 +90,12 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      # GraalVM Community publishes no macOS x64 build after 25.0.1, so the Intel runner uses that one.
       - name: Set up GraalVM 25.5
         uses: graalvm/setup-graalvm@v1
         with:
-          version: '25.5'
+          version: ${{ matrix.os != 'macos-15-intel' && '25.5' || '' }}
+          java-version: ${{ matrix.os == 'macos-15-intel' && '25.0.1' || '' }}
           distribution: graalvm-community
           github-token: ${{ secrets.GITHUB_TOKEN }}
           cache: maven
