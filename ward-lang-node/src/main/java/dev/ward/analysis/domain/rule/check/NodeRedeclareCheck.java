@@ -16,18 +16,31 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Reports a name that a scope declares more than once, like ESLint {@code no-redeclare}: each
  * declaration after the first is reported at its name. A parameter and a {@code var} of the same
- * name in one function count as two declarations. The builtin-globals option is not offered.
+ * name in one function count as two declarations. With {@code ignoreDeclarationMerge}, TypeScript
+ * declarations that merge are not reported, as typescript-eslint does: interfaces, namespaces, a
+ * class with interfaces or namespaces, a function with namespaces, and an enum with namespaces.
  */
 public final class NodeRedeclareCheck implements RuleCheck {
 
   private static final int FIRST_DECLARATION = 1;
   private static final String BUILTIN_NAME = "{value}";
+  private static final String CLASS = "classDeclaration";
+  private static final String INTERFACE = "interfaceDeclaration";
+  private static final String NAMESPACE = "namespaceDeclaration";
+  private static final String FUNCTION = "functionDeclaration";
+  private static final String ENUM = "enumDeclaration";
+  private static final Set<String> CLASS_MERGE = Set.of(CLASS, INTERFACE, NAMESPACE);
+  private static final Set<String> FUNCTION_MERGE = Set.of(FUNCTION, NAMESPACE);
+  private static final Set<String> ENUM_MERGE = Set.of(ENUM, NAMESPACE);
 
   private final boolean builtinGlobals;
+  private final boolean ignoreDeclarationMerge;
   private final Set<String> environments;
   private final String message;
   private final String builtinMessage;
@@ -36,16 +49,19 @@ public final class NodeRedeclareCheck implements RuleCheck {
    * Creates the check.
    *
    * @param builtinGlobals whether a global declaration of a built-in name is reported
+   * @param ignoreDeclarationMerge whether TypeScript declarations that merge are not reported
    * @param environments the environments whose built-in names are defined, such as {@code browser}
    * @param message the message of each finding, with {@code {value}} as the name
    * @param builtinMessage the message of a declaration of a built-in name
    */
   public NodeRedeclareCheck(
       final boolean builtinGlobals,
+      final boolean ignoreDeclarationMerge,
       final Set<String> environments,
       final String message,
       final String builtinMessage) {
     this.builtinGlobals = builtinGlobals;
+    this.ignoreDeclarationMerge = ignoreDeclarationMerge;
     this.environments = Set.copyOf(environments);
     this.message = Objects.requireNonNull(message, "message");
     this.builtinMessage = Objects.requireNonNull(builtinMessage, "builtinMessage");
@@ -62,15 +78,17 @@ public final class NodeRedeclareCheck implements RuleCheck {
     final UnitScopes scopes = view.scopes(environments);
     final Set<String> builtins = builtinNames(scopes);
     final boolean script = !SourceKind.isModule(root);
+    final Map<Integer, String> kinds =
+        ignoreDeclarationMerge ? DeclarationKinds.of(root) : Map.of();
     final List<RuleMatch> matches = new ArrayList<>();
     for (final Scope scope : scopes.scopes()) {
       if (builtinGlobals
           && script
           && !environments.isEmpty()
           && scope.id() == UnitScopes.MODULE_ID) {
-        builtinRedeclarations(scope.bindings(), builtins, matches);
+        builtinRedeclarations(scope.bindings(), builtins, kinds, matches);
       } else {
-        redeclarations(scope.bindings(), matches);
+        redeclarations(scope.bindings(), kinds, matches);
       }
     }
     return List.copyOf(matches);
@@ -89,7 +107,10 @@ public final class NodeRedeclareCheck implements RuleCheck {
 
   /** A global declaration of a built-in name is reported at each of its declarations. */
   private void builtinRedeclarations(
-      final List<Binding> bindings, final Set<String> builtins, final List<RuleMatch> matches) {
+      final List<Binding> bindings,
+      final Set<String> builtins,
+      final Map<Integer, String> kinds,
+      final List<RuleMatch> matches) {
     for (final Binding binding : bindings) {
       if (builtins.contains(binding.name())) {
         matches.add(
@@ -98,20 +119,66 @@ public final class NodeRedeclareCheck implements RuleCheck {
       }
     }
     redeclarations(
-        bindings.stream().filter(binding -> !builtins.contains(binding.name())).toList(), matches);
+        bindings.stream().filter(binding -> !builtins.contains(binding.name())).toList(),
+        kinds,
+        matches);
+  }
+
+  /** The bindings of a scope grouped by name; each reported binding is a redeclaration. */
+  private void redeclarations(
+      final List<Binding> bindings,
+      final Map<Integer, String> kinds,
+      final List<RuleMatch> matches) {
+    final Map<String, List<Binding>> byName =
+        bindings.stream()
+            .collect(Collectors.groupingBy(Binding::name, LinkedHashMap::new, Collectors.toList()));
+    matches.addAll(
+        byName.values().stream()
+            .flatMap(group -> reportedOf(group, kinds).stream())
+            .map(this::match)
+            .toList());
+  }
+
+  private RuleMatch match(final Binding binding) {
+    return new RuleMatch(binding.declaration(), message.replace("{value}", binding.name()));
   }
 
   /**
-   * The bindings of a scope grouped by name; every binding after the first of a name is reported.
+   * The declarations of one name that are reported: every one after the first, unless the
+   * declarations merge, when the merge rules of typescript-eslint decide.
    */
-  private void redeclarations(final List<Binding> bindings, final List<RuleMatch> matches) {
-    final Map<String, Integer> seen = new LinkedHashMap<>();
-    for (final Binding binding : bindings) {
-      final int count = seen.merge(binding.name(), 1, Integer::sum);
-      if (count > FIRST_DECLARATION) {
-        matches.add(
-            new RuleMatch(binding.declaration(), message.replace("{value}", binding.name())));
-      }
+  private List<Binding> reportedOf(final List<Binding> group, final Map<Integer, String> kinds) {
+    if (!ignoreDeclarationMerge || group.size() <= FIRST_DECLARATION) {
+      return group.subList(Math.min(FIRST_DECLARATION, group.size()), group.size());
     }
+    final List<String> found =
+        group.stream()
+            .map(binding -> kinds.getOrDefault(binding.declaration().startOffset(), ""))
+            .toList();
+    if (allIn(found, CLASS_MERGE)) {
+      return onlyWhenRepeated(group, found, CLASS);
+    }
+    if (allIn(found, FUNCTION_MERGE)) {
+      return onlyWhenRepeated(group, found, FUNCTION);
+    }
+    if (allIn(found, ENUM_MERGE)) {
+      return onlyWhenRepeated(group, found, ENUM);
+    }
+    return group.subList(FIRST_DECLARATION, group.size());
+  }
+
+  private static boolean allIn(final List<String> found, final Set<String> kinds) {
+    return found.stream().allMatch(kinds::contains);
+  }
+
+  /** The declarations of {@code kind} when there are several; a single one merges safely. */
+  private static List<Binding> onlyWhenRepeated(
+      final List<Binding> group, final List<String> found, final String kind) {
+    final List<Binding> same =
+        IntStream.range(0, group.size())
+            .filter(index -> kind.equals(found.get(index)))
+            .mapToObj(group::get)
+            .toList();
+    return same.size() > FIRST_DECLARATION ? same : List.of();
   }
 }

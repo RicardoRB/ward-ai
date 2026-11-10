@@ -322,6 +322,7 @@ options.builtin-globals = { type = "boolean" }
 body = '''
 check = "node-no-redeclare"
 builtin-globals = true
+ignore-declaration-merge = true
 env = ["es2024", "browser", "node"]
 message = "'{value}' is already defined."
 builtin-message = "'{value}' is already defined as a built-in global variable."

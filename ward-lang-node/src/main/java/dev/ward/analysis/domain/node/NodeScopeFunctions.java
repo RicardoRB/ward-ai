@@ -26,9 +26,7 @@ final class NodeScopeFunctions {
   void functionLike(final SyntaxNode node) {
     final List<SyntaxNode> parts = NodeFlowSyntax.parts(node);
     if (!hasBody(parts)) {
-      walk.expressionFunction = "anonymousFunction".equals(node.kind());
-      walk.generic(node);
-      walk.expressionFunction = false;
+      bodyless(node);
       return;
     }
     final boolean declaration = DECLARATIONS.contains(node.kind()) && !walk.expressionFunction;
@@ -43,6 +41,23 @@ final class NodeScopeFunctions {
     }
     walk.generic(node);
     walk.builder.close();
+  }
+
+  /**
+   * A function without body. An overload signature owns its parameters, so they are not declared in
+   * the enclosing scope; another wrapper is walked without a scope of its own.
+   */
+  private void bodyless(final SyntaxNode node) {
+    final boolean signature = DECLARATIONS.contains(node.kind()) && !walk.expressionFunction;
+    walk.expressionFunction = "anonymousFunction".equals(node.kind());
+    if (signature) {
+      walk.builder.open(ScopeKind.FUNCTION, node.span());
+      walk.generic(node);
+      walk.builder.close();
+    } else {
+      walk.generic(node);
+    }
+    walk.expressionFunction = false;
   }
 
   static boolean hasBody(final List<SyntaxNode> parts) {

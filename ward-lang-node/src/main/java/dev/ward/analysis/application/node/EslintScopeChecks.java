@@ -27,6 +27,7 @@ final class EslintScopeChecks {
                 toml ->
                     new NodeRedeclareCheck(
                         EslintOptionChecks.flag(toml, "builtin-globals"),
+                        EslintOptionChecks.flag(toml, "ignore-declaration-merge"),
                         Set.copyOf(TomlValues.optionalStrings(toml, "env")),
                         TomlValues.required(toml, MESSAGE),
                         TomlValues.required(toml, "builtin-message"))),

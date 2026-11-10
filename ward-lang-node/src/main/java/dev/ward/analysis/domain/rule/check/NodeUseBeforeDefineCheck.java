@@ -13,12 +13,10 @@ import dev.ward.analysis.domain.scope.Scope;
 import dev.ward.analysis.domain.scope.ScopeKind;
 import dev.ward.analysis.domain.scope.UnitScopes;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Reports a use of a function, class or variable that comes textually before its declaration, like
@@ -32,7 +30,6 @@ public final class NodeUseBeforeDefineCheck implements RuleCheck {
   private static final String INTERFACE = "interfaceDeclaration";
   private static final String TYPE_REFERENCE = "typeReference";
   private static final String EXPORT_ITEMS = "exportModuleItems";
-  private static final String IDENTIFIER_LEAF = "Identifier";
 
   private final Kinds kinds;
   private final boolean allowNamedExports;
@@ -70,7 +67,7 @@ public final class NodeUseBeforeDefineCheck implements RuleCheck {
   public List<RuleMatch> matches(
       final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
     final UnitScopes scopes = view.scopes();
-    final Map<Integer, String> declared = Declarations.declaredKinds(root);
+    final Map<Integer, String> declared = DeclarationKinds.of(root);
     final List<Span> typeSpans = Declarations.spansOf(root, TYPE_REFERENCE);
     final List<Span> exportSpans =
         allowNamedExports ? Declarations.spansOf(root, EXPORT_ITEMS) : List.of();
@@ -101,7 +98,7 @@ public final class NodeUseBeforeDefineCheck implements RuleCheck {
       case FUNCTION -> kinds.functions();
       case CLASS -> kinds.classes() || !upperFunction(scopes, reference, binding);
       case VARIABLE, CONSTANT -> kinds.variables() || !upperFunction(scopes, reference, binding);
-      case TYPE -> typeChecked(declared.get(binding.declaration().startOffset()));
+      case TYPE -> typeChecked(scopes, reference, binding, declared);
       default -> false;
     };
   }
@@ -123,46 +120,23 @@ public final class NodeUseBeforeDefineCheck implements RuleCheck {
     return false;
   }
 
-  private boolean typeChecked(final String declaration) {
+  /**
+   * An enum is checked like a variable, so {@code enums} skips only the uses in nested functions.
+   */
+  private boolean typeChecked(
+      final UnitScopes scopes,
+      final NameReference reference,
+      final Binding binding,
+      final Map<Integer, String> declared) {
+    final String declaration = declared.get(binding.declaration().startOffset());
     if (ENUM.equals(declaration)) {
-      return types.enums();
+      return types.enums() || !upperFunction(scopes, reference, binding);
     }
     return (TYPE_ALIAS.equals(declaration) || INTERFACE.equals(declaration)) && types.typedefs();
   }
 
   /** The tree queries that find the declarations, the type positions and the export clauses. */
   private static final class Declarations {
-
-    /**
-     * The kind of each named declaration, by the offset of its name: enum, type alias or interface.
-     */
-    static Map<Integer, String> declaredKinds(final SyntaxNode root) {
-      final Map<Integer, String> found = new HashMap<>();
-      collectDeclared(root, found);
-      return found;
-    }
-
-    static void collectDeclared(final SyntaxNode node, final Map<Integer, String> found) {
-      if (Set.of(ENUM, TYPE_ALIAS, INTERFACE).contains(node.kind())) {
-        nameOffset(node).ifPresent(offset -> found.put(offset, node.kind()));
-      }
-      node.children().forEach(child -> collectDeclared(child, found));
-    }
-
-    static Optional<Integer> nameOffset(final SyntaxNode node) {
-      if (node.children().isEmpty()) {
-        return IDENTIFIER_LEAF.equals(node.kind())
-            ? Optional.of(node.span().startOffset())
-            : Optional.empty();
-      }
-      for (final SyntaxNode child : node.children()) {
-        final Optional<Integer> found = nameOffset(child);
-        if (found.isPresent()) {
-          return found;
-        }
-      }
-      return Optional.empty();
-    }
 
     static List<Span> spansOf(final SyntaxNode node, final String kind) {
       final List<Span> spans = new ArrayList<>();
