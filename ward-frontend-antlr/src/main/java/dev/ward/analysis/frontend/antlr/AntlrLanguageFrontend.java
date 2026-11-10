@@ -30,8 +30,12 @@ import org.antlr.v4.runtime.ParserRuleContext;
  */
 public final class AntlrLanguageFrontend implements LanguageFrontend {
 
+  /** Recent parses, so the rules, the dependency pass and the type facts parse a unit once. */
+  private static final int RECENT_UNITS = 64;
+
   private final Map<AnalysisLanguage, LanguageFrontend> sessions =
       new EnumMap<>(AnalysisLanguage.class);
+  private final ParseCache recent = new ParseCache(RECENT_UNITS);
 
   /** Creates the lexers and parsers for all six languages. */
   public AntlrLanguageFrontend() {
@@ -42,7 +46,13 @@ public final class AntlrLanguageFrontend implements LanguageFrontend {
 
   @Override
   public ParseResult parse(final SourceUnit unit) {
-    return sessions.get(unit.language()).parse(unit);
+    final ParseResult known = recent.get(unit);
+    if (known != null) {
+      return known;
+    }
+    final ParseResult parsed = sessions.get(unit.language()).parse(unit);
+    recent.put(unit, parsed);
+    return parsed;
   }
 
   private static LanguageFrontend session(final AnalysisLanguage language) {
