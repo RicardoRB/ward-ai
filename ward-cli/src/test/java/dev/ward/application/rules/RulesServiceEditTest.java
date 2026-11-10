@@ -1,6 +1,5 @@
 package dev.ward.application.rules;
 
-import static dev.ward.application.rules.RuleFixtures.FIELD;
 import static dev.ward.application.rules.RuleFixtures.METHOD;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -14,6 +13,8 @@ import org.junit.jupiter.api.Test;
 
 /** {@code ward rules show, enable, disable}: the rule view, and the edits of the selection file. */
 class RulesServiceEditTest {
+  private static final String FIELD = "java.no-field-di";
+  private static final String METHOD_NAME = "java.method-length";
   private static final Path ROOT = Path.of("project");
 
   private final RuleFixtures.FakeSource source = new RuleFixtures.FakeSource();
@@ -51,7 +52,7 @@ class RulesServiceEditTest {
     service.enable(ROOT, List.of(METHOD));
 
     assertThat(file.writes).isEqualTo(1);
-    assertThat(file.written).contains("[select]\ninclude = [\"" + METHOD + "\"]");
+    assertThat(file.written).contains("[select]\ninclude = [\"" + METHOD_NAME + "\"]");
   }
 
   @Test
@@ -63,16 +64,17 @@ class RulesServiceEditTest {
     assertThat(file.written)
         .contains("# keep me")
         .contains("# field")
-        .contains("\"" + FIELD + "\", \"" + METHOD + "\"");
+        .contains("\"" + FIELD + "\", \"" + METHOD_NAME + "\"");
   }
 
   @Test
   void disableWritesAnExcludeEntry() {
-    file.text = Optional.of("[select]\ninclude = [\"" + METHOD + "\"]\n");
+    file.text = Optional.of("[select]\ninclude = [\"" + METHOD_NAME + "\"]\n");
 
     service.disable(ROOT, List.of(METHOD));
 
-    assertThat(file.written).isEqualTo("[select]\nexclude = [\"" + METHOD + "\"]\ninclude = []\n");
+    assertThat(file.written)
+        .isEqualTo("[select]\nexclude = [\"" + METHOD_NAME + "\"]\ninclude = []\n");
   }
 
   @Test

@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 final class PresetRuleFileContent {
   /** The options the strict preset sets on the {@code ward:java/hidden-field} rule. */
   private static final String HIDDEN_FIELD =
-      "\n[rules.\"ward:java/hidden-field\"]\nignore-constructor-parameter = true\n"
+      "\n[rules.java.hidden-field]\nignore-constructor-parameter = true\n"
           + "ignore-setter = true\n";
 
   private PresetRuleFileContent() {}

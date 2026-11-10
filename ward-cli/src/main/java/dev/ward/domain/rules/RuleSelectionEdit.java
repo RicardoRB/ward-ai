@@ -5,8 +5,9 @@ import java.util.List;
 
 /**
  * Edits the {@code include} and {@code exclude} arrays of the {@code [select]} table of {@code
- * ward-rules.toml} as text, so comments, blank lines and the other keys keep their place. It
- * changes nothing else; the caller checks the result with a TOML reader before it writes.
+ * ward-rules.toml} as text, so comments, blank lines and the other keys keep their place. A rule id
+ * {@code ward:<language>/<rule-name>} is written {@code <language>.<rule-name>}, the name the file
+ * uses. It changes nothing else; the caller checks the result with a TOML reader before it writes.
  */
 public final class RuleSelectionEdit {
   /** The array of rules the project turns on. */
@@ -51,7 +52,7 @@ public final class RuleSelectionEdit {
     final List<String> lines = new ArrayList<>(List.of(start.split(NEWLINE, -1)));
     SelectTable.ensure(lines);
     for (final String id : ids) {
-      final String token = QUOTE + id + QUOTE;
+      final String token = QUOTE + id.substring(id.indexOf(':') + 1).replace('/', '.') + QUOTE;
       RuleArrayEdit.remove(lines, source, token);
       RuleArrayEdit.add(lines, target, token);
     }

@@ -8,10 +8,9 @@ import org.tomlj.TomlParseResult;
 import org.tomlj.TomlTable;
 
 /**
- * Reads the {@code [rules]} table of {@code ward-rules.toml}. A rule table is written either as
- * {@code [rules."ward:<group>/<name>"]} or as {@code [rules.<group>.<name>]}, and both name the
- * rule {@code ward:<group>/<name>}. Configuring one rule in both forms is a problem that names both
- * tables; the first table is kept.
+ * Reads the {@code [rules]} table of {@code ward-rules.toml}. A rule table is written {@code
+ * [rules.<group>.<name>]} and names the rule {@code ward:<group>/<name>}. A table named by the
+ * quoted rule id is a problem that names the form to write instead.
  */
 final class RuleTableReader {
   private static final String RULES = "rules";
@@ -19,7 +18,6 @@ final class RuleTableReader {
 
   private final String name;
   private final List<String> problems;
-  private final Map<String, String> headers = new LinkedHashMap<>();
 
   RuleTableReader(final String name, final List<String> problems) {
     this.name = name;
@@ -36,7 +34,7 @@ final class RuleTableReader {
     }
     for (final String key : table == null ? Set.<String>of() : table.keySet()) {
       if (key.contains(":")) {
-        quotedRule(table, key, rules);
+        quotedRule(key);
       } else {
         group(table, key, rules);
       }
@@ -44,20 +42,16 @@ final class RuleTableReader {
     return rules;
   }
 
-  /** Returns the table header of each rule as written, by rule id. */
-  Map<String, String> headers() {
-    return Map.copyOf(headers);
-  }
-
-  /** Reads {@code [rules."ward:<group>/<name>"]}. */
-  private void quotedRule(
-      final TomlTable table, final String id, final Map<String, Map<String, Object>> rules) {
-    final TomlTable rule = table.isTable(List.of(id)) ? table.getTable(List.of(id)) : null;
-    if (rule == null) {
-      problem("", RULES, "[rules.\"" + id + "\"] must be a table");
-    } else {
-      add(rules, id, "[rules.\"" + id + "\"]", rule);
-    }
+  /** Reports {@code [rules."ward:<group>/<name>"]}, which is not a rule table name. */
+  private void quotedRule(final String id) {
+    final String dotted = id.substring(id.indexOf(':') + 1).replace('/', '.');
+    problems.add(
+        name
+            + ": [rules.\""
+            + id
+            + "\"]: name the table [rules.<language>.<rule-name>]; write [rules."
+            + dotted
+            + "]");
   }
 
   /** Reads {@code [rules.<group>.<name>]} as {@code ward:<group>/<name>}. */
@@ -65,40 +59,18 @@ final class RuleTableReader {
       final TomlTable table, final String group, final Map<String, Map<String, Object>> rules) {
     final TomlTable entries = table.isTable(List.of(group)) ? table.getTable(List.of(group)) : null;
     if (entries == null) {
-      problem("", RULES, "[rules.\"" + group + "\"] must be a table");
+      problem("", RULES, "[rules." + group + "] must be a table");
       return;
     }
     for (final String rule : entries.keySet()) {
-      if (entries.isTable(List.of(rule))) {
-        add(
-            rules,
-            RULE_PREFIX + group + "/" + rule,
-            "[rules." + group + "." + rule + "]",
-            entries.getTable(List.of(rule)));
-      } else {
+      final TomlTable options =
+          entries.isTable(List.of(rule)) ? entries.getTable(List.of(rule)) : null;
+      if (options == null) {
         problem("[rules." + group + "]", rule, "must be a rule table");
+      } else {
+        rules.put(RULE_PREFIX + group + "/" + rule, TomlTree.values(options));
       }
     }
-  }
-
-  /** Adds the rule unless another table already configures it; the first table is kept. */
-  private void add(
-      final Map<String, Map<String, Object>> rules,
-      final String id,
-      final String header,
-      final TomlTable rule) {
-    if (headers.containsKey(id)) {
-      problems.add(
-          name
-              + ": "
-              + headers.get(id)
-              + " and "
-              + header
-              + " configure the same rule; keep one table");
-      return;
-    }
-    headers.put(id, header);
-    rules.put(id, TomlTree.values(rule));
   }
 
   private void problem(final String table, final String key, final String detail) {

@@ -17,7 +17,8 @@ class WardCliRulesEditTest extends WardCliIntegrationSupport {
   private static final String DISABLE = "disable";
   private static final String DIRECTORY = "-C";
   private static final String METHOD = "ward:java/method-length";
-  private static final String FIELD = "ward:java/no-field-di";
+  private static final String FIELD = "java.no-field-di";
+  private static final String METHOD_NAME = "java.method-length";
   private static final String FILE = "ward-rules.toml";
 
   @BeforeEach
@@ -30,7 +31,7 @@ class WardCliRulesEditTest extends WardCliIntegrationSupport {
     assertThat(run(RULES, ENABLE, METHOD, DIRECTORY, project.toString())).isEqualTo(ExitCodes.OK);
 
     final String text = Files.readString(project.resolve(FILE));
-    assertThat(text).contains("version = 1").contains("include = [\"" + METHOD + "\"]");
+    assertThat(text).contains("version = 1").contains("include = [\"" + METHOD_NAME + "\"]");
   }
 
   @Test
@@ -47,20 +48,20 @@ class WardCliRulesEditTest extends WardCliIntegrationSupport {
     assertThat(text)
         .contains("# team rules")
         .contains("# turn on the DI rule")
-        .contains("\"" + FIELD + "\", \"" + METHOD + "\"");
+        .contains("\"" + FIELD + "\", \"" + METHOD_NAME + "\"");
   }
 
   @Test
   void disableMovesTheRuleToExclude() throws IOException {
     Files.writeString(
-        project.resolve(FILE), "version = 1\n[select]\ninclude = [\"" + METHOD + "\"]\n");
+        project.resolve(FILE), "version = 1\n[select]\ninclude = [\"" + METHOD_NAME + "\"]\n");
 
     assertThat(run(RULES, DISABLE, METHOD, DIRECTORY, project.toString())).isEqualTo(ExitCodes.OK);
 
     final String text = Files.readString(project.resolve(FILE));
     assertThat(text)
-        .contains("exclude = [\"" + METHOD + "\"]")
-        .doesNotContain("include = [\"" + METHOD);
+        .contains("exclude = [\"" + METHOD_NAME + "\"]")
+        .doesNotContain("include = [\"" + METHOD_NAME);
   }
 
   @Test

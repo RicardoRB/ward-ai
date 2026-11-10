@@ -61,7 +61,7 @@ class GenericRuleOptionsGateTest {
     project.config(FixtureProject.VERSION);
     assertThat(FixtureProject.ids(project.run(List.of(), null, new HashMap<>()))).contains(id);
 
-    project.config(FixtureProject.VERSION + "[rules.\"" + id + "\"]\n" + option + "\n");
+    project.config(FixtureProject.VERSION + "[rules.java.example-" + rule + "]\n" + option + "\n");
     assertThat(FixtureProject.ids(project.run(List.of(), null, new HashMap<>())))
         .doesNotContain(id);
   }

@@ -19,7 +19,7 @@ class RuleConfigurationGateTest {
   private static final String METHOD_LENGTH = "ward:java/method-length";
   private static final String TYPE_NAME = "ward:java/type-name";
   private static final String RULES_FILE = "ward-rules.toml";
-  private static final String TABLE = "[rules.\"ward:java/method-length\"]\n";
+  private static final String TABLE = "[rules.java.method-length]\n";
   private static final int SEVENTY = 70;
 
   @TempDir Path dir;
@@ -51,10 +51,24 @@ class RuleConfigurationGateTest {
   }
 
   @Test
+  void aRuleWrittenAsItsIdInExcludeFailsTheGate() throws IOException {
+    final FixtureProject f = fixture();
+    f.config("version = 1\n[select]\nexclude = [\"" + METHOD_LENGTH + "\"]\n");
+
+    final GateResult result = f.run(List.of(), null, new HashMap<>());
+
+    assertThat(result.status()).isEqualTo(GateStatus.EXECUTION_ERROR);
+    assertThat(result.stderr())
+        .contains(
+            "ward-rules.toml: [select] exclude: \"ward:java/method-length\": name the rule"
+                + " <language>.<rule-name>; write \"java.method-length\"");
+  }
+
+  @Test
   void excludeRemovesAPresetRuleAndKeepsTheOthers() throws IOException {
     final FixtureProject f = fixture();
     f.source(FixtureProject.SRC_A, "class lower", SEVENTY);
-    f.config("version = 1\n[select]\nexclude = [\"" + METHOD_LENGTH + "\"]\n");
+    f.config("version = 1\n[select]\nexclude = [\"java.method-length\"]\n");
 
     final GateResult result = f.run(List.of(), null, new HashMap<>());
 

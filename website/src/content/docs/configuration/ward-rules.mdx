@@ -10,7 +10,7 @@ cycles, independence).
 
 Without the file the `ward` check selects rules as before: the ids in its `rules` list, or all of
 them. With the file, the `rules` list in `ward.toml` is a configuration error that names both files;
-move the ids to `include` below. To keep the file elsewhere, set `rules-file` in the check; the path
+move the rules to `include` below, written as described next. To keep the file elsewhere, set `rules-file` in the check; the path
 must stay inside the project:
 
 ```toml
@@ -18,6 +18,11 @@ must stay inside the project:
 uses = "ward"
 rules-file = "config/ward-rules.toml"
 ```
+
+Inside `ward-rules.toml` a rule is always named `<language>.<rule-name>`, such as
+`java.method-length`: in `include`, in `exclude` and in its table `[rules.java.method-length]`.
+Wherever Ward prints a rule (findings, JSON, SARIF, `ward rules list`) it is the id
+`ward:<language>/<rule-name>`, such as `ward:java/method-length`.
 
 ## Example
 
@@ -28,10 +33,10 @@ version = 1
 preset = "standard"                 # none | standard | strict (default: standard)
 languages = ["java", "typescript"]  # default: every language
 categories = ["naming", "sizes"]    # default: every category
-include = ["ward:java/missing-javadoc"]
-exclude = ["ward:java/star-import"]
+include = ["java.missing-javadoc"]
+exclude = ["java.star-import"]
 
-[rules.java.method-length]          # the same rule as [rules."ward:java/method-length"]
+[rules.java.method-length]          # tunes the rule ward:java/method-length
 max = 80
 severity = "warning"                # error | warning
 exclude-paths = ["src/generated/**"]
@@ -43,7 +48,13 @@ pattern = "[A-Z][A-Za-z0-9]*"
 ## Selection
 
 Ward starts from the rules of the preset, keeps only the listed `languages` and `categories`, adds
-the ids in `include` and removes the ids in `exclude`.
+the rules in `include` and removes the rules in `exclude`.
+
+A rule written as its id in either list is a configuration error that names the form to write:
+
+```text
+ward-rules.toml: [select] exclude: "ward:java/star-import": name the rule <language>.<rule-name>; write "java.star-import"
+```
 
 | Preset | Rules |
 |---|---|
@@ -52,26 +63,24 @@ the ids in `include` and removes the ids in `exclude`.
 | `none` | No rule; build the set from `include`. |
 
 A rule belongs to one category, named after the usual style groups: `sizes`, `metrics`, `naming`,
-`imports`, `javadoc`, `coding`, `misc` or `linter`. A `[rules."<id>"]` table for a rule that is not
+`imports`, `javadoc`, `coding`, `misc` or `linter`. A rule table for a rule that is not
 selected is a configuration error, so a tuned rule is never silently off.
 
 `ward rules list --selected` shows the rules the file selects, and `ward rules enable` and
-`ward rules disable` add an id to `include` or `exclude` without losing the file's comments. See the
+`ward rules disable` add a rule to `include` or `exclude` without losing the file's comments. See the
 [`ward rules` command](/commands/rules/).
 
 ## Rule tables
 
-A rule table is named in one of two ways, and both configure the same rule:
+A rule table is named `[rules.<language>.<rule-name>]`, such as `[rules.java.method-length]`, which
+is the rule `ward:java/method-length`. The group can also be a non-language group such as
+`architecture`.
 
-- `[rules.<language>.<rule-name>]`, such as `[rules.java.method-length]`, which is the rule
-  `ward:java/method-length`. The group can also be a non-language group such as `architecture`.
-- `[rules."ward:<language>/<rule-name>"]`, the quoted id, such as `[rules."ward:java/method-length"]`.
-
-Writing both tables for one rule is a configuration error that names both, and the file is not used
-until one of them is removed:
+A table named by the rule id is a configuration error that names the table to write, and the
+file is not used until it is renamed:
 
 ```text
-ward-rules.toml: [rules."ward:java/method-length"] and [rules.java.method-length] configure the same rule; keep one table
+ward-rules.toml: [rules."ward:java/method-length"]: name the table [rules.<language>.<rule-name>]; write [rules.java.method-length]
 ```
 
 Every rule accepts `severity` (`error` or `warning`) and `exclude-paths` (globs relative to the
@@ -129,7 +138,7 @@ ward-rules.toml: [rules.cobol.method-length]: unknown rule id
 ward-rules.toml: [rules.java] max: must be a rule table
 ```
 
-Each problem names the table as it is written in the file, in either form.
+Each problem names the table as it is written in the file.
 
 Unknown rule ids, unknown options, wrong types, values out of range, unknown enum values, and
 invalid globs or regular expressions are all errors. The `ward` gate then fails with an execution

@@ -10,13 +10,14 @@ import org.tomlj.Toml;
 /** Enabling rules: the edit adds to {@code include} and keeps the rest of the file. */
 class RuleSelectionEditEnableTest {
   private static final String METHOD = "ward:java/method-length";
-  private static final String FIELD = "ward:java/no-field-di";
+  private static final String FIELD = "java.no-field-di";
+  private static final String METHOD_NAME = "java.method-length";
 
   @Test
   void enableOnAMissingFileWritesVersionAndSelect() {
     final String text = RuleSelectionEdit.enable(null, List.of(METHOD));
 
-    assertThat(text).isEqualTo("version = 1\n\n[select]\ninclude = [\"" + METHOD + "\"]\n");
+    assertThat(text).isEqualTo("version = 1\n\n[select]\ninclude = [\"" + METHOD_NAME + "\"]\n");
     assertValid(text);
   }
 
@@ -24,7 +25,7 @@ class RuleSelectionEditEnableTest {
   void enableAddsTheSelectTableWhenTheFileHasNone() {
     final String text = RuleSelectionEdit.enable("version = 1\n", List.of(METHOD));
 
-    assertThat(text).isEqualTo("version = 1\n\n[select]\ninclude = [\"" + METHOD + "\"]\n");
+    assertThat(text).isEqualTo("version = 1\n\n[select]\ninclude = [\"" + METHOD_NAME + "\"]\n");
     assertValid(text);
   }
 
@@ -35,7 +36,8 @@ class RuleSelectionEditEnableTest {
             "version = 1\n[select]\ninclude = [\"" + FIELD + "\"]\n", List.of(METHOD));
 
     assertThat(text)
-        .isEqualTo("version = 1\n[select]\ninclude = [\"" + FIELD + "\", \"" + METHOD + "\"]\n");
+        .isEqualTo(
+            "version = 1\n[select]\ninclude = [\"" + FIELD + "\", \"" + METHOD_NAME + "\"]\n");
     assertValid(text);
   }
 
@@ -43,7 +45,7 @@ class RuleSelectionEditEnableTest {
   void enableFillsAnEmptyArray() {
     final String text = RuleSelectionEdit.enable("[select]\ninclude = []\n", List.of(METHOD));
 
-    assertThat(text).isEqualTo("[select]\ninclude = [\"" + METHOD + "\"]\n");
+    assertThat(text).isEqualTo("[select]\ninclude = [\"" + METHOD_NAME + "\"]\n");
     assertValid(text);
   }
 
@@ -57,10 +59,10 @@ class RuleSelectionEditEnableTest {
             + "preset = \"standard\"  # the default set\n"
             + "# rules we want on top of it\n"
             + "include = [\n"
-            + "    \"ward:java/no-field-di\", # DI rule\n"
+            + "    \"java.no-field-di\", # DI rule\n"
             + "]\n"
             + "\n"
-            + "[rules.\"ward:java/method-length\"]\n"
+            + "[rules.java.method-length]\n"
             + "max = 80\n";
 
     final String text = RuleSelectionEdit.enable(original, List.of(METHOD));
@@ -74,11 +76,11 @@ class RuleSelectionEditEnableTest {
                 + "preset = \"standard\"  # the default set\n"
                 + "# rules we want on top of it\n"
                 + "include = [\n"
-                + "    \"ward:java/no-field-di\", # DI rule\n"
-                + "    \"ward:java/method-length\",\n"
+                + "    \"java.no-field-di\", # DI rule\n"
+                + "    \"java.method-length\",\n"
                 + "]\n"
                 + "\n"
-                + "[rules.\"ward:java/method-length\"]\n"
+                + "[rules.java.method-length]\n"
                 + "max = 80\n");
     assertValid(text);
   }
@@ -86,15 +88,16 @@ class RuleSelectionEditEnableTest {
   @Test
   void enableMovesAnIdOutOfExclude() {
     final String text =
-        RuleSelectionEdit.enable("[select]\nexclude = [\"" + METHOD + "\"]\n", List.of(METHOD));
+        RuleSelectionEdit.enable(
+            "[select]\nexclude = [\"" + METHOD_NAME + "\"]\n", List.of(METHOD));
 
-    assertThat(text).isEqualTo("[select]\ninclude = [\"" + METHOD + "\"]\nexclude = []\n");
+    assertThat(text).isEqualTo("[select]\ninclude = [\"" + METHOD_NAME + "\"]\nexclude = []\n");
     assertValid(text);
   }
 
   @Test
   void enableDoesNotDuplicateAnId() {
-    final String original = "[select]\ninclude = [\"" + METHOD + "\"]\n";
+    final String original = "[select]\ninclude = [\"" + METHOD_NAME + "\"]\n";
 
     assertThat(RuleSelectionEdit.enable(original, List.of(METHOD))).isEqualTo(original);
   }
