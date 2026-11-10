@@ -133,9 +133,20 @@ capability = "SYNTAX"
 severity = "ERROR"
 category = "suggestion"
 presets = ["standard", "strict"]
+options.mode = { type = "enum", values = ["never", "global", "function", "safe"], parameter = "mode" }
 body = '''
 check = "node-strict-directive"
-message = "'use strict' is unnecessary inside of modules."
+mode = "safe"
+message-function = "Use the function form of 'use strict'."
+message-global = "Use the global form of 'use strict'."
+message-multiple = "Multiple 'use strict' directives."
+message-never = "Strict mode is not permitted."
+message-unnecessary = "Unnecessary 'use strict' directive."
+message-module = "'use strict' is unnecessary inside of modules."
+message-unnecessary-in-classes = "'use strict' is unnecessary inside of classes."
+message-non-simple-parameter-list = "'use strict' directive inside a function with non-simple parameter list throws a syntax error since ES2016."
+message-wrap = "Wrap the code in a function with 'use strict' directive."
+always-module = false
 '''
 
 [[rules]]
@@ -145,9 +156,20 @@ capability = "SYNTAX"
 severity = "ERROR"
 category = "suggestion"
 presets = ["standard", "strict"]
+options.mode = { type = "enum", values = ["never", "global", "function", "safe"], parameter = "mode" }
 body = '''
 check = "node-strict-directive"
-message = "'use strict' is unnecessary inside of modules."
+mode = "safe"
+message-function = "Use the function form of 'use strict'."
+message-global = "Use the global form of 'use strict'."
+message-multiple = "Multiple 'use strict' directives."
+message-never = "Strict mode is not permitted."
+message-unnecessary = "Unnecessary 'use strict' directive."
+message-module = "'use strict' is unnecessary inside of modules."
+message-unnecessary-in-classes = "'use strict' is unnecessary inside of classes."
+message-non-simple-parameter-list = "'use strict' directive inside a function with non-simple parameter list throws a syntax error since ES2016."
+message-wrap = "Wrap the code in a function with 'use strict' directive."
+always-module = false
 '''
 
 [[rules]]

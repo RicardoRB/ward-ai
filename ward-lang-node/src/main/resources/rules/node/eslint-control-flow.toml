@@ -318,9 +318,13 @@ capability = "SCOPES"
 severity = "ERROR"
 category = "suggestion"
 presets = ["standard", "strict"]
+options.builtin-globals = { type = "boolean" }
 body = '''
 check = "node-no-redeclare"
+builtin-globals = true
+env = ["es2024", "browser", "node"]
 message = "'{value}' is already defined."
+builtin-message = "'{value}' is already defined as a built-in global variable."
 '''
 
 [[rules]]
@@ -330,9 +334,13 @@ capability = "SCOPES"
 severity = "ERROR"
 category = "suggestion"
 presets = ["standard", "strict"]
+options.builtin-globals = { type = "boolean" }
 body = '''
 check = "node-no-redeclare"
+builtin-globals = true
+env = ["es2024", "browser", "node"]
 message = "'{value}' is already defined."
+builtin-message = "'{value}' is already defined as a built-in global variable."
 '''
 
 [[rules]]
@@ -345,11 +353,19 @@ presets = ["standard", "strict"]
 options.functions = { type = "boolean" }
 options.classes = { type = "boolean" }
 options.variables = { type = "boolean" }
+options.allow-named-exports = { type = "boolean" }
+options.enums = { type = "boolean" }
+options.typedefs = { type = "boolean" }
+options.ignore-type-references = { type = "boolean" }
 body = '''
 check = "node-no-use-before-define"
 functions = true
 classes = true
 variables = true
+allow-named-exports = false
+enums = true
+typedefs = true
+ignore-type-references = true
 message = "'{value}' was used before it was defined."
 '''
 
@@ -363,11 +379,19 @@ presets = ["standard", "strict"]
 options.functions = { type = "boolean" }
 options.classes = { type = "boolean" }
 options.variables = { type = "boolean" }
+options.allow-named-exports = { type = "boolean" }
+options.enums = { type = "boolean" }
+options.typedefs = { type = "boolean" }
+options.ignore-type-references = { type = "boolean" }
 body = '''
 check = "node-no-use-before-define"
 functions = true
 classes = true
 variables = true
+allow-named-exports = false
+enums = true
+typedefs = true
+ignore-type-references = true
 message = "'{value}' was used before it was defined."
 '''
 
