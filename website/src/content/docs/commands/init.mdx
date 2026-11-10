@@ -276,8 +276,7 @@ commercial Arcmutate history plugin.
 - **`ward.toml` architecture tables.** `[[checks.ward.layers]]` holds the boundary of the style, and
   `ward:architecture/layers` checks it. Under `strict`, `[checks.ward.cycles]` lists the source roots
   whose slices must not form cycles, and `[[checks.ward.independence]]` lists the feature modules that
-  must stay independent. Init writes no ArchUnit test, dependency-cruiser config, Import Linter config
-  or Harmonize package.
+  must stay independent.
 - **The `gitleaks` gate** writes a redacted SARIF report, so `ward check` can attach findings (file,
   line, and rule) to a failed gate:
 
@@ -523,8 +522,7 @@ projects are not supported yet, and init stops with an error that names the mana
   checks formatting.
   `pip-audit` is opt-in.
 - Lint comes from Ward's Python rules: `ward-rules.toml` selects them for `"python"` with the
-  preset. Init does not offer, pin or configure Ruff, Pylint or vulture. A project's own `ruff.toml`
-  is left unchanged.
+  preset.
 - Ward writes `mypy.ini` and `.coveragerc` only where the project has none. A config the
   project keeps is never changed; its coverage threshold goes on the command instead.
 - Install runs the manager's sync or install. A failed install restores `pyproject.toml`, the lock
@@ -574,7 +572,7 @@ error that names the generator.
   older than 26.0 (or one whose version cannot be read), and an Xcode project with a `Podfile`.
   Move CocoaPods dependencies to Swift Package Manager to use Ward with that project.
 - **Lint rules.** The `ward` check applies Ward's Swift rules that the preset selects in
-  `ward-rules.toml`, as for Java. Init writes no SwiftLint gate.
+  `ward-rules.toml`, as for Java.
 - **Gates.** `ward-format` runs in every profile. A SwiftPM package adds `swift-build` and
   `swift-test`; an Xcode project adds `xcodebuild-test`. Both end with `swift-coverage` in the
   `pre-push` and `ci` profiles, at an 80% minimum under `standard` and 85% under `strict`.
@@ -598,12 +596,7 @@ error that names the generator.
   several, the wizard asks, or `--scheme <name>` chooses one; `--yes` without `--scheme` fails and
   names the schemes. The test platform is `iOS Simulator`, or `macOS` when every target builds only
   for macOS.
-- **No SwiftLint files.** Init writes no SwiftLint config, tools package (`.ward/swift-tools/`), resolve
-  step or CI cache. Re-running init removes the Ward-owned SwiftLint files that an earlier init wrote:
-  `.swiftlint.yml`, `.ward/swiftlint-strict.yml` and `.ward/swift-tools/Package.swift` with its
-  `Package.resolved`. A `.swiftlint.yml` you wrote is kept as it is. A `.ward/swift-tools/.build`
-  cache from an earlier run is not removed; delete it by hand. Ward never edits the project's
-  `Package.swift` or `project.pbxproj`.
+- **Project files.** Ward never edits the project's `Package.swift` or `project.pbxproj`.
 - **Configs.** Init writes `.editorconfig` when the project has none. The `.editorconfig` indentation
   follows the project's sources, so Xcode's 4-space templates pass. Files the project keeps are never
   changed.

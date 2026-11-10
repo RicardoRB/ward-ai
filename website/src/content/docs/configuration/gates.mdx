@@ -179,7 +179,7 @@ their `command` from the project root, exactly as written, and pass when it exit
   such as `uv run` or `poetry run`, so the project's own environment runs the tool.
 - When `uses` is omitted, Ward infers the type from the command wherever the tool appears, so
   `coverage report` is `coverage`, `mutmut run` is `mutmut`, and `pytest` is `pytest`, including
-  `coverage run -m pytest`. A `ruff check` command is not inferred: it is a plain `command` check.
+  `coverage run -m pytest`.
 - `mypy` findings are read from its output; see [structured findings](#structured-findings).
 
 ```toml
@@ -488,24 +488,24 @@ analyzes again only the files around the change. Deleting `.ward/cache/` still f
 
 ### Java rules
 
-Ward ships thirteen Java rules. They mirror the structural checks of the strict
+Ward ships thirteen Java rules. They are the structural checks of the strict
 preset, so a Java project can run them in the same pass as the rest of its gates:
 
-| Rule | Mirrors | Limit or pattern |
-|---|---|---|
-| `ward:java/file-length` | Checkstyle `FileLength` | more than 500 lines |
-| `ward:java/method-length` | Checkstyle `MethodLength` | method body over 60 lines |
-| `ward:java/parameter-count` | Checkstyle `ParameterNumber` | more than 5 parameters |
-| `ward:java/cyclomatic-complexity` | Checkstyle `CyclomaticComplexity` | above 10 |
-| `ward:java/cognitive-complexity` | PMD `CognitiveComplexity` | above 15 |
-| `ward:java/star-import` | Checkstyle `AvoidStarImport` | any `.*` import |
-| `ward:java/unused-import` | Checkstyle `UnusedImports` | a simple name used nowhere else, including Javadoc |
-| `ward:java/missing-javadoc` | Checkstyle `MissingJavadocType` and `MissingJavadocMethod` | public types and methods without Javadoc |
-| `ward:java/type-name` | Checkstyle `TypeName` | `^[A-Z][a-zA-Z0-9]*$` |
-| `ward:java/method-name` | Checkstyle `MethodName` | `^[a-z][a-zA-Z0-9]*$` |
-| `ward:java/member-name` | Checkstyle `MemberName` | non-static fields matching `^[a-z][a-zA-Z0-9]*$` |
-| `ward:java/parameter-name` | Checkstyle `ParameterName` | `^[a-z][a-zA-Z0-9]*$` |
-| `ward:java/local-variable-name` | Checkstyle `LocalVariableName` | `^[a-z][a-zA-Z0-9]*$` |
+| Rule | Limit or pattern |
+|---|---|
+| `ward:java/file-length` | more than 500 lines |
+| `ward:java/method-length` | method body over 60 lines |
+| `ward:java/parameter-count` | more than 5 parameters |
+| `ward:java/cyclomatic-complexity` | above 10 |
+| `ward:java/cognitive-complexity` | above 15 |
+| `ward:java/star-import` | any `.*` import |
+| `ward:java/unused-import` | a simple name used nowhere else, including Javadoc |
+| `ward:java/missing-javadoc` | public types and methods without Javadoc |
+| `ward:java/type-name` | `^[A-Z][a-zA-Z0-9]*$` |
+| `ward:java/method-name` | `^[a-z][a-zA-Z0-9]*$` |
+| `ward:java/member-name` | non-static fields matching `^[a-z][a-zA-Z0-9]*$` |
+| `ward:java/parameter-name` | `^[a-z][a-zA-Z0-9]*$` |
+| `ward:java/local-variable-name` | `^[a-z][a-zA-Z0-9]*$` |
 
 Differences from the upstream checks, by construction:
 
@@ -529,11 +529,11 @@ id.
 Data-flow rules read the control flow of each function and how it uses its local variables and
 parameters. They run in the `ward` gate with the other rules:
 
-| Rule | Mirrors | Reports |
-|---|---|---|
-| `ward:java/unused-assignment` | PMD `UnusedAssignment` | a write to a local variable or parameter that no read can observe |
-| `ward:typescript/unused-assignment` | none | the same check, for TypeScript |
-| `ward:javascript/unused-assignment` | none | the same check, for JavaScript |
+| Rule | Reports |
+|---|---|
+| `ward:java/unused-assignment` | a write to a local variable or parameter that no read can observe |
+| `ward:typescript/unused-assignment` | the same check, for TypeScript |
+| `ward:javascript/unused-assignment` | the same check, for JavaScript |
 
 Differences from the upstream check, by construction:
 
@@ -586,8 +586,7 @@ variables, redefinitions and shadowing build on it.
 
 The `ward` gate runs seven Kotlin structural rules for `.kt` files, including files in Gradle Kotlin
 modules. They read the syntax tree from the ANTLR Kotlin frontend and use the same limits as the
-Java size and naming rules. Ward's Kotlin rules replace Detekt and ktlint. Ward never ran either
-tool: it has no gate, parser or init step for them.
+Java size and naming rules.
 
 | Rule | Limit or pattern |
 |---|---|
@@ -613,21 +612,19 @@ Differences from the Java rules, by construction:
 
 The `ward` gate runs five Python structural rules for `.py` files. They read the syntax tree from
 the ANTLR Python frontend and use fixed limits. Init selects the Python rules of the preset in
-`ward-rules.toml`, so lint no longer needs Ruff.
+`ward-rules.toml`.
 
-| Rule | Limit | Severity | Ruff counterpart |
-|---|---|---|---|
-| `ward:python/function-length` | more than 60 lines in a function, from the `def` line | error | none; Ruff's `PLR0915` counts statements, not lines |
-| `ward:python/parameter-count` | more than 5 parameters; `self` and `cls` of a method are not counted | error | `PLR0913` (max-args 5; whether Ruff counts `self` is not checked here) |
-| `ward:python/complexity` | complexity above 10 | error | `C901` (max-complexity 10) |
-| `ward:python/file-length` | more than 500 lines in a module | error | none |
-| `ward:python/naming` | functions and variables `snake_case`, classes `CapWords`; dunder names skipped | warning | `N802`, `N801`, `N806` (Ruff also checks arguments, which Ward does not) |
+| Rule | Limit | Severity |
+|---|---|---|
+| `ward:python/function-length` | more than 60 lines in a function, from the `def` line | error |
+| `ward:python/parameter-count` | more than 5 parameters; `self` and `cls` of a method are not counted | error |
+| `ward:python/complexity` | complexity above 10 | error |
+| `ward:python/file-length` | more than 500 lines in a module | error |
+| `ward:python/naming` | functions and variables `snake_case`, classes `CapWords`; dunder names skipped | warning |
 
 Complexity is one plus the decision points in a function: `if`, `elif`, `while`, `for`, `except`,
 `match` cases, comprehension `for` and `if` clauses, each `and` and `or`, and conditional
-expressions. Nested functions, classes and lambdas are measured on their own. Ruff's `C901` follows
-McCabe. How Ruff's `C901` treats boolean operators is not checked against Ruff's documentation here,
-so compare the two counts on your own code before relying on the parity.
+expressions. Nested functions, classes and lambdas are measured on their own.
 
 Enable the rules by naming them in `ward.toml`:
 
@@ -701,14 +698,14 @@ writes no external cycle or independence rule.
 The `ward` gate runs six Swift structural rules for `.swift` files. They read the syntax tree from
 the ANTLR Swift frontend and use fixed limits. They are the Swift style and lint checks; no external linter gate runs beside them.
 
-| Rule | Limit | Severity | SwiftLint counterpart |
-|---|---|---|---|
-| `ward:swift/function-length` | more than 60 lines in a function, method or initializer, from the declaration line | error | `function_body_length` (warning 50, error 100): Ward counts lines of the whole declaration, header included, and uses a single limit of 60 |
-| `ward:swift/parameter-count` | more than 5 parameters; defaulted and variadic parameters count | error | `function_parameter_count` (warning 5, error 8): Ward has one limit, 5 |
-| `ward:swift/complexity` | complexity above 10 | error | `cyclomatic_complexity` (warning 10, error 20): Ward counts every `case` label, including the first |
-| `ward:swift/file-length` | more than 500 lines in a file | error | `file_length` (warning 400, error 1000): Ward's limit is 500, matching the Python and Java rules |
-| `ward:swift/type-body-length` | more than 300 lines in a `struct`, `class`, `protocol`, `extension` or enum, from the declaration line | error | `type_body_length` (warning 250, error 350): Ward's limit 300 is a Ward choice, not a SwiftLint default |
-| `ward:swift/naming` | types `UpperCamelCase`; functions, variables, constants and enum cases `lowerCamelCase`; leading underscores and backticks ignored | warning | `identifier_name` checks length too (warning min 3 and max 40): Ward does not check length |
+| Rule | Limit | Severity |
+|---|---|---|
+| `ward:swift/function-length` | more than 60 lines in a function, method or initializer, from the declaration line | error |
+| `ward:swift/parameter-count` | more than 5 parameters; defaulted and variadic parameters count | error |
+| `ward:swift/complexity` | complexity above 10 | error |
+| `ward:swift/file-length` | more than 500 lines in a file | error |
+| `ward:swift/type-body-length` | more than 300 lines in a `struct`, `class`, `protocol`, `extension` or enum, from the declaration line | error |
+| `ward:swift/naming` | types `UpperCamelCase`; functions, variables, constants and enum cases `lowerCamelCase`; leading underscores and backticks ignored | warning |
 
 Complexity is one plus the decision points of a function or initializer: `if`, `guard`, `else if`,
 `for ... in`, `while`, `repeat ... while`, each `catch`, each `case` label, each `?:`, and each `&&`
