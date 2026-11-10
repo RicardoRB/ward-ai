@@ -133,4 +133,52 @@ final class NodeConfigImplicitUseCheckTest {
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
+
+  @Test
+  void treatsAGateCommandPackageAsUsedWhenTheRootWardConfigRunsIt() {
+    final List<ProjectMatch> found =
+        new NodeUnusedDependencyCheck(MESSAGE, DEV_DEPENDENCIES)
+            .project(
+                ProjectFixtures.trees(Map.of()),
+                ProjectFixtures.manifests(
+                    Map.of(
+                        "ward.toml",
+                        "[checks.astro]\ncommand = \"npx astro check\"\n",
+                        PACKAGE,
+                        "{\"devDependencies\":{\"@astrojs/check\":\"^0.9\"}}")));
+
+    assertThat(ProjectFixtures.positions(found)).isEmpty();
+  }
+
+  @Test
+  void treatsTheDefaultCoverageProviderAsUsedWhenAVitestGateRunsCoverage() {
+    final List<ProjectMatch> found =
+        new NodeUnusedDependencyCheck(MESSAGE, DEV_DEPENDENCIES)
+            .project(
+                ProjectFixtures.trees(Map.of()),
+                ProjectFixtures.manifests(
+                    Map.of(
+                        "ward.toml",
+                        "[checks.test]\ncommand = \"npx vitest run --coverage\"\n",
+                        PACKAGE,
+                        "{\"devDependencies\":{\"@vitest/coverage-v8\":\"^4\"}}")));
+
+    assertThat(ProjectFixtures.positions(found)).isEmpty();
+  }
+
+  @Test
+  void aGateCommandOfAnotherFolderIsNotRead() {
+    final List<ProjectMatch> found =
+        new NodeUnusedDependencyCheck(MESSAGE, DEV_DEPENDENCIES)
+            .project(
+                ProjectFixtures.trees(Map.of()),
+                ProjectFixtures.manifests(
+                    Map.of(
+                        "apps/web/ward.toml",
+                        "[checks.astro]\ncommand = \"npx astro check\"\n",
+                        "apps/web/package.json",
+                        "{\"devDependencies\":{\"@astrojs/check\":\"^0.9\"}}")));
+
+    assertThat(ProjectFixtures.positions(found)).containsExactly("apps/web/package.json:1:21");
+  }
 }

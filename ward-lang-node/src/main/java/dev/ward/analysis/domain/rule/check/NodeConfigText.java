@@ -27,6 +27,18 @@ final class NodeConfigText {
 
   private static final Pattern QUOTED = Pattern.compile("[\"']([^\"'\\s]+)[\"']");
 
+  /** A gate command string in {@code ward.toml}, as {@code command = "npx astro check"}. */
+  private static final Pattern GATE_COMMAND = Pattern.compile("command\\s*=\\s*\"([^\"]*)\"");
+
+  private static final String ASTRO = "astro";
+  private static final String CHECK = "check";
+  private static final String ASTRO_CHECK_PACKAGE = "@astrojs/check";
+  private static final String VITEST = "vitest";
+  private static final String COVERAGE_FLAG = "--coverage";
+
+  /** Vitest's default coverage provider, which a coverage run uses unless it names another. */
+  private static final String VITEST_COVERAGE_PACKAGE = "@vitest/coverage-v8";
+
   private NodeConfigText() {}
 
   /** Adds the packages a tsconfig names: typescript, tslib, extended and plugin packages. */
@@ -104,5 +116,27 @@ final class NodeConfigText {
   private static Optional<String> firstGroup(final Pattern pattern, final String text) {
     final Matcher match = pattern.matcher(text);
     return match.find() ? Optional.of(match.group(1)) : Optional.empty();
+  }
+
+  /** The command line of each gate in a {@code ward.toml}. */
+  static List<String> gateCommands(final String text) {
+    return allMatches(GATE_COMMAND, text);
+  }
+
+  /**
+   * The packages a gate command implies beyond the binaries it runs: {@code astro check} runs the
+   * check integration, and a vitest run with coverage uses the default coverage provider.
+   */
+  static Set<String> impliedBy(final List<String> tokens) {
+    final Set<String> packages = new HashSet<>();
+    for (int i = 0; i + 1 < tokens.size(); i++) {
+      if (ASTRO.equals(tokens.get(i)) && CHECK.equals(tokens.get(i + 1))) {
+        packages.add(ASTRO_CHECK_PACKAGE);
+      }
+    }
+    if (tokens.contains(VITEST) && tokens.contains(COVERAGE_FLAG)) {
+      packages.add(VITEST_COVERAGE_PACKAGE);
+    }
+    return packages;
   }
 }
