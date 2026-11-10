@@ -138,6 +138,16 @@ class RuleSchemaGeneratorTest {
   }
 
   @Test
+  void shortRuleTablesReferenceTheSameRuleSchemaAsTheQuotedKey() {
+    final String schema = RuleSchema.render(List.of(SIZES));
+
+    assertThat(schema).contains("\"java\": {");
+    assertThat(schema).contains("\"method-length\": {");
+    assertThat(schema).contains("\"$ref\": \"#/$defs/ward:java~1method-length\"");
+    assertThat(schema).contains("\"ward:java/method-length\": {");
+  }
+
+  @Test
   void endsWithALineBreakAfterTheRootObject() {
     assertThat(RuleSchema.render(List.of(SIZES))).startsWith("{\n").endsWith("}\n");
   }

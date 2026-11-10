@@ -1,16 +1,11 @@
 package dev.ward.infrastructure.rule.catalog;
 
-import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import static dev.ward.infrastructure.rule.catalog.RuleSchemaJson.obj;
+
 import dev.ward.analysis.domain.rule.RuleDefinition;
-import dev.ward.analysis.domain.rule.RuleOption;
-import dev.ward.analysis.domain.rule.RulePreset;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.stream.Stream;
 
 /**
  * Generates the JSON Schema of {@code ward-rules.toml} from the rule definitions, so a TOML editor
@@ -25,16 +20,10 @@ final class RuleSchema {
   static final String DIALECT = "https://json-schema.org/draft/2020-12/schema";
 
   private static final String TYPE = "type";
-  private static final String STRING = "string";
   private static final String OBJECT = "object";
-  private static final String ARRAY = "array";
-  private static final String ITEMS = "items";
-  private static final String ENUM = "enum";
-  private static final String PROPERTIES = "properties";
   private static final String ADDITIONAL = "additionalProperties";
-  private static final String SEVERITY = "severity";
-  private static final String EXCLUDE_PATHS = "exclude-paths";
-  private static final List<String> SEVERITIES = List.of("error", "warning");
+  private static final String PROPERTIES = "properties";
+  private static final String RULE_PREFIX = "ward:";
 
   private RuleSchema() {}
 
@@ -55,97 +44,49 @@ final class RuleSchema {
             + " from the rule catalog by RuleSchemaTest; do not edit by hand.");
     root.put(TYPE, OBJECT);
     root.put(ADDITIONAL, false);
+    final Map<String, Object> defs = obj();
     final Map<String, Object> properties = obj();
     properties.put("version", obj("const", 1L));
-    properties.put("select", select(definitions));
-    properties.put("rules", rules(definitions));
+    properties.put("select", RuleSchemaSelect.select(definitions));
+    properties.put("rules", rules(definitions, defs));
+    root.put("$defs", defs);
     root.put(PROPERTIES, properties);
     return root;
   }
 
-  private static Map<String, Object> select(final List<RuleDefinition> definitions) {
+  /**
+   * Returns the {@code rules} object. Each rule's schema is defined once in {@code defs} and
+   * referenced from the quoted table key and from the short {@code [rules.<group>.<name>]} key.
+   */
+  private static Map<String, Object> rules(
+      final List<RuleDefinition> definitions, final Map<String, Object> defs) {
     final Map<String, Object> properties = obj();
-    properties.put("preset", obj(TYPE, STRING, ENUM, presetKeys()));
-    properties.put("languages", array(obj(TYPE, STRING, ENUM, languageKeys())));
-    properties.put("categories", array(obj(TYPE, STRING, ENUM, categories(definitions))));
-    properties.put("include", array(obj(TYPE, STRING, ENUM, ids(definitions))));
-    properties.put("exclude", array(obj(TYPE, STRING, ENUM, ids(definitions))));
-    return obj(TYPE, OBJECT, ADDITIONAL, false, PROPERTIES, properties);
-  }
-
-  private static Map<String, Object> rules(final List<RuleDefinition> definitions) {
-    final Map<String, Object> properties = obj();
+    final Map<String, Map<String, Object>> groups = new TreeMap<>();
     final Map<String, RuleDefinition> byId = new TreeMap<>();
     definitions.forEach(definition -> byId.put(definition.id(), definition));
-    byId.forEach((id, definition) -> properties.put(id, rule(definition)));
+    byId.forEach(
+        (id, definition) -> {
+          defs.put(id, RuleOptionSchema.rule(definition));
+          final Map<String, Object> ref = ref(id);
+          properties.put(id, ref);
+          groups.computeIfAbsent(group(id), key -> obj()).put(name(id), ref);
+        });
+    groups.forEach(
+        (group, members) ->
+            properties.put(group, obj(TYPE, OBJECT, ADDITIONAL, false, PROPERTIES, members)));
     return obj(TYPE, OBJECT, ADDITIONAL, false, PROPERTIES, properties);
   }
 
-  private static Map<String, Object> rule(final RuleDefinition definition) {
-    final Map<String, Object> properties = obj();
-    properties.put(SEVERITY, obj(TYPE, STRING, ENUM, SEVERITIES));
-    properties.put(EXCLUDE_PATHS, array(obj(TYPE, STRING)));
-    for (final RuleOption option : definition.options()) {
-      properties.put(option.name(), option(option));
-    }
-    return obj(TYPE, OBJECT, ADDITIONAL, false, PROPERTIES, properties);
+  private static Map<String, Object> ref(final String id) {
+    return obj("$ref", "#/$defs/" + id.replace("/", "~1"));
   }
 
-  private static Map<String, Object> option(final RuleOption option) {
-    return switch (option.type()) {
-      case INTEGER -> integer(option);
-      case BOOLEAN -> obj(TYPE, "boolean");
-      case STRING_LIST -> array(obj(TYPE, STRING));
-      case ENUM -> obj(TYPE, STRING, ENUM, option.values());
-      case REGEX -> obj(TYPE, STRING, "description", "A regular expression.");
-      default -> obj(TYPE, STRING);
-    };
+  /** Returns the group of {@code ward:<group>/<name>}, such as {@code java}. */
+  private static String group(final String id) {
+    return id.substring(RULE_PREFIX.length(), id.indexOf('/'));
   }
 
-  private static Map<String, Object> integer(final RuleOption option) {
-    final Map<String, Object> schema = obj(TYPE, "integer");
-    if (option.min() != Long.MIN_VALUE) {
-      schema.put("minimum", option.min());
-    }
-    if (option.max() != Long.MAX_VALUE) {
-      schema.put("maximum", option.max());
-    }
-    return schema;
-  }
-
-  private static List<String> presetKeys() {
-    return Stream.of(RulePreset.values()).map(RulePreset::key).toList();
-  }
-
-  private static List<String> languageKeys() {
-    return Stream.of(AnalysisLanguage.values())
-        .map(language -> language.name().toLowerCase(Locale.ROOT))
-        .toList();
-  }
-
-  private static List<String> categories(final List<RuleDefinition> definitions) {
-    final Set<String> categories = new TreeSet<>();
-    definitions.stream()
-        .map(RuleDefinition::category)
-        .filter(category -> !category.isEmpty())
-        .forEach(categories::add);
-    return List.copyOf(categories);
-  }
-
-  private static List<String> ids(final List<RuleDefinition> definitions) {
-    return definitions.stream().map(RuleDefinition::id).distinct().sorted().toList();
-  }
-
-  private static Map<String, Object> array(final Object items) {
-    return obj(TYPE, ARRAY, ITEMS, items);
-  }
-
-  /** Returns a mutable object whose keys keep their insertion order. */
-  private static Map<String, Object> obj(final Object... keysAndValues) {
-    final Map<String, Object> map = new java.util.LinkedHashMap<>();
-    for (int index = 0; index < keysAndValues.length; index += 2) {
-      map.put((String) keysAndValues[index], keysAndValues[index + 1]);
-    }
-    return map;
+  private static String name(final String id) {
+    return id.substring(id.indexOf('/') + 1);
   }
 }

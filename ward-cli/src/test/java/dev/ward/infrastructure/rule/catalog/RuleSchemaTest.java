@@ -2,6 +2,7 @@ package dev.ward.infrastructure.rule.catalog;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.analysis.domain.rule.RuleDefinition;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -41,7 +42,7 @@ class RuleSchemaTest {
     final String generated = RuleSchema.render(CatalogRuleDefinitions.shipped());
     final List<String> missing =
         CatalogRuleDefinitions.shipped().stream()
-            .map(definition -> definition.id())
+            .map(RuleDefinition::id)
             .filter(id -> !generated.contains("\"" + id + "\": {"))
             .toList();
 
