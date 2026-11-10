@@ -13,6 +13,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.stream.Stream;
 
 /**
@@ -39,14 +40,15 @@ final class FileSystemManifests {
       return ProjectFiles.empty();
     }
     final Map<String, String> texts = new TreeMap<>();
+    final Set<String> existing = new TreeSet<>();
     final Set<String> ignored = GitIgnoredFiles.of(root, executor);
     try {
-      Files.walkFileTree(root, new Collector(root, names, ignored, texts));
+      Files.walkFileTree(root, new Collector(root, names, ignored, texts, existing));
     } catch (final IOException exception) {
       throw new WardException("Could not read the manifest files under " + root + ".", exception);
     }
     addInstalled(root, texts);
-    return new ProjectFiles(texts);
+    return new ProjectFiles(texts, existing);
   }
 
   /**
@@ -106,34 +108,39 @@ final class FileSystemManifests {
     private final Set<String> names;
     private final Set<String> ignored;
     private final Map<String, String> texts;
+    private final Set<String> existing;
 
     Collector(
         final Path root,
         final Set<String> names,
         final Set<String> ignored,
-        final Map<String, String> texts) {
+        final Map<String, String> texts,
+        final Set<String> existing) {
       super();
       this.root = root;
       this.names = names;
       this.ignored = ignored;
       this.texts = texts;
+      this.existing = existing;
     }
 
     @Override
     public FileVisitResult preVisitDirectory(
         final Path directory, final BasicFileAttributes attributes) {
       final boolean skipped =
-          !directory.equals(root)
-              && (FileSystemSourceUnits.skipsDirectory(nameOf(directory))
-                  || ignored.contains(relative(directory) + "/"));
+          !directory.equals(root) && FileSystemSourceUnits.skipsDirectory(nameOf(directory));
       return skipped ? FileVisitResult.SKIP_SUBTREE : FileVisitResult.CONTINUE;
     }
 
     @Override
     public FileVisitResult visitFile(final Path file, final BasicFileAttributes attributes)
         throws IOException {
+      if (!attributes.isRegularFile()) {
+        return FileVisitResult.CONTINUE;
+      }
       final String path = relative(file);
-      if (names.contains(nameOf(file)) && attributes.isRegularFile() && !ignored.contains(path)) {
+      existing.add(path);
+      if (wanted(nameOf(file)) && !GitIgnoredFiles.covers(ignored, path)) {
         texts.put(path, Files.readString(file, StandardCharsets.UTF_8));
       }
       return FileVisitResult.CONTINUE;
@@ -141,6 +148,25 @@ final class FileSystemManifests {
 
     private String relative(final Path file) {
       return root.relativize(file).toString().replace('\\', '/');
+    }
+
+    /**
+     * Tells whether a file name is wanted: named exactly, or matching a {@code prefix*suffix} glob.
+     */
+    private boolean wanted(final String name) {
+      return names.contains(name)
+          || names.stream()
+              .filter(pattern -> pattern.indexOf('*') >= 0)
+              .anyMatch(pattern -> matchesGlob(pattern, name));
+    }
+
+    private static boolean matchesGlob(final String pattern, final String name) {
+      final int star = pattern.indexOf('*');
+      final String prefix = pattern.substring(0, star);
+      final String suffix = pattern.substring(star + 1);
+      return name.length() >= prefix.length() + suffix.length()
+          && name.startsWith(prefix)
+          && name.endsWith(suffix);
     }
 
     private static String nameOf(final Path path) {
