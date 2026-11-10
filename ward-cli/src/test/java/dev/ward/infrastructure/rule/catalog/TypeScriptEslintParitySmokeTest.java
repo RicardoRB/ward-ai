@@ -39,9 +39,6 @@ class TypeScriptEslintParitySmokeTest {
       "{\"compilerOptions\":{\"strict\":true,\"target\":\"es2022\",\"module\":\"esnext\","
           + "\"moduleResolution\":\"bundler\",\"noEmit\":true,\"lib\":[\"es2022\"],\"types\":[]},"
           + "\"include\":[\"**/*.ts\"]}";
-  private static final String MODULE_MARKER = "\nexport {};\n";
-  private static final String NO_MARKER_ROW = "no-useless-empty-export";
-  private static final Set<String> SCRIPT_ROWS = Set.of("no-redeclare");
   private static final String FORMATTER_SOURCE =
       """
       export default function (results) {
@@ -109,8 +106,7 @@ class TypeScriptEslintParitySmokeTest {
     final String suffix = name.isEmpty() ? "" : "-" + name;
     final Path source = "violating".equals(kind) ? set.violating(name) : set.passing(name);
     final String body = Files.readString(source, StandardCharsets.UTF_8);
-    final String text =
-        NO_MARKER_ROW.equals(row) || SCRIPT_ROWS.contains(row) ? body : body + MODULE_MARKER;
+    final String text = TypeScriptParityModules.text(row, body);
     final List<String> expected = "violating".equals(kind) ? lines(set.expected(name)) : List.of();
     return new Case(
         row,
@@ -139,14 +135,11 @@ class TypeScriptEslintParitySmokeTest {
     return config.append("];\n").toString();
   }
 
-  /** A script row is linted as a script, as Ward reads a file without import or export. */
-  private static String sourceType(final String row) {
-    return SCRIPT_ROWS.contains(row) ? "sourceType: \"script\", " : "";
-  }
-
   private static String entry(final Case testCase, final Path workspace) {
     return "  { files: [%s], languageOptions: { %sparser: tsParser, parserOptions: "
-            .formatted(TypeScriptEslintOptions.json(testCase.path()), sourceType(testCase.row()))
+            .formatted(
+                TypeScriptEslintOptions.json(testCase.path()),
+                TypeScriptParityModules.sourceType(testCase.row()))
         + "{ project: \"./%s\", tsconfigRootDir: %s } }, plugins: { \"@typescript-eslint\": tsPlugin },"
             .formatted(TSCONFIG, TypeScriptEslintOptions.json(workspace.toString()))
         + " rules: { %s: [\"error\"%s] } },\n"
