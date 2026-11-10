@@ -20,8 +20,24 @@ class NodeMagicNumberCheckTest {
   private static final int OCTAL_VALUE = 15;
   private static final NodeMagicNumberFlags DEFAULTS =
       new NodeMagicNumberFlags(false, false, false, false, false);
+  private static final NodeMagicNumberFlags ENFORCE_CONST =
+      new NodeMagicNumberFlags(false, false, false, false, true);
   private static final NodeMagicNumberFlags OBJECTS =
       new NodeMagicNumberFlags(true, false, false, false, false);
+
+  @Test
+  void declarationInitializerIsSilentByDefault() {
+    assertThat(run(DEFAULTS, "export const PORT = 3000;\nlet sum = 3;\n")).isEmpty();
+  }
+
+  @Test
+  void letOrVarInitializerIsReportedWithEnforceConstAndConstIsNot() {
+    final List<RuleMatch> found =
+        run(ENFORCE_CONST, "let port = 3000;\nvar sum = 3;\nconst x = 4;\n");
+
+    assertThat(found).hasSize(2);
+    assertThat(found.get(0).message()).isEqualTo("use const");
+  }
 
   @Test
   void propertyValueIsSilentByDefault() {
@@ -37,13 +53,9 @@ class NodeMagicNumberCheckTest {
   }
 
   @Test
-  void assignmentToMemberIsSilentByDefaultAndReportedWithDetectObjects() {
+  void assignmentToMemberIsSilentByDefaultAndIdentifierIsReported() {
     assertThat(run(DEFAULTS, "o.p = 10;\n")).isEmpty();
     assertThat(run(OBJECTS, "o.p = 10;\n")).hasSize(1);
-  }
-
-  @Test
-  void assignmentToIdentifierIsReported() {
     assertThat(run(DEFAULTS, "x = 9;\n")).hasSize(1);
   }
 

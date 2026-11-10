@@ -9,7 +9,8 @@ package dev.ward.analysis.domain.rule.check;
  * @param ignoreArrayIndexes whether a number that indexes an array is left alone
  * @param ignoreDefaultValues whether a default value of a parameter or pattern is left alone
  * @param ignoreClassFieldInitialValues whether the initial value of a class field is left alone
- * @param enforceConst whether a number declared with {@code let} or {@code var} is reported
+ * @param enforceConst whether a number declared with {@code let} or {@code var} is reported; a
+ *     {@code const} initializer is left alone
  */
 public record NodeMagicNumberFlags(
     boolean detectObjects,

@@ -14,9 +14,9 @@ import java.util.Set;
 /**
  * Reports each number literal that is a magic number, like ESLint's no-magic-numbers with its
  * default options. Property values and assignments to members are left alone unless {@code
- * detectObjects} is set. Declarations are reported as Checkstyle's MagicNumber does, unless {@code
- * enforceConst} is set; then only a number declared without {@code const} is reported, with its own
- * message. The numbers 0, 1 and 2 are never reported, as in Checkstyle's defaults.
+ * detectObjects} is set. The initializer of a declaration is left alone; with {@code enforceConst}
+ * only a number declared without {@code const} is reported, with its own message. The numbers 0, 1
+ * and 2 are never reported, as in Checkstyle's defaults.
  */
 public final class NodeMagicNumberCheck implements RuleCheck {
 
@@ -51,8 +51,8 @@ public final class NodeMagicNumberCheck implements RuleCheck {
    * @param ignore the numbers that are never reported, besides 0, 1 and 2
    * @param flags the boolean options
    * @param message the message of a magic number; {@code {value}} is the number as written
-   * @param constMessage the message of a number declared without {@code const} when {@code
-   *     enforceConst} is set
+   * @param constMessage the message of a number declared with {@code let} or {@code var} when
+   *     {@code enforceConst} is set
    */
   public NodeMagicNumberCheck(
       final List<BigDecimal> ignore,
@@ -102,7 +102,7 @@ public final class NodeMagicNumberCheck implements RuleCheck {
     if (usage.role() == NodeMagicNumberRoles.Role.DECLARATOR) {
       return flags.enforceConst()
           ? Optional.of(constMessage).filter(text -> !usage.constant())
-          : Optional.of(magic(usage));
+          : Optional.empty();
     }
     if (flags.detectObjects()) {
       return Optional.of(magic(usage));
