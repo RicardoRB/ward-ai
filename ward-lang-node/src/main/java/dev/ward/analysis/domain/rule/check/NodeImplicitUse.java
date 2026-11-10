@@ -12,9 +12,10 @@ import java.util.regex.Pattern;
 
 /**
  * The packages a workspace uses without importing them: the tool its config files configure, the
- * package a script runs, a package a used package requires as a peer, and the vitest coverage
- * provider its config selects. Each row names the knip plugin it stands for. A package used this
- * way is not reported as unused, so a fact this table does not know produces no finding.
+ * package a script runs, a package a used package requires as a peer, the vitest coverage provider
+ * its config selects, and tslib when a tsconfig sets {@code importHelpers}. Each row names the knip
+ * plugin it stands for. A package used this way is not reported as unused, so a fact this table
+ * does not know produces no finding.
  */
 public final class NodeImplicitUse {
 
@@ -96,6 +97,7 @@ public final class NodeImplicitUse {
   private static final String JEST_CONFIG = "jest.config.";
   private static final String TSCONFIG = "tsconfig.json";
   private static final Pattern QUOTED = Pattern.compile("[\"']([^\"'\\s]+)[\"']");
+  private static final Pattern IMPORT_HELPERS = Pattern.compile("\"importHelpers\"\\s*:\\s*true");
 
   private NodeImplicitUse() {}
 
@@ -137,11 +139,24 @@ public final class NodeImplicitUse {
   /** Adds the package a config file names, and the packages its quoted values name. */
   private static void addConfig(final String name, final String text, final Set<String> implied) {
     if (TSCONFIG.equals(name) || name.startsWith("tsconfig.") && name.endsWith(".json")) {
-      implied.add("typescript");
+      addTypescriptConfig(text, implied);
     }
     Optional.ofNullable(CONFIG_PACKAGES.get(name)).ifPresent(implied::add);
     addLiterals(
         name, QUOTED.matcher(text).results().map(match -> match.group(1)).toList(), implied);
+  }
+
+  /**
+   * A tsconfig implies typescript, and tslib when it sets {@code importHelpers}, which knip's
+   * typescript plugin reads as tslib in use. A tsconfig that extends another is read only in its
+   * own folder: shortcut: an {@code importHelpers} set in a parent folder's tsconfig is missed,
+   * upgrade by following {@code extends}.
+   */
+  private static void addTypescriptConfig(final String text, final Set<String> implied) {
+    implied.add("typescript");
+    if (IMPORT_HELPERS.matcher(text).find()) {
+      implied.add("tslib");
+    }
   }
 
   /**

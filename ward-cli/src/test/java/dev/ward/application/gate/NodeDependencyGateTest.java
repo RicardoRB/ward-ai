@@ -7,6 +7,7 @@ import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import dev.ward.analysis.infrastructure.node.NodeRuleMatcher;
+import dev.ward.domain.FakeCommandExecutor;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.GateStatus;
 import dev.ward.domain.project.BuildTool;
@@ -14,7 +15,6 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.infrastructure.analysis.node.NodeDependencyAdapters;
-import dev.ward.infrastructure.process.ProcessCommandExecutor;
 import dev.ward.infrastructure.rule.FileAnalysisCache;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
 import java.io.IOException;
@@ -40,7 +40,9 @@ class NodeDependencyGateTest {
         new AnalysisPorts(
             () -> new AnalysisRuleLoad(List.of(), List.of()),
             new NodeRuleMatcher(),
-            new FileSystemSourceUnits(new ProcessCommandExecutor()),
+            // The fixture is copied under target/, which Git ignores; this test is not about
+            // ignores.
+            new FileSystemSourceUnits(new FakeCommandExecutor(128, "", "not a git repository")),
             List.of(
                 new FrontendSupport(
                     AnalysisLanguage.TYPESCRIPT,

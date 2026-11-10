@@ -23,8 +23,9 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 
 /**
- * Reads source files from the project working tree, skipping build output, hidden folders, and JVM
- * files under a Maven or Gradle resource folder, which the build never compiles.
+ * Reads source files from the project working tree, skipping build output, hidden folders, files
+ * that Git ignores, and JVM files under a Maven or Gradle resource folder, which the build never
+ * compiles.
  */
 public final class FileSystemSourceUnits implements AnalysisSourceUnits {
 
@@ -49,7 +50,7 @@ public final class FileSystemSourceUnits implements AnalysisSourceUnits {
   private final CommandExecutor executor;
 
   /**
-   * Creates the reader that Dagger injects. The executor asks Git which manifests are ignored.
+   * Creates the reader that Dagger injects. The executor asks Git which files are ignored.
    *
    * @param executor the command executor
    */
@@ -64,8 +65,9 @@ public final class FileSystemSourceUnits implements AnalysisSourceUnits {
       return List.of();
     }
     final List<SourceUnit> units = new ArrayList<>();
+    final Set<String> ignored = GitIgnoredFiles.of(root, executor);
     try {
-      Files.walkFileTree(root, new Collector(root, languages, units));
+      Files.walkFileTree(root, new Collector(root, languages, ignored, units));
     } catch (final IOException exception) {
       throw new WardException("Could not list the source files under " + root + ".", exception);
     }
@@ -82,13 +84,18 @@ public final class FileSystemSourceUnits implements AnalysisSourceUnits {
   private static final class Collector extends SimpleFileVisitor<Path> {
     private final Path root;
     private final Set<AnalysisLanguage> languages;
+    private final Set<String> ignored;
     private final List<SourceUnit> units;
 
     Collector(
-        final Path root, final Set<AnalysisLanguage> languages, final List<SourceUnit> units) {
+        final Path root,
+        final Set<AnalysisLanguage> languages,
+        final Set<String> ignored,
+        final List<SourceUnit> units) {
       super();
       this.root = root;
       this.languages = languages;
+      this.ignored = ignored;
       this.units = units;
     }
 
@@ -107,6 +114,7 @@ public final class FileSystemSourceUnits implements AnalysisSourceUnits {
       if (language != null
           && languages.contains(language)
           && attributes.isRegularFile()
+          && !ignored.contains(path)
           && !isJvmResource(language, path)) {
         final String text = Files.readString(file, StandardCharsets.UTF_8);
         units.add(new SourceUnit(path, language, text));

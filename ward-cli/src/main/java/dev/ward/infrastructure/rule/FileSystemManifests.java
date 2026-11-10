@@ -3,7 +3,6 @@ package dev.ward.infrastructure.rule;
 import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.process.CommandExecutor;
-import dev.ward.domain.process.CommandResult;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
@@ -11,7 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -46,7 +44,7 @@ final class FileSystemManifests {
     } catch (final IOException exception) {
       throw new WardException("Could not read the manifest files under " + root + ".", exception);
     }
-    final Set<String> ignored = ignored(root, executor);
+    final Set<String> ignored = GitIgnoredFiles.of(root, executor);
     texts.keySet().removeIf(ignored::contains);
     addInstalled(root, texts);
     return new ProjectFiles(texts);
@@ -101,16 +99,6 @@ final class FileSystemManifests {
   private static String nameOf(final Path path) {
     final Path name = path.getFileName();
     return name == null ? "" : name.toString();
-  }
-
-  /** The untracked files that Git ignores, relative to {@code root}; empty when Git cannot say. */
-  private static Set<String> ignored(final Path root, final CommandExecutor executor) {
-    final CommandResult result =
-        executor.execute(List.of("git", "ls-files", "-o", "-i", "--exclude-standard", "-z"), root);
-    if (result.executionError() != null || result.exitCode() != 0) {
-      return Set.of();
-    }
-    return Set.of(result.stdout().split("\\u0000"));
   }
 
   /** Reads each file whose name is wanted, skipping the folders source reads skip. */
