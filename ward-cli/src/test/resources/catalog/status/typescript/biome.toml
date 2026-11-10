@@ -77,12 +77,12 @@ no-jsx-leaked-dollar = { status = "planned", issue = "#329" }
 no-jsx-literals = { status = "planned", issue = "#296" }
 no-jsx-namespace = "implemented"
 no-jsx-props-bind = "implemented"
-no-label-without-control = { status = "planned", issue = "#329" }
+no-label-without-control = "implemented"
 no-leaked-render = { status = "planned", issue = "#329" }
 no-misleading-instantiator = { status = "planned", issue = "#329" }
 no-misleading-return-type = { status = "planned", issue = "#329" }
 no-misplaced-assertion = { status = "planned", issue = "#329" }
-no-misplaced-list-elements = { status = "planned", issue = "#329" }
+no-misplaced-list-elements = "implemented"
 no-misrefactored-shorthand-assign = "implemented"
 no-multiline-string = { status = "planned", issue = "#296" }
 no-namespace-import = "implemented"
@@ -139,7 +139,7 @@ no-static-element-interactions = "implemented"
 no-static-only-class = "implemented"
 no-string-case-mismatch = "implemented"
 no-substr = "implemented"
-no-suspicious-semicolon-in-jsx = { status = "planned", issue = "#329" }
+no-suspicious-semicolon-in-jsx = "implemented"
 no-svelte-export-let = { status = "planned", issue = "#329" }
 no-svelte-unnecessary-state-wrap = { status = "planned", issue = "#329" }
 no-svg-without-title = "implemented"
@@ -225,7 +225,7 @@ use-flat-math-min-max = "implemented"
 use-focusable-interactive = { status = "planned", issue = "#329" }
 use-fragment-syntax = { status = "planned", issue = "#296" }
 use-global-this = "implemented"
-use-google-font-display = { status = "planned", issue = "#329" }
+use-google-font-display = "implemented"
 use-google-font-preconnect = { status = "planned", issue = "#329" }
 use-heading-content = "implemented"
 use-hook-at-top-level = { status = "planned", issue = "#329" }

@@ -845,3 +845,27 @@ body = '''
 check = "node-valid-lang"
 message = "The lang attribute must be a valid language tag, such as en or en-US."
 '''
+
+[[rules]]
+id = "ward:javascript/no-label-without-control"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-label-without-control"
+message = "A label needs text and a control: a for or htmlFor attribute, or a nested form control."
+'''
+
+[[rules]]
+id = "ward:typescript/no-label-without-control"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-label-without-control"
+message = "A label needs text and a control: a for or htmlFor attribute, or a nested form control."
+'''

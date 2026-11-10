@@ -6,8 +6,12 @@ import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.BiomeAmbiguousAnchorTextCheck;
 import dev.ward.analysis.domain.rule.check.BiomeCommentTextCheck;
+import dev.ward.analysis.domain.rule.check.BiomeGoogleFontDisplayCheck;
 import dev.ward.analysis.domain.rule.check.BiomeHeaderScopeCheck;
+import dev.ward.analysis.domain.rule.check.BiomeLabelWithoutControlCheck;
+import dev.ward.analysis.domain.rule.check.BiomeMisplacedListElementCheck;
 import dev.ward.analysis.domain.rule.check.BiomeRedundantAltCheck;
+import dev.ward.analysis.domain.rule.check.BiomeSuspiciousSemicolonCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUnsafeIframeSandboxCheck;
 import dev.ward.analysis.domain.rule.check.BiomeValidLangCheck;
 import java.util.Map;
@@ -38,7 +42,18 @@ final class BiomeJsxChecks {
             "node-ambiguous-anchor-text",
             toml -> new BiomeAmbiguousAnchorTextCheck(TomlValues.required(toml, MESSAGE))),
         entry(
-            "node-valid-lang",
-            toml -> new BiomeValidLangCheck(TomlValues.required(toml, MESSAGE))));
+            "node-valid-lang", toml -> new BiomeValidLangCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "node-label-without-control",
+            toml -> new BiomeLabelWithoutControlCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "node-misplaced-list-element",
+            toml -> new BiomeMisplacedListElementCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "node-suspicious-semicolon",
+            toml -> new BiomeSuspiciousSemicolonCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "node-google-font-display",
+            toml -> new BiomeGoogleFontDisplayCheck(TomlValues.required(toml, MESSAGE))));
   }
 }

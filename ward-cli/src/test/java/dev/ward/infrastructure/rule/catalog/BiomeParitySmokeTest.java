@@ -91,6 +91,10 @@ class BiomeParitySmokeTest {
           Map.entry("no-redundant-alt", "a11y/noRedundantAlt"),
           Map.entry("no-ambiguous-anchor-text", "a11y/noAmbiguousAnchorText"),
           Map.entry("use-valid-lang", "a11y/useValidLang"),
+          Map.entry("no-label-without-control", "a11y/noLabelWithoutControl"),
+          Map.entry("no-misplaced-list-elements", "nursery/noMisplacedListElements"),
+          Map.entry("no-suspicious-semicolon-in-jsx", "suspicious/noSuspiciousSemicolonInJsx"),
+          Map.entry("use-google-font-display", "suspicious/useGoogleFontDisplay"),
           Map.entry("no-comment-text", "suspicious/noCommentText"),
           Map.entry("no-unsafe-iframe-sandbox", "nursery/noUnsafeIframeSandbox"),
           Map.entry(
