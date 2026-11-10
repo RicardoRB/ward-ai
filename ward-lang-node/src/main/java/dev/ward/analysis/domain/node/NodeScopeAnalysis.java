@@ -5,6 +5,7 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.port.BuiltinNames;
 import dev.ward.analysis.domain.port.ScopeAnalysis;
 import dev.ward.analysis.domain.scope.BindingFlag;
+import dev.ward.analysis.domain.scope.BindingKind;
 import dev.ward.analysis.domain.scope.ClassScopes;
 import dev.ward.analysis.domain.scope.ImportOrigin;
 import dev.ward.analysis.domain.scope.ScopeBuilder;
@@ -30,6 +31,15 @@ public final class NodeScopeAnalysis implements ScopeAnalysis {
   public UnitScopes analyze(final SourceUnit unit, final SyntaxNode tree) {
     final ScopeBuilder builder = new ScopeBuilder(tree.span(), ClassScopes.VISIBLE);
     final NodeImportScan imports = new NodeImportScan(tree);
+    NodeGlobalComments.of(unit.text())
+        .forEach(
+            name ->
+                builder.declareIn(
+                    UnitScopes.BUILTIN_ID,
+                    name,
+                    BindingKind.BUILTIN,
+                    UnitScopes.NOWHERE,
+                    Set.of()));
     imports.bindings().forEach(binding -> declareImport(builder, binding));
     new NodeScopeWalk(builder, imports.sites()).visit(tree);
     return builder.build();
