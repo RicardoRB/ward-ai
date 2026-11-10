@@ -28,12 +28,14 @@ final class NodeReferences {
   private final NodeScopes scopes;
   private final NodeWalker walker;
   private final NodeDeclarations declarations;
+  private final NodePatternWrites patterns;
 
   NodeReferences(
       final NodeScopes scopes, final NodeWalker walker, final NodeDeclarations declarations) {
     this.scopes = scopes;
     this.walker = walker;
     this.declarations = declarations;
+    this.patterns = new NodePatternWrites(scopes, walker);
   }
 
   /** Adds the accesses of an expression: a declaration header, an assignment, or a plain one. */
@@ -103,6 +105,11 @@ final class NodeReferences {
   /** A simple assignment writes after its right side; a compound one also reads first. */
   private void assignment(final List<SyntaxNode> parts, final List<VariableAccess> found) {
     final SyntaxNode target = NodeSyntax.simpleTarget(parts.get(0));
+    if (target == null && isDestructuring(parts)) {
+      walker.walk(parts.get(2), found);
+      patterns.assign(NodePatternWrites.literalOf(parts.get(0)), found);
+      return;
+    }
     if (target == null) {
       walker.walk(parts.get(0), found);
       walker.walk(parts.get(2), found);
@@ -113,6 +120,14 @@ final class NodeReferences {
     }
     walker.walk(parts.get(2), found);
     write(target, found);
+  }
+
+  /**
+   * Whether a simple assignment's target is an object or array literal, a destructuring pattern.
+   */
+  private static boolean isDestructuring(final List<SyntaxNode> parts) {
+    return EQUALS.equals(NodeFlowSyntax.text(parts.get(1)))
+        && NodePatternWrites.literalOf(parts.get(0)) != null;
   }
 
   /** An increment or decrement reads the variable, then writes it. */
