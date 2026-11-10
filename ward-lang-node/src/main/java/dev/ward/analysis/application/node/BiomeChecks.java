@@ -39,6 +39,7 @@ final class BiomeChecks {
     final Map<String, CheckFactory> checks = new HashMap<>(AriaChecks.checks());
     checks.putAll(BiomeJsxChecks.checks());
     checks.putAll(BiomeTypeChecks.checks());
+    checks.putAll(BiomeStatementChecks.checks());
     checks.putAll(
         Map.ofEntries(
             entry(

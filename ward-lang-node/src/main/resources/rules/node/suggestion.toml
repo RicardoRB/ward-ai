@@ -1124,10 +1124,10 @@ capability = "SYNTAX"
 severity = "ERROR"
 category = "suggestion"
 presets = ["standard", "strict"]
+options.allowed-labels = { type = "string-list" }
 body = '''
-check = "forbidden-node"
-kinds = ["labelledStatement"]
-text = '^[\w$]+:(?!for\(|while\(|do|switch)'
+allowed-labels = []
+check = "node-confusing-labels"
 message = "a label should only mark a loop"
 '''
 
@@ -1947,9 +1947,9 @@ capability = "SYNTAX"
 severity = "ERROR"
 category = "suggestion"
 presets = ["standard", "strict"]
+options.allowed-labels = { type = "string-list" }
 body = '''
-check = "forbidden-node"
-kinds = ["labelledStatement"]
-text = '^[\w$]+:(?!for\(|while\(|do|switch)'
+allowed-labels = []
+check = "node-confusing-labels"
 message = "a label should only mark a loop"
 '''

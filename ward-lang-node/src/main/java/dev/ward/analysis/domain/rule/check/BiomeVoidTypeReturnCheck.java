@@ -25,6 +25,7 @@ public final class BiomeVoidTypeReturnCheck implements RuleCheck {
   private static final String ANNOTATION = "typeAnnotation";
   private static final String CALL_SIGNATURE = "callSignature";
   private static final String ARROW = "arrowFunctionDeclaration";
+  private static final String METHOD = "generatorMethod";
   private static final String FUNCTION_EXPRESSION = "anonymousFunction";
   private static final String SINGLE_EXPRESSION = "singleExpression";
 
@@ -82,6 +83,7 @@ public final class BiomeVoidTypeReturnCheck implements RuleCheck {
   private static boolean isFunction(final SyntaxNode node) {
     return ARROW.equals(node.kind())
         || FUNCTION_EXPRESSION.equals(node.kind())
+        || METHOD.equals(node.kind())
         || node.children().stream().anyMatch(child -> CALL_SIGNATURE.equals(child.kind()));
   }
 

@@ -30,8 +30,6 @@ final class EslintScriptChecks {
     final Map<String, String> messages = new LinkedHashMap<>();
     STRICT_MESSAGES.forEach((id, key) -> messages.put(id, TomlValues.required(toml, key)));
     return new NodeStrictDirectiveCheck(
-        NodeStrictDirectiveCheck.Mode.named(TomlValues.required(toml, "mode")),
-        EslintOptionChecks.flag(toml, "always-module"),
-        messages);
+        NodeStrictDirectiveCheck.Mode.named(TomlValues.required(toml, "mode")), messages);
   }
 }
