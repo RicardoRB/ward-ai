@@ -55,7 +55,7 @@ class RuleSchemaGeneratorTest {
   void rulesListTheirOptionsWithTheirDeclaredTypesAndBounds() {
     final String schema = RuleSchema.render(List.of(SIZES));
 
-    assertThat(schema).contains("\"ward:java/method-length\": {");
+    assertThat(schema).containsOnlyOnce("\"ward:java/method-length\": {");
     assertThat(schema)
         .contains("\"max\": {\n")
         .contains("\"minimum\": 1")
@@ -138,13 +138,13 @@ class RuleSchemaGeneratorTest {
   }
 
   @Test
-  void shortRuleTablesReferenceTheSameRuleSchemaAsTheQuotedKey() {
+  void ruleTablesAreKeyedByGroupAndNameOnly() {
     final String schema = RuleSchema.render(List.of(SIZES));
 
     assertThat(schema).contains("\"java\": {");
     assertThat(schema).contains("\"method-length\": {");
     assertThat(schema).contains("\"$ref\": \"#/$defs/ward:java~1method-length\"");
-    assertThat(schema).contains("\"ward:java/method-length\": {");
+    assertThat(schema).containsOnlyOnce("\"ward:java/method-length\": {");
   }
 
   @Test

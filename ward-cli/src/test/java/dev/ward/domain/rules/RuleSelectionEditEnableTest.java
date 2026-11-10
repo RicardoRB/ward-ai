@@ -60,7 +60,7 @@ class RuleSelectionEditEnableTest {
             + "    \"ward:java/no-field-di\", # DI rule\n"
             + "]\n"
             + "\n"
-            + "[rules.\"ward:java/method-length\"]\n"
+            + "[rules.java.method-length]\n"
             + "max = 80\n";
 
     final String text = RuleSelectionEdit.enable(original, List.of(METHOD));
@@ -78,7 +78,7 @@ class RuleSelectionEditEnableTest {
                 + "    \"ward:java/method-length\",\n"
                 + "]\n"
                 + "\n"
-                + "[rules.\"ward:java/method-length\"]\n"
+                + "[rules.java.method-length]\n"
                 + "max = 80\n");
     assertValid(text);
   }

@@ -19,9 +19,8 @@ import org.tomlj.TomlTable;
 /**
  * Reads {@code ward-rules.toml}. It checks the shape of the file (the version, the {@code [select]}
  * keys and their types, and the rule tables) and reports each problem with the file, the table and
- * the key. A rule table may be written {@code [rules."ward:<group>/<name>"]} or {@code
- * [rules.<group>.<name>]}, and both name the same rule. Whether the rules and options exist is
- * checked later.
+ * the key. A rule table is written {@code [rules.<group>.<name>]}. Whether the rules and options
+ * exist is checked later.
  */
 final class RuleConfigFileReader {
   private static final Logger LOGGER = Logger.getLogger(RuleConfigFileReader.class.getName());
@@ -76,9 +75,8 @@ final class RuleConfigFileReader {
       }
     }
     version(toml);
-    final RuleTableReader tables = new RuleTableReader(name, problems);
-    final Map<String, Map<String, Object>> rules = tables.read(toml);
-    return new RuleConfigFile(name, select(toml), rules, tables.headers(), problems);
+    final Map<String, Map<String, Object>> rules = new RuleTableReader(name, problems).read(toml);
+    return new RuleConfigFile(name, select(toml), rules, problems);
   }
 
   private void version(final TomlParseResult toml) {

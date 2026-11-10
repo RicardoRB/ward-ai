@@ -37,7 +37,7 @@ class RuleConfigurationFindingsTest {
   void eachProblemIsAFailingFinding() throws IOException {
     Files.writeString(
         root.resolve("ward-rules.toml"),
-        "version = 1\n[rules.\"ward:java/method-length\"]\nmax = 0\n[rules.\"ward:java/zzz\"]\n");
+        "version = 1\n[rules.java.method-length]\nmax = 0\n[rules.java.zzz]\n");
 
     assertThat(diagnose())
         .hasSize(2)
@@ -45,6 +45,21 @@ class RuleConfigurationFindingsTest {
         .anyMatch(
             f -> f.message().contains("not selected") || f.message().contains("max: expected"))
         .anyMatch(f -> f.message().contains("unknown rule id"));
+  }
+
+  @Test
+  void aTableNamedByTheQuotedRuleIdIsAFailingFinding() throws IOException {
+    Files.writeString(
+        root.resolve("ward-rules.toml"),
+        "version = 1\n[rules.\"ward:java/method-length\"]\nmax = 80\n");
+
+    assertThat(diagnose())
+        .singleElement()
+        .satisfies(
+            f -> {
+              assertThat(f.status()).isEqualTo(Status.ERROR);
+              assertThat(f.message()).contains("write [rules.java.method-length]");
+            });
   }
 
   private List<Finding> diagnose() throws IOException {

@@ -44,7 +44,7 @@ is there. `disable` adds each id to `[select] exclude`, and removes it from `inc
 
 - With no `ward-rules.toml`, the command creates one with `version = 1` and the `[select]` table.
 - Comments, blank lines and the other keys of the file keep their place.
-- Only the two lists change. `[rules."<id>"]` tables are never written.
+- Only the two lists change. `[rules.<language>.<rule-name>]` tables are never written.
 - Every id is checked before anything is written. If one id is unknown, the file is not touched.
 - The new text must be valid TOML. Otherwise the command refuses and leaves the file as it was.
 

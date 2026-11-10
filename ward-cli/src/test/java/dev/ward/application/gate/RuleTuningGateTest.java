@@ -19,7 +19,7 @@ class RuleTuningGateTest {
 
   private static final String METHOD_LENGTH = "ward:java/method-length";
   private static final String TYPE_NAME = "ward:java/type-name";
-  private static final String TABLE = "[rules.\"ward:java/method-length\"]\n";
+  private static final String TABLE = "[rules.java.method-length]\n";
   private static final int SEVENTY = 70;
   private static final int NINETY = 90;
 
@@ -50,17 +50,17 @@ class RuleTuningGateTest {
   }
 
   @Test
-  void bothFormsForOneRuleNameBothTables() throws IOException {
+  void aTableNamedByTheQuotedRuleIdFailsTheGate() throws IOException {
     final FixtureProject f = fixture();
-    f.config(FixtureProject.VERSION + TABLE + "max = 80\n[rules.java.method-length]\nmax = 80\n");
+    f.config(FixtureProject.VERSION + "[rules.\"ward:java/method-length\"]\nmax = 80\n");
 
     final GateResult result = f.run(List.of(), null, new HashMap<>());
 
     assertThat(result.status()).isEqualTo(GateStatus.EXECUTION_ERROR);
     assertThat(result.stderr())
         .contains(
-            "[rules.\"ward:java/method-length\"] and [rules.java.method-length] configure the same"
-                + " rule; keep one table");
+            "ward-rules.toml: [rules.\"ward:java/method-length\"]: name the table"
+                + " [rules.<language>.<rule-name>]; write [rules.java.method-length]");
   }
 
   @Test
@@ -126,7 +126,7 @@ class RuleTuningGateTest {
     assertThat(result.status()).isEqualTo(GateStatus.EXECUTION_ERROR);
     assertThat(result.stderr())
         .contains(
-            "ward-rules.toml: [rules.\"ward:java/method-length\"] max: expected an integer >= 1,"
+            "ward-rules.toml: [rules.java.method-length] max: expected an integer >= 1,"
                 + " got \"sixty\"");
   }
 
@@ -134,16 +134,16 @@ class RuleTuningGateTest {
   void everyProblemIsReported() throws IOException {
     final FixtureProject f = fixture();
     f.config(
-        "version = 1\n[rules.\"ward:java/nope\"]\nmax = 1\n"
-            + "[rules.\"ward:java/type-name\"]\npattern = \"[\"\n"
+        "version = 1\n[rules.java.nope]\nmax = 1\n"
+            + "[rules.java.type-name]\npattern = \"[\"\n"
             + TABLE
             + "exclude-paths = [\"[a\"]\nseverity = \"fatal\"\ncolor = 1\n");
 
     final String stderr = f.run(List.of(), null, new HashMap<>()).stderr();
 
     assertThat(stderr)
-        .contains("[rules.\"ward:java/nope\"]: unknown rule id")
-        .contains("[rules.\"ward:java/type-name\"] pattern: expected a valid regular expression")
+        .contains("[rules.java.nope]: unknown rule id")
+        .contains("[rules.java.type-name] pattern: expected a valid regular expression")
         .contains("exclude-paths: invalid glob")
         .contains("severity: expected")
         .contains("color: unknown option");

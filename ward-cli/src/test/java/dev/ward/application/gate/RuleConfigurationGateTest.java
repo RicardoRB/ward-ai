@@ -19,7 +19,7 @@ class RuleConfigurationGateTest {
   private static final String METHOD_LENGTH = "ward:java/method-length";
   private static final String TYPE_NAME = "ward:java/type-name";
   private static final String RULES_FILE = "ward-rules.toml";
-  private static final String TABLE = "[rules.\"ward:java/method-length\"]\n";
+  private static final String TABLE = "[rules.java.method-length]\n";
   private static final int SEVENTY = 70;
 
   @TempDir Path dir;

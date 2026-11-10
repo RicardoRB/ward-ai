@@ -154,7 +154,7 @@ the backlog. These are suppressions under the guardrails.
 
 To turn a rule on or off in `ward-rules.toml`, use `ward rules enable <id>...` or `ward rules
 disable <id>...` after the user approves it. They change only the `include` and `exclude` lists and
-keep the file's comments; they do not change `[rules."<id>"]` tables, which you still edit as text.
+keep the file's comments; they do not change `[rules.<language>.<rule-name>]` tables, which you still edit as text.
 
 Edit only the approved files, exactly as shown. Keep the file's existing formatting and indentation.
 If a managed file's ownership was transferred, the marker line is removed in this same edit.

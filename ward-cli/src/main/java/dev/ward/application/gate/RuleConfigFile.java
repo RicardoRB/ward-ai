@@ -15,16 +15,10 @@ import java.util.Objects;
  * @param select the {@code [select]} table
  * @param rules the rule tables by rule id, each a map from key to value; a value is a {@link Long},
  *     {@link Boolean}, {@link String}, or a {@link List} of them
- * @param headers the table header of each rule as the user wrote it, by rule id, such as {@code
- *     [rules.java.method-length]}; a missing id uses the quoted form
  * @param problems the shape problems the reader found, each already naming the file, table and key
  */
 public record RuleConfigFile(
-    String name,
-    Select select,
-    Map<String, Map<String, Object>> rules,
-    Map<String, String> headers,
-    List<String> problems) {
+    String name, Select select, Map<String, Map<String, Object>> rules, List<String> problems) {
 
   /** The file name {@code ward-rules.toml} at the project root, used when no path is configured. */
   public static final String DEFAULT_NAME = "ward-rules.toml";
@@ -34,17 +28,7 @@ public record RuleConfigFile(
     Objects.requireNonNull(name, "name");
     Objects.requireNonNull(select, "select");
     rules = copyTables(rules);
-    headers = Map.copyOf(headers);
     problems = List.copyOf(problems);
-  }
-
-  /** A file whose rule tables all use the quoted header form. */
-  public RuleConfigFile(
-      final String name,
-      final Select select,
-      final Map<String, Map<String, Object>> rules,
-      final List<String> problems) {
-    this(name, select, rules, Map.of(), problems);
   }
 
   /** Returns a file that only reports {@code problem}. */
@@ -56,7 +40,7 @@ public record RuleConfigFile(
    * Returns the table header of the rule {@code id}, such as {@code [rules.java.method-length]}.
    */
   public String header(final String id) {
-    return headers.getOrDefault(id, "[rules.\"" + id + "\"]");
+    return "[rules." + id.substring(id.indexOf(':') + 1).replace('/', '.') + "]";
   }
 
   /** Returns a copy of the rule tables, in file order. */
