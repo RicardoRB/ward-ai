@@ -4,7 +4,6 @@ import dev.ward.analysis.domain.node.NodeManifest;
 import dev.ward.analysis.domain.rule.ProjectFiles;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -86,19 +85,12 @@ public final class NodeImplicitUse {
   private static final Set<String> JEST_PACKAGES =
       Set.of("ts-jest", "babel-jest", "jest-environment-jsdom", "@swc/jest");
 
-  /** Commands that a package installs, for a script run when node_modules is not installed. */
-  private static final Map<String, String> KNOWN_BINARIES =
-      Map.of(
-          "tsc", "typescript",
-          "playwright", "@playwright/test",
-          "babel", "@babel/cli",
-          "stryker", "@stryker-mutator/core");
-
   private static final String VITEST_CONFIG = "vitest.config.";
   private static final String STRYKER_CONFIG = "stryker.config.";
   private static final String JEST_CONFIG = "jest.config.";
   private static final String TSCONFIG = "tsconfig.json";
   private static final String ANGULAR_CONFIG = "angular.json";
+  private static final String WARD_CONFIG = "ward.toml";
 
   /**
    * A glob for every tsconfig variant, such as {@code tsconfig.app.json}, that a manifest read
@@ -121,6 +113,7 @@ public final class NodeImplicitUse {
     names.add(TSCONFIG);
     names.add(TSCONFIG_VARIANTS);
     names.add(ANGULAR_CONFIG);
+    names.add(WARD_CONFIG);
     return Set.copyOf(names);
   }
 
@@ -144,6 +137,7 @@ public final class NodeImplicitUse {
     final Set<String> implied = new HashSet<>();
     configs(owner.directory(), files, implied);
     scripts(owner.manifest(), installed, implied);
+    gateCommands(owner.directory(), files, installed, implied);
     return implied;
   }
 
@@ -196,24 +190,32 @@ public final class NodeImplicitUse {
       final NodeManifest manifest,
       final Map<String, NodeManifests.Manifest> installed,
       final Set<String> implied) {
-    final Map<String, String> providers = binaryProviders(installed);
-    for (final String script : NodeManifests.texts(manifest, "scripts")) {
-      for (final String token : script.trim().split("\\s+")) {
-        Optional.ofNullable(providers.getOrDefault(token, KNOWN_BINARIES.get(token)))
-            .ifPresent(implied::add);
-      }
-    }
+    final Map<String, String> providers = NodeCommands.binaryProviders(installed);
+    NodeManifests.texts(manifest, "scripts")
+        .forEach(script -> implied.addAll(NodeCommands.packagesOf(script, providers)));
   }
 
-  /** The package that installs each command, from the installed packages' bin fields. */
-  private static Map<String, String> binaryProviders(
-      final Map<String, NodeManifests.Manifest> installed) {
-    final Map<String, String> providers = new HashMap<>();
-    installed.forEach(
-        (name, owner) ->
-            NodeInstalledPackages.binaryNames(name, owner.manifest())
-                .forEach(command -> providers.put(command, name)));
-    return providers;
+  /**
+   * The packages that the root {@code ward.toml} gate commands run. Ward configured them itself, so
+   * knip cannot see them, but the packages are used all the same. Only the root config covers the
+   * workspace at the root, so other folders read none.
+   */
+  private static void gateCommands(
+      final String directory,
+      final ProjectFiles files,
+      final Map<String, NodeManifests.Manifest> installed,
+      final Set<String> implied) {
+    if (!directory.isEmpty()) {
+      return;
+    }
+    final Map<String, String> providers = NodeCommands.binaryProviders(installed);
+    files
+        .text(WARD_CONFIG)
+        .ifPresent(
+            text ->
+                NodeConfigText.gateCommands(text)
+                    .forEach(
+                        command -> implied.addAll(NodeCommands.packagesOf(command, providers))));
   }
 
   /**

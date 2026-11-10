@@ -19,6 +19,9 @@ final class NodeEntryPoints {
   private static final List<String> ENTRY_FIELDS =
       List.of("main", "module", "types", "typings", "bin", "exports");
   private static final String WILDCARD = "*";
+  private static final String INDEX_HTML = "index.html";
+  private static final Pattern SCRIPT_SOURCE =
+      Pattern.compile("<script[^>]*\\ssrc\\s*=\\s*[\"']([^\"']+)[\"']");
   private static final Pattern SOURCE_FILE = Pattern.compile("\\.(ts|tsx|js|jsx|mjs|cjs|mts|cts)$");
   private static final Pattern CONVENTIONAL_ENTRY =
       Pattern.compile(
@@ -35,10 +38,33 @@ final class NodeEntryPoints {
   static Set<String> entryPaths(final ProjectFiles files, final Set<String> paths) {
     final Set<String> entries = new HashSet<>();
     paths.stream().filter(path -> CONVENTIONAL_ENTRY.matcher(path).find()).forEach(entries::add);
+    entries.addAll(indexHtmlEntries(files, paths));
     for (final NodeManifests.Manifest owner : NodeManifests.byDirectory(files).values()) {
       entries.addAll(scriptEntries(owner, paths));
       entries.addAll(fieldEntries(owner, paths));
     }
+    return entries;
+  }
+
+  /**
+   * The scripts that the root {@code index.html} loads, as Vite's entries: a script whose source is
+   * a project file, with a leading {@code /} naming the project root.
+   */
+  private static Set<String> indexHtmlEntries(final ProjectFiles files, final Set<String> paths) {
+    final Set<String> entries = new HashSet<>();
+    files
+        .text(INDEX_HTML)
+        .ifPresent(
+            html ->
+                SCRIPT_SOURCE
+                    .matcher(html)
+                    .results()
+                    .map(match -> match.group(1))
+                    .map(
+                        source ->
+                            resolveFrom("", source.startsWith("/") ? source.substring(1) : source))
+                    .filter(paths::contains)
+                    .forEach(entries::add));
     return entries;
   }
 

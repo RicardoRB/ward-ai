@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 final class NodeUnusedFileCheckTest {
 
   private static final String MESSAGE = "unused file";
+  private static final String SOURCE = "export const a = 1;";
 
   @Test
   void reportsAFileNoEntryReaches() {
@@ -18,7 +19,7 @@ final class NodeUnusedFileCheckTest {
         new NodeUnusedFileCheck(MESSAGE)
             .project(
                 ProjectFixtures.trees(
-                    Map.of("index.ts", "export const a = 1;", "orphan.ts", "export const b = 2;")),
+                    Map.of("index.ts", SOURCE, "orphan.ts", "export const b = 2;")),
                 ProjectFixtures.manifests(Map.of()));
 
     assertThat(ProjectFixtures.positions(found)).containsExactly("orphan.ts:1:1");
@@ -44,7 +45,7 @@ final class NodeUnusedFileCheckTest {
     final List<ProjectMatch> found =
         new NodeUnusedFileCheck(MESSAGE)
             .project(
-                ProjectFixtures.trees(Map.of("src/cli.ts", "export const a = 1;")),
+                ProjectFixtures.trees(Map.of("src/cli.ts", SOURCE)),
                 ProjectFixtures.manifests(Map.of("package.json", "{\"bin\":\"./src/cli.ts\"}")));
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
@@ -56,11 +57,7 @@ final class NodeUnusedFileCheckTest {
         new NodeUnusedFileCheck(MESSAGE)
             .project(
                 ProjectFixtures.trees(
-                    Map.of(
-                        "scripts/build.ts",
-                        "export const a = 1;",
-                        "scripts/unused.ts",
-                        "export const b = 2;")),
+                    Map.of("scripts/build.ts", SOURCE, "scripts/unused.ts", "export const b = 2;")),
                 ProjectFixtures.manifests(
                     Map.of("package.json", "{\"scripts\":{\"build\":\"tsx scripts/build.ts\"}}")));
 
@@ -72,7 +69,7 @@ final class NodeUnusedFileCheckTest {
     final List<ProjectMatch> found =
         new NodeUnusedFileCheck(MESSAGE)
             .project(
-                ProjectFixtures.trees(Map.of("pages/home.ts", "export const a = 1;")),
+                ProjectFixtures.trees(Map.of("pages/home.ts", SOURCE)),
                 ProjectFixtures.manifests(
                     Map.of("package.json", "{\"dependencies\":{\"next\":\"^14.0.0\"}}")));
 
@@ -84,7 +81,7 @@ final class NodeUnusedFileCheckTest {
     final List<ProjectMatch> found =
         new NodeUnusedFileCheck(MESSAGE)
             .project(
-                ProjectFixtures.trees(Map.of("app/routes.ts", "export const a = 1;")),
+                ProjectFixtures.trees(Map.of("app/routes.ts", SOURCE)),
                 ProjectFixtures.manifests(
                     Map.of("package.json", "{\"dependencies\":{\"@remix-run/react\":\"^2\"}}")));
 
@@ -96,7 +93,7 @@ final class NodeUnusedFileCheckTest {
     final List<ProjectMatch> found =
         new NodeUnusedFileCheck(MESSAGE)
             .project(
-                ProjectFixtures.trees(Map.of("pkg/unused.ts", "export const a = 1;")),
+                ProjectFixtures.trees(Map.of("pkg/unused.ts", SOURCE)),
                 ProjectFixtures.manifests(
                     Map.of("pkg/package.json", "{\"dependencies\":{\"lodash\":\"^4\"}}")));
 
@@ -108,12 +105,26 @@ final class NodeUnusedFileCheckTest {
     final List<ProjectMatch> found =
         new NodeUnusedFileCheck(MESSAGE)
             .project(
-                ProjectFixtures.trees(Map.of("packages/ui/src/order.tsx", "export const a = 1;")),
+                ProjectFixtures.trees(Map.of("packages/ui/src/order.tsx", SOURCE)),
                 ProjectFixtures.manifests(
                     Map.of(
                         "packages/ui/package.json",
                         "{\"name\":\"@repo/ui\",\"exports\":{\"./*\":\"./src/*.tsx\"}}")));
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
+  }
+
+  @Test
+  void keepsAScriptThatTheRootIndexHtmlLoads() {
+    final List<ProjectMatch> found =
+        new NodeUnusedFileCheck(MESSAGE)
+            .project(
+                ProjectFixtures.trees(
+                    Map.of("src/main.tsx", SOURCE, "orphan.ts", "export const b = 2;")),
+                ProjectFixtures.manifests(
+                    Map.of(
+                        "index.html", "<script type=\"module\" src=\"/src/main.tsx\"></script>")));
+
+    assertThat(ProjectFixtures.positions(found)).containsExactly("orphan.ts:1:1");
   }
 }
