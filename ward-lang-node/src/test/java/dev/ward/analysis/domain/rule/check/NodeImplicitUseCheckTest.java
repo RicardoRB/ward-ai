@@ -36,12 +36,11 @@ final class NodeImplicitUseCheckTest {
     final List<ProjectMatch> found =
         new NodeUnusedDependencyCheck(MESSAGE, DEV_DEPENDENCIES)
             .project(
-                ProjectFixtures.trees(
-                    Map.of(
-                        "vitest.config.ts",
-                        "import { defineConfig } from 'vitest/config';\nexport default defineConfig({ test: { coverage: { provider: 'v8' } } });")),
+                ProjectFixtures.trees(Map.of()),
                 ProjectFixtures.manifests(
                     Map.of(
+                        "vitest.config.ts",
+                        "import { defineConfig } from 'vitest/config';\nexport default defineConfig({ test: { coverage: { provider: 'v8' } } });",
                         PACKAGE,
                         "{\"devDependencies\":{\"vitest\":\"^3\",\"@vitest/coverage-v8\":\"^3\"}}")));
 
@@ -115,10 +114,11 @@ final class NodeImplicitUseCheckTest {
     final List<ProjectMatch> found =
         new NodeUnusedDependencyCheck(MESSAGE, DEV_DEPENDENCIES)
             .project(
-                ProjectFixtures.trees(
-                    Map.of("stryker.config.mjs", "export default { testRunner: 'vitest' };")),
+                ProjectFixtures.trees(Map.of()),
                 ProjectFixtures.manifests(
                     Map.of(
+                        "stryker.config.mjs",
+                        "export default { testRunner: 'vitest' };",
                         PACKAGE,
                         "{\"devDependencies\":{\"@stryker-mutator/core\":\"^9\",\"@stryker-mutator/vitest-runner\":\"^9\"}}")));
 
@@ -130,11 +130,13 @@ final class NodeImplicitUseCheckTest {
     final List<ProjectMatch> found =
         new NodeUnusedDependencyCheck(MESSAGE, DEV_DEPENDENCIES)
             .project(
-                ProjectFixtures.trees(
-                    Map.of("jest.config.ts", "export default { preset: 'ts-jest' };")),
+                ProjectFixtures.trees(Map.of()),
                 ProjectFixtures.manifests(
                     Map.of(
-                        PACKAGE, "{\"devDependencies\":{\"jest\":\"^29\",\"ts-jest\":\"^29\"}}")));
+                        "jest.config.ts",
+                        "export default { preset: 'ts-jest' };",
+                        PACKAGE,
+                        "{\"devDependencies\":{\"jest\":\"^29\",\"ts-jest\":\"^29\"}}")));
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }

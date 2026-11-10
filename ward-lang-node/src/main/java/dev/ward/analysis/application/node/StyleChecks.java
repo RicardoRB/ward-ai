@@ -10,6 +10,8 @@ import dev.ward.analysis.domain.rule.check.NodeIllegalTokenCheck;
 import dev.ward.analysis.domain.rule.check.NodeJavadocAlignCheck;
 import dev.ward.analysis.domain.rule.check.NodeJavadocMethodCheck;
 import dev.ward.analysis.domain.rule.check.NodeJavadocPositionCheck;
+import dev.ward.analysis.domain.rule.check.NodeMagicNumberCheck;
+import dev.ward.analysis.domain.rule.check.NodeMagicNumberFlags;
 import dev.ward.analysis.domain.rule.check.NodeMissingJavadocTypeCheck;
 import dev.ward.analysis.domain.rule.check.NodeOverloadGroupingCheck;
 import dev.ward.analysis.domain.rule.check.NodePreferConstCheck;
@@ -18,6 +20,7 @@ import dev.ward.analysis.domain.rule.check.NodeTypeOnlyExportCheck;
 import dev.ward.analysis.domain.rule.check.NodeTypeOnlyImportCheck;
 import dev.ward.analysis.domain.rule.check.NodeUselessConstructorCheck;
 import dev.ward.analysis.domain.rule.check.VariableDistanceCheck;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -116,6 +119,21 @@ final class StyleChecks {
         Map.entry(
             "node-useless-constructor",
             toml -> new NodeUselessConstructorCheck(TomlValues.required(toml, MESSAGE))),
+        Map.entry(
+            "node-magic-number",
+            toml ->
+                new NodeMagicNumberCheck(
+                    TomlValues.strings(toml, "ignore-numbers").stream()
+                        .map(BigDecimal::new)
+                        .toList(),
+                    new NodeMagicNumberFlags(
+                        toml.getBoolean("detect-objects", () -> false),
+                        toml.getBoolean("ignore-array-indexes", () -> false),
+                        toml.getBoolean("ignore-default-values", () -> false),
+                        toml.getBoolean("ignore-class-field-initial-values", () -> false),
+                        toml.getBoolean("enforce-const", () -> false)),
+                    TomlValues.required(toml, MESSAGE),
+                    TomlValues.required(toml, "const-message"))),
         Map.entry(
             "node-prefer-const",
             toml ->

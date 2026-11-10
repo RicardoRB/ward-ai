@@ -7,6 +7,11 @@ import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.analysis.domain.rule.RuleDefinition;
+import dev.ward.domain.init.QualityPreset;
+import dev.ward.domain.project.Framework;
+import dev.ward.infrastructure.init.ConfigFiles;
+import dev.ward.infrastructure.init.node.NodeConfigTemplates;
+import dev.ward.infrastructure.init.node.NodeStrykerTemplate;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -36,9 +41,9 @@ final class NodeInitDevDependenciesTest {
   private static final String CASE = "case";
   private static final String CASE_TEXT = "export const value = 1;\n";
   private static final String TSCONFIG = "tsconfig.json";
-  private static final String VITEST_V8 =
-      "import { defineConfig } from \"vitest/config\";\n"
-          + "export default defineConfig({ test: { coverage: { provider: \"v8\" } } });\n";
+  private static final String VITEST_MJS = "vitest.config.mjs";
+  private static final String JEST_MJS = "jest.config.mjs";
+  private static final String STRYKER_MJS = "stryker.config.mjs";
   private static final Map<String, RuleDefinition> RULES =
       CatalogRuleDefinitions.all().stream()
           .collect(Collectors.toMap(RuleDefinition::id, rule -> rule));
@@ -58,12 +63,12 @@ final class NodeInitDevDependenciesTest {
             TYPESCRIPT_FIXTURE,
             AnalysisLanguage.TYPESCRIPT,
             List.of("typescript", "vitest", "@vitest/coverage-v8"),
-            Map.of("vitest.config.ts", VITEST_V8)),
+            Map.of(VITEST_MJS, vitest(QualityPreset.STANDARD))),
         new InitCase(
             "javascript-esm",
             AnalysisLanguage.JAVASCRIPT,
             List.of("@vitest/coverage-v8"),
-            Map.of("vitest.config.mjs", VITEST_V8)),
+            Map.of(VITEST_MJS, vitest(QualityPreset.STANDARD))),
         new InitCase(
             TYPESCRIPT_FIXTURE,
             AnalysisLanguage.TYPESCRIPT,
@@ -73,13 +78,19 @@ final class NodeInitDevDependenciesTest {
                 "@vitest/coverage-v8",
                 "@stryker-mutator/core",
                 "@stryker-mutator/vitest-runner"),
-            Map.of("vitest.config.ts", VITEST_V8, "stryker.config.ts", stryker("vitest"))),
+            Map.of(
+                VITEST_MJS, vitest(QualityPreset.STRICT),
+                STRYKER_MJS, stryker("vitest"))),
         new InitCase(
             "javascript-esm",
             AnalysisLanguage.JAVASCRIPT,
             List.of("jest", "@stryker-mutator/core", "@stryker-mutator/jest-runner"),
             Map.of(
-                "jest.config.mjs", "export default {};\n", "stryker.config.mjs", stryker("jest"))));
+                JEST_MJS,
+                ConfigFiles.marker(ConfigFiles.JS_MARKER, QualityPreset.STRICT)
+                    + NodeConfigTemplates.jest(QualityPreset.STRICT),
+                STRYKER_MJS,
+                stryker("jest"))));
   }
 
   @ParameterizedTest
@@ -119,10 +130,8 @@ final class NodeInitDevDependenciesTest {
     if (TYPESCRIPT_FIXTURE.equals(test.fixture())) {
       manifests.put(TSCONFIG, "{}\n");
     }
-    final List<SourceUnit> sources = new ArrayList<>(sources(test));
-    test.configs()
-        .forEach((name, text) -> sources.add(new SourceUnit(name, test.language(), text)));
-    return new FixtureProject(new ProjectFiles(manifests), sources);
+    manifests.putAll(test.configs());
+    return new FixtureProject(new ProjectFiles(manifests), sources(test));
   }
 
   private static String manifest(final String fixture, final List<String> devDependencies) {
@@ -157,7 +166,17 @@ final class NodeInitDevDependenciesTest {
     return language == AnalysisLanguage.TYPESCRIPT ? ".ts" : ".js";
   }
 
+  /** The text init writes for a vitest config: its managed marker, then the preset's template. */
+  private static String vitest(final QualityPreset preset) {
+    return ConfigFiles.marker(ConfigFiles.JS_MARKER, preset) + NodeConfigTemplates.vitest(preset);
+  }
+
+  /**
+   * The text init writes for a Stryker config: its managed marker, then the template for the
+   * runner.
+   */
   private static String stryker(final String runner) {
-    return "export default { testRunner: \"" + runner + "\" };\n";
+    return ConfigFiles.marker(ConfigFiles.JS_MARKER, QualityPreset.STRICT)
+        + NodeStrykerTemplate.stryker(runner, QualityPreset.STRICT, Framework.NONE);
   }
 }

@@ -674,7 +674,7 @@ indexMemberDeclaration
     ;
 
 generatorMethod
-    : (Async {this.notLineTerminator()}?)? '*'? propertyName '(' formalParameterList? ')' '{' functionBody '}'
+    : (Async {this.notLineTerminator()}?)? '*'? propertyName typeParameters? '(' formalParameterList? ')' typeAnnotation? '{' functionBody '}'
     ;
 
 generatorFunctionDeclaration
