@@ -17,6 +17,10 @@ import java.util.regex.Pattern;
  * its config selects, and tslib when a tsconfig sets {@code importHelpers}. Each row names the knip
  * plugin it stands for. A package used this way is not reported as unused, so a fact this table
  * does not know produces no finding.
+ *
+ * <p>shortcut: a tool that a config loads by a path rather than a name, such as the eslint and
+ * prettier packages behind their config files, is not counted, so knip's findings for those tools
+ * are silent here; upgrade by reading each config's imports as knip's plugin does.
  */
 public final class NodeImplicitUse {
 
