@@ -35,7 +35,6 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | TypeScript & JavaScript | `tsc` | TypeScript compiler | Type-check the project. |
 | | `vitest` / `jest` / `bun-test` | Vitest / Jest / Bun test | Run the project's automated tests. |
 | | `stryker` | StrykerJS | Run mutation testing, optionally with a `minimum` score. |
-| | `ruff` | Ruff | Lint Python sources. |
 | | `mypy` | mypy | Type-check the project. |
 | | `pytest` | pytest | Run the project's automated tests. |
 | | `pip-audit` | pip-audit | Scan dependencies for known vulnerabilities. |
@@ -179,16 +178,11 @@ their `command` from the project root, exactly as written, and pass when it exit
 - Ward does not add flags and does not choose a package manager. Put the runner in the command,
   such as `uv run` or `poetry run`, so the project's own environment runs the tool.
 - When `uses` is omitted, Ward infers the type from the command wherever the tool appears, so
-  `["uv", "run", "ruff", "check", "."]` is a `ruff` check. `coverage report` is `coverage`, `mutmut run` is `mutmut`, and `pytest`
-  is `pytest`, including `coverage run -m pytest`.
-- `ruff` and `mypy` findings are read from their output; see
-  [structured findings](#structured-findings).
+  `coverage report` is `coverage`, `mutmut run` is `mutmut`, and `pytest` is `pytest`, including
+  `coverage run -m pytest`. A `ruff check` command is not inferred: it is a plain `command` check.
+- `mypy` findings are read from its output; see [structured findings](#structured-findings).
 
 ```toml
-[checks.ruff]
-command = ["uv", "run", "ruff", "check", ".", "--output-format", "json"]
-profiles = ["default"]
-
 [checks.mypy]
 command = ["uv", "run", "mypy", "-O", "json", "src"]
 profiles = ["pre-push"]
@@ -896,7 +890,7 @@ You are responsible for being authorized to scan the target.
 
 ## Structured findings
 
-When `ward`, `gitleaks`, `compile`, `ward-format`, `tsc`, `ruff`, `mypy`, `swift-build`, or `xcodebuild-test` fails, Ward turns the tool's output
+When `ward`, `gitleaks`, `compile`, `ward-format`, `tsc`, `mypy`, `swift-build`, or `xcodebuild-test` fails, Ward turns the tool's output
 into findings with rule, severity, file, line, column, message, and a rule documentation link when
 known. They appear in [JSON](/reference/json-output/) and SARIF output.
 
@@ -915,9 +909,7 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
   `reports/mutation/mutation.json`, because only Stryker's configuration file can move it.
 - A missing or malformed report never changes the gate result; the gate just has no findings.
 - Gitleaks findings never contain the matched secret.
-- `ruff` reads the JSON array of `ruff check --output-format json` from standard output, and
-  `mypy` reads the JSON lines of `mypy -O json`. Ruff findings are errors; mypy `note` lines are
-  skipped. A missing or unparseable JSON output gives no findings, and the gate result does not
+- `mypy` reads the JSON lines of `mypy -O json`. Mypy `note` lines are skipped. A missing or unparseable JSON output gives no findings, and the gate result does not
   change. Only the structured formats are read: the command must pass them.
 - `tsc`'s pretty output gives no findings. The gate result does not change.
 - Swift compiler errors are read without terminal colours, once each even when the compiler

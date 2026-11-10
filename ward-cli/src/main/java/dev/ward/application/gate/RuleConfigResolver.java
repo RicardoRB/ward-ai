@@ -68,7 +68,7 @@ final class RuleConfigResolver {
       final String id,
       final Map<String, Object> table,
       final Map<String, RuleDefinition> selected) {
-    final String where = RuleProblems.ruleTable(id);
+    final String where = file.header(id);
     final Optional<RuleDefinition> rule =
         catalog.stream().filter(r -> r.id().equals(id)).findFirst();
     if (rule.isPresent() && selected.containsKey(id)) {

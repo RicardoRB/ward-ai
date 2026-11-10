@@ -36,7 +36,6 @@ public final class QualityGateDefinitions {
           new Definition("jest", "Jest", Phase.LOCAL, false),
           new Definition("bun-test", "Bun test", Phase.LOCAL, false),
           new Definition(SupportedQualityGates.STRYKER, "Stryker", Phase.CI, false),
-          new Definition("ruff", "Ruff", Phase.FAST, true),
           new Definition("mypy", "mypy", Phase.LOCAL, true),
           new Definition("pytest", "pytest", Phase.LOCAL, false),
           new Definition(SupportedQualityGates.MUTMUT, "mutmut", Phase.CI, false),

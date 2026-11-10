@@ -72,7 +72,6 @@ public final class CommandTypeInference {
           new Rule("jest", sequence("jest")),
           new Rule("bun-test", sequence("bun", "test")),
           new Rule("openspec", sequence("openspec", "validate")),
-          new Rule("ruff", sequence("ruff", "check")),
           new Rule("mypy", sequence("mypy")),
           new Rule("pytest", sequence("pytest")),
           new Rule("mutmut", sequence("mutmut", "run")),

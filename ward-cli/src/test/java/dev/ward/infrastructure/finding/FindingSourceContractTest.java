@@ -8,7 +8,6 @@ import dev.ward.infrastructure.finding.jvm.JavacOutputFindings;
 import dev.ward.infrastructure.finding.node.TscOutputFindings;
 import dev.ward.infrastructure.finding.node.turbo.TurborepoFindings;
 import dev.ward.infrastructure.finding.python.MypyJsonFindings;
-import dev.ward.infrastructure.finding.python.RuffJsonFindings;
 import dev.ward.infrastructure.finding.swift.SwiftFindingSources;
 import dev.ward.infrastructure.json.ForyJsonCodec;
 import java.util.stream.Stream;
@@ -25,7 +24,6 @@ class FindingSourceContractTest {
                         new GitleaksSarifFindings(new ForyJsonCodec()),
                         new JavacOutputFindings(),
                         new TscOutputFindings(),
-                        new RuffJsonFindings(new ForyJsonCodec()),
                         new MypyJsonFindings(new ForyJsonCodec())),
                     new SwiftFindingSources().sources().stream())
                 .toList());

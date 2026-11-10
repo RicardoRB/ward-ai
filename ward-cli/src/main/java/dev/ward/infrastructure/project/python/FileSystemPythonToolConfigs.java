@@ -21,13 +21,11 @@ public final class FileSystemPythonToolConfigs implements PythonToolConfigs {
   private static final String WARD_MARKER = "# managed-by: ward";
   private static final Map<String, List<String>> FILES =
       Map.of(
-          "ruff", List.of("ruff.toml", ".ruff.toml"),
           "mypy", List.of("mypy.ini", ".mypy.ini"),
           "coverage", List.of(".coveragerc"),
           "pytest", List.of("pytest.ini", ".pytest.ini"));
   private static final Map<String, String> TABLES =
       Map.of(
-          "ruff", "tool.ruff",
           "mypy", "tool.mypy",
           "coverage", "tool.coverage",
           "pytest", "tool.pytest.ini_options");
