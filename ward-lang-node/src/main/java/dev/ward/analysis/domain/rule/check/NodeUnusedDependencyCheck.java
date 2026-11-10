@@ -30,6 +30,9 @@ public final class NodeUnusedDependencyCheck implements RuleCheck, ProjectCheck 
   private static final String SCOPE_SEPARATOR = "__";
   private static final String VALUE = "{value}";
 
+  /** Packages knip never reports, as its ignored dependencies: the tool itself and TypeScript. */
+  private static final Set<String> ALWAYS_USED = Set.of("knip", "typescript");
+
   private final String message;
   private final String section;
 
@@ -101,7 +104,10 @@ public final class NodeUnusedDependencyCheck implements RuleCheck, ProjectCheck 
 
   private static boolean isUsed(
       final String name, final Set<String> used, final Set<String> scripts) {
-    return used.contains(name) || scripts.contains(name) || typedPackageUsed(name, used);
+    return ALWAYS_USED.contains(name)
+        || used.contains(name)
+        || scripts.contains(name)
+        || typedPackageUsed(name, used);
   }
 
   /**

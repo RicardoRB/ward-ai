@@ -83,4 +83,32 @@ final class NodeUnusedExportCheckTest {
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
+
+  @Test
+  void keepsATypeTheFileItselfRefersTo() {
+    final List<ProjectMatch> found =
+        new NodeUnusedExportCheck(MESSAGE, true)
+            .project(
+                ProjectFixtures.trees(
+                    Map.of(
+                        "lib.ts",
+                        "export interface Order { id: string }\nexport function save(order: Order): void {}")),
+                ProjectFixtures.manifests(Map.of()));
+
+    assertThat(ProjectFixtures.positions(found)).isEmpty();
+  }
+
+  @Test
+  void stillReportsAValueOnlyItsOwnFileCalls() {
+    final List<ProjectMatch> found =
+        new NodeUnusedExportCheck(MESSAGE, false)
+            .project(
+                ProjectFixtures.trees(
+                    Map.of(
+                        "lib.ts",
+                        "export interface Order { id: string }\nexport function save(order: Order): void {}\nsave({ id: '' });")),
+                ProjectFixtures.manifests(Map.of()));
+
+    assertThat(ProjectFixtures.positions(found)).containsExactly("lib.ts:2:17");
+  }
 }

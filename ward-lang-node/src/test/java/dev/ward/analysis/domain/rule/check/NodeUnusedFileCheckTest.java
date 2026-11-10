@@ -102,4 +102,18 @@ final class NodeUnusedFileCheckTest {
 
     assertThat(ProjectFixtures.positions(found)).containsExactly("pkg/unused.ts:1:1");
   }
+
+  @Test
+  void keepsAFileAPackageExportsByAWildcard() {
+    final List<ProjectMatch> found =
+        new NodeUnusedFileCheck(MESSAGE)
+            .project(
+                ProjectFixtures.trees(Map.of("packages/ui/src/order.tsx", "export const a = 1;")),
+                ProjectFixtures.manifests(
+                    Map.of(
+                        "packages/ui/package.json",
+                        "{\"name\":\"@repo/ui\",\"exports\":{\"./*\":\"./src/*.tsx\"}}")));
+
+    assertThat(ProjectFixtures.positions(found)).isEmpty();
+  }
 }
