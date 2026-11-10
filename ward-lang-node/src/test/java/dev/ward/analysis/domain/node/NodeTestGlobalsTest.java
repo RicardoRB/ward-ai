@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.scope.NameReference;
 import dev.ward.analysis.domain.scope.UnitScopes;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import java.util.List;
@@ -56,6 +57,6 @@ final class NodeTestGlobalsTest {
     final SourceUnit unit = new SourceUnit(path, AnalysisLanguage.JAVASCRIPT, source);
     final SyntaxNode root = new AntlrLanguageFrontend().parse(unit).tree();
     final UnitScopes scopes = new NodeScopeAnalysis(environments -> Set.of()).analyze(unit, root);
-    return scopes.unresolved().stream().map(reference -> reference.name()).distinct().toList();
+    return scopes.unresolved().stream().map(NameReference::name).distinct().toList();
   }
 }
