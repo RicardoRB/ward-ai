@@ -70,6 +70,37 @@ limit it uses without the file:
 Option types are `integer` (with an allowed range), `boolean`, `string`, `regex`, `string-list` and
 `enum`. A `regex` is compiled when the file is read.
 
+## Editor support
+
+A JSON Schema describes `ward-rules.toml` to TOML editors: every rule id, the options of each rule
+with their types, bounds and enum values, `severity`, `exclude-paths` and `[select]`. It lists the
+rules that ship with Ward, which are the same definitions `ward` checks the file against. It is
+published with this site as [`ward-rules.schema.json`](https://ricardorb.github.io/ward-ai/schemas/ward-rules.schema.json).
+
+Start the file with a `#:schema` line, which Taplo and Even Better TOML both read:
+
+```toml
+#:schema https://ricardorb.github.io/ward-ai/schemas/ward-rules.schema.json
+version = 1
+```
+
+Without the line, associate the file with the schema in the editor. In VS Code with Even Better
+TOML, add this to `settings.json`:
+
+```json
+"evenBetterToml.schema.associations": {
+  "ward-rules.toml": "https://ricardorb.github.io/ward-ai/schemas/ward-rules.schema.json"
+}
+```
+
+With the Taplo CLI or language server, add this to `.taplo.toml` at the project root:
+
+```toml
+[[schema]]
+path = "ward-rules.toml"
+url = "https://ricardorb.github.io/ward-ai/schemas/ward-rules.schema.json"
+```
+
 ## Validation
 
 Every problem is reported, not only the first, and each names the file, the table and the key:
