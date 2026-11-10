@@ -13,6 +13,7 @@ import dev.ward.analysis.domain.rule.check.BiomeMisplacedListElementCheck;
 import dev.ward.analysis.domain.rule.check.BiomeRedundantAltCheck;
 import dev.ward.analysis.domain.rule.check.BiomeSuspiciousSemicolonCheck;
 import dev.ward.analysis.domain.rule.check.BiomeUnsafeIframeSandboxCheck;
+import dev.ward.analysis.domain.rule.check.BiomeValidAutocompleteCheck;
 import dev.ward.analysis.domain.rule.check.BiomeValidLangCheck;
 import java.util.Map;
 
@@ -54,6 +55,9 @@ final class BiomeJsxChecks {
             toml -> new BiomeSuspiciousSemicolonCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "node-google-font-display",
-            toml -> new BiomeGoogleFontDisplayCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new BiomeGoogleFontDisplayCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "node-valid-autocomplete",
+            toml -> new BiomeValidAutocompleteCheck(TomlValues.required(toml, MESSAGE))));
   }
 }

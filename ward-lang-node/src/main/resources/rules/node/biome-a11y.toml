@@ -869,3 +869,75 @@ body = '''
 check = "node-label-without-control"
 message = "A label needs text and a control: a for or htmlFor attribute, or a nested form control."
 '''
+
+[[rules]]
+id = "ward:javascript/no-aria-hidden-on-focusable"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-hidden-on-focusable"
+message = "aria-hidden must not be set on an element that can take focus."
+'''
+
+[[rules]]
+id = "ward:typescript/no-aria-hidden-on-focusable"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-hidden-on-focusable"
+message = "aria-hidden must not be set on an element that can take focus."
+'''
+
+[[rules]]
+id = "ward:javascript/use-focusable-interactive"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-use-focusable-interactive"
+message = "An element with an interactive role must be focusable, so give it a tabIndex."
+'''
+
+[[rules]]
+id = "ward:typescript/use-focusable-interactive"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-use-focusable-interactive"
+message = "An element with an interactive role must be focusable, so give it a tabIndex."
+'''
+
+[[rules]]
+id = "ward:javascript/use-valid-autocomplete"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-valid-autocomplete"
+message = "Use a valid value for the autocomplete attribute, such as email or tel."
+'''
+
+[[rules]]
+id = "ward:typescript/use-valid-autocomplete"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-valid-autocomplete"
+message = "Use a valid value for the autocomplete attribute, such as email or tel."
+'''

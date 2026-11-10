@@ -95,6 +95,9 @@ class BiomeParitySmokeTest {
           Map.entry("no-misplaced-list-elements", "nursery/noMisplacedListElements"),
           Map.entry("no-suspicious-semicolon-in-jsx", "suspicious/noSuspiciousSemicolonInJsx"),
           Map.entry("use-google-font-display", "suspicious/useGoogleFontDisplay"),
+          Map.entry("no-aria-hidden-on-focusable", "a11y/noAriaHiddenOnFocusable"),
+          Map.entry("use-focusable-interactive", "a11y/useFocusableInteractive"),
+          Map.entry("use-valid-autocomplete", "a11y/useValidAutocomplete"),
           Map.entry("no-comment-text", "suspicious/noCommentText"),
           Map.entry("no-unsafe-iframe-sandbox", "nursery/noUnsafeIframeSandbox"),
           Map.entry(

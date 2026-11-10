@@ -5,7 +5,7 @@ no-accumulating-spread = "implemented"
 no-adjacent-spaces-in-regex = "implemented"
 no-ambiguous-anchor-text = "implemented"
 no-approximative-numeric-constant = "implemented"
-no-aria-hidden-on-focusable = { status = "planned", issue = "#329" }
+no-aria-hidden-on-focusable = "implemented"
 no-aria-unsupported-elements = "implemented"
 no-array-index-key = { status = "planned", issue = "#329" }
 no-assign-in-expressions = "implemented"
@@ -222,7 +222,7 @@ use-exports-last = { status = "planned", issue = "#296" }
 use-filenaming-convention = { status = "planned", issue = "#296" }
 use-flat-map = "implemented"
 use-flat-math-min-max = "implemented"
-use-focusable-interactive = { status = "planned", issue = "#329" }
+use-focusable-interactive = "implemented"
 use-fragment-syntax = { status = "planned", issue = "#296" }
 use-global-this = "implemented"
 use-google-font-display = "implemented"
@@ -285,7 +285,7 @@ use-valid-anchor = "implemented"
 use-valid-aria-props = "implemented"
 use-valid-aria-role = "implemented"
 use-valid-aria-values = "implemented"
-use-valid-autocomplete = { status = "planned", issue = "#329" }
+use-valid-autocomplete = "implemented"
 use-valid-for-direction = "implemented"
 use-valid-lang = "implemented"
 use-valid-test-title = { status = "planned", issue = "#329" }
