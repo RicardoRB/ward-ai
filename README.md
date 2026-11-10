@@ -40,7 +40,7 @@ team, and Ward checks every change against them, from the first edit to producti
 | Kotlin / Java for Android | Gradle with the Android Gradle Plugin | Android app and library modules | Android lint, Android unit tests, Android debug unit-test coverage |
 | TypeScript | npm, pnpm, Yarn, Bun | Vue, Svelte, Astro, Angular (others are checked with the same gates) | `tsc`, Vitest / Jest / `bun test`, Stryker, Ward's TypeScript and JavaScript rules |
 | JavaScript | npm, pnpm, Yarn, Bun | Same as TypeScript | Same as TypeScript, without `tsc` |
-| Python 3.11–3.14 | uv, Poetry, pip | Django, FastAPI, Flask | Ward rules (lint), mypy, pytest, coverage.py, Import Linter, pip-audit, mutmut |
+| Python 3.11–3.14 | uv, Poetry, pip | Django, FastAPI, Flask | Ward rules (lint), mypy, pytest, coverage.py, pip-audit, mutmut |
 | Swift | SwiftPM, Xcode | Any | Ward rules (lint), `swift build`, `swift test` or `xcodebuild test`, llvm-cov / xccov |
 
 <div align="center">
@@ -61,7 +61,7 @@ forgets.
 Ward moves those rules out of your prompts and into your project:
 
 - **The rules live in the repository.** `ward.toml` lists the checks (tests, coverage,
-  linters such as ESLint or Biome, architecture rules, security scanners, or any
+  Ward's own lint, format and architecture rules, security scanners, or any
   command).
 - **Every agent gets the same feedback.** After each edit, Ward runs the fast checks and hands the
   exact failure back to the agent, which fixes it on its own.
@@ -139,6 +139,7 @@ ward init --preset standard --integration claude-code --quality-hooks
 
 ```bash
 ward check                     # layer 1: fast checks
+ward format                    # format the sources in Ward style
 ward check --profile pre-push  # layer 3: stricter checks
 ```
 
@@ -195,13 +196,13 @@ ward check --profile ci --format json > ward-report.json
 | Security | Gitleaks, Semgrep, OWASP Dependency-Check, Trivy, OWASP ZAP |
 | Compliance | License plugins, japicmp API compatibility |
 | TypeScript and JavaScript | `tsc`, Vitest / Jest / `bun test`, Stryker mutation testing, Ward's TypeScript and JavaScript rules (lint, selected in `ward-rules.toml`), framework checkers (`vue-tsc`, `svelte-check`, `astro check`, `ngc`) |
-| Python | Ward rules (lint, selected in `ward-rules.toml`), `ward-format` (format), mypy, pytest, coverage.py, Import Linter, pip-audit, mutmut mutation testing, `manage.py check` for Django |
+| Python | Ward rules (lint, selected in `ward-rules.toml`), `ward-format` (format), mypy, pytest, coverage.py, pip-audit, mutmut mutation testing, `manage.py check` for Django |
 | Swift | Ward rules (lint, selected in `ward-rules.toml`), `swift build`, `swift test` or `xcodebuild test`, llvm-cov / xccov coverage |
 | Android | Android lint (`lintDebug`), Android unit tests (`testDebugUnitTest`), debug unit-test coverage |
 | Anything else | Any command you add to `ward.toml` |
 
-Ward runs the tools; the rules live in each tool's own configuration, or for TypeScript and JavaScript
-in Ward's own rules, selected by `ward-rules.toml`. For TypeScript and JavaScript projects, `ward init`
+Ward runs the tools; the rules live in each tool's own configuration. Lint, format and architecture
+rules are Ward's own, for every language: `ward-rules.toml` selects them, and [`ward format`](https://ricardorb.github.io/ward-ai/commands/format/) applies the format. For TypeScript and JavaScript projects, `ward init`
 writes `ward-rules.toml` and the test runner's config, such as `vitest.config.mjs`, and the thresholds sit there too. See [Node projects](https://ricardorb.github.io/ward-ai/commands/init/#node-projects). See
 [quality gates](https://ricardorb.github.io/ward-ai/configuration/gates/).
 
