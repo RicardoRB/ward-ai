@@ -124,18 +124,25 @@ class NodeFixturesTest {
       files
           .map(file -> file.getFileName().toString())
           .filter(file -> file.startsWith(VIOLATING + "-"))
-          .map(file -> file.substring(VIOLATING.length() + 1, file.lastIndexOf('.')))
+          .map(file -> file.substring(VIOLATING.length() + 1, file.indexOf('.')))
           .sorted()
           .forEach(cases::add);
     }
     return cases;
   }
 
-  /** The file of a case: a TypeScript case with a {@code .tsx} file uses it, so that JSX is on. */
+  /**
+   * The file of a case: a TypeScript case uses its {@code .tsx} or {@code .d.ts} file if it has
+   * one.
+   */
   private static Path source(final OwnedRule owned, final String base, final String extension) {
     final Path tsx = owned.directory().resolve(base + ".tsx");
     if ("ts".equals(extension) && Files.isRegularFile(tsx)) {
       return tsx;
+    }
+    final Path definition = owned.directory().resolve(base + ".d.ts");
+    if ("ts".equals(extension) && Files.isRegularFile(definition)) {
+      return definition;
     }
     return owned.directory().resolve(base + "." + extension);
   }

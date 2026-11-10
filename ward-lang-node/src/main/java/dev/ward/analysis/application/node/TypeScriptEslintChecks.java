@@ -10,6 +10,7 @@ import dev.ward.analysis.domain.node.lint.DuplicateEnumValuesCheck;
 import dev.ward.analysis.domain.node.lint.ExtraNonNullAssertionCheck;
 import dev.ward.analysis.domain.node.lint.MisusedNewCheck;
 import dev.ward.analysis.domain.node.lint.NoExplicitAnyCheck;
+import dev.ward.analysis.domain.node.lint.NoNamespaceCheck;
 import dev.ward.analysis.domain.node.lint.NonNullOptionalChainCheck;
 import dev.ward.analysis.domain.node.lint.PreferAsConstCheck;
 import dev.ward.analysis.domain.node.lint.RedundantConstituentsCheck;
@@ -56,6 +57,7 @@ final class TypeScriptEslintChecks {
         "node-no-unsafe-declaration-merging", toml -> new DeclarationMergingCheck(message(toml)));
     checks.put("node-no-explicit-any", TypeScriptEslintChecks::explicitAny);
     checks.put("node-no-this-alias", TypeScriptEslintChecks::thisAlias);
+    checks.put("node-no-namespace", TypeScriptEslintChecks::namespace);
     checks.put(
         "node-no-duplicate-type-constituents", TypeScriptEslintChecks::duplicateConstituents);
     checks.put("node-no-misused-new", TypeScriptEslintChecks::misusedNew);
@@ -79,6 +81,13 @@ final class TypeScriptEslintChecks {
   private static NoExplicitAnyCheck explicitAny(final TomlParseResult toml) {
     return new NoExplicitAnyCheck(
         Boolean.TRUE.equals(toml.getBoolean("ignore-rest-args")), message(toml));
+  }
+
+  private static NoNamespaceCheck namespace(final TomlParseResult toml) {
+    return new NoNamespaceCheck(
+        flag(toml, "allow-declarations", false),
+        flag(toml, "allow-definition-files", true),
+        message(toml));
   }
 
   private static ThisAliasCheck thisAlias(final TomlParseResult toml) {

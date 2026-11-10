@@ -5,13 +5,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-/** The syntax style rules of the suggestion file exist for the languages they apply to. */
+/**
+ * The syntax style rules of the suggestion and typescript-eslint files exist for their languages.
+ */
 class NodeSyntaxStyleRulesFileTest {
 
   private static final String FILE = "rules/node/suggestion.toml";
+  private static final String SYNTAX_FILE = "rules/node/typescript-eslint-syntax.toml";
   private static final List<String> BOTH =
       List.of(
           "prefer-exponentiation-operator",
@@ -50,7 +54,15 @@ class NodeSyntaxStyleRulesFileTest {
   }
 
   private static List<String> ids() throws IOException {
-    try (InputStream in = NodeSyntaxStyleRulesFileTest.class.getResourceAsStream("/" + FILE)) {
+    final List<String> ids = new ArrayList<>();
+    for (final String file : List.of(FILE, SYNTAX_FILE)) {
+      ids.addAll(idsOf(file));
+    }
+    return ids;
+  }
+
+  private static List<String> idsOf(final String file) throws IOException {
+    try (InputStream in = NodeSyntaxStyleRulesFileTest.class.getResourceAsStream("/" + file)) {
       assertThat(in).isNotNull();
       return new String(in.readAllBytes(), StandardCharsets.UTF_8)
           .lines()

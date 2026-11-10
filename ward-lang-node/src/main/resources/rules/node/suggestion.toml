@@ -1623,20 +1623,6 @@ text = '^(window\.|globalThis\.)?(setTimeout|setInterval|setImmediate)\(("|\x27|
 message = "implied eval; pass a function instead of a string"
 '''
 [[rules]]
-id = "ward:typescript/no-namespace"
-language = "TYPESCRIPT"
-capability = "SYNTAX"
-severity = "ERROR"
-category = "suggestion"
-presets = ["standard", "strict"]
-body = '''
-check = "forbidden-node"
-kinds = ["namespaceDeclaration"]
-text = '^(namespace|module[A-Za-z_$])'
-message = "do not use TypeScript namespaces; use ES modules"
-'''
-
-[[rules]]
 id = "ward:typescript/prefer-namespace-keyword"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
