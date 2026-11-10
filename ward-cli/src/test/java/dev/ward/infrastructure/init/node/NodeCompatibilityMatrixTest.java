@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -53,8 +54,11 @@ class NodeCompatibilityMatrixTest {
     final String fixture = cell.getString(1);
     final String preset = cell.getString(2);
     // The packages column is optional: rows without it have only the first five arguments.
+    // JUnit reads an empty trailing CSV column as null, so a row without packages gives null too.
     final String packageSpec =
-        cell.size() > PACKAGES_ARGUMENT ? cell.getString(PACKAGES_ARGUMENT) : "";
+        cell.size() > PACKAGES_ARGUMENT
+            ? Objects.requireNonNullElse(cell.getString(PACKAGES_ARGUMENT), "")
+            : "";
     final Map<String, String> packages = NodeMatrixFixtureEdits.parsePackages(packageSpec);
     Assumptions.assumeTrue(
         node.equals(System.getProperty(NODE_PROPERTY)), "row is for Node " + node);
