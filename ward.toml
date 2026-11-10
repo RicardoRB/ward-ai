@@ -108,8 +108,7 @@ enabled = true
 uses = "license"
 profiles = ["pre-push", "ci"]
 # Regenerates THIRD-PARTY-LICENSES and the SBOM of the shipped ward-cli into ward-cli/target/compliance; the drift check below compares them.
-# The aggregate SBOM runs once at the root, so its directory is given from there. Drop both -D options to regenerate compliance/.
-command = ["./mvnw", "-q", "-pl", "ward-cli", "-am", "-Dcompliance.outputDirectory=target/compliance", "-Dcompliance.sbomDirectory=ward-cli/target/compliance", "license:add-third-party", "cyclonedx:makeAggregateBom"]
+command = ["./mvnw", "-q", "-pl", "ward-cli", "-am", "-Dcompliance.outputDirectory=target/compliance", "license:add-third-party", "cyclonedx:makeBom"]
 
 # Fails when the committed compliance files differ from the regenerated ones, and names the stale file.
 [checks.license-drift]
