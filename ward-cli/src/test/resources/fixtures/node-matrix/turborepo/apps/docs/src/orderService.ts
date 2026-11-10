@@ -1,28 +1,39 @@
-/** An order placed by a customer, keyed by its id. */
-export interface Order {
-  readonly id: string;
-  readonly total: number;
+/** One line of the example ledger that the documentation pages walk through. */
+export interface LedgerLine {
+  readonly orderId: string;
+  readonly amount: number;
 }
 
-const orders = new Map<string, Order>();
+const ledger: LedgerLine[] = [];
 
-export function save(order: Order): void {
-  orders.set(order.id, order);
-}
-
-export function placeOrder(id: string, total: number): Order {
-  if (total <= 0) {
-    throw new Error("total must be positive");
+/**
+ * Appends an example line, rejecting an amount that is not greater than zero.
+ *
+ * @param orderId the order the line belongs to
+ * @param amount the amount of the line
+ * @returns the recorded line
+ */
+export function recordLine(orderId: string, amount: number): LedgerLine {
+  if (amount <= 0) {
+    throw new RangeError("amount must be greater than zero");
   }
-  const order = { id: id, total };
-  save(order);
-  return order;
+  const line: LedgerLine = { orderId: orderId, amount: amount };
+  ledger.push(line);
+  return line;
 }
 
-export function orderTotal(id: string): number {
-  const order = orders.get(id);
-  if (order === undefined) {
-    throw new Error(`unknown order ${id}`);
+/**
+ * Sums the example amounts recorded for one order.
+ *
+ * @param orderId the order to sum
+ * @returns the sum of its amounts
+ */
+export function sumFor(orderId: string): number {
+  let total = 0;
+  for (const line of ledger) {
+    if (line.orderId === orderId) {
+      total += line.amount;
+    }
   }
-  return order.total;
+  return total;
 }

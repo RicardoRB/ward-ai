@@ -1,21 +1,18 @@
 import { describe, expect, it } from "vitest";
-import { orderTotal, placeOrder } from "../src/orderService";
+import { recordLine, sumFor } from "../src/orderService";
 
-const AMOUNT = 5;
+const SAMPLE_AMOUNT = 5;
 
-describe("placeOrder", () => {
-  it("stores a positive order", () => {
-    expect(placeOrder("a", AMOUNT)).toEqual({ id: "a", total: AMOUNT });
-    expect(orderTotal("a")).toBe(AMOUNT);
+describe("recordLine", () => {
+  it("keeps a line for an order", () => {
+    expect(recordLine("doc-1", SAMPLE_AMOUNT)).toEqual({
+      orderId: "doc-1",
+      amount: SAMPLE_AMOUNT,
+    });
+    expect(sumFor("doc-1")).toBe(SAMPLE_AMOUNT);
   });
 
-  it("rejects a total that is not positive", () => {
-    expect(() => placeOrder("b", 0)).toThrow("total must be positive");
-  });
-});
-
-describe("orderTotal", () => {
-  it("rejects an unknown order", () => {
-    expect(() => orderTotal("missing")).toThrow("unknown order missing");
+  it("rejects an amount that is not positive", () => {
+    expect(() => recordLine("doc-2", 0)).toThrow(RangeError);
   });
 });
