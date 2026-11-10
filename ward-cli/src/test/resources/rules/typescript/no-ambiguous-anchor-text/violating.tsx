@@ -1,0 +1,12 @@
+const c1 = <a href="/x">click here</a>;
+const c2 = <a href="/x">Click here!</a>;
+const c3 = <a href="/x"><span>here</span></a>;
+const c4 = <a href="/x" aria-label="link" />;
+const c5 = <a href="/x"><img alt="a link" /></a>;
+const c6 = <a href="/x">learn more</a>;
+const c7 = <a href="/x">read more</a>;
+const c8 = <a href="/x"><span aria-hidden="true">link</span></a>;
+const c9 = <a href="/x">{"link"}</a>;
+const c10 = <a href="/x">  Learn   more.  </a>;
+const c11 = <button>here</button>;
+const c12 = <a href="/x" aria-label="learn more">foo</a>;

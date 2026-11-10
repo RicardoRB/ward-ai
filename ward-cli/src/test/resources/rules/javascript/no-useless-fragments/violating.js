@@ -12,3 +12,8 @@ const t = <div><>{a}</></div>;
 const u = <div>{a && <><b /></>}</div>;
 const y = <div><><b /></></div>;
 const z = <><><b /><i /></></>;
+const e1 = <div><Fragment><span /></Fragment></div>;
+const e2 = <div><React.Fragment><span /></React.Fragment></div>;
+const e3 = <div><F><span /></F></div>;
+import { Fragment, Fragment as F } from 'react';
+import * as React from 'react';
