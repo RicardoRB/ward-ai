@@ -14,7 +14,8 @@ public final class PythonStatementLeaves {
   private static final Set<String> SEQUENCES =
       Set.of("file_input", "block", "stmt", "simple_stmts");
   private static final Set<String> WRAPPERS =
-      Set.of("simple_stmt", "small_stmt", "flow_stmt", "compound_stmt", "async_stmt");
+      Set.of(
+          "simple_stmt", "small_stmt", "flow_stmt", "import_stmt", "compound_stmt", "async_stmt");
 
   private PythonStatementLeaves() {}
 

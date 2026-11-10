@@ -104,6 +104,18 @@ final class PythonFlowChecksTest {
             List.of(LINE_3)),
         Arguments.of(
             UsedBeforeAssignmentCheck.Problem.NEVER_BOUND,
+            "try:\n    import json\nexcept ImportError:\n    json = None\nprint(json)\n",
+            List.of()),
+        Arguments.of(
+            UsedBeforeAssignmentCheck.Problem.POSSIBLY_UNBOUND,
+            "try:\n    import json\nexcept ImportError:\n    json = None\nprint(json)\n",
+            List.of()),
+        Arguments.of(
+            UsedBeforeAssignmentCheck.Problem.NEVER_BOUND,
+            "import os.path as p\nfrom x import y as z\nprint(p, z)\n",
+            List.of()),
+        Arguments.of(
+            UsedBeforeAssignmentCheck.Problem.NEVER_BOUND,
             "from m import *\nprint(y)\ny = 1\n",
             List.of()));
   }

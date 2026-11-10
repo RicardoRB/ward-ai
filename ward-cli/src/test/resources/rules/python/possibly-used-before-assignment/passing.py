@@ -4,3 +4,8 @@ def f(flag):
     else:
         result = 2
     return result
+try:
+    import json
+except ImportError:
+    json = None
+print(json)
