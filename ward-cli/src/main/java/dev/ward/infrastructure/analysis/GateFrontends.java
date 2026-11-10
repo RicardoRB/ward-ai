@@ -12,10 +12,13 @@ import dev.ward.analysis.domain.port.ControlFlowResult;
 import dev.ward.analysis.domain.port.LanguageFrontend;
 import dev.ward.analysis.domain.python.PythonScopes;
 import dev.ward.analysis.domain.rule.RuleCapability;
+import dev.ward.analysis.domain.rule.check.NodeImplicitUse;
 import dev.ward.analysis.domain.scope.CachedScopes;
 import dev.ward.analysis.domain.swift.SwiftScopeAnalysis;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The language frontends of the {@code ward} gate: what each language provides to rules. Scopes are
@@ -25,15 +28,10 @@ public final class GateFrontends {
 
   /** The manifests that the TypeScript and JavaScript project checks read. */
   private static final Set<String> NODE_MANIFESTS =
-      Set.of(
-          "package.json",
-          "pnpm-workspace.yaml",
-          "tsconfig.json",
-          ".eslintrc.json",
-          ".prettierrc",
-          ".prettierrc.json",
-          ".babelrc",
-          "babel.config.json");
+      Stream.concat(
+              Stream.of("package.json", "pnpm-workspace.yaml"),
+              NodeImplicitUse.configFileNames().stream())
+          .collect(Collectors.toUnmodifiableSet());
 
   private static final ControlFlowLowering NO_GRAPHS =
       (unit, tree) -> new ControlFlowResult(List.of(), List.of());
