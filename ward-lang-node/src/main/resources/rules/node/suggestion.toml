@@ -1925,3 +1925,16 @@ disallow-redundant-wrapping = false
 message = "use a regular expression literal instead of the 'RegExp' constructor"
 '''
 
+[[rules]]
+id = "ward:typescript/no-confusing-labels"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suggestion"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["labelledStatement"]
+text = '^[\w$]+:(?!for\(|while\(|do|switch)'
+message = "a label should only mark a loop"
+'''

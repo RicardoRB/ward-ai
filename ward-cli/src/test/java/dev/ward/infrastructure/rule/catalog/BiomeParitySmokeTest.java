@@ -98,6 +98,11 @@ class BiomeParitySmokeTest {
           Map.entry("no-aria-hidden-on-focusable", "a11y/noAriaHiddenOnFocusable"),
           Map.entry("use-focusable-interactive", "a11y/useFocusableInteractive"),
           Map.entry("use-valid-autocomplete", "a11y/useValidAutocomplete"),
+          Map.entry("no-implicit-any-let", "suspicious/noImplicitAnyLet"),
+          Map.entry("no-misleading-instantiator", "suspicious/noMisleadingInstantiator"),
+          Map.entry("no-confusing-void-type", "suspicious/noConfusingVoidType"),
+          Map.entry("no-void-type-return", "correctness/noVoidTypeReturn"),
+          Map.entry("no-confusing-labels", "suspicious/noConfusingLabels"),
           Map.entry("no-comment-text", "suspicious/noCommentText"),
           Map.entry("no-unsafe-iframe-sandbox", "nursery/noUnsafeIframeSandbox"),
           Map.entry(

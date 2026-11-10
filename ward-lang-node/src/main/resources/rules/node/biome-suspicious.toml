@@ -153,3 +153,39 @@ body = '''
 check = "node-google-font-display"
 message = "A Google Fonts link needs a display parameter that is not auto, block or fallback, such as swap."
 '''
+
+[[rules]]
+id = "ward:typescript/no-implicit-any-let"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suspicious"
+presets = ["standard", "strict"]
+body = '''
+check = "node-implicit-any-let"
+message = "A let or var declaration without a type or an initializer is implicitly any; add a type annotation."
+'''
+
+[[rules]]
+id = "ward:typescript/no-misleading-instantiator"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "suspicious"
+presets = ["standard", "strict"]
+body = '''
+check = "node-misleading-instantiator"
+message = "A new signature or constructor member misleads readers into thinking it constructs an instance; rename it."
+'''
+
+[[rules]]
+id = "ward:typescript/no-confusing-void-type"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "suspicious"
+presets = ["standard", "strict"]
+body = '''
+check = "node-confusing-void-type"
+message = "void is confusing here: use undefined, or keep void for a return type."
+'''

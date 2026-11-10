@@ -22,8 +22,8 @@ no-comment-text = "implemented"
 no-common-js = { status = "planned", issue = "#296" }
 no-component-hook-factories = { status = "planned", issue = "#329" }
 no-conditional-expect = { status = "planned", issue = "#329" }
-no-confusing-labels = { status = "planned", issue = "#329" }
-no-confusing-void-type = { status = "planned", issue = "#329" }
+no-confusing-labels = "implemented"
+no-confusing-void-type = "implemented"
 no-const-enum = "implemented"
 no-constant-math-min-max-clamp = "implemented"
 no-dangerously-set-inner-html = "implemented"
@@ -65,7 +65,7 @@ no-head-import-in-document = { status = "planned", issue = "#329" }
 no-header-scope = "implemented"
 no-identical-test-title = { status = "planned", issue = "#329" }
 no-img-element = { status = "planned", issue = "#329" }
-no-implicit-any-let = { status = "planned", issue = "#329" }
+no-implicit-any-let = "implemented"
 no-implicit-boolean = { status = "planned", issue = "#296" }
 no-import-cycles = { status = "planned", issue = "#329" }
 no-inline-styles = { status = "planned", issue = "#329" }
@@ -79,7 +79,7 @@ no-jsx-namespace = "implemented"
 no-jsx-props-bind = "implemented"
 no-label-without-control = "implemented"
 no-leaked-render = { status = "planned", issue = "#329" }
-no-misleading-instantiator = { status = "planned", issue = "#329" }
+no-misleading-instantiator = "implemented"
 no-misleading-return-type = { status = "planned", issue = "#329" }
 no-misplaced-assertion = { status = "planned", issue = "#329" }
 no-misplaced-list-elements = "implemented"
@@ -172,7 +172,7 @@ no-useless-string-raw = "implemented"
 no-useless-switch-case = "implemented"
 no-useless-undefined = { status = "planned", issue = "#329" }
 no-void-elements-with-children = "implemented"
-no-void-type-return = { status = "planned", issue = "#329" }
+no-void-type-return = "implemented"
 no-vue-arrow-func-in-watch = { status = "planned", issue = "#329" }
 no-vue-data-object-declaration = { status = "planned", issue = "#329" }
 no-vue-deprecated-scoped-slots = { status = "planned", issue = "#329" }
