@@ -805,7 +805,9 @@ capability = "SYNTAX"
 severity = "ERROR"
 category = "a11y"
 presets = ["standard", "strict"]
+options.words = { type = "string-list" }
 body = '''
+words = ["click here", "here", "link", "a link", "learn more"]
 check = "node-ambiguous-anchor-text"
 message = "Ambiguous anchor text does not give screen reader users enough context. Describe where the link goes."
 '''
@@ -817,7 +819,9 @@ capability = "SYNTAX"
 severity = "ERROR"
 category = "a11y"
 presets = ["standard", "strict"]
+options.words = { type = "string-list" }
 body = '''
+words = ["click here", "here", "link", "a link", "learn more"]
 check = "node-ambiguous-anchor-text"
 message = "Ambiguous anchor text does not give screen reader users enough context. Describe where the link goes."
 '''
