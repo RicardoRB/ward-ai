@@ -26,8 +26,8 @@ ward:javascript/no-useless-backreference | javascript | the positions match for 
 ward:typescript/no-unassigned-vars | typescript | the positions match; the message is Ward's wording of the same error
 ward:javascript/no-unassigned-vars | javascript | the positions match; the message is Ward's wording of the same error
 ward:typescript/preserve-caught-error | typescript | the positions match for the cases the fixture covers; a shorthand cause property is read as missing, and the messages are Ward's wording
-ward:typescript/strict | typescript | the same script and mode semantics as JavaScript, read from the parity configuration; the source is a module when it has an import or export
-ward:javascript/strict | javascript | a source with an import or export is a module, and any other is a script, where the mode option applies; ESLint reads the source type from the configuration, which the parity configuration sets per rule
+ward:typescript/strict | typescript | the positions match for the module fixtures; the commonjs sources (.cts) follow the mode with safe read as global, and are checked by unit tests only, since the fixture files are .ts
+ward:javascript/strict | javascript | the positions match for the module fixtures; the commonjs sources (.cjs) follow the mode with safe read as global, and are checked by unit tests only, since the fixture files are .js
 ward:typescript/no-redeclare | typescript | the positions match; the message is Ward's wording, and builtinGlobals applies to a script as it does for JavaScript
 ward:javascript/no-redeclare | javascript | the positions match; a source with an import or export is a module, where builtinGlobals does not apply, and any other is a script; the message is Ward's wording
 ward:typescript/no-use-before-define | typescript | the positions match for the cases the fixtures cover; a class or variable used only as a new callee is not a reference in Ward's scopes, so that form is not in the fixtures; the messages are Ward's wording

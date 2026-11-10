@@ -58,7 +58,6 @@ class EslintParitySmokeTest {
       Set.of(
           "no-delete-var",
           "no-redeclare",
-          "strict",
           "no-dupe-args",
           "no-octal",
           "no-octal-escape",

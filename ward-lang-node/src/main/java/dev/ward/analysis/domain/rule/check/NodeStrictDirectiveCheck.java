@@ -1,6 +1,8 @@
 package dev.ward.analysis.domain.rule.check;
 
+import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.rule.FlowView;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,41 +53,36 @@ public final class NodeStrictDirectiveCheck implements RuleCheck {
   private static final String NON_SIMPLE = "nonSimpleParameterList";
   private static final String WRAP = "wrap";
 
+  private static final Set<String> COMMONJS_EXTENSIONS = Set.of(".cjs", ".cts");
+
   private final Mode mode;
-  private final boolean alwaysModule;
   private final Map<String, String> messages;
 
   /**
    * Creates the check.
    *
    * @param mode the mode of the rule
-   * @param alwaysModule whether every source is a module, as the TypeScript parser reports it
    * @param messages the message of each ESLint message id, keyed by the id
    */
-  public NodeStrictDirectiveCheck(
-      final Mode mode, final boolean alwaysModule, final Map<String, String> messages) {
+  public NodeStrictDirectiveCheck(final Mode mode, final Map<String, String> messages) {
     this.mode = Objects.requireNonNull(mode, "mode");
-    this.alwaysModule = alwaysModule;
     this.messages = Map.copyOf(messages);
   }
 
   /** The walk over one unit: the scope stack of functions, and the depth of class bodies. */
   private final class DirectiveWalk {
 
-    private final boolean module;
+    /**
+     * The mode a commonjs source follows, or null for a module, where every directive is unneeded.
+     */
+    private final Mode effective;
+
     private final List<Boolean> scopes = new ArrayList<>();
     private int classDepth;
     private final List<RuleMatch> matches = new ArrayList<>();
 
-    private DirectiveWalk(final boolean module) {
-      this.module = module;
-    }
-
-    private Mode effective() {
-      if (module) {
-        return null;
-      }
-      return mode == Mode.SAFE ? Mode.FUNCTION : mode;
+    private DirectiveWalk(final Mode effective) {
+      this.effective = effective;
     }
 
     private void visit(final SyntaxNode node) {
@@ -102,7 +99,7 @@ public final class NodeStrictDirectiveCheck implements RuleCheck {
 
     private void program(final SyntaxNode elements) {
       final List<SyntaxNode> directives = directives(elements);
-      final Mode current = effective();
+      final Mode current = effective;
       if (current == Mode.GLOBAL) {
         if (!elements.children().isEmpty() && directives.isEmpty()) {
           matches.add(new RuleMatch(elements.children().get(0).span(), messages.get(GLOBAL)));
@@ -115,12 +112,15 @@ public final class NodeStrictDirectiveCheck implements RuleCheck {
 
     private void function(final SyntaxNode function) {
       final List<SyntaxNode> directives = bodyDirectives(function);
-      final Mode current = effective();
+      final Mode current = effective;
       if (current == Mode.FUNCTION) {
         functionMode(function, directives);
         scopes.add(!scopes.isEmpty() && scopes.get(scopes.size() - 1) || !directives.isEmpty());
         function.children().forEach(this::visit);
         scopes.remove(scopes.size() - 1);
+      } else if (current == null) {
+        all(directives, MODULE);
+        function.children().forEach(this::visit);
       } else {
         if (!directives.isEmpty()) {
           reportOrNonSimple(function, directives, messageOf(current));
@@ -181,8 +181,25 @@ public final class NodeStrictDirectiveCheck implements RuleCheck {
   }
 
   @Override
+  public List<RuleMatch> matches(
+      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+    return walk(root, COMMONJS_EXTENSIONS.stream().anyMatch(unit.path()::endsWith));
+  }
+
+  /** Walks a source without its path: it is a module, the ESLint default for a script file. */
+  @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
-    final DirectiveWalk walk = new DirectiveWalk(alwaysModule || SourceKind.isModule(root));
+    return walk(root, false);
+  }
+
+  /**
+   * Walks a source. A source with an import or export is a module, and so is any file that is not
+   * commonjs, which ESLint reads as a module by default; a commonjs source follows the mode, with
+   * {@code safe} read as {@code global}.
+   */
+  private List<RuleMatch> walk(final SyntaxNode root, final boolean commonjsPath) {
+    final boolean commonjs = commonjsPath && !SourceKind.isModule(root);
+    final DirectiveWalk walk = new DirectiveWalk(commonjs ? commonjsMode() : null);
     root.children().stream()
         .filter(child -> SOURCE_ELEMENTS.equals(child.kind()))
         .findFirst()
@@ -192,6 +209,10 @@ public final class NodeStrictDirectiveCheck implements RuleCheck {
               elements.children().forEach(walk::visit);
             });
     return List.copyOf(walk.matches);
+  }
+
+  private Mode commonjsMode() {
+    return mode == Mode.SAFE ? Mode.GLOBAL : mode;
   }
 
   /** The message id of a mode, for a directive that the mode does not allow. */

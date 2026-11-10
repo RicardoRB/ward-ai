@@ -146,7 +146,6 @@ message-module = "'use strict' is unnecessary inside of modules."
 message-unnecessary-in-classes = "'use strict' is unnecessary inside of classes."
 message-non-simple-parameter-list = "'use strict' directive inside a function with non-simple parameter list throws a syntax error since ES2016."
 message-wrap = "Wrap the code in a function with 'use strict' directive."
-always-module = false
 '''
 
 [[rules]]
@@ -169,7 +168,6 @@ message-module = "'use strict' is unnecessary inside of modules."
 message-unnecessary-in-classes = "'use strict' is unnecessary inside of classes."
 message-non-simple-parameter-list = "'use strict' directive inside a function with non-simple parameter list throws a syntax error since ES2016."
 message-wrap = "Wrap the code in a function with 'use strict' directive."
-always-module = false
 '''
 
 [[rules]]
