@@ -1,4 +1,4 @@
-import { accessSync, constants, cpSync, existsSync, mkdirSync, mkdtempSync, rmSync, statSync } from "node:fs";
+import { accessSync, appendFileSync, constants, cpSync, existsSync, mkdirSync, mkdtempSync, rmSync, statSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { REPO_ROOT } from "./manifest";
@@ -43,7 +43,7 @@ export interface FixtureOptions {
   guard: boolean;
   ward: WardLauncher;
   timeoutMs?: number;
-  /** Gates passed to `ward init`; defaults to `format`. */
+  /** Gates passed to `ward init`; defaults to `compile`; init always adds `ward` and `ward-format`. */
   gates?: string[];
 }
 
@@ -84,7 +84,10 @@ export async function createFixture(options: FixtureOptions): Promise<Fixture> {
   try {
     const ward = (args: string[]) =>
       run([...options.ward.argv, ...args, "-C", root], { cwd: root, env, timeoutMs: options.timeoutMs ?? 60_000 });
-    await expectSuccess("ward init", ward(["init", "--integration", "none", ...(options.gates ?? ["format"]).flatMap((gate) => ["--gate", gate])]));
+    await expectSuccess("ward init", ward(["init", "--integration", "none", ...(options.gates ?? ["compile"]).flatMap((gate) => ["--gate", gate])]));
+    // Init's own edit-profile gates run inside Ward, so a stub command gate gives tests a failure they
+    // control: the fixture's stub mvnw fails while a FAIL file exists.
+    appendFileSync(join(root, "ward.toml"), '\n[checks.format]\nenabled = true\nprofiles = ["default", "edit"]\ncommand = "./mvnw format"\n');
     const integrate = ["integrate", options.harness];
     if (options.guard) integrate.push("--guard-approved-specs");
     await expectSuccess(`ward integrate ${options.harness}`, ward(integrate));
