@@ -9,10 +9,10 @@ import java.util.TreeMap;
 
 /**
  * Generates the JSON Schema of {@code ward-rules.toml} from the rule definitions, so a TOML editor
- * can complete and check rule ids and options. Each shipped rule id is a property of {@code rules}
- * whose object lists the rule's options with their declared types, bounds and enum values, plus
- * {@code severity} and {@code exclude-paths}. The schema is text only: {@link RuleSchemaTest}
- * compares it with the committed file.
+ * can complete and check rule ids and options. Each shipped rule is a property of its group under
+ * {@code rules}, whose object lists the rule's options with their declared types, bounds and enum
+ * values, plus {@code severity} and {@code exclude-paths}. The schema is text only: {@link
+ * RuleSchemaTest} compares it with the committed file.
  */
 final class RuleSchema {
 
@@ -56,7 +56,7 @@ final class RuleSchema {
 
   /**
    * Returns the {@code rules} object. Each rule's schema is defined once in {@code defs} and
-   * referenced from the quoted table key and from the short {@code [rules.<group>.<name>]} key.
+   * referenced from its {@code [rules.<group>.<name>]} key.
    */
   private static Map<String, Object> rules(
       final List<RuleDefinition> definitions, final Map<String, Object> defs) {
@@ -67,9 +67,7 @@ final class RuleSchema {
     byId.forEach(
         (id, definition) -> {
           defs.put(id, RuleOptionSchema.rule(definition));
-          final Map<String, Object> ref = ref(id);
-          properties.put(id, ref);
-          groups.computeIfAbsent(group(id), key -> obj()).put(name(id), ref);
+          groups.computeIfAbsent(group(id), key -> obj()).put(name(id), ref(id));
         });
     groups.forEach(
         (group, members) ->

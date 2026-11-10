@@ -83,7 +83,8 @@ final class RuleFixtures {
   static RuleConfigFile configuration() {
     return new RuleConfigFile(
         RuleConfigFile.DEFAULT_NAME,
-        new RuleConfigFile.Select(null, List.of(), List.of(), List.of(FIELD), List.of(METHOD)),
+        new RuleConfigFile.Select(
+            null, List.of(), List.of(), List.of("java.no-field-di"), List.of("java.method-length")),
         java.util.Map.of(),
         List.of());
   }

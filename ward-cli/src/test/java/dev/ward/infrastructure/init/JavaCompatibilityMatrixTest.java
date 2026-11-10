@@ -114,9 +114,8 @@ class JavaCompatibilityMatrixTest {
 
     JavaMatrixProcesses.git(project, "checkout", "-q", ".");
     JavaMatrixProcesses.git(project, "clean", "-qfd");
-    // A named fixture seeds its own compile error, in its source language.
-    final String compileError = fixture.isEmpty() ? "compile-error" : fixture + "-compile-error";
-    JavaMatrixProcesses.copyTree(JavaMatrixFixtures.VIOLATIONS.resolve(compileError), project);
+    JavaMatrixProcesses.copyTree(
+        JavaMatrixFixtures.VIOLATIONS.resolve(JavaMatrixFixtures.compileError(fixture)), project);
     assertThat(statuses(report(project)).get("compile"))
         .as("compile with a compile error")
         .isEqualTo(FAILED);

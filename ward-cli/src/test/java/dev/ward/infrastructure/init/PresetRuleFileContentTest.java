@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 class PresetRuleFileContentTest {
   private static final String HIDDEN_FIELD =
-      "ward:java/hidden-field\"]\nignore-constructor-parameter";
+      "[rules.java.hidden-field]\nignore-constructor-parameter";
 
   @Test
   void javaStrictSetsTheHiddenFieldOptions() {
@@ -19,12 +19,12 @@ class PresetRuleFileContentTest {
   @Test
   void nodeStrictOmitsTheJavaHiddenFieldOptions() {
     assertThat(PresetRuleFileContent.wardRules(QualityPreset.STRICT, List.of("typescript")))
-        .doesNotContain("ward:java/hidden-field");
+        .doesNotContain("hidden-field");
   }
 
   @Test
   void javaStandardOmitsTheHiddenFieldOptions() {
     assertThat(PresetRuleFileContent.wardRules(QualityPreset.STANDARD, List.of("java")))
-        .doesNotContain("ward:java/hidden-field");
+        .doesNotContain("hidden-field");
   }
 }

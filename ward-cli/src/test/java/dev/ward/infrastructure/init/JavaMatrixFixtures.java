@@ -48,6 +48,11 @@ final class JavaMatrixFixtures {
     }
   }
 
+  /** The seeded compile error: a Java one, or the named fixture's own, in its source language. */
+  static String compileError(final String fixture) {
+    return fixture.isEmpty() ? "compile-error" : fixture + "-compile-error";
+  }
+
   /** Adds the common violations, and for Maven a dynamic dependency version for Enforcer. */
   static void seedCommon(final Path project, final String buildTool) throws IOException {
     JavaMatrixProcesses.copyTree(VIOLATIONS.resolve("common"), project);

@@ -87,7 +87,7 @@ class MinJavaReleaseTest {
         new RuleConfigFile(
             "ward-rules.toml",
             new RuleConfigFile.Select(
-                null, List.of(), List.of(), List.of(USE_EXPLICIT_TYPES), List.of()),
+                null, List.of(), List.of(), List.of("java.use-explicit-types"), List.of()),
             Map.of(USE_EXPLICIT_TYPES, Map.of("severity", "warning")),
             List.of());
     final List<RuleDefinition> catalog = List.of(rule(USE_EXPLICIT_TYPES));

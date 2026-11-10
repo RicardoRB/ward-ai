@@ -26,14 +26,14 @@ class RuleConfigFileReaderTest {
   void readsTheSelectionAndTheTables() throws IOException {
     write(
         "version = 1\n[select]\npreset = \"strict\"\nlanguages = [\"java\"]\n"
-            + "include = [\"ward:java/x\"]\n[rules.\"ward:java/y\"]\nmax = 3\nglobs = [\"a\"]\n");
+            + "include = [\"java.x\"]\n[rules.java.y]\nmax = 3\nglobs = [\"a\"]\n");
 
     final RuleConfigFile file = RuleConfigFileReader.read(root, null).orElseThrow();
 
     assertThat(file.problems()).isEmpty();
     assertThat(file.select().preset()).isEqualTo("strict");
     assertThat(file.select().languages()).containsExactly("java");
-    assertThat(file.select().include()).containsExactly("ward:java/x");
+    assertThat(file.select().include()).containsExactly("java.x");
     assertThat(file.rules().get("ward:java/y"))
         .containsEntry("max", THREE)
         .containsEntry("globs", List.of("a"));
@@ -43,7 +43,7 @@ class RuleConfigFileReaderTest {
   void reportsEveryShapeProblemWithItsTableAndKey() throws IOException {
     write(
         "version = 2\ncolor = 1\n[select]\npreset = 3\nlanguages = \"java\"\nwhat = 1\n"
-            + "[rules]\n\"ward:java/y\" = 1\n");
+            + "[rules]\njava = 1\n");
 
     final List<String> problems = RuleConfigFileReader.read(root, null).orElseThrow().problems();
 
@@ -53,11 +53,11 @@ class RuleConfigFileReaderTest {
         .anyMatch(p -> p.startsWith("ward-rules.toml: [select] preset: expected a string"))
         .anyMatch(p -> p.startsWith("ward-rules.toml: [select] languages: expected a list"))
         .anyMatch(p -> p.startsWith("ward-rules.toml: [select] what: unknown key"))
-        .anyMatch(p -> p.contains("[rules.\"ward:java/y\"] must be a table"));
+        .anyMatch(p -> p.contains("[rules.java] must be a table"));
   }
 
   @Test
-  void theDottedFormNamesTheSameRuleAsTheQuotedForm() throws IOException {
+  void aRuleTableNamesItsRuleByGroupAndName() throws IOException {
     write("version = 1\n[rules.java.method-length]\nmax = 80\n");
 
     final RuleConfigFile file = RuleConfigFileReader.read(root, null).orElseThrow();
@@ -69,13 +69,16 @@ class RuleConfigFileReaderTest {
   }
 
   @Test
-  void aQuotedTableKeepsItsHeader() throws IOException {
+  void aTableNamedByTheQuotedRuleIdIsReportedWithTheFormToWrite() throws IOException {
     write("version = 1\n[rules.\"ward:java/method-length\"]\nmax = 80\n");
 
     final RuleConfigFile file = RuleConfigFileReader.read(root, null).orElseThrow();
 
-    assertThat(file.header("ward:java/method-length"))
-        .isEqualTo("[rules.\"ward:java/method-length\"]");
+    assertThat(file.rules()).isEmpty();
+    assertThat(file.problems())
+        .containsExactly(
+            "ward-rules.toml: [rules.\"ward:java/method-length\"]: name the table"
+                + " [rules.<language>.<rule-name>]; write [rules.java.method-length]");
   }
 
   @Test

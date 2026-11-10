@@ -9,16 +9,18 @@ import org.tomlj.Toml;
 /** Disabling rules: the edit adds to {@code exclude} and removes from {@code include}. */
 class RuleSelectionEditDisableTest {
   private static final String METHOD = "ward:java/method-length";
-  private static final String FIELD = "ward:java/no-field-di";
+  private static final String FIELD = "java.no-field-di";
+  private static final String METHOD_NAME = "java.method-length";
 
   @Test
   void disableMovesAnIdFromIncludeToExclude() {
     final String text =
         RuleSelectionEdit.disable(
-            "[select]\ninclude = [\"" + FIELD + "\", \"" + METHOD + "\"]\n", List.of(METHOD));
+            "[select]\ninclude = [\"" + FIELD + "\", \"" + METHOD_NAME + "\"]\n", List.of(METHOD));
 
     assertThat(text)
-        .isEqualTo("[select]\nexclude = [\"" + METHOD + "\"]\ninclude = [\"" + FIELD + "\"]\n");
+        .isEqualTo(
+            "[select]\nexclude = [\"" + METHOD_NAME + "\"]\ninclude = [\"" + FIELD + "\"]\n");
     assertValid(text);
   }
 
@@ -26,7 +28,7 @@ class RuleSelectionEditDisableTest {
   void disableOnAMissingFileWritesAnExcludeEntry() {
     final String text = RuleSelectionEdit.disable(null, List.of(METHOD));
 
-    assertThat(text).isEqualTo("version = 1\n\n[select]\nexclude = [\"" + METHOD + "\"]\n");
+    assertThat(text).isEqualTo("version = 1\n\n[select]\nexclude = [\"" + METHOD_NAME + "\"]\n");
     assertValid(text);
   }
 
@@ -34,12 +36,16 @@ class RuleSelectionEditDisableTest {
   void disableRemovesTheLastElementOfAMultiLineArray() {
     final String text =
         RuleSelectionEdit.disable(
-            "[select]\ninclude = [\n    \"" + METHOD + "\",\n    \"" + FIELD + "\"\n]\n",
+            "[select]\ninclude = [\n    \"" + METHOD_NAME + "\",\n    \"" + FIELD + "\"\n]\n",
             List.of(FIELD));
 
     assertThat(text)
         .isEqualTo(
-            "[select]\nexclude = [\"" + FIELD + "\"]\ninclude = [\n    \"" + METHOD + "\",\n]\n");
+            "[select]\nexclude = [\""
+                + FIELD
+                + "\"]\ninclude = [\n    \""
+                + METHOD_NAME
+                + "\",\n]\n");
     assertValid(text);
   }
 
