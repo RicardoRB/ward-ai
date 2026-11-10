@@ -13,6 +13,7 @@ import org.junit.jupiter.api.io.TempDir;
 class RuleConfigFileReaderTest {
 
   private static final long THREE = 3L;
+  private static final long EIGHTY = 80L;
 
   @TempDir Path root;
 
@@ -53,6 +54,37 @@ class RuleConfigFileReaderTest {
         .anyMatch(p -> p.startsWith("ward-rules.toml: [select] languages: expected a list"))
         .anyMatch(p -> p.startsWith("ward-rules.toml: [select] what: unknown key"))
         .anyMatch(p -> p.contains("[rules.\"ward:java/y\"] must be a table"));
+  }
+
+  @Test
+  void theDottedFormNamesTheSameRuleAsTheQuotedForm() throws IOException {
+    write("version = 1\n[rules.java.method-length]\nmax = 80\n");
+
+    final RuleConfigFile file = RuleConfigFileReader.read(root, null).orElseThrow();
+
+    assertThat(file.problems()).isEmpty();
+    assertThat(file.rules()).containsOnlyKeys("ward:java/method-length");
+    assertThat(file.rules().get("ward:java/method-length")).containsEntry("max", EIGHTY);
+    assertThat(file.header("ward:java/method-length")).isEqualTo("[rules.java.method-length]");
+  }
+
+  @Test
+  void aQuotedTableKeepsItsHeader() throws IOException {
+    write("version = 1\n[rules.\"ward:java/method-length\"]\nmax = 80\n");
+
+    final RuleConfigFile file = RuleConfigFileReader.read(root, null).orElseThrow();
+
+    assertThat(file.header("ward:java/method-length"))
+        .isEqualTo("[rules.\"ward:java/method-length\"]");
+  }
+
+  @Test
+  void aValueDirectlyUnderAGroupIsReported() throws IOException {
+    write("version = 1\n[rules.java]\nmax = 3\n");
+
+    assertThat(RuleConfigFileReader.read(root, null).orElseThrow().problems())
+        .singleElement()
+        .isEqualTo("ward-rules.toml: [rules.java] max: must be a rule table");
   }
 
   @Test
