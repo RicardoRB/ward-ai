@@ -92,7 +92,9 @@ final class NodeExportScan {
   /** Adds the last name of an item: its alias when it has one, its name otherwise. */
   private void addExportedName(final List<SyntaxNode> leaves) {
     final SyntaxNode last = leaves.get(leaves.size() - 1);
-    if (IDENTIFIER.equals(last.kind()) || STRING.equals(last.kind())) {
+    if (IDENTIFIER.equals(last.kind())) {
+      exports.add(new Symbol(NodeLeaves.text(last), last.span()));
+    } else if (STRING.equals(last.kind())) {
       exports.add(new Symbol(NodeTokens.unquote(NodeLeaves.text(last)), last.span()));
     }
   }

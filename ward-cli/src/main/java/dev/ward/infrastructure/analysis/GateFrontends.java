@@ -29,7 +29,7 @@ public final class GateFrontends {
   /** The manifests that the TypeScript and JavaScript project checks read. */
   private static final Set<String> NODE_MANIFESTS =
       Stream.concat(
-              Stream.of("package.json", "pnpm-workspace.yaml"),
+              Stream.of("package.json", "pnpm-workspace.yaml", "index.html"),
               NodeImplicitUse.configFileNames().stream())
           .collect(Collectors.toUnmodifiableSet());
 

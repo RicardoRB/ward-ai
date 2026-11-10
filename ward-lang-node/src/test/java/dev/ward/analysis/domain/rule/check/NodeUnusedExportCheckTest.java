@@ -111,4 +111,19 @@ final class NodeUnusedExportCheckTest {
 
     assertThat(ProjectFixtures.positions(found)).containsExactly("lib.ts:2:17");
   }
+
+  @Test
+  void reportsAReExportedNameWhole() {
+    final List<ProjectMatch> found =
+        new NodeUnusedExportCheck(MESSAGE, false)
+            .project(
+                ProjectFixtures.trees(
+                    Map.of(
+                        "lib.ts",
+                        "export { renderTotal, replaceOrder as laceOrder } from './orders';")),
+                ProjectFixtures.manifests(Map.of()));
+
+    assertThat(ProjectFixtures.messages(found))
+        .containsExactly("unused renderTotal", "unused laceOrder");
+  }
 }
