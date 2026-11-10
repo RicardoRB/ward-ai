@@ -29,8 +29,7 @@ final class NodeScopeWalk {
           "constructorDeclaration",
           "getAccessor",
           "setAccessor",
-          "propertyMemberDeclaration",
-          "propertyAssignment");
+          "propertyMemberDeclaration");
   private static final Set<String> PARAMETERS =
       Set.of(
           "formalParameterArg",
@@ -98,6 +97,23 @@ final class NodeScopeWalk {
     PARAMETERS.forEach(kind -> handlers.put(kind, functions::parameter));
     TYPE_POSITIONS.forEach(kind -> handlers.put(kind, expressions.typeRefs::types));
     handlers.put("importStatement", node -> {});
+    handlers.put("propertyAssignment", this::propertyAssignment);
+  }
+
+  /**
+   * A shorthand property {@code { id }} reads the variable it names, as TypeScript's grammar keeps
+   * it as a bare identifier; any other property is a method, or a keyed value that is visited.
+   */
+  private void propertyAssignment(final SyntaxNode node) {
+    final SyntaxNode name =
+        NodeScopeNames.isShorthand(node)
+            ? NodeScopeNames.nameOf(NodeFlowSyntax.parts(node).get(0))
+            : null;
+    if (name == null) {
+      functions.functionLike(node);
+    } else {
+      expressions.read(name);
+    }
   }
 
   /** Visits {@code node} and everything under it. */

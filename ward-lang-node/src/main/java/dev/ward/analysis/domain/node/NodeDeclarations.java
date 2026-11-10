@@ -14,6 +14,8 @@ import java.util.List;
 final class NodeDeclarations {
 
   private static final String VARIABLE_LIST = "variableDeclarationList";
+  private static final String BINDING_PATTERN = "bindingPattern";
+  private static final String INITIALIZER = "initializer";
   private static final String VARIABLE_DECLARATION = "variableDeclaration";
   private static final String IDENTIFIER = "identifier";
   private static final String FUNCTION_DECLARATION = "functionDeclaration";
@@ -22,20 +24,42 @@ final class NodeDeclarations {
 
   private final NodeScopes scopes;
   private final NodeWalker walker;
+  private final NodePatternWrites patterns;
 
   NodeDeclarations(final NodeScopes scopes, final NodeWalker walker) {
     this.scopes = scopes;
     this.walker = walker;
+    this.patterns = new NodePatternWrites(scopes, walker);
   }
 
   /** A variable statement declares its names when it has a modifier, on it or on its list. */
   void variableStatement(final SyntaxNode node, final List<VariableAccess> found) {
     final SyntaxNode list = NodeFlowSyntax.firstOf(NodeFlowSyntax.parts(node), VARIABLE_LIST);
     if (list == null) {
-      walkChildren(node, found);
+      if (!patternAssignment(node, found)) {
+        walkChildren(node, found);
+      }
       return;
     }
     declarationList(list, NodeSyntax.modifies(node) || NodeSyntax.modifies(list), found);
+  }
+
+  /**
+   * The grammar reads {@code [a] = value} at the start of a statement as a variable statement with
+   * a binding pattern and no keyword. It assigns: the value is read, then the pattern's names
+   * written.
+   */
+  private boolean patternAssignment(final SyntaxNode node, final List<VariableAccess> found) {
+    final List<SyntaxNode> parts = NodeFlowSyntax.parts(node);
+    final SyntaxNode pattern = NodeFlowSyntax.firstOf(parts, BINDING_PATTERN);
+    final SyntaxNode initializer = NodeFlowSyntax.firstOf(parts, INITIALIZER);
+    if (pattern == null || initializer == null || NodePatternWrites.literalOf(pattern) == null) {
+      return false;
+    }
+    final List<SyntaxNode> value = NodeFlowSyntax.parts(initializer);
+    walker.walk(value.get(value.size() - 1), found);
+    patterns.assign(NodePatternWrites.literalOf(pattern), found);
+    return true;
   }
 
   /** Adds the declarators of a list, each declaring its names when the list has a modifier. */
