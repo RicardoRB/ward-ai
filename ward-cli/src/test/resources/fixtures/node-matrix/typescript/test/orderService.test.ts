@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { orderTotal, placeOrder } from "../src/service/orderService";
 
+const AMOUNT = 5;
+
 describe("placeOrder", () => {
   it("stores a positive order", () => {
-    expect(placeOrder("a", 5)).toEqual({ id: "a", total: 5 });
-    expect(orderTotal("a")).toBe(5);
+    expect(placeOrder("a", AMOUNT)).toEqual({ id: "a", total: AMOUNT });
+    expect(orderTotal("a")).toBe(AMOUNT);
   });
 
   it("rejects a total that is not positive", () => {

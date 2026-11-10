@@ -4,7 +4,7 @@ export function placeOrder(id: string, total: number): Order {
   if (total <= 0) {
     throw new Error("total must be positive");
   }
-  const order = { id, total };
+  const order = { id: id, total };
   save(order);
   return order;
 }

@@ -1,3 +1,4 @@
+/** An order placed by a customer, keyed by its id. */
 export interface Order {
   readonly id: string;
   readonly total: number;
