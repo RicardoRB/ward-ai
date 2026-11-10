@@ -29,7 +29,9 @@ verifies its SHA-256 checksum, and installs it as `ward` in `~/.local/bin`. The 
 `LICENSE` and `NOTICE` go to `~/.local/share/doc/ward`. Releases before `v0.0.7` predate the
 archives and can't be installed with the script. If that directory is not on your
 `PATH`, the script prints the line to add to your shell profile. It supports Linux x86_64, macOS
-(Apple Silicon and Intel), and Git Bash on Windows, where it installs `ward.exe` and needs `unzip`.
+(Apple Silicon), and Git Bash on Windows, where it installs `ward.exe` and needs `unzip`. No macOS
+Intel binary is published: on an Intel Mac,
+[build the JAR from source](#build-from-source) and run it on JDK 25.
 
 When it finishes, the script prints the command that installs the Ward
 [agent skills](/integrations/agent-skills/). It only prints the command and does not run it:
@@ -86,7 +88,6 @@ per platform with a `.sha256` checksum file. Each archive contains the binary, `
 |---|---|
 | Linux x86_64 | `ward-linux-x86_64.tar.gz` |
 | macOS Apple Silicon | `ward-macos-aarch64.tar.gz` |
-| macOS Intel | `ward-macos-x86_64.tar.gz` |
 | Windows x86_64 | `ward-windows-x86_64.zip` |
 
 `LICENSE`, `NOTICE`, `THIRD-PARTY-LICENSES` (the full license texts of every shipped dependency), and

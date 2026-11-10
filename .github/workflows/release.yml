@@ -65,7 +65,7 @@ jobs:
       security-events: write
     uses: ./.github/workflows/verify.yml
     with:
-      native-runners: '["ubuntu-24.04", "macos-15-intel", "macos-15", "windows-latest"]'
+      native-runners: '["ubuntu-24.04", "macos-15", "windows-latest"]'
       harness-compatibility: true
 
   build:
@@ -76,9 +76,6 @@ jobs:
         include:
           - os: ubuntu-24.04
             platform: linux-x86_64
-            binary: ward-cli/target/ward
-          - os: macos-15-intel
-            platform: macos-x86_64
             binary: ward-cli/target/ward
           - os: macos-15
             platform: macos-aarch64

@@ -36,6 +36,7 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ### Removed
 
+- **BREAKING:** No macOS Intel (x86_64) binary is published, and `install.sh` stops on an Intel Mac with a message. Native builds use GraalVM Community 25.5, which has no macOS x64 release. On an Intel Mac, build `ward.jar` from source and run it on JDK 25.
 - **BREAKING (alpha, no migration):** Ward no longer has the `eslint` and `biome` gate types, their finding sources, or the Semgrep `p/javascript` and `p/typescript` packs. A `ward.toml` that names `uses = "eslint"` or `uses = "biome"` is rejected with the list of supported types, and a `command` check that runs `eslint` or `biome` is a plain command check with no structured findings and no learning. The Semgrep gate stays for Python (#451, #455).
 - **BREAKING:** Ward no longer wires Checkstyle, PMD, SpotBugs, Error Prone, NullAway or Semgrep's `p/java` pack. Their gates, finding sources, Maven and Gradle plugin declarations, preset rule files and init defaults are gone. Java and Kotlin projects use the `ward` gate and `ward-rules.toml`; Semgrep stays for TypeScript, JavaScript and Python, each with its own pack.
 
