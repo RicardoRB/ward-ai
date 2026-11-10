@@ -20,6 +20,8 @@ team, and Ward checks every change against them, from the first edit to producti
 [How it works](#how-it-works) ·
 [Report a bug](https://github.com/RicardoRB/ward-ai/issues)
 
+<img src="website/public/ward-layers.svg" alt="Four nested shields around your code: Edit, Commit, Push, and CI. Faster checks sit close to the code, stricter ones further out." width="720">
+
 <img src=".github/assets/ward-demo.webp" alt="An agent's change fails a quality check, the agent fixes it, and the quick check and the stricter pre-push check pass" width="900">
 <br>
 <sub>An agent's change fails a quality check, the agent fixes it, and the fast and pre-push checks pass. (<a href=".github/assets/ward-demo.webm">WebM version</a>)</sub>
