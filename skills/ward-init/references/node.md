@@ -45,12 +45,14 @@ rule files under `config/`).
     (bundled with Node 22) crashes on it (npm/cli#9787).
   - `typescript` (TypeScript only): note the declared range. Init keeps it.
   - `@sveltejs/kit` with the `svelte-check` gate: `svelte-check` reads `.svelte-kit/tsconfig.json`,
-    which only `svelte-kit sync` writes. When the `prepare` script in `package.json` does not run
-    `svelte-kit sync`, or is missing, the plan notes the line to add,
-    `"prepare": "svelte-kit sync || echo ''"`. The note does not block init, and init does not edit
-    `scripts`.
-    npm skips `prepare` when install scripts are disabled (for example `ignore-scripts=true` in an
-    `.npmrc`), so run `svelte-kit sync` before `ward check` in that setup.
+    which only `svelte-kit sync` writes. When the `check` script in `package.json` runs
+    `svelte-kit sync` (the SvelteKit template's `svelte-kit sync && svelte-check ...`), the gate
+    runs that script with the package manager (`npm run check`, `pnpm run check`, `yarn run check`
+    or `bun run check`), so the sync happens first. Otherwise the gate runs `svelte-check` itself,
+    and the plan notes the line to add, `"prepare": "svelte-kit sync || echo ''"`. The note does
+    not block init, and init does not edit `scripts`.
+    npm does not run the project's own `prepare` script on `npm install`, so with the note's
+    `prepare` alone, run `svelte-kit sync` before `ward check`.
 - **Configs.** List `vitest.config.*`, `vite.config.*`, `jest.config.*` (and a `"jest"` key in
   `package.json`), `stryker.conf.*`, `stryker.config.*`, `.stryker.conf.*`, `bunfig.toml`, and
   `ward-rules.toml` in the project root. A file whose first line is not `// managed-by: ward` or

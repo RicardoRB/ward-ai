@@ -19,19 +19,23 @@ import java.util.List;
  * @param preset the selected preset, or {@code null} for a custom selection
  * @param ownTestConfig whether the project keeps its own test runner config, which init leaves
  *     unchanged
+ * @param checkSyncsSvelteKit whether the project's {@code check} script runs {@code svelte-kit
+ *     sync} before {@code svelte-check}, which needs the sync's {@code .svelte-kit} tsconfig
  */
 public record NodeTools(
     BuildTool manager,
     String testGate,
     boolean available,
     QualityPreset preset,
-    boolean ownTestConfig) {
+    boolean ownTestConfig,
+    boolean checkSyncsSvelteKit) {
   public static final String VITEST = "vitest";
   public static final String JEST = "jest";
   public static final String BUN_TEST = "bun-test";
   public static final String NG_TEST = "ng-test";
   static final String LINE = "LINE";
   static final String BRANCH = "BRANCH";
+  private static final String SVELTE_SYNC = "svelte-kit sync";
   private static final int PERCENT = 100;
 
   /**
@@ -49,12 +53,39 @@ public record NodeTools(
         testGate,
         inputs.environment().inspect(project.root()).hasExecutable(project.buildExecutable()),
         preset,
-        inputs.configs().userConfig(project.root(), testGate).isPresent());
+        inputs.configs().userConfig(project.root(), testGate).isPresent(),
+        syncsSvelteKit(manifest.check()));
   }
 
   /** Returns these tools with {@code gate} as the test runner gate. */
   NodeTools withTestGate(final String gate) {
-    return new NodeTools(manager, gate, available, preset, ownTestConfig);
+    return new NodeTools(manager, gate, available, preset, ownTestConfig, checkSyncsSvelteKit);
+  }
+
+  /**
+   * The command of svelte-check: the project's {@code check} script when it runs {@code svelte-kit
+   * sync} first, so the tsconfig it extends exists; otherwise svelte-check itself.
+   */
+  List<String> svelteCheckCommand() {
+    return checkSyncsSvelteKit ? scriptCommand("check") : command("svelte-check");
+  }
+
+  private static boolean syncsSvelteKit(final String check) {
+    return check != null && check.contains(SVELTE_SYNC);
+  }
+
+  /** Returns the package manager's command that runs {@code script} from {@code package.json}. */
+  private List<String> scriptCommand(final String script) {
+    final List<String> command =
+        switch (manager) {
+          case PNPM -> List.of("pnpm", "run");
+          case YARN -> List.of("yarn", "run");
+          case BUN -> List.of("bun", "run");
+          default -> List.of("npm", "run");
+        };
+    final List<String> arguments = new ArrayList<>(command);
+    arguments.add(script);
+    return List.copyOf(arguments);
   }
 
   /**

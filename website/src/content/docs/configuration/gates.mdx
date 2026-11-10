@@ -131,6 +131,8 @@ run their `command` from the project root, exactly as written, and pass when it 
   in the `ward` check, selected in `ward-rules.toml`; see [Node projects](/commands/init/#node-projects).
 - For a Vue, Svelte, or Astro project, the type-check gate is `vue-tsc`, `svelte-check`, or
   `astro-check` instead of `tsc`, because only the framework's checker reads its component files.
+  A SvelteKit project whose `check` script runs `svelte-kit sync` gets that script as its
+  `svelte-check` command, so the sync runs first.
   The framework comes from the project's declared packages; see
   [Node projects](/commands/init/#node-projects). Angular's type-check gate is `ngc`, which checks
   its templates, and its test gate is `ng-test`. A type-check configuration with no inputs fails

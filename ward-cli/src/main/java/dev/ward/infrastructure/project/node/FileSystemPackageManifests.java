@@ -26,7 +26,8 @@ public final class FileSystemPackageManifests implements PackageManifests {
         dependencies,
         text(manifest.get("type")),
         text(manifest.get("packageManager")),
-        text(scripts(manifest).get("prepare")));
+        text(scripts(manifest).get("prepare")),
+        text(scripts(manifest).get("check")));
   }
 
   private static Map<?, ?> scripts(final Map<?, ?> manifest) {
