@@ -3,10 +3,12 @@ import orderController from "../src/controller/orderController.js";
 
 const { getTotal, postOrder } = orderController;
 
+const QUANTITY = 7;
+
 describe("orderController", () => {
   it("confirms a placed order and reports its total", () => {
-    expect(postOrder("c", 7)).toBe("placed c");
-    expect(getTotal("c")).toBe("total 7");
+    expect(postOrder("c", QUANTITY)).toBe("placed c");
+    expect(getTotal("c")).toBe(`total ${QUANTITY}`);
   });
 
   it("passes the service's rejections through", () => {

@@ -3,6 +3,8 @@ import { describe, expect, it } from "vitest";
 import App from "../src/App.vue";
 import HelloWorld from "../src/components/HelloWorld.vue";
 import TheWelcome from "../src/components/TheWelcome.vue";
+
+const WELCOME_ITEMS = 5;
 import WelcomeItem from "../src/components/WelcomeItem.vue";
 import IconCommunity from "../src/components/icons/IconCommunity.vue";
 import IconDocumentation from "../src/components/icons/IconDocumentation.vue";
@@ -32,7 +34,7 @@ describe("components", () => {
   it("lists the five welcome items", () => {
     const wrapper = mount(TheWelcome);
 
-    expect(wrapper.findAll(".item")).toHaveLength(5);
+    expect(wrapper.findAll(".item")).toHaveLength(WELCOME_ITEMS);
     expect(wrapper.text()).toContain("Documentation");
   });
 
@@ -40,7 +42,7 @@ describe("components", () => {
     const wrapper = mount(App);
 
     expect(wrapper.text()).toContain("You did it!");
-    expect(wrapper.findAll(".item")).toHaveLength(5);
+    expect(wrapper.findAll(".item")).toHaveLength(WELCOME_ITEMS);
   });
 
   it.each([
