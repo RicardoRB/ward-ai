@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Stream;
 
@@ -21,6 +22,16 @@ import java.util.stream.Stream;
 final class FixtureProjects {
 
   private static final String PASSING = "passing";
+  private static final Set<String> MANIFEST_NAMES =
+      Set.of(
+          "package.json",
+          "pnpm-workspace.yaml",
+          "tsconfig.json",
+          ".eslintrc.json",
+          ".prettierrc",
+          ".prettierrc.json",
+          ".babelrc",
+          "babel.config.json");
 
   private FixtureProjects() {}
 
@@ -110,7 +121,7 @@ final class FixtureProjects {
     try (Stream<Path> files = Files.walk(project)) {
       for (final Path manifest : files.filter(Files::isRegularFile).toList()) {
         final String name = manifest.getFileName().toString();
-        if ("package.json".equals(name) || "pnpm-workspace.yaml".equals(name)) {
+        if (MANIFEST_NAMES.contains(name)) {
           texts.put(
               project.relativize(manifest).toString().replace('\\', '/'),
               Files.readString(manifest));

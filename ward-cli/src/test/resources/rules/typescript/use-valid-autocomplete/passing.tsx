@@ -1,0 +1,11 @@
+const k1 = <input autocomplete="email" />;
+const k2 = <input autocomplete="none" />;
+const k3 = <input autocomplete="section-blue shipping street-address" />;
+const k4 = <input autocomplete="billing email" />;
+const k5 = <input autocomplete="email tel" />;
+const k6 = <input autocomplete={x} />;
+const k7 = <input autocomplete />;
+const k8 = <input />;
+const k9 = <textarea autocomplete="bad" />;
+const k10 = <input autocomplete="" />;
+const k11 = <input autocomplete="off" autoComplete="bad" />;

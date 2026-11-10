@@ -749,3 +749,195 @@ body = '''
 check = "node-activedescendant-tabindex"
 message = "an element with aria-activedescendant needs a tabIndex to keep focus"
 '''
+
+[[rules]]
+id = "ward:javascript/no-header-scope"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-header-scope"
+message = "The scope attribute should only be used on th elements."
+'''
+
+[[rules]]
+id = "ward:typescript/no-header-scope"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-header-scope"
+message = "The scope attribute should only be used on th elements."
+'''
+
+[[rules]]
+id = "ward:javascript/no-redundant-alt"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-redundant-alt"
+message = "Redundant alt text: screen readers already announce an image, so drop the words image, photo or picture."
+'''
+
+[[rules]]
+id = "ward:typescript/no-redundant-alt"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-redundant-alt"
+message = "Redundant alt text: screen readers already announce an image, so drop the words image, photo or picture."
+'''
+
+[[rules]]
+id = "ward:javascript/no-ambiguous-anchor-text"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-ambiguous-anchor-text"
+message = "Ambiguous anchor text does not give screen reader users enough context. Describe where the link goes."
+'''
+
+[[rules]]
+id = "ward:typescript/no-ambiguous-anchor-text"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-ambiguous-anchor-text"
+message = "Ambiguous anchor text does not give screen reader users enough context. Describe where the link goes."
+'''
+
+[[rules]]
+id = "ward:javascript/use-valid-lang"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-valid-lang"
+message = "The lang attribute must be a valid language tag, such as en or en-US."
+'''
+
+[[rules]]
+id = "ward:typescript/use-valid-lang"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-valid-lang"
+message = "The lang attribute must be a valid language tag, such as en or en-US."
+'''
+
+[[rules]]
+id = "ward:javascript/no-label-without-control"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-label-without-control"
+message = "A label needs text and a control: a for or htmlFor attribute, or a nested form control."
+'''
+
+[[rules]]
+id = "ward:typescript/no-label-without-control"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-label-without-control"
+message = "A label needs text and a control: a for or htmlFor attribute, or a nested form control."
+'''
+
+[[rules]]
+id = "ward:javascript/no-aria-hidden-on-focusable"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-hidden-on-focusable"
+message = "aria-hidden must not be set on an element that can take focus."
+'''
+
+[[rules]]
+id = "ward:typescript/no-aria-hidden-on-focusable"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-aria-hidden-on-focusable"
+message = "aria-hidden must not be set on an element that can take focus."
+'''
+
+[[rules]]
+id = "ward:javascript/use-focusable-interactive"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-use-focusable-interactive"
+message = "An element with an interactive role must be focusable, so give it a tabIndex."
+'''
+
+[[rules]]
+id = "ward:typescript/use-focusable-interactive"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-use-focusable-interactive"
+message = "An element with an interactive role must be focusable, so give it a tabIndex."
+'''
+
+[[rules]]
+id = "ward:javascript/use-valid-autocomplete"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-valid-autocomplete"
+message = "Use a valid value for the autocomplete attribute, such as email or tel."
+'''
+
+[[rules]]
+id = "ward:typescript/use-valid-autocomplete"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "a11y"
+presets = ["standard", "strict"]
+body = '''
+check = "node-valid-autocomplete"
+message = "Use a valid value for the autocomplete attribute, such as email or tel."
+'''

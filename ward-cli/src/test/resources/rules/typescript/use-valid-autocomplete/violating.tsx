@@ -1,0 +1,18 @@
+const g1 = <input autocomplete="foo" />;
+const g2 = <input autocomplete="email" />;
+const g3 = <input autocomplete="none" />;
+const g4 = <input autocomplete="section-blue shipping street-address" />;
+const g5 = <input autocomplete="billing foo" />;
+const g6 = <input autocomplete="billing email" />;
+const g7 = <input autocomplete="shipping country" />;
+const g8 = <input autocomplete="email foo" />;
+const g9 = <input autocomplete="email tel" />;
+const g10 = <input autoComplete="bad" />;
+const g11 = <input autocomplete={x} />;
+const g12 = <input autocomplete />;
+const g13 = <input />;
+const g14 = <textarea autocomplete="bad" />;
+const g15 = <input autocomplete="" />;
+const g16 = <input autocomplete="none foo" />;
+const g17 = <input autocomplete={"bad"} />;
+const g18 = <input autocomplete="off" autoComplete="bad" />;

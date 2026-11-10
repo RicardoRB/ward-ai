@@ -1,6 +1,7 @@
 package dev.ward.analysis.domain.rule.check;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -35,6 +36,20 @@ final class FragmentContext {
   }
 
   private FragmentContext() {}
+
+  /**
+   * The ancestors that decide the context of a visited fragment. A short fragment sits under its
+   * own wrapper element, so its ancestors end with the wrapper; an element is its own wrapper, so
+   * it is appended to its ancestors.
+   */
+  static List<SyntaxNode> chainOf(final SyntaxWalk.Visit visit) {
+    if (FRAGMENT.equals(visit.node().kind())) {
+      return visit.ancestors();
+    }
+    final List<SyntaxNode> chain = new ArrayList<>(visit.ancestors());
+    chain.add(visit.node());
+    return chain;
+  }
 
   /**
    * The context of the fragment: its wrapper element's parent decides it. The wrapper is the

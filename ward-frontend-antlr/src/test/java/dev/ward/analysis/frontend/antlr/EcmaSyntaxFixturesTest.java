@@ -57,6 +57,11 @@ class EcmaSyntaxFixturesTest {
           Map.entry(
               "static-accessors.ts", List.of("getAccessor", "setAccessor", "propertyMemberBase")),
           Map.entry("template-escapes.ts", List.of("TemplateStringEscapeAtom")),
+          Map.entry(
+              "catch-patterns.ts", List.of("catchProduction", "objectLiteral", "arrayLiteral")),
+          Map.entry(
+              "class-extends-expression.ts",
+              List.of("classExtendsClause", "typeReference", "singleExpression")),
           Map.entry("readonly-operator.ts", List.of("readonlyType")),
           Map.entry("regex-v.ts", List.of("RegularExpressionLiteral")),
           Map.entry("satisfies.ts", List.of("satisfiesClause")),

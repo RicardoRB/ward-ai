@@ -1,0 +1,10 @@
+const m1 = <ul><li>a</li></ul>;
+const m2 = <div><li>a</li></div>;
+const m3 = <ul><><li /></></ul>;
+const m4 = <ol><span><li /></span></ol>;
+const m5 = <menu><li /></menu>;
+const m6 = <li />;
+const m7 = <div>{x && <li />}</div>;
+const m8 = <ul>{x ? <li /> : null}</ul>;
+const m9 = <section><li>b</li></section>;
+const m10 = <div>{x ? <li /> : null}</div>;

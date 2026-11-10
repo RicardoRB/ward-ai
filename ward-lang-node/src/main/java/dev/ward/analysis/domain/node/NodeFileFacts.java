@@ -3,6 +3,7 @@ package dev.ward.analysis.domain.node;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.Symbol;
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -14,6 +15,8 @@ import java.util.Set;
  * imports. The scans stay package-private; checks in other packages use this facade.
  */
 public final class NodeFileFacts {
+
+  private static final String STRING_LITERAL = "StringLiteral";
 
   private NodeFileFacts() {}
 
@@ -123,6 +126,25 @@ public final class NodeFileFacts {
                     new ImportedName(
                         binding.member(), NodeLeaves.text(binding.local()), binding.specifier()))
             .toList();
+  }
+
+  /**
+   * Tells whether a specifier names a Node built-in module, such as {@code fs} or {@code node:fs}.
+   */
+  public static boolean isNodeBuiltin(final String specifier) {
+    return specifier.startsWith("node:") || NodeBuiltins.NAMES.contains(specifier.split("/", 2)[0]);
+  }
+
+  /** Returns the string literals of the file, without their quotes, in source order. */
+  public static List<String> stringLiterals(final SyntaxNode tree) {
+    final NodeTokens tokens = new NodeTokens(NodeLeaves.of(tree));
+    final List<String> literals = new ArrayList<>();
+    for (int i = 0; i < tokens.size(); i++) {
+      if (STRING_LITERAL.equals(tokens.kind(i))) {
+        literals.add(NodeTokens.unquote(tokens.text(i)));
+      }
+    }
+    return List.copyOf(literals);
   }
 
   /**

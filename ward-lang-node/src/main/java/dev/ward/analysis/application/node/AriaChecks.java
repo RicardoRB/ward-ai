@@ -5,6 +5,7 @@ import static java.util.Map.entry;
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.BiomeActivedescendantTabindexCheck;
+import dev.ward.analysis.domain.rule.check.BiomeAriaHiddenOnFocusableCheck;
 import dev.ward.analysis.domain.rule.check.BiomeAriaPropsCheck;
 import dev.ward.analysis.domain.rule.check.BiomeAriaPropsForRoleCheck;
 import dev.ward.analysis.domain.rule.check.BiomeAriaPropsSupportedByRoleCheck;
@@ -19,6 +20,7 @@ import dev.ward.analysis.domain.rule.check.BiomeNoninteractiveToInteractiveRoleC
 import dev.ward.analysis.domain.rule.check.BiomeSemanticElementCheck;
 import dev.ward.analysis.domain.rule.check.BiomeStaticElementInteractionsCheck;
 import dev.ward.analysis.domain.rule.check.BiomeSvgTitleCheck;
+import dev.ward.analysis.domain.rule.check.BiomeUseFocusableInteractiveCheck;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -99,6 +101,16 @@ final class AriaChecks {
             "node-static-element-interactions",
             toml ->
                 new BiomeStaticElementInteractionsCheck(
+                    AriaTables.load(), TomlValues.required(toml, MESSAGE))),
+        entry(
+            "node-aria-hidden-on-focusable",
+            toml ->
+                new BiomeAriaHiddenOnFocusableCheck(
+                    AriaTables.load(), TomlValues.required(toml, MESSAGE))),
+        entry(
+            "node-use-focusable-interactive",
+            toml ->
+                new BiomeUseFocusableInteractiveCheck(
                     AriaTables.load(), TomlValues.required(toml, MESSAGE))),
         entry(
             "node-no-redundant-roles",
