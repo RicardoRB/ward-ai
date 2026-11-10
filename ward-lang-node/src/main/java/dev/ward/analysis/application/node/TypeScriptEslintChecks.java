@@ -14,6 +14,7 @@ import dev.ward.analysis.domain.node.lint.NonNullOptionalChainCheck;
 import dev.ward.analysis.domain.node.lint.PreferAsConstCheck;
 import dev.ward.analysis.domain.node.lint.RedundantConstituentsCheck;
 import dev.ward.analysis.domain.node.lint.ThisAliasCheck;
+import dev.ward.analysis.domain.node.lint.TripleSlashReferenceCheck;
 import dev.ward.analysis.domain.node.lint.UselessEmptyExportCheck;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -62,6 +63,7 @@ final class TypeScriptEslintChecks {
         "node-no-redundant-type-constituents",
         toml -> new RedundantConstituentsCheck(message(toml)));
     checks.put("node-ban-ts-comment", TypeScriptEslintChecks::banTsComment);
+    checks.put("node-triple-slash-reference", TypeScriptEslintChecks::tripleSlash);
   }
 
   static String message(final TomlParseResult toml) {
@@ -91,6 +93,11 @@ final class TypeScriptEslintChecks {
         Boolean.TRUE.equals(toml.getBoolean("ignore-unions")),
         Boolean.TRUE.equals(toml.getBoolean("ignore-intersections")),
         message(toml));
+  }
+
+  private static TripleSlashReferenceCheck tripleSlash(final TomlParseResult toml) {
+    return new TripleSlashReferenceCheck(
+        toml.getString("lib"), toml.getString("path"), toml.getString("types"), message(toml));
   }
 
   private static MisusedNewCheck misusedNew(final TomlParseResult toml) {

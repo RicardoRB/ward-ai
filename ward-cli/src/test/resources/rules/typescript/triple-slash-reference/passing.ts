@@ -1,2 +1,3 @@
-// a comment
-export const x = 1;
+/// <reference types="vite/client" />
+/// <reference lib="dom" />
+export {};

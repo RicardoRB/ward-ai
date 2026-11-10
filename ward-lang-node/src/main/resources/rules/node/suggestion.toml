@@ -1769,11 +1769,15 @@ capability = "SYNTAX"
 severity = "ERROR"
 category = "suggestion"
 presets = ["standard", "strict"]
+options.lib = { type = "string" }
+options.path = { type = "string" }
+options.types = { type = "string" }
 body = '''
-check = "text-pattern"
-target = "comments"
-pattern = '^///\s*<reference\s+(path|types|lib)='
-message = "do not use a triple-slash reference; use an import"
+check = "node-triple-slash-reference"
+lib = "always"
+path = "never"
+types = "prefer-import"
+message = "do not use a triple-slash reference to {module}; use an import"
 '''
 
 # ESLint core rules of type "suggestion" (#326). Node text has no whitespace: match tokens, not spaces.

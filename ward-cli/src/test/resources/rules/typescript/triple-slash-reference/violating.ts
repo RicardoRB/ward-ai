@@ -1,2 +1,5 @@
 /// <reference path="./types.d.ts" />
-export const x = 1;
+/// <reference lib="es2015" />
+/// <reference types="vite/client" />
+/// <reference types="node" />
+import "node";
