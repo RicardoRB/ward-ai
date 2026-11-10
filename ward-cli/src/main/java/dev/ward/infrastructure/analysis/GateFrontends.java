@@ -10,6 +10,7 @@ import dev.ward.analysis.domain.node.NodeScopeAnalysis;
 import dev.ward.analysis.domain.port.ControlFlowLowering;
 import dev.ward.analysis.domain.port.ControlFlowResult;
 import dev.ward.analysis.domain.port.LanguageFrontend;
+import dev.ward.analysis.domain.python.PythonControlFlow;
 import dev.ward.analysis.domain.python.PythonScopes;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.check.NodeImplicitUse;
@@ -61,8 +62,8 @@ public final class GateFrontends {
         new FrontendSupport(
             AnalysisLanguage.PYTHON,
             frontend,
-            symbols,
-            NO_GRAPHS,
+            flow,
+            new PythonControlFlow(),
             new CachedScopes(new PythonScopes(ClasspathBuiltinNames.python()))),
         new FrontendSupport(
                 AnalysisLanguage.TYPESCRIPT,
