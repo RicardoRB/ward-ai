@@ -23,6 +23,10 @@ import java.util.SortedMap;
  * <p>shortcut: a name counts as used when any file imports that name from anywhere, so an export
  * imported under the same name from another module is not reported; upgrade by resolving each
  * import to the file it names.
+ *
+ * <p>shortcut: a CommonJS export assigned as {@code exports.name = ...} is not read as an export,
+ * so it is never reported; upgrade by reading those member assignments as knip's CommonJS support
+ * does.
  */
 public final class NodeUnusedExportCheck implements RuleCheck, ProjectCheck {
 

@@ -1,5 +1,9 @@
 # Dead-code rules for TypeScript and JavaScript, replacing knip. Each body names a check; the
 # project-wide checks read every file of the language at once.
+# shortcut: knip findings Ward does not make, so they stay silent: Svelte's generated ./$types
+# imports (no Svelte frontend), and an unlisted @angular-eslint/builder in angular.json (no check
+# reads angular.json for unlisted builders); upgrade with a Svelte frontend and that angular.json
+# read.
 
 [[rules]]
 id = "ward:typescript/knip-unresolved"
