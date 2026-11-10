@@ -9,9 +9,7 @@ import dev.ward.domain.project.WorkspaceMember;
 import dev.ward.domain.project.WorkspaceMembers;
 import dev.ward.infrastructure.finding.CompositeFindingExtractor;
 import dev.ward.infrastructure.finding.FindingFixtures;
-import dev.ward.infrastructure.finding.node.EslintJsonFindings;
 import dev.ward.infrastructure.finding.node.TscOutputFindings;
-import dev.ward.infrastructure.json.ForyJsonCodec;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +18,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 class TurborepoFindingsTest {
   private static final String WEB = "web";
-  private static final String UI = "ui";
   private static final int ERROR_LINE = 3;
   private static final int ERROR_COLUMN = 7;
 
@@ -53,36 +50,6 @@ class TurborepoFindingsTest {
   }
 
   @Test
-  void keepsTheEslintFindingsOfTwoMembers() {
-    final Path web = root.resolve("apps/web");
-    final Path ui = root.resolve("packages/ui");
-    final CompositeFindingExtractor extractor =
-        extractor(
-            new WorkspaceMember(WEB, web, FindingFixtures.typescript(web)),
-            new WorkspaceMember(UI, ui, FindingFixtures.typescript(ui)));
-
-    final String stdout =
-        "web:lint: [{\"filePath\":\""
-            + web.resolve("src/a.ts")
-            + "\",\"messages\":[{\"ruleId\":\"no-unused-vars\",\"severity\":2,"
-            + "\"message\":\"unused\",\"line\":1,\"column\":1}]}]\n"
-            + "ui:lint: [{\"filePath\":\""
-            + ui.resolve("src/b.ts")
-            + "\",\"messages\":[{\"ruleId\":\"eqeqeq\",\"severity\":2,"
-            + "\"message\":\"use ===\",\"line\":2,\"column\":3}]}]\n";
-
-    final List<Finding> findings =
-        extractor.extract(
-            turbo(), FindingFixtures.failed("eslint", stdout), FindingFixtures.justBefore());
-
-    assertThat(findings)
-        .extracting(Finding::file, Finding::ruleId)
-        .containsExactly(
-            org.assertj.core.groups.Tuple.tuple("apps/web/src/a.ts", "no-unused-vars"),
-            org.assertj.core.groups.Tuple.tuple("packages/ui/src/b.ts", "eqeqeq"));
-  }
-
-  @Test
   void unprefixedOutputIsReadAsOneProject() {
     final CompositeFindingExtractor extractor = extractor();
 
@@ -98,8 +65,7 @@ class TurborepoFindingsTest {
 
   private CompositeFindingExtractor extractor(final WorkspaceMember... members) {
     return new CompositeFindingExtractor(
-        List.of(new TscOutputFindings(), new EslintJsonFindings(new ForyJsonCodec())),
-        new FakeMembers(List.of(members)));
+        List.of(new TscOutputFindings()), new FakeMembers(List.of(members)));
   }
 
   private Project turbo() {

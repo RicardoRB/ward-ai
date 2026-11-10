@@ -3,7 +3,6 @@ package dev.ward.infrastructure.init.node;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.domain.init.InitGateOption;
-import dev.ward.domain.project.Language;
 import dev.ward.domain.project.node.PackageManifest;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +28,6 @@ class NodeCheckerPackageCatalogTest {
   void frameworkGatesAddTheirCheckerAndTypeScriptWhenMissing() {
     assertThat(
             NodePackageCatalog.missing(
-                    Language.TYPESCRIPT,
                     List.of(gate("vue-tsc")),
                     new PackageManifest(Map.of("vue", "3.5.0"), null, null))
                 .stream()

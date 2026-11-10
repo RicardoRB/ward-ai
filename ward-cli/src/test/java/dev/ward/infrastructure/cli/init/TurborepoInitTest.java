@@ -35,27 +35,12 @@ class TurborepoInitTest {
         .contains("\"check-types\": \"tsc --noEmit --pretty false\"");
     assertThat(fixture.read("packages/eslint-config/" + PACKAGE_JSON)).isEqualTo(configOnly);
     assertThat(fixture.read(TURBO_JSON))
-        .contains(
-            "\"check-types\": {}",
-            "\"lint\": {}",
-            "\"mutation\": { \"outputs\": [\"reports/**\"] }")
+        .contains("\"check-types\": {}", "\"mutation\": { \"outputs\": [\"reports/**\"] }")
         .contains("\"test\": { \"dependsOn\": [\"^build\"], \"outputs\": [\"coverage/**\"] }");
-    assertThat(fixture.read("apps/web/eslint.config.mjs")).startsWith("// managed-by: ward");
+    assertThat(project.resolve("apps/web/eslint.config.mjs")).doesNotExist();
+    assertThat(fixture.read("ward-rules.toml")).contains("languages = [\"typescript\", \"swift\"]");
     assertThat(fixture.read("packages/ui/" + PACKAGE_JSON)).contains("\"vitest\":");
-    assertThat(fixture.read("ward.toml")).contains("turbo", "run", "--filter=...");
-  }
-
-  @Test
-  void memberOwnEslintConfigIsKept() throws IOException, InterruptedException {
-    final NodeFixtureRun fixture = NodeFixtureRun.copy(FIXTURE, project);
-    final String own = "import base from \"@repo/eslint-config\";\nexport default [base];\n";
-    Files.writeString(project.resolve("apps/web/eslint.config.mjs"), own);
-
-    final NodeFixtureRun.Result init = init(fixture);
-
-    assertThat(init.exit()).as(init.output()).isZero();
-    assertThat(fixture.read("apps/web/eslint.base.mjs")).isEqualTo(own);
-    assertThat(fixture.read("apps/web/eslint.config.mjs")).contains("from \"./eslint.base.mjs\"");
+    assertThat(fixture.read("ward.toml")).contains("turbo", "run", "check-types");
   }
 
   @Test

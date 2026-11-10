@@ -10,7 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -21,82 +20,40 @@ class NodeMatrixCellsTest {
   private static final List<String> NODES = List.of("22", "24");
   private static final List<String> FIXTURES =
       List.of("typescript", "javascript-esm", "javascript-commonjs");
-  private static final List<String> LINTERS = List.of("eslint", "biome");
   private static final int NODE_COLUMN = 0;
   private static final int FIXTURE_COLUMN = 1;
-  private static final int PRESET_COLUMN = 3;
-  private static final int PACKAGES_COLUMN = 5;
-
-  /** The oldest and newest supported version of each linter, declared in the TypeScript rows. */
-  private static final Map<String, List<String>> DECLARED_VERSIONS =
-      Map.of("eslint", List.of("9.22.0", "10.13.0"), "biome", List.of("2.3.0", "2.6.3"));
+  private static final int PRESET_COLUMN = 2;
+  private static final int PACKAGES_COLUMN = 3;
 
   @Test
-  void strictCellsCoverEveryCombinationAtThePinnedVersion() throws IOException {
+  void strictCellsCoverEveryPlainFixtureOnEachNodeVersion() throws IOException {
     final List<String> expected =
         NODES.stream()
-            .flatMap(
-                node ->
-                    FIXTURES.stream()
-                        .flatMap(
-                            fixture ->
-                                LINTERS.stream()
-                                    .map(
-                                        linting ->
-                                            node + "," + fixture + "," + linting + ",strict,")))
+            .flatMap(node -> FIXTURES.stream().map(fixture -> node + "," + fixture + ",strict,"))
             .toList();
 
     assertThat(plainRowsEndingWith(",strict,")).containsExactlyInAnyOrderElementsOf(expected);
   }
 
   @Test
-  void typeScriptCellsDeclareBothEndsOfEachLinterRange() throws IOException {
-    final List<String> expected =
-        NODES.stream()
-            .flatMap(
-                node ->
-                    DECLARED_VERSIONS.entrySet().stream()
-                        .flatMap(
-                            entry ->
-                                entry.getValue().stream()
-                                    .map(
-                                        version ->
-                                            node
-                                                + ",typescript,"
-                                                + entry.getKey()
-                                                + ",strict,"
-                                                + version)))
-            .toList();
-
-    assertThat(
-            rows().stream()
-                .filter(row -> row.contains(",typescript,") && !row.endsWith(","))
-                .toList())
-        .containsExactlyInAnyOrderElementsOf(expected);
-  }
-
-  @Test
-  void frameworkCellsRunStrictOnNode24WithEslint() throws IOException {
+  void frameworkCellsRunStrictOnNode24() throws IOException {
     assertThat(rows().stream().filter(row -> row.startsWith("24,") && row.contains(",strict,")))
         .as("framework rows")
         .containsAll(
             List.of(
-                "24,nextjs,eslint,strict,9.22.0",
-                "24,vite-react,eslint,strict,9.22.0",
-                "24,nestjs,eslint,strict,",
-                "24,express,eslint,strict,",
-                "24,angular-21,eslint,strict,",
-                "24,angular-22,eslint,strict,"));
+                "24,nextjs,strict,",
+                "24,vite-react,strict,",
+                "24,nestjs,strict,",
+                "24,express,strict,",
+                "24,angular-21,strict,",
+                "24,angular-22,strict,"));
   }
 
   @Test
-  void standardCellsAreTypeScriptOnNode22WithEachLinter() throws IOException {
+  void standardCellsAreTypeScriptOnNode22() throws IOException {
     assertThat(rowsEndingWith(",standard,"))
         .containsExactlyInAnyOrder(
-            "22,typescript,eslint,standard,",
-            "22,typescript,biome,standard,",
-            "22,angular-21,eslint,standard,",
-            "22,angular-22,eslint,standard,");
+            "22,typescript,standard,", "22,angular-21,standard,", "22,angular-22,standard,");
   }
 
   @Test
@@ -106,8 +63,7 @@ class NodeMatrixCellsTest {
             .flatMap(
                 major ->
                     List.of(
-                        "22,angular-" + major + ",eslint,standard,",
-                        "24,angular-" + major + ",eslint,strict,")
+                        "22,angular-" + major + ",standard,", "24,angular-" + major + ",strict,")
                         .stream())
             .toList();
 
@@ -133,7 +89,7 @@ class NodeMatrixCellsTest {
     // The Node 24 row without packages covers the fixture's astro 7.4.2 and the pinned checker and
     // TypeScript.
     assertThat(declared).contains("astro@7.3.8", "typescript@5.0.4", "@astrojs/check@0.9.12");
-    assertThat(astroRows).contains("24,astro,eslint,strict,");
+    assertThat(astroRows).contains("24,astro,strict,");
     assertThat(astroRows.stream().map(row -> column(row, NODE_COLUMN))).contains("22.12");
   }
 
@@ -158,8 +114,8 @@ class NodeMatrixCellsTest {
   }
 
   @Test
-  void turborepoCellRunsStrictOnNode24WithEslint() throws IOException {
-    assertThat(rows()).contains("24,turborepo,eslint,strict,");
+  void turborepoCellRunsStrictOnNode24() throws IOException {
+    assertThat(rows()).contains("24,turborepo,strict,");
     assertThat(NODE_FIXTURES.resolve("turborepo")).isDirectory();
     assertThat(Path.of("src/test/resources/node-matrix/violations/turborepo")).isDirectory();
   }

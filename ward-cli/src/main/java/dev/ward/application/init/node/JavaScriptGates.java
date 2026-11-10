@@ -8,23 +8,15 @@ import java.util.List;
 
 /**
  * JavaScript's gates on a Node package manager; unlike TypeScript there is no {@code tsc} gate.
+ * Ward's JavaScript rules, selected in {@code ward-rules.toml}, do the linting.
  *
  * @param testGate the project's test runner gate, which both presets enable
- * @param linting the project's lint and format tools
  */
-record JavaScriptGates(String testGate, NodeLinting linting)
-    implements SourceLanguageGates<NodeTools> {
+record JavaScriptGates(String testGate) implements SourceLanguageGates<NodeTools> {
   @Override
   public List<InitGateOption> analysisGates(final NodeTools node) {
     final List<InitGateOption> gates = new ArrayList<>();
     gates.add(node.tests());
-    gates.addAll(
-        linting.gates(
-            node,
-            node.option(
-                "eslint",
-                "Lints sources with ESLint's recommended JavaScript rules.",
-                node.command("eslint", ".", "--format", "json"))));
     gates.add(node.stryker());
     return List.copyOf(gates);
   }
@@ -32,7 +24,6 @@ record JavaScriptGates(String testGate, NodeLinting linting)
   @Override
   public List<String> presetGates(final QualityPreset preset) {
     final List<String> gates = new ArrayList<>(List.of(testGate));
-    gates.addAll(linting.presetIds());
     if (preset == QualityPreset.STRICT) {
       gates.add("stryker");
     }

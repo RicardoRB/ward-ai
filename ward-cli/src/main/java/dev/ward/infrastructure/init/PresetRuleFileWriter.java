@@ -6,6 +6,7 @@ import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.init.RuleFileChange;
 import dev.ward.domain.init.RuleFileGeneration;
+import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 
@@ -103,8 +105,45 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
         ConfigTarget.write(
             project.root().resolve(WARD_RULES),
             ConfigFiles.marker(ConfigFiles.TOML_MARKER, preset)
-                + PresetRuleFileContent.wardRules(preset, project.languages())));
+                + PresetRuleFileContent.wardRules(preset, wardLanguages(project))));
     return targets;
+  }
+
+  /**
+   * The language ids whose Ward rules the {@code ward} gate applies: a Node project's TypeScript
+   * and JavaScript; other projects get Java or Kotlin, then Python when present, then Swift.
+   */
+  private static List<String> wardLanguages(final Project project) {
+    final List<String> ids = new ArrayList<>();
+    if (project.toolchain() == Toolchain.NODE) {
+      if (project.languages().contains(Language.TYPESCRIPT)) {
+        ids.add("typescript");
+      }
+      if (project.languages().contains(Language.JAVASCRIPT)) {
+        ids.add("javascript");
+      }
+    } else {
+      ids.addAll(jvmLanguageIds(project.languages()));
+    }
+    if (project.languages().contains(Language.PYTHON)) {
+      ids.add("python");
+    }
+    ids.add("swift");
+    return List.copyOf(ids);
+  }
+
+  private static List<String> jvmLanguageIds(final Set<Language> languages) {
+    final List<String> ids = new ArrayList<>();
+    if (languages.contains(Language.JAVA)) {
+      ids.add("java");
+    }
+    if (languages.contains(Language.KOTLIN)) {
+      ids.add("kotlin");
+    }
+    if (ids.isEmpty()) {
+      ids.add("java");
+    }
+    return ids;
   }
 
   private static Map<Path, String> enforcerTargets(

@@ -13,9 +13,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Checks the packages init adds against the project's Node major version, and {@code
- * typescript-eslint} against its TypeScript version. A Node or TypeScript version cannot be fixed
- * by choosing another package version, so findings have no approval path.
+ * Checks the packages init adds against the project's Node major version and TypeScript version. A
+ * Node or TypeScript version cannot be fixed by choosing another package version, so findings have
+ * no approval path.
  *
  * @param findings the {@code INCOMPATIBLE} findings, one per package
  * @param notes plan notes, such as a minimum minor Node version a range needs
@@ -32,9 +32,8 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
   }
 
   /**
-   * Checks {@code added}, the packages init would add to {@code project}, a declared Biome or
-   * ESLint when {@code gates} selects it, and the Vitest the {@code vitest} gate runs against the
-   * project's Vite.
+   * Checks {@code added}, the packages init would add to {@code project}, and the Vitest the {@code
+   * vitest} gate runs against the project's Vite.
    */
   static NodeCompatibility check(
       final Project project,
@@ -47,12 +46,6 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
     for (final NodePackageCatalog.Package tool : added) {
       checkNode(tool, node, findings, notes);
       typescript(tool, manifest, added).ifPresent(findings::add);
-    }
-    if (gates.contains("biome")) {
-      declaredBiome(manifest).ifPresent(findings::add);
-    }
-    if (gates.contains("eslint")) {
-      declaredEslint(manifest).ifPresent(findings::add);
     }
     vitestVite(manifest, gates).ifPresent(findings::add);
     findings.addAll(declaredCheckers(manifest));
@@ -77,20 +70,18 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
       final List<String> notes) {
     final Optional<String> minimum = NodeVersionRange.nodeMinimum(tool.node(), node);
     if (minimum.isEmpty()) {
-      if (!NodePackageCatalog.ANGULAR_ESLINT.equals(tool.name())) {
-        findings.add(
-            finding(
-                tool,
-                "Node " + node,
-                tool.name()
-                    + " "
-                    + tool.version()
-                    + " supports Node "
-                    + tool.node()
-                    + "; the project uses Node "
-                    + node
-                    + "."));
-      }
+      findings.add(
+          finding(
+              tool,
+              "Node " + node,
+              tool.name()
+                  + " "
+                  + tool.version()
+                  + " supports Node "
+                  + tool.node()
+                  + "; the project uses Node "
+                  + node
+                  + "."));
     } else if (minimum.get().startsWith(node + ".") && !minimum.get().endsWith(".0.0")) {
       notes.add(tool.name() + " needs Node " + minimum.get() + " or later.");
     }
@@ -125,29 +116,6 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
                         + tool.typescript()
                         + "; the project uses TypeScript "
                         + declared
-                        + "."));
-  }
-
-  /** A declared Biome must start inside the range Ward's checkstyle reading supports. */
-  private static Optional<CompatibilityFinding> declaredBiome(final PackageManifest manifest) {
-    final String declared = manifest.dependencies().get(NodePackageCatalog.BIOME_PACKAGE);
-    if (declared == null) {
-      return Optional.empty();
-    }
-    return NodeVersionRange.lowerBound(declared)
-        .filter(version -> !NodeVersionRange.matches(NodePackageCatalog.BIOME_SUPPORTED, version))
-        .map(
-            version ->
-                new CompatibilityFinding(
-                    NodePackageCatalog.BIOME_PACKAGE,
-                    "Biome " + version,
-                    NodePackageCatalog.BIOME_VERSION,
-                    CompatibilityOutcome.INCOMPATIBLE,
-                    NodePackageCatalog.BIOME_PACKAGE
-                        + " "
-                        + declared
-                        + " is outside the supported range "
-                        + NodePackageCatalog.BIOME_SUPPORTED
                         + "."));
   }
 
@@ -237,43 +205,6 @@ record NodeCompatibility(List<CompatibilityFinding> findings, List<String> notes
                 + "; the newest supports "
                 + NodeVitestReleases.newestViteRange()
                 + "."));
-  }
-
-  /** A declared ESLint must start inside the range the generated config supports. */
-  private static Optional<CompatibilityFinding> declaredEslint(final PackageManifest manifest) {
-    final String declared = manifest.dependencies().get(NodePackageCatalog.ESLINT);
-    if (declared == null) {
-      return Optional.empty();
-    }
-    return NodeVersionRange.lowerBound(declared)
-        .filter(version -> !reachesSupportedEslint(declared, version))
-        .map(
-            version ->
-                new CompatibilityFinding(
-                    NodePackageCatalog.ESLINT,
-                    "ESLint " + version,
-                    NodePackageCatalog.ESLINT_VERSION,
-                    CompatibilityOutcome.INCOMPATIBLE,
-                    NodePackageCatalog.ESLINT
-                        + " "
-                        + declared
-                        + " is outside the supported range "
-                        + NodePackageCatalog.ESLINT_SUPPORTED
-                        + "."));
-  }
-
-  /**
-   * Returns whether {@code declared} can resolve inside the supported ESLint range. A caret range
-   * such as {@code ^9} resolves to the newest release of its major, so it reaches the range when
-   * that major has a supported release; the top of the major stands for all of it.
-   */
-  private static boolean reachesSupportedEslint(final String declared, final String lowerBound) {
-    if (NodeVersionRange.matches(NodePackageCatalog.ESLINT_SUPPORTED, lowerBound)) {
-      return true;
-    }
-    final String major = lowerBound.substring(0, lowerBound.indexOf('.'));
-    return declared.startsWith("^")
-        && NodeVersionRange.matches(NodePackageCatalog.ESLINT_SUPPORTED, major + ".999.999");
   }
 
   /**

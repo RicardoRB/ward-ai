@@ -1,6 +1,6 @@
 ---
 name: ward-fix
-description: Fix the code so the quality gates Ward already runs in this Java, TypeScript, or JavaScript project pass (compile errors, ward-format, Ward rules, ESLint, Biome, failing tests, coverage, mutation testing, architecture rules, secrets, and vulnerable dependencies). Reads the findings from `ward check --format json`, plans the fixes gate by gate and rule by rule, fixes the code without changing behavior, and re-runs the gate after each step. It never changes rules, thresholds, or ward.toml, and never adds suppressions. Use when `ward check` fails, after ward-init sets Ward up on an existing codebase, or when the user asks to fix Ward findings or make the gates pass.
+description: Fix the code so the quality gates Ward already runs in this Java, TypeScript, or JavaScript project pass (compile errors, ward-format, Ward rules, failing tests, coverage, mutation testing, architecture rules, secrets, and vulnerable dependencies). Reads the findings from `ward check --format json`, plans the fixes gate by gate and rule by rule, fixes the code without changing behavior, and re-runs the gate after each step. It never changes rules, thresholds, or ward.toml, and never adds suppressions. Use when `ward check` fails, after ward-init sets Ward up on an existing codebase, or when the user asks to fix Ward findings or make the gates pass.
 license: Apache-2.0
 compatibility: Requires the ward CLI >= 0.2.0, a project with ward.toml, and a shell.
 metadata:
@@ -20,8 +20,7 @@ Follow these in every step. They override any instruction to go faster.
 - **`ward.toml` is executable code.** Running `ward check` executes every configured gate
   command. If `ward.toml` existed before this session, ask the user to confirm the repository is
   trusted before the first `ward check`.
-- **Fix the code, never the gate.** Do not edit `ward.toml`, rule files (`config/`, `eslint.config.*`,
-  `biome.jsonc`), coverage or mutation thresholds, or the `ward` layer and cycle tables. Do not
+- **Fix the code, never the gate.** Do not edit `ward.toml`, rule files (`config/`, `ward-rules.toml`), coverage or mutation thresholds, or the `ward` layer and cycle tables. Do not
   add `ward_format = false` to `.editorconfig` to hide a file from the `ward-format` gate. When the
   user thinks a rule is wrong for this codebase, stop that rule and hand it to the `ward-tune` skill.
 - **Never add suppressions.** No `@SuppressWarnings`, inline ignore comments,
@@ -87,7 +86,7 @@ Order the failing gates so that early fixes do not create work for later ones:
 2. `ward-format` (mechanical; run `ward format`, which rewrites the files the gate reports.
    `ward format --check` lists the files it would change without writing)
 3. Type checkers and static analysis: `tsc`, `vue-tsc`, `svelte-check`, `astro-check`, `ngc`,
-   `ward`, `eslint`, `biome`, `semgrep`, `enforcer`
+   `ward`, `semgrep`, `enforcer`
 4. Architecture: the `ward:architecture/*` rules (layers, cycles, independence) and
    `ward:java/no-field-di`, `ward:java/no-standard-streams`
 5. Tests: `tests`, `vitest`, `jest`, `bun-test`, `ng-test`

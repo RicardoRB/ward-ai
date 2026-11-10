@@ -5,6 +5,7 @@ import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.gate.ToolReports;
 import dev.ward.domain.init.InitGateOption;
+import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -114,12 +115,7 @@ record BinaryToolGates(EnvironmentInspection environment, Project project) {
 
   /** The Semgrep registry ruleset for {@code project}'s language, or empty when there is none. */
   private Optional<String> semgrepRuleset() {
-    return switch (project.language()) {
-      case TYPESCRIPT -> Optional.of("p/typescript");
-      case JAVASCRIPT -> Optional.of("p/javascript");
-      case PYTHON -> Optional.of("p/python");
-      default -> Optional.empty();
-    };
+    return project.language() == Language.PYTHON ? Optional.of("p/python") : Optional.empty();
   }
 
   private InitGateOption option(

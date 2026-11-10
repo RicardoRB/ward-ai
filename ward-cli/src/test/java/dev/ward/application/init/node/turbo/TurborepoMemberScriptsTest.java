@@ -49,22 +49,4 @@ class TurborepoMemberScriptsTest {
                 TurborepoFixtures.inputs(root, List.of(config), Map.of(), Set.of())))
         .isEmpty();
   }
-
-  @Test
-  void biomeAtTheRootIsTheLintToolOfEveryMember() {
-    final WorkspaceMember web =
-        TurborepoFixtures.memberOf(root, TurborepoFixtures.WEB, Framework.NONE);
-    final PackageManifest biome =
-        new PackageManifest(Map.of("@biomejs/biome", "2.3.0"), null, null);
-
-    final TurborepoPlan.MemberPlan member =
-        TurborepoPlan.memberScripts(
-                TurborepoFixtures.rootProject(root, BuildTool.PNPM),
-                QualityPreset.STANDARD,
-                TurborepoFixtures.inputs(
-                    root, List.of(web), Map.of(root, biome), Set.of(web.directory())))
-            .getFirst();
-
-    assertThat(member.scripts().get("lint")).startsWith("biome ci");
-  }
 }

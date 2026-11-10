@@ -6,9 +6,7 @@ import dev.ward.application.init.SourceLanguages;
 import dev.ward.application.init.ToolchainInitSupport.Gates;
 import dev.ward.application.init.node.turbo.TaskRunnerStrategies;
 import dev.ward.application.init.node.turbo.TurborepoPlan;
-import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.QualityPreset;
-import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.node.PackageManifest;
@@ -26,38 +24,24 @@ public final class NodeGates {
   static Gates turborepo(
       final Project project, final QualityPreset preset, final InitInputs inputs) {
     final PackageManifest manifest = inputs.manifests().read(project.root());
-    final NodeLinting linting = NodeLinting.of(project, manifest, inputs.configs());
     final String testGate = TurborepoPlan.testGate(project, inputs);
-    final NodeTools tools =
-        NodeTools.of(project, manifest, inputs, preset).withTestGate(testGate).withLinting(linting);
-    refuseBiomeForAngular(project, tools);
+    final NodeTools tools = NodeTools.of(project, manifest, inputs, preset).withTestGate(testGate);
     return new Gates(
         TurborepoPlan.rootGates(
-            languages(project, testGate, linting).analysisGates(tools),
+            languages(project, testGate).analysisGates(tools),
             TaskRunnerStrategies.of(project).orElseThrow(),
             project.buildTool()),
         List.of());
   }
 
-  /** Biome has no Angular template support, so a green Biome gate would hide template errors. */
-  public static void refuseBiomeForAngular(final Project project, final NodeTools tools) {
-    if (project.framework() == Framework.ANGULAR && tools.linting().biome()) {
-      throw new WardException(
-          "Biome does not check Angular templates, so a passing biome gate would hide template"
-              + " errors. Lint this Angular project with eslint instead: remove biome from the"
-              + " project, then run init again.");
-    }
-  }
-
   /** Returns the source-language gates of a Node project, by its language. */
-  public static SourceLanguages<NodeTools> languages(
-      final Project project, final String testGate, final NodeLinting linting) {
+  public static SourceLanguages<NodeTools> languages(final Project project, final String testGate) {
     return SourceLanguages.of(
         Map.<Language, SourceLanguageGates<NodeTools>>of(
             Language.TYPESCRIPT,
-            new TypeScriptGates(project.framework(), testGate, linting),
+            new TypeScriptGates(project.framework(), testGate),
             Language.JAVASCRIPT,
-            new JavaScriptGates(testGate, linting)),
+            new JavaScriptGates(testGate)),
         project);
   }
 }

@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Test;
 
 /** Which findings become rule records, and what the records and prompts carry. */
 class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
-  private static final String BIOME = "biome";
-  private static final String ESLINT = "eslint";
+  private static final String MYPY = "mypy";
+  private static final String RUFF = "ruff";
   private static final String TSC = "tsc";
   private static final int VIOLATIONS = 12;
 
@@ -23,24 +23,24 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
     final LearningOutcome failure =
         LearningPolicy.apply(LearningLedger.empty(), unusedVariable(), 1, NOW);
 
-    final LearningOutcome resolved = apply(failure, passed(ESLINT), 1, 1);
+    final LearningOutcome resolved = apply(failure, passed(RUFF), 1, 1);
 
     assertThat(resolved.prompts())
         .singleElement()
         .extracting(LearningPrompt::instruction)
         .asString()
-        .contains("AGENTS.md", "`eslint`", "`UnusedLocalVariable`", UNUSED_MESSAGE)
+        .contains("AGENTS.md", "`ruff`", "`UnusedLocalVariable`", UNUSED_MESSAGE)
         .contains("do not write a rule about running the gate, Ward, or any command");
   }
 
   @Test
   void manyViolationsOfOneRuleMakeOneRecordWithTheFirstMessage() {
     final List<Finding> findings =
-        Collections.nCopies(VIOLATIONS, finding(BIOME, "FinalParameters", "first"));
+        Collections.nCopies(VIOLATIONS, finding(MYPY, "FinalParameters", "first"));
 
     final LearningOutcome outcome =
         LearningPolicy.apply(
-            LearningLedger.empty(), failed(BIOME, findings.toArray(Finding[]::new)), 1, NOW);
+            LearningLedger.empty(), failed(MYPY, findings.toArray(Finding[]::new)), 1, NOW);
 
     assertThat(outcome.ledger().records().values())
         .singleElement()
@@ -57,18 +57,16 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
         new CheckReport(
             PROJECT,
             List.of(
-                failedResult(BIOME, finding(BIOME, "FinalParameters", "final")),
+                failedResult(MYPY, finding(MYPY, "FinalParameters", "final")),
                 failedResult(
-                    ESLINT,
-                    finding(ESLINT, UNUSED, UNUSED_MESSAGE),
-                    finding(ESLINT, PRIVATE, "private")),
+                    RUFF, finding(RUFF, UNUSED, UNUSED_MESSAGE), finding(RUFF, PRIVATE, "private")),
                 failedResult("gitleaks", finding("gitleaks", "generic-api-key", "secret"))));
 
     final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
 
     assertThat(outcome.ledger().records())
         .containsOnlyKeys(
-            "biome:FinalParameters", UNUSED_KEY, PRIVATE_KEY, "gitleaks:generic-api-key");
+            "mypy:FinalParameters", UNUSED_KEY, PRIVATE_KEY, "gitleaks:generic-api-key");
     assertThat(outcome.ledger().records().get(UNUSED_KEY).rule()).isEqualTo(UNUSED);
   }
 
@@ -81,11 +79,10 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
                 failedResult("test"),
                 failedResult("format", finding("spotless", "format", "not formatted")),
                 failedResult("compile", finding("javac", "javac.error", "cannot find symbol")),
-                failedResult(ESLINT, finding(ESLINT, ESLINT, "blank rule")),
-                GateResult.builder(BIOME, GateStatus.PASSED)
+                failedResult(RUFF, finding(RUFF, RUFF, "blank rule")),
+                GateResult.builder(MYPY, GateStatus.PASSED)
                     .build()
-                    .withFindings(
-                        GateFindings.of(List.of(finding(BIOME, "MagicNumber", "warn"))))));
+                    .withFindings(GateFindings.of(List.of(finding(MYPY, "MagicNumber", "warn"))))));
 
     final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
 
@@ -93,31 +90,31 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
   }
 
   @Test
-  void eslintRulesAndTscDiagnosticsAreLearnedButParsingErrorsAreNot() {
+  void ruffRulesAndTscDiagnosticsAreLearnedButParsingErrorsAreNot() {
     final CheckReport report =
         new CheckReport(
             PROJECT,
             List.of(
                 failedResult(
-                    ESLINT,
-                    finding(ESLINT, "no-unused-vars", "x is never used"),
-                    finding(ESLINT, ESLINT, "Parsing error: ';' expected.")),
+                    RUFF,
+                    finding(RUFF, "no-unused-vars", "x is never used"),
+                    finding(RUFF, RUFF, "Parsing error: ';' expected.")),
                 failedResult(TSC, finding(TSC, "TS2322", "not assignable"))));
 
     final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
 
-    assertThat(outcome.ledger().records()).containsOnlyKeys("eslint:no-unused-vars", "tsc:TS2322");
+    assertThat(outcome.ledger().records()).containsOnlyKeys("ruff:no-unused-vars", "tsc:TS2322");
   }
 
   @Test
   void recordsStoreOnlyTheFindingMessageNeverStdoutOrStderr() {
     final GateResult result =
-        GateResult.builder(ESLINT, GateStatus.FAILED)
+        GateResult.builder(RUFF, GateStatus.FAILED)
             .stdout("stdout must not be stored")
             .stderr("stderr must not be stored")
             .summary("Build broke")
             .build()
-            .withFindings(GateFindings.of(List.of(finding(ESLINT, UNUSED, UNUSED_MESSAGE))));
+            .withFindings(GateFindings.of(List.of(finding(RUFF, UNUSED, UNUSED_MESSAGE))));
 
     final LearningRecord record =
         LearningPolicy.apply(
@@ -156,13 +153,13 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
         new CheckReport(
             PROJECT,
             List.of(
-                failedResult("eslint", finding("eslint", "no-undef", "'x' is not defined")),
+                failedResult("ruff", finding("ruff", "no-undef", "'x' is not defined")),
                 failedResult(
                     "swift-format", finding("swift-format", "Indentation", "unindent by 2 spaces")),
                 failedResult("swift-build", finding("swift-build", "swiftc", "cannot convert"))));
 
     final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
 
-    assertThat(outcome.ledger().records()).containsOnlyKeys("eslint:no-undef");
+    assertThat(outcome.ledger().records()).containsOnlyKeys("ruff:no-undef");
   }
 }

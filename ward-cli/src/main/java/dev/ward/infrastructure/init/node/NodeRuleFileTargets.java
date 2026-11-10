@@ -4,22 +4,19 @@ import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.node.NodeToolConfigs;
-import dev.ward.domain.project.node.PackageManifests;
 import dev.ward.infrastructure.init.ConfigTarget;
 import dev.ward.infrastructure.init.RuleFileTargets;
 import java.io.IOException;
 import java.util.List;
 import javax.inject.Inject;
 
-/** The rule files of a Node project: its tool configs, read through the project's manifest. */
+/** The rule files of a Node project: its test runner and Stryker configs. */
 public final class NodeRuleFileTargets implements RuleFileTargets {
-  private final PackageManifests manifests;
   private final NodeToolConfigs configs;
 
-  /** Creates the targets from the manifests and the tool configs a project keeps itself. */
+  /** Creates the targets from the tool configs a project keeps itself. */
   @Inject
-  public NodeRuleFileTargets(final PackageManifests manifests, final NodeToolConfigs configs) {
-    this.manifests = manifests;
+  public NodeRuleFileTargets(final NodeToolConfigs configs) {
     this.configs = configs;
   }
 
@@ -27,6 +24,6 @@ public final class NodeRuleFileTargets implements RuleFileTargets {
   public List<ConfigTarget> targets(
       final Project project, final QualityPreset preset, final List<InitGateOption> gates)
       throws IOException {
-    return NodeConfigFiles.targets(project, manifests.read(project.root()), configs, preset, gates);
+    return NodeConfigFiles.targets(project, configs, preset, gates);
   }
 }

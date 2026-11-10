@@ -28,7 +28,6 @@ class WardCliPartialCheckTest extends WardCliIntegrationSupport {
         profiles = ["default", "edit"]
         command = "./mvnw spotless:check"
         [checks.lint]
-        uses = "eslint"
         profiles = ["default", "edit"]
         command = "./mvnw lint:check"
         [checks.lint.paths]

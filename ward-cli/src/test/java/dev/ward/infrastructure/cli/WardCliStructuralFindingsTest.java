@@ -66,7 +66,6 @@ class WardCliStructuralFindingsTest extends WardCliIntegrationSupport {
         """
         version = 2
         [checks.eslint]
-        uses = "eslint"
         command = ["./fake-eslint"]
         """);
 

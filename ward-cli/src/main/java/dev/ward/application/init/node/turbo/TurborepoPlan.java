@@ -2,7 +2,6 @@ package dev.ward.application.init.node.turbo;
 
 import dev.ward.application.init.InitInputs;
 import dev.ward.application.init.node.NodeGates;
-import dev.ward.application.init.node.NodeLinting;
 import dev.ward.application.init.node.NodeTools;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
@@ -25,7 +24,6 @@ import java.util.stream.Collectors;
  */
 public final class TurborepoPlan {
   static final String CHECK_TYPES = "check-types";
-  static final String LINT = "lint";
   static final String TEST = "test";
   static final String MUTATION = "mutation";
   private static final Map<String, String> TASK_BY_GATE =
@@ -35,8 +33,6 @@ public final class TurborepoPlan {
           Map.entry("svelte-check", CHECK_TYPES),
           Map.entry("astro-check", CHECK_TYPES),
           Map.entry("ngc", CHECK_TYPES),
-          Map.entry("eslint", LINT),
-          Map.entry("biome", LINT),
           Map.entry(NodeTools.VITEST, TEST),
           Map.entry(NodeTools.JEST, TEST),
           Map.entry(NodeTools.BUN_TEST, TEST),
@@ -119,32 +115,22 @@ public final class TurborepoPlan {
         .toList();
   }
 
-  /**
-   * Returns each plannable member's scripts. Lint is the root's tool, so a member's lint script
-   * matches the root's; the member keeps its own test runner and checker.
-   */
+  /** Returns each plannable member's scripts, with the test runner and checker it keeps. */
   static List<MemberPlan> memberScripts(
       final Project root, final QualityPreset preset, final InitInputs inputs) {
-    final NodeLinting linting =
-        NodeLinting.of(root, inputs.manifests().read(root.root()), inputs.configs());
     return plannable(root, inputs).stream()
-        .map(member -> memberScripts(member, linting, preset, inputs))
+        .map(member -> memberScripts(member, preset, inputs))
         .toList();
   }
 
   private static MemberPlan memberScripts(
-      final WorkspaceMember member,
-      final NodeLinting linting,
-      final QualityPreset preset,
-      final InitInputs inputs) {
+      final WorkspaceMember member, final QualityPreset preset, final InitInputs inputs) {
     final Project project = member.project();
     final PackageManifest manifest = manifest(member, inputs);
-    final NodeTools tools = NodeTools.of(project, manifest, inputs, preset).withLinting(linting);
-    NodeGates.refuseBiomeForAngular(project, tools);
+    final NodeTools tools = NodeTools.of(project, manifest, inputs, preset);
     final Map<String, String> scripts = new LinkedHashMap<>();
     final List<InitGateOption> gates =
-        NodeGates.languages(project, NodeTools.testGate(project, manifest), linting)
-            .analysisGates(tools);
+        NodeGates.languages(project, NodeTools.testGate(project, manifest)).analysisGates(tools);
     gates.forEach(
         gate ->
             taskOf(gate.id())

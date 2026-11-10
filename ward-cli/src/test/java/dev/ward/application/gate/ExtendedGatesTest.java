@@ -71,11 +71,23 @@ class ExtendedGatesTest {
     final FakeCommandExecutor executor = new FakeCommandExecutor(0, "ok", "");
     final GateResult result =
         new QualityGateFactory(executor)
-            .create(config("eslint", List.of("mvnw", "eslint:check")))
+            .create(config("command", List.of("mvnw", "lint:check")))
             .getFirst()
             .execute(PROJECT);
-    assertThat(result.name()).isEqualTo("eslint");
+    assertThat(result.name()).isEqualTo("command");
     assertThat(result.status()).isEqualTo(GateStatus.PASSED);
+  }
+
+  @Test
+  void removedNodeLintGateTypesAreRejectedAsUnknown() {
+    final QualityGateFactory factory = new QualityGateFactory(new FakeCommandExecutor(0, "", ""));
+
+    assertThatThrownBy(() -> factory.create(config("eslint", List.of("npx", "eslint"))))
+        .isInstanceOf(WardException.class)
+        .hasMessageContaining("'eslint'");
+    assertThatThrownBy(() -> factory.create(config("biome", List.of("npx", "biome"))))
+        .isInstanceOf(WardException.class)
+        .hasMessageContaining("'biome'");
   }
 
   @Test

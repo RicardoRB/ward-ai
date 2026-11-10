@@ -1,7 +1,6 @@
 package dev.ward.infrastructure.init.node;
 
 import dev.ward.domain.init.InitGateOption;
-import dev.ward.domain.project.Language;
 import dev.ward.domain.project.node.PackageManifest;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -9,39 +8,22 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * The dev dependencies init adds for the Node gates, pinned to the newest releases at least 14 days
- * old on 2026-10-24, with the Node and TypeScript versions each supports. A gate's packages may
- * depend on the project's language.
+ * old on 2026-10-24, with the Node and TypeScript versions each supports.
  */
 public final class NodePackageCatalog {
   static final String TYPESCRIPT = "typescript";
-  static final String TYPESCRIPT_ESLINT = "typescript-eslint";
-  static final String ESLINT = "eslint";
-  static final String ESLINT_VERSION = "10.12.0";
-  private static final Pattern FIRST_NUMBER = Pattern.compile("\\d+");
   static final String TURBO = "turbo";
   // The newest release at least 14 days old on 2026-10-30. npm publishes no engines range for it.
   public static final String TURBO_VERSION = "2.11.9";
-  private static final String ESLINT_JS = "@eslint/js";
-  private static final String GLOBALS = "globals";
-  private static final String ESLINT_NODE = "^20.19.0 || ^22.13.0 || >=24";
-  private static final String VITEST_NODE = "^20.0.0 || ^22.0.0 || >=24.0.0";
-  static final String VITEST_VERSION = "4.0.18";
   private static final String STRYKER = "stryker";
   private static final String STRYKER_CORE = "@stryker-mutator/core";
   private static final String STRYKER_VERSION = "10.1.1";
   private static final String STRYKER_NODE = ">=22.0.0";
-  private static final String BIOME = "biome";
-  static final String BIOME_PACKAGE = "@biomejs/biome";
-  static final String BIOME_VERSION = "2.5.15";
-  private static final String BIOME_NODE = ">=14.21.3";
-
-  /** The Biome releases with the checkstyle reporter; 3.x may change the config schema. */
-  static final String BIOME_SUPPORTED = ">=2.3.0 <3.0.0";
+  private static final String VITEST_NODE = "^20.0.0 || ^22.0.0 || >=24.0.0";
+  static final String VITEST_VERSION = "4.0.18";
 
   /**
    * The framework checkers' supported ranges: the major each was verified in, so a declared checker
@@ -53,11 +35,7 @@ public final class NodePackageCatalog {
           "svelte-check", ">=4.7.6 <5.0.0",
           "@astrojs/check", ">=0.9.10 <1.0.0");
 
-  /** The ESLint releases with {@code eslint/config}, which the generated config imports. */
-  static final String ESLINT_SUPPORTED = ">=9.22.0 <11.0.0";
-
   static final String ANGULAR_CORE = "@angular/core";
-  static final String ANGULAR_ESLINT = "angular-eslint";
   static final String NG_TEST = "ng-test";
   static final String VITEST = "vitest";
   static final String VITE = "vite";
@@ -69,20 +47,10 @@ public final class NodePackageCatalog {
 
   private static final Map<String, Package> PACKAGES =
       Map.ofEntries(
-          entry(new Package(ESLINT, ESLINT_VERSION, ESLINT_NODE, null)),
-          entry(new Package(ESLINT_JS, "10.0.1", ESLINT_NODE, null)),
-          entry(new Package(GLOBALS, "17.13.0", ">=18", null)),
-          entry(
-              new Package(
-                  TYPESCRIPT_ESLINT,
-                  "8.71.1",
-                  "^18.18.0 || ^20.9.0 || >=21.1.0",
-                  ">=4.8.4 <6.1.0")),
           entry(new Package(TURBO, TURBO_VERSION, ">=18", null)),
-          entry(new Package(BIOME_PACKAGE, BIOME_VERSION, BIOME_NODE, null)),
           entry(new Package("vitest", VITEST_VERSION, VITEST_NODE, null)),
-          entry(new Package("@vitest/coverage-v8", VITEST_VERSION, VITEST_NODE, null)),
-          // The newest release inside typescript-eslint's range; 7.0.2 is outside it.
+          entry(new Package(COVERAGE_V8, VITEST_VERSION, VITEST_NODE, null)),
+          // The TypeScript compiler's pin; the framework checkers name their own ranges.
           entry(new Package(TYPESCRIPT, "6.0.3", ">=14.17", null)),
           // Verified on Node 22.12 and 24 with TypeScript 5.9.3 and 6.0.3; Node 18 for
           // svelte-check.
@@ -95,24 +63,17 @@ public final class NodePackageCatalog {
           entry(new Package(STRYKER_RUNNERS.get("vitest"), STRYKER_VERSION, STRYKER_NODE, null)),
           entry(new Package(STRYKER_RUNNERS.get("jest"), STRYKER_VERSION, STRYKER_NODE, null)));
 
-  // typescript-eslint needs the compiler as a peer, so ESLint adds it when it is missing.
   private static final Map<String, List<String>> GATES =
       Map.ofEntries(
           Map.entry("tsc", List.of(TYPESCRIPT)),
-          Map.entry(ESLINT, List.of(ESLINT, ESLINT_JS, TYPESCRIPT_ESLINT, TYPESCRIPT)),
-          Map.entry("vitest", List.of("vitest", "@vitest/coverage-v8")),
+          Map.entry("vitest", List.of("vitest", COVERAGE_V8)),
           Map.entry(NG_TEST, List.of(COVERAGE_V8)),
           Map.entry("jest", List.of()),
           Map.entry("bun-test", List.of()),
           Map.entry(STRYKER, List.of(STRYKER_CORE)),
-          Map.entry(BIOME, List.of(BIOME_PACKAGE)),
           Map.entry("vue-tsc", List.of("vue-tsc", TYPESCRIPT)),
           Map.entry("svelte-check", List.of("svelte-check", TYPESCRIPT)),
           Map.entry("astro-check", List.of("@astrojs/check", TYPESCRIPT)));
-
-  /** Rows that replace a {@link #GATES} row for one language; other gates are shared. */
-  private static final Map<Language, Map<String, List<String>>> LANGUAGE_GATES =
-      Map.of(Language.JAVASCRIPT, Map.of(ESLINT, List.of(ESLINT, ESLINT_JS, GLOBALS)));
 
   /**
    * One pinned package.
@@ -140,24 +101,9 @@ public final class NodePackageCatalog {
     return GATES.keySet();
   }
 
-  /**
-   * Returns the packages {@code gate} needs in a {@code language} project, empty for a gate that is
-   * not a Node tool.
-   */
-  static List<String> packages(final Language language, final String gate) {
-    return LANGUAGE_GATES
-        .getOrDefault(language, Map.of())
-        .getOrDefault(gate, GATES.getOrDefault(gate, List.of()));
-  }
-
-  /**
-   * Returns the angular-eslint package for the project's supported Angular major, or empty when the
-   * manifest does not declare Angular or its major is unsupported.
-   */
-  static Optional<Package> angularEslint(final PackageManifest manifest) {
-    return angularMajor(manifest)
-        .flatMap(AngularReleases::forMajor)
-        .map(release -> new Package(ANGULAR_ESLINT, release.angularEslint(), release.node(), null));
+  /** Returns the packages {@code gate} needs, empty for a gate that is not a Node tool. */
+  static List<String> packages(final String gate) {
+    return GATES.getOrDefault(gate, List.of());
   }
 
   static Optional<String> angularMajor(final PackageManifest manifest) {
@@ -169,37 +115,29 @@ public final class NodePackageCatalog {
   }
 
   /**
-   * Returns the packages {@code gates} need in a {@code language} project that {@code manifest}
-   * does not declare, each once, in gate order.
+   * Returns the packages {@code gates} need that {@code manifest} does not declare, each once, in
+   * gate order.
    */
-  static List<Package> missing(
-      final Language language, final List<InitGateOption> gates, final PackageManifest manifest) {
-    return missing(language, gates, manifest, Optional.empty());
+  static List<Package> missing(final List<InitGateOption> gates, final PackageManifest manifest) {
+    return missing(gates, manifest, Optional.empty());
   }
 
   /**
-   * Returns the packages {@link #missing(Language, List, PackageManifest)} returns, plus the task
-   * runner's package when {@code runnerPackage} is present: the root of a workspace runs its tasks
-   * with it.
+   * Returns the packages {@link #missing(List, PackageManifest)} returns, plus the task runner's
+   * package when {@code runnerPackage} is present: the root of a workspace runs its tasks with it.
    */
   static List<Package> missing(
-      final Language language,
       final List<InitGateOption> gates,
       final PackageManifest manifest,
       final Optional<String> runnerPackage) {
     final Set<String> names = new LinkedHashSet<>();
     runnerPackage.ifPresent(names::add);
-    gates.forEach(gate -> names.addAll(packages(language, gate.id())));
+    gates.forEach(gate -> names.addAll(packages(gate.id())));
     if (names.contains(STRYKER_CORE)) {
       gates.stream()
           .map(gate -> STRYKER_RUNNERS.get(gate.id()))
           .filter(Objects::nonNull)
           .forEach(names::add);
-    }
-    if (gates.stream().anyMatch(gate -> NG_TEST.equals(gate.id()))
-        && gates.stream().anyMatch(gate -> ESLINT.equals(gate.id()))
-        && angularEslint(manifest).isPresent()) {
-      names.add(ANGULAR_ESLINT);
     }
     return names.stream()
         .filter(name -> !manifest.declares(name))
@@ -207,23 +145,9 @@ public final class NodePackageCatalog {
         .toList();
   }
 
-  /**
-   * Returns the catalog pin of {@code name}. @eslint/js ships with ESLint, so when the project
-   * declares ESLint it takes the declared range; a pin outside that range fails the install.
-   */
+  /** Returns the catalog pin of {@code name}, with Vitest and its coverage following the Vite. */
   private static Optional<Package> pinned(final String name, final PackageManifest manifest) {
     final Package tool = PACKAGES.get(name);
-    if (ANGULAR_ESLINT.equals(name)) {
-      return angularEslint(manifest);
-    }
-    if (ESLINT_JS.equals(name) && manifest.declares(ESLINT)) {
-      // @eslint/js versions on its own, so an exact ESLint release has no same-numbered match.
-      final String declared = manifest.dependencies().get(ESLINT);
-      final Matcher major = FIRST_NUMBER.matcher(declared);
-      return Optional.of(
-          new Package(
-              name, major.find() ? "^" + major.group() : declared, tool.node(), tool.typescript()));
-    }
     if (COVERAGE_V8.equals(name) && manifest.declares(VITEST)) {
       // Each coverage release requires its own Vitest version, so it follows the declared one.
       return Optional.of(new Package(name, manifest.dependencies().get(VITEST), tool.node(), null));

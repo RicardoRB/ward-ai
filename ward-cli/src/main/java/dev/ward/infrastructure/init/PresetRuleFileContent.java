@@ -1,10 +1,7 @@
 package dev.ward.infrastructure.init;
 
 import dev.ward.domain.init.QualityPreset;
-import dev.ward.domain.project.Language;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /** The body of each preset rule file, in the format its tool loads. */
@@ -21,33 +18,14 @@ final class PresetRuleFileContent {
    * languages the project has, Java before Kotlin, then Python when the project has it, then Swift.
    * A project without a JVM language selects Java, as it always has.
    */
-  static String wardRules(final QualityPreset preset, final Set<Language> languages) {
+  static String wardRules(final QualityPreset preset, final List<String> languages) {
     final QualityPreset chosen = preset == null ? QualityPreset.STANDARD : preset;
-    final List<String> ids = jvmLanguageIds(languages);
-    if (languages.contains(Language.PYTHON)) {
-      ids.add("python");
-    }
-    ids.add("swift");
     return "version = 1\n\n[select]\npreset = \""
         + chosen.id()
         + "\"\nlanguages = "
-        + ids.stream().map(id -> "\"" + id + "\"").collect(Collectors.joining(", ", "[", "]"))
+        + languages.stream().map(id -> "\"" + id + "\"").collect(Collectors.joining(", ", "[", "]"))
         + "\n"
-        + (chosen == QualityPreset.STRICT && ids.contains("java") ? HIDDEN_FIELD : "");
-  }
-
-  private static List<String> jvmLanguageIds(final Set<Language> languages) {
-    final List<String> ids = new ArrayList<>();
-    if (languages.contains(Language.JAVA)) {
-      ids.add("java");
-    }
-    if (languages.contains(Language.KOTLIN)) {
-      ids.add("kotlin");
-    }
-    if (ids.isEmpty()) {
-      ids.add("java");
-    }
-    return ids;
+        + (chosen == QualityPreset.STRICT && languages.contains("java") ? HIDDEN_FIELD : "");
   }
 
   /** {@code ExternalRules} reads the rules from an {@code <enforcer><rules>} document. */

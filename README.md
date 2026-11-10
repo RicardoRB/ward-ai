@@ -38,7 +38,7 @@ team, and Ward checks every change against them, from the first edit to producti
 |---|---|---|---|
 | Java / Kotlin | Maven, Gradle | Any. Spring Boot, Quarkus, Micronaut, Helidon, Dropwizard, Javalin, and Ktor are labeled when detected | Compiler, JUnit, JaCoCo, PIT, Ward's own style and bug rules, and Ward's layer, cycle and independence rules |
 | Kotlin / Java for Android | Gradle with the Android Gradle Plugin | Android app and library modules | Android lint, Android unit tests, Android debug unit-test coverage |
-| TypeScript | npm, pnpm, Yarn, Bun | Vue, Svelte, Astro, Angular (others are checked with the same gates) | `tsc`, Vitest / Jest / `bun test`, ESLint or Biome, Stryker |
+| TypeScript | npm, pnpm, Yarn, Bun | Vue, Svelte, Astro, Angular (others are checked with the same gates) | `tsc`, Vitest / Jest / `bun test`, Stryker, Ward's TypeScript and JavaScript rules |
 | JavaScript | npm, pnpm, Yarn, Bun | Same as TypeScript | Same as TypeScript, without `tsc` |
 | Python 3.11–3.14 | uv, Poetry, pip | Django, FastAPI, Flask | Ward rules (lint), mypy, pytest, coverage.py, Import Linter, pip-audit, mutmut |
 | Swift | SwiftPM, Xcode | Any | Ward rules (lint), `swift build`, `swift test` or `xcodebuild test`, llvm-cov / xccov |
@@ -194,15 +194,15 @@ ward check --profile ci --format json > ward-report.json
 | Architecture | Ward's layer boundaries (Layered, Hexagonal, or Clean), slice cycles and feature independence, native `no-field-di` and `no-standard-streams` rules (`strict`), Maven Enforcer / Gradle checks |
 | Security | Gitleaks, Semgrep, OWASP Dependency-Check, Trivy, OWASP ZAP |
 | Compliance | License plugins, japicmp API compatibility |
-| TypeScript and JavaScript | `tsc`, Vitest / Jest / `bun test`, ESLint, Biome, Stryker mutation testing, Semgrep, framework checkers (`vue-tsc`, `svelte-check`, `astro check`, `ngc`) |
+| TypeScript and JavaScript | `tsc`, Vitest / Jest / `bun test`, Stryker mutation testing, Ward's TypeScript and JavaScript rules (lint, selected in `ward-rules.toml`), framework checkers (`vue-tsc`, `svelte-check`, `astro check`, `ngc`) |
 | Python | Ward rules (lint, selected in `ward-rules.toml`), `ward-format` (format), mypy, pytest, coverage.py, Import Linter, pip-audit, mutmut mutation testing, `manage.py check` for Django |
 | Swift | Ward rules (lint, selected in `ward-rules.toml`), `swift build`, `swift test` or `xcodebuild test`, llvm-cov / xccov coverage |
 | Android | Android lint (`lintDebug`), Android unit tests (`testDebugUnitTest`), debug unit-test coverage |
 | Anything else | Any command you add to `ward.toml` |
 
-Ward runs the tools; the rules live in each tool's own configuration. For TypeScript and JavaScript
-projects, `ward init` writes the tools' own config files, such as an ESLint flat config or
-`vitest.config.mjs`, and the thresholds sit there too. See [Node projects](https://ricardorb.github.io/ward-ai/commands/init/#node-projects). See
+Ward runs the tools; the rules live in each tool's own configuration, or for TypeScript and JavaScript
+in Ward's own rules, selected by `ward-rules.toml`. For TypeScript and JavaScript projects, `ward init`
+writes `ward-rules.toml` and the test runner's config, such as `vitest.config.mjs`, and the thresholds sit there too. See [Node projects](https://ricardorb.github.io/ward-ai/commands/init/#node-projects). See
 [quality gates](https://ricardorb.github.io/ward-ai/configuration/gates/).
 
 **Coding agents:** Claude Code, OpenCode, Codex, Cursor, GitHub Copilot CLI, Gemini CLI, Windsurf,

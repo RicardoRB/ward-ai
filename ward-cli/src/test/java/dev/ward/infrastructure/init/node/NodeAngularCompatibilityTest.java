@@ -16,32 +16,25 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-/** Angular major, TypeScript, angular-eslint and Node findings reported by init. */
+/** Angular major, TypeScript and Node findings reported by init. */
 class NodeAngularCompatibilityTest {
   @TempDir Path root;
 
   @Test
-  void supportedAngularMajorsAcceptTheirDeclaredTypeScriptAndAngularEslintVersions() {
+  void supportedAngularMajorsAcceptTheirDeclaredTypeScriptVersions() {
     final PackageManifest angular21 =
         new PackageManifest(
             Map.of(
                 NodePackageCatalog.ANGULAR_CORE,
                 "^21.2.0",
                 NodePackageCatalog.TYPESCRIPT,
-                "~5.9.3",
-                NodePackageCatalog.ANGULAR_ESLINT,
-                "21.4.0"),
+                "~5.9.3"),
             null,
             null);
     final PackageManifest angular22 =
         new PackageManifest(
             Map.of(
-                NodePackageCatalog.ANGULAR_CORE,
-                "^22.2.0",
-                NodePackageCatalog.TYPESCRIPT,
-                "6.0.3",
-                NodePackageCatalog.ANGULAR_ESLINT,
-                "22.6.0"),
+                NodePackageCatalog.ANGULAR_CORE, "^22.2.0", NodePackageCatalog.TYPESCRIPT, "6.0.3"),
             null,
             null);
 
@@ -54,12 +47,7 @@ class NodeAngularCompatibilityTest {
     final PackageManifest manifest =
         new PackageManifest(
             Map.of(
-                NodePackageCatalog.ANGULAR_CORE,
-                "^19.0.0",
-                NodePackageCatalog.TYPESCRIPT,
-                "7.0.2",
-                NodePackageCatalog.ANGULAR_ESLINT,
-                "^22.0.0"),
+                NodePackageCatalog.ANGULAR_CORE, "^19.0.0", NodePackageCatalog.TYPESCRIPT, "7.0.2"),
             null,
             null);
 
@@ -89,28 +77,6 @@ class NodeAngularCompatibilityTest {
               assertThat(finding.artifactId()).isEqualTo(NodePackageCatalog.TYPESCRIPT);
               assertThat(finding.outcome()).isEqualTo(CompatibilityOutcome.INCOMPATIBLE);
               assertThat(finding.message()).contains(">=5.9 <6.1", "TypeScript 6.1.0");
-            });
-  }
-
-  @Test
-  void angularEslintMajorMismatchIsIncompatible() {
-    final PackageManifest manifest =
-        new PackageManifest(
-            Map.of(
-                NodePackageCatalog.ANGULAR_CORE,
-                "^21.2.0",
-                NodePackageCatalog.ANGULAR_ESLINT,
-                "^22.0.0"),
-            null,
-            null);
-
-    assertThat(check("24", manifest).findings())
-        .singleElement()
-        .satisfies(
-            finding -> {
-              assertThat(finding.artifactId()).isEqualTo(NodePackageCatalog.ANGULAR_ESLINT);
-              assertThat(finding.outcome()).isEqualTo(CompatibilityOutcome.INCOMPATIBLE);
-              assertThat(finding.message()).contains("does not match Angular 21", "21.4.0");
             });
   }
 

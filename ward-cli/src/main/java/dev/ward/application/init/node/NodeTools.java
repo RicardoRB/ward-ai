@@ -6,7 +6,6 @@ import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Project;
-import dev.ward.domain.project.node.NodeToolConfigs;
 import dev.ward.domain.project.node.PackageManifest;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,17 +19,13 @@ import java.util.List;
  * @param preset the selected preset, or {@code null} for a custom selection
  * @param ownTestConfig whether the project keeps its own test runner config, which init leaves
  *     unchanged
- * @param biome whether the project uses Biome for linting and formatting
- * @param ownEslintConfig whether the project keeps its own ESLint config
  */
 public record NodeTools(
     BuildTool manager,
     String testGate,
     boolean available,
     QualityPreset preset,
-    boolean ownTestConfig,
-    boolean biome,
-    boolean ownEslintConfig) {
+    boolean ownTestConfig) {
   public static final String VITEST = "vitest";
   public static final String JEST = "jest";
   public static final String BUN_TEST = "bun-test";
@@ -38,9 +33,6 @@ public record NodeTools(
   static final String LINE = "LINE";
   static final String BRANCH = "BRANCH";
   private static final int PERCENT = 100;
-  private static final String BIOME_PACKAGE = "@biomejs/biome";
-  private static final String BIOME = "biome";
-  private static final String ESLINT = "eslint";
 
   /**
    * Resolves the tools of {@code project} from its manifest, the executables on the path and the
@@ -52,57 +44,17 @@ public record NodeTools(
       final InitInputs inputs,
       final QualityPreset preset) {
     final String testGate = testGate(project, manifest);
-    final NodeLinting linting = NodeLinting.of(project, manifest, inputs.configs());
     return new NodeTools(
         project.buildTool(),
         testGate,
         inputs.environment().inspect(project.root()).hasExecutable(project.buildExecutable()),
         preset,
-        inputs.configs().userConfig(project.root(), testGate).isPresent(),
-        linting.biome(),
-        linting.ownEslintConfig());
-  }
-
-  /**
-   * Returns whether the project uses Biome: it declares the package, or keeps a Biome config or the
-   * base file of a layered one.
-   */
-  static boolean biome(
-      final Project project, final PackageManifest manifest, final NodeToolConfigs configs) {
-    return manifest.declares(BIOME_PACKAGE)
-        || configs.userConfig(project.root(), BIOME).isPresent()
-        || configs.baseConfig(project.root(), BIOME).isPresent();
-  }
-
-  /**
-   * Returns whether the project has its own ESLint config: one it keeps, or the base file of one
-   * that init layers. Either way, a re-run keeps the same gates.
-   */
-  static boolean ownEslintConfig(final Project project, final NodeToolConfigs configs) {
-    return configs.userConfig(project.root(), ESLINT).isPresent()
-        || configs.baseConfig(project.root(), ESLINT).isPresent();
-  }
-
-  /** Returns the project's lint and format choices. */
-  NodeLinting linting() {
-    return new NodeLinting(biome, ownEslintConfig);
-  }
-
-  /** Returns these tools with the lint and format choices of {@code linting}. */
-  public NodeTools withLinting(final NodeLinting linting) {
-    return new NodeTools(
-        manager,
-        testGate,
-        available,
-        preset,
-        ownTestConfig,
-        linting.biome(),
-        linting.ownEslintConfig());
+        inputs.configs().userConfig(project.root(), testGate).isPresent());
   }
 
   /** Returns these tools with {@code gate} as the test runner gate. */
   NodeTools withTestGate(final String gate) {
-    return new NodeTools(manager, gate, available, preset, ownTestConfig, biome, ownEslintConfig);
+    return new NodeTools(manager, gate, available, preset, ownTestConfig);
   }
 
   /**
@@ -208,23 +160,6 @@ public record NodeTools(
   InitGateOption stryker() {
     return option(
         "stryker", "Mutation-tests the project with Stryker (ci).", command("stryker", "run"));
-  }
-
-  /**
-   * The Biome gate, which lints and checks formatting in one run. Under strict, warnings fail it
-   * too. Biome's own checkstyle reporter keeps its findings readable by Ward.
-   */
-  InitGateOption biomeGate() {
-    final List<String> arguments =
-        new ArrayList<>(List.of(BIOME, "ci", "--colors=off", "--reporter=checkstyle"));
-    if (preset == QualityPreset.STRICT) {
-      arguments.add("--error-on-warnings");
-    }
-    arguments.add(".");
-    return option(
-        BIOME,
-        "Lints with Biome; ward-format checks formatting.",
-        command(arguments.toArray(String[]::new)));
   }
 
   /** A gate that runs the local tool with {@code command}. */

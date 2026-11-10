@@ -43,18 +43,17 @@ class InitTypeScriptProjectTest {
             "[checks.tsc]",
             "[checks.vitest]",
             "[checks.ward-format]",
-            "[checks.eslint]",
+            "[checks.ward]",
             "command = \"npx vitest run --coverage\"")
+        .doesNotContain("[checks.eslint]", "[checks.biome]", "[checks.semgrep]")
         .doesNotContain("checkstyle", "mvnw");
     assertThat(fixture.read("package.json"))
-        .contains(
-            "\"typescript\": \"^5.9.3\",",
-            "\"eslint\": \"10.12.0\"",
-            "\"typescript-eslint\": \"8.71.1\"",
-            "\"@vitest/coverage-v8\": \"4.0.18\"");
+        .contains("\"typescript\": \"^5.9.3\",", "\"@vitest/coverage-v8\": \"4.0.18\"")
+        .doesNotContain("eslint", "biome");
     assertThat(fixture.read("package-lock.json")).contains("\"stub\": \"installed\"");
-    assertThat(fixture.read("eslint.config.mjs"))
-        .startsWith("// managed-by: ward preset=standard\n");
+    assertThat(fixture.read("ward-rules.toml"))
+        .contains("preset = \"standard\"", "languages = [\"typescript\", \"swift\"]");
+    assertThat(project.resolve("eslint.config.mjs")).doesNotExist();
     assertThat(fixture.read("vitest.config.mjs"))
         .startsWith("// managed-by: ward preset=standard\n")
         .contains("lines: 70,")
@@ -64,8 +63,8 @@ class InitTypeScriptProjectTest {
         .doesNotContain("setup-java");
     assertThat(fixture.read(".gitignore")).startsWith("node_modules/\n").contains(".ward/reports/");
     assertThat(fixture.read("AGENTS.md"))
-        .contains("ESLint", "Tests (Vitest)")
-        .doesNotContain("JaCoCo");
+        .contains("ward-rules.toml", "Tests (Vitest)")
+        .doesNotContain("ESLint", "JaCoCo");
     assertThat(project.resolve("config")).doesNotExist();
 
     final NodeFixtureRun.Result check = fixture.ward("check", "--profile", "pre-push");

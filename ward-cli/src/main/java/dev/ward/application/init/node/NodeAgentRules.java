@@ -3,11 +3,9 @@ package dev.ward.application.init.node;
 import dev.ward.application.init.AgentRulesTemplate;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
-import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -24,15 +22,6 @@ public final class NodeAgentRules {
 
   private NodeAgentRules() {}
 
-  /** Returns the Biome line: Biome lints, and formatting runs through {@code ward format}. */
-  private static String biomeRow(
-      final Project project, final QualityPreset preset, final Set<String> owned) {
-    return "- Biome: "
-        + biomeRules(project, preset, owned)
-        + "; fix edited lint findings with `biome check --write`, and the gate runs `{command}`."
-        + " Formatting runs through `ward format`, not Biome.";
-  }
-
   /**
    * Returns one line per selected Node tool gate, naming its command; the minimums are the ones the
    * test runner and Stryker configs or commands enforce.
@@ -48,10 +37,6 @@ public final class NodeAgentRules {
         Map.of(
             "tsc",
             "- TypeScript compiler: `{command}` must report no errors.",
-            "eslint",
-            "- ESLint: " + eslintRules(project, preset, owned) + "; the gate runs `{command}`.",
-            "biome",
-            biomeRow(project, preset, owned),
             NodeTools.VITEST,
             "- Tests (Vitest): `{command}`, " + coverage + tests,
             NodeTools.JEST,
@@ -66,9 +51,14 @@ public final class NodeAgentRules {
                 + strykerMinimum(preset, owned)
                 + ".");
     final List<String> lines =
-        gates.stream()
-            .filter(gate -> rows.containsKey(gate.id()))
-            .map(gate -> rows.get(gate.id()).replace("{command}", String.join(" ", gate.command())))
+        Stream.concat(
+                Stream.of(wardRule(preset)),
+                gates.stream()
+                    .filter(gate -> rows.containsKey(gate.id()))
+                    .map(
+                        gate ->
+                            rows.get(gate.id())
+                                .replace("{command}", String.join(" ", gate.command()))))
             .toList();
     if (!project.taskRunner().isRootRunner()) {
       return lines;
@@ -79,6 +69,13 @@ public final class NodeAgentRules {
         .toList();
   }
 
+  /** The rule line for Ward's TypeScript and JavaScript rules, which the {@code ward} gate runs. */
+  private static String wardRule(final QualityPreset preset) {
+    return "- TypeScript and JavaScript: the `ward` check applies the Ward "
+        + (preset == null ? QualityPreset.STANDARD : preset).id()
+        + " rules selected in `ward-rules.toml`; fix each finding at its cause.";
+  }
+
   /** The preset's coverage minimum; Bun measures no branches, so it gets only the line minimum. */
   private static String nodeCoverage(final QualityPreset preset, final boolean branches) {
     final Integer branch = branches ? NodeTools.minimum(preset, NodeTools.BRANCH) : null;
@@ -87,76 +84,6 @@ public final class NodeAgentRules {
         + "% line"
         + (branch == null ? "" : " and " + branch + "% branch")
         + " coverage";
-  }
-
-  private static String eslintRules(
-      final Project project, final QualityPreset preset, final Set<String> owned) {
-    final String rules;
-    if (project.language() == Language.JAVASCRIPT) {
-      rules = "ESLint's recommended JavaScript rules";
-    } else if (preset == QualityPreset.STRICT) {
-      rules = "typescript-eslint's `strict-type-checked` rules";
-    } else {
-      rules = "typescript-eslint's recommended rules";
-    }
-    final Optional<String> base =
-        owned.stream().filter(file -> file.startsWith("eslint.base.")).findFirst();
-    if (base.isPresent()) {
-      return "Ward's flat config (`eslint.config.*`) imports `"
-          + base.get()
-          + "`, the project's own config, and adds "
-          + rules
-          + " after it, so Ward's rules win over the base's";
-    }
-    return owned.stream()
-        .filter(file -> file.startsWith("eslint.config.") || file.startsWith(".eslintrc"))
-        .findFirst()
-        .map(file -> keptRules(file, preset, "ESLint"))
-        .orElse("Ward's flat config (`eslint.config.*`) with " + rules);
-  }
-
-  /** Names a config init kept, and says that the preset's rules do not reach it. */
-  private static String keptRules(
-      final String file, final QualityPreset preset, final String tool) {
-    return "follow the rules in `"
-        + file
-        + "`; "
-        + (preset == null ? "Ward's" : "the " + preset.id() + " preset's")
-        + " "
-        + tool
-        + " rules are not applied to it";
-  }
-
-  /**
-   * Names the Biome config in use and the rules it enforces. Under strict, warnings fail the gate,
-   * and for TypeScript Biome's type-aware rules replace typescript-eslint's strict rules.
-   */
-  private static String biomeRules(
-      final Project project, final QualityPreset preset, final Set<String> owned) {
-    final Optional<String> base =
-        owned.stream().filter(file -> file.startsWith("biome.base.")).findFirst();
-    if (base.isEmpty()) {
-      final Optional<String> kept =
-          owned.stream()
-              .filter(file -> file.startsWith("biome.") || file.startsWith(".biome."))
-              .findFirst();
-      if (kept.isPresent()) {
-        return keptRules(kept.get(), preset, "Biome");
-      }
-    }
-    final String config =
-        base.map(file -> "Ward's `biome.jsonc` extends `" + file + "`, the project's own config")
-            .orElse(
-                "Ward's `biome.jsonc` with Biome's recommended rules"
-                    + (preset == QualityPreset.STRICT ? " and Ward's strict rules" : ""));
-    if (preset != QualityPreset.STRICT) {
-      return config;
-    }
-    final String typeAware =
-        project.language() == Language.TYPESCRIPT
-            ? "; Biome's type-aware rules replace typescript-eslint's `strict-type-checked`"
-            : "";
-    return config + "; warnings fail the gate" + typeAware;
   }
 
   /** Names the break threshold of Ward's Stryker config; a project's own config sets its own. */

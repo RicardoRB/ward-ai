@@ -3,7 +3,6 @@ package dev.ward.infrastructure.init.node;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.domain.FakeCommandExecutor;
-import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.init.RuleFileChange;
@@ -13,7 +12,6 @@ import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.TaskRunner;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
-import dev.ward.infrastructure.init.RuleFilePlans;
 import dev.ward.infrastructure.init.RuleFileTargetsFixtures;
 import dev.ward.infrastructure.project.node.FileSystemNodeToolConfigs;
 import dev.ward.infrastructure.project.node.FileSystemPackageManifests;
@@ -33,63 +31,6 @@ class NodeConfigFilesTest {
       new PresetRuleFileWriter(
           RuleFileTargetsFixtures.of(
               new FileSystemPackageManifests(), new FileSystemNodeToolConfigs()));
-
-  @Test
-  void esmProjectGetsEslintConfigJsAndRollbackRemovesIt() throws IOException {
-    manifest("{\n  \"type\": \"module\"\n}\n");
-
-    final RuleFileChange change =
-        writer.apply(project(BuildTool.NPM), QualityPreset.STANDARD, gates("eslint"));
-
-    final Path config = root.resolve("eslint.config.js");
-    assertThat(Files.readString(config))
-        .startsWith("// managed-by: ward preset=standard\n")
-        .contains(
-            "tseslint.configs.recommended",
-            "\"dist/\"",
-            "\"coverage/\"",
-            "\".next/\"",
-            "\"out/\"",
-            "\"build/\"",
-            "\".ward/\"");
-    assertThat(root.resolve("config")).doesNotExist();
-    writer.rollback(change);
-    assertThat(config).doesNotExist();
-  }
-
-  @Test
-  void commonJsProjectGetsEslintConfigMjs() throws IOException {
-    manifest("{\n  \"name\": \"shop\"\n}\n");
-
-    writer.apply(project(BuildTool.NPM), QualityPreset.STANDARD, gates("eslint"));
-
-    assertThat(root.resolve("eslint.config.mjs")).exists();
-    assertThat(root.resolve("eslint.config.js")).doesNotExist();
-  }
-
-  @Test
-  void legacyEslintrcIsReusedAndListedAsUserOwned() throws IOException {
-    manifest("{\n  \"name\": \"shop\"\n}\n");
-    Files.writeString(root.resolve(".eslintrc.json"), "{\"root\": true}\n");
-
-    final List<PlannedFileChange> plan =
-        RuleFilePlans.tools(
-            writer.plan(project(BuildTool.NPM), QualityPreset.STANDARD, gates("eslint")));
-    final RuleFileChange change =
-        writer.apply(project(BuildTool.NPM), QualityPreset.STANDARD, gates("eslint"));
-
-    final String warning = "the standard preset's ESLint rules are not applied to .eslintrc.json";
-    assertThat(plan)
-        .containsExactly(
-            new PlannedFileChange(
-                root.resolve(".eslintrc.json"),
-                PlannedFileChange.Action.PRESERVE_USER_OWNED,
-                List.of(warning)));
-    assertThat(change.preserved()).containsExactly(root.resolve(".eslintrc.json"));
-    assertThat(change.warnings()).containsExactly(warning);
-    assertThat(root.resolve("eslint.config.mjs")).doesNotExist();
-    assertThat(Files.readString(root.resolve(".eslintrc.json"))).isEqualTo("{\"root\": true}\n");
-  }
 
   @Test
   void newBunfigSetsThePresetLineThreshold() throws IOException {
@@ -122,28 +63,6 @@ class NodeConfigFilesTest {
     assertThat(Files.readString(root.resolve("bunfig.toml")))
         .isEqualTo("[install]\nexact = true\n");
     assertThat(warnings).singleElement().asString().contains("bunfig.toml", "coverageThreshold");
-  }
-
-  @Test
-  void typeScriptConfigIsUnchanged() throws IOException {
-    manifest("{\n  \"name\": \"shop\"\n}\n");
-
-    writer.apply(project(BuildTool.NPM), QualityPreset.STANDARD, gates("eslint"));
-
-    assertThat(Files.readString(root.resolve("eslint.config.mjs")))
-        .isEqualTo(
-            """
-            // managed-by: ward preset=standard
-            import js from "@eslint/js";
-            import { defineConfig } from "eslint/config";
-            import tseslint from "typescript-eslint";
-
-            export default defineConfig(
-              { ignores: ["dist/", "coverage/", ".next/", "out/", "build/", ".ward/"] },
-              js.configs.recommended,
-              tseslint.configs.recommended,
-            );
-            """);
   }
 
   private void manifest(final String content) throws IOException {

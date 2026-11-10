@@ -7,10 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Checks the Angular release, TypeScript, angular-eslint, and Node versions as one compatibility
- * set.
- */
+/** Checks the Angular release, TypeScript, and Node versions as one compatibility set. */
 final class NodeAngularCompatibility {
   private NodeAngularCompatibility() {}
 
@@ -36,7 +33,6 @@ final class NodeAngularCompatibility {
       final AngularRelease release) {
     final List<CompatibilityFinding> findings = new ArrayList<>();
     typescript(manifest, added, release).ifPresent(findings::add);
-    angularEslint(manifest, added, release).ifPresent(findings::add);
     node(node, release).ifPresent(findings::add);
     return List.copyOf(findings);
   }
@@ -80,35 +76,6 @@ final class NodeAngularCompatibility {
                         + "; the project uses TypeScript "
                         + version
                         + "."));
-  }
-
-  private static Optional<CompatibilityFinding> angularEslint(
-      final PackageManifest manifest,
-      final List<NodePackageCatalog.Package> added,
-      final AngularRelease release) {
-    return packageVersion(NodePackageCatalog.ANGULAR_ESLINT, manifest, added)
-        .filter(version -> !matchesMajor(version, release.major()))
-        .map(
-            version ->
-                new CompatibilityFinding(
-                    NodePackageCatalog.ANGULAR_ESLINT,
-                    "angular-eslint " + NodeVersionRange.lowerBound(version).orElse(version),
-                    release.angularEslint(),
-                    CompatibilityOutcome.INCOMPATIBLE,
-                    "angular-eslint "
-                        + version
-                        + " does not match Angular "
-                        + release.major()
-                        + "; use angular-eslint "
-                        + release.angularEslint()
-                        + "."));
-  }
-
-  private static boolean matchesMajor(final String version, final String major) {
-    return NodeVersionRange.lowerBound(version)
-        .map(lowerBound -> lowerBound.substring(0, lowerBound.indexOf('.')))
-        .filter(major::equals)
-        .isPresent();
   }
 
   private static Optional<CompatibilityFinding> node(final int node, final AngularRelease release) {

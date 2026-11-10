@@ -22,7 +22,6 @@ class ClaudeCodeHookPartialCheckTest extends ClaudeCodeHookTestSupport {
         CONFIG
             + """
             [checks.lint]
-            uses = "eslint"
             profiles = ["default", "edit"]
             command = "mvn lint:check"
             [checks.lint.paths]

@@ -33,8 +33,6 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `openapi-diff` | oasdiff | Breaking changes in uncommitted spec edits. |
 | | `openapi-compat` | oasdiff | Breaking changes on the branch against `origin/main`. |
 | TypeScript & JavaScript | `tsc` | TypeScript compiler | Type-check the project. |
-| | `eslint` | ESLint | Lint TypeScript and JavaScript sources. |
-| | `biome` | Biome | Lint sources in one run with Biome's formatter off; replaces `eslint` where the project uses Biome. |
 | | `vitest` / `jest` / `bun-test` | Vitest / Jest / Bun test | Run the project's automated tests. |
 | | `stryker` | StrykerJS | Run mutation testing, optionally with a `minimum` score. |
 | | `ruff` | Ruff | Lint Python sources. |
@@ -72,17 +70,18 @@ deliberately, for example in a CI-only profile with `profiles = ["ci"]`:
 |---|---|---|
 | `standard` | compile, tests, coverage, `ward-format`, and the `ward` check with the standard Java rules of `ward-rules.toml` | 70% line coverage |
 | `strict` | `standard` plus the strict Java rules, the `ward` architecture tables, Enforcer, and PIT mutation testing | 85% line, 75% branch, 60% mutation |
-| `standard` (TypeScript) | `tsc`, the test runner (`vitest`, `jest` or `bun-test`), and `eslint`, or `biome` in a Biome project | 70% line coverage |
-| `standard` (JavaScript) | the test runner (`vitest`, `jest` or `bun-test`), and `eslint`, or `biome` in a Biome project | 70% line coverage |
-| `strict` (TypeScript) | `standard` plus `stryker`, with `typescript-eslint` `strict-type-checked` | 85% line, 75% branch, 60% mutation |
-| `strict` (JavaScript) | `standard` plus `stryker` | 85% line, 75% branch, 60% mutation |
+| `standard` (TypeScript) | `tsc`, the test runner (`vitest`, `jest` or `bun-test`), and the `ward` check with the standard TypeScript rules of `ward-rules.toml` | 70% line coverage |
+| `standard` (JavaScript) | the test runner (`vitest`, `jest` or `bun-test`), and the `ward` check with the standard JavaScript rules of `ward-rules.toml` | 70% line coverage |
+| `strict` (TypeScript) | `standard` plus `stryker`, with the strict TypeScript rules of `ward-rules.toml` | 85% line, 75% branch, 60% mutation |
+| `strict` (JavaScript) | `standard` plus `stryker`, with the strict JavaScript rules of `ward-rules.toml` | 85% line, 75% branch, 60% mutation |
 
 When Git tracks an OpenAPI spec, both presets add `openapi-lint` and `openapi-diff`, and `strict`
 also adds `openapi-compat`. A project whose framework serves HTTP (such as Spring Boot, FastAPI or Express) but has no tracked
 spec gets a note asking you to commit one, because the gates have nothing to check without it.
 
-For TypeScript and JavaScript, presets write no rule files under `config/`. Init adds the tools to
-`package.json` and writes the tools' own configs when the project has none: an ESLint flat config,
+For TypeScript and JavaScript, presets write no rule files under `config/`. Init writes
+`ward-rules.toml`, which selects the preset's Ward rules for the project's languages, and adds the
+test and mutation tools to `package.json`. It writes their configs when the project has none:
 `vitest.config.mjs` or `jest.config.mjs` with the coverage thresholds, and `stryker.config.mjs`.
 Bun checks lines only, because it does not measure branch coverage. See
 [Node projects](/commands/init/#node-projects).
@@ -122,34 +121,28 @@ the Groovy or the Kotlin build script. See [what init changes](/commands/init/#w
 
 ## TypeScript and JavaScript gates
 
-`tsc`, `eslint`, `biome`, `vitest`, `jest`, `bun-test`, and `stryker`
+`tsc`, `vitest`, `jest`, `bun-test`, and `stryker`
 run their `command` from the project root, exactly as written, and pass when it exits with code 0.
 
 - Ward does not add flags and does not choose a package manager. Put the runner in the command,
   such as `pnpm exec`, `npx`, `yarn` or `bunx`, so the project's locally installed tool runs.
-- For a TypeScript project, `ward init` offers `tsc`, `eslint`, the project's test
-  runner, and `semgrep` with the `p/typescript` ruleset, and writes their commands with the
-  package manager's runner; see [Node projects](/commands/init/#node-projects).
+- For a TypeScript project, `ward init` offers `tsc`, the project's test runner, and `stryker` with
+  `strict`, and writes their commands with the package manager's runner. Ward's TypeScript rules run
+  in the `ward` check, selected in `ward-rules.toml`; see [Node projects](/commands/init/#node-projects).
 - For a Vue, Svelte, or Astro project, the type-check gate is `vue-tsc`, `svelte-check`, or
   `astro-check` instead of `tsc`, because only the framework's checker reads its component files.
   The framework comes from the project's declared packages; see
   [Node projects](/commands/init/#node-projects). Angular's type-check gate is `ngc`, which checks
   its templates, and its test gate is `ng-test`. A type-check configuration with no inputs fails
   the gate and names the file.
-- For a Vue, Svelte, or Astro project, `stryker` mutates only `src`, and the generated ESLint config
-  ignores `.astro/` (Astro) or `.svelte-kit/` (Svelte).
-- For a JavaScript project, it offers the same gates without `tsc`, and `semgrep` with the
-  `p/javascript` ruleset.
-- In a project that uses Biome, init offers `biome` in place of `eslint`, and offers `eslint` only
-  with the project's own ESLint config. The `biome` command is
-  `<runner> biome ci --colors=off --reporter=checkstyle .`; under `strict` it adds
-  `--error-on-warnings`. See [Node projects](/commands/init/#biome).
+- For a Vue, Svelte, or Astro project, `stryker` mutates only `src`.
+- For a JavaScript project, it offers the same gates without `tsc`.
 - Init also offers `stryker`, in the `ci` profile, and `strict` selects it.
 
 ```toml
-[checks.eslint]
-command = ["pnpm", "exec", "eslint", ".", "--format", "json"]
-profiles = ["default"]
+[checks.vitest]
+command = ["npx", "vitest", "run", "--coverage"]
+profiles = ["pre-push"]
 
 [checks.tsc]
 command = ["npx", "tsc", "--noEmit", "--pretty", "false"]
@@ -165,18 +158,15 @@ through turbo from the root, and the repository-wide gates run once:
 [checks.tsc]
 command = ["pnpm", "exec", "turbo", "run", "check-types", "--log-prefix=task", "--log-order=grouped", "--continue=always", "--ui=stream"]
 
-[checks.eslint]
-command = ["pnpm", "exec", "turbo", "run", "lint", "--log-prefix=task", "--log-order=grouped", "--continue=always", "--ui=stream"]
 ```
 
-- `tsc`, lint, test, and `stryker` map to the `check-types`, `lint`, `test`, and `mutation` tasks.
+- `tsc`, test, and `stryker` map to the `check-types`, `test`, and `mutation` tasks. Ward's TypeScript
+  rules run from the root `ward` check, so no `lint` task is needed.
   Init writes the missing tasks and each member's script. See
   [Turborepo projects](/guides/turborepo/).
 - Findings are read per package. Ward splits the output at turbo's `<package>:<task>: ` prefix,
   parses each block with the gate's parser, and reports the file under the member directory, such as
   `apps/web/src/page.tsx`. Unprefixed output is read as before.
-- A narrowed lint check uses turbo's filter for the edited packages and their dependents:
-  `item = "--filter=...{package}"`; see [partial checks](#partial-checks).
 - At a Turborepo root, `minimum` on `stryker` compares the combined score of every member's report.
 
 ## Python gates
@@ -904,7 +894,7 @@ You are responsible for being authorized to scan the target.
 
 ## Structured findings
 
-When `ward`, `gitleaks`, `compile`, `ward-format`, `eslint`, `biome`, `tsc`, `ruff`, `mypy`, `swift-build`, or `xcodebuild-test` fails, Ward turns the tool's output
+When `ward`, `gitleaks`, `compile`, `ward-format`, `tsc`, `ruff`, `mypy`, `swift-build`, or `xcodebuild-test` fails, Ward turns the tool's output
 into findings with rule, severity, file, line, column, message, and a rule documentation link when
 known. They appear in [JSON](/reference/json-output/) and SARIF output.
 
@@ -913,8 +903,6 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
 | `gitleaks` | SARIF report | `target/gitleaks.sarif` | `build/gitleaks.sarif` | `.ward/reports/gitleaks.sarif` |
 | `compile` | javac messages in the output | | | |
 | `ward-format` | Ward's own findings, one per unformatted file (file only, no line) | | | |
-| `eslint` | ESLint JSON in the output; the command must pass `--format json` | | | |
-| `biome` | Checkstyle XML on standard output; the command must pass `--reporter=checkstyle`. Lint rules keep Biome's category, such as `lint/suspicious/noExplicitAny`. | | | |
 | `tsc` | Compiler diagnostics in the output; the command must pass `--pretty false` | | | |
 | `swift-build` / `xcodebuild-test` | Swift compiler errors in the output, with rule `swiftc` | | | |
 
@@ -929,8 +917,7 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
   `mypy` reads the JSON lines of `mypy -O json`. Ruff findings are errors; mypy `note` lines are
   skipped. A missing or unparseable JSON output gives no findings, and the gate result does not
   change. Only the structured formats are read: the command must pass them.
-- ESLint's default `stylish` output and `tsc`'s pretty output give no findings. The gate result
-  does not change. An ESLint parsing error is reported with the rule `eslint`.
+- `tsc`'s pretty output gives no findings. The gate result does not change.
 - Swift compiler errors are read without terminal colours, once each even when the compiler
   repeats them in a source excerpt.
 - Other gates have no findings yet.
@@ -938,8 +925,8 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
 ## Partial checks
 
 `ward init` writes a [`[checks.<name>.paths]` table](/configuration/ward-toml/#partial-checks)
-for `semgrep`, `gitleaks`, `eslint`, `biome`,
-`openapi-lint`, and `openapi-diff`. After an agent
+for `semgrep`, `gitleaks`, `openapi-lint`, and
+`openapi-diff`. After an agent
 edit, and for the files a commit stages, a gate:
 
 - is skipped when no edited file is in its `match`;
@@ -952,18 +939,10 @@ edit, and for the files a commit stages, a gate:
 | `gitleaks` | `--no-git --source=<path>` for each path, so uncommitted edits are scanned | same as Maven |
 | `openapi-lint`, `openapi-diff` | full, only when the spec is edited | full, only when the spec is edited |
 
-In a TypeScript or JavaScript project, `eslint` takes edited `.ts`, `.tsx`, `.mts`, `.cts`, `.js`,
-`.jsx`, `.mjs`, and `.cjs` files, each as its own argument. Their tables set `command` to the full
-command without its `.` target, so a narrowed check runs, for example,
-`npx eslint src/app.ts`. An edit of its config or `package.json` runs it in full.
-`biome` takes the same form: a narrowed run passes `--no-errors-on-unmatched`, so an edited file that
-Biome ignores passes. `tsc` and the test runners have no table, so they run in full in `pre-push`
+`tsc` and the test runners have no table, so they run in full in `pre-push`
 and `ci`.
 
-In a Turborepo workspace, the lint gate narrows with turbo's `--filter=...<package>` for the packages
-that contain the edited files and their dependents. Its `full` files are `turbo.json`, the root
-`package.json`, and the root lint configs; an edit that no member contains runs it in full. The
-type-check and test gates have no table and always run in full.
+In a Turborepo workspace, the type-check and test gates have no table and always run in full.
 
 
 The forms above were verified against the real tools: a path format a tool does not understand

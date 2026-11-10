@@ -84,7 +84,7 @@ Init assigns each gate to cumulative [profiles](/configuration/ward-toml/):
 
 | Gates | Profiles |
 |---|---|
-| Fast: `ward-format`, `ward`, `gitleaks`, `eslint`, `biome` | `default`, `pre-commit`, `pre-push`, `ci` |
+| Fast: `ward-format`, `ward`, `gitleaks` | `default`, `pre-commit`, `pre-push`, `ci` |
 | Slower local gates, including `compile`, `tsc`, the test runners, and custom commands | `pre-push`, `ci` |
 | Environment-dependent gates | `ci` |
 
@@ -268,8 +268,8 @@ commercial Arcmutate history plugin.
 ### Generated files
 
 - **`ward.toml`** includes [`partial` tables](/configuration/gates/#partial-checks) for
-  `ward`, `ward-format`, `semgrep`, `gitleaks`, `eslint`, and `biome`. The check after each agent edit, and
-  the pre-commit hook, skip gates the change cannot affect and narrow these tools to the edited or
+  `ward`, `ward-format`, `semgrep`, and `gitleaks`. The check after each agent edit, and the
+  pre-commit hook, skip gates the change cannot affect and narrow these tools to the edited or
   staged files. Other gates, `ward check` without `--path`, the pre-push hook, and CI still check
   the whole project. `gitleaks` scans those files directly, so it sees changes that are not yet
   committed; its full run scans the Git history.
@@ -364,36 +364,37 @@ as a local dev dependency through the package manager's runner: `npx`, `pnpm exe
 - Angular's coverage minimums are enforced only when `angular.json` sets `coverageThresholds`. When
   it sets none, the plan says so and names `angular.json` and `karma.conf.js` as the files to set
   them in.
-- Angular's ESLint config uses `angular-eslint`, which lints `.html` templates. Init pins
-  `angular-eslint` to the release for the project's Angular major (21.4.0 or 22.6.0) and checks
-  the Node range of that release.
 - Ward supports Angular 21 and 22. Before it changes any file, init reports an `INCOMPATIBLE`
   finding and writes nothing when the project declares an unsupported Angular major, a TypeScript
-  version outside the major's peer range (`>=5.9 <6.1` for 21, `>=6.0 <6.1` for 22), an
-  `angular-eslint` major that differs from Angular's, or runs on a Node version outside the major's
-  range (`^20.19.0 || ^22.12.0 || >=24.0.0` for 21, `^22.22.3 || ^24.15.0 || >=26.0.0` for 22). An
-  unsupported major reports only that finding.
+  version outside the major's peer range (`>=5.9 <6.1` for 21, `>=6.0 <6.1` for 22), or runs on a
+  Node version outside the major's range (`^20.19.0 || ^22.12.0 || >=24.0.0` for 21,
+  `^22.22.3 || ^24.15.0 || >=26.0.0` for 22). An unsupported major reports only that finding.
 - `stryker` is not offered for Angular, and the strict preset omits it, because no Stryker runner
   works with Angular's test builder. The plan says so.
-- `biome` is refused for Angular, because Biome does not check templates. Init stops with an error
-  that names `biome` and suggests `eslint`, and changes no file.
 - A framework project whose TypeScript configuration has no inputs fails the type-check gate and
   names the file. `vue-tsc --build` reports `TS18002` for a root `tsconfig.json` with `"files": []`
   and no references, and `TS18003` for a referenced config with `"include": []`. A root with
   references to configs that have sources passes.
 - Stryker mutates only the `src` folder in Vue, Svelte and Astro projects, so component files and
   tests are not mutated. Other projects keep Stryker's default.
-- The generated ESLint config ignores each framework's output folder: `.astro/` for Astro and
-  `.svelte-kit/` for Svelte.
-- Biome and framework lint rules are out of scope: a Biome project with a framework keeps Biome's
-  current behavior, and `eslint` lints `.vue`, `.svelte`, or `.astro` files only when the project's own
-  ESLint config handles them.
 - Any other `package.json` is JavaScript, and counts as a project only when it holds `.js`, `.jsx`,
   `.mjs`, or `.cjs` sources of its own. Init does not count files in `node_modules`, build output
   (`dist`, `build`, `out`, `target`, `coverage`), hidden directories, directories with another build
   file (such as `pom.xml`), packages that are not workspace members, or root tool configs such as
   `vite.config.js`. A package without sources, such as a monorepo root, is skipped; see
   [Choosing projects](#choosing-projects).
+
+### Lint and style
+
+Ward's TypeScript and JavaScript rules do the linting. Init writes no lint config, adds no lint
+packages or scripts, and offers no lint gate. It writes `ward-rules.toml` with the preset and the
+project's languages: `languages = ["typescript"]`, `["javascript"]`, or both. The `ward` gate then
+applies Ward's rules for those languages. Formatting stays with `ward-format`, and Semgrep's
+JavaScript and TypeScript packs are not offered, because Ward's rules cover those languages.
+
+If the project already has a `ward-rules.toml` that Ward did not write, init keeps it as it is and
+warns that the preset is not applied to it. A project's own lint config, if any, is left unchanged,
+and Ward does not run it.
 
 ### Gates
 
@@ -404,70 +405,22 @@ as a local dev dependency through the package manager's runner: `npx`, `pnpm exe
 | `jest` | `npx jest --coverage` | `pre-push`, `ci` |
 | `bun-test` | `bun test --coverage` | `pre-push`, `ci` |
 | `stryker` | `npx stryker run` | `ci` |
-| `eslint` | `npx eslint . --format json` | `default`, `pre-commit`, `pre-push`, `ci` |
-| `biome` | `npx biome ci --colors=off --reporter=checkstyle .` (`--error-on-warnings` under `strict`) | `default`, `pre-commit`, `pre-push`, `ci` |
-| `semgrep` | `semgrep scan --config p/typescript --error` (`p/javascript` for JavaScript) | `ci` |
+| `ward` | `ward` analysis of `ward-rules.toml` | `default`, `pre-commit`, `pre-push`, `ci` |
 
 - JavaScript gets the same gates except `tsc`.
-- A project that uses Biome gets the `biome` gate instead of `eslint`; see [Biome](#biome).
 - The test runner is the one the project declares: `vitest`, then `jest`. A Bun project without
   either gets `bun-test`, and any other project gets `vitest` with `@vitest/coverage-v8`. Their version follows the declared `vite`: the newest pinned release whose Vite range includes it (4.1.11 for Vite 6 to 8), and 4.0.18 without `vite`.
-- `semgrep` stays opt-in, and `gitleaks` and `trivy` are offered as for Java.
+- `gitleaks` and `trivy` are offered as for Java.
 
 | | `standard` | `strict` |
 |---|---|---|
-| Gates | `tsc` (TypeScript only), the test runner, and `eslint` (or `biome` in a Biome project) | the same, plus `stryker` |
+| Gates | `tsc` (TypeScript only), and the test runner | the same, plus `stryker` |
+| Ward rules (`ward-rules.toml`) | the `standard` preset | the `strict` preset |
 | Coverage | at least 70% of lines | at least 85% of lines and 75% of branches (Bun: lines only, because it does not measure branches) |
-| ESLint (generated config) | recommended rules | TypeScript: `typescript-eslint` `strict-type-checked`; JavaScript: recommended rules |
 | Mutation score | none | at least 60%, in `ci` |
 
 A custom selection uses the `standard` coverage minimum, and `stryker` without `strict` reports its
 score without a minimum.
-
-#### Declared ESLint and Biome versions
-
-When `package.json` already declares `eslint` or `@biomejs/biome`, init keeps that version, as long as
-it is inside Ward's supported range. Ward tests the oldest and newest version of each range on Node 22
-and 24, with the TypeScript fixture.
-
-| Tool | Ward pins | Supported range | Tested versions |
-| --- | --- | --- | --- |
-| `eslint` | 10.12.0 | `>=9.22.0 <11.0.0` | 9.22.0, 10.13.0 |
-| `@biomejs/biome` | 2.5.15 | `>=2.3.0 <3.0.0` | 2.3.0, 2.6.3 |
-
-A declared version outside its range is an `INCOMPATIBLE` finding that names the tool and the range.
-`--dry-run` lists it, and applying the plan fails without changing any file. Pick a version inside the
-range, or skip the gate.
-
-#### Biome
-
-Init detects Biome when `package.json` declares `@biomejs/biome` or the project root has its own
-`biome.json`, `biome.jsonc`, `.biome.json`, or `.biome.jsonc`. It asks no question about Biome.
-
-- A Biome project gets one `biome` gate, which lints in one run; Biome's formatter is off, and
-  `ward-format` checks formatting. It replaces `eslint` unless the project has its own ESLint config.
-  With `strict`, warnings fail the gate too (`--error-on-warnings`).
-- A project's own ESLint config (`eslint.config.*` or `.eslintrc*`) stays, and its `eslint` gate runs
-  that config unchanged. Init writes no ESLint config for a Biome project.
-- Under `strict`, a project's own `biome.json` or `biome.jsonc` is layered (see
-  [Layered configs](#layered-configs)). A `.biome.json` or `.biome.jsonc` is kept with a warning.
-  Under `standard`, a project's own Biome config is kept unchanged and listed as user-owned, with a
-  warning that the preset's Biome rules are not applied to it. Otherwise init writes an
-  ownership-marked `biome.jsonc` with Biome's recommended rules. It also turns on Git-ignore support,
-  so Biome skips `.ward/reports/` and coverage output. `strict` sets these rules to `error`:
-  `noExplicitAny`, `noNonNullAssertion`, `useConst`, `noUnusedImports`, `noUnusedVariables`,
-  `noExcessiveCognitiveComplexity`, `noFloatingPromises`, and `noMisusedPromises`.
-- If the project does not declare `@biomejs/biome`, init adds it at 2.5.15. A declared version
-  outside `>=2.3.0 <3.0.0` is an `INCOMPATIBLE` finding, and applying changes nothing. Biome 2.3.0 is
-  the first release with the XML reporter that Ward reads, and 3.x may change the config
-  schema.
-- Edit hooks run Biome on the edited files only. An edited file that Biome ignores passes.
-
-<Aside type="caution">
-Ward's `biome.jsonc` reads the project's ignore file. In a directory that is not a Git repository
-and has no `.gitignore`, Biome reports a configuration error and the `biome` gate fails. Add a
-`.gitignore`, or set up the repository, before running the gate.
-</Aside>
 
 #### Where the thresholds live
 
@@ -485,79 +438,34 @@ The thresholds sit in the tools' own config files, so you can see and tune them 
 - Projects set up by an earlier Ward version keep the threshold flag on their test command. Running
   init again moves it into `vitest.config.mjs` or `jest.config.mjs`.
 
-### Layered configs
-
-Under `strict`, a TypeScript project's own flat ESLint config (`eslint.config.*`), or the project's
-own `biome.json` or `biome.jsonc`, is not replaced. Init moves it to a base file and writes Ward's
-root config in its place:
-
-| Project file | Base file | Ward's root |
-| --- | --- | --- |
-| `eslint.config.mjs` | `eslint.base.mjs` | `eslint.config.mjs` |
-| `eslint.config.js` with `"type": "module"` | `eslint.base.js` | `eslint.config.js` |
-| `eslint.config.js` without `"type"` | `eslint.base.js` | `eslint.config.mjs` |
-| `eslint.config.cjs` | `eslint.base.cjs` | `eslint.config.mjs` |
-| `eslint.config.ts` | `eslint.base.ts` | `eslint.config.ts` |
-| `biome.json` | `biome.base.json` | `biome.jsonc` |
-| `biome.jsonc` | `biome.base.jsonc` | `biome.jsonc` |
-
-- ESLint: Ward's root imports the base file and appends the strict rules, so Ward's rules win over
-  the base's. The base's own rules still apply, so a framework's rules, such as Next's
-  `core-web-vitals` or Nest's Jest globals, keep working. The base file is ignored by the lint.
-- Biome: Ward's `biome.jsonc` extends the base file and sets the eight strict rules itself, so they
-  win over the base's settings. Biome checks the same files it checked before.
-- The base file's content is not changed. Editors, `npx eslint`, `npm run lint`, and `ward check`
-  all read the combined config.
-- Running `ward init --preset strict` again regenerates Ward's root and leaves the base file alone.
-- If the base file name is already taken by a file Ward did not write, init stops with a conflict
-  and changes no file. Rename or move that file, then run init again.
-- To undo the layering, delete Ward's root config and rename the base file back to the project's
-  own name. The project's config is then the user's again.
-
 ### What init changes in `package.json`
 
-- Init adds each dev dependency the selected gates need and the project does not declare, with an
-  exact version from Ward's catalog and no range prefix. A package already in `dependencies` or
-  `devDependencies` keeps its version, and existing tool configs are reused.
-- The edit inserts entries into `devDependencies`, or creates it, with the file's own indentation;
-  nothing else in the file changes. A file whose layout cannot be located, such as a minified one,
-  fails init before anything is written.
-- Then init runs `<manager> install` from the project root. When nothing is missing, no install
-  runs. `--dry-run` lists the packages and the install without running it.
-- If the install fails, init fails naming the command, restores `package.json` and the lock file
-  byte for byte, removes a lock file the install created, and writes no `ward.toml`. A later init
-  failure rolls back the same way. `node_modules` is not restored; the next install converges.
+Init adds each package its gates need, at the pinned version, unless the project already declares it:
 
-| Package | Version | Node |
-|---|---|---|
-| `eslint` | 10.12.0 | `^20.19.0 \|\| ^22.13.0 \|\| >=24` |
-| `@eslint/js` | 10.0.1 | `^20.19.0 \|\| ^22.13.0 \|\| >=24` |
-| `typescript-eslint` | 8.71.1 | `^18.18.0 \|\| ^20.9.0 \|\| >=21.1.0`, TypeScript `>=4.8.4 <6.1.0` |
-| `@biomejs/biome` | 2.5.15 | `>=14.21.3` (declared versions must be `>=2.3.0 <3.0.0`) |
-| `vitest`, `@vitest/coverage-v8` | 4.1.11 for a project that declares Vite `^6`, `^7`, or `^8`, else 4.0.18 (see below) | `^20.0.0 \|\| ^22.0.0 \|\| >=24.0.0` |
-| `typescript` | 6.0.3 | `>=14.17` |
-| `globals` | 17.13.0 | `>=18` |
-| `@stryker-mutator/core`, `@stryker-mutator/vitest-runner`, `@stryker-mutator/jest-runner` | 10.1.1 | `>=22.0.0` |
+| Package | Version | Node | TypeScript |
+|---|---|---|---|
+| `typescript` | 6.0.3 | `>=14.17` | any (added only when missing) |
+| `vitest`, `@vitest/coverage-v8` | 4.0.18, or the release for the declared `vite` | `^20.0.0 \|\| ^22.0.0 \|\| >=24.0.0` | none |
+| `vue-tsc` | 3.3.12 | `>=22.12.0` | `>=5.9.3` |
+| `svelte-check` | 4.7.6 | `>=18.0.0` | `^5.0.0 \|\| ^6.0.0` |
+| `@astrojs/check` | 0.9.10 | `>=22.12.0` | `^5.0.0 \|\| ^6.0.0` |
+| `@stryker-mutator/core` and its runner | 10.1.1 | `>=22.0.0` | none |
+| `turbo` (Turborepo root) | 2.11.9 | `>=18` | none |
 
-The `eslint` gate adds `eslint`, `@eslint/js`, and `typescript-eslint` (plus `typescript` when it is
-missing) to a TypeScript project, and `eslint`, `@eslint/js`, and `globals` to a JavaScript project,
-with no TypeScript package. The `stryker` gate adds `@stryker-mutator/core` and the runner plugin
-for Vitest or Jest. Bun has no runner plugin, so Stryker runs `bun test` through its command
-runner. Stryker 10 needs Node 22 or later.
+A declared package keeps its version. Init writes its changes only after the compatibility checks
+below pass.
 
 ### Compatibility checks
 
 Before writing, init checks each package it would add against the project's Node version (from
-`.nvmrc`, `.node-version`, or `engines.node`, else 24), and `typescript-eslint` against the declared
-`typescript` version (the lower bound of its range, or 6.0.3 when init adds it).
+`.nvmrc`, `.node-version`, or `engines.node`, else 24), and each checker against the declared
+`typescript` version.
 
 - A package outside its range is an `INCOMPATIBLE` finding naming the package and the range.
   `--dry-run` lists it, and applying fails without changing any file. A Node or TypeScript version
   cannot be fixed by choosing another package version, so there is no approval option.
-- For example, `"typescript": "7.0.2"` with the `eslint` gate fails because `typescript-eslint`
-  8.71.1 supports TypeScript `>=4.8.4 <6.1.0`. Pin TypeScript 6.0 or lower, or skip `eslint`.
-- Node is compared on its major version. When a range needs a later minor, such as `^22.13.0` for
-  ESLint on Node 22, the plan notes the minimum version.
+- Node is compared on its major version. When a range needs a later minor, the plan notes the
+  minimum version.
 - When the `vitest` gate is selected and the project declares `vite`, init checks the Vitest against
   that Vite. A declared Vitest whose release does not declare the project's Vite is `INCOMPATIBLE`,
   such as `vitest` 4.0.18 with `vite` `^8.2.2`, which names the Vitest, the Vite version, and the
@@ -578,29 +486,12 @@ Before writing, init checks each package it would add against the project's Node
 
 ### Generated files
 
-- **`eslint.config.js`** (with `"type": "module"`) or **`eslint.config.mjs`** (otherwise) when the
-  `eslint` gate is selected and the project has no `eslint.config.*` or `.eslintrc*`. It is a flat
-  config ignoring `dist/`, `coverage/`, `.ward/`, `.next/`, `out/`, and `build/` (framework build
-  output), and it starts with a `// managed-by: ward` marker. Under `strict`, a TypeScript
-  project's own flat config is layered instead (see [Layered configs](#layered-configs)). Otherwise
-  an existing config is reused unchanged and listed as user-owned, and the plan warns that the
-  preset's ESLint rules are not applied to it. A project with no tests fails the test gate until it
-  adds one, because a test gate that passes with no tests is misleading.
-  - For TypeScript it enables the `@eslint/js` and `typescript-eslint` recommended rules. With
-    `strict` it enables `strict-type-checked` instead, with type information from `tsconfig.json`
-    through the project service. Type-checked rules are off for `.js`, `.mjs`, and `.cjs` files,
-    such as init's own configs, because they sit outside `tsconfig.json`. TypeScript files that
-    `tsconfig.json` does not include, such as excluded tests, fail with a project-service error:
-    add them to `tsconfig.json`. Under `strict`, empty classes that carry a decorator, such as a
-    NestJS module, are allowed.
-  - For JavaScript it enables the `@eslint/js` recommended rules and declares both browser and
-    Node globals from `globals`, so `require`, `process`, and `window` pass `no-undef`. It parses
-    JSX in `.jsx` files. Without `"type": "module"` it also parses `.js` files as CommonJS, because
-    ESLint parses them as ES modules otherwise. With the `jest` gate it also declares Jest's
-    globals (`test`, `expect`, `describe`, ...) for files under `__tests__` and `*.test.*` or
-    `*.spec.*` files. Narrow the globals to your runtime once the first check passes.
+- **`ward-rules.toml`** with the preset and the Node languages the `ward` gate applies. It starts
+  with a `# managed-by: ward preset=<id>` marker; see [Lint and style](#lint-and-style).
 - **`vitest.config.mjs`** or **`jest.config.mjs`** with the coverage thresholds, unless the
   project has its own test config; see [Where the thresholds live](#where-the-thresholds-live).
+  A project with no tests fails the test gate until it adds one, because a test gate that passes
+  with no tests is misleading.
 - **`bunfig.toml`** for `bun-test` when none exists, with
   `[test] coverageThreshold = { lines = 0.7 }` (0.85 with `strict`) and a `#` marker. An existing
   `bunfig.toml` is kept, and init warns that the coverage threshold is enforced only if it sets
@@ -613,14 +504,9 @@ Before writing, init checks each package it would add against the project's Node
 - These generated configs are ES modules (`.mjs`) in every project and start with a
   `// managed-by: ward preset=<id>` marker. Init rewrites them when you change the preset, and
   never touches a config you wrote.
-- **`biome.jsonc`** for the `biome` gate when the project has no Biome config of its own. It starts
-  with a `// managed-by: ward preset=<id>` marker; see [Biome](#biome).
 - **`.gitignore`** gets a Ward-owned section with `.ward/reports/` and `coverage/`, created when
   the file does not exist. With `stryker` it also lists `.stryker-tmp/` and `reports/mutation/`.
-  `ward-format` and Biome skip Git-ignored files, so they do not check these reports.
-- **`ward.toml`** gets `paths` tables for `eslint`: an edit hook runs it on the
-  edited TypeScript and JavaScript files only, with a `command` that drops the full run's `.`.
-  `tsc` and the tests have none, so they run in full in `pre-push` and `ci`.
+  `ward-format` skips Git-ignored files, so it does not check these reports.
 
 ## Python projects
 
@@ -790,9 +676,9 @@ Ward's marker blocks initialization as a conflict. Gates that need a running app
 `--agent-rules` writes a Ward-owned section into `AGENTS.md` with the limits the selected gates
 enforce: the Ward rule preset for Java and Kotlin, coverage and mutation minimums, and enforcer rules.
 
-- For TypeScript it names the `tsc`, Biome (or ESLint), and test commands, the 70% line coverage
-  minimum (85% of lines and 75% of branches with `strict`), Stryker (with its 60% minimum under
-  `strict`), and the ESLint config in use, and no Java tool.
+- For TypeScript it names the `tsc` and test commands, the 70% line coverage minimum (85% of lines
+  and 75% of branches with `strict`), Stryker (with its 60% minimum under `strict`), and the Ward
+  rules in `ward-rules.toml`, and no Java tool.
 - For JavaScript it names the same without `tsc`.
 
 - Content outside the section's markers is kept.

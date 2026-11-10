@@ -17,9 +17,6 @@ final class NodeMatrixFixtureEdits {
   // Matches a whole dependency object, so the scripts section and its entries are never touched.
   private static final Pattern SECTION =
       Pattern.compile("\"(?:dependencies|devDependencies)\"\\s*:\\s*\\{[^}]*\\}");
-  private static final Path ASTRO_IGNORED_FILE = Path.of(".astro", "ward-matrix-ignored.ts");
-  // Breaks no-var and no-explicit-any in the generated ESLint config, and is Prettier-formatted.
-  private static final String ASTRO_IGNORED_SOURCE = "export var ignored: any = 1;\n";
 
   private NodeMatrixFixtureEdits() {}
 
@@ -81,14 +78,5 @@ final class NodeMatrixFixtureEdits {
     return missing.isEmpty()
         ? out.toString()
         : PackageJsonEdit.addDevDependencies(out.toString(), missing);
-  }
-
-  /**
-   * Puts a file that breaks a lint rule in the folder Astro generates code into, so a clean check
-   * proves the generated ESLint config ignores it.
-   */
-  static void writeLintViolationInAstroFolder(final Path project) throws IOException {
-    Files.createDirectories(project.resolve(ASTRO_IGNORED_FILE).getParent());
-    Files.writeString(project.resolve(ASTRO_IGNORED_FILE), ASTRO_IGNORED_SOURCE);
   }
 }

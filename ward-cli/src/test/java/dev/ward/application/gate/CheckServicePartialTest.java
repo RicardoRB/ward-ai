@@ -30,7 +30,6 @@ class CheckServicePartialTest {
       profiles = ["default", "edit"]
       command = "mvn spotless:check"
       [checks.lint]
-      uses = "eslint"
       profiles = ["default", "edit"]
       command = "mvn lint:check"
       [checks.lint.paths]
@@ -40,7 +39,6 @@ class CheckServicePartialTest {
       item = "**/{name}"
       separator = ","
       [checks.style]
-      uses = "eslint"
       profiles = ["default", "edit"]
       command = "mvn style:check"
       [checks.style.paths]

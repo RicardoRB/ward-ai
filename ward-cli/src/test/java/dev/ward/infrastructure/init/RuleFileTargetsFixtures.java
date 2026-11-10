@@ -40,7 +40,7 @@ public final class RuleFileTargetsFixtures {
       final PythonToolConfigs pythonConfigs) {
     return Map.of(
         Toolchain.NODE,
-        new NodeRuleFileTargets(manifests, configs),
+        new NodeRuleFileTargets(configs),
         Toolchain.PYTHON,
         new PythonRuleFileTargets(pythonConfigs),
         Toolchain.SWIFT,
