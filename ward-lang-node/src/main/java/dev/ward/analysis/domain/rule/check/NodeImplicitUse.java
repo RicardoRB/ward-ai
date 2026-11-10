@@ -1,7 +1,5 @@
 package dev.ward.analysis.domain.rule.check;
 
-import dev.ward.analysis.domain.ir.SyntaxNode;
-import dev.ward.analysis.domain.node.NodeFileFacts;
 import dev.ward.analysis.domain.node.NodeManifest;
 import dev.ward.analysis.domain.rule.ProjectFiles;
 import java.util.HashMap;
@@ -10,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.SortedMap;
+import java.util.regex.Pattern;
 
 /**
  * The packages a workspace uses without importing them: the tool its config files configure, the
@@ -18,7 +16,7 @@ import java.util.SortedMap;
  * provider its config selects. Each row names the knip plugin it stands for. A package used this
  * way is not reported as unused, so a fact this table does not know produces no finding.
  */
-final class NodeImplicitUse {
+public final class NodeImplicitUse {
 
   /** Config file names and the package each configures; knip's plugin of that tool reads them. */
   private static final Map<String, String> CONFIG_PACKAGES =
@@ -96,8 +94,20 @@ final class NodeImplicitUse {
   private static final String VITEST_CONFIG = "vitest.config.";
   private static final String STRYKER_CONFIG = "stryker.config.";
   private static final String JEST_CONFIG = "jest.config.";
+  private static final String TSCONFIG = "tsconfig.json";
+  private static final Pattern QUOTED = Pattern.compile("[\"']([^\"'\\s]+)[\"']");
 
   private NodeImplicitUse() {}
+
+  /**
+   * The config file names this table reads, so a project carries them whatever their language: init
+   * writes a {@code .mjs} vitest config even for a TypeScript project.
+   */
+  public static Set<String> configFileNames() {
+    final Set<String> names = new HashSet<>(CONFIG_PACKAGES.keySet());
+    names.add(TSCONFIG);
+    return Set.copyOf(names);
+  }
 
   /**
    * The packages that a workspace uses without an import, given the project's files and the
@@ -105,49 +115,37 @@ final class NodeImplicitUse {
    */
   static Set<String> of(
       final NodeManifests.Manifest owner,
-      final SortedMap<String, SyntaxNode> trees,
       final ProjectFiles files,
       final Map<String, NodeManifests.Manifest> installed) {
     final Set<String> implied = new HashSet<>();
-    configs(owner.directory(), trees, files, implied);
+    configs(owner.directory(), files, implied);
     scripts(owner.manifest(), installed, implied);
     return implied;
   }
 
-  /** The tool each config file in the workspace's directory configures. */
+  /** The tool each config file in the workspace's directory configures, read from its text. */
   private static void configs(
-      final String directory,
-      final SortedMap<String, SyntaxNode> trees,
-      final ProjectFiles files,
-      final Set<String> implied) {
-    for (final String path : trees.keySet()) {
-      addConfig(directory, path, trees.get(path), implied);
-    }
+      final String directory, final ProjectFiles files, final Set<String> implied) {
     for (final String path : files.paths()) {
-      addConfig(directory, path, null, implied);
+      final String name = path.substring(path.lastIndexOf('/') + 1);
+      if (NodeManifests.directoryOf(path).equals(directory) && configFileNames().contains(name)) {
+        addConfig(name, files.text(path).orElse(""), implied);
+      }
     }
   }
 
-  /**
-   * Adds the package a config file names, and for a vitest config the coverage provider it selects.
-   */
-  private static void addConfig(
-      final String directory, final String path, final SyntaxNode tree, final Set<String> implied) {
-    if (!NodeManifests.directoryOf(path).equals(directory)) {
-      return;
-    }
-    final String name = path.substring(path.lastIndexOf('/') + 1);
-    if ("tsconfig.json".equals(name) || name.startsWith("tsconfig.") && name.endsWith(".json")) {
+  /** Adds the package a config file names, and the packages its quoted values name. */
+  private static void addConfig(final String name, final String text, final Set<String> implied) {
+    if (TSCONFIG.equals(name) || name.startsWith("tsconfig.") && name.endsWith(".json")) {
       implied.add("typescript");
     }
     Optional.ofNullable(CONFIG_PACKAGES.get(name)).ifPresent(implied::add);
-    if (tree != null) {
-      addLiterals(name, NodeFileFacts.stringLiterals(tree), implied);
-    }
+    addLiterals(
+        name, QUOTED.matcher(text).results().map(match -> match.group(1)).toList(), implied);
   }
 
   /**
-   * The packages that a config's string literals name: a vitest coverage provider, a stryker runner
+   * The packages that a config's quoted values name: a vitest coverage provider, a stryker runner
    * or a jest package.
    */
   private static void addLiterals(

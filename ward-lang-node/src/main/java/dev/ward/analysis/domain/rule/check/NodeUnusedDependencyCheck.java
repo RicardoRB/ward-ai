@@ -62,7 +62,7 @@ public final class NodeUnusedDependencyCheck implements RuleCheck, ProjectCheck 
     final Map<String, Set<String>> imports = NodeImportUsage.importsByDirectory(trees, manifests);
     final List<ProjectMatch> found = new ArrayList<>();
     for (final NodeManifests.Manifest owner : manifests.values()) {
-      final Set<String> used = usedBy(owner, imports, trees, files, installed);
+      final Set<String> used = usedBy(owner, imports, files, installed);
       final Set<String> scripts = scriptTokens(owner.manifest());
       for (final Member dependency : owner.manifest().entries(section)) {
         if (!isUsed(dependency.key(), used, scripts)) {
@@ -80,7 +80,6 @@ public final class NodeUnusedDependencyCheck implements RuleCheck, ProjectCheck 
   private static Set<String> usedBy(
       final NodeManifests.Manifest owner,
       final Map<String, Set<String>> imports,
-      final SortedMap<String, SyntaxNode> trees,
       final ProjectFiles files,
       final Map<String, NodeManifests.Manifest> installed) {
     final Set<String> used =
@@ -88,7 +87,7 @@ public final class NodeUnusedDependencyCheck implements RuleCheck, ProjectCheck 
             owner.directory().isEmpty()
                 ? everywhere(imports)
                 : imports.getOrDefault(owner.directory(), Set.of()));
-    used.addAll(NodeImplicitUse.of(owner, trees, files, installed));
+    used.addAll(NodeImplicitUse.of(owner, files, installed));
     used.addAll(NodeImplicitUse.peersOf(used, installed));
     return used;
   }

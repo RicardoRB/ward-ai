@@ -5,6 +5,7 @@ import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.analysis.domain.rule.RuleDefinition;
+import dev.ward.analysis.domain.rule.check.NodeImplicitUse;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -23,15 +25,10 @@ final class FixtureProjects {
 
   private static final String PASSING = "passing";
   private static final Set<String> MANIFEST_NAMES =
-      Set.of(
-          "package.json",
-          "pnpm-workspace.yaml",
-          "tsconfig.json",
-          ".eslintrc.json",
-          ".prettierrc",
-          ".prettierrc.json",
-          ".babelrc",
-          "babel.config.json");
+      Stream.concat(
+              Stream.of("package.json", "pnpm-workspace.yaml"),
+              NodeImplicitUse.configFileNames().stream())
+          .collect(Collectors.toUnmodifiableSet());
 
   private FixtureProjects() {}
 
