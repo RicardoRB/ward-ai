@@ -11,6 +11,7 @@ import dev.ward.analysis.domain.rule.check.LocalDeclarationOrderCheck;
 import dev.ward.analysis.domain.rule.check.PrematureDeclarationCheck;
 import dev.ward.analysis.domain.rule.check.RedundantInterfaceCheck;
 import dev.ward.analysis.domain.rule.check.StaticImportCountCheck;
+import dev.ward.analysis.domain.rule.check.ThrowsExceptionCheck;
 import dev.ward.analysis.domain.rule.check.UselessQualifiedThisCheck;
 import dev.ward.analysis.domain.rule.check.VariableCanBeInlinedCheck;
 import java.util.Map;
@@ -25,6 +26,9 @@ final class CodestyleChecks {
   /** The checks this class provides, by name. */
   static Map<String, CheckFactory> checks() {
     return Map.ofEntries(
+        entry(
+            "throws-exception",
+            toml -> new ThrowsExceptionCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "static-import-count",
             toml ->
