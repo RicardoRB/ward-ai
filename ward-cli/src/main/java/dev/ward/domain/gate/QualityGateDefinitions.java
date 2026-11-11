@@ -55,6 +55,7 @@ public final class QualityGateDefinitions {
           new Definition(
               SupportedQualityGates.ANALYSIS, SupportedQualityGates.ANALYSIS, Phase.LOCAL, true),
           gate(SupportedQualityGates.FORMAT, Phase.FAST),
+          gate(SupportedQualityGates.CRAP, Phase.LOCAL),
           gate("command", Phase.LOCAL),
           gate("openspec", Phase.CI),
           gate("openspec-archived", Phase.CI));
