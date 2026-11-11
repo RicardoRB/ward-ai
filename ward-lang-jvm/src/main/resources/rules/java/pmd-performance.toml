@@ -77,14 +77,12 @@ message = "file streams are finalized by the garbage collector; use java.nio.fil
 [[rules]]
 id = "ward:java/avoid-instantiating-objects-in-loops"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "performance"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["creator"]
-inside = ["statement>'for'", "statement>'while'", "statement>'do'"]
+check = "loop-allocation"
 message = "object created inside a loop; create it once before the loop"
 '''
 
