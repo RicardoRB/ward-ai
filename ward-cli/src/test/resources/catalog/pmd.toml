@@ -1058,6 +1058,12 @@ name = "unnecessary-conversion-temporary"
 pmd = ["UnnecessaryConversionTemporary"]
 
 [[rule]]
+name = "unnecessary-constructor"
+presets = ["strict"]
+category = "style"
+pmd = ["UnnecessaryConstructor"]
+
+[[rule]]
 name = "unnecessary-fully-qualified-name"
 presets = ["standard", "strict"]
 category = "style"

@@ -2,15 +2,15 @@
 # Error Prone 2.50.0 with NullAway 0.14.2, and Semgrep p/java.
 # rule, tool, tool id, outcome, note. Regenerate with -Dward.parity.write=true.
 # - no-counterpart: 16
-# checkstyle agree: 78
-# checkstyle agree-lines: 43
+# checkstyle agree: 79
+# checkstyle agree-lines: 45
 # checkstyle anchor-differs: 4
-# checkstyle approximation: 13
+# checkstyle approximation: 15
 # checkstyle tool-silent: 8
 # errorprone agree: 18
 # errorprone agree-lines: 63
 # errorprone anchor-differs: 1
-# errorprone approximation: 6
+# errorprone approximation: 7
 # errorprone not-comparable: 119
 # errorprone tool-silent: 16
 # nullaway agree-lines: 5
@@ -18,10 +18,10 @@
 # nullaway approximation: 2
 # nullaway not-comparable: 18
 # nullaway tool-silent: 3
-# pmd agree: 100
-# pmd agree-lines: 109
+# pmd agree: 102
+# pmd agree-lines: 111
 # pmd anchor-differs: 19
-# pmd approximation: 16
+# pmd approximation: 17
 # pmd tool-silent: 39
 # semgrep agree: 7
 # semgrep agree-lines: 9
@@ -98,6 +98,7 @@ avoid-message-digest-field	pmd	AvoidMessageDigestField	agree
 avoid-module-import	checkstyle	AvoidModuleImport	agree	
 avoid-multiple-unary-operators	pmd	AvoidMultipleUnaryOperators	agree	
 avoid-nested-blocks	checkstyle	AvoidNestedBlocks	agree	
+avoid-no-argument-super-constructor-call	checkstyle	AvoidNoArgumentSuperConstructorCall	agree	
 avoid-print-stack-trace	pmd	AvoidPrintStackTrace	agree-lines	
 avoid-reassigning-catch-variables	pmd	AvoidReassigningCatchVariables	agree	
 avoid-reassigning-loop-variables	pmd	AvoidReassigningLoopVariables	agree	
@@ -423,6 +424,8 @@ final-field-could-be-static	pmd	FinalFieldCouldBeStatic	agree-lines
 final-local-variable	checkstyle	FinalLocalVariable	approximation	Checkstyle and PMD report a variable assigned once after its declaration (passing line 5); Ward does not
 final-local-variable	pmd	LocalVariableCouldBeFinal	approximation	Checkstyle and PMD report a variable assigned once after its declaration (passing line 5); Ward does not
 final-parameter-in-abstract-method	pmd	FinalParameterInAbstractMethod	agree-lines	
+final-parameters	checkstyle	FinalParameters	approximation	Checkstyle also reports a parameter that the method assigns (line 2 of the passing fixture); Ward follows PMD's MethodArgumentCouldBeFinal and leaves an assigned parameter alone
+final-parameters	pmd	MethodArgumentCouldBeFinal	agree-lines	
 finalize-does-not-call-super-finalize	pmd	FinalizeDoesNotCallSuperFinalize	anchor-differs	tool lines [3], on passing [], fixture [2]
 finalize-only-calls-super-finalize	pmd	FinalizeOnlyCallsSuperFinalize	agree-lines	
 finalize-overloaded	pmd	FinalizeOverloaded	agree-lines	
@@ -1007,6 +1010,8 @@ signature-declare-throws-exception	pmd	SignatureDeclareThrowsException	agree-lin
 simple-date-format-needs-locale	pmd	SimpleDateFormatNeedsLocale	agree	
 simplifiable-test-assertion	pmd	SimplifiableTestAssertion	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 simplified-ternary	pmd	SimplifiedTernary	agree	
+simplify-boolean-expression	checkstyle	SimplifyBooleanExpression	agree-lines	
+simplify-boolean-expression	pmd	SimplifyBooleanExpressions	approximation	PMD reports only the comparison with a boolean literal (line 3); Ward and Checkstyle also report && true, !false and the ternary of literals
 simplify-boolean-return	checkstyle	SimplifyBooleanReturn	agree	
 simplify-boolean-return	pmd	SimplifyBooleanReturns	approximation	PMD also reports the passing fixture's if with a return in its branch (line 3); Ward does not
 simplify-conditional	pmd	SimplifyConditional	agree	
@@ -1152,11 +1157,15 @@ unnecessary-boxing	pmd	UnnecessaryBoxing	approximation	PMD also reports Integer.
 unnecessary-case-change	pmd	UnnecessaryCaseChange	agree	
 unnecessary-cast	pmd	UnnecessaryCast	approximation	PMD also reports (long) 2 and (Object) "x" (passing lines 2, 4); Ward reports only casts to the expression's own type
 unnecessary-check-not-null	errorprone	UnnecessaryCheckNotNull	not-comparable	the fixture does not compile
+unnecessary-constructor	pmd	UnnecessaryConstructor	agree-lines	
 unnecessary-conversion-temporary	pmd	UnnecessaryConversionTemporary	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 unnecessary-fully-qualified-name	pmd	UnnecessaryFullyQualifiedName	agree	
 unnecessary-fully-qualified-type	checkstyle	UnnecessaryFullyQualifiedType	agree-lines	
 unnecessary-interface-declaration	pmd	UnnecessaryInterfaceDeclaration	agree	
 unnecessary-lambda	errorprone	UnnecessaryLambda	approximation	Error Prone also reports the private lambda field of the passing fixture (line 4); Ward does not
+unnecessary-parentheses	checkstyle	UnnecessaryParentheses	agree-lines	
+unnecessary-parentheses	errorprone	UnnecessaryParentheses	approximation	Error Prone does not report the parentheses around an initializer (line 4); Ward and PMD do
+unnecessary-parentheses	pmd	UselessParentheses	agree	
 unnecessary-return	pmd	UnnecessaryReturn	anchor-differs	tool lines [4], on passing [], fixture [2]
 unnecessary-type-argument	errorprone	UnnecessaryTypeArgument	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 unnecessary-varargs-array-creation	pmd	UnnecessaryVarargsArrayCreation	agree-lines	
@@ -1177,6 +1186,8 @@ unused-local-variable	checkstyle	UnusedLocalVariable	agree-lines
 unused-local-variable	errorprone	UnusedVariable	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 unused-local-variable	pmd	UnusedLocalVariable	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 unused-null-check-in-equals	pmd	UnusedNullCheckInEquals	agree-lines	
+unused-private-field	checkstyle	UnusedPrivateField	approximation	Checkstyle also reports an annotated private field (line 4 of the passing fixture); Ward and PMD leave it alone
+unused-private-field	pmd	UnusedPrivateField	agree	
 unused-private-method	errorprone	UnusedMethod	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 unused-private-method	pmd	UnusedPrivateMethod	agree-lines	
 unused-return-value	pmd	UnusedReturnValue	approximation	PMD also reports text.length() (passing line 10); Ward reports only the methods it lists
