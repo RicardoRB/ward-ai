@@ -11,6 +11,8 @@ import org.tomlj.Toml;
 
 class TomlCrapCheckTest {
 
+  private static final int CUSTOM = 15;
+
   private static GateConfiguration crap(final String body) {
     return new TomlConfigurationReader()
         .parse(Toml.parse("version = 2\n[checks.crap]\nuses = \"crap\"\n" + body + "\n"))
@@ -25,13 +27,13 @@ class TomlCrapCheckTest {
     assertThat(check.type()).isEqualTo("crap");
     assertThat(check.command()).isEmpty();
     assertThat(check.crap()).isEqualTo(CrapOptions.defaults());
-    assertThat(check.crap().max()).isEqualTo(30);
+    assertThat(check.crap().max()).isEqualTo(CrapOptions.DEFAULT_MAX);
   }
 
   @Test
   void readsALimitAndAStringOrArrayOfReports() {
     assertThat(crap("max = 15\nreport = \"reports/lcov.info\"").crap())
-        .isEqualTo(new CrapOptions(java.util.List.of("reports/lcov.info"), 15));
+        .isEqualTo(new CrapOptions(java.util.List.of("reports/lcov.info"), CUSTOM));
     assertThat(
             crap("report = [\"api/./coverage/lcov.info\", \"web/coverage/lcov.info\"]")
                 .crap()

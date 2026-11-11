@@ -27,8 +27,8 @@ class RealCoverageReportsTest {
       assertThat(hits.entries())
           .extracting(LineHits.Entry::name)
           .containsExactly("com/shop/Cart.java");
-      assertThat(hits.entries().get(0).lines().coverable()).containsExactly(3, 5, 6, 8, 12);
-      assertThat(hits.entries().get(0).lines().covered()).containsExactly(3, 5, 6);
+      assertThat(hits.entries().get(0).lines().coverable()).hasToString("[3, 5, 6, 8, 12]");
+      assertThat(hits.entries().get(0).lines().covered()).hasToString("[3, 5, 6]");
     }
   }
 
@@ -38,9 +38,9 @@ class RealCoverageReportsTest {
     final LineHits pytest = reader.read(DIRECTORY.resolve("coverage-pytest.lcov"));
 
     assertThat(vitest.entries().get(0).name()).isEqualTo("src/cart.js");
-    assertThat(vitest.entries().get(0).lines().covered()).containsExactly(2, 3);
+    assertThat(vitest.entries().get(0).lines().covered()).hasToString("[2, 3]");
     assertThat(pytest.entries().get(0).name()).isEqualTo("cart.py");
-    assertThat(pytest.entries().get(0).lines().covered()).containsExactly(1, 2, 3, 7);
-    assertThat(pytest.entries().get(0).lines().coverable()).containsExactly(1, 2, 3, 4, 7, 8);
+    assertThat(pytest.entries().get(0).lines().covered()).hasToString("[1, 2, 3, 7]");
+    assertThat(pytest.entries().get(0).lines().coverable()).hasToString("[1, 2, 3, 4, 7, 8]");
   }
 }

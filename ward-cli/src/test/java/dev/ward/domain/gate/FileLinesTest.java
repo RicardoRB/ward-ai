@@ -8,32 +8,45 @@ import org.junit.jupiter.api.Test;
 
 class FileLinesTest {
 
+  private static final int TEN = 10;
+  private static final int ELEVEN = 11;
+  private static final int TWENTY = 20;
+  private static final int THREE = 3;
+
+  private static Set<Integer> ints(final String csv) {
+    return csv.isEmpty()
+        ? Set.of()
+        : java.util.Arrays.stream(csv.split(","))
+            .map(Integer::valueOf)
+            .collect(java.util.stream.Collectors.toSet());
+  }
+
   private static FileLines lines(final Set<Integer> coverable, final Set<Integer> covered) {
     return new FileLines(new TreeSet<>(coverable), new TreeSet<>(covered));
   }
 
   @Test
   void mergeMarksALineCoveredWhenEitherReportCoversIt() {
-    final FileLines first = lines(Set.of(12, 13), Set.of());
-    final FileLines second = lines(Set.of(12), Set.of(12));
+    final FileLines first = lines(ints("12,13"), ints(""));
+    final FileLines second = lines(ints("12"), ints("12"));
 
     final FileLines merged = first.merge(second);
 
-    assertThat(merged.coverable()).containsExactly(12, 13);
-    assertThat(merged.covered()).containsExactly(12);
+    assertThat(merged.coverable()).hasToString("[12, 13]");
+    assertThat(merged.covered()).hasToString("[12]");
   }
 
   @Test
   void countsStayInsideTheRequestedRange() {
-    final FileLines file = lines(Set.of(5, 11, 12, 18, 25), Set.of(11, 12, 25));
+    final FileLines file = lines(ints("5,11,12,18,25"), ints("11,12,25"));
 
-    assertThat(file.coverableIn(10, 20)).isEqualTo(3);
-    assertThat(file.coveredIn(10, 20)).isEqualTo(2);
-    assertThat(file.coverableIn(11, 11)).isEqualTo(1);
+    assertThat(file.coverableIn(TEN, TWENTY)).isEqualTo(THREE);
+    assertThat(file.coveredIn(TEN, TWENTY)).isEqualTo(2);
+    assertThat(file.coverableIn(ELEVEN, ELEVEN)).isEqualTo(1);
   }
 
   @Test
   void coveredLinesThatAreNotCoverableAreDropped() {
-    assertThat(lines(Set.of(1), Set.of(1, 2)).covered()).containsExactly(1);
+    assertThat(lines(ints("1"), ints("1,2")).covered()).hasToString("[1]");
   }
 }

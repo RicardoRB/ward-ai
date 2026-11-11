@@ -42,9 +42,9 @@ class JacocoXmlLineCoverageTest {
         .extracting(LineHits.Entry::name)
         .containsExactly("com/shop/Cart.java", "com/shop/Item.java", "com/shop/util/Math.java");
     assertThat(hits.entries().get(0).kind()).isEqualTo(LineHits.Kind.PACKAGE_FILE);
-    assertThat(hits.entries().get(0).lines().coverable()).containsExactly(3, 4);
-    assertThat(hits.entries().get(0).lines().covered()).containsExactly(3);
-    assertThat(hits.entries().get(1).lines().covered()).containsExactly(9);
+    assertThat(hits.entries().get(0).lines().coverable()).hasToString("[3, 4]");
+    assertThat(hits.entries().get(0).lines().covered()).hasToString("[3]");
+    assertThat(hits.entries().get(1).lines().covered()).hasToString("[9]");
     assertThat(hits.entries().get(2).lines().covered()).containsExactly(2);
   }
 

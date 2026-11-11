@@ -113,7 +113,7 @@ final class MeasurementTest {
 
   @Test
   void measuresReturnsNothingForMeasurementsWithoutAValuePerNode() {
-    assertThat(Trees.measured(FUNCTION_LENGTH, Trees.node(FUNCTION, 1, 3))).isEmpty();
+    assertThat(Trees.measured(FUNCTION_LENGTH, Trees.node(FUNCTION, 1, SIX_PARAMETERS))).isEmpty();
   }
 
   @Test

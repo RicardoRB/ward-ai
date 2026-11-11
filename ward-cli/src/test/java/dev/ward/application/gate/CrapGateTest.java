@@ -39,6 +39,16 @@ import org.junit.jupiter.api.Test;
 /** The {@code crap} gate over in-memory sources and fake report ports. */
 class CrapGateTest {
 
+  private static final int FIVE = 5;
+  private static final int SIX = 6;
+  private static final int NINE = 9;
+
+  /** The last line of the method that {@code method(SIX)} writes. */
+  private static final int SIX_END = 9;
+
+  /** The score of an untested method of complexity six. */
+  private static final int SIX_SCORE = 42;
+
   private static final Path ROOT = Path.of("/proj");
   private static final String REPORT = "target/site/jacoco/jacoco.xml";
   private static final String CART = "src/main/java/com/shop/Cart.java";
@@ -140,8 +150,8 @@ class CrapGateTest {
 
   @Test
   void anUntestedComplexMethodFailsWithOneFindingAtItsLocation() {
-    source(CART, method(6), BEFORE);
-    report(REPORT, AFTER, entry(2, 9, Set.of()));
+    source(CART, method(SIX), BEFORE);
+    report(REPORT, AFTER, entry(2, SIX_END, Set.of()));
 
     final GateResult result = run();
 
@@ -160,8 +170,8 @@ class CrapGateTest {
 
   @Test
   void aTestedMethodPassesAndTheSummaryCountsFunctions() {
-    source(CART, method(6), BEFORE);
-    report(REPORT, AFTER, entry(2, 9, range(2, 9)));
+    source(CART, method(SIX), BEFORE);
+    report(REPORT, AFTER, entry(2, SIX_END, range(2, SIX_END)));
 
     final GateResult result = run();
 
@@ -171,18 +181,19 @@ class CrapGateTest {
 
   @Test
   void aCustomLimitIsUsed() {
-    source(CART, method(6), BEFORE);
-    report(REPORT, AFTER, entry(2, 9, Set.of()));
+    source(CART, method(SIX), BEFORE);
+    report(REPORT, AFTER, entry(2, SIX_END, Set.of()));
 
-    assertThat(run(new CrapOptions(List.of(), 42)).status()).isEqualTo(GateStatus.PASSED);
-    assertThat(run(new CrapOptions(List.of(), 41)).status()).isEqualTo(GateStatus.FAILED);
+    assertThat(run(new CrapOptions(List.of(), SIX_SCORE)).status()).isEqualTo(GateStatus.PASSED);
+    assertThat(run(new CrapOptions(List.of(), SIX_SCORE - 1)).status())
+        .isEqualTo(GateStatus.FAILED);
   }
 
   @Test
   void aFileTheReportsDoNotNameIsScoredFromComplexityAlone() {
-    source(CART, method(6), BEFORE);
-    source("src/main/java/com/shop/Other.java", method(9).replace("Cart", "Other"), BEFORE);
-    report(REPORT, AFTER, entry(2, 9, range(2, 9)));
+    source(CART, method(SIX), BEFORE);
+    source("src/main/java/com/shop/Other.java", method(NINE).replace("Cart", "Other"), BEFORE);
+    report(REPORT, AFTER, entry(2, SIX_END, range(2, SIX_END)));
 
     final GateResult result = run();
 
@@ -212,7 +223,7 @@ class CrapGateTest {
 
   @Test
   void anUnparseableReportIsAnExecutionErrorAndNoScoreIsUsed() {
-    source(CART, method(9), BEFORE);
+    source(CART, method(NINE), BEFORE);
     files.add(REPORT);
 
     final GateResult result = run();
@@ -242,7 +253,7 @@ class CrapGateTest {
   @Test
   void aReportOlderThanASourceItNamesIsAnExecutionError() {
     source(CART, method(2), AFTER);
-    report(REPORT, BEFORE, entry(2, 5, range(2, 5)));
+    report(REPORT, BEFORE, entry(2, FIVE, range(2, FIVE)));
 
     final GateResult result = run();
 
@@ -286,8 +297,8 @@ class CrapGateTest {
     final Logger gate = Logger.getLogger(CrapGate.class.getName());
     reports.addHandler(handler);
     gate.addHandler(handler);
-    source(CART, method(6), BEFORE);
-    report(REPORT, AFTER, entry(2, 9, Set.of()));
+    source(CART, method(SIX), BEFORE);
+    report(REPORT, AFTER, entry(2, SIX_END, Set.of()));
     try {
       run();
     } finally {

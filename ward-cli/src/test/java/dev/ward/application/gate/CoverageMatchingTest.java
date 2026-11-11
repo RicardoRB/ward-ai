@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 class CoverageMatchingTest {
 
+  private static final int TWELVE = 12;
   private static final Path ROOT = Path.of("/proj");
 
   private static LineHits.Entry entry(
@@ -90,13 +91,13 @@ class CoverageMatchingTest {
 
   @Test
   void twoReportsOfOneFileCoverALineWhenEitherDoes() {
-    final LineHits first = report("a/lcov.info", entry(LineHits.Kind.PATH, "x.ts", 12, false));
-    final LineHits second = report("b/lcov.info", entry(LineHits.Kind.PATH, "x.ts", 12, true));
+    final LineHits first = report("a/lcov.info", entry(LineHits.Kind.PATH, "x.ts", TWELVE, false));
+    final LineHits second = report("b/lcov.info", entry(LineHits.Kind.PATH, "x.ts", TWELVE, true));
 
     final CoverageMatching matching =
         CoverageMatching.of(ROOT, List.of(first, second), Set.of("x.ts"));
 
-    assertThat(matching.lines().get("x.ts").covered()).containsExactly(12);
+    assertThat(matching.lines().get("x.ts").covered()).hasToString("[12]");
     assertThat(matching.namedBy().get("x.ts")).hasSize(2);
   }
 

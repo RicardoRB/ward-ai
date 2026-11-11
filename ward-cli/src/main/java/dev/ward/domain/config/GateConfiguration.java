@@ -55,44 +55,6 @@ public record GateConfiguration(
     String rulesFile,
     CrapOptions crap) {
 
-  /** Creates a check without {@code crap} options. */
-  public GateConfiguration(
-      final String name,
-      final String type,
-      final boolean enabled,
-      final List<String> command,
-      final Set<String> profiles,
-      final PartialGateConfiguration partial,
-      final String root,
-      final OpenApiGateOptions openApi,
-      final Integer minimum,
-      final XcodePlatform platform,
-      final List<String> rules,
-      final String javaClasspath,
-      final List<LayerBoundary> layers,
-      final List<String> cycleRoots,
-      final List<List<String>> independence,
-      final String rulesFile) {
-    this(
-        name,
-        type,
-        enabled,
-        command,
-        profiles,
-        partial,
-        root,
-        openApi,
-        minimum,
-        platform,
-        rules,
-        javaClasspath,
-        layers,
-        cycleRoots,
-        independence,
-        rulesFile,
-        null);
-  }
-
   /** Copies the command, profiles and rule ids, keeping their order. */
   public GateConfiguration {
     command = List.copyOf(command);

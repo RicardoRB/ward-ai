@@ -31,8 +31,8 @@ class LcovLineCoverageTest {
     assertThat(hits.entries()).hasSize(2);
     assertThat(hits.entries().get(0).kind()).isEqualTo(LineHits.Kind.PATH);
     assertThat(hits.entries().get(0).name()).isEqualTo("src/cart.ts");
-    assertThat(hits.entries().get(0).lines().coverable()).containsExactly(12, 13);
-    assertThat(hits.entries().get(0).lines().covered()).containsExactly(12);
+    assertThat(hits.entries().get(0).lines().coverable()).hasToString("[12, 13]");
+    assertThat(hits.entries().get(0).lines().covered()).hasToString("[12]");
     assertThat(hits.entries().get(1).name()).isEqualTo("/abs/other.ts");
     assertThat(hits.entries().get(1).lines().covered()).containsExactly(1);
     assertThat(hits.report()).isEqualTo(report);
