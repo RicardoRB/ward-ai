@@ -1058,6 +1058,12 @@ name = "unnecessary-conversion-temporary"
 pmd = ["UnnecessaryConversionTemporary"]
 
 [[rule]]
+name = "field-declarations-should-be-at-start-of-class"
+presets = ["strict"]
+category = "style"
+pmd = ["FieldDeclarationsShouldBeAtStartOfClass"]
+
+[[rule]]
 name = "unnecessary-constructor"
 presets = ["strict"]
 category = "style"

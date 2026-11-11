@@ -6993,6 +6993,25 @@
         }
       }
     },
+    "ward:java/field-declarations-should-be-at-start-of-class": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/field-no-init": {
       "type": "object",
       "additionalProperties": false,
@@ -52566,6 +52585,7 @@
               "java.fi-nullify-super",
               "java.fi-public-should-be-protected",
               "java.fi-useless",
+              "java.field-declarations-should-be-at-start-of-class",
               "java.field-no-init",
               "java.file-length",
               "java.final-class",
@@ -55228,6 +55248,7 @@
               "java.fi-nullify-super",
               "java.fi-public-should-be-protected",
               "java.fi-useless",
+              "java.field-declarations-should-be-at-start-of-class",
               "java.field-no-init",
               "java.file-length",
               "java.final-class",
@@ -58602,6 +58623,9 @@
             },
             "fi-useless": {
               "$ref": "#/$defs/ward:java~1fi-useless"
+            },
+            "field-declarations-should-be-at-start-of-class": {
+              "$ref": "#/$defs/ward:java~1field-declarations-should-be-at-start-of-class"
             },
             "field-no-init": {
               "$ref": "#/$defs/ward:java~1field-no-init"

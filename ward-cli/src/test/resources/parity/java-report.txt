@@ -19,9 +19,9 @@
 # nullaway not-comparable: 18
 # nullaway tool-silent: 3
 # pmd agree: 103
-# pmd agree-lines: 110
+# pmd agree-lines: 111
 # pmd anchor-differs: 19
-# pmd approximation: 17
+# pmd approximation: 16
 # pmd tool-silent: 39
 # semgrep agree: 7
 # semgrep agree-lines: 9
@@ -230,7 +230,6 @@ de-might-ignore	spotbugs	DE_MIGHT_IGNORE	not-comparable	the fixture does not com
 dead-exception	errorprone	DeadException	agree	
 dead-thread	errorprone	DeadThread	agree	
 declaration-order	checkstyle	DeclarationOrder	agree	
-declaration-order	pmd	FieldDeclarationsShouldBeAtStartOfClass	approximation	PMD reports only the field declared after a method; Ward also reports the fields declared in the wrong modifier order
 deduplicate-constants	errorprone	DeduplicateConstants	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 default-label-not-last-in-switch	pmd	DefaultLabelNotLastInSwitch	agree	
 dep-ann	errorprone	DepAnn	agree-lines	
@@ -416,6 +415,7 @@ fi-missing-super-call	spotbugs	FI_MISSING_SUPER_CALL	not-comparable	the fixture 
 fi-nullify-super	spotbugs	FI_NULLIFY_SUPER	not-comparable	the fixture does not compile
 fi-public-should-be-protected	spotbugs	FI_PUBLIC_SHOULD_BE_PROTECTED	anchor-differs	tool lines [1], on passing [], fixture [2]
 fi-useless	spotbugs	FI_USELESS	not-comparable	the fixture does not compile
+field-declarations-should-be-at-start-of-class	pmd	FieldDeclarationsShouldBeAtStartOfClass	agree-lines	
 field-no-init	nullaway	FIELD_NO_INIT	not-comparable	the fixture does not compile
 file-length	checkstyle	FileLength	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 final-class	checkstyle	FinalClass	agree	

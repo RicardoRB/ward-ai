@@ -5,6 +5,7 @@ import static java.util.Map.entry;
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.ConstructorSuperCheck;
+import dev.ward.analysis.domain.rule.check.FieldsAtStartCheck;
 import dev.ward.analysis.domain.rule.check.FinalParametersCheck;
 import dev.ward.analysis.domain.rule.check.IdenticalCatchBranchesCheck;
 import dev.ward.analysis.domain.rule.check.JavaEmptyAbstractMethodCheck;
@@ -33,6 +34,8 @@ final class CodestyleChecks {
         entry(
             "throws-exception",
             toml -> new ThrowsExceptionCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "fields-at-start", toml -> new FieldsAtStartCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "final-parameters",
             toml -> new FinalParametersCheck(TomlValues.required(toml, MESSAGE))),

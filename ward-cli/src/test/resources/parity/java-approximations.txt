@@ -3,7 +3,6 @@ abbreviation-as-word-in-name	checkstyle	AbbreviationAsWordInName	Ward's default 
 atclause-order	checkstyle	AtclauseOrder	Checkstyle reports both misplaced @param tags, Ward the first
 avoid-string-buffer-field	pmd	AvoidStringBufferField	PMD also reports a StringBuilder field; Ward reports StringBuffer fields only
 class-type-parameter-name	checkstyle	ClassTypeParameterName	the passing fixture uses names such as KeyT, which Checkstyle's default pattern (one capital letter) rejects
-declaration-order	pmd	FieldDeclarationsShouldBeAtStartOfClass	PMD reports only the field declared after a method; Ward also reports the fields declared in the wrong modifier order
 interface-type-parameter-name	checkstyle	InterfaceTypeParameterName	the passing fixture uses names such as KeyT, which Checkstyle's default pattern (one capital letter) rejects
 java8-api-checker	errorprone	Java8ApiChecker	Error Prone reports List.of(1); Ward has no finding there
 method-type-parameter-name	checkstyle	MethodTypeParameterName	the passing fixture uses names such as KeyT, which Checkstyle's default pattern (one capital letter) rejects

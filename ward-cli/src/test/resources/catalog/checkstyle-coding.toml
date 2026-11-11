@@ -37,7 +37,6 @@ name = "declaration-order"
 category = "style"
 presets = ["strict"]
 not-applicable = { python = "Java member declaration order; Python class bodies have no declaration-order rule of this kind" }
-pmd = ["FieldDeclarationsShouldBeAtStartOfClass"]
 typescript-eslint = ["member-ordering"]
 checkstyle = ["DeclarationOrder"]
 
