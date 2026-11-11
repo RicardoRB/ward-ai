@@ -10,6 +10,7 @@ class DesignMemberChecksTest extends DesignFlowTrees {
 
   private static final String MESSAGE = "flagged";
   private static final String PUBLIC = "public";
+  private static final String PRIVATE = "private";
   private static final String COUNT = "count";
 
   @Test
@@ -37,20 +38,21 @@ class DesignMemberChecksTest extends DesignFlowTrees {
   }
 
   @Test
-  void reportsPrivateFieldsThatNoMethodAssigns() {
+  void reportsInitializedPrivateFieldsThatNoMethodAssigns() {
     final SyntaxNode unassigned =
-        compilationUnit(classOf(member(field(COUNT), "private"), member(method("read"))));
+        compilationUnit(classOf(member(initializedField(COUNT), PRIVATE), member(method("read"))));
+    final SyntaxNode blank =
+        compilationUnit(classOf(member(field(COUNT), PRIVATE), member(method("read"))));
     final SyntaxNode assigned =
         compilationUnit(
-            classOf(
-                member(field(COUNT), "private"), member(method("set", assignment(COUNT, "1")))));
-    final SyntaxNode finalField =
-        compilationUnit(classOf(member(field(COUNT), "private", "final")));
+            classOf(member(field(COUNT), PRIVATE), member(method("set", assignment(COUNT, "1")))));
+    final SyntaxNode finalField = compilationUnit(classOf(member(field(COUNT), PRIVATE, "final")));
     final SyntaxNode staticField =
-        compilationUnit(classOf(member(field(COUNT), "private", "static")));
+        compilationUnit(classOf(member(field(COUNT), PRIVATE, "static")));
     final SyntaxNode publicField = compilationUnit(classOf(member(field(COUNT), PUBLIC)));
 
     assertThat(messagesOf(new ImmutableFieldCheck(MESSAGE), unassigned)).containsExactly(MESSAGE);
+    assertThat(messagesOf(new ImmutableFieldCheck(MESSAGE), blank)).isEmpty();
     assertThat(messagesOf(new ImmutableFieldCheck(MESSAGE), assigned)).isEmpty();
     assertThat(messagesOf(new ImmutableFieldCheck(MESSAGE), finalField)).isEmpty();
     assertThat(messagesOf(new ImmutableFieldCheck(MESSAGE), staticField)).isEmpty();
@@ -61,18 +63,17 @@ class DesignMemberChecksTest extends DesignFlowTrees {
   void reportsPrivateFieldsWithOneUserThatAssignsIt() {
     final SyntaxNode singular =
         compilationUnit(
-            classOf(
-                member(field(COUNT), "private"), member(method("bump", assignment(COUNT, "1")))));
+            classOf(member(field(COUNT), PRIVATE), member(method("bump", assignment(COUNT, "1")))));
     final SyntaxNode sharedByTwo =
         compilationUnit(
             classOf(
-                member(field(COUNT), "private"),
+                member(field(COUNT), PRIVATE),
                 member(method("read", n("identifier", t("IDENTIFIER", COUNT)))),
                 member(method("bump", assignment(COUNT, "1")))));
     final SyntaxNode readOnly =
         compilationUnit(
             classOf(
-                member(field(COUNT), "private"),
+                member(field(COUNT), PRIVATE),
                 member(method("read", n("identifier", t("IDENTIFIER", COUNT))))));
 
     assertThat(messagesOf(new SingularFieldCheck(MESSAGE), singular)).containsExactly(MESSAGE);
@@ -150,5 +151,16 @@ class DesignMemberChecksTest extends DesignFlowTrees {
     assertThat(messagesOf(new ExceptionFlowCheck(MESSAGE), qualified)).containsExactly(MESSAGE);
     assertThat(messagesOf(new ExceptionFlowCheck(MESSAGE), otherType)).isEmpty();
     assertThat(messagesOf(new ExceptionFlowCheck(MESSAGE), noCatch)).isEmpty();
+  }
+
+  private static SyntaxNode initializedField(final String name) {
+    return n(
+        "fieldDeclaration",
+        t("'int'", "int"),
+        n(
+            "variableDeclarator",
+            n("variableDeclaratorId", id(name)),
+            t("'='", "="),
+            n("variableInitializer")));
   }
 }
