@@ -20,6 +20,18 @@ public interface CompiledRule {
   List<RuleMatch> matches(SyntaxNode root);
 
   /**
+   * Returns the value this rule measures for every declaration in the tree rooted at {@code root},
+   * including those within its limit. A rule that measures nothing returns none, as this default
+   * method does.
+   *
+   * @throws dev.ward.analysis.domain.port.AnalysisFailedException if the rule cannot run on the
+   *     tree
+   */
+  default List<Measured> measures(final SyntaxNode root) {
+    return List.of();
+  }
+
+  /**
    * Returns the matches of this rule in the tree rooted at {@code root}, given the files around it.
    * A rule that reads no dependencies needs only {@link #matches(SyntaxNode)}, which this default
    * method delegates to.

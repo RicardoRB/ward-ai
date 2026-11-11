@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.rule.RuleRunResult;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 /** Behavior of the structural rules on inline sources, for the edge cases the spec names. */
@@ -37,6 +38,23 @@ class NodeRuleBehaviorTest {
 
     assertThat(result.findings()).hasSize(1);
     assertThat(result.findings().get(0).line()).isEqualTo(2);
+  }
+
+  @Test
+  void measuresReturnsEveryFunctionIncludingNestedOnesWithinTheLimit() {
+    final String source =
+        "function outer(a) {\n"
+            + "  const inner = (b) => {\n"
+            + "    if (b) { void 0; }\n"
+            + "  };\n"
+            + "  return inner;\n"
+            + "}\n";
+
+    for (final AnalysisLanguage language : List.of(TS, JS)) {
+      assertThat(NodeRuleRuns.measure("complexity", language, source))
+          .extracting(measured -> measured.span().startLine() + ":" + measured.value())
+          .containsExactly("1:1", "2:2");
+    }
   }
 
   @Test

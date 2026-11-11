@@ -6,6 +6,7 @@ import dev.ward.analysis.domain.rule.CompiledRule;
 import dev.ward.analysis.domain.rule.DependencyView;
 import dev.ward.analysis.domain.rule.FactNeed;
 import dev.ward.analysis.domain.rule.FlowView;
+import dev.ward.analysis.domain.rule.Measured;
 import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.analysis.domain.rule.ProjectMatch;
 import dev.ward.analysis.domain.rule.RuleDefinition;
@@ -35,6 +36,11 @@ public final class CheckedRule implements CompiledRule {
   @Override
   public RuleDefinition definition() {
     return definition;
+  }
+
+  @Override
+  public List<Measured> measures(final SyntaxNode root) {
+    return check.measures(root);
   }
 
   @Override
