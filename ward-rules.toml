@@ -1,0 +1,1267 @@
+# Ward rules of this repository's own `ward` gate, replacing the Checkstyle, PMD and SpotBugs gates (#347 part B).
+# Each include is a Ward rule that mirrors a check of config/checkstyle.xml, config/pmd-ruleset.xml or a
+# standard SpotBugs row; RepositoryWardRulesTest derives the list from the rule catalog and fails when one is missing.
+# Thresholds match config/checkstyle.xml and config/pmd-ruleset.xml. PMD AvoidDuplicateLiterals flags a literal
+# repeated 8 times or more, which is max-repeats = 7 here (flagged above the maximum).
+version = 1
+
+[select]
+preset = "none"
+languages = ["java"]
+include = [
+  "java.abstract-class-without-abstract-method",
+  "java.abstract-class-without-any-method",
+  "java.accessor-class-generation",
+  "java.accessor-method-generation",
+  "java.add-empty-string",
+  "java.append-character-with-char",
+  "java.array-is-stored-directly",
+  "java.assert-equals-argument-order",
+  "java.assert-statement-in-test",
+  "java.assignment-in-operand",
+  "java.assignment-to-non-final-static",
+  "java.at-nonatomic-64-bit-primitive",
+  "java.at-nonatomic-operations-on-shared-variable",
+  "java.at-operation-sequence-on-concurrent-abstraction",
+  "java.at-stale-thread-write-of-primitive",
+  "java.at-unsafe-resource-access-in-thread",
+  "java.avoid-accessibility-alteration",
+  "java.avoid-array-loops",
+  "java.avoid-branching-statement-as-last-in-loop",
+  "java.avoid-calendar-date-creation",
+  "java.avoid-calling-finalize",
+  "java.avoid-decimal-literals-in-big-decimal-constructor",
+  "java.avoid-deeply-nested-if-stmts",
+  "java.avoid-dollar-signs",
+  "java.avoid-field-name-matching-type-name",
+  "java.avoid-file-stream",
+  "java.avoid-instanceof-checks-in-catch-clause",
+  "java.avoid-instantiating-objects-in-loops",
+  "java.avoid-literals-in-if-condition",
+  "java.avoid-message-digest-field",
+  "java.avoid-multiple-unary-operators",
+  "java.avoid-print-stack-trace",
+  "java.avoid-reassigning-catch-variables",
+  "java.avoid-reassigning-loop-variables",
+  "java.avoid-rethrowing-exception",
+  "java.avoid-string-buffer-field",
+  "java.avoid-synchronized-at-method-level",
+  "java.avoid-synchronized-statement",
+  "java.avoid-thread-group",
+  "java.avoid-throwing-new-instance-of-same-exception",
+  "java.avoid-throwing-null-pointer-exception",
+  "java.avoid-unchecked-exceptions-in-signatures",
+  "java.avoid-using-hard-coded-ip",
+  "java.avoid-using-native-code",
+  "java.avoid-using-octal-values",
+  "java.avoid-using-volatile",
+  "java.big-integer-instantiation",
+  "java.boolean-get-method-name",
+  "java.broken-null-check",
+  "java.c-style-array-declaration",
+  "java.call-super-first",
+  "java.call-super-in-constructor",
+  "java.call-super-last",
+  "java.check-result-set",
+  "java.class-cast-exception-with-to-array",
+  "java.class-fan-out-complexity",
+  "java.clone-method-must-be-public",
+  "java.clone-method-must-implement-cloneable",
+  "java.clone-method-return-type-must-match-class-name",
+  "java.close-resource",
+  "java.collapsible-if-statements",
+  "java.collection-type-mismatch",
+  "java.compare-objects-with-equals",
+  "java.comparison-with-na-n",
+  "java.confusing-argument-to-varargs-method",
+  "java.confusing-ternary",
+  "java.consecutive-appends-should-reuse",
+  "java.consecutive-literal-appends",
+  "java.constants-in-interface",
+  "java.constructor-calls-overridable-method",
+  "java.control-statement-braces",
+  "java.cyclomatic-complexity",
+  "java.data-class",
+  "java.declaration-order",
+  "java.default-label-not-last-in-switch",
+  "java.detached-test-case",
+  "java.do-not-call-garbage-collection-explicitly",
+  "java.do-not-extend-java-lang-error",
+  "java.do-not-extend-java-lang-throwable",
+  "java.do-not-hard-code-sd-card",
+  "java.do-not-terminate-vm",
+  "java.do-not-throw-exception-in-finally",
+  "java.dont-call-thread-run",
+  "java.dont-use-float-type-for-loop-indices",
+  "java.double-brace-initialization",
+  "java.double-checked-locking",
+  "java.empty-block",
+  "java.empty-catch-block",
+  "java.empty-finalizer",
+  "java.empty-method-in-abstract-class-should-be-abstract",
+  "java.empty-statement",
+  "java.enum-comparison",
+  "java.equals-hash-code",
+  "java.equals-null",
+  "java.exception-as-flow-control",
+  "java.excessive-imports",
+  "java.excessive-parameter-list",
+  "java.excessive-public-count",
+  "java.exhaustive-switch-has-default",
+  "java.explicit-initialization",
+  "java.extends-object",
+  "java.fall-through",
+  "java.file-length",
+  "java.final-class",
+  "java.final-field-could-be-static",
+  "java.final-local-variable",
+  "java.final-parameter-in-abstract-method",
+  "java.finalize-does-not-call-super-finalize",
+  "java.finalize-only-calls-super-finalize",
+  "java.finalize-overloaded",
+  "java.finalize-should-be-protected",
+  "java.for-loop-can-be-foreach",
+  "java.for-loop-should-be-while-loop",
+  "java.for-loop-variable-count",
+  "java.god-class",
+  "java.guard-log-statement",
+  "java.hard-coded-crypto-key",
+  "java.hidden-field",
+  "java.hide-utility-class-constructor",
+  "java.idempotent-operations",
+  "java.identical-catch-branches",
+  "java.identical-conditional-branches",
+  "java.illegal-catch",
+  "java.illegal-import",
+  "java.illegal-throws",
+  "java.immutable-field",
+  "java.implicit-functional-interface",
+  "java.inefficient-empty-string-check",
+  "java.inefficient-string-buffering",
+  "java.insecure-crypto-iv",
+  "java.instantiable-utility-class",
+  "java.instantiation-to-get-class",
+  "java.insufficient-string-buffer-declaration",
+  "java.internal-api-usage",
+  "java.invalid-java-bean",
+  "java.invalid-log-message-format",
+  "java.j-unit-jupiter-test-no-private-modifier",
+  "java.j-unit-jupiter-test-should-be-package-private",
+  "java.j-unit-spelling",
+  "java.j-unit-static-suite",
+  "java.j-unit-use-expected",
+  "java.j-unit4-suites-should-use-suite-annotation",
+  "java.java-ncss",
+  "java.jumbled-incrementer",
+  "java.labeled-statement",
+  "java.lambda-can-be-method-reference",
+  "java.linguistic-naming",
+  "java.literals-first-in-comparisons",
+  "java.local-home-naming-convention",
+  "java.local-interface-session-naming-convention",
+  "java.local-variable-name",
+  "java.logic-inversion",
+  "java.long-literal-ending-with-lowercase-l",
+  "java.loose-coupling",
+  "java.magic-number",
+  "java.mdb-and-session-bean-naming-convention",
+  "java.member-name",
+  "java.method-length",
+  "java.method-name",
+  "java.method-returns-internal-array",
+  "java.method-with-same-name-as-enclosing-class",
+  "java.misplaced-null-check",
+  "java.missing-javadoc",
+  "java.missing-javadoc-type",
+  "java.missing-override",
+  "java.missing-serial-version-uid",
+  "java.missing-static-method-in-non-instantiatable-class",
+  "java.missing-switch-default",
+  "java.modifier-order",
+  "java.more-than-one-logger",
+  "java.multiple-string-literals",
+  "java.multiple-variable-declarations",
+  "java.mutable-static-state",
+  "java.n-path-complexity",
+  "java.no-package",
+  "java.non-case-label-in-switch",
+  "java.non-exhaustive-switch",
+  "java.non-serializable-class",
+  "java.non-static-initializer",
+  "java.non-thread-safe-singleton",
+  "java.null-assignment",
+  "java.one-statement-per-line",
+  "java.optimizable-to-array-call",
+  "java.override-both-equals-and-hashcode",
+  "java.overriding-thread-run",
+  "java.package-case",
+  "java.parameter-assignment",
+  "java.parameter-count",
+  "java.parameter-name",
+  "java.premature-declaration",
+  "java.preserve-stack-trace",
+  "java.primitive-wrapper-instantiation",
+  "java.proper-clone-implementation",
+  "java.proper-logger",
+  "java.protected-member-in-final-class",
+  "java.public-member-in-non-public-type",
+  "java.redundant-modifier",
+  "java.reliance-on-default-charset",
+  "java.remote-interface-naming-convention",
+  "java.remote-session-interface-naming-convention",
+  "java.replace-enumeration-with-iterator",
+  "java.replace-hashtable-with-map",
+  "java.replace-java-util-calendar",
+  "java.replace-java-util-date",
+  "java.replace-java-util-vector",
+  "java.return-empty-collection-rather-than-null",
+  "java.return-from-finally-block",
+  "java.rv-return-value-of-putifabsent-ignored",
+  "java.se-no-suitable-constructor",
+  "java.se-no-suitable-constructor-for-externalization",
+  "java.short-class-name",
+  "java.si-instance-before-finals-assigned",
+  "java.sic-inner-should-be-static-needs-this",
+  "java.signature-declare-throws-exception",
+  "java.simple-date-format-needs-locale",
+  "java.simplifiable-test-assertion",
+  "java.simplified-ternary",
+  "java.simplify-boolean-return",
+  "java.simplify-conditional",
+  "java.single-method-singleton",
+  "java.singleton-class-returning-new-instance",
+  "java.singular-field",
+  "java.sr-not-checked",
+  "java.ssd-do-not-use-instance-lock-on-shared-static-data",
+  "java.st-write-to-static-from-instance-method",
+  "java.star-import",
+  "java.static-ejb-field-should-be-final",
+  "java.string-buffer-instantiation-with-char",
+  "java.string-instantiation",
+  "java.string-literal-equality",
+  "java.string-to-string",
+  "java.suspicious-equals-method-name",
+  "java.suspicious-hashcode-method-name",
+  "java.suspicious-octal-escape",
+  "java.sw-swing-methods-invoked-in-swing-thread",
+  "java.switch-density",
+  "java.system-println",
+  "java.test-class-without-test-cases",
+  "java.tlw-two-lock-wait",
+  "java.too-few-branches-for-switch",
+  "java.too-many-fields",
+  "java.too-many-methods",
+  "java.too-many-static-imports",
+  "java.type-name",
+  "java.type-name-mismatch",
+  "java.type-parameter-naming-conventions",
+  "java.uc-useless-condition",
+  "java.uc-useless-condition-type",
+  "java.uc-useless-object",
+  "java.uc-useless-object-stack",
+  "java.uc-useless-void-method",
+  "java.ug-sync-set-unsync-get",
+  "java.unconditional-if-statement",
+  "java.unit-test-assertions-should-include-message",
+  "java.unit-test-should-include-assert",
+  "java.unit-test-should-use-after-annotation",
+  "java.unit-test-should-use-before-annotation",
+  "java.unit-test-should-use-test-annotation",
+  "java.unnecessary-annotation-value-element",
+  "java.unnecessary-block",
+  "java.unnecessary-boolean-assertion",
+  "java.unnecessary-boxing",
+  "java.unnecessary-case-change",
+  "java.unnecessary-cast",
+  "java.unnecessary-conversion-temporary",
+  "java.unnecessary-fully-qualified-name",
+  "java.unnecessary-interface-declaration",
+  "java.unnecessary-return",
+  "java.unnecessary-varargs-array-creation",
+  "java.unnecessary-warning-suppression",
+  "java.unsupported-jdk-api-usage",
+  "java.unsynchronized-static-formatter",
+  "java.unused-formal-parameter",
+  "java.unused-import",
+  "java.unused-label",
+  "java.unused-local-variable",
+  "java.unused-null-check-in-equals",
+  "java.unused-private-method",
+  "java.unused-return-value",
+  "java.urf-unread-public-or-protected-field",
+  "java.usc-potential-security-check-based-on-untrusted-source",
+  "java.use-arrays-as-list",
+  "java.use-collection-is-empty",
+  "java.use-correct-exception-logging",
+  "java.use-diamond-operator",
+  "java.use-enum-collections",
+  "java.use-equals-to-compare-strings",
+  "java.use-explicit-types",
+  "java.use-index-of-char",
+  "java.use-io-streams-with-apache-commons-file-item",
+  "java.use-locale-with-case-conversions",
+  "java.use-notify-all-instead-of-notify",
+  "java.use-proper-class-loader",
+  "java.use-short-array-initializer",
+  "java.use-standard-charsets",
+  "java.use-string-buffer-for-string-appends",
+  "java.use-string-buffer-length",
+  "java.use-try-with-resources",
+  "java.use-underscores-in-numeric-literals",
+  "java.use-varargs",
+  "java.useless-overriding-method",
+  "java.useless-qualified-this",
+  "java.useless-string-value-of",
+  "java.uuf-unused-public-or-protected-field",
+  "java.uw-uncond-wait",
+  "java.uwf-field-not-initialized-in-constructor",
+  "java.uwf-unwritten-public-or-protected-field",
+  "java.variable-can-be-inlined",
+  "java.variable-declaration-usage-distance",
+  "java.vsc-vulnerable-security-check-methods",
+  "java.while-loop-with-literal-boolean",
+  "java.wrong-test-annotation",
+]
+
+[rules.java.abstract-class-without-abstract-method]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.abstract-class-without-any-method]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.accessor-class-generation]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.accessor-method-generation]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.add-empty-string]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.append-character-with-char]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.array-is-stored-directly]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.assert-equals-argument-order]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.assert-statement-in-test]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.assignment-in-operand]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.assignment-to-non-final-static]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.at-nonatomic-64-bit-primitive]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.at-nonatomic-operations-on-shared-variable]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.at-operation-sequence-on-concurrent-abstraction]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.at-stale-thread-write-of-primitive]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.at-unsafe-resource-access-in-thread]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-accessibility-alteration]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-array-loops]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-branching-statement-as-last-in-loop]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-calendar-date-creation]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-calling-finalize]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-decimal-literals-in-big-decimal-constructor]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-deeply-nested-if-stmts]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-dollar-signs]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-field-name-matching-type-name]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-file-stream]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-instanceof-checks-in-catch-clause]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-instantiating-objects-in-loops]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-literals-in-if-condition]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-message-digest-field]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-multiple-unary-operators]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-print-stack-trace]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-reassigning-catch-variables]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-reassigning-loop-variables]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-rethrowing-exception]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-string-buffer-field]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-synchronized-at-method-level]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-synchronized-statement]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-thread-group]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-throwing-new-instance-of-same-exception]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-throwing-null-pointer-exception]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-unchecked-exceptions-in-signatures]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-using-hard-coded-ip]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-using-native-code]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-using-octal-values]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.avoid-using-volatile]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.big-integer-instantiation]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.boolean-get-method-name]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.broken-null-check]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.c-style-array-declaration]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.call-super-first]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.call-super-in-constructor]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.call-super-last]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.check-result-set]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.class-cast-exception-with-to-array]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.class-fan-out-complexity]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.clone-method-must-be-public]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.clone-method-must-implement-cloneable]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.clone-method-return-type-must-match-class-name]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.close-resource]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.collapsible-if-statements]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.collection-type-mismatch]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.compare-objects-with-equals]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.comparison-with-na-n]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.confusing-argument-to-varargs-method]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.confusing-ternary]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.consecutive-appends-should-reuse]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.consecutive-literal-appends]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.constants-in-interface]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.constructor-calls-overridable-method]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.control-statement-braces]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.cyclomatic-complexity]
+max = 10
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.data-class]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.declaration-order]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.default-label-not-last-in-switch]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.detached-test-case]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.do-not-call-garbage-collection-explicitly]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.do-not-extend-java-lang-error]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.do-not-extend-java-lang-throwable]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.do-not-hard-code-sd-card]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.do-not-terminate-vm]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.do-not-throw-exception-in-finally]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.dont-call-thread-run]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.dont-use-float-type-for-loop-indices]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.double-brace-initialization]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.double-checked-locking]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.empty-block]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.empty-catch-block]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.empty-finalizer]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.empty-method-in-abstract-class-should-be-abstract]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.empty-statement]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.enum-comparison]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.equals-hash-code]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.equals-null]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.exception-as-flow-control]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.excessive-imports]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.excessive-parameter-list]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.excessive-public-count]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.exhaustive-switch-has-default]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.explicit-initialization]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.extends-object]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.fall-through]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.file-length]
+max = 500
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.final-class]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.final-field-could-be-static]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.final-local-variable]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.final-parameter-in-abstract-method]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.finalize-does-not-call-super-finalize]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.finalize-only-calls-super-finalize]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.finalize-overloaded]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.finalize-should-be-protected]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.for-loop-can-be-foreach]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.for-loop-should-be-while-loop]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.for-loop-variable-count]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.god-class]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.guard-log-statement]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.hard-coded-crypto-key]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.hidden-field]
+ignore-constructor-parameter = true
+ignore-setter = true
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.hide-utility-class-constructor]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.idempotent-operations]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.identical-catch-branches]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.identical-conditional-branches]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.illegal-catch]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.illegal-import]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.illegal-throws]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.immutable-field]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.implicit-functional-interface]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.inefficient-empty-string-check]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.inefficient-string-buffering]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.insecure-crypto-iv]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.instantiable-utility-class]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.instantiation-to-get-class]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.insufficient-string-buffer-declaration]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.internal-api-usage]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.invalid-java-bean]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.invalid-log-message-format]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.j-unit-jupiter-test-no-private-modifier]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.j-unit-jupiter-test-should-be-package-private]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.j-unit-spelling]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.j-unit-static-suite]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.j-unit-use-expected]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.j-unit4-suites-should-use-suite-annotation]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.java-ncss]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.jumbled-incrementer]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.labeled-statement]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.lambda-can-be-method-reference]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.linguistic-naming]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.literals-first-in-comparisons]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.local-home-naming-convention]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.local-interface-session-naming-convention]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.local-variable-name]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.logic-inversion]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.long-literal-ending-with-lowercase-l]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.loose-coupling]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.magic-number]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.mdb-and-session-bean-naming-convention]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.member-name]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.method-length]
+max = 60
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.method-name]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.method-returns-internal-array]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.method-with-same-name-as-enclosing-class]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.misplaced-null-check]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.missing-javadoc]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.missing-javadoc-type]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.missing-override]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.missing-serial-version-uid]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.missing-static-method-in-non-instantiatable-class]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.missing-switch-default]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.modifier-order]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.more-than-one-logger]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.multiple-string-literals]
+max-repeats = 7
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.multiple-variable-declarations]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.mutable-static-state]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.n-path-complexity]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.no-package]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.non-case-label-in-switch]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.non-exhaustive-switch]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.non-serializable-class]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.non-static-initializer]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.non-thread-safe-singleton]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.null-assignment]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.one-statement-per-line]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.optimizable-to-array-call]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.override-both-equals-and-hashcode]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.overriding-thread-run]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.package-case]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.parameter-assignment]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.parameter-count]
+max = 5
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.parameter-name]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.premature-declaration]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.preserve-stack-trace]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.primitive-wrapper-instantiation]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.proper-clone-implementation]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.proper-logger]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.protected-member-in-final-class]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.public-member-in-non-public-type]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.redundant-modifier]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.reliance-on-default-charset]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.remote-interface-naming-convention]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.remote-session-interface-naming-convention]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.replace-enumeration-with-iterator]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.replace-hashtable-with-map]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.replace-java-util-calendar]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.replace-java-util-date]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.replace-java-util-vector]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.return-empty-collection-rather-than-null]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.return-from-finally-block]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.rv-return-value-of-putifabsent-ignored]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.se-no-suitable-constructor]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.se-no-suitable-constructor-for-externalization]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.short-class-name]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.si-instance-before-finals-assigned]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.sic-inner-should-be-static-needs-this]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.signature-declare-throws-exception]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.simple-date-format-needs-locale]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.simplifiable-test-assertion]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.simplified-ternary]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.simplify-boolean-return]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.simplify-conditional]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.single-method-singleton]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.singleton-class-returning-new-instance]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.singular-field]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.sr-not-checked]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.ssd-do-not-use-instance-lock-on-shared-static-data]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.st-write-to-static-from-instance-method]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.star-import]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.static-ejb-field-should-be-final]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.string-buffer-instantiation-with-char]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.string-instantiation]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.string-literal-equality]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.string-to-string]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.suspicious-equals-method-name]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.suspicious-hashcode-method-name]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.suspicious-octal-escape]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.sw-swing-methods-invoked-in-swing-thread]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.switch-density]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.system-println]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.test-class-without-test-cases]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.tlw-two-lock-wait]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.too-few-branches-for-switch]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.too-many-fields]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.too-many-methods]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.too-many-static-imports]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.type-name]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.type-name-mismatch]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.type-parameter-naming-conventions]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.uc-useless-condition]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.uc-useless-condition-type]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.uc-useless-object]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.uc-useless-object-stack]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.uc-useless-void-method]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.ug-sync-set-unsync-get]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unconditional-if-statement]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unit-test-assertions-should-include-message]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unit-test-should-include-assert]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unit-test-should-use-after-annotation]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unit-test-should-use-before-annotation]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unit-test-should-use-test-annotation]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unnecessary-annotation-value-element]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unnecessary-block]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unnecessary-boolean-assertion]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unnecessary-boxing]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unnecessary-case-change]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unnecessary-cast]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unnecessary-conversion-temporary]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unnecessary-fully-qualified-name]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unnecessary-interface-declaration]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unnecessary-return]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unnecessary-varargs-array-creation]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unnecessary-warning-suppression]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unsupported-jdk-api-usage]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unsynchronized-static-formatter]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unused-formal-parameter]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unused-import]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unused-label]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unused-local-variable]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unused-null-check-in-equals]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unused-private-method]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.unused-return-value]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.urf-unread-public-or-protected-field]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.usc-potential-security-check-based-on-untrusted-source]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.use-arrays-as-list]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.use-collection-is-empty]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.use-correct-exception-logging]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.use-diamond-operator]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.use-enum-collections]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.use-equals-to-compare-strings]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.use-explicit-types]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.use-index-of-char]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.use-io-streams-with-apache-commons-file-item]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.use-locale-with-case-conversions]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.use-notify-all-instead-of-notify]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.use-proper-class-loader]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.use-short-array-initializer]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.use-standard-charsets]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.use-string-buffer-for-string-appends]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.use-string-buffer-length]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.use-try-with-resources]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.use-underscores-in-numeric-literals]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.use-varargs]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.useless-overriding-method]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.useless-qualified-this]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.useless-string-value-of]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.uuf-unused-public-or-protected-field]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.uw-uncond-wait]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.uwf-field-not-initialized-in-constructor]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.uwf-unwritten-public-or-protected-field]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.variable-can-be-inlined]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.variable-declaration-usage-distance]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.vsc-vulnerable-security-check-methods]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.while-loop-with-literal-boolean]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.wrong-test-annotation]
+exclude-paths = ["**/src/test/resources/**"]

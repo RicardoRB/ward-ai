@@ -6,6 +6,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Ward is in alpha, so minor versions may
 still change behavior. Breaking changes are called out under **Changed**.
 
+## [Unreleased]
+
+### Changed
+
+- This repository's own `ward.toml` gates its Java with the `ward` gate and the root `ward-rules.toml` instead of the Checkstyle, PMD, SpotBugs and Semgrep `p/java` checks (#347, part B). The Spotless format check and the Maven plugins stay.
+
 ## [0.6.0] - 2026-11-10
 
 ### Added
