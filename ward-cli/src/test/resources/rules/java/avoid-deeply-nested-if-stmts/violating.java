@@ -9,5 +9,19 @@ final class Nesting {
     }
   }
 
+  void other(boolean a, boolean b, boolean c) {
+    if (a) {
+      run();
+    } else {
+      if (b) {
+        run();
+      } else {
+        if (c) {
+          run();
+        }
+      }
+    }
+  }
+
   void run() {}
 }
