@@ -38,6 +38,26 @@ final class ComplexityMeasuresTest {
         .containsExactly("1:1", "2:2");
   }
 
+  @Test
+  void pythonMeasuresANestedFunctionApartFromItsOuterFunction() {
+    final String source =
+        "def outer(a):\n    if a:\n        pass\n    def inner(b):\n        if b:\n"
+            + "            pass\n        if b:\n            pass\n";
+
+    assertThat(measure("ward:python/complexity", AnalysisLanguage.PYTHON, source))
+        .containsExactly("1:2", "4:3");
+  }
+
+  @Test
+  void swiftMeasuresFunctionsAndNotTheirClosures() {
+    final String source =
+        "func f(a: Int) {\n  if a > 0 {}\n  let g = { (b: Int) in if b > 0 {} }\n}\n"
+            + "func h() {}\n";
+
+    assertThat(measure("ward:swift/complexity", AnalysisLanguage.SWIFT, source))
+        .containsExactly("1:2", "5:1");
+  }
+
   private static List<String> measure(
       final String id, final AnalysisLanguage language, final String text) {
     return new ClasspathRuleSource()
