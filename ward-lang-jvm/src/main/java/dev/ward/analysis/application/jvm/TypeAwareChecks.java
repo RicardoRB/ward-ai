@@ -76,8 +76,7 @@ final class TypeAwareChecks {
             "check-result-set",
             toml -> new CheckResultSetCheck(TomlValues.required(toml, MESSAGE))),
         entry(
-            "loop-allocation",
-            toml -> new LoopAllocationCheck(TomlValues.required(toml, MESSAGE))),
+            "loop-allocation", toml -> new LoopAllocationCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "enum-comparison", toml -> new EnumComparisonCheck(TomlValues.required(toml, MESSAGE))),
         entry(
