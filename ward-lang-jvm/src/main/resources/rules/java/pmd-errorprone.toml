@@ -828,11 +828,11 @@ capability = "SYNTAX"
 severity = "error"
 category = "correctness"
 presets = ["standard", "strict"]
+options.ignore-magic-numbers = { type = "string-list" }
 body = '''
-check = "forbidden-node"
-kinds = ["statement"]
-text = '^if\([^{};]*?(?:(?<![\w.-])(?!0(?![\w.]))\d[\w.]*|(?<![\w.])-(?!1(?![\w.]))\d[\w.]*)'
-message = "literal in an if condition; name it as a constant"
+check = "if-literal"
+ignore-magic-numbers = ["-1", "0"]
+message = "literal '{value}' in an if condition; name it as a constant"
 '''
 
 [[rules]]

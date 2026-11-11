@@ -4,11 +4,13 @@ import static java.util.Map.entry;
 
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.CheckRegistry;
+import dev.ward.analysis.application.rule.TomlLists;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.CovariantEqualsCheck;
 import dev.ward.analysis.domain.rule.check.EqualsAvoidNullCheck;
 import dev.ward.analysis.domain.rule.check.EqualsHashCodeCheck;
 import dev.ward.analysis.domain.rule.check.FallThroughCheck;
+import dev.ward.analysis.domain.rule.check.IfLiteralCheck;
 import dev.ward.analysis.domain.rule.check.IllegalCatchCheck;
 import dev.ward.analysis.domain.rule.check.IllegalThrowsCheck;
 import dev.ward.analysis.domain.rule.check.MissingSwitchDefaultCheck;
@@ -34,6 +36,12 @@ final class CodingChecks {
 
   private static Map<String, CheckFactory> build() {
     return Map.ofEntries(
+        entry(
+            "if-literal",
+            toml ->
+                new IfLiteralCheck(
+                    TomlLists.optional(toml, "ignore-magic-numbers"),
+                    TomlValues.required(toml, MESSAGE))),
         entry(
             "fall-through",
             toml ->
