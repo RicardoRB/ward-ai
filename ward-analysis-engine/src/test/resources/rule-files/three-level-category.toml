@@ -1,0 +1,12 @@
+[[rules]]
+id = "ward:java/example"
+language = "java"
+capability = "SYNTAX"
+severity = "warning"
+category = "style/imports/order"
+presets = ["standard", "strict"]
+options.max = { type = "integer", min = 1, max = 9 }
+options.mode = { type = "string", values = ["a", "b"], parameter = "mode" }
+body = '''
+check = "lines"
+'''

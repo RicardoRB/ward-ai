@@ -48,7 +48,7 @@ swiftlint = ["blanket_disable_command"]
 
 [[rule]]
 name = "block-based-kvo"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["block_based_kvo"]
 
 [[rule]]
@@ -160,7 +160,7 @@ swiftlint = ["discarded_notification_center_observer"]
 
 [[rule]]
 name = "discouraged-assert"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["discouraged_assert"]
 
 [[rule]]
@@ -177,7 +177,7 @@ swiftlint = ["discouraged_direct_init"]
 
 [[rule]]
 name = "discouraged-none-name"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["discouraged_none_name"]
 
 [[rule]]
@@ -188,12 +188,12 @@ swiftlint = ["discouraged_object_literal"]
 
 [[rule]]
 name = "discouraged-optional-boolean"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["discouraged_optional_boolean"]
 
 [[rule]]
 name = "discouraged-optional-collection"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["discouraged_optional_collection"]
 
 [[rule]]
@@ -211,7 +211,7 @@ swiftlint = ["duplicate_enum_cases"]
 [[rule]]
 name = "duplicate-imports"
 presets = ["standard", "strict"]
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["duplicate_imports"]
 
 [[rule]]
@@ -278,7 +278,7 @@ swiftlint = ["explicit_acl"]
 
 [[rule]]
 name = "explicit-enum-raw-value"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["explicit_enum_raw_value"]
 
 [[rule]]
@@ -289,7 +289,7 @@ swiftlint = ["explicit_init"]
 
 [[rule]]
 name = "explicit-top-level-acl"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["explicit_top_level_acl"]
 
 [[rule]]
@@ -306,12 +306,12 @@ swiftlint = ["extension_access_modifier"]
 
 [[rule]]
 name = "fallthrough"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["fallthrough"]
 
 [[rule]]
 name = "fatal-error-message"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["fatal_error_message"]
 
 [[rule]]
@@ -356,17 +356,17 @@ swiftlint = ["flatmap_over_map_reduce"]
 [[rule]]
 name = "for-where"
 presets = ["standard", "strict"]
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["for_where"]
 
 [[rule]]
 name = "force-cast"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["force_cast"]
 
 [[rule]]
 name = "force-try"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["force_try"]
 
 [[rule]]
@@ -390,7 +390,7 @@ swiftlint = ["function_name_whitespace"]
 [[rule]]
 name = "generic-type-name"
 presets = ["standard", "strict"]
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["generic_type_name"]
 
 [[rule]]
@@ -445,12 +445,12 @@ swiftlint = ["invisible_character"]
 
 [[rule]]
 name = "is-disjoint"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["is_disjoint"]
 
 [[rule]]
 name = "joined-default-parameter"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["joined_default_parameter"]
 
 [[rule]]
@@ -466,32 +466,32 @@ swiftlint = ["last_where"]
 
 [[rule]]
 name = "legacy-cggeometry-functions"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["legacy_cggeometry_functions"]
 
 [[rule]]
 name = "legacy-constant"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["legacy_constant"]
 
 [[rule]]
 name = "legacy-constructor"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["legacy_constructor"]
 
 [[rule]]
 name = "legacy-hashing"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["legacy_hashing"]
 
 [[rule]]
 name = "legacy-multiple"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["legacy_multiple"]
 
 [[rule]]
 name = "legacy-nsgeometry-functions"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["legacy_nsgeometry_functions"]
 
 [[rule]]
@@ -502,17 +502,17 @@ swiftlint = ["legacy_objc_type"]
 
 [[rule]]
 name = "legacy-random"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["legacy_random"]
 
 [[rule]]
 name = "legacy-swiftui-aspect-ratio"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["legacy_swiftui_aspect_ratio"]
 
 [[rule]]
 name = "legacy-uigraphics-function"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["legacy_uigraphics_function"]
 
 [[rule]]
@@ -558,7 +558,7 @@ swiftlint = ["nesting"]
 
 [[rule]]
 name = "nimble-operator"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["nimble_operator"]
 
 [[rule]]
@@ -569,12 +569,12 @@ swiftlint = ["no_empty_block"]
 
 [[rule]]
 name = "no-extension-access-modifier"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["no_extension_access_modifier"]
 
 [[rule]]
 name = "no-fallthrough-only"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["no_fallthrough_only"]
 
 [[rule]]
@@ -676,7 +676,7 @@ swiftlint = ["override_in_extension"]
 
 [[rule]]
 name = "pattern-matching-keywords"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["pattern_matching_keywords"]
 
 [[rule]]
@@ -686,7 +686,7 @@ swiftlint = ["period_spacing"]
 
 [[rule]]
 name = "prefer-asset-symbols"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["prefer_asset_symbols"]
 
 [[rule]]
@@ -703,7 +703,7 @@ swiftlint = ["prefer_key_path"]
 
 [[rule]]
 name = "prefer-nimble"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["prefer_nimble"]
 
 [[rule]]
@@ -720,12 +720,12 @@ swiftlint = ["prefer_self_type_over_type_of_self"]
 
 [[rule]]
 name = "prefer-type-checking"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["prefer_type_checking"]
 
 [[rule]]
 name = "prefer-zero-over-explicit-init"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["prefer_zero_over_explicit_init"]
 
 [[rule]]
@@ -748,7 +748,7 @@ swiftlint = ["private_outlet"]
 [[rule]]
 name = "private-over-fileprivate"
 presets = ["standard", "strict"]
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["private_over_fileprivate"]
 
 [[rule]]
@@ -830,12 +830,12 @@ swiftlint = ["redundant_final"]
 
 [[rule]]
 name = "redundant-nil-coalescing"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["redundant_nil_coalescing"]
 
 [[rule]]
 name = "redundant-objc-attribute"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["redundant_objc_attribute"]
 
 [[rule]]
@@ -852,12 +852,12 @@ swiftlint = ["redundant_sendable"]
 
 [[rule]]
 name = "redundant-set-access-control"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["redundant_set_access_control"]
 
 [[rule]]
 name = "redundant-string-enum-value"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["redundant_string_enum_value"]
 
 [[rule]]
@@ -869,7 +869,7 @@ swiftlint = ["redundant_type_annotation"]
 [[rule]]
 name = "redundant-void-return"
 presets = ["standard", "strict"]
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["redundant_void_return"]
 
 [[rule]]
@@ -915,7 +915,7 @@ swiftlint = ["shorthand_operator"]
 
 [[rule]]
 name = "shorthand-optional-binding"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["shorthand_optional_binding"]
 
 [[rule]]
@@ -937,18 +937,18 @@ swiftlint = ["sorted_first_last"]
 
 [[rule]]
 name = "static-operator"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["static_operator"]
 
 [[rule]]
 name = "static-over-final-class"
 presets = ["standard", "strict"]
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["static_over_final_class"]
 
 [[rule]]
 name = "strict-fileprivate"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["strict_fileprivate"]
 
 [[rule]]
@@ -970,7 +970,7 @@ swiftlint = ["switch_case_on_newline"]
 
 [[rule]]
 name = "syntactic-sugar"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["syntactic_sugar"]
 
 [[rule]]
@@ -981,7 +981,7 @@ swiftlint = ["test_case_accessibility"]
 
 [[rule]]
 name = "toggle-bool"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["toggle_bool"]
 
 [[rule]]
@@ -992,7 +992,7 @@ swiftlint = ["trailing_closure"]
 
 [[rule]]
 name = "trailing-semicolon"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["trailing_semicolon"]
 
 [[rule]]
@@ -1009,12 +1009,12 @@ swiftlint = ["typesafe_array_init"]
 
 [[rule]]
 name = "unavailable-condition"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["unavailable_condition"]
 
 [[rule]]
 name = "unavailable-function"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["unavailable_function"]
 
 [[rule]]
@@ -1025,7 +1025,7 @@ swiftlint = ["unhandled_throwing_task"]
 
 [[rule]]
 name = "unneeded-break-in-switch"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["unneeded_break_in_switch"]
 
 [[rule]]
@@ -1043,7 +1043,7 @@ swiftlint = ["unneeded_override"]
 [[rule]]
 name = "unneeded-synthesized-initializer"
 presets = ["standard", "strict"]
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["unneeded_synthesized_initializer"]
 
 [[rule]]
@@ -1059,7 +1059,7 @@ swiftlint = ["unowned_variable_capture"]
 
 [[rule]]
 name = "untyped-error-in-catch"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["untyped_error_in_catch"]
 
 [[rule]]
@@ -1081,7 +1081,7 @@ swiftlint = ["unused_declaration"]
 
 [[rule]]
 name = "unused-enumerated"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["unused_enumerated"]
 
 [[rule]]
@@ -1123,7 +1123,7 @@ swiftlint = ["vertical_parameter_alignment_on_call"]
 [[rule]]
 name = "void-function-in-ternary"
 presets = ["standard", "strict"]
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["void_function_in_ternary"]
 
 [[rule]]
@@ -1145,5 +1145,5 @@ swiftlint = ["xct_specific_matcher"]
 
 [[rule]]
 name = "xctfail-message"
-category = "style"
+category = "style/idiomatic"
 swiftlint = ["xctfail_message"]

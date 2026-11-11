@@ -2,26 +2,30 @@ package dev.ward.application.gate;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.rule.RuleDefinition;
+import dev.ward.analysis.domain.rule.RuleGroup;
 import dev.ward.analysis.domain.rule.RulePreset;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Applies the {@code [select]} table: the rules of the preset, kept to the listed languages and
- * categories, plus {@code include}, minus {@code exclude}. The two lists name a rule {@code
- * <language>.<rule-name>}, as a rule table does. A value that names nothing, or a rule written as
- * its id, is reported to {@link RuleProblems}.
+ * category groups, plus {@code include}, minus {@code exclude}. The two lists name a rule {@code
+ * <language>.<rule-name>} or a group {@code <family>} or {@code <family>/<subcategory>}; a value
+ * with a dot is a rule. A value that names nothing, or a rule written as its id, is reported to
+ * {@link RuleProblems}.
  */
 final class RuleSelector {
   private static final String SELECT = "[select]";
   private static final String DEFAULT_PRESET = "standard";
   private static final String RULE_PREFIX = "ward:";
   private static final char ID_MARK = ':';
+  private static final char RULE_MARK = '.';
 
   private final RuleConfigFile.Select select;
   private final List<RuleDefinition> catalog;
@@ -45,14 +49,14 @@ final class RuleSelector {
     for (final RuleDefinition rule : catalog) {
       if (preset.selects(rule.presets())
           && (languages.isEmpty() || languages.stream().anyMatch(rule::covers))
-          && (categories.isEmpty() || categories.contains(rule.category()))) {
+          && (categories.isEmpty() || matchesAny(categories, rule.category()))) {
         chosen.put(rule.id(), rule);
       }
     }
-    for (final RuleDefinition rule : known("include", select.include())) {
+    for (final RuleDefinition rule : resolve("include", select.include(), languages)) {
       chosen.put(rule.id(), rule);
     }
-    known("exclude", select.exclude()).forEach(rule -> chosen.remove(rule.id()));
+    resolve("exclude", select.exclude(), Set.of()).forEach(rule -> chosen.remove(rule.id()));
     return chosen;
   }
 
@@ -74,7 +78,7 @@ final class RuleSelector {
   }
 
   private Set<AnalysisLanguage> languages() {
-    final Set<AnalysisLanguage> languages = new java.util.LinkedHashSet<>();
+    final Set<AnalysisLanguage> languages = new LinkedHashSet<>();
     for (final String name : select.languages()) {
       try {
         languages.add(AnalysisLanguage.valueOf(name.toUpperCase(Locale.ROOT)));
@@ -94,40 +98,68 @@ final class RuleSelector {
   }
 
   private Set<String> categories() {
-    final Set<String> known =
-        catalog.stream().map(RuleDefinition::category).collect(Collectors.toSet());
-    final Set<String> categories = new java.util.LinkedHashSet<>();
-    for (final String category : select.categories()) {
-      if (known.contains(category)) {
-        categories.add(category);
+    final Set<String> categories = new LinkedHashSet<>();
+    for (final String group : select.categories()) {
+      if (isKnownGroup(group)) {
+        categories.add(group);
       } else {
-        problems.add(
-            SELECT,
-            "categories",
-            "unknown category \""
-                + category
-                + "\"; expected one of "
-                + known.stream().filter(name -> !name.isEmpty()).sorted().toList());
+        problems.add(SELECT, "categories", unknownGroup(group));
       }
     }
     return categories;
   }
 
-  private List<RuleDefinition> known(final String key, final List<String> names) {
+  private boolean isKnownGroup(final String group) {
+    return catalog.stream().anyMatch(rule -> RuleGroup.matches(group, rule.category()));
+  }
+
+  private static boolean matchesAny(final Set<String> groups, final String category) {
+    return groups.stream().anyMatch(group -> RuleGroup.matches(group, category));
+  }
+
+  private String unknownGroup(final String group) {
+    return "unknown group \""
+        + group
+        + "\"; expected one of "
+        + RuleGroup.names(catalog.stream().map(RuleDefinition::category).toList());
+  }
+
+  private List<RuleDefinition> resolve(
+      final String key, final List<String> names, final Set<AnalysisLanguage> languages) {
     final List<RuleDefinition> rules = new ArrayList<>();
     for (final String name : names) {
       if (name.indexOf(ID_MARK) >= 0) {
         problems.add(SELECT, key, writeDotted(name));
-        continue;
+      } else if (name.indexOf(RULE_MARK) >= 0) {
+        rule(key, name).ifPresent(rules::add);
+      } else {
+        rules.addAll(group(key, name, languages));
       }
-      final String id = RULE_PREFIX + name.replaceFirst("\\.", "/");
-      catalog.stream()
-          .filter(rule -> rule.id().equals(id))
-          .findFirst()
-          .ifPresentOrElse(
-              rules::add, () -> problems.add(SELECT, key, "unknown rule \"" + name + "\""));
     }
     return rules;
+  }
+
+  private Optional<RuleDefinition> rule(final String key, final String name) {
+    final String id = RULE_PREFIX + name.replaceFirst("\\.", "/");
+    final Optional<RuleDefinition> rule =
+        catalog.stream().filter(candidate -> candidate.id().equals(id)).findFirst();
+    if (rule.isEmpty()) {
+      problems.add(SELECT, key, "unknown rule \"" + name + "\"");
+    }
+    return rule;
+  }
+
+  /** The rules of a group; a group that matches no rule is reported, and languages narrow it. */
+  private List<RuleDefinition> group(
+      final String key, final String name, final Set<AnalysisLanguage> languages) {
+    if (!isKnownGroup(name)) {
+      problems.add(SELECT, key, unknownGroup(name));
+      return List.of();
+    }
+    return catalog.stream()
+        .filter(rule -> RuleGroup.matches(name, rule.category()))
+        .filter(rule -> languages.isEmpty() || languages.stream().anyMatch(rule::covers))
+        .toList();
   }
 
   /** The problem of a rule written as its id, {@code ward:<language>/<rule-name>}. */

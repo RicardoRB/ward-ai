@@ -2203,7 +2203,7 @@ spotbugs = ["UR_UNINIT_READ_CALLED_FROM_SUPER_CONSTRUCTOR"]
 [[rule]]
 name = "usc-potential-security-check-based-on-untrusted-source"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/exposure"
 spotbugs = ["USC_POTENTIAL_SECURITY_CHECK_BASED_ON_UNTRUSTED_SOURCE"]
 
 [[rule]]
@@ -2286,7 +2286,7 @@ spotbugs = ["VR_UNRESOLVABLE_REFERENCE"]
 [[rule]]
 name = "vsc-vulnerable-security-check-methods"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/exposure"
 spotbugs = ["VSC_VULNERABLE_SECURITY_CHECK_METHODS"]
 
 [[rule]]

@@ -5,6 +5,7 @@ import static dev.ward.infrastructure.rule.catalog.RuleSchemaJson.obj;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.rule.RuleDefinition;
+import dev.ward.analysis.domain.rule.RuleGroup;
 import dev.ward.analysis.domain.rule.RulePreset;
 import java.util.List;
 import java.util.Locale;
@@ -33,9 +34,9 @@ final class RuleSchemaSelect {
     final Map<String, Object> properties = obj();
     properties.put("preset", obj(TYPE, STRING, ENUM, presetKeys()));
     properties.put("languages", array(obj(TYPE, STRING, ENUM, languageKeys())));
-    properties.put("categories", array(obj(TYPE, STRING, ENUM, categories(definitions))));
-    properties.put("include", array(obj(TYPE, STRING, ENUM, ids(definitions))));
-    properties.put("exclude", array(obj(TYPE, STRING, ENUM, ids(definitions))));
+    properties.put("categories", array(obj(TYPE, STRING, ENUM, groups(definitions))));
+    properties.put("include", array(obj(TYPE, STRING, ENUM, groupsAndIds(definitions))));
+    properties.put("exclude", array(obj(TYPE, STRING, ENUM, groupsAndIds(definitions))));
     return obj(TYPE, "object", ADDITIONAL, false, PROPERTIES, properties);
   }
 
@@ -49,13 +50,15 @@ final class RuleSchemaSelect {
         .toList();
   }
 
-  private static List<String> categories(final List<RuleDefinition> definitions) {
-    final Set<String> categories = new TreeSet<>();
-    definitions.stream()
-        .map(RuleDefinition::category)
-        .filter(category -> !category.isEmpty())
-        .forEach(categories::add);
-    return List.copyOf(categories);
+  private static List<String> groups(final List<RuleDefinition> definitions) {
+    return List.copyOf(
+        RuleGroup.names(definitions.stream().map(RuleDefinition::category).toList()));
+  }
+
+  private static List<String> groupsAndIds(final List<RuleDefinition> definitions) {
+    final Set<String> values = new TreeSet<>(groups(definitions));
+    values.addAll(ids(definitions));
+    return List.copyOf(values);
   }
 
   private static List<String> ids(final List<RuleDefinition> definitions) {

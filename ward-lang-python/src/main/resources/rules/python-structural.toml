@@ -6,7 +6,7 @@ id = "ward:python/function-length"
 language = "python"
 capability = "SYNTAX"
 severity = "error"
-category = "complexity"
+category = "complexity/size"
 presets = ["standard", "strict"]
 options.max = { type = "integer", min = 1 }
 body = "measure=lines; node=funcdef; max=60; name=name; message=function {name} spans {value} lines, the limit is {max}"
@@ -16,7 +16,7 @@ id = "ward:python/parameter-count"
 language = "python"
 capability = "SYNTAX"
 severity = "error"
-category = "complexity"
+category = "complexity/size"
 presets = ["standard", "strict"]
 options.max = { type = "integer", min = 0 }
 body = "measure=parameters; node=funcdef; max=5; name=name; path=parameters/typedargslist/tfpdef; receivers=self,cls; message=function {name} has {value} parameters, the limit is {max}"
@@ -26,7 +26,7 @@ id = "ward:python/complexity"
 language = "python"
 capability = "SYNTAX"
 severity = "error"
-category = "complexity"
+category = "complexity/metrics"
 presets = ["standard", "strict"]
 options.max = { type = "integer", min = 1 }
 body = "measure=decision-points; node=funcdef; max=10; name=name; nested=funcdef,classdef,lambdef; decisions=if_stmt,while_stmt,for_stmt,except_clause,case_block,comp_for,comp_if,if_stmt>elif,and_test>and,or_test>or,test>if; message=function {name} has complexity {value}, the limit is {max}"
@@ -36,7 +36,7 @@ id = "ward:python/file-length"
 language = "python"
 capability = "SYNTAX"
 severity = "error"
-category = "complexity"
+category = "complexity/size"
 presets = ["standard", "strict"]
 options.max = { type = "integer", min = 1 }
 body = "measure=lines; node=file_input; max=500; message=file has {value} lines, the limit is {max}"

@@ -9,7 +9,7 @@ eslint = ["accessor-pairs"]
 [[rule]]
 name = "array-callback-return"
 presets = ["standard", "strict"]
-category = "correctness"
+category = "correctness/control-flow"
 eslint = ["array-callback-return"]
 biome = ["useIterableCallbackReturn"]
 
@@ -239,7 +239,7 @@ biome = ["noConstAssign"]
 [[rule]]
 name = "no-constant-binary-expression"
 presets = ["standard", "strict"]
-category = "correctness"
+category = "correctness/control-flow"
 eslint = ["no-constant-binary-expression"]
 biome = ["noConstantBinaryExpressions"]
 
@@ -251,7 +251,7 @@ biome = ["noConstantCondition"]
 [[rule]]
 name = "no-constructor-return"
 presets = ["standard", "strict"]
-category = "correctness"
+category = "correctness/control-flow"
 eslint = ["no-constructor-return"]
 biome = ["noConstructorReturn"]
 
@@ -297,7 +297,7 @@ biome = ["noDuplicateClassMembers"]
 [[rule]]
 name = "no-dupe-else-if"
 presets = ["standard", "strict"]
-category = "correctness"
+category = "correctness/control-flow"
 eslint = ["no-dupe-else-if"]
 biome = ["noDuplicateElseIf"]
 
@@ -377,7 +377,7 @@ eslint = ["no-extra-boolean-cast"]
 [[rule]]
 name = "no-extra-label"
 presets = ["standard", "strict"]
-category = "style"
+category = "style/suggestions"
 eslint = ["no-extra-label"]
 biome = ["noUselessLabel"]
 
@@ -418,14 +418,14 @@ biome = ["noImportAssign"]
 [[rule]]
 name = "no-inner-declarations"
 presets = ["standard", "strict"]
-category = "correctness"
+category = "correctness/control-flow"
 eslint = ["no-inner-declarations"]
 biome = ["noInnerDeclarations"]
 
 [[rule]]
 name = "no-invalid-regexp"
 presets = ["standard", "strict"]
-category = "correctness"
+category = "correctness/strings"
 eslint = ["no-invalid-regexp"]
 
 [[rule]]
@@ -438,7 +438,7 @@ eslint = ["no-invalid-this"]
 [[rule]]
 name = "no-irregular-whitespace"
 presets = ["standard", "strict"]
-category = "correctness"
+category = "correctness/strings"
 eslint = ["no-irregular-whitespace"]
 biome = ["noIrregularWhitespace"]
 
@@ -449,7 +449,7 @@ eslint = ["no-iterator"]
 [[rule]]
 name = "no-label-var"
 presets = ["standard", "strict"]
-category = "style"
+category = "style/suggestions"
 eslint = ["no-label-var"]
 biome = ["noLabelVar"]
 
@@ -483,7 +483,7 @@ biome = ["noPrecisionLoss"]
 [[rule]]
 name = "no-misleading-character-class"
 presets = ["standard", "strict"]
-category = "correctness"
+category = "correctness/strings"
 eslint = ["no-misleading-character-class"]
 biome = ["noMisleadingCharacterClass"]
 
@@ -584,7 +584,7 @@ biome = ["noPrototypeBuiltins"]
 [[rule]]
 name = "no-redeclare"
 presets = ["standard", "strict"]
-category = "style"
+category = "style/suggestions"
 typescript-eslint = ["no-redeclare"]
 eslint = ["no-redeclare"]
 biome = ["noRedeclare"]
@@ -668,7 +668,7 @@ biome = ["noTemplateCurlyInString"]
 [[rule]]
 name = "no-this-before-super"
 presets = ["standard", "strict"]
-category = "correctness"
+category = "correctness/control-flow"
 eslint = ["no-this-before-super"]
 
 [[rule]]
@@ -678,7 +678,7 @@ eslint = ["no-throw-literal"]
 [[rule]]
 name = "no-unassigned-vars"
 presets = ["standard", "strict"]
-category = "correctness"
+category = "correctness/control-flow"
 eslint = ["no-unassigned-vars"]
 
 [[rule]]
@@ -706,7 +706,7 @@ eslint = ["no-underscore-dangle"]
 [[rule]]
 name = "no-unexpected-multiline"
 presets = ["standard", "strict"]
-category = "correctness"
+category = "correctness/control-flow"
 eslint = ["no-unexpected-multiline"]
 
 [[rule]]
@@ -745,14 +745,14 @@ biome = ["noUnsafeNegation"]
 [[rule]]
 name = "no-unsafe-optional-chaining"
 presets = ["standard", "strict"]
-category = "correctness"
+category = "correctness/control-flow"
 eslint = ["no-unsafe-optional-chaining"]
 biome = ["noUnsafeOptionalChaining"]
 
 [[rule]]
 name = "no-unused-expressions"
 presets = ["standard", "strict"]
-category = "style"
+category = "style/suggestions"
 typescript-eslint = ["no-unused-expressions"]
 eslint = ["no-unused-expressions"]
 biome = ["noUnusedExpressions"]
@@ -773,7 +773,7 @@ biome = ["noUnusedPrivateClassMembers"]
 [[rule]]
 name = "no-use-before-define"
 presets = ["standard", "strict"]
-category = "correctness"
+category = "correctness/control-flow"
 typescript-eslint = ["no-use-before-define"]
 eslint = ["no-use-before-define"]
 biome = ["noInvalidUseBeforeDeclaration"]
@@ -781,7 +781,7 @@ biome = ["noInvalidUseBeforeDeclaration"]
 [[rule]]
 name = "no-useless-backreference"
 presets = ["standard", "strict"]
-category = "correctness"
+category = "correctness/control-flow"
 eslint = ["no-useless-backreference"]
 biome = ["noUselessRegexBackrefs"]
 
@@ -816,7 +816,7 @@ biome = ["noUselessConstructor"]
 [[rule]]
 name = "no-useless-escape"
 presets = ["standard", "strict"]
-category = "style"
+category = "style/suggestions"
 eslint = ["no-useless-escape"]
 biome = ["noUselessEscapeInRegex", "noUselessEscapeInString"]
 
@@ -913,7 +913,7 @@ biome = ["useObjectSpread"]
 [[rule]]
 name = "prefer-promise-reject-errors"
 presets = ["standard", "strict"]
-category = "style"
+category = "style/suggestions"
 typescript-eslint = ["prefer-promise-reject-errors"]
 eslint = ["prefer-promise-reject-errors"]
 biome = ["usePromiseRejectErrors"]
@@ -941,7 +941,7 @@ biome = ["useTemplate"]
 [[rule]]
 name = "preserve-caught-error"
 presets = ["standard", "strict"]
-category = "style"
+category = "style/suggestions"
 eslint = ["preserve-caught-error"]
 
 [[rule]]
@@ -988,7 +988,7 @@ eslint = ["sort-vars"]
 [[rule]]
 name = "strict"
 presets = ["standard", "strict"]
-category = "style"
+category = "style/suggestions"
 eslint = ["strict"]
 biome = ["noRedundantUseStrict", "useStrictMode"]
 

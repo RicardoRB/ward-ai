@@ -33,6 +33,20 @@ class RuleFileReaderTest {
         .hasMessageContaining("absent.toml");
   }
 
+  @Test
+  void readsATwoLevelCategory() {
+    final List<RuleDefinition> rules = RuleFileReader.read(DIRECTORY + "subcategory.toml");
+
+    assertThat(rules.get(0).category()).isEqualTo("sizes/metrics");
+  }
+
+  @Test
+  void aThreeLevelCategoryFailsAndNamesTheValue() {
+    assertThatThrownBy(() -> RuleFileReader.read(DIRECTORY + "three-level-category.toml"))
+        .isInstanceOf(RuleConfigurationException.class)
+        .hasMessageContaining("style/imports/order");
+  }
+
   @ParameterizedTest
   @ValueSource(
       strings = {

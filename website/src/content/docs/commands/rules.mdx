@@ -7,7 +7,7 @@ description: List, show, enable and disable analysis rules, and edit the selecti
 rules on or off in `ward-rules.toml`. The file's comments and formatting are kept.
 
 ```sh
-ward rules list [--preset none|standard|strict] [--language <language>] [--category <category>] [--selected] [--format text|json] [-C <dir>]
+ward rules list [--preset none|standard|strict] [--language <language>] [--category <group>] [--selected] [--format text|json] [-C <dir>]
 ward rules show <id> [--format text|json]
 ward rules enable <id>... [-C <dir>]
 ward rules disable <id>... [-C <dir>]
@@ -22,11 +22,16 @@ filters combine.
 |---|---|
 | `--preset none\|standard\|strict` | Keeps the rules that the preset selects, with the same meaning as `[select] preset`. `strict` includes the `standard` rules. `none` keeps the rules that no preset selects, which only `include` can turn on. |
 | `--language <language>` | Keeps the rules that cover the language, such as `java` or `python`. |
-| `--category <category>` | Keeps the rules of one category, such as `complexity` or `naming`. |
+| `--category <group>` | Keeps the rules of one group. A family, such as `security`, keeps its own rules and the rules of each `security/...` subcategory. A `family/subcategory`, such as `security/injection`, keeps only that subcategory. |
 | `--selected` | Keeps only the rules that `ward-rules.toml` selects. Without the file, the `standard` preset applies. |
 | `--format text\|json` | Output format (default `text`). With `json`, stdout holds only the JSON document `{"rules": [...]}`. |
 
 A filter value that is not known is a usage error, and the command names the valid values.
+
+```sh
+ward rules list --category security
+ward rules list --category security/injection
+```
 
 ## show
 

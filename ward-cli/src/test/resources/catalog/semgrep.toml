@@ -235,361 +235,361 @@ semgrep = ["java.spring.security.injection.tainted-url-host.tainted-url-host"]
 [[rule]]
 name = "detect-angular-element-taint"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/web"
 semgrep = ["javascript.angular.security.detect-angular-element-taint.detect-angular-element-taint"]
 
 [[rule]]
 name = "detect-angular-sce-disabled"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["javascript.angular.security.detect-angular-sce-disabled.detect-angular-sce-disabled"]
 
 [[rule]]
 name = "detect-angular-trust-as-method"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/web"
 semgrep = ["javascript.angular.security.detect-angular-trust-as-method.detect-angular-trust-as-method"]
 
 [[rule]]
 name = "unsafe-argon2-config"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/secrets"
 semgrep = ["javascript.argon2.security.unsafe-argon2-config.unsafe-argon2-config"]
 
 [[rule]]
 name = "detect-child-process"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.aws-lambda.security.detect-child-process.detect-child-process"]
 
 [[rule]]
 name = "dynamodb-request-object"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.aws-lambda.security.dynamodb-request-object.dynamodb-request-object"]
 
 [[rule]]
 name = "knex-sqli"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.aws-lambda.security.knex-sqli.knex-sqli"]
 
 [[rule]]
 name = "mysql-sqli"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.aws-lambda.security.mysql-sqli.mysql-sqli"]
 
 [[rule]]
 name = "pg-sqli"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.aws-lambda.security.pg-sqli.pg-sqli"]
 
 [[rule]]
 name = "sequelize-sqli"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.aws-lambda.security.sequelize-sqli.sequelize-sqli"]
 
 [[rule]]
 name = "tainted-html-response"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/web"
 semgrep = ["javascript.aws-lambda.security.tainted-html-response.tainted-html-response"]
 
 [[rule]]
 name = "vm-runincontext-injection"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.aws-lambda.security.vm-runincontext-injection.vm-runincontext-injection"]
 
 [[rule]]
 name = "js-open-redirect"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/web"
 semgrep = ["javascript.browser.security.open-redirect.js-open-redirect"]
 
 [[rule]]
 name = "raw-html-concat"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/web"
 semgrep = ["javascript.browser.security.raw-html-concat.raw-html-concat"]
 
 [[rule]]
 name = "wildcard-postmessage-configuration"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["javascript.browser.security.wildcard-postmessage-configuration.wildcard-postmessage-configuration"]
 
 [[rule]]
 name = "chrome-remote-interface-compilescript-injection"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.chrome-remote-interface.security.audit.chrome-remote-interface-compilescript-injection.chrome-remote-interface-compilescript-injection"]
 
 [[rule]]
 name = "deno-dangerous-run"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.deno.security.audit.deno-dangerous-run.deno-dangerous-run"]
 
 [[rule]]
 name = "express-check-directory-listing"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["javascript.express.security.audit.express-check-directory-listing.express-check-directory-listing"]
 
 [[rule]]
 name = "express-cookie-session-default-name"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["javascript.express.security.audit.express-cookie-settings.express-cookie-session-default-name"]
 
 [[rule]]
 name = "express-cookie-session-no-domain"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["javascript.express.security.audit.express-cookie-settings.express-cookie-session-no-domain"]
 
 [[rule]]
 name = "express-cookie-session-no-expires"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["javascript.express.security.audit.express-cookie-settings.express-cookie-session-no-expires"]
 
 [[rule]]
 name = "express-cookie-session-no-httponly"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["javascript.express.security.audit.express-cookie-settings.express-cookie-session-no-httponly"]
 
 [[rule]]
 name = "express-cookie-session-no-path"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["javascript.express.security.audit.express-cookie-settings.express-cookie-session-no-path"]
 
 [[rule]]
 name = "express-cookie-session-no-secure"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["javascript.express.security.audit.express-cookie-settings.express-cookie-session-no-secure"]
 
 [[rule]]
 name = "express-jwt-not-revoked"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["javascript.express.security.audit.express-jwt-not-revoked.express-jwt-not-revoked"]
 
 [[rule]]
 name = "express-libxml-noent"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.express.security.audit.express-libxml-noent.express-libxml-noent"]
 
 [[rule]]
 name = "express-open-redirect"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/web"
 semgrep = ["javascript.express.security.audit.express-open-redirect.express-open-redirect"]
 
 [[rule]]
 name = "express-path-join-resolve-traversal"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/web"
 semgrep = ["javascript.express.security.audit.express-path-join-resolve-traversal.express-path-join-resolve-traversal"]
 
 [[rule]]
 name = "express-res-sendfile"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/web"
 semgrep = ["javascript.express.security.audit.express-res-sendfile.express-res-sendfile"]
 
 [[rule]]
 name = "express-session-hardcoded-secret"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["javascript.express.security.audit.express-session-hardcoded-secret.express-session-hardcoded-secret"]
 
 [[rule]]
 name = "express-ssrf"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/web"
 semgrep = ["javascript.express.security.audit.express-ssrf.express-ssrf"]
 
 [[rule]]
 name = "express-third-party-object-deserialization"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.express.security.audit.express-third-party-object-deserialization.express-third-party-object-deserialization"]
 
 [[rule]]
 name = "express-xml2json-xxe-event"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.express.security.audit.express-xml2json-xxe-event.express-xml2json-xxe-event"]
 
 [[rule]]
 name = "res-render-injection"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/web"
 semgrep = ["javascript.express.security.audit.res-render-injection.res-render-injection"]
 
 [[rule]]
 name = "direct-response-write"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/web"
 semgrep = ["javascript.express.security.audit.xss.direct-response-write.direct-response-write"]
 
 [[rule]]
 name = "cors-misconfiguration"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/web"
 semgrep = ["javascript.express.security.cors-misconfiguration.cors-misconfiguration"]
 
 [[rule]]
 name = "express-expat-xxe"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.express.security.express-expat-xxe.express-expat-xxe"]
 
 [[rule]]
 name = "express-insecure-template-usage"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/web"
 semgrep = ["javascript.express.security.express-insecure-template-usage.express-insecure-template-usage"]
 
 [[rule]]
 name = "express-jwt-hardcoded-secret"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["javascript.express.security.express-jwt-hardcoded-secret.express-jwt-hardcoded-secret"]
 
 [[rule]]
 name = "express-phantom-injection"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.express.security.express-phantom-injection.express-phantom-injection"]
 
 [[rule]]
 name = "express-puppeteer-injection"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.express.security.express-puppeteer-injection.express-puppeteer-injection"]
 
 [[rule]]
 name = "express-sandbox-code-injection"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.express.security.express-sandbox-injection.express-sandbox-code-injection"]
 
 [[rule]]
 name = "express-vm-injection"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.express.security.express-vm-injection.express-vm-injection"]
 
 [[rule]]
 name = "express-vm2-injection"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.express.security.express-vm2-injection.express-vm2-injection"]
 
 [[rule]]
 name = "express-xml2json-xxe"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.express.security.express-xml2json-xxe.express-xml2json-xxe"]
 
 [[rule]]
 name = "raw-html-format"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/web"
 semgrep = ["javascript.express.security.injection.raw-html-format.raw-html-format"]
 
 [[rule]]
 name = "require-request"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.express.security.require-request.require-request"]
 
 [[rule]]
 name = "x-frame-options-misconfiguration"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/web"
 semgrep = ["javascript.express.security.x-frame-options-misconfiguration.x-frame-options-misconfiguration"]
 
 [[rule]]
 name = "intercom-settings-user-identifier-without-user-hash"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["javascript.intercom.security.audit.intercom-settings-user-identifier-without-user-hash.intercom-settings-user-identifier-without-user-hash"]
 
 [[rule]]
 name = "hardcoded-jwt-secret"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/secrets"
 semgrep = ["javascript.jose.security.jwt-hardcode.hardcoded-jwt-secret", "javascript.jsonwebtoken.security.jwt-hardcode.hardcoded-jwt-secret"]
 
 [[rule]]
 name = "jwt-none-alg"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["javascript.jose.security.jwt-none-alg.jwt-none-alg", "javascript.jsonwebtoken.security.jwt-none-alg.jwt-none-alg"]
 
 [[rule]]
 name = "jwt-simple-noverify"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["javascript.jwt-simple.security.jwt-simple-noverify.jwt-simple-noverify"]
 
 [[rule]]
 name = "code-string-concat"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.lang.security.audit.code-string-concat.code-string-concat"]
 
 [[rule]]
 name = "node-knex-sqli"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.lang.security.audit.sqli.node-knex-sqli.node-knex-sqli"]
 
 [[rule]]
 name = "detect-eval-with-expression"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.lang.security.detect-eval-with-expression.detect-eval-with-expression"]
 
 [[rule]]
 name = "aead-no-final"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/crypto"
 semgrep = ["javascript.node-crypto.security.aead-no-final.aead-no-final"]
 
 [[rule]]
 name = "create-de-cipher-no-iv"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["javascript.node-crypto.security.create-de-cipher-no-iv.create-de-cipher-no-iv"]
 
 [[rule]]
 name = "gcm-no-tag-length"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["javascript.node-crypto.security.gcm-no-tag-length.gcm-no-tag-length"]
 
 [[rule]]
 name = "hardcoded-passport-secret"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/secrets"
 semgrep = ["javascript.passport-jwt.security.passport-hardcode.hardcoded-passport-secret"]
 
 [[rule]]
 name = "express-sequelize-injection"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/injection"
 semgrep = ["javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection"]
 
 [[rule]]
@@ -599,65 +599,65 @@ semgrep = ["problem-based-packs.insecure-transport.java-stdlib.httpget-http-requ
 [[rule]]
 name = "bypass-tls-verification"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["problem-based-packs.insecure-transport.js-node.bypass-tls-verification.bypass-tls-verification"]
 
 [[rule]]
 name = "angular-bypasssecuritytrust"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/web"
 semgrep = ["typescript.angular.security.audit.angular-domsanitizer.angular-bypasssecuritytrust"]
 
 [[rule]]
 name = "awscdk-bucket-encryption"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["typescript.aws-cdk.security.audit.awscdk-bucket-encryption.awscdk-bucket-encryption"]
 
 [[rule]]
 name = "aws-cdk-bucket-enforcessl"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["typescript.aws-cdk.security.audit.awscdk-bucket-enforcessl.aws-cdk-bucket-enforcessl"]
 
 [[rule]]
 name = "awscdk-sqs-unencryptedqueue"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["typescript.aws-cdk.security.audit.awscdk-sqs-unencryptedqueue.awscdk-sqs-unencryptedqueue"]
 
 [[rule]]
 name = "awscdk-bucket-grantpublicaccessmethod"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["typescript.aws-cdk.security.awscdk-bucket-grantpublicaccessmethod.awscdk-bucket-grantpublicaccessmethod"]
 
 [[rule]]
 name = "awscdk-codebuild-project-public"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["typescript.aws-cdk.security.awscdk-codebuild-project-public.awscdk-codebuild-project-public"]
 
 [[rule]]
 name = "react-dangerouslysetinnerhtml"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/web"
 semgrep = ["typescript.react.security.audit.react-dangerouslysetinnerhtml.react-dangerouslysetinnerhtml"]
 
 [[rule]]
 name = "react-unsanitized-method"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/web"
 semgrep = ["typescript.react.security.audit.react-unsanitized-method.react-unsanitized-method"]
 
 [[rule]]
 name = "react-unsanitized-property"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/web"
 semgrep = ["typescript.react.security.audit.react-unsanitized-property.react-unsanitized-property"]
 
 [[rule]]
 name = "react-insecure-request"
 presets = ["standard", "strict"]
-category = "security"
+category = "security/config"
 semgrep = ["typescript.react.security.react-insecure-request.react-insecure-request"]

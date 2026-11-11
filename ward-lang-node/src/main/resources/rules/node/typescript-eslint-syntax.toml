@@ -5,7 +5,7 @@ id = "ward:typescript/no-explicit-any"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
-category = "style"
+category = "style/suggestions"
 presets = ["standard", "strict"]
 options.ignore-rest-args = { type = "boolean" }
 body = '''
@@ -47,7 +47,7 @@ id = "ward:typescript/no-unnecessary-type-constraint"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
-category = "style"
+category = "style/suggestions"
 presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
@@ -85,7 +85,7 @@ id = "ward:typescript/no-this-alias"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
-category = "style"
+category = "style/suggestions"
 presets = ["standard", "strict"]
 options.allow-destructuring = { type = "boolean" }
 options.allowed-names = { type = "string-list" }
@@ -101,7 +101,7 @@ id = "ward:typescript/no-useless-empty-export"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
-category = "style"
+category = "style/suggestions"
 presets = ["standard", "strict"]
 body = '''
 check = "node-no-useless-empty-export"
@@ -113,7 +113,7 @@ id = "ward:typescript/prefer-as-const"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
-category = "style"
+category = "style/suggestions"
 presets = ["standard", "strict"]
 body = '''
 check = "node-prefer-as-const"
@@ -149,7 +149,7 @@ id = "ward:typescript/no-duplicate-type-constituents"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
-category = "style"
+category = "style/suggestions"
 presets = ["standard", "strict"]
 options.ignore-unions = { type = "boolean" }
 options.ignore-intersections = { type = "boolean" }
@@ -202,7 +202,7 @@ id = "ward:typescript/no-redundant-type-constituents"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
-category = "style"
+category = "style/suggestions"
 presets = ["standard", "strict"]
 body = '''
 check = "node-no-redundant-type-constituents"
@@ -214,7 +214,7 @@ id = "ward:typescript/no-namespace"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
-category = "style"
+category = "style/suggestions"
 presets = ["standard", "strict"]
 options.allow-declarations = { type = "boolean" }
 options.allow-definition-files = { type = "boolean" }

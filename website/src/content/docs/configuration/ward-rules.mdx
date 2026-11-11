@@ -48,7 +48,14 @@ pattern = "[A-Z][A-Za-z0-9]*"
 ## Selection
 
 Ward starts from the rules of the preset, keeps only the listed `languages` and `categories`, adds
-the rules in `include` and removes the rules in `exclude`.
+the rules in `include` and removes the rules in `exclude`. The order is fixed: preset, then
+`languages` and `categories`, then `include`, then `exclude`. `exclude` always wins.
+
+Each value in `include` and `exclude` names either a rule or a group:
+
+- A rule is written `<language>.<rule-name>`, such as `java.star-import`. A value with a dot is a rule.
+- A group is a family or a `family/subcategory`, such as `style` or `style/imports`. A value without
+  a dot is a group.
 
 A rule written as its id in either list is a configuration error that names the form to write:
 
@@ -62,10 +69,46 @@ ward-rules.toml: [select] exclude: "ward:java/star-import": name the rule <langu
 | `strict` | Every rule of `standard`, and the stricter ones as they are added. |
 | `none` | No rule; build the set from `include`. |
 
-A rule belongs to one category, named after what the rule checks and not after a tool:
-`accessibility`, `angular`, `architecture`, `complexity`, `concurrency`, `correctness`, `dead-code`,
-`docs`, `duplication`, `error-handling`, `experimental`, `naming`, `null-safety`, `performance`,
-`security` or `style`. A rule table for a rule that is not
+`categories` keeps the preset's rules that a listed group matches. A family matches its own rules and
+the rules of each of its subcategories; a subcategory matches only its own rules.
+
+`include` of a group adds every rule of that group for the listed `languages`, whatever the preset.
+Including a whole family therefore adds its `strict`-only rules to `standard`. Use a subcategory to
+add less. `exclude` of a group removes every rule of that group.
+
+To keep `standard` and remove its import rules:
+
+```toml
+[select]
+preset = "standard"
+exclude = ["style/imports"]
+```
+
+An unknown group, such as `style/unknown`, is a configuration error that lists the valid group names.
+
+A rule belongs to one category: a family, or a family and one subcategory. A category is named after
+what the rule checks and not after a tool. The families are:
+
+| Family | Subcategories |
+|---|---|
+| `accessibility` | none |
+| `angular` | none |
+| `architecture` | none |
+| `complexity` | `design`, `metrics`, `size` |
+| `concurrency` | `coroutines` |
+| `correctness` | `annotations`, `control-flow`, `i18n`, `strings`, `types` |
+| `dead-code` | none |
+| `docs` | none |
+| `duplication` | none |
+| `error-handling` | none |
+| `experimental` | none |
+| `naming` | none |
+| `null-safety` | none |
+| `performance` | none |
+| `security` | `config`, `crypto`, `exposure`, `injection`, `secrets`, `web` |
+| `style` | `annotations`, `blocks`, `idiomatic`, `imports`, `modifiers`, `suggestions` |
+
+A rule without a subcategory belongs to its family alone. A rule table for a rule that is not
 selected is a configuration error, so a tuned rule is never silently off.
 
 `ward rules list --selected` shows the rules the file selects, and `ward rules enable` and

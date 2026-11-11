@@ -272,7 +272,7 @@ id = "ward:python/too-many-boolean-expressions"
 language = "python"
 capability = "SYNTAX"
 severity = "error"
-category = "complexity"
+category = "complexity/size"
 presets = ["standard", "strict"]
 options.max = { type = "integer", min = 1 }
 body = '''
@@ -289,7 +289,7 @@ id = "ward:python/too-many-branches"
 language = "python"
 capability = "SYNTAX"
 severity = "error"
-category = "complexity"
+category = "complexity/size"
 presets = ["standard", "strict"]
 options.max = { type = "integer", min = 1 }
 body = '''
@@ -306,7 +306,7 @@ id = "ward:python/too-many-statements"
 language = "python"
 capability = "SYNTAX"
 severity = "error"
-category = "complexity"
+category = "complexity/size"
 presets = ["standard", "strict"]
 options.max = { type = "integer", min = 1 }
 body = '''
@@ -323,7 +323,7 @@ id = "ward:python/too-many-nested-blocks"
 language = "python"
 capability = "SYNTAX"
 severity = "error"
-category = "complexity"
+category = "complexity/size"
 presets = ["standard", "strict"]
 options.max = { type = "integer", min = 1 }
 body = '''
@@ -451,7 +451,7 @@ id = "ward:python/too-many-positional-arguments"
 language = "python"
 capability = "SYNTAX"
 severity = "error"
-category = "complexity"
+category = "complexity/size"
 presets = ["standard", "strict"]
 options.max-positional-arguments = { type = "integer", min = 0 }
 body = '''
@@ -549,7 +549,7 @@ id = "ward:python/too-many-locals"
 language = "python"
 capability = "SYNTAX"
 severity = "error"
-category = "complexity"
+category = "complexity/size"
 presets = ["standard", "strict"]
 options.max-locals = { type = "integer", min = 1 }
 body = '''
@@ -563,7 +563,7 @@ id = "ward:python/too-many-public-methods"
 language = "python"
 capability = "SYNTAX"
 severity = "error"
-category = "complexity"
+category = "complexity/size"
 presets = ["standard", "strict"]
 options.max-public-methods = { type = "integer", min = 1 }
 body = '''

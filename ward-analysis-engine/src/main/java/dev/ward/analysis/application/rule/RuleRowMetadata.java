@@ -1,5 +1,6 @@
 package dev.ward.analysis.application.rule;
 
+import dev.ward.analysis.domain.rule.RuleGroup;
 import dev.ward.analysis.domain.rule.RuleOption;
 import dev.ward.analysis.domain.rule.RuleOptionType;
 import dev.ward.analysis.domain.rule.RulePreset;
@@ -37,7 +38,7 @@ public final class RuleRowMetadata {
     return Math.toIntExact(release);
   }
 
-  /** Returns the category, or the empty text when the row has none. */
+  /** Returns the category, or the empty text when the row has none. Rejects any other shape. */
   public static String category(final TomlTable row) {
     if (!row.contains(CATEGORY)) {
       return "";
@@ -45,6 +46,10 @@ public final class RuleRowMetadata {
     final String category = row.getString(CATEGORY);
     if (category == null || category.isBlank()) {
       throw new IllegalArgumentException("'" + CATEGORY + "' must be a non-blank string");
+    }
+    if (!RuleGroup.isValidCategory(category)) {
+      throw new IllegalArgumentException(
+          "'" + CATEGORY + "' value '" + category + "' must be family or family/subcategory");
     }
     return category;
   }

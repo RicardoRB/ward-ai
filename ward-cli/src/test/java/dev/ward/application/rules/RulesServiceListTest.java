@@ -42,6 +42,21 @@ class RulesServiceListTest {
   }
 
   @Test
+  void categoryGroupMatchesAFamilyAndItsSubcategories() {
+    source.rules =
+        List.of(
+            RuleFixtures.categorised("ward:java/inject", "security/injection"),
+            RuleFixtures.categorised("ward:java/plain", "security"),
+            RuleFixtures.categorised("ward:java/crypto", "security/crypto"),
+            RuleFixtures.categorised("ward:java/naming", "naming"));
+
+    assertThat(ids(RuleFilter.parse(null, null, "security", false)))
+        .containsExactly("ward:java/inject", "ward:java/plain", "ward:java/crypto");
+    assertThat(ids(RuleFilter.parse(null, null, "security/crypto", false)))
+        .containsExactly("ward:java/crypto");
+  }
+
+  @Test
   void selectedKeepsOnlyTheRulesTheFileSelects() {
     source.configured = Optional.of(RuleFixtures.configuration());
 

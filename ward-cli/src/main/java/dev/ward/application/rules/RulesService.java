@@ -1,6 +1,7 @@
 package dev.ward.application.rules;
 
 import dev.ward.analysis.domain.rule.RuleDefinition;
+import dev.ward.analysis.domain.rule.RuleGroup;
 import dev.ward.analysis.domain.rule.RulePreset;
 import dev.ward.application.gate.AnalysisRuleSource;
 import dev.ward.application.gate.RuleConfigFile;
@@ -50,7 +51,9 @@ public final class RulesService {
     return catalog.stream()
         .filter(rule -> matchesPreset(rule, filter.preset()))
         .filter(rule -> filter.language() == null || rule.covers(filter.language()))
-        .filter(rule -> filter.category() == null || rule.category().equals(filter.category()))
+        .filter(
+            rule ->
+                filter.category() == null || RuleGroup.matches(filter.category(), rule.category()))
         .filter(rule -> selected == null || selected.contains(rule.id()))
         .map(rule -> RuleViews.of(bodies, rule))
         .toList();

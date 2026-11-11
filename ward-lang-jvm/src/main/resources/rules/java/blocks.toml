@@ -8,7 +8,7 @@ id = "ward:java/need-braces"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "style"
+category = "style/blocks"
 presets = ["standard", "strict"]
 options.allow-empty-loop-body = { type = "boolean" }
 body = '''
@@ -22,7 +22,7 @@ id = "ward:java/left-curly"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "style"
+category = "style/blocks"
 presets = ["standard", "strict"]
 options.ignore-enums = { type = "boolean" }
 body = '''
@@ -36,7 +36,7 @@ id = "ward:java/google-right-curly"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "style"
+category = "style/blocks"
 presets = ["standard", "strict"]
 body = '''
 check = "google-right-curly"
@@ -48,7 +48,7 @@ id = "ward:java/empty-catch-block"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "style"
+category = "style/blocks"
 presets = ["standard", "strict"]
 options.comment-format = { type = "regex" }
 options.exception-variable-name = { type = "regex" }
@@ -64,7 +64,7 @@ id = "ward:java/avoid-nested-blocks"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "style"
+category = "style/blocks"
 presets = ["strict"]
 options.allow-in-switch-case = { type = "boolean" }
 body = '''
@@ -78,7 +78,7 @@ id = "ward:java/right-curly"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "style"
+category = "style/blocks"
 presets = ["strict"]
 options.option = { type = "enum", values = ["alone", "same"] }
 body = '''
@@ -92,7 +92,7 @@ id = "ward:java/empty-block"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "style"
+category = "style/blocks"
 presets = ["strict"]
 options.option = { type = "enum", values = ["text", "statement"] }
 body = '''

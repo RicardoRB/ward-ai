@@ -39,6 +39,11 @@ final class RuleFixtures {
         rule(STREAMS, AnalysisLanguage.JAVA, "architecture", Set.of(), List.of()));
   }
 
+  /** A standard-preset Java rule in the category, for the group tests. */
+  static RuleDefinition categorised(final String id, final String category) {
+    return rule(id, AnalysisLanguage.JAVA, category, Set.of(RulePreset.STANDARD), List.of());
+  }
+
   /** A body reader whose description is the body itself. */
   static RuleBodyReader bodies() {
     return body -> java.util.Map.of("message", "text of " + body);

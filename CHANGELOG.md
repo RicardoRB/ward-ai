@@ -8,9 +8,14 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Added
+
+- Groups in `ward-rules.toml`: a rule category may have one subcategory, `family/subcategory` (such as `style/imports` or `security/injection`). `[select] include` and `exclude` accept a group, a family or a `family/subcategory`, as well as a rule (`<language>.<rule-name>`). A value with a dot is a rule, and a value without one is a group. `include` of a group adds every rule of the group for the listed languages, whatever the preset; `exclude` of a group removes every rule of the group, and wins over `include`. `[select] categories` and `ward rules list --category` accept both levels. The published `ward-rules.schema.json` lists the valid groups.
+
 ### Changed
 
 - **Breaking (alpha, no migration):** Rule categories are named after what a rule checks, not after the tool it came from. The 46 categories become 16: `accessibility`, `angular`, `architecture`, `complexity`, `concurrency`, `correctness`, `dead-code`, `docs`, `duplication`, `error-handling`, `experimental`, `naming`, `null-safety`, `performance`, `security` and `style`. For example `errorprone`, `bad-practice`, `problem` and `pylint` are now `correctness`; `sizes`, `metrics` and `design` are `complexity`; `javadoc` is `docs`; `mt-correctness` and `multithreading` are `concurrency`; `nullness` is `null-safety`; `a11y` is `accessibility`. Rule ids do not change. Update `categories` in `ward-rules.toml` and `ward rules list --category`; an old name is reported as an unknown category with the list of valid ones.
+- **Breaking (alpha, no migration):** The rules of `security`, `complexity`, `style`, `correctness` and `concurrency` that have a clear topic now have a subcategory, so their category text changes: for example `security/injection`, `complexity/size`, `style/imports`, `correctness/types` and `concurrency/coroutines`. The rules that have no clear topic keep the family alone. The new text shows in `ward rules list` and `ward rules show`. A `ward-rules.toml` that names only families or rules needs no edit; one that names a rule's old family still selects the rule.
 
 ## [0.6.0] - 2026-11-10
 
