@@ -165,6 +165,14 @@ order:
      spec, so first recommend committing one: a FastAPI app exports its document with `app.openapi()`
      to `openapi.json`, and a Spring project can export its document with springdoc. Then recommend
      the gates and `vacuum` as above.
+   - `crap` is opt-in: no preset selects it. Offer it when the user wants functions that are both
+     complex and untested to fail. It needs the coverage gate (`coverage` for Maven and Gradle, the
+     test gate for Node, `pytest` for Python); init fails with exit code 2 and writes no file
+     without it, so add it with `--gate crap` next to that gate. Init makes the coverage tool write
+     the report: nothing for Maven, the JaCoCo XML report in the Gradle block, `text` and `lcov`
+     reporters for Vitest, Jest and Bun (flags on the command when the project owns the config),
+     and a `crap-report` check for Python. It is not offered for Swift, Android or Angular
+     (`ng-test`); for those, `[checks.crap]` can be written by hand with a `report` path.
    - Layering violations the inspection found: `ward:architecture/layers` fails on its first run.
      Tell the user before the first check, and do not remove the boundaries to make it pass.
 

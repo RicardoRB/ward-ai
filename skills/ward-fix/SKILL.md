@@ -91,7 +91,7 @@ Order the failing gates so that early fixes do not create work for later ones:
    `ward:java/no-field-di`, `ward:java/no-standard-streams`
 5. Tests: `tests`, `vitest`, `jest`, `bun-test`, `ng-test`, `pytest`, `swift-test`
 6. `coverage` or `swift-coverage`, then `mutation`, `stryker` or `mutmut` (they measure the tests,
-   so they come last)
+   so they come last), then `crap` (it reads the coverage report those checks write)
 7. Security and dependencies: `gitleaks`, `dependency-check`, `trivy`, `pip-audit`, `license`
 
 Within a gate, group the findings by `rule`. When `findingsTruncated` is `true`, the JSON lists only
@@ -125,6 +125,10 @@ For each approved rule:
      expectation only after a yes.
    - **Coverage and mutation**: find the uncovered or surviving lines in the tool's report, and
      write tests that assert the behavior those lines implement.
+   - **`crap`**: each finding is a function whose complexity and missing coverage score above `max`.
+     Write tests that cover its branches, or split the function so each part is simple. Never raise
+     `max` and never exclude the file. Re-run the coverage check first, because the gate reads the
+     report it writes and fails on a stale one.
    - **Secrets** (`gitleaks`): never print the secret. Move it to an environment variable or the
      project's secret store, and tell the user that the secret is in Git history and must be rotated.
    - **Vulnerable dependencies**: propose the smallest version that fixes the advisory, with its

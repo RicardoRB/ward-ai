@@ -468,6 +468,31 @@ To make each tool write the report:
   `xcrun llvm-cov export -format=lcov` to a file and name it in `report`. Xcode projects that measure
   coverage with `xccov` have no lcov export and are not read.
 
+### What `ward init` writes for `crap`
+
+`crap` is opt-in: no preset selects it, and `ward init --preset standard --gate crap` adds it. It
+needs the gate that produces the coverage data (`coverage` for Maven and Gradle, the test gate for
+Node, `pytest` for Python); init stops with exit code 2 and writes no file when that gate is missing.
+Init writes `[checks.crap]` after that gate, in the `pre-push` and `ci` profiles, and makes the
+coverage tool write the report:
+
+| Project | What init adds |
+|---|---|
+| Maven | Nothing: the generated JaCoCo plugin already writes `target/site/jacoco/jacoco.xml`. |
+| Gradle | The Ward block enables the JaCoCo XML report and makes `jacocoTestCoverageVerification` depend on `jacocoTestReport`. |
+| Vitest | The `vitest.config.mjs` that init writes lists the `text` and `lcov` reporters. With a project-owned config, the gate command ends with `--coverage.reporter=text --coverage.reporter=lcov`. |
+| Jest | Nothing with the `jest.config.mjs` that init writes (lcov is a default reporter). With a project-owned config, the command ends with `--coverageReporters=text --coverageReporters=lcov`. |
+| Bun | The command is `bun test --coverage --coverage-reporter=text --coverage-reporter=lcov`. |
+| Python | A `crap-report` check runs `coverage lcov -o .ward/reports/coverage.lcov`, and `[checks.crap]` sets `report` to that file. |
+
+Init never edits a config the project owns, so the reporter flags go on the command. Setting reporters
+replaces the tool's defaults, so the flags keep `text`, the table you read today, beside `lcov`.
+
+Init does not offer `crap` for Swift, Android and Angular (`ng test`) projects, because it cannot
+make their coverage tool write a report at a known path. Add the table by hand with a `report`: for
+SwiftPM the `llvm-cov export -format=lcov` file above, for Android the JaCoCo XML report of your
+coverage task, and for Angular the lcov file that your Karma or Vitest reporter writes.
+
 ### Reports that cannot be used
 
 The gate never passes on a report it cannot trust. It ends with an execution error that names the file

@@ -10,7 +10,8 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ### Added
 
-- The `crap` check (`uses = "crap"`) scores every function as `complexity^2 * (1 - coverage)^3 + complexity` and fails the functions above `max` (default 30). Complexity is the value of the language's complexity rule; coverage is read per line from a JaCoCo XML or lcov report, by default at the build tool's conventional path, or from `report`. The gate runs no tests, treats a missing, unparseable or stale report as an execution error, and is opt-in: `ward init` does not select it yet.
+- The `crap` check (`uses = "crap"`) scores every function as `complexity^2 * (1 - coverage)^3 + complexity` and fails the functions above `max` (default 30). Complexity is the value of the language's complexity rule; coverage is read per line from a JaCoCo XML or lcov report, by default at the build tool's conventional path, or from `report`. The gate runs no tests, treats a missing, unparseable or stale report as an execution error, and is opt-in.
+- `ward init --gate crap` offers the `crap` gate for Maven, Gradle, Vitest, Jest, Bun and Python projects, after the gate that produces the coverage data, and makes the coverage tool write the report: the JaCoCo XML report in the Gradle build, the `text` and `lcov` reporters for Vitest, Jest and Bun, and a `crap-report` check (`coverage lcov`) for Python. No preset selects it. It is not offered for Swift, Android and Angular (`ng test`) projects.
 
 ## [0.7.0] - 2026-11-11
 
