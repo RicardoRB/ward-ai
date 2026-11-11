@@ -56,6 +56,10 @@ final class FactTypeMembers {
 
   /** Returns the members of {@code type}. */
   TypeMembers of(final JvmClass type) {
+    return hierarchy.membersOf(type, this::read);
+  }
+
+  private TypeMembers read(final JvmClass type) {
     final List<CallTarget> methods = new ArrayList<>();
     for (final JvmMethod method : type.methods()) {
       FactMembers.target(type, method).ifPresent(methods::add);
