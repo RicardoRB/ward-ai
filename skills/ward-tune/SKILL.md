@@ -1,6 +1,6 @@
 ---
 name: ward-tune
-description: Tune the rules of the quality gates Ward already runs in this Java, TypeScript, JavaScript, or Python project (Ward rule selection, the JaCoCo coverage threshold, PIT mutation testing, the Vitest, Jest, or Bun coverage thresholds, Stryker mutation testing, Python Ward rules in `ward-rules.toml`, mypy rules, and mutmut) so they fit the real codebase instead of a generic preset. Every edit is grounded in evidence from the code, shown as a diff, and written only after approval. Weakening a rule needs its own approval and reason, and suppressions are never added. Use when the user wants to adjust, tighten, relax, or fix Ward's gate rules or thresholds, or after ward-init offers rule tuning.
+description: Tune the rules of the quality gates Ward already runs in this Java, Kotlin, TypeScript, JavaScript, Python, or Swift project (the Ward rules that `ward-rules.toml` selects, the JaCoCo coverage threshold, PIT mutation testing, the Vitest, Jest, or Bun coverage thresholds, Stryker mutation testing, mypy rules, and mutmut) so they fit the real codebase instead of a generic preset. Every edit is grounded in evidence from the code, shown as a diff, and written only after approval. Weakening a rule needs its own approval and reason, and suppressions are never added. Use when the user wants to adjust, tighten, relax, or fix Ward's gate rules or thresholds, or after ward-init offers rule tuning.
 license: Apache-2.0
 compatibility: Requires the ward CLI >= 0.6.0, a project with ward.toml, and a shell.
 metadata:
@@ -49,6 +49,11 @@ To see which rules the project selects, and what each one takes, use `ward rules
 --format json` and `ward rules show <id> --format json`. Use them instead of reading the rule
 reference. The JSON output is one document on stdout.
 
+Every rule has one category, named after what the rule checks (`naming`, `complexity`, `security`
+and so on), not after a tool. `ward rules list --category <category>` lists one category, and
+`categories` under `[select]` in `ward-rules.toml` keeps only the listed ones. Read the category
+names from the `ward rules list` output of the installed version; do not guess them.
+
 ## Step 2: Scope the tuning
 
 List the gates with `enabled = true`. This skill tunes these:
@@ -59,7 +64,7 @@ List the gates with `enabled = true`. This skill tunes these:
 | `mutation` | PIT threshold, target classes, and threads | [references/mutation.md](references/mutation.md) |
 | `mypy` | mypy strict mode and the pydantic and Django plugins in `mypy.ini` | [references/mypy.md](references/mypy.md) |
 | `mutmut` | mutmut's source paths and its 60% minimum | [references/mutation.md](references/mutation.md#mutmut-python) |
-| `ward` | The Python rules that `ward-rules.toml` selects for `"python"`, their severities and options | [references/ward-rules-python.md](references/ward-rules-python.md) |
+| `ward` | The Ward rules that `ward-rules.toml` selects for the project's languages (Java, Kotlin, TypeScript, JavaScript, Python, Swift), their severities and options | [references/ward-rules.md](references/ward-rules.md) |
 | `ward` (architecture) | `[[checks.ward.layers]]` boundaries, `[checks.ward.cycles]` source roots and `[[checks.ward.independence]]` module lists, written by `ward init`; the layer, slice cycle and feature independence rules | Not tuned here; edit the tables by hand or re-run `ward init` |
 | `vitest`, `jest`, `bun-test` | The line and branch coverage minimums | [references/coverage.md](references/coverage.md#typescript-and-javascript-test-gates) |
 | `stryker` | Stryker's `thresholds.break` and run settings | [references/mutation.md](references/mutation.md#stryker-typescript-and-javascript) |
@@ -130,14 +135,15 @@ Turn the evidence into proposals. Put each one in a class, using the tables in t
 Present strengthening and neutral proposals first, then weakenings. For each proposal, show:
 
 1. The class: strengthen, neutral, or weaken.
-2. The evidence, for example `MagicNumber: 41 findings, e.g. Order.java:7, Pricing.java:33`, or
+2. The evidence, for example `ward:java/magic-number: 41 findings, e.g. Order.java:7, Pricing.java:33`, or
    `domain → infrastructure imports: 0`.
 3. The exact diff of the file.
 4. The effect on the next check, for example "passes today" or "adds about 12 findings in 3 files".
 
 For a **weakening**, also show the old and new values, and ask for a reason in one sentence. Ask for
 approval of that single change. When a finding can be fixed in the code, offer that first. Put the
-reason in an XML or Java comment next to the change, so reviewers see why it was made.
+reason in a comment next to the change, so reviewers see why it was made: a `#` comment in
+`ward-rules.toml` or `ward.toml`, an XML comment in `pom.xml`.
 
 Write a change only after the user approves it. If the user declines, leave the file untouched and
 move on to the next proposal. Never batch several weakenings into one approval.
