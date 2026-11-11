@@ -63,3 +63,15 @@ body = '''
 check = "pattern-variable-assignment"
 message = "pattern variable {value} should not be assigned"
 '''
+
+[[rules]]
+id = "ward:java/field-declarations-should-be-at-start-of-class"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "fields-at-start"
+message = "field is declared after a method, constructor or nested type; declare fields at the top of the class"
+'''

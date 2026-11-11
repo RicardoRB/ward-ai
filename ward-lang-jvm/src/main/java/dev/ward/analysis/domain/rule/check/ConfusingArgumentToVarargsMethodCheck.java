@@ -13,13 +13,17 @@ import java.util.Set;
 
 /**
  * Reports a call of a varargs method whose last argument is {@code null}, or an array that is a
- * subtype of the varargs array type without being it, as PMD's ConfusingArgumentToVarargsMethod
- * does: the reader cannot tell whether the array or an element of it is passed.
+ * subtype of the varargs array type and also of its element type without being the array type, as
+ * PMD's ConfusingArgumentToVarargsMethod does: the reader cannot tell whether the array or an
+ * element of it is passed. A generic method or a method of a generic type is skipped, because its
+ * erased parameter type hides the element type that the call infers.
  */
 public final class ConfusingArgumentToVarargsMethodCheck extends FactsCheck {
 
   private static final String EXPRESSION = "expression";
   private static final String NULL = "null";
+  private static final Set<String> ARRAY_SUPERTYPES =
+      Set.of("java.lang.Object", "java.lang.Cloneable", "java.io.Serializable");
   private static final FactNeed NEED =
       new FactNeed(Set.of(EXPRESSION), Set.of(FactKind.CALL, FactKind.TYPE));
 
@@ -48,6 +52,7 @@ public final class ConfusingArgumentToVarargsMethodCheck extends FactsCheck {
     final List<SyntaxNode> arguments = CallArgumentNodes.all(call);
     if (target == null
         || !target.isVarargs()
+        || genericVarargs(target)
         || arguments.isEmpty()
         || arguments.size() != target.parameters().size()) {
       return List.of();
@@ -59,9 +64,27 @@ public final class ConfusingArgumentToVarargsMethodCheck extends FactsCheck {
         : List.of();
   }
 
+  /**
+   * Whether the element type may be a type variable: the declared parameter is erased, and an array
+   * of {@code String} passed for {@code T...} is exactly the array the method expects.
+   */
+  private static boolean genericVarargs(final CallTarget target) {
+    return !target.typeParameters().isEmpty() || !target.declaringTypeParameters().isEmpty();
+  }
+
   private static boolean confusing(
       final SyntaxNode last, final TypeRef expected, final UnitTypeFacts types) {
-    return NULL.equals(SyntaxWalk.text(last)) || subtypeArray(last, expected, types);
+    return NULL.equals(SyntaxWalk.text(last))
+        || (arrayIsAnElement(expected) && subtypeArray(last, expected, types));
+  }
+
+  /**
+   * Whether an array can be one element of the varargs array too: only when the element type is
+   * {@code Object}, {@code Cloneable} or {@code Serializable}, or itself an array. A {@code
+   * StandardOpenOption[]} passed for {@code OpenOption...} cannot be an element.
+   */
+  private static boolean arrayIsAnElement(final TypeRef expected) {
+    return expected.arrayDepth() > 1 || ARRAY_SUPERTYPES.contains(expected.name());
   }
 
   private static boolean subtypeArray(

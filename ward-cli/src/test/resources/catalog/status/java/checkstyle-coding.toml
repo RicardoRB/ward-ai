@@ -2,7 +2,7 @@
 
 array-trailing-comma = "implemented"
 avoid-inline-conditionals = "implemented"
-avoid-no-argument-super-constructor-call = { status = "planned", issue = "#289" }
+avoid-no-argument-super-constructor-call = "implemented"
 constructors-declaration-grouping = "implemented"
 covariant-equals = "implemented"
 declaration-order = "implemented"
@@ -44,14 +44,14 @@ parameter-assignment = "implemented"
 pattern-variable-assignment = "implemented"
 require-this = { status = "planned", issue = "#289" }
 return-count = "implemented"
-simplify-boolean-expression = { status = "planned", issue = "#288" }
+simplify-boolean-expression = "implemented"
 simplify-boolean-return = "implemented"
 string-literal-equality = "implemented"
 super-clone = "implemented"
 super-finalize = "implemented"
 text-block-google-style-formatting = "implemented"
 unnecessary-null-check-with-instance-of = { status = "planned", issue = "#288" }
-unnecessary-parentheses = { status = "planned", issue = "#289" }
+unnecessary-parentheses = "implemented"
 unnecessary-permits-clause = { status = "planned", issue = "#289" }
 unnecessary-semicolon-after-outer-type-declaration = { status = "planned", issue = "#289" }
 unnecessary-semicolon-after-type-member-declaration = { status = "planned", issue = "#289" }
@@ -61,7 +61,7 @@ unnecessary-type-arguments-with-record-pattern = { status = "planned", issue = "
 unused-catch-parameter-should-be-unnamed = { status = "planned", issue = "#289" }
 unused-lambda-parameter-should-be-unnamed = { status = "planned", issue = "#289" }
 unused-local-variable = "implemented"
-unused-private-field = { status = "planned", issue = "#289" }
+unused-private-field = "implemented"
 unused-try-resource-should-be-unnamed = { status = "planned", issue = "#289" }
 use-enhanced-switch = { status = "planned", issue = "#288" }
 variable-declaration-usage-distance = "implemented"

@@ -10,7 +10,7 @@ import java.util.Set;
  * The scopes a walker has opened and the names they declare. {@link ScopeBuilder} adds the cursor
  * and the references to it.
  */
-abstract class ScopeDeclarations {
+public abstract class ScopeDeclarations {
 
   final List<Span> spans = new ArrayList<>();
   final List<ScopeKind> kinds = new ArrayList<>();

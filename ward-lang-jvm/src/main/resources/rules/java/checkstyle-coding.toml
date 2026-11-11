@@ -122,12 +122,14 @@ presets = ["strict"]
 options.ignore = { type = "string-list" }
 options.ignore-contexts = { type = "string-list" }
 options.max-repeats = { type = "integer", min = 0 }
+options.min-length = { type = "integer", min = 0 }
 body = '''
 check = "literal"
 kinds = ["STRING_LITERAL"]
 ignore = ['""']
 ignore-contexts = ["annotation"]
 max-repeats = 1
+min-length = 3
 message = "string literal {value} is repeated; declare it as a constant"
 '''
 
@@ -223,4 +225,67 @@ presets = ["standard", "strict"]
 body = '''
 check = "unused-binding"
 message = "local variable '{value}' is never read"
+'''
+
+[[rules]]
+id = "ward:java/avoid-no-argument-super-constructor-call"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["methodCall"]
+text = '^super\(\)$'
+message = "explicit call of the no-argument super constructor; remove it"
+'''
+
+[[rules]]
+id = "ward:java/simplify-boolean-expression"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "simplify-boolean-expression"
+message = "boolean expression with a boolean literal; simplify it"
+'''
+
+[[rules]]
+id = "ward:java/unnecessary-parentheses"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "unnecessary-parentheses"
+message = "unnecessary parentheses; remove them"
+'''
+
+[[rules]]
+id = "ward:java/unused-private-field"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "unused-private-field"
+mode = "unused"
+message = "private field '{value}' is never used"
+'''
+
+[[rules]]
+id = "ward:java/unnecessary-constructor"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "unnecessary-constructor"
+message = "unnecessary constructor; the compiler generates it"
 '''

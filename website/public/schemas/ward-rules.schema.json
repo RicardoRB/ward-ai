@@ -1366,6 +1366,25 @@
         }
       }
     },
+    "ward:java/avoid-no-argument-super-constructor-call": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/avoid-print-stack-trace": {
       "type": "object",
       "additionalProperties": false,
@@ -6974,6 +6993,25 @@
         }
       }
     },
+    "ward:java/field-declarations-should-be-at-start-of-class": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/field-no-init": {
       "type": "object",
       "additionalProperties": false,
@@ -7074,6 +7112,25 @@
       }
     },
     "ward:java/final-parameter-in-abstract-method": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:java/final-parameters": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -12736,6 +12793,10 @@
         "max-repeats": {
           "type": "integer",
           "minimum": 0
+        },
+        "min-length": {
+          "type": "integer",
+          "minimum": 0
         }
       }
     },
@@ -18134,6 +18195,25 @@
         }
       }
     },
+    "ward:java/simplify-boolean-expression": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/simplify-boolean-return": {
       "type": "object",
       "additionalProperties": false,
@@ -20794,6 +20874,25 @@
         }
       }
     },
+    "ward:java/unnecessary-constructor": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/unnecessary-conversion-temporary": {
       "type": "object",
       "additionalProperties": false,
@@ -20871,6 +20970,25 @@
       }
     },
     "ward:java/unnecessary-lambda": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:java/unnecessary-parentheses": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -21178,6 +21296,25 @@
       }
     },
     "ward:java/unused-null-check-in-equals": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:java/unused-private-field": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -52160,6 +52297,7 @@
               "java.avoid-module-import",
               "java.avoid-multiple-unary-operators",
               "java.avoid-nested-blocks",
+              "java.avoid-no-argument-super-constructor-call",
               "java.avoid-print-stack-trace",
               "java.avoid-reassigning-catch-variables",
               "java.avoid-reassigning-loop-variables",
@@ -52447,12 +52585,14 @@
               "java.fi-nullify-super",
               "java.fi-public-should-be-protected",
               "java.fi-useless",
+              "java.field-declarations-should-be-at-start-of-class",
               "java.field-no-init",
               "java.file-length",
               "java.final-class",
               "java.final-field-could-be-static",
               "java.final-local-variable",
               "java.final-parameter-in-abstract-method",
+              "java.final-parameters",
               "java.finalize-does-not-call-super-finalize",
               "java.finalize-only-calls-super-finalize",
               "java.finalize-overloaded",
@@ -53014,6 +53154,7 @@
               "java.simple-date-format-needs-locale",
               "java.simplifiable-test-assertion",
               "java.simplified-ternary",
+              "java.simplify-boolean-expression",
               "java.simplify-boolean-return",
               "java.simplify-conditional",
               "java.sing-singleton-getter-not-synchronized",
@@ -53151,11 +53292,13 @@
               "java.unnecessary-case-change",
               "java.unnecessary-cast",
               "java.unnecessary-check-not-null",
+              "java.unnecessary-constructor",
               "java.unnecessary-conversion-temporary",
               "java.unnecessary-fully-qualified-name",
               "java.unnecessary-fully-qualified-type",
               "java.unnecessary-interface-declaration",
               "java.unnecessary-lambda",
+              "java.unnecessary-parentheses",
               "java.unnecessary-return",
               "java.unnecessary-type-argument",
               "java.unnecessary-varargs-array-creation",
@@ -53172,6 +53315,7 @@
               "java.unused-label",
               "java.unused-local-variable",
               "java.unused-null-check-in-equals",
+              "java.unused-private-field",
               "java.unused-private-method",
               "java.unused-return-value",
               "java.unvalidated-redirect",
@@ -54816,6 +54960,7 @@
               "java.avoid-module-import",
               "java.avoid-multiple-unary-operators",
               "java.avoid-nested-blocks",
+              "java.avoid-no-argument-super-constructor-call",
               "java.avoid-print-stack-trace",
               "java.avoid-reassigning-catch-variables",
               "java.avoid-reassigning-loop-variables",
@@ -55103,12 +55248,14 @@
               "java.fi-nullify-super",
               "java.fi-public-should-be-protected",
               "java.fi-useless",
+              "java.field-declarations-should-be-at-start-of-class",
               "java.field-no-init",
               "java.file-length",
               "java.final-class",
               "java.final-field-could-be-static",
               "java.final-local-variable",
               "java.final-parameter-in-abstract-method",
+              "java.final-parameters",
               "java.finalize-does-not-call-super-finalize",
               "java.finalize-only-calls-super-finalize",
               "java.finalize-overloaded",
@@ -55670,6 +55817,7 @@
               "java.simple-date-format-needs-locale",
               "java.simplifiable-test-assertion",
               "java.simplified-ternary",
+              "java.simplify-boolean-expression",
               "java.simplify-boolean-return",
               "java.simplify-conditional",
               "java.sing-singleton-getter-not-synchronized",
@@ -55807,11 +55955,13 @@
               "java.unnecessary-case-change",
               "java.unnecessary-cast",
               "java.unnecessary-check-not-null",
+              "java.unnecessary-constructor",
               "java.unnecessary-conversion-temporary",
               "java.unnecessary-fully-qualified-name",
               "java.unnecessary-fully-qualified-type",
               "java.unnecessary-interface-declaration",
               "java.unnecessary-lambda",
+              "java.unnecessary-parentheses",
               "java.unnecessary-return",
               "java.unnecessary-type-argument",
               "java.unnecessary-varargs-array-creation",
@@ -55828,6 +55978,7 @@
               "java.unused-label",
               "java.unused-local-variable",
               "java.unused-null-check-in-equals",
+              "java.unused-private-field",
               "java.unused-private-method",
               "java.unused-return-value",
               "java.unvalidated-redirect",
@@ -57609,6 +57760,9 @@
             "avoid-nested-blocks": {
               "$ref": "#/$defs/ward:java~1avoid-nested-blocks"
             },
+            "avoid-no-argument-super-constructor-call": {
+              "$ref": "#/$defs/ward:java~1avoid-no-argument-super-constructor-call"
+            },
             "avoid-print-stack-trace": {
               "$ref": "#/$defs/ward:java~1avoid-print-stack-trace"
             },
@@ -58470,6 +58624,9 @@
             "fi-useless": {
               "$ref": "#/$defs/ward:java~1fi-useless"
             },
+            "field-declarations-should-be-at-start-of-class": {
+              "$ref": "#/$defs/ward:java~1field-declarations-should-be-at-start-of-class"
+            },
             "field-no-init": {
               "$ref": "#/$defs/ward:java~1field-no-init"
             },
@@ -58487,6 +58644,9 @@
             },
             "final-parameter-in-abstract-method": {
               "$ref": "#/$defs/ward:java~1final-parameter-in-abstract-method"
+            },
+            "final-parameters": {
+              "$ref": "#/$defs/ward:java~1final-parameters"
             },
             "finalize-does-not-call-super-finalize": {
               "$ref": "#/$defs/ward:java~1finalize-does-not-call-super-finalize"
@@ -60171,6 +60331,9 @@
             "simplified-ternary": {
               "$ref": "#/$defs/ward:java~1simplified-ternary"
             },
+            "simplify-boolean-expression": {
+              "$ref": "#/$defs/ward:java~1simplify-boolean-expression"
+            },
             "simplify-boolean-return": {
               "$ref": "#/$defs/ward:java~1simplify-boolean-return"
             },
@@ -60582,6 +60745,9 @@
             "unnecessary-check-not-null": {
               "$ref": "#/$defs/ward:java~1unnecessary-check-not-null"
             },
+            "unnecessary-constructor": {
+              "$ref": "#/$defs/ward:java~1unnecessary-constructor"
+            },
             "unnecessary-conversion-temporary": {
               "$ref": "#/$defs/ward:java~1unnecessary-conversion-temporary"
             },
@@ -60596,6 +60762,9 @@
             },
             "unnecessary-lambda": {
               "$ref": "#/$defs/ward:java~1unnecessary-lambda"
+            },
+            "unnecessary-parentheses": {
+              "$ref": "#/$defs/ward:java~1unnecessary-parentheses"
             },
             "unnecessary-return": {
               "$ref": "#/$defs/ward:java~1unnecessary-return"
@@ -60644,6 +60813,9 @@
             },
             "unused-null-check-in-equals": {
               "$ref": "#/$defs/ward:java~1unused-null-check-in-equals"
+            },
+            "unused-private-field": {
+              "$ref": "#/$defs/ward:java~1unused-private-field"
             },
             "unused-private-method": {
               "$ref": "#/$defs/ward:java~1unused-private-method"

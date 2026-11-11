@@ -7,6 +7,7 @@ import dev.ward.analysis.domain.node.NodeProjectLayout;
 import dev.ward.analysis.domain.node.NodeScopeAnalysis;
 import dev.ward.analysis.domain.node.types.NativeNodeTypeFacts;
 import dev.ward.analysis.domain.node.types.Program;
+import dev.ward.analysis.domain.port.LanguageFrontend;
 import dev.ward.analysis.domain.port.TypeFacts;
 import dev.ward.analysis.domain.types.CachedTypeFacts;
 import dev.ward.analysis.domain.types.FactKind;
@@ -43,12 +44,22 @@ public final class NativeNodeTypes {
       List.of(".ts", ".tsx", ".mts", ".cts", ".js", ".jsx", ".mjs", ".cjs");
 
   private final Path projectRoot;
+  private final LanguageFrontend frontend;
   private final ReentrantLock lock = new ReentrantLock();
   private TypeFacts facts;
 
-  /** Creates the facts of the project at {@code projectRoot}. */
+  /** Creates the facts of the project at {@code projectRoot}, with a parser of its own. */
   public NativeNodeTypes(final Path projectRoot) {
+    this(projectRoot, new AntlrLanguageFrontend());
+  }
+
+  /**
+   * Creates the facts of the project at {@code projectRoot}, reading sources with {@code frontend},
+   * which the other passes of the run share so that a unit is parsed once.
+   */
+  public NativeNodeTypes(final Path projectRoot, final LanguageFrontend frontend) {
     this.projectRoot = projectRoot.toAbsolutePath().normalize();
+    this.frontend = frontend;
   }
 
   /** Returns the type facts; the project is opened on the first query. */
@@ -73,7 +84,6 @@ public final class NativeNodeTypes {
   private TypeFacts open() {
     final Set<String> files = projectFiles();
     final NodeProjectLayout layout = NodeLayouts.read(projectRoot, files);
-    final AntlrLanguageFrontend frontend = new AntlrLanguageFrontend();
     final Program program =
         new Program(
             new ProjectDeclarationFiles(projectRoot),

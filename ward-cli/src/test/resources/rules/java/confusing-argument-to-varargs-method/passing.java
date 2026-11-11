@@ -15,4 +15,16 @@ class Sample {
     log(objects);
     log((Object[]) words);
   }
+
+  static <T> void generic(T... items) {}
+
+  void more(String[] words) {
+    generic(words);
+  }
+
+  static void join(CharSequence... names) {}
+
+  void names(String[] words) {
+    join(words);
+  }
 }

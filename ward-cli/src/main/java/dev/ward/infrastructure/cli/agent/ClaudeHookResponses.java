@@ -45,25 +45,25 @@ final class ClaudeHookResponses {
   }
 
   @JsonType
-  public static final class PreToolUseOutput {
-    public PreToolUseDecision hookSpecificOutput;
+  static final class PreToolUseOutput {
+    PreToolUseDecision hookSpecificOutput;
   }
 
   @JsonType
-  public static final class PreToolUseDecision {
-    public String hookEventName;
-    public String permissionDecision;
-    public String permissionDecisionReason;
+  static final class PreToolUseDecision {
+    String hookEventName;
+    String permissionDecision;
+    String permissionDecisionReason;
   }
 
   @JsonType
-  public static final class StopBlockOutput {
-    public String decision;
-    public String reason;
+  static final class StopBlockOutput {
+    String decision;
+    String reason;
   }
 
   @JsonType
-  public static final class SystemMessageOutput {
-    public String systemMessage;
+  static final class SystemMessageOutput {
+    String systemMessage;
   }
 }
