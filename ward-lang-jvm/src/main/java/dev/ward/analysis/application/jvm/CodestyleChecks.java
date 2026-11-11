@@ -14,6 +14,7 @@ import dev.ward.analysis.domain.rule.check.PrematureDeclarationCheck;
 import dev.ward.analysis.domain.rule.check.RedundantInterfaceCheck;
 import dev.ward.analysis.domain.rule.check.SimplifyBooleanCheck;
 import dev.ward.analysis.domain.rule.check.StaticImportCountCheck;
+import dev.ward.analysis.domain.rule.check.StringInstantiationCheck;
 import dev.ward.analysis.domain.rule.check.ThrowsExceptionCheck;
 import dev.ward.analysis.domain.rule.check.UnnecessaryConstructorCheck;
 import dev.ward.analysis.domain.rule.check.UnnecessaryParenthesesCheck;
@@ -48,6 +49,9 @@ final class CodestyleChecks {
         entry(
             "unnecessary-parentheses",
             toml -> new UnnecessaryParenthesesCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "string-instantiation",
+            toml -> new StringInstantiationCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "static-import-count",
             toml ->
