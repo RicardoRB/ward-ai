@@ -97,7 +97,9 @@ final class GenericChecks {
               filter,
               TomlValues.optionalStrings(toml, "ignore"),
               TomlValues.optionalStrings(toml, "ignore-contexts"),
-              TomlValues.optionalInteger(toml, "max-repeats", LiteralCheck.NO_REPEAT_LIMIT),
+              new LiteralCheck.Limits(
+                  TomlValues.optionalInteger(toml, "max-repeats", LiteralCheck.NO_REPEAT_LIMIT),
+                  TomlValues.optionalInteger(toml, "min-length", 0)),
               message);
       default -> throw new RuleConfigurationException("unknown check '" + kind.id() + "'");
     };

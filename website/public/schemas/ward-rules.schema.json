@@ -12736,6 +12736,10 @@
         "max-repeats": {
           "type": "integer",
           "minimum": 0
+        },
+        "min-length": {
+          "type": "integer",
+          "minimum": 0
         }
       }
     },

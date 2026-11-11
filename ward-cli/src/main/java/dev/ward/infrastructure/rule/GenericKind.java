@@ -34,11 +34,12 @@ enum GenericKind {
       List.of(option("order", RuleOptionType.STRING_LIST))),
   LITERAL(
       "literal",
-      List.of("ignore", "ignore-contexts", "max-repeats"),
+      List.of("ignore", "ignore-contexts", "max-repeats", "min-length"),
       List.of(
           option("ignore", RuleOptionType.STRING_LIST),
           option("ignore-contexts", RuleOptionType.STRING_LIST),
-          option("max-repeats", RuleOptionType.INTEGER))),
+          option("max-repeats", RuleOptionType.INTEGER),
+          option("min-length", RuleOptionType.INTEGER))),
   DUPLICATE("duplicate", List.of("items", "key"), List.of());
 
   /** The keys every generic kind accepts: the node kinds, the shared filters and the message. */
