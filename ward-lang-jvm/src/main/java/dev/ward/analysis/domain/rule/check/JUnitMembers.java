@@ -20,6 +20,7 @@ final class JUnitMembers {
   private static final String MEMBER_DECLARATION = "memberDeclaration";
   private static final String METHOD_DECLARATION = "methodDeclaration";
   private static final String MODIFIER = "modifier";
+  private static final String TYPE_MODIFIER = "classOrInterfaceModifier";
   private static final String ANNOTATION = "annotation";
   private static final String IDENTIFIER = "identifier";
   private static final String METHOD_CALL = "methodCall";
@@ -51,10 +52,13 @@ final class JUnitMembers {
         .orElse("");
   }
 
-  /** Returns the simple names of the annotations on a member, without {@code @} or arguments. */
+  /**
+   * Returns the simple names of the annotations on a member or type declaration, without {@code @}
+   * or arguments.
+   */
   static Set<String> annotations(final SyntaxNode member) {
     return member.children().stream()
-        .filter(child -> MODIFIER.equals(child.kind()))
+        .filter(child -> MODIFIER.equals(child.kind()) || TYPE_MODIFIER.equals(child.kind()))
         .flatMap(modifier -> SyntaxWalk.descendants(modifier).stream())
         .filter(node -> ANNOTATION.equals(node.kind()))
         .map(node -> simpleName(SyntaxWalk.text(node)))
