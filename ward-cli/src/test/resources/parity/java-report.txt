@@ -11,8 +11,8 @@
 # errorprone agree-lines: 63
 # errorprone anchor-differs: 1
 # errorprone approximation: 7
-# errorprone not-comparable: 119
-# errorprone tool-silent: 16
+# errorprone not-comparable: 120
+# errorprone tool-silent: 15
 # nullaway agree-lines: 5
 # nullaway anchor-differs: 1
 # nullaway approximation: 2
@@ -27,10 +27,10 @@
 # semgrep agree-lines: 9
 # semgrep anchor-differs: 5
 # semgrep tool-silent: 40
-# spotbugs agree-lines: 168
+# spotbugs agree-lines: 167
 # spotbugs anchor-differs: 42
 # spotbugs approximation: 16
-# spotbugs not-comparable: 116
+# spotbugs not-comparable: 117
 # spotbugs tool-silent: 126
 aa-assertion-of-arguments	spotbugs	AA_ASSERTION_OF_ARGUMENTS	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 abbreviation-as-word-in-name	checkstyle	AbbreviationAsWordInName	approximation	Ward's default pattern rejects any two consecutive capitals, as Google style does; Checkstyle allows up to four by default
@@ -784,7 +784,7 @@ np-clone-could-return-null	spotbugs	NP_CLONE_COULD_RETURN_NULL	not-comparable	th
 np-closing-null	spotbugs	NP_CLOSING_NULL	agree-lines	
 np-dereference-of-readline-value	spotbugs	NP_DEREFERENCE_OF_READLINE_VALUE	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 np-equals-should-handle-null-argument	spotbugs	NP_EQUALS_SHOULD_HANDLE_NULL_ARGUMENT	anchor-differs	tool lines [1], on passing [], fixture [2]
-np-guaranteed-deref	spotbugs	NP_GUARANTEED_DEREF	agree-lines	
+np-guaranteed-deref	spotbugs	NP_GUARANTEED_DEREF	anchor-differs	tool lines [9], on passing [], fixture [7]
 np-guaranteed-deref-on-exception-path	spotbugs	NP_GUARANTEED_DEREF_ON_EXCEPTION_PATH	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 np-immediate-dereference-of-readline	spotbugs	NP_IMMEDIATE_DEREFERENCE_OF_READLINE	agree-lines	
 np-load-of-known-null-value	spotbugs	NP_LOAD_OF_KNOWN_NULL_VALUE	agree-lines	
@@ -1188,11 +1188,11 @@ unused-local-variable	pmd	UnusedLocalVariable	tool-silent	the tool reports nothi
 unused-null-check-in-equals	pmd	UnusedNullCheckInEquals	agree-lines	
 unused-private-field	checkstyle	UnusedPrivateField	approximation	Checkstyle also reports an annotated private field (line 4 of the passing fixture); Ward and PMD leave it alone
 unused-private-field	pmd	UnusedPrivateField	agree	
-unused-private-method	errorprone	UnusedMethod	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
+unused-private-method	errorprone	UnusedMethod	not-comparable	the fixture does not compile
 unused-private-method	pmd	UnusedPrivateMethod	agree-lines	
 unused-return-value	pmd	UnusedReturnValue	approximation	PMD also reports text.length() (passing line 10); Ward reports only the methods it lists
 unvalidated-redirect	semgrep	java.lang.security.audit.unvalidated-redirect.unvalidated-redirect	anchor-differs	tool lines [5], on passing [], fixture [7]
-upm-uncalled-private-method	spotbugs	UPM_UNCALLED_PRIVATE_METHOD	anchor-differs	tool lines [1], on passing [], fixture [2]
+upm-uncalled-private-method	spotbugs	UPM_UNCALLED_PRIVATE_METHOD	not-comparable	the fixture does not compile
 upper-ell	checkstyle	UpperEll	agree	
 ur-uninit-read	spotbugs	UR_UNINIT_READ	agree-lines	
 ur-uninit-read-called-from-super-constructor	spotbugs	UR_UNINIT_READ_CALLED_FROM_SUPER_CONSTRUCTOR	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape

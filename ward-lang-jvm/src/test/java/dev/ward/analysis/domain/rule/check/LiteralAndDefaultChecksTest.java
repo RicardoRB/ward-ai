@@ -33,17 +33,20 @@ class LiteralAndDefaultChecksTest extends TreeBuilders {
 
   @Test
   void numberInAConstantIsNeverMagic() {
-    final SyntaxNode constant = n("constDeclaration", t(DECIMAL, "42"));
+    final SyntaxNode constant = n("constDeclaration", n("constantDeclarator", t(DECIMAL, "42")));
     assertThat(magic(List.of(), false, false, false).check(unit(constant), FILE)).isEmpty();
     final SyntaxNode staticFinal =
         n(
             CLASS_BODY_DECLARATION,
             n(MODIFIER, t("'static'", "static")),
             n(MODIFIER, t("'final'", "final")),
-            n(FIELD, t(DECIMAL, "42")));
+            n(FIELD, n(DECLARATOR, t(DECIMAL, "42"))));
     assertThat(magic(List.of(), false, false, false).check(unit(staticFinal), FILE)).isEmpty();
     final SyntaxNode plain =
-        n(CLASS_BODY_DECLARATION, n(MODIFIER, t("'static'", "static")), n(FIELD, t(DECIMAL, "42")));
+        n(
+            CLASS_BODY_DECLARATION,
+            n(MODIFIER, t("'static'", "static")),
+            n(FIELD, n(DECLARATOR, t(DECIMAL, "42"))));
     assertThat(magic(List.of(), false, false, false).check(unit(plain), FILE)).hasSize(1);
   }
 

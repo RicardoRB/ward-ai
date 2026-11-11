@@ -27,9 +27,7 @@ public final class MagicNumberCheck implements UnitCheck {
           "BINARY_LITERAL",
           "FLOAT_LITERAL",
           "HEX_FLOAT_LITERAL");
-  private static final String CONSTANT = "constDeclaration";
   private static final String FIELD = "fieldDeclaration";
-  private static final String MEMBER = "classBodyDeclaration";
   private static final String ANNOTATION = "annotation";
   private static final String METHOD = "methodDeclaration";
   private static final String HASH_CODE = "hashCode";
@@ -88,7 +86,7 @@ public final class MagicNumberCheck implements UnitCheck {
     if (ignoredNumber(SyntaxWalk.text(visit.node()))) {
       return false;
     }
-    if (up.stream().anyMatch(node -> CONSTANT.equals(node.kind()) || constantField(node))) {
+    if (ConstantContext.waived(up)) {
       return false;
     }
     return !(ignoreFieldDeclaration && up.stream().anyMatch(n -> FIELD.equals(n.kind())))
@@ -99,18 +97,6 @@ public final class MagicNumberCheck implements UnitCheck {
   private boolean ignoredNumber(final String text) {
     final OptionalDouble value = value(text);
     return value.isPresent() && ignored.contains(Math.abs(value.getAsDouble()));
-  }
-
-  private static boolean constantField(final SyntaxNode node) {
-    if (!MEMBER.equals(node.kind())) {
-      return false;
-    }
-    final List<String> modifiers =
-        node.children().stream()
-            .filter(child -> "modifier".equals(child.kind()))
-            .map(SyntaxWalk::text)
-            .toList();
-    return modifiers.contains("static") && modifiers.contains("final");
   }
 
   private static boolean isHashCode(final SyntaxNode node) {
