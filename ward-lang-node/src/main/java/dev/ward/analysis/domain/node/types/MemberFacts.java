@@ -5,6 +5,7 @@ import dev.ward.analysis.domain.types.FieldRef;
 import dev.ward.analysis.domain.types.TypeMembers;
 import dev.ward.analysis.domain.types.TypeRef;
 import java.util.ArrayList;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,13 +22,28 @@ final class MemberFacts {
   private static final Set<Decl.Kind> DECLARED_KINDS =
       Set.of(Decl.Kind.CLASS, Decl.Kind.INTERFACE, Decl.Kind.ENUM);
 
-  private MemberFacts() {}
+  /**
+   * The members of each declaration seen so far, by declaration identity. Type arguments do not
+   * change them, since bases are resolved with an empty substitution. One instance serves one unit
+   * on one thread, so the map needs no locking. An empty value is an unknown declaration.
+   */
+  private final Map<Decl, Optional<TypeMembers>> known = new IdentityHashMap<>();
 
   /** The members a declaration has itself, before those it inherits. */
   private record Own(List<CallTarget> methods, List<FieldRef> fields) {}
 
   /** Returns the members of {@code type}, or null when its declaration is unknown. */
-  static TypeMembers of(final TsType type) {
+  TypeMembers of(final TsType type) {
+    final Optional<Sym.Located> located = declarationOf(type);
+    if (located.isEmpty()) {
+      return compute(type);
+    }
+    return known
+        .computeIfAbsent(located.get().decl(), decl -> Optional.ofNullable(compute(type)))
+        .orElse(null);
+  }
+
+  private static TypeMembers compute(final TsType type) {
     final Own self = declared(type);
     if (self == null) {
       return null;
