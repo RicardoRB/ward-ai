@@ -62,12 +62,16 @@ final class TomlCrapParser {
     if (value == null || value.isBlank()) {
       throw new WardException(message);
     }
+    final Path path = normalized(value, message);
+    if (path.isAbsolute() || path.startsWith(PARENT) || path.toString().isEmpty()) {
+      throw new WardException(message);
+    }
+    return path.toString().replace('\\', '/');
+  }
+
+  private static Path normalized(final String value, final String message) {
     try {
-      final Path path = Path.of(value).normalize();
-      if (path.isAbsolute() || path.startsWith(PARENT) || path.toString().isEmpty()) {
-        throw new WardException(message);
-      }
-      return path.toString().replace('\\', '/');
+      return Path.of(value).normalize();
     } catch (InvalidPathException e) {
       throw new WardException(message, e);
     }

@@ -6,10 +6,12 @@ import dev.ward.domain.gate.LineCoverageException;
 import dev.ward.domain.gate.LineHits;
 import dev.ward.domain.project.Project;
 import java.nio.file.Path;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,7 +42,8 @@ final class CrapReports {
         throw new CrapReportException(
             display(project.root(), report)
                 + " cannot be parsed as a JaCoCo XML or lcov report; no score was used."
-                + FIRST);
+                + FIRST,
+            e);
       }
     }
     LOGGER.log(Level.INFO, () -> "event=crap-reports gate=" + gate + " reports=" + hits.size());
@@ -53,8 +56,8 @@ final class CrapReports {
    * @throws CrapReportException naming the report and the source file
    */
   void requireFresh(final Path root, final Map<String, Set<Path>> namedBy) {
-    for (final Map.Entry<String, Set<Path>> named : new java.util.TreeMap<>(namedBy).entrySet()) {
-      final var source = ports.files().modified(root.resolve(named.getKey()));
+    for (final Map.Entry<String, Set<Path>> named : new TreeMap<>(namedBy).entrySet()) {
+      final Instant source = ports.files().modified(root.resolve(named.getKey()));
       for (final Path report : named.getValue()) {
         if (source.isAfter(ports.files().modified(report))) {
           throw new CrapReportException(

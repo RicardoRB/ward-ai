@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.SortedMap;
 
 /** A rule ready to run over syntax trees. A {@link RuleMatcher} builds it from a definition. */
-public interface CompiledRule {
+public interface CompiledRule extends MeasuringRule {
 
   /** Returns the definition this rule was built from. */
   RuleDefinition definition();
@@ -18,18 +18,6 @@ public interface CompiledRule {
    *     tree
    */
   List<RuleMatch> matches(SyntaxNode root);
-
-  /**
-   * Returns the value this rule measures for every declaration in the tree rooted at {@code root},
-   * including those within its limit. A rule that measures nothing returns none, as this default
-   * method does.
-   *
-   * @throws dev.ward.analysis.domain.port.AnalysisFailedException if the rule cannot run on the
-   *     tree
-   */
-  default List<Measured> measures(final SyntaxNode root) {
-    return List.of();
-  }
 
   /**
    * Returns the matches of this rule in the tree rooted at {@code root}, given the files around it.

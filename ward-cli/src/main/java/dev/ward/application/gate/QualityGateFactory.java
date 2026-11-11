@@ -244,7 +244,7 @@ public class QualityGateFactory {
    */
   private QualityGate inProcessGate(final GateConfiguration check, final List<String> focus) {
     if (SupportedQualityGates.CRAP.equals(check.type())) {
-      return crapGate(check);
+      return CrapGates.create(check, extensions);
     }
     if (!SupportedQualityGates.FORMAT.equals(check.type())) {
       return AnalysisGates.create(check, extensions.analysis(), focus);
@@ -253,13 +253,6 @@ public class QualityGateFactory {
       throw new WardException("Format gate dependencies are unavailable.");
     }
     return extensions.format().create(check.name(), focus);
-  }
-
-  private QualityGate crapGate(final GateConfiguration check) {
-    if (extensions.analysis() == null || extensions.crap() == null) {
-      throw new WardException("CRAP gate dependencies are unavailable.");
-    }
-    return new CrapGate(check.name(), check.crap(), extensions.analysis(), extensions.crap());
   }
 
   private QualityGate openApiGate(

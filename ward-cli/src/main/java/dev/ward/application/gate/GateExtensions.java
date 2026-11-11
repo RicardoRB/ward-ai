@@ -15,12 +15,12 @@ import dev.ward.application.gate.openapi.OpenApiGates;
 public record GateExtensions(
     OpenApiGates openApi, AnalysisPorts analysis, FormatGates format, CrapPorts crap) {
 
+  /** No optional dependencies: every extension gate is reported as unavailable. */
+  public static final GateExtensions NONE = new GateExtensions(null, null, null, null);
+
   /** Creates the extensions without the {@code crap} gate. */
   public GateExtensions(
       final OpenApiGates openApi, final AnalysisPorts analysis, final FormatGates format) {
     this(openApi, analysis, format, null);
   }
-
-  /** No optional dependencies: every extension gate is reported as unavailable. */
-  public static final GateExtensions NONE = new GateExtensions(null, null, null, null);
 }

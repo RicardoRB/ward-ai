@@ -41,7 +41,7 @@ final class MetricCompiledRule implements CompiledRule {
         rule.measurement()
             .measure()
             .measured(node, target, method, rule)
-            .map(violation -> new Measured(violation.span(), violation.value()))
+            .map(MetricCompiledRule::measured)
             .ifPresent(measured::add);
       }
     }
@@ -80,6 +80,10 @@ final class MetricCompiledRule implements CompiledRule {
         .check(node, target, method, rule)
         .map(this::match)
         .ifPresent(matches::add);
+  }
+
+  private static Measured measured(final Violation violation) {
+    return new Measured(violation.span(), violation.value());
   }
 
   private RuleMatch match(final Violation violation) {

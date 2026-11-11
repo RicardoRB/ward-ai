@@ -7,4 +7,8 @@ final class CrapReportException extends RuntimeException {
   CrapReportException(final String message) {
     super(message);
   }
+
+  CrapReportException(final String message, final Throwable cause) {
+    super(message, cause);
+  }
 }

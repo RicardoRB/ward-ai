@@ -6,13 +6,14 @@ import dev.ward.domain.gate.LineCoverageException;
 import dev.ward.domain.gate.LineCoverageReport;
 import dev.ward.domain.gate.LineHits;
 import dev.ward.infrastructure.finding.SafeXml;
-import jakarta.inject.Inject;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.xml.stream.XMLStreamReader;
 
 /** Reads the per-line instruction counts of the {@code sourcefile} elements of a JaCoCo report. */
@@ -24,6 +25,7 @@ public final class JacocoXmlLineCoverage implements LineCoverageReport {
   private static final String LINE = "line";
   private static final String NAME = "name";
   private static final String XML = "<?xml";
+  private static final String NO_FILE = "";
 
   /** Creates the stateless reader that Dagger injects. */
   @Inject
@@ -61,11 +63,11 @@ public final class JacocoXmlLineCoverage implements LineCoverageReport {
   /** Accumulates the entry of the {@code sourcefile} element being read. */
   private static final class Collector {
     private final List<LineHits.Entry> entries = new ArrayList<>();
-    private final TreeSet<Integer> coverable = new TreeSet<>();
-    private final TreeSet<Integer> covered = new TreeSet<>();
+    private final SortedSet<Integer> coverable = new TreeSet<>();
+    private final SortedSet<Integer> covered = new TreeSet<>();
     private boolean first = true;
     private String directory = "";
-    private String file;
+    private String file = NO_FILE;
 
     void visit(final String element, final String name, final XMLStreamReader reader) {
       switch (element) {
@@ -85,12 +87,12 @@ public final class JacocoXmlLineCoverage implements LineCoverageReport {
 
     private void begin(final String name) {
       flush();
-      file = name;
+      file = name == null ? NO_FILE : name;
     }
 
     private void mark(final XMLStreamReader reader) {
       final Integer number = SafeXml.intAttribute(reader, "nr");
-      if (file == null || number == null) {
+      if (NO_FILE.equals(file) || number == null) {
         return;
       }
       coverable.add(number);
@@ -100,13 +102,13 @@ public final class JacocoXmlLineCoverage implements LineCoverageReport {
     }
 
     void flush() {
-      if (file != null) {
+      if (!NO_FILE.equals(file)) {
         final String name = directory.isEmpty() ? file : directory + "/" + file;
         entries.add(
             new LineHits.Entry(
                 LineHits.Kind.PACKAGE_FILE, name, new FileLines(coverable, covered)));
       }
-      file = null;
+      file = NO_FILE;
       coverable.clear();
       covered.clear();
     }

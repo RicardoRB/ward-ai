@@ -38,12 +38,25 @@ record CoverageMatching(Map<String, FileLines> lines, Map<String, Set<Path>> nam
                 ? byPath(root, entry.name(), reportDirectory, sources)
                 : byPackage(entry.name(), reportDirectory, sources);
         if (source != null) {
-          lines.merge(source, entry.lines(), FileLines::merge);
-          namedBy.computeIfAbsent(source, key -> new TreeSet<>()).add(report.report());
+          record(lines, namedBy, source, entry.lines(), report.report());
         }
       }
     }
     return new CoverageMatching(lines, namedBy);
+  }
+
+  private static void record(
+      final Map<String, FileLines> lines,
+      final Map<String, Set<Path>> namedBy,
+      final String source,
+      final FileLines marks,
+      final Path report) {
+    lines.merge(source, marks, FileLines::merge);
+    namedBy.computeIfAbsent(source, key -> namedByNew()).add(report);
+  }
+
+  private static Set<Path> namedByNew() {
+    return new TreeSet<>();
   }
 
   /** The directory of a report relative to the project root, as path segments. */

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.domain.gate.LineCoverageException;
+import dev.ward.domain.gate.LineHits;
 import dev.ward.infrastructure.finding.jvm.JacocoXmlLineCoverage;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -28,8 +29,12 @@ class DetectedLineCoverageTest {
             temp.resolve("report.info"),
             "﻿<?xml version=\"1.0\"?><report><package name=\"p\"><sourcefile name=\"A.java\"/></package></report>");
 
-    assertThat(reader.read(lcov).entries()).extracting(e -> e.name()).containsExactly("a.ts");
-    assertThat(reader.read(xml).entries()).extracting(e -> e.name()).containsExactly("p/A.java");
+    assertThat(reader.read(lcov).entries())
+        .extracting(LineHits.Entry::name)
+        .containsExactly("a.ts");
+    assertThat(reader.read(xml).entries())
+        .extracting(LineHits.Entry::name)
+        .containsExactly("p/A.java");
   }
 
   @Test

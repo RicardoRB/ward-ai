@@ -16,7 +16,6 @@ class CrapFunctionsTest {
 
   private static final int TEN = 10;
   private static final int TWENTY = 20;
-  private static final int THIRTY = 30;
   private static final int THREE = 3;
   private static final int FIVE = 5;
   private static final int FOUR = 4;

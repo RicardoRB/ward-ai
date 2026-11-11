@@ -4,16 +4,17 @@ import dev.ward.domain.gate.FileLines;
 import dev.ward.domain.gate.LineCoverageException;
 import dev.ward.domain.gate.LineCoverageReport;
 import dev.ward.domain.gate.LineHits;
-import jakarta.inject.Inject;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.inject.Inject;
 
 /** Reads the {@code SF:}, {@code DA:} and {@code end_of_record} lines of an lcov tracefile. */
 public final class LcovLineCoverage implements LineCoverageReport {
@@ -22,6 +23,7 @@ public final class LcovLineCoverage implements LineCoverageReport {
   private static final String LINE_DATA = "DA:";
   private static final String END = "end_of_record";
   private static final String TEST_NAME = "TN:";
+  private static final String NO_RECORD = "";
 
   /** Creates the stateless reader that Dagger injects. */
   @Inject
@@ -42,9 +44,9 @@ public final class LcovLineCoverage implements LineCoverageReport {
       throw new LineCoverageException("Cannot read " + report.getFileName(), e);
     }
     final List<LineHits.Entry> entries = new ArrayList<>();
-    String name = null;
-    final TreeSet<Integer> coverable = new TreeSet<>();
-    final TreeSet<Integer> covered = new TreeSet<>();
+    String name = NO_RECORD;
+    final SortedSet<Integer> coverable = new TreeSet<>();
+    final SortedSet<Integer> covered = new TreeSet<>();
     for (final String raw : lines) {
       final String line = raw.strip();
       if (line.startsWith(SOURCE_FILE)) {
@@ -56,12 +58,12 @@ public final class LcovLineCoverage implements LineCoverageReport {
         requireRecord(name, report);
         entries.add(
             new LineHits.Entry(LineHits.Kind.PATH, name, new FileLines(coverable, covered)));
-        name = null;
+        name = NO_RECORD;
         coverable.clear();
         covered.clear();
       }
     }
-    if (name != null) {
+    if (!NO_RECORD.equals(name)) {
       throw new LineCoverageException(report.getFileName() + " is truncated: no end_of_record");
     }
     LOGGER.log(Level.FINE, () -> "event=lcov-read entries=" + entries.size());
@@ -69,7 +71,7 @@ public final class LcovLineCoverage implements LineCoverageReport {
   }
 
   private static void requireRecord(final String name, final Path report) {
-    if (name == null) {
+    if (NO_RECORD.equals(name)) {
       throw new LineCoverageException(
           report.getFileName() + " is not an lcov report: a record has no SF line");
     }
@@ -77,8 +79,8 @@ public final class LcovLineCoverage implements LineCoverageReport {
 
   private static void parseLine(
       final String data,
-      final TreeSet<Integer> coverable,
-      final TreeSet<Integer> covered,
+      final SortedSet<Integer> coverable,
+      final SortedSet<Integer> covered,
       final Path report) {
     final String[] parts = data.split(",", -1);
     try {

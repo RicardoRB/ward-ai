@@ -2,12 +2,12 @@ package dev.ward.infrastructure.finding;
 
 import dev.ward.domain.gate.CoverageFiles;
 import dev.ward.infrastructure.project.ProjectDirectories;
-import jakarta.inject.Inject;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.List;
+import javax.inject.Inject;
 
 /** Answers the {@code crap} gate's file questions from the file system. */
 public final class FileSystemCoverageFiles implements CoverageFiles {

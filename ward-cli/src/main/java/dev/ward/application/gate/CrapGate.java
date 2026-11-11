@@ -1,16 +1,13 @@
 package dev.ward.application.gate;
 
 import dev.ward.analysis.application.rule.FrontendSupport;
-import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.AnalysisFailedException;
 import dev.ward.analysis.domain.port.ParseResult;
 import dev.ward.analysis.domain.rule.CompiledRule;
-import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.domain.config.CrapOptions;
 import dev.ward.domain.gate.FileLines;
 import dev.ward.domain.gate.Finding;
-import dev.ward.domain.gate.FindingSeverity;
 import dev.ward.domain.gate.GateFindings;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.GateStatus;
@@ -19,11 +16,8 @@ import dev.ward.domain.gate.QualityGate;
 import dev.ward.domain.project.Project;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -35,19 +29,7 @@ import java.util.stream.Collectors;
  * coverage check wrote.
  */
 public final class CrapGate implements QualityGate {
-  /** The rule id of the findings. */
-  static final String RULE = "crap";
-
   private static final Logger LOGGER = Logger.getLogger(CrapGate.class.getName());
-  private static final String TOOL = "ward";
-  private static final Map<AnalysisLanguage, String> COMPLEXITY_RULES =
-      Map.of(
-          AnalysisLanguage.JAVA, "ward:java/cyclomatic-complexity",
-          AnalysisLanguage.KOTLIN, "ward:kotlin/cyclomatic-complexity",
-          AnalysisLanguage.TYPESCRIPT, "ward:typescript/complexity",
-          AnalysisLanguage.JAVASCRIPT, "ward:javascript/complexity",
-          AnalysisLanguage.PYTHON, "ward:python/complexity",
-          AnalysisLanguage.SWIFT, "ward:swift/complexity");
 
   private final String name;
   private final CrapOptions options;
@@ -83,9 +65,9 @@ public final class CrapGate implements QualityGate {
 
   private GateResult run(final Project project) {
     final List<LineHits> hits = reports.read(project, options, name);
-    final Map<AnalysisLanguage, CompiledRule> rules = complexityRules();
-    final Map<AnalysisLanguage, FrontendSupport> frontends = frontends(rules.keySet());
-    final List<SourceUnit> units = analysis.sources().read(project.root(), frontends.keySet());
+    final ComplexityRules complexity = ComplexityRules.load(analysis);
+    final List<SourceUnit> units =
+        analysis.sources().read(project.root(), complexity.frontends().keySet());
     final CoverageMatching matching =
         CoverageMatching.of(
             project.root(),
@@ -101,11 +83,15 @@ public final class CrapGate implements QualityGate {
     int scored = 0;
     for (final SourceUnit unit : units) {
       final List<CrapFunctions.Scored> functions =
-          score(unit, rules.get(unit.language()), frontends.get(unit.language()), matching);
+          score(
+              unit,
+              complexity.rules().get(unit.language()),
+              complexity.frontends().get(unit.language()),
+              matching);
       scored += functions.size();
       functions.stream()
           .filter(function -> function.score().score() > options.max())
-          .forEach(function -> findings.add(finding(unit, function)));
+          .forEach(function -> findings.add(CrapFindings.of(name, options.max(), unit, function)));
     }
     findings.sort(
         Comparator.comparing(Finding::file)
@@ -133,52 +119,6 @@ public final class CrapGate implements QualityGate {
           unit.path() + " is named by a coverage report but cannot be parsed.");
     }
     return List.of();
-  }
-
-  private Map<AnalysisLanguage, CompiledRule> complexityRules() {
-    final Map<String, RuleDefinition> byId =
-        analysis.rules().load().rules().stream()
-            .collect(Collectors.toMap(RuleDefinition::id, rule -> rule, (first, second) -> first));
-    final Map<AnalysisLanguage, CompiledRule> rules = new EnumMap<>(AnalysisLanguage.class);
-    COMPLEXITY_RULES.forEach(
-        (language, id) -> {
-          final RuleDefinition definition = byId.get(id);
-          if (definition != null) {
-            rules.put(language, analysis.matcher().compile(definition));
-          }
-        });
-    return rules;
-  }
-
-  private Map<AnalysisLanguage, FrontendSupport> frontends(final Set<AnalysisLanguage> ruled) {
-    return analysis.frontends().stream()
-        .filter(support -> ruled.contains(support.language()))
-        .collect(
-            Collectors.toMap(
-                FrontendSupport::language, support -> support, (first, second) -> first));
-  }
-
-  private Finding finding(final SourceUnit unit, final CrapFunctions.Scored function) {
-    final CrapScore score = function.score();
-    return new Finding(
-        name,
-        TOOL,
-        RULE,
-        FindingSeverity.ERROR,
-        "CRAP score "
-            + score.display()
-            + " is above "
-            + options.max()
-            + " (complexity "
-            + score.complexity()
-            + ", coverage "
-            + score.coverageDisplay()
-            + ")",
-        unit.path(),
-        function.span().startLine(),
-        function.span().startColumn(),
-        null,
-        List.of());
   }
 
   private GateResult result(final List<Finding> findings, final int scored) {
