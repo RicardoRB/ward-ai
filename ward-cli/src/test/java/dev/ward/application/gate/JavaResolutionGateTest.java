@@ -38,14 +38,14 @@ class JavaResolutionGateTest {
   @TempDir Path root;
 
   /** The stored reverse index in the codec's own shape: one entry per depended-on file. */
-  public static final class StoredIndex {
-    public List<StoredEntry> entries;
+  static final class StoredIndex {
+    List<StoredEntry> entries;
   }
 
   /** One depended-on file and the files that depend on it. */
-  public static final class StoredEntry {
-    public String path;
-    public List<String> dependents;
+  static final class StoredEntry {
+    String path;
+    List<String> dependents;
   }
 
   @Test

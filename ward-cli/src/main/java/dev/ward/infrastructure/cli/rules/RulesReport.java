@@ -19,9 +19,9 @@ final class RulesReport {
 
   /** The JSON of {@code ward rules list}. */
   @JsonType
-  public record RuleListDto(List<RuleDto> rules) {
+  record RuleListDto(List<RuleDto> rules) {
     /** Copies the rules. */
-    public RuleListDto {
+    RuleListDto {
       rules = List.copyOf(rules);
     }
   }
@@ -36,14 +36,14 @@ final class RulesReport {
    * @param description the one-line description
    */
   @JsonType
-  public record RuleDto(
+  record RuleDto(
       String id,
       List<String> languages,
       String category,
       List<String> presets,
       String description) {
     /** Copies the lists. */
-    public RuleDto {
+    RuleDto {
       languages = List.copyOf(languages);
       presets = List.copyOf(presets);
     }
@@ -60,7 +60,7 @@ final class RulesReport {
    * @param options the options the rule declares
    */
   @JsonType
-  public record RuleDetailDto(
+  record RuleDetailDto(
       String id,
       List<String> languages,
       String category,
@@ -68,7 +68,7 @@ final class RulesReport {
       String description,
       List<OptionDto> options) {
     /** Copies the lists. */
-    public RuleDetailDto {
+    RuleDetailDto {
       languages = List.copyOf(languages);
       presets = List.copyOf(presets);
       options = List.copyOf(options);
@@ -87,10 +87,10 @@ final class RulesReport {
    * @param values the allowed texts of an enum
    */
   @JsonType
-  public record OptionDto(
+  record OptionDto(
       String name, String type, String defaultValue, Long min, Long max, List<String> values) {
     /** Copies the values. */
-    public OptionDto {
+    OptionDto {
       values = List.copyOf(values);
     }
   }

@@ -90,15 +90,15 @@ final class JsonDependencyCodec {
 
   /** One stored file summary; its public fields are serialized. */
   @JsonType
-  public static final class SummaryDto {
-    public int formatVersion;
-    public String key;
-    public String path;
-    public List<SymbolDto> exports;
-    public List<ReferenceDto> imports;
-    public List<SymbolDto> declared;
-    public List<String> usedNames;
-    public List<String> assignedNames;
+  static final class SummaryDto {
+    int formatVersion;
+    String key;
+    String path;
+    List<SymbolDto> exports;
+    List<ReferenceDto> imports;
+    List<SymbolDto> declared;
+    List<String> usedNames;
+    List<String> assignedNames;
 
     static SummaryDto from(final String key, final FileSummary summary) {
       final SummaryDto dto = new SummaryDto();
@@ -116,10 +116,10 @@ final class JsonDependencyCodec {
 
   /** One stored symbol. */
   @JsonType
-  public static final class SymbolDto {
-    public String name;
-    public String kind;
-    public SpanDto span;
+  static final class SymbolDto {
+    String name;
+    String kind;
+    SpanDto span;
 
     static SymbolDto from(final Symbol symbol) {
       final SymbolDto dto = new SymbolDto();
@@ -139,10 +139,10 @@ final class JsonDependencyCodec {
 
   /** One stored reference. */
   @JsonType
-  public static final class ReferenceDto {
-    public String specifier;
-    public SpanDto span;
-    public boolean typeChecking;
+  static final class ReferenceDto {
+    String specifier;
+    SpanDto span;
+    boolean typeChecking;
 
     static ReferenceDto from(final Reference reference) {
       final ReferenceDto dto = new ReferenceDto();
@@ -162,13 +162,13 @@ final class JsonDependencyCodec {
 
   /** One stored region of a source unit. */
   @JsonType
-  public static final class SpanDto {
-    public int startLine;
-    public int startColumn;
-    public int endLine;
-    public int endColumn;
-    public int startOffset;
-    public int endOffset;
+  static final class SpanDto {
+    int startLine;
+    int startColumn;
+    int endLine;
+    int endColumn;
+    int startOffset;
+    int endOffset;
 
     static SpanDto from(final Span span) {
       final SpanDto dto = new SpanDto();
@@ -184,9 +184,9 @@ final class JsonDependencyCodec {
 
   /** The stored reverse-dependency index: the dependents of each depended-on file. */
   @JsonType
-  public static final class IndexDto {
-    public int formatVersion;
-    public List<IndexEntryDto> entries;
+  static final class IndexDto {
+    int formatVersion;
+    List<IndexEntryDto> entries;
 
     static IndexDto from(final DependencyGraph graph) {
       final IndexDto dto = new IndexDto();
@@ -204,9 +204,9 @@ final class JsonDependencyCodec {
 
   /** One file of the index and the files that depend on it. */
   @JsonType
-  public static final class IndexEntryDto {
-    public String path;
-    public List<String> dependents;
+  static final class IndexEntryDto {
+    String path;
+    List<String> dependents;
 
     static IndexEntryDto of(final String path, final List<String> dependents) {
       final IndexEntryDto dto = new IndexEntryDto();
