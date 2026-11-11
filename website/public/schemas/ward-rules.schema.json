@@ -1268,6 +1268,12 @@
           "items": {
             "type": "string"
           }
+        },
+        "ignore-magic-numbers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },

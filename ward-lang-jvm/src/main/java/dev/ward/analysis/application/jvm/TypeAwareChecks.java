@@ -17,6 +17,7 @@ import dev.ward.analysis.domain.rule.check.EnumComparisonCheck;
 import dev.ward.analysis.domain.rule.check.ExhaustiveSwitchHasDefaultCheck;
 import dev.ward.analysis.domain.rule.check.GuardLogStatementCheck;
 import dev.ward.analysis.domain.rule.check.IncompatibleArgumentCheck;
+import dev.ward.analysis.domain.rule.check.LoopAllocationCheck;
 import dev.ward.analysis.domain.rule.check.NonExhaustiveSwitchCheck;
 import dev.ward.analysis.domain.rule.check.ReferenceEqualityCheck;
 import dev.ward.analysis.domain.rule.check.SynchronizedOnTypeCheck;
@@ -74,6 +75,8 @@ final class TypeAwareChecks {
         entry(
             "check-result-set",
             toml -> new CheckResultSetCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "loop-allocation", toml -> new LoopAllocationCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "enum-comparison", toml -> new EnumComparisonCheck(TomlValues.required(toml, MESSAGE))),
         entry(

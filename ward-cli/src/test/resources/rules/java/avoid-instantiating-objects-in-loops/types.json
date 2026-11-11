@@ -1,0 +1,6 @@
+{
+  "33:7-33:10": {
+    "type": {"name": "java.util.List"},
+    "members": {"ancestors": [{"name": "java.util.Collection"}]}
+  }
+}

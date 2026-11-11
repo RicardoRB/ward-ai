@@ -16,6 +16,7 @@ final class ExpressionFacts {
 
   private final UnitModel model;
   private final ExprTyper typer;
+  private final MemberFacts memberFacts = new MemberFacts();
 
   ExpressionFacts(final UnitModel model, final ExprTyper typer) {
     this.model = model;
@@ -64,7 +65,7 @@ final class ExpressionFacts {
 
   /** The methods and fields of the type of an expression, or null when the type is unknown. */
   TypeMembers members(final SyntaxNode node) {
-    return Exprs.isExpression(node.kind()) ? MemberFacts.of(typer.typeOf(node)) : null;
+    return Exprs.isExpression(node.kind()) ? memberFacts.of(typer.typeOf(node)) : null;
   }
 
   /** The shape of the declaration behind the type of an expression, such as an enum. */
