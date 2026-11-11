@@ -3,7 +3,7 @@
 array-type-style = "implemented"
 avoid-escaped-unicode-characters = "implemented"
 descendant-token = { status = "planned", issue = "#292" }
-final-parameters = { status = "planned", issue = "#292" }
+final-parameters = "implemented"
 hex-literal-case = { status = "planned", issue = "#292" }
 line-ending = { status = "planned", issue = "#292" }
 multiline-comment-leading-asterisk-presence = "implemented"
