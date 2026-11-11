@@ -8,15 +8,32 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-11-11
+
+### Added
+
+- Five native Java rules that this repository's Checkstyle and PMD configuration enforces and Ward lacked: `ward:java/simplify-boolean-expression` (`x == true`, `x && true`, `c ? true : false`), `ward:java/unnecessary-parentheses` (precedence-clarifying parentheses are not reported), `ward:java/unused-private-field`, `ward:java/final-parameters` (a parameter the body uses and never assigns) and `ward:java/avoid-no-argument-super-constructor-call`. `ward:java/unnecessary-constructor` is now its own rule (#491).
+- Thirteen native Python rules from the optional Pylint extensions, in the `strict` preset: `while-used`, `bad-builtin`, `bad-dunder-name`, `consider-math-not-float`, `consider-using-tuple`, `prefer-typing-namedtuple`, `consider-refactoring-into-while-condition`, `consider-ternary-expression`, `too-many-try-statements` (option `max-try-statements`, default 1), `overlapping-except`, `consider-using-assignment-expr`, `confusing-consecutive-elif` and `eq-without-hash`. Fourteen more Pylint checks are covered by existing rules (#336).
+- Option `min-length` for the repeated string literal rules. `ward:java/multiple-string-literals` sets it to 3, so literals shorter than three characters are ignored, as PMD's `AvoidDuplicateLiterals` does; the default 0 keeps the other languages unchanged (#491).
+
 ### Changed
 
 - **Breaking (alpha, no migration):** Rule categories are named after what a rule checks, not after the tool it came from. The 46 categories become 16: `accessibility`, `angular`, `architecture`, `complexity`, `concurrency`, `correctness`, `dead-code`, `docs`, `duplication`, `error-handling`, `experimental`, `naming`, `null-safety`, `performance`, `security` and `style`. For example `errorprone`, `bad-practice`, `problem` and `pylint` are now `correctness`; `sizes`, `metrics` and `design` are `complexity`; `javadoc` is `docs`; `mt-correctness` and `multithreading` are `concurrency`; `nullness` is `null-safety`; `a11y` is `accessibility`. Rule ids do not change. Update `categories` in `ward-rules.toml` and `ward rules list --category`; an old name is reported as an unknown category with the list of valid ones.
+- The `ward` gate parses each source unit once per run. Type facts for Java, Node and Swift share the gate's parser, and the parse cache is bounded by source size instead of 64 entries. Measured on a 98-file TypeScript project: 457 parses become 98 and parse time drops from 209 s to 69 s, with an identical report (#502).
+- The `ward` gate needs much less memory on large Java and Kotlin projects: the members of a class that every file shares are read once, not once per typed expression. On this repository the peak went from 9.0 GB to 3.3 GB with an identical report (#493). The members of a named TypeScript type are cached per file in the same way (#494).
 
 ### Fixed
 
 - The `ward` gate no longer crashes with a `NullPointerException` on a JavaScript class that declares a `get` or `set` accessor. A getter is now a property of unknown type for the type-aware rules, and a setter declares nothing, as for TypeScript classes.
-- `ward:java/avoid-deeply-nested-if-stmts` no longer counts each `else if` of a chain as another nesting level, as PMD does; only a plain `else` block adds one.
-
+- Eight Java rules reported code that the tool they mirror accepts. They now follow that tool's documented behaviour (#491):
+  - `ward:java/avoid-instantiating-objects-in-loops` follows PMD's exemptions, such as `throw new` inside a loop.
+  - `ward:java/avoid-literals-in-if-condition` reports only literals that are direct operands of the condition, and ignores `-1` and `0` by default.
+  - `ward:java/unused-private-method` counts method references such as `Type::method`, and PMD's exemptions.
+  - `ward:java/immutable-field` reports a field only when every write is in its initializer or a constructor, and leaves injected annotated fields alone.
+  - `ward:java/magic-number` waives literals that initialize a `final` variable, as Checkstyle does.
+  - `ward:java/public-member-in-non-public-type` follows the effective visibility of the member: interface members, `@Override` methods and `main` are not reported, and the finding is on the `public` modifier.
+  - `ward:java/signature-declare-throws-exception` reports only an exact `Exception`, and not tests or overriding methods.
+  - `ward:java/avoid-deeply-nested-if-stmts` no longer counts each `else if` of a chain as another nesting level; only a plain `else` block adds one, as in PMD.
 
 ## [0.6.0] - 2026-11-10
 
@@ -293,6 +310,7 @@ Initial release, published as `sentinel-ai`.
 - A bounded quality loop and a typed gate registry.
 - Starlight documentation site.
 
+[0.7.0]: https://github.com/RicardoRB/ward-ai/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/RicardoRB/ward-ai/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/RicardoRB/ward-ai/compare/v0.4.1...v0.5.0
 [0.4.1]: https://github.com/RicardoRB/ward-ai/compare/v0.4.0...v0.4.1

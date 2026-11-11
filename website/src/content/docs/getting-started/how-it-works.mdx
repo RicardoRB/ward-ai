@@ -41,7 +41,8 @@ can't see: files changed outside the agent, by a person, or by a tool. See
 
 The `pre-push` hook adds slower local checks before code leaves your machine: compilation, tests,
 coverage, and, with the `strict` preset, Ward's architecture rules and Maven Enforcer.
-For TypeScript and JavaScript projects, it adds `tsc` and the test runner.
+For TypeScript and JavaScript projects, it adds `tsc` and the test runner; for Python, mypy and pytest;
+for Swift, the build and the tests.
 
 ### 4. CI
 
@@ -78,7 +79,7 @@ The [agent skills](/integrations/agent-skills/) let your coding agent set up the
 
 ## Share it with your team
 
-Commit `ward.toml`, the rule files under `config/`, the generated agent hooks (such as `.claude/`
+Commit `ward.toml`, `ward-rules.toml`, any rule file under `config/`, the generated agent hooks (such as `.claude/`
 or `.opencode/`), and, if you generate it, `AGENTS.md`. Every teammate and every agent then works with
 the same rules. The commit and push hooks live in `.git/hooks/`, which Git doesn't share; a one-step
 setup for teammates is planned.

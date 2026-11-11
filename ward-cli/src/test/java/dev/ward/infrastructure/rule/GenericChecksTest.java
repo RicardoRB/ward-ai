@@ -119,7 +119,8 @@ class GenericChecksTest {
         .containsExactly(
             new CheckOption("ignore", RuleOptionType.STRING_LIST, "0"),
             new CheckOption("ignore-contexts", RuleOptionType.STRING_LIST, ""),
-            new CheckOption("max-repeats", RuleOptionType.INTEGER, ""));
+            new CheckOption("max-repeats", RuleOptionType.INTEGER, ""),
+            new CheckOption("min-length", RuleOptionType.INTEGER, ""));
     assertThat(CheckOptions.of(MINIMAL.get(GenericKind.DUPLICATE))).isEmpty();
   }
 

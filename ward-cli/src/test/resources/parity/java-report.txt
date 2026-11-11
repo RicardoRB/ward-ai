@@ -4,8 +4,8 @@
 # - no-counterpart: 16
 # checkstyle agree: 79
 # checkstyle agree-lines: 45
-# checkstyle anchor-differs: 4
-# checkstyle approximation: 15
+# checkstyle anchor-differs: 3
+# checkstyle approximation: 16
 # checkstyle tool-silent: 8
 # errorprone agree: 18
 # errorprone agree-lines: 63
@@ -721,7 +721,7 @@ msf-mutable-servlet-field	spotbugs	MSF_MUTABLE_SERVLET_FIELD	not-comparable	the 
 mtia-suspect-servlet-instance-field	spotbugs	MTIA_SUSPECT_SERVLET_INSTANCE_FIELD	not-comparable	the fixture does not compile
 mtia-suspect-struts-instance-field	spotbugs	MTIA_SUSPECT_STRUTS_INSTANCE_FIELD	not-comparable	the fixture does not compile
 multiline-comment-leading-asterisk-presence	checkstyle	MultilineCommentLeadingAsteriskPresence	approximation	Checkstyle reports the opening line of the comment (line 2); Ward reports its lines that lack the asterisk (lines 3, 4)
-multiple-string-literals	checkstyle	MultipleStringLiterals	anchor-differs	tool lines [2], on passing [], fixture [3]
+multiple-string-literals	checkstyle	MultipleStringLiterals	approximation	Checkstyle has no minimum length and reports repeated "x" and "ab" (lines 5 and 7 of the passing fixture); Ward follows PMD AvoidDuplicateLiterals and ignores literals shorter than 3 characters
 multiple-string-literals	pmd	AvoidDuplicateLiterals	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 multiple-variable-declarations	checkstyle	MultipleVariableDeclarations	agree	
 multiple-variable-declarations	pmd	OneDeclarationPerLine	agree-lines	

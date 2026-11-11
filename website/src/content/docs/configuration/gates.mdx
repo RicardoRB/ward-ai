@@ -17,7 +17,7 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `tests` | JUnit 5 | Run the project's automated tests. |
 | | `coverage` | JaCoCo / coverage.py | Enforce or report test coverage. |
 | | `mutation` | PIT | Run mutation testing, optionally with a `minimum` score. |
-| Code Quality | `ward` | Ward rules | Check Java and Kotlin style and bug rules selected in `ward-rules.toml`. |
+| Code Quality | `ward` | Ward rules | Check the style and bug rules that `ward-rules.toml` selects, for Java, Kotlin, TypeScript, JavaScript, Python and Swift. |
 | | `sonar` | SonarQube | Code smells, bugs, duplication, overall quality. |
 | | `ward-format` | Ward's native formatter | Check source formatting against `.editorconfig`. Always selected by `ward init`. |
 | Security | `semgrep` | Semgrep | SAST and custom security rules. |
@@ -35,11 +35,12 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | TypeScript & JavaScript | `tsc` | TypeScript compiler | Type-check the project. |
 | | `vitest` / `jest` / `bun-test` | Vitest / Jest / Bun test | Run the project's automated tests. |
 | | `stryker` | StrykerJS | Run mutation testing, optionally with a `minimum` score. |
-| | `mypy` | mypy | Type-check the project. |
+| Python | `mypy` | mypy | Type-check the project. |
 | | `pytest` | pytest | Run the project's automated tests. |
+| | `django-check` | Django system checks | Run `manage.py check` on a Django project. |
 | | `pip-audit` | pip-audit | Scan dependencies for known vulnerabilities. |
 | | `mutmut` | mutmut 3 | Run mutation testing, optionally with a `minimum` score. |
-| | `swift-build` | Swift build | Compile the SwiftPM package. |
+| Swift | `swift-build` | Swift build | Compile the SwiftPM package. |
 | | `swift-test` | Swift tests | Run the SwiftPM package's tests. |
 | | `xcodebuild-test` | Xcode tests | Run an Xcode scheme's tests on an iPhone simulator or the Mac. |
 | | `swift-coverage` | llvm-cov / xccov | Fail below a `minimum` line coverage of production code. |
@@ -92,9 +93,9 @@ writes a license allowlist instead of the GPL/AGPL denylist; see
 Presets may write these rule files:
 
 - `config/enforcer-rules.xml` (strict)
-- `ward-rules.toml`, which selects the Ward rules of the preset for the Java and Kotlin sources of the project and for Python
+- `ward-rules.toml`, which selects the Ward rules of the preset for the languages of the project
 
-Java and Kotlin projects get no tool rule files under `config/`; the Ward rules in `ward-rules.toml` replace them. The files carry a `managed-by: ward` marker. Unmarked user files are never overwritten.
+No project gets lint tool rule files under `config/`; the Ward rules in `ward-rules.toml` replace them. The files carry a `managed-by: ward` marker. Unmarked user files are never overwritten.
 
 ## Build plugins
 

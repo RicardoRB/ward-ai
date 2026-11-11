@@ -52,6 +52,7 @@ li-lazy-init-static	spotbugs	LI_LAZY_INIT_STATIC	SpotBugs reports the null check
 np-null-param-deref-all-targets-dangerous	spotbugs	NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS	SpotBugs also reports the call use(null) of the passing fixture (line 8); Ward does not
 uc-useless-condition	spotbugs	UC_USELESS_CONDITION	SpotBugs also reports the passing fixture's condition on line 29; Ward does not
 umac-uncallable-method-of-anonymous-class	spotbugs	UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS	SpotBugs reports the anonymous class (line 3), and one in the passing fixture (line 10); Ward reports the uncallable method (line 7)
+multiple-string-literals	checkstyle	MultipleStringLiterals	Checkstyle has no minimum length and reports repeated "x" and "ab" (lines 5 and 7 of the passing fixture); Ward follows PMD AvoidDuplicateLiterals and ignores literals shorter than 3 characters
 final-parameters	checkstyle	FinalParameters	Checkstyle also reports a parameter that the method assigns (line 2 of the passing fixture); Ward follows PMD's MethodArgumentCouldBeFinal and leaves an assigned parameter alone
 simplify-boolean-expression	pmd	SimplifyBooleanExpressions	PMD reports only the comparison with a boolean literal (line 3); Ward and Checkstyle also report && true, !false and the ternary of literals
 unnecessary-parentheses	errorprone	UnnecessaryParentheses	Error Prone does not report the parentheses around an initializer (line 4); Ward and PMD do
