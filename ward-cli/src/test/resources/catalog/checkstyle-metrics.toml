@@ -24,6 +24,7 @@ checkstyle = ["CyclomaticComplexity"]
 eslint = ["complexity"]
 swiftlint = ["cyclomatic_complexity"]
 ruff = ["C901"]
+pylint = ["too-complex"]
 
 [[rule]]
 name = "java-ncss"

@@ -6,6 +6,7 @@ import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.ClassOverrideCheck;
 import dev.ward.analysis.domain.rule.check.ClassProtocolCheck;
+import dev.ward.analysis.domain.rule.check.ConsecutiveStatementsCheck;
 import dev.ward.analysis.domain.rule.check.DunderReturnCheck;
 import dev.ward.analysis.domain.rule.check.ElseAfterJumpCheck;
 import dev.ward.analysis.domain.rule.check.ExceptionStatementCheck;
@@ -20,10 +21,12 @@ import dev.ward.analysis.domain.rule.check.ModifiedIterationCheck;
 import dev.ward.analysis.domain.rule.check.NamedExprWithoutContextCheck;
 import dev.ward.analysis.domain.rule.check.NoMethodArgumentCheck;
 import dev.ward.analysis.domain.rule.check.NonlocalCheck;
+import dev.ward.analysis.domain.rule.check.OverlappingExceptCheck;
 import dev.ward.analysis.domain.rule.check.PointlessStringCheck;
 import dev.ward.analysis.domain.rule.check.PossiblyUnusedVariableCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
 import dev.ward.analysis.domain.rule.check.SameModuleCallCheck;
+import dev.ward.analysis.domain.rule.check.TryBodyLengthCheck;
 import java.util.Map;
 import org.tomlj.TomlParseResult;
 
@@ -70,6 +73,16 @@ final class PylintCheckFactories {
             "keyword-arg-before-vararg",
             toml -> new KeywordArgBeforeVarargCheck(TomlValues.required(toml, MESSAGE))),
         entry("first-argument", toml -> new FirstArgumentCheck(TomlValues.required(toml, MESSAGE))),
+        entry("consecutive-statements", PylintCheckFactories::consecutiveStatements),
+        entry(
+            "try-body-length",
+            toml ->
+                new TryBodyLengthCheck(
+                    TomlValues.integer(toml, "max-try-statements"),
+                    TomlValues.required(toml, MESSAGE))),
+        entry(
+            "overlapping-except",
+            toml -> new OverlappingExceptCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "named-expr-without-context",
             toml -> new NamedExprWithoutContextCheck(TomlValues.required(toml, MESSAGE))));
@@ -90,6 +103,12 @@ final class PylintCheckFactories {
   private static RuleCheck classProtocol(final TomlParseResult toml) {
     return new ClassProtocolCheck(
         problemOf(toml, ClassProtocolCheck.Problem.class), TomlValues.required(toml, MESSAGE));
+  }
+
+  private static RuleCheck consecutiveStatements(final TomlParseResult toml) {
+    return new ConsecutiveStatementsCheck(
+        problemOf(toml, ConsecutiveStatementsCheck.Problem.class),
+        TomlValues.required(toml, MESSAGE));
   }
 
   private static RuleCheck classOverride(final TomlParseResult toml) {

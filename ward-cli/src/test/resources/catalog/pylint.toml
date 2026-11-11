@@ -128,12 +128,6 @@ presets = ["standard", "strict"]
 pylint = ["bare-name-capture-pattern"]
 
 [[rule]]
-name = "boolean-datetime"
-presets = ["strict"]
-category = "pylint"
-pylint = ["boolean-datetime"]
-
-[[rule]]
 name = "broad-exception-raised"
 presets = ["standard", "strict"]
 pylint = ["broad-exception-raised"]
@@ -220,12 +214,6 @@ category = "pylint"
 pylint = ["consider-using-assignment-expr"]
 
 [[rule]]
-name = "consider-using-augmented-assign"
-presets = ["strict"]
-category = "pylint"
-pylint = ["consider-using-augmented-assign"]
-
-[[rule]]
 name = "consider-using-dict-items"
 presets = ["standard", "strict"]
 category = "linter"
@@ -274,12 +262,6 @@ presets = ["standard", "strict"]
 pylint = ["consider-using-min-builtin"]
 
 [[rule]]
-name = "consider-using-namedtuple-or-dataclass"
-presets = ["strict"]
-category = "pylint"
-pylint = ["consider-using-namedtuple-or-dataclass"]
-
-[[rule]]
 name = "consider-using-sys-exit"
 presets = ["standard", "strict"]
 pylint = ["consider-using-sys-exit"]
@@ -323,18 +305,6 @@ category = "linter"
 pylint = ["dict-init-mutate"]
 
 [[rule]]
-name = "differing-param-doc"
-presets = ["strict"]
-category = "pylint"
-pylint = ["differing-param-doc"]
-
-[[rule]]
-name = "differing-type-doc"
-presets = ["strict"]
-category = "pylint"
-pylint = ["differing-type-doc"]
-
-[[rule]]
 name = "disallowed-name"
 presets = ["standard", "strict"]
 category = "linter"
@@ -355,12 +325,6 @@ pylint = ["duplicate-argument-name"]
 name = "duplicate-string-formatting-argument"
 presets = ["standard", "strict"]
 pylint = ["duplicate-string-formatting-argument"]
-
-[[rule]]
-name = "else-if-used"
-presets = ["strict"]
-category = "pylint"
-pylint = ["else-if-used"]
 
 [[rule]]
 name = "eq-without-hash"
@@ -398,12 +362,6 @@ pylint = ["import-outside-toplevel"]
 name = "inconsistent-mro"
 presets = ["standard", "strict"]
 pylint = ["inconsistent-mro"]
-
-[[rule]]
-name = "inconsistent-quotes"
-presets = ["strict"]
-category = "pylint"
-pylint = ["inconsistent-quotes"]
 
 [[rule]]
 name = "inconsistent-return-statements"
@@ -644,12 +602,6 @@ category = "pylint"
 pylint = ["misplaced-format-function"]
 
 [[rule]]
-name = "missing-any-param-doc"
-presets = ["strict"]
-category = "pylint"
-pylint = ["missing-any-param-doc"]
-
-[[rule]]
 name = "missing-class-docstring"
 presets = ["standard", "strict"]
 category = "linter"
@@ -674,52 +626,10 @@ category = "linter"
 pylint = ["missing-module-docstring"]
 
 [[rule]]
-name = "missing-param-doc"
-presets = ["strict"]
-category = "pylint"
-pylint = ["missing-param-doc"]
-
-[[rule]]
 name = "missing-parentheses-for-call-in-test"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["missing-parentheses-for-call-in-test"]
-
-[[rule]]
-name = "missing-raises-doc"
-presets = ["strict"]
-category = "pylint"
-pylint = ["missing-raises-doc"]
-
-[[rule]]
-name = "missing-return-doc"
-presets = ["strict"]
-category = "pylint"
-pylint = ["missing-return-doc"]
-
-[[rule]]
-name = "missing-return-type-doc"
-presets = ["strict"]
-category = "pylint"
-pylint = ["missing-return-type-doc"]
-
-[[rule]]
-name = "missing-type-doc"
-presets = ["strict"]
-category = "pylint"
-pylint = ["missing-type-doc"]
-
-[[rule]]
-name = "missing-yield-doc"
-presets = ["strict"]
-category = "pylint"
-pylint = ["missing-yield-doc"]
-
-[[rule]]
-name = "missing-yield-type-doc"
-presets = ["strict"]
-category = "pylint"
-pylint = ["missing-yield-type-doc"]
 
 [[rule]]
 name = "modified-iterating-dict"
@@ -738,12 +648,6 @@ name = "multiple-class-sub-patterns"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["multiple-class-sub-patterns"]
-
-[[rule]]
-name = "multiple-constructor-doc"
-presets = ["strict"]
-category = "pylint"
-pylint = ["multiple-constructor-doc"]
 
 [[rule]]
 name = "no-else-break"
@@ -896,22 +800,10 @@ category = "pylint"
 pylint = ["redefined-builtin"]
 
 [[rule]]
-name = "redefined-variable-type"
-presets = ["strict"]
-category = "pylint"
-pylint = ["redefined-variable-type"]
-
-[[rule]]
 name = "redundant-keyword-arg"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["redundant-keyword-arg"]
-
-[[rule]]
-name = "redundant-returns-doc"
-presets = ["strict"]
-category = "pylint"
-pylint = ["redundant-returns-doc"]
 
 [[rule]]
 name = "redundant-u-string-prefix"
@@ -926,12 +818,6 @@ category = "pylint"
 pylint = ["redundant-unittest-assert"]
 
 [[rule]]
-name = "redundant-yields-doc"
-presets = ["strict"]
-category = "pylint"
-pylint = ["redundant-yields-doc"]
-
-[[rule]]
 name = "reimported"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -942,12 +828,6 @@ name = "repeated-keyword"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["repeated-keyword"]
-
-[[rule]]
-name = "return-arg-in-generator"
-presets = ["strict"]
-category = "pylint"
-pylint = ["return-arg-in-generator"]
 
 [[rule]]
 name = "self-cls-assignment"
@@ -1014,12 +894,6 @@ name = "super-with-arguments"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["super-with-arguments"]
-
-[[rule]]
-name = "too-complex"
-presets = ["strict"]
-category = "pylint"
-pylint = ["too-complex"]
 
 [[rule]]
 name = "too-few-public-methods"
@@ -1232,12 +1106,6 @@ category = "linter"
 pylint = ["use-sequence-for-iteration"]
 
 [[rule]]
-name = "use-set-for-membership"
-presets = ["strict"]
-category = "pylint"
-pylint = ["use-set-for-membership"]
-
-[[rule]]
 name = "use-yield-from"
 presets = ["standard", "strict"]
 category = "pylint"
@@ -1256,22 +1124,10 @@ category = "pylint"
 pylint = ["used-prior-global-declaration"]
 
 [[rule]]
-name = "useless-param-doc"
-presets = ["strict"]
-category = "pylint"
-pylint = ["useless-param-doc"]
-
-[[rule]]
 name = "useless-parent-delegation"
 presets = ["standard", "strict"]
 category = "pylint"
 pylint = ["useless-parent-delegation"]
-
-[[rule]]
-name = "useless-type-doc"
-presets = ["strict"]
-category = "pylint"
-pylint = ["useless-type-doc"]
 
 [[rule]]
 name = "using-constant-test"

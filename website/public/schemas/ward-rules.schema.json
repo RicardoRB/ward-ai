@@ -32753,6 +32753,25 @@
         }
       }
     },
+    "ward:python/bad-builtin": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:python/bad-chained-comparison": {
       "type": "object",
       "additionalProperties": false,
@@ -32773,6 +32792,25 @@
       }
     },
     "ward:python/bad-classmethod-argument": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:python/bad-dunder-name": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33434,7 +33472,45 @@
         }
       }
     },
+    "ward:python/confusing-consecutive-elif": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:python/confusing-with-statement": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:python/consider-math-not-float": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33472,7 +33548,64 @@
         }
       }
     },
+    "ward:python/consider-refactoring-into-while-condition": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:python/consider-swap-variables": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:python/consider-ternary-expression": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:python/consider-using-assignment-expr": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33682,6 +33815,25 @@
       }
     },
     "ward:python/consider-using-ternary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:python/consider-using-tuple": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -34094,6 +34246,25 @@
       }
     },
     "ward:python/empty-method-without-abstract-decorator": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:python/eq-without-hash": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -37286,6 +37457,25 @@
         }
       }
     },
+    "ward:python/overlapping-except": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:python/overload-methods-declaration-order": {
       "type": "object",
       "additionalProperties": false,
@@ -37633,6 +37823,25 @@
       }
     },
     "ward:python/potential-index-error": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:python/prefer-typing-namedtuple": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -39477,6 +39686,29 @@
         }
       }
     },
+    "ward:python/too-many-try-statements": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "max-try-statements": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
     "ward:python/trailing-comma-tuple": {
       "type": "object",
       "additionalProperties": false,
@@ -41207,6 +41439,25 @@
       }
     },
     "ward:python/variable-declaration-usage-distance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:python/while-used": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -53532,8 +53783,10 @@
               "python.avoid-inline-conditionals",
               "python.avoid-star-import",
               "python.await-outside-async",
+              "python.bad-builtin",
               "python.bad-chained-comparison",
               "python.bad-classmethod-argument",
+              "python.bad-dunder-name",
               "python.bad-except-order",
               "python.bad-exception-cause",
               "python.bad-format-string-key",
@@ -53567,9 +53820,14 @@
               "python.comparison-with-itself",
               "python.complexity",
               "python.condition-evals-to-constant",
+              "python.confusing-consecutive-elif",
               "python.confusing-with-statement",
+              "python.consider-math-not-float",
               "python.consider-merging-isinstance",
+              "python.consider-refactoring-into-while-condition",
               "python.consider-swap-variables",
+              "python.consider-ternary-expression",
+              "python.consider-using-assignment-expr",
               "python.consider-using-dict-items",
               "python.consider-using-enumerate",
               "python.consider-using-f-string",
@@ -53581,6 +53839,7 @@
               "python.consider-using-min-builtin",
               "python.consider-using-sys-exit",
               "python.consider-using-ternary",
+              "python.consider-using-tuple",
               "python.consider-using-with",
               "python.constant-name",
               "python.contextmanager-generator-missing-cleanup",
@@ -53602,6 +53861,7 @@
               "python.duplicate-value",
               "python.empty-docstring",
               "python.empty-method-without-abstract-decorator",
+              "python.eq-without-hash",
               "python.except-with-empty-tuple",
               "python.except-with-non-exception-classes",
               "python.exec-builtin",
@@ -53768,6 +54028,7 @@
               "python.not-is-test",
               "python.numerical-prefixes-infixes-suffixes-character-case",
               "python.one-statement-per-line",
+              "python.overlapping-except",
               "python.overload-methods-declaration-order",
               "python.overridden-final-method",
               "python.parameter-count",
@@ -53787,6 +54048,7 @@
               "python.possibly-unused-variable",
               "python.possibly-used-before-assignment",
               "python.potential-index-error",
+              "python.prefer-typing-namedtuple",
               "python.print-empty-string",
               "python.private-member-access",
               "python.property-with-parameters",
@@ -53881,6 +54143,7 @@
               "python.too-many-public-methods",
               "python.too-many-star-expressions",
               "python.too-many-statements",
+              "python.too-many-try-statements",
               "python.trailing-comma-tuple",
               "python.trailing-comment",
               "python.trailing-whitespace",
@@ -53973,6 +54236,7 @@
               "python.useless-with-lock",
               "python.using-constant-test",
               "python.variable-declaration-usage-distance",
+              "python.while-used",
               "python.wrong-import-order",
               "python.yield-from-in-async-function",
               "python.yield-outside-function",
@@ -56175,8 +56439,10 @@
               "python.avoid-inline-conditionals",
               "python.avoid-star-import",
               "python.await-outside-async",
+              "python.bad-builtin",
               "python.bad-chained-comparison",
               "python.bad-classmethod-argument",
+              "python.bad-dunder-name",
               "python.bad-except-order",
               "python.bad-exception-cause",
               "python.bad-format-string-key",
@@ -56210,9 +56476,14 @@
               "python.comparison-with-itself",
               "python.complexity",
               "python.condition-evals-to-constant",
+              "python.confusing-consecutive-elif",
               "python.confusing-with-statement",
+              "python.consider-math-not-float",
               "python.consider-merging-isinstance",
+              "python.consider-refactoring-into-while-condition",
               "python.consider-swap-variables",
+              "python.consider-ternary-expression",
+              "python.consider-using-assignment-expr",
               "python.consider-using-dict-items",
               "python.consider-using-enumerate",
               "python.consider-using-f-string",
@@ -56224,6 +56495,7 @@
               "python.consider-using-min-builtin",
               "python.consider-using-sys-exit",
               "python.consider-using-ternary",
+              "python.consider-using-tuple",
               "python.consider-using-with",
               "python.constant-name",
               "python.contextmanager-generator-missing-cleanup",
@@ -56245,6 +56517,7 @@
               "python.duplicate-value",
               "python.empty-docstring",
               "python.empty-method-without-abstract-decorator",
+              "python.eq-without-hash",
               "python.except-with-empty-tuple",
               "python.except-with-non-exception-classes",
               "python.exec-builtin",
@@ -56411,6 +56684,7 @@
               "python.not-is-test",
               "python.numerical-prefixes-infixes-suffixes-character-case",
               "python.one-statement-per-line",
+              "python.overlapping-except",
               "python.overload-methods-declaration-order",
               "python.overridden-final-method",
               "python.parameter-count",
@@ -56430,6 +56704,7 @@
               "python.possibly-unused-variable",
               "python.possibly-used-before-assignment",
               "python.potential-index-error",
+              "python.prefer-typing-namedtuple",
               "python.print-empty-string",
               "python.private-member-access",
               "python.property-with-parameters",
@@ -56524,6 +56799,7 @@
               "python.too-many-public-methods",
               "python.too-many-star-expressions",
               "python.too-many-statements",
+              "python.too-many-try-statements",
               "python.trailing-comma-tuple",
               "python.trailing-comment",
               "python.trailing-whitespace",
@@ -56616,6 +56892,7 @@
               "python.useless-with-lock",
               "python.using-constant-test",
               "python.variable-declaration-usage-distance",
+              "python.while-used",
               "python.wrong-import-order",
               "python.yield-from-in-async-function",
               "python.yield-outside-function",
@@ -62171,11 +62448,17 @@
             "await-outside-async": {
               "$ref": "#/$defs/ward:python~1await-outside-async"
             },
+            "bad-builtin": {
+              "$ref": "#/$defs/ward:python~1bad-builtin"
+            },
             "bad-chained-comparison": {
               "$ref": "#/$defs/ward:python~1bad-chained-comparison"
             },
             "bad-classmethod-argument": {
               "$ref": "#/$defs/ward:python~1bad-classmethod-argument"
+            },
+            "bad-dunder-name": {
+              "$ref": "#/$defs/ward:python~1bad-dunder-name"
             },
             "bad-except-order": {
               "$ref": "#/$defs/ward:python~1bad-except-order"
@@ -62276,14 +62559,29 @@
             "condition-evals-to-constant": {
               "$ref": "#/$defs/ward:python~1condition-evals-to-constant"
             },
+            "confusing-consecutive-elif": {
+              "$ref": "#/$defs/ward:python~1confusing-consecutive-elif"
+            },
             "confusing-with-statement": {
               "$ref": "#/$defs/ward:python~1confusing-with-statement"
+            },
+            "consider-math-not-float": {
+              "$ref": "#/$defs/ward:python~1consider-math-not-float"
             },
             "consider-merging-isinstance": {
               "$ref": "#/$defs/ward:python~1consider-merging-isinstance"
             },
+            "consider-refactoring-into-while-condition": {
+              "$ref": "#/$defs/ward:python~1consider-refactoring-into-while-condition"
+            },
             "consider-swap-variables": {
               "$ref": "#/$defs/ward:python~1consider-swap-variables"
+            },
+            "consider-ternary-expression": {
+              "$ref": "#/$defs/ward:python~1consider-ternary-expression"
+            },
+            "consider-using-assignment-expr": {
+              "$ref": "#/$defs/ward:python~1consider-using-assignment-expr"
             },
             "consider-using-dict-items": {
               "$ref": "#/$defs/ward:python~1consider-using-dict-items"
@@ -62317,6 +62615,9 @@
             },
             "consider-using-ternary": {
               "$ref": "#/$defs/ward:python~1consider-using-ternary"
+            },
+            "consider-using-tuple": {
+              "$ref": "#/$defs/ward:python~1consider-using-tuple"
             },
             "consider-using-with": {
               "$ref": "#/$defs/ward:python~1consider-using-with"
@@ -62380,6 +62681,9 @@
             },
             "empty-method-without-abstract-decorator": {
               "$ref": "#/$defs/ward:python~1empty-method-without-abstract-decorator"
+            },
+            "eq-without-hash": {
+              "$ref": "#/$defs/ward:python~1eq-without-hash"
             },
             "except-with-empty-tuple": {
               "$ref": "#/$defs/ward:python~1except-with-empty-tuple"
@@ -62879,6 +63183,9 @@
             "one-statement-per-line": {
               "$ref": "#/$defs/ward:python~1one-statement-per-line"
             },
+            "overlapping-except": {
+              "$ref": "#/$defs/ward:python~1overlapping-except"
+            },
             "overload-methods-declaration-order": {
               "$ref": "#/$defs/ward:python~1overload-methods-declaration-order"
             },
@@ -62935,6 +63242,9 @@
             },
             "potential-index-error": {
               "$ref": "#/$defs/ward:python~1potential-index-error"
+            },
+            "prefer-typing-namedtuple": {
+              "$ref": "#/$defs/ward:python~1prefer-typing-namedtuple"
             },
             "print-empty-string": {
               "$ref": "#/$defs/ward:python~1print-empty-string"
@@ -63218,6 +63528,9 @@
             "too-many-statements": {
               "$ref": "#/$defs/ward:python~1too-many-statements"
             },
+            "too-many-try-statements": {
+              "$ref": "#/$defs/ward:python~1too-many-try-statements"
+            },
             "trailing-comma-tuple": {
               "$ref": "#/$defs/ward:python~1trailing-comma-tuple"
             },
@@ -63493,6 +63806,9 @@
             },
             "variable-declaration-usage-distance": {
               "$ref": "#/$defs/ward:python~1variable-declaration-usage-distance"
+            },
+            "while-used": {
+              "$ref": "#/$defs/ward:python~1while-used"
             },
             "wrong-import-order": {
               "$ref": "#/$defs/ward:python~1wrong-import-order"

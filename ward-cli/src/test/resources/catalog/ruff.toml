@@ -450,6 +450,7 @@ name = "return-in-generator"
 presets = ["strict"]
 category = "flake8-bugbear"
 ruff = ["B901"]
+pylint = ["return-arg-in-generator"]
 
 [[rule]]
 name = "class-as-data-structure"
@@ -812,6 +813,7 @@ name = "undocumented-param"
 presets = ["strict"]
 category = "linter"
 ruff = ["D417"]
+pylint = ["missing-param-doc", "missing-any-param-doc"]
 
 [[rule]]
 name = "overload-with-docstring"
@@ -885,36 +887,42 @@ name = "docstring-extraneous-parameter"
 presets = ["strict"]
 category = "linter"
 ruff = ["DOC102"]
+pylint = ["useless-param-doc", "differing-param-doc"]
 
 [[rule]]
 name = "docstring-missing-returns"
 presets = ["strict"]
 category = "linter"
 ruff = ["DOC201"]
+pylint = ["missing-return-doc"]
 
 [[rule]]
 name = "docstring-extraneous-returns"
 presets = ["strict"]
 category = "linter"
 ruff = ["DOC202"]
+pylint = ["redundant-returns-doc"]
 
 [[rule]]
 name = "docstring-missing-yields"
 presets = ["strict"]
 category = "linter"
 ruff = ["DOC402"]
+pylint = ["missing-yield-doc"]
 
 [[rule]]
 name = "docstring-extraneous-yields"
 presets = ["strict"]
 category = "linter"
 ruff = ["DOC403"]
+pylint = ["redundant-yields-doc"]
 
 [[rule]]
 name = "docstring-missing-exception"
 presets = ["strict"]
 category = "linter"
 ruff = ["DOC501"]
+pylint = ["missing-raises-doc"]
 
 [[rule]]
 name = "docstring-extraneous-exception"
@@ -2415,18 +2423,21 @@ name = "collapsible-else-if"
 presets = ["strict"]
 category = "pylint"
 ruff = ["PLR5501"]
+pylint = ["else-if-used"]
 
 [[rule]]
 name = "non-augmented-assignment"
 presets = ["strict"]
 category = "pylint"
 ruff = ["PLR6104"]
+pylint = ["consider-using-augmented-assign"]
 
 [[rule]]
 name = "literal-membership"
 presets = ["strict"]
 category = "pylint"
 ruff = ["PLR6201"]
+pylint = ["use-set-for-membership"]
 
 [[rule]]
 name = "no-self-use"
