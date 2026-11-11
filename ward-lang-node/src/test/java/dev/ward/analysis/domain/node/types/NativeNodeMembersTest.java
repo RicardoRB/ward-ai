@@ -96,6 +96,27 @@ class NativeNodeMembersTest {
     assertThat(facts.membersOf(TypeProject.span(unit, "orphan"))).isEmpty();
   }
 
+  @Test
+  void aJavaScriptClassWithAccessorsHasAFieldForItsGetterAndAMethodForEachMethod() {
+    final String path = "src/app.js";
+    final String unit =
+        """
+        class Counter {
+          get total() { return 1; }
+          set total(value) {}
+          set only(value) {}
+          bump() {}
+        }
+        const counter = new Counter();
+        const copy = counter;
+        """;
+    final UnitTypeFacts facts = new TypeProject().file(path, unit).answer(path, "counter");
+
+    final TypeMembers members = facts.membersOf(TypeProject.span(unit, "counter")).orElseThrow();
+    assertThat(names(members.methods())).containsExactly("bump");
+    assertThat(fieldNames(members.fields())).containsExactly("total");
+  }
+
   private static List<String> names(final List<CallTarget> methods) {
     return methods.stream().map(CallTarget::name).toList();
   }
