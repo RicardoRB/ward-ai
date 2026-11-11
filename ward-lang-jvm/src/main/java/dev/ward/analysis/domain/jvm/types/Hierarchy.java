@@ -1,5 +1,6 @@
 package dev.ward.analysis.domain.jvm.types;
 
+import dev.ward.analysis.domain.types.TypeMembers;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 /** Supertypes and members over the classes a unit can see. */
 final class Hierarchy {
@@ -26,6 +28,11 @@ final class Hierarchy {
 
   Optional<JvmClass> find(final String name) {
     return classes.find(name);
+  }
+
+  /** Returns the members of {@code type}, read once when every unit shares the class. */
+  TypeMembers membersOf(final JvmClass type, final Function<JvmClass, TypeMembers> reader) {
+    return classes.membersOf(type, reader);
   }
 
   boolean exists(final String name) {
