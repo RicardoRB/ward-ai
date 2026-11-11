@@ -26,16 +26,22 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 /**
  * The ANTLR frontend for every {@link AnalysisLanguage}. Each language keeps one lexer and one
- * parser, reset per unit. Not thread-safe: create one instance per thread.
+ * parser, reset per unit, so parsing is serialized; the results are cached, so any number of
+ * threads and passes that ask for the same unit share one parse. Create one instance per run and
+ * hand it to every pass.
  */
 public final class AntlrLanguageFrontend implements LanguageFrontend {
 
-  /** Recent parses, so the rules, the dependency pass and the type facts parse a unit once. */
-  private static final int RECENT_UNITS = 64;
+  /**
+   * The weight of the parses kept, in characters of source text, so the passes of a run parse a
+   * unit once. It is about 8 MB of source: Java trees weigh about 90 bytes per character, so the
+   * cache holds well under a gigabyte of trees however large the project is.
+   */
+  private static final long RECENT_WEIGHT = 8L * 1024 * 1024;
 
   private final Map<AnalysisLanguage, LanguageFrontend> sessions =
       new EnumMap<>(AnalysisLanguage.class);
-  private final ParseCache recent = new ParseCache(RECENT_UNITS);
+  private final ParseCache recent = new ParseCache(RECENT_WEIGHT);
 
   /** Creates the lexers and parsers for all six languages. */
   public AntlrLanguageFrontend() {
@@ -46,13 +52,7 @@ public final class AntlrLanguageFrontend implements LanguageFrontend {
 
   @Override
   public ParseResult parse(final SourceUnit unit) {
-    final ParseResult known = recent.get(unit);
-    if (known != null) {
-      return known;
-    }
-    final ParseResult parsed = sessions.get(unit.language()).parse(unit);
-    recent.put(unit, parsed);
-    return parsed;
+    return recent.parse(unit, key -> sessions.get(key.language()).parse(key));
   }
 
   private static LanguageFrontend session(final AnalysisLanguage language) {
