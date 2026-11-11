@@ -3,7 +3,7 @@
 [[rule]]
 name = "absent-or-wrong-file-license"
 presets = ["strict"]
-category = "comments"
+category = "docs"
 detekt = ["AbsentOrWrongFileLicense"]
 
 [[rule]]
@@ -47,13 +47,13 @@ detekt = ["CascadingCallWrapping"]
 [[rule]]
 name = "cast-nullable-to-non-nullable-type"
 presets = ["strict"]
-category = "potential-bugs"
+category = "correctness"
 detekt = ["CastNullableToNonNullableType"]
 
 [[rule]]
 name = "cast-to-nullable-type"
 presets = ["strict"]
-category = "potential-bugs"
+category = "correctness"
 detekt = ["CastToNullableType"]
 
 [[rule]]
@@ -71,13 +71,13 @@ detekt = ["CognitiveComplexMethod"]
 [[rule]]
 name = "comment-over-private-function"
 presets = ["strict"]
-category = "comments"
+category = "docs"
 detekt = ["CommentOverPrivateFunction"]
 
 [[rule]]
 name = "comment-over-private-property"
 presets = ["strict"]
-category = "comments"
+category = "docs"
 detekt = ["CommentOverPrivateProperty"]
 
 [[rule]]
@@ -115,13 +115,13 @@ detekt = ["DataClassShouldBeImmutable"]
 [[rule]]
 name = "deprecated-block-tag"
 presets = ["strict"]
-category = "comments"
+category = "docs"
 detekt = ["DeprecatedBlockTag"]
 
 [[rule]]
 name = "deprecation"
 presets = ["strict"]
-category = "potential-bugs"
+category = "correctness"
 detekt = ["Deprecation"]
 
 [[rule]]
@@ -131,7 +131,7 @@ detekt = ["DestructuringDeclarationWithTooManyEntries"]
 [[rule]]
 name = "dont-downcast-collection-types"
 presets = ["strict"]
-category = "potential-bugs"
+category = "correctness"
 detekt = ["DontDowncastCollectionTypes"]
 
 [[rule]]
@@ -147,7 +147,7 @@ detekt = ["DoubleNegativeLambda"]
 [[rule]]
 name = "else-case-instead-of-exhaustive-when"
 presets = ["strict"]
-category = "potential-bugs"
+category = "correctness"
 detekt = ["ElseCaseInsteadOfExhaustiveWhen"]
 
 [[rule]]
@@ -205,7 +205,7 @@ detekt = ["EmptyWhileBlock"]
 [[rule]]
 name = "end-of-sentence-format"
 presets = ["strict"]
-category = "comments"
+category = "docs"
 detekt = ["EndOfSentenceFormat"]
 
 [[rule]]
@@ -233,7 +233,7 @@ detekt = ["ExceptionRaisedInUnexpectedLocation"]
 [[rule]]
 name = "exit-outside-main"
 presets = ["strict"]
-category = "potential-bugs"
+category = "correctness"
 detekt = ["ExitOutsideMain"]
 
 [[rule]]
@@ -329,7 +329,7 @@ detekt = ["ImplicitDefaultLocale"]
 [[rule]]
 name = "implicit-unit-return-type"
 presets = ["strict"]
-category = "potential-bugs"
+category = "correctness"
 detekt = ["ImplicitUnitReturnType"]
 
 [[rule]]
@@ -359,7 +359,7 @@ detekt = ["IteratorNotThrowingNoSuchElementException"]
 [[rule]]
 name = "k-doc-references-non-public-property"
 presets = ["strict"]
-category = "comments"
+category = "docs"
 detekt = ["KDocReferencesNonPublicProperty"]
 
 [[rule]]
@@ -423,7 +423,7 @@ detekt = ["MethodOverloading"]
 [[rule]]
 name = "missing-package-declaration"
 presets = ["strict"]
-category = "potential-bugs"
+category = "correctness"
 detekt = ["MissingPackageDeclaration"]
 
 [[rule]]
@@ -481,7 +481,7 @@ detekt = ["NotImplementedDeclaration"]
 [[rule]]
 name = "null-check-on-mutable-property"
 presets = ["strict"]
-category = "potential-bugs"
+category = "correctness"
 detekt = ["NullCheckOnMutableProperty"]
 
 [[rule]]
@@ -493,7 +493,7 @@ detekt = ["NullableBooleanCheck"]
 [[rule]]
 name = "nullable-to-string-call"
 presets = ["strict"]
-category = "potential-bugs"
+category = "correctness"
 detekt = ["NullableToStringCall"]
 
 [[rule]]
@@ -521,7 +521,7 @@ detekt = ["OptionalUnit"]
 [[rule]]
 name = "outdated-documentation"
 presets = ["strict"]
-category = "comments"
+category = "docs"
 detekt = ["OutdatedDocumentation"]
 
 [[rule]]
@@ -537,7 +537,7 @@ detekt = ["PrintStackTrace"]
 [[rule]]
 name = "property-used-before-declaration"
 presets = ["strict"]
-category = "potential-bugs"
+category = "correctness"
 detekt = ["PropertyUsedBeforeDeclaration"]
 
 [[rule]]
@@ -605,7 +605,7 @@ detekt = ["StringShouldBeRawString"]
 [[rule]]
 name = "suspend-fun-swallowed-cancellation"
 presets = ["strict"]
-category = "coroutines"
+category = "concurrency"
 detekt = ["SuspendFunSwallowedCancellation"]
 
 [[rule]]
@@ -627,7 +627,7 @@ detekt = ["ThrowingExceptionFromFinally"]
 [[rule]]
 name = "throwing-exception-in-main"
 presets = ["strict"]
-category = "exceptions"
+category = "error-handling"
 detekt = ["ThrowingExceptionInMain"]
 
 [[rule]]
@@ -656,7 +656,7 @@ detekt = ["TrimMultilineRawString"]
 [[rule]]
 name = "unconditional-jump-statement-in-loop"
 presets = ["strict"]
-category = "potential-bugs"
+category = "correctness"
 detekt = ["UnconditionalJumpStatementInLoop"]
 
 [[rule]]
@@ -668,7 +668,7 @@ detekt = ["UnderscoresInNumericLiterals"]
 [[rule]]
 name = "undocumented-public-property"
 presets = ["strict"]
-category = "comments"
+category = "docs"
 detekt = ["UndocumentedPublicProperty"]
 
 [[rule]]
@@ -720,7 +720,7 @@ detekt = ["UnnecessaryLet"]
 [[rule]]
 name = "unnecessary-not-null-check"
 presets = ["strict"]
-category = "potential-bugs"
+category = "correctness"
 detekt = ["UnnecessaryNotNullCheck"]
 
 [[rule]]

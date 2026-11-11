@@ -5,7 +5,7 @@ id = "ward:typescript/magic-number"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
-category = "coding"
+category = "style"
 presets = ["standard", "strict"]
 options.detect-objects = { type = "boolean" }
 options.ignore-numbers = { type = "string-list" }
@@ -30,7 +30,7 @@ id = "ward:javascript/magic-number"
 language = "JAVASCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
-category = "coding"
+category = "style"
 presets = ["standard", "strict"]
 options.detect-objects = { type = "boolean" }
 options.ignore-numbers = { type = "string-list" }
@@ -55,7 +55,7 @@ id = "ward:typescript/unused-local-variable"
 language = "TYPESCRIPT"
 capability = "SCOPES"
 severity = "ERROR"
-category = "coding"
+category = "style"
 presets = ["standard", "strict"]
 body = '''
 check = "unused-binding"
@@ -67,7 +67,7 @@ id = "ward:javascript/unused-local-variable"
 language = "JAVASCRIPT"
 capability = "SCOPES"
 severity = "ERROR"
-category = "coding"
+category = "style"
 presets = ["standard", "strict"]
 body = '''
 check = "unused-binding"
@@ -79,7 +79,7 @@ id = "ward:typescript/one-statement-per-line"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
-category = "coding"
+category = "style"
 presets = ["standard", "strict"]
 body = '''
 check = "text-pattern"
@@ -93,7 +93,7 @@ id = "ward:javascript/one-statement-per-line"
 language = "JAVASCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
-category = "coding"
+category = "style"
 presets = ["standard", "strict"]
 body = '''
 check = "text-pattern"
@@ -107,7 +107,7 @@ id = "ward:typescript/constructors-declaration-grouping"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
-category = "coding"
+category = "style"
 presets = ["standard", "strict"]
 body = '''
 check = "node-constructor-group"
@@ -119,7 +119,7 @@ id = "ward:javascript/constructors-declaration-grouping"
 language = "JAVASCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
-category = "coding"
+category = "style"
 presets = ["standard", "strict"]
 body = '''
 check = "node-constructor-group"
@@ -131,7 +131,7 @@ id = "ward:typescript/overload-methods-declaration-order"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
-category = "coding"
+category = "style"
 presets = ["standard", "strict"]
 body = '''
 check = "node-overload-grouping"
@@ -143,7 +143,7 @@ id = "ward:javascript/overload-methods-declaration-order"
 language = "JAVASCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
-category = "coding"
+category = "style"
 presets = ["standard", "strict"]
 body = '''
 check = "node-overload-grouping"
@@ -155,7 +155,7 @@ id = "ward:typescript/variable-declaration-usage-distance"
 language = "TYPESCRIPT"
 capability = "SCOPES"
 severity = "ERROR"
-category = "coding"
+category = "style"
 presets = ["standard", "strict"]
 options.allowed-distance = { type = "integer", min = 1, parameter = "max" }
 body = '''
@@ -169,7 +169,7 @@ id = "ward:javascript/variable-declaration-usage-distance"
 language = "JAVASCRIPT"
 capability = "SCOPES"
 severity = "ERROR"
-category = "coding"
+category = "style"
 presets = ["standard", "strict"]
 options.allowed-distance = { type = "integer", min = 1, parameter = "max" }
 body = '''
@@ -183,7 +183,7 @@ id = "ward:typescript/illegal-token-text"
 language = "TYPESCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
-category = "coding"
+category = "style"
 presets = ["standard", "strict"]
 options.tokens = { type = "string-list", parameter = "tokens" }
 options.format = { type = "regex", parameter = "format" }
@@ -201,7 +201,7 @@ id = "ward:javascript/illegal-token-text"
 language = "JAVASCRIPT"
 capability = "SYNTAX"
 severity = "ERROR"
-category = "coding"
+category = "style"
 presets = ["standard", "strict"]
 options.tokens = { type = "string-list", parameter = "tokens" }
 options.format = { type = "regex", parameter = "format" }
@@ -219,7 +219,7 @@ id = "ward:typescript/hidden-field"
 language = "TYPESCRIPT"
 capability = "SCOPES"
 severity = "ERROR"
-category = "coding"
+category = "style"
 presets = ["strict"]
 options.ignore-constructor-parameter = { type = "boolean" }
 options.ignore-setter = { type = "boolean" }
@@ -235,7 +235,7 @@ id = "ward:javascript/hidden-field"
 language = "JAVASCRIPT"
 capability = "SCOPES"
 severity = "ERROR"
-category = "coding"
+category = "style"
 presets = ["strict"]
 options.ignore-constructor-parameter = { type = "boolean" }
 options.ignore-setter = { type = "boolean" }

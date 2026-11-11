@@ -53,7 +53,7 @@ pylint = ["attribute-defined-outside-init"]
 [[rule]]
 name = "bad-builtin"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["bad-builtin"]
 
 [[rule]]
@@ -64,19 +64,19 @@ pylint = ["bad-chained-comparison"]
 [[rule]]
 name = "bad-classmethod-argument"
 presets = ["standard", "strict"]
-category = "linter"
+category = "style"
 pylint = ["bad-classmethod-argument"]
 
 [[rule]]
 name = "bad-docstring-quotes"
 presets = ["strict"]
-category = "linter"
+category = "style"
 pylint = ["bad-docstring-quotes"]
 
 [[rule]]
 name = "bad-dunder-name"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["bad-dunder-name"]
 
 
@@ -98,13 +98,13 @@ pylint = ["bad-format-string-key"]
 [[rule]]
 name = "bad-mcs-classmethod-argument"
 presets = ["standard", "strict"]
-category = "linter"
+category = "style"
 pylint = ["bad-mcs-classmethod-argument"]
 
 [[rule]]
 name = "bad-mcs-method-argument"
 presets = ["standard", "strict"]
-category = "linter"
+category = "style"
 pylint = ["bad-mcs-method-argument"]
 
 [[rule]]
@@ -130,7 +130,7 @@ pylint = ["bare-name-capture-pattern"]
 [[rule]]
 name = "boolean-datetime"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["boolean-datetime"]
 
 [[rule]]
@@ -171,7 +171,7 @@ pylint = ["condition-evals-to-constant"]
 [[rule]]
 name = "confusing-consecutive-elif"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["confusing-consecutive-elif"]
 
 [[rule]]
@@ -182,7 +182,7 @@ pylint = ["confusing-with-statement"]
 [[rule]]
 name = "consider-math-not-float"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["consider-math-not-float"]
 
 [[rule]]
@@ -193,7 +193,7 @@ pylint = ["consider-merging-isinstance"]
 [[rule]]
 name = "consider-refactoring-into-while-condition"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["consider-refactoring-into-while-condition"]
 
 [[rule]]
@@ -204,43 +204,43 @@ pylint = ["consider-swap-variables"]
 [[rule]]
 name = "consider-ternary-expression"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["consider-ternary-expression"]
 
 [[rule]]
 name = "consider-using-any-or-all"
 presets = ["strict"]
-category = "linter"
+category = "style"
 pylint = ["consider-using-any-or-all"]
 
 [[rule]]
 name = "consider-using-assignment-expr"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["consider-using-assignment-expr"]
 
 [[rule]]
 name = "consider-using-augmented-assign"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["consider-using-augmented-assign"]
 
 [[rule]]
 name = "consider-using-dict-items"
 presets = ["standard", "strict"]
-category = "linter"
+category = "style"
 pylint = ["consider-using-dict-items"]
 
 [[rule]]
 name = "consider-using-enumerate"
 presets = ["standard", "strict"]
-category = "linter"
+category = "style"
 pylint = ["consider-using-enumerate"]
 
 [[rule]]
 name = "consider-using-f-string"
 presets = ["standard", "strict"]
-category = "linter"
+category = "style"
 pylint = ["consider-using-f-string"]
 
 [[rule]]
@@ -276,7 +276,7 @@ pylint = ["consider-using-min-builtin"]
 [[rule]]
 name = "consider-using-namedtuple-or-dataclass"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["consider-using-namedtuple-or-dataclass"]
 
 [[rule]]
@@ -292,7 +292,7 @@ pylint = ["consider-using-ternary"]
 [[rule]]
 name = "consider-using-tuple"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["consider-using-tuple"]
 
 [[rule]]
@@ -308,7 +308,7 @@ pylint = ["contextmanager-generator-missing-cleanup"]
 [[rule]]
 name = "cyclic-import"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["cyclic-import"]
 
 [[rule]]
@@ -319,31 +319,31 @@ pylint = ["declare-non-slot"]
 [[rule]]
 name = "dict-init-mutate"
 presets = ["strict"]
-category = "linter"
+category = "style"
 pylint = ["dict-init-mutate"]
 
 [[rule]]
 name = "differing-param-doc"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["differing-param-doc"]
 
 [[rule]]
 name = "differing-type-doc"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["differing-type-doc"]
 
 [[rule]]
 name = "disallowed-name"
 presets = ["standard", "strict"]
-category = "linter"
+category = "style"
 pylint = ["disallowed-name"]
 
 [[rule]]
 name = "docstring-first-line-empty"
 presets = ["strict"]
-category = "linter"
+category = "style"
 pylint = ["docstring-first-line-empty"]
 
 [[rule]]
@@ -359,13 +359,13 @@ pylint = ["duplicate-string-formatting-argument"]
 [[rule]]
 name = "else-if-used"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["else-if-used"]
 
 [[rule]]
 name = "eq-without-hash"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["eq-without-hash"]
 
 [[rule]]
@@ -391,7 +391,7 @@ pylint = ["global-variable-undefined"]
 [[rule]]
 name = "import-outside-toplevel"
 presets = ["standard", "strict"]
-category = "linter"
+category = "style"
 pylint = ["import-outside-toplevel"]
 
 [[rule]]
@@ -402,13 +402,13 @@ pylint = ["inconsistent-mro"]
 [[rule]]
 name = "inconsistent-quotes"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["inconsistent-quotes"]
 
 [[rule]]
 name = "inconsistent-return-statements"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["inconsistent-return-statements"]
 
 [[rule]]
@@ -424,869 +424,869 @@ pylint = ["init-is-generator"]
 [[rule]]
 name = "invalid-bool-returned"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-bool-returned"]
 
 [[rule]]
 name = "invalid-bytes-returned"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-bytes-returned"]
 
 [[rule]]
 name = "invalid-class-object"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-class-object"]
 
 [[rule]]
 name = "invalid-enum-extension"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-enum-extension"]
 
 [[rule]]
 name = "invalid-field-call"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-field-call"]
 
 [[rule]]
 name = "invalid-format-index"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-format-index"]
 
 [[rule]]
 name = "invalid-format-returned"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-format-returned"]
 
 [[rule]]
 name = "invalid-getnewargs-ex-returned"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-getnewargs-ex-returned"]
 
 [[rule]]
 name = "invalid-getnewargs-returned"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-getnewargs-returned"]
 
 [[rule]]
 name = "invalid-hash-returned"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-hash-returned"]
 
 [[rule]]
 name = "invalid-index-returned"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-index-returned"]
 
 [[rule]]
 name = "invalid-length-hint-returned"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-length-hint-returned"]
 
 [[rule]]
 name = "invalid-length-returned"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-length-returned"]
 
 [[rule]]
 name = "invalid-match-args-definition"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-match-args-definition"]
 
 [[rule]]
 name = "invalid-metaclass"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-metaclass"]
 
 [[rule]]
 name = "invalid-overridden-method"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-overridden-method"]
 
 [[rule]]
 name = "invalid-repr-returned"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-repr-returned"]
 
 [[rule]]
 name = "invalid-sequence-index"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-sequence-index"]
 
 [[rule]]
 name = "invalid-slice-index"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-slice-index"]
 
 [[rule]]
 name = "invalid-slice-step"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-slice-step"]
 
 [[rule]]
 name = "invalid-slots"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-slots"]
 
 [[rule]]
 name = "invalid-slots-object"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-slots-object"]
 
 [[rule]]
 name = "invalid-star-assignment-target"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-star-assignment-target"]
 
 [[rule]]
 name = "invalid-str-returned"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-str-returned"]
 
 [[rule]]
 name = "invalid-unary-operand-type"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-unary-operand-type"]
 
 [[rule]]
 name = "invalid-unicode-codec"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["invalid-unicode-codec"]
 
 [[rule]]
 name = "isinstance-second-argument-not-valid-type"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["isinstance-second-argument-not-valid-type"]
 
 [[rule]]
 name = "keyword-arg-before-vararg"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["keyword-arg-before-vararg"]
 
 [[rule]]
 name = "kwarg-superseded-by-positional-arg"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["kwarg-superseded-by-positional-arg"]
 
 [[rule]]
 name = "logging-format-truncated"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["logging-format-truncated"]
 
 [[rule]]
 name = "logging-unsupported-format"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["logging-unsupported-format"]
 
 [[rule]]
 name = "match-class-bind-self"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["match-class-bind-self"]
 
 [[rule]]
 name = "match-class-positional-attributes"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["match-class-positional-attributes"]
 
 [[rule]]
 name = "method-cache-max-size-none"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["method-cache-max-size-none"]
 
 [[rule]]
 name = "method-hidden"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["method-hidden"]
 
 [[rule]]
 name = "misplaced-comparison-constant"
 presets = ["strict"]
-category = "linter"
+category = "style"
 pylint = ["misplaced-comparison-constant"]
 
 [[rule]]
 name = "misplaced-format-function"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["misplaced-format-function"]
 
 [[rule]]
 name = "missing-any-param-doc"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["missing-any-param-doc"]
 
 [[rule]]
 name = "missing-class-docstring"
 presets = ["standard", "strict"]
-category = "linter"
+category = "style"
 pylint = ["missing-class-docstring"]
 
 [[rule]]
 name = "missing-function-docstring"
 presets = ["standard", "strict"]
-category = "linter"
+category = "style"
 pylint = ["missing-function-docstring"]
 
 [[rule]]
 name = "missing-kwoa"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["missing-kwoa"]
 
 [[rule]]
 name = "missing-module-docstring"
 presets = ["standard", "strict"]
-category = "linter"
+category = "style"
 pylint = ["missing-module-docstring"]
 
 [[rule]]
 name = "missing-param-doc"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["missing-param-doc"]
 
 [[rule]]
 name = "missing-parentheses-for-call-in-test"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["missing-parentheses-for-call-in-test"]
 
 [[rule]]
 name = "missing-raises-doc"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["missing-raises-doc"]
 
 [[rule]]
 name = "missing-return-doc"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["missing-return-doc"]
 
 [[rule]]
 name = "missing-return-type-doc"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["missing-return-type-doc"]
 
 [[rule]]
 name = "missing-type-doc"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["missing-type-doc"]
 
 [[rule]]
 name = "missing-yield-doc"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["missing-yield-doc"]
 
 [[rule]]
 name = "missing-yield-type-doc"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["missing-yield-type-doc"]
 
 [[rule]]
 name = "modified-iterating-dict"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["modified-iterating-dict"]
 
 [[rule]]
 name = "modified-iterating-list"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["modified-iterating-list"]
 
 [[rule]]
 name = "multiple-class-sub-patterns"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["multiple-class-sub-patterns"]
 
 [[rule]]
 name = "multiple-constructor-doc"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["multiple-constructor-doc"]
 
 [[rule]]
 name = "no-else-break"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["no-else-break"]
 
 [[rule]]
 name = "no-else-continue"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["no-else-continue"]
 
 [[rule]]
 name = "no-else-raise"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["no-else-raise"]
 
 [[rule]]
 name = "no-method-argument"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["no-method-argument"]
 
 [[rule]]
 name = "no-value-for-parameter"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["no-value-for-parameter"]
 
 [[rule]]
 name = "non-ascii-module-import"
 presets = ["standard", "strict"]
-category = "linter"
+category = "style"
 pylint = ["non-ascii-module-import"]
 
 [[rule]]
 name = "non-iterator-returned"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["non-iterator-returned"]
 
 [[rule]]
 name = "non-parent-init-called"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["non-parent-init-called"]
 
 [[rule]]
 name = "non-str-assignment-to-dunder-name"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["non-str-assignment-to-dunder-name"]
 
 [[rule]]
 name = "not-a-mapping"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["not-a-mapping"]
 
 [[rule]]
 name = "not-an-iterable"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["not-an-iterable"]
 
 [[rule]]
 name = "not-async-context-manager"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["not-async-context-manager"]
 
 [[rule]]
 name = "not-callable"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["not-callable"]
 
 [[rule]]
 name = "not-context-manager"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["not-context-manager"]
 
 [[rule]]
 name = "overlapping-except"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["overlapping-except"]
 
 [[rule]]
 name = "overridden-final-method"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["overridden-final-method"]
 
 [[rule]]
 name = "pointless-exception-statement"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["pointless-exception-statement"]
 
 [[rule]]
 name = "pointless-string-statement"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["pointless-string-statement"]
 
 [[rule]]
 name = "positional-only-arguments-expected"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["positional-only-arguments-expected"]
 
 [[rule]]
 name = "possibly-unused-variable"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["possibly-unused-variable"]
 
 [[rule]]
 name = "possibly-used-before-assignment"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["possibly-used-before-assignment"]
 
 [[rule]]
 name = "prefer-typing-namedtuple"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["prefer-typing-namedtuple"]
 
 [[rule]]
 name = "raising-format-tuple"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["raising-format-tuple"]
 
 [[rule]]
 name = "raising-non-exception"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["raising-non-exception"]
 
 [[rule]]
 name = "redefined-builtin"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["redefined-builtin"]
 
 [[rule]]
 name = "redefined-variable-type"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["redefined-variable-type"]
 
 [[rule]]
 name = "redundant-keyword-arg"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["redundant-keyword-arg"]
 
 [[rule]]
 name = "redundant-returns-doc"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["redundant-returns-doc"]
 
 [[rule]]
 name = "redundant-u-string-prefix"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["redundant-u-string-prefix"]
 
 [[rule]]
 name = "redundant-unittest-assert"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["redundant-unittest-assert"]
 
 [[rule]]
 name = "redundant-yields-doc"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["redundant-yields-doc"]
 
 [[rule]]
 name = "reimported"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["reimported"]
 
 [[rule]]
 name = "repeated-keyword"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["repeated-keyword"]
 
 [[rule]]
 name = "return-arg-in-generator"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["return-arg-in-generator"]
 
 [[rule]]
 name = "self-cls-assignment"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["self-cls-assignment"]
 
 [[rule]]
 name = "shadowed-import"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["shadowed-import"]
 
 [[rule]]
 name = "signature-differs"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["signature-differs"]
 
 [[rule]]
 name = "simplifiable-condition"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["simplifiable-condition"]
 
 [[rule]]
 name = "simplifiable-if-expression"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["simplifiable-if-expression"]
 
 [[rule]]
 name = "single-string-used-for-slots"
 presets = ["standard", "strict"]
-category = "linter"
+category = "style"
 pylint = ["single-string-used-for-slots"]
 
 [[rule]]
 name = "star-needs-assignment-target"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["star-needs-assignment-target"]
 
 [[rule]]
 name = "subclassed-final-class"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["subclassed-final-class"]
 
 [[rule]]
 name = "subprocess-run-check"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["subprocess-run-check"]
 
 [[rule]]
 name = "super-init-not-called"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["super-init-not-called"]
 
 [[rule]]
 name = "super-with-arguments"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["super-with-arguments"]
 
 [[rule]]
 name = "too-complex"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["too-complex"]
 
 [[rule]]
 name = "too-few-public-methods"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["too-few-public-methods"]
 
 [[rule]]
 name = "too-many-ancestors"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["too-many-ancestors"]
 
 [[rule]]
 name = "too-many-function-args"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["too-many-function-args"]
 
 [[rule]]
 name = "too-many-instance-attributes"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["too-many-instance-attributes"]
 
 [[rule]]
 name = "too-many-positional-sub-patterns"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["too-many-positional-sub-patterns"]
 
 [[rule]]
 name = "too-many-star-expressions"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["too-many-star-expressions"]
 
 [[rule]]
 name = "too-many-try-statements"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["too-many-try-statements"]
 
 [[rule]]
 name = "trailing-comma-tuple"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["trailing-comma-tuple"]
 
 [[rule]]
 name = "truncated-format-string"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["truncated-format-string"]
 
 [[rule]]
 name = "try-except-raise"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["try-except-raise"]
 
 [[rule]]
 name = "typevar-double-variance"
 presets = ["standard", "strict"]
-category = "linter"
+category = "style"
 pylint = ["typevar-double-variance"]
 
 [[rule]]
 name = "typevar-name-incorrect-variance"
 presets = ["standard", "strict"]
-category = "linter"
+category = "style"
 pylint = ["typevar-name-incorrect-variance"]
 
 [[rule]]
 name = "typevar-name-mismatch"
 presets = ["standard", "strict"]
-category = "linter"
+category = "style"
 pylint = ["typevar-name-mismatch"]
 
 [[rule]]
 name = "unbalanced-dict-unpacking"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["unbalanced-dict-unpacking"]
 
 [[rule]]
 name = "unbalanced-tuple-unpacking"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["unbalanced-tuple-unpacking"]
 
 [[rule]]
 name = "undefined-loop-variable"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["undefined-loop-variable"]
 
 [[rule]]
 name = "unexpected-keyword-arg"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["unexpected-keyword-arg"]
 
 [[rule]]
 name = "ungrouped-imports"
 presets = ["standard", "strict"]
-category = "linter"
+category = "style"
 pylint = ["ungrouped-imports"]
 
 [[rule]]
 name = "unhashable-member"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["unhashable-member"]
 
 [[rule]]
 name = "unnecessary-ellipsis"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["unnecessary-ellipsis"]
 
 [[rule]]
 name = "unnecessary-negation"
 presets = ["standard", "strict"]
-category = "linter"
+category = "style"
 pylint = ["unnecessary-negation"]
 
 [[rule]]
 name = "unnecessary-pass"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["unnecessary-pass"]
 
 [[rule]]
 name = "unpacking-non-sequence"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["unpacking-non-sequence"]
 
 [[rule]]
 name = "unreachable"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["unreachable"]
 
 [[rule]]
 name = "unsubscriptable-object"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["unsubscriptable-object"]
 
 [[rule]]
 name = "unsupported-assignment-operation"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["unsupported-assignment-operation"]
 
 [[rule]]
 name = "unsupported-delete-operation"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["unsupported-delete-operation"]
 
 [[rule]]
 name = "unsupported-membership-test"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["unsupported-membership-test"]
 
 [[rule]]
 name = "unused-argument"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["unused-argument"]
 
 [[rule]]
 name = "use-implicit-booleaness-not-comparison"
 presets = ["standard", "strict"]
-category = "linter"
+category = "style"
 pylint = ["use-implicit-booleaness-not-comparison"]
 
 [[rule]]
 name = "use-implicit-booleaness-not-comparison-to-string"
 presets = ["strict"]
-category = "linter"
+category = "style"
 pylint = ["use-implicit-booleaness-not-comparison-to-string"]
 
 [[rule]]
 name = "use-implicit-booleaness-not-comparison-to-zero"
 presets = ["strict"]
-category = "linter"
+category = "style"
 pylint = ["use-implicit-booleaness-not-comparison-to-zero"]
 
 [[rule]]
 name = "use-implicit-booleaness-not-len"
 presets = ["standard", "strict"]
-category = "linter"
+category = "style"
 pylint = ["use-implicit-booleaness-not-len"]
 
 [[rule]]
 name = "use-maxsplit-arg"
 presets = ["standard", "strict"]
-category = "linter"
+category = "style"
 pylint = ["use-maxsplit-arg"]
 
 [[rule]]
 name = "use-sequence-for-iteration"
 presets = ["standard", "strict"]
-category = "linter"
+category = "style"
 pylint = ["use-sequence-for-iteration"]
 
 [[rule]]
 name = "use-set-for-membership"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["use-set-for-membership"]
 
 [[rule]]
 name = "use-yield-from"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["use-yield-from"]
 
 [[rule]]
 name = "used-before-assignment"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["used-before-assignment"]
 
 [[rule]]
 name = "used-prior-global-declaration"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["used-prior-global-declaration"]
 
 [[rule]]
 name = "useless-param-doc"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["useless-param-doc"]
 
 [[rule]]
 name = "useless-parent-delegation"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["useless-parent-delegation"]
 
 [[rule]]
 name = "useless-type-doc"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["useless-type-doc"]
 
 [[rule]]
 name = "using-constant-test"
 presets = ["standard", "strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["using-constant-test"]
 
 [[rule]]
 name = "while-used"
 presets = ["strict"]
-category = "pylint"
+category = "correctness"
 pylint = ["while-used"]
 
 [[rule]]
 name = "wrong-import-order"
 presets = ["standard", "strict"]
-category = "linter"
+category = "style"
 pylint = ["wrong-import-order"]

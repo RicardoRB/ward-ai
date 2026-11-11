@@ -32,7 +32,7 @@ version = 1
 [select]
 preset = "standard"                 # none | standard | strict (default: standard)
 languages = ["java", "typescript"]  # default: every language
-categories = ["naming", "sizes"]    # default: every category
+categories = ["naming", "complexity"]  # default: every category
 include = ["java.missing-javadoc"]
 exclude = ["java.star-import"]
 
@@ -62,8 +62,10 @@ ward-rules.toml: [select] exclude: "ward:java/star-import": name the rule <langu
 | `strict` | Every rule of `standard`, and the stricter ones as they are added. |
 | `none` | No rule; build the set from `include`. |
 
-A rule belongs to one category, named after the usual style groups: `sizes`, `metrics`, `naming`,
-`imports`, `javadoc`, `coding`, `misc` or `linter`. A rule table for a rule that is not
+A rule belongs to one category, named after what the rule checks and not after a tool:
+`accessibility`, `angular`, `architecture`, `complexity`, `concurrency`, `correctness`, `dead-code`,
+`docs`, `duplication`, `error-handling`, `experimental`, `naming`, `null-safety`, `performance`,
+`security` or `style`. A rule table for a rule that is not
 selected is a configuration error, so a tuned rule is never silently off.
 
 `ward rules list --selected` shows the rules the file selects, and `ward rules enable` and

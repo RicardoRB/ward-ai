@@ -13,14 +13,14 @@ checkstyle = ["AvoidEscapedUnicodeCharacters"]
 
 [[rule]]
 name = "descendant-token"
-category = "misc"
+category = "style"
 presets = ["strict"]
 not-applicable = { python = "Java token-tree check; Python has no equivalent token tree" }
 checkstyle = ["DescendantToken"]
 
 [[rule]]
 name = "final-parameters"
-category = "misc"
+category = "style"
 presets = ["strict"]
 not-applicable = { python = "Java final parameters; Python has no final modifier" }
 pmd = ["MethodArgumentCouldBeFinal"]
@@ -28,13 +28,13 @@ checkstyle = ["FinalParameters"]
 
 [[rule]]
 name = "hex-literal-case"
-category = "misc"
+category = "style"
 presets = ["strict"]
 checkstyle = ["HexLiteralCase"]
 
 [[rule]]
 name = "line-ending"
-category = "misc"
+category = "style"
 presets = ["strict"]
 checkstyle = ["LineEnding"]
 
@@ -45,25 +45,25 @@ checkstyle = ["MultilineCommentLeadingAsteriskPresence"]
 
 [[rule]]
 name = "newline-at-end-of-file"
-category = "misc"
+category = "style"
 presets = ["strict"]
 checkstyle = ["NewlineAtEndOfFile"]
 
 [[rule]]
 name = "no-code-in-file"
-category = "misc"
+category = "style"
 presets = ["strict"]
 checkstyle = ["NoCodeInFile"]
 
 [[rule]]
 name = "numerical-prefixes-infixes-suffixes-character-case"
-category = "misc"
+category = "style"
 presets = ["strict"]
 checkstyle = ["NumericalPrefixesInfixesSuffixesCharacterCase"]
 
 [[rule]]
 name = "outer-type-filename"
-category = "misc"
+category = "style"
 presets = ["standard", "strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["OuterTypeFilename"]
@@ -79,14 +79,14 @@ pylint = ["fixme"]
 
 [[rule]]
 name = "trailing-comment"
-category = "misc"
+category = "style"
 presets = ["strict"]
 checkstyle = ["TrailingComment"]
 eslint = ["no-inline-comments"]
 
 [[rule]]
 name = "uncommented-main"
-category = "misc"
+category = "style"
 presets = ["strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["UncommentedMain"]

@@ -6,7 +6,7 @@ id = "ward:java/star-import"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "imports"
+category = "style"
 presets = ["standard", "strict"]
 body = '''
 check = "descendant-count"
@@ -21,7 +21,7 @@ id = "ward:java/unused-import"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "imports"
+category = "style"
 presets = ["standard", "strict"]
 body = '''
 check = "unreferenced-name"
@@ -33,7 +33,7 @@ id = "ward:java/missing-javadoc"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "javadoc"
+category = "docs"
 presets = ["standard", "strict"]
 body = '''
 check = "preceding-comment"
@@ -49,7 +49,7 @@ id = "ward:java/static-import"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "imports"
+category = "style"
 presets = ["strict"]
 options.excludes = { type = "string-list" }
 body = '''
@@ -63,7 +63,7 @@ id = "ward:java/illegal-import"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "imports"
+category = "style"
 presets = ["strict"]
 options.illegal-pkgs = { type = "string-list" }
 options.illegal-classes = { type = "string-list" }
@@ -81,7 +81,7 @@ id = "ward:java/redundant-import"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "imports"
+category = "style"
 presets = ["strict"]
 body = '''
 check = "redundant-import"
@@ -93,7 +93,7 @@ id = "ward:java/unnecessary-fully-qualified-type"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "imports"
+category = "style"
 presets = ["strict"]
 body = '''
 check = "unnecessary-qualified-type"
@@ -105,7 +105,7 @@ id = "ward:java/import-order"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "imports"
+category = "style"
 presets = ["strict"]
 options.groups = { type = "string-list" }
 options.ordered = { type = "boolean" }
@@ -125,7 +125,7 @@ id = "ward:java/custom-import-order"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "imports"
+category = "style"
 presets = ["standard", "strict"]
 options.custom-import-order-rules = { type = "string" }
 options.sort-imports-in-group-alphabetically = { type = "boolean" }
@@ -149,7 +149,7 @@ id = "ward:java/import-control"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "imports"
+category = "style"
 presets = ["strict"]
 options.rules = { type = "string-list" }
 options.path = { type = "regex" }
@@ -165,7 +165,7 @@ id = "ward:java/module-directive-order"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "imports"
+category = "style"
 presets = ["standard", "strict"]
 options.order = { type = "string-list" }
 options.validate-block-separation = { type = "boolean" }
@@ -181,7 +181,7 @@ id = "ward:java/module-import-order"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "imports"
+category = "style"
 presets = ["strict"]
 options.option = { type = "string" }
 options.separated = { type = "boolean" }
@@ -197,7 +197,7 @@ id = "ward:java/avoid-module-import"
 language = "java"
 capability = "SYNTAX"
 severity = "error"
-category = "imports"
+category = "style"
 presets = ["standard", "strict"]
 options.excludes = { type = "string-list" }
 options.max-allowed-module-imports = { type = "integer", min = 0 }

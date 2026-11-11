@@ -2,19 +2,19 @@
 
 [[rule]]
 name = "regexp"
-category = "regexp"
+category = "style"
 presets = ["strict"]
 checkstyle = ["Regexp"]
 
 [[rule]]
 name = "regexp-multiline"
-category = "regexp"
+category = "style"
 presets = ["strict"]
 checkstyle = ["RegexpMultiline"]
 
 [[rule]]
 name = "regexp-on-filename"
-category = "regexp"
+category = "style"
 presets = ["strict"]
 checkstyle = ["RegexpOnFilename"]
 
@@ -24,7 +24,7 @@ checkstyle = ["RegexpSingleline"]
 
 [[rule]]
 name = "regexp-singleline-java"
-category = "regexp"
+category = "style"
 presets = ["strict"]
 not-applicable = { python = "Java-specific regexp check over Java source; the generic regexp-singleline covers Python" }
 checkstyle = ["RegexpSinglelineJava"]

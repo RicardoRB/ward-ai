@@ -3,7 +3,7 @@
 [[rule]]
 name = "no-access-key"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["noAccessKey"]
 
 [[rule]]
@@ -17,7 +17,7 @@ biome = ["noAdjacentSpacesInRegex"]
 [[rule]]
 name = "no-ambiguous-anchor-text"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["noAmbiguousAnchorText"]
 
 [[rule]]
@@ -27,19 +27,19 @@ biome = ["noApproximativeNumericConstant"]
 [[rule]]
 name = "no-aria-hidden-on-focusable"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["noAriaHiddenOnFocusable"]
 
 [[rule]]
 name = "no-aria-unsupported-elements"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["noAriaUnsupportedElements"]
 
 [[rule]]
 name = "no-array-index-key"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noArrayIndexKey"]
 
 [[rule]]
@@ -49,19 +49,19 @@ biome = ["noAssignInExpressions"]
 [[rule]]
 name = "no-astro-conflicting-set-directives"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noAstroConflictingSetDirectives"]
 
 [[rule]]
 name = "no-astro-set-html-directive"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noAstroSetHtmlDirective"]
 
 [[rule]]
 name = "no-autofocus"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["noAutofocus"]
 
 [[rule]]
@@ -90,7 +90,7 @@ biome = ["noBlankTarget"]
 [[rule]]
 name = "no-bun-modules"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noBunModules"]
 
 [[rule]]
@@ -102,25 +102,25 @@ biome = ["noChildrenProp"]
 [[rule]]
 name = "no-comment-text"
 presets = ["standard", "strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noCommentText"]
 
 [[rule]]
 name = "no-common-js"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["noCommonJs"]
 
 [[rule]]
 name = "no-component-hook-factories"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noComponentHookFactories"]
 
 [[rule]]
 name = "no-conditional-expect"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noConditionalExpect"]
 
 [[rule]]
@@ -131,7 +131,7 @@ biome = ["noConfusingLabels"]
 name = "no-confusing-void-type"
 not-applicable = { javascript = "TypeScript void type annotations have no JavaScript counterpart" }
 presets = ["standard", "strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noConfusingVoidType"]
 
 [[rule]]
@@ -166,13 +166,13 @@ biome = ["noDelete"]
 [[rule]]
 name = "no-deprecated-imports"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noDeprecatedImports"]
 
 [[rule]]
 name = "no-distracting-elements"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["noDistractingElements"]
 
 [[rule]]
@@ -182,43 +182,43 @@ biome = ["noDocumentCookie"]
 [[rule]]
 name = "no-document-import-in-page"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noDocumentImportInPage"]
 
 [[rule]]
 name = "no-done-callback"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["noDoneCallback"]
 
 [[rule]]
 name = "no-drizzle-delete-without-where"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noDrizzleDeleteWithoutWhere"]
 
 [[rule]]
 name = "no-drizzle-update-without-where"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noDrizzleUpdateWithoutWhere"]
 
 [[rule]]
 name = "no-duplicate-jsx-props"
 presets = ["standard", "strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noDuplicateJsxProps"]
 
 [[rule]]
 name = "no-duplicate-test-hooks"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noDuplicateTestHooks"]
 
 [[rule]]
 name = "no-duplicated-spread-props"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noDuplicatedSpreadProps"]
 
 [[rule]]
@@ -233,7 +233,7 @@ biome = ["noEmptyInterface"]
 [[rule]]
 name = "no-empty-source"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noEmptySource"]
 
 [[rule]]
@@ -244,13 +244,13 @@ biome = ["noEmptyTypeParameters"]
 [[rule]]
 name = "no-enum"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["noEnum"]
 
 [[rule]]
 name = "no-evolving-types"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noEvolvingTypes"]
 
 [[rule]]
@@ -262,7 +262,7 @@ biome = ["noExcessiveCognitiveComplexity"]
 [[rule]]
 name = "no-excessive-lines-per-file"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["noExcessiveLinesPerFile"]
 
 [[rule]]
@@ -280,13 +280,13 @@ biome = ["noExcessiveNestedTestSuites"]
 [[rule]]
 name = "no-exported-imports"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["noExportedImports"]
 
 [[rule]]
 name = "no-exports-in-test"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noExportsInTest"]
 
 [[rule]]
@@ -324,25 +324,25 @@ biome = ["noGlobalIsNan"]
 [[rule]]
 name = "no-head-element"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["noHeadElement"]
 
 [[rule]]
 name = "no-head-import-in-document"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noHeadImportInDocument"]
 
 [[rule]]
 name = "no-header-scope"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["noHeaderScope"]
 
 [[rule]]
 name = "no-identical-test-title"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noIdenticalTestTitle"]
 
 [[rule]]
@@ -355,31 +355,31 @@ biome = ["noImgElement"]
 name = "no-implicit-any-let"
 not-applicable = { javascript = "TypeScript variable type annotations have no JavaScript counterpart" }
 presets = ["standard", "strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noImplicitAnyLet"]
 
 [[rule]]
 name = "no-implicit-boolean"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["noImplicitBoolean"]
 
 [[rule]]
 name = "no-import-cycles"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noImportCycles"]
 
 [[rule]]
 name = "no-inline-styles"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noInlineStyles"]
 
 [[rule]]
 name = "no-interactive-element-to-noninteractive-role"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["noInteractiveElementToNoninteractiveRole"]
 
 [[rule]]
@@ -389,31 +389,31 @@ biome = ["noInvalidBuiltinInstantiation"]
 [[rule]]
 name = "no-invalid-file-input-accept"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noInvalidFileInputAccept"]
 
 [[rule]]
 name = "no-js-restricted-properties"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noJsRestrictedProperties"]
 
 [[rule]]
 name = "no-jsx-leaked-dollar"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noJsxLeakedDollar"]
 
 [[rule]]
 name = "no-jsx-literals"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["noJsxLiterals"]
 
 [[rule]]
 name = "no-jsx-namespace"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noJsxNamespace"]
 
 [[rule]]
@@ -425,38 +425,38 @@ biome = ["noJsxPropsBind"]
 [[rule]]
 name = "no-label-without-control"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["noLabelWithoutControl"]
 
 [[rule]]
 name = "no-leaked-render"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noLeakedRender"]
 
 [[rule]]
 name = "no-misleading-instantiator"
 not-applicable = { javascript = "TypeScript interfaces and type aliases have no JavaScript counterpart" }
 presets = ["standard", "strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noMisleadingInstantiator"]
 
 [[rule]]
 name = "no-misleading-return-type"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noMisleadingReturnType"]
 
 [[rule]]
 name = "no-misplaced-assertion"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noMisplacedAssertion"]
 
 [[rule]]
 name = "no-misplaced-list-elements"
 presets = ["standard", "strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noMisplacedListElements"]
 
 [[rule]]
@@ -466,7 +466,7 @@ biome = ["noMisrefactoredShorthandAssign"]
 [[rule]]
 name = "no-multiline-string"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["noMultilineString"]
 
 [[rule]]
@@ -476,7 +476,7 @@ biome = ["noNamespaceImport"]
 [[rule]]
 name = "no-negation-in-equality-check"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noNegationInEqualityCheck"]
 
 [[rule]]
@@ -488,7 +488,7 @@ biome = ["noNestedComponentDefinitions"]
 [[rule]]
 name = "no-nested-promises"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noNestedPromises"]
 
 [[rule]]
@@ -506,109 +506,109 @@ biome = ["noNodejsModules"]
 [[rule]]
 name = "no-non-scalable-viewport"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noNonScalableViewport"]
 
 [[rule]]
 name = "no-noninteractive-element-interactions"
 presets = ["strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["noNoninteractiveElementInteractions"]
 
 [[rule]]
 name = "no-noninteractive-element-to-interactive-role"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["noNoninteractiveElementToInteractiveRole"]
 
 [[rule]]
 name = "no-noninteractive-tabindex"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["noNoninteractiveTabindex"]
 
 [[rule]]
 name = "no-obsolete-tags"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noObsoleteTags"]
 
 [[rule]]
 name = "no-parameter-assign"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["noParameterAssign"]
 
 [[rule]]
 name = "no-parameters-only-used-in-recursion"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noParametersOnlyUsedInRecursion"]
 
 [[rule]]
 name = "no-playwright-element-handle"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noPlaywrightElementHandle"]
 
 [[rule]]
 name = "no-playwright-eval"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noPlaywrightEval"]
 
 [[rule]]
 name = "no-playwright-force-option"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noPlaywrightForceOption"]
 
 [[rule]]
 name = "no-playwright-missing-await"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noPlaywrightMissingAwait"]
 
 [[rule]]
 name = "no-playwright-networkidle"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noPlaywrightNetworkidle"]
 
 [[rule]]
 name = "no-playwright-page-pause"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noPlaywrightPagePause"]
 
 [[rule]]
 name = "no-playwright-useless-await"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noPlaywrightUselessAwait"]
 
 [[rule]]
 name = "no-playwright-wait-for-navigation"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noPlaywrightWaitForNavigation"]
 
 [[rule]]
 name = "no-playwright-wait-for-selector"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noPlaywrightWaitForSelector"]
 
 [[rule]]
 name = "no-playwright-wait-for-timeout"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noPlaywrightWaitForTimeout"]
 
 [[rule]]
 name = "no-positive-tabindex"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["noPositiveTabindex"]
 
 [[rule]]
@@ -640,31 +640,31 @@ biome = ["noReExportAll"]
 [[rule]]
 name = "no-react-forward-ref"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noReactForwardRef"]
 
 [[rule]]
 name = "no-react-native-deep-imports"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noReactNativeDeepImports"]
 
 [[rule]]
 name = "no-react-native-literal-colors"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noReactNativeLiteralColors"]
 
 [[rule]]
 name = "no-react-native-raw-text"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noReactNativeRawText"]
 
 [[rule]]
 name = "no-react-object-type-as-default-prop"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noReactObjectTypeAsDefaultProp"]
 
 [[rule]]
@@ -676,19 +676,19 @@ biome = ["noReactPropAssignments"]
 [[rule]]
 name = "no-react-specific-props"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noReactSpecificProps"]
 
 [[rule]]
 name = "no-react-string-refs"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noReactStringRefs"]
 
 [[rule]]
 name = "no-redundant-alt"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["noRedundantAlt"]
 
 [[rule]]
@@ -700,7 +700,7 @@ biome = ["noRedundantDefaultExport"]
 [[rule]]
 name = "no-redundant-roles"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["noRedundantRoles"]
 
 [[rule]]
@@ -716,7 +716,7 @@ biome = ["noRestrictedElements"]
 [[rule]]
 name = "no-restricted-imports"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["noRestrictedImports"]
 
 [[rule]]
@@ -732,19 +732,19 @@ biome = ["noSecrets"]
 [[rule]]
 name = "no-self-import"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noSelfImport"]
 
 [[rule]]
 name = "no-shadow"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noShadow"]
 
 [[rule]]
 name = "no-shouty-constants"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["noShoutyConstants"]
 
 [[rule]]
@@ -760,7 +760,7 @@ biome = ["noSolidDestructuredProps"]
 [[rule]]
 name = "no-static-element-interactions"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["noStaticElementInteractions"]
 
 [[rule]]
@@ -778,25 +778,25 @@ biome = ["noSubstr"]
 [[rule]]
 name = "no-suspicious-semicolon-in-jsx"
 presets = ["standard", "strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noSuspiciousSemicolonInJsx"]
 
 [[rule]]
 name = "no-svelte-export-let"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noSvelteExportLet"]
 
 [[rule]]
 name = "no-svelte-unnecessary-state-wrap"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noSvelteUnnecessaryStateWrap"]
 
 [[rule]]
 name = "no-svg-without-title"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["noSvgWithoutTitle"]
 
 [[rule]]
@@ -808,19 +808,19 @@ biome = ["noSyncScripts"]
 [[rule]]
 name = "no-tailwind-arbitrary-value"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noTailwindArbitraryValue"]
 
 [[rule]]
 name = "no-tailwind-raw-colors"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noTailwindRawColors"]
 
 [[rule]]
 name = "no-ternary"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["noTernary"]
 
 [[rule]]
@@ -834,25 +834,25 @@ biome = ["noThisInStatic"]
 [[rule]]
 name = "no-this-outside-of-class"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noThisOutsideOfClass"]
 
 [[rule]]
 name = "no-unassigned-variables"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noUnassignedVariables"]
 
 [[rule]]
 name = "no-undeclared-classes"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noUndeclaredClasses"]
 
 [[rule]]
 name = "no-undeclared-custom-properties"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noUndeclaredCustomProperties"]
 
 [[rule]]
@@ -864,19 +864,19 @@ biome = ["noUndeclaredDependencies"]
 [[rule]]
 name = "no-undeclared-env-vars"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noUndeclaredEnvVars"]
 
 [[rule]]
 name = "no-unknown-attribute"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noUnknownAttribute"]
 
 [[rule]]
 name = "no-unnecessary-conditions"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noUnnecessaryConditions"]
 
 [[rule]]
@@ -892,7 +892,7 @@ biome = ["noUnresolvedImports"]
 [[rule]]
 name = "no-unsafe-iframe-sandbox"
 presets = ["standard", "strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noUnsafeIframeSandbox"]
 
 [[rule]]
@@ -961,7 +961,7 @@ biome = ["noVoidTypeReturn"]
 [[rule]]
 name = "no-vue-arrow-func-in-watch"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["noVueArrowFuncInWatch"]
 
 [[rule]]
@@ -973,7 +973,7 @@ biome = ["noVueDataObjectDeclaration"]
 [[rule]]
 name = "no-vue-deprecated-scoped-slots"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noVueDeprecatedScopedSlots"]
 
 [[rule]]
@@ -985,19 +985,19 @@ biome = ["noVueDuplicateKeys"]
 [[rule]]
 name = "no-vue-import-compiler-macros"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noVueImportCompilerMacros"]
 
 [[rule]]
 name = "no-vue-options-api"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["noVueOptionsApi"]
 
 [[rule]]
 name = "no-vue-ref-as-operand"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["noVueRefAsOperand"]
 
 [[rule]]
@@ -1025,31 +1025,31 @@ biome = ["noXorAsExponentiation"]
 [[rule]]
 name = "use-alt-text"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["useAltText"]
 
 [[rule]]
 name = "use-anchor-content"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["useAnchorContent"]
 
 [[rule]]
 name = "use-aria-activedescendant-with-tabindex"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["useAriaActivedescendantWithTabindex"]
 
 [[rule]]
 name = "use-aria-props-for-role"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["useAriaPropsForRole"]
 
 [[rule]]
 name = "use-aria-props-supported-by-role"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["useAriaPropsSupportedByRole"]
 
 [[rule]]
@@ -1059,85 +1059,85 @@ biome = ["useArrayFind"]
 [[rule]]
 name = "use-array-some"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useArraySome"]
 
 [[rule]]
 name = "use-at-index"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["useAtIndex"]
 
 [[rule]]
 name = "use-better-dom-traversing"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useBetterDomTraversing"]
 
 [[rule]]
 name = "use-button-type"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["useButtonType"]
 
 [[rule]]
 name = "use-component-export-only-modules"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["useComponentExportOnlyModules"]
 
 [[rule]]
 name = "use-consistent-array-type"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["useConsistentArrayType"]
 
 [[rule]]
 name = "use-consistent-arrow-return"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["useConsistentArrowReturn"]
 
 [[rule]]
 name = "use-consistent-builtin-instantiation"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["useConsistentBuiltinInstantiation"]
 
 [[rule]]
 name = "use-consistent-curly-braces"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["useConsistentCurlyBraces"]
 
 [[rule]]
 name = "use-consistent-enum-value-type"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["useConsistentEnumValueType"]
 
 [[rule]]
 name = "use-consistent-member-accessibility"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["useConsistentMemberAccessibility"]
 
 [[rule]]
 name = "use-consistent-object-definitions"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["useConsistentObjectDefinitions"]
 
 [[rule]]
 name = "use-consistent-test-it"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useConsistentTestIt"]
 
 [[rule]]
 name = "use-control-label"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useControlLabel"]
 
 [[rule]]
@@ -1147,7 +1147,7 @@ biome = ["useDateNow"]
 [[rule]]
 name = "use-default-switch-clause"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["useDefaultSwitchClause"]
 
 [[rule]]
@@ -1157,7 +1157,7 @@ biome = ["useDefaultSwitchClauseLast"]
 [[rule]]
 name = "use-disposables"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useDisposables"]
 
 [[rule]]
@@ -1167,19 +1167,19 @@ biome = ["useDomNodeTextContent"]
 [[rule]]
 name = "use-dom-query-selector"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useDomQuerySelector"]
 
 [[rule]]
 name = "use-error-cause"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["useErrorCause"]
 
 [[rule]]
 name = "use-error-message"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["useErrorMessage"]
 
 [[rule]]
@@ -1191,43 +1191,43 @@ biome = ["useExhaustiveDependencies"]
 [[rule]]
 name = "use-exhaustive-switch-cases"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useExhaustiveSwitchCases"]
 
 [[rule]]
 name = "use-expect"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useExpect"]
 
 [[rule]]
 name = "use-explicit-length-check"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["useExplicitLengthCheck"]
 
 [[rule]]
 name = "use-explicit-return-type"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useExplicitReturnType"]
 
 [[rule]]
 name = "use-explicit-type"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useExplicitType"]
 
 [[rule]]
 name = "use-exports-last"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["useExportsLast"]
 
 [[rule]]
 name = "use-filenaming-convention"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["useFilenamingConvention"]
 
 [[rule]]
@@ -1241,13 +1241,13 @@ biome = ["useFlatMathMinMax"]
 [[rule]]
 name = "use-focusable-interactive"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["useFocusableInteractive"]
 
 [[rule]]
 name = "use-fragment-syntax"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["useFragmentSyntax"]
 
 [[rule]]
@@ -1257,7 +1257,7 @@ biome = ["useGlobalThis"]
 [[rule]]
 name = "use-google-font-display"
 presets = ["standard", "strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["useGoogleFontDisplay"]
 
 [[rule]]
@@ -1269,7 +1269,7 @@ biome = ["useGoogleFontPreconnect"]
 [[rule]]
 name = "use-heading-content"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["useHeadingContent"]
 
 [[rule]]
@@ -1281,19 +1281,19 @@ biome = ["useHookAtTopLevel"]
 [[rule]]
 name = "use-html-lang"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["useHtmlLang"]
 
 [[rule]]
 name = "use-iframe-sandbox"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useIframeSandbox"]
 
 [[rule]]
 name = "use-iframe-title"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["useIframeTitle"]
 
 [[rule]]
@@ -1311,7 +1311,7 @@ biome = ["useImportExtensions"]
 [[rule]]
 name = "use-imports-first"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useImportsFirst"]
 
 [[rule]]
@@ -1341,13 +1341,13 @@ biome = ["useJsxKeyInIterable"]
 [[rule]]
 name = "use-key-with-click-events"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["useKeyWithClickEvents"]
 
 [[rule]]
 name = "use-key-with-mouse-events"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["useKeyWithMouseEvents"]
 
 [[rule]]
@@ -1357,7 +1357,7 @@ biome = ["useMathMinMax"]
 [[rule]]
 name = "use-media-caption"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["useMediaCaption"]
 
 [[rule]]
@@ -1367,7 +1367,7 @@ biome = ["useModernMathApis"]
 [[rule]]
 name = "use-node-assert-strict"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["useNodeAssertStrict"]
 
 [[rule]]
@@ -1377,7 +1377,7 @@ biome = ["useNodejsImportProtocol"]
 [[rule]]
 name = "use-number-namespace"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["useNumberNamespace"]
 
 [[rule]]
@@ -1387,13 +1387,13 @@ biome = ["useNumberToFixedDigitsArgument"]
 [[rule]]
 name = "use-numeric-separators"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["useNumericSeparators"]
 
 [[rule]]
 name = "use-playwright-valid-describe-callback"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["usePlaywrightValidDescribeCallback"]
 
 [[rule]]
@@ -1405,7 +1405,7 @@ biome = ["useQwikClasslist"]
 [[rule]]
 name = "use-qwik-loader-location"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useQwikLoaderLocation"]
 
 [[rule]]
@@ -1423,61 +1423,61 @@ biome = ["useQwikValidLexicalScope"]
 [[rule]]
 name = "use-react-async-server-function"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useReactAsyncServerFunction"]
 
 [[rule]]
 name = "use-react-compiler"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useReactCompiler"]
 
 [[rule]]
 name = "use-react-function-component-definition"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useReactFunctionComponentDefinition"]
 
 [[rule]]
 name = "use-react-function-components"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["useReactFunctionComponents"]
 
 [[rule]]
 name = "use-react-naming-convention"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useReactNamingConvention"]
 
 [[rule]]
 name = "use-react-native-platform-components"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useReactNativePlatformComponents"]
 
 [[rule]]
 name = "use-reduce-type-parameter"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useReduceTypeParameter"]
 
 [[rule]]
 name = "use-regexp-test"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useRegexpTest"]
 
 [[rule]]
 name = "use-self-closing-elements"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["useSelfClosingElements"]
 
 [[rule]]
 name = "use-semantic-elements"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["useSemanticElements"]
 
 [[rule]]
@@ -1504,7 +1504,7 @@ biome = ["useSingleJsDocAsterisk"]
 [[rule]]
 name = "use-single-var-declarator"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["useSingleVarDeclarator"]
 
 [[rule]]
@@ -1516,37 +1516,37 @@ biome = ["useSolidForComponent"]
 [[rule]]
 name = "use-sorted-classes"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useSortedClasses"]
 
 [[rule]]
 name = "use-static-response-methods"
 presets = ["strict"]
-category = "suspicious"
+category = "correctness"
 biome = ["useStaticResponseMethods"]
 
 [[rule]]
 name = "use-svelte-kit-rune-imports"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useSvelteKitRuneImports"]
 
 [[rule]]
 name = "use-tailwind-shorthand-classes"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useTailwindShorthandClasses"]
 
 [[rule]]
 name = "use-test-hooks-in-order"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useTestHooksInOrder"]
 
 [[rule]]
 name = "use-test-hooks-on-top"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useTestHooksOnTop"]
 
 [[rule]]
@@ -1572,31 +1572,31 @@ biome = ["useUniqueElementIds"]
 [[rule]]
 name = "use-valid-anchor"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["useValidAnchor"]
 
 [[rule]]
 name = "use-valid-aria-props"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["useValidAriaProps"]
 
 [[rule]]
 name = "use-valid-aria-role"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["useValidAriaRole"]
 
 [[rule]]
 name = "use-valid-aria-values"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["useValidAriaValues"]
 
 [[rule]]
 name = "use-valid-autocomplete"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["useValidAutocomplete"]
 
 [[rule]]
@@ -1606,43 +1606,43 @@ biome = ["useValidForDirection"]
 [[rule]]
 name = "use-valid-lang"
 presets = ["standard", "strict"]
-category = "a11y"
+category = "accessibility"
 biome = ["useValidLang"]
 
 [[rule]]
 name = "use-valid-test-title"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useValidTestTitle"]
 
 [[rule]]
 name = "use-vue-base-import"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useVueBaseImport"]
 
 [[rule]]
 name = "use-vue-consistent-define-props-declaration"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useVueConsistentDefinePropsDeclaration"]
 
 [[rule]]
 name = "use-vue-define-macros-order"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["useVueDefineMacrosOrder"]
 
 [[rule]]
 name = "use-vue-multi-word-component-names"
 presets = ["strict"]
-category = "linter"
+category = "style"
 biome = ["useVueMultiWordComponentNames"]
 
 [[rule]]
 name = "use-vue-next-tick-promise"
 presets = ["strict"]
-category = "nursery"
+category = "experimental"
 biome = ["useVueNextTickPromise"]
 
 [[rule]]

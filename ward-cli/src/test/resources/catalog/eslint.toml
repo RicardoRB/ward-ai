@@ -3,38 +3,38 @@
 [[rule]]
 name = "accessor-pairs"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 eslint = ["accessor-pairs"]
 
 [[rule]]
 name = "array-callback-return"
 presets = ["standard", "strict"]
-category = "problem"
+category = "correctness"
 eslint = ["array-callback-return"]
 biome = ["useIterableCallbackReturn"]
 
 [[rule]]
 name = "arrow-body-style"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 eslint = ["arrow-body-style"]
 
 [[rule]]
 name = "block-scoped-var"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["block-scoped-var"]
 
 [[rule]]
 name = "capitalized-comments"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["capitalized-comments"]
 
 [[rule]]
 name = "class-methods-use-this"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["class-methods-use-this"]
 eslint = ["class-methods-use-this"]
 biome = ["useThisInClassMethods"]
@@ -42,14 +42,14 @@ biome = ["useThisInClassMethods"]
 [[rule]]
 name = "consistent-return"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["consistent-return"]
 eslint = ["consistent-return"]
 
 [[rule]]
 name = "consistent-this"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["consistent-this"]
 
 [[rule]]
@@ -60,7 +60,7 @@ biome = ["noInvalidConstructorSuper"]
 [[rule]]
 name = "default-param-last"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["default-param-last"]
 eslint = ["default-param-last"]
 biome = ["useDefaultParameterLast"]
@@ -83,19 +83,19 @@ eslint = ["for-direction"]
 [[rule]]
 name = "func-name-matching"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["func-name-matching"]
 
 [[rule]]
 name = "func-names"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["func-names"]
 
 [[rule]]
 name = "func-style"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["func-style"]
 biome = ["useConsistentFunctionStyle"]
 
@@ -107,72 +107,72 @@ biome = ["useGetterReturn"]
 [[rule]]
 name = "grouped-accessor-pairs"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["grouped-accessor-pairs"]
 biome = ["useGroupedAccessorPairs"]
 
 [[rule]]
 name = "guard-for-in"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 eslint = ["guard-for-in"]
 biome = ["useGuardForIn"]
 
 [[rule]]
 name = "id-denylist"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["id-denylist"]
 
 [[rule]]
 name = "id-length"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["id-length"]
 
 [[rule]]
 name = "id-match"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["id-match"]
 
 [[rule]]
 name = "init-declarations"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["init-declarations"]
 eslint = ["init-declarations"]
 
 [[rule]]
 name = "logical-assignment-operators"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 eslint = ["logical-assignment-operators"]
 
 [[rule]]
 name = "max-classes-per-file"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["max-classes-per-file"]
 biome = ["noExcessiveClassesPerFile"]
 
 [[rule]]
 name = "max-nested-callbacks"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["max-nested-callbacks"]
 biome = ["noExcessiveNestedCallbacks"]
 
 [[rule]]
 name = "max-statements"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["max-statements"]
 
 [[rule]]
 name = "new-cap"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["new-cap"]
 
 [[rule]]
@@ -194,14 +194,14 @@ biome = ["noAsyncPromiseExecutor"]
 [[rule]]
 name = "no-await-in-loop"
 presets = ["strict"]
-category = "problem"
+category = "correctness"
 eslint = ["no-await-in-loop"]
 biome = ["noAwaitInLoops"]
 
 [[rule]]
 name = "no-bitwise"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["no-bitwise"]
 biome = ["noBitwiseOperators"]
 
@@ -227,7 +227,7 @@ biome = ["noCompareNegZero"]
 [[rule]]
 name = "no-console"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 eslint = ["no-console"]
 biome = ["noConsole"]
 
@@ -239,7 +239,7 @@ biome = ["noConstAssign"]
 [[rule]]
 name = "no-constant-binary-expression"
 presets = ["standard", "strict"]
-category = "problem"
+category = "correctness"
 eslint = ["no-constant-binary-expression"]
 biome = ["noConstantBinaryExpressions"]
 
@@ -251,14 +251,14 @@ biome = ["noConstantCondition"]
 [[rule]]
 name = "no-constructor-return"
 presets = ["standard", "strict"]
-category = "problem"
+category = "correctness"
 eslint = ["no-constructor-return"]
 biome = ["noConstructorReturn"]
 
 [[rule]]
 name = "no-continue"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["no-continue"]
 biome = ["noContinue"]
 
@@ -289,7 +289,7 @@ biome = ["noDuplicateParameters"]
 [[rule]]
 name = "no-dupe-class-members"
 presets = ["standard", "strict"]
-category = "problem"
+category = "correctness"
 typescript-eslint = ["no-dupe-class-members"]
 eslint = ["no-dupe-class-members"]
 biome = ["noDuplicateClassMembers"]
@@ -297,7 +297,7 @@ biome = ["noDuplicateClassMembers"]
 [[rule]]
 name = "no-dupe-else-if"
 presets = ["standard", "strict"]
-category = "problem"
+category = "correctness"
 eslint = ["no-dupe-else-if"]
 biome = ["noDuplicateElseIf"]
 
@@ -313,7 +313,7 @@ biome = ["noDuplicateCase"]
 [[rule]]
 name = "no-duplicate-imports"
 presets = ["strict"]
-category = "problem"
+category = "correctness"
 eslint = ["no-duplicate-imports"]
 
 [[rule]]
@@ -330,7 +330,7 @@ biome = ["noEmptyCharacterClassInRegex"]
 [[rule]]
 name = "no-empty-function"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["no-empty-function"]
 eslint = ["no-empty-function"]
 
@@ -346,7 +346,7 @@ eslint = ["no-empty-static-block"]
 [[rule]]
 name = "no-eq-null"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["no-eq-null"]
 biome = ["noEqualsToNull"]
 
@@ -367,7 +367,7 @@ biome = ["noExtendNative"]
 [[rule]]
 name = "no-extra-bind"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 eslint = ["no-extra-bind"]
 
 [[rule]]
@@ -377,7 +377,7 @@ eslint = ["no-extra-boolean-cast"]
 [[rule]]
 name = "no-extra-label"
 presets = ["standard", "strict"]
-category = "suggestion"
+category = "style"
 eslint = ["no-extra-label"]
 biome = ["noUselessLabel"]
 
@@ -394,14 +394,14 @@ biome = ["noGlobalAssign"]
 [[rule]]
 name = "no-implicit-coercion"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["no-implicit-coercion"]
 biome = ["noImplicitCoercions"]
 
 [[rule]]
 name = "no-implicit-globals"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 eslint = ["no-implicit-globals"]
 
 [[rule]]
@@ -418,27 +418,27 @@ biome = ["noImportAssign"]
 [[rule]]
 name = "no-inner-declarations"
 presets = ["standard", "strict"]
-category = "problem"
+category = "correctness"
 eslint = ["no-inner-declarations"]
 biome = ["noInnerDeclarations"]
 
 [[rule]]
 name = "no-invalid-regexp"
 presets = ["standard", "strict"]
-category = "problem"
+category = "correctness"
 eslint = ["no-invalid-regexp"]
 
 [[rule]]
 name = "no-invalid-this"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["no-invalid-this"]
 eslint = ["no-invalid-this"]
 
 [[rule]]
 name = "no-irregular-whitespace"
 presets = ["standard", "strict"]
-category = "problem"
+category = "correctness"
 eslint = ["no-irregular-whitespace"]
 biome = ["noIrregularWhitespace"]
 
@@ -449,75 +449,75 @@ eslint = ["no-iterator"]
 [[rule]]
 name = "no-label-var"
 presets = ["standard", "strict"]
-category = "suggestion"
+category = "style"
 eslint = ["no-label-var"]
 biome = ["noLabelVar"]
 
 [[rule]]
 name = "no-labels"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 eslint = ["no-labels"]
 
 [[rule]]
 name = "no-lonely-if"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["no-lonely-if"]
 biome = ["useCollapsedIf", "useCollapsedElseIf"]
 
 [[rule]]
 name = "no-loop-func"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 eslint = ["no-loop-func"]
 biome = ["noLoopFunc"]
 
 [[rule]]
 name = "no-loss-of-precision"
 presets = ["standard", "strict"]
-category = "problem"
+category = "correctness"
 eslint = ["no-loss-of-precision"]
 biome = ["noPrecisionLoss"]
 
 [[rule]]
 name = "no-misleading-character-class"
 presets = ["standard", "strict"]
-category = "problem"
+category = "correctness"
 eslint = ["no-misleading-character-class"]
 biome = ["noMisleadingCharacterClass"]
 
 [[rule]]
 name = "no-multi-assign"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["no-multi-assign"]
 biome = ["noMultiAssign"]
 
 [[rule]]
 name = "no-multi-str"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["no-multi-str"]
 
 [[rule]]
 name = "no-negated-condition"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["no-negated-condition"]
 biome = ["noNegationElse"]
 
 [[rule]]
 name = "no-nested-ternary"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["no-nested-ternary"]
 biome = ["noNestedTernary"]
 
 [[rule]]
 name = "no-new"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 eslint = ["no-new"]
 
 [[rule]]
@@ -545,7 +545,7 @@ biome = ["noGlobalObjectCalls"]
 [[rule]]
 name = "no-object-constructor"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 eslint = ["no-object-constructor"]
 
 [[rule]]
@@ -561,14 +561,14 @@ biome = ["noOctalEscape"]
 [[rule]]
 name = "no-plusplus"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["no-plusplus"]
 biome = ["noIncrementDecrement"]
 
 [[rule]]
 name = "no-promise-executor-return"
 presets = ["strict"]
-category = "problem"
+category = "correctness"
 eslint = ["no-promise-executor-return"]
 
 [[rule]]
@@ -584,7 +584,7 @@ biome = ["noPrototypeBuiltins"]
 [[rule]]
 name = "no-redeclare"
 presets = ["standard", "strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["no-redeclare"]
 eslint = ["no-redeclare"]
 biome = ["noRedeclare"]
@@ -596,32 +596,32 @@ eslint = ["no-regex-spaces"]
 [[rule]]
 name = "no-restricted-exports"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 eslint = ["no-restricted-exports"]
 
 [[rule]]
 name = "no-restricted-globals"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 eslint = ["no-restricted-globals"]
 biome = ["noRestrictedGlobals"]
 
 [[rule]]
 name = "no-restricted-properties"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 eslint = ["no-restricted-properties"]
 
 [[rule]]
 name = "no-restricted-syntax"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 eslint = ["no-restricted-syntax"]
 
 [[rule]]
 name = "no-return-assign"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 eslint = ["no-return-assign"]
 biome = ["noReturnAssign"]
 
@@ -668,7 +668,7 @@ biome = ["noTemplateCurlyInString"]
 [[rule]]
 name = "no-this-before-super"
 presets = ["standard", "strict"]
-category = "problem"
+category = "correctness"
 eslint = ["no-this-before-super"]
 
 [[rule]]
@@ -678,7 +678,7 @@ eslint = ["no-throw-literal"]
 [[rule]]
 name = "no-unassigned-vars"
 presets = ["standard", "strict"]
-category = "problem"
+category = "correctness"
 eslint = ["no-unassigned-vars"]
 
 [[rule]]
@@ -694,25 +694,25 @@ biome = ["noUselessUndefinedInitialization"]
 [[rule]]
 name = "no-undefined"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["no-undefined"]
 
 [[rule]]
 name = "no-underscore-dangle"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["no-underscore-dangle"]
 
 [[rule]]
 name = "no-unexpected-multiline"
 presets = ["standard", "strict"]
-category = "problem"
+category = "correctness"
 eslint = ["no-unexpected-multiline"]
 
 [[rule]]
 name = "no-unmodified-loop-condition"
 presets = ["strict"]
-category = "problem"
+category = "correctness"
 eslint = ["no-unmodified-loop-condition"]
 biome = ["noUnmodifiedLoopCondition"]
 
@@ -729,7 +729,7 @@ biome = ["noUnreachable"]
 [[rule]]
 name = "no-unreachable-loop"
 presets = ["strict"]
-category = "problem"
+category = "correctness"
 eslint = ["no-unreachable-loop"]
 
 [[rule]]
@@ -745,14 +745,14 @@ biome = ["noUnsafeNegation"]
 [[rule]]
 name = "no-unsafe-optional-chaining"
 presets = ["standard", "strict"]
-category = "problem"
+category = "correctness"
 eslint = ["no-unsafe-optional-chaining"]
 biome = ["noUnsafeOptionalChaining"]
 
 [[rule]]
 name = "no-unused-expressions"
 presets = ["standard", "strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["no-unused-expressions"]
 eslint = ["no-unused-expressions"]
 biome = ["noUnusedExpressions"]
@@ -765,7 +765,7 @@ biome = ["noUnusedLabels"]
 [[rule]]
 name = "no-unused-private-class-members"
 presets = ["standard", "strict"]
-category = "problem"
+category = "correctness"
 typescript-eslint = ["no-unused-private-class-members"]
 eslint = ["no-unused-private-class-members"]
 biome = ["noUnusedPrivateClassMembers"]
@@ -773,7 +773,7 @@ biome = ["noUnusedPrivateClassMembers"]
 [[rule]]
 name = "no-use-before-define"
 presets = ["standard", "strict"]
-category = "problem"
+category = "correctness"
 typescript-eslint = ["no-use-before-define"]
 eslint = ["no-use-before-define"]
 biome = ["noInvalidUseBeforeDeclaration"]
@@ -781,7 +781,7 @@ biome = ["noInvalidUseBeforeDeclaration"]
 [[rule]]
 name = "no-useless-backreference"
 presets = ["standard", "strict"]
-category = "problem"
+category = "correctness"
 eslint = ["no-useless-backreference"]
 biome = ["noUselessRegexBackrefs"]
 
@@ -797,13 +797,13 @@ biome = ["noUselessCatch"]
 [[rule]]
 name = "no-useless-computed-key"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["no-useless-computed-key"]
 
 [[rule]]
 name = "no-useless-concat"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["no-useless-concat"]
 biome = ["noUselessStringConcat"]
 
@@ -816,7 +816,7 @@ biome = ["noUselessConstructor"]
 [[rule]]
 name = "no-useless-escape"
 presets = ["standard", "strict"]
-category = "suggestion"
+category = "style"
 eslint = ["no-useless-escape"]
 biome = ["noUselessEscapeInRegex", "noUselessEscapeInString"]
 
@@ -828,21 +828,21 @@ biome = ["noUselessRename"]
 [[rule]]
 name = "no-useless-return"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["no-useless-return"]
 biome = ["noUselessReturn"]
 
 [[rule]]
 name = "no-var"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["no-var"]
 biome = ["noVar"]
 
 [[rule]]
 name = "no-void"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["no-void"]
 biome = ["noVoid"]
 
@@ -854,13 +854,13 @@ biome = ["noWith"]
 [[rule]]
 name = "object-shorthand"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["object-shorthand"]
 
 [[rule]]
 name = "operator-assignment"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["operator-assignment"]
 biome = ["useShorthandAssign"]
 
@@ -877,7 +877,7 @@ biome = ["useConst"]
 [[rule]]
 name = "prefer-destructuring"
 presets = ["strict"]
-category = "linter"
+category = "style"
 typescript-eslint = ["prefer-destructuring"]
 eslint = ["prefer-destructuring"]
 biome = ["useDestructuring"]
@@ -890,7 +890,7 @@ biome = ["useExponentiationOperator"]
 [[rule]]
 name = "prefer-named-capture-group"
 presets = ["strict"]
-category = "suggestion"
+category = "style"
 eslint = ["prefer-named-capture-group"]
 biome = ["useNamedCaptureGroup"]
 
@@ -906,14 +906,14 @@ eslint = ["prefer-object-has-own"]
 [[rule]]
 name = "prefer-object-spread"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["prefer-object-spread"]
 biome = ["useObjectSpread"]
 
 [[rule]]
 name = "prefer-promise-reject-errors"
 presets = ["standard", "strict"]
-category = "suggestion"
+category = "style"
 typescript-eslint = ["prefer-promise-reject-errors"]
 eslint = ["prefer-promise-reject-errors"]
 biome = ["usePromiseRejectErrors"]
@@ -941,7 +941,7 @@ biome = ["useTemplate"]
 [[rule]]
 name = "preserve-caught-error"
 presets = ["standard", "strict"]
-category = "suggestion"
+category = "style"
 eslint = ["preserve-caught-error"]
 
 [[rule]]
@@ -952,7 +952,7 @@ biome = ["useParseIntRadix"]
 [[rule]]
 name = "require-atomic-updates"
 presets = ["strict"]
-category = "problem"
+category = "correctness"
 eslint = ["require-atomic-updates"]
 
 [[rule]]
@@ -964,7 +964,7 @@ biome = ["useAwait"]
 [[rule]]
 name = "require-unicode-regexp"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["require-unicode-regexp"]
 biome = ["useUnicodeRegex"]
 
@@ -976,19 +976,19 @@ biome = ["useYield"]
 [[rule]]
 name = "sort-keys"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["sort-keys"]
 
 [[rule]]
 name = "sort-vars"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["sort-vars"]
 
 [[rule]]
 name = "strict"
 presets = ["standard", "strict"]
-category = "suggestion"
+category = "style"
 eslint = ["strict"]
 biome = ["noRedundantUseStrict", "useStrictMode"]
 
@@ -1010,13 +1010,13 @@ biome = ["useValidTypeof"]
 [[rule]]
 name = "vars-on-top"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["vars-on-top"]
 biome = ["useVarsOnTop"]
 
 [[rule]]
 name = "yoda"
 presets = ["strict"]
-category = "linter"
+category = "style"
 eslint = ["yoda"]
 biome = ["noYodaExpression"]
