@@ -194,19 +194,19 @@ class NativeJvmTypesTest {
   }
 
   /** A class to put in a jar. */
-  public static final class Library {
+  static final class Library {
     /** The size. */
-    public static final int LIMIT = 3;
+    static final int LIMIT = 3;
 
     private Library() {}
 
     /** Returns an object. */
-    public static Object make() {
+    static Object make() {
       return new Object();
     }
 
     /** Looks a key up. */
-    public static <T> Object find(
+    static <T> Object find(
         @com.google.errorprone.annotations.CompatibleWith("T") final Object key,
         final int ignored) {
       return key;
@@ -214,7 +214,7 @@ class NativeJvmTypesTest {
 
     /** An old way. */
     @Deprecated
-    public static String legacy() {
+    static String legacy() {
       return "";
     }
   }
