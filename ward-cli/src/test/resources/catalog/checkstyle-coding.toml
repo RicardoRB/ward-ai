@@ -2,7 +2,7 @@
 
 [[rule]]
 name = "array-trailing-comma"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { python = "Java-only construct with no counterpart in this language" }
 checkstyle = ["ArrayTrailingComma"]
@@ -15,7 +15,7 @@ eslint = ["no-ternary"]
 
 [[rule]]
 name = "avoid-no-argument-super-constructor-call"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
 pmd = ["UnnecessaryConstructor"]
@@ -35,7 +35,7 @@ spotbugs = ["EQ_OTHER_USE_OBJECT"]
 
 [[rule]]
 name = "declaration-order"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { python = "Java member declaration order; Python class bodies have no declaration-order rule of this kind" }
 pmd = ["FieldDeclarationsShouldBeAtStartOfClass"]
@@ -44,7 +44,7 @@ checkstyle = ["DeclarationOrder"]
 
 [[rule]]
 name = "default-comes-last"
-category = "coding"
+category = "style"
 presets = ["strict"]
 checkstyle = ["DefaultComesLast"]
 eslint = ["default-case-last"]
@@ -75,7 +75,7 @@ ruff = ["PLW1641"]
 
 [[rule]]
 name = "explicit-initialization"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { python = "Java field default values; Python has no field declarations" }
 pmd = ["RedundantFieldInitializer"]
@@ -83,7 +83,7 @@ checkstyle = ["ExplicitInitialization"]
 
 [[rule]]
 name = "expression-over-block-lambda"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { python = "Java block lambdas; Python lambdas are expressions only" }
 checkstyle = ["ExpressionOverBlockLambda"]
@@ -100,7 +100,7 @@ biome = ["noFallthroughSwitchClause"]
 
 [[rule]]
 name = "final-local-variable"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { python = "Java final local variables; Python has no final modifier" }
 pmd = ["LocalVariableCouldBeFinal"]
@@ -125,14 +125,14 @@ pylint = ["broad-exception-caught"]
 
 [[rule]]
 name = "illegal-instantiation"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["IllegalInstantiation"]
 
 [[rule]]
 name = "illegal-symbol"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { python = "Java-only construct with no counterpart in this language" }
 checkstyle = ["IllegalSymbol"]
@@ -147,7 +147,7 @@ checkstyle = ["IllegalThrows"]
 
 [[rule]]
 name = "illegal-token"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { python = "Java-only construct with no counterpart in this language" }
 checkstyle = ["IllegalToken"]
@@ -159,14 +159,14 @@ checkstyle = ["IllegalTokenText"]
 
 [[rule]]
 name = "illegal-type"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { python = "Java-only construct with no counterpart in this language" }
 checkstyle = ["IllegalType"]
 
 [[rule]]
 name = "inner-assignment"
-category = "coding"
+category = "style"
 presets = ["strict"]
 checkstyle = ["InnerAssignment"]
 eslint = ["no-cond-assign"]
@@ -181,14 +181,14 @@ pylint = ["magic-value-comparison"]
 
 [[rule]]
 name = "missing-ctor"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
 checkstyle = ["MissingCtor"]
 
 [[rule]]
 name = "missing-null-case-in-switch"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["MissingNullCaseInSwitch"]
@@ -202,7 +202,7 @@ eslint = ["default-case"]
 
 [[rule]]
 name = "modified-control-variable"
-category = "coding"
+category = "style"
 presets = ["strict"]
 checkstyle = ["ModifiedControlVariable"]
 
@@ -235,21 +235,21 @@ checkstyle = ["NestedTryDepth"]
 
 [[rule]]
 name = "no-array-trailing-comma"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { python = "Java-only construct with no counterpart in this language" }
 checkstyle = ["NoArrayTrailingComma"]
 
 [[rule]]
 name = "no-clone"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
 checkstyle = ["NoClone"]
 
 [[rule]]
 name = "no-enum-trailing-comma"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { python = "Java-only construct with no counterpart in this language" }
 checkstyle = ["NoEnumTrailingComma"]
@@ -274,7 +274,7 @@ checkstyle = ["PackageDeclaration"]
 
 [[rule]]
 name = "parameter-assignment"
-category = "coding"
+category = "style"
 presets = ["strict"]
 pmd = ["AvoidReassigningParameters"]
 checkstyle = ["ParameterAssignment"]
@@ -282,14 +282,14 @@ eslint = ["no-param-reassign"]
 
 [[rule]]
 name = "pattern-variable-assignment"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["PatternVariableAssignment"]
 
 [[rule]]
 name = "require-this"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { python = "Java this. qualifier; Python uses self, which is a parameter" }
 checkstyle = ["RequireThis"]
@@ -306,7 +306,7 @@ pylint = ["too-many-return-statements"]
 
 [[rule]]
 name = "simplify-boolean-expression"
-category = "coding"
+category = "style"
 presets = ["strict"]
 pmd = ["SimplifyBooleanExpressions"]
 checkstyle = ["SimplifyBooleanExpression"]
@@ -330,35 +330,35 @@ spotbugs = ["ES_COMPARING_STRINGS_WITH_EQ"]
 
 [[rule]]
 name = "super-clone"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
 checkstyle = ["SuperClone"]
 
 [[rule]]
 name = "super-finalize"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
 checkstyle = ["SuperFinalize"]
 
 [[rule]]
 name = "text-block-google-style-formatting"
-category = "coding"
+category = "style"
 presets = ["standard", "strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["TextBlockGoogleStyleFormatting"]
 
 [[rule]]
 name = "unnecessary-null-check-with-instance-of"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { python = "Java-only construct with no counterpart in this language" }
 checkstyle = ["UnnecessaryNullCheckWithInstanceOf"]
 
 [[rule]]
 name = "unnecessary-parentheses"
-category = "coding"
+category = "style"
 presets = ["strict"]
 detekt = ["UnnecessaryParentheses"]
 pmd = ["UselessParentheses"]
@@ -367,56 +367,56 @@ errorprone = ["UnnecessaryParentheses"]
 
 [[rule]]
 name = "unnecessary-permits-clause"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["UnnecessaryPermitsClause"]
 
 [[rule]]
 name = "unnecessary-semicolon-after-outer-type-declaration"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["UnnecessarySemicolonAfterOuterTypeDeclaration"]
 
 [[rule]]
 name = "unnecessary-semicolon-after-type-member-declaration"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["UnnecessarySemicolonAfterTypeMemberDeclaration"]
 
 [[rule]]
 name = "unnecessary-semicolon-in-enumeration"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["UnnecessarySemicolonInEnumeration"]
 
 [[rule]]
 name = "unnecessary-semicolon-in-try-with-resources"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["UnnecessarySemicolonInTryWithResources"]
 
 [[rule]]
 name = "unnecessary-type-arguments-with-record-pattern"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["UnnecessaryTypeArgumentsWithRecordPattern"]
 
 [[rule]]
 name = "unused-catch-parameter-should-be-unnamed"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["UnusedCatchParameterShouldBeUnnamed"]
 
 [[rule]]
 name = "unused-lambda-parameter-should-be-unnamed"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["UnusedLambdaParameterShouldBeUnnamed"]
@@ -435,7 +435,7 @@ vulture = ["V107"]
 
 [[rule]]
 name = "unused-private-field"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { python = "Java private fields; Python has no private field modifier" }
 detekt = ["UnusedPrivateProperty"]
@@ -444,14 +444,14 @@ checkstyle = ["UnusedPrivateField"]
 
 [[rule]]
 name = "unused-try-resource-should-be-unnamed"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["UnusedTryResourceShouldBeUnnamed"]
 
 [[rule]]
 name = "use-enhanced-switch"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["UseEnhancedSwitch"]
@@ -463,7 +463,7 @@ checkstyle = ["VariableDeclarationUsageDistance"]
 
 [[rule]]
 name = "when-should-be-used"
-category = "coding"
+category = "style"
 presets = ["strict"]
 not-applicable = { kotlin = "Java-only construct with no counterpart in this language", typescript = "Java-only construct with no counterpart in this language", javascript = "Java-only construct with no counterpart in this language", python = "Java-only construct with no counterpart in this language", swift = "Java-only construct with no counterpart in this language" }
 checkstyle = ["WhenShouldBeUsed"]

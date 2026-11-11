@@ -47,13 +47,13 @@ pmd = ["AssignmentInOperand"]
 [[rule]]
 name = "assignment-to-non-final-static"
 presets = ["standard", "strict"]
-category = "errorprone"
+category = "correctness"
 pmd = ["AssignmentToNonFinalStatic"]
 
 [[rule]]
 name = "at-least-one-constructor"
 presets = ["strict"]
-category = "codestyle"
+category = "style"
 pmd = ["AtLeastOneConstructor"]
 
 [[rule]]
@@ -91,20 +91,20 @@ pmd = ["AvoidDeeplyNestedIfStmts"]
 [[rule]]
 name = "avoid-dollar-signs"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["AvoidDollarSigns"]
 
 [[rule]]
 name = "avoid-field-name-matching-method-name"
 presets = ["strict"]
-category = "errorprone"
+category = "correctness"
 # Planned: needs the method names of the enclosing class compared with each field name; no generic check compares sibling declarations
 pmd = ["AvoidFieldNameMatchingMethodName"]
 
 [[rule]]
 name = "avoid-field-name-matching-type-name"
 presets = ["standard", "strict"]
-category = "errorprone"
+category = "correctness"
 pmd = ["AvoidFieldNameMatchingTypeName"]
 
 [[rule]]
@@ -158,19 +158,19 @@ pmd = ["AvoidStringBufferField"]
 [[rule]]
 name = "avoid-synchronized-at-method-level"
 presets = ["standard", "strict"]
-category = "multithreading"
+category = "concurrency"
 pmd = ["AvoidSynchronizedAtMethodLevel"]
 
 [[rule]]
 name = "avoid-synchronized-statement"
 presets = ["standard", "strict"]
-category = "multithreading"
+category = "concurrency"
 pmd = ["AvoidSynchronizedStatement"]
 
 [[rule]]
 name = "avoid-thread-group"
 presets = ["standard", "strict"]
-category = "multithreading"
+category = "concurrency"
 pmd = ["AvoidThreadGroup"]
 
 [[rule]]
@@ -192,7 +192,7 @@ pmd = ["AvoidUsingHardCodedIP"]
 [[rule]]
 name = "avoid-using-native-code"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["AvoidUsingNativeCode"]
 
 [[rule]]
@@ -202,7 +202,7 @@ pmd = ["AvoidUsingOctalValues"]
 [[rule]]
 name = "avoid-using-volatile"
 presets = ["standard", "strict"]
-category = "multithreading"
+category = "concurrency"
 pmd = ["AvoidUsingVolatile"]
 
 [[rule]]
@@ -214,7 +214,7 @@ pmd = ["BigIntegerInstantiation"]
 [[rule]]
 name = "boolean-get-method-name"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["BooleanGetMethodName"]
 
 [[rule]]
@@ -224,25 +224,25 @@ pmd = ["BrokenNullCheck"]
 [[rule]]
 name = "c-style-array-declaration"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["CStyleArrayDeclaration"]
 
 [[rule]]
 name = "call-super-first"
 presets = ["standard", "strict"]
-category = "errorprone"
+category = "correctness"
 pmd = ["CallSuperFirst"]
 
 [[rule]]
 name = "call-super-in-constructor"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["CallSuperInConstructor"]
 
 [[rule]]
 name = "call-super-last"
 presets = ["standard", "strict"]
-category = "errorprone"
+category = "correctness"
 pmd = ["CallSuperLast"]
 
 [[rule]]
@@ -269,7 +269,7 @@ pmd = ["CloneMethodReturnTypeMustMatchClassName"]
 [[rule]]
 name = "close-resource"
 presets = ["standard", "strict"]
-category = "errorprone"
+category = "correctness"
 pmd = ["CloseResource"]
 
 [[rule]]
@@ -280,25 +280,25 @@ pmd = ["CollapsibleIfStatements"]
 [[rule]]
 name = "collection-type-mismatch"
 presets = ["standard", "strict"]
-category = "errorprone"
+category = "correctness"
 pmd = ["CollectionTypeMismatch"]
 
 [[rule]]
 name = "comment-content"
 presets = ["strict"]
-category = "documentation"
+category = "docs"
 pmd = ["CommentContent"]
 
 [[rule]]
 name = "comment-default-access-modifier"
 presets = ["strict"]
-category = "codestyle"
+category = "style"
 pmd = ["CommentDefaultAccessModifier"]
 
 [[rule]]
 name = "comment-size"
 presets = ["strict"]
-category = "documentation"
+category = "docs"
 pmd = ["CommentSize"]
 
 [[rule]]
@@ -312,13 +312,13 @@ pmd = ["ComparisonWithNaN"]
 [[rule]]
 name = "confusing-argument-to-varargs-method"
 presets = ["standard", "strict"]
-category = "errorprone"
+category = "correctness"
 pmd = ["ConfusingArgumentToVarargsMethod"]
 
 [[rule]]
 name = "confusing-ternary"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["ConfusingTernary"]
 
 [[rule]]
@@ -340,19 +340,19 @@ pmd = ["ConstantsInInterface"]
 [[rule]]
 name = "constructor-calls-overridable-method"
 presets = ["standard", "strict"]
-category = "errorprone"
+category = "correctness"
 pmd = ["ConstructorCallsOverridableMethod"]
 
 [[rule]]
 name = "control-statement-braces"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["ControlStatementBraces"]
 
 [[rule]]
 name = "dangling-javadoc"
 presets = ["strict"]
-category = "documentation"
+category = "docs"
 pmd = ["DanglingJavadoc"]
 
 [[rule]]
@@ -366,7 +366,7 @@ pmd = ["DefaultLabelNotLastInSwitch"]
 [[rule]]
 name = "detached-test-case"
 presets = ["standard", "strict"]
-category = "errorprone"
+category = "correctness"
 pmd = ["DetachedTestCase"]
 
 [[rule]]
@@ -396,13 +396,13 @@ pmd = ["DoNotThrowExceptionInFinally"]
 [[rule]]
 name = "do-not-use-threads"
 presets = ["strict"]
-category = "multithreading"
+category = "concurrency"
 pmd = ["DoNotUseThreads"]
 
 [[rule]]
 name = "dont-call-thread-run"
 presets = ["standard", "strict"]
-category = "multithreading"
+category = "concurrency"
 pmd = ["DontCallThreadRun"]
 
 [[rule]]
@@ -412,7 +412,7 @@ pmd = ["DontUseFloatTypeForLoopIndices"]
 [[rule]]
 name = "double-checked-locking"
 presets = ["standard", "strict"]
-category = "multithreading"
+category = "concurrency"
 pmd = ["DoubleCheckedLocking"]
 errorprone = ["DoubleCheckedLocking"]
 
@@ -423,7 +423,7 @@ pmd = ["EmptyFinalizer"]
 [[rule]]
 name = "empty-method-in-abstract-class-should-be-abstract"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["EmptyMethodInAbstractClassShouldBeAbstract"]
 
 [[rule]]
@@ -460,7 +460,7 @@ pmd = ["ExhaustiveSwitchHasDefault"]
 [[rule]]
 name = "extends-object"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["ExtendsObject"]
 errorprone = ["ExtendsObject"]
 
@@ -471,7 +471,7 @@ pmd = ["FinalFieldCouldBeStatic"]
 [[rule]]
 name = "final-parameter-in-abstract-method"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["FinalParameterInAbstractMethod"]
 
 [[rule]]
@@ -497,7 +497,7 @@ pmd = ["ForLoopCanBeForeach"]
 [[rule]]
 name = "for-loop-should-be-while-loop"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["ForLoopShouldBeWhileLoop"]
 
 [[rule]]
@@ -526,7 +526,7 @@ pmd = ["IdempotentOperations"]
 [[rule]]
 name = "identical-catch-branches"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["IdenticalCatchBranches"]
 
 [[rule]]
@@ -584,7 +584,7 @@ pmd = ["InvalidJavaBean"]
 [[rule]]
 name = "invalid-log-message-format"
 presets = ["standard", "strict"]
-category = "errorprone"
+category = "correctness"
 pmd = ["InvalidLogMessageFormat"]
 
 [[rule]]
@@ -614,7 +614,7 @@ pmd = ["JUnitUseExpected"]
 [[rule]]
 name = "jumbled-incrementer"
 presets = ["standard", "strict"]
-category = "errorprone"
+category = "correctness"
 pmd = ["JumbledIncrementer"]
 
 [[rule]]
@@ -624,7 +624,7 @@ pmd = ["LabeledStatement"]
 [[rule]]
 name = "lambda-can-be-method-reference"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["LambdaCanBeMethodReference"]
 
 [[rule]]
@@ -634,7 +634,7 @@ pmd = ["LawOfDemeter"]
 [[rule]]
 name = "linguistic-naming"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["LinguisticNaming"]
 
 [[rule]]
@@ -644,19 +644,19 @@ pmd = ["LiteralsFirstInComparisons"]
 [[rule]]
 name = "local-home-naming-convention"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["LocalHomeNamingConvention"]
 
 [[rule]]
 name = "local-interface-session-naming-convention"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["LocalInterfaceSessionNamingConvention"]
 
 [[rule]]
 name = "local-variable-declaration-should-be-at-start-of-block"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["LocalVariableDeclarationShouldBeAtStartOfBlock"]
 
 [[rule]]
@@ -670,7 +670,7 @@ pmd = ["LongLiteralEndingWithLowercaseL"]
 [[rule]]
 name = "long-variable"
 presets = ["strict"]
-category = "codestyle"
+category = "style"
 pmd = ["LongVariable"]
 
 [[rule]]
@@ -684,7 +684,7 @@ pmd = ["LoosePackageCoupling"]
 [[rule]]
 name = "mdb-and-session-bean-naming-convention"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["MDBAndSessionBeanNamingConvention"]
 
 [[rule]]
@@ -694,7 +694,7 @@ pmd = ["MethodReturnsInternalArray"]
 [[rule]]
 name = "method-with-same-name-as-enclosing-class"
 presets = ["standard", "strict"]
-category = "errorprone"
+category = "correctness"
 pmd = ["MethodWithSameNameAsEnclosingClass"]
 
 [[rule]]
@@ -720,7 +720,7 @@ pmd = ["MutableStaticState"]
 [[rule]]
 name = "no-package"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["NoPackage"]
 
 [[rule]]
@@ -735,7 +735,7 @@ pmd = ["NonExhaustiveSwitch"]
 [[rule]]
 name = "non-serializable-class"
 presets = ["standard", "strict"]
-category = "errorprone"
+category = "correctness"
 pmd = ["NonSerializableClass"]
 
 [[rule]]
@@ -745,7 +745,7 @@ pmd = ["NonStaticInitializer"]
 [[rule]]
 name = "non-thread-safe-singleton"
 presets = ["standard", "strict"]
-category = "multithreading"
+category = "concurrency"
 pmd = ["NonThreadSafeSingleton"]
 
 [[rule]]
@@ -765,19 +765,19 @@ pmd = ["OverrideBothEqualsAndHashcode"]
 [[rule]]
 name = "overriding-thread-run"
 presets = ["standard", "strict"]
-category = "multithreading"
+category = "concurrency"
 pmd = ["OverridingThreadRun"]
 
 [[rule]]
 name = "package-case"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["PackageCase"]
 
 [[rule]]
 name = "premature-declaration"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["PrematureDeclaration"]
 
 [[rule]]
@@ -795,7 +795,7 @@ pmd = ["ProperCloneImplementation"]
 [[rule]]
 name = "proper-logger"
 presets = ["standard", "strict"]
-category = "errorprone"
+category = "correctness"
 pmd = ["ProperLogger"]
 
 [[rule]]
@@ -814,13 +814,13 @@ pmd = ["RelianceOnDefaultCharset"]
 [[rule]]
 name = "remote-interface-naming-convention"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["RemoteInterfaceNamingConvention"]
 
 [[rule]]
 name = "remote-session-interface-naming-convention"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["RemoteSessionInterfaceNamingConvention"]
 
 [[rule]]
@@ -846,7 +846,7 @@ pmd = ["ReplaceJavaUtilVector"]
 [[rule]]
 name = "return-empty-collection-rather-than-null"
 presets = ["standard", "strict"]
-category = "errorprone"
+category = "correctness"
 pmd = ["ReturnEmptyCollectionRatherThanNull"]
 
 [[rule]]
@@ -856,19 +856,19 @@ pmd = ["ReturnFromFinallyBlock"]
 [[rule]]
 name = "short-class-name"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["ShortClassName"]
 
 [[rule]]
 name = "short-method-name"
 presets = ["strict"]
-category = "codestyle"
+category = "style"
 pmd = ["ShortMethodName"]
 
 [[rule]]
 name = "short-variable"
 presets = ["strict"]
-category = "codestyle"
+category = "style"
 pmd = ["ShortVariable"]
 
 [[rule]]
@@ -894,7 +894,7 @@ pmd = ["SimplifyConditional"]
 [[rule]]
 name = "single-method-singleton"
 presets = ["standard", "strict"]
-category = "errorprone"
+category = "correctness"
 pmd = ["SingleMethodSingleton"]
 
 [[rule]]
@@ -908,7 +908,7 @@ pmd = ["SingularField"]
 [[rule]]
 name = "static-ejb-field-should-be-final"
 presets = ["standard", "strict"]
-category = "errorprone"
+category = "correctness"
 pmd = ["StaticEJBFieldShouldBeFinal"]
 
 [[rule]]
@@ -968,7 +968,7 @@ pmd = ["TooManyMethods"]
 [[rule]]
 name = "too-many-static-imports"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["TooManyStaticImports"]
 
 [[rule]]
@@ -978,19 +978,19 @@ pmd = ["TypeNameMismatch"]
 [[rule]]
 name = "type-parameter-naming-conventions"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["TypeParameterNamingConventions"]
 
 [[rule]]
 name = "uncommented-empty-constructor"
 presets = ["strict"]
-category = "documentation"
+category = "docs"
 pmd = ["UncommentedEmptyConstructor"]
 
 [[rule]]
 name = "uncommented-empty-method-body"
 presets = ["strict"]
-category = "documentation"
+category = "docs"
 pmd = ["UncommentedEmptyMethodBody"]
 
 [[rule]]
@@ -1024,13 +1024,13 @@ pmd = ["UnitTestShouldUseTestAnnotation"]
 [[rule]]
 name = "unnecessary-annotation-value-element"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["UnnecessaryAnnotationValueElement"]
 
 [[rule]]
 name = "unnecessary-block"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["UnnecessaryBlock"]
 
 [[rule]]
@@ -1040,7 +1040,7 @@ pmd = ["UnnecessaryBooleanAssertion"]
 [[rule]]
 name = "unnecessary-boxing"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["UnnecessaryBoxing"]
 
 [[rule]]
@@ -1050,7 +1050,7 @@ pmd = ["UnnecessaryCaseChange"]
 [[rule]]
 name = "unnecessary-cast"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["UnnecessaryCast"]
 
 [[rule]]
@@ -1060,19 +1060,19 @@ pmd = ["UnnecessaryConversionTemporary"]
 [[rule]]
 name = "unnecessary-fully-qualified-name"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["UnnecessaryFullyQualifiedName"]
 
 [[rule]]
 name = "unnecessary-interface-declaration"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["UnnecessaryInterfaceDeclaration"]
 
 [[rule]]
 name = "unnecessary-return"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["UnnecessaryReturn"]
 
 [[rule]]
@@ -1086,13 +1086,13 @@ pmd = ["UnnecessaryWarningSuppression"]
 [[rule]]
 name = "unsupported-jdk-api-usage"
 presets = ["standard", "strict"]
-category = "errorprone"
+category = "correctness"
 pmd = ["UnsupportedJdkApiUsage"]
 
 [[rule]]
 name = "unsynchronized-static-formatter"
 presets = ["standard", "strict"]
-category = "multithreading"
+category = "concurrency"
 pmd = ["UnsynchronizedStaticFormatter"]
 
 [[rule]]
@@ -1116,7 +1116,7 @@ errorprone = ["UnusedMethod"]
 [[rule]]
 name = "unused-return-value"
 presets = ["standard", "strict"]
-category = "errorprone"
+category = "correctness"
 pmd = ["UnusedReturnValue"]
 
 [[rule]]
@@ -1132,19 +1132,19 @@ pmd = ["UseCollectionIsEmpty"]
 [[rule]]
 name = "use-concurrent-hash-map"
 presets = ["strict"]
-category = "multithreading"
+category = "concurrency"
 pmd = ["UseConcurrentHashMap"]
 
 [[rule]]
 name = "use-correct-exception-logging"
 presets = ["standard", "strict"]
-category = "errorprone"
+category = "correctness"
 pmd = ["UseCorrectExceptionLogging"]
 
 [[rule]]
 name = "use-diamond-operator"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["UseDiamondOperator"]
 
 [[rule]]
@@ -1159,7 +1159,7 @@ pmd = ["UseEqualsToCompareStrings"]
 [[rule]]
 name = "use-explicit-types"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["UseExplicitTypes"]
 
 [[rule]]
@@ -1181,7 +1181,7 @@ pmd = ["UseLocaleWithCaseConversions"]
 [[rule]]
 name = "use-notify-all-instead-of-notify"
 presets = ["standard", "strict"]
-category = "multithreading"
+category = "concurrency"
 pmd = ["UseNotifyAllInsteadOfNotify"]
 
 [[rule]]
@@ -1191,7 +1191,7 @@ pmd = ["UseProperClassLoader"]
 [[rule]]
 name = "use-short-array-initializer"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["UseShortArrayInitializer"]
 
 [[rule]]
@@ -1217,7 +1217,7 @@ pmd = ["UseTryWithResources"]
 [[rule]]
 name = "use-underscores-in-numeric-literals"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["UseUnderscoresInNumericLiterals"]
 
 [[rule]]
@@ -1231,7 +1231,7 @@ pmd = ["UselessOverridingMethod"]
 [[rule]]
 name = "useless-qualified-this"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["UselessQualifiedThis"]
 
 [[rule]]
@@ -1243,7 +1243,7 @@ pmd = ["UselessStringValueOf"]
 [[rule]]
 name = "variable-can-be-inlined"
 presets = ["standard", "strict"]
-category = "codestyle"
+category = "style"
 pmd = ["VariableCanBeInlined"]
 
 [[rule]]
@@ -1253,5 +1253,5 @@ pmd = ["WhileLoopWithLiteralBoolean"]
 [[rule]]
 name = "wrong-test-annotation"
 presets = ["standard", "strict"]
-category = "errorprone"
+category = "correctness"
 pmd = ["WrongTestAnnotation"]

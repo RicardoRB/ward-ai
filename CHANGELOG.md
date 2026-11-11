@@ -6,6 +6,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Ward is in alpha, so minor versions may
 still change behavior. Breaking changes are called out under **Changed**.
 
+## [Unreleased]
+
+### Changed
+
+- **Breaking (alpha, no migration):** Rule categories are named after what a rule checks, not after the tool it came from. The 46 categories become 16: `accessibility`, `angular`, `architecture`, `complexity`, `concurrency`, `correctness`, `dead-code`, `docs`, `duplication`, `error-handling`, `experimental`, `naming`, `null-safety`, `performance`, `security` and `style`. For example `errorprone`, `bad-practice`, `problem` and `pylint` are now `correctness`; `sizes`, `metrics` and `design` are `complexity`; `javadoc` is `docs`; `mt-correctness` and `multithreading` are `concurrency`; `nullness` is `null-safety`; `a11y` is `accessibility`. Rule ids do not change. Update `categories` in `ward-rules.toml` and `ward rules list --category`; an old name is reported as an unknown category with the list of valid ones.
+
 ## [0.6.0] - 2026-11-10
 
 ### Added

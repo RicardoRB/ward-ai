@@ -3,55 +3,55 @@
 [[rule]]
 name = "ast-helpers-suggestions"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ASTHelpersSuggestions"]
 
 [[rule]]
 name = "add-null-marked-to-class"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["AddNullMarkedToClass"]
 
 [[rule]]
 name = "add-null-marked-to-package-info"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["AddNullMarkedToPackageInfo"]
 
 [[rule]]
 name = "address-selection"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["AddressSelection"]
 
 [[rule]]
 name = "almost-exhaustive-test-parameter"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["AlmostExhaustiveTestParameter"]
 
 [[rule]]
 name = "almost-javadoc"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["AlmostJavadoc"]
 
 [[rule]]
 name = "already-checked"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["AlreadyChecked"]
 
 [[rule]]
 name = "always-throws"
 presets = ["standard", "strict"]
-category = "severity-error"
+category = "correctness"
 errorprone = ["AlwaysThrows"]
 
 [[rule]]
 name = "ambiguous-method-reference"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["AmbiguousMethodReference"]
 
 [[rule]]
@@ -61,31 +61,31 @@ errorprone = ["AndroidInjectionBeforeSuper"]
 [[rule]]
 name = "annotate-format-method"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["AnnotateFormatMethod"]
 
 [[rule]]
 name = "annotation-mirror-to-string"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["AnnotationMirrorToString"]
 
 [[rule]]
 name = "annotation-position"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["AnnotationPosition"]
 
 [[rule]]
 name = "annotation-value-to-string"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["AnnotationValueToString"]
 
 [[rule]]
 name = "argument-selection-defect-checker"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ArgumentSelectionDefectChecker"]
 
 [[rule]]
@@ -103,7 +103,7 @@ errorprone = ["ArrayHashCode"]
 [[rule]]
 name = "array-record-component"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ArrayRecordComponent"]
 
 [[rule]]
@@ -117,61 +117,61 @@ errorprone = ["ArraysAsListPrimitiveArray"]
 [[rule]]
 name = "assert-equals-argument-order-checker"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["AssertEqualsArgumentOrderChecker"]
 
 [[rule]]
 name = "assert-false"
-category = "coding"
+category = "correctness"
 errorprone = ["AssertFalse"]
 ruff = ["B011"]
 
 [[rule]]
 name = "assert-same-incompatible"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["AssertSameIncompatible"]
 
 [[rule]]
 name = "assert-throws-block-to-expression"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["AssertThrowsBlockToExpression"]
 
 [[rule]]
 name = "assert-throws-minimizer"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["AssertThrowsMinimizer"]
 
 [[rule]]
 name = "assert-throws-multiple-statements"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["AssertThrowsMultipleStatements"]
 
 [[rule]]
 name = "assertion-failure-ignored"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["AssertionFailureIgnored"]
 
 [[rule]]
 name = "assignment-expression"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["AssignmentExpression"]
 
 [[rule]]
 name = "assisted-inject-and-inject-on-constructors"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["AssistedInjectAndInjectOnConstructors"]
 
 [[rule]]
 name = "assisted-inject-and-inject-on-same-constructor"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["AssistedInjectAndInjectOnSameConstructor"]
 
 [[rule]]
@@ -185,7 +185,7 @@ errorprone = ["AsyncFunctionReturnsNull"]
 [[rule]]
 name = "attempted-negative-zero"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["AttemptedNegativeZero"]
 
 [[rule]]
@@ -195,7 +195,7 @@ errorprone = ["AutoFactoryAtInject"]
 [[rule]]
 name = "auto-value-boxed-values"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["AutoValueBoxedValues"]
 
 [[rule]]
@@ -205,43 +205,43 @@ errorprone = ["AutoValueBuilderDefaultsInConstructor"]
 [[rule]]
 name = "auto-value-constructor-order-checker"
 presets = ["standard", "strict"]
-category = "severity-error"
+category = "correctness"
 errorprone = ["AutoValueConstructorOrderChecker"]
 
 [[rule]]
 name = "auto-value-final-methods"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["AutoValueFinalMethods"]
 
 [[rule]]
 name = "auto-value-immutable-fields"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["AutoValueImmutableFields"]
 
 [[rule]]
 name = "auto-value-subclass-leaked"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["AutoValueSubclassLeaked"]
 
 [[rule]]
 name = "avoid-common-type-names"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["AvoidCommonTypeNames"]
 
 [[rule]]
 name = "avoid-object-arrays"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["AvoidObjectArrays"]
 
 [[rule]]
 name = "avoid-value-setter"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["AvoidValueSetter"]
 
 [[rule]]
@@ -251,19 +251,19 @@ errorprone = ["BadAnnotationImplementation"]
 [[rule]]
 name = "bad-comparable"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["BadComparable"]
 
 [[rule]]
 name = "bad-import"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["BadImport"]
 
 [[rule]]
 name = "bad-instanceof"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["BadInstanceof"]
 
 [[rule]]
@@ -285,49 +285,49 @@ errorprone = ["BanSerializableRead"]
 [[rule]]
 name = "bare-dot-metacharacter"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["BareDotMetacharacter"]
 
 [[rule]]
 name = "big-decimal-equals"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["BigDecimalEquals"]
 
 [[rule]]
 name = "big-decimal-literal-double"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["BigDecimalLiteralDouble"]
 
 [[rule]]
 name = "binder-identity-restored-dangerously"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["BinderIdentityRestoredDangerously"]
 
 [[rule]]
 name = "binding-to-unqualified-common-type"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["BindingToUnqualifiedCommonType"]
 
 [[rule]]
 name = "boolean-literal"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["BooleanLiteral"]
 
 [[rule]]
 name = "boolean-parameter"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["BooleanParameter"]
 
 [[rule]]
 name = "boxed-primitive-constructor"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["BoxedPrimitiveConstructor"]
 
 [[rule]]
@@ -337,97 +337,97 @@ errorprone = ["BoxedPrimitiveEquality"]
 [[rule]]
 name = "boxing-comparator"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["BoxingComparator"]
 
 [[rule]]
 name = "bug-pattern-naming"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["BugPatternNaming"]
 
 [[rule]]
 name = "builder-return-this"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["BuilderReturnThis"]
 
 [[rule]]
 name = "bundle-deserialization-cast"
 presets = ["standard", "strict"]
-category = "severity-error"
+category = "correctness"
 errorprone = ["BundleDeserializationCast"]
 
 [[rule]]
 name = "byte-buffer-backing-array"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ByteBufferBackingArray"]
 
 [[rule]]
 name = "cache-loader-null"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["CacheLoaderNull"]
 
 [[rule]]
 name = "can-ignore-return-value-suggester"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["CanIgnoreReturnValueSuggester"]
 
 [[rule]]
 name = "cannot-mock-final-class"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["CannotMockFinalClass"]
 
 [[rule]]
 name = "cannot-mock-method"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["CannotMockMethod"]
 
 [[rule]]
 name = "canonical-duration"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["CanonicalDuration"]
 
 [[rule]]
 name = "catch-and-print-stack-trace"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["CatchAndPrintStackTrace"]
 
 [[rule]]
 name = "catch-fail"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["CatchFail"]
 
 [[rule]]
 name = "catching-unchecked"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["CatchingUnchecked"]
 
 [[rule]]
 name = "chained-assertion-loses-context"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ChainedAssertionLosesContext"]
 
 [[rule]]
 name = "chaining-constructor-ignores-parameter"
 presets = ["standard", "strict"]
-category = "severity-error"
+category = "correctness"
 errorprone = ["ChainingConstructorIgnoresParameter"]
 
 [[rule]]
 name = "character-get-numeric-value"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["CharacterGetNumericValue"]
 
 [[rule]]
@@ -441,19 +441,19 @@ errorprone = ["CheckReturnValue"]
 [[rule]]
 name = "checked-exception-not-thrown"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["CheckedExceptionNotThrown"]
 
 [[rule]]
 name = "class-can-be-static"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ClassCanBeStatic"]
 
 [[rule]]
 name = "class-initialization-deadlock"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ClassInitializationDeadlock"]
 
 [[rule]]
@@ -463,25 +463,25 @@ errorprone = ["ClassName"]
 [[rule]]
 name = "class-named-like-type-parameter"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["ClassNamedLikeTypeParameter"]
 
 [[rule]]
 name = "class-new-instance"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ClassNewInstance"]
 
 [[rule]]
 name = "closeable-provides"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["CloseableProvides"]
 
 [[rule]]
 name = "closing-standard-output-streams"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ClosingStandardOutputStreams"]
 
 [[rule]]
@@ -495,13 +495,13 @@ errorprone = ["CollectionToArraySafeParameter"]
 [[rule]]
 name = "collector-should-not-use-state"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["CollectorShouldNotUseState"]
 
 [[rule]]
 name = "comparable-and-comparator"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ComparableAndComparator"]
 
 [[rule]]
@@ -535,7 +535,7 @@ errorprone = ["CompileTimeConstant"]
 [[rule]]
 name = "complex-boolean-constant"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ComplexBooleanConstant"]
 
 [[rule]]
@@ -549,7 +549,7 @@ errorprone = ["ConditionalExpressionNumericPromotion"]
 [[rule]]
 name = "constant-field"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["ConstantField"]
 
 [[rule]]
@@ -559,7 +559,7 @@ errorprone = ["ConstantOverflow"]
 [[rule]]
 name = "constant-pattern-compile"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ConstantPatternCompile"]
 
 [[rule]]
@@ -573,13 +573,13 @@ errorprone = ["DangerousLiteralNull"]
 [[rule]]
 name = "date-checker"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["DateChecker"]
 
 [[rule]]
 name = "date-format-constant"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["DateFormatConstant"]
 
 [[rule]]
@@ -597,26 +597,26 @@ errorprone = ["DeduplicateConstants"]
 [[rule]]
 name = "deeply-nested"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["DeeplyNested"]
 
 [[rule]]
 name = "default-charset"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["DefaultCharset"]
 
 [[rule]]
 name = "default-locale"
 not-applicable = { kotlin = "the Kotlin counterpart is Android Lint, which is out of scope (maintainer decision); Error Prone checks Java only" }
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["DefaultLocale"]
 
 [[rule]]
 name = "default-package"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["DefaultPackage"]
 
 [[rule]]
@@ -626,7 +626,7 @@ errorprone = ["DepAnn"]
 [[rule]]
 name = "deprecated-variable"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["DeprecatedVariable"]
 
 [[rule]]
@@ -636,13 +636,13 @@ errorprone = ["DereferenceWithNullBranch"]
 [[rule]]
 name = "different-name-but-same"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["DifferentNameButSame"]
 
 [[rule]]
 name = "direct-invocation-on-mock"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["DirectInvocationOnMock"]
 
 [[rule]]
@@ -652,7 +652,7 @@ errorprone = ["DiscardedPostfixExpression"]
 [[rule]]
 name = "distinct-varargs-checker"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["DistinctVarargsChecker"]
 
 [[rule]]
@@ -662,13 +662,13 @@ errorprone = ["DoNotCall"]
 [[rule]]
 name = "do-not-call-suggester"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["DoNotCallSuggester"]
 
 [[rule]]
 name = "do-not-claim-annotations"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["DoNotClaimAnnotations"]
 
 [[rule]]
@@ -678,7 +678,7 @@ errorprone = ["DoNotMock"]
 [[rule]]
 name = "do-not-mock-auto-value"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["DoNotMockAutoValue"]
 
 [[rule]]
@@ -690,19 +690,19 @@ checkstyle = ["AvoidDoubleBraceInitialization"]
 [[rule]]
 name = "duplicate-assertion"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["DuplicateAssertion"]
 
 [[rule]]
 name = "duplicate-branches"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["DuplicateBranches"]
 
 [[rule]]
 name = "duplicate-date-format-field"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["DuplicateDateFormatField"]
 
 [[rule]]
@@ -728,19 +728,19 @@ errorprone = ["DurationToLongTimeUnit"]
 [[rule]]
 name = "effectively-private"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["EffectivelyPrivate"]
 
 [[rule]]
 name = "empty-block-tag"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["EmptyBlockTag"]
 
 [[rule]]
 name = "empty-catch"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["EmptyCatch"]
 
 [[rule]]
@@ -750,43 +750,43 @@ errorprone = ["EmptyIf"]
 [[rule]]
 name = "empty-set-multibinding-contributions"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["EmptySetMultibindingContributions"]
 
 [[rule]]
 name = "empty-top-level-declaration"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["EmptyTopLevelDeclaration"]
 
 [[rule]]
 name = "enum-ordinal"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["EnumOrdinal"]
 
 [[rule]]
 name = "equals-broken-for-null"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["EqualsBrokenForNull"]
 
 [[rule]]
 name = "equals-get-class"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["EqualsGetClass"]
 
 [[rule]]
 name = "equals-incompatible-type"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["EqualsIncompatibleType"]
 
 [[rule]]
 name = "equals-missing-nullable"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["EqualsMissingNullable"]
 
 [[rule]]
@@ -800,13 +800,13 @@ errorprone = ["EqualsReference"]
 [[rule]]
 name = "equals-unsafe-cast"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["EqualsUnsafeCast"]
 
 [[rule]]
 name = "equals-using-hash-code"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["EqualsUsingHashCode"]
 
 [[rule]]
@@ -816,49 +816,49 @@ errorprone = ["EqualsWrongThing"]
 [[rule]]
 name = "erroneous-bitwise-expression"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ErroneousBitwiseExpression"]
 
 [[rule]]
 name = "erroneous-thread-pool-constructor-checker"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ErroneousThreadPoolConstructorChecker"]
 
 [[rule]]
 name = "escaped-entity"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["EscapedEntity"]
 
 [[rule]]
 name = "expected-exception-checker"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ExpectedExceptionChecker"]
 
 [[rule]]
 name = "expensive-lenient-format-string"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ExpensiveLenientFormatString"]
 
 [[rule]]
 name = "explicit-array-for-varargs"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ExplicitArrayForVarargs"]
 
 [[rule]]
 name = "exposed-private-type"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ExposedPrivateType"]
 
 [[rule]]
 name = "extending-j-unit-assert"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ExtendingJUnitAssert"]
 
 [[rule]]
@@ -868,61 +868,61 @@ errorprone = ["ExtendsAutoValue"]
 [[rule]]
 name = "field-can-be-final"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["FieldCanBeFinal"]
 
 [[rule]]
 name = "field-can-be-local"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["FieldCanBeLocal"]
 
 [[rule]]
 name = "field-can-be-static"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["FieldCanBeStatic"]
 
 [[rule]]
 name = "field-missing-nullable"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["FieldMissingNullable"]
 
 [[rule]]
 name = "finalize"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["Finalize"]
 
 [[rule]]
 name = "finally"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["Finally"]
 
 [[rule]]
 name = "float-cast"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["FloatCast"]
 
 [[rule]]
 name = "floating-point-assertion-within-epsilon"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["FloatingPointAssertionWithinEpsilon"]
 
 [[rule]]
 name = "floating-point-literal-precision"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["FloatingPointLiteralPrecision"]
 
 [[rule]]
 name = "flogger-argument-to-string"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["FloggerArgumentToString"]
 
 [[rule]]
@@ -940,31 +940,31 @@ errorprone = ["FloggerLogVarargs"]
 [[rule]]
 name = "flogger-log-with-cause"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["FloggerLogWithCause"]
 
 [[rule]]
 name = "flogger-message-format"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["FloggerMessageFormat"]
 
 [[rule]]
 name = "flogger-per-without-rate-limit"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["FloggerPerWithoutRateLimit"]
 
 [[rule]]
 name = "flogger-redundant-is-enabled"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["FloggerRedundantIsEnabled"]
 
 [[rule]]
 name = "flogger-required-modifiers"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["FloggerRequiredModifiers"]
 
 [[rule]]
@@ -974,25 +974,25 @@ errorprone = ["FloggerSplitLogStatement"]
 [[rule]]
 name = "flogger-string-concatenation"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["FloggerStringConcatenation"]
 
 [[rule]]
 name = "flogger-with-cause"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["FloggerWithCause"]
 
 [[rule]]
 name = "flogger-without-cause"
 presets = ["strict"]
-category = "severity-bug-pattern"
+category = "correctness"
 errorprone = ["FloggerWithoutCause"]
 
 [[rule]]
 name = "for-each-iterable"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["ForEachIterable"]
 
 [[rule]]
@@ -1010,19 +1010,19 @@ errorprone = ["FormatStringAnnotation"]
 [[rule]]
 name = "format-string-should-use-placeholders"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["FormatStringShouldUsePlaceholders"]
 
 [[rule]]
 name = "fragment-injection"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["FragmentInjection"]
 
 [[rule]]
 name = "fragment-not-instantiable"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["FragmentNotInstantiable"]
 
 [[rule]]
@@ -1032,7 +1032,7 @@ errorprone = ["FromTemporalAccessor"]
 [[rule]]
 name = "functional-interface-clash"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["FunctionalInterfaceClash"]
 
 [[rule]]
@@ -1042,13 +1042,13 @@ errorprone = ["FunctionalInterfaceMethodChanged"]
 [[rule]]
 name = "future-return-value-ignored"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["FutureReturnValueIgnored"]
 
 [[rule]]
 name = "future-transform-async"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["FutureTransformAsync"]
 
 [[rule]]
@@ -1070,7 +1070,7 @@ errorprone = ["GetClassOnClass"]
 [[rule]]
 name = "get-class-on-enum"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["GetClassOnEnum"]
 
 [[rule]]
@@ -1092,19 +1092,19 @@ errorprone = ["GuiceInjectOnFinalField"]
 [[rule]]
 name = "guice-nested-combine"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["GuiceNestedCombine"]
 
 [[rule]]
 name = "hard-coded-sd-card-path"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["HardCodedSdCardPath"]
 
 [[rule]]
 name = "hash-code-in-objects-hash"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["HashCodeInObjectsHash"]
 
 [[rule]]
@@ -1114,13 +1114,13 @@ errorprone = ["HashtableContains"]
 [[rule]]
 name = "hiding-field"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["HidingField"]
 
 [[rule]]
 name = "icc-profile-get-instance"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ICCProfileGetInstance"]
 
 [[rule]]
@@ -1139,19 +1139,19 @@ errorprone = ["IdentityHashMapBoxing"]
 [[rule]]
 name = "identity-hash-map-usage"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["IdentityHashMapUsage"]
 
 [[rule]]
 name = "if-chain-to-switch"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["IfChainToSwitch"]
 
 [[rule]]
 name = "ignored-pure-getter"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["IgnoredPureGetter"]
 
 [[rule]]
@@ -1161,37 +1161,37 @@ errorprone = ["Immutable"]
 [[rule]]
 name = "immutable-annotation-checker"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ImmutableAnnotationChecker"]
 
 [[rule]]
 name = "immutable-enum-checker"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ImmutableEnumChecker"]
 
 [[rule]]
 name = "immutable-member-collection"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["ImmutableMemberCollection"]
 
 [[rule]]
 name = "immutable-refactoring"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["ImmutableRefactoring"]
 
 [[rule]]
 name = "immutable-set-for-contains"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["ImmutableSetForContains"]
 
 [[rule]]
 name = "implement-assertion-with-chaining"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["ImplementAssertionWithChaining"]
 
 [[rule]]
@@ -1213,31 +1213,31 @@ errorprone = ["IncompatibleModifiers"]
 [[rule]]
 name = "inconsistent-capitalization"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InconsistentCapitalization"]
 
 [[rule]]
 name = "inconsistent-hash-code"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InconsistentHashCode"]
 
 [[rule]]
 name = "inconsistent-overloads"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InconsistentOverloads"]
 
 [[rule]]
 name = "incorrect-main-method"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["IncorrectMainMethod"]
 
 [[rule]]
 name = "increment-in-for-loop-and-header"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["IncrementInForLoopAndHeader"]
 
 [[rule]]
@@ -1255,19 +1255,19 @@ errorprone = ["InfiniteRecursion"]
 [[rule]]
 name = "inherit-doc"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InheritDoc"]
 
 [[rule]]
 name = "initialize-inline"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InitializeInline"]
 
 [[rule]]
 name = "inject-invalid-targeting-on-scoping-annotation"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InjectInvalidTargetingOnScopingAnnotation"]
 
 [[rule]]
@@ -1277,13 +1277,13 @@ errorprone = ["InjectMoreThanOneScopeAnnotationOnClass"]
 [[rule]]
 name = "inject-on-bug-checkers"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InjectOnBugCheckers"]
 
 [[rule]]
 name = "inject-on-constructor-of-abstract-class"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InjectOnConstructorOfAbstractClass"]
 
 [[rule]]
@@ -1293,31 +1293,31 @@ errorprone = ["InjectOnMemberAndConstructor"]
 [[rule]]
 name = "inject-scope-annotation-on-interface-or-abstract-class"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InjectScopeAnnotationOnInterfaceOrAbstractClass"]
 
 [[rule]]
 name = "injected-constructor-annotations"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InjectedConstructorAnnotations"]
 
 [[rule]]
 name = "inline-format-string"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InlineFormatString"]
 
 [[rule]]
 name = "inline-me-inliner"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InlineMeInliner"]
 
 [[rule]]
 name = "inline-me-suggester"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InlineMeSuggester"]
 
 [[rule]]
@@ -1327,13 +1327,13 @@ errorprone = ["InlineMeValidator"]
 [[rule]]
 name = "inline-trivial-constant"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InlineTrivialConstant"]
 
 [[rule]]
 name = "input-stream-slow-multibyte-read"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InputStreamSlowMultibyteRead"]
 
 [[rule]]
@@ -1343,7 +1343,7 @@ errorprone = ["InsecureCryptoUsage"]
 [[rule]]
 name = "instance-of-and-cast-match-wrong-type"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InstanceOfAndCastMatchWrongType"]
 
 [[rule]]
@@ -1353,55 +1353,55 @@ errorprone = ["InstantTemporalUnit"]
 [[rule]]
 name = "int-float-conversion"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["IntFloatConversion"]
 
 [[rule]]
 name = "int-literal-cast"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["IntLiteralCast"]
 
 [[rule]]
 name = "int-long-math"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["IntLongMath"]
 
 [[rule]]
 name = "interface-with-only-statics"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InterfaceWithOnlyStatics"]
 
 [[rule]]
 name = "interrupted-exception-swallowed"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InterruptedExceptionSwallowed"]
 
 [[rule]]
 name = "interrupted-in-catch-block"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InterruptedInCatchBlock"]
 
 [[rule]]
 name = "interruption"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["Interruption"]
 
 [[rule]]
 name = "invalid-block-tag"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InvalidBlockTag"]
 
 [[rule]]
 name = "invalid-inline-tag"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InvalidInlineTag"]
 
 [[rule]]
@@ -1411,13 +1411,13 @@ errorprone = ["InvalidJavaTimeConstant"]
 [[rule]]
 name = "invalid-link"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InvalidLink"]
 
 [[rule]]
 name = "invalid-param"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InvalidParam"]
 
 [[rule]]
@@ -1427,19 +1427,19 @@ errorprone = ["InvalidPatternSyntax"]
 [[rule]]
 name = "invalid-snippet"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InvalidSnippet"]
 
 [[rule]]
 name = "invalid-throws"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InvalidThrows"]
 
 [[rule]]
 name = "invalid-throws-link"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["InvalidThrowsLink"]
 
 [[rule]]
@@ -1465,7 +1465,7 @@ errorprone = ["IsLoggableTagLength"]
 [[rule]]
 name = "iterable-and-iterator"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["IterableAndIterator"]
 
 [[rule]]
@@ -1475,7 +1475,7 @@ errorprone = ["IterablePathParameter"]
 [[rule]]
 name = "j-unit3-floating-point-comparison-without-delta"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JUnit3FloatingPointComparisonWithoutDelta"]
 
 [[rule]]
@@ -1489,13 +1489,13 @@ errorprone = ["JUnit4ClassAnnotationNonStatic"]
 [[rule]]
 name = "j-unit4-class-used-in-j-unit3"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JUnit4ClassUsedInJUnit3"]
 
 [[rule]]
 name = "j-unit4-empty-methods"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JUnit4EmptyMethods"]
 
 [[rule]]
@@ -1517,7 +1517,7 @@ errorprone = ["JUnit4TestsNotRunWithinEnclosed"]
 [[rule]]
 name = "j-unit-ambiguous-test-class"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JUnitAmbiguousTestClass"]
 
 [[rule]]
@@ -1527,13 +1527,13 @@ errorprone = ["JUnitAssertSameCheck"]
 [[rule]]
 name = "j-unit-incompatible-type"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JUnitIncompatibleType"]
 
 [[rule]]
 name = "j-unit-method-invoked"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JUnitMethodInvoked"]
 
 [[rule]]
@@ -1547,61 +1547,61 @@ errorprone = ["Java8ApiChecker"]
 [[rule]]
 name = "java-duration-get-seconds-get-nano"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JavaDurationGetSecondsGetNano"]
 
 [[rule]]
 name = "java-duration-get-seconds-to-to-seconds"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JavaDurationGetSecondsToToSeconds"]
 
 [[rule]]
 name = "java-duration-with-nanos"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JavaDurationWithNanos"]
 
 [[rule]]
 name = "java-duration-with-seconds"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JavaDurationWithSeconds"]
 
 [[rule]]
 name = "java-instant-get-seconds-get-nano"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JavaInstantGetSecondsGetNano"]
 
 [[rule]]
 name = "java-local-date-time-get-nano"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JavaLocalDateTimeGetNano"]
 
 [[rule]]
 name = "java-local-time-get-nano"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JavaLocalTimeGetNano"]
 
 [[rule]]
 name = "java-period-get-days"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JavaPeriodGetDays"]
 
 [[rule]]
 name = "java-time-default-time-zone"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JavaTimeDefaultTimeZone"]
 
 [[rule]]
 name = "java-util-date"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JavaUtilDate"]
 
 [[rule]]
@@ -1611,55 +1611,55 @@ errorprone = ["JavaxInjectOnAbstractMethod"]
 [[rule]]
 name = "javax-inject-on-final-field"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JavaxInjectOnFinalField"]
 
 [[rule]]
 name = "jdk-obsolete"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JdkObsolete"]
 
 [[rule]]
 name = "joda-constructors"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JodaConstructors"]
 
 [[rule]]
 name = "joda-date-time-constants"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JodaDateTimeConstants"]
 
 [[rule]]
 name = "joda-duration-with-millis"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JodaDurationWithMillis"]
 
 [[rule]]
 name = "joda-instant-with-millis"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JodaInstantWithMillis"]
 
 [[rule]]
 name = "joda-new-period"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JodaNewPeriod"]
 
 [[rule]]
 name = "joda-plus-minus-long"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JodaPlusMinusLong"]
 
 [[rule]]
 name = "joda-time-converter-manager"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JodaTimeConverterManager"]
 
 [[rule]]
@@ -1669,7 +1669,7 @@ errorprone = ["JodaToSelf"]
 [[rule]]
 name = "joda-with-duration-added-long"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["JodaWithDurationAddedLong"]
 
 [[rule]]
@@ -1679,7 +1679,7 @@ errorprone = ["LabelledBreakTarget"]
 [[rule]]
 name = "lambda-functional-interface"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["LambdaFunctionalInterface"]
 
 [[rule]]
@@ -1689,7 +1689,7 @@ errorprone = ["LenientFormatStringValidation"]
 [[rule]]
 name = "list-remove-ambiguous"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ListRemoveAmbiguous"]
 
 [[rule]]
@@ -1699,13 +1699,13 @@ errorprone = ["LiteByteStringUtf8"]
 [[rule]]
 name = "lite-enum-value-of"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["LiteEnumValueOf"]
 
 [[rule]]
 name = "lite-proto-to-string"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["LiteProtoToString"]
 
 [[rule]]
@@ -1715,7 +1715,7 @@ errorprone = ["LocalDateTemporalAmount"]
 [[rule]]
 name = "lock-not-before-try"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["LockNotBeforeTry"]
 
 [[rule]]
@@ -1725,25 +1725,25 @@ errorprone = ["LockOnBoxedPrimitive"]
 [[rule]]
 name = "lock-on-non-enclosing-class-literal"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["LockOnNonEnclosingClassLiteral"]
 
 [[rule]]
 name = "logical-assignment"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["LogicalAssignment"]
 
 [[rule]]
 name = "long-double-conversion"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["LongDoubleConversion"]
 
 [[rule]]
 name = "long-float-conversion"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["LongFloatConversion"]
 
 [[rule]]
@@ -1757,13 +1757,13 @@ errorprone = ["LoopConditionChecker"]
 [[rule]]
 name = "loop-over-char-array"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["LoopOverCharArray"]
 
 [[rule]]
 name = "loop-to-test-parameter"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["LoopToTestParameter"]
 
 [[rule]]
@@ -1773,13 +1773,13 @@ errorprone = ["LossyPrimitiveCompare"]
 [[rule]]
 name = "malformed-inline-tag"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["MalformedInlineTag"]
 
 [[rule]]
 name = "math-absolute-negative"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["MathAbsoluteNegative"]
 
 [[rule]]
@@ -1789,7 +1789,7 @@ errorprone = ["MathRoundIntLong"]
 [[rule]]
 name = "memoize-constant-visitor-state-lookups"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["MemoizeConstantVisitorStateLookups"]
 
 [[rule]]
@@ -1799,13 +1799,13 @@ errorprone = ["MemorySegmentReferenceEquality"]
 [[rule]]
 name = "method-can-be-static"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["MethodCanBeStatic"]
 
 [[rule]]
 name = "misformatted-test-data"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["MisformattedTestData"]
 
 [[rule]]
@@ -1827,37 +1827,37 @@ errorprone = ["MisplacedScopeAnnotations"]
 [[rule]]
 name = "missing-braces"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["MissingBraces"]
 
 [[rule]]
 name = "missing-cases-in-enum-switch"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["MissingCasesInEnumSwitch"]
 
 [[rule]]
 name = "missing-default"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["MissingDefault"]
 
 [[rule]]
 name = "missing-fail"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["MissingFail"]
 
 [[rule]]
 name = "missing-implements-comparable"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["MissingImplementsComparable"]
 
 [[rule]]
 name = "missing-refaster-annotation"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["MissingRefasterAnnotation"]
 
 [[rule]]
@@ -1867,7 +1867,7 @@ errorprone = ["MissingRuntimeRetention"]
 [[rule]]
 name = "missing-summary"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["MissingSummary"]
 
 [[rule]]
@@ -1890,7 +1890,7 @@ errorprone = ["MisusedWeekYear"]
 [[rule]]
 name = "mixed-array-dimensions"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["MixedArrayDimensions"]
 
 [[rule]]
@@ -1900,25 +1900,25 @@ errorprone = ["MixedDescriptors"]
 [[rule]]
 name = "mixed-mutability-return-type"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["MixedMutabilityReturnType"]
 
 [[rule]]
 name = "mock-illegal-throws"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["MockIllegalThrows"]
 
 [[rule]]
 name = "mock-not-used-in-production"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["MockNotUsedInProduction"]
 
 [[rule]]
 name = "mockito-do-setup"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["MockitoDoSetup"]
 
 [[rule]]
@@ -1928,19 +1928,19 @@ errorprone = ["MockitoUsage"]
 [[rule]]
 name = "modified-but-not-used"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ModifiedButNotUsed"]
 
 [[rule]]
 name = "modify-collection-in-enhanced-for-loop"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ModifyCollectionInEnhancedForLoop"]
 
 [[rule]]
 name = "modify-source-collection-in-stream"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ModifySourceCollectionInStream"]
 
 [[rule]]
@@ -1958,37 +1958,37 @@ errorprone = ["MoreThanOneQualifier"]
 [[rule]]
 name = "multi-variable-declaration"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["MultiVariableDeclaration"]
 
 [[rule]]
 name = "multimap-keys"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["MultimapKeys"]
 
 [[rule]]
 name = "multiple-nullness-annotations"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["MultipleNullnessAnnotations"]
 
 [[rule]]
 name = "multiple-parallel-or-sequential-calls"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["MultipleParallelOrSequentialCalls"]
 
 [[rule]]
 name = "multiple-top-level-classes"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["MultipleTopLevelClasses"]
 
 [[rule]]
 name = "multiple-unary-operators-in-method-call"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["MultipleUnaryOperatorsInMethodCall"]
 
 [[rule]]
@@ -1998,13 +1998,13 @@ errorprone = ["MustBeClosedChecker"]
 [[rule]]
 name = "mutable-guice-module"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["MutableGuiceModule"]
 
 [[rule]]
 name = "mutable-public-array"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["MutablePublicArray"]
 
 [[rule]]
@@ -2014,43 +2014,43 @@ errorprone = ["NCopiesOfChar"]
 [[rule]]
 name = "named-like-contextual-keyword"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["NamedLikeContextualKeyword"]
 
 [[rule]]
 name = "narrow-calculation"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["NarrowCalculation"]
 
 [[rule]]
 name = "narrowing-compound-assignment"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["NarrowingCompoundAssignment"]
 
 [[rule]]
 name = "negative-boolean"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["NegativeBoolean"]
 
 [[rule]]
 name = "negative-char-literal"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["NegativeCharLiteral"]
 
 [[rule]]
 name = "nested-instance-of-conditions"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["NestedInstanceOfConditions"]
 
 [[rule]]
 name = "new-file-system"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["NewFileSystem"]
 
 [[rule]]
@@ -2064,13 +2064,13 @@ errorprone = ["NoCanIgnoreReturnValueOnClasses"]
 [[rule]]
 name = "non-api-type"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["NonApiType"]
 
 [[rule]]
 name = "non-atomic-volatile-update"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["NonAtomicVolatileUpdate"]
 
 [[rule]]
@@ -2080,13 +2080,13 @@ errorprone = ["NonCanonicalStaticImport"]
 [[rule]]
 name = "non-canonical-static-member-import"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["NonCanonicalStaticMemberImport"]
 
 [[rule]]
 name = "non-canonical-type"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["NonCanonicalType"]
 
 [[rule]]
@@ -2096,13 +2096,13 @@ errorprone = ["NonFinalCompileTimeConstant"]
 [[rule]]
 name = "non-final-static-field"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["NonFinalStaticField"]
 
 [[rule]]
 name = "non-overriding-equals"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["NonOverridingEquals"]
 
 [[rule]]
@@ -2112,7 +2112,7 @@ errorprone = ["NonRuntimeAnnotation"]
 [[rule]]
 name = "not-javadoc"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["NotJavadoc"]
 
 [[rule]]
@@ -2126,7 +2126,7 @@ errorprone = ["NullNeedsCastForVarargs"]
 [[rule]]
 name = "null-optional"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["NullOptional"]
 
 [[rule]]
@@ -2136,7 +2136,7 @@ errorprone = ["NullTernary"]
 [[rule]]
 name = "nullable-constructor"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["NullableConstructor"]
 
 [[rule]]
@@ -2146,61 +2146,61 @@ errorprone = ["NullableOnContainingClass"]
 [[rule]]
 name = "nullable-optional"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["NullableOptional"]
 
 [[rule]]
 name = "nullable-primitive"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["NullablePrimitive"]
 
 [[rule]]
 name = "nullable-primitive-array"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["NullablePrimitiveArray"]
 
 [[rule]]
 name = "nullable-type-parameter"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["NullableTypeParameter"]
 
 [[rule]]
 name = "nullable-void"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["NullableVoid"]
 
 [[rule]]
 name = "nullable-wildcard"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["NullableWildcard"]
 
 [[rule]]
 name = "object-equals-for-primitives"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ObjectEqualsForPrimitives"]
 
 [[rule]]
 name = "object-to-string"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ObjectToString"]
 
 [[rule]]
 name = "objects-hash-code-primitive"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ObjectsHashCodePrimitive"]
 
 [[rule]]
 name = "operator-precedence"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["OperatorPrecedence"]
 
 [[rule]]
@@ -2210,7 +2210,7 @@ errorprone = ["OptionalEquality"]
 [[rule]]
 name = "optional-map-to-optional"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["OptionalMapToOptional"]
 
 [[rule]]
@@ -2220,7 +2220,7 @@ errorprone = ["OptionalMapUnusedValue"]
 [[rule]]
 name = "optional-not-present"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["OptionalNotPresent"]
 
 [[rule]]
@@ -2230,13 +2230,13 @@ errorprone = ["OptionalOfRedundantMethod"]
 [[rule]]
 name = "orphaned-format-string"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["OrphanedFormatString"]
 
 [[rule]]
 name = "outline-none"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["OutlineNone"]
 
 [[rule]]
@@ -2246,19 +2246,19 @@ errorprone = ["OverlappingQualifierAndScopeAnnotation"]
 [[rule]]
 name = "override-throwable-to-string"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["OverrideThrowableToString"]
 
 [[rule]]
 name = "overrides"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["Overrides"]
 
 [[rule]]
 name = "overrides-guice-injectable-method"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["OverridesGuiceInjectableMethod"]
 
 [[rule]]
@@ -2268,7 +2268,7 @@ errorprone = ["OverridesJavaxInjectableMethod"]
 [[rule]]
 name = "overriding-method-inconsistent-argument-names-checker"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["OverridingMethodInconsistentArgumentNamesChecker"]
 
 [[rule]]
@@ -2278,19 +2278,19 @@ errorprone = ["PackageInfo"]
 [[rule]]
 name = "package-location"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["PackageLocation"]
 
 [[rule]]
 name = "parameter-comment"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["ParameterComment"]
 
 [[rule]]
 name = "parameter-missing-nullable"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["ParameterMissingNullable"]
 
 [[rule]]
@@ -2304,7 +2304,7 @@ errorprone = ["ParcelableCreator"]
 [[rule]]
 name = "pattern-matching-instanceof"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["PatternMatchingInstanceof"]
 
 [[rule]]
@@ -2322,7 +2322,7 @@ errorprone = ["PeriodTimeMath"]
 [[rule]]
 name = "preconditions-check-not-null-repeated"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["PreconditionsCheckNotNullRepeated"]
 
 [[rule]]
@@ -2332,61 +2332,61 @@ errorprone = ["PreconditionsInvalidPlaceholder"]
 [[rule]]
 name = "prefer-charset-overload"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["PreferCharsetOverload"]
 
 [[rule]]
 name = "prefer-instanceof-over-get-kind"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["PreferInstanceofOverGetKind"]
 
 [[rule]]
 name = "prefer-java-time-overload"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["PreferJavaTimeOverload"]
 
 [[rule]]
 name = "prefer-preconditions"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["PreferPreconditions"]
 
 [[rule]]
 name = "prefer-throws-tag"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["PreferThrowsTag"]
 
 [[rule]]
 name = "preferred-interface-type"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["PreferredInterfaceType"]
 
 [[rule]]
 name = "primitive-array-passed-to-varargs-method"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["PrimitiveArrayPassedToVarargsMethod"]
 
 [[rule]]
 name = "primitive-atomic-reference"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["PrimitiveAtomicReference"]
 
 [[rule]]
 name = "private-constructor-for-noninstantiable-module"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["PrivateConstructorForNoninstantiableModule"]
 
 [[rule]]
 name = "private-constructor-for-utility-class"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["PrivateConstructorForUtilityClass"]
 
 [[rule]]
@@ -2396,7 +2396,7 @@ errorprone = ["PrivateSecurityContractProtoAccess"]
 [[rule]]
 name = "protected-members-in-final-class"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ProtectedMembersInFinalClass"]
 
 [[rule]]
@@ -2406,7 +2406,7 @@ errorprone = ["ProtoBuilderReturnValueIgnored"]
 [[rule]]
 name = "proto-duration-get-seconds-get-nano"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ProtoDurationGetSecondsGetNano"]
 
 [[rule]]
@@ -2416,7 +2416,7 @@ errorprone = ["ProtoStringFieldReferenceEquality"]
 [[rule]]
 name = "proto-timestamp-get-seconds-get-nano"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ProtoTimestampGetSecondsGetNano"]
 
 [[rule]]
@@ -2434,19 +2434,19 @@ errorprone = ["ProvidesMethodOutsideOfModule"]
 [[rule]]
 name = "public-api-named-stream-should-return-stream"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["PublicApiNamedStreamShouldReturnStream"]
 
 [[rule]]
 name = "qualifier-or-scope-on-inject-method"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["QualifierOrScopeOnInjectMethod"]
 
 [[rule]]
 name = "qualifier-with-type-use"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["QualifierWithTypeUse"]
 
 [[rule]]
@@ -2460,7 +2460,7 @@ errorprone = ["RandomModInteger"]
 [[rule]]
 name = "reachability-fence-usage"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ReachabilityFenceUsage"]
 
 [[rule]]
@@ -2470,13 +2470,13 @@ errorprone = ["RecordAccessorInCompactConstructor"]
 [[rule]]
 name = "record-component-accessor-annotation-conflict"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["RecordComponentAccessorAnnotationConflict"]
 
 [[rule]]
 name = "record-component-override"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["RecordComponentOverride"]
 
 [[rule]]
@@ -2486,19 +2486,19 @@ errorprone = ["RectIntersectReturnValueIgnored"]
 [[rule]]
 name = "redundant-control-flow"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["RedundantControlFlow"]
 
 [[rule]]
 name = "redundant-null-check"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["RedundantNullCheck"]
 
 [[rule]]
 name = "redundant-override"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["RedundantOverride"]
 
 [[rule]]
@@ -2508,19 +2508,19 @@ errorprone = ["RedundantSetterCall"]
 [[rule]]
 name = "redundant-throws"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["RedundantThrows"]
 
 [[rule]]
 name = "refactor-switch"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["RefactorSwitch"]
 
 [[rule]]
 name = "reference-equality"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ReferenceEquality"]
 
 [[rule]]
@@ -2530,13 +2530,13 @@ errorprone = ["RefersToDaggerCodegen"]
 [[rule]]
 name = "remove-unused-imports"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["RemoveUnusedImports"]
 
 [[rule]]
 name = "require-non-null-refactoring"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["RequireNonNullRefactoring"]
 
 [[rule]]
@@ -2551,25 +2551,25 @@ errorprone = ["RestrictedApi"]
 [[rule]]
 name = "rethrow-reflective-operation-exception-as-linkage-error"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["RethrowReflectiveOperationExceptionAsLinkageError"]
 
 [[rule]]
 name = "return-at-the-end-of-void-function"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ReturnAtTheEndOfVoidFunction"]
 
 [[rule]]
 name = "return-from-void"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ReturnFromVoid"]
 
 [[rule]]
 name = "return-missing-nullable"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["ReturnMissingNullable"]
 
 [[rule]]
@@ -2579,49 +2579,49 @@ errorprone = ["ReturnValueIgnored"]
 [[rule]]
 name = "returns-null-collection"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["ReturnsNullCollection"]
 
 [[rule]]
 name = "robolectric-shadow-directly-on"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["RobolectricShadowDirectlyOn"]
 
 [[rule]]
 name = "rule-not-run"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["RuleNotRun"]
 
 [[rule]]
 name = "rx-return-value-ignored"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["RxReturnValueIgnored"]
 
 [[rule]]
 name = "same-name-but-different"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["SameNameButDifferent"]
 
 [[rule]]
 name = "scanner-use-delimiter"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ScannerUseDelimiter"]
 
 [[rule]]
 name = "scope-on-module"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["ScopeOnModule"]
 
 [[rule]]
 name = "self-always-returns-this"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["SelfAlwaysReturnsThis"]
 
 [[rule]]
@@ -2643,7 +2643,7 @@ errorprone = ["SelfEquals"]
 [[rule]]
 name = "self-set"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["SelfSet"]
 
 [[rule]]
@@ -2653,7 +2653,7 @@ errorprone = ["SetUnrecognized"]
 [[rule]]
 name = "short-circuit-boolean"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ShortCircuitBoolean"]
 
 [[rule]]
@@ -2663,13 +2663,13 @@ errorprone = ["ShouldHaveEvenArgs"]
 [[rule]]
 name = "simplify-test-parameter"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["SimplifyTestParameter"]
 
 [[rule]]
 name = "single-test-parameter"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["SingleTestParameter"]
 
 [[rule]]
@@ -2679,31 +2679,31 @@ errorprone = ["SizeGreaterThanOrEqualsZero"]
 [[rule]]
 name = "statement-switch-to-expression-switch"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["StatementSwitchToExpressionSwitch"]
 
 [[rule]]
 name = "static-assignment-in-constructor"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["StaticAssignmentInConstructor"]
 
 [[rule]]
 name = "static-assignment-of-throwable"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["StaticAssignmentOfThrowable"]
 
 [[rule]]
 name = "static-guarded-by-instance"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["StaticGuardedByInstance"]
 
 [[rule]]
 name = "static-mock-member"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["StaticMockMember"]
 
 [[rule]]
@@ -2717,13 +2717,13 @@ errorprone = ["StaticQualifiedUsingExpression"]
 [[rule]]
 name = "stream-resource-leak"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["StreamResourceLeak"]
 
 [[rule]]
 name = "stream-to-iterable"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["StreamToIterable"]
 
 [[rule]]
@@ -2737,25 +2737,25 @@ errorprone = ["StringBuilderInitWithChar"]
 [[rule]]
 name = "string-case-locale-usage"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["StringCaseLocaleUsage"]
 
 [[rule]]
 name = "string-charset"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["StringCharset"]
 
 [[rule]]
 name = "string-concat-to-text-block"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["StringConcatToTextBlock"]
 
 [[rule]]
 name = "string-format-with-literal"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["StringFormatWithLiteral"]
 
 [[rule]]
@@ -2765,19 +2765,19 @@ errorprone = ["StringJoin"]
 [[rule]]
 name = "string-splitter"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["StringSplitter"]
 
 [[rule]]
 name = "strongly-type-byte-string"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["StronglyTypeByteString"]
 
 [[rule]]
 name = "strongly-type-time"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["StronglyTypeTime"]
 
 [[rule]]
@@ -2787,13 +2787,13 @@ errorprone = ["SubstringOfZero"]
 [[rule]]
 name = "sun-api"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["SunApi"]
 
 [[rule]]
 name = "super-call-to-object-method"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["SuperCallToObjectMethod"]
 
 [[rule]]
@@ -2803,37 +2803,37 @@ errorprone = ["SuppressWarningsDeprecated"]
 [[rule]]
 name = "suppress-warnings-without-explanation"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["SuppressWarningsWithoutExplanation"]
 
 [[rule]]
 name = "swig-memory-leak"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["SwigMemoryLeak"]
 
 [[rule]]
 name = "switch-default"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["SwitchDefault"]
 
 [[rule]]
 name = "symbol-to-string"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["SymbolToString"]
 
 [[rule]]
 name = "synchronize-on-non-final-field"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["SynchronizeOnNonFinalField"]
 
 [[rule]]
 name = "system-console-null"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["SystemConsoleNull"]
 
 [[rule]]
@@ -2843,7 +2843,7 @@ errorprone = ["SystemExitOutsideMain"]
 [[rule]]
 name = "system-out"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["SystemOut"]
 
 [[rule]]
@@ -2869,19 +2869,19 @@ errorprone = ["ThreadBuilderNameWithPlaceholder"]
 [[rule]]
 name = "thread-join-loop"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ThreadJoinLoop"]
 
 [[rule]]
 name = "thread-local-usage"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ThreadLocalUsage"]
 
 [[rule]]
 name = "thread-priority-check"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ThreadPriorityCheck"]
 
 [[rule]]
@@ -2891,7 +2891,7 @@ errorprone = ["ThreadSafe"]
 [[rule]]
 name = "three-letter-time-zone-id"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ThreeLetterTimeZoneID"]
 
 [[rule]]
@@ -2901,7 +2901,7 @@ errorprone = ["ThrowIfUncheckedKnownChecked"]
 [[rule]]
 name = "throw-if-unchecked-known-unchecked"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ThrowIfUncheckedKnownUnchecked"]
 
 [[rule]]
@@ -2911,67 +2911,67 @@ errorprone = ["ThrowNull"]
 [[rule]]
 name = "throw-specific-exceptions"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ThrowSpecificExceptions"]
 
 [[rule]]
 name = "throwable-equals-hash-code"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ThrowableEqualsHashCode"]
 
 [[rule]]
 name = "throws-unchecked-exception"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["ThrowsUncheckedException"]
 
 [[rule]]
 name = "time-in-static-initializer"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["TimeInStaticInitializer"]
 
 [[rule]]
 name = "time-unit-conversion-checker"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["TimeUnitConversionChecker"]
 
 [[rule]]
 name = "time-unit-mismatch"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["TimeUnitMismatch"]
 
 [[rule]]
 name = "to-string-returns-null"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ToStringReturnsNull"]
 
 [[rule]]
 name = "too-many-parameters"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["TooManyParameters"]
 
 [[rule]]
 name = "traditional-javadoc-to-markdown"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["TraditionalJavadocToMarkdown"]
 
 [[rule]]
 name = "traditional-switch-expression"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["TraditionalSwitchExpression"]
 
 [[rule]]
 name = "transient-misuse"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["TransientMisuse"]
 
 [[rule]]
@@ -2981,37 +2981,37 @@ errorprone = ["TreeToString"]
 [[rule]]
 name = "truth-assert-expected"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["TruthAssertExpected"]
 
 [[rule]]
 name = "truth-constant-asserts"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["TruthConstantAsserts"]
 
 [[rule]]
 name = "truth-contains-exactly-elements-in-usage"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["TruthContainsExactlyElementsInUsage"]
 
 [[rule]]
 name = "truth-get-or-default"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["TruthGetOrDefault"]
 
 [[rule]]
 name = "truth-incompatible-type"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["TruthIncompatibleType"]
 
 [[rule]]
 name = "try-fail-refactoring"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["TryFailRefactoring"]
 
 [[rule]]
@@ -3021,25 +3021,25 @@ errorprone = ["TryFailThrowable"]
 [[rule]]
 name = "try-with-resources-variable"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["TryWithResourcesVariable"]
 
 [[rule]]
 name = "type-equals"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["TypeEquals"]
 
 [[rule]]
 name = "type-name-shadowing"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["TypeNameShadowing"]
 
 [[rule]]
 name = "type-parameter-naming"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["TypeParameterNaming"]
 
 [[rule]]
@@ -3049,43 +3049,43 @@ errorprone = ["TypeParameterQualifier"]
 [[rule]]
 name = "type-parameter-shadowing"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["TypeParameterShadowing"]
 
 [[rule]]
 name = "type-parameter-unused-in-formals"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["TypeParameterUnusedInFormals"]
 
 [[rule]]
 name = "type-to-string"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["TypeToString"]
 
 [[rule]]
 name = "url-equals-hash-code"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["URLEqualsHashCode"]
 
 [[rule]]
 name = "undefined-equals"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UndefinedEquals"]
 
 [[rule]]
 name = "unescaped-entity"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnescapedEntity"]
 
 [[rule]]
 name = "ungrouped-overloads"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["UngroupedOverloads"]
 
 [[rule]]
@@ -3095,7 +3095,7 @@ errorprone = ["UnicodeDirectionalityCharacters"]
 [[rule]]
 name = "unicode-escape"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnicodeEscape"]
 
 [[rule]]
@@ -3105,61 +3105,61 @@ errorprone = ["UnicodeInCode"]
 [[rule]]
 name = "unnamed-variable"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnnamedVariable"]
 
 [[rule]]
 name = "unnecessarily-fully-qualified"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnnecessarilyFullyQualified"]
 
 [[rule]]
 name = "unnecessarily-used-value"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnnecessarilyUsedValue"]
 
 [[rule]]
 name = "unnecessarily-visible"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnnecessarilyVisible"]
 
 [[rule]]
 name = "unnecessary-anonymous-class"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnnecessaryAnonymousClass"]
 
 [[rule]]
 name = "unnecessary-assignment"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnnecessaryAssignment"]
 
 [[rule]]
 name = "unnecessary-async"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnnecessaryAsync"]
 
 [[rule]]
 name = "unnecessary-boxed-assignment"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["UnnecessaryBoxedAssignment"]
 
 [[rule]]
 name = "unnecessary-boxed-variable"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["UnnecessaryBoxedVariable"]
 
 [[rule]]
 name = "unnecessary-break-in-switch"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnnecessaryBreakInSwitch"]
 
 [[rule]]
@@ -3169,19 +3169,19 @@ errorprone = ["UnnecessaryCheckNotNull"]
 [[rule]]
 name = "unnecessary-copy"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnnecessaryCopy"]
 
 [[rule]]
 name = "unnecessary-default-in-enum-switch"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnnecessaryDefaultInEnumSwitch"]
 
 [[rule]]
 name = "unnecessary-final"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnnecessaryFinal"]
 
 [[rule]]
@@ -3193,61 +3193,61 @@ pylint = ["unnecessary-lambda"]
 [[rule]]
 name = "unnecessary-long-to-int-conversion"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnnecessaryLongToIntConversion"]
 
 [[rule]]
 name = "unnecessary-method-invocation-matcher"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnnecessaryMethodInvocationMatcher"]
 
 [[rule]]
 name = "unnecessary-method-reference"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnnecessaryMethodReference"]
 
 [[rule]]
 name = "unnecessary-optional-get"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnnecessaryOptionalGet"]
 
 [[rule]]
 name = "unnecessary-qualifier"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnnecessaryQualifier"]
 
 [[rule]]
 name = "unnecessary-semicolon"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnnecessarySemicolon"]
 
 [[rule]]
 name = "unnecessary-set-default"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["UnnecessarySetDefault"]
 
 [[rule]]
 name = "unnecessary-static-import"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["UnnecessaryStaticImport"]
 
 [[rule]]
 name = "unnecessary-string-builder"
 presets = ["strict"]
-category = "severity-bug-pattern"
+category = "correctness"
 errorprone = ["UnnecessaryStringBuilder"]
 
 [[rule]]
 name = "unnecessary-test-method-prefix"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnnecessaryTestMethodPrefix"]
 
 [[rule]]
@@ -3257,25 +3257,25 @@ errorprone = ["UnnecessaryTypeArgument"]
 [[rule]]
 name = "unrecognised-javadoc-tag"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnrecognisedJavadocTag"]
 
 [[rule]]
 name = "unsafe-finalization"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnsafeFinalization"]
 
 [[rule]]
 name = "unsafe-locale-usage"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnsafeLocaleUsage"]
 
 [[rule]]
 name = "unsafe-reflective-construction-cast"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnsafeReflectiveConstructionCast"]
 
 [[rule]]
@@ -3285,7 +3285,7 @@ errorprone = ["UnsafeWildcard"]
 [[rule]]
 name = "unsynchronized-overrides-synchronized"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnsynchronizedOverridesSynchronized"]
 
 [[rule]]
@@ -3299,31 +3299,31 @@ errorprone = ["UnusedCollectionModifiedInPlace"]
 [[rule]]
 name = "unused-exception"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnusedException"]
 
 [[rule]]
 name = "unused-nested-class"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnusedNestedClass"]
 
 [[rule]]
 name = "unused-type-parameter"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UnusedTypeParameter"]
 
 [[rule]]
 name = "url-in-see"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UrlInSee"]
 
 [[rule]]
 name = "use-binds"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UseBinds"]
 
 [[rule]]
@@ -3333,19 +3333,19 @@ errorprone = ["UseCorrectAssertInTests"]
 [[rule]]
 name = "use-enum-switch"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["UseEnumSwitch"]
 
 [[rule]]
 name = "using-jsr305-check-return-value"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["UsingJsr305CheckReturnValue"]
 
 [[rule]]
 name = "value-class-equals"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["ValueClassEquals"]
 
 [[rule]]
@@ -3355,7 +3355,7 @@ errorprone = ["ValueClassIdentity"]
 [[rule]]
 name = "var"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["Var"]
 
 [[rule]]
@@ -3365,43 +3365,43 @@ errorprone = ["VarTypeName"]
 [[rule]]
 name = "var-with-primitive"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["VarWithPrimitive"]
 
 [[rule]]
 name = "variable-name-same-as-type"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["VariableNameSameAsType"]
 
 [[rule]]
 name = "varifier"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["Varifier"]
 
 [[rule]]
 name = "void-missing-nullable"
 presets = ["strict"]
-category = "severity-suggestion"
+category = "style"
 errorprone = ["VoidMissingNullable"]
 
 [[rule]]
 name = "void-used"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["VoidUsed"]
 
 [[rule]]
 name = "wait-not-in-loop"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["WaitNotInLoop"]
 
 [[rule]]
 name = "wakelock-released-dangerously"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 errorprone = ["WakelockReleasedDangerously"]
 
 [[rule]]
@@ -3415,7 +3415,7 @@ errorprone = ["XorPower"]
 [[rule]]
 name = "yoda-condition"
 presets = ["strict"]
-category = "severity-warning"
+category = "correctness"
 swiftlint = ["yoda_condition"]
 errorprone = ["YodaCondition"]
 
