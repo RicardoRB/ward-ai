@@ -1,0 +1,179 @@
+# Pylint 4.1.3 optional extension checks for Python (#336): the rows that a syntax-tree shape or a
+# line pattern decides. They belong to the strict preset only.
+
+[[rules]]
+id = "ward:python/while-used"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["while_stmt"]
+message = "while loop used; prefer a for loop or a comprehension"
+'''
+
+[[rules]]
+id = "ward:python/bad-builtin"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^(?:map|filter)\('
+message = "map and filter are discouraged; use a comprehension or a generator expression"
+'''
+
+[[rules]]
+id = "ward:python/bad-dunder-name"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["funcdef"]
+inside = ["classdef"]
+text = '^def__(?!(?:abs|add|aenter|aexit|aiter|and|anext|await|bool|buffer|bytes|call|ceil|class_getitem|complex|contains|copy|deepcopy|del|delattr|delete|delitem|dir|divmod|enter|eq|exit|float|floor|floordiv|format|fspath|ge|get|getattr|getattribute|getitem|getnewargs|getnewargs_ex|getstate|gt|hash|iadd|iand|ifloordiv|ilshift|imatmul|imod|imul|index|init|init_subclass|instancecheck|int|invert|ior|ipow|irshift|isub|iter|itruediv|ixor|le|len|length_hint|lshift|lt|matmul|missing|mod|mul|ne|neg|new|next|or|pos|pow|post_init|prepare|radd|rand|rdivmod|release_buffer|replace|repr|reversed|rfloordiv|rlshift|rmatmul|rmod|rmul|ror|round|rpow|rrshift|rshift|rsub|rtruediv|rxor|set|set_name|setattr|setitem|setstate|sizeof|str|sub|subclasscheck|subclasshook|truediv|trunc|xor|reduce|reduce_ex)__\()\w+?__\('
+message = "{value} is not a known special method name"
+'''
+
+[[rules]]
+id = "ward:python/consider-math-not-float"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '(?i)^float\(\s*[\x27\x22][+-]?(?:inf|infinity|nan)[\x27\x22]\s*\)'
+message = "use math.inf or math.nan instead of converting a string with float"
+'''
+
+[[rules]]
+id = "ward:python/consider-using-tuple"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["for_stmt", "comp_for"]
+text = '^for[\w,()*.]+in\[(?![^\]]*for\w+in)'
+message = "iterate over an in-place tuple instead of a list literal"
+'''
+
+[[rules]]
+id = "ward:python/prefer-typing-namedtuple"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^(?:collections\.)?namedtuple\('
+message = "use typing.NamedTuple instead of collections.namedtuple"
+'''
+
+[[rules]]
+id = "ward:python/too-many-try-statements"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["strict"]
+options.max-try-statements = { type = "integer", min = 1 }
+body = '''
+check = "try-body-length"
+max-try-statements = 1
+message = "try block has {value} statements; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:python/consider-refactoring-into-while-condition"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["while_stmt"]
+text = '^while(?:True|1):\s*if[^:]+:\s*break(?!\s*el(?:se|if)\b)'
+message = "move the condition of the first if into the while statement"
+'''
+
+[[rules]]
+id = "ward:python/consider-ternary-expression"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["if_stmt"]
+text = '^if[^:]+:\s*(\w+)=[^=;]+?\s*else:\s*\1=[^=;]+?\s*$'
+message = "use a conditional expression to assign the variable"
+'''
+
+[[rules]]
+id = "ward:python/eq-without-hash"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["strict"]
+body = '''
+check = "class-protocol"
+problem = "eq-without-hash"
+message = "class defines __eq__ but not __hash__"
+'''
+
+[[rules]]
+id = "ward:python/overlapping-except"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["strict"]
+body = '''
+check = "overlapping-except"
+message = "the exception classes of this except clause overlap; the narrower one is already caught"
+'''
+
+[[rules]]
+id = "ward:python/consider-using-assignment-expr"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["strict"]
+body = '''
+check = "consecutive-statements"
+problem = "assignment-expr"
+message = "use an assignment expression in the if condition instead of a separate assignment"
+'''
+
+[[rules]]
+id = "ward:python/confusing-consecutive-elif"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["strict"]
+body = '''
+check = "consecutive-statements"
+problem = "confusing-elif"
+message = "elif follows a branch that ends with an if; consider a separate if statement"
+'''

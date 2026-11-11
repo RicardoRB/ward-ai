@@ -14,6 +14,7 @@ rules = [
 reason = "formatting: covered by ward format"
 rules = [
   "bad-indentation",
+  "inconsistent-quotes",
   "missing-final-newline",
   "mixed-line-endings",
   "multiple-statements",
@@ -47,6 +48,7 @@ rules = [
   "access-member-before-definition",
   "async-context-manager-with-regular-with",
   "impossible-comparison",
+  "redefined-variable-type",
 ]
 
 [[group]]
@@ -169,4 +171,32 @@ rules = [
 reason = "a SyntaxError in CPython; Ward reports unparsable files itself"
 rules = [
   "nonlocal-and-global",
+]
+
+[[group]]
+reason = "documents the type of a parameter, return or yield in the docstring; Ward reads types from the annotations, so the docstring type sections are not checked"
+rules = [
+  "differing-type-doc",
+  "missing-return-type-doc",
+  "missing-type-doc",
+  "missing-yield-type-doc",
+  "useless-type-doc",
+]
+
+[[group]]
+reason = "convention of the optional docparams extension for documenting constructor parameters in the class docstring or in __init__; no Ward docstring rule distinguishes the two"
+rules = [
+  "multiple-constructor-doc",
+]
+
+[[group]]
+reason = "applies only to Python before 3.5, where datetime.time could be false; Ward supports Python 3.11 and later"
+rules = [
+  "boolean-datetime",
+]
+
+[[group]]
+reason = "heuristic of the optional extension that needs the inferred types of the values of a dict literal to judge whether it is a record"
+rules = [
+  "consider-using-namedtuple-or-dataclass",
 ]

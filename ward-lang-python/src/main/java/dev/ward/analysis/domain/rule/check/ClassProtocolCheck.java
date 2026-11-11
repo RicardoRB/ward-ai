@@ -29,7 +29,9 @@ public final class ClassProtocolCheck implements RuleCheck {
     /** A class that derives from an enum of this module that has members. */
     INVALID_ENUM_EXTENSION,
     /** A {@code metaclass=} that is not a class deriving from {@code type}. */
-    INVALID_METACLASS
+    INVALID_METACLASS,
+    /** A class that defines {@code __eq__} but not {@code __hash__}. */
+    EQ_WITHOUT_HASH
   }
 
   private static final Set<String> CLASSES = Set.of("classdef");
@@ -65,6 +67,7 @@ public final class ClassProtocolCheck implements RuleCheck {
       case NON_ITERATOR_RETURNED -> nonIterators(root, classes);
       case INVALID_ENUM_EXTENSION -> enumExtensions(root, classes);
       case INVALID_METACLASS -> invalidMetaclasses(root, classes);
+      case EQ_WITHOUT_HASH -> eqWithoutHash(classes);
     };
   }
 
@@ -140,6 +143,13 @@ public final class ClassProtocolCheck implements RuleCheck {
       }
     }
     return List.copyOf(found);
+  }
+
+  private List<RuleMatch> eqWithoutHash(final Map<String, ClassIndex.Info> classes) {
+    return classes.values().stream()
+        .filter(info -> info.members().contains("__eq__") && !info.text().contains("__hash__"))
+        .map(info -> new RuleMatch(info.node().span(), message))
+        .toList();
   }
 
   private static boolean invalidMetaclass(

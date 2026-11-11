@@ -9,11 +9,11 @@ assigning-non-slot = "implemented"
 assignment-from-no-return = "implemented"
 assignment-from-none = "implemented"
 attribute-defined-outside-init = "implemented"
-bad-builtin = { status = "planned", issue = "#336" }
+bad-builtin = "implemented"
 bad-chained-comparison = "implemented"
 bad-classmethod-argument = "implemented"
 bad-docstring-quotes = { status = "planned", issue = "#297" }
-bad-dunder-name = { status = "planned", issue = "#336" }
+bad-dunder-name = "implemented"
 bad-exception-cause = "implemented"
 bad-except-order = "implemented"
 bad-format-string-key = "implemented"
@@ -23,7 +23,6 @@ bad-reversed-sequence = "implemented"
 bad-super-call = "implemented"
 bad-thread-instantiation = "implemented"
 bare-name-capture-pattern = "implemented"
-boolean-datetime = { status = "planned", issue = "#336" }
 broad-exception-raised = "implemented"
 chained-comparison = "implemented"
 chained-comparison-all-equal = "implemented"
@@ -31,16 +30,15 @@ class-variable-slots-conflict = "implemented"
 comparison-of-constants = "implemented"
 comparison-with-callable = "implemented"
 condition-evals-to-constant = "implemented"
-confusing-consecutive-elif = { status = "planned", issue = "#336" }
+confusing-consecutive-elif = "implemented"
 confusing-with-statement = "implemented"
-consider-math-not-float = { status = "planned", issue = "#336" }
+consider-math-not-float = "implemented"
 consider-merging-isinstance = "implemented"
-consider-refactoring-into-while-condition = { status = "planned", issue = "#336" }
+consider-refactoring-into-while-condition = "implemented"
 consider-swap-variables = "implemented"
-consider-ternary-expression = { status = "planned", issue = "#336" }
+consider-ternary-expression = "implemented"
 consider-using-any-or-all = { status = "planned", issue = "#297" }
-consider-using-assignment-expr = { status = "planned", issue = "#336" }
-consider-using-augmented-assign = { status = "planned", issue = "#336" }
+consider-using-assignment-expr = "implemented"
 consider-using-dict-items = "implemented"
 consider-using-enumerate = "implemented"
 consider-using-f-string = "implemented"
@@ -50,30 +48,25 @@ consider-using-in = "implemented"
 consider-using-join = "implemented"
 consider-using-max-builtin = "implemented"
 consider-using-min-builtin = "implemented"
-consider-using-namedtuple-or-dataclass = { status = "planned", issue = "#336" }
 consider-using-sys-exit = "implemented"
 consider-using-ternary = "implemented"
-consider-using-tuple = { status = "planned", issue = "#336" }
+consider-using-tuple = "implemented"
 consider-using-with = "implemented"
 contextmanager-generator-missing-cleanup = "implemented"
 cyclic-import = "implemented"
 declare-non-slot = "implemented"
 dict-init-mutate = { status = "planned", issue = "#297" }
-differing-param-doc = { status = "planned", issue = "#336" }
-differing-type-doc = { status = "planned", issue = "#336" }
 disallowed-name = "implemented"
 docstring-first-line-empty = { status = "planned", issue = "#297" }
 duplicate-argument-name = "implemented"
 duplicate-string-formatting-argument = "implemented"
-else-if-used = { status = "planned", issue = "#336" }
-eq-without-hash = { status = "planned", issue = "#336" }
+eq-without-hash = "implemented"
 expression-not-assigned = "implemented"
 format-string-without-interpolation = "implemented"
 function-redefined = "implemented"
 global-variable-undefined = "implemented"
 import-outside-toplevel = "implemented"
 inconsistent-mro = "implemented"
-inconsistent-quotes = { status = "planned", issue = "#336" }
 inconsistent-return-statements = "implemented"
 inherit-non-class = "implemented"
 init-is-generator = "implemented"
@@ -114,23 +107,14 @@ method-cache-max-size-none = "implemented"
 method-hidden = "implemented"
 misplaced-comparison-constant = { status = "planned", issue = "#297" }
 misplaced-format-function = "implemented"
-missing-any-param-doc = { status = "planned", issue = "#336" }
 missing-class-docstring = "implemented"
 missing-function-docstring = "implemented"
 missing-kwoa = "implemented"
 missing-module-docstring = "implemented"
-missing-param-doc = { status = "planned", issue = "#336" }
 missing-parentheses-for-call-in-test = "implemented"
-missing-raises-doc = { status = "planned", issue = "#336" }
-missing-return-doc = { status = "planned", issue = "#336" }
-missing-return-type-doc = { status = "planned", issue = "#336" }
-missing-type-doc = { status = "planned", issue = "#336" }
-missing-yield-doc = { status = "planned", issue = "#336" }
-missing-yield-type-doc = { status = "planned", issue = "#336" }
 modified-iterating-dict = "implemented"
 modified-iterating-list = "implemented"
 multiple-class-sub-patterns = "implemented"
-multiple-constructor-doc = { status = "planned", issue = "#336" }
 no-else-break = "implemented"
 no-else-continue = "implemented"
 no-else-raise = "implemented"
@@ -145,26 +129,22 @@ not-an-iterable = "implemented"
 not-async-context-manager = "implemented"
 not-callable = "implemented"
 not-context-manager = "implemented"
-overlapping-except = { status = "planned", issue = "#336" }
+overlapping-except = "implemented"
 overridden-final-method = "implemented"
 pointless-exception-statement = "implemented"
 pointless-string-statement = "implemented"
 positional-only-arguments-expected = "implemented"
 possibly-unused-variable = "implemented"
 possibly-used-before-assignment = "implemented"
-prefer-typing-namedtuple = { status = "planned", issue = "#336" }
+prefer-typing-namedtuple = "implemented"
 raising-format-tuple = "implemented"
 raising-non-exception = "implemented"
 redefined-builtin = "implemented"
-redefined-variable-type = { status = "planned", issue = "#336" }
 redundant-keyword-arg = "implemented"
-redundant-returns-doc = { status = "planned", issue = "#336" }
 redundant-u-string-prefix = "implemented"
 redundant-unittest-assert = "implemented"
-redundant-yields-doc = { status = "planned", issue = "#336" }
 reimported = "implemented"
 repeated-keyword = "implemented"
-return-arg-in-generator = { status = "planned", issue = "#336" }
 self-cls-assignment = "implemented"
 shadowed-import = "implemented"
 signature-differs = "implemented"
@@ -176,14 +156,13 @@ subclassed-final-class = "implemented"
 subprocess-run-check = "implemented"
 super-init-not-called = "implemented"
 super-with-arguments = "implemented"
-too-complex = { status = "planned", issue = "#336" }
 too-few-public-methods = "implemented"
 too-many-ancestors = "implemented"
 too-many-function-args = "implemented"
 too-many-instance-attributes = "implemented"
 too-many-positional-sub-patterns = "implemented"
 too-many-star-expressions = "implemented"
-too-many-try-statements = { status = "planned", issue = "#336" }
+too-many-try-statements = "implemented"
 trailing-comma-tuple = "implemented"
 truncated-format-string = "implemented"
 try-except-raise = "implemented"
@@ -212,13 +191,10 @@ use-implicit-booleaness-not-comparison-to-zero = { status = "planned", issue = "
 use-implicit-booleaness-not-len = "implemented"
 use-maxsplit-arg = "implemented"
 use-sequence-for-iteration = "implemented"
-use-set-for-membership = { status = "planned", issue = "#336" }
 use-yield-from = "implemented"
 used-before-assignment = "implemented"
 used-prior-global-declaration = "implemented"
-useless-param-doc = { status = "planned", issue = "#336" }
 useless-parent-delegation = "implemented"
-useless-type-doc = { status = "planned", issue = "#336" }
 using-constant-test = "implemented"
-while-used = { status = "planned", issue = "#336" }
+while-used = "implemented"
 wrong-import-order = "implemented"

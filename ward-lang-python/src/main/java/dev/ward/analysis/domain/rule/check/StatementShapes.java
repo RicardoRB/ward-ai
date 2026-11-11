@@ -38,7 +38,12 @@ final class StatementShapes {
     if (statements.size() != SOLE) {
       return Optional.empty();
     }
-    SyntaxNode node = statements.get(0);
+    return asIf(statements.get(0));
+  }
+
+  /** Returns the {@code if_stmt} that {@code statement} is, looking through wrapper nodes. */
+  static Optional<SyntaxNode> asIf(final SyntaxNode statement) {
+    SyntaxNode node = statement;
     while (!IF_STMT.equals(node.kind()) && node.children().size() == 1) {
       node = node.children().get(0);
     }

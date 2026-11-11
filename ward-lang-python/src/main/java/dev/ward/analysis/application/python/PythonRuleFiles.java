@@ -35,6 +35,7 @@ public final class PythonRuleFiles implements RuleFileProvider {
           "rules/python/pylint-checks-a2.toml",
           "rules/python/pylint-checks-b.toml",
           "rules/python/pylint-checks-c.toml",
+          "rules/python/pylint-checks-d.toml",
           "rules/python/pylint-flow.toml",
           "rules/python/pylint.toml",
           "rules/python/python-style.toml",
