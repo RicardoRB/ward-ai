@@ -16,8 +16,8 @@ hero:
 ![Four nested shields around your code: Edit, Commit, Push, and CI.](/ward-layers.svg)
 
 Ward checks code in [four layers](/getting-started/how-it-works/): after every agent edit, before
-each commit, before each push, and in CI. The rules live in `ward.toml`, so every teammate and
-every agent follows the same ones.
+each commit, before each push, and in CI. The gates live in `ward.toml` and the rules in
+`ward-rules.toml`, so every teammate and every agent follows the same ones.
 
 Ward is in alpha. It supports Java projects built with Maven or Gradle, TypeScript and JavaScript
 projects built with npm, pnpm, Yarn, or Bun, Python projects managed with uv, Poetry, or pip, and
@@ -44,10 +44,17 @@ Windsurf, Cline, Factory Droid, and Amp).
 | Java / Kotlin | Maven, Gradle | Any. Spring Boot, Quarkus, Micronaut, Helidon, Dropwizard, Javalin, and Ktor are labeled when detected | Compiler, JUnit, JaCoCo, PIT, Ward's style and bug rules, and Ward's layer, cycle and independence rules |
 | TypeScript | npm, pnpm, Yarn, Bun | Vue, Svelte, Astro, Angular (others are checked with the same gates) | `tsc`, Vitest / Jest / `bun test`, Stryker, Ward's TypeScript and JavaScript rules |
 | JavaScript | npm, pnpm, Yarn, Bun | Same as TypeScript | Same as TypeScript, without `tsc` |
+| Python 3.11–3.14 | uv, Poetry, pip | Django, FastAPI, Flask | mypy, pytest, coverage.py, pip-audit, mutmut, `manage.py check` for Django, Ward's Python rules |
+| Swift | SwiftPM, Xcode (26 or newer, on macOS) | Any | `swift build`, `swift test` or `xcodebuild test`, llvm-cov / xccov coverage, Ward's Swift rules |
+| Kotlin / Java for Android | Gradle with the Android Gradle Plugin | Android app and library modules | Android lint, Android unit tests, debug unit-test coverage |
 
-Node projects are tested on Node 22 and 24 in Ward's compatibility matrix, which runs Next.js,
-Vite with React, NestJS, Express, Vue, Astro, and Angular fixtures. See
-[Node projects](/commands/init/#node-projects) for what `init` changes.
+Every language gets Ward's own rules, selected in [`ward-rules.toml`](/configuration/ward-rules/),
+and Ward's formatter. There is no separate lint or format tool to install.
+
+Ward's compatibility matrices run the real CLI on each supported version: JDK 8, 11, 17, 21 and 25;
+Node 22 and 24, with Next.js, Vite with React, NestJS, Express, Vue, Astro, and Angular fixtures;
+Python 3.11 to 3.14 with uv, Poetry and pip, and Django, FastAPI and Flask fixtures; and Xcode 26.0
+to 27.2. See [Node projects](/commands/init/#node-projects) for what `init` changes there.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.sh | sh
@@ -61,7 +68,7 @@ irm https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.ps1 | iex
 
 ## What you can do
 
-- Detect supported Java/Maven, Java/Kotlin Gradle, TypeScript, and JavaScript projects and initialize configuration from `standard` or `strict` presets.
+- Detect supported Java, Kotlin, TypeScript, JavaScript, Python, Swift, and Android projects and initialize configuration from `standard` or `strict` presets.
 - Run configured quality gates as text or machine-readable JSON, locally or in [CI](/guides/ci-cd/), using cumulative local and complete CI profiles.
 - Install agent hooks that run checks after edits and writes.
 - Opt into managed Git quality hooks for fast pre-commit and cumulative pre-push checks.
