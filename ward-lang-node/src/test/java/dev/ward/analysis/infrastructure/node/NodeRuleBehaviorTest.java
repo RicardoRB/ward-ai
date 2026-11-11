@@ -46,14 +46,16 @@ class NodeRuleBehaviorTest {
         "function outer(a) {\n"
             + "  const inner = (b) => {\n"
             + "    if (b) { void 0; }\n"
+            + "    if (b) { void 0; }\n"
             + "  };\n"
             + "  return inner;\n"
             + "}\n";
 
     for (final AnalysisLanguage language : List.of(TS, JS)) {
       assertThat(NodeRuleRuns.measure("complexity", language, source))
+          .as(language.name())
           .extracting(measured -> measured.span().startLine() + ":" + measured.value())
-          .containsExactly("1:1", "2:2");
+          .containsExactly("1:1", "2:3");
     }
   }
 
