@@ -1,7 +1,7 @@
 package dev.ward.application.init.node;
 
 import dev.ward.application.init.CiWorkflowTemplate;
-import dev.ward.application.init.CrapInit;
+import dev.ward.application.init.CrapSetup;
 import dev.ward.application.init.InitInputs;
 import dev.ward.application.init.InitProjectFiles;
 import dev.ward.application.init.MemberPlanning;
@@ -17,9 +17,7 @@ import dev.ward.domain.init.ScriptReplacement;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.node.PackageManifest;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -94,41 +92,9 @@ public final class NodeInitSupport implements ToolchainInitSupport {
         || project.language() == Language.JAVASCRIPT && inputs.sources().hasSources(project.root());
   }
 
-  /** The test gates that can write lcov; Angular's {@code ng test} and Turborepo roots cannot. */
   @Override
-  public boolean offersCrap(final Project project, final InitInputs inputs) {
-    return !project.taskRunner().isRootRunner()
-        && COVERAGE_GATES.contains(
-            NodeTools.testGate(project, inputs.manifests().read(project.root())));
-  }
-
-  @Override
-  public List<InitGateOption> withCrap(
-      final Project project, final List<InitGateOption> gates, final InitInputs inputs) {
-    if (gates.stream().noneMatch(gate -> SupportedQualityGates.CRAP.equals(gate.id()))) {
-      return gates;
-    }
-    final NodeTools tools =
-        NodeTools.of(project, inputs.manifests().read(project.root()), inputs, null);
-    final String test = tools.testGate();
-    return CrapInit.place(
-        gates.stream().map(gate -> test.equals(gate.id()) ? withFlags(gate, tools) : gate).toList(),
-        test,
-        List.of(),
-        List.of(),
-        Map.of());
-  }
-
-  private static InitGateOption withFlags(final InitGateOption gate, final NodeTools tools) {
-    final List<String> command = new ArrayList<>(gate.command());
-    command.addAll(tools.crapFlags());
-    return new InitGateOption(
-        gate.id(),
-        gate.description(),
-        command,
-        gate.available(),
-        gate.availabilityMessage(),
-        gate.settings());
+  public Optional<CrapSetup> crap(final Project project, final InitInputs inputs) {
+    return NodeCrap.of(project, inputs);
   }
 
   @Override

@@ -3,6 +3,7 @@ package dev.ward.application.init;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.InitGateOption;
+import dev.ward.domain.project.Project;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,21 @@ public final class CrapInit {
           + " hand.";
 
   private CrapInit() {}
+
+  /**
+   * Checks that {@code support} offers the gate when {@code id} is {@code crap}.
+   *
+   * @throws WardException with the manual step when the toolchain cannot write the report
+   */
+  static void require(
+      final ToolchainInitSupport support,
+      final Project project,
+      final InitInputs inputs,
+      final String id) {
+    if (SupportedQualityGates.CRAP.equals(id) && support.crap(project, inputs).isEmpty()) {
+      throw new WardException(MANUAL_STEP);
+    }
+  }
 
   /** Returns the opt-in gate choice; it runs no command, so it is always available. */
   public static InitGateOption option() {

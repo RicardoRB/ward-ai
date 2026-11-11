@@ -70,7 +70,8 @@ class PythonCrapReportTest {
                 .filter(gate -> List.of("mypy", "crap").contains(gate.id()))
                 .toList();
 
-    assertThatThrownBy(() -> new PythonInitSupport().withCrap(project, gates, INPUTS))
+    assertThatThrownBy(
+            () -> new PythonInitSupport().crap(project, INPUTS).orElseThrow().apply(gates))
         .isInstanceOf(WardException.class)
         .hasMessageContaining("'pytest'");
   }
@@ -83,10 +84,10 @@ class PythonCrapReportTest {
                 .filter(
                     gate ->
                         List.of("mypy", "pytest", "coverage").contains(gate.id())
-                            || crap && gate.id().equals("crap"))
+                            || crap && "crap".equals(gate.id()))
                 .toList();
     return ConfigurationTemplate.render(
-        new PythonInitSupport().withCrap(project, offered, INPUTS),
+        new PythonInitSupport().crap(project, INPUTS).orElseThrow().apply(offered),
         QualityPreset.STANDARD,
         project);
   }

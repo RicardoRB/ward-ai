@@ -93,7 +93,7 @@ public class InitGeneralCatalog {
     final List<InitGateOption> options = new ArrayList<>(buildTool.analysis());
     options.addAll(new BinaryToolGates(environment, project).gates());
     options.addAll(buildTool.policy());
-    if (InitToolchains.support(project).offersCrap(project, inputs)) {
+    if (InitToolchains.support(project).crap(project, inputs).isPresent()) {
       options.add(CrapInit.option());
     }
     options.add(
@@ -151,7 +151,7 @@ public class InitGeneralCatalog {
    */
   public InitGateOption gate(final Project project, final String id) {
     GateOffers.require(environment, project, id);
-    requireCrapOffer(project, id);
+    CrapInit.require(InitToolchains.support(project), project, inputs, id);
     InitToolchains.find(project)
         .map(support -> support.omissions(project, List.of(id), inputs))
         .orElse(List.of())
@@ -176,13 +176,6 @@ public class InitGeneralCatalog {
                         + id
                         + "'. Supported gates: "
                         + SupportedQualityGates.IDS));
-  }
-
-  private void requireCrapOffer(final Project project, final String id) {
-    if (SupportedQualityGates.CRAP.equals(id)
-        && !InitToolchains.support(project).offersCrap(project, inputs)) {
-      throw new WardException(CrapInit.MANUAL_STEP);
-    }
   }
 
   /**

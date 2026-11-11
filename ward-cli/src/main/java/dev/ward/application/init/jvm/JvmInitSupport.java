@@ -2,6 +2,7 @@ package dev.ward.application.init.jvm;
 
 import dev.ward.application.init.CiWorkflowTemplate;
 import dev.ward.application.init.CrapInit;
+import dev.ward.application.init.CrapSetup;
 import dev.ward.application.init.InitInputs;
 import dev.ward.application.init.SourceLanguageGates;
 import dev.ward.application.init.SourceLanguages;
@@ -18,6 +19,7 @@ import dev.ward.domain.project.Project;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /** Init choices for Maven and Gradle projects. */
@@ -79,14 +81,10 @@ public final class JvmInitSupport implements ToolchainInitSupport {
 
   /** Android's coverage report is not at the Gradle default location, so it is not offered. */
   @Override
-  public boolean offersCrap(final Project project, final InitInputs inputs) {
-    return project.framework() != Framework.ANDROID;
-  }
-
-  @Override
-  public List<InitGateOption> withCrap(
-      final Project project, final List<InitGateOption> gates, final InitInputs inputs) {
-    return CrapInit.place(gates, COVERAGE, List.of(), List.of(), Map.of());
+  public Optional<CrapSetup> crap(final Project project, final InitInputs inputs) {
+    return project.framework() == Framework.ANDROID
+        ? Optional.empty()
+        : Optional.of(gates -> CrapInit.place(gates, COVERAGE, List.of(), List.of(), Map.of()));
   }
 
   @Override

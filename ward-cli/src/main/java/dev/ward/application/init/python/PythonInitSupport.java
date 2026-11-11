@@ -2,6 +2,7 @@ package dev.ward.application.init.python;
 
 import dev.ward.application.init.CiWorkflowTemplate;
 import dev.ward.application.init.CrapInit;
+import dev.ward.application.init.CrapSetup;
 import dev.ward.application.init.InitInputs;
 import dev.ward.application.init.SourceLanguageGates;
 import dev.ward.application.init.SourceLanguages;
@@ -14,6 +15,7 @@ import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /** Init choices for uv, Poetry and pip projects. PDM and Hatch projects are not supported yet. */
@@ -53,13 +55,7 @@ public final class PythonInitSupport implements ToolchainInitSupport {
   }
 
   @Override
-  public boolean offersCrap(final Project project, final InitInputs inputs) {
-    return true;
-  }
-
-  @Override
-  public List<InitGateOption> withCrap(
-      final Project project, final List<InitGateOption> gates, final InitInputs inputs) {
+  public Optional<CrapSetup> crap(final Project project, final InitInputs inputs) {
     final PythonTools python =
         PythonTools.of(
             project,
@@ -69,12 +65,14 @@ public final class PythonInitSupport implements ToolchainInitSupport {
                 .inspect(project.root())
                 .hasExecutable(PythonTools.executable(project)),
             null);
-    return CrapInit.place(
-        gates,
-        "pytest",
-        List.of("coverage"),
-        List.of(PythonGates.crapReport(python)),
-        Map.of("report", PythonGates.CRAP_REPORT));
+    return Optional.of(
+        gates ->
+            CrapInit.place(
+                gates,
+                "pytest",
+                List.of("coverage"),
+                List.of(PythonGates.crapReport(python)),
+                Map.of("report", PythonGates.CRAP_REPORT)));
   }
 
   @Override

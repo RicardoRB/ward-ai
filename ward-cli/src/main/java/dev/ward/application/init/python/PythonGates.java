@@ -15,6 +15,9 @@ import java.util.Map;
  * top of the standard gates.
  */
 final class PythonGates implements SourceLanguageGates<PythonTools> {
+  /** The lcov report the {@code crap-report} check writes and the {@code crap} gate reads. */
+  static final String CRAP_REPORT = ".ward/reports/coverage.lcov";
+
   private static final List<String> STANDARD = List.of("mypy", "pytest", "coverage");
   private static final List<String> STRICT = List.of("mypy", "pytest", "coverage", "mutmut");
 
@@ -56,9 +59,6 @@ final class PythonGates implements SourceLanguageGates<PythonTools> {
             mutationSettings(python)));
     return List.copyOf(gates);
   }
-
-  /** The lcov report the {@code crap-report} check writes and the {@code crap} gate reads. */
-  static final String CRAP_REPORT = ".ward/reports/coverage.lcov";
 
   /**
    * The check that turns the coverage data of {@code pytest} into the report {@code crap} reads.

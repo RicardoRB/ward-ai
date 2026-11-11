@@ -89,11 +89,11 @@ class NodeCrapCommandsTest {
     final List<InitGateOption> offered =
         new InitGeneralCatalog(inputs)
             .gates(project, QualityPreset.STANDARD).stream()
-                .filter(gate -> gate.id().equals(id) || crap && gate.id().equals("crap"))
+                .filter(gate -> id.equals(gate.id()) || crap && "crap".equals(gate.id()))
                 .toList();
     return new NodeInitSupport()
-        .withCrap(project, offered, inputs).stream()
-            .filter(gate -> gate.id().equals(id))
+        .crap(project, inputs).map(setup -> setup.apply(offered)).orElse(offered).stream()
+            .filter(gate -> id.equals(gate.id()))
             .findFirst()
             .orElseThrow()
             .command();

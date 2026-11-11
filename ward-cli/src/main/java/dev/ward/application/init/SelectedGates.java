@@ -52,7 +52,8 @@ final class SelectedGates {
     }
     return offlineTrivy(
         InitToolchains.find(project)
-            .map(support -> support.withCrap(project, gates, catalog.inputs))
+            .flatMap(support -> support.crap(project, catalog.inputs))
+            .map(setup -> setup.apply(gates))
             .orElse(gates),
         project);
   }

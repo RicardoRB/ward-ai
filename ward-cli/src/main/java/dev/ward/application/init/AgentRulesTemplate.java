@@ -81,16 +81,7 @@ public final class AgentRulesTemplate {
             + " `[[checks.ward.independence]]`, `ward:architecture/cycles` and"
             + " `ward:architecture/independence` enforce them; do not remove them or add"
             + " exemptions.");
-    if (ids.contains(SupportedQualityGates.CRAP)) {
-      lines.add(
-          "- CRAP (`crap`): split or test every function the check reports; never raise `max` or"
-              + " exclude files to pass it.");
-    }
-    if (ids.contains(FormatGates.WARD_FORMAT)) {
-      lines.add(
-          "- Format: `ward-format` must pass; format edited files with `ward format`, whose layout"
-              + " comes from `.editorconfig`.");
-    }
+    lines.addAll(gateLines(ids));
     InitToolchains.all()
         .forEach(support -> lines.addAll(support.agentRules(project, gates, preset, owned)));
     // Node projects keep blank lines around the markers, as their Markdown did under Prettier.
@@ -101,6 +92,22 @@ public final class AgentRulesTemplate {
         END,
         padding + String.join("\n", lines) + "\n" + padding,
         false);
+  }
+
+  /** Returns the lines of the gates that have no limit: the formatter and the crap gate. */
+  private static List<String> gateLines(final Set<String> ids) {
+    final List<String> lines = new ArrayList<>();
+    if (ids.contains(SupportedQualityGates.CRAP)) {
+      lines.add(
+          "- CRAP (`crap`): split or test every function the check reports; never raise `max` or"
+              + " exclude files to pass it.");
+    }
+    if (ids.contains(FormatGates.WARD_FORMAT)) {
+      lines.add(
+          "- Format: `ward-format` must pass; format edited files with `ward format`, whose layout"
+              + " comes from `.editorconfig`.");
+    }
+    return lines;
   }
 
   /** Returns the gates that can get a limit line, for the gate contract test. */
