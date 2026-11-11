@@ -102,6 +102,24 @@ Unknown check names are errors, and so are checks with no enabled matching check
 profile with no check belonging to it passes with a warning on stderr, because a hook must not fail
 every edit on a configuration without `edit` checks.
 
+## CRAP score limit
+
+A `crap` check needs no `command`. `max` is the largest CRAP score a function may have, an integer
+of at least 1 (default 30), and `report` is a project-relative path, or an array of paths, to the
+coverage report it reads; without `report` Ward reads the default report of the build tool. See
+[CRAP gate](/configuration/gates/#crap-gate).
+
+```toml
+[checks.crap]
+uses = "crap"
+report = ["api/coverage/lcov.info", "web/coverage/lcov.info"]
+max = 15
+profiles = ["ci"]
+```
+
+A `max` that is not an integer of at least 1, or a `report` that is empty or outside the project, is
+a configuration error that names the key.
+
 ## Mutation score minimum
 
 The `stryker`, PIT `mutation` and `mutmut` checks accept an optional `minimum`, an integer from 0 to

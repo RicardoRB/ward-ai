@@ -20,6 +20,7 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | Code Quality | `ward` | Ward rules | Check the style and bug rules that `ward-rules.toml` selects, for Java, Kotlin, TypeScript, JavaScript, Python and Swift. |
 | | `sonar` | SonarQube | Code smells, bugs, duplication, overall quality. |
 | | `ward-format` | Ward's native formatter | Check source formatting against `.editorconfig`. Always selected by `ward init`. |
+| | `crap` | Ward analysis and a coverage report | Fail functions that are both complex and untested, by their CRAP score. |
 | Security | `semgrep` | Semgrep | SAST and custom security rules. |
 | | `gitleaks` | Gitleaks | Detect committed secrets. |
 | | `dependency-check` | OWASP Dependency-Check | Scan dependencies for known CVEs. |
@@ -390,6 +391,98 @@ changes a file: run [`ward format`](/commands/format/) to fix the reported files
 On a partial run, such as the `edit` profile after one file changed, the gate checks only the changed
 files when its `paths` table matches them, as the analysis gate does. Results for files that are
 already formatted are cached by content and settings, so unchanged files cost nothing on the next run.
+
+## CRAP gate
+
+`uses = "crap"` scores every function with the CRAP metric (Change Risk Anti-Patterns) and fails the
+functions above a limit. A function that is complex and untested scores high, even when the rest of
+the project is well covered, which neither the complexity rules nor the `coverage` minimum catch:
+
+```
+CRAP = complexity^2 * (1 - coverage)^3 + complexity
+```
+
+```toml
+[checks.coverage]
+profiles = ["ci"]
+command = "./mvnw -DskipTests package jacoco:report"
+
+[checks.crap]
+uses = "crap"
+profiles = ["ci"]
+max = 30
+```
+
+The gate runs no tests and no process. It reads the per-line coverage report that the coverage or
+test check wrote, so declare it after that check: checks run in the order `ward.toml` declares them.
+
+- **Complexity** is the value that Ward's complexity rule of the language computes for the function:
+  `ward:java/cyclomatic-complexity`, `ward:kotlin/cyclomatic-complexity`,
+  `ward:typescript/complexity`, `ward:javascript/complexity`, `ward:python/complexity` and
+  `ward:swift/complexity`. It does not matter whether the rule is selected in `ward-rules.toml` or
+  what limit it has.
+- **Coverage** of a function is its covered lines over its coverable lines, from the first to the
+  last line of its declaration. A line counts only for the innermost function that contains it, so a
+  nested function does not count for its outer function, while a lambda counts for its method.
+- A function with no coverable line in the reports, such as an interface method, or in a file that
+  no report names, is scored from its complexity alone.
+
+`max` is an integer of at least 1, 30 by default, the threshold of the original metric. A function
+fails when its score is above `max`; a score equal to it passes. Each failing function is one error
+finding at its declaration, for example `CRAP score 42 is above 30 (complexity 6, coverage 0%)`, and
+the summary states how many functions were scored and how many are above the limit.
+
+### Coverage reports
+
+The gate reads JaCoCo XML (Java, Kotlin, Android) and lcov (TypeScript, JavaScript, Python, SwiftPM),
+choosing the format from the content of the file. `report` is one project-relative path or an array
+of them, and a path outside the project is a configuration error. Without `report`, Ward reads the
+default report of the project's build tool, in the project root and in every module directory below
+it:
+
+| Build tool | Default report |
+|---|---|
+| Maven | `target/site/jacoco/jacoco.xml` |
+| Gradle | `build/reports/jacoco/test/jacocoTestReport.xml` |
+| npm, pnpm, Yarn, Bun | `coverage/lcov.info` |
+| uv, Poetry, PDM, Hatch, pip | `coverage.lcov` |
+| SwiftPM, Xcode | none: set `report` |
+
+When several reports name the same line, the line is covered when any of them marks it covered. An
+lcov path is taken as absolute, or resolved against the project root and then against each directory
+from the report's own directory up to the root. A JaCoCo entry matches the source file whose path ends
+with its package and file name, preferring the file in the module that holds the report.
+
+To make each tool write the report:
+
+- **Maven:** the `jacoco-maven-plugin` goal `prepare-agent` before the tests and `report` after them;
+  the XML report is written by default.
+- **Gradle:** the `jacoco` plugin with `jacocoTestReport { reports { xml.required = true } }`, run
+  after `test`.
+- **Vitest:** `coverage: { reporter: ['lcov'], include: ['src/**'] }` and `vitest run --coverage`.
+  **Jest:** `collectCoverageFrom` and `jest --coverage`, whose default reporters include `lcov`.
+  List the source files in `include` or `collectCoverageFrom`, or the files no test loads are absent
+  from the report.
+- **pytest:** `pytest --cov=<package> --cov-report=lcov`, which writes `coverage.lcov`.
+- **SwiftPM:** `swift test --enable-code-coverage`, then export the profile with
+  `xcrun llvm-cov export -format=lcov` to a file and name it in `report`. Xcode projects that measure
+  coverage with `xccov` have no lcov export and are not read.
+
+### Reports that cannot be used
+
+The gate never passes on a report it cannot trust. It ends with an execution error that names the file
+and says the coverage check must run first when:
+
+- no report is found, or a configured `report` does not exist;
+- a report is neither JaCoCo XML nor lcov, or is truncated;
+- the reports name no source file of the project;
+- a source file that a report names was modified after the report was written, which usually means the
+  tests did not run since the edit. A fresh checkout can also trigger it, so run the coverage check
+  first;
+- a source file that a report names cannot be parsed.
+
+The gate is opt-in: no preset selects it. It does not honor `exclude-paths` of `ward-rules.toml` and
+does not run on partial (edit-hook) runs.
 
 ## Analysis gate
 

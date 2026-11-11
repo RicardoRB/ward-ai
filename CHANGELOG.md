@@ -8,6 +8,10 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Added
+
+- The `crap` check (`uses = "crap"`) scores every function as `complexity^2 * (1 - coverage)^3 + complexity` and fails the functions above `max` (default 30). Complexity is the value of the language's complexity rule; coverage is read per line from a JaCoCo XML or lcov report, by default at the build tool's conventional path, or from `report`. The gate runs no tests, treats a missing, unparseable or stale report as an execution error, and is opt-in: `ward init` does not select it yet.
+
 ## [0.7.0] - 2026-11-11
 
 ### Added

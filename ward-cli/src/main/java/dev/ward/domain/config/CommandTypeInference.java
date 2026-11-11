@@ -25,6 +25,7 @@ public final class CommandTypeInference {
           "openspec-archived",
           "openspec-junit-traceability",
           "ward-format",
+          "crap",
           "ng-test",
           "api-compat",
           "license",
