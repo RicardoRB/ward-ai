@@ -5,11 +5,18 @@ enabled = true
 profiles = ["pre-push", "ci"]
 command = "./mvnw test"
 
-# Ward's own format and analysis rules replace the former format, Checkstyle, PMD and SpotBugs gates (#347 part B).
-[checks.ward-format]
+# The Ward gate replaces the Checkstyle, PMD, SpotBugs and Semgrep checks (#347 part B); the format check waits for #470.
+[checks.format]
 enabled = true
 profiles = ["default", "pre-commit", "pre-push", "ci"]
-uses = "ward-format"
+command = "./mvnw spotless:check"
+
+[checks.format.paths]
+match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java"]
+full = ["pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-python/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml"]
+args = ["-DspotlessFiles={paths}"]
+item = ".*/{path}"
+separator = ","
 
 [checks.ward]
 enabled = true
@@ -58,16 +65,6 @@ command = "gitleaks detect --no-banner --redact --report-format sarif --report-p
 match = ["**"]
 full = [".gitleaks*"]
 args = ["--no-git", "--source={paths}"]
-
-[checks.semgrep]
-enabled = true
-profiles = ["ci"]
-command = "semgrep scan --config p/java --error"
-
-[checks.semgrep.paths]
-match = ["**"]
-full = [".semgrep*"]
-args = ["{paths}"]
 
 # Disabled: trivy already scans Maven dependencies without an NVD API key.
 [checks.dependency-check]

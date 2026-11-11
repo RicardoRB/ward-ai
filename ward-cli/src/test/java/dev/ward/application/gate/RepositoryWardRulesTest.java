@@ -3,9 +3,9 @@ package dev.ward.application.gate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -68,6 +68,15 @@ class RepositoryWardRulesTest {
           "ward:java/unused-private-field",
           "ward:java/final-parameters");
 
+  /**
+   * Mapped rules that the repository deliberately leaves out. PMD added
+   * LocalVariableDeclarationShouldBeAtStartOfBlock in 7.29.0; the Maven build still runs PMD 7.17.0
+   * (maven-pmd-plugin 3.28.0), which never enforced it, and the tree has about 17,000 sites that
+   * declare a local with an initializer in mid-block.
+   */
+  private static final Set<String> NOT_ENFORCED_BY_PMD_IN_BUILD =
+      Set.of("ward:java/local-variable-declaration-should-be-at-start-of-block");
+
   private static final String SEEDED_CHECKSTYLE = "ward:java/magic-number";
   private static final String SEEDED_PMD = "ward:java/unnecessary-return";
   private static final String SEEDED_SPOTBUGS = "ward:java/st-write-to-static-from-instance-method";
@@ -88,7 +97,9 @@ class RepositoryWardRulesTest {
     final Set<String> include = include();
     final Map<String, String> notImplemented = new HashMap<>();
     for (final Row row : mappedRows()) {
-      if (IMPLEMENTED.equals(row.status())) {
+      if (NOT_ENFORCED_BY_PMD_IN_BUILD.contains(row.wardId())) {
+        assertThat(include).doesNotContain(row.wardId());
+      } else if (IMPLEMENTED.equals(row.status())) {
         assertThat(include).as("mapped rule %s", row.wardId()).contains(row.wardId());
       } else {
         notImplemented.put(row.wardId(), row.status());
@@ -117,6 +128,7 @@ class RepositoryWardRulesTest {
     assertThat(select.getString("preset")).isEqualTo("none");
     assertThat(strings(select, "languages")).containsExactly(JAVA);
     assertThat(include()).allSatisfy(id -> assertThat(id).startsWith("ward:java/"));
+    assertThat(Files.readString(RULES_FILE)).doesNotContain("[rules.\"ward:");
   }
 
   @Test
@@ -132,7 +144,9 @@ class RepositoryWardRulesTest {
 
   private static Set<String> include() throws IOException {
     final TomlTable select = Toml.parse(Files.readString(RULES_FILE)).getTable("select");
-    return Set.copyOf(strings(select, "include"));
+    return strings(select, "include").stream()
+        .map(name -> "ward:" + name.replaceFirst("\\.", "/"))
+        .collect(java.util.stream.Collectors.toUnmodifiableSet());
   }
 
   private static Set<String> checkstyleModules() throws IOException {
@@ -147,7 +161,9 @@ class RepositoryWardRulesTest {
     return modules;
   }
 
-  /** The Java rows of the catalog that map to a PMD group of the ruleset, SpotBugs or Checkstyle. */
+  /**
+   * The Java rows of the catalog that map to a PMD group of the ruleset, SpotBugs or Checkstyle.
+   */
   private static List<Row> mappedRows() throws IOException {
     final Set<String> checkstyle = checkstyleModules();
     final String pmdXml = Files.readString(ROOT.resolve("config/pmd-ruleset.xml"));
@@ -160,9 +176,7 @@ class RepositoryWardRulesTest {
       final boolean viaCheckstyle = row.checkstyle().stream().anyMatch(checkstyle::contains);
       final boolean viaPmd =
           row.pmd().stream()
-              .anyMatch(
-                  rule ->
-                      groups.contains(pmdGroup.get(rule)) && !excluded.contains(rule));
+              .anyMatch(rule -> groups.contains(pmdGroup.get(rule)) && !excluded.contains(rule));
       final boolean viaSpotbugs = row.spotbugs() && row.presets().contains(STANDARD);
       if (viaCheckstyle || viaPmd || viaSpotbugs) {
         mapped.add(row);
@@ -174,7 +188,8 @@ class RepositoryWardRulesTest {
   private static List<Row> catalogRows() throws IOException {
     final List<Row> rows = new ArrayList<>();
     try (Stream<Path> files = Files.list(CATALOG)) {
-      for (final Path file : files.filter(RepositoryWardRulesTest::isCatalogFile).sorted().toList()) {
+      for (final Path file :
+          files.filter(RepositoryWardRulesTest::isCatalogFile).sorted().toList()) {
         final TomlParseResult catalog = Toml.parse(Files.readString(file));
         final TomlTable statuses = javaStatuses(file.getFileName().toString());
         final TomlArray table = catalog.getArray("rule");
@@ -188,9 +203,7 @@ class RepositoryWardRulesTest {
 
   private static boolean isCatalogFile(final Path file) {
     final String name = file.getFileName().toString();
-    return name.endsWith(".toml")
-        && !name.equals(WARD_OWN)
-        && !name.endsWith(OUT_OF_SCOPE_SUFFIX);
+    return name.endsWith(".toml") && !name.equals(WARD_OWN) && !name.endsWith(OUT_OF_SCOPE_SUFFIX);
   }
 
   private static TomlTable javaStatuses(final String catalogFile) throws IOException {
