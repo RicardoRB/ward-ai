@@ -28,7 +28,8 @@ import javax.inject.Inject;
 public class QualityGateFactory {
   private static final String ZAP = "zap";
   private static final Set<String> IN_PROCESS_GATES =
-      Set.of(SupportedQualityGates.ANALYSIS, SupportedQualityGates.FORMAT);
+      Set.of(
+          SupportedQualityGates.ANALYSIS, SupportedQualityGates.FORMAT, SupportedQualityGates.CRAP);
 
   public static final List<String> SUPPORTED_GATES = SupportedQualityGates.IDS;
   private static final Set<String> PLATFORM_GATES =
@@ -242,6 +243,9 @@ public class QualityGateFactory {
    * Builds the gates that run inside Ward: the {@code ward} analysis and the {@code ward-format}.
    */
   private QualityGate inProcessGate(final GateConfiguration check, final List<String> focus) {
+    if (SupportedQualityGates.CRAP.equals(check.type())) {
+      return crapGate(check);
+    }
     if (!SupportedQualityGates.FORMAT.equals(check.type())) {
       return AnalysisGates.create(check, extensions.analysis(), focus);
     }
@@ -249,6 +253,13 @@ public class QualityGateFactory {
       throw new WardException("Format gate dependencies are unavailable.");
     }
     return extensions.format().create(check.name(), focus);
+  }
+
+  private QualityGate crapGate(final GateConfiguration check) {
+    if (extensions.analysis() == null || extensions.crap() == null) {
+      throw new WardException("CRAP gate dependencies are unavailable.");
+    }
+    return new CrapGate(check.name(), check.crap(), extensions.analysis(), extensions.crap());
   }
 
   private QualityGate openApiGate(
