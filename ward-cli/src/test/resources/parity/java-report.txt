@@ -27,8 +27,8 @@
 # semgrep agree-lines: 9
 # semgrep anchor-differs: 5
 # semgrep tool-silent: 40
-# spotbugs agree-lines: 167
-# spotbugs anchor-differs: 42
+# spotbugs agree-lines: 168
+# spotbugs anchor-differs: 41
 # spotbugs approximation: 16
 # spotbugs not-comparable: 117
 # spotbugs tool-silent: 126
@@ -784,7 +784,7 @@ np-clone-could-return-null	spotbugs	NP_CLONE_COULD_RETURN_NULL	not-comparable	th
 np-closing-null	spotbugs	NP_CLOSING_NULL	agree-lines	
 np-dereference-of-readline-value	spotbugs	NP_DEREFERENCE_OF_READLINE_VALUE	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 np-equals-should-handle-null-argument	spotbugs	NP_EQUALS_SHOULD_HANDLE_NULL_ARGUMENT	anchor-differs	tool lines [1], on passing [], fixture [2]
-np-guaranteed-deref	spotbugs	NP_GUARANTEED_DEREF	anchor-differs	tool lines [9], on passing [], fixture [7]
+np-guaranteed-deref	spotbugs	NP_GUARANTEED_DEREF	agree-lines	
 np-guaranteed-deref-on-exception-path	spotbugs	NP_GUARANTEED_DEREF_ON_EXCEPTION_PATH	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 np-immediate-dereference-of-readline	spotbugs	NP_IMMEDIATE_DEREFERENCE_OF_READLINE	agree-lines	
 np-load-of-known-null-value	spotbugs	NP_LOAD_OF_KNOWN_NULL_VALUE	agree-lines	
