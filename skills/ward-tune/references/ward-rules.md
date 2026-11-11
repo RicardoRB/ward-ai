@@ -3,7 +3,7 @@
 Lint is Ward's own rules for every language: Java, Kotlin, TypeScript, JavaScript, Python and
 Swift. `ward-rules.toml` at the project root selects them, and the `ward` check applies them. Init
 writes the file with the project's languages and the preset (`standard` or `strict`). There is no
-separate Checkstyle, PMD, SpotBugs, ESLint, Ruff or SwiftLint gate to tune.
+separate lint tool gate to tune, for any language.
 
 ## Where the configuration lives
 
@@ -22,7 +22,7 @@ separate Checkstyle, PMD, SpotBugs, ESLint, Ruff or SwiftLint gate to tune.
 
 ## Rules
 
-- Never add a suppression to silence a finding: no `@SuppressWarnings`, `// NOPMD`, `# noqa`,
+- Never add a suppression to silence a finding: no `@SuppressWarnings`, `# noqa`,
   `eslint-disable` or `per-file-ignores`. Ward has none of its own. Fix the code, or change a rule
   with a reason written down in the change.
 - Tune a rule's `severity`, `exclude-paths` or options in `ward-rules.toml`, and say why in the
