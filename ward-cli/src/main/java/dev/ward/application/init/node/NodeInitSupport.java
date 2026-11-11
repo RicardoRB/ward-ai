@@ -105,6 +105,9 @@ public final class NodeInitSupport implements ToolchainInitSupport {
   @Override
   public List<InitGateOption> withCrap(
       final Project project, final List<InitGateOption> gates, final InitInputs inputs) {
+    if (gates.stream().noneMatch(gate -> SupportedQualityGates.CRAP.equals(gate.id()))) {
+      return gates;
+    }
     final NodeTools tools =
         NodeTools.of(project, inputs.manifests().read(project.root()), inputs, null);
     final String test = tools.testGate();
