@@ -96,5 +96,50 @@
       "name": "java.lang.Object",
       "array": 1
     }
+  },
+  "22:5": {
+    "call": {
+      "declaring": {
+        "name": "Sample"
+      },
+      "name": "generic",
+      "params": [
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "varargs": true,
+      "typeParameters": [
+        "T"
+      ]
+    }
+  },
+  "22:13": {
+    "type": {
+      "name": "java.lang.String",
+      "array": 1
+    }
+  },
+  "28:5": {
+    "call": {
+      "declaring": {
+        "name": "Sample"
+      },
+      "name": "join",
+      "params": [
+        {
+          "name": "java.lang.CharSequence",
+          "array": 1
+        }
+      ],
+      "varargs": true
+    }
+  },
+  "28:10": {
+    "type": {
+      "name": "java.lang.String",
+      "array": 1
+    }
   }
 }
