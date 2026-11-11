@@ -25,7 +25,7 @@ still change behavior. Breaking changes are called out under **Changed**.
 ### Fixed
 
 - The `ward` gate no longer crashes with a `NullPointerException` on a JavaScript class that declares a `get` or `set` accessor. A getter is now a property of unknown type for the type-aware rules, and a setter declares nothing, as for TypeScript classes.
-- Nine Java rules reported code that the tool they mirror accepts. They now follow that tool's documented behaviour (#491):
+- Ten Java rules reported code that the tool they mirror accepts. They now follow that tool's documented behaviour (#491):
   - `ward:java/avoid-instantiating-objects-in-loops` follows PMD's exemptions, such as `throw new` inside a loop.
   - `ward:java/avoid-literals-in-if-condition` reports only literals that are direct operands of the condition, and ignores `-1` and `0` by default.
   - `ward:java/unused-private-method` counts method references such as `Type::method`, and PMD's exemptions.
@@ -35,6 +35,7 @@ still change behavior. Breaking changes are called out under **Changed**.
   - `ward:java/signature-declare-throws-exception` reports only an exact `Exception`, and not tests or overriding methods.
   - `ward:java/avoid-deeply-nested-if-stmts` no longer counts each `else if` of a chain as another nesting level; only a plain `else` block adds one, as in PMD.
   - `ward:java/confusing-argument-to-varargs-method` no longer reports a generic varargs method, whose erased parameter hides the inferred element type, or an array passed for a varargs type that an array cannot be an element of, such as `OpenOption...`.
+  - `ward:java/string-instantiation` reports only `new String(value)` with a `String` argument, as PMD does, and no longer a `String` built from bytes or characters.
 
 ## [0.6.0] - 2026-11-10
 

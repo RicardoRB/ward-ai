@@ -159,14 +159,12 @@ message = "toArray with a sized array allocates it twice; pass a zero-length arr
 [[rules]]
 id = "ward:java/string-instantiation"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "performance"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["expression"]
-text = '^new(?:java\.lang\.)?String\([^()]*+(?:\([^()]*\)[^()]*+)*+\)$'
+check = "string-instantiation"
 message = "a String created with new is usually unnecessary; use a literal or the existing value"
 '''
 
