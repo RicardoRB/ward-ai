@@ -1,5 +1,6 @@
 package dev.ward.infrastructure.init.node;
 
+import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
@@ -43,7 +44,8 @@ final class NodeConfigFiles {
           root,
           configs.userConfig(root, VITEST),
           "vitest.config.mjs",
-          ConfigFiles.marker(ConfigFiles.JS_MARKER, preset) + NodeConfigTemplates.vitest(preset));
+          ConfigFiles.marker(ConfigFiles.JS_MARKER, preset)
+              + NodeConfigTemplates.vitest(preset, ids.contains(SupportedQualityGates.CRAP)));
     }
     if (ids.contains(JEST)) {
       target(

@@ -33,7 +33,8 @@ final class GradleQualityBlocks {
   }
 
   /** One limit per counter, the preset's minimums or a line ratio of 0.80 without a preset. */
-  static String coverage(final boolean kotlin, final QualityPreset preset, final String version) {
+  static String coverage(
+      final boolean kotlin, final QualityPreset preset, final String version, final boolean crap) {
     final Map<String, Double> minimums =
         new TreeMap<>(preset == null ? DEFAULT_MINIMUMS : preset.rules().jacocoMinimums());
     final StringBuilder limits = new StringBuilder(LIMIT_LENGTH * minimums.size());
@@ -54,7 +55,8 @@ final class GradleQualityBlocks {
         + " {\n    violationRules {\n        rule {\n"
         + limits
         + "        }\n    }\n}\n"
-        + GradleCoverageData.block(kotlin);
+        + GradleCoverageData.block(kotlin)
+        + (crap ? "\n" + GradleCoverageData.xmlReport(kotlin) : "");
   }
 
   /**

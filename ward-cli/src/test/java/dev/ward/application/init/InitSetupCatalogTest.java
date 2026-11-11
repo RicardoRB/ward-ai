@@ -210,8 +210,6 @@ class InitSetupCatalogTest {
                 .filter(id -> !"semgrep".equals(id))
                 // The analysis gate is written by hand in ward.toml; init does not offer it.
                 .filter(id -> !SupportedQualityGates.ANALYSIS.equals(id))
-                // The crap gate is opt-in and written by hand until init offers it.
-                .filter(id -> !SupportedQualityGates.CRAP.equals(id))
                 // Node gates are run by check only; init does not offer them for JVM projects.
                 .filter(id -> !NODE_GATES.contains(id))
                 .filter(id -> !PYTHON_GATES.contains(id))

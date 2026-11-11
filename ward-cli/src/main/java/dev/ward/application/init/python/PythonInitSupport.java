@@ -1,6 +1,7 @@
 package dev.ward.application.init.python;
 
 import dev.ward.application.init.CiWorkflowTemplate;
+import dev.ward.application.init.CrapInit;
 import dev.ward.application.init.InitInputs;
 import dev.ward.application.init.SourceLanguageGates;
 import dev.ward.application.init.SourceLanguages;
@@ -49,6 +50,31 @@ public final class PythonInitSupport implements ToolchainInitSupport {
     return java.util.stream.Stream.concat(
             gates.stream(), java.util.stream.Stream.of("django-check"))
         .toList();
+  }
+
+  @Override
+  public boolean offersCrap(final Project project, final InitInputs inputs) {
+    return true;
+  }
+
+  @Override
+  public List<InitGateOption> withCrap(
+      final Project project, final List<InitGateOption> gates, final InitInputs inputs) {
+    final PythonTools python =
+        PythonTools.of(
+            project,
+            inputs.pythonConfigs(),
+            inputs
+                .environment()
+                .inspect(project.root())
+                .hasExecutable(PythonTools.executable(project)),
+            null);
+    return CrapInit.place(
+        gates,
+        "pytest",
+        List.of("coverage"),
+        List.of(PythonGates.crapReport(python)),
+        Map.of("report", PythonGates.CRAP_REPORT));
   }
 
   @Override

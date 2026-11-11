@@ -17,7 +17,7 @@ public final class NodeConfigTemplates {
       export default defineConfig({
         test: {
           coverage: {
-            provider: "v8",
+            provider: "v8",{reporter}
             thresholds: {
       {thresholds}
             },
@@ -41,7 +41,17 @@ public final class NodeConfigTemplates {
 
   /** Returns a Vitest config that fails below {@code preset}'s coverage minimums. */
   public static String vitest(final QualityPreset preset) {
-    return VITEST.replace("{thresholds}", properties(thresholds(preset), "        "));
+    return vitest(preset, false);
+  }
+
+  /**
+   * Returns the Vitest config; {@code lcov} adds the lcov reporter beside the text table, which the
+   * {@code crap} gate reads.
+   */
+  public static String vitest(final QualityPreset preset, final boolean lcov) {
+    return VITEST
+        .replace("{reporter}", lcov ? "\n      reporter: [\"text\", \"lcov\"]," : "")
+        .replace("{thresholds}", properties(thresholds(preset), "        "));
   }
 
   /** Returns a Jest config that fails below {@code preset}'s global coverage minimums. */

@@ -1,6 +1,7 @@
 package dev.ward.application.init.python;
 
 import dev.ward.application.init.SourceLanguageGates;
+import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Framework;
@@ -54,6 +55,19 @@ final class PythonGates implements SourceLanguageGates<PythonTools> {
             python.command("mutmut", "run"),
             mutationSettings(python)));
     return List.copyOf(gates);
+  }
+
+  /** The lcov report the {@code crap-report} check writes and the {@code crap} gate reads. */
+  static final String CRAP_REPORT = ".ward/reports/coverage.lcov";
+
+  /**
+   * The check that turns the coverage data of {@code pytest} into the report {@code crap} reads.
+   */
+  static InitGateOption crapReport(final PythonTools python) {
+    return python.option(
+        SupportedQualityGates.CRAP_REPORT,
+        "Writes the lcov coverage report that the crap gate reads.",
+        python.command("coverage", "lcov", "-o", CRAP_REPORT));
   }
 
   @Override

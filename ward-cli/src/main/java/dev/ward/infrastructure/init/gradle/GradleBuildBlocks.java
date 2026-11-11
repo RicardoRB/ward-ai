@@ -1,5 +1,6 @@
 package dev.ward.infrastructure.init.gradle;
 
+import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.init.gradle.GradleToolCatalog;
 import java.util.List;
@@ -23,7 +24,7 @@ public final class GradleBuildBlocks {
               "NVD_API_KEY",
               "dependency-check-nvd-key",
               "",
-              (kotlin, preset, versions, module) -> GradleQualityBlocks.dependencyCheck(kotlin)),
+              (kotlin, preset, versions, selected) -> GradleQualityBlocks.dependencyCheck(kotlin)),
           new Block(
               "coverage",
               false,
@@ -31,9 +32,12 @@ public final class GradleBuildBlocks {
               GradleQualityBlocks.COVERAGE_TASK,
               "jacoco-coverage-rule",
               "",
-              (kotlin, preset, versions, module) ->
+              (kotlin, preset, versions, selected) ->
                   GradleQualityBlocks.coverage(
-                      kotlin, preset, versions.version(GradleToolCatalog.JACOCO_ENGINE))),
+                      kotlin,
+                      preset,
+                      versions.version(GradleToolCatalog.JACOCO_ENGINE),
+                      selected.contains(SupportedQualityGates.CRAP))),
           new Block(
               "mutation",
               false,
@@ -41,7 +45,7 @@ public final class GradleBuildBlocks {
               GradleQualityBlocks.PITEST_JUNIT5,
               "pitest-junit5",
               "",
-              (kotlin, preset, versions, module) ->
+              (kotlin, preset, versions, selected) ->
                   GradleQualityBlocks.pitest(
                       kotlin, versions.version(GradleToolCatalog.PITEST_ENGINE))),
           new Block(
@@ -51,7 +55,7 @@ public final class GradleBuildBlocks {
               "licenseReport {",
               "license-policy",
               "",
-              (kotlin, preset, versions, module) -> GradleLicensePolicy.block(kotlin, preset)));
+              (kotlin, preset, versions, selected) -> GradleLicensePolicy.block(kotlin, preset)));
 
   private GradleBuildBlocks() {}
 
@@ -72,7 +76,7 @@ public final class GradleBuildBlocks {
           && (preset != null || !block.needsPreset())
           && !edit.contains(block.present())) {
         edit.append(
-            "\n" + MARKER + "\n" + block.body().render(kotlin, preset, versions, module),
+            "\n" + MARKER + "\n" + block.body().render(kotlin, preset, versions, selected),
             block.tool(),
             block.versionOf().isEmpty() ? "" : versions.version(block.versionOf()));
       }
@@ -96,6 +100,6 @@ public final class GradleBuildBlocks {
   @FunctionalInterface
   private interface BlockBody {
     String render(
-        boolean kotlin, QualityPreset preset, GradleToolVersions versions, boolean module);
+        boolean kotlin, QualityPreset preset, GradleToolVersions versions, Set<String> selected);
   }
 }

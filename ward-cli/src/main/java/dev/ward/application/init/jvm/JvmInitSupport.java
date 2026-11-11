@@ -1,6 +1,7 @@
 package dev.ward.application.init.jvm;
 
 import dev.ward.application.init.CiWorkflowTemplate;
+import dev.ward.application.init.CrapInit;
 import dev.ward.application.init.InitInputs;
 import dev.ward.application.init.SourceLanguageGates;
 import dev.ward.application.init.SourceLanguages;
@@ -74,6 +75,18 @@ public final class JvmInitSupport implements ToolchainInitSupport {
       gates.addAll(ANDROID_GATES);
     }
     return gates;
+  }
+
+  /** Android's coverage report is not at the Gradle default location, so it is not offered. */
+  @Override
+  public boolean offersCrap(final Project project, final InitInputs inputs) {
+    return project.framework() != Framework.ANDROID;
+  }
+
+  @Override
+  public List<InitGateOption> withCrap(
+      final Project project, final List<InitGateOption> gates, final InitInputs inputs) {
+    return CrapInit.place(gates, COVERAGE, List.of(), List.of(), Map.of());
   }
 
   @Override

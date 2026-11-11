@@ -33,6 +33,26 @@ public interface ToolchainInitSupport extends OwnedFileSupport, MemberSupport {
     return true;
   }
 
+  /**
+   * Returns whether init offers the opt-in {@code crap} gate for {@code project}, that is, whether
+   * it can make the project's coverage tool write the report the gate reads.
+   */
+  default boolean offersCrap(final Project project, final InitInputs inputs) {
+    return false;
+  }
+
+  /**
+   * Returns {@code gates} with the setup the selected {@code crap} gate needs: it is placed after
+   * the gate that produces the coverage data, and the toolchain adds the report to the commands or
+   * checks. Returns {@code gates} when {@code crap} is not among them.
+   *
+   * @throws dev.ward.domain.config.WardException if the gate that produces the data is missing
+   */
+  default List<InitGateOption> withCrap(
+      final Project project, final List<InitGateOption> gates, final InitInputs inputs) {
+    return gates;
+  }
+
   /** Returns the presets init offers for the toolchain, in wizard order. */
   default List<QualityPreset> presets() {
     return List.of(QualityPreset.STANDARD, QualityPreset.STRICT);

@@ -50,7 +50,11 @@ final class SelectedGates {
     if (gates.isEmpty() && selection.tools().isEmpty()) {
       throw new WardException("Select at least one quality gate.");
     }
-    return offlineTrivy(gates, project);
+    return offlineTrivy(
+        InitToolchains.find(project)
+            .map(support -> support.withCrap(project, gates, catalog.inputs))
+            .orElse(gates),
+        project);
   }
 
   /** The {@code ward-format} gate: it has no command, because Ward runs it in-process. */

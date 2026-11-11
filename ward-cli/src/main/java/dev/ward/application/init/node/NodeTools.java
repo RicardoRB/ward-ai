@@ -187,6 +187,26 @@ public record NodeTools(
     return command(arguments.toArray(String[]::new));
   }
 
+  /**
+   * The flags that make the test runner write {@code coverage/lcov.info} and keep its text table,
+   * since setting reporters replaces the defaults. Ward's own Vitest and Jest configs already
+   * report it; Bun's {@code bunfig.toml} may be the project's.
+   */
+  List<String> crapFlags() {
+    return switch (testGate) {
+      case VITEST ->
+          ownTestConfig
+              ? List.of("--coverage.reporter=text", "--coverage.reporter=lcov")
+              : List.of();
+      case JEST ->
+          ownTestConfig
+              ? List.of("--coverageReporters=text", "--coverageReporters=lcov")
+              : List.of();
+      case BUN_TEST -> List.of("--coverage-reporter=text", "--coverage-reporter=lcov");
+      default -> List.of();
+    };
+  }
+
   /** The Stryker mutation gate; its config file sets the minimum score. */
   InitGateOption stryker() {
     return option(
