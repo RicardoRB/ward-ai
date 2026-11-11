@@ -15,6 +15,8 @@ still change behavior. Breaking changes are called out under **Changed**.
 ### Fixed
 
 - The `ward` gate no longer crashes with a `NullPointerException` on a JavaScript class that declares a `get` or `set` accessor. A getter is now a property of unknown type for the type-aware rules, and a setter declares nothing, as for TypeScript classes.
+- `ward:java/avoid-deeply-nested-if-stmts` no longer counts each `else if` of a chain as another nesting level, as PMD does; only a plain `else` block adds one.
+
 
 ## [0.6.0] - 2026-11-10
 
