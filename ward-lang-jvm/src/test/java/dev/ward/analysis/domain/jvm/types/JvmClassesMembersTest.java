@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 
 class JvmClassesMembersTest {
+  private static final int READS_WITHOUT_SHARING = 3;
 
   private static JvmClass classNamed(final String name) {
     return new JvmClass(
@@ -95,6 +96,6 @@ class JvmClassesMembersTest {
 
     assertThat(two).isNotSameAs(one);
     assertThat(other).isNotSameAs(one).isNotSameAs(two);
-    assertThat(reads).hasValue(3);
+    assertThat(reads).hasValue(READS_WITHOUT_SHARING);
   }
 }
