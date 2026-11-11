@@ -8,6 +8,7 @@ final class ClassMemberReader {
   private static final String PROPERTY_NAME = "propertyName";
   private static final String CALL_SIGNATURE = "callSignature";
   private static final String CONSTRUCTOR = "constructor";
+  private static final String CLASS_ELEMENT_NAME = "classElementName";
 
   private final MemberSink sink = new MemberSink();
 
@@ -39,14 +40,29 @@ final class ClassMemberReader {
     }
   }
 
-  /** Reads a method of a JavaScript class, whose parameters carry no types. */
+  /**
+   * Reads a method or accessor of a JavaScript class, whose parameters carry no types. A getter is
+   * a property of unknown type and a setter declares nothing, as for TypeScript classes.
+   */
   private void scriptMethod(final SyntaxNode node, final List<String> decorators) {
-    final String name = TreeText.text(TreeKit.child(node, "classElementName"));
+    final int flags = TreeKit.hasToken(node, "static") ? Member.STATIC : 0;
+    final SyntaxNode name = TreeKit.child(node, CLASS_ELEMENT_NAME);
+    final SyntaxNode getter = TreeKit.child(node, "getter");
+    if (name != null) {
+      namedMethod(TreeText.text(name), node, flags, decorators);
+    } else if (getter != null) {
+      final String property = TreeText.text(TreeKit.child(getter, CLASS_ELEMENT_NAME));
+      sink.add(new Member(property, TsType.UNKNOWN, List.of(), flags, decorators));
+    }
+  }
+
+  private void namedMethod(
+      final String name, final SyntaxNode node, final int flags, final List<String> decorators) {
     final Sig sig = new Sig(List.of(), SigReader.params(node), TsType.UNKNOWN);
     if (CONSTRUCTOR.equals(name)) {
       sink.addConstruct(sig);
     } else {
-      sink.method(name, sig, TreeKit.hasToken(node, "static") ? Member.STATIC : 0, decorators);
+      sink.method(name, sig, flags, decorators);
     }
   }
 

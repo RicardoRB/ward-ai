@@ -27,23 +27,23 @@ final class NativeTypeFactsBindings {
    * The native type-fact sources of the project at {@code projectRoot}, by language.
    *
    * @param projectRoot the project root
-   * @param frontend the parser that Python stubs and sources are read with
+   * @param frontend the parser that every language reads sources with, shared with the other passes
    * @param classpathFile the project's {@code java-classpath} file, if it has one
    */
   static Map<AnalysisLanguage, TypeFacts> forProject(
       final Path projectRoot, final LanguageFrontend frontend, final Optional<Path> classpathFile) {
     final Map<AnalysisLanguage, TypeFacts> sources = new EnumMap<>(AnalysisLanguage.class);
-    new NativeJvmTypes(projectRoot)
+    new NativeJvmTypes(projectRoot, frontend)
         .facts(classpathFile)
         .ifPresent(
             facts -> {
               sources.put(AnalysisLanguage.JAVA, facts);
               sources.put(AnalysisLanguage.KOTLIN, facts);
             });
-    final TypeFacts node = new NativeNodeTypes(projectRoot).facts();
+    final TypeFacts node = new NativeNodeTypes(projectRoot, frontend).facts();
     sources.put(AnalysisLanguage.TYPESCRIPT, node);
     sources.put(AnalysisLanguage.JAVASCRIPT, node);
-    sources.put(AnalysisLanguage.SWIFT, new NativeSwiftTypes(projectRoot));
+    sources.put(AnalysisLanguage.SWIFT, new NativeSwiftTypes(projectRoot, frontend));
     final PythonStubs stubs = new PythonStubs(frontend, new PythonStubFiles(projectRoot)::text);
     sources.put(
         AnalysisLanguage.PYTHON, new CachedTypeFacts(new PythonTypeFacts(frontend, stubs), ""));

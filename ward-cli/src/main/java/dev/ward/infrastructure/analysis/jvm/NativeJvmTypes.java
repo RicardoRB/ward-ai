@@ -5,6 +5,7 @@ import dev.ward.analysis.domain.jvm.JavaScopeAnalysis;
 import dev.ward.analysis.domain.jvm.KotlinScopeAnalysis;
 import dev.ward.analysis.domain.jvm.types.JvmClasses;
 import dev.ward.analysis.domain.jvm.types.NativeJvmTypeFacts;
+import dev.ward.analysis.domain.port.LanguageFrontend;
 import dev.ward.analysis.domain.port.TypeFacts;
 import dev.ward.analysis.domain.types.CachedTypeFacts;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
@@ -32,15 +33,25 @@ public final class NativeJvmTypes {
   private static final String CACHE_DIRECTORY = ".ward/cache/types";
 
   private final Path projectRoot;
+  private final LanguageFrontend frontend;
   private final ReentrantLock lock = new ReentrantLock();
   private final AtomicReference<Running> running = new AtomicReference<>();
 
   /** The libraries that are open and the facts that read them. */
   private record Running(JvmClassLibraries libraries, TypeFacts facts) {}
 
-  /** Creates the facts of the project at {@code projectRoot}. */
+  /** Creates the facts of the project at {@code projectRoot}, with a parser of its own. */
   public NativeJvmTypes(final Path projectRoot) {
+    this(projectRoot, new AntlrLanguageFrontend());
+  }
+
+  /**
+   * Creates the facts of the project at {@code projectRoot}, reading sources with {@code frontend},
+   * which the other passes of the run share so that a unit is parsed once.
+   */
+  public NativeJvmTypes(final Path projectRoot, final LanguageFrontend frontend) {
     this.projectRoot = projectRoot.toAbsolutePath().normalize();
+    this.frontend = frontend;
   }
 
   /**
@@ -79,7 +90,6 @@ public final class NativeJvmTypes {
                 Optional.ofNullable(environment.apply("JAVA_HOME")),
                 Optional.ofNullable(System.getProperty("java.home"))),
             Optional.of(projectRoot.resolve(CACHE_DIRECTORY)));
-    final AntlrLanguageFrontend frontend = new AntlrLanguageFrontend();
     final JvmClasses classes =
         new JvmClasses(
             libraries,

@@ -5,7 +5,7 @@ import java.util.List;
 
 /** Finds where one nullness rule reports in a file. */
 @FunctionalInterface
-interface NullFinder {
+public interface NullFinder {
 
   /**
    * The file as the finders read it.
