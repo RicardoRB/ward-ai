@@ -3,12 +3,15 @@ package dev.ward.analysis.domain.jvm.types;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.LanguageFrontend;
+import dev.ward.analysis.domain.types.TypeMembers;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,6 +54,17 @@ public final class JvmClasses {
     return own != null ? Optional.of(own) : shared.find(name);
   }
 
+  /**
+   * Returns the members of {@code type}, read once for a class that every unit shares. A class that
+   * the unit itself declares is read each time, because its sibling units may see another version.
+   */
+  TypeMembers membersOf(final JvmClass type, final Function<JvmClass, TypeMembers> reader) {
+    if (local.containsKey(type.name())) {
+      return reader.apply(type);
+    }
+    return shared.members.computeIfAbsent(type.name(), name -> reader.apply(type));
+  }
+
   /** Returns whether the class exists, without reading it when it is compiled. */
   boolean exists(final String name) {
     return local.containsKey(name) || shared.exists(name);
@@ -62,6 +76,7 @@ public final class JvmClasses {
     private final JvmSources sources;
     private final LanguageFrontend frontend;
     private final Map<String, Map<String, JvmClass>> parsed = new HashMap<>();
+    private final Map<String, TypeMembers> members = new ConcurrentHashMap<>();
     private final Set<String> loading = new HashSet<>();
     private final ReentrantLock lock = new ReentrantLock();
 
