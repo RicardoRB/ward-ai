@@ -80,3 +80,15 @@ body = '''
 check = "outer-type-filename"
 message = "the type '{value}' must be declared in a file named after it, '{max}.java'"
 '''
+
+[[rules]]
+id = "ward:java/final-parameters"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "style"
+presets = ["strict"]
+body = '''
+check = "final-parameters"
+message = "parameter '{value}' is never assigned; declare it final"
+'''

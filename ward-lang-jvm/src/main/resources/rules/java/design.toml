@@ -184,11 +184,8 @@ severity = "error"
 category = "complexity"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["qualifiedNameList"]
-parent = ["methodDeclaration"]
-text = '(^|,)\s*(java\.lang\.)?(Exception|Throwable)\s*($|,)'
-message = "method declares Exception or Throwable in its throws clause; declare the specific exception"
+check = "throws-exception"
+message = "method declares Exception in its throws clause; declare the specific exception"
 '''
 
 [[rules]]

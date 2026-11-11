@@ -10,7 +10,7 @@ class JsonTreeValue {
     this.value = value;
   }
 
-  public Object value() {
+  Object value() {
     return value;
   }
 

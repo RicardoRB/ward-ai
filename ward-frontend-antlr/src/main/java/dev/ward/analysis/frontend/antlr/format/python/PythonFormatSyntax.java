@@ -109,12 +109,12 @@ public final class PythonFormatSyntax implements FormatSyntax {
     }
 
     @Override
-    public void reportMissingToken(final Parser recognizer) {
+    protected void reportMissingToken(final Parser recognizer) {
       record(recognizer);
     }
 
     @Override
-    public void reportUnwantedToken(final Parser recognizer) {
+    protected void reportUnwantedToken(final Parser recognizer) {
       record(recognizer);
     }
 
