@@ -1007,6 +1007,7 @@ oasdiff = ["required-response-header-removed"]
 [[rule]]
 name = "response-body-all-of-removed"
 category = "correctness"
+not-applicable = { openapi = "oasdiff 1.37.0 lists the check as an error but reports it at warning level for every allOf change tried (inline and referenced members, three members, constraint-only members), so the error-level diff never contains it" }
 oasdiff = ["response-body-all-of-removed"]
 
 [[rule]]
@@ -1464,6 +1465,7 @@ oasdiff = ["response-mediatype-enum-value-added"]
 [[rule]]
 name = "response-property-all-of-removed"
 category = "correctness"
+not-applicable = { openapi = "oasdiff 1.37.0 lists the check as an error but reports it at warning level for every allOf change tried (inline and referenced members, three members, constraint-only members), so the error-level diff never contains it" }
 oasdiff = ["response-property-all-of-removed"]
 
 [[rule]]
