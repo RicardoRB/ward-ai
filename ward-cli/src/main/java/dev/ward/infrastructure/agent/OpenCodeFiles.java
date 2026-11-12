@@ -1,6 +1,8 @@
 package dev.ward.infrastructure.agent;
 
 import dev.ward.domain.project.Project;
+import java.nio.file.Path;
+import java.util.regex.Pattern;
 
 /**
  * The OpenCode files of one Ward project. A root project keeps the original names and contents; a
@@ -12,7 +14,9 @@ import dev.ward.domain.project.Project;
 record OpenCodeFiles(String projectPath) {
   static final String COMMAND_FILE = ".opencode/commands/ward-check";
   static final String PLUGIN_FILE = ".opencode/plugins/ward-edit-write";
-  static final String GUARD_FILE = ".opencode/plugins/ward-openspec-guard";
+  private static final String PLUGINS_DIRECTORY = ".opencode/plugins";
+  private static final String GUARD_NAME = "ward-[a-z]+-guard";
+  private static final String GUARD_MARKER = "ward-owned: opencode-[a-z]+-guard v1";
   private static final String SESSION_CWD = "{ cwd: directory, ";
   private static final String PROJECT_CWD = "{ cwd: PROJECT, ";
 
@@ -32,8 +36,12 @@ record OpenCodeFiles(String projectPath) {
     return PLUGIN_FILE + suffix() + ".js";
   }
 
-  String guardFile() {
-    return GUARD_FILE + suffix() + ".js";
+  /** The guard plugins that earlier versions wrote for this project below {@code root}. */
+  LegacyFiles legacyGuards(final Path root) {
+    return new LegacyFiles(
+        root.resolve(PLUGINS_DIRECTORY),
+        Pattern.compile(GUARD_NAME + Pattern.quote(suffix() + ".js")),
+        Pattern.compile(GUARD_MARKER));
   }
 
   String command(final String template) {
@@ -61,27 +69,6 @@ record OpenCodeFiles(String projectPath) {
                 + ".map((path) => (isAbsolute(path) ? path : join(directory, path)));")
         .replace(
             "id: \"ward.edit-write\"", "id: \"ward.edit-write." + Project.slug(projectPath) + "\"");
-  }
-
-  /** Runs the guard from the project, with an edited path made absolute against the session. */
-  String guard(final String template) {
-    if (!nested()) {
-      return template;
-    }
-    return template
-        .replace(
-            "import { isAbsolute, join } from \"node:path\";",
-            "import { dirname, isAbsolute, join } from \"node:path\";\n"
-                + "import { fileURLToPath } from \"node:url\";")
-        .replace("const GUARDED", projectConstant() + "const GUARDED")
-        .replace(SESSION_CWD, PROJECT_CWD)
-        .replace(
-            "if (path) return { command: [\"spec\", \"guard\", \"--\", path] };",
-            "if (path) return { command: [\"spec\", \"guard\", \"--\","
-                + " isAbsolute(path) ? path : join(directory, path)] };")
-        .replace(
-            "id: \"ward.openspec-guard\"",
-            "id: \"ward.openspec-guard." + Project.slug(projectPath) + "\"");
   }
 
   /** The project directory: two levels above the plugin file, then the project path. */

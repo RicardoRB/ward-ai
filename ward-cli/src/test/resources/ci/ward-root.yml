@@ -31,7 +31,6 @@ jobs:
         run: |
           set -eu
           pip install semgrep==1.181.0
-          npm install -g @fission-ai/openspec@1.14.1
       - name: Install Ward
         env:
           WARD_VERSION: v0.1.1

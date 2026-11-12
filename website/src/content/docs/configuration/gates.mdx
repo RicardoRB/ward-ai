@@ -29,7 +29,7 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `enforcer` | Maven Enforcer / Gradle checks | Dependency and build rules. |
 | | `build-policy` | Ward's native build policy rules | Pinned plugin versions, no dynamic versions, a minimum build tool version and duplicate dependency declarations in Maven, Gradle, Node and Python build files; see [Build policy rules](/reference/build-policy-rules/). |
 | Dependencies & Compliance | `license` | Ward (native) | Licenses of the resolved dependencies against a deny or allow policy, for every toolchain. See [License gate](#license-gate). |
-| | `api-compat` | japicmp | Binary/API compatibility between versions. |
+| | `api-compat` | Ward (Java), japicmp (Kotlin) | Compatibility of the public API with the latest release. |
 | REST API contract | `openapi-lint` | Ward's OpenAPI rules | Lint the committed OpenAPI spec with every rule, with no tool to install. |
 | | `openapi-diff` | Ward breaking-change rules | Breaking changes in uncommitted spec edits. |
 | | `openapi-compat` | Ward breaking-change rules | Breaking changes on the branch against `origin/main`. |
@@ -48,7 +48,6 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `android-unit-test` | Android unit tests | Run `testDebugUnitTest` through the Gradle wrapper. |
 | | `android-coverage` | AGP JaCoCo | Fail below a `minimum` line coverage of the debug unit tests. |
 | Custom | `command` | — | Run an arbitrary configured project check. |
-| Traceability | `openspec-junit-traceability` | Ward source analysis | Require one explicitly annotated JUnit mapping per live OpenSpec scenario. |
 
 ## Choosing gates
 
@@ -946,43 +945,55 @@ instead of passing. `ward init --preset strict` writes an `allow` list of Apache
 BSD-2-Clause, BSD-3-Clause, ISC, EPL-1.0, EPL-2.0 and CC0-1.0. See also
 [`ward sbom` and `ward licenses`](/commands/sbom/).
 
-## Traceability gate
-
-`openspec-junit-traceability` is the one built-in gate that needs no `command`:
-
-```toml
-[checks.openspec-junit-traceability]
-enabled = true
-```
-
-Each mapping must be declared directly on a `@Test`, `@ParameterizedTest`, or `@RepeatedTest`
-method, using matching exact identities:
-
-```java
-@Tag("spec:identity/user-auth")
-@DisplayName("Successful sign-in")
-@Test
-void signsIn() {}
-```
-
-- Only the existence of a mapping is checked, not test execution or assertions.
-- Empty live specs fail with `no scenarios found`.
-- Active-change specs are excluded.
-
 ## API compatibility
 
-`api-compat` is for published libraries. It compares the latest released artifact (`RELEASE`) with
-the jar the current build produces, so a released baseline must be resolvable from a Maven
-repository.
+`api-compat` compares the public API of the project's main sources in the working tree with the
+public API of the same sources at an earlier Git revision, and reports each incompatible change.
+For Java it is a Ward check: it runs no build, no external tool and no network access, reads the
+baseline from Git objects (nothing is checked out), and works the same for Maven and Gradle.
 
-On Maven, init:
+```toml
+[checks.api-compat]
+uses = "api-compat"
+profiles = ["ci"]
+base = "v1.4.0"             # optional: a Git ref; default is the latest release tag
+include = ["com.acme.api"]  # optional: package prefixes that limit the API
+```
 
-- runs `-DskipTests package japicmp:cmp`;
-- points japicmp's new version at `${project.build.directory}/${project.build.finalName}.jar`, so a
-  custom `finalName` works;
-- limits the comparison to `${project.groupId}.*`, so classes bundled from dependencies are not
-  reported;
-- offers the gate only when `pom.xml` declares `<distributionManagement>`.
+- **Baseline.** `base` names a Git ref. Without it, the baseline is the highest release tag
+  reachable from `HEAD` (`v1.2.3` or `1.2`, any further numeric segments, no suffix), other than a
+  tag that points at `HEAD`. Pre-release tags such as `v1.0.0-rc1` are never a baseline. Ward never
+  fetches: CI needs full history and tags (`fetch-depth: 0`), which init's workflow sets.
+- **Scope.** Types in the main source roots, read from `pom.xml` or the Gradle script at each
+  revision. Test sources are not API. `include` limits the API to types whose qualified name starts
+  with one of the package prefixes, as japicmp's `${project.groupId}.*` filter did.
+- **Java API.** `public` types and members, `protected` members of types that can be extended
+  outside their package, interface members, and nested types of API types. Package-private and
+  `private` declarations are not API.
+- **Execution errors, never a pass.** Not a Git repository, an unknown `base`, no release tag, a
+  baseline that has no sources for the project, a syntax error in a source file at either revision
+  (the message names the file and the revision), and an `include` prefix that matches no type at
+  the baseline.
+- **Findings.** `api-compat:<kind>`, with the qualified type, the member, the signature at the
+  baseline and the signature now (or `removed`). Kinds: `type-removed`, `type-less-visible`,
+  `type-kind-changed`, `type-now-final`, `type-now-abstract`, `supertype-removed`,
+  `type-parameters-changed`, `member-removed`, `member-less-visible`, `static-changed`,
+  `return-type-changed`, `field-type-changed`, `signature-changed`, `abstract-method-added`,
+  `method-now-abstract`, `method-now-final` and `field-now-final`. A method that moved to an API
+  supertype of the project is not reported as removed.
+- **Not reported.** Additions, widened visibility, abstract methods that become concrete, added
+  `default` methods, annotation, `throws`, parameter-name and constant-value changes, and
+  bridge or synthetic members. Narrowing a return type is reported, because callers compiled
+  against the old signature break.
+- **Limits.** The baseline is the tag's sources, not the published artifact, so a release built
+  from other code is not seen. Code generated by annotation processors or Lombok is not read, and a
+  type from a library that is not imported by name or on Ward's classpath is left out of both sides.
+
+Init offers `api-compat` to a Java project (Maven or Gradle) when a release tag is reachable from
+`HEAD`, and writes `uses = "api-compat"` with no command and no build-file change. Kotlin projects
+are not read by the native check yet: for them init still offers the japicmp command, which needs
+`<distributionManagement>` on Maven. A `[checks.api-compat]` with a `command` runs that command as
+before; one without a `command` is the native check.
 
 Applications shipped as binaries, such as CLIs, have no Java API consumers and should not enable it.
 
@@ -1129,51 +1140,6 @@ In a Turborepo workspace, the type-check and test gates have no table and always
 The forms above were verified against the real tools: a path format a tool does not understand
 analyzes no files and passes. The full check at the end of an agent turn, Git hooks, and CI always
 check the whole project.
-
-## OpenSpec tool validations
-
-OpenSpec is an optional project tool, not a quality-gate menu entry. A configuration may register
-the two validations independently:
-
-```toml
-[checks.openspec]
-enabled = true
-command = ["openspec", "validate", "--all", "--strict", "--no-interactive"]
-
-[checks.openspec-archived]
-enabled = true
-command = ["openspec", "validate", "--archived", "--no-interactive"]
-```
-
-- The configured executable runs directly from the target root. Relative and absolute paths are
-  honored, with no PATH fallback.
-- Both validations need an `openspec/` directory at the project root.
-- A missing executable is reported as `UNAVAILABLE`. A missing or non-directory `openspec/` is a
-  `FAILED` result.
-- Check and doctor never install or scaffold OpenSpec.
-
-### OpenSpec in a monorepo
-
-In a monorepo, `openspec/` often lives at the repository root while the Java project sits in a
-subdirectory. Set `root` on each OpenSpec gate to the directory that holds `openspec/`, relative to
-the project root:
-
-```toml
-[checks.openspec]
-enabled = true
-command = ["openspec", "validate", "--all", "--strict", "--no-interactive"]
-root = "../.."
-```
-
-- The gate then requires `openspec/` in that directory and runs the command from it.
-- Ward never searches other parents. If `root` has no `openspec/`, the gate fails and names the
-  configured root.
-- `root` must be relative and stay inside the Git repository. An absolute path is a configuration
-  error, and a path that leaves the repository fails the gate without running it.
-- `ward init` writes `root` for a nested project without its own `openspec/` when the repository
-  root has one. Doctor reports the prerequisites of the configured root.
-- Targeted `ward spec validate -- <paths>` uses the same root, and the approved-artifact guard
-  protects that repository-level `openspec/` too.
 
 ## Legacy identifiers
 

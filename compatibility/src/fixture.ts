@@ -40,7 +40,6 @@ export interface Fixture {
 
 export interface FixtureOptions {
   harness: string;
-  guard: boolean;
   ward: WardLauncher;
   timeoutMs?: number;
   /** Gates passed to `ward init`; defaults to `compile`; init always adds `ward` and `ward-format`. */
@@ -88,9 +87,7 @@ export async function createFixture(options: FixtureOptions): Promise<Fixture> {
     // Init's own edit-profile gates run inside Ward, so a stub command gate gives tests a failure they
     // control: the fixture's stub mvnw fails while a FAIL file exists.
     appendFileSync(join(root, "ward.toml"), '\n[checks.format]\nenabled = true\nprofiles = ["default", "edit"]\ncommand = "./mvnw format"\n');
-    const integrate = ["integrate", options.harness];
-    if (options.guard) integrate.push("--guard-approved-specs");
-    await expectSuccess(`ward integrate ${options.harness}`, ward(integrate));
+    await expectSuccess(`ward integrate ${options.harness}`, ward(["integrate", options.harness]));
     return fixture;
   } catch (error) {
     fixture.cleanup();

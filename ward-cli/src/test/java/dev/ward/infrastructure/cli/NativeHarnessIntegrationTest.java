@@ -2,6 +2,7 @@ package dev.ward.infrastructure.cli;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.nio.file.Files;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -17,10 +18,10 @@ class NativeHarnessIntegrationTest extends WardCliIntegrationSupport {
       final String id, final String config, final String hook) {
     assertThat(run("integrate", id, "-C", project.toString())).isZero();
     assertThat(project.resolve(config)).exists();
-    assertThat(project.resolve(hook)).exists();
+    assertThat(hook.isEmpty() || Files.exists(project.resolve(hook))).isTrue();
     assertThat(run("integrate", id, "--remove", "-C", project.toString())).isZero();
     assertThat(project.resolve(config)).doesNotExist();
-    assertThat(project.resolve(hook)).doesNotExist();
+    assertThat(hook.isEmpty() || Files.notExists(project.resolve(hook))).isTrue();
   }
 
   private static Stream<Arguments> harnesses() {
@@ -30,7 +31,7 @@ class NativeHarnessIntegrationTest extends WardCliIntegrationSupport {
         Arguments.of("copilot", ".github/hooks/ward.json", ".github/hooks/ward.sh"),
         Arguments.of("gemini", ".gemini/settings.json", ".gemini/hooks/ward.sh"),
         Arguments.of("windsurf", ".windsurf/hooks.json", ".windsurf/hooks/ward.sh"),
-        Arguments.of("cline", ".cline/hooks/PostToolUse", ".cline/hooks/PreToolUse"),
+        Arguments.of("cline", ".cline/hooks/PostToolUse", ""),
         Arguments.of("factory-droid", ".factory/hooks.json", ".factory/hooks/ward.sh"),
         Arguments.of("amp", ".amp/plugins/ward.ts", ".amp/plugins/ward.sh"),
         Arguments.of("junie", ".junie/config.json", ".junie/hooks/ward.sh"));

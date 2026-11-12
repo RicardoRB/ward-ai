@@ -75,13 +75,13 @@ final class OpenApiGateFixtures {
                 command,
                 Set.of("ci"),
                 null,
-                null,
                 new OpenApiGateOptions(SPEC, null),
                 null,
                 null,
                 null,
                 null,
                 List.of(),
+                null,
                 null,
                 null,
                 null,
@@ -99,31 +99,7 @@ final class OpenApiGateFixtures {
 
   OpenApiGates gates(final CommandExecutor executor) {
     return new OpenApiGates(
-        new RevisionFiles() {
-          @Override
-          public Optional<String> resolve(final Path root, final String revision) {
-            return Optional.ofNullable(revisions.get(revision));
-          }
-
-          @Override
-          public Optional<String> mergeBase(
-              final Path root, final String first, final String second) {
-            return mergeBase;
-          }
-
-          @Override
-          public boolean exists(final Path root, final String commit, final String path) {
-            return committedFiles.contains(commit + ":" + path);
-          }
-
-          @Override
-          public Optional<String> read(final Path root, final String commit, final String path) {
-            if (unreadable) {
-              throw new RevisionReadException("git failed");
-            }
-            return Optional.ofNullable(committedContents.get(commit + ":" + path));
-          }
-        },
+        revisionFiles(),
         new ProjectFiles() {
           @Override
           public boolean exists(final Path root, final String path) {
@@ -142,5 +118,52 @@ final class OpenApiGateFixtures {
         },
         null,
         CLOCK);
+  }
+
+  private RevisionFiles revisionFiles() {
+    return new RevisionFiles() {
+      @Override
+      public Optional<String> resolve(final Path root, final String revision) {
+        return Optional.ofNullable(revisions.get(revision));
+      }
+
+      @Override
+      public Optional<String> mergeBase(final Path root, final String first, final String second) {
+        return mergeBase;
+      }
+
+      @Override
+      public boolean exists(final Path root, final String commit, final String path) {
+        return committedFiles.contains(commit + ":" + path);
+      }
+
+      @Override
+      public List<String> files(final Path root, final String commit, final String directory) {
+        return List.of();
+      }
+
+      @Override
+      public Optional<String> read(final Path root, final String commit, final String path) {
+        if (unreadable) {
+          throw new RevisionReadException("git failed");
+        }
+        return Optional.ofNullable(committedContents.get(commit + ":" + path));
+      }
+
+      @Override
+      public List<String> tagsReachableFrom(final Path root, final String commit) {
+        return List.of();
+      }
+
+      @Override
+      public List<String> tagsAt(final Path root, final String commit) {
+        return List.of();
+      }
+
+      @Override
+      public boolean isShallow(final Path root) {
+        return false;
+      }
+    };
   }
 }

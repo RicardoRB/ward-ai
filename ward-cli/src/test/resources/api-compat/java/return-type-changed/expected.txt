@@ -1,0 +1,2 @@
+p/A.java:4:3 api-compat:return-type-changed p.A#name: public java.lang.String name() -> public int name()
+p/A.java:5:3 api-compat:return-type-changed p.A#other: public java.lang.Object other() -> public java.lang.String other()

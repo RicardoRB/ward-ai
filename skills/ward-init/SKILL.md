@@ -188,25 +188,22 @@ order:
 5. **Tool installation** (one question per selected gate that has an `install` line). Show the exact
    command from the plan, for example `brew install <tool>`. No is the default. Only a yes adds that
    gate to `--install-tool`. For `guidance` tools, give the link. They cannot be installed by init.
-6. **OpenSpec** (offer it only when the repository has an `openspec/` directory or the user mentions
-   specs). Ask about `--tool openspec`, then separately about each validation (`openspec`,
-   `openspec-archived`). Installing OpenSpec is its own yes for `--install-tool openspec`.
-7. **Agent integration.** Recommend the harness you are running in (for example `claude-code`,
+6. **Agent integration.** Recommend the harness you are running in (for example `claude-code`,
    `opencode`, or `codex`), plus any other the user names, including `junie` for Junie CLI. `none` is valid.
-8. **Git quality hooks.** These add Ward sections to `.git/hooks/pre-commit` and `pre-push`
+7. **Git quality hooks.** These add Ward sections to `.git/hooks/pre-commit` and `pre-push`
    without replacing existing hook logic; they print `--format json` reports so agents can act on findings. Recommend them when the project has no CI, and mention that
    they slow down commits and pushes.
-9. **CI workflow** (only for GitHub repositories: a `github.com` remote or a `.github/` directory).
+8. **CI workflow** (only for GitHub repositories: a `github.com` remote or a `.github/` directory).
    `--ci github` writes `.github/workflows/ward.yml`, which runs the `ci` profile, installs the
    gate tools, and uploads SARIF to code scanning. Recommend it when the project has no workflow that
    runs Ward. If `.github/workflows/ward.yml` already exists and is not Ward's, the plan
    shows a `conflict`. When `vulnerabilities` is selected the workflow caches
    `.ward/cache/vulnerabilities/`. Mention that `zap` is not run by the workflow.
-10. **Agent rules** (offer when an agent integration is selected). `--agent-rules` writes a
-    Ward-owned section into `AGENTS.md` that lists the limits the gates enforce (file and method
-    length, parameters, coverage and mutation minimums), so agents meet them before the first check
-    fails. Existing `AGENTS.md` content is kept. Recommend it for `strict`, where the limits are
-    hardest to guess.
+9. **Agent rules** (offer when an agent integration is selected). `--agent-rules` writes a
+   Ward-owned section into `AGENTS.md` that lists the limits the gates enforce (file and method
+   length, parameters, coverage and mutation minimums), so agents meet them before the first check
+   fails. Existing `AGENTS.md` content is kept. Recommend it for `strict`, where the limits are
+   hardest to guess.
 
 If the user changes an earlier answer, update it and continue. Do not restart the conversation.
 

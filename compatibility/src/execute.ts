@@ -104,11 +104,8 @@ pwd -P > "$dir/cwd"
 cat > "$dir/stdin"
 # Written last, so readers never observe a partially recorded invocation.
 : > "$dir/complete"
-# Optional per-subcommand responses: $WARD_STUB_RESPONSES/<command>[-<subcommand>]/{exit,stdout,stderr,delay}; hook calls are keyed hook-guard or hook-check.
-key="$1"; [ "$1" = spec ] && key="spec-$2"
-if [ "$1" = hook ]; then
-  case " $* " in *" --guard-approved-specs "*) key="hook-guard" ;; *) key="hook-check" ;; esac
-fi
+# Optional per-command responses: $WARD_STUB_RESPONSES/<command>/{exit,stdout,stderr,delay}.
+key="$1"
 response="$responses/$key"
 if [ -d "$response" ]; then
   [ -f "$response/delay" ] && sleep "$(cat "$response/delay")"

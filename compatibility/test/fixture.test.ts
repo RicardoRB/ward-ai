@@ -48,11 +48,11 @@ describe("disposable fixtures", () => {
 
   test("integrates with real Ward output inside an isolated home", async () => {
     const before = snapshot();
-    const fixture = await createFixture({ harness: "codex", guard: true, ward: launcher! });
+    const fixture = await createFixture({ harness: "codex", ward: launcher! });
     try {
       const base = dirname(fixture.root);
       expect(readFileSync(join(fixture.root, ".codex/hooks.json"), "utf8")).toContain("ward-owned: codex-native-hooks v1");
-      expect(readFileSync(join(fixture.root, ".codex/hooks/ward.sh"), "utf8")).toContain("--guard-approved-specs");
+      expect(readFileSync(join(fixture.root, ".codex/hooks/ward.sh"), "utf8")).toContain("ward hook native --agent codex");
       for (const key of ["HOME", "XDG_CONFIG_HOME", "XDG_CACHE_HOME", "XDG_DATA_HOME", "CODEX_HOME", "CLAUDE_CONFIG_DIR", "COPILOT_HOME", "TMPDIR"]) {
         expect(fixture.env[key].startsWith(base)).toBe(true);
       }
@@ -67,7 +67,7 @@ describe("disposable fixtures", () => {
   test("a failed integration cleans up and reports no captured output", async () => {
     let error: unknown;
     try {
-      await createFixture({ harness: "not-a-harness", guard: false, ward: launcher! });
+      await createFixture({ harness: "not-a-harness", ward: launcher! });
     } catch (caught) {
       error = caught;
     }

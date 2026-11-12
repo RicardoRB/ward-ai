@@ -4,16 +4,11 @@ import static dev.ward.ProjectFixtures.PLAIN_POM;
 import static dev.ward.ProjectFixtures.withPom;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.ward.application.project.ProjectDetector;
-import dev.ward.application.spec.ApprovedArtifactGuardService;
-import dev.ward.application.spec.SpecValidationFixtures;
-import dev.ward.domain.FakeOpenSpecEnvironment;
+import dev.ward.application.gate.HookCheckFixtures;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
 import dev.ward.infrastructure.agent.CodexIntegration;
 import dev.ward.infrastructure.json.ForyJsonCodec;
-import dev.ward.infrastructure.project.FileSystemProjectInspection;
-import dev.ward.infrastructure.spec.FileSystemProjectPaths;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -51,16 +46,9 @@ class NativeHookFailureTest {
   }
 
   private int run(final String payload, final String... args) {
-    final FakeOpenSpecEnvironment environment = new FakeOpenSpecEnvironment(true);
     final NativeHookCommand command =
         new NativeHookCommand(
-            new HookChecks(
-                SpecValidationFixtures.checks(passing, environment),
-                SpecValidationFixtures.service(
-                    passing, environment, SpecValidationFixtures.checks(passing, environment))),
-            new ApprovedArtifactGuardService(
-                new ProjectDetector(new FileSystemProjectInspection()),
-                new FileSystemProjectPaths()),
+            new HookChecks(HookCheckFixtures.checks(passing)),
             new ForyJsonCodec(),
             Set.of(new CodexIntegration()),
             new ByteArrayInputStream(payload.getBytes(StandardCharsets.UTF_8)));
@@ -79,23 +67,6 @@ class NativeHookFailureTest {
   @Test
   void nonObjectPayloadIsTreatedAsUnreadable() {
     assertThat(run("[1, 2]", AGENT, CODEX, EVENT_STDIN, DIRECTORY, root.toString())).isZero();
-    assertThat(err.toString()).isEmpty();
-  }
-
-  @Test
-  void guardAllowsUnreadablePayloadWhenNoApprovedArtifactsExist() {
-    final int exit =
-        run(
-            "null",
-            AGENT,
-            CODEX,
-            "--guard-approved-specs",
-            EVENT_STDIN,
-            DIRECTORY,
-            root.toString());
-
-    assertThat(exit).isZero();
-    assertThat(out.toString()).isEmpty();
     assertThat(err.toString()).isEmpty();
   }
 

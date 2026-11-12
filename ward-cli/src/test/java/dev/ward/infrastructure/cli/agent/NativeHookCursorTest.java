@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-/** Pins Cursor delivery: postToolUse additional_context, stop followup_message, preToolUse deny. */
+/** Pins Cursor delivery: postToolUse additional_context, stop followup_message. */
 class NativeHookCursorTest {
   @TempDir Path root;
 
@@ -61,46 +61,5 @@ class NativeHookCursorTest {
         .isZero();
     assertThat(hook.out.toString()).isEmpty();
     assertThat(hook.err.toString()).contains("Ward quality findings");
-  }
-
-  @Test
-  void theGuardDeniesAWriteToAnApprovedSpec() {
-    final String spec = root.resolve("openspec/specs/auth/spec.md").toString();
-    assertThat(
-            hook.run(
-                0,
-                tool("preToolUse", "Write", "{\"file_path\":\"" + spec + "\",\"content\":\"x\"}"),
-                "--guard-approved-specs"))
-        .isZero();
-    assertThat(hook.out.toString())
-        .startsWith("{\"permission\":\"deny\"")
-        .contains("openspec/specs/auth/spec.md");
-  }
-
-  @Test
-  void theGuardResolvesAShellCommandInItsWorkingDirectory() {
-    assertThat(
-            hook.run(
-                0,
-                tool(
-                    "preToolUse",
-                    "Shell",
-                    "{\"command\":\"rm specs/auth/spec.md\",\"working_directory\":\""
-                        + root.resolve("openspec")
-                        + "\"}"),
-                "--guard-approved-specs"))
-        .isZero();
-    assertThat(hook.out.toString()).contains("\"permission\":\"deny\"");
-  }
-
-  @Test
-  void theGuardAllowsAWriteOutsideApprovedSpecs() {
-    assertThat(
-            hook.run(
-                0,
-                tool("preToolUse", "Write", "{\"file_path\":\"src/A.java\"}"),
-                "--guard-approved-specs"))
-        .isZero();
-    assertThat(hook.out.toString()).isEmpty();
   }
 }

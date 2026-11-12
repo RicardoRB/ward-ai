@@ -153,7 +153,7 @@ async function runHarness(harness: Harness, options: LiveOptions, revision: stri
       continue;
     }
     const started = performance.now();
-    const fixture = await createFixture({ harness: harness.id, guard: true, ward: launcher });
+    const fixture = await createFixture({ harness: harness.id, ward: launcher });
     try {
       driver.prepare?.(fixture);
       const wrapperDir = join(dirname(fixture.root), "ward-bin");

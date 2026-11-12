@@ -138,8 +138,9 @@ ward init -C <dir> --dry-run --preset strict --integration none --architecture l
 ```
 
 Add `--overwrite` when `ward.toml` already exists. Without it the probe prints nothing useful.
-On a Maven project whose `pom.xml` has no `<distributionManagement>`, drop `api-compat` from the
-list: init offers it only for published libraries and rejects it otherwise.
+On a Java project with no release tag reachable from `HEAD` (such as `v1.2.3`), drop `api-compat`
+from the list: init offers it only when a tag exists and rejects it otherwise. On a Kotlin Maven
+project whose `pom.xml` has no `<distributionManagement>`, drop it too.
 When Git tracks an OpenAPI spec (`openapi.yml`, `openapi.yaml`, or `openapi.json` in
 `src/main/resources` or the project root), add `openapi-lint,openapi-diff,openapi-compat`; init
 rejects them otherwise.
@@ -153,8 +154,6 @@ Read these lines from the output:
 - `install    <command>` is the installation init would run if the user consents with
   `--install-tool <id>`.
 - `guidance   <tool>: <url>` means the tool can only be installed by hand.
-- `Warning: openspec/ is ignored by Git` means the OpenSpec gate passes locally but fails in CI.
-  Ask whether to track `openspec/` or keep the validation out of the `ci` profile.
 
 Ignore the rest of the probe's plan. It reflects the probe's selection, not the user's.
 

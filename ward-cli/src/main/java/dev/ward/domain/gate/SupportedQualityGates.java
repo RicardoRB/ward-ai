@@ -5,9 +5,9 @@ import java.util.Set;
 
 /** Stable configuration identifiers for the built-in quality gates. */
 public final class SupportedQualityGates {
-  public static final String TRACEABILITY = "openspec-junit-traceability";
   public static final String ANALYSIS = "ward";
   public static final String FORMAT = "ward-format";
+  public static final String API_COMPAT = "api-compat";
   public static final String SECRETS = "secrets";
   public static final String COVERAGE = "coverage";
   public static final String CRAP = "crap";
@@ -29,8 +29,6 @@ public final class SupportedQualityGates {
   public static final List<String> IDS =
       QualityGateDefinitions.all().stream().map(QualityGateDefinitions.Definition::id).toList();
 
-  private static final Set<String> SPEC_IDS = Set.of("openspec", "openspec-archived");
-
   private static final Set<String> OPENAPI_IDS = Set.of(OPENAPI_LINT, OPENAPI_DIFF, OPENAPI_COMPAT);
 
   public static final List<String> LEGACY_IDS = List.of("architecture", "compliance");
@@ -38,11 +36,6 @@ public final class SupportedQualityGates {
   public static final String ZAP_TARGET_PLACEHOLDER = "<TARGET_URL>";
 
   private SupportedQualityGates() {}
-
-  /** Specification validations, which run separately from code-quality checks when requested. */
-  public static Set<String> specIds() {
-    return SPEC_IDS;
-  }
 
   /** The gates that check a committed OpenAPI spec and take OpenAPI options. */
   public static Set<String> openApiIds() {

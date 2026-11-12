@@ -1,7 +1,6 @@
 package dev.ward.application.init;
 
 import dev.ward.domain.agent.AgentIntegration;
-import dev.ward.domain.agent.GuardMode;
 import dev.ward.domain.agent.IntegrationRequest;
 import dev.ward.domain.agent.IntegrationResult;
 import dev.ward.domain.agent.PlannedFileChange;
@@ -72,8 +71,7 @@ final class IntegrationInstaller {
               final AgentIntegration adapter = integration(id);
               return adapter
                   .plan(
-                      root(project, adapter),
-                      request(project, adapter, new IntegrationRequest(false, GuardMode.KEEP)))
+                      root(project, adapter), request(project, adapter, IntegrationRequest.INSTALL))
                   .stream();
             })
         .toList();

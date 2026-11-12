@@ -1,5 +1,6 @@
 package dev.ward.application.gate;
 
+import dev.ward.application.gate.apicompat.ApiCompatGates;
 import dev.ward.application.gate.buildpolicy.BuildPolicyGates;
 import dev.ward.application.gate.openapi.OpenApiGates;
 import dev.ward.application.license.LicenseService;
@@ -7,6 +8,7 @@ import dev.ward.domain.config.GateConfiguration;
 import dev.ward.domain.config.LicenseSettings;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.gate.QualityGate;
+import java.util.Objects;
 
 /**
  * The optional gate dependencies that {@code QualityGateFactory} injects beside its core ports.
@@ -22,6 +24,8 @@ import dev.ward.domain.gate.QualityGate;
  * @param license looks up the licenses of the {@code license} gate, or {@code null} when it is
  *     unavailable
  * @param buildPolicy builds the {@code build-policy} gate, or {@code null} when it is unavailable
+ * @param apiCompat builds the native {@code api-compat} gate, or {@code null} when it is
+ *     unavailable
  */
 public record GateExtensions(
     OpenApiGates openApi,
@@ -31,19 +35,25 @@ public record GateExtensions(
     CrapPorts crap,
     VulnerabilityGates vulnerabilities,
     LicenseService license,
-    BuildPolicyGates buildPolicy) {
+    BuildPolicyGates buildPolicy,
+    ApiCompatGates apiCompat) {
 
   /** No optional dependencies: every extension gate is reported as unavailable. */
   public static final GateExtensions NONE =
-      new GateExtensions(null, null, null, null, null, null, null, null);
+      new GateExtensions(null, null, null, null, null, null, null, null, null);
+
+  /** Replaces a missing {@code api-compat} builder with one that only runs command checks. */
+  public GateExtensions {
+    apiCompat = Objects.requireNonNullElse(apiCompat, ApiCompatGates.UNAVAILABLE);
+  }
 
   /**
    * Creates the extensions without the {@code secrets}, {@code crap}, {@code vulnerabilities},
-   * {@code license} and {@code build-policy} gates.
+   * {@code license}, {@code build-policy} and {@code api-compat} gates.
    */
   public GateExtensions(
       final OpenApiGates openApi, final AnalysisPorts analysis, final FormatGates format) {
-    this(openApi, analysis, format, null, null, null, null, null);
+    this(openApi, analysis, format, null, null, null, null, null, null);
   }
 
   /**

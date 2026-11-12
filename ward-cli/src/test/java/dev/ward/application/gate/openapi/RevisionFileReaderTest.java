@@ -6,6 +6,7 @@ import dev.ward.analysis.domain.openapi.LoadResult;
 import dev.ward.analysis.domain.openapi.OpenApiDocuments;
 import dev.ward.domain.gate.RevisionFiles;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -44,6 +45,26 @@ class RevisionFileReaderTest {
       @Override
       public Optional<String> read(final Path root, final String commit, final String path) {
         return exists(root, commit, path) ? Optional.of(files.get(path)) : Optional.empty();
+      }
+
+      @Override
+      public List<String> files(final Path root, final String commit, final String directory) {
+        return List.of();
+      }
+
+      @Override
+      public List<String> tagsReachableFrom(final Path root, final String commit) {
+        return List.of();
+      }
+
+      @Override
+      public List<String> tagsAt(final Path root, final String commit) {
+        return List.of();
+      }
+
+      @Override
+      public boolean isShallow(final Path root) {
+        return false;
       }
     };
   }

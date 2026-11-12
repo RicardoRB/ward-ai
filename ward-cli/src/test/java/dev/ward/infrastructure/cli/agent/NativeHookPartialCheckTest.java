@@ -4,17 +4,12 @@ import static dev.ward.ProjectFixtures.PLAIN_POM;
 import static dev.ward.ProjectFixtures.withPom;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.ward.application.project.ProjectDetector;
-import dev.ward.application.spec.ApprovedArtifactGuardService;
-import dev.ward.application.spec.SpecValidationFixtures;
-import dev.ward.domain.FakeOpenSpecEnvironment;
+import dev.ward.application.gate.HookCheckFixtures;
 import dev.ward.domain.agent.NativeHookInput;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
 import dev.ward.infrastructure.agent.CodexIntegration;
 import dev.ward.infrastructure.json.ForyJsonCodec;
-import dev.ward.infrastructure.project.FileSystemProjectInspection;
-import dev.ward.infrastructure.spec.FileSystemProjectPaths;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -135,16 +130,9 @@ class NativeHookPartialCheckTest {
           commands.add(command);
           return new CommandResult(0, "", "", Duration.ZERO);
         };
-    final FakeOpenSpecEnvironment environment = new FakeOpenSpecEnvironment(true);
     final NativeHookCommand command =
         new NativeHookCommand(
-            new HookChecks(
-                SpecValidationFixtures.checks(executor, environment),
-                SpecValidationFixtures.service(
-                    executor, environment, SpecValidationFixtures.checks(executor, environment))),
-            new ApprovedArtifactGuardService(
-                new ProjectDetector(new FileSystemProjectInspection()),
-                new FileSystemProjectPaths()),
+            new HookChecks(HookCheckFixtures.checks(executor)),
             new ForyJsonCodec(),
             Set.of(new CodexIntegration()),
             new ByteArrayInputStream(payload.getBytes(StandardCharsets.UTF_8)));

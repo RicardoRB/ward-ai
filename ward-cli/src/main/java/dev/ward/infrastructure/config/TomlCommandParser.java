@@ -14,7 +14,6 @@ final class TomlCommandParser {
   private static final String COMMAND = "command";
   private static final Set<String> COMMAND_LESS =
       Set.of(
-          SupportedQualityGates.TRACEABILITY,
           SupportedQualityGates.ANALYSIS,
           SupportedQualityGates.FORMAT,
           SupportedQualityGates.CRAP,
@@ -22,11 +21,15 @@ final class TomlCommandParser {
           SupportedQualityGates.SECRETS,
           SupportedQualityGates.VULNERABILITIES,
           SupportedQualityGates.BUILD_POLICY,
-          SupportedQualityGates.LICENSE);
+          SupportedQualityGates.LICENSE,
+          SupportedQualityGates.API_COMPAT);
 
   private TomlCommandParser() {}
 
-  /** Returns the command; an empty command is allowed only for a traceability or analysis check. */
+  /**
+   * Returns the command; an empty command is allowed only for an analysis, format or api-compat
+   * check.
+   */
   static List<String> parse(final String where, final TomlTable gate, final String uses) {
     if (SupportedQualityGates.OPENAPI_LINT.equals(uses)) {
       return nativeCheck(where, gate, "openapi-lint runs Ward's own rules");

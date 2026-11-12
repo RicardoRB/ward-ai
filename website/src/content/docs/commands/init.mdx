@@ -10,7 +10,7 @@ Gradle, TypeScript, and JavaScript projects; see [Node projects](#node-projects)
 in a Node project.
 
 ```sh
-ward init [-C <dir>] [--project <dir>]... [--preset <standard|strict>] [--integration <none|agent>[,...]] [--quality-hooks] [--remove-quality-hooks] [--ci github] [--agent-rules] [--gate <id>[,...]] [--tool openspec] [--openspec-validation <openspec|openspec-archived>[,...]] [--install-tool <tool|gate>[,...]] [--architecture <style>] [--overwrite] [--dry-run] [--accept-compatibility-updates] [--replace-scripts] [--yes]
+ward init [-C <dir>] [--project <dir>]... [--preset <standard|strict>] [--integration <none|agent>[,...]] [--quality-hooks] [--remove-quality-hooks] [--ci github] [--agent-rules] [--gate <id>[,...]] [--install-tool <gate>[,...]] [--architecture <style>] [--overwrite] [--dry-run] [--accept-compatibility-updates] [--replace-scripts] [--yes]
 ```
 
 <Aside type="tip">
@@ -31,9 +31,7 @@ each choice for this codebase, and runs `init` with explicit options after you a
 | `--integration <none\|agent>[,...]` | Install agent integrations. `none` cannot be combined with an agent. |
 | `--architecture <style>` | `layered` (default), `hexagonal`, or `clean`: the layer boundaries of `[[checks.ward.layers]]` in `ward.toml`, which init always writes. The wizard asks for it under `strict`. |
 | `--scheme <name>` | Xcode scheme that a Swift project's tests run, when the project has several. With `--yes`, a project with several schemes needs this option. |
-| `--tool openspec` | Add OpenSpec as a project tool. |
-| `--openspec-validation <id>[,...]` | Add the `openspec` (active) or `openspec-archived` validation gate. |
-| `--install-tool <tool\|gate>[,...]` | Consent to install a missing tool, such as `openspec`. |
+| `--install-tool <gate>[,...]` | Consent to install the missing executable of a selected gate. Init currently offers no gate whose tool it can install. |
 | `--quality-hooks` | Add Ward checks to the Git pre-commit and pre-push hooks. |
 | `--remove-quality-hooks` | Remove only Ward's sections from those hooks. |
 | `--ci github` | Write a GitHub Actions workflow that runs the `ci` profile. |
@@ -66,8 +64,11 @@ Some gates need extra input:
   written too; see [Generated files](#generated-files).
 - **`zap`** writes a `<TARGET_URL>` placeholder. Replace it with an authorized target before
   `check` will run the gate.
-- **`api-compat`** needs a released baseline. On Maven it is offered only when `pom.xml` declares
-  `<distributionManagement>`; otherwise `--gate api-compat` fails with that explanation.
+- **`api-compat`** needs a baseline. A Java project (Maven or Gradle) is offered it when a release
+  tag such as `v1.2.3` is reachable from `HEAD`; otherwise `--gate api-compat` fails and says so.
+  Init writes `uses = "api-compat"` and changes no build file. A Kotlin project keeps the japicmp
+  command, which on Maven needs `<distributionManagement>`, until the native check reads Kotlin.
+  See [API compatibility](/configuration/gates/#api-compatibility).
 - **`openapi-lint`, `openapi-diff`, and `openapi-compat`** are offered only when Git tracks an
   `openapi.yml`, `openapi.yaml`, or `openapi.json` in `src/main/resources` or the project root.
   With a tracked spec, `--preset` adds `openapi-lint` and `openapi-diff`, and `strict` adds
@@ -126,8 +127,8 @@ finding twice.
 
 ## What init changes in your build
 
-For `enforcer` and `api-compat`, init adds missing plugins using
-Ward's embedded Java compatibility catalog.
+For `enforcer` and, on Kotlin projects, `api-compat`, init adds missing plugins using
+Ward's embedded Java compatibility catalog. Java `api-compat` adds no plugin.
 
 - Existing compatible plugin versions are kept.
 - For an incompatible managed plugin, init shows the current version, the compatible version, the
@@ -620,7 +621,6 @@ Init installs a missing tool only with your explicit consent, one tool at a time
 | Tool | How |
 |---|---|
 | ZAP (`zap-baseline.py`) | Manual guidance only |
-| OpenSpec | `--install-tool openspec` |
 
 - In the wizard, each unavailable tool gets a Yes/No question. No is the default, and blank input or
   end of input declines.
@@ -654,7 +654,7 @@ Without `--ci`, init does not generate a CI workflow. `--ci github` writes
 - installs the Ward release that ran init (`WARD_VERSION`);
 - for a Java project, sets up the JDK that runs your build (JDK 25 when init cannot read it), since
   the pinned tools were chosen for that JDK;
-- pins the tools the selected gates need, such as OpenSpec;
+- pins the tools the selected gates need;
 - fetches full history for `openapi-compat`;
 - restores and saves `.ward/cache/vulnerabilities/` around the check when `vulnerabilities` is selected;
 - uploads the SARIF report to code scanning for pull requests from the same repository.
@@ -734,7 +734,6 @@ Ward keeps two roots apart:
 | Claude Code | `.claude/settings.json`, `.claude/hooks/ward-edit-write` | root `.claude/settings.json`, `.claude/hooks/ward-edit-write-apps-api` |
 | OpenCode | `.opencode/...` | root `.opencode/...`, files suffixed `-apps-api` |
 | Other agents (Codex, Gemini, Copilot, ...) | `.codex/hooks.json`, ... | the same root files, shared by every project |
-| OpenSpec gates | `openspec/` in the project | `root = "../.."` when `openspec/` exists only at the repository root |
 
 The plan shows repository-level files relative to the project root, such as
 `modify ../../.git/hooks/pre-commit`. A run that configures several projects lists them once under
@@ -825,7 +824,7 @@ Proceed? [Y/n]:
 | `conflict` | A user-owned file that blocks initialization. Init stops with exit code `2` before writing anything. |
 
 `--dry-run` resolves your answers the same way, prints the plan, and exits with code `0`. It writes
-no files, installs nothing (including OpenSpec), and asks for no compatibility approval:
+no files, installs nothing, and asks for no compatibility approval:
 
 ```console
 ward init --dry-run --preset strict --integration none --architecture layered
@@ -836,16 +835,15 @@ ward init --dry-run --preset strict --integration none --architecture layered
 Each question is answered by the first of these that applies:
 
 1. The option that answers it, such as `--preset`, `--gate`, `--integration`, `--architecture`,
-   `--tool`, or `--quality-hooks`. `--ci` and `--agent-rules` are options only; the wizard does not
+   `--install-tool`, or `--quality-hooks`. `--ci` and `--agent-rules` are options only; the wizard does not
    ask for them.
-2. Its default, when `--yes` is given: preset `standard` with its gates, integration `none`, no tools,
-   OpenSpec validations, or installation, no quality hooks, and architecture `layered`. `--yes` never
-   overwrites an existing `ward.toml` (use `--overwrite`) and never installs OpenSpec (use
-   `--install-tool openspec`).
+2. Its default, when `--yes` is given: preset `standard` with its gates, integration `none`, no installation,
+   no quality hooks, and architecture `layered`. `--yes` never overwrites an existing `ward.toml` (use
+   `--overwrite`) and never installs a tool (use `--install-tool <gate>`).
 3. An answer read from input.
 
 On a terminal, options never hide the questions they don't answer, so
-`ward init --integration claude-code` still asks for the preset, gates, tools, and quality hooks.
+`ward init --integration claude-code` still asks for the preset, gates, and quality hooks.
 
 Without a terminal, for example in CI:
 
@@ -859,27 +857,11 @@ Without a terminal, for example in CI:
   missing in a non-interactive run, init exits with code `2` and suggests `--preset`, `--gate`, or
   `--yes`.
 - If input ends at any other question, init uses its default and continues. The exception is the
-  OpenSpec installation prompt, where initialization is cancelled and no files change.
+  installation consent prompt, where initialization is cancelled and no files change.
 - On a terminal, an invalid answer (such as `4` at the preset question, an out-of-range number, or an
   empty gate selection) shows the error and asks again, keeping your earlier answers. The raw-key
   menus stay open after an empty confirmation.
 - With piped input, an invalid answer fails immediately with exit code `2` and no changes.
-
-### Tools screen
-
-The wizard has a separate optional Tools screen. OpenSpec and its two validations are unselected by
-default:
-
-- active: `openspec validate --all --strict --no-interactive`
-- archived: `openspec validate --archived --no-interactive`
-
-Selecting a tool or validation is not consent to install it. `--install-tool openspec` is explicit
-consent; without it, Ward only writes the selected validations and reports manual remediation.
-
-<Aside type="caution">
-When a selected validation's `openspec/` directory is ignored by Git, init still writes the gate but
-warns you: CI checkouts will not contain the specs, so the gate fails there.
-</Aside>
 
 ## Troubleshooting with verbose diagnostics
 

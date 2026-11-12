@@ -21,7 +21,6 @@ public final class CiWorkflowTemplate {
   private static final String WORKFLOWS = ".github/workflows/";
   private static final String SARIF = "ward.sarif";
   private static final String SEMGREP_VERSION = "1.181.0";
-  private static final String OPENSPEC_VERSION = "1.14.1";
   public static final String STEP = "      - name: ";
 
   private CiWorkflowTemplate() {}
@@ -146,8 +145,11 @@ public final class CiWorkflowTemplate {
         + "      security-events: write\n"
         + "    steps:\n"
         + "      - uses: actions/checkout@v5\n"
-        // openapi-compat needs the base branch; init never turns on the history scan of secrets.
-        + (ids.contains("openapi-compat") ? "        with:\n          fetch-depth: 0\n" : "")
+        // openapi-compat needs the base branch and api-compat the release tags; init never turns on
+        // the history scan of secrets.
+        + (ids.contains("openapi-compat") || ids.contains("api-compat")
+            ? "        with:\n          fetch-depth: 0\n"
+            : "")
         + InitToolchains.support(project).ciSetup(project, facts);
   }
 
@@ -155,9 +157,6 @@ public final class CiWorkflowTemplate {
     final List<String> install = new ArrayList<>();
     if (ids.contains("semgrep")) {
       install.add("          pip install semgrep==" + SEMGREP_VERSION + "\n");
-    }
-    if (ids.contains("openspec") || ids.contains("openspec-archived")) {
-      install.add("          npm install -g @fission-ai/openspec@" + OPENSPEC_VERSION + "\n");
     }
     // The runner's system Python refuses global pip installs.
     final String python =

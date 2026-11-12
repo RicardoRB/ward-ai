@@ -1,0 +1,1 @@
+p/A.java:5:3 api-compat:method-now-final p.A#run: public void run() -> public final void run()

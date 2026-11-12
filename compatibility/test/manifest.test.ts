@@ -68,8 +68,8 @@ describe("compatibility inventory", () => {
 
   test("an unsupported capability needs provenance and cannot be an unknown value", () => {
     const unexplained = clone();
-    unexplained.harnesses[2].capabilities["pre-tool-guard"] = "unsupported";
-    expect(validateManifest(unexplained, registered)).toContain("codex: unsupported capability pre-tool-guard needs a provenance note");
+    unexplained.harnesses[2].capabilities["turn-end"] = "unsupported";
+    expect(validateManifest(unexplained, registered)).toContain("codex: unsupported capability turn-end needs a provenance note");
     const unknown = clone();
     (unknown.harnesses[2].capabilities as any).feedback = "maybe";
     expect(validateManifest(unknown, registered)).toContain("codex: capability feedback must be supported or unsupported");

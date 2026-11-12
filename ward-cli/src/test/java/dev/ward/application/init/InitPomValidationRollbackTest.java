@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import dev.ward.application.project.ProjectDetector;
 import dev.ward.domain.FakeEnvironmentInspection;
 import dev.ward.domain.agent.AgentIntegration;
-import dev.ward.domain.agent.GuardMode;
 import dev.ward.domain.agent.IntegrationResult;
 import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.init.InitSelection;
@@ -63,7 +62,7 @@ class InitPomValidationRollbackTest {
     private int installs;
 
     @Override
-    public List<PlannedFileChange> plan(final Path projectRoot, final GuardMode guard) {
+    public List<PlannedFileChange> plan(final Path projectRoot) {
       return List.of();
     }
 

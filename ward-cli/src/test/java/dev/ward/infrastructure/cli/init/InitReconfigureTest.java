@@ -52,7 +52,7 @@ class InitReconfigureTest {
     Files.writeString(root.resolve("ward.toml"), "not [valid toml");
     final InitCommandFixture init = new InitCommandFixture(root);
 
-    final int exit = init.run(true, "y\n\n1\n\n\nn\n\n");
+    final int exit = init.run(true, "y\n\n1\n\nn\n\n");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(init.output()).contains("Choose a preset [1-3, Enter=1]");

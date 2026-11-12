@@ -17,6 +17,7 @@ final class TomlGateParser {
   private static final String PROFILES = "profiles";
   private static final String USES = "uses";
   private static final String PARTIAL = "partial";
+  private static final String ROOT = "root";
 
   private TomlGateParser() {}
 
@@ -24,6 +25,7 @@ final class TomlGateParser {
   static GateConfiguration parse(final String name, final TomlTable gate) {
     final String where = TomlConfigurationReader.CHECKS + "." + name;
     rejectLegacyPartial(where, gate);
+    rejectRemovedRoot(where, gate);
     final String uses = uses(name, where, gate);
     final List<String> command = TomlCommandParser.parse(where, gate, uses);
     final String type = type(uses, command);
@@ -35,7 +37,6 @@ final class TomlGateParser {
         command,
         profiles(where, gate),
         TomlPartialParser.parse(where, gate),
-        TomlOpenSpecRoot.parse(where, type, gate),
         TomlOpenApiParser.parse(where, type, gate, enabled),
         TomlMinimumParser.parse(where, type, gate),
         TomlPlatformParser.parse(where, type, gate, command),
@@ -49,7 +50,8 @@ final class TomlGateParser {
         TomlCrapParser.parse(where, type, gate),
         TomlCoverageParser.parse(where, type, gate),
         TomlVulnerabilitiesParser.parse(where, type, gate),
-        TomlLicenseParser.parse(where, type, gate, command));
+        TomlLicenseParser.parse(where, type, gate, command),
+        TomlApiCompatParser.parse(where, type, gate));
   }
 
   private static void rejectLegacyPartial(final String where, final TomlTable gate) {
@@ -63,6 +65,18 @@ final class TomlGateParser {
               + where
               + ".paths' with"
               + " 'match' and 'full' instead");
+    }
+  }
+
+  private static void rejectRemovedRoot(final String where, final TomlTable gate) {
+    if (gate.contains(ROOT)) {
+      throw new WardException(
+          "'"
+              + where
+              + "."
+              + ROOT
+              + "' is no longer supported: it only located a directory that Ward no longer reads;"
+              + " delete the key");
     }
   }
 

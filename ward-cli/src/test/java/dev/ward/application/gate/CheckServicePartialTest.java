@@ -10,7 +10,6 @@ import dev.ward.domain.gate.CheckReport;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.GateScope;
 import dev.ward.domain.gate.GateStatus;
-import dev.ward.domain.gate.SupportedQualityGates;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -50,10 +49,6 @@ class CheckServicePartialTest {
       profiles = ["pre-push"]
       [checks.tests.paths]
       match = ["src/**/*.java"]
-      [checks.openspec]
-      uses = "openspec"
-      profiles = ["default", "edit"]
-      command = "openspec validate --all"
       """;
   private static final List<String> FORMAT = List.of("mvn", "spotless:check");
   private static final List<String> CHECKSTYLE = List.of("mvn", "lint:check");
@@ -157,7 +152,7 @@ class CheckServicePartialTest {
                       }
                     },
                     true,
-                    SupportedQualityGates.specIds()));
+                    Set.of()));
 
     assertThat(executor.commands).containsExactly(FORMAT);
     assertThat(finished).containsExactly("format", "lint", "style");
@@ -170,15 +165,14 @@ class CheckServicePartialTest {
         dir.resolve("ward.toml"),
         """
         version = 2
-        [checks.openspec]
-        uses = "openspec"
+        [checks.mypy]
         profiles = ["default", "edit"]
-        command = "openspec validate --all"
+        command = "mypy ."
         """);
 
     final CheckReport report =
         CheckServiceFixtures.checks(executor)
-            .checkPartial(dir, List.of(dir.resolve(ORDER)), SupportedQualityGates.specIds());
+            .checkPartial(dir, List.of(dir.resolve(ORDER)), Set.of("mypy"));
 
     assertThat(report.results()).isEmpty();
     assertThat(executor.commands).isEmpty();
@@ -186,6 +180,6 @@ class CheckServicePartialTest {
 
   private CheckReport partial(final String path) {
     return CheckServiceFixtures.checks(executor)
-        .checkPartial(dir, List.of(dir.resolve(path)), SupportedQualityGates.specIds());
+        .checkPartial(dir, List.of(dir.resolve(path)), Set.of());
   }
 }

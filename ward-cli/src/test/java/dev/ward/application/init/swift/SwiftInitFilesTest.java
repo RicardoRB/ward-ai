@@ -41,17 +41,7 @@ class SwiftInitFilesTest {
             "dev");
     final InitSelection selection =
         new InitSelection(
-            List.of("none"),
-            List.of(),
-            null,
-            null,
-            List.of(),
-            List.of(),
-            List.of(),
-            false,
-            null,
-            false,
-            null);
+            List.of("none"), List.of(), null, null, List.of(), false, null, false, null);
 
     assertThat(
             OwnedSections.of(catalog, SWIFT_PM, selection, swiftGates(), List.of()).stream()

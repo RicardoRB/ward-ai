@@ -1,6 +1,5 @@
 package dev.ward.infrastructure.agent;
 
-import dev.ward.domain.agent.GuardMode;
 import dev.ward.domain.agent.IntegrationHealth;
 import dev.ward.domain.agent.IntegrationRequest;
 import dev.ward.domain.agent.IntegrationResult;
@@ -11,39 +10,35 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /** Shared ownership-safe filesystem mechanics for project-local native integrations. */
 public final class NativeIntegrationSupport {
-  /** The wrapper line that marks an enabled guard, in current and earlier wrappers. */
-  private static final String GUARD_ENABLED = "\"enable\" = \"enable\" ]";
-
   private NativeIntegrationSupport() {}
 
   /** Returns whether both files of {@code plan} exist and carry the Ward ownership marker. */
   public static boolean installed(final Path projectRoot, final NativeArtifactPlan plan) {
     final Path root = projectRoot.toAbsolutePath().normalize();
     return owned(root.resolve(plan.configPath()), plan.marker())
-        && owned(root.resolve(plan.hookPath()), plan.marker());
+        && (!plan.hasHook() || owned(root.resolve(plan.hookPath()), plan.marker()));
   }
 
   /** Reports whether the files of {@code plan} are installed, missing, partial, or user-owned. */
   public static IntegrationHealth health(final Path projectRoot, final NativeArtifactPlan plan) {
     final Path root = projectRoot.toAbsolutePath().normalize();
-    final Path config = root.resolve(plan.configPath());
-    final Path hook = root.resolve(plan.hookPath());
-    final boolean configExists = Files.exists(config);
-    final boolean hookExists = Files.exists(hook);
-    final boolean configOwned = owned(config, plan.marker());
-    final boolean hookOwned = owned(hook, plan.marker());
-    if (!configExists && !hookExists) {
+    final List<Path> files = plan.files().stream().map(root::resolve).toList();
+    final boolean anyExists = files.stream().anyMatch(Files::exists);
+    final long owned = files.stream().filter(file -> owned(file, plan.marker())).count();
+    final long existing = files.stream().filter(Files::exists).count();
+    if (!anyExists) {
       return new IntegrationHealth(
           IntegrationHealth.Status.MISSING, "Integration is not configured.");
     }
-    if ((configExists && !configOwned) || (hookExists && !hookOwned)) {
+    if (owned != existing) {
       return new IntegrationHealth(
           IntegrationHealth.Status.CONFLICT, "User-owned integration content requires review.");
     }
-    if (configOwned && hookOwned) {
+    if (owned == files.size()) {
       return new IntegrationHealth(IntegrationHealth.Status.INSTALLED, "Integration is installed.");
     }
     return new IntegrationHealth(
@@ -56,18 +51,18 @@ public final class NativeIntegrationSupport {
    */
   public static IntegrationResult integrate(
       final Path projectRoot, final IntegrationRequest request, final NativeArtifactPlan plan) {
-    final Path root = projectRoot.toAbsolutePath().normalize();
-    final Path config = root.resolve(plan.configPath());
-    final Path hook = root.resolve(plan.hookPath());
     final NativeIntegrationTransaction transaction;
     try {
-      transaction = NativeIntegrationTransaction.capture(config, hook);
+      transaction =
+          NativeIntegrationTransaction.capture(
+              Stream.concat(plan.files().stream(), plan.legacyPaths().stream())
+                  .toArray(Path[]::new));
     } catch (IOException exception) {
       throw new UncheckedIOException(
           "Could not snapshot " + plan.id() + " integration: " + exception.getMessage(), exception);
     }
     try {
-      final IntegrationResult conflict = firstConflict(config, hook, plan.marker());
+      final IntegrationResult conflict = firstConflict(plan);
       if (conflict != null) {
         return conflict.withCapabilities(plan.capabilities());
       }
@@ -86,55 +81,41 @@ public final class NativeIntegrationSupport {
     }
   }
 
-  /**
-   * Resolves {@link GuardMode#KEEP} to the state of the installed hook wrapper, so a refresh
-   * without a guard option neither enables nor silently disables the guard.
-   */
-  static GuardMode resolveGuard(
-      final Path root,
-      final NativeAgentIntegration.Definition definition,
-      final GuardMode requested) {
-    final Path current = root.resolve(definition.hookFile());
-    return resolveGuard(
-        Files.exists(current) ? current : root.resolve(definition.priorHookFile()), requested);
-  }
-
-  static GuardMode resolveGuard(final Path hook, final GuardMode requested) {
-    if (requested != GuardMode.KEEP) {
-      return requested;
-    }
-    try {
-      return Files.isRegularFile(hook) && Files.readString(hook).contains(GUARD_ENABLED)
-          ? GuardMode.ENABLE
-          : GuardMode.DISABLE;
-    } catch (IOException exception) {
-      throw new UncheckedIOException(
-          "Could not read " + hook + ": " + exception.getMessage(), exception);
-    }
-  }
-
   private static IntegrationResult install(final NativeArtifactPlan plan) throws IOException {
     final Path config = plan.configPath();
-    final Path hook = plan.hookPath();
-    final List<Map.Entry<Path, IntegrationResult>> results =
-        new ArrayList<>(
-            List.of(
-                Map.entry(
-                    config,
-                    IntegrationArtifacts.installOrRefresh(
-                        config,
-                        plan.marker(),
-                        plan.configContent(),
-                        "Updated Ward " + plan.id() + " hooks.")),
-                Map.entry(
-                    hook,
-                    IntegrationArtifacts.installOrRefresh(
-                        hook,
-                        plan.marker(),
-                        plan.hookContent(),
-                        "Updated Ward " + plan.id() + " hook."))));
-    if (Files.exists(hook)) {
-      IntegrationArtifacts.makeExecutable(hook);
+    final List<Map.Entry<Path, IntegrationResult>> results = new ArrayList<>();
+    results.add(
+        Map.entry(
+            config,
+            IntegrationArtifacts.installOrRefresh(
+                config,
+                plan.marker(),
+                plan.configContent(),
+                "Updated Ward " + plan.id() + " hooks.")));
+    if (plan.hasHook()) {
+      final Path hook = plan.hookPath();
+      results.add(
+          Map.entry(
+              hook,
+              IntegrationArtifacts.installOrRefresh(
+                  hook,
+                  plan.marker(),
+                  plan.hookContent(),
+                  "Updated Ward " + plan.id() + " hook.")));
+      if (Files.exists(hook)) {
+        IntegrationArtifacts.makeExecutable(hook);
+      }
+    }
+    for (final Path legacy : plan.legacyPaths()) {
+      for (final Path old : plan.legacy(legacy).delete()) {
+        results.add(
+            Map.entry(
+                old,
+                new IntegrationResult(
+                    IntegrationResult.Status.REMOVED,
+                    List.of(old.toString()),
+                    "Removed the Ward-owned " + plan.id() + " file of an earlier version.")));
+      }
     }
     return IntegrationArtifacts.combine(
             results,
@@ -144,9 +125,8 @@ public final class NativeIntegrationSupport {
   }
 
   private static IntegrationResult remove(final NativeArtifactPlan plan) throws IOException {
-    final Path config = plan.configPath();
-    final Path hook = plan.hookPath();
-    if (!Files.exists(config) && !Files.exists(hook)) {
+    final boolean legacyPresent = legacyPresent(plan);
+    if (plan.files().stream().noneMatch(Files::exists) && !legacyPresent) {
       return new IntegrationResult(
               IntegrationResult.Status.NOT_FOUND,
               List.of(),
@@ -154,16 +134,16 @@ public final class NativeIntegrationSupport {
           .withCapabilities(plan.capabilities());
     }
     final List<String> removed = new ArrayList<>();
-    final IntegrationResult configResult = IntegrationArtifacts.remove(config, plan.marker(), "");
-    if (configResult.status() == IntegrationResult.Status.CONFLICT) {
-      return configResult.withCapabilities(plan.capabilities());
+    for (final Path file : plan.files()) {
+      final IntegrationResult result = IntegrationArtifacts.remove(file, plan.marker(), "");
+      if (result.status() == IntegrationResult.Status.CONFLICT) {
+        return result.withCapabilities(plan.capabilities());
+      }
+      removed.addAll(result.changed());
     }
-    removed.addAll(configResult.changed());
-    final IntegrationResult hookResult = IntegrationArtifacts.remove(hook, plan.marker(), "");
-    if (hookResult.status() == IntegrationResult.Status.CONFLICT) {
-      return hookResult.withCapabilities(plan.capabilities());
+    for (final Path legacy : plan.legacyPaths()) {
+      plan.legacy(legacy).delete().forEach(old -> removed.add(old.toString()));
     }
-    removed.addAll(hookResult.changed());
     return new IntegrationResult(
             IntegrationResult.Status.REMOVED,
             removed,
@@ -171,10 +151,23 @@ public final class NativeIntegrationSupport {
         .withCapabilities(plan.capabilities());
   }
 
-  private static IntegrationResult firstConflict(
-      final Path config, final Path hook, final String marker) throws IOException {
-    final IntegrationResult configConflict = IntegrationArtifacts.preflight(config, marker);
-    return configConflict == null ? IntegrationArtifacts.preflight(hook, marker) : configConflict;
+  private static boolean legacyPresent(final NativeArtifactPlan plan) throws IOException {
+    for (final Path legacy : plan.legacyPaths()) {
+      if (!plan.legacy(legacy).owned().isEmpty()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private static IntegrationResult firstConflict(final NativeArtifactPlan plan) throws IOException {
+    for (final Path file : plan.files()) {
+      final IntegrationResult conflict = IntegrationArtifacts.preflight(file, plan.marker());
+      if (conflict != null) {
+        return conflict;
+      }
+    }
+    return null;
   }
 
   private static boolean owned(final Path target, final String marker) {

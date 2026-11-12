@@ -23,8 +23,6 @@ public final class CommandTypeInference {
       Set.of(
           "ward",
           "secrets",
-          "openspec-archived",
-          "openspec-junit-traceability",
           "ward-format",
           "vulnerabilities",
           "crap",
@@ -70,7 +68,6 @@ public final class CommandTypeInference {
           new Rule("vitest", sequence("vitest")),
           new Rule("jest", sequence("jest")),
           new Rule("bun-test", sequence("bun", "test")),
-          new Rule("openspec", sequence("openspec", "validate")),
           new Rule("mypy", sequence("mypy")),
           new Rule("pytest", sequence("pytest")),
           new Rule("mutmut", sequence("mutmut", "run")),
@@ -88,8 +85,7 @@ public final class CommandTypeInference {
 
   /**
    * Returns the one type the command implies, or {@code command} when none or several match. The
-   * executable's file name counts, so {@code /usr/local/bin/openspec validate} is an OpenSpec
-   * check.
+   * executable's file name counts, so {@code /usr/local/bin/gitleaks} is a gitleaks check.
    */
   public static String infer(final List<String> command) {
     final List<String> tokens = new ArrayList<>(command);

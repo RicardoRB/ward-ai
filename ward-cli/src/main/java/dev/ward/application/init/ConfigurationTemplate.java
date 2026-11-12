@@ -22,35 +22,22 @@ public final class ConfigurationTemplate {
   /** Renders the configuration of {@code project} with {@code gates} under {@code preset}. */
   public static String render(
       final List<InitGateOption> gates, final QualityPreset preset, final Project project) {
-    return render(gates, preset, project, null);
+    return render(gates, preset, project, WardArchitecture.NONE);
   }
 
   /**
-   * Renders the configuration; {@code openSpecRoot}, when not {@code null}, is written as the
-   * project-relative directory the OpenSpec gates run from.
+   * Renders the configuration as {@link #render(List, QualityPreset, Project)} does, and when
+   * {@code architecture} names any table, adds the {@code ward} gate that enforces them.
    */
   static String render(
       final List<InitGateOption> gates,
       final QualityPreset preset,
       final Project project,
-      final String openSpecRoot) {
-    return render(gates, preset, project, openSpecRoot, WardArchitecture.NONE);
-  }
-
-  /**
-   * Renders the configuration as {@link #render(List, QualityPreset, Project, String)} does, and
-   * when {@code architecture} names any table, adds the {@code ward} gate that enforces them.
-   */
-  static String render(
-      final List<InitGateOption> gates,
-      final QualityPreset preset,
-      final Project project,
-      final String openSpecRoot,
       final WardArchitecture architecture) {
     final StringBuilder content = new StringBuilder(SECTION_CAPACITY * (gates.size() + 1));
     content.append(VERSION);
     for (final InitGateOption gate : gates) {
-      appendGate(content, gate, preset, project, openSpecRoot);
+      appendGate(content, gate, preset, project);
     }
     if (architecture.any()) {
       WardGateTemplate.append(content, architecture);
@@ -62,8 +49,7 @@ public final class ConfigurationTemplate {
       final StringBuilder content,
       final InitGateOption gate,
       final QualityPreset preset,
-      final Project project,
-      final String openSpecRoot) {
+      final Project project) {
     if (InProcessGateTemplate.handles(gate.id())) {
       InProcessGateTemplate.append(
           content, gate.id(), QualityGatePhasePolicy.profilesFor(gate.id()), preset);
@@ -85,15 +71,8 @@ public final class ConfigurationTemplate {
       content.append("uses = \"").append(gate.id()).append("\"\n");
     }
     GateCommandTemplate.append(content, gate);
-    if (openSpecRoot != null && isOpenSpec(gate.id())) {
-      content.append("root = \"").append(escape(openSpecRoot)).append("\"\n");
-    }
     gatePreset(gate, project, preset).forEach((key, value) -> setting(content, key, value));
     partial(content, gate, project, preset);
-  }
-
-  private static boolean isOpenSpec(final String id) {
-    return "openspec".equals(id) || "openspec-archived".equals(id);
   }
 
   private static void partial(

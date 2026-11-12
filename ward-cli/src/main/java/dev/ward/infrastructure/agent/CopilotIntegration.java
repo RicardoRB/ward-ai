@@ -1,6 +1,5 @@
 package dev.ward.infrastructure.agent;
 
-import dev.ward.domain.agent.GuardMode;
 import dev.ward.domain.agent.IntegrationCapability;
 import dev.ward.domain.agent.NativeHookInput;
 import dev.ward.domain.agent.NativeHookOutcome;
@@ -26,13 +25,11 @@ public final class CopilotIntegration implements NativeHarnessAdapter {
           "copilot",
           ".github/hooks/ward.json",
           ".github/hooks/ward.sh",
-          "PreToolUse,PostToolUse,Stop",
+          "PostToolUse,Stop",
           Set.of(
-              IntegrationCapability.PRE_TOOL,
               IntegrationCapability.POST_EDIT,
               IntegrationCapability.TURN_END,
-              IntegrationCapability.FEEDBACK,
-              IntegrationCapability.APPROVED_ARTIFACT_GUARD));
+              IntegrationCapability.FEEDBACK));
 
   @Override
   public NativeAgentIntegration.Definition definition() {
@@ -48,9 +45,7 @@ public final class CopilotIntegration implements NativeHarnessAdapter {
   @Override
   public String configContent() {
     return "{\n  \"version\": 1,\n  \"hooks\": {\n"
-        + "    \"PreToolUse\": ["
-        + handler("bash|edit|create", "pre", 0)
-        + "],\n    \"PostToolUse\": ["
+        + "    \"PostToolUse\": ["
         + handler("edit|create", "post", CHECK_TIMEOUT_SECONDS)
         + "],\n    \"Stop\": ["
         + handler(null, "post", CHECK_TIMEOUT_SECONDS)
@@ -72,8 +67,8 @@ public final class CopilotIntegration implements NativeHarnessAdapter {
   }
 
   @Override
-  public String hookContent(final GuardMode guardMode) {
-    return NativeHookText.phaseWrapper(DEFINITION.id(), DEFINITION.hookFile(), guardMode);
+  public String hookContent() {
+    return NativeHookText.wrapper(DEFINITION.id(), DEFINITION.hookFile());
   }
 
   /** Returns the hook response that blocks the tool call and tells the agent {@code reason}. */

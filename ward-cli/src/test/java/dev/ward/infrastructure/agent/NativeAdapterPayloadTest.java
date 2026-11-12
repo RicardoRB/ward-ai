@@ -29,13 +29,13 @@ class NativeAdapterPayloadTest {
         parse(
             adapter,
             "{\"hook_event_name\":\"PreToolUse\",\"tool_name\":\"Edit\",\"cwd\":\"/p\","
-                + "\"file_path\":\"openspec/specs/a/spec.md\",\"command\":\"ls\","
+                + "\"file_path\":\"docs/a/guide.md\",\"command\":\"ls\","
                 + "\"patch\":\"*** Begin Patch\",\"skill\":\"archive\"}");
 
     assertThat(event.eventName()).isEqualTo("PreToolUse");
     assertThat(event.toolName()).isEqualTo("Edit");
     assertThat(event.workingDirectory()).isEqualTo("/p");
-    assertThat(event.path()).isEqualTo("openspec/specs/a/spec.md");
+    assertThat(event.path()).isEqualTo("docs/a/guide.md");
     assertThat(event.command()).isEqualTo("ls");
     assertThat(event.patch()).isEqualTo("*** Begin Patch");
     assertThat(event.skill()).isEqualTo("archive");

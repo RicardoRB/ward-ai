@@ -1,12 +1,10 @@
 package dev.ward.application.init;
 
-import dev.ward.application.init.openspec.OpenSpecInstallation;
 import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.init.FormatGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitPlan;
 import dev.ward.domain.init.InitSelection;
-import dev.ward.domain.init.OpenSpecDistribution;
 import dev.ward.domain.init.OwnedSection;
 import dev.ward.domain.init.PlannedGateInstallation;
 import dev.ward.domain.init.QualityPreset;
@@ -58,11 +56,7 @@ final class InitPlanner {
   /** Lists the changes in the order {@code InitChanges.apply} makes them. */
   InitPlan plan(final Project project, final InitSelection selection, final boolean approved) {
     installer.validate(selection.integrations());
-    final boolean installs = selection.installTools().contains(OpenSpecInstallation.TOOL);
-    final String executable =
-        installs ? OpenSpecDistribution.executable(Path.of("")).toString() : "openspec";
-    final List<InitGateOption> gates =
-        SelectedGates.resolve(catalog.get(), project, selection, executable);
+    final List<InitGateOption> gates = SelectedGates.resolve(catalog.get(), project, selection);
     final List<PlannedGateInstallation> gateInstallations = gateInstallations(project, gates);
     final List<PlannedFileChange> changes = new ArrayList<>();
     changes.add(
@@ -90,9 +84,6 @@ final class InitPlanner {
     changes.addAll(ownedSectionChanges(project, selection, gates, ruleFiles));
     return new InitPlan(
         changes,
-        installs
-            ? Optional.of(OpenSpecDistribution.installation(project.root()))
-            : Optional.empty(),
         gateInstallations,
         InitToolchains.find(project)
             .map(
@@ -181,13 +172,7 @@ final class InitPlanner {
     }
     return new PlannedFileChange(
         file,
-        ConfigurationTemplate.render(
-                    gates,
-                    preset,
-                    project,
-                    catalog.get().openSpecDirectories().root(project),
-                    architecture)
-                .equals(existing.get())
+        ConfigurationTemplate.render(gates, preset, project, architecture).equals(existing.get())
             ? PlannedFileChange.Action.UNCHANGED
             : PlannedFileChange.Action.MODIFY,
         notes);

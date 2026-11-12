@@ -15,8 +15,6 @@ import java.util.Set;
  * @param command the argument vector it runs
  * @param profiles the profiles it belongs to
  * @param partial how a per-edit check narrows it, or {@code null} when it always runs in full
- * @param root the project-relative directory it runs from, or {@code null} for the project root;
- *     only OpenSpec checks read it
  * @param openApi the OpenAPI options of an OpenAPI check, or {@code null} for others
  * @param minimum the minimum score from 0 to 100 of a mutation or Swift coverage check, or {@code
  *     null} when unset
@@ -40,6 +38,8 @@ import java.util.Set;
  *     for others
  * @param vulnerabilities the options of a {@code vulnerabilities} check, or {@code null} for others
  * @param license the settings of a {@code license} check, or {@code null} for other checks
+ * @param apiCompat the {@code base} and {@code include} options of an {@code api-compat} check, or
+ *     {@code null} for others
  */
 public record GateConfiguration(
     String name,
@@ -48,7 +48,6 @@ public record GateConfiguration(
     List<String> command,
     Set<String> profiles,
     PartialGateConfiguration partial,
-    String root,
     OpenApiGateOptions openApi,
     Integer minimum,
     XcodePlatform platform,
@@ -62,7 +61,8 @@ public record GateConfiguration(
     CrapOptions crap,
     CoverageOptions coverage,
     VulnerabilityOptions vulnerabilities,
-    LicenseSettings license) {
+    LicenseSettings license,
+    ApiCompatOptions apiCompat) {
 
   /** Copies the command, profiles and rule ids, keeping their order. */
   public GateConfiguration {
@@ -98,8 +98,8 @@ public record GateConfiguration(
         null,
         null,
         null,
-        null,
         List.of(),
+        null,
         null,
         null,
         null,

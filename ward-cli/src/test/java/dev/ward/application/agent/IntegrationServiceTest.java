@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.application.project.ProjectDetector;
 import dev.ward.domain.agent.AgentIntegration;
-import dev.ward.domain.agent.GuardMode;
 import dev.ward.domain.agent.IntegrationRequest;
 import dev.ward.domain.agent.IntegrationResult;
 import dev.ward.domain.agent.PlannedFileChange;
@@ -22,7 +21,7 @@ class IntegrationServiceTest {
   private final AgentIntegration legacy =
       new AgentIntegration() {
         @Override
-        public List<PlannedFileChange> plan(final Path projectRoot, final GuardMode guard) {
+        public List<PlannedFileChange> plan(final Path projectRoot) {
           return List.of();
         }
 
@@ -39,13 +38,13 @@ class IntegrationServiceTest {
       };
 
   @Test
-  void guardModeReachesTheIntegrationAndLegacyIntegrationsIgnoreIt(@TempDir final Path root) {
+  void requestReachesTheIntegrationAndLegacyIntegrationsUseTheFlag(@TempDir final Path root) {
     withPom(root, PLAIN_POM);
     final List<IntegrationRequest> requests = new ArrayList<>();
     final AgentIntegration recording =
         new AgentIntegration() {
           @Override
-          public List<PlannedFileChange> plan(final Path projectRoot, final GuardMode guard) {
+          public List<PlannedFileChange> plan(final Path projectRoot) {
             return List.of();
           }
 
@@ -56,7 +55,7 @@ class IntegrationServiceTest {
 
           @Override
           public IntegrationResult integrate(final Path projectRoot, final boolean remove) {
-            return integrate(projectRoot, new IntegrationRequest(remove, GuardMode.KEEP));
+            return integrate(projectRoot, new IntegrationRequest(remove));
           }
 
           @Override
@@ -70,20 +69,11 @@ class IntegrationServiceTest {
         new IntegrationService(
             new ProjectDetector(new FileSystemProjectInspection()), List.of(recording, legacy));
 
-    service.integrate("recording", root, new IntegrationRequest(false, GuardMode.ENABLE));
+    service.integrate("recording", root, IntegrationRequest.INSTALL);
     service.integrate("recording", root, true);
-    service.integrate("legacy", root, new IntegrationRequest(false, GuardMode.DISABLE));
+    service.integrate("legacy", root, IntegrationRequest.INSTALL);
 
-    assertThat(requests)
-        .containsExactly(
-            new IntegrationRequest(false, GuardMode.ENABLE), IntegrationRequest.REMOVE);
+    assertThat(requests).containsExactly(IntegrationRequest.INSTALL, IntegrationRequest.REMOVE);
     assertThat(removals).containsExactly(false);
-  }
-
-  @Test
-  void negatableOptionMapsToGuardModes() {
-    assertThat(GuardMode.of(null)).isEqualTo(GuardMode.KEEP);
-    assertThat(GuardMode.of(true)).isEqualTo(GuardMode.ENABLE);
-    assertThat(GuardMode.of(false)).isEqualTo(GuardMode.DISABLE);
   }
 }

@@ -8,7 +8,7 @@ import { Aside } from '@astrojs/starlight/components';
 `ward integrate` installs, refreshes, or removes the hooks that run Ward from a coding agent.
 
 ```sh
-ward integrate <agent> [-C <dir>] [--remove | --[no-]guard-approved-specs]
+ward integrate <agent> [-C <dir>] [--remove]
 ```
 
 ## Options
@@ -18,18 +18,15 @@ ward integrate <agent> [-C <dir>] [--remove | --[no-]guard-approved-specs]
 | `<agent>` | `opencode`, `claude-code`, `codex`, `cursor`, `copilot`, `gemini`, `windsurf`, `cline`, `factory-droid`, or `amp`. Without it, Ward prompts for a choice. |
 | `-C`, `--directory <dir>` | Install for the project in `<dir>` instead of the current directory. |
 | `--remove` | Remove the Ward-owned integration files. |
-| `--guard-approved-specs` | Also install the [approved-artifact guard](#approved-artifact-guard-opt-in). |
-| `--no-guard-approved-specs` | Remove only the guard. |
 | `--verbose` | Print diagnostics to stderr. See [Verbose diagnostics](#verbose-diagnostics). |
-
-`--remove` cannot be combined with either guard option; that is a usage error (exit `2`).
 
 ## How installation works
 
 - Installation is project-local and idempotent. Make sure `ward` is on `PATH`.
 - Generated files are ownership-marked. Conflicting user-owned files are never overwritten, and
   removal deletes only Ward-owned files.
-- Re-running the command refreshes changed Ward-owned files.
+- Re-running the command refreshes changed Ward-owned files, and deletes the Ward-owned guard files that
+  earlier versions of Ward wrote. A user-owned file with the same name is left alone.
 - Claude Code uses `ward hook claude-code`, OpenCode uses V2 plugins, and the other harnesses use
   `ward hook native --agent <agent>`.
 - For OpenCode, removal also removes Ward's OpenCode command.
@@ -39,7 +36,7 @@ file:
 
 ```text
 CHANGED: Created Ward codex native hook integration.
-Capabilities: [APPROVED_ARTIFACT_GUARD, FEEDBACK, POST_EDIT, PRE_TOOL]
+Capabilities: [FEEDBACK, POST_EDIT, TURN_END]
 .codex/hooks.json
 .codex/hooks/ward.sh
 ```
@@ -50,11 +47,9 @@ The status is one of `CHANGED`, `ALREADY_PRESENT`, `REMOVED`, `NOT_FOUND`, or `C
 
 | Capability | Without it |
 |---|---|
-| `PRE_TOOL` | Advisory only: the harness reports failures but cannot block a tool call. |
 | `POST_EDIT` | No check after each edit. |
 | `TURN_END` | No check when the agent finishes (Windsurf, Cline). |
 | `FEEDBACK` | Findings are shown to you but cannot be passed to the agent (Windsurf). |
-| `APPROVED_ARTIFACT_GUARD` | No guard for approved specs. |
 
 Capabilities describe what the generated files are built to do. A successful install does not prove
 the harness has loaded them. See
@@ -62,9 +57,8 @@ the harness has loaded them. See
 
 ### Claude Code and OpenCode
 
-After each edit, they run the quality check with `--exclude-spec` and validate edited spec files with
-[`spec validate`](/commands/spec/). When the agent finishes a turn, they run the configured spec
-checks and hand any findings to the agent once per turn. See the [Claude Code](/integrations/claude-code/),
+After each edit, they run the quality check for the edited files. When the agent finishes a turn,
+Claude Code runs the `default` check and hands any findings to the agent once per turn. See the [Claude Code](/integrations/claude-code/),
 [OpenCode](/integrations/opencode/), and [native harness](/integrations/native-harnesses/) pages for
 details.
 
@@ -86,41 +80,6 @@ For a project below the Git top-level, such as `apps/api`:
   exactly as `ward init` does; see [monorepos](/commands/init/#monorepos).
 - Other agents install one shared hook at the repository root. Running `ward integrate` from a
   second project finds it already present, and `--remove` removes it for every project.
-
-## Approved-artifact guard (opt-in)
-
-`--guard-approved-specs` also installs a pre-tool guard. It runs before the agent edits, patches,
-deletes, or moves files, runs a shell command, or invokes a skill. The guard calls
-[`spec guard`](/commands/spec/#guarding-approved-artifacts-spec-guard) and refuses calls that would
-modify:
-
-- approved OpenSpec specs (`openspec/specs/**`);
-- archived changes (`openspec/changes/archive/**`).
-
-Active changes under `openspec/changes/<change>/` stay editable. Archiving and syncing into approved
-specs are left to a human.
-
-| Command | Guard afterwards |
-|---|---|
-| `ward integrate <agent> --guard-approved-specs` | Installed (or refreshed) |
-| `ward integrate <agent>` | Unchanged: kept if installed, absent if not |
-| `ward integrate <agent> --no-guard-approved-specs` | Removed; the rest of the integration stays installed |
-| `ward integrate <agent> --remove` | Removed together with the rest of the integration |
-
-- The guard lives in its own Ward-owned file, so you can see whether it is installed, and it
-  survives refreshes.
-- A user-owned file at the guard's path is reported as a conflict when you pass
-  `--guard-approved-specs`, and is otherwise left alone.
-- Without the option, nothing runs before tool calls. The guard never changes the quality check or
-  spec validation hooks.
-
-See the [Claude Code](/integrations/claude-code/#approved-artifact-guard) and
-[OpenCode](/integrations/opencode/#approved-artifact-guard) pages for what each agent covers.
-
-<Aside type="caution">
-Shell-command filtering is a heuristic, not a security boundary: scripts and other indirect writes
-are not prevented. See [security](/security/).
-</Aside>
 
 ## Verbose diagnostics
 

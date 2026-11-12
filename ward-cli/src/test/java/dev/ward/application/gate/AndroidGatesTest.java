@@ -99,7 +99,6 @@ class AndroidGatesTest {
             Set.of("ci"),
             null,
             null,
-            null,
             minimum,
             null,
             null,
@@ -112,8 +111,9 @@ class AndroidGatesTest {
             null,
             null,
             null,
+            null,
             null);
-    return new QualityGateFactory(executor, null, new TraceabilitySources(null, null), ports, null)
+    return new QualityGateFactory(executor, ports, null)
         .create(new WardConfiguration(1, Map.of("check", check)))
         .getFirst()
         .execute(PROJECT);

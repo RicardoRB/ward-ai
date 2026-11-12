@@ -41,9 +41,10 @@ class CiWorkflowTemplateTest {
   @Test
   void securityGatesAddHistoryCacheAndKey() {
     final String body =
-        CiWorkflowTemplate.render("github", MAVEN, gates("secrets", "openspec"), "0.0.12").body();
+        CiWorkflowTemplate.render("github", MAVEN, gates("secrets", "vulnerabilities"), "0.0.12")
+            .body();
 
-    assertThat(body).contains("@fission-ai/openspec@");
+    assertThat(body).contains(".ward/cache/vulnerabilities").doesNotContain("openspec");
   }
 
   @Test
@@ -79,8 +80,7 @@ class CiWorkflowTemplateTest {
   @Test
   void rootProjectWorkflowIsUnchanged() throws IOException {
     final OwnedSection workflow =
-        CiWorkflowTemplate.render(
-            "github", MAVEN, gates("tests", "secrets", "semgrep", "openspec"), "0.1.1");
+        CiWorkflowTemplate.render("github", MAVEN, gates("tests", "secrets", "semgrep"), "0.1.1");
 
     assertThat(workflow.body())
         .isEqualTo(Files.readString(Path.of("src/test/resources/ci/ward-root.yml")));

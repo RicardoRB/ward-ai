@@ -111,13 +111,6 @@ public class InitGeneralCatalog {
             true,
             "Reads installed dependency metadata, so install dependencies before it runs;"
                 + " a license it cannot find is a finding."));
-    options.add(
-        new InitGateOption(
-            SupportedQualityGates.TRACEABILITY,
-            "Maps live OpenSpec scenarios to explicitly annotated JUnit tests (opt-in).",
-            List.of(),
-            true,
-            "Source-level mapping analysis; it does not execute tests."));
     return List.copyOf(options);
   }
 
@@ -161,8 +154,8 @@ public class InitGeneralCatalog {
   /**
    * Returns the gate choice with {@code id} for {@code project}.
    *
-   * @throws WardException if {@code id} is an OpenSpec tool, not a supported gate, or a gate the
-   *     project's runtime JDK cannot run
+   * @throws WardException if {@code id} is not a supported gate, or a gate the project's runtime
+   *     JDK cannot run
    */
   public InitGateOption gate(final Project project, final String id) {
     GateOffers.require(environment, project, id);

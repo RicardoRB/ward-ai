@@ -34,10 +34,8 @@ final class ArchitectureBoundarySupport {
           "dev.ward.config.PythonBindingsModule",
           "dev.ward.config.SwiftBindingsModule",
           "dev.ward.config.CommandBindingsModule",
-          "dev.ward.config.SpecCommandBindingsModule",
-          "dev.ward.config.TraceabilityBindingsModule",
-          "dev.ward.config.ProvenanceBindingsModule",
           "dev.ward.config.GateBindingsModule",
+          "dev.ward.config.ApiCompatBindingsModule",
           "dev.ward.config.GateExtensionBindingsModule",
           "dev.ward.config.RuleBindingsModule",
           "dev.ward.config.GateExtensionsModule",
@@ -50,6 +48,7 @@ final class ArchitectureBoundarySupport {
   /** The analysis packages that every layer may hold. */
   static final Set<String> ANALYSIS_PACKAGES =
       Set.of(
+          "dev.ward.analysis.domain.api",
           "dev.ward.analysis.domain.graph",
           "dev.ward.analysis.domain.ir",
           "dev.ward.analysis.domain.port",
@@ -72,6 +71,7 @@ final class ArchitectureBoundarySupport {
   static final Map<String, Set<String>> DOMAIN_FEATURE_EDGES =
       Map.ofEntries(
           Map.entry("agent", Set.of()),
+          Map.entry("apicompat", Set.of()),
           Map.entry("buildpolicy", Set.of("dependency")),
           Map.entry("config", Set.of()),
           Map.entry("dependency", Set.of("config", "project", "process")),
@@ -81,7 +81,6 @@ final class ArchitectureBoundarySupport {
           Map.entry("init", Set.of("agent", "gate", "project")),
           Map.entry("loop", Set.of("gate")),
           Map.entry("policy", Set.of("gate")),
-          Map.entry("provenance", Set.of()),
           Map.entry("process", Set.of()),
           Map.entry("terminal", Set.of()),
           Map.entry("project", Set.of()),
@@ -89,10 +88,8 @@ final class ArchitectureBoundarySupport {
           Map.entry("license", Set.of("config", "dependency", "project")),
           Map.entry("learning", Set.of("gate")),
           Map.entry("secrets", Set.of()),
-          Map.entry("spec", Set.of()),
           Map.entry("update", Set.of()),
           Map.entry("vulnerability", Set.of("dependency", "gate")),
-          Map.entry("traceability", Set.of()),
           Map.entry("rules", Set.of()));
 
   static final Map<String, Set<String>> APPLICATION_ENTRY_POINTS =
@@ -109,8 +106,6 @@ final class ArchitectureBoundarySupport {
                   "dev.ward.application.project.ProjectDetector",
                   "dev.ward.application.project.ProjectDiscovery",
                   "dev.ward.application.project.ProjectNotFoundException",
-                  "dev.ward.application.traceability.TraceabilityPolicy",
-                  "dev.ward.application.gate.openspec.OpenSpecJunitTraceabilityGate",
                   "dev.ward.application.format.FormatService",
                   "dev.ward.application.format.FormatFileOutcome",
                   "dev.ward.application.format.FormatFileOutcome$Verdict",
@@ -152,23 +147,7 @@ final class ArchitectureBoundarySupport {
           Map.entry("project", Set.of()),
           Map.entry("analysis", Set.of()),
           Map.entry("learning", Set.of()),
-          Map.entry(
-              "spec",
-              Set.of(
-                  "dev.ward.application.gate.CheckService",
-                  "dev.ward.application.gate.openspec.OpenSpecPrerequisites",
-                  "dev.ward.application.gate.openspec.OpenSpecPrerequisites$Problem",
-                  "dev.ward.application.gate.openspec.OpenSpecQualityGate",
-                  "dev.ward.application.project.ProjectDetector",
-                  "dev.ward.application.project.ProjectNotFoundException")),
-          Map.entry(
-              "provenance",
-              Set.of(
-                  "dev.ward.application.gate.CheckService",
-                  "dev.ward.application.project.ProjectDetector",
-                  "dev.ward.application.project.ProjectNotFoundException")),
           Map.entry("update", Set.of()),
-          Map.entry("traceability", Set.of()),
           Map.entry(
               "rules",
               Set.of(

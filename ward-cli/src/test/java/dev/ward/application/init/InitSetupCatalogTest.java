@@ -51,8 +51,6 @@ class InitSetupCatalogTest {
   private static final double STRICT_LINE_MINIMUM = 0.85;
   private static final double STRICT_BRANCH_MINIMUM = 0.75;
   private static final int STRICT_MUTATION_THRESHOLD = 60;
-  private static final String OPENSPEC = "openspec";
-  private static final String OPENSPEC_ARCHIVED = "openspec-archived";
   private static final String COMPILE = "compile";
   private static final String TESTS = "tests";
 
@@ -76,13 +74,6 @@ class InitSetupCatalogTest {
             "factory-droid",
             "amp",
             "junie");
-    assertThat(
-            catalog.gates(
-                new ProjectDetector(new FileSystemProjectInspection()).detect(dir).orElseThrow(),
-                null))
-        .extracting(InitGateOption::id)
-        .doesNotContain(OPENSPEC, OPENSPEC_ARCHIVED);
-    assertThat(QualityGateFactory.SUPPORTED_GATES).contains(OPENSPEC, OPENSPEC_ARCHIVED);
     assertThat(
             catalog.gates(
                 new ProjectDetector(new FileSystemProjectInspection()).detect(dir).orElseThrow(),
@@ -199,13 +190,13 @@ class InitSetupCatalogTest {
     Files.writeString(dir.resolve("build.gradle"), "plugins { id 'java' }\n");
     final Project project =
         new ProjectDetector(new FileSystemProjectInspection()).detect(dir).orElseThrow();
-    final InitSetupCatalog catalog = new InitSetupCatalog(new FakeEnvironmentInspection("gradle"));
+    final InitSetupCatalog catalog =
+        new InitSetupCatalog(new FakeEnvironmentInspection("gradle").withReleaseTag());
 
     assertThat(catalog.gates(project, null))
         .extracting(InitGateOption::id)
         .containsExactlyInAnyOrderElementsOf(
             QualityGateFactory.SUPPORTED_GATES.stream()
-                .filter(id -> !OPENSPEC.equals(id) && !OPENSPEC_ARCHIVED.equals(id))
                 // OpenAPI gates are offered only when the project commits a spec.
                 .filter(id -> !id.startsWith("openapi-"))
                 // Init offers semgrep for no language; Ward's own security rules replace it.

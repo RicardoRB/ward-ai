@@ -10,6 +10,7 @@ import dev.ward.application.gate.PolicyGatePorts;
 import dev.ward.application.gate.ReportingGatePorts;
 import dev.ward.application.gate.SecretGates;
 import dev.ward.application.gate.VulnerabilityGates;
+import dev.ward.application.gate.apicompat.ApiCompatGates;
 import dev.ward.application.gate.buildpolicy.BuildPolicyGates;
 import dev.ward.application.gate.openapi.OpenApiGates;
 import dev.ward.application.license.LicenseService;
@@ -38,14 +39,17 @@ interface GateExtensionsModule {
         reporting.crap(),
         reporting.vulnerabilities(),
         policy.license(),
-        policy.buildPolicy());
+        policy.buildPolicy(),
+        policy.apiCompat());
   }
 
-  /** Gathers the gates that check a policy: licenses and build files. */
+  /** Gathers the gates that check a policy: licenses, build files and the public API. */
   @Provides
   static PolicyGatePorts policyGates(
-      final LicenseService license, final BuildPolicyGates buildPolicy) {
-    return new PolicyGatePorts(license, buildPolicy);
+      final LicenseService license,
+      final BuildPolicyGates buildPolicy,
+      final ApiCompatGates apiCompat) {
+    return new PolicyGatePorts(license, buildPolicy, apiCompat);
   }
 
   /** Gathers the gates that read a report or the dependency inventory themselves. */

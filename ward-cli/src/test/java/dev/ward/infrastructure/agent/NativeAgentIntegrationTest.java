@@ -2,7 +2,6 @@ package dev.ward.infrastructure.agent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.ward.domain.agent.GuardMode;
 import dev.ward.domain.agent.IntegrationCapability;
 import dev.ward.domain.agent.IntegrationHealth;
 import dev.ward.domain.agent.IntegrationRequest;
@@ -19,7 +18,11 @@ class NativeAgentIntegrationTest {
 
     final IntegrationResult created = integration.integrate(root, IntegrationRequest.INSTALL);
     assertThat(created.status()).isEqualTo(IntegrationResult.Status.CHANGED);
-    assertThat(created.capabilities()).contains(IntegrationCapability.PRE_TOOL);
+    assertThat(created.capabilities())
+        .containsExactlyInAnyOrder(
+            IntegrationCapability.POST_EDIT,
+            IntegrationCapability.TURN_END,
+            IntegrationCapability.FEEDBACK);
     assertThat(Files.readString(root.resolve(".codex/hooks.json")))
         .contains("ward-owned: codex-native-hooks v1");
     assertThat(Files.readString(root.resolve(".codex/hooks/ward.sh")))
@@ -57,20 +60,40 @@ class NativeAgentIntegrationTest {
   }
 
   @Test
-  void refreshWithoutAGuardOptionKeepsTheInstalledGuardState(@TempDir final Path root)
+  void clineRefreshRemovesTheOwnedPreToolUseFileOfAnEarlierVersion(@TempDir final Path root)
       throws Exception {
-    final Path hook = root.resolve(".amp/plugins/ward.sh");
-    final AmpIntegration integration = new AmpIntegration();
+    final ClineIntegration integration = new ClineIntegration();
+    final Path preTool = root.resolve(".cline/hooks/PreToolUse");
+    integration.integrate(root, IntegrationRequest.INSTALL);
+    Files.writeString(preTool, "#!/bin/sh\n# ward-owned: cline-native-hooks v1\nexit 0\n");
 
-    integration.integrate(root, new IntegrationRequest(false, GuardMode.ENABLE));
-    assertThat(Files.readString(hook)).contains("[ \"enable\" = \"enable\" ]");
+    final IntegrationResult refreshed = integration.integrate(root, IntegrationRequest.INSTALL);
+
+    assertThat(refreshed.status()).isEqualTo(IntegrationResult.Status.CHANGED);
+    assertThat(refreshed.changed()).containsExactly(preTool.toString());
+    assertThat(preTool).doesNotExist();
     assertThat(integration.integrate(root, IntegrationRequest.INSTALL).status())
         .isEqualTo(IntegrationResult.Status.ALREADY_PRESENT);
-    assertThat(Files.readString(hook)).contains("[ \"enable\" = \"enable\" ]");
+  }
 
-    integration.integrate(root, new IntegrationRequest(false, GuardMode.DISABLE));
-    assertThat(Files.readString(hook)).doesNotContain("[ \"enable\" = \"enable\" ]");
+  @Test
+  void clineRemovalDeletesTheOwnedPreToolUseFileAndKeepsAUserOwnedOne(@TempDir final Path root)
+      throws Exception {
+    final ClineIntegration integration = new ClineIntegration();
+    final Path preTool = root.resolve(".cline/hooks/PreToolUse");
     integration.integrate(root, IntegrationRequest.INSTALL);
-    assertThat(Files.readString(hook)).doesNotContain("[ \"enable\" = \"enable\" ]");
+    Files.writeString(preTool, "#!/bin/sh\n# ward-owned: cline-native-hooks v1\nexit 0\n");
+    assertThat(integration.integrate(root, IntegrationRequest.REMOVE).changed())
+        .contains(preTool.toString());
+    assertThat(preTool).doesNotExist();
+
+    integration.integrate(root, IntegrationRequest.INSTALL);
+    Files.writeString(preTool, "#!/bin/sh\necho mine\n");
+    assertThat(integration.integrate(root, IntegrationRequest.INSTALL).status())
+        .isEqualTo(IntegrationResult.Status.ALREADY_PRESENT);
+    assertThat(integration.integrate(root, IntegrationRequest.REMOVE).status())
+        .isEqualTo(IntegrationResult.Status.REMOVED);
+    assertThat(preTool).hasContent("#!/bin/sh\necho mine\n");
+    assertThat(integration.health(root).status()).isEqualTo(IntegrationHealth.Status.MISSING);
   }
 }

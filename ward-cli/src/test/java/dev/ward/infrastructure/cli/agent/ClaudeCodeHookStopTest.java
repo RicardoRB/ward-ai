@@ -11,30 +11,26 @@ import org.junit.jupiter.api.Test;
 
 class ClaudeCodeHookStopTest extends ClaudeCodeHookTestSupport {
   @Test
-  void stopBlocksOnceWithCombinedQualityAndSpecFindings() {
-    specsValid = false;
+  void stopBlocksOnceWithTheQualityFindings() {
+    testsPass = false;
 
     assertThat(hook(stop(false))).isEqualTo(ExitCodes.OK);
 
     final JsonTree output = JsonTree.parse(out.toString());
     assertThat(output.get("decision").asString()).isEqualTo("block");
-    assertThat(output.get("reason").asString())
-        .contains("openspec (FAILED): 1 error", "must include at least one scenario");
-    assertThat(commands)
-        .containsExactly(
-            List.of("mvn", "test"),
-            List.of("openspec", "validate", "--all", "--strict", "--no-interactive"));
+    assertThat(output.get("reason").asString()).contains("tests: ");
+    assertThat(commands).containsExactly(List.of("mvn", "test"));
     assertThat(err.toString()).isEmpty();
   }
 
   @Test
   void stopAlreadyContinuedReportsToTheUserWithoutBlocking() {
-    specsValid = false;
+    testsPass = false;
 
     assertThat(hook(stop(true))).isEqualTo(ExitCodes.OK);
 
     final JsonTree output = JsonTree.parse(out.toString());
-    assertThat(output.get("systemMessage").asString()).contains("openspec (FAILED)");
+    assertThat(output.get("systemMessage").asString()).contains("tests: ");
     assertThat(out.toString()).doesNotContain("decision");
   }
 
@@ -43,16 +39,6 @@ class ClaudeCodeHookStopTest extends ClaudeCodeHookTestSupport {
     assertThat(hook(stop(false))).isEqualTo(ExitCodes.OK);
     assertThat(out.toString()).isEmpty();
     assertThat(err.toString()).isEmpty();
-  }
-
-  @Test
-  void stopWithoutOpenSpecIsSilent() throws IOException {
-    Files.writeString(
-        root.resolve("ward.toml"),
-        "version = 2\n[checks.tests]\nuses = \"tests\"\nprofiles = [\"default\", \"edit\"]\ncommand = \"mvn test\"\n");
-
-    assertThat(hook(stop(false))).isEqualTo(ExitCodes.OK);
-    assertThat(out.toString()).isEmpty();
     assertThat(commands).containsExactly(List.of("mvn", "test"));
   }
 

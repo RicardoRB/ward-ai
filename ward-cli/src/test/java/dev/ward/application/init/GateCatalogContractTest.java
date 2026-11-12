@@ -167,7 +167,10 @@ class GateCatalogContractTest {
   private static List<InitGateOption> jvmGates(final Project project) {
     final ToolchainInitSupport.Gates gates =
         new JvmInitSupport()
-            .gates(project, null, InitInputs.withoutManifests(new FakeEnvironmentInspection()));
+            .gates(
+                project,
+                null,
+                InitInputs.withoutManifests(new FakeEnvironmentInspection().withReleaseTag()));
     return Stream.concat(gates.analysis().stream(), gates.policy().stream()).toList();
   }
 
@@ -176,7 +179,7 @@ class GateCatalogContractTest {
   }
 
   private Project project(final BuildTool buildTool, final Language language) {
-    // Publishing makes Maven offer api-compat, so every JVM gate is listed.
+    // Publishing makes Maven Kotlin offer api-compat, and a release tag makes Java offer it.
     return new Project(
         root,
         language,

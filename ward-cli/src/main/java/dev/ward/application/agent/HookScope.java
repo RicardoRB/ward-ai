@@ -5,7 +5,7 @@ import dev.ward.domain.config.WardConfiguration;
 import dev.ward.domain.project.DiscoveredProject;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.ProjectChanges;
-import dev.ward.domain.spec.ProjectPaths;
+import dev.ward.domain.project.ProjectPaths;
 import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.List;

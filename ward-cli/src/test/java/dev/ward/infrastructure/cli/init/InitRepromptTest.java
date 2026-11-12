@@ -16,7 +16,7 @@ class InitRepromptTest {
   void terminalAsksForThePresetAgainAfterATypo() throws IOException {
     final InitCommandFixture init = new InitCommandFixture(root);
 
-    final int exit = init.run(true, "4\n1\n1\n\n\nn\n\n");
+    final int exit = init.run(true, "4\n1\n1\n\nn\n\n");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(init.output()).contains("Invalid preset selection. Choose 1, 2, or 3.");
@@ -27,7 +27,7 @@ class InitRepromptTest {
   void terminalAsksForGatesAgainAfterAnOutOfRangeNumber() throws IOException {
     final InitCommandFixture init = new InitCommandFixture(root);
 
-    final int exit = init.run(true, "3\n1\n99\n1\n\nn\n\n");
+    final int exit = init.run(true, "3\n1\n99\n1\nn\n\n");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(init.output()).contains("Invalid quality-gate selection '99'");

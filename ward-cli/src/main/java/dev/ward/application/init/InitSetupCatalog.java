@@ -1,13 +1,11 @@
 package dev.ward.application.init;
 
-import dev.ward.application.init.openspec.OpenSpecDirectories;
 import dev.ward.domain.agent.IntegrationResult;
 import dev.ward.domain.config.WardConfiguration;
 import dev.ward.domain.config.WardConfigurationReader;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.init.InitGateOption;
-import dev.ward.domain.init.InitToolOption;
 import dev.ward.domain.init.OwnedSection;
 import dev.ward.domain.init.QualityHookGeneration;
 import dev.ward.domain.project.Project;
@@ -22,10 +20,8 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-/** Stable OpenSpec tool choices and project-aware defaults used by init. */
+/** Project-aware defaults used by init. */
 public final class InitSetupCatalog extends InitGeneralCatalog {
-  public static final List<String> OPENSPEC_VALIDATIONS = List.of("openspec", "openspec-archived");
-  private final EnvironmentInspection environment;
   private static final Logger LOGGER = Logger.getLogger(InitSetupCatalog.class.getName());
 
   private final Supplier<QualityHookGeneration> qualityHooks;
@@ -99,7 +95,6 @@ public final class InitSetupCatalog extends InitGeneralCatalog {
       final WardConfigurationReader configurations,
       final String wardVersion) {
     super(inputs);
-    this.environment = inputs.environment();
     this.manifests = inputs.manifests();
     this.qualityHooks = () -> qualityHooks;
     this.configurations = configurations;
@@ -144,53 +139,5 @@ public final class InitSetupCatalog extends InitGeneralCatalog {
   /** Removes the Ward-owned quality hooks of {@code project}. */
   public IntegrationResult removeQualityHooks(final Project project) {
     return qualityHooks.get().remove(project);
-  }
-
-  /** Returns the optional tools init can install. */
-  public List<InitToolOption> tools() {
-    return List.of(new InitToolOption("openspec", "OpenSpec project validation tool"));
-  }
-
-  /** Returns the OpenSpec validation IDs. */
-  public List<String> openSpecValidations() {
-    return OPENSPEC_VALIDATIONS;
-  }
-
-  /** Returns whether a usable OpenSpec executable is on the path of {@code project}. */
-  public boolean openSpecAvailable(final Project project) {
-    return environment.inspectExecutable(project.root(), "openspec").usable();
-  }
-
-  /** Returns where the OpenSpec gates of a project find {@code openspec/}. */
-  public OpenSpecDirectories openSpecDirectories() {
-    return new OpenSpecDirectories(environment);
-  }
-
-  /**
-   * Returns the gate choice for the OpenSpec validation {@code id}, run with {@code executable}.
-   *
-   * @throws WardException if {@code id} is unknown
-   */
-  public InitGateOption openSpecValidation(
-      final Project project, final String id, final String executable) {
-    if (!openSpecValidations().contains(id)) {
-      throw new WardException(
-          "Unknown OpenSpec validation '"
-              + id
-              + "'. Supported validations: openspec, openspec-archived");
-    }
-    final List<String> command =
-        "openspec".equals(id)
-            ? List.of(executable, "validate", "--all", "--strict", "--no-interactive")
-            : List.of(executable, "validate", "--archived", "--no-interactive");
-    final boolean available = environment.inspectExecutable(project.root(), executable).usable();
-    return new InitGateOption(
-        id,
-        "OpenSpec " + ("openspec".equals(id) ? "active" : "archived") + " validation.",
-        command,
-        available,
-        available
-            ? "OpenSpec executable available."
-            : "OpenSpec is unavailable; install it or configure a local executable.");
   }
 }

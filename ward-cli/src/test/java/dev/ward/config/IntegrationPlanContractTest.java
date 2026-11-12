@@ -5,13 +5,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.ProjectSnapshot;
 import dev.ward.domain.agent.AgentIntegration;
-import dev.ward.domain.agent.GuardMode;
 import dev.ward.domain.agent.IntegrationRequest;
 import dev.ward.domain.agent.PlannedFileChange;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -21,42 +19,36 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-/** Every registered integration's plan matches what installing it writes, in every guard mode. */
+/** Every registered integration's plan matches what installing it writes, in every state. */
 class IntegrationPlanContractTest {
   @TempDir Path root;
 
   static Stream<Arguments> integrations() {
     return WardProvidesModule.agentIntegrations().stream()
         .sorted(Comparator.comparing(AgentIntegration::id))
-        .flatMap(
-            integration ->
-                Arrays.stream(GuardMode.values())
-                    .map(guard -> Arguments.of(integration.id(), integration, guard)));
+        .map(integration -> Arguments.of(integration.id(), integration));
   }
 
-  @ParameterizedTest(name = "{0} {2} on an empty project")
+  @ParameterizedTest(name = "{0} on an empty project")
   @MethodSource("integrations")
-  void installMatchesPlan(
-      final String id, final AgentIntegration integration, final GuardMode guard) {
-    assertPlanMatches(root, () -> integration.plan(root, guard), () -> install(integration, guard));
+  void installMatchesPlan(final String id, final AgentIntegration integration) {
+    assertPlanMatches(root, () -> integration.plan(root), () -> install(integration));
   }
 
-  @ParameterizedTest(name = "{0} {2} after an install with the guard enabled")
+  @ParameterizedTest(name = "{0} after an install")
   @MethodSource("integrations")
-  void refreshMatchesPlan(
-      final String id, final AgentIntegration integration, final GuardMode guard) {
-    install(integration, GuardMode.ENABLE);
+  void refreshMatchesPlan(final String id, final AgentIntegration integration) {
+    install(integration);
 
-    assertPlanMatches(root, () -> integration.plan(root, guard), () -> install(integration, guard));
+    assertPlanMatches(root, () -> integration.plan(root), () -> install(integration));
   }
 
-  @ParameterizedTest(name = "{0} {2} with one installed file missing")
+  @ParameterizedTest(name = "{0} with one installed file missing")
   @MethodSource("integrations")
-  void partialInstallMatchesPlan(
-      final String id, final AgentIntegration integration, final GuardMode guard)
+  void partialInstallMatchesPlan(final String id, final AgentIntegration integration)
       throws IOException {
     final Map<String, String> before = ProjectSnapshot.of(root);
-    install(integration, GuardMode.KEEP);
+    install(integration);
     final String created =
         ProjectSnapshot.of(root).keySet().stream()
             .filter(file -> !before.containsKey(file))
@@ -64,21 +56,20 @@ class IntegrationPlanContractTest {
             .orElseThrow();
     Files.delete(root.resolve(created));
 
-    assertPlanMatches(root, () -> integration.plan(root, guard), () -> install(integration, guard));
+    assertPlanMatches(root, () -> integration.plan(root), () -> install(integration));
   }
 
-  @ParameterizedTest(name = "{0} {2} with a user-owned file in the way")
+  @ParameterizedTest(name = "{0} with a user-owned file in the way")
   @MethodSource("integrations")
-  void conflictIsPlannedAndNothingIsWritten(
-      final String id, final AgentIntegration integration, final GuardMode guard)
+  void conflictIsPlannedAndNothingIsWritten(final String id, final AgentIntegration integration)
       throws IOException {
-    final Path target = integration.plan(root, GuardMode.KEEP).getFirst().file();
+    final Path target = integration.plan(root).getFirst().file();
     Files.createDirectories(target.getParent());
     Files.writeString(target, "user-owned\n");
 
-    final List<PlannedFileChange> plan = integration.plan(root, guard);
+    final List<PlannedFileChange> plan = integration.plan(root);
     final Map<String, String> before = ProjectSnapshot.of(root);
-    install(integration, guard);
+    install(integration);
 
     assertThat(plan)
         .extracting(PlannedFileChange::action)
@@ -86,7 +77,7 @@ class IntegrationPlanContractTest {
     assertThat(ProjectSnapshot.of(root)).isEqualTo(before);
   }
 
-  private void install(final AgentIntegration integration, final GuardMode guard) {
-    integration.integrate(root, new IntegrationRequest(false, guard));
+  private void install(final AgentIntegration integration) {
+    integration.integrate(root, IntegrationRequest.INSTALL);
   }
 }

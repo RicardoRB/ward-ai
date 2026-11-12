@@ -10,11 +10,11 @@ import dev.ward.domain.gate.Finding;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.GateScope;
 import dev.ward.domain.gate.GateStatus;
-import dev.ward.domain.gate.SupportedQualityGates;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -109,6 +109,6 @@ class WardPartialCheckTest {
 
   private CheckReport partial(final String path) {
     return WardAnalysisFixtures.checks(new FakeCommandExecutor(0, "", ""))
-        .checkPartial(dir, List.of(dir.resolve(path)), SupportedQualityGates.specIds());
+        .checkPartial(dir, List.of(dir.resolve(path)), Set.of());
   }
 }

@@ -1,0 +1,5 @@
+p/A.java:3:1 api-compat:member-removed p.A#<init>: public <init>(int) -> removed
+p/A.java:3:1 api-compat:member-removed p.A#close: public void close() -> removed
+p/A.java:3:1 api-compat:member-removed p.A#put: public void put(java.lang.String) -> removed
+p/A.java:3:1 api-compat:member-removed p.A#size: public int size -> removed
+p/E.java:3:1 api-compat:member-removed p.E#TWO: public static final p.E TWO -> removed
