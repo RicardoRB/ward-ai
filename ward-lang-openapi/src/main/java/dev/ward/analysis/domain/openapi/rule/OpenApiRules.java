@@ -29,7 +29,7 @@ public final class OpenApiRules {
     rules.put("info-license", InfoRules::license);
     rules.put("info-license-spdx", InfoRules::licenseSpdx);
     rules.put("license-url", InfoRules::licenseUrl);
-    rules.put("no-ambiguous-paths", PathStructureRules::ambiguousPaths);
+    rules.put("no-ambiguous-paths", AmbiguousPathRules::ambiguousPaths);
     rules.put("no-eval-in-markdown", MarkdownRules::noEval);
     rules.put("no-http-verbs-in-path", PathRules::noVerbs);
     rules.put("no-request-body", ResponseRules::noRequestBody);
@@ -53,7 +53,7 @@ public final class OpenApiRules {
     rules.put("operation-operation-id", new OperationOperationId());
     rules.put("operation-operation-id-unique", OperationIdRules::unique);
     rules.put("operation-operation-id-valid-in-url", OperationIdRules::validInUrl);
-    rules.put("operation-parameters", PathStructureRules::operationParameters);
+    rules.put("operation-parameters", OperationStructureRules::operationParameters);
     rules.put("operation-singular-tag", TagRules::singularTag);
     rules.put("operation-success-response", ResponseRules::successResponse);
     rules.put("operation-tag-defined", TagRules::tagDefined);
@@ -91,7 +91,7 @@ public final class OpenApiRules {
     rules.put("owasp-string-limit", OwaspSchemaRules::stringLimit);
     rules.put("owasp-string-restricted", OwaspSchemaRules::stringRestricted);
     rules.put("path-declarations-must-exist", PathRules::declarationsMustExist);
-    rules.put("path-item-refs", PathStructureRules::pathItemRefs);
+    rules.put("path-item-refs", OperationStructureRules::pathItemRefs);
     rules.put("path-keys-no-trailing-slash", PathRules::noTrailingSlash);
     rules.put("path-not-include-query", PathRules::notIncludeQuery);
   }
