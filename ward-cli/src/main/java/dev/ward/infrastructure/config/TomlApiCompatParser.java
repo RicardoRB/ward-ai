@@ -38,19 +38,24 @@ final class TomlApiCompatParser {
     if (!gate.contains(INCLUDE)) {
       return List.of();
     }
-    final String key = where + "." + INCLUDE;
+    final String key =
+        "'" + where + "." + INCLUDE + "' must be a non-empty array of non-blank strings";
     final TomlArray array = gate.isArray(INCLUDE) ? gate.getArray(INCLUDE) : null;
     if (array == null || array.isEmpty()) {
-      throw new WardException("'" + key + "' must be a non-empty array of non-blank strings");
+      throw new WardException(key);
     }
     final List<String> prefixes = new ArrayList<>(array.size());
     for (int i = 0; i < array.size(); i++) {
-      final String prefix = array.isString(i) ? array.getString(i) : null;
-      if (prefix == null || prefix.isBlank()) {
-        throw new WardException("'" + key + "' must be a non-empty array of non-blank strings");
-      }
-      prefixes.add(prefix.trim());
+      prefixes.add(prefix(array, i, key));
     }
     return prefixes;
+  }
+
+  private static String prefix(final TomlArray array, final int index, final String message) {
+    final String prefix = array.isString(index) ? array.getString(index) : null;
+    if (prefix == null || prefix.isBlank()) {
+      throw new WardException(message);
+    }
+    return prefix.trim();
   }
 }

@@ -2,6 +2,7 @@ package dev.ward.domain.apicompat;
 
 import dev.ward.analysis.domain.api.ApiMember;
 import dev.ward.analysis.domain.api.ApiType;
+import dev.ward.analysis.domain.api.ApiTypeRef;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -72,11 +73,11 @@ public final class ApiComparison {
     final ApiType now = found.get();
     if (!after.isApi(now.name()) || now.visibility().lessVisibleThan(old.visibility())) {
       typeChange("type-less-visible", old, now);
-    } else if (now.kind() != old.kind()) {
-      typeChange("type-kind-changed", old, now);
-    } else {
+    } else if (now.kind() == old.kind()) {
       compareShape(old, now);
       new ApiMemberComparison(before, after, changes).compare(old, now);
+    } else {
+      typeChange("type-kind-changed", old, now);
     }
   }
 
@@ -94,7 +95,7 @@ public final class ApiComparison {
     final Set<String> removed = new HashSet<>(before.supertypeNames(old));
     removed.removeAll(remaining);
     old.supertypes().stream()
-        .map(supertype -> supertype.erasure())
+        .map(ApiTypeRef::erasure)
         .filter(removed::contains)
         .forEach(name -> removedSupertype(old, now, name));
     before.supertypeNames(old).stream()

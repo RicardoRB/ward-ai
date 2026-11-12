@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 /** Resolves revisions with fixed Git argument vectors; never fetches or writes. */
 public final class GitRevisionFiles implements RevisionFiles {
+  private static final String GIT = "git";
   private final CommandExecutor executor;
 
   /** Creates the adapter; {@code executor} runs Git. */
@@ -24,19 +25,19 @@ public final class GitRevisionFiles implements RevisionFiles {
     return commit(
         root,
         List.of(
-            "git", "rev-parse", "--verify", "--quiet", "--end-of-options", revision + "^{commit}"));
+            GIT, "rev-parse", "--verify", "--quiet", "--end-of-options", revision + "^{commit}"));
   }
 
   @Override
   public Optional<String> mergeBase(final Path root, final String first, final String second) {
-    return commit(root, List.of("git", "merge-base", "--end-of-options", first, second));
+    return commit(root, List.of(GIT, "merge-base", "--end-of-options", first, second));
   }
 
   // ./ makes Git resolve the path from the project root, which may be below the repository root.
   @Override
   public boolean exists(final Path root, final String commit, final String path) {
     return executor
-        .execute(List.of("git", "cat-file", "-e", commit + ":./" + path), root)
+        .execute(List.of(GIT, "cat-file", "-e", commit + ":./" + path), root)
         .succeeded();
   }
 
@@ -46,7 +47,7 @@ public final class GitRevisionFiles implements RevisionFiles {
     final String base = directory.isEmpty() ? "." : directory;
     final CommandResult result =
         executor.execute(
-            List.of("git", "ls-tree", "-r", "-z", "--name-only", commit, "--", base), root);
+            List.of(GIT, "ls-tree", "-r", "-z", "--name-only", commit, "--", base), root);
     if (!result.succeeded()) {
       return List.of();
     }
@@ -61,18 +62,18 @@ public final class GitRevisionFiles implements RevisionFiles {
   @Override
   public Optional<String> read(final Path root, final String commit, final String path) {
     final CommandResult result =
-        executor.execute(List.of("git", "cat-file", "blob", commit + ":./" + path), root);
+        executor.execute(List.of(GIT, "cat-file", "blob", commit + ":./" + path), root);
     return result.succeeded() ? Optional.of(result.stdout()) : Optional.empty();
   }
 
   @Override
   public List<String> tagsReachableFrom(final Path root, final String commit) {
-    return lines(executor.execute(List.of("git", "tag", "--merged", commit), root));
+    return lines(executor.execute(List.of(GIT, "tag", "--merged", commit), root));
   }
 
   @Override
   public List<String> tagsAt(final Path root, final String commit) {
-    return lines(executor.execute(List.of("git", "tag", "--points-at", commit), root));
+    return lines(executor.execute(List.of(GIT, "tag", "--points-at", commit), root));
   }
 
   @Override
@@ -80,7 +81,7 @@ public final class GitRevisionFiles implements RevisionFiles {
     return "true"
         .equals(
             executor
-                .execute(List.of("git", "rev-parse", "--is-shallow-repository"), root)
+                .execute(List.of(GIT, "rev-parse", "--is-shallow-repository"), root)
                 .stdout()
                 .trim());
   }

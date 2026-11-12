@@ -2,6 +2,7 @@ package dev.ward.application.gate;
 
 import dev.ward.application.gate.apicompat.ApiCompatGates;
 import dev.ward.application.gate.openapi.OpenApiGates;
+import java.util.Objects;
 
 /**
  * The optional gate dependencies that {@code QualityGateFactory} injects beside its core ports.
@@ -18,6 +19,11 @@ public record GateExtensions(
 
   /** No optional dependencies: every extension gate is reported as unavailable. */
   public static final GateExtensions NONE = new GateExtensions(null, null, null, null);
+
+  /** Replaces a missing {@code api-compat} builder with one that only runs command checks. */
+  public GateExtensions {
+    apiCompat = Objects.requireNonNullElse(apiCompat, ApiCompatGates.UNAVAILABLE);
+  }
 
   /** Creates the extensions without the {@code api-compat} gate. */
   public GateExtensions(

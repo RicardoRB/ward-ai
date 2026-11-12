@@ -7,4 +7,8 @@ final class ApiCompatException extends RuntimeException {
   ApiCompatException(final String message) {
     super(message);
   }
+
+  ApiCompatException(final String message, final Throwable cause) {
+    super(message, cause);
+  }
 }

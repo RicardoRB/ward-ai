@@ -14,7 +14,7 @@ final class ApiSignatures {
 
   /** Returns the type as a signature, such as {@code public final class p.A<T>}. */
   static String of(final ApiType type) {
-    final StringBuilder text = new StringBuilder();
+    final StringBuilder text = new StringBuilder(64);
     text.append(type.visibility().name().toLowerCase(Locale.ROOT)).append(' ');
     if (type.isFinal() && type.kind() != ApiType.Kind.ENUM && type.kind() != ApiType.Kind.RECORD) {
       text.append("final ");

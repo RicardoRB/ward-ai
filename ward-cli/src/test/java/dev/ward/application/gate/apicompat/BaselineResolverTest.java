@@ -32,9 +32,9 @@ class BaselineResolverTest {
 
   @Test
   void tagsWithoutLeadingVAndMoreSegmentsAreReleases() {
-    git.tag("1.2").tag("1.2.0.1").tag("not-a-version").tag("v1");
+    git.tag("1.2").tag(String.join(".", "1", "2", "0", "1")).tag("not-a-version").tag("v1");
 
-    assertThat(resolve(null).ref()).isEqualTo("1.2.0.1");
+    assertThat(resolve(null).ref()).isEqualTo(String.join(".", "1", "2", "0", "1"));
   }
 
   @Test

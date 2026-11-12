@@ -64,7 +64,11 @@ public final class JvmSourceLayouts {
 
   /** Returns the Java roots of a module, then its Kotlin roots, main before test in each. */
   private static List<JavaSourceRoot> rootsOf(final Path projectRoot, final Path module) {
-    final Directories dirs = directoriesOf(module);
+    final Path pom = module.resolve(POM);
+    final Directories dirs =
+        directoriesOf(
+            Files.isRegularFile(pom) ? Optional.of(read(pom)) : Optional.empty(),
+            gradleScript(module).map(JvmSourceLayouts::read));
     final String moduleId = relative(projectRoot, module);
     final List<JavaSourceRoot> roots = new ArrayList<>();
     roots.add(
@@ -78,14 +82,6 @@ public final class JvmSourceLayouts {
       roots.add(new JavaSourceRoot(relative(projectRoot, module.resolve(dir)), moduleId, true));
     }
     return roots;
-  }
-
-  /** Reads the Maven build section when there is a POM, else the Gradle script, else defaults. */
-  private static Directories directoriesOf(final Path module) {
-    final Path pom = module.resolve(POM);
-    return directoriesOf(
-        Files.isRegularFile(pom) ? Optional.of(read(pom)) : Optional.empty(),
-        gradleScript(module).map(JvmSourceLayouts::read));
   }
 
   private static Directories directoriesOf(

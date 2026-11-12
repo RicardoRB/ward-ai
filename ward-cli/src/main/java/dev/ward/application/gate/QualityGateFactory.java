@@ -38,7 +38,8 @@ public class QualityGateFactory {
           SupportedQualityGates.MUTMUT,
           SupportedQualityGates.XCODEBUILD_TEST,
           SupportedQualityGates.SWIFT_COVERAGE,
-          SupportedQualityGates.ANDROID_COVERAGE);
+          SupportedQualityGates.ANDROID_COVERAGE,
+          SupportedQualityGates.API_COMPAT);
   private static final String STRYKER_REPORT_HINT =
       "Enable Stryker's json reporter in the command, for example with"
           + " --reporters clear-text,progress,json.";
@@ -199,17 +200,24 @@ public class QualityGateFactory {
     if (SupportedQualityGates.openApiIds().contains(type)) {
       return openApiGate(name, check, project);
     }
-    if (SupportedQualityGates.API_COMPAT.equals(type) && check.command().isEmpty()) {
-      return apiCompatGate(check);
-    }
     if (PLATFORM_GATES.contains(type)) {
       return platformGate(check);
     }
     return new CommandQualityGate(name, executor, check.command(), reportDirectories);
   }
 
-  /** Builds a mutation, Swift or Android gate, each of which reads its own tool's report. */
+  /** Builds a mutation, Swift, Android or api-compat gate. */
   private QualityGate platformGate(final GateConfiguration check) {
+    if (SupportedQualityGates.API_COMPAT.equals(check.type())) {
+      // A check without a command is the native comparison; one with a command runs as before.
+      return extensions
+          .apiCompat()
+          .create(
+              check,
+              () ->
+                  new CommandQualityGate(
+                      check.name(), executor, check.command(), reportDirectories));
+    }
     if (SupportedQualityGates.ANDROID_COVERAGE.equals(check.type())) {
       return CoverageGates.minimum(check, executor, reports, reports.swift().android());
     }
@@ -261,14 +269,6 @@ public class QualityGateFactory {
       throw new WardException("OpenAPI gate dependencies are unavailable.");
     }
     return extensions.openApi().create(name, check, project);
-  }
-
-  /** A check without a command is the native comparison; one with a command is run as before. */
-  private QualityGate apiCompatGate(final GateConfiguration check) {
-    if (extensions.apiCompat() == null) {
-      throw new WardException("api-compat gate dependencies are unavailable.");
-    }
-    return extensions.apiCompat().create(check.name(), check);
   }
 
   private static List<String> testsCommand(final List<String> configured, final Project project) {

@@ -36,20 +36,25 @@ public final class JavaApiSurfaceReader implements ApiSurfaceReader {
     final Set<String> project = new HashSet<>();
     parsed.forEach(unit -> project.addAll(unit.names()));
     final List<ApiType> found = new ArrayList<>();
-    for (final ParsedUnit unit : parsed) {
-      final Set<String> imported = imported(unit);
-      final JavaUnitModel model =
-          JavaUnitModel.of(
-              unit.result().tree(),
-              name ->
-                  project.contains(name) || imported.contains(name) || libraryExists.test(name));
-      final JavaApiTypeReader reader = new JavaApiTypeReader(unit.path());
-      model
-          .classes()
-          .forEach(declaration -> reader.read(declaration, null, false, new ApiTypeRefs(), found));
-    }
+    parsed.forEach(unit -> readUnit(unit, project, libraryExists, found));
     found.sort(Comparator.comparing(ApiType::name));
     return List.copyOf(found);
+  }
+
+  private static void readUnit(
+      final ParsedUnit unit,
+      final Set<String> project,
+      final Predicate<String> libraryExists,
+      final List<ApiType> found) {
+    final Set<String> imported = imported(unit);
+    final JavaUnitModel model =
+        JavaUnitModel.of(
+            unit.result().tree(),
+            name -> project.contains(name) || imported.contains(name) || libraryExists.test(name));
+    final JavaApiTypeReader reader = new JavaApiTypeReader(unit.path());
+    model
+        .classes()
+        .forEach(declaration -> reader.read(declaration, null, false, new ApiTypeRefs(), found));
   }
 
   /** The single-type imports of a file: a name that is imported is taken to exist. */

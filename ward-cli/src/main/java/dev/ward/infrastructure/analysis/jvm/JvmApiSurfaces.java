@@ -30,8 +30,7 @@ public final class JvmApiSurfaces implements ApiSurfaces {
             root,
             List.of(),
             JvmClassLibraries.jdkHome(
-                Optional.ofNullable(System.getenv("JAVA_HOME")),
-                Optional.ofNullable(System.getProperty("java.home"))),
+                Optional.empty(), Optional.ofNullable(System.getProperty("java.home"))),
             Optional.empty())) {
       for (final ApiSurfaceReader reader : BundledLanguages.apiSurfaceReaders()) {
         final List<SourceUnit> own = ofLanguage(units, reader.language());

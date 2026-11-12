@@ -12,9 +12,10 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.DynamicTest;
-import org.junit.jupiter.api.TestFactory;
+import org.junit.jupiter.api.Test;
 
 /**
  * Compares every {@code baseline} and {@code revision} pair under {@code
@@ -25,33 +26,33 @@ import org.junit.jupiter.api.TestFactory;
 class ApiCompatFixturesTest {
   private static final Path ROOT = Path.of("src/test/resources/api-compat/java");
   private static final String WRITE = "ward.apicompat.write";
+  private static final String EXPECTED = "expected.txt";
 
-  @TestFactory
-  Stream<DynamicTest> everyFixtureMatchesItsExpectedChanges() throws IOException {
+  @Test
+  void everyFixtureMatchesItsExpectedChanges() throws IOException {
+    final Map<String, List<String>> actual = new TreeMap<>();
+    final Map<String, List<String>> expected = new TreeMap<>();
     try (Stream<Path> directories = Files.list(ROOT)) {
-      return directories
-          .filter(Files::isDirectory)
-          .sorted()
-          .map(
-              directory ->
-                  DynamicTest.dynamicTest(
-                      directory.getFileName().toString(), () -> check(directory)))
-          .toList()
-          .stream();
+      for (final Path fixture : directories.filter(Files::isDirectory).sorted().toList()) {
+        final String name = fixture.getFileName().toString();
+        actual.put(name, changes(fixture));
+        if (Boolean.getBoolean(WRITE)) {
+          Files.writeString(
+              fixture.resolve(EXPECTED),
+              String.join("\n", actual.get(name)) + (actual.get(name).isEmpty() ? "" : "\n"));
+        }
+        expected.put(name, Files.readAllLines(fixture.resolve(EXPECTED)));
+      }
     }
+    assertThat(actual).isNotEmpty().isEqualTo(expected);
   }
 
-  private static void check(final Path fixture) throws IOException {
-    final List<String> actual =
-        ApiComparison.compare(read(fixture.resolve("baseline")), read(fixture.resolve("revision")))
-            .stream()
-            .map(ApiCompatFixturesTest::line)
-            .toList();
-    final Path expected = fixture.resolve("expected.txt");
-    if (Boolean.getBoolean(WRITE)) {
-      Files.writeString(expected, String.join("\n", actual) + (actual.isEmpty() ? "" : "\n"));
-    }
-    assertThat(actual).isEqualTo(Files.readAllLines(expected));
+  private static List<String> changes(final Path fixture) throws IOException {
+    return ApiComparison.compare(
+            read(fixture.resolve("baseline")), read(fixture.resolve("revision")))
+        .stream()
+        .map(ApiCompatFixturesTest::line)
+        .toList();
   }
 
   private static String line(final ApiChange change) {

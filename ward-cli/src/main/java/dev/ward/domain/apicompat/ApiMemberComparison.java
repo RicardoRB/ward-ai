@@ -1,18 +1,13 @@
 package dev.ward.domain.apicompat;
 
-import dev.ward.analysis.domain.api.ApiLocation;
 import dev.ward.analysis.domain.api.ApiMember;
 import dev.ward.analysis.domain.api.ApiType;
-import dev.ward.analysis.domain.api.ApiTypeParameter;
-import dev.ward.analysis.domain.api.ApiTypeRef;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /** Compares the members of one type that is API in both versions. */
 final class ApiMemberComparison {
-  private static final String EMPTY = "";
   private static final Set<String> OBJECT_METHODS =
       Set.of(
           "toString()",
@@ -43,7 +38,7 @@ final class ApiMemberComparison {
     }
     for (final ApiMember member : now.members()) {
       if (old.extendable() && now.exposes(member) && member.isAbstract()) {
-        addedAbstract(old, now, member);
+        addedAbstract(old, member);
       }
     }
   }
@@ -54,19 +49,21 @@ final class ApiMemberComparison {
       removed(old, now, member);
       return;
     }
-    final ApiMember current = found.get();
-    if (current.visibility().lessVisibleThan(member.visibility())) {
-      change("member-less-visible", old, member, current, current.location());
-    } else if (current.isStatic() != member.isStatic()) {
-      change("static-changed", old, member, current, current.location());
-    } else {
-      compareTypes(old, member, current);
-      compareInheritance(old, member, current);
+    final String kind = ApiMemberKinds.of(old, member, found.get());
+    if (kind != null) {
+      changes.add(
+          new ApiChange(
+              kind,
+              old.name(),
+              member.name(),
+              member.signature(),
+              found.get().signature(),
+              found.get().location()));
     }
   }
 
   private void removed(final ApiType old, final ApiType now, final ApiMember member) {
-    if (movedUp(now, member) || hiddenFromTypeBySuper(member)) {
+    if (movedUp(now, member) || inheritedFromObject(member)) {
       return;
     }
     changes.add(
@@ -84,66 +81,14 @@ final class ApiMemberComparison {
   }
 
   /** The methods of {@code Object} are inherited by every class, so overriding one is optional. */
-  private static boolean hiddenFromTypeBySuper(final ApiMember member) {
+  private static boolean inheritedFromObject(final ApiMember member) {
     return member.kind() == ApiMember.Kind.METHOD
         && !member.isStatic()
         && OBJECT_METHODS.contains(member.id());
   }
 
-  private void compareTypes(final ApiType old, final ApiMember member, final ApiMember current) {
-    final boolean method = member.kind() != ApiMember.Kind.FIELD;
-    if (!member.type().key().equals(current.type().key())) {
-      change(
-          method ? "return-type-changed" : "field-type-changed",
-          old,
-          member,
-          current,
-          current.location());
-    } else if (method && signatureChanged(member, current)) {
-      change("signature-changed", old, member, current, current.location());
-    }
-  }
-
-  private static boolean signatureChanged(final ApiMember member, final ApiMember current) {
-    return !ApiSignatures.parameterKeys(member.parameters())
-            .equals(ApiSignatures.parameterKeys(current.parameters()))
-        || member.isVarargs() != current.isVarargs()
-        || boundsDiffer(member.typeParameters(), current.typeParameters());
-  }
-
-  private static boolean boundsDiffer(
-      final List<ApiTypeParameter> before, final List<ApiTypeParameter> after) {
-    return !bounds(before).equals(bounds(after));
-  }
-
-  private static List<String> bounds(final List<ApiTypeParameter> parameters) {
-    return parameters.stream()
-        .map(
-            parameter ->
-                parameter.bounds().stream().map(ApiTypeRef::key).collect(Collectors.joining("&")))
-        .toList();
-  }
-
-  private void compareInheritance(
-      final ApiType old, final ApiMember member, final ApiMember current) {
-    final boolean method = member.kind() == ApiMember.Kind.METHOD;
-    if (member.kind() == ApiMember.Kind.FIELD && !member.isFinal() && current.isFinal()) {
-      change("field-now-final", old, member, current, current.location());
-    } else if (method && old.extendable() && !member.isAbstract() && current.isAbstract()) {
-      change("method-now-abstract", old, member, current, current.location());
-    } else if (method
-        && old.extendable()
-        && !member.isFinal()
-        && !member.isStatic()
-        && current.isFinal()) {
-      change("method-now-final", old, member, current, current.location());
-    }
-  }
-
-  /**
-   * A new abstract method breaks implementers, unless the baseline already had it by inheritance.
-   */
-  private void addedAbstract(final ApiType old, final ApiType now, final ApiMember member) {
+  /** A new abstract method breaks implementers, unless the baseline already had it. */
+  private void addedAbstract(final ApiType old, final ApiMember member) {
     if (ApiIndex.member(old, member.id()).isPresent()
         || before.inheritsApiMember(old, member.id())) {
       return;
@@ -156,16 +101,5 @@ final class ApiMemberComparison {
             "none",
             member.signature(),
             member.location()));
-  }
-
-  private void change(
-      final String kind,
-      final ApiType type,
-      final ApiMember member,
-      final ApiMember current,
-      final ApiLocation location) {
-    changes.add(
-        new ApiChange(
-            kind, type.name(), member.name(), member.signature(), current.signature(), location));
   }
 }

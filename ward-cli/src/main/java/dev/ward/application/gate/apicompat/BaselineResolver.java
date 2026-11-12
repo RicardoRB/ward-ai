@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 /** Chooses the baseline: the configured ref, else the highest release tag before {@code HEAD}. */
 final class BaselineResolver {
   private static final Logger LOGGER = Logger.getLogger(BaselineResolver.class.getName());
+  private static final int ABBREVIATION = 12;
   private static final String HEAD = "HEAD";
   private static final String HINT = "Fetch tags and history or set 'base' in [checks.api-compat].";
 
@@ -42,7 +43,7 @@ final class BaselineResolver {
           "event=api-compat-baseline ref="
               + baseline.ref()
               + " commit="
-              + baseline.commit().substring(0, Math.min(baseline.commit().length(), 12)));
+              + baseline.commit().substring(0, Math.min(baseline.commit().length(), ABBREVIATION)));
     }
     return baseline;
   }

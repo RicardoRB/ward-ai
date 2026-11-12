@@ -3,6 +3,7 @@ package dev.ward.domain.gate;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,17 +30,17 @@ public final class ReleaseTags {
         .max(Comparator.comparing(ReleaseTags::version, ReleaseTags::compare));
   }
 
-  private static int[] version(final String tag) {
+  private static List<Integer> version(final String tag) {
     final Matcher matcher = RELEASE.matcher(tag);
     return matcher.matches()
-        ? Arrays.stream(matcher.group(1).split(SEPARATOR)).mapToInt(Integer::parseInt).toArray()
-        : new int[0];
+        ? Arrays.stream(matcher.group(1).split(SEPARATOR)).map(Integer::valueOf).toList()
+        : List.of();
   }
 
-  private static int compare(final int[] first, final int[] second) {
-    for (int index = 0; index < Math.max(first.length, second.length); index++) {
-      final int left = index < first.length ? first[index] : 0;
-      final int right = index < second.length ? second[index] : 0;
+  private static int compare(final List<Integer> first, final List<Integer> second) {
+    for (int index = 0; index < Math.max(first.size(), second.size()); index++) {
+      final int left = index < first.size() ? first.get(index) : 0;
+      final int right = index < second.size() ? second.get(index) : 0;
       if (left != right) {
         return Integer.compare(left, right);
       }
