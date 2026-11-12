@@ -2,6 +2,7 @@ package dev.ward.infrastructure.init.node;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.infrastructure.init.MatrixFileTrees;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -24,10 +25,11 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 
 /**
  * Runs each Node compatibility matrix cell through the real CLI: {@code init}, the clean {@code
- * check}, then the seeded violations, which must make every selected gate except {@code stryker}
- * fail. Runs only for the cells whose Node value is named by {@code ward.node.matrix} (a major, or
- * a major and minor) and, when {@code ward.node.matrix.fixture} is set, whose fixture it names,
- * with the Ward jar named by {@code ward.node.matrix.jar}.
+ * check}, an untested source file, which must fail {@code coverage}, then the seeded violations,
+ * which must make every selected gate except {@code stryker} and {@code coverage} fail. Runs only
+ * for the cells whose Node value is named by {@code ward.node.matrix} (a major, or a major and
+ * minor) and, when {@code ward.node.matrix.fixture} is set, whose fixture it names, with the Ward
+ * jar named by {@code ward.node.matrix.jar}.
  */
 @EnabledIfSystemProperty(
     named = NodeCompatibilityMatrixTest.NODE_PROPERTY,
@@ -38,7 +40,12 @@ class NodeCompatibilityMatrixTest {
   private static final String JAR_PROPERTY = "ward.node.matrix.jar";
   private static final Path FIXTURES = Path.of("src/test/resources/fixtures/node-matrix");
   private static final Path VIOLATIONS = Path.of("src/test/resources/node-matrix/violations");
+  private static final Path COVERAGE_VIOLATIONS =
+      Path.of("src/test/resources/node-matrix/coverage");
+  private static final String ANGULAR = "angular";
   private static final String STRYKER = "stryker";
+  // The combined violations do not target coverage: a failing test may leave a passing report.
+  private static final String COVERAGE = "coverage";
   private static final String FAILED = "FAILED";
   private static final String EXECUTION_ERROR = "EXECUTION_ERROR";
   private static final int PACKAGES_ARGUMENT = 3;
@@ -88,10 +95,13 @@ class NodeCompatibilityMatrixTest {
     clean.forEach(
         (gate, status) -> assertThat(status).as("clean gate %s", gate).isEqualTo("PASSED"));
 
+    if (!fixture.startsWith(ANGULAR)) {
+      assertUntestedSourceFailsCoverage(project, fixture);
+    }
     copyTree(VIOLATIONS.resolve(fixture), project);
     final Map<String, String> seeded = statuses(check(project));
     for (final String gate : clean.keySet()) {
-      if (!STRYKER.equals(gate)) {
+      if (!STRYKER.equals(gate) && !COVERAGE.equals(gate)) {
         // A seeded syntax error makes a gate error out rather than fail, so either status catches
         // it.
         assertThat(seeded.get(gate))
@@ -99,6 +109,19 @@ class NodeCompatibilityMatrixTest {
             .isIn(FAILED, EXECUTION_ERROR);
       }
     }
+  }
+
+  /** An untested source file, loaded by a test, fails the {@code coverage} check on its own. */
+  private static void assertUntestedSourceFailsCoverage(final Path project, final String fixture)
+      throws IOException, InterruptedException {
+    final Path untested = COVERAGE_VIOLATIONS.resolve(fixture);
+    copyTree(untested, project);
+    final CommandRun report = check(project);
+    assertThat(statuses(report).get("coverage"))
+        .as("coverage with an untested source file\n%s", report.stdout())
+        .isEqualTo(FAILED);
+    assertThat(report.stdout()).as("coverage finding").contains("Line coverage");
+    MatrixFileTrees.remove(untested, project);
   }
 
   private static CommandRun check(final Path project) throws IOException, InterruptedException {

@@ -1,6 +1,7 @@
 package dev.ward.analysis.domain.rule.check;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.rule.Measured;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,16 +44,24 @@ public final class DescendantCountCheck implements RuleCheck {
   }
 
   @Override
-  public List<RuleMatch> matches(final SyntaxNode root) {
-    final List<RuleMatch> matches = new ArrayList<>();
+  public List<Measured> measures(final SyntaxNode root) {
+    final List<Measured> measured = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, kinds)) {
       final SyntaxNode node = visit.node();
-      final int value = base + count(node);
-      if (value > max) {
+      measured.add(new Measured(node.span(), base + count(node)));
+    }
+    return List.copyOf(measured);
+  }
+
+  @Override
+  public List<RuleMatch> matches(final SyntaxNode root) {
+    final List<RuleMatch> matches = new ArrayList<>();
+    for (final Measured measured : measures(root)) {
+      if (measured.value() > max) {
         matches.add(
             new RuleMatch(
-                node.span(),
-                CheckSupport.fill(message, String.valueOf(value), String.valueOf(max))));
+                measured.span(),
+                CheckSupport.fill(message, String.valueOf(measured.value()), String.valueOf(max))));
       }
     }
     return List.copyOf(matches);

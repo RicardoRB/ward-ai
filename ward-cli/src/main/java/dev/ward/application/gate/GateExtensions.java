@@ -14,19 +14,33 @@ import dev.ward.domain.gate.QualityGate;
  * @param analysis gives the {@code ward} gate its rules and sources, or {@code null} when it is
  *     unavailable
  * @param format builds the {@code ward-format} gate, or {@code null} when it is unavailable
+ * @param secrets builds the {@code secrets} gate, or {@code null} when it is unavailable
+ * @param crap gives the {@code crap} gate its report readers, or {@code null} when it is
+ * @param vulnerabilities builds the {@code vulnerabilities} gate, or {@code null} when it is
+ *     unavailable
  * @param license looks up the licenses of the {@code license} gate, or {@code null} when it is
  *     unavailable
  */
 public record GateExtensions(
-    OpenApiGates openApi, AnalysisPorts analysis, FormatGates format, LicenseService license) {
+    OpenApiGates openApi,
+    AnalysisPorts analysis,
+    FormatGates format,
+    SecretGates secrets,
+    CrapPorts crap,
+    VulnerabilityGates vulnerabilities,
+    LicenseService license) {
 
   /** No optional dependencies: every extension gate is reported as unavailable. */
-  public static final GateExtensions NONE = new GateExtensions(null, null, null, null);
+  public static final GateExtensions NONE =
+      new GateExtensions(null, null, null, null, null, null, null);
 
-  /** Creates the extensions without the license lookup. */
+  /**
+   * Creates the extensions without the {@code secrets}, {@code crap}, {@code vulnerabilities} and
+   * {@code license} gates.
+   */
   public GateExtensions(
       final OpenApiGates openApi, final AnalysisPorts analysis, final FormatGates format) {
-    this(openApi, analysis, format, null);
+    this(openApi, analysis, format, null, null, null, null);
   }
 
   /**

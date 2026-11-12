@@ -69,6 +69,10 @@ final class MutationGateFixtures {
         null,
         null,
         null,
+        null,
+        null,
+        null,
+        null,
         null);
   }
 

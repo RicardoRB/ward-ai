@@ -8,9 +8,14 @@ public final class SupportedQualityGates {
   public static final String TRACEABILITY = "openspec-junit-traceability";
   public static final String ANALYSIS = "ward";
   public static final String FORMAT = "ward-format";
+  public static final String SECRETS = "secrets";
+  public static final String COVERAGE = "coverage";
+  public static final String CRAP = "crap";
+
   public static final String OPENAPI_LINT = "openapi-lint";
   public static final String OPENAPI_DIFF = "openapi-diff";
   public static final String OPENAPI_COMPAT = "openapi-compat";
+  public static final String VULNERABILITIES = "vulnerabilities";
   public static final String STRYKER = "stryker";
   public static final String MUTATION = "mutation";
   public static final String MUTMUT = "mutmut";

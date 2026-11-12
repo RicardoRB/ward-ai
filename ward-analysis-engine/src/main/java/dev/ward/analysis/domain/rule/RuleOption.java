@@ -77,6 +77,9 @@ public record RuleOption(
     if (type == RuleOptionType.INTEGER) {
       return integerProblem(value);
     }
+    if (type == RuleOptionType.NUMBER) {
+      return numberProblem(value);
+    }
     if (type == RuleOptionType.REGEX) {
       return regexProblem(value);
     }
@@ -101,6 +104,14 @@ public record RuleOption(
       return wrong(expected, value);
     }
     return number < min || number > max ? wrong(expected, value) : Optional.empty();
+  }
+
+  private Optional<String> numberProblem(final Object value) {
+    final String expected = "a number" + range();
+    if (!(value instanceof Number number) || number.doubleValue() < min) {
+      return wrong(expected, value);
+    }
+    return number.doubleValue() > max ? wrong(expected, value) : Optional.empty();
   }
 
   private String range() {

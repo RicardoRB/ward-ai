@@ -4,6 +4,7 @@ import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.FactNeed;
 import dev.ward.analysis.domain.rule.FlowView;
+import dev.ward.analysis.domain.rule.Measured;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import dev.ward.analysis.domain.rule.ScopeView;
 import dev.ward.analysis.domain.types.UnitTypeFacts;
@@ -20,6 +21,17 @@ public interface RuleCheck {
    *     tree
    */
   List<RuleMatch> matches(SyntaxNode root);
+
+  /**
+   * Returns the value this check measures for every declaration in {@code root}, including those
+   * within its limit. A check that measures nothing returns none, as this default method does.
+   *
+   * @throws dev.ward.analysis.domain.port.AnalysisFailedException if the check cannot run on the
+   *     tree
+   */
+  default List<Measured> measures(final SyntaxNode root) {
+    return List.of();
+  }
 
   /**
    * Returns the places in {@code root} where the check fails, given the control-flow graphs of the

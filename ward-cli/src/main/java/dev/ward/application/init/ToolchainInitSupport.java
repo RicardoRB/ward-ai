@@ -5,6 +5,7 @@ import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import java.util.List;
+import java.util.Optional;
 
 /** The init choices that depend on a project's toolchain. */
 public interface ToolchainInitSupport extends OwnedFileSupport, MemberSupport {
@@ -31,6 +32,14 @@ public interface ToolchainInitSupport extends OwnedFileSupport, MemberSupport {
    */
   default boolean supports(final Project project, final InitInputs inputs) {
     return true;
+  }
+
+  /**
+   * Returns the setup of the opt-in {@code crap} gate, or empty when init cannot make {@code
+   * project}'s coverage tool write the report the gate reads, so the gate is not offered.
+   */
+  default Optional<CrapSetup> crap(final Project project, final InitInputs inputs) {
+    return Optional.empty();
   }
 
   /** Returns the presets init offers for the toolchain, in wizard order. */

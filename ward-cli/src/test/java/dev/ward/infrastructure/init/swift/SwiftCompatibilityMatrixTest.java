@@ -2,9 +2,11 @@ package dev.ward.infrastructure.init.swift;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.infrastructure.init.MatrixFileTrees;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +40,12 @@ class SwiftCompatibilityMatrixTest {
   private static final String DEVELOPER_DIR_PROPERTY = "ward.swift.matrix.developer-dir";
   private static final Path FIXTURES = Path.of("src/test/resources/fixtures/swift-matrix");
   private static final Path VIOLATIONS = Path.of("src/test/resources/swift-matrix/violations");
+  private static final Path COVERAGE_VIOLATIONS =
+      Path.of("src/test/resources/swift-matrix/coverage");
+
+  /** Gates the combined violations do not target: swift-coverage has its own run. */
   private static final Set<String> NOT_VIOLATED = Set.of("swift-coverage");
+
   private static final Set<String> STANDARD_PASSES = Set.of("swift-build");
   private static final String STANDARD = "standard";
 
@@ -92,6 +99,14 @@ class SwiftCompatibilityMatrixTest {
         .as("gates that fail on the clean project")
         .isEmpty();
 
+    final Path untested = COVERAGE_VIOLATIONS.resolve(fixture);
+    copyTree(untested, project);
+    final Run uncovered = run(env, project, "check", "--profile", "ci", "--format", "json");
+    assertThat(checks(uncovered).get("swift-coverage"))
+        .as("swift-coverage with an untested source file\n%s", uncovered.output())
+        .isEqualTo("FAILED");
+    assertThat(uncovered.output()).as("coverage finding").contains("Line coverage");
+    MatrixFileTrees.restore(untested, FIXTURES.resolve(fixture), project);
     copyTree(VIOLATIONS.resolve(fixture), project);
     final Run violatedReport = run(env, project, "check", "--profile", "ci", "--format", "json");
     final Map<String, String> violated = checks(violatedReport);
@@ -172,7 +187,7 @@ class SwiftCompatibilityMatrixTest {
           Files.createDirectories(destination);
         } else {
           Files.createDirectories(destination.getParent());
-          Files.copy(file, destination, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+          Files.copy(file, destination, StandardCopyOption.REPLACE_EXISTING);
         }
       }
     }

@@ -2,6 +2,7 @@ package dev.ward.analysis.domain.rule.metric;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.CompiledRule;
+import dev.ward.analysis.domain.rule.Measured;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.ArrayList;
@@ -25,6 +26,29 @@ final class MetricCompiledRule implements CompiledRule {
   @Override
   public RuleDefinition definition() {
     return definition;
+  }
+
+  @Override
+  public List<Measured> measures(final SyntaxNode root) {
+    final List<Measured> measured = new ArrayList<>();
+    collect(root, false, measured);
+    return List.copyOf(measured);
+  }
+
+  private void collect(final SyntaxNode node, final boolean method, final List<Measured> measured) {
+    for (final MetricRule.Target target : rule.targets()) {
+      if (node.kind().equals(target.kind())) {
+        rule.measurement()
+            .measure()
+            .measured(node, target, method, rule)
+            .map(MetricCompiledRule::measured)
+            .ifPresent(measured::add);
+      }
+    }
+    final boolean inClass = inClassBody(node, method);
+    for (final SyntaxNode child : node.children()) {
+      collect(child, inClass, measured);
+    }
   }
 
   @Override
@@ -56,6 +80,10 @@ final class MetricCompiledRule implements CompiledRule {
         .check(node, target, method, rule)
         .map(this::match)
         .ifPresent(matches::add);
+  }
+
+  private static Measured measured(final Violation violation) {
+    return new Measured(violation.span(), violation.value());
   }
 
   private RuleMatch match(final Violation violation) {

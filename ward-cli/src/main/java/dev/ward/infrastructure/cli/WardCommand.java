@@ -12,6 +12,7 @@ import dev.ward.infrastructure.cli.project.DetectCommand;
 import dev.ward.infrastructure.cli.rules.RulesCommand;
 import dev.ward.infrastructure.cli.sbom.SbomCommand;
 import dev.ward.infrastructure.cli.spec.SpecCommand;
+import dev.ward.infrastructure.cli.vulnerability.VulnerabilitiesCommand;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Callable;
@@ -39,6 +40,7 @@ import picocli.CommandLine.Spec;
       FormatCommand.class,
       LoopCommand.class,
       RulesCommand.class,
+      VulnerabilitiesCommand.class,
       SbomCommand.class,
       LicensesCommand.class
     },

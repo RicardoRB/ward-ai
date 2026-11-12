@@ -118,7 +118,13 @@ class LicenseGateUnknownTest {
     final GateConfiguration check = new GateConfiguration("license", true, List.of());
     final GateExtensions extensions =
         new GateExtensions(
-            null, null, null, LicenseFixtures.service(LicenseFixtures.inventory(), Map.of()));
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            LicenseFixtures.service(LicenseFixtures.inventory(), Map.of()));
 
     assertThat(extensions.licenseGate(check).execute(LicenseFixtures.NPM).status())
         .isEqualTo(GateStatus.PASSED);

@@ -30,6 +30,10 @@ final class TomlCommandParser {
     if (SupportedQualityGates.TRACEABILITY.equals(uses)
         || SupportedQualityGates.ANALYSIS.equals(uses)
         || SupportedQualityGates.FORMAT.equals(uses)
+        || SupportedQualityGates.CRAP.equals(uses)
+        || SupportedQualityGates.COVERAGE.equals(uses)
+        || SupportedQualityGates.SECRETS.equals(uses)
+        || SupportedQualityGates.VULNERABILITIES.equals(uses)
         || SupportedQualityGates.LICENSE.equals(uses)) {
       return List.of();
     }

@@ -25,9 +25,9 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class ExtendedGatesTest {
-  private static final String GITLEAKS = "gitleaks";
+  private static final String TRIVY = "trivy";
   private static final List<String> GATE_IDENTIFIERS =
-      List.of("semgrep", GITLEAKS, "trivy", "enforcer", "api-compat", "compliance", "architecture");
+      List.of("semgrep", "enforcer", "api-compat", "compliance", "architecture");
   private static final Project PROJECT =
       new Project(Path.of("/p"), Language.JAVA, BuildTool.MAVEN, Framework.NONE);
 
@@ -55,7 +55,7 @@ class ExtendedGatesTest {
     assertThatThrownBy(() -> factory.create(config("nope", List.of("x"))))
         .isInstanceOf(WardException.class)
         .hasMessageContaining(
-            GITLEAKS, "zap", "api-compat", "pmd", "openapi-lint", "openapi-diff", "openapi-compat");
+            "zap", "api-compat", "pmd", "openapi-lint", "openapi-diff", "openapi-compat");
   }
 
   @Test
@@ -119,24 +119,22 @@ class ExtendedGatesTest {
   void missingBinaryReportsInstallHint() {
     final CommandExecutor missing =
         (command, dir) ->
-            new CommandResult(-1, "", "", Duration.ZERO, "Could not start [gitleaks]: not found");
+            new CommandResult(-1, "", "", Duration.ZERO, "Could not start [trivy]: not found");
     final GateResult result =
         new QualityGateRunner()
-            .run(
-                PROJECT,
-                List.of(new CommandQualityGate(GITLEAKS, missing, List.of(GITLEAKS, "detect"))))
+            .run(PROJECT, List.of(new CommandQualityGate(TRIVY, missing, List.of(TRIVY, "detect"))))
             .results()
             .getFirst();
 
     assertThat(result.status()).isEqualTo(GateStatus.UNAVAILABLE);
-    assertThat(result.summary()).contains(GITLEAKS).contains("Install gitleaks");
+    assertThat(result.summary()).contains(TRIVY).contains("Install trivy");
   }
 
   @Test
   void failedSecretScanDoesNotAddMatchedValuesToSummary() {
     final FakeCommandExecutor executor = new FakeCommandExecutor(1, "", "leaks found: 1");
     final GateResult result =
-        new CommandQualityGate(GITLEAKS, executor, List.of(GITLEAKS, "detect", "--redact"))
+        new CommandQualityGate(TRIVY, executor, List.of(TRIVY, "detect", "--redact"))
             .execute(PROJECT);
 
     assertThat(result.status()).isEqualTo(GateStatus.FAILED);

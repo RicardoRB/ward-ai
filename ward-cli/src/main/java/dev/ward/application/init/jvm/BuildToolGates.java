@@ -3,19 +3,30 @@ package dev.ward.application.init.jvm;
 import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.InitGateOption;
+import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Project;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /** Gate choices that run through the project's Maven or Gradle executable. */
-record BuildToolGates(boolean gradle, boolean available, String availability, String executable) {
+record BuildToolGates(
+    boolean gradle,
+    boolean available,
+    String availability,
+    String executable,
+    QualityPreset preset) {
   /** The line coverage minimum of the Android coverage gate, in percent. */
   // shortcut: one minimum for both presets; strict should raise it to 85 like Swift.
   static final int ANDROID_COVERAGE_MINIMUM = 80;
 
   private static final String MINIMUM = "minimum";
+  private static final String LINE = "LINE";
+  private static final String BRANCH = "BRANCH";
+  private static final double CUSTOM_COVERAGE = 0.80;
+  private static final int PERCENT = 100;
 
   /** Runs the project's tests. */
   InitGateOption tests() {
@@ -27,29 +38,45 @@ record BuildToolGates(boolean gradle, boolean available, String availability, St
     return option("compile", "Checks that the project compiles.", "", task("classes", "compile"));
   }
 
-  /** Enforces minimum test coverage with JaCoCo. */
+  /** Writes the JaCoCo report that Ward checks against the minimum in ward.toml. */
   InitGateOption coverage() {
-    return option(
-        "coverage",
-        "Enforces minimum test coverage.",
-        gradle
-            ? " (minimum coverage is configured in the Gradle build.)"
-            : " (minimum coverage is configured in pom.xml.)",
-        task("jacocoTestCoverageVerification", "jacoco:check"));
+    final InitGateOption report =
+        option(
+            "coverage",
+            "Enforces minimum test coverage.",
+            " (the minimum is configured in ward.toml; the build writes the JaCoCo XML report.)",
+            task("jacocoTestReport", "jacoco:report"));
+    return new InitGateOption(
+        report.id(),
+        report.description(),
+        report.command(),
+        report.available(),
+        report.availabilityMessage(),
+        coverageMinimums());
+  }
+
+  /**
+   * The line minimum, and the branch minimum when the preset sets one, as whole percentages: the
+   * preset's JaCoCo ratios, or 80% of lines for a custom selection.
+   */
+  private Map<String, String> coverageMinimums() {
+    final Map<String, Double> ratios =
+        preset == null ? Map.of(LINE, CUSTOM_COVERAGE) : preset.rules().jacocoMinimums();
+    final Map<String, String> minimums = new LinkedHashMap<>();
+    minimums.put(MINIMUM, percent(ratios.get(LINE)));
+    if (ratios.containsKey(BRANCH)) {
+      minimums.put("minimum-branches", percent(ratios.get(BRANCH)));
+    }
+    return minimums;
+  }
+
+  private static String percent(final double ratio) {
+    return String.valueOf(Math.round(ratio * PERCENT));
   }
 
   /** Checks code quality, smells, and duplication with Sonar. */
   InitGateOption sonar() {
     return option("sonar", "Checks code quality, smells, and duplication.", "", "sonar");
-  }
-
-  /** Scans dependencies for known CVEs. */
-  InitGateOption dependencyCheck() {
-    return tool(
-        "dependency-check",
-        "Scans dependencies for known CVEs.",
-        "dependencyCheckAnalyze",
-        "dependency-check:check");
   }
 
   /** Measures test strength with PIT mutation testing. */
@@ -133,7 +160,8 @@ record BuildToolGates(boolean gradle, boolean available, String availability, St
   }
 
   /** Returns the Maven or Gradle gate choices with the tool's availability resolved. */
-  static BuildToolGates of(final Project project, final EnvironmentInspection environment) {
+  static BuildToolGates of(
+      final Project project, final EnvironmentInspection environment, final QualityPreset preset) {
     final boolean gradle = project.buildTool() == BuildTool.GRADLE;
     final String executable = project.buildExecutable();
     final String toolName = gradle ? "Gradle" : "Maven";
@@ -150,6 +178,6 @@ record BuildToolGates(boolean gradle, boolean available, String availability, St
                 + " or add a "
                 + toolName
                 + " Wrapper before running this gate.";
-    return new BuildToolGates(gradle, toolAvailable, availability, executable);
+    return new BuildToolGates(gradle, toolAvailable, availability, executable, preset);
   }
 }

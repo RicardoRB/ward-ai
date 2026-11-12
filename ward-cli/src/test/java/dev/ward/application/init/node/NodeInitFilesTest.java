@@ -72,7 +72,7 @@ class NodeInitFilesTest {
         new InitGeneralCatalog(
                 InitInputs.withoutManifests(new dev.ward.domain.FakeEnvironmentInspection("npm")))
             .gates(project(BuildTool.NPM, "24"), null).stream()
-                .filter(gate -> Set.of("tsc", "vitest").contains(gate.id()))
+                .filter(gate -> Set.of("tsc", "vitest", "coverage").contains(gate.id()))
                 .toList();
 
     final String body =

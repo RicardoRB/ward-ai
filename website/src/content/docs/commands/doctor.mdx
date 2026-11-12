@@ -60,9 +60,7 @@ per check:
 | `native` | `OK` / `WARNING` | `target/ward` or `ward-cli/target/ward` exists in the current directory. This is a development check for the Ward repository. |
 | `openspec` / `openspec-archived` | `OK` / `WARNING` / `ERROR` | For each enabled registration, the configured executable and project-root `openspec/` directory are available. `WARNING` means Git ignores `openspec/`, so CI checkouts will not contain the specs and the gate fails there. |
 | `openspec-junit-traceability` | `OK` / `ERROR` | When enabled, `openspec/specs/` and `src/test/java/` must exist; doctor does not create them. |
-| `dependency-check-nvd-api-key` | `WARNING` | When dependency-check is enabled, `NVD_API_KEY` should be set; without it scans may be very slow or rate-limited. The value is never displayed. |
 | `ward` | `OK` / `WARNING` | Compares the running version with the latest GitHub release, looking it up now rather than using the [update check](/reference/environment-variables/) cache. `WARNING` means a newer release exists (the line shows how to install it) or the latest release could not be determined, for example offline. `OK` also covers development builds and `WARD_NO_UPDATE_CHECK`, which skip the lookup. |
-| `dependency-check-oss-index` | `WARNING` | When dependency-check is enabled and the build leaves the OSS Index analyzer on (explicitly or by the plugin default), `OSS_INDEX_PASSWORD` should be set; without it scans fail with `401 Unauthorized`. Turn the analyzer off or set the variable. Values are never displayed. |
 
 Warnings do not affect the result.
 

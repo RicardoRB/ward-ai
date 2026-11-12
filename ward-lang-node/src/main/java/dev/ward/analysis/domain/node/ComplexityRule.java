@@ -2,6 +2,7 @@ package dev.ward.analysis.domain.node;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.CompiledRule;
+import dev.ward.analysis.domain.rule.Measured;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.ArrayList;
@@ -20,15 +21,23 @@ public record ComplexityRule(RuleDefinition definition, int limit) implements Co
   private static final int BASE_COMPLEXITY = 1;
 
   @Override
+  public List<Measured> measures(final SyntaxNode root) {
+    final List<Measured> measured = new ArrayList<>();
+    for (final SyntaxNode function : SyntaxTrees.functions(SyntaxTrees.withoutErrors(root))) {
+      measured.add(new Measured(function.span(), BASE_COMPLEXITY + Decisions.count(function)));
+    }
+    return measured;
+  }
+
+  @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
     final List<RuleMatch> matches = new ArrayList<>();
-    for (final SyntaxNode function : SyntaxTrees.functions(SyntaxTrees.withoutErrors(root))) {
-      final int complexity = BASE_COMPLEXITY + Decisions.count(function);
-      if (complexity > limit) {
+    for (final Measured function : measures(root)) {
+      if (function.value() > limit) {
         matches.add(
             new RuleMatch(
                 function.span(),
-                "Function has complexity " + complexity + " (limit " + limit + ")"));
+                "Function has complexity " + function.value() + " (limit " + limit + ")"));
       }
     }
     return matches;
