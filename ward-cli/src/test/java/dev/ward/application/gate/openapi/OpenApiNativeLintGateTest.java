@@ -112,9 +112,9 @@ class OpenApiNativeLintGateTest {
   }
 
   @Test
-  void aVacuumConfigFileIsNeitherReadNorRefused() throws IOException {
+  void aToolConfigFileIsNeitherReadNorRefused() throws IOException {
     fixture.write(NativeLintFixture.SPEC, NativeLintFixture.CLEAN);
-    fixture.write("vacuum.conf.yaml", "ignore: all\n");
+    fixture.write("ruleset.conf.yaml", "ignore: all\n");
 
     assertThat(fixture.lint().status()).isEqualTo(GateStatus.PASSED);
   }

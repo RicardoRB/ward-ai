@@ -1,6 +1,6 @@
 # Bundled OpenAPI schemas
 
-`oas-3.0.json` is the JSON Schema of OpenAPI 3.0 documents, `$id`
+The files below are in `src/main/resources/openapi/schemas`. `oas-3.0.json` is the JSON Schema of OpenAPI 3.0 documents, `$id`
 `https://spec.openapis.org/oas/3.0/schema/2019-04-02`, published by the OpenAPI Initiative in
 `OAI/OpenAPI-Specification` (`schemas/v3.0/schema.json`) under the Apache License 2.0.
 

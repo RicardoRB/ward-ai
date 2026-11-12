@@ -58,7 +58,6 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
           "gitleaks",
           "semgrep",
           "zap-baseline.py",
-          "vacuum",
           "oasdiff");
   private static final List<String> OPENAPI_SPECS =
       List.of(

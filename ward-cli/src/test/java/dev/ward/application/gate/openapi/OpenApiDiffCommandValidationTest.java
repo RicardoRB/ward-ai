@@ -22,11 +22,11 @@ class OpenApiDiffCommandValidationTest {
   private static final String LINT = "openapi-lint";
   private static final String DIFF = "openapi-diff";
   private static final String COMPAT = "openapi-compat";
-  private static final String VACUUM = "vacuum";
+  private static final String LINTER = "linter";
   private static final String OASDIFF = "oasdiff";
 
   private static List<String> lint(final String... flags) {
-    return command(VACUUM, "lint", flags);
+    return command(LINTER, "lint", flags);
   }
 
   private static List<String> diff(final String... flags) {
@@ -104,6 +104,6 @@ class OpenApiDiffCommandValidationTest {
 
     assertThatThrownBy(() -> factory.create(new WardConfiguration(1, gates)))
         .isInstanceOf(WardException.class)
-        .hasMessageContaining("--hard-mode");
+        .hasMessageContaining("is not allowed");
   }
 }

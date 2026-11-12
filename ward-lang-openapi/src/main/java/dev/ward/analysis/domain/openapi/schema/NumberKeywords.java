@@ -81,7 +81,7 @@ final class NumberKeywords {
     }
     final double divisor = JsonValues.number(factor.get());
     final double quotient = value / divisor;
-    if (divisor != 0 && quotient == Math.rint(quotient)) {
+    if (divisor != 0 && Double.compare(quotient, Math.rint(quotient)) == 0) {
       return true;
     }
     validator

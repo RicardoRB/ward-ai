@@ -7,5 +7,6 @@ description = "test resources and tests of the rule catalog and the secret rules
 paths = [
   '''ward-cli/src/test/resources/catalog/''',
   '''ward-cli/src/test/resources/rules/secrets/''',
-  '''ward-cli/src/test/java/dev/ward/infrastructure/rule/SecretScanBundledRulesTest\.java''',
+  '''ward-cli/src/main/resources/rules/secrets/''',
+  '''ward-cli/src/test/java/dev/ward/infrastructure/rule/SecretScan.*Test\.java''',
 ]

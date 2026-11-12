@@ -1,5 +1,6 @@
 package dev.ward.application.gate.openapi;
 
+import dev.ward.application.gate.AnalysisPorts;
 import dev.ward.domain.config.GateConfiguration;
 import dev.ward.domain.config.OpenApiGateOptions;
 import dev.ward.domain.config.WardException;
@@ -15,6 +16,7 @@ import javax.inject.Inject;
 /** Builds the {@code openapi-lint}, {@code openapi-diff}, and {@code openapi-compat} gates. */
 public final class OpenApiGates {
   private final Ports ports;
+  private final AnalysisPorts analysis;
 
   /** Creates the builder from the ports the OpenAPI gates use. */
   @Inject
@@ -22,8 +24,10 @@ public final class OpenApiGates {
       final CommandExecutor executor,
       final EnvironmentInspection environment,
       final RevisionFiles revisions,
-      final ProjectFiles files) {
+      final ProjectFiles files,
+      final AnalysisPorts analysis) {
     this.ports = new Ports(executor, environment, revisions, files);
+    this.analysis = analysis;
   }
 
   /**
@@ -35,15 +39,16 @@ public final class OpenApiGates {
   public QualityGate create(
       final String id, final GateConfiguration configuration, final Project project) {
     final String type = configuration.type();
-    OpenApiCommandValidation.require(id, configuration.command());
     final OpenApiGateOptions options = configuration.openApi();
     if (options == null) {
       throw new WardException("'checks." + id + ".spec' is required for an enabled OpenAPI gate");
     }
     if (SupportedQualityGates.OPENAPI_LINT.equals(type)) {
-      return new OpenApiLintGate(
-          id, ports.executor(), ports.files(), configuration.command(), options.spec());
+      OpenApiCommandValidation.requireFor(type, id, configuration.command());
+      return new OpenApiNativeLintGate(
+          id, options.spec(), configuration.rulesFile(), analysis, ports.files());
     }
+    OpenApiCommandValidation.require(id, configuration.command());
     if (SupportedQualityGates.OPENAPI_DIFF.equals(type)) {
       return new OpenApiDiffGate(
           id,

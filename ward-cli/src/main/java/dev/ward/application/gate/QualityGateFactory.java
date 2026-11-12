@@ -254,7 +254,7 @@ public class QualityGateFactory {
   private QualityGate openApiGate(
       final String name, final GateConfiguration check, final Project project) {
     if (extensions.openApi() == null) {
-      OpenApiCommandValidation.require(name, check.command());
+      OpenApiCommandValidation.requireFor(check.type(), name, check.command());
       throw new WardException("OpenAPI gate dependencies are unavailable.");
     }
     return extensions.openApi().create(name, check, project);

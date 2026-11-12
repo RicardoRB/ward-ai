@@ -8,6 +8,14 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Added
+
+- Native OpenAPI lint rules, `ward:openapi/*`, for OpenAPI 3.0 and 3.1 documents in YAML or JSON: the OpenAPI 3.x rules of Spectral 6.17.1 (`spectral:oas` with every rule) and of its OWASP ruleset 2.0.1, with Spectral's severities, positions and messages, a JSON Schema validator for the document and the examples, and `$ref` resolution inside the project (#522). `ward rules list` shows them, and `ward-rules.toml` configures them.
+
+### Changed
+
+- **Breaking (alpha):** `openapi-lint` runs these rules and no longer runs the vacuum binary. It takes no `command`: a `command` on it is a configuration error (exit `2`), so remove it from `ward.toml`. `vacuum.conf.yaml` is no longer read or refused, and init, the doctor, the install catalog and the generated CI workflow no longer mention vacuum. A Swagger 2.0 or OpenAPI 3.2 document, a syntax error or an unreadable `$ref` now ends the gate with an execution error.
+
 ## [0.7.0] - 2026-11-11
 
 ### Added

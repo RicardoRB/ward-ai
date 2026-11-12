@@ -62,10 +62,12 @@ public final class ConfigurationTemplate {
       }
       final List<String> command = gate.command();
       final String goal =
-          command.subList(1, command.size()).stream()
-              .map(ConfigurationTemplate::escape)
-              .reduce((left, right) -> left + " " + right)
-              .orElse("");
+          command.isEmpty()
+              ? ""
+              : command.subList(1, command.size()).stream()
+                  .map(ConfigurationTemplate::escape)
+                  .reduce((left, right) -> left + " " + right)
+                  .orElse("");
       content
           .append("\n[checks.")
           .append(gate.id())
@@ -80,14 +82,7 @@ public final class ConfigurationTemplate {
       if (writesUses(gate)) {
         content.append("uses = \"").append(gate.id()).append("\"\n");
       }
-      if (!SupportedQualityGates.TRACEABILITY.equals(gate.id())) {
-        content
-            .append("command = \"")
-            .append(escape(command.getFirst()))
-            .append(command.size() > 1 ? " " : "")
-            .append(goal)
-            .append("\"\n");
-      }
+      CommandLines.append(content, gate, goal);
       if (openSpecRoot != null && isOpenSpec(gate.id())) {
         content.append("root = \"").append(escape(openSpecRoot)).append("\"\n");
       }
@@ -184,7 +179,7 @@ public final class ConfigurationTemplate {
     return "\"" + escape(value) + "\"";
   }
 
-  private static String escape(final String value) {
+  static String escape(final String value) {
     return value.replace("\\", "\\\\").replace("\"", "\\\"");
   }
 }

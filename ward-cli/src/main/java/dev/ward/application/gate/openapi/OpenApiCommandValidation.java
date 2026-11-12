@@ -14,52 +14,10 @@ import java.util.stream.Stream;
  * silence a rule.
  */
 public final class OpenApiCommandValidation {
-  private static final String HARD_MODE = "--hard-mode";
-  private static final String FAIL_SEVERITY = "--fail-severity";
   private static final String FAIL_ON = "--fail-on";
-  private static final String MIN_SCORE = "--min-score";
   private static final String FORMAT = "--format";
   private static final String COLOR = "--color";
   private static final String LANG = "--lang";
-
-  private static final Policy LINT =
-      new Policy(
-          "lint",
-          Map.ofEntries(
-              Map.entry("-z", HARD_MODE),
-              Map.entry(HARD_MODE, HARD_MODE),
-              Map.entry("-n", FAIL_SEVERITY),
-              Map.entry(FAIL_SEVERITY, FAIL_SEVERITY),
-              Map.entry(MIN_SCORE, MIN_SCORE),
-              Map.entry("-b", "--no-banner"),
-              Map.entry("--no-banner", "--no-banner"),
-              Map.entry("-q", "--no-style"),
-              Map.entry("--no-style", "--no-style"),
-              Map.entry("-d", "--details"),
-              Map.entry("--details", "--details"),
-              Map.entry("-s", "--snippets"),
-              Map.entry("--snippets", "--snippets"),
-              Map.entry("-a", "--all-results"),
-              Map.entry("--all-results", "--all-results"),
-              Map.entry("-x", "--silent"),
-              Map.entry("--silent", "--silent"),
-              Map.entry("-m", "--no-message"),
-              Map.entry("--no-message", "--no-message"),
-              Map.entry("-t", "--time"),
-              Map.entry("--time", "--time"),
-              Map.entry("--no-clip", "--no-clip"),
-              Map.entry("--abs-paths", "--abs-paths"),
-              Map.entry("--pipeline-output", "--pipeline-output"),
-              Map.entry("--github-annotations", "--github-annotations"),
-              Map.entry("--no-update-check", "--no-update-check")),
-          Map.of(
-              FAIL_SEVERITY,
-              Set.of("warn", "info", "hint")::contains,
-              MIN_SCORE,
-              value -> value.matches("\\d+")),
-          List.of(
-              new Requirement(HARD_MODE, "requires -z (--hard-mode) so every built-in rule runs"),
-              new Requirement(FAIL_SEVERITY, "requires --fail-severity warn, info, or hint")));
 
   private static final Policy DIFF =
       new Policy(
@@ -99,13 +57,33 @@ public final class OpenApiCommandValidation {
   private OpenApiCommandValidation() {}
 
   /**
+   * Checks the command of the OpenAPI gate {@code gate} of the given {@code type}: the lint gate
+   * runs Ward's own rules and takes no command, the others take a command of the allowed shape.
+   *
+   * @throws WardException if the lint gate has a command, or another gate's command is not allowed
+   */
+  public static void requireFor(final String type, final String gate, final List<String> command) {
+    if (SupportedQualityGates.OPENAPI_LINT.equals(type)) {
+      if (!command.isEmpty()) {
+        throw new WardException(
+            "Quality gate '"
+                + gate
+                + "' has a command, which is not allowed: openapi-lint runs"
+                + " Ward's own rules.");
+      }
+    } else {
+      require(gate, command);
+    }
+  }
+
+  /**
    * Checks the command of the OpenAPI gate {@code gate}.
    *
    * @throws WardException if the command uses a flag outside the allowed set, sets one twice, or
    *     misses a required one
    */
   public static void require(final String gate, final List<String> command) {
-    final Policy policy = SupportedQualityGates.OPENAPI_LINT.equals(gate) ? LINT : DIFF;
+    final Policy policy = DIFF;
     if (command.size() < 2 || !policy.subcommand().equals(command.get(1))) {
       throw error(gate, "must run the '" + policy.subcommand() + "' subcommand");
     }
