@@ -94,6 +94,31 @@ final class OpenApiGateFixtures {
           public boolean exists(final Path root, final String commit, final String path) {
             return committedFiles.contains(commit + ":" + path);
           }
+
+          @Override
+          public List<String> files(final Path root, final String commit, final String directory) {
+            return List.of();
+          }
+
+          @Override
+          public Optional<String> read(final Path root, final String commit, final String path) {
+            return Optional.empty();
+          }
+
+          @Override
+          public List<String> tagsReachableFrom(final Path root, final String commit) {
+            return List.of();
+          }
+
+          @Override
+          public List<String> tagsAt(final Path root, final String commit) {
+            return List.of();
+          }
+
+          @Override
+          public boolean isShallow(final Path root) {
+            return false;
+          }
         },
         new ProjectFiles() {
           @Override

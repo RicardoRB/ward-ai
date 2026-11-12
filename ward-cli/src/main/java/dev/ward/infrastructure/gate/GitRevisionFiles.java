@@ -4,6 +4,7 @@ import dev.ward.domain.gate.RevisionFiles;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import javax.inject.Inject;
@@ -37,6 +38,58 @@ public final class GitRevisionFiles implements RevisionFiles {
     return executor
         .execute(List.of("git", "cat-file", "-e", commit + ":./" + path), root)
         .succeeded();
+  }
+
+  // ls-tree prints paths relative to the working directory, which is the project root.
+  @Override
+  public List<String> files(final Path root, final String commit, final String directory) {
+    final String base = directory.isEmpty() ? "." : directory;
+    final CommandResult result =
+        executor.execute(
+            List.of("git", "ls-tree", "-r", "-z", "--name-only", commit, "--", base), root);
+    if (!result.succeeded()) {
+      return List.of();
+    }
+    final String prefix = directory.isEmpty() ? "" : directory + "/";
+    return Arrays.stream(result.stdout().split("\0"))
+        .filter(name -> !name.isEmpty() && name.startsWith(prefix))
+        .map(name -> name.substring(prefix.length()))
+        .toList();
+  }
+
+  // Git has no batch read through the executor, which has no standard input: one process per file.
+  @Override
+  public Optional<String> read(final Path root, final String commit, final String path) {
+    final CommandResult result =
+        executor.execute(List.of("git", "cat-file", "blob", commit + ":./" + path), root);
+    return result.succeeded() ? Optional.of(result.stdout()) : Optional.empty();
+  }
+
+  @Override
+  public List<String> tagsReachableFrom(final Path root, final String commit) {
+    return lines(executor.execute(List.of("git", "tag", "--merged", commit), root));
+  }
+
+  @Override
+  public List<String> tagsAt(final Path root, final String commit) {
+    return lines(executor.execute(List.of("git", "tag", "--points-at", commit), root));
+  }
+
+  @Override
+  public boolean isShallow(final Path root) {
+    return "true"
+        .equals(
+            executor
+                .execute(List.of("git", "rev-parse", "--is-shallow-repository"), root)
+                .stdout()
+                .trim());
+  }
+
+  private static List<String> lines(final CommandResult result) {
+    if (!result.succeeded()) {
+      return List.of();
+    }
+    return result.stdout().lines().map(String::trim).filter(line -> !line.isEmpty()).toList();
   }
 
   private Optional<String> commit(final Path root, final List<String> command) {
