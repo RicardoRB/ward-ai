@@ -29,7 +29,8 @@ final class TomlCommandParser {
   private static List<String> missing(final String where, final String uses) {
     if (SupportedQualityGates.TRACEABILITY.equals(uses)
         || SupportedQualityGates.ANALYSIS.equals(uses)
-        || SupportedQualityGates.FORMAT.equals(uses)) {
+        || SupportedQualityGates.FORMAT.equals(uses)
+        || SupportedQualityGates.SECRETS.equals(uses)) {
       return List.of();
     }
     throw new WardException("'" + where + ".command' is required");

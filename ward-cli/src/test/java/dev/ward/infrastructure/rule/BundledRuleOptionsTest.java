@@ -2,6 +2,7 @@ package dev.ward.infrastructure.rule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatcher;
 import dev.ward.analysis.domain.rule.RuleOption;
@@ -14,6 +15,8 @@ import org.junit.jupiter.api.Test;
 
 /** Every bundled rule is in a category and the standard preset, and every option compiles. */
 class BundledRuleOptionsTest {
+
+  private static final double FRACTION = 0.5;
 
   private static final AnalysisRuleLoad LOAD = new ClasspathRuleSource().load();
   private static final long NON_DEFAULT = 7;
@@ -39,7 +42,8 @@ class BundledRuleOptionsTest {
         .allSatisfy(
             rule -> {
               assertThat(rule.category()).as(rule.id()).isNotBlank();
-              if (OptInOnlyRules.IDS.contains(rule.id())) {
+              if (OptInOnlyRules.IDS.contains(rule.id())
+                  || rule.capability() == RuleCapability.TEXT) {
                 assertThat(rule.presets()).as(rule.id()).isEmpty();
                 return;
               }
@@ -66,6 +70,7 @@ class BundledRuleOptionsTest {
   private static Object sample(final RuleOption option) {
     return switch (option.type()) {
       case INTEGER -> Math.max(option.min(), 0) + NON_DEFAULT;
+      case NUMBER -> Math.max(option.min(), 0) + NON_DEFAULT + FRACTION;
       case REGEX -> PATTERN;
       case BOOLEAN -> Boolean.FALSE;
       case STRING -> STRING_SAMPLES.getOrDefault(option.name(), "Sample");

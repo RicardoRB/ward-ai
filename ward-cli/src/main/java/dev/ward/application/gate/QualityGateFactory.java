@@ -28,7 +28,10 @@ import javax.inject.Inject;
 public class QualityGateFactory {
   private static final String ZAP = "zap";
   private static final Set<String> IN_PROCESS_GATES =
-      Set.of(SupportedQualityGates.ANALYSIS, SupportedQualityGates.FORMAT);
+      Set.of(
+          SupportedQualityGates.ANALYSIS,
+          SupportedQualityGates.FORMAT,
+          SupportedQualityGates.SECRETS);
 
   public static final List<String> SUPPORTED_GATES = SupportedQualityGates.IDS;
   private static final Set<String> PLATFORM_GATES =
@@ -239,9 +242,16 @@ public class QualityGateFactory {
   }
 
   /**
-   * Builds the gates that run inside Ward: the {@code ward} analysis and the {@code ward-format}.
+   * Builds the gates that run inside Ward: the {@code ward} analysis, the {@code ward-format} and
+   * the {@code secrets} check.
    */
   private QualityGate inProcessGate(final GateConfiguration check, final List<String> focus) {
+    if (SupportedQualityGates.SECRETS.equals(check.type())) {
+      if (extensions.secrets() == null) {
+        throw new WardException("Secrets gate dependencies are unavailable.");
+      }
+      return extensions.secrets().create(check, focus);
+    }
     if (!SupportedQualityGates.FORMAT.equals(check.type())) {
       return AnalysisGates.create(check, extensions.analysis(), focus);
     }

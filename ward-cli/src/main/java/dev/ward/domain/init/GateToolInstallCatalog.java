@@ -14,11 +14,6 @@ public final class GateToolInstallCatalog {
                   "trivy",
                   "https://trivy.dev/latest/getting-started/installation/",
                   method("brew", "install", "trivy")),
-          "gitleaks",
-              entry(
-                  "gitleaks",
-                  "https://github.com/gitleaks/gitleaks#installing",
-                  method("brew", "install", "gitleaks")),
           "semgrep",
               new Entry(
                   "semgrep",

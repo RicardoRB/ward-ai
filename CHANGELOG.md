@@ -8,6 +8,14 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Added
+
+- The `secrets` check (`uses = "secrets"`), native secret detection that needs no executable: the 222 rules of the Gitleaks 8.30.1 default configuration run inside Ward as `ward:secrets/<gitleaks-rule-id>`, over every text file, in the fast profiles like `ward-format`. Findings carry the rule, file, line and column and never the secret or any source text. Options: `exclude-paths`, `scan-history` and `history-since` on the check, and `entropy` and `exclude-paths` per rule in `ward-rules.toml` (#516).
+
+### Changed
+
+- **Breaking:** the `gitleaks` gate is removed, with no migration flag. `uses = "gitleaks"` is rejected, a check that runs a `gitleaks` command is a plain `command` check with no findings, and `ward init --gate gitleaks` is an unknown gate: use `--gate secrets`. Init no longer offers or installs Gitleaks, `ward doctor` no longer probes for it, and the generated CI workflow no longer downloads it. The native check scans the working tree; the history is scanned only with `scan-history = true`.
+
 ## [0.7.0] - 2026-11-11
 
 ### Added

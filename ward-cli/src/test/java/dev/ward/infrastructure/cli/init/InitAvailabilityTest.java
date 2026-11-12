@@ -40,9 +40,7 @@ class InitAvailabilityTest {
 
     init.run("3\n1\n1\n");
 
-    assertThat(init.output())
-        .contains("gitleaks - ", "[unavailable]")
-        .doesNotContain("[available]");
+    assertThat(init.output()).contains("trivy - ", "[unavailable]").doesNotContain("[available]");
   }
 
   @Test
@@ -62,7 +60,7 @@ class InitAvailabilityTest {
             List.of());
 
     assertThat(selected).containsExactly("tests");
-    assertThat(output.toString()).contains("gitleaks - ").contains("[unavailable]");
+    assertThat(output.toString()).contains("trivy - ").contains("[unavailable]");
   }
 
   @Test
@@ -95,14 +93,14 @@ class InitAvailabilityTest {
     final InitCommandFixture init = new InitCommandFixture(root);
     final String remediation =
         new InitSetupCatalog(new FakeEnvironmentInspection())
-            .gate(new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE), "gitleaks")
+            .gate(new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE), "trivy")
             .availabilityMessage();
 
-    final int exit = init.run("", "--integration", "none", "--gate", "gitleaks");
+    final int exit = init.run("", "--integration", "none", "--gate", "trivy");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(init.output())
-        .contains("Selected quality gate 'gitleaks': UNAVAILABLE - " + remediation);
+        .contains("Selected quality gate 'trivy': UNAVAILABLE - " + remediation);
   }
 
   @Test

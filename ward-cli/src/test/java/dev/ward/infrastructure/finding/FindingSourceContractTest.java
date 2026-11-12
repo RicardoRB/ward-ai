@@ -21,7 +21,6 @@ class FindingSourceContractTest {
         new CompositeFindingExtractor(
             Stream.concat(
                     Stream.of(
-                        new GitleaksSarifFindings(new ForyJsonCodec()),
                         new JavacOutputFindings(),
                         new TscOutputFindings(),
                         new MypyJsonFindings(new ForyJsonCodec())),
