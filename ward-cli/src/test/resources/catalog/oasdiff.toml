@@ -304,6 +304,7 @@ oasdiff = ["request-body-max-set"]
 [[rule]]
 name = "request-body-media-type-item-schema-added"
 category = "correctness"
+not-applicable = { openapi = "the check is about itemSchema, a keyword of OpenAPI 3.2, and Ward loads only OpenAPI 3.0 and 3.1 documents" }
 oasdiff = ["request-body-media-type-item-schema-added"]
 
 [[rule]]
@@ -1151,11 +1152,13 @@ oasdiff = ["response-body-max-unset"]
 [[rule]]
 name = "response-body-media-type-item-schema-removed"
 category = "correctness"
+not-applicable = { openapi = "the check is about itemSchema, a keyword of OpenAPI 3.2, and Ward loads only OpenAPI 3.0 and 3.1 documents" }
 oasdiff = ["response-body-media-type-item-schema-removed"]
 
 [[rule]]
 name = "response-body-media-type-item-schema-removed-untyped"
 category = "correctness"
+not-applicable = { openapi = "the check is about itemSchema, a keyword of OpenAPI 3.2, and Ward loads only OpenAPI 3.0 and 3.1 documents" }
 oasdiff = ["response-body-media-type-item-schema-removed-untyped"]
 
 [[rule]]

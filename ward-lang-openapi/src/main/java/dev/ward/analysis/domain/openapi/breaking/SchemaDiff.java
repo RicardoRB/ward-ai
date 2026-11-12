@@ -21,6 +21,7 @@ final class SchemaDiff {
     changes.addAll(KeywordChanges.changes(sides, base, revision));
     changes.addAll(TypeChanges.changes(sides, base, revision));
     changes.addAll(EnumChanges.changes(sides, base, revision));
+    changes.addAll(HeaderTypeChanges.changes(sides, base, revision));
     changes.addAll(CompositionChanges.changes(sides, base, revision));
     return changes;
   }

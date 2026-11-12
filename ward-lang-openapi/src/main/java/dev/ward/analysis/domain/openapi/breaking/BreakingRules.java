@@ -23,6 +23,7 @@ public final class BreakingRules {
     rules.addAll(LifecycleRemovals.rules());
     rules.addAll(ParameterRules.rules());
     rules.addAll(ResponseRules.rules());
+    rules.addAll(ResponseMediaTypeRules.rules());
     rules.addAll(SecurityRules.rules());
     rules.addAll(SecuritySchemeRules.rules());
     return List.copyOf(rules);

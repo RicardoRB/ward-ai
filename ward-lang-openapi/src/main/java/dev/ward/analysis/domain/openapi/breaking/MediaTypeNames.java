@@ -1,13 +1,30 @@
 package dev.ward.analysis.domain.openapi.breaking;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 /** Reads a media type name such as {@code application/json;charset=utf-8}. */
 final class MediaTypeNames {
 
   private MediaTypeNames() {}
+
+  /**
+   * The name among {@code kept} that is the plain form of a structured-syntax {@code name}: for
+   * {@code application/problem+json} it is {@code application/json}.
+   */
+  static Optional<String> generalizedTo(final String name, final List<String> kept) {
+    final String essence = essence(name);
+    final int plus = essence.indexOf('+');
+    final int slash = essence.indexOf('/');
+    if (plus < 0 || slash < 0) {
+      return Optional.empty();
+    }
+    final String general = essence.substring(0, slash + 1) + essence.substring(plus + 1);
+    return kept.stream().filter(entry -> essence(entry).equals(general)).findFirst();
+  }
 
   static String essence(final String name) {
     final int cut = name.indexOf(';');

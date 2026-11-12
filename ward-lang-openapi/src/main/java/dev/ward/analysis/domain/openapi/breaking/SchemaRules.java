@@ -21,6 +21,8 @@ final class SchemaRules {
               Place.REQUEST_PROPERTY,
               "became-not-read-only"),
           new Irregular(
+              "response-header-type-changed", Place.RESPONSE_HEADER, "header-type-changed"),
+          new Irregular(
               "new-required-request-property-with-default",
               Place.REQUEST_PROPERTY,
               "new-required-with-default"),
