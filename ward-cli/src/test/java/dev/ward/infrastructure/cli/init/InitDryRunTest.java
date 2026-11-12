@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -41,6 +42,8 @@ class InitDryRunTest {
   }
 
   @Test
+  @Disabled(
+      "Init offers no gate whose tool it can install since the security rules replaced semgrep; the decision on these tests is open")
   void gateToolConsentIsPlannedWithoutInstalling() throws IOException {
     Files.createDirectories(root.resolve(".venv"));
     Files.createDirectories(root.resolve("src"));

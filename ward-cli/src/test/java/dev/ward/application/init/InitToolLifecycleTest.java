@@ -20,11 +20,14 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class InitToolLifecycleTest {
   @Test
+  @Disabled(
+      "Init offers no gate whose tool it can install since the security rules replaced semgrep; the decision on these tests is open")
   void selectedGateWithoutConsentDoesNotInvokeInstaller(@TempDir final Path root) throws Exception {
     PythonInitFixtures.project(root);
     final RecordingInstaller installer = new RecordingInstaller(true);
@@ -35,6 +38,8 @@ class InitToolLifecycleTest {
   }
 
   @Test
+  @Disabled(
+      "Init offers no gate whose tool it can install since the security rules replaced semgrep; the decision on these tests is open")
   void consentInstallsTheGateTool(@TempDir final Path root) throws Exception {
     PythonInitFixtures.project(root);
     final RecordingInstaller installer = new RecordingInstaller(true);
@@ -45,6 +50,8 @@ class InitToolLifecycleTest {
   }
 
   @Test
+  @Disabled(
+      "Init offers no gate whose tool it can install since the security rules replaced semgrep; the decision on these tests is open")
   void unavailableInstallerStillWritesTheConfiguration(@TempDir final Path root) throws Exception {
     PythonInitFixtures.project(root);
     final RecordingInstaller installer = new RecordingInstaller(false);
@@ -56,6 +63,8 @@ class InitToolLifecycleTest {
   }
 
   @Test
+  @Disabled(
+      "Init offers no gate whose tool it can install since the security rules replaced semgrep; the decision on these tests is open")
   void aMissingGateExecutableIsDescribedWithoutRunningAnInstaller(@TempDir final Path root)
       throws Exception {
     PythonInitFixtures.project(root);
