@@ -21,6 +21,7 @@ final class TomlCommandParser {
           SupportedQualityGates.COVERAGE,
           SupportedQualityGates.SECRETS,
           SupportedQualityGates.VULNERABILITIES,
+          SupportedQualityGates.BUILD_POLICY,
           SupportedQualityGates.LICENSE);
 
   private TomlCommandParser() {}

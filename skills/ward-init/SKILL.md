@@ -109,7 +109,7 @@ order:
    Ask whether to reconfigure. A yes here is consent for `--overwrite`. A no ends the skill with no
    changes.
 2. **Preset.** `standard` (fast, offline gates), `strict` (adds the strict Java rules,
-   coverage, enforcer, and mutation testing), or a custom selection. To show exactly which
+   coverage, build-policy, enforcer, and mutation testing), or a custom selection. To show exactly which
    gates a preset enables in this project, run a read-only preview and read its
    `Selected quality gate` lines:
 

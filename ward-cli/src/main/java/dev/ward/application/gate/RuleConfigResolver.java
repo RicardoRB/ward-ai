@@ -68,6 +68,9 @@ final class RuleConfigResolver {
       final String id,
       final Map<String, Object> table,
       final Map<String, RuleDefinition> selected) {
+    if (id.startsWith("ward:build/")) {
+      return;
+    }
     final String where = file.header(id);
     final Optional<RuleDefinition> rule =
         catalog.stream().filter(r -> r.id().equals(id)).findFirst();

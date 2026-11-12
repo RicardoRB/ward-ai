@@ -135,6 +135,10 @@ public final class AgentRulesTemplate {
           "mutation",
           "- Mutation (PIT): at least " + rules.mutationThreshold() + "% of mutants killed.");
     }
+    lines.put(
+        "build-policy",
+        "- Build policy: plugin versions pinned, no dynamic versions, a minimum build tool version"
+            + " and no duplicate dependency declarations (ward:build rules).");
     lines.put("enforcer", "- Enforcer: " + String.join(", ", rules.enforcerRules()) + ".");
     return lines;
   }

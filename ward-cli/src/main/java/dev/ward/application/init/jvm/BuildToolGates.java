@@ -116,6 +116,7 @@ record BuildToolGates(
   /** Gates that enforce build, compatibility, or custom policies, in wizard order. */
   List<InitGateOption> policyGates() {
     return List.of(
+        buildPolicy(),
         option(
             "enforcer",
             "Enforces dependency and build rules with Maven Enforcer.",
@@ -127,6 +128,20 @@ record BuildToolGates(
             "Runs a custom command from ward.toml.",
             " (customize the command in ward.toml after initialization.)",
             "test"));
+  }
+
+  /**
+   * The {@code build-policy} gate: it has no command, because Ward reads the build files itself.
+   */
+  private static InitGateOption buildPolicy() {
+    return new InitGateOption(
+        SupportedQualityGates.BUILD_POLICY,
+        "Checks pinned plugin versions, dynamic versions, the build tool version and duplicate"
+            + " dependency declarations in the build files, with Ward's native rules.",
+        List.of(),
+        true,
+        null,
+        Map.of());
   }
 
   // japicmp:cmp compares the packaged jar, so Maven packages it first.

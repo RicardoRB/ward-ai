@@ -11,6 +11,7 @@ public final class SupportedQualityGates {
   public static final String SECRETS = "secrets";
   public static final String COVERAGE = "coverage";
   public static final String CRAP = "crap";
+  public static final String BUILD_POLICY = "build-policy";
 
   public static final String OPENAPI_LINT = "openapi-lint";
   public static final String OPENAPI_DIFF = "openapi-diff";

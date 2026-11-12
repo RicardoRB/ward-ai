@@ -23,6 +23,7 @@ final class RuleSelector {
   private static final String DEFAULT_PRESET = "standard";
   private static final String RULE_PREFIX = "ward:";
   private static final char ID_MARK = ':';
+  private static final String BUILD_PREFIX = "build.";
 
   private final RuleConfigFile.Select select;
   private final List<RuleDefinition> catalog;
@@ -119,6 +120,9 @@ final class RuleSelector {
   private List<RuleDefinition> known(final String key, final List<String> names) {
     final List<RuleDefinition> rules = new ArrayList<>();
     for (final String name : names) {
+      if (name.startsWith(BUILD_PREFIX)) {
+        continue;
+      }
       if (name.indexOf(ID_MARK) >= 0) {
         problems.add(SELECT, key, writeDotted(name));
         continue;
