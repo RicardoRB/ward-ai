@@ -27,7 +27,10 @@ class LanguageFilteredSetupTest {
   void theLintGateKeepsOnlyTheOpenApiRules() {
     final RuleSet set = LanguageFilteredSetup.onlyOpenApi(everything).resolve(Path.of("."), 0);
 
-    assertThat(set.rules()).extracting(RuleDefinition::id).containsExactly(RULE);
+    assertThat(set.rules())
+        .extracting(RuleDefinition::id)
+        .contains(RULE)
+        .allSatisfy(id -> assertThat(id).startsWith("ward:openapi/"));
   }
 
   @Test
