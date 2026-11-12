@@ -1,0 +1,14 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths: {}
+components:
+  securitySchemes:
+    a:
+      type: oauth2
+      flows:
+        authorizationCode:
+          scopes: {}
+          authorizationUrl: https://auth.acme.org/a
+          tokenUrl: https://auth.acme.org/t

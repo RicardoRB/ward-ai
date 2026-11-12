@@ -14,6 +14,7 @@ public final class OpenApiRuleFiles implements RuleFileProvider {
           "rules/openapi/descriptions.toml",
           "rules/openapi/information.toml",
           "rules/openapi/operations.toml",
+          "rules/openapi/owasp.toml",
           "rules/openapi/schemas.toml",
           "rules/openapi/security.toml",
           "rules/openapi/tags.toml",

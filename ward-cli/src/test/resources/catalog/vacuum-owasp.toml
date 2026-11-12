@@ -8,14 +8,10 @@ vacuum = ["owasp-array-limit"]
 
 [[rule]]
 name = "owasp-auth-insecure-schemes"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-auth-insecure-schemes"]
 
 [[rule]]
 name = "owasp-auth-urls-https"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-auth-urls-https"]
 
 [[rule]]
@@ -62,8 +58,6 @@ vacuum = ["owasp-integer-limit"]
 
 [[rule]]
 name = "owasp-jwt-best-practices"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-jwt-best-practices"]
 
 [[rule]]
@@ -74,38 +68,26 @@ vacuum = ["owasp-no-additionalProperties"]
 
 [[rule]]
 name = "owasp-no-api-keys-in-url"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-no-api-keys-in-url"]
 
 [[rule]]
 name = "owasp-no-credentials-in-url"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-no-credentials-in-url"]
 
 [[rule]]
 name = "owasp-no-http-basic"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-no-http-basic"]
 
 [[rule]]
 name = "owasp-no-numeric-ids"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-no-numeric-ids"]
 
 [[rule]]
 name = "owasp-oauth-no-implicit"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-oauth-no-implicit"]
 
 [[rule]]
 name = "owasp-oauth-no-password"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-oauth-no-password"]
 
 [[rule]]
@@ -140,8 +122,6 @@ vacuum = ["owasp-rate-limit-retry-after"]
 
 [[rule]]
 name = "owasp-security-hosts-https-oas3"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-security-hosts-https-oas3"]
 
 [[rule]]

@@ -1,0 +1,8 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+servers:
+  - url: http://api.acme.org
+  - url: https://api.acme.org
+paths: {}

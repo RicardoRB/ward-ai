@@ -1,0 +1,111 @@
+# OpenAPI lint rules (owasp), ported from the vacuum 0.39.3 rules of the same id. Each rule is a project check over the loaded document model.
+
+[[rules]]
+id = "ward:openapi/owasp-no-http-basic"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-no-http-basic"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-auth-insecure-schemes"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-auth-insecure-schemes"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-no-api-keys-in-url"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-no-api-keys-in-url"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-jwt-best-practices"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-jwt-best-practices"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-auth-urls-https"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-auth-urls-https"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-oauth-no-password"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-oauth-no-password"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-oauth-no-implicit"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-oauth-no-implicit"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-no-numeric-ids"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-no-numeric-ids"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-no-credentials-in-url"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-no-credentials-in-url"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-security-hosts-https-oas3"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-security-hosts-https-oas3"
+'''

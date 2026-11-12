@@ -33105,6 +33105,196 @@
         }
       }
     },
+    "ward:openapi/owasp-auth-insecure-schemes": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-auth-urls-https": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-jwt-best-practices": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-no-api-keys-in-url": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-no-credentials-in-url": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-no-http-basic": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-no-numeric-ids": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-oauth-no-implicit": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-oauth-no-password": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-security-hosts-https-oas3": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:openapi/path-declarations-must-exist": {
       "type": "object",
       "additionalProperties": false,
@@ -54713,6 +54903,16 @@
               "openapi.operation-success-response",
               "openapi.operation-tag-defined",
               "openapi.operation-tags",
+              "openapi.owasp-auth-insecure-schemes",
+              "openapi.owasp-auth-urls-https",
+              "openapi.owasp-jwt-best-practices",
+              "openapi.owasp-no-api-keys-in-url",
+              "openapi.owasp-no-credentials-in-url",
+              "openapi.owasp-no-http-basic",
+              "openapi.owasp-no-numeric-ids",
+              "openapi.owasp-oauth-no-implicit",
+              "openapi.owasp-oauth-no-password",
+              "openapi.owasp-security-hosts-https-oas3",
               "openapi.path-declarations-must-exist",
               "openapi.path-keys-no-trailing-slash",
               "openapi.path-not-include-query",
@@ -57418,6 +57618,16 @@
               "openapi.operation-success-response",
               "openapi.operation-tag-defined",
               "openapi.operation-tags",
+              "openapi.owasp-auth-insecure-schemes",
+              "openapi.owasp-auth-urls-https",
+              "openapi.owasp-jwt-best-practices",
+              "openapi.owasp-no-api-keys-in-url",
+              "openapi.owasp-no-credentials-in-url",
+              "openapi.owasp-no-http-basic",
+              "openapi.owasp-no-numeric-ids",
+              "openapi.owasp-oauth-no-implicit",
+              "openapi.owasp-oauth-no-password",
+              "openapi.owasp-security-hosts-https-oas3",
               "openapi.path-declarations-must-exist",
               "openapi.path-keys-no-trailing-slash",
               "openapi.path-not-include-query",
@@ -63511,6 +63721,36 @@
             },
             "operation-tags": {
               "$ref": "#/$defs/ward:openapi~1operation-tags"
+            },
+            "owasp-auth-insecure-schemes": {
+              "$ref": "#/$defs/ward:openapi~1owasp-auth-insecure-schemes"
+            },
+            "owasp-auth-urls-https": {
+              "$ref": "#/$defs/ward:openapi~1owasp-auth-urls-https"
+            },
+            "owasp-jwt-best-practices": {
+              "$ref": "#/$defs/ward:openapi~1owasp-jwt-best-practices"
+            },
+            "owasp-no-api-keys-in-url": {
+              "$ref": "#/$defs/ward:openapi~1owasp-no-api-keys-in-url"
+            },
+            "owasp-no-credentials-in-url": {
+              "$ref": "#/$defs/ward:openapi~1owasp-no-credentials-in-url"
+            },
+            "owasp-no-http-basic": {
+              "$ref": "#/$defs/ward:openapi~1owasp-no-http-basic"
+            },
+            "owasp-no-numeric-ids": {
+              "$ref": "#/$defs/ward:openapi~1owasp-no-numeric-ids"
+            },
+            "owasp-oauth-no-implicit": {
+              "$ref": "#/$defs/ward:openapi~1owasp-oauth-no-implicit"
+            },
+            "owasp-oauth-no-password": {
+              "$ref": "#/$defs/ward:openapi~1owasp-oauth-no-password"
+            },
+            "owasp-security-hosts-https-oas3": {
+              "$ref": "#/$defs/ward:openapi~1owasp-security-hosts-https-oas3"
             },
             "path-declarations-must-exist": {
               "$ref": "#/$defs/ward:openapi~1path-declarations-must-exist"
