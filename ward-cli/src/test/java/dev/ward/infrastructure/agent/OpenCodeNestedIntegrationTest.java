@@ -2,7 +2,6 @@ package dev.ward.infrastructure.agent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.ward.domain.agent.GuardMode;
 import dev.ward.domain.agent.IntegrationRequest;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -38,17 +37,17 @@ class OpenCodeNestedIntegrationTest {
   }
 
   @Test
-  void nestedGuardRunsFromTheProject() throws IOException {
-    integration.integrate(
-        repository, new IntegrationRequest(false, GuardMode.ENABLE).forProject("apps/api"));
+  void nestedRefreshRemovesOnlyItsOwnGuardPlugin() throws IOException {
+    final Path own = repository.resolve(GUARD);
+    final Path rootGuard = repository.resolve(".opencode/plugins/ward-openspec-guard.js");
+    Files.createDirectories(own.getParent());
+    Files.writeString(own, "// ward-owned: opencode-openspec-guard v1\n");
+    Files.writeString(rootGuard, "// ward-owned: opencode-openspec-guard v1\n");
 
-    assertThat(Files.readString(repository.resolve(GUARD)))
-        .contains(
-            "import { dirname, isAbsolute, join } from \"node:path\";",
-            "cwd: PROJECT,",
-            "isAbsolute(path) ? path : join(directory, path)",
-            "id: \"ward.openspec-guard.apps-api\"")
-        .doesNotContain(SESSION_CWD);
+    integration.integrate(repository, IntegrationRequest.INSTALL.forProject("apps/api"));
+
+    assertThat(own).doesNotExist();
+    assertThat(rootGuard).exists();
   }
 
   @Test

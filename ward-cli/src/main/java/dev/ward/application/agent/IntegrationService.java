@@ -10,7 +10,6 @@ import dev.ward.domain.config.WardException;
 import dev.ward.domain.project.Project;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,10 +35,7 @@ public final class IntegrationService {
     this(detector, List.copyOf(integrations));
   }
 
-  /**
-   * Installs or, when {@code remove}, removes the integration {@code agent}, keeping the guard
-   * setting.
-   */
+  /** Installs or, when {@code remove}, removes the integration {@code agent}. */
   public IntegrationResult integrate(final String agent, final Path start, final boolean remove) {
     return integrate(agent, start, remove ? IntegrationRequest.REMOVE : IntegrationRequest.INSTALL);
   }
@@ -56,9 +52,7 @@ public final class IntegrationService {
             "event=integration-start agent="
                 + agent
                 + " operation="
-                + (request.remove() ? "remove" : "install")
-                + " guard="
-                + request.guard().name().toLowerCase(Locale.ROOT));
+                + (request.remove() ? "remove" : "install"));
     final AgentIntegration adapter =
         integrations.stream()
             .filter(candidate -> candidate.id().equals(agent))

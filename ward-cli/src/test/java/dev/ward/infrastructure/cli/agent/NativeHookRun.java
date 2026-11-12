@@ -3,16 +3,12 @@ package dev.ward.infrastructure.cli.agent;
 import static dev.ward.ProjectFixtures.PLAIN_POM;
 import static dev.ward.ProjectFixtures.withPom;
 
-import dev.ward.application.project.ProjectDetector;
-import dev.ward.application.spec.ApprovedArtifactGuardService;
-import dev.ward.application.spec.SpecValidationFixtures;
-import dev.ward.domain.FakeOpenSpecEnvironment;
+import dev.ward.application.gate.HookCheckFixtures;
+import dev.ward.domain.FakeAvailableEnvironment;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
 import dev.ward.infrastructure.agent.NativeHarnessAdapter;
 import dev.ward.infrastructure.json.ForyJsonCodec;
-import dev.ward.infrastructure.project.FileSystemProjectInspection;
-import dev.ward.infrastructure.project.FileSystemProjectPaths;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,7 +20,7 @@ import java.time.Duration;
 import java.util.Set;
 import picocli.CommandLine;
 
-/** Runs {@code hook native} for one adapter in a project with an approved spec. */
+/** Runs {@code hook native} for one adapter in a project with one test check. */
 final class NativeHookRun {
   final StringWriter out = new StringWriter();
   final StringWriter err = new StringWriter();
@@ -38,8 +34,6 @@ final class NativeHookRun {
     Files.writeString(
         root.resolve("ward.toml"),
         "version = 2\n[checks.tests]\nuses = \"tests\"\nprofiles = [\"default\", \"edit\"]\ncommand = \"mvn test\"\n");
-    Files.createDirectories(root.resolve("openspec/specs/auth"));
-    Files.writeString(root.resolve("openspec/specs/auth/spec.md"), "# Auth\n");
   }
 
   int run(final int gateExit, final String payload, final String... flags) {
@@ -47,16 +41,10 @@ final class NativeHookRun {
     err.getBuffer().setLength(0);
     final CommandExecutor executor =
         (command, directory) -> new CommandResult(gateExit, "", "", Duration.ZERO);
-    final FakeOpenSpecEnvironment environment = new FakeOpenSpecEnvironment(true);
+    final FakeAvailableEnvironment environment = new FakeAvailableEnvironment(true);
     final NativeHookCommand command =
         new NativeHookCommand(
-            new HookChecks(
-                SpecValidationFixtures.checks(executor, environment),
-                SpecValidationFixtures.service(
-                    executor, environment, SpecValidationFixtures.checks(executor, environment))),
-            new ApprovedArtifactGuardService(
-                new ProjectDetector(new FileSystemProjectInspection()),
-                new FileSystemProjectPaths()),
+            new HookChecks(HookCheckFixtures.checks(executor, environment)),
             new ForyJsonCodec(),
             Set.of(adapter),
             new ByteArrayInputStream(payload.getBytes(StandardCharsets.UTF_8)));

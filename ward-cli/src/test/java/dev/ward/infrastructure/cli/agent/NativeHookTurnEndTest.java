@@ -4,16 +4,12 @@ import static dev.ward.ProjectFixtures.PLAIN_POM;
 import static dev.ward.ProjectFixtures.withPom;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.ward.application.project.ProjectDetector;
-import dev.ward.application.spec.ApprovedArtifactGuardService;
-import dev.ward.application.spec.SpecValidationFixtures;
-import dev.ward.domain.FakeOpenSpecEnvironment;
+import dev.ward.application.gate.HookCheckFixtures;
+import dev.ward.domain.FakeAvailableEnvironment;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
 import dev.ward.infrastructure.agent.CodexIntegration;
 import dev.ward.infrastructure.json.ForyJsonCodec;
-import dev.ward.infrastructure.project.FileSystemProjectInspection;
-import dev.ward.infrastructure.project.FileSystemProjectPaths;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -45,23 +41,15 @@ class NativeHookTurnEndTest {
     Files.writeString(
         root.resolve("ward.toml"),
         "version = 2\n[checks.tests]\nuses = \"tests\"\nprofiles = [\"default\", \"edit\"]\ncommand = \"mvn test\"\n");
-    Files.createDirectories(root.resolve("openspec/specs/auth"));
-    Files.writeString(root.resolve("openspec/specs/auth/spec.md"), "# Auth\n");
   }
 
   private int run(final int gateExit, final String payload, final String... flags) {
     final CommandExecutor executor =
         (command, directory) -> new CommandResult(gateExit, "", "", Duration.ZERO);
-    final FakeOpenSpecEnvironment environment = new FakeOpenSpecEnvironment(true);
+    final FakeAvailableEnvironment environment = new FakeAvailableEnvironment(true);
     final NativeHookCommand command =
         new NativeHookCommand(
-            new HookChecks(
-                SpecValidationFixtures.checks(executor, environment),
-                SpecValidationFixtures.service(
-                    executor, environment, SpecValidationFixtures.checks(executor, environment))),
-            new ApprovedArtifactGuardService(
-                new ProjectDetector(new FileSystemProjectInspection()),
-                new FileSystemProjectPaths()),
+            new HookChecks(HookCheckFixtures.checks(executor, environment)),
             new ForyJsonCodec(),
             Set.of(new CodexIntegration()),
             new ByteArrayInputStream(payload.getBytes(StandardCharsets.UTF_8)));
@@ -106,49 +94,5 @@ class NativeHookTurnEndTest {
                     + "\"tool_input\":{\"command\":\"*** Begin Patch\"}}"))
         .isEqualTo(2);
     assertThat(err.toString()).contains("Ward quality findings");
-  }
-
-  @Test
-  void codexPatchToolInputReachesTheGuard() {
-    final String patch =
-        "*** Begin Patch\\n*** Update File: openspec/specs/auth/spec.md\\n@@\\n-# Auth\\n+# Changed\\n*** End Patch";
-    assertThat(
-            run(
-                0,
-                "{\"hook_event_name\":\"PreToolUse\",\"tool_name\":\"apply_patch\","
-                    + "\"tool_input\":{\"command\":\""
-                    + patch
-                    + "\"}}",
-                "--guard-approved-specs"))
-        .isZero();
-    assertThat(out.toString())
-        .contains("\"permissionDecision\":\"deny\"")
-        .doesNotContain("could not inspect");
-  }
-
-  @Test
-  void codexShellToolInputReachesTheGuard() {
-    assertThat(
-            run(
-                0,
-                "{\"hook_event_name\":\"PreToolUse\",\"tool_name\":\"Bash\","
-                    + "\"tool_input\":{\"command\":\"rm openspec/specs/auth/spec.md\"}}",
-                "--guard-approved-specs"))
-        .isZero();
-    assertThat(out.toString())
-        .contains("\"permissionDecision\":\"deny\"")
-        .doesNotContain("could not inspect");
-  }
-
-  @Test
-  void aHarmlessCodexShellCommandIsAllowed() {
-    assertThat(
-            run(
-                0,
-                "{\"hook_event_name\":\"PreToolUse\",\"tool_name\":\"Bash\","
-                    + "\"tool_input\":{\"command\":\"ls src\"}}",
-                "--guard-approved-specs"))
-        .isZero();
-    assertThat(out.toString()).isEmpty();
   }
 }

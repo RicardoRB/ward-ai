@@ -3,10 +3,8 @@ package dev.ward.infrastructure.cli.agent;
 import dev.ward.application.learning.LearningService;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.gate.CheckReport;
-import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.json.JsonCodec;
 import dev.ward.domain.learning.LearningOutcome;
-import dev.ward.domain.spec.SpecValidationReport;
 import dev.ward.infrastructure.cli.ExitCodes;
 import dev.ward.infrastructure.cli.ProjectOptions;
 import java.io.PrintWriter;
@@ -41,17 +39,6 @@ public final class ClaudeCodeHookCommand implements Callable<Integer> {
   private int threshold;
 
   @Option(
-      names = "--exclude-spec",
-      description = "Skip spec gates in the quality check; spec validation runs separately.")
-  private boolean excludeSpec;
-
-  @Option(
-      names = "--guard-approved-specs",
-      description =
-          "Act as the PreToolUse guard for approved OpenSpec artifacts; runs no quality checks.")
-  private boolean guard;
-
-  @Option(
       names = "--event-stdin",
       description = "Read the Claude Code hook event JSON from stdin (used by generated hooks).")
   private boolean eventStdin;
@@ -59,42 +46,32 @@ public final class ClaudeCodeHookCommand implements Callable<Integer> {
   private final HookChecks hookChecks;
   private final LearningService learningService;
   private final JsonCodec codec;
-  private final ClaudeGuardHook guardHook;
   private final HookStdin stdin;
 
   /**
    * Creates the hook command reading its event from standard input. {@code hookChecks} runs the
-   * quality gates and spec validation, {@code learningService} records repeated failures, and
-   * {@code guardHook} answers approved-artifact guard requests.
+   * quality gates and {@code learningService} records repeated failures.
    */
   @Inject
   public ClaudeCodeHookCommand(
-      final HookChecks hookChecks,
-      final LearningService learningService,
-      final JsonCodec codec,
-      final ClaudeGuardHook guardHook) {
-    this(hookChecks, learningService, codec, guardHook, HookStdin.system());
+      final HookChecks hookChecks, final LearningService learningService, final JsonCodec codec) {
+    this(hookChecks, learningService, codec, HookStdin.system());
   }
 
   ClaudeCodeHookCommand(
       final HookChecks hookChecks,
       final LearningService learningService,
       final JsonCodec codec,
-      final ClaudeGuardHook guardHook,
       final HookStdin stdin) {
     this.hookChecks = hookChecks;
     this.learningService = learningService;
     this.codec = codec;
-    this.guardHook = guardHook;
     this.stdin = stdin;
   }
 
   // The hook must always answer Claude Code with an exit code, even on unexpected failures.
   @Override
   public Integer call() {
-    if (guard) {
-      return guardHook.run(options.directory(), readsPayload(), stdin.stream(), output(), error());
-    }
     if (threshold < MIN_LEARN_AFTER) {
       error().println("--learn-after must be at least 1");
       return ExitCodes.ERROR;
@@ -122,7 +99,6 @@ public final class ClaudeCodeHookCommand implements Callable<Integer> {
   }
 
   private Integer executePostToolUse(final ClaudeHookEvent event) {
-    final Set<String> excluded = excludeSpec ? SupportedQualityGates.specIds() : Set.of();
     final CheckReport report =
         hookChecks
             .checks()
@@ -132,18 +108,11 @@ public final class ClaudeCodeHookCommand implements Callable<Integer> {
                     .editedPath()
                     .map(path -> List.of(options.directory().toAbsolutePath().resolve(path)))
                     .orElseGet(List::of),
-                excluded);
+                Set.of());
     final LearningOutcome learning = learningService.learn(report, threshold);
-    final SpecValidationReport specs =
-        event
-            .editedPath()
-            .map(
-                path ->
-                    hookChecks.specs().validatePaths(options.directory(), List.of(), List.of(path)))
-            .orElse(SpecValidationReport.EMPTY);
-    final boolean failed = !report.passed() || specs.hasFindings();
+    final boolean failed = !report.passed();
     if (failed) {
-      ClaudeHookFeedback.failures(report, specs, learning).forEach(error()::println);
+      ClaudeHookFeedback.failures(report, learning).forEach(error()::println);
     } else if (!learning.prompts().isEmpty()) {
       output()
           .println(
@@ -155,23 +124,20 @@ public final class ClaudeCodeHookCommand implements Callable<Integer> {
   }
 
   /**
-   * Runs the full {@code default} check and spec validation at turn end, and delivers their
-   * findings to the agent once per turn. When Claude Code is already continuing because of a stop
-   * hook, the findings go to the user instead of blocking again.
+   * Runs the full {@code default} check at turn end, and delivers its findings to the agent once
+   * per turn. When Claude Code is already continuing because of a stop hook, the findings go to the
+   * user instead of blocking again.
    */
   private Integer executeStop(final ClaudeHookEvent event) {
     if (!hookChecks.scope().applies(options.directory())) {
       LOGGER.log(Level.INFO, "event=claude-stop-skipped reason=project-unchanged");
       return ExitCodes.OK;
     }
-    final CheckReport report =
-        hookChecks.checks().checkExcluding(options.directory(), SupportedQualityGates.specIds());
-    final SpecValidationReport specs =
-        hookChecks.specs().validateConfigured(options.directory(), List.of());
-    if (report.passed() && !specs.hasFindings()) {
+    final CheckReport report = hookChecks.checks().check(options.directory());
+    if (report.passed()) {
       return ExitCodes.OK;
     }
-    final String findings = ClaudeHookFeedback.turnEnd(report, specs);
+    final String findings = ClaudeHookFeedback.turnEnd(report);
     if (event.stopHookActive) {
       LOGGER.log(Level.INFO, "event=claude-stop-reported reason=already-continued");
       output().println(ClaudeHookResponses.systemMessage(codec, findings));

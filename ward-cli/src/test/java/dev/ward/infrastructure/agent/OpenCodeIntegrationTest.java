@@ -2,8 +2,6 @@ package dev.ward.infrastructure.agent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.ward.domain.agent.GuardMode;
-import dev.ward.domain.agent.IntegrationRequest;
 import dev.ward.domain.agent.IntegrationResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,10 +11,8 @@ class OpenCodeIntegrationTest {
   private static final String COMMAND_PATH = ".opencode/commands/ward-check.md";
   private static final String PLUGIN_PATH = ".opencode/plugins/ward-edit-write.js";
   private static final String GUARD_PATH = ".opencode/plugins/ward-openspec-guard.js";
-  private static final IntegrationRequest ENABLE_GUARD =
-      new IntegrationRequest(false, GuardMode.ENABLE);
-  private static final IntegrationRequest DISABLE_GUARD =
-      new IntegrationRequest(false, GuardMode.DISABLE);
+  private static final String LEGACY_GUARD =
+      "// ward-owned: opencode-openspec-guard v1\nexport default {};\n";
 
   @Test
   void integratesAndRemovesOnlyOwnedContent() throws Exception {
@@ -32,8 +28,6 @@ class OpenCodeIntegrationTest {
             "export default Plugin.define({",
             "id: \"ward.edit-write\"",
             "ctx.tool.hook(\"execute.after\"",
-            "ctx.event.subscribe",
-            "ctx.session.hook(\"prompt\"",
             "ward",
             "--learn-after",
             "multiedit",
@@ -72,8 +66,9 @@ class OpenCodeIntegrationTest {
   }
 
   @Test
-  void pluginValidatesEditedSpecPathsAfterTheQualityCheck() throws Exception {
-    final Path root = Files.createTempDirectory("ward-opencode-spec");
+  void pluginChecksEditedPathsAndAppendsFeedbackWithoutSpecValidationOrIdleHooks()
+      throws Exception {
+    final Path root = Files.createTempDirectory("ward-opencode-check");
     new OpenCodeIntegration().integrate(root, false);
 
     final String plugin = Files.readString(root.resolve(PLUGIN_PATH));
@@ -87,30 +82,10 @@ class OpenCodeIntegrationTest {
             "file?.filePath",
             "file?.movePath",
             "const checkArgs = paths.flatMap((path) => [\"--path\", path])",
-            "[\"check\", \"--profile\", \"edit\", \"--format\", \"json\", \"--exclude-spec\", \"--learn-after\", \"3\"]",
-            "[\"spec\", \"validate\", \"--\", ...specPaths]",
-            "content: [...contentOf(event.result), { type: \"text\", text: feedback }]");
-  }
-
-  @Test
-  void pluginDeliversIdleFindingsOncePerTurnWithoutOverlap() throws Exception {
-    final Path root = Files.createTempDirectory("ward-opencode-idle");
-    new OpenCodeIntegration().integrate(root, false);
-
-    final String plugin = Files.readString(root.resolve(PLUGIN_PATH));
-
-    assertThat(plugin)
-        .contains(
-            "event?.type === \"session.idle\" ? event.data?.sessionID",
-            "state.running",
-            "state.delivered",
-            "run([\"spec\", \"validate\"]",
-            "ctx.session.prompt",
-            "metadata: { ward: FEEDBACK_MARKER }",
-            "const FEEDBACK_MARKER = \"[ward spec validation]\"",
-            "diagnostic",
-            "state.generation++",
-            "after.dispose");
+            "[\"check\", \"--profile\", \"edit\", \"--format\", \"json\", \"--learn-after\", \"3\"]",
+            "content: [...contentOf(event.result), { type: \"text\", text: feedback }]",
+            "after.dispose")
+        .doesNotContain("spec", "session.idle", "ctx.event", "ctx.session.prompt");
   }
 
   @Test
@@ -131,51 +106,54 @@ class OpenCodeIntegrationTest {
     assertThat(result.changed()).contains(plugin.toString());
     assertThat(Files.readString(plugin))
         .startsWith("// " + OpenCodeIntegration.PLUGIN_MARKER)
-        .contains("session.idle");
+        .doesNotContain("session.idle");
   }
 
   @Test
-  void installsKeepsDisablesAndRemovesTheSeparateGuard() throws Exception {
+  void refreshRemovesTheGuardPluginOfAnEarlierVersion() throws Exception {
     final Path root = Files.createTempDirectory("ward-opencode-guard");
     final OpenCodeIntegration integration = new OpenCodeIntegration();
+    integration.integrate(root, false);
     final Path guard = root.resolve(GUARD_PATH);
+    Files.writeString(guard, LEGACY_GUARD);
 
-    assertThat(integration.integrate(root, ENABLE_GUARD).status())
-        .isEqualTo(IntegrationResult.Status.CHANGED);
-    assertThat(Files.readString(guard))
-        .contains(
-            OpenCodeIntegration.GUARD_MARKER,
-            "import { Plugin } from \"@opencode/plugin\"",
-            "id: \"ward.openspec-guard\"",
-            "ctx.tool.hook(\"execute.before\"",
-            "apply_patch",
-            "patchText",
-            "workdir",
-            "--shell-stdin",
-            "--skill",
-            "ctx.session.get",
-            "--unreadable-input",
-            "warning");
-    assertThat(integration.integrate(root, IntegrationRequest.INSTALL).status())
-        .isEqualTo(IntegrationResult.Status.ALREADY_PRESENT);
-    assertThat(integration.integrate(root, DISABLE_GUARD).status())
-        .isEqualTo(IntegrationResult.Status.CHANGED);
+    final IntegrationResult refreshed = integration.integrate(root, false);
+
+    assertThat(refreshed.status()).isEqualTo(IntegrationResult.Status.CHANGED);
+    assertThat(refreshed.changed()).containsExactly(guard.toString());
     assertThat(guard).doesNotExist();
     assertThat(root.resolve(PLUGIN_PATH)).exists();
+    assertThat(integration.integrate(root, false).status())
+        .isEqualTo(IntegrationResult.Status.ALREADY_PRESENT);
   }
 
   @Test
-  void guardConflictPreventsTheOtherIntegrationFilesFromBeingWritten() throws Exception {
+  void removalDeletesTheGuardPluginOfAnEarlierVersion() throws Exception {
+    final Path root = Files.createTempDirectory("ward-opencode-guard-remove");
+    final OpenCodeIntegration integration = new OpenCodeIntegration();
+    integration.integrate(root, false);
+    final Path guard = root.resolve(GUARD_PATH);
+    Files.writeString(guard, LEGACY_GUARD);
+
+    final IntegrationResult removed = integration.integrate(root, true);
+
+    assertThat(removed.status()).isEqualTo(IntegrationResult.Status.REMOVED);
+    assertThat(removed.changed()).contains(guard.toString());
+    assertThat(guard).doesNotExist();
+  }
+
+  @Test
+  void userOwnedFileAtTheGuardPathIsPreserved() throws Exception {
     final Path root = Files.createTempDirectory("ward-opencode-guard-conflict");
     final Path guard = root.resolve(GUARD_PATH);
     Files.createDirectories(guard.getParent());
     Files.writeString(guard, "user-owned");
+    final OpenCodeIntegration integration = new OpenCodeIntegration();
 
-    final IntegrationResult result = new OpenCodeIntegration().integrate(root, ENABLE_GUARD);
-
-    assertThat(result.status()).isEqualTo(IntegrationResult.Status.CONFLICT);
-    assertThat(root.resolve(COMMAND_PATH)).doesNotExist();
-    assertThat(root.resolve(PLUGIN_PATH)).doesNotExist();
+    assertThat(integration.integrate(root, false).status())
+        .isEqualTo(IntegrationResult.Status.CHANGED);
+    assertThat(integration.integrate(root, true).status())
+        .isEqualTo(IntegrationResult.Status.REMOVED);
     assertThat(guard).hasContent("user-owned");
   }
 }

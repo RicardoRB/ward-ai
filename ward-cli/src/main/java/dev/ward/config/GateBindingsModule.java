@@ -7,7 +7,6 @@ import dev.ward.application.agent.HookScope;
 import dev.ward.application.gate.CheckService;
 import dev.ward.application.gate.TraceabilitySources;
 import dev.ward.application.project.ProjectDetector;
-import dev.ward.application.spec.SpecValidationService;
 import dev.ward.domain.gate.FindingExtractor;
 import dev.ward.domain.gate.ProjectFiles;
 import dev.ward.domain.gate.ReportSink;
@@ -53,11 +52,10 @@ interface GateBindingsModule {
   @Provides
   static HookChecks hookChecks(
       final CheckService checks,
-      final SpecValidationService specs,
       final ProjectDetector detector,
       final ProjectChanges changes,
       final ProjectPaths paths) {
-    return new HookChecks(checks, specs, new HookScope(detector, changes, paths));
+    return new HookChecks(checks, new HookScope(detector, changes, paths));
   }
 
   @Provides

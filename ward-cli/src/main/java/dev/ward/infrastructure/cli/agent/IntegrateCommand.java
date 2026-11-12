@@ -1,7 +1,6 @@
 package dev.ward.infrastructure.cli.agent;
 
 import dev.ward.application.agent.IntegrationService;
-import dev.ward.domain.agent.GuardMode;
 import dev.ward.domain.agent.IntegrationRequest;
 import dev.ward.domain.agent.IntegrationResult;
 import dev.ward.domain.agent.SupportedAgents;
@@ -45,15 +44,6 @@ public final class IntegrateCommand implements Callable<Integer> {
   @Option(names = "--remove", description = "Remove only Ward-owned integration content.")
   private boolean remove;
 
-  @Option(
-      names = "--guard-approved-specs",
-      negatable = true,
-      description = {
-        "Install the opt-in guard that stops agents from modifying approved OpenSpec specs and",
-        "archived changes; --no-guard-approved-specs removes it. Omit to keep the current state."
-      })
-  private Boolean guard;
-
   private final IntegrationService service;
   private final InputStream input;
 
@@ -71,16 +61,11 @@ public final class IntegrateCommand implements Callable<Integer> {
 
   @Override
   public Integer call() {
-    if (remove && guard != null) {
-      error().println("--remove cannot be combined with --[no-]guard-approved-specs.");
-      return ExitCodes.ERROR;
-    }
     if (agent == null || agent.isBlank()) {
       agent = selectAgent();
     }
     final IntegrationResult result =
-        service.integrate(
-            agent, options.directory(), new IntegrationRequest(remove, GuardMode.of(guard)));
+        service.integrate(agent, options.directory(), new IntegrationRequest(remove));
     output().printf("%s: %s%n", result.status(), result.message());
     if (!result.capabilities().isEmpty()) {
       output()

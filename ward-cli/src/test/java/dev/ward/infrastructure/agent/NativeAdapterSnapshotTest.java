@@ -2,7 +2,6 @@ package dev.ward.infrastructure.agent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.ward.domain.agent.GuardMode;
 import dev.ward.domain.agent.NativeHookOutcome;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -42,10 +41,9 @@ class NativeAdapterSnapshotTest {
         .append(adapter.capabilities().stream().map(Enum::name).sorted().toList())
         .append("\n== config\n")
         .append(adapter.configContent());
-    for (final GuardMode mode : GuardMode.values()) {
-      text.append("\n== hook ").append(mode).append('\n').append(adapter.hookContent(mode));
-    }
-    text.append("\n== deny\n")
+    text.append("\n== hook\n")
+        .append(adapter.hookContent())
+        .append("\n== deny\n")
         .append(adapter.serialize(NativeHookOutcome.deny("Blocked \"quoted\" \\ path")))
         .append("\n== feedback\n")
         .append(adapter.serialize(NativeHookOutcome.feedback("Fix it")))

@@ -31,31 +31,6 @@ final class ClaudeHookResponses {
     return codec.toJson(output);
   }
 
-  /**
-   * Refuses a tool call before it runs and tells the agent why. Ward never answers {@code allow},
-   * so allowed calls still go through Claude Code's own permission handling.
-   */
-  static String denyPreToolUse(final JsonCodec codec, final String reason) {
-    final PreToolUseOutput output = new PreToolUseOutput();
-    output.hookSpecificOutput = new PreToolUseDecision();
-    output.hookSpecificOutput.hookEventName = "PreToolUse";
-    output.hookSpecificOutput.permissionDecision = "deny";
-    output.hookSpecificOutput.permissionDecisionReason = reason;
-    return codec.toJson(output);
-  }
-
-  @JsonType
-  static final class PreToolUseOutput {
-    PreToolUseDecision hookSpecificOutput;
-  }
-
-  @JsonType
-  static final class PreToolUseDecision {
-    String hookEventName;
-    String permissionDecision;
-    String permissionDecisionReason;
-  }
-
   @JsonType
   static final class StopBlockOutput {
     String decision;

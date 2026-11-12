@@ -53,45 +53,4 @@ class NativeHookGeminiTest {
     assertThat(hook.out.toString()).isEmpty();
     assertThat(hook.err.toString()).contains("Ward quality findings");
   }
-
-  @Test
-  void theGuardDeniesAWriteToAnApprovedSpec() {
-    assertThat(
-            hook.run(
-                0,
-                tool(
-                    "BeforeTool",
-                    "write_file",
-                    "{\"file_path\":\"openspec/specs/auth/spec.md\",\"content\":\"x\"}"),
-                "--guard-approved-specs"))
-        .isZero();
-    assertThat(hook.out.toString())
-        .startsWith("{\"decision\":\"deny\",\"reason\":")
-        .contains("openspec/specs/auth/spec.md");
-  }
-
-  @Test
-  void theGuardDeniesAProtectedShellCommand() {
-    assertThat(
-            hook.run(
-                0,
-                tool(
-                    "BeforeTool",
-                    "run_shell_command",
-                    "{\"command\":\"rm openspec/specs/auth/spec.md\"}"),
-                "--guard-approved-specs"))
-        .isZero();
-    assertThat(hook.out.toString()).contains("\"decision\":\"deny\"");
-  }
-
-  @Test
-  void theGuardAllowsAnEditOutsideApprovedSpecs() {
-    assertThat(
-            hook.run(
-                0,
-                tool("BeforeTool", "replace", "{\"file_path\":\"src/A.java\"}"),
-                "--guard-approved-specs"))
-        .isZero();
-    assertThat(hook.out.toString()).isEmpty();
-  }
 }

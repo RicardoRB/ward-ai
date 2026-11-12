@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-/** Pins Cline v3 delivery: PreToolUse cancel, PostToolUse contextModification. */
+/** Pins Cline v3 delivery: PostToolUse contextModification. */
 class NativeHookClineTest {
   @TempDir Path root;
 
@@ -33,55 +33,6 @@ class NativeHookClineTest {
   }
 
   @Test
-  void theGuardCancelsAnEditToAnApprovedSpec() {
-    final String spec = root.resolve("openspec/specs/auth/spec.md").toString();
-    assertThat(
-            hook.run(
-                0,
-                pre("editor", "{\"path\":\"" + spec + "\",\"new_text\":\"x\"}"),
-                "--guard-approved-specs"))
-        .isZero();
-    assertThat(hook.out.toString())
-        .startsWith("{\"cancel\":true,\"errorMessage\":")
-        .contains("openspec/specs/auth/spec.md");
-  }
-
-  @Test
-  void theGuardReadsEachCommandOfARunCommandsCall() {
-    assertThat(
-            hook.run(
-                0,
-                pre(
-                    "run_commands",
-                    "{\"commands\":\"[\\\"ls\\\",\\\"rm openspec/specs/auth/spec.md\\\"]\"}"),
-                "--guard-approved-specs"))
-        .isZero();
-    assertThat(hook.out.toString()).startsWith("{\"cancel\":true");
-  }
-
-  @Test
-  void commandsInAnUnexpectedShapeAreUnreadableAndCancelled() {
-    assertThat(
-            hook.run(
-                0,
-                pre("run_commands", "{\"commands\":\"[{\\\"command\\\":\\\"rm\\\"}]\"}"),
-                "--guard-approved-specs"))
-        .isZero();
-    assertThat(hook.out.toString()).startsWith("{\"cancel\":true");
-  }
-
-  @Test
-  void theGuardAllowsAPatchToAnActiveChange() {
-    final String patch =
-        "*** Begin Patch\\n*** Add File: openspec/changes/x/tasks.md\\n+- [ ] 1\\n*** End Patch";
-    assertThat(
-            hook.run(
-                0, pre("apply_patch", "{\"input\":\"" + patch + "\"}"), "--guard-approved-specs"))
-        .isZero();
-    assertThat(hook.out.toString()).isEmpty();
-  }
-
-  @Test
   void failingChecksAfterAnEditReachTheAgentAsContextModification() {
     final String payload =
         "{\"hookName\":\"tool_result\",\"postToolUse\":{\"toolName\":\"editor\","
@@ -90,11 +41,5 @@ class NativeHookClineTest {
     assertThat(hook.out.toString())
         .startsWith("{\"contextModification\":")
         .contains("Ward quality findings");
-  }
-
-  @Test
-  void aJsonNullPayloadIsUnreadable() {
-    assertThat(hook.run(0, "null", "--guard-approved-specs")).isZero();
-    assertThat(hook.out.toString()).startsWith("{\"cancel\":true");
   }
 }

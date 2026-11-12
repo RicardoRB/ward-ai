@@ -1,5 +1,5 @@
 == definition
-cline .cline/hooks/PostToolUse .cline/hooks/PreToolUse PreToolUse,PostToolUse [APPROVED_ARTIFACT_GUARD, FEEDBACK, POST_EDIT, PRE_TOOL]
+cline .cline/hooks/PostToolUse  PostToolUse [FEEDBACK, POST_EDIT]
 == config
 #!/bin/sh
 # ward-owned: cline-native-hooks v1
@@ -12,44 +12,7 @@ case "$payload" in
 esac
 printf '%s' "$payload" | exec ward hook native --agent cline --event-stdin
 
-== hook KEEP
-#!/bin/sh
-# ward-owned: cline-native-hooks v1
-# Cline PreToolUse hook. Ward always checks the project this file is in.
-payload=$(cat)
-cd "$(dirname "$0")/../.." || exit 0
-[ "keep" = "enable" ] || exit 0
-case "$payload" in
-  *'"toolName":"editor"'*|*'"toolName":"apply_patch"'*|*'"toolName":"run_commands"'*) ;;
-  *) exit 0 ;;
-esac
-printf '%s' "$payload" | exec ward hook native --agent cline --guard-approved-specs --event-stdin
-
-== hook ENABLE
-#!/bin/sh
-# ward-owned: cline-native-hooks v1
-# Cline PreToolUse hook. Ward always checks the project this file is in.
-payload=$(cat)
-cd "$(dirname "$0")/../.." || exit 0
-[ "enable" = "enable" ] || exit 0
-case "$payload" in
-  *'"toolName":"editor"'*|*'"toolName":"apply_patch"'*|*'"toolName":"run_commands"'*) ;;
-  *) exit 0 ;;
-esac
-printf '%s' "$payload" | exec ward hook native --agent cline --guard-approved-specs --event-stdin
-
-== hook DISABLE
-#!/bin/sh
-# ward-owned: cline-native-hooks v1
-# Cline PreToolUse hook. Ward always checks the project this file is in.
-payload=$(cat)
-cd "$(dirname "$0")/../.." || exit 0
-[ "disable" = "enable" ] || exit 0
-case "$payload" in
-  *'"toolName":"editor"'*|*'"toolName":"apply_patch"'*|*'"toolName":"run_commands"'*) ;;
-  *) exit 0 ;;
-esac
-printf '%s' "$payload" | exec ward hook native --agent cline --guard-approved-specs --event-stdin
+== hook
 
 == deny
 {"cancel":true,"errorMessage":"Blocked \"quoted\" \\ path"}

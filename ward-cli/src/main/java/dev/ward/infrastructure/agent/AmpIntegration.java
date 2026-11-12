@@ -1,6 +1,5 @@
 package dev.ward.infrastructure.agent;
 
-import dev.ward.domain.agent.GuardMode;
 import dev.ward.domain.agent.IntegrationCapability;
 import dev.ward.domain.agent.NativeHookInput;
 import dev.ward.domain.agent.NativeHookOutcome;
@@ -16,24 +15,22 @@ public final class AmpIntegration implements NativeHarnessAdapter {
           "amp",
           ".amp/plugins/ward.ts",
           ".amp/plugins/ward.sh",
-          "tool.call,tool.result,agent.end",
+          "tool.result,agent.end",
           Set.of(
-              IntegrationCapability.PRE_TOOL,
               IntegrationCapability.POST_EDIT,
               IntegrationCapability.TURN_END,
-              IntegrationCapability.FEEDBACK,
-              IntegrationCapability.APPROVED_ARTIFACT_GUARD));
+              IntegrationCapability.FEEDBACK));
 
-  // Amp plugin API (@ampcode/plugin): tool.call returns allow or reject-and-continue, tool.result
-  // may replace the output the model reads, and agent.end may continue the turn once.
+  // Amp plugin API (@ampcode/plugin): tool.result may replace the output the model reads, and
+  // agent.end may continue the turn once.
   private static final String PLUGIN =
       """
       // %s
       import { spawn } from "node:child_process";
       import type { PluginAPI } from "@ampcode/plugin";
 
-      // Calls .amp/plugins/ward.sh: "pre" runs the approved-artifact guard when it is enabled,
-      // "post" runs the quality check. Edits and shell commands are identified with Amp's helpers.
+      // Calls .amp/plugins/ward.sh with "post" to run the quality check. Edits are identified with
+      // Amp's helpers.
       const HOOK = ".amp/plugins/ward.sh";
       const MAX = 8192;
 
@@ -55,44 +52,20 @@ public final class AmpIntegration implements NativeHarnessAdapter {
         const modified = (event: Parameters<typeof amp.helpers.filesModifiedByToolCall>[0]) =>
           (amp.helpers.filesModifiedByToolCall(event) ?? []).map((uri) => amp.helpers.filePathFromURI(uri));
 
-        amp.on("tool.call", async (event, ctx) => {
-          const shell = amp.helpers.shellCommandFromToolCall(event);
-          const payloads = modified(event).map((path) => ({ event: "tool.call", tool_name: event.tool, cwd: root, file_path: path }));
-          if (shell) payloads.push({ event: "tool.call", tool_name: event.tool, cwd: shell.dir ?? root, command: shell.command } as never);
-          for (const payload of payloads) {
-            const result = await hook("pre", payload);
-            if (result.error || result.code !== 0) {
-              // Ward could not decide; the call proceeds, as documented.
-              ctx.logger.log(`[ward guard] could not decide; allowing: ${(result.error ?? result.stderr).slice(0, 500)}`);
-              continue;
-            }
-            let decision: { action?: string; message?: unknown } | null = null;
-            try { decision = result.stdout.trim() ? JSON.parse(result.stdout) : null; } catch { decision = null; }
-            if (decision?.action === "reject-and-continue") {
-              return { action: "reject-and-continue", message: String(decision.message ?? "Refused by Ward.").slice(0, MAX) };
-            }
-          }
-          return { action: "allow" };
-        });
-
         amp.on("tool.result", async (event, ctx) => {
           // Failed or cancelled tool calls keep their original result and are not checked.
           if (event.status !== "done") return;
           const paths = modified(event);
           if (paths.length === 0) return;
-          const targets = [paths[0], ...paths.slice(1).filter((path) => path.includes("openspec"))];
-          const feedback: string[] = [];
-          for (const path of targets) {
-            const result = await hook("post", { event: "tool.result", tool_name: event.tool, cwd: root, file_path: path });
-            if (result.error) {
-              ctx.logger.log(`[ward] could not run: ${result.error.slice(0, 500)}`);
-              return;
-            }
-            if (result.code !== 0) feedback.push((result.stderr || result.stdout).trim() || "Ward validation failed.");
+          const result = await hook("post", { event: "tool.result", tool_name: event.tool, cwd: root, file_path: paths[0] });
+          if (result.error) {
+            ctx.logger.log(`[ward] could not run: ${result.error.slice(0, 500)}`);
+            return;
           }
-          if (feedback.length === 0) return;
+          if (result.code === 0) return;
+          const feedback = (result.stderr || result.stdout).trim() || "Ward validation failed.";
           const original = typeof event.output === "string" ? event.output : JSON.stringify(event.output ?? "");
-          return { status: "done", output: `${original}\\n\\n${[...new Set(feedback)].join("\\n").slice(0, MAX)}` };
+          return { status: "done", output: `${original}\\n\\n${feedback.slice(0, MAX)}` };
         });
 
         amp.on("agent.end", async (event, ctx) => {
@@ -121,8 +94,8 @@ public final class AmpIntegration implements NativeHarnessAdapter {
   }
 
   @Override
-  public String hookContent(final GuardMode guardMode) {
-    return NativeHookText.phaseWrapper(DEFINITION.id(), DEFINITION.hookFile(), guardMode);
+  public String hookContent() {
+    return NativeHookText.wrapper(DEFINITION.id(), DEFINITION.hookFile());
   }
 
   /** Returns the hook response that blocks the tool call and tells the agent {@code reason}. */

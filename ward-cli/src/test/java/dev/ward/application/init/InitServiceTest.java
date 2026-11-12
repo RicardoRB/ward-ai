@@ -10,7 +10,6 @@ import dev.ward.application.project.ProjectDetector;
 import dev.ward.application.project.ProjectNotFoundException;
 import dev.ward.domain.FakeEnvironmentInspection;
 import dev.ward.domain.agent.AgentIntegration;
-import dev.ward.domain.agent.GuardMode;
 import dev.ward.domain.agent.IntegrationResult;
 import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.config.WardConfiguration;
@@ -120,7 +119,7 @@ class InitServiceTest {
     final AgentIntegration conflict =
         new AgentIntegration() {
           @Override
-          public List<PlannedFileChange> plan(final Path projectRoot, final GuardMode guard) {
+          public List<PlannedFileChange> plan(final Path projectRoot) {
             return List.of();
           }
 

@@ -5,10 +5,9 @@ import static dev.ward.ProjectFixtures.withPom;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.application.agent.HookScope;
+import dev.ward.application.gate.HookCheckFixtures;
 import dev.ward.application.project.ProjectDetector;
-import dev.ward.application.spec.ApprovedArtifactGuardService;
-import dev.ward.application.spec.SpecValidationFixtures;
-import dev.ward.domain.FakeOpenSpecEnvironment;
+import dev.ward.domain.FakeAvailableEnvironment;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
 import dev.ward.infrastructure.agent.CodexIntegration;
@@ -93,24 +92,6 @@ class NativeHookRepositoryTest {
     assertThat(out.toString()).isEmpty();
   }
 
-  @Test
-  void guardOutsideEveryProjectWithoutSharedSpecsAllowsTheCall() {
-    assertThat(run(0, patch("apps/api/src/App.java"), "--guard-approved-specs")).isZero();
-
-    assertThat(out.toString()).isEmpty();
-    assertThat(err.toString()).isEmpty();
-  }
-
-  @Test
-  void guardProtectsTheSharedOpenSpecDirectory() throws IOException {
-    Files.createDirectories(repository.resolve("openspec/specs/auth"));
-    Files.writeString(repository.resolve("openspec/specs/auth/spec.md"), "# Auth\n");
-
-    run(0, patch("openspec/specs/auth/spec.md"), "--guard-approved-specs");
-
-    assertThat(out.toString()).contains("deny");
-  }
-
   private static String patch(final String path) {
     return "{\"hook_event_name\":\"PostToolUse\",\"tool_name\":\"apply_patch\",\"cwd\":\"\","
         + "\"tool_input\":{\"command\":\"*** Begin Patch\\n*** Update File: "
@@ -124,16 +105,13 @@ class NativeHookRepositoryTest {
           ranIn.add(directory);
           return new CommandResult(gateExit, "", "", Duration.ZERO);
         };
-    final FakeOpenSpecEnvironment environment = new FakeOpenSpecEnvironment(true);
+    final FakeAvailableEnvironment environment = new FakeAvailableEnvironment(true);
     final ProjectDetector detector = new ProjectDetector(new FileSystemProjectInspection());
     final NativeHookCommand command =
         new NativeHookCommand(
             new HookChecks(
-                SpecValidationFixtures.checks(executor, environment),
-                SpecValidationFixtures.service(
-                    executor, environment, SpecValidationFixtures.checks(executor, environment)),
+                HookCheckFixtures.checks(executor, environment),
                 new HookScope(detector, directory -> true, new FileSystemProjectPaths())),
-            new ApprovedArtifactGuardService(detector, new FileSystemProjectPaths()),
             new ForyJsonCodec(),
             Set.of(new CodexIntegration()),
             new ByteArrayInputStream(payload.getBytes(StandardCharsets.UTF_8)));

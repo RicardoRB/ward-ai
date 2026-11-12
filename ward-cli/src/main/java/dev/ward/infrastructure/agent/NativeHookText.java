@@ -1,6 +1,5 @@
 package dev.ward.infrastructure.agent;
 
-import dev.ward.domain.agent.GuardMode;
 import dev.ward.domain.agent.NativeHookInput;
 import dev.ward.domain.json.JsonCodec;
 import java.util.Locale;
@@ -46,33 +45,25 @@ final class NativeHookText {
   }
 
   /**
-   * Returns the phase-aware hook wrapper. Native registrations call it with {@code pre} for
-   * pre-tool events, which run the approved-artifact guard only when it is enabled, and with {@code
-   * post} for post-tool and turn-end events, which run the quality check.
+   * Returns the hook wrapper. Native registrations call it with {@code post} for post-tool and
+   * turn-end events, which run the quality check.
    */
-  static String phaseWrapper(final String id, final String hookFile, final GuardMode guardMode) {
+  static String wrapper(final String id, final String hookFile) {
     final String up = "/..".repeat((int) hookFile.chars().filter(ch -> ch == '/').count());
     return "#!/bin/sh\n# "
         + marker(id)
         + "\n# Native event adapter for "
         + id
-        + ". Usage: ward.sh pre|post, with the event JSON on stdin.\n"
+        + ". Usage: ward.sh post, with the event JSON on stdin.\n"
         + "# Hooks may run in a subdirectory, so Ward always checks the project this file is in.\n"
         + "cd \"$(dirname \"$0\")"
         + up
         + "\" || exit 2\n"
         + "case \"$1\" in\n"
-        + "  pre)\n"
-        + "    [ \""
-        + guardMode.name().toLowerCase(Locale.ROOT)
-        + "\" = \"enable\" ] || exit 0\n"
-        + "    exec ward hook native --agent "
-        + id
-        + " --guard-approved-specs --event-stdin ;;\n"
         + "  post) exec ward hook native --agent "
         + id
         + " --event-stdin ;;\n"
-        + "  *) echo \"Ward hook wrapper: expected pre or post.\" >&2; exit 2 ;;\n"
+        + "  *) echo \"Ward hook wrapper: expected post.\" >&2; exit 2 ;;\n"
         + "esac\n";
   }
 
