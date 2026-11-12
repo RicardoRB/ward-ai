@@ -11,6 +11,7 @@ import dev.ward.analysis.domain.rule.ProjectMatch;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import dev.ward.analysis.domain.rule.check.ProjectCheck;
 import dev.ward.analysis.domain.rule.check.RuleCheck;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,12 @@ import java.util.SortedMap;
 final class OpenApiProjectCheck implements RuleCheck, ProjectCheck {
 
   private static final String ENTRY_KEY = "openapi";
+
+  private static final Comparator<ProjectMatch> ORDER =
+      Comparator.comparing(ProjectMatch::path)
+          .thenComparingInt(match -> match.match().span().startLine())
+          .thenComparingInt(match -> match.match().span().startColumn())
+          .thenComparing(match -> match.match().message());
 
   private final OpenApiRule rule;
 
@@ -47,7 +54,7 @@ final class OpenApiProjectCheck implements RuleCheck, ProjectCheck {
         loaded.document().ifPresent(document -> matches.addAll(run(document)));
       }
     }
-    return List.copyOf(matches);
+    return matches.stream().sorted(ORDER).toList();
   }
 
   private List<ProjectMatch> run(final OpenApiDocument document) {

@@ -32459,6 +32459,25 @@
         }
       }
     },
+    "ward:openapi/component-description": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:openapi/contact-properties": {
       "type": "object",
       "additionalProperties": false,
@@ -32611,6 +32630,25 @@
         }
       }
     },
+    "ward:openapi/oas3-parameter-description": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:openapi/oas3-server-trailing-slash": {
       "type": "object",
       "additionalProperties": false,
@@ -32630,7 +32668,140 @@
         }
       }
     },
+    "ward:openapi/openapi-tags": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/openapi-tags-alphabetical": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/operation-description": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:openapi/operation-operation-id": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/operation-singular-tag": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/operation-tag-defined": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/operation-tags": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/tag-description": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -54071,6 +54242,7 @@
               "kotlin.var-could-be-val",
               "kotlin.variable-declaration-usage-distance",
               "kotlin.wrong-equals-type-parameter",
+              "openapi.component-description",
               "openapi.contact-properties",
               "openapi.info-contact",
               "openapi.info-description",
@@ -54079,8 +54251,16 @@
               "openapi.license-url",
               "openapi.oas3-api-servers",
               "openapi.oas3-host-not-example",
+              "openapi.oas3-parameter-description",
               "openapi.oas3-server-trailing-slash",
+              "openapi.openapi-tags",
+              "openapi.openapi-tags-alphabetical",
+              "openapi.operation-description",
               "openapi.operation-operation-id",
+              "openapi.operation-singular-tag",
+              "openapi.operation-tag-defined",
+              "openapi.operation-tags",
+              "openapi.tag-description",
               "python.abbreviation-as-word-in-name",
               "python.abstract-base-class-without-abstract-method",
               "python.abstract-class-instantiated",
@@ -56744,6 +56924,7 @@
               "kotlin.var-could-be-val",
               "kotlin.variable-declaration-usage-distance",
               "kotlin.wrong-equals-type-parameter",
+              "openapi.component-description",
               "openapi.contact-properties",
               "openapi.info-contact",
               "openapi.info-description",
@@ -56752,8 +56933,16 @@
               "openapi.license-url",
               "openapi.oas3-api-servers",
               "openapi.oas3-host-not-example",
+              "openapi.oas3-parameter-description",
               "openapi.oas3-server-trailing-slash",
+              "openapi.openapi-tags",
+              "openapi.openapi-tags-alphabetical",
+              "openapi.operation-description",
               "openapi.operation-operation-id",
+              "openapi.operation-singular-tag",
+              "openapi.operation-tag-defined",
+              "openapi.operation-tags",
+              "openapi.tag-description",
               "python.abbreviation-as-word-in-name",
               "python.abstract-base-class-without-abstract-method",
               "python.abstract-class-instantiated",
@@ -62738,6 +62927,9 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
+            "component-description": {
+              "$ref": "#/$defs/ward:openapi~1component-description"
+            },
             "contact-properties": {
               "$ref": "#/$defs/ward:openapi~1contact-properties"
             },
@@ -62762,11 +62954,35 @@
             "oas3-host-not-example": {
               "$ref": "#/$defs/ward:openapi~1oas3-host-not-example"
             },
+            "oas3-parameter-description": {
+              "$ref": "#/$defs/ward:openapi~1oas3-parameter-description"
+            },
             "oas3-server-trailing-slash": {
               "$ref": "#/$defs/ward:openapi~1oas3-server-trailing-slash"
             },
+            "openapi-tags": {
+              "$ref": "#/$defs/ward:openapi~1openapi-tags"
+            },
+            "openapi-tags-alphabetical": {
+              "$ref": "#/$defs/ward:openapi~1openapi-tags-alphabetical"
+            },
+            "operation-description": {
+              "$ref": "#/$defs/ward:openapi~1operation-description"
+            },
             "operation-operation-id": {
               "$ref": "#/$defs/ward:openapi~1operation-operation-id"
+            },
+            "operation-singular-tag": {
+              "$ref": "#/$defs/ward:openapi~1operation-singular-tag"
+            },
+            "operation-tag-defined": {
+              "$ref": "#/$defs/ward:openapi~1operation-tag-defined"
+            },
+            "operation-tags": {
+              "$ref": "#/$defs/ward:openapi~1operation-tags"
+            },
+            "tag-description": {
+              "$ref": "#/$defs/ward:openapi~1tag-description"
             }
           }
         },

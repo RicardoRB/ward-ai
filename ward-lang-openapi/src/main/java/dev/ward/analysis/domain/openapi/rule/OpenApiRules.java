@@ -20,7 +20,16 @@ public final class OpenApiRules {
     rules.put("oas3-api-servers", ServerRules::apiServers);
     rules.put("oas3-host-not-example", ServerRules::hostNotExample);
     rules.put("oas3-server-trailing-slash", ServerRules::trailingSlash);
+    rules.put("component-description", DescriptionRules::component);
+    rules.put("oas3-parameter-description", DescriptionRules::parameter);
+    rules.put("openapi-tags", TagRules::openapiTags);
+    rules.put("openapi-tags-alphabetical", TagRules::alphabetical);
+    rules.put("operation-description", DescriptionRules::operation);
     rules.put("operation-operation-id", new OperationOperationId());
+    rules.put("operation-singular-tag", TagRules::singularTag);
+    rules.put("operation-tag-defined", TagRules::tagDefined);
+    rules.put("operation-tags", TagRules::operationTags);
+    rules.put("tag-description", TagRules::description);
     return Map.copyOf(rules);
   }
 }

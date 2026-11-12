@@ -1,0 +1,22 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths:
+  /pets:
+    parameters:
+      - name: q
+        in: query
+    get:
+      parameters:
+        - name: limit
+          in: query
+        - name: ok
+          in: query
+          description: d
+      responses: {}
+components:
+  parameters:
+    P:
+      name: p
+      in: query

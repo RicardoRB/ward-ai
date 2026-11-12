@@ -2,36 +2,24 @@
 
 [[rule]]
 name = "openapi-tags"
-presets = ["standard", "strict"]
-category = "docs"
 vacuum = ["openapi-tags"]
 
 [[rule]]
 name = "openapi-tags-alphabetical"
-presets = ["standard", "strict"]
-category = "docs"
 vacuum = ["openapi-tags-alphabetical"]
 
 [[rule]]
 name = "operation-singular-tag"
-presets = ["standard", "strict"]
-category = "docs"
 vacuum = ["operation-singular-tag"]
 
 [[rule]]
 name = "operation-tag-defined"
-presets = ["standard", "strict"]
-category = "docs"
 vacuum = ["operation-tag-defined"]
 
 [[rule]]
 name = "operation-tags"
-presets = ["standard", "strict"]
-category = "docs"
 vacuum = ["operation-tags"]
 
 [[rule]]
 name = "tag-description"
-presets = ["standard", "strict"]
-category = "docs"
 vacuum = ["tag-description"]

@@ -53,8 +53,13 @@ final class YamlEntries {
     }
   }
 
-  SyntaxNode build(final Span empty) {
-    return YamlNodes.object(entries, empty);
+  /** The mapping of the entries, written over {@code whole} or, when null, from first to last. */
+  SyntaxNode build(final Span whole) {
+    final Span span =
+        whole != null
+            ? whole
+            : YamlNodes.cover(entries.getFirst().span(), entries.getLast().span());
+    return YamlNodes.object(entries, span);
   }
 
   private SyntaxNode requireObject(final SyntaxNode item, final int at) {

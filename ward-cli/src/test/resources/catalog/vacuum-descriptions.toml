@@ -2,8 +2,6 @@
 
 [[rule]]
 name = "component-description"
-presets = ["standard", "strict"]
-category = "docs"
 vacuum = ["component-description"]
 
 [[rule]]
@@ -14,12 +12,8 @@ vacuum = ["description-duplication"]
 
 [[rule]]
 name = "oas3-parameter-description"
-presets = ["standard", "strict"]
-category = "docs"
 vacuum = ["oas3-parameter-description"]
 
 [[rule]]
 name = "operation-description"
-presets = ["standard", "strict"]
-category = "docs"
 vacuum = ["operation-description"]

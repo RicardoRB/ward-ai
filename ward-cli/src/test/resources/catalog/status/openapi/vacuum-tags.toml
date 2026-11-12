@@ -1,8 +1,8 @@
 # Status of the vacuum-tags rows in openapi: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-openapi-tags = { status = "planned", issue = "#522" }
-openapi-tags-alphabetical = { status = "planned", issue = "#522" }
-operation-singular-tag = { status = "planned", issue = "#522" }
-operation-tag-defined = { status = "planned", issue = "#522" }
-operation-tags = { status = "planned", issue = "#522" }
-tag-description = { status = "planned", issue = "#522" }
+openapi-tags = "implemented"
+openapi-tags-alphabetical = "implemented"
+operation-singular-tag = "implemented"
+operation-tag-defined = "implemented"
+operation-tags = "implemented"
+tag-description = "implemented"

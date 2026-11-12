@@ -29,14 +29,14 @@ final class YamlNodes {
         YamlSyntax.ENTRY, cover(key.span(), value.span()), Map.of(), List.of(key, value));
   }
 
-  /** An object of {@code entries}, or of {@code empty} when there are none. */
-  static SyntaxNode object(final List<SyntaxNode> entries, final Span empty) {
-    return container(YamlSyntax.OBJECT, entries, empty);
+  /** An object of {@code entries} that is written over {@code whole}. */
+  static SyntaxNode object(final List<SyntaxNode> entries, final Span whole) {
+    return container(YamlSyntax.OBJECT, entries, whole);
   }
 
-  /** An array of {@code items}, or of {@code empty} when there are none. */
-  static SyntaxNode array(final List<SyntaxNode> items, final Span empty) {
-    return container(YamlSyntax.ARRAY, items, empty);
+  /** An array of {@code items} that is written over {@code whole}. */
+  static SyntaxNode array(final List<SyntaxNode> items, final Span whole) {
+    return container(YamlSyntax.ARRAY, items, whole);
   }
 
   /** The node as an expanded alias: it keeps the children and the alias site's position. */
@@ -61,10 +61,8 @@ final class YamlNodes {
   }
 
   private static SyntaxNode container(
-      final String kind, final List<SyntaxNode> children, final Span empty) {
-    final Span span =
-        children.isEmpty() ? empty : cover(children.getFirst().span(), children.getLast().span());
-    return new SyntaxNode(kind, span, Map.of(), children);
+      final String kind, final List<SyntaxNode> children, final Span whole) {
+    return new SyntaxNode(kind, whole, Map.of(), children);
   }
 
   private static Map<String, String> withAlias(

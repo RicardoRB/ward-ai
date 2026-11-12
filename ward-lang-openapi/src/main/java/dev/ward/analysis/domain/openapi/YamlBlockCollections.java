@@ -41,17 +41,17 @@ final class YamlBlockCollections {
       cursor.advance(1);
       items.add(item(indent));
     } while (nextAt(indent) && keys.sequenceEntryAt(cursor.pos()));
-    return YamlNodes.array(items, lines.span(start, start));
+    return YamlNodes.array(
+        items, YamlNodes.cover(lines.span(start, start + 1), items.getLast().span()));
   }
 
   /** Reads the block mapping whose first key is at the cursor, at indentation {@code indent}. */
   SyntaxNode mapping(final int indent) {
     final YamlEntries entries = new YamlEntries(cursor, lines);
-    final int start = cursor.pos();
     do {
       addEntry(entries, indent);
     } while (mappingContinues(indent));
-    return entries.build(lines.span(start, start));
+    return entries.build(null);
   }
 
   private SyntaxNode item(final int indent) {

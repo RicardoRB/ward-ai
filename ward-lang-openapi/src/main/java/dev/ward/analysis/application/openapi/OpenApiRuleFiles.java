@@ -11,8 +11,10 @@ public final class OpenApiRuleFiles implements RuleFileProvider {
 
   private static final List<String> FILES =
       List.of(
+          "rules/openapi/descriptions.toml",
           "rules/openapi/information.toml",
           "rules/openapi/operations.toml",
+          "rules/openapi/tags.toml",
           "rules/openapi/validation.toml");
 
   @Override
