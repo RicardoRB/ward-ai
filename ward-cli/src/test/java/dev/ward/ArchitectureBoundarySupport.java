@@ -29,6 +29,7 @@ final class ArchitectureBoundarySupport {
           "dev.ward.config.DependencyBindingsModule",
           "dev.ward.config.BuildPolicyBindingsModule",
           "dev.ward.config.VulnerabilityBindingsModule",
+          "dev.ward.config.LicenseBindingsModule",
           "dev.ward.config.NodeBindingsModule",
           "dev.ward.config.PythonBindingsModule",
           "dev.ward.config.SwiftBindingsModule",
@@ -85,6 +86,7 @@ final class ArchitectureBoundarySupport {
           Map.entry("terminal", Set.of()),
           Map.entry("project", Set.of()),
           Map.entry("json", Set.of()),
+          Map.entry("license", Set.of("config", "dependency", "project")),
           Map.entry("learning", Set.of("gate")),
           Map.entry("secrets", Set.of()),
           Map.entry("spec", Set.of()),
@@ -118,7 +120,9 @@ final class ArchitectureBoundarySupport {
                   "dev.ward.application.vulnerability.ScanResult$Located",
                   "dev.ward.application.vulnerability.ScanResult$Unmatchable",
                   "dev.ward.application.vulnerability.VulnerabilityRunMode",
-                  "dev.ward.application.vulnerability.VulnerabilityScan")),
+                  "dev.ward.application.vulnerability.VulnerabilityScan",
+                  "dev.ward.application.license.LicenseService",
+                  "dev.ward.application.license.PackageLicense")),
           Map.entry(
               "init",
               Set.of(
@@ -140,6 +144,11 @@ final class ArchitectureBoundarySupport {
           Map.entry(
               "vulnerability",
               Set.of("dev.ward.application.dependency.DependencyInventoryService")),
+          Map.entry(
+              "license",
+              Set.of(
+                  "dev.ward.application.dependency.DependencyInventoryService",
+                  "dev.ward.application.project.ProjectDetector")),
           Map.entry("project", Set.of()),
           Map.entry("analysis", Set.of()),
           Map.entry("learning", Set.of()),

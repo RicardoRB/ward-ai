@@ -25,7 +25,6 @@ public final class ManagedPluginCatalog {
           row("maven-enforcer-plugin", "3.5.0", JDK_8, JDK_25),
           row("sonar-maven-plugin", "3.11.0.3922", JDK_8, JDK_10),
           row("sonar-maven-plugin", "5.1.0.4751", JDK_11, JDK_25),
-          row("license-maven-plugin", "2.5.0", JDK_8, JDK_25),
           row("japicmp-maven-plugin", "0.23.1", JDK_8, JDK_25));
 
   private ManagedPluginCatalog() {}

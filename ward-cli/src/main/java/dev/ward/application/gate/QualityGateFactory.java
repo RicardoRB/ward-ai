@@ -31,6 +31,7 @@ public class QualityGateFactory {
       Set.of(
           SupportedQualityGates.ANALYSIS,
           SupportedQualityGates.FORMAT,
+          SupportedQualityGates.LICENSE,
           SupportedQualityGates.SECRETS,
           SupportedQualityGates.CRAP,
           SupportedQualityGates.COVERAGE,
@@ -262,6 +263,9 @@ public class QualityGateFactory {
         throw new WardException("Build policy gate dependencies are unavailable.");
       }
       return extensions.buildPolicy().create(check.name(), check.rulesFile());
+    }
+    if (SupportedQualityGates.LICENSE.equals(check.type())) {
+      return extensions.licenseGate(check);
     }
     if (REPORTING_GATES.contains(check.type())) {
       return ReportingGates.create(check, focus, executor, reports, extensions);
