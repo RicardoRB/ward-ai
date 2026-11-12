@@ -107,21 +107,10 @@ command = "trivy fs --offline-scan --exit-code 1 ."
 enabled = true
 uses = "license"
 profiles = ["pre-push", "ci"]
-# The shipped set: runtime dependencies only. JNA is dual Apache-2.0 OR LGPL-2.1-or-later.
-allow = ["Apache-2.0", "MIT", "BSD-3-Clause", "EPL-2.0", "LGPL-2.1-or-later"]
-scopes = ["runtime"]
-
-# Regenerate the SBOM and the third-party notice of the shipped ward-cli into ward-cli/target/compliance; the drift check below compares them.
-# Drop --output to print one to stdout, and write it to compliance/ to refresh the committed copy.
-[checks.compliance-sbom]
-enabled = true
-profiles = ["pre-push", "ci"]
-command = ["ward", "sbom", "--directory", "ward-cli", "--scopes", "runtime", "--output", "ward-cli/target/compliance/sbom.json"]
-
-[checks.compliance-notice]
-enabled = true
-profiles = ["pre-push", "ci"]
-command = ["ward", "licenses", "--directory", "ward-cli", "--scopes", "runtime", "--output", "ward-cli/target/compliance/THIRD-PARTY-LICENSES"]
+# Regenerates THIRD-PARTY-LICENSES and the SBOM of the shipped ward-cli into ward-cli/target/compliance; the drift check below compares them.
+# The aggregate SBOM runs once at the root, so its directory is given from there. Drop both -D options to regenerate compliance/.
+# compile lets the goals resolve the dev.ward modules from the reactor; without it Maven looks for their jars in the local repository, which a clean CI runner lacks.
+command = ["./mvnw", "-q", "-pl", "ward-cli", "-am", "-Dcompliance.outputDirectory=target/compliance", "-Dcompliance.sbomDirectory=ward-cli/target/compliance", "compile", "license:add-third-party", "cyclonedx:makeAggregateBom"]
 
 # Fails when the committed compliance files differ from the regenerated ones, and names the stale file.
 [checks.license-drift]

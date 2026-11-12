@@ -1,622 +1,2468 @@
 {
-  "bomFormat": "CycloneDX",
-  "specVersion": "1.6",
-  "version": 1,
-  "metadata": {
-    "tools": {
-      "components": [
+  "bomFormat" : "CycloneDX",
+  "specVersion" : "1.6",
+  "version" : 1,
+  "metadata" : {
+    "lifecycles" : [
+      {
+        "phase" : "build"
+      }
+    ],
+    "tools" : {
+      "components" : [
         {
-          "type": "application",
-          "name": "ward",
-          "version": "0.7.0"
+          "type" : "library",
+          "author" : "OWASP Foundation",
+          "group" : "org.cyclonedx",
+          "name" : "cyclonedx-maven-plugin",
+          "version" : "2.9.3",
+          "description" : "CycloneDX Maven plugin",
+          "hashes" : [
+            {
+              "alg" : "MD5",
+              "content" : "e7c87ab327b65b23c681fc9dc8bb620b"
+            },
+            {
+              "alg" : "SHA-1",
+              "content" : "fa3f0f04f4d5077b5e085d4d09aa2e68aeba5260"
+            },
+            {
+              "alg" : "SHA-256",
+              "content" : "c452d5eebe28bc86bef2e7c72d129f04f60877bef843eac8120f01fb655be293"
+            },
+            {
+              "alg" : "SHA-512",
+              "content" : "ec0344ed2ffe62d565aaf936a37140d04c7fffa8669a666be0366cd44eec3195232d79841cdec47030b79068216ac7e1a8c805255758e3d418dae32a4b9b9beb"
+            },
+            {
+              "alg" : "SHA-384",
+              "content" : "3df26b2a00d87fe090851975ebcc30217f98634e7c47d07128e148f325ebfe3bc0790b2f52ad4591734b7b0de738f003"
+            },
+            {
+              "alg" : "SHA3-384",
+              "content" : "470c1b4962379b5b6494c75bd1475da3519bbe2543999c95f26b4021164d3d05419b0c3f704443162fe5433a204250e9"
+            },
+            {
+              "alg" : "SHA3-256",
+              "content" : "900e9c4edb18940ed3c4a4ba6946957fa613ef0d4b0c380551638f229206373c"
+            },
+            {
+              "alg" : "SHA3-512",
+              "content" : "5e36433e18ae24f7460902da27818874df5d1d73df1a97e49e7369335f7cc61ca595466a2d37789fba7eaa7f7f251b29216c3d7a78910b2ec38e2ed68ea84876"
+            }
+          ]
         }
       ]
     },
-    "component": {
-      "type": "application",
-      "bom-ref": "root",
-      "name": "ward-cli"
-    }
+    "component" : {
+      "type" : "application",
+      "bom-ref" : "pkg:maven/dev.ward/ward-parent@0.7.0?type=pom",
+      "group" : "dev.ward",
+      "name" : "ward-parent",
+      "version" : "0.7.0",
+      "description" : "Ward: a quality gate orchestrator for AI coding agents",
+      "purl" : "pkg:maven/dev.ward/ward-parent@0.7.0?type=pom"
+    },
+    "properties" : [
+      {
+        "name" : "maven.goal",
+        "value" : "makeAggregateBom"
+      },
+      {
+        "name" : "maven.scopes",
+        "value" : "compile,runtime"
+      },
+      {
+        "name" : "cdx:reproducible",
+        "value" : "enabled"
+      }
+    ]
   },
-  "components": [
+  "components" : [
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/com.google.dagger/dagger@2.60.1",
-      "group": "com.google.dagger",
-      "name": "dagger",
-      "version": "2.60.1",
-      "purl": "pkg:maven/com.google.dagger/dagger@2.60.1",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/dev.ward/ward-analysis-api@0.7.0?type=jar",
+      "group" : "dev.ward",
+      "name" : "ward-analysis-api",
+      "version" : "0.7.0",
+      "description" : "Ward analysis engine API: a dependency-free intermediate representation and ports for language frontends",
+      "licenses" : [
         {
-          "license": {
-            "id": "Apache-2.0"
+          "license" : {
+            "id" : "Apache-2.0"
           }
         }
-      ]
+      ],
+      "purl" : "pkg:maven/dev.ward/ward-analysis-api@0.7.0?type=jar"
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/info.picocli/picocli@4.7.7",
-      "group": "info.picocli",
-      "name": "picocli",
-      "version": "4.7.7",
-      "purl": "pkg:maven/info.picocli/picocli@4.7.7",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.jspecify/jspecify@1.0.0?type=jar",
+      "group" : "org.jspecify",
+      "name" : "jspecify",
+      "version" : "1.0.0",
+      "description" : "An artifact of well-named and well-specified annotations to power static analysis checks",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "Apache-2.0"
+          "alg" : "MD5",
+          "content" : "9133aba420d0ca3b001dbb6ae9992cf6"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "7425a601c1c7ec76645a78d22b8c6a627edee507"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "1fad6e6be7557781e4d33729d49ae1cdc8fdda6fe477bb0cc68ce351eafdfbab"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "efded31ef5b342f09422935076e599789076431e93a746685c0607e7de5592719ba6aacde0be670b3f064d1e85630d58d5bce6b34aed2a288fdb34f745efb7bc"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "814f860e5a44ead6c457676841eef471a8b87be31b84c60a8a4477a18a9cbcb6e3c2ae700969d5c5e52309d961e0537a"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "c8844e5b71e5ecfbb7366097ce34af2f5863d86d5ccc3f9ec384d8ade4b60ccc8124c7fc88664f1afd2b0962fc8775bf"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "4b4f08ad7606a3ac62997779484919a302267b26d26ee19125f8a7eea60e8a71"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "65c6845ebae981cb81b61107707ced39f5b377dae970b47606ef482aaf10e3729def0da40d9377c43abbfb483a5ceae039b0d51c129c50a6d36ad351a5d6b01e"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
           }
         }
+      ],
+      "purl" : "pkg:maven/org.jspecify/jspecify@1.0.0?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "http://jspecify.org/"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/jspecify/jspecify/"
+        }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/jakarta.inject/jakarta.inject-api@2.0.1",
-      "group": "jakarta.inject",
-      "name": "jakarta.inject-api",
-      "version": "2.0.1",
-      "purl": "pkg:maven/jakarta.inject/jakarta.inject-api@2.0.1",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/dev.ward/ward-analysis-engine@0.7.0?type=jar",
+      "group" : "dev.ward",
+      "name" : "ward-analysis-engine",
+      "version" : "0.7.0",
+      "description" : "Ward analysis rule engine: capability-gated rules over syntax trees, with deterministic findings",
+      "licenses" : [
         {
-          "license": {
-            "id": "Apache-2.0"
+          "license" : {
+            "id" : "Apache-2.0"
           }
         }
-      ]
+      ],
+      "purl" : "pkg:maven/dev.ward/ward-analysis-engine@0.7.0?type=jar"
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/javax.inject/javax.inject@1",
-      "group": "javax.inject",
-      "name": "javax.inject",
-      "version": "1",
-      "purl": "pkg:maven/javax.inject/javax.inject@1",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar",
+      "group" : "org.tomlj",
+      "name" : "tomlj",
+      "version" : "2.2.0",
+      "description" : "A parser and serializer for Tom's Obvious, Minimal Language (TOML). Bundles the ANTLR runtime it needs.",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "Apache-2.0"
+          "alg" : "MD5",
+          "content" : "176322ab9b4a455e04d5337fefa46898"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "021a0249a798b11ea1e1fdb88611074054080345"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "e1fc98734f3b4285b4f87d1f1f473300c83791f2fb406feb86bca67e371896e7"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "d9d75c3e362559ce62f585814ad30d3035bc88389b6969b863153651d16d0c1578e89dfacee48240f09d52fcfd24b147c75775e1ac2336890b54814d9e14928c"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "86963a3d1bb6e7d66f7878336de3a87de4eea1cef28cbffd0a57ec6ec787aadc526735335ced3a0f53ff6c8b7c6addbd"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "f870d2b982c0a75e9edbed8f246bfdeb4acd52af7f1053c140e077deda6dd68e4d1ea4e51bca7964135e2e4ea340deeb"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "6ea07bb7748b7d4c5624c8694844fd8a1151668380f43db69dd18183f2a73a55"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "c53e37efa1cd28212eb0cd0c02f59b12d8efa954fc5b18919403016c1ebfb13d712856988c29b9600ebe52dc339d1e5a6221e1f1268063a6207a68b375350573"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
           }
         }
-      ]
-    },
-    {
-      "type": "library",
-      "bom-ref": "pkg:maven/net.java.dev.jna/jna-platform@5.19.1",
-      "group": "net.java.dev.jna",
-      "name": "jna-platform",
-      "version": "5.19.1",
-      "purl": "pkg:maven/net.java.dev.jna/jna-platform@5.19.1",
-      "licenses": [
+      ],
+      "purl" : "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar",
+      "externalReferences" : [
         {
-          "expression": "LGPL-2.1-or-later OR Apache-2.0"
+          "type" : "website",
+          "url" : "https://github.com/tomlj/tomlj"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/tomlj/tomlj"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/net.java.dev.jna/jna@5.19.1",
-      "group": "net.java.dev.jna",
-      "name": "jna",
-      "version": "5.19.1",
-      "purl": "pkg:maven/net.java.dev.jna/jna@5.19.1",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/dev.ward/ward-frontend-antlr@0.7.0?type=jar",
+      "group" : "dev.ward",
+      "name" : "ward-frontend-antlr",
+      "version" : "0.7.0",
+      "description" : "Ward ANTLR language frontends: parses Java, Kotlin, TypeScript, JavaScript, Python and Swift into the analysis syntax tree",
+      "licenses" : [
         {
-          "expression": "LGPL-2.1-or-later OR Apache-2.0"
-        }
-      ]
-    },
-    {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.antlr/antlr4-runtime@4.13.2",
-      "group": "org.antlr",
-      "name": "antlr4-runtime",
-      "version": "4.13.2",
-      "purl": "pkg:maven/org.antlr/antlr4-runtime@4.13.2",
-      "licenses": [
-        {
-          "license": {
-            "id": "BSD-3-Clause"
+          "license" : {
+            "id" : "Apache-2.0"
           }
         }
-      ]
+      ],
+      "purl" : "pkg:maven/dev.ward/ward-frontend-antlr@0.7.0?type=jar"
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.apache.fory/fory-core@1.7.7",
-      "group": "org.apache.fory",
-      "name": "fory-core",
-      "version": "1.7.7",
-      "purl": "pkg:maven/org.apache.fory/fory-core@1.7.7",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.antlr/antlr4-runtime@4.13.2?type=jar",
+      "publisher" : "ANTLR",
+      "group" : "org.antlr",
+      "name" : "antlr4-runtime",
+      "version" : "4.13.2",
+      "description" : "The ANTLR 4 Runtime",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "Apache-2.0"
+          "alg" : "MD5",
+          "content" : "eecf1908f0cfff10f8bb82878b5ca401"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "fc3db6d844df652a3d5db31c87fa12757f13691d"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "dd3e8a13a2d669bf84fb8d834de35ce4875f27157698d206241ec8488aadcaf7"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "1c3e47b6b5dc40ca13927a7ae2ed187f470b8f406cea325e73c7a18af8e07b9ada0484312dd611f225f030b5585924932c702fd9326c143a626e271682b2b95e"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "f49c2395e16fe71fa35622bcca225c0910609ef09626207ce4522c73c760fd232489489ea88d54c88fc21b05a03031e0"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "322345326586e3f8954e80efa80b510228a7eb06f6d7283177f04809c15aad1722c700897c8c8f405955946b63808bc0"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "2d39db66ce6dc530c7796f75d646f4d8316586e2acd0756524c25b238eb71618"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "a4cdaec49dff4a6963a0db56712a837db7300de7145335b915ffc2234b0d53d6f9fd4b1d6e82c4350e22fee9390ca643cfbf7f51ff47a11bc44561b6686be32b"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "BSD-3-Clause",
+            "url" : "https://opensource.org/licenses/BSD-3-Clause"
           }
+        }
+      ],
+      "purl" : "pkg:maven/org.antlr/antlr4-runtime@4.13.2?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://www.antlr.org/antlr4-runtime/"
+        },
+        {
+          "type" : "distribution-intake",
+          "url" : "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+        },
+        {
+          "type" : "issue-tracker",
+          "url" : "https://github.com/antlr/antlr4/issues"
+        },
+        {
+          "type" : "mailing-list",
+          "url" : "https://groups.google.com/forum/?fromgroups#!forum/antlr-discussion"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/antlr/antlr4/tree/master/antlr4-runtime"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.apache.fory/fory-json@1.7.7",
-      "group": "org.apache.fory",
-      "name": "fory-json",
-      "version": "1.7.7",
-      "purl": "pkg:maven/org.apache.fory/fory-json@1.7.7",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/dev.ward/ward-lang-jvm@0.7.0?type=jar",
+      "group" : "dev.ward",
+      "name" : "ward-lang-jvm",
+      "version" : "0.7.0",
+      "description" : "Ward Java analysis: declarative rule files for the structural checks of Java sources, and the module and package resolution of Java imports",
+      "licenses" : [
         {
-          "license": {
-            "id": "Apache-2.0"
+          "license" : {
+            "id" : "Apache-2.0"
           }
+        }
+      ],
+      "purl" : "pkg:maven/dev.ward/ward-lang-jvm@0.7.0?type=jar"
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/dev.ward/ward-lang-node@0.7.0?type=jar",
+      "group" : "dev.ward",
+      "name" : "ward-lang-node",
+      "version" : "0.7.0",
+      "description" : "Ward structural rules for TypeScript and JavaScript, run by the analysis engine on the shared syntax tree",
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/dev.ward/ward-lang-node@0.7.0?type=jar"
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/dev.ward/ward-lang-python@0.7.0?type=jar",
+      "group" : "dev.ward",
+      "name" : "ward-lang-python",
+      "version" : "0.7.0",
+      "description" : "Ward Python structural rules: function length, parameter count, complexity, file length and naming, as declarative rule data",
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/dev.ward/ward-lang-python@0.7.0?type=jar"
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/dev.ward/ward-lang-swift@0.7.0?type=jar",
+      "group" : "dev.ward",
+      "name" : "ward-lang-swift",
+      "version" : "0.7.0",
+      "description" : "Ward Swift structural rules: function length, parameter count, complexity, file length, type body length and naming, as declarative rule data",
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/dev.ward/ward-lang-swift@0.7.0?type=jar"
+    },
+    {
+      "type" : "application",
+      "bom-ref" : "pkg:maven/dev.ward/ward-cli@0.7.0?type=jar",
+      "group" : "dev.ward",
+      "name" : "ward-cli",
+      "version" : "0.7.0",
+      "description" : "Ward command-line interface: a quality gate orchestrator for AI coding agents",
+      "purl" : "pkg:maven/dev.ward/ward-cli@0.7.0?type=jar"
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/com.google.dagger/dagger@2.60.1?type=jar",
+      "publisher" : "Google, Inc.",
+      "group" : "com.google.dagger",
+      "name" : "dagger",
+      "version" : "2.60.1",
+      "description" : "A fast dependency injector for Android and Java.",
+      "scope" : "required",
+      "hashes" : [
+        {
+          "alg" : "MD5",
+          "content" : "4a352166ba54a7ea7032fe802199895a"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "440df415f28bf80fc0d1f98bcf8765c32e769d68"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "b012d0df527b51bfcd8953d5fcb4d022a45ebe66010d6f181ede68d1572b5cb2"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "7fcc323c176a26243f4d961cef3b272f733eda906d022b9766bc2391f2ac639cc629c411114f077edee9df91be65f3e34fb17085063230c37fa988fcf8d6251d"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "77c726d43f34c41291c876cc3e04ad1c5978c9485dcda904952a4f6e118803601d318663541c4606a391c50398a78c88"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "98cca48f36f3f702763d5a2fc593a2b7f6d0a5e7567b7a6fba5be109b96964d14c2b7c3d1276cc7af340c032aac36f18"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "649adc3e83f8bdcd5a303452c0cfec3554a82de177a9661c7f5ebf025b85460a"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "7e34f7d6e4de75edc9f71d1e063a8cb66b0a9d86885f72724916334bc9505196196292e73eed64c1946e9e910c53ea34b5bde2364ec30d53a5a1d3fd4d66b369"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/com.google.dagger/dagger@2.60.1?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/google/dagger"
+        },
+        {
+          "type" : "distribution-intake",
+          "url" : "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+        },
+        {
+          "type" : "issue-tracker",
+          "url" : "https://github.com/google/dagger/issues"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/google/dagger/"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.codehaus.janino/commons-compiler@3.1.12",
-      "group": "org.codehaus.janino",
-      "name": "commons-compiler",
-      "version": "3.1.12",
-      "purl": "pkg:maven/org.codehaus.janino/commons-compiler@3.1.12",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/jakarta.inject/jakarta.inject-api@2.0.1?type=jar",
+      "publisher" : "Eclipse Foundation",
+      "group" : "jakarta.inject",
+      "name" : "jakarta.inject-api",
+      "version" : "2.0.1",
+      "description" : "Jakarta Dependency Injection",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "BSD-3-Clause"
+          "alg" : "MD5",
+          "content" : "72003bf6efcc8455d414bbd7da86c11c"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "4c28afe1991a941d7702fe1362c365f0a8641d1e"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "f7dc98062fccf14126abb751b64fab12c312566e8cbdc8483598bffcea93af7c"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "f186b2ada470abba1cc3b4f8c4373d940fb7c71a051b2c26f7c204ad4dfb69235fbf3f9c33da36d744cb90f52d921c51d76c0ff263bacb35eafb66cab83dc47d"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "405bd297a73901f013d48a0da028d04d400f3e61f4997c0e7297eb08120670a0e242e0002db8f130c33ab16cb02feb2d"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "4db7e54434d0a208c876868f5595b808f2728c0455feaa752ab7b569a2186fc37cb891c9aa0076de3d08f6da6ff06eba"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "3a5aba9f1ff1a130b76af886123eb375fa578498490df3dc60bb7ce7d59e9404"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "00bba8efc2d6e7f0a509b321868d75f1aaf0681a750d089d913bde8424ab7bb88aadf49de6e291e352523e4f8c117b1b48033ff31d4d665dcc43c4c6ea000ba9"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
           }
+        }
+      ],
+      "purl" : "pkg:maven/jakarta.inject/jakarta.inject-api@2.0.1?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/eclipse-ee4j/injection-api"
+        },
+        {
+          "type" : "distribution-intake",
+          "url" : "https://jakarta.oss.sonatype.org/service/local/staging/deploy/maven2/"
+        },
+        {
+          "type" : "issue-tracker",
+          "url" : "https://github.com/eclipse-ee4j/ee4j/issues"
+        },
+        {
+          "type" : "mailing-list",
+          "url" : "https://dev.eclipse.org/mhonarc/lists/jakarta.ee-community/"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/eclipse-ee4j/injection-api"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.codehaus.janino/janino@3.1.12",
-      "group": "org.codehaus.janino",
-      "name": "janino",
-      "version": "3.1.12",
-      "purl": "pkg:maven/org.codehaus.janino/janino@3.1.12",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/javax.inject/javax.inject@1?type=jar",
+      "group" : "javax.inject",
+      "name" : "javax.inject",
+      "version" : "1",
+      "description" : "The javax.inject API",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "BSD-3-Clause"
+          "alg" : "MD5",
+          "content" : "289075e48b909e9e74e6c915b3631d2e"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "6975da39a7040257bd51d21a231b76c915872d38"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "91c77044a50c481636c32d916fd89c9118a72195390452c81065080f957de7ff"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "e126b7ccf3e42fd1984a0beef1004a7269a337c202e59e04e8e2af714280d2f2d8d2ba5e6f59481b8dcd34aaf35c966a688d0b48ec7e96f102c274dc0d3b381e"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "ac04c9f03ccbe35a25deb8b50280a0ca01dbe6aff0dd795d55af6112bfe3cd5817eb82f32fb18378d86cd64b07597190"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "fca090ecb1edeacb9fe865dc515cd1d109b323cd742d4a9733ff199a96ee96e0db4f924079520b9c189ef750f255475d"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "5b0054e39e522de0e0ffc4034d12f72270291fb24d94d5ffc9c4d69c25035fc6"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "fb290f5a70b1efc1dff12f40a0b2d7b94019f66da42e78010c0b8e61f222c4f267b67e356a9e9c346eb801e5515e36243888f280c5cb95c2dd69016a30cadeb9"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
           }
+        }
+      ],
+      "purl" : "pkg:maven/javax.inject/javax.inject@1?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "http://code.google.com/p/atinject/"
+        },
+        {
+          "type" : "vcs",
+          "url" : "http://code.google.com/p/atinject/source/checkout"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.codehaus.plexus/plexus-utils@3.6.2",
-      "group": "org.codehaus.plexus",
-      "name": "plexus-utils",
-      "version": "3.6.2",
-      "purl": "pkg:maven/org.codehaus.plexus/plexus-utils@3.6.2",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/info.picocli/picocli@4.7.7?type=jar",
+      "group" : "info.picocli",
+      "name" : "picocli",
+      "version" : "4.7.7",
+      "description" : "Java command line parser with both an annotations API and a programmatic API. Usage help with ANSI styles and colors. Autocomplete. Nested subcommands. Easily included as source to avoid adding a dependency.",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "Apache-2.0"
+          "alg" : "MD5",
+          "content" : "149402d1c0939a9afbf9ed7d6a2ae180"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "82bcae3dc45ddeb08b4954e2f596772a42219715"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "f86e30fffd10d2b13b8caa8d4b237a7ee61f2ffccf5b1941de718b765d235bf8"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "125a8d5cf9dac7f2d67ac82e281d47aab4f15643b4dd5e09199dd5048e385fa74f7f287ebd1162c9f23c488e0d616f1e46591015fe5319c6ad796cc4beddfff6"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "91d445fc22d81964883a8b520771ea62bb6ba0fd4093a5b22ac00b9d025a302e16a2cb52c50bb33b9f29d380990a8a30"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "056eac83d293fa1fea73d5fa79da9216fc2af9c396971f700df3964985660e79ce362211a3de7f38e781ecbe77ef491b"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "916249db6baafc31296ce795a9eae35f7ecd253d15e20e5c37e26fc6c206fd0a"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "38586c496881613573c77b3edf24afc3325726698641cfd7236b197997b8264e8fbfa732731c8ca737b64e03be8ef7d0da9d93ffe300ffa82be0bf4dbe957419"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
           }
+        }
+      ],
+      "purl" : "pkg:maven/info.picocli/picocli@4.7.7?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://picocli.info"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/remkop/picocli/tree/master"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.eclipse.jdt/ecj@3.46.100",
-      "group": "org.eclipse.jdt",
-      "name": "ecj",
-      "version": "3.46.100",
-      "purl": "pkg:maven/org.eclipse.jdt/ecj@3.46.100",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.apache.fory/fory-json@1.7.7?type=jar",
+      "publisher" : "The Apache Software Foundation",
+      "group" : "org.apache.fory",
+      "name" : "fory-json",
+      "version" : "1.7.7",
+      "description" : "Apache Fory JSON serialization.",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "EPL-2.0"
+          "alg" : "MD5",
+          "content" : "c366ceb5805629be0d253335b17ac70f"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "612723eaed3f6483a10c1dc726d55f03b4df19bc"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "d7e39d5a8ed2025fddf3712e2401f042dfdcd6eedc36530909b9d6ce20d92d42"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "fa279be7594c8568d18f31023891c19c081135c76e1dbe3ca55c544449201149652ad55e0e4d43acff3155aacc54443d0783b396d490cfdca598891f9482aabe"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "cfcedaf4a9f7ca723e8c98b70e178207259e99d6fbd8505919f0f6b61a8b7128ce231f1ccdcd50ce2b352d470bd80c5e"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "485af7efd85bcffbff8465dd5b4e380bdd0f7449d4848c698ad1d3b2afdeb0ae9d54ba7043f7c203000497b2928fd69d"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "8f97026ac500f99c6d1c728d17ba0a23358f31f1900dbf5c42474de9291ddf9c"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "219c07966ed4e1943286fbf8dd56def1abea36c14f0d64ecaa93e48d1bb493074165a3025602c17bcea79e672a601bf4ea7294c58d292ed319d18ff57a07c9cb"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
           }
+        }
+      ],
+      "purl" : "pkg:maven/org.apache.fory/fory-json@1.7.7?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://fory.apache.org"
+        },
+        {
+          "type" : "distribution-intake",
+          "url" : "https://repository.apache.org/service/local/staging/deploy/maven2"
+        },
+        {
+          "type" : "mailing-list",
+          "url" : "https://mail-archives.apache.org/mod_mbox/www-announce/"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/apache/fory"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.eclipse.jdt/org.eclipse.jdt.core@3.47.0",
-      "group": "org.eclipse.jdt",
-      "name": "org.eclipse.jdt.core",
-      "version": "3.47.0",
-      "purl": "pkg:maven/org.eclipse.jdt/org.eclipse.jdt.core@3.47.0",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.apache.fory/fory-core@1.7.7?type=jar",
+      "publisher" : "The Apache Software Foundation",
+      "group" : "org.apache.fory",
+      "name" : "fory-core",
+      "version" : "1.7.7",
+      "description" : "Apache Fory™ is a blazingly fast multi-language serialization framework powered by jit and zero-copy.",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "EPL-2.0"
+          "alg" : "MD5",
+          "content" : "f5cd33c8cb18271c1042cc6f7f8e8503"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "b60f3addd08a71fd4148e19c6c1012ad82bfe80b"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "d591f46cb03cf411690a4d7257b5bef3d9148cd3dda032a1eb8f1950a92c2061"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "64f46890d13f3e43fcbb7ac429a9a212a1b82d93ffa6ee5ab444de8738cc63385e35bf384193c3c8fc9ce5e0d7042e18309da2e225dc93283da066476c20bb5c"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "349342ae9671dc4a7314951f100f791437c6833334e7424a6d402b16db266020117a797790f8c55b5ec7b51eaaf4b4ce"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "c406a7eae4950e27964f70f46f9d95ef29e44e6f91a2fcf5fd86c96ecbd2530104510eb94107e4b75d6e92024e0df79a"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "c5b87f7569aef093ce979f35e714abbc1c07cf71f62ab8f395aa44c86b9dd3db"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "93303b64fb5bf83ee047d8225e28742a3c9e14f1fdd76443ae7d66b8d60aa982b7e532ea6cbcfbcba5326d7bf98cf7effd38fa2a52acbcccaf3e60062b260298"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
           }
+        }
+      ],
+      "purl" : "pkg:maven/org.apache.fory/fory-core@1.7.7?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://fory.apache.org"
+        },
+        {
+          "type" : "distribution-intake",
+          "url" : "https://repository.apache.org/service/local/staging/deploy/maven2"
+        },
+        {
+          "type" : "mailing-list",
+          "url" : "https://mail-archives.apache.org/mod_mbox/www-announce/"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/apache/fory"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.eclipse.platform/org.eclipse.core.commands@3.13.0",
-      "group": "org.eclipse.platform",
-      "name": "org.eclipse.core.commands",
-      "version": "3.13.0",
-      "purl": "pkg:maven/org.eclipse.platform/org.eclipse.core.commands@3.13.0",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.codehaus.janino/janino@3.1.12?type=jar",
+      "group" : "org.codehaus.janino",
+      "name" : "janino",
+      "version" : "3.1.12",
+      "description" : "The \"JANINO\" implementation of the \"commons-compiler\" API: Super-small, super-fast, independent from the JDK's \"tools.jar\".",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "EPL-2.0"
+          "alg" : "MD5",
+          "content" : "a580a272db2e7ac9fbbec85a0dd8993b"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "ffcd3dfa84057ef76092b6b66c53871a97ae40b8"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "5699878c31e71c9a94cf472f95a2dad52ca7b0449c099276b8bd7e992a43595b"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "f619b3e6c512275b3c18bc9e304c2f5947d7655d1184a77300cffee92980d42f1f43ccb6692ca5e33403127b8e41da594f699ddf07f0e9b0243579a435f12024"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "e03310ad91f4170e2a25d5cd961b30a23d419c791d69014e46120b3d15b7dc8a2d0961bf64ef9a50f9701cfb7481cd49"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "03631bdbafc5e7c159bcedf342e980cdd1d10681e501f1d86584c36ea24e229623f7e45fd3db7f64da365ab8a8ea6386"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "2df577b7a3fe4db4b1f82d2acc27e0e1f6ab713b72fd0dbb40845e1c6290f675"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "6dcb4e2c5ad27c88fc8de89a87692ab6a1f4397db832773df1eadc82e48dc61f4e5b9d41bc6e87578bf262a066718009471346c6f3bcfeccef0539b91099e5da"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "BSD-3-Clause",
+            "url" : "https://opensource.org/licenses/BSD-3-Clause"
           }
+        }
+      ],
+      "purl" : "pkg:maven/org.codehaus.janino/janino@3.1.12?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "http://janino-compiler.github.io/janino/"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/janino-compiler/janino"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.eclipse.platform/org.eclipse.core.contenttype@3.9.900",
-      "group": "org.eclipse.platform",
-      "name": "org.eclipse.core.contenttype",
-      "version": "3.9.900",
-      "purl": "pkg:maven/org.eclipse.platform/org.eclipse.core.contenttype@3.9.900",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.codehaus.janino/commons-compiler@3.1.12?type=jar",
+      "group" : "org.codehaus.janino",
+      "name" : "commons-compiler",
+      "version" : "3.1.12",
+      "description" : "The \"commons-compiler\" API, including the \"IExpressionEvaluator\", \"IScriptEvaluator\", \"IClassBodyEvaluator\" and \"ISimpleCompiler\" interfaces.",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "EPL-2.0"
+          "alg" : "MD5",
+          "content" : "ef93103e6aa8e9255a38351ebb51ecc2"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "0501779107b06a981ff359eab7369ff7a2bf077e"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "17ea25d860225f4b59d0a512b4995f2e4711bdae5e15736cbcd5f6ce4dda8f7c"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "cd8eceb3c9cd284f4b380321babb5fa0b07eb44376867f501c7e253bfc96bd8c7f2b60fc049df21ee9a6c09225ada1828c9f8922846d90432f64f4fb104babde"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "df10f62d0ac0d1800dfc4c6b10bfab0d50d1bfc82ffe55df160a023365e52a7f3398d4e3b0ad3a4b81cd76f21b81d421"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "cffe884877272491e807405ce6a424c386942204dba09d7bac2959e7ad3f9ebf8f1e47615230a18ea7df71f361862173"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "f681836833d57e4e78bdef1739b9d40727b4bc247c3fc0e07361924ab710da43"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "685f9517c5b5f2aa7526954592d0a360cf91f747bda633d8401e29f533cd2a2a4121b06d75aeeb2d0ff29d88775da8f81594e1bde348cec65218cb86794b8f6b"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "BSD-3-Clause",
+            "url" : "https://opensource.org/licenses/BSD-3-Clause"
           }
+        }
+      ],
+      "purl" : "pkg:maven/org.codehaus.janino/commons-compiler@3.1.12?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "http://janino-compiler.github.io/commons-compiler/"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/janino-compiler/commons-compiler"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.eclipse.platform/org.eclipse.core.expressions@3.9.700",
-      "group": "org.eclipse.platform",
-      "name": "org.eclipse.core.expressions",
-      "version": "3.9.700",
-      "purl": "pkg:maven/org.eclipse.platform/org.eclipse.core.expressions@3.9.700",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.eclipse.jdt/org.eclipse.jdt.core@3.47.0?type=jar",
+      "publisher" : "Eclipse Foundation",
+      "group" : "org.eclipse.jdt",
+      "name" : "org.eclipse.jdt.core",
+      "version" : "3.47.0",
+      "description" : "Java Development Tools Core",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "EPL-2.0"
+          "alg" : "MD5",
+          "content" : "b07f92538266b40ed4de24614bf33a24"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "bb4f5e63db86d8b9caa4e81bc8f05755d801d854"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "723e30be1e841516c388ebb32017cb8b36662808f46be5265b78cc06bd4fe71c"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "8232d78b2ba3d6b40a4dd04579f1eacdc8ee6eb0e3c137db54a19c506d8f52b9069419f39710c0653006f8cd927a8ffc7aded9f2721f5ba312949785c8aeaeac"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "f589cf95706851a62aaafdec3a8757a609f4731d0892379fa709940c1d3052a604c5d259e8b5ec200c1c40231ea6d951"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "a93e7cd726f57b43c27a394a4e74395a8e93a20189071f75277aa6b51ebfac7eb9825c9d57063495f6600cebca1f8a04"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "fb88b0940c1ceba2e26de2d30950b3da4b2564b243565bee293bba0e87c57fe4"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "060190ab4b73707be91750e528ea9a37ec5818b590b8ff563a1f88348fc4cc99907219824e7551897312c49fc3bf91903feee19d6e8ef3f4283efda6dd580925"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "EPL-2.0",
+            "url" : "https://www.eclipse.org/legal/epl-2.0"
           }
+        }
+      ],
+      "purl" : "pkg:maven/org.eclipse.jdt/org.eclipse.jdt.core@3.47.0?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/eclipse-jdt/eclipse.jdt.core/"
+        },
+        {
+          "type" : "issue-tracker",
+          "url" : "https://github.com/eclipse-jdt/eclipse.jdt.core/issues"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/eclipse-jdt/eclipse.jdt.core/tree/6725c16c24d94c83302346dc384bb915a0f2fe1a/org.eclipse.jdt.core"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.eclipse.platform/org.eclipse.core.filesystem@1.11.500",
-      "group": "org.eclipse.platform",
-      "name": "org.eclipse.core.filesystem",
-      "version": "1.11.500",
-      "purl": "pkg:maven/org.eclipse.platform/org.eclipse.core.filesystem@1.11.500",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.eclipse.platform/org.eclipse.core.resources@3.24.100?type=jar",
+      "publisher" : "Eclipse Foundation",
+      "group" : "org.eclipse.platform",
+      "name" : "org.eclipse.core.resources",
+      "version" : "3.24.100",
+      "description" : "Core Resource Management",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "EPL-2.0"
+          "alg" : "MD5",
+          "content" : "403d03ee97c548dcf66c1ee4d88c296d"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "4d6e63657558d8d28fd917e4d930503409906ad5"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "946851cf5902cd3b002920063a30b169e5710088b6c1ad7dd05bdd3be4fbfff4"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "5c6823dac533bba145cb08f84b0385e93036bb2262c4d98ad94a4d575160a29576e34d3a4e5511e6d8763cd826b788f444d1989ed1c5f8b4483afbd5fb457a37"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "85a95fe9ed621870e9be61b870f549f30dd387af89864745e0230467a02054de09d0d36cc8124d346e73fe141b802f75"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "c25a5fa72c8ac9363500b697def1baf3c73958afdfb199920da706d7f2bcc92fb360ea2b0d21238baf4555594bfd3865"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "c3a028baa0cf6a5c54a1e7f0604eb73a8a5e2086be9f49d67679456234979f9b"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "f47229f23fe16b8871d3fe44a5c6d4937c3b94e0467df68cdaad8e0daada8363110d233a5231e6889d1f0ae5f6f9a8f87f894faad772c5771d6385ec98a305eb"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "EPL-2.0",
+            "url" : "https://www.eclipse.org/legal/epl-2.0"
           }
+        }
+      ],
+      "purl" : "pkg:maven/org.eclipse.platform/org.eclipse.core.resources@3.24.100?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform/"
+        },
+        {
+          "type" : "issue-tracker",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform/issues"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform/tree/c4fcf4429832bcf375810f989c1c8fc2d8e9cdef/resources/bundles/org.eclipse.core.resources"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.eclipse.platform/org.eclipse.core.jobs@3.15.900",
-      "group": "org.eclipse.platform",
-      "name": "org.eclipse.core.jobs",
-      "version": "3.15.900",
-      "purl": "pkg:maven/org.eclipse.platform/org.eclipse.core.jobs@3.15.900",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.eclipse.platform/org.eclipse.core.expressions@3.9.700?type=jar",
+      "publisher" : "Eclipse Foundation",
+      "group" : "org.eclipse.platform",
+      "name" : "org.eclipse.core.expressions",
+      "version" : "3.9.700",
+      "description" : "Expression Language",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "EPL-2.0"
+          "alg" : "MD5",
+          "content" : "0d39d9cbc70a66a86b9646cb93028c8e"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "707292c47dcabb23fe4055016e1198eb548388c2"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "06a18236ae181659e1e5499d912d68de527720686f1f51dab632d3e298e32b78"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "f14a84cccedda7c0d4e3c96dfdc41a7220daa20e22be3dcea9c971ddd2db1a5a5de289e0f1799fa801e11b84b5a9358a8b1a3d860d3d0098e89db63d898656e2"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "7b2f4c3328b0d44b889546952402e126fdcabcfd3f3a7bc50a83918dfb1585314c258c00ea82bf34d6e91b20a0159884"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "dfdaee8bff827f1ccbc9fac9f40e6c5bf17576a62e9252d6c2899b18f97358b60ae77fd4f3ee59f91493e9be2312be1f"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "abde3d5c7f2b9e1a3b0a7f5b2a888d63f31320c3da09f96418d53344adfce11e"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "f4f352449bb57a01a2a9d4f0cab15d0101a8455194f17953bd8ad22a4b5e3d54199e2af41d4c7550d4de5502ea0f4b3f59fcdaf58efc24e7c40ce225ced8cf70"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "EPL-2.0",
+            "url" : "https://www.eclipse.org/legal/epl-2.0"
           }
+        }
+      ],
+      "purl" : "pkg:maven/org.eclipse.platform/org.eclipse.core.expressions@3.9.700?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform/"
+        },
+        {
+          "type" : "issue-tracker",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform/issues"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform/tree/b2ec9aac35d6f9eebecc21eae5a022ba510738fe/runtime/bundles/org.eclipse.core.expressions"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.eclipse.platform/org.eclipse.core.resources@3.24.100",
-      "group": "org.eclipse.platform",
-      "name": "org.eclipse.core.resources",
-      "version": "3.24.100",
-      "purl": "pkg:maven/org.eclipse.platform/org.eclipse.core.resources@3.24.100",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/net.java.dev.jna/jna@5.19.1?type=jar",
+      "group" : "net.java.dev.jna",
+      "name" : "jna",
+      "version" : "5.19.1",
+      "description" : "Java Native Access",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "EPL-2.0"
+          "alg" : "MD5",
+          "content" : "cf327da3e9cf5a5d77c8a43540320929"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "ca303052cd617c1af2e2c8d344c98a706fb63143"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "4fb141dd8ef6b0585ffceea4bc49602fbc6312fa977e2c488794ea3e6aafecae"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "0e6a960acfd6fac77486da7b6d18eb9d98e0a205bdf78189548997fb6f6093e713e570e9829ecc6d7dec813276eaf5d3af56d30c627febb3a0b324fa9035e88f"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "239a053f0438d1f2fcfdb75dd496bff142f42f6878d51f1ba942a16ac9d6f9bc466e7b00e72683d16cb64c8cdfab0d5d"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "dbe36096cf7c72b7ec07e141b41b48c37c6055414eb73990a45b7fbfc62e66c1a8ff9ab233eb28e7276929a71ec0f480"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "99a8dd61862215be2ef7216183c5b810a2318761cf5466cdb092ee19dca18225"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "b4f294446b4bf62ed7099a5467aae8b35706e4b7dfe6fbfbd58f76e179ccde1424eed933e6c2dc2274047b7c332039cc2a812bcd2acc2e29771b7f9554c4ca7a"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "LGPL-2.1-or-later",
+            "url" : "https://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html"
           }
+        },
+        {
+          "license" : {
+            "id" : "Apache-2.0",
+            "url" : "https://www.apache.org/licenses/LICENSE-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/net.java.dev.jna/jna@5.19.1?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/java-native-access/jna"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/java-native-access/jna"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.eclipse.platform/org.eclipse.core.runtime@3.35.0",
-      "group": "org.eclipse.platform",
-      "name": "org.eclipse.core.runtime",
-      "version": "3.35.0",
-      "purl": "pkg:maven/org.eclipse.platform/org.eclipse.core.runtime@3.35.0",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.eclipse.platform/org.eclipse.osgi@3.24.300?type=jar",
+      "publisher" : "Eclipse Foundation",
+      "group" : "org.eclipse.platform",
+      "name" : "org.eclipse.osgi",
+      "version" : "3.24.300",
+      "description" : "OSGi System Bundle",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "EPL-2.0"
+          "alg" : "MD5",
+          "content" : "aab43d33762b78f947700b3e504ab61c"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "cb886c6a2338c6a544efe08dd78843b280bd496f"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "4a770aa4a78df653af871073c8b4ddd56884895f5fc71d10c40b4289ac7c8b9f"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "67cebff393aca5c4a8bcb57dbe9be4ee2978c786092926008252eca2ae4ccbcc75215bc39fb81fe7ad8a1514e864d1b60dcb42f97589747282beaf97f91ec634"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "fd2b316b030bd5269804641a2c722ccfd50aaa79ab31a540f0afad3b2f9a842f6af00150598a825fc2bb70bc43aa81d7"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "eedbd10edaebdda2d5a2a4eee002cb86013404303c550c17f5be13e20c4cfb170d0648e3ab47dfbd664264a115b0e227"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "f7e4837f1fcc7fe2a676b86c68fc784592efc5ea9a0799137bd97e8ff2dc2736"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "3c8d3125ab5eea4f785427fa56b27452543d7b30c82cd63f57e7b6a7b141f940feb999dce53b7592a3c9cb26637a840ff1e52dd3ac55b2df7f715b839c782b7d"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "EPL-2.0",
+            "url" : "https://www.eclipse.org/legal/epl-2.0"
           }
+        }
+      ],
+      "purl" : "pkg:maven/org.eclipse.platform/org.eclipse.osgi@3.24.300?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/eclipse-equinox/equinox/"
+        },
+        {
+          "type" : "issue-tracker",
+          "url" : "https://github.com/eclipse-equinox/equinox/issues"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/eclipse-equinox/equinox/tree/73815d3f63a3fd5e2614138ef5789c371f9ed85b/bundles/org.eclipse.osgi"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.eclipse.platform/org.eclipse.equinox.app@1.7.600",
-      "group": "org.eclipse.platform",
-      "name": "org.eclipse.equinox.app",
-      "version": "1.7.600",
-      "purl": "pkg:maven/org.eclipse.platform/org.eclipse.equinox.app@1.7.600",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.eclipse.platform/org.eclipse.core.runtime@3.35.0?type=jar",
+      "publisher" : "Eclipse Foundation",
+      "group" : "org.eclipse.platform",
+      "name" : "org.eclipse.core.runtime",
+      "version" : "3.35.0",
+      "description" : "Core Runtime",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "EPL-2.0"
+          "alg" : "MD5",
+          "content" : "4bd00f6c7d0653a224e1370f6588ff1c"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "432ca9bc4749486f1745604f6129b082deb2e83a"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "5b0c2794e9fe1785360dec920cc802f3388a0eb72ee25b89054b79ff3e2f07c9"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "0a25360fa9ba8c9f762eac460c15a3ff6572ea4f4410e6958ed94151df5207aad19980467acfebb8918b2331d4597a9ffdea78e98caa29e5ab30686d433552d8"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "ce3b2ceac4b7b661d6cdd8f5958f266334fff8e967fdbe1e9eb216791433f400db1519d1d1b64393902dedee80bcb004"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "0060d40e1d720bbcfb773b972ddc73c7ac875b70f63988e03d6e10a77b387c195427e2756caa16fd0d9cc267d37b2cc3"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "ac4dc085f4bfbcbfddb592f3ea2fae08db1af446375a3d18184dd5087630edc8"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "c1c89ef9ee2157112a441bf67e2ec9dfcaa350c894a95e1b2719388c807957a7c35a3ee1e5dc1a78f9d5dfe6ab311dd012a318f506b41c8cb4c8be6994ffe4f3"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "EPL-2.0",
+            "url" : "https://www.eclipse.org/legal/epl-2.0"
           }
+        }
+      ],
+      "purl" : "pkg:maven/org.eclipse.platform/org.eclipse.core.runtime@3.35.0?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform/"
+        },
+        {
+          "type" : "issue-tracker",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform/issues"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform/tree/c3b35e8817cd343d2258c182cdbcd9c03e75bd19/runtime/bundles/org.eclipse.core.runtime"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.eclipse.platform/org.eclipse.equinox.common@3.21.0",
-      "group": "org.eclipse.platform",
-      "name": "org.eclipse.equinox.common",
-      "version": "3.21.0",
-      "purl": "pkg:maven/org.eclipse.platform/org.eclipse.equinox.common@3.21.0",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.eclipse.platform/org.eclipse.equinox.common@3.21.0?type=jar",
+      "publisher" : "Eclipse Foundation",
+      "group" : "org.eclipse.platform",
+      "name" : "org.eclipse.equinox.common",
+      "version" : "3.21.0",
+      "description" : "Common Eclipse Runtime",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "EPL-2.0"
+          "alg" : "MD5",
+          "content" : "c26a1912d9bafa9041e28572362a679d"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "41bfb057e8e477ccd9ec9fa9dffc3c5bbb580920"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "2545ed27d408f19882695703097e5998bf25652bd0dac76a8e6d1391ec228ab7"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "15190f95af63782e504a89e14fcb754baf53f52f57b63385ac1806772dd32770b0ab14476cb836029018397f0046aa49b74a16b022a434db933a437920339cfc"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "61b47e2f0c2f737e2d5c931c068e85bf98de75c32a3f432f29b749b48322bf548d5cbe06714fab2b0afd76fb2e3d6c26"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "6c372ba0a08febdf58274a29a38f5dd3b36aa1f0c8c67a32ce05f810c578299cc85e8ebff0d18cde81bc29cd8d19228f"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "e109497586491284a7376ac2d934b07cb6888429cdcb35789461421137c71677"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "5fca6583e2bf2cf4aef8e71128039ac049d46db6e607c87c7a9e3cf30ecc88fdf417c3b9fdd44b3dd2e2d1aca50bc6ca024804220a808854ae1b98decf9970b4"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "EPL-2.0",
+            "url" : "https://www.eclipse.org/legal/epl-2.0"
           }
+        }
+      ],
+      "purl" : "pkg:maven/org.eclipse.platform/org.eclipse.equinox.common@3.21.0?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/eclipse-equinox/equinox/"
+        },
+        {
+          "type" : "issue-tracker",
+          "url" : "https://github.com/eclipse-equinox/equinox/issues"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/eclipse-equinox/equinox/tree/f75094c787ff7ef5156be62ae52ad779072e66b1/bundles/org.eclipse.equinox.common"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.eclipse.platform/org.eclipse.equinox.preferences@3.12.100",
-      "group": "org.eclipse.platform",
-      "name": "org.eclipse.equinox.preferences",
-      "version": "3.12.100",
-      "purl": "pkg:maven/org.eclipse.platform/org.eclipse.equinox.preferences@3.12.100",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.eclipse.platform/org.eclipse.core.jobs@3.15.900?type=jar",
+      "publisher" : "Eclipse Foundation",
+      "group" : "org.eclipse.platform",
+      "name" : "org.eclipse.core.jobs",
+      "version" : "3.15.900",
+      "description" : "Eclipse Jobs Mechanism",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "EPL-2.0"
+          "alg" : "MD5",
+          "content" : "e9f0217eaad2e977f2bcf94061fbda05"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "bd8a76a534cc779ff3947627481091ff675b3d7e"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "941b3c5feeba4ec0a949a8a94ff10283b2505813fa736c9e6345f146ae1b7e8a"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "a3ed988af5c0603fa6b1a74bfbc98f28e06060a1c7a1510b158bcf7c2e977ab0a4f921f924425c0ff38ca772851680ad28bbcb9b0c5b48fef49a24b7aaac05c5"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "672c58906448232231c746e76e01105a5570789f4953dc72413322f8fcd9f3e4a42303879cc05e71f92a2ac6c28bcbc9"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "3174be0727ed1134df409371334a93a43fae27f8a2a20c2802e7e964e8df5bdf915c71bb820e54c91023d3f9b4fe0856"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "480892d86c89d24afcbcf687d431e5f523d8a0f26fae6f26559c98eba4b2bcd9"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "132b84add4b1d1fbba267276aebf9bb63b761b9911e1a481b49395469c7b5d515955a37d591dc5cdb6a02b399b31a6fe8c92dde11783800818155cef4faeffa8"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "EPL-2.0",
+            "url" : "https://www.eclipse.org/legal/epl-2.0"
           }
+        }
+      ],
+      "purl" : "pkg:maven/org.eclipse.platform/org.eclipse.core.jobs@3.15.900?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform/"
+        },
+        {
+          "type" : "issue-tracker",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform/issues"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform/tree/a0b74bce8fa786009f86cc976917ba4faaf7b6c3/runtime/bundles/org.eclipse.core.jobs"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.eclipse.platform/org.eclipse.equinox.registry@3.12.600",
-      "group": "org.eclipse.platform",
-      "name": "org.eclipse.equinox.registry",
-      "version": "3.12.600",
-      "purl": "pkg:maven/org.eclipse.platform/org.eclipse.equinox.registry@3.12.600",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.eclipse.platform/org.eclipse.equinox.registry@3.12.600?type=jar",
+      "publisher" : "Eclipse Foundation",
+      "group" : "org.eclipse.platform",
+      "name" : "org.eclipse.equinox.registry",
+      "version" : "3.12.600",
+      "description" : "Extension Registry Support",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "EPL-2.0"
+          "alg" : "MD5",
+          "content" : "782425562cafe452f05522fd8317dd75"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "0d62997e162e9ee21e957ee4d88048b83c8b34f9"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "4f8cd72681446b598390a8c24ee9b9996f6e4c5fabed022b50bd26f6f5a0bf6c"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "90985770a7973c5ca83dcfdab91014f01b5b37ebe4b8dbe7ddf2bb820d952273100dc42c3124a0e11ce31c100ea97ae992179370481ae211fe0cad836a6d2a9f"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "65de8c6546b6176531f3a26b7d272a79295c5747dfddccc87e7f1d30a9518c6f0b89d75b52ef62c9e2f8c96fec163e36"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "af7e6ac8774cf02ac27369ba394fd5eaed1ad301e607c8d68c7b2a8748632c33cbd59b6bcac8667b2e2f94ac008a0b5c"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "60b2c11adbce7b85d8a21f2e0df8a382981c23a944ed167e5b70c57f0f582ad8"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "0bd5ec3c1320fca25a7d7169cb8eeb8e244df324b5e8def4b18196b4f4589e5193439de7b697adbafdda60f0a20de01254ddc0fc97789c1dc4e66efa15623f34"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "EPL-2.0",
+            "url" : "https://www.eclipse.org/legal/epl-2.0"
           }
+        }
+      ],
+      "purl" : "pkg:maven/org.eclipse.platform/org.eclipse.equinox.registry@3.12.600?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/eclipse-equinox/equinox/"
+        },
+        {
+          "type" : "issue-tracker",
+          "url" : "https://github.com/eclipse-equinox/equinox/issues"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/eclipse-equinox/equinox/tree/1132e94cbc9aeb47858efe64aac9db19d2cc930f/bundles/org.eclipse.equinox.registry"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.eclipse.platform/org.eclipse.osgi@3.24.300",
-      "group": "org.eclipse.platform",
-      "name": "org.eclipse.osgi",
-      "version": "3.24.300",
-      "purl": "pkg:maven/org.eclipse.platform/org.eclipse.osgi@3.24.300",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.eclipse.platform/org.eclipse.equinox.preferences@3.12.100?type=jar",
+      "publisher" : "Eclipse Foundation",
+      "group" : "org.eclipse.platform",
+      "name" : "org.eclipse.equinox.preferences",
+      "version" : "3.12.100",
+      "description" : "Eclipse Preferences Mechanism",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "EPL-2.0"
+          "alg" : "MD5",
+          "content" : "d5b42385fdd65d8e738383057219ec17"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "31ec4b200952d71e06ef4546dceb8fed08fefd34"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "fd04e81a28ab32b6bb073286eb293c44b760176fcf1e35ef15614d62df820f86"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "020b1b13d0a3bc4cf4c5b5943b656f30c82d8b946b4c038fbf75fb3f683a33398a7d8975a251e965c3c667a4c7fb55d3f9d2c3cdea8972e934f9d0f23c593541"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "829a3922a44cadc3324f0756716e8288c397b3f0488715c2f551c2256d89bababd0100f35dbe329caf2c49a5e81beb98"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "d9f7d0c1f9e919e06cdc8a6606fcc42db583e7719e313271b24bbcfb9771ff6a17be14dd153367a1bd106d9851ad79dd"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "785a957d044aa836e7ee2f9d28803837143a6f348c083787f6c36c5e5f4e0ff8"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "a9c96d4be7c17d79b7c053331e865f7ef9fa8f048f905227ac8eb7913245a2c78362e15a0f1bcc6b9ed0f48578712a1cd44775764e824dd224b76cda496262bd"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "EPL-2.0",
+            "url" : "https://www.eclipse.org/legal/epl-2.0"
           }
+        }
+      ],
+      "purl" : "pkg:maven/org.eclipse.platform/org.eclipse.equinox.preferences@3.12.100?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/eclipse-equinox/equinox/"
+        },
+        {
+          "type" : "issue-tracker",
+          "url" : "https://github.com/eclipse-equinox/equinox/issues"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/eclipse-equinox/equinox/tree/bd06ec661a36dcf2c6d8cdafa4e554fb22e6f656/bundles/org.eclipse.equinox.preferences"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.eclipse.platform/org.eclipse.text@3.14.800",
-      "group": "org.eclipse.platform",
-      "name": "org.eclipse.text",
-      "version": "3.14.800",
-      "purl": "pkg:maven/org.eclipse.platform/org.eclipse.text@3.14.800",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.osgi/org.osgi.service.prefs@1.1.2?type=jar",
+      "publisher" : "Eclipse Foundation",
+      "group" : "org.osgi",
+      "name" : "org.osgi.service.prefs",
+      "version" : "1.1.2",
+      "description" : "OSGi Companion Code for org.osgi.service.prefs Version 1.1.2",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "EPL-2.0"
+          "alg" : "MD5",
+          "content" : "af897bbdd6af5601133c19865a7db4fa"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "44351fdfb119ee920394c1a27c938288c93c03c8"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "43c7c870710e363405d422da653cce0d798a4537f76e4930f79bceadd3a55345"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "bdf3afdd59b791ad415706cc892ec5cc1e83f622c79a08d82a8f5192e03af74e96709d4bc6a3105b8a2950fe3440b930767cc03c3f9022d878e7e83d2a46b286"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "ae750848e87836add9e3c3a9a64378bd14ac99aba96c84ef180811a5f7fe6b5b269b798ead4d5558274611c693d9f2b8"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "23787b96f9ca0d4449ed7ca1f2bdee04a41d82e7c0162f56512c01744fc05e4dd327787c914f15e4d8818e7593a2a056"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "3f610476f605f8b679903980ea62fe6aa31a2b54d851b489f0fe6b0b1b2b6bd4"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "da74227b900936e198caa46ea534459009a0cb39f02045e8355f3118e603c81e7b4407c5c6b43cd1d001e91bc4662acb7a6f514fbea8bd88d0bcf80e97703dc4"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0",
+            "url" : "https://www.apache.org/licenses/LICENSE-2.0"
           }
+        }
+      ],
+      "purl" : "pkg:maven/org.osgi/org.osgi.service.prefs@1.1.2?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://docs.osgi.org/"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/osgi/osgi"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.jspecify/jspecify@1.0.0",
-      "group": "org.jspecify",
-      "name": "jspecify",
-      "version": "1.0.0",
-      "purl": "pkg:maven/org.jspecify/jspecify@1.0.0",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.osgi/osgi.annotation@8.0.1?type=jar",
+      "publisher" : "Eclipse Foundation",
+      "group" : "org.osgi",
+      "name" : "osgi.annotation",
+      "version" : "8.0.1",
+      "description" : "OSGi Annotation Release 8, Annotations for use in compiling bundles",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "Apache-2.0"
+          "alg" : "MD5",
+          "content" : "4f15008cd76e0c6ba527d89148c56d08"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "593d823753aa6e128129da357d7891758e66aa1d"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "a0e8a4c362bd3600812f37b0ea45fba966c7bc049d01fed56a09ecc74082759e"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "9e0dc035fd381d2f4b5c783227acd88656c7f4c8faaaa0e51178b3cd7b051871e0d7a6db906e32149d027df8dd738b27eaf80b74775dc5f6470e030c08a6b47b"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "3393fc41135ac929638a6a2f4fc14150a705c6576e1a739509bd7850394435c5d6c0794e44f40efdbd9a3a9f79732132"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "6ec4762de433eb53ac4a4620577a83d85d06a620a96cf160c21b90ec98e48f025913932d87b9b87b2bcbcea221244d79"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "ef77483de9664ad8ae772060ab8d4e84062dbfc321ed780045d0b4f47a61d04d"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "bc2fb8c061b3c7a1596946f3beaaa3df852cb43b353c809cfc3d91bcbbf03d19b1c0d32328864a38966b88996a50b0ddec47c4f71d7a6b84d4f4762e39717c03"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0",
+            "url" : "https://www.apache.org/licenses/LICENSE-2.0"
           }
+        }
+      ],
+      "purl" : "pkg:maven/org.osgi/osgi.annotation@8.0.1?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://docs.osgi.org/"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/osgi/osgi"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.osgi/org.osgi.service.prefs@1.1.2",
-      "group": "org.osgi",
-      "name": "org.osgi.service.prefs",
-      "version": "1.1.2",
-      "purl": "pkg:maven/org.osgi/org.osgi.service.prefs@1.1.2",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.eclipse.platform/org.eclipse.core.contenttype@3.9.900?type=jar",
+      "publisher" : "Eclipse Foundation",
+      "group" : "org.eclipse.platform",
+      "name" : "org.eclipse.core.contenttype",
+      "version" : "3.9.900",
+      "description" : "Eclipse Content Mechanism",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "Apache-2.0"
+          "alg" : "MD5",
+          "content" : "9cdfdc9c5bec04065a9d47c40c81084c"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "324cee57a0b220ecac7adcac95e0160bc21a3114"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "6c57132740523b5c5de125c0041ca43c1606da6563214c1bae3999fa21ead893"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "73f1b693aa998cceb4fa66ec28fe302044fd555f5031b565d6d48b43b4dcada664680b19043f50edb604fc953c8def72ce2b53ee93ede854f3544ea994afd35a"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "a3a58ee1dcad0db9196ffd177290cb3b4002c3ac60f75f3b6785922b68ca628318d65d4377e36ec4ca202307fedd5843"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "7657e3cf6c9e985ce25b1c939a34040c19a7d96a2f09469fcf024edcc293e22a9eaaed48b0c2b5a5bbd2cd1f66da431d"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "3d0175088b83612b4e064ec6906f7a1f3719089a9ac9eee367e4f44a56ab71da"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "3f5997da3378187f57c638293285b26fcdaf68b105676c072ca1c353a08d86195217b3d26b64c9c0010c01f47365176e5b1e93d9b9657c21db2a78c9967bca54"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "EPL-2.0",
+            "url" : "https://www.eclipse.org/legal/epl-2.0"
           }
+        }
+      ],
+      "purl" : "pkg:maven/org.eclipse.platform/org.eclipse.core.contenttype@3.9.900?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform/"
+        },
+        {
+          "type" : "issue-tracker",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform/issues"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform/tree/5fd581ff38e6df70a7b0f15bb5705e5f13cd61d5/runtime/bundles/org.eclipse.core.contenttype"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.osgi/osgi.annotation@8.0.1",
-      "group": "org.osgi",
-      "name": "osgi.annotation",
-      "version": "8.0.1",
-      "purl": "pkg:maven/org.osgi/osgi.annotation@8.0.1",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.eclipse.platform/org.eclipse.equinox.app@1.7.600?type=jar",
+      "publisher" : "Eclipse Foundation",
+      "group" : "org.eclipse.platform",
+      "name" : "org.eclipse.equinox.app",
+      "version" : "1.7.600",
+      "description" : "Equinox Application Container",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "Apache-2.0"
+          "alg" : "MD5",
+          "content" : "ed701aba6d95a3ad63a2d11ef35919b3"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "0851769e1cd1efda62d55ddd01d419af64f05a19"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "fd353398835107608f554779a6e91891725efb94e0f57559d0ab3cea4b6156c7"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "c6f7f5c9f137f17686feb94e660d23de846be10c3be2408f74b5d51e4ac69273ef6405f416bb5625330149227d755113fade9dacce870aefe8d5f8dad312da84"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "303171033819d502f5cf0a02f078250c8c59797148b065b41a0e70700edb3c439da80910c836a216f303d036e1f7a94d"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "d9df7f9ab6c1d59356fe90d1a03fb46fc3d0a7c890b3b9564210f3b82c49d68ab0bdacc7e7369973a5643e8e754e721e"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "75911dacc019e4997c7ed69bda47eb87a7b7bb98ce0c329550a64dfca603c32b"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "f7fe5dd00438994c219a990bad9d9d6a7ca398769fee34d269166e4df0acd90a617281973b591e131fe043a9f65299fcc08f4c355f0c65e56e8fb627d738dbeb"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "EPL-2.0",
+            "url" : "https://www.eclipse.org/legal/epl-2.0"
           }
+        }
+      ],
+      "purl" : "pkg:maven/org.eclipse.platform/org.eclipse.equinox.app@1.7.600?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/eclipse-equinox/equinox/"
+        },
+        {
+          "type" : "issue-tracker",
+          "url" : "https://github.com/eclipse-equinox/equinox/issues"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/eclipse-equinox/equinox/tree/4eee650d1efb62626d10acc2d5b9f6a998b799ae/bundles/org.eclipse.equinox.app"
         }
       ]
     },
     {
-      "type": "library",
-      "bom-ref": "pkg:maven/org.tomlj/tomlj@2.2.0",
-      "group": "org.tomlj",
-      "name": "tomlj",
-      "version": "2.2.0",
-      "purl": "pkg:maven/org.tomlj/tomlj@2.2.0",
-      "licenses": [
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.eclipse.platform/org.eclipse.core.filesystem@1.11.500?type=jar",
+      "publisher" : "Eclipse Foundation",
+      "group" : "org.eclipse.platform",
+      "name" : "org.eclipse.core.filesystem",
+      "version" : "1.11.500",
+      "description" : "Core File Systems",
+      "scope" : "required",
+      "hashes" : [
         {
-          "license": {
-            "id": "Apache-2.0"
+          "alg" : "MD5",
+          "content" : "a4a4152cf50c59d32d64760649f17170"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "a4bfc0efec962aadc029c458158bee05777e237c"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "bf9ad56f6bee0044829bcbbe0ac5b9df28bb354beb0a4bdf0fe9a489ded12d36"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "37dae78f83b5986e08a84cd07cede96aa96b94d6fee0099be0817ee7f2fe7c3bd30522eea14530dd3e5218a24ca589b8df02c51c719fc9714cdad6a31c260643"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "076ffc66aa22eaf5bdd2622af32bdd0e5dee74392e17afbde7afb7f87facd65186dac015db9ab2b70339740c388aea4a"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "d7f50381a67a28e57fac7938708b4ce9e44ff33dc7a3f83229992ae49f870609287b0c4f00fa5cd9e06dbf7d759c3ed4"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "1f81765d541d554a80a41bb907d3fa7316fc16e0aa88b3ed5bf29f6f276ca81a"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "c1697c662ba4bf570df99af1d233dae43d3d688a0f06f20bd836e06bc8e36eeb1efc0c9f08117ed8af86bc023df96829a26ed8c41042bc14abf70197cb0791e1"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "EPL-2.0",
+            "url" : "https://www.eclipse.org/legal/epl-2.0"
           }
+        }
+      ],
+      "purl" : "pkg:maven/org.eclipse.platform/org.eclipse.core.filesystem@1.11.500?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform/"
+        },
+        {
+          "type" : "issue-tracker",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform/issues"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform/tree/30b8bb2131614eb570a20c133d9b902c2b72fa7f/resources/bundles/org.eclipse.core.filesystem"
+        }
+      ]
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/net.java.dev.jna/jna-platform@5.19.1?type=jar",
+      "group" : "net.java.dev.jna",
+      "name" : "jna-platform",
+      "version" : "5.19.1",
+      "description" : "Java Native Access Platform",
+      "scope" : "required",
+      "hashes" : [
+        {
+          "alg" : "MD5",
+          "content" : "1d97b6103a9b3b7ddb671908683f4566"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "d1e54d9231da5ca3fa730d52960deaa555475468"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "3b3864f5b449e9c3c24b16861524b622b086563f44e0cd8384c8efc5a6052f82"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "a8cdc1a080f0a11905014c125697d54815d5102f50a42380bc6b1230f229d84e44d1a0a501f12b49da90e191437259b4fa7b7e2a43bfc3b5485e8cb253c0c490"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "e6196afbd7c918de11084c7f007afd786bb1d1dc664c9007e4826944350d150c68f23f80c1c199f828d8dfd862377dfd"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "065a0332f939218d9d1cff6f0258222d350d515131683c7ff41d7a11e176de06694a729a5e0a7062ad75bd1674d9aeb6"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "7022764db623e7ecc6965948796602c392eea3649bb3bbc9817a5b2a70bcef78"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "1a14f7bac3ac451e4224226a073475d22180bee050eaee3103f33c906938ff5fda33049328374d1d962856216d46f7a264e4aec1181b6da07313fb74529127ec"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "LGPL-2.1-or-later",
+            "url" : "https://www.gnu.org/licenses/old-licenses/lgpl-2.1-standalone.html"
+          }
+        },
+        {
+          "license" : {
+            "id" : "Apache-2.0",
+            "url" : "https://www.apache.org/licenses/LICENSE-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/net.java.dev.jna/jna-platform@5.19.1?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/java-native-access/jna"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/java-native-access/jna"
+        }
+      ]
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.eclipse.platform/org.eclipse.text@3.14.800?type=jar",
+      "publisher" : "Eclipse Foundation",
+      "group" : "org.eclipse.platform",
+      "name" : "org.eclipse.text",
+      "version" : "3.14.800",
+      "description" : "Text",
+      "scope" : "required",
+      "hashes" : [
+        {
+          "alg" : "MD5",
+          "content" : "c4654b33d5aa6c433a67b08db97f7c61"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "4daae7dd965b8214422eec638d132b4c1d7d2779"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "14814c1f1a737fde0a2d56c47a2f02cf4c8c5dee748756c4763e674cae214250"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "0fa90e5ad0736961588a535847db9e16e2cd77afcece4c3336599e5c4fa6214f2027700aaa145f05b7c5218c51acaa182f7d78862c5ad01106f8048e2fbc2146"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "27bdf75832e98617ce54e97662756ba97fc768c145a25fd2c8ed4ca15f70f38e041ebb4da1136c2e7e4758ece83d3ac8"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "e3ec556b0a969f3e7cb0698bb151d33c897971de16e4ea58170d2586f4b7329e35e6f3c308c7cd77752c8e45ac51e698"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "f88b9ee506c50ff43fd21cd331009e576c8ba4e2384ea45c5bb919cf28f5995e"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "4a2e67255cf9877af25c5e06b66dfb3a827515697d1d2be1c11882f7675f05b35f92ccfb64ad31023c07d3d6fefb0a0dc4b85953cfd609e705eb4fc468b53858"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "EPL-2.0",
+            "url" : "https://www.eclipse.org/legal/epl-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/org.eclipse.platform/org.eclipse.text@3.14.800?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform.ui/"
+        },
+        {
+          "type" : "issue-tracker",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform.ui/issues"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform.ui/tree/889d5d549b40c8413d14b73326b761b2a5cabf75/bundles/org.eclipse.text"
+        }
+      ]
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.eclipse.platform/org.eclipse.core.commands@3.13.0?type=jar",
+      "publisher" : "Eclipse Foundation",
+      "group" : "org.eclipse.platform",
+      "name" : "org.eclipse.core.commands",
+      "version" : "3.13.0",
+      "description" : "Commands",
+      "scope" : "required",
+      "hashes" : [
+        {
+          "alg" : "MD5",
+          "content" : "c7b82739abda91a154c322cb13151b95"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "52df69c731cc71de6ce2d4f9b2c86cbf50079836"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "fe916979793d364fcd0a71c15c3fa803d60a8566cff8c64b0eef04918b5b6a65"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "e11babe54630e9cde1e15b4e8e370a2c6fdb63b1618b30435b81ac63be7f4b43315445b27805ddfb5a5fa1218b3f3e7a8a52ea0072319aa56f1e48debab36dc2"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "99e902dc79d19e0a1a34f2a5a050dbda9b9f919ddb671ada6dde0e858bef377223e09fbef49076c418239f04199dc74e"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "16ff1913f46b8c9aec989c22b437032ee2c594721ee1bfb9d1056c80d1b8f7a1e344eea153300ed84590a90660e378a2"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "2fe42b0d575dc646e7b876f9d55bb31b771b90510537b49643efdaefe619eda1"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "df809bc46d8a55b8de782ffdd4eb7dad877f750cc2710ae27312767df96083889ca7622a5d0e0625884c59301d3cf21225f67a2c6dde61c24b9187e782078a96"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "EPL-2.0",
+            "url" : "https://www.eclipse.org/legal/epl-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/org.eclipse.platform/org.eclipse.core.commands@3.13.0?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform.ui/"
+        },
+        {
+          "type" : "issue-tracker",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform.ui/issues"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/eclipse-platform/eclipse.platform.ui/tree/de45bf4d2ec460c8b55248de82526236c2bf91a7/bundles/org.eclipse.core.commands"
+        }
+      ]
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/org.eclipse.jdt/ecj@3.46.100?type=jar",
+      "publisher" : "Eclipse Foundation",
+      "group" : "org.eclipse.jdt",
+      "name" : "ecj",
+      "version" : "3.46.100",
+      "description" : "Eclipse Compiler for Java(TM)",
+      "scope" : "required",
+      "hashes" : [
+        {
+          "alg" : "MD5",
+          "content" : "56b7091e6cf1fb7af9429e3fd7a89858"
+        },
+        {
+          "alg" : "SHA-1",
+          "content" : "a06c482cdb8601a94328aae668c7236e3818fbe9"
+        },
+        {
+          "alg" : "SHA-256",
+          "content" : "74c93172475fee0cd4e6eefb44233516dd40525642da35d009146d97ea598229"
+        },
+        {
+          "alg" : "SHA-512",
+          "content" : "080bb403adb3b88b5b5f382388922425de5274f7729f0a94702f0e2a516c7d13c6740faab1cb20786b1dda0c5da933aa9b842f7c64867414ff75fa668ea06b09"
+        },
+        {
+          "alg" : "SHA-384",
+          "content" : "58eee5dd11139f27349c6bcd4b8518e89023994c9d16170cdfbf62e4f22ef2925217a9ea4abeac666169b14bf312d6c9"
+        },
+        {
+          "alg" : "SHA3-384",
+          "content" : "d681c6c089cad084a70f11bd007405f0f038c59222746e40bb4f27ba56d50c780181f3bbe3607766bcc008e49eccf407"
+        },
+        {
+          "alg" : "SHA3-256",
+          "content" : "527ce6b32a2b161baf620fc60709a3ae8b350b610695dd964258ce2186e42b97"
+        },
+        {
+          "alg" : "SHA3-512",
+          "content" : "0c61defd0fd8095c2c52229acda348e966d7c390fef8af44ab49a9ed6d198f980154e710140cbbec7b9a04c9afaad8d697809be952090bf84615819f97453df3"
+        }
+      ],
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "EPL-2.0",
+            "url" : "https://www.eclipse.org/legal/epl-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/org.eclipse.jdt/ecj@3.46.100?type=jar",
+      "externalReferences" : [
+        {
+          "type" : "website",
+          "url" : "https://github.com/eclipse-jdt/eclipse.jdt.core/"
+        },
+        {
+          "type" : "issue-tracker",
+          "url" : "https://github.com/eclipse-jdt/eclipse.jdt.core/issues"
+        },
+        {
+          "type" : "vcs",
+          "url" : "https://github.com/eclipse-jdt/eclipse.jdt.core/tree/8634087ceb99426b43565db17d8c1456d9e4d782/org.eclipse.jdt.core.compiler.batch"
         }
       ]
     }
   ],
-  "dependencies": [
+  "dependencies" : [
     {
-      "ref": "root",
-      "dependsOn": [
-        "pkg:maven/com.google.dagger/dagger@2.60.1",
-        "pkg:maven/info.picocli/picocli@4.7.7",
-        "pkg:maven/javax.inject/javax.inject@1",
-        "pkg:maven/org.apache.fory/fory-json@1.7.7",
-        "pkg:maven/org.codehaus.plexus/plexus-utils@3.6.2",
-        "pkg:maven/org.eclipse.jdt/org.eclipse.jdt.core@3.47.0",
-        "pkg:maven/org.tomlj/tomlj@2.2.0"
+      "ref" : "pkg:maven/dev.ward/ward-parent@0.7.0?type=pom",
+      "dependsOn" : [
+        "pkg:maven/dev.ward/ward-analysis-api@0.7.0?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-engine@0.7.0?type=jar",
+        "pkg:maven/dev.ward/ward-frontend-antlr@0.7.0?type=jar",
+        "pkg:maven/dev.ward/ward-lang-jvm@0.7.0?type=jar",
+        "pkg:maven/dev.ward/ward-lang-node@0.7.0?type=jar",
+        "pkg:maven/dev.ward/ward-lang-python@0.7.0?type=jar",
+        "pkg:maven/dev.ward/ward-lang-swift@0.7.0?type=jar",
+        "pkg:maven/dev.ward/ward-cli@0.7.0?type=jar"
       ]
     },
     {
-      "ref": "pkg:maven/com.google.dagger/dagger@2.60.1",
-      "dependsOn": []
+      "ref" : "pkg:maven/dev.ward/ward-analysis-api@0.7.0?type=jar",
+      "dependsOn" : [ ]
     },
     {
-      "ref": "pkg:maven/info.picocli/picocli@4.7.7",
-      "dependsOn": []
+      "ref" : "pkg:maven/dev.ward/ward-analysis-engine@0.7.0?type=jar",
+      "dependsOn" : [
+        "pkg:maven/dev.ward/ward-analysis-api@0.7.0?type=jar",
+        "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar"
+      ]
     },
     {
-      "ref": "pkg:maven/jakarta.inject/jakarta.inject-api@2.0.1",
-      "dependsOn": []
+      "ref" : "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar",
+      "dependsOn" : [ ]
     },
     {
-      "ref": "pkg:maven/javax.inject/javax.inject@1",
-      "dependsOn": []
+      "ref" : "pkg:maven/dev.ward/ward-frontend-antlr@0.7.0?type=jar",
+      "dependsOn" : [
+        "pkg:maven/dev.ward/ward-analysis-api@0.7.0?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-engine@0.7.0?type=jar",
+        "pkg:maven/org.antlr/antlr4-runtime@4.13.2?type=jar"
+      ]
     },
     {
-      "ref": "pkg:maven/net.java.dev.jna/jna-platform@5.19.1",
-      "dependsOn": []
+      "ref" : "pkg:maven/org.antlr/antlr4-runtime@4.13.2?type=jar",
+      "dependsOn" : [ ]
     },
     {
-      "ref": "pkg:maven/net.java.dev.jna/jna@5.19.1",
-      "dependsOn": []
+      "ref" : "pkg:maven/dev.ward/ward-lang-jvm@0.7.0?type=jar",
+      "dependsOn" : [
+        "pkg:maven/dev.ward/ward-analysis-api@0.7.0?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-engine@0.7.0?type=jar",
+        "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar"
+      ]
     },
     {
-      "ref": "pkg:maven/org.antlr/antlr4-runtime@4.13.2",
-      "dependsOn": []
+      "ref" : "pkg:maven/dev.ward/ward-lang-node@0.7.0?type=jar",
+      "dependsOn" : [
+        "pkg:maven/dev.ward/ward-analysis-api@0.7.0?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-engine@0.7.0?type=jar"
+      ]
     },
     {
-      "ref": "pkg:maven/org.apache.fory/fory-core@1.7.7",
-      "dependsOn": []
+      "ref" : "pkg:maven/dev.ward/ward-lang-python@0.7.0?type=jar",
+      "dependsOn" : [
+        "pkg:maven/dev.ward/ward-analysis-api@0.7.0?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-engine@0.7.0?type=jar",
+        "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar"
+      ]
     },
     {
-      "ref": "pkg:maven/org.apache.fory/fory-json@1.7.7",
-      "dependsOn": []
+      "ref" : "pkg:maven/dev.ward/ward-lang-swift@0.7.0?type=jar",
+      "dependsOn" : [
+        "pkg:maven/dev.ward/ward-analysis-api@0.7.0?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-engine@0.7.0?type=jar",
+        "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar"
+      ]
     },
     {
-      "ref": "pkg:maven/org.codehaus.janino/commons-compiler@3.1.12",
-      "dependsOn": []
+      "ref" : "pkg:maven/dev.ward/ward-cli@0.7.0?type=jar",
+      "dependsOn" : [
+        "pkg:maven/com.google.dagger/dagger@2.60.1?type=jar",
+        "pkg:maven/javax.inject/javax.inject@1?type=jar",
+        "pkg:maven/info.picocli/picocli@4.7.7?type=jar",
+        "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar",
+        "pkg:maven/org.apache.fory/fory-json@1.7.7?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-api@0.7.0?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-engine@0.7.0?type=jar",
+        "pkg:maven/dev.ward/ward-frontend-antlr@0.7.0?type=jar",
+        "pkg:maven/dev.ward/ward-lang-jvm@0.7.0?type=jar",
+        "pkg:maven/org.eclipse.jdt/org.eclipse.jdt.core@3.47.0?type=jar",
+        "pkg:maven/dev.ward/ward-lang-node@0.7.0?type=jar",
+        "pkg:maven/dev.ward/ward-lang-python@0.7.0?type=jar",
+        "pkg:maven/dev.ward/ward-lang-swift@0.7.0?type=jar"
+      ]
     },
     {
-      "ref": "pkg:maven/org.codehaus.janino/janino@3.1.12",
-      "dependsOn": []
+      "ref" : "pkg:maven/com.google.dagger/dagger@2.60.1?type=jar",
+      "dependsOn" : [
+        "pkg:maven/jakarta.inject/jakarta.inject-api@2.0.1?type=jar",
+        "pkg:maven/javax.inject/javax.inject@1?type=jar",
+        "pkg:maven/org.jspecify/jspecify@1.0.0?type=jar"
+      ]
     },
     {
-      "ref": "pkg:maven/org.codehaus.plexus/plexus-utils@3.6.2",
-      "dependsOn": []
+      "ref" : "pkg:maven/jakarta.inject/jakarta.inject-api@2.0.1?type=jar",
+      "dependsOn" : [ ]
     },
     {
-      "ref": "pkg:maven/org.eclipse.jdt/ecj@3.46.100",
-      "dependsOn": []
+      "ref" : "pkg:maven/javax.inject/javax.inject@1?type=jar",
+      "dependsOn" : [ ]
     },
     {
-      "ref": "pkg:maven/org.eclipse.jdt/org.eclipse.jdt.core@3.47.0",
-      "dependsOn": []
+      "ref" : "pkg:maven/org.jspecify/jspecify@1.0.0?type=jar",
+      "dependsOn" : [ ]
     },
     {
-      "ref": "pkg:maven/org.eclipse.platform/org.eclipse.core.commands@3.13.0",
-      "dependsOn": []
+      "ref" : "pkg:maven/info.picocli/picocli@4.7.7?type=jar",
+      "dependsOn" : [ ]
     },
     {
-      "ref": "pkg:maven/org.eclipse.platform/org.eclipse.core.contenttype@3.9.900",
-      "dependsOn": []
+      "ref" : "pkg:maven/org.apache.fory/fory-json@1.7.7?type=jar",
+      "dependsOn" : [
+        "pkg:maven/org.apache.fory/fory-core@1.7.7?type=jar"
+      ]
     },
     {
-      "ref": "pkg:maven/org.eclipse.platform/org.eclipse.core.expressions@3.9.700",
-      "dependsOn": []
+      "ref" : "pkg:maven/org.apache.fory/fory-core@1.7.7?type=jar",
+      "dependsOn" : [
+        "pkg:maven/org.codehaus.janino/janino@3.1.12?type=jar"
+      ]
     },
     {
-      "ref": "pkg:maven/org.eclipse.platform/org.eclipse.core.filesystem@1.11.500",
-      "dependsOn": []
+      "ref" : "pkg:maven/org.codehaus.janino/janino@3.1.12?type=jar",
+      "dependsOn" : [
+        "pkg:maven/org.codehaus.janino/commons-compiler@3.1.12?type=jar"
+      ]
     },
     {
-      "ref": "pkg:maven/org.eclipse.platform/org.eclipse.core.jobs@3.15.900",
-      "dependsOn": []
+      "ref" : "pkg:maven/org.codehaus.janino/commons-compiler@3.1.12?type=jar",
+      "dependsOn" : [ ]
     },
     {
-      "ref": "pkg:maven/org.eclipse.platform/org.eclipse.core.resources@3.24.100",
-      "dependsOn": []
+      "ref" : "pkg:maven/org.eclipse.jdt/org.eclipse.jdt.core@3.47.0?type=jar",
+      "dependsOn" : [
+        "pkg:maven/org.eclipse.platform/org.eclipse.core.resources@3.24.100?type=jar",
+        "pkg:maven/org.eclipse.platform/org.eclipse.core.runtime@3.35.0?type=jar",
+        "pkg:maven/org.eclipse.platform/org.eclipse.core.filesystem@1.11.500?type=jar",
+        "pkg:maven/org.eclipse.platform/org.eclipse.text@3.14.800?type=jar",
+        "pkg:maven/org.eclipse.jdt/ecj@3.46.100?type=jar"
+      ]
     },
     {
-      "ref": "pkg:maven/org.eclipse.platform/org.eclipse.core.runtime@3.35.0",
-      "dependsOn": []
+      "ref" : "pkg:maven/org.eclipse.platform/org.eclipse.core.resources@3.24.100?type=jar",
+      "dependsOn" : [
+        "pkg:maven/org.eclipse.platform/org.eclipse.core.expressions@3.9.700?type=jar",
+        "pkg:maven/org.eclipse.platform/org.eclipse.core.filesystem@1.11.500?type=jar",
+        "pkg:maven/org.eclipse.platform/org.eclipse.core.runtime@3.35.0?type=jar",
+        "pkg:maven/net.java.dev.jna/jna@5.19.1?type=jar",
+        "pkg:maven/org.eclipse.platform/org.eclipse.osgi@3.24.300?type=jar"
+      ]
     },
     {
-      "ref": "pkg:maven/org.eclipse.platform/org.eclipse.equinox.app@1.7.600",
-      "dependsOn": []
+      "ref" : "pkg:maven/org.eclipse.platform/org.eclipse.core.expressions@3.9.700?type=jar",
+      "dependsOn" : [
+        "pkg:maven/org.eclipse.platform/org.eclipse.core.runtime@3.35.0?type=jar"
+      ]
     },
     {
-      "ref": "pkg:maven/org.eclipse.platform/org.eclipse.equinox.common@3.21.0",
-      "dependsOn": []
+      "ref" : "pkg:maven/org.eclipse.platform/org.eclipse.core.runtime@3.35.0?type=jar",
+      "dependsOn" : [
+        "pkg:maven/org.eclipse.platform/org.eclipse.osgi@3.24.300?type=jar",
+        "pkg:maven/org.eclipse.platform/org.eclipse.equinox.common@3.21.0?type=jar",
+        "pkg:maven/org.eclipse.platform/org.eclipse.core.jobs@3.15.900?type=jar",
+        "pkg:maven/org.eclipse.platform/org.eclipse.equinox.registry@3.12.600?type=jar",
+        "pkg:maven/org.eclipse.platform/org.eclipse.equinox.preferences@3.12.100?type=jar",
+        "pkg:maven/org.eclipse.platform/org.eclipse.core.contenttype@3.9.900?type=jar",
+        "pkg:maven/org.eclipse.platform/org.eclipse.equinox.app@1.7.600?type=jar"
+      ]
     },
     {
-      "ref": "pkg:maven/org.eclipse.platform/org.eclipse.equinox.preferences@3.12.100",
-      "dependsOn": []
+      "ref" : "pkg:maven/org.eclipse.platform/org.eclipse.osgi@3.24.300?type=jar",
+      "dependsOn" : [ ]
     },
     {
-      "ref": "pkg:maven/org.eclipse.platform/org.eclipse.equinox.registry@3.12.600",
-      "dependsOn": []
+      "ref" : "pkg:maven/org.eclipse.platform/org.eclipse.equinox.common@3.21.0?type=jar",
+      "dependsOn" : [
+        "pkg:maven/org.eclipse.platform/org.eclipse.osgi@3.24.300?type=jar"
+      ]
     },
     {
-      "ref": "pkg:maven/org.eclipse.platform/org.eclipse.osgi@3.24.300",
-      "dependsOn": []
+      "ref" : "pkg:maven/org.eclipse.platform/org.eclipse.core.jobs@3.15.900?type=jar",
+      "dependsOn" : [
+        "pkg:maven/org.eclipse.platform/org.eclipse.equinox.common@3.21.0?type=jar",
+        "pkg:maven/org.eclipse.platform/org.eclipse.osgi@3.24.300?type=jar"
+      ]
     },
     {
-      "ref": "pkg:maven/org.eclipse.platform/org.eclipse.text@3.14.800",
-      "dependsOn": []
+      "ref" : "pkg:maven/org.eclipse.platform/org.eclipse.equinox.registry@3.12.600?type=jar",
+      "dependsOn" : [
+        "pkg:maven/org.eclipse.platform/org.eclipse.equinox.common@3.21.0?type=jar",
+        "pkg:maven/org.eclipse.platform/org.eclipse.osgi@3.24.300?type=jar"
+      ]
     },
     {
-      "ref": "pkg:maven/org.jspecify/jspecify@1.0.0",
-      "dependsOn": []
+      "ref" : "pkg:maven/org.eclipse.platform/org.eclipse.equinox.preferences@3.12.100?type=jar",
+      "dependsOn" : [
+        "pkg:maven/org.eclipse.platform/org.eclipse.equinox.common@3.21.0?type=jar",
+        "pkg:maven/org.osgi/org.osgi.service.prefs@1.1.2?type=jar",
+        "pkg:maven/org.eclipse.platform/org.eclipse.osgi@3.24.300?type=jar"
+      ]
     },
     {
-      "ref": "pkg:maven/org.osgi/org.osgi.service.prefs@1.1.2",
-      "dependsOn": []
+      "ref" : "pkg:maven/org.osgi/org.osgi.service.prefs@1.1.2?type=jar",
+      "dependsOn" : [
+        "pkg:maven/org.osgi/osgi.annotation@8.0.1?type=jar"
+      ]
     },
     {
-      "ref": "pkg:maven/org.osgi/osgi.annotation@8.0.1",
-      "dependsOn": []
+      "ref" : "pkg:maven/org.osgi/osgi.annotation@8.0.1?type=jar",
+      "dependsOn" : [ ]
     },
     {
-      "ref": "pkg:maven/org.tomlj/tomlj@2.2.0",
-      "dependsOn": []
+      "ref" : "pkg:maven/org.eclipse.platform/org.eclipse.core.contenttype@3.9.900?type=jar",
+      "dependsOn" : [
+        "pkg:maven/org.eclipse.platform/org.eclipse.equinox.preferences@3.12.100?type=jar",
+        "pkg:maven/org.eclipse.platform/org.eclipse.equinox.registry@3.12.600?type=jar",
+        "pkg:maven/org.eclipse.platform/org.eclipse.equinox.common@3.21.0?type=jar",
+        "pkg:maven/org.eclipse.platform/org.eclipse.osgi@3.24.300?type=jar"
+      ]
+    },
+    {
+      "ref" : "pkg:maven/org.eclipse.platform/org.eclipse.equinox.app@1.7.600?type=jar",
+      "dependsOn" : [
+        "pkg:maven/org.eclipse.platform/org.eclipse.equinox.registry@3.12.600?type=jar",
+        "pkg:maven/org.eclipse.platform/org.eclipse.equinox.common@3.21.0?type=jar"
+      ]
+    },
+    {
+      "ref" : "pkg:maven/org.eclipse.platform/org.eclipse.core.filesystem@1.11.500?type=jar",
+      "dependsOn" : [
+        "pkg:maven/org.eclipse.platform/org.eclipse.core.runtime@3.35.0?type=jar",
+        "pkg:maven/net.java.dev.jna/jna@5.19.1?type=jar",
+        "pkg:maven/net.java.dev.jna/jna-platform@5.19.1?type=jar"
+      ]
+    },
+    {
+      "ref" : "pkg:maven/net.java.dev.jna/jna@5.19.1?type=jar",
+      "dependsOn" : [ ]
+    },
+    {
+      "ref" : "pkg:maven/net.java.dev.jna/jna-platform@5.19.1?type=jar",
+      "dependsOn" : [
+        "pkg:maven/net.java.dev.jna/jna@5.19.1?type=jar"
+      ]
+    },
+    {
+      "ref" : "pkg:maven/org.eclipse.platform/org.eclipse.text@3.14.800?type=jar",
+      "dependsOn" : [
+        "pkg:maven/org.eclipse.platform/org.eclipse.core.commands@3.13.0?type=jar",
+        "pkg:maven/org.eclipse.platform/org.eclipse.equinox.common@3.21.0?type=jar",
+        "pkg:maven/org.eclipse.platform/org.eclipse.equinox.preferences@3.12.100?type=jar",
+        "pkg:maven/org.eclipse.platform/org.eclipse.core.runtime@3.35.0?type=jar"
+      ]
+    },
+    {
+      "ref" : "pkg:maven/org.eclipse.platform/org.eclipse.core.commands@3.13.0?type=jar",
+      "dependsOn" : [
+        "pkg:maven/org.eclipse.platform/org.eclipse.equinox.common@3.21.0?type=jar"
+      ]
+    },
+    {
+      "ref" : "pkg:maven/org.eclipse.jdt/ecj@3.46.100?type=jar",
+      "dependsOn" : [ ]
     }
   ]
 }
