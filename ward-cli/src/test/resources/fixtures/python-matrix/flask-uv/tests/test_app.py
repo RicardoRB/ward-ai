@@ -13,6 +13,11 @@ def test_total_multiplies_quantity_by_price() -> None:
     assert total(QUANTITY, 2) == EXPECTED_TOTAL
 
 
+def test_no_quantity_costs_nothing() -> None:
+    """Zero units cost nothing."""
+    assert total(0, 2) == 0
+
+
 def test_login_route(client: FlaskClient) -> None:
     """The login route answers."""
     assert client.get("/login").data == b"login"

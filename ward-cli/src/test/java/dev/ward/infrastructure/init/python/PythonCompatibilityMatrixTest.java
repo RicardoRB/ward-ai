@@ -30,12 +30,12 @@ import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
 /**
- * Runs each Python matrix cell through the real CLI: {@code init}, the clean {@code check}, then
- * the seeded violations, which must make every selected gate except {@code coverage} and {@code
- * mutmut} fail. Each cell runs under its Python interpreter, which is first on the PATH of the Ward
- * process only, so the test process is unchanged. Runs only for the cells whose Python version is
- * named by {@code ward.python.matrix}, and for the fixture named by {@code
- * ward.python.matrix.fixture} when set.
+ * Runs each Python matrix cell through the real CLI: {@code init}, the clean {@code check}, then an
+ * untested module, which must make {@code coverage} fail, then the seeded violations, which must
+ * make every selected gate except {@code coverage} and {@code mutmut} fail. Each cell runs under
+ * its Python interpreter, which is first on the PATH of the Ward process only, so the test process
+ * is unchanged. Runs only for the cells whose Python version is named by {@code
+ * ward.python.matrix}, and for the fixture named by {@code ward.python.matrix.fixture} when set.
  */
 @EnabledIfSystemProperty(
     named = PythonCompatibilityMatrixTest.VERSION_PROPERTY,
@@ -55,7 +55,14 @@ class PythonCompatibilityMatrixTest {
           "basic-pip", Set.of("src/shop/controller/api.py"),
           "fastapi-uv", Set.of("app/routers/cross.py"));
 
+  private static final Path COVERAGE_VIOLATIONS =
+      Path.of("src/test/resources/python-matrix/coverage");
+
+  /**
+   * Gates the combined violations do not target: coverage has its own run, mutmut is clean-only.
+   */
   private static final Set<String> NOT_VIOLATED = Set.of("coverage", "mutmut");
+
   private static final String PIP = "pip";
   private static final int PACKAGES_COLUMN = 4;
   private static final String POETRY = "poetry";
@@ -96,6 +103,17 @@ class PythonCompatibilityMatrixTest {
         .isEmpty();
 
     assertThat(engineLayerFiles(project, fixture)).as("engine layer findings, clean").isEmpty();
+    final Path untested = COVERAGE_VIOLATIONS.resolve(fixture);
+    copyTree(untested, project);
+    final Run report = run(env, project, "check", "--profile", "ci", "--format", "json");
+    assertThat(checks(report).get("coverage"))
+        .as("coverage with an untested module\n%s", report.output())
+        .isEqualTo("FAILED");
+    assertThat(report.output())
+        .as("coverage finding")
+        .contains("Line coverage")
+        .contains("is below");
+    removeTree(untested, project);
     copyTree(VIOLATIONS.resolve(fixture), project);
     assertThat(engineLayerFiles(project, fixture))
         .as("engine layer findings, seeded")
@@ -241,6 +259,15 @@ class PythonCompatibilityMatrixTest {
           Files.createDirectories(destination.getParent());
           Files.copy(file, destination, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
         }
+      }
+    }
+  }
+
+  /** Deletes the files of {@code source} from {@code target}, undoing {@link #copyTree}. */
+  private static void removeTree(final Path source, final Path target) throws IOException {
+    try (Stream<Path> files = Files.walk(source)) {
+      for (final Path file : files.filter(Files::isRegularFile).toList()) {
+        Files.delete(target.resolve(source.relativize(file).toString()));
       }
     }
   }

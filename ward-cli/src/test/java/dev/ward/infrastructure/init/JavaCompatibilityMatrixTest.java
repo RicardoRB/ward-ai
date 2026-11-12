@@ -32,11 +32,11 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 /**
  * Runs each Java compatibility matrix cell through the real CLI on the cell's JDK: {@code init},
  * the clean {@code check}, the seeded violations, which must fail every configured gate except
- * {@code compile}, {@code coverage} and {@code mutation}, and a compile error, which must fail
- * {@code compile}. Runs only the cells of the JDK named by {@code ward.java.matrix}, with the Ward
- * jar named by {@code ward.java.matrix.jar} and that JDK's home named by {@code
- * ward.java.matrix.home}. Ward runs on the test JVM; Maven, Gradle and every gate run on the cell's
- * JDK.
+ * {@code compile}, {@code coverage} and {@code mutation}, a compile error, which must fail {@code
+ * compile}, and an untested class, which must fail {@code coverage}. Runs only the cells of the JDK
+ * named by {@code ward.java.matrix}, with the Ward jar named by {@code ward.java.matrix.jar} and
+ * that JDK's home named by {@code ward.java.matrix.home}. Ward runs on the test JVM; Maven, Gradle
+ * and every gate run on the cell's JDK.
  */
 @EnabledIfSystemProperty(named = JavaCompatibilityMatrixTest.JDK_PROPERTY, matches = "\\d+")
 class JavaCompatibilityMatrixTest {
@@ -55,7 +55,10 @@ class JavaCompatibilityMatrixTest {
       List.of("compile", "tests", "coverage", "ward-format");
   private static final List<String> STRICT_EXTRAS = List.of("enforcer", "mutation");
 
-  /** Gates the seeded violations do not target: the clean check proves the last two measure. */
+  /**
+   * Gates the combined violations do not target: the compile error and the untested class have
+   * their own runs, and the clean check proves {@code mutation} measures.
+   */
   private static final Set<String> NOT_SEEDED = Set.of("compile", "coverage", "mutation");
 
   private static final Pattern CHECK =
@@ -119,6 +122,17 @@ class JavaCompatibilityMatrixTest {
     assertThat(statuses(report(project)).get("compile"))
         .as("compile with a compile error")
         .isEqualTo(FAILED);
+
+    JavaMatrixProcesses.git(project, "checkout", "-q", ".");
+    JavaMatrixProcesses.git(project, "clean", "-qfd");
+    JavaMatrixProcesses.copyTree(
+        JavaMatrixFixtures.VIOLATIONS.resolve(JavaMatrixFixtures.coverageViolation(fixture)),
+        project);
+    final String untested = report(project);
+    assertThat(statuses(untested).get("coverage"))
+        .as("coverage with an untested class\n%s", untested)
+        .isEqualTo(FAILED);
+    assertThat(untested).as("coverage finding").contains("Line coverage").contains("is below");
   }
 
   /** Seeds the Java violations, with their layer check, or a named fixture's own violations. */
