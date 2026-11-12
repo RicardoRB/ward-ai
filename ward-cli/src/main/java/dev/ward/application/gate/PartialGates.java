@@ -121,7 +121,8 @@ final class PartialGates {
         List.of(),
         null,
         null,
-        null);
+        null,
+        gate.apiCompat());
   }
 
   private static GateScope scope(final PartialCheckPlan.GatePlan plan) {

@@ -34,6 +34,8 @@ import java.util.Set;
  *     checked by {@code ward:architecture/independence}; empty when unset
  * @param rulesFile the project-relative path of the rule configuration file, or {@code null} for
  *     {@code ward-rules.toml}; only {@code ward} checks read it
+ * @param apiCompat the {@code base} and {@code include} options of an {@code api-compat} check, or
+ *     {@code null} for others
  */
 public record GateConfiguration(
     String name,
@@ -51,7 +53,46 @@ public record GateConfiguration(
     List<LayerBoundary> layers,
     List<String> cycleRoots,
     List<List<String>> independence,
-    String rulesFile) {
+    String rulesFile,
+    ApiCompatOptions apiCompat) {
+
+  /** Creates a check without {@code api-compat} options. */
+  public GateConfiguration(
+      final String name,
+      final String type,
+      final boolean enabled,
+      final List<String> command,
+      final Set<String> profiles,
+      final PartialGateConfiguration partial,
+      final String root,
+      final OpenApiGateOptions openApi,
+      final Integer minimum,
+      final XcodePlatform platform,
+      final List<String> rules,
+      final String javaClasspath,
+      final List<LayerBoundary> layers,
+      final List<String> cycleRoots,
+      final List<List<String>> independence,
+      final String rulesFile) {
+    this(
+        name,
+        type,
+        enabled,
+        command,
+        profiles,
+        partial,
+        root,
+        openApi,
+        minimum,
+        platform,
+        rules,
+        javaClasspath,
+        layers,
+        cycleRoots,
+        independence,
+        rulesFile,
+        null);
+  }
 
   /** Copies the command, profiles and rule ids, keeping their order. */
   public GateConfiguration {

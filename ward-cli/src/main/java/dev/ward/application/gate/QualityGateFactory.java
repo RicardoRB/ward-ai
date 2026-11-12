@@ -199,6 +199,9 @@ public class QualityGateFactory {
     if (SupportedQualityGates.openApiIds().contains(type)) {
       return openApiGate(name, check, project);
     }
+    if (SupportedQualityGates.API_COMPAT.equals(type) && check.command().isEmpty()) {
+      return apiCompatGate(check);
+    }
     if (PLATFORM_GATES.contains(type)) {
       return platformGate(check);
     }
@@ -258,6 +261,14 @@ public class QualityGateFactory {
       throw new WardException("OpenAPI gate dependencies are unavailable.");
     }
     return extensions.openApi().create(name, check, project);
+  }
+
+  /** A check without a command is the native comparison; one with a command is run as before. */
+  private QualityGate apiCompatGate(final GateConfiguration check) {
+    if (extensions.apiCompat() == null) {
+      throw new WardException("api-compat gate dependencies are unavailable.");
+    }
+    return extensions.apiCompat().create(check.name(), check);
   }
 
   private static List<String> testsCommand(final List<String> configured, final Project project) {

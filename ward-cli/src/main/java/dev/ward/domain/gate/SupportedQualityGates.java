@@ -8,6 +8,7 @@ public final class SupportedQualityGates {
   public static final String TRACEABILITY = "openspec-junit-traceability";
   public static final String ANALYSIS = "ward";
   public static final String FORMAT = "ward-format";
+  public static final String API_COMPAT = "api-compat";
   public static final String OPENAPI_LINT = "openapi-lint";
   public static final String OPENAPI_DIFF = "openapi-diff";
   public static final String OPENAPI_COMPAT = "openapi-compat";

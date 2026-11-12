@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * Compares the API of a working tree with the API at a baseline and lists the incompatible changes.
@@ -30,9 +31,18 @@ public final class ApiComparison {
    * line and kind.
    */
   public static List<ApiChange> compare(final List<ApiType> baseline, final List<ApiType> current) {
+    return compare(baseline, current, name -> true);
+  }
+
+  /**
+   * Returns the incompatible changes of the baseline types whose qualified name {@code inScope}
+   * accepts; the other types still count as supertypes.
+   */
+  public static List<ApiChange> compare(
+      final List<ApiType> baseline, final List<ApiType> current, final Predicate<String> inScope) {
     final ApiComparison comparison = new ApiComparison(baseline, current);
     baseline.stream()
-        .filter(type -> comparison.before.isApi(type.name()))
+        .filter(type -> inScope.test(type.name()) && comparison.before.isApi(type.name()))
         .forEach(comparison::compareType);
     return comparison.changes.stream()
         .sorted(

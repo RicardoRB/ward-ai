@@ -43,7 +43,8 @@ final class TomlGateParser {
         TomlAnalysisParser.layers(where, type, gate),
         TomlArchitectureParser.cycleRoots(where, type, gate),
         TomlArchitectureParser.independence(where, type, gate),
-        TomlAnalysisParser.rulesFile(where, type, gate));
+        TomlAnalysisParser.rulesFile(where, type, gate),
+        TomlApiCompatParser.parse(where, type, gate));
   }
 
   private static void rejectLegacyPartial(final String where, final TomlTable gate) {
