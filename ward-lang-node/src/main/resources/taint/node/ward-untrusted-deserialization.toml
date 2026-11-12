@@ -1,0 +1,37 @@
+# Written for Ward from the documentation named in the catalog row of the rule; sources: taint/node/sources.toml.
+# Deserialization sinks: libraries that rebuild functions and objects from text, such as node-serialize and the explicit unsafe loaders of js-yaml.
+
+[[sinks]]
+kind = "call"
+name = "unserialize"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "unsafeLoad"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "unsafeLoadAll"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "deserialize"
+qualifier = "serialize"
+arguments = [0]
+
+
+[[sanitizers]]
+kind = "call"
+name = "Number"
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+
+[[sanitizers]]
+kind = "call"
+name = "parseFloat"
+

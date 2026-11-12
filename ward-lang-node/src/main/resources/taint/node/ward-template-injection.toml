@@ -1,0 +1,106 @@
+# Written for Ward from the documentation named in the catalog row of the rule; sources: taint/node/sources.toml.
+# Template sinks: the template source that EJS, Pug, Handlebars, Nunjucks, lodash and Mustache compile, and the view name of Express render.
+
+[[sinks]]
+kind = "call"
+name = "render"
+qualifier = "ejs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "render"
+qualifier = "pug"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "render"
+qualifier = "jade"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "compile"
+qualifier = "ejs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "compile"
+qualifier = "pug"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "compile"
+qualifier = "jade"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "compile"
+qualifier = "handlebars"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "compile"
+qualifier = "Handlebars"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "renderString"
+qualifier = "nunjucks"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "template"
+qualifier = "_"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "template"
+qualifier = "lodash"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "render"
+qualifier = "mustache"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "render"
+qualifier = "Mustache"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "render"
+qualifier = "res"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "render"
+qualifier = "response"
+arguments = [0]
+
+
+[[sanitizers]]
+kind = "call"
+name = "Number"
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+
+[[sanitizers]]
+kind = "call"
+name = "parseFloat"
+

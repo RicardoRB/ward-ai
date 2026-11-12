@@ -25,6 +25,8 @@ eslint = ["no-useless-assignment"]
 [[rule]]
 name = "sql-injection"
 spotbugs = ["SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE", "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING"]
+cwe = ["CWE-89"]
+sources = ["https://sidorares.github.io/node-mysql2/docs", "https://node-postgres.com/features/queries", "https://sequelize.org/docs/v6/core-concepts/raw-queries/", "https://www.prisma.io/docs/orm/prisma-client/queries/raw-database-access/raw-queries", "https://cwe.mitre.org/data/definitions/89.html"]
 
 [[rule]]
 name = "command-injection"
@@ -33,6 +35,8 @@ name = "command-injection"
 name = "path-traversal"
 ids = { java = "ward:java/path-injection" }
 spotbugs = ["PT_ABSOLUTE_PATH_TRAVERSAL", "PT_RELATIVE_PATH_TRAVERSAL"]
+cwe = ["CWE-22"]
+sources = ["https://docs.python.org/3/library/tarfile.html#extraction-filters", "https://flask.palletsprojects.com/en/stable/api/#flask.send_from_directory", "https://cwe.mitre.org/data/definitions/22.html"]
 
 [[rule]]
 name = "xss"

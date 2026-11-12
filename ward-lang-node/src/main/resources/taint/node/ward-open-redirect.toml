@@ -1,0 +1,69 @@
+# Written for Ward from the documentation named in the catalog row of the rule; sources: taint/node/sources.toml.
+# Redirect sinks: Express redirects and the browser location, matched by the name of the response variable.
+
+[[sinks]]
+kind = "call"
+name = "redirect"
+qualifier = "res"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "redirect"
+qualifier = "response"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "location"
+qualifier = "res"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "location"
+qualifier = "response"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "assign"
+qualifier = "location"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "assign"
+qualifier = "window.location"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "replace"
+qualifier = "location"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "replace"
+qualifier = "window.location"
+arguments = [0]
+
+[[sinks]]
+kind = "member-write"
+name = "href"
+arguments = [0]
+
+
+[[sanitizers]]
+kind = "call"
+name = "Number"
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+
+[[sanitizers]]
+kind = "call"
+name = "parseFloat"
+

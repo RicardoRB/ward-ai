@@ -1,0 +1,178 @@
+# Written for Ward from the documentation named in the catalog row of the rule; sources: taint/node/sources.toml.
+# Log sinks: the message of the common logger objects; console is not listed, since its output is rarely parsed as records.
+
+[[sinks]]
+kind = "call"
+name = "info"
+qualifier = "logger"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "info"
+qualifier = "log"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "info"
+qualifier = "winston"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "warn"
+qualifier = "logger"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "warn"
+qualifier = "log"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "warn"
+qualifier = "winston"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "error"
+qualifier = "logger"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "error"
+qualifier = "log"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "error"
+qualifier = "winston"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "debug"
+qualifier = "logger"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "debug"
+qualifier = "log"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "debug"
+qualifier = "winston"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "log"
+qualifier = "logger"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "log"
+qualifier = "log"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "log"
+qualifier = "winston"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "verbose"
+qualifier = "logger"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "verbose"
+qualifier = "log"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "verbose"
+qualifier = "winston"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "silly"
+qualifier = "logger"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "silly"
+qualifier = "log"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "silly"
+qualifier = "winston"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "trace"
+qualifier = "logger"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "trace"
+qualifier = "log"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "trace"
+qualifier = "winston"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "fatal"
+qualifier = "logger"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "fatal"
+qualifier = "log"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "fatal"
+qualifier = "winston"
+arguments = [0]
+
+
+[[sanitizers]]
+kind = "call"
+name = "Number"
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+
+[[sanitizers]]
+kind = "call"
+name = "parseFloat"
+

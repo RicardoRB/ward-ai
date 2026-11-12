@@ -1,0 +1,199 @@
+# Written for Ward from the documentation named in the catalog row of the rule; sources: taint/node/sources.toml.
+# Request sinks: fetch, axios, got and the http module, whose argument 0 is the address.
+
+[[sinks]]
+kind = "call"
+name = "fetch"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "axios"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "got"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "get"
+qualifier = "axios"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "get"
+qualifier = "got"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "get"
+qualifier = "http"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "get"
+qualifier = "https"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "post"
+qualifier = "axios"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "post"
+qualifier = "got"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "post"
+qualifier = "http"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "post"
+qualifier = "https"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "put"
+qualifier = "axios"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "put"
+qualifier = "got"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "put"
+qualifier = "http"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "put"
+qualifier = "https"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "patch"
+qualifier = "axios"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "patch"
+qualifier = "got"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "patch"
+qualifier = "http"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "patch"
+qualifier = "https"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "delete"
+qualifier = "axios"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "delete"
+qualifier = "got"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "delete"
+qualifier = "http"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "delete"
+qualifier = "https"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "head"
+qualifier = "axios"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "head"
+qualifier = "got"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "head"
+qualifier = "http"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "head"
+qualifier = "https"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "request"
+qualifier = "axios"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "request"
+qualifier = "got"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "request"
+qualifier = "http"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "request"
+qualifier = "https"
+arguments = [0]
+
+
+[[sanitizers]]
+kind = "call"
+name = "Number"
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+
+[[sanitizers]]
+kind = "call"
+name = "parseFloat"
+

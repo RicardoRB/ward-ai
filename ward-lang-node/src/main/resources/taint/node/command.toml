@@ -42,6 +42,29 @@ name = "fork"
 receiver = "child_process"
 arguments = [0]
 
+# Shell helpers that run their first argument as a command line.
+[[sinks]]
+kind = "call"
+name = "exec"
+qualifier = "shelljs"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "exec"
+qualifier = "shell"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execa"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execaCommand"
+arguments = [0]
+
 # Numeric conversions cannot carry markup or a path separator.
 
 [[sanitizers]]

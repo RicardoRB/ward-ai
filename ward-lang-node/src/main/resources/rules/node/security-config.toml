@@ -1,0 +1,337 @@
+# Configuration rules for JavaScript and TypeScript: options, settings and calls that are dangerous when set to the value they match.
+
+[[rules]]
+id = "ward:javascript/tls-verification-disabled"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["propertyAssignment", "singleExpression"]
+text = '^(?:rejectUnauthorized|strictSSL):false$|^process\.env\.NODE_TLS_REJECT_UNAUTHORIZED=[\"\x27`]?0[\"\x27`]?$'
+message = "this setting turns off certificate checks, so anyone can impersonate the server; keep verification on"
+'''
+
+[[rules]]
+id = "ward:typescript/tls-verification-disabled"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["propertyAssignment", "singleExpression"]
+text = '^(?:rejectUnauthorized|strictSSL):false$|^process\.env\.NODE_TLS_REJECT_UNAUTHORIZED=[\"\x27`]?0[\"\x27`]?$'
+message = "this setting turns off certificate checks, so anyone can impersonate the server; keep verification on"
+'''
+
+[[rules]]
+id = "ward:javascript/cleartext-transport"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:fetch|axios|got|(?:axios|got|http|ky)\.(?:get|post|put|patch|delete|head|request))\([\"\x27`]http://(?!localhost|127\.0\.0\.1|\[::1\])[^\"\x27`]*[\"\x27`](?:,(?:[^()]|\([^()]*\))*)?\)$|^newWebSocket\([\"\x27`]ws://(?!localhost|127\.0\.0\.1|\[::1\])[^\"\x27`]*[\"\x27`]\)$'
+message = "this address uses http or ws, which send data in clear text; use https or wss"
+'''
+
+[[rules]]
+id = "ward:typescript/cleartext-transport"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:fetch|axios|got|(?:axios|got|http|ky)\.(?:get|post|put|patch|delete|head|request))\([\"\x27`]http://(?!localhost|127\.0\.0\.1|\[::1\])[^\"\x27`]*[\"\x27`](?:,(?:[^()]|\([^()]*\))*)?\)$|^newWebSocket\([\"\x27`]ws://(?!localhost|127\.0\.0\.1|\[::1\])[^\"\x27`]*[\"\x27`]\)$'
+message = "this address uses http or ws, which send data in clear text; use https or wss"
+'''
+
+[[rules]]
+id = "ward:javascript/jwt-without-verification"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["propertyAssignment"]
+text = '^algorithms?:\[?[\"\x27`](?i:none)[\"\x27`]\]?$'
+message = "the none algorithm skips the signature, so anyone can forge the token; name a real algorithm"
+'''
+
+[[rules]]
+id = "ward:typescript/jwt-without-verification"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["propertyAssignment"]
+text = '^algorithms?:\[?[\"\x27`](?i:none)[\"\x27`]\]?$'
+message = "the none algorithm skips the signature, so anyone can forge the token; name a real algorithm"
+'''
+
+[[rules]]
+id = "ward:javascript/hard-coded-secret"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["propertyAssignment", "singleExpression"]
+text = '^secret:[\"\x27`][^"\x27`$]+[\"\x27`]$|^jwt\.(?:sign|verify)\(.*,[\"\x27`][^"\x27]+[\"\x27`](?:,\{[^{}]*\})?\)$'
+message = "this secret is a string literal in the source; read it from the environment or a secret store"
+'''
+
+[[rules]]
+id = "ward:typescript/hard-coded-secret"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["propertyAssignment", "singleExpression"]
+text = '^secret:[\"\x27`][^"\x27`$]+[\"\x27`]$|^jwt\.(?:sign|verify)\(.*,[\"\x27`][^"\x27]+[\"\x27`](?:,\{[^{}]*\})?\)$'
+message = "this secret is a string literal in the source; read it from the environment or a secret store"
+'''
+
+[[rules]]
+id = "ward:javascript/insecure-cookie"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:res|response)\.cookie\(.*\b(?:secure|httpOnly):false\b.*\)$|^(?:session|cookieSession)\(\{.*\bcookie:\{[^{}]*\b(?:secure|httpOnly):false\b[^{}]*\}.*\}\)$'
+message = "this cookie is allowed over plain http or from scripts; set secure and httpOnly"
+'''
+
+[[rules]]
+id = "ward:typescript/insecure-cookie"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:res|response)\.cookie\(.*\b(?:secure|httpOnly):false\b.*\)$|^(?:session|cookieSession)\(\{.*\bcookie:\{[^{}]*\b(?:secure|httpOnly):false\b[^{}]*\}.*\}\)$'
+message = "this cookie is allowed over plain http or from scripts; set secure and httpOnly"
+'''
+
+[[rules]]
+id = "ward:javascript/permissive-cors"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^cors\(\)$|^cors\(\{[^{}]*\borigin:(?:[\"\x27`]\*[\"\x27`]|true)(?:,|\})|^(?:\w+\.)+(?:setHeader|header|set|append)\([\"\x27`](?i:access-control-allow-origin)[\"\x27`],[\"\x27`]\*[\"\x27`]\)$'
+message = "this setting lets every origin call the API from a browser; list the origins that need access"
+'''
+
+[[rules]]
+id = "ward:typescript/permissive-cors"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^cors\(\)$|^cors\(\{[^{}]*\borigin:(?:[\"\x27`]\*[\"\x27`]|true)(?:,|\})|^(?:\w+\.)+(?:setHeader|header|set|append)\([\"\x27`](?i:access-control-allow-origin)[\"\x27`],[\"\x27`]\*[\"\x27`]\)$'
+message = "this setting lets every origin call the API from a browser; list the origins that need access"
+'''
+
+[[rules]]
+id = "ward:javascript/wildcard-post-message"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:\w+\.)*postMessage\(.+,[\"\x27`]\*[\"\x27`](?:,\[[^\]]*\])?\)$'
+message = "the target origin * sends the message to any page that holds the window; name the receiving origin"
+'''
+
+[[rules]]
+id = "ward:typescript/wildcard-post-message"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:\w+\.)*postMessage\(.+,[\"\x27`]\*[\"\x27`](?:,\[[^\]]*\])?\)$'
+message = "the target origin * sends the message to any page that holds the window; name the receiving origin"
+'''
+
+[[rules]]
+id = "ward:javascript/dom-xss"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^\w+(?:\.\w+)*\.(?:innerHTML|outerHTML)=(?![\"\x27`][^"\x27`$]*[\"\x27`]$)(?:[^()]|\([^()]*\))*$|^document\.(?:write|writeln)\((?![\"\x27`][^"\x27`$]*[\"\x27`]\)$)(?:[^()]|\([^()]*\))*\)$|^[\w.]+\.insertAdjacentHTML\([^,()]+,(?![\"\x27`][^"\x27`$]*[\"\x27`]\)$)(?:[^()]|\([^()]*\))*\)$'
+message = "this call writes a computed string as markup; use textContent, or sanitize the string first"
+'''
+
+[[rules]]
+id = "ward:typescript/dom-xss"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^\w+(?:\.\w+)*\.(?:innerHTML|outerHTML)=(?![\"\x27`][^"\x27`$]*[\"\x27`]$)(?:[^()]|\([^()]*\))*$|^document\.(?:write|writeln)\((?![\"\x27`][^"\x27`$]*[\"\x27`]\)$)(?:[^()]|\([^()]*\))*\)$|^[\w.]+\.insertAdjacentHTML\([^,()]+,(?![\"\x27`][^"\x27`$]*[\"\x27`]\)$)(?:[^()]|\([^()]*\))*\)$'
+message = "this call writes a computed string as markup; use textContent, or sanitize the string first"
+'''
+
+[[rules]]
+id = "ward:javascript/unsafe-framework-trust"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^[\w.]+\.bypassSecurityTrust(?:Html|Script|Style|Url|ResourceUrl)\((?![\"\x27`][^"\x27`$]*[\"\x27`]\)$)(?:[^()]|\([^()]*\))*\)$'
+message = "this call tells Angular to skip its sanitizer for a computed value; sanitize it or bind it as text"
+'''
+
+[[rules]]
+id = "ward:typescript/unsafe-framework-trust"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^[\w.]+\.bypassSecurityTrust(?:Html|Script|Style|Url|ResourceUrl)\((?![\"\x27`][^"\x27`$]*[\"\x27`]\)$)(?:[^()]|\([^()]*\))*\)$'
+message = "this call tells Angular to skip its sanitizer for a computed value; sanitize it or bind it as text"
+'''
+
+[[rules]]
+id = "ward:javascript/prototype-pollution"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^[\w.\[\]"\x27]*__proto__[\w.\[\]"\x27]*=|^[\w.]*\.constructor\.prototype\.\w+='
+message = "this write changes the prototype shared by every object; build objects with Object.create(null) or a Map"
+'''
+
+[[rules]]
+id = "ward:typescript/prototype-pollution"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^[\w.\[\]"\x27]*__proto__[\w.\[\]"\x27]*=|^[\w.]*\.constructor\.prototype\.\w+='
+message = "this write changes the prototype shared by every object; build objects with Object.create(null) or a Map"
+'''
+
+[[rules]]
+id = "ward:javascript/xml-external-entities"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["propertyAssignment"]
+text = '^(?:noent|dtdload):true$'
+message = "this option makes the XML parser expand external entities or load DTDs, which can read files; turn it off"
+'''
+
+[[rules]]
+id = "ward:typescript/xml-external-entities"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["propertyAssignment"]
+text = '^(?:noent|dtdload):true$'
+message = "this option makes the XML parser expand external entities or load DTDs, which can read files; turn it off"
+'''
+
+[[rules]]
+id = "ward:javascript/shell-option"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["propertyAssignment"]
+text = '^shell:(?:true|[\"\x27`][^\"\x27`]+[\"\x27`])$'
+message = "the shell option runs the command through a shell, where metacharacters in any argument are interpreted; pass the arguments as an array without it"
+'''
+
+[[rules]]
+id = "ward:typescript/shell-option"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["propertyAssignment"]
+text = '^shell:(?:true|[\"\x27`][^\"\x27`]+[\"\x27`])$'
+message = "the shell option runs the command through a shell, where metacharacters in any argument are interpreted; pass the arguments as an array without it"
+'''

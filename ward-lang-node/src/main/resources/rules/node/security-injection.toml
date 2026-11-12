@@ -1,0 +1,262 @@
+# Injection rules for JavaScript and TypeScript: untrusted input from a request reaches a sensitive call within one function.
+# Each follows the taint specifications taint/node/ward-<weakness>.toml and taint/node/sources.toml.
+
+[[rules]]
+id = "ward:javascript/sql-injection"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/ward-sql-injection.toml"]
+message = "untrusted data from {source} is part of the SQL text of {sink}; pass it as a bound parameter instead"
+'''
+
+[[rules]]
+id = "ward:typescript/sql-injection"
+language = "TYPESCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/ward-sql-injection.toml"]
+message = "untrusted data from {source} is part of the SQL text of {sink}; pass it as a bound parameter instead"
+'''
+
+[[rules]]
+id = "ward:javascript/nosql-injection"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/ward-nosql-injection.toml"]
+message = "untrusted data from {source} is used as a query filter by {sink}; an object with operators such as $ne would change the query, so convert the value to a string first"
+'''
+
+[[rules]]
+id = "ward:typescript/nosql-injection"
+language = "TYPESCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/ward-nosql-injection.toml"]
+message = "untrusted data from {source} is used as a query filter by {sink}; an object with operators such as $ne would change the query, so convert the value to a string first"
+'''
+
+[[rules]]
+id = "ward:javascript/code-injection"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/ward-code-injection.toml"]
+message = "untrusted data from {source} is run as code by {sink}; never build a script from request data"
+'''
+
+[[rules]]
+id = "ward:typescript/code-injection"
+language = "TYPESCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/ward-code-injection.toml"]
+message = "untrusted data from {source} is run as code by {sink}; never build a script from request data"
+'''
+
+[[rules]]
+id = "ward:javascript/open-redirect"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/ward-open-redirect.toml"]
+message = "untrusted data from {source} decides where the user is sent, through {sink}; allow only known targets"
+'''
+
+[[rules]]
+id = "ward:typescript/open-redirect"
+language = "TYPESCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/ward-open-redirect.toml"]
+message = "untrusted data from {source} decides where the user is sent, through {sink}; allow only known targets"
+'''
+
+[[rules]]
+id = "ward:javascript/ssrf"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/ward-ssrf.toml"]
+message = "untrusted data from {source} chooses the address that {sink} requests; check the host against an allow-list"
+'''
+
+[[rules]]
+id = "ward:typescript/ssrf"
+language = "TYPESCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/ward-ssrf.toml"]
+message = "untrusted data from {source} chooses the address that {sink} requests; check the host against an allow-list"
+'''
+
+[[rules]]
+id = "ward:javascript/untrusted-deserialization"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/ward-untrusted-deserialization.toml"]
+message = "untrusted data from {source} is deserialized by {sink}, which can run attacker-chosen code; parse a data format such as JSON instead"
+'''
+
+[[rules]]
+id = "ward:typescript/untrusted-deserialization"
+language = "TYPESCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/ward-untrusted-deserialization.toml"]
+message = "untrusted data from {source} is deserialized by {sink}, which can run attacker-chosen code; parse a data format such as JSON instead"
+'''
+
+[[rules]]
+id = "ward:javascript/template-injection"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/ward-template-injection.toml"]
+message = "untrusted data from {source} is compiled as a template by {sink}; keep the template fixed and pass the data as a variable"
+'''
+
+[[rules]]
+id = "ward:typescript/template-injection"
+language = "TYPESCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/ward-template-injection.toml"]
+message = "untrusted data from {source} is compiled as a template by {sink}; keep the template fixed and pass the data as a variable"
+'''
+
+[[rules]]
+id = "ward:javascript/log-forging"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/ward-log-forging.toml"]
+message = "untrusted data from {source} is written to the log by {sink}; line breaks in it could forge log entries"
+'''
+
+[[rules]]
+id = "ward:typescript/log-forging"
+language = "TYPESCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/ward-log-forging.toml"]
+message = "untrusted data from {source} is written to the log by {sink}; line breaks in it could forge log entries"
+'''
+
+[[rules]]
+id = "ward:javascript/header-injection"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/ward-header-injection.toml"]
+message = "untrusted data from {source} is written into a response header by {sink}; a line break in it would split the response"
+'''
+
+[[rules]]
+id = "ward:typescript/header-injection"
+language = "TYPESCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/ward-header-injection.toml"]
+message = "untrusted data from {source} is written into a response header by {sink}; a line break in it would split the response"
+'''
+
+[[rules]]
+id = "ward:javascript/regex-injection"
+language = "JAVASCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/ward-regex-injection.toml"]
+message = "untrusted data from {source} becomes a regular expression in {sink}; escape it or limit its length"
+'''
+
+[[rules]]
+id = "ward:typescript/regex-injection"
+language = "TYPESCRIPT"
+capability = "DATAFLOW"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/node/sources.toml", "taint/node/ward-regex-injection.toml"]
+message = "untrusted data from {source} becomes a regular expression in {sink}; escape it or limit its length"
+'''

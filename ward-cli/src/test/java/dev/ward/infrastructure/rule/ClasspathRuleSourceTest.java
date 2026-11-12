@@ -6,8 +6,10 @@ import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.AnalysisSeverity;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
+import dev.ward.analysis.domain.rule.RulePreset;
 import dev.ward.application.gate.AnalysisRuleLoad;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
@@ -79,7 +81,16 @@ class ClasspathRuleSourceTest {
             rule -> {
               assertThat(rule.languages()).containsExactly(AnalysisLanguage.JAVA);
               assertThat(rule.capability()).isEqualTo(capabilityOf(rule));
-              assertThat(rule.severity()).isEqualTo(AnalysisSeverity.ERROR);
+              // Ward's own hardening rules, strict only, are warnings; every other rule is an
+              // error.
+              final boolean hardening =
+                  "security".equals(rule.category())
+                      && rule.presets().equals(Set.of(RulePreset.STRICT));
+              assertThat(rule.severity())
+                  .isIn(
+                      hardening
+                          ? List.of(AnalysisSeverity.ERROR, AnalysisSeverity.WARNING)
+                          : List.of(AnalysisSeverity.ERROR));
             });
   }
 

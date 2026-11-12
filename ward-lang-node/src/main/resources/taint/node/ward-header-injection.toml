@@ -1,0 +1,64 @@
+# Written for Ward from the documentation named in the catalog row of the rule; sources: taint/node/sources.toml.
+# Header sinks: the name and the value of a response header, matched by the name of the response variable.
+
+[[sinks]]
+kind = "call"
+name = "setHeader"
+qualifier = "res"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "setHeader"
+qualifier = "response"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "header"
+qualifier = "res"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "header"
+qualifier = "response"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "set"
+qualifier = "res"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "set"
+qualifier = "response"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "append"
+qualifier = "res"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "append"
+qualifier = "response"
+arguments = [0, 1]
+
+
+[[sanitizers]]
+kind = "call"
+name = "Number"
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+
+[[sanitizers]]
+kind = "call"
+name = "parseFloat"
+
