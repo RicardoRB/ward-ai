@@ -1,0 +1,98 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] parent                                                             [pom]
+[INFO] domain                                                             [jar]
+[INFO] api                                                                [jar]
+[INFO] Loaded 24457 auto-discovered prefixes for remote repository central (prefixes-central.txt)
+[INFO] 
+[INFO] -------------------------< dev.example:parent >-------------------------
+[INFO] Building parent 1.0.0                                              [1/3]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.11.0:tree (default-cli) @ parent ---
+[INFO] Loaded 64 auto-discovered prefixes for remote repository apache.snapshots (prefixes-apache.snapshots.txt)
+[INFO] 275448142 dev.example:parent:pom:1.0.0
+[INFO] #
+[INFO] 
+[INFO] -------------------------< dev.example:domain >-------------------------
+[INFO] Building domain 1.0.0                                              [2/3]
+[INFO]   from domain/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.11.0:tree (default-cli) @ domain ---
+[INFO] 1303187181 dev.example:domain:jar:1.0.0
+[INFO] 2142052682 com.google.guava:guava:jar:31.1-jre:compile
+[INFO] 373703332 com.google.guava:failureaccess:jar:1.0.1:compile
+[INFO] 1651923692 com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[INFO] 1868288866 com.google.code.findbugs:jsr305:jar:3.0.2:compile
+[INFO] 977278793 org.checkerframework:checker-qual:jar:3.12.0:compile
+[INFO] 2006166872 com.google.errorprone:error_prone_annotations:jar:2.11.0:compile
+[INFO] 669132924 com.google.j2objc:j2objc-annotations:jar:1.3:compile
+[INFO] 370356001 org.slf4j:slf4j-api:jar:2.0.16:provided
+[INFO] #
+[INFO] 2142052682 373703332 compile
+[INFO] 2142052682 1651923692 compile
+[INFO] 2142052682 1868288866 compile
+[INFO] 2142052682 977278793 compile
+[INFO] 2142052682 2006166872 compile
+[INFO] 2142052682 669132924 compile
+[INFO] 1303187181 2142052682 compile
+[INFO] 1303187181 370356001 provided
+[INFO] 
+[INFO] --------------------------< dev.example:api >---------------------------
+[INFO] Building api 1.0.0                                                 [3/3]
+[INFO]   from api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.11.0:tree (default-cli) @ api ---
+[INFO] 1487814699 dev.example:api:jar:1.0.0
+[INFO] 1083777179 dev.example:domain:jar:1.0.0:compile
+[INFO] 1135348328 (com.google.guava:guava:jar:31.1-jre:compile - omitted for conflict with 33.0.0-jre)
+[INFO] 497877502 com.fasterxml.jackson.core:jackson-databind:jar:2.18.2:compile
+[INFO] 925410680 com.fasterxml.jackson.core:jackson-annotations:jar:2.18.2:compile
+[INFO] 1044174590 com.fasterxml.jackson.core:jackson-core:jar:2.18.2:compile
+[INFO] 501244955 com.google.guava:guava:jar:33.0.0-jre:compile
+[INFO] 1756837032 com.google.guava:failureaccess:jar:1.0.2:compile
+[INFO] 440815523 com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[INFO] 1108730163 com.google.code.findbugs:jsr305:jar:3.0.2:compile
+[INFO] 1556841942 org.checkerframework:checker-qual:jar:3.41.0:compile
+[INFO] 227080339 com.google.errorprone:error_prone_annotations:jar:2.23.0:compile
+[INFO] 630949334 com.google.j2objc:j2objc-annotations:jar:2.8:compile
+[INFO] 1223357487 org.junit.jupiter:junit-jupiter-api:jar:5.11.3:test
+[INFO] 1217347025 org.opentest4j:opentest4j:jar:1.3.0:test
+[INFO] 34150451 org.junit.platform:junit-platform-commons:jar:1.11.3:test
+[INFO] 2076543121 (org.apiguardian:apiguardian-api:jar:1.1.2:test - omitted for duplicate)
+[INFO] 1678856266 org.apiguardian:apiguardian-api:jar:1.1.2:test
+[INFO] #
+[INFO] 1083777179 1135348328 compile
+[INFO] 1487814699 1083777179 compile
+[INFO] 497877502 925410680 compile
+[INFO] 497877502 1044174590 compile
+[INFO] 1487814699 497877502 compile
+[INFO] 501244955 1756837032 compile
+[INFO] 501244955 440815523 compile
+[INFO] 501244955 1108730163 compile
+[INFO] 501244955 1556841942 compile
+[INFO] 501244955 227080339 compile
+[INFO] 501244955 630949334 compile
+[INFO] 1487814699 501244955 compile
+[INFO] 1223357487 1217347025 test
+[INFO] 34150451 2076543121 test
+[INFO] 1223357487 34150451 test
+[INFO] 1223357487 1678856266 test
+[INFO] 1487814699 1223357487 test
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for parent 1.0.0:
+[INFO] 
+[INFO] parent ............................................. SUCCESS [  0.763 s]
+[INFO] domain ............................................. SUCCESS [  0.024 s]
+[INFO] api ................................................ SUCCESS [  0.020 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.955 s
+[INFO] Finished at: 2026-11-12T01:46:31+01:00
+[INFO] ------------------------------------------------------------------------
