@@ -6,13 +6,12 @@ import dev.ward.domain.config.OpenApiGateOptions;
 import dev.ward.domain.gate.ProjectFiles;
 import dev.ward.domain.gate.QualityGate;
 import dev.ward.domain.gate.RevisionFiles;
+import dev.ward.domain.gate.RevisionReadException;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.time.Clock;
 import java.time.Instant;
@@ -117,7 +116,7 @@ final class OpenApiGateFixtures {
           @Override
           public Optional<String> read(final Path root, final String commit, final String path) {
             if (unreadable) {
-              throw new UncheckedIOException(new IOException("git failed"));
+              throw new RevisionReadException("git failed");
             }
             return Optional.ofNullable(committedContents.get(commit + ":" + path));
           }

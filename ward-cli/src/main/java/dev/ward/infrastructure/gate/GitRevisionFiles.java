@@ -1,10 +1,9 @@
 package dev.ward.infrastructure.gate;
 
 import dev.ward.domain.gate.RevisionFiles;
+import dev.ward.domain.gate.RevisionReadException;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
@@ -53,8 +52,7 @@ public final class GitRevisionFiles implements RevisionFiles {
         executor.execute(List.of("git", "show", "--end-of-options", commit + ":./" + path), root);
     if (!result.succeeded()) {
       LOG.log(Level.WARNING, "git show failed for a file at revision {0}", commit);
-      throw new UncheckedIOException(
-          new IOException("Git could not read " + path + " at revision " + commit));
+      throw new RevisionReadException("Git could not read " + path + " at revision " + commit);
     }
     return Optional.of(result.stdout());
   }

@@ -13,8 +13,8 @@ import dev.ward.domain.gate.GateFindings;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.GateStatus;
 import dev.ward.domain.gate.QualityGate;
+import dev.ward.domain.gate.RevisionReadException;
 import dev.ward.domain.project.Project;
-import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.time.Clock;
 import java.time.LocalDate;
@@ -96,7 +96,7 @@ final class OpenApiDiffGate implements QualityGate {
     final LoadResult before;
     try {
       before = OpenApiDocuments.load(spec, new RevisionFileReader(ports.revisions(), root, commit));
-    } catch (final UncheckedIOException unreadable) {
+    } catch (final RevisionReadException unreadable) {
       LOGGER.log(Level.INFO, () -> "event=openapi-diff-git-error gate=" + name);
       return error("Cannot read " + spec + " at " + commit + " from Git.");
     }

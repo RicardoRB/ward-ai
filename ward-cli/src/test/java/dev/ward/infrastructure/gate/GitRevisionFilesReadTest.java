@@ -4,10 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.domain.FakeCommandExecutor;
+import dev.ward.domain.gate.RevisionReadException;
 import dev.ward.domain.process.CommandResult;
 import dev.ward.infrastructure.process.ProcessCommandExecutor;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
@@ -48,7 +48,7 @@ class GitRevisionFilesReadTest {
             new CommandResult(1, "", "", Duration.ZERO));
 
     assertThatThrownBy(() -> new GitRevisionFiles(onlyShowFails).read(root, "abc", SPEC))
-        .isInstanceOf(UncheckedIOException.class);
+        .isInstanceOf(RevisionReadException.class);
   }
 
   private String commitSpec(final String text) throws IOException {
