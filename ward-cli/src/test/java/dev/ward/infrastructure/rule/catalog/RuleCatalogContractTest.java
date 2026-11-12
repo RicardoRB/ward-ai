@@ -40,6 +40,7 @@ class RuleCatalogContractTest {
   void everyRuleDefinitionThatShipsBelongsToExactlyOneImplementedRow() {
     final Map<String, List<String>> owners =
         catalog.rows().stream()
+            .filter(row -> !row.breaking())
             .flatMap(
                 row ->
                     row.languages(CatalogStatus.IMPLEMENTED).stream()
@@ -65,6 +66,9 @@ class RuleCatalogContractTest {
     final Map<String, RuleDefinition> byId = new HashMap<>();
     definitions.forEach(rule -> byId.put(rule.id(), rule));
     for (final CatalogRow row : catalog.rows()) {
+      if (row.breaking()) {
+        continue;
+      }
       for (final AnalysisLanguage language : row.languages(CatalogStatus.IMPLEMENTED)) {
         final RuleDefinition rule = byId.get(row.idFor(language));
         assertThat(rule.category()).as("category of %s", rule.id()).isNotBlank();
@@ -112,7 +116,7 @@ class RuleCatalogContractTest {
   @Test
   void everyRowWithoutAnImplementedRuleHasACategoryAndALanguage() {
     for (final CatalogRow row : catalog.rows()) {
-      if (row.languages(CatalogStatus.IMPLEMENTED).isEmpty()) {
+      if (!row.breaking() && row.languages(CatalogStatus.IMPLEMENTED).isEmpty()) {
         assertThat(row.category()).as("category of %s", row.name()).isNotBlank();
         assertThat(row.languages(CatalogStatus.PLANNED))
             .as("planned languages of %s", row.name())

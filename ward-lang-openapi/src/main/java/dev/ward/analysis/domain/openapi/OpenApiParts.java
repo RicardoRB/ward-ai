@@ -45,6 +45,11 @@ public final class OpenApiParts {
     return document.root().get("paths").map(DocNode::entries).orElse(List.of());
   }
 
+  /** Returns the entries of {@code webhooks} (OpenAPI 3.1) in file order. */
+  public List<DocNode.Entry> webhooks() {
+    return document.root().get("webhooks").map(DocNode::entries).orElse(List.of());
+  }
+
   /** Returns the {@code components} object. */
   public Optional<DocNode> components() {
     return document.root().get("components");

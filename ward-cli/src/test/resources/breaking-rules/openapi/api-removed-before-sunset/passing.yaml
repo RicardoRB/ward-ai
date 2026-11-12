@@ -1,0 +1,16 @@
+openapi: 3.0.3
+info:
+  title: Pets
+  version: "2"
+paths:
+  /pets:
+    get:
+      deprecated: true
+      x-sunset: "2999-01-01"
+      responses:
+        '200':
+          description: ok
+    post:
+      responses:
+        '200':
+          description: ok

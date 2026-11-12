@@ -3,6 +3,7 @@
 [[rule]]
 name = "api-deprecated-sunset-missing"
 category = "correctness"
+not-applicable = { openapi = "oasdiff reports it only when a deprecation-days flag asks for a sunset date, and Ward offers no such flag, so with default flags it never fires" }
 oasdiff = ["api-deprecated-sunset-missing"]
 
 [[rule]]

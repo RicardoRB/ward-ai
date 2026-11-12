@@ -128,6 +128,9 @@ class RuleCatalogFixturesTest {
   private static List<Pair> implemented() {
     final List<Pair> pairs = new ArrayList<>();
     for (final CatalogRow row : CATALOG.rows()) {
+      if (row.breaking()) {
+        continue;
+      }
       for (final AnalysisLanguage language : row.languages(CatalogStatus.IMPLEMENTED)) {
         pairs.add(new Pair(row, language));
       }

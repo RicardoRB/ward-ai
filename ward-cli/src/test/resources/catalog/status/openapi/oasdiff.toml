@@ -1,15 +1,15 @@
 # Status of the oasdiff rows in openapi: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-api-deprecated-sunset-missing = { status = "planned", issue = "#523" }
-api-deprecated-sunset-parse = { status = "planned", issue = "#523" }
+api-deprecated-sunset-missing = "not-applicable"
+api-deprecated-sunset-parse = "implemented"
 api-global-security-removed = { status = "planned", issue = "#523" }
 api-global-security-scope-added = { status = "planned", issue = "#523" }
-api-invalid-stability-level = { status = "planned", issue = "#523" }
-api-path-removed-before-sunset = { status = "planned", issue = "#523" }
-api-path-removed-without-deprecation = { status = "planned", issue = "#523" }
-api-path-sunset-parse = { status = "planned", issue = "#523" }
-api-removed-before-sunset = { status = "planned", issue = "#523" }
-api-removed-without-deprecation = { status = "planned", issue = "#523" }
+api-invalid-stability-level = "implemented"
+api-path-removed-before-sunset = "implemented"
+api-path-removed-without-deprecation = "implemented"
+api-path-sunset-parse = "implemented"
+api-removed-before-sunset = "implemented"
+api-removed-without-deprecation = "implemented"
 api-security-anonymous-access-removed = { status = "planned", issue = "#523" }
 api-security-component-api-key-in-changed = { status = "planned", issue = "#523" }
 api-security-component-api-key-name-changed = { status = "planned", issue = "#523" }
@@ -17,10 +17,10 @@ api-security-component-http-scheme-changed = { status = "planned", issue = "#523
 api-security-component-type-changed = { status = "planned", issue = "#523" }
 api-security-removed = { status = "planned", issue = "#523" }
 api-security-scope-added = { status = "planned", issue = "#523" }
-api-stability-decreased = { status = "planned", issue = "#523" }
-api-sunset-date-changed-earlier = { status = "planned", issue = "#523" }
-api-sunset-date-changed-too-small = { status = "planned", issue = "#523" }
-api-sunset-date-too-small = { status = "planned", issue = "#523" }
+api-stability-decreased = "implemented"
+api-sunset-date-changed-earlier = "implemented"
+api-sunset-date-changed-too-small = "implemented"
+api-sunset-date-too-small = "implemented"
 new-request-path-parameter = { status = "planned", issue = "#523" }
 new-required-request-default-parameter-to-existing-path = { status = "planned", issue = "#523" }
 new-required-request-header-property = { status = "planned", issue = "#523" }
@@ -357,5 +357,5 @@ response-required-property-became-write-only = { status = "planned", issue = "#5
 response-required-property-removed = { status = "planned", issue = "#523" }
 response-required-property-removed-before-sunset = { status = "planned", issue = "#523" }
 response-success-status-removed = { status = "planned", issue = "#523" }
-sunset-deleted = { status = "planned", issue = "#523" }
-webhook-removed = { status = "planned", issue = "#523" }
+sunset-deleted = "implemented"
+webhook-removed = "implemented"

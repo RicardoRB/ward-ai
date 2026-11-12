@@ -67,6 +67,15 @@ public record CatalogRow(
     return statuses.getOrDefault(language, LanguageStatus.notApplicable(UNLISTED_REASON));
   }
 
+  /**
+   * Tells whether the row is a breaking-change rule of the OpenAPI diff: a counterpart of oasdiff.
+   * Such a rule compares two documents, so it has no rule definition, no presets and no single
+   * document fixtures; {@code BreakingRulesCatalogTest} checks it instead.
+   */
+  public boolean breaking() {
+    return counterparts.containsKey("oasdiff");
+  }
+
   /** Returns the id the rule has, or would have, in {@code language}. */
   public String idFor(final AnalysisLanguage language) {
     return ids.getOrDefault(language, "ward:" + key(language) + "/" + name);
