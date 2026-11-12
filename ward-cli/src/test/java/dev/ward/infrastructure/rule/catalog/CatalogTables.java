@@ -98,11 +98,6 @@ final class CatalogTables {
     return counterparts;
   }
 
-  /** Returns the list of strings at {@code key}, empty when the row has no such key. */
-  static List<String> strings(final TomlTable row, final String key) {
-    return row.contains(key) ? strings(row.get(key), key) : List.of();
-  }
-
   private static CatalogStatusFiles.Entry entryOf(
       final String key, final TomlTable status, final TomlTable issues) {
     return new CatalogStatusFiles.Entry(

@@ -9,6 +9,13 @@ import org.junit.jupiter.api.Test;
 /** Checks the method mapping on a two-case sample written by hand in the shape of Juliet. */
 class JulietMethodsTest {
 
+  // Zero-based lines of SAMPLE.
+  private static final int BAD_FIRST = 2;
+  private static final int BAD_LAST = 3;
+  private static final int GOOD_BODY = 7;
+  private static final int GOOD_CALL = 12;
+  private static final int MAIN_BODY = 16;
+
   private static final String SAMPLE =
       """
       public class Sample_01 extends AbstractTestCase {
@@ -36,11 +43,10 @@ class JulietMethodsTest {
   void aLineTakesTheKindOfTheMemberThatHoldsIt() {
     final List<Kind> kinds = JulietMethods.kinds(SAMPLE);
 
-    assertThat(kinds.get(2)).isEqualTo(Kind.BAD);
-    assertThat(kinds.get(3)).isEqualTo(Kind.BAD);
-    assertThat(kinds.get(7)).isEqualTo(Kind.GOOD);
-    assertThat(kinds.get(12)).isEqualTo(Kind.GOOD);
-    assertThat(kinds.get(16)).isEqualTo(Kind.OTHER);
+    assertThat(kinds.subList(BAD_FIRST, BAD_LAST + 1)).containsOnly(Kind.BAD);
+    assertThat(kinds.get(GOOD_BODY)).isEqualTo(Kind.GOOD);
+    assertThat(kinds.get(GOOD_CALL)).isEqualTo(Kind.GOOD);
+    assertThat(kinds.get(MAIN_BODY)).isEqualTo(Kind.OTHER);
   }
 
   @Test
