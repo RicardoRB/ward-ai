@@ -1,45 +1,87 @@
 package dev.ward.analysis.domain.openapi.breaking;
 
 import dev.ward.analysis.domain.openapi.DocNode;
-import dev.ward.analysis.domain.openapi.OpenApiParts.Operation;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
+import java.util.function.Function;
 
 /**
- * The rules about the sunset date of an operation that exists in both documents. The minimum
- * deprecation period is zero days, as in oasdiff without its deprecation flags, so a sunset is too
- * small only when it is already past.
+ * The rules about the sunset date of an operation, a parameter or a property that exists in both
+ * documents. The minimum deprecation period is zero days, as in oasdiff without its deprecation
+ * flags, so a sunset is too small only when it is already past.
  */
 final class SunsetRules {
 
   private SunsetRules() {}
 
-  /** The sunset rules, one per oasdiff check that fires with the default flags. */
-  static List<BreakingRule> rules() {
-    return List.of(
-        each("api-deprecated-sunset-parse", SunsetRules::unparsable),
-        each("api-sunset-date-too-small", SunsetRules::tooSmall),
-        each("api-sunset-date-changed-earlier", change -> moved(change, false)),
-        each("api-sunset-date-changed-too-small", change -> moved(change, true)),
-        each("sunset-deleted", SunsetRules::deleted));
+  /** The names of the five checks of a family and where to find what they apply to. */
+  private record Family(
+      String parse,
+      String tooSmall,
+      String earlier,
+      String changedTooSmall,
+      String deleted,
+      Function<DocumentPair, List<Subject>> subjects) {
+
+    List<BreakingRule> rules() {
+      return List.of(
+          each(parse, subjects, SunsetRules::unparsable),
+          each(tooSmall, subjects, SunsetRules::tooSmall),
+          each(earlier, subjects, change -> moved(change, false)),
+          each(changedTooSmall, subjects, change -> moved(change, true)),
+          each(deleted, subjects, SunsetRules::deleted));
+    }
   }
 
-  /** One operation in both documents, the day, and the id a finding gets. */
-  private record Change(Operation base, Operation revision, LocalDate today, String id) {
+  /** The sunset rules, one per oasdiff check that fires with the default flags. */
+  static List<BreakingRule> rules() {
+    final List<BreakingRule> rules = new ArrayList<>();
+    for (final Family family :
+        List.of(
+            new Family(
+                "api-deprecated-sunset-parse",
+                "api-sunset-date-too-small",
+                "api-sunset-date-changed-earlier",
+                "api-sunset-date-changed-too-small",
+                "sunset-deleted",
+                Subjects::operations),
+            new Family(
+                "request-parameter-sunset-parse",
+                "request-parameter-sunset-date-too-small",
+                "request-parameter-sunset-date-changed-earlier",
+                "request-parameter-sunset-date-changed-too-small",
+                "request-parameter-sunset-deleted",
+                Subjects::parameters),
+            new Family(
+                "request-property-deprecated-sunset-invalid",
+                "request-property-sunset-date-too-small",
+                "request-property-sunset-date-changed-earlier",
+                "request-property-sunset-date-changed-too-small",
+                "request-property-sunset-deleted",
+                Subjects::requestProperties),
+            new Family(
+                "response-property-deprecated-sunset-invalid",
+                "response-property-sunset-date-too-small",
+                "response-property-sunset-date-changed-earlier",
+                "response-property-sunset-date-changed-too-small",
+                "response-property-sunset-deleted",
+                Subjects::responseProperties))) {
+      rules.addAll(family.rules());
+    }
+    return rules;
+  }
+
+  /** One subject in both documents, the day, and the id a finding gets. */
+  private record Change(Subject subject, LocalDate today, String id) {
 
     Optional<DocNode> sunset() {
-      return Lifecycle.sunset(revision.node());
+      return Lifecycle.sunset(subject.revision());
     }
 
     BreakingFinding at(final DocNode node, final String message) {
-      return new BreakingFinding(
-          id,
-          OperationIndex.method(revision) + " " + revision.path() + ": " + message,
-          OperationIndex.method(revision),
-          revision.path(),
-          node);
+      return subject.finding(id, node, message);
     }
   }
 
@@ -48,28 +90,21 @@ final class SunsetRules {
     Optional<BreakingFinding> check(Change change);
   }
 
-  private static BreakingRule each(final String id, final Check check) {
+  private static BreakingRule each(
+      final String id, final Function<DocumentPair, List<Subject>> subjects, final Check check) {
     return RowRule.of(
         id,
-        pair -> {
-          final OperationIndex revision = new OperationIndex(pair.revision());
-          return StreamSupport.stream(new OperationIndex(pair.base()).all().spliterator(), false)
-              .flatMap(
-                  base ->
-                      revision
-                          .counterpart(base)
-                          .map(now -> new Change(base, now, pair.today(), RowRule.PREFIX + id))
-                          .flatMap(check::check)
-                          .stream())
-              .toList();
-        });
+        pair ->
+            subjects.apply(pair).stream()
+                .flatMap(subject -> check.check(new Change(subject, pair.today(), id)).stream())
+                .toList());
   }
 
   private static Optional<BreakingFinding> unparsable(final Change change) {
     final Optional<DocNode> now = change.sunset();
-    final String before = Lifecycle.sunset(change.base().node()).map(DocNode::text).orElse("");
+    final String before = Lifecycle.sunset(change.subject().base()).map(DocNode::text).orElse("");
     if (now.isPresent()
-        && Lifecycle.deprecated(change.revision().node())
+        && Lifecycle.deprecated(change.subject().revision())
         && !before.equals(now.get().text())
         && Lifecycle.day(now.get()).isEmpty()) {
       return Optional.of(
@@ -81,8 +116,8 @@ final class SunsetRules {
   private static Optional<BreakingFinding> tooSmall(final Change change) {
     final Optional<DocNode> now = change.sunset();
     if (now.isPresent()
-        && Lifecycle.deprecated(change.revision().node())
-        && sunsetDay(change.base()).isEmpty()
+        && Lifecycle.deprecated(change.subject().revision())
+        && sunsetDay(change.subject().base()).isEmpty()
         && Lifecycle.day(now.get()).filter(day -> day.isBefore(change.today())).isPresent()) {
       return Optional.of(change.at(now.get(), "the sunset date is already past"));
     }
@@ -91,8 +126,8 @@ final class SunsetRules {
 
   /** A sunset moved earlier: too small when the new date is past, else just earlier. */
   private static Optional<BreakingFinding> moved(final Change change, final boolean pastWanted) {
-    final Optional<LocalDate> before = sunsetDay(change.base());
-    final Optional<LocalDate> after = sunsetDay(change.revision());
+    final Optional<LocalDate> before = sunsetDay(change.subject().base());
+    final Optional<LocalDate> after = sunsetDay(change.subject().revision());
     if (before.isPresent()
         && after.isPresent()
         && after.get().isBefore(before.get())
@@ -106,20 +141,22 @@ final class SunsetRules {
   }
 
   private static Optional<BreakingFinding> deleted(final Change change) {
-    if (Lifecycle.sunset(change.base().node()).isPresent()
+    if (Lifecycle.sunset(change.subject().base()).isPresent()
         && change.sunset().isEmpty()
-        && Lifecycle.deprecated(change.revision().node())) {
+        && Lifecycle.deprecated(change.subject().revision())) {
       return Optional.of(
           change.at(
-              change.revision().node(),
-              "the sunset date was deleted but the operation stays deprecated"));
+              change.subject().revision(),
+              "the sunset date was deleted but the "
+                  + change.subject().what()
+                  + " stays deprecated"));
     }
     return Optional.empty();
   }
 
-  private static Optional<LocalDate> sunsetDay(final Operation operation) {
-    return Lifecycle.deprecated(operation.node())
-        ? Lifecycle.sunset(operation.node()).flatMap(Lifecycle::day)
+  private static Optional<LocalDate> sunsetDay(final DocNode node) {
+    return Lifecycle.deprecated(node)
+        ? Lifecycle.sunset(node).flatMap(Lifecycle::day)
         : Optional.empty();
   }
 }

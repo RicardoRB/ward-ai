@@ -1,10 +1,10 @@
 package dev.ward.analysis.domain.openapi.breaking;
 
 import dev.ward.analysis.domain.openapi.DocNode;
-import dev.ward.analysis.domain.openapi.OpenApiParts.Operation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 /** The rules about {@code x-stability-level}: an invalid level, a level that went down. */
 final class StabilityRules {
@@ -16,31 +16,44 @@ final class StabilityRules {
   /** The stability rules. */
   static List<BreakingRule> rules() {
     return List.of(
-        RowRule.of("api-invalid-stability-level", pair -> changes(pair, true)),
-        RowRule.of("api-stability-decreased", pair -> changes(pair, false)));
+        RowRule.of("api-invalid-stability-level", StabilityRules::invalidEverywhere),
+        decreased("api-stability-decreased", Subjects::operations),
+        decreased("request-property-stability-decreased", Subjects::requestProperties),
+        decreased("response-property-stability-decreased", Subjects::responseProperties));
   }
 
-  private static List<BreakingFinding> changes(final DocumentPair pair, final boolean invalid) {
-    final OperationIndex revision = new OperationIndex(pair.revision());
+  private static List<BreakingFinding> invalidEverywhere(final DocumentPair pair) {
     final List<BreakingFinding> findings = new ArrayList<>();
-    for (final Operation base : new OperationIndex(pair.base()).all()) {
-      revision
-          .counterpart(base)
-          .flatMap(now -> invalid ? invalid(base, now) : decreased(base, now))
-          .ifPresent(findings::add);
+    for (final Function<DocumentPair, List<Subject>> subjects :
+        List.<Function<DocumentPair, List<Subject>>>of(
+            Subjects::operations, Subjects::requestProperties, Subjects::responseProperties)) {
+      for (final Subject subject : subjects.apply(pair)) {
+        invalid(subject).ifPresent(findings::add);
+      }
     }
     return findings;
   }
 
-  private static Optional<BreakingFinding> invalid(final Operation base, final Operation now) {
-    final Optional<DocNode> level = now.node().get(Lifecycle.STABILITY);
+  private static BreakingRule decreased(
+      final String id, final Function<DocumentPair, List<Subject>> subjects) {
+    return RowRule.of(
+        id,
+        pair ->
+            subjects.apply(pair).stream()
+                .flatMap(subject -> decreased(id, subject).stream())
+                .toList());
+  }
+
+  private static Optional<BreakingFinding> invalid(final Subject subject) {
+    final Optional<DocNode> level = subject.revision().get(Lifecycle.STABILITY);
     final boolean changed =
-        !level.map(DocNode::text).equals(base.node().get(Lifecycle.STABILITY).map(DocNode::text));
+        !level
+            .map(DocNode::text)
+            .equals(subject.base().get(Lifecycle.STABILITY).map(DocNode::text));
     if (level.isPresent() && changed && !LEVELS.contains(level.get().text())) {
       return Optional.of(
-          finding(
+          subject.finding(
               "api-invalid-stability-level",
-              now,
               level.get(),
               "the stability level '"
                   + level.get().text()
@@ -49,15 +62,14 @@ final class StabilityRules {
     return Optional.empty();
   }
 
-  private static Optional<BreakingFinding> decreased(final Operation base, final Operation now) {
-    final int before = rank(base);
-    final int after = rank(now);
+  private static Optional<BreakingFinding> decreased(final String id, final Subject subject) {
+    final int before = rank(subject.base());
+    final int after = rank(subject.revision());
     if (before >= 0 && after >= 0 && after < before) {
-      final DocNode at = now.node().get(Lifecycle.STABILITY).orElse(now.node());
+      final DocNode at = subject.revision().get(Lifecycle.STABILITY).orElse(subject.revision());
       return Optional.of(
-          finding(
-              "api-stability-decreased",
-              now,
+          subject.finding(
+              id,
               at,
               "the stability level decreased from "
                   + LEVELS.get(before)
@@ -68,18 +80,7 @@ final class StabilityRules {
   }
 
   /** The rank of the level; absent means stable, an invalid level has no rank. */
-  private static int rank(final Operation operation) {
-    return LEVELS.indexOf(
-        operation.node().get(Lifecycle.STABILITY).map(DocNode::text).orElse("stable"));
-  }
-
-  private static BreakingFinding finding(
-      final String id, final Operation operation, final DocNode at, final String message) {
-    return new BreakingFinding(
-        RowRule.PREFIX + id,
-        OperationIndex.method(operation) + " " + operation.path() + ": " + message,
-        OperationIndex.method(operation),
-        operation.path(),
-        at);
+  private static int rank(final DocNode node) {
+    return LEVELS.indexOf(node.get(Lifecycle.STABILITY).map(DocNode::text).orElse("stable"));
   }
 }

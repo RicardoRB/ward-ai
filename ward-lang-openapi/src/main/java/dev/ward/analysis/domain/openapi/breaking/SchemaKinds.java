@@ -36,6 +36,7 @@ final class SchemaKinds {
       min-properties-increased min-properties-set min-set multiple-of-changed multiple-of-set
       pattern-added pattern-property-added property-names-added schema-became-false then-added
       type-changed unique-items-set
+      x-extensible-enum-value-removed
       """;
 
   /** The kinds of request-parameter checks. */
@@ -48,6 +49,7 @@ final class SchemaKinds {
       min-contains-set min-increased min-items-increased min-items-set min-length-increased
       min-length-set min-properties-increased min-properties-set min-set multiple-of-set
       pattern-added schema-became-false type-changed
+      x-extensible-enum-value-removed
       """;
 
   /** The kinds of response-body checks. */

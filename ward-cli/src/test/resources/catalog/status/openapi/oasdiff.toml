@@ -125,15 +125,15 @@ request-parameter-property-enum-value-removed = { status = "planned", issue = "#
 request-parameter-property-list-of-types-narrowed = { status = "planned", issue = "#523" }
 request-parameter-property-schema-became-false = { status = "planned", issue = "#523" }
 request-parameter-property-type-specialized = { status = "planned", issue = "#523" }
-request-parameter-removed-before-sunset = { status = "planned", issue = "#523" }
+request-parameter-removed-before-sunset = "implemented"
 request-parameter-schema-became-false = "implemented"
-request-parameter-sunset-date-changed-earlier = { status = "planned", issue = "#523" }
-request-parameter-sunset-date-changed-too-small = { status = "planned", issue = "#523" }
-request-parameter-sunset-date-too-small = { status = "planned", issue = "#523" }
-request-parameter-sunset-deleted = { status = "planned", issue = "#523" }
-request-parameter-sunset-parse = { status = "planned", issue = "#523" }
+request-parameter-sunset-date-changed-earlier = "implemented"
+request-parameter-sunset-date-changed-too-small = "implemented"
+request-parameter-sunset-date-too-small = "implemented"
+request-parameter-sunset-deleted = "implemented"
+request-parameter-sunset-parse = "implemented"
 request-parameter-type-changed = "implemented"
-request-parameter-x-extensible-enum-value-removed = { status = "planned", issue = "#523" }
+request-parameter-x-extensible-enum-value-removed = "implemented"
 request-property-all-of-added = "implemented"
 request-property-any-of-removed = { status = "planned", issue = "#523" }
 request-property-became-enum = "implemented"
@@ -149,7 +149,7 @@ request-property-content-schema-added = "implemented"
 request-property-dependent-required-added = "implemented"
 request-property-dependent-required-changed = "implemented"
 request-property-dependent-schema-added = "implemented"
-request-property-deprecated-sunset-invalid = { status = "planned", issue = "#523" }
+request-property-deprecated-sunset-invalid = "implemented"
 request-property-deprecated-sunset-missing = { status = "planned", issue = "#523" }
 request-property-else-added = "implemented"
 request-property-enum-value-removed = "implemented"
@@ -185,19 +185,19 @@ request-property-one-of-removed = { status = "planned", issue = "#523" }
 request-property-pattern-added = "implemented"
 request-property-pattern-property-added = "implemented"
 request-property-property-names-added = "implemented"
-request-property-removed-before-sunset = { status = "planned", issue = "#523" }
+request-property-removed-before-sunset = "implemented"
 request-property-schema-became-false = "implemented"
-request-property-stability-decreased = { status = "planned", issue = "#523" }
-request-property-sunset-date-changed-earlier = { status = "planned", issue = "#523" }
-request-property-sunset-date-changed-too-small = { status = "planned", issue = "#523" }
-request-property-sunset-date-too-small = { status = "planned", issue = "#523" }
-request-property-sunset-deleted = { status = "planned", issue = "#523" }
+request-property-stability-decreased = "implemented"
+request-property-sunset-date-changed-earlier = "implemented"
+request-property-sunset-date-changed-too-small = "implemented"
+request-property-sunset-date-too-small = "implemented"
+request-property-sunset-deleted = "implemented"
 request-property-then-added = "implemented"
 request-property-type-changed = "implemented"
 request-property-unevaluated-items-added = { status = "planned", issue = "#523" }
 request-property-unevaluated-properties-added = { status = "planned", issue = "#523" }
 request-property-unique-items-set = "implemented"
-request-property-x-extensible-enum-value-removed = { status = "planned", issue = "#523" }
+request-property-x-extensible-enum-value-removed = "implemented"
 request-required-property-became-not-read-only = { status = "planned", issue = "#523" }
 required-response-header-removed = { status = "planned", issue = "#523" }
 response-body-all-of-removed = { status = "planned", issue = "#523" }
@@ -305,7 +305,7 @@ response-property-content-schema-removed = "implemented"
 response-property-dependent-required-changed = "implemented"
 response-property-dependent-required-removed = "implemented"
 response-property-dependent-schema-removed = "implemented"
-response-property-deprecated-sunset-invalid = { status = "planned", issue = "#523" }
+response-property-deprecated-sunset-invalid = "implemented"
 response-property-deprecated-sunset-missing = { status = "planned", issue = "#523" }
 response-property-else-removed = "implemented"
 response-property-enum-value-added = "implemented"
@@ -342,11 +342,11 @@ response-property-pattern-property-removed = "implemented"
 response-property-pattern-removed = "implemented"
 response-property-property-names-removed = "implemented"
 response-property-schema-became-not-false = "implemented"
-response-property-stability-decreased = { status = "planned", issue = "#523" }
-response-property-sunset-date-changed-earlier = { status = "planned", issue = "#523" }
-response-property-sunset-date-changed-too-small = { status = "planned", issue = "#523" }
-response-property-sunset-date-too-small = { status = "planned", issue = "#523" }
-response-property-sunset-deleted = { status = "planned", issue = "#523" }
+response-property-stability-decreased = "implemented"
+response-property-sunset-date-changed-earlier = "implemented"
+response-property-sunset-date-changed-too-small = "implemented"
+response-property-sunset-date-too-small = "implemented"
+response-property-sunset-deleted = "implemented"
 response-property-then-removed = "implemented"
 response-property-type-changed = "implemented"
 response-property-type-generalized = "implemented"
@@ -355,7 +355,7 @@ response-property-unevaluated-properties-removed = { status = "planned", issue =
 response-property-unique-items-unset = "implemented"
 response-required-property-became-write-only = { status = "planned", issue = "#523" }
 response-required-property-removed = "implemented"
-response-required-property-removed-before-sunset = { status = "planned", issue = "#523" }
+response-required-property-removed-before-sunset = "implemented"
 response-success-status-removed = { status = "planned", issue = "#523" }
 sunset-deleted = "implemented"
 webhook-removed = "implemented"

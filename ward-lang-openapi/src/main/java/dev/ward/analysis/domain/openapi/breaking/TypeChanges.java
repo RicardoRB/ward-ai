@@ -23,13 +23,12 @@ final class TypeChanges {
   static List<String> kinds(final Direction direction) {
     return direction == Direction.REQUEST
         ? List.of(
-            "type-changed", "became-not-nullable", "schema-became-false", "enum-value-removed")
-        : List.of(
             "type-changed",
-            "type-generalized",
-            "became-nullable",
-            "schema-became-not-false",
-            "enum-value-added");
+            "became-not-nullable",
+            "schema-became-false",
+            "enum-value-removed",
+            "x-extensible-enum-value-removed")
+        : List.of("type-changed", "type-generalized", "became-nullable", "schema-became-not-false");
   }
 
   /** The type changes of one schema pair. */
@@ -39,7 +38,6 @@ final class TypeChanges {
     type(sides, base, revision).ifPresent(changes::add);
     nullable(sides, base, revision).ifPresent(changes::add);
     falseSchema(sides, base, revision).ifPresent(changes::add);
-    enumValues(sides, base, revision).ifPresent(changes::add);
     return changes;
   }
 
@@ -120,28 +118,5 @@ final class TypeChanges {
       return Optional.of(new SchemaChange("schema-became-not-false", revision));
     }
     return Optional.empty();
-  }
-
-  private static Optional<SchemaChange> enumValues(
-      final SchemaSides sides, final DocNode base, final DocNode revision) {
-    final Optional<DocNode> before = base.get("enum");
-    final Optional<DocNode> after = revision.get("enum");
-    if (before.isEmpty() || after.isEmpty()) {
-      return Optional.empty();
-    }
-    if (sides.request() && lacks(after.get(), before.get())) {
-      return Optional.of(new SchemaChange("enum-value-removed", after.get()));
-    }
-    if (!sides.request() && lacks(before.get(), after.get())) {
-      return Optional.of(new SchemaChange("enum-value-added", after.get()));
-    }
-    return Optional.empty();
-  }
-
-  /** Tells whether {@code outer} lacks a value of {@code inner}. */
-  private static boolean lacks(final DocNode outer, final DocNode inner) {
-    return inner.items().stream()
-        .anyMatch(
-            value -> outer.items().stream().noneMatch(other -> SameNodes.equal(value, other)));
   }
 }

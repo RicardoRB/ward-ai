@@ -1,0 +1,12 @@
+openapi: 3.1.0
+info:
+  title: Pets
+  version: "1"
+paths:
+  /pets:
+    get:
+      parameters:
+        - {name: q, in: query, schema: {type: string}, deprecated: true, x-sunset: '2000-01-01'}
+      responses:
+        '200':
+          description: ok

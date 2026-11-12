@@ -19,6 +19,7 @@ final class SchemaDiff {
     kinds.addAll(LimitChanges.kinds(direction));
     kinds.addAll(KeywordChanges.kinds(direction));
     kinds.addAll(TypeChanges.kinds(direction));
+    kinds.addAll(EnumChanges.kinds(direction));
     kinds.addAll(CompositionChanges.kinds(direction));
     return kinds;
   }
@@ -30,6 +31,7 @@ final class SchemaDiff {
     changes.addAll(LimitChanges.changes(sides, base, revision));
     changes.addAll(KeywordChanges.changes(sides, base, revision));
     changes.addAll(TypeChanges.changes(sides, base, revision));
+    changes.addAll(EnumChanges.changes(sides, base, revision));
     changes.addAll(CompositionChanges.changes(sides, base, revision));
     return changes;
   }
@@ -56,10 +58,10 @@ final class SchemaDiff {
   }
 
   /** A schema of the base and the schema at the same place in the revision. */
-  private record Pair(DocNode base, DocNode revision) {}
+  record Pair(DocNode base, DocNode revision) {}
 
-  private static List<Pair> nested(
-      final SchemaSides sides, final DocNode base, final DocNode revision) {
+  /** The pairs of schemas below the root: properties, items and extra properties. */
+  static List<Pair> nested(final SchemaSides sides, final DocNode base, final DocNode revision) {
     final Set<DocNode> seen = Collections.newSetFromMap(new IdentityHashMap<>());
     final List<Pair> pairs = new ArrayList<>();
     collect(sides, base, revision, seen, pairs);
