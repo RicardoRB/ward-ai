@@ -13,4 +13,12 @@ public interface QualityGate {
 
   /** Runs the gate against {@code project} and returns its result. */
   GateResult execute(Project project);
+
+  /**
+   * Runs the gate like {@link #execute(Project)} and tells {@code progress} what it is doing. The
+   * default reports nothing.
+   */
+  default GateResult execute(final Project project, final GateProgress progress) {
+    return execute(project);
+  }
 }

@@ -11,6 +11,11 @@ public interface CheckProgressListener {
     // Optional callback.
   }
 
+  /** Called when the running gate {@code name} starts {@code step}; the default does nothing. */
+  default void gateStep(String name, String step) {
+    // Optional callback.
+  }
+
   /** Called after a gate finished with {@code result}; the default does nothing. */
   default void gateFinished(GateResult result) {
     // Optional callback.

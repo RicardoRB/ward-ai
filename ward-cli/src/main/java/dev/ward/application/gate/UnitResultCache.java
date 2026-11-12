@@ -18,6 +18,7 @@ import dev.ward.analysis.domain.rule.DuplicateCodeRule;
 import dev.ward.analysis.domain.rule.GraphRules;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleRunResult;
+import dev.ward.domain.gate.GateProgress;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.LinkedHashMap;
@@ -38,6 +39,7 @@ final class UnitResultCache {
   private final AnalysisResultCodec codec;
   private final String engineVersion;
   private final List<DependencySupport> dependencies;
+  private final GateProgress progress;
 
   /** Creates the partition that analyzes missing units with {@code engine}. */
   UnitResultCache(
@@ -45,10 +47,21 @@ final class UnitResultCache {
       final AnalysisResultCodec codec,
       final String engineVersion,
       final List<DependencySupport> dependencies) {
+    this(engine, codec, engineVersion, dependencies, GateProgress.NONE);
+  }
+
+  /** Like the constructor without {@code progress}, and tells it each phase of the analysis. */
+  UnitResultCache(
+      final RuleEngine engine,
+      final AnalysisResultCodec codec,
+      final String engineVersion,
+      final List<DependencySupport> dependencies,
+      final GateProgress progress) {
     this.engine = engine;
     this.codec = codec;
     this.engineVersion = engineVersion;
     this.dependencies = List.copyOf(dependencies);
+    this.progress = progress;
   }
 
   /** The findings of a run, in the stable report order, and the dependency graph it resolved. */
@@ -88,6 +101,7 @@ final class UnitResultCache {
             .filter(rule -> !DuplicateCodeRule.isDuplicateRule(rule))
             .filter(rule -> !UnusedDefinitionFindings.isUnusedDefinitionRule(rule))
             .toList();
+    progress.step("resolving dependencies");
     final DependencySnapshot snapshot =
         new DependencyAnalysis(frontends, dependencies)
             .analyze(units, new AnalysisSummaryCache(cache, codec, engineVersion));
@@ -107,11 +121,20 @@ final class UnitResultCache {
         misses.add(unit);
       }
     }
+    progress.step(
+        "analyzing "
+            + misses.size()
+            + " of "
+            + units.size()
+            + " files with "
+            + unitRules.size()
+            + " rules");
     final RuleRunResult analyzed = engine.run(misses, frontends, unitRules, snapshot);
     if (analyzed.executionErrors().isEmpty() && analyzed.notRun().isEmpty()) {
       store(cache, keys, misses, analyzed.findings());
       cache.write(AnalysisCacheKey.index(), codec.encodeIndex(snapshot.graph()));
     }
+    progress.step("project-wide rules");
     final List<AnalysisFinding> wholeRunFindings =
         new ArrayList<>(
             ArchitectureGraphRules.findings(

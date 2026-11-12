@@ -11,6 +11,7 @@ still change behavior. Breaking changes are called out under **Changed**.
 ### Added
 
 - The `secrets` check (`uses = "secrets"`), native secret detection that needs no executable: the 222 rules of the Gitleaks 8.30.1 default configuration run inside Ward as `ward:secrets/<gitleaks-rule-id>`, over every text file, in the fast profiles like `ward-format`. Findings carry the rule, file, line and column and never the secret or any source text. Options: `exclude-paths`, `scan-history` and `history-since` on the check, and `entropy` and `exclude-paths` per rule in `ward-rules.toml` (#516).
+- `ward check` text output shows what the `ward` gate checks: one result line per rule category (`✓ ward · style`, `✗ ward · correctness — 3 errors`) instead of the single `ward` line, and on an interactive terminal the running line names the current phase (`… ward: analyzing 12 of 812 files with 431 rules`). JSON and SARIF output are unchanged.
 
 ### Changed
 
