@@ -25,7 +25,7 @@ per check:
 [OK] project       /path/to/project
 [OK] maven         Maven Wrapper available.
 [OK] configuration Configuration is present.
-[OK] integration   Configured integrations: codex=installed [[APPROVED_ARTIFACT_GUARD, FEEDBACK, POST_EDIT, PRE_TOOL]].
+[OK] integration   Configured integrations: codex=installed [[FEEDBACK, POST_EDIT, TURN_END]].
 [OK] native        Native executable present.
 [OK] ward          v0.7.0 is the latest release.
 ```
@@ -55,26 +55,14 @@ per check:
 | `cocoapods` | `WARNING` | For Xcode projects whose root holds a `Podfile`: CocoaPods trunk is read-only, and Ward does not install pods. The warning does not change the exit status. |
 | Other build tools, such as `cargo` | `WARNING` | Ward does not check that toolchain yet. The finding is named after the build tool, and nothing about Maven is reported. |
 | `configuration` | `OK` / `ERROR` | `ward.toml` exists in the project root; otherwise run `ward init`. |
-| `integration` | `OK` / `WARNING` | Lists configured project-local agent integrations as `id=status [capabilities]`. Integrations without pre-tool support are marked `advisory-only`. `installed` means the integration's files are present and Ward-owned; it does not show that the harness has loaded them. `WARNING` means none is configured (`No supported agent integration configured.`) or one is incomplete or outdated; re-run `ward integrate <agent>` to repair it. For a project in a monorepo, agent integrations are looked up at the repository root, where `ward init` installs them. |
+| `integration` | `OK` / `WARNING` | Lists configured project-local agent integrations as `id=status [capabilities]`. `installed` means the integration's files are present and Ward-owned; it does not show that the harness has loaded them. `WARNING` means none is configured (`No supported agent integration configured.`) or one is incomplete or outdated; re-run `ward integrate <agent>` to repair it. For a project in a monorepo, agent integrations are looked up at the repository root, where `ward init` installs them. |
 | `rule configuration` | `OK` / `ERROR` | For each enabled `ward` check that has a `ward-rules.toml` (or the `rules-file` it names): `OK` with the number of selected rules, or one `ERROR` per problem, each naming the file, the table and the key. The `ward` gate fails with the same problems. |
 | `native` | `OK` / `WARNING` | `target/ward` or `ward-cli/target/ward` exists in the current directory. This is a development check for the Ward repository. |
-| `openspec` / `openspec-archived` | `OK` / `WARNING` / `ERROR` | For each enabled registration, the configured executable and project-root `openspec/` directory are available. `WARNING` means Git ignores `openspec/`, so CI checkouts will not contain the specs and the gate fails there. |
-| `openspec-junit-traceability` | `OK` / `ERROR` | When enabled, `openspec/specs/` and `src/test/java/` must exist; doctor does not create them. |
 | `dependency-check-nvd-api-key` | `WARNING` | When dependency-check is enabled, `NVD_API_KEY` should be set; without it scans may be very slow or rate-limited. The value is never displayed. |
 | `ward` | `OK` / `WARNING` | Compares the running version with the latest GitHub release, looking it up now rather than using the [update check](/reference/environment-variables/) cache. `WARNING` means a newer release exists (the line shows how to install it) or the latest release could not be determined, for example offline. `OK` also covers development builds and `WARD_NO_UPDATE_CHECK`, which skip the lookup. |
 | `dependency-check-oss-index` | `WARNING` | When dependency-check is enabled and the build leaves the OSS Index analyzer on (explicitly or by the plugin default), `OSS_INDEX_PASSWORD` should be set; without it scans fail with `401 Unauthorized`. Turn the analyzer off or set the variable. Values are never displayed. |
 
 Warnings do not affect the result.
-
-### OpenSpec checks
-
-OpenSpec diagnosis is conditional and read-only:
-
-- Doctor inspects only enabled registrations in configured profiles.
-- It never runs validation, installs a tool, creates an `openspec/` directory, or reads artifact
-  contents.
-- Relative executable paths are resolved against the target root. Bare names use `PATH`, and
-  absolute paths are used as supplied.
 
 ## Native type resolution
 

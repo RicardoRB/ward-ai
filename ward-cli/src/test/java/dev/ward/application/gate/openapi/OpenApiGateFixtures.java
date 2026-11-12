@@ -57,7 +57,6 @@ final class OpenApiGateFixtures {
                 command,
                 Set.of("ci"),
                 null,
-                null,
                 new OpenApiGateOptions(SPEC, null),
                 null,
                 null,

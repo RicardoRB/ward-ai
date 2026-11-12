@@ -23,7 +23,6 @@ public final class CiWorkflowTemplate {
   private static final String GITLEAKS_VERSION = "8.30.1";
   private static final String TRIVY_VERSION = "0.76.0";
   private static final String SEMGREP_VERSION = "1.181.0";
-  private static final String OPENSPEC_VERSION = "1.14.1";
   public static final String STEP = "      - name: ";
 
   private CiWorkflowTemplate() {}
@@ -193,9 +192,6 @@ public final class CiWorkflowTemplate {
       install.add("          pip install semgrep==" + SEMGREP_VERSION + "\n");
     }
     OpenApiToolInstalls.add(ids, install);
-    if (ids.contains("openspec") || ids.contains("openspec-archived")) {
-      install.add("          npm install -g @fission-ai/openspec@" + OPENSPEC_VERSION + "\n");
-    }
     // The runner's system Python refuses global pip installs.
     final String python =
         ids.contains("semgrep")

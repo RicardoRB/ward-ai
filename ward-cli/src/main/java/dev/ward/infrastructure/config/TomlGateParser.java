@@ -34,7 +34,6 @@ final class TomlGateParser {
         command,
         profiles(where, gate),
         TomlPartialParser.parse(where, gate),
-        TomlOpenSpecRoot.parse(where, type, gate),
         TomlOpenApiParser.parse(where, type, gate, enabled),
         TomlMinimumParser.parse(where, type, gate),
         TomlPlatformParser.parse(where, type, gate, command),

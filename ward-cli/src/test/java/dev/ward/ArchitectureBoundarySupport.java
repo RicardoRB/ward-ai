@@ -30,9 +30,6 @@ final class ArchitectureBoundarySupport {
           "dev.ward.config.PythonBindingsModule",
           "dev.ward.config.SwiftBindingsModule",
           "dev.ward.config.CommandBindingsModule",
-          "dev.ward.config.SpecCommandBindingsModule",
-          "dev.ward.config.TraceabilityBindingsModule",
-          "dev.ward.config.ProvenanceBindingsModule",
           "dev.ward.config.GateBindingsModule",
           "dev.ward.config.GateExtensionBindingsModule",
           "dev.ward.config.RuleBindingsModule",
@@ -75,15 +72,12 @@ final class ArchitectureBoundarySupport {
           Map.entry("init", Set.of("agent", "gate", "project")),
           Map.entry("loop", Set.of("gate")),
           Map.entry("policy", Set.of("gate")),
-          Map.entry("provenance", Set.of()),
           Map.entry("process", Set.of()),
           Map.entry("terminal", Set.of()),
           Map.entry("project", Set.of()),
           Map.entry("json", Set.of()),
           Map.entry("learning", Set.of("gate")),
-          Map.entry("spec", Set.of()),
           Map.entry("update", Set.of()),
-          Map.entry("traceability", Set.of()),
           Map.entry("rules", Set.of()));
 
   static final Map<String, Set<String>> APPLICATION_ENTRY_POINTS =
@@ -96,8 +90,6 @@ final class ArchitectureBoundarySupport {
                   "dev.ward.application.project.ProjectDetector",
                   "dev.ward.application.project.ProjectDiscovery",
                   "dev.ward.application.project.ProjectNotFoundException",
-                  "dev.ward.application.traceability.TraceabilityPolicy",
-                  "dev.ward.application.gate.openspec.OpenSpecJunitTraceabilityGate",
                   "dev.ward.application.format.FormatService",
                   "dev.ward.application.format.FormatFileOutcome",
                   "dev.ward.application.format.FormatFileOutcome$Verdict")),
@@ -121,23 +113,7 @@ final class ArchitectureBoundarySupport {
           Map.entry("project", Set.of()),
           Map.entry("analysis", Set.of()),
           Map.entry("learning", Set.of()),
-          Map.entry(
-              "spec",
-              Set.of(
-                  "dev.ward.application.gate.CheckService",
-                  "dev.ward.application.gate.openspec.OpenSpecPrerequisites",
-                  "dev.ward.application.gate.openspec.OpenSpecPrerequisites$Problem",
-                  "dev.ward.application.gate.openspec.OpenSpecQualityGate",
-                  "dev.ward.application.project.ProjectDetector",
-                  "dev.ward.application.project.ProjectNotFoundException")),
-          Map.entry(
-              "provenance",
-              Set.of(
-                  "dev.ward.application.gate.CheckService",
-                  "dev.ward.application.project.ProjectDetector",
-                  "dev.ward.application.project.ProjectNotFoundException")),
           Map.entry("update", Set.of()),
-          Map.entry("traceability", Set.of()),
           Map.entry(
               "rules",
               Set.of(

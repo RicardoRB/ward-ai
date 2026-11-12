@@ -117,9 +117,3 @@ command = ["./mvnw", "-q", "-pl", "ward-cli", "-am", "-Dcompliance.outputDirecto
 enabled = true
 profiles = ["pre-push", "ci"]
 command = ["git", "diff", "--no-index", "--exit-code", "ward-cli/target/compliance", "compliance"]
-
-# Disabled until openspec/ is tracked in Git; it is gitignored, so CI has no specs to validate.
-[checks.openspec]
-enabled = false
-profiles = ["ci"]
-command = "openspec validate --all --strict --no-interactive"

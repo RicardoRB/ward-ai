@@ -82,8 +82,6 @@ class InitServiceTest {
             null,
             null,
             List.of(),
-            List.of(),
-            List.of(),
             true,
             null,
             false,

@@ -42,10 +42,7 @@ class CiWorkflowTemplateTest {
   void securityGatesAddHistoryCacheAndKey() {
     final String body =
         CiWorkflowTemplate.render(
-                "github",
-                MAVEN,
-                gates("gitleaks", "trivy", "dependency-check", "openspec"),
-                "0.0.12")
+                "github", MAVEN, gates("gitleaks", "trivy", "dependency-check"), "0.0.12")
             .body();
 
     assertThat(body)
@@ -54,8 +51,7 @@ class CiWorkflowTemplateTest {
             "gitleaks_8.30.1_linux_x64",
             "Restore trivy cache",
             "Save trivy cache",
-            "NVD_API_KEY: ${{ secrets.NVD_API_KEY }}",
-            "@fission-ai/openspec@");
+            "NVD_API_KEY: ${{ secrets.NVD_API_KEY }}");
   }
 
   @Test
@@ -94,7 +90,7 @@ class CiWorkflowTemplateTest {
         CiWorkflowTemplate.render(
             "github",
             MAVEN,
-            gates("tests", "gitleaks", "trivy", "semgrep", "dependency-check", "openspec"),
+            gates("tests", "gitleaks", "trivy", "semgrep", "dependency-check"),
             "0.1.1");
 
     assertThat(workflow.body())

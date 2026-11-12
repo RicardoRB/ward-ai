@@ -1,7 +1,6 @@
 package dev.ward.application.init;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.ProjectFixtures;
 import dev.ward.application.project.ProjectDetector;
@@ -27,76 +26,42 @@ import org.junit.jupiter.api.io.TempDir;
 
 class InitToolLifecycleTest {
   @Test
-  void selectedToolWithoutConsentDoesNotInvokeInstaller(@TempDir final Path root) throws Exception {
+  void selectedGateWithoutConsentDoesNotInvokeInstaller(@TempDir final Path root) throws Exception {
     ProjectFixtures.withPom(root, ProjectFixtures.PLAIN_POM);
     final RecordingInstaller installer = new RecordingInstaller(true);
 
-    service(installer).initialize(root, selection(List.of(), List.of()));
+    service(installer).initialize(root, selection(List.of()));
 
     assertThat(installer.installCalled).isFalse();
-    assertThat(Files.readString(root.resolve("ward.toml"))).doesNotContain("openspec");
   }
 
   @Test
-  void approvedInstallUsesInstallerAndWritesRelativeExecutable(@TempDir final Path root)
-      throws Exception {
+  void consentInstallsTheGateTool(@TempDir final Path root) throws Exception {
     ProjectFixtures.withPom(root, ProjectFixtures.PLAIN_POM);
     final RecordingInstaller installer = new RecordingInstaller(true);
 
-    service(installer).initialize(root, selection(List.of("openspec"), List.of("openspec")));
-
-    assertThat(installer.installCalled).isTrue();
-    assertThat(Files.readString(root.resolve("ward.toml")))
-        .contains(".ward/tools/openspec/openspec");
-  }
-
-  @Test
-  void gateOnlyConsentInstallsTheGateToolAndNotOpenSpec(@TempDir final Path root) throws Exception {
-    ProjectFixtures.withPom(root, ProjectFixtures.PLAIN_POM);
-    final RecordingInstaller installer = new RecordingInstaller(true);
-
-    service(installer)
-        .initialize(
-            root,
-            new InitSelection(
-                List.of("none"),
-                List.of("tests", "gitleaks"),
-                null,
-                null,
-                List.of(),
-                List.of(),
-                List.of("gitleaks"),
-                false,
-                null,
-                false,
-                null));
+    service(installer).initialize(root, selection(List.of("gitleaks")));
 
     assertThat(installer.installed).containsExactly("gitleaks");
-    assertThat(Files.readString(root.resolve("ward.toml"))).doesNotContain("openspec");
   }
 
   @Test
-  void unavailableInstallerLeavesProjectUnchanged(@TempDir final Path root) throws Exception {
+  void unavailableInstallerStillWritesTheConfiguration(@TempDir final Path root) throws Exception {
     ProjectFixtures.withPom(root, ProjectFixtures.PLAIN_POM);
     final RecordingInstaller installer = new RecordingInstaller(false);
 
-    assertThatThrownBy(
-            () ->
-                service(installer)
-                    .initialize(root, selection(List.of("openspec"), List.of("openspec"))))
-        .hasMessageContaining("installation failed");
-    assertThat(root.resolve("ward.toml")).doesNotExist();
+    service(installer).initialize(root, selection(List.of("gitleaks")));
+
+    assertThat(installer.installCalled).isTrue();
+    assertThat(Files.readString(root.resolve("ward.toml"))).contains("[checks.gitleaks]");
   }
 
-  private static InitSelection selection(
-      final List<String> installTools, final List<String> validations) {
+  private static InitSelection selection(final List<String> installTools) {
     return new InitSelection(
         List.of("none"),
-        List.of("tests"),
+        List.of("tests", "gitleaks"),
         null,
         null,
-        List.of("openspec"),
-        validations,
         installTools,
         false,
         null,
@@ -137,9 +102,9 @@ class InitToolLifecycleTest {
       return new ToolInstallationResult(
           tool,
           true,
-          Path.of(".ward/tools/openspec/openspec"),
+          Path.of(tool),
           "installed",
-          new ToolInstallationChange(null, projectRoot.resolve(".ward/tools/openspec"), true));
+          new ToolInstallationChange(null, projectRoot.resolve(".ward/tools/" + tool), true));
     }
   }
 }

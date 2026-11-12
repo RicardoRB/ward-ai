@@ -138,19 +138,6 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
         Files.isExecutable(candidate));
   }
 
-  @Override
-  public boolean hasOpenSpecDirectory(final Path projectRoot) {
-    return Files.isDirectory(projectRoot.resolve("openspec"));
-  }
-
-  /** Asks Git, so nested ignore files, global excludes, and negations all apply. */
-  @Override
-  public boolean isOpenSpecDirectoryIgnored(final Path projectRoot) {
-    final CommandResult result =
-        executor.execute(List.of("git", "check-ignore", "-q", "openspec"), projectRoot);
-    return result.executionError() == null && result.exitCode() == 0;
-  }
-
   /** Asks Git which candidates are tracked, so an untracked draft spec is never offered. */
   @Override
   public Optional<String> openApiSpec(final Path projectRoot) {

@@ -12,6 +12,7 @@ import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.agent.PlannedFileChange.Action;
 import dev.ward.domain.init.InitPlan;
 import dev.ward.domain.init.InitSelection;
+import dev.ward.domain.init.PlannedGateInstallation;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.infrastructure.agent.ClaudeCodeIntegration;
 import dev.ward.infrastructure.init.ArchitectureTablesFixtures;
@@ -54,7 +55,6 @@ class InitServicePlanTest {
         .doesNotContainKeys(
             "config/pmd-ruleset.xml", "config/checkstyle.xml", "config/spotbugs-exclude.xml");
     assertThat(plan.hasConflict()).isFalse();
-    assertThat(plan.installation()).isEmpty();
     assertThat(ProjectSnapshot.of(dir)).isEqualTo(before);
   }
 
@@ -72,19 +72,19 @@ class InitServicePlanTest {
   }
 
   @Test
-  void consentedInstallationIsDescribed(@TempDir final Path dir) throws IOException {
+  void aMissingGateExecutableIsDescribedWithoutRunningAnInstaller(@TempDir final Path dir)
+      throws IOException {
     withPom(dir, PLAIN_POM);
+    final Map<String, String> before = ProjectSnapshot.of(dir);
 
     final InitPlan plan =
         service(new PomToolConfigurator())
-            .plan(dir, selection(List.of("none"), List.of("openspec"), false), false);
+            .plan(dir, new InitSelection(List.of("none"), List.of("tests", "gitleaks")), false);
 
-    assertThat(plan.installation())
-        .hasValueSatisfying(
-            installation -> {
-              assertThat(installation.packageName()).startsWith("@fission-ai/openspec@");
-              assertThat(installation.destination()).isEqualTo(dir.resolve(".ward/tools/openspec"));
-            });
+    assertThat(plan.gateInstallations())
+        .extracting(PlannedGateInstallation::tool)
+        .containsExactly("gitleaks");
+    assertThat(ProjectSnapshot.of(dir)).isEqualTo(before);
   }
 
   @Test
@@ -116,8 +116,6 @@ class InitServicePlanTest {
         JavaPresetGates.STANDARD,
         null,
         QualityPreset.STANDARD,
-        install.isEmpty() ? List.of() : List.of("openspec"),
-        List.of(),
         install,
         hooks,
         null,

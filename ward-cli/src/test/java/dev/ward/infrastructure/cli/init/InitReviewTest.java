@@ -21,7 +21,7 @@ class InitReviewTest {
   void terminalReviewAppliesOnEnter() throws IOException {
     final InitCommandFixture init = new InitCommandFixture(root);
 
-    assertThat(init.run(true, "\nn\n\n", TESTS_ONLY)).as(init.output()).isEqualTo(ExitCodes.OK);
+    assertThat(init.run(true, "n\n\n", TESTS_ONLY)).as(init.output()).isEqualTo(ExitCodes.OK);
 
     assertThat(init.output()).contains("Ward will make these changes:", "Proceed? [Y/n]");
     assertThat(init.configuration()).contains("[checks.tests]");
@@ -32,7 +32,7 @@ class InitReviewTest {
     final InitCommandFixture init = new InitCommandFixture(root);
     final Map<String, String> before = ProjectSnapshot.of(root);
 
-    assertThat(init.run(true, "\nn\nn\n", TESTS_ONLY)).isEqualTo(ExitCodes.OK);
+    assertThat(init.run(true, "n\nn\n", TESTS_ONLY)).isEqualTo(ExitCodes.OK);
 
     assertThat(init.output()).contains("No changes made.");
     assertThat(ProjectSnapshot.of(root)).isEqualTo(before);

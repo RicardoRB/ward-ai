@@ -69,17 +69,7 @@ class InitSetupCatalogPreviousChoicesTest {
     service.initialize(
         dir,
         new InitSelection(
-            List.of("none"),
-            List.of("tests"),
-            null,
-            null,
-            List.of("openspec"),
-            List.of("openspec"),
-            List.of(),
-            false,
-            null,
-            false,
-            null));
+            List.of("none"), List.of("tests"), null, null, List.of(), false, null, false, null));
 
     assertThat(catalog.previousChoices(project(dir)))
         .hasValue(new PreviousChoices(List.of("tests")));

@@ -8,6 +8,10 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Removed
+
+- **Breaking (alpha, no migration):** The OpenSpec integration. Ward no longer ships the `openspec`, `openspec-archived` and `openspec-junit-traceability` check types, the `root` setting of a check, the `ward spec` commands (`validate`, `guard`, `enforce`), `--exclude-spec` of `ward check` and `ward hook claude-code`, `--tool` and `--openspec-validation` of `ward init`, the OpenSpec installer and its step in the generated CI workflow, the OpenSpec checks of `ward doctor`, and the approved-artifact guard of every agent integration with its `PreToolUse` registrations. A `ward.toml` that still names a removed check type is rejected with the unknown-type error that lists the valid types. `ward integrate <agent>` and `--remove` delete the Ward-owned guard files that earlier versions wrote. To keep approved files from agent edits, use the agent's own permission rules or repository protection such as CODEOWNERS.
+
 ## [0.7.0] - 2026-11-11
 
 ### Added

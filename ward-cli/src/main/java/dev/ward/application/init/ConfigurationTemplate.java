@@ -11,7 +11,6 @@ import dev.ward.domain.project.Project;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /** Renders the {@code ward.toml} written by {@code ward init}. */
 public final class ConfigurationTemplate {
@@ -19,38 +18,22 @@ public final class ConfigurationTemplate {
   private static final int SECTION_CAPACITY = 96;
   private static final String VERSION = "version = 2\n";
 
-  /** Types written with {@code uses} even when their command would infer them. */
-  private static final Set<String> CRITICAL_USES = Set.of("openspec", "openspec-archived");
-
   private ConfigurationTemplate() {}
 
   /** Renders the configuration of {@code project} with {@code gates} under {@code preset}. */
   public static String render(
       final List<InitGateOption> gates, final QualityPreset preset, final Project project) {
-    return render(gates, preset, project, null);
+    return render(gates, preset, project, WardArchitecture.NONE);
   }
 
   /**
-   * Renders the configuration; {@code openSpecRoot}, when not {@code null}, is written as the
-   * project-relative directory the OpenSpec gates run from.
+   * Renders the configuration as {@link #render(List, QualityPreset, Project)} does, and when
+   * {@code architecture} names any table, adds the {@code ward} gate that enforces them.
    */
   static String render(
       final List<InitGateOption> gates,
       final QualityPreset preset,
       final Project project,
-      final String openSpecRoot) {
-    return render(gates, preset, project, openSpecRoot, WardArchitecture.NONE);
-  }
-
-  /**
-   * Renders the configuration as {@link #render(List, QualityPreset, Project, String)} does, and
-   * when {@code architecture} names any table, adds the {@code ward} gate that enforces them.
-   */
-  static String render(
-      final List<InitGateOption> gates,
-      final QualityPreset preset,
-      final Project project,
-      final String openSpecRoot,
       final WardArchitecture architecture) {
     final StringBuilder content = new StringBuilder(SECTION_CAPACITY * (gates.size() + 1));
     content.append(VERSION);
@@ -80,17 +63,12 @@ public final class ConfigurationTemplate {
       if (writesUses(gate)) {
         content.append("uses = \"").append(gate.id()).append("\"\n");
       }
-      if (!SupportedQualityGates.TRACEABILITY.equals(gate.id())) {
-        content
-            .append("command = \"")
-            .append(escape(command.getFirst()))
-            .append(command.size() > 1 ? " " : "")
-            .append(goal)
-            .append("\"\n");
-      }
-      if (openSpecRoot != null && isOpenSpec(gate.id())) {
-        content.append("root = \"").append(escape(openSpecRoot)).append("\"\n");
-      }
+      content
+          .append("command = \"")
+          .append(escape(command.getFirst()))
+          .append(command.size() > 1 ? " " : "")
+          .append(goal)
+          .append("\"\n");
       gatePreset(gate, project, preset).forEach((key, value) -> setting(content, key, value));
       partial(content, gate, project, preset);
     }
@@ -100,17 +78,9 @@ public final class ConfigurationTemplate {
     return content.toString();
   }
 
-  /**
-   * Whether the check needs {@code uses}: its command does not imply its type, or the type is one
-   * that must never depend on command shape.
-   */
+  /** Whether the check needs {@code uses}: its command does not imply its type. */
   private static boolean writesUses(final InitGateOption gate) {
-    return CRITICAL_USES.contains(gate.id())
-        || !CommandTypeInference.infer(gate.command()).equals(gate.id());
-  }
-
-  private static boolean isOpenSpec(final String id) {
-    return "openspec".equals(id) || "openspec-archived".equals(id);
+    return !CommandTypeInference.infer(gate.command()).equals(gate.id());
   }
 
   private static void partial(

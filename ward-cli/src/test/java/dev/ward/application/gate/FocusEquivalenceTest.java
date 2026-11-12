@@ -89,7 +89,6 @@ class FocusEquivalenceTest {
             null,
             null,
             null,
-            null,
             List.of("ward:java/type-name", "ward:java/member-name", "ward:kotlin/type-name"),
             null,
             List.of(),

@@ -7,8 +7,6 @@ import dagger.Module;
       ProcessBindingsModule.class,
       ProjectBindingsModule.class,
       InitBindingsModule.class,
-      TraceabilityBindingsModule.class,
-      ProvenanceBindingsModule.class,
       GateBindingsModule.class,
       GateExtensionBindingsModule.class,
       RuleBindingsModule.class,

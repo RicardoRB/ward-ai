@@ -10,7 +10,6 @@ import javax.inject.Provider;
     modules = {
       PortBindingsModule.class,
       CommandBindingsModule.class,
-      SpecCommandBindingsModule.class,
       RulesCommandBindingsModule.class,
       WardProvidesModule.class
     })

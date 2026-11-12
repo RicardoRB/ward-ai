@@ -48,17 +48,7 @@ class AnalysisCacheIgnoreTest {
             "dev");
     final InitSelection selection =
         new InitSelection(
-            List.of("none"),
-            List.of(),
-            null,
-            null,
-            List.of(),
-            List.of(),
-            List.of(),
-            false,
-            null,
-            false,
-            null);
+            List.of("none"), List.of(), null, null, List.of(), false, null, false, null);
     return OwnedSections.of(catalog, JAVA, selection, gates, List.of()).stream()
         .filter(section -> section.file().endsWith(".gitignore"))
         .map(OwnedSection::body)

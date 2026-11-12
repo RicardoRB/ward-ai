@@ -2,32 +2,26 @@ package dev.ward.domain.init;
 
 import dev.ward.domain.agent.PlannedFileChange;
 import java.util.List;
-import java.util.Optional;
 
 /** Everything initialization would change, computed without touching the project. */
 public record InitPlan(
     List<PlannedFileChange> files,
-    Optional<PlannedInstallation> installation,
     List<PlannedGateInstallation> gateInstallations,
     List<ScriptReplacement> replacements) {
-  /** Creates a plan that installs no gate executables. */
-  public InitPlan(
-      final List<PlannedFileChange> files, final Optional<PlannedInstallation> installation) {
-    this(files, installation, List.of(), List.of());
+  /** Creates a plan that installs no gate executables and replaces no scripts. */
+  public InitPlan(final List<PlannedFileChange> files) {
+    this(files, List.of(), List.of());
   }
 
   /** Creates a plan that replaces no scripts. */
   public InitPlan(
-      final List<PlannedFileChange> files,
-      final Optional<PlannedInstallation> installation,
-      final List<PlannedGateInstallation> gateInstallations) {
-    this(files, installation, gateInstallations, List.of());
+      final List<PlannedFileChange> files, final List<PlannedGateInstallation> gateInstallations) {
+    this(files, gateInstallations, List.of());
   }
 
   /** Copies the lists; missing values mean nothing to install or replace. */
   public InitPlan {
     files = List.copyOf(files);
-    installation = installation == null ? Optional.empty() : installation;
     gateInstallations = gateInstallations == null ? List.of() : List.copyOf(gateInstallations);
     replacements = replacements == null ? List.of() : List.copyOf(replacements);
   }

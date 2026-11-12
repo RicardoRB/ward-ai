@@ -8,7 +8,6 @@ import dev.ward.application.learning.LearningService;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.gate.CheckReport;
 import dev.ward.domain.gate.SeverityThreshold;
-import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.learning.LearningOutcome;
 import dev.ward.infrastructure.cli.ExitCodes;
 import dev.ward.infrastructure.cli.ProjectOptions;
@@ -87,11 +86,6 @@ public class CheckCommand implements Callable<Integer> {
 
   @Option(names = "--fail-fast", description = "Stop after the first gate that does not pass.")
   private boolean failFast;
-
-  @Option(
-      names = "--exclude-spec",
-      description = "Skip spec validation gates (openspec, openspec-archived).")
-  private boolean excludeSpec;
 
   @Option(
       names = "--learn-after",
@@ -236,7 +230,7 @@ public class CheckCommand implements Callable<Integer> {
 
   private CheckReport runServiceCheck(final CheckProgressListener listener) {
     if (paths.isEmpty()) {
-      return service.check(options.directory(), profiles, listener, failFast, excludedGates());
+      return service.check(options.directory(), profiles, listener, failFast, Set.of());
     }
     final Path workingDirectory = options.directory().toAbsolutePath().normalize();
     final List<Path> resolved =
@@ -248,13 +242,7 @@ public class CheckCommand implements Callable<Integer> {
                         : workingDirectory.resolve(path).normalize())
             .toList();
     return service.checkPartial(
-        workingDirectory,
-        resolved,
-        new CheckRunOptions(profiles, listener, failFast, excludedGates()));
-  }
-
-  private Set<String> excludedGates() {
-    return excludeSpec ? SupportedQualityGates.specIds() : Set.of();
+        workingDirectory, resolved, new CheckRunOptions(profiles, listener, failFast, Set.of()));
   }
 
   private PrintWriter output() {

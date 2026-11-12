@@ -2,7 +2,6 @@ package dev.ward.application.gate;
 
 import dev.ward.application.gate.jvm.MavenTestGate;
 import dev.ward.application.gate.openapi.OpenApiCommandValidation;
-import dev.ward.application.gate.openspec.OpenSpecQualityGate;
 import dev.ward.application.gate.swift.SwiftGates;
 import dev.ward.domain.config.GateConfiguration;
 import dev.ward.domain.config.WardConfiguration;
@@ -16,8 +15,6 @@ import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Project;
-import dev.ward.domain.traceability.ScenarioInventory;
-import dev.ward.domain.traceability.TestMappingInventory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +52,6 @@ public class QualityGateFactory {
 
   private final CommandExecutor executor;
   private final EnvironmentInspection environment;
-  private final TraceabilitySources traceability;
   private final ReportDirectories reportDirectories;
   private final MutationReport strykerReport;
   private final MutationReport pitReport;
@@ -65,22 +61,13 @@ public class QualityGateFactory {
 
   /** Creates a factory for command gates only. */
   public QualityGateFactory(final CommandExecutor executor) {
-    this(executor, null, null, null);
+    this(executor, null, ReportDirectories.NONE);
   }
 
   /** Creates a factory that can check executable availability. */
   public QualityGateFactory(
       final CommandExecutor executor, final EnvironmentInspection environment) {
-    this(executor, environment, null, null);
-  }
-
-  /** Creates a factory that can also build the traceability gate. */
-  public QualityGateFactory(
-      final CommandExecutor executor,
-      final EnvironmentInspection environment,
-      final ScenarioInventory scenarioInventory,
-      final TestMappingInventory testMappingInventory) {
-    this(executor, environment, scenarioInventory, testMappingInventory, ReportDirectories.NONE);
+    this(executor, environment, ReportDirectories.NONE);
   }
 
   /**
@@ -90,15 +77,8 @@ public class QualityGateFactory {
   public QualityGateFactory(
       final CommandExecutor executor,
       final EnvironmentInspection environment,
-      final ScenarioInventory scenarioInventory,
-      final TestMappingInventory testMappingInventory,
       final ReportDirectories reportDirectories) {
-    this(
-        executor,
-        environment,
-        new TraceabilitySources(scenarioInventory, testMappingInventory),
-        new GateReportPorts(reportDirectories, null, null, null),
-        null);
+    this(executor, environment, new GateReportPorts(reportDirectories, null, null, null), null);
   }
 
   /**
@@ -110,7 +90,6 @@ public class QualityGateFactory {
   public QualityGateFactory(
       final CommandExecutor executor,
       final EnvironmentInspection environment,
-      final TraceabilitySources traceability,
       final GateReportPorts reports,
       final GateExtensions extensions) {
     this.reportDirectories = reports.directories();
@@ -120,7 +99,6 @@ public class QualityGateFactory {
     this.reports = reports;
     this.executor = executor;
     this.environment = environment;
-    this.traceability = traceability;
     this.extensions = extensions == null ? GateExtensions.NONE : extensions;
   }
 
@@ -182,16 +160,8 @@ public class QualityGateFactory {
     if (IN_PROCESS_GATES.contains(type)) {
       return inProcessGate(check, focus);
     }
-    if (SupportedQualityGates.specIds().contains(type)) {
-      return environment == null
-          ? new CommandQualityGate(name, executor, check.command())
-          : new OpenSpecQualityGate(name, executor, environment, check.command(), check.root());
-    }
     if (MavenTestGate.NAME.equals(type)) {
       return new MavenTestGate(executor, testsCommand(check.command(), project));
-    }
-    if (SupportedQualityGates.TRACEABILITY.equals(type)) {
-      return traceability.gate();
     }
     if (ZAP.equals(type)) {
       ZapTargetValidation.require(name, check.command());

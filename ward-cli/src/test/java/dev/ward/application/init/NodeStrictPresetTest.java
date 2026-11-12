@@ -78,8 +78,6 @@ class NodeStrictPresetTest {
             null,
             QualityPreset.STRICT,
             List.of(),
-            List.of(),
-            List.of(),
             false,
             null,
             false,

@@ -9,7 +9,6 @@ import dev.ward.infrastructure.cli.init.InitCommand;
 import dev.ward.infrastructure.cli.loop.LoopCommand;
 import dev.ward.infrastructure.cli.project.DetectCommand;
 import dev.ward.infrastructure.cli.rules.RulesCommand;
-import dev.ward.infrastructure.cli.spec.SpecCommand;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Callable;
@@ -32,7 +31,6 @@ import picocli.CommandLine.Spec;
       CheckCommand.class,
       IntegrateCommand.class,
       HookCommand.class,
-      SpecCommand.class,
       DoctorCommand.class,
       FormatCommand.class,
       LoopCommand.class,

@@ -26,7 +26,6 @@ class PartialCheckPlanWithoutPathsTest {
             null,
             null,
             null,
-            null,
             List.of(),
             null,
             null,

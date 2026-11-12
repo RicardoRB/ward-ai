@@ -48,7 +48,6 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `android-unit-test` | Android unit tests | Run `testDebugUnitTest` through the Gradle wrapper. |
 | | `android-coverage` | AGP JaCoCo | Fail below a `minimum` line coverage of the debug unit tests. |
 | Custom | `command` | — | Run an arbitrary configured project check. |
-| Traceability | `openspec-junit-traceability` | Ward source analysis | Require one explicitly annotated JUnit mapping per live OpenSpec scenario. |
 
 ## Choosing gates
 
@@ -737,29 +736,6 @@ writing, the parse report lists `func run() async {` (first error at 6:18) and a
 declaration (2:8) as errors; the cause is not analyzed here. Limits are tuned in
 [`ward-rules.toml`](/configuration/ward-rules/), as for the Python rules.
 
-## Traceability gate
-
-`openspec-junit-traceability` is the one built-in gate that needs no `command`:
-
-```toml
-[checks.openspec-junit-traceability]
-enabled = true
-```
-
-Each mapping must be declared directly on a `@Test`, `@ParameterizedTest`, or `@RepeatedTest`
-method, using matching exact identities:
-
-```java
-@Tag("spec:identity/user-auth")
-@DisplayName("Successful sign-in")
-@Test
-void signsIn() {}
-```
-
-- Only the existence of a mapping is checked, not test execution or assertions.
-- Empty live specs fail with `no scenarios found`.
-- Active-change specs are excluded.
-
 ## API compatibility
 
 `api-compat` is for published libraries. It compares the latest released artifact (`RELEASE`) with
@@ -940,51 +916,6 @@ In a Turborepo workspace, the type-check and test gates have no table and always
 The forms above were verified against the real tools: a path format a tool does not understand
 analyzes no files and passes. The full check at the end of an agent turn, Git hooks, and CI always
 check the whole project.
-
-## OpenSpec tool validations
-
-OpenSpec is an optional project tool, not a quality-gate menu entry. A configuration may register
-the two validations independently:
-
-```toml
-[checks.openspec]
-enabled = true
-command = ["openspec", "validate", "--all", "--strict", "--no-interactive"]
-
-[checks.openspec-archived]
-enabled = true
-command = ["openspec", "validate", "--archived", "--no-interactive"]
-```
-
-- The configured executable runs directly from the target root. Relative and absolute paths are
-  honored, with no PATH fallback.
-- Both validations need an `openspec/` directory at the project root.
-- A missing executable is reported as `UNAVAILABLE`. A missing or non-directory `openspec/` is a
-  `FAILED` result.
-- Check and doctor never install or scaffold OpenSpec.
-
-### OpenSpec in a monorepo
-
-In a monorepo, `openspec/` often lives at the repository root while the Java project sits in a
-subdirectory. Set `root` on each OpenSpec gate to the directory that holds `openspec/`, relative to
-the project root:
-
-```toml
-[checks.openspec]
-enabled = true
-command = ["openspec", "validate", "--all", "--strict", "--no-interactive"]
-root = "../.."
-```
-
-- The gate then requires `openspec/` in that directory and runs the command from it.
-- Ward never searches other parents. If `root` has no `openspec/`, the gate fails and names the
-  configured root.
-- `root` must be relative and stay inside the Git repository. An absolute path is a configuration
-  error, and a path that leaves the repository fails the gate without running it.
-- `ward init` writes `root` for a nested project without its own `openspec/` when the repository
-  root has one. Doctor reports the prerequisites of the configured root.
-- Targeted `ward spec validate -- <paths>` uses the same root, and the approved-artifact guard
-  protects that repository-level `openspec/` too.
 
 ## Legacy identifiers
 

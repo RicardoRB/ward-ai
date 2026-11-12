@@ -98,7 +98,6 @@ class KotlinStructuralGateTest {
             null,
             null,
             null,
-            null,
             rules,
             null,
             List.of(),

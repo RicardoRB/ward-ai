@@ -14,7 +14,6 @@ import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.swift.SwiftToolchainInspection;
-import dev.ward.domain.traceability.TraceabilityPrerequisites;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +27,6 @@ public final class DoctorService {
   private final ProjectDetector detector;
   private final EnvironmentInspection environment;
   private final WardConfigurationReader configurationReader;
-  private final TraceabilityPrerequisites traceabilityPrerequisites;
   private final Set<AgentIntegration> integrations;
   private final Optional<BuildToolConfiguration> buildTools;
   private final Optional<SwiftToolchainInspection> swift;
@@ -50,20 +48,16 @@ public final class DoctorService {
    */
   public record Finding(String name, Status status, String message) {}
 
-  /**
-   * Creates the service. {@code traceabilityPrerequisites} checks the traceability gate's inputs,
-   * and {@code integrations} are checked for installation health.
-   */
+  /** Creates the service; {@code integrations} are checked for installation health. */
   public DoctorService(
       final ProjectDetector detector,
       final EnvironmentInspection environment,
       final WardConfigurationReader configurationReader,
-      final TraceabilityPrerequisites traceabilityPrerequisites,
       final Set<AgentIntegration> integrations) {
     this(
         detector,
         environment,
-        new DoctorPorts(configurationReader, traceabilityPrerequisites, null, null, null),
+        new DoctorPorts(configurationReader, null, null, null),
         integrations);
   }
 
@@ -80,7 +74,6 @@ public final class DoctorService {
     this.detector = detector;
     this.environment = environment;
     this.configurationReader = ports.configurationReader();
-    this.traceabilityPrerequisites = ports.traceabilityPrerequisites();
     this.integrations = Set.copyOf(integrations);
     this.buildTools = Optional.ofNullable(ports.buildTools());
     this.swift = Optional.ofNullable(ports.swift());
@@ -89,7 +82,7 @@ public final class DoctorService {
 
   /** Creates a service that checks only the project and environment. */
   public DoctorService(final ProjectDetector detector, final EnvironmentInspection environment) {
-    this(detector, environment, null, null, Set.of());
+    this(detector, environment, (WardConfigurationReader) null, Set.of());
   }
 
   /** Creates a service that also checks {@code ward.toml}. */
@@ -97,16 +90,7 @@ public final class DoctorService {
       final ProjectDetector detector,
       final EnvironmentInspection environment,
       final WardConfigurationReader configurationReader) {
-    this(detector, environment, configurationReader, null, Set.of());
-  }
-
-  /** Creates a service that also checks the traceability prerequisites. */
-  public DoctorService(
-      final ProjectDetector detector,
-      final EnvironmentInspection environment,
-      final WardConfigurationReader configurationReader,
-      final TraceabilityPrerequisites traceabilityPrerequisites) {
-    this(detector, environment, configurationReader, traceabilityPrerequisites, Set.of());
+    this(detector, environment, configurationReader, Set.of());
   }
 
   /** Returns the diagnostic findings for the project containing {@code start}. */
@@ -148,9 +132,8 @@ public final class DoctorService {
             Status.WARNING,
             "Native executable present.",
             "Build with the native profile."));
-    diagnoseOpenSpec(root, facts, findings);
+    diagnoseConfiguration(root, facts, findings);
     diagnoseNvdApiKey(root, facts, findings);
-    diagnoseTraceability(root, findings);
     CheckTypeFindings.diagnose(configurationReader, root, facts, findings);
     if (flag(facts, "configurationPresent")) {
       RuleConfigurationFindings.diagnose(configurationReader, rules, root, findings);
@@ -227,61 +210,20 @@ public final class DoctorService {
     return adapter.health(project.installRoot(shared), project.installPath(shared));
   }
 
-  private void diagnoseTraceability(final Path root, final List<Finding> findings) {
-    if (configurationReader == null || traceabilityPrerequisites == null) {
-      return;
-    }
-    if (!traceabilityEnabled(root)) {
-      return;
-    }
-    final boolean specs = traceabilityPrerequisites.liveSpecsDirectory(root);
-    final boolean tests = traceabilityPrerequisites.javaTestSourceDirectory(root);
-    findings.add(traceabilityFinding(specs, tests));
-  }
-
-  private boolean traceabilityEnabled(final Path root) {
-    final WardConfiguration configuration;
-    try {
-      configuration = configurationReader.read(root.resolve(WardConfiguration.FILE_NAME));
-    } catch (WardException e) {
-      return false;
-    }
-    return CheckTypeFindings.enabledOfType(configuration, "openspec-junit-traceability");
-  }
-
-  private static Finding traceabilityFinding(final boolean specs, final boolean tests) {
-    final boolean ready = specs && tests;
-    return new Finding(
-        "openspec-junit-traceability",
-        ready ? Status.OK : Status.ERROR,
-        ready
-            ? "Live OpenSpec specs and Java test sources are available."
-            : "Enabled traceability requires openspec/specs/ and src/test/java/.");
-  }
-
-  private void diagnoseOpenSpec(
+  private void diagnoseConfiguration(
       final Path root, final EnvironmentFacts facts, final List<Finding> findings) {
     if (configurationReader == null || !flag(facts, "configurationPresent")) {
       return;
     }
-    final WardConfiguration configuration;
     try {
-      configuration = configurationReader.read(root.resolve(WardConfiguration.FILE_NAME));
+      configurationReader.read(root.resolve(WardConfiguration.FILE_NAME));
     } catch (WardException e) {
       findings.add(
           new Finding(
               "configuration",
               Status.ERROR,
               "Configuration could not be read. Fix ward.toml and run doctor again."));
-      return;
     }
-    configuration.checks().entrySet().stream()
-        .filter(entry -> isOpenSpec(entry.getValue().type()) && entry.getValue().enabled())
-        .forEach(entry -> findings.addAll(OpenSpecDoctorFindings.of(environment, root, entry)));
-  }
-
-  private static boolean isOpenSpec(final String type) {
-    return "openspec".equals(type) || "openspec-archived".equals(type);
   }
 
   static boolean flag(final EnvironmentFacts facts, final String name) {

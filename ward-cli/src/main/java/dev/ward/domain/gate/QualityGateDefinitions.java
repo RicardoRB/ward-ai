@@ -51,13 +51,10 @@ public final class QualityGateDefinitions {
               SupportedQualityGates.ANDROID_UNIT_TEST, "Android unit tests", Phase.LOCAL, false),
           new Definition(
               SupportedQualityGates.ANDROID_COVERAGE, "Android coverage", Phase.LOCAL, false),
-          gate(SupportedQualityGates.TRACEABILITY, Phase.CI),
           new Definition(
               SupportedQualityGates.ANALYSIS, SupportedQualityGates.ANALYSIS, Phase.LOCAL, true),
           gate(SupportedQualityGates.FORMAT, Phase.FAST),
-          gate("command", Phase.LOCAL),
-          gate("openspec", Phase.CI),
-          gate("openspec-archived", Phase.CI));
+          gate("command", Phase.LOCAL));
 
   /** When a gate runs: on every edit, before a push, only on staged diffs, or in CI. */
   public enum Phase {

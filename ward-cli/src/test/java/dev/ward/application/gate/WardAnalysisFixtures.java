@@ -31,7 +31,6 @@ final class WardAnalysisFixtures {
         new QualityGateFactory(
             executor,
             null,
-            new TraceabilitySources(null, null),
             new GateReportPorts(ReportDirectories.NONE, null, null, null),
             new GateExtensions(null, ports(), null));
     return new CheckService(

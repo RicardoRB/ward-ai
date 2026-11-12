@@ -10,11 +10,11 @@ executable `.claude/hooks/ward-edit-write`, and registers the same hook for two 
 
 | Event | When | What Ward does |
 |---|---|---|
-| `PostToolUse` (`Edit`, `Write`, `MultiEdit`) | After each file edit | Runs a partial quality check of the `edit` profile, then validates the edited spec file |
-| `Stop` | When Claude finishes its turn | Runs the full default quality check plus every configured spec check |
+| `PostToolUse` (`Edit`, `Write`, `MultiEdit`) | After each file edit | Runs a partial quality check of the `edit` profile for the edited file |
+| `Stop` | When Claude finishes its turn | Runs the full default quality check |
 
 Make sure `ward` is on `PATH`. The generated hook runs
-`ward hook claude-code --learn-after 3 --exclude-spec --event-stdin` for the project directory.
+`ward hook claude-code --learn-after 3 --event-stdin` for the project directory.
 
 - Claude Code runs hooks in the session's current directory, so the registrations point at
   `${CLAUDE_PROJECT_DIR}/.claude/hooks/...` and the hook passes `-C "$CLAUDE_PROJECT_DIR"` to Ward.
@@ -34,70 +34,29 @@ Make sure `ward` is on `PATH`. The generated hook runs
 
 ## After each edit
 
-Ward runs a [partial check](/commands/check/) of the `default` profile for the edited file, skipping spec
-gates (`--exclude-spec`). Checks with a `paths` table are skipped when the file is not relevant to them and
-narrowed to it when they can be; other gates run in full. It then runs
-[targeted spec validation](/commands/spec/) for the edited file. An edit outside `openspec/changes/<change>/`
-or `openspec/specs/` validates nothing extra.
+Ward runs a [partial check](/commands/check/) of the `default` profile for the edited file. Checks with a
+`paths` table are skipped when the file is not relevant to them and narrowed to it when they can be; other
+gates run in full.
 
-- **Something fails:** a quality gate failure, spec findings, or both are written to stderr with exit code
-  `2`. Claude Code shows them to the agent, which can fix them right away. Learning prompts are included too.
+- **Something fails:** a quality gate failure is written to stderr with exit code `2`. Claude Code shows it to
+  the agent, which can fix it right away. Learning prompts are included too.
 - **Everything passes:** learning prompts, if any, are returned as `PostToolUse` context, and nothing else is
   added.
 
 ## When the turn ends
 
-On `Stop`, Ward runs the full `default` profile, without spec gates, and the enabled `openspec` and
-`openspec-archived` validations. Files changed by shell commands send no edit event, so this full check is
-where they are caught.
+On `Stop`, Ward runs the full `default` profile. Files changed by shell commands send no edit event, so this
+full check is where they are caught.
 
 - **No problems:** the turn ends normally with no output.
 - **First stop with findings:** Ward blocks the stop with `{"decision": "block", "reason": ...}`, so Claude
   receives the findings and keeps working on them.
 - **Claude stops again and findings remain:** Claude Code marks this with `stop_hook_active`. Ward then
   lets the turn end and shows the findings to you as a `systemMessage` instead of sending them to the agent
-  again. Findings are handed to the agent at most once per turn, so a problem the agent cannot fix, such as a
-  missing `openspec` executable, cannot trap it in a loop.
+  again. Findings are handed to the agent at most once per turn, so a problem the agent cannot fix cannot
+  trap it in a loop.
 - **Ward itself fails,** for example on an invalid `ward.toml`: the error is shown to you and the stop
   is never blocked.
-
-Projects without an enabled OpenSpec validation see no change: per-edit spec validation and the `Stop` hook do
-nothing.
-
-## Approved-artifact guard
-
-The guard is opt-in. Install it with `ward integrate claude-code --guard-approved-specs`. Ward then
-creates the executable `.claude/hooks/ward-openspec-guard` and registers it in `.claude/settings.json` as a
-`PreToolUse` hook for `^(Edit|Write|MultiEdit|NotebookEdit|Bash|Skill)$`. Before each of those tool calls, it runs
-`ward hook claude-code --guard-approved-specs --event-stdin`.
-
-| The agent tries to | Result |
-|---|---|
-| Edit or create files under `openspec/changes/<change>/` | Allowed |
-| Read anything, including approved specs and archived changes | Allowed |
-| `Edit`, `Write`, `MultiEdit`, or `NotebookEdit` a file under `openspec/specs/` or `openspec/changes/archive/` | Denied |
-| Run a `Bash` command recognized as `openspec archive`, or one that writes, deletes, or moves a protected path | Denied |
-| Invoke an OpenSpec archive or sync skill, such as `opsx:archive` or `openspec-sync-specs` | Denied |
-
-A denied call returns `permissionDecision: "deny"` with a reason that names the blocked path. For an approved spec,
-the reason gives the delta path to edit instead (`openspec/changes/<change>/specs/<capability>/spec.md`) and lists
-the active changes. Claude receives the reason and can redirect its work.
-
-**Archiving and syncing stay with you.** With the guard installed, Claude cannot complete `/opsx:archive` or
-`/opsx:sync` on its own. Run the command yourself when the change is approved, for example by typing
-`! openspec archive <change>` in Claude Code, which runs it directly in your shell.
-
-**Failures do not block your work.** If `ward` is not on `PATH` or Ward cannot decide, the hook reports the
-problem on stderr with a non-blocking exit code and the tool call goes ahead. A payload Ward cannot read is
-denied, because the guard cannot see what the call would change.
-
-**Know the limits.** Bash filtering is a heuristic, not a security boundary. Scripts, variables, and other indirect
-writes are not prevented. See [`spec guard`](/commands/spec/#guarding-approved-artifacts-spec-guard) and
-[security](/security/).
-
-The guard is independent of the edit and turn-end hooks. It runs whether or not OpenSpec validation is enabled in
-`ward.toml`, and installing or removing it does not change them. Re-running `ward integrate claude-code`
-keeps the guard as it is. `--no-guard-approved-specs` removes only the guard, and `--remove` removes everything.
 
 ## Ownership and removal
 
@@ -111,7 +70,9 @@ and a conflict prevents a partial integration.
 - **Removal:** `ward integrate claude-code --remove` removes only Ward's hook registrations and
   ownership marker, deletes its owned hook scripts, and keeps unrelated settings and hooks. The
   `.claude/settings.json` file remains, even if it ends up empty.
-- **Refresh:** re-run `ward integrate claude-code` to refresh an outdated Ward-owned hook.
+- **Refresh:** re-run `ward integrate claude-code` to refresh an outdated Ward-owned hook. A refresh also removes
+  the guard hook that earlier versions of Ward could install, together with its `PreToolUse` registration. A
+  user-owned file at the same path is left alone.
 
 <Aside type="caution">
 The hook executes repository configuration with your user privileges. Enable it only in
@@ -130,8 +91,8 @@ Claude Code loads `.claude/settings.json` from the directory a session starts in
 monorepo is usually the repository root. When `ward init` configures a project below the root, such
 as `apps/api`, it therefore installs the integration at the repository root:
 
-- the hook scripts are named after the project, `.claude/hooks/ward-edit-write-apps-api` (and
-  `ward-openspec-guard-apps-api` with the guard), and change to the repository root before running
+- the hook script is named after the project, `.claude/hooks/ward-edit-write-apps-api`, and changes to the
+  repository root before running
   `ward hook claude-code -C 'apps/api'`, so the session's directory does not matter;
 - the root `.claude/settings.json` keeps every hook you already registered. Ward adds or replaces
   only the entries of the project being installed, so several Ward projects can share the file;
@@ -148,7 +109,6 @@ and hook scripts against the real Ward, the way Claude Code launches them: from 
 `CLAUDE_PROJECT_DIR` set. It covers:
 
 - edit checks and their exit-2 feedback, and learning context;
-- the guard's deny decision and uninspectable input;
 - the one-time stop block;
 - settings merge and removal.
 

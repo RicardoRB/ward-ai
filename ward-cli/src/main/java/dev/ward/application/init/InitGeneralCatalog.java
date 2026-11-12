@@ -93,13 +93,6 @@ public class InitGeneralCatalog {
     final List<InitGateOption> options = new ArrayList<>(buildTool.analysis());
     options.addAll(new BinaryToolGates(environment, project).gates());
     options.addAll(buildTool.policy());
-    options.add(
-        new InitGateOption(
-            SupportedQualityGates.TRACEABILITY,
-            "Maps live OpenSpec scenarios to explicitly annotated JUnit tests (opt-in).",
-            List.of(),
-            true,
-            "Source-level mapping analysis; it does not execute tests."));
     return List.copyOf(options);
   }
 
@@ -143,8 +136,8 @@ public class InitGeneralCatalog {
   /**
    * Returns the gate choice with {@code id} for {@code project}.
    *
-   * @throws WardException if {@code id} is an OpenSpec tool, not a supported gate, or a gate the
-   *     project's runtime JDK cannot run
+   * @throws WardException if {@code id} is not a supported gate, or a gate the project's runtime
+   *     JDK cannot run
    */
   public InitGateOption gate(final Project project, final String id) {
     GateOffers.require(environment, project, id);

@@ -6,7 +6,7 @@ description: Run configured quality gates.
 `ward check` runs the quality gates configured in `ward.toml` and reports the result.
 
 ```sh
-ward check [-C <dir>] [--format text|json|sarif] [--severity error|warning|info] [--output <path>] [--profile <name>[,...]] [--path <path>] [--fail-fast] [--exclude-spec] [--learn-after <n>]
+ward check [-C <dir>] [--format text|json|sarif] [--severity error|warning|info] [--output <path>] [--profile <name>[,...]] [--path <path>] [--fail-fast] [--learn-after <n>]
 ```
 
 ## Options
@@ -20,7 +20,6 @@ ward check [-C <dir>] [--format text|json|sarif] [--severity error|warning|info]
 | `--output <path>` | Write the JSON or SARIF report to a file. See [Writing the report to a file](#writing-the-report-to-a-file). | stdout |
 | `--path <path>` | Run a [partial check](#partial-checks) for an edited file. Repeat for several. | no partial check |
 | `--fail-fast` | Stop after the first gate that does not pass. | off |
-| `--exclude-spec` | Skip the `openspec` and `openspec-archived` gates. See [Excluding spec gates](#excluding-spec-gates). | off |
 | `--learn-after <n>` | Record recurring rule findings after `n` occurrences. Must be at least `1`. See [Learning](#learning). | off |
 | `--verbose` | Print diagnostics to stderr. See [Verbose diagnostics](#verbose-diagnostics). | off |
 
@@ -71,18 +70,6 @@ check's `scope`; see [JSON output](/reference/json-output/).
 Checks without `--path`, including Git hooks and CI, never apply `paths` settings. `--profile edit`
 without `--path` is the exception: checks with a `paths` table are skipped, the others run in full,
 and Ward warns on stderr that the `edit` profile expects edited paths.
-
-## Excluding spec gates
-
-`--exclude-spec` skips the spec validation gates, `openspec` and `openspec-archived`, and runs every
-other selected gate.
-
-The generated agent integrations pass it on each edit, because they validate specs separately with
-[`spec validate`](/commands/spec/): the edited change on each edit, and everything at the end of the
-turn.
-
-If excluding the spec gates leaves nothing enabled, the check passes with an empty report instead of
-failing with "No quality gates are enabled".
 
 ## Output formats
 
@@ -167,16 +154,6 @@ findings in `.ward/learning.json`:
 - Ward never edits that file, and learning prompts do not change the exit code.
 
 See [learning](/configuration/learning/).
-
-## OpenSpec gates
-
-OpenSpec gates run their configured command vectors exactly.
-
-- They need both the configured executable and an `openspec/` directory at the project root.
-- A missing prerequisite is reported as a gate failure. Ward never installs the tool or scaffolds
-  the directory.
-- An installed CLI that rejects a required flag also fails. Ward does not remove the flag or
-  downgrade.
 
 ## Verbose diagnostics
 

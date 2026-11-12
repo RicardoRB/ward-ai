@@ -91,7 +91,6 @@ class NodeStructuralGateTest {
             null,
             null,
             null,
-            null,
             rules,
             null,
             List.of(),

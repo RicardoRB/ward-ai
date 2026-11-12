@@ -5,11 +5,11 @@ import static dev.ward.ProjectFixtures.withPom;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.domain.FakeCommandExecutor;
-import dev.ward.domain.gate.SupportedQualityGates;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -38,7 +38,7 @@ class CheckServicePartialCommandTest {
     Files.writeString(dir.resolve("src/app.ts"), "export {};\n");
 
     CheckServiceFixtures.checks(executor)
-        .checkPartial(dir, List.of(dir.resolve("src/app.ts")), SupportedQualityGates.specIds());
+        .checkPartial(dir, List.of(dir.resolve("src/app.ts")), Set.of());
     CheckServiceFixtures.checks(executor).check(dir);
 
     assertThat(executor.commands)

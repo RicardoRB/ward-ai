@@ -118,10 +118,7 @@ public final class OpenCodeIntegration implements AgentIntegration {
 
   @Override
   public Set<IntegrationCapability> capabilities() {
-    return Set.of(
-        IntegrationCapability.POST_EDIT,
-        IntegrationCapability.TURN_END,
-        IntegrationCapability.FEEDBACK);
+    return Set.of(IntegrationCapability.POST_EDIT, IntegrationCapability.FEEDBACK);
   }
 
   @Override

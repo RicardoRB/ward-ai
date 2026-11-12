@@ -5,7 +5,6 @@ import dagger.Module;
 import dagger.Provides;
 import dev.ward.application.agent.HookScope;
 import dev.ward.application.gate.CheckService;
-import dev.ward.application.gate.TraceabilitySources;
 import dev.ward.application.project.ProjectDetector;
 import dev.ward.domain.gate.FindingExtractor;
 import dev.ward.domain.gate.ProjectFiles;
@@ -13,8 +12,6 @@ import dev.ward.domain.gate.ReportSink;
 import dev.ward.domain.gate.RevisionFiles;
 import dev.ward.domain.project.ProjectChanges;
 import dev.ward.domain.project.ProjectPaths;
-import dev.ward.domain.traceability.ScenarioInventory;
-import dev.ward.domain.traceability.TestMappingInventory;
 import dev.ward.infrastructure.cli.agent.HookChecks;
 import dev.ward.infrastructure.cli.gate.JsonReportRenderer;
 import dev.ward.infrastructure.cli.gate.ReportRenderers;
@@ -42,12 +39,6 @@ interface GateBindingsModule {
 
   @Binds
   ProjectFiles projectFiles(FileSystemProjectFiles implementation);
-
-  @Provides
-  static TraceabilitySources traceabilitySources(
-      final ScenarioInventory scenarios, final TestMappingInventory mappings) {
-    return new TraceabilitySources(scenarios, mappings);
-  }
 
   @Provides
   static HookChecks hookChecks(

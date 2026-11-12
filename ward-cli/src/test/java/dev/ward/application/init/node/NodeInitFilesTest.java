@@ -128,17 +128,7 @@ class NodeInitFilesTest {
 
   private static InitSelection selection(final String ci, final boolean agentRules) {
     return new InitSelection(
-        List.of("none"),
-        List.of(),
-        null,
-        null,
-        List.of(),
-        List.of(),
-        List.of(),
-        false,
-        ci,
-        agentRules,
-        null);
+        List.of("none"), List.of(), null, null, List.of(), false, ci, agentRules, null);
   }
 
   private static Project project(final BuildTool manager, final String node) {

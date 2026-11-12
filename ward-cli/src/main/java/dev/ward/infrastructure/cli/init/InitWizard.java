@@ -6,7 +6,6 @@ import dev.ward.domain.config.WardException;
 import dev.ward.domain.init.InitArchitectureOption;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitIntegrationOption;
-import dev.ward.domain.init.InitToolOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.init.RawTerminal.RawSession;
 import dev.ward.domain.project.Project;
@@ -176,61 +175,6 @@ final class InitWizard {
           return prompt
               .readSelection(ids, presetGates, "quality-gate", "Select at least one quality gate.")
               .orElseThrow(() -> new WardException(GATE_INPUT_ENDED));
-        });
-  }
-
-  List<String> selectTools(final InitSetupCatalog catalog) {
-    final List<InitToolOption> choices = catalog.tools();
-    final List<String> ids = choices.stream().map(InitToolOption::id).toList();
-    final Optional<List<String>> fromMenu =
-        menu(
-            new MenuSpec(
-                "Select optional tools",
-                choices.stream().map(c -> c.id() + " - " + c.description()).toList(),
-                "",
-                Set.of(),
-                true),
-            ids);
-    if (fromMenu.isPresent()) {
-      return fromMenu.get();
-    }
-    return answering.ask(
-        () -> {
-          out.println("Select optional tools (empty means none):");
-          for (int i = 0; i < choices.size(); i++) {
-            out.printf(
-                "> [ ] %d) %s - %s%n", i + 1, choices.get(i).id(), choices.get(i).description());
-          }
-          out.print("Toggle tools with space-separated numbers [1-" + choices.size() + "]: ");
-          out.flush();
-          return prompt.readOptionalSelection(ids, "tool", "tools");
-        });
-  }
-
-  List<String> selectOpenSpecValidations(final InitSetupCatalog catalog) {
-    final List<String> ids = catalog.openSpecValidations();
-    final Optional<List<String>> fromMenu =
-        menu(
-            new MenuSpec(
-                "Select OpenSpec validations",
-                List.of(
-                    "openspec - active strict validation",
-                    "openspec-archived - archived validation"),
-                "",
-                Set.of(),
-                true),
-            ids);
-    if (fromMenu.isPresent()) {
-      return fromMenu.get();
-    }
-    return answering.ask(
-        () -> {
-          out.println("Select OpenSpec validations (empty means none):");
-          out.println("> [ ] 1) openspec - active strict validation");
-          out.println("> [ ] 2) openspec-archived - archived validation");
-          out.print("Toggle validations with space-separated numbers [1-2]: ");
-          out.flush();
-          return prompt.readOptionalSelection(ids, "OpenSpec validation", "openspec-validations");
         });
   }
 

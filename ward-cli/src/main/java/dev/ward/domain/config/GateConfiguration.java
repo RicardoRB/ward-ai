@@ -15,8 +15,6 @@ import java.util.Set;
  * @param command the argument vector it runs
  * @param profiles the profiles it belongs to
  * @param partial how a per-edit check narrows it, or {@code null} when it always runs in full
- * @param root the project-relative directory it runs from, or {@code null} for the project root;
- *     only OpenSpec checks read it
  * @param openApi the OpenAPI options of an OpenAPI check, or {@code null} for others
  * @param minimum the minimum score from 0 to 100 of a mutation or Swift coverage check, or {@code
  *     null} when unset
@@ -42,7 +40,6 @@ public record GateConfiguration(
     List<String> command,
     Set<String> profiles,
     PartialGateConfiguration partial,
-    String root,
     OpenApiGateOptions openApi,
     Integer minimum,
     XcodePlatform platform,
@@ -80,7 +77,6 @@ public record GateConfiguration(
         enabled,
         command,
         Set.of(WardConfiguration.DEFAULT_PROFILE),
-        null,
         null,
         null,
         null,

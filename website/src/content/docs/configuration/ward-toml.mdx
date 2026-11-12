@@ -45,7 +45,7 @@ the file with `ward init --overwrite`, or edit it by hand using this page.
 ## Tool types
 
 Each check has a tool type. The type decides its behavior: how its findings are read, its
-prerequisites, its learning keys, and whether `--exclude-spec` selects it. The name does not.
+prerequisites, and its learning keys. The name does not.
 
 - `uses` sets the type explicitly. It must be a supported type, or the file is rejected.
 - Without `uses`, Ward infers the type from `command`. A command that matches no type, or more than
@@ -203,9 +203,3 @@ no files and pass.
 **Security:** commands are trusted executable code and run with the current user's privileges in
 the project root. Review `ward.toml` as carefully as a build script; do not run checks on
 untrusted repositories outside a sandbox. See [security](/security/).
-
-OpenSpec checks are optional and independent. Use `uses = "openspec"` for strict active validation
-and `uses = "openspec-archived"` for completed-task validation. A configured local executable is
-resolved from the target project root and is never silently replaced by a PATH executable. An OpenSpec
-check may set `root`, a path relative to the project root such as `"../.."`, to run from the directory
-that holds `openspec/`; see [OpenSpec tool validations](/configuration/gates/#openspec-tool-validations).

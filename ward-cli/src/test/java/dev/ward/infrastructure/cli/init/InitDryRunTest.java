@@ -39,29 +39,7 @@ class InitDryRunTest {
   }
 
   @Test
-  void dryRunListsTheInstallationWithoutInstalling() throws IOException {
-    final InitCommandFixture init = new InitCommandFixture(root);
-
-    final int exit =
-        init.run(
-            "",
-            "--dry-run",
-            "--gate",
-            "tests",
-            "--integration",
-            "none",
-            "--tool",
-            "openspec",
-            "--install-tool",
-            "openspec");
-
-    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
-    assertThat(init.output()).contains("install    openspec @fission-ai/openspec@");
-    assertThat(root.resolve(".ward")).doesNotExist();
-  }
-
-  @Test
-  void gateToolConsentDoesNotPlanAnOpenSpecInstallation() throws IOException {
+  void gateToolConsentIsPlannedWithoutInstalling() throws IOException {
     final InitCommandFixture init = new InitCommandFixture(root, new PomToolConfigurator(), "brew");
 
     final int exit =
@@ -76,7 +54,7 @@ class InitDryRunTest {
             "gitleaks");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
-    assertThat(init.output()).contains("brew install gitleaks").doesNotContain("openspec");
+    assertThat(init.output()).contains("brew install gitleaks");
     assertThat(root.resolve(".ward")).doesNotExist();
   }
 }

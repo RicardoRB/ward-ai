@@ -90,7 +90,6 @@ class OpenApiDiffCommandValidationTest {
                 lint("-n", "warn"),
                 Set.of("default"),
                 null,
-                null,
                 new OpenApiGateOptions("openapi.yml", null),
                 null,
                 null,

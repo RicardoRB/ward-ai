@@ -98,7 +98,7 @@ class InitProjectSelectionTest {
 
   @Test
   void severalCandidatesOnTerminalAreAskedAllPreselected() {
-    final int exit = init.run(true, "2\n\nn\n\n", TESTS_ONLY);
+    final int exit = init.run(true, "2\nn\n\n", TESTS_ONLY);
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(init.output())

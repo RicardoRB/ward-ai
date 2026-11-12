@@ -59,7 +59,7 @@ final class InitResultPrinter {
   /** Prints the files a plan would change, relative to the project root. */
   void printPlan(final InitPlan plan, final Path root) {
     final List<PlannedFileChange> files = plan.visibleFiles();
-    if (files.isEmpty() && plan.installation().isEmpty() && plan.gateInstallations().isEmpty()) {
+    if (files.isEmpty() && plan.gateInstallations().isEmpty()) {
       out.println("No files would change.");
       return;
     }
@@ -79,15 +79,6 @@ final class InitResultPrinter {
 
   /** Prints the tool installations a plan would run, with paths relative to {@code root}. */
   void printInstallations(final InitPlan plan, final Path root) {
-    plan.installation()
-        .ifPresent(
-            installation ->
-                out.printf(
-                    "  %-10s %s %s into %s%n",
-                    "install",
-                    installation.tool(),
-                    installation.packageName(),
-                    root.relativize(installation.destination())));
     for (final PlannedGateInstallation installation : plan.gateInstallations()) {
       if (installation.installable()) {
         out.printf("  %-10s %s%n", "install", String.join(" ", installation.command()));

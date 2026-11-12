@@ -1,6 +1,5 @@
 package dev.ward.application.init;
 
-import dev.ward.application.init.openspec.OpenSpecInstallation;
 import dev.ward.application.project.ProjectDetector;
 import dev.ward.application.project.ProjectNotFoundException;
 import dev.ward.domain.agent.AgentIntegration;
@@ -45,7 +44,7 @@ public class InitService {
 
   /**
    * Creates the service. {@code integrations} are the installable agent integrations, {@code files}
-   * writes the project files, and {@code toolInstaller} installs optional tools.
+   * writes the project files, and {@code toolInstaller} installs gate executables.
    */
   @Inject
   public InitService(
@@ -61,7 +60,7 @@ public class InitService {
     this.toolInstaller = toolInstaller;
   }
 
-  /** Creates a service that cannot install optional tools. */
+  /** Creates a service that cannot install gate executables. */
   public InitService(
       final ProjectDetector detector,
       final Set<AgentIntegration> integrations,
@@ -139,10 +138,7 @@ public class InitService {
       LOGGER.log(Level.INFO, "event=initialization-complete status=ownership-conflict");
       return new InitResult(configurationFile, false, List.of(), List.of());
     }
-    final Path installed = OpenSpecInstallation.install(toolInstaller, project, selection);
-    final String executable = OpenSpecInstallation.executable(installed);
-    final List<InitGateOption> gates =
-        SelectedGates.resolve(catalog.get(), project, selection, executable);
+    final List<InitGateOption> gates = SelectedGates.resolve(catalog.get(), project, selection);
     if (selection.architecture() != null) {
       catalog.get().architecture(selection.architecture());
     }
@@ -163,7 +159,6 @@ public class InitService {
       return result;
     } finally {
       if (!completed) {
-        toolInstaller.rollbackPath(project.root(), installed);
         changes.rollback();
         LOGGER.log(Level.WARNING, "event=initialization-rollback status=applied");
         if (originalConfiguration != null) {
@@ -195,7 +190,6 @@ public class InitService {
             gates,
             selection.preset(),
             project,
-            catalog.get().openSpecDirectories().root(project),
             WardArchitecture.of(selection, project, files.architectureTables()));
     final boolean created;
     if (overwrite) {
@@ -206,7 +200,6 @@ public class InitService {
     }
     final List<String> warnings =
         new ArrayList<>(OmissionNotes.of(catalog.get(), project, selection.preset()));
-    warnings.addAll(catalog.get().openSpecDirectories().warnings(project, gates));
     warnings.addAll(SharedDirectoryNotes.of(detector, project));
     return changes.result(file, created, overwrite, gates, warnings);
   }

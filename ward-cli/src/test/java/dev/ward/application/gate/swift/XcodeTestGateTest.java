@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import dev.ward.application.gate.GateReportPorts;
 import dev.ward.application.gate.PlatformGatePorts;
 import dev.ward.application.gate.QualityGateFactory;
-import dev.ward.application.gate.TraceabilitySources;
 import dev.ward.domain.FakeCommandExecutor;
 import dev.ward.domain.config.GateConfiguration;
 import dev.ward.domain.config.WardConfiguration;
@@ -83,7 +82,6 @@ class XcodeTestGateTest {
             null,
             null,
             null,
-            null,
             platform,
             null,
             null,
@@ -91,7 +89,7 @@ class XcodeTestGateTest {
             null,
             null,
             null);
-    return new QualityGateFactory(executor, null, new TraceabilitySources(null, null), ports, null)
+    return new QualityGateFactory(executor, null, ports, null)
         .create(new WardConfiguration(1, Map.of("xcode", check)))
         .getFirst()
         .execute(PROJECT);
