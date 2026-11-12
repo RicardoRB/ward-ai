@@ -13,17 +13,6 @@ final class SchemaDiff {
 
   private SchemaDiff() {}
 
-  /** The kinds of checks that compare one schema on its own, in the given direction. */
-  static List<String> kinds(final Direction direction) {
-    final List<String> kinds = new ArrayList<>();
-    kinds.addAll(LimitChanges.kinds(direction));
-    kinds.addAll(KeywordChanges.kinds(direction));
-    kinds.addAll(TypeChanges.kinds(direction));
-    kinds.addAll(EnumChanges.kinds(direction));
-    kinds.addAll(CompositionChanges.kinds(direction));
-    return kinds;
-  }
-
   /** The changes of the schema itself, not of what lies below it. */
   static List<SchemaChange> root(
       final SchemaSides sides, final DocNode base, final DocNode revision) {

@@ -9,17 +9,17 @@ final class RequiredChanges {
 
   private RequiredChanges() {}
 
-  /** The kinds this class reports in the given direction. */
-  static List<String> kinds(final Direction direction) {
-    return direction == Direction.REQUEST
-        ? List.of("became-required", "new-required")
-        : List.of("became-optional", "required-removed");
-  }
-
   /** The required-property changes of one object schema pair. */
   static List<SchemaChange> changes(
       final SchemaSides sides, final DocNode base, final DocNode revision) {
-    return sides.request() ? added(base, revision) : lost(base, revision);
+    if (!sides.request()) {
+      return lost(base, revision);
+    }
+    final List<SchemaChange> changes = added(base, revision);
+    if (!sides.revision().isVersion31()) {
+      changes.addAll(writable(base, revision));
+    }
+    return changes;
   }
 
   /** The properties the revision requires and the base did not. */
@@ -27,8 +27,10 @@ final class RequiredChanges {
     final List<SchemaChange> changes = new ArrayList<>();
     for (final DocNode name : required(revision)) {
       if (!listed(base, name.text())) {
-        final String kind = hasProperty(base, name.text()) ? "became-required" : "new-required";
-        changes.add(new SchemaChange(kind, name));
+        final boolean existed = hasProperty(base, name.text());
+        final String suffix = hasDefault(revision, name.text()) ? "-with-default" : "";
+        changes.add(
+            new SchemaChange((existed ? "became-required" : "new-required") + suffix, name));
       }
     }
     return changes;
@@ -45,6 +47,18 @@ final class RequiredChanges {
       }
     }
     changes.addAll(writeOnly(base, revision));
+    return changes;
+  }
+
+  /** The required properties of the revision that a request now has to send. */
+  private static List<SchemaChange> writable(final DocNode base, final DocNode revision) {
+    final List<SchemaChange> changes = new ArrayList<>();
+    for (final DocNode name : required(revision)) {
+      if (flag(base, name.text(), "readOnly") && !flag(revision, name.text(), "readOnly")) {
+        changes.add(
+            new SchemaChange("became-not-read-only", revision.get("properties").orElse(revision)));
+      }
+    }
     return changes;
   }
 
@@ -76,6 +90,14 @@ final class RequiredChanges {
 
   private static boolean listed(final DocNode schema, final String name) {
     return required(schema).stream().anyMatch(item -> item.text().equals(name));
+  }
+
+  private static boolean hasDefault(final DocNode schema, final String name) {
+    return schema
+        .get("properties")
+        .flatMap(properties -> properties.get(name))
+        .flatMap(property -> property.get("default"))
+        .isPresent();
   }
 
   private static boolean hasProperty(final DocNode schema, final String name) {

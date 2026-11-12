@@ -20,6 +20,11 @@ final class SchemaKinds {
       min-properties-increased min-properties-set min-set multiple-of-changed multiple-of-set
       pattern-property-added property-names-added schema-became-false then-added type-changed
       unique-items-set
+      any-of-removed
+      one-of-removed
+      unevaluated-items-added
+      unevaluated-properties-added
+      list-of-types-narrowed
       """;
 
   /** The kinds of request-property checks. */
@@ -37,6 +42,12 @@ final class SchemaKinds {
       pattern-added pattern-property-added property-names-added schema-became-false then-added
       type-changed unique-items-set
       x-extensible-enum-value-removed
+      became-required-with-default
+      any-of-removed
+      one-of-removed
+      unevaluated-items-added
+      unevaluated-properties-added
+      list-of-types-narrowed
       """;
 
   /** The kinds of request-parameter checks. */
@@ -50,6 +61,7 @@ final class SchemaKinds {
       min-length-set min-properties-increased min-properties-set min-set multiple-of-set
       pattern-added schema-became-false type-changed
       x-extensible-enum-value-removed
+      list-of-types-narrowed
       """;
 
   /** The kinds of response-body checks. */
@@ -67,6 +79,11 @@ final class SchemaKinds {
       pattern-property-removed property-names-removed then-removed type-changed type-generalized
       unique-items-unset
       schema-became-false
+      any-of-added
+      one-of-added
+      unevaluated-items-removed
+      unevaluated-properties-removed
+      list-of-types-widened
       """;
 
   /** The kinds of response-property checks. */
@@ -84,6 +101,11 @@ final class SchemaKinds {
       multiple-of-changed multiple-of-unset pattern-property-removed pattern-removed
       property-names-removed schema-became-not-false then-removed type-changed type-generalized
       unique-items-unset
+      any-of-added
+      one-of-added
+      unevaluated-items-removed
+      unevaluated-properties-removed
+      list-of-types-widened
       """;
 
   /** The kinds of response-header checks. */
@@ -99,9 +121,15 @@ final class SchemaKinds {
       """;
 
   private static final String REQUEST_PARAMETER_PROPERTY =
-      "became-not-nullable enum-value-removed schema-became-false";
+      """
+      became-not-nullable enum-value-removed schema-became-false
+      list-of-types-narrowed
+      """;
 
-  private static final String REQUEST_HEADER_PROPERTY = "became-enum became-required";
+  private static final String REQUEST_HEADER_PROPERTY =
+      """
+      became-enum became-required
+      """;
 
   private SchemaKinds() {}
 

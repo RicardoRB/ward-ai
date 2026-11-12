@@ -459,6 +459,7 @@ oasdiff = ["request-parameter-became-required"]
 [[rule]]
 name = "request-parameter-deprecated-sunset-missing"
 category = "correctness"
+not-applicable = { openapi = "oasdiff reports it only when a deprecation-days flag asks for a sunset date, and Ward offers no such flag, so with default flags it never fires" }
 oasdiff = ["request-parameter-deprecated-sunset-missing"]
 
 [[rule]]
@@ -754,6 +755,7 @@ oasdiff = ["request-property-deprecated-sunset-invalid"]
 [[rule]]
 name = "request-property-deprecated-sunset-missing"
 category = "correctness"
+not-applicable = { openapi = "oasdiff reports it only when a deprecation-days flag asks for a sunset date, and Ward offers no such flag, so with default flags it never fires" }
 oasdiff = ["request-property-deprecated-sunset-missing"]
 
 [[rule]]
@@ -1534,6 +1536,7 @@ oasdiff = ["response-property-deprecated-sunset-invalid"]
 [[rule]]
 name = "response-property-deprecated-sunset-missing"
 category = "correctness"
+not-applicable = { openapi = "oasdiff reports it only when a deprecation-days flag asks for a sunset date, and Ward offers no such flag, so with default flags it never fires" }
 oasdiff = ["response-property-deprecated-sunset-missing"]
 
 [[rule]]

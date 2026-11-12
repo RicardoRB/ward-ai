@@ -12,13 +12,6 @@ final class CompositionChanges {
 
   private CompositionChanges() {}
 
-  /** The kinds this class reports in the given direction. */
-  static List<String> kinds(final Direction direction) {
-    return direction == Direction.REQUEST
-        ? List.of("one-of-removed", "any-of-removed", "all-of-added")
-        : List.of("one-of-added", "any-of-added");
-  }
-
   /** The composition changes of one schema pair. */
   static List<SchemaChange> changes(
       final SchemaSides sides, final DocNode base, final DocNode revision) {
@@ -26,15 +19,16 @@ final class CompositionChanges {
     final boolean request = sides.request();
     final DocNode from = request ? base : revision;
     final DocNode other = request ? revision : base;
+    final String list = request ? "list-of-types-narrowed" : "list-of-types-widened";
     final List<Member> members =
         request
             ? List.of(
-                new Member("oneOf", "one-of-removed", from, other),
-                new Member("anyOf", "any-of-removed", from, other),
-                new Member("allOf", "all-of-added", other, from))
+                new Member("oneOf", "one-of-removed", list, from, other),
+                new Member("anyOf", "any-of-removed", list, from, other),
+                new Member("allOf", "all-of-added", "all-of-added", other, from))
             : List.of(
-                new Member("oneOf", "one-of-added", from, other),
-                new Member("anyOf", "any-of-added", from, other));
+                new Member("oneOf", "one-of-added", list, from, other),
+                new Member("anyOf", "any-of-added", list, from, other));
     for (final Member member : members) {
       member.change(revision).ifPresent(changes::add);
     }
@@ -46,10 +40,11 @@ final class CompositionChanges {
    *
    * @param keyword the composition keyword
    * @param kind the check
+   * @param listKind the check when both lists only name plain types
    * @param from the schema whose members are looked up
    * @param other the schema that should have them
    */
-  private record Member(String keyword, String kind, DocNode from, DocNode other) {
+  private record Member(String keyword, String kind, String listKind, DocNode from, DocNode other) {
 
     Optional<SchemaChange> change(final DocNode revision) {
       final Optional<DocNode> members = from.get(keyword);
@@ -57,8 +52,19 @@ final class CompositionChanges {
       if (members.isEmpty() || remaining.isEmpty() || !missing(members.get(), remaining.get())) {
         return Optional.empty();
       }
-      return Optional.of(new SchemaChange(kind, revision.get(keyword).orElse(revision)));
+      final boolean plain = plain(members.get()) && plain(remaining.get());
+      return Optional.of(
+          new SchemaChange(plain ? listKind : kind, revision.get(keyword).orElse(revision)));
     }
+  }
+
+  /** Tells whether every member of a list is a schema that only names a type. */
+  private static boolean plain(final DocNode members) {
+    return members.items().stream()
+        .allMatch(
+            member ->
+                member.entries().size() == 1
+                    && member.get("type").filter(DocNode::isScalar).isPresent());
   }
 
   private static boolean missing(final DocNode members, final DocNode remaining) {

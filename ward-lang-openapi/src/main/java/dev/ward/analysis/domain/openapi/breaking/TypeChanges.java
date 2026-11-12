@@ -19,18 +19,6 @@ final class TypeChanges {
 
   private TypeChanges() {}
 
-  /** The kinds this class reports in the given direction. */
-  static List<String> kinds(final Direction direction) {
-    return direction == Direction.REQUEST
-        ? List.of(
-            "type-changed",
-            "became-not-nullable",
-            "schema-became-false",
-            "enum-value-removed",
-            "x-extensible-enum-value-removed")
-        : List.of("type-changed", "type-generalized", "became-nullable", "schema-became-not-false");
-  }
-
   /** The type changes of one schema pair. */
   static List<SchemaChange> changes(
       final SchemaSides sides, final DocNode base, final DocNode revision) {

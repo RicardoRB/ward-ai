@@ -32,16 +32,6 @@ final class LimitChanges {
 
   private LimitChanges() {}
 
-  /** The kinds this class reports in the given direction. */
-  static List<String> kinds(final Direction direction) {
-    final List<String> kinds = new ArrayList<>();
-    for (final Limit limit : LIMITS) {
-      kinds.add(limit.name() + (direction == Direction.REQUEST ? "-set" : "-unset"));
-      kinds.add(limit.name() + "-" + moved(limit, direction));
-    }
-    return kinds;
-  }
-
   /** The limit changes of one schema pair. */
   static List<SchemaChange> changes(
       final SchemaSides sides, final DocNode base, final DocNode revision) {

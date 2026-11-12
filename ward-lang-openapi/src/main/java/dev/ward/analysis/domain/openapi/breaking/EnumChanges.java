@@ -10,13 +10,6 @@ final class EnumChanges {
 
   private EnumChanges() {}
 
-  /** The kinds this class reports in the given direction. */
-  static List<String> kinds(final Direction direction) {
-    return direction == Direction.REQUEST
-        ? List.of("enum-value-removed", "x-extensible-enum-value-removed")
-        : List.of("enum-value-added");
-  }
-
   /** The enum changes of one schema pair. */
   static List<SchemaChange> changes(
       final SchemaSides sides, final DocNode base, final DocNode revision) {

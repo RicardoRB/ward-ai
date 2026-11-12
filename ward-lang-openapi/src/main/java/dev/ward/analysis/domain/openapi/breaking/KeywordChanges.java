@@ -61,16 +61,6 @@ final class KeywordChanges {
 
   private KeywordChanges() {}
 
-  /** The kinds this class reports in the given direction. */
-  static List<String> kinds(final Direction direction) {
-    final List<String> kinds = new ArrayList<>();
-    for (final Presence presence : PRESENCE) {
-      kinds.add(direction == Direction.REQUEST ? presence.added() : presence.removed());
-    }
-    CHANGED.forEach(changed -> kinds.add(changed.kind()));
-    return kinds;
-  }
-
   /** The keyword changes of one schema pair. */
   static List<SchemaChange> changes(
       final SchemaSides sides, final DocNode base, final DocNode revision) {

@@ -17,6 +17,14 @@ final class SchemaRules {
       List.of(
           new Irregular("new-required-request-property", Place.REQUEST_PROPERTY, "new-required"),
           new Irregular(
+              "request-required-property-became-not-read-only",
+              Place.REQUEST_PROPERTY,
+              "became-not-read-only"),
+          new Irregular(
+              "new-required-request-property-with-default",
+              Place.REQUEST_PROPERTY,
+              "new-required-with-default"),
+          new Irregular(
               "response-required-property-removed", Place.RESPONSE_PROPERTY, "required-removed"),
           new Irregular(
               "response-mediatype-became-not-enum", Place.RESPONSE_BODY, "became-not-enum"),
