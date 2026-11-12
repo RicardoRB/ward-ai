@@ -11,7 +11,10 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.terminal.TerminalCapabilities;
 import dev.ward.infrastructure.json.ForyJsonCodec;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -57,6 +60,81 @@ class GateLinesTest {
     assertThat(new TextReportRenderer().render(report))
         .contains("✗ ward — error")
         .doesNotContain("ward · style");
+  }
+
+  @Test
+  void jsonAndSarifAreTheSameWithAndWithoutSections() {
+    final GateResult plain = GateResult.builder(GATE, GateStatus.FAILED).errors(ERRORS).build();
+    final GateResult sectioned =
+        plain.withSections(
+            List.of(new GateSection("naming", 0, 0), new GateSection("style", ERRORS, 0)));
+
+    assertThat(new JsonReportRenderer(new ForyJsonCodec()).render(report(sectioned)))
+        .isEqualTo(new JsonReportRenderer(new ForyJsonCodec()).render(report(plain)));
+    assertThat(new SarifReportRenderer(new ForyJsonCodec()).render(report(sectioned)))
+        .isEqualTo(new SarifReportRenderer(new ForyJsonCodec()).render(report(plain)));
+  }
+
+  @Test
+  void singleSectionPrintsOneLine() {
+    final GateResult result =
+        GateResult.builder(GATE, GateStatus.PASSED)
+            .build()
+            .withSections(List.of(new GateSection("other", 0, 0)));
+
+    assertThat(GateLines.of(result)).isEqualTo("✓ ward · other");
+  }
+
+  @Test
+  void interactiveTerminalReplacesRunningLineWithEachStepAndThenSections() {
+    final StringWriter out = new StringWriter();
+    final TextReportRenderer renderer = new TextReportRenderer(terminal(true), "dev");
+    renderer.begin(new PrintWriter(out));
+
+    renderer.gateStarted(GATE);
+    renderer.gateStep(GATE, "loading rules");
+    renderer.gateFinished(
+        GateResult.builder(GATE, GateStatus.PASSED)
+            .build()
+            .withSections(List.of(new GateSection("style", 0, 0))));
+
+    assertThat(out.toString())
+        .contains("… ward\r\033[2K… ward: loading rules\r\033[2K✓ ward · style");
+  }
+
+  @Test
+  void plainTerminalPrintsNoPhaseLineAndNoEscapes() {
+    final StringWriter out = new StringWriter();
+    final TextReportRenderer renderer = new TextReportRenderer(terminal(false), "dev");
+    renderer.begin(new PrintWriter(out));
+
+    renderer.gateStarted(GATE);
+    renderer.gateStep(GATE, "loading rules");
+    renderer.gateFinished(
+        GateResult.builder(GATE, GateStatus.PASSED)
+            .build()
+            .withSections(List.of(new GateSection("style", 0, 0))));
+
+    assertThat(out.toString()).contains("✓ ward · style").doesNotContain("…", "\033");
+  }
+
+  private static TerminalCapabilities terminal(final boolean interactive) {
+    return new TerminalCapabilities() {
+      @Override
+      public boolean interactive() {
+        return interactive;
+      }
+
+      @Override
+      public boolean colorEnabled() {
+        return false;
+      }
+
+      @Override
+      public boolean consoleAttached() {
+        return interactive;
+      }
+    };
   }
 
   private CheckReport report(final GateResult result) {

@@ -8,6 +8,7 @@ import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatch;
+import dev.ward.domain.gate.GateProgress;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.GateSection;
 import dev.ward.domain.project.BuildTool;
@@ -48,6 +49,18 @@ class AnalysisGateProgressTest {
             "resolving dependencies",
             "analyzing 1 of 1 files with 2 rules",
             "project-wide rules");
+  }
+
+  @Test
+  void ruleWithoutCategoryGoesUnderOtherAndSingleCategoryGivesOneSection() {
+    final GateResult result =
+        AnalysisGateTest.gate(
+                List.of(categorized(LENGTH, ""), categorized(NAMING, "")),
+                Map.of(LENGTH, List.of(new RuleMatch(AT, "too long")), NAMING, List.of()),
+                Set.of(RuleCapability.SYNTAX))
+            .execute(PROJECT, GateProgress.NONE);
+
+    assertThat(result.sections()).containsExactly(new GateSection("other", 1, 0));
   }
 
   private static RuleDefinition categorized(final String id, final String category) {
