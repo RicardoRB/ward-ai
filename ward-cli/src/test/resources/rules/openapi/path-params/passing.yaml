@@ -1,0 +1,28 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths:
+  /pets/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      responses: {}
+  /pets/{id}/toys/{toy}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: toy
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: {}

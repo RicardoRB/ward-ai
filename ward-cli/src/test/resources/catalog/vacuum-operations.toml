@@ -54,8 +54,6 @@ vacuum = ["path-not-include-query"]
 
 [[rule]]
 name = "path-params"
-presets = ["standard", "strict"]
-category = "correctness"
 vacuum = ["path-params"]
 
 [[rule]]

@@ -13,7 +13,7 @@ path-declarations-must-exist = "implemented"
 path-item-refs = "implemented"
 path-keys-no-trailing-slash = "implemented"
 path-not-include-query = "implemented"
-path-params = { status = "planned", issue = "#522" }
+path-params = "implemented"
 paths-kebab-case = "implemented"
 paths-specificity-order = { status = "planned", issue = "#522" }
 post-response-success = "implemented"

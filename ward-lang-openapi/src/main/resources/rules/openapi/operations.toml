@@ -165,3 +165,14 @@ presets = ["standard", "strict"]
 body = '''
 check = "openapi-path-item-refs"
 '''
+
+[[rules]]
+id = "ward:openapi/path-params"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-path-params"
+'''
