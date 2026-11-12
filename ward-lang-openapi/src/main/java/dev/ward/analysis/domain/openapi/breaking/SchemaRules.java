@@ -17,34 +17,76 @@ final class SchemaRules {
       List.of(
           new Irregular("new-required-request-property", Place.REQUEST_PROPERTY, "new-required"),
           new Irregular(
-              "response-required-property-removed", Place.RESPONSE_PROPERTY, "required-removed"));
+              "response-required-property-removed", Place.RESPONSE_PROPERTY, "required-removed"),
+          new Irregular(
+              "response-mediatype-became-not-enum", Place.RESPONSE_BODY, "became-not-enum"),
+          new Irregular(
+              "response-mediatype-enum-value-added", Place.RESPONSE_BODY, "enum-value-added"),
+          new Irregular(
+              "response-required-property-became-write-only",
+              Place.RESPONSE_PROPERTY,
+              "became-write-only"),
+          new Irregular(
+              "request-parameter-property-type-specialized",
+              Place.REQUEST_PARAMETER_PROPERTY,
+              "type-changed"),
+          new Irregular(
+              "new-required-request-header-property",
+              Place.REQUEST_HEADER_PROPERTY,
+              "new-required"));
 
   /** Where the checks with an id of their own report: the place and the kind of change. */
   private record Irregular(String id, Place place, String kind) {}
 
+  /** How much of a schema a place looks at. */
+  private enum Depth {
+    /** The schema itself. */
+    ROOT,
+    /** The schemas below it. */
+    BELOW,
+    /** Both. */
+    BOTH
+  }
+
   /** A place of schemas: the id prefix, how to find them and whether it looks below the root. */
   private enum Place {
-    REQUEST_BODY("request-body", Direction.REQUEST, SchemaSites::requestBodies, false),
-    REQUEST_PROPERTY("request-property", Direction.REQUEST, SchemaSites::requestBodies, true),
-    REQUEST_PARAMETER("request-parameter", Direction.REQUEST, SchemaSites::parameters, false),
-    RESPONSE_BODY("response-body", Direction.RESPONSE, SchemaSites::responseBodies, false),
-    RESPONSE_PROPERTY("response-property", Direction.RESPONSE, SchemaSites::responseBodies, true),
-    RESPONSE_HEADER("response-header", Direction.RESPONSE, SchemaSites::headers, false);
+    REQUEST_BODY("request-body", Direction.REQUEST, SchemaSites::requestBodies, Depth.ROOT),
+    REQUEST_PROPERTY(
+        "request-property", Direction.REQUEST, SchemaSites::requestBodies, Depth.BELOW),
+    REQUEST_PARAMETER(
+        "request-parameter",
+        Direction.REQUEST,
+        pair -> SchemaSites.parameters(pair, false),
+        Depth.ROOT),
+    REQUEST_PARAMETER_PROPERTY(
+        "request-parameter-property",
+        Direction.REQUEST,
+        pair -> SchemaSites.parameters(pair, false),
+        Depth.BELOW),
+    REQUEST_HEADER_PROPERTY(
+        "request-header-property",
+        Direction.REQUEST,
+        pair -> SchemaSites.parameters(pair, true),
+        Depth.BOTH),
+    RESPONSE_BODY("response-body", Direction.RESPONSE, SchemaSites::responseBodies, Depth.ROOT),
+    RESPONSE_PROPERTY(
+        "response-property", Direction.RESPONSE, SchemaSites::responseBodies, Depth.BELOW),
+    RESPONSE_HEADER("response-header", Direction.RESPONSE, SchemaSites::headers, Depth.ROOT);
 
     private final String prefix;
     private final Direction direction;
     private final Function<DocumentPair, List<Site>> sites;
-    private final boolean nested;
+    private final Depth depth;
 
     Place(
         final String prefix,
         final Direction direction,
         final Function<DocumentPair, List<Site>> sites,
-        final boolean nested) {
+        final Depth depth) {
       this.prefix = prefix;
       this.direction = direction;
       this.sites = sites;
-      this.nested = nested;
+      this.depth = depth;
     }
   }
 
@@ -88,13 +130,15 @@ final class SchemaRules {
 
   private static List<SchemaChange> changes(
       final SchemaSides sides, final Place place, final Site site) {
-    if (place.nested) {
-      final List<SchemaChange> changes =
-          new ArrayList<>(SchemaDiff.below(sides, site.base(), site.revision()));
-      changes.addAll(SchemaDiff.required(sides, site.base(), site.revision()));
-      return changes;
+    final List<SchemaChange> changes = new ArrayList<>();
+    if (place.depth != Depth.BELOW) {
+      changes.addAll(SchemaDiff.root(sides, site.base(), site.revision()));
     }
-    return SchemaDiff.root(sides, site.base(), site.revision());
+    if (place.depth != Depth.ROOT) {
+      changes.addAll(SchemaDiff.below(sides, site.base(), site.revision()));
+      changes.addAll(SchemaDiff.required(sides, site.base(), site.revision()));
+    }
+    return changes;
   }
 
   private static BreakingFinding finding(

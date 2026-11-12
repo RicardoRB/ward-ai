@@ -109,14 +109,21 @@ final class TypeChanges {
 
   private static Optional<SchemaChange> falseSchema(
       final SchemaSides sides, final DocNode base, final DocNode revision) {
-    final boolean before = "false".equals(base.text()) && base.isScalar();
-    final boolean after = "false".equals(revision.text()) && revision.isScalar();
-    if (sides.request() && !before && after) {
-      return Optional.of(new SchemaChange("schema-became-false", revision));
+    final boolean before = isFalse(base);
+    final boolean after = isFalse(revision);
+    if (sides.request()) {
+      return !before && after
+          ? Optional.of(new SchemaChange("schema-became-false", revision))
+          : Optional.empty();
     }
-    if (!sides.request() && before && !after) {
-      return Optional.of(new SchemaChange("schema-became-not-false", revision));
+    if (before != after) {
+      return Optional.of(
+          new SchemaChange(before ? "schema-became-not-false" : "schema-became-false", revision));
     }
     return Optional.empty();
+  }
+
+  private static boolean isFalse(final DocNode schema) {
+    return schema.isScalar() && "false".equals(schema.text());
   }
 }

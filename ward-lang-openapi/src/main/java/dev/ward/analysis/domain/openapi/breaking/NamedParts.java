@@ -16,14 +16,19 @@ final class NamedParts {
   /** The parameters of an operation by {@code in:name}; an operation's win over its path's. */
   static Map<String, DocNode> parameters(
       final OpenApiDocument document, final Operation operation) {
+    final Map<String, DocNode> parameters =
+        new LinkedHashMap<>(declared(document, operation.pathItem()));
+    parameters.putAll(declared(document, operation.node()));
+    return parameters;
+  }
+
+  /** The parameters one object declares, by {@code in:name}. */
+  static Map<String, DocNode> declared(final OpenApiDocument document, final DocNode owner) {
     final Map<String, DocNode> parameters = new LinkedHashMap<>();
-    for (final DocNode owner : List.of(operation.pathItem(), operation.node())) {
-      for (final DocNode parameter :
-          owner.get("parameters").map(DocNode::items).orElse(List.of())) {
-        final DocNode resolved = document.resolve(parameter);
-        parameters.put(
-            resolved.string("in").orElse("") + ":" + resolved.string("name").orElse(""), resolved);
-      }
+    for (final DocNode parameter : owner.get("parameters").map(DocNode::items).orElse(List.of())) {
+      final DocNode resolved = document.resolve(parameter);
+      parameters.put(
+          resolved.string("in").orElse("") + ":" + resolved.string("name").orElse(""), resolved);
     }
     return parameters;
   }

@@ -21,6 +21,10 @@ public final class BreakingRules {
     rules.addAll(RequestBodyRules.rules());
     rules.addAll(SchemaRules.rules());
     rules.addAll(LifecycleRemovals.rules());
+    rules.addAll(ParameterRules.rules());
+    rules.addAll(ResponseRules.rules());
+    rules.addAll(SecurityRules.rules());
+    rules.addAll(SecuritySchemeRules.rules());
     return List.copyOf(rules);
   }
 

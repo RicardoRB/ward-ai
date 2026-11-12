@@ -1,0 +1,1 @@
+new-required-request-header-property	GET	/pets

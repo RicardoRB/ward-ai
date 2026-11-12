@@ -44,7 +44,30 @@ final class RequiredChanges {
         changes.add(new SchemaChange(kind, revision));
       }
     }
+    changes.addAll(writeOnly(base, revision));
     return changes;
+  }
+
+  /** The required properties of the revision that stopped being readable. */
+  private static List<SchemaChange> writeOnly(final DocNode base, final DocNode revision) {
+    final List<SchemaChange> changes = new ArrayList<>();
+    for (final DocNode name : required(revision)) {
+      final boolean was = flag(base, name.text(), "writeOnly");
+      if (!was && flag(revision, name.text(), "writeOnly")) {
+        changes.add(
+            new SchemaChange("became-write-only", revision.get("properties").orElse(revision)));
+      }
+    }
+    return changes;
+  }
+
+  private static boolean flag(final DocNode schema, final String property, final String flag) {
+    return schema
+        .get("properties")
+        .flatMap(properties -> properties.get(property))
+        .flatMap(node -> node.get(flag))
+        .filter(node -> "true".equals(node.text()))
+        .isPresent();
   }
 
   private static List<DocNode> required(final DocNode schema) {

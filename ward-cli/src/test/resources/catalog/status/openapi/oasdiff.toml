@@ -10,21 +10,21 @@ api-path-removed-without-deprecation = "implemented"
 api-path-sunset-parse = "implemented"
 api-removed-before-sunset = "implemented"
 api-removed-without-deprecation = "implemented"
-api-security-anonymous-access-removed = { status = "planned", issue = "#523" }
-api-security-component-api-key-in-changed = { status = "planned", issue = "#523" }
-api-security-component-api-key-name-changed = { status = "planned", issue = "#523" }
-api-security-component-http-scheme-changed = { status = "planned", issue = "#523" }
-api-security-component-type-changed = { status = "planned", issue = "#523" }
-api-security-removed = { status = "planned", issue = "#523" }
-api-security-scope-added = { status = "planned", issue = "#523" }
+api-security-anonymous-access-removed = "implemented"
+api-security-component-api-key-in-changed = "implemented"
+api-security-component-api-key-name-changed = "implemented"
+api-security-component-http-scheme-changed = "implemented"
+api-security-component-type-changed = "implemented"
+api-security-removed = "implemented"
+api-security-scope-added = "implemented"
 api-stability-decreased = "implemented"
 api-sunset-date-changed-earlier = "implemented"
 api-sunset-date-changed-too-small = "implemented"
 api-sunset-date-too-small = "implemented"
-new-request-path-parameter = { status = "planned", issue = "#523" }
-new-required-request-default-parameter-to-existing-path = { status = "planned", issue = "#523" }
-new-required-request-header-property = { status = "planned", issue = "#523" }
-new-required-request-parameter = { status = "planned", issue = "#523" }
+new-request-path-parameter = "implemented"
+new-required-request-default-parameter-to-existing-path = "implemented"
+new-required-request-header-property = "implemented"
+new-required-request-parameter = "implemented"
 new-required-request-property = "implemented"
 new-required-request-property-with-default = { status = "planned", issue = "#523" }
 request-body-added-required = "implemented"
@@ -86,11 +86,11 @@ request-body-unevaluated-items-added = { status = "planned", issue = "#523" }
 request-body-unevaluated-properties-added = { status = "planned", issue = "#523" }
 request-body-unique-items-set = "implemented"
 request-body-wrapped-in-one-of = { status = "planned", issue = "#523" }
-request-header-property-became-enum = { status = "planned", issue = "#523" }
-request-header-property-became-required = { status = "planned", issue = "#523" }
+request-header-property-became-enum = "implemented"
+request-header-property-became-required = "implemented"
 request-parameter-became-enum = "implemented"
 request-parameter-became-not-nullable = "implemented"
-request-parameter-became-required = { status = "planned", issue = "#523" }
+request-parameter-became-required = "implemented"
 request-parameter-deprecated-sunset-missing = { status = "planned", issue = "#523" }
 request-parameter-enum-value-removed = "implemented"
 request-parameter-exclusive-max-decreased = "implemented"
@@ -120,11 +120,11 @@ request-parameter-min-properties-set = "implemented"
 request-parameter-min-set = "implemented"
 request-parameter-multiple-of-set = "implemented"
 request-parameter-pattern-added = "implemented"
-request-parameter-property-became-not-nullable = { status = "planned", issue = "#523" }
-request-parameter-property-enum-value-removed = { status = "planned", issue = "#523" }
+request-parameter-property-became-not-nullable = "implemented"
+request-parameter-property-enum-value-removed = "implemented"
 request-parameter-property-list-of-types-narrowed = { status = "planned", issue = "#523" }
-request-parameter-property-schema-became-false = { status = "planned", issue = "#523" }
-request-parameter-property-type-specialized = { status = "planned", issue = "#523" }
+request-parameter-property-schema-became-false = "implemented"
+request-parameter-property-type-specialized = "implemented"
 request-parameter-removed-before-sunset = "implemented"
 request-parameter-schema-became-false = "implemented"
 request-parameter-sunset-date-changed-earlier = "implemented"
@@ -199,7 +199,7 @@ request-property-unevaluated-properties-added = { status = "planned", issue = "#
 request-property-unique-items-set = "implemented"
 request-property-x-extensible-enum-value-removed = "implemented"
 request-required-property-became-not-read-only = { status = "planned", issue = "#523" }
-required-response-header-removed = { status = "planned", issue = "#523" }
+required-response-header-removed = "implemented"
 response-body-all-of-removed = { status = "planned", issue = "#523" }
 response-body-any-of-added = { status = "planned", issue = "#523" }
 response-body-became-nullable = "implemented"
@@ -231,7 +231,7 @@ response-body-max-properties-unset = "implemented"
 response-body-max-unset = "implemented"
 response-body-media-type-item-schema-removed = { status = "planned", issue = "#523" }
 response-body-media-type-item-schema-removed-untyped = { status = "planned", issue = "#523" }
-response-body-media-type-schema-removed = { status = "planned", issue = "#523" }
+response-body-media-type-schema-removed = "implemented"
 response-body-min-contains-decreased = "implemented"
 response-body-min-contains-unset = "implemented"
 response-body-min-decreased = "implemented"
@@ -247,7 +247,7 @@ response-body-multiple-of-unset = "implemented"
 response-body-one-of-added = { status = "planned", issue = "#523" }
 response-body-pattern-property-removed = "implemented"
 response-body-property-names-removed = "implemented"
-response-body-schema-became-false = { status = "planned", issue = "#523" }
+response-body-schema-became-false = "implemented"
 response-body-then-removed = "implemented"
 response-body-type-changed = "implemented"
 response-body-type-generalized = "implemented"
@@ -256,7 +256,7 @@ response-body-unevaluated-properties-removed = { status = "planned", issue = "#5
 response-body-unique-items-unset = "implemented"
 response-body-wrapped-in-one-of = { status = "planned", issue = "#523" }
 response-header-became-nullable = "implemented"
-response-header-became-optional = { status = "planned", issue = "#523" }
+response-header-became-optional = "implemented"
 response-header-exclusive-max-increased = "implemented"
 response-header-exclusive-max-unset = "implemented"
 response-header-exclusive-min-decreased = "implemented"
@@ -286,11 +286,11 @@ response-header-schema-became-not-false = "implemented"
 response-header-type-changed = { status = "planned", issue = "#523" }
 response-header-type-generalized = "implemented"
 response-media-type-name-generalized = { status = "planned", issue = "#523" }
-response-media-type-parameter-changed = { status = "planned", issue = "#523" }
-response-media-type-parameter-removed = { status = "planned", issue = "#523" }
-response-media-type-removed = { status = "planned", issue = "#523" }
-response-mediatype-became-not-enum = { status = "planned", issue = "#523" }
-response-mediatype-enum-value-added = { status = "planned", issue = "#523" }
+response-media-type-parameter-changed = "implemented"
+response-media-type-parameter-removed = "implemented"
+response-media-type-removed = "implemented"
+response-mediatype-became-not-enum = "implemented"
+response-mediatype-enum-value-added = "implemented"
 response-property-all-of-removed = { status = "planned", issue = "#523" }
 response-property-any-of-added = { status = "planned", issue = "#523" }
 response-property-became-not-enum = "implemented"
@@ -353,9 +353,9 @@ response-property-type-generalized = "implemented"
 response-property-unevaluated-items-removed = { status = "planned", issue = "#523" }
 response-property-unevaluated-properties-removed = { status = "planned", issue = "#523" }
 response-property-unique-items-unset = "implemented"
-response-required-property-became-write-only = { status = "planned", issue = "#523" }
+response-required-property-became-write-only = "implemented"
 response-required-property-removed = "implemented"
 response-required-property-removed-before-sunset = "implemented"
-response-success-status-removed = { status = "planned", issue = "#523" }
+response-success-status-removed = "implemented"
 sunset-deleted = "implemented"
 webhook-removed = "implemented"

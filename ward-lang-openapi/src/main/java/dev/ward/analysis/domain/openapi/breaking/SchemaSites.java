@@ -42,8 +42,10 @@ final class SchemaSites {
         });
   }
 
-  /** The schemas of the parameters both documents have, by place and name. */
-  static List<Site> parameters(final DocumentPair pair) {
+  /**
+   * The schemas of the parameters both documents have, by place and name; only headers if asked.
+   */
+  static List<Site> parameters(final DocumentPair pair, final boolean headersOnly) {
     return OperationPairs.each(
         pair,
         (base, now) -> {
@@ -51,9 +53,12 @@ final class SchemaSites {
           final List<Site> sites = new ArrayList<>();
           NamedParts.parameters(pair.base(), base)
               .forEach(
-                  (key, before) ->
+                  (key, before) -> {
+                    if (!headersOnly || key.startsWith("header:")) {
                       schemas(pair, before, Optional.ofNullable(after.get(key)))
-                          .ifPresent(schemas -> sites.add(site(now, schemas))));
+                          .ifPresent(schemas -> sites.add(site(now, schemas)));
+                    }
+                  });
           return sites;
         });
   }

@@ -1,0 +1,1 @@
+api-security-anonymous-access-removed	GET	/pets

@@ -66,6 +66,7 @@ final class SchemaKinds {
       min-properties-unset min-unset multiple-of-changed multiple-of-unset
       pattern-property-removed property-names-removed then-removed type-changed type-generalized
       unique-items-unset
+      schema-became-false
       """;
 
   /** The kinds of response-property checks. */
@@ -97,6 +98,11 @@ final class SchemaKinds {
       schema-became-not-false type-generalized
       """;
 
+  private static final String REQUEST_PARAMETER_PROPERTY =
+      "became-not-nullable enum-value-removed schema-became-false";
+
+  private static final String REQUEST_HEADER_PROPERTY = "became-enum became-required";
+
   private SchemaKinds() {}
 
   /** The kinds with a check at the place whose check ids start with {@code prefix}. */
@@ -109,6 +115,8 @@ final class SchemaKinds {
           case "response-body" -> RESPONSE_BODY;
           case "response-property" -> RESPONSE_PROPERTY;
           case "response-header" -> RESPONSE_HEADER;
+          case "request-parameter-property" -> REQUEST_PARAMETER_PROPERTY;
+          case "request-header-property" -> REQUEST_HEADER_PROPERTY;
           default -> "";
         };
     return Arrays.asList(kinds.split("\\s+"));
