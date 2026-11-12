@@ -3,6 +3,7 @@ package dev.ward.infrastructure.gate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
@@ -33,7 +34,7 @@ class FileSystemProjectFilesReadTest {
 
   @Test
   void aFileThatIsNotUtf8IsEmpty() throws IOException {
-    Files.write(root.resolve("bin"), new byte[] {(byte) 0xC3, (byte) 0x28});
+    Files.write(root.resolve("bin"), "\u00e9".getBytes(StandardCharsets.ISO_8859_1));
 
     assertThat(files.read(root, "bin")).isEmpty();
   }

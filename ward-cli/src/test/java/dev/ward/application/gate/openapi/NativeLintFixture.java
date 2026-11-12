@@ -18,6 +18,7 @@ import dev.ward.infrastructure.rule.ClasspathRuleSource;
 import dev.ward.infrastructure.rule.DeclarativeRuleMatcher;
 import dev.ward.infrastructure.rule.ProjectRuleSource;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -45,8 +46,17 @@ final class NativeLintFixture {
 
   private final Path root;
 
+  /** Selects only {@code operation-operation-id}, so each test is about one rule. */
+  static final String ONLY_OPERATION_ID =
+      "version = 1\n[select]\npreset = \"none\"\ninclude = [\"openapi.operation-operation-id\"]\n";
+
   NativeLintFixture(final Path root) {
     this.root = root;
+    try {
+      write("ward-rules.toml", ONLY_OPERATION_ID);
+    } catch (final IOException exception) {
+      throw new UncheckedIOException(exception);
+    }
   }
 
   void write(final String path, final String text) throws IOException {

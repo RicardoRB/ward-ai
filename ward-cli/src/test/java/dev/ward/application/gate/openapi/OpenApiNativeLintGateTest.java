@@ -2,10 +2,12 @@ package dev.ward.application.gate.openapi;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.domain.gate.Finding;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.GateStatus;
 import java.io.IOException;
 import java.nio.file.Path;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -13,15 +15,18 @@ class OpenApiNativeLintGateTest {
 
   @TempDir Path root;
 
-  private NativeLintFixture fixture() {
-    return new NativeLintFixture(root);
+  private NativeLintFixture fixture;
+
+  @BeforeEach
+  void setUp() {
+    fixture = new NativeLintFixture(root);
   }
 
   @Test
   void aViolationFailsTheGateWithItsFileAndPosition() throws IOException {
-    fixture().write(NativeLintFixture.SPEC, NativeLintFixture.VIOLATING);
+    fixture.write(NativeLintFixture.SPEC, NativeLintFixture.VIOLATING);
 
-    final GateResult result = fixture().lint();
+    final GateResult result = fixture.lint();
 
     assertThat(result.status()).isEqualTo(GateStatus.FAILED);
     assertThat(result.findings().items())
@@ -36,14 +41,14 @@ class OpenApiNativeLintGateTest {
 
   @Test
   void aCleanSpecPasses() throws IOException {
-    fixture().write(NativeLintFixture.SPEC, NativeLintFixture.CLEAN);
+    fixture.write(NativeLintFixture.SPEC, NativeLintFixture.CLEAN);
 
-    assertThat(fixture().lint().status()).isEqualTo(GateStatus.PASSED);
+    assertThat(fixture.lint().status()).isEqualTo(GateStatus.PASSED);
   }
 
   @Test
   void aMissingSpecFailsAndNamesTheFile() {
-    final GateResult result = fixture().lint();
+    final GateResult result = fixture.lint();
 
     assertThat(result.status()).isEqualTo(GateStatus.FAILED);
     assertThat(result.summary()).contains(NativeLintFixture.SPEC);
@@ -51,13 +56,13 @@ class OpenApiNativeLintGateTest {
 
   @Test
   void aWarningFailsTheGateLikeAnError() throws IOException {
-    fixture().write(NativeLintFixture.SPEC, NativeLintFixture.VIOLATING);
-    fixture()
-        .write(
-            "ward-rules.toml",
-            "version = 1\n[rules.openapi.operation-operation-id]\nseverity = \"warning\"\n");
+    fixture.write(NativeLintFixture.SPEC, NativeLintFixture.VIOLATING);
+    fixture.write(
+        "ward-rules.toml",
+        NativeLintFixture.ONLY_OPERATION_ID
+            + "[rules.openapi.operation-operation-id]\nseverity = \"warning\"\n");
 
-    final GateResult result = fixture().lint();
+    final GateResult result = fixture.lint();
 
     assertThat(result.status()).as(result.stderr()).isEqualTo(GateStatus.FAILED);
     assertThat(result.warnings()).isEqualTo(1);
@@ -65,24 +70,30 @@ class OpenApiNativeLintGateTest {
 
   @Test
   void aRuleExcludedInTheRuleFileDoesNotRun() throws IOException {
-    fixture().write(NativeLintFixture.SPEC, NativeLintFixture.VIOLATING);
-    fixture()
-        .write(
-            "ward-rules.toml",
-            "version = 1\n[select]\nexclude = [\"openapi.operation-operation-id\"]\n");
+    fixture.write(
+        NativeLintFixture.SPEC,
+        "openapi: 3.0.3\ninfo:\n  title: T\npaths:\n  /pets:\n    get:\n      summary: l\n");
+    fixture.write(
+        "ward-rules.toml",
+        "version = 1\n[select]\npreset = \"none\"\ninclude = [\"openapi.operation-operation-id\", \"openapi.info-contact\"]\nexclude = [\"openapi.operation-operation-id\"]\n");
 
-    assertThat(fixture().lint().status()).isEqualTo(GateStatus.PASSED);
+    final GateResult result = fixture.lint();
+
+    assertThat(result.status()).isEqualTo(GateStatus.PASSED);
+    assertThat(result.findings().items())
+        .extracting(Finding::ruleId)
+        .containsExactly("ward:openapi/info-contact");
   }
 
   @Test
   void aTableForAnUnknownRuleIsAConfigurationError() throws IOException {
-    fixture().write(NativeLintFixture.SPEC, NativeLintFixture.CLEAN);
-    fixture()
-        .write(
-            "ward-rules.toml",
-            "version = 1\n[rules.openapi.no-such-rule]\nseverity = \"warning\"\n");
+    fixture.write(NativeLintFixture.SPEC, NativeLintFixture.CLEAN);
+    fixture.write(
+        "ward-rules.toml",
+        NativeLintFixture.ONLY_OPERATION_ID
+            + "[rules.openapi.no-such-rule]\nseverity = \"warning\"\n");
 
-    final GateResult result = fixture().lint();
+    final GateResult result = fixture.lint();
 
     assertThat(result.status()).isEqualTo(GateStatus.EXECUTION_ERROR);
     assertThat(result.stderr()).contains("no-such-rule");
@@ -90,11 +101,11 @@ class OpenApiNativeLintGateTest {
 
   @Test
   void findingsInAReferencedFilePointAtThatFile() throws IOException {
-    fixture()
-        .write(NativeLintFixture.SPEC, "openapi: 3.0.3\npaths:\n  /pets:\n    $ref: 'pets.yaml'\n");
-    fixture().write("api/pets.yaml", "get:\n  summary: x\n");
+    fixture.write(
+        NativeLintFixture.SPEC, "openapi: 3.0.3\npaths:\n  /pets:\n    $ref: 'pets.yaml'\n");
+    fixture.write("api/pets.yaml", "get:\n  summary: x\n");
 
-    final GateResult result = fixture().lint();
+    final GateResult result = fixture.lint();
 
     assertThat(result.status()).isEqualTo(GateStatus.FAILED);
     assertThat(result.findings().items().getFirst().file()).isEqualTo("api/pets.yaml");
@@ -102,9 +113,9 @@ class OpenApiNativeLintGateTest {
 
   @Test
   void aVacuumConfigFileIsNeitherReadNorRefused() throws IOException {
-    fixture().write(NativeLintFixture.SPEC, NativeLintFixture.CLEAN);
-    fixture().write("vacuum.conf.yaml", "ignore: all\n");
+    fixture.write(NativeLintFixture.SPEC, NativeLintFixture.CLEAN);
+    fixture.write("vacuum.conf.yaml", "ignore: all\n");
 
-    assertThat(fixture().lint().status()).isEqualTo(GateStatus.PASSED);
+    assertThat(fixture.lint().status()).isEqualTo(GateStatus.PASSED);
   }
 }

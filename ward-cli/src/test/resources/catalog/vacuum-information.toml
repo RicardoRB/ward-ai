@@ -2,48 +2,32 @@
 
 [[rule]]
 name = "contact-properties"
-presets = ["standard", "strict"]
-category = "docs"
 vacuum = ["contact-properties"]
 
 [[rule]]
 name = "info-contact"
-presets = ["standard", "strict"]
-category = "docs"
 vacuum = ["info-contact"]
 
 [[rule]]
 name = "info-description"
-presets = ["standard", "strict"]
-category = "docs"
 vacuum = ["info-description"]
 
 [[rule]]
 name = "info-license"
-presets = ["standard", "strict"]
-category = "docs"
 vacuum = ["info-license"]
 
 [[rule]]
 name = "info-license-spdx"
-presets = ["standard", "strict"]
-category = "docs"
 vacuum = ["info-license-spdx"]
 
 [[rule]]
 name = "license-url"
-presets = ["standard", "strict"]
-category = "docs"
 vacuum = ["license-url"]
 
 [[rule]]
 name = "oas3-host-not-example"
-presets = ["standard", "strict"]
-category = "docs"
 vacuum = ["oas3-host-not-example"]
 
 [[rule]]
 name = "oas3-server-trailing-slash"
-presets = ["standard", "strict"]
-category = "docs"
 vacuum = ["oas3-server-trailing-slash"]

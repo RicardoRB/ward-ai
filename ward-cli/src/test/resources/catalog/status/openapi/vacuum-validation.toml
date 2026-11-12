@@ -2,4 +2,4 @@
 
 no-eval-in-markdown = { status = "planned", issue = "#522" }
 no-script-tags-in-markdown = { status = "planned", issue = "#522" }
-oas3-api-servers = { status = "planned", issue = "#522" }
+oas3-api-servers = "implemented"

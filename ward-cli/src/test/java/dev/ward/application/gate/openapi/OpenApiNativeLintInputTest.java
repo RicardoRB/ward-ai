@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -15,18 +16,19 @@ class OpenApiNativeLintInputTest {
 
   @TempDir Path root;
 
-  private NativeLintFixture fixture() {
-    return new NativeLintFixture(root);
+  private NativeLintFixture fixture;
+
+  @BeforeEach
+  void setUp() {
+    fixture = new NativeLintFixture(root);
   }
 
   @Test
   void anInlineLintIgnoreIsRefusedByKeyAnywhereInTheLoadedFiles() throws IOException {
-    fixture()
-        .write(
-            NativeLintFixture.SPEC,
-            NativeLintFixture.CLEAN + "      x-lint-ignore: operation-tags\n");
+    fixture.write(
+        NativeLintFixture.SPEC, NativeLintFixture.CLEAN + "      x-lint-ignore: operation-tags\n");
 
-    final GateResult result = fixture().lint();
+    final GateResult result = fixture.lint();
 
     assertThat(result.status()).isEqualTo(GateStatus.FAILED);
     assertThat(result.summary()).contains("x-lint-ignore").contains(NativeLintFixture.SPEC);
@@ -34,32 +36,29 @@ class OpenApiNativeLintInputTest {
 
   @Test
   void anIgnoreInAReferencedFileIsRefusedToo() throws IOException {
-    fixture()
-        .write(NativeLintFixture.SPEC, "openapi: 3.0.3\npaths:\n  /pets:\n    $ref: 'pets.yaml'\n");
-    fixture().write("api/pets.yaml", "get:\n  operationId: a\n  x-lint-ignore: all\n");
+    fixture.write(
+        NativeLintFixture.SPEC, "openapi: 3.0.3\npaths:\n  /pets:\n    $ref: 'pets.yaml'\n");
+    fixture.write("api/pets.yaml", "get:\n  operationId: a\n  x-lint-ignore: all\n");
 
-    assertThat(fixture().lint().summary()).contains("api/pets.yaml");
+    assertThat(fixture.lint().summary()).contains("api/pets.yaml");
   }
 
   @Test
   void aMentionInACommentOrAStringIsNotAnIgnore() throws IOException {
-    fixture()
-        .write(
-            NativeLintFixture.SPEC,
-            NativeLintFixture.CLEAN
-                + "      summary: 'x-lint-ignore is not allowed' # x-lint-ignore\n");
+    fixture.write(
+        NativeLintFixture.SPEC,
+        NativeLintFixture.CLEAN
+            + "      summary: 'x-lint-ignore is not allowed' # x-lint-ignore\n");
 
-    assertThat(fixture().lint().status()).isEqualTo(GateStatus.PASSED);
+    assertThat(fixture.lint().status()).isEqualTo(GateStatus.PASSED);
   }
 
   @Test
   void aSyntaxErrorIsAnExecutionErrorNamingFileAndLine() throws IOException {
-    fixture()
-        .write(
-            NativeLintFixture.SPEC,
-            "openapi: 3.0.3\npaths:\n  /pets:\n    get: 1\n  bad: 2\n x: 3\n");
+    fixture.write(
+        NativeLintFixture.SPEC, "openapi: 3.0.3\npaths:\n  /pets:\n    get: 1\n  bad: 2\n x: 3\n");
 
-    final GateResult result = fixture().lint();
+    final GateResult result = fixture.lint();
 
     assertThat(result.status()).isEqualTo(GateStatus.EXECUTION_ERROR);
     assertThat(result.summary()).startsWith(NativeLintFixture.SPEC + ":6:");
@@ -74,9 +73,9 @@ class OpenApiNativeLintInputTest {
             "openapi: 3.0.0\npaths:\n  /a:\n    get: {}\n    get: {}\n", "duplicate key 'get'",
             "", "empty");
     for (final Map.Entry<String, String> spec : specs.entrySet()) {
-      fixture().write(NativeLintFixture.SPEC, spec.getKey());
+      fixture.write(NativeLintFixture.SPEC, spec.getKey());
 
-      final GateResult result = fixture().lint();
+      final GateResult result = fixture.lint();
 
       assertThat(result.status()).as(spec.getValue()).isEqualTo(GateStatus.EXECUTION_ERROR);
       assertThat(result.summary()).contains(spec.getValue());
@@ -87,12 +86,11 @@ class OpenApiNativeLintInputTest {
   void referencesThatCannotBeUsedAreExecutionErrors() throws IOException {
     for (final String reference :
         List.of("gone.yaml", "https://example.com/a.yaml", "../../outside.yaml", "#/nope")) {
-      fixture()
-          .write(
-              NativeLintFixture.SPEC,
-              "openapi: 3.0.3\ncomponents:\n  schemas:\n    A:\n      $ref: '" + reference + "'\n");
+      fixture.write(
+          NativeLintFixture.SPEC,
+          "openapi: 3.0.3\ncomponents:\n  schemas:\n    A:\n      $ref: '" + reference + "'\n");
 
-      final GateResult result = fixture().lint();
+      final GateResult result = fixture.lint();
 
       assertThat(result.status()).as(reference).isEqualTo(GateStatus.EXECUTION_ERROR);
       assertThat(result.summary()).contains(NativeLintFixture.SPEC + ":5:");

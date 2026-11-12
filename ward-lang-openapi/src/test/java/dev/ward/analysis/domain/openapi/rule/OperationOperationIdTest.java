@@ -26,7 +26,11 @@ class OperationOperationIdTest {
 
     assertThat(findings).hasSize(1);
     assertThat(findings.getFirst().file()).isEqualTo("api.yaml");
-    assertThat(findings.getFirst().span().startLine()).isEqualTo(4);
+    assertThat(
+            RuleFixtures.positions(
+                "operation-operation-id",
+                "openapi: 3.0.0\npaths:\n  /a:\n    get:\n      summary: x\n"))
+        .containsExactly("4:5");
     assertThat(findings.getFirst().message())
         .isEqualTo("the `GET` operation does not contain an `operationId`");
   }

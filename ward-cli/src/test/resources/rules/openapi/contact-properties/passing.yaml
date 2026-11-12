@@ -1,0 +1,9 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+  contact:
+    name: n
+    url: https://x
+    email: a@b.c
+paths: {}

@@ -32459,6 +32459,177 @@
         }
       }
     },
+    "ward:openapi/contact-properties": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/info-contact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/info-description": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/info-license": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/info-license-spdx": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/license-url": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/oas3-api-servers": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/oas3-host-not-example": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/oas3-server-trailing-slash": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:openapi/operation-operation-id": {
       "type": "object",
       "additionalProperties": false,
@@ -53900,6 +54071,15 @@
               "kotlin.var-could-be-val",
               "kotlin.variable-declaration-usage-distance",
               "kotlin.wrong-equals-type-parameter",
+              "openapi.contact-properties",
+              "openapi.info-contact",
+              "openapi.info-description",
+              "openapi.info-license",
+              "openapi.info-license-spdx",
+              "openapi.license-url",
+              "openapi.oas3-api-servers",
+              "openapi.oas3-host-not-example",
+              "openapi.oas3-server-trailing-slash",
               "openapi.operation-operation-id",
               "python.abbreviation-as-word-in-name",
               "python.abstract-base-class-without-abstract-method",
@@ -56564,6 +56744,15 @@
               "kotlin.var-could-be-val",
               "kotlin.variable-declaration-usage-distance",
               "kotlin.wrong-equals-type-parameter",
+              "openapi.contact-properties",
+              "openapi.info-contact",
+              "openapi.info-description",
+              "openapi.info-license",
+              "openapi.info-license-spdx",
+              "openapi.license-url",
+              "openapi.oas3-api-servers",
+              "openapi.oas3-host-not-example",
+              "openapi.oas3-server-trailing-slash",
               "openapi.operation-operation-id",
               "python.abbreviation-as-word-in-name",
               "python.abstract-base-class-without-abstract-method",
@@ -62549,6 +62738,33 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
+            "contact-properties": {
+              "$ref": "#/$defs/ward:openapi~1contact-properties"
+            },
+            "info-contact": {
+              "$ref": "#/$defs/ward:openapi~1info-contact"
+            },
+            "info-description": {
+              "$ref": "#/$defs/ward:openapi~1info-description"
+            },
+            "info-license": {
+              "$ref": "#/$defs/ward:openapi~1info-license"
+            },
+            "info-license-spdx": {
+              "$ref": "#/$defs/ward:openapi~1info-license-spdx"
+            },
+            "license-url": {
+              "$ref": "#/$defs/ward:openapi~1license-url"
+            },
+            "oas3-api-servers": {
+              "$ref": "#/$defs/ward:openapi~1oas3-api-servers"
+            },
+            "oas3-host-not-example": {
+              "$ref": "#/$defs/ward:openapi~1oas3-host-not-example"
+            },
+            "oas3-server-trailing-slash": {
+              "$ref": "#/$defs/ward:openapi~1oas3-server-trailing-slash"
+            },
             "operation-operation-id": {
               "$ref": "#/$defs/ward:openapi~1operation-operation-id"
             }

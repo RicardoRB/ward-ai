@@ -9,7 +9,11 @@ import java.util.List;
  */
 public final class OpenApiRuleFiles implements RuleFileProvider {
 
-  private static final List<String> FILES = List.of("rules/openapi/operations.toml");
+  private static final List<String> FILES =
+      List.of(
+          "rules/openapi/information.toml",
+          "rules/openapi/operations.toml",
+          "rules/openapi/validation.toml");
 
   @Override
   public List<String> ruleFiles() {

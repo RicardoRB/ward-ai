@@ -9,6 +9,7 @@ import dev.ward.analysis.domain.openapi.YamlSyntax;
 import dev.ward.analysis.domain.port.ParseResult;
 import dev.ward.analysis.domain.rule.ProjectMatch;
 import java.util.List;
+import java.util.SortedMap;
 import java.util.TreeMap;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +24,7 @@ class OpenApiRuleRunTest {
         .tree();
   }
 
-  private static List<ProjectMatch> run(final TreeMap<String, SyntaxNode> trees) {
+  private static List<ProjectMatch> run(final SortedMap<String, SyntaxNode> trees) {
     final OpenApiProjectCheck check =
         (OpenApiProjectCheck)
             new OpenApiCheckProvider().checks().get("openapi-operation-operation-id").create(null);
@@ -63,20 +64,24 @@ class OpenApiRuleRunTest {
 
   @Test
   void aProjectCheckBuildsTheDocumentOfEachEntryFileFromTheTrees() {
-    final TreeMap<String, SyntaxNode> trees = new TreeMap<>();
+    final SortedMap<String, SyntaxNode> trees = new TreeMap<>();
     trees.put(ENTRY, tree(MISSING));
 
     final List<ProjectMatch> matches = run(trees);
 
     assertThat(matches).hasSize(1);
     assertThat(matches.getFirst().path()).isEqualTo(ENTRY);
-    assertThat(matches.getFirst().match().span().startLine()).isEqualTo(4);
+    assertThat(
+            matches.getFirst().match().span().startLine()
+                + ":"
+                + matches.getFirst().match().span().startColumn())
+        .isEqualTo("4:5");
     assertThat(matches.getFirst().match().message()).contains("`GET`");
   }
 
   @Test
   void aFileWithoutAnOpenapiKeyIsNotAnEntryAndABrokenDocumentRunsNoRule() {
-    final TreeMap<String, SyntaxNode> trees = new TreeMap<>();
+    final SortedMap<String, SyntaxNode> trees = new TreeMap<>();
     trees.put("part.yaml", tree("paths: {}\n"));
     trees.put(
         "broken.yaml",
