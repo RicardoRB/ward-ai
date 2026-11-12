@@ -27,11 +27,25 @@ final class UvLockfile {
   private static final String VERSION = "version";
   private static final int SUPPORTED = 1;
 
+  private final Map<String, List<Entry>> byName = new LinkedHashMap<>();
+
   /** One {@code [[package]]} table. */
   private record Entry(
-      String name, String version, boolean member, boolean registry, TomlTable table) {}
+      String name, String version, boolean member, boolean registry, TomlTable table) {
+    static Entry of(
+        final String name,
+        final String version,
+        final boolean member,
+        final boolean registry,
+        final TomlTable table) {
+      return new Entry(
+          name, version == null ? "" : version, member || version == null, registry, table);
+    }
 
-  private final Map<String, List<Entry>> byName = new LinkedHashMap<>();
+    PackageId id() {
+      return PythonLock.pypi(name, version);
+    }
+  }
 
   private UvLockfile() {}
 
@@ -63,46 +77,51 @@ final class UvLockfile {
     final boolean member =
         source != null && (source.contains("editable") || source.contains("virtual"));
     final String version = table.getString(VERSION);
-    byName
-        .computeIfAbsent(PyprojectDependencies.normalize(name), key -> new ArrayList<>())
-        .add(
-            new Entry(
-                PyprojectDependencies.normalize(name),
-                version == null ? "" : version,
-                member || version == null,
-                source != null && source.contains("registry"),
-                table));
+    final Entry entry =
+        Entry.of(
+            PyprojectDependencies.normalize(name),
+            version,
+            member,
+            source != null && source.contains("registry"),
+            table);
+    byName.computeIfAbsent(entry.name(), key -> new ArrayList<>()).add(entry);
   }
 
   private PythonLock toLock() {
     final PythonLock.Collector collector = new PythonLock.Collector();
     final Map<String, Map<String, PythonLock.Resolved>> directs = new HashMap<>();
-    for (final List<Entry> entries : byName.values()) {
-      for (final Entry entry : entries) {
-        if (entry.member()) {
-          directs.put(entry.name(), directsOf(entry));
-        } else {
-          final Set<PackageId> required = new HashSet<>();
-          refs(entry.table(), true).forEach(ref -> required.addAll(real(ref, new HashSet<>())));
-          collector.add(id(entry), entry.registry(), required);
-        }
-      }
-    }
+    byName.values().stream()
+        .flatMap(List::stream)
+        .forEach(
+            entry -> {
+              if (entry.member()) {
+                directs.put(entry.name(), directsOf(entry));
+              } else {
+                collector.add(entry.id(), entry.registry(), required(entry));
+              }
+            });
     return new PythonLock(collector.packages(), directs);
+  }
+
+  private Set<PackageId> required(final Entry entry) {
+    final Set<PackageId> required = new HashSet<>();
+    refs(entry.table(), true).forEach(ref -> required.addAll(real(ref, new HashSet<>())));
+    return required;
   }
 
   private Map<String, PythonLock.Resolved> directsOf(final Entry module) {
     final Map<String, PythonLock.Resolved> directs = new LinkedHashMap<>();
-    for (final TomlTable ref : refs(module.table(), false)) {
-      final String name = PyprojectDependencies.normalize(ref.getString(NAME));
-      final Entry target = target(ref);
-      if (target != null) {
-        directs.put(
-            name,
-            new PythonLock.Resolved(new ArrayList<>(real(ref, new HashSet<>())), target.member()));
-      }
-    }
+    refs(module.table(), false).forEach(ref -> direct(directs, ref));
     return directs;
+  }
+
+  private void direct(final Map<String, PythonLock.Resolved> directs, final TomlTable ref) {
+    final Entry target = target(ref);
+    if (target != null) {
+      directs.put(
+          PyprojectDependencies.normalize(ref.getString(NAME)),
+          new PythonLock.Resolved(new ArrayList<>(real(ref, new HashSet<>())), target.member()));
+    }
   }
 
   /** Returns the packages {@code ref} stands for, passing through members and local projects. */
@@ -112,7 +131,7 @@ final class UvLockfile {
       return List.of();
     }
     if (!target.member()) {
-      return List.of(id(target));
+      return List.of(target.id());
     }
     final List<PackageId> through = new ArrayList<>();
     if (visited.add(target.name())) {
@@ -128,7 +147,7 @@ final class UvLockfile {
    */
   private List<TomlTable> refs(final TomlTable table, final boolean defaultOnly) {
     final List<TomlTable> refs = new ArrayList<>();
-    for (final TomlTable ref : tables(table.getArray(DEPENDENCIES))) {
+    for (final TomlTable ref : TomlSupport.tables(table.getArray(DEPENDENCIES))) {
       refs.add(ref);
       if (defaultOnly) {
         refs.addAll(requestedExtras(ref));
@@ -138,7 +157,7 @@ final class UvLockfile {
       for (final String section : List.of(OPTIONAL, DEV)) {
         final TomlTable group = table.getTable(section);
         if (group != null) {
-          group.keySet().forEach(key -> refs.addAll(tables(group.getArray(key))));
+          group.keySet().forEach(key -> refs.addAll(TomlSupport.tables(group.getArray(key))));
         }
       }
     }
@@ -152,7 +171,7 @@ final class UvLockfile {
     final TomlTable optional = target == null ? null : target.table().getTable(OPTIONAL);
     if (requested != null && optional != null) {
       for (int index = 0; index < requested.size(); index++) {
-        extras.addAll(tables(optional.getArray(requested.getString(index))));
+        extras.addAll(TomlSupport.tables(optional.getArray(requested.getString(index))));
       }
     }
     return extras;
@@ -170,19 +189,5 @@ final class UvLockfile {
         .filter(entry -> version == null || entry.version().equals(version))
         .findFirst()
         .orElse(null);
-  }
-
-  private static List<TomlTable> tables(final TomlArray array) {
-    final List<TomlTable> tables = new ArrayList<>();
-    if (array != null) {
-      for (int index = 0; index < array.size(); index++) {
-        tables.add(array.getTable(index));
-      }
-    }
-    return tables;
-  }
-
-  private static PackageId id(final Entry entry) {
-    return PythonLock.pypi(entry.name(), entry.version());
   }
 }

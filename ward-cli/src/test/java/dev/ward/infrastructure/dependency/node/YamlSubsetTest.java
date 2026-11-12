@@ -31,12 +31,12 @@ class YamlSubsetTest {
 
     assertThat(root.get("lockfileVersion")).isEqualTo("9.0");
     final Map<String, Object> core =
-        YamlSubset.map(YamlSubset.map(root.get("packages")).get("@babel/core@7.0.0"));
-    assertThat(YamlSubset.map(core.get("resolution"))).containsEntry("integrity", "sha512-abc==");
-    assertThat(YamlSubset.map(core.get("engines"))).containsEntry("node", ">=6.9.0");
+        YamlScalars.map(YamlScalars.map(root.get("packages")).get("@babel/core@7.0.0"));
+    assertThat(YamlScalars.map(core.get("resolution"))).containsEntry("integrity", "sha512-abc==");
+    assertThat(YamlScalars.map(core.get("engines"))).containsEntry("node", ">=6.9.0");
     assertThat(core.get("cpu")).isEqualTo(List.of("x64", "arm64"));
     assertThat(root.get("onlyBuilt")).isEqualTo(List.of("esbuild", "sharp"));
-    assertThat(YamlSubset.map(root.get("empty"))).isEmpty();
+    assertThat(YamlScalars.map(root.get("empty"))).isEmpty();
   }
 
   @Test

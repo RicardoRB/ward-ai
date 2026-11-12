@@ -64,29 +64,16 @@ public final class SwiftDependencySource implements DependencySource {
     final String label = LockFiles.relative(root, resolved.get());
     final List<PackageResolved.Pin> pins = pins(project, resolved.get(), label);
     final ModuleBuilder builder = new ModuleBuilder(label, false);
-    for (final PackageResolved.Pin pin : pins) {
-      builder.add(pin.id(), pin.released()).scope(pin.id(), DependencyScope.RUNTIME);
-    }
-    for (final String location : declared.locations()) {
-      final PackageId id =
-          pins.stream()
-              .filter(pin -> pin.id().name().equals(location) || pin.identity().equals(location))
-              .map(PackageResolved.Pin::id)
-              .findFirst()
-              .orElseThrow(
-                  () ->
-                      new DependencyInventoryException(
-                          root.toString(),
-                          label,
-                          "Package.resolved has no pin for "
-                              + location
-                              + " declared in "
-                              + declared.file(),
-                          xcode
-                              ? "run `xcodebuild -resolvePackageDependencies`"
-                              : "run `swift package resolve`"));
-      builder.direct(id, DependencyScope.RUNTIME, declared.file());
-    }
+    pins.forEach(
+        pin -> builder.add(pin.id(), pin.released()).scope(pin.id(), DependencyScope.RUNTIME));
+    declared
+        .locations()
+        .forEach(
+            location ->
+                builder.direct(
+                    pinFor(project, pins, label, declared, location),
+                    DependencyScope.RUNTIME,
+                    declared.file()));
     final ModuleDependencies module = builder.build("");
     LOGGER.log(
         Level.FINE,
@@ -96,6 +83,30 @@ public final class SwiftDependencySource implements DependencySource {
                 + " modules=1 entries="
                 + module.dependencies().size());
     return new DependencyInventory(List.of(module));
+  }
+
+  private static PackageId pinFor(
+      final Project project,
+      final List<PackageResolved.Pin> pins,
+      final String label,
+      final Declared declared,
+      final String location) {
+    return pins.stream()
+        .filter(pin -> pin.id().name().equals(location) || pin.identity().equals(location))
+        .map(PackageResolved.Pin::id)
+        .findFirst()
+        .orElseThrow(
+            () ->
+                new DependencyInventoryException(
+                    project.root().toString(),
+                    label,
+                    "Package.resolved has no pin for "
+                        + location
+                        + " declared in "
+                        + declared.file(),
+                    project.buildTool() == BuildTool.XCODE
+                        ? "run `xcodebuild -resolvePackageDependencies`"
+                        : "run `swift package resolve`"));
   }
 
   /** The locations a manifest names and the file that names them. */

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.OptionalInt;
 import java.util.regex.Pattern;
 
 /**
@@ -50,14 +49,14 @@ final class YamlSubset {
   private void entry(final Map<String, Object> target, final int indent) {
     final String line = lines.get(position);
     final String content = line.substring(indent);
-    final int keyEnd = keyEnd(content).orElseThrow(this::unplaced);
-    final String key = unquote(content.substring(0, keyEnd));
+    final int keyEnd = YamlScalars.keyEnd(content).orElseThrow(this::unplaced);
+    final String key = YamlScalars.unquote(content.substring(0, keyEnd));
     final String rest = content.substring(keyEnd + 1).strip();
     position++;
     if (rest.isEmpty()) {
       target.put(key, block(indent));
-    } else if (isBlockScalar(rest)) {
-      throw unplacedPrevious();
+    } else if (BLOCK_INDICATOR.matcher(rest).matches()) {
+      throw unplacedAt(position);
     } else {
       target.put(key, value(rest, position - 1));
     }
@@ -103,7 +102,7 @@ final class YamlSubset {
         break;
       }
       final String item = lines.get(position).substring(indent + SEQUENCE_ITEM.length()).strip();
-      if (keyEnd(item).isPresent() && !quoted(item)) {
+      if (YamlScalars.keyEnd(item).isPresent() && !YamlScalars.quoted(item)) {
         throw unplaced();
       }
       items.add(value(item, position));
@@ -116,16 +115,7 @@ final class YamlSubset {
     if (text.startsWith("{") || text.startsWith("[")) {
       return new YamlFlow(text, zeroBasedLine).parse();
     }
-    return scalar(text);
-  }
-
-  private static String scalar(final String text) {
-    final String stripped = stripComment(text);
-    return unquote(stripped);
-  }
-
-  private static boolean isBlockScalar(final String rest) {
-    return BLOCK_INDICATOR.matcher(rest).matches();
+    return YamlScalars.plain(text);
   }
 
   private void skipBlank() {
@@ -139,13 +129,11 @@ final class YamlSubset {
   }
 
   private LockfileFormatException unplaced() {
-    return new LockfileFormatException(
-        "line " + (position + 1) + " has a shape the reader does not know");
+    return unplacedAt(position + 1);
   }
 
-  private LockfileFormatException unplacedPrevious() {
-    return new LockfileFormatException(
-        "line " + position + " has a shape the reader does not know");
+  private static LockfileFormatException unplacedAt(final int line) {
+    return new LockfileFormatException("line " + line + " has a shape the reader does not know");
   }
 
   private static int indent(final String line) {
@@ -157,86 +145,5 @@ final class YamlSubset {
       throw new LockfileFormatException("a line is indented with a tab");
     }
     return count;
-  }
-
-  /** Returns where the key of {@code key: value} ends, or empty when there is no key. */
-  private static OptionalInt keyEnd(final String content) {
-    final boolean quoted = quoted(content);
-    final int from = quoted ? closingQuote(content, 0, content.charAt(0)) + 1 : 0;
-    if (quoted && from == 0) {
-      return OptionalInt.empty();
-    }
-    for (int index = from; index < content.length(); index++) {
-      if (isSeparator(content, index)) {
-        return OptionalInt.of(index);
-      }
-      if (quoted) {
-        break;
-      }
-    }
-    return OptionalInt.empty();
-  }
-
-  private static boolean quoted(final String text) {
-    return text.startsWith("'") || text.startsWith("\"");
-  }
-
-  /** A colon ends a key only at the end of the line or before a space. */
-  private static boolean isSeparator(final String content, final int index) {
-    return content.charAt(index) == ':'
-        && (index + 1 == content.length() || content.charAt(index + 1) == ' ');
-  }
-
-  static int closingQuote(final String text, final int open, final char quote) {
-    int index = open + 1;
-    while (index < text.length()) {
-      final char current = text.charAt(index);
-      if (current == '\\' && quote == '"') {
-        index += 2;
-        continue;
-      }
-      if (current == quote) {
-        if (quote == '\'' && index + 1 < text.length() && text.charAt(index + 1) == '\'') {
-          index += 2;
-          continue;
-        }
-        return index;
-      }
-      index++;
-    }
-    return -1;
-  }
-
-  private static String stripComment(final String text) {
-    if (text.startsWith("'") || text.startsWith("\"")) {
-      final int close = closingQuote(text, 0, text.charAt(0));
-      return close < 0 ? text : text.substring(0, close + 1);
-    }
-    final int comment = text.indexOf(" #");
-    return comment < 0 ? text : text.substring(0, comment).strip();
-  }
-
-  /** Returns {@code value} as a map, or an empty map when it is not one. */
-  static Map<String, Object> map(final Object value) {
-    final Map<String, Object> copy = new LinkedHashMap<>();
-    if (value instanceof Map<?, ?> source) {
-      source.forEach((key, item) -> copy.put(String.valueOf(key), item));
-    }
-    return copy;
-  }
-
-  /** Returns {@code value} as text, or an empty text when it is not a scalar. */
-  static String scalar(final Object value) {
-    return value instanceof String text ? text : "";
-  }
-
-  static String unquote(final String text) {
-    if (text.length() >= 2 && text.startsWith("'") && text.endsWith("'")) {
-      return text.substring(1, text.length() - 1).replace("''", "'");
-    }
-    if (text.length() >= 2 && text.startsWith("\"") && text.endsWith("\"")) {
-      return text.substring(1, text.length() - 1).replace("\\\"", "\"").replace("\\\\", "\\");
-    }
-    return text;
   }
 }

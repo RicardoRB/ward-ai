@@ -46,18 +46,22 @@ final class YarnClassicLockfile {
     final Map<String, Stanza> byDescriptor = new HashMap<>();
     stanzas.forEach(stanza -> stanza.descriptors.forEach(key -> byDescriptor.put(key, stanza)));
     final NodeLock.Collector collector = new NodeLock.Collector();
-    for (final Stanza stanza : stanzas) {
-      final Set<PackageId> required = new HashSet<>();
-      stanza.requires.forEach(
-          (name, range) ->
-              Optional.ofNullable(byDescriptor.get(name + "@" + range))
-                  .ifPresent(target -> required.add(id(target))));
-      collector.add(id(stanza), released(stanza), required);
-    }
+    stanzas.forEach(
+        stanza -> collector.add(id(stanza), released(stanza), required(stanza, byDescriptor)));
     return new NodeLock(
         collector.packages(),
         (member, name, range) ->
             Optional.ofNullable(byDescriptor.get(name + "@" + range)).map(YarnClassicLockfile::id));
+  }
+
+  private static Set<PackageId> required(
+      final Stanza stanza, final Map<String, Stanza> byDescriptor) {
+    final Set<PackageId> required = new HashSet<>();
+    stanza.requires.forEach(
+        (name, range) ->
+            Optional.ofNullable(byDescriptor.get(name + "@" + range))
+                .ifPresent(target -> required.add(id(target))));
+    return required;
   }
 
   private static PackageId id(final Stanza stanza) {
@@ -121,12 +125,16 @@ final class YarnClassicLockfile {
   /** Reads one two-space entry and returns the section it opens, or an empty text. */
   private static String entry(final Stanza stanza, final String content, final int number) {
     if (content.endsWith(":")) {
-      return unquote(content.substring(0, content.length() - 1));
+      return YamlScalars.unquote(content.substring(0, content.length() - 1));
     }
     final String[] pair = pair(content, number);
     switch (pair[0]) {
-      case "version" -> stanza.version = pair[1];
-      case "resolved" -> stanza.resolved = pair[1];
+      case "version" -> {
+        stanza.version = pair[1];
+      }
+      case "resolved" -> {
+        stanza.resolved = pair[1];
+      }
       default -> {
         // other scalar entries (integrity, uid) carry nothing the inventory needs
       }
@@ -137,7 +145,7 @@ final class YarnClassicLockfile {
   private static List<String> descriptors(final String header, final int number) {
     final List<String> result = new ArrayList<>();
     for (final String part : header.split(",")) {
-      final String descriptor = unquote(part.strip());
+      final String descriptor = YamlScalars.unquote(part.strip());
       if (descriptor.indexOf('@', 1) < 0) {
         throw new LockfileFormatException("line " + number + " is not a package descriptor");
       }
@@ -152,13 +160,8 @@ final class YarnClassicLockfile {
       throw new LockfileFormatException("line " + number + " has a shape the reader does not know");
     }
     return new String[] {
-      unquote(content.substring(0, split)), unquote(content.substring(split + 1).strip())
+      YamlScalars.unquote(content.substring(0, split)),
+      YamlScalars.unquote(content.substring(split + 1).strip())
     };
-  }
-
-  private static String unquote(final String text) {
-    return text.length() >= 2 && text.startsWith("\"") && text.endsWith("\"")
-        ? text.substring(1, text.length() - 1)
-        : text;
   }
 }

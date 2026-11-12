@@ -18,7 +18,7 @@ import java.util.TreeSet;
 public final class ModuleBuilder {
   private final String source;
   private final boolean propagateScope;
-  private final Map<PackageId, Node> nodes = new HashMap<>();
+  private final Map<PackageId, PendingPackage> nodes = new HashMap<>();
 
   /**
    * Creates a builder for entries read from {@code source}.
@@ -34,7 +34,7 @@ public final class ModuleBuilder {
 
   /** Adds a package; adding it again keeps it {@code released} only if both adds say so. */
   public ModuleBuilder add(final PackageId id, final boolean released) {
-    final Node node = node(id);
+    final PendingPackage node = node(id);
     node.released = node.seen ? node.released && released : released;
     node.seen = true;
     return this;
@@ -50,7 +50,7 @@ public final class ModuleBuilder {
   /** Marks {@code id} as declared by the module, in {@code declaredIn}, with {@code scope}. */
   public ModuleBuilder direct(
       final PackageId id, final DependencyScope scope, final String declaredIn) {
-    final Node node = node(id);
+    final PendingPackage node = node(id);
     node.direct = true;
     node.declaredIn = node.declaredIn.isEmpty() ? declaredIn : min(node.declaredIn, declaredIn);
     return scope(id, scope);
@@ -58,7 +58,7 @@ public final class ModuleBuilder {
 
   /** Gives {@code id} a scope of its own; the widest of all it is given wins. */
   public ModuleBuilder scope(final PackageId id, final DependencyScope scope) {
-    final Node node = node(id);
+    final PendingPackage node = node(id);
     node.scope = node.scope == null ? scope : DependencyScope.widest(node.scope, scope);
     return this;
   }
@@ -79,8 +79,8 @@ public final class ModuleBuilder {
       propagate();
     }
     final List<Dependency> entries = new ArrayList<>();
-    for (final Map.Entry<PackageId, Node> entry : nodes.entrySet()) {
-      final Node node = entry.getValue();
+    for (final Map.Entry<PackageId, PendingPackage> entry : nodes.entrySet()) {
+      final PendingPackage node = entry.getValue();
       if (node.scope == null) {
         throw new IllegalStateException("No scope for " + entry.getKey());
       }
@@ -115,7 +115,7 @@ public final class ModuleBuilder {
     while (!work.isEmpty()) {
       final PackageId parent = work.poll();
       for (final PackageId child : children.getOrDefault(parent, Set.of())) {
-        final Node node = nodes.get(child);
+        final PendingPackage node = nodes.get(child);
         final DependencyScope wider =
             node.scope == null
                 ? nodes.get(parent).scope
@@ -128,8 +128,8 @@ public final class ModuleBuilder {
     }
   }
 
-  private Node node(final PackageId id) {
-    return nodes.computeIfAbsent(id, key -> new Node());
+  private PendingPackage node(final PackageId id) {
+    return nodes.computeIfAbsent(id, key -> new PendingPackage());
   }
 
   private static String min(final String first, final String second) {
@@ -137,7 +137,7 @@ public final class ModuleBuilder {
   }
 
   /** The mutable state of one package while a source is read. */
-  private static final class Node {
+  private static final class PendingPackage {
     private boolean seen;
     private boolean released = true;
     private boolean direct;

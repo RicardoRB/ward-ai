@@ -8,7 +8,6 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
-import dev.ward.infrastructure.dependency.gradle.GradleDependencySourceTest;
 import dev.ward.infrastructure.dependency.maven.MavenDependencySource;
 import dev.ward.infrastructure.json.ForyJsonCodec;
 import java.io.IOException;
@@ -37,7 +36,7 @@ class ResolvingDependencySourceTest {
 
   @BeforeEach
   void copyReactor() throws IOException {
-    GradleDependencySourceTest.copy(FIXTURE, work);
+    InventoryFixtures.copy(FIXTURE, work);
     maven = new FakeCommandExecutor(0, Files.readString(FIXTURE.resolve("mvn-output.txt")), "");
     project = new Project(work, Language.JAVA, BuildTool.MAVEN, Framework.NONE);
   }

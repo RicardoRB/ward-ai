@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /** Renders inventories as golden text and compares them with the committed {@code expected.txt}. */
 public final class InventoryFixtures {
@@ -81,6 +82,20 @@ public final class InventoryFixtures {
       assertThat(actual).isEqualTo(Files.readString(expected));
     } catch (IOException e) {
       throw new UncheckedIOException(e);
+    }
+  }
+
+  /** Copies the directory {@code from} into the existing directory {@code to}. */
+  public static void copy(final Path from, final Path to) throws IOException {
+    try (Stream<Path> walk = Files.walk(from)) {
+      for (final Path source : walk.toList()) {
+        final Path target = to.resolve(from.relativize(source).toString());
+        if (Files.isDirectory(source)) {
+          Files.createDirectories(target);
+        } else {
+          Files.copy(source, target);
+        }
+      }
     }
   }
 }

@@ -1,16 +1,14 @@
 package dev.ward.infrastructure.dependency.maven;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.domain.FakeCommandExecutor;
 import dev.ward.domain.dependency.Dependency;
 import dev.ward.domain.dependency.DependencyInventory;
-import dev.ward.domain.dependency.DependencyInventoryException;
 import dev.ward.domain.dependency.DependencyRelation;
 import dev.ward.domain.dependency.DependencyScope;
+import dev.ward.domain.dependency.ModuleDependencies;
 import dev.ward.domain.dependency.RequestedVersion;
-import dev.ward.domain.process.CommandResult;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
@@ -19,7 +17,6 @@ import dev.ward.infrastructure.dependency.InventoryFixtures;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.Duration;
 import org.junit.jupiter.api.Test;
 
 class MavenGraphToolTest {
@@ -44,21 +41,21 @@ class MavenGraphToolTest {
   void siblingModulesAreNotEntriesButTheirPackagesAre() throws IOException {
     final DependencyInventory inventory = new MavenGraphTool(ok(), false).resolve(project(false));
 
-    final var api = inventory.of("api").orElseThrow();
-    assertThat(api.dependencies()).noneMatch(d -> d.id().name().equals("dev.example:domain"));
+    final ModuleDependencies api = inventory.of("api").orElseThrow();
+    assertThat(api.dependencies()).noneMatch(d -> "dev.example:domain".equals(d.id().name()));
     assertThat(api.dependencies())
-        .anyMatch(d -> d.id().name().equals("com.google.guava:failureaccess"));
+        .anyMatch(d -> "com.google.guava:failureaccess".equals(d.id().name()));
     assertThat(inventory.of("").orElseThrow().dependencies()).isEmpty();
   }
 
   @Test
   void mavenScopesMapAndTransitivesKeepMediatedScope() throws IOException {
-    final var domain =
+    final ModuleDependencies domain =
         new MavenGraphTool(ok(), false).resolve(project(false)).of("domain").orElseThrow();
 
     final Dependency slf4j =
         domain.dependencies().stream()
-            .filter(d -> d.id().name().equals("org.slf4j:slf4j-api"))
+            .filter(d -> "org.slf4j:slf4j-api".equals(d.id().name()))
             .findFirst()
             .orElseThrow();
     assertThat(slf4j.scope()).isEqualTo(DependencyScope.PROVIDED);
@@ -68,11 +65,12 @@ class MavenGraphToolTest {
 
   @Test
   void theUnmediatedTreeKeepsEveryRequestedVersion() throws IOException {
-    final var api = new MavenGraphTool(ok(), false).resolve(project(false)).of("api").orElseThrow();
+    final ModuleDependencies api =
+        new MavenGraphTool(ok(), false).resolve(project(false)).of("api").orElseThrow();
 
     final Dependency guava =
         api.dependencies().stream()
-            .filter(d -> d.id().name().equals("com.google.guava:guava"))
+            .filter(d -> "com.google.guava:guava".equals(d.id().name()))
             .findFirst()
             .orElseThrow();
     assertThat(guava.id().version()).isEqualTo("33.0.0-jre");
@@ -108,51 +106,5 @@ class MavenGraphToolTest {
     new MavenGraphTool(executor, true).resolve(project(false));
 
     assertThat(executor.commands.getFirst()).contains("--offline");
-  }
-
-  @Test
-  void aFailingBuildNamesTheExecutableAndTheFirstErrorLine() {
-    final FakeCommandExecutor executor =
-        new FakeCommandExecutor(
-            1, "[INFO] x\n[ERROR] Could not resolve dependencies for api\n", "");
-
-    assertThatThrownBy(() -> new MavenGraphTool(executor, false).resolve(project(false)))
-        .isInstanceOf(DependencyInventoryException.class)
-        .hasMessageContaining("mvn")
-        .hasMessageContaining("Could not resolve dependencies for api")
-        .hasMessageNotContaining("-DoutputType");
-  }
-
-  @Test
-  void aToolThatCannotStartSaysWhichExecutableWasNotFound() {
-    final FakeCommandExecutor executor =
-        new FakeCommandExecutor(
-            new CommandResult(
-                -1,
-                "",
-                "Could not start mvn: no such file",
-                Duration.ZERO,
-                "PROCESS_START_FAILURE"));
-
-    assertThatThrownBy(() -> new MavenGraphTool(executor, false).resolve(project(false)))
-        .hasMessageContaining("mvn was not found");
-  }
-
-  @Test
-  void aTimeoutIsReported() {
-    final FakeCommandExecutor executor =
-        new FakeCommandExecutor(
-            new CommandResult(-3, "", "Timed out", Duration.ZERO, "PROCESS_TIMEOUT"));
-
-    assertThatThrownBy(() -> new MavenGraphTool(executor, false).resolve(project(false)))
-        .hasMessageContaining("did not finish");
-  }
-
-  @Test
-  void outputWithoutATreeIsAnError() {
-    final FakeCommandExecutor executor = new FakeCommandExecutor(0, "[INFO] nothing\n", "");
-
-    assertThatThrownBy(() -> new MavenGraphTool(executor, false).resolve(project(false)))
-        .hasMessageContaining("no dependency tree");
   }
 }

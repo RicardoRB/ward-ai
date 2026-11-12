@@ -96,10 +96,12 @@ final class GradleLockfiles {
     final String coordinate = matcher.group(1) + ":" + matcher.group(2) + ":" + matcher.group(3);
     final Set<String> configurations =
         locked.computeIfAbsent(coordinate, key -> new LinkedHashSet<>());
-    if (!configuration.isEmpty()) {
+    if (configuration.isEmpty()) {
+      if (matcher.group(CONFIGURATIONS_GROUP) != null) {
+        configurations.addAll(List.of(matcher.group(CONFIGURATIONS_GROUP).split(",")));
+      }
+    } else {
       configurations.add(configuration);
-    } else if (matcher.group(CONFIGURATIONS_GROUP) != null) {
-      configurations.addAll(List.of(matcher.group(CONFIGURATIONS_GROUP).split(",")));
     }
   }
 

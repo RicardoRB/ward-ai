@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,12 +27,12 @@ final class PinnedRequirements {
       Pattern.compile("^(?:-r|--requirement|-c|--constraint)\\s*=?\\s*(\\S+)$");
   private static final String VIA = "via";
 
-  /** A pinned requirement. */
-  record Pin(String name, String version, String file, boolean transitive) {}
-
   private final Path root;
   private final List<Pin> pins = new ArrayList<>();
   private final Set<Path> visited = new HashSet<>();
+
+  /** A pinned requirement. */
+  record Pin(String name, String version, String file, boolean transitive) {}
 
   private PinnedRequirements(final Path root) {
     this.root = root;
@@ -61,7 +62,7 @@ final class PinnedRequirements {
     } catch (IOException e) {
       throw new LockfileFormatException(label + " cannot be read", e);
     }
-    Pin last = null;
+    Optional<Pin> last = Optional.empty();
     boolean inVia = false;
     final List<String> via = new ArrayList<>();
     for (final Logical logical : logicalLines(lines)) {
@@ -73,9 +74,9 @@ final class PinnedRequirements {
       via.clear();
       last =
           logical.text().isEmpty()
-              ? null
+              ? Optional.empty()
               : requirement(normal, label, logical.number(), logical.text(), via);
-      inVia = last != null && (!via.isEmpty() || logical.text().contains("# via"));
+      inVia = last.isPresent() && (!via.isEmpty() || logical.text().contains("# via"));
     }
     flush(last, via);
   }
@@ -118,18 +119,18 @@ final class PinnedRequirements {
     return inVia;
   }
 
-  private void flush(final Pin last, final List<String> via) {
-    if (last == null) {
-      return;
-    }
+  private void flush(final Optional<Pin> last, final List<String> via) {
     final boolean transitive =
         !via.isEmpty()
             && via.stream().noneMatch(item -> item.startsWith("-r") || item.startsWith("-c"));
-    pins.set(pins.lastIndexOf(last), new Pin(last.name(), last.version(), last.file(), transitive));
+    last.ifPresent(
+        pin ->
+            pins.set(
+                pins.lastIndexOf(pin), new Pin(pin.name(), pin.version(), pin.file(), transitive)));
   }
 
-  /** Reads one logical line; returns the pin it adds, or null for an option or an include. */
-  private Pin requirement(
+  /** Reads one logical line; returns the pin it adds, or none for an option or an include. */
+  private Optional<Pin> requirement(
       final Path file,
       final String label,
       final int number,
@@ -138,11 +139,11 @@ final class PinnedRequirements {
     final String inline = comment(line, via);
     final String text = HASH.matcher(inline).replaceAll("").strip();
     if (text.isEmpty()) {
-      return null;
+      return Optional.empty();
     }
     if (text.startsWith("-")) {
       option(file, label, number, text);
-      return null;
+      return Optional.empty();
     }
     final int marker = text.indexOf(';');
     final String requirement = (marker < 0 ? text : text.substring(0, marker)).strip();
@@ -159,7 +160,7 @@ final class PinnedRequirements {
     final Pin result =
         new Pin(PyprojectDependencies.normalize(pin.group(1)), pin.group(2), label, false);
     pins.add(result);
-    return result;
+    return Optional.of(result);
   }
 
   /** Splits off a trailing comment, adding a {@code # via} annotation to {@code via}. */
@@ -176,25 +177,25 @@ final class PinnedRequirements {
   }
 
   private void option(final Path file, final String label, final int number, final String text) {
-    final Matcher include = INCLUDE.matcher(text);
     if (text.startsWith("-e") || text.startsWith("--editable")) {
       throw new LockfileFormatException(
           label + " line " + number + ": an editable requirement is not an exact version");
     }
+    final Matcher include = INCLUDE.matcher(text);
     if (include.matches()) {
-      final Path target = file.getParent().resolve(include.group(1)).normalize();
-      if (!target.startsWith(root) || !Files.isRegularFile(target)) {
-        throw new LockfileFormatException(
-            label
-                + " line "
-                + number
-                + ": the included file "
-                + include.group(1)
-                + " is not in the project");
-      }
+      final Path target = include(file, label, number, include.group(1));
       if (text.startsWith("-r") || text.startsWith("--requirement")) {
         file(target);
       }
     }
+  }
+
+  private Path include(final Path file, final String label, final int number, final String name) {
+    final Path target = file.getParent().resolve(name).normalize();
+    if (!target.startsWith(root) || !Files.isRegularFile(target)) {
+      throw new LockfileFormatException(
+          label + " line " + number + ": the included file " + name + " is not in the project");
+    }
+    return target;
   }
 }

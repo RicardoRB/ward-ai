@@ -33,43 +33,46 @@ final class PoetryLockfile {
     if (version == null || !(version.startsWith("1.") || version.startsWith("2."))) {
       throw new LockfileFormatException("unsupported lock-version " + version);
     }
+    final TomlArray array = parsed.getArrayOrEmpty("package");
+    final List<TomlTable> tables = new ArrayList<>();
+    for (int index = 0; index < array.size(); index++) {
+      tables.add(array.getTable(index));
+    }
     final Map<String, List<PackageId>> byName = new LinkedHashMap<>();
-    final TomlArray packages = parsed.getArrayOrEmpty("package");
-    for (int index = 0; index < packages.size(); index++) {
-      final TomlTable table = packages.getTable(index);
-      final String name = table.getString("name");
-      final String packageVersion = table.getString("version");
-      if (name == null || packageVersion == null) {
-        throw new LockfileFormatException("a package has no name or version");
-      }
-      final String normalized = PyprojectDependencies.normalize(name);
-      byName
-          .computeIfAbsent(normalized, key -> new ArrayList<>())
-          .add(PythonLock.pypi(normalized, packageVersion));
-    }
+    tables.forEach(
+        table -> byName.computeIfAbsent(nameOf(table), key -> new ArrayList<>()).add(id(table)));
     final PythonLock.Collector collector = new PythonLock.Collector();
-    for (int index = 0; index < packages.size(); index++) {
-      final TomlTable table = packages.getTable(index);
-      final Set<PackageId> required = new HashSet<>();
-      final TomlTable dependencies = table.getTable("dependencies");
-      if (dependencies != null) {
-        dependencies
-            .keySet()
-            .forEach(
-                dependency ->
-                    required.addAll(
-                        byName.getOrDefault(
-                            PyprojectDependencies.normalize(dependency), List.of())));
-      }
-      collector.add(
-          PythonLock.pypi(
-              PyprojectDependencies.normalize(table.getString("name")), table.getString("version")),
-          released(table),
-          required);
-    }
+    tables.forEach(table -> collector.add(id(table), released(table), required(table, byName)));
     final Map<String, PythonLock.Resolved> directs = new LinkedHashMap<>();
     byName.forEach((name, ids) -> directs.put(name, new PythonLock.Resolved(ids, false)));
     return new PythonLock(collector.packages(), Map.of("", directs));
+  }
+
+  private static String nameOf(final TomlTable table) {
+    final String name = table.getString("name");
+    if (name == null || table.getString("version") == null) {
+      throw new LockfileFormatException("a package has no name or version");
+    }
+    return PyprojectDependencies.normalize(name);
+  }
+
+  private static PackageId id(final TomlTable table) {
+    return PythonLock.pypi(nameOf(table), table.getString("version"));
+  }
+
+  private static Set<PackageId> required(
+      final TomlTable table, final Map<String, List<PackageId>> byName) {
+    final Set<PackageId> required = new HashSet<>();
+    final TomlTable dependencies = table.getTable("dependencies");
+    if (dependencies != null) {
+      dependencies
+          .keySet()
+          .forEach(
+              dependency ->
+                  required.addAll(
+                      byName.getOrDefault(PyprojectDependencies.normalize(dependency), List.of())));
+    }
+    return required;
   }
 
   private static boolean released(final TomlTable table) {

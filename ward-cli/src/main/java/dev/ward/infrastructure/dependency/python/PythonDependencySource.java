@@ -2,14 +2,12 @@ package dev.ward.infrastructure.dependency.python;
 
 import dev.ward.domain.dependency.DependencyInventory;
 import dev.ward.domain.dependency.DependencyInventoryException;
-import dev.ward.domain.dependency.DependencyScope;
 import dev.ward.domain.dependency.DependencySource;
 import dev.ward.domain.dependency.LockfileFormatException;
 import dev.ward.domain.dependency.ModuleBuilder;
 import dev.ward.domain.dependency.ModuleDependencies;
 import dev.ward.domain.dependency.PackageId;
 import dev.ward.infrastructure.dependency.LockFiles;
-import dev.ward.infrastructure.project.python.PythonProjectInspection;
 import dev.ward.infrastructure.project.python.PythonWorkspaces;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -24,7 +22,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 /**
  * Reads the inventory of a Python project without running a package manager: {@code uv.lock} for uv
@@ -33,7 +30,6 @@ import java.util.stream.Stream;
  */
 public final class PythonDependencySource implements DependencySource {
   private static final Logger LOGGER = Logger.getLogger(PythonDependencySource.class.getName());
-  private static final String PYPROJECT = PythonProjectInspection.PYPROJECT;
   private static final String UV_LOCK = "uv.lock";
   private static final String POETRY_LOCK = "poetry.lock";
 
@@ -43,7 +39,7 @@ public final class PythonDependencySource implements DependencySource {
         switch (project.buildTool()) {
           case UV -> locked(project, UV_LOCK, "uv lock");
           case POETRY -> locked(project, POETRY_LOCK, "poetry lock");
-          default -> pip(project);
+          default -> PipRequirementsSource.read(project);
         };
     LOGGER.log(
         Level.FINE,
@@ -62,7 +58,7 @@ public final class PythonDependencySource implements DependencySource {
     final Path root = project.root();
     final List<PythonManifest> members = new ArrayList<>();
     members.add(PythonManifest.read(root, root, project));
-    if (lockName.equals(UV_LOCK)) {
+    if (UV_LOCK.equals(lockName)) {
       PythonWorkspaces.members(root)
           .forEach(dir -> members.add(PythonManifest.read(root, dir, project)));
     }
@@ -95,7 +91,7 @@ public final class PythonDependencySource implements DependencySource {
       final String fix) {
     try {
       final String text = Files.readString(file);
-      return file.getFileName().toString().equals(UV_LOCK)
+      return UV_LOCK.equals(file.getFileName().toString())
           ? UvLockfile.read(text)
           : PoetryLockfile.read(text);
     } catch (IOException | UncheckedIOException e) {
@@ -164,97 +160,5 @@ public final class PythonDependencySource implements DependencySource {
         }
       }
     }
-  }
-
-  private DependencyInventory pip(final dev.ward.domain.project.Project project) {
-    final Path root = project.root();
-    final List<Path> files = requirementsFiles(root);
-    final ModuleBuilder builder = new ModuleBuilder("requirements.txt", false);
-    if (files.isEmpty()) {
-      final PythonManifest manifest = PythonManifest.read(root, root, project);
-      if (manifest.declaresPackages()) {
-        throw new DependencyInventoryException(
-            root.toString(),
-            "requirements.txt",
-            "the project declares dependencies and has no pinned requirements file",
-            "run `pip freeze > requirements.txt` or `pip-compile`");
-      }
-      return new DependencyInventory(List.of(new ModuleDependencies("", List.of())));
-    }
-    final Map<PackageId, String> sources = new java.util.HashMap<>();
-    for (final Path file : files) {
-      final DependencyScope scope = scopeOf(file.getFileName().toString());
-      try {
-        for (final PinnedRequirements.Pin pin : PinnedRequirements.read(root, file)) {
-          final PackageId id = PythonLock.pypi(pin.name(), pin.version());
-          builder.add(id, true).scope(id, scope);
-          if (!pin.transitive()) {
-            builder.direct(id, scope, pin.file());
-          }
-          sources.merge(id, pin.file(), (a, b) -> a.compareTo(b) <= 0 ? a : b);
-        }
-      } catch (LockfileFormatException e) {
-        throw new DependencyInventoryException(
-            root.toString(),
-            LockFiles.relative(root, file),
-            e.getMessage(),
-            "pin every requirement with `==`, for example with `pip-compile`",
-            e);
-      }
-    }
-    return new DependencyInventory(List.of(withSources(builder.build(""), sources)));
-  }
-
-  /** Gives each entry the file its pin was read from instead of the first file read. */
-  private static ModuleDependencies withSources(
-      final ModuleDependencies module, final Map<PackageId, String> sources) {
-    return new ModuleDependencies(
-        module.modulePath(),
-        module.dependencies().stream()
-            .map(
-                entry ->
-                    new dev.ward.domain.dependency.Dependency(
-                        entry.id(),
-                        entry.relation(),
-                        entry.scope(),
-                        entry.released(),
-                        sources.get(entry.id()),
-                        entry.declaredIn(),
-                        entry.requiredBy(),
-                        entry.requested()))
-            .toList());
-  }
-
-  private static DependencyScope scopeOf(final String file) {
-    if (file.contains("dev")) {
-      return DependencyScope.DEVELOPMENT;
-    }
-    return file.contains("test") ? DependencyScope.TEST : DependencyScope.RUNTIME;
-  }
-
-  private static List<Path> requirementsFiles(final Path root) {
-    final List<Path> files = new ArrayList<>();
-    for (final Path dir : List.of(root, root.resolve("requirements"))) {
-      if (Files.isDirectory(dir)) {
-        try (Stream<Path> listed = Files.list(dir)) {
-          listed
-              .filter(Files::isRegularFile)
-              .filter(
-                  file ->
-                      PythonProjectInspection.isRequirementsFile(file.getFileName().toString())
-                          || dir != root && file.getFileName().toString().endsWith(".txt"))
-              .sorted()
-              .forEach(files::add);
-        } catch (IOException e) {
-          throw new DependencyInventoryException(
-              root.toString(),
-              "requirements",
-              "the folder cannot be read",
-              "check its permissions",
-              e);
-        }
-      }
-    }
-    return files;
   }
 }

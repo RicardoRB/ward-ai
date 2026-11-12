@@ -12,6 +12,7 @@ import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -59,15 +60,17 @@ class DependencyInventoryServiceTest {
   void writesNothingToStandardOutput() {
     final PrintStream original = System.out;
     final ByteArrayOutputStream captured = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(captured, true));
+    final PrintStream replacement = new PrintStream(captured, true, StandardCharsets.UTF_8);
+    System.setOut(replacement);
     try {
       new DependencyInventoryService(
               Map.of(BuildTool.NPM, project -> new DependencyInventory(List.of())))
           .inventory(NPM);
     } finally {
       System.setOut(original);
+      replacement.close();
     }
 
-    assertThat(captured.toString()).isEmpty();
+    assertThat(captured.toString(StandardCharsets.UTF_8)).isEmpty();
   }
 }

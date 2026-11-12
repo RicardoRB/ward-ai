@@ -30,24 +30,24 @@ final class PnpmLockfile {
    */
   static NodeLock read(final String text) {
     final Map<String, Object> root = YamlSubset.parse(text);
-    final String version = YamlSubset.scalar(root.get("lockfileVersion"));
+    final String version = YamlScalars.text(root.get("lockfileVersion"));
     if (!VERSIONS.contains(version)) {
       throw new LockfileFormatException("unsupported lockfileVersion " + version);
     }
-    final Map<String, Object> packages = YamlSubset.map(root.get("packages"));
+    final Map<String, Object> packages = YamlScalars.map(root.get("packages"));
     final boolean split = version.startsWith("9");
-    final Map<String, Object> graph = split ? YamlSubset.map(root.get("snapshots")) : packages;
+    final Map<String, Object> graph = split ? YamlScalars.map(root.get("snapshots")) : packages;
     final NodeLock.Collector collector = new NodeLock.Collector();
     graph.forEach(
         (key, body) -> {
           final PackageId id = parseKey(key);
           final Map<String, Object> meta =
-              YamlSubset.map(split ? packages.get(baseKey(key)) : body);
+              YamlScalars.map(split ? packages.get(baseKey(key)) : body);
           final Set<PackageId> required = new HashSet<>();
           for (final String section : EDGES) {
-            YamlSubset.map(YamlSubset.map(body).get(section))
+            YamlScalars.map(YamlScalars.map(body).get(section))
                 .forEach(
-                    (name, value) -> toId(name, YamlSubset.scalar(value)).ifPresent(required::add));
+                    (name, value) -> toId(name, YamlScalars.text(value)).ifPresent(required::add));
           }
           collector.add(id, released(meta), required);
         });
@@ -59,7 +59,7 @@ final class PnpmLockfile {
   /** v6 without workspaces keeps the root importer's sections at the top. */
   private static Map<String, Object> importers(final Map<String, Object> root) {
     if (root.get("importers") instanceof Map) {
-      return YamlSubset.map(root.get("importers"));
+      return YamlScalars.map(root.get("importers"));
     }
     return Map.of(".", root);
   }
@@ -67,14 +67,14 @@ final class PnpmLockfile {
   private static Optional<PackageId> direct(
       final Map<String, Object> importers, final String member, final String name) {
     final Map<String, Object> importer =
-        YamlSubset.map(importers.get(member.isEmpty() ? "." : member));
+        YamlScalars.map(importers.get(member.isEmpty() ? "." : member));
     for (final String section : IMPORTER_SECTIONS) {
-      final Object entry = YamlSubset.map(importer.get(section)).get(name);
+      final Object entry = YamlScalars.map(importer.get(section)).get(name);
       if (entry != null) {
         final String resolved =
             entry instanceof Map
-                ? YamlSubset.scalar(YamlSubset.map(entry).get("version"))
-                : YamlSubset.scalar(entry);
+                ? YamlScalars.text(YamlScalars.map(entry).get("version"))
+                : YamlScalars.text(entry);
         return toId(name, resolved);
       }
     }
@@ -82,7 +82,7 @@ final class PnpmLockfile {
   }
 
   private static boolean released(final Map<String, Object> meta) {
-    final Map<String, Object> resolution = YamlSubset.map(meta.get("resolution"));
+    final Map<String, Object> resolution = YamlScalars.map(meta.get("resolution"));
     return !(resolution.containsKey("tarball")
         || resolution.containsKey("commit")
         || resolution.containsKey("repo")

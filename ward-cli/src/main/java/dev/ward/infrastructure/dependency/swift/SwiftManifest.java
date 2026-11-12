@@ -20,6 +20,8 @@ final class SwiftManifest {
   private static final Pattern REPOSITORY_URL =
       Pattern.compile("repositoryURL\\s*=\\s*\"([^\"]+)\"");
 
+  private static final char QUOTE = '"';
+
   private SwiftManifest() {}
 
   /**
@@ -50,7 +52,7 @@ final class SwiftManifest {
     int index = 0;
     while (index < source.length()) {
       final char current = source.charAt(index);
-      if (current == '"') {
+      if (current == QUOTE) {
         final int end = endOfString(source, index);
         code.append(source, index, end);
         index = end;

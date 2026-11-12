@@ -158,12 +158,11 @@ final class BunLockfile {
       return result;
     }
     final String[] parts = key.split("/");
-    for (int index = 0; index < parts.length; index++) {
-      if (parts[index].startsWith("@") && index + 1 < parts.length) {
-        result.add(parts[index] + "/" + parts[++index]);
-      } else {
-        result.add(parts[index]);
-      }
+    int index = 0;
+    while (index < parts.length) {
+      final boolean scoped = parts[index].startsWith("@") && index + 1 < parts.length;
+      result.add(scoped ? parts[index] + "/" + parts[index + 1] : parts[index]);
+      index += scoped ? 2 : 1;
     }
     return result;
   }

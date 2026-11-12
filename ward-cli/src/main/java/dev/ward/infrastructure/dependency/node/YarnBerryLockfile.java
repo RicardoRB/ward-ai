@@ -30,7 +30,7 @@ final class YarnBerryLockfile {
    */
   static NodeLock read(final String text) {
     final Map<String, Object> root = YamlSubset.parse(text);
-    final String metadata = YamlSubset.scalar(YamlSubset.map(root.get(METADATA)).get(VERSION));
+    final String metadata = YamlScalars.text(YamlScalars.map(root.get(METADATA)).get(VERSION));
     if (!supported(metadata)) {
       throw new LockfileFormatException("unsupported __metadata version " + metadata);
     }
@@ -39,7 +39,7 @@ final class YarnBerryLockfile {
         (header, body) -> {
           if (!METADATA.equals(header)) {
             for (final String descriptor : header.split(",\\s*")) {
-              byDescriptor.put(descriptor.strip(), YamlSubset.map(body));
+              byDescriptor.put(descriptor.strip(), YamlScalars.map(body));
             }
           }
         });
@@ -47,13 +47,13 @@ final class YarnBerryLockfile {
     root.forEach(
         (header, body) -> {
           if (!METADATA.equals(header) && !header.contains(WORKSPACE)) {
-            final Map<String, Object> stanza = YamlSubset.map(body);
+            final Map<String, Object> stanza = YamlScalars.map(body);
             final Set<PackageId> required = new HashSet<>();
             for (final String section : new String[] {"dependencies", "optionalDependencies"}) {
-              YamlSubset.map(stanza.get(section))
+              YamlScalars.map(stanza.get(section))
                   .forEach(
                       (name, range) ->
-                          find(byDescriptor, name, YamlSubset.scalar(range))
+                          find(byDescriptor, name, YamlScalars.text(range))
                               .ifPresent(target -> required.add(id(name, target))));
             }
             collector.add(id(header.split(",")[0].strip(), stanza), released(stanza), required);
@@ -80,7 +80,7 @@ final class YarnBerryLockfile {
   }
 
   private static PackageId id(final String descriptor, final Map<String, Object> stanza) {
-    final String version = YamlSubset.scalar(stanza.get(VERSION));
+    final String version = YamlScalars.text(stanza.get(VERSION));
     if (version.isEmpty()) {
       throw new LockfileFormatException("package " + descriptor + " has no version");
     }
@@ -89,7 +89,7 @@ final class YarnBerryLockfile {
   }
 
   private static boolean released(final Map<String, Object> stanza) {
-    final String resolution = YamlSubset.scalar(stanza.get("resolution"));
+    final String resolution = YamlScalars.text(stanza.get("resolution"));
     return resolution.contains("@" + NPM) || resolution.contains("@patch:");
   }
 }

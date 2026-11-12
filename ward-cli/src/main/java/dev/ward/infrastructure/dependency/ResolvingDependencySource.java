@@ -64,7 +64,7 @@ public final class ResolvingDependencySource implements DependencySource {
     final Optional<String> stored = cache.load(project.root(), key);
     if (stored.isPresent()) {
       try {
-        final DependencyInventory inventory = InventoryJson.decode(codec, stored.get());
+        final DependencyInventory inventory = InventoryDecoder.decode(codec, stored.get());
         LOGGER.log(
             Level.FINE,
             () -> "event=dependency-cache result=hit modules=" + inventory.modules().size());

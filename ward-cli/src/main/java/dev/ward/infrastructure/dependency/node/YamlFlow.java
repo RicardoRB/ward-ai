@@ -49,7 +49,7 @@ final class YamlFlow {
     return switch (text.charAt(at)) {
       case OPEN_MAP -> map();
       case OPEN_LIST -> list();
-      default -> YamlSubset.unquote(token(false));
+      default -> YamlScalars.unquote(token(false));
     };
   }
 
@@ -62,9 +62,12 @@ final class YamlFlow {
     }
     boolean more = true;
     while (more) {
-      final String key = YamlSubset.unquote(token(true));
+      final String key = YamlScalars.unquote(token(true));
       skipSpaces();
-      expect(COLON);
+      if (peek() != COLON) {
+        throw fail();
+      }
+      at++;
       map.put(key, element());
       more = separator(CLOSE_MAP);
     }
@@ -106,36 +109,26 @@ final class YamlFlow {
     return next == COMMA;
   }
 
-  private void expect(final char expected) {
-    if (peek() != expected) {
-      throw fail();
-    }
-    at++;
-  }
-
   private String token(final boolean key) {
     skipSpaces();
     final int start = at;
     final char first = peek();
     if (first == '\'' || first == '"') {
-      final int close = YamlSubset.closingQuote(text, at, first);
+      final int close = YamlScalars.closingQuote(text, at, first);
       if (close < 0) {
         throw fail();
       }
       at = close + 1;
       return text.substring(start, at);
     }
-    while (at < text.length() && !endsToken(text.charAt(at), key)) {
+    while (at < text.length() && !(isEnd(text.charAt(at)) || key && text.charAt(at) == COLON)) {
       at++;
     }
     return text.substring(start, at).strip();
   }
 
-  private static boolean endsToken(final char current, final boolean key) {
-    return current == COMMA
-        || current == CLOSE_MAP
-        || current == CLOSE_LIST
-        || key && current == COLON;
+  private static boolean isEnd(final char current) {
+    return current == COMMA || current == CLOSE_MAP || current == CLOSE_LIST;
   }
 
   private char peek() {

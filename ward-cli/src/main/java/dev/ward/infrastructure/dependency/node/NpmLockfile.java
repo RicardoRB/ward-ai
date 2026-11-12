@@ -6,7 +6,6 @@ import dev.ward.domain.json.JsonCodec;
 import dev.ward.domain.json.JsonCodecException;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -20,18 +19,12 @@ import java.util.Set;
 final class NpmLockfile {
   private static final String NODE_MODULES = "node_modules/";
   private static final String SEGMENT = "/" + NODE_MODULES;
-  private static final List<String> EDGE_SECTIONS =
-      List.of("dependencies", "optionalDependencies", "peerDependencies");
   private static final int OLDEST = 1;
   private static final int NEWEST = 3;
 
-  private final Map<String, Entry> entries = new LinkedHashMap<>();
+  private final Map<String, NpmEntry> entries = new LinkedHashMap<>();
 
   private NpmLockfile() {}
-
-  /** One {@code packages} entry. */
-  private record Entry(
-      String name, String version, String resolved, String link, Set<String> required) {}
 
   /**
    * Reads {@code text}.
@@ -52,7 +45,7 @@ final class NpmLockfile {
     final int version = version(root.get("lockfileVersion"));
     final NpmLockfile lock = new NpmLockfile();
     if (version == OLDEST) {
-      lock.readTree("", root.get("dependencies"));
+      lock.entries.putAll(NpmEntry.flatten(root.get("dependencies")));
     } else if (root.get("packages") instanceof Map<?, ?> packages) {
       lock.readPackages(packages);
     } else {
@@ -74,49 +67,8 @@ final class NpmLockfile {
     packages.forEach(
         (key, value) -> {
           if (value instanceof Map<?, ?> body) {
-            entries.put(String.valueOf(key), entry(String.valueOf(key), body));
+            entries.put(String.valueOf(key), NpmEntry.of(String.valueOf(key), body));
           }
-        });
-  }
-
-  private static Entry entry(final String key, final Map<?, ?> body) {
-    final String link = Boolean.TRUE.equals(body.get("link")) ? string(body.get("resolved")) : "";
-    final String declaredName = string(body.get("name"));
-    final String name = declaredName.isEmpty() ? nameOf(key) : declaredName;
-    final Set<String> required = new HashSet<>();
-    for (final String section : EDGE_SECTIONS) {
-      if (body.get(section) instanceof Map<?, ?> deps) {
-        deps.keySet().forEach(dependency -> required.add(String.valueOf(dependency)));
-      }
-    }
-    return new Entry(
-        name, string(body.get("version")), string(body.get("resolved")), link, required);
-  }
-
-  /** Flattens a version 1 {@code dependencies} tree into path keys. */
-  private void readTree(final String parent, final Object tree) {
-    if (!(tree instanceof Map<?, ?> dependencies)) {
-      return;
-    }
-    dependencies.forEach(
-        (name, value) -> {
-          if (!(value instanceof Map<?, ?> body)) {
-            return;
-          }
-          final String key = parent.isEmpty() ? NODE_MODULES + name : parent + SEGMENT + name;
-          final Set<String> required = new HashSet<>();
-          if (body.get("requires") instanceof Map<?, ?> requires) {
-            requires.keySet().forEach(dependency -> required.add(String.valueOf(dependency)));
-          }
-          entries.put(
-              key,
-              new Entry(
-                  String.valueOf(name),
-                  string(body.get("version")),
-                  string(body.get("resolved")),
-                  "",
-                  required));
-          readTree(key, body.get("dependencies"));
         });
   }
 
@@ -137,16 +89,16 @@ final class NpmLockfile {
   }
 
   /** A package is a {@code node_modules} entry that is neither a link nor a workspace member. */
-  private static boolean isPackage(final String key, final Entry entry) {
+  private static boolean isPackage(final String key, final NpmEntry entry) {
     return key.contains(NODE_MODULES) && entry.link().isEmpty() && !entry.version().isEmpty();
   }
 
   private Optional<PackageId> idOf(final String key) {
-    final Entry entry = key == null ? null : entries.get(key);
+    final NpmEntry entry = key == null ? null : entries.get(key);
     return entry == null || !isPackage(key, entry) ? Optional.empty() : Optional.of(id(entry));
   }
 
-  private static PackageId id(final Entry entry) {
+  private static PackageId id(final NpmEntry entry) {
     return NodeLock.npm(entry.name(), entry.version());
   }
 
@@ -164,14 +116,5 @@ final class NpmLockfile {
       final int cut = base.lastIndexOf(SEGMENT);
       base = cut < 0 ? "" : base.substring(0, cut);
     }
-  }
-
-  private static String nameOf(final String key) {
-    final int cut = key.lastIndexOf(NODE_MODULES);
-    return cut < 0 ? key : key.substring(cut + NODE_MODULES.length());
-  }
-
-  private static String string(final Object value) {
-    return value instanceof String text ? text : "";
   }
 }
