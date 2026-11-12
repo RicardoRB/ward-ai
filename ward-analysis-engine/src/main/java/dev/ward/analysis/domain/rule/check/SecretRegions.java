@@ -51,7 +51,7 @@ final class SecretRegions {
     if (!hasKeywords) {
       return slide(0, length, TEXT_WINDOW);
     }
-    return windows(hits, 0, 0, length, TEXT_WINDOW, TEXT_OVERLAP);
+    return windows(hits, 0, new Span(0, length, TEXT_WINDOW, TEXT_OVERLAP));
   }
 
   private static List<int[]> lines(final String text, final int[] hits, final boolean keywords) {
@@ -79,7 +79,7 @@ final class SecretRegions {
     if (!keywords) {
       return slide(start, end, LONG_LINE);
     }
-    return windows(hits, from, start, end, LONG_LINE, OVERLAP);
+    return windows(hits, from, new Span(start, end, LONG_LINE, OVERLAP));
   }
 
   /**
@@ -88,29 +88,26 @@ final class SecretRegions {
    * of the end of the last one, or after it, so the windows overlap by little and their total size
    * stays near the size of the text, however many hits there are.
    */
-  private static List<int[]> windows(
-      final int[] hits,
-      final int from,
-      final int floor,
-      final int limit,
-      final int size,
-      final int overlap) {
+  private static List<int[]> windows(final int[] hits, final int from, final Span span) {
     final List<int[]> windows = new ArrayList<>();
     int next = from;
-    while (next < hits.length && hits[next] < limit) {
-      final int start = Math.max(floor, hits[next] - LEAD);
-      final int end = Math.min(limit, start + size);
+    while (next < hits.length && hits[next] < span.limit()) {
+      final int start = Math.max(span.floor(), hits[next] - LEAD);
+      final int end = Math.min(span.limit(), start + span.size());
       windows.add(new int[] {start, end});
-      final int resume = end - overlap;
-      while (next < hits.length && hits[next] < resume && end < limit) {
+      final int resume = end - span.overlap();
+      while (next < hits.length && hits[next] < resume && end < span.limit()) {
         next++;
       }
-      if (end >= limit) {
+      if (end >= span.limit()) {
         break;
       }
     }
     return windows;
   }
+
+  /** The bounds and the size of the windows over one stretch of text. */
+  private record Span(int floor, int limit, int size, int overlap) {}
 
   private static List<int[]> slide(final int start, final int end, final int size) {
     final List<int[]> windows = new ArrayList<>();

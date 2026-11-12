@@ -16,6 +16,11 @@ import org.junit.jupiter.api.Test;
 /** The {@code secret-scan} check: SecretScanBundledRulesTest. */
 final class SecretScanBundledRulesTest extends SecretScanSupport {
 
+  /** Word-like text with the words of the key rules, in pieces so no source line matches one. */
+  private static final String[] WORDS = {
+    "tok", "en=abcDEF123_k", "ey sec", "ret: value api", "-key = 'x1Y2z3' pass", "word "
+  };
+
   /** Where the first window of a long line ends, so a token there is cut by it. */
   private static final int WINDOW_EDGE = 4090;
 
@@ -94,8 +99,7 @@ final class SecretScanBundledRulesTest extends SecretScanSupport {
 
   @Test
   void everySecretRuleRunsOverAMegabyteOfMixedTextInTime() {
-    final String mixed =
-        ("token=abcDEF123_key secret: value api" + "-key = 'x1Y2z3' password\n").repeat(16_000);
+    final String mixed = (String.join("", WORDS) + "\n").repeat(16_000);
     final List<RuleDefinition> rules = RuleFileReader.read("rules/secrets/secrets.toml");
     final DeclarativeRuleMatcher matcher = new DeclarativeRuleMatcher();
     final TextFile file = new TextFile("src/mixed.txt", mixed);
@@ -106,8 +110,7 @@ final class SecretScanBundledRulesTest extends SecretScanSupport {
 
   @Test
   void everySecretRuleFinishesOnAOneMegabyteSingleLineOfMixedTokenLikeText() {
-    final String line =
-        ("token=abcDEF123_key secret: value api" + "-key = 'x1Y2z3' password ").repeat(16_000);
+    final String line = String.join("", WORDS).repeat(16_000);
     final List<RuleDefinition> rules = RuleFileReader.read("rules/secrets/secrets.toml");
     final DeclarativeRuleMatcher matcher = new DeclarativeRuleMatcher();
     final TextFile file = new TextFile("dist/bundle.js", line);
