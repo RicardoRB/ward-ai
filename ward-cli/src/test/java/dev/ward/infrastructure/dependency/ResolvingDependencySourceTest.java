@@ -67,7 +67,7 @@ class ResolvingDependencySourceTest {
 
     Files.writeString(
         work.resolve("api/pom.xml"),
-        Files.readString(work.resolve("api/pom.xml")).replace("2.18.2", "2.18.3"));
+        Files.readString(work.resolve("api/pom.xml")).replace("2.22.3", "2.22.2"));
     source.read(project);
 
     assertThat(maven.commands).hasSize(2);

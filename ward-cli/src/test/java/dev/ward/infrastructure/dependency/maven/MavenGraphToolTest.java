@@ -73,11 +73,11 @@ class MavenGraphToolTest {
             .filter(d -> "com.google.guava:guava".equals(d.id().name()))
             .findFirst()
             .orElseThrow();
-    assertThat(guava.id().version()).isEqualTo("33.0.0-jre");
+    assertThat(guava.id().version()).isEqualTo("33.8.0-jre");
     assertThat(guava.requested())
         .containsExactlyInAnyOrder(
-            RequestedVersion.byModule("33.0.0-jre"),
-            new RequestedVersion("pkg:maven/dev.example/domain@1.0.0", "31.1-jre"));
+            RequestedVersion.byModule("33.8.0-jre"),
+            new RequestedVersion("pkg:maven/dev.example/domain@1.0.0", "33.7.2-jre"));
   }
 
   @Test
