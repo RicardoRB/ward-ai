@@ -1,0 +1,6 @@
+# Interim: the fake secrets of the native secret rules' fixtures. Removed with the gitleaks gate.
+[extend]
+useDefault = true
+
+[allowlist]
+paths = ['''ward-cli/src/test/resources/rules/secrets/''']
