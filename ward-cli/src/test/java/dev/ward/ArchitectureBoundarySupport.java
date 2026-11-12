@@ -27,6 +27,7 @@ final class ArchitectureBoundarySupport {
           "dev.ward.config.BuildToolBindingsModule",
           "dev.ward.config.DoctorBindingsModule",
           "dev.ward.config.DependencyBindingsModule",
+          "dev.ward.config.VulnerabilityBindingsModule",
           "dev.ward.config.NodeBindingsModule",
           "dev.ward.config.PythonBindingsModule",
           "dev.ward.config.SwiftBindingsModule",
@@ -103,7 +104,14 @@ final class ArchitectureBoundarySupport {
                   "dev.ward.application.gate.openspec.OpenSpecJunitTraceabilityGate",
                   "dev.ward.application.format.FormatService",
                   "dev.ward.application.format.FormatFileOutcome",
-                  "dev.ward.application.format.FormatFileOutcome$Verdict")),
+                  "dev.ward.application.format.FormatFileOutcome$Verdict",
+                  "dev.ward.application.vulnerability.EcosystemStatus",
+                  "dev.ward.application.vulnerability.ScanOptions",
+                  "dev.ward.application.vulnerability.ScanResult",
+                  "dev.ward.application.vulnerability.ScanResult$Located",
+                  "dev.ward.application.vulnerability.ScanResult$Unmatchable",
+                  "dev.ward.application.vulnerability.VulnerabilityRunMode",
+                  "dev.ward.application.vulnerability.VulnerabilityScan")),
           Map.entry(
               "init",
               Set.of(

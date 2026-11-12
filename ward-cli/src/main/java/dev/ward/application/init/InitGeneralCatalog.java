@@ -95,6 +95,13 @@ public class InitGeneralCatalog {
     options.addAll(buildTool.policy());
     options.add(
         new InitGateOption(
+            SupportedQualityGates.VULNERABILITIES,
+            "Matches the resolved dependencies against OSV advisories (opt-in).",
+            List.of(),
+            true,
+            "Downloads advisory data from osv.dev, and sends no project data."));
+    options.add(
+        new InitGateOption(
             SupportedQualityGates.TRACEABILITY,
             "Maps live OpenSpec scenarios to explicitly annotated JUnit tests (opt-in).",
             List.of(),

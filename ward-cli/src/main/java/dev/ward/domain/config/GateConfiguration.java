@@ -34,6 +34,7 @@ import java.util.Set;
  *     checked by {@code ward:architecture/independence}; empty when unset
  * @param rulesFile the project-relative path of the rule configuration file, or {@code null} for
  *     {@code ward-rules.toml}; only {@code ward} checks read it
+ * @param vulnerabilities the options of a {@code vulnerabilities} check, or {@code null} for others
  */
 public record GateConfiguration(
     String name,
@@ -51,7 +52,8 @@ public record GateConfiguration(
     List<LayerBoundary> layers,
     List<String> cycleRoots,
     List<List<String>> independence,
-    String rulesFile) {
+    String rulesFile,
+    VulnerabilityOptions vulnerabilities) {
 
   /** Copies the command, profiles and rule ids, keeping their order. */
   public GateConfiguration {
@@ -88,6 +90,7 @@ public record GateConfiguration(
         null,
         null,
         List.of(),
+        null,
         null,
         null,
         null);

@@ -2,6 +2,7 @@ package dev.ward.application.init;
 
 import dev.ward.application.init.openapi.OpenApiToolInstalls;
 import dev.ward.domain.config.WardException;
+import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.OwnedSection;
 import dev.ward.domain.project.Project;
@@ -85,8 +86,14 @@ public final class CiWorkflowTemplate {
               + "          key: trivy-${{ github.run_id }}\n"
               + "          restore-keys: trivy-\n");
     }
+    if (ids.contains(SupportedQualityGates.VULNERABILITIES)) {
+      body.append(VulnerabilityCacheSteps.restore(project));
+    }
     body.append(
         ward(wardVersion, ids.contains("dependency-check"), sarif(project), category(project)));
+    if (ids.contains(SupportedQualityGates.VULNERABILITIES)) {
+      body.append(VulnerabilityCacheSteps.save(project));
+    }
     if (ids.contains("trivy")) {
       body.append(
           STEP

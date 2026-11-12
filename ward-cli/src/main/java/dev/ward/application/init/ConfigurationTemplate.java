@@ -12,6 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /** Renders the {@code ward.toml} written by {@code ward init}. */
 public final class ConfigurationTemplate {
@@ -62,10 +63,10 @@ public final class ConfigurationTemplate {
       }
       final List<String> command = gate.command();
       final String goal =
-          command.subList(1, command.size()).stream()
+          command.stream()
+              .skip(1)
               .map(ConfigurationTemplate::escape)
-              .reduce((left, right) -> left + " " + right)
-              .orElse("");
+              .collect(Collectors.joining(" "));
       content
           .append("\n[checks.")
           .append(gate.id())
@@ -80,7 +81,7 @@ public final class ConfigurationTemplate {
       if (writesUses(gate)) {
         content.append("uses = \"").append(gate.id()).append("\"\n");
       }
-      if (!SupportedQualityGates.TRACEABILITY.equals(gate.id())) {
+      if (!command.isEmpty()) {
         content
             .append("command = \"")
             .append(escape(command.getFirst()))
@@ -106,6 +107,7 @@ public final class ConfigurationTemplate {
    */
   private static boolean writesUses(final InitGateOption gate) {
     return CRITICAL_USES.contains(gate.id())
+        || gate.command().isEmpty()
         || !CommandTypeInference.infer(gate.command()).equals(gate.id());
   }
 

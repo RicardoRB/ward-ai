@@ -5,8 +5,10 @@ import dev.ward.application.dependency.DependencyInventoryService;
 import dev.ward.infrastructure.cli.CommandLineRunnerImpl;
 import java.util.Map;
 import javax.inject.Provider;
+import javax.inject.Singleton;
 
 /** The compile-time Dagger graph that builds the command-line runner and every command. */
+@Singleton
 @Component(
     modules = {
       PortBindingsModule.class,

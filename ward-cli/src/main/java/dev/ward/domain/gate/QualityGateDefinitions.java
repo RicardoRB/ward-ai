@@ -20,6 +20,7 @@ public final class QualityGateDefinitions {
           new Definition("gitleaks", "Gitleaks", Phase.FAST, true),
           gate("zap", Phase.CI),
           gate("trivy", Phase.CI),
+          gate(SupportedQualityGates.VULNERABILITIES, Phase.CI),
           gate("enforcer", Phase.LOCAL),
           gate("license", Phase.LOCAL),
           gate("api-compat", Phase.CI),
