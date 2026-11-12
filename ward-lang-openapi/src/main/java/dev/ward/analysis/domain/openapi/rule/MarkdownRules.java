@@ -32,7 +32,7 @@ final class MarkdownRules {
   private static List<OpenApiFinding> forbidden(
       final OpenApiDocument document, final Pattern pattern, final String shown) {
     final List<OpenApiFinding> findings = new ArrayList<>();
-    for (final DocNode description : descriptions(document.root())) {
+    for (final DocNode description : stringsNamed(document.root(), DESCRIPTION)) {
       if (pattern.matcher(description.text()).find()) {
         findings.add(
             Findings.atValue(
@@ -46,7 +46,7 @@ final class MarkdownRules {
    * The string values of every {@code description} key, in file order, outside examples, which
    * vacuum does not index.
    */
-  private static List<DocNode> descriptions(final DocNode root) {
+  static List<DocNode> stringsNamed(final DocNode root, final String key) {
     final List<DocNode> found = new ArrayList<>();
     final Deque<DocNode> stack = new ArrayDeque<>();
     stack.push(root);
@@ -63,9 +63,7 @@ final class MarkdownRules {
         stack.push(node.items().get(index));
       }
       if (node.kind() == DocNode.Kind.OBJECT) {
-        node.get(DESCRIPTION)
-            .filter(text -> text.kind() == DocNode.Kind.STRING)
-            .ifPresent(found::add);
+        node.get(key).filter(text -> text.kind() == DocNode.Kind.STRING).ifPresent(found::add);
       }
     }
     return found;

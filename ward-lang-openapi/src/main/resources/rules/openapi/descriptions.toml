@@ -32,3 +32,14 @@ presets = ["standard", "strict"]
 body = '''
 check = "openapi-oas3-parameter-description"
 '''
+
+[[rules]]
+id = "ward:openapi/description-duplication"
+language = "openapi"
+capability = "SYNTAX"
+severity = "note"
+category = "docs"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-description-duplication"
+'''

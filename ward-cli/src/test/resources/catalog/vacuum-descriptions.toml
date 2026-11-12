@@ -6,8 +6,6 @@ vacuum = ["component-description"]
 
 [[rule]]
 name = "description-duplication"
-presets = ["standard", "strict"]
-category = "docs"
 vacuum = ["description-duplication"]
 
 [[rule]]

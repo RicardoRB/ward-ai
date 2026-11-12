@@ -23,6 +23,7 @@ public final class OpenApiRules {
     rules.put("camel-case-properties", SchemaShapeRules::camelCase);
     rules.put("component-description", DescriptionRules::component);
     rules.put("contact-properties", InfoRules::contactProperties);
+    rules.put("description-duplication", DuplicationRules::descriptions);
     rules.put("duplicated-entry-in-enum", EnumRules::duplicated);
     rules.put("info-contact", InfoRules::contact);
     rules.put("info-description", InfoRules::description);
@@ -40,10 +41,10 @@ public final class OpenApiRules {
     rules.put("oas3-api-servers", ServerRules::apiServers);
     rules.put("oas3-host-not-example", ServerRules::hostNotExample);
     rules.put("oas3-operation-security-defined", SecurityRules::operationSecurityDefined);
-    rules.put("oas3-parameter-description", DescriptionRules::parameter);
   }
 
   private static void register2(final Map<String, OpenApiRule> rules) {
+    rules.put("oas3-parameter-description", DescriptionRules::parameter);
     rules.put("oas3-server-trailing-slash", ServerRules::trailingSlash);
     rules.put("oas3-unused-component", UnusedComponentRules::unused);
     rules.put("openapi-tags", TagRules::openapiTags);
@@ -67,10 +68,10 @@ public final class OpenApiRules {
     rules.put("owasp-define-error-responses-401", OwaspResponseRules::unauthorized);
     rules.put("owasp-define-error-responses-429", OwaspResponseRules::tooManyRequests);
     rules.put("owasp-define-error-responses-500", OwaspResponseRules::serverError);
-    rules.put("owasp-define-error-validation", OwaspResponseRules::errorValidation);
   }
 
   private static void register3(final Map<String, OpenApiRule> rules) {
+    rules.put("owasp-define-error-validation", OwaspResponseRules::errorValidation);
     rules.put("owasp-integer-format", OwaspSchemaRules::integerFormat);
     rules.put("owasp-integer-limit", OwaspSchemaRules::integerLimit);
     rules.put("owasp-jwt-best-practices", OwaspSchemeRules::jwtBestPractices);
@@ -93,10 +94,10 @@ public final class OpenApiRules {
     rules.put("path-declarations-must-exist", PathRules::declarationsMustExist);
     rules.put("path-item-refs", OperationStructureRules::pathItemRefs);
     rules.put("path-keys-no-trailing-slash", PathRules::noTrailingSlash);
-    rules.put("path-not-include-query", PathRules::notIncludeQuery);
   }
 
   private static void register4(final Map<String, OpenApiRule> rules) {
+    rules.put("path-not-include-query", PathRules::notIncludeQuery);
     rules.put("path-params", PathParameterRules::pathParams);
     rules.put("paths-kebab-case", PathRules::kebabCase);
     rules.put("paths-specificity-order", SpecificityRules::order);

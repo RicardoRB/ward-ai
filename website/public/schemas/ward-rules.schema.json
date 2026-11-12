@@ -32535,6 +32535,25 @@
         }
       }
     },
+    "ward:openapi/description-duplication": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:openapi/duplicated-entry-in-enum": {
       "type": "object",
       "additionalProperties": false,
@@ -55272,6 +55291,7 @@
               "openapi.camel-case-properties",
               "openapi.component-description",
               "openapi.contact-properties",
+              "openapi.description-duplication",
               "openapi.duplicated-entry-in-enum",
               "openapi.info-contact",
               "openapi.info-description",
@@ -58008,6 +58028,7 @@
               "openapi.camel-case-properties",
               "openapi.component-description",
               "openapi.contact-properties",
+              "openapi.description-duplication",
               "openapi.duplicated-entry-in-enum",
               "openapi.info-contact",
               "openapi.info-description",
@@ -64072,6 +64093,9 @@
             },
             "contact-properties": {
               "$ref": "#/$defs/ward:openapi~1contact-properties"
+            },
+            "description-duplication": {
+              "$ref": "#/$defs/ward:openapi~1description-duplication"
             },
             "duplicated-entry-in-enum": {
               "$ref": "#/$defs/ward:openapi~1duplicated-entry-in-enum"
