@@ -1,7 +1,6 @@
 package dev.ward.infrastructure.init.maven;
 
 import dev.ward.domain.init.QualityPreset;
-import dev.ward.infrastructure.init.LicensePolicySnippets;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -14,7 +13,6 @@ final class PomTools {
   private static final String DEPENDENCY_CHECK = "dependency-check-maven";
   private static final String PIT = "pitest-maven";
   private static final String ENFORCER = "maven-enforcer-plugin";
-  private static final String LICENSE = "license-maven-plugin";
   private static final String JAPICMP = "japicmp-maven-plugin";
 
   private static final String JAPICMP_PLUGIN =
@@ -124,8 +122,6 @@ final class PomTools {
           Tool.modulePlugin("mutation", PIT, PIT_PLUGIN, PresetPluginSnippets::pit),
           Tool.modulePlugin(
               "enforcer", ENFORCER, ENFORCER_PLUGIN, preset -> PresetPluginSnippets.enforcer()),
-          Tool.plugin(
-              "license", LICENSE, LicensePolicySnippets.DENYLIST, LicensePolicySnippets::forPreset),
           Tool.plugin("api-compat", JAPICMP, JAPICMP_PLUGIN));
 
   private PomTools() {}

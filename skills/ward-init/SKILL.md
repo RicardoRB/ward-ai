@@ -129,11 +129,12 @@ order:
    versions, and the aggregator pins the versions in `pluginManagement`. A module without Java sources
    is skipped, and init names it in its output. Gradle modules that apply `java` or `java-library` get
    the same gates.
-   With the `license` gate (Maven `license:add-third-party`, Gradle `checkLicense`), `strict`
-   writes a license allowlist that fails on any license it does
-   not list (including LGPL, MPL, and CDDL); `standard` only denies GPL and AGPL. Ask the user which
-   licenses their legal policy approves before recommending `strict` for a project with such
-   dependencies.
+   The `license` gate is native and works for every toolchain without changing a build file: it
+   writes `[checks.license]` with `uses = "license"`. `strict` writes an `allow` list that fails on any
+   license it does not list (including LGPL, MPL, and CDDL); `standard` only denies GPL and AGPL. Ask
+   the user which licenses their legal policy approves before recommending `strict` for a project
+   with such dependencies, and tell them that dependencies must be installed before the gate runs,
+   since Ward never downloads license metadata.
 3. **Gates.** Start from the preset's gates and ask what to add or remove. Mention what you found:
    - Gates whose tool is `UNAVAILABLE` and whether init can install the tool (an `install` line) or
      only point to a manual guide (a `guidance` line).

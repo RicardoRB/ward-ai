@@ -118,7 +118,7 @@ finding twice.
 
 ## What init changes in your build
 
-For `enforcer`, `license` and `api-compat`, init adds missing plugins using
+For `enforcer` and `api-compat`, init adds missing plugins using
 Ward's embedded Java compatibility catalog.
 
 - Existing compatible plugin versions are kept.
@@ -289,28 +289,19 @@ commercial Arcmutate history plugin.
   Gradle projects use `build/gitleaks.sarif`. Ward creates the report directory before the gate
   runs, so it works on a fresh clone. Configurations from earlier versions keep working without
   findings; re-run `ward init` or add the four report arguments to enable them.
-- **The `license` plugin** matches license names exactly and case-sensitively, so init adds
-  `licenseMerges` that map common spellings to one name. The policy depends on the preset:
-  - `standard` denies GPL and AGPL, mapping spellings such as `GPL-3.0` and
-    `GNU Affero General Public License v3.0` to the excluded names. Licenses it does not recognize
-    pass, so unusual GPL spellings are not caught.
-  - `strict` allows only Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause, ISC, EPL-1.0, EPL-2.0, and
-    CC0-1.0. Any other license, or a dependency without one, fails the build. A dual-licensed
-    dependency passes when one of its licenses is allowed. LGPL, MPL, and CDDL are not listed
-    because they need a legal decision; add an approved license to `includedLicenses` and its
-    spellings to `licenseMerges`.
-- **On Gradle, the `license` gate** runs `checkLicense` from the
-  `com.github.jk1.dependency-license-report` plugin, and init writes a `licenseReport {}` block
-  whose rules are case-insensitive regular expressions. The plugin reads licenses from POMs and
-  from files inside the jar, and a dependency passes when any of them matches a rule.
-  - `standard` allows every license except GPL and AGPL. LGPL, the Classpath Exception, and
-    dependencies without a license pass. Other GPL exceptions, such as MySQL's Universal FOSS
-    Exception, only cover open-source use, so they fail.
-  - `strict` allows only Apache-2.0, MIT, BSD, ISC, EPL, and CC0 or public domain. Any other
-    license, or a dependency without one, fails.
-  - Earlier versions configured `com.github.hierynomus.license`, whose `licenseMain` checks
-    source headers, not dependencies. Re-run `ward init` to switch; remove the old plugin
-    yourself if you do not use it for headers.
+- **The `license` gate** is native and changes no build file: init writes `[checks.license]` with
+  `uses = "license"` and no `command`, for Maven, Gradle, Node, Python and Swift projects. It adds no
+  plugin, version, `licenseMerges` or `licenseReport` block, and leaves such content that is already
+  in a build file alone. The policy depends on the preset:
+  - `standard` and `custom` write `deny = ["GPL-*", "AGPL-*"]`; `LGPL` and the Classpath Exception
+    pass.
+  - `strict` writes an `allow` list of Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause, ISC, EPL-1.0,
+    EPL-2.0 and CC0-1.0. A dual-licensed dependency passes when one of its licenses is allowed. LGPL,
+    MPL and CDDL are not listed because they need a legal decision; add an approved identifier to
+    `allow`.
+
+  A license Ward cannot find is a finding, so install the dependencies before the gate runs; Ward
+  never downloads license metadata. See [License gate](/configuration/gates/#license-gate).
 
 ### Existing files
 
@@ -333,11 +324,10 @@ finding. With `strict`, expect these on most existing projects:
   - The rule can still fail on other plugins, such as `maven-war-plugin`, or when a parent POM
     supplies a version. Pin those in `<pluginManagement>` with the versions the message reports.
   - Use `standard` if you do not want this rule.
-- `license`: "There are some forbidden licenses used" (Maven) or "Some libraries do not declare at
-  least one allowed license" (Gradle) for any dependency whose only licenses are not on the
-  allowlist, for example an LGPL-only JDBC driver. On Maven, add the license to
-  `includedLicenses` once your legal policy approves it, or add its spelling to `licenseMerges`
-  when it is an approved license written another way. On Gradle, add a rule to `licenseReport`.
+- `license`: a `ward:license/not-allowed` finding for any dependency whose licenses are not all on the
+  `allow` list, for example an LGPL-only JDBC driver, and a `ward:license/unknown` finding for a
+  dependency that is not installed or declares no recognizable license. Add the license to `allow`
+  once your legal policy approves it, install the dependencies, or set `unknown = "warn"`.
 
 ## Node projects
 

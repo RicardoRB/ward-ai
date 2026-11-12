@@ -87,7 +87,6 @@ final class GradleToolVersions {
     tools.put("mutation", List.of(GradleToolCatalog.PITEST, GradleToolCatalog.PITEST_ENGINE));
     tools.put("dependency-check", List.of("org.owasp.dependencycheck"));
     tools.put("sonar", List.of("org.sonarqube"));
-    tools.put("license", List.of("com.github.jk1.dependency-license-report"));
     tools.put("api-compat", List.of("me.champeau.gradle.japicmp"));
     return Collections.unmodifiableMap(tools);
   }

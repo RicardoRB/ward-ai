@@ -27,15 +27,7 @@ import org.junit.jupiter.api.Test;
 class ExtendedGatesTest {
   private static final String GITLEAKS = "gitleaks";
   private static final List<String> GATE_IDENTIFIERS =
-      List.of(
-          "semgrep",
-          GITLEAKS,
-          "trivy",
-          "enforcer",
-          "license",
-          "api-compat",
-          "compliance",
-          "architecture");
+      List.of("semgrep", GITLEAKS, "trivy", "enforcer", "api-compat", "compliance", "architecture");
   private static final Project PROJECT =
       new Project(Path.of("/p"), Language.JAVA, BuildTool.MAVEN, Framework.NONE);
 

@@ -24,9 +24,6 @@
 
     <properties>
         <java.version>25</java.version>
-        <!-- Committed THIRD-PARTY-LICENSES and sbom.json; the license gate writes its regenerated copies elsewhere. -->
-        <compliance.outputDirectory>${maven.multiModuleProjectDirectory}/compliance</compliance.outputDirectory>
-        <compliance.sbomDirectory>${compliance.outputDirectory}</compliance.sbomDirectory>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <picocli.version>4.7.7</picocli.version>
         <tomlj.version>2.2.0</tomlj.version>
@@ -272,55 +269,6 @@
                 </plugin>
                 <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-enforcer-plugin</artifactId><version>3.7.0</version>
                   <configuration><rules><externalRules><location>${maven.multiModuleProjectDirectory}/config/enforcer-rules.xml</location></externalRules></rules><fail>true</fail></configuration>
-                </plugin>
-                <plugin>
-                  <groupId>org.codehaus.mojo</groupId>
-                  <artifactId>license-maven-plugin</artifactId>
-                  <version>2.7.1</version>
-                  <configuration>
-                    <!-- Allowlist: POMs spell licenses many ways, so a GPL denylist misses variants. -->
-                    <failOnBlacklist>true</failOnBlacklist>
-                    <licenseMerges>
-                      <licenseMerge>Apache-2.0|Apache 2.0|Apache License 2.0|Apache License, Version 2.0|The Apache License, Version 2.0|The Apache Software License, Version 2.0|The Apache Software License, version 2.0</licenseMerge>
-                      <licenseMerge>MIT|MIT License|The MIT License</licenseMerge>
-                      <licenseMerge>BSD|BSD-3-Clause|BSD-style</licenseMerge>
-                      <licenseMerge>EPL-2.0|Eclipse Public License v2.0</licenseMerge>
-                    </licenseMerges>
-                    <includedLicenses>
-                      <includedLicense>Apache-2.0</includedLicense>
-                      <includedLicense>MIT</includedLicense>
-                      <includedLicense>BSD</includedLicense>
-                      <includedLicense>EPL-2.0</includedLicense>
-                      <includedLicense>LGPL-2.1-or-later</includedLicense>
-                    </includedLicenses>
-                    <!-- Shipped set: compile and runtime scope, the dependencies the shaded JAR contains. -->
-                    <includedScopes>compile,runtime</includedScopes>
-                    <outputDirectory>${compliance.outputDirectory}</outputDirectory>
-                    <thirdPartyFilename>THIRD-PARTY-LICENSES</thirdPartyFilename>
-                    <!-- Adds the full text of each license in the shipped set; see licenses/. -->
-                    <fileTemplate>${maven.multiModuleProjectDirectory}/licenses/third-party-licenses.ftl</fileTemplate>
-                    <!-- Keeps the repository root out of the resource directories of the JAR. -->
-                    <addOutputDirectoryAsResourceDir>false</addOutputDirectoryAsResourceDir>
-                  </configuration>
-                </plugin>
-                <plugin>
-                  <groupId>org.cyclonedx</groupId>
-                  <artifactId>cyclonedx-maven-plugin</artifactId>
-                  <version>2.9.3</version>
-                  <configuration>
-                    <projectType>application</projectType>
-                    <!-- Run as makeAggregateBom: it lists Ward's own modules without the hashes of their JARs, which change with every build. -->
-                    <outputDirectory>${compliance.sbomDirectory}</outputDirectory>
-                    <outputName>sbom</outputName>
-                    <outputFormat>json</outputFormat>
-                    <schemaVersion>1.6</schemaVersion>
-                    <!-- A random serial number and a build time would change the file on every run. A fixed output timestamp drops the build time from the BOM. -->
-                    <includeBomSerialNumber>false</includeBomSerialNumber>
-                    <outputTimestamp>2026-01-01T00:00:00Z</outputTimestamp>
-                    <includeTestScope>false</includeTestScope>
-                    <includeProvidedScope>false</includeProvidedScope>
-                    <includeSystemScope>false</includeSystemScope>
-                  </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

@@ -8,6 +8,14 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Added
+
+- Native `license` gate for Maven, Gradle, Node, Python and Swift projects: it checks the licenses of the resolved dependencies against a deny or allow policy in `[checks.license]` (`deny`, `allow`, `exceptions`, `scopes`, `unknown`), reading only local metadata. `ward sbom` writes a CycloneDX 1.6 JSON bill of materials and `ward licenses` the third-party license notice (#520).
+
+### Changed
+
+- **Breaking (alpha, no migration):** the `license` gate no longer runs a build plugin. A `license` check that sets `command` is a configuration error, a license Ward cannot find or recognize now fails the gate (`unknown = "warn"` only warns), and init no longer writes `license-maven-plugin`, `com.github.jk1.dependency-license-report`, `licenseMerges` or `licenseReport` (#520).
+
 ## [0.7.0] - 2026-11-11
 
 ### Added

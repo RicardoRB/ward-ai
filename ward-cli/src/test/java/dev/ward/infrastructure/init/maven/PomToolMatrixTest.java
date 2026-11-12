@@ -41,14 +41,7 @@ class PomToolMatrixTest {
   /** Gates that add Maven declarations, matching the configurator's tool table. */
   private static final List<String> MAVEN_GATES =
       List.of(
-          "sonar",
-          "coverage",
-          "dependency-check",
-          "mutation",
-          "enforcer",
-          "format",
-          "license",
-          "api-compat");
+          "sonar", "coverage", "dependency-check", "mutation", "enforcer", "format", "api-compat");
 
   @ParameterizedTest(name = "{0}")
   @MethodSource("fixtures")

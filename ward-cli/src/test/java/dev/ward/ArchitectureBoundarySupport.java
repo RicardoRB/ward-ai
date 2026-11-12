@@ -27,6 +27,7 @@ final class ArchitectureBoundarySupport {
           "dev.ward.config.BuildToolBindingsModule",
           "dev.ward.config.DoctorBindingsModule",
           "dev.ward.config.DependencyBindingsModule",
+          "dev.ward.config.LicenseBindingsModule",
           "dev.ward.config.NodeBindingsModule",
           "dev.ward.config.PythonBindingsModule",
           "dev.ward.config.SwiftBindingsModule",
@@ -82,6 +83,7 @@ final class ArchitectureBoundarySupport {
           Map.entry("terminal", Set.of()),
           Map.entry("project", Set.of()),
           Map.entry("json", Set.of()),
+          Map.entry("license", Set.of("config", "dependency", "project")),
           Map.entry("learning", Set.of("gate")),
           Map.entry("spec", Set.of()),
           Map.entry("update", Set.of()),
@@ -102,7 +104,9 @@ final class ArchitectureBoundarySupport {
                   "dev.ward.application.gate.openspec.OpenSpecJunitTraceabilityGate",
                   "dev.ward.application.format.FormatService",
                   "dev.ward.application.format.FormatFileOutcome",
-                  "dev.ward.application.format.FormatFileOutcome$Verdict")),
+                  "dev.ward.application.format.FormatFileOutcome$Verdict",
+                  "dev.ward.application.license.LicenseService",
+                  "dev.ward.application.license.PackageLicense")),
           Map.entry(
               "init",
               Set.of(
@@ -121,6 +125,11 @@ final class ArchitectureBoundarySupport {
                   "dev.ward.application.gate.RuleConfigurationCheck",
                   "dev.ward.application.gate.RuleSet")),
           Map.entry("dependency", Set.of()),
+          Map.entry(
+              "license",
+              Set.of(
+                  "dev.ward.application.dependency.DependencyInventoryService",
+                  "dev.ward.application.project.ProjectDetector")),
           Map.entry("project", Set.of()),
           Map.entry("analysis", Set.of()),
           Map.entry("learning", Set.of()),

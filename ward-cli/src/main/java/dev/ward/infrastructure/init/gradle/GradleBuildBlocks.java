@@ -43,15 +43,7 @@ public final class GradleBuildBlocks {
               "",
               (kotlin, preset, versions, module) ->
                   GradleQualityBlocks.pitest(
-                      kotlin, versions.version(GradleToolCatalog.PITEST_ENGINE))),
-          new Block(
-              "license",
-              false,
-              false,
-              "licenseReport {",
-              "license-policy",
-              "",
-              (kotlin, preset, versions, module) -> GradleLicensePolicy.block(kotlin, preset)));
+                      kotlin, versions.version(GradleToolCatalog.PITEST_ENGINE))));
 
   private GradleBuildBlocks() {}
 

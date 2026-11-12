@@ -12,6 +12,7 @@ import javax.inject.Provider;
       PortBindingsModule.class,
       CommandBindingsModule.class,
       SpecCommandBindingsModule.class,
+      LicenseBindingsModule.class,
       RulesCommandBindingsModule.class,
       WardProvidesModule.class
     })

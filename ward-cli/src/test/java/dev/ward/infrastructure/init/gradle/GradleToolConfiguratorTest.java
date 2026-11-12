@@ -39,7 +39,7 @@ class GradleToolConfiguratorTest {
     Files.writeString(build, "plugins { id 'java' }\n");
     final Project project = new Project(root, Language.JAVA, BuildTool.GRADLE, Framework.NONE);
     final List<String> ids =
-        List.of("coverage", "dependency-check", "mutation", "sonar", "license", "api-compat");
+        List.of("coverage", "dependency-check", "mutation", "sonar", "api-compat");
 
     new GradleToolConfigurator()
         .apply(
@@ -53,7 +53,6 @@ class GradleToolConfiguratorTest {
             "org.owasp.dependencycheck",
             "info.solidsoft.pitest",
             "org.sonarqube",
-            "com.github.jk1.dependency-license-report",
             "me.champeau.gradle.japicmp");
   }
 

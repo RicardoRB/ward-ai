@@ -86,7 +86,7 @@ record BuildToolGates(boolean gradle, boolean available, String availability, St
         androidCoverage());
   }
 
-  /** Gates that enforce build, license, compatibility, or custom policies, in wizard order. */
+  /** Gates that enforce build, compatibility, or custom policies, in wizard order. */
   List<InitGateOption> policyGates() {
     return List.of(
         option(
@@ -94,11 +94,6 @@ record BuildToolGates(boolean gradle, boolean available, String availability, St
             "Enforces dependency and build rules with Maven Enforcer.",
             " (dependency and build rules are configured in pom.xml.)",
             task("check", "enforcer:enforce")),
-        option(
-            "license",
-            "Checks dependency licenses against the build file's license policy.",
-            " (license policy is configured in the build file.)",
-            task("checkLicense", "license:add-third-party")),
         apiCompat(),
         option(
             "command",

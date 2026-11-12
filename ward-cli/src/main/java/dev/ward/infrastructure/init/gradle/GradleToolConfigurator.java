@@ -39,7 +39,6 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
           new GradlePlugin("dependency-check", "org.owasp.dependencycheck", true, false),
           new GradlePlugin("mutation", GradleToolCatalog.PITEST, true, true),
           new GradlePlugin("sonar", "org.sonarqube", true, false),
-          new GradlePlugin("license", "com.github.jk1.dependency-license-report", true, false),
           new GradlePlugin("api-compat", "me.champeau.gradle.japicmp", true, false));
 
   private static final String NO_KOTLIN_MODULE =
