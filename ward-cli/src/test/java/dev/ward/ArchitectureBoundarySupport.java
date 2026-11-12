@@ -26,6 +26,7 @@ final class ArchitectureBoundarySupport {
           "dev.ward.config.InitBindingsModule",
           "dev.ward.config.BuildToolBindingsModule",
           "dev.ward.config.DoctorBindingsModule",
+          "dev.ward.config.DependencyBindingsModule",
           "dev.ward.config.NodeBindingsModule",
           "dev.ward.config.PythonBindingsModule",
           "dev.ward.config.SwiftBindingsModule",
