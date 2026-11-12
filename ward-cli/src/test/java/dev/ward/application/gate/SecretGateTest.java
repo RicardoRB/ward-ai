@@ -202,6 +202,52 @@ final class SecretGateTest {
   }
 
   @Test
+  void aChangedEntropyOptionRunsTheFileAgainThroughTheCache() throws IOException {
+    write(CONFIG, TOKEN_LINE);
+    assertThat(onlyFinding(run(SecretsOptions.NONE, List.of())).line()).isEqualTo(3);
+
+    write("ward-rules.toml", "version = 1\n[rules.secrets.github-pat]\nentropy = 5.5\n");
+
+    assertThat(run(SecretsOptions.NONE, List.of()).findings().items())
+        .noneMatch(finding -> finding.ruleId().equals("ward:secrets/github-pat"));
+  }
+
+  @Test
+  void theWardGateNeverRunsSecretRulesAndSecretsNeverRunsLanguageRules() throws IOException {
+    write(CONFIG, TOKEN_LINE);
+    write("src/Long.java", "class Long {\n  int a;\n}\n");
+    final AnalysisPorts ports = ports();
+    final GateConfiguration ward =
+        new GateConfiguration(
+            "ward",
+            "ward",
+            true,
+            List.of(),
+            Set.of("default"),
+            null,
+            null,
+            null,
+            null,
+            null,
+            List.of(),
+            null,
+            List.of(),
+            List.of(),
+            List.of(),
+            null);
+
+    final GateResult wardResult =
+        AnalysisGates.create(ward, ports)
+            .execute(new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE));
+    final GateResult secretsResult = run(SecretsOptions.NONE, List.of());
+
+    assertThat(wardResult.findings().items())
+        .noneMatch(finding -> finding.ruleId().startsWith("ward:secrets/"));
+    assertThat(secretsResult.findings().items())
+        .allMatch(finding -> finding.ruleId().startsWith("ward:secrets/"));
+  }
+
+  @Test
   void theHistoryIsNotReadUnlessAsked() throws IOException {
     write(CONFIG, "clean\n");
 
@@ -249,18 +295,21 @@ final class SecretGateTest {
     assertThat(historyCalls).isEmpty();
   }
 
+  private AnalysisPorts ports() {
+    return new AnalysisPorts(
+        new ProjectRuleSource(new ClasspathRuleSource()),
+        new DeclarativeRuleMatcher(),
+        new FileSystemSourceUnits(new FakeCommandExecutor(0, ignored, "")),
+        List.of(),
+        projectRoot -> AnalysisCacheFixtures.memory(cache),
+        AnalysisCacheFixtures.codec(),
+        "test",
+        DependencyAdapters.none(),
+        (unused, classpath) -> Map.of());
+  }
+
   private GateResult run(final SecretsOptions options, final List<String> focus) {
-    final AnalysisPorts ports =
-        new AnalysisPorts(
-            new ProjectRuleSource(new ClasspathRuleSource()),
-            new DeclarativeRuleMatcher(),
-            new FileSystemSourceUnits(new FakeCommandExecutor(0, ignored, "")),
-            List.of(),
-            projectRoot -> AnalysisCacheFixtures.memory(cache),
-            AnalysisCacheFixtures.codec(),
-            "test",
-            DependencyAdapters.none(),
-            (unused, classpath) -> Map.of());
+    final AnalysisPorts ports = ports();
     final SecretGates gates =
         new SecretGates(
             ports,

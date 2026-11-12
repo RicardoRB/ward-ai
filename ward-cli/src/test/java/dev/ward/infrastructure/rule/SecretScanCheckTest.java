@@ -258,6 +258,37 @@ final class SecretScanCheckTest {
         () -> rules.forEach(rule -> matcher.compile(rule).textMatches(file)));
   }
 
+  @Test
+  void everyUnusableKeyOrValueIsRejectedAtCompileTime() {
+    final List<String> bodies =
+        List.of(
+            "regex = '(unclosed'",
+            "regex = 'a'\nentropy = -1.0",
+            "regex = 'a'\nentropy = \"high\"",
+            "regex = 'a'\nunknown-key = 1",
+            "regex = 'a'\nsecret-group = 3",
+            "regex = 'a'\nsecret-group = -1",
+            "regex = 'a'\nspan = \"page\"",
+            "path = '(unclosed'",
+            "regex = 'a'\nallowlist = \"other\"",
+            "regex = 'a'\nallowlists = [{ colour = \"red\" }]",
+            "regex = 'a'\nallowlists = [{ regexes = ['(x'] }]",
+            "regex = 'a'\nallowlists = [{ regex-target = \"file\" }]",
+            "regex = 'a'\nallowlists = [{ condition = \"xor\" }]",
+            "regex = 'a'\nkeywords = [1]",
+            "keywords = ['a']");
+    for (final String body : bodies) {
+      assertThatThrownBy(
+              () -> definitionCompiled("check = \"secret-scan\"\nmessage = \"m\"\n" + body))
+          .as(body)
+          .isInstanceOf(AnalysisFailedException.class);
+    }
+  }
+
+  private static void definitionCompiled(final String body) {
+    new DeclarativeRuleMatcher().compile(definition(body));
+  }
+
   private static RuleDefinition bundled(final String name) {
     return RuleFileReader.read("rules/secrets/secrets.toml").stream()
         .filter(rule -> rule.id().equals("ward:secrets/" + name))
