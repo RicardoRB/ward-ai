@@ -1,0 +1,22 @@
+# Juliet Java 1.3 (NIST SARD 111, public domain) against Ward's Java security rules.
+# A finding in a bad method is a true positive (tp, at most one per case), a bad case without one is a false negative (fn), and a finding in a good method is a false positive (fp).
+# The taint rules find nothing here: Juliet imports types with wildcards (import java.sql.*), which the receiver types of the taint specifications do not follow, and most cases cross a method or a class, which intra-procedural taint does not follow.
+# The CWE-327 false positives are the good cases that call Cipher.getInstance("AES"), which the JCA documentation maps to ECB mode, so ward:java/ecb-mode is right.
+# Regenerate: ./mvnw -pl ward-cli -am -Dtest=SecurityBenchmarkSmokeTest -Dward.benchmark.juliet=<dir> -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
+CWE-23 Relative Path Traversal | cases 684 | tp 0 | fn 684 | fp 0 | ward:java/path-injection
+CWE-36 Absolute Path Traversal | cases 684 | tp 0 | fn 684 | fp 0 | ward:java/path-injection
+CWE-78 OS Command Injection | cases 684 | tp 0 | fn 684 | fp 0 | ward:java/command-injection
+CWE-80 Cross-Site Scripting | cases 1026 | tp 0 | fn 1026 | fp 0 | ward:java/xss
+CWE-83 XSS in an Attribute | cases 513 | tp 0 | fn 513 | fp 0 | ward:java/xss
+CWE-89 SQL Injection | cases 3420 | tp 0 | fn 3420 | fp 0 | ward:java/sql-injection
+CWE-90 LDAP Injection | cases 684 | tp 0 | fn 684 | fp 0 | ward:java/ldap-injection
+CWE-113 HTTP Response Splitting | cases 2052 | tp 0 | fn 2052 | fp 0 | ward:java/response-splitting
+CWE-259 Hard-Coded Password | cases 171 | tp 0 | fn 171 | fp 0 | ward:java/hard-coded-password
+CWE-321 Hard-Coded Cryptographic Key | cases 57 | tp 0 | fn 57 | fp 0 | ward:java/hard-coded-crypto-key
+CWE-327 Broken or Risky Cryptographic Algorithm | cases 34 | tp 34 | fn 0 | fp 62 | ward:java/weak-cipher, ward:java/ecb-mode
+CWE-328 Reversible One-Way Hash | cases 51 | tp 51 | fn 0 | fp 0 | ward:java/weak-hash
+CWE-338 Weak PRNG | cases 34 | tp 34 | fn 0 | fp 0 | ward:java/insecure-random
+CWE-470 Unsafe Reflection | cases 684 | tp 0 | fn 684 | fp 0 | ward:java/unsafe-reflection
+CWE-601 Open Redirect | cases 513 | tp 0 | fn 513 | fp 0 | ward:java/open-redirect
+CWE-614 Sensitive Cookie Without Secure | cases 17 | tp 0 | fn 17 | fp 0 | ward:java/insecure-cookie
+CWE-643 XPath Injection | cases 684 | tp 0 | fn 684 | fp 0 | ward:java/xpath-injection
