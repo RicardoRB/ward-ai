@@ -2,6 +2,4 @@
 
 [[rule]]
 name = "oas3-operation-security-defined"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["oas3-operation-security-defined"]

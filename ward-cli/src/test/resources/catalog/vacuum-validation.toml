@@ -2,14 +2,10 @@
 
 [[rule]]
 name = "no-eval-in-markdown"
-presets = ["standard", "strict"]
-category = "correctness"
 vacuum = ["no-eval-in-markdown"]
 
 [[rule]]
 name = "no-script-tags-in-markdown"
-presets = ["standard", "strict"]
-category = "correctness"
 vacuum = ["no-script-tags-in-markdown"]
 
 [[rule]]

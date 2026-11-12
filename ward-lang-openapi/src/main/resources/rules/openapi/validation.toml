@@ -10,3 +10,25 @@ presets = ["standard", "strict"]
 body = '''
 check = "openapi-oas3-api-servers"
 '''
+
+[[rules]]
+id = "ward:openapi/no-eval-in-markdown"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-no-eval-in-markdown"
+'''
+
+[[rules]]
+id = "ward:openapi/no-script-tags-in-markdown"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-no-script-tags-in-markdown"
+'''

@@ -1,6 +1,5 @@
 # Status of the vacuum-operations rows in openapi: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-duplicate-paths = { status = "planned", issue = "#522" }
 no-ambiguous-paths = { status = "planned", issue = "#522" }
 no-http-verbs-in-path = "implemented"
 no-request-body = "implemented"

@@ -1,0 +1,12 @@
+# OpenAPI lint rules (security), ported from the vacuum 0.39.3 rules of the same id. Each rule is a project check over the loaded document model.
+
+[[rules]]
+id = "ward:openapi/oas3-operation-security-defined"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-oas3-operation-security-defined"
+'''

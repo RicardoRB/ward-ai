@@ -32592,6 +32592,25 @@
         }
       }
     },
+    "ward:openapi/no-eval-in-markdown": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:openapi/no-http-verbs-in-path": {
       "type": "object",
       "additionalProperties": false,
@@ -32630,6 +32649,25 @@
         }
       }
     },
+    "ward:openapi/no-script-tags-in-markdown": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:openapi/oas3-api-servers": {
       "type": "object",
       "additionalProperties": false,
@@ -32650,6 +32688,25 @@
       }
     },
     "ward:openapi/oas3-host-not-example": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/oas3-operation-security-defined": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -54458,10 +54515,13 @@
               "openapi.info-license",
               "openapi.info-license-spdx",
               "openapi.license-url",
+              "openapi.no-eval-in-markdown",
               "openapi.no-http-verbs-in-path",
               "openapi.no-request-body",
+              "openapi.no-script-tags-in-markdown",
               "openapi.oas3-api-servers",
               "openapi.oas3-host-not-example",
+              "openapi.oas3-operation-security-defined",
               "openapi.oas3-parameter-description",
               "openapi.oas3-server-trailing-slash",
               "openapi.openapi-tags",
@@ -57151,10 +57211,13 @@
               "openapi.info-license",
               "openapi.info-license-spdx",
               "openapi.license-url",
+              "openapi.no-eval-in-markdown",
               "openapi.no-http-verbs-in-path",
               "openapi.no-request-body",
+              "openapi.no-script-tags-in-markdown",
               "openapi.oas3-api-servers",
               "openapi.oas3-host-not-example",
+              "openapi.oas3-operation-security-defined",
               "openapi.oas3-parameter-description",
               "openapi.oas3-server-trailing-slash",
               "openapi.openapi-tags",
@@ -63179,17 +63242,26 @@
             "license-url": {
               "$ref": "#/$defs/ward:openapi~1license-url"
             },
+            "no-eval-in-markdown": {
+              "$ref": "#/$defs/ward:openapi~1no-eval-in-markdown"
+            },
             "no-http-verbs-in-path": {
               "$ref": "#/$defs/ward:openapi~1no-http-verbs-in-path"
             },
             "no-request-body": {
               "$ref": "#/$defs/ward:openapi~1no-request-body"
             },
+            "no-script-tags-in-markdown": {
+              "$ref": "#/$defs/ward:openapi~1no-script-tags-in-markdown"
+            },
             "oas3-api-servers": {
               "$ref": "#/$defs/ward:openapi~1oas3-api-servers"
             },
             "oas3-host-not-example": {
               "$ref": "#/$defs/ward:openapi~1oas3-host-not-example"
+            },
+            "oas3-operation-security-defined": {
+              "$ref": "#/$defs/ward:openapi~1oas3-operation-security-defined"
             },
             "oas3-parameter-description": {
               "$ref": "#/$defs/ward:openapi~1oas3-parameter-description"

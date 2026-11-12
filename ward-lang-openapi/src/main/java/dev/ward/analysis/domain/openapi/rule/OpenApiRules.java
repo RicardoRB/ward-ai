@@ -25,8 +25,11 @@ public final class OpenApiRules {
     rules.put("openapi-tags", TagRules::openapiTags);
     rules.put("openapi-tags-alphabetical", TagRules::alphabetical);
     rules.put("operation-description", DescriptionRules::operation);
+    rules.put("no-eval-in-markdown", MarkdownRules::noEval);
     rules.put("no-http-verbs-in-path", PathRules::noVerbs);
     rules.put("no-request-body", ResponseRules::noRequestBody);
+    rules.put("no-script-tags-in-markdown", MarkdownRules::noScriptTags);
+    rules.put("oas3-operation-security-defined", SecurityRules::operationSecurityDefined);
     rules.put("operation-4xx-response", ResponseRules::clientErrorResponse);
     rules.put("operation-operation-id-unique", OperationIdRules::unique);
     rules.put("operation-operation-id-valid-in-url", OperationIdRules::validInUrl);

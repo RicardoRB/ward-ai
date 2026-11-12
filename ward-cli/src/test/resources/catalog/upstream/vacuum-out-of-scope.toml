@@ -20,3 +20,7 @@ rules = [
 [[group]]
 reason = "a migration helper for Zally ignore files, not a lint of the document"
 rules = ["migrate-zally-ignore"]
+
+[[group]]
+reason = "a duplicate key in one object, such as a path written twice, is an execution error of the parser before any rule runs, so the rule can never find one"
+rules = ["duplicate-paths"]
