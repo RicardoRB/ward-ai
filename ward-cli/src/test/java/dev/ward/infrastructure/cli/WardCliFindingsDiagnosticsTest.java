@@ -53,4 +53,26 @@ class WardCliFindingsDiagnosticsTest extends WardCliIntegrationSupport {
                     .doesNotContain(
                         SECRET, SECRET.substring(0, 8), "config/app.yml", project.toString()));
   }
+
+  @Test
+  void jsonSarifAndTextReportsAndLogsNeverHoldTheTokenOrItsPrefix() throws IOException {
+    Files.createDirectories(project.resolve("config"));
+    Files.writeString(project.resolve("config/app.yml"), "token: " + SECRET + "\n");
+    Files.writeString(
+        project.resolve(WARD_TOML), "version = 2\n[checks.secrets]\nuses = \"secrets\"\n");
+
+    for (final String format : List.of("json", "sarif", "text")) {
+      out.getBuffer().setLength(0);
+      err.getBuffer().setLength(0);
+
+      final int exit = run("--verbose", CHECK, FORMAT_OPTION, format, "-C", project.toString());
+
+      assertThat(exit).as(format).isEqualTo(ExitCodes.FAILED);
+      assertThat(out.toString()).as(format).contains("github-pat");
+      assertThat(out.toString() + err)
+          .as(format)
+          .doesNotContain(SECRET)
+          .doesNotContain(SECRET.substring(0, 8));
+    }
+  }
 }
