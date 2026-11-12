@@ -9,16 +9,6 @@ import java.util.stream.Stream;
 public final class GateToolInstallCatalog {
   private static final Map<String, Entry> ENTRIES =
       Map.of(
-          "trivy",
-              entry(
-                  "trivy",
-                  "https://trivy.dev/latest/getting-started/installation/",
-                  method("brew", "install", "trivy")),
-          "gitleaks",
-              entry(
-                  "gitleaks",
-                  "https://github.com/gitleaks/gitleaks#installing",
-                  method("brew", "install", "gitleaks")),
           "semgrep",
               new Entry(
                   "semgrep",

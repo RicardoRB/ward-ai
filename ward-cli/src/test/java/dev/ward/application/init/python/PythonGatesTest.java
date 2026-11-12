@@ -27,7 +27,8 @@ class PythonGatesTest {
         .containsExactly(
             "uv", RUN, "--group", "ward", COVERAGE, "run", "-m", "pytest", "--ignore=mutants");
     assertThat(command(gates, COVERAGE))
-        .containsExactly("uv", RUN, "--group", "ward", COVERAGE, "report");
+        .containsExactly(
+            "uv", RUN, "--group", "ward", COVERAGE, "lcov", "-o", ".ward/reports/coverage.lcov");
   }
 
   @Test
@@ -38,24 +39,19 @@ class PythonGatesTest {
 
   @Test
   void pipRunsFromTheVirtualEnvironment() {
-    assertThat(command(gates(BuildTool.PIP, QualityPreset.STANDARD, false), "pip-audit"))
-        .containsExactly(".venv/bin/pip-audit");
+    assertThat(command(gates(BuildTool.PIP, QualityPreset.STANDARD, false), "mypy"))
+        .containsExactly(".venv/bin/mypy", ".", "-O", "json");
   }
 
   @Test
-  void coverageThresholdGoesOnTheCommandOnlyForAUserConfig() {
-    assertThat(command(gates(BuildTool.UV, QualityPreset.STANDARD, true), "coverage"))
-        .containsExactly("uv", RUN, "--group", "ward", COVERAGE, "report", "--fail-under=80");
-  }
-
-  @Test
-  void standardPresetSelectsThreeGatesAndKeepsAuditAndMutationOptIn() {
+  void standardPresetSelectsThreeGatesAndKeepsMutationOptIn() {
     final PythonGates gates = new PythonGates();
 
     assertThat(gates.presetGates(QualityPreset.STANDARD))
         .containsExactly("mypy", "pytest", "coverage");
     assertThat(gates(BuildTool.UV, QualityPreset.STANDARD, false).stream().map(InitGateOption::id))
-        .contains("pip-audit", "mutmut");
+        .contains("mutmut")
+        .doesNotContain("pip-audit");
   }
 
   @Test
@@ -78,9 +74,7 @@ class PythonGatesTest {
     assertThat(command(owned, MYPY)).contains("--strict");
     assertThat(command(owned, "pytest"))
         .containsSequence(COVERAGE, "run", "--branch", "-m", "pytest", "--ignore=mutants");
-    assertThat(command(owned, COVERAGE)).endsWith("--fail-under=85");
     assertThat(command(ward, MYPY)).doesNotContain("--strict");
-    assertThat(command(ward, COVERAGE)).doesNotContain("--fail-under=85");
   }
 
   private static List<InitGateOption> gates(

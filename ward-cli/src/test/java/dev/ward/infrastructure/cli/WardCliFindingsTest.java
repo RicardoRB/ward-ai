@@ -10,12 +10,13 @@ import java.nio.file.attribute.PosixFilePermissions;
 import org.junit.jupiter.api.Test;
 
 class WardCliFindingsTest extends WardCliIntegrationSupport {
-  // configureFailingGates() configures tsc, gitleaks, and tests; SARIF has a run per gate.
+  // configureFailingGates() configures tsc, secrets, and tests; SARIF has a run per gate.
   private static final int CONFIGURED_GATES = 3;
   private static final int TYPE_ERROR_LINE = 42;
   private static final String SARIF = "sarif";
   private static final String OUTPUT_OPTION = "--output";
-  private static final String SECRET = "ghp_FAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKE1234";
+  // Built from two literals, so that no source file holds a token.
+  private static final String SECRET = "ghp_" + "aB3dE5gH7jK9mN1pQ3sT5vW7yZ9bD1fH3jL5";
 
   private void script(final String name, final String body) throws IOException {
     final Path file = project.resolve(name);
@@ -30,18 +31,8 @@ class WardCliFindingsTest extends WardCliIntegrationSupport {
         echo "src/main/java/Foo.java(42,5): error TS2322: Type 'string' is not assignable."
         exit 1
         """);
-    script(
-        "fake-gitleaks",
-        """
-        # Writes to the --report-path value ($2) without creating directories, like gitleaks.
-        cat > "$2" <<JSON
-        {"runs":[{"results":[{"ruleId":"github-pat","message":{"text":"secret %s"},
-          "locations":[{"physicalLocation":{"artifactLocation":{"uri":"config/app.yml"},
-          "region":{"startLine":3,"snippet":{"text":"%s"}}}}]}]}]}
-        JSON
-        exit 1
-        """
-            .formatted(SECRET, SECRET));
+    Files.createDirectories(project.resolve("config"));
+    Files.writeString(project.resolve("config/app.yml"), "a: 1\nb: 2\ntoken: " + SECRET + "\n");
     Files.writeString(
         project.resolve(WARD_TOML),
         """
@@ -49,9 +40,8 @@ class WardCliFindingsTest extends WardCliIntegrationSupport {
         [checks.tsc]
         uses = "tsc"
         command = ["./fake-tsc"]
-        [checks.gitleaks]
-        uses = "gitleaks"
-        command = ["./fake-gitleaks", "--report-path", "target/gitleaks.sarif"]
+        [checks.secrets]
+        uses = "secrets"
         [checks.tests]
         uses = "tests"
         command = "./mvnw test"
@@ -72,10 +62,9 @@ class WardCliFindingsTest extends WardCliIntegrationSupport {
     assertThat(finding.get("rule").asString()).isEqualTo("TS2322");
     assertThat(finding.get("file").asString()).isEqualTo("src/main/java/Foo.java");
     assertThat(finding.get("line").asInt()).isEqualTo(TYPE_ERROR_LINE);
-    final JsonTree gitleaks = checks.get(1);
-    assertThat(gitleaks.get("findings").get(0).get("file").asString()).isEqualTo("config/app.yml");
+    final JsonTree secrets = checks.get(1);
+    assertThat(secrets.get("findings").get(0).get("file").asString()).isEqualTo("config/app.yml");
     assertThat(checks.get(2).get("findings").size()).isZero();
-    assertThat(project.resolve("target")).isDirectory();
 
     out.getBuffer().setLength(0);
     final int errorExit =

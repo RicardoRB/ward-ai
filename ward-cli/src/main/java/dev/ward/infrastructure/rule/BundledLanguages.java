@@ -32,6 +32,7 @@ public final class BundledLanguages {
         new NodeRuleFiles(),
         new PythonRuleFiles(),
         new SwiftRuleFiles(),
+        new SecretRuleFiles(),
         new OpenApiRuleFiles());
   }
 

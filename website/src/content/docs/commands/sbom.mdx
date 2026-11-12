@@ -1,0 +1,41 @@
+---
+title: sbom and licenses
+description: Write the CycloneDX software bill of materials and the third-party license notice of a project, with no build plugin.
+---
+
+`ward sbom` and `ward licenses` write release compliance files from the same dependency inventory and
+license lookup as the [`license` gate](/configuration/gates/#license-gate). They work for Maven,
+Gradle, Node, Python and Swift projects, read only local files, and never use the network.
+
+```sh
+ward sbom     [-C <dir>] [-o <file>] [--scopes runtime,provided,test,development]
+ward licenses [-C <dir>] [-o <file>] [--scopes runtime,provided,test,development]
+```
+
+| Option | Meaning |
+|---|---|
+| `-C`, `--directory` | Run as if started in `<dir>`. |
+| `-o`, `--output` | Write the document to a file (relative to the current directory) instead of standard output. The file is replaced only after the whole document is written. |
+| `--scopes` | Only include packages of these inventory scopes. Default: every scope. |
+
+Exit codes: `0` the document was written, `2` an error, for example a project whose dependencies
+cannot be resolved (nothing is written). Diagnostics, such as a package whose license is unknown, go
+to standard error; standard output holds only the document.
+
+## `ward sbom`
+
+Writes a CycloneDX 1.6 JSON document: a root component for the project, one `library` component per
+package with its Package URL (`pkg:maven`, `pkg:npm`, `pkg:pypi` or `pkg:swift`) and normalized
+license, and a dependency edge from the root to each direct package. A package with an unknown
+license has no `licenses`: the SBOM states facts and the gate applies policy. The inventory records
+no edges between packages, so transitive packages are components without outgoing edges.
+
+The document has no serial number and no timestamp, and components are sorted by Package URL, so
+the same inputs give the same bytes.
+
+## `ward licenses`
+
+Writes a plain-text notice that lists each package under its normalized license, then the full text
+of each distinct license used, taken from texts bundled with Ward. A license whose text Ward does not
+bundle is listed by identifier with a note, and an unknown license is listed as unknown. The output is
+sorted and reproducible.

@@ -69,6 +69,11 @@ class SwiftCoverageGateTest {
             List.of(),
             null,
             null,
+            null,
+            null,
+            null,
+            null,
+            null,
             null);
     return new QualityGateFactory(
             new FakeCommandExecutor(exitCode, STDOUT, ""),

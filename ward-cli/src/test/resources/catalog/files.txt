@@ -26,6 +26,7 @@ periphery
 pmd
 pylint
 ruff
+secrets
 semgrep
 spectral-oas
 spectral-owasp

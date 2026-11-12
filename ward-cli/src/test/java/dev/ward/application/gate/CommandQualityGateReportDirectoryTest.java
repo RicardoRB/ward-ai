@@ -17,7 +17,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class CommandQualityGateReportDirectoryTest {
-  private static final String GITLEAKS = "gitleaks";
+  private static final String TRIVY = "trivy";
   private static final String REPORT_PATH = "--report-path";
 
   private final Project project =
@@ -29,24 +29,23 @@ class CommandQualityGateReportDirectoryTest {
   @Test
   void preparesReportPathParentBeforeRunningUnchangedCommand() {
     final FakeCommandExecutor executor = new FakeCommandExecutor(0, "", "");
-    final List<String> command = List.of(GITLEAKS, "detect", REPORT_PATH, "target/gitleaks.sarif");
+    final List<String> command = List.of(TRIVY, "detect", REPORT_PATH, "target/trivy.sarif");
 
-    new CommandQualityGate(GITLEAKS, executor, command, recording).execute(project);
+    new CommandQualityGate(TRIVY, executor, command, recording).execute(project);
 
-    assertThat(prepared).containsExactly("/p|target/gitleaks.sarif");
+    assertThat(prepared).containsExactly("/p|target/trivy.sarif");
     assertThat(executor.commands).containsExactly(command);
   }
 
   @Test
   void commandsWithoutReportPathPrepareNothing() {
     new CommandQualityGate(
-            GITLEAKS,
+            TRIVY,
             new FakeCommandExecutor(0, "", ""),
-            List.of(GITLEAKS, "detect", REPORT_PATH),
+            List.of(TRIVY, "detect", REPORT_PATH),
             recording)
         .execute(project);
-    new CommandQualityGate(
-            GITLEAKS, new FakeCommandExecutor(0, "", ""), List.of(GITLEAKS), recording)
+    new CommandQualityGate(TRIVY, new FakeCommandExecutor(0, "", ""), List.of(TRIVY), recording)
         .execute(project);
 
     assertThat(prepared).isEmpty();
@@ -61,8 +60,7 @@ class CommandQualityGateReportDirectoryTest {
         };
 
     final GateResult result =
-        new CommandQualityGate(
-                GITLEAKS, executor, List.of(GITLEAKS, REPORT_PATH, "target/x"), broken)
+        new CommandQualityGate(TRIVY, executor, List.of(TRIVY, REPORT_PATH, "target/x"), broken)
             .execute(project);
 
     assertThat(executor.commands).hasSize(1);

@@ -43120,6 +43120,4890 @@
         }
       }
     },
+    "ward:secrets/1password-secret-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/1password-service-account-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/adafruit-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/adobe-client-id": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/adobe-client-secret": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/age-secret-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/airtable-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/airtable-personnal-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/algolia-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/alibaba-access-key-id": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/alibaba-secret-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/anthropic-admin-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/anthropic-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/artifactory-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/artifactory-reference-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/asana-client-id": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/asana-client-secret": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/atlassian-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/authress-service-client-access-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/aws-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/aws-amazon-bedrock-api-key-long-lived": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/aws-amazon-bedrock-api-key-short-lived": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/azure-ad-client-secret": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/beamer-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/bitbucket-client-id": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/bitbucket-client-secret": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/bittrex-access-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/bittrex-secret-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/cisco-meraki-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/clickhouse-cloud-api-secret-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/clojars-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/cloudflare-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/cloudflare-global-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/cloudflare-origin-ca-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/codecov-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/cohere-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/coinbase-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/confluent-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/confluent-secret-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/contentful-delivery-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/curl-auth-header": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/curl-auth-user": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/databricks-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/datadog-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/defined-networking-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/digitalocean-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/digitalocean-pat": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/digitalocean-refresh-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/discord-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/discord-client-id": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/discord-client-secret": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/doppler-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/droneci-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/dropbox-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/dropbox-long-lived-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/dropbox-short-lived-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/duffel-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/dynatrace-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/easypost-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/easypost-test-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/etsy-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/facebook-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/facebook-page-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/facebook-secret": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/fastly-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/finicity-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/finicity-client-secret": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/finnhub-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/flickr-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/flutterwave-encryption-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/flutterwave-public-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/flutterwave-secret-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/flyio-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/frameio-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/freemius-secret-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/freshbooks-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/gcp-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/generic-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/github-app-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/github-fine-grained-pat": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/github-oauth": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/github-pat": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/github-refresh-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/gitlab-cicd-job-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/gitlab-deploy-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/gitlab-feature-flag-client-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/gitlab-feed-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/gitlab-incoming-mail-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/gitlab-kubernetes-agent-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/gitlab-oauth-app-secret": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/gitlab-pat": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/gitlab-pat-routable": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/gitlab-ptt": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/gitlab-rrt": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/gitlab-runner-authentication-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/gitlab-runner-authentication-token-routable": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/gitlab-scim-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/gitlab-session-cookie": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/gitter-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/gocardless-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/grafana-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/grafana-cloud-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/grafana-service-account-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/harness-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/hashicorp-tf-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/hashicorp-tf-password": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/heroku-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/heroku-api-key-v2": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/hubspot-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/huggingface-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/huggingface-organization-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/infracost-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/intercom-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/intra42-client-secret": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/jfrog-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/jfrog-identity-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/jwt": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/jwt-base64": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/kraken-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/kubernetes-secret-yaml": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/kucoin-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/kucoin-secret-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/launchdarkly-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/linear-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/linear-client-secret": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/linkedin-client-id": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/linkedin-client-secret": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/lob-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/lob-pub-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/looker-client-id": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/looker-client-secret": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/mailchimp-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/mailgun-private-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/mailgun-pub-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/mailgun-signing-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/mapbox-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/mattermost-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/maxmind-license-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/messagebird-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/messagebird-client-id": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/microsoft-teams-webhook": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/netlify-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/new-relic-browser-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/new-relic-insert-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/new-relic-user-api-id": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/new-relic-user-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/notion-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/npm-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/nuget-config-password": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/nytimes-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/octopus-deploy-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/okta-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/openai-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/openshift-user-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/perplexity-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/pkcs12-file": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/plaid-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/plaid-client-id": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/plaid-secret-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/planetscale-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/planetscale-oauth-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/planetscale-password": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/postman-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/prefect-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/private-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/privateai-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/pulumi-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/pypi-upload-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/rapidapi-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/readme-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/rubygems-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/scalingo-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/sendbird-access-id": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/sendbird-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/sendgrid-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/sendinblue-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/sentry-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/sentry-org-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/sentry-user-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/settlemint-application-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/settlemint-personal-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/settlemint-service-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/shippo-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/shopify-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/shopify-custom-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/shopify-private-app-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/shopify-shared-secret": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/sidekiq-secret": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/sidekiq-sensitive-url": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/slack-app-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/slack-bot-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/slack-config-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/slack-config-refresh-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/slack-legacy-bot-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/slack-legacy-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/slack-legacy-workspace-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/slack-user-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/slack-webhook-url": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/snyk-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/sonar-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/sourcegraph-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/square-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/squarespace-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/stripe-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/sumologic-access-id": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/sumologic-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/telegram-bot-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/travisci-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/twilio-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/twitch-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/twitter-access-secret": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/twitter-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/twitter-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/twitter-api-secret": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/twitter-bearer-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/typeform-api-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/vault-batch-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/vault-service-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/yandex-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/yandex-api-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/yandex-aws-access-token": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
+    "ward:secrets/zendesk-secret-key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "entropy": {
+          "type": "string"
+        }
+      }
+    },
     "ward:swift/abbreviation-as-word-in-name": {
       "type": "object",
       "additionalProperties": false,
@@ -53609,6 +58493,7 @@
               "naming",
               "null-safety",
               "performance",
+              "secrets",
               "security",
               "style"
             ]
@@ -55824,6 +60709,228 @@
               "python.yoda-conditions",
               "python.zip-dict-keys-and-values",
               "python.zip-without-explicit-strict",
+              "secrets.1password-secret-key",
+              "secrets.1password-service-account-token",
+              "secrets.adafruit-api-key",
+              "secrets.adobe-client-id",
+              "secrets.adobe-client-secret",
+              "secrets.age-secret-key",
+              "secrets.airtable-api-key",
+              "secrets.airtable-personnal-access-token",
+              "secrets.algolia-api-key",
+              "secrets.alibaba-access-key-id",
+              "secrets.alibaba-secret-key",
+              "secrets.anthropic-admin-api-key",
+              "secrets.anthropic-api-key",
+              "secrets.artifactory-api-key",
+              "secrets.artifactory-reference-token",
+              "secrets.asana-client-id",
+              "secrets.asana-client-secret",
+              "secrets.atlassian-api-token",
+              "secrets.authress-service-client-access-key",
+              "secrets.aws-access-token",
+              "secrets.aws-amazon-bedrock-api-key-long-lived",
+              "secrets.aws-amazon-bedrock-api-key-short-lived",
+              "secrets.azure-ad-client-secret",
+              "secrets.beamer-api-token",
+              "secrets.bitbucket-client-id",
+              "secrets.bitbucket-client-secret",
+              "secrets.bittrex-access-key",
+              "secrets.bittrex-secret-key",
+              "secrets.cisco-meraki-api-key",
+              "secrets.clickhouse-cloud-api-secret-key",
+              "secrets.clojars-api-token",
+              "secrets.cloudflare-api-key",
+              "secrets.cloudflare-global-api-key",
+              "secrets.cloudflare-origin-ca-key",
+              "secrets.codecov-access-token",
+              "secrets.cohere-api-token",
+              "secrets.coinbase-access-token",
+              "secrets.confluent-access-token",
+              "secrets.confluent-secret-key",
+              "secrets.contentful-delivery-api-token",
+              "secrets.curl-auth-header",
+              "secrets.curl-auth-user",
+              "secrets.databricks-api-token",
+              "secrets.datadog-access-token",
+              "secrets.defined-networking-api-token",
+              "secrets.digitalocean-access-token",
+              "secrets.digitalocean-pat",
+              "secrets.digitalocean-refresh-token",
+              "secrets.discord-api-token",
+              "secrets.discord-client-id",
+              "secrets.discord-client-secret",
+              "secrets.doppler-api-token",
+              "secrets.droneci-access-token",
+              "secrets.dropbox-api-token",
+              "secrets.dropbox-long-lived-api-token",
+              "secrets.dropbox-short-lived-api-token",
+              "secrets.duffel-api-token",
+              "secrets.dynatrace-api-token",
+              "secrets.easypost-api-token",
+              "secrets.easypost-test-api-token",
+              "secrets.etsy-access-token",
+              "secrets.facebook-access-token",
+              "secrets.facebook-page-access-token",
+              "secrets.facebook-secret",
+              "secrets.fastly-api-token",
+              "secrets.finicity-api-token",
+              "secrets.finicity-client-secret",
+              "secrets.finnhub-access-token",
+              "secrets.flickr-access-token",
+              "secrets.flutterwave-encryption-key",
+              "secrets.flutterwave-public-key",
+              "secrets.flutterwave-secret-key",
+              "secrets.flyio-access-token",
+              "secrets.frameio-api-token",
+              "secrets.freemius-secret-key",
+              "secrets.freshbooks-access-token",
+              "secrets.gcp-api-key",
+              "secrets.generic-api-key",
+              "secrets.github-app-token",
+              "secrets.github-fine-grained-pat",
+              "secrets.github-oauth",
+              "secrets.github-pat",
+              "secrets.github-refresh-token",
+              "secrets.gitlab-cicd-job-token",
+              "secrets.gitlab-deploy-token",
+              "secrets.gitlab-feature-flag-client-token",
+              "secrets.gitlab-feed-token",
+              "secrets.gitlab-incoming-mail-token",
+              "secrets.gitlab-kubernetes-agent-token",
+              "secrets.gitlab-oauth-app-secret",
+              "secrets.gitlab-pat",
+              "secrets.gitlab-pat-routable",
+              "secrets.gitlab-ptt",
+              "secrets.gitlab-rrt",
+              "secrets.gitlab-runner-authentication-token",
+              "secrets.gitlab-runner-authentication-token-routable",
+              "secrets.gitlab-scim-token",
+              "secrets.gitlab-session-cookie",
+              "secrets.gitter-access-token",
+              "secrets.gocardless-api-token",
+              "secrets.grafana-api-key",
+              "secrets.grafana-cloud-api-token",
+              "secrets.grafana-service-account-token",
+              "secrets.harness-api-key",
+              "secrets.hashicorp-tf-api-token",
+              "secrets.hashicorp-tf-password",
+              "secrets.heroku-api-key",
+              "secrets.heroku-api-key-v2",
+              "secrets.hubspot-api-key",
+              "secrets.huggingface-access-token",
+              "secrets.huggingface-organization-api-token",
+              "secrets.infracost-api-token",
+              "secrets.intercom-api-key",
+              "secrets.intra42-client-secret",
+              "secrets.jfrog-api-key",
+              "secrets.jfrog-identity-token",
+              "secrets.jwt",
+              "secrets.jwt-base64",
+              "secrets.kraken-access-token",
+              "secrets.kubernetes-secret-yaml",
+              "secrets.kucoin-access-token",
+              "secrets.kucoin-secret-key",
+              "secrets.launchdarkly-access-token",
+              "secrets.linear-api-key",
+              "secrets.linear-client-secret",
+              "secrets.linkedin-client-id",
+              "secrets.linkedin-client-secret",
+              "secrets.lob-api-key",
+              "secrets.lob-pub-api-key",
+              "secrets.looker-client-id",
+              "secrets.looker-client-secret",
+              "secrets.mailchimp-api-key",
+              "secrets.mailgun-private-api-token",
+              "secrets.mailgun-pub-key",
+              "secrets.mailgun-signing-key",
+              "secrets.mapbox-api-token",
+              "secrets.mattermost-access-token",
+              "secrets.maxmind-license-key",
+              "secrets.messagebird-api-token",
+              "secrets.messagebird-client-id",
+              "secrets.microsoft-teams-webhook",
+              "secrets.netlify-access-token",
+              "secrets.new-relic-browser-api-token",
+              "secrets.new-relic-insert-key",
+              "secrets.new-relic-user-api-id",
+              "secrets.new-relic-user-api-key",
+              "secrets.notion-api-token",
+              "secrets.npm-access-token",
+              "secrets.nuget-config-password",
+              "secrets.nytimes-access-token",
+              "secrets.octopus-deploy-api-key",
+              "secrets.okta-access-token",
+              "secrets.openai-api-key",
+              "secrets.openshift-user-token",
+              "secrets.perplexity-api-key",
+              "secrets.pkcs12-file",
+              "secrets.plaid-api-token",
+              "secrets.plaid-client-id",
+              "secrets.plaid-secret-key",
+              "secrets.planetscale-api-token",
+              "secrets.planetscale-oauth-token",
+              "secrets.planetscale-password",
+              "secrets.postman-api-token",
+              "secrets.prefect-api-token",
+              "secrets.private-key",
+              "secrets.privateai-api-token",
+              "secrets.pulumi-api-token",
+              "secrets.pypi-upload-token",
+              "secrets.rapidapi-access-token",
+              "secrets.readme-api-token",
+              "secrets.rubygems-api-token",
+              "secrets.scalingo-api-token",
+              "secrets.sendbird-access-id",
+              "secrets.sendbird-access-token",
+              "secrets.sendgrid-api-token",
+              "secrets.sendinblue-api-token",
+              "secrets.sentry-access-token",
+              "secrets.sentry-org-token",
+              "secrets.sentry-user-token",
+              "secrets.settlemint-application-access-token",
+              "secrets.settlemint-personal-access-token",
+              "secrets.settlemint-service-access-token",
+              "secrets.shippo-api-token",
+              "secrets.shopify-access-token",
+              "secrets.shopify-custom-access-token",
+              "secrets.shopify-private-app-access-token",
+              "secrets.shopify-shared-secret",
+              "secrets.sidekiq-secret",
+              "secrets.sidekiq-sensitive-url",
+              "secrets.slack-app-token",
+              "secrets.slack-bot-token",
+              "secrets.slack-config-access-token",
+              "secrets.slack-config-refresh-token",
+              "secrets.slack-legacy-bot-token",
+              "secrets.slack-legacy-token",
+              "secrets.slack-legacy-workspace-token",
+              "secrets.slack-user-token",
+              "secrets.slack-webhook-url",
+              "secrets.snyk-api-token",
+              "secrets.sonar-api-token",
+              "secrets.sourcegraph-access-token",
+              "secrets.square-access-token",
+              "secrets.squarespace-access-token",
+              "secrets.stripe-access-token",
+              "secrets.sumologic-access-id",
+              "secrets.sumologic-access-token",
+              "secrets.telegram-bot-api-token",
+              "secrets.travisci-access-token",
+              "secrets.twilio-api-key",
+              "secrets.twitch-api-token",
+              "secrets.twitter-access-secret",
+              "secrets.twitter-access-token",
+              "secrets.twitter-api-key",
+              "secrets.twitter-api-secret",
+              "secrets.twitter-bearer-token",
+              "secrets.typeform-api-token",
+              "secrets.vault-batch-token",
+              "secrets.vault-service-token",
+              "secrets.yandex-access-token",
+              "secrets.yandex-api-key",
+              "secrets.yandex-aws-access-token",
+              "secrets.zendesk-secret-key",
               "swift.abbreviation-as-word-in-name",
               "swift.annotation-location",
               "swift.array-init",
@@ -58560,6 +63667,228 @@
               "python.yoda-conditions",
               "python.zip-dict-keys-and-values",
               "python.zip-without-explicit-strict",
+              "secrets.1password-secret-key",
+              "secrets.1password-service-account-token",
+              "secrets.adafruit-api-key",
+              "secrets.adobe-client-id",
+              "secrets.adobe-client-secret",
+              "secrets.age-secret-key",
+              "secrets.airtable-api-key",
+              "secrets.airtable-personnal-access-token",
+              "secrets.algolia-api-key",
+              "secrets.alibaba-access-key-id",
+              "secrets.alibaba-secret-key",
+              "secrets.anthropic-admin-api-key",
+              "secrets.anthropic-api-key",
+              "secrets.artifactory-api-key",
+              "secrets.artifactory-reference-token",
+              "secrets.asana-client-id",
+              "secrets.asana-client-secret",
+              "secrets.atlassian-api-token",
+              "secrets.authress-service-client-access-key",
+              "secrets.aws-access-token",
+              "secrets.aws-amazon-bedrock-api-key-long-lived",
+              "secrets.aws-amazon-bedrock-api-key-short-lived",
+              "secrets.azure-ad-client-secret",
+              "secrets.beamer-api-token",
+              "secrets.bitbucket-client-id",
+              "secrets.bitbucket-client-secret",
+              "secrets.bittrex-access-key",
+              "secrets.bittrex-secret-key",
+              "secrets.cisco-meraki-api-key",
+              "secrets.clickhouse-cloud-api-secret-key",
+              "secrets.clojars-api-token",
+              "secrets.cloudflare-api-key",
+              "secrets.cloudflare-global-api-key",
+              "secrets.cloudflare-origin-ca-key",
+              "secrets.codecov-access-token",
+              "secrets.cohere-api-token",
+              "secrets.coinbase-access-token",
+              "secrets.confluent-access-token",
+              "secrets.confluent-secret-key",
+              "secrets.contentful-delivery-api-token",
+              "secrets.curl-auth-header",
+              "secrets.curl-auth-user",
+              "secrets.databricks-api-token",
+              "secrets.datadog-access-token",
+              "secrets.defined-networking-api-token",
+              "secrets.digitalocean-access-token",
+              "secrets.digitalocean-pat",
+              "secrets.digitalocean-refresh-token",
+              "secrets.discord-api-token",
+              "secrets.discord-client-id",
+              "secrets.discord-client-secret",
+              "secrets.doppler-api-token",
+              "secrets.droneci-access-token",
+              "secrets.dropbox-api-token",
+              "secrets.dropbox-long-lived-api-token",
+              "secrets.dropbox-short-lived-api-token",
+              "secrets.duffel-api-token",
+              "secrets.dynatrace-api-token",
+              "secrets.easypost-api-token",
+              "secrets.easypost-test-api-token",
+              "secrets.etsy-access-token",
+              "secrets.facebook-access-token",
+              "secrets.facebook-page-access-token",
+              "secrets.facebook-secret",
+              "secrets.fastly-api-token",
+              "secrets.finicity-api-token",
+              "secrets.finicity-client-secret",
+              "secrets.finnhub-access-token",
+              "secrets.flickr-access-token",
+              "secrets.flutterwave-encryption-key",
+              "secrets.flutterwave-public-key",
+              "secrets.flutterwave-secret-key",
+              "secrets.flyio-access-token",
+              "secrets.frameio-api-token",
+              "secrets.freemius-secret-key",
+              "secrets.freshbooks-access-token",
+              "secrets.gcp-api-key",
+              "secrets.generic-api-key",
+              "secrets.github-app-token",
+              "secrets.github-fine-grained-pat",
+              "secrets.github-oauth",
+              "secrets.github-pat",
+              "secrets.github-refresh-token",
+              "secrets.gitlab-cicd-job-token",
+              "secrets.gitlab-deploy-token",
+              "secrets.gitlab-feature-flag-client-token",
+              "secrets.gitlab-feed-token",
+              "secrets.gitlab-incoming-mail-token",
+              "secrets.gitlab-kubernetes-agent-token",
+              "secrets.gitlab-oauth-app-secret",
+              "secrets.gitlab-pat",
+              "secrets.gitlab-pat-routable",
+              "secrets.gitlab-ptt",
+              "secrets.gitlab-rrt",
+              "secrets.gitlab-runner-authentication-token",
+              "secrets.gitlab-runner-authentication-token-routable",
+              "secrets.gitlab-scim-token",
+              "secrets.gitlab-session-cookie",
+              "secrets.gitter-access-token",
+              "secrets.gocardless-api-token",
+              "secrets.grafana-api-key",
+              "secrets.grafana-cloud-api-token",
+              "secrets.grafana-service-account-token",
+              "secrets.harness-api-key",
+              "secrets.hashicorp-tf-api-token",
+              "secrets.hashicorp-tf-password",
+              "secrets.heroku-api-key",
+              "secrets.heroku-api-key-v2",
+              "secrets.hubspot-api-key",
+              "secrets.huggingface-access-token",
+              "secrets.huggingface-organization-api-token",
+              "secrets.infracost-api-token",
+              "secrets.intercom-api-key",
+              "secrets.intra42-client-secret",
+              "secrets.jfrog-api-key",
+              "secrets.jfrog-identity-token",
+              "secrets.jwt",
+              "secrets.jwt-base64",
+              "secrets.kraken-access-token",
+              "secrets.kubernetes-secret-yaml",
+              "secrets.kucoin-access-token",
+              "secrets.kucoin-secret-key",
+              "secrets.launchdarkly-access-token",
+              "secrets.linear-api-key",
+              "secrets.linear-client-secret",
+              "secrets.linkedin-client-id",
+              "secrets.linkedin-client-secret",
+              "secrets.lob-api-key",
+              "secrets.lob-pub-api-key",
+              "secrets.looker-client-id",
+              "secrets.looker-client-secret",
+              "secrets.mailchimp-api-key",
+              "secrets.mailgun-private-api-token",
+              "secrets.mailgun-pub-key",
+              "secrets.mailgun-signing-key",
+              "secrets.mapbox-api-token",
+              "secrets.mattermost-access-token",
+              "secrets.maxmind-license-key",
+              "secrets.messagebird-api-token",
+              "secrets.messagebird-client-id",
+              "secrets.microsoft-teams-webhook",
+              "secrets.netlify-access-token",
+              "secrets.new-relic-browser-api-token",
+              "secrets.new-relic-insert-key",
+              "secrets.new-relic-user-api-id",
+              "secrets.new-relic-user-api-key",
+              "secrets.notion-api-token",
+              "secrets.npm-access-token",
+              "secrets.nuget-config-password",
+              "secrets.nytimes-access-token",
+              "secrets.octopus-deploy-api-key",
+              "secrets.okta-access-token",
+              "secrets.openai-api-key",
+              "secrets.openshift-user-token",
+              "secrets.perplexity-api-key",
+              "secrets.pkcs12-file",
+              "secrets.plaid-api-token",
+              "secrets.plaid-client-id",
+              "secrets.plaid-secret-key",
+              "secrets.planetscale-api-token",
+              "secrets.planetscale-oauth-token",
+              "secrets.planetscale-password",
+              "secrets.postman-api-token",
+              "secrets.prefect-api-token",
+              "secrets.private-key",
+              "secrets.privateai-api-token",
+              "secrets.pulumi-api-token",
+              "secrets.pypi-upload-token",
+              "secrets.rapidapi-access-token",
+              "secrets.readme-api-token",
+              "secrets.rubygems-api-token",
+              "secrets.scalingo-api-token",
+              "secrets.sendbird-access-id",
+              "secrets.sendbird-access-token",
+              "secrets.sendgrid-api-token",
+              "secrets.sendinblue-api-token",
+              "secrets.sentry-access-token",
+              "secrets.sentry-org-token",
+              "secrets.sentry-user-token",
+              "secrets.settlemint-application-access-token",
+              "secrets.settlemint-personal-access-token",
+              "secrets.settlemint-service-access-token",
+              "secrets.shippo-api-token",
+              "secrets.shopify-access-token",
+              "secrets.shopify-custom-access-token",
+              "secrets.shopify-private-app-access-token",
+              "secrets.shopify-shared-secret",
+              "secrets.sidekiq-secret",
+              "secrets.sidekiq-sensitive-url",
+              "secrets.slack-app-token",
+              "secrets.slack-bot-token",
+              "secrets.slack-config-access-token",
+              "secrets.slack-config-refresh-token",
+              "secrets.slack-legacy-bot-token",
+              "secrets.slack-legacy-token",
+              "secrets.slack-legacy-workspace-token",
+              "secrets.slack-user-token",
+              "secrets.slack-webhook-url",
+              "secrets.snyk-api-token",
+              "secrets.sonar-api-token",
+              "secrets.sourcegraph-access-token",
+              "secrets.square-access-token",
+              "secrets.squarespace-access-token",
+              "secrets.stripe-access-token",
+              "secrets.sumologic-access-id",
+              "secrets.sumologic-access-token",
+              "secrets.telegram-bot-api-token",
+              "secrets.travisci-access-token",
+              "secrets.twilio-api-key",
+              "secrets.twitch-api-token",
+              "secrets.twitter-access-secret",
+              "secrets.twitter-access-token",
+              "secrets.twitter-api-key",
+              "secrets.twitter-api-secret",
+              "secrets.twitter-bearer-token",
+              "secrets.typeform-api-token",
+              "secrets.vault-batch-token",
+              "secrets.vault-service-token",
+              "secrets.yandex-access-token",
+              "secrets.yandex-api-key",
+              "secrets.yandex-aws-access-token",
+              "secrets.zendesk-secret-key",
               "swift.abbreviation-as-word-in-name",
               "swift.annotation-location",
               "swift.array-init",
@@ -65734,6 +71063,678 @@
             },
             "zip-without-explicit-strict": {
               "$ref": "#/$defs/ward:python~1zip-without-explicit-strict"
+            }
+          }
+        },
+        "secrets": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "1password-secret-key": {
+              "$ref": "#/$defs/ward:secrets~11password-secret-key"
+            },
+            "1password-service-account-token": {
+              "$ref": "#/$defs/ward:secrets~11password-service-account-token"
+            },
+            "adafruit-api-key": {
+              "$ref": "#/$defs/ward:secrets~1adafruit-api-key"
+            },
+            "adobe-client-id": {
+              "$ref": "#/$defs/ward:secrets~1adobe-client-id"
+            },
+            "adobe-client-secret": {
+              "$ref": "#/$defs/ward:secrets~1adobe-client-secret"
+            },
+            "age-secret-key": {
+              "$ref": "#/$defs/ward:secrets~1age-secret-key"
+            },
+            "airtable-api-key": {
+              "$ref": "#/$defs/ward:secrets~1airtable-api-key"
+            },
+            "airtable-personnal-access-token": {
+              "$ref": "#/$defs/ward:secrets~1airtable-personnal-access-token"
+            },
+            "algolia-api-key": {
+              "$ref": "#/$defs/ward:secrets~1algolia-api-key"
+            },
+            "alibaba-access-key-id": {
+              "$ref": "#/$defs/ward:secrets~1alibaba-access-key-id"
+            },
+            "alibaba-secret-key": {
+              "$ref": "#/$defs/ward:secrets~1alibaba-secret-key"
+            },
+            "anthropic-admin-api-key": {
+              "$ref": "#/$defs/ward:secrets~1anthropic-admin-api-key"
+            },
+            "anthropic-api-key": {
+              "$ref": "#/$defs/ward:secrets~1anthropic-api-key"
+            },
+            "artifactory-api-key": {
+              "$ref": "#/$defs/ward:secrets~1artifactory-api-key"
+            },
+            "artifactory-reference-token": {
+              "$ref": "#/$defs/ward:secrets~1artifactory-reference-token"
+            },
+            "asana-client-id": {
+              "$ref": "#/$defs/ward:secrets~1asana-client-id"
+            },
+            "asana-client-secret": {
+              "$ref": "#/$defs/ward:secrets~1asana-client-secret"
+            },
+            "atlassian-api-token": {
+              "$ref": "#/$defs/ward:secrets~1atlassian-api-token"
+            },
+            "authress-service-client-access-key": {
+              "$ref": "#/$defs/ward:secrets~1authress-service-client-access-key"
+            },
+            "aws-access-token": {
+              "$ref": "#/$defs/ward:secrets~1aws-access-token"
+            },
+            "aws-amazon-bedrock-api-key-long-lived": {
+              "$ref": "#/$defs/ward:secrets~1aws-amazon-bedrock-api-key-long-lived"
+            },
+            "aws-amazon-bedrock-api-key-short-lived": {
+              "$ref": "#/$defs/ward:secrets~1aws-amazon-bedrock-api-key-short-lived"
+            },
+            "azure-ad-client-secret": {
+              "$ref": "#/$defs/ward:secrets~1azure-ad-client-secret"
+            },
+            "beamer-api-token": {
+              "$ref": "#/$defs/ward:secrets~1beamer-api-token"
+            },
+            "bitbucket-client-id": {
+              "$ref": "#/$defs/ward:secrets~1bitbucket-client-id"
+            },
+            "bitbucket-client-secret": {
+              "$ref": "#/$defs/ward:secrets~1bitbucket-client-secret"
+            },
+            "bittrex-access-key": {
+              "$ref": "#/$defs/ward:secrets~1bittrex-access-key"
+            },
+            "bittrex-secret-key": {
+              "$ref": "#/$defs/ward:secrets~1bittrex-secret-key"
+            },
+            "cisco-meraki-api-key": {
+              "$ref": "#/$defs/ward:secrets~1cisco-meraki-api-key"
+            },
+            "clickhouse-cloud-api-secret-key": {
+              "$ref": "#/$defs/ward:secrets~1clickhouse-cloud-api-secret-key"
+            },
+            "clojars-api-token": {
+              "$ref": "#/$defs/ward:secrets~1clojars-api-token"
+            },
+            "cloudflare-api-key": {
+              "$ref": "#/$defs/ward:secrets~1cloudflare-api-key"
+            },
+            "cloudflare-global-api-key": {
+              "$ref": "#/$defs/ward:secrets~1cloudflare-global-api-key"
+            },
+            "cloudflare-origin-ca-key": {
+              "$ref": "#/$defs/ward:secrets~1cloudflare-origin-ca-key"
+            },
+            "codecov-access-token": {
+              "$ref": "#/$defs/ward:secrets~1codecov-access-token"
+            },
+            "cohere-api-token": {
+              "$ref": "#/$defs/ward:secrets~1cohere-api-token"
+            },
+            "coinbase-access-token": {
+              "$ref": "#/$defs/ward:secrets~1coinbase-access-token"
+            },
+            "confluent-access-token": {
+              "$ref": "#/$defs/ward:secrets~1confluent-access-token"
+            },
+            "confluent-secret-key": {
+              "$ref": "#/$defs/ward:secrets~1confluent-secret-key"
+            },
+            "contentful-delivery-api-token": {
+              "$ref": "#/$defs/ward:secrets~1contentful-delivery-api-token"
+            },
+            "curl-auth-header": {
+              "$ref": "#/$defs/ward:secrets~1curl-auth-header"
+            },
+            "curl-auth-user": {
+              "$ref": "#/$defs/ward:secrets~1curl-auth-user"
+            },
+            "databricks-api-token": {
+              "$ref": "#/$defs/ward:secrets~1databricks-api-token"
+            },
+            "datadog-access-token": {
+              "$ref": "#/$defs/ward:secrets~1datadog-access-token"
+            },
+            "defined-networking-api-token": {
+              "$ref": "#/$defs/ward:secrets~1defined-networking-api-token"
+            },
+            "digitalocean-access-token": {
+              "$ref": "#/$defs/ward:secrets~1digitalocean-access-token"
+            },
+            "digitalocean-pat": {
+              "$ref": "#/$defs/ward:secrets~1digitalocean-pat"
+            },
+            "digitalocean-refresh-token": {
+              "$ref": "#/$defs/ward:secrets~1digitalocean-refresh-token"
+            },
+            "discord-api-token": {
+              "$ref": "#/$defs/ward:secrets~1discord-api-token"
+            },
+            "discord-client-id": {
+              "$ref": "#/$defs/ward:secrets~1discord-client-id"
+            },
+            "discord-client-secret": {
+              "$ref": "#/$defs/ward:secrets~1discord-client-secret"
+            },
+            "doppler-api-token": {
+              "$ref": "#/$defs/ward:secrets~1doppler-api-token"
+            },
+            "droneci-access-token": {
+              "$ref": "#/$defs/ward:secrets~1droneci-access-token"
+            },
+            "dropbox-api-token": {
+              "$ref": "#/$defs/ward:secrets~1dropbox-api-token"
+            },
+            "dropbox-long-lived-api-token": {
+              "$ref": "#/$defs/ward:secrets~1dropbox-long-lived-api-token"
+            },
+            "dropbox-short-lived-api-token": {
+              "$ref": "#/$defs/ward:secrets~1dropbox-short-lived-api-token"
+            },
+            "duffel-api-token": {
+              "$ref": "#/$defs/ward:secrets~1duffel-api-token"
+            },
+            "dynatrace-api-token": {
+              "$ref": "#/$defs/ward:secrets~1dynatrace-api-token"
+            },
+            "easypost-api-token": {
+              "$ref": "#/$defs/ward:secrets~1easypost-api-token"
+            },
+            "easypost-test-api-token": {
+              "$ref": "#/$defs/ward:secrets~1easypost-test-api-token"
+            },
+            "etsy-access-token": {
+              "$ref": "#/$defs/ward:secrets~1etsy-access-token"
+            },
+            "facebook-access-token": {
+              "$ref": "#/$defs/ward:secrets~1facebook-access-token"
+            },
+            "facebook-page-access-token": {
+              "$ref": "#/$defs/ward:secrets~1facebook-page-access-token"
+            },
+            "facebook-secret": {
+              "$ref": "#/$defs/ward:secrets~1facebook-secret"
+            },
+            "fastly-api-token": {
+              "$ref": "#/$defs/ward:secrets~1fastly-api-token"
+            },
+            "finicity-api-token": {
+              "$ref": "#/$defs/ward:secrets~1finicity-api-token"
+            },
+            "finicity-client-secret": {
+              "$ref": "#/$defs/ward:secrets~1finicity-client-secret"
+            },
+            "finnhub-access-token": {
+              "$ref": "#/$defs/ward:secrets~1finnhub-access-token"
+            },
+            "flickr-access-token": {
+              "$ref": "#/$defs/ward:secrets~1flickr-access-token"
+            },
+            "flutterwave-encryption-key": {
+              "$ref": "#/$defs/ward:secrets~1flutterwave-encryption-key"
+            },
+            "flutterwave-public-key": {
+              "$ref": "#/$defs/ward:secrets~1flutterwave-public-key"
+            },
+            "flutterwave-secret-key": {
+              "$ref": "#/$defs/ward:secrets~1flutterwave-secret-key"
+            },
+            "flyio-access-token": {
+              "$ref": "#/$defs/ward:secrets~1flyio-access-token"
+            },
+            "frameio-api-token": {
+              "$ref": "#/$defs/ward:secrets~1frameio-api-token"
+            },
+            "freemius-secret-key": {
+              "$ref": "#/$defs/ward:secrets~1freemius-secret-key"
+            },
+            "freshbooks-access-token": {
+              "$ref": "#/$defs/ward:secrets~1freshbooks-access-token"
+            },
+            "gcp-api-key": {
+              "$ref": "#/$defs/ward:secrets~1gcp-api-key"
+            },
+            "generic-api-key": {
+              "$ref": "#/$defs/ward:secrets~1generic-api-key"
+            },
+            "github-app-token": {
+              "$ref": "#/$defs/ward:secrets~1github-app-token"
+            },
+            "github-fine-grained-pat": {
+              "$ref": "#/$defs/ward:secrets~1github-fine-grained-pat"
+            },
+            "github-oauth": {
+              "$ref": "#/$defs/ward:secrets~1github-oauth"
+            },
+            "github-pat": {
+              "$ref": "#/$defs/ward:secrets~1github-pat"
+            },
+            "github-refresh-token": {
+              "$ref": "#/$defs/ward:secrets~1github-refresh-token"
+            },
+            "gitlab-cicd-job-token": {
+              "$ref": "#/$defs/ward:secrets~1gitlab-cicd-job-token"
+            },
+            "gitlab-deploy-token": {
+              "$ref": "#/$defs/ward:secrets~1gitlab-deploy-token"
+            },
+            "gitlab-feature-flag-client-token": {
+              "$ref": "#/$defs/ward:secrets~1gitlab-feature-flag-client-token"
+            },
+            "gitlab-feed-token": {
+              "$ref": "#/$defs/ward:secrets~1gitlab-feed-token"
+            },
+            "gitlab-incoming-mail-token": {
+              "$ref": "#/$defs/ward:secrets~1gitlab-incoming-mail-token"
+            },
+            "gitlab-kubernetes-agent-token": {
+              "$ref": "#/$defs/ward:secrets~1gitlab-kubernetes-agent-token"
+            },
+            "gitlab-oauth-app-secret": {
+              "$ref": "#/$defs/ward:secrets~1gitlab-oauth-app-secret"
+            },
+            "gitlab-pat": {
+              "$ref": "#/$defs/ward:secrets~1gitlab-pat"
+            },
+            "gitlab-pat-routable": {
+              "$ref": "#/$defs/ward:secrets~1gitlab-pat-routable"
+            },
+            "gitlab-ptt": {
+              "$ref": "#/$defs/ward:secrets~1gitlab-ptt"
+            },
+            "gitlab-rrt": {
+              "$ref": "#/$defs/ward:secrets~1gitlab-rrt"
+            },
+            "gitlab-runner-authentication-token": {
+              "$ref": "#/$defs/ward:secrets~1gitlab-runner-authentication-token"
+            },
+            "gitlab-runner-authentication-token-routable": {
+              "$ref": "#/$defs/ward:secrets~1gitlab-runner-authentication-token-routable"
+            },
+            "gitlab-scim-token": {
+              "$ref": "#/$defs/ward:secrets~1gitlab-scim-token"
+            },
+            "gitlab-session-cookie": {
+              "$ref": "#/$defs/ward:secrets~1gitlab-session-cookie"
+            },
+            "gitter-access-token": {
+              "$ref": "#/$defs/ward:secrets~1gitter-access-token"
+            },
+            "gocardless-api-token": {
+              "$ref": "#/$defs/ward:secrets~1gocardless-api-token"
+            },
+            "grafana-api-key": {
+              "$ref": "#/$defs/ward:secrets~1grafana-api-key"
+            },
+            "grafana-cloud-api-token": {
+              "$ref": "#/$defs/ward:secrets~1grafana-cloud-api-token"
+            },
+            "grafana-service-account-token": {
+              "$ref": "#/$defs/ward:secrets~1grafana-service-account-token"
+            },
+            "harness-api-key": {
+              "$ref": "#/$defs/ward:secrets~1harness-api-key"
+            },
+            "hashicorp-tf-api-token": {
+              "$ref": "#/$defs/ward:secrets~1hashicorp-tf-api-token"
+            },
+            "hashicorp-tf-password": {
+              "$ref": "#/$defs/ward:secrets~1hashicorp-tf-password"
+            },
+            "heroku-api-key": {
+              "$ref": "#/$defs/ward:secrets~1heroku-api-key"
+            },
+            "heroku-api-key-v2": {
+              "$ref": "#/$defs/ward:secrets~1heroku-api-key-v2"
+            },
+            "hubspot-api-key": {
+              "$ref": "#/$defs/ward:secrets~1hubspot-api-key"
+            },
+            "huggingface-access-token": {
+              "$ref": "#/$defs/ward:secrets~1huggingface-access-token"
+            },
+            "huggingface-organization-api-token": {
+              "$ref": "#/$defs/ward:secrets~1huggingface-organization-api-token"
+            },
+            "infracost-api-token": {
+              "$ref": "#/$defs/ward:secrets~1infracost-api-token"
+            },
+            "intercom-api-key": {
+              "$ref": "#/$defs/ward:secrets~1intercom-api-key"
+            },
+            "intra42-client-secret": {
+              "$ref": "#/$defs/ward:secrets~1intra42-client-secret"
+            },
+            "jfrog-api-key": {
+              "$ref": "#/$defs/ward:secrets~1jfrog-api-key"
+            },
+            "jfrog-identity-token": {
+              "$ref": "#/$defs/ward:secrets~1jfrog-identity-token"
+            },
+            "jwt": {
+              "$ref": "#/$defs/ward:secrets~1jwt"
+            },
+            "jwt-base64": {
+              "$ref": "#/$defs/ward:secrets~1jwt-base64"
+            },
+            "kraken-access-token": {
+              "$ref": "#/$defs/ward:secrets~1kraken-access-token"
+            },
+            "kubernetes-secret-yaml": {
+              "$ref": "#/$defs/ward:secrets~1kubernetes-secret-yaml"
+            },
+            "kucoin-access-token": {
+              "$ref": "#/$defs/ward:secrets~1kucoin-access-token"
+            },
+            "kucoin-secret-key": {
+              "$ref": "#/$defs/ward:secrets~1kucoin-secret-key"
+            },
+            "launchdarkly-access-token": {
+              "$ref": "#/$defs/ward:secrets~1launchdarkly-access-token"
+            },
+            "linear-api-key": {
+              "$ref": "#/$defs/ward:secrets~1linear-api-key"
+            },
+            "linear-client-secret": {
+              "$ref": "#/$defs/ward:secrets~1linear-client-secret"
+            },
+            "linkedin-client-id": {
+              "$ref": "#/$defs/ward:secrets~1linkedin-client-id"
+            },
+            "linkedin-client-secret": {
+              "$ref": "#/$defs/ward:secrets~1linkedin-client-secret"
+            },
+            "lob-api-key": {
+              "$ref": "#/$defs/ward:secrets~1lob-api-key"
+            },
+            "lob-pub-api-key": {
+              "$ref": "#/$defs/ward:secrets~1lob-pub-api-key"
+            },
+            "looker-client-id": {
+              "$ref": "#/$defs/ward:secrets~1looker-client-id"
+            },
+            "looker-client-secret": {
+              "$ref": "#/$defs/ward:secrets~1looker-client-secret"
+            },
+            "mailchimp-api-key": {
+              "$ref": "#/$defs/ward:secrets~1mailchimp-api-key"
+            },
+            "mailgun-private-api-token": {
+              "$ref": "#/$defs/ward:secrets~1mailgun-private-api-token"
+            },
+            "mailgun-pub-key": {
+              "$ref": "#/$defs/ward:secrets~1mailgun-pub-key"
+            },
+            "mailgun-signing-key": {
+              "$ref": "#/$defs/ward:secrets~1mailgun-signing-key"
+            },
+            "mapbox-api-token": {
+              "$ref": "#/$defs/ward:secrets~1mapbox-api-token"
+            },
+            "mattermost-access-token": {
+              "$ref": "#/$defs/ward:secrets~1mattermost-access-token"
+            },
+            "maxmind-license-key": {
+              "$ref": "#/$defs/ward:secrets~1maxmind-license-key"
+            },
+            "messagebird-api-token": {
+              "$ref": "#/$defs/ward:secrets~1messagebird-api-token"
+            },
+            "messagebird-client-id": {
+              "$ref": "#/$defs/ward:secrets~1messagebird-client-id"
+            },
+            "microsoft-teams-webhook": {
+              "$ref": "#/$defs/ward:secrets~1microsoft-teams-webhook"
+            },
+            "netlify-access-token": {
+              "$ref": "#/$defs/ward:secrets~1netlify-access-token"
+            },
+            "new-relic-browser-api-token": {
+              "$ref": "#/$defs/ward:secrets~1new-relic-browser-api-token"
+            },
+            "new-relic-insert-key": {
+              "$ref": "#/$defs/ward:secrets~1new-relic-insert-key"
+            },
+            "new-relic-user-api-id": {
+              "$ref": "#/$defs/ward:secrets~1new-relic-user-api-id"
+            },
+            "new-relic-user-api-key": {
+              "$ref": "#/$defs/ward:secrets~1new-relic-user-api-key"
+            },
+            "notion-api-token": {
+              "$ref": "#/$defs/ward:secrets~1notion-api-token"
+            },
+            "npm-access-token": {
+              "$ref": "#/$defs/ward:secrets~1npm-access-token"
+            },
+            "nuget-config-password": {
+              "$ref": "#/$defs/ward:secrets~1nuget-config-password"
+            },
+            "nytimes-access-token": {
+              "$ref": "#/$defs/ward:secrets~1nytimes-access-token"
+            },
+            "octopus-deploy-api-key": {
+              "$ref": "#/$defs/ward:secrets~1octopus-deploy-api-key"
+            },
+            "okta-access-token": {
+              "$ref": "#/$defs/ward:secrets~1okta-access-token"
+            },
+            "openai-api-key": {
+              "$ref": "#/$defs/ward:secrets~1openai-api-key"
+            },
+            "openshift-user-token": {
+              "$ref": "#/$defs/ward:secrets~1openshift-user-token"
+            },
+            "perplexity-api-key": {
+              "$ref": "#/$defs/ward:secrets~1perplexity-api-key"
+            },
+            "pkcs12-file": {
+              "$ref": "#/$defs/ward:secrets~1pkcs12-file"
+            },
+            "plaid-api-token": {
+              "$ref": "#/$defs/ward:secrets~1plaid-api-token"
+            },
+            "plaid-client-id": {
+              "$ref": "#/$defs/ward:secrets~1plaid-client-id"
+            },
+            "plaid-secret-key": {
+              "$ref": "#/$defs/ward:secrets~1plaid-secret-key"
+            },
+            "planetscale-api-token": {
+              "$ref": "#/$defs/ward:secrets~1planetscale-api-token"
+            },
+            "planetscale-oauth-token": {
+              "$ref": "#/$defs/ward:secrets~1planetscale-oauth-token"
+            },
+            "planetscale-password": {
+              "$ref": "#/$defs/ward:secrets~1planetscale-password"
+            },
+            "postman-api-token": {
+              "$ref": "#/$defs/ward:secrets~1postman-api-token"
+            },
+            "prefect-api-token": {
+              "$ref": "#/$defs/ward:secrets~1prefect-api-token"
+            },
+            "private-key": {
+              "$ref": "#/$defs/ward:secrets~1private-key"
+            },
+            "privateai-api-token": {
+              "$ref": "#/$defs/ward:secrets~1privateai-api-token"
+            },
+            "pulumi-api-token": {
+              "$ref": "#/$defs/ward:secrets~1pulumi-api-token"
+            },
+            "pypi-upload-token": {
+              "$ref": "#/$defs/ward:secrets~1pypi-upload-token"
+            },
+            "rapidapi-access-token": {
+              "$ref": "#/$defs/ward:secrets~1rapidapi-access-token"
+            },
+            "readme-api-token": {
+              "$ref": "#/$defs/ward:secrets~1readme-api-token"
+            },
+            "rubygems-api-token": {
+              "$ref": "#/$defs/ward:secrets~1rubygems-api-token"
+            },
+            "scalingo-api-token": {
+              "$ref": "#/$defs/ward:secrets~1scalingo-api-token"
+            },
+            "sendbird-access-id": {
+              "$ref": "#/$defs/ward:secrets~1sendbird-access-id"
+            },
+            "sendbird-access-token": {
+              "$ref": "#/$defs/ward:secrets~1sendbird-access-token"
+            },
+            "sendgrid-api-token": {
+              "$ref": "#/$defs/ward:secrets~1sendgrid-api-token"
+            },
+            "sendinblue-api-token": {
+              "$ref": "#/$defs/ward:secrets~1sendinblue-api-token"
+            },
+            "sentry-access-token": {
+              "$ref": "#/$defs/ward:secrets~1sentry-access-token"
+            },
+            "sentry-org-token": {
+              "$ref": "#/$defs/ward:secrets~1sentry-org-token"
+            },
+            "sentry-user-token": {
+              "$ref": "#/$defs/ward:secrets~1sentry-user-token"
+            },
+            "settlemint-application-access-token": {
+              "$ref": "#/$defs/ward:secrets~1settlemint-application-access-token"
+            },
+            "settlemint-personal-access-token": {
+              "$ref": "#/$defs/ward:secrets~1settlemint-personal-access-token"
+            },
+            "settlemint-service-access-token": {
+              "$ref": "#/$defs/ward:secrets~1settlemint-service-access-token"
+            },
+            "shippo-api-token": {
+              "$ref": "#/$defs/ward:secrets~1shippo-api-token"
+            },
+            "shopify-access-token": {
+              "$ref": "#/$defs/ward:secrets~1shopify-access-token"
+            },
+            "shopify-custom-access-token": {
+              "$ref": "#/$defs/ward:secrets~1shopify-custom-access-token"
+            },
+            "shopify-private-app-access-token": {
+              "$ref": "#/$defs/ward:secrets~1shopify-private-app-access-token"
+            },
+            "shopify-shared-secret": {
+              "$ref": "#/$defs/ward:secrets~1shopify-shared-secret"
+            },
+            "sidekiq-secret": {
+              "$ref": "#/$defs/ward:secrets~1sidekiq-secret"
+            },
+            "sidekiq-sensitive-url": {
+              "$ref": "#/$defs/ward:secrets~1sidekiq-sensitive-url"
+            },
+            "slack-app-token": {
+              "$ref": "#/$defs/ward:secrets~1slack-app-token"
+            },
+            "slack-bot-token": {
+              "$ref": "#/$defs/ward:secrets~1slack-bot-token"
+            },
+            "slack-config-access-token": {
+              "$ref": "#/$defs/ward:secrets~1slack-config-access-token"
+            },
+            "slack-config-refresh-token": {
+              "$ref": "#/$defs/ward:secrets~1slack-config-refresh-token"
+            },
+            "slack-legacy-bot-token": {
+              "$ref": "#/$defs/ward:secrets~1slack-legacy-bot-token"
+            },
+            "slack-legacy-token": {
+              "$ref": "#/$defs/ward:secrets~1slack-legacy-token"
+            },
+            "slack-legacy-workspace-token": {
+              "$ref": "#/$defs/ward:secrets~1slack-legacy-workspace-token"
+            },
+            "slack-user-token": {
+              "$ref": "#/$defs/ward:secrets~1slack-user-token"
+            },
+            "slack-webhook-url": {
+              "$ref": "#/$defs/ward:secrets~1slack-webhook-url"
+            },
+            "snyk-api-token": {
+              "$ref": "#/$defs/ward:secrets~1snyk-api-token"
+            },
+            "sonar-api-token": {
+              "$ref": "#/$defs/ward:secrets~1sonar-api-token"
+            },
+            "sourcegraph-access-token": {
+              "$ref": "#/$defs/ward:secrets~1sourcegraph-access-token"
+            },
+            "square-access-token": {
+              "$ref": "#/$defs/ward:secrets~1square-access-token"
+            },
+            "squarespace-access-token": {
+              "$ref": "#/$defs/ward:secrets~1squarespace-access-token"
+            },
+            "stripe-access-token": {
+              "$ref": "#/$defs/ward:secrets~1stripe-access-token"
+            },
+            "sumologic-access-id": {
+              "$ref": "#/$defs/ward:secrets~1sumologic-access-id"
+            },
+            "sumologic-access-token": {
+              "$ref": "#/$defs/ward:secrets~1sumologic-access-token"
+            },
+            "telegram-bot-api-token": {
+              "$ref": "#/$defs/ward:secrets~1telegram-bot-api-token"
+            },
+            "travisci-access-token": {
+              "$ref": "#/$defs/ward:secrets~1travisci-access-token"
+            },
+            "twilio-api-key": {
+              "$ref": "#/$defs/ward:secrets~1twilio-api-key"
+            },
+            "twitch-api-token": {
+              "$ref": "#/$defs/ward:secrets~1twitch-api-token"
+            },
+            "twitter-access-secret": {
+              "$ref": "#/$defs/ward:secrets~1twitter-access-secret"
+            },
+            "twitter-access-token": {
+              "$ref": "#/$defs/ward:secrets~1twitter-access-token"
+            },
+            "twitter-api-key": {
+              "$ref": "#/$defs/ward:secrets~1twitter-api-key"
+            },
+            "twitter-api-secret": {
+              "$ref": "#/$defs/ward:secrets~1twitter-api-secret"
+            },
+            "twitter-bearer-token": {
+              "$ref": "#/$defs/ward:secrets~1twitter-bearer-token"
+            },
+            "typeform-api-token": {
+              "$ref": "#/$defs/ward:secrets~1typeform-api-token"
+            },
+            "vault-batch-token": {
+              "$ref": "#/$defs/ward:secrets~1vault-batch-token"
+            },
+            "vault-service-token": {
+              "$ref": "#/$defs/ward:secrets~1vault-service-token"
+            },
+            "yandex-access-token": {
+              "$ref": "#/$defs/ward:secrets~1yandex-access-token"
+            },
+            "yandex-api-key": {
+              "$ref": "#/$defs/ward:secrets~1yandex-api-key"
+            },
+            "yandex-aws-access-token": {
+              "$ref": "#/$defs/ward:secrets~1yandex-aws-access-token"
+            },
+            "zendesk-secret-key": {
+              "$ref": "#/$defs/ward:secrets~1zendesk-secret-key"
             }
           }
         },

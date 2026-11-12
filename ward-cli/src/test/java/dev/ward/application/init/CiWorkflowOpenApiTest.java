@@ -17,6 +17,6 @@ class CiWorkflowOpenApiTest {
 
     assertThat(body)
         .contains("releases/download/v1.35.0/oasdiff_1.35.0_linux_amd64.tar.gz", "fetch-depth: 0")
-        .doesNotContain("gitleaks", "trivy", "vacuum");
+        .doesNotContain("gitleaks", "vacuum");
   }
 }

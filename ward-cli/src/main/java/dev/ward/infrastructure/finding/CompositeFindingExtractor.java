@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 import javax.inject.Inject;
 
 /** Routes a gate result to the finding source registered for its tool type. */
@@ -26,10 +25,8 @@ public final class CompositeFindingExtractor implements FindingExtractor {
   /** Creates the extractor that delegates to the extractor of each supported gate. */
   @Inject
   public CompositeFindingExtractor(
-      final ToolchainFindingSources toolchains,
-      final GitleaksSarifFindings gitleaks,
-      final WorkspaceMembers members) {
-    this(Stream.concat(toolchains.sources().stream(), Stream.of(gitleaks)).toList(), members);
+      final ToolchainFindingSources toolchains, final WorkspaceMembers members) {
+    this(toolchains.sources(), members);
   }
 
   /** Creates the extractor for the given sources, without workspace members. */

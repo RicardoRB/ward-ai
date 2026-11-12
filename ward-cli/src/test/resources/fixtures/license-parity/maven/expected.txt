@@ -1,0 +1,8 @@
+# Generated once by org.codehaus.mojo:license-maven-plugin 2.7.1 (add-third-party) on pom.xml.
+# Format: group:artifact@version = declared license names, joined by " | ".
+ch.qos.logback:logback-classic@1.5.38 = EPL-2.0 | LGPL-2.1-only
+ch.qos.logback:logback-core@1.5.38 = EPL-2.0 | LGPL-2.1-only
+commons-io:commons-io@2.21.0 = Apache-2.0
+org.apache.commons:commons-lang3@3.19.0 = Apache-2.0
+org.codehaus.plexus:plexus-utils@4.1.0 = Apache-2.0
+org.slf4j:slf4j-api@2.0.17 = MIT

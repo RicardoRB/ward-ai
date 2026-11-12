@@ -4,6 +4,7 @@ import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.AnalysisSeverity;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.rule.Measured;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatch;
@@ -50,6 +51,18 @@ final class Trees {
             body);
     return new MetricMatcher()
         .compile(definition).matches(root).stream().map(RuleMatch::message).toList();
+  }
+
+  /** Runs the rule {@code body} over {@code root} and returns what it measures. */
+  static List<Measured> measured(final String body, final SyntaxNode root) {
+    final RuleDefinition definition =
+        new RuleDefinition(
+            "ward:python/test",
+            AnalysisLanguage.PYTHON,
+            RuleCapability.SYNTAX,
+            AnalysisSeverity.ERROR,
+            body);
+    return new MetricMatcher().compile(definition).measures(root);
   }
 
   /** A function named {@code name} whose parameters are {@code names}, with {@code self} first. */

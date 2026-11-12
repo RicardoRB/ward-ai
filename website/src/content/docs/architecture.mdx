@@ -27,3 +27,16 @@ the [gate reference](/configuration/gates/) must stay in sync. Explicit construc
 supports native-image builds. Picocli command reflection metadata is generated from command annotations
 by `picocli-codegen` at compile time, so adding a command or option does not require a manual metadata
 entry. Hand-written native metadata is reserved for non-Picocli requirements such as FFM downcalls.
+
+## Dependency inventory
+
+Ward reads the packages a project resolves through one inventory, `DependencyInventoryService`,
+instead of each check resolving the project on its own. Node, Python and Swift projects are read
+from their lockfiles (`package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `bun.lock`, `uv.lock`,
+`poetry.lock`, pinned `requirements*.txt`, `Package.resolved`) without running a package manager.
+Maven and Gradle projects are resolved by the build tool, except a Gradle build that locks every
+configuration, which is read from its lockfiles. The graph a build tool resolves is stored under
+`.ward/cache/dependencies/`, keyed by the content of the build files, and reused for 24 hours. A
+project that cannot be resolved is an execution error that names the file and the command that fixes
+it, never an empty inventory. The inventory has no command and no output of its own; it logs only to
+standard error.

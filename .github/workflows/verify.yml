@@ -427,45 +427,6 @@ jobs:
           -Dward.parity.semgrep="$(command -v semgrep)"
           test
 
-  # Runs the real Spectral and its OWASP ruleset on the fixtures of every implemented OpenAPI rule
-  # and compares the positions and messages with the committed parity report
-  # (ward-cli/src/test/resources/parity/spectral-report.txt).
-  spectral-parity:
-    name: OpenAPI parity with Spectral
-    if: inputs.compatibility-matrices
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v5
-
-      - name: Set up JDK 25
-        uses: actions/setup-java@v5
-        with:
-          distribution: temurin
-          java-version: '25'
-          cache: maven
-          cache-dependency-path: |
-            pom.xml
-            ward-*/pom.xml
-
-      - name: Set up Node.js 22
-        uses: actions/setup-node@v5
-        with:
-          node-version: '22'
-
-      - name: Install Spectral
-        run: >-
-          npm install --no-audit --no-fund --prefix "$RUNNER_TEMP/spectral"
-          @stoplight/spectral-cli@6.17.1 @stoplight/spectral-owasp-ruleset@2.0.1
-
-      - name: Compare the OpenAPI rules with Spectral
-        run: >-
-          ./mvnw -B
-          -pl ward-cli -am
-          -Dsurefire.failIfNoSpecifiedTests=false
-          -Dtest=SpectralParitySmokeTest
-          -Dward.spectral.dir="$RUNNER_TEMP/spectral"
-          test
-
   # Reads the Xcode and fixture pairs and their runners from the
   # matrix data and skips the matrix for pull requests that change only website, openspec or Markdown
   # files.
@@ -639,7 +600,7 @@ jobs:
       # local repository instead of the reactor. ward-cli depends on the ANTLR frontend and the Java,
       # TypeScript, JavaScript and Python rules, so those are installed too.
       - name: Install the analysis modules for the native build
-        run: ./mvnw -B -q -DskipTests install -pl ward-analysis-api,ward-analysis-engine,ward-frontend-antlr,ward-lang-jvm,ward-lang-node,ward-lang-python,ward-lang-swift,ward-lang-openapi -am
+        run: ./mvnw -B -q -DskipTests install -pl ward-analysis-api,ward-analysis-engine,ward-frontend-antlr,ward-lang-jvm,ward-lang-node,ward-lang-python,ward-lang-swift -am
 
       - name: Run terminal tests in a native test image
         run: >-

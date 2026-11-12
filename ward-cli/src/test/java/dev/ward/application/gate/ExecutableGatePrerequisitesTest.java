@@ -25,15 +25,15 @@ class ExecutableGatePrerequisitesTest {
                     GatePrerequisiteFixtures.MAVEN,
                     List.of(
                         GatePrerequisiteFixtures.gate(
-                            "gitleaks", GatePrerequisiteFixtures.MISSING))));
+                            "semgrep", GatePrerequisiteFixtures.MISSING))));
 
     assertThat(result.status()).isEqualTo(GateStatus.UNAVAILABLE);
     assertThat(result.summary())
-        .startsWith("Gate 'gitleaks' could not start 'gitleaks'.")
-        .contains("Install gitleaks:");
+        .startsWith("Gate 'semgrep' could not start 'semgrep'.")
+        .contains("Install semgrep:");
     assertThat(result.prerequisite().kind()).isEqualTo(GatePrerequisite.Kind.EXECUTABLE);
-    assertThat(result.prerequisite().executable()).isEqualTo("gitleaks");
-    assertThat(result.prerequisite().remediation()).contains("gitleaks");
+    assertThat(result.prerequisite().executable()).isEqualTo("semgrep");
+    assertThat(result.prerequisite().remediation()).contains("semgrep");
   }
 
   @Test
@@ -79,7 +79,7 @@ class ExecutableGatePrerequisitesTest {
                     GatePrerequisiteFixtures.MAVEN,
                     List.of(
                         GatePrerequisiteFixtures.gate(
-                            "gitleaks", GatePrerequisiteFixtures.MISSING))));
+                            "semgrep", GatePrerequisiteFixtures.MISSING))));
 
     assertThat(result.prerequisite().kind()).isEqualTo(GatePrerequisite.Kind.EXECUTABLE);
   }
@@ -107,11 +107,11 @@ class ExecutableGatePrerequisitesTest {
               GatePrerequisiteFixtures.failing(), GatePrerequisiteFixtures.failing())
           .run(
               GatePrerequisiteFixtures.MAVEN,
-              List.of(GatePrerequisiteFixtures.gate("gitleaks", GatePrerequisiteFixtures.MISSING)));
+              List.of(GatePrerequisiteFixtures.gate("semgrep", GatePrerequisiteFixtures.MISSING)));
     } finally {
       logger.removeHandler(handler);
     }
 
-    assertThat(messages).containsExactly("event=gate-prerequisite gate=gitleaks kind=executable");
+    assertThat(messages).containsExactly("event=gate-prerequisite gate=semgrep kind=executable");
   }
 }

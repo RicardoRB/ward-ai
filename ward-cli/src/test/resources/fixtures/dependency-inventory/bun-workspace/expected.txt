@@ -1,0 +1,5 @@
+[] NPM semver 7.6.3 DIRECT DEVELOPMENT from=bun.lock in=package.json
+[packages/shared] NPM ms 2.1.3 DIRECT RUNTIME from=bun.lock in=packages/shared/package.json
+[packages/web] NPM is-number 6.0.0 TRANSITIVE RUNTIME from=bun.lock by=is-odd
+[packages/web] NPM is-odd 3.0.1 DIRECT RUNTIME from=bun.lock in=packages/web/package.json
+[packages/web] NPM ms 2.1.3 TRANSITIVE RUNTIME from=bun.lock

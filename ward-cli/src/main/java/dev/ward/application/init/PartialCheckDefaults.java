@@ -55,15 +55,9 @@ public final class PartialCheckDefaults {
           WARD,
           "semgrep",
           new Table(WHOLE_PROJECT, List.of(".semgrep*"), PATHS, null, null),
-          // Its history scan misses uncommitted and staged edits, so edited files are scanned
-          // directly.
-          "gitleaks",
-          new Table(
-              WHOLE_PROJECT,
-              List.of(".gitleaks*"),
-              List.of("--no-git", "--source={paths}"),
-              null,
-              null));
+          // Ward scans the edited files itself, so the table names no argument.
+          SupportedQualityGates.SECRETS,
+          new Table(WHOLE_PROJECT, List.of("ward-rules.toml"), List.of(), null, null));
 
   /**
    * The table's keys; {@code item} and {@code separator} are omitted when {@code null}, and {@code

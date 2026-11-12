@@ -5,6 +5,7 @@ import dev.ward.domain.config.GateConfiguration;
 import dev.ward.domain.config.WardConfiguration;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.gate.QualityGateDefinitions;
+import dev.ward.domain.gate.SupportedQualityGates;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,7 +24,7 @@ final class TomlGateParser {
   static GateConfiguration parse(final String name, final TomlTable gate) {
     final String where = TomlConfigurationReader.CHECKS + "." + name;
     rejectLegacyPartial(where, gate);
-    final String uses = uses(where, gate);
+    final String uses = uses(name, where, gate);
     final List<String> command = TomlCommandParser.parse(where, gate, uses);
     final String type = type(uses, command);
     final boolean enabled = enabled(where, gate);
@@ -43,7 +44,12 @@ final class TomlGateParser {
         TomlAnalysisParser.layers(where, type, gate),
         TomlArchitectureParser.cycleRoots(where, type, gate),
         TomlArchitectureParser.independence(where, type, gate),
-        TomlAnalysisParser.rulesFile(where, type, gate));
+        TomlAnalysisParser.rulesFile(where, type, gate),
+        TomlSecretsParser.parse(where, type, gate),
+        TomlCrapParser.parse(where, type, gate),
+        TomlCoverageParser.parse(where, type, gate),
+        TomlVulnerabilitiesParser.parse(where, type, gate),
+        TomlLicenseParser.parse(where, type, gate, command));
   }
 
   private static void rejectLegacyPartial(final String where, final TomlTable gate) {
@@ -60,9 +66,9 @@ final class TomlGateParser {
     }
   }
 
-  private static String uses(final String where, final TomlTable gate) {
+  private static String uses(final String name, final String where, final TomlTable gate) {
     if (!gate.contains(USES)) {
-      return null;
+      return namedVulnerabilities(name, gate);
     }
     final String key = where + "." + USES;
     final String uses = gate.isString(USES) ? gate.getString(USES) : null;
@@ -76,6 +82,13 @@ final class TomlGateParser {
                   .toList());
     }
     return uses;
+  }
+
+  /** A check named {@code vulnerabilities} with no command is the native check. */
+  private static String namedVulnerabilities(final String name, final TomlTable gate) {
+    return SupportedQualityGates.VULNERABILITIES.equals(name) && !gate.contains("command")
+        ? SupportedQualityGates.VULNERABILITIES
+        : null;
   }
 
   /** The declared {@code uses}, or the type the command implies. */

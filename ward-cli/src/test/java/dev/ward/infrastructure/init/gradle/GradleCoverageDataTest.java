@@ -26,7 +26,7 @@ class GradleCoverageDataTest {
         .contains(
             "tasks.register('wardCoverageData') {\n    dependsOn 'test'",
             "throw new org.gradle.api.GradleException(",
-            "tasks.named('jacocoTestCoverageVerification') { dependsOn 'wardCoverageData' }");
+            "tasks.named('jacocoTestReport') { dependsOn 'wardCoverageData' }");
   }
 
   @Test
@@ -37,7 +37,7 @@ class GradleCoverageDataTest {
         .contains(
             "tasks.register(\"wardCoverageData\") {\n    dependsOn(\"test\")",
             "check(exec != null && exec.exists())",
-            "tasks.named(\"jacocoTestCoverageVerification\") { dependsOn(\"wardCoverageData\") }");
+            "tasks.named(\"jacocoTestReport\") { dependsOn(\"wardCoverageData\") }");
   }
 
   private String configure(final String name, final String content) throws IOException {

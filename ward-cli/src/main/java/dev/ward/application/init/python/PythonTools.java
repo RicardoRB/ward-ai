@@ -36,6 +36,7 @@ public record PythonTools(
   private static final String VENV_BIN = ".venv/bin/";
   private static final int STANDARD_COVERAGE = 80;
   private static final int STRICT_COVERAGE = 85;
+  static final int STRICT_BRANCHES = 75;
   private static final int STRICT_MUTATION = 60;
 
   /** Resolves the tools of {@code project} from the executables on the path and its configs. */

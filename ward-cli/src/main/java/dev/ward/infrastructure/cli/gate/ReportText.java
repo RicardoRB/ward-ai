@@ -52,20 +52,7 @@ final class ReportText {
           case SKIPPED -> "–";
           default -> "✗";
         };
-    final String line = marker + " " + displayName(result.name());
-    if (result.status() == GateStatus.UNAVAILABLE) {
-      return line + " — unavailable";
-    }
-    if (result.status() == GateStatus.EXECUTION_ERROR) {
-      return line + " — error";
-    }
-    if (result.status() == GateStatus.SKIPPED && result.summary() != null) {
-      return line + " — " + result.summary();
-    }
-    if (result.status() == GateStatus.FAILED && result.errors() != null) {
-      return line + " — " + result.errors() + " errors";
-    }
-    return line;
+    return marker + " " + displayName(result.name()) + GateLineSuffix.of(result);
   }
 
   static String displayName(final String id) {
