@@ -16,6 +16,9 @@ import org.junit.jupiter.api.Test;
 /** The {@code secret-scan} check: SecretScanBundledRulesTest. */
 final class SecretScanBundledRulesTest extends SecretScanSupport {
 
+  /** Where the first window of a long line ends, so a token there is cut by it. */
+  private static final int WINDOW_EDGE = 4090;
+
   @Test
   void aMultiLinePrivateKeyIsReportedAtItsHeader() {
     final String key =
@@ -56,6 +59,20 @@ final class SecretScanBundledRulesTest extends SecretScanSupport {
     assertThat(matches).hasSize(1);
     assertThat(matches.get(0).span().startColumn())
         .isEqualTo(filler.length() + COLUMN_AFTER_PREFIX);
+  }
+
+  @Test
+  void aSecretCutByTheEdgeOfAWindowIsReportedOnceAtItsStart() {
+    final String decoy = "ghp_ ";
+    final String token = "ghp_" + "aB3dE5gH7jK9mN1pQ3sT5vW7yZ9bD1fH3jL5";
+    final int tokenAt = WINDOW_EDGE;
+    final String line =
+        decoy + "x".repeat(tokenAt - decoy.length()) + token + "x".repeat(WINDOW_EDGE);
+
+    final List<RuleMatch> matches = run(bundled("github-pat"), "dist/app.js", line);
+
+    assertThat(matches).hasSize(1);
+    assertThat(matches.get(0).span().startColumn()).isEqualTo(tokenAt + 1);
   }
 
   @Test

@@ -2,7 +2,6 @@ package dev.ward.analysis.domain.rule.check;
 
 import dev.ward.analysis.domain.ir.TextFile;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,14 +16,17 @@ final class SecretRegions {
   /** A line longer than this is matched in windows. */
   static final int LONG_LINE = 4096;
 
-  private static final int HALF_WINDOW = LONG_LINE / 2;
   private static final int OVERLAP = 256;
+  private static final int TEXT_OVERLAP = 4096;
   private static final int TEXT_WINDOW = 16 * 1024;
   private static final int LEAD = 512;
 
   private SecretRegions() {}
 
-  /** Returns the sorted, disjoint {@code [start, end)} regions where {@code rule} matches. */
+  /**
+   * Returns the sorted {@code [start, end)} regions where {@code rule} matches; windows may overlap
+   * a little, so a match is found in either.
+   */
   static List<int[]> of(final TextFile file, final SecretRule rule) {
     final int[] hits = hits(file.lower(), rule.keywords());
     return rule.multiline()
@@ -49,11 +51,7 @@ final class SecretRegions {
     if (!hasKeywords) {
       return slide(0, length, TEXT_WINDOW);
     }
-    final List<int[]> windows = new ArrayList<>();
-    for (final int hit : hits) {
-      windows.add(new int[] {Math.max(0, hit - LEAD), Math.min(length, hit + TEXT_WINDOW)});
-    }
-    return merge(windows);
+    return windows(hits, 0, 0, length, TEXT_WINDOW, TEXT_OVERLAP);
   }
 
   private static List<int[]> lines(final String text, final int[] hits, final boolean keywords) {
@@ -81,14 +79,37 @@ final class SecretRegions {
     if (!keywords) {
       return slide(start, end, LONG_LINE);
     }
+    return windows(hits, from, start, end, LONG_LINE, OVERLAP);
+  }
+
+  /**
+   * Returns windows of {@code size} characters that start {@link #LEAD} before a keyword hit and
+   * stop at {@code limit}. The next window starts at the first hit that is within {@code overlap}
+   * of the end of the last one, or after it, so the windows overlap by little and their total size
+   * stays near the size of the text, however many hits there are.
+   */
+  private static List<int[]> windows(
+      final int[] hits,
+      final int from,
+      final int floor,
+      final int limit,
+      final int size,
+      final int overlap) {
     final List<int[]> windows = new ArrayList<>();
-    for (int index = from; index < hits.length && hits[index] < end; index++) {
-      windows.add(
-          new int[] {
-            Math.max(start, hits[index] - HALF_WINDOW), Math.min(end, hits[index] + HALF_WINDOW)
-          });
+    int next = from;
+    while (next < hits.length && hits[next] < limit) {
+      final int start = Math.max(floor, hits[next] - LEAD);
+      final int end = Math.min(limit, start + size);
+      windows.add(new int[] {start, end});
+      final int resume = end - overlap;
+      while (next < hits.length && hits[next] < resume && end < limit) {
+        next++;
+      }
+      if (end >= limit) {
+        break;
+      }
     }
-    return merge(windows);
+    return windows;
   }
 
   private static List<int[]> slide(final int start, final int end, final int size) {
@@ -100,18 +121,5 @@ final class SecretRegions {
       }
     }
     return windows;
-  }
-
-  private static List<int[]> merge(final List<int[]> windows) {
-    final List<int[]> merged = new ArrayList<>();
-    for (final int[] window : windows) {
-      final int[] last = merged.isEmpty() ? null : merged.get(merged.size() - 1);
-      if (last != null && window[0] <= last[1]) {
-        last[1] = Math.max(last[1], window[1]);
-      } else {
-        merged.add(Arrays.copyOf(window, 2));
-      }
-    }
-    return merged;
   }
 }

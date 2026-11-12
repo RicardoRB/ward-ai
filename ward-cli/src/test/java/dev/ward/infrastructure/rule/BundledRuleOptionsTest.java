@@ -2,6 +2,7 @@ package dev.ward.infrastructure.rule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatcher;
 import dev.ward.analysis.domain.rule.RuleOption;
@@ -41,7 +42,8 @@ class BundledRuleOptionsTest {
         .allSatisfy(
             rule -> {
               assertThat(rule.category()).as(rule.id()).isNotBlank();
-              if (OptInOnlyRules.IDS.contains(rule.id())) {
+              if (OptInOnlyRules.IDS.contains(rule.id())
+                  || rule.capability() == RuleCapability.TEXT) {
                 assertThat(rule.presets()).as(rule.id()).isEmpty();
                 return;
               }

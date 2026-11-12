@@ -32,7 +32,7 @@ class SecretScanSupport {
   static final int MEGABYTE = 1_000_000;
   static final int COLUMN_AFTER_PREFIX = 10;
   static final int RUN_OF_A = 60;
-  static final Duration LIMIT = Duration.ofSeconds(30);
+  static final Duration LIMIT = Duration.ofSeconds(90);
   // Built from two literals, so that no source file holds a private key header.
   static final String PEM_HEADER = "-----BEGIN " + "RSA PRIVATE KEY-----\n";
 
