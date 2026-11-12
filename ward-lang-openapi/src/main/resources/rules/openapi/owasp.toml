@@ -109,3 +109,80 @@ presets = ["standard", "strict"]
 body = '''
 check = "openapi-owasp-security-hosts-https-oas3"
 '''
+
+[[rules]]
+id = "ward:openapi/owasp-array-limit"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-array-limit"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-string-limit"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-string-limit"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-string-restricted"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-string-restricted"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-integer-format"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-integer-format"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-integer-limit"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-integer-limit"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-no-additional-properties"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-no-additional-properties"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-constrained-additional-properties"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-constrained-additional-properties"
+'''

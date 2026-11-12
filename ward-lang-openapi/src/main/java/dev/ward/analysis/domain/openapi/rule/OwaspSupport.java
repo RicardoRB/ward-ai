@@ -53,4 +53,12 @@ final class OwaspSupport {
     final Matcher matcher = SCHEME.matcher(url);
     return matcher.find() && !"https".equalsIgnoreCase(matcher.group(1));
   }
+
+  static boolean declares(final DocNode schema, final String type) {
+    return schema.get("type").stream()
+        .anyMatch(
+            node ->
+                type.equals(node.text())
+                    || node.items().stream().anyMatch(item -> type.equals(item.text())));
+  }
 }

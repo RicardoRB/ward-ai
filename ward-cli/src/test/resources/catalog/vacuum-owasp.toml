@@ -2,8 +2,6 @@
 
 [[rule]]
 name = "owasp-array-limit"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-array-limit"]
 
 [[rule]]
@@ -16,8 +14,6 @@ vacuum = ["owasp-auth-urls-https"]
 
 [[rule]]
 name = "owasp-constrained-additional-properties"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-constrained-additionalProperties"]
 
 [[rule]]
@@ -46,14 +42,10 @@ vacuum = ["owasp-define-error-validation"]
 
 [[rule]]
 name = "owasp-integer-format"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-integer-format"]
 
 [[rule]]
 name = "owasp-integer-limit"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-integer-limit"]
 
 [[rule]]
@@ -62,8 +54,6 @@ vacuum = ["owasp-jwt-best-practices"]
 
 [[rule]]
 name = "owasp-no-additional-properties"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-no-additionalProperties"]
 
 [[rule]]
@@ -126,12 +116,8 @@ vacuum = ["owasp-security-hosts-https-oas3"]
 
 [[rule]]
 name = "owasp-string-limit"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-string-limit"]
 
 [[rule]]
 name = "owasp-string-restricted"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-string-restricted"]

@@ -1,0 +1,16 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths:
+  /p:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: integer
+              minimum: 1
+      responses:
+        "200":
+          description: d

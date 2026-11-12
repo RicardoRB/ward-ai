@@ -1,17 +1,17 @@
 # Status of the vacuum-owasp rows in openapi: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-owasp-array-limit = { status = "planned", issue = "#522" }
+owasp-array-limit = "implemented"
 owasp-auth-insecure-schemes = "implemented"
 owasp-auth-urls-https = "implemented"
-owasp-constrained-additional-properties = { status = "planned", issue = "#522" }
+owasp-constrained-additional-properties = "implemented"
 owasp-define-error-responses-401 = { status = "planned", issue = "#522" }
 owasp-define-error-responses-429 = { status = "planned", issue = "#522" }
 owasp-define-error-responses-500 = { status = "planned", issue = "#522" }
 owasp-define-error-validation = { status = "planned", issue = "#522" }
-owasp-integer-format = { status = "planned", issue = "#522" }
-owasp-integer-limit = { status = "planned", issue = "#522" }
+owasp-integer-format = "implemented"
+owasp-integer-limit = "implemented"
 owasp-jwt-best-practices = "implemented"
-owasp-no-additional-properties = { status = "planned", issue = "#522" }
+owasp-no-additional-properties = "implemented"
 owasp-no-api-keys-in-url = "implemented"
 owasp-no-credentials-in-url = "implemented"
 owasp-no-http-basic = "implemented"
@@ -24,5 +24,5 @@ owasp-protection-global-unsafe-strict = { status = "planned", issue = "#522" }
 owasp-rate-limit = { status = "planned", issue = "#522" }
 owasp-rate-limit-retry-after = { status = "planned", issue = "#522" }
 owasp-security-hosts-https-oas3 = "implemented"
-owasp-string-limit = { status = "planned", issue = "#522" }
-owasp-string-restricted = { status = "planned", issue = "#522" }
+owasp-string-limit = "implemented"
+owasp-string-restricted = "implemented"

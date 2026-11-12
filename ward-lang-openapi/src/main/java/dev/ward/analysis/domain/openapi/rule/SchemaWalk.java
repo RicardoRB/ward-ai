@@ -45,6 +45,43 @@ final class SchemaWalk {
     return expand(document, roots);
   }
 
+  /**
+   * Returns the schemas reachable from a request: the parameters and request bodies of the path
+   * items and operations. A schema used by a request and by a response is in it too.
+   */
+  static Set<DocNode> requestSchemas(final OpenApiDocument document) {
+    final List<DocNode> roots = new ArrayList<>();
+    for (final DocNode.Entry path : document.parts().paths()) {
+      OperationNodes.parameters(document.resolve(path.value()))
+          .forEach(parameter -> carried(document, parameter, roots));
+    }
+    for (final Operation operation : document.parts().operations()) {
+      OperationNodes.parameters(operation.node())
+          .forEach(parameter -> carried(document, parameter, roots));
+      OperationNodes.requestBody(operation.node())
+          .ifPresent(body -> carried(document, body, roots));
+    }
+    final Set<DocNode> request = Collections.newSetFromMap(new IdentityHashMap<>());
+    request.addAll(expand(document, roots));
+    return request;
+  }
+
+  /** Returns the schemas that are a branch of a combinator, a condition or a negation. */
+  static Set<DocNode> combined(final OpenApiDocument document) {
+    final Set<DocNode> branches = Collections.newSetFromMap(new IdentityHashMap<>());
+    for (final DocNode schema : schemas(document)) {
+      for (final String key : List.of("allOf", "anyOf", "oneOf")) {
+        schema
+            .get(key)
+            .ifPresent(list -> list.items().forEach(item -> branches.add(document.resolve(item))));
+      }
+      for (final String key : List.of("if", "then", "else", "not")) {
+        schema.get(key).ifPresent(branch -> branches.add(document.resolve(branch)));
+      }
+    }
+    return branches;
+  }
+
   private static void operationRoots(
       final OpenApiDocument document, final DocNode operation, final List<DocNode> roots) {
     OperationNodes.parameters(operation).forEach(parameter -> carried(document, parameter, roots));
