@@ -66,8 +66,11 @@ Some gates need extra input:
   written too; see [Generated files](#generated-files).
 - **`zap`** writes a `<TARGET_URL>` placeholder. Replace it with an authorized target before
   `check` will run the gate.
-- **`api-compat`** needs a released baseline. On Maven it is offered only when `pom.xml` declares
-  `<distributionManagement>`; otherwise `--gate api-compat` fails with that explanation.
+- **`api-compat`** needs a baseline. A Java project (Maven or Gradle) is offered it when a release
+  tag such as `v1.2.3` is reachable from `HEAD`; otherwise `--gate api-compat` fails and says so.
+  Init writes `uses = "api-compat"` and changes no build file. A Kotlin project keeps the japicmp
+  command, which on Maven needs `<distributionManagement>`, until the native check reads Kotlin.
+  See [API compatibility](/configuration/gates/#api-compatibility).
 - **`openapi-lint`, `openapi-diff`, and `openapi-compat`** are offered only when Git tracks an
   `openapi.yml`, `openapi.yaml`, or `openapi.json` in `src/main/resources` or the project root.
   With a tracked spec, `--preset` adds `openapi-lint` and `openapi-diff`, and `strict` adds
@@ -118,8 +121,8 @@ finding twice.
 
 ## What init changes in your build
 
-For `enforcer`, `license` and `api-compat`, init adds missing plugins using
-Ward's embedded Java compatibility catalog.
+For `enforcer`, `license` and, on Kotlin projects, `api-compat`, init adds missing plugins using
+Ward's embedded Java compatibility catalog. Java `api-compat` adds no plugin.
 
 - Existing compatible plugin versions are kept.
 - For an incompatible managed plugin, init shows the current version, the compatible version, the

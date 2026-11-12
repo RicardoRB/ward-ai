@@ -8,6 +8,10 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Added
+
+- `api-compat` is a native check for Java. It compares the public API of the main sources in the working tree with the same sources at a baseline Git revision, `base` or the latest release tag, and reports incompatible changes as `api-compat:<kind>` findings (#526). It runs no build, no external tool and no network access; `[checks.api-compat]` takes `base` and `include`. Init offers it to Java projects with a release tag and the generated CI workflow fetches full history and tags. Kotlin projects keep japicmp for now.
+
 ## [0.7.0] - 2026-11-11
 
 ### Added
