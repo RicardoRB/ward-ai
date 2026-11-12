@@ -27,7 +27,7 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `zap` | OWASP ZAP | DAST against a running application. |
 | Architecture | `ward` | Ward analysis rules | Run Ward's analysis rules over source syntax trees, with stable `ward:<language>/<rule>` ids, and the layer, slice cycle and feature independence rules `ward:architecture/*`. |
 | | `enforcer` | Maven Enforcer / Gradle checks | Dependency and build rules. |
-| Dependencies & Compliance | `license` | License Maven Plugin / Gradle License Report (`checkLicense`) | Dependency license policy. |
+| Dependencies & Compliance | `license` | Ward (native) | Licenses of the resolved dependencies against a deny or allow policy, for every toolchain. See [License gate](#license-gate). |
 | | `api-compat` | japicmp | Binary/API compatibility between versions. |
 | REST API contract | `openapi-lint` | vacuum | Lint the committed OpenAPI spec with every built-in rule. |
 | | `openapi-diff` | oasdiff | Breaking changes in uncommitted spec edits. |
@@ -87,7 +87,7 @@ because it does not measure branch coverage. See
 
 Strict mutation testing can add a lot to check runtime. When `license` is selected, `strict`
 writes a license allowlist instead of the GPL/AGPL denylist; see
-[what init changes in your build](/commands/init/#generated-files).
+[License gate](#license-gate).
 
 Presets may write these rule files:
 
@@ -898,6 +898,52 @@ Ward repository (`ward-lang-swift/src/test/resources/corpus/parse-report.txt`). 
 writing, the parse report lists `func run() async {` (first error at 6:18) and a freestanding macro
 declaration (2:8) as errors; the cause is not analyzed here. Limits are tuned in
 [`ward-rules.toml`](/configuration/ward-rules/), as for the Python rules.
+
+## License gate
+
+The `license` gate is native: it reads the packages of the [dependency inventory](#structured-findings)
+and each package's declared license from local files, normalizes it to an SPDX expression, and
+checks it against a policy. It runs for Maven, Gradle, Node, Python and Swift projects, takes no
+`command`, and never uses the network or runs your build tool. A `command` on a `license` check is a
+configuration error.
+
+```toml
+[checks.license]
+uses = "license"
+profiles = ["pre-push", "ci"]
+deny = ["GPL-*", "AGPL-*"]        # the default; or allow = ["Apache-2.0", "MIT"]
+exceptions = ["Classpath-exception-2.0"]
+scopes = ["runtime", "provided"]  # default: every scope
+unknown = "fail"                  # or "warn"
+```
+
+| Key | Meaning |
+|---|---|
+| `deny` | SPDX identifiers, each optionally ending in `*` for a family. The default is `["GPL-*", "AGPL-*"]`; `GPL-*` does not match `LGPL-*`. |
+| `allow` | An allowlist in the same notation. Set `allow` or `deny`, not both. |
+| `exceptions` | `WITH` exceptions that waive a denied license (default `["Classpath-exception-2.0"]`); a deny policy only. |
+| `scopes` | Inventory scopes that are checked: `runtime`, `provided`, `test`, `development`. Default: all. |
+| `unknown` | `"fail"` (default) or `"warn"`: the severity of a license Ward cannot find or recognize. |
+
+Where each ecosystem's license is read:
+
+- **Maven and Gradle:** the POM in `~/.m2/repository` or the Gradle module cache, with the license of
+  the `<parent>` POM when a POM has none.
+- **Node:** `package.json` in `node_modules` (hoisted, nested or the `.pnpm` store); the version must
+  match the lockfile's.
+- **Python:** `License-Expression`, `License` or `License ::` classifiers in the `.dist-info` of the
+  project's virtual environment (`.venv`, `venv` or `VIRTUAL_ENV`).
+- **Swift:** `Package.swift` declares no license, so Ward matches the `LICENSE` or `COPYING` file of the
+  package checkout (`.build/checkouts`) against the bundled license texts.
+
+A package that is not installed locally, or whose license Ward does not recognize, is a
+`ward:license/unknown` finding, never an allowed one: install the dependencies before the gate runs,
+or set `unknown = "warn"`. Several declared licenses are alternatives, and an `OR` expression passes
+when one choice is allowed. The findings are `ward:license/denied`, `ward:license/not-allowed` and
+`ward:license/unknown`. If the dependencies cannot be resolved the gate reports an execution error
+instead of passing. `ward init --preset strict` writes an `allow` list of Apache-2.0, MIT,
+BSD-2-Clause, BSD-3-Clause, ISC, EPL-1.0, EPL-2.0 and CC0-1.0. See also
+[`ward sbom` and `ward licenses`](/commands/sbom/).
 
 ## Traceability gate
 

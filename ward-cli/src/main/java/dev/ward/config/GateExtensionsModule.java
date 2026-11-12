@@ -10,6 +10,7 @@ import dev.ward.application.gate.ReportingGatePorts;
 import dev.ward.application.gate.SecretGates;
 import dev.ward.application.gate.VulnerabilityGates;
 import dev.ward.application.gate.openapi.OpenApiGates;
+import dev.ward.application.license.LicenseService;
 import dev.ward.domain.gate.LineCoverageReport;
 import dev.ward.infrastructure.finding.FileSystemCoverageFiles;
 
@@ -25,14 +26,16 @@ interface GateExtensionsModule {
       final OpenApiGates openApi,
       final AnalysisPorts analysis,
       final FormatGates format,
-      final ReportingGatePorts reporting) {
+      final ReportingGatePorts reporting,
+      final LicenseService license) {
     return new GateExtensions(
         openApi,
         analysis,
         format,
         reporting.secrets(),
         reporting.crap(),
-        reporting.vulnerabilities());
+        reporting.vulnerabilities(),
+        license);
   }
 
   /** Gathers the gates that read a report or the dependency inventory themselves. */

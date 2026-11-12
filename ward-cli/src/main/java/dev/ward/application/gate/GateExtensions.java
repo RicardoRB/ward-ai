@@ -1,6 +1,11 @@
 package dev.ward.application.gate;
 
 import dev.ward.application.gate.openapi.OpenApiGates;
+import dev.ward.application.license.LicenseService;
+import dev.ward.domain.config.GateConfiguration;
+import dev.ward.domain.config.LicenseSettings;
+import dev.ward.domain.config.WardException;
+import dev.ward.domain.gate.QualityGate;
 
 /**
  * The optional gate dependencies that {@code QualityGateFactory} injects beside its core ports.
@@ -13,6 +18,8 @@ import dev.ward.application.gate.openapi.OpenApiGates;
  * @param crap gives the {@code crap} gate its report readers, or {@code null} when it is
  * @param vulnerabilities builds the {@code vulnerabilities} gate, or {@code null} when it is
  *     unavailable
+ * @param license looks up the licenses of the {@code license} gate, or {@code null} when it is
+ *     unavailable
  */
 public record GateExtensions(
     OpenApiGates openApi,
@@ -20,17 +27,35 @@ public record GateExtensions(
     FormatGates format,
     SecretGates secrets,
     CrapPorts crap,
-    VulnerabilityGates vulnerabilities) {
+    VulnerabilityGates vulnerabilities,
+    LicenseService license) {
 
   /** No optional dependencies: every extension gate is reported as unavailable. */
-  public static final GateExtensions NONE = new GateExtensions(null, null, null, null, null, null);
+  public static final GateExtensions NONE =
+      new GateExtensions(null, null, null, null, null, null, null);
 
   /**
-   * Creates the extensions without the {@code secrets}, {@code crap} and {@code vulnerabilities}
-   * gates.
+   * Creates the extensions without the {@code secrets}, {@code crap}, {@code vulnerabilities} and
+   * {@code license} gates.
    */
   public GateExtensions(
       final OpenApiGates openApi, final AnalysisPorts analysis, final FormatGates format) {
-    this(openApi, analysis, format, null, null, null);
+    this(openApi, analysis, format, null, null, null, null);
+  }
+
+  /**
+   * Builds the {@code license} gate of {@code check}, with the default settings when the check sets
+   * none.
+   *
+   * @throws WardException if the license lookup is unavailable
+   */
+  public QualityGate licenseGate(final GateConfiguration check) {
+    if (license == null) {
+      throw new WardException("License gate dependencies are unavailable.");
+    }
+    return new LicenseGate(
+        check.name(),
+        license,
+        check.license() == null ? LicenseSettings.defaults() : check.license());
   }
 }

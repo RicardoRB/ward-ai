@@ -31,6 +31,7 @@ public class QualityGateFactory {
       Set.of(
           SupportedQualityGates.ANALYSIS,
           SupportedQualityGates.FORMAT,
+          SupportedQualityGates.LICENSE,
           SupportedQualityGates.SECRETS,
           SupportedQualityGates.CRAP,
           SupportedQualityGates.COVERAGE,
@@ -256,6 +257,9 @@ public class QualityGateFactory {
    * report itself.
    */
   private QualityGate inProcessGate(final GateConfiguration check, final List<String> focus) {
+    if (SupportedQualityGates.LICENSE.equals(check.type())) {
+      return extensions.licenseGate(check);
+    }
     if (REPORTING_GATES.contains(check.type())) {
       return ReportingGates.create(check, focus, executor, reports, extensions);
     }

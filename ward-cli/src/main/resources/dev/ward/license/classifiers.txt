@@ -1,0 +1,27 @@
+# Python trove classifiers ("License :: OSI Approved :: <name>" or "License :: <name>") to SPDX identifiers.
+# A classifier that names no single license, such as the bare "OSI Approved", is deliberately absent. GPL and LGPL classifiers that do not state a version are mapped to the most common one only where the classifier names it.
+Academic Free License (AFL)=AFL-3.0
+Apache Software License=Apache-2.0
+Artistic License=Artistic-2.0
+BSD License=BSD-3-Clause
+Boost Software License 1.0 (BSL-1.0)=BSL-1.0
+Creative Commons CC0 1.0 Universal (CC0 1.0) Public Domain Dedication=CC0-1.0
+Eclipse Public License 1.0 (EPL-1.0)=EPL-1.0
+Eclipse Public License 2.0 (EPL-2.0)=EPL-2.0
+GNU Affero General Public License v3=AGPL-3.0-only
+GNU Affero General Public License v3 or later (AGPLv3+)=AGPL-3.0-or-later
+GNU General Public License v2 (GPLv2)=GPL-2.0-only
+GNU General Public License v2 or later (GPLv2+)=GPL-2.0-or-later
+GNU General Public License v3 (GPLv3)=GPL-3.0-only
+GNU General Public License v3 or later (GPLv3+)=GPL-3.0-or-later
+GNU Lesser General Public License v2 (LGPLv2)=LGPL-2.0-only
+GNU Lesser General Public License v2 or later (LGPLv2+)=LGPL-2.0-or-later
+GNU Lesser General Public License v3 (LGPLv3)=LGPL-3.0-only
+GNU Lesser General Public License v3 or later (LGPLv3+)=LGPL-3.0-or-later
+ISC License (ISCL)=ISC
+MIT License=MIT
+Mozilla Public License 1.1 (MPL 1.1)=MPL-1.1
+Mozilla Public License 2.0 (MPL 2.0)=MPL-2.0
+Python Software Foundation License=PSF-2.0
+The Unlicense (Unlicense)=Unlicense
+Zlib/libpng License=Zlib

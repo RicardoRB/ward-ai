@@ -31,10 +31,8 @@ class CompatibilityCatalogTest {
   private static final Set<String> NOT_IN_MATRIX =
       Set.of(
           "sonar-maven-plugin",
-          "license-maven-plugin",
           "japicmp-maven-plugin",
           "org.sonarqube",
-          "com.github.jk1.dependency-license-report",
           "me.champeau.gradle.japicmp");
 
   @Test

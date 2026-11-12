@@ -71,6 +71,7 @@ final class SecretGateCacheTest extends SecretGateTestSupport {
             null,
             null,
             null,
+            null,
             null);
 
     final GateResult wardResult =

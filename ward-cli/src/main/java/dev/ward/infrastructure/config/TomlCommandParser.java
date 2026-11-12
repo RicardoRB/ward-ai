@@ -5,12 +5,23 @@ import dev.ward.domain.config.WardException;
 import dev.ward.domain.gate.SupportedQualityGates;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import org.tomlj.TomlArray;
 import org.tomlj.TomlTable;
 
 /** Parses the {@code command} of one {@code [checks.<name>]} table: a string or an array. */
 final class TomlCommandParser {
   private static final String COMMAND = "command";
+  private static final Set<String> COMMAND_LESS =
+      Set.of(
+          SupportedQualityGates.TRACEABILITY,
+          SupportedQualityGates.ANALYSIS,
+          SupportedQualityGates.FORMAT,
+          SupportedQualityGates.CRAP,
+          SupportedQualityGates.COVERAGE,
+          SupportedQualityGates.SECRETS,
+          SupportedQualityGates.VULNERABILITIES,
+          SupportedQualityGates.LICENSE);
 
   private TomlCommandParser() {}
 
@@ -27,13 +38,7 @@ final class TomlCommandParser {
   }
 
   private static List<String> missing(final String where, final String uses) {
-    if (SupportedQualityGates.TRACEABILITY.equals(uses)
-        || SupportedQualityGates.ANALYSIS.equals(uses)
-        || SupportedQualityGates.FORMAT.equals(uses)
-        || SupportedQualityGates.CRAP.equals(uses)
-        || SupportedQualityGates.COVERAGE.equals(uses)
-        || SupportedQualityGates.SECRETS.equals(uses)
-        || SupportedQualityGates.VULNERABILITIES.equals(uses)) {
+    if (uses != null && COMMAND_LESS.contains(uses)) {
       return List.of();
     }
     throw new WardException("'" + where + ".command' is required");

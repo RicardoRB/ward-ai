@@ -33,7 +33,6 @@ public final class GradleToolCatalog {
           row(PITEST_ENGINE, "1.17.4", JDK_8, JDK_10, "6.4"),
           row(PITEST_ENGINE, "1.30.1", JDK_11, JDK_25, "6.4"),
           row("org.sonarqube", "5.1.0.4882", JDK_11, JDK_25, ANY_GRADLE),
-          row("com.github.jk1.dependency-license-report", "3.1.4", JDK_8, JDK_25, ANY_GRADLE),
           row("me.champeau.gradle.japicmp", "0.4.6", JDK_8, JDK_25, ANY_GRADLE));
 
   private GradleToolCatalog() {}

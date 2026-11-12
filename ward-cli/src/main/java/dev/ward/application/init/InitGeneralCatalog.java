@@ -105,6 +105,14 @@ public class InitGeneralCatalog {
             "Downloads advisory data from osv.dev, and sends no project data."));
     options.add(
         new InitGateOption(
+            SupportedQualityGates.LICENSE,
+            "Checks the licenses of the resolved dependencies against a policy (native).",
+            List.of(),
+            true,
+            "Reads installed dependency metadata, so install dependencies before it runs;"
+                + " a license it cannot find is a finding."));
+    options.add(
+        new InitGateOption(
             SupportedQualityGates.TRACEABILITY,
             "Maps live OpenSpec scenarios to explicitly annotated JUnit tests (opt-in).",
             List.of(),

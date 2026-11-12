@@ -103,6 +103,7 @@ class OpenApiDiffCommandValidationTest {
                 null,
                 null,
                 null,
+                null,
                 null));
     final QualityGateFactory factory = new QualityGateFactory(new FakeCommandExecutor(0, "", ""));
 

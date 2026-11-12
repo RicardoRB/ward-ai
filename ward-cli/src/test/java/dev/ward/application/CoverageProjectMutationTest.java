@@ -66,7 +66,6 @@ class CoverageProjectMutationTest {
             "jacoco-maven-plugin",
             "pitest-maven",
             "maven-enforcer-plugin",
-            "license-maven-plugin",
             "japicmp-maven-plugin");
     assertThat(Files.readString(root.resolve("pom.xml")))
         .contains(

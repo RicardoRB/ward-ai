@@ -1,7 +1,6 @@
 package dev.ward.application.init;
 
 import dev.ward.domain.gate.SupportedQualityGates;
-import dev.ward.domain.init.FormatGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityGatePhasePolicy;
 import dev.ward.domain.init.QualityPreset;
@@ -65,8 +64,9 @@ public final class ConfigurationTemplate {
       final QualityPreset preset,
       final Project project,
       final String openSpecRoot) {
-    if (FormatGates.WARD_FORMAT.equals(gate.id())) {
-      WardFormatTemplate.append(content, QualityGatePhasePolicy.profilesFor(gate.id()));
+    if (InProcessGateTemplate.handles(gate.id())) {
+      InProcessGateTemplate.append(
+          content, gate.id(), QualityGatePhasePolicy.profilesFor(gate.id()), preset);
       partial(content, gate, project, preset);
       return;
     }
