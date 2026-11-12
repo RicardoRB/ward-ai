@@ -157,6 +157,11 @@ public record DocNode(
       Objects.requireNonNull(value, "value");
     }
 
+    /** The same entry with another value node. */
+    public Entry withValue(final DocNode other) {
+      return new Entry(key, keySpan, other, numericKey);
+    }
+
     /** An entry whose key is text, as every JSON key and every quoted YAML key is. */
     public Entry(final String key, final Span keySpan, final DocNode value) {
       this(key, keySpan, value, false);

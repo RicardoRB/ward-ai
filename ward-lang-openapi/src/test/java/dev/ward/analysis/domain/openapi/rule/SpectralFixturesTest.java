@@ -33,22 +33,39 @@ class SpectralFixturesTest {
 
   @ParameterizedTest(name = "{0}")
   @MethodSource("rules")
-  void theViolatingDocumentReportsTheMessagesOfSpectralAndThePassingOneNothing(final String name)
+  void theViolatingDocumentsReportTheMessagesOfSpectralAndThePassingOnesNothing(final String name)
       throws IOException {
     final Path directory = FIXTURES.resolve(name);
-    assertThat(
-            run(name, directory.resolve("violating.yaml")).stream()
-                .map(
-                    finding ->
-                        finding.span().startLine()
-                            + ":"
-                            + finding.span().startColumn()
-                            + "\t"
-                            + finding.message())
-                .sorted())
-        .containsExactlyElementsOf(
-            Files.readAllLines(directory.resolve("messages.txt")).stream().sorted().toList());
-    assertThat(run(name, directory.resolve("passing.yaml"))).isEmpty();
+    try (Stream<Path> files = Files.list(directory)) {
+      for (final Path file : files.sorted().toList()) {
+        final String fileName = file.getFileName().toString();
+        if (fileName.startsWith("violating")) {
+          final String suffix =
+              fileName.substring("violating".length(), fileName.length() - ".yaml".length());
+          assertThat(report(name, file))
+              .as(fileName)
+              .containsExactlyElementsOf(
+                  Files.readAllLines(directory.resolve("messages" + suffix + ".txt")).stream()
+                      .sorted()
+                      .toList());
+        } else if (fileName.startsWith("passing")) {
+          assertThat(run(name, file)).as(fileName).isEmpty();
+        }
+      }
+    }
+  }
+
+  private static List<String> report(final String name, final Path file) throws IOException {
+    return run(name, file).stream()
+        .map(
+            finding ->
+                finding.span().startLine()
+                    + ":"
+                    + finding.span().startColumn()
+                    + "\t"
+                    + finding.message())
+        .sorted()
+        .toList();
   }
 
   @Test

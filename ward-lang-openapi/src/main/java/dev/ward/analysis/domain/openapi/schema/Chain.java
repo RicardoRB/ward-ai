@@ -12,7 +12,7 @@ final class Chain {
     boolean valid = true;
     for (final BooleanSupplier step : steps) {
       valid &= step.getAsBoolean();
-      if (!valid && !validator.allErrors()) {
+      if (!valid && !validator.isAllErrors()) {
         return false;
       }
     }

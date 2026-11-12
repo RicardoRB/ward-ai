@@ -50,7 +50,8 @@ public final class DocumentSchemaMessages {
         switch (error.keyword()) {
           case ADDITIONAL -> "Property \"" + error.detail() + "\" is not expected to be here";
           case "enum" -> enumeration(error, input, property);
-          case "errorMessage" -> error.message();
+          case "errorMessage" ->
+              error.message().replace("{{property}}", property == null ? "" : property);
           default -> clean(property, error.message());
         };
     return new SchemaMessages.Message(text, path);

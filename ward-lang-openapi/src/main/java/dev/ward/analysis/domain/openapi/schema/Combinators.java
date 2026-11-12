@@ -32,7 +32,7 @@ final class Combinators {
   }
 
   private static boolean stop(final JsonSchemaValidator validator, final boolean valid) {
-    return !valid && !validator.allErrors();
+    return !valid && !validator.isAllErrors();
   }
 
   private static boolean constant(
@@ -44,7 +44,7 @@ final class Combinators {
     if (expected.isEmpty() || JsonValues.equal(expected.get(), data)) {
       return true;
     }
-    validator.errors().add(SchemaError.of("const", path, "must be equal to constant"));
+    validator.getErrors().add(SchemaError.of("const", path, "must be equal to constant"));
     return false;
   }
 
@@ -60,7 +60,7 @@ final class Combinators {
       return true;
     }
     validator
-        .errors()
+        .getErrors()
         .add(
             new SchemaError(
                 "enum",
@@ -81,7 +81,7 @@ final class Combinators {
     if (inner.isEmpty()) {
       return true;
     }
-    final int before = validator.errors().size();
+    final int before = validator.getErrors().size();
     validator.changeNotDepth(1);
     final boolean passes = validator.check(inner.get(), data, path, validator.scratch());
     validator.changeNotDepth(-1);
@@ -89,12 +89,12 @@ final class Combinators {
     if (!passes) {
       return true;
     }
-    validator.errors().add(SchemaError.of("not", path, "must NOT be valid"));
+    validator.getErrors().add(SchemaError.of("not", path, "must NOT be valid"));
     return false;
   }
 
   private static void truncate(final JsonSchemaValidator validator, final int size) {
-    final List<SchemaError> errors = validator.errors();
+    final List<SchemaError> errors = validator.getErrors();
     while (errors.size() > size) {
       errors.removeLast();
     }
@@ -110,14 +110,14 @@ final class Combinators {
     if (branches.isEmpty() || branches.get().kind() != DocNode.Kind.ARRAY) {
       return true;
     }
-    final int before = validator.errors().size();
+    final int before = validator.getErrors().size();
     boolean passed = false;
     for (final DocNode branch : branches.get().items()) {
       final Set<String> own = validator.scratch();
       if (validator.check(branch, data, path, own)) {
         passed = true;
         evaluated.addAll(own);
-        if (!validator.allErrors()) {
+        if (!validator.isAllErrors()) {
           break;
         }
       }
@@ -127,7 +127,7 @@ final class Combinators {
       return true;
     }
     validator
-        .errors()
+        .getErrors()
         .add(new SchemaError("anyOf", path, "must match a schema in anyOf", "", List.of(), true));
     return false;
   }
@@ -142,7 +142,7 @@ final class Combinators {
     if (branches.isEmpty() || branches.get().kind() != DocNode.Kind.ARRAY) {
       return true;
     }
-    final int before = validator.errors().size();
+    final int before = validator.getErrors().size();
     final List<Set<String>> passing = new ArrayList<>();
     for (final DocNode branch : branches.get().items()) {
       final Set<String> own = validator.scratch();
@@ -156,7 +156,7 @@ final class Combinators {
       return true;
     }
     validator
-        .errors()
+        .getErrors()
         .add(
             new SchemaError(
                 "oneOf",
@@ -198,7 +198,7 @@ final class Combinators {
     if (condition.isEmpty()) {
       return true;
     }
-    final int before = validator.errors().size();
+    final int before = validator.getErrors().size();
     final Set<String> own = validator.scratch();
     final boolean holds = validator.check(condition.get(), data, path, own);
     truncate(validator, before);
@@ -207,10 +207,15 @@ final class Combinators {
       evaluated.addAll(own);
     }
     final Optional<DocNode> chosen = schema.get(branch);
-    if (chosen.isEmpty() || validator.check(chosen.get(), data, path, evaluated)) {
+    if (chosen.isEmpty()) {
       return true;
     }
-    validator.errors().add(SchemaError.of("if", path, "must match \"" + branch + "\" schema"));
+    final Set<String> read = validator.scratch();
+    if (validator.check(chosen.get(), data, path, read)) {
+      evaluated.addAll(read);
+      return true;
+    }
+    validator.getErrors().add(SchemaError.of("if", path, "must match \"" + branch + "\" schema"));
     return false;
   }
 }

@@ -42,7 +42,7 @@ final class ArrayKeywords {
       return true;
     }
     validator
-        .errors()
+        .getErrors()
         .add(
             SchemaError.of(
                 keyword,
@@ -97,7 +97,7 @@ final class ArrayKeywords {
   private static boolean duplicate(
       final JsonSchemaValidator validator, final String path, final int first, final int second) {
     validator
-        .errors()
+        .getErrors()
         .add(
             SchemaError.of(
                 "uniqueItems",
@@ -135,7 +135,7 @@ final class ArrayKeywords {
         valid &=
             validator.check(
                 applicable.get(), data.items().get(index), path + "/" + index, validator.scratch());
-        if (!valid && !validator.allErrors()) {
+        if (!valid && !validator.isAllErrors()) {
           return false;
         }
       }

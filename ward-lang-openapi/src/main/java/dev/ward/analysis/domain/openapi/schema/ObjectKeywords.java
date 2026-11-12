@@ -21,6 +21,10 @@ final class ObjectKeywords {
         () -> count(validator, schema, "maxProperties", data, path),
         () -> count(validator, schema, "minProperties", data, path),
         () -> required(validator, schema, data, path),
+        () -> DependencyKeywords.dependentRequired(validator, schema, data, path),
+        () -> DependencyKeywords.dependencies(validator, schema, data, path),
+        () -> DependencyKeywords.propertyNames(validator, schema, data, path),
+        () -> DependencyKeywords.dependentSchemas(validator, schema, data, path),
         () -> PropertyKeywords.additional(validator, schema, data, path, evaluated),
         () -> PropertyKeywords.properties(validator, schema, data, path, evaluated),
         () -> PropertyKeywords.patterns(validator, schema, data, path, evaluated),
@@ -45,7 +49,7 @@ final class ObjectKeywords {
     }
     final String direction = max ? "more" : "fewer";
     validator
-        .errors()
+        .getErrors()
         .add(
             SchemaError.of(
                 keyword,
@@ -66,9 +70,9 @@ final class ObjectKeywords {
     boolean valid = true;
     for (final DocNode name : names.get().items()) {
       if (data.get(name.text()).isEmpty() && !relaxed(validator, schema, name.text())) {
-        validator.errors().add(missing(path, name.text()));
+        validator.getErrors().add(missing(path, name.text()));
         valid = false;
-        if (!validator.allErrors()) {
+        if (!validator.isAllErrors()) {
           return false;
         }
       }

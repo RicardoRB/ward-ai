@@ -23,6 +23,8 @@ public final class JsonSchemaValidator {
   private final List<SchemaError> errors = new ArrayList<>();
   private Relax relax = Relax.NONE;
   private int notDepth;
+  private boolean formats = true;
+  private final List<String> scope = new ArrayList<>();
 
   /**
    * Creates a validator.
@@ -61,6 +63,15 @@ public final class JsonSchemaValidator {
   public interface RefResolver {
     /** Returns the target of the reference held by {@code holder}, or empty when there is none. */
     Optional<DocNode> resolve(DocNode holder);
+
+    /**
+     * Returns the schema a {@code $dynamicRef} to {@code anchor} reaches: the outermost resource of
+     * the dynamic {@code scope} (the files of the schemas being checked, outermost first) that
+     * declares the {@code $dynamicAnchor}.
+     */
+    default Optional<DocNode> dynamic(final String anchor, final List<String> scope) {
+      return Optional.empty();
+    }
   }
 
   /** A reference that points nowhere. */
@@ -70,6 +81,16 @@ public final class JsonSchemaValidator {
     UnresolvedReferenceException(final String reference) {
       super("can't resolve reference " + reference);
     }
+  }
+
+  /** Makes {@code format} an annotation that is not checked; returns this validator. */
+  public JsonSchemaValidator withoutFormats() {
+    this.formats = false;
+    return this;
+  }
+
+  boolean isAssertingFormats() {
+    return formats;
   }
 
   /** Sets which properties {@code required} may leave out; returns this validator. */
@@ -106,11 +127,11 @@ public final class JsonSchemaValidator {
     return dialect;
   }
 
-  boolean allErrors() {
+  boolean isAllErrors() {
     return allErrors;
   }
 
-  List<SchemaError> errors() {
+  List<SchemaError> getErrors() {
     return errors;
   }
 
@@ -123,11 +144,7 @@ public final class JsonSchemaValidator {
   boolean check(
       final DocNode schema, final DocNode data, final String path, final Set<String> evaluated) {
     if (schema.kind() == DocNode.Kind.BOOLEAN) {
-      if (!JsonValues.isTrue(Optional.of(schema))) {
-        errors.add(SchemaError.of("false schema", path, "boolean schema is false"));
-        return false;
-      }
-      return true;
+      return booleanSchema(schema, path);
     }
     if (schema.kind() != DocNode.Kind.OBJECT) {
       return true;
@@ -138,6 +155,10 @@ public final class JsonSchemaValidator {
       return check(target(schema, reference.get()), data, path, evaluated);
     }
     final int before = errors.size();
+    final boolean entered = scope.isEmpty() || !scope.getLast().equals(schema.file());
+    if (entered) {
+      scope.add(schema.file());
+    }
     final boolean valid =
         Chain.run(
             this,
@@ -145,12 +166,40 @@ public final class JsonSchemaValidator {
             () ->
                 reference.isEmpty()
                     || check(target(schema, reference.get()), data, path, evaluated),
+            () -> dynamicRef(schema, data, path, evaluated),
             () -> Combinators.check(this, schema, data, path, evaluated),
             () -> Keywords.check(this, schema, data, path, evaluated));
     if (allErrors) {
       ErrorMessages.apply(this, schema, path, before);
     }
+    if (entered) {
+      scope.removeLast();
+    }
     return valid;
+  }
+
+  private boolean booleanSchema(final DocNode schema, final String path) {
+    if (JsonValues.isTrue(Optional.of(schema))) {
+      return true;
+    }
+    errors.add(SchemaError.of("false schema", path, "boolean schema is false"));
+    return false;
+  }
+
+  private boolean dynamicRef(
+      final DocNode schema, final DocNode data, final String path, final Set<String> evaluated) {
+    final Optional<DocNode> reference =
+        schema.get("$dynamicRef").filter(ref -> ref.text().startsWith("#"));
+    if (reference.isEmpty() || dialect != Dialect.DRAFT2020) {
+      return true;
+    }
+    final String anchor = reference.get().text().substring(1);
+    final Optional<DocNode> target = refs.dynamic(anchor, scope);
+    return check(
+        target.orElseThrow(() -> new UnresolvedReferenceException(reference.get().text())),
+        data,
+        path,
+        evaluated);
   }
 
   private DocNode target(final DocNode holder, final DocNode reference) {

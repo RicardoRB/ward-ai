@@ -1,0 +1,64 @@
+openapi: 3.1.0
+info:
+  version: 1
+  title: T
+  termsOfService: "not a uri"
+  license: {name: x, identifier: MIT, url: "https://x"}
+  extra: 1
+jsonSchemaDialect: nope
+servers:
+  - url: 5
+tags:
+  - name: a
+    externalDocs: {description: no url}
+webhooks:
+  hook:
+    post:
+      responses:
+        "200": {description: ok}
+paths:
+  /pets:
+    get:
+      operationId: 7
+      parameters:
+        - name: q
+          in: querry
+          schema: {type: string}
+        - name: both
+          in: query
+          schema: {type: string}
+          content: {application/json: {}}
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: strin
+                properties: 5
+                items: [1]
+                minimum: x
+                required: name
+                example: 1
+                discriminator: {mapping: {a: 1}}
+                xml: {name: 1, bogus: true}
+                allOf: []
+                bogus: 1
+        "99": {description: bad}
+  bad: {}
+components:
+  schemas:
+    Pet:
+      type: [object, "null"]
+      pattern: "("
+      enum: x
+      additionalProperties: 5
+      $ref: 7
+      uniqueItems: yes
+  securitySchemes:
+    k: {type: apiKey, name: k}
+    o: {type: oauth2}
+    h: {type: http}
+    d: {type: nope}
+  "bad key": {}
+unknownRoot: true

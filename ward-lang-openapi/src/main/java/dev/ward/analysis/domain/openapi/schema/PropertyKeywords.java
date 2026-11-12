@@ -26,7 +26,7 @@ final class PropertyKeywords {
       if (!declared(schema, entry.key())) {
         evaluated.add(entry.key());
         valid &= extra(validator, rule.get(), entry, path, "additionalProperties");
-        if (!valid && !validator.allErrors()) {
+        if (!valid && !validator.isAllErrors()) {
           return false;
         }
       }
@@ -46,7 +46,7 @@ final class PropertyKeywords {
           "additionalProperties".equals(keyword)
               ? "must NOT have additional properties"
               : "must NOT have unevaluated properties";
-      validator.errors().add(SchemaError.about(keyword, path, message, entry.key()));
+      validator.getErrors().add(SchemaError.about(keyword, path, message, entry.key()));
       return false;
     }
     return rule.kind() != DocNode.Kind.OBJECT
@@ -92,7 +92,7 @@ final class PropertyKeywords {
         valid &=
             validator.check(
                 property.value(), value.get(), child(path, property.key()), validator.scratch());
-        if (!valid && !validator.allErrors()) {
+        if (!valid && !validator.isAllErrors()) {
           return false;
         }
       }
@@ -118,7 +118,7 @@ final class PropertyKeywords {
           valid &=
               validator.check(
                   rule.value(), entry.value(), child(path, entry.key()), validator.scratch());
-          if (!valid && !validator.allErrors()) {
+          if (!valid && !validator.isAllErrors()) {
             return false;
           }
         }
@@ -141,7 +141,7 @@ final class PropertyKeywords {
     for (final DocNode.Entry entry : data.entries()) {
       if (evaluated.add(entry.key())) {
         valid &= extra(validator, rule.get(), entry, path, "unevaluatedProperties");
-        if (!valid && !validator.allErrors()) {
+        if (!valid && !validator.isAllErrors()) {
           return false;
         }
       }

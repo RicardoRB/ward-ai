@@ -47,7 +47,7 @@ final class NumberKeywords {
     }
     final String comparison = (upper ? "<" : ">") + (exclusive ? "" : "=");
     validator
-        .errors()
+        .getErrors()
         .add(SchemaError.of(keyword, path, "must be " + comparison + " " + JsonValues.show(bound)));
     return false;
   }
@@ -85,7 +85,7 @@ final class NumberKeywords {
       return true;
     }
     validator
-        .errors()
+        .getErrors()
         .add(SchemaError.of("multipleOf", path, "must be multiple of " + JsonValues.show(divisor)));
     return false;
   }

@@ -37,6 +37,11 @@ final class ExampleChecks {
     if (cyclic(schema, Collections.newSetFromMap(new IdentityHashMap<>()))) {
       return;
     }
+    final Optional<String> problem = new SchemaProblems(document).of(schema);
+    if (problem.isPresent()) {
+      findings.add(Findings.atValue(value, problem.get()));
+      return;
+    }
     final JsonSchemaValidator validator =
         new JsonSchemaValidator(
                 document.isVersion31() ? Dialect.DRAFT2020 : Dialect.DRAFT4,

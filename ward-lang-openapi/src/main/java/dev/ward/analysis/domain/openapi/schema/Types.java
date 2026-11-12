@@ -29,7 +29,7 @@ final class Types {
     if (JsonValues.isTrue(schema.get("nullable")) && !shown.contains("null")) {
       shown.add("null");
     }
-    validator.errors().add(SchemaError.of("type", path, "must be " + String.join(",", shown)));
+    validator.getErrors().add(SchemaError.of("type", path, "must be " + String.join(",", shown)));
     return false;
   }
 

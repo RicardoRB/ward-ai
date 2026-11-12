@@ -18,15 +18,12 @@ final class DocumentSchemaRules {
 
   private DocumentSchemaRules() {}
 
-  /** Validates the entry file against the bundled schema of OpenAPI 3.0. */
+  /** Validates the entry file against the bundled schema of its OpenAPI version. */
   static List<OpenApiFinding> oas3Schema(final OpenApiDocument document) {
     final List<OpenApiFinding> findings = new ArrayList<>();
-    if (document.isVersion31()) {
-      return findings;
-    }
-    final DocNode schema = BundledSchemas.oas30();
+    final DocNode schema = document.isVersion31() ? BundledSchemas.oas31() : BundledSchemas.oas30();
     final List<SchemaError> errors =
-        new JsonSchemaValidator(Dialect.DRAFT2020, true, BundledSchemas.localRefs(schema))
+        new JsonSchemaValidator(Dialect.DRAFT2020, true, BundledSchemas.resolver())
             .validate(schema, document.root());
     for (final SchemaMessages.Message message :
         DocumentSchemaMessages.format(errors, document.root())) {

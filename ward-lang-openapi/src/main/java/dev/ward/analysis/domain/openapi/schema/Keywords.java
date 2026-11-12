@@ -58,7 +58,7 @@ final class Keywords {
       return true;
     }
     validator
-        .errors()
+        .getErrors()
         .add(
             SchemaError.of(
                 keyword,
@@ -88,7 +88,7 @@ final class Keywords {
       return true;
     }
     validator
-        .errors()
+        .getErrors()
         .add(
             SchemaError.of(
                 "pattern", path, "must match pattern \"" + expression.get().text() + "\""));
@@ -102,12 +102,13 @@ final class Keywords {
       final String path) {
     final Optional<DocNode> format = schema.get("format");
     if (format.isEmpty()
+        || !validator.isAssertingFormats()
         || format.get().kind() != DocNode.Kind.STRING
         || Formats.valid(format.get().text(), text)) {
       return true;
     }
     validator
-        .errors()
+        .getErrors()
         .add(SchemaError.of("format", path, "must match format \"" + format.get().text() + "\""));
     return false;
   }
