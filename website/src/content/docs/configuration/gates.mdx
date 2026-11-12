@@ -30,8 +30,8 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | Dependencies & Compliance | `license` | License Maven Plugin / Gradle License Report (`checkLicense`) | Dependency license policy. |
 | | `api-compat` | japicmp | Binary/API compatibility between versions. |
 | REST API contract | `openapi-lint` | vacuum | Lint the committed OpenAPI spec with every built-in rule. |
-| | `openapi-diff` | oasdiff | Breaking changes in uncommitted spec edits. |
-| | `openapi-compat` | oasdiff | Breaking changes on the branch against `origin/main`. |
+| | `openapi-diff` | Ward breaking-change rules | Breaking changes in uncommitted spec edits. |
+| | `openapi-compat` | Ward breaking-change rules | Breaking changes on the branch against `origin/main`. |
 | TypeScript & JavaScript | `tsc` | TypeScript compiler | Type-check the project. |
 | | `vitest` / `jest` / `bun-test` | Vitest / Jest / Bun test | Run the project's automated tests. |
 | | `stryker` | StrykerJS | Run mutation testing, optionally with a `minimum` score. |
@@ -112,7 +112,7 @@ the Groovy or the Kotlin build script. See [what init changes](/commands/init/#w
 
 ## Standalone tools
 
-`semgrep`, `gitleaks`, `trivy`, `zap-baseline.py`, `vacuum`, and `oasdiff` must already be on the path.
+`semgrep`, `gitleaks`, `trivy`, `zap-baseline.py`, and `vacuum` must already be on the path.
 
 - A missing tool is reported as unavailable with an install link, and other gates still run.
 - `ward init` can install supported tools with your consent; `check` never installs them.
@@ -780,8 +780,9 @@ Applications shipped as binaries, such as CLIs, have no Java API consumers and s
 ## OpenAPI contract gates
 
 `openapi-lint`, `openapi-diff`, and `openapi-compat` check a committed (contract-first) OpenAPI
-spec. Each one needs a `spec` option with the project-relative path of that file. Ward appends the
-spec to the command, so the command names only the tool and its flags:
+spec. Each one needs a `spec` option with the project-relative path of that file. `openapi-lint`
+runs `vacuum`: Ward appends the spec to the command, so the command names only the tool and its
+flags. `openapi-diff` and `openapi-compat` run inside Ward and take no `command`:
 
 ```toml
 [checks.openapi-lint]
@@ -790,19 +791,32 @@ command = ["vacuum", "lint", "-z", "-n", "warn"]
 spec = "src/main/resources/openapi.yml"
 
 [checks.openapi-diff]
+uses = "openapi-diff"
 profiles = ["default", "pre-commit"]
-command = ["oasdiff", "breaking", "--fail-on", "ERR"]
 spec = "src/main/resources/openapi.yml"
 
 [checks.openapi-compat]
+uses = "openapi-compat"
 profiles = ["pre-push", "ci"]
-command = ["oasdiff", "breaking", "--fail-on", "ERR"]
 spec = "src/main/resources/openapi.yml"
 base = "origin/main" # the default
 ```
 
-`vacuum` and `oasdiff` must be on the path; a missing tool makes the gate unavailable. The flags
-and behavior below were verified with vacuum 0.35.1 and oasdiff 1.34.1.
+`vacuum` must be on the path for `openapi-lint`; a missing tool makes that gate unavailable. The
+comparison needs no tool. A `command` on `openapi-diff` or `openapi-compat` is a configuration
+error (exit `2`).
+
+### Breaking-change rules
+
+The two comparison gates load the spec at the baseline and in the working tree, follow the `$ref`s
+of each (the baseline's at its own commit), and run the breaking-change rules
+`ward:openapi/<check id>`: one per error-level check of oasdiff 1.37.0, with the same ids. A finding
+points at the changed node in the working-tree file. The gate fails on any finding. A spec that
+cannot be parsed, a `$ref` that cannot be resolved, a referenced file that is missing at the
+baseline, or a Git read failure is an execution error, never a pass. `oasdiff` is not used and
+`.oasdiff.*` files or `OASDIFF_CONFIG` change nothing. The rules cover OpenAPI 3.0 and 3.1; the
+list is in the OpenAPI rule reference. Sunset dates are judged against today, with no minimum
+deprecation period.
 
 ### Baselines
 
@@ -830,19 +844,15 @@ These gates accept no way to silence a rule, in any profile:
   `-x`, `-m`, `-t` and their long forms, `--no-clip`, `--abs-paths`, `--pipeline-output`,
   `--github-annotations`, `--no-update-check`, and `--min-score`. Rulesets (`-r`), ignore files,
   and `--config` are rejected, because a ruleset can lower a rule's severity even in hard mode.
-- `openapi-diff` and `openapi-compat` require `--fail-on ERR` or `--fail-on WARN`, and accept only
-  `--format`, `--color`, `--lang`, `--flatten-allof`, `--flatten-params`, and
-  `--include-path-params`. Ignore files, path and extension filters, `--config`, `--open` (which
-  uploads the comparison), and `--fetch` are rejected.
+- `openapi-diff` and `openapi-compat` have no flags and no ignore file: every breaking change the
+  rules find fails the gate.
 
-Any other flag, a repeated flag, or a spec path in the command is a configuration error (exit `2`)
-that names the argument.
+Any other `openapi-lint` flag, a repeated flag, or a spec path in the command is a configuration
+error (exit `2`) that names the argument.
 
 Before running, the gates also fail when:
 
-- the project root contains a file the tool loads on its own: `vacuum.conf.yaml`, `.oasdiff.yaml`,
-  `.oasdiff.yml`, or `.oasdiff.json`;
-- `OASDIFF_CONFIG` is set;
+- the project root contains the file `vacuum` loads on its own: `vacuum.conf.yaml`;
 - the spec contains `x-lint-ignore`.
 
 ## Dependency scanning credentials

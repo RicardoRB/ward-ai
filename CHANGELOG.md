@@ -8,6 +8,14 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Added
+
+- Native OpenAPI breaking-change rules `ward:openapi/<check id>`, one for each error-level check of oasdiff 1.37.0 that Ward can evaluate (346 of 359; the others are listed as not applicable in the rule catalog with their reason). Each has a base and revision fixture whose result a real oasdiff run confirmed; the opt-in `OasdiffParitySmokeTest` and the `oasdiff-parity` CI job keep them in step (#523).
+
+### Changed
+
+- **Breaking (alpha, no migration):** `openapi-diff` and `openapi-compat` compare the spec with Ward's own rules instead of running `oasdiff`. A `command` on either gate is now a configuration error (exit `2`); remove it. Init no longer offers or installs oasdiff, `ward doctor` no longer looks for it, and `.oasdiff.*` files and `OASDIFF_CONFIG` are ignored. A spec, reference or Git read failure at either side of the comparison is an execution error (#523).
+
 ## [0.7.0] - 2026-11-11
 
 ### Added

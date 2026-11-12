@@ -13,9 +13,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 class OpenApiCommandValidationTest {
   private static final String LINT = "openapi-lint";
-  private static final String DIFF = "openapi-diff";
   private static final String VACUUM = "vacuum";
-  private static final String OASDIFF = "oasdiff";
 
   private static List<String> lint(final String... flags) {
     return command(VACUUM, "lint", flags);
@@ -86,7 +84,5 @@ class OpenApiCommandValidationTest {
   void rejectsWrongSubcommand() {
     assertThatThrownBy(() -> OpenApiCommandValidation.require(LINT, List.of(VACUUM, "report")))
         .hasMessageContaining("must run the 'lint' subcommand");
-    assertThatThrownBy(() -> OpenApiCommandValidation.require(DIFF, List.of(OASDIFF)))
-        .hasMessageContaining("must run the 'breaking' subcommand");
   }
 }

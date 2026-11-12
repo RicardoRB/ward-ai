@@ -151,11 +151,12 @@ order:
      `openapi.yml`, `openapi.yaml`, or `openapi.json` in `src/main/resources` or the project root.
      When one is found, the `standard` and `strict` presets include `openapi-lint` and
      `openapi-diff` (`strict` also `openapi-compat`), so recommend the preset as usual and say that
-     it adds them. Their tools are `vacuum` (`openapi-lint`) and `oasdiff` (`openapi-diff`,
-     `openapi-compat`). If a tool is missing, its `install` line (for example `brew install vacuum`)
-     is the recommended step, asked in step 5 like any other gate. CI installs both tools pinned.
-     They allow no exceptions: `openapi-lint` runs every built-in vacuum rule, and the gates fail on
-     `vacuum.conf.yaml`, `.oasdiff.*` files, or `x-lint-ignore` in the spec. Say so before
+     it adds them. `openapi-lint` runs `vacuum`; `openapi-diff` and `openapi-compat` compare the spec
+     with Ward's own breaking-change rules, need no tool and take no `command`. If vacuum is missing,
+     its `install` line (for example `brew install vacuum`) is the recommended step, asked in step 5
+     like any other gate. CI installs vacuum pinned. They allow no exceptions: `openapi-lint` runs
+     every built-in vacuum rule, and the gates fail on `vacuum.conf.yaml` or `x-lint-ignore` in the
+     spec. Say so before
      recommending them on a spec that has never been linted. `openapi-compat` compares with
      `origin/main`, and the CI workflow fetches full history for it.
      A project whose framework serves HTTP, as `ward detect` reports it (Spring Boot, Quarkus,

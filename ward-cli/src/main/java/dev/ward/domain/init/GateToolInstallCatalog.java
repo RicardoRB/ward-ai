@@ -31,12 +31,7 @@ public final class GateToolInstallCatalog {
               entry(
                   "vacuum",
                   "https://quobix.com/vacuum/installing/",
-                  method("brew", "install", "vacuum")),
-          "oasdiff",
-              entry(
-                  "oasdiff",
-                  "https://github.com/oasdiff/oasdiff#installation",
-                  method("brew", "install", "oasdiff")));
+                  method("brew", "install", "vacuum")));
 
   private GateToolInstallCatalog() {}
 

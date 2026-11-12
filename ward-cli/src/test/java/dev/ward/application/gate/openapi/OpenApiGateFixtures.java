@@ -3,7 +3,6 @@ package dev.ward.application.gate.openapi;
 import dev.ward.domain.FakeCommandExecutor;
 import dev.ward.domain.config.GateConfiguration;
 import dev.ward.domain.config.OpenApiGateOptions;
-import dev.ward.domain.doctor.EnvironmentFacts;
 import dev.ward.domain.gate.ProjectFiles;
 import dev.ward.domain.gate.QualityGate;
 import dev.ward.domain.gate.RevisionFiles;
@@ -12,7 +11,12 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -29,20 +33,36 @@ final class OpenApiGateFixtures {
   static final Project PROJECT =
       new Project(Path.of("/project"), Language.JAVA, BuildTool.MAVEN, Framework.SPRING_BOOT);
   static final List<String> LINT_COMMAND = List.of("vacuum", "lint", "-z", "-n", "warn");
-  static final List<String> DIFF_COMMAND = List.of("oasdiff", "breaking", "--fail-on", "ERR");
+  static final List<String> NO_COMMAND = List.of();
+  static final Clock CLOCK = Clock.fixed(Instant.parse("2026-11-12T00:00:00Z"), ZoneOffset.UTC);
+  static final String DOCUMENT =
+      """
+      openapi: 3.0.3
+      info: {title: t, version: '1'}
+      paths:
+        /pets:
+          get:
+            responses:
+              '200': {description: ok}
+          post:
+            responses:
+              '200': {description: ok}
+      """;
 
   final Map<String, String> revisions = new HashMap<>();
   final Set<String> committedFiles = new HashSet<>();
   final Map<String, String> workingTree = new HashMap<>();
-  final Map<String, String> environment = new HashMap<>();
+  final Map<String, String> committedContents = new HashMap<>();
+  boolean unreadable;
   Optional<String> mergeBase = Optional.empty();
 
   /** A working tree containing the spec, committed at {@code HEAD}. */
   static OpenApiGateFixtures committedSpec() {
     final OpenApiGateFixtures fixtures = new OpenApiGateFixtures();
-    fixtures.workingTree.put(SPEC, "openapi: 3.0.3\n");
+    fixtures.workingTree.put(SPEC, DOCUMENT);
     fixtures.revisions.put("HEAD", HEAD_SHA);
     fixtures.committedFiles.add(HEAD_SHA + ":" + SPEC);
+    fixtures.committedContents.put(HEAD_SHA + ":" + SPEC, DOCUMENT);
     return fixtures;
   }
 
@@ -77,7 +97,6 @@ final class OpenApiGateFixtures {
   OpenApiGates gates(final CommandExecutor executor) {
     return new OpenApiGates(
         executor,
-        root -> new EnvironmentFacts(Set.of(), environment),
         new RevisionFiles() {
           @Override
           public Optional<String> resolve(final Path root, final String revision) {
@@ -97,7 +116,10 @@ final class OpenApiGateFixtures {
 
           @Override
           public Optional<String> read(final Path root, final String commit, final String path) {
-            return Optional.empty();
+            if (unreadable) {
+              throw new UncheckedIOException(new IOException("git failed"));
+            }
+            return Optional.ofNullable(committedContents.get(commit + ":" + path));
           }
         },
         new ProjectFiles() {
@@ -110,6 +132,12 @@ final class OpenApiGateFixtures {
           public boolean contains(final Path root, final String path, final String text) {
             return workingTree.getOrDefault(path, "").contains(text);
           }
-        });
+
+          @Override
+          public Optional<String> read(final Path root, final String path) {
+            return Optional.ofNullable(workingTree.get(path));
+          }
+        },
+        CLOCK);
   }
 }

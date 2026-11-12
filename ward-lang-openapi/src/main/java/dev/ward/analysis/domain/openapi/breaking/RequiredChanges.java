@@ -17,7 +17,7 @@ final class RequiredChanges {
     }
     final List<SchemaChange> changes = added(base, revision);
     if (!sides.revision().isVersion31()) {
-      changes.addAll(writable(base, revision));
+      changes.addAll(AccessChanges.writable(base, revision));
     }
     return changes;
   }
@@ -41,55 +41,33 @@ final class RequiredChanges {
     final List<SchemaChange> changes = new ArrayList<>();
     for (final DocNode name : required(base)) {
       if (!listed(revision, name.text())) {
-        final String kind =
-            hasProperty(revision, name.text()) ? "became-optional" : "required-removed";
-        changes.add(new SchemaChange(kind, revision));
+        final boolean kept = hasProperty(revision, name.text());
+        if (kept) {
+          changes.add(new SchemaChange("became-optional", revision));
+        } else if (!deprecated(base, name.text())) {
+          changes.add(new SchemaChange("required-removed", revision));
+        }
       }
     }
-    changes.addAll(writeOnly(base, revision));
+    changes.addAll(AccessChanges.writeOnly(base, revision));
     return changes;
   }
 
-  /** The required properties of the revision that a request now has to send. */
-  private static List<SchemaChange> writable(final DocNode base, final DocNode revision) {
-    final List<SchemaChange> changes = new ArrayList<>();
-    for (final DocNode name : required(revision)) {
-      if (flag(base, name.text(), "readOnly") && !flag(revision, name.text(), "readOnly")) {
-        changes.add(
-            new SchemaChange("became-not-read-only", revision.get("properties").orElse(revision)));
-      }
-    }
-    return changes;
-  }
-
-  /** The required properties of the revision that stopped being readable. */
-  private static List<SchemaChange> writeOnly(final DocNode base, final DocNode revision) {
-    final List<SchemaChange> changes = new ArrayList<>();
-    for (final DocNode name : required(revision)) {
-      final boolean was = flag(base, name.text(), "writeOnly");
-      if (!was && flag(revision, name.text(), "writeOnly")) {
-        changes.add(
-            new SchemaChange("became-write-only", revision.get("properties").orElse(revision)));
-      }
-    }
-    return changes;
-  }
-
-  private static boolean flag(final DocNode schema, final String property, final String flag) {
-    return schema
-        .get("properties")
-        .flatMap(properties -> properties.get(property))
-        .flatMap(node -> node.get(flag))
-        .filter(node -> "true".equals(node.text()))
-        .isPresent();
-  }
-
-  private static List<DocNode> required(final DocNode schema) {
+  static List<DocNode> required(final DocNode schema) {
     return schema.get("required").map(DocNode::items).orElse(List.of());
   }
 
   private static boolean listed(final DocNode schema, final String name) {
     return required(schema).stream().anyMatch(item -> item.text().equals(name));
+  }
+
+  /** A property removed after being deprecated is the sunset rules' business, not this one's. */
+  private static boolean deprecated(final DocNode schema, final String name) {
+    return schema
+        .get("properties")
+        .flatMap(properties -> properties.get(name))
+        .filter(Lifecycle::deprecated)
+        .isPresent();
   }
 
   private static boolean hasDefault(final DocNode schema, final String name) {

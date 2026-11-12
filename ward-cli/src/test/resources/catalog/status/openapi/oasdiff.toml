@@ -2,8 +2,8 @@
 
 api-deprecated-sunset-missing = "not-applicable"
 api-deprecated-sunset-parse = "implemented"
-api-global-security-removed = { status = "planned", issue = "#523" }
-api-global-security-scope-added = { status = "planned", issue = "#523" }
+api-global-security-removed = "not-applicable"
+api-global-security-scope-added = "not-applicable"
 api-invalid-stability-level = "implemented"
 api-path-removed-before-sunset = "implemented"
 api-path-removed-without-deprecation = "implemented"
@@ -85,7 +85,7 @@ request-body-type-changed = "implemented"
 request-body-unevaluated-items-added = "implemented"
 request-body-unevaluated-properties-added = "implemented"
 request-body-unique-items-set = "implemented"
-request-body-wrapped-in-one-of = { status = "planned", issue = "#523" }
+request-body-wrapped-in-one-of = "not-applicable"
 request-header-property-became-enum = "implemented"
 request-header-property-became-required = "implemented"
 request-parameter-became-enum = "implemented"
@@ -254,7 +254,7 @@ response-body-type-generalized = "implemented"
 response-body-unevaluated-items-removed = "implemented"
 response-body-unevaluated-properties-removed = "implemented"
 response-body-unique-items-unset = "implemented"
-response-body-wrapped-in-one-of = { status = "planned", issue = "#523" }
+response-body-wrapped-in-one-of = "not-applicable"
 response-header-became-nullable = "implemented"
 response-header-became-optional = "implemented"
 response-header-exclusive-max-increased = "implemented"

@@ -16,6 +16,10 @@ final class TomlCommandParser {
 
   /** Returns the command; an empty command is allowed only for a traceability or analysis check. */
   static List<String> parse(final String where, final TomlTable gate, final String uses) {
+    if (SupportedQualityGates.OPENAPI_DIFF.equals(uses)
+        || SupportedQualityGates.OPENAPI_COMPAT.equals(uses)) {
+      return nativeComparison(where, gate, uses);
+    }
     if (!gate.contains(COMMAND)) {
       return missing(where, uses);
     }
@@ -24,6 +28,20 @@ final class TomlCommandParser {
       throw new WardException("'" + where + ".command' must not be empty");
     }
     return command;
+  }
+
+  /** The comparison runs inside Ward, so a command has nothing to run. */
+  private static List<String> nativeComparison(
+      final String where, final TomlTable gate, final String uses) {
+    if (gate.contains(COMMAND)) {
+      throw new WardException(
+          "'"
+              + where
+              + ".command' is not allowed for "
+              + uses
+              + ": Ward compares the spec itself. Remove 'command'.");
+    }
+    return List.of();
   }
 
   private static List<String> missing(final String where, final String uses) {

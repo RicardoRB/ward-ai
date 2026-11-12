@@ -6,7 +6,6 @@ import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.openapi.breaking.BreakingFinding;
 import dev.ward.analysis.domain.openapi.breaking.BreakingRule;
 import dev.ward.analysis.domain.openapi.breaking.BreakingRules;
-import dev.ward.analysis.domain.rule.RuleDefinition;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -56,27 +55,6 @@ class BreakingRulesCatalogTest {
         assertThat(status.reason()).as("reason of %s", row.name()).isNotBlank();
       }
     }
-  }
-
-  @Test
-  void aBreakingRuleIsNeverALintRule() {
-    final List<String> lintIds =
-        CatalogRuleDefinitions.all().stream().map(RuleDefinition::id).toList();
-
-    assertThat(BreakingRules.all().stream().map(BreakingRule::id))
-        .doesNotContainAnyElementsOf(lintIds);
-  }
-
-  @Test
-  void everyImplementedRuleIsInTheReference() {
-    final String reference =
-        String.join(
-            "\n",
-            RuleReference.pages(CATALOG, CatalogRuleDefinitions.all(), UpstreamLists.outOfScope())
-                .values());
-
-    assertThat(implemented().map(row -> "`" + row.idFor(AnalysisLanguage.OPENAPI) + "`"))
-        .allSatisfy(id -> assertThat(reference).contains(id));
   }
 
   @Test

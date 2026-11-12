@@ -14,11 +14,13 @@ oasdiff = ["api-deprecated-sunset-parse"]
 [[rule]]
 name = "api-global-security-removed"
 category = "correctness"
+not-applicable = { openapi = "oasdiff 1.37.0 does not report it for any document shape tried (a root security requirement removed with and without operations, with operations overriding it, as a combined or replaced requirement)" }
 oasdiff = ["api-global-security-removed"]
 
 [[rule]]
 name = "api-global-security-scope-added"
 category = "correctness"
+not-applicable = { openapi = "oasdiff 1.37.0 does not report it for any document shape tried (a scope added to a root requirement with and without operations, combined with another scheme, overridden by operations)" }
 oasdiff = ["api-global-security-scope-added"]
 
 [[rule]]
@@ -430,6 +432,7 @@ oasdiff = ["request-body-unique-items-set"]
 [[rule]]
 name = "request-body-wrapped-in-one-of"
 category = "correctness"
+not-applicable = { openapi = "oasdiff 1.37.0 does not report it for any document shape tried (a schema wrapped in a oneOf alone, with other members, as a reference, in OpenAPI 3.0 and 3.1, or replaced by another member (only the warning original-preserved check fires))" }
 oasdiff = ["request-body-wrapped-in-one-of"]
 
 [[rule]]
@@ -1280,6 +1283,7 @@ oasdiff = ["response-body-unique-items-unset"]
 [[rule]]
 name = "response-body-wrapped-in-one-of"
 category = "correctness"
+not-applicable = { openapi = "oasdiff 1.37.0 does not report it for any document shape tried (the same shapes as for the request body)" }
 oasdiff = ["response-body-wrapped-in-one-of"]
 
 [[rule]]

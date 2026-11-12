@@ -58,8 +58,7 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
           "gitleaks",
           "semgrep",
           "zap-baseline.py",
-          "vacuum",
-          "oasdiff");
+          "vacuum");
   private static final List<String> OPENAPI_SPECS =
       List.of(
           "src/main/resources/openapi.yml",
@@ -106,7 +105,6 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
     final Map<String, String> observed = new HashMap<>(values);
     observed.put("NVD_API_KEY", Boolean.toString(isSet("NVD_API_KEY")));
     observed.put("OSS_INDEX_PASSWORD", Boolean.toString(isSet("OSS_INDEX_PASSWORD")));
-    observed.put("OASDIFF_CONFIG", Boolean.toString(isSet("OASDIFF_CONFIG")));
     observed.putAll(AndroidEnvironmentFacts.read(projectRoot));
     observed.put(
         "typescriptResolvable", Boolean.toString(TypeScriptPackages.resolvable(projectRoot)));

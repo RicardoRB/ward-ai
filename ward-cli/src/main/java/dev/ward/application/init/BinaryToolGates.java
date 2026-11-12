@@ -26,7 +26,6 @@ record BinaryToolGates(EnvironmentInspection environment, Project project) {
 
   /** The contract gates, offered only for a Git-tracked OpenAPI spec they can check. */
   private List<InitGateOption> openApiGates(final String spec) {
-    final List<String> diff = List.of("oasdiff", "breaking", "--fail-on", "ERR");
     return List.of(
         withSettings(
             option(
@@ -36,19 +35,21 @@ record BinaryToolGates(EnvironmentInspection environment, Project project) {
                 "Install vacuum."),
             Map.of(SPEC, spec)),
         withSettings(
-            option(
+            nativeOption(
                 SupportedQualityGates.OPENAPI_DIFF,
-                "Reports breaking changes in uncommitted OpenAPI spec edits with oasdiff.",
-                diff,
-                "Install oasdiff."),
+                "Reports breaking changes in uncommitted OpenAPI spec edits."),
             Map.of(SPEC, spec)),
         withSettings(
-            option(
+            nativeOption(
                 SupportedQualityGates.OPENAPI_COMPAT,
-                "Reports breaking OpenAPI changes on the branch against origin/main with oasdiff.",
-                diff,
-                "Install oasdiff, and fetch origin/main before checking."),
+                "Reports breaking OpenAPI changes on the branch against origin/main."),
             orderedSettings(spec)));
+  }
+
+  /** A gate Ward runs itself: always available, with no command. */
+  private static InitGateOption nativeOption(final String id, final String description) {
+    return new InitGateOption(
+        id, description, List.of(), true, "Runs inside Ward; nothing to install.");
   }
 
   private static Map<String, String> orderedSettings(final String spec) {

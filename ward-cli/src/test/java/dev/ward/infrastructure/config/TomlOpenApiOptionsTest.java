@@ -39,8 +39,7 @@ class TomlOpenApiOptionsTest {
         read(
             reader,
             dir,
-            "version = 2\n[checks.openapi-compat]\nuses = \"openapi-compat\"\ncommand = \"oasdiff breaking --fail-on"
-                + " ERR\"\nspec = \"openapi.yaml\"\nbase = \"upstream/develop\"\n");
+            "version = 2\n[checks.openapi-compat]\nuses = \"openapi-compat\"\nspec = \"openapi.yaml\"\nbase = \"upstream/develop\"\n");
 
     assertThat(configuration.checks().get("openapi-compat").openApi().base())
         .isEqualTo("upstream/develop");
@@ -50,11 +49,7 @@ class TomlOpenApiOptionsTest {
   void rejectsEnabledOpenApiGateWithoutSpec() {
     assertThatThrownBy(
             () ->
-                read(
-                    reader,
-                    dir,
-                    "version = 2\n[checks.openapi-diff]\nuses = \"openapi-diff\"\n"
-                        + "command = \"oasdiff breaking --fail-on ERR\"\n"))
+                read(reader, dir, "version = 2\n[checks.openapi-diff]\nuses = \"openapi-diff\"\n"))
         .isInstanceOf(WardException.class)
         .hasMessageContaining("checks.openapi-diff.spec");
   }
@@ -65,7 +60,7 @@ class TomlOpenApiOptionsTest {
         read(
             reader,
             dir,
-            "version = 2\n[checks.openapi-diff]\nuses = \"openapi-diff\"\nenabled = false\ncommand = \"oasdiff\"\n");
+            "version = 2\n[checks.openapi-diff]\nuses = \"openapi-diff\"\nenabled = false\n");
 
     assertThat(configuration.checks().get("openapi-diff").openApi()).isNull();
   }
@@ -86,7 +81,7 @@ class TomlOpenApiOptionsTest {
                 read(
                     reader,
                     dir,
-                    "version = 2\n[checks.openapi-compat]\nuses = \"openapi-compat\"\ncommand = \"oasdiff\"\n"
+                    "version = 2\n[checks.openapi-compat]\nuses = \"openapi-compat\"\n"
                         + "spec = \"openapi.yml\"\nbase = \" \"\n"))
         .isInstanceOf(WardException.class)
         .hasMessageContaining("checks.openapi-compat.base");

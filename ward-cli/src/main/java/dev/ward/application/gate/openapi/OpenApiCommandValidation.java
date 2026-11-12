@@ -1,7 +1,6 @@
 package dev.ward.application.gate.openapi;
 
 import dev.ward.domain.config.WardException;
-import dev.ward.domain.gate.SupportedQualityGates;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -10,17 +9,13 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
- * Accepts only allowed flags on OpenAPI gate commands, so no flag, ruleset, or ignore file can
- * silence a rule.
+ * Accepts only allowed flags on the {@code openapi-lint} command, so no flag, ruleset, or ignore
+ * file can silence a rule.
  */
 public final class OpenApiCommandValidation {
   private static final String HARD_MODE = "--hard-mode";
   private static final String FAIL_SEVERITY = "--fail-severity";
-  private static final String FAIL_ON = "--fail-on";
   private static final String MIN_SCORE = "--min-score";
-  private static final String FORMAT = "--format";
-  private static final String COLOR = "--color";
-  private static final String LANG = "--lang";
 
   private static final Policy LINT =
       new Policy(
@@ -61,41 +56,6 @@ public final class OpenApiCommandValidation {
               new Requirement(HARD_MODE, "requires -z (--hard-mode) so every built-in rule runs"),
               new Requirement(FAIL_SEVERITY, "requires --fail-severity warn, info, or hint")));
 
-  private static final Policy DIFF =
-      new Policy(
-          "breaking",
-          Map.ofEntries(
-              Map.entry("-o", FAIL_ON),
-              Map.entry(FAIL_ON, FAIL_ON),
-              Map.entry("-f", FORMAT),
-              Map.entry(FORMAT, FORMAT),
-              Map.entry(COLOR, COLOR),
-              Map.entry("-l", LANG),
-              Map.entry(LANG, LANG),
-              Map.entry("--flatten-allof", "--flatten-allof"),
-              Map.entry("--flatten-params", "--flatten-params"),
-              Map.entry("--include-path-params", "--include-path-params")),
-          Map.of(
-              FAIL_ON,
-              Set.of("ERR", "WARN")::contains,
-              FORMAT,
-              Set.of(
-                      "githubactions",
-                      "html",
-                      "json",
-                      "junit",
-                      "markdown",
-                      "markup",
-                      "singleline",
-                      "text",
-                      "yaml")
-                  ::contains,
-              COLOR,
-              Set.of("auto", "always", "never")::contains,
-              LANG,
-              Set.of("en", "ru", "pt-br", "es")::contains),
-          List.of(new Requirement(FAIL_ON, "requires --fail-on ERR or --fail-on WARN")));
-
   private OpenApiCommandValidation() {}
 
   /**
@@ -105,7 +65,7 @@ public final class OpenApiCommandValidation {
    *     misses a required one
    */
   public static void require(final String gate, final List<String> command) {
-    final Policy policy = SupportedQualityGates.OPENAPI_LINT.equals(gate) ? LINT : DIFF;
+    final Policy policy = LINT;
     if (command.size() < 2 || !policy.subcommand().equals(command.get(1))) {
       throw error(gate, "must run the '" + policy.subcommand() + "' subcommand");
     }

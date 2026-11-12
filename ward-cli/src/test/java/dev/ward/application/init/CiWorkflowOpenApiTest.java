@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 class CiWorkflowOpenApiTest {
   @Test
-  void openApiGatesInstallPinnedVacuumAndOasdiff() {
+  void openApiGatesInstallOnlyPinnedVacuum() {
     final String body =
         CiWorkflowTemplate.render(
                 "github",
@@ -16,10 +16,7 @@ class CiWorkflowOpenApiTest {
             .body();
 
     assertThat(body)
-        .contains(
-            "releases/download/v0.36.1/vacuum_0.36.1_linux_x86_64.tar.gz",
-            "releases/download/v1.35.0/oasdiff_1.35.0_linux_amd64.tar.gz",
-            "fetch-depth: 0")
-        .doesNotContain("gitleaks", "trivy");
+        .contains("releases/download/v0.36.1/vacuum_0.36.1_linux_x86_64.tar.gz", "fetch-depth: 0")
+        .doesNotContain("gitleaks", "trivy", "oasdiff");
   }
 }
