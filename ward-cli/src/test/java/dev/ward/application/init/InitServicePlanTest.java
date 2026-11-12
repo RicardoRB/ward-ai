@@ -26,7 +26,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
@@ -126,13 +125,7 @@ class InitServicePlanTest {
         new ProjectDetector(new FileSystemProjectInspection()),
         Set.of(new ClaudeCodeIntegration()),
         new InitSetupCatalog(
-            new FakeEnvironmentInspection() {
-              @Override
-              public Optional<String> openApiSpec(final Path projectRoot) {
-                return Optional.of("openapi.yml");
-              }
-            },
-            new QualityHookInstaller()),
+            FakeEnvironmentInspection.withOpenApiSpec("openapi.yml"), new QualityHookInstaller()),
         new InitProjectFiles(
             pom,
             RuleFileTargetsFixtures.writer(),

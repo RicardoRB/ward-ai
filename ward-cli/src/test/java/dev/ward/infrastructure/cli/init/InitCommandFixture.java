@@ -113,10 +113,10 @@ final class InitCommandFixture {
                 new dev.ward.application.init.InitPorts(
                     new FakeEnvironmentInspection(executables) {
                       @Override
-                      public java.util.Optional<String> openApiSpec(final Path projectRoot) {
+                      public Optional<String> openApiSpec(final Path projectRoot) {
                         return Files.exists(projectRoot.resolve("openapi.yml"))
-                            ? java.util.Optional.of("openapi.yml")
-                            : java.util.Optional.empty();
+                            ? Optional.of("openapi.yml")
+                            : Optional.empty();
                       }
                     },
                     new NodeInputs(
