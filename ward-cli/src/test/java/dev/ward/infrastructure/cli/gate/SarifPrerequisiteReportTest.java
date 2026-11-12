@@ -48,14 +48,14 @@ class SarifPrerequisiteReportTest {
     final JsonTree run =
         render(
                 withPrerequisite(
-                    "trivy",
+                    "zap",
                     new GatePrerequisite(
                         GatePrerequisite.Kind.EXECUTABLE,
-                        "trivy",
+                        "zap-baseline.py",
                         null,
                         null,
-                        "Install trivy: https://trivy.dev"),
-                    "Gate 'trivy' could not start 'trivy'. Install trivy: https://trivy.dev"))
+                        "Install zap-baseline.py: https://www.zaproxy.org"),
+                    "Gate 'zap' could not start 'zap-baseline.py'. Install zap-baseline.py: https://www.zaproxy.org"))
             .get(RUNS)
             .get(0);
 
@@ -64,7 +64,7 @@ class SarifPrerequisiteReportTest {
     assertThat(invocation.get("executionSuccessful").asBoolean()).isFalse();
     final JsonTree notification = invocation.get("toolExecutionNotifications").get(0);
     assertThat(notification.get("level").asString()).isEqualTo("error");
-    assertThat(notification.get("message").get("text").asString()).contains("trivy");
+    assertThat(notification.get("message").get("text").asString()).contains("zap");
   }
 
   @Test

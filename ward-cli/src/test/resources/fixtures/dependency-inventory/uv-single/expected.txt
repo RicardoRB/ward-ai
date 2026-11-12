@@ -1,0 +1,15 @@
+[] PYPI anyio 4.16.0 TRANSITIVE RUNTIME from=uv.lock by=httpx
+[] PYPI certifi 2026.10.23 TRANSITIVE RUNTIME from=uv.lock by=httpcore,httpx
+[] PYPI click 8.5.1 DIRECT RUNTIME from=uv.lock in=pyproject.toml
+[] PYPI colorama 0.4.6 TRANSITIVE TEST from=uv.lock by=pytest
+[] PYPI h11 0.16.0 TRANSITIVE RUNTIME from=uv.lock by=httpcore
+[] PYPI httpcore 1.0.9 TRANSITIVE RUNTIME from=uv.lock by=httpx
+[] PYPI httpx 0.28.1 DIRECT RUNTIME from=uv.lock in=pyproject.toml
+[] PYPI idna 3.20 TRANSITIVE RUNTIME from=uv.lock by=anyio,httpx
+[] PYPI iniconfig 2.3.1 TRANSITIVE TEST from=uv.lock by=pytest
+[] PYPI packaging 26.3 TRANSITIVE TEST from=uv.lock by=pytest
+[] PYPI pluggy 1.7.0 TRANSITIVE TEST from=uv.lock by=pytest
+[] PYPI pygments 2.21.0 TRANSITIVE TEST from=uv.lock by=pytest
+[] PYPI pytest 9.2.0 DIRECT TEST from=uv.lock in=pyproject.toml
+[] PYPI ruff 0.17.4 DIRECT DEVELOPMENT from=uv.lock in=pyproject.toml
+[] PYPI typing-extensions 4.16.0 TRANSITIVE RUNTIME from=uv.lock by=anyio

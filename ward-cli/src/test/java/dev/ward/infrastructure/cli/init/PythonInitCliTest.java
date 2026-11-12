@@ -57,8 +57,10 @@ class PythonInitCliTest {
         .contains("preset = \"strict\"", "languages = [\"java\", \"python\", \"swift\"]");
     assertThat(Files.readString(root.resolve("mypy.ini"))).contains("strict = True");
     assertThat(Files.readString(root.resolve(".coveragerc")))
-        .contains("branch = True", "fail_under = 85");
+        .contains("branch = True")
+        .doesNotContain("fail_under");
     assertThat(Files.readString(root.resolve("ward.toml")))
+        .contains("minimum = 85", "minimum-branches = 75")
         .contains("[checks.mutmut]", "command = \"uv run --group ward mutmut run\"")
         .contains("minimum = 60");
     assertThat(Files.readString(root.resolve("pyproject.toml"))).contains("mutmut==3.8.0");

@@ -14,17 +14,23 @@ final class DecisionCount implements Measure {
   private static final String TEXT_SEPARATOR = "#";
 
   @Override
-  public Optional<Violation> check(
+  public Optional<Violation> measured(
       final SyntaxNode node,
       final MetricRule.Target target,
       final boolean method,
       final MetricRule rule) {
     final int complexity = BASE + decisions(node, rule);
-    if (complexity <= rule.max()) {
-      return Optional.empty();
-    }
     return Optional.of(
         new Violation(node.span(), SyntaxTrees.nameOf(node, rule.keys().name()), complexity, ""));
+  }
+
+  @Override
+  public Optional<Violation> check(
+      final SyntaxNode node,
+      final MetricRule.Target target,
+      final boolean method,
+      final MetricRule rule) {
+    return measured(node, target, method, rule).filter(violation -> violation.value() > rule.max());
   }
 
   private static int decisions(final SyntaxNode node, final MetricRule rule) {

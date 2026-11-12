@@ -16,7 +16,9 @@ public enum RuleCapability {
   /** Control-flow graphs. */
   CFG,
   /** Data-flow facts. */
-  DATAFLOW;
+  DATAFLOW,
+  /** The path and text of a file, with no syntax tree and no language. */
+  TEXT;
 
   /**
    * Reports whether a rule with this capability sees the files around its unit, so its findings

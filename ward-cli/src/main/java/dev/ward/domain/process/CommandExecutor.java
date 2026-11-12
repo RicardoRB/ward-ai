@@ -1,6 +1,7 @@
 package dev.ward.domain.process;
 
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -16,6 +17,14 @@ public interface CommandExecutor {
   /** Runs {@code command} in its working directory. */
   default CommandResult execute(final Command command) {
     return execute(command.arguments(), command.workingDirectory());
+  }
+
+  /**
+   * Runs {@code command} and stops it, with its child processes, once {@code limit} has passed,
+   * reporting an execution error. The default does not enforce the limit.
+   */
+  default CommandResult execute(final Command command, final Duration limit) {
+    return execute(command);
   }
 
   /** Runs the argument vector {@code command} in {@code workingDirectory} and waits for it. */

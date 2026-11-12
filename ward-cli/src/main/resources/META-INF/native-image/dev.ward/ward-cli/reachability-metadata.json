@@ -4,6 +4,9 @@
       "glob": "dev/ward/infrastructure/cli/version.properties"
     },
     {
+      "glob": "dev/ward/infrastructure/dependency/gradle/*.gradle"
+    },
+    {
       "glob": "dev/ward/rules/*.toml"
     },
     {

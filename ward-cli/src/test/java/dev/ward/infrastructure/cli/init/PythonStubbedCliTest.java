@@ -61,7 +61,7 @@ class PythonStubbedCliTest {
   private static void venvWithStubTools(final Path project) throws IOException {
     final Path bin = Files.createDirectories(project.resolve(".venv/bin"));
     final Path stub = Path.of("src/test/resources/fixtures/python-project-bin/uv").toAbsolutePath();
-    for (final String tool : List.of("python", "mypy", "coverage", "pytest", "pip-audit")) {
+    for (final String tool : List.of("python", "mypy", "coverage", "pytest")) {
       Files.createSymbolicLink(bin.resolve(tool), stub);
     }
   }

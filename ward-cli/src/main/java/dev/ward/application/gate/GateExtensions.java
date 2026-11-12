@@ -11,23 +11,37 @@ import java.util.Objects;
  * @param analysis gives the {@code ward} gate its rules and sources, or {@code null} when it is
  *     unavailable
  * @param format builds the {@code ward-format} gate, or {@code null} when it is unavailable
+ * @param secrets builds the {@code secrets} gate, or {@code null} when it is unavailable
+ * @param crap gives the {@code crap} gate its report readers, or {@code null} when it is
+ * @param vulnerabilities builds the {@code vulnerabilities} gate, or {@code null} when it is
+ *     unavailable
  * @param apiCompat builds the native {@code api-compat} gate, or {@code null} when it is
  *     unavailable
  */
 public record GateExtensions(
-    OpenApiGates openApi, AnalysisPorts analysis, FormatGates format, ApiCompatGates apiCompat) {
+    OpenApiGates openApi,
+    AnalysisPorts analysis,
+    FormatGates format,
+    SecretGates secrets,
+    CrapPorts crap,
+    VulnerabilityGates vulnerabilities,
+    ApiCompatGates apiCompat) {
 
   /** No optional dependencies: every extension gate is reported as unavailable. */
-  public static final GateExtensions NONE = new GateExtensions(null, null, null, null);
+  public static final GateExtensions NONE =
+      new GateExtensions(null, null, null, null, null, null, null);
 
   /** Replaces a missing {@code api-compat} builder with one that only runs command checks. */
   public GateExtensions {
     apiCompat = Objects.requireNonNullElse(apiCompat, ApiCompatGates.UNAVAILABLE);
   }
 
-  /** Creates the extensions without the {@code api-compat} gate. */
+  /**
+   * Creates the extensions without the {@code secrets}, {@code crap}, {@code vulnerabilities} and
+   * {@code api-compat} gates.
+   */
   public GateExtensions(
       final OpenApiGates openApi, final AnalysisPorts analysis, final FormatGates format) {
-    this(openApi, analysis, format, null);
+    this(openApi, analysis, format, null, null, null, null);
   }
 }

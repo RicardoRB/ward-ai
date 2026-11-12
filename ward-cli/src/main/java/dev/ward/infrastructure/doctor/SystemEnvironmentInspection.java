@@ -3,12 +3,10 @@ package dev.ward.infrastructure.doctor;
 import dev.ward.domain.doctor.EnvironmentFacts;
 import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.doctor.ExecutableObservation;
-import dev.ward.domain.doctor.OssIndexSetting;
 import dev.ward.domain.gate.ReleaseTags;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
 import dev.ward.infrastructure.doctor.gradle.AndroidEnvironmentFacts;
-import dev.ward.infrastructure.doctor.jvm.DependencyCheckSettings;
 import dev.ward.infrastructure.doctor.python.FastApiAppInspection;
 import dev.ward.infrastructure.project.gradle.GradleKotlinModules;
 import dev.ward.infrastructure.project.gradle.GradleModuleScan;
@@ -24,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
@@ -56,8 +53,6 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
           "swift",
           "xcodebuild",
           "xcrun",
-          "trivy",
-          "gitleaks",
           "semgrep",
           "zap-baseline.py",
           "vacuum",
@@ -106,15 +101,7 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
             "nativeExecutablePresent",
             Boolean.toString(NativeExecutableFact.present(Path.of(""))));
     final Map<String, String> observed = new HashMap<>(values);
-    // Only presence is recorded; values never leave this lambda.
-    final Predicate<String> isSet =
-        name -> {
-          final String value = System.getenv(name);
-          return value != null && !value.isBlank();
-        };
-    observed.put("NVD_API_KEY", Boolean.toString(isSet.test("NVD_API_KEY")));
-    observed.put("OSS_INDEX_PASSWORD", Boolean.toString(isSet.test("OSS_INDEX_PASSWORD")));
-    observed.put("OASDIFF_CONFIG", Boolean.toString(isSet.test("OASDIFF_CONFIG")));
+    observed.put("OASDIFF_CONFIG", Boolean.toString(isSet("OASDIFF_CONFIG")));
     observed.putAll(AndroidEnvironmentFacts.read(projectRoot));
     observed.put(
         "typescriptResolvable", Boolean.toString(TypeScriptPackages.resolvable(projectRoot)));
@@ -197,8 +184,9 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
         : GradleModuleScan.skipped(projectRoot);
   }
 
-  @Override
-  public OssIndexSetting ossIndexSetting(final Path projectRoot) {
-    return DependencyCheckSettings.read(projectRoot);
+  /** Only presence is recorded; values never leave this method. */
+  private static boolean isSet(final String name) {
+    final String value = System.getenv(name);
+    return value != null && !value.isBlank();
   }
 }

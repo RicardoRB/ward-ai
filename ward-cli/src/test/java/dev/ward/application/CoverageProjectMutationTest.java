@@ -64,17 +64,12 @@ class CoverageProjectMutationTest {
         .containsExactly(
             "sonar-maven-plugin",
             "jacoco-maven-plugin",
-            "dependency-check-maven",
             "pitest-maven",
             "maven-enforcer-plugin",
             "license-maven-plugin");
     assertThat(Files.readString(root.resolve("pom.xml")))
         .contains(
-            "jacoco-maven-plugin",
-            "sonar-maven-plugin",
-            "dependency-check-maven",
-            "pitest-maven",
-            "maven-enforcer-plugin");
+            "jacoco-maven-plugin", "sonar-maven-plugin", "pitest-maven", "maven-enforcer-plugin");
     configurator.rollback(change);
     assertThat(Files.readString(root.resolve("pom.xml"))).isEqualTo(ProjectFixtures.PLAIN_POM);
     configurator.rollback(null);

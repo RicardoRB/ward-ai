@@ -100,6 +100,23 @@ final class MeasurementTest {
   }
 
   @Test
+  void measuresReturnsEveryFunctionWithItsOwnComplexityAndSpan() {
+    final SyntaxNode inner =
+        Trees.node(FUNCTION, 3, 4, Trees.named(NAME, "g", 3), Trees.node(IF_STMT, 4, 4));
+    final SyntaxNode outer =
+        Trees.node(FUNCTION, 1, 5, Trees.named(NAME, "f", 1), Trees.node(IF_STMT, 2, 2), inner);
+
+    assertThat(Trees.measured(DECISIONS, outer))
+        .extracting(measured -> measured.span().startLine() + ":" + measured.value())
+        .containsExactly("1:2", "3:2");
+  }
+
+  @Test
+  void measuresReturnsNothingForMeasurementsWithoutAValuePerNode() {
+    assertThat(Trees.measured(FUNCTION_LENGTH, Trees.node(FUNCTION, 1, SIX_PARAMETERS))).isEmpty();
+  }
+
+  @Test
   void identifierCaseChecksDeclarationsAndPlainAssignmentsOnly() {
     final SyntaxNode module =
         Trees.node(

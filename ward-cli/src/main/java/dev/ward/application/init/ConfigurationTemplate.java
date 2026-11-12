@@ -1,6 +1,5 @@
 package dev.ward.application.init;
 
-import dev.ward.domain.config.CommandTypeInference;
 import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.FormatGates;
 import dev.ward.domain.init.InitGateOption;
@@ -11,16 +10,13 @@ import dev.ward.domain.project.Project;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /** Renders the {@code ward.toml} written by {@code ward init}. */
 public final class ConfigurationTemplate {
   private static final String MINIMUM = "minimum";
+  private static final String MINIMUM_BRANCHES = "minimum-branches";
   private static final int SECTION_CAPACITY = 96;
   private static final String VERSION = "version = 2\n";
-
-  /** Types written with {@code uses} even when their command would infer them. */
-  private static final Set<String> CRITICAL_USES = Set.of("openspec", "openspec-archived");
 
   private ConfigurationTemplate() {}
 
@@ -55,17 +51,7 @@ public final class ConfigurationTemplate {
     final StringBuilder content = new StringBuilder(SECTION_CAPACITY * (gates.size() + 1));
     content.append(VERSION);
     for (final InitGateOption gate : gates) {
-      if (FormatGates.WARD_FORMAT.equals(gate.id())) {
-        WardFormatTemplate.append(content, QualityGatePhasePolicy.profilesFor(gate.id()));
-        partial(content, gate, project, preset);
-        continue;
-      }
-      GateTable.append(content, gate, writesUses(gate));
-      if (openSpecRoot != null && isOpenSpec(gate.id())) {
-        content.append("root = \"").append(escape(openSpecRoot)).append("\"\n");
-      }
-      gatePreset(gate, project, preset).forEach((key, value) -> setting(content, key, value));
-      partial(content, gate, project, preset);
+      appendGate(content, gate, preset, project, openSpecRoot);
     }
     if (architecture.any()) {
       WardGateTemplate.append(content, architecture);
@@ -73,13 +59,37 @@ public final class ConfigurationTemplate {
     return content.toString();
   }
 
-  /**
-   * Whether the check needs {@code uses}: its command does not imply its type, or the type is one
-   * that must never depend on command shape.
-   */
-  private static boolean writesUses(final InitGateOption gate) {
-    return CRITICAL_USES.contains(gate.id())
-        || !CommandTypeInference.infer(gate.command()).equals(gate.id());
+  private static void appendGate(
+      final StringBuilder content,
+      final InitGateOption gate,
+      final QualityPreset preset,
+      final Project project,
+      final String openSpecRoot) {
+    if (FormatGates.WARD_FORMAT.equals(gate.id())) {
+      WardFormatTemplate.append(content, QualityGatePhasePolicy.profilesFor(gate.id()));
+      partial(content, gate, project, preset);
+      return;
+    }
+    content
+        .append("\n[checks.")
+        .append(gate.id())
+        .append("]\nenabled = true\nprofiles = [")
+        .append(
+            String.join(
+                ", ",
+                QualityGatePhasePolicy.profilesFor(gate.id()).stream()
+                    .map(profile -> "\"" + profile + "\"")
+                    .toList()))
+        .append("]\n");
+    if (GateCommandTemplate.writesUses(gate)) {
+      content.append("uses = \"").append(gate.id()).append("\"\n");
+    }
+    GateCommandTemplate.append(content, gate);
+    if (openSpecRoot != null && isOpenSpec(gate.id())) {
+      content.append("root = \"").append(escape(openSpecRoot)).append("\"\n");
+    }
+    gatePreset(gate, project, preset).forEach((key, value) -> setting(content, key, value));
+    partial(content, gate, project, preset);
   }
 
   private static boolean isOpenSpec(final String id) {
@@ -140,7 +150,7 @@ public final class ConfigurationTemplate {
 
   /** Writes a gate setting: {@code minimum} is a number, every other setting a string. */
   private static void setting(final StringBuilder content, final String key, final String value) {
-    if (MINIMUM.equals(key) && value != null) {
+    if ((MINIMUM.equals(key) || MINIMUM_BRANCHES.equals(key)) && value != null) {
       content.append(key).append(" = ").append(value).append('\n');
     } else {
       string(content, key, value);

@@ -1,0 +1,3 @@
+# rule, difference: tool-silent (Gitleaks reports nothing on the violating fixture), anchor-differs (same number of findings at other positions), count-differs, tool-extra (Gitleaks reports the passing fixture).
+# Gitleaks 8.30.1 over rules/secrets. Regenerate with -Dward.parity.write=true.
+kubernetes-secret-yaml	approximation

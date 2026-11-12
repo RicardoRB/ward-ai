@@ -1,6 +1,8 @@
 package dev.ward.application.init.python;
 
 import dev.ward.application.init.CiWorkflowTemplate;
+import dev.ward.application.init.CrapInit;
+import dev.ward.application.init.CrapSetup;
 import dev.ward.application.init.InitInputs;
 import dev.ward.application.init.SourceLanguageGates;
 import dev.ward.application.init.SourceLanguages;
@@ -11,8 +13,10 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.Toolchain;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /** Init choices for uv, Poetry and pip projects. PDM and Hatch projects are not supported yet. */
@@ -52,6 +56,18 @@ public final class PythonInitSupport implements ToolchainInitSupport {
   }
 
   @Override
+  public Optional<CrapSetup> crap(final Project project, final InitInputs inputs) {
+    return Optional.of(
+        gates ->
+            CrapInit.place(
+                gates,
+                "pytest",
+                List.of("coverage"),
+                List.of(),
+                Map.of("report", PythonGates.REPORT)));
+  }
+
+  @Override
   public boolean handles(final Project project) {
     return project.buildTool() == BuildTool.UV
         || project.buildTool() == BuildTool.POETRY
@@ -69,7 +85,9 @@ public final class PythonInitSupport implements ToolchainInitSupport {
       final List<InitGateOption> gates,
       final QualityPreset preset,
       final Set<String> owned) {
-    return PythonAgentRules.lines(project, gates, preset, owned);
+    return project.toolchain() == Toolchain.PYTHON
+        ? PythonAgentRules.lines(project, gates, preset, owned)
+        : List.of();
   }
 
   @Override

@@ -13,6 +13,7 @@ import dev.ward.application.gate.AnalysisSourceUnits;
 import dev.ward.application.gate.apicompat.ApiSurfaces;
 import dev.ward.domain.gate.MainSourceRoots;
 import dev.ward.domain.gate.WorkingFiles;
+import dev.ward.domain.secrets.GitHistory;
 import dev.ward.infrastructure.analysis.GateFrontends;
 import dev.ward.infrastructure.analysis.JsonAnalysisResultCodec;
 import dev.ward.infrastructure.analysis.JvmDependencyAdapters;
@@ -27,6 +28,7 @@ import dev.ward.infrastructure.rule.BundledRuleMatchers;
 import dev.ward.infrastructure.rule.FileAnalysisCache;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
 import dev.ward.infrastructure.rule.ProjectRuleSource;
+import dev.ward.infrastructure.secrets.GitCliHistory;
 import java.util.List;
 import javax.inject.Named;
 
@@ -56,6 +58,9 @@ interface GateExtensionBindingsModule {
   static MainSourceRoots mainSourceRoots() {
     return JvmSourceLayouts::mainRoots;
   }
+
+  @Binds
+  GitHistory gitHistory(GitCliHistory implementation);
 
   /** Each bundled rule goes to the matcher of its language or body format. */
   @Provides

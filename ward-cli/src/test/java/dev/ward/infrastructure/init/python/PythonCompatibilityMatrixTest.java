@@ -9,6 +9,7 @@ import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.infrastructure.analysis.ProjectDependencyAdapters;
 import dev.ward.infrastructure.analysis.python.PythonDependencyAdapters;
+import dev.ward.infrastructure.init.MatrixFileTrees;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,7 +22,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.api.io.TempDir;
@@ -30,12 +30,12 @@ import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
 /**
- * Runs each Python matrix cell through the real CLI: {@code init}, the clean {@code check}, then
- * the seeded violations, which must make every selected gate except {@code coverage} and {@code
- * mutmut} fail. Each cell runs under its Python interpreter, which is first on the PATH of the Ward
- * process only, so the test process is unchanged. Runs only for the cells whose Python version is
- * named by {@code ward.python.matrix}, and for the fixture named by {@code
- * ward.python.matrix.fixture} when set.
+ * Runs each Python matrix cell through the real CLI: {@code init}, the clean {@code check}, then an
+ * untested module, which must make {@code coverage} fail, then the seeded violations, which must
+ * make every selected gate except {@code coverage} and {@code mutmut} fail. Each cell runs under
+ * its Python interpreter, which is first on the PATH of the Ward process only, so the test process
+ * is unchanged. Runs only for the cells whose Python version is named by {@code
+ * ward.python.matrix}, and for the fixture named by {@code ward.python.matrix.fixture} when set.
  */
 @EnabledIfSystemProperty(
     named = PythonCompatibilityMatrixTest.VERSION_PROPERTY,
@@ -55,7 +55,14 @@ class PythonCompatibilityMatrixTest {
           "basic-pip", Set.of("src/shop/controller/api.py"),
           "fastapi-uv", Set.of("app/routers/cross.py"));
 
+  private static final Path COVERAGE_VIOLATIONS =
+      Path.of("src/test/resources/python-matrix/coverage");
+
+  /**
+   * Gates the combined violations do not target: coverage has its own run, mutmut is clean-only.
+   */
   private static final Set<String> NOT_VIOLATED = Set.of("coverage", "mutmut");
+
   private static final String PIP = "pip";
   private static final int PACKAGES_COLUMN = 4;
   private static final String POETRY = "poetry";
@@ -76,7 +83,7 @@ class PythonCompatibilityMatrixTest {
     Assumptions.assumeTrue(
         fixture.equals(System.getProperty(FIXTURE_PROPERTY, fixture)), "row is for " + fixture);
     final Map<String, String> env = environment(python, bin);
-    copyTree(FIXTURES.resolve(fixture), project);
+    MatrixFileTrees.copy(FIXTURES.resolve(fixture), project);
     Files.writeString(project.resolve(".python-version"), python + "\n");
     pinPackages(project, cell.size() > PACKAGES_COLUMN ? cell.getString(PACKAGES_COLUMN) : "");
     prepareManager(manager, find(python), project, env);
@@ -96,7 +103,18 @@ class PythonCompatibilityMatrixTest {
         .isEmpty();
 
     assertThat(engineLayerFiles(project, fixture)).as("engine layer findings, clean").isEmpty();
-    copyTree(VIOLATIONS.resolve(fixture), project);
+    final Path untested = COVERAGE_VIOLATIONS.resolve(fixture);
+    MatrixFileTrees.copy(untested, project);
+    final Run report = run(env, project, "check", "--profile", "ci", "--format", "json");
+    assertThat(checks(report).get("coverage"))
+        .as("coverage with an untested module\n%s", report.output())
+        .isEqualTo("FAILED");
+    assertThat(report.output())
+        .as("coverage finding")
+        .contains("Line coverage")
+        .contains("is below");
+    MatrixFileTrees.remove(untested, project);
+    MatrixFileTrees.copy(VIOLATIONS.resolve(fixture), project);
     assertThat(engineLayerFiles(project, fixture))
         .as("engine layer findings, seeded")
         .isEqualTo(ENGINE_LAYER_VIOLATIONS.getOrDefault(fixture, Set.of()));
@@ -229,20 +247,6 @@ class PythonCompatibilityMatrixTest {
       checks.put(match.group(1), match.group(2));
     }
     return checks;
-  }
-
-  private static void copyTree(final Path source, final Path target) throws IOException {
-    try (Stream<Path> files = Files.walk(source)) {
-      for (final Path file : files.toList()) {
-        final Path destination = target.resolve(source.relativize(file).toString());
-        if (Files.isDirectory(file)) {
-          Files.createDirectories(destination);
-        } else {
-          Files.createDirectories(destination.getParent());
-          Files.copy(file, destination, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
-        }
-      }
-    }
   }
 
   /** The exit code and standard output of one process. */

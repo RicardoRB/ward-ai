@@ -110,8 +110,8 @@ class ReportRendererTest {
                     .stdout("")
                     .stderr("")
                     .build(),
-                GateResult.builder("gitleaks", GateStatus.UNAVAILABLE)
-                    .command(List.of("gitleaks"))
+                GateResult.builder("trivy", GateStatus.UNAVAILABLE)
+                    .command(List.of("trivy"))
                     .exitCode(-1)
                     .duration(Duration.ZERO)
                     .stdout("")
@@ -121,7 +121,7 @@ class ReportRendererTest {
     final String text = new TextReportRenderer().render(report);
 
     assertThat(text)
-        .contains("– customGate", "✗ Gitleaks — unavailable", "0 passed · 1 failed · 1 skipped")
+        .contains("– customGate", "✗ trivy — unavailable", "0 passed · 1 failed · 1 skipped")
         .doesNotContain("\u001b", "3 errors", "0 errors");
   }
 
@@ -169,26 +169,26 @@ class ReportRendererTest {
         new CheckReport(
             project,
             List.of(
-                GateResult.builder("gitleaks", GateStatus.UNAVAILABLE)
-                    .command(List.of("gitleaks", "detect"))
+                GateResult.builder("trivy", GateStatus.UNAVAILABLE)
+                    .command(List.of("trivy", "detect"))
                     .exitCode(-1)
                     .duration(Duration.ZERO)
                     .stdout("")
                     .stderr("")
-                    .summary("Gate 'gitleaks' could not start 'gitleaks'.")
+                    .summary("Gate 'trivy' could not start 'trivy'.")
                     .build()
                     .withPrerequisite(
                         new GatePrerequisite(
                             GatePrerequisite.Kind.EXECUTABLE,
-                            "gitleaks",
+                            "trivy",
                             null,
                             null,
-                            "Install gitleaks: https://github.com/gitleaks/gitleaks#installing"))));
+                            "Install trivy: https://trivy.dev/latest/getting-started/installation/"))));
 
     final String text = new TextReportRenderer().render(report);
 
     assertThat(text)
-        .contains("✗ Gitleaks — unavailable")
-        .contains("Install gitleaks: https://github.com/gitleaks/gitleaks#installing");
+        .contains("✗ trivy — unavailable")
+        .contains("Install trivy: https://trivy.dev/latest/getting-started/installation/");
   }
 }

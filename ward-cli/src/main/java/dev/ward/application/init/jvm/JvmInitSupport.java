@@ -1,6 +1,8 @@
 package dev.ward.application.init.jvm;
 
 import dev.ward.application.init.CiWorkflowTemplate;
+import dev.ward.application.init.CrapInit;
+import dev.ward.application.init.CrapSetup;
 import dev.ward.application.init.InitInputs;
 import dev.ward.application.init.SourceLanguageGates;
 import dev.ward.application.init.SourceLanguages;
@@ -38,7 +40,7 @@ public final class JvmInitSupport implements ToolchainInitSupport {
 
   @Override
   public Gates gates(final Project project, final QualityPreset preset, final InitInputs inputs) {
-    final BuildToolGates buildTool = BuildToolGates.of(project, inputs.environment());
+    final BuildToolGates buildTool = BuildToolGates.of(project, inputs.environment(), preset);
     final boolean android = project.framework() == Framework.ANDROID;
     return new Gates(
         analysisGates(project, buildTool, android),
@@ -99,6 +101,14 @@ public final class JvmInitSupport implements ToolchainInitSupport {
       gates.addAll(ANDROID_GATES);
     }
     return gates;
+  }
+
+  /** Android's coverage report is not at the Gradle default location, so it is not offered. */
+  @Override
+  public Optional<CrapSetup> crap(final Project project, final InitInputs inputs) {
+    return project.framework() == Framework.ANDROID
+        ? Optional.empty()
+        : Optional.of(gates -> CrapInit.place(gates, COVERAGE, List.of(), List.of(), Map.of()));
   }
 
   @Override
