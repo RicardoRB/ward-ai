@@ -1,0 +1,22 @@
+# Rules of vacuum-0.39.3 that Ward does not implement, with the reason for each group.
+
+[[group]]
+reason = "Swagger 2.0 documents are not supported: the gate ends with an execution error on them"
+rules = [
+  "oas2-anyOf",
+  "oas2-api-host",
+  "oas2-api-schemes",
+  "oas2-discriminator",
+  "oas2-host-not-example",
+  "oas2-host-trailing-slash",
+  "oas2-oneOf",
+  "oas2-operation-formData-consume-check",
+  "oas2-operation-security-defined",
+  "oas2-parameter-description",
+  "oas2-schema",
+  "oas2-unused-definition",
+]
+
+[[group]]
+reason = "a migration helper for Zally ignore files, not a lint of the document"
+rules = ["migrate-zally-ignore"]

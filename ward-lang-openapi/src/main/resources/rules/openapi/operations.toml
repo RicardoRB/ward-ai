@@ -1,0 +1,13 @@
+# OpenAPI lint rules over the operations of a document, ported from the vacuum 0.39.3 rules of the
+# same id. Each rule is a project check over the loaded document model.
+
+[[rules]]
+id = "ward:openapi/operation-operation-id"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-operation-operation-id"
+'''

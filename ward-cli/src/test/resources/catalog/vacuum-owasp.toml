@@ -1,0 +1,157 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "owasp-array-limit"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-array-limit"]
+
+[[rule]]
+name = "owasp-auth-insecure-schemes"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-auth-insecure-schemes"]
+
+[[rule]]
+name = "owasp-auth-urls-https"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-auth-urls-https"]
+
+[[rule]]
+name = "owasp-constrained-additional-properties"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-constrained-additionalProperties"]
+
+[[rule]]
+name = "owasp-define-error-responses-401"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-define-error-responses-401"]
+
+[[rule]]
+name = "owasp-define-error-responses-429"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-define-error-responses-429"]
+
+[[rule]]
+name = "owasp-define-error-responses-500"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-define-error-responses-500"]
+
+[[rule]]
+name = "owasp-define-error-validation"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-define-error-validation"]
+
+[[rule]]
+name = "owasp-integer-format"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-integer-format"]
+
+[[rule]]
+name = "owasp-integer-limit"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-integer-limit"]
+
+[[rule]]
+name = "owasp-jwt-best-practices"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-jwt-best-practices"]
+
+[[rule]]
+name = "owasp-no-additional-properties"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-no-additionalProperties"]
+
+[[rule]]
+name = "owasp-no-api-keys-in-url"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-no-api-keys-in-url"]
+
+[[rule]]
+name = "owasp-no-credentials-in-url"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-no-credentials-in-url"]
+
+[[rule]]
+name = "owasp-no-http-basic"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-no-http-basic"]
+
+[[rule]]
+name = "owasp-no-numeric-ids"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-no-numeric-ids"]
+
+[[rule]]
+name = "owasp-oauth-no-implicit"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-oauth-no-implicit"]
+
+[[rule]]
+name = "owasp-oauth-no-password"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-oauth-no-password"]
+
+[[rule]]
+name = "owasp-protection-global-safe"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-protection-global-safe"]
+
+[[rule]]
+name = "owasp-protection-global-unsafe"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-protection-global-unsafe"]
+
+[[rule]]
+name = "owasp-protection-global-unsafe-strict"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-protection-global-unsafe-strict"]
+
+[[rule]]
+name = "owasp-rate-limit"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-rate-limit"]
+
+[[rule]]
+name = "owasp-rate-limit-retry-after"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-rate-limit-retry-after"]
+
+[[rule]]
+name = "owasp-security-hosts-https-oas3"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-security-hosts-https-oas3"]
+
+[[rule]]
+name = "owasp-string-limit"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-string-limit"]
+
+[[rule]]
+name = "owasp-string-restricted"
+presets = ["standard", "strict"]
+category = "security"
+vacuum = ["owasp-string-restricted"]

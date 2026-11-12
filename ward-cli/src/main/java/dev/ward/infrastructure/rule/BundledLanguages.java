@@ -4,6 +4,8 @@ import dev.ward.analysis.application.jvm.JvmCheckProvider;
 import dev.ward.analysis.application.jvm.JvmRuleFiles;
 import dev.ward.analysis.application.node.NodeCheckProvider;
 import dev.ward.analysis.application.node.NodeRuleFiles;
+import dev.ward.analysis.application.openapi.OpenApiCheckProvider;
+import dev.ward.analysis.application.openapi.OpenApiRuleFiles;
 import dev.ward.analysis.application.python.PythonCheckProvider;
 import dev.ward.analysis.application.python.PythonRuleFiles;
 import dev.ward.analysis.application.rule.CheckProvider;
@@ -26,7 +28,11 @@ public final class BundledLanguages {
   /** Returns the rule file lists of every bundled language module. */
   public static List<RuleFileProvider> ruleFiles() {
     return List.of(
-        new JvmRuleFiles(), new NodeRuleFiles(), new PythonRuleFiles(), new SwiftRuleFiles());
+        new JvmRuleFiles(),
+        new NodeRuleFiles(),
+        new PythonRuleFiles(),
+        new SwiftRuleFiles(),
+        new OpenApiRuleFiles());
   }
 
   /** Returns the check providers of the shared checks and of every bundled language module. */
@@ -37,7 +43,8 @@ public final class BundledLanguages {
         new NodeCheckProvider(),
         new PythonCheckProvider(),
         new SwiftCheckProvider(),
-        new SwiftLintCheckProvider());
+        new SwiftLintCheckProvider(),
+        new OpenApiCheckProvider());
   }
 
   /** Returns the registry of every bundled check. */

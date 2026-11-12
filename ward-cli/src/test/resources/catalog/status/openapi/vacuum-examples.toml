@@ -1,0 +1,5 @@
+# Status of the vacuum-examples rows in openapi: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+oas3-example-external-check = { status = "planned", issue = "#522" }
+oas3-missing-example = { status = "planned", issue = "#522" }
+oas3-valid-schema-example = { status = "planned", issue = "#522" }

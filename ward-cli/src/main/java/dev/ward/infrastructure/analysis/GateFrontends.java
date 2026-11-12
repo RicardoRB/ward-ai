@@ -1,5 +1,6 @@
 package dev.ward.infrastructure.analysis;
 
+import dev.ward.analysis.application.openapi.OpenApiLanguageFrontend;
 import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.jvm.JavaControlFlow;
@@ -91,6 +92,10 @@ public final class GateFrontends {
             frontend,
             syntax,
             NO_GRAPHS,
-            new CachedScopes(new KotlinScopeAnalysis(ClasspathBuiltinNames.kotlin()))));
+            new CachedScopes(new KotlinScopeAnalysis(ClasspathBuiltinNames.kotlin()))),
+        new FrontendSupport(
+            AnalysisLanguage.OPENAPI,
+            new OpenApiLanguageFrontend(),
+            Set.of(RuleCapability.SYNTAX)));
   }
 }

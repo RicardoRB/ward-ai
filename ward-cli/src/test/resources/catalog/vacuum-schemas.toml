@@ -1,0 +1,67 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "allof-conflicts"
+presets = ["standard", "strict"]
+category = "correctness"
+vacuum = ["allof-conflicts"]
+
+[[rule]]
+name = "camel-case-properties"
+presets = ["standard", "strict"]
+category = "correctness"
+vacuum = ["camel-case-properties"]
+
+[[rule]]
+name = "duplicated-entry-in-enum"
+presets = ["standard", "strict"]
+category = "correctness"
+vacuum = ["duplicated-entry-in-enum"]
+
+[[rule]]
+name = "no-unnecessary-combinator"
+presets = ["standard", "strict"]
+category = "correctness"
+vacuum = ["no-unnecessary-combinator"]
+
+[[rule]]
+name = "nullable-enum-contains-null"
+presets = ["standard", "strict"]
+category = "correctness"
+vacuum = ["nullable-enum-contains-null"]
+
+[[rule]]
+name = "oas-missing-type"
+presets = ["standard", "strict"]
+category = "correctness"
+vacuum = ["oas-missing-type"]
+
+[[rule]]
+name = "oas-schema-check"
+presets = ["standard", "strict"]
+category = "correctness"
+vacuum = ["oas-schema-check"]
+
+[[rule]]
+name = "oas3-schema"
+presets = ["standard", "strict"]
+category = "correctness"
+vacuum = ["oas3-schema"]
+
+[[rule]]
+name = "oas3-unused-component"
+presets = ["standard", "strict"]
+category = "correctness"
+vacuum = ["oas3-unused-component"]
+
+[[rule]]
+name = "required-fields-defined"
+presets = ["standard", "strict"]
+category = "correctness"
+vacuum = ["required-fields-defined"]
+
+[[rule]]
+name = "typed-enum"
+presets = ["standard", "strict"]
+category = "correctness"
+vacuum = ["typed-enum"]

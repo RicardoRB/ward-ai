@@ -11,16 +11,17 @@ class AnalysisLanguageToolchainsTest {
   @Test
   void mapsEveryLanguageToItsToolchain() {
     assertThat(AnalysisLanguageToolchains.toolchainOf(AnalysisLanguage.KOTLIN))
-        .isEqualTo(Toolchain.JVM);
+        .contains(Toolchain.JVM);
     assertThat(AnalysisLanguageToolchains.toolchainOf(AnalysisLanguage.JAVA))
-        .isEqualTo(Toolchain.JVM);
+        .contains(Toolchain.JVM);
     assertThat(AnalysisLanguageToolchains.toolchainOf(AnalysisLanguage.TYPESCRIPT))
-        .isEqualTo(Toolchain.NODE);
+        .contains(Toolchain.NODE);
     assertThat(AnalysisLanguageToolchains.toolchainOf(AnalysisLanguage.JAVASCRIPT))
-        .isEqualTo(Toolchain.NODE);
+        .contains(Toolchain.NODE);
     assertThat(AnalysisLanguageToolchains.toolchainOf(AnalysisLanguage.PYTHON))
-        .isEqualTo(Toolchain.PYTHON);
+        .contains(Toolchain.PYTHON);
     assertThat(AnalysisLanguageToolchains.toolchainOf(AnalysisLanguage.SWIFT))
-        .isEqualTo(Toolchain.SWIFT);
+        .contains(Toolchain.SWIFT);
+    assertThat(AnalysisLanguageToolchains.toolchainOf(AnalysisLanguage.OPENAPI)).isEmpty();
   }
 }

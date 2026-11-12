@@ -1,0 +1,25 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "component-description"
+presets = ["standard", "strict"]
+category = "docs"
+vacuum = ["component-description"]
+
+[[rule]]
+name = "description-duplication"
+presets = ["standard", "strict"]
+category = "docs"
+vacuum = ["description-duplication"]
+
+[[rule]]
+name = "oas3-parameter-description"
+presets = ["standard", "strict"]
+category = "docs"
+vacuum = ["oas3-parameter-description"]
+
+[[rule]]
+name = "operation-description"
+presets = ["standard", "strict"]
+category = "docs"
+vacuum = ["operation-description"]

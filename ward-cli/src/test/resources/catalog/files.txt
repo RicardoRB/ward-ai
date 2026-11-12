@@ -32,3 +32,12 @@ swiftlint
 typescript-eslint
 vulture
 ward-own
+vacuum-descriptions
+vacuum-examples
+vacuum-information
+vacuum-operations
+vacuum-owasp
+vacuum-schemas
+vacuum-security
+vacuum-tags
+vacuum-validation

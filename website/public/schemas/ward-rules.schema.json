@@ -32459,6 +32459,25 @@
         }
       }
     },
+    "ward:openapi/operation-operation-id": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:python/abbreviation-as-word-in-name": {
       "type": "object",
       "additionalProperties": false,
@@ -52198,7 +52217,8 @@
               "typescript",
               "javascript",
               "python",
-              "swift"
+              "swift",
+              "openapi"
             ]
           }
         },
@@ -53880,6 +53900,7 @@
               "kotlin.var-could-be-val",
               "kotlin.variable-declaration-usage-distance",
               "kotlin.wrong-equals-type-parameter",
+              "openapi.operation-operation-id",
               "python.abbreviation-as-word-in-name",
               "python.abstract-base-class-without-abstract-method",
               "python.abstract-class-instantiated",
@@ -56543,6 +56564,7 @@
               "kotlin.var-could-be-val",
               "kotlin.variable-declaration-usage-distance",
               "kotlin.wrong-equals-type-parameter",
+              "openapi.operation-operation-id",
               "python.abbreviation-as-word-in-name",
               "python.abstract-base-class-without-abstract-method",
               "python.abstract-class-instantiated",
@@ -62520,6 +62542,15 @@
             },
             "wrong-equals-type-parameter": {
               "$ref": "#/$defs/ward:kotlin~1wrong-equals-type-parameter"
+            }
+          }
+        },
+        "openapi": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "operation-operation-id": {
+              "$ref": "#/$defs/ward:openapi~1operation-operation-id"
             }
           }
         },

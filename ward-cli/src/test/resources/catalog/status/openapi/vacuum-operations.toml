@@ -1,0 +1,20 @@
+# Status of the vacuum-operations rows in openapi: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+duplicate-paths = { status = "planned", issue = "#522" }
+no-ambiguous-paths = { status = "planned", issue = "#522" }
+no-http-verbs-in-path = { status = "planned", issue = "#522" }
+no-request-body = { status = "planned", issue = "#522" }
+operation-4xx-response = { status = "planned", issue = "#522" }
+operation-operation-id = "implemented"
+operation-operation-id-unique = { status = "planned", issue = "#522" }
+operation-operation-id-valid-in-url = { status = "planned", issue = "#522" }
+operation-parameters = { status = "planned", issue = "#522" }
+operation-success-response = { status = "planned", issue = "#522" }
+path-declarations-must-exist = { status = "planned", issue = "#522" }
+path-item-refs = { status = "planned", issue = "#522" }
+path-keys-no-trailing-slash = { status = "planned", issue = "#522" }
+path-not-include-query = { status = "planned", issue = "#522" }
+path-params = { status = "planned", issue = "#522" }
+paths-kebab-case = { status = "planned", issue = "#522" }
+paths-specificity-order = { status = "planned", issue = "#522" }
+post-response-success = { status = "planned", issue = "#522" }

@@ -43,7 +43,7 @@ public final class AntlrLanguageFrontend implements LanguageFrontend {
       new EnumMap<>(AnalysisLanguage.class);
   private final ParseCache recent = new ParseCache(RECENT_WEIGHT);
 
-  /** Creates the lexers and parsers for all six languages. */
+  /** Creates the lexers and parsers for the six source languages. */
   public AntlrLanguageFrontend() {
     for (final AnalysisLanguage language : AnalysisLanguage.values()) {
       sessions.put(language, session(language));
@@ -63,6 +63,12 @@ public final class AntlrLanguageFrontend implements LanguageFrontend {
       case JAVASCRIPT -> javaScriptSession();
       case PYTHON -> pythonSession();
       case SWIFT -> swiftSession();
+      // OpenAPI documents are YAML or JSON data that the OpenAPI frontend reads, not ANTLR.
+      case OPENAPI ->
+          unit -> {
+            throw new IllegalArgumentException(
+                "the ANTLR frontend does not parse OpenAPI: " + unit.path());
+          };
     };
   }
 

@@ -29,7 +29,8 @@ public final class CatalogTools {
           "periphery",
           "cpd",
           "jscpd",
-          "gitleaks");
+          "gitleaks",
+          "vacuum");
 
   private CatalogTools() {}
 }
