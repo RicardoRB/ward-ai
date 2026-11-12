@@ -11,13 +11,10 @@ still change behavior. Breaking changes are called out under **Changed**.
 ### Added
 
 - The `secrets` check (`uses = "secrets"`), native secret detection that needs no executable: the 222 rules of the Gitleaks 8.30.1 default configuration run inside Ward as `ward:secrets/<gitleaks-rule-id>`, over every text file, in the fast profiles like `ward-format`. Findings carry the rule, file, line and column and never the secret or any source text. Options: `exclude-paths`, `scan-history` and `history-since` on the check, and `entropy` and `exclude-paths` per rule in `ward-rules.toml` (#516).
-<<<<<<< HEAD
 - `ward check` text output shows what the `ward` gate checks: one result line per rule category (`✓ ward · style`, `✗ ward · correctness — 3 errors`) instead of the single `ward` line, and on an interactive terminal the running line names the current phase (`… ward: analyzing 12 of 812 files with 431 rules`). JSON and SARIF output are unchanged.
-=======
 - The `crap` check (`uses = "crap"`) scores every function as `complexity^2 * (1 - coverage)^3 + complexity` and fails the functions above `max` (default 30). Complexity is the value of the language's complexity rule; coverage is read per line from a JaCoCo XML or lcov report, by default at the build tool's conventional path, or from `report`. The gate runs no tests, treats a missing, unparseable or stale report as an execution error, and is opt-in.
 - `ward init --gate crap` offers the `crap` gate for Maven, Gradle, Vitest, Jest, Bun and Python projects, after the gate that produces the coverage data. No preset selects it. It is not offered for Swift, Android and Angular (`ng test`) projects.
 - The native `vulnerabilities` check (`uses = "vulnerabilities"`): it matches the resolved dependencies of every toolchain against OSV advisories, with the version ordering of Maven, semver and PEP 440. Options `minimum-severity` and `max-age-days`. A reduced copy of each advisory database lives under `.ward/cache/vulnerabilities/`. `ward check --offline` makes no network request, and `ward vulnerabilities update` refreshes the databases (#519).
->>>>>>> 0.8.0
 
 ### Changed
 
