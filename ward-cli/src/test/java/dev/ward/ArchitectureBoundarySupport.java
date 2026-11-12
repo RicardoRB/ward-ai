@@ -69,6 +69,7 @@ final class ArchitectureBoundarySupport {
       Map.ofEntries(
           Map.entry("agent", Set.of()),
           Map.entry("config", Set.of()),
+          Map.entry("dependency", Set.of("config", "project", "process")),
           Map.entry("doctor", Set.of()),
           Map.entry("gate", Set.of("project", "process")),
           Map.entry("format", Set.of("config")),
@@ -118,6 +119,7 @@ final class ArchitectureBoundarySupport {
                   "dev.ward.application.gate.AnalysisRuleSource",
                   "dev.ward.application.gate.RuleConfigurationCheck",
                   "dev.ward.application.gate.RuleSet")),
+          Map.entry("dependency", Set.of()),
           Map.entry("project", Set.of()),
           Map.entry("analysis", Set.of()),
           Map.entry("learning", Set.of()),

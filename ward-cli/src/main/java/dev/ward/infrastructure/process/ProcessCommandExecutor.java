@@ -1,5 +1,6 @@
 package dev.ward.infrastructure.process;
 
+import dev.ward.domain.process.Command;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
@@ -31,6 +33,7 @@ public class ProcessCommandExecutor implements CommandExecutor {
   private static final int EXIT_COULD_NOT_START = -1;
   private static final int EXIT_OUTPUT_CAPTURE_FAILED = -2;
   private static final int EXIT_INTERRUPTED = 130;
+  private static final int EXIT_TIMED_OUT = -3;
 
   /** Creates the stateless adapter that Dagger injects. */
   @Inject
@@ -38,6 +41,16 @@ public class ProcessCommandExecutor implements CommandExecutor {
 
   @Override
   public CommandResult execute(final List<String> command, final Path workingDirectory) {
+    return run(command, workingDirectory, null);
+  }
+
+  @Override
+  public CommandResult execute(final Command command, final Duration limit) {
+    return run(command.arguments(), command.workingDirectory(), limit);
+  }
+
+  private CommandResult run(
+      final List<String> command, final Path workingDirectory, final Duration limit) {
     final long start = System.nanoTime();
     final String executable = command.isEmpty() ? "empty" : command.getFirst();
     LOGGER.log(Level.FINE, () -> "event=process-start executable=" + executable);
@@ -51,6 +64,9 @@ public class ProcessCommandExecutor implements CommandExecutor {
         final Future<String> stdout = readers.submit(() -> read(process.getInputStream()));
         final Future<String> stderr = readers.submit(() -> read(process.getErrorStream()));
         try {
+          if (limit != null && !process.waitFor(limit.toNanos(), TimeUnit.NANOSECONDS)) {
+            return timedOut(process, executable, limit, start);
+          }
           final int exitCode = process.waitFor();
           final CommandResult result =
               new CommandResult(exitCode, stdout.get(), stderr.get(), since(start));
@@ -96,6 +112,23 @@ public class ProcessCommandExecutor implements CommandExecutor {
           since(start),
           "PROCESS_START_FAILURE");
     }
+  }
+
+  /** Destroys the process and its children, so their output streams close and the readers end. */
+  private static CommandResult timedOut(
+      final Process process, final String executable, final Duration limit, final long start) {
+    process.descendants().forEach(ProcessHandle::destroyForcibly);
+    process.destroyForcibly();
+    if (LOGGER.isLoggable(Level.WARNING)) {
+      LOGGER.log(
+          Level.WARNING, "event=process-failure executable=" + executable + " category=timeout");
+    }
+    return new CommandResult(
+        EXIT_TIMED_OUT,
+        "",
+        "Timed out after " + limit.toSeconds() + " seconds",
+        since(start),
+        "PROCESS_TIMEOUT");
   }
 
   /**
