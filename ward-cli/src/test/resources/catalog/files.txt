@@ -36,3 +36,4 @@ swiftlint
 typescript-eslint
 vulture
 ward-own
+security

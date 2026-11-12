@@ -31,7 +31,7 @@ class RuleCatalogContractTest {
   // Issues split out of roadmaps #455 (TypeScript and JavaScript engine and grammar) and #457
   // (Swift module-aware dead code), and the OpenAPI lint rules of roadmap #515 (#522) and the
   // OpenAPI breaking-change rules (#523).
-  private static final Set<Integer> ENGINE_ISSUES = Set.of(462, 466, 522, 523);
+  private static final Set<Integer> ENGINE_ISSUES = Set.of(462, 466, 522, 523, 538);
 
   private final RuleCatalog catalog = new RuleCatalogReader().load();
   private final List<RuleDefinition> definitions = CatalogRuleDefinitions.all();

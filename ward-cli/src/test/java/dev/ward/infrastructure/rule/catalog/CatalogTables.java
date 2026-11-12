@@ -22,7 +22,17 @@ final class CatalogTables {
   private static final String NOT_APPLICABLE = "not-applicable";
   private static final String IDS = "ids";
   private static final Set<String> RESERVED =
-      Set.of("name", "category", "presets", "scope", STATUS, ISSUES, NOT_APPLICABLE, IDS);
+      Set.of(
+          "name",
+          "category",
+          "presets",
+          "scope",
+          "cwe",
+          "sources",
+          STATUS,
+          ISSUES,
+          NOT_APPLICABLE,
+          IDS);
 
   private CatalogTables() {}
 
@@ -86,6 +96,11 @@ final class CatalogTables {
       }
     }
     return counterparts;
+  }
+
+  /** Returns the list of strings at {@code key}, empty when the row has no such key. */
+  static List<String> strings(final TomlTable row, final String key) {
+    return row.contains(key) ? strings(row.get(key), key) : List.of();
   }
 
   private static CatalogStatusFiles.Entry entryOf(

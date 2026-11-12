@@ -1,0 +1,1 @@
+# Security rules that Ward provides itself, one [[rule]] per weakness. Every row has cwe (the MITRE CWE ids) and sources (the public documents the rule was written from); SecurityCatalogTest enforces both. The list of CWE ids is catalog/security/cwe-5.0.txt.

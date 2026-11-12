@@ -113,7 +113,9 @@ public final class RuleCatalogReader {
           CatalogTables.ids(table),
           CatalogTables.counterparts(table),
           source,
-          CatalogStatusFiles.textStatus(table, textStatuses.get(name)));
+          CatalogStatusFiles.textStatus(table, textStatuses.get(name)),
+          CatalogTables.strings(table, "cwe"),
+          CatalogTables.strings(table, "sources"));
     } catch (final IllegalArgumentException exception) {
       throw new RuleConfigurationException(
           "Catalog file '"

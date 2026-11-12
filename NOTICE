@@ -348,3 +348,17 @@ https://github.com/gitleaks/gitleaks), MIT License:
   The rules are in ward-cli/src/main/resources/rules/secrets/, generated from
   the Gitleaks configuration by
   ward-cli/src/test/resources/catalog/upstream/gitleaks-rules-generator.py.
+
+================================================================
+MITRE CWE
+================================================================
+
+Ward's security rules, the rule reference and the pinned list
+ward-cli/src/test/resources/catalog/security/cwe-5.0.txt name weaknesses by
+their Common Weakness Enumeration (CWE) ids and names.
+
+Copyright (c) 2006-2026, The MITRE Corporation. All rights reserved.
+CWE and the CWE logo are trademarks of The MITRE Corporation. The CWE
+List is provided under the CWE Terms of Use (https://cwe.mitre.org/about/termsofuse.html),
+which grants a royalty-free license to copy and use it on condition that
+this copyright designation and the license are reproduced in any copy.

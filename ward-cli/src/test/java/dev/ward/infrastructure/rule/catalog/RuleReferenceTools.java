@@ -50,7 +50,21 @@ final class RuleReferenceTools {
         parts.add(TOOL_NAMES.get(tool) + " " + codes(rules));
       }
     }
+    if (!row.cwe().isEmpty()) {
+      parts.add(String.join(", ", row.cwe()));
+    }
+    if (!row.sources().isEmpty()) {
+      parts.add("sources " + sourceLinks(row.sources()));
+    }
     return parts.isEmpty() ? "none" : String.join("; ", parts);
+  }
+
+  private static String sourceLinks(final List<String> sources) {
+    final List<String> links = new ArrayList<>();
+    for (int index = 0; index < sources.size(); index++) {
+      links.add("[" + (index + 1) + "](" + sources.get(index) + ")");
+    }
+    return String.join(" ", links);
   }
 
   private static String codes(final List<String> rules) {

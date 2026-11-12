@@ -56,7 +56,9 @@ class CatalogModelTest {
             Map.of(AnalysisLanguage.JAVA, "ward:java/parameter-count"),
             Map.of("checkstyle", List.of("ParameterNumber")),
             "catalog/x.toml",
-            Optional.empty());
+            Optional.empty(),
+            List.of(),
+            List.of());
 
     assertThat(row.idFor(AnalysisLanguage.JAVA)).isEqualTo("ward:java/parameter-count");
     assertThat(row.idFor(AnalysisLanguage.KOTLIN)).isEqualTo("ward:kotlin/parameter-number");
@@ -82,7 +84,9 @@ class CatalogModelTest {
                     Map.of(),
                     Map.of("sonar", List.of("S1")),
                     "f",
-                    Optional.empty()))
+                    Optional.empty(),
+                    List.of(),
+                    List.of()))
         .hasMessageContaining("'sonar' is not a tool of the catalog");
   }
 
