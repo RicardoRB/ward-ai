@@ -53,7 +53,7 @@ class JavaCompatibilityMatrixTest {
   private static final String STRICT = "strict";
   private static final List<String> STANDARD =
       List.of("compile", "tests", "coverage", "ward-format");
-  private static final List<String> STRICT_EXTRAS = List.of("enforcer", "mutation");
+  private static final List<String> STRICT_EXTRAS = List.of("build-policy", "enforcer", "mutation");
 
   /** Gates the seeded violations do not target: the clean check proves the last two measure. */
   private static final Set<String> NOT_SEEDED = Set.of("compile", "coverage", "mutation");

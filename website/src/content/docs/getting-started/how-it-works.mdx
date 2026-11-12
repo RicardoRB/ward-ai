@@ -40,7 +40,7 @@ can't see: files changed outside the agent, by a person, or by a tool. See
 ### 3. Push
 
 The `pre-push` hook adds slower local checks before code leaves your machine: compilation, tests,
-coverage, and, with the `strict` preset, Ward's architecture rules and Maven Enforcer.
+coverage, and, with the `strict` preset, Ward's architecture rules, the `build-policy` rules and Maven Enforcer.
 For TypeScript and JavaScript projects, it adds `tsc` and the test runner; for Python, mypy and pytest;
 for Swift, the build and the tests.
 

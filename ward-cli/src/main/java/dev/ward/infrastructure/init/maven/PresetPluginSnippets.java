@@ -1,5 +1,6 @@
 package dev.ward.infrastructure.init.maven;
 
+import dev.ward.domain.buildpolicy.maven.MavenLifecyclePlugins;
 import dev.ward.domain.init.QualityPreset;
 import java.util.List;
 import java.util.Set;
@@ -8,18 +9,13 @@ import java.util.Set;
 final class PresetPluginSnippets {
   /**
    * Default lifecycle plugins with the versions Maven 3.9.16 binds, so pinning them changes no
-   * build behavior while satisfying {@code requirePluginVersions}.
+   * build behavior while satisfying {@code ward:build/plugin-version-pinned}. The table is the one
+   * the rule reads.
    */
   static final List<LifecyclePlugin> LIFECYCLE_PLUGINS =
-      List.of(
-          new LifecyclePlugin("maven-clean-plugin", "3.2.0"),
-          new LifecyclePlugin("maven-resources-plugin", "3.4.0"),
-          new LifecyclePlugin("maven-compiler-plugin", "3.15.0"),
-          new LifecyclePlugin("maven-surefire-plugin", "3.5.4"),
-          new LifecyclePlugin("maven-jar-plugin", "3.5.0"),
-          new LifecyclePlugin("maven-install-plugin", "3.1.4"),
-          new LifecyclePlugin("maven-deploy-plugin", "3.1.4"),
-          new LifecyclePlugin("maven-site-plugin", "3.12.1"));
+      MavenLifecyclePlugins.JAR.stream()
+          .map(plugin -> new LifecyclePlugin(plugin.artifact(), plugin.version()))
+          .toList();
 
   private PresetPluginSnippets() {}
 
@@ -74,17 +70,16 @@ final class PresetPluginSnippets {
   }
 
   /**
-   * Pins each unpinned lifecycle plugin when the preset's Enforcer rules require plugin versions,
-   * recording one plan detail per pin.
+   * Pins each unpinned lifecycle plugin when the strict preset runs the {@code build-policy} or
+   * {@code enforcer} gate, which require plugin versions, recording one plan detail per pin.
    */
   static String pinLifecycle(
       final String pom,
       final Set<String> gates,
       final QualityPreset preset,
       final List<String> details) {
-    if (!gates.contains("enforcer")
-        || preset == null
-        || !preset.rules().enforcerRules().contains("requirePluginVersions")) {
+    if (preset != QualityPreset.STRICT
+        || !(gates.contains("build-policy") || gates.contains("enforcer"))) {
       return pom;
     }
     String pinned = pom;

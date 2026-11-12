@@ -70,7 +70,7 @@ deliberately, for example in a CI-only profile with `profiles = ["ci"]`:
 | Preset | Gates | Minimums |
 |---|---|---|
 | `standard` | compile, tests, coverage, `ward-format`, and the `ward` check with the standard Java rules of `ward-rules.toml` | 70% line coverage |
-| `strict` | `standard` plus the strict Java rules, the `ward` architecture tables, Enforcer, and PIT mutation testing | 85% line, 75% branch, 60% mutation |
+| `strict` | `standard` plus the strict Java rules, the `ward` architecture tables, `build-policy`, Enforcer, and PIT mutation testing | 85% line, 75% branch, 60% mutation |
 | `standard` (TypeScript) | `tsc`, the test runner (`vitest`, `jest` or `bun-test`), and the `ward` check with the standard TypeScript rules of `ward-rules.toml` | 70% line coverage |
 | `standard` (JavaScript) | the test runner (`vitest`, `jest` or `bun-test`), and the `ward` check with the standard JavaScript rules of `ward-rules.toml` | 70% line coverage |
 | `strict` (TypeScript) | `standard` plus `stryker`, with the strict TypeScript rules of `ward-rules.toml` | 85% line, 75% branch, 60% mutation |
@@ -93,8 +93,8 @@ writes a license allowlist instead of the GPL/AGPL denylist; see
 
 Presets may write these rule files:
 
-- `config/enforcer-rules.xml` (strict)
-- `ward-rules.toml`, which selects the Ward rules of the preset for the languages of the project
+- `config/enforcer-rules.xml` (when the `enforcer` gate is selected): `dependencyConvergence`, and `requireUpperBoundDeps` for `strict`. The other Enforcer rules that earlier versions wrote are native `ward:build` rules now.
+- `ward-rules.toml`, which selects the Ward rules of the preset for the languages of the project, and for `strict` on Java the four `build.*` rules that the `build-policy` check runs
 
 No project gets lint tool rule files under `config/`; the Ward rules in `ward-rules.toml` replace them. The files carry a `managed-by: ward` marker. Unmarked user files are never overwritten.
 

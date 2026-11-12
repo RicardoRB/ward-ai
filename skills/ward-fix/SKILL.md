@@ -86,7 +86,7 @@ Order the failing gates so that early fixes do not create work for later ones:
 2. `ward-format` (mechanical; run `ward format`, which rewrites the files the gate reports.
    `ward format --check` lists the files it would change without writing)
 3. Type checkers and static analysis: `tsc`, `vue-tsc`, `svelte-check`, `astro-check`, `ngc`,
-   `mypy`, `django-check`, `ward`, `semgrep`, `enforcer`
+   `mypy`, `django-check`, `ward`, `semgrep`, `build-policy`, `enforcer`
 4. Architecture: the `ward:architecture/*` rules (layers, cycles, independence) and
    `ward:java/no-field-di`, `ward:java/no-standard-streams`
 5. Tests: `tests`, `vitest`, `jest`, `bun-test`, `ng-test`, `pytest`, `swift-test`

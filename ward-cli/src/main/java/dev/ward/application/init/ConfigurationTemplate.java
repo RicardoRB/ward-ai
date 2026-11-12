@@ -12,6 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /** Renders the {@code ward.toml} written by {@code ward init}. */
 public final class ConfigurationTemplate {
@@ -61,11 +62,6 @@ public final class ConfigurationTemplate {
         continue;
       }
       final List<String> command = gate.command();
-      final String goal =
-          command.subList(1, command.size()).stream()
-              .map(ConfigurationTemplate::escape)
-              .reduce((left, right) -> left + " " + right)
-              .orElse("");
       content
           .append("\n[checks.")
           .append(gate.id())
@@ -80,12 +76,15 @@ public final class ConfigurationTemplate {
       if (writesUses(gate)) {
         content.append("uses = \"").append(gate.id()).append("\"\n");
       }
-      if (!SupportedQualityGates.TRACEABILITY.equals(gate.id())) {
+      if (!command.isEmpty()) {
         content
             .append("command = \"")
             .append(escape(command.getFirst()))
             .append(command.size() > 1 ? " " : "")
-            .append(goal)
+            .append(
+                command.subList(1, command.size()).stream()
+                    .map(ConfigurationTemplate::escape)
+                    .collect(Collectors.joining(" ")))
             .append("\"\n");
       }
       if (openSpecRoot != null && isOpenSpec(gate.id())) {

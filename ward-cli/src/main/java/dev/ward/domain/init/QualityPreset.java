@@ -7,23 +7,12 @@ import java.util.Map;
 public enum QualityPreset {
   STANDARD(
       "standard",
-      new PresetRules(
-          Map.of("LINE", 0.70),
-          List.of(
-              "dependencyConvergence", "banDuplicatePomDependencyVersions", "requireMavenVersion"),
-          null,
-          false)),
+      new PresetRules(Map.of("LINE", 0.70), List.of("dependencyConvergence"), null, false)),
   STRICT(
       "strict",
       new PresetRules(
           Map.of("LINE", 0.85, "BRANCH", 0.75),
-          List.of(
-              "dependencyConvergence",
-              "banDuplicatePomDependencyVersions",
-              "requireMavenVersion",
-              "requireUpperBoundDeps",
-              "requirePluginVersions",
-              "banDynamicVersions"),
+          List.of("dependencyConvergence", "requireUpperBoundDeps"),
           60,
           true));
 

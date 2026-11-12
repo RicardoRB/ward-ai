@@ -103,7 +103,9 @@ class InitSetupCatalogTest {
         .containsEntry("LINE", STRICT_LINE_MINIMUM)
         .containsEntry("BRANCH", STRICT_BRANCH_MINIMUM);
     assertThat(QualityPreset.STRICT.rules().enforcerRules())
-        .contains("requireUpperBoundDeps", "requirePluginVersions", "banDynamicVersions");
+        .containsExactly("dependencyConvergence", "requireUpperBoundDeps");
+    assertThat(QualityPreset.STANDARD.rules().enforcerRules())
+        .containsExactly("dependencyConvergence");
     assertThat(QualityPreset.STRICT.rules().mutationThreshold())
         .isEqualTo(STRICT_MUTATION_THRESHOLD);
     assertThat(QualityPreset.STRICT.rules().architectureCycles()).isTrue();

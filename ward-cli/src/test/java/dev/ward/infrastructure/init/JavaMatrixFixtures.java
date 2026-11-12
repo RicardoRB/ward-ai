@@ -53,14 +53,33 @@ final class JavaMatrixFixtures {
     return fixture.isEmpty() ? "compile-error" : fixture + "-compile-error";
   }
 
-  /** Adds the common violations, and for Maven a dynamic dependency version for Enforcer. */
+  /**
+   * Adds the common violations, and for Maven a dynamic dependency version for {@code build-policy}
+   * and a version conflict for Enforcer.
+   */
   static void seedCommon(final Path project, final String buildTool) throws IOException {
     JavaMatrixProcesses.copyTree(VIOLATIONS.resolve("common"), project);
     if (MAVEN.equals(buildTool)) {
       final Path pom = project.resolve(POM);
-      final String dependency = Files.readString(VIOLATIONS.resolve("maven/dependency.xml"));
+      final String dependency =
+          Files.readString(VIOLATIONS.resolve("maven/dependency.xml"))
+              + Files.readString(VIOLATIONS.resolve("maven/convergence.xml"));
       Files.writeString(
           pom, Files.readString(pom).replaceFirst("(?s)(\\s*</dependencies>)", dependency + "$1"));
+    } else {
+      seedGradle(project);
     }
+  }
+
+  /** A dynamic dependency version in the Gradle build script, for {@code build-policy}. */
+  private static void seedGradle(final Path project) throws IOException {
+    final Path kotlin = project.resolve("build.gradle.kts");
+    final Path script = Files.exists(kotlin) ? kotlin : project.resolve("build.gradle");
+    final String dependency =
+        Files.exists(kotlin)
+            ? "implementation(\"junit:junit:4.+\")"
+            : "implementation 'junit:junit:4.+'";
+    Files.writeString(
+        script, Files.readString(script) + "\ndependencies {\n    " + dependency + "\n}\n");
   }
 }
