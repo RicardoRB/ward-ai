@@ -71,7 +71,7 @@ final class InitQuestions {
     final List<String> gates = gates(gatesGiven, preset);
     final String architecture = architecture(preset, gatesGiven);
     final SchemeQuestions schemeQuestions = new SchemeQuestions(answers, wizard, useDefaults);
-    final List<String> installs = installTools(gates);
+    final List<String> installs = InstallToolOption.resolve(answers.installTools(), gates);
     final boolean qualityHooks =
         answers.qualityHooks() != null ? answers.qualityHooks() : askQualityHooks();
     return new InitSelection(
@@ -84,23 +84,6 @@ final class InitQuestions {
         answers.ci(),
         answers.agentRules(),
         schemeQuestions.scheme(catalog, project));
-  }
-
-  /**
-   * Returns the {@code --install-tool} values, which init accepts but does not act on, after
-   * checking that each names a selected gate as before.
-   */
-  private List<String> installTools(final List<String> gates) {
-    final List<String> installs =
-        answers.installTools() == null ? List.of() : List.copyOf(answers.installTools());
-    installs.forEach(
-        install -> {
-          if (!gates.contains(install)) {
-            throw new WardException(
-                "--install-tool " + install + " requires --gate " + install + ".");
-          }
-        });
-    return installs;
   }
 
   private QualityPreset preset(final boolean gatesGiven) {

@@ -139,7 +139,7 @@ public class InitService {
         changes.rollback();
       }
       if (result.created()) {
-        warnIgnoredInstallTools(selection);
+        IgnoredInstallTools.warn(selection);
       }
       completed = true;
       LOGGER.log(Level.INFO, "event=initialization-complete status=applied");
@@ -197,15 +197,6 @@ public class InitService {
       files.configuration().restore(configurationFile, original);
     } catch (IllegalStateException ignored) {
       // Restoration can be retried manually.
-    }
-  }
-
-  /** {@code --install-tool} is accepted for old command lines; init installs no gate tool. */
-  private static void warnIgnoredInstallTools(final InitSelection selection) {
-    if (!selection.installTools().isEmpty()) {
-      LOGGER.log(
-          Level.WARNING,
-          () -> "event=init-install-tool-ignored count=" + selection.installTools().size());
     }
   }
 }
