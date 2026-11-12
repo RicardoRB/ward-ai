@@ -12,7 +12,6 @@ import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.agent.PlannedFileChange.Action;
 import dev.ward.domain.init.InitPlan;
 import dev.ward.domain.init.InitSelection;
-import dev.ward.domain.init.PlannedGateInstallation;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.infrastructure.agent.ClaudeCodeIntegration;
 import dev.ward.infrastructure.init.ArchitectureTablesFixtures;
@@ -82,7 +81,7 @@ class InitServicePlanTest {
             .plan(dir, new InitSelection(List.of("none"), List.of("tests", "gitleaks")), false);
 
     assertThat(plan.gateInstallations())
-        .extracting(PlannedGateInstallation::tool)
+        .extracting(installation -> installation.tool())
         .containsExactly("gitleaks");
     assertThat(ProjectSnapshot.of(dir)).isEqualTo(before);
   }

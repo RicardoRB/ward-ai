@@ -20,18 +20,6 @@ class NativeHookClineTest {
     hook = new NativeHookRun(root, new ClineIntegration());
   }
 
-  private String pre(final String tool, final String parameters) {
-    return "{\"clineVersion\":\"3.0.72\",\"hookName\":\"tool_call\",\"workspaceRoots\":[\""
-        + root
-        + "\"],\"tool_call\":{\"id\":\"1\",\"name\":\""
-        + tool
-        + "\",\"input\":{}},\"preToolUse\":{\"toolName\":\""
-        + tool
-        + "\",\"parameters\":"
-        + parameters
-        + "}}";
-  }
-
   @Test
   void failingChecksAfterAnEditReachTheAgentAsContextModification() {
     final String payload =

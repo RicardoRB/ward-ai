@@ -40,8 +40,8 @@ class NativeAdapterSnapshotTest {
         .append(' ')
         .append(adapter.capabilities().stream().map(Enum::name).sorted().toList())
         .append("\n== config\n")
-        .append(adapter.configContent());
-    text.append("\n== hook\n")
+        .append(adapter.configContent())
+        .append("\n== hook\n")
         .append(adapter.hookContent())
         .append("\n== deny\n")
         .append(adapter.serialize(NativeHookOutcome.deny("Blocked \"quoted\" \\ path")))

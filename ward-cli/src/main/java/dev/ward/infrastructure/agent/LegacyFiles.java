@@ -30,7 +30,7 @@ record LegacyFiles(Path directory, Pattern name, Pattern marker) {
       candidates =
           entries
               .filter(Files::isRegularFile)
-              .filter(file -> name.matcher(file.getFileName().toString()).matches())
+              .filter(file -> name.matcher(String.valueOf(file.getFileName())).matches())
               .sorted()
               .toList();
     }

@@ -30,7 +30,6 @@ final class WardAnalysisFixtures {
     final QualityGateFactory factory =
         new QualityGateFactory(
             executor,
-            null,
             new GateReportPorts(ReportDirectories.NONE, null, null, null),
             new GateExtensions(null, ports(), null));
     return new CheckService(

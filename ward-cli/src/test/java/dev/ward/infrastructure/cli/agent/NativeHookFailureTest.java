@@ -5,7 +5,6 @@ import static dev.ward.ProjectFixtures.withPom;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.application.gate.HookCheckFixtures;
-import dev.ward.domain.FakeAvailableEnvironment;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
 import dev.ward.infrastructure.agent.CodexIntegration;
@@ -47,10 +46,9 @@ class NativeHookFailureTest {
   }
 
   private int run(final String payload, final String... args) {
-    final FakeAvailableEnvironment environment = new FakeAvailableEnvironment(true);
     final NativeHookCommand command =
         new NativeHookCommand(
-            new HookChecks(HookCheckFixtures.checks(passing, environment)),
+            new HookChecks(HookCheckFixtures.checks(passing)),
             new ForyJsonCodec(),
             Set.of(new CodexIntegration()),
             new ByteArrayInputStream(payload.getBytes(StandardCharsets.UTF_8)));

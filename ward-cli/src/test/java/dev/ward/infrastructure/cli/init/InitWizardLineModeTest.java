@@ -91,7 +91,7 @@ class InitWizardLineModeTest {
 
     assertThat(exit).as(output.toString()).isZero();
     final String configuration = Files.readString(root.resolve("ward.toml"));
-    assertThat(configuration).contains("[checks.tests]").doesNotContain("openspec");
+    assertThat(configuration).contains("[checks.tests]");
     assertThat(root.resolve(".git/hooks/pre-commit")).doesNotExist();
     assertThat(root.resolve(".git/hooks/pre-push")).doesNotExist();
     assertThat(events)

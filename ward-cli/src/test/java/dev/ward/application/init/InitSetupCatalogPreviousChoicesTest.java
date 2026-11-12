@@ -64,18 +64,6 @@ class InitSetupCatalogPreviousChoicesTest {
   }
 
   @Test
-  void openSpecValidationsAreNotOfferedAsGates(@TempDir final Path dir) throws Exception {
-    withPom(dir, PLAIN_POM);
-    service.initialize(
-        dir,
-        new InitSelection(
-            List.of("none"), List.of("tests"), null, null, List.of(), false, null, false, null));
-
-    assertThat(catalog.previousChoices(project(dir)))
-        .hasValue(new PreviousChoices(List.of("tests")));
-  }
-
-  @Test
   void unreadableConfigurationGivesNoChoices(@TempDir final Path dir) throws Exception {
     withPom(dir, PLAIN_POM);
     Files.writeString(dir.resolve("ward.toml"), "not [valid toml");

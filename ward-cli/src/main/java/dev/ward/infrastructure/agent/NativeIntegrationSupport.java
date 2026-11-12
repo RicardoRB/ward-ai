@@ -51,7 +51,6 @@ public final class NativeIntegrationSupport {
    */
   public static IntegrationResult integrate(
       final Path projectRoot, final IntegrationRequest request, final NativeArtifactPlan plan) {
-    final Path root = projectRoot.toAbsolutePath().normalize();
     final NativeIntegrationTransaction transaction;
     try {
       transaction =

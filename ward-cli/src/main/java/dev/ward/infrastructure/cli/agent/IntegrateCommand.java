@@ -121,12 +121,6 @@ public final class IntegrateCommand implements Callable<Integer> {
         cause);
   }
 
-  private PrintWriter error() {
-    return spec == null
-        ? new PrintWriter(System.err, true, StandardCharsets.UTF_8)
-        : spec.commandLine().getErr();
-  }
-
   private PrintWriter output() {
     return spec == null
         ? new PrintWriter(System.out, true, StandardCharsets.UTF_8)

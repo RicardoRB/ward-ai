@@ -7,7 +7,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import dev.ward.application.agent.HookScope;
 import dev.ward.application.gate.HookCheckFixtures;
 import dev.ward.application.project.ProjectDetector;
-import dev.ward.domain.FakeAvailableEnvironment;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
 import dev.ward.infrastructure.agent.CodexIntegration;
@@ -105,12 +104,11 @@ class NativeHookRepositoryTest {
           ranIn.add(directory);
           return new CommandResult(gateExit, "", "", Duration.ZERO);
         };
-    final FakeAvailableEnvironment environment = new FakeAvailableEnvironment(true);
     final ProjectDetector detector = new ProjectDetector(new FileSystemProjectInspection());
     final NativeHookCommand command =
         new NativeHookCommand(
             new HookChecks(
-                HookCheckFixtures.checks(executor, environment),
+                HookCheckFixtures.checks(executor),
                 new HookScope(detector, directory -> true, new FileSystemProjectPaths())),
             new ForyJsonCodec(),
             Set.of(new CodexIntegration()),

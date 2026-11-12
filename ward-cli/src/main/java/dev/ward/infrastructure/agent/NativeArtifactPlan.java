@@ -3,6 +3,7 @@ package dev.ward.infrastructure.agent;
 import dev.ward.domain.agent.IntegrationCapability;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -38,8 +39,8 @@ public record NativeArtifactPlan(
   /** The earlier-version files that carry this integration's marker. */
   LegacyFiles legacy(final Path legacyPath) {
     return new LegacyFiles(
-        legacyPath.getParent(),
-        Pattern.compile(Pattern.quote(legacyPath.getFileName().toString())),
+        Objects.requireNonNull(legacyPath.getParent(), "legacy path must have a parent"),
+        Pattern.compile(Pattern.quote(String.valueOf(legacyPath.getFileName()))),
         Pattern.compile(Pattern.quote(marker)));
   }
 }

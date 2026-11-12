@@ -5,7 +5,6 @@ import static dev.ward.ProjectFixtures.withPom;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.application.gate.HookCheckFixtures;
-import dev.ward.domain.FakeAvailableEnvironment;
 import dev.ward.domain.agent.NativeHookInput;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
@@ -131,10 +130,9 @@ class NativeHookPartialCheckTest {
           commands.add(command);
           return new CommandResult(0, "", "", Duration.ZERO);
         };
-    final FakeAvailableEnvironment environment = new FakeAvailableEnvironment(true);
     final NativeHookCommand command =
         new NativeHookCommand(
-            new HookChecks(HookCheckFixtures.checks(executor, environment)),
+            new HookChecks(HookCheckFixtures.checks(executor)),
             new ForyJsonCodec(),
             Set.of(new CodexIntegration()),
             new ByteArrayInputStream(payload.getBytes(StandardCharsets.UTF_8)));

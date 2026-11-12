@@ -40,7 +40,6 @@ class SwiftGatesTest {
   private static QualityGateFactory factory(final FakeCommandExecutor executor) {
     return new QualityGateFactory(
         executor,
-        null,
         new GateReportPorts(
             ReportDirectories.NONE,
             null,

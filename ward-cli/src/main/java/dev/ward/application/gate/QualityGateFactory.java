@@ -6,7 +6,6 @@ import dev.ward.application.gate.swift.SwiftGates;
 import dev.ward.domain.config.GateConfiguration;
 import dev.ward.domain.config.WardConfiguration;
 import dev.ward.domain.config.WardException;
-import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.gate.MutationReport;
 import dev.ward.domain.gate.QualityGate;
 import dev.ward.domain.gate.ReportDirectories;
@@ -51,7 +50,6 @@ public class QualityGateFactory {
           SupportedQualityGates.MUTATION, PIT_REPORT_HINT);
 
   private final CommandExecutor executor;
-  private final EnvironmentInspection environment;
   private final ReportDirectories reportDirectories;
   private final MutationReport strykerReport;
   private final MutationReport pitReport;
@@ -61,13 +59,7 @@ public class QualityGateFactory {
 
   /** Creates a factory for command gates only. */
   public QualityGateFactory(final CommandExecutor executor) {
-    this(executor, null, ReportDirectories.NONE);
-  }
-
-  /** Creates a factory that can check executable availability. */
-  public QualityGateFactory(
-      final CommandExecutor executor, final EnvironmentInspection environment) {
-    this(executor, environment, ReportDirectories.NONE);
+    this(executor, ReportDirectories.NONE);
   }
 
   /**
@@ -75,10 +67,8 @@ public class QualityGateFactory {
    * their tools write reports.
    */
   public QualityGateFactory(
-      final CommandExecutor executor,
-      final EnvironmentInspection environment,
-      final ReportDirectories reportDirectories) {
-    this(executor, environment, new GateReportPorts(reportDirectories, null, null, null), null);
+      final CommandExecutor executor, final ReportDirectories reportDirectories) {
+    this(executor, new GateReportPorts(reportDirectories, null, null, null), null);
   }
 
   /**
@@ -89,7 +79,6 @@ public class QualityGateFactory {
   @Inject
   public QualityGateFactory(
       final CommandExecutor executor,
-      final EnvironmentInspection environment,
       final GateReportPorts reports,
       final GateExtensions extensions) {
     this.reportDirectories = reports.directories();
@@ -98,7 +87,6 @@ public class QualityGateFactory {
     this.mutmutReport = reports.mutmut();
     this.reports = reports;
     this.executor = executor;
-    this.environment = environment;
     this.extensions = extensions == null ? GateExtensions.NONE : extensions;
   }
 

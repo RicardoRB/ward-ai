@@ -6,8 +6,6 @@ import static dev.ward.ProjectFixtures.withPom;
 import dev.ward.application.gate.CheckService;
 import dev.ward.application.gate.HookCheckFixtures;
 import dev.ward.application.learning.LearningService;
-import dev.ward.domain.FakeAvailableEnvironment;
-import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
 import dev.ward.infrastructure.json.ForyJsonCodec;
@@ -71,8 +69,7 @@ class ClaudeCodeHookTestSupport {
 
   int run(final InputStream input, final boolean interactive, final String... args) {
     final ForyJsonCodec codec = new ForyJsonCodec();
-    final EnvironmentInspection environment = new FakeAvailableEnvironment(true);
-    final CheckService checks = HookCheckFixtures.checks(executor, environment);
+    final CheckService checks = HookCheckFixtures.checks(executor);
     final ClaudeCodeHookCommand command =
         new ClaudeCodeHookCommand(
             new HookChecks(checks),

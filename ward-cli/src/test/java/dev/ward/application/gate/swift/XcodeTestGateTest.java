@@ -89,7 +89,7 @@ class XcodeTestGateTest {
             null,
             null,
             null);
-    return new QualityGateFactory(executor, null, ports, null)
+    return new QualityGateFactory(executor, ports, null)
         .create(new WardConfiguration(1, Map.of("xcode", check)))
         .getFirst()
         .execute(PROJECT);
