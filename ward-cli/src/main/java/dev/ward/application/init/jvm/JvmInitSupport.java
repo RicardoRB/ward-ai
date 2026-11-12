@@ -17,6 +17,7 @@ import dev.ward.domain.project.Project;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /** Init choices for Maven and Gradle projects. */
@@ -42,8 +43,32 @@ public final class JvmInitSupport implements ToolchainInitSupport {
     return new Gates(
         analysisGates(project, buildTool, android),
         buildTool.policyGates().stream()
-            .filter(gate -> !"api-compat".equals(gate.id()) || project.hasApiBaseline())
+            .map(gate -> apiCompat(gate, project, inputs))
+            .flatMap(Optional::stream)
             .toList());
+  }
+
+  /**
+   * Java projects get the native source comparison when a release tag exists; Kotlin projects keep
+   * japicmp, which needs a published baseline, until the native check reads Kotlin.
+   */
+  private static Optional<InitGateOption> apiCompat(
+      final InitGateOption gate, final Project project, final InitInputs inputs) {
+    if (!SupportedQualityGates.API_COMPAT.equals(gate.id())) {
+      return Optional.of(gate);
+    }
+    if (project.language() == Language.JAVA) {
+      return inputs.environment().hasReleaseTag(project.root())
+          ? Optional.of(
+              new InitGateOption(
+                  gate.id(),
+                  "Compares the public API with the latest release tag, from sources.",
+                  List.of(),
+                  true,
+                  "compares sources with the latest release tag; needs full Git history and tags"))
+          : Optional.empty();
+    }
+    return project.hasApiBaseline() ? Optional.of(gate) : Optional.empty();
   }
 
   /**

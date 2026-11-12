@@ -4,6 +4,7 @@ import dev.ward.domain.config.WardException;
 import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.project.Framework;
+import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 
 /** Explains why init does not offer a supported gate for a project. */
@@ -24,12 +25,26 @@ final class GateOffers {
               + id
               + ".");
     }
-    if ("api-compat".equals(id) && !project.hasApiBaseline()) {
+    requireApiBaseline(environment, project, id);
+    requireOpenApiSpec(environment, project, id);
+  }
+
+  private static void requireApiBaseline(
+      final EnvironmentInspection environment, final Project project, final String id) {
+    if (!SupportedQualityGates.API_COMPAT.equals(id)) {
+      return;
+    }
+    if (project.language() == Language.JAVA) {
+      if (!environment.hasReleaseTag(project.root())) {
+        throw new WardException(
+            "api-compat compares sources with the latest release tag, so it is offered only when"
+                + " a tag such as v1.2.3 is reachable from HEAD. Fetch tags or create one.");
+      }
+    } else if (!project.hasApiBaseline()) {
       throw new WardException(
           "api-compat compares against a released baseline, so it is offered only for Maven projects"
               + " whose pom.xml declares <distributionManagement>.");
     }
-    requireOpenApiSpec(environment, project, id);
   }
 
   private static void requireOpenApiSpec(

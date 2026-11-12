@@ -4,6 +4,7 @@ import dev.ward.domain.doctor.EnvironmentFacts;
 import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.doctor.ExecutableObservation;
 import dev.ward.domain.doctor.OssIndexSetting;
+import dev.ward.domain.gate.ReleaseTags;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
 import dev.ward.infrastructure.doctor.gradle.AndroidEnvironmentFacts;
@@ -162,6 +163,14 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
     }
     final List<String> tracked = Arrays.asList(result.stdout().split("\\u0000"));
     return OPENAPI_SPECS.stream().filter(tracked::contains).findFirst();
+  }
+
+  @Override
+  public boolean hasReleaseTag(final Path projectRoot) {
+    final CommandResult result =
+        executor.execute(List.of("git", "tag", "--merged", "HEAD"), projectRoot);
+    return result.succeeded()
+        && ReleaseTags.highest(result.stdout().lines().map(String::trim).toList()).isPresent();
   }
 
   @Override

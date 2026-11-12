@@ -39,6 +39,11 @@ public interface EnvironmentInspection {
     return Optional.empty();
   }
 
+  /** Returns whether a release tag, such as {@code v1.2.3}, is reachable from {@code HEAD}. */
+  default boolean hasReleaseTag(final Path projectRoot) {
+    return false;
+  }
+
   /**
    * Returns the FastAPI application the project defines, as {@code module:attribute} such as {@code
    * app.main:app}, found in {@code main.py} or {@code app.py} at the root, or under {@code app/};

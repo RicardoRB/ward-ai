@@ -197,7 +197,8 @@ class InitSetupCatalogTest {
     Files.writeString(dir.resolve("build.gradle"), "plugins { id 'java' }\n");
     final Project project =
         new ProjectDetector(new FileSystemProjectInspection()).detect(dir).orElseThrow();
-    final InitSetupCatalog catalog = new InitSetupCatalog(new FakeEnvironmentInspection("gradle"));
+    final InitSetupCatalog catalog =
+        new InitSetupCatalog(new FakeEnvironmentInspection("gradle").withReleaseTag());
 
     assertThat(catalog.gates(project, null))
         .extracting(InitGateOption::id)

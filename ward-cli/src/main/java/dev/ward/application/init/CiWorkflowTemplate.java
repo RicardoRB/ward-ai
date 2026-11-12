@@ -163,8 +163,9 @@ public final class CiWorkflowTemplate {
         + "      security-events: write\n"
         + "    steps:\n"
         + "      - uses: actions/checkout@v5\n"
-        // gitleaks scans the whole history, and openapi-compat needs the base branch.
-        + (ids.contains("gitleaks") || ids.contains("openapi-compat")
+        // gitleaks scans the whole history, openapi-compat needs the base branch, and api-compat
+        // needs the release tags.
+        + (ids.contains("gitleaks") || ids.contains("openapi-compat") || ids.contains("api-compat")
             ? "        with:\n          fetch-depth: 0\n"
             : "")
         + InitToolchains.support(project).ciSetup(project, facts);
