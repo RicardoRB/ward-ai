@@ -11,7 +11,7 @@ occurrence count, state, timestamps, and whether a prompt has been issued. Full 
 never stored.
 
 Only findings from failed gates whose tool reports specific rule IDs are learned: Ward rules,
-gitleaks, the TypeScript compiler (for example `tsc:TS2322`) and
+secrets rules, the TypeScript compiler (for example `tsc:TS2322`) and
 mypy (for example `mypy:arg-type`). Gates without rule-level findings (tests, coverage, mutation) and
 catch-all findings such as formatting, javac or Swift compiler errors are not tracked, because the only lesson they offer is to run the command again.
 

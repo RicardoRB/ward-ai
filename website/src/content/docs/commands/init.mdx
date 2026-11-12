@@ -90,7 +90,7 @@ Init assigns each gate to cumulative [profiles](/configuration/ward-toml/):
 
 | Gates | Profiles |
 |---|---|
-| Fast: `ward-format`, `ward`, `gitleaks` | `default`, `pre-commit`, `pre-push`, `ci` |
+| Fast: `ward-format`, `secrets` | `default`, `pre-commit`, `pre-push`, `ci`, `edit` |
 | Slower local gates, including `compile`, `tsc`, the test runners, and custom commands | `pre-push`, `ci` |
 | Environment-dependent gates | `ci` |
 
@@ -278,27 +278,19 @@ commercial Arcmutate history plugin.
 ### Generated files
 
 - **`ward.toml`** includes [`partial` tables](/configuration/gates/#partial-checks) for
-  `ward`, `ward-format`, `semgrep`, and `gitleaks`. The check after each agent edit, and the
+  `ward`, `ward-format`, `semgrep`, and `secrets`. The check after each agent edit, and the
   pre-commit hook, skip gates the change cannot affect and narrow these tools to the edited or
   staged files. Other gates, `ward check` without `--path`, the pre-push hook, and CI still check
-  the whole project. `gitleaks` scans those files directly, so it sees changes that are not yet
-  committed; its full run scans the Git history.
+  the whole project. `secrets` scans those files itself, so it sees changes that are not yet
+  committed.
 - **`ward.toml` architecture tables.** `[[checks.ward.layers]]` holds the boundary of the style, and
   `ward:architecture/layers` checks it. Under `strict`, `[checks.ward.cycles]` lists the source roots
   whose slices must not form cycles, and `[[checks.ward.independence]]` lists the feature modules that
   must stay independent.
-- **The `gitleaks` gate** writes a redacted SARIF report, so `ward check` can attach findings (file,
-  line, and rule) to a failed gate:
-
-  ```toml
-  [checks.gitleaks]
-  command = ["gitleaks", "detect", "--no-banner", "--redact",
-             "--report-format", "sarif", "--report-path", "target/gitleaks.sarif"]
-  ```
-
-  Gradle projects use `build/gitleaks.sarif`. Ward creates the report directory before the gate
-  runs, so it works on a fresh clone. Configurations from earlier versions keep working without
-  findings; re-run `ward init` or add the four report arguments to enable them.
+- **The `secrets` gate** runs inside Ward, with no command and nothing to install, and writes
+  `uses = "secrets"`. It is offered with `--gate secrets` and no preset selects it. See
+  [secret detection](/configuration/secrets/). The `gitleaks` gate no longer exists; a configuration
+  that still runs a `gitleaks` command keeps working as a plain command check, without findings.
 - **The `license` plugin** matches license names exactly and case-sensitively, so init adds
   `licenseMerges` that map common spellings to one name. The policy depends on the preset:
   - `standard` denies GPL and AGPL, mapping spellings such as `GPL-3.0` and
@@ -421,7 +413,7 @@ and Ward does not run it.
 - JavaScript gets the same gates except `tsc`.
 - The test runner is the one the project declares: `vitest`, then `jest`. A Bun project without
   either gets `bun-test`, and any other project gets `vitest` with `@vitest/coverage-v8`. Their version follows the declared `vite`: the newest pinned release whose Vite range includes it (4.1.11 for Vite 6 to 8), and 4.0.18 without `vite`.
-- `gitleaks` and `trivy` are offered as for Java.
+- `secrets` and `trivy` are offered as for Java.
 - `crap` is opt-in. Selected with `vitest`, `jest` or `bun-test`, it reads the `coverage/lcov.info`
   that the test gate writes. It is not offered for `ng-test`.
 
@@ -637,7 +629,7 @@ Init installs a missing tool only with your explicit consent, one tool at a time
 
 | Tool | How |
 |---|---|
-| Trivy, Gitleaks | Homebrew |
+| Trivy | Homebrew |
 | Semgrep | Homebrew, or pipx as a fallback |
 | vacuum (`openapi-lint`) | Homebrew |
 | oasdiff (`openapi-diff`, `openapi-compat`) | Homebrew |
@@ -680,8 +672,8 @@ Without `--ci`, init does not generate a CI workflow. `--ci github` writes
 - installs the Ward release that ran init (`WARD_VERSION`);
 - for a Java project, sets up the JDK that runs your build (JDK 25 when init cannot read it), since
   the pinned tools were chosen for that JDK;
-- pins the tools the selected gates need (gitleaks, trivy, semgrep, OpenSpec);
-- fetches full history for gitleaks and caches the trivy database;
+- pins the tools the selected gates need (trivy, semgrep, OpenSpec);
+- caches the trivy database, and fetches full history for `openapi-compat`;
 - passes the `NVD_API_KEY` secret to `dependency-check`;
 - uploads the SARIF report to code scanning for pull requests from the same repository.
 

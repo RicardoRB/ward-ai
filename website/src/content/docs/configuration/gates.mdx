@@ -22,7 +22,7 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `ward-format` | Ward's native formatter | Check source formatting against `.editorconfig`. Always selected by `ward init`. |
 | | `crap` | Ward analysis and a coverage report | Fail functions that are both complex and untested, by their CRAP score. |
 | Security | `semgrep` | Semgrep | SAST and custom security rules. |
-| | `gitleaks` | Gitleaks | Detect committed secrets. |
+| | `secrets` | Ward's native secret rules | Detect committed secrets with no tool to install. See [secret detection](/configuration/secrets/). |
 | | `dependency-check` | OWASP Dependency-Check | Scan dependencies for known CVEs. |
 | | `zap` | OWASP ZAP | DAST against a running application. |
 | | `trivy` | Trivy | Vulnerabilities in dependencies, containers, and IaC. |
@@ -114,7 +114,7 @@ the Groovy or the Kotlin build script. See [what init changes](/commands/init/#w
 
 ## Standalone tools
 
-`semgrep`, `gitleaks`, `trivy`, `zap-baseline.py`, `vacuum`, and `oasdiff` must already be on the path.
+`semgrep`, `trivy`, `zap-baseline.py`, `vacuum`, and `oasdiff` must already be on the path.
 
 - A missing tool is reported as unavailable with an install link, and other gates still run.
 - `ward init` can install supported tools with your consent; `check` never installs them.
@@ -1053,13 +1053,13 @@ You are responsible for being authorized to scan the target.
 
 ## Structured findings
 
-When `ward`, `gitleaks`, `compile`, `ward-format`, `tsc`, `mypy`, `swift-build`, or `xcodebuild-test` fails, Ward turns the tool's output
+When `ward`, `secrets`, `compile`, `ward-format`, `tsc`, `mypy`, `swift-build`, or `xcodebuild-test` fails, Ward turns the tool's output
 into findings with rule, severity, file, line, column, message, and a rule documentation link when
 known. They appear in [JSON](/reference/json-output/) and SARIF output.
 
 | Gate | Source | Maven | Gradle | TypeScript & JavaScript |
 |---|---|---|---|---|
-| `gitleaks` | SARIF report | `target/gitleaks.sarif` | `build/gitleaks.sarif` | `.ward/reports/gitleaks.sarif` |
+| `secrets` | Ward's own findings, with rule, file, line and column | | | |
 | `compile` | javac messages in the output | | | |
 | `ward-format` | Ward's own findings, one per unformatted file (file only, no line) | | | |
 | `tsc` | Compiler diagnostics in the output; the command must pass `--pretty false` | | | |
@@ -1071,7 +1071,7 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
   instead of `target/` or `build/`. Stryker's mutation report is the exception: it stays at Stryker's own
   `reports/mutation/mutation.json`, because only Stryker's configuration file can move it.
 - A missing or malformed report never changes the gate result; the gate just has no findings.
-- Gitleaks findings never contain the matched secret.
+- `secrets` findings never contain the matched secret or any source text.
 - `mypy` reads the JSON lines of `mypy -O json`. Mypy `note` lines are skipped. A missing or unparseable JSON output gives no findings, and the gate result does not
   change. Only the structured formats are read: the command must pass them.
 - `tsc`'s pretty output gives no findings. The gate result does not change.
@@ -1082,7 +1082,7 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
 ## Partial checks
 
 `ward init` writes a [`[checks.<name>.paths]` table](/configuration/ward-toml/#partial-checks)
-for `semgrep`, `gitleaks`, `openapi-lint`, and
+for `semgrep`, `secrets`, `openapi-lint`, and
 `openapi-diff`. After an agent
 edit, and for the files a commit stages, a gate:
 
@@ -1093,7 +1093,7 @@ edit, and for the files a commit stages, a gate:
 | Gate | Maven | Gradle |
 |---|---|---|
 | `semgrep` | each path as its own argument | each path as its own argument |
-| `gitleaks` | `--no-git --source=<path>` for each path, so uncommitted edits are scanned | same as Maven |
+| `secrets` | the edited files, scanned in Ward, so uncommitted edits are scanned | same as Maven |
 | `openapi-lint`, `openapi-diff` | full, only when the spec is edited | full, only when the spec is edited |
 
 `tsc` and the test runners have no table, so they run in full in `pre-push`

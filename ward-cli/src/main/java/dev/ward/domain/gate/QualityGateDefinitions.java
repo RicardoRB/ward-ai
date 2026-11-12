@@ -17,7 +17,7 @@ public final class QualityGateDefinitions {
           new Definition("dependency-check", "OWASP Dependency-Check", Phase.CI, false),
           gate("mutation", Phase.CI),
           gate("semgrep", Phase.CI),
-          new Definition("gitleaks", "Gitleaks", Phase.FAST, true),
+          new Definition(SupportedQualityGates.SECRETS, "secrets", Phase.FAST, true),
           gate("zap", Phase.CI),
           gate("trivy", Phase.CI),
           gate("enforcer", Phase.LOCAL),

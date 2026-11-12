@@ -6,6 +6,7 @@ import dev.ward.application.gate.AnalysisPorts;
 import dev.ward.application.gate.CrapPorts;
 import dev.ward.application.gate.FormatGates;
 import dev.ward.application.gate.GateExtensions;
+import dev.ward.application.gate.SecretGates;
 import dev.ward.application.gate.openapi.OpenApiGates;
 import dev.ward.domain.gate.LineCoverageReport;
 import dev.ward.infrastructure.finding.FileSystemCoverageFiles;
@@ -13,14 +14,18 @@ import dev.ward.infrastructure.finding.FileSystemCoverageFiles;
 /** Collects the optional gate dependencies that the quality gate factory injects. */
 @Module
 interface GateExtensionsModule {
-  /** Gathers the OpenAPI gates, the {@code ward} gate's ports and the {@code ward-format} gate. */
+  /**
+   * Gathers the OpenAPI gates, the {@code ward} gate's ports and the {@code ward-format} and {@code
+   * secrets} gates.
+   */
   @Provides
   static GateExtensions gateExtensions(
       final OpenApiGates openApi,
       final AnalysisPorts analysis,
       final FormatGates format,
+      final SecretGates secrets,
       final CrapPorts crap) {
-    return new GateExtensions(openApi, analysis, format, crap);
+    return new GateExtensions(openApi, analysis, format, secrets, crap);
   }
 
   /** Gathers what the {@code crap} gate reads: a coverage report reader and the file facts. */

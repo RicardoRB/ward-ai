@@ -28,12 +28,12 @@ repository-wide gates run once from the root:
 [checks.tsc]
 command = ["pnpm", "exec", "turbo", "run", "check-types", "--log-prefix=task", "--log-order=grouped", "--continue=always", "--ui=stream"]
 
-[checks.gitleaks]
-command = ["gitleaks", "git", "--redact", "--report-format", "sarif", "--report-path", ".ward/reports/gitleaks.sarif"]
+[checks.secrets]
+uses = "secrets"
 ```
 
 `tsc`, test, and `stryker` are the turbo gates, with the tasks `check-types`, `test`, and `mutation`.
-`gitleaks`, the `ward` check, and the OpenAPI gates are unchanged and run once from the root. The
+`secrets`, the `ward` check, and the OpenAPI gates are unchanged and run once from the root. The
 test gate is named after the members' majority runner.
 
 Init adds the tasks the gates need to `turbo.json` when they are missing, without changing an

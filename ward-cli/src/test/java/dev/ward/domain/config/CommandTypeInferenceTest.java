@@ -33,7 +33,7 @@ class CommandTypeInferenceTest {
         "tests|./mvnw -q -DskipITs test",
         "tests|./gradlew test",
         "compile|./mvnw compile",
-        "gitleaks|gitleaks detect --no-git",
+        "command|gitleaks detect --no-git",
         "semgrep|semgrep scan --config p/typescript",
         "trivy|trivy fs .",
         "command|npx eslint . --format json",

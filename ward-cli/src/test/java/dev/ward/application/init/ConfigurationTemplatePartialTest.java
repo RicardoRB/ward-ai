@@ -36,17 +36,13 @@ class ConfigurationTemplatePartialTest {
   }
 
   @Test
-  void gitleaksScansEachEditedFileOutsideGitHistory() throws IOException {
+  void secretsScansEachEditedFileThroughWard() throws IOException {
     final Map<String, GateConfiguration> gates = parse(BuildTool.MAVEN, QualityPreset.STANDARD);
 
-    assertThat(gates.get("gitleaks").partial())
+    assertThat(gates.get("secrets").partial())
         .isEqualTo(
             new PartialGateConfiguration(
-                List.of("**"),
-                List.of(".gitleaks*"),
-                List.of("--no-git", "--source={paths}"),
-                null,
-                null));
+                List.of("**"), List.of("ward-rules.toml"), List.of(), null, null));
   }
 
   @Test
@@ -61,7 +57,7 @@ class ConfigurationTemplatePartialTest {
   private Map<String, GateConfiguration> parse(
       final BuildTool buildTool, final QualityPreset preset) throws IOException {
     final List<InitGateOption> options =
-        List.of("compile", "tests", "coverage", "license", "mutation", "gitleaks", "semgrep")
+        List.of("compile", "tests", "coverage", "license", "mutation", "secrets", "semgrep")
             .stream()
             .map(
                 id ->

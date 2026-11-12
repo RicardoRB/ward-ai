@@ -31,6 +31,7 @@ public class QualityGateFactory {
       Set.of(
           SupportedQualityGates.ANALYSIS,
           SupportedQualityGates.FORMAT,
+          SupportedQualityGates.SECRETS,
           SupportedQualityGates.CRAP,
           SupportedQualityGates.COVERAGE);
 
@@ -244,9 +245,16 @@ public class QualityGateFactory {
 
   /**
    * Builds the gates that run inside Ward: the {@code ward} analysis, the {@code ward-format}, the
-   * {@code crap} score and the {@code coverage} minimum, which reads its report itself.
+   * {@code secrets} check, the {@code crap} score and the {@code coverage} minimum, which reads its
+   * report itself.
    */
   private QualityGate inProcessGate(final GateConfiguration check, final List<String> focus) {
+    if (SupportedQualityGates.SECRETS.equals(check.type())) {
+      if (extensions.secrets() == null) {
+        throw new WardException("Secrets gate dependencies are unavailable.");
+      }
+      return extensions.secrets().create(check, focus);
+    }
     if (SupportedQualityGates.COVERAGE.equals(check.type())) {
       return CoverageGates.report(check, executor, reports, extensions);
     }

@@ -97,6 +97,7 @@ class FocusEquivalenceTest {
             null,
             null,
             null,
+            null,
             null);
     return AnalysisGates.create(check, ports(), focus);
   }

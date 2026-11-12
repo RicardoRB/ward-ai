@@ -8,6 +8,7 @@ public final class SupportedQualityGates {
   public static final String TRACEABILITY = "openspec-junit-traceability";
   public static final String ANALYSIS = "ward";
   public static final String FORMAT = "ward-format";
+  public static final String SECRETS = "secrets";
   public static final String COVERAGE = "coverage";
   public static final String CRAP = "crap";
 

@@ -60,18 +60,18 @@ class InitToolLifecycleTest {
             root,
             new InitSelection(
                 List.of("none"),
-                List.of("tests", "gitleaks"),
+                List.of("tests", "trivy"),
                 null,
                 null,
                 List.of(),
                 List.of(),
-                List.of("gitleaks"),
+                List.of("trivy"),
                 false,
                 null,
                 false,
                 null));
 
-    assertThat(installer.installed).containsExactly("gitleaks");
+    assertThat(installer.installed).containsExactly("trivy");
     assertThat(Files.readString(root.resolve("ward.toml"))).doesNotContain("openspec");
   }
 

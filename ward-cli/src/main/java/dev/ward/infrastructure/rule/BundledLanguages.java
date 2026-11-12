@@ -26,7 +26,11 @@ public final class BundledLanguages {
   /** Returns the rule file lists of every bundled language module. */
   public static List<RuleFileProvider> ruleFiles() {
     return List.of(
-        new JvmRuleFiles(), new NodeRuleFiles(), new PythonRuleFiles(), new SwiftRuleFiles());
+        new JvmRuleFiles(),
+        new NodeRuleFiles(),
+        new PythonRuleFiles(),
+        new SwiftRuleFiles(),
+        new SecretRuleFiles());
   }
 
   /** Returns the check providers of the shared checks and of every bundled language module. */

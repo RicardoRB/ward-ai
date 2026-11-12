@@ -82,6 +82,7 @@ final class FixtureProject {
             null,
             rulesFile,
             null,
+            null,
             null);
     final AnalysisPorts ports =
         new AnalysisPorts(

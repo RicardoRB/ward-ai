@@ -306,7 +306,7 @@ Tell the user:
    Mention any CI workflow or `AGENTS.md` section init wrote (`Wrote Ward section:` lines).
    Mention that Java and Kotlin projects get no separate style or bug-finding tool gate, and Python projects get no Ruff
    gate: init writes `ward-rules.toml`, which selects the Ward rules of the preset for the project's JVM languages and Python. Mention that `ward.toml` has `paths` tables for ward-format, Semgrep, and
-   Gitleaks, and for the `ward` analysis
+   `secrets` (when selected), and for the `ward` analysis
    check: the check after each agent edit, and the pre-commit hook, skip gates the change does not affect
    and narrow supported tools, and the `ward` analysis, to the edited or staged files. Claude Code and the
    native harnesses still run the full `default` check when the turn ends. The pre-push hook checks the

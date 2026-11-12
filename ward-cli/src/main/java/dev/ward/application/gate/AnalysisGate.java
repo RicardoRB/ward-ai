@@ -7,6 +7,7 @@ import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.AnalysisCache;
+import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleRunResult;
 import dev.ward.domain.gate.GateResult;
@@ -92,7 +93,8 @@ public final class AnalysisGate implements QualityGate {
     if (!set.problems().isEmpty()) {
       return AnalysisGateResults.configurationError(name, set.problems());
     }
-    final List<RuleDefinition> rules = set.rules();
+    final List<RuleDefinition> rules =
+        set.rules().stream().filter(rule -> rule.capability() != RuleCapability.TEXT).toList();
     final Set<AnalysisLanguage> languages =
         ports.frontends().stream()
             .map(FrontendSupport::language)

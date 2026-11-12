@@ -31,6 +31,7 @@ final class RuleReference {
       final Map<String, Map<String, String>> outOfScope) {
     final Map<String, List<CatalogRow>> byFile =
         catalog.rows().stream()
+            .filter(row -> !row.isText())
             .collect(
                 Collectors.groupingBy(
                     RuleReference::pageName, LinkedHashMap::new, Collectors.toList()));
