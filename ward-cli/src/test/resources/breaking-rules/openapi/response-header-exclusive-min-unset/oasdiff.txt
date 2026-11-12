@@ -1,0 +1,1 @@
+response-header-exclusive-min-unset	GET	/pets

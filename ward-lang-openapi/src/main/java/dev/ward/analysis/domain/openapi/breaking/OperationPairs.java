@@ -10,12 +10,11 @@ final class OperationPairs {
 
   private OperationPairs() {}
 
-  /** The findings of {@code check} on each operation of the base and its counterpart. */
-  static List<BreakingFinding> each(
-      final DocumentPair pair,
-      final BiFunction<Operation, Operation, List<BreakingFinding>> check) {
+  /** The results of {@code check} on each operation of the base and its counterpart. */
+  static <T> List<T> each(
+      final DocumentPair pair, final BiFunction<Operation, Operation, List<T>> check) {
     final OperationIndex revision = new OperationIndex(pair.revision());
-    final List<BreakingFinding> findings = new ArrayList<>();
+    final List<T> findings = new ArrayList<>();
     for (final Operation base : new OperationIndex(pair.base()).all()) {
       revision.counterpart(base).ifPresent(now -> findings.addAll(check.apply(base, now)));
     }

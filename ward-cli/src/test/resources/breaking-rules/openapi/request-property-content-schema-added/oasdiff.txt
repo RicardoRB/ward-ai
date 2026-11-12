@@ -1,0 +1,1 @@
+request-property-content-schema-added	POST	/pets

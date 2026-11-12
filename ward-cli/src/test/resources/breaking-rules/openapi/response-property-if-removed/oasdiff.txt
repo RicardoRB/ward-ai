@@ -1,0 +1,1 @@
+response-property-if-removed	GET	/pets

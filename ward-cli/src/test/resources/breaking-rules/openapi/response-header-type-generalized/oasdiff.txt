@@ -1,0 +1,1 @@
+response-header-type-generalized	GET	/pets

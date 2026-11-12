@@ -1,0 +1,1 @@
+response-property-exclusive-min-decreased	GET	/pets

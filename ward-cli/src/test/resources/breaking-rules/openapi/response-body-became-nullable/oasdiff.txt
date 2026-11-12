@@ -1,0 +1,1 @@
+response-body-became-nullable	GET	/pets

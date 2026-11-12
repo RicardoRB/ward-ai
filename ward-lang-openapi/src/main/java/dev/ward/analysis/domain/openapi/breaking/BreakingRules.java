@@ -19,6 +19,7 @@ public final class BreakingRules {
     rules.addAll(StabilityRules.rules());
     rules.addAll(WebhookRules.rules());
     rules.addAll(RequestBodyRules.rules());
+    rules.addAll(SchemaRules.rules());
     return List.copyOf(rules);
   }
 
