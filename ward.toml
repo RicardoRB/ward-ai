@@ -46,9 +46,7 @@ command = "./mvnw -DskipTests package spotbugs:check"
 [checks.coverage]
 enabled = true
 profiles = ["pre-push", "ci"]
-command = "./mvnw -DskipTests package jacoco:report"
-minimum = 85
-minimum-branches = 75
+command = "./mvnw -DskipTests package jacoco:check"
 
 [checks.archunit]
 enabled = true
@@ -72,21 +70,16 @@ enabled = true
 profiles = ["pre-push", "ci"]
 command = "./mvnw -B -q -Pnative -pl ward-cli -am -DskipTests package native:compile"
 
-[checks.secrets]
+[checks.gitleaks]
 enabled = true
 profiles = ["default", "pre-commit", "pre-push", "ci"]
-uses = "secrets"
-# The secret rules hold the literal prefix of the secrets they match, and their fixtures hold fake
-# secrets; no suppression comment exists, so both folders are excluded.
-exclude-paths = [
-  "ward-cli/src/main/resources/rules/secrets/**",
-  "ward-cli/src/test/resources/rules/secrets/**",
-]
+command = "gitleaks detect --no-banner --redact --report-format sarif --report-path target/gitleaks.sarif"
 
-# Ward scans the edited files itself; a change to the rule options scans everything.
-[checks.secrets.paths]
+# History scans miss uncommitted and staged edits, so edited and staged files are scanned directly.
+[checks.gitleaks.paths]
 match = ["**"]
-full = ["ward-rules.toml"]
+full = [".gitleaks*"]
+args = ["--no-git", "--config=.gitleaks.toml", "--source={paths}"]
 
 [checks.semgrep]
 enabled = true
@@ -98,10 +91,17 @@ match = ["**"]
 full = [".semgrep*"]
 args = ["{paths}"]
 
-[checks.vulnerabilities]
-enabled = true
-uses = "vulnerabilities"
+# Disabled: trivy already scans Maven dependencies without an NVD API key.
+[checks.dependency-check]
+enabled = false
 profiles = ["ci"]
+command = "./mvnw -DskipTests package dependency-check:check"
+
+[checks.trivy]
+enabled = true
+profiles = ["ci"]
+# Offline: resolve Maven POMs from ~/.m2 (filled by earlier gates); Maven Central rate-limits CI runners.
+command = "trivy fs --offline-scan --exit-code 1 ."
 
 [checks.license]
 enabled = true

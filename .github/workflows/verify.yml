@@ -28,6 +28,7 @@ permissions:
 env:
   # Maven 3.9 reads MAVEN_ARGS; -ntp keeps artifact downloads out of the job logs.
   MAVEN_ARGS: -ntp
+  GITLEAKS_VERSION: 8.30.1
   TRIVY_VERSION: 0.76.0
   SEMGREP_VERSION: 1.181.0
   OPENSPEC_VERSION: 1.14.1
@@ -68,6 +69,7 @@ jobs:
       contents: read
       security-events: write
     steps:
+      # Full history for gitleaks.
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
@@ -120,6 +122,8 @@ jobs:
       - name: Install gate tools
         run: |
           set -eu
+          curl -sSfL --retry 5 --retry-all-errors "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
+            | sudo tar -xz -C /usr/local/bin gitleaks
           # The install script's raw.githubusercontent.com fetch fails intermittently on runners;
           # download the release asset with retries and verify it against the release checksums.
           trivy_dir="$RUNNER_TEMP/trivy"
