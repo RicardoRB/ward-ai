@@ -171,10 +171,4 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
         ? MavenJavaModules.skipped(projectRoot)
         : GradleModuleScan.skipped(projectRoot);
   }
-
-  /** Only presence is recorded; values never leave this method. */
-  private static boolean isSet(final String name) {
-    final String value = System.getenv(name);
-    return value != null && !value.isBlank();
-  }
 }
