@@ -134,7 +134,7 @@ selects every gate. `--dry-run` writes nothing, installs nothing, and runs no ga
 
 ```sh
 ward init -C <dir> --dry-run --preset strict --integration none --architecture layered \
-  --gate compile,tests,coverage,mutation,sonar,semgrep,gitleaks,dependency-check,zap,trivy,enforcer,license,api-compat
+  --gate compile,tests,coverage,mutation,sonar,semgrep,secrets,dependency-check,zap,trivy,enforcer,license,api-compat
 ```
 
 Add `--overwrite` when `ward.toml` already exists. Without it the probe prints nothing useful.
@@ -185,7 +185,7 @@ Layout: com.acme.shop -> domain, application, infrastructure (looks hexagonal)
 Layers: controller, service, repository (layered boundaries written to ward.toml)
 Config: no ward.toml yet
 Rule files: none
-Unavailable tools: semgrep, gitleaks (brew can install them), zap (manual)
+Unavailable tools: semgrep (brew can install it), zap (manual)
 CI: GitHub repository, no workflow runs Ward yet
 Notes: NVD_API_KEY is not set
 ```
