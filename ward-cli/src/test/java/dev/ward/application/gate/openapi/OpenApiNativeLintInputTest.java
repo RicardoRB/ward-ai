@@ -96,4 +96,16 @@ class OpenApiNativeLintInputTest {
       assertThat(result.summary()).contains(NativeLintFixture.SPEC + ":5:");
     }
   }
+
+  @Test
+  void aPathWrittenTwiceIsAnExecutionErrorSoDuplicatePathsCannotPass() throws IOException {
+    fixture.write(
+        NativeLintFixture.SPEC,
+        "openapi: 3.0.3\npaths:\n  /pets:\n    get: {}\n  /pets:\n    post: {}\n");
+
+    final GateResult result = fixture.lint();
+
+    assertThat(result.status()).isEqualTo(GateStatus.EXECUTION_ERROR);
+    assertThat(result.summary()).contains("duplicate key '/pets' (lines 3 and 5)");
+  }
 }
