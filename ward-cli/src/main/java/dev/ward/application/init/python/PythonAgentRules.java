@@ -44,10 +44,7 @@ final class PythonAgentRules {
                 + "; do not lower it.",
             "mutmut",
             "- Mutation testing (mutmut): `{command}` in `ci` must score at least 60%; kill the"
-                + " surviving mutants with tests, do not weaken the code under test.",
-            "pip-audit",
-            "- Dependency audit (pip-audit): `{command}` in `ci` must pass; upgrade the vulnerable"
-                + " package instead of ignoring the advisory.");
+                + " surviving mutants with tests, do not weaken the code under test.");
     final List<String> gateLines =
         gates.stream()
             .filter(gate -> rows.containsKey(gate.id()))

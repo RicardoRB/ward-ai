@@ -25,6 +25,7 @@ class GradleToolConfiguratorModulesTest {
   private static final String API = "api/build.gradle.kts";
   private static final String DOMAIN = "domain/build.gradle";
   private static final String COVERAGE = "coverage";
+  private static final String LICENSE_PLUGIN = "com.github.jk1.dependency-license-report";
 
   @TempDir Path root;
 
@@ -74,15 +75,15 @@ class GradleToolConfiguratorModulesTest {
   }
 
   @Test
-  void dependencyCheckStaysInTheRootOnly() throws IOException {
+  void licenseStaysInTheRootOnly() throws IOException {
     final Project project = ModuleFixtures.copy(root);
 
     new GradleToolConfigurator()
-        .apply(project, ModuleFixtures.gates("dependency-check", COVERAGE), null, finding -> false);
+        .apply(project, ModuleFixtures.gates("license", COVERAGE), null, finding -> false);
 
-    assertThat(ModuleFixtures.read(root, "build.gradle.kts")).contains("org.owasp.dependencycheck");
-    assertThat(ModuleFixtures.read(root, API)).doesNotContain("org.owasp.dependencycheck");
-    assertThat(ModuleFixtures.read(root, DOMAIN)).doesNotContain("org.owasp.dependencycheck");
+    assertThat(ModuleFixtures.read(root, "build.gradle.kts")).contains(LICENSE_PLUGIN);
+    assertThat(ModuleFixtures.read(root, API)).doesNotContain(LICENSE_PLUGIN);
+    assertThat(ModuleFixtures.read(root, DOMAIN)).doesNotContain(LICENSE_PLUGIN);
   }
 
   @Test

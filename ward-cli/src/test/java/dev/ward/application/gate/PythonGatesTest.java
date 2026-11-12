@@ -15,7 +15,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 class PythonGatesTest {
 
   @ParameterizedTest
-  @ValueSource(strings = {"mypy", "pytest", "coverage", "mutmut", "pip-audit"})
+  @ValueSource(strings = {"mypy", "pytest", "coverage", "mutmut"})
   void pythonTypeIsAcceptedAndBuilt(final String type) {
     final QualityGateFactory factory = new QualityGateFactory(new FakeCommandExecutor(0, "", ""));
 

@@ -11,7 +11,6 @@ import java.util.regex.Matcher;
 final class PomTools {
   private static final String SONAR = "sonar-maven-plugin";
   private static final String JACOCO = "jacoco-maven-plugin";
-  private static final String DEPENDENCY_CHECK = "dependency-check-maven";
   private static final String PIT = "pitest-maven";
   private static final String ENFORCER = "maven-enforcer-plugin";
   private static final String LICENSE = "license-maven-plugin";
@@ -71,20 +70,6 @@ final class PomTools {
                 </configuration>
               </plugin>
             """;
-  private static final String DEPENDENCY_CHECK_PLUGIN =
-      """
-              <plugin>
-                <groupId>org.owasp</groupId>
-                <artifactId>dependency-check-maven</artifactId>
-                <version>12.1.0</version>
-                 <configuration>
-                   <failBuildOnCVSS>7</failBuildOnCVSS>
-                   <nvdApiKeyEnvironmentVariable>NVD_API_KEY</nvdApiKeyEnvironmentVariable>
-                   <ossindexAnalyzerEnabled>false</ossindexAnalyzerEnabled>
-                   <ossIndexServerId>ossindex</ossIndexServerId>
-                 </configuration>
-              </plugin>
-            """;
   static final String PIT_PLUGIN =
       """
               <plugin>
@@ -120,7 +105,6 @@ final class PomTools {
       List.of(
           Tool.plugin("sonar", SONAR, SONAR_PLUGIN),
           Tool.modulePlugin("coverage", JACOCO, JACOCO_PLUGIN, PresetPluginSnippets::jacoco),
-          Tool.plugin("dependency-check", DEPENDENCY_CHECK, DEPENDENCY_CHECK_PLUGIN),
           Tool.modulePlugin("mutation", PIT, PIT_PLUGIN, PresetPluginSnippets::pit),
           Tool.modulePlugin(
               "enforcer", ENFORCER, ENFORCER_PLUGIN, preset -> PresetPluginSnippets.enforcer()),

@@ -17,7 +17,6 @@ public final class PythonPackageCatalog {
   static final String MYPY = "mypy";
   static final String PYTEST = "pytest";
   static final String COVERAGE = "coverage";
-  static final String PIP_AUDIT = "pip-audit";
   static final String MUTMUT = "mutmut";
   static final String PYTEST_DJANGO = "pytest-django";
   static final String DJANGO_STUBS = "django-stubs";
@@ -32,7 +31,6 @@ public final class PythonPackageCatalog {
           Map.entry(MYPY, new Package(MYPY, "2.4.0")),
           Map.entry(PYTEST, new Package(PYTEST, "9.1.1")),
           Map.entry(COVERAGE, new Package(COVERAGE, "7.16.2")),
-          Map.entry(PIP_AUDIT, new Package(PIP_AUDIT, "2.10.1")),
           Map.entry(MUTMUT, new Package(MUTMUT, "3.8.0")),
           Map.entry(PYTEST_DJANGO, new Package(PYTEST_DJANGO, "4.14.0")),
           Map.entry(DJANGO_STUBS, new Package(DJANGO_STUBS, "6.1.2")),
@@ -45,7 +43,6 @@ public final class PythonPackageCatalog {
           "mypy", List.of(MYPY),
           "pytest", List.of(PYTEST, COVERAGE),
           "coverage", List.of(COVERAGE),
-          "pip-audit", List.of(PIP_AUDIT),
           "mutmut", List.of(MUTMUT));
 
   /** The extra distributions Django projects need: the test plugin and the type stubs. */

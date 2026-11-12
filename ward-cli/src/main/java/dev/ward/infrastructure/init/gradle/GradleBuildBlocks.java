@@ -17,14 +17,6 @@ public final class GradleBuildBlocks {
   private static final List<Block> BLOCKS =
       List.of(
           new Block(
-              "dependency-check",
-              false,
-              false,
-              "NVD_API_KEY",
-              "dependency-check-nvd-key",
-              "",
-              (kotlin, preset, versions, module) -> GradleQualityBlocks.dependencyCheck(kotlin)),
-          new Block(
               "coverage",
               false,
               true,

@@ -43,15 +43,6 @@ record BuildToolGates(boolean gradle, boolean available, String availability, St
     return option("sonar", "Checks code quality, smells, and duplication.", "", "sonar");
   }
 
-  /** Scans dependencies for known CVEs. */
-  InitGateOption dependencyCheck() {
-    return tool(
-        "dependency-check",
-        "Scans dependencies for known CVEs.",
-        "dependencyCheckAnalyze",
-        "dependency-check:check");
-  }
-
   /** Measures test strength with PIT mutation testing. */
   InitGateOption mutation() {
     return tool(

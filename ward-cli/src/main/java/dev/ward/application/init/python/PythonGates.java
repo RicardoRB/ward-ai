@@ -44,11 +44,6 @@ final class PythonGates implements SourceLanguageGates<PythonTools> {
             coverage(python)));
     gates.add(
         python.option(
-            "pip-audit",
-            "Audits the installed dependencies for known vulnerabilities (opt-in).",
-            python.command("pip-audit")));
-    gates.add(
-        python.option(
             "mutmut",
             "Runs mutation testing with mutmut; strict fails below a 60% mutation score.",
             python.command("mutmut", "run"),

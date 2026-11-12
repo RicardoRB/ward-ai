@@ -91,17 +91,10 @@ match = ["**"]
 full = [".semgrep*"]
 args = ["{paths}"]
 
-# Disabled: trivy already scans Maven dependencies without an NVD API key.
-[checks.dependency-check]
-enabled = false
-profiles = ["ci"]
-command = "./mvnw -DskipTests package dependency-check:check"
-
-[checks.trivy]
+[checks.vulnerabilities]
 enabled = true
+uses = "vulnerabilities"
 profiles = ["ci"]
-# Offline: resolve Maven POMs from ~/.m2 (filled by earlier gates); Maven Central rate-limits CI runners.
-command = "trivy fs --offline-scan --exit-code 1 ."
 
 [checks.license]
 enabled = true

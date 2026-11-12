@@ -166,11 +166,6 @@ public final class InitSetupCatalog extends InitGeneralCatalog {
     return new OpenSpecDirectories(environment);
   }
 
-  /** Returns whether {@code NVD_API_KEY} is set, which dependency-check needs to update quickly. */
-  public boolean nvdApiKeySet(final Project project) {
-    return environment.inspect(project.root()).isSet("NVD_API_KEY");
-  }
-
   /**
    * Returns the gate choice for the OpenSpec validation {@code id}, run with {@code executable}.
    *

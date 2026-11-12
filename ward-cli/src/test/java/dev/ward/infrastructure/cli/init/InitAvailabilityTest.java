@@ -106,22 +106,15 @@ class InitAvailabilityTest {
   }
 
   @Test
-  void selectingDependencyCheckAndTrivyWarnsAboutTheOverlap() throws IOException {
+  void removedScannersAreNotOffered() throws IOException {
     final InitCommandFixture init = new InitCommandFixture(root);
 
-    init.run(
-        "", "--dry-run", "--integration", "none", "--gate", "dependency-check", "--gate", "trivy");
+    for (final String gate : List.of("trivy", "dependency-check", "pip-audit")) {
+      final int exit = init.run("", "--dry-run", "--integration", "none", "--gate", gate);
 
-    assertThat(init.output()).contains("Warning: trivy already scans dependencies");
-  }
-
-  @Test
-  void selectingOnlyTrivyDoesNotWarnAboutTheOverlap() throws IOException {
-    final InitCommandFixture init = new InitCommandFixture(root);
-
-    init.run("", "--dry-run", "--integration", "none", "--gate", "trivy");
-
-    assertThat(init.output()).doesNotContain("trivy already scans dependencies");
+      assertThat(exit).as(gate).isEqualTo(ExitCodes.ERROR);
+      assertThat(init.output()).contains("Unknown quality gate '" + gate + "'");
+    }
   }
 
   /** A build-tool port whose runtime JDK cannot run the format gate; it writes nothing. */

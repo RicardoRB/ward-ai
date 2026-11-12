@@ -38,8 +38,8 @@ class PythonGatesTest {
 
   @Test
   void pipRunsFromTheVirtualEnvironment() {
-    assertThat(command(gates(BuildTool.PIP, QualityPreset.STANDARD, false), "pip-audit"))
-        .containsExactly(".venv/bin/pip-audit");
+    assertThat(command(gates(BuildTool.PIP, QualityPreset.STANDARD, false), "mypy"))
+        .containsExactly(".venv/bin/mypy", ".", "-O", "json");
   }
 
   @Test
@@ -49,13 +49,14 @@ class PythonGatesTest {
   }
 
   @Test
-  void standardPresetSelectsThreeGatesAndKeepsAuditAndMutationOptIn() {
+  void standardPresetSelectsThreeGatesAndKeepsMutationOptIn() {
     final PythonGates gates = new PythonGates();
 
     assertThat(gates.presetGates(QualityPreset.STANDARD))
         .containsExactly("mypy", "pytest", "coverage");
     assertThat(gates(BuildTool.UV, QualityPreset.STANDARD, false).stream().map(InitGateOption::id))
-        .contains("pip-audit", "mutmut");
+        .contains("mutmut")
+        .doesNotContain("pip-audit");
   }
 
   @Test
