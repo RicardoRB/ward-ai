@@ -122,6 +122,9 @@ final class ArchitectureBoundarySupport {
                   "dev.ward.application.gate.RuleConfigurationCheck",
                   "dev.ward.application.gate.RuleSet")),
           Map.entry("dependency", Set.of()),
+          Map.entry(
+              "vulnerability",
+              Set.of("dev.ward.application.dependency.DependencyInventoryService")),
           Map.entry("project", Set.of()),
           Map.entry("analysis", Set.of()),
           Map.entry("learning", Set.of()),
