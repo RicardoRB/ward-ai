@@ -102,8 +102,8 @@ class NativeInitTerminalSmokeTest {
             .contains(
                 "create     ward.toml",
                 "create     .git/hooks/pre-commit",
-                "Step 1 of 5",
-                "Step 5 of 5",
+                "Step 1 of 4",
+                "Step 4 of 4",
                 "Enter=1]")
             .doesNotContain("\033[2J");
         terminal.write("\n".getBytes(StandardCharsets.US_ASCII));
@@ -142,8 +142,6 @@ class NativeInitTerminalSmokeTest {
     terminal.write(" ".getBytes(StandardCharsets.US_ASCII));
     terminal.awaitOutput(process, "> [ ] 3) coverage", KEY_TIMEOUT);
     terminal.write(ENTER);
-    terminal.awaitOutput(process, "Select optional tools", PROMPT_TIMEOUT);
-    terminal.write(ENTER);
     terminal.awaitOutput(process, "quality hooks? [y/N]", PROMPT_TIMEOUT);
     terminal.write("y\n".getBytes(StandardCharsets.US_ASCII));
     terminal.awaitOutput(process, "Proceed? [Y/n]", PROMPT_TIMEOUT);
@@ -166,8 +164,6 @@ class NativeInitTerminalSmokeTest {
               .redirectError(ProcessBuilder.Redirect.appendTo(device))
               .start();
       try {
-        terminal.awaitOutput(process, "Select optional tools", PROMPT_TIMEOUT);
-        terminal.write(ENTER);
         terminal.awaitOutput(process, "quality hooks? [y/N]", PROMPT_TIMEOUT);
         terminal.write("n\n".getBytes(StandardCharsets.US_ASCII));
         terminal.awaitOutput(process, "Proceed? [Y/n]", PROMPT_TIMEOUT);
