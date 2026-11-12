@@ -8,8 +8,9 @@ import java.util.List;
 /**
  * Chooses where in a text a secret rule matches its regex. A single-line rule matches line by line,
  * and a line over {@link #LONG_LINE} characters only in windows around the keyword hits; a rule
- * that spans lines matches in windows that start at a keyword hit. Bounding the text a regex sees
- * is what keeps Java's backtracking regex fast on a minified file.
+ * that spans lines matches in windows that start {@link #LEAD} characters before a keyword hit, for
+ * a regex whose keyword is not its first word. Bounding the text a regex sees is what keeps Java's
+ * backtracking regex fast on a minified file.
  */
 final class SecretRegions {
 
@@ -19,6 +20,7 @@ final class SecretRegions {
   private static final int HALF_WINDOW = LONG_LINE / 2;
   private static final int OVERLAP = 256;
   private static final int TEXT_WINDOW = 16 * 1024;
+  private static final int LEAD = 512;
 
   private SecretRegions() {}
 
@@ -49,7 +51,7 @@ final class SecretRegions {
     }
     final List<int[]> windows = new ArrayList<>();
     for (final int hit : hits) {
-      windows.add(new int[] {hit, Math.min(length, hit + TEXT_WINDOW)});
+      windows.add(new int[] {Math.max(0, hit - LEAD), Math.min(length, hit + TEXT_WINDOW)});
     }
     return merge(windows);
   }
