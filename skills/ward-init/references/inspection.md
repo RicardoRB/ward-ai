@@ -151,8 +151,6 @@ Read these lines from the output:
 - `Selected quality gate '<id>': AVAILABLE` means the gate can run.
 - `Selected quality gate '<id>': UNAVAILABLE - <reason>` means its tool is missing. Keep the reason
   for when the user considers that gate.
-- `install    <command>` is the installation init would run if the user consents with
-  `--install-tool <id>`.
 - `guidance   <tool>: <url>` means the tool can only be installed by hand.
 
 Ignore the rest of the probe's plan. It reflects the probe's selection, not the user's.

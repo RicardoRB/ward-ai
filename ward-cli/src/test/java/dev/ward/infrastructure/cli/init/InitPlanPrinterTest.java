@@ -29,9 +29,7 @@ class InitPlanPrinterTest {
                 change(".claude/settings.json", Action.CONFLICT),
                 change(".claude/hooks/old", Action.REMOVE),
                 change("config/pmd-ruleset.xml", Action.UNCHANGED)),
-            List.of(
-                new PlannedGateInstallation(
-                    "gitleaks", "brew", List.of("brew", "install", "gitleaks"), "")));
+            List.of(new PlannedGateInstallation("zap-baseline.py", "https://zap.example/docs")));
 
     new InitResultPrinter(new PrintWriter(output, true)).printPlan(plan, ROOT);
 
@@ -44,7 +42,7 @@ class InitPlanPrinterTest {
             "  keep       config/checkstyle.xml  (user-owned, not changed)",
             "  conflict   .claude/settings.json  (user-owned, blocks initialization)",
             "  remove     .claude/hooks/old",
-            "  install    brew install gitleaks")
+            "  guidance   zap-baseline.py: https://zap.example/docs")
         .doesNotContain("pmd-ruleset.xml");
   }
 

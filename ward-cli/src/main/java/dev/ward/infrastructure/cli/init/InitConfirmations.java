@@ -1,7 +1,6 @@
 package dev.ward.infrastructure.cli.init;
 
 import dev.ward.domain.init.CompatibilityFinding;
-import dev.ward.domain.init.GateToolInstallCatalog;
 import dev.ward.domain.init.ScriptReplacement;
 import java.io.PrintWriter;
 import java.nio.file.Path;
@@ -9,7 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-/** The yes/no questions init asks: overwrite, installation consent, hooks, review, updates. */
+/** The yes/no questions init asks: overwrite, hooks, review, updates. */
 final class InitConfirmations {
   private final LinePrompt prompt;
   private final PrintWriter out;
@@ -25,15 +24,6 @@ final class InitConfirmations {
     out.print(file + " already exists. Overwrite it? [y/N]: ");
     out.flush();
     return prompt.confirm("overwrite");
-  }
-
-  boolean gateToolInstallation(
-      final String tool, final GateToolInstallCatalog.InstallMethod method) {
-    out.println("The selected gate requires unavailable tool '" + tool + "'.");
-    out.println("Install command: " + String.join(" ", method.arguments()));
-    out.print("Install " + tool + "? [y/N]: ");
-    out.flush();
-    return prompt.confirmInstallation();
   }
 
   /** Asks to apply the reviewed plan; Enter means yes, and end of input means no. */

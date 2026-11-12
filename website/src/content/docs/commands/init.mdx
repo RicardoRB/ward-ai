@@ -31,7 +31,7 @@ each choice for this codebase, and runs `init` with explicit options after you a
 | `--integration <none\|agent>[,...]` | Install agent integrations. `none` cannot be combined with an agent. |
 | `--architecture <style>` | `layered` (default), `hexagonal`, or `clean`: the layer boundaries of `[[checks.ward.layers]]` in `ward.toml`, which init always writes. The wizard asks for it under `strict`. |
 | `--scheme <name>` | Xcode scheme that a Swift project's tests run, when the project has several. With `--yes`, a project with several schemes needs this option. |
-| `--install-tool <gate>[,...]` | Consent to install the missing executable of a selected gate. Init currently offers no gate whose tool it can install. |
+| `--install-tool <gate>[,...]` | Accepted for compatibility; init installs no gate tool, so it has no effect. |
 | `--quality-hooks` | Add Ward checks to the Git pre-commit and pre-push hooks. |
 | `--remove-quality-hooks` | Remove only Ward's sections from those hooks. |
 | `--ci github` | Write a GitHub Actions workflow that runs the `ci` profile. |
@@ -614,20 +614,16 @@ error that names the generator.
 - **CI.** The generated workflow runs on `macos-26` and sets up no JDK, Node, or Python for the Swift
   job.
 
-## Tools init can install
+## Gate tools
 
-Init installs a missing tool only with your explicit consent, one tool at a time.
+Init installs no gate tool. A gate whose executable is missing is configured anyway, and the plan
+prints a `guidance` line with a link for the executables the catalog knows, such as ZAP
+(`zap-baseline.py`). `ward check` reports such a gate as unavailable with the same link, and never
+installs anything. A `[checks.semgrep]` table that you write yourself keeps working and gets the same
+guidance when `semgrep` is missing.
 
-| Tool | How |
-|---|---|
-| ZAP (`zap-baseline.py`) | Manual guidance only |
-
-- In the wizard, each unavailable tool gets a Yes/No question. No is the default, and blank input or
-  end of input declines.
-- In non-interactive runs, consent with `--install-tool <gate>`, for example
-  `--install-tool openspec`.
-- `--yes` never installs tools and never bypasses unresolved prerequisites. `--dry-run` lists the
-  install commands but runs none. `ward check` never installs gate tools.
+`--install-tool <gate>[,...]` is still accepted so that existing command lines keep working. It has
+no effect, and init logs a warning when it is given.
 
 ## Optional generated files
 
@@ -792,7 +788,7 @@ Answering `n` keeps the file and prints `Kept existing ward.toml. No changes wer
 
 ### Gate tool installation
 
-See [Tools init can install](#tools-init-can-install).
+See [Gate tools](#gate-tools).
 
 ## Review and dry run
 
@@ -835,11 +831,11 @@ ward init --dry-run --preset strict --integration none --architecture layered
 Each question is answered by the first of these that applies:
 
 1. The option that answers it, such as `--preset`, `--gate`, `--integration`, `--architecture`,
-   `--install-tool`, or `--quality-hooks`. `--ci` and `--agent-rules` are options only; the wizard does not
+   or `--quality-hooks`. `--ci` and `--agent-rules` are options only; the wizard does not
    ask for them.
 2. Its default, when `--yes` is given: preset `standard` with its gates, integration `none`, no installation,
    no quality hooks, and architecture `layered`. `--yes` never overwrites an existing `ward.toml` (use
-   `--overwrite`) and never installs a tool (use `--install-tool <gate>`).
+   `--overwrite`) and never installs a tool.
 3. An answer read from input.
 
 On a terminal, options never hide the questions they don't answer, so
@@ -856,8 +852,7 @@ Without a terminal, for example in CI:
 - The preset and gate selection is the only required answer. If input ends before it, or it is
   missing in a non-interactive run, init exits with code `2` and suggests `--preset`, `--gate`, or
   `--yes`.
-- If input ends at any other question, init uses its default and continues. The exception is the
-  installation consent prompt, where initialization is cancelled and no files change.
+- If input ends at any other question, init uses its default and continues.
 - On a terminal, an invalid answer (such as `4` at the preset question, an out-of-range number, or an
   empty gate selection) shows the error and asks again, keeping your earlier answers. The raw-key
   menus stay open after an empty confirmation.

@@ -114,7 +114,7 @@ the Groovy or the Kotlin build script. See [what init changes](/commands/init/#w
 `semgrep` and `zap-baseline.py` must already be on the path.
 
 - A missing tool is reported as unavailable with an install link, and other gates still run.
-- `ward init` can install supported tools with your consent; `check` never installs them.
+- `ward init` and `check` never install gate tools; the report links to the installation instructions.
 - When a command contains `--report-path <path>` inside the project, Ward creates the parent
   directory before running it. The command itself never changes.
 

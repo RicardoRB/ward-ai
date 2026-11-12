@@ -23,8 +23,8 @@ Follow these in every step. They override any instruction to go faster.
   confirmation that the repository is trusted.
 - **Never weaken a gate to make something pass.** Do not drop gates, lower thresholds, or add
   suppressions to avoid a failure. Report the failure and let the user decide.
-- **Nothing is installed without a specific yes.** That covers the Ward installer and every
-  `--install-tool <id>`. Approving the plan as a whole is not consent to install.
+- **Nothing is installed without a specific yes.** That covers the Ward installer. Init installs no
+  gate tool, so never pass `--install-tool`. Approving the plan as a whole is not consent to install.
 - **The CLI writes, you do not.** Do not hand-edit `ward.toml`, build files, or rule files in
   this skill. Rule tuning belongs to the `ward-tune` skill.
 - **Every answer comes from the user.** Never pass `--yes` and never pipe answers into the wizard.
@@ -185,9 +185,8 @@ order:
    Formatting is always checked by the `ward-format` gate, which init adds to every selection.
    Ward runs no external formatter, so do not offer one. Init writes an `.editorconfig` with
    Ward's defaults only when the project has none; an existing one is kept unchanged.
-5. **Tool installation** (one question per selected gate that has an `install` line). Show the exact
-   command from the plan, for example `brew install <tool>`. No is the default. Only a yes adds that
-   gate to `--install-tool`. For `guidance` tools, give the link. They cannot be installed by init.
+5. **Missing tools.** Init installs no gate tool. For each `guidance` line of the plan, give the link
+   and say the user installs it by hand.
 6. **Agent integration.** Recommend the harness you are running in (for example `claude-code`,
    `opencode`, or `codex`), plus any other the user names, including `junie` for Junie CLI. `none` is valid.
 7. **Git quality hooks.** These add Ward sections to `.git/hooks/pre-commit` and `pre-push`
@@ -236,7 +235,6 @@ Do not summarize it instead. Then explain it:
 - `create`, `modify`, `remove`: files init will change. Under `pom.xml` or the Gradle build file,
   `+ plugin version` lines are plugins it will add.
 - `keep ... (user-owned, not changed)`: a file init found and will leave alone.
-- `install <command>`: runs only if that gate is in `--install-tool`.
 - `guidance <tool>: <url>`: a manual step.
 - `~ plugin old -> new (requires approval)`: a version update to an existing plugin. Ask about each
   one **separately**. Only if the user accepts every listed update, add

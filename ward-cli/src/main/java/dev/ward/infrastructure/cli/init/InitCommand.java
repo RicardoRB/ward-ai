@@ -61,7 +61,8 @@ public class InitCommand implements Callable<Integer> {
   @Option(
       names = "--install-tool",
       split = ",",
-      description = "Explicitly consent to install the missing executable of a selected gate.")
+      description =
+          "Accepted for compatibility; init installs no gate executable, so it has no effect.")
   private List<String> installTools;
 
   @Option(names = "--preset", description = "Quality preset: standard or strict.")

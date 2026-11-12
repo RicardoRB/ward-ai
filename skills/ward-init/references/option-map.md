@@ -21,7 +21,6 @@ as a whole is not that yes.
 | Agent rules in `AGENTS.md` | `--agent-rules` | Present to write the section; leave it out to skip | No |
 | Remove quality hooks | `--remove-quality-hooks` | Present to remove Ward's hook sections | No |
 | Install a Node project's dev dependencies | none: applying a plan with `run <manager> install` runs it | Every `add devDependency` and `run ... install` line in the plan | **Yes, before applying** |
-| Install a missing tool | `--install-tool <id>[,<id>...]` | A selected gate id that the plan shows with an `install` line | **Yes, per tool** |
 | Replace an existing `ward.toml` | `--overwrite` | Present | **Yes** |
 | Accept plugin version updates | `--accept-compatibility-updates` | Present | **Yes, after showing each `(requires approval)` line** |
 | Replace differing Turborepo member scripts | `--replace-scripts` | Each `replace <script> script (requires approval)` line in the plan | **Yes, once, after listing each member, script, current and proposed command** |

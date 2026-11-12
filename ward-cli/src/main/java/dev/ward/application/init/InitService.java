@@ -8,7 +8,6 @@ import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitPlan;
 import dev.ward.domain.init.InitResult;
 import dev.ward.domain.init.InitSelection;
-import dev.ward.domain.init.ToolInstaller;
 import dev.ward.domain.project.Project;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -40,33 +39,21 @@ public class InitService {
   private final IntegrationInstaller installer;
   private final Supplier<InitSetupCatalog> catalog;
   private final InitProjectFiles files;
-  private final ToolInstaller toolInstaller;
 
   /**
    * Creates the service. {@code integrations} are the installable agent integrations, {@code files}
-   * writes the project files, and {@code toolInstaller} installs gate executables.
+   * writes the project files.
    */
   @Inject
   public InitService(
       final ProjectDetector detector,
       final Set<AgentIntegration> integrations,
       final InitSetupCatalog catalog,
-      final InitProjectFiles files,
-      final ToolInstaller toolInstaller) {
+      final InitProjectFiles files) {
     this.detector = detector;
     this.installer = new IntegrationInstaller(integrations, catalog);
     this.catalog = () -> catalog;
     this.files = files;
-    this.toolInstaller = toolInstaller;
-  }
-
-  /** Creates a service that cannot install gate executables. */
-  public InitService(
-      final ProjectDetector detector,
-      final Set<AgentIntegration> integrations,
-      final InitSetupCatalog catalog,
-      final InitProjectFiles files) {
-    this(detector, integrations, catalog, files, new UnavailableToolInstaller());
   }
 
   /** Creates a minimal {@code ward.toml} with only the tests gate. */
@@ -152,7 +139,7 @@ public class InitService {
         changes.rollback();
       }
       if (result.created()) {
-        GateToolInstallation.run(toolInstaller, project, selection, gates);
+        warnIgnoredInstallTools(selection);
       }
       completed = true;
       LOGGER.log(Level.INFO, "event=initialization-complete status=applied");
@@ -210,6 +197,15 @@ public class InitService {
       files.configuration().restore(configurationFile, original);
     } catch (IllegalStateException ignored) {
       // Restoration can be retried manually.
+    }
+  }
+
+  /** {@code --install-tool} is accepted for old command lines; init installs no gate tool. */
+  private static void warnIgnoredInstallTools(final InitSelection selection) {
+    if (!selection.installTools().isEmpty()) {
+      LOGGER.log(
+          Level.WARNING,
+          () -> "event=init-install-tool-ignored count=" + selection.installTools().size());
     }
   }
 }

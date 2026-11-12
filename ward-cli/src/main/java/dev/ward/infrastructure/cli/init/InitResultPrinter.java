@@ -67,14 +67,10 @@ final class InitResultPrinter {
     file.details().forEach(detail -> out.println("               " + detail));
   }
 
-  /** Prints the tool installations a plan would run, with paths relative to {@code root}. */
+  /** Prints where to install the executables that the selected gates need and lack. */
   void printInstallations(final InitPlan plan, final Path root) {
     for (final PlannedGateInstallation installation : plan.gateInstallations()) {
-      if (installation.installable()) {
-        out.printf("  %-10s %s%n", "install", String.join(" ", installation.command()));
-      } else {
-        out.printf("  %-10s %s: %s%n", "guidance", installation.tool(), installation.guidance());
-      }
+      out.printf("  %-10s %s: %s%n", "guidance", installation.tool(), installation.guidance());
     }
   }
 

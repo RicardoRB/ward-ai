@@ -226,6 +226,10 @@ class InitSetupCatalogTest {
     final InitSetupCatalog catalog = new InitSetupCatalog(new FakeEnvironmentInspection());
 
     assertThat(catalog.gate(project, "zap").command()).contains("-t", "<TARGET_URL>");
+    assertThat(catalog.gateInstallation(project, catalog.gate(project, "zap")))
+        .get()
+        .extracting("tool", "guidance")
+        .containsExactly("zap-baseline.py", "https://www.zaproxy.org/docs/docker/baseline-scan/");
     assertThat(catalog.gate(project, "secrets").command()).isEmpty();
     assertThat(catalog.gate(project, "secrets").available()).isTrue();
     assertThat(catalog.gate(project, "enforcer").command()).endsWith("enforcer:enforce");

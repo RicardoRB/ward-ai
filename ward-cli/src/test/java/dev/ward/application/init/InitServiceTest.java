@@ -71,8 +71,7 @@ class InitServiceTest {
             new ProjectDetector(new FileSystemProjectInspection()),
             Set.of(),
             new InitSetupCatalog(new FakeEnvironmentInspection(), new QualityHookInstaller()),
-            InitFixtures.projectFiles(new PomToolConfigurator(), RuleFileTargetsFixtures.writer()),
-            new UnavailableToolInstaller());
+            InitFixtures.projectFiles(new PomToolConfigurator(), RuleFileTargetsFixtures.writer()));
 
     qualityService.initialize(
         dir,

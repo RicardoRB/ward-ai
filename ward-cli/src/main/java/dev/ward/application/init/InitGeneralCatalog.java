@@ -187,8 +187,8 @@ public class InitGeneralCatalog {
   }
 
   /**
-   * Plans how to install the executable a missing {@code gate} needs, preferring the first package
-   * manager found on the path; empty when the gate is available or runs no command.
+   * Describes where to install the executable a missing {@code gate} needs; empty when the gate is
+   * available, runs no command, or has no guidance in the catalog. Init installs nothing itself.
    */
   public Optional<PlannedGateInstallation> gateInstallation(
       final Project project, final InitGateOption gate) {
@@ -197,24 +197,7 @@ public class InitGeneralCatalog {
     }
     final String executable = gate.command().getFirst();
     return GateToolInstallCatalog.forExecutable(executable)
-        .map(
-            entry ->
-                entry.methods().stream()
-                    .filter(
-                        method ->
-                            environment.inspect(project.root()).hasExecutable(method.manager()))
-                    .findFirst()
-                    .map(
-                        method ->
-                            new PlannedGateInstallation(
-                                executable,
-                                method.manager(),
-                                method.arguments(),
-                                entry.manualGuidance()))
-                    .orElseGet(
-                        () ->
-                            new PlannedGateInstallation(
-                                executable, null, List.of(), entry.manualGuidance())));
+        .map(entry -> new PlannedGateInstallation(executable, entry.manualGuidance()));
   }
 
   /** Returns the quality presets init offers for {@code project}, in wizard order. */

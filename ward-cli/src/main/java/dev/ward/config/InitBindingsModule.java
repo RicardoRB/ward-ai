@@ -11,7 +11,6 @@ import dev.ward.domain.init.OwnedSectionGeneration;
 import dev.ward.domain.init.QualityHookGeneration;
 import dev.ward.domain.init.RawTerminal;
 import dev.ward.domain.init.RuleFileGeneration;
-import dev.ward.domain.init.ToolInstaller;
 import dev.ward.domain.project.Toolchain;
 import dev.ward.domain.terminal.TerminalCapabilities;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
@@ -21,7 +20,6 @@ import dev.ward.infrastructure.init.QualityHookInstaller;
 import dev.ward.infrastructure.init.RuleFileTargets;
 import dev.ward.infrastructure.init.ToolchainArchitectureTables;
 import dev.ward.infrastructure.init.node.NodeRuleFileTargets;
-import dev.ward.infrastructure.init.node.PackageManagerToolInstaller;
 import dev.ward.infrastructure.init.python.PythonRuleFileTargets;
 import dev.ward.infrastructure.init.swift.SwiftRuleFileTargets;
 import dev.ward.infrastructure.terminal.JdkTerminalCapabilities;
@@ -56,9 +54,6 @@ interface InitBindingsModule {
 
   @Binds
   OwnedSectionGeneration ownedSectionGeneration(OwnedSectionWriter implementation);
-
-  @Binds
-  ToolInstaller toolInstaller(PackageManagerToolInstaller implementation);
 
   /** The rule files of each toolchain that has its own; a JVM project has none here. */
   @Provides
