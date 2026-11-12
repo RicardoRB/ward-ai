@@ -28,6 +28,8 @@ pylint
 ruff
 secrets
 semgrep
+spectral-oas
+spectral-owasp
 spotbugs
 swiftlint
 typescript-eslint

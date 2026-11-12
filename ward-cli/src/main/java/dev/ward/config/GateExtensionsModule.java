@@ -6,9 +6,11 @@ import dev.ward.application.gate.AnalysisPorts;
 import dev.ward.application.gate.CrapPorts;
 import dev.ward.application.gate.FormatGates;
 import dev.ward.application.gate.GateExtensions;
+import dev.ward.application.gate.PolicyGatePorts;
 import dev.ward.application.gate.ReportingGatePorts;
 import dev.ward.application.gate.SecretGates;
 import dev.ward.application.gate.VulnerabilityGates;
+import dev.ward.application.gate.buildpolicy.BuildPolicyGates;
 import dev.ward.application.gate.openapi.OpenApiGates;
 import dev.ward.application.license.LicenseService;
 import dev.ward.domain.gate.LineCoverageReport;
@@ -27,7 +29,7 @@ interface GateExtensionsModule {
       final AnalysisPorts analysis,
       final FormatGates format,
       final ReportingGatePorts reporting,
-      final LicenseService license) {
+      final PolicyGatePorts policy) {
     return new GateExtensions(
         openApi,
         analysis,
@@ -35,7 +37,15 @@ interface GateExtensionsModule {
         reporting.secrets(),
         reporting.crap(),
         reporting.vulnerabilities(),
-        license);
+        policy.license(),
+        policy.buildPolicy());
+  }
+
+  /** Gathers the gates that check a policy: licenses and build files. */
+  @Provides
+  static PolicyGatePorts policyGates(
+      final LicenseService license, final BuildPolicyGates buildPolicy) {
+    return new PolicyGatePorts(license, buildPolicy);
   }
 
   /** Gathers the gates that read a report or the dependency inventory themselves. */

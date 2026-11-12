@@ -1,0 +1,19 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths:
+  /p:
+    get:
+      security:
+        - missing: []
+        - key: []
+      responses: {}
+components:
+  securitySchemes:
+    key:
+      type: apiKey
+      name: n
+      in: header
+security:
+  - other: []

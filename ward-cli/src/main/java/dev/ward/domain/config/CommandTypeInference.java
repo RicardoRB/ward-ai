@@ -28,6 +28,7 @@ public final class CommandTypeInference {
           "ward-format",
           "vulnerabilities",
           "crap",
+          "build-policy",
           "ng-test",
           "api-compat",
           "license",

@@ -1,0 +1,122 @@
+# OpenAPI lint rules (validation), ported from the Spectral 6.17.1 rules of the same id. Each rule is a project check over the loaded document model.
+
+[[rules]]
+id = "ward:openapi/oas3-api-servers"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-oas3-api-servers"
+'''
+
+[[rules]]
+id = "ward:openapi/no-eval-in-markdown"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-no-eval-in-markdown"
+'''
+
+[[rules]]
+id = "ward:openapi/no-script-tags-in-markdown"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-no-script-tags-in-markdown"
+'''
+
+[[rules]]
+id = "ward:openapi/oas3-examples-value-or-external-value"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-oas3-examples-value-or-external-value"
+'''
+
+[[rules]]
+id = "ward:openapi/oas3-callbacks-in-callbacks"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-oas3-callbacks-in-callbacks"
+'''
+
+[[rules]]
+id = "ward:openapi/oas3-1-servers-in-webhook"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-oas3-1-servers-in-webhook"
+'''
+
+[[rules]]
+id = "ward:openapi/oas3-1-callbacks-in-webhook"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-oas3-1-callbacks-in-webhook"
+'''
+
+[[rules]]
+id = "ward:openapi/oas3-server-variables"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-oas3-server-variables"
+'''
+
+[[rules]]
+id = "ward:openapi/oas3-valid-schema-example"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-oas3-valid-schema-example"
+'''
+
+[[rules]]
+id = "ward:openapi/oas3-valid-media-example"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-oas3-valid-media-example"
+'''
+
+[[rules]]
+id = "ward:openapi/oas3-schema"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-oas3-schema"
+'''

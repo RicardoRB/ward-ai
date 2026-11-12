@@ -27,6 +27,7 @@ final class ArchitectureBoundarySupport {
           "dev.ward.config.BuildToolBindingsModule",
           "dev.ward.config.DoctorBindingsModule",
           "dev.ward.config.DependencyBindingsModule",
+          "dev.ward.config.BuildPolicyBindingsModule",
           "dev.ward.config.VulnerabilityBindingsModule",
           "dev.ward.config.LicenseBindingsModule",
           "dev.ward.config.NodeBindingsModule",
@@ -71,6 +72,7 @@ final class ArchitectureBoundarySupport {
   static final Map<String, Set<String>> DOMAIN_FEATURE_EDGES =
       Map.ofEntries(
           Map.entry("agent", Set.of()),
+          Map.entry("buildpolicy", Set.of("dependency")),
           Map.entry("config", Set.of()),
           Map.entry("dependency", Set.of("config", "project", "process")),
           Map.entry("doctor", Set.of()),
@@ -98,8 +100,12 @@ final class ArchitectureBoundarySupport {
           Map.entry("loop", Set.of("dev.ward.application.gate.CheckService")),
           Map.entry("format", Set.of()),
           Map.entry(
+              "buildpolicy", Set.of("dev.ward.application.dependency.DependencyInventoryService")),
+          Map.entry(
               "gate",
               Set.of(
+                  "dev.ward.application.buildpolicy.BuildPolicyService",
+                  "dev.ward.application.buildpolicy.BuildPolicySetting",
                   "dev.ward.application.project.ProjectDetector",
                   "dev.ward.application.project.ProjectDiscovery",
                   "dev.ward.application.project.ProjectNotFoundException",
@@ -242,12 +248,12 @@ final class ArchitectureBoundarySupport {
 
   /**
    * The packages of the frontend module, including its generated parsers, and of the structural
-   * rules and dependency summarizers of the Node, Python and Swift languages, which are the
-   * analysis adapters and domain for those rules.
+   * rules and dependency summarizers of the Node, Python and Swift languages, and the OpenAPI
+   * document model and rules, which are the analysis adapters and domain for those rules.
    */
   private static boolean isGeneratedFrontendPackage(final String packageName) {
     return packageName.matches(
-        "dev\\.ward\\.analysis\\.(frontend\\.antlr|domain\\.node|domain\\.jvm|domain\\.python|domain\\.swift|application\\.(?:jvm|node|python|swift)|infrastructure\\.node)(\\..*)?");
+        "dev\\.ward\\.analysis\\.(frontend\\.antlr|domain\\.node|domain\\.jvm|domain\\.python|domain\\.swift|domain\\.openapi|application\\.(?:jvm|node|python|swift|openapi)|infrastructure\\.node)(\\..*)?");
   }
 
   static boolean isDaggerGenerated(final String name) {

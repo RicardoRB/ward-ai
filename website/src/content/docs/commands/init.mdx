@@ -228,7 +228,7 @@ mutation omitted: info.solidsoft.pitest needs JDK 8+; this project builds on JDK
   project-level `<dependencies>`. Missing sections are created.
 - Profiles, `dependencyManagement`, and plugin dependencies are never edited. A plugin declared
   only inside a profile is reported as not reconfigured.
-- The one addition to `<build><pluginManagement>` is the strict `enforcer` pins described in
+- The one addition to `<build><pluginManagement>` is the strict lifecycle plugin pins, written for the `build-policy` and `enforcer` gates, described in
   [First failures under `strict`](#first-failures-under-strict). Existing entries there never
   change.
 - Compatibility updates change only the managed plugin's own project-level `<version>`.
@@ -318,8 +318,8 @@ finding. With `strict`, expect these on most existing projects:
 
 - `ward`: findings of the strict Java rules, such as `ward:java/magic-number`,
   `ward:java/missing-javadoc` or `ward:java/method-length`, in existing code.
-- `enforcer`: strict keeps `requirePluginVersions` on purpose, so every plugin needs a pinned
-  version.
+- `build-policy`: `ward:build/plugin-version-pinned` is selected by `strict` on purpose, so every
+  plugin needs a pinned version. See [Build policy rules](/reference/build-policy-rules/).
   - Init pins the plugins Maven adds through its default lifecycle (clean, resources, compiler,
     surefire, jar, install, deploy, and site) in `<pluginManagement>`. It uses the versions Maven
     3.9.16 binds by default and skips plugins the POM already declares. The pins appear in
@@ -620,7 +620,6 @@ Init installs a missing tool only with your explicit consent, one tool at a time
 | Tool | How |
 |---|---|
 | Semgrep | Homebrew, or pipx as a fallback |
-| vacuum (`openapi-lint`) | Homebrew |
 | oasdiff (`openapi-diff`, `openapi-compat`) | Homebrew |
 | ZAP (`zap-baseline.py`) | Manual guidance only |
 | OpenSpec | `--install-tool openspec` |
@@ -672,7 +671,7 @@ Ward's marker blocks initialization as a conflict. Gates that need a running app
 ### Agent rules
 
 `--agent-rules` writes a Ward-owned section into `AGENTS.md` with the limits the selected gates
-enforce: the Ward rule preset for Java and Kotlin, coverage and mutation minimums, and enforcer rules.
+enforce: the Ward rule preset for Java and Kotlin, coverage and mutation minimums, the build policy rules and the remaining Enforcer rules.
 
 - For TypeScript it names the `tsc` and test commands, the 70% line coverage minimum of the `coverage` check
   (85% of lines and 75% of branches with `strict`), Stryker (with its 60% minimum under `strict`), and the Ward

@@ -1,0 +1,1 @@
+10:12	"enum" property must not have duplicate items (items ## 0 and 2 are identical)

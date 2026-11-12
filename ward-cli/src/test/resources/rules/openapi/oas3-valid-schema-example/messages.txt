@@ -1,0 +1,18 @@
+8:34	"example" property type must be string
+9:35	"example" property type must be integer
+10:47	"example" property must be >= 5
+11:70	"example" property must be < 5
+12:62	"example" property must not have fewer than 3 characters
+16:16	"example" property must match pattern "^a+$"
+17:49	"example" property must match format "uuid"
+18:54	"example" property must match format "date-time"
+19:51	"example" property must be equal to one of the allowed values: "a", "b"
+20:56	"example" property must be equal to one of the allowed values: "alpha", "beta". Did you mean "alpha"?
+27:15	"example" property must have required property "id"
+38:13	"id" property type must be integer
+40:77	"example" property must not have duplicate items (items ## 2 and 0 are identical)
+41:55	"example" property type must be string,null
+47:15	"example" property must have required property "a"
+58:40	"default" property type must be integer
+59:55	"example" property must be multiple of 3
+60:70	"example" property must not have more than 1 items

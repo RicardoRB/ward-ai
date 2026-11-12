@@ -17,11 +17,6 @@ public final class GateToolInstallCatalog {
                   "https://semgrep.dev/docs/getting-started/"),
           "zap-baseline.py",
               entry("zap-baseline.py", "https://www.zaproxy.org/docs/docker/baseline-scan/"),
-          "vacuum",
-              entry(
-                  "vacuum",
-                  "https://quobix.com/vacuum/installing/",
-                  method("brew", "install", "vacuum")),
           "oasdiff",
               entry(
                   "oasdiff",

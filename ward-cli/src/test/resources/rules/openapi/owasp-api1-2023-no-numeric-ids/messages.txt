@@ -1,0 +1,1 @@
+12:18	Use random IDs that cannot be guessed. UUIDs are preferred but any other random string will do.

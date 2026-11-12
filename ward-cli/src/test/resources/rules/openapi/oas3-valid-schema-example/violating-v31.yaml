@@ -1,0 +1,40 @@
+openapi: 3.1.0
+info: {title: T, version: "1", description: d}
+paths:
+  /a:
+    get:
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Pet'}
+              example: {id: x, tags: [1], extra: 1}
+components:
+  schemas:
+    Pet:
+      type: object
+      required: [id]
+      unevaluatedProperties: false
+      properties:
+        id: {type: integer, example: a}
+        tags:
+          type: array
+          prefixItems:
+            - {type: string}
+            - {type: integer}
+          items: {type: boolean}
+          example: [1, x, 3]
+        maybe: {type: [string, "null"], example: 5}
+        c: {const: 3, example: 4}
+        n: {type: number, exclusiveMinimum: 5, exclusiveMaximum: 6, example: 5}
+        w:
+          allOf:
+            - {type: object, properties: {a: {type: string}}}
+            - {type: object, required: [b]}
+          example: {a: 1}
+        i:
+          if: {properties: {t: {const: x}}, required: [t]}
+          then: {required: [y]}
+          else: {required: [z]}
+          example: {t: x}

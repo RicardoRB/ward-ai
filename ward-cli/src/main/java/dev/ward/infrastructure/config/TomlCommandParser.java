@@ -21,12 +21,20 @@ final class TomlCommandParser {
           SupportedQualityGates.COVERAGE,
           SupportedQualityGates.SECRETS,
           SupportedQualityGates.VULNERABILITIES,
+          SupportedQualityGates.BUILD_POLICY,
           SupportedQualityGates.LICENSE);
 
   private TomlCommandParser() {}
 
   /** Returns the command; an empty command is allowed only for a traceability or analysis check. */
   static List<String> parse(final String where, final TomlTable gate, final String uses) {
+    if (SupportedQualityGates.OPENAPI_LINT.equals(uses)) {
+      if (gate.contains(COMMAND)) {
+        throw new WardException(
+            "'" + where + ".command' is not allowed: openapi-lint runs Ward's own rules.");
+      }
+      return List.of();
+    }
     if (!gate.contains(COMMAND)) {
       return missing(where, uses);
     }

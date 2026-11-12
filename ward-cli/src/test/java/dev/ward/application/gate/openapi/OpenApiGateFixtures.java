@@ -28,7 +28,6 @@ final class OpenApiGateFixtures {
   static final String PARENT_SHA = "c".repeat(40);
   static final Project PROJECT =
       new Project(Path.of("/project"), Language.JAVA, BuildTool.MAVEN, Framework.SPRING_BOOT);
-  static final List<String> LINT_COMMAND = List.of("vacuum", "lint", "-z", "-n", "warn");
   static final List<String> DIFF_COMMAND = List.of("oasdiff", "breaking", "--fail-on", "ERR");
 
   final Map<String, String> revisions = new HashMap<>();
@@ -110,6 +109,7 @@ final class OpenApiGateFixtures {
           public boolean contains(final Path root, final String path, final String text) {
             return workingTree.getOrDefault(path, "").contains(text);
           }
-        });
+        },
+        null);
   }
 }

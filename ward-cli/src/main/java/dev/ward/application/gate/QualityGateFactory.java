@@ -35,7 +35,8 @@ public class QualityGateFactory {
           SupportedQualityGates.SECRETS,
           SupportedQualityGates.CRAP,
           SupportedQualityGates.COVERAGE,
-          SupportedQualityGates.VULNERABILITIES);
+          SupportedQualityGates.VULNERABILITIES,
+          SupportedQualityGates.BUILD_POLICY);
   private static final Set<String> REPORTING_GATES =
       Set.of(
           SupportedQualityGates.SECRETS,
@@ -257,6 +258,12 @@ public class QualityGateFactory {
    * report itself.
    */
   private QualityGate inProcessGate(final GateConfiguration check, final List<String> focus) {
+    if (SupportedQualityGates.BUILD_POLICY.equals(check.type())) {
+      if (extensions.buildPolicy() == null) {
+        throw new WardException("Build policy gate dependencies are unavailable.");
+      }
+      return extensions.buildPolicy().create(check.name(), check.rulesFile());
+    }
     if (SupportedQualityGates.LICENSE.equals(check.type())) {
       return extensions.licenseGate(check);
     }
@@ -275,7 +282,7 @@ public class QualityGateFactory {
   private QualityGate openApiGate(
       final String name, final GateConfiguration check, final Project project) {
     if (extensions.openApi() == null) {
-      OpenApiCommandValidation.require(name, check.command());
+      OpenApiCommandValidation.requireFor(check.type(), name, check.command());
       throw new WardException("OpenAPI gate dependencies are unavailable.");
     }
     return extensions.openApi().create(name, check, project);

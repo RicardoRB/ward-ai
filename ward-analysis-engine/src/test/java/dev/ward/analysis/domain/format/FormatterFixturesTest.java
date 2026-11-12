@@ -90,6 +90,7 @@ class FormatterFixturesTest {
       case JAVASCRIPT -> "js";
       case PYTHON -> "py";
       case SWIFT -> "swift";
+      case OPENAPI -> "yaml";
     };
   }
 }

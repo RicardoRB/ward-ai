@@ -28,11 +28,12 @@ record BinaryToolGates(EnvironmentInspection environment, Project project) {
     final List<String> diff = List.of("oasdiff", "breaking", "--fail-on", "ERR");
     return List.of(
         withSettings(
-            option(
+            new InitGateOption(
                 SupportedQualityGates.OPENAPI_LINT,
-                "Lints the committed OpenAPI spec with every built-in vacuum rule.",
-                List.of("vacuum", "lint", "-z", "-n", "warn"),
-                "Install vacuum."),
+                "Lints the committed OpenAPI spec with Ward's own rules; nothing to install.",
+                List.of(),
+                true,
+                "Ward's own rules; no executable is needed."),
             Map.of(SPEC, spec)),
         withSettings(
             option(

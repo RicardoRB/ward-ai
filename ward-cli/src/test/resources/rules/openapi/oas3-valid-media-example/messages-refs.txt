@@ -1,0 +1,2 @@
+14:23	Property "extra" is not expected to be here
+22:94	"example" property must be <= 10

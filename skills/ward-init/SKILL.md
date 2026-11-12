@@ -109,7 +109,7 @@ order:
    Ask whether to reconfigure. A yes here is consent for `--overwrite`. A no ends the skill with no
    changes.
 2. **Preset.** `standard` (fast, offline gates), `strict` (adds the strict Java rules,
-   coverage, enforcer, and mutation testing), or a custom selection. To show exactly which
+   coverage, build-policy, enforcer, and mutation testing), or a custom selection. To show exactly which
    gates a preset enables in this project, run a read-only preview and read its
    `Selected quality gate` lines:
 
@@ -153,11 +153,12 @@ order:
      `openapi.yml`, `openapi.yaml`, or `openapi.json` in `src/main/resources` or the project root.
      When one is found, the `standard` and `strict` presets include `openapi-lint` and
      `openapi-diff` (`strict` also `openapi-compat`), so recommend the preset as usual and say that
-     it adds them. Their tools are `vacuum` (`openapi-lint`) and `oasdiff` (`openapi-diff`,
-     `openapi-compat`). If a tool is missing, its `install` line (for example `brew install vacuum`)
-     is the recommended step, asked in step 5 like any other gate. CI installs both tools pinned.
-     They allow no exceptions: `openapi-lint` runs every built-in vacuum rule, and the gates fail on
-     `vacuum.conf.yaml`, `.oasdiff.*` files, or `x-lint-ignore` in the spec. Say so before
+     it adds them. `openapi-lint` runs Ward's own rules (those of Spectral's OpenAPI and OWASP
+     rulesets) and needs no tool; `openapi-diff` and `openapi-compat` need `oasdiff`. If `oasdiff` is
+     missing, its `install` line (for example `brew install oasdiff`) is the recommended step, asked
+     in step 5 like any other gate. CI installs `oasdiff` pinned.
+     They allow no exceptions: `openapi-lint` takes no `command` and fails on `x-lint-ignore` in the
+     spec, and the diff gates fail on `.oasdiff.*` files. Say so before
      recommending them on a spec that has never been linted. `openapi-compat` compares with
      `origin/main`, and the CI workflow fetches full history for it.
      A project whose framework serves HTTP, as `ward detect` reports it (Spring Boot, Quarkus,
@@ -166,7 +167,7 @@ order:
      reason to lint a contract. Init's plan notes the framework and adds no OpenAPI gate without a
      spec, so first recommend committing one: a FastAPI app exports its document with `app.openapi()`
      to `openapi.json`, and a Spring project can export its document with springdoc. Then recommend
-     the gates and `vacuum` as above.
+     the gates as above.
    - `crap` is opt-in: no preset selects it. Offer it when the user wants functions that are both
      complex and untested to fail. It needs the coverage gate (`coverage` for Maven and Gradle, the
      test gate for Node, `pytest` for Python); init fails with exit code 2 and writes no file

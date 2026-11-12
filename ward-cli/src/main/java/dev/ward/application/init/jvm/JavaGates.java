@@ -12,7 +12,7 @@ import java.util.List;
 final class JavaGates implements SourceLanguageGates<BuildToolGates> {
   private static final List<String> STANDARD = List.of("compile", "tests", "coverage");
   private static final List<String> STRICT =
-      List.of("compile", "tests", "coverage", "enforcer", "mutation");
+      List.of("compile", "tests", "coverage", "build-policy", "enforcer", "mutation");
 
   @Override
   public List<InitGateOption> analysisGates(final BuildToolGates jvm) {

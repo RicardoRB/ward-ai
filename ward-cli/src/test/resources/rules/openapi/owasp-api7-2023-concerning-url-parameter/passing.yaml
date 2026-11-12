@@ -1,0 +1,15 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths:
+  /pets:
+    get:
+      parameters:
+        - name: name
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok

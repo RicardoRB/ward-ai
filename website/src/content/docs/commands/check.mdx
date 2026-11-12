@@ -209,8 +209,8 @@ A gate is `UNAVAILABLE` when the environment, not the code, stopped it. Ward exp
 how to fix it:
 
 - **Missing executable.** The gate's command could not start. The summary names the gate and the
-  executable. For the tools in Ward's install catalog (semgrep, zap-baseline.py,
-  vacuum and oasdiff) it gives the install command or link; for any other tool it says to install
+  executable. For the tools in Ward's install catalog (semgrep, zap-baseline.py
+  and oasdiff) it gives the install command or link; for any other tool it says to install
   it or add it to `PATH`.
 - **JDK older than the project.** When a Maven or Gradle gate fails and the build declares a Java
   release newer than the JDK that runs it, the gate is `UNAVAILABLE`. The summary names both

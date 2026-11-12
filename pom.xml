@@ -19,6 +19,7 @@
         <module>ward-cli</module>
         <module>ward-lang-python</module>
         <module>ward-lang-swift</module>
+        <module>ward-lang-openapi</module>
         <module>ward-analysis-bench</module>
     </modules>
 

@@ -54,7 +54,6 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
           "xcrun",
           "semgrep",
           "zap-baseline.py",
-          "vacuum",
           "oasdiff");
   private static final List<String> OPENAPI_SPECS =
       List.of(

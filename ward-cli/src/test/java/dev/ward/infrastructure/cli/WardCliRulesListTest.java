@@ -44,6 +44,25 @@ class WardCliRulesListTest extends WardCliIntegrationSupport {
   }
 
   @Test
+  void theOpenApiRulesAreListedUnderTheOpenApiLanguage() {
+    assertThat(
+            run(
+                RULES,
+                LIST,
+                LANGUAGE,
+                "openapi",
+                "--format",
+                "json",
+                DIRECTORY,
+                project.toString()))
+        .isEqualTo(ExitCodes.OK);
+
+    final JsonTree rules = JsonTree.parse(out.toString()).get("rules");
+    assertThat(rules.size()).isPositive();
+    assertThat(rules.get(0).get("id").asString()).startsWith("ward:openapi/");
+  }
+
+  @Test
   void selectedWithoutAFileListsTheStandardRules() {
     assertThat(run(RULES, LIST, SELECTED, "--format", "json", DIRECTORY, project.toString()))
         .isEqualTo(ExitCodes.OK);
