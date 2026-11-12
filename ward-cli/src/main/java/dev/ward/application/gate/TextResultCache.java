@@ -1,11 +1,12 @@
 package dev.ward.application.gate;
 
-import dev.ward.analysis.application.rule.RuleEngine;
+import dev.ward.analysis.application.rule.TextRules;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisFindingOrder;
 import dev.ward.analysis.domain.ir.TextFile;
 import dev.ward.analysis.domain.port.AnalysisCache;
 import dev.ward.analysis.domain.rule.RuleDefinition;
+import dev.ward.analysis.domain.rule.RuleMatcher;
 import dev.ward.analysis.domain.rule.RuleRunResult;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -21,13 +22,13 @@ import java.util.stream.Collectors;
  * Only a run with no execution error is stored.
  */
 final class TextResultCache {
-  private final RuleEngine engine;
+  private final RuleMatcher matcher;
   private final AnalysisResultCodec codec;
   private final String engineVersion;
 
   TextResultCache(
-      final RuleEngine engine, final AnalysisResultCodec codec, final String engineVersion) {
-    this.engine = engine;
+      final RuleMatcher matcher, final AnalysisResultCodec codec, final String engineVersion) {
+    this.matcher = matcher;
     this.codec = codec;
     this.engineVersion = engineVersion;
   }
@@ -48,7 +49,7 @@ final class TextResultCache {
         misses.put(file, key);
       }
     }
-    final RuleRunResult analyzed = engine.runText(List.copyOf(misses.keySet()), rules);
+    final RuleRunResult analyzed = new TextRules(matcher, rules).run(List.copyOf(misses.keySet()));
     if (analyzed.executionErrors().isEmpty()) {
       store(cache, misses, analyzed.findings());
     }

@@ -13,8 +13,20 @@ final class PatchParser {
   private static final Pattern HUNK = Pattern.compile("^@@ -\\S+ \\+(\\d+)(?:,\\d+)? @@");
   private static final String FILE_MARK = "+++ b/";
   private static final String NO_FILE = "+++ /dev/null";
+  private static final String DIFF = "diff --git ";
 
-  private PatchParser() {}
+  private final String marker;
+  private final int shortId;
+  private final List<HistoryPatch> patches = new ArrayList<>();
+  private final List<AddedLine> lines = new ArrayList<>();
+  private String commit = "";
+  private String path = "";
+  private int number;
+
+  private PatchParser(final String marker, final int shortId) {
+    this.marker = marker;
+    this.shortId = shortId;
+  }
 
   /** Returns how many commits {@code output} holds. */
   static int commits(final String output, final String marker) {
@@ -37,46 +49,49 @@ final class PatchParser {
 
   /** Returns one patch per commit and file with added lines. */
   static List<HistoryPatch> parse(final String output, final String marker, final int shortId) {
-    final List<HistoryPatch> patches = new ArrayList<>();
-    String commit = "";
-    String path = null;
-    List<AddedLine> lines = new ArrayList<>();
-    int number = 0;
+    final PatchParser parser = new PatchParser(marker, shortId);
     for (final String line : output.split("\n", -1)) {
-      if (line.startsWith(marker)) {
-        flush(patches, commit, path, lines);
-        commit =
-            line.substring(marker.length(), Math.min(line.length(), marker.length() + shortId));
-        path = null;
-        lines = new ArrayList<>();
-      } else if (line.startsWith("diff --git ")) {
-        flush(patches, commit, path, lines);
-        path = null;
-        lines = new ArrayList<>();
-      } else if (line.startsWith(FILE_MARK)) {
-        path = line.substring(FILE_MARK.length());
-      } else if (line.startsWith(NO_FILE)) {
-        path = null;
-      } else {
-        final Matcher hunk = HUNK.matcher(line);
-        if (hunk.find()) {
-          number = Integer.parseInt(hunk.group(1));
-        } else if (path != null && line.startsWith("+")) {
-          lines.add(new AddedLine(number++, line.substring(1)));
-        }
-      }
+      parser.read(line);
     }
-    flush(patches, commit, path, lines);
-    return patches;
+    parser.flush();
+    return parser.patches;
   }
 
-  private static void flush(
-      final List<HistoryPatch> patches,
-      final String commit,
-      final String path,
-      final List<AddedLine> lines) {
-    if (path != null && !lines.isEmpty()) {
+  private void read(final String line) {
+    if (line.startsWith(marker)) {
+      flush();
+      commit = line.substring(marker.length(), Math.min(line.length(), marker.length() + shortId));
+    } else if (line.startsWith(DIFF)) {
+      flush();
+    } else if (line.startsWith(FILE_MARK)) {
+      path = line.substring(FILE_MARK.length());
+    } else if (line.startsWith(NO_FILE)) {
+      path = "";
+    } else {
+      content(line);
+    }
+  }
+
+  private void content(final String line) {
+    final Matcher hunk = HUNK.matcher(line);
+    if (hunk.find()) {
+      number = Integer.parseInt(hunk.group(1));
+    } else if (!path.isEmpty() && line.startsWith("+")) {
+      add(line.substring(1));
+    }
+  }
+
+  private void add(final String text) {
+    lines.add(new AddedLine(number, text));
+    number++;
+  }
+
+  /** Ends the patch of the current file and commit. */
+  private void flush() {
+    if (!path.isEmpty() && !lines.isEmpty()) {
       patches.add(new HistoryPatch(commit, path, lines));
     }
+    path = "";
+    lines.clear();
   }
 }

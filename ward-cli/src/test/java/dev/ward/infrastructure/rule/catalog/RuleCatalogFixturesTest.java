@@ -2,7 +2,7 @@ package dev.ward.infrastructure.rule.catalog;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.ward.analysis.application.rule.RuleEngine;
+import dev.ward.analysis.application.rule.TextRules;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.TextFile;
@@ -99,10 +99,8 @@ class RuleCatalogFixturesTest {
   private static List<String> checkText(
       final RuleDefinition rule, final Path file, final List<String> expected) throws IOException {
     final RuleRunResult result =
-        new RuleEngine(BundledRuleMatchers.create())
-            .runText(
-                List.of(new TextFile(file.getFileName().toString(), Files.readString(file))),
-                List.of(rule));
+        new TextRules(BundledRuleMatchers.create(), List.of(rule))
+            .run(List.of(new TextFile(file.getFileName().toString(), Files.readString(file))));
     final List<String> problems = new ArrayList<>();
     if (!result.executionErrors().isEmpty()) {
       problems.add(rule.id() + " has execution errors: " + result.executionErrors());

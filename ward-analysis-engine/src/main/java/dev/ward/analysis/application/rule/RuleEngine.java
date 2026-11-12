@@ -4,12 +4,10 @@ import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
-import dev.ward.analysis.domain.ir.TextFile;
 import dev.ward.analysis.domain.port.AnalysisFailedException;
 import dev.ward.analysis.domain.rule.CompiledRule;
 import dev.ward.analysis.domain.rule.DependencyView;
 import dev.ward.analysis.domain.rule.ProjectFiles;
-import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleExecutionError;
 import dev.ward.analysis.domain.rule.RuleMatcher;
@@ -66,74 +64,6 @@ public final class RuleEngine {
       runRule(rule, units, state);
     }
     return collector.result();
-  }
-
-  /**
-   * Runs the {@code TEXT} rules among {@code rules} over {@code files}, which need no frontend. A
-   * rule that cannot be compiled, or cannot run on a file, is recorded as an execution error with
-   * the reason its check gives, and the run continues.
-   */
-  public RuleRunResult runText(final List<TextFile> files, final List<RuleDefinition> rules) {
-    return textRules(rules).run(files);
-  }
-
-  /**
-   * Compiles the {@code TEXT} rules among {@code rules} once, for a caller that runs them over
-   * several batches of files.
-   */
-  public TextRules textRules(final List<RuleDefinition> rules) {
-    final RuleRunCollector compiled = new RuleRunCollector();
-    final List<CompiledRule> usable = new ArrayList<>();
-    for (final RuleDefinition definition : rules) {
-      if (definition.capability() == RuleCapability.TEXT) {
-        compileText(definition, compiled).ifPresent(usable::add);
-      }
-    }
-    return new TextRules(usable, compiled.result().executionErrors());
-  }
-
-  /** The compiled {@code TEXT} rules of one run. */
-  public static final class TextRules {
-    private final List<CompiledRule> rules;
-    private final List<RuleExecutionError> compileErrors;
-
-    private TextRules(final List<CompiledRule> rules, final List<RuleExecutionError> errors) {
-      this.rules = List.copyOf(rules);
-      this.compileErrors = List.copyOf(errors);
-    }
-
-    /** Runs the rules over {@code files}; the findings come back sorted. */
-    public RuleRunResult run(final List<TextFile> files) {
-      final RuleRunCollector collector = new RuleRunCollector();
-      compileErrors.forEach(collector::recordError);
-      for (final CompiledRule rule : rules) {
-        files.forEach(file -> runOnText(rule, file, collector));
-      }
-      return collector.result();
-    }
-  }
-
-  private Optional<CompiledRule> compileText(
-      final RuleDefinition definition, final RuleRunCollector collector) {
-    try {
-      return Optional.of(matcher.compile(definition));
-    } catch (final AnalysisFailedException exception) {
-      collector.recordError(
-          new RuleExecutionError(definition.id(), null, "the rule could not be compiled"));
-      return Optional.empty();
-    }
-  }
-
-  private static void runOnText(
-      final CompiledRule rule, final TextFile file, final RuleRunCollector collector) {
-    try {
-      rule.textMatches(file)
-          .forEach(
-              match -> collector.finding(RuleFindings.at(rule.definition(), file.path(), match)));
-    } catch (final AnalysisFailedException exception) {
-      collector.recordError(
-          new RuleExecutionError(rule.definition().id(), file.path(), exception.getMessage()));
-    }
   }
 
   /**

@@ -105,9 +105,7 @@ public final class PartialCheckPlan {
     if (relevant.isEmpty()) {
       return new GatePlan(name, Scope.SKIP, List.of());
     }
-    if (SupportedQualityGates.ANALYSIS.equals(configuration.type())
-        || SupportedQualityGates.FORMAT.equals(configuration.type())
-        || SupportedQualityGates.SECRETS.equals(configuration.type())) {
+    if (runsInProcess(configuration.type())) {
       return new GatePlan(
           name, Scope.NARROW, List.of(), relevant.stream().map(EditedPath::relative).toList());
     }
@@ -117,6 +115,13 @@ public final class PartialCheckPlan {
       return new GatePlan(name, Scope.FULL, List.of());
     }
     return new GatePlan(name, Scope.NARROW, PartialArguments.render(partial, items));
+  }
+
+  /** The gates that run inside Ward narrow to the edited paths themselves, not to arguments. */
+  private static boolean runsInProcess(final String type) {
+    return SupportedQualityGates.ANALYSIS.equals(type)
+        || SupportedQualityGates.FORMAT.equals(type)
+        || SupportedQualityGates.SECRETS.equals(type);
   }
 
   private static List<EditedPath> normalize(

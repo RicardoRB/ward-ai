@@ -20,10 +20,12 @@ public record HistoryPatch(String commit, String path, List<AddedLine> lines) {
    */
   public record AddedLine(int number, String text) {
 
+    private static final int FIRST_LINE = 1;
+
     /** Validates the line. */
     public AddedLine {
       Objects.requireNonNull(text, "text");
-      if (number < 1) {
+      if (number < FIRST_LINE) {
         throw new IllegalArgumentException("line numbers are 1-based");
       }
     }

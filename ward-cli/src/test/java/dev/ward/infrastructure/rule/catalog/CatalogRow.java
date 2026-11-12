@@ -67,18 +67,6 @@ public record CatalogRow(
     ids.forEach((language, id) -> requireId(name, language, id));
   }
 
-  /** Creates a row of the languages, which has no text scope. */
-  public CatalogRow(
-      final String name,
-      final String category,
-      final Set<RulePreset> presets,
-      final Map<AnalysisLanguage, LanguageStatus> statuses,
-      final Map<AnalysisLanguage, String> ids,
-      final Map<String, List<String>> counterparts,
-      final String source) {
-    this(name, category, presets, statuses, ids, counterparts, source, Optional.empty());
-  }
-
   /** Tells whether this row is of the text scope. */
   public boolean isText() {
     return text.isPresent();
@@ -86,12 +74,12 @@ public record CatalogRow(
 
   /** Returns the ids of the implemented rules of the row: one per language, or the text rule. */
   public List<String> implementedIds() {
-    final List<String> ids = new ArrayList<>();
-    languages(CatalogStatus.IMPLEMENTED).forEach(language -> ids.add(idFor(language)));
+    final List<String> implemented = new ArrayList<>();
+    languages(CatalogStatus.IMPLEMENTED).forEach(language -> implemented.add(idFor(language)));
     if (text.isPresent() && text.get().status() == CatalogStatus.IMPLEMENTED) {
-      ids.add(textId());
+      implemented.add(textId());
     }
-    return ids;
+    return implemented;
   }
 
   /** Returns the id of the rule of a text row, {@code ward:secrets/<name>}. */

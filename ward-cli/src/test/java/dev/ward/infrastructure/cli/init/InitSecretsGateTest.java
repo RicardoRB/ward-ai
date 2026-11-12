@@ -38,12 +38,7 @@ class InitSecretsGateTest {
   @Test
   void noPresetSelectsTheSecretsCheck() throws IOException {
     for (final String preset : new String[] {"standard", "strict"}) {
-      final InitCommandFixture init = new InitCommandFixture(root);
-
-      assertThat(init.run("", "--yes", "--preset", preset, "--integration", "none"))
-          .as(preset)
-          .isEqualTo(ExitCodes.OK);
-      assertThat(init.configuration()).as(preset).doesNotContain("secrets");
+      assertThat(configurationOf(preset)).as(preset).doesNotContain("secrets");
     }
   }
 
@@ -55,5 +50,13 @@ class InitSecretsGateTest {
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.ERROR);
     assertThat(init.output()).contains("gitleaks").contains("secrets");
+  }
+
+  private String configurationOf(final String preset) throws IOException {
+    final InitCommandFixture init = new InitCommandFixture(root);
+    assertThat(init.run("", "--yes", "--preset", preset, "--integration", "none"))
+        .as(preset)
+        .isEqualTo(ExitCodes.OK);
+    return init.configuration();
   }
 }

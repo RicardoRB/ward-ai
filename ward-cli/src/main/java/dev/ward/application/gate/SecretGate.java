@@ -1,11 +1,12 @@
 package dev.ward.application.gate;
 
-import dev.ward.analysis.application.rule.RuleEngine;
+import dev.ward.analysis.application.rule.TextRules;
 import dev.ward.analysis.domain.ir.AnalysisFindingOrder;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleExecutionError;
 import dev.ward.analysis.domain.rule.RuleRunResult;
+import dev.ward.domain.config.GateConfiguration;
 import dev.ward.domain.config.SecretsOptions;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.QualityGate;
@@ -34,17 +35,16 @@ public final class SecretGate implements QualityGate {
   private final List<String> focus;
 
   SecretGate(
-      final String name,
+      final GateConfiguration check,
       final RuleSetup setup,
       final AnalysisPorts ports,
       final GitHistory history,
-      final SecretsOptions options,
       final List<String> focus) {
-    this.name = name;
+    this.name = check.name();
     this.setup = setup;
     this.ports = ports;
     this.history = history;
-    this.options = options;
+    this.options = check.secrets();
     this.focus = List.copyOf(focus);
   }
 
@@ -65,9 +65,8 @@ public final class SecretGate implements QualityGate {
         set.rules().stream().filter(rule -> rule.capability() == RuleCapability.TEXT).toList();
     final Predicate<String> excluded = SecretHistoryScan.excluding(excludedPaths);
     final TextRead read = ports.sources().readText(project.root(), focus, excluded);
-    final RuleEngine engine = new RuleEngine(ports.matcher());
     RuleRunResult run =
-        new TextResultCache(engine, ports.codec(), ports.engineVersion())
+        new TextResultCache(ports.matcher(), ports.codec(), ports.engineVersion())
             .run(ports.caches().open(project.root()), read.files(), rules);
     run = merge(run, new RuleRunResult(List.of(), read.errors(), List.of()));
     if (options.scanHistory() && focus.isEmpty()) {
@@ -75,7 +74,11 @@ public final class SecretGate implements QualityGate {
           merge(
               run,
               new SecretHistoryScan(history)
-                  .scan(project.root(), options.historySince(), engine.textRules(rules), excluded));
+                  .scan(
+                      project.root(),
+                      options.historySince(),
+                      new TextRules(ports.matcher(), rules),
+                      excluded));
     }
     run = ExcludedFindings.drop(run, set);
     if (LOGGER.isLoggable(Level.FINE)) {

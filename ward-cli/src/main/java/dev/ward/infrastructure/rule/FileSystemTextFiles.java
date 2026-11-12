@@ -106,8 +106,7 @@ final class FileSystemTextFiles {
         return FileVisitResult.CONTINUE;
       }
       final boolean skip =
-          SKIPPED.contains(directory.getFileName().toString())
-              || ignored.contains(relative(directory) + "/");
+          SKIPPED.contains(nameOf(directory)) || ignored.contains(relative(directory) + "/");
       skipped += skip ? 1 : 0;
       return skip ? FileVisitResult.SKIP_SUBTREE : FileVisitResult.CONTINUE;
     }
@@ -160,6 +159,12 @@ final class FileSystemTextFiles {
     private String relative(final Path file) {
       return root.relativize(file).toString().replace('\\', '/');
     }
+  }
+
+  /** Returns the last name of {@code path}, or an empty string for a root with no name. */
+  private static String nameOf(final Path path) {
+    final Path name = path.getFileName();
+    return name == null ? "" : name.toString();
   }
 
   private static boolean isBinary(final byte[] bytes) {

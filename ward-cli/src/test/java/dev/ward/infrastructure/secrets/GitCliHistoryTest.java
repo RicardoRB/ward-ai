@@ -23,6 +23,10 @@ import org.junit.jupiter.api.io.TempDir;
 class GitCliHistoryTest {
 
   private static final String MARKER = "\u0001ward-commit ";
+
+  private static final LocalDate SINCE = LocalDate.of(2026, 1, 1);
+  private static final int FIRST_ADDED_LINE = 5;
+  private static final int GIT_FATAL = 128;
   private static final String TOKEN = "ghp_" + "aB3dE5gH7jK9mN1pQ3sT5vW7yZ9bD1fH3jL5";
   private static final Duration TIME = Duration.ofMillis(1);
   private static final String LOG =
@@ -39,8 +43,7 @@ class GitCliHistoryTest {
             new CommandResult(0, "", "", TIME));
     final List<List<HistoryPatch>> batches = new ArrayList<>();
 
-    new GitCliHistory(executor)
-        .patches(Path.of("."), Optional.of(LocalDate.of(2026, 1, 1)), batches::add);
+    new GitCliHistory(executor).patches(Path.of("."), Optional.of(SINCE), batches::add);
 
     assertThat(executor.commands.get(0))
         .containsExactly("git", "rev-parse", "--is-shallow-repository");
@@ -52,7 +55,7 @@ class GitCliHistoryTest {
     final HistoryPatch patch = batches.get(0).get(0);
     assertThat(patch.commit()).isEqualTo("01234567");
     assertThat(patch.path()).isEqualTo("c.yml");
-    assertThat(patch.lines().get(0).number()).isEqualTo(5);
+    assertThat(patch.lines().get(0).number()).isEqualTo(FIRST_ADDED_LINE);
     assertThat(patch.lines().get(1).text()).isEqualTo("two");
   }
 
@@ -82,7 +85,7 @@ class GitCliHistoryTest {
                 new GitCliHistory(
                         new FakeCommandExecutor(
                             new CommandResult(0, "false", "", TIME),
-                            new CommandResult(128, "", "fatal", TIME)))
+                            new CommandResult(GIT_FATAL, "", "fatal", TIME)))
                     .patches(Path.of("."), Optional.empty(), b -> {}))
         .isInstanceOf(HistoryUnavailableException.class);
   }

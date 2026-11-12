@@ -1,6 +1,6 @@
 package dev.ward.application.gate;
 
-import dev.ward.analysis.application.rule.RuleEngine;
+import dev.ward.analysis.application.rule.TextRules;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.TextFile;
 import dev.ward.analysis.domain.rule.RuleExecutionError;
@@ -35,7 +35,7 @@ final class SecretHistoryScan {
   RuleRunResult scan(
       final Path root,
       final Optional<LocalDate> since,
-      final RuleEngine.TextRules rules,
+      final TextRules rules,
       final Predicate<String> excluded) {
     final List<AnalysisFinding> findings = new ArrayList<>();
     final List<RuleExecutionError> errors = new ArrayList<>();
@@ -69,7 +69,7 @@ final class SecretHistoryScan {
 
   private static void scanPatch(
       final HistoryPatch patch,
-      final RuleEngine.TextRules rules,
+      final TextRules rules,
       final List<AnalysisFinding> findings,
       final List<RuleExecutionError> errors) {
     final String text =

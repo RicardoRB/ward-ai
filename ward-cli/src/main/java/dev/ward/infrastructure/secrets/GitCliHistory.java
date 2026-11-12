@@ -30,6 +30,7 @@ public final class GitCliHistory implements GitHistory {
 
   private static final String MARKER = "\u0001ward-commit ";
   private static final int SHORT_ID = 8;
+  private static final String SHALLOW = "true";
 
   private final CommandExecutor executor;
 
@@ -68,7 +69,7 @@ public final class GitCliHistory implements GitHistory {
     if (!result.succeeded()) {
       throw new HistoryUnavailableException("the project is not in a Git work tree");
     }
-    if ("true".equals(result.stdout().strip())) {
+    if (SHALLOW.equals(result.stdout().strip())) {
       throw new HistoryUnavailableException(
           "the clone is shallow; fetch the full history (for example fetch-depth: 0) to scan it");
     }

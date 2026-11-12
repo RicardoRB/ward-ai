@@ -1,5 +1,6 @@
 package dev.ward.analysis.domain.rule.check;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -54,19 +55,20 @@ public record SecretAllowlist(
 
   /** Returns whether this allowlist allows {@code candidate}. */
   boolean allows(final Candidate candidate, final WorkBudget budget) {
-    final boolean hasPaths = !paths.isEmpty();
-    final boolean hasRegexes = !regexes.isEmpty();
-    final boolean hasStopwords = !stopwords.isEmpty();
-    final boolean path = hasPaths && pathMatches(candidate.path());
-    final boolean regex = hasRegexes && regexMatches(candidate, budget);
-    final boolean stopword = hasStopwords && hasStopword(candidate.secret());
-    if (!all) {
-      return path || regex || stopword;
+    final List<Boolean> held = new ArrayList<>();
+    if (!paths.isEmpty()) {
+      held.add(pathMatches(candidate.path()));
     }
-    return (hasPaths || hasRegexes || hasStopwords)
-        && (!hasPaths || path)
-        && (!hasRegexes || regex)
-        && (!hasStopwords || stopword);
+    if (!regexes.isEmpty()) {
+      held.add(regexMatches(candidate, budget));
+    }
+    if (!stopwords.isEmpty()) {
+      held.add(hasStopword(candidate.secret()));
+    }
+    if (held.isEmpty()) {
+      return false;
+    }
+    return all ? !held.contains(false) : held.contains(true);
   }
 
   private boolean regexMatches(final Candidate candidate, final WorkBudget budget) {

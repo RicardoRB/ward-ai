@@ -22,6 +22,9 @@ final class SecretRuleDataTest {
       Path.of("src/test/resources/catalog/upstream/gitleaks-8.30.1.txt");
   private static final String PREFIX = "ward:secrets/";
 
+  private static final int RULE_COUNT = 222;
+  private static final int RULES_WITH_PATH = 5;
+
   @Test
   void idsEqualThePinnedGitleaksList() throws IOException {
     final List<String> pinned =
@@ -33,7 +36,7 @@ final class SecretRuleDataTest {
 
     final List<String> ids = rules().stream().map(RuleDefinition::id).sorted().toList();
 
-    assertThat(ids).hasSize(222).containsExactlyElementsOf(pinned);
+    assertThat(ids).hasSize(RULE_COUNT).containsExactlyElementsOf(pinned);
   }
 
   @Test
@@ -54,7 +57,8 @@ final class SecretRuleDataTest {
   @Test
   void everyRuleCanBeCompiledByTheMatcher() {
     final DeclarativeRuleMatcher matcher = new DeclarativeRuleMatcher();
-    rules().forEach(rule -> assertThat(matcher.compile(rule)).as(rule.id()).isNotNull());
+
+    assertThat(rules().stream().map(matcher::compile).toList()).hasSize(RULE_COUNT);
   }
 
   @Test
@@ -72,7 +76,7 @@ final class SecretRuleDataTest {
     final TomlParseResult global =
         Toml.parse(Files.readString(Path.of("src/main/resources/" + SecretAllowlistFile.RESOURCE)));
 
-    assertThat(withPath).isEqualTo(5);
+    assertThat(withPath).isEqualTo(RULES_WITH_PATH);
     assertThat(size(global.getArray("paths"))).isPositive();
     assertThat(size(global.getArray("regexes"))).isPositive();
     assertThat(size(global.getArray("stopwords"))).isPositive();

@@ -10,6 +10,7 @@ import java.util.function.Consumer;
  * Port that yields the lines every commit of a repository added, for the history scan of the {@code
  * secrets} check.
  */
+@FunctionalInterface
 public interface GitHistory {
 
   /**

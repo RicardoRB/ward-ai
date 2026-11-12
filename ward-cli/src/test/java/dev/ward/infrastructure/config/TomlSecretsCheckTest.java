@@ -14,6 +14,8 @@ import org.tomlj.Toml;
 /** The {@code secrets} check type and its keys in {@code ward.toml}. */
 class TomlSecretsCheckTest {
 
+  private static final LocalDate SINCE = LocalDate.of(2026, 1, 1);
+
   private static GateConfiguration secrets(final String body) {
     return new TomlConfigurationReader()
         .parse(Toml.parse("version = 2\n[checks.secrets]\n" + body))
@@ -53,7 +55,7 @@ class TomlSecretsCheckTest {
                 + "exclude-paths = [\"fixtures/**\"]\n");
 
     assertThat(check.secrets().scanHistory()).isTrue();
-    assertThat(check.secrets().historySince()).isEqualTo(Optional.of(LocalDate.of(2026, 1, 1)));
+    assertThat(check.secrets().historySince()).isEqualTo(Optional.of(SINCE));
     assertThat(check.secrets().excludePaths()).isEqualTo(List.of("fixtures/**"));
   }
 

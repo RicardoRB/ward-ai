@@ -9,6 +9,7 @@ import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.tomlj.Toml;
 import org.tomlj.TomlParseResult;
 import org.tomlj.TomlTable;
@@ -42,6 +43,24 @@ final class CatalogStatusFiles {
   /** Returns the status lines of the text scope of the catalog file {@code stem}, by row name. */
   static Map<String, Entry> readText(final String stem) {
     return readFile(ROOT + "text/" + stem + ".toml");
+  }
+
+  /**
+   * Returns the status of a row of the text scope, which is {@code scope = "text"} and has its
+   * status in the text status file; empty for a row of the languages.
+   */
+  static Optional<LanguageStatus> textStatus(final TomlTable row, final Entry external) {
+    final String scope = row.getString("scope");
+    if (scope == null) {
+      return Optional.empty();
+    }
+    if (!"text".equals(scope) || external == null) {
+      throw new IllegalArgumentException("'scope' must be \"text\" and the row needs a status");
+    }
+    final CatalogStatus status =
+        CatalogStatus.byKey(external.status())
+            .orElseThrow(() -> new IllegalArgumentException("unknown status for text"));
+    return Optional.of(new LanguageStatus(status, external.issue(), ""));
   }
 
   private static Map<String, Entry> readFile(final String resource) {

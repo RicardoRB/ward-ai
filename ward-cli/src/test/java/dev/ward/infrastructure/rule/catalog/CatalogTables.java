@@ -6,7 +6,6 @@ import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import org.tomlj.TomlArray;
 import org.tomlj.TomlTable;
@@ -62,24 +61,6 @@ final class CatalogTables {
     rejectUnlisted(issues, status, ISSUES);
     rejectUnlisted(reasons, all);
     return statuses;
-  }
-
-  /**
-   * Returns the status of a row of the text scope, which is {@code scope = "text"} and has its
-   * status in the text status file; empty for a row of the languages.
-   */
-  static Optional<LanguageStatus> text(
-      final TomlTable row, final CatalogStatusFiles.Entry external) {
-    final String scope = row.getString("scope");
-    if (scope == null) {
-      return Optional.empty();
-    }
-    if (!"text".equals(scope) || external == null) {
-      throw new IllegalArgumentException("'scope' must be \"text\" and the row needs a status");
-    }
-    final CatalogStatus status =
-        CatalogStatus.byKey(external.status()).orElseThrow(() -> unknownStatus("text"));
-    return Optional.of(new LanguageStatus(status, external.issue(), ""));
   }
 
   /** Returns the ids that differ from {@code ward:<language>/<name>}. */

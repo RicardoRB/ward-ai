@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Test;
 /** Every bundled rule is in a category and the standard preset, and every option compiles. */
 class BundledRuleOptionsTest {
 
+  private static final double FRACTION = 0.5;
+
   private static final AnalysisRuleLoad LOAD = new ClasspathRuleSource().load();
   private static final long NON_DEFAULT = 7;
   private static final String PATTERN = "[a-z]+";
@@ -66,7 +68,7 @@ class BundledRuleOptionsTest {
   private static Object sample(final RuleOption option) {
     return switch (option.type()) {
       case INTEGER -> Math.max(option.min(), 0) + NON_DEFAULT;
-      case NUMBER -> Math.max(option.min(), 0) + NON_DEFAULT + 0.5;
+      case NUMBER -> Math.max(option.min(), 0) + NON_DEFAULT + FRACTION;
       case REGEX -> PATTERN;
       case BOOLEAN -> Boolean.FALSE;
       case STRING -> STRING_SAMPLES.getOrDefault(option.name(), "Sample");

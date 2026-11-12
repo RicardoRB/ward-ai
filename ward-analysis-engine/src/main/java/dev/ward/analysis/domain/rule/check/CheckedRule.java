@@ -3,7 +3,6 @@ package dev.ward.analysis.domain.rule.check;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.ir.TextFile;
-import dev.ward.analysis.domain.rule.CompiledRule;
 import dev.ward.analysis.domain.rule.DependencyView;
 import dev.ward.analysis.domain.rule.FactNeed;
 import dev.ward.analysis.domain.rule.FlowView;
@@ -12,13 +11,14 @@ import dev.ward.analysis.domain.rule.ProjectMatch;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatch;
 import dev.ward.analysis.domain.rule.ScopeView;
+import dev.ward.analysis.domain.rule.TextCompiledRule;
 import dev.ward.analysis.domain.rule.UnitViews;
 import java.util.List;
 import java.util.Objects;
 import java.util.SortedMap;
 
 /** A rule whose matches come from one {@link RuleCheck}. */
-public final class CheckedRule implements CompiledRule {
+public final class CheckedRule implements TextCompiledRule {
 
   private final RuleDefinition definition;
   private final RuleCheck check;

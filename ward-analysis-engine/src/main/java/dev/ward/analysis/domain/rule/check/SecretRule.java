@@ -35,7 +35,7 @@ public record SecretRule(
     Objects.requireNonNull(path, "path");
     Objects.requireNonNull(entropy, "entropy");
     Objects.requireNonNull(message, "message");
-    keywords = keywords.stream().map(word -> word.toLowerCase(Locale.ROOT)).toList();
+    keywords = List.copyOf(keywords.stream().map(word -> word.toLowerCase(Locale.ROOT)).toList());
     allowlists = List.copyOf(allowlists);
     if (secretGroup < 0) {
       throw new IllegalArgumentException("secret-group must not be negative");

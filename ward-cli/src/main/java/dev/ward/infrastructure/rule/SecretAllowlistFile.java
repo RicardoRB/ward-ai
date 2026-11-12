@@ -67,7 +67,5 @@ final class SecretAllowlistFile {
   /** Holds the allowlist, read when first used. */
   private static final class Holder {
     private static final SecretAllowlist DEFAULTS = read();
-
-    private Holder() {}
   }
 }

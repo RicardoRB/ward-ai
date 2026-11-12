@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIf;
 
@@ -28,6 +29,10 @@ final class GitleaksParitySmokeTest {
 
   private static final String GITLEAKS_PROPERTY = "ward.parity.gitleaks";
   private static final String WRITE_PROPERTY = "ward.parity.write";
+
+  private static final int LINE_GROUP = 2;
+  private static final int COLUMN_GROUP = 3;
+  private static final int FILE_GROUP = 4;
   private static final String REPORT_FILE = "src/test/resources/parity/gitleaks-report.txt";
   private static final String APPROXIMATIONS_FILE =
       "src/test/resources/parity/gitleaks-approximations.txt";
@@ -48,7 +53,7 @@ final class GitleaksParitySmokeTest {
     final Path root = RuleFixtureSet.root().resolve("secrets");
     final Map<String, List<String>> reported = run(System.getProperty(GITLEAKS_PROPERTY), root);
     final List<String> lines = new ArrayList<>();
-    try (var folders = Files.list(root)) {
+    try (Stream<Path> folders = Files.list(root)) {
       for (final Path folder : folders.sorted().toList()) {
         difference(folder, reported)
             .ifPresent(kind -> lines.add(folder.getFileName() + "\t" + kind));
@@ -93,13 +98,16 @@ final class GitleaksParitySmokeTest {
     final Map<String, List<String>> positions = new TreeMap<>();
     final Matcher matcher = ENTRY.matcher(json);
     while (matcher.find()) {
-      final Path file = Path.of(matcher.group(4)).toAbsolutePath();
+      final Path file = Path.of(matcher.group(FILE_GROUP)).toAbsolutePath();
       final String key = matcher.group(1) + "\t" + root.relativize(file);
-      positions
-          .computeIfAbsent(key, name -> new ArrayList<>())
-          .add(matcher.group(2) + ":" + matcher.group(3));
+      record(positions, key, matcher.group(LINE_GROUP) + ":" + matcher.group(COLUMN_GROUP));
     }
     return positions;
+  }
+
+  private static void record(
+      final Map<String, List<String>> positions, final String key, final String position) {
+    positions.computeIfAbsent(key, name -> new ArrayList<>()).add(position);
   }
 
   private static java.util.Optional<String> difference(
@@ -145,7 +153,7 @@ final class GitleaksParitySmokeTest {
   }
 
   private static Path fixture(final Path folder, final String base) throws IOException {
-    try (var files = Files.list(folder)) {
+    try (Stream<Path> files = Files.list(folder)) {
       return files
           .filter(file -> file.getFileName().toString().startsWith(base + "."))
           .sorted()

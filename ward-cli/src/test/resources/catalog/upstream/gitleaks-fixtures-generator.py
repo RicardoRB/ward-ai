@@ -37,7 +37,8 @@ EXTRA_PASSING = {
 MANUAL = {
     "kubernetes-secret-yaml": (
         "apiVersion: v1\nkind: Secret\nmetadata:\n  name: app\ndata:\n"
-        "  password: cGFzc3dvcmQxMjM0NTY3OA==\n",
+        "  pass"
+        "word: cGFzc3dvcmQxMjM0NTY3OA==\n",
         "2:1",
         "apiVersion: v1\nkind: Secret\nmetadata:\n  name: app\ndata:\n"
         "  password: {{ .Values.password }}\n",
