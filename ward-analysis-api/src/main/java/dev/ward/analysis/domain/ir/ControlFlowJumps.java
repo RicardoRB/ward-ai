@@ -9,6 +9,8 @@ import dev.ward.analysis.domain.ir.ControlFlowFrames.FrameKind;
  */
 public final class ControlFlowJumps {
 
+  private static final int NOT_FOUND = -1;
+
   private final ControlFlowFrames frames;
 
   ControlFlowJumps(final ControlFlowFrames frames) {
@@ -55,11 +57,17 @@ public final class ControlFlowJumps {
    * Jumps to the loop or label with the label, or to the innermost loop or switch when the label is
    * null, and continues from a fresh block.
    *
+   * <p>A jump with no matching target (a {@code break} outside a loop, or an unknown label) is
+   * invalid source; it leaves the body like a {@code return} so the rest of the unit is analysed.
+   *
    * @param label the label, or null
-   * @throws IllegalStateException if no enclosing loop or switch matches
    */
   public void breakTo(final String label) {
     final int depth = findTarget(label, false);
+    if (depth == NOT_FOUND) {
+      leaveBody();
+      return;
+    }
     frames.transfer(frames.at(depth).getBreakBlock(), depth);
   }
 
@@ -67,11 +75,16 @@ public final class ControlFlowJumps {
    * Jumps to the next iteration of the loop with the label, or of the innermost loop when the label
    * is null, and continues from a fresh block.
    *
+   * <p>A {@code continue} with no matching loop leaves the body like a {@code return}.
+   *
    * @param label the label, or null
-   * @throws IllegalStateException if no enclosing loop matches
    */
   public void continueTo(final String label) {
     final int depth = findTarget(label, true);
+    if (depth == NOT_FOUND) {
+      leaveBody();
+      return;
+    }
     frames.transfer(frames.at(depth).getContinueBlock(), depth);
   }
 
@@ -97,6 +110,10 @@ public final class ControlFlowJumps {
         return depth;
       }
     }
-    throw new IllegalStateException("no enclosing target for " + label);
+    return NOT_FOUND;
+  }
+
+  private void leaveBody() {
+    frames.transfer(ControlFlowBuilder.EXIT, 0);
   }
 }
