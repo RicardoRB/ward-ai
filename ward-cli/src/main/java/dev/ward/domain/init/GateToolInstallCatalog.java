@@ -9,29 +9,13 @@ import java.util.stream.Stream;
 public final class GateToolInstallCatalog {
   private static final Map<String, Entry> ENTRIES =
       Map.of(
-          "trivy",
-              entry(
-                  "trivy",
-                  "https://trivy.dev/latest/getting-started/installation/",
-                  method("brew", "install", "trivy")),
-          "gitleaks",
-              entry(
-                  "gitleaks",
-                  "https://github.com/gitleaks/gitleaks#installing",
-                  method("brew", "install", "gitleaks")),
           "semgrep",
-              new Entry(
-                  "semgrep",
-                  List.of(
-                      method("brew", "install", "semgrep"), method("pipx", "install", "semgrep")),
-                  "https://semgrep.dev/docs/getting-started/"),
+          new Entry(
+              "semgrep",
+              List.of(method("brew", "install", "semgrep"), method("pipx", "install", "semgrep")),
+              "https://semgrep.dev/docs/getting-started/"),
           "zap-baseline.py",
-              entry("zap-baseline.py", "https://www.zaproxy.org/docs/docker/baseline-scan/"),
-          "vacuum",
-              entry(
-                  "vacuum",
-                  "https://quobix.com/vacuum/installing/",
-                  method("brew", "install", "vacuum")));
+          entry("zap-baseline.py", "https://www.zaproxy.org/docs/docker/baseline-scan/"));
 
   private GateToolInstallCatalog() {}
 

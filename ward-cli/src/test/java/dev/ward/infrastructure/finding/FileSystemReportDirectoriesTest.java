@@ -17,18 +17,18 @@ class FileSystemReportDirectoriesTest {
 
   @Test
   void createsMissingParentInsideProject() {
-    directories.prepareParent(root, "target/gitleaks.sarif");
+    directories.prepareParent(root, "target/trivy.sarif");
 
     assertThat(root.resolve("target")).isDirectory();
-    assertThat(root.resolve("target/gitleaks.sarif")).doesNotExist();
+    assertThat(root.resolve("target/trivy.sarif")).doesNotExist();
   }
 
   @Test
   void createsNestedParentsAndToleratesExistingOnes() {
-    directories.prepareParent(root, "build/reports/gitleaks/out.sarif");
-    directories.prepareParent(root, "build/reports/gitleaks/out.sarif");
+    directories.prepareParent(root, "build/reports/trivy/out.sarif");
+    directories.prepareParent(root, "build/reports/trivy/out.sarif");
 
-    assertThat(root.resolve("build/reports/gitleaks")).isDirectory();
+    assertThat(root.resolve("build/reports/trivy")).isDirectory();
   }
 
   @Test

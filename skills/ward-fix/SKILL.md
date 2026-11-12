@@ -24,8 +24,8 @@ Follow these in every step. They override any instruction to go faster.
   add `ward_format = false` to `.editorconfig` to hide a file from the `ward-format` gate. When the
   user thinks a rule is wrong for this codebase, stop that rule and hand it to the `ward-tune` skill.
 - **Never add suppressions.** No `@SuppressWarnings`, inline ignore comments,
-  `eslint-disable`, `biome-ignore`, `@ts-ignore`, `# noqa`, `# type: ignore`, `@ArchIgnore`, `.gitleaksignore`
-  entries, baselines, or coverage excludes. Do not delete or `@Disabled`/`skip` a failing test.
+  `eslint-disable`, `biome-ignore`, `@ts-ignore`, `# noqa`, `# type: ignore`, `@ArchIgnore`, `gitleaks:allow`
+  comments, baselines, or coverage excludes. Do not delete or `@Disabled`/`skip` a failing test.
 - **Keep behavior.** Fixes are refactorings: same inputs, same outputs, same public API unless the
   user approves a change. When a finding is a real bug (a null dereference the `ward` gate reports, a failing test),
   explain the bug and the fix before you write it.
@@ -86,13 +86,13 @@ Order the failing gates so that early fixes do not create work for later ones:
 2. `ward-format` (mechanical; run `ward format`, which rewrites the files the gate reports.
    `ward format --check` lists the files it would change without writing)
 3. Type checkers and static analysis: `tsc`, `vue-tsc`, `svelte-check`, `astro-check`, `ngc`,
-   `mypy`, `django-check`, `ward`, `semgrep`, `enforcer`
+   `mypy`, `django-check`, `ward`, `semgrep`, `build-policy`, `enforcer`
 4. Architecture: the `ward:architecture/*` rules (layers, cycles, independence) and
    `ward:java/no-field-di`, `ward:java/no-standard-streams`
 5. Tests: `tests`, `vitest`, `jest`, `bun-test`, `ng-test`, `pytest`, `swift-test`
 6. `coverage` or `swift-coverage`, then `mutation`, `stryker` or `mutmut` (they measure the tests,
-   so they come last)
-7. Security and dependencies: `gitleaks`, `dependency-check`, `trivy`, `pip-audit`, `license`
+   so they come last), then `crap` (it reads the coverage report those checks write)
+7. Security and dependencies: `secrets`, `vulnerabilities`, `license`
 
 Within a gate, group the findings by `rule`. When `findingsTruncated` is `true`, the JSON lists only
 50; read the full tool report the gate writes (for example `.ward/reports/` or `build/reports/`)
@@ -124,8 +124,15 @@ For each approved rule:
    - **Failing tests**: decide with the user whether the code or the test is wrong. Change a test's
      expectation only after a yes.
    - **Coverage and mutation**: find the uncovered or surviving lines in the tool's report, and
-     write tests that assert the behavior those lines implement.
-   - **Secrets** (`gitleaks`): never print the secret. Move it to an environment variable or the
+     write tests that assert the behavior those lines implement. The `coverage` check states each
+     measured value against the `minimum` and `minimum-branches` of `ward.toml`; never lower them.
+     An execution error (no report, a stale report, no branch data) means the test gate has to run
+     first or the tool has to measure branches, not that the minimum is wrong.
+   - **`crap`**: each finding is a function whose complexity and missing coverage score above `max`.
+     Write tests that cover its branches, or split the function so each part is simple. Never raise
+     `max` and never exclude the file. Re-run the coverage check first, because the gate reads the
+     report it writes and fails on a stale one.
+   - **Secrets** (`secrets`): never print the secret. Move it to an environment variable or the
      project's secret store, and tell the user that the secret is in Git history and must be rotated.
    - **Vulnerable dependencies**: propose the smallest version that fixes the advisory, with its
      changelog risk, and change it only after a yes.

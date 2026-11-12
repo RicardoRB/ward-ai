@@ -1,0 +1,27 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths:
+  /pets:
+    post:
+      responses:
+        "200":
+          description: ok
+    put:
+      security: []
+      responses:
+        "200":
+          description: ok
+    delete:
+      security:
+        - key: []
+      responses:
+        "200":
+          description: ok
+components:
+  securitySchemes:
+    key:
+      type: apiKey
+      in: header
+      name: k

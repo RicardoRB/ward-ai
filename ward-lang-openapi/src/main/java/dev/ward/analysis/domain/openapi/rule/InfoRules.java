@@ -4,101 +4,60 @@ import dev.ward.analysis.domain.openapi.DocNode;
 import dev.ward.analysis.domain.openapi.OpenApiDocument;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /** The rules about the {@code info} object: contact, description and license. */
 final class InfoRules {
 
+  private static final String INFO = "info";
+  private static final String CONTACT = "contact";
+  private static final String LICENSE = "license";
+
   private InfoRules() {}
 
-  /** {@code info-contact}: {@code info} has a {@code contact}. */
+  /** {@code info-contact}: {@code info.contact} is present. */
   static List<OpenApiFinding> contact(final OpenApiDocument document) {
-    return info(document)
-        .filter(info -> missing(info, "contact"))
-        .map(info -> List.of(Findings.at(info, "`info` section must contain `contact` details")))
-        .orElse(List.of());
+    return Fields.requireTruthy(
+        document, document.root(), "Info object must have \"contact\" object.", INFO, CONTACT);
   }
 
   /** {@code contact-properties}: a {@code contact} has a name, a url and an email. */
   static List<OpenApiFinding> contactProperties(final OpenApiDocument document) {
     final List<OpenApiFinding> findings = new ArrayList<>();
-    final Optional<DocNode> contact =
-        info(document).flatMap(info -> info.get("contact")).map(document::resolve);
-    for (final String property : List.of("name", "url", "email")) {
-      contact
-          .filter(node -> Findings.text(node, property).isEmpty())
-          .ifPresent(
-              node ->
-                  findings.add(
-                      Findings.at(node, "`contact` section must contain a `" + property + "`")));
-    }
-    return findings;
-  }
-
-  /** {@code info-description}: {@code info} has a non-empty {@code description}. */
-  static List<OpenApiFinding> description(final OpenApiDocument document) {
-    return info(document)
-        .filter(info -> Findings.text(info, "description").isEmpty())
-        .map(info -> List.of(Findings.at(info, "`info` section must have a `description`")))
-        .orElse(List.of());
-  }
-
-  /** {@code info-license}: {@code info} has a {@code license} and the license has a name. */
-  static List<OpenApiFinding> license(final OpenApiDocument document) {
-    final List<OpenApiFinding> findings = new ArrayList<>();
-    final Optional<DocNode> info = info(document);
-    if (info.isPresent() && missing(info.get(), "license")) {
-      findings.add(Findings.at(info.get(), "`info` section must contain a `license`"));
-    }
-    license(document, info)
-        .filter(license -> Findings.text(license, "name").isEmpty())
+    final String message = "Contact object must have \"name\", \"url\" and \"email\".";
+    Fields.at(document, document.root(), INFO, CONTACT)
         .ifPresent(
-            license ->
-                findings.add(Findings.at(license, "`license` section must contain a `name`")));
-    return findings;
+            contact -> {
+              for (final String property : List.of("name", "url", "email")) {
+                findings.addAll(Fields.requireTruthy(document, contact, message, property));
+              }
+            });
+    return Findings.distinct(findings);
   }
 
-  /** {@code license-url}: a {@code license} has a {@code url} or an {@code identifier}. */
+  /** {@code info-description}: {@code info.description} is a non-empty string. */
+  static List<OpenApiFinding> description(final OpenApiDocument document) {
+    return Fields.requireTruthy(
+        document,
+        document.root(),
+        "Info \"description\" must be present and non-empty string.",
+        INFO,
+        "description");
+  }
+
+  /** {@code info-license}: {@code info.license} is present. */
+  static List<OpenApiFinding> license(final OpenApiDocument document) {
+    return Fields.requireTruthy(
+        document, document.root(), "Info object must have \"license\" object.", INFO, LICENSE);
+  }
+
+  /** {@code license-url}: {@code info.license.url} is present. */
   static List<OpenApiFinding> licenseUrl(final OpenApiDocument document) {
-    return license(document, info(document))
-        .filter(
-            license ->
-                Findings.text(license, "url").isEmpty()
-                    && Findings.text(license, "identifier").isEmpty())
-        .map(
-            license ->
-                List.of(
-                    Findings.at(
-                        license, "`license` section must contain a `url` or an `identifier`")))
-        .orElse(List.of());
+    return Fields.requireTruthy(
+        document, document.root(), "License object must include \"url\".", INFO, LICENSE, "url");
   }
 
-  /** {@code info-license-spdx}: a {@code license} has a {@code url} or an {@code identifier}. */
-  static List<OpenApiFinding> licenseSpdx(final OpenApiDocument document) {
-    return license(document, info(document))
-        .filter(
-            license ->
-                !Findings.text(license, "url").isEmpty()
-                    && !Findings.text(license, "identifier").isEmpty())
-        .map(
-            license ->
-                List.of(
-                    Findings.at(
-                        license,
-                        "`license` must contain either a `url` or an `identifier`, not both")))
-        .orElse(List.of());
-  }
-
-  private static Optional<DocNode> info(final OpenApiDocument document) {
-    return document.parts().info().map(document::resolve);
-  }
-
-  private static Optional<DocNode> license(
-      final OpenApiDocument document, final Optional<DocNode> info) {
-    return info.flatMap(node -> node.get("license")).map(document::resolve);
-  }
-
-  private static boolean missing(final DocNode node, final String key) {
-    return node.get(key).filter(child -> child.kind() != DocNode.Kind.NULL).isEmpty();
+  /** Tells whether the node is an object, for rules that read a section that may be a string. */
+  static boolean isObject(final DocNode node) {
+    return node.kind() == DocNode.Kind.OBJECT;
   }
 }

@@ -5,12 +5,24 @@ import dev.ward.domain.config.WardException;
 import dev.ward.domain.gate.SupportedQualityGates;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import org.tomlj.TomlArray;
 import org.tomlj.TomlTable;
 
 /** Parses the {@code command} of one {@code [checks.<name>]} table: a string or an array. */
 final class TomlCommandParser {
   private static final String COMMAND = "command";
+  private static final Set<String> COMMAND_LESS =
+      Set.of(
+          SupportedQualityGates.TRACEABILITY,
+          SupportedQualityGates.ANALYSIS,
+          SupportedQualityGates.FORMAT,
+          SupportedQualityGates.CRAP,
+          SupportedQualityGates.COVERAGE,
+          SupportedQualityGates.SECRETS,
+          SupportedQualityGates.VULNERABILITIES,
+          SupportedQualityGates.BUILD_POLICY,
+          SupportedQualityGates.LICENSE);
 
   private TomlCommandParser() {}
 
@@ -19,6 +31,13 @@ final class TomlCommandParser {
     if (SupportedQualityGates.OPENAPI_DIFF.equals(uses)
         || SupportedQualityGates.OPENAPI_COMPAT.equals(uses)) {
       return nativeComparison(where, gate, uses);
+    }
+    if (SupportedQualityGates.OPENAPI_LINT.equals(uses)) {
+      if (gate.contains(COMMAND)) {
+        throw new WardException(
+            "'" + where + ".command' is not allowed: openapi-lint runs Ward's own rules.");
+      }
+      return List.of();
     }
     if (!gate.contains(COMMAND)) {
       return missing(where, uses);
@@ -45,9 +64,7 @@ final class TomlCommandParser {
   }
 
   private static List<String> missing(final String where, final String uses) {
-    if (SupportedQualityGates.TRACEABILITY.equals(uses)
-        || SupportedQualityGates.ANALYSIS.equals(uses)
-        || SupportedQualityGates.FORMAT.equals(uses)) {
+    if (uses != null && COMMAND_LESS.contains(uses)) {
       return List.of();
     }
     throw new WardException("'" + where + ".command' is required");

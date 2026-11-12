@@ -3,11 +3,9 @@ package dev.ward.infrastructure.doctor;
 import dev.ward.domain.doctor.EnvironmentFacts;
 import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.doctor.ExecutableObservation;
-import dev.ward.domain.doctor.OssIndexSetting;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
 import dev.ward.infrastructure.doctor.gradle.AndroidEnvironmentFacts;
-import dev.ward.infrastructure.doctor.jvm.DependencyCheckSettings;
 import dev.ward.infrastructure.doctor.python.FastApiAppInspection;
 import dev.ward.infrastructure.project.gradle.GradleKotlinModules;
 import dev.ward.infrastructure.project.gradle.GradleModuleScan;
@@ -54,11 +52,8 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
           "swift",
           "xcodebuild",
           "xcrun",
-          "trivy",
-          "gitleaks",
           "semgrep",
-          "zap-baseline.py",
-          "vacuum");
+          "zap-baseline.py");
   private static final List<String> OPENAPI_SPECS =
       List.of(
           "src/main/resources/openapi.yml",
@@ -103,8 +98,6 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
             "nativeExecutablePresent",
             Boolean.toString(NativeExecutableFact.present(Path.of(""))));
     final Map<String, String> observed = new HashMap<>(values);
-    observed.put("NVD_API_KEY", Boolean.toString(isSet("NVD_API_KEY")));
-    observed.put("OSS_INDEX_PASSWORD", Boolean.toString(isSet("OSS_INDEX_PASSWORD")));
     observed.putAll(AndroidEnvironmentFacts.read(projectRoot));
     observed.put(
         "typescriptResolvable", Boolean.toString(TypeScriptPackages.resolvable(projectRoot)));
@@ -177,11 +170,6 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
     return Files.isRegularFile(projectRoot.resolve("pom.xml"))
         ? MavenJavaModules.skipped(projectRoot)
         : GradleModuleScan.skipped(projectRoot);
-  }
-
-  @Override
-  public OssIndexSetting ossIndexSetting(final Path projectRoot) {
-    return DependencyCheckSettings.read(projectRoot);
   }
 
   /** Only presence is recorded; values never leave this method. */

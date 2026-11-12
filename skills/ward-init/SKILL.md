@@ -109,7 +109,7 @@ order:
    Ask whether to reconfigure. A yes here is consent for `--overwrite`. A no ends the skill with no
    changes.
 2. **Preset.** `standard` (fast, offline gates), `strict` (adds the strict Java rules,
-   coverage, enforcer, and mutation testing), or a custom selection. To show exactly which
+   coverage, build-policy, enforcer, and mutation testing), or a custom selection. To show exactly which
    gates a preset enables in this project, run a read-only preview and read its
    `Selected quality gate` lines:
 
@@ -117,7 +117,12 @@ order:
    ward init --dry-run --preset standard --integration none
    ```
 
-   Add `--overwrite` when `ward.toml` exists. For TypeScript and JavaScript, `strict` adds Stryker mutation testing and
+   Every coverage minimum lives in the `coverage` check of `ward.toml` (`minimum`, and
+   `minimum-branches` under `strict`), never in `pom.xml`, the Gradle build, a test runner config or
+   `.coveragerc`. Ward reads the JaCoCo XML or lcov report and decides, and a multi-module build is
+   checked as one total. A threshold in a config the project owns keeps applying to its tool; init
+   leaves it unchanged and the plan says Ward does not read it. Add `--overwrite` when `ward.toml`
+   exists. For TypeScript and JavaScript, `strict` adds Stryker mutation testing and
    stricter coverage and lint rules; see [references/node.md](references/node.md#choices). A project
    gets Ward's TypeScript and JavaScript rules in `ward-rules.toml`, with no separate lint gate. Recommend `standard` for a first setup or a large
    legacy codebase. Recommend `strict` when the code already has tests and a clear structure.
@@ -129,34 +134,29 @@ order:
    versions, and the aggregator pins the versions in `pluginManagement`. A module without Java sources
    is skipped, and init names it in its output. Gradle modules that apply `java` or `java-library` get
    the same gates.
-   With the `license` gate (Maven `license:add-third-party`, Gradle `checkLicense`), `strict`
-   writes a license allowlist that fails on any license it does
-   not list (including LGPL, MPL, and CDDL); `standard` only denies GPL and AGPL. Ask the user which
-   licenses their legal policy approves before recommending `strict` for a project with such
-   dependencies.
+   The `license` gate is native and works for every toolchain without changing a build file: it
+   writes `[checks.license]` with `uses = "license"`. `strict` writes an `allow` list that fails on any
+   license it does not list (including LGPL, MPL, and CDDL); `standard` only denies GPL and AGPL. Ask
+   the user which licenses their legal policy approves before recommending `strict` for a project
+   with such dependencies, and tell them that dependencies must be installed before the gate runs,
+   since Ward never downloads license metadata.
 3. **Gates.** Start from the preset's gates and ask what to add or remove. Mention what you found:
    - Gates whose tool is `UNAVAILABLE` and whether init can install the tool (an `install` line) or
      only point to a manual guide (a `guidance` line).
-   - `dependency-check` without `NVD_API_KEY`: the first scans are slow or rate-limited. The key is
-     read from the environment and never written to files.
-   - `dependency-check` OSS Index: init turns the analyzer off because Sonatype OSS Index needs
-     credentials. To use it, set `OSS_INDEX_PASSWORD` in the environment (Maven reads it through a
-     `settings.xml` server with id `ossindex`); never commit the credentials. `trivy` covers
-     dependency vulnerabilities without any key. When both `dependency-check` and `trivy` are
-     selected, the plan prints `Warning: trivy already scans dependencies`; recommend keeping only
-     `trivy` unless the user needs Dependency-Check's reports.
+   - `vulnerabilities` is a native check that matches the resolved dependencies against OSV
+     advisories. No preset enables it and it needs no tool or key. It downloads advisory data on
+     every online run, so offer it for the `ci` profile and mention `ward check --offline` and
+     `ward vulnerabilities update` for offline use.
    - `zap` needs a running application and a `<TARGET_URL>` that the user is authorized to scan.
      `check` fails until it is replaced.
    - `openapi-lint`, `openapi-diff`, and `openapi-compat` are offered only when Git tracks an
      `openapi.yml`, `openapi.yaml`, or `openapi.json` in `src/main/resources` or the project root.
      When one is found, the `standard` and `strict` presets include `openapi-lint` and
      `openapi-diff` (`strict` also `openapi-compat`), so recommend the preset as usual and say that
-     it adds them. `openapi-lint` runs `vacuum`; `openapi-diff` and `openapi-compat` compare the spec
-     with Ward's own breaking-change rules, need no tool and take no `command`. If vacuum is missing,
-     its `install` line (for example `brew install vacuum`) is the recommended step, asked in step 5
-     like any other gate. CI installs vacuum pinned. They allow no exceptions: `openapi-lint` runs
-     every built-in vacuum rule, and the gates fail on `vacuum.conf.yaml` or `x-lint-ignore` in the
-     spec. Say so before
+     it adds them. `openapi-lint` runs Ward's own rules (those of Spectral's OpenAPI and OWASP
+     rulesets); `openapi-diff` and `openapi-compat` compare the spec with Ward's own breaking-change
+     rules. None needs a tool, and none takes a `command`. They allow no exceptions: `openapi-lint`
+     fails on `x-lint-ignore` in the spec, and the diff gates have no flag and no ignore file. Say so before
      recommending them on a spec that has never been linted. `openapi-compat` compares with
      `origin/main`, and the CI workflow fetches full history for it.
      A project whose framework serves HTTP, as `ward detect` reports it (Spring Boot, Quarkus,
@@ -165,7 +165,14 @@ order:
      reason to lint a contract. Init's plan notes the framework and adds no OpenAPI gate without a
      spec, so first recommend committing one: a FastAPI app exports its document with `app.openapi()`
      to `openapi.json`, and a Spring project can export its document with springdoc. Then recommend
-     the gates and `vacuum` as above.
+     the gates as above.
+   - `crap` is opt-in: no preset selects it. Offer it when the user wants functions that are both
+     complex and untested to fail. It needs the coverage gate (`coverage` for Maven and Gradle, the
+     test gate for Node, `pytest` for Python); init fails with exit code 2 and writes no file
+     without it, so add it with `--gate crap` next to that gate. The `coverage` setup that every
+     toolchain gets already makes the tool write the report `crap` reads, so `crap` adds no
+     report-writing of its own. It is not offered for Swift, Android or Angular
+     (`ng-test`); for those, `[checks.crap]` can be written by hand with a `report` path.
    - Layering violations the inspection found: `ward:architecture/layers` fails on its first run.
      Tell the user before the first check, and do not remove the boundaries to make it pass.
 
@@ -193,8 +200,8 @@ order:
    `--ci github` writes `.github/workflows/ward.yml`, which runs the `ci` profile, installs the
    gate tools, and uploads SARIF to code scanning. Recommend it when the project has no workflow that
    runs Ward. If `.github/workflows/ward.yml` already exists and is not Ward's, the plan
-   shows a `conflict`. Mention that `dependency-check` needs an `NVD_API_KEY` repository secret, and
-   that `zap` is not run by the workflow.
+   shows a `conflict`. When `vulnerabilities` is selected the workflow caches
+   `.ward/cache/vulnerabilities/`. Mention that `zap` is not run by the workflow.
 10. **Agent rules** (offer when an agent integration is selected). `--agent-rules` writes a
     Ward-owned section into `AGENTS.md` that lists the limits the gates enforce (file and method
     length, parameters, coverage and mutation minimums), so agents meet them before the first check
@@ -295,15 +302,14 @@ Tell the user:
    Mention any CI workflow or `AGENTS.md` section init wrote (`Wrote Ward section:` lines).
    Mention that Java and Kotlin projects get no separate style or bug-finding tool gate, and Python projects get no Ruff
    gate: init writes `ward-rules.toml`, which selects the Ward rules of the preset for the project's JVM languages and Python. Mention that `ward.toml` has `paths` tables for ward-format, Semgrep, and
-   Gitleaks, and for the `ward` analysis
+   `secrets` (when selected), and for the `ward` analysis
    check: the check after each agent edit, and the pre-commit hook, skip gates the change does not affect
    and narrow supported tools, and the `ward` analysis, to the edited or staged files. Claude Code and the
    native harnesses still run the full `default` check when the turn ends. The pre-push hook checks the
    files changed since the branch's upstream, and runs in full without an upstream; CI always checks the
    whole project.
 2. Every manual step still open, taken from the output. For example: tools that are still
-   `UNAVAILABLE`, replacing `<TARGET_URL>` for `zap`, setting `NVD_API_KEY` for `dependency-check`
-   (as a repository secret too when `--ci github` was used), committing the generated workflow, or a
+   `UNAVAILABLE`, replacing `<TARGET_URL>` for `zap`, committing the generated workflow, or a
    declined compatibility update.
 3. How to run the gates: `ward check` (the `default` profile, fast gates) and
    `ward check --profile ci` (every gate). Offer to run the fast profile now. This session wrote

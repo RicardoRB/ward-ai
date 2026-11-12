@@ -35,8 +35,24 @@ class AgentRulesTemplateTest {
             "branch at least 75%, line at least 85%",
             "at least 60% of mutants killed",
             "- Architecture: `ward:architecture/layers` enforces",
-            "requirePluginVersions",
+            "- Build policy: plugin versions pinned",
+            "- Enforcer: dependencyConvergence, requireUpperBoundDeps.",
             "Do not add suppressions");
+  }
+
+  @Test
+  void crapRuleIsNamedOnlyWhenTheGateIsSelected() {
+    final String with =
+        AgentRulesTemplate.render(
+                PROJECT, gates(List.of("coverage", "crap")), QualityPreset.STANDARD, List.of())
+            .body();
+    final String without =
+        AgentRulesTemplate.render(
+                PROJECT, gates(List.of("coverage")), QualityPreset.STANDARD, List.of())
+            .body();
+
+    assertThat(with).contains("CRAP (`crap`)", "never raise `max`");
+    assertThat(without).doesNotContain("CRAP");
   }
 
   @Test

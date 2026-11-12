@@ -63,6 +63,14 @@ record RuleFixtureSet(AnalysisLanguage language, String name, Path directory) {
     return new RuleFixtureSet(language, name, root.resolve(CatalogRow.key(language)).resolve(name));
   }
 
+  /**
+   * Returns the fixtures of a row of the text scope, under {@code rules/secrets/<name>/}. Its
+   * fixture files have the extension that the path filter of the rule needs, and no language.
+   */
+  static RuleFixtureSet ofText(final Path root, final CatalogRow row) {
+    return new RuleFixtureSet(null, row.name(), root.resolve("secrets").resolve(row.name()));
+  }
+
   /** Returns the file extension of {@code language}'s sources, without the dot. */
   static String extension(final AnalysisLanguage language) {
     return EXTENSIONS.get(language);
@@ -151,6 +159,9 @@ record RuleFixtureSet(AnalysisLanguage language, String name, Path directory) {
    */
   private Path source(final String kind, final String caseName) {
     final String base = kind + suffix(caseName);
+    if (language == null) {
+      return textSource(base);
+    }
     final Path tsx = directory.resolve(base + ".tsx");
     if (language == AnalysisLanguage.TYPESCRIPT && Files.isRegularFile(tsx)) {
       return tsx;
@@ -160,6 +171,19 @@ record RuleFixtureSet(AnalysisLanguage language, String name, Path directory) {
       return definition;
     }
     return directory.resolve(base + "." + extension(language));
+  }
+
+  /** The one file of a text fixture is {@code <base>.<any extension>}. */
+  private Path textSource(final String base) {
+    try (Stream<Path> files = Files.list(directory)) {
+      return files
+          .filter(file -> file.getFileName().toString().startsWith(base + "."))
+          .sorted()
+          .findFirst()
+          .orElse(directory.resolve(base + ".txt"));
+    } catch (final IOException exception) {
+      throw new UncheckedIOException(exception);
+    }
   }
 
   private static String suffix(final String caseName) {

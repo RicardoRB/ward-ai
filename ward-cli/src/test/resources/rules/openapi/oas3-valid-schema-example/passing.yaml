@@ -1,0 +1,24 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths: {}
+components:
+  schemas:
+    Str: {type: string, example: ok}
+    Num: {type: number, example: 1.5, nullable: true}
+    Obj:
+      type: object
+      required: [id]
+      properties:
+        id: {type: integer}
+        read: {type: string, readOnly: true}
+      example:
+        id: 1
+        read: x
+    Pick:
+      oneOf:
+        - {type: string}
+        - {type: integer}
+      example: 7
+    Open: {type: string, default: x}

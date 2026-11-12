@@ -1,0 +1,1 @@
+16:11	Admin endpoint /admin/pets has the same security requirement as a non-admin endpoint.

@@ -1,0 +1,2 @@
+10:29	If the additionalProperties keyword is used it must be set to false.
+13:28	If the additionalProperties keyword is used it must be set to false.

@@ -75,7 +75,7 @@ Omitted fields are intentional in schema v2.
 
 ## Findings
 
-A failed `ward`, `gitleaks`, `compile`, `ward-format`, `tsc`, `mypy`, `swift-build`, or `xcodebuild-test` gate lists one entry per visible
+A failed `ward`, `secrets`, `compile`, `ward-format`, `tsc`, `mypy`, `swift-build`, or `xcodebuild-test` gate lists one entry per visible
 violation in `findings`, in the tool's report order, so an agent can go straight to the file and
 line.
 
@@ -100,7 +100,7 @@ array, `findingsTotal` `0`, `findingsHidden` `0`, and `findingsTruncated` `false
   `file`, `line`, `column`, and `message` of one point, such as the source call, a write that
   carried the value on, and the sink call. A finding without a path has no `path` field. Paths are
   written by the taint rules; see [writing taint specs](/reference/taint-specs/).
-- Gitleaks findings never contain the matched secret.
+- `secrets` findings never contain the matched secret or any source text.
 - Swift compiler errors from `swift-build` and `xcodebuild-test` have `tool` and `rule` `swiftc`.
 - When a report is missing, stale, or unreadable, the check keeps its status and simply has no
   findings; use `output` as the fallback.

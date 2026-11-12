@@ -75,8 +75,9 @@ class OpenApiRuleRunTest {
             matches.getFirst().match().span().startLine()
                 + ":"
                 + matches.getFirst().match().span().startColumn())
-        .isEqualTo("4:5");
-    assertThat(matches.getFirst().match().message()).contains("`GET`");
+        .isEqualTo("4:9");
+    assertThat(matches.getFirst().match().message())
+        .isEqualTo("Operation must have \"operationId\".");
   }
 
   @Test

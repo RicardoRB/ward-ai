@@ -1,6 +1,0 @@
-# Status of the vacuum-descriptions rows in openapi: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
-
-component-description = "implemented"
-description-duplication = "implemented"
-oas3-parameter-description = "implemented"
-operation-description = "implemented"

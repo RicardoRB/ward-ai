@@ -2,73 +2,103 @@ package dev.ward.analysis.domain.openapi.rule;
 
 import dev.ward.analysis.domain.openapi.DocNode;
 import dev.ward.analysis.domain.openapi.OpenApiDocument;
+import dev.ward.analysis.domain.openapi.OpenApiDocument.View;
 import dev.ward.analysis.domain.openapi.OpenApiParts.Operation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
-/** The OWASP rules that ask every operation to define its {@code security}. */
+/** The OWASP rules about the security requirements of operations. */
 final class OwaspSecurityRules {
 
   private static final String SECURITY = "security";
-  private static final Set<String> UNSAFE = Set.of("post", "put", "patch", "delete");
-  private static final Set<String> SAFE = Set.of("get", "head");
+  private static final String ADMIN = "/admin";
 
   private OwaspSecurityRules() {}
 
-  /** {@code owasp-protection-global-unsafe}: unsafe methods define security, which may be null. */
-  static List<OpenApiFinding> unsafe(final OpenApiDocument document) {
-    return check(document, UNSAFE, true);
+  /** {@code owasp-api2-2023-write-restricted}: a write operation has a security requirement. */
+  static List<OpenApiFinding> writeRestricted(final OpenApiDocument document) {
+    return restricted(
+        document,
+        List.of("post", "put", "patch", "delete"),
+        "This write operation is not protected by any security scheme.");
   }
 
-  /** {@code owasp-protection-global-unsafe-strict}: unsafe methods define non-null security. */
-  static List<OpenApiFinding> unsafeStrict(final OpenApiDocument document) {
-    return check(document, UNSAFE, false);
+  /** {@code owasp-api2-2023-read-restricted}: a read operation has a security requirement. */
+  static List<OpenApiFinding> readRestricted(final OpenApiDocument document) {
+    return restricted(
+        document,
+        List.of("get", "head"),
+        "This read operation is not protected by any security scheme.");
   }
 
-  /** {@code owasp-protection-global-safe}: safe methods define security, which may be null. */
-  static List<OpenApiFinding> safe(final OpenApiDocument document) {
-    return check(document, SAFE, true);
-  }
-
-  private static List<OpenApiFinding> check(
-      final OpenApiDocument document, final Set<String> methods, final boolean nullable) {
-    final Optional<DocNode> global = document.root().get(SECURITY);
+  private static List<OpenApiFinding> restricted(
+      final OpenApiDocument document, final List<String> methods, final String message) {
     final List<OpenApiFinding> findings = new ArrayList<>();
+    final Optional<DocNode> global = document.get(document.root(), SECURITY, View.RESOLVED);
     for (final Operation operation : document.parts().operations()) {
-      if (methods.contains(operation.method())) {
-        findings.addAll(operation(operation, global, nullable));
+      if (!methods.contains(operation.method())) {
+        continue;
+      }
+      final Optional<DocNode> own = document.get(operation.node(), SECURITY, View.RESOLVED);
+      final Optional<DocNode> effective = own.isPresent() ? own : global;
+      if (effective.isEmpty() || !defined(effective.get())) {
+        findings.add(Findings.atValue(own.orElse(operation.node()), message));
       }
     }
     return findings;
   }
 
-  private static List<OpenApiFinding> operation(
-      final Operation operation, final Optional<DocNode> global, final boolean nullable) {
-    final Optional<DocNode> own = operation.node().get(SECURITY);
-    final String where =
-        "for path `" + operation.path() + "` in method `" + operation.method() + "`";
+  /** JavaScript: a security value is missing when it is falsy or an empty array. */
+  private static boolean defined(final DocNode security) {
+    return security.kind() == DocNode.Kind.ARRAY
+        ? !security.items().isEmpty()
+        : Fields.truthy(security);
+  }
+
+  /** {@code owasp-api5-2023-admin-security-unique}: an admin path has its own security. */
+  static List<OpenApiFinding> adminSecurityUnique(final OpenApiDocument document) {
+    final List<String> ordinary = new ArrayList<>();
+    final List<DocNode> admin = new ArrayList<>();
+    final List<String> adminPaths = new ArrayList<>();
+    for (final Operation operation : document.parts().operations()) {
+      for (final DocNode entry : requirements(document, operation)) {
+        if (operation.path().contains(ADMIN)) {
+          admin.add(entry);
+          adminPaths.add(operation.path());
+        } else {
+          ordinary.add(JsonText.write(entry));
+        }
+      }
+    }
     final List<OpenApiFinding> findings = new ArrayList<>();
-    if (own.isEmpty() && global.isEmpty()) {
-      findings.add(Findings.at(operation.node(), "`security` was not defined " + where));
-      return findings;
-    }
-    if (own.isPresent() && own.get().items().isEmpty()) {
-      findings.add(Findings.at(operation.node(), "`security` is empty " + where));
-    }
-    if (!nullable) {
-      findings.addAll(nullElements(own.isPresent() ? own : global, where));
+    for (int index = 0; index < admin.size(); index++) {
+      if (ordinary.contains(JsonText.write(admin.get(index)))) {
+        findings.add(
+            Findings.atValue(
+                admin.get(index),
+                "Admin endpoint "
+                    + adminPaths.get(index)
+                    + " has the same security requirement as a non-admin endpoint."));
+      }
     }
     return findings;
   }
 
-  private static List<OpenApiFinding> nullElements(
-      final Optional<DocNode> security, final String where) {
-    return security.stream()
-        .flatMap(node -> node.items().stream())
-        .filter(requirement -> requirement.entries().isEmpty())
-        .map(requirement -> Findings.atValue(requirement, "`security` has null elements " + where))
-        .toList();
+  /** The object or array requirements of the operation's own {@code security}. */
+  private static List<DocNode> requirements(
+      final OpenApiDocument document, final Operation operation) {
+    return document
+        .get(operation.node(), SECURITY, View.RESOLVED)
+        .filter(security -> security.kind() == DocNode.Kind.ARRAY)
+        .map(
+            security ->
+                security.items().stream()
+                    .filter(
+                        entry ->
+                            entry.kind() == DocNode.Kind.OBJECT
+                                || entry.kind() == DocNode.Kind.ARRAY)
+                    .toList())
+        .orElse(List.of());
   }
 }

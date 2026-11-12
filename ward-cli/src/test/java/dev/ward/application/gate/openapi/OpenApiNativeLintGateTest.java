@@ -35,8 +35,15 @@ class OpenApiNativeLintGateTest {
             finding -> {
               assertThat(finding.ruleId()).isEqualTo("ward:openapi/operation-operation-id");
               assertThat(finding.file()).isEqualTo(NativeLintFixture.SPEC);
-              assertThat(finding.line() + ":" + finding.column()).isEqualTo("4:5");
+              assertThat(finding.line() + ":" + finding.column()).isEqualTo("4:9");
             });
+  }
+
+  @Test
+  void theGateKeepsOneLineWithoutCategorySections() throws IOException {
+    fixture.write(NativeLintFixture.SPEC, NativeLintFixture.CLEAN);
+
+    assertThat(fixture.lint().sections()).isEmpty();
   }
 
   @Test
@@ -79,7 +86,7 @@ class OpenApiNativeLintGateTest {
 
     final GateResult result = fixture.lint();
 
-    assertThat(result.status()).isEqualTo(GateStatus.PASSED);
+    assertThat(result.status()).isEqualTo(GateStatus.FAILED);
     assertThat(result.findings().items())
         .extracting(Finding::ruleId)
         .containsExactly("ward:openapi/info-contact");
@@ -112,9 +119,9 @@ class OpenApiNativeLintGateTest {
   }
 
   @Test
-  void aVacuumConfigFileIsNeitherReadNorRefused() throws IOException {
+  void aToolConfigFileIsNeitherReadNorRefused() throws IOException {
     fixture.write(NativeLintFixture.SPEC, NativeLintFixture.CLEAN);
-    fixture.write("vacuum.conf.yaml", "ignore: all\n");
+    fixture.write("ruleset.conf.yaml", "ignore: all\n");
 
     assertThat(fixture.lint().status()).isEqualTo(GateStatus.PASSED);
   }

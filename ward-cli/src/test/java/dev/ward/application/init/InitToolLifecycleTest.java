@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -48,31 +49,6 @@ class InitToolLifecycleTest {
     assertThat(installer.installCalled).isTrue();
     assertThat(Files.readString(root.resolve("ward.toml")))
         .contains(".ward/tools/openspec/openspec");
-  }
-
-  @Test
-  void gateOnlyConsentInstallsTheGateToolAndNotOpenSpec(@TempDir final Path root) throws Exception {
-    ProjectFixtures.withPom(root, ProjectFixtures.PLAIN_POM);
-    final RecordingInstaller installer = new RecordingInstaller(true);
-
-    service(installer)
-        .initialize(
-            root,
-            new InitSelection(
-                List.of("none"),
-                List.of("tests", "gitleaks"),
-                null,
-                null,
-                List.of(),
-                List.of(),
-                List.of("gitleaks"),
-                false,
-                null,
-                false,
-                null));
-
-    assertThat(installer.installed).containsExactly("gitleaks");
-    assertThat(Files.readString(root.resolve("ward.toml"))).doesNotContain("openspec");
   }
 
   @Test
@@ -108,7 +84,13 @@ class InitToolLifecycleTest {
     return new InitService(
         new ProjectDetector(new FileSystemProjectInspection()),
         Set.of(),
-        new InitSetupCatalog(new FakeEnvironmentInspection()),
+        new InitSetupCatalog(
+            new FakeEnvironmentInspection() {
+              @Override
+              public Optional<String> openApiSpec(final Path projectRoot) {
+                return Optional.of("openapi.yml");
+              }
+            }),
         new InitProjectFiles(
             new PomToolConfigurator(),
             new PresetRuleFileWriter(RuleFileTargetsFixtures.defaults()),

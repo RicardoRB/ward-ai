@@ -1,0 +1,105 @@
+---
+title: Build policy rules
+description: The ward:build rules that the build-policy check runs over Maven, Gradle, Node and Python build files.
+---
+
+The `build-policy` check reads the build files of the project and of its modules and reports
+violations of the `ward:build/*` rules. It starts no process and needs no installed tool.
+
+```toml
+[checks.build-policy]
+enabled = true
+uses = "build-policy"
+profiles = ["pre-push", "ci"]
+```
+
+The rules are selected and configured in `ward-rules.toml`, like the other Ward rules:
+
+```toml
+version = 1
+
+[select]
+include = ["build.plugin-version-pinned", "build.no-dynamic-version"]
+
+[rules.build.no-dynamic-version]
+severity = "warning"
+```
+
+`preset = "strict"` selects every rule below except `dependency-convergence`. The default preset,
+`standard`, selects none, so write `include` (init does this for `strict`). Without a
+`ward-rules.toml`, the check runs the `strict` rules. The `ward` gate leaves `build.*` ids alone and
+this check leaves every other id alone, so one file can select rules for both.
+
+Build rules accept no suppression: `exclude-paths`, an ignore list and an inline ignore do not
+exist. A table for a rule that is not selected, an unknown rule or option, or a value of the wrong
+type is a configuration error that names the file, table and key; no build rule runs.
+
+## Which files are read
+
+In the project root and in each module that a build file lists (Maven `<modules>`, Gradle
+`include`, Node `workspaces`, uv workspace `members`), the check reads:
+
+| Build tool | Files |
+|---|---|
+| Maven | `pom.xml`, `.mvn/wrapper/maven-wrapper.properties` |
+| Gradle | `build.gradle`, `build.gradle.kts`, `settings.gradle`, `settings.gradle.kts`, `gradle/libs.versions.toml`, `gradle/wrapper/gradle-wrapper.properties` |
+| Node | `package.json` |
+| Python | `pyproject.toml` (`requirements*.txt` is not read) |
+
+The tree is never walked, so a fixture project under `src/test/resources` is not read. A file that
+cannot be read or does not parse (malformed XML, TOML or JSON, a DTD in a POM, a wrapper
+`distributionUrl` without a version) ends the check with an execution error that names the file.
+
+Gradle scripts are read lexically, not parsed. Ward recognizes `id("x") version "1"`,
+`id 'x' version '1'`, `kotlin("jvm") version "1"`, dependency configurations with a
+`"group:artifact:version"` string, `classpath` entries and the version catalog. Text outside those
+forms is ignored. A recognized form whose version is not a literal (a variable) is a finding that
+says the version cannot be determined from the file. A plugin applied without a version in
+`plugins {}` is not checked there, because `pluginManagement` or the settings file may give it one.
+
+## Rules
+
+| Rule | Selected by | What it reports |
+|---|---|---|
+| `ward:build/plugin-version-pinned` | `strict` | A Maven or Gradle plugin without an exact version, including the default Maven lifecycle plugins of the packaging. A version may come from the POM, its `pluginManagement` or a parent POM inside the project. A version that only an external parent could give is reported, and the message says so. |
+| `ward:build/no-dynamic-version` | `strict` | A version that can resolve differently later: a Maven range, `LATEST`, `RELEASE` or `SNAPSHOT`; a Gradle `+`, `latest.*` or range; a Node dist-tag, wildcard or range; a Python requirement with no pin. |
+| `ward:build/minimum-build-tool-version` | `strict` | A declared build tool version below the minimum: the Maven or Gradle wrapper, `packageManager` in `package.json`, `required-version` of uv. |
+| `ward:build/duplicate-dependency-declaration` | `strict` | A Maven dependency declared twice with the same group, artifact, type and classifier in one section. |
+| `ward:build/dependency-convergence` | none | A package that the dependency inventory lists with more than one version in one module. |
+
+### Lockfiles
+
+Maven has no lockfile, so every Maven range is dynamic. For Gradle, Node and Python dependencies, a
+range is not dynamic when a lockfile of the ecosystem sits next to the build file (`gradle.lockfile`,
+`package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `bun.lock`, `uv.lock`, `poetry.lock`). A
+dist-tag, a wildcard, a Gradle plugin version and every Maven version stay dynamic with or without a
+lockfile.
+
+### Minimum build tool version
+
+The options `maven`, `gradle`, `npm`, `pnpm`, `yarn`, `bun` and `uv` take a dotted version. Only
+`maven` has a default, `3.9`; another tool is checked when you set its minimum. A project that
+declares no version for a tool gets no finding for it, so a Maven project without a wrapper is not
+checked.
+
+```toml
+[rules.build.minimum-build-tool-version]
+gradle = "8.5"
+```
+
+### Dependency convergence
+
+The rule uses the dependency inventory and starts no build tool. When the inventory cannot be
+resolved, the check ends with an execution error instead of passing. It is for graphs that hold
+several versions of a package, such as npm lockfiles. Maven resolves one version per artifact, so on
+Maven the `enforcer` gate keeps checking `dependencyConvergence` and `requireUpperBoundDeps`.
+
+## What replaces Maven Enforcer
+
+| Enforcer rule | Native rule |
+|---|---|
+| `requirePluginVersions` | `plugin-version-pinned` |
+| `banDynamicVersions` | `no-dynamic-version`, for versions in your own build files |
+| `requireMavenVersion` | `minimum-build-tool-version`, when the project has the Maven wrapper |
+| `banDuplicatePomDependencyVersions` | `duplicate-dependency-declaration` |
+| `dependencyConvergence`, `requireUpperBoundDeps` | none yet; the `enforcer` gate keeps them |

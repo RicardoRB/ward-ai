@@ -1,9 +1,13 @@
 package dev.ward.infrastructure.project.python;
 
+import dev.ward.infrastructure.project.FileSystemProjectInspection;
 import dev.ward.infrastructure.project.WorkspaceGlobs;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.stream.Stream;
 import org.tomlj.TomlTable;
 
 /**
@@ -27,6 +31,25 @@ public final class PythonWorkspaces {
     final TomlTable pyproject = PythonProjectInspection.pyproject(root);
     return WorkspaceGlobs.matchesAny(globs(pyproject, MEMBERS), root, candidate)
         && !WorkspaceGlobs.matchesAny(globs(pyproject, EXCLUDE), root, candidate);
+  }
+
+  /**
+   * Returns the uv workspace member directories of {@code root}, sorted, not including {@code
+   * root}; empty when it is not a workspace root or cannot be read.
+   */
+  public static List<Path> members(final Path root) {
+    if (!Files.isRegularFile(root.resolve(PythonProjectInspection.PYPROJECT))) {
+      return List.of();
+    }
+    try (Stream<Path> files = Files.walk(root, FileSystemProjectInspection.MAX_SEARCH_DEPTH)) {
+      return files
+          .filter(Files::isDirectory)
+          .filter(dir -> !dir.equals(root) && isMember(root, dir))
+          .sorted()
+          .toList();
+    } catch (IOException | UncheckedIOException e) {
+      return List.of();
+    }
   }
 
   /** Returns the string entries of the array at {@code key}; a missing array is empty. */

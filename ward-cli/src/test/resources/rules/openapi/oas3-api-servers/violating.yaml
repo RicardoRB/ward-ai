@@ -2,9 +2,5 @@ openapi: 3.0.3
 info:
   title: T
   version: "1"
-servers:
-  - url: https://api.example.org/v1/
-  - description: no url
-  - url: "::bad"
-  - url: https://ok.org
+servers: []
 paths: {}

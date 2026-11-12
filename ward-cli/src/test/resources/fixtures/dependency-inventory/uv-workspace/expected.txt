@@ -1,0 +1,9 @@
+[] (none)
+[packages/billing] PYPI anyio 4.16.0 TRANSITIVE RUNTIME from=uv.lock by=httpx
+[packages/billing] PYPI certifi 2026.10.23 TRANSITIVE RUNTIME from=uv.lock by=httpcore,httpx
+[packages/billing] PYPI h11 0.16.0 TRANSITIVE RUNTIME from=uv.lock by=httpcore
+[packages/billing] PYPI httpcore 1.0.9 TRANSITIVE RUNTIME from=uv.lock by=httpx
+[packages/billing] PYPI httpx 0.28.1 DIRECT RUNTIME from=uv.lock in=packages/billing/pyproject.toml
+[packages/billing] PYPI idna 3.20 TRANSITIVE RUNTIME from=uv.lock by=anyio,httpx
+[packages/billing] PYPI typing-extensions 4.16.0 TRANSITIVE RUNTIME from=uv.lock by=anyio
+[packages/core] PYPI idna 3.20 DIRECT RUNTIME from=uv.lock in=packages/core/pyproject.toml

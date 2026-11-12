@@ -25,12 +25,11 @@ class PythonPackageCatalogTest {
 
   @Test
   void everyStandardGateHasAnExactPin() {
-    final List<InitGateOption> gates = gates("mypy", "pytest", "coverage", "pip-audit");
+    final List<InitGateOption> gates = gates("mypy", "pytest", "coverage");
 
     assertThat(PythonPackageCatalog.missing(gates, Set.of()))
         .extracting(PythonPackageCatalog.Package::requirement)
-        .containsExactlyInAnyOrder(
-            "mypy==2.4.0", "pytest==9.1.1", "coverage==7.16.2", "pip-audit==2.10.1");
+        .containsExactlyInAnyOrder("mypy==2.4.0", "pytest==9.1.1", "coverage==7.16.2");
   }
 
   private static List<InitGateOption> gates(final String... ids) {

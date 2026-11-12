@@ -27,6 +27,14 @@ class RuleFileReaderTest {
   }
 
   @Test
+  void aTextScopeRuleHasNoLanguage() {
+    final RuleDefinition rule = RuleFileReader.read(DIRECTORY + "text-scope.toml").get(0);
+
+    assertThat(rule.id()).isEqualTo("ward:secrets/example");
+    assertThat(rule.languages()).isEmpty();
+  }
+
+  @Test
   void aMissingFileNamesItself() {
     assertThatThrownBy(() -> RuleFileReader.read(DIRECTORY + "absent.toml"))
         .isInstanceOf(RuleConfigurationException.class)
@@ -42,6 +50,8 @@ class RuleFileReaderTest {
         "bad-preset",
         "bad-option-key",
         "bad-option-type",
+        "both-language-and-scope",
+        "neither-language-nor-scope",
       })
   void anUnusableFileFailsAsAWholeAndNamesTheFile(final String name) {
     assertThatThrownBy(() -> RuleFileReader.read(DIRECTORY + name + ".toml"))

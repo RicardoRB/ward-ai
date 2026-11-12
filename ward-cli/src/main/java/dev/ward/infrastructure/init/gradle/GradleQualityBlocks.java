@@ -1,59 +1,25 @@
 package dev.ward.infrastructure.init.gradle;
 
-import dev.ward.domain.init.QualityPreset;
-import java.util.Map;
-import java.util.TreeMap;
-
 /**
- * Gradle extension blocks that make the plugins use what init generates: the preset rule files, a
- * coverage rule that fails the build, and JUnit 5 support for mutation testing. Each block is
- * rendered for the Groovy or the Kotlin DSL.
+ * Gradle extension blocks that make the plugins use what init generates: the preset rule files, the
+ * JaCoCo setup that writes the report Ward checks, and JUnit 5 support for mutation testing. Each
+ * block is rendered for the Groovy or the Kotlin DSL.
  */
 final class GradleQualityBlocks {
-  static final String COVERAGE_TASK = "jacocoTestCoverageVerification";
+  static final String COVERAGE_TASK = "jacocoTestReport";
   static final String PITEST_JUNIT5 = "junit5PluginVersion";
   private static final String PITEST_JUNIT5_VERSION = "1.2.3";
-  private static final Map<String, Double> DEFAULT_MINIMUMS = Map.of("LINE", 0.80);
-  private static final int LIMIT_LENGTH = 128;
 
   private GradleQualityBlocks() {}
 
   /**
-   * OSS Index needs credentials, so it stays off until the user opts in through the environment.
+   * The JaCoCo engine version and the task that fails a module whose tests left no execution data.
+   * The minimum is not here: Ward checks it against the XML report in {@code ward.toml}.
    */
-  static String dependencyCheck(final boolean kotlin) {
-    return "dependencyCheck {\n    nvd { apiKey = System.getenv("
-        + quote(kotlin, "NVD_API_KEY")
-        + ") }\n    analyzers {\n        ossIndex {\n            enabled = false\n"
-        + "            username = System.getenv("
-        + quote(kotlin, "OSS_INDEX_USERNAME")
-        + ")\n            password = System.getenv("
-        + quote(kotlin, "OSS_INDEX_PASSWORD")
-        + ")\n        }\n    }\n}";
-  }
-
-  /** One limit per counter, the preset's minimums or a line ratio of 0.80 without a preset. */
-  static String coverage(final boolean kotlin, final QualityPreset preset, final String version) {
-    final Map<String, Double> minimums =
-        new TreeMap<>(preset == null ? DEFAULT_MINIMUMS : preset.rules().jacocoMinimums());
-    final StringBuilder limits = new StringBuilder(LIMIT_LENGTH * minimums.size());
-    minimums.forEach(
-        (counter, minimum) ->
-            limits
-                .append("            limit {\n                counter = ")
-                .append(quote(kotlin, counter))
-                .append("\n                minimum = ")
-                .append(kotlin ? "\"" + minimum + "\".toBigDecimal()" : minimum.toString())
-                .append("\n            }\n"));
-    // The Kotlin DSL reaches tasks through their type-safe accessor on tasks.
+  static String coverage(final boolean kotlin, final String version) {
     return "jacoco {\n"
         + GradleEngineBlocks.toolVersion(kotlin, version)
         + "}\n"
-        + (kotlin ? "tasks." : "")
-        + COVERAGE_TASK
-        + " {\n    violationRules {\n        rule {\n"
-        + limits
-        + "        }\n    }\n}\n"
         + GradleCoverageData.block(kotlin);
   }
 

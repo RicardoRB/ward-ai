@@ -109,7 +109,11 @@ public final class OpenApiNativeLintGate implements QualityGate {
         Level.INFO,
         () ->
             "event=openapi-lint-start gate=" + name + " files=" + units.size() + " rules=" + rules);
-    final GateResult result = new AnalysisGate(name, setup, own, null, List.of()).execute(project);
+    // One check, one line: the per-category lines are for the ward gate only.
+    final GateResult result =
+        new AnalysisGate(name, setup, own, null, List.of())
+            .execute(project)
+            .withSections(List.of());
     final GateResult policed = failingOnWarnings(result);
     LOGGER.log(
         Level.INFO, () -> "event=openapi-lint-done gate=" + name + " status=" + policed.status());
@@ -147,7 +151,8 @@ public final class OpenApiNativeLintGate implements QualityGate {
         result.warnings(),
         result.findings(),
         result.scope(),
-        result.prerequisite());
+        result.prerequisite(),
+        List.of());
   }
 
   /** The first loaded file that has the {@code x-lint-ignore} key as an object key. */

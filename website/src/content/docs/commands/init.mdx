@@ -33,7 +33,7 @@ each choice for this codebase, and runs `init` with explicit options after you a
 | `--scheme <name>` | Xcode scheme that a Swift project's tests run, when the project has several. With `--yes`, a project with several schemes needs this option. |
 | `--tool openspec` | Add OpenSpec as a project tool. |
 | `--openspec-validation <id>[,...]` | Add the `openspec` (active) or `openspec-archived` validation gate. |
-| `--install-tool <tool\|gate>[,...]` | Consent to install a missing tool, such as `trivy` or `openspec`. |
+| `--install-tool <tool\|gate>[,...]` | Consent to install a missing tool, such as `semgrep` or `openspec`. |
 | `--quality-hooks` | Add Ward checks to the Git pre-commit and pre-push hooks. |
 | `--remove-quality-hooks` | Remove only Ward's sections from those hooks. |
 | `--ci github` | Write a GitHub Actions workflow that runs the `ci` profile. |
@@ -75,8 +75,16 @@ Some gates need extra input:
   [OpenAPI contract gates](/configuration/gates/#openapi-contract-gates). When the project's
   framework serves HTTP (such as Spring Boot, FastAPI or Express) but has no tracked spec, init's plan
   says so and asks you to commit one first.
-- **`dependency-check` with `trivy`**: init warns that trivy already scans dependencies without an
-  API key, so you can usually drop one of them.
+- **`crap`** is opt-in for Maven, Gradle, Vitest, Jest, Bun and Python projects: no preset selects it
+  and the wizard lists it unselected. It needs the coverage gate (`coverage`, the test gate, or
+  `pytest`) and `--gate crap` fails with exit code 2 without it. Init writes `[checks.crap]` after
+  that gate, and reads the report that the `coverage` check already makes the tool write; see
+  [CRAP gate](/configuration/gates/#what-ward-init-writes-for-crap). Swift, Android and Angular
+  (`ng test`) projects are not offered it.
+- **`vulnerabilities`**: a native check that matches the resolved dependencies against OSV advisories.
+  No preset enables it. Init offers it for every toolchain, writes it with `uses = "vulnerabilities"`
+  in the `ci` profile, and asks no install question. See
+  [vulnerabilities](/configuration/vulnerabilities/).
 
 ### Profiles
 
@@ -84,7 +92,7 @@ Init assigns each gate to cumulative [profiles](/configuration/ward-toml/):
 
 | Gates | Profiles |
 |---|---|
-| Fast: `ward-format`, `ward`, `gitleaks` | `default`, `pre-commit`, `pre-push`, `ci` |
+| Fast: `ward-format`, `secrets` | `default`, `pre-commit`, `pre-push`, `ci`, `edit` |
 | Slower local gates, including `compile`, `tsc`, the test runners, and custom commands | `pre-push`, `ci` |
 | Environment-dependent gates | `ci` |
 
@@ -118,7 +126,7 @@ finding twice.
 
 ## What init changes in your build
 
-For `enforcer`, `license` and `api-compat`, init adds missing plugins using
+For `enforcer` and `api-compat`, init adds missing plugins using
 Ward's embedded Java compatibility catalog.
 
 - Existing compatible plugin versions are kept.
@@ -167,8 +175,9 @@ stay in the root script.
 - `ward init --dry-run` lists every module script that would change. Rollback restores every
   script init changed, and a rerun changes no script.
 - The Gradle `coverage` gate fails a module that has no tests, instead of passing it: Gradle skips
-  JaCoCo verification when no test wrote coverage data, so init adds a task that runs the tests and
-  fails when they leave none.
+  the JaCoCo report when no test wrote coverage data, so init adds a task that runs the tests and
+  fails when they leave none. The `coverage` check of `ward.toml` sums the XML reports of every
+  module and checks one total against its `minimum`.
 - The `mutation` minimum score sums the fresh PIT XML reports of the root and each module. The
   strict preset writes its threshold there as the gate's `minimum`; the Gradle PIT block sets none.
   The generated PIT block enables the XML output that the gate reads and reruns PIT on every
@@ -206,8 +215,7 @@ mutation omitted: info.solidsoft.pitest needs JDK 8+; this project builds on JDK
 
 - A gate you pass with `--gate` that cannot run on your JDK stops init before it changes any file.
 - In the interactive gate list, such a gate is shown as unavailable and cannot be selected.
-- The Gradle `dependency-check` and `sonar` plugins need JDK 11, so on Gradle they are omitted on
-  JDK 8.
+- The Gradle `sonar` plugin needs JDK 11, so on Gradle it is omitted on JDK 8.
 - Above Java 25, init configures the project exactly as for JDK 25 and warns that Ward has not been
   tested on that JDK and does not support it.
 - Below Java 8, init warns that Ward supports Java 8 to 25 and may not work with that version.
@@ -220,7 +228,7 @@ mutation omitted: info.solidsoft.pitest needs JDK 8+; this project builds on JDK
   project-level `<dependencies>`. Missing sections are created.
 - Profiles, `dependencyManagement`, and plugin dependencies are never edited. A plugin declared
   only inside a profile is reported as not reconfigured.
-- The one addition to `<build><pluginManagement>` is the strict `enforcer` pins described in
+- The one addition to `<build><pluginManagement>` is the strict lifecycle plugin pins, written for the `build-policy` and `enforcer` gates, described in
   [First failures under `strict`](#first-failures-under-strict). Existing entries there never
   change.
 - Compatibility updates change only the managed plugin's own project-level `<version>`.
@@ -252,8 +260,11 @@ and prefers the Gradle Wrapper when one exists.
 
 Init then appends blocks that make the plugins use what it generated:
 
-- `jacocoTestCoverageVerification` with the preset's minimums, or `LINE` `0.80` without a preset.
-  The `coverage` gate runs this task, which fails below a minimum.
+- The JaCoCo setup of the `coverage` gate: the engine version, `jacocoTestReport` with the XML report
+  enabled, and a `wardCoverageData` task that fails a module whose tests left no execution data.
+  The gate runs `jacocoTestReport`, and Ward checks the report against the `minimum` (and
+  `minimum-branches`) of `[checks.coverage]` in `ward.toml`; the build has no `violationRules`. A
+  build from an earlier Ward keeps its old rules, and init adds only the XML report setting.
 - `pitest { pitestVersion = '1.30.1'; junit5PluginVersion = '1.2.3' }` for `mutation`, plus the
   preset's `mutationThreshold`. PIT is pinned because the plugin's default PIT cannot read Java 25
   class files. PIT derives `targetClasses` from the project `group`, so set `group` in the build
@@ -268,49 +279,32 @@ commercial Arcmutate history plugin.
 ### Generated files
 
 - **`ward.toml`** includes [`partial` tables](/configuration/gates/#partial-checks) for
-  `ward`, `ward-format`, `semgrep`, and `gitleaks`. The check after each agent edit, and the
+  `ward`, `ward-format`, `semgrep`, and `secrets`. The check after each agent edit, and the
   pre-commit hook, skip gates the change cannot affect and narrow these tools to the edited or
   staged files. Other gates, `ward check` without `--path`, the pre-push hook, and CI still check
-  the whole project. `gitleaks` scans those files directly, so it sees changes that are not yet
-  committed; its full run scans the Git history.
+  the whole project. `secrets` scans those files itself, so it sees changes that are not yet
+  committed.
 - **`ward.toml` architecture tables.** `[[checks.ward.layers]]` holds the boundary of the style, and
   `ward:architecture/layers` checks it. Under `strict`, `[checks.ward.cycles]` lists the source roots
   whose slices must not form cycles, and `[[checks.ward.independence]]` lists the feature modules that
   must stay independent.
-- **The `gitleaks` gate** writes a redacted SARIF report, so `ward check` can attach findings (file,
-  line, and rule) to a failed gate:
+- **The `secrets` gate** runs inside Ward, with no command and nothing to install, and writes
+  `uses = "secrets"`. It is offered with `--gate secrets` and no preset selects it. See
+  [secret detection](/configuration/secrets/). The `gitleaks` gate no longer exists; a configuration
+  that still runs a `gitleaks` command keeps working as a plain command check, without findings.
+- **The `license` gate** is native and changes no build file: init writes `[checks.license]` with
+  `uses = "license"` and no `command`, for Maven, Gradle, Node, Python and Swift projects. It adds no
+  plugin, version, `licenseMerges` or `licenseReport` block, and leaves such content that is already
+  in a build file alone. The policy depends on the preset:
+  - `standard` and `custom` write `deny = ["GPL-*", "AGPL-*"]`; `LGPL` and the Classpath Exception
+    pass.
+  - `strict` writes an `allow` list of Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause, ISC, EPL-1.0,
+    EPL-2.0 and CC0-1.0. A dual-licensed dependency passes when one of its licenses is allowed. LGPL,
+    MPL and CDDL are not listed because they need a legal decision; add an approved identifier to
+    `allow`.
 
-  ```toml
-  [checks.gitleaks]
-  command = ["gitleaks", "detect", "--no-banner", "--redact",
-             "--report-format", "sarif", "--report-path", "target/gitleaks.sarif"]
-  ```
-
-  Gradle projects use `build/gitleaks.sarif`. Ward creates the report directory before the gate
-  runs, so it works on a fresh clone. Configurations from earlier versions keep working without
-  findings; re-run `ward init` or add the four report arguments to enable them.
-- **The `license` plugin** matches license names exactly and case-sensitively, so init adds
-  `licenseMerges` that map common spellings to one name. The policy depends on the preset:
-  - `standard` denies GPL and AGPL, mapping spellings such as `GPL-3.0` and
-    `GNU Affero General Public License v3.0` to the excluded names. Licenses it does not recognize
-    pass, so unusual GPL spellings are not caught.
-  - `strict` allows only Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause, ISC, EPL-1.0, EPL-2.0, and
-    CC0-1.0. Any other license, or a dependency without one, fails the build. A dual-licensed
-    dependency passes when one of its licenses is allowed. LGPL, MPL, and CDDL are not listed
-    because they need a legal decision; add an approved license to `includedLicenses` and its
-    spellings to `licenseMerges`.
-- **On Gradle, the `license` gate** runs `checkLicense` from the
-  `com.github.jk1.dependency-license-report` plugin, and init writes a `licenseReport {}` block
-  whose rules are case-insensitive regular expressions. The plugin reads licenses from POMs and
-  from files inside the jar, and a dependency passes when any of them matches a rule.
-  - `standard` allows every license except GPL and AGPL. LGPL, the Classpath Exception, and
-    dependencies without a license pass. Other GPL exceptions, such as MySQL's Universal FOSS
-    Exception, only cover open-source use, so they fail.
-  - `strict` allows only Apache-2.0, MIT, BSD, ISC, EPL, and CC0 or public domain. Any other
-    license, or a dependency without one, fails.
-  - Earlier versions configured `com.github.hierynomus.license`, whose `licenseMain` checks
-    source headers, not dependencies. Re-run `ward init` to switch; remove the old plugin
-    yourself if you do not use it for headers.
+  A license Ward cannot find is a finding, so install the dependencies before the gate runs; Ward
+  never downloads license metadata. See [License gate](/configuration/gates/#license-gate).
 
 ### Existing files
 
@@ -324,8 +318,8 @@ finding. With `strict`, expect these on most existing projects:
 
 - `ward`: findings of the strict Java rules, such as `ward:java/magic-number`,
   `ward:java/missing-javadoc` or `ward:java/method-length`, in existing code.
-- `enforcer`: strict keeps `requirePluginVersions` on purpose, so every plugin needs a pinned
-  version.
+- `build-policy`: `ward:build/plugin-version-pinned` is selected by `strict` on purpose, so every
+  plugin needs a pinned version. See [Build policy rules](/reference/build-policy-rules/).
   - Init pins the plugins Maven adds through its default lifecycle (clean, resources, compiler,
     surefire, jar, install, deploy, and site) in `<pluginManagement>`. It uses the versions Maven
     3.9.16 binds by default and skips plugins the POM already declares. The pins appear in
@@ -333,11 +327,10 @@ finding. With `strict`, expect these on most existing projects:
   - The rule can still fail on other plugins, such as `maven-war-plugin`, or when a parent POM
     supplies a version. Pin those in `<pluginManagement>` with the versions the message reports.
   - Use `standard` if you do not want this rule.
-- `license`: "There are some forbidden licenses used" (Maven) or "Some libraries do not declare at
-  least one allowed license" (Gradle) for any dependency whose only licenses are not on the
-  allowlist, for example an LGPL-only JDBC driver. On Maven, add the license to
-  `includedLicenses` once your legal policy approves it, or add its spelling to `licenseMerges`
-  when it is an approved license written another way. On Gradle, add a rule to `licenseReport`.
+- `license`: a `ward:license/not-allowed` finding for any dependency whose licenses are not all on the
+  `allow` list, for example an LGPL-only JDBC driver, and a `ward:license/unknown` finding for a
+  dependency that is not installed or declares no recognizable license. Add the license to `allow`
+  once your legal policy approves it, install the dependencies, or set `unknown = "warn"`.
 
 ## Node projects
 
@@ -360,9 +353,10 @@ as a local dev dependency through the package manager's runner: `npx`, `pnpm exe
   project's own test builder. Ward writes no test config for Angular and edits no `angular.json`,
   `karma.conf.js` or `tsconfig*.json`. Angular's default `vitest` dependency does not select the
   `vitest` gate; a declared `jest` keeps `jest`.
-- Angular's coverage minimums are enforced only when `angular.json` sets `coverageThresholds`. When
-  it sets none, the plan says so and names `angular.json` and `karma.conf.js` as the files to set
-  them in.
+- Angular's coverage minimums are enforced only when `angular.json` sets `coverageThresholds`, and
+  init writes no `coverage` check for `ng-test`. When it sets none, the plan says so, names
+  `angular.json` and `karma.conf.js` as the files to set them in, and names the `[checks.coverage]`
+  check with `uses = "coverage"` and a `report` path that enforces a minimum from `ward.toml`.
 - Ward supports Angular 21 and 22. Before it changes any file, init reports an `INCOMPATIBLE`
   finding and writes nothing when the project declares an unsupported Angular major, a TypeScript
   version outside the major's peer range (`>=5.9 <6.1` for 21, `>=6.0 <6.1` for 22), or runs on a
@@ -402,40 +396,50 @@ and Ward does not run it.
 | `tsc` | `npx tsc --noEmit --pretty false` | `pre-push`, `ci` |
 | `vitest` | `npx vitest run --coverage` | `pre-push`, `ci` |
 | `jest` | `npx jest --coverage` | `pre-push`, `ci` |
-| `bun-test` | `bun test --coverage` | `pre-push`, `ci` |
+| `bun-test` | `bun test --coverage --coverage-reporter=text --coverage-reporter=lcov` | `pre-push`, `ci` |
+| `coverage` | no command: reads `coverage/lcov.info` | `pre-push`, `ci` |
 | `stryker` | `npx stryker run` | `ci` |
 | `ward` | `ward` analysis of `ward-rules.toml` | `default`, `pre-commit`, `pre-push`, `ci` |
 
 - JavaScript gets the same gates except `tsc`.
 - The test runner is the one the project declares: `vitest`, then `jest`. A Bun project without
   either gets `bun-test`, and any other project gets `vitest` with `@vitest/coverage-v8`. Their version follows the declared `vite`: the newest pinned release whose Vite range includes it (4.1.11 for Vite 6 to 8), and 4.0.18 without `vite`.
-- `gitleaks` and `trivy` are offered as for Java.
+- `secrets` is offered as for Java.
+- `crap` is opt-in. Selected with `vitest`, `jest` or `bun-test`, it reads the `coverage/lcov.info`
+  that the test gate writes. It is not offered for `ng-test`.
 
 | | `standard` | `strict` |
 |---|---|---|
 | Gates | `tsc` (TypeScript only), and the test runner | the same, plus `stryker` |
 | Ward rules (`ward-rules.toml`) | the `standard` preset | the `strict` preset |
-| Coverage | at least 70% of lines | at least 85% of lines and 75% of branches (Bun: lines only, because it does not measure branches) |
+| Coverage (`minimum` of the `coverage` check) | at least 70% of lines | at least 85% of lines and 75% of branches (Bun: lines only, because it does not measure branches, and the plan says so) |
 | Mutation score | none | at least 60%, in `ci` |
 
 A custom selection uses the `standard` coverage minimum, and `stryker` without `strict` reports its
 score without a minimum.
 
-#### Where the thresholds live
+#### Where the minimums live
 
-The thresholds sit in the tools' own config files, so you can see and tune them there:
+The coverage minimums live in `ward.toml`, and nowhere else. After the test gate, init writes a
+`coverage` check with `uses = "coverage"`, no `command`, the `pre-push` and `ci` profiles and the
+preset's `minimum` (and `minimum-branches`). The test runner writes `coverage/lcov.info`, which Ward
+reads; Angular (`ng-test`) projects get no `coverage` check. The check reads the report of every
+member in a Turborepo workspace and compares their sum with the minimum.
 
-- When the project has no test config, init writes a Ward-owned **`vitest.config.mjs`** or
-  **`jest.config.mjs`** with the preset's coverage thresholds, and the test command carries no
-  threshold flag.
+- When the project has no Vitest config, init writes a Ward-owned **`vitest.config.mjs`** with the
+  `v8` provider and the `text` and `lcov` reporters, and no threshold. Jest reports lcov by default,
+  so init writes no Jest config. The Bun command is `bun test --coverage --coverage-reporter=text
+  --coverage-reporter=lcov`, and init writes no `bunfig.toml`.
 - When the project has its own config (`vitest.config.*` or `vite.config.*` for Vitest;
   `jest.config.*` or a `"jest"` key in `package.json` for Jest), init keeps it unchanged and lists
-  it as user-owned. The command then passes the thresholds, for example
-  `npx vitest run --coverage --coverage.thresholds.lines=85 --coverage.thresholds.branches=75`.
-- Bun reads its threshold from `bunfig.toml`, and Stryker reads its minimum from
-  `stryker.config.mjs`.
-- Projects set up by an earlier Ward version keep the threshold flag on their test command. Running
-  init again moves it into `vitest.config.mjs` or `jest.config.mjs`.
+  it as user-owned. The command then passes the reporter flags, for example `npx vitest run
+  --coverage --coverage.reporter=text --coverage.reporter=lcov`, and no threshold flag. A threshold
+  the project's config sets still applies to the runner; Ward reads only the `minimum` of
+  `ward.toml`, and the plan says so.
+- Stryker reads its minimum from `stryker.config.mjs`.
+- Configs written by an earlier Ward version carry a `managed-by: ward` marker: init rewrites a
+  `vitest.config.mjs` without its threshold, and removes a `jest.config.mjs` or `bunfig.toml`, which
+  held nothing else, and lists each in the plan. A file without the marker is never touched.
 
 ### What init changes in `package.json`
 
@@ -488,14 +492,10 @@ Before writing, init checks each package it would add against the project's Node
 
 - **`ward-rules.toml`** with the preset and the Node languages the `ward` gate applies. It starts
   with a `# managed-by: ward preset=<id>` marker; see [Lint and style](#lint-and-style).
-- **`vitest.config.mjs`** or **`jest.config.mjs`** with the coverage thresholds, unless the
-  project has its own test config; see [Where the thresholds live](#where-the-thresholds-live).
+- **`vitest.config.mjs`** with the coverage reporters, unless the project has its own test config;
+  see [Where the minimums live](#where-the-minimums-live).
   A project with no tests fails the test gate until it adds one, because a test gate that passes
   with no tests is misleading.
-- **`bunfig.toml`** for `bun-test` when none exists, with
-  `[test] coverageThreshold = { lines = 0.7 }` (0.85 with `strict`) and a `#` marker. An existing
-  `bunfig.toml` is kept, and init warns that the coverage threshold is enforced only if it sets
-  one.
 - **`stryker.config.mjs`** for `stryker` when the project has no `stryker.conf.*`,
   `stryker.config.*`, or `.stryker.conf.*`. It names the test runner, enables the `json`,
   `clear-text`, and `progress` reporters, and sets `thresholds` with `high: 80` and `low: 60`. With
@@ -518,13 +518,19 @@ projects are not supported yet, and init stops with an error that names the mana
 - Every tool is pinned at an exact version in a PEP 735 `ward` dependency group in
   `pyproject.toml`. A project without `pyproject.toml` gets `requirements-ward.txt`.
 - The gates run through the manager: `uv run --group ward`, `poetry run`, or `.venv/bin/` for pip.
-  `standard` selects `mypy`, `pytest`, and `coverage` (line coverage of 80%), and `ward-format`
+  `standard` selects `mypy`, `pytest`, and `coverage` (`minimum = 80` lines), and `ward-format`
   checks formatting.
-  `pip-audit` is opt-in.
 - Lint comes from Ward's Python rules: `ward-rules.toml` selects them for `"python"` with the
   preset.
+- The `coverage` check runs `coverage lcov -o .ward/reports/coverage.lcov` after `pytest`, and Ward
+  reads that file (`report`) and compares it with `minimum = 80` (`strict`: `minimum = 85` and
+  `minimum-branches = 75`, each measured separately, with branch coverage turned on). The command
+  carries no `--fail-under`, and `.coveragerc` holds no `fail_under`.
+- `crap` is opt-in and needs `pytest`. `[checks.crap]` reads the same lcov file through `report`,
+  after the `coverage` check.
 - Ward writes `mypy.ini` and `.coveragerc` only where the project has none. A config the
-  project keeps is never changed; its coverage threshold goes on the command instead.
+  project keeps is never changed; a `fail_under` it sets still applies to `coverage lcov`, and Ward
+  reads only the `minimum` of `ward.toml`, which the plan says.
 - Install runs the manager's sync or install. A failed install restores `pyproject.toml`, the lock
   file, and `requirements-ward.txt`.
 - pip needs a `.venv` first (`python -m venv .venv`). When `pyproject.toml` has a `[build-system]`,
@@ -534,8 +540,8 @@ projects are not supported yet, and init stops with an error that names the mana
 - Init refuses Python below 3.11, Poetry below 2.2, and pip below 25.1 (in a project with
   `pyproject.toml`) before it changes any file.
 - `strict` adds `mutmut` and selects the strict Ward rules. Strict mypy and branch coverage
-  with an 85% total apply to Ward's own configs, or go on the commands for a
-  project's own. `mutmut` runs in `ci` with a 60% minimum.
+  (`minimum = 85` lines and `minimum-branches = 75` of branches, measured separately) apply to Ward's
+  own configs, or go on the commands for a project's own. `mutmut` runs in `ci` with a 60% minimum.
 - A Django project (a declared `django` package or a `manage.py`) gets `django-stubs` with the mypy
   plugin, `pytest-django` with a Ward `pytest.ini` that names the settings module, and a `django-check`
   gate (`manage.py check --fail-level WARNING`) in both presets. Its import contracts cover every
@@ -555,8 +561,9 @@ Init recognizes an Android project from the Android Gradle Plugin (`com.android.
 It keeps the Gradle setup and adds the Android gates.
 
 - **Gates.** `android-lint` runs `lintDebug`, `android-unit-test` runs `testDebugUnitTest`, and
-  `android-coverage` runs `createDebugUnitTestCoverageReport` at an 80% minimum. The JVM `coverage`
-  gate is left out, since an Android root has no JaCoCo verification task.
+  `android-coverage` runs `createDebugUnitTestCoverageReport` at an 80% minimum (lines only: it takes
+  no `minimum-branches`). The JVM `coverage` gate is left out, since an Android root writes no
+  `jacocoTestReport` XML report.
 - **Modules.** Each Android module script gets the debug unit-test coverage block. An Android module
   applies no JVM plugin, so init writes no JVM quality block into it.
 - **Doctor.** `ward doctor` warns when neither `ANDROID_HOME` nor `ANDROID_SDK_ROOT` names an existing
@@ -612,22 +619,16 @@ Init installs a missing tool only with your explicit consent, one tool at a time
 
 | Tool | How |
 |---|---|
-| Trivy, Gitleaks | Homebrew |
 | Semgrep | Homebrew, or pipx as a fallback |
-| vacuum (`openapi-lint`) | Homebrew |
 | ZAP (`zap-baseline.py`) | Manual guidance only |
 | OpenSpec | `--install-tool openspec` |
 
 - In the wizard, each unavailable tool gets a Yes/No question. No is the default, and blank input or
   end of input declines.
 - In non-interactive runs, consent with `--install-tool <gate>`, for example
-  `--install-tool trivy`.
+  `--install-tool semgrep`.
 - `--yes` never installs tools and never bypasses unresolved prerequisites. `--dry-run` lists the
   install commands but runs none. `ward check` never installs gate tools.
-
-When `trivy` runs after a selected Maven or Gradle gate, init adds `--offline-scan`, so Trivy
-resolves dependencies from the local repository instead of Maven Central
-([why](/guides/ci-cd/#trivy-offline-scans)).
 
 ## Optional generated files
 
@@ -654,9 +655,9 @@ Without `--ci`, init does not generate a CI workflow. `--ci github` writes
 - installs the Ward release that ran init (`WARD_VERSION`);
 - for a Java project, sets up the JDK that runs your build (JDK 25 when init cannot read it), since
   the pinned tools were chosen for that JDK;
-- pins the tools the selected gates need (gitleaks, trivy, semgrep, OpenSpec);
-- fetches full history for gitleaks and caches the trivy database;
-- passes the `NVD_API_KEY` secret to `dependency-check`;
+- pins the tools the selected gates need (semgrep, OpenSpec);
+- fetches full history for `openapi-compat`;
+- restores and saves `.ward/cache/vulnerabilities/` around the check when `vulnerabilities` is selected;
 - uploads the SARIF report to code scanning for pull requests from the same repository.
 
 In a Node project the workflow sets up Node or Bun instead of Java and installs the dependencies
@@ -669,10 +670,10 @@ Ward's marker blocks initialization as a conflict. Gates that need a running app
 ### Agent rules
 
 `--agent-rules` writes a Ward-owned section into `AGENTS.md` with the limits the selected gates
-enforce: the Ward rule preset for Java and Kotlin, coverage and mutation minimums, and enforcer rules.
+enforce: the Ward rule preset for Java and Kotlin, coverage and mutation minimums, the build policy rules and the remaining Enforcer rules.
 
-- For TypeScript it names the `tsc` and test commands, the 70% line coverage minimum (85% of lines
-  and 75% of branches with `strict`), Stryker (with its 60% minimum under `strict`), and the Ward
+- For TypeScript it names the `tsc` and test commands, the 70% line coverage minimum of the `coverage` check
+  (85% of lines and 75% of branches with `strict`), Stryker (with its 60% minimum under `strict`), and the Ward
   rules in `ward-rules.toml`, and no Java tool.
 - For JavaScript it names the same without `tsc`.
 

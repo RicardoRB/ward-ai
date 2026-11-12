@@ -48,8 +48,8 @@ class MavenModuleConfiguratorTest {
 
     new PomToolConfigurator().apply(project, ModuleFixtures.gates(COVERAGE));
 
-    assertThat(read("api/pom.xml")).contains(JACOCO, "<rules>");
-    assertThat(read("domain/pom.xml")).contains(JACOCO, "<rules>");
+    assertThat(read("api/pom.xml")).contains(JACOCO, "prepare-agent").doesNotContain("<rules>");
+    assertThat(read("domain/pom.xml")).contains(JACOCO, "prepare-agent").doesNotContain("<rules>");
     assertThat(read(POM)).contains("<pluginManagement>", JACOCO, "<version>0.8.13</version>");
     assertThat(PomXml.hasProjectPlugin(read(POM), JACOCO)).isFalse();
   }

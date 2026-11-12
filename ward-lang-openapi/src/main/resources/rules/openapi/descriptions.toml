@@ -1,4 +1,4 @@
-# OpenAPI lint rules (descriptions), ported from the vacuum 0.39.3 rules of the same id. Each rule is a project check over the loaded document model.
+# OpenAPI lint rules (descriptions), ported from the Spectral 6.17.1 rules of the same id. Each rule is a project check over the loaded document model.
 
 [[rules]]
 id = "ward:openapi/operation-description"
@@ -12,17 +12,6 @@ check = "openapi-operation-description"
 '''
 
 [[rules]]
-id = "ward:openapi/component-description"
-language = "openapi"
-capability = "SYNTAX"
-severity = "warning"
-category = "docs"
-presets = ["standard", "strict"]
-body = '''
-check = "openapi-component-description"
-'''
-
-[[rules]]
 id = "ward:openapi/oas3-parameter-description"
 language = "openapi"
 capability = "SYNTAX"
@@ -33,13 +22,3 @@ body = '''
 check = "openapi-oas3-parameter-description"
 '''
 
-[[rules]]
-id = "ward:openapi/description-duplication"
-language = "openapi"
-capability = "SYNTAX"
-severity = "note"
-category = "docs"
-presets = ["standard", "strict"]
-body = '''
-check = "openapi-description-duplication"
-'''

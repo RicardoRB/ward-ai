@@ -1,5 +1,6 @@
 package dev.ward.application.gate.openapi;
 
+import dev.ward.application.gate.AnalysisPorts;
 import dev.ward.domain.config.GateConfiguration;
 import dev.ward.domain.config.OpenApiGateOptions;
 import dev.ward.domain.config.WardException;
@@ -7,7 +8,6 @@ import dev.ward.domain.gate.ProjectFiles;
 import dev.ward.domain.gate.QualityGate;
 import dev.ward.domain.gate.RevisionFiles;
 import dev.ward.domain.gate.SupportedQualityGates;
-import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.project.Project;
 import java.time.Clock;
 import javax.inject.Inject;
@@ -15,22 +15,24 @@ import javax.inject.Inject;
 /** Builds the {@code openapi-lint}, {@code openapi-diff}, and {@code openapi-compat} gates. */
 public final class OpenApiGates {
   private final Ports ports;
+  private final AnalysisPorts analysis;
   private final Clock clock;
 
   /** Creates the builder from the ports the OpenAPI gates use. */
   @Inject
   public OpenApiGates(
-      final CommandExecutor executor, final RevisionFiles revisions, final ProjectFiles files) {
-    this(executor, revisions, files, Clock.systemUTC());
+      final RevisionFiles revisions, final ProjectFiles files, final AnalysisPorts analysis) {
+    this(revisions, files, analysis, Clock.systemUTC());
   }
 
   /** Creates the builder with the clock that dates sunsets, for tests. */
   OpenApiGates(
-      final CommandExecutor executor,
       final RevisionFiles revisions,
       final ProjectFiles files,
+      final AnalysisPorts analysis,
       final Clock clock) {
-    this.ports = new Ports(executor, revisions, files);
+    this.ports = new Ports(revisions, files);
+    this.analysis = analysis;
     this.clock = clock;
   }
 
@@ -48,9 +50,11 @@ public final class OpenApiGates {
       throw new WardException("'checks." + id + ".spec' is required for an enabled OpenAPI gate");
     }
     if (SupportedQualityGates.OPENAPI_LINT.equals(type)) {
-      OpenApiCommandValidation.require(id, configuration.command());
-      return new OpenApiLintGate(
-          id, ports.executor(), ports.files(), configuration.command(), options.spec());
+      if (!configuration.command().isEmpty()) {
+        throw new WardException(noCommand(id, "runs Ward's own rules"));
+      }
+      return new OpenApiNativeLintGate(
+          id, options.spec(), configuration.rulesFile(), analysis, ports.files());
     }
     return comparison(id, configuration, options, project);
   }
@@ -61,10 +65,7 @@ public final class OpenApiGates {
       final OpenApiGateOptions options,
       final Project project) {
     if (!configuration.command().isEmpty()) {
-      throw new WardException(
-          "Quality gate '"
-              + id
-              + "' does not take a 'command': it compares the spec natively. Remove 'command'.");
+      throw new WardException(noCommand(id, "compares the spec natively"));
     }
     if (SupportedQualityGates.OPENAPI_DIFF.equals(configuration.type())) {
       return new OpenApiDiffGate(
@@ -87,5 +88,13 @@ public final class OpenApiGates {
   }
 
   /** The ports shared by the OpenAPI gates. */
-  record Ports(CommandExecutor executor, RevisionFiles revisions, ProjectFiles files) {}
+  record Ports(RevisionFiles revisions, ProjectFiles files) {}
+
+  private static String noCommand(final String id, final String reason) {
+    return "Quality gate '"
+        + id
+        + "' does not take a 'command': it "
+        + reason
+        + ". Remove 'command'.";
+  }
 }

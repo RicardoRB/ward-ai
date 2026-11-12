@@ -1,7 +1,6 @@
 package dev.ward.application.gate;
 
 import dev.ward.application.gate.jvm.MavenTestGate;
-import dev.ward.application.gate.openapi.OpenApiCommandValidation;
 import dev.ward.application.gate.openspec.OpenSpecQualityGate;
 import dev.ward.application.gate.swift.SwiftGates;
 import dev.ward.domain.config.GateConfiguration;
@@ -28,7 +27,21 @@ import javax.inject.Inject;
 public class QualityGateFactory {
   private static final String ZAP = "zap";
   private static final Set<String> IN_PROCESS_GATES =
-      Set.of(SupportedQualityGates.ANALYSIS, SupportedQualityGates.FORMAT);
+      Set.of(
+          SupportedQualityGates.ANALYSIS,
+          SupportedQualityGates.FORMAT,
+          SupportedQualityGates.LICENSE,
+          SupportedQualityGates.SECRETS,
+          SupportedQualityGates.CRAP,
+          SupportedQualityGates.COVERAGE,
+          SupportedQualityGates.VULNERABILITIES,
+          SupportedQualityGates.BUILD_POLICY);
+  private static final Set<String> REPORTING_GATES =
+      Set.of(
+          SupportedQualityGates.SECRETS,
+          SupportedQualityGates.CRAP,
+          SupportedQualityGates.COVERAGE,
+          SupportedQualityGates.VULNERABILITIES);
 
   public static final List<String> SUPPORTED_GATES = SupportedQualityGates.IDS;
   private static final Set<String> PLATFORM_GATES =
@@ -239,9 +252,23 @@ public class QualityGateFactory {
   }
 
   /**
-   * Builds the gates that run inside Ward: the {@code ward} analysis and the {@code ward-format}.
+   * Builds the gates that run inside Ward: the {@code ward} analysis, the {@code ward-format}, the
+   * {@code secrets} check, the {@code crap} score and the {@code coverage} minimum, which reads its
+   * report itself.
    */
   private QualityGate inProcessGate(final GateConfiguration check, final List<String> focus) {
+    if (SupportedQualityGates.BUILD_POLICY.equals(check.type())) {
+      if (extensions.buildPolicy() == null) {
+        throw new WardException("Build policy gate dependencies are unavailable.");
+      }
+      return extensions.buildPolicy().create(check.name(), check.rulesFile());
+    }
+    if (SupportedQualityGates.LICENSE.equals(check.type())) {
+      return extensions.licenseGate(check);
+    }
+    if (REPORTING_GATES.contains(check.type())) {
+      return ReportingGates.create(check, focus, executor, reports, extensions);
+    }
     if (!SupportedQualityGates.FORMAT.equals(check.type())) {
       return AnalysisGates.create(check, extensions.analysis(), focus);
     }
@@ -254,7 +281,6 @@ public class QualityGateFactory {
   private QualityGate openApiGate(
       final String name, final GateConfiguration check, final Project project) {
     if (extensions.openApi() == null) {
-      OpenApiCommandValidation.require(name, check.command());
       throw new WardException("OpenAPI gate dependencies are unavailable.");
     }
     return extensions.openApi().create(name, check, project);

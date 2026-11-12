@@ -3,7 +3,6 @@ package dev.ward.application.init;
 import dev.ward.domain.config.OpenApiGateOptions;
 import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.gate.SupportedQualityGates;
-import dev.ward.domain.gate.ToolReports;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
@@ -28,11 +27,12 @@ record BinaryToolGates(EnvironmentInspection environment, Project project) {
   private List<InitGateOption> openApiGates(final String spec) {
     return List.of(
         withSettings(
-            option(
+            new InitGateOption(
                 SupportedQualityGates.OPENAPI_LINT,
-                "Lints the committed OpenAPI spec with every built-in vacuum rule.",
-                List.of("vacuum", "lint", "-z", "-n", "warn"),
-                "Install vacuum."),
+                "Lints the committed OpenAPI spec with Ward's own rules; nothing to install.",
+                List.of(),
+                true,
+                "Ward's own rules; no executable is needed."),
             Map.of(SPEC, spec)),
         withSettings(
             nativeOption(
@@ -86,31 +86,19 @@ record BinaryToolGates(EnvironmentInspection environment, Project project) {
                             + " ruleset).")));
     gates.addAll(
         List.of(
-            option(
-                "gitleaks",
-                "Detects committed secrets with Gitleaks.",
-                List.of(
-                    "gitleaks",
-                    "detect",
-                    "--no-banner",
-                    "--redact",
-                    "--report-format",
-                    "sarif",
-                    "--report-path",
-                    ToolReports.gitleaksSarif(project)),
-                "Install Gitleaks."),
+            new InitGateOption(
+                SupportedQualityGates.SECRETS,
+                "Detects committed secrets with Ward's native secret rules (no install needed).",
+                List.of(),
+                true,
+                "Runs inside Ward; nothing to install."),
             option(
                 "zap",
                 "Runs an OWASP ZAP baseline DAST scan against a running application; replace <TARGET_URL> in -t with an authorized target before running.",
                 List.of("zap-baseline.py", "-t", SupportedQualityGates.ZAP_TARGET_PLACEHOLDER),
                 "Install ZAP and replace "
                     + SupportedQualityGates.ZAP_TARGET_PLACEHOLDER
-                    + " with a target you are authorized to scan before running."),
-            option(
-                "trivy",
-                "Scans dependencies, containers, and IaC with Trivy.",
-                List.of("trivy", "fs", "--exit-code", "1", "."),
-                "Install Trivy.")));
+                    + " with a target you are authorized to scan before running.")));
     return gates;
   }
 

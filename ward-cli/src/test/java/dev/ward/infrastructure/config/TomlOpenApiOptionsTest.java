@@ -24,13 +24,27 @@ class TomlOpenApiOptionsTest {
         read(
             reader,
             dir,
-            "version = 2\n[checks.openapi-lint]\nuses = \"openapi-lint\"\ncommand = \"vacuum lint -z -n warn\"\n"
+            "version = 2\n[checks.openapi-lint]\nuses = \"openapi-lint\"\n"
                 + "spec = \""
                 + SPEC
                 + "\"\n");
 
     assertThat(configuration.checks().get("openapi-lint").openApi())
         .isEqualTo(new OpenApiGateOptions(SPEC, "origin/main"));
+  }
+
+  @Test
+  void rejectsACommandOnTheLintGate() {
+    assertThatThrownBy(
+            () ->
+                read(
+                    reader,
+                    dir,
+                    "version = 2\n[checks.openapi-lint]\nuses = \"openapi-lint\"\n"
+                        + "command = \"anything\"\nspec = \"openapi.yml\"\n"))
+        .isInstanceOf(WardException.class)
+        .hasMessageContaining("checks.openapi-lint.command")
+        .hasMessageContaining("not allowed");
   }
 
   @Test
@@ -72,7 +86,7 @@ class TomlOpenApiOptionsTest {
                 read(
                     reader,
                     dir,
-                    "version = 2\n[checks.openapi-lint]\nuses = \"openapi-lint\"\ncommand = \"vacuum\"\nspec = 5\n"))
+                    "version = 2\n[checks.openapi-lint]\nuses = \"openapi-lint\"\nspec = 5\n"))
         .isInstanceOf(WardException.class)
         .hasMessageContaining("checks.openapi-lint.spec")
         .hasMessageContaining("non-blank string");

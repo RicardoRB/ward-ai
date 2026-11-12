@@ -1,0 +1,26 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+  contact:
+    name: me
+servers:
+  - url: https://api.example.org
+paths:
+  /pets:
+    get:
+      operationId: list
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+components:
+  schemas:
+    Pet:
+      type: object
+      required: [name]
+      properties:
+        name: {type: string}

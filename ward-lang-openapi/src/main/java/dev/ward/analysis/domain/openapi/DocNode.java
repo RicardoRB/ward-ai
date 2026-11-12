@@ -79,6 +79,27 @@ public record DocNode(
     return keySpan.orElse(span);
   }
 
+  /**
+   * Returns where Spectral reports this value. A YAML object or array that is the value of a key
+   * starts right after the colon of its key; every other value starts where it is written.
+   *
+   * <p>shortcut: the colon is taken to follow the key directly and a file is JSON when its name
+   * ends in {@code .json}; upgrade when a key is written with a space before its colon.
+   */
+  public Span reportSpan() {
+    if (keySpan.isEmpty() || isScalar() || file.endsWith(".json")) {
+      return span;
+    }
+    final Span key = keySpan.get();
+    return new Span(
+        key.endLine(),
+        key.endColumn() + 1,
+        span.endLine(),
+        span.endColumn(),
+        key.endOffset() + 1,
+        span.endOffset());
+  }
+
   /** Tells whether the node is a scalar. */
   public boolean isScalar() {
     return kind != Kind.OBJECT && kind != Kind.ARRAY;
@@ -134,6 +155,11 @@ public record DocNode(
       Objects.requireNonNull(key, "key");
       Objects.requireNonNull(keySpan, "keySpan");
       Objects.requireNonNull(value, "value");
+    }
+
+    /** The same entry with another value node. */
+    public Entry withValue(final DocNode other) {
+      return new Entry(key, keySpan, other, numericKey);
     }
 
     /** An entry whose key is text, as every JSON key and every quoted YAML key is. */

@@ -31,7 +31,6 @@ final class OpenApiGateFixtures {
   static final String PARENT_SHA = "c".repeat(40);
   static final Project PROJECT =
       new Project(Path.of("/project"), Language.JAVA, BuildTool.MAVEN, Framework.SPRING_BOOT);
-  static final List<String> LINT_COMMAND = List.of("vacuum", "lint", "-z", "-n", "warn");
   static final List<String> NO_COMMAND = List.of();
   static final Clock CLOCK = Clock.fixed(Instant.parse("2026-11-12T00:00:00Z"), ZoneOffset.UTC);
   static final String DOCUMENT =
@@ -85,6 +84,11 @@ final class OpenApiGateFixtures {
                 List.of(),
                 null,
                 null,
+                null,
+                null,
+                null,
+                null,
+                null,
                 null),
             PROJECT);
   }
@@ -95,7 +99,6 @@ final class OpenApiGateFixtures {
 
   OpenApiGates gates(final CommandExecutor executor) {
     return new OpenApiGates(
-        executor,
         new RevisionFiles() {
           @Override
           public Optional<String> resolve(final Path root, final String revision) {
@@ -137,6 +140,7 @@ final class OpenApiGateFixtures {
             return Optional.ofNullable(workingTree.get(path));
           }
         },
+        null,
         CLOCK);
   }
 }

@@ -23,29 +23,31 @@ public final class NodeAgentRules {
   private NodeAgentRules() {}
 
   /**
-   * Returns one line per selected Node tool gate, naming its command; the minimums are the ones the
-   * test runner and Stryker configs or commands enforce.
+   * Returns one line per selected Node tool gate, naming its command; the coverage minimums are the
+   * ones of the {@code coverage} check in {@code ward.toml}.
    */
   public static List<String> lines(
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
       final Set<String> owned) {
-    final String coverage = nodeCoverage(preset, true);
+    final boolean bun = gates.stream().anyMatch(gate -> NodeTools.BUN_TEST.equals(gate.id()));
+    final String coverage = nodeCoverage(preset, !bun);
     final String tests = ". New code needs tests that assert behavior.";
     final Map<String, String> rows =
         Map.of(
             "tsc",
             "- TypeScript compiler: `{command}` must report no errors.",
             NodeTools.VITEST,
-            "- Tests (Vitest): `{command}`, " + coverage + tests,
+            "- Tests (Vitest): `{command}`." + tests,
             NodeTools.JEST,
-            "- Tests (Jest): `{command}`, " + coverage + tests,
+            "- Tests (Jest): `{command}`." + tests,
             NodeTools.BUN_TEST,
-            "- Tests (Bun): `{command}`, "
-                + nodeCoverage(preset, false)
-                + " set in `bunfig.toml`"
-                + tests,
+            "- Tests (Bun): `{command}`." + tests,
+            "coverage",
+            "- Coverage: the `coverage` check reads `coverage/lcov.info` and requires "
+                + coverage
+                + ", set in `ward.toml`.",
             "stryker",
             "- Mutation testing (Stryker): `{command}` in `ci`"
                 + strykerMinimum(preset, owned)

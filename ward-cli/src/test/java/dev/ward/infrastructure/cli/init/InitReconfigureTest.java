@@ -11,7 +11,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** Overwriting an existing configuration starts from its recorded preset and gates. */
 class InitReconfigureTest {
-  private static final String MUTATION_ROW = "6";
+  private static final String MUTATION_ROW = "5";
 
   @TempDir Path root;
 
@@ -34,7 +34,7 @@ class InitReconfigureTest {
   @Test
   void customConfigurationKeepsItsGates() throws IOException {
     final InitCommandFixture create = new InitCommandFixture(root);
-    assertThat(create.run("", "--integration", "none", "--gate", "tests,gitleaks"))
+    assertThat(create.run("", "--integration", "none", "--gate", "tests,secrets"))
         .isEqualTo(ExitCodes.OK);
     final InitCommandFixture init = new InitCommandFixture(root);
 
@@ -43,7 +43,7 @@ class InitReconfigureTest {
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(init.output()).contains("Choose a preset [1-3, Enter=1]");
     assertThat(init.configuration())
-        .contains("[checks.tests]", "[checks.gitleaks]")
+        .contains("[checks.tests]", "[checks.secrets]")
         .doesNotContain("preset =");
   }
 

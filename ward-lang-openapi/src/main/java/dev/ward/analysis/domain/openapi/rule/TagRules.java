@@ -2,7 +2,9 @@ package dev.ward.analysis.domain.openapi.rule;
 
 import dev.ward.analysis.domain.openapi.DocNode;
 import dev.ward.analysis.domain.openapi.OpenApiDocument;
+import dev.ward.analysis.domain.openapi.OpenApiDocument.View;
 import dev.ward.analysis.domain.openapi.OpenApiParts.Operation;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,47 +18,87 @@ final class TagRules {
   private static final String TAGS = "tags";
   private static final String NAME = "name";
   private static final int SINGLE = 1;
-  private static final String TAGS_MESSAGE =
-      "Top level spec `tags` must not be empty, and must be an array: ";
 
   private TagRules() {}
 
-  /** {@code openapi-tags}: the top-level {@code tags} is an array of distinct objects. */
+  /** {@code openapi-tags}: the top-level {@code tags} is a non-empty array. */
   static List<OpenApiFinding> openapiTags(final OpenApiDocument document) {
-    final DocNode root = document.root();
-    final Optional<DocNode> tags = root.get(TAGS);
+    return nonEmptyArray(
+        document, document.root(), "OpenAPI object must have non-empty \"tags\" array.");
+  }
+
+  /** {@code operation-tags}: every operation has a non-empty {@code tags} array. */
+  static List<OpenApiFinding> operationTags(final OpenApiDocument document) {
+    final List<OpenApiFinding> findings = new ArrayList<>();
+    for (final Operation operation : document.parts().operations()) {
+      findings.addAll(
+          nonEmptyArray(
+              document, operation.node(), "Operation must have non-empty \"tags\" array."));
+    }
+    return findings;
+  }
+
+  /** Spectral's schema {@code {type: array, minItems: 1}} on the {@code tags} of {@code owner}. */
+  private static List<OpenApiFinding> nonEmptyArray(
+      final OpenApiDocument document, final DocNode owner, final String message) {
+    final Optional<DocNode> tags = document.get(owner, TAGS, View.RESOLVED);
     if (tags.isEmpty()) {
-      return List.of(
-          Findings.in(
-              root,
-              root.entries().getFirst().keySpan(),
-              TAGS_MESSAGE + "`tags`, is missing and is required"));
+      return List.of(Findings.atValue(document.resolve(owner), message));
     }
-    final DocNode node = document.resolve(tags.get());
-    if (node.kind() != DocNode.Kind.ARRAY) {
-      return List.of(
-          Findings.atValue(
-              node, TAGS_MESSAGE + "got " + DocEquality.typeName(node) + ", want array"));
+    if (tags.get().kind() != DocNode.Kind.ARRAY || tags.get().items().isEmpty()) {
+      return List.of(Findings.atValue(tags.get(), message));
     }
-    return duplicateTags(node);
+    return List.of();
   }
 
   /** {@code openapi-tags-alphabetical}: the global tags are sorted by name. */
   static List<OpenApiFinding> alphabetical(final OpenApiDocument document) {
-    final List<OpenApiFinding> findings = new ArrayList<>();
-    final Optional<DocNode> tags = document.root().get(TAGS).map(document::resolve);
-    final List<DocNode> names = tags.map(TagRules::tagNames).orElse(List.of());
+    final Optional<DocNode> tags = document.get(document.root(), TAGS, View.RESOLVED);
+    if (tags.isEmpty()
+        || tags.get().kind() != DocNode.Kind.ARRAY
+        || tags.get().items().size() < 2) {
+      return List.of();
+    }
+    final List<String> names = new ArrayList<>();
+    for (final DocNode item : tags.get().items()) {
+      final DocNode tag = document.resolve(item);
+      if (tag.kind() != DocNode.Kind.OBJECT) {
+        return List.of(
+            Findings.atValue(tags.get(), "OpenAPI object must have alphabetical \"tags\"."));
+      }
+      names.add(tag.get(NAME).map(DocNode::text).orElse(""));
+    }
+    final Collator collator = Collator.getInstance(Locale.ENGLISH);
     for (int index = 0; index + 1 < names.size(); index++) {
-      final int next = nextScalar(names, index);
-      if (next < names.size() && names.get(index).text().compareTo(names.get(next).text()) > 0) {
+      if (collator.compare(names.get(index), names.get(index + 1)) > 0) {
+        return List.of(
+            Findings.atValue(tags.get(), "OpenAPI object must have alphabetical \"tags\"."));
+      }
+    }
+    return List.of();
+  }
+
+  /** {@code openapi-tags-uniqueness}: no two global tags have the same name. */
+  static List<OpenApiFinding> uniqueness(final OpenApiDocument document) {
+    final Optional<DocNode> tags = document.get(document.root(), TAGS, View.RESOLVED);
+    final List<OpenApiFinding> findings = new ArrayList<>();
+    if (tags.isEmpty() || tags.get().kind() != DocNode.Kind.ARRAY) {
+      return findings;
+    }
+    final List<DocNode> names = new ArrayList<>();
+    for (final DocNode item : tags.get().items()) {
+      final Optional<DocNode> name = document.get(item, NAME, View.RESOLVED);
+      if (name.isEmpty() || name.get().kind() != DocNode.Kind.STRING) {
+        return List.of();
+      }
+      names.add(name.get());
+    }
+    final Set<String> seen = new HashSet<>();
+    for (final DocNode name : names) {
+      if (!seen.add(name.text())) {
         findings.add(
             Findings.atValue(
-                tags.orElseThrow(),
-                "Tags must be in alphabetical order: `"
-                    + names.get(next).text()
-                    + "` must be placed before `"
-                    + names.get(index).text()
-                    + "` (alphabetical)"));
+                name, "\"tags\" object contains duplicate tag name \"" + name.text() + "\"."));
       }
     }
     return findings;
@@ -66,105 +108,64 @@ final class TagRules {
   static List<OpenApiFinding> description(final OpenApiDocument document) {
     final List<OpenApiFinding> findings = new ArrayList<>();
     for (final DocNode tag : document.parts().tags()) {
-      final DocNode resolved = document.resolve(tag);
-      if (Findings.text(resolved, "description").isEmpty()) {
-        findings.add(
-            Findings.atValue(
-                resolved, "tag `" + Findings.text(resolved, NAME) + "` must have a description"));
-      }
+      findings.addAll(
+          Fields.requireTruthy(
+              document, tag, "Tag object must have \"description\".", "description"));
     }
     return findings;
   }
 
-  /** {@code operation-tags}: every operation has at least one tag. */
-  static List<OpenApiFinding> operationTags(final OpenApiDocument document) {
-    final List<OpenApiFinding> findings = new ArrayList<>();
-    for (final Operation operation : document.parts().operations()) {
-      if (operation.node().get(TAGS).map(DocNode::items).orElse(List.of()).isEmpty()) {
-        findings.add(
-            Findings.at(
-                operation.node(),
-                "tags for `"
-                    + operation.method().toUpperCase(Locale.ROOT)
-                    + "` operation are missing"));
-      }
-    }
-    return findings;
-  }
-
-  /** {@code operation-tag-defined}: the tags of an operation are defined as global tags. */
-  static List<OpenApiFinding> tagDefined(final OpenApiDocument document) {
-    final Set<String> defined = new HashSet<>();
-    for (final DocNode tag : document.parts().tags()) {
-      defined.add(Findings.text(document.resolve(tag), NAME));
-    }
-    final List<OpenApiFinding> findings = new ArrayList<>();
-    for (final Operation operation : document.parts().operations()) {
-      for (final DocNode tag : operation.node().get(TAGS).map(DocNode::items).orElse(List.of())) {
-        if (tag.kind() == DocNode.Kind.STRING && !defined.contains(tag.text())) {
-          findings.add(
-              Findings.atValue(
-                  tag,
-                  "tag `"
-                      + tag.text()
-                      + "` for `"
-                      + operation.method().toUpperCase(Locale.ROOT)
-                      + "` operation is not defined as a global tag"));
-        }
-      }
-    }
-    return findings;
-  }
-
-  /** {@code operation-singular-tag}: an operation has at most one tag. */
+  /** {@code operation-singular-tag}: no operation has more than one tag. */
   static List<OpenApiFinding> singularTag(final OpenApiDocument document) {
     final List<OpenApiFinding> findings = new ArrayList<>();
     for (final Operation operation : document.parts().operations()) {
-      final List<DocNode> tags = operation.node().get(TAGS).map(DocNode::items).orElse(List.of());
-      if (tags.size() > SINGLE) {
-        findings.add(
-            Findings.at(
-                operation.node().get(TAGS).orElseThrow(),
-                "the `"
-                    + operation.method()
-                    + "` operation at path `"
-                    + operation.path()
-                    + "` contains more than one tag ("
-                    + tags.size()
-                    + " is too many)'"));
+      document
+          .get(operation.node(), TAGS, View.RESOLVED)
+          .filter(tags -> length(tags) > SINGLE)
+          .ifPresent(
+              tags ->
+                  findings.add(
+                      Findings.atValue(tags, "Operation must not have more than a single tag.")));
+    }
+    return findings;
+  }
+
+  /** The {@code length} of Spectral: of a string, an array or an object, or a number itself. */
+  private static double length(final DocNode value) {
+    return switch (value.kind()) {
+      case STRING -> value.text().length();
+      case ARRAY -> value.items().size();
+      case OBJECT -> value.entries().size();
+      case NUMBER -> JavaScript.number(value.text());
+      default -> 0;
+    };
+  }
+
+  /** {@code operation-tag-defined}: every operation tag is one of the global tags. */
+  static List<OpenApiFinding> tagDefined(final OpenApiDocument document) {
+    final Set<String> defined = new HashSet<>();
+    for (final DocNode item : document.parts().tags()) {
+      document
+          .get(item, NAME, View.RESOLVED)
+          .filter(name -> name.kind() == DocNode.Kind.STRING)
+          .ifPresent(name -> defined.add(name.text()));
+    }
+    final List<OpenApiFinding> findings = new ArrayList<>();
+    for (final Operation operation : document.parts().operations()) {
+      for (final DocNode tag : tagsOf(document, operation)) {
+        if (tag.kind() != DocNode.Kind.STRING || !defined.contains(tag.text())) {
+          findings.add(Findings.atValue(tag, "Operation tags must be defined in global tags."));
+        }
       }
     }
     return findings;
   }
 
-  private static List<OpenApiFinding> duplicateTags(final DocNode tags) {
-    final List<DocNode> items = tags.items();
-    for (int first = 0; first < items.size(); first++) {
-      for (int second = first + 1; second < items.size(); second++) {
-        if (DocEquality.same(items.get(first), items.get(second))) {
-          return List.of(
-              Findings.atValue(
-                  tags, TAGS_MESSAGE + "items at " + first + " and " + second + " are equal"));
-        }
-      }
-    }
-    return List.of();
-  }
-
-  private static List<DocNode> tagNames(final DocNode tags) {
-    final List<DocNode> names = new ArrayList<>();
-    for (final DocNode tag : tags.items()) {
-      names.add(tag.get(NAME).filter(DocNode::isScalar).orElse(null));
-    }
-    return names;
-  }
-
-  /** The index of the next tag after {@code index} that has a scalar name, or the size. */
-  private static int nextScalar(final List<DocNode> names, final int index) {
-    int next = index + 1;
-    while (next < names.size() && (names.get(next) == null || names.get(index) == null)) {
-      next++;
-    }
-    return names.get(index) == null ? names.size() : next;
+  private static List<DocNode> tagsOf(final OpenApiDocument document, final Operation operation) {
+    return document
+        .get(operation.node(), TAGS, View.RESOLVED)
+        .filter(tags -> tags.kind() == DocNode.Kind.ARRAY)
+        .map(DocNode::items)
+        .orElse(List.of());
   }
 }

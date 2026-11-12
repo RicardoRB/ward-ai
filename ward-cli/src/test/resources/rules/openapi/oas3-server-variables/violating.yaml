@@ -1,0 +1,16 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+servers:
+  - url: https://{region}.example.org/{version}
+    variables:
+      region:
+        default: eu
+        enum: [us]
+      stale:
+        default: x
+  - url: https://{host}.example.org
+  - 7
+  - url: 7
+paths: {}

@@ -38,7 +38,7 @@ class InitSetupCatalogTest {
 
   /** Python gates are offered by init only for Python projects (#136). */
   private static final Set<String> PYTHON_GATES =
-      Set.of("mypy", "pytest", "mutmut", "pip-audit", "django-check");
+      Set.of("mypy", "pytest", "mutmut", "django-check");
 
   private static final Set<String> ANDROID_GATES =
       Set.of(
@@ -103,7 +103,9 @@ class InitSetupCatalogTest {
         .containsEntry("LINE", STRICT_LINE_MINIMUM)
         .containsEntry("BRANCH", STRICT_BRANCH_MINIMUM);
     assertThat(QualityPreset.STRICT.rules().enforcerRules())
-        .contains("requireUpperBoundDeps", "requirePluginVersions", "banDynamicVersions");
+        .containsExactly("dependencyConvergence", "requireUpperBoundDeps");
+    assertThat(QualityPreset.STANDARD.rules().enforcerRules())
+        .containsExactly("dependencyConvergence");
     assertThat(QualityPreset.STRICT.rules().mutationThreshold())
         .isEqualTo(STRICT_MUTATION_THRESHOLD);
     assertThat(QualityPreset.STRICT.rules().architectureCycles()).isTrue();
@@ -221,11 +223,8 @@ class InitSetupCatalogTest {
                 .filter(id -> !ANDROID_GATES.contains(id))
                 .toList());
     assertThat(catalog.gate(project, "coverage").command())
-        .containsExactly("gradle", "jacocoTestCoverageVerification");
-    assertThat(catalog.gate(project, "dependency-check").command())
-        .containsExactly("gradle", "dependencyCheckAnalyze");
-    assertThat(catalog.gate(project, "gitleaks").command())
-        .endsWith("--report-format", "sarif", "--report-path", "build/gitleaks.sarif");
+        .containsExactly("gradle", "jacocoTestReport");
+    assertThat(catalog.gate(project, "secrets").command()).isEmpty();
   }
 
   @Test
@@ -236,16 +235,8 @@ class InitSetupCatalogTest {
     final InitSetupCatalog catalog = new InitSetupCatalog(new FakeEnvironmentInspection());
 
     assertThat(catalog.gate(project, "zap").command()).contains("-t", "<TARGET_URL>");
-    assertThat(catalog.gate(project, "gitleaks").command())
-        .containsExactly(
-            "gitleaks",
-            "detect",
-            "--no-banner",
-            "--redact",
-            "--report-format",
-            "sarif",
-            "--report-path",
-            "target/gitleaks.sarif");
+    assertThat(catalog.gate(project, "secrets").command()).isEmpty();
+    assertThat(catalog.gate(project, "secrets").available()).isTrue();
     assertThat(catalog.gate(project, "enforcer").command()).endsWith("enforcer:enforce");
     assertThat(catalog.gates(project, null))
         .extracting(InitGateOption::id)

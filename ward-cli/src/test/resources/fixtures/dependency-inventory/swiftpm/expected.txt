@@ -1,0 +1,1 @@
+[] SWIFT_URL github.com/apple/swift-log 1.17.0 DIRECT RUNTIME from=Package.resolved in=Package.swift

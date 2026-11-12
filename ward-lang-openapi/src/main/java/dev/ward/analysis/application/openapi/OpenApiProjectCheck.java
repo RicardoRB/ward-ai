@@ -58,7 +58,7 @@ final class OpenApiProjectCheck implements RuleCheck, ProjectCheck {
   }
 
   private List<ProjectMatch> run(final OpenApiDocument document) {
-    return rule.check(document).stream().map(OpenApiProjectCheck::match).toList();
+    return rule.check(document).stream().distinct().map(OpenApiProjectCheck::match).toList();
   }
 
   private static ProjectMatch match(final OpenApiFinding finding) {

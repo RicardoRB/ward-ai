@@ -52,7 +52,7 @@ public final class CommandQualityGate implements QualityGate {
     return GateResult.from(name, command, executor.execute(command, project.root()));
   }
 
-  /** Lets tools such as gitleaks write reports into build directories that do not exist yet. */
+  /** Lets tools such as trivy write reports into build directories that do not exist yet. */
   private void prepareReportDirectory(final Project project) {
     final int option = command.indexOf(REPORT_PATH_OPTION);
     if (option < 0 || option + 1 >= command.size()) {
