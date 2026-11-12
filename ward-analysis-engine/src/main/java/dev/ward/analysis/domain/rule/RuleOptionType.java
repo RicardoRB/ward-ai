@@ -7,6 +7,8 @@ import java.util.Optional;
 public enum RuleOptionType {
   /** A whole number, optionally bounded by {@code min} and {@code max}. */
   INTEGER,
+  /** A number, whole or fractional, at least {@code min}. */
+  NUMBER,
   /** {@code true} or {@code false}. */
   BOOLEAN,
   /** Any text. */

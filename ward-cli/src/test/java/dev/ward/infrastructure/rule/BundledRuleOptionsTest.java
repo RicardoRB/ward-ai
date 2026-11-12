@@ -66,6 +66,7 @@ class BundledRuleOptionsTest {
   private static Object sample(final RuleOption option) {
     return switch (option.type()) {
       case INTEGER -> Math.max(option.min(), 0) + NON_DEFAULT;
+      case NUMBER -> Math.max(option.min(), 0) + NON_DEFAULT + 0.5;
       case REGEX -> PATTERN;
       case BOOLEAN -> Boolean.FALSE;
       case STRING -> STRING_SAMPLES.getOrDefault(option.name(), "Sample");

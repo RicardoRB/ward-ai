@@ -49,7 +49,7 @@ public record RuleDefinition(
   /** The id prefix of a rule with capability {@link RuleCapability#TEXT}. */
   public static final String TEXT_PREFIX = "secrets";
 
-  private static final Pattern ID = Pattern.compile("ward:([a-z]+)/([a-z][a-z0-9-]*)");
+  private static final Pattern ID = Pattern.compile("ward:([a-z]+)/([a-z0-9][a-z0-9-]*)");
 
   /** Creates a rule with no category, preset or option. */
   public RuleDefinition(
