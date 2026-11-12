@@ -71,7 +71,7 @@ message = "this Flask setting is unsafe in production; read the secret from the 
 '''
 
 [[rules]]
-id = "ward:python/ssrf"
+id = "ward:python/server-side-request-forgery"
 language = "python"
 capability = "SYNTAX"
 severity = "error"

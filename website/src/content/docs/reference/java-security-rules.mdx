@@ -16,9 +16,9 @@ one method. They use the taint analysis, so each finding has a path from the sou
 The rules are written as data in `taint/java/*.toml`, the same format as
 [writing taint specs](/reference/taint-specs/) describes. They need no `ward.toml` change.
 
-Thirteen more injection rules, `ward:java/xss`, `open-redirect`, `ssrf`, `ldap-injection`,
-`xpath-injection`, `log-forging`, `response-splitting`, `untrusted-deserialization`,
-`code-injection`, `expression-injection`, `jndi-injection`, `unsafe-reflection` and
+Thirteen more injection rules, `ward:java/cross-site-scripting`, `untrusted-redirect`, `server-side-request-forgery`,
+`ldap-injection`, `xpath-injection`, `log-forging`, `header-splitting`, `untrusted-deserialization`,
+`script-injection`, `expression-injection`, `jndi-injection`, `unsafe-reflection` and
 `regex-injection`, use the same sources with one specification file each,
 `taint/java/ward-<weakness>.toml`. They and the seventeen Java configuration rules are listed in
 [security rules](/reference/security-rules/), with their CWE ids.

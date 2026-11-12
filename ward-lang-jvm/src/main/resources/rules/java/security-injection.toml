@@ -2,7 +2,7 @@
 # Each follows the taint specifications taint/java/ward-<weakness>.toml and taint/java/sources.toml.
 
 [[rules]]
-id = "ward:java/xss"
+id = "ward:java/cross-site-scripting"
 language = "java"
 capability = "DATAFLOW"
 severity = "error"
@@ -10,12 +10,12 @@ category = "security"
 presets = ["standard", "strict"]
 body = '''
 check = "taint"
-specs = ["taint/java/sources.toml", "taint/java/ward-xss.toml"]
+specs = ["taint/java/sources.toml", "taint/java/ward-cross-site-scripting.toml"]
 message = "untrusted data from {source} is written into the HTML response by {sink}; escape it for HTML first"
 '''
 
 [[rules]]
-id = "ward:java/open-redirect"
+id = "ward:java/untrusted-redirect"
 language = "java"
 capability = "DATAFLOW"
 severity = "error"
@@ -23,12 +23,12 @@ category = "security"
 presets = ["standard", "strict"]
 body = '''
 check = "taint"
-specs = ["taint/java/sources.toml", "taint/java/ward-open-redirect.toml"]
+specs = ["taint/java/sources.toml", "taint/java/ward-untrusted-redirect.toml"]
 message = "untrusted data from {source} decides where the response redirects, through {sink}; allow only known targets"
 '''
 
 [[rules]]
-id = "ward:java/ssrf"
+id = "ward:java/server-side-request-forgery"
 language = "java"
 capability = "DATAFLOW"
 severity = "error"
@@ -36,7 +36,7 @@ category = "security"
 presets = ["standard", "strict"]
 body = '''
 check = "taint"
-specs = ["taint/java/sources.toml", "taint/java/ward-ssrf.toml"]
+specs = ["taint/java/sources.toml", "taint/java/ward-server-side-request-forgery.toml"]
 message = "untrusted data from {source} chooses the address that {sink} requests; check the host against an allow-list"
 '''
 
@@ -80,7 +80,7 @@ message = "untrusted data from {source} is written to the log by {sink}; line br
 '''
 
 [[rules]]
-id = "ward:java/response-splitting"
+id = "ward:java/header-splitting"
 language = "java"
 capability = "DATAFLOW"
 severity = "error"
@@ -88,7 +88,7 @@ category = "security"
 presets = ["standard", "strict"]
 body = '''
 check = "taint"
-specs = ["taint/java/sources.toml", "taint/java/ward-response-splitting.toml"]
+specs = ["taint/java/sources.toml", "taint/java/ward-header-splitting.toml"]
 message = "untrusted data from {source} is written into a response header by {sink}; a line break in it would split the response"
 '''
 
@@ -106,7 +106,7 @@ message = "untrusted data from {source} is deserialized by {sink}, which can run
 '''
 
 [[rules]]
-id = "ward:java/code-injection"
+id = "ward:java/script-injection"
 language = "java"
 capability = "DATAFLOW"
 severity = "error"
@@ -114,7 +114,7 @@ category = "security"
 presets = ["standard", "strict"]
 body = '''
 check = "taint"
-specs = ["taint/java/sources.toml", "taint/java/ward-code-injection.toml"]
+specs = ["taint/java/sources.toml", "taint/java/ward-script-injection.toml"]
 message = "untrusted data from {source} is run as code by {sink}; never build a script from request data"
 '''
 

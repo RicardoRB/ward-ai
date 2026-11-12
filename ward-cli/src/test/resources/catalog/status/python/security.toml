@@ -2,8 +2,8 @@
 
 django-insecure-settings = "implemented"
 flask-insecure-config = "implemented"
+server-side-request-forgery = "implemented"
 sql-string-formatting = "implemented"
-ssrf = "implemented"
 template-autoescape-disabled = "implemented"
 weak-password-hash = "implemented"
 xml-external-entities = "implemented"

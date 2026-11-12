@@ -54,7 +54,7 @@ message = "untrusted data from {source} is used as a query filter by {sink}; an 
 '''
 
 [[rules]]
-id = "ward:javascript/code-injection"
+id = "ward:javascript/script-injection"
 language = "JAVASCRIPT"
 capability = "DATAFLOW"
 severity = "ERROR"
@@ -62,12 +62,12 @@ category = "security"
 presets = ["standard", "strict"]
 body = '''
 check = "taint"
-specs = ["taint/node/sources.toml", "taint/node/ward-code-injection.toml"]
+specs = ["taint/node/sources.toml", "taint/node/ward-script-injection.toml"]
 message = "untrusted data from {source} is run as code by {sink}; never build a script from request data"
 '''
 
 [[rules]]
-id = "ward:typescript/code-injection"
+id = "ward:typescript/script-injection"
 language = "TYPESCRIPT"
 capability = "DATAFLOW"
 severity = "ERROR"
@@ -75,12 +75,12 @@ category = "security"
 presets = ["standard", "strict"]
 body = '''
 check = "taint"
-specs = ["taint/node/sources.toml", "taint/node/ward-code-injection.toml"]
+specs = ["taint/node/sources.toml", "taint/node/ward-script-injection.toml"]
 message = "untrusted data from {source} is run as code by {sink}; never build a script from request data"
 '''
 
 [[rules]]
-id = "ward:javascript/open-redirect"
+id = "ward:javascript/untrusted-redirect"
 language = "JAVASCRIPT"
 capability = "DATAFLOW"
 severity = "ERROR"
@@ -88,12 +88,12 @@ category = "security"
 presets = ["standard", "strict"]
 body = '''
 check = "taint"
-specs = ["taint/node/sources.toml", "taint/node/ward-open-redirect.toml"]
+specs = ["taint/node/sources.toml", "taint/node/ward-untrusted-redirect.toml"]
 message = "untrusted data from {source} decides where the user is sent, through {sink}; allow only known targets"
 '''
 
 [[rules]]
-id = "ward:typescript/open-redirect"
+id = "ward:typescript/untrusted-redirect"
 language = "TYPESCRIPT"
 capability = "DATAFLOW"
 severity = "ERROR"
@@ -101,12 +101,12 @@ category = "security"
 presets = ["standard", "strict"]
 body = '''
 check = "taint"
-specs = ["taint/node/sources.toml", "taint/node/ward-open-redirect.toml"]
+specs = ["taint/node/sources.toml", "taint/node/ward-untrusted-redirect.toml"]
 message = "untrusted data from {source} decides where the user is sent, through {sink}; allow only known targets"
 '''
 
 [[rules]]
-id = "ward:javascript/ssrf"
+id = "ward:javascript/server-side-request-forgery"
 language = "JAVASCRIPT"
 capability = "DATAFLOW"
 severity = "ERROR"
@@ -114,12 +114,12 @@ category = "security"
 presets = ["standard", "strict"]
 body = '''
 check = "taint"
-specs = ["taint/node/sources.toml", "taint/node/ward-ssrf.toml"]
+specs = ["taint/node/sources.toml", "taint/node/ward-server-side-request-forgery.toml"]
 message = "untrusted data from {source} chooses the address that {sink} requests; check the host against an allow-list"
 '''
 
 [[rules]]
-id = "ward:typescript/ssrf"
+id = "ward:typescript/server-side-request-forgery"
 language = "TYPESCRIPT"
 capability = "DATAFLOW"
 severity = "ERROR"
@@ -127,7 +127,7 @@ category = "security"
 presets = ["standard", "strict"]
 body = '''
 check = "taint"
-specs = ["taint/node/sources.toml", "taint/node/ward-ssrf.toml"]
+specs = ["taint/node/sources.toml", "taint/node/ward-server-side-request-forgery.toml"]
 message = "untrusted data from {source} chooses the address that {sink} requests; check the host against an allow-list"
 '''
 

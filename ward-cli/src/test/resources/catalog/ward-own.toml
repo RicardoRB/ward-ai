@@ -40,6 +40,7 @@ sources = ["https://docs.python.org/3/library/tarfile.html#extraction-filters", 
 
 [[rule]]
 name = "xss"
+ids = { java = "ward:java/cross-site-scripting" }
 spotbugs = ["XSS_REQUEST_PARAMETER_TO_SERVLET_WRITER", "XSS_REQUEST_PARAMETER_TO_JSP_WRITER", "XSS_REQUEST_PARAMETER_TO_SEND_ERROR"]
 cwe = ["CWE-79"]
 sources = ["https://cwe.mitre.org/data/definitions/79.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/PrintWriter.html", "https://jakarta.ee/specifications/servlet/6.0/apidocs/jakarta.servlet/jakarta/servlet/servletoutputstream"]

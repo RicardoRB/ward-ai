@@ -6,11 +6,6 @@ cwe = ["CWE-319"]
 sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/URL.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/URI.html", "https://cwe.mitre.org/data/definitions/319.html", "https://developer.mozilla.org/en-US/docs/Web/API/Window/fetch", "https://nodejs.org/docs/latest-v22.x/api/http.html"]
 
 [[rule]]
-name = "code-injection"
-cwe = ["CWE-94", "CWE-95"]
-sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.scripting/javax/script/ScriptEngine.html", "https://docs.groovy-lang.org/latest/html/api/groovy/lang/GroovyShell.html", "https://cwe.mitre.org/data/definitions/94.html", "https://cwe.mitre.org/data/definitions/95.html", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval", "https://nodejs.org/docs/latest-v22.x/api/vm.html"]
-
-[[rule]]
 name = "csrf-protection-disabled"
 cwe = ["CWE-352"]
 sources = ["https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html", "https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/config/annotation/web/builders/HttpSecurity.html", "https://cwe.mitre.org/data/definitions/352.html"]
@@ -56,6 +51,11 @@ cwe = ["CWE-113"]
 sources = ["https://expressjs.com/en/5x/api.html#res.set", "https://nodejs.org/docs/latest-v22.x/api/http.html#responsesetheadername-value", "https://cwe.mitre.org/data/definitions/113.html"]
 
 [[rule]]
+name = "header-splitting"
+cwe = ["CWE-113"]
+sources = ["https://jakarta.ee/specifications/servlet/6.0/apidocs/jakarta.servlet/jakarta/servlet/http/httpservletresponse#setHeader(java.lang.String,java.lang.String)", "https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/HttpHeaders.html", "https://cwe.mitre.org/data/definitions/113.html"]
+
+[[rule]]
 name = "hostname-verification-disabled"
 cwe = ["CWE-297"]
 sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/net/ssl/HostnameVerifier.html", "https://hc.apache.org/httpcomponents-client-4.5.x/current/httpclient/apidocs/org/apache/http/conn/ssl/NoopHostnameVerifier.html", "https://cwe.mitre.org/data/definitions/297.html"]
@@ -96,11 +96,6 @@ cwe = ["CWE-943"]
 sources = ["https://www.mongodb.com/docs/manual/reference/operator/query/", "https://mongoosejs.com/docs/api/model.html", "https://cwe.mitre.org/data/definitions/943.html"]
 
 [[rule]]
-name = "open-redirect"
-cwe = ["CWE-601"]
-sources = ["https://jakarta.ee/specifications/servlet/6.0/apidocs/jakarta.servlet/jakarta/servlet/http/httpservletresponse#sendRedirect(java.lang.String)", "https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/servlet/view/RedirectView.html", "https://cwe.mitre.org/data/definitions/601.html", "https://expressjs.com/en/5x/api.html#res.redirect", "https://developer.mozilla.org/en-US/docs/Web/API/Location"]
-
-[[rule]]
 name = "permissive-cors"
 cwe = ["CWE-942"]
 sources = ["https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/servlet/config/annotation/CorsRegistration.html", "https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/cors/CorsConfiguration.html", "https://cwe.mitre.org/data/definitions/942.html", "https://github.com/expressjs/cors#configuration-options", "https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS"]
@@ -116,14 +111,19 @@ cwe = ["CWE-1333", "CWE-400"]
 sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/regex/Pattern.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html#matches(java.lang.String)", "https://cwe.mitre.org/data/definitions/1333.html", "https://cwe.mitre.org/data/definitions/400.html", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/RegExp", "https://nodejs.org/en/learn/getting-started/security-best-practices#denial-of-service-of-the-server-cwe-400"]
 
 [[rule]]
-name = "response-splitting"
-cwe = ["CWE-113"]
-sources = ["https://jakarta.ee/specifications/servlet/6.0/apidocs/jakarta.servlet/jakarta/servlet/http/httpservletresponse#setHeader(java.lang.String,java.lang.String)", "https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/HttpHeaders.html", "https://cwe.mitre.org/data/definitions/113.html"]
-
-[[rule]]
 name = "rsa-without-padding"
 cwe = ["CWE-780", "CWE-327"]
 sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/crypto/Cipher.html", "https://cwe.mitre.org/data/definitions/780.html", "https://cwe.mitre.org/data/definitions/327.html"]
+
+[[rule]]
+name = "script-injection"
+cwe = ["CWE-94", "CWE-95"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.scripting/javax/script/ScriptEngine.html", "https://docs.groovy-lang.org/latest/html/api/groovy/lang/GroovyShell.html", "https://cwe.mitre.org/data/definitions/94.html", "https://cwe.mitre.org/data/definitions/95.html", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval", "https://nodejs.org/docs/latest-v22.x/api/vm.html"]
+
+[[rule]]
+name = "server-side-request-forgery"
+cwe = ["CWE-918"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/URL.html", "https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html", "https://cwe.mitre.org/data/definitions/918.html", "https://developer.mozilla.org/en-US/docs/Web/API/Window/fetch", "https://axios-http.com/docs/req_config", "https://nodejs.org/docs/latest-v22.x/api/http.html#httprequesturl-options-callback", "https://requests.readthedocs.io/en/latest/api/#requests.request", "https://docs.python.org/3/library/urllib.request.html#urllib.request.urlopen"]
 
 [[rule]]
 name = "shell-option"
@@ -134,11 +134,6 @@ sources = ["https://nodejs.org/docs/latest-v22.x/api/child_process.html#child_pr
 name = "sql-string-formatting"
 cwe = ["CWE-89"]
 sources = ["https://docs.python.org/3/library/sqlite3.html#sqlite3-placeholders", "https://peps.python.org/pep-0249/#paramstyle", "https://docs.djangoproject.com/en/5.1/topics/db/sql/#passing-parameters-into-raw", "https://cwe.mitre.org/data/definitions/89.html"]
-
-[[rule]]
-name = "ssrf"
-cwe = ["CWE-918"]
-sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/URL.html", "https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html", "https://cwe.mitre.org/data/definitions/918.html", "https://developer.mozilla.org/en-US/docs/Web/API/Window/fetch", "https://axios-http.com/docs/req_config", "https://nodejs.org/docs/latest-v22.x/api/http.html#httprequesturl-options-callback", "https://requests.readthedocs.io/en/latest/api/#requests.request", "https://docs.python.org/3/library/urllib.request.html#urllib.request.urlopen"]
 
 [[rule]]
 name = "static-iv"
@@ -184,6 +179,11 @@ sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/la
 name = "untrusted-deserialization"
 cwe = ["CWE-502"]
 sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/ObjectInputStream.html", "https://docs.oracle.com/en/java/javase/21/core/serialization-filtering1.html", "https://cwe.mitre.org/data/definitions/502.html", "https://www.npmjs.com/package/node-serialize", "https://github.com/nodeca/js-yaml/blob/master/migrate_v3_to_v4.md"]
+
+[[rule]]
+name = "untrusted-redirect"
+cwe = ["CWE-601"]
+sources = ["https://jakarta.ee/specifications/servlet/6.0/apidocs/jakarta.servlet/jakarta/servlet/http/httpservletresponse#sendRedirect(java.lang.String)", "https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/servlet/view/RedirectView.html", "https://cwe.mitre.org/data/definitions/601.html", "https://expressjs.com/en/5x/api.html#res.redirect", "https://developer.mozilla.org/en-US/docs/Web/API/Location"]
 
 [[rule]]
 name = "weak-cipher"
