@@ -11,7 +11,6 @@ import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.analysis.domain.rule.ProjectMatch;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatch;
-import dev.ward.analysis.domain.rule.ScopeView;
 import dev.ward.analysis.domain.rule.TextCompiledRule;
 import dev.ward.analysis.domain.rule.UnitViews;
 import java.util.List;
@@ -62,16 +61,6 @@ public final class CheckedRule implements TextCompiledRule {
       final FlowView flow,
       final SourceUnit unit) {
     return check.matches(root, flow, unit);
-  }
-
-  @Override
-  public List<RuleMatch> matches(
-      final SyntaxNode root,
-      final DependencyView dependencies,
-      final FlowView flow,
-      final ScopeView scopes,
-      final SourceUnit unit) {
-    return check.matches(root, flow, scopes, unit);
   }
 
   @Override
