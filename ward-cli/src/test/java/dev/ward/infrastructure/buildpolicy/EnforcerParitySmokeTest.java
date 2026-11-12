@@ -45,9 +45,6 @@ class EnforcerParitySmokeTest {
       "org.apache.maven.plugins:maven-enforcer-plugin:3.5.0:enforce";
   private static final Duration TIMEOUT = Duration.ofMinutes(3);
 
-  /** One native rule and the Enforcer rule it replaces, with what each reports for a fixture. */
-  private record Pairing(BuildRule rule, String enforcerRule, String named) {}
-
   private static final List<Pairing> PAIRINGS =
       List.of(
           new Pairing(
@@ -58,6 +55,9 @@ class EnforcerParitySmokeTest {
               "banDuplicatePomDependencyVersions",
               "guava"));
 
+  /** One native rule and the Enforcer rule it replaces, with what each reports for a fixture. */
+  private record Pairing(BuildRule rule, String enforcerRule, String named) {}
+
   @Test
   void enforcerAndTheNativeRulesAgreeOnTheMavenFixtures() throws Exception {
     final List<String> disagreements = new ArrayList<>();
@@ -67,7 +67,7 @@ class EnforcerParitySmokeTest {
         final List<Finding> findings = nativeFindings(folder, pairing.rule());
         final Run enforcer = enforcer(folder, pairing.enforcerRule());
         final boolean enforcerFails = enforcer.exitCode() != 0;
-        if (enforcerFails != !findings.isEmpty()) {
+        if (enforcerFails == findings.isEmpty()) {
           disagreements.add(folder + ": enforcer fails=" + enforcerFails + ", native=" + findings);
         } else if (enforcerFails
             && !(enforcer.output().contains(pairing.named())
