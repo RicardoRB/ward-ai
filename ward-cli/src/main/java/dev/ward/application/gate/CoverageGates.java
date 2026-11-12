@@ -25,4 +25,30 @@ public final class CoverageGates {
         report,
         check.minimum());
   }
+
+  /**
+   * Builds the {@code coverage} gate: it runs the check's command when it has one and reads the
+   * JaCoCo XML or lcov reports.
+   */
+  static QualityGate report(
+      final GateConfiguration check,
+      final CommandExecutor executor,
+      final GateReportPorts reports,
+      final GateExtensions extensions) {
+    if (extensions.crap() == null || extensions.analysis() == null || check.coverage() == null) {
+      throw new WardException("Coverage gate dependencies are unavailable.");
+    }
+    final QualityGate command =
+        check.command().isEmpty()
+            ? null
+            : new CommandQualityGate(
+                check.name(), executor, check.command(), reports.directories());
+    return new CoverageReportGate(
+        check.name(),
+        command,
+        check.minimum(),
+        check.coverage(),
+        extensions.crap(),
+        extensions.analysis());
+  }
 }

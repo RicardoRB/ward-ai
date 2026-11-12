@@ -30,7 +30,8 @@ final class TomlCommandParser {
     if (SupportedQualityGates.TRACEABILITY.equals(uses)
         || SupportedQualityGates.ANALYSIS.equals(uses)
         || SupportedQualityGates.FORMAT.equals(uses)
-        || SupportedQualityGates.CRAP.equals(uses)) {
+        || SupportedQualityGates.CRAP.equals(uses)
+        || SupportedQualityGates.COVERAGE.equals(uses)) {
       return List.of();
     }
     throw new WardException("'" + where + ".command' is required");

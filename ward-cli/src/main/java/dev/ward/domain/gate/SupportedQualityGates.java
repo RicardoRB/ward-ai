@@ -8,10 +8,8 @@ public final class SupportedQualityGates {
   public static final String TRACEABILITY = "openspec-junit-traceability";
   public static final String ANALYSIS = "ward";
   public static final String FORMAT = "ward-format";
+  public static final String COVERAGE = "coverage";
   public static final String CRAP = "crap";
-
-  /** The plain command check that writes the report {@code crap} reads; it is not a gate type. */
-  public static final String CRAP_REPORT = "crap-report";
 
   public static final String OPENAPI_LINT = "openapi-lint";
   public static final String OPENAPI_DIFF = "openapi-diff";

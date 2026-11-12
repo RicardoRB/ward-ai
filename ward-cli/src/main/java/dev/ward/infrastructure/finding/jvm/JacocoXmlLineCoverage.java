@@ -9,7 +9,9 @@ import dev.ward.infrastructure.finding.SafeXml;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,7 +59,7 @@ public final class JacocoXmlLineCoverage implements LineCoverageReport {
     }
     collector.flush();
     LOGGER.log(Level.FINE, () -> "event=jacoco-read entries=" + collector.entries.size());
-    return new LineHits(report, collector.entries);
+    return new LineHits(report, collector.entries, true);
   }
 
   /** Accumulates the entry of the {@code sourcefile} element being read. */
@@ -65,6 +67,8 @@ public final class JacocoXmlLineCoverage implements LineCoverageReport {
     private final List<LineHits.Entry> entries = new ArrayList<>();
     private final SortedSet<Integer> coverable = new TreeSet<>();
     private final SortedSet<Integer> covered = new TreeSet<>();
+    private final SortedMap<Integer, Integer> branches = new TreeMap<>();
+    private final SortedMap<Integer, Integer> coveredBranches = new TreeMap<>();
     private boolean first = true;
     private String directory = "";
     private String file = NO_FILE;
@@ -99,6 +103,17 @@ public final class JacocoXmlLineCoverage implements LineCoverageReport {
       if (SafeXml.intAttribute(reader, "ci") != null) {
         covered.add(number);
       }
+      final int missed = count(reader, "mb");
+      final int hit = count(reader, "cb");
+      if (missed + hit > 0) {
+        branches.put(number, missed + hit);
+        coveredBranches.put(number, hit);
+      }
+    }
+
+    private static int count(final XMLStreamReader reader, final String attribute) {
+      final Integer value = SafeXml.intAttribute(reader, attribute);
+      return value == null ? 0 : value;
     }
 
     void flush() {
@@ -106,11 +121,15 @@ public final class JacocoXmlLineCoverage implements LineCoverageReport {
         final String name = directory.isEmpty() ? file : directory + "/" + file;
         entries.add(
             new LineHits.Entry(
-                LineHits.Kind.PACKAGE_FILE, name, new FileLines(coverable, covered)));
+                LineHits.Kind.PACKAGE_FILE,
+                name,
+                new FileLines(coverable, covered, branches, coveredBranches)));
       }
       file = NO_FILE;
       coverable.clear();
       covered.clear();
+      branches.clear();
+      coveredBranches.clear();
     }
   }
 }

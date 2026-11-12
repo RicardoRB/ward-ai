@@ -45,7 +45,7 @@ public final class CrapGate implements QualityGate {
     this.name = name;
     this.options = options;
     this.analysis = analysis;
-    this.reports = new CrapReports(ports);
+    this.reports = new CrapReports(ports, CrapReports.CRAP_FIRST);
   }
 
   @Override
@@ -64,7 +64,7 @@ public final class CrapGate implements QualityGate {
   }
 
   private GateResult run(final Project project) {
-    final List<LineHits> hits = reports.read(project, options, name);
+    final List<LineHits> hits = reports.read(project, options.reports(), name);
     final ComplexityRules complexity = ComplexityRules.load(analysis);
     final List<SourceUnit> units =
         analysis.sources().read(project.root(), complexity.frontends().keySet());

@@ -49,9 +49,9 @@ public final class CommandTypeInference {
           new Rule(
               "coverage",
               anyOf(
-                  sequence("jacoco:check"),
-                  sequence("jacocoTestCoverageVerification"),
-                  sequence("coverage", "report"))),
+                  sequence("jacoco:report"),
+                  sequence("jacocoTestReport"),
+                  sequence("coverage", "lcov"))),
           new Rule("mutation", anyOf(sequence("pitest:mutationCoverage"), sequence("pitest"))),
           new Rule("stryker", sequence("stryker", "run")),
           new Rule("tests", CommandTypeInference::isUnfilteredBuildTest),

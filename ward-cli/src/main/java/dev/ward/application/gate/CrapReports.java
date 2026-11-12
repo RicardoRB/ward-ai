@@ -1,6 +1,5 @@
 package dev.ward.application.gate;
 
-import dev.ward.domain.config.CrapOptions;
 import dev.ward.domain.gate.ConventionalCoverageReports;
 import dev.ward.domain.gate.LineCoverageException;
 import dev.ward.domain.gate.LineHits;
@@ -15,16 +14,23 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/** Finds, reads and checks the coverage reports of a {@code crap} check. */
+/** Finds, reads and checks the coverage reports of a {@code crap} or {@code coverage} check. */
 final class CrapReports {
   private static final Logger LOGGER = Logger.getLogger(CrapReports.class.getName());
-  private static final String FIRST =
+
+  /** The advice of a {@code crap} check whose report is missing. */
+  static final String CRAP_FIRST =
       " The coverage check must run first, so that it writes the report.";
 
-  private final CrapPorts ports;
+  /** The advice of a {@code coverage} check whose report is missing. */
+  static final String TESTS_FIRST = " Run the test gate first, so that the tests write the report.";
 
-  CrapReports(final CrapPorts ports) {
+  private final CrapPorts ports;
+  private final String first;
+
+  CrapReports(final CrapPorts ports, final String first) {
     this.ports = ports;
+    this.first = first;
   }
 
   /**
@@ -33,16 +39,25 @@ final class CrapReports {
    *
    * @throws CrapReportException if a report is missing or cannot be parsed
    */
-  List<LineHits> read(final Project project, final CrapOptions options, final String gate) {
+  List<LineHits> read(final Project project, final List<String> paths, final String gate) {
+    return parse(project, locate(project, paths), gate);
+  }
+
+  /**
+   * Reads each of {@code reports}.
+   *
+   * @throws CrapReportException if a report cannot be parsed
+   */
+  List<LineHits> parse(final Project project, final List<Path> reports, final String gate) {
     final List<LineHits> hits = new ArrayList<>();
-    for (final Path report : locate(project, options)) {
+    for (final Path report : reports) {
       try {
         hits.add(ports.reader().read(report));
       } catch (LineCoverageException e) {
         throw new CrapReportException(
             display(project.root(), report)
                 + " cannot be parsed as a JaCoCo XML or lcov report; no score was used."
-                + FIRST,
+                + first,
             e);
       }
     }
@@ -65,16 +80,22 @@ final class CrapReports {
                   + " is older than "
                   + named.getKey()
                   + ", which it names."
-                  + FIRST);
+                  + first);
         }
       }
     }
   }
 
-  private List<Path> locate(final Project project, final CrapOptions options) {
+  /**
+   * Returns the report files of {@code project}: the configured {@code paths}, or the build tool's
+   * conventional report in the root and every module.
+   *
+   * @throws CrapReportException if no report exists
+   */
+  List<Path> locate(final Project project, final List<String> paths) {
     final Path root = project.root();
-    if (!options.reports().isEmpty()) {
-      return options.reports().stream().map(path -> configured(root, path)).toList();
+    if (!paths.isEmpty()) {
+      return paths.stream().map(path -> configured(root, path)).toList();
     }
     final String conventional =
         ConventionalCoverageReports.of(project.buildTool())
@@ -89,7 +110,7 @@ final class CrapReports {
             .filter(ports.files()::isFile)
             .toList();
     if (found.isEmpty()) {
-      throw new CrapReportException("No coverage report " + conventional + " was found." + FIRST);
+      throw new CrapReportException("No coverage report " + conventional + " was found." + first);
     }
     return found;
   }
@@ -97,7 +118,7 @@ final class CrapReports {
   private Path configured(final Path root, final String path) {
     final Path report = root.resolve(path);
     if (!ports.files().isFile(report)) {
-      throw new CrapReportException("The coverage report " + path + " does not exist." + FIRST);
+      throw new CrapReportException("The coverage report " + path + " does not exist." + first);
     }
     return report;
   }

@@ -46,6 +46,27 @@ class FileLinesTest {
   }
 
   @Test
+  void mergeKeepsTheLargerCoveredBranchCountOfEachLine() {
+    final FileLines first =
+        new FileLines(
+            new TreeSet<>(Set.of(1)),
+            new TreeSet<>(Set.of(1)),
+            new java.util.TreeMap<>(java.util.Map.of(1, 4, 2, 2)),
+            new java.util.TreeMap<>(java.util.Map.of(1, 1, 2, 0)));
+    final FileLines second =
+        new FileLines(
+            new TreeSet<>(Set.of(1)),
+            new TreeSet<>(Set.of(1)),
+            new java.util.TreeMap<>(java.util.Map.of(1, 4)),
+            new java.util.TreeMap<>(java.util.Map.of(1, 3)));
+
+    final FileLines merged = first.merge(second);
+
+    assertThat(merged.branchCount()).isEqualTo(6);
+    assertThat(merged.coveredBranchCount()).isEqualTo(3);
+  }
+
+  @Test
   void coveredLinesThatAreNotCoverableAreDropped() {
     assertThat(lines(ints("1"), ints("1,2")).covered()).hasToString("[1]");
   }

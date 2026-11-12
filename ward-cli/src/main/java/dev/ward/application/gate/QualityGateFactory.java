@@ -183,6 +183,9 @@ public class QualityGateFactory {
     if (IN_PROCESS_GATES.contains(type)) {
       return inProcessGate(check, focus);
     }
+    if (SupportedQualityGates.COVERAGE.equals(type)) {
+      return CoverageGates.report(check, executor, reports, extensions);
+    }
     if (SupportedQualityGates.specIds().contains(type)) {
       return environment == null
           ? new CommandQualityGate(name, executor, check.command())

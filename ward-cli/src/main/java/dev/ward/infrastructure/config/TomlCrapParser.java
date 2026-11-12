@@ -37,7 +37,7 @@ final class TomlCrapParser {
     return value.intValue();
   }
 
-  private static List<String> reports(final String where, final TomlTable gate) {
+  static List<String> reports(final String where, final TomlTable gate) {
     if (!gate.contains(REPORT)) {
       return List.of();
     }

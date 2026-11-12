@@ -14,9 +14,12 @@ class CommandTypeInferenceTest {
   @CsvSource(
       delimiter = '|',
       value = {
-        "coverage|./mvnw jacoco:check",
-        "coverage|./gradlew jacocoTestCoverageVerification",
-        "coverage|uv run coverage report --fail-under=85",
+        "coverage|./mvnw jacoco:report",
+        "coverage|./gradlew jacocoTestReport",
+        "coverage|uv run coverage lcov -o .ward/reports/coverage.lcov",
+        "command|./mvnw jacoco:check",
+        "command|./gradlew jacocoTestCoverageVerification",
+        "command|uv run coverage report --fail-under=85",
         "mypy|uv run mypy src",
         "mypy|python -m mypy src",
         "pytest|uv run pytest -q",

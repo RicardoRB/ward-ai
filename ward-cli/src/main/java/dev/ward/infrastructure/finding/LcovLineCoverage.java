@@ -10,7 +10,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +23,8 @@ public final class LcovLineCoverage implements LineCoverageReport {
   private static final Logger LOGGER = Logger.getLogger(LcovLineCoverage.class.getName());
   private static final String SOURCE_FILE = "SF:";
   private static final String LINE_DATA = "DA:";
+  private static final String BRANCH_DATA = "BRDA:";
+  private static final String BRANCH_FOUND = "BRF:";
   private static final String END = "end_of_record";
   private static final String TEST_NAME = "TN:";
   private static final String NO_RECORD = "";
@@ -47,6 +51,9 @@ public final class LcovLineCoverage implements LineCoverageReport {
     String name = NO_RECORD;
     final SortedSet<Integer> coverable = new TreeSet<>();
     final SortedSet<Integer> covered = new TreeSet<>();
+    final SortedMap<Integer, Integer> branches = new TreeMap<>();
+    final SortedMap<Integer, Integer> coveredBranches = new TreeMap<>();
+    boolean recordsBranches = false;
     for (final String raw : lines) {
       final String line = raw.strip();
       if (line.startsWith(SOURCE_FILE)) {
@@ -54,26 +61,58 @@ public final class LcovLineCoverage implements LineCoverageReport {
       } else if (line.startsWith(LINE_DATA)) {
         requireRecord(name, report);
         parseLine(line.substring(LINE_DATA.length()), coverable, covered, report);
+      } else if (line.startsWith(BRANCH_DATA)) {
+        requireRecord(name, report);
+        recordsBranches = true;
+        parseBranch(line.substring(BRANCH_DATA.length()), branches, coveredBranches, report);
+      } else if (line.startsWith(BRANCH_FOUND)) {
+        requireRecord(name, report);
+        recordsBranches = true;
       } else if (END.equals(line)) {
         requireRecord(name, report);
         entries.add(
-            new LineHits.Entry(LineHits.Kind.PATH, name, new FileLines(coverable, covered)));
+            new LineHits.Entry(
+                LineHits.Kind.PATH,
+                name,
+                new FileLines(coverable, covered, branches, coveredBranches)));
         name = NO_RECORD;
         coverable.clear();
         covered.clear();
+        branches.clear();
+        coveredBranches.clear();
       }
     }
     if (!NO_RECORD.equals(name)) {
       throw new LineCoverageException(report.getFileName() + " is truncated: no end_of_record");
     }
     LOGGER.log(Level.FINE, () -> "event=lcov-read entries=" + entries.size());
-    return new LineHits(report, entries);
+    return new LineHits(report, entries, recordsBranches);
   }
 
   private static void requireRecord(final String name, final Path report) {
     if (NO_RECORD.equals(name)) {
       throw new LineCoverageException(
           report.getFileName() + " is not an lcov report: a record has no SF line");
+    }
+  }
+
+  /** A {@code BRDA:line,block,branch,taken} record; {@code -} taken means never evaluated. */
+  private static void parseBranch(
+      final String data,
+      final SortedMap<Integer, Integer> branches,
+      final SortedMap<Integer, Integer> coveredBranches,
+      final Path report) {
+    final String[] parts = data.split(",", -1);
+    try {
+      final int number = Integer.parseInt(parts[0].strip());
+      final String taken = parts[3].strip();
+      branches.merge(number, 1, Integer::sum);
+      if (!"-".equals(taken) && Math.round(Double.parseDouble(taken)) > 0) {
+        coveredBranches.merge(number, 1, Integer::sum);
+      }
+    } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+      throw new LineCoverageException(
+          report.getFileName() + " is not an lcov report: a BRDA line is malformed", e);
     }
   }
 
