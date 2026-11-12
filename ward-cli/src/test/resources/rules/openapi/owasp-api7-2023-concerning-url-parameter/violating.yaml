@@ -1,0 +1,24 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths:
+  /pets:
+    parameters:
+      - name: callback
+        in: query
+        schema:
+          type: string
+    get:
+      parameters:
+        - name: avatar_url
+          in: query
+          schema:
+            type: string
+        - name: name
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ok

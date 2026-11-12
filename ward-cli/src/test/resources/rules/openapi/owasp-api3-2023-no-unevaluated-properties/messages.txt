@@ -1,0 +1,2 @@
+10:30	If the unevaluatedProperties keyword is used it must be set to false.
+13:29	If the unevaluatedProperties keyword is used it must be set to false.

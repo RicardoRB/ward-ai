@@ -1,0 +1,1 @@
+9:15	All 2XX and 4XX responses should define rate limiting headers.

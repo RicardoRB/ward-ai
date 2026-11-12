@@ -35,7 +35,7 @@ class OpenApiNativeLintGateTest {
             finding -> {
               assertThat(finding.ruleId()).isEqualTo("ward:openapi/operation-operation-id");
               assertThat(finding.file()).isEqualTo(NativeLintFixture.SPEC);
-              assertThat(finding.line() + ":" + finding.column()).isEqualTo("4:5");
+              assertThat(finding.line() + ":" + finding.column()).isEqualTo("4:9");
             });
   }
 

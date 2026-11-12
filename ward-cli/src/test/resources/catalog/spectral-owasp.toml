@@ -27,20 +27,14 @@ spectral = ["owasp:api2:2023-no-http-basic"]
 [[rule]]
 name = "owasp-api2-2023-read-restricted"
 spectral = ["owasp:api2:2023-read-restricted"]
-presets = ["standard", "strict"]
-category = "security"
 
 [[rule]]
 name = "owasp-api2-2023-short-lived-access-tokens"
 spectral = ["owasp:api2:2023-short-lived-access-tokens"]
-presets = ["standard", "strict"]
-category = "security"
 
 [[rule]]
 name = "owasp-api2-2023-write-restricted"
 spectral = ["owasp:api2:2023-write-restricted"]
-presets = ["standard", "strict"]
-category = "security"
 
 [[rule]]
 name = "owasp-api3-2023-constrained-additional-properties"
@@ -49,8 +43,6 @@ spectral = ["owasp:api3:2023-constrained-additionalProperties"]
 [[rule]]
 name = "owasp-api3-2023-constrained-unevaluated-properties"
 spectral = ["owasp:api3:2023-constrained-unevaluatedProperties"]
-presets = ["standard", "strict"]
-category = "security"
 
 [[rule]]
 name = "owasp-api3-2023-no-additional-properties"
@@ -59,8 +51,6 @@ spectral = ["owasp:api3:2023-no-additionalProperties"]
 [[rule]]
 name = "owasp-api3-2023-no-unevaluated-properties"
 spectral = ["owasp:api3:2023-no-unevaluatedProperties"]
-presets = ["standard", "strict"]
-category = "security"
 
 [[rule]]
 name = "owasp-api4-2023-array-limit"
@@ -77,8 +67,6 @@ spectral = ["owasp:api4:2023-integer-limit"]
 [[rule]]
 name = "owasp-api4-2023-integer-limit-legacy"
 spectral = ["owasp:api4:2023-integer-limit-legacy"]
-presets = ["standard", "strict"]
-category = "security"
 
 [[rule]]
 name = "owasp-api4-2023-rate-limit"
@@ -103,20 +91,14 @@ spectral = ["owasp:api4:2023-string-restricted"]
 [[rule]]
 name = "owasp-api5-2023-admin-security-unique"
 spectral = ["owasp:api5:2023-admin-security-unique"]
-presets = ["standard", "strict"]
-category = "security"
 
 [[rule]]
 name = "owasp-api7-2023-concerning-url-parameter"
 spectral = ["owasp:api7:2023-concerning-url-parameter"]
-presets = ["standard", "strict"]
-category = "security"
 
 [[rule]]
 name = "owasp-api8-2023-define-cors-origin"
 spectral = ["owasp:api8:2023-define-cors-origin"]
-presets = ["standard", "strict"]
-category = "security"
 
 [[rule]]
 name = "owasp-api8-2023-define-error-responses-401"
@@ -137,11 +119,7 @@ spectral = ["owasp:api8:2023-no-server-http"]
 [[rule]]
 name = "owasp-api9-2023-inventory-access"
 spectral = ["owasp:api9:2023-inventory-access"]
-presets = ["standard", "strict"]
-category = "security"
 
 [[rule]]
 name = "owasp-api9-2023-inventory-environment"
 spectral = ["owasp:api9:2023-inventory-environment"]
-presets = ["standard", "strict"]
-category = "security"

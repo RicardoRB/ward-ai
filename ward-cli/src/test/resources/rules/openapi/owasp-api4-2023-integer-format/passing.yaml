@@ -2,15 +2,9 @@ openapi: 3.0.3
 info:
   title: T
   version: "1"
-paths:
-  /p:
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: integer
-              format: int32
-      responses:
-        "200":
-          description: d
+paths: {}
+components:
+  schemas:
+    Sized:
+      type: integer
+      format: int64

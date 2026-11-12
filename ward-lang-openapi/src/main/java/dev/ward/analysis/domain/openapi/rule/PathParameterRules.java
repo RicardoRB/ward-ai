@@ -1,208 +1,160 @@
 package dev.ward.analysis.domain.openapi.rule;
 
-import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.openapi.DocNode;
 import dev.ward.analysis.domain.openapi.OpenApiDocument;
-import dev.ward.analysis.domain.openapi.OperationNodes;
+import dev.ward.analysis.domain.openapi.OpenApiDocument.View;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.Map;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-/** {@code path-params}: the path parameters of a path are declared, required and not repeated. */
+/** {@code path-params}: the parameters of a path template are defined, valid and used. */
 final class PathParameterRules {
 
+  private static final Pattern TEMPLATE = Pattern.compile("(\\{;?\\??[a-zA-Z0-9_-]+\\*?\\})");
+  private static final Pattern DECORATION = Pattern.compile("[{}?*;]");
   private static final List<String> METHODS =
-      List.of("get", "put", "post", "delete", "options", "head", "patch", "trace");
-  private static final String PARAMETERS = "parameters";
-  private static final String PATH_IN = "path";
+      List.of("get", "head", "post", "put", "patch", "delete", "options", "trace");
 
   private PathParameterRules() {}
 
-  /** Reports every way a path and its path parameters disagree. */
+  /** Checks every path and every operation of the document. */
   static List<OpenApiFinding> pathParams(final OpenApiDocument document) {
     final List<OpenApiFinding> findings = new ArrayList<>();
-    final List<DocNode.Entry> paths = document.parts().paths();
-    for (int index = 0; index < paths.size(); index++) {
-      final DocNode.Entry path = paths.get(index);
+    final Map<String, String> unique = new HashMap<>();
+    for (final DocNode.Entry path : document.parts().paths()) {
       final DocNode item = document.resolve(path.value());
-      findings.addAll(equivalent(document, paths.subList(0, index), path, item));
-      findings.addAll(template(document, path, item));
-      findings.addAll(declared(document, path, item));
-    }
-    return findings;
-  }
-
-  private static List<OpenApiFinding> equivalent(
-      final OpenApiDocument document,
-      final List<DocNode.Entry> earlier,
-      final DocNode.Entry path,
-      final DocNode item) {
-    final List<OpenApiFinding> findings = new ArrayList<>();
-    for (final String method : methods(item)) {
-      for (final DocNode.Entry other : earlier) {
-        if (methods(document.resolve(other.value())).contains(method)
-            && PathTemplates.normalized(other.key()).equals(PathTemplates.normalized(path.key()))) {
-          findings.add(
-              Findings.in(
-                  path.value(),
-                  path.keySpan(),
-                  method.toUpperCase(Locale.ROOT)
-                      + ": paths `"
-                      + other.key()
-                      + "` and `"
-                      + path.key()
-                      + "` must not be equivalent, paths must be unique for the same HTTP method"));
-          break;
-        }
+      if (item.kind() != DocNode.Kind.OBJECT) {
+        continue;
       }
-    }
-    return findings;
-  }
-
-  /** The findings about the parameters named in the path template itself. */
-  private static List<OpenApiFinding> template(
-      final OpenApiDocument document, final DocNode.Entry path, final DocNode item) {
-    final List<OpenApiFinding> findings = new ArrayList<>();
-    final Set<String> seen = new HashSet<>();
-    for (final String name : PathTemplates.names(path.key())) {
-      if (!seen.add(name)) {
+      final String normalized = TEMPLATE.matcher(path.key()).replaceAll("%");
+      final String first = unique.putIfAbsent(normalized, path.key());
+      if (first != null) {
         findings.add(
-            Findings.in(
-                path.value(),
-                path.keySpan(),
-                "path `"
-                    + path.key()
-                    + "` must not use the parameter `"
-                    + name
-                    + "` multiple times"));
+            Findings.atValue(
+                item,
+                "Paths \"" + first + "\" and \"" + path.key() + "\" must not be equivalent."));
       }
-      final boolean atPathItem = pathParameter(document, item, name);
-      for (final DocNode.Entry method : item.entries()) {
-        if (METHODS.contains(method.key())
-            && !atPathItem
-            && !pathParameter(document, document.resolve(method.value()), name)) {
-          findings.add(
-              Findings.in(
-                  path.value(),
-                  path.keySpan(),
-                  "parameter named `"
-                      + name
-                      + "` must be defined as part of the path `"
-                      + path.key()
-                      + "` definition, or in the `"
-                      + method.key().toUpperCase(Locale.ROOT)
-                      + "` operation(s)"));
-        }
-      }
+      inspect(document, path.key(), item, findings);
     }
     return findings;
   }
 
-  /** The findings about the path parameters that the path item and its operations declare. */
-  private static List<OpenApiFinding> declared(
-      final OpenApiDocument document, final DocNode.Entry path, final DocNode item) {
-    final List<OpenApiFinding> findings = new ArrayList<>();
-    final Set<String> names = new LinkedHashSet<>(PathTemplates.names(path.key()));
-    declaredBy(document, item, new Scope(path.key(), "path parameter", names), findings);
+  private static void inspect(
+      final OpenApiDocument document,
+      final String path,
+      final DocNode item,
+      final List<OpenApiFinding> findings) {
+    final List<String> expected = expected(path, item, findings);
+    final Map<String, DocNode> top = new LinkedHashMap<>();
+    parameters(document, item, top, findings);
+    final Template template = new Template(path, expected, top);
     for (final DocNode.Entry method : item.entries()) {
-      if (METHODS.contains(method.key())) {
-        declaredBy(
-            document,
-            document.resolve(method.value()),
-            scopeOf(path.key(), method.key(), names),
-            findings);
+      final DocNode operation = document.resolve(method.value());
+      if (METHODS.contains(method.key()) && operation.kind() == DocNode.Kind.OBJECT) {
+        operation(document, template, operation, findings);
       }
     }
-    return findings;
   }
 
-  private static void declaredBy(
+  private static List<String> expected(
+      final String path, final DocNode item, final List<OpenApiFinding> findings) {
+    final List<String> names = new ArrayList<>();
+    final Matcher matcher = TEMPLATE.matcher(path);
+    while (matcher.find()) {
+      final String name = DECORATION.matcher(matcher.group()).replaceAll("");
+      if (names.contains(name)) {
+        findings.add(
+            Findings.atValue(
+                item,
+                "Path \"" + path + "\" must not use parameter \"{" + name + "}\" multiple times."));
+      } else {
+        names.add(name);
+      }
+    }
+    return names;
+  }
+
+  /** A path, the parameter names its template expects and the path item's own parameters. */
+  private record Template(String path, List<String> expected, Map<String, DocNode> top) {}
+
+  private static void operation(
+      final OpenApiDocument document,
+      final Template template,
+      final DocNode operation,
+      final List<OpenApiFinding> findings) {
+    final String path = template.path();
+    final List<String> expected = template.expected();
+    final Map<String, DocNode> top = template.top();
+    final Map<String, DocNode> own = new LinkedHashMap<>();
+    parameters(document, operation, own, findings);
+    final Map<String, DocNode> defined = new LinkedHashMap<>(top);
+    defined.putAll(own);
+    for (final Map.Entry<String, DocNode> parameter : defined.entrySet()) {
+      if (!expected.contains(parameter.getKey())) {
+        findings.add(
+            Findings.atValue(
+                parameter.getValue(),
+                "Parameter \"" + parameter.getKey() + "\" must be used in path \"" + path + "\"."));
+      }
+    }
+    for (final String name : expected) {
+      if (!defined.containsKey(name)) {
+        findings.add(
+            Findings.atValue(
+                operation,
+                "Operation must define parameter \"{"
+                    + name
+                    + "}\" as expected by path \""
+                    + path
+                    + "\"."));
+      }
+    }
+  }
+
+  /** Records the named path parameters of {@code owner} and reports the invalid ones. */
+  private static void parameters(
       final OpenApiDocument document,
       final DocNode owner,
-      final Scope scope,
+      final Map<String, DocNode> seen,
       final List<OpenApiFinding> findings) {
-    final Span at =
-        owner.entries().stream()
-            .filter(entry -> PARAMETERS.equals(entry.key()))
-            .findFirst()
-            .map(DocNode.Entry::keySpan)
-            .orElse(owner.span());
-    final Set<String> duplicates = new HashSet<>();
-    for (final DocNode raw : OperationNodes.parameters(owner)) {
-      final DocNode parameter = document.resolve(raw);
-      if (PATH_IN.equals(parameter.string("in").orElse(""))) {
-        final String name = parameter.string("name").orElse("");
-        final boolean required =
-            parameter.get("required").map(node -> "false".equals(node.text())).orElse(false);
-        final List<String> problems = problemsOf(scope, name, required, duplicates);
-        problems.forEach(message -> findings.add(Findings.in(owner, at, message)));
+    final Optional<DocNode> list = document.get(owner, "parameters", View.RESOLVED);
+    if (list.isEmpty() || list.get().kind() != DocNode.Kind.ARRAY) {
+      return;
+    }
+    for (final DocNode item : list.get().items()) {
+      final DocNode parameter = document.resolve(item);
+      final Optional<DocNode> name = parameter.get("name");
+      if (parameter.kind() != DocNode.Kind.OBJECT
+          || name.isEmpty()
+          || !parameter.get("in").map(in -> "path".equals(in.text())).orElse(false)) {
+        continue;
+      }
+      if (!parameter
+          .get("required")
+          .map(required -> "true".equals(required.text()))
+          .orElse(false)) {
+        findings.add(
+            Findings.atValue(
+                parameter,
+                "Path parameter \""
+                    + name.get().text()
+                    + "\" must have \"required\" property that is set to \"true\"."));
+      }
+      if (seen.containsKey(name.get().text())) {
+        findings.add(
+            Findings.atValue(
+                parameter,
+                "Path parameter \""
+                    + name.get().text()
+                    + "\" must not be defined multiple times."));
+      } else {
+        seen.put(name.get().text(), parameter);
       }
     }
-  }
-
-  private static Scope scopeOf(final String path, final String method, final Set<String> names) {
-    return new Scope(path, "`" + method.toUpperCase(Locale.ROOT) + "` parameter", names);
-  }
-
-  private static List<String> problemsOf(
-      final Scope scope,
-      final String name,
-      final boolean notRequired,
-      final Set<String> duplicates) {
-    final List<String> problems = new ArrayList<>();
-    if (notRequired) {
-      problems.add(requiredMessage(scope, name));
-    }
-    if (!duplicates.add(name)) {
-      problems.add(
-          scope.label()
-              + " named `"
-              + name
-              + "` at `"
-              + scope.path()
-              + "` is a duplicate of another parameter with the same name");
-    }
-    if (!scope.names().contains(name)) {
-      problems.add(
-          scope.label() + " named `" + name + "` does not exist in path `" + scope.path() + "`");
-    }
-    return problems;
-  }
-
-  private static String requiredMessage(final Scope scope, final String name) {
-    return scope.label().startsWith("`")
-        ? "`"
-            + scope.path()
-            + "` "
-            + scope.label()
-            + " named `"
-            + name
-            + "` must have `required` set to `true`"
-        : scope.label()
-            + " named `"
-            + name
-            + "` at `"
-            + scope.path()
-            + "` must have `required` set to `true`";
-  }
-
-  /** The path, the way a message names the parameters, and the names its template declares. */
-  private record Scope(String path, String label, Set<String> names) {}
-
-  private static boolean pathParameter(
-      final OpenApiDocument document, final DocNode owner, final String name) {
-    return OperationNodes.parameters(owner).stream()
-        .map(document::resolve)
-        .anyMatch(
-            parameter ->
-                PATH_IN.equals(parameter.string("in").orElse(""))
-                    && name.equals(parameter.string("name").orElse("")));
-  }
-
-  private static List<String> methods(final DocNode item) {
-    return item.entries().stream().map(DocNode.Entry::key).filter(METHODS::contains).toList();
   }
 }

@@ -32459,6 +32459,25 @@
         }
       }
     },
+    "ward:openapi/array-items": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:openapi/contact-properties": {
       "type": "object",
       "additionalProperties": false,
@@ -32592,6 +32611,25 @@
         }
       }
     },
+    "ward:openapi/no-ref-siblings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:openapi/no-script-tags-in-markdown": {
       "type": "object",
       "additionalProperties": false,
@@ -32611,7 +32649,83 @@
         }
       }
     },
+    "ward:openapi/oas3-1-callbacks-in-webhook": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/oas3-1-servers-in-webhook": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:openapi/oas3-api-servers": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/oas3-callbacks-in-callbacks": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/oas3-examples-value-or-external-value": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -32706,6 +32820,25 @@
         }
       }
     },
+    "ward:openapi/oas3-server-variables": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:openapi/oas3-unused-component": {
       "type": "object",
       "additionalProperties": false,
@@ -32745,6 +32878,25 @@
       }
     },
     "ward:openapi/openapi-tags-alphabetical": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/openapi-tags-uniqueness": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33048,6 +33200,63 @@
         }
       }
     },
+    "ward:openapi/owasp-api2-2023-read-restricted": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-api2-2023-short-lived-access-tokens": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-api2-2023-write-restricted": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:openapi/owasp-api3-2023-constrained-additional-properties": {
       "type": "object",
       "additionalProperties": false,
@@ -33067,7 +33276,45 @@
         }
       }
     },
+    "ward:openapi/owasp-api3-2023-constrained-unevaluated-properties": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:openapi/owasp-api3-2023-no-additional-properties": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-api3-2023-no-unevaluated-properties": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33125,6 +33372,25 @@
       }
     },
     "ward:openapi/owasp-api4-2023-integer-limit": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-api4-2023-integer-limit-legacy": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33238,6 +33504,63 @@
         }
       }
     },
+    "ward:openapi/owasp-api5-2023-admin-security-unique": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-api7-2023-concerning-url-parameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-api8-2023-define-cors-origin": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:openapi/owasp-api8-2023-define-error-responses-401": {
       "type": "object",
       "additionalProperties": false,
@@ -33296,6 +33619,44 @@
       }
     },
     "ward:openapi/owasp-api8-2023-no-server-http": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-api9-2023-inventory-access": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-api9-2023-inventory-environment": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -54850,6 +55211,7 @@
               "kotlin.var-could-be-val",
               "kotlin.variable-declaration-usage-distance",
               "kotlin.wrong-equals-type-parameter",
+              "openapi.array-items",
               "openapi.contact-properties",
               "openapi.duplicated-entry-in-enum",
               "openapi.info-contact",
@@ -54857,15 +55219,22 @@
               "openapi.info-license",
               "openapi.license-url",
               "openapi.no-eval-in-markdown",
+              "openapi.no-ref-siblings",
               "openapi.no-script-tags-in-markdown",
+              "openapi.oas3-1-callbacks-in-webhook",
+              "openapi.oas3-1-servers-in-webhook",
               "openapi.oas3-api-servers",
+              "openapi.oas3-callbacks-in-callbacks",
+              "openapi.oas3-examples-value-or-external-value",
               "openapi.oas3-operation-security-defined",
               "openapi.oas3-parameter-description",
               "openapi.oas3-server-not-example-com",
               "openapi.oas3-server-trailing-slash",
+              "openapi.oas3-server-variables",
               "openapi.oas3-unused-component",
               "openapi.openapi-tags",
               "openapi.openapi-tags-alphabetical",
+              "openapi.openapi-tags-uniqueness",
               "openapi.operation-description",
               "openapi.operation-operation-id",
               "openapi.operation-operation-id-unique",
@@ -54881,20 +55250,31 @@
               "openapi.owasp-api2-2023-no-api-keys-in-url",
               "openapi.owasp-api2-2023-no-credentials-in-url",
               "openapi.owasp-api2-2023-no-http-basic",
+              "openapi.owasp-api2-2023-read-restricted",
+              "openapi.owasp-api2-2023-short-lived-access-tokens",
+              "openapi.owasp-api2-2023-write-restricted",
               "openapi.owasp-api3-2023-constrained-additional-properties",
+              "openapi.owasp-api3-2023-constrained-unevaluated-properties",
               "openapi.owasp-api3-2023-no-additional-properties",
+              "openapi.owasp-api3-2023-no-unevaluated-properties",
               "openapi.owasp-api4-2023-array-limit",
               "openapi.owasp-api4-2023-integer-format",
               "openapi.owasp-api4-2023-integer-limit",
+              "openapi.owasp-api4-2023-integer-limit-legacy",
               "openapi.owasp-api4-2023-rate-limit",
               "openapi.owasp-api4-2023-rate-limit-responses-429",
               "openapi.owasp-api4-2023-rate-limit-retry-after",
               "openapi.owasp-api4-2023-string-limit",
               "openapi.owasp-api4-2023-string-restricted",
+              "openapi.owasp-api5-2023-admin-security-unique",
+              "openapi.owasp-api7-2023-concerning-url-parameter",
+              "openapi.owasp-api8-2023-define-cors-origin",
               "openapi.owasp-api8-2023-define-error-responses-401",
               "openapi.owasp-api8-2023-define-error-responses-500",
               "openapi.owasp-api8-2023-define-error-validation",
               "openapi.owasp-api8-2023-no-server-http",
+              "openapi.owasp-api9-2023-inventory-access",
+              "openapi.owasp-api9-2023-inventory-environment",
               "openapi.path-declarations-must-exist",
               "openapi.path-keys-no-trailing-slash",
               "openapi.path-not-include-query",
@@ -57564,6 +57944,7 @@
               "kotlin.var-could-be-val",
               "kotlin.variable-declaration-usage-distance",
               "kotlin.wrong-equals-type-parameter",
+              "openapi.array-items",
               "openapi.contact-properties",
               "openapi.duplicated-entry-in-enum",
               "openapi.info-contact",
@@ -57571,15 +57952,22 @@
               "openapi.info-license",
               "openapi.license-url",
               "openapi.no-eval-in-markdown",
+              "openapi.no-ref-siblings",
               "openapi.no-script-tags-in-markdown",
+              "openapi.oas3-1-callbacks-in-webhook",
+              "openapi.oas3-1-servers-in-webhook",
               "openapi.oas3-api-servers",
+              "openapi.oas3-callbacks-in-callbacks",
+              "openapi.oas3-examples-value-or-external-value",
               "openapi.oas3-operation-security-defined",
               "openapi.oas3-parameter-description",
               "openapi.oas3-server-not-example-com",
               "openapi.oas3-server-trailing-slash",
+              "openapi.oas3-server-variables",
               "openapi.oas3-unused-component",
               "openapi.openapi-tags",
               "openapi.openapi-tags-alphabetical",
+              "openapi.openapi-tags-uniqueness",
               "openapi.operation-description",
               "openapi.operation-operation-id",
               "openapi.operation-operation-id-unique",
@@ -57595,20 +57983,31 @@
               "openapi.owasp-api2-2023-no-api-keys-in-url",
               "openapi.owasp-api2-2023-no-credentials-in-url",
               "openapi.owasp-api2-2023-no-http-basic",
+              "openapi.owasp-api2-2023-read-restricted",
+              "openapi.owasp-api2-2023-short-lived-access-tokens",
+              "openapi.owasp-api2-2023-write-restricted",
               "openapi.owasp-api3-2023-constrained-additional-properties",
+              "openapi.owasp-api3-2023-constrained-unevaluated-properties",
               "openapi.owasp-api3-2023-no-additional-properties",
+              "openapi.owasp-api3-2023-no-unevaluated-properties",
               "openapi.owasp-api4-2023-array-limit",
               "openapi.owasp-api4-2023-integer-format",
               "openapi.owasp-api4-2023-integer-limit",
+              "openapi.owasp-api4-2023-integer-limit-legacy",
               "openapi.owasp-api4-2023-rate-limit",
               "openapi.owasp-api4-2023-rate-limit-responses-429",
               "openapi.owasp-api4-2023-rate-limit-retry-after",
               "openapi.owasp-api4-2023-string-limit",
               "openapi.owasp-api4-2023-string-restricted",
+              "openapi.owasp-api5-2023-admin-security-unique",
+              "openapi.owasp-api7-2023-concerning-url-parameter",
+              "openapi.owasp-api8-2023-define-cors-origin",
               "openapi.owasp-api8-2023-define-error-responses-401",
               "openapi.owasp-api8-2023-define-error-responses-500",
               "openapi.owasp-api8-2023-define-error-validation",
               "openapi.owasp-api8-2023-no-server-http",
+              "openapi.owasp-api9-2023-inventory-access",
+              "openapi.owasp-api9-2023-inventory-environment",
               "openapi.path-declarations-must-exist",
               "openapi.path-keys-no-trailing-slash",
               "openapi.path-not-include-query",
@@ -63599,6 +63998,9 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
+            "array-items": {
+              "$ref": "#/$defs/ward:openapi~1array-items"
+            },
             "contact-properties": {
               "$ref": "#/$defs/ward:openapi~1contact-properties"
             },
@@ -63620,11 +64022,26 @@
             "no-eval-in-markdown": {
               "$ref": "#/$defs/ward:openapi~1no-eval-in-markdown"
             },
+            "no-ref-siblings": {
+              "$ref": "#/$defs/ward:openapi~1no-ref-siblings"
+            },
             "no-script-tags-in-markdown": {
               "$ref": "#/$defs/ward:openapi~1no-script-tags-in-markdown"
             },
+            "oas3-1-callbacks-in-webhook": {
+              "$ref": "#/$defs/ward:openapi~1oas3-1-callbacks-in-webhook"
+            },
+            "oas3-1-servers-in-webhook": {
+              "$ref": "#/$defs/ward:openapi~1oas3-1-servers-in-webhook"
+            },
             "oas3-api-servers": {
               "$ref": "#/$defs/ward:openapi~1oas3-api-servers"
+            },
+            "oas3-callbacks-in-callbacks": {
+              "$ref": "#/$defs/ward:openapi~1oas3-callbacks-in-callbacks"
+            },
+            "oas3-examples-value-or-external-value": {
+              "$ref": "#/$defs/ward:openapi~1oas3-examples-value-or-external-value"
             },
             "oas3-operation-security-defined": {
               "$ref": "#/$defs/ward:openapi~1oas3-operation-security-defined"
@@ -63638,6 +64055,9 @@
             "oas3-server-trailing-slash": {
               "$ref": "#/$defs/ward:openapi~1oas3-server-trailing-slash"
             },
+            "oas3-server-variables": {
+              "$ref": "#/$defs/ward:openapi~1oas3-server-variables"
+            },
             "oas3-unused-component": {
               "$ref": "#/$defs/ward:openapi~1oas3-unused-component"
             },
@@ -63646,6 +64066,9 @@
             },
             "openapi-tags-alphabetical": {
               "$ref": "#/$defs/ward:openapi~1openapi-tags-alphabetical"
+            },
+            "openapi-tags-uniqueness": {
+              "$ref": "#/$defs/ward:openapi~1openapi-tags-uniqueness"
             },
             "operation-description": {
               "$ref": "#/$defs/ward:openapi~1operation-description"
@@ -63692,11 +64115,26 @@
             "owasp-api2-2023-no-http-basic": {
               "$ref": "#/$defs/ward:openapi~1owasp-api2-2023-no-http-basic"
             },
+            "owasp-api2-2023-read-restricted": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api2-2023-read-restricted"
+            },
+            "owasp-api2-2023-short-lived-access-tokens": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api2-2023-short-lived-access-tokens"
+            },
+            "owasp-api2-2023-write-restricted": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api2-2023-write-restricted"
+            },
             "owasp-api3-2023-constrained-additional-properties": {
               "$ref": "#/$defs/ward:openapi~1owasp-api3-2023-constrained-additional-properties"
             },
+            "owasp-api3-2023-constrained-unevaluated-properties": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api3-2023-constrained-unevaluated-properties"
+            },
             "owasp-api3-2023-no-additional-properties": {
               "$ref": "#/$defs/ward:openapi~1owasp-api3-2023-no-additional-properties"
+            },
+            "owasp-api3-2023-no-unevaluated-properties": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api3-2023-no-unevaluated-properties"
             },
             "owasp-api4-2023-array-limit": {
               "$ref": "#/$defs/ward:openapi~1owasp-api4-2023-array-limit"
@@ -63706,6 +64144,9 @@
             },
             "owasp-api4-2023-integer-limit": {
               "$ref": "#/$defs/ward:openapi~1owasp-api4-2023-integer-limit"
+            },
+            "owasp-api4-2023-integer-limit-legacy": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api4-2023-integer-limit-legacy"
             },
             "owasp-api4-2023-rate-limit": {
               "$ref": "#/$defs/ward:openapi~1owasp-api4-2023-rate-limit"
@@ -63722,6 +64163,15 @@
             "owasp-api4-2023-string-restricted": {
               "$ref": "#/$defs/ward:openapi~1owasp-api4-2023-string-restricted"
             },
+            "owasp-api5-2023-admin-security-unique": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api5-2023-admin-security-unique"
+            },
+            "owasp-api7-2023-concerning-url-parameter": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api7-2023-concerning-url-parameter"
+            },
+            "owasp-api8-2023-define-cors-origin": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api8-2023-define-cors-origin"
+            },
             "owasp-api8-2023-define-error-responses-401": {
               "$ref": "#/$defs/ward:openapi~1owasp-api8-2023-define-error-responses-401"
             },
@@ -63733,6 +64183,12 @@
             },
             "owasp-api8-2023-no-server-http": {
               "$ref": "#/$defs/ward:openapi~1owasp-api8-2023-no-server-http"
+            },
+            "owasp-api9-2023-inventory-access": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api9-2023-inventory-access"
+            },
+            "owasp-api9-2023-inventory-environment": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api9-2023-inventory-environment"
             },
             "path-declarations-must-exist": {
               "$ref": "#/$defs/ward:openapi~1path-declarations-must-exist"

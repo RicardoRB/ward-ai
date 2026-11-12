@@ -3,8 +3,6 @@
 [[rule]]
 name = "array-items"
 spectral = ["array-items"]
-presets = ["standard", "strict"]
-category = "correctness"
 
 [[rule]]
 name = "contact-properties"
@@ -37,8 +35,6 @@ spectral = ["no-eval-in-markdown"]
 [[rule]]
 name = "no-ref-siblings"
 spectral = ["no-$ref-siblings"]
-presets = ["standard", "strict"]
-category = "correctness"
 
 [[rule]]
 name = "no-script-tags-in-markdown"
@@ -47,14 +43,10 @@ spectral = ["no-script-tags-in-markdown"]
 [[rule]]
 name = "oas3-1-callbacks-in-webhook"
 spectral = ["oas3_1-callbacks-in-webhook"]
-presets = ["standard", "strict"]
-category = "correctness"
 
 [[rule]]
 name = "oas3-1-servers-in-webhook"
 spectral = ["oas3_1-servers-in-webhook"]
-presets = ["standard", "strict"]
-category = "correctness"
 
 [[rule]]
 name = "oas3-api-servers"
@@ -63,14 +55,10 @@ spectral = ["oas3-api-servers"]
 [[rule]]
 name = "oas3-callbacks-in-callbacks"
 spectral = ["oas3-callbacks-in-callbacks"]
-presets = ["standard", "strict"]
-category = "correctness"
 
 [[rule]]
 name = "oas3-examples-value-or-external-value"
 spectral = ["oas3-examples-value-or-externalValue"]
-presets = ["standard", "strict"]
-category = "correctness"
 
 [[rule]]
 name = "oas3-operation-security-defined"
@@ -97,8 +85,6 @@ spectral = ["oas3-server-trailing-slash"]
 [[rule]]
 name = "oas3-server-variables"
 spectral = ["oas3-server-variables"]
-presets = ["standard", "strict"]
-category = "correctness"
 
 [[rule]]
 name = "oas3-unused-component"
@@ -127,8 +113,6 @@ spectral = ["openapi-tags-alphabetical"]
 [[rule]]
 name = "openapi-tags-uniqueness"
 spectral = ["openapi-tags-uniqueness"]
-presets = ["standard", "strict"]
-category = "correctness"
 
 [[rule]]
 name = "operation-description"

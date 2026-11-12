@@ -2,18 +2,11 @@ openapi: 3.0.3
 info:
   title: T
   version: "1"
-paths:
-  /p:
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              additionalProperties: false
-              properties:
-                a:
-                  type: string
-      responses:
-        "200":
-          description: d
+paths: {}
+components:
+  schemas:
+    Closed:
+      type: object
+      additionalProperties: false
+    Plain:
+      type: object

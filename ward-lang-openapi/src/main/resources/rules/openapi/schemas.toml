@@ -32,3 +32,25 @@ presets = ["standard", "strict"]
 body = '''
 check = "openapi-oas3-unused-component"
 '''
+
+[[rules]]
+id = "ward:openapi/no-ref-siblings"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-no-ref-siblings"
+'''
+
+[[rules]]
+id = "ward:openapi/array-items"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-array-items"
+'''

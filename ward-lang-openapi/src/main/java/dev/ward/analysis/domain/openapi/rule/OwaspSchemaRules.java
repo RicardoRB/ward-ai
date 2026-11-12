@@ -4,116 +4,115 @@ import dev.ward.analysis.domain.openapi.DocNode;
 import dev.ward.analysis.domain.openapi.OpenApiDocument;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Predicate;
 
-/** The OWASP rules that ask a schema to limit its values. */
+/** The OWASP rules about the limits of arrays, strings and integers, and about open objects. */
 final class OwaspSchemaRules {
 
   private static final String TYPE = "type";
 
-  /**
-   * The presence of minimum, maximum, exclusiveMinimum and exclusiveMaximum that vacuum rejects.
-   */
-  private static final Set<String> INCOMPLETE_BOUNDS =
-      Set.of("0000", "1000", "1010", "0100", "0101", "0010", "0001", "1011", "1111");
-
   private OwaspSchemaRules() {}
 
-  /** {@code owasp-array-limit}: an array a request sends has {@code maxItems}. */
+  /** {@code owasp-api4-2023-array-limit}: an array schema has {@code maxItems}. */
   static List<OpenApiFinding> arrayLimit(final OpenApiDocument document) {
-    return request(
+    return require(
         document,
         "array",
-        schema -> schema.get("maxItems").isEmpty(),
-        "schema of type `array` must specify `maxItems`");
+        schema -> schema.get("maxItems").isPresent(),
+        "Schema of type array must specify maxItems.");
   }
 
-  /** {@code owasp-string-limit}: a string a request sends has {@code maxLength}. */
+  /** {@code owasp-api4-2023-string-limit}: a string schema has a maximum length, enum or const. */
   static List<OpenApiFinding> stringLimit(final OpenApiDocument document) {
-    return request(
+    return require(
         document,
         "string",
-        schema ->
-            schema.get("maxLength").isEmpty()
-                && schema.get("const").isEmpty()
-                && schema.get("enum").isEmpty(),
-        "schema of type `string` must specify `maxLength`, `const` or `enum`");
+        schema -> hasAny(schema, "maxLength", "enum", "const"),
+        "Schema of type string must specify maxLength, enum, or const.");
   }
 
-  /** {@code owasp-string-restricted}: a string has a format, a pattern, a const or an enum. */
+  /** {@code owasp-api4-2023-string-restricted}: a string schema has a format, pattern or enum. */
   static List<OpenApiFinding> stringRestricted(final OpenApiDocument document) {
-    return all(
+    return require(
         document,
         "string",
-        schema ->
-            schema.get("format").isEmpty()
-                && schema.get("const").isEmpty()
-                && schema.get("enum").isEmpty()
-                && Findings.text(schema, "pattern").isEmpty(),
-        "schema of type `string` must specify `format`, `const`, `enum` or `pattern`");
+        schema -> hasAny(schema, "format", "pattern", "enum", "const"),
+        "Schema of type string should specify a format, pattern, enum, or const.");
   }
 
-  /** {@code owasp-integer-format}: an integer has the format {@code int32} or {@code int64}. */
-  static List<OpenApiFinding> integerFormat(final OpenApiDocument document) {
-    return all(
-        document,
-        "integer",
-        schema -> !Set.of("int32", "int64").contains(Findings.text(schema, "format")),
-        "schema of type `integer` must specify a format of `int32` or `int64`");
-  }
-
-  /** {@code owasp-integer-limit}: an integer has a minimum and a maximum. */
+  /** {@code owasp-api4-2023-integer-limit}: in 3.1 an integer has exactly one bound each way. */
   static List<OpenApiFinding> integerLimit(final OpenApiDocument document) {
-    return all(
+    return document.isVersion31()
+        ? require(
+            document,
+            "integer",
+            schema ->
+                exactlyOne(schema, "minimum", "exclusiveMinimum")
+                    && exactlyOne(schema, "maximum", "exclusiveMaximum"),
+            "Schema of type integer must specify minimum and maximum.")
+        : List.of();
+  }
+
+  /** {@code owasp-api4-2023-integer-limit-legacy}: in 3.0 an integer has both bounds. */
+  static List<OpenApiFinding> integerLimitLegacy(final OpenApiDocument document) {
+    return document.isVersion31()
+        ? List.of()
+        : require(
+            document,
+            "integer",
+            schema -> schema.get("minimum").isPresent() && schema.get("maximum").isPresent(),
+            "Schema of type integer must specify minimum and maximum.");
+  }
+
+  /** {@code owasp-api4-2023-integer-format}: an integer schema has a {@code format}. */
+  static List<OpenApiFinding> integerFormat(final OpenApiDocument document) {
+    return require(
         document,
         "integer",
-        OwaspSchemaRules::boundsIncomplete,
-        "schema of type `integer` must specify `minimum` and `maximum` or `exclusiveMinimum` and"
-            + " `exclusiveMaximum`");
+        schema -> schema.get("format").isPresent(),
+        "Schema of type integer must specify format (int32 or int64).");
   }
 
-  private static List<OpenApiFinding> request(
+  private static List<OpenApiFinding> require(
       final OpenApiDocument document,
       final String type,
-      final Predicate<DocNode> unlimited,
+      final Predicate<DocNode> satisfied,
       final String message) {
-    final Set<DocNode> request = SchemaWalk.requestSchemas(document);
     final List<OpenApiFinding> findings = new ArrayList<>();
-    for (final DocNode schema : SchemaWalk.schemas(document)) {
-      if (request.contains(schema)
-          && OwaspSupport.declares(schema, type)
-          && unlimited.test(schema)) {
-        findings.add(Findings.in(schema, OwaspSupport.key(schema, TYPE), message));
+    for (final Nodes.Located located : Nodes.resolved(document, document.root())) {
+      final DocNode node = located.node();
+      if (hasType(document, node, type) && !satisfied.test(node)) {
+        findings.add(Findings.atValue(node, message));
       }
     }
     return findings;
   }
 
-  private static List<OpenApiFinding> all(
-      final OpenApiDocument document,
-      final String type,
-      final Predicate<DocNode> flagged,
-      final String message) {
-    final List<OpenApiFinding> findings = new ArrayList<>();
-    for (final DocNode schema : SchemaWalk.schemas(document)) {
-      if (OwaspSupport.declares(schema, type) && flagged.test(schema)) {
-        findings.add(Findings.in(schema, OwaspSupport.key(schema, TYPE), message));
+  private static boolean hasType(
+      final OpenApiDocument document, final DocNode node, final String type) {
+    final DocNode declared =
+        node.kind() == DocNode.Kind.OBJECT ? node.get(TYPE).orElse(null) : null;
+    if (declared == null) {
+      return false;
+    }
+    if (declared.kind() == DocNode.Kind.STRING) {
+      return type.equals(declared.text());
+    }
+    return document.isVersion31()
+        && declared.kind() == DocNode.Kind.ARRAY
+        && declared.items().stream().anyMatch(item -> type.equals(item.text()));
+  }
+
+  private static boolean hasAny(final DocNode node, final String... keys) {
+    for (final String key : keys) {
+      if (node.get(key).isPresent()) {
+        return true;
       }
     }
-    return findings;
+    return false;
   }
 
-  private static boolean boundsIncomplete(final DocNode schema) {
-    final String bits =
-        flag(schema, "minimum")
-            + flag(schema, "maximum")
-            + flag(schema, "exclusiveMinimum")
-            + flag(schema, "exclusiveMaximum");
-    return INCOMPLETE_BOUNDS.contains(bits);
-  }
-
-  private static String flag(final DocNode schema, final String key) {
-    return schema.get(key).isPresent() ? "1" : "0";
+  private static boolean exactlyOne(final DocNode node, final String first, final String second) {
+    return node.get(first).isPresent() != node.get(second).isPresent();
   }
 }

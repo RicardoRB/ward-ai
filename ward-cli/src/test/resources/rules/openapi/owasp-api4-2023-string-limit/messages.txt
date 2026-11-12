@@ -1,0 +1,1 @@
+11:20	Schema of type string must specify maxLength, enum, or const.

@@ -1,0 +1,4 @@
+7:15	Not all server's variables are described with "variables" object. Missed: version.
+9:18	Server Variable "region" has a default not listed in the enum.
+11:13	Server's "variables" object has unused defined "stale" url variable.
+13:5	Not all server's variables are described with "variables" object. Missed: host.

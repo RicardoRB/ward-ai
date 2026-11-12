@@ -1,0 +1,10 @@
+openapi: 3.1.0
+info:
+  title: T
+  version: "1"
+paths: {}
+components:
+  schemas:
+    Closed:
+      type: object
+      unevaluatedProperties: false

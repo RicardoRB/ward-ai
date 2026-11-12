@@ -1,0 +1,25 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths:
+  /pets:
+    get:
+      security:
+        - key: []
+      responses:
+        "200":
+          description: ok
+  /admin/pets:
+    get:
+      security:
+        - key: []
+      responses:
+        "200":
+          description: ok
+    post:
+      security:
+        - admin: []
+      responses:
+        "200":
+          description: ok

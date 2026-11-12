@@ -219,3 +219,124 @@ presets = ["standard", "strict"]
 body = '''
 check = "openapi-owasp-api4-2023-rate-limit-retry-after"
 '''
+
+[[rules]]
+id = "ward:openapi/owasp-api2-2023-short-lived-access-tokens"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api2-2023-short-lived-access-tokens"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api2-2023-write-restricted"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api2-2023-write-restricted"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api2-2023-read-restricted"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api2-2023-read-restricted"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api3-2023-constrained-unevaluated-properties"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api3-2023-constrained-unevaluated-properties"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api3-2023-no-unevaluated-properties"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api3-2023-no-unevaluated-properties"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api4-2023-integer-limit-legacy"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api4-2023-integer-limit-legacy"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api5-2023-admin-security-unique"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api5-2023-admin-security-unique"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api7-2023-concerning-url-parameter"
+language = "openapi"
+capability = "SYNTAX"
+severity = "note"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api7-2023-concerning-url-parameter"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api8-2023-define-cors-origin"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api8-2023-define-cors-origin"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api9-2023-inventory-access"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api9-2023-inventory-access"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api9-2023-inventory-environment"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api9-2023-inventory-environment"
+'''

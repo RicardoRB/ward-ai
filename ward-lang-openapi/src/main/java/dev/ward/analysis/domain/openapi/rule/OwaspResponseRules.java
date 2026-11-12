@@ -1,116 +1,143 @@
 package dev.ward.analysis.domain.openapi.rule;
 
-import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.openapi.DocNode;
 import dev.ward.analysis.domain.openapi.OpenApiDocument;
-import dev.ward.analysis.domain.openapi.OpenApiParts.Operation;
+import dev.ward.analysis.domain.openapi.OpenApiDocument.View;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
-/** The OWASP rules about error responses and rate-limit headers. */
+/** The OWASP rules about responses: rate limits, error responses and CORS. */
 final class OwaspResponseRules {
 
   private static final String RESPONSES = "responses";
-  private static final String UNAUTHORIZED = "401";
+  private static final String HEADERS = "headers";
+  private static final String CONTENT = "content";
+  private static final Pattern SUCCESS_OR_CLIENT_ERROR = Pattern.compile("^(2|4)");
+  private static final List<List<String>> RATE_LIMITS =
+      List.of(
+          List.of("RateLimit"),
+          List.of("RateLimit-Limit", "RateLimit-Reset"),
+          List.of("X-RateLimit-Limit"),
+          List.of("X-Rate-Limit-Limit"));
+  private static final List<String> VALIDATION = List.of("400", "422", "4XX");
 
   private OwaspResponseRules() {}
 
-  /** {@code owasp-define-error-responses-401}: an operation that needs auth defines a 401. */
-  static List<OpenApiFinding> unauthorized(final OpenApiDocument document) {
-    return errorResponse(document, UNAUTHORIZED);
+  /** {@code owasp-api4-2023-rate-limit}: a 2xx or 4xx response names one rate limit header set. */
+  static List<OpenApiFinding> rateLimit(final OpenApiDocument document) {
+    final List<OpenApiFinding> findings = new ArrayList<>();
+    final String message = "All 2XX and 4XX responses should define rate limiting headers.";
+    for (final DocNode responses : responses(document)) {
+      for (final DocNode.Entry entry : responses.entries()) {
+        if (!SUCCESS_OR_CLIENT_ERROR.matcher(entry.key()).find()) {
+          continue;
+        }
+        final DocNode response = document.resolve(entry.value());
+        final Optional<DocNode> headers = document.get(response, HEADERS, View.RESOLVED);
+        if (headers.isEmpty()) {
+          findings.add(Findings.atValue(response, message));
+        } else if (!oneSet(headers.get())) {
+          findings.add(Findings.atValue(headers.get(), message));
+        }
+      }
+    }
+    return findings;
   }
 
-  /** {@code owasp-define-error-responses-500}: an operation defines a 500. */
-  static List<OpenApiFinding> serverError(final OpenApiDocument document) {
-    return errorResponse(document, "500");
+  private static boolean oneSet(final DocNode headers) {
+    return headers.kind() == DocNode.Kind.OBJECT
+        && RATE_LIMITS.stream()
+                .filter(set -> set.stream().allMatch(name -> headers.get(name).isPresent()))
+                .count()
+            == 1;
   }
 
-  /** {@code owasp-define-error-responses-429}: an operation defines a 429. */
+  /** {@code owasp-api4-2023-rate-limit-retry-after}: a 429 with headers has Retry-After. */
+  static List<OpenApiFinding> retryAfter(final OpenApiDocument document) {
+    final List<OpenApiFinding> findings = new ArrayList<>();
+    for (final Nodes.Located located : Nodes.resolved(document, document.root())) {
+      if (RESPONSES.equals(located.key())) {
+        located
+            .node()
+            .get("429")
+            .flatMap(response -> document.get(response, HEADERS, View.RESOLVED))
+            .filter(headers -> headers.kind() == DocNode.Kind.OBJECT)
+            .filter(headers -> headers.get("Retry-After").isEmpty())
+            .ifPresent(
+                headers ->
+                    findings.add(
+                        Findings.atValue(
+                            headers, "A 429 response should define a Retry-After header.")));
+      }
+    }
+    return findings;
+  }
+
+  /** {@code owasp-api4-2023-rate-limit-responses-429}: a 429 response with content exists. */
   static List<OpenApiFinding> tooManyRequests(final OpenApiDocument document) {
-    return errorResponse(document, "429");
+    return withContent(document, "429", "Operation is missing rate limiting response in ");
   }
 
-  /** {@code owasp-define-error-validation}: an operation defines a 400, 422 or 4XX response. */
+  /** {@code owasp-api8-2023-define-error-responses-401}: a 401 response with content exists. */
+  static List<OpenApiFinding> unauthorized(final OpenApiDocument document) {
+    return withContent(document, "401", "Operation is missing ");
+  }
+
+  /** {@code owasp-api8-2023-define-error-responses-500}: a 500 response with content exists. */
+  static List<OpenApiFinding> serverError(final OpenApiDocument document) {
+    return withContent(document, "500", "Operation is missing ");
+  }
+
+  private static List<OpenApiFinding> withContent(
+      final OpenApiDocument document, final String code, final String lead) {
+    final List<OpenApiFinding> findings = new ArrayList<>();
+    for (final DocNode responses : responses(document)) {
+      findings.addAll(
+          Fields.requireTruthy(document, responses, lead + "responses[" + code + "].", code));
+      findings.addAll(
+          Fields.requireTruthy(
+              document, responses, lead + "responses[" + code + "].content.", code, CONTENT));
+    }
+    return findings;
+  }
+
+  /** {@code owasp-api8-2023-define-error-validation}: a 400, 422 or 4XX response exists. */
   static List<OpenApiFinding> errorValidation(final OpenApiDocument document) {
     final List<OpenApiFinding> findings = new ArrayList<>();
-    for (final Operation operation : document.parts().operations()) {
-      final Optional<DocNode> responses = operation.node().get(RESPONSES).map(document::resolve);
-      if (responses.isPresent()
-          && List.of("400", "422", "4XX").stream()
-              .noneMatch(code -> responses.get().get(code).isPresent())) {
+    for (final DocNode responses : responses(document)) {
+      if (responses.kind() != DocNode.Kind.OBJECT
+          || VALIDATION.stream().noneMatch(code -> responses.get(code).isPresent())) {
         findings.add(
-            Findings.in(
-                operation.node(),
-                OwaspSupport.key(operation.node(), RESPONSES),
-                "missing one of `400`, `422`, `4XX` response codes"));
+            Findings.atValue(responses, "Missing error response of either 400, 422 or 4XX."));
       }
     }
     return findings;
   }
 
-  private static List<OpenApiFinding> errorResponse(
-      final OpenApiDocument document, final String code) {
+  /** {@code owasp-api8-2023-define-cors-origin}: every headers object has the CORS header. */
+  static List<OpenApiFinding> corsOrigin(final OpenApiDocument document) {
     final List<OpenApiFinding> findings = new ArrayList<>();
-    for (final Operation operation : document.parts().operations()) {
-      if (UNAUTHORIZED.equals(code) && anonymous(operation.node())) {
-        continue;
-      }
-      final Optional<DocNode> responses = operation.node().get(RESPONSES).map(document::resolve);
-      if (responses.isPresent()) {
-        errorFinding(document, operation, responses.get(), code).ifPresent(findings::add);
+    for (final Nodes.Located located : Nodes.resolved(document, document.root())) {
+      if (HEADERS.equals(located.key())) {
+        findings.addAll(
+            Fields.requireTruthy(
+                document,
+                located.node(),
+                "Header `headers.Access-Control-Allow-Origin` should be defined on all responses.",
+                "Access-Control-Allow-Origin"));
       }
     }
     return findings;
   }
 
-  private static Optional<OpenApiFinding> errorFinding(
-      final OpenApiDocument document,
-      final Operation operation,
-      final DocNode responses,
-      final String code) {
-    final String method = operation.method().toUpperCase(Locale.ROOT);
-    final Optional<DocNode> found = responses.get(code);
-    if (found.isEmpty()) {
-      return Optional.of(
-          Findings.in(
-              operation.node(),
-              OwaspSupport.key(operation.node(), RESPONSES),
-              "missing response code `" + code + "` for `" + method + "`"));
+  /** The {@code responses} objects below {@code paths}, in file order. */
+  private static List<DocNode> responses(final OpenApiDocument document) {
+    final List<DocNode> found = new ArrayList<>();
+    for (final DocNode.Entry path : document.parts().paths()) {
+      found.addAll(Nodes.named(document, path.value(), RESPONSES));
     }
-    final DocNode response = document.resolve(found.get());
-    final Optional<DocNode> content = response.get("content").map(document::resolve);
-    final boolean hasSchema =
-        content.isPresent()
-            && !content.get().entries().isEmpty()
-            && document
-                .resolve(content.get().entries().getFirst().value())
-                .get("schema")
-                .isPresent();
-    if (hasSchema) {
-      return Optional.empty();
-    }
-    final Span at =
-        content.isPresent() ? OwaspSupport.key(response, "content") : keyOf(responses, code);
-    return Optional.of(
-        Findings.in(
-            response, at, "missing schema for `" + code + "` response on `" + method + "`"));
-  }
-
-  /** Tells whether the security of an operation lets everyone in: empty, or only empty items. */
-  private static boolean anonymous(final DocNode operation) {
-    final Optional<DocNode> security = operation.get("security");
-    return security.isPresent()
-        && (security.get().items().isEmpty()
-            || security.get().items().stream().allMatch(item -> item.entries().isEmpty()));
-  }
-
-  private static Span keyOf(final DocNode node, final String key) {
-    return node.entries().stream()
-        .filter(entry -> key.equals(entry.key()))
-        .findFirst()
-        .orElseThrow()
-        .keySpan();
+    return found;
   }
 }

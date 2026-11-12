@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/** {@code oas3-unused-component}: every reusable component is referenced somewhere. */
+/** The rule that finds a reusable component nothing refers to. */
 final class UnusedComponentRules {
 
   private static final List<String> SECTIONS =
@@ -23,30 +23,26 @@ final class UnusedComponentRules {
 
   private UnusedComponentRules() {}
 
-  /** Reports the components no {@code $ref} of the loaded files points at. */
+  /** {@code oas3-unused-component}: a component is the target of some {@code $ref}. */
   static List<OpenApiFinding> unused(final OpenApiDocument document) {
-    final Set<String> referenced = new HashSet<>();
-    for (final DocNode root : document.files().values()) {
-      collect(root, referenced);
+    final Set<String> targets = new HashSet<>();
+    for (final DocNode file : document.files().values()) {
+      for (final Nodes.Located located : Nodes.raw(file)) {
+        document
+            .target(located.node())
+            .ifPresent(target -> targets.add(target.file() + "#" + target.pointer()));
+      }
     }
     final List<OpenApiFinding> findings = new ArrayList<>();
     for (final String section : SECTIONS) {
       for (final DocNode.Entry component : document.parts().component(section)) {
-        final String reference = "#/components/" + section + "/" + component.key();
-        if (!referenced.contains(reference)) {
+        if (!targets.contains(component.value().file() + "#" + component.value().pointer())) {
           findings.add(
-              Findings.in(
-                  component.value(),
-                  component.keySpan(),
-                  "`" + reference + "` is potentially unused or has been orphaned"));
+              Findings.atValue(
+                  component.value(), "Potentially unused component has been detected."));
         }
       }
     }
     return findings;
-  }
-
-  private static void collect(final DocNode node, final Set<String> referenced) {
-    node.reference().ifPresent(referenced::add);
-    node.children().forEach(child -> collect(child, referenced));
   }
 }

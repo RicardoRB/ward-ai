@@ -1,0 +1,2 @@
+10:17	Enum value 1 must be "string".
+13:17	Enum value 2.5 must be "integer".

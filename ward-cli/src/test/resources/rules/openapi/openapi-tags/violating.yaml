@@ -2,7 +2,5 @@ openapi: 3.0.3
 info:
   title: T
   version: "1"
+tags: []
 paths: {}
-tags:
-  - name: a
-  - name: a
