@@ -4,10 +4,10 @@ owasp-array-limit = "implemented"
 owasp-auth-insecure-schemes = "implemented"
 owasp-auth-urls-https = "implemented"
 owasp-constrained-additional-properties = "implemented"
-owasp-define-error-responses-401 = { status = "planned", issue = "#522" }
-owasp-define-error-responses-429 = { status = "planned", issue = "#522" }
-owasp-define-error-responses-500 = { status = "planned", issue = "#522" }
-owasp-define-error-validation = { status = "planned", issue = "#522" }
+owasp-define-error-responses-401 = "implemented"
+owasp-define-error-responses-429 = "implemented"
+owasp-define-error-responses-500 = "implemented"
+owasp-define-error-validation = "implemented"
 owasp-integer-format = "implemented"
 owasp-integer-limit = "implemented"
 owasp-jwt-best-practices = "implemented"
@@ -18,11 +18,11 @@ owasp-no-http-basic = "implemented"
 owasp-no-numeric-ids = "implemented"
 owasp-oauth-no-implicit = "implemented"
 owasp-oauth-no-password = "implemented"
-owasp-protection-global-safe = { status = "planned", issue = "#522" }
-owasp-protection-global-unsafe = { status = "planned", issue = "#522" }
-owasp-protection-global-unsafe-strict = { status = "planned", issue = "#522" }
-owasp-rate-limit = { status = "planned", issue = "#522" }
-owasp-rate-limit-retry-after = { status = "planned", issue = "#522" }
+owasp-protection-global-safe = "implemented"
+owasp-protection-global-unsafe = "implemented"
+owasp-protection-global-unsafe-strict = "implemented"
+owasp-rate-limit = "implemented"
+owasp-rate-limit-retry-after = "implemented"
 owasp-security-hosts-https-oas3 = "implemented"
 owasp-string-limit = "implemented"
 owasp-string-restricted = "implemented"

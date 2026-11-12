@@ -186,3 +186,102 @@ presets = ["standard", "strict"]
 body = '''
 check = "openapi-owasp-constrained-additional-properties"
 '''
+
+[[rules]]
+id = "ward:openapi/owasp-protection-global-unsafe"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-protection-global-unsafe"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-protection-global-unsafe-strict"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-protection-global-unsafe-strict"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-protection-global-safe"
+language = "openapi"
+capability = "SYNTAX"
+severity = "note"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-protection-global-safe"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-define-error-validation"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-define-error-validation"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-define-error-responses-401"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-define-error-responses-401"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-define-error-responses-500"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-define-error-responses-500"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-define-error-responses-429"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-define-error-responses-429"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-rate-limit"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-rate-limit"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-rate-limit-retry-after"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-rate-limit-retry-after"
+'''

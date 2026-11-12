@@ -14,6 +14,7 @@ public final class OpenApiRules {
     register1(rules);
     register2(rules);
     register3(rules);
+    register4(rules);
     return Map.copyOf(rules);
   }
 
@@ -61,20 +62,29 @@ public final class OpenApiRules {
     rules.put(
         "owasp-constrained-additional-properties",
         OwaspAdditionalPropertiesRules::constrainedAdditionalProperties);
+    rules.put("owasp-define-error-responses-401", OwaspResponseRules::unauthorized);
+    rules.put("owasp-define-error-responses-429", OwaspResponseRules::tooManyRequests);
+    rules.put("owasp-define-error-responses-500", OwaspResponseRules::serverError);
+    rules.put("owasp-define-error-validation", OwaspResponseRules::errorValidation);
     rules.put("owasp-integer-format", OwaspSchemaRules::integerFormat);
     rules.put("owasp-integer-limit", OwaspSchemaRules::integerLimit);
+  }
+
+  private static void register3(final Map<String, OpenApiRule> rules) {
     rules.put("owasp-jwt-best-practices", OwaspSchemeRules::jwtBestPractices);
     rules.put(
         "owasp-no-additional-properties", OwaspAdditionalPropertiesRules::noAdditionalProperties);
     rules.put("owasp-no-api-keys-in-url", OwaspSchemeRules::noApiKeysInUrl);
     rules.put("owasp-no-credentials-in-url", OwaspUrlRules::noCredentialsInUrl);
-  }
-
-  private static void register3(final Map<String, OpenApiRule> rules) {
     rules.put("owasp-no-http-basic", OwaspSchemeRules::noHttpBasic);
     rules.put("owasp-no-numeric-ids", OwaspUrlRules::noNumericIds);
     rules.put("owasp-oauth-no-implicit", OwaspOAuthRules::oauthNoImplicit);
     rules.put("owasp-oauth-no-password", OwaspOAuthRules::oauthNoPassword);
+    rules.put("owasp-protection-global-safe", OwaspSecurityRules::safe);
+    rules.put("owasp-protection-global-unsafe", OwaspSecurityRules::unsafe);
+    rules.put("owasp-protection-global-unsafe-strict", OwaspSecurityRules::unsafeStrict);
+    rules.put("owasp-rate-limit", OwaspRateLimitRules::rateLimit);
+    rules.put("owasp-rate-limit-retry-after", OwaspRateLimitRules::retryAfter);
     rules.put("owasp-security-hosts-https-oas3", OwaspUrlRules::hostsHttps);
     rules.put("owasp-string-limit", OwaspSchemaRules::stringLimit);
     rules.put("owasp-string-restricted", OwaspSchemaRules::stringRestricted);
@@ -84,6 +94,9 @@ public final class OpenApiRules {
     rules.put("paths-kebab-case", PathRules::kebabCase);
     rules.put("post-response-success", ResponseRules::postSuccess);
     rules.put("required-fields-defined", SchemaShapeRules::requiredDefined);
+  }
+
+  private static void register4(final Map<String, OpenApiRule> rules) {
     rules.put("tag-description", TagRules::description);
     rules.put("typed-enum", EnumRules::typed);
   }

@@ -18,26 +18,18 @@ vacuum = ["owasp-constrained-additionalProperties"]
 
 [[rule]]
 name = "owasp-define-error-responses-401"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-define-error-responses-401"]
 
 [[rule]]
 name = "owasp-define-error-responses-429"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-define-error-responses-429"]
 
 [[rule]]
 name = "owasp-define-error-responses-500"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-define-error-responses-500"]
 
 [[rule]]
 name = "owasp-define-error-validation"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-define-error-validation"]
 
 [[rule]]
@@ -82,32 +74,22 @@ vacuum = ["owasp-oauth-no-password"]
 
 [[rule]]
 name = "owasp-protection-global-safe"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-protection-global-safe"]
 
 [[rule]]
 name = "owasp-protection-global-unsafe"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-protection-global-unsafe"]
 
 [[rule]]
 name = "owasp-protection-global-unsafe-strict"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-protection-global-unsafe-strict"]
 
 [[rule]]
 name = "owasp-rate-limit"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-rate-limit"]
 
 [[rule]]
 name = "owasp-rate-limit-retry-after"
-presets = ["standard", "strict"]
-category = "security"
 vacuum = ["owasp-rate-limit-retry-after"]
 
 [[rule]]

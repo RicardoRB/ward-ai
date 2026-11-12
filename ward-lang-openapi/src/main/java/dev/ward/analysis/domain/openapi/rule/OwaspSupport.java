@@ -61,4 +61,12 @@ final class OwaspSupport {
                 type.equals(node.text())
                     || node.items().stream().anyMatch(item -> type.equals(item.text())));
   }
+
+  static List<DocNode.Entry> responses(final OpenApiDocument document, final DocNode operation) {
+    return operation
+        .get("responses")
+        .map(document::resolve)
+        .map(DocNode::entries)
+        .orElse(List.of());
+  }
 }

@@ -33181,6 +33181,82 @@
         }
       }
     },
+    "ward:openapi/owasp-define-error-responses-401": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-define-error-responses-429": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-define-error-responses-500": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-define-error-validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:openapi/owasp-integer-format": {
       "type": "object",
       "additionalProperties": false,
@@ -33353,6 +33429,101 @@
       }
     },
     "ward:openapi/owasp-oauth-no-password": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-protection-global-safe": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-protection-global-unsafe": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-protection-global-unsafe-strict": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-rate-limit": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/owasp-rate-limit-retry-after": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -55040,6 +55211,10 @@
               "openapi.owasp-auth-insecure-schemes",
               "openapi.owasp-auth-urls-https",
               "openapi.owasp-constrained-additional-properties",
+              "openapi.owasp-define-error-responses-401",
+              "openapi.owasp-define-error-responses-429",
+              "openapi.owasp-define-error-responses-500",
+              "openapi.owasp-define-error-validation",
               "openapi.owasp-integer-format",
               "openapi.owasp-integer-limit",
               "openapi.owasp-jwt-best-practices",
@@ -55050,6 +55225,11 @@
               "openapi.owasp-no-numeric-ids",
               "openapi.owasp-oauth-no-implicit",
               "openapi.owasp-oauth-no-password",
+              "openapi.owasp-protection-global-safe",
+              "openapi.owasp-protection-global-unsafe",
+              "openapi.owasp-protection-global-unsafe-strict",
+              "openapi.owasp-rate-limit",
+              "openapi.owasp-rate-limit-retry-after",
               "openapi.owasp-security-hosts-https-oas3",
               "openapi.owasp-string-limit",
               "openapi.owasp-string-restricted",
@@ -57762,6 +57942,10 @@
               "openapi.owasp-auth-insecure-schemes",
               "openapi.owasp-auth-urls-https",
               "openapi.owasp-constrained-additional-properties",
+              "openapi.owasp-define-error-responses-401",
+              "openapi.owasp-define-error-responses-429",
+              "openapi.owasp-define-error-responses-500",
+              "openapi.owasp-define-error-validation",
               "openapi.owasp-integer-format",
               "openapi.owasp-integer-limit",
               "openapi.owasp-jwt-best-practices",
@@ -57772,6 +57956,11 @@
               "openapi.owasp-no-numeric-ids",
               "openapi.owasp-oauth-no-implicit",
               "openapi.owasp-oauth-no-password",
+              "openapi.owasp-protection-global-safe",
+              "openapi.owasp-protection-global-unsafe",
+              "openapi.owasp-protection-global-unsafe-strict",
+              "openapi.owasp-rate-limit",
+              "openapi.owasp-rate-limit-retry-after",
               "openapi.owasp-security-hosts-https-oas3",
               "openapi.owasp-string-limit",
               "openapi.owasp-string-restricted",
@@ -63881,6 +64070,18 @@
             "owasp-constrained-additional-properties": {
               "$ref": "#/$defs/ward:openapi~1owasp-constrained-additional-properties"
             },
+            "owasp-define-error-responses-401": {
+              "$ref": "#/$defs/ward:openapi~1owasp-define-error-responses-401"
+            },
+            "owasp-define-error-responses-429": {
+              "$ref": "#/$defs/ward:openapi~1owasp-define-error-responses-429"
+            },
+            "owasp-define-error-responses-500": {
+              "$ref": "#/$defs/ward:openapi~1owasp-define-error-responses-500"
+            },
+            "owasp-define-error-validation": {
+              "$ref": "#/$defs/ward:openapi~1owasp-define-error-validation"
+            },
             "owasp-integer-format": {
               "$ref": "#/$defs/ward:openapi~1owasp-integer-format"
             },
@@ -63910,6 +64111,21 @@
             },
             "owasp-oauth-no-password": {
               "$ref": "#/$defs/ward:openapi~1owasp-oauth-no-password"
+            },
+            "owasp-protection-global-safe": {
+              "$ref": "#/$defs/ward:openapi~1owasp-protection-global-safe"
+            },
+            "owasp-protection-global-unsafe": {
+              "$ref": "#/$defs/ward:openapi~1owasp-protection-global-unsafe"
+            },
+            "owasp-protection-global-unsafe-strict": {
+              "$ref": "#/$defs/ward:openapi~1owasp-protection-global-unsafe-strict"
+            },
+            "owasp-rate-limit": {
+              "$ref": "#/$defs/ward:openapi~1owasp-rate-limit"
+            },
+            "owasp-rate-limit-retry-after": {
+              "$ref": "#/$defs/ward:openapi~1owasp-rate-limit-retry-after"
             },
             "owasp-security-hosts-https-oas3": {
               "$ref": "#/$defs/ward:openapi~1owasp-security-hosts-https-oas3"
