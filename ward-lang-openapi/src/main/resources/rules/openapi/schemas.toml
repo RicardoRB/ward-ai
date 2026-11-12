@@ -1,10 +1,10 @@
-# OpenAPI lint rules (schemas), ported from the vacuum 0.39.3 rules of the same id. Each rule is a project check over the loaded document model.
+# OpenAPI lint rules (schemas), ported from the Spectral 6.17.1 rules of the same id. Each rule is a project check over the loaded document model.
 
 [[rules]]
 id = "ward:openapi/duplicated-entry-in-enum"
 language = "openapi"
 capability = "SYNTAX"
-severity = "error"
+severity = "warning"
 category = "correctness"
 presets = ["standard", "strict"]
 body = '''
@@ -20,72 +20,6 @@ category = "correctness"
 presets = ["standard", "strict"]
 body = '''
 check = "openapi-typed-enum"
-'''
-
-[[rules]]
-id = "ward:openapi/nullable-enum-contains-null"
-language = "openapi"
-capability = "SYNTAX"
-severity = "warning"
-category = "correctness"
-presets = ["standard", "strict"]
-body = '''
-check = "openapi-nullable-enum-contains-null"
-'''
-
-[[rules]]
-id = "ward:openapi/camel-case-properties"
-language = "openapi"
-capability = "SYNTAX"
-severity = "warning"
-category = "style"
-presets = ["standard", "strict"]
-body = '''
-check = "openapi-camel-case-properties"
-'''
-
-[[rules]]
-id = "ward:openapi/required-fields-defined"
-language = "openapi"
-capability = "SYNTAX"
-severity = "warning"
-category = "correctness"
-presets = ["standard", "strict"]
-body = '''
-check = "openapi-required-fields-defined"
-'''
-
-[[rules]]
-id = "ward:openapi/oas-missing-type"
-language = "openapi"
-capability = "SYNTAX"
-severity = "note"
-category = "correctness"
-presets = ["standard", "strict"]
-body = '''
-check = "openapi-oas-missing-type"
-'''
-
-[[rules]]
-id = "ward:openapi/no-unnecessary-combinator"
-language = "openapi"
-capability = "SYNTAX"
-severity = "warning"
-category = "style"
-presets = ["standard", "strict"]
-body = '''
-check = "openapi-no-unnecessary-combinator"
-'''
-
-[[rules]]
-id = "ward:openapi/allof-conflicts"
-language = "openapi"
-capability = "SYNTAX"
-severity = "error"
-category = "correctness"
-presets = ["standard", "strict"]
-body = '''
-check = "openapi-allof-conflicts"
 '''
 
 [[rules]]

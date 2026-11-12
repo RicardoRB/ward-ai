@@ -13,35 +13,11 @@ import java.util.Set;
 /** The rules about how operations and their parameters are written. */
 final class OperationStructureRules {
 
-  private static final List<String> METHODS =
-      List.of("get", "put", "post", "delete", "options", "head", "patch", "trace");
   private static final String IN = "in";
   private static final String BODY = "body";
   private static final String FORM_DATA = "formData";
 
   private OperationStructureRules() {}
-
-  /** {@code path-item-refs}: only a path item, never an operation, is a {@code $ref}. */
-  static List<OpenApiFinding> pathItemRefs(final OpenApiDocument document) {
-    final List<OpenApiFinding> findings = new ArrayList<>();
-    for (final DocNode.Entry path : document.parts().paths()) {
-      for (final DocNode.Entry method : document.resolve(path.value()).entries()) {
-        if (METHODS.contains(method.key()) && method.value().reference().isPresent()) {
-          findings.add(
-              Findings.in(
-                  method.value(),
-                  method.keySpan(),
-                  "`"
-                      + method.key().toUpperCase(Locale.ROOT)
-                      + "` operation at path `"
-                      + path.key()
-                      + "` uses a $ref, which is not valid; $ref is only allowed on the path item"
-                      + " itself"));
-        }
-      }
-    }
-    return findings;
-  }
 
   /** {@code operation-parameters}: parameters have an {@code in} and are not repeated. */
   static List<OpenApiFinding> operationParameters(final OpenApiDocument document) {

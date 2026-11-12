@@ -73,22 +73,6 @@ final class InfoRules {
         .orElse(List.of());
   }
 
-  /** {@code info-license-spdx}: a {@code license} has a {@code url} or an {@code identifier}. */
-  static List<OpenApiFinding> licenseSpdx(final OpenApiDocument document) {
-    return license(document, info(document))
-        .filter(
-            license ->
-                !Findings.text(license, "url").isEmpty()
-                    && !Findings.text(license, "identifier").isEmpty())
-        .map(
-            license ->
-                List.of(
-                    Findings.at(
-                        license,
-                        "`license` must contain either a `url` or an `identifier`, not both")))
-        .orElse(List.of());
-  }
-
   private static Optional<DocNode> info(final OpenApiDocument document) {
     return document.parts().info().map(document::resolve);
   }

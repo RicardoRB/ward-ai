@@ -24,21 +24,6 @@ class InfoAndServerRulesTest {
   }
 
   @Test
-  void licenseUrlAndSpdxCheckTheUrlAndTheIdentifier() {
-    assertThat(RuleFixtures.positions("license-url", HEAD + "  license:\n    name: n\n"))
-        .containsExactly("4:3");
-    assertThat(
-            RuleFixtures.positions(
-                "info-license-spdx",
-                HEAD + "  license:\n    name: n\n    url: u\n    identifier: i\n"))
-        .containsExactly("4:3");
-    assertThat(
-            RuleFixtures.positions(
-                "info-license-spdx", HEAD + "  license:\n    name: n\n    url: u\n"))
-        .isEmpty();
-  }
-
-  @Test
   void contactPropertiesNameWhatIsMissing() {
     assertThat(RuleFixtures.run("contact-properties", HEAD + "  contact:\n    name: n\n"))
         .extracting(OpenApiFinding::message)
@@ -73,7 +58,8 @@ class InfoAndServerRulesTest {
     final String servers =
         HEAD
             + "servers:\n  - url: https://a.example.com/v1/\n  - description: no url\n  - url: https://b.org\n";
-    assertThat(RuleFixtures.positions("oas3-host-not-example", servers)).containsExactly("5:10");
+    assertThat(RuleFixtures.positions("oas3-server-not-example-com", servers))
+        .containsExactly("5:10");
     assertThat(RuleFixtures.positions("oas3-server-trailing-slash", servers))
         .containsExactly("5:10");
   }

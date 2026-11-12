@@ -12,16 +12,6 @@ import java.util.Locale;
 final class DescriptionRules {
 
   private static final String DESCRIPTION = "description";
-  private static final List<String> COMPONENT_SECTIONS =
-      List.of(
-          "schemas",
-          "parameters",
-          "requestBodies",
-          "responses",
-          "examples",
-          "headers",
-          "links",
-          "securitySchemes");
 
   private DescriptionRules() {}
 
@@ -69,23 +59,6 @@ final class DescriptionRules {
                       + "` `responseBody` "
                       + at
                       + " is missing a `description`"));
-        }
-      }
-    }
-    return findings;
-  }
-
-  /** {@code component-description}: the reusable components are described. */
-  static List<OpenApiFinding> component(final OpenApiDocument document) {
-    final List<OpenApiFinding> findings = new ArrayList<>();
-    for (final String section : COMPONENT_SECTIONS) {
-      for (final DocNode.Entry entry : document.parts().component(section)) {
-        if (Findings.text(document.resolve(entry.value()), DESCRIPTION).isEmpty()) {
-          findings.add(
-              Findings.in(
-                  entry.value(),
-                  entry.keySpan(),
-                  "`" + section + "` component `" + entry.key() + "` is missing a description"));
         }
       }
     }

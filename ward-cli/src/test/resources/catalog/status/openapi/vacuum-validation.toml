@@ -1,5 +1,0 @@
-# Status of the vacuum-validation rows in openapi: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
-
-no-eval-in-markdown = "implemented"
-no-script-tags-in-markdown = "implemented"
-oas3-api-servers = "implemented"

@@ -25,18 +25,4 @@ class PathRulesTest {
     assertThat(RuleFixtures.positions("path-not-include-query", paths("'/a?x'", "/b")))
         .containsExactly("3:3");
   }
-
-  @Test
-  void kebabCaseNamesTheBadStaticSegmentsAndSkipsTemplates() {
-    assertThat(RuleFixtures.run("paths-kebab-case", paths("/Ab/cd_e/{Id}/ok-1.2")))
-        .extracting(OpenApiFinding::message)
-        .containsExactly("path segments `Ab`, `cd_e` do not use kebab-case");
-  }
-
-  @Test
-  void aSegmentThatIsAnHttpVerbIsFoundInAnyCase() {
-    assertThat(RuleFixtures.run("no-http-verbs-in-path", paths("/a/Get/b", "/c")))
-        .extracting(OpenApiFinding::message)
-        .containsExactly("path `/a/Get/b` contains an HTTP Verb `Get`");
-  }
 }

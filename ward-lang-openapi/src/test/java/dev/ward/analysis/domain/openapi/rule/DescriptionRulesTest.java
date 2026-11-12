@@ -29,19 +29,6 @@ class DescriptionRulesTest {
   }
 
   @Test
-  void componentsOfEverySectionNeedADescription() {
-    final String spec =
-        HEAD
-            + "components:\n  schemas:\n    A:\n      type: object\n  headers:\n    H:\n      schema: {}\n"
-            + "  responses:\n    R:\n      description: d\n";
-    assertThat(RuleFixtures.run("component-description", spec))
-        .extracting(OpenApiFinding::message)
-        .containsExactly(
-            "`schemas` component `A` is missing a description",
-            "`headers` component `H` is missing a description");
-  }
-
-  @Test
   void parametersAreCheckedInComponentsPathItemsAndOperations() {
     final String spec =
         HEAD

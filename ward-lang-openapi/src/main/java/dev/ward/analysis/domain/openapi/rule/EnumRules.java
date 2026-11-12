@@ -68,25 +68,6 @@ final class EnumRules {
     return findings;
   }
 
-  /** {@code nullable-enum-contains-null}: a nullable enum lists {@code null}. */
-  static List<OpenApiFinding> nullable(final OpenApiDocument document) {
-    final List<OpenApiFinding> findings = new ArrayList<>();
-    for (final DocNode schema : SchemaWalk.schemas(document)) {
-      final Optional<DocNode> values =
-          schema.get(ENUM).filter(node -> node.kind() == DocNode.Kind.ARRAY);
-      if (values.isPresent()
-          && isNullable(schema)
-          && values.get().items().stream().noneMatch(item -> item.kind() == DocNode.Kind.NULL)) {
-        findings.add(
-            Findings.atValue(
-                schema,
-                "enum is defined as nullable but does not contain a `null` value. Nullable enums"
-                    + " must explicitly include `null` in the enum array (not the string \"null\")"));
-      }
-    }
-    return findings;
-  }
-
   private static Set<String> duplicates(final List<DocNode> items) {
     final Set<String> seen = new LinkedHashSet<>();
     final Set<String> duplicates = new LinkedHashSet<>();
@@ -118,14 +99,5 @@ final class EnumRules {
 
   private static boolean matches(final String declared, final String actual) {
     return declared.equals(actual) || "number".equals(declared) && "integer".equals(actual);
-  }
-
-  private static boolean isNullable(final DocNode schema) {
-    final boolean flag =
-        schema.get("nullable").map(node -> "true".equals(node.text())).orElse(false);
-    return flag
-        || schema.get("type").stream()
-            .flatMap(type -> type.items().stream())
-            .anyMatch(item -> "null".equals(item.text()));
   }
 }

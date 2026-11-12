@@ -24,44 +24,6 @@ class ResponseAndIdRulesTest {
   }
 
   @Test
-  void clientErrorResponseWants4xxAndSkipsAnOperationWithoutResponses() {
-    final String spec =
-        HEAD
-            + "    get:\n      responses:\n        '200':\n          description: d\n"
-            + "    post:\n      responses:\n        '404':\n          description: d\n"
-            + "    put:\n      operationId: p\n";
-    assertThat(RuleFixtures.positions("operation-4xx-response", spec)).containsExactly("5:7");
-  }
-
-  @Test
-  void postSuccessCountsTheCodesOfEveryPostLikeVacuumDoes() {
-    final String spec =
-        HEAD + "    post:\n      responses:\n        default:\n          description: d\n";
-    assertThat(RuleFixtures.run("post-response-success", spec))
-        .extracting(OpenApiFinding::message)
-        .singleElement()
-        .asString()
-        .startsWith(
-            "operations must define a success response with one of the following codes: '2XX");
-    assertThat(RuleFixtures.run("post-response-success", HEAD + "    get:\n      responses: {}\n"))
-        .isEmpty();
-  }
-
-  @Test
-  void aRequestBodyOnAGetOrDeleteIsReported() {
-    final String spec =
-        HEAD
-            + "    get:\n      requestBody:\n        content: {}\n"
-            + "    post:\n      requestBody:\n        content: {}\n"
-            + "    delete:\n      requestBody:\n        content: {}\n";
-    assertThat(RuleFixtures.run("no-request-body", spec))
-        .extracting(OpenApiFinding::message)
-        .containsExactly(
-            "`GET` operation should not have a requestBody defined",
-            "`DELETE` operation should not have a requestBody defined");
-  }
-
-  @Test
   void operationIdsMustBeUniqueAndUrlFriendly() {
     final String spec =
         HEAD

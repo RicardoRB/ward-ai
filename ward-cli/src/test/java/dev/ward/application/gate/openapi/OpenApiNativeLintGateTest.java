@@ -79,7 +79,7 @@ class OpenApiNativeLintGateTest {
 
     final GateResult result = fixture.lint();
 
-    assertThat(result.status()).isEqualTo(GateStatus.PASSED);
+    assertThat(result.status()).isEqualTo(GateStatus.FAILED);
     assertThat(result.findings().items())
         .extracting(Finding::ruleId)
         .containsExactly("ward:openapi/info-contact");

@@ -1,4 +1,4 @@
-# OpenAPI lint rules (tags), ported from the vacuum 0.39.3 rules of the same id. Each rule is a project check over the loaded document model.
+# OpenAPI lint rules (tags), ported from the Spectral 6.17.1 rules of the same id. Each rule is a project check over the loaded document model.
 
 [[rules]]
 id = "ward:openapi/openapi-tags"
@@ -15,7 +15,7 @@ check = "openapi-openapi-tags"
 id = "ward:openapi/openapi-tags-alphabetical"
 language = "openapi"
 capability = "SYNTAX"
-severity = "note"
+severity = "warning"
 category = "docs"
 presets = ["standard", "strict"]
 body = '''

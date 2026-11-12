@@ -1,0 +1,33 @@
+# Status of the spectral-owasp rows in openapi: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+owasp-api1-2023-no-numeric-ids = "implemented"
+owasp-api2-2023-auth-insecure-schemes = "implemented"
+owasp-api2-2023-jwt-best-practices = "implemented"
+owasp-api2-2023-no-api-keys-in-url = "implemented"
+owasp-api2-2023-no-credentials-in-url = "implemented"
+owasp-api2-2023-no-http-basic = "implemented"
+owasp-api2-2023-read-restricted = { status = "planned", issue = "#522" }
+owasp-api2-2023-short-lived-access-tokens = { status = "planned", issue = "#522" }
+owasp-api2-2023-write-restricted = { status = "planned", issue = "#522" }
+owasp-api3-2023-constrained-additional-properties = "implemented"
+owasp-api3-2023-constrained-unevaluated-properties = { status = "planned", issue = "#522" }
+owasp-api3-2023-no-additional-properties = "implemented"
+owasp-api3-2023-no-unevaluated-properties = { status = "planned", issue = "#522" }
+owasp-api4-2023-array-limit = "implemented"
+owasp-api4-2023-integer-format = "implemented"
+owasp-api4-2023-integer-limit = "implemented"
+owasp-api4-2023-integer-limit-legacy = { status = "planned", issue = "#522" }
+owasp-api4-2023-rate-limit = "implemented"
+owasp-api4-2023-rate-limit-responses-429 = "implemented"
+owasp-api4-2023-rate-limit-retry-after = "implemented"
+owasp-api4-2023-string-limit = "implemented"
+owasp-api4-2023-string-restricted = "implemented"
+owasp-api5-2023-admin-security-unique = { status = "planned", issue = "#522" }
+owasp-api7-2023-concerning-url-parameter = { status = "planned", issue = "#522" }
+owasp-api8-2023-define-cors-origin = { status = "planned", issue = "#522" }
+owasp-api8-2023-define-error-responses-401 = "implemented"
+owasp-api8-2023-define-error-responses-500 = "implemented"
+owasp-api8-2023-define-error-validation = "implemented"
+owasp-api8-2023-no-server-http = "implemented"
+owasp-api9-2023-inventory-access = { status = "planned", issue = "#522" }
+owasp-api9-2023-inventory-environment = { status = "planned", issue = "#522" }

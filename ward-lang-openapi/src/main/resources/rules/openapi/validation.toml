@@ -1,4 +1,4 @@
-# OpenAPI lint rules (validation), ported from the vacuum 0.39.3 rules of the same id. Each rule is a project check over the loaded document model.
+# OpenAPI lint rules (validation), ported from the Spectral 6.17.1 rules of the same id. Each rule is a project check over the loaded document model.
 
 [[rules]]
 id = "ward:openapi/oas3-api-servers"
@@ -15,7 +15,7 @@ check = "openapi-oas3-api-servers"
 id = "ward:openapi/no-eval-in-markdown"
 language = "openapi"
 capability = "SYNTAX"
-severity = "error"
+severity = "warning"
 category = "correctness"
 presets = ["standard", "strict"]
 body = '''
@@ -26,7 +26,7 @@ check = "openapi-no-eval-in-markdown"
 id = "ward:openapi/no-script-tags-in-markdown"
 language = "openapi"
 capability = "SYNTAX"
-severity = "error"
+severity = "warning"
 category = "correctness"
 presets = ["standard", "strict"]
 body = '''

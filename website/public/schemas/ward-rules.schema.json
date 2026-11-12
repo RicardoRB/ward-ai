@@ -32459,83 +32459,7 @@
         }
       }
     },
-    "ward:openapi/allof-conflicts": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:openapi/camel-case-properties": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:openapi/component-description": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:openapi/contact-properties": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:openapi/description-duplication": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -32630,45 +32554,7 @@
         }
       }
     },
-    "ward:openapi/info-license-spdx": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:openapi/license-url": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:openapi/no-ambiguous-paths": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -32706,44 +32592,6 @@
         }
       }
     },
-    "ward:openapi/no-http-verbs-in-path": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:openapi/no-request-body": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:openapi/no-script-tags-in-markdown": {
       "type": "object",
       "additionalProperties": false,
@@ -32763,83 +32611,7 @@
         }
       }
     },
-    "ward:openapi/no-unnecessary-combinator": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:openapi/nullable-enum-contains-null": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:openapi/oas-missing-type": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:openapi/oas3-api-servers": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:openapi/oas3-host-not-example": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -32878,6 +32650,25 @@
       }
     },
     "ward:openapi/oas3-parameter-description": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/oas3-server-not-example-com": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -32954,25 +32745,6 @@
       }
     },
     "ward:openapi/openapi-tags-alphabetical": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:openapi/operation-4xx-response": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33162,7 +32934,7 @@
         }
       }
     },
-    "ward:openapi/owasp-array-limit": {
+    "ward:openapi/owasp-api1-2023-no-numeric-ids": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33181,7 +32953,7 @@
         }
       }
     },
-    "ward:openapi/owasp-auth-insecure-schemes": {
+    "ward:openapi/owasp-api2-2023-auth-insecure-schemes": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33200,7 +32972,7 @@
         }
       }
     },
-    "ward:openapi/owasp-auth-urls-https": {
+    "ward:openapi/owasp-api2-2023-jwt-best-practices": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33219,7 +32991,7 @@
         }
       }
     },
-    "ward:openapi/owasp-constrained-additional-properties": {
+    "ward:openapi/owasp-api2-2023-no-api-keys-in-url": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33238,7 +33010,7 @@
         }
       }
     },
-    "ward:openapi/owasp-define-error-responses-401": {
+    "ward:openapi/owasp-api2-2023-no-credentials-in-url": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33257,7 +33029,7 @@
         }
       }
     },
-    "ward:openapi/owasp-define-error-responses-429": {
+    "ward:openapi/owasp-api2-2023-no-http-basic": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33276,7 +33048,7 @@
         }
       }
     },
-    "ward:openapi/owasp-define-error-responses-500": {
+    "ward:openapi/owasp-api3-2023-constrained-additional-properties": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33295,7 +33067,7 @@
         }
       }
     },
-    "ward:openapi/owasp-define-error-validation": {
+    "ward:openapi/owasp-api3-2023-no-additional-properties": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33314,7 +33086,7 @@
         }
       }
     },
-    "ward:openapi/owasp-integer-format": {
+    "ward:openapi/owasp-api4-2023-array-limit": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33333,7 +33105,7 @@
         }
       }
     },
-    "ward:openapi/owasp-integer-limit": {
+    "ward:openapi/owasp-api4-2023-integer-format": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33352,7 +33124,7 @@
         }
       }
     },
-    "ward:openapi/owasp-jwt-best-practices": {
+    "ward:openapi/owasp-api4-2023-integer-limit": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33371,7 +33143,7 @@
         }
       }
     },
-    "ward:openapi/owasp-no-additional-properties": {
+    "ward:openapi/owasp-api4-2023-rate-limit": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33390,7 +33162,7 @@
         }
       }
     },
-    "ward:openapi/owasp-no-api-keys-in-url": {
+    "ward:openapi/owasp-api4-2023-rate-limit-responses-429": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33409,7 +33181,7 @@
         }
       }
     },
-    "ward:openapi/owasp-no-credentials-in-url": {
+    "ward:openapi/owasp-api4-2023-rate-limit-retry-after": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33428,7 +33200,7 @@
         }
       }
     },
-    "ward:openapi/owasp-no-http-basic": {
+    "ward:openapi/owasp-api4-2023-string-limit": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33447,7 +33219,7 @@
         }
       }
     },
-    "ward:openapi/owasp-no-numeric-ids": {
+    "ward:openapi/owasp-api4-2023-string-restricted": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33466,7 +33238,7 @@
         }
       }
     },
-    "ward:openapi/owasp-oauth-no-implicit": {
+    "ward:openapi/owasp-api8-2023-define-error-responses-401": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33485,7 +33257,7 @@
         }
       }
     },
-    "ward:openapi/owasp-oauth-no-password": {
+    "ward:openapi/owasp-api8-2023-define-error-responses-500": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33504,7 +33276,7 @@
         }
       }
     },
-    "ward:openapi/owasp-protection-global-safe": {
+    "ward:openapi/owasp-api8-2023-define-error-validation": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33523,121 +33295,7 @@
         }
       }
     },
-    "ward:openapi/owasp-protection-global-unsafe": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:openapi/owasp-protection-global-unsafe-strict": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:openapi/owasp-rate-limit": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:openapi/owasp-rate-limit-retry-after": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:openapi/owasp-security-hosts-https-oas3": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:openapi/owasp-string-limit": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:openapi/owasp-string-restricted": {
+    "ward:openapi/owasp-api8-2023-no-server-http": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33657,25 +33315,6 @@
       }
     },
     "ward:openapi/path-declarations-must-exist": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:openapi/path-item-refs": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33733,82 +33372,6 @@
       }
     },
     "ward:openapi/path-params": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:openapi/paths-kebab-case": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:openapi/paths-specificity-order": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:openapi/post-response-success": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:openapi/required-fields-defined": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -55287,34 +54850,22 @@
               "kotlin.var-could-be-val",
               "kotlin.variable-declaration-usage-distance",
               "kotlin.wrong-equals-type-parameter",
-              "openapi.allof-conflicts",
-              "openapi.camel-case-properties",
-              "openapi.component-description",
               "openapi.contact-properties",
-              "openapi.description-duplication",
               "openapi.duplicated-entry-in-enum",
               "openapi.info-contact",
               "openapi.info-description",
               "openapi.info-license",
-              "openapi.info-license-spdx",
               "openapi.license-url",
-              "openapi.no-ambiguous-paths",
               "openapi.no-eval-in-markdown",
-              "openapi.no-http-verbs-in-path",
-              "openapi.no-request-body",
               "openapi.no-script-tags-in-markdown",
-              "openapi.no-unnecessary-combinator",
-              "openapi.nullable-enum-contains-null",
-              "openapi.oas-missing-type",
               "openapi.oas3-api-servers",
-              "openapi.oas3-host-not-example",
               "openapi.oas3-operation-security-defined",
               "openapi.oas3-parameter-description",
+              "openapi.oas3-server-not-example-com",
               "openapi.oas3-server-trailing-slash",
               "openapi.oas3-unused-component",
               "openapi.openapi-tags",
               "openapi.openapi-tags-alphabetical",
-              "openapi.operation-4xx-response",
               "openapi.operation-description",
               "openapi.operation-operation-id",
               "openapi.operation-operation-id-unique",
@@ -55324,41 +54875,30 @@
               "openapi.operation-success-response",
               "openapi.operation-tag-defined",
               "openapi.operation-tags",
-              "openapi.owasp-array-limit",
-              "openapi.owasp-auth-insecure-schemes",
-              "openapi.owasp-auth-urls-https",
-              "openapi.owasp-constrained-additional-properties",
-              "openapi.owasp-define-error-responses-401",
-              "openapi.owasp-define-error-responses-429",
-              "openapi.owasp-define-error-responses-500",
-              "openapi.owasp-define-error-validation",
-              "openapi.owasp-integer-format",
-              "openapi.owasp-integer-limit",
-              "openapi.owasp-jwt-best-practices",
-              "openapi.owasp-no-additional-properties",
-              "openapi.owasp-no-api-keys-in-url",
-              "openapi.owasp-no-credentials-in-url",
-              "openapi.owasp-no-http-basic",
-              "openapi.owasp-no-numeric-ids",
-              "openapi.owasp-oauth-no-implicit",
-              "openapi.owasp-oauth-no-password",
-              "openapi.owasp-protection-global-safe",
-              "openapi.owasp-protection-global-unsafe",
-              "openapi.owasp-protection-global-unsafe-strict",
-              "openapi.owasp-rate-limit",
-              "openapi.owasp-rate-limit-retry-after",
-              "openapi.owasp-security-hosts-https-oas3",
-              "openapi.owasp-string-limit",
-              "openapi.owasp-string-restricted",
+              "openapi.owasp-api1-2023-no-numeric-ids",
+              "openapi.owasp-api2-2023-auth-insecure-schemes",
+              "openapi.owasp-api2-2023-jwt-best-practices",
+              "openapi.owasp-api2-2023-no-api-keys-in-url",
+              "openapi.owasp-api2-2023-no-credentials-in-url",
+              "openapi.owasp-api2-2023-no-http-basic",
+              "openapi.owasp-api3-2023-constrained-additional-properties",
+              "openapi.owasp-api3-2023-no-additional-properties",
+              "openapi.owasp-api4-2023-array-limit",
+              "openapi.owasp-api4-2023-integer-format",
+              "openapi.owasp-api4-2023-integer-limit",
+              "openapi.owasp-api4-2023-rate-limit",
+              "openapi.owasp-api4-2023-rate-limit-responses-429",
+              "openapi.owasp-api4-2023-rate-limit-retry-after",
+              "openapi.owasp-api4-2023-string-limit",
+              "openapi.owasp-api4-2023-string-restricted",
+              "openapi.owasp-api8-2023-define-error-responses-401",
+              "openapi.owasp-api8-2023-define-error-responses-500",
+              "openapi.owasp-api8-2023-define-error-validation",
+              "openapi.owasp-api8-2023-no-server-http",
               "openapi.path-declarations-must-exist",
-              "openapi.path-item-refs",
               "openapi.path-keys-no-trailing-slash",
               "openapi.path-not-include-query",
               "openapi.path-params",
-              "openapi.paths-kebab-case",
-              "openapi.paths-specificity-order",
-              "openapi.post-response-success",
-              "openapi.required-fields-defined",
               "openapi.tag-description",
               "openapi.typed-enum",
               "python.abbreviation-as-word-in-name",
@@ -58024,34 +57564,22 @@
               "kotlin.var-could-be-val",
               "kotlin.variable-declaration-usage-distance",
               "kotlin.wrong-equals-type-parameter",
-              "openapi.allof-conflicts",
-              "openapi.camel-case-properties",
-              "openapi.component-description",
               "openapi.contact-properties",
-              "openapi.description-duplication",
               "openapi.duplicated-entry-in-enum",
               "openapi.info-contact",
               "openapi.info-description",
               "openapi.info-license",
-              "openapi.info-license-spdx",
               "openapi.license-url",
-              "openapi.no-ambiguous-paths",
               "openapi.no-eval-in-markdown",
-              "openapi.no-http-verbs-in-path",
-              "openapi.no-request-body",
               "openapi.no-script-tags-in-markdown",
-              "openapi.no-unnecessary-combinator",
-              "openapi.nullable-enum-contains-null",
-              "openapi.oas-missing-type",
               "openapi.oas3-api-servers",
-              "openapi.oas3-host-not-example",
               "openapi.oas3-operation-security-defined",
               "openapi.oas3-parameter-description",
+              "openapi.oas3-server-not-example-com",
               "openapi.oas3-server-trailing-slash",
               "openapi.oas3-unused-component",
               "openapi.openapi-tags",
               "openapi.openapi-tags-alphabetical",
-              "openapi.operation-4xx-response",
               "openapi.operation-description",
               "openapi.operation-operation-id",
               "openapi.operation-operation-id-unique",
@@ -58061,41 +57589,30 @@
               "openapi.operation-success-response",
               "openapi.operation-tag-defined",
               "openapi.operation-tags",
-              "openapi.owasp-array-limit",
-              "openapi.owasp-auth-insecure-schemes",
-              "openapi.owasp-auth-urls-https",
-              "openapi.owasp-constrained-additional-properties",
-              "openapi.owasp-define-error-responses-401",
-              "openapi.owasp-define-error-responses-429",
-              "openapi.owasp-define-error-responses-500",
-              "openapi.owasp-define-error-validation",
-              "openapi.owasp-integer-format",
-              "openapi.owasp-integer-limit",
-              "openapi.owasp-jwt-best-practices",
-              "openapi.owasp-no-additional-properties",
-              "openapi.owasp-no-api-keys-in-url",
-              "openapi.owasp-no-credentials-in-url",
-              "openapi.owasp-no-http-basic",
-              "openapi.owasp-no-numeric-ids",
-              "openapi.owasp-oauth-no-implicit",
-              "openapi.owasp-oauth-no-password",
-              "openapi.owasp-protection-global-safe",
-              "openapi.owasp-protection-global-unsafe",
-              "openapi.owasp-protection-global-unsafe-strict",
-              "openapi.owasp-rate-limit",
-              "openapi.owasp-rate-limit-retry-after",
-              "openapi.owasp-security-hosts-https-oas3",
-              "openapi.owasp-string-limit",
-              "openapi.owasp-string-restricted",
+              "openapi.owasp-api1-2023-no-numeric-ids",
+              "openapi.owasp-api2-2023-auth-insecure-schemes",
+              "openapi.owasp-api2-2023-jwt-best-practices",
+              "openapi.owasp-api2-2023-no-api-keys-in-url",
+              "openapi.owasp-api2-2023-no-credentials-in-url",
+              "openapi.owasp-api2-2023-no-http-basic",
+              "openapi.owasp-api3-2023-constrained-additional-properties",
+              "openapi.owasp-api3-2023-no-additional-properties",
+              "openapi.owasp-api4-2023-array-limit",
+              "openapi.owasp-api4-2023-integer-format",
+              "openapi.owasp-api4-2023-integer-limit",
+              "openapi.owasp-api4-2023-rate-limit",
+              "openapi.owasp-api4-2023-rate-limit-responses-429",
+              "openapi.owasp-api4-2023-rate-limit-retry-after",
+              "openapi.owasp-api4-2023-string-limit",
+              "openapi.owasp-api4-2023-string-restricted",
+              "openapi.owasp-api8-2023-define-error-responses-401",
+              "openapi.owasp-api8-2023-define-error-responses-500",
+              "openapi.owasp-api8-2023-define-error-validation",
+              "openapi.owasp-api8-2023-no-server-http",
               "openapi.path-declarations-must-exist",
-              "openapi.path-item-refs",
               "openapi.path-keys-no-trailing-slash",
               "openapi.path-not-include-query",
               "openapi.path-params",
-              "openapi.paths-kebab-case",
-              "openapi.paths-specificity-order",
-              "openapi.post-response-success",
-              "openapi.required-fields-defined",
               "openapi.tag-description",
               "openapi.typed-enum",
               "python.abbreviation-as-word-in-name",
@@ -64082,20 +63599,8 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "allof-conflicts": {
-              "$ref": "#/$defs/ward:openapi~1allof-conflicts"
-            },
-            "camel-case-properties": {
-              "$ref": "#/$defs/ward:openapi~1camel-case-properties"
-            },
-            "component-description": {
-              "$ref": "#/$defs/ward:openapi~1component-description"
-            },
             "contact-properties": {
               "$ref": "#/$defs/ward:openapi~1contact-properties"
-            },
-            "description-duplication": {
-              "$ref": "#/$defs/ward:openapi~1description-duplication"
             },
             "duplicated-entry-in-enum": {
               "$ref": "#/$defs/ward:openapi~1duplicated-entry-in-enum"
@@ -64109,47 +63614,26 @@
             "info-license": {
               "$ref": "#/$defs/ward:openapi~1info-license"
             },
-            "info-license-spdx": {
-              "$ref": "#/$defs/ward:openapi~1info-license-spdx"
-            },
             "license-url": {
               "$ref": "#/$defs/ward:openapi~1license-url"
-            },
-            "no-ambiguous-paths": {
-              "$ref": "#/$defs/ward:openapi~1no-ambiguous-paths"
             },
             "no-eval-in-markdown": {
               "$ref": "#/$defs/ward:openapi~1no-eval-in-markdown"
             },
-            "no-http-verbs-in-path": {
-              "$ref": "#/$defs/ward:openapi~1no-http-verbs-in-path"
-            },
-            "no-request-body": {
-              "$ref": "#/$defs/ward:openapi~1no-request-body"
-            },
             "no-script-tags-in-markdown": {
               "$ref": "#/$defs/ward:openapi~1no-script-tags-in-markdown"
             },
-            "no-unnecessary-combinator": {
-              "$ref": "#/$defs/ward:openapi~1no-unnecessary-combinator"
-            },
-            "nullable-enum-contains-null": {
-              "$ref": "#/$defs/ward:openapi~1nullable-enum-contains-null"
-            },
-            "oas-missing-type": {
-              "$ref": "#/$defs/ward:openapi~1oas-missing-type"
-            },
             "oas3-api-servers": {
               "$ref": "#/$defs/ward:openapi~1oas3-api-servers"
-            },
-            "oas3-host-not-example": {
-              "$ref": "#/$defs/ward:openapi~1oas3-host-not-example"
             },
             "oas3-operation-security-defined": {
               "$ref": "#/$defs/ward:openapi~1oas3-operation-security-defined"
             },
             "oas3-parameter-description": {
               "$ref": "#/$defs/ward:openapi~1oas3-parameter-description"
+            },
+            "oas3-server-not-example-com": {
+              "$ref": "#/$defs/ward:openapi~1oas3-server-not-example-com"
             },
             "oas3-server-trailing-slash": {
               "$ref": "#/$defs/ward:openapi~1oas3-server-trailing-slash"
@@ -64162,9 +63646,6 @@
             },
             "openapi-tags-alphabetical": {
               "$ref": "#/$defs/ward:openapi~1openapi-tags-alphabetical"
-            },
-            "operation-4xx-response": {
-              "$ref": "#/$defs/ward:openapi~1operation-4xx-response"
             },
             "operation-description": {
               "$ref": "#/$defs/ward:openapi~1operation-description"
@@ -64193,89 +63674,68 @@
             "operation-tags": {
               "$ref": "#/$defs/ward:openapi~1operation-tags"
             },
-            "owasp-array-limit": {
-              "$ref": "#/$defs/ward:openapi~1owasp-array-limit"
+            "owasp-api1-2023-no-numeric-ids": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api1-2023-no-numeric-ids"
             },
-            "owasp-auth-insecure-schemes": {
-              "$ref": "#/$defs/ward:openapi~1owasp-auth-insecure-schemes"
+            "owasp-api2-2023-auth-insecure-schemes": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api2-2023-auth-insecure-schemes"
             },
-            "owasp-auth-urls-https": {
-              "$ref": "#/$defs/ward:openapi~1owasp-auth-urls-https"
+            "owasp-api2-2023-jwt-best-practices": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api2-2023-jwt-best-practices"
             },
-            "owasp-constrained-additional-properties": {
-              "$ref": "#/$defs/ward:openapi~1owasp-constrained-additional-properties"
+            "owasp-api2-2023-no-api-keys-in-url": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api2-2023-no-api-keys-in-url"
             },
-            "owasp-define-error-responses-401": {
-              "$ref": "#/$defs/ward:openapi~1owasp-define-error-responses-401"
+            "owasp-api2-2023-no-credentials-in-url": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api2-2023-no-credentials-in-url"
             },
-            "owasp-define-error-responses-429": {
-              "$ref": "#/$defs/ward:openapi~1owasp-define-error-responses-429"
+            "owasp-api2-2023-no-http-basic": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api2-2023-no-http-basic"
             },
-            "owasp-define-error-responses-500": {
-              "$ref": "#/$defs/ward:openapi~1owasp-define-error-responses-500"
+            "owasp-api3-2023-constrained-additional-properties": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api3-2023-constrained-additional-properties"
             },
-            "owasp-define-error-validation": {
-              "$ref": "#/$defs/ward:openapi~1owasp-define-error-validation"
+            "owasp-api3-2023-no-additional-properties": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api3-2023-no-additional-properties"
             },
-            "owasp-integer-format": {
-              "$ref": "#/$defs/ward:openapi~1owasp-integer-format"
+            "owasp-api4-2023-array-limit": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api4-2023-array-limit"
             },
-            "owasp-integer-limit": {
-              "$ref": "#/$defs/ward:openapi~1owasp-integer-limit"
+            "owasp-api4-2023-integer-format": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api4-2023-integer-format"
             },
-            "owasp-jwt-best-practices": {
-              "$ref": "#/$defs/ward:openapi~1owasp-jwt-best-practices"
+            "owasp-api4-2023-integer-limit": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api4-2023-integer-limit"
             },
-            "owasp-no-additional-properties": {
-              "$ref": "#/$defs/ward:openapi~1owasp-no-additional-properties"
+            "owasp-api4-2023-rate-limit": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api4-2023-rate-limit"
             },
-            "owasp-no-api-keys-in-url": {
-              "$ref": "#/$defs/ward:openapi~1owasp-no-api-keys-in-url"
+            "owasp-api4-2023-rate-limit-responses-429": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api4-2023-rate-limit-responses-429"
             },
-            "owasp-no-credentials-in-url": {
-              "$ref": "#/$defs/ward:openapi~1owasp-no-credentials-in-url"
+            "owasp-api4-2023-rate-limit-retry-after": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api4-2023-rate-limit-retry-after"
             },
-            "owasp-no-http-basic": {
-              "$ref": "#/$defs/ward:openapi~1owasp-no-http-basic"
+            "owasp-api4-2023-string-limit": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api4-2023-string-limit"
             },
-            "owasp-no-numeric-ids": {
-              "$ref": "#/$defs/ward:openapi~1owasp-no-numeric-ids"
+            "owasp-api4-2023-string-restricted": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api4-2023-string-restricted"
             },
-            "owasp-oauth-no-implicit": {
-              "$ref": "#/$defs/ward:openapi~1owasp-oauth-no-implicit"
+            "owasp-api8-2023-define-error-responses-401": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api8-2023-define-error-responses-401"
             },
-            "owasp-oauth-no-password": {
-              "$ref": "#/$defs/ward:openapi~1owasp-oauth-no-password"
+            "owasp-api8-2023-define-error-responses-500": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api8-2023-define-error-responses-500"
             },
-            "owasp-protection-global-safe": {
-              "$ref": "#/$defs/ward:openapi~1owasp-protection-global-safe"
+            "owasp-api8-2023-define-error-validation": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api8-2023-define-error-validation"
             },
-            "owasp-protection-global-unsafe": {
-              "$ref": "#/$defs/ward:openapi~1owasp-protection-global-unsafe"
-            },
-            "owasp-protection-global-unsafe-strict": {
-              "$ref": "#/$defs/ward:openapi~1owasp-protection-global-unsafe-strict"
-            },
-            "owasp-rate-limit": {
-              "$ref": "#/$defs/ward:openapi~1owasp-rate-limit"
-            },
-            "owasp-rate-limit-retry-after": {
-              "$ref": "#/$defs/ward:openapi~1owasp-rate-limit-retry-after"
-            },
-            "owasp-security-hosts-https-oas3": {
-              "$ref": "#/$defs/ward:openapi~1owasp-security-hosts-https-oas3"
-            },
-            "owasp-string-limit": {
-              "$ref": "#/$defs/ward:openapi~1owasp-string-limit"
-            },
-            "owasp-string-restricted": {
-              "$ref": "#/$defs/ward:openapi~1owasp-string-restricted"
+            "owasp-api8-2023-no-server-http": {
+              "$ref": "#/$defs/ward:openapi~1owasp-api8-2023-no-server-http"
             },
             "path-declarations-must-exist": {
               "$ref": "#/$defs/ward:openapi~1path-declarations-must-exist"
-            },
-            "path-item-refs": {
-              "$ref": "#/$defs/ward:openapi~1path-item-refs"
             },
             "path-keys-no-trailing-slash": {
               "$ref": "#/$defs/ward:openapi~1path-keys-no-trailing-slash"
@@ -64285,18 +63745,6 @@
             },
             "path-params": {
               "$ref": "#/$defs/ward:openapi~1path-params"
-            },
-            "paths-kebab-case": {
-              "$ref": "#/$defs/ward:openapi~1paths-kebab-case"
-            },
-            "paths-specificity-order": {
-              "$ref": "#/$defs/ward:openapi~1paths-specificity-order"
-            },
-            "post-response-success": {
-              "$ref": "#/$defs/ward:openapi~1post-response-success"
-            },
-            "required-fields-defined": {
-              "$ref": "#/$defs/ward:openapi~1required-fields-defined"
             },
             "tag-description": {
               "$ref": "#/$defs/ward:openapi~1tag-description"

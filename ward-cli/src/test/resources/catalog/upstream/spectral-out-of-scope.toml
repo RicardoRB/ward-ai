@@ -1,4 +1,4 @@
-# Rules of vacuum-0.39.3 that Ward does not implement, with the reason for each group.
+# Rules of Spectral 6.17.1 (spectral:oas with "all" and the OWASP ruleset 2.0.1) that Ward does not implement, with the reason for each group.
 
 [[group]]
 reason = "Swagger 2.0 documents are not supported: the gate ends with an execution error on them"
@@ -15,12 +15,13 @@ rules = [
   "oas2-parameter-description",
   "oas2-schema",
   "oas2-unused-definition",
+  "oas2-valid-media-example",
+  "oas2-valid-schema-example",
+  "owasp:api8:2023-no-scheme-http",
 ]
 
 [[group]]
-reason = "a migration helper for Zally ignore files, not a lint of the document"
-rules = ["migrate-zally-ignore"]
-
-[[group]]
-reason = "a duplicate key in one object, such as a path written twice, is an execution error of the parser before any rule runs, so the rule can never find one"
-rules = ["duplicate-paths"]
+reason = "OpenAPI 3.2 documents are not supported: the gate ends with an execution error on them"
+rules = [
+  "oas3_2-no-deprecated-xml-attribute",
+]

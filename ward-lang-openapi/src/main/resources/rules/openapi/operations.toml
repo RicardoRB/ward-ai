@@ -5,7 +5,7 @@
 id = "ward:openapi/operation-operation-id"
 language = "openapi"
 capability = "SYNTAX"
-severity = "error"
+severity = "warning"
 category = "correctness"
 presets = ["standard", "strict"]
 body = '''
@@ -16,7 +16,7 @@ check = "openapi-operation-operation-id"
 id = "ward:openapi/path-declarations-must-exist"
 language = "openapi"
 capability = "SYNTAX"
-severity = "error"
+severity = "warning"
 category = "correctness"
 presets = ["standard", "strict"]
 body = '''
@@ -38,55 +38,11 @@ check = "openapi-path-keys-no-trailing-slash"
 id = "ward:openapi/path-not-include-query"
 language = "openapi"
 capability = "SYNTAX"
-severity = "error"
+severity = "warning"
 category = "correctness"
 presets = ["standard", "strict"]
 body = '''
 check = "openapi-path-not-include-query"
-'''
-
-[[rules]]
-id = "ward:openapi/paths-kebab-case"
-language = "openapi"
-capability = "SYNTAX"
-severity = "warning"
-category = "style"
-presets = ["standard", "strict"]
-body = '''
-check = "openapi-paths-kebab-case"
-'''
-
-[[rules]]
-id = "ward:openapi/no-http-verbs-in-path"
-language = "openapi"
-capability = "SYNTAX"
-severity = "warning"
-category = "style"
-presets = ["standard", "strict"]
-body = '''
-check = "openapi-no-http-verbs-in-path"
-'''
-
-[[rules]]
-id = "ward:openapi/no-request-body"
-language = "openapi"
-capability = "SYNTAX"
-severity = "warning"
-category = "correctness"
-presets = ["standard", "strict"]
-body = '''
-check = "openapi-no-request-body"
-'''
-
-[[rules]]
-id = "ward:openapi/post-response-success"
-language = "openapi"
-capability = "SYNTAX"
-severity = "warning"
-category = "correctness"
-presets = ["standard", "strict"]
-body = '''
-check = "openapi-post-response-success"
 '''
 
 [[rules]]
@@ -101,21 +57,10 @@ check = "openapi-operation-success-response"
 '''
 
 [[rules]]
-id = "ward:openapi/operation-4xx-response"
-language = "openapi"
-capability = "SYNTAX"
-severity = "warning"
-category = "correctness"
-presets = ["standard", "strict"]
-body = '''
-check = "openapi-operation-4xx-response"
-'''
-
-[[rules]]
 id = "ward:openapi/operation-operation-id-valid-in-url"
 language = "openapi"
 capability = "SYNTAX"
-severity = "error"
+severity = "warning"
 category = "correctness"
 presets = ["standard", "strict"]
 body = '''
@@ -134,36 +79,14 @@ check = "openapi-operation-operation-id-unique"
 '''
 
 [[rules]]
-id = "ward:openapi/no-ambiguous-paths"
-language = "openapi"
-capability = "SYNTAX"
-severity = "error"
-category = "correctness"
-presets = ["standard", "strict"]
-body = '''
-check = "openapi-no-ambiguous-paths"
-'''
-
-[[rules]]
 id = "ward:openapi/operation-parameters"
-language = "openapi"
-capability = "SYNTAX"
-severity = "error"
-category = "correctness"
-presets = ["standard", "strict"]
-body = '''
-check = "openapi-operation-parameters"
-'''
-
-[[rules]]
-id = "ward:openapi/path-item-refs"
 language = "openapi"
 capability = "SYNTAX"
 severity = "warning"
 category = "correctness"
 presets = ["standard", "strict"]
 body = '''
-check = "openapi-path-item-refs"
+check = "openapi-operation-parameters"
 '''
 
 [[rules]]
@@ -177,13 +100,3 @@ body = '''
 check = "openapi-path-params"
 '''
 
-[[rules]]
-id = "ward:openapi/paths-specificity-order"
-language = "openapi"
-capability = "SYNTAX"
-severity = "note"
-category = "style"
-presets = ["standard", "strict"]
-body = '''
-check = "openapi-paths-specificity-order"
-'''

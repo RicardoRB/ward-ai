@@ -1,0 +1,44 @@
+# Status of the spectral-oas rows in openapi: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+array-items = { status = "planned", issue = "#522" }
+contact-properties = "implemented"
+duplicated-entry-in-enum = "implemented"
+info-contact = "implemented"
+info-description = "implemented"
+info-license = "implemented"
+license-url = "implemented"
+no-eval-in-markdown = "implemented"
+no-ref-siblings = { status = "planned", issue = "#522" }
+no-script-tags-in-markdown = "implemented"
+oas3-1-callbacks-in-webhook = { status = "planned", issue = "#522" }
+oas3-1-servers-in-webhook = { status = "planned", issue = "#522" }
+oas3-api-servers = "implemented"
+oas3-callbacks-in-callbacks = { status = "planned", issue = "#522" }
+oas3-examples-value-or-external-value = { status = "planned", issue = "#522" }
+oas3-operation-security-defined = "implemented"
+oas3-parameter-description = "implemented"
+oas3-schema = { status = "planned", issue = "#522" }
+oas3-server-not-example-com = "implemented"
+oas3-server-trailing-slash = "implemented"
+oas3-server-variables = { status = "planned", issue = "#522" }
+oas3-unused-component = "implemented"
+oas3-valid-media-example = { status = "planned", issue = "#522" }
+oas3-valid-schema-example = { status = "planned", issue = "#522" }
+openapi-tags = "implemented"
+openapi-tags-alphabetical = "implemented"
+openapi-tags-uniqueness = { status = "planned", issue = "#522" }
+operation-description = "implemented"
+operation-operation-id = "implemented"
+operation-operation-id-unique = "implemented"
+operation-operation-id-valid-in-url = "implemented"
+operation-parameters = "implemented"
+operation-singular-tag = "implemented"
+operation-success-response = "implemented"
+operation-tag-defined = "implemented"
+operation-tags = "implemented"
+path-declarations-must-exist = "implemented"
+path-keys-no-trailing-slash = "implemented"
+path-not-include-query = "implemented"
+path-params = "implemented"
+tag-description = "implemented"
+typed-enum = "implemented"

@@ -1,10 +1,10 @@
-# OpenAPI lint rules (information), ported from the vacuum 0.39.3 rules of the same id. Each rule is a project check over the loaded document model.
+# OpenAPI lint rules (information), ported from the Spectral 6.17.1 rules of the same id. Each rule is a project check over the loaded document model.
 
 [[rules]]
 id = "ward:openapi/contact-properties"
 language = "openapi"
 capability = "SYNTAX"
-severity = "note"
+severity = "warning"
 category = "docs"
 presets = ["standard", "strict"]
 body = '''
@@ -15,7 +15,7 @@ check = "openapi-contact-properties"
 id = "ward:openapi/info-contact"
 language = "openapi"
 capability = "SYNTAX"
-severity = "note"
+severity = "warning"
 category = "docs"
 presets = ["standard", "strict"]
 body = '''
@@ -26,7 +26,7 @@ check = "openapi-info-contact"
 id = "ward:openapi/info-description"
 language = "openapi"
 capability = "SYNTAX"
-severity = "error"
+severity = "warning"
 category = "docs"
 presets = ["standard", "strict"]
 body = '''
@@ -37,7 +37,7 @@ check = "openapi-info-description"
 id = "ward:openapi/info-license"
 language = "openapi"
 capability = "SYNTAX"
-severity = "note"
+severity = "warning"
 category = "docs"
 presets = ["standard", "strict"]
 body = '''
@@ -45,21 +45,10 @@ check = "openapi-info-license"
 '''
 
 [[rules]]
-id = "ward:openapi/info-license-spdx"
-language = "openapi"
-capability = "SYNTAX"
-severity = "error"
-category = "docs"
-presets = ["standard", "strict"]
-body = '''
-check = "openapi-info-license-spdx"
-'''
-
-[[rules]]
 id = "ward:openapi/license-url"
 language = "openapi"
 capability = "SYNTAX"
-severity = "note"
+severity = "warning"
 category = "docs"
 presets = ["standard", "strict"]
 body = '''
@@ -67,14 +56,14 @@ check = "openapi-license-url"
 '''
 
 [[rules]]
-id = "ward:openapi/oas3-host-not-example"
+id = "ward:openapi/oas3-server-not-example-com"
 language = "openapi"
 capability = "SYNTAX"
 severity = "warning"
 category = "correctness"
 presets = ["standard", "strict"]
 body = '''
-check = "openapi-oas3-host-not-example"
+check = "openapi-oas3-server-not-example-com"
 '''
 
 [[rules]]
