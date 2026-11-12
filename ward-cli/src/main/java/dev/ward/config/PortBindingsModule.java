@@ -10,6 +10,7 @@ import dagger.Module;
       TraceabilityBindingsModule.class,
       ProvenanceBindingsModule.class,
       GateBindingsModule.class,
+      ApiCompatBindingsModule.class,
       GateExtensionBindingsModule.class,
       RuleBindingsModule.class,
       GateExtensionsModule.class,

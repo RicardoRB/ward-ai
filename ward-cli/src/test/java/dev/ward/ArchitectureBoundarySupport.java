@@ -36,6 +36,7 @@ final class ArchitectureBoundarySupport {
           "dev.ward.config.TraceabilityBindingsModule",
           "dev.ward.config.ProvenanceBindingsModule",
           "dev.ward.config.GateBindingsModule",
+          "dev.ward.config.ApiCompatBindingsModule",
           "dev.ward.config.GateExtensionBindingsModule",
           "dev.ward.config.RuleBindingsModule",
           "dev.ward.config.GateExtensionsModule",

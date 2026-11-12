@@ -10,20 +10,14 @@ import dev.ward.application.gate.AnalysisPorts;
 import dev.ward.application.gate.AnalysisResultCodec;
 import dev.ward.application.gate.AnalysisRuleSource;
 import dev.ward.application.gate.AnalysisSourceUnits;
-import dev.ward.application.gate.apicompat.ApiSurfaces;
-import dev.ward.domain.gate.MainSourceRoots;
-import dev.ward.domain.gate.WorkingFiles;
 import dev.ward.domain.secrets.GitHistory;
 import dev.ward.infrastructure.analysis.GateFrontends;
 import dev.ward.infrastructure.analysis.JsonAnalysisResultCodec;
 import dev.ward.infrastructure.analysis.JvmDependencyAdapters;
 import dev.ward.infrastructure.analysis.ProjectDependencyAdapters;
-import dev.ward.infrastructure.analysis.jvm.JvmApiSurfaces;
-import dev.ward.infrastructure.analysis.jvm.JvmSourceLayouts;
 import dev.ward.infrastructure.analysis.node.NodeDependencyAdapters;
 import dev.ward.infrastructure.analysis.python.PythonDependencyAdapters;
 import dev.ward.infrastructure.analysis.swift.SwiftDependencyAdapters;
-import dev.ward.infrastructure.gate.FileSystemWorkingFiles;
 import dev.ward.infrastructure.rule.BundledRuleMatchers;
 import dev.ward.infrastructure.rule.FileAnalysisCache;
 import dev.ward.infrastructure.rule.FileSystemSourceUnits;
@@ -46,18 +40,6 @@ interface GateExtensionBindingsModule {
 
   @Binds
   AnalysisResultCodec analysisResultCodec(JsonAnalysisResultCodec implementation);
-
-  @Binds
-  WorkingFiles workingFiles(FileSystemWorkingFiles implementation);
-
-  @Binds
-  ApiSurfaces apiSurfaces(JvmApiSurfaces implementation);
-
-  /** The main source roots come from the text of the build file, read at any revision. */
-  @Provides
-  static MainSourceRoots mainSourceRoots() {
-    return JvmSourceLayouts::mainRoots;
-  }
 
   @Binds
   GitHistory gitHistory(GitCliHistory implementation);
