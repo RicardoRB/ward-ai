@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
  *
  * @param id the stable id, {@code ward:<language>/<rule>}, or {@code ward:architecture/<rule>} for
  *     a rule covering several languages
- * @param languages the languages the rule applies to, never empty
+ * @param languages the languages the rule applies to; empty exactly for capability {@code TEXT}
  * @param capability the one capability the rule requires from its frontend
  * @param severity the severity of the rule's findings
  * @param body the declarative rule text, in the format the matcher understands
@@ -45,6 +45,9 @@ public record RuleDefinition(
 
   /** The id prefix of a rule that covers several languages. */
   public static final String CROSS_LANGUAGE = "architecture";
+
+  /** The id prefix of a rule with capability {@link RuleCapability#TEXT}. */
+  public static final String TEXT_PREFIX = "secrets";
 
   private static final Pattern ID = Pattern.compile("ward:([a-z]+)/([a-z][a-z0-9-]*)");
 
@@ -87,10 +90,14 @@ public record RuleDefinition(
     Objects.requireNonNull(severity, "severity");
     Objects.requireNonNull(body, "body");
     Objects.requireNonNull(category, "category");
-    if (languages.isEmpty()) {
-      throw new IllegalArgumentException("rule '" + id + "' must name at least one language");
+    final boolean text = capability == RuleCapability.TEXT;
+    if (languages.isEmpty() != text) {
+      throw new IllegalArgumentException(
+          text
+              ? "rule '" + id + "' reads text and must name no language"
+              : "rule '" + id + "' must name at least one language");
     }
-    final String prefix = prefixFor(languages);
+    final String prefix = text ? TEXT_PREFIX : prefixFor(languages);
     final Matcher matcher = ID.matcher(id);
     if (!matcher.matches() || !matcher.group(1).equals(prefix)) {
       throw new IllegalArgumentException(

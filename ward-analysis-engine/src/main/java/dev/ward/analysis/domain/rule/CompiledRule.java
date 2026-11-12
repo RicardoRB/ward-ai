@@ -2,6 +2,7 @@ package dev.ward.analysis.domain.rule;
 
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.ir.TextFile;
 import java.util.List;
 import java.util.SortedMap;
 
@@ -120,5 +121,16 @@ public interface CompiledRule {
   default List<ProjectMatch> project(
       final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
     return project(trees);
+  }
+
+  /**
+   * Returns the matches of this rule in the text of {@code file}. Only a rule with capability
+   * {@code TEXT} returns any.
+   *
+   * @throws dev.ward.analysis.domain.port.AnalysisFailedException if the rule cannot run on the
+   *     file; its message holds no text of the file
+   */
+  default List<RuleMatch> textMatches(final TextFile file) {
+    return List.of();
   }
 }

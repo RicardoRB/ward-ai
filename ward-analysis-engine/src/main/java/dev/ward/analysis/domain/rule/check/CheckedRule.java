@@ -2,6 +2,7 @@ package dev.ward.analysis.domain.rule.check;
 
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.ir.TextFile;
 import dev.ward.analysis.domain.rule.CompiledRule;
 import dev.ward.analysis.domain.rule.DependencyView;
 import dev.ward.analysis.domain.rule.FactNeed;
@@ -95,5 +96,10 @@ public final class CheckedRule implements CompiledRule {
   public List<ProjectMatch> project(
       final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
     return check instanceof ProjectCheck project ? project.project(trees, files) : List.of();
+  }
+
+  @Override
+  public List<RuleMatch> textMatches(final TextFile file) {
+    return check instanceof TextCheck text ? text.textMatches(file) : List.of();
   }
 }
