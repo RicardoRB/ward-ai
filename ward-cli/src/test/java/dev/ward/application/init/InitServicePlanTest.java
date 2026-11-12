@@ -80,9 +80,7 @@ class InitServicePlanTest {
         service(new PomToolConfigurator())
             .plan(dir, new InitSelection(List.of("none"), List.of("tests", "gitleaks")), false);
 
-    assertThat(plan.gateInstallations())
-        .extracting(installation -> installation.tool())
-        .containsExactly("gitleaks");
+    assertThat(plan.gateInstallations()).extracting("tool").containsExactly("gitleaks");
     assertThat(ProjectSnapshot.of(dir)).isEqualTo(before);
   }
 
