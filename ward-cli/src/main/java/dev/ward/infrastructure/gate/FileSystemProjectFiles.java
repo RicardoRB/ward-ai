@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
@@ -31,6 +32,22 @@ public final class FileSystemProjectFiles implements ProjectFiles {
           Level.WARNING,
           () -> "event=project-file-read-failed error=" + exception.getClass().getSimpleName());
       return false;
+    }
+  }
+
+  @Override
+  public Optional<String> read(final Path root, final String path) {
+    final Path file = root.resolve(path).normalize();
+    if (!file.startsWith(root.normalize())) {
+      return Optional.empty();
+    }
+    try {
+      return Optional.of(Files.readString(file, StandardCharsets.UTF_8));
+    } catch (IOException exception) {
+      LOGGER.log(
+          Level.FINE,
+          () -> "event=project-file-read-failed error=" + exception.getClass().getSimpleName());
+      return Optional.empty();
     }
   }
 }
