@@ -27,12 +27,12 @@ new-required-request-header-property = { status = "planned", issue = "#523" }
 new-required-request-parameter = { status = "planned", issue = "#523" }
 new-required-request-property = { status = "planned", issue = "#523" }
 new-required-request-property-with-default = { status = "planned", issue = "#523" }
-request-body-added-required = { status = "planned", issue = "#523" }
+request-body-added-required = "implemented"
 request-body-all-of-added = { status = "planned", issue = "#523" }
 request-body-any-of-removed = { status = "planned", issue = "#523" }
 request-body-became-enum = { status = "planned", issue = "#523" }
 request-body-became-not-nullable = { status = "planned", issue = "#523" }
-request-body-became-required = { status = "planned", issue = "#523" }
+request-body-became-required = "implemented"
 request-body-const-added = { status = "planned", issue = "#523" }
 request-body-const-changed = { status = "planned", issue = "#523" }
 request-body-contains-added = { status = "planned", issue = "#523" }
@@ -61,8 +61,8 @@ request-body-max-properties-decreased = { status = "planned", issue = "#523" }
 request-body-max-properties-set = { status = "planned", issue = "#523" }
 request-body-max-set = { status = "planned", issue = "#523" }
 request-body-media-type-item-schema-added = { status = "planned", issue = "#523" }
-request-body-media-type-removed = { status = "planned", issue = "#523" }
-request-body-media-type-schema-added = { status = "planned", issue = "#523" }
+request-body-media-type-removed = "implemented"
+request-body-media-type-schema-added = "implemented"
 request-body-min-contains-increased = { status = "planned", issue = "#523" }
 request-body-min-contains-set = { status = "planned", issue = "#523" }
 request-body-min-increased = { status = "planned", issue = "#523" }
@@ -78,7 +78,7 @@ request-body-multiple-of-set = { status = "planned", issue = "#523" }
 request-body-one-of-removed = { status = "planned", issue = "#523" }
 request-body-pattern-property-added = { status = "planned", issue = "#523" }
 request-body-property-names-added = { status = "planned", issue = "#523" }
-request-body-removed = { status = "planned", issue = "#523" }
+request-body-removed = "implemented"
 request-body-schema-became-false = { status = "planned", issue = "#523" }
 request-body-then-added = { status = "planned", issue = "#523" }
 request-body-type-changed = { status = "planned", issue = "#523" }

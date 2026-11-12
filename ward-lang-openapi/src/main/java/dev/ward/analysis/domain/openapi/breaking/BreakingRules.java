@@ -18,6 +18,7 @@ public final class BreakingRules {
     rules.addAll(SunsetRules.rules());
     rules.addAll(StabilityRules.rules());
     rules.addAll(WebhookRules.rules());
+    rules.addAll(RequestBodyRules.rules());
     return List.copyOf(rules);
   }
 
