@@ -24,15 +24,16 @@ class ExecutableGatePrerequisitesTest {
                 .run(
                     GatePrerequisiteFixtures.MAVEN,
                     List.of(
-                        GatePrerequisiteFixtures.gate("trivy", GatePrerequisiteFixtures.MISSING))));
+                        GatePrerequisiteFixtures.gate(
+                            "semgrep", GatePrerequisiteFixtures.MISSING))));
 
     assertThat(result.status()).isEqualTo(GateStatus.UNAVAILABLE);
     assertThat(result.summary())
-        .startsWith("Gate 'trivy' could not start 'trivy'.")
-        .contains("Install trivy:");
+        .startsWith("Gate 'semgrep' could not start 'semgrep'.")
+        .contains("Install semgrep:");
     assertThat(result.prerequisite().kind()).isEqualTo(GatePrerequisite.Kind.EXECUTABLE);
-    assertThat(result.prerequisite().executable()).isEqualTo("trivy");
-    assertThat(result.prerequisite().remediation()).contains("trivy");
+    assertThat(result.prerequisite().executable()).isEqualTo("semgrep");
+    assertThat(result.prerequisite().remediation()).contains("semgrep");
   }
 
   @Test
@@ -77,7 +78,8 @@ class ExecutableGatePrerequisitesTest {
                 .run(
                     GatePrerequisiteFixtures.MAVEN,
                     List.of(
-                        GatePrerequisiteFixtures.gate("trivy", GatePrerequisiteFixtures.MISSING))));
+                        GatePrerequisiteFixtures.gate(
+                            "semgrep", GatePrerequisiteFixtures.MISSING))));
 
     assertThat(result.prerequisite().kind()).isEqualTo(GatePrerequisite.Kind.EXECUTABLE);
   }
@@ -105,11 +107,11 @@ class ExecutableGatePrerequisitesTest {
               GatePrerequisiteFixtures.failing(), GatePrerequisiteFixtures.failing())
           .run(
               GatePrerequisiteFixtures.MAVEN,
-              List.of(GatePrerequisiteFixtures.gate("trivy", GatePrerequisiteFixtures.MISSING)));
+              List.of(GatePrerequisiteFixtures.gate("semgrep", GatePrerequisiteFixtures.MISSING)));
     } finally {
       logger.removeHandler(handler);
     }
 
-    assertThat(messages).containsExactly("event=gate-prerequisite gate=trivy kind=executable");
+    assertThat(messages).containsExactly("event=gate-prerequisite gate=semgrep kind=executable");
   }
 }

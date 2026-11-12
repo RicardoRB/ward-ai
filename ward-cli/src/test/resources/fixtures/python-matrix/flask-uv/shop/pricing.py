@@ -2,5 +2,7 @@
 
 
 def total(quantity: int, unit_price: int) -> int:
-    """Multiplies the quantity by the unit price."""
+    """Multiplies the quantity by the unit price; no quantity costs nothing."""
+    if quantity <= 0:
+        return 0
     return quantity * unit_price

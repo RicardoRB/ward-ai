@@ -27,15 +27,7 @@ import org.junit.jupiter.api.Test;
 class ExtendedGatesTest {
   private static final String TRIVY = "trivy";
   private static final List<String> GATE_IDENTIFIERS =
-      List.of(
-          "semgrep",
-          TRIVY,
-          "trivy",
-          "enforcer",
-          "license",
-          "api-compat",
-          "compliance",
-          "architecture");
+      List.of("semgrep", "enforcer", "license", "api-compat", "compliance", "architecture");
   private static final Project PROJECT =
       new Project(Path.of("/p"), Language.JAVA, BuildTool.MAVEN, Framework.NONE);
 
@@ -63,7 +55,7 @@ class ExtendedGatesTest {
     assertThatThrownBy(() -> factory.create(config("nope", List.of("x"))))
         .isInstanceOf(WardException.class)
         .hasMessageContaining(
-            TRIVY, "zap", "api-compat", "pmd", "openapi-lint", "openapi-diff", "openapi-compat");
+            "zap", "api-compat", "pmd", "openapi-lint", "openapi-diff", "openapi-compat");
   }
 
   @Test

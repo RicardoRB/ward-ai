@@ -17,4 +17,17 @@ interface Measure {
    */
   Optional<Violation> check(
       SyntaxNode node, MetricRule.Target target, boolean method, MetricRule rule);
+
+  /**
+   * Returns the measured value of {@code node} whether or not it breaks the limit, as a violation
+   * that carries it. A measure that has no value per node returns none, as this default method
+   * does.
+   */
+  default Optional<Violation> measured(
+      final SyntaxNode node,
+      final MetricRule.Target target,
+      final boolean method,
+      final MetricRule rule) {
+    return Optional.empty();
+  }
 }

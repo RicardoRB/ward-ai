@@ -38,7 +38,7 @@ class InitSetupCatalogTest {
 
   /** Python gates are offered by init only for Python projects (#136). */
   private static final Set<String> PYTHON_GATES =
-      Set.of("mypy", "pytest", "mutmut", "pip-audit", "django-check");
+      Set.of("mypy", "pytest", "mutmut", "django-check");
 
   private static final Set<String> ANDROID_GATES =
       Set.of(
@@ -221,9 +221,7 @@ class InitSetupCatalogTest {
                 .filter(id -> !ANDROID_GATES.contains(id))
                 .toList());
     assertThat(catalog.gate(project, "coverage").command())
-        .containsExactly("gradle", "jacocoTestCoverageVerification");
-    assertThat(catalog.gate(project, "dependency-check").command())
-        .containsExactly("gradle", "dependencyCheckAnalyze");
+        .containsExactly("gradle", "jacocoTestReport");
     assertThat(catalog.gate(project, "secrets").command()).isEmpty();
   }
 

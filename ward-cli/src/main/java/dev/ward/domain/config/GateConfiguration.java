@@ -35,6 +35,10 @@ import java.util.Set;
  * @param rulesFile the project-relative path of the rule configuration file, or {@code null} for
  *     {@code ward-rules.toml}; only {@code ward} checks read it
  * @param secrets the options of a {@code secrets} check; {@link SecretsOptions#NONE} for others
+ * @param crap the report paths and limit of a {@code crap} check, or {@code null} for others
+ * @param coverage the report paths and branch minimum of a {@code coverage} check, or {@code null}
+ *     for others
+ * @param vulnerabilities the options of a {@code vulnerabilities} check, or {@code null} for others
  */
 public record GateConfiguration(
     String name,
@@ -53,7 +57,10 @@ public record GateConfiguration(
     List<String> cycleRoots,
     List<List<String>> independence,
     String rulesFile,
-    SecretsOptions secrets) {
+    SecretsOptions secrets,
+    CrapOptions crap,
+    CoverageOptions coverage,
+    VulnerabilityOptions vulnerabilities) {
 
   /** Copies the command, profiles and rule ids, keeping their order. */
   public GateConfiguration {
@@ -91,6 +98,9 @@ public record GateConfiguration(
         null,
         null,
         List.of(),
+        null,
+        null,
+        null,
         null,
         null,
         null,

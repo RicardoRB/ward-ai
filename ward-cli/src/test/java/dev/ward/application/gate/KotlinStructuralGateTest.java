@@ -105,6 +105,9 @@ class KotlinStructuralGateTest {
             null,
             null,
             null,
+            null,
+            null,
+            null,
             null);
     return AnalysisGates.create(check, ports());
   }

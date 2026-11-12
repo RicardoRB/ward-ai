@@ -31,7 +31,16 @@ public class QualityGateFactory {
       Set.of(
           SupportedQualityGates.ANALYSIS,
           SupportedQualityGates.FORMAT,
-          SupportedQualityGates.SECRETS);
+          SupportedQualityGates.SECRETS,
+          SupportedQualityGates.CRAP,
+          SupportedQualityGates.COVERAGE,
+          SupportedQualityGates.VULNERABILITIES);
+  private static final Set<String> REPORTING_GATES =
+      Set.of(
+          SupportedQualityGates.SECRETS,
+          SupportedQualityGates.CRAP,
+          SupportedQualityGates.COVERAGE,
+          SupportedQualityGates.VULNERABILITIES);
 
   public static final List<String> SUPPORTED_GATES = SupportedQualityGates.IDS;
   private static final Set<String> PLATFORM_GATES =
@@ -242,15 +251,13 @@ public class QualityGateFactory {
   }
 
   /**
-   * Builds the gates that run inside Ward: the {@code ward} analysis, the {@code ward-format} and
-   * the {@code secrets} check.
+   * Builds the gates that run inside Ward: the {@code ward} analysis, the {@code ward-format}, the
+   * {@code secrets} check, the {@code crap} score and the {@code coverage} minimum, which reads its
+   * report itself.
    */
   private QualityGate inProcessGate(final GateConfiguration check, final List<String> focus) {
-    if (SupportedQualityGates.SECRETS.equals(check.type())) {
-      if (extensions.secrets() == null) {
-        throw new WardException("Secrets gate dependencies are unavailable.");
-      }
-      return extensions.secrets().create(check, focus);
+    if (REPORTING_GATES.contains(check.type())) {
+      return ReportingGates.create(check, focus, executor, reports, extensions);
     }
     if (!SupportedQualityGates.FORMAT.equals(check.type())) {
       return AnalysisGates.create(check, extensions.analysis(), focus);

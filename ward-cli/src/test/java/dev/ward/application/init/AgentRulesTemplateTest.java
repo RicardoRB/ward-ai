@@ -40,6 +40,21 @@ class AgentRulesTemplateTest {
   }
 
   @Test
+  void crapRuleIsNamedOnlyWhenTheGateIsSelected() {
+    final String with =
+        AgentRulesTemplate.render(
+                PROJECT, gates(List.of("coverage", "crap")), QualityPreset.STANDARD, List.of())
+            .body();
+    final String without =
+        AgentRulesTemplate.render(
+                PROJECT, gates(List.of("coverage")), QualityPreset.STANDARD, List.of())
+            .body();
+
+    assertThat(with).contains("CRAP (`crap`)", "never raise `max`");
+    assertThat(without).doesNotContain("CRAP");
+  }
+
+  @Test
   void strictSwiftRulesNameTheCoverageMinimumAndWarningsAsErrors() {
     final Project swift =
         new Project(Path.of("/p"), Language.SWIFT, BuildTool.SWIFTPM, Framework.NONE);

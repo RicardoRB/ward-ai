@@ -33,7 +33,7 @@ class PythonConfigFilesTest {
         .containsExactly(ROOT.resolve("mypy.ini"), ROOT.resolve(".coveragerc"));
     assertThat(targets.get(1).content())
         .startsWith("# managed-by: ward preset=standard\n")
-        .contains("fail_under = 80");
+        .doesNotContain("fail_under");
   }
 
   @Test

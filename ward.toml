@@ -70,21 +70,16 @@ enabled = true
 profiles = ["pre-push", "ci"]
 command = "./mvnw -B -q -Pnative -pl ward-cli -am -DskipTests package native:compile"
 
-[checks.secrets]
+[checks.gitleaks]
 enabled = true
 profiles = ["default", "pre-commit", "pre-push", "ci"]
-uses = "secrets"
-# The secret rules hold the literal prefix of the secrets they match, and their fixtures hold fake
-# secrets; no suppression comment exists, so both folders are excluded.
-exclude-paths = [
-  "ward-cli/src/main/resources/rules/secrets/**",
-  "ward-cli/src/test/resources/rules/secrets/**",
-]
+command = "gitleaks detect --no-banner --redact --report-format sarif --report-path target/gitleaks.sarif"
 
-# Ward scans the edited files itself; a change to the rule options scans everything.
-[checks.secrets.paths]
+# History scans miss uncommitted and staged edits, so edited and staged files are scanned directly.
+[checks.gitleaks.paths]
 match = ["**"]
-full = ["ward-rules.toml"]
+full = [".gitleaks*"]
+args = ["--no-git", "--config=.gitleaks.toml", "--source={paths}"]
 
 [checks.semgrep]
 enabled = true

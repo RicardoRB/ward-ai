@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.ProjectSnapshot;
 import dev.ward.infrastructure.cli.ExitCodes;
-import dev.ward.infrastructure.init.maven.PomToolConfigurator;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Map;
@@ -57,26 +56,6 @@ class InitDryRunTest {
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(init.output()).contains("install    openspec @fission-ai/openspec@");
-    assertThat(root.resolve(".ward")).doesNotExist();
-  }
-
-  @Test
-  void gateToolConsentDoesNotPlanAnOpenSpecInstallation() throws IOException {
-    final InitCommandFixture init = new InitCommandFixture(root, new PomToolConfigurator(), "brew");
-
-    final int exit =
-        init.run(
-            "",
-            "--dry-run",
-            "--integration",
-            "none",
-            "--gate",
-            "tests,trivy",
-            "--install-tool",
-            "trivy");
-
-    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
-    assertThat(init.output()).contains("brew install trivy").doesNotContain("openspec");
     assertThat(root.resolve(".ward")).doesNotExist();
   }
 }

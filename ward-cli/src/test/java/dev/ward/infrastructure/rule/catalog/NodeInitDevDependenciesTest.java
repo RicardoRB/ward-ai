@@ -42,7 +42,6 @@ final class NodeInitDevDependenciesTest {
   private static final String CASE_TEXT = "export const value = 1;\n";
   private static final String TSCONFIG = "tsconfig.json";
   private static final String VITEST_MJS = "vitest.config.mjs";
-  private static final String JEST_MJS = "jest.config.mjs";
   private static final String STRYKER_MJS = "stryker.config.mjs";
   private static final Map<String, RuleDefinition> RULES =
       CatalogRuleDefinitions.all().stream()
@@ -63,12 +62,12 @@ final class NodeInitDevDependenciesTest {
             TYPESCRIPT_FIXTURE,
             AnalysisLanguage.TYPESCRIPT,
             List.of("typescript", "vitest", "@vitest/coverage-v8"),
-            Map.of(VITEST_MJS, vitest(QualityPreset.STANDARD))),
+            Map.of(VITEST_MJS, vitest())),
         new InitCase(
             "javascript-esm",
             AnalysisLanguage.JAVASCRIPT,
             List.of("@vitest/coverage-v8"),
-            Map.of(VITEST_MJS, vitest(QualityPreset.STANDARD))),
+            Map.of(VITEST_MJS, vitest())),
         new InitCase(
             TYPESCRIPT_FIXTURE,
             AnalysisLanguage.TYPESCRIPT,
@@ -79,18 +78,13 @@ final class NodeInitDevDependenciesTest {
                 "@stryker-mutator/core",
                 "@stryker-mutator/vitest-runner"),
             Map.of(
-                VITEST_MJS, vitest(QualityPreset.STRICT),
+                VITEST_MJS, vitest(),
                 STRYKER_MJS, stryker("vitest"))),
         new InitCase(
             "javascript-esm",
             AnalysisLanguage.JAVASCRIPT,
             List.of("jest", "@stryker-mutator/core", "@stryker-mutator/jest-runner"),
-            Map.of(
-                JEST_MJS,
-                ConfigFiles.marker(ConfigFiles.JS_MARKER, QualityPreset.STRICT)
-                    + NodeConfigTemplates.jest(QualityPreset.STRICT),
-                STRYKER_MJS,
-                stryker("jest"))));
+            Map.of(STRYKER_MJS, stryker("jest"))));
   }
 
   @ParameterizedTest
@@ -139,9 +133,13 @@ final class NodeInitDevDependenciesTest {
         devDependencies.stream()
             .map(name -> "\"" + name + "\": \"" + VERSION + "\"")
             .collect(Collectors.joining(", "));
+    // A project that declares Jest runs it from its own script, since init writes no Jest config.
+    final String test = devDependencies.contains("jest") ? "jest" : "vitest run";
     return "{\"name\": \""
         + fixture
-        + "\", \"scripts\": {\"test\": \"vitest run\"}, \"devDependencies\": {"
+        + "\", \"scripts\": {\"test\": \""
+        + test
+        + "\"}, \"devDependencies\": {"
         + entries
         + "}}";
   }
@@ -167,8 +165,8 @@ final class NodeInitDevDependenciesTest {
   }
 
   /** The text init writes for a vitest config: its managed marker, then the preset's template. */
-  private static String vitest(final QualityPreset preset) {
-    return ConfigFiles.marker(ConfigFiles.JS_MARKER, preset) + NodeConfigTemplates.vitest(preset);
+  private static String vitest() {
+    return ConfigFiles.marker(ConfigFiles.JS_MARKER, null) + NodeConfigTemplates.vitest();
   }
 
   /**

@@ -96,12 +96,7 @@ record BinaryToolGates(EnvironmentInspection environment, Project project) {
                 List.of("zap-baseline.py", "-t", SupportedQualityGates.ZAP_TARGET_PLACEHOLDER),
                 "Install ZAP and replace "
                     + SupportedQualityGates.ZAP_TARGET_PLACEHOLDER
-                    + " with a target you are authorized to scan before running."),
-            option(
-                "trivy",
-                "Scans dependencies, containers, and IaC with Trivy.",
-                List.of("trivy", "fs", "--exit-code", "1", "."),
-                "Install Trivy.")));
+                    + " with a target you are authorized to scan before running.")));
     return gates;
   }
 

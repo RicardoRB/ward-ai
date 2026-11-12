@@ -14,6 +14,7 @@ import java.util.Map;
 /** Renders the {@code ward.toml} written by {@code ward init}. */
 public final class ConfigurationTemplate {
   private static final String MINIMUM = "minimum";
+  private static final String MINIMUM_BRANCHES = "minimum-branches";
   private static final int SECTION_CAPACITY = 96;
   private static final String VERSION = "version = 2\n";
 
@@ -149,7 +150,7 @@ public final class ConfigurationTemplate {
 
   /** Writes a gate setting: {@code minimum} is a number, every other setting a string. */
   private static void setting(final StringBuilder content, final String key, final String value) {
-    if (MINIMUM.equals(key) && value != null) {
+    if ((MINIMUM.equals(key) || MINIMUM_BRANCHES.equals(key)) && value != null) {
       content.append(key).append(" = ").append(value).append('\n');
     } else {
       string(content, key, value);

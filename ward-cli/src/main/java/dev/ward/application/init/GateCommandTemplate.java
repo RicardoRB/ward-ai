@@ -23,6 +23,7 @@ final class GateCommandTemplate {
   static boolean writesUses(final InitGateOption gate) {
     return CRITICAL_USES.contains(gate.id())
         || SupportedQualityGates.SECRETS.equals(gate.id())
+        || gate.command().isEmpty()
         || !CommandTypeInference.infer(gate.command()).equals(gate.id());
   }
 

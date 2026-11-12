@@ -23,9 +23,9 @@ class JsonReportRendererTest {
   private final Project project =
       new Project(Path.of("/p"), Language.JAVA, BuildTool.MAVEN, Framework.NONE);
 
-  private static GateResult unavailableTrivy() {
-    return GateResult.builder("trivy", GateStatus.UNAVAILABLE)
-        .command(List.of("trivy", "image"))
+  private static GateResult unavailableZap() {
+    return GateResult.builder("zap", GateStatus.UNAVAILABLE)
+        .command(List.of("zap-baseline.py", "-t"))
         .exitCode(-1)
         .duration(Duration.ZERO)
         .stdout("")
@@ -34,10 +34,10 @@ class JsonReportRendererTest {
         .withPrerequisite(
             new GatePrerequisite(
                 GatePrerequisite.Kind.EXECUTABLE,
-                "trivy",
+                "zap-baseline.py",
                 null,
                 null,
-                "Install trivy or add it to PATH."));
+                "Install zap-baseline.py or add it to PATH."));
   }
 
   private static GateResult failedCheckstyle() {
@@ -58,13 +58,12 @@ class JsonReportRendererTest {
 
   @Test
   void missingExecutableIsReportedAsExecutablePrerequisite() {
-    final JsonTree prerequisite =
-        render(unavailableTrivy()).get("checks").get(0).get("prerequisite");
+    final JsonTree prerequisite = render(unavailableZap()).get("checks").get(0).get("prerequisite");
 
     assertThat(prerequisite.get("kind").asString()).isEqualTo("executable");
-    assertThat(prerequisite.get("executable").asString()).isEqualTo("trivy");
+    assertThat(prerequisite.get("executable").asString()).isEqualTo("zap-baseline.py");
     assertThat(prerequisite.get("remediation").asString())
-        .isEqualTo("Install trivy or add it to PATH.");
+        .isEqualTo("Install zap-baseline.py or add it to PATH.");
     assertThat(prerequisite.has("required")).isFalse();
     assertThat(prerequisite.has("detected")).isFalse();
   }
@@ -79,6 +78,6 @@ class JsonReportRendererTest {
 
   @Test
   void schemaVersionDoesNotChange() {
-    assertThat(render(unavailableTrivy()).get("schemaVersion").asInt()).isEqualTo(SCHEMA_VERSION);
+    assertThat(render(unavailableZap()).get("schemaVersion").asInt()).isEqualTo(SCHEMA_VERSION);
   }
 }

@@ -6,11 +6,11 @@ import dev.ward.analysis.domain.ir.TextFile;
 import dev.ward.analysis.domain.rule.DependencyView;
 import dev.ward.analysis.domain.rule.FactNeed;
 import dev.ward.analysis.domain.rule.FlowView;
+import dev.ward.analysis.domain.rule.Measured;
 import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.analysis.domain.rule.ProjectMatch;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleMatch;
-import dev.ward.analysis.domain.rule.ScopeView;
 import dev.ward.analysis.domain.rule.TextCompiledRule;
 import dev.ward.analysis.domain.rule.UnitViews;
 import java.util.List;
@@ -39,6 +39,11 @@ public final class CheckedRule implements TextCompiledRule {
   }
 
   @Override
+  public List<Measured> measures(final SyntaxNode root) {
+    return check.measures(root);
+  }
+
+  @Override
   public List<RuleMatch> matches(final SyntaxNode root) {
     return check.matches(root);
   }
@@ -56,16 +61,6 @@ public final class CheckedRule implements TextCompiledRule {
       final FlowView flow,
       final SourceUnit unit) {
     return check.matches(root, flow, unit);
-  }
-
-  @Override
-  public List<RuleMatch> matches(
-      final SyntaxNode root,
-      final DependencyView dependencies,
-      final FlowView flow,
-      final ScopeView scopes,
-      final SourceUnit unit) {
-    return check.matches(root, flow, scopes, unit);
   }
 
   @Override

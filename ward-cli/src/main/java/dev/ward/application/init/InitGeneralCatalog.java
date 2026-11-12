@@ -93,6 +93,16 @@ public class InitGeneralCatalog {
     final List<InitGateOption> options = new ArrayList<>(buildTool.analysis());
     options.addAll(new BinaryToolGates(environment, project).gates());
     options.addAll(buildTool.policy());
+    if (InitToolchains.support(project).crap(project, inputs).isPresent()) {
+      options.add(CrapInit.option());
+    }
+    options.add(
+        new InitGateOption(
+            SupportedQualityGates.VULNERABILITIES,
+            "Matches the resolved dependencies against OSV advisories (opt-in).",
+            List.of(),
+            true,
+            "Downloads advisory data from osv.dev, and sends no project data."));
     options.add(
         new InitGateOption(
             SupportedQualityGates.TRACEABILITY,
@@ -148,6 +158,7 @@ public class InitGeneralCatalog {
    */
   public InitGateOption gate(final Project project, final String id) {
     GateOffers.require(environment, project, id);
+    CrapInit.require(InitToolchains.support(project), project, inputs, id);
     InitToolchains.find(project)
         .map(support -> support.omissions(project, List.of(id), inputs))
         .orElse(List.of())

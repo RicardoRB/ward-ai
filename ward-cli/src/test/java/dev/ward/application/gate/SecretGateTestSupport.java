@@ -99,7 +99,10 @@ class SecretGateTestSupport {
             List.of(),
             List.of(),
             null,
-            options);
+            options,
+            null,
+            null,
+            null);
     return gates
         .create(check, focus)
         .execute(new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE));

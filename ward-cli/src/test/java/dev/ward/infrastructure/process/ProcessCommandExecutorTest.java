@@ -2,9 +2,11 @@ package dev.ward.infrastructure.process;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.domain.process.Command;
 import dev.ward.domain.process.CommandResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
@@ -13,6 +15,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 @DisabledOnOs(OS.WINDOWS)
 class ProcessCommandExecutorTest {
+  private static final Duration GENEROUS_LIMIT = Duration.ofSeconds(10);
   private static final int SCRIPT_EXIT_CODE = 3;
   private static final int LARGE_OUTPUT_LINES = 20_000;
 
@@ -87,5 +90,24 @@ class ProcessCommandExecutorTest {
     assertThat(result.exitCode()).isZero();
     assertThat(result.stdout().lines().count()).isEqualTo(LARGE_OUTPUT_LINES);
     assertThat(result.stderr().lines().count()).isEqualTo(LARGE_OUTPUT_LINES);
+  }
+
+  @Test
+  void stopsACommandThatExceedsItsLimitAndReportsAnExecutionError(@TempDir final Path dir) {
+    final CommandResult result =
+        executor.execute(new Command(List.of("sh", "-c", "sleep 30"), dir), Duration.ofMillis(200));
+
+    assertThat(result.hasExecutionError()).isTrue();
+    assertThat(result.executionError()).isEqualTo("PROCESS_TIMEOUT");
+    assertThat(result.duration()).isLessThan(GENEROUS_LIMIT);
+  }
+
+  @Test
+  void aCommandThatFinishesInsideItsLimitReturnsItsOutput(@TempDir final Path dir) {
+    final CommandResult result =
+        executor.execute(new Command(List.of("echo", "ok"), dir), Duration.ofSeconds(30));
+
+    assertThat(result.stdout()).isEqualTo("ok\n");
+    assertThat(result.hasExecutionError()).isFalse();
   }
 }

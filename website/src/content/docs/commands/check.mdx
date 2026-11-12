@@ -22,6 +22,7 @@ ward check [-C <dir>] [--format text|json|sarif] [--severity error|warning|info]
 | `--fail-fast` | Stop after the first gate that does not pass. | off |
 | `--exclude-spec` | Skip the `openspec` and `openspec-archived` gates. See [Excluding spec gates](#excluding-spec-gates). | off |
 | `--learn-after <n>` | Record recurring rule findings after `n` occurrences. Must be at least `1`. See [Learning](#learning). | off |
+| `--offline` | Make no network request. The [`vulnerabilities`](/configuration/vulnerabilities/) check then reads its stored databases, and ends with an execution error that names `ward vulnerabilities update` when one is missing, stale or corrupt. Other gates are not affected. | off |
 | `--verbose` | Print diagnostics to stderr. See [Verbose diagnostics](#verbose-diagnostics). | off |
 
 An invalid option value is a usage error and produces no partial report.
@@ -33,7 +34,7 @@ An invalid option value is a usage error and produces no partial report.
 - Every selected gate runs, even after an earlier one fails, unless you pass `--fail-fast`.
 - With `--fail-fast`, Ward stops after the first gate that fails, is unavailable, or hits an
   execution error. Later gates are listed as skipped (`not run (fail-fast)`).
-- A gate whose standalone tool is missing, such as `trivy`, is reported as unavailable with
+- A gate whose standalone tool is missing, such as `semgrep`, is reported as unavailable with
   install guidance.
 - An enabled `zap` gate without an explicit `-t <url>` target is a configuration error.
 
@@ -208,7 +209,7 @@ A gate is `UNAVAILABLE` when the environment, not the code, stopped it. Ward exp
 how to fix it:
 
 - **Missing executable.** The gate's command could not start. The summary names the gate and the
-  executable. For the tools in Ward's install catalog (trivy, semgrep, zap-baseline.py,
+  executable. For the tools in Ward's install catalog (semgrep, zap-baseline.py,
   vacuum and oasdiff) it gives the install command or link; for any other tool it says to install
   it or add it to `PATH`.
 - **JDK older than the project.** When a Maven or Gradle gate fails and the build declares a Java
@@ -229,12 +230,12 @@ Each prerequisite is reported in every output format:
 
 ```json
 {
-  "name": "trivy",
+  "name": "zap",
   "status": "UNAVAILABLE",
   "prerequisite": {
     "kind": "executable",
-    "executable": "trivy",
-    "remediation": "Install trivy: https://trivy.dev/latest/getting-started/installation/"
+    "executable": "zap-baseline.py",
+    "remediation": "Install zap-baseline.py: https://www.zaproxy.org/docs/docker/baseline-scan/"
   }
 }
 ```

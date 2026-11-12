@@ -68,6 +68,9 @@ final class SecretGateCacheTest extends SecretGateTestSupport {
             List.of(),
             List.of(),
             null,
+            null,
+            null,
+            null,
             null);
 
     final GateResult wardResult =

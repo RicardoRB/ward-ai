@@ -1,0 +1,5 @@
+[] NPM debug 4.3.7 DIRECT RUNTIME from=yarn.lock in=package.json
+[] NPM is-number 6.0.0 TRANSITIVE RUNTIME from=yarn.lock by=is-odd
+[] NPM is-odd 3.0.1 DIRECT RUNTIME from=yarn.lock in=package.json
+[] NPM ms 2.1.3 TRANSITIVE RUNTIME from=yarn.lock by=debug
+[] NPM semver 7.6.3 DIRECT DEVELOPMENT from=yarn.lock in=package.json

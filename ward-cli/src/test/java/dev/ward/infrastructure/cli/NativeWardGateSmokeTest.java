@@ -101,7 +101,18 @@ class NativeWardGateSmokeTest {
 
       [checks.ward.cycles]
       roots = ["src/main/java/shop"]
+
+      [checks.coverage]
+      uses = "coverage"
+      minimum = 90
+      minimum-branches = 50
+      report = "coverage/lcov.info"
       """;
+
+  /** The lcov report of the coverage check: half the lines and branches of one file covered. */
+  private static final String LCOV =
+      "TN:\nSF:web/app.ts\nDA:1,1\nDA:2,0\nBRDA:1,0,0,1\nBRDA:1,0,1,0\nBRF:2\nBRH:1\n"
+          + "end_of_record\n";
 
   @TempDir Path project;
 
@@ -124,7 +135,9 @@ class NativeWardGateSmokeTest {
         .contains("ward:architecture/layers")
         .contains("ward:architecture/cycles")
         .contains("ward:secrets/github-pat")
-        .doesNotContain(TOKEN);
+        .doesNotContain(TOKEN)
+        .contains("Line coverage 50% is below the minimum of 90%")
+        .contains("Branch coverage 50% meets the minimum of 50%");
     assertThat(warm.exitCode()).isEqualTo(FAILED);
     assertThat(warm.stdout()).isEqualTo(cold.stdout());
   }
@@ -139,6 +152,9 @@ class NativeWardGateSmokeTest {
     Files.writeString(project.resolve("config/app.yml"), "token: " + TOKEN + "\n");
     final String rules = String.join(", ", RULES.stream().map(id -> "\"" + id + "\"").toList());
     Files.writeString(project.resolve("ward.toml"), WARD_TOML.formatted(rules));
+    // Written last, so that no source file it names is newer than the report.
+    Files.createDirectories(project.resolve("coverage"));
+    Files.writeString(project.resolve("coverage/lcov.info"), LCOV);
   }
 
   private Run check(final Path binary) throws IOException, InterruptedException {
