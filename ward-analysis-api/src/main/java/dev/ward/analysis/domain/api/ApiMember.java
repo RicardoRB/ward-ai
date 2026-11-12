@@ -1,8 +1,9 @@
 package dev.ward.analysis.domain.api;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * A method, constructor or field that is part of an API. A constructor is named {@code <init>}.
@@ -70,20 +71,53 @@ public record ApiMember(
     return name
         + parameters.stream()
             .map(parameter -> parameter.type().erasure())
-            .collect(Collectors.joining(",", "(", ")"));
+            .collect(java.util.stream.Collectors.joining(",", "(", ")"));
   }
 
-  /** Returns the member as a signature for messages, such as {@code String name(int)}. */
+  /** Returns the member as a signature for messages, such as {@code public static int count()}. */
   public String signature() {
-    if (kind == Kind.FIELD) {
-      return type.text() + " " + name;
+    final StringBuilder text = new StringBuilder(visibility.name().toLowerCase(Locale.ROOT));
+    for (final String modifier : modifiers()) {
+      text.append(' ').append(modifier);
     }
-    final String arguments =
-        parameters.stream()
-            .map(parameter -> parameter.type().text())
-            .collect(Collectors.joining(", "));
-    return kind == Kind.CONSTRUCTOR
-        ? name + "(" + arguments + ")"
-        : type.text() + " " + name + "(" + arguments + ")";
+    if (kind == Kind.FIELD) {
+      return text.append(' ').append(type.text()).append(' ').append(name).toString();
+    }
+    final String arguments = arguments();
+    if (kind != Kind.CONSTRUCTOR) {
+      text.append(' ').append(type.text());
+    }
+    return text.append(' ').append(name).append('(').append(arguments).append(')').toString();
+  }
+
+  private List<String> modifiers() {
+    final List<String> found = new ArrayList<>();
+    if (isStatic) {
+      found.add("static");
+    }
+    if (isFinal) {
+      found.add("final");
+    }
+    if (isAbstract) {
+      found.add("abstract");
+    }
+    if (isDefault) {
+      found.add("default");
+    }
+    return found;
+  }
+
+  private String arguments() {
+    final List<String> texts = new ArrayList<>();
+    for (final ApiParameter parameter : parameters) {
+      texts.add(parameter.type().text());
+    }
+    if (isVarargs && !texts.isEmpty()) {
+      final String last = texts.getLast();
+      texts.set(
+          texts.size() - 1,
+          last.endsWith("[]") ? last.substring(0, last.length() - 2) + "..." : last);
+    }
+    return String.join(", ", texts);
   }
 }

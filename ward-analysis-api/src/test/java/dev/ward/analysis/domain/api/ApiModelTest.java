@@ -63,10 +63,10 @@ class ApiModelTest {
 
   @Test
   void signaturesAreWrittenForMessages() {
-    assertThat(method("name", STRING).signature()).isEqualTo("java.lang.String name()");
+    assertThat(method("name", STRING).signature()).isEqualTo("public java.lang.String name()");
     assertThat(member(ApiMember.Kind.CONSTRUCTOR, "<init>", ApiTypeRef.of("void"), INT).signature())
-        .isEqualTo("<init>(int)");
-    assertThat(member(ApiMember.Kind.FIELD, "size", INT).signature()).isEqualTo("int size");
+        .isEqualTo("public <init>(int)");
+    assertThat(member(ApiMember.Kind.FIELD, "size", INT).signature()).isEqualTo("public int size");
   }
 
   @Test

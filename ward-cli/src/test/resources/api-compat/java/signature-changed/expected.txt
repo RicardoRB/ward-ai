@@ -1,0 +1,2 @@
+p/A.java:4:3 api-compat:signature-changed p.A#accept: public void accept(java.util.List<java.lang.Object>) -> public void accept(java.util.List<java.lang.String>)
+p/A.java:5:3 api-compat:signature-changed p.A#log: public void log(java.lang.String...) -> public void log(java.lang.String[])

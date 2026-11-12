@@ -1,0 +1,2 @@
+p/A.java:4:3 api-compat:member-less-visible p.A#m: public void m() -> package void m()
+p/A.java:5:3 api-compat:member-less-visible p.A#f: public int f -> protected int f
