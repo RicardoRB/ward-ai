@@ -30,7 +30,8 @@ public final class CatalogTools {
           "cpd",
           "jscpd",
           "gitleaks",
-          "vacuum");
+          "vacuum",
+          "oasdiff");
 
   private CatalogTools() {}
 }
