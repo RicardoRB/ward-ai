@@ -1,0 +1,71 @@
+# Configuration rules for Java: parser, serializer, CSRF, CORS and cookie settings that are dangerous when set to the value they match.
+
+[[rules]]
+id = "ward:java/xml-external-entities"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^.*\.setFeature\("http://xml\.org/sax/features/external-(?:general|parameter)-entities",true\)$|^.*\.setFeature\("http://apache\.org/xml/features/disallow-doctype-decl",false\)$|^.*\.setFeature\("http://javax\.xml\.XMLConstants/feature/secure-processing",false\)$|^.*\.setProperty\((?:\w+\.)*(?:SUPPORT_DTD|IS_SUPPORTING_EXTERNAL_ENTITIES),true\)$|^.*\.setExpandEntityReferences\(true\)$|^.*\.setXIncludeAware\(true\)$'
+message = "this setting lets the XML parser load external entities or DTDs, which can read files and call servers; disable it"
+'''
+
+[[rules]]
+id = "ward:java/unsafe-deserialization-settings"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^.*\.enableDefaultTyping\((?:[^()]|\([^()]*\))*\)$|^.*\.activateDefaultTyping\((?:(?:\w+\.)*LaissezFaireSubTypeValidator\.instance|new(?:\w+\.)*LaissezFaireSubTypeValidator\(\))(?:,[^()]*)?\)$'
+message = "default typing with no type restrictions lets the input choose the class to build; use a PolymorphicTypeValidator that lists the allowed types"
+'''
+
+[[rules]]
+id = "ward:java/csrf-protection-disabled"
+language = "java"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^.*\.csrf\(\)\.disable\(\)$|^.*\.csrf\((?:AbstractHttpConfigurer::disable|\w+->\w+\.disable\(\))\)$'
+message = "CSRF protection is switched off; keep it on for browser clients, or document why this API has none"
+'''
+
+[[rules]]
+id = "ward:java/permissive-cors"
+language = "java"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^.*\.allowedOrigins\("\*"\)$|^.*\.addAllowedOrigin\("\*"\)$|^.*\.addAllowedOriginPattern\("\*"\)$|^.*\.setAllowedOrigins\((?:List\.of|Arrays\.asList|Collections\.singletonList)\("\*"\)\)$|^.*\.(?:set|add)Header\("Access-Control-Allow-Origin","\*"\)$'
+message = "this setting lets every origin call the API from a browser; list the origins that need access"
+'''
+
+[[rules]]
+id = "ward:java/insecure-cookie"
+language = "java"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^.*\.(?:setSecure|setHttpOnly)\(false\)$|^(?:org\.springframework\.http\.)?ResponseCookie\..*\.(?:secure|httpOnly)\(false\)$'
+message = "this cookie is allowed over plain http or from scripts; set Secure and HttpOnly"
+'''

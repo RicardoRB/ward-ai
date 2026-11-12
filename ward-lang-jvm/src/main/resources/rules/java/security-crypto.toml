@@ -1,0 +1,99 @@
+# Cryptography rules for Java: algorithms, modes, key sizes and credentials that the JDK documentation lists as broken or weak.
+
+[[rules]]
+id = "ward:java/weak-hash"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:java\.security\.)?MessageDigest\.getInstance\("(?i:MD2|MD4|MD5|SHA-?1)"(?:,[^()]*)?\)$|^(?:org\.apache\.commons\.codec\.digest\.)?DigestUtils\.(?:md2|md5|sha|sha1)(?:Hex)?\((?:[^()]|\([^()]*\))*\)$'
+message = "MD2, MD4, MD5 and SHA-1 are broken for integrity and signatures; use SHA-256 or stronger"
+'''
+
+[[rules]]
+id = "ward:java/weak-cipher"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:javax\.crypto\.)?(?:Cipher|KeyGenerator|SecretKeyFactory)\.getInstance\("(?i:DES|DESede|TripleDES|3DES|RC2|RC4|ARCFOUR|Blowfish)(?:/[^"]*)?"\)$'
+message = "DES, 3DES, RC2, RC4 and Blowfish are broken or too weak; use AES-GCM"
+'''
+
+[[rules]]
+id = "ward:java/ecb-mode"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:javax\.crypto\.)?Cipher\.getInstance\("(?:[^"/]+/(?i:ECB)/[^"]*|(?i:AES|AES_128|AES_192|AES_256))"\)$'
+message = "ECB mode, which a bare AES name selects, encrypts equal blocks to equal output; use AES-GCM"
+'''
+
+[[rules]]
+id = "ward:java/rsa-without-padding"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:javax\.crypto\.)?Cipher\.getInstance\("RSA/[^/"]*/NoPadding"\)$'
+message = "RSA without padding is deterministic and malleable; use RSA/ECB/OAEPWithSHA-256AndMGF1Padding"
+'''
+
+[[rules]]
+id = "ward:java/weak-key-size"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^\w+\.initialize\((?:512|768|1024|1536)(?:,[^()]*)?\)$|^new(?:java\.security\.spec\.)?RSAKeyGenParameterSpec\((?:512|768|1024|1536),[^()]*\)$'
+message = "a key of 1536 bits or fewer is too short for RSA, DSA and Diffie-Hellman; use at least 2048 bits"
+'''
+
+[[rules]]
+id = "ward:java/insecure-random"
+language = "java"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(?:java\.util\.)?Random\((?:[^()]|\([^()]*\))*\)$|^(?:java\.lang\.)?Math\.random\(\)$'
+message = "java.util.Random and Math.random are predictable; use SecureRandom for tokens, keys and identifiers"
+'''
+
+[[rules]]
+id = "ward:java/hard-coded-password"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:java\.sql\.)?DriverManager\.getConnection\([^,()]+,[^,()]+,"[^"]+"\)$|^(?:\w+\.)*setPassword\("[^"]+"\)$|^new(?:java\.net\.)?PasswordAuthentication\([^,()]+,"[^"]+"\.toCharArray\(\)\)$|^new(?:javax\.crypto\.spec\.)?PBEKeySpec\("[^"]+"\.toCharArray\(\)(?:,[^()]*)?\)$'
+message = "this password is a string literal in the source; read it from the environment or a secret store"
+'''

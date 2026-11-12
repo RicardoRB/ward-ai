@@ -1,0 +1,83 @@
+# Written for Ward from the API documentation named in the catalog row of the rule; sources: taint/java/sources.toml.
+# XPath sinks: the expression that is compiled or evaluated, which is argument 0.
+
+[[sinks]]
+kind = "call"
+name = "evaluate"
+receiver = "javax.xml.xpath.XPath"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "compile"
+receiver = "javax.xml.xpath.XPath"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "evaluateExpression"
+receiver = "javax.xml.xpath.XPath"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "selectNodes"
+receiver = "org.dom4j.Node"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "selectNodes"
+receiver = "org.dom4j.Document"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "selectNodes"
+receiver = "org.dom4j.Element"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "selectSingleNode"
+receiver = "org.dom4j.Node"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "selectSingleNode"
+receiver = "org.dom4j.Document"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "selectSingleNode"
+receiver = "org.dom4j.Element"
+arguments = [0]
+
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "parseLong"
+receiver = "java.lang.Long"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Long"
+
+[[sanitizers]]
+kind = "call"
+name = "parseDouble"
+receiver = "java.lang.Double"
+

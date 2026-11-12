@@ -1,0 +1,71 @@
+# Written for Ward from the API documentation named in the catalog row of the rule; sources: taint/java/sources.toml.
+# Deserialization sinks: the stream or text that a native, XML or YAML reader turns into objects.
+
+[[sinks]]
+kind = "call"
+name = "<init>"
+receiver = "java.io.ObjectInputStream"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "<init>"
+receiver = "java.beans.XMLDecoder"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "fromXML"
+receiver = "com.thoughtworks.xstream.XStream"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "load"
+receiver = "org.yaml.snakeyaml.Yaml"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "loadAll"
+receiver = "org.yaml.snakeyaml.Yaml"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "loadAs"
+receiver = "org.yaml.snakeyaml.Yaml"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "deserialize"
+receiver = "org.apache.commons.lang3.SerializationUtils"
+arguments = [0]
+
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "parseLong"
+receiver = "java.lang.Long"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Long"
+
+[[sanitizers]]
+kind = "call"
+name = "parseDouble"
+receiver = "java.lang.Double"
+

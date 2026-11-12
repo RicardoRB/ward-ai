@@ -1,0 +1,71 @@
+# Written for Ward from the API documentation named in the catalog row of the rule; sources: taint/java/sources.toml.
+# Pattern sinks: the expression that java.util.regex and String methods compile.
+
+[[sinks]]
+kind = "call"
+name = "compile"
+receiver = "java.util.regex.Pattern"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "matches"
+receiver = "java.util.regex.Pattern"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "matches"
+receiver = "java.lang.String"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "replaceAll"
+receiver = "java.lang.String"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "replaceFirst"
+receiver = "java.lang.String"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "split"
+receiver = "java.lang.String"
+arguments = [0]
+
+
+[[sanitizers]]
+kind = "call"
+name = "quote"
+receiver = "java.util.regex.Pattern"
+
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "parseLong"
+receiver = "java.lang.Long"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Long"
+
+[[sanitizers]]
+kind = "call"
+name = "parseDouble"
+receiver = "java.lang.Double"
+

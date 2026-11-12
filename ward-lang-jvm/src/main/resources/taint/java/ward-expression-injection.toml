@@ -1,0 +1,107 @@
+# Written for Ward from the API documentation named in the catalog row of the rule; sources: taint/java/sources.toml.
+# Expression sinks: the text that Spring EL, JEXL, the Jakarta Expression Language, OGNL and MVEL parse.
+
+[[sinks]]
+kind = "call"
+name = "parseExpression"
+receiver = "org.springframework.expression.ExpressionParser"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "parseExpression"
+receiver = "org.springframework.expression.spel.standard.SpelExpressionParser"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "createExpression"
+receiver = "org.apache.commons.jexl3.JexlEngine"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "createScript"
+receiver = "org.apache.commons.jexl3.JexlEngine"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "createValueExpression"
+receiver = "javax.el.ExpressionFactory"
+arguments = [1]
+
+[[sinks]]
+kind = "call"
+name = "createValueExpression"
+receiver = "jakarta.el.ExpressionFactory"
+arguments = [1]
+
+[[sinks]]
+kind = "call"
+name = "createMethodExpression"
+receiver = "javax.el.ExpressionFactory"
+arguments = [1]
+
+[[sinks]]
+kind = "call"
+name = "createMethodExpression"
+receiver = "jakarta.el.ExpressionFactory"
+arguments = [1]
+
+[[sinks]]
+kind = "call"
+name = "parseExpression"
+receiver = "ognl.Ognl"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "getValue"
+receiver = "ognl.Ognl"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "setValue"
+receiver = "ognl.Ognl"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "eval"
+receiver = "org.mvel2.MVEL"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "compileExpression"
+receiver = "org.mvel2.MVEL"
+arguments = [0]
+
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "parseLong"
+receiver = "java.lang.Long"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Long"
+
+[[sanitizers]]
+kind = "call"
+name = "parseDouble"
+receiver = "java.lang.Double"
+

@@ -1,0 +1,171 @@
+# Injection rules for Java: untrusted input from a web request reaches a sensitive call within one method.
+# Each follows the taint specifications taint/java/ward-<weakness>.toml and taint/java/sources.toml.
+
+[[rules]]
+id = "ward:java/xss"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/java/ward-xss.toml"]
+message = "untrusted data from {source} is written into the HTML response by {sink}; escape it for HTML first"
+'''
+
+[[rules]]
+id = "ward:java/open-redirect"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/java/ward-open-redirect.toml"]
+message = "untrusted data from {source} decides where the response redirects, through {sink}; allow only known targets"
+'''
+
+[[rules]]
+id = "ward:java/ssrf"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/java/ward-ssrf.toml"]
+message = "untrusted data from {source} chooses the address that {sink} requests; check the host against an allow-list"
+'''
+
+[[rules]]
+id = "ward:java/ldap-injection"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/java/ward-ldap-injection.toml"]
+message = "untrusted data from {source} is part of the LDAP name or filter of {sink}; encode it with LdapEncoder"
+'''
+
+[[rules]]
+id = "ward:java/xpath-injection"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/java/ward-xpath-injection.toml"]
+message = "untrusted data from {source} is part of the XPath expression of {sink}; bind it as a variable instead"
+'''
+
+[[rules]]
+id = "ward:java/log-forging"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/java/ward-log-forging.toml"]
+message = "untrusted data from {source} is written to the log by {sink}; line breaks in it could forge log entries"
+'''
+
+[[rules]]
+id = "ward:java/response-splitting"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/java/ward-response-splitting.toml"]
+message = "untrusted data from {source} is written into a response header by {sink}; a line break in it would split the response"
+'''
+
+[[rules]]
+id = "ward:java/untrusted-deserialization"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/java/ward-untrusted-deserialization.toml"]
+message = "untrusted data from {source} is deserialized by {sink}, which can run attacker-chosen code; accept a data format instead"
+'''
+
+[[rules]]
+id = "ward:java/code-injection"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/java/ward-code-injection.toml"]
+message = "untrusted data from {source} is run as code by {sink}; never build a script from request data"
+'''
+
+[[rules]]
+id = "ward:java/expression-injection"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/java/ward-expression-injection.toml"]
+message = "untrusted data from {source} is evaluated as an expression by {sink}; use a fixed expression and pass the data as a variable"
+'''
+
+[[rules]]
+id = "ward:java/jndi-injection"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/java/ward-jndi-injection.toml"]
+message = "untrusted data from {source} names the JNDI object that {sink} looks up; a remote name can load attacker code"
+'''
+
+[[rules]]
+id = "ward:java/unsafe-reflection"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/java/ward-unsafe-reflection.toml"]
+message = "untrusted data from {source} chooses the class or member that {sink} resolves; map the input to a fixed set of names"
+'''
+
+[[rules]]
+id = "ward:java/regex-injection"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/java/ward-regex-injection.toml"]
+message = "untrusted data from {source} becomes a regular expression in {sink}; quote it with Pattern.quote or limit its length"
+'''

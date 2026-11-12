@@ -1,0 +1,94 @@
+# Written for Ward from the API documentation named in the catalog row of the rule; sources: taint/java/sources.toml.
+# LDAP sinks: the base name and the filter of a search, which are arguments 0 and 1.
+
+[[sinks]]
+kind = "call"
+name = "search"
+receiver = "javax.naming.directory.DirContext"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "search"
+receiver = "javax.naming.directory.InitialDirContext"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "search"
+receiver = "javax.naming.ldap.LdapContext"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "search"
+receiver = "javax.naming.ldap.InitialLdapContext"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "search"
+receiver = "org.springframework.ldap.core.LdapTemplate"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "find"
+receiver = "org.springframework.ldap.core.LdapTemplate"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "authenticate"
+receiver = "org.springframework.ldap.core.LdapTemplate"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "searchForObject"
+receiver = "org.springframework.ldap.core.LdapTemplate"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "searchForContext"
+receiver = "org.springframework.ldap.core.LdapTemplate"
+arguments = [0, 1]
+
+
+[[sanitizers]]
+kind = "call"
+name = "filterEncode"
+receiver = "org.springframework.ldap.support.LdapEncoder"
+
+[[sanitizers]]
+kind = "call"
+name = "nameEncode"
+receiver = "org.springframework.ldap.support.LdapEncoder"
+
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "parseLong"
+receiver = "java.lang.Long"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Long"
+
+[[sanitizers]]
+kind = "call"
+name = "parseDouble"
+receiver = "java.lang.Double"
+

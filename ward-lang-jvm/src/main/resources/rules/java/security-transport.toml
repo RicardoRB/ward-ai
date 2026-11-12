@@ -1,0 +1,71 @@
+# Transport rules for Java: certificate and host checks, TLS protocols, clear-text addresses and token verification.
+
+[[rules]]
+id = "ward:java/hostname-verification-disabled"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^.*\.set(?:Default)?(?:SSL)?HostnameVerifier\((?:NoopHostnameVerifier\.INSTANCE|(?:\w+\.)*ALLOW_ALL_HOSTNAME_VERIFIER|new(?:\w+\.)*(?:AllowAllHostnameVerifier|NoopHostnameVerifier)\(\)|\(\w+(?:,\w+)*\)->true)\)$'
+message = "this verifier accepts every host name, so a certificate for any host is trusted; keep the default verifier"
+'''
+
+[[rules]]
+id = "ward:java/trust-all-certificates"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:new(?:\w+\.)*(?:TrustAllStrategy|TrustSelfSignedStrategy)\(\)|(?:\w+\.)*(?:TrustAllStrategy|InsecureTrustManagerFactory)\.INSTANCE)$|^.*\.loadTrustMaterial\((?:null|\w+),\(\w+(?:,\w+)*\)->true\)$|^new(?:javax\.net\.ssl\.)?X509(?:Extended)?TrustManager\(\)\{.*checkServerTrusted\([^)]*\)(?:throws[\w.,]+)?\{\}'
+message = "this trust manager or strategy accepts any certificate chain, so anyone can impersonate the server; trust a key store"
+'''
+
+[[rules]]
+id = "ward:java/weak-tls-protocol"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:javax\.net\.ssl\.)?SSLContext\.getInstance\("(?:SSL|SSLv2|SSLv3|TLSv1|TLSv1\.1)"(?:,[^()]*)?\)$|^.*\.setEnabledProtocols\(newString\[\]\{(?:[^{}]*,)?"(?:SSLv2|SSLv3|TLSv1|TLSv1\.1)"[^{}]*\}\)$'
+message = "SSL, SSLv2, SSLv3, TLS 1.0 and TLS 1.1 are broken or retired; use TLSv1.2 or TLSv1.3"
+'''
+
+[[rules]]
+id = "ward:java/cleartext-transport"
+language = "java"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(?:java\.net\.)?URL\("(?:http|ftp)://(?!localhost|127\.0\.0\.1|\[::1\])[^"]*"\)$|^(?:java\.net\.)?URI\.create\("(?:http|ftp)://(?!localhost|127\.0\.0\.1|\[::1\])[^"]*"\)$|^new(?:\w+\.)*Http(?:Get|Post|Put|Delete)\("http://(?!localhost|127\.0\.0\.1|\[::1\])[^"]*"\)$'
+message = "this address uses http or ftp, which send data in clear text; use https"
+'''
+
+[[rules]]
+id = "ward:java/jwt-without-verification"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^Jwts\.parser(?:Builder)?\(\)(?:\.\w+\((?:[^()]|\([^()]*\))*\))*\.parse(?:Claims|Plaintext)Jwt\((?:[^()]|\([^()]*\))*\)$|^(?:com\.auth0\.jwt\.)?JWT\.decode\((?:[^()]|\([^()]*\))*\)$|^(?:com\.auth0\.jwt\.algorithms\.)?Algorithm\.none\(\)$'
+message = "this call reads a token without checking its signature, so anyone can forge it; verify it with a key"
+'''
