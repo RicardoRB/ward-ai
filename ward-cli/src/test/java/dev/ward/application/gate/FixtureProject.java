@@ -79,7 +79,11 @@ final class FixtureProject {
             List.of(),
             null,
             null,
-            rulesFile);
+            rulesFile,
+            null,
+            null,
+            null,
+            null);
     final AnalysisPorts ports =
         new AnalysisPorts(
             new ProjectRuleSource(packaged),

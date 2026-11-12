@@ -53,9 +53,4 @@ public interface EnvironmentInspection {
   default List<String> skippedJvmModules(final Path projectRoot) {
     return List.of();
   }
-
-  /** Returns how the project's Dependency-Check build configuration sets the OSS Index analyzer. */
-  default OssIndexSetting ossIndexSetting(final Path projectRoot) {
-    return OssIndexSetting.ABSENT;
-  }
 }

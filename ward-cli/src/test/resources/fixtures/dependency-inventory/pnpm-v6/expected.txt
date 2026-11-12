@@ -1,0 +1,5 @@
+[] NPM debug 4.3.7 DIRECT RUNTIME from=pnpm-lock.yaml in=package.json
+[] NPM is-number 6.0.0 TRANSITIVE RUNTIME from=pnpm-lock.yaml by=is-odd
+[] NPM is-odd 3.0.1 DIRECT RUNTIME from=pnpm-lock.yaml in=package.json
+[] NPM ms 2.1.3 TRANSITIVE RUNTIME from=pnpm-lock.yaml by=debug
+[] NPM semver 7.6.3 DIRECT DEVELOPMENT from=pnpm-lock.yaml in=package.json

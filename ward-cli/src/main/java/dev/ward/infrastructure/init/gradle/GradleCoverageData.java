@@ -1,16 +1,27 @@
 package dev.ward.infrastructure.init.gradle;
 
-/** The Gradle task that makes the coverage gate fail a module whose tests left no coverage data. */
+/**
+ * The Gradle tasks that make the coverage gate read an XML report and fail a module whose tests
+ * left no coverage data.
+ */
 final class GradleCoverageData {
   static final String NO_EXECUTION_DATA =
       "No JaCoCo execution data in this module: add tests so coverage can be checked.";
 
   private GradleCoverageData() {}
 
+  /** Ward reads the JaCoCo XML report, which Gradle does not write by default. */
+  static String xmlReport(final boolean kotlin) {
+    return kotlin
+        ? "tasks.named<org.gradle.testing.jacoco.tasks.JacocoReport>(\"jacocoTestReport\") {\n"
+            + "    reports { xml.required.set(true) }\n"
+            + "}"
+        : "tasks.named('jacocoTestReport') {\n" + "    reports { xml.required = true }\n" + "}";
+  }
+
   /**
-   * Gradle skips the verification when no test wrote JaCoCo data, so a module without tests would
-   * pass. This task runs the tests first and fails when they left no data, and the verification
-   * depends on it.
+   * Gradle skips the report when no test wrote JaCoCo data, so a module without tests would pass.
+   * This task runs the tests first and fails when they left no data, and the report depends on it.
    */
   static String block(final boolean kotlin) {
     return kotlin

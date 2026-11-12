@@ -43,16 +43,6 @@ final class InitResultPrinter {
                   + gateOption.id()
                   + " status="
                   + (gateOption.available() ? "available" : "unavailable"));
-      if ("dependency-check".equals(selectedGate) && !catalog.nvdApiKeySet(project)) {
-        out.println(
-            "Warning: NVD_API_KEY is not set; dependency-check scans may be very slow or rate-limited."
-                + " Request a key from the NVD API.");
-      }
-    }
-    if (selectedGates.contains("dependency-check") && selectedGates.contains("trivy")) {
-      out.println(
-          "Warning: trivy already scans dependencies for known vulnerabilities and needs no API"
-              + " key; consider keeping trivy and dropping dependency-check.");
     }
   }
 

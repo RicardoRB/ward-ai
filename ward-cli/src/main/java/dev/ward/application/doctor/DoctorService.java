@@ -1,6 +1,5 @@
 package dev.ward.application.doctor;
 
-import dev.ward.application.doctor.jvm.DependencyCheckDiagnosis;
 import dev.ward.application.gate.AnalysisRuleSource;
 import dev.ward.application.project.ProjectDetector;
 import dev.ward.domain.agent.AgentIntegration;
@@ -133,29 +132,11 @@ public final class DoctorService {
             "Native executable present.",
             "Build with the native profile."));
     diagnoseConfiguration(root, facts, findings);
-    diagnoseNvdApiKey(root, facts, findings);
     CheckTypeFindings.diagnose(configurationReader, root, facts, findings);
     if (flag(facts, "configurationPresent")) {
       RuleConfigurationFindings.diagnose(configurationReader, rules, root, findings);
     }
     return findings;
-  }
-
-  private void diagnoseNvdApiKey(
-      final Path root, final EnvironmentFacts facts, final List<Finding> findings) {
-    if (configurationReader == null || !flag(facts, "configurationPresent")) {
-      return;
-    }
-    try {
-      final WardConfiguration configuration =
-          configurationReader.read(root.resolve(WardConfiguration.FILE_NAME));
-      if (CheckTypeFindings.enabledOfType(configuration, "dependency-check")) {
-        findings.addAll(
-            DependencyCheckDiagnosis.findings(facts, environment.ossIndexSetting(root)));
-      }
-    } catch (WardException ignored) {
-      // The configuration finding already reports malformed configuration.
-    }
   }
 
   private void diagnoseIntegrations(

@@ -1,0 +1,62 @@
+// Written and run by Ward to list the resolved dependency graph of every project. It only reads.
+// One file per project is written to the directory in -Dward.dependencies.dir:
+//   line 1:  # path=<project directory relative to the root project, empty for the root>
+//   others:  EDGE <configuration> <parent> <child group:name:version>
+//            PROJECT <configuration> <parent> <project path>
+//            UNRESOLVED <configuration> <requested> <reason>
+// <parent> is group:name:version of the requiring component, project:<path> for a project, or -
+// for the project being listed.
+allprojects {
+    tasks.create('wardDependencies') {
+        if (it.metaClass.respondsTo(it, 'notCompatibleWithConfigurationCache')) {
+            it.notCompatibleWithConfigurationCache('Ward reads the resolved graph at execution time')
+        }
+        doLast {
+            def directory = new File(System.getProperty('ward.dependencies.dir'))
+            directory.mkdirs()
+            def relative = project.rootDir.toPath().relativize(project.projectDir.toPath()).toString().replace('\\', '/')
+            def file = new File(directory, (project.path == ':' ? 'root' : project.path.substring(1).replace(':', '_')) + '.tsv')
+            def lines = ['# path=' + relative]
+            project.configurations.findAll { wardWanted(it) }.each { configuration ->
+                def seen = new HashSet()
+                def queue = new ArrayDeque()
+                def root = configuration.incoming.resolutionResult.root
+                queue.add(root)
+                while (!queue.isEmpty()) {
+                    def component = queue.poll()
+                    if (!seen.add(component.id.displayName)) { continue }
+                    def from = component == root ? '-' : wardCoordinates(component)
+                    component.dependencies.each { dependency ->
+                        if (dependency instanceof org.gradle.api.artifacts.result.UnresolvedDependencyResult) {
+                            lines << ['UNRESOLVED', configuration.name, dependency.requested.displayName, dependency.failure.message.readLines().first()].join('\t')
+                        } else {
+                            def selected = dependency.selected
+                            if (selected.id instanceof org.gradle.api.artifacts.component.ProjectComponentIdentifier) {
+                                lines << ['PROJECT', configuration.name, from, selected.id.projectPath].join('\t')
+                            } else {
+                                lines << ['EDGE', configuration.name, from, wardCoordinates(selected)].join('\t')
+                            }
+                            queue.add(selected)
+                        }
+                    }
+                }
+            }
+            file.text = lines.join('\n') + '\n'
+        }
+    }
+}
+
+def wardWanted(configuration) {
+    if (!configuration.canBeResolved) { return false }
+    def name = configuration.name
+    return name ==~ /(?i).*(compile|runtime)classpath/ ||
+        name ==~ /(?i)(test)?annotationProcessor/ || name ==~ /kapt.*|ksp.*/
+}
+
+def wardCoordinates(component) {
+    if (component.id instanceof org.gradle.api.artifacts.component.ProjectComponentIdentifier) {
+        return 'project:' + component.id.projectPath
+    }
+    def id = component.moduleVersion
+    return id.group + ':' + id.name + ':' + id.version
+}

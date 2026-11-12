@@ -57,10 +57,10 @@ class InitSetupCatalogPreviousChoicesTest {
   @Test
   void configurationGivesItsGatesWithoutAPreset(@TempDir final Path dir) throws Exception {
     withPom(dir, PLAIN_POM);
-    service.initialize(dir, new InitSelection(List.of("none"), List.of("tests", "gitleaks")));
+    service.initialize(dir, new InitSelection(List.of("none"), List.of("tests", "secrets")));
 
     assertThat(catalog.previousChoices(project(dir)))
-        .hasValue(new PreviousChoices(List.of("tests", "gitleaks")));
+        .hasValue(new PreviousChoices(List.of("tests", "secrets")));
   }
 
   @Test

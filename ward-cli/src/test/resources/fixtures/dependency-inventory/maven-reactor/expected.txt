@@ -1,0 +1,23 @@
+[] (none)
+[api] MAVEN com.fasterxml.jackson.core:jackson-annotations 2.18.2 TRANSITIVE RUNTIME from=api/pom.xml by=com.fasterxml.jackson.core:jackson-databind
+[api] MAVEN com.fasterxml.jackson.core:jackson-core 2.18.2 TRANSITIVE RUNTIME from=api/pom.xml by=com.fasterxml.jackson.core:jackson-databind
+[api] MAVEN com.fasterxml.jackson.core:jackson-databind 2.18.2 DIRECT RUNTIME from=api/pom.xml in=api/pom.xml
+[api] MAVEN com.google.code.findbugs:jsr305 3.0.2 TRANSITIVE RUNTIME from=api/pom.xml by=com.google.guava:guava
+[api] MAVEN com.google.errorprone:error_prone_annotations 2.23.0 TRANSITIVE RUNTIME from=api/pom.xml by=com.google.guava:guava
+[api] MAVEN com.google.guava:failureaccess 1.0.2 TRANSITIVE RUNTIME from=api/pom.xml by=com.google.guava:guava
+[api] MAVEN com.google.guava:guava 33.0.0-jre DIRECT RUNTIME from=api/pom.xml in=api/pom.xml
+[api] MAVEN com.google.guava:listenablefuture 9999.0-empty-to-avoid-conflict-with-guava TRANSITIVE RUNTIME from=api/pom.xml by=com.google.guava:guava
+[api] MAVEN com.google.j2objc:j2objc-annotations 2.8 TRANSITIVE RUNTIME from=api/pom.xml by=com.google.guava:guava
+[api] MAVEN org.apiguardian:apiguardian-api 1.1.2 TRANSITIVE TEST from=api/pom.xml by=org.junit.jupiter:junit-jupiter-api
+[api] MAVEN org.checkerframework:checker-qual 3.41.0 TRANSITIVE RUNTIME from=api/pom.xml by=com.google.guava:guava
+[api] MAVEN org.junit.jupiter:junit-jupiter-api 5.11.3 DIRECT TEST from=api/pom.xml in=api/pom.xml
+[api] MAVEN org.junit.platform:junit-platform-commons 1.11.3 TRANSITIVE TEST from=api/pom.xml by=org.junit.jupiter:junit-jupiter-api
+[api] MAVEN org.opentest4j:opentest4j 1.3.0 TRANSITIVE TEST from=api/pom.xml by=org.junit.jupiter:junit-jupiter-api
+[domain] MAVEN com.google.code.findbugs:jsr305 3.0.2 TRANSITIVE RUNTIME from=domain/pom.xml by=com.google.guava:guava
+[domain] MAVEN com.google.errorprone:error_prone_annotations 2.11.0 TRANSITIVE RUNTIME from=domain/pom.xml by=com.google.guava:guava
+[domain] MAVEN com.google.guava:failureaccess 1.0.1 TRANSITIVE RUNTIME from=domain/pom.xml by=com.google.guava:guava
+[domain] MAVEN com.google.guava:guava 31.1-jre DIRECT RUNTIME from=domain/pom.xml in=domain/pom.xml
+[domain] MAVEN com.google.guava:listenablefuture 9999.0-empty-to-avoid-conflict-with-guava TRANSITIVE RUNTIME from=domain/pom.xml by=com.google.guava:guava
+[domain] MAVEN com.google.j2objc:j2objc-annotations 1.3 TRANSITIVE RUNTIME from=domain/pom.xml by=com.google.guava:guava
+[domain] MAVEN org.checkerframework:checker-qual 3.12.0 TRANSITIVE RUNTIME from=domain/pom.xml by=com.google.guava:guava
+[domain] MAVEN org.slf4j:slf4j-api 2.0.16 DIRECT PROVIDED from=domain/pom.xml in=domain/pom.xml

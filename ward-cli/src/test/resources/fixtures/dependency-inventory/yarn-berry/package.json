@@ -1,0 +1,11 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "dependencies": {
+    "debug": "4.3.7",
+    "is-odd": "3.0.1"
+  },
+  "devDependencies": {
+    "semver": "7.6.3"
+  }
+}

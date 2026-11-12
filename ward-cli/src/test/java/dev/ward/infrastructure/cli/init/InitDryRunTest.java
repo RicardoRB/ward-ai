@@ -6,6 +6,7 @@ import dev.ward.ProjectSnapshot;
 import dev.ward.infrastructure.cli.ExitCodes;
 import dev.ward.infrastructure.init.maven.PomToolConfigurator;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -40,6 +41,7 @@ class InitDryRunTest {
 
   @Test
   void gateToolConsentIsPlannedWithoutInstalling() throws IOException {
+    Files.writeString(root.resolve("openapi.yml"), "openapi: 3.0.0\n");
     final InitCommandFixture init = new InitCommandFixture(root, new PomToolConfigurator(), "brew");
 
     final int exit =
@@ -49,12 +51,12 @@ class InitDryRunTest {
             "--integration",
             "none",
             "--gate",
-            "tests,gitleaks",
+            "tests,openapi-lint",
             "--install-tool",
-            "gitleaks");
+            "openapi-lint");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
-    assertThat(init.output()).contains("brew install gitleaks");
+    assertThat(init.output()).contains("brew install vacuum");
     assertThat(root.resolve(".ward")).doesNotExist();
   }
 }

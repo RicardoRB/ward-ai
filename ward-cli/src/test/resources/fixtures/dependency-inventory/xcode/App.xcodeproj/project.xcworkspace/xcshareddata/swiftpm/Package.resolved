@@ -1,0 +1,12 @@
+{
+  "originHash" : "abc",
+  "pins" : [
+    { "identity" : "swift-nio", "kind" : "remoteSourceControl", "location" : "https://github.com/apple/swift-nio.git",
+      "state" : { "revision" : "aaa", "version" : "2.80.0" } },
+    { "identity" : "swift-log", "kind" : "remoteSourceControl", "location" : "https://github.com/apple/swift-log.git",
+      "state" : { "revision" : "bbb", "version" : "1.6.1" } },
+    { "identity" : "vapor", "kind" : "remoteSourceControl", "location" : "https://user@GitHub.com/Vapor/Vapor.git/",
+      "state" : { "branch" : "main", "revision" : "ccc" } }
+  ],
+  "version" : 3
+}

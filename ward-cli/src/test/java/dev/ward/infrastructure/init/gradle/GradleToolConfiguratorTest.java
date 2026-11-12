@@ -38,8 +38,7 @@ class GradleToolConfiguratorTest {
     final Path build = root.resolve("build.gradle");
     Files.writeString(build, "plugins { id 'java' }\n");
     final Project project = new Project(root, Language.JAVA, BuildTool.GRADLE, Framework.NONE);
-    final List<String> ids =
-        List.of("coverage", "dependency-check", "mutation", "sonar", "license", "api-compat");
+    final List<String> ids = List.of("coverage", "mutation", "sonar", "license", "api-compat");
 
     new GradleToolConfigurator()
         .apply(
@@ -50,7 +49,6 @@ class GradleToolConfiguratorTest {
 
     assertThat(Files.readString(build))
         .contains(
-            "org.owasp.dependencycheck",
             "info.solidsoft.pitest",
             "org.sonarqube",
             "com.github.jk1.dependency-license-report",

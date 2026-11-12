@@ -67,6 +67,10 @@ class SwiftCoverageGateTest {
             List.of(),
             null,
             null,
+            null,
+            null,
+            null,
+            null,
             null);
     return new QualityGateFactory(new FakeCommandExecutor(exitCode, STDOUT, ""), ports, null)
         .create(new WardConfiguration(1, Map.of("coverage", check)))

@@ -130,12 +130,12 @@ class WardCliContract1Test extends WardCliIntegrationSupport {
                 "--preset",
                 "standard",
                 GATE_OPTION,
-                "gitleaks",
+                "secrets",
                 INTEGRATION_OPTION,
                 NONE,
                 "-C",
                 project.toString()))
         .isZero();
-    assertThat(Files.readString(project.resolve(WARD_TOML))).contains("checks.gitleaks");
+    assertThat(Files.readString(project.resolve(WARD_TOML))).contains("checks.secrets");
   }
 }

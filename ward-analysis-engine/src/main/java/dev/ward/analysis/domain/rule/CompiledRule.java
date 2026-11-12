@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.SortedMap;
 
 /** A rule ready to run over syntax trees. A {@link RuleMatcher} builds it from a definition. */
-public interface CompiledRule {
+public interface CompiledRule extends MeasuringRule {
 
   /** Returns the definition this rule was built from. */
   RuleDefinition definition();

@@ -1,0 +1,3 @@
+# Reviewed differences between Ward and Gitleaks 8.30.1 on the secret fixtures: rule<TAB>reason.
+# A rule listed here shows as "approximation" in gitleaks-report.txt instead of its raw difference.
+kubernetes-secret-yaml	Gitleaks reports the one manifest twice (the whole file and its decoded copy) and anchors a match after line 1 one column to the right; Ward reports it once at the start of the match.

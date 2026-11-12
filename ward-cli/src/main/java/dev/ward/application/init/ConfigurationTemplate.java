@@ -1,6 +1,5 @@
 package dev.ward.application.init;
 
-import dev.ward.domain.config.CommandTypeInference;
 import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.FormatGates;
 import dev.ward.domain.init.InitGateOption;
@@ -15,6 +14,7 @@ import java.util.Map;
 /** Renders the {@code ward.toml} written by {@code ward init}. */
 public final class ConfigurationTemplate {
   private static final String MINIMUM = "minimum";
+  private static final String MINIMUM_BRANCHES = "minimum-branches";
   private static final int SECTION_CAPACITY = 96;
   private static final String VERSION = "version = 2\n";
 
@@ -38,39 +38,7 @@ public final class ConfigurationTemplate {
     final StringBuilder content = new StringBuilder(SECTION_CAPACITY * (gates.size() + 1));
     content.append(VERSION);
     for (final InitGateOption gate : gates) {
-      if (FormatGates.WARD_FORMAT.equals(gate.id())) {
-        WardFormatTemplate.append(content, QualityGatePhasePolicy.profilesFor(gate.id()));
-        partial(content, gate, project, preset);
-        continue;
-      }
-      final List<String> command = gate.command();
-      final String goal =
-          command.subList(1, command.size()).stream()
-              .map(ConfigurationTemplate::escape)
-              .reduce((left, right) -> left + " " + right)
-              .orElse("");
-      content
-          .append("\n[checks.")
-          .append(gate.id())
-          .append("]\nenabled = true\nprofiles = [")
-          .append(
-              String.join(
-                  ", ",
-                  QualityGatePhasePolicy.profilesFor(gate.id()).stream()
-                      .map(profile -> "\"" + profile + "\"")
-                      .toList()))
-          .append("]\n");
-      if (writesUses(gate)) {
-        content.append("uses = \"").append(gate.id()).append("\"\n");
-      }
-      content
-          .append("command = \"")
-          .append(escape(command.getFirst()))
-          .append(command.size() > 1 ? " " : "")
-          .append(goal)
-          .append("\"\n");
-      gatePreset(gate, project, preset).forEach((key, value) -> setting(content, key, value));
-      partial(content, gate, project, preset);
+      appendGate(content, gate, preset, project);
     }
     if (architecture.any()) {
       WardGateTemplate.append(content, architecture);
@@ -78,9 +46,33 @@ public final class ConfigurationTemplate {
     return content.toString();
   }
 
-  /** Whether the check needs {@code uses}: its command does not imply its type. */
-  private static boolean writesUses(final InitGateOption gate) {
-    return !CommandTypeInference.infer(gate.command()).equals(gate.id());
+  private static void appendGate(
+      final StringBuilder content,
+      final InitGateOption gate,
+      final QualityPreset preset,
+      final Project project) {
+    if (FormatGates.WARD_FORMAT.equals(gate.id())) {
+      WardFormatTemplate.append(content, QualityGatePhasePolicy.profilesFor(gate.id()));
+      partial(content, gate, project, preset);
+      return;
+    }
+    content
+        .append("\n[checks.")
+        .append(gate.id())
+        .append("]\nenabled = true\nprofiles = [")
+        .append(
+            String.join(
+                ", ",
+                QualityGatePhasePolicy.profilesFor(gate.id()).stream()
+                    .map(profile -> "\"" + profile + "\"")
+                    .toList()))
+        .append("]\n");
+    if (GateCommandTemplate.writesUses(gate)) {
+      content.append("uses = \"").append(gate.id()).append("\"\n");
+    }
+    GateCommandTemplate.append(content, gate);
+    gatePreset(gate, project, preset).forEach((key, value) -> setting(content, key, value));
+    partial(content, gate, project, preset);
   }
 
   private static void partial(
@@ -137,7 +129,7 @@ public final class ConfigurationTemplate {
 
   /** Writes a gate setting: {@code minimum} is a number, every other setting a string. */
   private static void setting(final StringBuilder content, final String key, final String value) {
-    if (MINIMUM.equals(key) && value != null) {
+    if ((MINIMUM.equals(key) || MINIMUM_BRANCHES.equals(key)) && value != null) {
       content.append(key).append(" = ").append(value).append('\n');
     } else {
       string(content, key, value);
@@ -154,7 +146,7 @@ public final class ConfigurationTemplate {
     return "\"" + escape(value) + "\"";
   }
 
-  private static String escape(final String value) {
+  static String escape(final String value) {
     return value.replace("\\", "\\\\").replace("\"", "\\\"");
   }
 }

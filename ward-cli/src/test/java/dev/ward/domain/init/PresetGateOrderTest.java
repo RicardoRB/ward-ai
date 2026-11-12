@@ -11,15 +11,15 @@ class PresetGateOrderTest {
 
   @Test
   void explicitGatesFollowPresetGatesWithoutDuplicates() {
-    assertThat(PresetGateOrder.withExplicitGates(STANDARD, List.of("gitleaks", "tests")))
+    assertThat(PresetGateOrder.withExplicitGates(STANDARD, List.of("trivy", "tests")))
         .containsExactly(
-            "compile", "tests", "format", "checkstyle", "pmd", "spotbugs", "coverage", "gitleaks");
+            "compile", "tests", "format", "checkstyle", "pmd", "spotbugs", "coverage", "trivy");
   }
 
   @Test
   void explicitGatesKeepTheirGivenOrder() {
-    assertThat(PresetGateOrder.withExplicitGates(STANDARD, List.of("sonar", "gitleaks", "sonar")))
-        .endsWith("sonar", "gitleaks");
+    assertThat(PresetGateOrder.withExplicitGates(STANDARD, List.of("sonar", "trivy", "sonar")))
+        .endsWith("sonar", "trivy");
   }
 
   @Test
@@ -30,8 +30,8 @@ class PresetGateOrderTest {
 
   @Test
   void selectedPresetGatesComeFirstInPresetOrder() {
-    assertThat(PresetGateOrder.orderSelected(STANDARD, List.of("gitleaks", "pmd", "tests")))
-        .containsExactly("tests", "pmd", "gitleaks");
+    assertThat(PresetGateOrder.orderSelected(STANDARD, List.of("trivy", "pmd", "tests")))
+        .containsExactly("tests", "pmd", "trivy");
   }
 
   @Test

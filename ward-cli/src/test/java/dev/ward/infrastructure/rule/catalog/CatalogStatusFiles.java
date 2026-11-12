@@ -9,6 +9,7 @@ import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.tomlj.Toml;
 import org.tomlj.TomlParseResult;
 import org.tomlj.TomlTable;
@@ -34,18 +35,39 @@ final class CatalogStatusFiles {
     final Map<String, Map<AnalysisLanguage, Entry>> rows = new LinkedHashMap<>();
     for (final AnalysisLanguage language : AnalysisLanguage.values()) {
       final String resource = ROOT + CatalogRow.key(language) + "/" + stem + ".toml";
-      readLanguage(resource, language, rows);
+      readFile(resource).forEach((name, entry) -> languageRows(rows, name).put(language, entry));
     }
     return rows;
   }
 
-  private static void readLanguage(
-      final String resource,
-      final AnalysisLanguage language,
-      final Map<String, Map<AnalysisLanguage, Entry>> rows) {
+  /** Returns the status lines of the text scope of the catalog file {@code stem}, by row name. */
+  static Map<String, Entry> readText(final String stem) {
+    return readFile(ROOT + "text/" + stem + ".toml");
+  }
+
+  /**
+   * Returns the status of a row of the text scope, which is {@code scope = "text"} and has its
+   * status in the text status file; empty for a row of the languages.
+   */
+  static Optional<LanguageStatus> textStatus(final TomlTable row, final Entry external) {
+    final String scope = row.getString("scope");
+    if (scope == null) {
+      return Optional.empty();
+    }
+    if (!"text".equals(scope) || external == null) {
+      throw new IllegalArgumentException("'scope' must be \"text\" and the row needs a status");
+    }
+    final CatalogStatus status =
+        CatalogStatus.byKey(external.status())
+            .orElseThrow(() -> new IllegalArgumentException("unknown status for text"));
+    return Optional.of(new LanguageStatus(status, external.issue(), ""));
+  }
+
+  private static Map<String, Entry> readFile(final String resource) {
+    final Map<String, Entry> entries = new LinkedHashMap<>();
     try (InputStream stream = CatalogStatusFiles.class.getResourceAsStream("/" + resource)) {
       if (stream == null) {
-        return;
+        return entries;
       }
       final TomlParseResult toml =
           Toml.parse(new String(stream.readAllBytes(), StandardCharsets.UTF_8));
@@ -57,12 +79,13 @@ final class CatalogStatusFiles {
                 + toml.errors().getFirst());
       }
       for (final String name : toml.keySet()) {
-        languageRows(rows, name).put(language, entry(resource, name, toml));
+        entries.put(name, entry(resource, name, toml));
       }
     } catch (final IOException exception) {
       throw new RuleConfigurationException(
           "Catalog status file '" + resource + "' could not be read", exception);
     }
+    return entries;
   }
 
   private static Map<AnalysisLanguage, Entry> languageRows(

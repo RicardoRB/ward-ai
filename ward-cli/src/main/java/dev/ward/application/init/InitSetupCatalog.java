@@ -22,7 +22,6 @@ import javax.inject.Named;
 
 /** Project-aware defaults used by init. */
 public final class InitSetupCatalog extends InitGeneralCatalog {
-  private final EnvironmentInspection environment;
   private static final Logger LOGGER = Logger.getLogger(InitSetupCatalog.class.getName());
 
   private final Supplier<QualityHookGeneration> qualityHooks;
@@ -96,7 +95,6 @@ public final class InitSetupCatalog extends InitGeneralCatalog {
       final WardConfigurationReader configurations,
       final String wardVersion) {
     super(inputs);
-    this.environment = inputs.environment();
     this.manifests = inputs.manifests();
     this.qualityHooks = () -> qualityHooks;
     this.configurations = configurations;
@@ -141,10 +139,5 @@ public final class InitSetupCatalog extends InitGeneralCatalog {
   /** Removes the Ward-owned quality hooks of {@code project}. */
   public IntegrationResult removeQualityHooks(final Project project) {
     return qualityHooks.get().remove(project);
-  }
-
-  /** Returns whether {@code NVD_API_KEY} is set, which dependency-check needs to update quickly. */
-  public boolean nvdApiKeySet(final Project project) {
-    return environment.inspect(project.root()).isSet("NVD_API_KEY");
   }
 }

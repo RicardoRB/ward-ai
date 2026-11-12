@@ -1,0 +1,38 @@
+---
+title: vulnerabilities
+description: Download or refresh the advisory databases of the vulnerabilities check.
+---
+
+`ward vulnerabilities update` downloads or refreshes the advisory databases that the
+[`vulnerabilities`](/configuration/vulnerabilities/) check reads.
+
+```sh
+ward vulnerabilities update [-C <dir>]
+```
+
+It refreshes the database of each ecosystem of the project's languages: Maven for Java and Kotlin,
+npm for TypeScript and JavaScript, PyPI for Python, and SwiftURL for Swift. It does not read the
+dependency inventory, because reading a Maven inventory can run the build tool. A project can
+therefore refresh a database the check later does not need.
+
+For each ecosystem it prints the date of the data and whether it changed:
+
+```text
+npm: updated, data of 2026-11-10
+PyPI: unchanged, data of 2026-11-09
+```
+
+## Exit codes
+
+| Code | Meaning |
+|---|---|
+| `0` | Every database is current. |
+| `2` | A download failed, or no project was found. |
+
+When a download fails, the command names the ecosystem and leaves any stored copy unchanged. It does
+not accept `--offline`.
+
+## When to run it
+
+`ward check` already refreshes the databases on every online run. Run this command before an
+`--offline` check, for example in a CI step that restores `.ward/cache/vulnerabilities/` first.

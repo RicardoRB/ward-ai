@@ -2,6 +2,7 @@ package dev.ward.application.init;
 
 import dev.ward.application.init.openapi.OpenApiToolInstalls;
 import dev.ward.domain.config.WardException;
+import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.OwnedSection;
 import dev.ward.domain.project.Project;
@@ -20,8 +21,6 @@ public final class CiWorkflowTemplate {
   static final String END = "# ward-owned: github-ci v1 end";
   private static final String WORKFLOWS = ".github/workflows/";
   private static final String SARIF = "ward.sarif";
-  private static final String GITLEAKS_VERSION = "8.30.1";
-  private static final String TRIVY_VERSION = "0.76.0";
   private static final String SEMGREP_VERSION = "1.181.0";
   public static final String STEP = "      - name: ";
 
@@ -74,27 +73,12 @@ public final class CiWorkflowTemplate {
     final Set<String> ids = gates.stream().map(InitGateOption::id).collect(Collectors.toSet());
     final StringBuilder body = new StringBuilder(header(ids, project, fileName(project), facts));
     body.append(tools(ids));
-    if (ids.contains("trivy")) {
-      body.append(
-          STEP
-              + "Restore trivy cache\n"
-              + "        uses: actions/cache/restore@v5\n"
-              + "        with:\n"
-              + "          path: ~/.cache/trivy\n"
-              + "          key: trivy-${{ github.run_id }}\n"
-              + "          restore-keys: trivy-\n");
+    if (ids.contains(SupportedQualityGates.VULNERABILITIES)) {
+      body.append(VulnerabilityCacheSteps.restore(project));
     }
-    body.append(
-        ward(wardVersion, ids.contains("dependency-check"), sarif(project), category(project)));
-    if (ids.contains("trivy")) {
-      body.append(
-          STEP
-              + "Save trivy cache\n"
-              + "        if: always()\n"
-              + "        uses: actions/cache/save@v5\n"
-              + "        with:\n"
-              + "          path: ~/.cache/trivy\n"
-              + "          key: trivy-${{ github.run_id }}\n");
+    body.append(ward(wardVersion, sarif(project), category(project)));
+    if (ids.contains(SupportedQualityGates.VULNERABILITIES)) {
+      body.append(VulnerabilityCacheSteps.save(project));
     }
     return new OwnedSection(
         project.repositoryRoot().resolve(WORKFLOWS + fileName(project)),
@@ -162,32 +146,13 @@ public final class CiWorkflowTemplate {
         + "      security-events: write\n"
         + "    steps:\n"
         + "      - uses: actions/checkout@v5\n"
-        // gitleaks scans the whole history, and openapi-compat needs the base branch.
-        + (ids.contains("gitleaks") || ids.contains("openapi-compat")
-            ? "        with:\n          fetch-depth: 0\n"
-            : "")
+        // openapi-compat needs the base branch; init never turns on the history scan of secrets.
+        + (ids.contains("openapi-compat") ? "        with:\n          fetch-depth: 0\n" : "")
         + InitToolchains.support(project).ciSetup(project, facts);
   }
 
   private static String tools(final Set<String> ids) {
     final List<String> install = new ArrayList<>();
-    if (ids.contains("gitleaks")) {
-      install.add(
-          "          curl -sSfL"
-              + " \"https://github.com/gitleaks/gitleaks/releases/download/v"
-              + GITLEAKS_VERSION
-              + "/gitleaks_"
-              + GITLEAKS_VERSION
-              + "_linux_x64.tar.gz\" | sudo tar -xz -C /usr/local/bin gitleaks\n");
-    }
-    if (ids.contains("trivy")) {
-      install.add(
-          "          curl -sSfL"
-              + " https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh"
-              + " | sudo sh -s -- -b /usr/local/bin v"
-              + TRIVY_VERSION
-              + "\n");
-    }
     if (ids.contains("semgrep")) {
       install.add("          pip install semgrep==" + SEMGREP_VERSION + "\n");
     }
@@ -214,8 +179,7 @@ public final class CiWorkflowTemplate {
     return "'" + value.replace("'", "''") + "'";
   }
 
-  private static String ward(
-      final String version, final boolean nvdKey, final String sarif, final String category) {
+  private static String ward(final String version, final String sarif, final String category) {
     return STEP
         + "Install Ward\n"
         + "        env:\n"
@@ -227,7 +191,6 @@ public final class CiWorkflowTemplate {
         + "          echo \"$WARD_INSTALL_DIR\" >> \"$GITHUB_PATH\"\n"
         + STEP
         + "Run quality gates\n"
-        + (nvdKey ? "        env:\n          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}\n" : "")
         + "        run: ward check --profile ci --format sarif --output ward.sarif\n"
         // Fork tokens cannot write security events; no file means Ward could not run at all.
         + STEP
