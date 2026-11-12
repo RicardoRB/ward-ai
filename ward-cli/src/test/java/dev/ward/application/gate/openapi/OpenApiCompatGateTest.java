@@ -25,6 +25,9 @@ class OpenApiCompatGateTest {
     fixtures.revisions.put(ORIGIN_MAIN, OpenApiGateFixtures.BASE_SHA);
     fixtures.mergeBase = Optional.of(OpenApiGateFixtures.BASE_SHA);
     fixtures.committedFiles.add(OpenApiGateFixtures.BASE_SHA + ":" + OpenApiGateFixtures.SPEC);
+    fixtures.committedContents.put(
+        OpenApiGateFixtures.BASE_SHA + ":" + OpenApiGateFixtures.SPEC,
+        OpenApiGateFixtures.DOCUMENT);
     return fixtures;
   }
 
@@ -33,7 +36,7 @@ class OpenApiCompatGateTest {
     final OpenApiGateFixtures fixtures = branch();
     fixtures.committedContents.put(
         OpenApiGateFixtures.BASE_SHA + ":" + OpenApiGateFixtures.SPEC,
-        OpenApiGateFixtures.DOCUMENT.replace("          post:\n", "          put:\n"));
+        OpenApiGateFixtures.DOCUMENT.replace("    post:\n", "    put:\n"));
     fixtures.committedContents.put(
         OpenApiGateFixtures.HEAD_SHA + ":" + OpenApiGateFixtures.SPEC, "not: used\n");
 
@@ -63,7 +66,7 @@ class OpenApiCompatGateTest {
     fixtures.committedFiles.add(OpenApiGateFixtures.PARENT_SHA + ":" + OpenApiGateFixtures.SPEC);
     fixtures.committedContents.put(
         OpenApiGateFixtures.PARENT_SHA + ":" + OpenApiGateFixtures.SPEC,
-        OpenApiGateFixtures.DOCUMENT.replace("          post:\n", "          put:\n"));
+        OpenApiGateFixtures.DOCUMENT.replace("    post:\n", "    put:\n"));
 
     final GateResult result =
         fixtures.gate(COMPAT, OpenApiGateFixtures.NO_COMMAND).execute(OpenApiGateFixtures.PROJECT);

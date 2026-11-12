@@ -74,7 +74,12 @@ final class OpenApiDiffGate implements QualityGate {
     }
     if (!ports.revisions().exists(root, resolved.commit(), spec)) {
       LOGGER.log(
-          Level.INFO, () -> "event=openapi-baseline gate=" + name + " status=none reason=new-spec");
+          Level.INFO,
+          () ->
+              "event=openapi-baseline gate="
+                  + name
+                  + " status=none reason=new-spec revision="
+                  + resolved.commit());
       return OpenApiResults.stopped(
           name,
           GateStatus.PASSED,
