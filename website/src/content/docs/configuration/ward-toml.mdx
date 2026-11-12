@@ -23,10 +23,12 @@ Two checks may run the same tool:
 
 ```toml
 [checks.coverage]
-command = "./mvnw jacoco:check"
+command = "./mvnw jacoco:report"
+minimum = 70
 
-[checks.coverage-tests]
-command = "./mvnw -pl core jacoco:check"
+[checks.coverage-core]
+command = "./mvnw -pl core jacoco:report"
+minimum = 85
 ```
 
 Version 1 files (`[quality-gates.<id>]`, `preset`, top-level `[profiles]`) are rejected. Regenerate
@@ -53,7 +55,7 @@ prerequisites, its learning keys, and whether `--exclude-spec` selects it. The n
 
 ```toml
 [checks.style]
-command = "./mvnw jacoco:check" # inferred: coverage
+command = "./mvnw jacoco:report" # inferred: coverage (needs a minimum)
 
 [checks.architecture]
 command = "./mvnw -Dtest=ArchitectureBoundaryTest test" # a filtered test run is not inferred as tests

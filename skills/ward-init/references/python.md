@@ -21,7 +21,8 @@ version by the Python matrix. Python 3.15 waits until mutmut installs on it. Dja
   to run `python -m venv .venv`.
 - **Own configs.** A `mypy.ini`, `.coveragerc`, or a `[tool.mypy]`,
   `[tool.coverage]` table, or a `setup.cfg` or `tox.ini` section, is the project's own. Ward keeps
-  it unchanged and puts the coverage threshold on the command instead.
+  it unchanged. A `fail_under` it sets keeps applying to `coverage lcov`, and Ward reads only the
+  `minimum` of the `coverage` check in `ward.toml`.
 
 ## Choices
 
@@ -29,11 +30,12 @@ version by the Python matrix. Python 3.15 waits until mutmut installs on it. Dja
 |---|---|---|
 | `mypy` | `mypy . -O json` | yes |
 | `pytest` | `coverage run -m pytest` | yes |
-| `coverage` | `coverage report`, `--fail-under=80` with a user config | yes |
+| `coverage` | `coverage lcov -o .ward/reports/coverage.lcov`; Ward reads the report and checks `minimum = 80` | yes |
 | `pip-audit` | `pip-audit` in `ci` | no, opt-in |
 
 `strict` adds `mutmut` (mutation testing in `ci`, with a 60% minimum). It also turns on mypy's strict
-mode, the strict Ward rules in `ward-rules.toml`, and branch coverage with an 85% total. Lint comes
+mode, the strict Ward rules in `ward-rules.toml`, and branch coverage: the `coverage` check then
+requires 85% of lines and 75% of branches, each measured separately. Lint comes
 from the Ward rules that `ward-rules.toml` selects for `"python"`; init does not configure Ruff. A
 project's own mypy or coverage config is kept unchanged, and the same settings go on the commands
 instead. Each

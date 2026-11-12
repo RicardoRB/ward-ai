@@ -46,7 +46,9 @@ command = "./mvnw -DskipTests package spotbugs:check"
 [checks.coverage]
 enabled = true
 profiles = ["pre-push", "ci"]
-command = "./mvnw -DskipTests package jacoco:check"
+command = "./mvnw -DskipTests package jacoco:report"
+minimum = 85
+minimum-branches = 75
 
 [checks.archunit]
 enabled = true

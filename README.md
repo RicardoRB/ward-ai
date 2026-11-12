@@ -205,7 +205,7 @@ ward check --profile ci --format json > ward-report.json
 
 Ward runs the tools; the rules live in each tool's own configuration. Lint, format and architecture
 rules are Ward's own, for every language: `ward-rules.toml` selects them, and [`ward format`](https://ricardorb.github.io/ward-ai/commands/format/) applies the format. For TypeScript and JavaScript projects, `ward init`
-writes `ward-rules.toml` and the test runner's config, such as `vitest.config.mjs`, and the thresholds sit there too. See [Node projects](https://ricardorb.github.io/ward-ai/commands/init/#node-projects). See
+writes `ward-rules.toml` and the test runner's reporter config, such as `vitest.config.mjs`, and the coverage minimum sits in the `coverage` check of `ward.toml`. See [Node projects](https://ricardorb.github.io/ward-ai/commands/init/#node-projects). See
 [quality gates](https://ricardorb.github.io/ward-ai/configuration/gates/).
 
 **Coding agents:** Claude Code, OpenCode, Codex, Cursor, GitHub Copilot CLI, Gemini CLI, Windsurf,

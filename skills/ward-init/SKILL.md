@@ -117,7 +117,12 @@ order:
    ward init --dry-run --preset standard --integration none
    ```
 
-   Add `--overwrite` when `ward.toml` exists. For TypeScript and JavaScript, `strict` adds Stryker mutation testing and
+   Every coverage minimum lives in the `coverage` check of `ward.toml` (`minimum`, and
+   `minimum-branches` under `strict`), never in `pom.xml`, the Gradle build, a test runner config or
+   `.coveragerc`. Ward reads the JaCoCo XML or lcov report and decides, and a multi-module build is
+   checked as one total. A threshold in a config the project owns keeps applying to its tool; init
+   leaves it unchanged and the plan says Ward does not read it. Add `--overwrite` when `ward.toml`
+   exists. For TypeScript and JavaScript, `strict` adds Stryker mutation testing and
    stricter coverage and lint rules; see [references/node.md](references/node.md#choices). A project
    gets Ward's TypeScript and JavaScript rules in `ward-rules.toml`, with no separate lint gate. Recommend `standard` for a first setup or a large
    legacy codebase. Recommend `strict` when the code already has tests and a clear structure.
@@ -168,10 +173,9 @@ order:
    - `crap` is opt-in: no preset selects it. Offer it when the user wants functions that are both
      complex and untested to fail. It needs the coverage gate (`coverage` for Maven and Gradle, the
      test gate for Node, `pytest` for Python); init fails with exit code 2 and writes no file
-     without it, so add it with `--gate crap` next to that gate. Init makes the coverage tool write
-     the report: nothing for Maven, the JaCoCo XML report in the Gradle block, `text` and `lcov`
-     reporters for Vitest, Jest and Bun (flags on the command when the project owns the config),
-     and a `crap-report` check for Python. It is not offered for Swift, Android or Angular
+     without it, so add it with `--gate crap` next to that gate. The `coverage` setup that every
+     toolchain gets already makes the tool write the report `crap` reads, so `crap` adds no
+     report-writing of its own. It is not offered for Swift, Android or Angular
      (`ng-test`); for those, `[checks.crap]` can be written by hand with a `report` path.
    - Layering violations the inspection found: `ward:architecture/layers` fails on its first run.
      Tell the user before the first check, and do not remove the boundaries to make it pass.

@@ -124,7 +124,10 @@ For each approved rule:
    - **Failing tests**: decide with the user whether the code or the test is wrong. Change a test's
      expectation only after a yes.
    - **Coverage and mutation**: find the uncovered or surviving lines in the tool's report, and
-     write tests that assert the behavior those lines implement.
+     write tests that assert the behavior those lines implement. The `coverage` check states each
+     measured value against the `minimum` and `minimum-branches` of `ward.toml`; never lower them.
+     An execution error (no report, a stale report, no branch data) means the test gate has to run
+     first or the tool has to measure branches, not that the minimum is wrong.
    - **`crap`**: each finding is a function whose complexity and missing coverage score above `max`.
      Write tests that cover its branches, or split the function so each part is simple. Never raise
      `max` and never exclude the file. Re-run the coverage check first, because the gate reads the
