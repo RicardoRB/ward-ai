@@ -15,7 +15,6 @@ import dev.ward.domain.project.TaskRunner;
 import dev.ward.domain.project.node.PackageManifest;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
@@ -24,8 +23,6 @@ import org.junit.jupiter.api.io.TempDir;
 /** The crap gate follows the coverage check, and Angular is not offered it. */
 class NodeCrapCommandsTest {
   private static final PackageManifest NO_RUNNER = PackageManifest.EMPTY;
-  private static final PackageManifest JEST =
-      new PackageManifest(Map.of("jest", "^30.0.0"), null, null);
 
   @TempDir Path root;
 

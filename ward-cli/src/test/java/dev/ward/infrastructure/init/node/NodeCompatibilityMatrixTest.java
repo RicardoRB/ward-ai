@@ -2,6 +2,7 @@ package dev.ward.infrastructure.init.node;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.infrastructure.init.MatrixFileTrees;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -120,11 +121,7 @@ class NodeCompatibilityMatrixTest {
         .as("coverage with an untested source file\n%s", report.stdout())
         .isEqualTo(FAILED);
     assertThat(report.stdout()).as("coverage finding").contains("Line coverage");
-    try (Stream<Path> files = Files.walk(untested)) {
-      for (final Path file : files.filter(Files::isRegularFile).toList()) {
-        Files.delete(project.resolve(untested.relativize(file).toString()));
-      }
-    }
+    MatrixFileTrees.remove(untested, project);
   }
 
   private static CommandRun check(final Path project) throws IOException, InterruptedException {

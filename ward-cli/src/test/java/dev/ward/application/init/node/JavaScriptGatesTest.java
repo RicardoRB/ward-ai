@@ -29,6 +29,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** The gates init offers a JavaScript project, and the standard preset's selection. */
 class JavaScriptGatesTest {
+  private static final int STANDARD_MINIMUM = 70;
   private static final PackageManifest NO_RUNNER = PackageManifest.EMPTY;
 
   @TempDir Path root;
@@ -58,7 +59,7 @@ class JavaScriptGatesTest {
     assertThat(gates.get("coverage").profiles()).isEqualTo(Set.of("pre-push", "ci"));
     assertThat(gates.get("coverage").type()).isEqualTo("coverage");
     assertThat(gates.get("coverage").command()).isEmpty();
-    assertThat(gates.get("coverage").minimum()).isEqualTo(70);
+    assertThat(gates.get("coverage").minimum()).isEqualTo(STANDARD_MINIMUM);
   }
 
   @Test

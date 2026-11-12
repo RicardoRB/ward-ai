@@ -1,25 +1,18 @@
 package dev.ward.application.gate;
 
-import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
-import dev.ward.analysis.domain.rule.RuleCapability;
-import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import dev.ward.domain.config.CoverageOptions;
-import dev.ward.domain.gate.CoverageFiles;
+import dev.ward.domain.config.GateConfiguration;
 import dev.ward.domain.gate.FileLines;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.GateStatus;
-import dev.ward.domain.gate.LineCoverageException;
-import dev.ward.domain.gate.LineCoverageReport;
 import dev.ward.domain.gate.LineHits;
 import dev.ward.domain.gate.QualityGate;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
-import dev.ward.infrastructure.rule.BundledRuleMatchers;
-import dev.ward.infrastructure.rule.ClasspathRuleSource;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
@@ -28,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.IntStream;
@@ -56,8 +51,8 @@ final class CoverageGateFixture {
       final int covered,
       final int branches,
       final int coveredBranches) {
-    final TreeMap<Integer, Integer> all = new TreeMap<>();
-    final TreeMap<Integer, Integer> taken = new TreeMap<>();
+    final SortedMap<Integer, Integer> all = new TreeMap<>();
+    final SortedMap<Integer, Integer> taken = new TreeMap<>();
     if (branches > 0) {
       all.put(1, branches);
       taken.put(1, coveredBranches);
@@ -69,7 +64,7 @@ final class CoverageGateFixture {
   }
 
   /** The lines {@code first} to {@code last}, or none when {@code last} is below {@code first}. */
-  static TreeSet<Integer> range(final int first, final int last) {
+  static SortedSet<Integer> range(final int first, final int last) {
     return new TreeSet<>(IntStream.rangeClosed(first, last).boxed().toList());
   }
 
@@ -127,59 +122,33 @@ final class CoverageGateFixture {
                     .build();
               }
             };
-    return new CoverageReportGate("coverage", command, minimum, options, ports(), analysis())
+    return new CoverageReportGate(
+            check(minimum, options),
+            command,
+            CoverageGateFakes.ports(hits, modified, files, modules),
+            CoverageGateFakes.analysis(units))
         .execute(new Project(ROOT, Language.JAVA, BuildTool.MAVEN, Framework.NONE));
   }
 
-  private CrapPorts ports() {
-    final LineCoverageReport reader =
-        new LineCoverageReport() {
-          @Override
-          public boolean accepts(final String head) {
-            return true;
-          }
-
-          @Override
-          public LineHits read(final Path report) {
-            final LineHits found = hits.get(ROOT.relativize(report).toString());
-            if (found == null) {
-              throw new LineCoverageException("bad " + report.getFileName());
-            }
-            return found;
-          }
-        };
-    final CoverageFiles fake =
-        new CoverageFiles() {
-          @Override
-          public List<Path> moduleDirectories(final Path root) {
-            return List.copyOf(modules);
-          }
-
-          @Override
-          public boolean isFile(final Path file) {
-            return files.contains(ROOT.relativize(file).toString());
-          }
-
-          @Override
-          public Instant modified(final Path file) {
-            return modified.getOrDefault(ROOT.relativize(file).toString(), Instant.MIN);
-          }
-        };
-    return new CrapPorts(reader, fake);
-  }
-
-  private AnalysisPorts analysis() {
-    return new AnalysisPorts(
-        new ClasspathRuleSource(),
-        BundledRuleMatchers.create(),
-        (root, languages) -> units,
-        List.of(
-            new FrontendSupport(
-                AnalysisLanguage.JAVA, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX))),
-        root -> AnalysisCacheFixtures.NO_CACHE,
-        AnalysisCacheFixtures.codec(),
-        "test",
-        DependencyAdapters.none(),
-        (unused, classpath) -> Map.of());
+  private static GateConfiguration check(final int minimum, final CoverageOptions options) {
+    return new GateConfiguration(
+        "coverage",
+        "coverage",
+        true,
+        List.of(),
+        Set.of(),
+        null,
+        null,
+        null,
+        minimum,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        options);
   }
 }

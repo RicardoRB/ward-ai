@@ -44,8 +44,9 @@ final class NodeConfigFiles {
           targets,
           root,
           configs.userConfig(root, VITEST),
-          "vitest.config.mjs",
-          ConfigFiles.marker(ConfigFiles.JS_MARKER, null) + NodeConfigTemplates.vitest(),
+          ConfigTarget.write(
+              root.resolve("vitest.config.mjs"),
+              ConfigFiles.marker(ConfigFiles.JS_MARKER, null) + NodeConfigTemplates.vitest()),
           true);
     }
     if (ids.contains(JEST)) {
@@ -58,27 +59,27 @@ final class NodeConfigFiles {
           targets,
           root,
           configs.userConfig(root, STRYKER),
-          "stryker.config.mjs",
-          ConfigFiles.marker(ConfigFiles.JS_MARKER, preset)
-              + NodeStrykerTemplate.stryker(testGate(ids), preset, project.framework()),
+          ConfigTarget.write(
+              root.resolve("stryker.config.mjs"),
+              ConfigFiles.marker(ConfigFiles.JS_MARKER, preset)
+                  + NodeStrykerTemplate.stryker(testGate(ids), preset, project.framework())),
           false);
     }
     return targets;
   }
 
   /**
-   * Adds the user's config as kept, or Ward's {@code file}; a config kept in {@code package.json}
-   * is already part of the plan, so it adds nothing.
+   * Adds the user's config as kept, or the {@code written} config of Ward; a config kept in {@code
+   * package.json} is already part of the plan, so it adds nothing.
    */
   private static void target(
       final List<ConfigTarget> targets,
       final Path root,
       final Optional<Path> userConfig,
-      final String file,
-      final String content,
+      final ConfigTarget written,
       final boolean coverageTool) {
     if (userConfig.isEmpty()) {
-      targets.add(new ConfigTarget(root.resolve(file), Disposition.WRITE, content, null));
+      targets.add(written);
     } else {
       keepOwn(targets, root, userConfig.get(), coverageTool);
     }

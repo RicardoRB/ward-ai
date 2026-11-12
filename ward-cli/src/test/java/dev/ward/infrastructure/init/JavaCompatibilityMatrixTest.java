@@ -123,6 +123,12 @@ class JavaCompatibilityMatrixTest {
         .as("compile with a compile error")
         .isEqualTo(FAILED);
 
+    assertUntestedClassFailsCoverage(project, fixture);
+  }
+
+  /** An untested class, added alone, fails {@code coverage} with the measured line coverage. */
+  private static void assertUntestedClassFailsCoverage(final Path project, final String fixture)
+      throws IOException, InterruptedException {
     JavaMatrixProcesses.git(project, "checkout", "-q", ".");
     JavaMatrixProcesses.git(project, "clean", "-qfd");
     JavaMatrixProcesses.copyTree(
@@ -142,11 +148,9 @@ class JavaCompatibilityMatrixTest {
       JavaMatrixProcesses.copyTree(JavaMatrixFixtures.VIOLATIONS.resolve(fixture), project);
       return;
     }
-    assertThat(LayerPorts.layerFiles(javaProject(project), "layered", javaDependencies()))
-        .as("engine layer findings, clean")
-        .isEmpty();
+    assertThat(engineLayerFiles(project)).as("engine layer findings, clean").isEmpty();
     JavaMatrixFixtures.seedCommon(project, buildTool);
-    assertThat(LayerPorts.layerFiles(javaProject(project), "layered", javaDependencies()))
+    assertThat(engineLayerFiles(project))
         .as("engine layer findings, seeded")
         .containsExactly(ENGINE_LAYER_VIOLATION);
   }
@@ -198,12 +202,12 @@ class JavaCompatibilityMatrixTest {
     return gates;
   }
 
-  private static Project javaProject(final Path project) {
-    return new Project(project, Language.JAVA, BuildTool.MAVEN, Framework.NONE);
-  }
-
-  private static ProjectDependencyAdapters javaDependencies() {
-    return new ProjectDependencyAdapters(List.of(new JvmDependencyAdapters()));
+  /** The files the engine's layer rule flags in a Java project, for the layered style. */
+  private static Set<String> engineLayerFiles(final Path project) {
+    return LayerPorts.layerFiles(
+        new Project(project, Language.JAVA, BuildTool.MAVEN, Framework.NONE),
+        "layered",
+        new ProjectDependencyAdapters(List.of(new JvmDependencyAdapters())));
   }
 
   private static String report(final Path project) throws IOException, InterruptedException {

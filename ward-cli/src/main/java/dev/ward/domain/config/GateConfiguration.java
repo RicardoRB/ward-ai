@@ -68,46 +68,6 @@ public record GateConfiguration(
     independence = independence == null ? List.of() : copyTables(independence);
   }
 
-  /** Creates a check that is not a {@code coverage} check. */
-  public GateConfiguration(
-      final String name,
-      final String type,
-      final boolean enabled,
-      final List<String> command,
-      final Set<String> profiles,
-      final PartialGateConfiguration partial,
-      final String root,
-      final OpenApiGateOptions openApi,
-      final Integer minimum,
-      final XcodePlatform platform,
-      final List<String> rules,
-      final String javaClasspath,
-      final List<LayerBoundary> layers,
-      final List<String> cycleRoots,
-      final List<List<String>> independence,
-      final String rulesFile,
-      final CrapOptions crap) {
-    this(
-        name,
-        type,
-        enabled,
-        command,
-        profiles,
-        partial,
-        root,
-        openApi,
-        minimum,
-        platform,
-        rules,
-        javaClasspath,
-        layers,
-        cycleRoots,
-        independence,
-        rulesFile,
-        crap,
-        null);
-  }
-
   /** Returns the module lists of the independence tables, copied so the record keeps its own. */
   public List<List<String>> independence() {
     return copyTables(independence);

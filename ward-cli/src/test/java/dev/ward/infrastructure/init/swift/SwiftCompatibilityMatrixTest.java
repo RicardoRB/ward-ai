@@ -2,6 +2,7 @@ package dev.ward.infrastructure.init.swift;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.infrastructure.init.MatrixFileTrees;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -105,7 +106,7 @@ class SwiftCompatibilityMatrixTest {
         .as("swift-coverage with an untested source file\n%s", uncovered.output())
         .isEqualTo("FAILED");
     assertThat(uncovered.output()).as("coverage finding").contains("Line coverage");
-    restoreFixture(untested, FIXTURES.resolve(fixture), project);
+    MatrixFileTrees.restore(untested, FIXTURES.resolve(fixture), project);
     copyTree(VIOLATIONS.resolve(fixture), project);
     final Run violatedReport = run(env, project, "check", "--profile", "ci", "--format", "json");
     final Map<String, String> violated = checks(violatedReport);
@@ -186,27 +187,7 @@ class SwiftCompatibilityMatrixTest {
           Files.createDirectories(destination);
         } else {
           Files.createDirectories(destination.getParent());
-          Files.copy(file, destination, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
-        }
-      }
-    }
-  }
-
-  /**
-   * Undoes {@link #copyTree} of the coverage files: a file the fixture has comes back as the
-   * fixture wrote it, and a file only the coverage run added is deleted. An Xcode project lists its
-   * sources, so its coverage file replaces one of them.
-   */
-  private static void restoreFixture(final Path added, final Path fixture, final Path target)
-      throws IOException {
-    try (Stream<Path> files = Files.walk(added)) {
-      for (final Path file : files.filter(Files::isRegularFile).toList()) {
-        final String relative = added.relativize(file).toString();
-        final Path original = fixture.resolve(relative);
-        if (Files.exists(original)) {
-          Files.copy(original, target.resolve(relative), StandardCopyOption.REPLACE_EXISTING);
-        } else {
-          Files.delete(target.resolve(relative));
+          Files.copy(file, destination, StandardCopyOption.REPLACE_EXISTING);
         }
       }
     }

@@ -16,6 +16,8 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** Branch counts come from JaCoCo's {@code mb} and {@code cb} and from lcov's {@code BRDA}. */
 class CoverageBranchReadingTest {
+  private static final int BRANCH_LINE = 5;
+  private static final int THREE = 3;
   private static final Path DIRECTORY = Path.of("src", "test", "resources", "coverage");
 
   private final DetectedLineCoverage reader =
@@ -30,7 +32,7 @@ class CoverageBranchReadingTest {
       final FileLines lines = hits.entries().get(0).lines();
 
       assertThat(hits.recordsBranches()).as(name).isTrue();
-      assertThat(lines.branches()).containsOnly(java.util.Map.entry(5, 2));
+      assertThat(lines.branches()).containsOnly(java.util.Map.entry(BRANCH_LINE, 2));
       assertThat(lines.branchCount()).isEqualTo(2);
       assertThat(lines.coveredBranchCount()).isEqualTo(1);
     }
@@ -51,7 +53,7 @@ class CoverageBranchReadingTest {
     final FileLines lines = hits.entries().get(0).lines();
 
     assertThat(hits.recordsBranches()).isTrue();
-    assertThat(lines.branchCount()).isEqualTo(3);
+    assertThat(lines.branchCount()).isEqualTo(THREE);
     assertThat(lines.coveredBranchCount()).isEqualTo(1);
   }
 

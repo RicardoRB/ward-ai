@@ -40,7 +40,7 @@ public final class JvmInitSupport implements ToolchainInitSupport {
 
   @Override
   public Gates gates(final Project project, final QualityPreset preset, final InitInputs inputs) {
-    final BuildToolGates buildTool = BuildToolGates.of(project, inputs.environment());
+    final BuildToolGates buildTool = BuildToolGates.of(project, inputs.environment(), preset);
     final boolean android = project.framework() == Framework.ANDROID;
     return new Gates(
         analysisGates(project, buildTool, android),

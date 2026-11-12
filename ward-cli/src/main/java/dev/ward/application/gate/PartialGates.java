@@ -122,7 +122,8 @@ final class PartialGates {
         null,
         null,
         null,
-        gate.crap());
+        gate.crap(),
+        gate.coverage());
   }
 
   private static GateScope scope(final PartialCheckPlan.GatePlan plan) {

@@ -9,6 +9,7 @@ import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.infrastructure.analysis.ProjectDependencyAdapters;
 import dev.ward.infrastructure.analysis.python.PythonDependencyAdapters;
+import dev.ward.infrastructure.init.MatrixFileTrees;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,7 +22,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.api.io.TempDir;
@@ -83,7 +83,7 @@ class PythonCompatibilityMatrixTest {
     Assumptions.assumeTrue(
         fixture.equals(System.getProperty(FIXTURE_PROPERTY, fixture)), "row is for " + fixture);
     final Map<String, String> env = environment(python, bin);
-    copyTree(FIXTURES.resolve(fixture), project);
+    MatrixFileTrees.copy(FIXTURES.resolve(fixture), project);
     Files.writeString(project.resolve(".python-version"), python + "\n");
     pinPackages(project, cell.size() > PACKAGES_COLUMN ? cell.getString(PACKAGES_COLUMN) : "");
     prepareManager(manager, find(python), project, env);
@@ -104,7 +104,7 @@ class PythonCompatibilityMatrixTest {
 
     assertThat(engineLayerFiles(project, fixture)).as("engine layer findings, clean").isEmpty();
     final Path untested = COVERAGE_VIOLATIONS.resolve(fixture);
-    copyTree(untested, project);
+    MatrixFileTrees.copy(untested, project);
     final Run report = run(env, project, "check", "--profile", "ci", "--format", "json");
     assertThat(checks(report).get("coverage"))
         .as("coverage with an untested module\n%s", report.output())
@@ -113,8 +113,8 @@ class PythonCompatibilityMatrixTest {
         .as("coverage finding")
         .contains("Line coverage")
         .contains("is below");
-    removeTree(untested, project);
-    copyTree(VIOLATIONS.resolve(fixture), project);
+    MatrixFileTrees.remove(untested, project);
+    MatrixFileTrees.copy(VIOLATIONS.resolve(fixture), project);
     assertThat(engineLayerFiles(project, fixture))
         .as("engine layer findings, seeded")
         .isEqualTo(ENGINE_LAYER_VIOLATIONS.getOrDefault(fixture, Set.of()));
@@ -247,29 +247,6 @@ class PythonCompatibilityMatrixTest {
       checks.put(match.group(1), match.group(2));
     }
     return checks;
-  }
-
-  private static void copyTree(final Path source, final Path target) throws IOException {
-    try (Stream<Path> files = Files.walk(source)) {
-      for (final Path file : files.toList()) {
-        final Path destination = target.resolve(source.relativize(file).toString());
-        if (Files.isDirectory(file)) {
-          Files.createDirectories(destination);
-        } else {
-          Files.createDirectories(destination.getParent());
-          Files.copy(file, destination, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
-        }
-      }
-    }
-  }
-
-  /** Deletes the files of {@code source} from {@code target}, undoing {@link #copyTree}. */
-  private static void removeTree(final Path source, final Path target) throws IOException {
-    try (Stream<Path> files = Files.walk(source)) {
-      for (final Path file : files.filter(Files::isRegularFile).toList()) {
-        Files.delete(target.resolve(source.relativize(file).toString()));
-      }
-    }
   }
 
   /** The exit code and standard output of one process. */

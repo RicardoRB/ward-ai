@@ -43,12 +43,6 @@ public final class CoverageGates {
             ? null
             : new CommandQualityGate(
                 check.name(), executor, check.command(), reports.directories());
-    return new CoverageReportGate(
-        check.name(),
-        command,
-        check.minimum(),
-        check.coverage(),
-        extensions.crap(),
-        extensions.analysis());
+    return new CoverageReportGate(check, command, extensions.crap(), extensions.analysis());
   }
 }

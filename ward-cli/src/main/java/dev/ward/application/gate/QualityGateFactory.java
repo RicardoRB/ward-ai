@@ -29,7 +29,10 @@ public class QualityGateFactory {
   private static final String ZAP = "zap";
   private static final Set<String> IN_PROCESS_GATES =
       Set.of(
-          SupportedQualityGates.ANALYSIS, SupportedQualityGates.FORMAT, SupportedQualityGates.CRAP);
+          SupportedQualityGates.ANALYSIS,
+          SupportedQualityGates.FORMAT,
+          SupportedQualityGates.CRAP,
+          SupportedQualityGates.COVERAGE);
 
   public static final List<String> SUPPORTED_GATES = SupportedQualityGates.IDS;
   private static final Set<String> PLATFORM_GATES =
@@ -183,9 +186,6 @@ public class QualityGateFactory {
     if (IN_PROCESS_GATES.contains(type)) {
       return inProcessGate(check, focus);
     }
-    if (SupportedQualityGates.COVERAGE.equals(type)) {
-      return CoverageGates.report(check, executor, reports, extensions);
-    }
     if (SupportedQualityGates.specIds().contains(type)) {
       return environment == null
           ? new CommandQualityGate(name, executor, check.command())
@@ -243,9 +243,13 @@ public class QualityGateFactory {
   }
 
   /**
-   * Builds the gates that run inside Ward: the {@code ward} analysis and the {@code ward-format}.
+   * Builds the gates that run inside Ward: the {@code ward} analysis, the {@code ward-format}, the
+   * {@code crap} score and the {@code coverage} minimum, which reads its report itself.
    */
   private QualityGate inProcessGate(final GateConfiguration check, final List<String> focus) {
+    if (SupportedQualityGates.COVERAGE.equals(check.type())) {
+      return CoverageGates.report(check, executor, reports, extensions);
+    }
     if (SupportedQualityGates.CRAP.equals(check.type())) {
       return CrapGates.create(check, extensions);
     }

@@ -30,6 +30,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 /** The gates init offers a TypeScript project, and the standard preset's selection. */
 class TypeScriptGatesTest {
+  private static final int STANDARD_MINIMUM = 70;
   private static final PackageManifest NO_RUNNER = PackageManifest.EMPTY;
 
   @TempDir Path root;
@@ -96,7 +97,7 @@ class TypeScriptGatesTest {
 
     assertThat(gates).containsOnlyKeys("tsc", "vitest", "coverage");
     assertThat(gates.get("coverage").profiles()).isEqualTo(Set.of("pre-push", "ci"));
-    assertThat(gates.get("coverage").minimum()).isEqualTo(70);
+    assertThat(gates.get("coverage").minimum()).isEqualTo(STANDARD_MINIMUM);
     assertThat(gates.get("tsc").profiles()).isEqualTo(Set.of("pre-push", "ci"));
     assertThat(gates.get("vitest").profiles()).isEqualTo(Set.of("pre-push", "ci"));
   }

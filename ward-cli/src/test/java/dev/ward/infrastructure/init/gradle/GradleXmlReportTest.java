@@ -16,6 +16,8 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** Ward reads the JaCoCo XML report, so the block enables it and sets no coverage rule. */
 class GradleXmlReportTest {
+  private static final String MARKER_END = "// Ward-managed";
+
   @TempDir Path root;
 
   @Test
@@ -50,7 +52,7 @@ class GradleXmlReportTest {
 
     final String script = configure("build.gradle", earlier);
 
-    assertThat(script).startsWith(earlier.substring(earlier.indexOf("plugins")).substring(0, 20));
+    assertThat(script).startsWith(earlier.substring(0, earlier.indexOf(MARKER_END)));
     assertThat(script).contains("xml.required = true");
     assertThat(script.indexOf("tasks.register('wardCoverageData')"))
         .isEqualTo(script.lastIndexOf("tasks.register('wardCoverageData')"));

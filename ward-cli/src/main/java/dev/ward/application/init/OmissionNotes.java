@@ -1,6 +1,7 @@
 package dev.ward.application.init;
 
 import dev.ward.domain.doctor.EnvironmentInspection;
+import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
@@ -19,6 +20,11 @@ public final class OmissionNotes {
           + " test target's options in angular.json (or in karma.conf.js for Karma), or add a"
           + " [checks.coverage] check with uses = \"coverage\", a minimum and the report path of"
           + " the lcov file ng test writes, to enforce a minimum from ward.toml.";
+  private static final String BRANCH = "BRANCH";
+  private static final String BRANCH_MINIMUM = "minimum-branches";
+  private static final String NO_BRANCH_MINIMUM =
+      "The coverage tool of this project measures no branches (Bun), so the coverage check has a"
+          + " line minimum and no minimum-branches.";
   private static final String ANGULAR_NO_MUTATION =
       "Mutation testing is not offered for Angular: no Stryker runner works with Angular's test"
           + " builder, so the strict preset omits stryker.";
@@ -29,6 +35,21 @@ public final class OmissionNotes {
           + " init again to add them.";
 
   private OmissionNotes() {}
+
+  /**
+   * Whether the preset sets a branch minimum that the {@code coverage} check leaves out, because
+   * its coverage tool (Bun) measures no branches.
+   */
+  private static boolean lacksBranchMinimum(
+      final InitGeneralCatalog catalog, final Project project, final QualityPreset preset) {
+    return preset != null
+        && preset.rules().jacocoMinimums().containsKey(BRANCH)
+        && catalog.gates(project, preset).stream()
+            .anyMatch(
+                gate ->
+                    SupportedQualityGates.COVERAGE.equals(gate.id())
+                        && !gate.settings().containsKey(BRANCH_MINIMUM));
+  }
 
   /** Returns the notes for {@code project}, and for the gates {@code preset} omits, if any. */
   public static List<String> of(
@@ -46,6 +67,9 @@ public final class OmissionNotes {
       if (preset == QualityPreset.STRICT) {
         notes.add(ANGULAR_NO_MUTATION);
       }
+    }
+    if (lacksBranchMinimum(catalog, project, preset)) {
+      notes.add(NO_BRANCH_MINIMUM);
     }
     InitToolchains.find(project)
         .map(support -> support.notes(project, preset, catalog.inputs))

@@ -12,6 +12,7 @@ class FileLinesTest {
   private static final int ELEVEN = 11;
   private static final int TWENTY = 20;
   private static final int THREE = 3;
+  private static final int SIX = 6;
 
   private static Set<Integer> ints(final String csv) {
     return csv.isEmpty()
@@ -62,8 +63,8 @@ class FileLinesTest {
 
     final FileLines merged = first.merge(second);
 
-    assertThat(merged.branchCount()).isEqualTo(6);
-    assertThat(merged.coveredBranchCount()).isEqualTo(3);
+    assertThat(merged.branchCount()).isEqualTo(SIX);
+    assertThat(merged.coveredBranchCount()).isEqualTo(THREE);
   }
 
   @Test

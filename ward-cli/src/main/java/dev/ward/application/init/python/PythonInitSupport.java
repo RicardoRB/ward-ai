@@ -57,15 +57,6 @@ public final class PythonInitSupport implements ToolchainInitSupport {
 
   @Override
   public Optional<CrapSetup> crap(final Project project, final InitInputs inputs) {
-    final PythonTools python =
-        PythonTools.of(
-            project,
-            inputs.pythonConfigs(),
-            inputs
-                .environment()
-                .inspect(project.root())
-                .hasExecutable(PythonTools.executable(project)),
-            null);
     return Optional.of(
         gates ->
             CrapInit.place(

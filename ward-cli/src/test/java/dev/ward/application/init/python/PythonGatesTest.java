@@ -44,25 +44,6 @@ class PythonGatesTest {
   }
 
   @Test
-  void coverageCommandCarriesNoThresholdWhoeverOwnsTheConfig() {
-    for (final boolean owned : new boolean[] {true, false}) {
-      assertThat(command(gates(BuildTool.UV, QualityPreset.STANDARD, owned), COVERAGE))
-          .noneMatch(argument -> argument.contains("fail"));
-    }
-  }
-
-  @Test
-  void coverageCheckHoldsTheMinimumsAndTheReportPath() {
-    assertThat(settings(gates(BuildTool.UV, QualityPreset.STANDARD, false), COVERAGE))
-        .containsEntry("minimum", "80")
-        .containsEntry("report", ".ward/reports/coverage.lcov")
-        .doesNotContainKey("minimum-branches");
-    assertThat(settings(gates(BuildTool.UV, QualityPreset.STRICT, false), COVERAGE))
-        .containsEntry("minimum", "85")
-        .containsEntry("minimum-branches", "75");
-  }
-
-  @Test
   void standardPresetSelectsThreeGatesAndKeepsAuditAndMutationOptIn() {
     final PythonGates gates = new PythonGates();
 
@@ -104,10 +85,6 @@ class PythonGatesTest {
 
   private static List<String> command(final List<InitGateOption> gates, final String id) {
     return gates.stream().filter(gate -> gate.id().equals(id)).findFirst().orElseThrow().command();
-  }
-
-  private static Map<String, String> settings(final List<InitGateOption> gates, final String id) {
-    return gates.stream().filter(gate -> gate.id().equals(id)).findFirst().orElseThrow().settings();
   }
 
   private static String setting(

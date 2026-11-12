@@ -25,8 +25,6 @@ import java.util.stream.Collectors;
 
 /** Init choices for npm, pnpm, Yarn and Bun projects. */
 public final class NodeInitSupport implements ToolchainInitSupport {
-  private static final String BUN_NO_BRANCHES =
-      "Bun measures no branches, so the coverage check has a line minimum and no minimum-branches.";
 
   /** The test gates whose coverage report is written to {@code coverage/}. */
   private static final Set<String> COVERAGE_GATES = Set.of("vitest", "jest", "bun-test");
@@ -94,16 +92,6 @@ public final class NodeInitSupport implements ToolchainInitSupport {
   public boolean supports(final Project project, final InitInputs inputs) {
     return project.language() == Language.TYPESCRIPT
         || project.language() == Language.JAVASCRIPT && inputs.sources().hasSources(project.root());
-  }
-
-  /** Bun writes no branch data, so a strict Bun project has a line minimum only. */
-  @Override
-  public List<String> notes(
-      final Project project, final QualityPreset preset, final InitInputs inputs) {
-    final String test = NodeTools.testGate(project, inputs.manifests().read(project.root()));
-    return preset == QualityPreset.STRICT && NodeTools.BUN_TEST.equals(test)
-        ? List.of(BUN_NO_BRANCHES)
-        : List.of();
   }
 
   @Override

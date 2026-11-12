@@ -3,7 +3,7 @@ package dev.ward.application.gate;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.domain.config.CoverageOptions;
-import dev.ward.domain.gate.FileLines;
+import dev.ward.domain.config.GateConfiguration;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.GateStatus;
 import dev.ward.domain.gate.LineCoverage;
@@ -14,9 +14,7 @@ import java.nio.file.Path;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -38,20 +36,19 @@ final class CoverageReportGate implements QualityGate {
   private final CrapReports reports;
 
   /**
-   * Creates the gate called {@code name}. {@code command} is {@code null} when the check only reads
-   * an earlier report; {@code analysis} then finds the sources a report must not be older than.
+   * Creates the gate of {@code check}, whose {@code minimum} and coverage options it enforces.
+   * {@code command} is {@code null} when the check only reads an earlier report; {@code analysis}
+   * then finds the sources a report must not be older than.
    */
   CoverageReportGate(
-      final String name,
+      final GateConfiguration check,
       final QualityGate command,
-      final int minimum,
-      final CoverageOptions options,
       final CrapPorts ports,
       final AnalysisPorts analysis) {
-    this.name = name;
+    this.name = check.name();
     this.command = command;
-    this.minimum = minimum;
-    this.options = options;
+    this.minimum = check.minimum();
+    this.options = check.coverage();
     this.ports = ports;
     this.analysis = analysis;
     this.reports = new CrapReports(ports, CrapReports.TESTS_FIRST);
@@ -87,8 +84,8 @@ final class CoverageReportGate implements QualityGate {
     if (command == null) {
       requireNewerThanSources(project, hits);
     }
-    final Totals totals = Totals.of(project.root(), hits, ports);
-    if (totals.lines.executable() == 0) {
+    final CoverageTotals totals = CoverageTotals.of(project.root(), hits, ports);
+    if (totals.lines().executable() == 0) {
       throw new CrapReportException(
           "The coverage reports have no coverable line." + CrapReports.TESTS_FIRST);
     }
@@ -126,26 +123,27 @@ final class CoverageReportGate implements QualityGate {
     reports.requireFresh(project.root(), matching.namedBy());
   }
 
-  private GateResult compare(final GateResult ran, final Totals totals, final Integer branchMin) {
+  private GateResult compare(
+      final GateResult ran, final CoverageTotals totals, final Integer branchMin) {
     LOGGER.log(
         Level.INFO,
         () ->
             "event=coverage-totals gate="
                 + name
                 + " lines="
-                + totals.lines.covered()
+                + totals.lines().covered()
                 + "/"
-                + totals.lines.executable()
+                + totals.lines().executable()
                 + " branches="
-                + totals.branches.covered()
+                + totals.branches().covered()
                 + "/"
-                + totals.branches.executable());
-    final boolean linesBelow = totals.lines.below(minimum);
-    final boolean branchesBelow = branchMin != null && totals.branches.below(branchMin);
+                + totals.branches().executable());
+    final boolean linesBelow = totals.lines().below(minimum);
+    final boolean branchesBelow = branchMin != null && totals.branches().below(branchMin);
     final StringBuilder summary =
-        new StringBuilder(describe("Line", totals.lines, minimum, linesBelow));
+        new StringBuilder(describe("Line", totals.lines(), minimum, linesBelow));
     if (branchMin != null) {
-      summary.append(' ').append(describe("Branch", totals.branches, branchMin, branchesBelow));
+      summary.append(' ').append(describe("Branch", totals.branches(), branchMin, branchesBelow));
     }
     final boolean failed = linesBelow || branchesBelow;
     return with(ran, failed ? GateStatus.FAILED : GateStatus.PASSED, summary.toString());
@@ -174,51 +172,5 @@ final class CoverageReportGate implements QualityGate {
           .stderr(ran.stderr());
     }
     return builder.build();
-  }
-
-  /** The line and branch counts summed over every file of every report. */
-  private record Totals(LineCoverage lines, LineCoverage branches) {
-
-    /**
-     * Sums the reports. A file is told apart by the module directory of its report and its name,
-     * and a line that any report covers is covered. shortcut: a configured report outside every
-     * module directory counts as the root's, so same-named files of two such reports merge; list
-     * module reports under their modules to keep them apart.
-     */
-    static Totals of(final Path root, final List<LineHits> hits, final CrapPorts ports) {
-      final List<Path> modules = ports.files().moduleDirectories(root);
-      final Map<String, FileLines> merged = new HashMap<>();
-      for (final LineHits report : hits) {
-        final String module = module(modules, report.report());
-        for (final LineHits.Entry entry : report.entries()) {
-          merged.merge(module + "|" + entry.name(), entry.lines(), FileLines::merge);
-        }
-      }
-      long coverable = 0;
-      long covered = 0;
-      long branches = 0;
-      long coveredBranches = 0;
-      for (final FileLines lines : merged.values()) {
-        coverable += lines.coverable().size();
-        covered += lines.covered().size();
-        branches += lines.branchCount();
-        coveredBranches += lines.coveredBranchCount();
-      }
-      return new Totals(
-          LineCoverage.of(covered, coverable), LineCoverage.of(coveredBranches, branches));
-    }
-
-    private static String module(final List<Path> modules, final Path report) {
-      final Path file = report.toAbsolutePath().normalize();
-      Path best = null;
-      for (final Path module : modules) {
-        final Path directory = module.toAbsolutePath().normalize();
-        if (file.startsWith(directory)
-            && (best == null || directory.getNameCount() > best.getNameCount())) {
-          best = directory;
-        }
-      }
-      return best == null ? "" : best.toString();
-    }
   }
 }
