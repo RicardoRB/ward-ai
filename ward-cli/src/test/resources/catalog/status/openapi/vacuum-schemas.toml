@@ -1,13 +1,13 @@
 # Status of the vacuum-schemas rows in openapi: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-allof-conflicts = { status = "planned", issue = "#522" }
-camel-case-properties = { status = "planned", issue = "#522" }
-duplicated-entry-in-enum = { status = "planned", issue = "#522" }
-no-unnecessary-combinator = { status = "planned", issue = "#522" }
-nullable-enum-contains-null = { status = "planned", issue = "#522" }
-oas-missing-type = { status = "planned", issue = "#522" }
+allof-conflicts = "implemented"
+camel-case-properties = "implemented"
+duplicated-entry-in-enum = "implemented"
+no-unnecessary-combinator = "implemented"
+nullable-enum-contains-null = "implemented"
+oas-missing-type = "implemented"
 oas-schema-check = { status = "planned", issue = "#522" }
 oas3-schema = { status = "planned", issue = "#522" }
-oas3-unused-component = { status = "planned", issue = "#522" }
-required-fields-defined = { status = "planned", issue = "#522" }
-typed-enum = { status = "planned", issue = "#522" }
+oas3-unused-component = "implemented"
+required-fields-defined = "implemented"
+typed-enum = "implemented"

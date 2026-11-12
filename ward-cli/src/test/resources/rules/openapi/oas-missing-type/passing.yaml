@@ -1,0 +1,16 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths: {}
+components:
+  schemas:
+    A:
+      type: object
+      properties:
+        typed:
+          type: string
+        listed:
+          type: array
+          items:
+            type: string

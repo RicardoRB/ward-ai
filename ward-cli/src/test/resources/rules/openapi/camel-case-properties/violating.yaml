@@ -1,0 +1,18 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths: {}
+components:
+  schemas:
+    A:
+      type: object
+      properties:
+        snake_case:
+          type: string
+        PascalCase:
+          type: string
+        okName:
+          type: string
+        Mixed_Case:
+          type: string

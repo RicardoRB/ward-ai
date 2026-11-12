@@ -32459,6 +32459,44 @@
         }
       }
     },
+    "ward:openapi/allof-conflicts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/camel-case-properties": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:openapi/component-description": {
       "type": "object",
       "additionalProperties": false,
@@ -32479,6 +32517,25 @@
       }
     },
     "ward:openapi/contact-properties": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/duplicated-entry-in-enum": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -32668,6 +32725,63 @@
         }
       }
     },
+    "ward:openapi/no-unnecessary-combinator": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/nullable-enum-contains-null": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/oas-missing-type": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:openapi/oas3-api-servers": {
       "type": "object",
       "additionalProperties": false,
@@ -32745,6 +32859,25 @@
       }
     },
     "ward:openapi/oas3-server-trailing-slash": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/oas3-unused-component": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33067,7 +33200,45 @@
         }
       }
     },
+    "ward:openapi/required-fields-defined": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:openapi/tag-description": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/typed-enum": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -54508,8 +54679,11 @@
               "kotlin.var-could-be-val",
               "kotlin.variable-declaration-usage-distance",
               "kotlin.wrong-equals-type-parameter",
+              "openapi.allof-conflicts",
+              "openapi.camel-case-properties",
               "openapi.component-description",
               "openapi.contact-properties",
+              "openapi.duplicated-entry-in-enum",
               "openapi.info-contact",
               "openapi.info-description",
               "openapi.info-license",
@@ -54519,11 +54693,15 @@
               "openapi.no-http-verbs-in-path",
               "openapi.no-request-body",
               "openapi.no-script-tags-in-markdown",
+              "openapi.no-unnecessary-combinator",
+              "openapi.nullable-enum-contains-null",
+              "openapi.oas-missing-type",
               "openapi.oas3-api-servers",
               "openapi.oas3-host-not-example",
               "openapi.oas3-operation-security-defined",
               "openapi.oas3-parameter-description",
               "openapi.oas3-server-trailing-slash",
+              "openapi.oas3-unused-component",
               "openapi.openapi-tags",
               "openapi.openapi-tags-alphabetical",
               "openapi.operation-4xx-response",
@@ -54540,7 +54718,9 @@
               "openapi.path-not-include-query",
               "openapi.paths-kebab-case",
               "openapi.post-response-success",
+              "openapi.required-fields-defined",
               "openapi.tag-description",
+              "openapi.typed-enum",
               "python.abbreviation-as-word-in-name",
               "python.abstract-base-class-without-abstract-method",
               "python.abstract-class-instantiated",
@@ -57204,8 +57384,11 @@
               "kotlin.var-could-be-val",
               "kotlin.variable-declaration-usage-distance",
               "kotlin.wrong-equals-type-parameter",
+              "openapi.allof-conflicts",
+              "openapi.camel-case-properties",
               "openapi.component-description",
               "openapi.contact-properties",
+              "openapi.duplicated-entry-in-enum",
               "openapi.info-contact",
               "openapi.info-description",
               "openapi.info-license",
@@ -57215,11 +57398,15 @@
               "openapi.no-http-verbs-in-path",
               "openapi.no-request-body",
               "openapi.no-script-tags-in-markdown",
+              "openapi.no-unnecessary-combinator",
+              "openapi.nullable-enum-contains-null",
+              "openapi.oas-missing-type",
               "openapi.oas3-api-servers",
               "openapi.oas3-host-not-example",
               "openapi.oas3-operation-security-defined",
               "openapi.oas3-parameter-description",
               "openapi.oas3-server-trailing-slash",
+              "openapi.oas3-unused-component",
               "openapi.openapi-tags",
               "openapi.openapi-tags-alphabetical",
               "openapi.operation-4xx-response",
@@ -57236,7 +57423,9 @@
               "openapi.path-not-include-query",
               "openapi.paths-kebab-case",
               "openapi.post-response-success",
+              "openapi.required-fields-defined",
               "openapi.tag-description",
+              "openapi.typed-enum",
               "python.abbreviation-as-word-in-name",
               "python.abstract-base-class-without-abstract-method",
               "python.abstract-class-instantiated",
@@ -63221,11 +63410,20 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
+            "allof-conflicts": {
+              "$ref": "#/$defs/ward:openapi~1allof-conflicts"
+            },
+            "camel-case-properties": {
+              "$ref": "#/$defs/ward:openapi~1camel-case-properties"
+            },
             "component-description": {
               "$ref": "#/$defs/ward:openapi~1component-description"
             },
             "contact-properties": {
               "$ref": "#/$defs/ward:openapi~1contact-properties"
+            },
+            "duplicated-entry-in-enum": {
+              "$ref": "#/$defs/ward:openapi~1duplicated-entry-in-enum"
             },
             "info-contact": {
               "$ref": "#/$defs/ward:openapi~1info-contact"
@@ -63254,6 +63452,15 @@
             "no-script-tags-in-markdown": {
               "$ref": "#/$defs/ward:openapi~1no-script-tags-in-markdown"
             },
+            "no-unnecessary-combinator": {
+              "$ref": "#/$defs/ward:openapi~1no-unnecessary-combinator"
+            },
+            "nullable-enum-contains-null": {
+              "$ref": "#/$defs/ward:openapi~1nullable-enum-contains-null"
+            },
+            "oas-missing-type": {
+              "$ref": "#/$defs/ward:openapi~1oas-missing-type"
+            },
             "oas3-api-servers": {
               "$ref": "#/$defs/ward:openapi~1oas3-api-servers"
             },
@@ -63268,6 +63475,9 @@
             },
             "oas3-server-trailing-slash": {
               "$ref": "#/$defs/ward:openapi~1oas3-server-trailing-slash"
+            },
+            "oas3-unused-component": {
+              "$ref": "#/$defs/ward:openapi~1oas3-unused-component"
             },
             "openapi-tags": {
               "$ref": "#/$defs/ward:openapi~1openapi-tags"
@@ -63317,8 +63527,14 @@
             "post-response-success": {
               "$ref": "#/$defs/ward:openapi~1post-response-success"
             },
+            "required-fields-defined": {
+              "$ref": "#/$defs/ward:openapi~1required-fields-defined"
+            },
             "tag-description": {
               "$ref": "#/$defs/ward:openapi~1tag-description"
+            },
+            "typed-enum": {
+              "$ref": "#/$defs/ward:openapi~1typed-enum"
             }
           }
         },

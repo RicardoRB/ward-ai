@@ -20,6 +20,15 @@ public final class OpenApiRules {
     rules.put("oas3-api-servers", ServerRules::apiServers);
     rules.put("oas3-host-not-example", ServerRules::hostNotExample);
     rules.put("oas3-server-trailing-slash", ServerRules::trailingSlash);
+    rules.put("allof-conflicts", AllOfRules::conflicts);
+    rules.put("camel-case-properties", SchemaShapeRules::camelCase);
+    rules.put("duplicated-entry-in-enum", EnumRules::duplicated);
+    rules.put("no-unnecessary-combinator", SchemaShapeRules::unnecessaryCombinator);
+    rules.put("nullable-enum-contains-null", EnumRules::nullable);
+    rules.put("oas-missing-type", SchemaShapeRules::missingType);
+    rules.put("oas3-unused-component", UnusedComponentRules::unused);
+    rules.put("required-fields-defined", SchemaShapeRules::requiredDefined);
+    rules.put("typed-enum", EnumRules::typed);
     rules.put("component-description", DescriptionRules::component);
     rules.put("oas3-parameter-description", DescriptionRules::parameter);
     rules.put("openapi-tags", TagRules::openapiTags);
