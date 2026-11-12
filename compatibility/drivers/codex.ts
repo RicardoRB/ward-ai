@@ -13,8 +13,6 @@ export const codexDriver: LiveDriver = {
   missingPrerequisites: (env) => (env.OPENAI_API_KEY ? [] : ["OPENAI_API_KEY"]),
   scenarios: [
     { id: "edit-check-feedback", notImplemented: TRUST },
-    { id: "guard-refuses-protected-edit", notImplemented: TRUST },
-    { id: "guard-allows-active-change-edit", notImplemented: TRUST },
     { id: "stop-feedback-limit", notImplemented: TRUST },
   ],
 };

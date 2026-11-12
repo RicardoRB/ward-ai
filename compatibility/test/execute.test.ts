@@ -50,7 +50,7 @@ describe("documented registration shapes", () => {
 describe("generated artifact execution", () => {
   let fixture: Fixture;
   beforeAll(async () => {
-    fixture = await createFixture({ harness: "codex", guard: false, ward: wardLauncher(process.env)! });
+    fixture = await createFixture({ harness: "codex", ward: wardLauncher(process.env)! });
   });
   afterAll(() => {
     fixture?.cleanup();
@@ -82,7 +82,7 @@ describe("generated artifact execution", () => {
 
   test("negative control: a disconnected wrapper fails the invocation assertion", async () => {
     const harness = executionHarness(fixture);
-    const disconnected = await createFixture({ harness: "codex", guard: false, ward: fixture.ward });
+    const disconnected = await createFixture({ harness: "codex", ward: fixture.ward });
     try {
       disconnectWrapper(join(disconnected.root, ".codex/hooks/ward.sh"));
       const { result, invocations } = await harness.execute(".codex/hooks/ward.sh post", { cwd: disconnected.root, stdin: "{}" });

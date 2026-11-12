@@ -10,11 +10,9 @@ import { AmpHost } from "./host";
 // `ward` stub. `bun run test` puts only the stub and system directories on PATH.
 const STUB_DIR = join(import.meta.dir, ".stub-bin");
 const STATE = join(STUB_DIR, ".state");
-const GUARD = ["hook", "native", "--agent", "amp", "--guard-approved-specs", "--event-stdin"];
 const CHECK = ["hook", "native", "--agent", "amp", "--event-stdin"];
 
-let guarded: Fixture;
-let unguarded: Fixture;
+let fixture: Fixture;
 
 beforeAll(async () => {
   if (process.env.PATH !== `${STUB_DIR}:/usr/bin:/bin`) {
@@ -22,13 +20,11 @@ beforeAll(async () => {
   }
   writeStub(STUB_DIR);
   const ward = wardLauncher(process.env)!;
-  guarded = await createFixture({ harness: "amp", guard: true, ward });
-  unguarded = await createFixture({ harness: "amp", guard: false, ward });
+  fixture = await createFixture({ harness: "amp", ward });
 });
 
 afterAll(() => {
-  guarded?.cleanup();
-  unguarded?.cleanup();
+  fixture?.cleanup();
   cleanupOwnedProcesses();
 });
 
@@ -37,7 +33,7 @@ beforeEach(() => {
   mkdirSync(join(STATE, "responses"), { recursive: true });
 });
 
-function respond(key: "hook-guard" | "hook-check", exit: number, stdout = "", stderr = ""): void {
+function respond(key: "hook", exit: number, stdout = "", stderr = ""): void {
   const dir = join(STATE, "responses", key);
   mkdirSync(dir, { recursive: true });
   writeFileSync(join(dir, "exit"), String(exit));
@@ -64,30 +60,30 @@ function legacyPlugin(fixture: Fixture): string {
 
 describe("post-edit check", () => {
   test("a completed edit sends the event to the wrapper's post phase and success is silent", async () => {
-    respond("hook-check", 0);
-    const host = await load(guarded);
+    respond("hook", 0);
+    const host = await load(fixture);
     const result = await host.toolResult({ tool: "edit_file", input: { path: "src/A.java" }, status: "done", output: "Edited." });
-    expect(invocations().map((i) => [i.argv, i.cwd])).toEqual([[CHECK, realpathSync(guarded.root)]]);
-    expect(payloads()).toEqual([{ event: "tool.result", tool_name: "edit_file", cwd: guarded.root, file_path: join(guarded.root, "src/A.java") }]);
+    expect(invocations().map((i) => [i.argv, i.cwd])).toEqual([[CHECK, realpathSync(fixture.root)]]);
+    expect(payloads()).toEqual([{ event: "tool.result", tool_name: "edit_file", cwd: fixture.root, file_path: join(fixture.root, "src/A.java") }]);
     expect(result).toEqual({ status: "done", output: "Edited.", error: undefined });
   });
 
   test("a failing check is appended to the output the model reads", async () => {
-    respond("hook-check", 2, "", "Ward quality findings:\nformat FAILED");
-    const host = await load(guarded);
+    respond("hook", 2, "", "Ward quality findings:\nformat FAILED");
+    const host = await load(fixture);
     const result = await host.toolResult({ tool: "create_file", input: { path: "src/B.java" }, status: "done", output: "Created." });
     expect(result).toEqual({ status: "done", output: "Created.\n\nWard quality findings:\nformat FAILED" });
   });
 
   test("structured output is preserved as JSON ahead of the feedback", async () => {
-    respond("hook-check", 2, "", "failed");
-    const host = await load(guarded);
+    respond("hook", 2, "", "failed");
+    const host = await load(fixture);
     const result = await host.toolResult({ tool: "edit_file", input: { path: "a" }, status: "done", output: { diff: "+x" } });
     expect(result.output).toBe('{"diff":"+x"}\n\nfailed');
   });
 
   test("failed and cancelled tool results are preserved and never checked", async () => {
-    const host = await load(guarded);
+    const host = await load(fixture);
     expect(await host.toolResult({ tool: "edit_file", input: { path: "a" }, status: "error", error: "no match" })).toEqual({
       status: "error",
       output: undefined,
@@ -98,105 +94,49 @@ describe("post-edit check", () => {
   });
 
   test("tools that modify no files are not checked", async () => {
-    const host = await load(guarded);
+    const host = await load(fixture);
     await host.toolResult({ tool: "read_file", input: { path: "a" }, status: "done", output: "x" });
     expect(invocations()).toEqual([]);
   });
 
   test("a missing workspace or Ward failure to start is logged, not delivered", async () => {
     const host = new AmpHost(null);
-    (await import(`${join(guarded.root, ".amp/plugins/ward.ts")}?run=${Math.random()}`)).default(host.api());
+    (await import(`${join(fixture.root, ".amp/plugins/ward.ts")}?run=${Math.random()}`)).default(host.api());
     const result = await host.toolResult({ tool: "edit_file", input: { path: "/x/a" }, status: "done", output: "ok" });
     expect(result.output).toBe("ok");
     expect(host.logs.join("\n")).toContain("[ward] could not run");
   });
 
   test("negative control: the legacy no-op plugin never reaches Ward", async () => {
-    respond("hook-check", 2, "", "failed");
-    const host = await load(guarded, legacyPlugin(guarded));
+    respond("hook", 2, "", "failed");
+    const host = await load(fixture, legacyPlugin(fixture));
     const result = await host.toolResult({ tool: "edit_file", input: { path: "a" }, status: "done", output: "ok" });
     expect(invocations()).toEqual([]);
     expect(result.output).toBe("ok");
   });
 });
 
-describe("approved-artifact guard", () => {
-  test("a refused edit returns reject-and-continue with Ward's message", async () => {
-    respond("hook-guard", 0, JSON.stringify({ action: "reject-and-continue", message: "openspec/specs is approved." }));
-    const host = await load(guarded);
-    expect(await host.toolCall({ tool: "edit_file", input: { path: "openspec/specs/a/spec.md" } })).toEqual({
-      action: "reject-and-continue",
-      message: "openspec/specs is approved.",
-    });
-    expect(invocations()[0].argv).toEqual(GUARD);
-    expect(payloads()[0]).toEqual({ event: "tool.call", tool_name: "edit_file", cwd: guarded.root, file_path: join(guarded.root, "openspec/specs/a/spec.md") });
-  });
-
-  test("a permitted edit is allowed", async () => {
-    respond("hook-guard", 0, "");
-    const host = await load(guarded);
-    expect(await host.toolCall({ tool: "edit_file", input: { path: "openspec/changes/a/tasks.md" } })).toEqual({ action: "allow" });
-  });
-
-  test("shell commands send the command and directory", async () => {
-    respond("hook-guard", 0, JSON.stringify({ action: "reject-and-continue", message: "archive refused" }));
-    const host = await load(guarded);
-    const result = await host.toolCall({ tool: "Bash", input: { cmd: "openspec archive x", cwd: "/work/dir" } });
-    expect(result).toEqual({ action: "reject-and-continue", message: "archive refused" });
-    expect(payloads()[0]).toEqual({ event: "tool.call", tool_name: "Bash", cwd: "/work/dir", command: "openspec archive x" });
-  });
-
-  test("Ward errors and unreadable responses allow the call with a log entry", async () => {
-    respond("hook-guard", 2, "", "internal");
-    const host = await load(guarded);
-    expect(await host.toolCall({ tool: "edit_file", input: { path: "openspec/specs/a/spec.md" } })).toEqual({ action: "allow" });
-    respond("hook-guard", 0, "not json");
-    expect(await host.toolCall({ tool: "edit_file", input: { path: "openspec/specs/a/spec.md" } })).toEqual({ action: "allow" });
-    expect(host.logs.join("\n")).toContain("[ward guard] could not decide; allowing");
-  });
-
-  test("tools that touch nothing are allowed without asking Ward", async () => {
-    const host = await load(guarded);
-    expect(await host.toolCall({ tool: "read_file", input: { path: "a" } })).toEqual({ action: "allow" });
-    expect(invocations()).toEqual([]);
-  });
-
-  test("with the guard disabled, the wrapper's pre phase allows without running Ward", async () => {
-    respond("hook-guard", 0, JSON.stringify({ action: "reject-and-continue", message: "should not run" }));
-    const host = await load(unguarded);
-    expect(await host.toolCall({ tool: "edit_file", input: { path: "openspec/specs/a/spec.md" } })).toEqual({ action: "allow" });
-    expect(invocations()).toEqual([]);
-  });
-
-  test("negative control: the legacy no-op plugin allows a protected edit without asking Ward", async () => {
-    respond("hook-guard", 0, JSON.stringify({ action: "reject-and-continue", message: "refused" }));
-    const host = await load(guarded, legacyPlugin(guarded));
-    expect(await host.toolCall({ tool: "edit_file", input: { path: "openspec/specs/a/spec.md" } })).toEqual({ action: "allow" });
-    expect(invocations()).toEqual([]);
-  });
-});
-
 describe("turn end", () => {
   test("findings at the end of a turn continue it once with bounded feedback", async () => {
-    respond("hook-check", 0, "Ward spec validation findings:\nx: missing scenario");
-    const host = await load(guarded);
+    respond("hook", 0, "Ward quality findings:\nx: missing scenario");
+    const host = await load(fixture);
     expect(await host.agentEnd()).toEqual([
-      { action: "continue", userMessage: "[ward]\nWard spec validation findings:\nx: missing scenario", maxContinuations: 1 },
+      { action: "continue", userMessage: "[ward]\nWard quality findings:\nx: missing scenario", maxContinuations: 1 },
     ]);
-    expect(payloads()).toEqual([{ event: "agent.end", cwd: guarded.root }]);
+    expect(payloads()).toEqual([{ event: "agent.end", cwd: fixture.root }]);
   });
 
   test("a failing check at the end of a turn is delivered the same way", async () => {
-    respond("hook-check", 2, "", "Ward quality findings:\ntests FAILED");
-    const host = await load(guarded);
+    respond("hook", 2, "", "Ward quality findings:\ntests FAILED");
+    const host = await load(fixture);
     expect(await host.agentEnd()).toEqual([
       { action: "continue", userMessage: "[ward]\nWard quality findings:\ntests FAILED", maxContinuations: 1 },
     ]);
   });
 
   test("a clean turn, or a cancelled or failed one, does not continue", async () => {
-    respond("hook-check", 0, "");
-    const host = await load(guarded);
+    respond("hook", 0, "");
+    const host = await load(fixture);
     expect(await host.agentEnd()).toEqual([]);
     expect(await host.agentEnd("cancelled")).toEqual([]);
     expect(await host.agentEnd("error")).toEqual([]);
@@ -206,7 +146,7 @@ describe("turn end", () => {
 
 describe("wrapper", () => {
   test("an unknown phase is an error rather than a silent check", async () => {
-    const result = Bun.spawnSync(["/bin/sh", join(guarded.root, ".amp/plugins/ward.sh")], { cwd: guarded.root });
+    const result = Bun.spawnSync(["/bin/sh", join(fixture.root, ".amp/plugins/ward.sh")], { cwd: fixture.root });
     expect(result.exitCode).toBe(2);
     expect(invocations()).toEqual([]);
   });
