@@ -19,6 +19,7 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class DependencyInventoryServiceTest {
+  private static final PrintStream ORIGINAL_OUT = System.out;
   private static final Project NPM =
       new Project(Path.of("/work/app"), Language.JAVASCRIPT, BuildTool.NPM, Framework.NONE);
 
@@ -58,17 +59,14 @@ class DependencyInventoryServiceTest {
 
   @Test
   void writesNothingToStandardOutput() {
-    final PrintStream original = System.out;
     final ByteArrayOutputStream captured = new ByteArrayOutputStream();
-    final PrintStream replacement = new PrintStream(captured, true, StandardCharsets.UTF_8);
-    System.setOut(replacement);
-    try {
+    try (PrintStream replacement = new PrintStream(captured, true, StandardCharsets.UTF_8)) {
+      System.setOut(replacement);
       new DependencyInventoryService(
               Map.of(BuildTool.NPM, project -> new DependencyInventory(List.of())))
           .inventory(NPM);
     } finally {
-      System.setOut(original);
-      replacement.close();
+      System.setOut(ORIGINAL_OUT);
     }
 
     assertThat(captured.toString(StandardCharsets.UTF_8)).isEmpty();
