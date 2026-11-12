@@ -49,9 +49,12 @@ class InitJavaScriptProjectTest {
     assertThat(project.resolve("eslint.config.mjs")).doesNotExist();
     assertThat(project.resolve("eslint.config.js")).doesNotExist();
     assertThat(fixture.read("vitest.config.mjs"))
-        .startsWith("// managed-by: ward preset=standard\n")
-        .contains("lines: 70,")
-        .doesNotContain("branches");
+        .startsWith("// managed-by: ward\n")
+        .contains("reporter: [\"text\", \"lcov\"]")
+        .doesNotContain("threshold");
+    assertThat(fixture.read("ward.toml"))
+        .contains("[checks.coverage]", "uses = \"coverage\"", "minimum = 70")
+        .doesNotContain("minimum-branches");
     assertThat(fixture.read(".github/workflows/ward.yml"))
         .contains("actions/setup-node@v5", "run: npm ci")
         .doesNotContain("setup-java");

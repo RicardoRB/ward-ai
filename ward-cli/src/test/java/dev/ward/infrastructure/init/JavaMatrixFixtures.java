@@ -53,6 +53,11 @@ final class JavaMatrixFixtures {
     return fixture.isEmpty() ? "compile-error" : fixture + "-compile-error";
   }
 
+  /** The seeded coverage violation: an untested class, in the fixture's source language. */
+  static String coverageViolation(final String fixture) {
+    return fixture.isEmpty() ? "coverage" : fixture + "-coverage";
+  }
+
   /**
    * Adds the common violations, and for Maven a dynamic dependency version for {@code build-policy}
    * and a version conflict for Enforcer.

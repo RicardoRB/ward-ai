@@ -30,7 +30,11 @@ final class TomlCommandParser {
     if (SupportedQualityGates.TRACEABILITY.equals(uses)
         || SupportedQualityGates.ANALYSIS.equals(uses)
         || SupportedQualityGates.FORMAT.equals(uses)
-        || SupportedQualityGates.BUILD_POLICY.equals(uses)) {
+        || SupportedQualityGates.CRAP.equals(uses)
+        || SupportedQualityGates.COVERAGE.equals(uses)
+        || SupportedQualityGates.SECRETS.equals(uses)
+        || SupportedQualityGates.BUILD_POLICY.equals(uses)
+        || SupportedQualityGates.VULNERABILITIES.equals(uses)) {
       return List.of();
     }
     throw new WardException("'" + where + ".command' is required");

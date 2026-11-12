@@ -148,7 +148,7 @@ class CheckServiceTest {
             command = "first"
             profiles = ["a", "b"]
             [checks.coverage]
-            uses = "coverage"
+            uses = "command"
             command = "defaulted"
             [checks.compile]
             uses = "compile"

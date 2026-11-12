@@ -19,24 +19,6 @@ final class PresetPluginSnippets {
 
   private PresetPluginSnippets() {}
 
-  static String jacoco(final QualityPreset preset) {
-    final String limits =
-        preset.rules().jacocoMinimums().entrySet().stream()
-            .map(
-                entry ->
-                    "<limit><counter>"
-                        + entry.getKey()
-                        + "</counter><value>COVEREDRATIO</value><minimum>"
-                        + entry.getValue()
-                        + "</minimum></limit>")
-            .reduce("", String::concat);
-    return "<plugin><groupId>org.jacoco</groupId><artifactId>jacoco-maven-plugin</artifactId><version>0.8.13</version>\n"
-        + "<executions><execution><goals><goal>prepare-agent</goal></goals></execution><execution><id>report</id><phase>test</phase><goals><goal>report</goal></goals></execution></executions>\n"
-        + "<configuration><rules><rule><element>BUNDLE</element><limits>"
-        + limits
-        + "</limits></rule></rules></configuration></plugin>\n";
-  }
-
   static String enforcer() {
     return """
             <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-enforcer-plugin</artifactId><version>3.5.0</version>

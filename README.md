@@ -195,17 +195,17 @@ ward check --profile ci --format json > ward-report.json
 | Build and tests | Compiler, JUnit, JaCoCo coverage, PIT mutation testing |
 | Code quality | Ward rules, SonarQube |
 | Architecture | Ward's layer boundaries (Layered, Hexagonal, or Clean), slice cycles and feature independence, native `no-field-di` and `no-standard-streams` rules (`strict`), native build policy rules (`build-policy`), Maven Enforcer / Gradle checks |
-| Security | Gitleaks, Semgrep, OWASP Dependency-Check, Trivy, OWASP ZAP |
+| Security | Ward secret detection, Semgrep, native vulnerability matching against OSV advisories, OWASP ZAP |
 | Compliance | License plugins, japicmp API compatibility |
 | TypeScript and JavaScript | `tsc`, Vitest / Jest / `bun test`, Stryker mutation testing, Ward's TypeScript and JavaScript rules (lint, selected in `ward-rules.toml`), framework checkers (`vue-tsc`, `svelte-check`, `astro check`, `ngc`) |
-| Python | Ward rules (lint, selected in `ward-rules.toml`), `ward-format` (format), mypy, pytest, coverage.py, pip-audit, mutmut mutation testing, `manage.py check` for Django |
+| Python | Ward rules (lint, selected in `ward-rules.toml`), `ward-format` (format), mypy, pytest, coverage.py, mutmut mutation testing, `manage.py check` for Django |
 | Swift | Ward rules (lint, selected in `ward-rules.toml`), `swift build`, `swift test` or `xcodebuild test`, llvm-cov / xccov coverage |
 | Android | Android lint (`lintDebug`), Android unit tests (`testDebugUnitTest`), debug unit-test coverage |
 | Anything else | Any command you add to `ward.toml` |
 
 Ward runs the tools; the rules live in each tool's own configuration. Lint, format and architecture
 rules are Ward's own, for every language: `ward-rules.toml` selects them, and [`ward format`](https://ricardorb.github.io/ward-ai/commands/format/) applies the format. For TypeScript and JavaScript projects, `ward init`
-writes `ward-rules.toml` and the test runner's config, such as `vitest.config.mjs`, and the thresholds sit there too. See [Node projects](https://ricardorb.github.io/ward-ai/commands/init/#node-projects). See
+writes `ward-rules.toml` and the test runner's reporter config, such as `vitest.config.mjs`, and the coverage minimum sits in the `coverage` check of `ward.toml`. See [Node projects](https://ricardorb.github.io/ward-ai/commands/init/#node-projects). See
 [quality gates](https://ricardorb.github.io/ward-ai/configuration/gates/).
 
 **Coding agents:** Claude Code, OpenCode, Codex, Cursor, GitHub Copilot CLI, Gemini CLI, Windsurf,

@@ -1,6 +1,7 @@
 package dev.ward.application.init.node;
 
 import dev.ward.application.init.CiWorkflowTemplate;
+import dev.ward.application.init.CrapSetup;
 import dev.ward.application.init.InitInputs;
 import dev.ward.application.init.InitProjectFiles;
 import dev.ward.application.init.MemberPlanning;
@@ -15,6 +16,7 @@ import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.init.ScriptReplacement;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.Toolchain;
 import dev.ward.domain.project.node.PackageManifest;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
 
 /** Init choices for npm, pnpm, Yarn and Bun projects. */
 public final class NodeInitSupport implements ToolchainInitSupport {
+
   /** The test gates whose coverage report is written to {@code coverage/}. */
   private static final Set<String> COVERAGE_GATES = Set.of("vitest", "jest", "bun-test");
 
@@ -92,12 +95,19 @@ public final class NodeInitSupport implements ToolchainInitSupport {
   }
 
   @Override
+  public Optional<CrapSetup> crap(final Project project, final InitInputs inputs) {
+    return NodeCrap.of(project, inputs);
+  }
+
+  @Override
   public List<String> agentRules(
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
       final Set<String> owned) {
-    return NodeAgentRules.lines(project, gates, preset, owned);
+    return project.toolchain() == Toolchain.NODE
+        ? NodeAgentRules.lines(project, gates, preset, owned)
+        : List.of();
   }
 
   @Override

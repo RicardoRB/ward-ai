@@ -1,6 +1,7 @@
 package dev.ward.application.init.node;
 
 import dev.ward.application.init.SourceLanguageGates;
+import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Framework;
@@ -28,6 +29,7 @@ record TypeScriptGates(Framework framework, String testGate)
     final List<InitGateOption> gates = new ArrayList<>();
     gates.add(typeCheck(node));
     gates.add(node.tests());
+    node.coverage().ifPresent(gates::add);
     if (!mutationUnavailable()) {
       gates.add(node.stryker());
     }
@@ -37,6 +39,9 @@ record TypeScriptGates(Framework framework, String testGate)
   @Override
   public List<String> presetGates(final QualityPreset preset) {
     final List<String> gates = new ArrayList<>(List.of(typeCheckId(), testGate));
+    if (!NodeTools.NG_TEST.equals(testGate)) {
+      gates.add(SupportedQualityGates.COVERAGE);
+    }
     if (preset == QualityPreset.STRICT && !mutationUnavailable()) {
       gates.add("stryker");
     }

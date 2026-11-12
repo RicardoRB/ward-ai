@@ -1,9 +1,0 @@
-version = 1
-
-[select]
-include = [
-  "build.duplicate-dependency-declaration",
-  "build.minimum-build-tool-version",
-  "build.no-dynamic-version",
-  "build.plugin-version-pinned",
-]

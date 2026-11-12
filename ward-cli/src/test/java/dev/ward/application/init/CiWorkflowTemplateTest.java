@@ -35,27 +35,15 @@ class CiWorkflowTemplateTest {
 
     assertThat(body)
         .contains("pip install semgrep==", "actions/setup-python", "cache: maven")
-        .doesNotContain("gitleaks", "trivy", "openspec", "fetch-depth", "NVD_API_KEY");
+        .doesNotContain("gitleaks", "openspec", "fetch-depth");
   }
 
   @Test
   void securityGatesAddHistoryCacheAndKey() {
     final String body =
-        CiWorkflowTemplate.render(
-                "github",
-                MAVEN,
-                gates("gitleaks", "trivy", "dependency-check", "openspec"),
-                "0.0.12")
-            .body();
+        CiWorkflowTemplate.render("github", MAVEN, gates("secrets", "openspec"), "0.0.12").body();
 
-    assertThat(body)
-        .contains(
-            "fetch-depth: 0",
-            "gitleaks_8.30.1_linux_x64",
-            "Restore trivy cache",
-            "Save trivy cache",
-            "NVD_API_KEY: ${{ secrets.NVD_API_KEY }}",
-            "@fission-ai/openspec@");
+    assertThat(body).contains("@fission-ai/openspec@");
   }
 
   @Test
@@ -92,10 +80,7 @@ class CiWorkflowTemplateTest {
   void rootProjectWorkflowIsUnchanged() throws IOException {
     final OwnedSection workflow =
         CiWorkflowTemplate.render(
-            "github",
-            MAVEN,
-            gates("tests", "gitleaks", "trivy", "semgrep", "dependency-check", "openspec"),
-            "0.1.1");
+            "github", MAVEN, gates("tests", "secrets", "semgrep", "openspec"), "0.1.1");
 
     assertThat(workflow.body())
         .isEqualTo(Files.readString(Path.of("src/test/resources/ci/ward-root.yml")));

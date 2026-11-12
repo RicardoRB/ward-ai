@@ -32,13 +32,13 @@ class InitNodeStrictProjectTest {
             "command = \"npx vitest run --coverage\"",
             "[checks.stryker]\nenabled = true\nprofiles = [\"ci\"]\n"
                 + "command = \"npx stryker run\"")
-        .doesNotContain("minimum");
+        .contains("[checks.coverage]", "minimum = 85", "minimum-branches = 75");
     assertThat(fixture.read("package.json"))
         .contains("\"@stryker-mutator/core\": \"10.1.1\"", "\"@stryker-mutator/vitest-runner\"");
     assertThat(fixture.read("ward-rules.toml"))
         .contains("preset = \"strict\"", "languages = [\"typescript\", \"swift\"]");
     assertThat(project.resolve("eslint.config.mjs")).doesNotExist();
-    assertThat(fixture.read("vitest.config.mjs")).contains("lines: 85,", "branches: 75,");
+    assertThat(fixture.read("vitest.config.mjs")).doesNotContain("threshold");
     assertThat(fixture.read(STRYKER_CONFIG)).contains("testRunner: \"vitest\"", "break: 60,");
     assertThat(fixture.read(GITIGNORE)).contains(".stryker-tmp/", "reports/mutation/");
     assertThat(fixture.read(AGENTS))
@@ -55,7 +55,8 @@ class InitNodeStrictProjectTest {
     final NodeFixtureRun fixture = NodeFixtureRun.copy("javascript-commonjs-project", project);
     Files.writeString(
         project.resolve("package.json"),
-        "{\n  \"name\": \"shop\",\n  \"private\": true,\n  \"devDependencies\": {\n"
+        "{\n  \"name\": \"shop\",\n  \"private\": true,\n  \"scripts\": { \"test\": \"jest\" },\n"
+            + "  \"devDependencies\": {\n"
             + "    \"jest\": \"^30.0.0\"\n  }\n}\n");
 
     final NodeFixtureRun.Result init = init(fixture);
@@ -67,7 +68,8 @@ class InitNodeStrictProjectTest {
     assertThat(fixture.read("package.json"))
         .contains("\"@stryker-mutator/jest-runner\": \"10.1.1\"")
         .doesNotContain("typescript", "vitest");
-    assertThat(fixture.read("jest.config.mjs")).contains("lines: 85,", "branches: 75,");
+    assertThat(project.resolve("jest.config.mjs")).doesNotExist();
+    assertThat(fixture.read(WARD_TOML)).contains("minimum = 85", "minimum-branches = 75");
     assertThat(fixture.read(STRYKER_CONFIG)).contains("testRunner: \"jest\"", "break: 60,");
     assertThat(fixture.read("ward-rules.toml")).contains("languages = [\"javascript\", \"swift\"]");
     assertThat(project.resolve("eslint.config.mjs")).doesNotExist();

@@ -18,6 +18,7 @@ import dagger.Module;
       DoctorBindingsModule.class,
       DependencyBindingsModule.class,
       BuildPolicyBindingsModule.class,
-      RulesBindingsModule.class
+      RulesBindingsModule.class,
+      VulnerabilityBindingsModule.class
     })
 interface PortBindingsModule {}

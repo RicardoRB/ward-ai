@@ -1,10 +1,8 @@
 package dev.ward.infrastructure.cli.gate;
 
 import dev.ward.application.gate.CheckProgressListener;
-import dev.ward.application.gate.CheckReportExport;
 import dev.ward.application.gate.CheckRunOptions;
 import dev.ward.application.gate.CheckService;
-import dev.ward.application.learning.LearningService;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.gate.CheckReport;
 import dev.ward.domain.gate.SeverityThreshold;
@@ -100,6 +98,12 @@ public class CheckCommand implements Callable<Integer> {
   private Integer learnAfter;
 
   @Option(
+      names = "--offline",
+      description =
+          "Make no network request; the vulnerabilities check reads its stored databases.")
+  private boolean offline;
+
+  @Option(
       names = "--output",
       paramLabel = "<path>",
       description =
@@ -110,8 +114,7 @@ public class CheckCommand implements Callable<Integer> {
   private final TextReportRenderer textRenderer;
   private final JsonReportRenderer jsonRenderer;
   private final SarifReportRenderer sarifRenderer;
-  private final LearningService learningService;
-  private final CheckReportExport reportExport;
+  private final CheckCollaborators collaborators;
 
   static final class FormatConverter implements ITypeConverter<Format> {
     @Override
@@ -147,30 +150,29 @@ public class CheckCommand implements Callable<Integer> {
   }
 
   /**
-   * Creates the command. {@code renderers} write each output format, {@code learningService}
-   * records repeated failures, and {@code reportExport} writes {@code --output} files.
+   * Creates the command. {@code renderers} write each output format, {@code collaborators} records
+   * repeated failures, writes {@code --output} files and sets the network mode.
    */
   @Inject
   public CheckCommand(
       final CheckService service,
       final ReportRenderers renderers,
-      final LearningService learningService,
-      final CheckReportExport reportExport) {
+      final CheckCollaborators collaborators) {
     this.service = service;
     this.textRenderer = renderers.text();
     this.jsonRenderer = renderers.json();
     this.sarifRenderer = renderers.sarif();
-    this.learningService = learningService;
-    this.reportExport = reportExport;
+    this.collaborators = collaborators;
   }
 
   @Override
   public Integer call() {
     validateOptions();
+    collaborators.runMode().useOffline(offline);
     profiles = profiles.stream().map(String::trim).toList();
     final CheckReport report = runChecks();
     final LearningOutcome learning =
-        learnAfter == null ? null : learningService.learn(report, learnAfter);
+        learnAfter == null ? null : collaborators.learning().learn(report, learnAfter);
     if (learning != null) {
       learning.warnings().forEach(warning -> error().println(warning));
     }
@@ -198,7 +200,7 @@ public class CheckCommand implements Callable<Integer> {
     if (outputFile == null) {
       output().println(machineReport);
     } else {
-      reportExport.export(outputFile, machineReport + System.lineSeparator());
+      collaborators.export().export(outputFile, machineReport + System.lineSeparator());
     }
   }
 

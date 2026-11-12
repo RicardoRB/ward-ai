@@ -8,6 +8,7 @@ import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.GateScope;
 import dev.ward.domain.gate.QualityGate;
 import dev.ward.domain.gate.SkippedQualityGate;
+import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.project.Project;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -100,7 +101,8 @@ final class PartialGates {
 
   private static GateConfiguration narrowed(
       final GateConfiguration gate, final PartialCheckPlan.GatePlan plan) {
-    if (plan.scope() != PartialCheckPlan.Scope.NARROW) {
+    if (plan.scope() != PartialCheckPlan.Scope.NARROW
+        || SupportedQualityGates.SECRETS.equals(gate.type())) {
       return gate;
     }
     final List<String> base =
@@ -121,7 +123,11 @@ final class PartialGates {
         List.of(),
         null,
         null,
-        null);
+        null,
+        gate.secrets(),
+        gate.crap(),
+        gate.coverage(),
+        gate.vulnerabilities());
   }
 
   private static GateScope scope(final PartialCheckPlan.GatePlan plan) {
