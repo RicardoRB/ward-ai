@@ -50,12 +50,12 @@ class InitServicePresetSelectionTest {
             dir,
             new InitSelection(
                 List.of("none"),
-                List.of("gitleaks", "tests", "compile", "coverage"),
+                List.of("secrets", "tests", "compile", "coverage"),
                 null,
                 QualityPreset.STANDARD));
     assertThat(result.gates())
         .extracting(InitGateOption::id)
-        .containsExactly("compile", "tests", "coverage", "gitleaks", "ward-format");
+        .containsExactly("compile", "tests", "coverage", "secrets", "ward-format");
     assertThat(Files.readString(dir.resolve(WARD_TOML))).contains("version = 2\n");
     assertThat(dir.resolve("ward-rules.toml")).content().contains("preset = \"standard\"");
   }

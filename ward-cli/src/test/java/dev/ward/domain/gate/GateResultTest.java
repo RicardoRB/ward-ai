@@ -9,14 +9,14 @@ class GateResultTest {
   private static final GatePrerequisite PREREQUISITE =
       new GatePrerequisite(
           GatePrerequisite.Kind.EXECUTABLE,
-          "gitleaks",
+          "trivy",
           null,
           null,
-          "Install gitleaks or add it to PATH.");
+          "Install trivy or add it to PATH.");
 
   private static GateResult unavailable() {
-    return GateResult.builder("gitleaks", GateStatus.UNAVAILABLE)
-        .command(List.of("gitleaks", "detect"))
+    return GateResult.builder("trivy", GateStatus.UNAVAILABLE)
+        .command(List.of("trivy", "detect"))
         .build();
   }
 

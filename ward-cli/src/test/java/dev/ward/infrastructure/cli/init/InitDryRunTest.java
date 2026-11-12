@@ -71,12 +71,12 @@ class InitDryRunTest {
             "--integration",
             "none",
             "--gate",
-            "tests,gitleaks",
+            "tests,trivy",
             "--install-tool",
-            "gitleaks");
+            "trivy");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
-    assertThat(init.output()).contains("brew install gitleaks").doesNotContain("openspec");
+    assertThat(init.output()).contains("brew install trivy").doesNotContain("openspec");
     assertThat(root.resolve(".ward")).doesNotExist();
   }
 }

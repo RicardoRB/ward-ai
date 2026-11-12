@@ -4,6 +4,7 @@ import dev.ward.analysis.domain.ir.FileSummary;
 import dev.ward.analysis.domain.ir.Reference;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.Symbol;
+import dev.ward.analysis.domain.ir.TextFile;
 import dev.ward.analysis.domain.rule.DependencyView;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import java.nio.charset.StandardCharsets;
@@ -51,6 +52,11 @@ final class AnalysisCacheKey {
    */
   static String unit(final String ruleSetHash, final SourceUnit unit, final DependencyView view) {
     return digest(List.of(ruleSetHash, unit.path(), unit.text(), dependencies(view)));
+  }
+
+  /** Hashes the rule set and the path and full text of a text file. */
+  static String text(final String ruleSetHash, final TextFile file) {
+    return digest(List.of("text", ruleSetHash, file.path(), file.text()));
   }
 
   /** Hashes the summary's key: the engine version, the path and the full text of the unit. */

@@ -9,9 +9,11 @@ import dev.ward.application.gate.openapi.OpenApiGates;
  * @param analysis gives the {@code ward} gate its rules and sources, or {@code null} when it is
  *     unavailable
  * @param format builds the {@code ward-format} gate, or {@code null} when it is unavailable
+ * @param secrets builds the {@code secrets} gate, or {@code null} when it is unavailable
  */
-public record GateExtensions(OpenApiGates openApi, AnalysisPorts analysis, FormatGates format) {
+public record GateExtensions(
+    OpenApiGates openApi, AnalysisPorts analysis, FormatGates format, SecretGates secrets) {
 
   /** No optional dependencies: every extension gate is reported as unavailable. */
-  public static final GateExtensions NONE = new GateExtensions(null, null, null);
+  public static final GateExtensions NONE = new GateExtensions(null, null, null, null);
 }

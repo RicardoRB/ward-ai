@@ -4,6 +4,7 @@ import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.application.gate.AnalysisSourceUnits;
+import dev.ward.application.gate.TextRead;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.process.CommandExecutor;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 
@@ -73,6 +75,12 @@ public final class FileSystemSourceUnits implements AnalysisSourceUnits {
     }
     units.sort(Comparator.comparing(SourceUnit::path));
     return List.copyOf(units);
+  }
+
+  @Override
+  public TextRead readText(
+      final Path root, final List<String> paths, final Predicate<String> excluded) {
+    return FileSystemTextFiles.read(root, paths, excluded, executor);
   }
 
   @Override

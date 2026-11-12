@@ -33,9 +33,18 @@ final class AnalysisGateResults {
   /** The gate result of {@code run}, the run of {@code rules} by the gate called {@code name}. */
   static GateResult result(
       final String name, final RuleRunResult run, final List<RuleDefinition> rules) {
+    return result(name, TOOL, run, rules);
+  }
+
+  /** Like {@link #result(String, RuleRunResult, List)}, naming {@code tool} as the finding tool. */
+  static GateResult result(
+      final String name,
+      final String tool,
+      final RuleRunResult run,
+      final List<RuleDefinition> rules) {
     final List<Finding> findings =
         run.findings().stream()
-            .map(finding -> AnalysisFindingMapper.toFinding(name, TOOL, finding))
+            .map(finding -> AnalysisFindingMapper.toFinding(name, tool, finding))
             .toList();
     final int errors = countOf(findings, FindingSeverity.ERROR);
     final int warnings = countOf(findings, FindingSeverity.WARNING);

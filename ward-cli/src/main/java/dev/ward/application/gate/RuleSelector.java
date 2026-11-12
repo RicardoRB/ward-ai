@@ -1,6 +1,7 @@
 package dev.ward.application.gate;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RulePreset;
 import java.util.ArrayList;
@@ -43,7 +44,9 @@ final class RuleSelector {
     final Set<String> categories = categories();
     final Map<String, RuleDefinition> chosen = new LinkedHashMap<>();
     for (final RuleDefinition rule : catalog) {
-      if (preset.selects(rule.presets())
+      if (rule.capability() == RuleCapability.TEXT) {
+        chosen.put(rule.id(), rule);
+      } else if (preset.selects(rule.presets())
           && (languages.isEmpty() || languages.stream().anyMatch(rule::covers))
           && (categories.isEmpty() || categories.contains(rule.category()))) {
         chosen.put(rule.id(), rule);

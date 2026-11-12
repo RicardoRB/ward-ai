@@ -106,7 +106,8 @@ public final class PartialCheckPlan {
       return new GatePlan(name, Scope.SKIP, List.of());
     }
     if (SupportedQualityGates.ANALYSIS.equals(configuration.type())
-        || SupportedQualityGates.FORMAT.equals(configuration.type())) {
+        || SupportedQualityGates.FORMAT.equals(configuration.type())
+        || SupportedQualityGates.SECRETS.equals(configuration.type())) {
       return new GatePlan(
           name, Scope.NARROW, List.of(), relevant.stream().map(EditedPath::relative).toList());
     }

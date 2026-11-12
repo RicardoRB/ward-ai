@@ -60,7 +60,6 @@ public final class CommandTypeInference {
               "dependency-check",
               anyOf(sequence("dependency-check:check"), sequence("dependencyCheckAnalyze"))),
           new Rule("enforcer", sequence("enforcer:enforce")),
-          new Rule("gitleaks", sequence("gitleaks")),
           new Rule("semgrep", sequence("semgrep")),
           new Rule("trivy", sequence("trivy")),
           new Rule("tsc", sequence("tsc")),

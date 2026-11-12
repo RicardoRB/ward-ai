@@ -115,9 +115,9 @@ uses = "compile"
         project.resolve(WARD_TOML),
 """
                 version = 2
-                [checks.gitleaks]
-uses = "gitleaks"
-                command = ["./missing-gitleaks", "detect", "--redact"]
+                [checks.trivy]
+uses = "trivy"
+                command = ["./missing-trivy", "fs", "."]
                 [checks.format]
                 command = "./mvnw test"
                 [checks.enforcer]
@@ -130,7 +130,7 @@ uses = "enforcer"
     assertThat(exit).isNotZero();
     final JsonTree json = JsonTree.parse(out.toString());
     assertThat(json.get(CHECKS).size()).isEqualTo(CONFIGURED_GATES);
-    assertThat(json.get(CHECKS).get(0).get("name").asString()).isEqualTo("gitleaks");
+    assertThat(json.get(CHECKS).get(0).get("name").asString()).isEqualTo("trivy");
     assertThat(json.get(CHECKS).get(0).get(STATUS).asString()).isNotEqualTo("PASSED");
     assertThat(json.get(CHECKS).get(1).get("name").asString()).isEqualTo("tests");
     assertThat(json.get(CHECKS).get(1).get(STATUS).asString()).isEqualTo("PASSED");
@@ -139,7 +139,7 @@ uses = "enforcer"
 
     out.getBuffer().setLength(0);
     run(CHECK, "-C", project.toString());
-    assertThat(out.toString()).contains("gitleaks", "tests", "enforcer");
+    assertThat(out.toString()).contains("trivy", "tests", "enforcer");
   }
 
   @Test

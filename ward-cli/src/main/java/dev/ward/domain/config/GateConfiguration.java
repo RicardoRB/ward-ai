@@ -34,6 +34,7 @@ import java.util.Set;
  *     checked by {@code ward:architecture/independence}; empty when unset
  * @param rulesFile the project-relative path of the rule configuration file, or {@code null} for
  *     {@code ward-rules.toml}; only {@code ward} checks read it
+ * @param secrets the options of a {@code secrets} check; {@link SecretsOptions#NONE} for others
  */
 public record GateConfiguration(
     String name,
@@ -51,7 +52,8 @@ public record GateConfiguration(
     List<LayerBoundary> layers,
     List<String> cycleRoots,
     List<List<String>> independence,
-    String rulesFile) {
+    String rulesFile,
+    SecretsOptions secrets) {
 
   /** Copies the command, profiles and rule ids, keeping their order. */
   public GateConfiguration {
@@ -61,6 +63,45 @@ public record GateConfiguration(
     layers = layers == null ? List.of() : List.copyOf(layers);
     cycleRoots = cycleRoots == null ? List.of() : List.copyOf(cycleRoots);
     independence = independence == null ? List.of() : copyTables(independence);
+    secrets = secrets == null ? SecretsOptions.NONE : secrets;
+  }
+
+  /** Creates a check that has no {@code secrets} options. */
+  public GateConfiguration(
+      final String name,
+      final String type,
+      final boolean enabled,
+      final List<String> command,
+      final Set<String> profiles,
+      final PartialGateConfiguration partial,
+      final String root,
+      final OpenApiGateOptions openApi,
+      final Integer minimum,
+      final XcodePlatform platform,
+      final List<String> rules,
+      final String javaClasspath,
+      final List<LayerBoundary> layers,
+      final List<String> cycleRoots,
+      final List<List<String>> independence,
+      final String rulesFile) {
+    this(
+        name,
+        type,
+        enabled,
+        command,
+        profiles,
+        partial,
+        root,
+        openApi,
+        minimum,
+        platform,
+        rules,
+        javaClasspath,
+        layers,
+        cycleRoots,
+        independence,
+        rulesFile,
+        null);
   }
 
   /** Returns the module lists of the independence tables, copied so the record keeps its own. */
@@ -88,6 +129,7 @@ public record GateConfiguration(
         null,
         null,
         List.of(),
+        null,
         null,
         null,
         null);

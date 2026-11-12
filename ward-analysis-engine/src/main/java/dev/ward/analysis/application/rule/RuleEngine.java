@@ -74,14 +74,43 @@ public final class RuleEngine {
    * the reason its check gives, and the run continues.
    */
   public RuleRunResult runText(final List<TextFile> files, final List<RuleDefinition> rules) {
-    final RuleRunCollector collector = new RuleRunCollector();
+    return textRules(rules).run(files);
+  }
+
+  /**
+   * Compiles the {@code TEXT} rules among {@code rules} once, for a caller that runs them over
+   * several batches of files.
+   */
+  public TextRules textRules(final List<RuleDefinition> rules) {
+    final RuleRunCollector compiled = new RuleRunCollector();
+    final List<CompiledRule> usable = new ArrayList<>();
     for (final RuleDefinition definition : rules) {
       if (definition.capability() == RuleCapability.TEXT) {
-        compileText(definition, collector)
-            .ifPresent(rule -> files.forEach(file -> runOnText(rule, file, collector)));
+        compileText(definition, compiled).ifPresent(usable::add);
       }
     }
-    return collector.result();
+    return new TextRules(usable, compiled.result().executionErrors());
+  }
+
+  /** The compiled {@code TEXT} rules of one run. */
+  public static final class TextRules {
+    private final List<CompiledRule> rules;
+    private final List<RuleExecutionError> compileErrors;
+
+    private TextRules(final List<CompiledRule> rules, final List<RuleExecutionError> errors) {
+      this.rules = List.copyOf(rules);
+      this.compileErrors = List.copyOf(errors);
+    }
+
+    /** Runs the rules over {@code files}; the findings come back sorted. */
+    public RuleRunResult run(final List<TextFile> files) {
+      final RuleRunCollector collector = new RuleRunCollector();
+      compileErrors.forEach(collector::recordError);
+      for (final CompiledRule rule : rules) {
+        files.forEach(file -> runOnText(rule, file, collector));
+      }
+      return collector.result();
+    }
   }
 
   private Optional<CompiledRule> compileText(

@@ -62,7 +62,8 @@ public final class ConfigurationTemplate {
       }
       final List<String> command = gate.command();
       final String goal =
-          command.subList(1, command.size()).stream()
+          command.stream()
+              .skip(1)
               .map(ConfigurationTemplate::escape)
               .reduce((left, right) -> left + " " + right)
               .orElse("");
@@ -80,7 +81,8 @@ public final class ConfigurationTemplate {
       if (writesUses(gate)) {
         content.append("uses = \"").append(gate.id()).append("\"\n");
       }
-      if (!SupportedQualityGates.TRACEABILITY.equals(gate.id())) {
+      if (!SupportedQualityGates.TRACEABILITY.equals(gate.id())
+          && !SupportedQualityGates.SECRETS.equals(gate.id())) {
         content
             .append("command = \"")
             .append(escape(command.getFirst()))
@@ -106,6 +108,7 @@ public final class ConfigurationTemplate {
    */
   private static boolean writesUses(final InitGateOption gate) {
     return CRITICAL_USES.contains(gate.id())
+        || SupportedQualityGates.SECRETS.equals(gate.id())
         || !CommandTypeInference.infer(gate.command()).equals(gate.id());
   }
 
