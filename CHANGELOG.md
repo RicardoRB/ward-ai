@@ -36,6 +36,12 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 - **Breaking (alpha, no migration):** The OpenSpec integration. Ward no longer ships the `openspec`, `openspec-archived` and `openspec-junit-traceability` check types, the `root` setting of a check, the `ward spec` commands (`validate`, `guard`, `enforce`), `--exclude-spec` of `ward check` and `ward hook claude-code`, `--tool` and `--openspec-validation` of `ward init`, the OpenSpec installer and its step in the generated CI workflow, the OpenSpec checks of `ward doctor`, and the approved-artifact guard of every agent integration with its `PreToolUse` registrations. A `ward.toml` that still names a removed check type is rejected with the unknown-type error that lists the valid types. `ward integrate <agent>` and `--remove` delete the Ward-owned guard files that earlier versions wrote. To keep approved files from agent edits, use the agent's own permission rules or repository protection such as CODEOWNERS.
 
+## [0.7.1] - 2026-11-12
+
+### Fixed
+
+- A `break` or `continue` outside a loop, or a jump to a label that does not exist, no longer aborts the `ward` gate with `unexpected error`: the jump leaves the body like a `return`, and the other files and rules still run (#530).
+
 ## [0.7.0] - 2026-11-11
 
 ### Added
@@ -341,6 +347,7 @@ Initial release, published as `sentinel-ai`.
 - A bounded quality loop and a typed gate registry.
 - Starlight documentation site.
 
+[0.7.1]: https://github.com/RicardoRB/ward-ai/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/RicardoRB/ward-ai/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/RicardoRB/ward-ai/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/RicardoRB/ward-ai/compare/v0.4.1...v0.5.0

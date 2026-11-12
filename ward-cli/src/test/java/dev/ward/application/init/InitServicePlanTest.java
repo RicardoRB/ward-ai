@@ -10,7 +10,6 @@ import dev.ward.application.project.ProjectDetector;
 import dev.ward.domain.FakeEnvironmentInspection;
 import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.agent.PlannedFileChange.Action;
-import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.init.InitPlan;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.QualityPreset;
@@ -72,20 +71,6 @@ class InitServicePlanTest {
   }
 
   @Test
-  void aMissingGateExecutableIsDescribedWithoutRunningAnInstaller(@TempDir final Path dir)
-      throws IOException {
-    PythonInitFixtures.project(dir);
-    final Map<String, String> before = ProjectSnapshot.of(dir);
-
-    final InitPlan plan =
-        service(PythonInitFixtures.configurator())
-            .plan(dir, new InitSelection(List.of("none"), List.of("semgrep")), false);
-
-    assertThat(plan.gateInstallations()).extracting("tool").containsExactly("semgrep");
-    assertThat(ProjectSnapshot.of(dir)).isEqualTo(before);
-  }
-
-  @Test
   void configurationWithoutPartialTablesIsPlannedAsModified(@TempDir final Path dir)
       throws IOException {
     withPom(dir, PLAIN_POM);
@@ -121,7 +106,7 @@ class InitServicePlanTest {
         null);
   }
 
-  private static InitService service(final BuildToolConfiguration pom) {
+  private static InitService service(final PomToolConfigurator pom) {
     return new InitService(
         new ProjectDetector(new FileSystemProjectInspection()),
         Set.of(new ClaudeCodeIntegration()),

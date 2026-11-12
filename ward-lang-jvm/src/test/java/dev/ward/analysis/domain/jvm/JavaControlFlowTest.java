@@ -105,13 +105,15 @@ class JavaControlFlowTest {
   }
 
   @Test
-  void bodyWithAnUnsupportedJumpFailsAndItsSiblingsStillLower() {
+  void jumpsWithoutATargetLeaveTheBodyAndSiblingsStillLower() {
     final ControlFlowResult result =
-        JavaFlowFixtures.lower("class C { void bad() { break; } void good() { x(); } }");
+        JavaFlowFixtures.lower(
+            "class C { void bad() { break; } void cont() { continue; }"
+                + " void lbl() { while (true) { break nowhere; } } void good() { x(); } }");
 
-    assertThat(result.failures()).hasSize(1);
-    assertThat(result.failures().get(0).message()).contains("C#bad(0)");
-    assertThat(JavaFlowFixtures.names(result)).containsExactly("C#good(0)");
+    assertThat(result.failures()).isEmpty();
+    assertThat(JavaFlowFixtures.names(result))
+        .contains("C#bad(0)", "C#cont(0)", "C#lbl(0)", "C#good(0)");
   }
 
   @Test

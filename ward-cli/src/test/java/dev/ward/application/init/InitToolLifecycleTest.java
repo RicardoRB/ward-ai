@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.application.project.ProjectDetector;
 import dev.ward.domain.FakeEnvironmentInspection;
+import dev.ward.domain.init.InitPlan;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.ToolInstallationChange;
 import dev.ward.domain.init.ToolInstallationResult;
@@ -52,6 +53,18 @@ class InitToolLifecycleTest {
 
     assertThat(installer.installCalled).isTrue();
     assertThat(Files.readString(root.resolve("ward.toml"))).contains("[checks.semgrep]");
+  }
+
+  @Test
+  void aMissingGateExecutableIsDescribedWithoutRunningAnInstaller(@TempDir final Path root)
+      throws Exception {
+    PythonInitFixtures.project(root);
+    final RecordingInstaller installer = new RecordingInstaller(true);
+
+    final InitPlan plan = service(installer).plan(root, selection(List.of()), false);
+
+    assertThat(plan.gateInstallations()).extracting("tool").containsExactly("semgrep");
+    assertThat(installer.installCalled).isFalse();
   }
 
   private static InitSelection selection(final List<String> installTools) {
