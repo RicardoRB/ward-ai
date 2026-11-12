@@ -32858,6 +32858,44 @@
         }
       }
     },
+    "ward:openapi/oas3-valid-media-example": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/oas3-valid-schema-example": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:openapi/openapi-tags": {
       "type": "object",
       "additionalProperties": false,
@@ -55232,6 +55270,8 @@
               "openapi.oas3-server-trailing-slash",
               "openapi.oas3-server-variables",
               "openapi.oas3-unused-component",
+              "openapi.oas3-valid-media-example",
+              "openapi.oas3-valid-schema-example",
               "openapi.openapi-tags",
               "openapi.openapi-tags-alphabetical",
               "openapi.openapi-tags-uniqueness",
@@ -57965,6 +58005,8 @@
               "openapi.oas3-server-trailing-slash",
               "openapi.oas3-server-variables",
               "openapi.oas3-unused-component",
+              "openapi.oas3-valid-media-example",
+              "openapi.oas3-valid-schema-example",
               "openapi.openapi-tags",
               "openapi.openapi-tags-alphabetical",
               "openapi.openapi-tags-uniqueness",
@@ -64060,6 +64102,12 @@
             },
             "oas3-unused-component": {
               "$ref": "#/$defs/ward:openapi~1oas3-unused-component"
+            },
+            "oas3-valid-media-example": {
+              "$ref": "#/$defs/ward:openapi~1oas3-valid-media-example"
+            },
+            "oas3-valid-schema-example": {
+              "$ref": "#/$defs/ward:openapi~1oas3-valid-schema-example"
             },
             "openapi-tags": {
               "$ref": "#/$defs/ward:openapi~1openapi-tags"

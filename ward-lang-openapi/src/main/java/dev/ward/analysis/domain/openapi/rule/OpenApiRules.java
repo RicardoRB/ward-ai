@@ -105,5 +105,7 @@ public final class OpenApiRules {
     rules.put("path-params", PathParameterRules::pathParams);
     rules.put("tag-description", TagRules::description);
     rules.put("typed-enum", EnumRules::typed);
+    rules.put("oas3-valid-schema-example", SchemaExampleRules::validSchemaExample);
+    rules.put("oas3-valid-media-example", MediaExampleRules::validMediaExample);
   }
 }

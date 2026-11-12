@@ -87,3 +87,25 @@ presets = ["standard", "strict"]
 body = '''
 check = "openapi-oas3-server-variables"
 '''
+
+[[rules]]
+id = "ward:openapi/oas3-valid-schema-example"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-oas3-valid-schema-example"
+'''
+
+[[rules]]
+id = "ward:openapi/oas3-valid-media-example"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-oas3-valid-media-example"
+'''

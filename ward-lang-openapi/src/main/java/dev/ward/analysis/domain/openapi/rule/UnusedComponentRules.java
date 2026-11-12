@@ -30,6 +30,7 @@ final class UnusedComponentRules {
       for (final Nodes.Located located : Nodes.raw(file)) {
         document
             .target(located.node())
+            .filter(target -> !within(located.node(), target))
             .ifPresent(target -> targets.add(target.file() + "#" + target.pointer()));
       }
     }
@@ -44,5 +45,12 @@ final class UnusedComponentRules {
       }
     }
     return findings;
+  }
+
+  /** Tells whether the reference is written inside the component it points at. */
+  private static boolean within(final DocNode reference, final DocNode target) {
+    return reference.file().equals(target.file())
+        && (reference.pointer().equals(target.pointer())
+            || reference.pointer().startsWith(target.pointer() + "/"));
   }
 }

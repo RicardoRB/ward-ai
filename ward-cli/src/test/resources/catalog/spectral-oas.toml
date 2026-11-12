@@ -93,14 +93,10 @@ spectral = ["oas3-unused-component"]
 [[rule]]
 name = "oas3-valid-media-example"
 spectral = ["oas3-valid-media-example"]
-presets = ["standard", "strict"]
-category = "correctness"
 
 [[rule]]
 name = "oas3-valid-schema-example"
 spectral = ["oas3-valid-schema-example"]
-presets = ["standard", "strict"]
-category = "correctness"
 
 [[rule]]
 name = "openapi-tags"

@@ -22,8 +22,8 @@ oas3-server-not-example-com = "implemented"
 oas3-server-trailing-slash = "implemented"
 oas3-server-variables = "implemented"
 oas3-unused-component = "implemented"
-oas3-valid-media-example = { status = "planned", issue = "#522" }
-oas3-valid-schema-example = { status = "planned", issue = "#522" }
+oas3-valid-media-example = "implemented"
+oas3-valid-schema-example = "implemented"
 openapi-tags = "implemented"
 openapi-tags-alphabetical = "implemented"
 openapi-tags-uniqueness = "implemented"
