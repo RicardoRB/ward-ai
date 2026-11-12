@@ -6,5 +6,5 @@
 [] PYPI packaging 26.3 TRANSITIVE TEST from=poetry.lock by=pytest
 [] PYPI pluggy 1.7.0 TRANSITIVE TEST from=poetry.lock by=pytest
 [] PYPI pytest 8.3.3 DIRECT TEST from=poetry.lock in=pyproject.toml
-[] PYPI requests 2.32.3 DIRECT RUNTIME from=poetry.lock in=pyproject.toml
+[] PYPI requests 2.33.0 DIRECT RUNTIME from=poetry.lock in=pyproject.toml
 [] PYPI urllib3 2.8.0 TRANSITIVE RUNTIME from=poetry.lock by=requests

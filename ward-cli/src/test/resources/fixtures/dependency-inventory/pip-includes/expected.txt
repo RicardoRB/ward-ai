@@ -1,2 +1,2 @@
 [] PYPI idna 3.10 DIRECT RUNTIME from=base.txt in=base.txt
-[] PYPI requests 2.32.3 DIRECT RUNTIME from=requirements.txt in=requirements.txt
+[] PYPI requests 2.33.0 DIRECT RUNTIME from=requirements.txt in=requirements.txt

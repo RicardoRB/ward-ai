@@ -60,7 +60,7 @@ class GradleLockSourceTest {
     final ModuleDependencies module =
         read(LOCKED, new FakeGradle(MULTI.resolve("tsv"))).modules().getFirst();
 
-    assertThat(scope(module.dependencies(), "com.google.j2objc:j2objc-annotations"))
+    assertThat(scope(module.dependencies(), "com.google.code.findbugs:jsr305"))
         .isEqualTo(DependencyScope.PROVIDED);
     assertThat(scope(module.dependencies(), "org.junit.jupiter:junit-jupiter-api"))
         .isEqualTo(DependencyScope.TEST);
