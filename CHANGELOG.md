@@ -8,6 +8,8 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+## [0.7.1] - 2026-11-12
+
 ### Fixed
 
 - A `break` or `continue` outside a loop, or a jump to a label that does not exist, no longer aborts the `ward` gate with `unexpected error`: the jump leaves the body like a `return`, and the other files and rules still run (#530).
@@ -317,6 +319,7 @@ Initial release, published as `sentinel-ai`.
 - A bounded quality loop and a typed gate registry.
 - Starlight documentation site.
 
+[0.7.1]: https://github.com/RicardoRB/ward-ai/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/RicardoRB/ward-ai/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/RicardoRB/ward-ai/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/RicardoRB/ward-ai/compare/v0.4.1...v0.5.0
