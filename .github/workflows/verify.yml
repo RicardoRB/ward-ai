@@ -600,7 +600,7 @@ jobs:
       # local repository instead of the reactor. ward-cli depends on the ANTLR frontend and the Java,
       # TypeScript, JavaScript and Python rules, so those are installed too.
       - name: Install the analysis modules for the native build
-        run: ./mvnw -B -q -DskipTests install -pl ward-analysis-api,ward-analysis-engine,ward-frontend-antlr,ward-lang-jvm,ward-lang-node,ward-lang-python,ward-lang-swift -am
+        run: ./mvnw -B -q -DskipTests install -pl ward-analysis-api,ward-analysis-engine,ward-frontend-antlr,ward-lang-jvm,ward-lang-node,ward-lang-python,ward-lang-swift,ward-lang-openapi -am
 
       - name: Run terminal tests in a native test image
         run: >-
