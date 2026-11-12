@@ -3,13 +3,18 @@ package dev.ward.infrastructure.gate;
 import dev.ward.domain.gate.RevisionFiles;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.inject.Inject;
 
 /** Resolves revisions with fixed Git argument vectors; never fetches or writes. */
 public final class GitRevisionFiles implements RevisionFiles {
+  private static final Logger LOG = Logger.getLogger(GitRevisionFiles.class.getName());
   private final CommandExecutor executor;
 
   /** Creates the adapter; {@code executor} runs Git. */
@@ -37,6 +42,21 @@ public final class GitRevisionFiles implements RevisionFiles {
     return executor
         .execute(List.of("git", "cat-file", "-e", commit + ":./" + path), root)
         .succeeded();
+  }
+
+  @Override
+  public Optional<String> read(final Path root, final String commit, final String path) {
+    if (!exists(root, commit, path)) {
+      return Optional.empty();
+    }
+    final CommandResult result =
+        executor.execute(List.of("git", "show", "--end-of-options", commit + ":./" + path), root);
+    if (!result.succeeded()) {
+      LOG.log(Level.WARNING, "git show failed for a file at revision {0}", commit);
+      throw new UncheckedIOException(
+          new IOException("Git could not read " + path + " at revision " + commit));
+    }
+    return Optional.of(result.stdout());
   }
 
   private Optional<String> commit(final Path root, final List<String> command) {

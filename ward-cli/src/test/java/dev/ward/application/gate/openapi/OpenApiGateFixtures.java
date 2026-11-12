@@ -94,6 +94,11 @@ final class OpenApiGateFixtures {
           public boolean exists(final Path root, final String commit, final String path) {
             return committedFiles.contains(commit + ":" + path);
           }
+
+          @Override
+          public Optional<String> read(final Path root, final String commit, final String path) {
+            return Optional.empty();
+          }
         },
         new ProjectFiles() {
           @Override
