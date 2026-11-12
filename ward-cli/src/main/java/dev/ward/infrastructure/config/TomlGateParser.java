@@ -45,6 +45,9 @@ final class TomlGateParser {
         TomlArchitectureParser.cycleRoots(where, type, gate),
         TomlArchitectureParser.independence(where, type, gate),
         TomlAnalysisParser.rulesFile(where, type, gate),
+        TomlSecretsParser.parse(where, type, gate),
+        TomlCrapParser.parse(where, type, gate),
+        TomlCoverageParser.parse(where, type, gate),
         TomlVulnerabilitiesParser.parse(where, type, gate));
   }
 

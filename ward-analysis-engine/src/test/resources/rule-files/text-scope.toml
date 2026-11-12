@@ -1,0 +1,7 @@
+[[rules]]
+id = "ward:secrets/example"
+scope = "text"
+capability = "TEXT"
+severity = "error"
+category = "secrets"
+body = "check = \"secret-scan\""

@@ -28,6 +28,8 @@ public final class RuleFileReader {
   private static final String RULES = "rules";
   private static final String ID = "id";
   private static final String LANGUAGE = "language";
+  private static final String SCOPE = "scope";
+  private static final String TEXT_SCOPE = "text";
   private static final String CAPABILITY = "capability";
   private static final String SEVERITY = "severity";
   private static final String BODY = "body";
@@ -81,7 +83,7 @@ public final class RuleFileReader {
     if (table == null) {
       throw RuleFileProblems.problem(resource, "every entry under [[rules]] must be a table");
     }
-    final AnalysisLanguage language = constant(resource, table, LANGUAGE, AnalysisLanguage.class);
+    final Set<AnalysisLanguage> languages = languages(resource, table);
     final RuleCapability capability = constant(resource, table, CAPABILITY, RuleCapability.class);
     final AnalysisSeverity severity = constant(resource, table, SEVERITY, AnalysisSeverity.class);
     final RuleDefinition definition;
@@ -89,7 +91,7 @@ public final class RuleFileReader {
       definition =
           new RuleDefinition(
               text(resource, table, ID),
-              Set.of(language),
+              languages,
               capability,
               severity,
               text(resource, table, BODY),
@@ -101,6 +103,23 @@ public final class RuleFileReader {
       throw RuleFileProblems.problem(resource, exception.getMessage(), exception);
     }
     return definition;
+  }
+
+  /** A table names either a {@code language} or the {@code text} scope, never both or neither. */
+  private static Set<AnalysisLanguage> languages(final String resource, final TomlTable table) {
+    final boolean hasLanguage = table.contains(LANGUAGE);
+    final boolean hasScope = table.contains(SCOPE);
+    if (hasLanguage == hasScope) {
+      throw RuleFileProblems.problem(
+          resource, "a rule must name either 'language' or scope = \"text\", not both or neither");
+    }
+    if (hasLanguage) {
+      return Set.of(constant(resource, table, LANGUAGE, AnalysisLanguage.class));
+    }
+    if (!TEXT_SCOPE.equals(table.getString(SCOPE))) {
+      throw RuleFileProblems.problem(resource, "'scope' must be \"text\"");
+    }
+    return Set.of();
   }
 
   private static String text(final String resource, final TomlTable table, final String key) {

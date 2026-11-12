@@ -1,6 +1,11 @@
 #!/bin/sh
 # Offline npx for the Node init fixtures: every tool passes; ESLint prints an empty JSON report.
 echo "stub npx: $*" >&2
+case "$1:$*" in
+  vitest:*--coverage*|jest:*--coverage*)
+    mkdir -p coverage
+    printf 'TN:\nSF:src/index.ts\nDA:1,1\nDA:2,1\nBRF:0\nBRH:0\nend_of_record\n' > coverage/lcov.info ;;
+esac
 if [ "$1" = "eslint" ]; then
   echo "[]"
 fi

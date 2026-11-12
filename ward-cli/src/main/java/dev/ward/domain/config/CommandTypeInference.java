@@ -22,10 +22,12 @@ public final class CommandTypeInference {
   public static final Set<String> USES_ONLY =
       Set.of(
           "ward",
+          "secrets",
           "openspec-archived",
           "openspec-junit-traceability",
           "ward-format",
           "vulnerabilities",
+          "crap",
           "ng-test",
           "api-compat",
           "license",
@@ -49,16 +51,15 @@ public final class CommandTypeInference {
           new Rule(
               "coverage",
               anyOf(
-                  sequence("jacoco:check"),
-                  sequence("jacocoTestCoverageVerification"),
-                  sequence("coverage", "report"))),
+                  sequence("jacoco:report"),
+                  sequence("jacocoTestReport"),
+                  sequence("coverage", "lcov"))),
           new Rule("mutation", anyOf(sequence("pitest:mutationCoverage"), sequence("pitest"))),
           new Rule("stryker", sequence("stryker", "run")),
           new Rule("tests", CommandTypeInference::isUnfilteredBuildTest),
           new Rule("compile", buildWrapper(sequence("compile"))),
           new Rule("sonar", anyOf(sequence("sonar:sonar"), sequence("sonarqube"))),
           new Rule("enforcer", sequence("enforcer:enforce")),
-          new Rule("gitleaks", sequence("gitleaks")),
           new Rule("semgrep", sequence("semgrep")),
           new Rule("tsc", sequence("tsc")),
           new Rule("vue-tsc", sequence("vue-tsc")),

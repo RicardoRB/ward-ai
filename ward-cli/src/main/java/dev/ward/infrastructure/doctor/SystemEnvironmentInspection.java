@@ -52,7 +52,6 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
           "swift",
           "xcodebuild",
           "xcrun",
-          "gitleaks",
           "semgrep",
           "zap-baseline.py",
           "vacuum",

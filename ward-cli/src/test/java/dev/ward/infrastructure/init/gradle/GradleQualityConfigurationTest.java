@@ -60,13 +60,17 @@ class GradleQualityConfigurationTest {
 
     assertThat(script)
         .contains(
-            "jacoco {\n    toolVersion = '0.8.13'\n}\njacocoTestCoverageVerification {\n",
-            "counter = 'BRANCH'\n                minimum = 0.75",
-            "counter = 'LINE'\n                minimum = 0.85",
+            "jacoco {\n    toolVersion = '0.8.13'\n}\ntasks.register('wardCoverageData')",
+            "reports { xml.required = true }",
             "pitest {\n    pitestVersion = '1.30.1'\n    junit5PluginVersion = '1.2.3'\n"
                 + "    outputFormats = ['XML', 'HTML']\n}\n"
                 + "tasks.named('pitest') { outputs.upToDateWhen { false } }")
-        .doesNotContain("mutationThreshold", "historyInputFile", "historyOutputFile");
+        .doesNotContain(
+            "mutationThreshold",
+            "historyInputFile",
+            "historyOutputFile",
+            "violationRules",
+            "minimum = 0.");
   }
 
   @Test
@@ -76,8 +80,7 @@ class GradleQualityConfigurationTest {
 
     assertThat(script)
         .contains(
-            "\ntasks.jacocoTestCoverageVerification {\n",
-            "minimum = \"0.85\".toBigDecimal()",
+            "reports { xml.required.set(true) }",
             "pitestVersion = \"1.30.1\"",
             "junit5PluginVersion = \"1.2.3\"",
             "outputFormats = listOf(\"XML\", \"HTML\")")
@@ -85,12 +88,12 @@ class GradleQualityConfigurationTest {
   }
 
   @Test
-  void withoutAPresetKeepsGradleRuleDefaultsAndEnforcesEightyPercentLines() throws IOException {
+  void withoutAPresetKeepsGradleRuleDefaultsAndStillWritesTheCoverageReport() throws IOException {
     final String script = configure("build.gradle", "plugins {\n    id 'java'\n}\n", null);
 
     assertThat(script)
-        .doesNotContain("mutationThreshold", "config/checkstyle.xml")
-        .contains("counter = 'LINE'\n                minimum = 0.8\n");
+        .doesNotContain("mutationThreshold", "config/checkstyle.xml", "violationRules")
+        .contains("reports { xml.required = true }");
   }
 
   @Test

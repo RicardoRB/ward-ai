@@ -117,7 +117,12 @@ order:
    ward init --dry-run --preset standard --integration none
    ```
 
-   Add `--overwrite` when `ward.toml` exists. For TypeScript and JavaScript, `strict` adds Stryker mutation testing and
+   Every coverage minimum lives in the `coverage` check of `ward.toml` (`minimum`, and
+   `minimum-branches` under `strict`), never in `pom.xml`, the Gradle build, a test runner config or
+   `.coveragerc`. Ward reads the JaCoCo XML or lcov report and decides, and a multi-module build is
+   checked as one total. A threshold in a config the project owns keeps applying to its tool; init
+   leaves it unchanged and the plan says Ward does not read it. Add `--overwrite` when `ward.toml`
+   exists. For TypeScript and JavaScript, `strict` adds Stryker mutation testing and
    stricter coverage and lint rules; see [references/node.md](references/node.md#choices). A project
    gets Ward's TypeScript and JavaScript rules in `ward-rules.toml`, with no separate lint gate. Recommend `standard` for a first setup or a large
    legacy codebase. Recommend `strict` when the code already has tests and a clear structure.
@@ -161,6 +166,13 @@ order:
      spec, so first recommend committing one: a FastAPI app exports its document with `app.openapi()`
      to `openapi.json`, and a Spring project can export its document with springdoc. Then recommend
      the gates and `vacuum` as above.
+   - `crap` is opt-in: no preset selects it. Offer it when the user wants functions that are both
+     complex and untested to fail. It needs the coverage gate (`coverage` for Maven and Gradle, the
+     test gate for Node, `pytest` for Python); init fails with exit code 2 and writes no file
+     without it, so add it with `--gate crap` next to that gate. The `coverage` setup that every
+     toolchain gets already makes the tool write the report `crap` reads, so `crap` adds no
+     report-writing of its own. It is not offered for Swift, Android or Angular
+     (`ng-test`); for those, `[checks.crap]` can be written by hand with a `report` path.
    - Layering violations the inspection found: `ward:architecture/layers` fails on its first run.
      Tell the user before the first check, and do not remove the boundaries to make it pass.
 
@@ -290,7 +302,7 @@ Tell the user:
    Mention any CI workflow or `AGENTS.md` section init wrote (`Wrote Ward section:` lines).
    Mention that Java and Kotlin projects get no separate style or bug-finding tool gate, and Python projects get no Ruff
    gate: init writes `ward-rules.toml`, which selects the Ward rules of the preset for the project's JVM languages and Python. Mention that `ward.toml` has `paths` tables for ward-format, Semgrep, and
-   Gitleaks, and for the `ward` analysis
+   `secrets` (when selected), and for the `ward` analysis
    check: the check after each agent edit, and the pre-commit hook, skip gates the change does not affect
    and narrow supported tools, and the `ward` analysis, to the edited or staged files. Claude Code and the
    native harnesses still run the full `default` check when the turn ends. The pre-push hook checks the

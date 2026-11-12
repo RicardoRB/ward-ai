@@ -221,9 +221,8 @@ class InitSetupCatalogTest {
                 .filter(id -> !ANDROID_GATES.contains(id))
                 .toList());
     assertThat(catalog.gate(project, "coverage").command())
-        .containsExactly("gradle", "jacocoTestCoverageVerification");
-    assertThat(catalog.gate(project, "gitleaks").command())
-        .endsWith("--report-format", "sarif", "--report-path", "build/gitleaks.sarif");
+        .containsExactly("gradle", "jacocoTestReport");
+    assertThat(catalog.gate(project, "secrets").command()).isEmpty();
   }
 
   @Test
@@ -234,16 +233,8 @@ class InitSetupCatalogTest {
     final InitSetupCatalog catalog = new InitSetupCatalog(new FakeEnvironmentInspection());
 
     assertThat(catalog.gate(project, "zap").command()).contains("-t", "<TARGET_URL>");
-    assertThat(catalog.gate(project, "gitleaks").command())
-        .containsExactly(
-            "gitleaks",
-            "detect",
-            "--no-banner",
-            "--redact",
-            "--report-format",
-            "sarif",
-            "--report-path",
-            "target/gitleaks.sarif");
+    assertThat(catalog.gate(project, "secrets").command()).isEmpty();
+    assertThat(catalog.gate(project, "secrets").available()).isTrue();
     assertThat(catalog.gate(project, "enforcer").command()).endsWith("enforcer:enforce");
     assertThat(catalog.gates(project, null))
         .extracting(InitGateOption::id)

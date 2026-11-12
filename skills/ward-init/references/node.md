@@ -73,10 +73,11 @@ Node: JavaScript (CommonJS), npm, Node 24, sources in src/, no test runner
 
 - **Preset.** `standard`, `strict`, or a custom selection.
   - `standard`: for TypeScript it selects `tsc` (or the framework's checker), the test gate; for
-    JavaScript the same without `tsc`, which is not offered. The test gate fails below 70% line
-    coverage.
-  - `strict`: the same gates plus `stryker` in `ci`. Tests fail below 85% line and 75% branch
-    coverage (Bun: lines only), and Stryker fails below a 60% mutation score.
+    JavaScript the same without `tsc`, which is not offered. The `coverage` check, which follows
+    the test gate (not for `ng-test`), fails below 70% line coverage.
+  - `strict`: the same gates plus `stryker` in `ci`. The `coverage` check fails below 85% line and
+    75% branch coverage (Bun: lines only, so init says there is no branch minimum), and Stryker
+    fails below a 60% mutation score. Both minimums live in `ward.toml`, not in a test config.
   - Recommend `strict` when the project already has tests that cover most code, and runs Node 22 or
     later (Stryker 10 needs it). Offer `ward-tune` for rules that do not fit the codebase.
 - **Lint and style.** Ward's TypeScript and JavaScript rules do the linting. Init writes
@@ -84,14 +85,14 @@ Node: JavaScript (CommonJS), npm, Node 24, sources in src/, no test runner
   both), so the `ward` gate applies them. Init writes no lint config, and formatting stays with
   `ward-format`.
 - **Gates.** Init also offers `stryker` (mutation testing, `ci` only; slow on Bun, which has no
-  Stryker runner plugin), `gitleaks`, `vulnerabilities`, and `zap`. Semgrep's JavaScript and TypeScript packs
+  Stryker runner plugin), `secrets` (Ward's native check, nothing to install), `vulnerabilities`, and `zap`. Semgrep's JavaScript and TypeScript packs
   are not offered: Ward's rules cover those languages. The layer boundaries of the architecture
   style are written to `ward.toml` as `[[checks.ward.layers]]` for every Node project, and
   `strict` adds the slice cycle check (`[checks.ward.cycles]`).
 - **Probe.** For tool availability, probe only the gates init offers here:
 
   ```sh
-  ward init -C <dir> --dry-run --preset strict --integration none --gate gitleaks,vulnerabilities
+  ward init -C <dir> --dry-run --preset strict --integration none --gate secrets,vulnerabilities
   ```
 
 ## Reading the plan
@@ -113,10 +114,13 @@ Node: JavaScript (CommonJS), npm, Node 24, sources in src/, no test runner
   that gate). Do not apply.
 - `create ward-rules.toml`: the preset and the Node languages the `ward` gate applies. A
   `ward-rules.toml` that Ward did not write is kept as it is, with a warning.
-- `create vitest.config.mjs` or `create jest.config.mjs`: Ward's test config holding the
-  preset's coverage thresholds; the test command then carries no threshold flag. `keep
-  vite.config.ts` (or another user test config) means the thresholds are passed as flags on the
-  command instead. A Jest config in `package.json` produces no line.
+- `create vitest.config.mjs`: Ward's Vitest config with the `v8` provider and the `text` and
+  `lcov` reporters, and no threshold. Ward writes no Jest config and no `bunfig.toml`. A project's
+  own Vitest or Jest config is kept, and the reporter flags go on the test command instead
+  (`bun test` always carries them). A threshold in a config the project owns keeps applying to the
+  runner, and the plan says Ward reads only the `coverage` check. A `jest.config.mjs`, `bunfig.toml`
+  or `vitest.config.mjs` that Ward wrote in an earlier version (with the marker) is removed or
+  rewritten without its threshold, and the plan lists it.
 - `create stryker.config.mjs`: the test runner (Bun: the command runner with `bun test`), the
   `json` reporter, and with `strict` `thresholds.break: 60`. `keep stryker.conf.json` means the
   user's own Stryker thresholds apply.

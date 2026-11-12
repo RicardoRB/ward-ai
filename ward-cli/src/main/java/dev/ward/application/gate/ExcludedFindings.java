@@ -23,6 +23,11 @@ final class ExcludedFindings {
         new RuleRunResult(kept, run.executionErrors(), run.notRun()), cached.graph());
   }
 
+  /** Returns {@code run} without the findings that the rule set leaves out. */
+  static RuleRunResult drop(final RuleRunResult run, final RuleSet set) {
+    return drop(new UnitResultCache.CachedRun(run, null), set).result();
+  }
+
   private static boolean isExcluded(final AnalysisFinding finding, final RuleSet set) {
     return finding.file() != null
         && set.excludePaths().getOrDefault(finding.ruleId(), List.of()).stream()

@@ -16,7 +16,7 @@ public final class QualityGateDefinitions {
           gate("sonar", Phase.CI),
           gate("mutation", Phase.CI),
           gate("semgrep", Phase.CI),
-          new Definition("gitleaks", "Gitleaks", Phase.FAST, true),
+          new Definition(SupportedQualityGates.SECRETS, "secrets", Phase.FAST, true),
           gate("zap", Phase.CI),
           gate(SupportedQualityGates.VULNERABILITIES, Phase.CI),
           gate("enforcer", Phase.LOCAL),
@@ -53,6 +53,7 @@ public final class QualityGateDefinitions {
           new Definition(
               SupportedQualityGates.ANALYSIS, SupportedQualityGates.ANALYSIS, Phase.LOCAL, true),
           gate(SupportedQualityGates.FORMAT, Phase.FAST),
+          gate(SupportedQualityGates.CRAP, Phase.LOCAL),
           gate("command", Phase.LOCAL),
           gate("openspec", Phase.CI),
           gate("openspec-archived", Phase.CI));

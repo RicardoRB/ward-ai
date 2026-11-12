@@ -85,7 +85,8 @@ public final class CoreCheckProvider implements CheckProvider {
                 new TaintCheck(
                     TaintSpecFiles.load(SpecPaths.of(toml, SPECS)),
                     TomlValues.required(toml, MESSAGE))),
-        entry("preceding-comment", CoreCheckProvider::precedingComment));
+        entry("preceding-comment", CoreCheckProvider::precedingComment),
+        entry("secret-scan", SecretScanFactory::create));
   }
 
   private static RuleCheck descendantCount(final TomlParseResult toml) {

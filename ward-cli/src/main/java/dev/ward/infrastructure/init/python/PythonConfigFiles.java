@@ -56,7 +56,6 @@ public final class PythonConfigFiles {
           mutants/*
 
       [report]
-      fail_under = 80
       show_missing = True
       """;
 
@@ -70,7 +69,6 @@ public final class PythonConfigFiles {
           mutants/*
 
       [report]
-      fail_under = 85
       show_missing = True
       """;
 
@@ -196,8 +194,18 @@ public final class PythonConfigFiles {
           new ConfigTarget(
               root.resolve(own.file()), ConfigTarget.Disposition.WRITE, own.content(), null));
     } else if (!isShared(root, userConfig.get())) {
-      targets.add(new ConfigTarget(userConfig.get(), ConfigTarget.Disposition.KEEP, null, null));
+      targets.add(
+          new ConfigTarget(
+              userConfig.get(), ConfigTarget.Disposition.KEEP, null, keptDetail(own.tool())));
     }
+  }
+
+  /** A kept coverage config may set a {@code fail_under}, which Ward does not read. */
+  private static String keptDetail(final String tool) {
+    return COVERAGE.equals(tool)
+        ? "a fail_under that your coverage config sets still applies to coverage lcov, and Ward"
+            + " reads only the minimum of the coverage check in ward.toml"
+        : null;
   }
 
   /** Returns whether {@code config} is one of the shared files Ward never edits. */

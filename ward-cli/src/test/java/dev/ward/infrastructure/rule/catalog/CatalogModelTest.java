@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
@@ -54,7 +55,8 @@ class CatalogModelTest {
                 AnalysisLanguage.KOTLIN, LanguageStatus.planned("#294")),
             Map.of(AnalysisLanguage.JAVA, "ward:java/parameter-count"),
             Map.of("checkstyle", List.of("ParameterNumber")),
-            "catalog/x.toml");
+            "catalog/x.toml",
+            Optional.empty());
 
     assertThat(row.idFor(AnalysisLanguage.JAVA)).isEqualTo("ward:java/parameter-count");
     assertThat(row.idFor(AnalysisLanguage.KOTLIN)).isEqualTo("ward:kotlin/parameter-number");
@@ -72,7 +74,14 @@ class CatalogModelTest {
     assertThatThrownBy(
             () ->
                 new CatalogRow(
-                    "x", "", Set.of(), Map.of(), Map.of(), Map.of("sonar", List.of("S1")), "f"))
+                    "x",
+                    "",
+                    Set.of(),
+                    Map.of(),
+                    Map.of(),
+                    Map.of("sonar", List.of("S1")),
+                    "f",
+                    Optional.empty()))
         .hasMessageContaining("'sonar' is not a tool of the catalog");
   }
 

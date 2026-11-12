@@ -23,10 +23,12 @@ Two checks may run the same tool:
 
 ```toml
 [checks.coverage]
-command = "./mvnw jacoco:check"
+command = "./mvnw jacoco:report"
+minimum = 70
 
-[checks.coverage-tests]
-command = "./mvnw -pl core jacoco:check"
+[checks.coverage-core]
+command = "./mvnw -pl core jacoco:report"
+minimum = 85
 ```
 
 Version 1 files (`[quality-gates.<id>]`, `preset`, top-level `[profiles]`) are rejected. Regenerate
@@ -53,7 +55,7 @@ prerequisites, its learning keys, and whether `--exclude-spec` selects it. The n
 
 ```toml
 [checks.style]
-command = "./mvnw jacoco:check" # inferred: coverage
+command = "./mvnw jacoco:report" # inferred: coverage (needs a minimum)
 
 [checks.architecture]
 command = "./mvnw -Dtest=ArchitectureBoundaryTest test" # a filtered test run is not inferred as tests
@@ -101,6 +103,24 @@ The `edit` profile is the set of checks that run after an agent edits a file. Se
 Unknown check names are errors, and so are checks with no enabled matching check. A selected `edit`
 profile with no check belonging to it passes with a warning on stderr, because a hook must not fail
 every edit on a configuration without `edit` checks.
+
+## CRAP score limit
+
+A `crap` check needs no `command`. `max` is the largest CRAP score a function may have, an integer
+of at least 1 (default 30), and `report` is a project-relative path, or an array of paths, to the
+coverage report it reads; without `report` Ward reads the default report of the build tool. See
+[CRAP gate](/configuration/gates/#crap-gate).
+
+```toml
+[checks.crap]
+uses = "crap"
+report = ["api/coverage/lcov.info", "web/coverage/lcov.info"]
+max = 15
+profiles = ["ci"]
+```
+
+A `max` that is not an integer of at least 1, or a `report` that is empty or outside the project, is
+a configuration error that names the key.
 
 ## Mutation score minimum
 

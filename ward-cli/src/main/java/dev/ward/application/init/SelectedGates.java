@@ -1,18 +1,23 @@
 package dev.ward.application.init;
 
 import dev.ward.domain.config.WardException;
+import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.FormatGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.PresetGateOrder;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.Toolchain;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /** Resolves a selection's gate ids into configured gates; shared by planning and applying. */
 final class SelectedGates {
+  private static final Set<String> NODE_TEST_GATES = Set.of("vitest", "jest", "bun-test");
+
   private SelectedGates() {}
 
   /**
@@ -44,7 +49,23 @@ final class SelectedGates {
     if (gates.isEmpty() && selection.tools().isEmpty()) {
       throw new WardException("Select at least one quality gate.");
     }
-    return gates;
+    requireNodeTestGate(project, gates);
+    return InitToolchains.find(project)
+        .flatMap(support -> support.crap(project, catalog.inputs))
+        .map(setup -> setup.apply(gates))
+        .orElse(gates);
+  }
+
+  /** A Node {@code coverage} check reads what a test runner wrote, so it needs that gate. */
+  private static void requireNodeTestGate(final Project project, final List<InitGateOption> gates) {
+    final List<String> ids = gates.stream().map(InitGateOption::id).toList();
+    if (project.toolchain() == Toolchain.NODE
+        && ids.contains(SupportedQualityGates.COVERAGE)
+        && ids.stream().noneMatch(NODE_TEST_GATES::contains)) {
+      throw new WardException(
+          "The coverage gate needs the vitest, jest or bun-test gate, which writes the report it"
+              + " reads. Select both gates.");
+    }
   }
 
   /** The {@code ward-format} gate: it has no command, because Ward runs it in-process. */

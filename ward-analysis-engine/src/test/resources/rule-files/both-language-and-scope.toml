@@ -1,0 +1,7 @@
+[[rules]]
+id = "ward:secrets/example"
+language = "java"
+scope = "text"
+capability = "TEXT"
+severity = "error"
+body = "check = \"secret-scan\""

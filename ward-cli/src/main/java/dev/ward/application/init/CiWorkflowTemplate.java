@@ -21,7 +21,6 @@ public final class CiWorkflowTemplate {
   static final String END = "# ward-owned: github-ci v1 end";
   private static final String WORKFLOWS = ".github/workflows/";
   private static final String SARIF = "ward.sarif";
-  private static final String GITLEAKS_VERSION = "8.30.1";
   private static final String SEMGREP_VERSION = "1.181.0";
   private static final String OPENSPEC_VERSION = "1.14.1";
   public static final String STEP = "      - name: ";
@@ -148,24 +147,13 @@ public final class CiWorkflowTemplate {
         + "      security-events: write\n"
         + "    steps:\n"
         + "      - uses: actions/checkout@v5\n"
-        // gitleaks scans the whole history, and openapi-compat needs the base branch.
-        + (ids.contains("gitleaks") || ids.contains("openapi-compat")
-            ? "        with:\n          fetch-depth: 0\n"
-            : "")
+        // openapi-compat needs the base branch; init never turns on the history scan of secrets.
+        + (ids.contains("openapi-compat") ? "        with:\n          fetch-depth: 0\n" : "")
         + InitToolchains.support(project).ciSetup(project, facts);
   }
 
   private static String tools(final Set<String> ids) {
     final List<String> install = new ArrayList<>();
-    if (ids.contains("gitleaks")) {
-      install.add(
-          "          curl -sSfL"
-              + " \"https://github.com/gitleaks/gitleaks/releases/download/v"
-              + GITLEAKS_VERSION
-              + "/gitleaks_"
-              + GITLEAKS_VERSION
-              + "_linux_x64.tar.gz\" | sudo tar -xz -C /usr/local/bin gitleaks\n");
-    }
     if (ids.contains("semgrep")) {
       install.add("          pip install semgrep==" + SEMGREP_VERSION + "\n");
     }

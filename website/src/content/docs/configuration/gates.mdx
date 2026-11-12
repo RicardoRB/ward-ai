@@ -15,13 +15,14 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 |---|---|---|---|
 | Build & Tests | `compile` | Maven Compiler / Gradle compilation | Compile the project. |
 | | `tests` | JUnit 5 | Run the project's automated tests. |
-| | `coverage` | JaCoCo / coverage.py | Enforce or report test coverage. |
+| | `coverage` | JaCoCo / lcov reports | Fail below a `minimum` line coverage and an optional `minimum-branches`, read by Ward from the tool's report. |
 | | `mutation` | PIT | Run mutation testing, optionally with a `minimum` score. |
 | Code Quality | `ward` | Ward rules | Check the style and bug rules that `ward-rules.toml` selects, for Java, Kotlin, TypeScript, JavaScript, Python and Swift. |
 | | `sonar` | SonarQube | Code smells, bugs, duplication, overall quality. |
 | | `ward-format` | Ward's native formatter | Check source formatting against `.editorconfig`. Always selected by `ward init`. |
+| | `crap` | Ward analysis and a coverage report | Fail functions that are both complex and untested, by their CRAP score. |
 | Security | `semgrep` | Semgrep | SAST and custom security rules. |
-| | `gitleaks` | Gitleaks | Detect committed secrets. |
+| | `secrets` | Ward's native secret rules | Detect committed secrets with no tool to install. See [secret detection](/configuration/secrets/). |
 | | `vulnerabilities` | Ward and OSV advisories | Match the resolved dependencies against known vulnerabilities. See [vulnerabilities](/configuration/vulnerabilities/). |
 | | `zap` | OWASP ZAP | DAST against a running application. |
 | Architecture | `ward` | Ward analysis rules | Run Ward's analysis rules over source syntax trees, with stable `ward:<language>/<rule>` ids, and the layer, slice cycle and feature independence rules `ward:architecture/*`. |
@@ -79,8 +80,9 @@ spec gets a note asking you to commit one, because the gates have nothing to che
 For TypeScript and JavaScript, presets write no rule files under `config/`. Init writes
 `ward-rules.toml`, which selects the preset's Ward rules for the project's languages, and adds the
 test and mutation tools to `package.json`. It writes their configs when the project has none:
-`vitest.config.mjs` or `jest.config.mjs` with the coverage thresholds, and `stryker.config.mjs`.
-Bun checks lines only, because it does not measure branch coverage. See
+`vitest.config.mjs` with the `text` and `lcov` reporters, and `stryker.config.mjs`. The coverage
+minimums are in the `coverage` check of `ward.toml`, not in a test config. Bun checks lines only,
+because it does not measure branch coverage. See
 [Node projects](/commands/init/#node-projects).
 
 Strict mutation testing can add a lot to check runtime. When `license` is selected, `strict`
@@ -109,7 +111,7 @@ the Groovy or the Kotlin build script. See [what init changes](/commands/init/#w
 
 ## Standalone tools
 
-`semgrep`, `gitleaks`, `zap-baseline.py`, `vacuum`, and `oasdiff` must already be on the path.
+`semgrep`, `zap-baseline.py`, `vacuum`, and `oasdiff` must already be on the path.
 
 - A missing tool is reported as unavailable with an install link, and other gates still run.
 - `ward init` can install supported tools with your consent; `check` never installs them.
@@ -387,6 +389,169 @@ changes a file: run [`ward format`](/commands/format/) to fix the reported files
 On a partial run, such as the `edit` profile after one file changed, the gate checks only the changed
 files when its `paths` table matches them, as the analysis gate does. Results for files that are
 already formatted are cached by content and settings, so unchanged files cost nothing on the next run.
+
+## Coverage gate
+
+The `coverage` check reads a coverage report and fails below the minimums in `ward.toml`. The tool
+measures; Ward decides. Init writes no minimum into `pom.xml`, the Gradle build, a test runner config,
+`bunfig.toml` or `.coveragerc`.
+
+```toml
+[checks.coverage]
+profiles = ["pre-push", "ci"]
+command = "./mvnw jacoco:report"   # optional
+minimum = 85                        # required: line coverage in percent, 0 to 100
+minimum-branches = 75               # optional: branch coverage in percent
+report = "target/site/jacoco/jacoco.xml"   # optional: a path or an array of paths
+```
+
+- `minimum` is required; a `coverage` check without it is a configuration error that names the check
+  (exit code 2). `minimum-branches` is accepted only here; every other type, `swift-coverage` and
+  `android-coverage` included, rejects it.
+- With a `command`, Ward runs it, and reads the report only when it exits with code 0. Without one
+  (`uses = "coverage"`), Ward starts no process and reads the reports an earlier check wrote, which is
+  how Node projects work: the check follows the `vitest`, `jest` or `bun-test` gate. A command that
+  contains `jacoco:report`, `jacocoTestReport` or `coverage lcov` is inferred as a `coverage` check;
+  `jacoco:check`, `jacocoTestCoverageVerification` and `coverage report` are plain command checks.
+- Ward reads JaCoCo XML and lcov, choosing the format from the content of the file. A JaCoCo line or
+  branch is covered as JaCoCo counts it; an lcov line is covered when its `DA` hits are above 0, and
+  a branch when its `BRDA` taken count is above 0.
+- Line and branch coverage are the covered over the coverable count, summed over every file of every
+  report, so a multi-module Maven or Gradle build is checked as one total (a high-coverage module can
+  hide a low one). A line is covered when any report covers it.
+- Without `report`, Ward reads the build tool's default report in the project root and in every
+  module directory: `target/site/jacoco/jacoco.xml` (Maven),
+  `build/reports/jacoco/test/jacocoTestReport.xml` (Gradle), `coverage/lcov.info` (Node, Turborepo
+  members included) and `coverage.lcov` (Python; init sets `report = ".ward/reports/coverage.lcov"`).
+  A path outside the project is a configuration error.
+- The gate ends with an execution error, never a pass, when no report exists (it says to run the test
+  gate first), a file is neither JaCoCo XML nor lcov, an lcov file is truncated, there is no coverable
+  line, `minimum-branches` is set and no report records branches (Bun, or coverage.py without
+  `branch = True`), a check with a command finds no report written after the command started, or a
+  check without one finds a report older than a source file it names. A report that records branches
+  and has none passes the branch minimum.
+- Vitest and coverage.py list only the files the tests load, so a file no test imports does not lower
+  the measured number; JaCoCo analyzes every class.
+- Angular (`ng test`) gets no `coverage` check from init. Its own `angular.json` or `karma.conf.js`
+  sets any threshold. Add `[checks.coverage]` with `uses = "coverage"`, `minimum` and the `report`
+  path of the lcov file it writes to enforce a minimum from `ward.toml`.
+- A threshold in a config the project owns (a Jest `coverageThreshold`, a Vitest threshold, a
+  `bunfig.toml` threshold, a `fail_under`) keeps applying to its tool. Ward does not read or edit it.
+
+What `ward init` writes, by toolchain: the preset sets `minimum` (70 for Maven, Gradle and Node
+`standard`, 80 for Python `standard`, and 85 with `minimum-branches = 75` for `strict`; a custom Maven
+or Gradle selection writes 80, a custom Node selection 70; Bun's `strict` has no
+`minimum-branches`). Maven gets the JaCoCo plugin with `prepare-agent` and `report` executions and no
+`rules`; Gradle gets the XML report setting; Vitest gets a Ward-owned config with the `lcov`
+reporter, Jest and Bun get reporter flags on their command where needed.
+
+## CRAP gate
+
+`uses = "crap"` scores every function with the CRAP metric (Change Risk Anti-Patterns) and fails the
+functions above a limit. A function that is complex and untested scores high, even when the rest of
+the project is well covered, which neither the complexity rules nor the `coverage` minimum catch:
+
+```
+CRAP = complexity^2 * (1 - coverage)^3 + complexity
+```
+
+```toml
+[checks.coverage]
+profiles = ["ci"]
+command = "./mvnw -DskipTests package jacoco:report"
+minimum = 70
+
+[checks.crap]
+uses = "crap"
+profiles = ["ci"]
+max = 30
+```
+
+The gate runs no tests and no process. It reads the per-line coverage report that the coverage or
+test check wrote, so declare it after that check: checks run in the order `ward.toml` declares them.
+
+- **Complexity** is the value that Ward's complexity rule of the language computes for the function:
+  `ward:java/cyclomatic-complexity`, `ward:kotlin/cyclomatic-complexity`,
+  `ward:typescript/complexity`, `ward:javascript/complexity`, `ward:python/complexity` and
+  `ward:swift/complexity`. It does not matter whether the rule is selected in `ward-rules.toml` or
+  what limit it has.
+- **Coverage** of a function is its covered lines over its coverable lines, from the first to the
+  last line of its declaration. A line counts only for the innermost function that contains it, so a
+  nested function does not count for its outer function, while a lambda counts for its method.
+- A function with no coverable line in the reports, such as an interface method, or in a file that
+  no report names, is scored from its complexity alone.
+
+`max` is an integer of at least 1, 30 by default, the threshold of the original metric. A function
+fails when its score is above `max`; a score equal to it passes. Each failing function is one error
+finding at its declaration, for example `CRAP score 42 is above 30 (complexity 6, coverage 0%)`, and
+the summary states how many functions were scored and how many are above the limit.
+
+### Coverage reports
+
+The gate reads JaCoCo XML (Java, Kotlin, Android) and lcov (TypeScript, JavaScript, Python, SwiftPM),
+choosing the format from the content of the file. `report` is one project-relative path or an array
+of them, and a path outside the project is a configuration error. Without `report`, Ward reads the
+default report of the project's build tool, in the project root and in every module directory below
+it:
+
+| Build tool | Default report |
+|---|---|
+| Maven | `target/site/jacoco/jacoco.xml` |
+| Gradle | `build/reports/jacoco/test/jacocoTestReport.xml` |
+| npm, pnpm, Yarn, Bun | `coverage/lcov.info` |
+| uv, Poetry, PDM, Hatch, pip | `coverage.lcov` |
+| SwiftPM, Xcode | none: set `report` |
+
+When several reports name the same line, the line is covered when any of them marks it covered. An
+lcov path is taken as absolute, or resolved against the project root and then against each directory
+from the report's own directory up to the root. A JaCoCo entry matches the source file whose path ends
+with its package and file name, preferring the file in the module that holds the report.
+
+To make each tool write the report:
+
+- **Maven:** the `jacoco-maven-plugin` goal `prepare-agent` before the tests and `report` after them;
+  the XML report is written by default.
+- **Gradle:** the `jacoco` plugin with `jacocoTestReport { reports { xml.required = true } }`, run
+  after `test`.
+- **Vitest:** `coverage: { reporter: ['lcov'], include: ['src/**'] }` and `vitest run --coverage`.
+  **Jest:** `collectCoverageFrom` and `jest --coverage`, whose default reporters include `lcov`.
+  List the source files in `include` or `collectCoverageFrom`, or the files no test loads are absent
+  from the report.
+- **pytest:** `pytest --cov=<package> --cov-report=lcov`, which writes `coverage.lcov`.
+- **SwiftPM:** `swift test --enable-code-coverage`, then export the profile with
+  `xcrun llvm-cov export -format=lcov` to a file and name it in `report`. Xcode projects that measure
+  coverage with `xccov` have no lcov export and are not read.
+
+### What `ward init` writes for `crap`
+
+`crap` is opt-in: no preset selects it, and `ward init --preset standard --gate crap` adds it. It
+needs the gate that produces the coverage data (`coverage` for Maven and Gradle, the test gate for
+Node, `pytest` for Python); init stops with exit code 2 and writes no file when that gate is missing.
+Init writes `[checks.crap]` after the `coverage` check, in the `pre-push` and `ci` profiles. The
+`coverage` check already makes each tool write the report that `crap` reads (the JaCoCo XML report for
+Maven and Gradle, `coverage/lcov.info` for Vitest, Jest and Bun, `.ward/reports/coverage.lcov` for
+Python), so `crap` adds no report-writing of its own.
+
+Init does not offer `crap` for Swift, Android and Angular (`ng test`) projects, because it cannot
+make their coverage tool write a report at a known path. Add the table by hand with a `report`: for
+SwiftPM the `llvm-cov export -format=lcov` file above, for Android the JaCoCo XML report of your
+coverage task, and for Angular the lcov file that your Karma or Vitest reporter writes.
+
+### Reports that cannot be used
+
+The gate never passes on a report it cannot trust. It ends with an execution error that names the file
+and says the coverage check must run first when:
+
+- no report is found, or a configured `report` does not exist;
+- a report is neither JaCoCo XML nor lcov, or is truncated;
+- the reports name no source file of the project;
+- a source file that a report names was modified after the report was written, which usually means the
+  tests did not run since the edit. A fresh checkout can also trigger it, so run the coverage check
+  first;
+- a source file that a report names cannot be parsed.
+
+The gate is opt-in: no preset selects it. It does not honor `exclude-paths` of `ward-rules.toml` and
+does not run on partial (edit-hook) runs.
 
 ## Analysis gate
 
@@ -857,13 +1022,13 @@ You are responsible for being authorized to scan the target.
 
 ## Structured findings
 
-When `ward`, `gitleaks`, `compile`, `ward-format`, `tsc`, `mypy`, `swift-build`, or `xcodebuild-test` fails, Ward turns the tool's output
+When `ward`, `secrets`, `compile`, `ward-format`, `tsc`, `mypy`, `swift-build`, or `xcodebuild-test` fails, Ward turns the tool's output
 into findings with rule, severity, file, line, column, message, and a rule documentation link when
 known. They appear in [JSON](/reference/json-output/) and SARIF output.
 
 | Gate | Source | Maven | Gradle | TypeScript & JavaScript |
 |---|---|---|---|---|
-| `gitleaks` | SARIF report | `target/gitleaks.sarif` | `build/gitleaks.sarif` | `.ward/reports/gitleaks.sarif` |
+| `secrets` | Ward's own findings, with rule, file, line and column | | | |
 | `compile` | javac messages in the output | | | |
 | `ward-format` | Ward's own findings, one per unformatted file (file only, no line) | | | |
 | `tsc` | Compiler diagnostics in the output; the command must pass `--pretty false` | | | |
@@ -875,7 +1040,7 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
   instead of `target/` or `build/`. Stryker's mutation report is the exception: it stays at Stryker's own
   `reports/mutation/mutation.json`, because only Stryker's configuration file can move it.
 - A missing or malformed report never changes the gate result; the gate just has no findings.
-- Gitleaks findings never contain the matched secret.
+- `secrets` findings never contain the matched secret or any source text.
 - `mypy` reads the JSON lines of `mypy -O json`. Mypy `note` lines are skipped. A missing or unparseable JSON output gives no findings, and the gate result does not
   change. Only the structured formats are read: the command must pass them.
 - `tsc`'s pretty output gives no findings. The gate result does not change.
@@ -886,7 +1051,7 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
 ## Partial checks
 
 `ward init` writes a [`[checks.<name>.paths]` table](/configuration/ward-toml/#partial-checks)
-for `semgrep`, `gitleaks`, `openapi-lint`, and
+for `semgrep`, `secrets`, `openapi-lint`, and
 `openapi-diff`. After an agent
 edit, and for the files a commit stages, a gate:
 
@@ -897,7 +1062,7 @@ edit, and for the files a commit stages, a gate:
 | Gate | Maven | Gradle |
 |---|---|---|
 | `semgrep` | each path as its own argument | each path as its own argument |
-| `gitleaks` | `--no-git --source=<path>` for each path, so uncommitted edits are scanned | same as Maven |
+| `secrets` | the edited files, scanned in Ward, so uncommitted edits are scanned | same as Maven |
 | `openapi-lint`, `openapi-diff` | full, only when the spec is edited | full, only when the spec is edited |
 
 `tsc` and the test runners have no table, so they run in full in `pre-push`

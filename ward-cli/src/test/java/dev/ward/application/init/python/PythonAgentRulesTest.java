@@ -25,7 +25,7 @@ class PythonAgentRulesTest {
             PROJECT, gates("coverage", "mutmut"), QualityPreset.STRICT, Set.of());
 
     assertThat(String.join("\n", lines))
-        .contains("85% minimum of lines and branches")
+        .contains("85% line and 75% branch coverage minimum in `ward.toml`")
         .contains("mutmut", "at least 60%");
   }
 
@@ -34,7 +34,7 @@ class PythonAgentRulesTest {
     final List<String> lines =
         PythonAgentRules.lines(PROJECT, gates("coverage"), QualityPreset.STANDARD, Set.of());
 
-    assertThat(String.join("\n", lines)).contains("80% minimum of lines;");
+    assertThat(String.join("\n", lines)).contains("80% line coverage minimum in `ward.toml`");
   }
 
   @Test
