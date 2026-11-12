@@ -81,13 +81,14 @@ class NodeControlFlowTest {
   }
 
   @Test
-  void bodyWithAnUnsupportedJumpFailsAndItsSiblingsStillLower() {
+  void jumpsWithoutATargetLeaveTheBodyAndSiblingsStillLower() {
     final ControlFlowResult result =
-        NodeFlowFixtures.lower("function bad() { break; }\nfunction good() { x(); }\n");
+        NodeFlowFixtures.lower(
+            "function bad() { break; }\nfunction cont() { continue; }\n"
+                + "function lbl() { while (true) { break nowhere; } }\nfunction good() { x(); }\n");
 
-    assertThat(result.failures()).hasSize(1);
-    assertThat(result.failures().get(0).message()).contains("bad");
-    assertThat(NodeFlowFixtures.names(result)).containsExactly("good");
+    assertThat(result.failures()).isEmpty();
+    assertThat(NodeFlowFixtures.names(result)).contains("bad", "cont", "lbl", "good");
   }
 
   @Test
