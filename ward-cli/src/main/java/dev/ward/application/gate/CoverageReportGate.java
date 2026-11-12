@@ -96,7 +96,8 @@ final class CoverageReportGate implements QualityGate {
     if (branchMinimum != null && hits.stream().noneMatch(LineHits::recordsBranches)) {
       throw new CrapReportException(
           "The coverage reports record no branches, so the branch minimum cannot be checked."
-              + " The tool did not measure branches; enable branch coverage in it.");
+              + " The tool did not measure branches; enable branch coverage in it."
+              + " coverage.py also writes no branch record for code that has no branch.");
     }
     return compare(ran, totals, branchMinimum);
   }
