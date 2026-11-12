@@ -1,0 +1,1 @@
+11:20	Schema of type string should specify a format, pattern, enum, or const.

@@ -1,0 +1,18 @@
+openapi: 3.1.0
+info:
+  title: T
+  version: "1"
+paths: {}
+components:
+  schemas:
+    Count:
+      type: integer
+    Both:
+      type: integer
+      minimum: 0
+      exclusiveMinimum: 0
+      maximum: 9
+    Fine:
+      type: integer
+      exclusiveMinimum: 0
+      maximum: 9

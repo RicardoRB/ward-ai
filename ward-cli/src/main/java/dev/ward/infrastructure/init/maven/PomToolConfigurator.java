@@ -171,7 +171,12 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
                             PomToolPlacement.apply(tool, preset, versions, approval, edit);
                           }
                         }));
-    edit.content = PresetPluginSnippets.pinLifecycle(edit.content, selected, preset, edit.details);
+    final String pinned =
+        PresetPluginSnippets.pinLifecycle(edit.content, selected, preset, edit.details);
+    if (!pinned.equals(edit.content) && edit.tools.isEmpty()) {
+      edit.tools.add("default lifecycle plugin versions");
+    }
+    edit.content = pinned;
     if (!edit.tools.isEmpty()) {
       PomDeclarationValidator.validate(
           edit.content, PomTools.addedDeclarations(edit.original, edit.content, rootGates));

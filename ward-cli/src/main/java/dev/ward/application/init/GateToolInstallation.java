@@ -26,7 +26,7 @@ final class GateToolInstallation {
               .filter(candidate -> candidate.id().equals(requested))
               .findFirst()
               .orElse(null);
-      if (gate == null) {
+      if (gate == null || gate.command().isEmpty()) {
         continue;
       }
       final ToolInstallationResult outcome =

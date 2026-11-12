@@ -94,6 +94,11 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>dev.ward</groupId>
+            <artifactId>ward-lang-openapi</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
@@ -306,6 +311,10 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.pitest</groupId>

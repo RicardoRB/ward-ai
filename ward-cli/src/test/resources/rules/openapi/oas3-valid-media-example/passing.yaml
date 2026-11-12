@@ -1,0 +1,31 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths:
+  /pets:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [id, name]
+              properties:
+                id: {type: integer, readOnly: true}
+                name: {type: string}
+            example:
+              name: rex
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [id, secret]
+                properties:
+                  id: {type: integer}
+                  secret: {type: string, writeOnly: true}
+              example:
+                id: 1

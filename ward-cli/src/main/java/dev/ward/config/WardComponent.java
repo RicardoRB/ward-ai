@@ -13,6 +13,7 @@ import javax.inject.Singleton;
     modules = {
       PortBindingsModule.class,
       CommandBindingsModule.class,
+      LicenseBindingsModule.class,
       RulesCommandBindingsModule.class,
       WardProvidesModule.class
     })

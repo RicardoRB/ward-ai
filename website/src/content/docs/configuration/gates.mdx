@@ -27,11 +27,12 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `zap` | OWASP ZAP | DAST against a running application. |
 | Architecture | `ward` | Ward analysis rules | Run Ward's analysis rules over source syntax trees, with stable `ward:<language>/<rule>` ids, and the layer, slice cycle and feature independence rules `ward:architecture/*`. |
 | | `enforcer` | Maven Enforcer / Gradle checks | Dependency and build rules. |
-| Dependencies & Compliance | `license` | License Maven Plugin / Gradle License Report (`checkLicense`) | Dependency license policy. |
+| | `build-policy` | Ward's native build policy rules | Pinned plugin versions, no dynamic versions, a minimum build tool version and duplicate dependency declarations in Maven, Gradle, Node and Python build files; see [Build policy rules](/reference/build-policy-rules/). |
+| Dependencies & Compliance | `license` | Ward (native) | Licenses of the resolved dependencies against a deny or allow policy, for every toolchain. See [License gate](#license-gate). |
 | | `api-compat` | japicmp | Binary/API compatibility between versions. |
-| REST API contract | `openapi-lint` | vacuum | Lint the committed OpenAPI spec with every built-in rule. |
-| | `openapi-diff` | oasdiff | Breaking changes in uncommitted spec edits. |
-| | `openapi-compat` | oasdiff | Breaking changes on the branch against `origin/main`. |
+| REST API contract | `openapi-lint` | Ward's OpenAPI rules | Lint the committed OpenAPI spec with every rule, with no tool to install. |
+| | `openapi-diff` | Ward breaking-change rules | Breaking changes in uncommitted spec edits. |
+| | `openapi-compat` | Ward breaking-change rules | Breaking changes on the branch against `origin/main`. |
 | TypeScript & JavaScript | `tsc` | TypeScript compiler | Type-check the project. |
 | | `vitest` / `jest` / `bun-test` | Vitest / Jest / Bun test | Run the project's automated tests. |
 | | `stryker` | StrykerJS | Run mutation testing, optionally with a `minimum` score. |
@@ -66,7 +67,7 @@ deliberately, for example in a CI-only profile with `profiles = ["ci"]`:
 | Preset | Gates | Minimums |
 |---|---|---|
 | `standard` | compile, tests, coverage, `ward-format`, and the `ward` check with the standard Java rules of `ward-rules.toml` | 70% line coverage |
-| `strict` | `standard` plus the strict Java rules, the `ward` architecture tables, Enforcer, and PIT mutation testing | 85% line, 75% branch, 60% mutation |
+| `strict` | `standard` plus the strict Java rules, the `ward` architecture tables, `build-policy`, Enforcer, and PIT mutation testing | 85% line, 75% branch, 60% mutation |
 | `standard` (TypeScript) | `tsc`, the test runner (`vitest`, `jest` or `bun-test`), and the `ward` check with the standard TypeScript rules of `ward-rules.toml` | 70% line coverage |
 | `standard` (JavaScript) | the test runner (`vitest`, `jest` or `bun-test`), and the `ward` check with the standard JavaScript rules of `ward-rules.toml` | 70% line coverage |
 | `strict` (TypeScript) | `standard` plus `stryker`, with the strict TypeScript rules of `ward-rules.toml` | 85% line, 75% branch, 60% mutation |
@@ -86,12 +87,12 @@ because it does not measure branch coverage. See
 
 Strict mutation testing can add a lot to check runtime. When `license` is selected, `strict`
 writes a license allowlist instead of the GPL/AGPL denylist; see
-[what init changes in your build](/commands/init/#generated-files).
+[License gate](#license-gate).
 
 Presets may write these rule files:
 
-- `config/enforcer-rules.xml` (strict)
-- `ward-rules.toml`, which selects the Ward rules of the preset for the languages of the project
+- `config/enforcer-rules.xml` (when the `enforcer` gate is selected): `dependencyConvergence`, and `requireUpperBoundDeps` for `strict`. The other Enforcer rules that earlier versions wrote are native `ward:build` rules now.
+- `ward-rules.toml`, which selects the Ward rules of the preset for the languages of the project, and for `strict` on Java the four `build.*` rules that the `build-policy` check runs
 
 No project gets lint tool rule files under `config/`; the Ward rules in `ward-rules.toml` replace them. The files carry a `managed-by: ward` marker. Unmarked user files are never overwritten.
 
@@ -110,7 +111,7 @@ the Groovy or the Kotlin build script. See [what init changes](/commands/init/#w
 
 ## Standalone tools
 
-`semgrep`, `zap-baseline.py`, `vacuum`, and `oasdiff` must already be on the path.
+`semgrep` and `zap-baseline.py` must already be on the path.
 
 - A missing tool is reported as unavailable with an install link, and other gates still run.
 - `ward init` can install supported tools with your consent; `check` never installs them.
@@ -898,6 +899,52 @@ writing, the parse report lists `func run() async {` (first error at 6:18) and a
 declaration (2:8) as errors; the cause is not analyzed here. Limits are tuned in
 [`ward-rules.toml`](/configuration/ward-rules/), as for the Python rules.
 
+## License gate
+
+The `license` gate is native: it reads the packages of the [dependency inventory](#structured-findings)
+and each package's declared license from local files, normalizes it to an SPDX expression, and
+checks it against a policy. It runs for Maven, Gradle, Node, Python and Swift projects, takes no
+`command`, and never uses the network or runs your build tool. A `command` on a `license` check is a
+configuration error.
+
+```toml
+[checks.license]
+uses = "license"
+profiles = ["pre-push", "ci"]
+deny = ["GPL-*", "AGPL-*"]        # the default; or allow = ["Apache-2.0", "MIT"]
+exceptions = ["Classpath-exception-2.0"]
+scopes = ["runtime", "provided"]  # default: every scope
+unknown = "fail"                  # or "warn"
+```
+
+| Key | Meaning |
+|---|---|
+| `deny` | SPDX identifiers, each optionally ending in `*` for a family. The default is `["GPL-*", "AGPL-*"]`; `GPL-*` does not match `LGPL-*`. |
+| `allow` | An allowlist in the same notation. Set `allow` or `deny`, not both. |
+| `exceptions` | `WITH` exceptions that waive a denied license (default `["Classpath-exception-2.0"]`); a deny policy only. |
+| `scopes` | Inventory scopes that are checked: `runtime`, `provided`, `test`, `development`. Default: all. |
+| `unknown` | `"fail"` (default) or `"warn"`: the severity of a license Ward cannot find or recognize. |
+
+Where each ecosystem's license is read:
+
+- **Maven and Gradle:** the POM in `~/.m2/repository` or the Gradle module cache, with the license of
+  the `<parent>` POM when a POM has none.
+- **Node:** `package.json` in `node_modules` (hoisted, nested or the `.pnpm` store); the version must
+  match the lockfile's.
+- **Python:** `License-Expression`, `License` or `License ::` classifiers in the `.dist-info` of the
+  project's virtual environment (`.venv`, `venv` or `VIRTUAL_ENV`).
+- **Swift:** `Package.swift` declares no license, so Ward matches the `LICENSE` or `COPYING` file of the
+  package checkout (`.build/checkouts`) against the bundled license texts.
+
+A package that is not installed locally, or whose license Ward does not recognize, is a
+`ward:license/unknown` finding, never an allowed one: install the dependencies before the gate runs,
+or set `unknown = "warn"`. Several declared licenses are alternatives, and an `OR` expression passes
+when one choice is allowed. The findings are `ward:license/denied`, `ward:license/not-allowed` and
+`ward:license/unknown`. If the dependencies cannot be resolved the gate reports an execution error
+instead of passing. `ward init --preset strict` writes an `allow` list of Apache-2.0, MIT,
+BSD-2-Clause, BSD-3-Clause, ISC, EPL-1.0, EPL-2.0 and CC0-1.0. See also
+[`ward sbom` and `ward licenses`](/commands/sbom/).
+
 ## API compatibility
 
 `api-compat` is for published libraries. It compares the latest released artifact (`RELEASE`) with
@@ -918,29 +965,49 @@ Applications shipped as binaries, such as CLIs, have no Java API consumers and s
 ## OpenAPI contract gates
 
 `openapi-lint`, `openapi-diff`, and `openapi-compat` check a committed (contract-first) OpenAPI
-spec. Each one needs a `spec` option with the project-relative path of that file. Ward appends the
-spec to the command, so the command names only the tool and its flags:
+spec. Each one needs a `spec` option with the project-relative path of that file.
+
+`openapi-lint` runs Ward's own `ward:openapi/*` rules, which follow the OpenAPI 3.x rules of
+Spectral (`spectral:oas` with every rule) and its OWASP ruleset, with the same severities, positions
+and messages. It takes no `command`, and a `command` on it is a configuration error (exit `2`). A
+warning or an error fails the gate; an `info` finding is a note. OpenAPI 3.0 and 3.1 documents are
+supported, and `$ref`s are followed to other files of the project, never fetched over the network. A
+Swagger 2.0 document, an OpenAPI 3.2 document, a syntax error or a reference that cannot be read
+ends the gate with an execution error that names the file and position. The `ward-rules.toml`
+file of the project (or `rules-file`) selects and configures the `openapi.*` rules like any other
+rule. `openapi-diff` and `openapi-compat` run inside Ward and take no `command`:
 
 ```toml
 [checks.openapi-lint]
 profiles = ["default", "pre-commit", "pre-push", "ci"]
-command = ["vacuum", "lint", "-z", "-n", "warn"]
 spec = "src/main/resources/openapi.yml"
 
 [checks.openapi-diff]
+uses = "openapi-diff"
 profiles = ["default", "pre-commit"]
-command = ["oasdiff", "breaking", "--fail-on", "ERR"]
 spec = "src/main/resources/openapi.yml"
 
 [checks.openapi-compat]
+uses = "openapi-compat"
 profiles = ["pre-push", "ci"]
-command = ["oasdiff", "breaking", "--fail-on", "ERR"]
 spec = "src/main/resources/openapi.yml"
 base = "origin/main" # the default
 ```
 
-`vacuum` and `oasdiff` must be on the path; a missing tool makes the gate unavailable. The flags
-and behavior below were verified with vacuum 0.35.1 and oasdiff 1.34.1.
+The gates need no tool. A `command` on `openapi-diff` or `openapi-compat` is a configuration
+error (exit `2`).
+
+### Breaking-change rules
+
+The two comparison gates load the spec at the baseline and in the working tree, follow the `$ref`s
+of each (the baseline's at its own commit), and run the breaking-change rules
+`ward:openapi/<check id>`: one per error-level check of oasdiff 1.37.0, with the same ids. A finding
+points at the changed node in the working-tree file. The gate fails on any finding. A spec that
+cannot be parsed, a `$ref` that cannot be resolved, a referenced file that is missing at the
+baseline, or a Git read failure is an execution error, never a pass. `oasdiff` is not used and
+`.oasdiff.*` files or `OASDIFF_CONFIG` change nothing. The rules cover OpenAPI 3.0 and 3.1; the
+list is in the OpenAPI rule reference. Sunset dates are judged against today, with no minimum
+deprecation period.
 
 ### Baselines
 
@@ -963,25 +1030,13 @@ Ward never fetches:
 
 These gates accept no way to silence a rule, in any profile:
 
-- `openapi-lint` requires `-z` (every built-in rule, including OWASP) and `-n` with `warn`,
-  `info`, or `hint`. Besides those it accepts only output flags: `-b`, `-q`, `-d`, `-s`, `-a`,
-  `-x`, `-m`, `-t` and their long forms, `--no-clip`, `--abs-paths`, `--pipeline-output`,
-  `--github-annotations`, `--no-update-check`, and `--min-score`. Rulesets (`-r`), ignore files,
-  and `--config` are rejected, because a ruleset can lower a rule's severity even in hard mode.
-- `openapi-diff` and `openapi-compat` require `--fail-on ERR` or `--fail-on WARN`, and accept only
-  `--format`, `--color`, `--lang`, `--flatten-allof`, `--flatten-params`, and
-  `--include-path-params`. Ignore files, path and extension filters, `--config`, `--open` (which
-  uploads the comparison), and `--fetch` are rejected.
+- `openapi-lint` has no inline or tool-level way to silence a rule: `x-lint-ignore` in the spec
+  fails the gate, a tool configuration file in the project root has no effect, and a rule is
+  switched off only by `exclude` in the committed `ward-rules.toml`.
+- `openapi-diff` and `openapi-compat` have no flags and no ignore file: every breaking change the
+  rules find fails the gate.
 
-Any other flag, a repeated flag, or a spec path in the command is a configuration error (exit `2`)
-that names the argument.
-
-Before running, the gates also fail when:
-
-- the project root contains a file the tool loads on its own: `vacuum.conf.yaml`, `.oasdiff.yaml`,
-  `.oasdiff.yml`, or `.oasdiff.json`;
-- `OASDIFF_CONFIG` is set;
-- the spec contains `x-lint-ignore`.
+Before running, `openapi-lint` also fails when the spec contains `x-lint-ignore`.
 
 ## ZAP target
 

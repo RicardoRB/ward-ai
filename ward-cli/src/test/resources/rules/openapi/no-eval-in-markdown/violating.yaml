@@ -1,0 +1,16 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+  description: run eval(x) now
+tags:
+  - name: a
+    description: eval(y)
+paths:
+  /p:
+    get:
+      responses:
+        "200":
+          description: fine
+x-ext:
+  description: eval(z)

@@ -49,7 +49,8 @@ final class TomlGateParser {
         TomlSecretsParser.parse(where, type, gate),
         TomlCrapParser.parse(where, type, gate),
         TomlCoverageParser.parse(where, type, gate),
-        TomlVulnerabilitiesParser.parse(where, type, gate));
+        TomlVulnerabilitiesParser.parse(where, type, gate),
+        TomlLicenseParser.parse(where, type, gate, command));
   }
 
   private static void rejectLegacyPartial(final String where, final TomlTable gate) {
@@ -73,7 +74,7 @@ final class TomlGateParser {
               + where
               + "."
               + ROOT
-              + "' is no longer supported: it only located the removed OpenSpec directory;"
+              + "' is no longer supported: it only located a directory that Ward no longer reads;"
               + " delete the key");
     }
   }

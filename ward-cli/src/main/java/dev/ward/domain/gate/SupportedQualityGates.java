@@ -10,6 +10,7 @@ public final class SupportedQualityGates {
   public static final String SECRETS = "secrets";
   public static final String COVERAGE = "coverage";
   public static final String CRAP = "crap";
+  public static final String BUILD_POLICY = "build-policy";
 
   public static final String OPENAPI_LINT = "openapi-lint";
   public static final String OPENAPI_DIFF = "openapi-diff";
@@ -23,6 +24,7 @@ public final class SupportedQualityGates {
   public static final String ANDROID_LINT = "android-lint";
   public static final String ANDROID_UNIT_TEST = "android-unit-test";
   public static final String ANDROID_COVERAGE = "android-coverage";
+  public static final String LICENSE = "license";
   public static final List<String> IDS =
       QualityGateDefinitions.all().stream().map(QualityGateDefinitions.Definition::id).toList();
 

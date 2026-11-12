@@ -1,0 +1,1 @@
+response-property-any-of-added	GET	/pets

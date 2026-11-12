@@ -1,0 +1,342 @@
+# OpenAPI lint rules (owasp), ported from the Spectral 6.17.1 rules of the same id. Each rule is a project check over the loaded document model.
+
+[[rules]]
+id = "ward:openapi/owasp-api2-2023-no-http-basic"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api2-2023-no-http-basic"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api2-2023-auth-insecure-schemes"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api2-2023-auth-insecure-schemes"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api2-2023-no-api-keys-in-url"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api2-2023-no-api-keys-in-url"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api2-2023-jwt-best-practices"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api2-2023-jwt-best-practices"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api1-2023-no-numeric-ids"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api1-2023-no-numeric-ids"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api2-2023-no-credentials-in-url"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api2-2023-no-credentials-in-url"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api8-2023-no-server-http"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api8-2023-no-server-http"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api4-2023-array-limit"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api4-2023-array-limit"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api4-2023-string-limit"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api4-2023-string-limit"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api4-2023-string-restricted"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api4-2023-string-restricted"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api4-2023-integer-format"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api4-2023-integer-format"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api4-2023-integer-limit"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api4-2023-integer-limit"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api3-2023-no-additional-properties"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api3-2023-no-additional-properties"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api3-2023-constrained-additional-properties"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api3-2023-constrained-additional-properties"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api8-2023-define-error-validation"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api8-2023-define-error-validation"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api8-2023-define-error-responses-401"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api8-2023-define-error-responses-401"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api8-2023-define-error-responses-500"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api8-2023-define-error-responses-500"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api4-2023-rate-limit-responses-429"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api4-2023-rate-limit-responses-429"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api4-2023-rate-limit"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api4-2023-rate-limit"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api4-2023-rate-limit-retry-after"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api4-2023-rate-limit-retry-after"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api2-2023-short-lived-access-tokens"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api2-2023-short-lived-access-tokens"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api2-2023-write-restricted"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api2-2023-write-restricted"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api2-2023-read-restricted"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api2-2023-read-restricted"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api3-2023-constrained-unevaluated-properties"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api3-2023-constrained-unevaluated-properties"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api3-2023-no-unevaluated-properties"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api3-2023-no-unevaluated-properties"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api4-2023-integer-limit-legacy"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api4-2023-integer-limit-legacy"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api5-2023-admin-security-unique"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api5-2023-admin-security-unique"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api7-2023-concerning-url-parameter"
+language = "openapi"
+capability = "SYNTAX"
+severity = "note"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api7-2023-concerning-url-parameter"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api8-2023-define-cors-origin"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api8-2023-define-cors-origin"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api9-2023-inventory-access"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api9-2023-inventory-access"
+'''
+
+[[rules]]
+id = "ward:openapi/owasp-api9-2023-inventory-environment"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-owasp-api9-2023-inventory-environment"
+'''

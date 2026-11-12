@@ -1,0 +1,1 @@
+response-property-max-properties-increased	GET	/pets

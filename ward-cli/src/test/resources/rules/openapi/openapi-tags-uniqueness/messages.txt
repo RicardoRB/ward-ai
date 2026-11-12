@@ -1,0 +1,2 @@
+8:11	"tags" object contains duplicate tag name "a".
+9:11	"tags" object contains duplicate tag name "b".

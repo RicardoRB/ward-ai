@@ -1,6 +1,5 @@
 package dev.ward.application.init;
 
-import dev.ward.application.init.openapi.OpenApiToolInstalls;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.InitGateOption;
@@ -156,7 +155,6 @@ public final class CiWorkflowTemplate {
     if (ids.contains("semgrep")) {
       install.add("          pip install semgrep==" + SEMGREP_VERSION + "\n");
     }
-    OpenApiToolInstalls.add(ids, install);
     // The runner's system Python refuses global pip installs.
     final String python =
         ids.contains("semgrep")

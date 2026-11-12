@@ -1,0 +1,21 @@
+2:6	"info" property must have required property "title".
+3:12	"version" property must be string.
+5:11	Property "mail" is not expected to be here.
+7:11	"license" property must have required property "name".
+9:5	"0" property must have required property "url".
+10:12	Property "extra" is not expected to be here.
+11:6	"tags" property must not have duplicate items (items ## 0 and 1 are identical).
+17:20	"operationId" property must be string.
+18:13	"tags" property must be array.
+21:15	"in" property must be equal to one of the allowed values: "path", "query", "header", "cookie". Did you mean "query"?.
+23:11	"schema" or "content" must be present.
+25:17	"$ref" property must be string.
+32:23	"type" property must be equal to one of the allowed values: "array", "boolean", "integer", "number", "object", "string". Did you mean "string"?.
+33:24	"items" property must be object.
+34:14	Property "20" is not expected to be here.
+36:10	"post" property must have required property "responses".
+39:14	Property "not-a-path" is not expected to be here.
+48:17	"required" property must be array.
+50:38	"minimum" property must be number.
+52:7	"k" property must have required property "in".
+57:14	Property "unknownRoot" is not expected to be here.

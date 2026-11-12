@@ -1,0 +1,1 @@
+10:15	Security scheme uses HTTP Basic. Use a more secure authentication method, like OAuth 2, or OpenID.

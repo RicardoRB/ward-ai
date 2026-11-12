@@ -1,0 +1,1 @@
+6:12	Path parameter declarations must not be empty, ex."/given/{}" is invalid.

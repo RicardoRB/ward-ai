@@ -1,0 +1,1 @@
+response-property-unevaluated-items-removed	GET	/pets

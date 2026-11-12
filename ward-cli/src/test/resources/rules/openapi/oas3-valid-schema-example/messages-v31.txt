@@ -1,0 +1,4 @@
+20:38	"example" property type must be integer
+27:21	Item at index 0 must be string
+28:50	"example" property type must be string,null
+30:78	"example" property must be > 5

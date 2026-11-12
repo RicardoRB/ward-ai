@@ -81,7 +81,11 @@ public class QualityGateRunner {
       final Instant gateStart = Instant.now();
       LOGGER.log(Level.INFO, () -> "event=gate-start gate=" + gate.name());
       final GateResult result =
-          withFindings(project, checks.attach(project, gate.execute(project)), gateStart);
+          withFindings(
+              project,
+              checks.attach(
+                  project, gate.execute(project, step -> listener.gateStep(gate.name(), step))),
+              gateStart);
       results.add(result);
       listener.gateFinished(result);
       LOGGER.log(

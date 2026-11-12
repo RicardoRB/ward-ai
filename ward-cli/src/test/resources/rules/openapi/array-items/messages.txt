@@ -1,0 +1,2 @@
+8:10	Schemas with "type: array", require a sibling "items" field
+13:14	Schemas with "type: array", require a sibling "items" field

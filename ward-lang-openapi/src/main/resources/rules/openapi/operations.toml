@@ -1,0 +1,102 @@
+# OpenAPI lint rules over the operations of a document, ported from the Spectral 6.17.1 rules of the
+# same id. Each rule is a project check over the loaded document model.
+
+[[rules]]
+id = "ward:openapi/operation-operation-id"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-operation-operation-id"
+'''
+
+[[rules]]
+id = "ward:openapi/path-declarations-must-exist"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-path-declarations-must-exist"
+'''
+
+[[rules]]
+id = "ward:openapi/path-keys-no-trailing-slash"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-path-keys-no-trailing-slash"
+'''
+
+[[rules]]
+id = "ward:openapi/path-not-include-query"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-path-not-include-query"
+'''
+
+[[rules]]
+id = "ward:openapi/operation-success-response"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-operation-success-response"
+'''
+
+[[rules]]
+id = "ward:openapi/operation-operation-id-valid-in-url"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-operation-operation-id-valid-in-url"
+'''
+
+[[rules]]
+id = "ward:openapi/operation-operation-id-unique"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-operation-operation-id-unique"
+'''
+
+[[rules]]
+id = "ward:openapi/operation-parameters"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-operation-parameters"
+'''
+
+[[rules]]
+id = "ward:openapi/path-params"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-path-params"
+'''
+

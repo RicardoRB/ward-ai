@@ -1,0 +1,1 @@
+request-body-enum-value-removed	POST	/pets

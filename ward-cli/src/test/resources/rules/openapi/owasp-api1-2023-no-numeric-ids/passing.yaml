@@ -1,0 +1,15 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths:
+  /u/{id}:
+    get:
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses: {}

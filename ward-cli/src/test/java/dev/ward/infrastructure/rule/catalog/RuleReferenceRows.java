@@ -20,6 +20,15 @@ final class RuleReferenceRows {
   /** Returns the row of one implemented rule, with the options its definition declares. */
   static String implementedRow(
       final CatalogRow row, final AnalysisLanguage language, final List<RuleDefinition> rules) {
+    if (row.breaking()) {
+      return "| `"
+          + row.idFor(language)
+          + "` | "
+          + row.category()
+          + " | none (compares two documents in openapi-diff and openapi-compat) | none | "
+          + RuleReferenceTools.counterparts(row)
+          + " |";
+    }
     final RuleDefinition rule = definition(row.idFor(language), rules);
     return String.join(
         " | ",

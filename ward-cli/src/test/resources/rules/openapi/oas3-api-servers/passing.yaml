@@ -1,0 +1,7 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+servers:
+  - url: https://api.example.org
+paths: {}

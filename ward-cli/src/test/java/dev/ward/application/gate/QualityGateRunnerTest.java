@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.domain.FakeCommandExecutor;
 import dev.ward.domain.gate.CheckReport;
+import dev.ward.domain.gate.GateProgress;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.GateStatus;
 import dev.ward.domain.gate.QualityGate;
@@ -164,5 +165,40 @@ class QualityGateRunnerTest {
             .build();
       }
     };
+  }
+
+  @Test
+  void forwardsStepsOfRunningGateToListener() {
+    final List<String> events = new ArrayList<>();
+    final QualityGate gate =
+        new QualityGate() {
+          @Override
+          public String name() {
+            return "ward";
+          }
+
+          @Override
+          public GateResult execute(final Project ignored) {
+            return execute(ignored, GateProgress.NONE);
+          }
+
+          @Override
+          public GateResult execute(final Project ignored, final GateProgress progress) {
+            progress.step("reading sources");
+            return GateResult.builder("ward", GateStatus.PASSED).build();
+          }
+        };
+
+    runner.run(
+        project,
+        List.of(gate),
+        new CheckProgressListener() {
+          @Override
+          public void gateStep(final String name, final String step) {
+            events.add(name + ":" + step);
+          }
+        });
+
+    assertThat(events).containsExactly("ward:reading sources");
   }
 }

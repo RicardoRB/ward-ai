@@ -1,0 +1,1 @@
+response-property-content-schema-removed	GET	/pets

@@ -1,0 +1,1 @@
+request-body-min-items-set	POST	/pets

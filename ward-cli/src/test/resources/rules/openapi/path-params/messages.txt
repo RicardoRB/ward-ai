@@ -1,0 +1,8 @@
+14:11	Parameter "other" must be used in path "/pets/{id}".
+20:16	Paths "/pets/{id}" and "/pets/{name}" must not be equivalent.
+21:9	Operation must define parameter "{name}" as expected by path "/pets/{name}".
+23:16	Path "/dup/{a}/{a}" must not use parameter "{a}" multiple times.
+25:9	Path parameter "a" must have "required" property that is set to "true".
+30:9	Path parameter "a" must not be defined multiple times.
+35:9	Parameter "gone" must be used in path "/dup/{a}/{a}".
+42:11	Path parameter "a" must have "required" property that is set to "true".

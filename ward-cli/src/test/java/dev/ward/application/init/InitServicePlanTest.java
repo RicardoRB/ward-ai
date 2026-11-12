@@ -7,9 +7,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import dev.ward.JavaPresetGates;
 import dev.ward.ProjectSnapshot;
 import dev.ward.application.project.ProjectDetector;
+import dev.ward.domain.FakeCommandExecutor;
 import dev.ward.domain.FakeEnvironmentInspection;
 import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.agent.PlannedFileChange.Action;
+import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.init.InitPlan;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.QualityPreset;
@@ -20,6 +22,7 @@ import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.QualityHookInstaller;
 import dev.ward.infrastructure.init.RuleFileTargetsFixtures;
 import dev.ward.infrastructure.init.maven.PomToolConfigurator;
+import dev.ward.infrastructure.init.python.PythonBuildToolConfigurator;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -73,14 +76,18 @@ class InitServicePlanTest {
   @Test
   void aMissingGateExecutableIsDescribedWithoutRunningAnInstaller(@TempDir final Path dir)
       throws IOException {
-    withPom(dir, PLAIN_POM);
+    Files.createDirectories(dir.resolve(".venv"));
+    Files.createDirectories(dir.resolve("src"));
+    Files.writeString(dir.resolve("src/app.py"), "x = 1\n");
+    Files.writeString(
+        dir.resolve("pyproject.toml"), "[project]\nname = \"demo\"\nversion = \"1\"\n");
     final Map<String, String> before = ProjectSnapshot.of(dir);
 
     final InitPlan plan =
-        service(new PomToolConfigurator())
-            .plan(dir, new InitSelection(List.of("none"), List.of("tests", "openapi-lint")), false);
+        service(new PythonBuildToolConfigurator(new FakeCommandExecutor(0, "", "")))
+            .plan(dir, new InitSelection(List.of("none"), List.of("semgrep")), false);
 
-    assertThat(plan.gateInstallations()).extracting("tool").containsExactly("vacuum");
+    assertThat(plan.gateInstallations()).extracting("tool").containsExactly("semgrep");
     assertThat(ProjectSnapshot.of(dir)).isEqualTo(before);
   }
 
@@ -120,12 +127,11 @@ class InitServicePlanTest {
         null);
   }
 
-  private static InitService service(final PomToolConfigurator pom) {
+  private static InitService service(final BuildToolConfiguration pom) {
     return new InitService(
         new ProjectDetector(new FileSystemProjectInspection()),
         Set.of(new ClaudeCodeIntegration()),
-        new InitSetupCatalog(
-            FakeEnvironmentInspection.withOpenApiSpec("openapi.yml"), new QualityHookInstaller()),
+        new InitSetupCatalog(new FakeEnvironmentInspection(), new QualityHookInstaller()),
         new InitProjectFiles(
             pom,
             RuleFileTargetsFixtures.writer(),

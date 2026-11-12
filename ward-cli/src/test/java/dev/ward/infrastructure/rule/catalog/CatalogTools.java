@@ -29,7 +29,9 @@ public final class CatalogTools {
           "periphery",
           "cpd",
           "jscpd",
-          "gitleaks");
+          "gitleaks",
+          "spectral",
+          "oasdiff");
 
   private CatalogTools() {}
 }

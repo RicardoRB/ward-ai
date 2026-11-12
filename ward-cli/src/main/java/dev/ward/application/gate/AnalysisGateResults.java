@@ -30,10 +30,14 @@ final class AnalysisGateResults {
         .build();
   }
 
-  /** The gate result of {@code run}, the run of {@code rules} by the gate called {@code name}. */
+  /**
+   * The gate result of {@code run}, the run of {@code rules} by the gate called {@code name}, with
+   * one section per rule category.
+   */
   static GateResult result(
       final String name, final RuleRunResult run, final List<RuleDefinition> rules) {
-    return result(name, TOOL, run, rules);
+    return result(name, TOOL, run, rules)
+        .withSections(AnalysisGateSections.of(run.findings(), rules));
   }
 
   /** Like {@link #result(String, RuleRunResult, List)}, naming {@code tool} as the finding tool. */

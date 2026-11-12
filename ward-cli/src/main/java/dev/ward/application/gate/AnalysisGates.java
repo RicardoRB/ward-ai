@@ -36,7 +36,7 @@ final class AnalysisGates {
     if (!loaded.configurationErrors().isEmpty()) {
       throw new WardException(String.join(" ", loaded.configurationErrors()));
     }
-    final RuleSetup setup =
+    final RuleSetup configured =
         new ConfiguredRuleSetup(
             check.name(),
             check.rulesFile(),
@@ -46,6 +46,7 @@ final class AnalysisGates {
                 loaded.rules(),
                 architectureRules(check)),
             analysis.rules());
+    final RuleSetup setup = LanguageFilteredSetup.withoutOpenApi(configured);
     return new AnalysisGate(check.name(), setup, analysis, check.javaClasspath(), focus);
   }
 

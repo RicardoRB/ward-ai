@@ -126,7 +126,8 @@ final class PartialGates {
         gate.secrets(),
         gate.crap(),
         gate.coverage(),
-        gate.vulnerabilities());
+        gate.vulnerabilities(),
+        gate.license());
   }
 
   private static GateScope scope(final PartialCheckPlan.GatePlan plan) {

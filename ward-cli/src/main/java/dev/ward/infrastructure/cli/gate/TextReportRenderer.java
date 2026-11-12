@@ -14,6 +14,7 @@ import javax.inject.Named;
 /** Prints gate progress and the human-readable check summary. */
 public class TextReportRenderer implements CheckProgressListener {
   private static final int RENDER_CAPACITY = 512;
+  private static final String CLEAR_LINE = "\r\033[2K";
 
   private final TerminalCapabilities terminal;
   private final String version;
@@ -73,11 +74,19 @@ public class TextReportRenderer implements CheckProgressListener {
   }
 
   @Override
+  public void gateStep(final String name, final String step) {
+    if (terminal.interactive()) {
+      print.accept(CLEAR_LINE + "… " + ReportText.displayName(name) + ": " + step);
+      flush.run();
+    }
+  }
+
+  @Override
   public void gateFinished(final GateResult result) {
     if (terminal.interactive()) {
-      print.accept("\r\033[2K");
+      print.accept(CLEAR_LINE);
     }
-    println.accept(ReportText.gateLine(result));
+    println.accept(GateLines.of(result));
     flush.run();
   }
 
@@ -114,7 +123,7 @@ public class TextReportRenderer implements CheckProgressListener {
     final StringBuilder output = new StringBuilder(RENDER_CAPACITY);
     output.append("Ward ").append(version).append(ReportText.NL).append(ReportText.NL);
     for (final GateResult result : report.results()) {
-      output.append(ReportText.gateLine(result)).append(ReportText.NL);
+      output.append(GateLines.of(result)).append(ReportText.NL);
     }
     return output.append(ReportText.summary(report, learning, threshold)).toString();
   }

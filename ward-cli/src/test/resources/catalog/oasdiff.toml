@@ -1,0 +1,1809 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "api-deprecated-sunset-missing"
+category = "correctness"
+not-applicable = { openapi = "oasdiff reports it only when a deprecation-days flag asks for a sunset date, and Ward offers no such flag, so with default flags it never fires" }
+oasdiff = ["api-deprecated-sunset-missing"]
+
+[[rule]]
+name = "api-deprecated-sunset-parse"
+category = "correctness"
+oasdiff = ["api-deprecated-sunset-parse"]
+
+[[rule]]
+name = "api-global-security-removed"
+category = "correctness"
+not-applicable = { openapi = "oasdiff 1.37.0 does not report it for any document shape tried (a root security requirement removed with and without operations, with operations overriding it, as a combined or replaced requirement)" }
+oasdiff = ["api-global-security-removed"]
+
+[[rule]]
+name = "api-global-security-scope-added"
+category = "correctness"
+not-applicable = { openapi = "oasdiff 1.37.0 does not report it for any document shape tried (a scope added to a root requirement with and without operations, combined with another scheme, overridden by operations)" }
+oasdiff = ["api-global-security-scope-added"]
+
+[[rule]]
+name = "api-invalid-stability-level"
+category = "correctness"
+oasdiff = ["api-invalid-stability-level"]
+
+[[rule]]
+name = "api-path-removed-before-sunset"
+category = "correctness"
+oasdiff = ["api-path-removed-before-sunset"]
+
+[[rule]]
+name = "api-path-removed-without-deprecation"
+category = "correctness"
+oasdiff = ["api-path-removed-without-deprecation"]
+
+[[rule]]
+name = "api-path-sunset-parse"
+category = "correctness"
+oasdiff = ["api-path-sunset-parse"]
+
+[[rule]]
+name = "api-removed-before-sunset"
+category = "correctness"
+oasdiff = ["api-removed-before-sunset"]
+
+[[rule]]
+name = "api-removed-without-deprecation"
+category = "correctness"
+oasdiff = ["api-removed-without-deprecation"]
+
+[[rule]]
+name = "api-security-anonymous-access-removed"
+category = "correctness"
+oasdiff = ["api-security-anonymous-access-removed"]
+
+[[rule]]
+name = "api-security-component-api-key-in-changed"
+category = "correctness"
+oasdiff = ["api-security-component-api-key-in-changed"]
+
+[[rule]]
+name = "api-security-component-api-key-name-changed"
+category = "correctness"
+oasdiff = ["api-security-component-api-key-name-changed"]
+
+[[rule]]
+name = "api-security-component-http-scheme-changed"
+category = "correctness"
+oasdiff = ["api-security-component-http-scheme-changed"]
+
+[[rule]]
+name = "api-security-component-type-changed"
+category = "correctness"
+oasdiff = ["api-security-component-type-changed"]
+
+[[rule]]
+name = "api-security-removed"
+category = "correctness"
+oasdiff = ["api-security-removed"]
+
+[[rule]]
+name = "api-security-scope-added"
+category = "correctness"
+oasdiff = ["api-security-scope-added"]
+
+[[rule]]
+name = "api-stability-decreased"
+category = "correctness"
+oasdiff = ["api-stability-decreased"]
+
+[[rule]]
+name = "api-sunset-date-changed-earlier"
+category = "correctness"
+oasdiff = ["api-sunset-date-changed-earlier"]
+
+[[rule]]
+name = "api-sunset-date-changed-too-small"
+category = "correctness"
+oasdiff = ["api-sunset-date-changed-too-small"]
+
+[[rule]]
+name = "api-sunset-date-too-small"
+category = "correctness"
+oasdiff = ["api-sunset-date-too-small"]
+
+[[rule]]
+name = "new-request-path-parameter"
+category = "correctness"
+oasdiff = ["new-request-path-parameter"]
+
+[[rule]]
+name = "new-required-request-default-parameter-to-existing-path"
+category = "correctness"
+oasdiff = ["new-required-request-default-parameter-to-existing-path"]
+
+[[rule]]
+name = "new-required-request-header-property"
+category = "correctness"
+oasdiff = ["new-required-request-header-property"]
+
+[[rule]]
+name = "new-required-request-parameter"
+category = "correctness"
+oasdiff = ["new-required-request-parameter"]
+
+[[rule]]
+name = "new-required-request-property"
+category = "correctness"
+oasdiff = ["new-required-request-property"]
+
+[[rule]]
+name = "new-required-request-property-with-default"
+category = "correctness"
+oasdiff = ["new-required-request-property-with-default"]
+
+[[rule]]
+name = "request-body-added-required"
+category = "correctness"
+oasdiff = ["request-body-added-required"]
+
+[[rule]]
+name = "request-body-all-of-added"
+category = "correctness"
+oasdiff = ["request-body-all-of-added"]
+
+[[rule]]
+name = "request-body-any-of-removed"
+category = "correctness"
+oasdiff = ["request-body-any-of-removed"]
+
+[[rule]]
+name = "request-body-became-enum"
+category = "correctness"
+oasdiff = ["request-body-became-enum"]
+
+[[rule]]
+name = "request-body-became-not-nullable"
+category = "correctness"
+oasdiff = ["request-body-became-not-nullable"]
+
+[[rule]]
+name = "request-body-became-required"
+category = "correctness"
+oasdiff = ["request-body-became-required"]
+
+[[rule]]
+name = "request-body-const-added"
+category = "correctness"
+oasdiff = ["request-body-const-added"]
+
+[[rule]]
+name = "request-body-const-changed"
+category = "correctness"
+oasdiff = ["request-body-const-changed"]
+
+[[rule]]
+name = "request-body-contains-added"
+category = "correctness"
+oasdiff = ["request-body-contains-added"]
+
+[[rule]]
+name = "request-body-content-encoding-changed"
+category = "correctness"
+oasdiff = ["request-body-content-encoding-changed"]
+
+[[rule]]
+name = "request-body-content-media-type-changed"
+category = "correctness"
+oasdiff = ["request-body-content-media-type-changed"]
+
+[[rule]]
+name = "request-body-content-schema-added"
+category = "correctness"
+oasdiff = ["request-body-content-schema-added"]
+
+[[rule]]
+name = "request-body-dependent-required-added"
+category = "correctness"
+oasdiff = ["request-body-dependent-required-added"]
+
+[[rule]]
+name = "request-body-dependent-required-changed"
+category = "correctness"
+oasdiff = ["request-body-dependent-required-changed"]
+
+[[rule]]
+name = "request-body-dependent-schema-added"
+category = "correctness"
+oasdiff = ["request-body-dependent-schema-added"]
+
+[[rule]]
+name = "request-body-else-added"
+category = "correctness"
+oasdiff = ["request-body-else-added"]
+
+[[rule]]
+name = "request-body-enum-value-removed"
+category = "correctness"
+oasdiff = ["request-body-enum-value-removed"]
+
+[[rule]]
+name = "request-body-exclusive-max-decreased"
+category = "correctness"
+oasdiff = ["request-body-exclusive-max-decreased"]
+
+[[rule]]
+name = "request-body-exclusive-max-set"
+category = "correctness"
+oasdiff = ["request-body-exclusive-max-set"]
+
+[[rule]]
+name = "request-body-exclusive-min-increased"
+category = "correctness"
+oasdiff = ["request-body-exclusive-min-increased"]
+
+[[rule]]
+name = "request-body-exclusive-min-set"
+category = "correctness"
+oasdiff = ["request-body-exclusive-min-set"]
+
+[[rule]]
+name = "request-body-if-added"
+category = "correctness"
+oasdiff = ["request-body-if-added"]
+
+[[rule]]
+name = "request-body-list-of-types-narrowed"
+category = "correctness"
+oasdiff = ["request-body-list-of-types-narrowed"]
+
+[[rule]]
+name = "request-body-max-contains-decreased"
+category = "correctness"
+oasdiff = ["request-body-max-contains-decreased"]
+
+[[rule]]
+name = "request-body-max-contains-set"
+category = "correctness"
+oasdiff = ["request-body-max-contains-set"]
+
+[[rule]]
+name = "request-body-max-decreased"
+category = "correctness"
+oasdiff = ["request-body-max-decreased"]
+
+[[rule]]
+name = "request-body-max-items-decreased"
+category = "correctness"
+oasdiff = ["request-body-max-items-decreased"]
+
+[[rule]]
+name = "request-body-max-items-set"
+category = "correctness"
+oasdiff = ["request-body-max-items-set"]
+
+[[rule]]
+name = "request-body-max-length-decreased"
+category = "correctness"
+oasdiff = ["request-body-max-length-decreased"]
+
+[[rule]]
+name = "request-body-max-length-set"
+category = "correctness"
+oasdiff = ["request-body-max-length-set"]
+
+[[rule]]
+name = "request-body-max-properties-decreased"
+category = "correctness"
+oasdiff = ["request-body-max-properties-decreased"]
+
+[[rule]]
+name = "request-body-max-properties-set"
+category = "correctness"
+oasdiff = ["request-body-max-properties-set"]
+
+[[rule]]
+name = "request-body-max-set"
+category = "correctness"
+oasdiff = ["request-body-max-set"]
+
+[[rule]]
+name = "request-body-media-type-item-schema-added"
+category = "correctness"
+not-applicable = { openapi = "the check is about itemSchema, a keyword of OpenAPI 3.2, and Ward loads only OpenAPI 3.0 and 3.1 documents" }
+oasdiff = ["request-body-media-type-item-schema-added"]
+
+[[rule]]
+name = "request-body-media-type-removed"
+category = "correctness"
+oasdiff = ["request-body-media-type-removed"]
+
+[[rule]]
+name = "request-body-media-type-schema-added"
+category = "correctness"
+oasdiff = ["request-body-media-type-schema-added"]
+
+[[rule]]
+name = "request-body-min-contains-increased"
+category = "correctness"
+oasdiff = ["request-body-min-contains-increased"]
+
+[[rule]]
+name = "request-body-min-contains-set"
+category = "correctness"
+oasdiff = ["request-body-min-contains-set"]
+
+[[rule]]
+name = "request-body-min-increased"
+category = "correctness"
+oasdiff = ["request-body-min-increased"]
+
+[[rule]]
+name = "request-body-min-items-increased"
+category = "correctness"
+oasdiff = ["request-body-min-items-increased"]
+
+[[rule]]
+name = "request-body-min-items-set"
+category = "correctness"
+oasdiff = ["request-body-min-items-set"]
+
+[[rule]]
+name = "request-body-min-length-increased"
+category = "correctness"
+oasdiff = ["request-body-min-length-increased"]
+
+[[rule]]
+name = "request-body-min-length-set"
+category = "correctness"
+oasdiff = ["request-body-min-length-set"]
+
+[[rule]]
+name = "request-body-min-properties-increased"
+category = "correctness"
+oasdiff = ["request-body-min-properties-increased"]
+
+[[rule]]
+name = "request-body-min-properties-set"
+category = "correctness"
+oasdiff = ["request-body-min-properties-set"]
+
+[[rule]]
+name = "request-body-min-set"
+category = "correctness"
+oasdiff = ["request-body-min-set"]
+
+[[rule]]
+name = "request-body-multiple-of-changed"
+category = "correctness"
+oasdiff = ["request-body-multiple-of-changed"]
+
+[[rule]]
+name = "request-body-multiple-of-set"
+category = "correctness"
+oasdiff = ["request-body-multiple-of-set"]
+
+[[rule]]
+name = "request-body-one-of-removed"
+category = "correctness"
+oasdiff = ["request-body-one-of-removed"]
+
+[[rule]]
+name = "request-body-pattern-property-added"
+category = "correctness"
+oasdiff = ["request-body-pattern-property-added"]
+
+[[rule]]
+name = "request-body-property-names-added"
+category = "correctness"
+oasdiff = ["request-body-property-names-added"]
+
+[[rule]]
+name = "request-body-removed"
+category = "correctness"
+oasdiff = ["request-body-removed"]
+
+[[rule]]
+name = "request-body-schema-became-false"
+category = "correctness"
+oasdiff = ["request-body-schema-became-false"]
+
+[[rule]]
+name = "request-body-then-added"
+category = "correctness"
+oasdiff = ["request-body-then-added"]
+
+[[rule]]
+name = "request-body-type-changed"
+category = "correctness"
+oasdiff = ["request-body-type-changed"]
+
+[[rule]]
+name = "request-body-unevaluated-items-added"
+category = "correctness"
+oasdiff = ["request-body-unevaluated-items-added"]
+
+[[rule]]
+name = "request-body-unevaluated-properties-added"
+category = "correctness"
+oasdiff = ["request-body-unevaluated-properties-added"]
+
+[[rule]]
+name = "request-body-unique-items-set"
+category = "correctness"
+oasdiff = ["request-body-unique-items-set"]
+
+[[rule]]
+name = "request-body-wrapped-in-one-of"
+category = "correctness"
+not-applicable = { openapi = "oasdiff 1.37.0 does not report it for any document shape tried (a schema wrapped in a oneOf alone, with other members, as a reference, in OpenAPI 3.0 and 3.1, or replaced by another member (only the warning original-preserved check fires))" }
+oasdiff = ["request-body-wrapped-in-one-of"]
+
+[[rule]]
+name = "request-header-property-became-enum"
+category = "correctness"
+oasdiff = ["request-header-property-became-enum"]
+
+[[rule]]
+name = "request-header-property-became-required"
+category = "correctness"
+oasdiff = ["request-header-property-became-required"]
+
+[[rule]]
+name = "request-parameter-became-enum"
+category = "correctness"
+oasdiff = ["request-parameter-became-enum"]
+
+[[rule]]
+name = "request-parameter-became-not-nullable"
+category = "correctness"
+oasdiff = ["request-parameter-became-not-nullable"]
+
+[[rule]]
+name = "request-parameter-became-required"
+category = "correctness"
+oasdiff = ["request-parameter-became-required"]
+
+[[rule]]
+name = "request-parameter-deprecated-sunset-missing"
+category = "correctness"
+not-applicable = { openapi = "oasdiff reports it only when a deprecation-days flag asks for a sunset date, and Ward offers no such flag, so with default flags it never fires" }
+oasdiff = ["request-parameter-deprecated-sunset-missing"]
+
+[[rule]]
+name = "request-parameter-enum-value-removed"
+category = "correctness"
+oasdiff = ["request-parameter-enum-value-removed"]
+
+[[rule]]
+name = "request-parameter-exclusive-max-decreased"
+category = "correctness"
+oasdiff = ["request-parameter-exclusive-max-decreased"]
+
+[[rule]]
+name = "request-parameter-exclusive-max-set"
+category = "correctness"
+oasdiff = ["request-parameter-exclusive-max-set"]
+
+[[rule]]
+name = "request-parameter-exclusive-min-increased"
+category = "correctness"
+oasdiff = ["request-parameter-exclusive-min-increased"]
+
+[[rule]]
+name = "request-parameter-exclusive-min-set"
+category = "correctness"
+oasdiff = ["request-parameter-exclusive-min-set"]
+
+[[rule]]
+name = "request-parameter-list-of-types-narrowed"
+category = "correctness"
+oasdiff = ["request-parameter-list-of-types-narrowed"]
+
+[[rule]]
+name = "request-parameter-max-contains-decreased"
+category = "correctness"
+oasdiff = ["request-parameter-max-contains-decreased"]
+
+[[rule]]
+name = "request-parameter-max-contains-set"
+category = "correctness"
+oasdiff = ["request-parameter-max-contains-set"]
+
+[[rule]]
+name = "request-parameter-max-decreased"
+category = "correctness"
+oasdiff = ["request-parameter-max-decreased"]
+
+[[rule]]
+name = "request-parameter-max-items-decreased"
+category = "correctness"
+oasdiff = ["request-parameter-max-items-decreased"]
+
+[[rule]]
+name = "request-parameter-max-items-set"
+category = "correctness"
+oasdiff = ["request-parameter-max-items-set"]
+
+[[rule]]
+name = "request-parameter-max-length-decreased"
+category = "correctness"
+oasdiff = ["request-parameter-max-length-decreased"]
+
+[[rule]]
+name = "request-parameter-max-length-set"
+category = "correctness"
+oasdiff = ["request-parameter-max-length-set"]
+
+[[rule]]
+name = "request-parameter-max-properties-decreased"
+category = "correctness"
+oasdiff = ["request-parameter-max-properties-decreased"]
+
+[[rule]]
+name = "request-parameter-max-properties-set"
+category = "correctness"
+oasdiff = ["request-parameter-max-properties-set"]
+
+[[rule]]
+name = "request-parameter-max-set"
+category = "correctness"
+oasdiff = ["request-parameter-max-set"]
+
+[[rule]]
+name = "request-parameter-min-contains-increased"
+category = "correctness"
+oasdiff = ["request-parameter-min-contains-increased"]
+
+[[rule]]
+name = "request-parameter-min-contains-set"
+category = "correctness"
+oasdiff = ["request-parameter-min-contains-set"]
+
+[[rule]]
+name = "request-parameter-min-increased"
+category = "correctness"
+oasdiff = ["request-parameter-min-increased"]
+
+[[rule]]
+name = "request-parameter-min-items-increased"
+category = "correctness"
+oasdiff = ["request-parameter-min-items-increased"]
+
+[[rule]]
+name = "request-parameter-min-items-set"
+category = "correctness"
+oasdiff = ["request-parameter-min-items-set"]
+
+[[rule]]
+name = "request-parameter-min-length-increased"
+category = "correctness"
+oasdiff = ["request-parameter-min-length-increased"]
+
+[[rule]]
+name = "request-parameter-min-length-set"
+category = "correctness"
+oasdiff = ["request-parameter-min-length-set"]
+
+[[rule]]
+name = "request-parameter-min-properties-increased"
+category = "correctness"
+oasdiff = ["request-parameter-min-properties-increased"]
+
+[[rule]]
+name = "request-parameter-min-properties-set"
+category = "correctness"
+oasdiff = ["request-parameter-min-properties-set"]
+
+[[rule]]
+name = "request-parameter-min-set"
+category = "correctness"
+oasdiff = ["request-parameter-min-set"]
+
+[[rule]]
+name = "request-parameter-multiple-of-set"
+category = "correctness"
+oasdiff = ["request-parameter-multiple-of-set"]
+
+[[rule]]
+name = "request-parameter-pattern-added"
+category = "correctness"
+oasdiff = ["request-parameter-pattern-added"]
+
+[[rule]]
+name = "request-parameter-property-became-not-nullable"
+category = "correctness"
+oasdiff = ["request-parameter-property-became-not-nullable"]
+
+[[rule]]
+name = "request-parameter-property-enum-value-removed"
+category = "correctness"
+oasdiff = ["request-parameter-property-enum-value-removed"]
+
+[[rule]]
+name = "request-parameter-property-list-of-types-narrowed"
+category = "correctness"
+oasdiff = ["request-parameter-property-list-of-types-narrowed"]
+
+[[rule]]
+name = "request-parameter-property-schema-became-false"
+category = "correctness"
+oasdiff = ["request-parameter-property-schema-became-false"]
+
+[[rule]]
+name = "request-parameter-property-type-specialized"
+category = "correctness"
+oasdiff = ["request-parameter-property-type-specialized"]
+
+[[rule]]
+name = "request-parameter-removed-before-sunset"
+category = "correctness"
+oasdiff = ["request-parameter-removed-before-sunset"]
+
+[[rule]]
+name = "request-parameter-schema-became-false"
+category = "correctness"
+oasdiff = ["request-parameter-schema-became-false"]
+
+[[rule]]
+name = "request-parameter-sunset-date-changed-earlier"
+category = "correctness"
+oasdiff = ["request-parameter-sunset-date-changed-earlier"]
+
+[[rule]]
+name = "request-parameter-sunset-date-changed-too-small"
+category = "correctness"
+oasdiff = ["request-parameter-sunset-date-changed-too-small"]
+
+[[rule]]
+name = "request-parameter-sunset-date-too-small"
+category = "correctness"
+oasdiff = ["request-parameter-sunset-date-too-small"]
+
+[[rule]]
+name = "request-parameter-sunset-deleted"
+category = "correctness"
+oasdiff = ["request-parameter-sunset-deleted"]
+
+[[rule]]
+name = "request-parameter-sunset-parse"
+category = "correctness"
+oasdiff = ["request-parameter-sunset-parse"]
+
+[[rule]]
+name = "request-parameter-type-changed"
+category = "correctness"
+oasdiff = ["request-parameter-type-changed"]
+
+[[rule]]
+name = "request-parameter-x-extensible-enum-value-removed"
+category = "correctness"
+oasdiff = ["request-parameter-x-extensible-enum-value-removed"]
+
+[[rule]]
+name = "request-property-all-of-added"
+category = "correctness"
+oasdiff = ["request-property-all-of-added"]
+
+[[rule]]
+name = "request-property-any-of-removed"
+category = "correctness"
+oasdiff = ["request-property-any-of-removed"]
+
+[[rule]]
+name = "request-property-became-enum"
+category = "correctness"
+oasdiff = ["request-property-became-enum"]
+
+[[rule]]
+name = "request-property-became-not-nullable"
+category = "correctness"
+oasdiff = ["request-property-became-not-nullable"]
+
+[[rule]]
+name = "request-property-became-required"
+category = "correctness"
+oasdiff = ["request-property-became-required"]
+
+[[rule]]
+name = "request-property-became-required-with-default"
+category = "correctness"
+oasdiff = ["request-property-became-required-with-default"]
+
+[[rule]]
+name = "request-property-const-added"
+category = "correctness"
+oasdiff = ["request-property-const-added"]
+
+[[rule]]
+name = "request-property-const-changed"
+category = "correctness"
+oasdiff = ["request-property-const-changed"]
+
+[[rule]]
+name = "request-property-contains-added"
+category = "correctness"
+oasdiff = ["request-property-contains-added"]
+
+[[rule]]
+name = "request-property-content-encoding-changed"
+category = "correctness"
+oasdiff = ["request-property-content-encoding-changed"]
+
+[[rule]]
+name = "request-property-content-media-type-changed"
+category = "correctness"
+oasdiff = ["request-property-content-media-type-changed"]
+
+[[rule]]
+name = "request-property-content-schema-added"
+category = "correctness"
+oasdiff = ["request-property-content-schema-added"]
+
+[[rule]]
+name = "request-property-dependent-required-added"
+category = "correctness"
+oasdiff = ["request-property-dependent-required-added"]
+
+[[rule]]
+name = "request-property-dependent-required-changed"
+category = "correctness"
+oasdiff = ["request-property-dependent-required-changed"]
+
+[[rule]]
+name = "request-property-dependent-schema-added"
+category = "correctness"
+oasdiff = ["request-property-dependent-schema-added"]
+
+[[rule]]
+name = "request-property-deprecated-sunset-invalid"
+category = "correctness"
+oasdiff = ["request-property-deprecated-sunset-invalid"]
+
+[[rule]]
+name = "request-property-deprecated-sunset-missing"
+category = "correctness"
+not-applicable = { openapi = "oasdiff reports it only when a deprecation-days flag asks for a sunset date, and Ward offers no such flag, so with default flags it never fires" }
+oasdiff = ["request-property-deprecated-sunset-missing"]
+
+[[rule]]
+name = "request-property-else-added"
+category = "correctness"
+oasdiff = ["request-property-else-added"]
+
+[[rule]]
+name = "request-property-enum-value-removed"
+category = "correctness"
+oasdiff = ["request-property-enum-value-removed"]
+
+[[rule]]
+name = "request-property-exclusive-max-decreased"
+category = "correctness"
+oasdiff = ["request-property-exclusive-max-decreased"]
+
+[[rule]]
+name = "request-property-exclusive-max-set"
+category = "correctness"
+oasdiff = ["request-property-exclusive-max-set"]
+
+[[rule]]
+name = "request-property-exclusive-min-increased"
+category = "correctness"
+oasdiff = ["request-property-exclusive-min-increased"]
+
+[[rule]]
+name = "request-property-exclusive-min-set"
+category = "correctness"
+oasdiff = ["request-property-exclusive-min-set"]
+
+[[rule]]
+name = "request-property-if-added"
+category = "correctness"
+oasdiff = ["request-property-if-added"]
+
+[[rule]]
+name = "request-property-list-of-types-narrowed"
+category = "correctness"
+oasdiff = ["request-property-list-of-types-narrowed"]
+
+[[rule]]
+name = "request-property-max-contains-decreased"
+category = "correctness"
+oasdiff = ["request-property-max-contains-decreased"]
+
+[[rule]]
+name = "request-property-max-contains-set"
+category = "correctness"
+oasdiff = ["request-property-max-contains-set"]
+
+[[rule]]
+name = "request-property-max-decreased"
+category = "correctness"
+oasdiff = ["request-property-max-decreased"]
+
+[[rule]]
+name = "request-property-max-items-decreased"
+category = "correctness"
+oasdiff = ["request-property-max-items-decreased"]
+
+[[rule]]
+name = "request-property-max-items-set"
+category = "correctness"
+oasdiff = ["request-property-max-items-set"]
+
+[[rule]]
+name = "request-property-max-length-decreased"
+category = "correctness"
+oasdiff = ["request-property-max-length-decreased"]
+
+[[rule]]
+name = "request-property-max-length-set"
+category = "correctness"
+oasdiff = ["request-property-max-length-set"]
+
+[[rule]]
+name = "request-property-max-properties-decreased"
+category = "correctness"
+oasdiff = ["request-property-max-properties-decreased"]
+
+[[rule]]
+name = "request-property-max-properties-set"
+category = "correctness"
+oasdiff = ["request-property-max-properties-set"]
+
+[[rule]]
+name = "request-property-max-set"
+category = "correctness"
+oasdiff = ["request-property-max-set"]
+
+[[rule]]
+name = "request-property-min-contains-increased"
+category = "correctness"
+oasdiff = ["request-property-min-contains-increased"]
+
+[[rule]]
+name = "request-property-min-contains-set"
+category = "correctness"
+oasdiff = ["request-property-min-contains-set"]
+
+[[rule]]
+name = "request-property-min-increased"
+category = "correctness"
+oasdiff = ["request-property-min-increased"]
+
+[[rule]]
+name = "request-property-min-items-increased"
+category = "correctness"
+oasdiff = ["request-property-min-items-increased"]
+
+[[rule]]
+name = "request-property-min-items-set"
+category = "correctness"
+oasdiff = ["request-property-min-items-set"]
+
+[[rule]]
+name = "request-property-min-length-increased"
+category = "correctness"
+oasdiff = ["request-property-min-length-increased"]
+
+[[rule]]
+name = "request-property-min-length-set"
+category = "correctness"
+oasdiff = ["request-property-min-length-set"]
+
+[[rule]]
+name = "request-property-min-properties-increased"
+category = "correctness"
+oasdiff = ["request-property-min-properties-increased"]
+
+[[rule]]
+name = "request-property-min-properties-set"
+category = "correctness"
+oasdiff = ["request-property-min-properties-set"]
+
+[[rule]]
+name = "request-property-min-set"
+category = "correctness"
+oasdiff = ["request-property-min-set"]
+
+[[rule]]
+name = "request-property-multiple-of-changed"
+category = "correctness"
+oasdiff = ["request-property-multiple-of-changed"]
+
+[[rule]]
+name = "request-property-multiple-of-set"
+category = "correctness"
+oasdiff = ["request-property-multiple-of-set"]
+
+[[rule]]
+name = "request-property-one-of-removed"
+category = "correctness"
+oasdiff = ["request-property-one-of-removed"]
+
+[[rule]]
+name = "request-property-pattern-added"
+category = "correctness"
+oasdiff = ["request-property-pattern-added"]
+
+[[rule]]
+name = "request-property-pattern-property-added"
+category = "correctness"
+oasdiff = ["request-property-pattern-property-added"]
+
+[[rule]]
+name = "request-property-property-names-added"
+category = "correctness"
+oasdiff = ["request-property-property-names-added"]
+
+[[rule]]
+name = "request-property-removed-before-sunset"
+category = "correctness"
+oasdiff = ["request-property-removed-before-sunset"]
+
+[[rule]]
+name = "request-property-schema-became-false"
+category = "correctness"
+oasdiff = ["request-property-schema-became-false"]
+
+[[rule]]
+name = "request-property-stability-decreased"
+category = "correctness"
+oasdiff = ["request-property-stability-decreased"]
+
+[[rule]]
+name = "request-property-sunset-date-changed-earlier"
+category = "correctness"
+oasdiff = ["request-property-sunset-date-changed-earlier"]
+
+[[rule]]
+name = "request-property-sunset-date-changed-too-small"
+category = "correctness"
+oasdiff = ["request-property-sunset-date-changed-too-small"]
+
+[[rule]]
+name = "request-property-sunset-date-too-small"
+category = "correctness"
+oasdiff = ["request-property-sunset-date-too-small"]
+
+[[rule]]
+name = "request-property-sunset-deleted"
+category = "correctness"
+oasdiff = ["request-property-sunset-deleted"]
+
+[[rule]]
+name = "request-property-then-added"
+category = "correctness"
+oasdiff = ["request-property-then-added"]
+
+[[rule]]
+name = "request-property-type-changed"
+category = "correctness"
+oasdiff = ["request-property-type-changed"]
+
+[[rule]]
+name = "request-property-unevaluated-items-added"
+category = "correctness"
+oasdiff = ["request-property-unevaluated-items-added"]
+
+[[rule]]
+name = "request-property-unevaluated-properties-added"
+category = "correctness"
+oasdiff = ["request-property-unevaluated-properties-added"]
+
+[[rule]]
+name = "request-property-unique-items-set"
+category = "correctness"
+oasdiff = ["request-property-unique-items-set"]
+
+[[rule]]
+name = "request-property-x-extensible-enum-value-removed"
+category = "correctness"
+oasdiff = ["request-property-x-extensible-enum-value-removed"]
+
+[[rule]]
+name = "request-required-property-became-not-read-only"
+category = "correctness"
+oasdiff = ["request-required-property-became-not-read-only"]
+
+[[rule]]
+name = "required-response-header-removed"
+category = "correctness"
+oasdiff = ["required-response-header-removed"]
+
+[[rule]]
+name = "response-body-all-of-removed"
+category = "correctness"
+not-applicable = { openapi = "oasdiff 1.37.0 lists the check as an error but reports it at warning level for every allOf change tried (inline and referenced members, three members, constraint-only members), so the error-level diff never contains it" }
+oasdiff = ["response-body-all-of-removed"]
+
+[[rule]]
+name = "response-body-any-of-added"
+category = "correctness"
+oasdiff = ["response-body-any-of-added"]
+
+[[rule]]
+name = "response-body-became-nullable"
+category = "correctness"
+oasdiff = ["response-body-became-nullable"]
+
+[[rule]]
+name = "response-body-const-changed"
+category = "correctness"
+oasdiff = ["response-body-const-changed"]
+
+[[rule]]
+name = "response-body-const-removed"
+category = "correctness"
+oasdiff = ["response-body-const-removed"]
+
+[[rule]]
+name = "response-body-contains-removed"
+category = "correctness"
+oasdiff = ["response-body-contains-removed"]
+
+[[rule]]
+name = "response-body-content-encoding-changed"
+category = "correctness"
+oasdiff = ["response-body-content-encoding-changed"]
+
+[[rule]]
+name = "response-body-content-media-type-changed"
+category = "correctness"
+oasdiff = ["response-body-content-media-type-changed"]
+
+[[rule]]
+name = "response-body-content-schema-removed"
+category = "correctness"
+oasdiff = ["response-body-content-schema-removed"]
+
+[[rule]]
+name = "response-body-dependent-required-changed"
+category = "correctness"
+oasdiff = ["response-body-dependent-required-changed"]
+
+[[rule]]
+name = "response-body-dependent-required-removed"
+category = "correctness"
+oasdiff = ["response-body-dependent-required-removed"]
+
+[[rule]]
+name = "response-body-dependent-schema-removed"
+category = "correctness"
+oasdiff = ["response-body-dependent-schema-removed"]
+
+[[rule]]
+name = "response-body-else-removed"
+category = "correctness"
+oasdiff = ["response-body-else-removed"]
+
+[[rule]]
+name = "response-body-exclusive-max-increased"
+category = "correctness"
+oasdiff = ["response-body-exclusive-max-increased"]
+
+[[rule]]
+name = "response-body-exclusive-max-unset"
+category = "correctness"
+oasdiff = ["response-body-exclusive-max-unset"]
+
+[[rule]]
+name = "response-body-exclusive-min-decreased"
+category = "correctness"
+oasdiff = ["response-body-exclusive-min-decreased"]
+
+[[rule]]
+name = "response-body-exclusive-min-unset"
+category = "correctness"
+oasdiff = ["response-body-exclusive-min-unset"]
+
+[[rule]]
+name = "response-body-if-removed"
+category = "correctness"
+oasdiff = ["response-body-if-removed"]
+
+[[rule]]
+name = "response-body-list-of-types-widened"
+category = "correctness"
+oasdiff = ["response-body-list-of-types-widened"]
+
+[[rule]]
+name = "response-body-max-contains-increased"
+category = "correctness"
+oasdiff = ["response-body-max-contains-increased"]
+
+[[rule]]
+name = "response-body-max-contains-unset"
+category = "correctness"
+oasdiff = ["response-body-max-contains-unset"]
+
+[[rule]]
+name = "response-body-max-increased"
+category = "correctness"
+oasdiff = ["response-body-max-increased"]
+
+[[rule]]
+name = "response-body-max-items-increased"
+category = "correctness"
+oasdiff = ["response-body-max-items-increased"]
+
+[[rule]]
+name = "response-body-max-items-unset"
+category = "correctness"
+oasdiff = ["response-body-max-items-unset"]
+
+[[rule]]
+name = "response-body-max-length-increased"
+category = "correctness"
+oasdiff = ["response-body-max-length-increased"]
+
+[[rule]]
+name = "response-body-max-length-unset"
+category = "correctness"
+oasdiff = ["response-body-max-length-unset"]
+
+[[rule]]
+name = "response-body-max-properties-increased"
+category = "correctness"
+oasdiff = ["response-body-max-properties-increased"]
+
+[[rule]]
+name = "response-body-max-properties-unset"
+category = "correctness"
+oasdiff = ["response-body-max-properties-unset"]
+
+[[rule]]
+name = "response-body-max-unset"
+category = "correctness"
+oasdiff = ["response-body-max-unset"]
+
+[[rule]]
+name = "response-body-media-type-item-schema-removed"
+category = "correctness"
+not-applicable = { openapi = "the check is about itemSchema, a keyword of OpenAPI 3.2, and Ward loads only OpenAPI 3.0 and 3.1 documents" }
+oasdiff = ["response-body-media-type-item-schema-removed"]
+
+[[rule]]
+name = "response-body-media-type-item-schema-removed-untyped"
+category = "correctness"
+not-applicable = { openapi = "the check is about itemSchema, a keyword of OpenAPI 3.2, and Ward loads only OpenAPI 3.0 and 3.1 documents" }
+oasdiff = ["response-body-media-type-item-schema-removed-untyped"]
+
+[[rule]]
+name = "response-body-media-type-schema-removed"
+category = "correctness"
+oasdiff = ["response-body-media-type-schema-removed"]
+
+[[rule]]
+name = "response-body-min-contains-decreased"
+category = "correctness"
+oasdiff = ["response-body-min-contains-decreased"]
+
+[[rule]]
+name = "response-body-min-contains-unset"
+category = "correctness"
+oasdiff = ["response-body-min-contains-unset"]
+
+[[rule]]
+name = "response-body-min-decreased"
+category = "correctness"
+oasdiff = ["response-body-min-decreased"]
+
+[[rule]]
+name = "response-body-min-items-decreased"
+category = "correctness"
+oasdiff = ["response-body-min-items-decreased"]
+
+[[rule]]
+name = "response-body-min-items-unset"
+category = "correctness"
+oasdiff = ["response-body-min-items-unset"]
+
+[[rule]]
+name = "response-body-min-length-decreased"
+category = "correctness"
+oasdiff = ["response-body-min-length-decreased"]
+
+[[rule]]
+name = "response-body-min-length-unset"
+category = "correctness"
+oasdiff = ["response-body-min-length-unset"]
+
+[[rule]]
+name = "response-body-min-properties-decreased"
+category = "correctness"
+oasdiff = ["response-body-min-properties-decreased"]
+
+[[rule]]
+name = "response-body-min-properties-unset"
+category = "correctness"
+oasdiff = ["response-body-min-properties-unset"]
+
+[[rule]]
+name = "response-body-min-unset"
+category = "correctness"
+oasdiff = ["response-body-min-unset"]
+
+[[rule]]
+name = "response-body-multiple-of-changed"
+category = "correctness"
+oasdiff = ["response-body-multiple-of-changed"]
+
+[[rule]]
+name = "response-body-multiple-of-unset"
+category = "correctness"
+oasdiff = ["response-body-multiple-of-unset"]
+
+[[rule]]
+name = "response-body-one-of-added"
+category = "correctness"
+oasdiff = ["response-body-one-of-added"]
+
+[[rule]]
+name = "response-body-pattern-property-removed"
+category = "correctness"
+oasdiff = ["response-body-pattern-property-removed"]
+
+[[rule]]
+name = "response-body-property-names-removed"
+category = "correctness"
+oasdiff = ["response-body-property-names-removed"]
+
+[[rule]]
+name = "response-body-schema-became-false"
+category = "correctness"
+oasdiff = ["response-body-schema-became-false"]
+
+[[rule]]
+name = "response-body-then-removed"
+category = "correctness"
+oasdiff = ["response-body-then-removed"]
+
+[[rule]]
+name = "response-body-type-changed"
+category = "correctness"
+oasdiff = ["response-body-type-changed"]
+
+[[rule]]
+name = "response-body-type-generalized"
+category = "correctness"
+oasdiff = ["response-body-type-generalized"]
+
+[[rule]]
+name = "response-body-unevaluated-items-removed"
+category = "correctness"
+oasdiff = ["response-body-unevaluated-items-removed"]
+
+[[rule]]
+name = "response-body-unevaluated-properties-removed"
+category = "correctness"
+oasdiff = ["response-body-unevaluated-properties-removed"]
+
+[[rule]]
+name = "response-body-unique-items-unset"
+category = "correctness"
+oasdiff = ["response-body-unique-items-unset"]
+
+[[rule]]
+name = "response-body-wrapped-in-one-of"
+category = "correctness"
+not-applicable = { openapi = "oasdiff 1.37.0 does not report it for any document shape tried (the same shapes as for the request body)" }
+oasdiff = ["response-body-wrapped-in-one-of"]
+
+[[rule]]
+name = "response-header-became-nullable"
+category = "correctness"
+oasdiff = ["response-header-became-nullable"]
+
+[[rule]]
+name = "response-header-became-optional"
+category = "correctness"
+oasdiff = ["response-header-became-optional"]
+
+[[rule]]
+name = "response-header-exclusive-max-increased"
+category = "correctness"
+oasdiff = ["response-header-exclusive-max-increased"]
+
+[[rule]]
+name = "response-header-exclusive-max-unset"
+category = "correctness"
+oasdiff = ["response-header-exclusive-max-unset"]
+
+[[rule]]
+name = "response-header-exclusive-min-decreased"
+category = "correctness"
+oasdiff = ["response-header-exclusive-min-decreased"]
+
+[[rule]]
+name = "response-header-exclusive-min-unset"
+category = "correctness"
+oasdiff = ["response-header-exclusive-min-unset"]
+
+[[rule]]
+name = "response-header-max-contains-increased"
+category = "correctness"
+oasdiff = ["response-header-max-contains-increased"]
+
+[[rule]]
+name = "response-header-max-contains-unset"
+category = "correctness"
+oasdiff = ["response-header-max-contains-unset"]
+
+[[rule]]
+name = "response-header-max-increased"
+category = "correctness"
+oasdiff = ["response-header-max-increased"]
+
+[[rule]]
+name = "response-header-max-items-increased"
+category = "correctness"
+oasdiff = ["response-header-max-items-increased"]
+
+[[rule]]
+name = "response-header-max-items-unset"
+category = "correctness"
+oasdiff = ["response-header-max-items-unset"]
+
+[[rule]]
+name = "response-header-max-length-increased"
+category = "correctness"
+oasdiff = ["response-header-max-length-increased"]
+
+[[rule]]
+name = "response-header-max-length-unset"
+category = "correctness"
+oasdiff = ["response-header-max-length-unset"]
+
+[[rule]]
+name = "response-header-max-properties-increased"
+category = "correctness"
+oasdiff = ["response-header-max-properties-increased"]
+
+[[rule]]
+name = "response-header-max-properties-unset"
+category = "correctness"
+oasdiff = ["response-header-max-properties-unset"]
+
+[[rule]]
+name = "response-header-max-unset"
+category = "correctness"
+oasdiff = ["response-header-max-unset"]
+
+[[rule]]
+name = "response-header-min-contains-decreased"
+category = "correctness"
+oasdiff = ["response-header-min-contains-decreased"]
+
+[[rule]]
+name = "response-header-min-contains-unset"
+category = "correctness"
+oasdiff = ["response-header-min-contains-unset"]
+
+[[rule]]
+name = "response-header-min-decreased"
+category = "correctness"
+oasdiff = ["response-header-min-decreased"]
+
+[[rule]]
+name = "response-header-min-items-decreased"
+category = "correctness"
+oasdiff = ["response-header-min-items-decreased"]
+
+[[rule]]
+name = "response-header-min-items-unset"
+category = "correctness"
+oasdiff = ["response-header-min-items-unset"]
+
+[[rule]]
+name = "response-header-min-length-decreased"
+category = "correctness"
+oasdiff = ["response-header-min-length-decreased"]
+
+[[rule]]
+name = "response-header-min-length-unset"
+category = "correctness"
+oasdiff = ["response-header-min-length-unset"]
+
+[[rule]]
+name = "response-header-min-properties-decreased"
+category = "correctness"
+oasdiff = ["response-header-min-properties-decreased"]
+
+[[rule]]
+name = "response-header-min-properties-unset"
+category = "correctness"
+oasdiff = ["response-header-min-properties-unset"]
+
+[[rule]]
+name = "response-header-min-unset"
+category = "correctness"
+oasdiff = ["response-header-min-unset"]
+
+[[rule]]
+name = "response-header-multiple-of-unset"
+category = "correctness"
+oasdiff = ["response-header-multiple-of-unset"]
+
+[[rule]]
+name = "response-header-schema-became-not-false"
+category = "correctness"
+oasdiff = ["response-header-schema-became-not-false"]
+
+[[rule]]
+name = "response-header-type-changed"
+category = "correctness"
+oasdiff = ["response-header-type-changed"]
+
+[[rule]]
+name = "response-header-type-generalized"
+category = "correctness"
+oasdiff = ["response-header-type-generalized"]
+
+[[rule]]
+name = "response-media-type-name-generalized"
+category = "correctness"
+oasdiff = ["response-media-type-name-generalized"]
+
+[[rule]]
+name = "response-media-type-parameter-changed"
+category = "correctness"
+oasdiff = ["response-media-type-parameter-changed"]
+
+[[rule]]
+name = "response-media-type-parameter-removed"
+category = "correctness"
+oasdiff = ["response-media-type-parameter-removed"]
+
+[[rule]]
+name = "response-media-type-removed"
+category = "correctness"
+oasdiff = ["response-media-type-removed"]
+
+[[rule]]
+name = "response-mediatype-became-not-enum"
+category = "correctness"
+oasdiff = ["response-mediatype-became-not-enum"]
+
+[[rule]]
+name = "response-mediatype-enum-value-added"
+category = "correctness"
+oasdiff = ["response-mediatype-enum-value-added"]
+
+[[rule]]
+name = "response-property-all-of-removed"
+category = "correctness"
+not-applicable = { openapi = "oasdiff 1.37.0 lists the check as an error but reports it at warning level for every allOf change tried (inline and referenced members, three members, constraint-only members), so the error-level diff never contains it" }
+oasdiff = ["response-property-all-of-removed"]
+
+[[rule]]
+name = "response-property-any-of-added"
+category = "correctness"
+oasdiff = ["response-property-any-of-added"]
+
+[[rule]]
+name = "response-property-became-not-enum"
+category = "correctness"
+oasdiff = ["response-property-became-not-enum"]
+
+[[rule]]
+name = "response-property-became-nullable"
+category = "correctness"
+oasdiff = ["response-property-became-nullable"]
+
+[[rule]]
+name = "response-property-became-optional"
+category = "correctness"
+oasdiff = ["response-property-became-optional"]
+
+[[rule]]
+name = "response-property-const-changed"
+category = "correctness"
+oasdiff = ["response-property-const-changed"]
+
+[[rule]]
+name = "response-property-const-removed"
+category = "correctness"
+oasdiff = ["response-property-const-removed"]
+
+[[rule]]
+name = "response-property-contains-removed"
+category = "correctness"
+oasdiff = ["response-property-contains-removed"]
+
+[[rule]]
+name = "response-property-content-encoding-changed"
+category = "correctness"
+oasdiff = ["response-property-content-encoding-changed"]
+
+[[rule]]
+name = "response-property-content-media-type-changed"
+category = "correctness"
+oasdiff = ["response-property-content-media-type-changed"]
+
+[[rule]]
+name = "response-property-content-schema-removed"
+category = "correctness"
+oasdiff = ["response-property-content-schema-removed"]
+
+[[rule]]
+name = "response-property-dependent-required-changed"
+category = "correctness"
+oasdiff = ["response-property-dependent-required-changed"]
+
+[[rule]]
+name = "response-property-dependent-required-removed"
+category = "correctness"
+oasdiff = ["response-property-dependent-required-removed"]
+
+[[rule]]
+name = "response-property-dependent-schema-removed"
+category = "correctness"
+oasdiff = ["response-property-dependent-schema-removed"]
+
+[[rule]]
+name = "response-property-deprecated-sunset-invalid"
+category = "correctness"
+oasdiff = ["response-property-deprecated-sunset-invalid"]
+
+[[rule]]
+name = "response-property-deprecated-sunset-missing"
+category = "correctness"
+not-applicable = { openapi = "oasdiff reports it only when a deprecation-days flag asks for a sunset date, and Ward offers no such flag, so with default flags it never fires" }
+oasdiff = ["response-property-deprecated-sunset-missing"]
+
+[[rule]]
+name = "response-property-else-removed"
+category = "correctness"
+oasdiff = ["response-property-else-removed"]
+
+[[rule]]
+name = "response-property-enum-value-added"
+category = "correctness"
+oasdiff = ["response-property-enum-value-added"]
+
+[[rule]]
+name = "response-property-exclusive-max-increased"
+category = "correctness"
+oasdiff = ["response-property-exclusive-max-increased"]
+
+[[rule]]
+name = "response-property-exclusive-max-unset"
+category = "correctness"
+oasdiff = ["response-property-exclusive-max-unset"]
+
+[[rule]]
+name = "response-property-exclusive-min-decreased"
+category = "correctness"
+oasdiff = ["response-property-exclusive-min-decreased"]
+
+[[rule]]
+name = "response-property-exclusive-min-unset"
+category = "correctness"
+oasdiff = ["response-property-exclusive-min-unset"]
+
+[[rule]]
+name = "response-property-if-removed"
+category = "correctness"
+oasdiff = ["response-property-if-removed"]
+
+[[rule]]
+name = "response-property-list-of-types-widened"
+category = "correctness"
+oasdiff = ["response-property-list-of-types-widened"]
+
+[[rule]]
+name = "response-property-max-contains-increased"
+category = "correctness"
+oasdiff = ["response-property-max-contains-increased"]
+
+[[rule]]
+name = "response-property-max-contains-unset"
+category = "correctness"
+oasdiff = ["response-property-max-contains-unset"]
+
+[[rule]]
+name = "response-property-max-increased"
+category = "correctness"
+oasdiff = ["response-property-max-increased"]
+
+[[rule]]
+name = "response-property-max-items-increased"
+category = "correctness"
+oasdiff = ["response-property-max-items-increased"]
+
+[[rule]]
+name = "response-property-max-items-unset"
+category = "correctness"
+oasdiff = ["response-property-max-items-unset"]
+
+[[rule]]
+name = "response-property-max-length-increased"
+category = "correctness"
+oasdiff = ["response-property-max-length-increased"]
+
+[[rule]]
+name = "response-property-max-length-unset"
+category = "correctness"
+oasdiff = ["response-property-max-length-unset"]
+
+[[rule]]
+name = "response-property-max-properties-increased"
+category = "correctness"
+oasdiff = ["response-property-max-properties-increased"]
+
+[[rule]]
+name = "response-property-max-properties-unset"
+category = "correctness"
+oasdiff = ["response-property-max-properties-unset"]
+
+[[rule]]
+name = "response-property-max-unset"
+category = "correctness"
+oasdiff = ["response-property-max-unset"]
+
+[[rule]]
+name = "response-property-min-contains-decreased"
+category = "correctness"
+oasdiff = ["response-property-min-contains-decreased"]
+
+[[rule]]
+name = "response-property-min-contains-unset"
+category = "correctness"
+oasdiff = ["response-property-min-contains-unset"]
+
+[[rule]]
+name = "response-property-min-decreased"
+category = "correctness"
+oasdiff = ["response-property-min-decreased"]
+
+[[rule]]
+name = "response-property-min-items-decreased"
+category = "correctness"
+oasdiff = ["response-property-min-items-decreased"]
+
+[[rule]]
+name = "response-property-min-items-unset"
+category = "correctness"
+oasdiff = ["response-property-min-items-unset"]
+
+[[rule]]
+name = "response-property-min-length-decreased"
+category = "correctness"
+oasdiff = ["response-property-min-length-decreased"]
+
+[[rule]]
+name = "response-property-min-length-unset"
+category = "correctness"
+oasdiff = ["response-property-min-length-unset"]
+
+[[rule]]
+name = "response-property-min-properties-decreased"
+category = "correctness"
+oasdiff = ["response-property-min-properties-decreased"]
+
+[[rule]]
+name = "response-property-min-properties-unset"
+category = "correctness"
+oasdiff = ["response-property-min-properties-unset"]
+
+[[rule]]
+name = "response-property-min-unset"
+category = "correctness"
+oasdiff = ["response-property-min-unset"]
+
+[[rule]]
+name = "response-property-multiple-of-changed"
+category = "correctness"
+oasdiff = ["response-property-multiple-of-changed"]
+
+[[rule]]
+name = "response-property-multiple-of-unset"
+category = "correctness"
+oasdiff = ["response-property-multiple-of-unset"]
+
+[[rule]]
+name = "response-property-one-of-added"
+category = "correctness"
+oasdiff = ["response-property-one-of-added"]
+
+[[rule]]
+name = "response-property-pattern-property-removed"
+category = "correctness"
+oasdiff = ["response-property-pattern-property-removed"]
+
+[[rule]]
+name = "response-property-pattern-removed"
+category = "correctness"
+oasdiff = ["response-property-pattern-removed"]
+
+[[rule]]
+name = "response-property-property-names-removed"
+category = "correctness"
+oasdiff = ["response-property-property-names-removed"]
+
+[[rule]]
+name = "response-property-schema-became-not-false"
+category = "correctness"
+oasdiff = ["response-property-schema-became-not-false"]
+
+[[rule]]
+name = "response-property-stability-decreased"
+category = "correctness"
+oasdiff = ["response-property-stability-decreased"]
+
+[[rule]]
+name = "response-property-sunset-date-changed-earlier"
+category = "correctness"
+oasdiff = ["response-property-sunset-date-changed-earlier"]
+
+[[rule]]
+name = "response-property-sunset-date-changed-too-small"
+category = "correctness"
+oasdiff = ["response-property-sunset-date-changed-too-small"]
+
+[[rule]]
+name = "response-property-sunset-date-too-small"
+category = "correctness"
+oasdiff = ["response-property-sunset-date-too-small"]
+
+[[rule]]
+name = "response-property-sunset-deleted"
+category = "correctness"
+oasdiff = ["response-property-sunset-deleted"]
+
+[[rule]]
+name = "response-property-then-removed"
+category = "correctness"
+oasdiff = ["response-property-then-removed"]
+
+[[rule]]
+name = "response-property-type-changed"
+category = "correctness"
+oasdiff = ["response-property-type-changed"]
+
+[[rule]]
+name = "response-property-type-generalized"
+category = "correctness"
+oasdiff = ["response-property-type-generalized"]
+
+[[rule]]
+name = "response-property-unevaluated-items-removed"
+category = "correctness"
+oasdiff = ["response-property-unevaluated-items-removed"]
+
+[[rule]]
+name = "response-property-unevaluated-properties-removed"
+category = "correctness"
+oasdiff = ["response-property-unevaluated-properties-removed"]
+
+[[rule]]
+name = "response-property-unique-items-unset"
+category = "correctness"
+oasdiff = ["response-property-unique-items-unset"]
+
+[[rule]]
+name = "response-required-property-became-write-only"
+category = "correctness"
+oasdiff = ["response-required-property-became-write-only"]
+
+[[rule]]
+name = "response-required-property-removed"
+category = "correctness"
+oasdiff = ["response-required-property-removed"]
+
+[[rule]]
+name = "response-required-property-removed-before-sunset"
+category = "correctness"
+oasdiff = ["response-required-property-removed-before-sunset"]
+
+[[rule]]
+name = "response-success-status-removed"
+category = "correctness"
+oasdiff = ["response-success-status-removed"]
+
+[[rule]]
+name = "sunset-deleted"
+category = "correctness"
+oasdiff = ["sunset-deleted"]
+
+[[rule]]
+name = "webhook-removed"
+category = "correctness"
+oasdiff = ["webhook-removed"]

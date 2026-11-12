@@ -37,6 +37,7 @@ import java.util.Set;
  * @param coverage the report paths and branch minimum of a {@code coverage} check, or {@code null}
  *     for others
  * @param vulnerabilities the options of a {@code vulnerabilities} check, or {@code null} for others
+ * @param license the settings of a {@code license} check, or {@code null} for other checks
  */
 public record GateConfiguration(
     String name,
@@ -57,7 +58,8 @@ public record GateConfiguration(
     SecretsOptions secrets,
     CrapOptions crap,
     CoverageOptions coverage,
-    VulnerabilityOptions vulnerabilities) {
+    VulnerabilityOptions vulnerabilities,
+    LicenseSettings license) {
 
   /** Copies the command, profiles and rule ids, keeping their order. */
   public GateConfiguration {
@@ -94,6 +96,7 @@ public record GateConfiguration(
         null,
         null,
         List.of(),
+        null,
         null,
         null,
         null,

@@ -31,7 +31,7 @@ final class WardAnalysisFixtures {
         new QualityGateFactory(
             executor,
             new GateReportPorts(ReportDirectories.NONE, null, null, null),
-            new GateExtensions(null, ports(), null, null, null, null));
+            new GateExtensions(null, ports(), null, null, null, null, null, null));
     return new CheckService(
         new ProjectDetector(new FileSystemProjectInspection()),
         new TomlConfigurationReader(),

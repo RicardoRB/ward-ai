@@ -1,0 +1,56 @@
+# OpenAPI lint rules (schemas), ported from the Spectral 6.17.1 rules of the same id. Each rule is a project check over the loaded document model.
+
+[[rules]]
+id = "ward:openapi/duplicated-entry-in-enum"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-duplicated-entry-in-enum"
+'''
+
+[[rules]]
+id = "ward:openapi/typed-enum"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-typed-enum"
+'''
+
+[[rules]]
+id = "ward:openapi/oas3-unused-component"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-oas3-unused-component"
+'''
+
+[[rules]]
+id = "ward:openapi/no-ref-siblings"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-no-ref-siblings"
+'''
+
+[[rules]]
+id = "ward:openapi/array-items"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-array-items"
+'''

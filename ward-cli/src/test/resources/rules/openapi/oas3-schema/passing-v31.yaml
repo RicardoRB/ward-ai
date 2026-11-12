@@ -1,0 +1,30 @@
+openapi: 3.1.0
+info:
+  title: T
+  version: "1"
+  license:
+    name: MIT
+    identifier: MIT
+webhooks:
+  hook:
+    post:
+      responses:
+        "200":
+          description: ok
+paths:
+  /pets:
+    get:
+      operationId: list
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: [object, "null"]
+                properties:
+                  name: {type: string}
+components:
+  schemas:
+    Pet:
+      type: object

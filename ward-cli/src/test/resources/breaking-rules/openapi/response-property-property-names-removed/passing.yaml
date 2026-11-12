@@ -1,0 +1,13 @@
+openapi: 3.1.0
+info:
+  title: Pets
+  version: "2"
+paths:
+  /pets:
+    get:
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema: {type: object, properties: {p: {type: object, propertyNames: {pattern: '^a'}}}}
