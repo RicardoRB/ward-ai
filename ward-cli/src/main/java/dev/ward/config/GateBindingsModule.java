@@ -19,7 +19,7 @@ import dev.ward.domain.project.ProjectChanges;
 import dev.ward.domain.spec.ProjectPaths;
 import dev.ward.domain.traceability.ScenarioInventory;
 import dev.ward.domain.traceability.TestMappingInventory;
-import dev.ward.infrastructure.analysis.BundledApiSurfaces;
+import dev.ward.infrastructure.analysis.jvm.JvmApiSurfaces;
 import dev.ward.infrastructure.analysis.jvm.JvmSourceLayouts;
 import dev.ward.infrastructure.cli.agent.HookChecks;
 import dev.ward.infrastructure.cli.gate.JsonReportRenderer;
@@ -54,7 +54,7 @@ interface GateBindingsModule {
   WorkingFiles workingFiles(FileSystemWorkingFiles implementation);
 
   @Binds
-  ApiSurfaces apiSurfaces(BundledApiSurfaces implementation);
+  ApiSurfaces apiSurfaces(JvmApiSurfaces implementation);
 
   @Provides
   static MainSourceRoots mainSourceRoots() {

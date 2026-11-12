@@ -1,4 +1,4 @@
-package dev.ward.infrastructure.analysis;
+package dev.ward.infrastructure.analysis.jvm;
 
 import dev.ward.analysis.domain.api.ApiSurfaceReader;
 import dev.ward.analysis.domain.api.ApiType;
@@ -6,7 +6,6 @@ import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import dev.ward.application.gate.apicompat.ApiSurfaces;
-import dev.ward.infrastructure.analysis.jvm.JvmClassLibraries;
 import dev.ward.infrastructure.rule.BundledLanguages;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -15,12 +14,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 
-/** Reads the API of source files with the bundled language readers and the JDK image. */
-public final class BundledApiSurfaces implements ApiSurfaces {
+/** Reads the API of JVM source files with the bundled readers and the JDK image. */
+public final class JvmApiSurfaces implements ApiSurfaces {
 
   /** Creates the adapter. */
   @Inject
-  public BundledApiSurfaces() {}
+  public JvmApiSurfaces() {}
 
   @Override
   public List<ApiType> read(final Path root, final List<SourceUnit> units) {

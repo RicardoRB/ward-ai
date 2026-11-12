@@ -46,6 +46,7 @@ final class ArchitectureBoundarySupport {
   /** The analysis packages that every layer may hold. */
   static final Set<String> ANALYSIS_PACKAGES =
       Set.of(
+          "dev.ward.analysis.domain.api",
           "dev.ward.analysis.domain.graph",
           "dev.ward.analysis.domain.ir",
           "dev.ward.analysis.domain.port",
@@ -68,6 +69,7 @@ final class ArchitectureBoundarySupport {
   static final Map<String, Set<String>> DOMAIN_FEATURE_EDGES =
       Map.ofEntries(
           Map.entry("agent", Set.of()),
+          Map.entry("apicompat", Set.of()),
           Map.entry("config", Set.of()),
           Map.entry("doctor", Set.of()),
           Map.entry("gate", Set.of("project", "process")),
