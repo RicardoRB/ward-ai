@@ -9,7 +9,6 @@ import dev.ward.analysis.domain.api.ApiVisibility;
 import dev.ward.analysis.domain.ir.Span;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 /** Turns the classes of one Java file into the API types and members that outside code can use. */
@@ -32,13 +31,9 @@ final class JavaApiTypeReader {
       final List<ApiType> found) {
     final JvmClass jvm = declaration.jvm();
     final ApiVisibility visibility = visibility(jvm.access(), parent == null, parentIsInterface);
-    if (visibility.lessVisibleThan(ApiVisibility.PROTECTED)) {
-      return;
-    }
     final ApiTypeRefs refs = outer.with("C", jvm.typeParameters());
     final ApiLocation at = location(declaration.outer().span());
     final boolean isFinal = isFinal(jvm);
-    final boolean extendable = extendable(declaration, isFinal, visibility);
     final ApiType type =
         new ApiType(
             qualified(jvm.name()),
@@ -49,7 +44,7 @@ final class JavaApiTypeReader {
             jvm.isAbstract(),
             refs.parametersOf(jvm.typeParameters(), ""),
             supertypes(jvm, refs),
-            members(declaration, refs, visibility, extendable, at),
+            members(declaration, refs, visibility, at),
             at);
     found.add(type);
     final boolean isInterface = isInterface(jvm.kind());
@@ -102,31 +97,6 @@ final class JavaApiTypeReader {
         .toList();
   }
 
-  /** A class can be extended outside its package when it is open and has a constructor to call. */
-  private static boolean extendable(
-      final SourceModel.ClassDecl declaration, final boolean isFinal, final ApiVisibility type) {
-    final JvmClass jvm = declaration.jvm();
-    if (isFinal || jvm.sealed()) {
-      return false;
-    }
-    if (jvm.kind() == JvmClass.Kind.INTERFACE) {
-      return true;
-    }
-    return jvm.kind() == JvmClass.Kind.CLASS
-        && jvm.methods().stream()
-            .filter(JvmMethod::isConstructor)
-            .anyMatch(c -> exposed(constructorVisibility(c, declaration, type), true));
-  }
-
-  private static ApiVisibility constructorVisibility(
-      final JvmMethod constructor,
-      final SourceModel.ClassDecl declaration,
-      final ApiVisibility type) {
-    return isImplicit(constructor, declaration)
-        ? type
-        : visibility(constructor.access(), false, false);
-  }
-
   /** An implicit member is one the reader added that no declaration in the file wrote. */
   private static boolean isImplicit(
       final JvmMethod method, final SourceModel.ClassDecl declaration) {
@@ -139,51 +109,40 @@ final class JavaApiTypeReader {
       final SourceModel.ClassDecl declaration,
       final ApiTypeRefs refs,
       final ApiVisibility type,
-      final boolean extendable,
       final ApiLocation at) {
     final JvmClass jvm = declaration.jvm();
     final List<ApiMember> found = new ArrayList<>();
     for (final SourceModel.Member member : declaration.members()) {
       final ApiLocation where = location(member.outer().span());
-      member
-          .field()
-          .forEach(field -> field(field, jvm, refs, extendable, where).ifPresent(found::add));
+      member.field().forEach(field -> found.add(field(field, jvm, refs, where)));
     }
     for (final JvmMethod method : jvm.methods()) {
       final boolean implicit = isImplicit(method, declaration);
-      method(method, declaration, refs, new Access(type, extendable, implicit), at, found);
+      method(method, declaration, refs, new Access(type, implicit), at, found);
     }
     return found;
   }
 
-  private Optional<ApiMember> field(
-      final JvmField field,
-      final JvmClass owner,
-      final ApiTypeRefs refs,
-      final boolean extendable,
-      final ApiLocation at) {
+  private ApiMember field(
+      final JvmField field, final JvmClass owner, final ApiTypeRefs refs, final ApiLocation at) {
     final ApiVisibility visibility = visibility(field.access(), false, isInterface(owner.kind()));
-    if (!exposed(visibility, extendable)) {
-      return Optional.empty();
-    }
-    return Optional.of(
-        new ApiMember(
-            ApiMember.Kind.FIELD,
-            field.name(),
-            visibility,
-            field.isStatic(),
-            Flags.has(field.access(), Flags.FINAL),
-            false,
-            false,
-            false,
-            List.of(),
-            List.of(),
-            refs.of(field.type()),
-            at));
+    return new ApiMember(
+        ApiMember.Kind.FIELD,
+        field.name(),
+        visibility,
+        field.isStatic(),
+        Flags.has(field.access(), Flags.FINAL),
+        false,
+        false,
+        false,
+        List.of(),
+        List.of(),
+        refs.of(field.type()),
+        at);
   }
 
-  /** What decides whether a member is API: its type's visibility, and the type being extendable. */
-  private record Access(ApiVisibility type, boolean extendable, boolean implicit) {}
+  /** What decides the visibility of an implicit member: the type's visibility. */
+  private record Access(ApiVisibility type, boolean implicit) {}
 
   private void method(
       final JvmMethod method,
@@ -194,9 +153,7 @@ final class JavaApiTypeReader {
       final List<ApiMember> found) {
     final JvmClass owner = declaration.jvm();
     final ApiVisibility visibility = methodVisibility(method, owner, access);
-    if (!exposed(visibility, access.extendable())
-        || method.isConstructor() && owner.kind() == JvmClass.Kind.ENUM
-        || Flags.has(method.access(), Flags.SYNTHETIC)) {
+    if (Flags.has(method.access(), Flags.SYNTHETIC)) {
       return;
     }
     final ApiTypeRefs refs = outer.with("M", method.typeParameters());
@@ -225,7 +182,10 @@ final class JavaApiTypeReader {
 
   private static ApiVisibility methodVisibility(
       final JvmMethod method, final JvmClass owner, final Access access) {
-    if (access.implicit() && method.isConstructor() && owner.kind() != JvmClass.Kind.ENUM) {
+    if (method.isConstructor() && owner.kind() == JvmClass.Kind.ENUM) {
+      return ApiVisibility.PRIVATE;
+    }
+    if (access.implicit() && method.isConstructor()) {
       return access.type();
     }
     return visibility(method.access(), false, isInterface(owner.kind()));
@@ -238,10 +198,5 @@ final class JavaApiTypeReader {
         .findFirst()
         .map(member -> location(member.outer().span()))
         .orElse(fallback);
-  }
-
-  private static boolean exposed(final ApiVisibility visibility, final boolean extendable) {
-    return visibility == ApiVisibility.PUBLIC
-        || visibility == ApiVisibility.PROTECTED && extendable;
   }
 }

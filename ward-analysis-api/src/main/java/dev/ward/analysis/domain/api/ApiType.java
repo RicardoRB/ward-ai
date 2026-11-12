@@ -70,9 +70,27 @@ public record ApiType(
     }
     return switch (kind) {
       case INTERFACE -> true;
-      case CLASS ->
-          members.stream().anyMatch(member -> member.kind() == ApiMember.Kind.CONSTRUCTOR);
+      case CLASS -> members.stream().anyMatch(ApiType::callableByExtenders);
       default -> false;
     };
+  }
+
+  private static boolean callableByExtenders(final ApiMember member) {
+    return member.kind() == ApiMember.Kind.CONSTRUCTOR
+        && (member.visibility() == ApiVisibility.PUBLIC
+            || member.visibility() == ApiVisibility.PROTECTED);
+  }
+
+  /**
+   * Returns whether the type itself can be seen outside its package, ignoring its enclosing type.
+   */
+  public boolean isVisible() {
+    return visibility == ApiVisibility.PUBLIC || visibility == ApiVisibility.PROTECTED;
+  }
+
+  /** Returns whether {@code member} of this type is part of its API. */
+  public boolean exposes(final ApiMember member) {
+    return member.visibility() == ApiVisibility.PUBLIC
+        || member.visibility() == ApiVisibility.PROTECTED && extendable();
   }
 }

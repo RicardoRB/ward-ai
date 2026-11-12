@@ -34,7 +34,7 @@ class JavaApiSurfaceReaderTest {
   }
 
   private static List<String> ids(final ApiType type) {
-    return type.members().stream().map(ApiMember::id).toList();
+    return type.members().stream().filter(type::exposes).map(ApiMember::id).toList();
   }
 
   @Test
@@ -45,7 +45,10 @@ class JavaApiSurfaceReaderTest {
                 + "public class A { void hidden() {} public void shown() {} private int x; }\n"
                 + "class B { public void m() {} }\n");
 
-    assertThat(types).extracting(ApiType::name).containsExactly("p.A");
+    assertThat(types.stream().filter(ApiType::isVisible))
+        .extracting(ApiType::name)
+        .containsExactly("p.A");
+    assertThat(type(types, "p.B").orElseThrow().visibility()).isEqualTo(ApiVisibility.PACKAGE);
     assertThat(ids(types.getFirst())).containsExactlyInAnyOrder("shown()", "<init>()");
   }
 
@@ -91,9 +94,10 @@ class JavaApiSurfaceReaderTest {
                 + " protected static class Sub {} static class Pkg {} }\n"
                 + "class P { public static class Out {} }\n");
 
-    assertThat(types)
+    assertThat(types.stream().filter(ApiType::isVisible))
         .extracting(ApiType::name)
-        .containsExactly("p.C", "p.C.In", "p.C.Sub", "p.I", "p.I.Nested");
+        .containsExactly("p.C", "p.C.In", "p.C.Sub", "p.I", "p.I.Nested", "p.P.Out");
+    assertThat(type(types, "p.P").orElseThrow().isVisible()).isFalse();
   }
 
   @Test
@@ -108,6 +112,8 @@ class JavaApiSurfaceReaderTest {
     assertThat(ids(type(types, "p.A").orElseThrow())).containsExactly("<init>()");
     assertThat(ids(type(types, "p.E").orElseThrow()))
         .containsExactlyInAnyOrder("ONE", "TWO", "values()", "valueOf(java.lang.String)");
+    assertThat(member(type(types, "p.E").orElseThrow(), "<init>()").visibility())
+        .isEqualTo(ApiVisibility.PRIVATE);
     assertThat(ids(type(types, "p.R").orElseThrow()))
         .contains("<init>(int,java.lang.String)", "x()", "y()");
     assertThat(type(types, "p.E").orElseThrow().isFinal()).isTrue();
