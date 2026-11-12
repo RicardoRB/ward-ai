@@ -2,6 +2,7 @@ package dev.ward.infrastructure.dependency.gradle;
 
 import dev.ward.domain.dependency.DependencyInventoryException;
 import dev.ward.domain.dependency.DependencyScope;
+import dev.ward.infrastructure.dependency.LockFiles;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -54,7 +55,7 @@ final class GradleLockfiles {
         Files.readAllLines(single).forEach(line -> entry(project, locked, line, ""));
       }
       for (final Path file : legacy(dir)) {
-        final String configuration = file.getFileName().toString().replace(".lockfile", "");
+        final String configuration = LockFiles.fileName(file).replace(".lockfile", "");
         Files.readAllLines(file).forEach(line -> entry(project, locked, line, configuration));
       }
     } catch (IOException e) {

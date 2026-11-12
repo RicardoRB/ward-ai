@@ -20,6 +20,12 @@ public record DependencyInventory(List<ModuleDependencies> modules) {
         modules.stream().sorted(Comparator.comparing(ModuleDependencies::modulePath)).toList();
   }
 
+  /** Returns the modules, root first; a copy-safe immutable list. */
+  @Override
+  public List<ModuleDependencies> modules() {
+    return List.copyOf(modules);
+  }
+
   /** Returns every distinct package of every module, ordered, for checks that ignore modules. */
   public SortedSet<PackageId> distinct() {
     final SortedSet<PackageId> ids = new TreeSet<>();

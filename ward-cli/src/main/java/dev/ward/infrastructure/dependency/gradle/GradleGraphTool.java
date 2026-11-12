@@ -135,7 +135,9 @@ public final class GradleGraphTool implements ResolvedGraphTool {
       return;
     }
     try (Stream<Path> walk = Files.walk(directory)) {
-      walk.sorted(Comparator.reverseOrder()).forEach(path -> path.toFile().delete());
+      for (final Path path : walk.sorted(Comparator.reverseOrder()).toList()) {
+        Files.deleteIfExists(path);
+      }
     } catch (IOException e) {
       LOGGER.log(Level.WARNING, "event=dependency-cleanup result=failed");
     }

@@ -191,7 +191,7 @@ final class PinnedRequirements {
   }
 
   private Path include(final Path file, final String label, final int number, final String name) {
-    final Path target = file.getParent().resolve(name).normalize();
+    final Path target = file.resolveSibling(name).normalize();
     if (!target.startsWith(root) || !Files.isRegularFile(target)) {
       throw new LockfileFormatException(
           label + " line " + number + ": the included file " + name + " is not in the project");

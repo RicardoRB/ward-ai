@@ -65,8 +65,9 @@ public final class FileGraphCache implements GraphCache {
   public void store(final Path projectRoot, final String key, final String text) {
     final Path file = file(projectRoot, key);
     try {
-      Files.createDirectories(file.getParent());
-      final Path temporary = Files.createTempFile(file.getParent(), "graph", ".tmp");
+      final Path directory = projectRoot.resolve(DIRECTORY);
+      Files.createDirectories(directory);
+      final Path temporary = Files.createTempFile(directory, "graph", ".tmp");
       Files.writeString(temporary, text, StandardCharsets.UTF_8);
       try {
         Files.move(

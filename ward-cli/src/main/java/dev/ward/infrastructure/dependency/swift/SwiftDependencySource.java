@@ -188,7 +188,7 @@ public final class SwiftDependencySource implements DependencySource {
     try (Stream<Path> files = Files.list(root)) {
       return files
           .filter(Files::isDirectory)
-          .filter(dir -> dir.getFileName().toString().endsWith(suffix))
+          .filter(dir -> LockFiles.fileName(dir).endsWith(suffix))
           .sorted()
           .toList();
     } catch (IOException | UncheckedIOException e) {

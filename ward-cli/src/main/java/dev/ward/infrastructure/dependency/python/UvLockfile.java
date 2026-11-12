@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import org.tomlj.TomlArray;
 import org.tomlj.TomlParseResult;
@@ -119,7 +120,7 @@ final class UvLockfile {
     final Entry target = target(ref);
     if (target != null) {
       directs.put(
-          PyprojectDependencies.normalize(ref.getString(NAME)),
+          PyprojectDependencies.normalize(Objects.requireNonNullElse(ref.getString(NAME), "")),
           new PythonLock.Resolved(new ArrayList<>(real(ref, new HashSet<>())), target.member()));
     }
   }

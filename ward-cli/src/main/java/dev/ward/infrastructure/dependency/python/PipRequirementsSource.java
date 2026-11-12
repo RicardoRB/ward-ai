@@ -53,7 +53,7 @@ final class PipRequirementsSource {
       final Path file,
       final ModuleBuilder builder,
       final Map<PackageId, String> sources) {
-    final DependencyScope scope = scopeOf(file.getFileName().toString());
+    final DependencyScope scope = scopeOf(LockFiles.fileName(file));
     try {
       for (final PinnedRequirements.Pin pin : PinnedRequirements.read(root, file)) {
         final PackageId id = PythonLock.pypi(pin.name(), pin.version());
@@ -109,8 +109,8 @@ final class PipRequirementsSource {
               .filter(Files::isRegularFile)
               .filter(
                   file ->
-                      PythonProjectInspection.isRequirementsFile(file.getFileName().toString())
-                          || !dir.equals(root) && file.getFileName().toString().endsWith(".txt"))
+                      PythonProjectInspection.isRequirementsFile(LockFiles.fileName(file))
+                          || !dir.equals(root) && LockFiles.fileName(file).endsWith(".txt"))
               .sorted()
               .forEach(files::add);
         } catch (IOException e) {

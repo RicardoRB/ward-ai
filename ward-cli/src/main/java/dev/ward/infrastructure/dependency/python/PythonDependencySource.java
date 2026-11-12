@@ -91,7 +91,7 @@ public final class PythonDependencySource implements DependencySource {
       final String fix) {
     try {
       final String text = Files.readString(file);
-      return UV_LOCK.equals(file.getFileName().toString())
+      return UV_LOCK.equals(LockFiles.fileName(file))
           ? UvLockfile.read(text)
           : PoetryLockfile.read(text);
     } catch (IOException | UncheckedIOException e) {

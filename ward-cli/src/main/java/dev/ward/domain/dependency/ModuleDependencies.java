@@ -28,4 +28,10 @@ public record ModuleDependencies(String modulePath, List<Dependency> dependencie
       }
     }
   }
+
+  /** Returns the entries, ordered by ecosystem, name, then version; a copy-safe immutable list. */
+  @Override
+  public List<Dependency> dependencies() {
+    return List.copyOf(dependencies);
+  }
 }

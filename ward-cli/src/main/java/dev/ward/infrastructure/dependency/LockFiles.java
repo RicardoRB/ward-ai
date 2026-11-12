@@ -42,4 +42,9 @@ public final class LockFiles {
     }
     return second.isEmpty() ? first : first + "/" + second;
   }
+
+  /** Returns the last name of {@code path}, or an empty text for a path without one. */
+  public static String fileName(final Path path) {
+    return Optional.ofNullable(path.getFileName()).map(Path::toString).orElse("");
+  }
 }

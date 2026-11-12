@@ -1,5 +1,6 @@
 package dev.ward.infrastructure.dependency.gradle;
 
+import dev.ward.infrastructure.dependency.LockFiles;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
@@ -73,7 +74,7 @@ final class GradleModules {
     if (Files.isDirectory(gradle)) {
       try (Stream<Path> catalogs = Files.list(gradle)) {
         catalogs
-            .filter(file -> file.getFileName().toString().endsWith(".versions.toml"))
+            .filter(file -> LockFiles.fileName(file).endsWith(".versions.toml"))
             .forEach(files::add);
       } catch (IOException e) {
         throw new UncheckedIOException(e);
