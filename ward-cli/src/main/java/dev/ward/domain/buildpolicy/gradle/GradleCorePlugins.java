@@ -21,8 +21,6 @@ public final class GradleCorePlugins {
           "ivy-publish",
           "publishing",
           "signing",
-          "checkstyle",
-          "pmd",
           "codenarc",
           "distribution",
           "base",
