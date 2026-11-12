@@ -37,12 +37,11 @@ class GradleJavaModulePlacementTest {
     final BuildFileChange change =
         configurator.apply(project, ModuleFixtures.gates("coverage"), null, finding -> false);
 
-    assertThat(Files.readString(root.resolve("api/build.gradle.kts")))
-        .contains("jacocoTestCoverageVerification");
+    assertThat(Files.readString(root.resolve("api/build.gradle.kts"))).contains("wardCoverageData");
     assertThat(Files.readString(root.resolve("domain/build.gradle")))
-        .contains("jacocoTestCoverageVerification {");
+        .contains("tasks.register('wardCoverageData')");
     assertThat(Files.readString(root.resolve("build.gradle.kts")))
-        .doesNotContain("jacocoTestCoverageVerification");
+        .doesNotContain("wardCoverageData");
 
     configurator.rollback(change);
 

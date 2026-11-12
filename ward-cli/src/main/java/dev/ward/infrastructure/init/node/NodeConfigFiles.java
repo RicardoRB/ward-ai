@@ -1,6 +1,5 @@
 package dev.ward.infrastructure.init.node;
 
-import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
@@ -9,14 +8,16 @@ import dev.ward.infrastructure.init.ConfigFiles;
 import dev.ward.infrastructure.init.ConfigTarget;
 import dev.ward.infrastructure.init.ConfigTarget.Disposition;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 /**
- * The tool configs init writes in a Node project root: the test runner's coverage thresholds and
- * Stryker's config. A project's own config is reused instead.
+ * The tool configs init writes in a Node project root: Vitest's coverage reporters and Stryker's
+ * config. A project's own config is reused instead, and earlier Ward-written coverage configs that
+ * held a threshold are cleaned up.
  */
 final class NodeConfigFiles {
   static final String BUNFIG = "bunfig.toml";
@@ -44,26 +45,14 @@ final class NodeConfigFiles {
           root,
           configs.userConfig(root, VITEST),
           "vitest.config.mjs",
-          ConfigFiles.marker(ConfigFiles.JS_MARKER, preset)
-              + NodeConfigTemplates.vitest(preset, ids.contains(SupportedQualityGates.CRAP)));
+          ConfigFiles.marker(ConfigFiles.JS_MARKER, null) + NodeConfigTemplates.vitest(),
+          true);
     }
     if (ids.contains(JEST)) {
-      target(
-          targets,
-          root,
-          configs.userConfig(root, JEST),
-          "jest.config.mjs",
-          ConfigFiles.marker(ConfigFiles.JS_MARKER, preset) + NodeConfigTemplates.jest(preset));
+      configs.userConfig(root, JEST).ifPresent(config -> keepOwn(targets, root, config, true));
     }
-    if (ids.contains(BUN_TEST)) {
-      targets.add(
-          new ConfigTarget(
-              root.resolve(BUNFIG),
-              Disposition.WRITE,
-              ConfigFiles.marker(ConfigFiles.TOML_MARKER, preset)
-                  + NodeConfigTemplates.bunfig(preset),
-              null));
-    }
+    retired(targets, root.resolve("jest.config.mjs"));
+    retired(targets, root.resolve(BUNFIG));
     if (ids.contains(STRYKER)) {
       target(
           targets,
@@ -71,7 +60,8 @@ final class NodeConfigFiles {
           configs.userConfig(root, STRYKER),
           "stryker.config.mjs",
           ConfigFiles.marker(ConfigFiles.JS_MARKER, preset)
-              + NodeStrykerTemplate.stryker(testGate(ids), preset, project.framework()));
+              + NodeStrykerTemplate.stryker(testGate(ids), preset, project.framework()),
+          false);
     }
     return targets;
   }
@@ -85,11 +75,49 @@ final class NodeConfigFiles {
       final Path root,
       final Optional<Path> userConfig,
       final String file,
-      final String content) {
+      final String content,
+      final boolean coverageTool) {
     if (userConfig.isEmpty()) {
       targets.add(new ConfigTarget(root.resolve(file), Disposition.WRITE, content, null));
-    } else if (!userConfig.get().equals(root.resolve(PACKAGE_JSON))) {
-      targets.add(new ConfigTarget(userConfig.get(), Disposition.KEEP, null, null));
+    } else {
+      keepOwn(targets, root, userConfig.get(), coverageTool);
+    }
+  }
+
+  /** Lists the user's config as kept, with a note when it may hold a coverage threshold. */
+  private static void keepOwn(
+      final List<ConfigTarget> targets,
+      final Path root,
+      final Path config,
+      final boolean coverageTool) {
+    if (!config.equals(root.resolve(PACKAGE_JSON))) {
+      targets.add(
+          new ConfigTarget(
+              config,
+              Disposition.KEEP,
+              null,
+              coverageTool
+                  ? "kept: your "
+                      + config.getFileName()
+                      + "; a coverage threshold it sets still applies to the tool, and Ward reads"
+                      + " only the minimum of the coverage check in ward.toml"
+                  : null));
+    }
+  }
+
+  /**
+   * Removes a coverage config that Ward wrote with a threshold in an earlier version, since it
+   * holds nothing else. A file without Ward's marker is the project's own and is not touched.
+   */
+  private static void retired(final List<ConfigTarget> targets, final Path file)
+      throws IOException {
+    if (Files.isRegularFile(file) && ConfigFiles.owned(Files.readString(file))) {
+      targets.add(
+          new ConfigTarget(
+              file,
+              Disposition.REMOVE,
+              null,
+              "removed: Ward's earlier " + file.getFileName() + "; the minimum is in ward.toml"));
     }
   }
 

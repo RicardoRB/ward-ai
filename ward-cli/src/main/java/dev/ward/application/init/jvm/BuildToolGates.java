@@ -27,15 +27,13 @@ record BuildToolGates(boolean gradle, boolean available, String availability, St
     return option("compile", "Checks that the project compiles.", "", task("classes", "compile"));
   }
 
-  /** Enforces minimum test coverage with JaCoCo. */
+  /** Writes the JaCoCo report that Ward checks against the minimum in ward.toml. */
   InitGateOption coverage() {
     return option(
         "coverage",
         "Enforces minimum test coverage.",
-        gradle
-            ? " (minimum coverage is configured in the Gradle build.)"
-            : " (minimum coverage is configured in pom.xml.)",
-        task("jacocoTestCoverageVerification", "jacoco:check"));
+        " (the minimum is configured in ward.toml; the build writes the JaCoCo XML report.)",
+        task("jacocoTestReport", "jacoco:report"));
   }
 
   /** Checks code quality, smells, and duplication with Sonar. */

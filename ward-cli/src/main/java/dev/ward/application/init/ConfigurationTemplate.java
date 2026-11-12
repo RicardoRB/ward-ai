@@ -16,6 +16,9 @@ import java.util.Set;
 /** Renders the {@code ward.toml} written by {@code ward init}. */
 public final class ConfigurationTemplate {
   private static final String MINIMUM = "minimum";
+  private static final String MINIMUM_BRANCHES = "minimum-branches";
+  private static final double CUSTOM_COVERAGE = 0.80;
+  private static final int PERCENT = 100;
   private static final int SECTION_CAPACITY = 96;
   private static final String VERSION = "version = 2\n";
 
@@ -107,8 +110,7 @@ public final class ConfigurationTemplate {
    */
   private static boolean writesUses(final InitGateOption gate) {
     return CRITICAL_USES.contains(gate.id())
-        || !SupportedQualityGates.CRAP_REPORT.equals(gate.id())
-            && !CommandTypeInference.infer(gate.command()).equals(gate.id());
+        || !CommandTypeInference.infer(gate.command()).equals(gate.id());
   }
 
   private static boolean isOpenSpec(final String id) {
@@ -156,6 +158,9 @@ public final class ConfigurationTemplate {
    */
   private static Map<String, String> gatePreset(
       final InitGateOption gate, final Project project, final QualityPreset preset) {
+    if (SupportedQualityGates.COVERAGE.equals(gate.id()) && isJvm(project)) {
+      return jvmCoverage(gate, preset);
+    }
     final Integer threshold = preset == null ? null : preset.rules().mutationThreshold();
     if (!SupportedQualityGates.MUTATION.equals(gate.id())
         || project.buildTool() != BuildTool.GRADLE
@@ -167,9 +172,29 @@ public final class ConfigurationTemplate {
     return settings;
   }
 
+  private static boolean isJvm(final Project project) {
+    return project.buildTool() == BuildTool.GRADLE || project.buildTool() == BuildTool.MAVEN;
+  }
+
+  /** The line and branch minimums of a Maven or Gradle {@code coverage} check, from the preset. */
+  private static Map<String, String> jvmCoverage(
+      final InitGateOption gate, final QualityPreset preset) {
+    final Map<String, String> settings = new LinkedHashMap<>(gate.settings());
+    final Map<String, Double> ratios =
+        preset == null ? Map.of("LINE", CUSTOM_COVERAGE) : preset.rules().jacocoMinimums();
+    ratios.entrySet().stream()
+        .sorted(Map.Entry.comparingByKey())
+        .forEach(
+            ratio ->
+                settings.putIfAbsent(
+                    "LINE".equals(ratio.getKey()) ? MINIMUM : MINIMUM_BRANCHES,
+                    String.valueOf(Math.round(ratio.getValue() * PERCENT))));
+    return settings;
+  }
+
   /** Writes a gate setting: {@code minimum} is a number, every other setting a string. */
   private static void setting(final StringBuilder content, final String key, final String value) {
-    if (MINIMUM.equals(key) && value != null) {
+    if ((MINIMUM.equals(key) || MINIMUM_BRANCHES.equals(key)) && value != null) {
       content.append(key).append(" = ").append(value).append('\n');
     } else {
       string(content, key, value);

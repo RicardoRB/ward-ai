@@ -1,6 +1,7 @@
 package dev.ward.application.init.node;
 
 import dev.ward.application.init.InitInputs;
+import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.BuildTool;
@@ -8,7 +9,10 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.node.PackageManifest;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Gate choices that run a Node tool as a local dependency through the project's package manager.
@@ -144,67 +148,75 @@ public record NodeTools(
   }
 
   /**
-   * The gate of the project's test runner, failing below the preset's coverage minimums. A config
-   * Ward writes holds them; a project's own config gets them as command-line flags.
+   * The gate of the project's test runner. It writes {@code coverage/lcov.info} and keeps its text
+   * table; Ward's own Vitest config does that for Vitest, Jest writes lcov by default, and a
+   * project's own config gets reporter flags. No threshold is passed: the {@code coverage} check
+   * holds the minimums.
    */
   InitGateOption tests() {
     final String description = "Runs the project's tests with coverage.";
-    final Integer branches = minimum(preset, BRANCH);
     return switch (testGate) {
-      case JEST -> {
-        final String threshold =
-            "--coverageThreshold={\"global\":{\"lines\":"
-                + minimum(preset, LINE)
-                + (branches == null ? "" : ",\"branches\":" + branches)
-                + "}}";
-        yield option(
-            JEST,
-            description,
-            ownTestConfig ? command(JEST, "--coverage", threshold) : command(JEST, "--coverage"));
-      }
+      case JEST ->
+          option(
+              JEST,
+              description,
+              ownTestConfig
+                  ? command(
+                      JEST, "--coverage", "--coverageReporters=text", "--coverageReporters=lcov")
+                  : command(JEST, "--coverage"));
       case BUN_TEST ->
           option(
               BUN_TEST,
-              description + " (the coverage threshold is configured in bunfig.toml.)",
-              List.of("bun", "test", "--coverage"));
+              description,
+              List.of(
+                  "bun",
+                  "test",
+                  "--coverage",
+                  "--coverage-reporter=text",
+                  "--coverage-reporter=lcov"));
       case NG_TEST ->
           option(
               NG_TEST,
               description + " (the project's angular.json sets any coverage threshold.)",
               command("ng", "test", "--watch=false", "--coverage"));
-      default -> option(VITEST, description, vitest(branches));
+      default ->
+          option(
+              VITEST,
+              description,
+              ownTestConfig
+                  ? command(
+                      VITEST,
+                      "run",
+                      "--coverage",
+                      "--coverage.reporter=text",
+                      "--coverage.reporter=lcov")
+                  : command(VITEST, "run", "--coverage"));
     };
-  }
-
-  private List<String> vitest(final Integer branches) {
-    final List<String> arguments = new ArrayList<>(List.of(VITEST, "run", "--coverage"));
-    if (ownTestConfig) {
-      arguments.add("--coverage.thresholds.lines=" + minimum(preset, LINE));
-      if (branches != null) {
-        arguments.add("--coverage.thresholds.branches=" + branches);
-      }
-    }
-    return command(arguments.toArray(String[]::new));
   }
 
   /**
-   * The flags that make the test runner write {@code coverage/lcov.info} and keep its text table,
-   * since setting reporters replaces the defaults. Ward's own Vitest and Jest configs already
-   * report it; Bun's {@code bunfig.toml} may be the project's.
+   * The {@code coverage} check that follows the test gate: it runs no command and reads the lcov
+   * report that gate wrote. Angular's {@code ng test} gets none. Bun measures no branches, so it
+   * gets only the line minimum.
    */
-  List<String> crapFlags() {
-    return switch (testGate) {
-      case VITEST ->
-          ownTestConfig
-              ? List.of("--coverage.reporter=text", "--coverage.reporter=lcov")
-              : List.of();
-      case JEST ->
-          ownTestConfig
-              ? List.of("--coverageReporters=text", "--coverageReporters=lcov")
-              : List.of();
-      case BUN_TEST -> List.of("--coverage-reporter=text", "--coverage-reporter=lcov");
-      default -> List.of();
-    };
+  Optional<InitGateOption> coverage() {
+    if (NG_TEST.equals(testGate)) {
+      return Optional.empty();
+    }
+    final Map<String, String> settings = new LinkedHashMap<>();
+    settings.put("minimum", String.valueOf(minimum(preset, LINE)));
+    final Integer branches = minimum(preset, BRANCH);
+    if (branches != null && !BUN_TEST.equals(testGate)) {
+      settings.put("minimum-branches", String.valueOf(branches));
+    }
+    return Optional.of(
+        new InitGateOption(
+            SupportedQualityGates.COVERAGE,
+            "Fails below the line and branch coverage minimums in ward.toml.",
+            List.of(),
+            true,
+            "Reads the lcov report that the test gate writes; it runs no command.",
+            settings));
   }
 
   /** The Stryker mutation gate; its config file sets the minimum score. */

@@ -221,7 +221,7 @@ class InitSetupCatalogTest {
                 .filter(id -> !ANDROID_GATES.contains(id))
                 .toList());
     assertThat(catalog.gate(project, "coverage").command())
-        .containsExactly("gradle", "jacocoTestCoverageVerification");
+        .containsExactly("gradle", "jacocoTestReport");
     assertThat(catalog.gate(project, "dependency-check").command())
         .containsExactly("gradle", "dependencyCheckAnalyze");
     assertThat(catalog.gate(project, "gitleaks").command())

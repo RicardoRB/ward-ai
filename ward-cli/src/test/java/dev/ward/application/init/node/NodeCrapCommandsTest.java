@@ -21,7 +21,7 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-/** The reporter flags the test gate carries when crap is selected, and when it carries none. */
+/** The crap gate follows the coverage check, and Angular is not offered it. */
 class NodeCrapCommandsTest {
   private static final PackageManifest NO_RUNNER = PackageManifest.EMPTY;
   private static final PackageManifest JEST =
@@ -30,42 +30,20 @@ class NodeCrapCommandsTest {
   @TempDir Path root;
 
   @Test
-  void wardOwnedVitestCommandKeepsItsFlagsBecauseTheConfigListsTheReporters() {
-    assertThat(command(BuildTool.NPM, NO_RUNNER, "vitest", false, true))
-        .containsExactly("npx", "vitest", "run", "--coverage");
-  }
+  void crapIsPlacedAfterTheCoverageCheck() {
+    final InitInputs inputs = inputs(NO_RUNNER, false);
+    final Project project = project(BuildTool.NPM, Framework.NONE, TaskRunner.NONE);
+    final List<InitGateOption> offered =
+        new InitGeneralCatalog(inputs)
+            .gates(project, QualityPreset.STANDARD).stream()
+                .filter(gate -> List.of("vitest", "coverage", "crap").contains(gate.id()))
+                .toList();
 
-  @Test
-  void ownedVitestConfigGetsBothReporterFlags() {
-    assertThat(command(BuildTool.NPM, NO_RUNNER, "vitest", true, true))
-        .endsWith("--coverage.reporter=text", "--coverage.reporter=lcov");
-  }
-
-  @Test
-  void wardOwnedJestCommandCarriesNoReporterFlag() {
-    assertThat(command(BuildTool.NPM, JEST, "jest", false, true))
-        .containsExactly("npx", "jest", "--coverage");
-  }
-
-  @Test
-  void ownedJestConfigGetsBothReporterFlags() {
-    assertThat(command(BuildTool.NPM, JEST, "jest", true, true))
-        .endsWith("--coverageReporters=text", "--coverageReporters=lcov");
-  }
-
-  @Test
-  void bunAlwaysCarriesTheReporterFlags() {
-    assertThat(command(BuildTool.BUN, NO_RUNNER, "bun-test", false, true))
-        .containsExactly(
-            "bun", "test", "--coverage", "--coverage-reporter=text", "--coverage-reporter=lcov");
-  }
-
-  @Test
-  void withoutCrapTheCommandsAreUnchanged() {
-    assertThat(command(BuildTool.BUN, NO_RUNNER, "bun-test", false, false))
-        .containsExactly("bun", "test", "--coverage");
-    assertThat(command(BuildTool.NPM, NO_RUNNER, "vitest", true, false))
-        .noneMatch(argument -> argument.contains("reporter"));
+    assertThat(
+            new NodeInitSupport()
+                .crap(project, inputs).map(setup -> setup.apply(offered)).orElse(offered).stream()
+                    .map(InitGateOption::id))
+        .containsExactly("vitest", "coverage", "crap");
   }
 
   @Test
@@ -76,27 +54,6 @@ class NodeCrapCommandsTest {
         .extracting(InitGateOption::id)
         .contains("ng-test")
         .doesNotContain("crap");
-  }
-
-  private List<String> command(
-      final BuildTool manager,
-      final PackageManifest manifest,
-      final String id,
-      final boolean ownConfig,
-      final boolean crap) {
-    final InitInputs inputs = inputs(manifest, ownConfig);
-    final Project project = project(manager, Framework.NONE, TaskRunner.NONE);
-    final List<InitGateOption> offered =
-        new InitGeneralCatalog(inputs)
-            .gates(project, QualityPreset.STANDARD).stream()
-                .filter(gate -> id.equals(gate.id()) || crap && "crap".equals(gate.id()))
-                .toList();
-    return new NodeInitSupport()
-        .crap(project, inputs).map(setup -> setup.apply(offered)).orElse(offered).stream()
-            .filter(gate -> id.equals(gate.id()))
-            .findFirst()
-            .orElseThrow()
-            .command();
   }
 
   private static InitInputs inputs(final PackageManifest manifest, final boolean own) {

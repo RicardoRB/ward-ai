@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-/** The crap-report check writes the lcov file that the crap gate reads. */
+/** The coverage check writes the lcov file that the crap gate also reads. */
 class PythonCrapReportTest {
   private static final InitInputs INPUTS =
       InitInputs.withoutManifests(new FakeEnvironmentInspection("uv", "poetry", "python3"));
@@ -36,20 +36,20 @@ class PythonCrapReportTest {
 
     assertThat(toml)
         .contains(
-            "[checks.crap-report]\nenabled = true\nprofiles = [\"pre-push\", \"ci\"]\ncommand = \""
+            "[checks.coverage]\nenabled = true\nprofiles = [\"pre-push\", \"ci\"]\ncommand = \""
                 + command
-                + "\"\n",
+                + "\"\nminimum = 80\nreport = \".ward/reports/coverage.lcov\"\n",
             "[checks.crap]\nenabled = true\nprofiles = [\"pre-push\", \"ci\"]\nuses = \"crap\"\n"
                 + "report = \".ward/reports/coverage.lcov\"\n")
-        .doesNotContain("uses = \"crap-report\"");
+        .doesNotContain("crap-report");
   }
 
   @Test
-  void checksAreOrderedPytestCoverageReportCrap() {
+  void checksAreOrderedPytestCoverageCrap() {
     final String toml = toml(BuildTool.UV, true);
 
     assertThat(
-            List.of("pytest", "coverage", "crap-report", "crap").stream()
+            List.of("pytest", "coverage", "crap").stream()
                 .map(id -> toml.indexOf("[checks." + id + "]"))
                 .toList())
         .isSorted()

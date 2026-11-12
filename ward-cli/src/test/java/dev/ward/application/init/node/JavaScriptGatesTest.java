@@ -36,7 +36,7 @@ class JavaScriptGatesTest {
   @Test
   void strictPresetAddsStrykerAndIsOffered() {
     assertThat(catalog(NO_RUNNER).presetGates(project(BuildTool.NPM), QualityPreset.STRICT))
-        .containsExactly("vitest", "stryker");
+        .containsExactly("vitest", "coverage", "stryker");
     assertThat(catalog(NO_RUNNER).presets(project(BuildTool.NPM)))
         .containsExactly(QualityPreset.STANDARD, QualityPreset.STRICT);
   }
@@ -53,8 +53,12 @@ class JavaScriptGatesTest {
 
     final Map<String, GateConfiguration> gates = new TomlConfigurationReader().read(file).checks();
 
-    assertThat(gates).containsOnlyKeys("vitest");
+    assertThat(gates).containsOnlyKeys("vitest", "coverage");
     assertThat(gates.get("vitest").profiles()).isEqualTo(Set.of("pre-push", "ci"));
+    assertThat(gates.get("coverage").profiles()).isEqualTo(Set.of("pre-push", "ci"));
+    assertThat(gates.get("coverage").type()).isEqualTo("coverage");
+    assertThat(gates.get("coverage").command()).isEmpty();
+    assertThat(gates.get("coverage").minimum()).isEqualTo(70);
   }
 
   @Test

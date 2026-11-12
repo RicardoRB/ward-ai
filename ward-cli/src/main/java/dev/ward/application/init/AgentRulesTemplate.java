@@ -57,10 +57,8 @@ public final class AgentRulesTemplate {
             + " rules, or lower thresholds to make a gate pass.");
     lines.add(
         "- Run `ward check` after changes and `ward check --profile ci` before" + " finishing.");
-    // Python's coverage gate is not JaCoCo, so the Maven limit lines do not apply to it.
-    if (preset != null
-        && project.toolchain() != Toolchain.PYTHON
-        && project.toolchain() != Toolchain.SWIFT) {
+    // Only the JVM coverage check reads JaCoCo; the other toolchains state their own minimums.
+    if (preset != null && project.toolchain() == Toolchain.JVM) {
       lines.addAll(limits(ids, preset.rules()));
     }
     for (final Language language : List.of(Language.JAVA, Language.PYTHON)) {
@@ -128,7 +126,10 @@ public final class AgentRulesTemplate {
     final Map<String, String> lines = new LinkedHashMap<>();
     lines.put(
         "coverage",
-        "- Coverage (JaCoCo): " + coverage(rules) + ". New code needs tests that assert behavior.");
+        "- Coverage (JaCoCo): "
+            + coverage(rules)
+            + ", set in `ward.toml` and checked from the JaCoCo XML report. New code needs tests"
+            + " that assert behavior.");
     if (rules.mutationThreshold() != null) {
       lines.put(
           "mutation",

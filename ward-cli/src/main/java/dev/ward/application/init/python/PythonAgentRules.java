@@ -37,11 +37,13 @@ final class PythonAgentRules {
             "- Tests (pytest under coverage): `{command}`. New code needs tests that assert"
                 + " behavior.",
             "coverage",
-            "- Coverage: `{command}` must meet the "
+            "- Coverage: `{command}` writes the lcov report that Ward checks against the "
                 + PythonTools.coverageMinimum(preset)
-                + "% minimum"
-                + (preset == QualityPreset.STRICT ? " of lines and branches" : " of lines")
-                + "; do not lower it.",
+                + "% line"
+                + (preset == QualityPreset.STRICT
+                    ? " and " + PythonTools.STRICT_BRANCHES + "% branch"
+                    : "")
+                + " coverage minimum in `ward.toml`; do not lower it.",
             "mutmut",
             "- Mutation testing (mutmut): `{command}` in `ci` must score at least 60%; kill the"
                 + " surviving mutants with tests, do not weaken the code under test.",

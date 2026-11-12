@@ -16,6 +16,7 @@ import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.init.ScriptReplacement;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.Toolchain;
 import dev.ward.domain.project.node.PackageManifest;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +25,9 @@ import java.util.stream.Collectors;
 
 /** Init choices for npm, pnpm, Yarn and Bun projects. */
 public final class NodeInitSupport implements ToolchainInitSupport {
+  private static final String BUN_NO_BRANCHES =
+      "Bun measures no branches, so the coverage check has a line minimum and no minimum-branches.";
+
   /** The test gates whose coverage report is written to {@code coverage/}. */
   private static final Set<String> COVERAGE_GATES = Set.of("vitest", "jest", "bun-test");
 
@@ -92,6 +96,16 @@ public final class NodeInitSupport implements ToolchainInitSupport {
         || project.language() == Language.JAVASCRIPT && inputs.sources().hasSources(project.root());
   }
 
+  /** Bun writes no branch data, so a strict Bun project has a line minimum only. */
+  @Override
+  public List<String> notes(
+      final Project project, final QualityPreset preset, final InitInputs inputs) {
+    final String test = NodeTools.testGate(project, inputs.manifests().read(project.root()));
+    return preset == QualityPreset.STRICT && NodeTools.BUN_TEST.equals(test)
+        ? List.of(BUN_NO_BRANCHES)
+        : List.of();
+  }
+
   @Override
   public Optional<CrapSetup> crap(final Project project, final InitInputs inputs) {
     return NodeCrap.of(project, inputs);
@@ -103,7 +117,9 @@ public final class NodeInitSupport implements ToolchainInitSupport {
       final List<InitGateOption> gates,
       final QualityPreset preset,
       final Set<String> owned) {
-    return NodeAgentRules.lines(project, gates, preset, owned);
+    return project.toolchain() == Toolchain.NODE
+        ? NodeAgentRules.lines(project, gates, preset, owned)
+        : List.of();
   }
 
   @Override

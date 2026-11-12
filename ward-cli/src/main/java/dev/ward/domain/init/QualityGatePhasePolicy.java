@@ -1,7 +1,6 @@
 package dev.ward.domain.init;
 
 import dev.ward.domain.gate.QualityGateDefinitions;
-import dev.ward.domain.gate.SupportedQualityGates;
 import java.util.List;
 
 /** Pure policy for assigning init-generated quality gates to execution phases. */
@@ -16,9 +15,7 @@ public final class QualityGatePhasePolicy {
 
   /** Returns ordered profile names for a selected gate. */
   public static List<String> profilesFor(final String gateId) {
-    final String id =
-        SupportedQualityGates.CRAP_REPORT.equals(gateId) ? SupportedQualityGates.CRAP : gateId;
-    return switch (QualityGateDefinitions.find(id)
+    return switch (QualityGateDefinitions.find(gateId)
         .map(QualityGateDefinitions.Definition::phase)
         .orElse(QualityGateDefinitions.Phase.CI)) {
       case FAST -> List.of(DEFAULT, PRE_COMMIT, PRE_PUSH, CI, EDIT);

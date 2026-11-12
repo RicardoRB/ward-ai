@@ -16,7 +16,9 @@ public final class OmissionNotes {
   private static final String ANGULAR_NO_COVERAGE =
       "Coverage minimums are not enforced for this Angular project: angular.json sets no"
           + " coverageThresholds, so ng-test checks no coverage. Set coverageThresholds under the"
-          + " test target's options in angular.json (or in karma.conf.js for Karma).";
+          + " test target's options in angular.json (or in karma.conf.js for Karma), or add a"
+          + " [checks.coverage] check with uses = \"coverage\", a minimum and the report path of"
+          + " the lcov file ng test writes, to enforce a minimum from ward.toml.";
   private static final String ANGULAR_NO_MUTATION =
       "Mutation testing is not offered for Angular: no Stryker runner works with Angular's test"
           + " builder, so the strict preset omits stryker.";

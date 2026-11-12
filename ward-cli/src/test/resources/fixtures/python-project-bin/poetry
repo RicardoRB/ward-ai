@@ -3,6 +3,16 @@
 # stands for, so one script serves uv, Poetry and a pip virtual environment. Every call passes; ruff
 # prints an empty JSON report, and the version queries answer the minimums init checks.
 tool=$(basename "$0")
+# `coverage lcov -o <file>` writes a small fully covered report, which the coverage check reads.
+case " $* " in
+  *" lcov "*)
+    out=""; previous=""
+    for argument in "$@"; do [ "$previous" = "-o" ] && out="$argument"; previous="$argument"; done
+    if [ -n "$out" ]; then
+      mkdir -p "$(dirname "$out")"
+      printf 'TN:\nSF:src/shop/__init__.py\nDA:1,1\nDA:2,1\nend_of_record\n' > "$out"
+    fi ;;
+esac
 case "$tool" in
   poetry) [ "$1" = "--version" ] && echo "Poetry (version 2.5.1)" ;;
   python) [ "$1" = "-m" ] && [ "$2" = "pip" ] && [ "$3" = "--version" ] && echo "pip 26.2.2 from stub" ;;

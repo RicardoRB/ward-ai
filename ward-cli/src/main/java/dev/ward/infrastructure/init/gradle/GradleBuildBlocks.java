@@ -1,6 +1,5 @@
 package dev.ward.infrastructure.init.gradle;
 
-import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.init.gradle.GradleToolCatalog;
 import java.util.List;
@@ -29,15 +28,20 @@ public final class GradleBuildBlocks {
               "coverage",
               false,
               true,
-              GradleQualityBlocks.COVERAGE_TASK,
-              "jacoco-coverage-rule",
+              "wardCoverageData",
+              "jacoco-coverage-data",
               "",
               (kotlin, preset, versions, selected) ->
                   GradleQualityBlocks.coverage(
-                      kotlin,
-                      preset,
-                      versions.version(GradleToolCatalog.JACOCO_ENGINE),
-                      selected.contains(SupportedQualityGates.CRAP))),
+                      kotlin, versions.version(GradleToolCatalog.JACOCO_ENGINE))),
+          new Block(
+              "coverage",
+              false,
+              true,
+              "xml.required",
+              "jacoco-xml-report",
+              "",
+              (kotlin, preset, versions, selected) -> GradleCoverageData.xmlReport(kotlin)),
           new Block(
               "mutation",
               false,

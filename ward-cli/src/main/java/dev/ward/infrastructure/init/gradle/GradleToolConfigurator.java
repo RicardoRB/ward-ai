@@ -1,7 +1,6 @@
 package dev.ward.infrastructure.init.gradle;
 
 import dev.ward.domain.agent.PlannedFileChange;
-import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.BuildFileChange;
 import dev.ward.domain.init.BuildToolConfiguration;
 import dev.ward.domain.init.CompatibilityFinding;
@@ -188,9 +187,7 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
     GradleBuildBlocks.append(root, rootGates, preset, versions, false);
     final List<GradleBuildFileEdit> modules = new ArrayList<>();
     for (final Path module : kotlinModules) {
-      modules.add(
-          GradleScriptPlacement.moduleEdit(
-              module, PLUGINS, withCrap(moduleGates, selected), preset, versions));
+      modules.add(GradleScriptPlacement.moduleEdit(module, PLUGINS, moduleGates, preset, versions));
     }
     for (final Path module : androidModules) {
       modules.add(GradleScriptPlacement.androidModuleEdit(module, selected));
@@ -203,18 +200,6 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
       warnings.add(NO_KOTLIN_MODULE);
     }
     return new Computed(root, modules, warnings);
-  }
-
-  /**
-   * The module gates plus {@code crap}, which only tells the coverage block to write its report.
-   */
-  private static Set<String> withCrap(final Set<String> moduleGates, final Set<String> selected) {
-    if (!selected.contains(SupportedQualityGates.CRAP)) {
-      return moduleGates;
-    }
-    final Set<String> gates = new java.util.HashSet<>(moduleGates);
-    gates.add(SupportedQualityGates.CRAP);
-    return gates;
   }
 
   @Override

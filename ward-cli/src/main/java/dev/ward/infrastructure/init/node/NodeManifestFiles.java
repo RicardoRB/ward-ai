@@ -16,7 +16,7 @@ import java.util.Map;
 final class NodeManifestFiles {
   private NodeManifestFiles() {}
 
-  /** Bun reads its coverage threshold only from bunfig.toml, which init never edits. */
+  /** A project's own bunfig.toml keeps its threshold, which Ward does not read. */
   static List<String> bunfigWarning(final Project project, final List<InitGateOption> gates) {
     final Path bunfig = project.root().resolve(NodeConfigFiles.BUNFIG);
     if (gates.stream().noneMatch(gate -> "bun-test".equals(gate.id()))
@@ -25,8 +25,8 @@ final class NodeManifestFiles {
       return List.of();
     }
     return List.of(
-        "bunfig.toml is kept as you wrote it; bun-test enforces a coverage threshold only if it"
-            + " sets [test] coverageThreshold.");
+        "bunfig.toml is kept as you wrote it; a [test] coverageThreshold it sets still applies to"
+            + " bun-test, and Ward reads only the minimum of the coverage check in ward.toml.");
   }
 
   /** Returns the packages {@code project} needs for {@code gates}; a Turborepo root adds turbo. */

@@ -13,6 +13,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.Toolchain;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -71,8 +72,8 @@ public final class PythonInitSupport implements ToolchainInitSupport {
                 gates,
                 "pytest",
                 List.of("coverage"),
-                List.of(PythonGates.crapReport(python)),
-                Map.of("report", PythonGates.CRAP_REPORT)));
+                List.of(),
+                Map.of("report", PythonGates.REPORT)));
   }
 
   @Override
@@ -93,7 +94,9 @@ public final class PythonInitSupport implements ToolchainInitSupport {
       final List<InitGateOption> gates,
       final QualityPreset preset,
       final Set<String> owned) {
-    return PythonAgentRules.lines(project, gates, preset, owned);
+    return project.toolchain() == Toolchain.PYTHON
+        ? PythonAgentRules.lines(project, gates, preset, owned)
+        : List.of();
   }
 
   @Override

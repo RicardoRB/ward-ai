@@ -1,11 +1,11 @@
 package dev.ward.application.init.python;
 
 import dev.ward.application.init.SourceLanguageGates;
-import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Framework;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,8 +15,8 @@ import java.util.Map;
  * top of the standard gates.
  */
 final class PythonGates implements SourceLanguageGates<PythonTools> {
-  /** The lcov report the {@code crap-report} check writes and the {@code crap} gate reads. */
-  static final String CRAP_REPORT = ".ward/reports/coverage.lcov";
+  /** The lcov report the {@code coverage} command writes and Ward reads. */
+  static final String REPORT = ".ward/reports/coverage.lcov";
 
   private static final List<String> STANDARD = List.of("mypy", "pytest", "coverage");
   private static final List<String> STRICT = List.of("mypy", "pytest", "coverage", "mutmut");
@@ -44,8 +44,9 @@ final class PythonGates implements SourceLanguageGates<PythonTools> {
     gates.add(
         python.option(
             "coverage",
-            "Fails below the line coverage minimum, the total of lines and branches when strict.",
-            coverage(python)));
+            "Writes the lcov report that Ward checks against the minimums in ward.toml.",
+            python.command("coverage", "lcov", "-o", REPORT),
+            coverageSettings(python)));
     gates.add(
         python.option(
             "pip-audit",
@@ -58,16 +59,6 @@ final class PythonGates implements SourceLanguageGates<PythonTools> {
             python.command("mutmut", "run"),
             mutationSettings(python)));
     return List.copyOf(gates);
-  }
-
-  /**
-   * The check that turns the coverage data of {@code pytest} into the report {@code crap} reads.
-   */
-  static InitGateOption crapReport(final PythonTools python) {
-    return python.option(
-        SupportedQualityGates.CRAP_REPORT,
-        "Writes the lcov coverage report that the crap gate reads.",
-        python.command("coverage", "lcov", "-o", CRAP_REPORT));
   }
 
   @Override
@@ -98,12 +89,15 @@ final class PythonGates implements SourceLanguageGates<PythonTools> {
     return python.command("coverage", arguments.toArray(String[]::new));
   }
 
-  /** Puts the threshold on the command only when the project owns its coverage config. */
-  private static List<String> coverage(final PythonTools python) {
-    return python.ownCoverageConfig()
-        ? python.command(
-            "coverage", "report", "--fail-under=" + PythonTools.coverageMinimum(python.preset()))
-        : python.command("coverage", "report");
+  /** The line minimum, and the branch minimum when strict; Ward reads the report and decides. */
+  private static Map<String, String> coverageSettings(final PythonTools python) {
+    final Map<String, String> settings = new LinkedHashMap<>();
+    settings.put("minimum", String.valueOf(PythonTools.coverageMinimum(python.preset())));
+    if (python.strict()) {
+      settings.put("minimum-branches", String.valueOf(PythonTools.STRICT_BRANCHES));
+    }
+    settings.put("report", REPORT);
+    return settings;
   }
 
   /** Strict sets the mutation minimum; standard runs mutmut with no minimum. */

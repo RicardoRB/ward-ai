@@ -27,7 +27,8 @@ class PythonGatesTest {
         .containsExactly(
             "uv", RUN, "--group", "ward", COVERAGE, "run", "-m", "pytest", "--ignore=mutants");
     assertThat(command(gates, COVERAGE))
-        .containsExactly("uv", RUN, "--group", "ward", COVERAGE, "report");
+        .containsExactly(
+            "uv", RUN, "--group", "ward", COVERAGE, "lcov", "-o", ".ward/reports/coverage.lcov");
   }
 
   @Test
@@ -43,9 +44,22 @@ class PythonGatesTest {
   }
 
   @Test
-  void coverageThresholdGoesOnTheCommandOnlyForAUserConfig() {
-    assertThat(command(gates(BuildTool.UV, QualityPreset.STANDARD, true), "coverage"))
-        .containsExactly("uv", RUN, "--group", "ward", COVERAGE, "report", "--fail-under=80");
+  void coverageCommandCarriesNoThresholdWhoeverOwnsTheConfig() {
+    for (final boolean owned : new boolean[] {true, false}) {
+      assertThat(command(gates(BuildTool.UV, QualityPreset.STANDARD, owned), COVERAGE))
+          .noneMatch(argument -> argument.contains("fail"));
+    }
+  }
+
+  @Test
+  void coverageCheckHoldsTheMinimumsAndTheReportPath() {
+    assertThat(settings(gates(BuildTool.UV, QualityPreset.STANDARD, false), COVERAGE))
+        .containsEntry("minimum", "80")
+        .containsEntry("report", ".ward/reports/coverage.lcov")
+        .doesNotContainKey("minimum-branches");
+    assertThat(settings(gates(BuildTool.UV, QualityPreset.STRICT, false), COVERAGE))
+        .containsEntry("minimum", "85")
+        .containsEntry("minimum-branches", "75");
   }
 
   @Test
@@ -78,9 +92,7 @@ class PythonGatesTest {
     assertThat(command(owned, MYPY)).contains("--strict");
     assertThat(command(owned, "pytest"))
         .containsSequence(COVERAGE, "run", "--branch", "-m", "pytest", "--ignore=mutants");
-    assertThat(command(owned, COVERAGE)).endsWith("--fail-under=85");
     assertThat(command(ward, MYPY)).doesNotContain("--strict");
-    assertThat(command(ward, COVERAGE)).doesNotContain("--fail-under=85");
   }
 
   private static List<InitGateOption> gates(
@@ -92,6 +104,10 @@ class PythonGatesTest {
 
   private static List<String> command(final List<InitGateOption> gates, final String id) {
     return gates.stream().filter(gate -> gate.id().equals(id)).findFirst().orElseThrow().command();
+  }
+
+  private static Map<String, String> settings(final List<InitGateOption> gates, final String id) {
+    return gates.stream().filter(gate -> gate.id().equals(id)).findFirst().orElseThrow().settings();
   }
 
   private static String setting(
