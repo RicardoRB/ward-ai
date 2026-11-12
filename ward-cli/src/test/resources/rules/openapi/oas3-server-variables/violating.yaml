@@ -11,4 +11,6 @@ servers:
       stale:
         default: x
   - url: https://{host}.example.org
+  - 7
+  - url: 7
 paths: {}

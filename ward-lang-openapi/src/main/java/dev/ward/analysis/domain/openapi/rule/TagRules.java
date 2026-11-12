@@ -63,7 +63,8 @@ final class TagRules {
     for (final DocNode item : tags.get().items()) {
       final DocNode tag = document.resolve(item);
       if (tag.kind() != DocNode.Kind.OBJECT) {
-        return List.of();
+        return List.of(
+            Findings.atValue(tags.get(), "OpenAPI object must have alphabetical \"tags\"."));
       }
       names.add(tag.get(NAME).map(DocNode::text).orElse(""));
     }

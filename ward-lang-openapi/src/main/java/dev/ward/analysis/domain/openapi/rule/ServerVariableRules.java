@@ -21,6 +21,7 @@ final class ServerVariableRules {
   private static final String VARIABLES = "variables";
   private static final String DEFAULT = "default";
   private static final int INVALID_LIMIT = 5;
+  private static final String INVALID = "Invalid Server Object";
 
   private ServerVariableRules() {}
 
@@ -55,6 +56,7 @@ final class ServerVariableRules {
     if (server.kind() != DocNode.Kind.OBJECT
         || url.isEmpty()
         || url.get().kind() != DocNode.Kind.STRING) {
+      findings.add(Findings.atValue(server, INVALID));
       return;
     }
     final List<String> found = new ArrayList<>();

@@ -49,6 +49,9 @@ final class Fields {
       final String... path) {
     final List<DocNode> chain = new ArrayList<>();
     DocNode current = document.resolve(base);
+    if (current.isScalar() && current.kind() != DocNode.Kind.NULL) {
+      return truthy(current) ? List.of() : List.of(Findings.atValue(current, message));
+    }
     chain.add(current);
     for (final String key : path) {
       final Optional<DocNode> next = document.get(current, key, View.RESOLVED);

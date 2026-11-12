@@ -2,3 +2,5 @@
 9:18	Server Variable "region" has a default not listed in the enum.
 11:13	Server's "variables" object has unused defined "stale" url variable.
 13:5	Not all server's variables are described with "variables" object. Missed: host.
+14:5	Invalid Server Object
+15:5	Invalid Server Object

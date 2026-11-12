@@ -96,9 +96,10 @@ final class OwaspResponseRules {
     for (final DocNode responses : responses(document)) {
       findings.addAll(
           Fields.requireTruthy(document, responses, lead + "responses[" + code + "].", code));
+      final String property =
+          responses.get(code).isPresent() ? "[" + code + "]" : "responses[" + code + "]";
       findings.addAll(
-          Fields.requireTruthy(
-              document, responses, lead + "responses[" + code + "].content.", code, CONTENT));
+          Fields.requireTruthy(document, responses, lead + property + ".content.", code, CONTENT));
     }
     return findings;
   }

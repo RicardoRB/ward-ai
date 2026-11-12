@@ -8,3 +8,8 @@ paths:
       responses:
         "200":
           description: d
+  /q:
+    get:
+      responses:
+        "429":
+          description: slow
