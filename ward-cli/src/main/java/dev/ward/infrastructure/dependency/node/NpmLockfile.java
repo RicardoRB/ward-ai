@@ -44,7 +44,7 @@ final class NpmLockfile {
     try {
       parsed = codec.fromJson(text, Object.class);
     } catch (JsonCodecException | IllegalArgumentException e) {
-      throw new LockfileFormatException("it is not valid JSON");
+      throw new LockfileFormatException("it is not valid JSON", e);
     }
     if (!(parsed instanceof Map<?, ?> root)) {
       throw new LockfileFormatException("it is not a JSON object");

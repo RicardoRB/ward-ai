@@ -75,40 +75,47 @@ final class YarnClassicLockfile {
 
   private static List<Stanza> stanzas(final String text) {
     final List<Stanza> stanzas = new ArrayList<>();
-    Stanza current = null;
     String section = "";
     int number = 0;
     for (final String line : text.lines().toList()) {
       number++;
-      if (line.isBlank() || line.startsWith("#")) {
-        continue;
-      }
-      final int indent = line.length() - line.stripLeading().length();
-      final String content = line.strip();
-      if (indent == 0 && content.endsWith(":")) {
-        current = new Stanza(descriptors(content.substring(0, content.length() - 1), number));
-        stanzas.add(current);
-        section = "";
-      } else if (current == null) {
-        throw new LockfileFormatException("line " + number + " is outside a package");
-      } else if (indent == STANZA_INDENT) {
-        section = entry(current, content, number);
-      } else if (indent == ENTRY_INDENT && EDGE_SECTIONS.contains(section)) {
-        final String[] pair = pair(content, number);
-        current.requires.put(pair[0], pair[1]);
-      } else if (indent != ENTRY_INDENT) {
-        throw new LockfileFormatException(
-            "line " + number + " has a shape the reader does not know");
+      if (!line.isBlank() && !line.startsWith("#")) {
+        section = accept(stanzas, section, line, number);
       }
     }
-    stanzas.forEach(
-        stanza -> {
-          if (stanza.version.isEmpty()) {
-            throw new LockfileFormatException(
-                "package " + stanza.descriptors.getFirst() + " has no version");
-          }
-        });
+    for (final Stanza stanza : stanzas) {
+      if (stanza.version.isEmpty()) {
+        throw new LockfileFormatException(
+            "package " + stanza.descriptors.getFirst() + " has no version");
+      }
+    }
     return stanzas;
+  }
+
+  /** Reads one line into the last stanza and returns the section that is open afterwards. */
+  private static String accept(
+      final List<Stanza> stanzas, final String section, final String line, final int number) {
+    final int indent = line.length() - line.stripLeading().length();
+    final String content = line.strip();
+    if (indent == 0 && content.endsWith(":")) {
+      stanzas.add(new Stanza(descriptors(content.substring(0, content.length() - 1), number)));
+      return "";
+    }
+    if (stanzas.isEmpty()) {
+      throw new LockfileFormatException("line " + number + " is outside a package");
+    }
+    final Stanza current = stanzas.getLast();
+    if (indent == STANZA_INDENT) {
+      return entry(current, content, number);
+    }
+    if (indent != ENTRY_INDENT) {
+      throw new LockfileFormatException("line " + number + " has a shape the reader does not know");
+    }
+    if (EDGE_SECTIONS.contains(section)) {
+      final String[] pair = pair(content, number);
+      current.requires.put(pair[0], pair[1]);
+    }
+    return section;
   }
 
   /** Reads one two-space entry and returns the section it opens, or an empty text. */

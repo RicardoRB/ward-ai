@@ -103,7 +103,8 @@ public final class ResolvingDependencySource implements DependencySource {
           project.root().toString(),
           "build files",
           "they cannot be read",
-          "check their permissions");
+          "check their permissions",
+          e);
     } catch (NoSuchAlgorithmException e) {
       throw new IllegalStateException("SHA-256 is part of every Java runtime", e);
     }

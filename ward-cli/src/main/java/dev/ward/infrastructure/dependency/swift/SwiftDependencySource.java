@@ -110,13 +110,18 @@ public final class SwiftDependencySource implements DependencySource {
       return new Declared(SwiftManifest.packageSwift(Files.readString(file)), PACKAGE_SWIFT);
     } catch (IOException | UncheckedIOException e) {
       throw new DependencyInventoryException(
-          project.root().toString(), PACKAGE_SWIFT, "it cannot be read", "check its permissions");
+          project.root().toString(),
+          PACKAGE_SWIFT,
+          "it cannot be read",
+          "check its permissions",
+          e);
     } catch (LockfileFormatException e) {
       throw new DependencyInventoryException(
           project.root().toString(),
           PACKAGE_SWIFT,
           e.getMessage(),
-          "write each .package url as a string literal");
+          "write each .package url as a string literal",
+          e);
     }
   }
 
@@ -134,7 +139,8 @@ public final class SwiftDependencySource implements DependencySource {
               project.root().toString(),
               declaringFile,
               "it cannot be read",
-              "check its permissions");
+              "check its permissions",
+              e);
         }
       }
     }
@@ -147,10 +153,10 @@ public final class SwiftDependencySource implements DependencySource {
       return PackageResolved.read(Files.readString(file), codec);
     } catch (IOException | UncheckedIOException e) {
       throw new DependencyInventoryException(
-          project.root().toString(), label, "it cannot be read", "check its permissions");
+          project.root().toString(), label, "it cannot be read", "check its permissions", e);
     } catch (LockfileFormatException e) {
       throw new DependencyInventoryException(
-          project.root().toString(), label, e.getMessage(), "run `swift package resolve`");
+          project.root().toString(), label, e.getMessage(), "run `swift package resolve`", e);
     }
   }
 

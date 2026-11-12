@@ -59,40 +59,46 @@ final class PinnedRequirements {
     try {
       lines = Files.readAllLines(normal);
     } catch (IOException e) {
-      throw new LockfileFormatException(label + " cannot be read");
+      throw new LockfileFormatException(label + " cannot be read", e);
     }
-    int first = -1;
     Pin last = null;
     boolean inVia = false;
     final List<String> via = new ArrayList<>();
-    final StringBuilder logical = new StringBuilder();
-    for (int index = 0; index < lines.size(); index++) {
-      final String raw = lines.get(index);
-      final boolean continued = raw.endsWith("\\");
-      logical.append(continued ? raw.substring(0, raw.length() - 1) : raw).append(' ');
-      if (first < 0) {
-        first = index + 1;
-      }
-      if (continued) {
-        continue;
-      }
-      final String line = logical.toString().strip();
-      logical.setLength(0);
-      final int number = first;
-      first = -1;
-      if (line.startsWith("#")) {
-        inVia = annotation(line.substring(1).strip(), inVia, via);
+    for (final Logical logical : logicalLines(lines)) {
+      if (logical.text().startsWith("#")) {
+        inVia = annotation(logical.text().substring(1).strip(), inVia, via);
         continue;
       }
       flush(last, via);
       via.clear();
-      inVia = false;
-      last = line.isEmpty() ? null : requirement(normal, label, number, line, via);
-      if (last != null) {
-        inVia = !via.isEmpty() || line.contains("# via");
-      }
+      last =
+          logical.text().isEmpty()
+              ? null
+              : requirement(normal, label, logical.number(), logical.text(), via);
+      inVia = last != null && (!via.isEmpty() || logical.text().contains("# via"));
     }
     flush(last, via);
+  }
+
+  /** A line with its backslash continuations joined, and the number of its first physical line. */
+  private record Logical(int number, String text) {}
+
+  private static List<Logical> logicalLines(final List<String> lines) {
+    final List<Logical> result = new ArrayList<>();
+    final StringBuilder joined = new StringBuilder();
+    int first = -1;
+    for (int index = 0; index < lines.size(); index++) {
+      final String raw = lines.get(index);
+      final boolean continued = raw.endsWith("\\");
+      joined.append(continued ? raw.substring(0, raw.length() - 1) : raw).append(' ');
+      first = first < 0 ? index + 1 : first;
+      if (!continued) {
+        result.add(new Logical(first, joined.toString().strip()));
+        joined.setLength(0);
+        first = -1;
+      }
+    }
+    return result;
   }
 
   /** Records a pip-compile {@code # via} annotation; returns whether more items may follow. */

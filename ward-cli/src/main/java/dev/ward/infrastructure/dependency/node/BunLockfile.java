@@ -5,7 +5,9 @@ import dev.ward.domain.dependency.PackageId;
 import dev.ward.domain.json.JsonCodec;
 import dev.ward.domain.json.JsonCodecException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -41,7 +43,7 @@ final class BunLockfile {
     try {
       parsed = codec.fromJson(Jsonc.toJson(text), Object.class);
     } catch (JsonCodecException | IllegalArgumentException e) {
-      throw new LockfileFormatException("it is not valid JSON");
+      throw new LockfileFormatException("it is not valid JSON", e);
     }
     if (!(parsed instanceof Map<?, ?> root)) {
       throw new LockfileFormatException("it is not a JSON object");
@@ -51,26 +53,35 @@ final class BunLockfile {
       throw new LockfileFormatException(
           "unsupported lockfileVersion " + root.get("lockfileVersion"));
     }
-    final Map<String, List<?>> packages = new java.util.LinkedHashMap<>();
-    if (root.get("packages") instanceof Map<?, ?> listed) {
-      listed.forEach(
+    return new BunLockfile(packages(root.get("packages")), workspaceNames(root.get("workspaces")))
+        .toLock();
+  }
+
+  private static Map<String, List<?>> packages(final Object listed) {
+    final Map<String, List<?>> packages = new LinkedHashMap<>();
+    if (listed instanceof Map<?, ?> map) {
+      map.forEach(
           (key, value) -> {
             if (value instanceof List<?> tuple && !tuple.isEmpty()) {
               packages.put(String.valueOf(key), tuple);
             }
           });
     }
-    final Map<String, String> names = new java.util.HashMap<>();
-    if (root.get("workspaces") instanceof Map<?, ?> workspaces) {
-      workspaces.forEach(
+    return packages;
+  }
+
+  private static Map<String, String> workspaceNames(final Object workspaces) {
+    final Map<String, String> names = new HashMap<>();
+    if (workspaces instanceof Map<?, ?> map) {
+      map.forEach(
           (path, body) ->
               names.put(
                   String.valueOf(path),
-                  body instanceof Map<?, ?> map && map.get("name") instanceof String name
+                  body instanceof Map<?, ?> member && member.get("name") instanceof String name
                       ? name
                       : ""));
     }
-    return new BunLockfile(packages, names).toLock();
+    return names;
   }
 
   private NodeLock toLock() {

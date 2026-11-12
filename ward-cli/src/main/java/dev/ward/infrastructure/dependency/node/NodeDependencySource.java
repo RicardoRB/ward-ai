@@ -59,6 +59,14 @@ public final class NodeDependencySource implements DependencySource {
     return sections;
   }
 
+  /** What every module of one project is resolved against. */
+  private record Locked(
+      Project project,
+      NodeLock lock,
+      String lockPath,
+      String offset,
+      Map<String, Member> workspace) {}
+
   /** One module: where it is and what its manifest declares. */
   private record Member(String path, String name, Map<String, Declared> declared) {}
 
@@ -84,7 +92,7 @@ public final class NodeDependencySource implements DependencySource {
         .forEach(m -> workspace.put(m.name(), m));
     final List<ModuleDependencies> modules = new ArrayList<>();
     for (final Member member : members) {
-      modules.add(module(project, lock, lockPath, offset, workspace, member));
+      modules.add(module(new Locked(project, lock, lockPath, offset, workspace), member));
     }
     final DependencyInventory inventory = new DependencyInventory(modules);
     LOGGER.log(
@@ -123,80 +131,92 @@ public final class NodeDependencySource implements DependencySource {
         members.stream().map(m -> new ModuleDependencies(m.path(), List.of())).toList());
   }
 
-  private ModuleDependencies module(
-      final Project project,
-      final NodeLock lock,
-      final String lockPath,
-      final String offset,
-      final Map<String, Member> workspace,
-      final Member member) {
-    final ModuleBuilder builder = new ModuleBuilder(lockPath, true);
-    final String lockMember = join(offset, member.path());
-    final String manifest = join(member.path(), PACKAGE_JSON);
-    final List<PackageId> seeds = new ArrayList<>();
-    final Set<String> visited = new HashSet<>();
-    member
-        .declared()
-        .forEach(
-            (name, declared) -> {
-              final Member sibling = workspace.get(name);
-              if (sibling != null) {
-                siblings(
-                    builder, lock, offset, workspace, sibling, declared.scope(), visited, seeds);
-                return;
-              }
-              final PackageId id =
-                  lock.directs().resolve(lockMember, name, declared.range()).orElse(null);
-              if (id == null && declared.peer()) {
-                return;
-              }
-              if (id == null) {
-                throw new DependencyInventoryException(
-                    project.root().toString(),
-                    lockPath,
-                    "the lockfile has no entry for " + name + " declared in " + manifest,
-                    "run `" + project.buildTool().executable() + " install`");
-              }
-              builder.direct(id, declared.scope(), manifest);
-              seeds.add(id);
-            });
-    reach(builder, lock, seeds);
-    return builder.build(member.path());
+  private ModuleDependencies module(final Locked locked, final Member member) {
+    final Resolution resolution =
+        new Resolution(
+            locked.project(),
+            locked.lock(),
+            locked.lockPath(),
+            locked.offset(),
+            locked.workspace());
+    member.declared().forEach((name, declared) -> resolution.declare(member, name, declared));
+    reach(resolution.builder, locked.lock(), resolution.seeds);
+    return resolution.builder.build(member.path());
   }
 
-  /** Adds what a sibling workspace package resolves, as transitive packages of {@code scope}. */
-  private void siblings(
-      final ModuleBuilder builder,
-      final NodeLock lock,
-      final String offset,
-      final Map<String, Member> workspace,
-      final Member sibling,
-      final DependencyScope scope,
-      final Set<String> visited,
-      final List<PackageId> seeds) {
-    if (!visited.add(sibling.path())) {
-      return;
+  /** The state of resolving one module's declared dependencies against the lockfile. */
+  private static final class Resolution {
+    private final ModuleBuilder builder;
+    private final Project project;
+    private final NodeLock lock;
+    private final String lockPath;
+    private final String offset;
+    private final Map<String, Member> workspace;
+    private final List<PackageId> seeds = new ArrayList<>();
+    private final Set<String> visited = new HashSet<>();
+
+    Resolution(
+        final Project project,
+        final NodeLock lock,
+        final String lockPath,
+        final String offset,
+        final Map<String, Member> workspace) {
+      this.builder = new ModuleBuilder(lockPath, true);
+      this.project = project;
+      this.lock = lock;
+      this.lockPath = lockPath;
+      this.offset = offset;
+      this.workspace = workspace;
     }
-    sibling
-        .declared()
-        .forEach(
-            (name, declared) -> {
-              if (declared.scope() == DependencyScope.DEVELOPMENT) {
-                return;
-              }
-              final Member nested = workspace.get(name);
-              if (nested != null) {
-                siblings(builder, lock, offset, workspace, nested, scope, visited, seeds);
-                return;
-              }
-              lock.directs()
-                  .resolve(join(offset, sibling.path()), name, declared.range())
-                  .ifPresent(
-                      id -> {
-                        builder.scope(id, scope);
-                        seeds.add(id);
-                      });
-            });
+
+    /** Resolves one dependency a member declares: a sibling's packages, or a direct package. */
+    void declare(final Member member, final String name, final Declared declared) {
+      final Member sibling = workspace.get(name);
+      if (sibling != null) {
+        siblings(sibling, declared.scope());
+        return;
+      }
+      final String manifest = join(member.path(), PACKAGE_JSON);
+      final PackageId id =
+          lock.directs().resolve(join(offset, member.path()), name, declared.range()).orElse(null);
+      if (id != null) {
+        builder.direct(id, declared.scope(), manifest);
+        seeds.add(id);
+      } else if (!declared.peer()) {
+        throw new DependencyInventoryException(
+            project.root().toString(),
+            lockPath,
+            "the lockfile has no entry for " + name + " declared in " + manifest,
+            "run `" + project.buildTool().executable() + " install`");
+      }
+    }
+
+    /** Adds what a sibling workspace package resolves, as transitive packages of {@code scope}. */
+    private void siblings(final Member sibling, final DependencyScope scope) {
+      if (!visited.add(sibling.path())) {
+        return;
+      }
+      sibling
+          .declared()
+          .forEach(
+              (name, declared) -> {
+                final Member nested = workspace.get(name);
+                if (declared.scope() == DependencyScope.DEVELOPMENT) {
+                  return;
+                }
+                if (nested != null) {
+                  siblings(nested, scope);
+                  return;
+                }
+                lock.directs()
+                    .resolve(join(offset, sibling.path()), name, declared.range())
+                    .ifPresent(
+                        id -> {
+                          builder.scope(id, scope);
+                          seeds.add(id);
+                        });
+              });
+    }
   }
 
   /** Adds every package reachable from {@code seeds}, with its edges. */
@@ -226,7 +246,7 @@ public final class NodeDependencySource implements DependencySource {
       text = Files.readString(file);
     } catch (IOException | UncheckedIOException e) {
       throw new DependencyInventoryException(
-          project.root().toString(), label, "it cannot be read", "check the file's permissions");
+          project.root().toString(), label, "it cannot be read", "check the file's permissions", e);
     }
     try {
       return switch (project.buildTool()) {
@@ -240,7 +260,8 @@ public final class NodeDependencySource implements DependencySource {
           project.root().toString(),
           label,
           e.getMessage(),
-          "run `" + project.buildTool().executable() + " install` with a supported version");
+          "run `" + project.buildTool().executable() + " install` with a supported version",
+          e);
     }
   }
 

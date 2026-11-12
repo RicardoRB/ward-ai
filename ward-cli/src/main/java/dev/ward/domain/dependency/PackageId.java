@@ -2,6 +2,7 @@ package dev.ward.domain.dependency;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
+import java.util.Objects;
 
 /**
  * The identity of a resolved package.
@@ -38,6 +39,19 @@ public record PackageId(Ecosystem ecosystem, String name, String version)
   }
 
   @Override
+  public boolean equals(final Object other) {
+    return other instanceof PackageId id
+        && ecosystem == id.ecosystem
+        && name.equals(id.name)
+        && version.equals(id.version);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(ecosystem, name, version);
+  }
+
+  @Override
   public int compareTo(final PackageId other) {
     return ORDER.compare(this, other);
   }
@@ -56,7 +70,6 @@ public record PackageId(Ecosystem ecosystem, String name, String version)
     return switch (ecosystem) {
       case MAVEN -> name.replace(':', '/');
       case NPM -> encodeSegments(name);
-      case PYPI, SWIFT_URL -> name;
       default -> name;
     };
   }

@@ -7,7 +7,6 @@ import dev.ward.domain.dependency.Ecosystem;
 import dev.ward.domain.dependency.ModuleBuilder;
 import dev.ward.domain.dependency.ModuleDependencies;
 import dev.ward.domain.dependency.PackageId;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -22,6 +21,9 @@ final class GradleTsv {
   private static final String SELF = "-";
   private static final String PROJECT = "project:";
   private static final int EDGE_FIELDS = 4;
+  private static final int PARENT = 2;
+  private static final int CHILD = 3;
+  private static final int COORDINATE_PARTS = 3;
   private static final Pattern TAB = Pattern.compile("\t");
 
   private GradleTsv() {}
@@ -35,11 +37,8 @@ final class GradleTsv {
    */
   static DependencyInventory read(
       final String project, final List<String> files, final Function<String, String> buildFile) {
-    final List<ModuleDependencies> modules = new ArrayList<>();
-    for (final String text : files) {
-      modules.add(module(project, text, buildFile));
-    }
-    return new DependencyInventory(modules);
+    return new DependencyInventory(
+        files.stream().map(text -> module(project, text, buildFile)).toList());
   }
 
   private static ModuleDependencies module(
@@ -51,29 +50,34 @@ final class GradleTsv {
     final String path = lines.getFirst().substring(PATH_PREFIX.length());
     final String declaringFile = buildFile.apply(path);
     final ModuleBuilder builder = new ModuleBuilder(declaringFile, false);
-    for (final String line : lines.subList(1, lines.size())) {
-      if (line.isBlank()) {
-        continue;
-      }
-      final String[] fields = TAB.split(line, -1);
-      switch (fields[0]) {
-        case "EDGE" -> edge(project, builder, fields, declaringFile);
-        case "PROJECT" -> {
-          // a dependency on another project: its packages arrive as edges of its component
-        }
-        case "UNRESOLVED" ->
-            throw new DependencyInventoryException(
-                project,
-                path.isEmpty() ? "the root project" : "module " + path,
-                "the dependency "
-                    + field(fields, 2)
-                    + " could not be resolved: "
-                    + field(fields, 3),
-                "fix the dependency or the repositories, then run again");
-        default -> throw unreadable(project, "an unknown result line");
-      }
-    }
+    lines.subList(1, lines.size()).stream()
+        .filter(line -> !line.isBlank())
+        .forEach(line -> line(project, path, builder, TAB.split(line, -1), declaringFile));
     return builder.build(path);
+  }
+
+  private static void line(
+      final String project,
+      final String path,
+      final ModuleBuilder builder,
+      final String[] fields,
+      final String declaringFile) {
+    switch (fields[0]) {
+      case "EDGE" -> edge(project, builder, fields, declaringFile);
+      case "PROJECT" -> {
+        // a dependency on another project: its packages arrive as edges of its component
+      }
+      case "UNRESOLVED" ->
+          throw new DependencyInventoryException(
+              project,
+              path.isEmpty() ? "the root project" : "module " + path,
+              "the dependency "
+                  + field(fields, PARENT)
+                  + " could not be resolved: "
+                  + field(fields, CHILD),
+              "fix the dependency or the repositories, then run again");
+      default -> throw unreadable(project, "an unknown result line");
+    }
   }
 
   private static void edge(
@@ -84,19 +88,19 @@ final class GradleTsv {
     if (fields.length != EDGE_FIELDS) {
       throw unreadable(project, "an edge line has " + fields.length + " fields");
     }
-    final PackageId child = id(project, fields[3]);
+    final PackageId child = id(project, fields[CHILD]);
     final DependencyScope scope = scope(fields[1]);
     builder.add(child, !child.version().endsWith("-SNAPSHOT")).scope(child, scope);
-    if (SELF.equals(fields[2])) {
+    if (SELF.equals(fields[PARENT])) {
       builder.direct(child, scope, declaringFile);
-    } else if (!fields[2].startsWith(PROJECT)) {
-      builder.edge(id(project, fields[2]), child);
+    } else if (!fields[PARENT].startsWith(PROJECT)) {
+      builder.edge(id(project, fields[PARENT]), child);
     }
   }
 
   private static PackageId id(final String project, final String coordinates) {
-    final String[] parts = coordinates.split(":", 3);
-    if (parts.length != 3) {
+    final String[] parts = coordinates.split(":", COORDINATE_PARTS);
+    if (parts.length != COORDINATE_PARTS) {
       throw unreadable(project, "a coordinate is not group:name:version");
     }
     return new PackageId(Ecosystem.MAVEN, parts[0] + ":" + parts[1], parts[2]);

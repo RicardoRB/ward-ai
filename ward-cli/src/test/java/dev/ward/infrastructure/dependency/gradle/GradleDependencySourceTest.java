@@ -25,6 +25,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+/** Gradle sources over fixtures; its {@code copy} helper is shared with other dependency tests. */
 public class GradleDependencySourceTest {
   private static final Path MULTI = InventoryFixtures.fixture("gradle-multi").toAbsolutePath();
   private static final Path LOCKED = InventoryFixtures.fixture("gradle-locked").toAbsolutePath();
@@ -195,6 +196,7 @@ public class GradleDependencySourceTest {
         .scope();
   }
 
+  /** Copies the directory {@code from} into the existing directory {@code to}. */
   public static void copy(final Path from, final Path to) throws IOException {
     try (var walk = Files.walk(from)) {
       for (final Path source : walk.toList()) {

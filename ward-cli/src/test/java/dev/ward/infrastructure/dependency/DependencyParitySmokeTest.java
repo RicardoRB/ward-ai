@@ -41,6 +41,8 @@ import org.junit.jupiter.api.io.TempDir;
  * gradle, swift).
  */
 class DependencyParitySmokeTest {
+  private static final int VERSION = 3;
+  private static final int MEDIATED = 4;
   private static final String LOCAL = "local:";
   private static final String PROPERTY = "ward.dependency.parity.";
   private static final JsonCodec CODEC = new ForyJsonCodec();
@@ -168,7 +170,7 @@ class DependencyParitySmokeTest {
         run(dir, "mvn", "--batch-mode", "compile", "dependency:list").lines().toList()) {
       final Matcher match = MAVEN_LIST.matcher(line);
       if (match.find() && !match.group(1).equals("dev.example")) {
-        listed.add(match.group(1) + ":" + match.group(2) + "@" + match.group(3));
+        listed.add(match.group(1) + ":" + match.group(2) + "@" + match.group(VERSION));
       }
     }
 
@@ -242,7 +244,7 @@ class DependencyParitySmokeTest {
               + ":"
               + match.group(2)
               + "@"
-              + (match.group(4) != null ? match.group(4) : match.group(3)));
+              + (match.group(MEDIATED) != null ? match.group(MEDIATED) : match.group(VERSION)));
     }
   }
 

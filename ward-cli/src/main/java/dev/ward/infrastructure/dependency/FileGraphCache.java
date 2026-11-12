@@ -2,6 +2,7 @@ package dev.ward.infrastructure.dependency;
 
 import dev.ward.domain.dependency.GraphCache;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
@@ -54,7 +55,7 @@ public final class FileGraphCache implements GraphCache {
         return Optional.empty();
       }
       return Optional.of(Files.readString(file, StandardCharsets.UTF_8));
-    } catch (IOException | RuntimeException e) {
+    } catch (IOException | UncheckedIOException e) {
       LOGGER.log(Level.WARNING, "event=dependency-cache result=unreadable");
       return Optional.empty();
     }

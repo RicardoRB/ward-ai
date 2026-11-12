@@ -14,17 +14,10 @@ public final class DependencySources {
    */
   public static DependencySource forBuildTool(
       final BuildTool tool, final Map<BuildTool, DependencySource> readers) {
-    return switch (tool) {
-      case MAVEN, GRADLE, NPM, PNPM, YARN, BUN, UV, POETRY, PIP, SWIFTPM, XCODE ->
-          supported(tool, readers);
-      case PDM, HATCH, GO, CARGO, DOTNET, TUIST, XCODEGEN -> new UnsupportedDependencySource(tool);
-      default -> new UnsupportedDependencySource(tool);
-    };
-  }
-
-  private static DependencySource supported(
-      final BuildTool tool, final Map<BuildTool, DependencySource> readers) {
     final DependencySource reader = readers.get(tool);
-    return reader == null ? new UnsupportedDependencySource(tool) : reader;
+    return switch (tool) {
+      case PDM, HATCH, GO, CARGO, DOTNET, TUIST, XCODEGEN -> new UnsupportedDependencySource(tool);
+      default -> reader == null ? new UnsupportedDependencySource(tool) : reader;
+    };
   }
 }

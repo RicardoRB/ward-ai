@@ -88,7 +88,8 @@ final class MavenModules {
           root.toString(),
           root.relativize(pom).toString().replace('\\', '/'),
           "it is not a readable POM",
-          "fix the POM so that Maven can read it");
+          "fix the POM so that Maven can read it",
+          e);
     }
   }
 

@@ -100,13 +100,14 @@ public final class PythonDependencySource implements DependencySource {
           : PoetryLockfile.read(text);
     } catch (IOException | UncheckedIOException e) {
       throw new DependencyInventoryException(
-          project.root().toString(), label, "it cannot be read", "check the file's permissions");
+          project.root().toString(), label, "it cannot be read", "check the file's permissions", e);
     } catch (LockfileFormatException e) {
       throw new DependencyInventoryException(
           project.root().toString(),
           label,
           e.getMessage(),
-          "run `" + fix + "` with a supported version");
+          "run `" + fix + "` with a supported version",
+          e);
     }
   }
 
@@ -197,7 +198,8 @@ public final class PythonDependencySource implements DependencySource {
             root.toString(),
             LockFiles.relative(root, file),
             e.getMessage(),
-            "pin every requirement with `==`, for example with `pip-compile`");
+            "pin every requirement with `==`, for example with `pip-compile`",
+            e);
       }
     }
     return new DependencyInventory(List.of(withSources(builder.build(""), sources)));
@@ -248,7 +250,8 @@ public final class PythonDependencySource implements DependencySource {
               root.toString(),
               "requirements",
               "the folder cannot be read",
-              "check its permissions");
+              "check its permissions",
+              e);
         }
       }
     }

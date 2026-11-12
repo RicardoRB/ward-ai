@@ -33,6 +33,11 @@ final class GradleModules {
     return paths;
   }
 
+  /** Joins two project-relative paths with {@code /}, leaving out an empty one. */
+  static String join(final String first, final String second) {
+    return first.isEmpty() ? second : first + "/" + second;
+  }
+
   /** Returns the build script of {@code dir}, preferring the Kotlin one, or null. */
   static String buildScript(final Path dir) {
     for (final String name : List.of("build.gradle.kts", "build.gradle")) {

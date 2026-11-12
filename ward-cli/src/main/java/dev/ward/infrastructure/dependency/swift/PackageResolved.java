@@ -34,7 +34,7 @@ final class PackageResolved {
     try {
       parsed = codec.fromJson(text, Object.class);
     } catch (JsonCodecException | IllegalArgumentException e) {
-      throw new LockfileFormatException("it is not valid JSON");
+      throw new LockfileFormatException("it is not valid JSON", e);
     }
     if (!(parsed instanceof Map<?, ?> root)) {
       throw new LockfileFormatException("it is not a JSON object");
@@ -59,22 +59,24 @@ final class PackageResolved {
   }
 
   private static Pin pin(final Map<?, ?> pin, final int version) {
-    final String location = text(pin.get(version == 1 ? "repositoryURL" : "location"));
-    final String identity = text(pin.get(version == 1 ? "package" : "identity"));
-    final String kind = text(pin.get("kind"));
+    final boolean first = version == 1;
+    final String location = text(pin.get(first ? "repositoryURL" : "location"));
+    final String identity = text(pin.get(first ? "package" : "identity"));
     final Map<?, ?> state = pin.get("state") instanceof Map<?, ?> map ? map : Map.of();
     final String name = SwiftLocations.normalize(location.isEmpty() ? identity : location);
     if (name.isEmpty()) {
       throw new LockfileFormatException("a pin has neither a location nor an identity");
     }
-    final String released = text(state.get("version"));
-    final boolean local = "localSourceControl".equals(kind) || "fileSystem".equals(kind);
-    final String revision = text(state.get("revision"));
-    final String exact = !released.isEmpty() && !local ? released : revision;
+    final boolean release = !text(state.get("version")).isEmpty() && !local(text(pin.get("kind")));
+    final String exact = release ? text(state.get("version")) : text(state.get("revision"));
     return new Pin(
         new PackageId(Ecosystem.SWIFT_URL, name, exact.isEmpty() ? LOCAL : exact),
-        !released.isEmpty() && !local,
+        release,
         identity.toLowerCase(java.util.Locale.ROOT));
+  }
+
+  private static boolean local(final String kind) {
+    return "localSourceControl".equals(kind) || "fileSystem".equals(kind);
   }
 
   private static String text(final Object value) {

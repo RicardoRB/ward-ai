@@ -10,12 +10,12 @@ import dev.ward.domain.dependency.PackageId;
 import dev.ward.domain.dependency.RequestedVersion;
 import dev.ward.domain.json.JsonCodec;
 import dev.ward.domain.json.JsonCodecException;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  * The stored form of a resolved graph: plain maps and lists through the JSON port, so the document
@@ -25,23 +25,28 @@ final class InventoryJson {
   /** The version of the stored format; part of the cache key. */
   static final int FORMAT = 1;
 
+  private static final String PATH = "path";
+  private static final String DEPENDENCIES = "dependencies";
+  private static final String NAME = "name";
+  private static final String VERSION = "version";
+  private static final String REQUIRED_BY = "requiredBy";
+  private static final String REQUESTED = "requested";
+
   private InventoryJson() {}
 
   /** Returns {@code inventory} as JSON. */
   static String encode(final JsonCodec codec, final DependencyInventory inventory) {
-    final List<Object> modules = new ArrayList<>();
-    for (final ModuleDependencies module : inventory.modules()) {
-      final List<Object> entries = new ArrayList<>();
-      module.dependencies().forEach(entry -> entries.add(entry(entry)));
-      final Map<String, Object> map = new LinkedHashMap<>();
-      map.put("path", module.modulePath());
-      map.put("dependencies", entries);
-      modules.add(map);
-    }
     final Map<String, Object> root = new LinkedHashMap<>();
     root.put("format", FORMAT);
-    root.put("modules", modules);
+    root.put("modules", inventory.modules().stream().map(InventoryJson::module).toList());
     return codec.toJson(root);
+  }
+
+  private static Map<String, Object> module(final ModuleDependencies module) {
+    final Map<String, Object> map = new LinkedHashMap<>();
+    map.put(PATH, module.modulePath());
+    map.put(DEPENDENCIES, module.dependencies().stream().map(InventoryJson::entry).toList());
+    return map;
   }
 
   private static Map<String, Object> entry(final Dependency entry) {
@@ -52,22 +57,24 @@ final class InventoryJson {
     map.put("released", entry.released());
     map.put("source", entry.source());
     map.put("declaredIn", entry.declaredIn());
+    map.put(REQUIRED_BY, entry.requiredBy().stream().sorted().map(InventoryJson::id).toList());
     map.put(
-        "requiredBy", new TreeSet<>(entry.requiredBy()).stream().map(InventoryJson::id).toList());
-    final List<Object> requested = new ArrayList<>();
-    entry.requested().stream()
-        .sorted(
-            java.util.Comparator.comparing(RequestedVersion::requester)
-                .thenComparing(RequestedVersion::version))
-        .forEach(
-            request ->
-                requested.add(Map.of("by", request.requester(), "version", request.version())));
-    map.put("requested", requested);
+        REQUESTED,
+        entry.requested().stream()
+            .sorted(
+                Comparator.comparing(RequestedVersion::requester)
+                    .thenComparing(RequestedVersion::version))
+            .map(InventoryJson::request)
+            .toList());
     return map;
   }
 
+  private static Map<String, Object> request(final RequestedVersion request) {
+    return Map.of("by", request.requester(), VERSION, request.version());
+  }
+
   private static Map<String, Object> id(final PackageId id) {
-    return Map.of("ecosystem", id.ecosystem().name(), "name", id.name(), "version", id.version());
+    return Map.of("ecosystem", id.ecosystem().name(), NAME, id.name(), VERSION, id.version());
   }
 
   /**
@@ -76,55 +83,54 @@ final class InventoryJson {
    * @throws IllegalArgumentException if it is not a document of the current format
    */
   static DependencyInventory decode(final JsonCodec codec, final String json) {
+    final Object parsed;
     try {
-      if (!(codec.fromJson(json, Object.class) instanceof Map<?, ?> root)
-          || !(root.get("format") instanceof Number format)
-          || format.intValue() != FORMAT
-          || !(root.get("modules") instanceof List<?> modules)) {
-        throw new IllegalArgumentException("not a stored graph");
-      }
-      final List<ModuleDependencies> result = new ArrayList<>();
-      for (final Object module : modules) {
-        result.add(module(map(module)));
-      }
-      return new DependencyInventory(result);
-    } catch (JsonCodecException
-        | ClassCastException
-        | NullPointerException
-        | IllegalStateException e) {
+      parsed = codec.fromJson(json, Object.class);
+    } catch (JsonCodecException e) {
       throw new IllegalArgumentException("not a stored graph", e);
     }
+    if (!(parsed instanceof Map<?, ?> root)
+        || !(root.get("format") instanceof Number format)
+        || format.intValue() != FORMAT) {
+      throw new IllegalArgumentException("not a stored graph");
+    }
+    return new DependencyInventory(
+        list(root.get("modules")).stream().map(item -> decodeModule(map(item))).toList());
   }
 
-  private static ModuleDependencies module(final Map<?, ?> module) {
-    final List<Dependency> entries = new ArrayList<>();
-    for (final Object entry : list(module.get("dependencies"))) {
-      final Map<?, ?> map = map(entry);
-      final Set<PackageId> requiredBy = new TreeSet<>();
-      list(map.get("requiredBy")).forEach(item -> requiredBy.add(packageId(map(item))));
-      final Set<RequestedVersion> requested = new java.util.HashSet<>();
-      list(map.get("requested"))
-          .forEach(
-              item ->
-                  requested.add(
-                      new RequestedVersion(text(map(item), "by"), text(map(item), "version"))));
-      entries.add(
-          new Dependency(
-              packageId(map(map.get("id"))),
-              DependencyRelation.valueOf(text(map, "relation")),
-              DependencyScope.valueOf(text(map, "scope")),
-              Boolean.TRUE.equals(map.get("released")),
-              text(map, "source"),
-              text(map, "declaredIn"),
-              requiredBy,
-              requested));
-    }
-    return new ModuleDependencies(text(module, "path"), entries);
+  private static ModuleDependencies decodeModule(final Map<?, ?> module) {
+    return new ModuleDependencies(
+        text(module, PATH),
+        list(module.get(DEPENDENCIES)).stream().map(item -> decodeEntry(map(item))).toList());
+  }
+
+  private static Dependency decodeEntry(final Map<?, ?> map) {
+    final Set<PackageId> requiredBy =
+        list(map.get(REQUIRED_BY)).stream()
+            .map(item -> packageId(map(item)))
+            .collect(Collectors.toSet());
+    final Set<RequestedVersion> requested =
+        list(map.get(REQUESTED)).stream()
+            .map(item -> decodeRequest(map(item)))
+            .collect(Collectors.toSet());
+    return new Dependency(
+        packageId(map(map.get("id"))),
+        DependencyRelation.valueOf(text(map, "relation")),
+        DependencyScope.valueOf(text(map, "scope")),
+        Boolean.TRUE.equals(map.get("released")),
+        text(map, "source"),
+        text(map, "declaredIn"),
+        requiredBy,
+        requested);
+  }
+
+  private static RequestedVersion decodeRequest(final Map<?, ?> map) {
+    return new RequestedVersion(text(map, "by"), text(map, VERSION));
   }
 
   private static PackageId packageId(final Map<?, ?> map) {
     return new PackageId(
-        Ecosystem.valueOf(text(map, "ecosystem")), text(map, "name"), text(map, "version"));
+        Ecosystem.valueOf(text(map, "ecosystem")), text(map, NAME), text(map, VERSION));
   }
 
   private static Map<?, ?> map(final Object value) {

@@ -61,10 +61,10 @@ record PythonManifest(
           path, manifest, name == null ? "" : PyprojectDependencies.normalize(name), declared);
     } catch (IOException | UncheckedIOException e) {
       throw new DependencyInventoryException(
-          project.root().toString(), manifest, "it cannot be read", "check its permissions");
+          project.root().toString(), manifest, "it cannot be read", "check its permissions", e);
     } catch (dev.ward.domain.config.WardException e) {
       throw new DependencyInventoryException(
-          project.root().toString(), manifest, e.getMessage(), "fix the TOML syntax");
+          project.root().toString(), manifest, e.getMessage(), "fix the TOML syntax", e);
     }
   }
 

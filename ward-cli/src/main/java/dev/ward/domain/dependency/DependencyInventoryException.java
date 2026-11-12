@@ -20,6 +20,24 @@ public class DependencyInventoryException extends WardException {
    */
   public DependencyInventoryException(
       final String project, final String subject, final String reason, final String fix) {
+    this(project, subject, reason, fix, null);
+  }
+
+  /**
+   * Creates the failure with its cause.
+   *
+   * @param project the project root
+   * @param subject the file or the command (executable only) that failed
+   * @param reason why it failed
+   * @param fix the command or step that fixes it
+   * @param cause what went wrong underneath; its text is not part of the message
+   */
+  public DependencyInventoryException(
+      final String project,
+      final String subject,
+      final String reason,
+      final String fix,
+      final Throwable cause) {
     super(
         "Cannot read the dependencies of "
             + project
@@ -28,6 +46,7 @@ public class DependencyInventoryException extends WardException {
             + ": "
             + reason
             + ". Fix: "
-            + fix);
+            + fix,
+        cause);
   }
 }

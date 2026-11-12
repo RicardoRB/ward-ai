@@ -74,7 +74,8 @@ public final class GradleGraphTool implements ResolvedGraphTool {
           project.root().toString(),
           ".ward/cache/dependencies",
           "the Gradle listing cannot be written or read",
-          "check the permissions of the project folder");
+          "check the permissions of the project folder",
+          e);
     } finally {
       delete(work);
     }

@@ -12,4 +12,9 @@ public class LockfileFormatException extends RuntimeException {
   public LockfileFormatException(final String reason) {
     super(reason);
   }
+
+  /** Creates the failure with the reason and what went wrong underneath. */
+  public LockfileFormatException(final String reason, final Throwable cause) {
+    super(reason, cause);
+  }
 }

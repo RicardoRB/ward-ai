@@ -77,26 +77,22 @@ public class ProcessCommandExecutor implements CommandExecutor {
         } catch (InterruptedException e) {
           process.destroyForcibly();
           Thread.currentThread().interrupt();
-          if (LOGGER.isLoggable(Level.WARNING)) {
-            LOGGER.log(
-                Level.WARNING,
-                "event=process-failure executable=" + executable + " category=interrupted");
-          }
-          return new CommandResult(
-              EXIT_INTERRUPTED, "", "Interrupted", since(start), "PROCESS_INTERRUPTED");
+          return failure(
+              executable,
+              "interrupted",
+              new CommandResult(
+                  EXIT_INTERRUPTED, "", "Interrupted", since(start), "PROCESS_INTERRUPTED"));
         } catch (ExecutionException e) {
           process.destroyForcibly();
-          if (LOGGER.isLoggable(Level.WARNING)) {
-            LOGGER.log(
-                Level.WARNING,
-                "event=process-failure executable=" + executable + " category=read-failure");
-          }
-          return new CommandResult(
-              EXIT_OUTPUT_CAPTURE_FAILED,
-              "",
-              "Failed to read process output",
-              since(start),
-              "OUTPUT_CAPTURE_FAILURE");
+          return failure(
+              executable,
+              "read-failure",
+              new CommandResult(
+                  EXIT_OUTPUT_CAPTURE_FAILED,
+                  "",
+                  "Failed to read process output",
+                  since(start),
+                  "OUTPUT_CAPTURE_FAILURE"));
         }
       }
     } catch (IOException e) {
@@ -112,6 +108,16 @@ public class ProcessCommandExecutor implements CommandExecutor {
           since(start),
           "PROCESS_START_FAILURE");
     }
+  }
+
+  private static CommandResult failure(
+      final String executable, final String category, final CommandResult result) {
+    if (LOGGER.isLoggable(Level.WARNING)) {
+      LOGGER.log(
+          Level.WARNING,
+          "event=process-failure executable=" + executable + " category=" + category);
+    }
+    return result;
   }
 
   /** Destroys the process and its children, so their output streams close and the readers end. */

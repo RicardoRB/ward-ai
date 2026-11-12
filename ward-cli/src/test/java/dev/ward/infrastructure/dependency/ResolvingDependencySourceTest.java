@@ -27,6 +27,9 @@ import org.junit.jupiter.api.io.TempDir;
 class ResolvingDependencySourceTest {
   private static final Path FIXTURE = InventoryFixtures.fixture("maven-reactor").toAbsolutePath();
 
+  private static final Duration STILL_FRESH = Duration.ofHours(23);
+  private static final Duration EXPIRED = Duration.ofHours(25);
+
   @TempDir Path work;
 
   private FakeCommandExecutor maven;
@@ -76,10 +79,10 @@ class ResolvingDependencySourceTest {
     final Instant now = Instant.now();
     source(at(now)).read(project);
 
-    source(at(now.plus(Duration.ofHours(23)))).read(project);
+    source(at(now.plus(STILL_FRESH))).read(project);
     assertThat(maven.commands).hasSize(1);
 
-    source(at(now.plus(Duration.ofHours(25)))).read(project);
+    source(at(now.plus(EXPIRED))).read(project);
     assertThat(maven.commands).hasSize(2);
   }
 
