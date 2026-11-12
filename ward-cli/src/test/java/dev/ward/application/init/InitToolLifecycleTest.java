@@ -61,18 +61,18 @@ class InitToolLifecycleTest {
             root,
             new InitSelection(
                 List.of("none"),
-                List.of("tests", "openapi-lint"),
+                List.of("tests", "openapi-diff"),
                 null,
                 null,
                 List.of(),
                 List.of(),
-                List.of("openapi-lint"),
+                List.of("openapi-diff"),
                 false,
                 null,
                 false,
                 null));
 
-    assertThat(installer.installed).containsExactly("vacuum");
+    assertThat(installer.installed).containsExactly("oasdiff");
     assertThat(Files.readString(root.resolve("ward.toml"))).doesNotContain("openspec");
   }
 
