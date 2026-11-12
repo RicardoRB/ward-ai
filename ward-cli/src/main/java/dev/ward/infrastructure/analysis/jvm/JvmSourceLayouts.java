@@ -83,23 +83,44 @@ public final class JvmSourceLayouts {
   /** Reads the Maven build section when there is a POM, else the Gradle script, else defaults. */
   private static Directories directoriesOf(final Path module) {
     final Path pom = module.resolve(POM);
-    if (Files.isRegularFile(pom)) {
-      final String text = read(pom);
-      final String build = firstGroup(text, MAVEN_BUILD).orElse("");
+    return directoriesOf(
+        Files.isRegularFile(pom) ? Optional.of(read(pom)) : Optional.empty(),
+        gradleScript(module).map(JvmSourceLayouts::read));
+  }
+
+  private static Directories directoriesOf(
+      final Optional<String> pomText, final Optional<String> gradleText) {
+    if (pomText.isPresent()) {
+      final String build = firstGroup(pomText.get(), MAVEN_BUILD).orElse("");
       return directories(
           firstGroup(build, MAVEN_MAIN).orElse(MAIN_DEFAULT),
           firstGroup(build, MAVEN_TEST).orElse(TEST_DEFAULT),
           KotlinSourceDirs.maven(build));
     }
-    final Optional<Path> script = gradleScript(module);
-    if (script.isPresent()) {
-      final String text = read(script.get());
+    if (gradleText.isPresent()) {
+      final String text = gradleText.get();
       return directories(
           firstGroup(text, GRADLE_MAIN).orElse(MAIN_DEFAULT),
           firstGroup(text, GRADLE_TEST).orElse(TEST_DEFAULT),
           KotlinSourceDirs.gradle(text));
     }
     return directories(MAIN_DEFAULT, TEST_DEFAULT, List.of());
+  }
+
+  /**
+   * Returns the main source roots, Java then Kotlin, of a module whose build file is given as text,
+   * relative to the module. A POM wins over a Gradle script; neither means the defaults.
+   *
+   * @param pomText the text of {@code pom.xml}, if the module has one
+   * @param gradleText the text of {@code build.gradle.kts} or {@code build.gradle}, if it has one
+   */
+  public static List<String> mainRoots(
+      final Optional<String> pomText, final Optional<String> gradleText) {
+    final Directories dirs = directoriesOf(pomText, gradleText);
+    final List<String> roots = new ArrayList<>();
+    roots.add(dirs.main());
+    roots.addAll(dirs.kotlinMain());
+    return List.copyOf(roots);
   }
 
   /** Adds the Kotlin defaults to the literal Kotlin directories of a build file. */

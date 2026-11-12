@@ -2,11 +2,13 @@ package dev.ward.application.gate.apicompat;
 
 import dev.ward.domain.gate.RevisionFiles;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /** Chooses the baseline: the configured ref, else the highest release tag before {@code HEAD}. */
@@ -82,11 +84,9 @@ final class BaselineResolver {
   }
 
   private static int[] version(final String tag) {
-    final java.util.regex.Matcher matcher = RELEASE.matcher(tag);
+    final Matcher matcher = RELEASE.matcher(tag);
     return matcher.matches()
-        ? java.util.Arrays.stream(matcher.group(1).split(SEPARATOR))
-            .mapToInt(Integer::parseInt)
-            .toArray()
+        ? Arrays.stream(matcher.group(1).split(SEPARATOR)).mapToInt(Integer::parseInt).toArray()
         : new int[0];
   }
 
