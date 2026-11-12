@@ -83,14 +83,11 @@ class ControlFlowBuilderTest {
   }
 
   @Test
-  void jumpWithoutAnEnclosingTargetLeavesTheBodyExceptYield() {
+  void jumpWithoutAnEnclosingTargetIsRejected() {
     final ControlFlowBuilder builder = new ControlFlowBuilder();
 
-    builder.jumps().breakTo(null);
-    builder.jumps().continueTo("nowhere");
-
-    assertThat(ControlFlowDump.render(builder.build("m", SPAN)))
-        .isEqualTo("graph m\nB0 [entry] -> B1\nB1 [exit]\n");
+    assertThatThrownBy(() -> builder.jumps().breakTo(null))
+        .isInstanceOf(IllegalStateException.class);
     assertThatThrownBy(builder.jumps()::yieldTo).isInstanceOf(IllegalStateException.class);
   }
 

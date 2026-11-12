@@ -87,6 +87,8 @@ class ControlFlowRoutingTest {
     final int after = builder.newBlock();
     builder.jumps().pushLabel("block", after);
 
+    assertThatThrownBy(() -> builder.jumps().continueTo("block"))
+        .isInstanceOf(IllegalStateException.class);
     builder.jumps().breakTo("block");
     builder.jumps().popFrame();
     final ControlFlowGraph graph = builder.build("m", SPAN);
@@ -95,13 +97,11 @@ class ControlFlowRoutingTest {
   }
 
   @Test
-  void continueWithoutAnyLoopLeavesTheBody() {
+  void continueWithoutAnyLoopIsRejected() {
     final ControlFlowBuilder builder = new ControlFlowBuilder();
 
-    builder.jumps().continueTo(null);
-
-    assertThat(hasEdge(builder.build("m", SPAN), 0, ControlFlowBuilder.EXIT, FlowEdgeKind.NORMAL))
-        .isTrue();
+    assertThatThrownBy(() -> builder.jumps().continueTo(null))
+        .isInstanceOf(IllegalStateException.class);
   }
 
   @Test
