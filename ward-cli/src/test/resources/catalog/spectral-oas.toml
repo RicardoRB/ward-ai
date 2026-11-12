@@ -71,8 +71,6 @@ spectral = ["oas3-parameter-description"]
 [[rule]]
 name = "oas3-schema"
 spectral = ["oas3-schema"]
-presets = ["standard", "strict"]
-category = "correctness"
 
 [[rule]]
 name = "oas3-server-not-example-com"

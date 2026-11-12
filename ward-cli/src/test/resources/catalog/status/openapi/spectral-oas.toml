@@ -17,7 +17,7 @@ oas3-callbacks-in-callbacks = "implemented"
 oas3-examples-value-or-external-value = "implemented"
 oas3-operation-security-defined = "implemented"
 oas3-parameter-description = "implemented"
-oas3-schema = { status = "planned", issue = "#522" }
+oas3-schema = "implemented"
 oas3-server-not-example-com = "implemented"
 oas3-server-trailing-slash = "implemented"
 oas3-server-variables = "implemented"

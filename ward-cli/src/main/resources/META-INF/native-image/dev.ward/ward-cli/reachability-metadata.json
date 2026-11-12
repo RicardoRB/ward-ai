@@ -10,6 +10,9 @@
       "glob": "taint/**"
     },
     {
+      "glob": "openapi/schemas/*.json"
+    },
+    {
       "glob": "rules/**"
     },
     {

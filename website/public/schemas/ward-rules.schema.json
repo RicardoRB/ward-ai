@@ -32782,6 +32782,25 @@
         }
       }
     },
+    "ward:openapi/oas3-schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:openapi/oas3-server-not-example-com": {
       "type": "object",
       "additionalProperties": false,
@@ -55266,6 +55285,7 @@
               "openapi.oas3-examples-value-or-external-value",
               "openapi.oas3-operation-security-defined",
               "openapi.oas3-parameter-description",
+              "openapi.oas3-schema",
               "openapi.oas3-server-not-example-com",
               "openapi.oas3-server-trailing-slash",
               "openapi.oas3-server-variables",
@@ -58001,6 +58021,7 @@
               "openapi.oas3-examples-value-or-external-value",
               "openapi.oas3-operation-security-defined",
               "openapi.oas3-parameter-description",
+              "openapi.oas3-schema",
               "openapi.oas3-server-not-example-com",
               "openapi.oas3-server-trailing-slash",
               "openapi.oas3-server-variables",
@@ -64090,6 +64111,9 @@
             },
             "oas3-parameter-description": {
               "$ref": "#/$defs/ward:openapi~1oas3-parameter-description"
+            },
+            "oas3-schema": {
+              "$ref": "#/$defs/ward:openapi~1oas3-schema"
             },
             "oas3-server-not-example-com": {
               "$ref": "#/$defs/ward:openapi~1oas3-server-not-example-com"

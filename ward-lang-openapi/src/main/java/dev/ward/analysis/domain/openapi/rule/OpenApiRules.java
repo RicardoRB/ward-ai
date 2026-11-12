@@ -107,5 +107,6 @@ public final class OpenApiRules {
     rules.put("typed-enum", EnumRules::typed);
     rules.put("oas3-valid-schema-example", SchemaExampleRules::validSchemaExample);
     rules.put("oas3-valid-media-example", MediaExampleRules::validMediaExample);
+    rules.put("oas3-schema", DocumentSchemaRules::oas3Schema);
   }
 }

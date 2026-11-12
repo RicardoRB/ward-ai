@@ -1,0 +1,57 @@
+openapi: 3.0.3
+info:
+  version: 1
+  contact:
+    mail: me@example.org
+  x-ok: fine
+  license: {}
+servers:
+  - description: no url
+    extra: 1
+tags:
+  - name: a
+  - name: a
+paths:
+  /pets:
+    get:
+      operationId: 7
+      tags: nope
+      parameters:
+        - name: q
+          in: querry
+          schema: {type: string}
+        - name: noschema
+          in: query
+        - $ref: 5
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: strin
+                items: 5
+        "20":
+          description: bad code
+    post:
+      requestBody:
+        content: {}
+  not-a-path:
+    get:
+      responses: {}
+components:
+  schemas:
+    Bad Name:
+      type: string
+    Pet:
+      type: object
+      required: name
+      properties:
+        id: {type: integer, minimum: x}
+  securitySchemes:
+    k:
+      type: apiKey
+      name: k
+    h:
+      type: http
+unknownRoot: true

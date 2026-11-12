@@ -121,13 +121,24 @@ final class TagRules {
     for (final Operation operation : document.parts().operations()) {
       document
           .get(operation.node(), TAGS, View.RESOLVED)
-          .filter(tags -> tags.kind() == DocNode.Kind.ARRAY && tags.items().size() > SINGLE)
+          .filter(tags -> length(tags) > SINGLE)
           .ifPresent(
               tags ->
                   findings.add(
                       Findings.atValue(tags, "Operation must not have more than a single tag.")));
     }
     return findings;
+  }
+
+  /** The {@code length} of Spectral: of a string, an array or an object, or a number itself. */
+  private static double length(final DocNode value) {
+    return switch (value.kind()) {
+      case STRING -> value.text().length();
+      case ARRAY -> value.items().size();
+      case OBJECT -> value.entries().size();
+      case NUMBER -> JavaScript.number(value.text());
+      default -> 0;
+    };
   }
 
   /** {@code operation-tag-defined}: every operation tag is one of the global tags. */

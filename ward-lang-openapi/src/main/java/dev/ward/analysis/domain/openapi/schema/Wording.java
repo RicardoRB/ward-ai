@@ -19,6 +19,7 @@ final class Wording {
       case "additionalProperties" ->
           "Property \"" + error.detail() + "\" is not expected to be here";
       case "type" -> type(error, propertyPath);
+      case "errorMessage" -> error.message();
       case "enum" -> enumeration(error, data, propertyPath);
       default -> pretty(error, data, propertyPath) + " " + clean(error.message());
     };
@@ -41,7 +42,7 @@ final class Wording {
         .orElse(text);
   }
 
-  private static String allowed(final DocNode value) {
+  static String allowed(final DocNode value) {
     return switch (value.kind()) {
       case STRING -> "\"" + value.text() + "\"";
       case NULL -> "null";
@@ -51,7 +52,7 @@ final class Wording {
     };
   }
 
-  private static String suggestion(final String value, final List<DocNode> allowed) {
+  static String suggestion(final String value, final List<DocNode> allowed) {
     final List<String> strings =
         allowed.stream()
             .filter(candidate -> candidate.kind() == DocNode.Kind.STRING)

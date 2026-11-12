@@ -137,12 +137,20 @@ public final class JsonSchemaValidator {
     if (reference.isPresent() && dialect == Dialect.DRAFT4) {
       return check(target(schema, reference.get()), data, path, evaluated);
     }
-    return Chain.run(
-        this,
-        () -> Types.check(this, schema, data, path),
-        () -> reference.isEmpty() || check(target(schema, reference.get()), data, path, evaluated),
-        () -> Combinators.check(this, schema, data, path, evaluated),
-        () -> Keywords.check(this, schema, data, path, evaluated));
+    final int before = errors.size();
+    final boolean valid =
+        Chain.run(
+            this,
+            () -> Types.check(this, schema, data, path),
+            () ->
+                reference.isEmpty()
+                    || check(target(schema, reference.get()), data, path, evaluated),
+            () -> Combinators.check(this, schema, data, path, evaluated),
+            () -> Keywords.check(this, schema, data, path, evaluated));
+    if (allErrors) {
+      ErrorMessages.apply(this, schema, path, before);
+    }
+    return valid;
   }
 
   private DocNode target(final DocNode holder, final DocNode reference) {
