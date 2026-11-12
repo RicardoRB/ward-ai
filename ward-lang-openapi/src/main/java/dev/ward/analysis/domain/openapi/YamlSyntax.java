@@ -39,6 +39,9 @@ public final class YamlSyntax {
   /** The field with the text of a scalar or key. */
   public static final String VALUE = "value";
 
+  /** The field of a key that was written without quotes and that YAML reads as a number. */
+  public static final String NUMERIC = "numeric";
+
   /** The field of an expanded alias with the name of the anchor. */
   public static final String ALIAS = "alias";
 

@@ -1,0 +1,19 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths:
+  /a:
+    get:
+      operationId: g
+      responses:
+        default:
+          description: d
+    post:
+      responses:
+        200:
+          description: d
+        "404":
+          description: d
+    put:
+      responses: {}

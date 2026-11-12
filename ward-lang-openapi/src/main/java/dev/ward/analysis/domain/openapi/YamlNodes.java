@@ -24,6 +24,17 @@ final class YamlNodes {
     return scalar(YamlSyntax.KEY, span, value);
   }
 
+  /** A key written without quotes that YAML reads as a number, such as {@code 200:}. */
+  static SyntaxNode plainKey(final Span span, final String value) {
+    final SyntaxNode key = key(span, value);
+    if (!YamlSyntax.NUMBER.equals(YamlScalars.kindOf(value))) {
+      return key;
+    }
+    final Map<String, String> fields = new HashMap<>(key.fields());
+    fields.put(YamlSyntax.NUMERIC, "true");
+    return new SyntaxNode(key.kind(), key.span(), fields, key.children());
+  }
+
   static SyntaxNode entry(final SyntaxNode key, final SyntaxNode value) {
     return new SyntaxNode(
         YamlSyntax.ENTRY, cover(key.span(), value.span()), Map.of(), List.of(key, value));
@@ -31,12 +42,12 @@ final class YamlNodes {
 
   /** An object of {@code entries} that is written over {@code whole}. */
   static SyntaxNode object(final List<SyntaxNode> entries, final Span whole) {
-    return container(YamlSyntax.OBJECT, entries, whole);
+    return new SyntaxNode(YamlSyntax.OBJECT, whole, Map.of(), entries);
   }
 
   /** An array of {@code items} that is written over {@code whole}. */
   static SyntaxNode array(final List<SyntaxNode> items, final Span whole) {
-    return container(YamlSyntax.ARRAY, items, whole);
+    return new SyntaxNode(YamlSyntax.ARRAY, whole, Map.of(), items);
   }
 
   /** The node as an expanded alias: it keeps the children and the alias site's position. */
@@ -58,11 +69,6 @@ final class YamlNodes {
         last.endColumn(),
         first.startOffset(),
         last.endOffset());
-  }
-
-  private static SyntaxNode container(
-      final String kind, final List<SyntaxNode> children, final Span whole) {
-    return new SyntaxNode(kind, whole, Map.of(), children);
   }
 
   private static Map<String, String> withAlias(

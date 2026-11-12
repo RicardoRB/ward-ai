@@ -25,6 +25,17 @@ public final class OpenApiRules {
     rules.put("openapi-tags", TagRules::openapiTags);
     rules.put("openapi-tags-alphabetical", TagRules::alphabetical);
     rules.put("operation-description", DescriptionRules::operation);
+    rules.put("no-http-verbs-in-path", PathRules::noVerbs);
+    rules.put("no-request-body", ResponseRules::noRequestBody);
+    rules.put("operation-4xx-response", ResponseRules::clientErrorResponse);
+    rules.put("operation-operation-id-unique", OperationIdRules::unique);
+    rules.put("operation-operation-id-valid-in-url", OperationIdRules::validInUrl);
+    rules.put("operation-success-response", ResponseRules::successResponse);
+    rules.put("path-declarations-must-exist", PathRules::declarationsMustExist);
+    rules.put("path-keys-no-trailing-slash", PathRules::noTrailingSlash);
+    rules.put("path-not-include-query", PathRules::notIncludeQuery);
+    rules.put("paths-kebab-case", PathRules::kebabCase);
+    rules.put("post-response-success", ResponseRules::postSuccess);
     rules.put("operation-operation-id", new OperationOperationId());
     rules.put("operation-singular-tag", TagRules::singularTag);
     rules.put("operation-tag-defined", TagRules::tagDefined);

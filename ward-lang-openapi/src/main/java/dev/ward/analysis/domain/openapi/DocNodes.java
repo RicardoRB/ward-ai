@@ -27,7 +27,10 @@ final class DocNodes {
         final String child = pointer + "/" + name.replace("~", "~0").replace("/", "~1");
         entries.add(
             new DocNode.Entry(
-                name, key.span(), node(file, child, entry.children().getLast(), key.span())));
+                name,
+                key.span(),
+                node(file, child, entry.children().getLast(), key.span()),
+                key.fields().containsKey(YamlSyntax.NUMERIC)));
       }
     } else if (kind == DocNode.Kind.ARRAY) {
       for (final SyntaxNode item : syntax.children()) {

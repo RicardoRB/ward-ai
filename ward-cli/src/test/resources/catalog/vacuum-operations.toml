@@ -14,20 +14,14 @@ vacuum = ["no-ambiguous-paths"]
 
 [[rule]]
 name = "no-http-verbs-in-path"
-presets = ["standard", "strict"]
-category = "correctness"
 vacuum = ["no-http-verbs-in-path"]
 
 [[rule]]
 name = "no-request-body"
-presets = ["standard", "strict"]
-category = "correctness"
 vacuum = ["no-request-body"]
 
 [[rule]]
 name = "operation-4xx-response"
-presets = ["standard", "strict"]
-category = "correctness"
 vacuum = ["operation-4xx-response"]
 
 [[rule]]
@@ -36,14 +30,10 @@ vacuum = ["operation-operationId"]
 
 [[rule]]
 name = "operation-operation-id-unique"
-presets = ["standard", "strict"]
-category = "correctness"
 vacuum = ["operation-operationId-unique"]
 
 [[rule]]
 name = "operation-operation-id-valid-in-url"
-presets = ["standard", "strict"]
-category = "correctness"
 vacuum = ["operation-operationId-valid-in-url"]
 
 [[rule]]
@@ -54,14 +44,10 @@ vacuum = ["operation-parameters"]
 
 [[rule]]
 name = "operation-success-response"
-presets = ["standard", "strict"]
-category = "correctness"
 vacuum = ["operation-success-response"]
 
 [[rule]]
 name = "path-declarations-must-exist"
-presets = ["standard", "strict"]
-category = "correctness"
 vacuum = ["path-declarations-must-exist"]
 
 [[rule]]
@@ -72,14 +58,10 @@ vacuum = ["path-item-refs"]
 
 [[rule]]
 name = "path-keys-no-trailing-slash"
-presets = ["standard", "strict"]
-category = "correctness"
 vacuum = ["path-keys-no-trailing-slash"]
 
 [[rule]]
 name = "path-not-include-query"
-presets = ["standard", "strict"]
-category = "correctness"
 vacuum = ["path-not-include-query"]
 
 [[rule]]
@@ -90,8 +72,6 @@ vacuum = ["path-params"]
 
 [[rule]]
 name = "paths-kebab-case"
-presets = ["standard", "strict"]
-category = "correctness"
 vacuum = ["paths-kebab-case"]
 
 [[rule]]
@@ -102,6 +82,4 @@ vacuum = ["paths-specificity-order"]
 
 [[rule]]
 name = "post-response-success"
-presets = ["standard", "strict"]
-category = "correctness"
 vacuum = ["post-response-success"]

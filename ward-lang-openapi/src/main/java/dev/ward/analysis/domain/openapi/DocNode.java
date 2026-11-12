@@ -121,8 +121,9 @@ public record DocNode(
    * @param key the key text
    * @param keySpan where the key is written
    * @param value the value node
+   * @param numericKey whether the key was written without quotes and YAML reads it as a number
    */
-  public record Entry(String key, Span keySpan, DocNode value) {
+  public record Entry(String key, Span keySpan, DocNode value, boolean numericKey) {
 
     /**
      * Validates the parts.
@@ -133,6 +134,11 @@ public record DocNode(
       Objects.requireNonNull(key, "key");
       Objects.requireNonNull(keySpan, "keySpan");
       Objects.requireNonNull(value, "value");
+    }
+
+    /** An entry whose key is text, as every JSON key and every quoted YAML key is. */
+    public Entry(final String key, final Span keySpan, final DocNode value) {
+      this(key, keySpan, value, false);
     }
   }
 }

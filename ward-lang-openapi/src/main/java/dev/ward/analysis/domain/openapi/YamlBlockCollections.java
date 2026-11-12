@@ -115,7 +115,9 @@ final class YamlBlockCollections {
       throw cursor.fail("expected ':' after the key", cursor.pos());
     }
     cursor.advance(1);
-    return YamlNodes.key(lines.span(start, end), name);
+    return quoted
+        ? YamlNodes.key(lines.span(start, end), name)
+        : YamlNodes.plainKey(lines.span(start, end), name);
   }
 
   private String quotedKey(final char quote) {

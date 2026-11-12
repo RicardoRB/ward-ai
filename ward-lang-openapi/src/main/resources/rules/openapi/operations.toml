@@ -11,3 +11,124 @@ presets = ["standard", "strict"]
 body = '''
 check = "openapi-operation-operation-id"
 '''
+
+[[rules]]
+id = "ward:openapi/path-declarations-must-exist"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-path-declarations-must-exist"
+'''
+
+[[rules]]
+id = "ward:openapi/path-keys-no-trailing-slash"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-path-keys-no-trailing-slash"
+'''
+
+[[rules]]
+id = "ward:openapi/path-not-include-query"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-path-not-include-query"
+'''
+
+[[rules]]
+id = "ward:openapi/paths-kebab-case"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-paths-kebab-case"
+'''
+
+[[rules]]
+id = "ward:openapi/no-http-verbs-in-path"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-no-http-verbs-in-path"
+'''
+
+[[rules]]
+id = "ward:openapi/no-request-body"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-no-request-body"
+'''
+
+[[rules]]
+id = "ward:openapi/post-response-success"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-post-response-success"
+'''
+
+[[rules]]
+id = "ward:openapi/operation-success-response"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-operation-success-response"
+'''
+
+[[rules]]
+id = "ward:openapi/operation-4xx-response"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-operation-4xx-response"
+'''
+
+[[rules]]
+id = "ward:openapi/operation-operation-id-valid-in-url"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-operation-operation-id-valid-in-url"
+'''
+
+[[rules]]
+id = "ward:openapi/operation-operation-id-unique"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-operation-operation-id-unique"
+'''

@@ -2,19 +2,19 @@
 
 duplicate-paths = { status = "planned", issue = "#522" }
 no-ambiguous-paths = { status = "planned", issue = "#522" }
-no-http-verbs-in-path = { status = "planned", issue = "#522" }
-no-request-body = { status = "planned", issue = "#522" }
-operation-4xx-response = { status = "planned", issue = "#522" }
+no-http-verbs-in-path = "implemented"
+no-request-body = "implemented"
+operation-4xx-response = "implemented"
 operation-operation-id = "implemented"
-operation-operation-id-unique = { status = "planned", issue = "#522" }
-operation-operation-id-valid-in-url = { status = "planned", issue = "#522" }
+operation-operation-id-unique = "implemented"
+operation-operation-id-valid-in-url = "implemented"
 operation-parameters = { status = "planned", issue = "#522" }
-operation-success-response = { status = "planned", issue = "#522" }
-path-declarations-must-exist = { status = "planned", issue = "#522" }
+operation-success-response = "implemented"
+path-declarations-must-exist = "implemented"
 path-item-refs = { status = "planned", issue = "#522" }
-path-keys-no-trailing-slash = { status = "planned", issue = "#522" }
-path-not-include-query = { status = "planned", issue = "#522" }
+path-keys-no-trailing-slash = "implemented"
+path-not-include-query = "implemented"
 path-params = { status = "planned", issue = "#522" }
-paths-kebab-case = { status = "planned", issue = "#522" }
+paths-kebab-case = "implemented"
 paths-specificity-order = { status = "planned", issue = "#522" }
-post-response-success = { status = "planned", issue = "#522" }
+post-response-success = "implemented"

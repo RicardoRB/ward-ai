@@ -147,6 +147,7 @@ final class YamlFlow {
     final int keyStart = cursor.pos();
     final char first = cursor.peek();
     final String name;
+    boolean plain = false;
     if (first == DOUBLE) {
       name = scalars.doubleQuoted();
     } else if (first == SINGLE) {
@@ -155,11 +156,14 @@ final class YamlFlow {
       throw cursor.fail("this kind of key is not supported", keyStart);
     } else {
       name = text.read();
+      plain = true;
       if (name.isEmpty()) {
         throw cursor.fail("expected a key", keyStart);
       }
     }
-    return YamlNodes.key(lines.span(keyStart, cursor.pos()), name);
+    return plain
+        ? YamlNodes.plainKey(lines.span(keyStart, cursor.pos()), name)
+        : YamlNodes.key(lines.span(keyStart, cursor.pos()), name);
   }
 
   private SyntaxNode plain() {

@@ -1,0 +1,10 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths:
+  /a:
+    post:
+      responses:
+        "201":
+          description: d
