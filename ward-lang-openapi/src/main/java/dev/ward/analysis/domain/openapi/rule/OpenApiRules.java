@@ -29,6 +29,7 @@ public final class OpenApiRules {
     rules.put("info-license", InfoRules::license);
     rules.put("info-license-spdx", InfoRules::licenseSpdx);
     rules.put("license-url", InfoRules::licenseUrl);
+    rules.put("no-ambiguous-paths", PathStructureRules::ambiguousPaths);
     rules.put("no-eval-in-markdown", MarkdownRules::noEval);
     rules.put("no-http-verbs-in-path", PathRules::noVerbs);
     rules.put("no-request-body", ResponseRules::noRequestBody);
@@ -40,10 +41,10 @@ public final class OpenApiRules {
     rules.put("oas3-host-not-example", ServerRules::hostNotExample);
     rules.put("oas3-operation-security-defined", SecurityRules::operationSecurityDefined);
     rules.put("oas3-parameter-description", DescriptionRules::parameter);
-    rules.put("oas3-server-trailing-slash", ServerRules::trailingSlash);
   }
 
   private static void register2(final Map<String, OpenApiRule> rules) {
+    rules.put("oas3-server-trailing-slash", ServerRules::trailingSlash);
     rules.put("oas3-unused-component", UnusedComponentRules::unused);
     rules.put("openapi-tags", TagRules::openapiTags);
     rules.put("openapi-tags-alphabetical", TagRules::alphabetical);
@@ -52,6 +53,7 @@ public final class OpenApiRules {
     rules.put("operation-operation-id", new OperationOperationId());
     rules.put("operation-operation-id-unique", OperationIdRules::unique);
     rules.put("operation-operation-id-valid-in-url", OperationIdRules::validInUrl);
+    rules.put("operation-parameters", PathStructureRules::operationParameters);
     rules.put("operation-singular-tag", TagRules::singularTag);
     rules.put("operation-success-response", ResponseRules::successResponse);
     rules.put("operation-tag-defined", TagRules::tagDefined);
@@ -66,11 +68,11 @@ public final class OpenApiRules {
     rules.put("owasp-define-error-responses-429", OwaspResponseRules::tooManyRequests);
     rules.put("owasp-define-error-responses-500", OwaspResponseRules::serverError);
     rules.put("owasp-define-error-validation", OwaspResponseRules::errorValidation);
-    rules.put("owasp-integer-format", OwaspSchemaRules::integerFormat);
-    rules.put("owasp-integer-limit", OwaspSchemaRules::integerLimit);
   }
 
   private static void register3(final Map<String, OpenApiRule> rules) {
+    rules.put("owasp-integer-format", OwaspSchemaRules::integerFormat);
+    rules.put("owasp-integer-limit", OwaspSchemaRules::integerLimit);
     rules.put("owasp-jwt-best-practices", OwaspSchemeRules::jwtBestPractices);
     rules.put(
         "owasp-no-additional-properties", OwaspAdditionalPropertiesRules::noAdditionalProperties);
@@ -89,14 +91,15 @@ public final class OpenApiRules {
     rules.put("owasp-string-limit", OwaspSchemaRules::stringLimit);
     rules.put("owasp-string-restricted", OwaspSchemaRules::stringRestricted);
     rules.put("path-declarations-must-exist", PathRules::declarationsMustExist);
+    rules.put("path-item-refs", PathStructureRules::pathItemRefs);
     rules.put("path-keys-no-trailing-slash", PathRules::noTrailingSlash);
     rules.put("path-not-include-query", PathRules::notIncludeQuery);
-    rules.put("paths-kebab-case", PathRules::kebabCase);
-    rules.put("post-response-success", ResponseRules::postSuccess);
-    rules.put("required-fields-defined", SchemaShapeRules::requiredDefined);
   }
 
   private static void register4(final Map<String, OpenApiRule> rules) {
+    rules.put("paths-kebab-case", PathRules::kebabCase);
+    rules.put("post-response-success", ResponseRules::postSuccess);
+    rules.put("required-fields-defined", SchemaShapeRules::requiredDefined);
     rules.put("tag-description", TagRules::description);
     rules.put("typed-enum", EnumRules::typed);
   }

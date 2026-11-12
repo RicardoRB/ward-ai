@@ -1,16 +1,16 @@
 # Status of the vacuum-operations rows in openapi: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
-no-ambiguous-paths = { status = "planned", issue = "#522" }
+no-ambiguous-paths = "implemented"
 no-http-verbs-in-path = "implemented"
 no-request-body = "implemented"
 operation-4xx-response = "implemented"
 operation-operation-id = "implemented"
 operation-operation-id-unique = "implemented"
 operation-operation-id-valid-in-url = "implemented"
-operation-parameters = { status = "planned", issue = "#522" }
+operation-parameters = "implemented"
 operation-success-response = "implemented"
 path-declarations-must-exist = "implemented"
-path-item-refs = { status = "planned", issue = "#522" }
+path-item-refs = "implemented"
 path-keys-no-trailing-slash = "implemented"
 path-not-include-query = "implemented"
 path-params = { status = "planned", issue = "#522" }

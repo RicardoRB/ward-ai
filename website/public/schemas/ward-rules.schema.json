@@ -32649,6 +32649,25 @@
         }
       }
     },
+    "ward:openapi/no-ambiguous-paths": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:openapi/no-eval-in-markdown": {
       "type": "object",
       "additionalProperties": false,
@@ -33011,6 +33030,25 @@
       }
     },
     "ward:openapi/operation-operation-id-valid-in-url": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/operation-parameters": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33600,6 +33638,25 @@
       }
     },
     "ward:openapi/path-declarations-must-exist": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:openapi/path-item-refs": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -55183,6 +55240,7 @@
               "openapi.info-license",
               "openapi.info-license-spdx",
               "openapi.license-url",
+              "openapi.no-ambiguous-paths",
               "openapi.no-eval-in-markdown",
               "openapi.no-http-verbs-in-path",
               "openapi.no-request-body",
@@ -55203,6 +55261,7 @@
               "openapi.operation-operation-id",
               "openapi.operation-operation-id-unique",
               "openapi.operation-operation-id-valid-in-url",
+              "openapi.operation-parameters",
               "openapi.operation-singular-tag",
               "openapi.operation-success-response",
               "openapi.operation-tag-defined",
@@ -55234,6 +55293,7 @@
               "openapi.owasp-string-limit",
               "openapi.owasp-string-restricted",
               "openapi.path-declarations-must-exist",
+              "openapi.path-item-refs",
               "openapi.path-keys-no-trailing-slash",
               "openapi.path-not-include-query",
               "openapi.paths-kebab-case",
@@ -57914,6 +57974,7 @@
               "openapi.info-license",
               "openapi.info-license-spdx",
               "openapi.license-url",
+              "openapi.no-ambiguous-paths",
               "openapi.no-eval-in-markdown",
               "openapi.no-http-verbs-in-path",
               "openapi.no-request-body",
@@ -57934,6 +57995,7 @@
               "openapi.operation-operation-id",
               "openapi.operation-operation-id-unique",
               "openapi.operation-operation-id-valid-in-url",
+              "openapi.operation-parameters",
               "openapi.operation-singular-tag",
               "openapi.operation-success-response",
               "openapi.operation-tag-defined",
@@ -57965,6 +58027,7 @@
               "openapi.owasp-string-limit",
               "openapi.owasp-string-restricted",
               "openapi.path-declarations-must-exist",
+              "openapi.path-item-refs",
               "openapi.path-keys-no-trailing-slash",
               "openapi.path-not-include-query",
               "openapi.paths-kebab-case",
@@ -63986,6 +64049,9 @@
             "license-url": {
               "$ref": "#/$defs/ward:openapi~1license-url"
             },
+            "no-ambiguous-paths": {
+              "$ref": "#/$defs/ward:openapi~1no-ambiguous-paths"
+            },
             "no-eval-in-markdown": {
               "$ref": "#/$defs/ward:openapi~1no-eval-in-markdown"
             },
@@ -64045,6 +64111,9 @@
             },
             "operation-operation-id-valid-in-url": {
               "$ref": "#/$defs/ward:openapi~1operation-operation-id-valid-in-url"
+            },
+            "operation-parameters": {
+              "$ref": "#/$defs/ward:openapi~1operation-parameters"
             },
             "operation-singular-tag": {
               "$ref": "#/$defs/ward:openapi~1operation-singular-tag"
@@ -64138,6 +64207,9 @@
             },
             "path-declarations-must-exist": {
               "$ref": "#/$defs/ward:openapi~1path-declarations-must-exist"
+            },
+            "path-item-refs": {
+              "$ref": "#/$defs/ward:openapi~1path-item-refs"
             },
             "path-keys-no-trailing-slash": {
               "$ref": "#/$defs/ward:openapi~1path-keys-no-trailing-slash"

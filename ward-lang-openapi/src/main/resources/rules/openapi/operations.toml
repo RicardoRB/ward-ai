@@ -132,3 +132,36 @@ presets = ["standard", "strict"]
 body = '''
 check = "openapi-operation-operation-id-unique"
 '''
+
+[[rules]]
+id = "ward:openapi/no-ambiguous-paths"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-no-ambiguous-paths"
+'''
+
+[[rules]]
+id = "ward:openapi/operation-parameters"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-operation-parameters"
+'''
+
+[[rules]]
+id = "ward:openapi/path-item-refs"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-path-item-refs"
+'''

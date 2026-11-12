@@ -2,8 +2,6 @@
 
 [[rule]]
 name = "no-ambiguous-paths"
-presets = ["standard", "strict"]
-category = "correctness"
 vacuum = ["no-ambiguous-paths"]
 
 [[rule]]
@@ -32,8 +30,6 @@ vacuum = ["operation-operationId-valid-in-url"]
 
 [[rule]]
 name = "operation-parameters"
-presets = ["standard", "strict"]
-category = "correctness"
 vacuum = ["operation-parameters"]
 
 [[rule]]
@@ -46,8 +42,6 @@ vacuum = ["path-declarations-must-exist"]
 
 [[rule]]
 name = "path-item-refs"
-presets = ["standard", "strict"]
-category = "correctness"
 vacuum = ["path-item-refs"]
 
 [[rule]]
