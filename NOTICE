@@ -19,12 +19,32 @@ Apache License, Version 2.0 (see LICENSE):
   * Picocli (https://github.com/remkop/picocli)
   * tomlj (https://github.com/tomlj/tomlj)
   * Apache Fory (https://fory.apache.org/)
+  * Plexus Common Utilities (https://codehaus-plexus.github.io/plexus-utils/)
+  * OSGi service prefs and annotations (https://docs.osgi.org/)
+  * Java Native Access (https://github.com/java-native-access/jna), which is
+    dual-licensed under Apache-2.0 or LGPL-2.1-or-later; Ward uses it under
+    Apache-2.0
 
 BSD 3-Clause License (license texts below):
 
   * Janino and commons-compiler (https://github.com/janino-compiler/janino)
   * Kryo, portions included in Apache Fory
     (https://github.com/EsotericSoftware/kryo)
+
+Eclipse Public License, Version 2.0 (https://www.eclipse.org/legal/epl-2.0/):
+
+  * Eclipse Compiler for Java (ecj) and Java Development Tools Core
+    (https://github.com/eclipse-jdt/eclipse.jdt.core/)
+  * Eclipse Platform core, text and runtime bundles:
+    org.eclipse.core.commands, contenttype, expressions, filesystem, jobs,
+    resources and runtime, org.eclipse.text
+    (https://github.com/eclipse-platform/eclipse.platform/ and
+    https://github.com/eclipse-platform/eclipse.platform.ui/)
+  * Eclipse Equinox bundles: app, common, preferences, registry and osgi
+    (https://github.com/eclipse-equinox/equinox/)
+
+  These components are distributed unmodified. Their source code is available
+  at the URLs above.
 
 MIT License (license text below):
 

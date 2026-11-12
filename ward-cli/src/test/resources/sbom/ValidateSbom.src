@@ -1,0 +1,14 @@
+import java.io.File;
+import java.util.List;
+import org.cyclonedx.Version;
+import org.cyclonedx.exception.ParseException;
+import org.cyclonedx.parsers.JsonParser;
+
+/** Validates the CycloneDX 1.6 JSON file named by the first argument against the official schema. */
+public class ValidateSbom {
+  public static void main(final String[] args) throws Exception {
+    final List<ParseException> errors = new JsonParser().validate(new File(args[0]), Version.VERSION_16);
+    errors.forEach(error -> System.out.println(error.getMessage()));
+    System.exit(errors.isEmpty() ? 0 : 1);
+  }
+}
