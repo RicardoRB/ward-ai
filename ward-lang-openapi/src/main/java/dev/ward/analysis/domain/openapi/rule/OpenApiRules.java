@@ -99,6 +99,7 @@ public final class OpenApiRules {
   private static void register4(final Map<String, OpenApiRule> rules) {
     rules.put("path-params", PathParameterRules::pathParams);
     rules.put("paths-kebab-case", PathRules::kebabCase);
+    rules.put("paths-specificity-order", SpecificityRules::order);
     rules.put("post-response-success", ResponseRules::postSuccess);
     rules.put("required-fields-defined", SchemaShapeRules::requiredDefined);
     rules.put("tag-description", TagRules::description);

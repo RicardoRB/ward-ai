@@ -59,7 +59,7 @@ final class AmbiguousPathRules {
     return findings;
   }
 
-  private static List<String> methods(final DocNode item) {
+  static List<String> methods(final DocNode item) {
     return item.entries().stream().map(DocNode.Entry::key).filter(METHODS::contains).toList();
   }
 
@@ -88,7 +88,7 @@ final class AmbiguousPathRules {
     return true;
   }
 
-  private static boolean compatible(
+  static boolean compatible(
       final String left, final DocNode leftItem, final String right, final DocNode rightItem) {
     final String leftType = parameterType(leftItem, name(left));
     final String rightType = parameterType(rightItem, name(right));
@@ -99,16 +99,16 @@ final class AmbiguousPathRules {
             || Set.of(leftType, rightType).equals(Set.of("integer", "number")));
   }
 
-  private static boolean isVariable(final String segment) {
+  static boolean isVariable(final String segment) {
     return segment.length() > MIN_VARIABLE && segment.startsWith("{") && segment.endsWith("}");
   }
 
-  private static String operator(final String segment) {
+  static String operator(final String segment) {
     final String inner = segment.substring(1, segment.length() - 1);
     return !inner.isEmpty() && "+#./;?&".indexOf(inner.charAt(0)) >= 0 ? inner.substring(0, 1) : "";
   }
 
-  private static String name(final String segment) {
+  static String name(final String segment) {
     String inner = segment.substring(1, segment.length() - 1);
     inner = operator(segment).isEmpty() ? inner : inner.substring(1);
     inner = inner.endsWith("*") ? inner.substring(0, inner.length() - 1) : inner;
@@ -119,7 +119,7 @@ final class AmbiguousPathRules {
   }
 
   /** The first declared type of the path parameter, at the path item or in an operation. */
-  private static String parameterType(final DocNode item, final String name) {
+  static String parameterType(final DocNode item, final String name) {
     final List<DocNode> parameters = new ArrayList<>(OperationNodes.parameters(item));
     for (final DocNode.Entry method : item.entries()) {
       if (METHODS.contains(method.key())) {

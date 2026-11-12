@@ -1,0 +1,23 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths:
+  /pets/mine:
+    get:
+      responses:
+        "200":
+          description: d
+  /pets/{id}:
+    get:
+      responses:
+        "200":
+          description: d
+  /a/{x}:
+    post:
+      responses: {}
+  /a/b:
+    get:
+      responses:
+        "200":
+          description: d

@@ -62,8 +62,6 @@ vacuum = ["paths-kebab-case"]
 
 [[rule]]
 name = "paths-specificity-order"
-presets = ["standard", "strict"]
-category = "correctness"
 vacuum = ["paths-specificity-order"]
 
 [[rule]]

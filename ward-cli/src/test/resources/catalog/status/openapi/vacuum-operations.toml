@@ -15,5 +15,5 @@ path-keys-no-trailing-slash = "implemented"
 path-not-include-query = "implemented"
 path-params = "implemented"
 paths-kebab-case = "implemented"
-paths-specificity-order = { status = "planned", issue = "#522" }
+paths-specificity-order = "implemented"
 post-response-success = "implemented"

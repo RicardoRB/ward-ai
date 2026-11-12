@@ -33751,6 +33751,25 @@
         }
       }
     },
+    "ward:openapi/paths-specificity-order": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:openapi/post-response-success": {
       "type": "object",
       "additionalProperties": false,
@@ -55317,6 +55336,7 @@
               "openapi.path-not-include-query",
               "openapi.path-params",
               "openapi.paths-kebab-case",
+              "openapi.paths-specificity-order",
               "openapi.post-response-success",
               "openapi.required-fields-defined",
               "openapi.tag-description",
@@ -58052,6 +58072,7 @@
               "openapi.path-not-include-query",
               "openapi.path-params",
               "openapi.paths-kebab-case",
+              "openapi.paths-specificity-order",
               "openapi.post-response-success",
               "openapi.required-fields-defined",
               "openapi.tag-description",
@@ -64243,6 +64264,9 @@
             },
             "paths-kebab-case": {
               "$ref": "#/$defs/ward:openapi~1paths-kebab-case"
+            },
+            "paths-specificity-order": {
+              "$ref": "#/$defs/ward:openapi~1paths-specificity-order"
             },
             "post-response-success": {
               "$ref": "#/$defs/ward:openapi~1post-response-success"

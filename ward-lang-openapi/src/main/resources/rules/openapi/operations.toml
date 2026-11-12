@@ -176,3 +176,14 @@ presets = ["standard", "strict"]
 body = '''
 check = "openapi-path-params"
 '''
+
+[[rules]]
+id = "ward:openapi/paths-specificity-order"
+language = "openapi"
+capability = "SYNTAX"
+severity = "note"
+category = "style"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-paths-specificity-order"
+'''
