@@ -3,7 +3,6 @@ package dev.ward.application.init;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.application.project.ProjectDetector;
-import dev.ward.domain.FakeCommandExecutor;
 import dev.ward.domain.FakeEnvironmentInspection;
 import dev.ward.domain.init.InitSelection;
 import dev.ward.domain.init.ToolInstallationChange;
@@ -14,7 +13,6 @@ import dev.ward.infrastructure.init.FileConfigurationStorage;
 import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
 import dev.ward.infrastructure.init.RuleFileTargetsFixtures;
-import dev.ward.infrastructure.init.python.PythonBuildToolConfigurator;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,11 +25,7 @@ import org.junit.jupiter.api.io.TempDir;
 class InitToolLifecycleTest {
   @Test
   void selectedGateWithoutConsentDoesNotInvokeInstaller(@TempDir final Path root) throws Exception {
-    Files.createDirectories(root.resolve(".venv"));
-    Files.createDirectories(root.resolve("src"));
-    Files.writeString(root.resolve("src/app.py"), "x = 1\n");
-    Files.writeString(
-        root.resolve("pyproject.toml"), "[project]\nname = \"demo\"\nversion = \"1\"\n");
+    PythonInitFixtures.project(root);
     final RecordingInstaller installer = new RecordingInstaller(true);
 
     service(installer).initialize(root, selection(List.of()));
@@ -41,11 +35,7 @@ class InitToolLifecycleTest {
 
   @Test
   void consentInstallsTheGateTool(@TempDir final Path root) throws Exception {
-    Files.createDirectories(root.resolve(".venv"));
-    Files.createDirectories(root.resolve("src"));
-    Files.writeString(root.resolve("src/app.py"), "x = 1\n");
-    Files.writeString(
-        root.resolve("pyproject.toml"), "[project]\nname = \"demo\"\nversion = \"1\"\n");
+    PythonInitFixtures.project(root);
     final RecordingInstaller installer = new RecordingInstaller(true);
 
     service(installer).initialize(root, selection(List.of("semgrep")));
@@ -55,11 +45,7 @@ class InitToolLifecycleTest {
 
   @Test
   void unavailableInstallerStillWritesTheConfiguration(@TempDir final Path root) throws Exception {
-    Files.createDirectories(root.resolve(".venv"));
-    Files.createDirectories(root.resolve("src"));
-    Files.writeString(root.resolve("src/app.py"), "x = 1\n");
-    Files.writeString(
-        root.resolve("pyproject.toml"), "[project]\nname = \"demo\"\nversion = \"1\"\n");
+    PythonInitFixtures.project(root);
     final RecordingInstaller installer = new RecordingInstaller(false);
 
     service(installer).initialize(root, selection(List.of("semgrep")));
@@ -79,7 +65,7 @@ class InitToolLifecycleTest {
         Set.of(),
         new InitSetupCatalog(new FakeEnvironmentInspection()),
         new InitProjectFiles(
-            new PythonBuildToolConfigurator(new FakeCommandExecutor(0, "", "")),
+            PythonInitFixtures.configurator(),
             new PresetRuleFileWriter(RuleFileTargetsFixtures.defaults()),
             ArchitectureTablesFixtures.create(),
             new FileConfigurationStorage(),

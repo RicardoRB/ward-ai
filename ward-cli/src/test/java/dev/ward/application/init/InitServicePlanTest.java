@@ -7,7 +7,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import dev.ward.JavaPresetGates;
 import dev.ward.ProjectSnapshot;
 import dev.ward.application.project.ProjectDetector;
-import dev.ward.domain.FakeCommandExecutor;
 import dev.ward.domain.FakeEnvironmentInspection;
 import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.agent.PlannedFileChange.Action;
@@ -22,7 +21,6 @@ import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.QualityHookInstaller;
 import dev.ward.infrastructure.init.RuleFileTargetsFixtures;
 import dev.ward.infrastructure.init.maven.PomToolConfigurator;
-import dev.ward.infrastructure.init.python.PythonBuildToolConfigurator;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -76,15 +74,11 @@ class InitServicePlanTest {
   @Test
   void aMissingGateExecutableIsDescribedWithoutRunningAnInstaller(@TempDir final Path dir)
       throws IOException {
-    Files.createDirectories(dir.resolve(".venv"));
-    Files.createDirectories(dir.resolve("src"));
-    Files.writeString(dir.resolve("src/app.py"), "x = 1\n");
-    Files.writeString(
-        dir.resolve("pyproject.toml"), "[project]\nname = \"demo\"\nversion = \"1\"\n");
+    PythonInitFixtures.project(dir);
     final Map<String, String> before = ProjectSnapshot.of(dir);
 
     final InitPlan plan =
-        service(new PythonBuildToolConfigurator(new FakeCommandExecutor(0, "", "")))
+        service(PythonInitFixtures.configurator())
             .plan(dir, new InitSelection(List.of("none"), List.of("semgrep")), false);
 
     assertThat(plan.gateInstallations()).extracting("tool").containsExactly("semgrep");
