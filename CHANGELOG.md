@@ -32,6 +32,12 @@ still change behavior. Breaking changes are called out under **Changed**.
 - **Breaking (alpha, no migration):** the `license` gate no longer runs a build plugin. A `license` check that sets `command` is a configuration error, a license Ward cannot find or recognize now fails the gate (`unknown = "warn"` only warns), and init no longer writes `license-maven-plugin`, `com.github.jk1.dependency-license-report`, `licenseMerges` or `licenseReport` (#520).
 - **Breaking (alpha, no migration):** `openapi-diff` and `openapi-compat` compare the spec with Ward's own rules instead of running `oasdiff`. A `command` on either gate is now a configuration error (exit `2`); remove it. Init no longer offers or installs oasdiff, `ward doctor` no longer looks for it, and `.oasdiff.*` files and `OASDIFF_CONFIG` are ignored. A spec, reference or Git read failure at either side of the comparison is an execution error (#523).
 
+## [0.7.1] - 2026-11-12
+
+### Fixed
+
+- A `break` or `continue` outside a loop, or a jump to a label that does not exist, no longer aborts the `ward` gate with `unexpected error`: the jump leaves the body like a `return`, and the other files and rules still run (#530).
+
 ## [0.7.0] - 2026-11-11
 
 ### Added
@@ -337,6 +343,7 @@ Initial release, published as `sentinel-ai`.
 - A bounded quality loop and a typed gate registry.
 - Starlight documentation site.
 
+[0.7.1]: https://github.com/RicardoRB/ward-ai/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/RicardoRB/ward-ai/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/RicardoRB/ward-ai/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/RicardoRB/ward-ai/compare/v0.4.1...v0.5.0
