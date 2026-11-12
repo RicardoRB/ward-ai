@@ -1,5 +1,6 @@
 package dev.ward.application.gate;
 
+import dev.ward.application.gate.apicompat.ApiCompatGates;
 import dev.ward.application.gate.buildpolicy.BuildPolicyGates;
 import dev.ward.application.license.LicenseService;
 
@@ -9,5 +10,7 @@ import dev.ward.application.license.LicenseService;
  *
  * @param license looks up the licenses of the {@code license} gate, or {@code null}
  * @param buildPolicy builds the {@code build-policy} gate, or {@code null}
+ * @param apiCompat builds the native {@code api-compat} gate, or {@code null}
  */
-public record PolicyGatePorts(LicenseService license, BuildPolicyGates buildPolicy) {}
+public record PolicyGatePorts(
+    LicenseService license, BuildPolicyGates buildPolicy, ApiCompatGates apiCompat) {}
