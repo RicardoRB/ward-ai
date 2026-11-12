@@ -111,7 +111,14 @@ final class InitCommandFixture {
             Set.of(new ClaudeCodeIntegration()),
             new InitSetupCatalog(
                 new dev.ward.application.init.InitPorts(
-                    new FakeEnvironmentInspection(executables),
+                    new FakeEnvironmentInspection(executables) {
+                      @Override
+                      public Optional<String> openApiSpec(final Path projectRoot) {
+                        return Files.exists(projectRoot.resolve("openapi.yml"))
+                            ? Optional.of("openapi.yml")
+                            : Optional.empty();
+                      }
+                    },
                     new NodeInputs(
                         new dev.ward.infrastructure.project.node.FileSystemPackageManifests(),
                         new FileSystemNodeSources(),

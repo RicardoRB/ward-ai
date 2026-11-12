@@ -112,6 +112,6 @@ class InitCrapOfferTest {
   private List<InitGateOption> resolve(
       final Project project, final QualityPreset preset, final List<String> ids) {
     return SelectedGates.resolve(
-        catalog, project, new InitSelection(List.of("none"), ids, null, preset), "openspec");
+        catalog, project, new InitSelection(List.of("none"), ids, null, preset));
   }
 }

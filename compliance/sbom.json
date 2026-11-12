@@ -56,12 +56,12 @@
     },
     "component" : {
       "type" : "application",
-      "bom-ref" : "pkg:maven/dev.ward/ward-parent@0.7.0?type=pom",
+      "bom-ref" : "pkg:maven/dev.ward/ward-parent@0.7.1?type=pom",
       "group" : "dev.ward",
       "name" : "ward-parent",
-      "version" : "0.7.0",
+      "version" : "0.7.1",
       "description" : "Ward: a quality gate orchestrator for AI coding agents",
-      "purl" : "pkg:maven/dev.ward/ward-parent@0.7.0?type=pom"
+      "purl" : "pkg:maven/dev.ward/ward-parent@0.7.1?type=pom"
     },
     "properties" : [
       {
@@ -81,10 +81,10 @@
   "components" : [
     {
       "type" : "library",
-      "bom-ref" : "pkg:maven/dev.ward/ward-analysis-api@0.7.0?type=jar",
+      "bom-ref" : "pkg:maven/dev.ward/ward-analysis-api@0.7.1?type=jar",
       "group" : "dev.ward",
       "name" : "ward-analysis-api",
-      "version" : "0.7.0",
+      "version" : "0.7.1",
       "description" : "Ward analysis engine API: a dependency-free intermediate representation and ports for language frontends",
       "licenses" : [
         {
@@ -93,7 +93,7 @@
           }
         }
       ],
-      "purl" : "pkg:maven/dev.ward/ward-analysis-api@0.7.0?type=jar"
+      "purl" : "pkg:maven/dev.ward/ward-analysis-api@0.7.1?type=jar"
     },
     {
       "type" : "library",
@@ -158,10 +158,10 @@
     },
     {
       "type" : "library",
-      "bom-ref" : "pkg:maven/dev.ward/ward-analysis-engine@0.7.0?type=jar",
+      "bom-ref" : "pkg:maven/dev.ward/ward-analysis-engine@0.7.1?type=jar",
       "group" : "dev.ward",
       "name" : "ward-analysis-engine",
-      "version" : "0.7.0",
+      "version" : "0.7.1",
       "description" : "Ward analysis rule engine: capability-gated rules over syntax trees, with deterministic findings",
       "licenses" : [
         {
@@ -170,7 +170,7 @@
           }
         }
       ],
-      "purl" : "pkg:maven/dev.ward/ward-analysis-engine@0.7.0?type=jar"
+      "purl" : "pkg:maven/dev.ward/ward-analysis-engine@0.7.1?type=jar"
     },
     {
       "type" : "library",
@@ -235,10 +235,10 @@
     },
     {
       "type" : "library",
-      "bom-ref" : "pkg:maven/dev.ward/ward-frontend-antlr@0.7.0?type=jar",
+      "bom-ref" : "pkg:maven/dev.ward/ward-frontend-antlr@0.7.1?type=jar",
       "group" : "dev.ward",
       "name" : "ward-frontend-antlr",
-      "version" : "0.7.0",
+      "version" : "0.7.1",
       "description" : "Ward ANTLR language frontends: parses Java, Kotlin, TypeScript, JavaScript, Python and Swift into the analysis syntax tree",
       "licenses" : [
         {
@@ -247,7 +247,7 @@
           }
         }
       ],
-      "purl" : "pkg:maven/dev.ward/ward-frontend-antlr@0.7.0?type=jar"
+      "purl" : "pkg:maven/dev.ward/ward-frontend-antlr@0.7.1?type=jar"
     },
     {
       "type" : "library",
@@ -326,10 +326,10 @@
     },
     {
       "type" : "library",
-      "bom-ref" : "pkg:maven/dev.ward/ward-lang-jvm@0.7.0?type=jar",
+      "bom-ref" : "pkg:maven/dev.ward/ward-lang-jvm@0.7.1?type=jar",
       "group" : "dev.ward",
       "name" : "ward-lang-jvm",
-      "version" : "0.7.0",
+      "version" : "0.7.1",
       "description" : "Ward Java analysis: declarative rule files for the structural checks of Java sources, and the module and package resolution of Java imports",
       "licenses" : [
         {
@@ -338,14 +338,14 @@
           }
         }
       ],
-      "purl" : "pkg:maven/dev.ward/ward-lang-jvm@0.7.0?type=jar"
+      "purl" : "pkg:maven/dev.ward/ward-lang-jvm@0.7.1?type=jar"
     },
     {
       "type" : "library",
-      "bom-ref" : "pkg:maven/dev.ward/ward-lang-node@0.7.0?type=jar",
+      "bom-ref" : "pkg:maven/dev.ward/ward-lang-node@0.7.1?type=jar",
       "group" : "dev.ward",
       "name" : "ward-lang-node",
-      "version" : "0.7.0",
+      "version" : "0.7.1",
       "description" : "Ward structural rules for TypeScript and JavaScript, run by the analysis engine on the shared syntax tree",
       "licenses" : [
         {
@@ -354,14 +354,14 @@
           }
         }
       ],
-      "purl" : "pkg:maven/dev.ward/ward-lang-node@0.7.0?type=jar"
+      "purl" : "pkg:maven/dev.ward/ward-lang-node@0.7.1?type=jar"
     },
     {
       "type" : "library",
-      "bom-ref" : "pkg:maven/dev.ward/ward-lang-python@0.7.0?type=jar",
+      "bom-ref" : "pkg:maven/dev.ward/ward-lang-python@0.7.1?type=jar",
       "group" : "dev.ward",
       "name" : "ward-lang-python",
-      "version" : "0.7.0",
+      "version" : "0.7.1",
       "description" : "Ward Python structural rules: function length, parameter count, complexity, file length and naming, as declarative rule data",
       "licenses" : [
         {
@@ -370,14 +370,14 @@
           }
         }
       ],
-      "purl" : "pkg:maven/dev.ward/ward-lang-python@0.7.0?type=jar"
+      "purl" : "pkg:maven/dev.ward/ward-lang-python@0.7.1?type=jar"
     },
     {
       "type" : "library",
-      "bom-ref" : "pkg:maven/dev.ward/ward-lang-swift@0.7.0?type=jar",
+      "bom-ref" : "pkg:maven/dev.ward/ward-lang-swift@0.7.1?type=jar",
       "group" : "dev.ward",
       "name" : "ward-lang-swift",
-      "version" : "0.7.0",
+      "version" : "0.7.1",
       "description" : "Ward Swift structural rules: function length, parameter count, complexity, file length, type body length and naming, as declarative rule data",
       "licenses" : [
         {
@@ -386,16 +386,32 @@
           }
         }
       ],
-      "purl" : "pkg:maven/dev.ward/ward-lang-swift@0.7.0?type=jar"
+      "purl" : "pkg:maven/dev.ward/ward-lang-swift@0.7.1?type=jar"
+    },
+    {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/dev.ward/ward-lang-openapi@0.7.1?type=jar",
+      "group" : "dev.ward",
+      "name" : "ward-lang-openapi",
+      "version" : "0.7.1",
+      "description" : "Ward OpenAPI lint rules: a YAML and JSON parser with positions, the OpenAPI document model with resolved references, and the rules over it",
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/dev.ward/ward-lang-openapi@0.7.1?type=jar"
     },
     {
       "type" : "application",
-      "bom-ref" : "pkg:maven/dev.ward/ward-cli@0.7.0?type=jar",
+      "bom-ref" : "pkg:maven/dev.ward/ward-cli@0.7.1?type=jar",
       "group" : "dev.ward",
       "name" : "ward-cli",
-      "version" : "0.7.0",
+      "version" : "0.7.1",
       "description" : "Ward command-line interface: a quality gate orchestrator for AI coding agents",
-      "purl" : "pkg:maven/dev.ward/ward-cli@0.7.0?type=jar"
+      "purl" : "pkg:maven/dev.ward/ward-cli@0.7.1?type=jar"
     },
     {
       "type" : "library",
@@ -2197,26 +2213,27 @@
   ],
   "dependencies" : [
     {
-      "ref" : "pkg:maven/dev.ward/ward-parent@0.7.0?type=pom",
+      "ref" : "pkg:maven/dev.ward/ward-parent@0.7.1?type=pom",
       "dependsOn" : [
-        "pkg:maven/dev.ward/ward-analysis-api@0.7.0?type=jar",
-        "pkg:maven/dev.ward/ward-analysis-engine@0.7.0?type=jar",
-        "pkg:maven/dev.ward/ward-frontend-antlr@0.7.0?type=jar",
-        "pkg:maven/dev.ward/ward-lang-jvm@0.7.0?type=jar",
-        "pkg:maven/dev.ward/ward-lang-node@0.7.0?type=jar",
-        "pkg:maven/dev.ward/ward-lang-python@0.7.0?type=jar",
-        "pkg:maven/dev.ward/ward-lang-swift@0.7.0?type=jar",
-        "pkg:maven/dev.ward/ward-cli@0.7.0?type=jar"
+        "pkg:maven/dev.ward/ward-analysis-api@0.7.1?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-engine@0.7.1?type=jar",
+        "pkg:maven/dev.ward/ward-frontend-antlr@0.7.1?type=jar",
+        "pkg:maven/dev.ward/ward-lang-jvm@0.7.1?type=jar",
+        "pkg:maven/dev.ward/ward-lang-node@0.7.1?type=jar",
+        "pkg:maven/dev.ward/ward-lang-python@0.7.1?type=jar",
+        "pkg:maven/dev.ward/ward-lang-swift@0.7.1?type=jar",
+        "pkg:maven/dev.ward/ward-lang-openapi@0.7.1?type=jar",
+        "pkg:maven/dev.ward/ward-cli@0.7.1?type=jar"
       ]
     },
     {
-      "ref" : "pkg:maven/dev.ward/ward-analysis-api@0.7.0?type=jar",
+      "ref" : "pkg:maven/dev.ward/ward-analysis-api@0.7.1?type=jar",
       "dependsOn" : [ ]
     },
     {
-      "ref" : "pkg:maven/dev.ward/ward-analysis-engine@0.7.0?type=jar",
+      "ref" : "pkg:maven/dev.ward/ward-analysis-engine@0.7.1?type=jar",
       "dependsOn" : [
-        "pkg:maven/dev.ward/ward-analysis-api@0.7.0?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-api@0.7.1?type=jar",
         "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar"
       ]
     },
@@ -2225,10 +2242,10 @@
       "dependsOn" : [ ]
     },
     {
-      "ref" : "pkg:maven/dev.ward/ward-frontend-antlr@0.7.0?type=jar",
+      "ref" : "pkg:maven/dev.ward/ward-frontend-antlr@0.7.1?type=jar",
       "dependsOn" : [
-        "pkg:maven/dev.ward/ward-analysis-api@0.7.0?type=jar",
-        "pkg:maven/dev.ward/ward-analysis-engine@0.7.0?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-api@0.7.1?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-engine@0.7.1?type=jar",
         "pkg:maven/org.antlr/antlr4-runtime@4.13.2?type=jar"
       ]
     },
@@ -2237,52 +2254,61 @@
       "dependsOn" : [ ]
     },
     {
-      "ref" : "pkg:maven/dev.ward/ward-lang-jvm@0.7.0?type=jar",
+      "ref" : "pkg:maven/dev.ward/ward-lang-jvm@0.7.1?type=jar",
       "dependsOn" : [
-        "pkg:maven/dev.ward/ward-analysis-api@0.7.0?type=jar",
-        "pkg:maven/dev.ward/ward-analysis-engine@0.7.0?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-api@0.7.1?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-engine@0.7.1?type=jar",
         "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar"
       ]
     },
     {
-      "ref" : "pkg:maven/dev.ward/ward-lang-node@0.7.0?type=jar",
+      "ref" : "pkg:maven/dev.ward/ward-lang-node@0.7.1?type=jar",
       "dependsOn" : [
-        "pkg:maven/dev.ward/ward-analysis-api@0.7.0?type=jar",
-        "pkg:maven/dev.ward/ward-analysis-engine@0.7.0?type=jar"
+        "pkg:maven/dev.ward/ward-analysis-api@0.7.1?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-engine@0.7.1?type=jar"
       ]
     },
     {
-      "ref" : "pkg:maven/dev.ward/ward-lang-python@0.7.0?type=jar",
+      "ref" : "pkg:maven/dev.ward/ward-lang-python@0.7.1?type=jar",
       "dependsOn" : [
-        "pkg:maven/dev.ward/ward-analysis-api@0.7.0?type=jar",
-        "pkg:maven/dev.ward/ward-analysis-engine@0.7.0?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-api@0.7.1?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-engine@0.7.1?type=jar",
         "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar"
       ]
     },
     {
-      "ref" : "pkg:maven/dev.ward/ward-lang-swift@0.7.0?type=jar",
+      "ref" : "pkg:maven/dev.ward/ward-lang-swift@0.7.1?type=jar",
       "dependsOn" : [
-        "pkg:maven/dev.ward/ward-analysis-api@0.7.0?type=jar",
-        "pkg:maven/dev.ward/ward-analysis-engine@0.7.0?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-api@0.7.1?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-engine@0.7.1?type=jar",
         "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar"
       ]
     },
     {
-      "ref" : "pkg:maven/dev.ward/ward-cli@0.7.0?type=jar",
+      "ref" : "pkg:maven/dev.ward/ward-lang-openapi@0.7.1?type=jar",
+      "dependsOn" : [
+        "pkg:maven/dev.ward/ward-analysis-api@0.7.1?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-engine@0.7.1?type=jar",
+        "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar"
+      ]
+    },
+    {
+      "ref" : "pkg:maven/dev.ward/ward-cli@0.7.1?type=jar",
       "dependsOn" : [
         "pkg:maven/com.google.dagger/dagger@2.60.1?type=jar",
         "pkg:maven/javax.inject/javax.inject@1?type=jar",
         "pkg:maven/info.picocli/picocli@4.7.7?type=jar",
         "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar",
         "pkg:maven/org.apache.fory/fory-json@1.7.7?type=jar",
-        "pkg:maven/dev.ward/ward-analysis-api@0.7.0?type=jar",
-        "pkg:maven/dev.ward/ward-analysis-engine@0.7.0?type=jar",
-        "pkg:maven/dev.ward/ward-frontend-antlr@0.7.0?type=jar",
-        "pkg:maven/dev.ward/ward-lang-jvm@0.7.0?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-api@0.7.1?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-engine@0.7.1?type=jar",
+        "pkg:maven/dev.ward/ward-frontend-antlr@0.7.1?type=jar",
+        "pkg:maven/dev.ward/ward-lang-jvm@0.7.1?type=jar",
         "pkg:maven/org.eclipse.jdt/org.eclipse.jdt.core@3.47.0?type=jar",
-        "pkg:maven/dev.ward/ward-lang-node@0.7.0?type=jar",
-        "pkg:maven/dev.ward/ward-lang-python@0.7.0?type=jar",
-        "pkg:maven/dev.ward/ward-lang-swift@0.7.0?type=jar"
+        "pkg:maven/dev.ward/ward-lang-node@0.7.1?type=jar",
+        "pkg:maven/dev.ward/ward-lang-python@0.7.1?type=jar",
+        "pkg:maven/dev.ward/ward-lang-swift@0.7.1?type=jar",
+        "pkg:maven/dev.ward/ward-lang-openapi@0.7.1?type=jar"
       ]
     },
     {

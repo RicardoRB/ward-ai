@@ -38,7 +38,7 @@ class GradleToolConfiguratorTest {
     final Path build = root.resolve("build.gradle");
     Files.writeString(build, "plugins { id 'java' }\n");
     final Project project = new Project(root, Language.JAVA, BuildTool.GRADLE, Framework.NONE);
-    final List<String> ids = List.of("coverage", "mutation", "sonar", "license", "api-compat");
+    final List<String> ids = List.of("coverage", "mutation", "sonar", "api-compat");
 
     new GradleToolConfigurator()
         .apply(
@@ -48,11 +48,7 @@ class GradleToolConfiguratorTest {
             finding -> false);
 
     assertThat(Files.readString(build))
-        .contains(
-            "info.solidsoft.pitest",
-            "org.sonarqube",
-            "com.github.jk1.dependency-license-report",
-            "me.champeau.gradle.japicmp");
+        .contains("info.solidsoft.pitest", "org.sonarqube", "me.champeau.gradle.japicmp");
   }
 
   private static InitGateOption gate(final String id) {

@@ -25,7 +25,6 @@ class GradleToolConfiguratorModulesTest {
   private static final String API = "api/build.gradle.kts";
   private static final String DOMAIN = "domain/build.gradle";
   private static final String COVERAGE = "coverage";
-  private static final String LICENSE_PLUGIN = "com.github.jk1.dependency-license-report";
 
   @TempDir Path root;
 
@@ -70,18 +69,6 @@ class GradleToolConfiguratorModulesTest {
     assertThat(ModuleFixtures.read(root, DOMAIN))
         .contains("tasks.register('wardCoverageData')")
         .doesNotContain("tasks.register(\"wardCoverageData\")");
-  }
-
-  @Test
-  void licenseStaysInTheRootOnly() throws IOException {
-    final Project project = ModuleFixtures.copy(root);
-
-    new GradleToolConfigurator()
-        .apply(project, ModuleFixtures.gates("license", COVERAGE), null, finding -> false);
-
-    assertThat(ModuleFixtures.read(root, "build.gradle.kts")).contains(LICENSE_PLUGIN);
-    assertThat(ModuleFixtures.read(root, API)).doesNotContain(LICENSE_PLUGIN);
-    assertThat(ModuleFixtures.read(root, DOMAIN)).doesNotContain(LICENSE_PLUGIN);
   }
 
   @Test

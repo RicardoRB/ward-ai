@@ -1,0 +1,13 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths: {}
+components:
+  securitySchemes:
+    a:
+      type: http
+      scheme: basic
+    b:
+      type: http
+      scheme: bearer

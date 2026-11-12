@@ -1,8 +1,10 @@
 package dev.ward.infrastructure.init;
 
+import dev.ward.domain.buildpolicy.BuildRule;
 import dev.ward.domain.init.QualityPreset;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /** The body of each preset rule file, in the format its tool loads. */
 final class PresetRuleFileContent {
@@ -11,6 +13,13 @@ final class PresetRuleFileContent {
       "\n[rules.java.hidden-field]\nignore-constructor-parameter = true\n"
           + "ignore-setter = true\n";
 
+  /** The native build rules the strict preset selects; the {@code ward} gate ignores them. */
+  private static final String BUILD_RULES =
+      Stream.of(BuildRule.values())
+          .filter(BuildRule::strict)
+          .map(rule -> "\"build." + rule.ruleName() + "\"")
+          .collect(Collectors.joining(", ", "include = [", "]\n"));
+
   private PresetRuleFileContent() {}
 
   /**
@@ -18,13 +27,15 @@ final class PresetRuleFileContent {
    * languages the project has, Java before Kotlin, then Python when the project has it, then Swift.
    * A project without a JVM language selects Java, as it always has.
    */
-  static String wardRules(final QualityPreset preset, final List<String> languages) {
+  static String wardRules(
+      final QualityPreset preset, final List<String> languages, final boolean buildPolicy) {
     final QualityPreset chosen = preset == null ? QualityPreset.STANDARD : preset;
     return "version = 1\n\n[select]\npreset = \""
         + chosen.id()
         + "\"\nlanguages = "
         + languages.stream().map(id -> "\"" + id + "\"").collect(Collectors.joining(", ", "[", "]"))
         + "\n"
+        + (buildPolicy && chosen == QualityPreset.STRICT ? BUILD_RULES : "")
         + (chosen == QualityPreset.STRICT && languages.contains("java") ? HIDDEN_FIELD : "");
   }
 
@@ -32,11 +43,7 @@ final class PresetRuleFileContent {
   static String enforcer(final QualityPreset preset) {
     return "<enforcer>\n<rules>\n"
         + preset.rules().enforcerRules().stream()
-            .map(
-                rule ->
-                    "requireMavenVersion".equals(rule)
-                        ? "  <requireMavenVersion><version>[3.9,)</version></requireMavenVersion>\n"
-                        : "  <" + rule + "/>\n")
+            .map(rule -> "  <" + rule + "/>\n")
             .reduce("", String::concat)
         + "</rules>\n</enforcer>\n";
   }

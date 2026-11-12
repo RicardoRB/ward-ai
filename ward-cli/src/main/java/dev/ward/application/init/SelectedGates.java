@@ -22,31 +22,23 @@ final class SelectedGates {
 
   /**
    * Returns the selected gates with the selected preset gates first, in preset order, followed by
-   * the other selected gates and the OpenSpec validations. Unselected preset gates are not added.
+   * the other selected gates. Unselected preset gates are not added.
    */
   static List<InitGateOption> resolve(
-      final InitSetupCatalog catalog,
-      final Project project,
-      final InitSelection selection,
-      final String openSpecExecutable) {
+      final InitSetupCatalog catalog, final Project project, final InitSelection selection) {
     final List<String> ids =
         Stream.concat(
-                Stream.concat(
-                    (selection.preset() == null
-                            ? selection.gates()
-                            : PresetGateOrder.orderSelected(
-                                catalog.presetGates(project, selection.preset()),
-                                selection.gates()))
-                        .stream(),
-                    selection.openSpecValidations().stream()),
+                (selection.preset() == null
+                        ? selection.gates()
+                        : PresetGateOrder.orderSelected(
+                            catalog.presetGates(project, selection.preset()), selection.gates()))
+                    .stream(),
                 Stream.of(FormatGates.WARD_FORMAT))
             .distinct()
             .toList();
     final List<InitGateOption> gates =
-        ids.stream()
-            .map(id -> option(catalog, project, selection, openSpecExecutable, id))
-            .toList();
-    if (gates.isEmpty() && selection.tools().isEmpty()) {
+        ids.stream().map(id -> option(catalog, project, selection, id)).toList();
+    if (gates.isEmpty()) {
       throw new WardException("Select at least one quality gate.");
     }
     requireNodeTestGate(project, gates);
@@ -84,14 +76,11 @@ final class SelectedGates {
       final InitSetupCatalog catalog,
       final Project project,
       final InitSelection selection,
-      final String openSpecExecutable,
       final String id) {
     if (FormatGates.WARD_FORMAT.equals(id)) {
       return wardFormat();
     }
-    return catalog.openSpecValidations().contains(id)
-        ? catalog.openSpecValidation(project, id, openSpecExecutable)
-        : configured(catalog, project, id, selection.preset());
+    return configured(catalog, project, id, selection.preset());
   }
 
   /** Returns the offered gate {@code id}, with the command {@code preset} configures. */

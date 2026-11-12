@@ -2,7 +2,6 @@ package dev.ward.infrastructure.agent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.ward.domain.agent.GuardMode;
 import dev.ward.domain.agent.IntegrationRequest;
 import dev.ward.domain.agent.IntegrationResult;
 import java.io.IOException;
@@ -15,8 +14,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Upgrades the artifacts Ward 0.0.7 generated, captured in {@code native-adapters-0.0.7}, to the
- * repaired adapters: refresh replaces owned files, keeps the installed guard state, is idempotent,
- * and never touches unrelated files.
+ * current adapters: refresh replaces owned files, drops the guard they carried, is idempotent, and
+ * never touches unrelated files.
  */
 class NativeAdapterUpgradeTest {
   private static final Path CAPTURED = Path.of("src/test/resources/fixtures/native-adapters-0.0.7");
@@ -54,24 +53,26 @@ class NativeAdapterUpgradeTest {
 
   @ParameterizedTest
   @MethodSource("upgradableAdapters")
-  void refreshUpgradesTheCapturedArtifactsAndKeepsTheGuard(
+  void refreshUpgradesTheCapturedArtifactsAndDropsTheGuard(
       final NativeHarnessAdapter adapter, @TempDir final Path root) throws IOException {
     final Captured old = Captured.of(adapter.id());
     write(root.resolve(old.configFile()), old.config());
     write(root.resolve(old.hookFile()), old.hook());
-    final Path userFile = root.resolve(adapter.definition().hookFile()).resolveSibling(USER_FILE);
+    final Path userFile = userFile(adapter, root);
     write(userFile, "mine");
 
     assertThat(adapter.integrate(root, IntegrationRequest.INSTALL).status())
         .isEqualTo(IntegrationResult.Status.CHANGED);
 
     final Path config = root.resolve(adapter.definition().configFile());
-    final Path hook = root.resolve(adapter.definition().hookFile());
     assertThat(config).hasContent(adapter.configContent());
-    // A refresh without a guard option keeps a guard the 0.0.7 wrapper had enabled.
-    final boolean guarded = old.hook().contains("\"enable\" = \"enable\" ]");
-    assertThat(hook)
-        .hasContent(adapter.hookContent(guarded ? GuardMode.ENABLE : GuardMode.DISABLE));
+    if (adapter.definition().hasHookFile()) {
+      assertThat(root.resolve(adapter.definition().hookFile()))
+          .hasContent(adapter.hookContent())
+          .content()
+          .doesNotContain("guard");
+    }
+    assertThat(config).content().doesNotContain("guard");
     assertThat(adapter.integrate(root, IntegrationRequest.INSTALL).status())
         .isEqualTo(IntegrationResult.Status.ALREADY_PRESENT);
     assertThat(userFile).hasContent("mine");
@@ -81,15 +82,21 @@ class NativeAdapterUpgradeTest {
   @MethodSource("adapters")
   void removalDeletesOnlyOwnedFiles(final NativeHarnessAdapter adapter, @TempDir final Path root)
       throws IOException {
-    adapter.integrate(root, new IntegrationRequest(false, GuardMode.ENABLE));
-    final Path userFile = root.resolve(adapter.definition().hookFile()).resolveSibling(USER_FILE);
+    adapter.integrate(root, IntegrationRequest.INSTALL);
+    final Path userFile = userFile(adapter, root);
     write(userFile, "mine");
 
     assertThat(adapter.integrate(root, IntegrationRequest.REMOVE).status())
         .isEqualTo(IntegrationResult.Status.REMOVED);
 
     assertThat(root.resolve(adapter.definition().configFile())).doesNotExist();
-    assertThat(root.resolve(adapter.definition().hookFile())).doesNotExist();
+    if (adapter.definition().hasHookFile()) {
+      assertThat(root.resolve(adapter.definition().hookFile())).doesNotExist();
+    }
     assertThat(userFile).hasContent("mine");
+  }
+
+  private static Path userFile(final NativeHarnessAdapter adapter, final Path root) {
+    return root.resolve(adapter.definition().configFile()).resolveSibling(USER_FILE);
   }
 }

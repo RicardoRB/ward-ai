@@ -1,17 +1,21 @@
 package dev.ward.infrastructure.gate;
 
 import dev.ward.domain.gate.RevisionFiles;
+import dev.ward.domain.gate.RevisionReadException;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.inject.Inject;
 
 /** Resolves revisions with fixed Git argument vectors; never fetches or writes. */
 public final class GitRevisionFiles implements RevisionFiles {
   private static final String GIT = "git";
+  private static final Logger LOG = Logger.getLogger(GitRevisionFiles.class.getName());
   private final CommandExecutor executor;
 
   /** Creates the adapter; {@code executor} runs Git. */
@@ -58,12 +62,18 @@ public final class GitRevisionFiles implements RevisionFiles {
         .toList();
   }
 
-  // Git has no batch read through the executor, which has no standard input: one process per file.
   @Override
   public Optional<String> read(final Path root, final String commit, final String path) {
+    if (!exists(root, commit, path)) {
+      return Optional.empty();
+    }
     final CommandResult result =
-        executor.execute(List.of(GIT, "cat-file", "blob", commit + ":./" + path), root);
-    return result.succeeded() ? Optional.of(result.stdout()) : Optional.empty();
+        executor.execute(List.of(GIT, "show", "--end-of-options", commit + ":./" + path), root);
+    if (!result.succeeded()) {
+      LOG.log(Level.WARNING, "git show failed for a file at revision {0}", commit);
+      throw new RevisionReadException("Git could not read " + path + " at revision " + commit);
+    }
+    return Optional.of(result.stdout());
   }
 
   @Override

@@ -52,37 +52,4 @@ class NativeHookCopilotTest {
     assertThat(hook.out.toString()).isEmpty();
     assertThat(hook.err.toString()).contains("Ward quality findings");
   }
-
-  @Test
-  void theGuardDeniesAnAbsoluteEditPathInsideApprovedSpecs() {
-    final String spec = root.resolve("openspec/specs/auth/spec.md").toString();
-    assertThat(hook.run(0, edit("PreToolUse", spec), "--guard-approved-specs")).isZero();
-    assertThat(hook.out.toString())
-        .startsWith("{\"permissionDecision\":\"deny\",\"permissionDecisionReason\":")
-        .contains("openspec/specs/auth/spec.md");
-  }
-
-  @Test
-  void theGuardDeniesAProtectedShellCommand() {
-    assertThat(
-            hook.run(
-                0,
-                "{\"hook_event_name\":\"PreToolUse\",\"cwd\":\""
-                    + root
-                    + "\",\"tool_name\":\"bash\",\"tool_input\":{\"command\":\"rm openspec/specs/auth/spec.md\"}}",
-                "--guard-approved-specs"))
-        .isZero();
-    assertThat(hook.out.toString()).contains("\"permissionDecision\":\"deny\"");
-  }
-
-  @Test
-  void theGuardAllowsAnEditOutsideApprovedSpecs() {
-    assertThat(
-            hook.run(
-                0,
-                edit("PreToolUse", root.resolve("src/A.java").toString()),
-                "--guard-approved-specs"))
-        .isZero();
-    assertThat(hook.out.toString()).isEmpty();
-  }
 }

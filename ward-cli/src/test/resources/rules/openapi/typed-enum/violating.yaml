@@ -1,0 +1,13 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths: {}
+components:
+  schemas:
+    A:
+      type: string
+      enum: [a, 1]
+    B:
+      type: integer
+      enum: [1, 2.5]

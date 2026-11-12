@@ -1,0 +1,1 @@
+response-property-exclusive-max-increased	GET	/pets

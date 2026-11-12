@@ -1,6 +1,0 @@
-{
-  "tool": "write",
-  "args": {
-    "filePath": "openspec/specs/agent-integration/spec.md"
-  }
-}

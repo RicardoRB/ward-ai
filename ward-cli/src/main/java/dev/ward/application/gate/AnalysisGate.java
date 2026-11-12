@@ -10,6 +10,7 @@ import dev.ward.analysis.domain.port.AnalysisCache;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleRunResult;
+import dev.ward.domain.gate.GateProgress;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.QualityGate;
 import dev.ward.domain.project.Project;
@@ -89,6 +90,12 @@ public final class AnalysisGate implements QualityGate {
 
   @Override
   public GateResult execute(final Project project) {
+    return execute(project, GateProgress.NONE);
+  }
+
+  @Override
+  public GateResult execute(final Project project, final GateProgress progress) {
+    progress.step("loading rules");
     final RuleSet set = setup.resolve(project.root(), JavaRelease.of(project));
     if (!set.problems().isEmpty()) {
       return AnalysisGateResults.configurationError(name, set.problems());
@@ -99,6 +106,7 @@ public final class AnalysisGate implements QualityGate {
         ports.frontends().stream()
             .map(FrontendSupport::language)
             .collect(Collectors.toUnmodifiableSet());
+    progress.step("reading sources");
     final List<SourceUnit> units = ports.sources().read(project.root(), languages);
     final AnalysisCache cache = ports.caches().open(project.root());
     final TypeFactsRun types =
@@ -115,7 +123,8 @@ public final class AnalysisGate implements QualityGate {
             ports.engineVersion(),
             ports
                 .dependencies()
-                .forProject(project.root(), units, Optional.ofNullable(javaClasspath)));
+                .forProject(project.root(), units, Optional.ofNullable(javaClasspath)),
+            progress);
     final List<FrontendSupport> frontends = types.withTypes(ports.frontends());
     final Set<String> manifests =
         frontends.stream()

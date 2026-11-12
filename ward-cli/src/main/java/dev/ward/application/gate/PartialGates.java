@@ -114,7 +114,6 @@ final class PartialGates {
         Stream.concat(base.stream(), plan.args().stream()).toList(),
         gate.profiles(),
         gate.partial(),
-        gate.root(),
         gate.openApi(),
         gate.minimum(),
         gate.platform(),
@@ -128,6 +127,7 @@ final class PartialGates {
         gate.crap(),
         gate.coverage(),
         gate.vulnerabilities(),
+        gate.license(),
         gate.apiCompat());
   }
 

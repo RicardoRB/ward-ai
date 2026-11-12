@@ -131,7 +131,7 @@ class AnalysisGateTest {
     assertThat(gate.execute(PROJECT).findings()).isEqualTo(gate.execute(PROJECT).findings());
   }
 
-  private static AnalysisGate gate(
+  static AnalysisGate gate(
       final List<RuleDefinition> rules,
       final Map<String, List<RuleMatch>> matches,
       final Set<RuleCapability> capabilities) {

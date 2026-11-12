@@ -1,0 +1,1 @@
+response-header-multiple-of-unset	GET	/pets

@@ -60,12 +60,12 @@ final class MutationGateFixtures {
         Set.of("ci"),
         null,
         null,
-        null,
         minimum,
         null,
         null,
         null,
         List.of(),
+        null,
         null,
         null,
         null,
@@ -90,12 +90,7 @@ final class MutationGateFixtures {
           default -> new GateReportPorts(ReportDirectories.NONE, report, null, null);
         };
     final QualityGateFactory factory =
-        new QualityGateFactory(
-            new FakeCommandExecutor(exitCode, STDOUT, ""),
-            null,
-            new TraceabilitySources(null, null),
-            ports,
-            null);
+        new QualityGateFactory(new FakeCommandExecutor(exitCode, STDOUT, ""), ports, null);
     return factory
         .create(new WardConfiguration(1, Map.of(id, gate(id, minimum))))
         .getFirst()

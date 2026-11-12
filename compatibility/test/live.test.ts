@@ -78,7 +78,7 @@ describe("live verification prerequisites", () => {
         "missing prerequisite: WARD_COMPAT_OPENCODE_MODEL (provider/model), a model provider API key from the credential allowlist",
       );
     }
-    expect(rest.map((s) => s.outcome)).toEqual(["blocked", "blocked", "blocked", "blocked", "blocked"]);
+    expect(rest.map((s) => s.outcome)).toEqual(["blocked", "blocked"]);
   });
 
   test("Amp is blocked on its pinned binary and then on AMP_API_KEY", async () => {
@@ -90,8 +90,6 @@ describe("live verification prerequisites", () => {
     const report = await runLive(["amp"], options({ WARD_COMPAT_AMP_BIN: runtime }));
     expect(report.harnesses[0].scenarios.map((s) => s.reason)).toEqual([
       "missing prerequisite: AMP_API_KEY",
-      "missing prerequisite: AMP_API_KEY",
-      "missing prerequisite: AMP_API_KEY",
       "verification driver is not implemented",
     ]);
     expect(report.exitCode).toBe(1);
@@ -101,7 +99,7 @@ describe("live verification prerequisites", () => {
     const runtime = fakeRuntime("claude-pinned", "2.1.292 (Claude Code)");
     const report = await runLive(["claude-code"], options({ WARD_COMPAT_CLAUDE_CODE_BIN: runtime }));
     expect(new Set(report.harnesses[0].scenarios.map((s) => s.reason))).toEqual(new Set(["missing prerequisite: ANTHROPIC_API_KEY"]));
-    expect(report.harnesses[0].scenarios.length).toBe(4);
+    expect(report.harnesses[0].scenarios.length).toBe(2);
     expect(report.exitCode).toBe(1);
   });
 
@@ -111,7 +109,7 @@ describe("live verification prerequisites", () => {
     const runtime = fakeRuntime("copilot-pinned", "1.0.98");
     const report = await runLive(["copilot"], options({ WARD_COMPAT_COPILOT_BIN: runtime }));
     expect(new Set(report.harnesses[0].scenarios.map((s) => s.reason))).toEqual(new Set(["missing prerequisite: GH_TOKEN"]));
-    expect(report.harnesses[0].scenarios.length).toBe(4);
+    expect(report.harnesses[0].scenarios.length).toBe(2);
     expect(report.exitCode).toBe(1);
   });
 
@@ -119,7 +117,7 @@ describe("live verification prerequisites", () => {
     const runtime = fakeRuntime("gemini-pinned", "0.64.0");
     const report = await runLive(["gemini"], options({ WARD_COMPAT_GEMINI_BIN: runtime }));
     expect(new Set(report.harnesses[0].scenarios.map((s) => s.reason))).toEqual(new Set(["missing prerequisite: GEMINI_API_KEY"]));
-    expect(report.harnesses[0].scenarios.length).toBe(4);
+    expect(report.harnesses[0].scenarios.length).toBe(2);
     expect(report.exitCode).toBe(1);
   });
 
@@ -127,7 +125,7 @@ describe("live verification prerequisites", () => {
     const runtime = fakeRuntime("droid-pinned", "0.243.0");
     const report = await runLive(["factory-droid"], options({ WARD_COMPAT_FACTORY_DROID_BIN: runtime }));
     expect(new Set(report.harnesses[0].scenarios.map((s) => s.reason))).toEqual(new Set(["missing prerequisite: FACTORY_API_KEY"]));
-    expect(report.harnesses[0].scenarios.length).toBe(4);
+    expect(report.harnesses[0].scenarios.length).toBe(2);
     expect(report.exitCode).toBe(1);
   });
 
@@ -135,7 +133,7 @@ describe("live verification prerequisites", () => {
     const runtime = fakeRuntime("cursor-pinned", "2026.10.14-941492e");
     const report = await runLive(["cursor"], options({ WARD_COMPAT_CURSOR_BIN: runtime }));
     expect(new Set(report.harnesses[0].scenarios.map((s) => s.reason))).toEqual(new Set(["missing prerequisite: CURSOR_API_KEY"]));
-    expect(report.harnesses[0].scenarios.length).toBe(4);
+    expect(report.harnesses[0].scenarios.length).toBe(2);
     expect(report.exitCode).toBe(1);
   });
 
@@ -147,7 +145,7 @@ describe("live verification prerequisites", () => {
 
   test("the OpenCode driver reports its unimplemented scenarios as blocked, never passed", () => {
     const pending = DRIVERS.opencode.scenarios.filter((s) => s.notImplemented).map((s) => s.id);
-    expect(pending).toEqual(["idle-feedback-limit", "reload-cleanup"]);
+    expect(pending).toEqual(["reload-cleanup"]);
   });
 });
 
@@ -214,8 +212,8 @@ printf '%s %s %s\\n' "$1" "$s" "\${CLAUDE_CONFIG_DIR:+isolated}" >> '${launches}
     );
     chmodSync(claude, 0o755);
     const report = await runLive(["claude-code"], options({ WARD_COMPAT_CLAUDE_CODE_BIN: claude, ANTHROPIC_API_KEY: "test-key" }));
-    expect(readFileSync(launches, "utf8").trim().split("\n")).toEqual(Array(4).fill("-p settings isolated"));
-    expect(report.harnesses[0].scenarios.map((s) => s.outcome)).toEqual(["fail", "fail", "fail", "fail"]);
+    expect(readFileSync(launches, "utf8").trim().split("\n")).toEqual(Array(2).fill("-p settings isolated"));
+    expect(report.harnesses[0].scenarios.map((s) => s.outcome)).toEqual(["fail", "fail"]);
     expect(report.exitCode).toBe(1);
   }, 120_000);
 });

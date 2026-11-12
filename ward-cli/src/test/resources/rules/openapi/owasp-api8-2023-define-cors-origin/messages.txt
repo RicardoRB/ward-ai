@@ -1,0 +1,1 @@
+11:19	Header `headers.Access-Control-Allow-Origin` should be defined on all responses.

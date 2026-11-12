@@ -1,0 +1,1 @@
+response-property-type-generalized	GET	/pets

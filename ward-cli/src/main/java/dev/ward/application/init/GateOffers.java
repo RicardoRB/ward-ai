@@ -14,17 +14,10 @@ final class GateOffers {
   /**
    * Checks that init offers gate {@code id} for {@code project}.
    *
-   * @throws WardException if {@code id} is an OpenSpec tool, or the project lacks what the gate
-   *     needs
+   * @throws WardException if the project lacks what the gate needs
    */
   static void require(
       final EnvironmentInspection environment, final Project project, final String id) {
-    if ("openspec".equals(id) || "openspec-archived".equals(id)) {
-      throw new WardException(
-          "OpenSpec validations are tools, not quality gates. Use --tool openspec and --openspec-validation "
-              + id
-              + ".");
-    }
     requireApiBaseline(environment, project, id);
     requireOpenApiSpec(environment, project, id);
   }

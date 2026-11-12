@@ -1,6 +1,5 @@
 package dev.ward.infrastructure.agent;
 
-import dev.ward.domain.agent.GuardMode;
 import dev.ward.domain.agent.IntegrationCapability;
 import dev.ward.domain.agent.NativeHookInput;
 import dev.ward.domain.agent.NativeHookOutcome;
@@ -25,13 +24,11 @@ public final class CursorIntegration implements NativeHarnessAdapter {
           "cursor",
           ".cursor/hooks.json",
           ".cursor/hooks/ward.sh",
-          "preToolUse,postToolUse,stop",
+          "postToolUse,stop",
           Set.of(
-              IntegrationCapability.PRE_TOOL,
               IntegrationCapability.POST_EDIT,
               IntegrationCapability.TURN_END,
-              IntegrationCapability.FEEDBACK,
-              IntegrationCapability.APPROVED_ARTIFACT_GUARD));
+              IntegrationCapability.FEEDBACK));
 
   @Override
   public NativeAgentIntegration.Definition definition() {
@@ -44,9 +41,7 @@ public final class CursorIntegration implements NativeHarnessAdapter {
     return "{\n  \"version\": 1,\n  \"wardOwnership\": \""
         + NativeHookText.marker(DEFINITION.id())
         + "\",\n  \"hooks\": {\n"
-        + "    \"preToolUse\": ["
-        + hook("^(Shell|Write|Delete)$", "pre", 0)
-        + "],\n    \"postToolUse\": ["
+        + "    \"postToolUse\": ["
         + hook("^(Write|Delete)$", "post", CHECK_TIMEOUT_SECONDS)
         + "],\n    \"stop\": ["
         + hook(null, "post", CHECK_TIMEOUT_SECONDS)
@@ -65,8 +60,8 @@ public final class CursorIntegration implements NativeHarnessAdapter {
   }
 
   @Override
-  public String hookContent(final GuardMode guardMode) {
-    return NativeHookText.phaseWrapper(DEFINITION.id(), DEFINITION.hookFile(), guardMode);
+  public String hookContent() {
+    return NativeHookText.wrapper(DEFINITION.id(), DEFINITION.hookFile());
   }
 
   /** Returns the hook response that blocks the tool call and tells the agent {@code reason}. */

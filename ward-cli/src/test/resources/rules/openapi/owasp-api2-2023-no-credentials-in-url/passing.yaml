@@ -1,0 +1,13 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths:
+  /u/{id}:
+    get:
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: string
+      responses: {}

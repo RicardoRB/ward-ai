@@ -1,0 +1,1 @@
+5:11	Contact object must have "name", "url" and "email".

@@ -59,11 +59,11 @@ class InitQuestionResolutionTest {
   void terminalStillAsksWhatAnIntegrationOptionLeavesOpen() throws IOException {
     final InitCommandFixture init = new InitCommandFixture(root);
 
-    final int exit = init.run(true, "1\n\n\nn\ny\n", "--integration", "claude-code");
+    final int exit = init.run(true, "1\n\nn\ny\n", "--integration", "claude-code");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(init.output())
-        .contains("Choose a preset", "Select quality gates", "Select optional tools", "[y/N]")
+        .contains("Choose a preset", "Select quality gates", "[y/N]")
         .doesNotContain("Select agent integrations");
   }
 
@@ -74,7 +74,7 @@ class InitQuestionResolutionTest {
     final int exit = init.run("1\n", "--integration", "none", "--gate", "tests");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
-    assertThat(init.output()).doesNotContain("Select optional tools", "[y/N]");
+    assertThat(init.output()).doesNotContain("[y/N]");
     assertThat(init.configuration()).contains("[checks.tests]");
   }
 

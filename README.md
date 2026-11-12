@@ -194,7 +194,7 @@ ward check --profile ci --format json > ward-report.json
 |---|---|
 | Build and tests | Compiler, JUnit, JaCoCo coverage, PIT mutation testing |
 | Code quality | Ward rules, SonarQube |
-| Architecture | Ward's layer boundaries (Layered, Hexagonal, or Clean), slice cycles and feature independence, native `no-field-di` and `no-standard-streams` rules (`strict`), Maven Enforcer / Gradle checks |
+| Architecture | Ward's layer boundaries (Layered, Hexagonal, or Clean), slice cycles and feature independence, native `no-field-di` and `no-standard-streams` rules (`strict`), native build policy rules (`build-policy`), Maven Enforcer / Gradle checks |
 | Security | Ward secret detection, Semgrep, native vulnerability matching against OSV advisories, OWASP ZAP |
 | Compliance | License plugins, native Java API compatibility (japicmp for Kotlin) |
 | TypeScript and JavaScript | `tsc`, Vitest / Jest / `bun test`, Stryker mutation testing, Ward's TypeScript and JavaScript rules (lint, selected in `ward-rules.toml`), framework checkers (`vue-tsc`, `svelte-check`, `astro check`, `ngc`) |
@@ -224,7 +224,7 @@ Cline, Factory Droid, and Amp. See [integrations](https://ricardorb.github.io/wa
 
 ## Project status
 
-**Alpha** (`0.7.0`). Runs as a native binary on Linux x86_64, macOS (Apple Silicon), and
+**Alpha** (`0.7.1`). Runs as a native binary on Linux x86_64, macOS (Apple Silicon), and
 Windows x86_64, or as a JAR built from source on JDK 25 (the way to run it on an Intel Mac). Only the
 latest release receives fixes. See
 [CHANGELOG.md](CHANGELOG.md) for what changed in each release.

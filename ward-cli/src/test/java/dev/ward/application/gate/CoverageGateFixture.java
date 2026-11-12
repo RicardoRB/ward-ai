@@ -139,7 +139,6 @@ final class CoverageGateFixture {
         Set.of(),
         null,
         null,
-        null,
         minimum,
         null,
         null,
@@ -151,6 +150,7 @@ final class CoverageGateFixture {
         null,
         null,
         options,
+        null,
         null,
         null);
   }

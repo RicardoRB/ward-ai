@@ -12,6 +12,7 @@ import dev.ward.domain.gate.GateFindings;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.GateStatus;
 import dev.ward.domain.gate.QualityGate;
+import dev.ward.domain.gate.RevisionReadException;
 import dev.ward.domain.project.Project;
 import java.nio.file.Path;
 import java.util.List;
@@ -48,7 +49,7 @@ final class ApiCompatGate implements QualityGate {
   public GateResult execute(final Project project) {
     try {
       return compare(project.root());
-    } catch (ApiCompatException unusable) {
+    } catch (ApiCompatException | RevisionReadException unusable) {
       if (LOGGER.isLoggable(Level.INFO)) {
         LOGGER.info("event=api-compat-unusable gate=" + name);
       }

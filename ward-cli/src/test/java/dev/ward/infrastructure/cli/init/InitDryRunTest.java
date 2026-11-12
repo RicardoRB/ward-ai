@@ -3,8 +3,11 @@ package dev.ward.infrastructure.cli.init;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.ProjectSnapshot;
+import dev.ward.domain.FakeCommandExecutor;
 import dev.ward.infrastructure.cli.ExitCodes;
+import dev.ward.infrastructure.init.python.PythonBuildToolConfigurator;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -38,24 +41,30 @@ class InitDryRunTest {
   }
 
   @Test
-  void dryRunListsTheInstallationWithoutInstalling() throws IOException {
-    final InitCommandFixture init = new InitCommandFixture(root);
+  void gateToolConsentIsPlannedWithoutInstalling() throws IOException {
+    Files.createDirectories(root.resolve(".venv"));
+    Files.createDirectories(root.resolve("src"));
+    Files.writeString(root.resolve("src/app.py"), "x = 1\n");
+    Files.writeString(
+        root.resolve("pyproject.toml"), "[project]\nname = \"demo\"\nversion = \"1\"\n");
+    final InitCommandFixture init =
+        new InitCommandFixture(
+            root, new PythonBuildToolConfigurator(new FakeCommandExecutor(0, "", "")), "brew");
+    Files.delete(root.resolve("pom.xml"));
 
     final int exit =
         init.run(
             "",
             "--dry-run",
-            "--gate",
-            "tests",
             "--integration",
             "none",
-            "--tool",
-            "openspec",
+            "--gate",
+            "semgrep",
             "--install-tool",
-            "openspec");
+            "semgrep");
 
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
-    assertThat(init.output()).contains("install    openspec @fission-ai/openspec@");
+    assertThat(init.output()).contains("brew install semgrep");
     assertThat(root.resolve(".ward")).doesNotExist();
   }
 }

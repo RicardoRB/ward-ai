@@ -1,54 +1,21 @@
 == definition
-windsurf .windsurf/hooks.json .windsurf/hooks/ward.sh pre_write_code,pre_run_command,post_write_code [APPROVED_ARTIFACT_GUARD, POST_EDIT, PRE_TOOL]
+windsurf .windsurf/hooks.json .windsurf/hooks/ward.sh post_write_code [POST_EDIT]
 == config
 {
   "hooks": {
-    "pre_write_code": [{"command": ".windsurf/hooks/ward.sh pre # ward-owned: windsurf-native-hooks v1"}],
-    "pre_run_command": [{"command": ".windsurf/hooks/ward.sh pre # ward-owned: windsurf-native-hooks v1"}],
     "post_write_code": [{"command": ".windsurf/hooks/ward.sh post # ward-owned: windsurf-native-hooks v1", "show_output": true}]
   }
 }
 
-== hook KEEP
+== hook
 #!/bin/sh
 # ward-owned: windsurf-native-hooks v1
-# Native event adapter for windsurf. Usage: ward.sh pre|post, with the event JSON on stdin.
+# Native event adapter for windsurf. Usage: ward.sh post, with the event JSON on stdin.
 # Hooks may run in a subdirectory, so Ward always checks the project this file is in.
 cd "$(dirname "$0")/../.." || exit 2
 case "$1" in
-  pre)
-    [ "keep" = "enable" ] || exit 0
-    exec ward hook native --agent windsurf --guard-approved-specs --event-stdin ;;
   post) exec ward hook native --agent windsurf --event-stdin ;;
-  *) echo "Ward hook wrapper: expected pre or post." >&2; exit 2 ;;
-esac
-
-== hook ENABLE
-#!/bin/sh
-# ward-owned: windsurf-native-hooks v1
-# Native event adapter for windsurf. Usage: ward.sh pre|post, with the event JSON on stdin.
-# Hooks may run in a subdirectory, so Ward always checks the project this file is in.
-cd "$(dirname "$0")/../.." || exit 2
-case "$1" in
-  pre)
-    [ "enable" = "enable" ] || exit 0
-    exec ward hook native --agent windsurf --guard-approved-specs --event-stdin ;;
-  post) exec ward hook native --agent windsurf --event-stdin ;;
-  *) echo "Ward hook wrapper: expected pre or post." >&2; exit 2 ;;
-esac
-
-== hook DISABLE
-#!/bin/sh
-# ward-owned: windsurf-native-hooks v1
-# Native event adapter for windsurf. Usage: ward.sh pre|post, with the event JSON on stdin.
-# Hooks may run in a subdirectory, so Ward always checks the project this file is in.
-cd "$(dirname "$0")/../.." || exit 2
-case "$1" in
-  pre)
-    [ "disable" = "enable" ] || exit 0
-    exec ward hook native --agent windsurf --guard-approved-specs --event-stdin ;;
-  post) exec ward hook native --agent windsurf --event-stdin ;;
-  *) echo "Ward hook wrapper: expected pre or post." >&2; exit 2 ;;
+  *) echo "Ward hook wrapper: expected post." >&2; exit 2 ;;
 esac
 
 == deny

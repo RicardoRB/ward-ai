@@ -12,19 +12,37 @@ class PresetRuleFileContentTest {
 
   @Test
   void javaStrictSetsTheHiddenFieldOptions() {
-    assertThat(PresetRuleFileContent.wardRules(QualityPreset.STRICT, List.of("java")))
+    assertThat(PresetRuleFileContent.wardRules(QualityPreset.STRICT, List.of("java"), false))
         .contains(HIDDEN_FIELD);
   }
 
   @Test
   void nodeStrictOmitsTheJavaHiddenFieldOptions() {
-    assertThat(PresetRuleFileContent.wardRules(QualityPreset.STRICT, List.of("typescript")))
+    assertThat(PresetRuleFileContent.wardRules(QualityPreset.STRICT, List.of("typescript"), false))
         .doesNotContain("hidden-field");
   }
 
   @Test
   void javaStandardOmitsTheHiddenFieldOptions() {
-    assertThat(PresetRuleFileContent.wardRules(QualityPreset.STANDARD, List.of("java")))
+    assertThat(PresetRuleFileContent.wardRules(QualityPreset.STANDARD, List.of("java"), false))
         .doesNotContain("hidden-field");
+  }
+
+  @Test
+  void strictWithBuildPolicySelectsTheFourNativeBuildRules() {
+    assertThat(PresetRuleFileContent.wardRules(QualityPreset.STRICT, List.of("java"), true))
+        .contains(
+            "include = [\"build.plugin-version-pinned\", \"build.no-dynamic-version\","
+                + " \"build.minimum-build-tool-version\","
+                + " \"build.duplicate-dependency-declaration\"]")
+        .doesNotContain("dependency-convergence");
+  }
+
+  @Test
+  void standardAndStrictWithoutTheGateSelectNoBuildRules() {
+    assertThat(PresetRuleFileContent.wardRules(QualityPreset.STANDARD, List.of("java"), true))
+        .doesNotContain("build.");
+    assertThat(PresetRuleFileContent.wardRules(QualityPreset.STRICT, List.of("java"), false))
+        .doesNotContain("build.");
   }
 }

@@ -35,7 +35,8 @@ class GateCatalogContractTest {
   private static final Set<Language> JVM_LANGUAGES = Set.of(Language.JAVA, Language.KOTLIN);
 
   /** Gates that run the build tool as it is and need no build-file entry. */
-  private static final Set<String> NO_BUILD_FILE = Set.of("tests", "compile", "command");
+  private static final Set<String> NO_BUILD_FILE =
+      Set.of("tests", "compile", "command", "build-policy");
 
   /**
    * Gates whose Gradle block needs another gate that Java no longer has: enforcement of Checkstyle.

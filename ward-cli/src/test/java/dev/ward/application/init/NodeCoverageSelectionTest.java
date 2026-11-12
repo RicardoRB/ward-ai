@@ -52,18 +52,7 @@ class NodeCoverageSelectionTest {
         catalog,
         project,
         new InitSelection(
-            List.of("none"),
-            List.of(gates),
-            null,
-            null,
-            List.of(),
-            List.of(),
-            List.of(),
-            false,
-            null,
-            false,
-            null),
-        "openspec");
+            List.of("none"), List.of(gates), null, null, List.of(), false, null, false, null));
   }
 
   @Test

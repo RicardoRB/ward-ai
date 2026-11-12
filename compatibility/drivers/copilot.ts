@@ -2,7 +2,7 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Fixture } from "../src/fixture";
 import type { LiveContext, LiveDriver } from "../src/live";
-import { hookScenarios, prepareSmokeFixture } from "./hook-scenarios";
+import { hookScenarios } from "./hook-scenarios";
 
 // Live Copilot CLI driver. `copilot -p` runs one non-interactive turn in the fixture; Copilot itself
 // discovers .github/hooks/ward.json and dispatches the hooks. COPILOT_HOME is isolated by the
@@ -14,7 +14,6 @@ import { hookScenarios, prepareSmokeFixture } from "./hook-scenarios";
 const TURN_TIMEOUT_MS = 240_000;
 
 function prepare(fixture: Fixture): void {
-  prepareSmokeFixture(fixture);
   const home = fixture.env.COPILOT_HOME;
   mkdirSync(home, { recursive: true });
   writeFileSync(join(home, "config.json"), JSON.stringify({ trusted_folders: [fixture.root] }));

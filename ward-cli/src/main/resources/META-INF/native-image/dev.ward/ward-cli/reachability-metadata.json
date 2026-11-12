@@ -7,10 +7,16 @@
       "glob": "dev/ward/infrastructure/dependency/gradle/*.gradle"
     },
     {
+      "glob": "dev/ward/license/**"
+    },
+    {
       "glob": "dev/ward/rules/*.toml"
     },
     {
       "glob": "taint/**"
+    },
+    {
+      "glob": "openapi/schemas/*.json"
     },
     {
       "glob": "rules/**"

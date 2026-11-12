@@ -11,7 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
+import java.util.function.Predicate;
 
 /** Parses and safely merges Ward hook registrations in a shared Claude Code settings file. */
 final class ClaudeSettingsDocument {
@@ -28,7 +28,7 @@ final class ClaudeSettingsDocument {
       final Path settings,
       final String ownershipMarker,
       final String desiredSettings,
-      final Set<String> owned)
+      final Predicate<String> owned)
       throws IOException {
     final Map<String, Object> root = readRoot(settings);
     validateOwnership(root, ownershipMarker);
@@ -48,7 +48,8 @@ final class ClaudeSettingsDocument {
    * Removes the hooks running {@code owned} commands. The ownership key goes only with the last
    * Ward registration, since other Ward projects may share the file.
    */
-  SettingsUpdate remove(final Path settings, final String ownershipMarker, final Set<String> owned)
+  SettingsUpdate remove(
+      final Path settings, final String ownershipMarker, final Predicate<String> owned)
       throws IOException {
     if (!Files.exists(settings)) {
       return null;
@@ -133,7 +134,7 @@ final class ClaudeSettingsDocument {
   }
 
   private static boolean hasWardRegistration(
-      final Map<String, Object> hooks, final Set<String> owned) {
+      final Map<String, Object> hooks, final Predicate<String> owned) {
     return hooks.values().stream()
         .filter(List.class::isInstance)
         .flatMap(event -> ((List<?>) event).stream())

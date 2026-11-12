@@ -27,7 +27,8 @@ class PresetRuleFileWriterTest {
 
     final RuleFileChange change = writer.apply(project, QualityPreset.STANDARD, gates);
     assertThat(Files.readString(root.resolve("config/enforcer-rules.xml")))
-        .contains("managed-by: ward", "dependencyConvergence", "requireMavenVersion");
+        .contains("managed-by: ward", "dependencyConvergence")
+        .doesNotContain("requireMavenVersion", "banDuplicatePomDependencyVersions");
     writer.rollback(change);
     assertThat(root.resolve("config")).doesNotExist();
   }

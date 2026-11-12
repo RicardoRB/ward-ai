@@ -1,0 +1,34 @@
+1:1	must not have unevaluated properties.
+2:6	"info" property must not have unevaluated properties.
+3:12	"version" property must be string.
+5:19	"termsOfService" property must match format "uri".
+6:11	"license" property must not be valid.
+8:20	"jsonSchemaDialect" property must match format "uri".
+10:10	"url" property must be string.
+13:18	"externalDocs" property must have required property "url".
+19:7	"paths" property must not have unevaluated properties.
+22:20	"operationId" property must be string.
+25:15	"in" property must be equal to one of the allowed values: "query", "header", "path", "cookie". Did you mean "query"?.
+27:11	"1" property must match exactly one schema in oneOf.
+31:17	"responses" property must not have unevaluated properties.
+37:23	"type" property must be equal to one of the allowed values: "array", "boolean", "integer", "null", "number", "object", "string". Did you mean "string"?.
+38:29	"properties" property must be object.
+39:23	"items" property must be a valid Schema Object.
+40:26	"minimum" property must be number.
+41:27	"required" property must be array.
+43:31	"discriminator" property must have required property "propertyName".
+43:46	"a" property must be string.
+44:21	"xml" property must not have unevaluated properties.
+44:29	"name" property must be string.
+45:23	"allOf" property must not have fewer than 1 items.
+49:12	"components" property must not have unevaluated properties.
+53:16	"pattern" property must match format "regex".
+54:13	"enum" property must be array.
+55:29	"additionalProperties" property must be a valid Schema Object.
+56:13	"$ref" property must be string.
+57:20	"uniqueItems" property must be boolean.
+59:7	"k" property must have required property "in".
+59:7	"k" property must not have unevaluated properties.
+60:7	"o" property must have required property "flows".
+61:7	"h" property must have required property "scheme".
+62:15	"type" property must be equal to one of the allowed values: "apiKey", "http", "mutualTLS", "oauth2", "openIdConnect".

@@ -54,9 +54,7 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
           "xcodebuild",
           "xcrun",
           "semgrep",
-          "zap-baseline.py",
-          "vacuum",
-          "oasdiff");
+          "zap-baseline.py");
   private static final List<String> OPENAPI_SPECS =
       List.of(
           "src/main/resources/openapi.yml",
@@ -101,7 +99,6 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
             "nativeExecutablePresent",
             Boolean.toString(NativeExecutableFact.present(Path.of(""))));
     final Map<String, String> observed = new HashMap<>(values);
-    observed.put("OASDIFF_CONFIG", Boolean.toString(isSet("OASDIFF_CONFIG")));
     observed.putAll(AndroidEnvironmentFacts.read(projectRoot));
     observed.put(
         "typescriptResolvable", Boolean.toString(TypeScriptPackages.resolvable(projectRoot)));
@@ -131,19 +128,6 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
         Files.exists(candidate),
         Files.isRegularFile(candidate),
         Files.isExecutable(candidate));
-  }
-
-  @Override
-  public boolean hasOpenSpecDirectory(final Path projectRoot) {
-    return Files.isDirectory(projectRoot.resolve("openspec"));
-  }
-
-  /** Asks Git, so nested ignore files, global excludes, and negations all apply. */
-  @Override
-  public boolean isOpenSpecDirectoryIgnored(final Path projectRoot) {
-    final CommandResult result =
-        executor.execute(List.of("git", "check-ignore", "-q", "openspec"), projectRoot);
-    return result.executionError() == null && result.exitCode() == 0;
   }
 
   /** Asks Git which candidates are tracked, so an untracked draft spec is never offered. */
@@ -182,11 +166,5 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
     return Files.isRegularFile(projectRoot.resolve("pom.xml"))
         ? MavenJavaModules.skipped(projectRoot)
         : GradleModuleScan.skipped(projectRoot);
-  }
-
-  /** Only presence is recorded; values never leave this method. */
-  private static boolean isSet(final String name) {
-    final String value = System.getenv(name);
-    return value != null && !value.isBlank();
   }
 }

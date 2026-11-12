@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import dev.ward.application.gate.GateReportPorts;
 import dev.ward.application.gate.PlatformGatePorts;
 import dev.ward.application.gate.QualityGateFactory;
-import dev.ward.application.gate.TraceabilitySources;
 import dev.ward.domain.FakeCommandExecutor;
 import dev.ward.domain.config.GateConfiguration;
 import dev.ward.domain.config.WardConfiguration;
@@ -41,8 +40,6 @@ class SwiftGatesTest {
   private static QualityGateFactory factory(final FakeCommandExecutor executor) {
     return new QualityGateFactory(
         executor,
-        null,
-        new TraceabilitySources(null, null),
         new GateReportPorts(
             ReportDirectories.NONE,
             null,
@@ -64,12 +61,12 @@ class SwiftGatesTest {
         Set.of("ci"),
         null,
         null,
-        null,
         "swift-coverage".equals(type) ? MINIMUM : null,
         "xcodebuild-test".equals(type) ? XcodePlatform.MACOS : null,
         null,
         null,
         List.of(),
+        null,
         null,
         null,
         null,

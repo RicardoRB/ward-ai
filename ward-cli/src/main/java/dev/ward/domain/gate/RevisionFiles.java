@@ -23,7 +23,10 @@ public interface RevisionFiles {
   List<String> files(Path root, String commit, String directory);
 
   /**
-   * Returns the text of {@code path}, relative to {@code root}, at {@code commit}, if it exists.
+   * Returns the text of {@code path}, relative to {@code root}, at commit {@code commit}, or empty
+   * when the path does not exist there.
+   *
+   * @throws RevisionReadException when the file exists at the commit but Git cannot read it
    */
   Optional<String> read(Path root, String commit, String path);
 

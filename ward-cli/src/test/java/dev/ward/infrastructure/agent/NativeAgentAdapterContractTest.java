@@ -30,8 +30,7 @@ class NativeAgentAdapterContractTest {
     assertThat(result.status()).isEqualTo(IntegrationResult.Status.CHANGED);
     assertThat(integration.getClass()).isNotEqualTo(NativeAgentIntegration.class);
     assertThat(root.resolve(config)).isRegularFile();
-    assertThat(root.resolve(hook)).isRegularFile();
-    assertThat(result.capabilities()).contains(IntegrationCapability.PRE_TOOL);
+    assertThat(hook.isEmpty() || Files.isRegularFile(root.resolve(hook))).isTrue();
     assertThat(result.capabilities().contains(IntegrationCapability.POST_EDIT)).isEqualTo(postEdit);
     assertThat(Files.readString(root.resolve(config))).contains(integration.id());
   }
@@ -43,7 +42,7 @@ class NativeAgentAdapterContractTest {
     integration.integrate(root, IntegrationRequest.INSTALL);
 
     assertThat(Files.readString(root.resolve(".amp/plugins/ward.ts")))
-        .contains("export default function", "tool.call", "agent.end");
+        .contains("export default function", "tool.result", "agent.end");
   }
 
   @ParameterizedTest
@@ -59,7 +58,6 @@ class NativeAgentAdapterContractTest {
         .isEqualTo(postEdit);
     integration.integrate(root, IntegrationRequest.INSTALL);
     final Path configPath = root.resolve(config);
-    final Path hookPath = root.resolve(hook);
     Files.writeString(configPath, Files.readString(configPath) + "\n// stale\n");
 
     assertThat(integration.integrate(root, IntegrationRequest.INSTALL).status())
@@ -67,7 +65,7 @@ class NativeAgentAdapterContractTest {
     assertThat(integration.integrate(root, IntegrationRequest.REMOVE).status())
         .isEqualTo(IntegrationResult.Status.REMOVED);
     assertThat(configPath).doesNotExist();
-    assertThat(hookPath).doesNotExist();
+    assertThat(hook.isEmpty() || Files.notExists(root.resolve(hook))).isTrue();
 
     Files.createDirectories(configPath.getParent());
     Files.writeString(configPath, "user-owned configuration");
@@ -86,8 +84,7 @@ class NativeAgentAdapterContractTest {
             new GeminiIntegration(), ".gemini/settings.json", ".gemini/hooks/ward.sh", true),
         Arguments.of(
             new WindsurfIntegration(), ".windsurf/hooks.json", ".windsurf/hooks/ward.sh", true),
-        Arguments.of(
-            new ClineIntegration(), ".cline/hooks/PostToolUse", ".cline/hooks/PreToolUse", true),
+        Arguments.of(new ClineIntegration(), ".cline/hooks/PostToolUse", "", true),
         Arguments.of(
             new FactoryDroidIntegration(), ".factory/hooks.json", ".factory/hooks/ward.sh", true),
         Arguments.of(new JunieIntegration(), ".junie/config.json", ".junie/hooks/ward.sh", false),

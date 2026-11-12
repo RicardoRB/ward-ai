@@ -7,9 +7,8 @@ description: Agent hook adapters invoked by generated integrations.
 yourself.
 
 ```sh
-ward hook claude-code [-C <dir>] [--learn-after <n>] [--exclude-spec] [--event-stdin]
-ward hook claude-code [-C <dir>] --guard-approved-specs --event-stdin
-ward hook native --agent <agent> [-C <dir>] [--event-stdin] [--guard-approved-specs]
+ward hook claude-code [-C <dir>] [--learn-after <n>] [--event-stdin]
+ward hook native --agent <agent> [-C <dir>] [--event-stdin]
 ```
 
 ## Options
@@ -18,16 +17,14 @@ ward hook native --agent <agent> [-C <dir>] [--event-stdin] [--guard-approved-sp
 |---|---|
 | `-C`, `--directory <dir>` | Run for the project in `<dir>`. See [Nested projects](#nested-projects). |
 | `--learn-after <n>` | Learn recurring quality failures after `n` occurrences (default `3`). |
-| `--exclude-spec` | Skip the `openspec` and `openspec-archived` gates in the quality check, because spec validation runs separately. |
 | `--agent <agent>` | (`native` only) Harness whose payload and response format to use. |
 | `--event-stdin` | Read the hook event JSON from stdin. It is ignored when stdin is an interactive terminal. |
-| `--guard-approved-specs` | Act as the opt-in `PreToolUse` [approved-artifact guard](#approved-artifact-guard). No quality gates, learning, or spec validation run in this mode. |
 | `--verbose` | Print diagnostics to stderr. See [Verbose diagnostics](#verbose-diagnostics). |
 
 ## Claude Code adapter
 
 `ward integrate claude-code` creates `.claude/hooks/ward-edit-write`, which runs
-`ward hook claude-code --learn-after 3 --exclude-spec --event-stdin` after Claude Code's edit tools and
+`ward hook claude-code --learn-after 3 --event-stdin` after Claude Code's edit tools and
 when Claude stops.
 
 Without `--event-stdin`, or when the payload is empty or not valid JSON, the adapter behaves as it always has. It
@@ -37,10 +34,9 @@ which Claude Code shows to the agent so it can fix them.
 
 With an event payload:
 
-- **`PostToolUse`:** a [partial check](/commands/check/) runs for the edited `tool_input.file_path`, then the path
-  goes through [`spec validate`](/commands/spec/). Spec findings are reported on stderr with exit `2`, alongside
-  any quality failures. An event without a path runs every gate in full.
-- **`Stop`:** the full `default` quality check and the configured spec validations run. Findings block the stop
+- **`PostToolUse`:** a [partial check](/commands/check/) runs for the edited `tool_input.file_path`. An event
+  without a path runs every gate in full.
+- **`Stop`:** the full `default` quality check runs. Findings block the stop
   once, using `decision: "block"`. When `stop_hook_active` is true, or Ward cannot run, they are shown to the
   user as a `systemMessage`. This full check also catches files changed by shell commands, which send no edit
   event. The exit code is `0`.
@@ -49,8 +45,8 @@ See [Claude Code](/integrations/claude-code/) and [learning](/configuration/lear
 
 ## Native adapter
 
-`ward hook native` accepts bounded JSON from the supported harnesses, runs quality checks and
-targeted OpenSpec validation, and translates guard refusals into the harness's response shape.
+`ward hook native` accepts bounded JSON from the supported harnesses, runs quality checks, and
+translates the findings into the harness's response shape.
 
 - `--agent` is required and must be a native harness ID: `codex`, `cursor`, `copilot`, `gemini`,
   `windsurf`, `cline`, `factory-droid`, or `amp`.
@@ -73,28 +69,7 @@ A native hook started outside every project, as the shared repository-level hook
 
 - checks each configured project (a directory with `ward.toml`) that contains an edited file, and at
   turn end each configured project with changes;
-- starts findings with `Ward checked <project>:`;
-- has an approved-artifact guard that protects the repository root's `openspec/` directory, if
-  there is one.
-
-## Approved-artifact guard
-
-`ward integrate claude-code --guard-approved-specs` creates `.claude/hooks/ward-openspec-guard`, which runs
-`ward hook claude-code --guard-approved-specs --event-stdin` before Claude Code's `Edit`, `Write`, `MultiEdit`,
-`NotebookEdit`, `Bash`, and `Skill` tool calls. The adapter reads the whole `PreToolUse` payload (up to 16 MiB,
-because a `Write` carries the full file) and passes the edited `file_path` or `notebook_path`, the `Bash` `command`
-(resolved against the payload's `cwd`), or the `Skill` name to the same checks as
-[`spec guard`](/commands/spec/#guarding-approved-artifacts-spec-guard).
-
-| Situation | Output | Exit |
-|---|---|---|
-| Allowed | Nothing, so Claude Code's own permission handling still applies | `0` |
-| Refused | `PreToolUse` JSON with `permissionDecision: "deny"` and the reason as `permissionDecisionReason` | `0` |
-| Payload missing from a pipe, larger than 16 MiB, or not a JSON object | A `deny` stating that Ward could not inspect the call | `0` |
-| Ward cannot decide, for example outside a detectable project | The problem on stderr; Claude Code treats it as non-blocking | `1` |
-| Any other event, such as `Stop` | Nothing | `0` |
-
-The guard never answers `allow` or `ask`, so it cannot bypass your permission prompts.
+- starts findings with `Ward checked <project>:`.
 
 ## Verbose diagnostics
 
@@ -106,6 +81,5 @@ response on stdout unchanged. They never include findings, payload contents, or 
 
 | Adapter | `0` | `1` | `2` |
 |---|---|---|---|
-| `hook claude-code` | Gates passed and no spec findings; always for `Stop` events | — | Gates failed, spec findings, or Ward could not run (reported to the agent on stderr) |
-| `hook claude-code --guard-approved-specs` | Allowed or refused; see [the guard table](#approved-artifact-guard) | Ward could not decide | — |
+| `hook claude-code` | Gates passed; always for `Stop` events | — | Gates failed or Ward could not run (reported to the agent on stderr) |
 | `hook native` | Depends on the harness's hook contract; see [native harness integrations](/integrations/native-harnesses/) | | |

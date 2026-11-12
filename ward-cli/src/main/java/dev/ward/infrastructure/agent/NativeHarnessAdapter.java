@@ -1,7 +1,6 @@
 package dev.ward.infrastructure.agent;
 
 import dev.ward.application.agent.NativeHookProtocol;
-import dev.ward.domain.agent.GuardMode;
 import dev.ward.domain.agent.IntegrationCapability;
 import java.nio.file.Path;
 import java.util.Set;
@@ -16,8 +15,8 @@ public interface NativeHarnessAdapter extends NativeHarnessLifecycle, NativeHook
   /** Returns the harness configuration file content that registers the hook. */
   String configContent();
 
-  /** Returns the hook wrapper script, with the approved-artifact guard set by {@code guardMode}. */
-  String hookContent(GuardMode guardMode);
+  /** Returns the hook wrapper script. */
+  String hookContent();
 
   @Override
   default String id() {
@@ -30,7 +29,7 @@ public interface NativeHarnessAdapter extends NativeHarnessLifecycle, NativeHook
   }
 
   @Override
-  default NativeArtifactPlan artifacts(final Path root, final GuardMode guardMode) {
-    return NativeArtifactPlans.of(this, root, guardMode);
+  default NativeArtifactPlan artifacts(final Path root) {
+    return NativeArtifactPlans.of(this, root);
   }
 }

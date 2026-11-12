@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 
 /** Executes explicitly consented gate-tool installations after configuration writes succeed. */
 final class GateToolInstallation {
-  private static final String OPENSPEC = "openspec";
   private static final Logger LOGGER = Logger.getLogger(GateToolInstallation.class.getName());
 
   private GateToolInstallation() {}
@@ -22,15 +21,12 @@ final class GateToolInstallation {
       final InitSelection selection,
       final List<InitGateOption> gates) {
     for (final String requested : selection.installTools()) {
-      if (OPENSPEC.equals(requested)) {
-        continue;
-      }
       final InitGateOption gate =
           gates.stream()
               .filter(candidate -> candidate.id().equals(requested))
               .findFirst()
               .orElse(null);
-      if (gate == null) {
+      if (gate == null || gate.command().isEmpty()) {
         continue;
       }
       final ToolInstallationResult outcome =

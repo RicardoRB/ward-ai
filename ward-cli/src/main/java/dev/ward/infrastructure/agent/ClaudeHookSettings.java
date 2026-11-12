@@ -3,7 +3,7 @@ package dev.ward.infrastructure.agent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.function.Predicate;
 
 /** Operations for preserving unrelated hook entries while adding or removing Ward hooks. */
 final class ClaudeHookSettings {
@@ -15,7 +15,7 @@ final class ClaudeHookSettings {
   static void merge(
       final Map<String, Object> existing,
       final Map<String, Object> desired,
-      final Set<String> owned) {
+      final Predicate<String> owned) {
     for (final String event : MANAGED_EVENTS) {
       final List<?> current = entries(existing.get(event), event);
       final List<Object> preserved = withoutWardEntries(current, owned);
@@ -29,7 +29,7 @@ final class ClaudeHookSettings {
   }
 
   /** Removes the hooks running {@code owned} commands, keeping all others. */
-  static void remove(final Map<String, Object> hooks, final Set<String> owned) {
+  static void remove(final Map<String, Object> hooks, final Predicate<String> owned) {
     final List<String> eventNames = new ArrayList<>(hooks.keySet());
     for (final String event : eventNames) {
       final Object value = hooks.get(event);
@@ -68,7 +68,8 @@ final class ClaudeHookSettings {
     }
   }
 
-  private static List<Object> withoutWardEntries(final List<?> entries, final Set<String> owned) {
+  private static List<Object> withoutWardEntries(
+      final List<?> entries, final Predicate<String> owned) {
     final List<Object> preserved = new ArrayList<>();
     for (final Object entry : entries) {
       final Map<String, Object> mappedEntry = ClaudeSettingsDocument.object(entry);
@@ -87,7 +88,7 @@ final class ClaudeHookSettings {
       final Object originalEntry,
       final Map<String, Object> mappedEntry,
       final Object commands,
-      final Set<String> owned) {
+      final Predicate<String> owned) {
     if (!(commands instanceof List<?> list)) {
       throw conflict(
           "Claude Code hook entries must contain a JSON array; existing settings were preserved.");
@@ -107,7 +108,7 @@ final class ClaudeHookSettings {
    * Where this project's entries go: where they were, so re-installing one project does not move it
    * behind another project's entries; at the end when it had none.
    */
-  private static int position(final List<?> current, final Set<String> owned) {
+  private static int position(final List<?> current, final Predicate<String> owned) {
     for (int i = 0; i < current.size(); i++) {
       if (WardClaudeHooks.hasRegistration(ClaudeSettingsDocument.object(current.get(i)), owned)) {
         return withoutWardEntries(current.subList(0, i), owned).size();

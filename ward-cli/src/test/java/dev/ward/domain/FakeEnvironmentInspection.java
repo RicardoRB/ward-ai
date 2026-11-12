@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 /** Reports a fixed set of executables instead of probing the host PATH. */
@@ -29,6 +30,18 @@ public class FakeEnvironmentInspection implements EnvironmentInspection {
   @Override
   public boolean hasReleaseTag(final Path projectRoot) {
     return releaseTag;
+  }
+
+  /**
+   * Creates an environment with no executables whose project tracks the OpenAPI spec {@code spec}.
+   */
+  public static FakeEnvironmentInspection withOpenApiSpec(final String spec) {
+    return new FakeEnvironmentInspection() {
+      @Override
+      public Optional<String> openApiSpec(final Path projectRoot) {
+        return Optional.of(spec);
+      }
+    };
   }
 
   @Override

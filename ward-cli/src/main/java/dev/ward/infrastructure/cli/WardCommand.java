@@ -6,10 +6,11 @@ import dev.ward.infrastructure.cli.doctor.DoctorCommand;
 import dev.ward.infrastructure.cli.format.FormatCommand;
 import dev.ward.infrastructure.cli.gate.CheckCommand;
 import dev.ward.infrastructure.cli.init.InitCommand;
+import dev.ward.infrastructure.cli.licenses.LicensesCommand;
 import dev.ward.infrastructure.cli.loop.LoopCommand;
 import dev.ward.infrastructure.cli.project.DetectCommand;
 import dev.ward.infrastructure.cli.rules.RulesCommand;
-import dev.ward.infrastructure.cli.spec.SpecCommand;
+import dev.ward.infrastructure.cli.sbom.SbomCommand;
 import dev.ward.infrastructure.cli.vulnerability.VulnerabilitiesCommand;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
@@ -33,12 +34,13 @@ import picocli.CommandLine.Spec;
       CheckCommand.class,
       IntegrateCommand.class,
       HookCommand.class,
-      SpecCommand.class,
       DoctorCommand.class,
       FormatCommand.class,
       LoopCommand.class,
       RulesCommand.class,
-      VulnerabilitiesCommand.class
+      VulnerabilitiesCommand.class,
+      SbomCommand.class,
+      LicensesCommand.class
     },
     footer = {"", "Exit codes: 0 = ok, 1 = failed, 2 = error"})
 public class WardCommand implements Callable<Integer> {

@@ -70,9 +70,9 @@ final class InitQuestions {
     final List<String> integrations = integrations();
     final List<String> gates = gates(gatesGiven, preset);
     final String architecture = architecture(preset, gatesGiven);
-    final ToolQuestions.Selection tools =
-        new ToolQuestions(answers, wizard, confirmations, useDefaults, progress)
-            .resolve(catalog, project, gates);
+    final GateToolQuestions installQuestions =
+        new GateToolQuestions(answers, wizard, confirmations, useDefaults, progress);
+    final List<String> installs = installQuestions.resolve(catalog, project, gates);
     final boolean qualityHooks =
         answers.qualityHooks() != null ? answers.qualityHooks() : askQualityHooks();
     return new InitSelection(
@@ -80,14 +80,11 @@ final class InitQuestions {
         gates,
         architecture,
         preset,
-        tools.tools(),
-        tools.validations(),
-        tools.installs(),
+        installs,
         qualityHooks,
         answers.ci(),
         answers.agentRules(),
-        new ToolQuestions(answers, wizard, confirmations, useDefaults, progress)
-            .scheme(catalog, project));
+        installQuestions.scheme(catalog, project));
   }
 
   private QualityPreset preset(final boolean gatesGiven) {
@@ -189,9 +186,6 @@ final class InitQuestions {
     if (answers.integrations() == null || answers.integrations().isEmpty()) {
       questions++;
     }
-    if (answers.tools() == null) {
-      questions++;
-    }
     if (answers.qualityHooks() == null) {
       questions++;
     }
@@ -204,8 +198,6 @@ final class InitQuestions {
       List<String> integrations,
       List<String> gates,
       String architecture,
-      List<String> tools,
-      List<String> validations,
       List<String> installTools,
       Boolean qualityHooks,
       String ci,

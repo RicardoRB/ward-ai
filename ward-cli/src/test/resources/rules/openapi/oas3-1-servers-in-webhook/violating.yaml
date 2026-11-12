@@ -1,0 +1,12 @@
+openapi: 3.1.0
+info:
+  title: T
+  version: "1"
+webhooks:
+  newPet:
+    post:
+      servers:
+        - url: https://hooks.example.org
+      responses:
+        "200":
+          description: ok

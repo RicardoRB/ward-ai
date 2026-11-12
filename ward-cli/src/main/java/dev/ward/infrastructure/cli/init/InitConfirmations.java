@@ -2,7 +2,6 @@ package dev.ward.infrastructure.cli.init;
 
 import dev.ward.domain.init.CompatibilityFinding;
 import dev.ward.domain.init.GateToolInstallCatalog;
-import dev.ward.domain.init.OpenSpecDistribution;
 import dev.ward.domain.init.ScriptReplacement;
 import java.io.PrintWriter;
 import java.nio.file.Path;
@@ -26,21 +25,6 @@ final class InitConfirmations {
     out.print(file + " already exists. Overwrite it? [y/N]: ");
     out.flush();
     return prompt.confirm("overwrite");
-  }
-
-  boolean openSpecInstallation(final Path destination) {
-    out.println("OpenSpec is unavailable and can be installed locally.");
-    out.println(
-        "Package: "
-            + OpenSpecDistribution.packageName()
-            + " ("
-            + OpenSpecDistribution.nodeRequirement()
-            + ")");
-    out.println("Destination: " + destination);
-    out.println("This may access the network and run npm lifecycle scripts.");
-    out.print("Install OpenSpec? [y/N]: ");
-    out.flush();
-    return prompt.confirmInstallation();
   }
 
   boolean gateToolInstallation(

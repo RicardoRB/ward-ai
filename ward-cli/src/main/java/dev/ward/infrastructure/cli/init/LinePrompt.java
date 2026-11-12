@@ -49,7 +49,7 @@ final class LinePrompt {
   }
 
   boolean confirmInstallation() {
-    final String answer = requireLine("OpenSpec installation consent");
+    final String answer = requireLine("installation consent");
     return "y".equalsIgnoreCase(answer.trim()) || "yes".equalsIgnoreCase(answer.trim());
   }
 

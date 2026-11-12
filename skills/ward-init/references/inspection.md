@@ -134,7 +134,7 @@ selects every gate. `--dry-run` writes nothing, installs nothing, and runs no ga
 
 ```sh
 ward init -C <dir> --dry-run --preset strict --integration none --architecture layered \
-  --gate compile,tests,coverage,mutation,sonar,semgrep,secrets,vulnerabilities,zap,enforcer,license,api-compat
+  --gate compile,tests,coverage,mutation,sonar,semgrep,secrets,vulnerabilities,zap,build-policy,enforcer,license,api-compat
 ```
 
 Add `--overwrite` when `ward.toml` already exists. Without it the probe prints nothing useful.
@@ -154,8 +154,6 @@ Read these lines from the output:
 - `install    <command>` is the installation init would run if the user consents with
   `--install-tool <id>`.
 - `guidance   <tool>: <url>` means the tool can only be installed by hand.
-- `Warning: openspec/ is ignored by Git` means the OpenSpec gate passes locally but fails in CI.
-  Ask whether to track `openspec/` or keep the validation out of the `ci` profile.
 
 Ignore the rest of the probe's plan. It reflects the probe's selection, not the user's.
 

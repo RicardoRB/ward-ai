@@ -52,11 +52,10 @@ class InitWizardLineModeTest {
   @Test
   void terminalWizardAsksOptionalQuestionsBeforeWriting() throws IOException {
     final int exit =
-        execute(new TerminalLikeInputStream("3\n1\n1\n\ny\n"), "--directory", root.toString());
+        execute(new TerminalLikeInputStream("3\n1\n1\ny\n"), "--directory", root.toString());
 
     assertThat(exit).as(output.toString()).isZero();
-    assertThat(output.toString())
-        .contains("Select optional tools", "Install Ward pre-commit and pre-push quality hooks");
+    assertThat(output.toString()).contains("Install Ward pre-commit and pre-push quality hooks");
     assertThat(Files.readString(root.resolve(".git/hooks/pre-commit")))
         .contains(QualityHookInstaller.START_MARKER);
   }
@@ -92,25 +91,11 @@ class InitWizardLineModeTest {
 
     assertThat(exit).as(output.toString()).isZero();
     final String configuration = Files.readString(root.resolve("ward.toml"));
-    assertThat(configuration).contains("[checks.tests]").doesNotContain("openspec");
+    assertThat(configuration).contains("[checks.tests]");
     assertThat(root.resolve(".git/hooks/pre-commit")).doesNotExist();
     assertThat(root.resolve(".git/hooks/pre-push")).doesNotExist();
     assertThat(events)
-        .containsExactly(
-            "event=init-optional-default question=tools reason=end-of-input",
-            "event=init-optional-default question=quality-hooks reason=end-of-input");
-  }
-
-  @Test
-  void endOfInputAtInstallationConsentAbortsWithoutWriting() {
-    final int exit =
-        execute(new TerminalLikeInputStream("3\n1\n1\n1\n"), "--directory", root.toString());
-
-    assertThat(exit).isNotZero();
-    assertThat(output.toString()).contains("Install OpenSpec?", "input ended");
-    assertThat(root.resolve("ward.toml")).doesNotExist();
-    assertThat(root.resolve(".ward")).doesNotExist();
-    assertThat(root.resolve(".git/hooks/pre-commit")).doesNotExist();
+        .containsExactly("event=init-optional-default question=quality-hooks reason=end-of-input");
   }
 
   @Test

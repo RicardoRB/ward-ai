@@ -1,0 +1,11 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths:
+  /pets:
+    get:
+      description: Lists the pets.
+      responses:
+        "200":
+          description: d

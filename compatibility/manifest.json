@@ -27,7 +27,6 @@
       "capabilities": {
         "post-edit": "supported",
         "feedback": "supported",
-        "pre-tool-guard": "supported",
         "turn-end": "supported"
       },
       "verification": { "mode": "automated", "prerequisites": ["model provider credentials for a bounded smoke turn"] }
@@ -51,7 +50,6 @@
       "capabilities": {
         "post-edit": "supported",
         "feedback": "supported",
-        "pre-tool-guard": "supported",
         "turn-end": "supported"
       },
       "verification": { "mode": "automated", "prerequisites": ["ANTHROPIC_API_KEY"] }
@@ -75,7 +73,6 @@
       "capabilities": {
         "post-edit": "supported",
         "feedback": "supported",
-        "pre-tool-guard": "supported",
         "turn-end": "supported"
       },
       "verification": { "mode": "automated", "prerequisites": ["OPENAI_API_KEY", "hook trust review in the isolated CODEX_HOME"] }
@@ -99,7 +96,6 @@
       "capabilities": {
         "post-edit": "supported",
         "feedback": "supported",
-        "pre-tool-guard": "supported",
         "turn-end": "supported"
       },
       "capabilityNotes": {
@@ -126,7 +122,6 @@
       "capabilities": {
         "post-edit": "supported",
         "feedback": "supported",
-        "pre-tool-guard": "supported",
         "turn-end": "supported"
       },
       "verification": { "mode": "automated", "prerequisites": ["GH_TOKEN with a Copilot subscription"] }
@@ -150,7 +145,6 @@
       "capabilities": {
         "post-edit": "supported",
         "feedback": "supported",
-        "pre-tool-guard": "supported",
         "turn-end": "supported"
       },
       "verification": { "mode": "automated", "prerequisites": ["GEMINI_API_KEY"] }
@@ -174,12 +168,10 @@
       "capabilities": {
         "post-edit": "supported",
         "feedback": "unsupported",
-        "pre-tool-guard": "supported",
         "turn-end": "unsupported"
       },
       "capabilityNotes": {
         "feedback": "Post-hook output is shown only in the Cascade UI when show_output is true; it is not delivered to the agent.",
-        "pre-tool-guard": "pre_write_code and pre_run_command block with exit code 2, and Cascade shows the agent stderr.",
         "turn-end": "post_cascade_response is asynchronous and for logging; no hook output continues the conversation."
       },
       "verification": { "mode": "witnessed", "prerequisites": ["Windsurf editor installation and a signed-in account"] }
@@ -208,7 +200,6 @@
       "capabilities": {
         "post-edit": "supported",
         "feedback": "supported",
-        "pre-tool-guard": "supported",
         "turn-end": "unsupported"
       },
       "capabilityNotes": {
@@ -235,7 +226,6 @@
       "capabilities": {
         "post-edit": "supported",
         "feedback": "supported",
-        "pre-tool-guard": "supported",
         "turn-end": "supported"
       },
       "verification": { "mode": "automated", "prerequisites": ["FACTORY_API_KEY"] }
@@ -261,7 +251,6 @@
       "capabilities": {
         "post-edit": "supported",
         "feedback": "supported",
-        "pre-tool-guard": "supported",
         "turn-end": "supported"
       },
       "capabilityNotes": {
@@ -291,7 +280,6 @@
       "capabilities": {
         "post-edit": "unsupported",
         "feedback": "supported",
-        "pre-tool-guard": "supported",
         "turn-end": "supported"
       },
       "capabilityNotes": {

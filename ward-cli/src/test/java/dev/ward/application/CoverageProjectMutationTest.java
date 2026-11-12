@@ -62,11 +62,7 @@ class CoverageProjectMutationTest {
             new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE), gates);
     assertThat(change.tools())
         .containsExactly(
-            "sonar-maven-plugin",
-            "jacoco-maven-plugin",
-            "pitest-maven",
-            "maven-enforcer-plugin",
-            "license-maven-plugin");
+            "sonar-maven-plugin", "jacoco-maven-plugin", "pitest-maven", "maven-enforcer-plugin");
     assertThat(Files.readString(root.resolve("pom.xml")))
         .contains(
             "jacoco-maven-plugin", "sonar-maven-plugin", "pitest-maven", "maven-enforcer-plugin");

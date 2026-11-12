@@ -1,0 +1,1 @@
+response-mediatype-enum-value-added	GET	/pets

@@ -1,6 +1,5 @@
 package dev.ward.application.init;
 
-import dev.ward.application.init.openapi.OpenApiToolInstalls;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.InitGateOption;
@@ -22,7 +21,6 @@ public final class CiWorkflowTemplate {
   private static final String WORKFLOWS = ".github/workflows/";
   private static final String SARIF = "ward.sarif";
   private static final String SEMGREP_VERSION = "1.181.0";
-  private static final String OPENSPEC_VERSION = "1.14.1";
   public static final String STEP = "      - name: ";
 
   private CiWorkflowTemplate() {}
@@ -159,10 +157,6 @@ public final class CiWorkflowTemplate {
     final List<String> install = new ArrayList<>();
     if (ids.contains("semgrep")) {
       install.add("          pip install semgrep==" + SEMGREP_VERSION + "\n");
-    }
-    OpenApiToolInstalls.add(ids, install);
-    if (ids.contains("openspec") || ids.contains("openspec-archived")) {
-      install.add("          npm install -g @fission-ai/openspec@" + OPENSPEC_VERSION + "\n");
     }
     // The runner's system Python refuses global pip installs.
     final String python =

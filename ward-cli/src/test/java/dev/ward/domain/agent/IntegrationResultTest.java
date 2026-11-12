@@ -22,9 +22,9 @@ class IntegrationResultTest {
             IntegrationResult.Status.CHANGED,
             List.of("hook"),
             "installed",
-            Set.of(IntegrationCapability.PRE_TOOL, IntegrationCapability.FEEDBACK));
+            Set.of(IntegrationCapability.POST_EDIT, IntegrationCapability.FEEDBACK));
 
     assertThat(result.capabilities())
-        .containsExactlyInAnyOrder(IntegrationCapability.PRE_TOOL, IntegrationCapability.FEEDBACK);
+        .containsExactlyInAnyOrder(IntegrationCapability.POST_EDIT, IntegrationCapability.FEEDBACK);
   }
 }

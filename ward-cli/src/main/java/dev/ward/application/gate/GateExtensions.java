@@ -1,7 +1,13 @@
 package dev.ward.application.gate;
 
 import dev.ward.application.gate.apicompat.ApiCompatGates;
+import dev.ward.application.gate.buildpolicy.BuildPolicyGates;
 import dev.ward.application.gate.openapi.OpenApiGates;
+import dev.ward.application.license.LicenseService;
+import dev.ward.domain.config.GateConfiguration;
+import dev.ward.domain.config.LicenseSettings;
+import dev.ward.domain.config.WardException;
+import dev.ward.domain.gate.QualityGate;
 import java.util.Objects;
 
 /**
@@ -15,6 +21,9 @@ import java.util.Objects;
  * @param crap gives the {@code crap} gate its report readers, or {@code null} when it is
  * @param vulnerabilities builds the {@code vulnerabilities} gate, or {@code null} when it is
  *     unavailable
+ * @param license looks up the licenses of the {@code license} gate, or {@code null} when it is
+ *     unavailable
+ * @param buildPolicy builds the {@code build-policy} gate, or {@code null} when it is unavailable
  * @param apiCompat builds the native {@code api-compat} gate, or {@code null} when it is
  *     unavailable
  */
@@ -25,11 +34,13 @@ public record GateExtensions(
     SecretGates secrets,
     CrapPorts crap,
     VulnerabilityGates vulnerabilities,
+    LicenseService license,
+    BuildPolicyGates buildPolicy,
     ApiCompatGates apiCompat) {
 
   /** No optional dependencies: every extension gate is reported as unavailable. */
   public static final GateExtensions NONE =
-      new GateExtensions(null, null, null, null, null, null, null);
+      new GateExtensions(null, null, null, null, null, null, null, null, null);
 
   /** Replaces a missing {@code api-compat} builder with one that only runs command checks. */
   public GateExtensions {
@@ -37,11 +48,27 @@ public record GateExtensions(
   }
 
   /**
-   * Creates the extensions without the {@code secrets}, {@code crap}, {@code vulnerabilities} and
-   * {@code api-compat} gates.
+   * Creates the extensions without the {@code secrets}, {@code crap}, {@code vulnerabilities},
+   * {@code license}, {@code build-policy} and {@code api-compat} gates.
    */
   public GateExtensions(
       final OpenApiGates openApi, final AnalysisPorts analysis, final FormatGates format) {
-    this(openApi, analysis, format, null, null, null, null);
+    this(openApi, analysis, format, null, null, null, null, null, null);
+  }
+
+  /**
+   * Builds the {@code license} gate of {@code check}, with the default settings when the check sets
+   * none.
+   *
+   * @throws WardException if the license lookup is unavailable
+   */
+  public QualityGate licenseGate(final GateConfiguration check) {
+    if (license == null) {
+      throw new WardException("License gate dependencies are unavailable.");
+    }
+    return new LicenseGate(
+        check.name(),
+        license,
+        check.license() == null ? LicenseSettings.defaults() : check.license());
   }
 }

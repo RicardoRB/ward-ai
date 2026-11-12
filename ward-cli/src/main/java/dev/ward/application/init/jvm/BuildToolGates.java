@@ -113,25 +113,35 @@ record BuildToolGates(
         androidCoverage());
   }
 
-  /** Gates that enforce build, license, compatibility, or custom policies, in wizard order. */
+  /** Gates that enforce build, compatibility, or custom policies, in wizard order. */
   List<InitGateOption> policyGates() {
     return List.of(
+        buildPolicy(),
         option(
             "enforcer",
             "Enforces dependency and build rules with Maven Enforcer.",
             " (dependency and build rules are configured in pom.xml.)",
             task("check", "enforcer:enforce")),
-        option(
-            "license",
-            "Checks dependency licenses against the build file's license policy.",
-            " (license policy is configured in the build file.)",
-            task("checkLicense", "license:add-third-party")),
         apiCompat(),
         option(
             "command",
             "Runs a custom command from ward.toml.",
             " (customize the command in ward.toml after initialization.)",
             "test"));
+  }
+
+  /**
+   * The {@code build-policy} gate: it has no command, because Ward reads the build files itself.
+   */
+  private static InitGateOption buildPolicy() {
+    return new InitGateOption(
+        SupportedQualityGates.BUILD_POLICY,
+        "Checks pinned plugin versions, dynamic versions, the build tool version and duplicate"
+            + " dependency declarations in the build files, with Ward's native rules.",
+        List.of(),
+        true,
+        null,
+        Map.of());
   }
 
   // japicmp:cmp compares the packaged jar, so Maven packages it first.

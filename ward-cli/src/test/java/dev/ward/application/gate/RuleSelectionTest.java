@@ -61,6 +61,22 @@ class RuleSelectionTest {
                 + " <language>.<rule-name>; write \"java.standard-rule\"");
   }
 
+  @Test
+  void buildPolicyIdsAreLeftToTheBuildPolicyCheck() {
+    final RuleSelection.Result result =
+        RuleSelection.selected(
+            new RuleConfigFile.Select(
+                null,
+                List.of(),
+                List.of(),
+                List.of("build.no-dynamic-version"),
+                List.of("build.plugin-version-pinned")),
+            List.of(rule(STANDARD_RULE, RulePreset.STANDARD)));
+
+    assertThat(result.ids()).containsExactly(STANDARD_RULE);
+    assertThat(result.problems()).isEmpty();
+  }
+
   private static RuleDefinition rule(final String id, final RulePreset preset) {
     return new RuleDefinition(
         id,

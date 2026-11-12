@@ -1,0 +1,14 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths:
+  /p:
+    get:
+      responses:
+        "429":
+          description: d
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer

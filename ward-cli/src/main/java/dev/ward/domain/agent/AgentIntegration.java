@@ -13,17 +13,17 @@ public interface AgentIntegration extends AgentAdapter {
   IntegrationResult integrate(Path projectRoot, boolean remove);
 
   /**
-   * Describes, without writing, every file that installing or refreshing this integration with
-   * {@code guard} would create, modify, or remove, including user-owned conflicts.
+   * Describes, without writing, every file that installing or refreshing this integration would
+   * create, modify, or remove, including user-owned conflicts.
    */
-  List<PlannedFileChange> plan(Path projectRoot, GuardMode guard);
+  List<PlannedFileChange> plan(Path projectRoot);
 
   /**
    * Describes, without writing, what {@code request} would change under {@code root}. Integrations
    * that do not install nested projects at the repository root ignore the project path.
    */
   default List<PlannedFileChange> plan(final Path root, final IntegrationRequest request) {
-    return plan(root, request.guard());
+    return plan(root);
   }
 
   /**
@@ -76,10 +76,7 @@ public interface AgentIntegration extends AgentAdapter {
         : new IntegrationHealth(IntegrationHealth.Status.MISSING, "Integration is not configured.");
   }
 
-  /**
-   * Installs, refreshes, or removes the integration as requested. Integrations without an
-   * approved-artifact guard ignore the guard mode.
-   */
+  /** Installs, refreshes, or removes the integration as requested. */
   default IntegrationResult integrate(final Path projectRoot, final IntegrationRequest request) {
     return integrate(projectRoot, request.remove());
   }

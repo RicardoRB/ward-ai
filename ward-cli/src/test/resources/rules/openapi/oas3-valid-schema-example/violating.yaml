@@ -1,0 +1,61 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths: {}
+components:
+  schemas:
+    Str: {type: string, example: 1}
+    Num: {type: integer, example: 1.5}
+    Min: {type: integer, minimum: 5, example: 1}
+    Max: {type: number, maximum: 5, exclusiveMaximum: true, example: 5}
+    Len: {type: string, minLength: 3, maxLength: 5, example: ab}
+    Pat:
+      type: string
+      pattern: '^a+$'
+      example: b
+    Uuid: {type: string, format: uuid, example: nope}
+    When: {type: string, format: date-time, example: yesterday}
+    Choice: {type: string, enum: [a, b], example: c}
+    Near: {type: string, enum: [alpha, beta], example: alpho}
+    Obj:
+      type: object
+      required: [id]
+      properties:
+        id: {type: integer}
+      additionalProperties: false
+      example:
+        name: x
+    Deep:
+      type: object
+      properties:
+        id: {type: integer}
+        tags:
+          type: array
+          items: {type: string}
+          minItems: 2
+      example:
+        id: x
+        tags: [a]
+    Unique: {type: array, uniqueItems: true, items: {type: string}, example: [a, b, a]}
+    Nullable: {type: string, nullable: true, example: 5}
+    Both:
+      allOf:
+        - {type: object, required: [a]}
+        - {type: object, required: [b]}
+      type: object
+      example: {}
+    Pick:
+      oneOf:
+        - {type: string}
+        - {type: integer}
+      example: true
+    Any:
+      anyOf:
+        - {type: string}
+        - {type: integer}
+      example: true
+    Fallback: {type: integer, default: abc}
+    Multiple: {type: integer, multipleOf: 3, example: 4}
+    List: {type: array, items: {type: integer}, maxItems: 1, example: [1, x]}
+    Fine: {type: string, example: fine}

@@ -51,8 +51,6 @@ class InitSetupCatalogTest {
   private static final double STRICT_LINE_MINIMUM = 0.85;
   private static final double STRICT_BRANCH_MINIMUM = 0.75;
   private static final int STRICT_MUTATION_THRESHOLD = 60;
-  private static final String OPENSPEC = "openspec";
-  private static final String OPENSPEC_ARCHIVED = "openspec-archived";
   private static final String COMPILE = "compile";
   private static final String TESTS = "tests";
 
@@ -80,13 +78,6 @@ class InitSetupCatalogTest {
             catalog.gates(
                 new ProjectDetector(new FileSystemProjectInspection()).detect(dir).orElseThrow(),
                 null))
-        .extracting(InitGateOption::id)
-        .doesNotContain(OPENSPEC, OPENSPEC_ARCHIVED);
-    assertThat(QualityGateFactory.SUPPORTED_GATES).contains(OPENSPEC, OPENSPEC_ARCHIVED);
-    assertThat(
-            catalog.gates(
-                new ProjectDetector(new FileSystemProjectInspection()).detect(dir).orElseThrow(),
-                null))
         .allSatisfy(gate -> assertThat(gate.description()).isNotBlank());
   }
 
@@ -103,7 +94,9 @@ class InitSetupCatalogTest {
         .containsEntry("LINE", STRICT_LINE_MINIMUM)
         .containsEntry("BRANCH", STRICT_BRANCH_MINIMUM);
     assertThat(QualityPreset.STRICT.rules().enforcerRules())
-        .contains("requireUpperBoundDeps", "requirePluginVersions", "banDynamicVersions");
+        .containsExactly("dependencyConvergence", "requireUpperBoundDeps");
+    assertThat(QualityPreset.STANDARD.rules().enforcerRules())
+        .containsExactly("dependencyConvergence");
     assertThat(QualityPreset.STRICT.rules().mutationThreshold())
         .isEqualTo(STRICT_MUTATION_THRESHOLD);
     assertThat(QualityPreset.STRICT.rules().architectureCycles()).isTrue();
@@ -204,7 +197,6 @@ class InitSetupCatalogTest {
         .extracting(InitGateOption::id)
         .containsExactlyInAnyOrderElementsOf(
             QualityGateFactory.SUPPORTED_GATES.stream()
-                .filter(id -> !OPENSPEC.equals(id) && !OPENSPEC_ARCHIVED.equals(id))
                 // OpenAPI gates are offered only when the project commits a spec.
                 .filter(id -> !id.startsWith("openapi-"))
                 // Semgrep has no ruleset for JVM projects, so init does not offer it to them.

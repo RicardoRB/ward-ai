@@ -1,5 +1,5 @@
 import type { LiveContext, LiveDriver } from "../src/live";
-import { hookScenarios, prepareSmokeFixture } from "./hook-scenarios";
+import { hookScenarios } from "./hook-scenarios";
 
 // Live Cursor driver. `cursor-agent -p` runs one headless turn in the fixture and `--force` allows its
 // commands; cursor-agent loads .cursor/hooks.json itself and runs the hooks from the project root.
@@ -14,6 +14,5 @@ const turn = (context: LiveContext, prompt: string) =>
 export const cursorDriver: LiveDriver = {
   harness: "cursor",
   missingPrerequisites: (env) => (env.CURSOR_API_KEY ? [] : ["CURSOR_API_KEY"]),
-  prepare: prepareSmokeFixture,
   scenarios: hookScenarios(turn),
 };

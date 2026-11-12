@@ -3,8 +3,8 @@ package dev.ward.application.gate.openapi;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import dev.ward.domain.FakeCommandExecutor;
 import dev.ward.domain.config.WardException;
+import dev.ward.domain.gate.Finding;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.GateStatus;
 import java.util.ArrayList;
@@ -25,36 +25,37 @@ class OpenApiCompatGateTest {
     fixtures.revisions.put(ORIGIN_MAIN, OpenApiGateFixtures.BASE_SHA);
     fixtures.mergeBase = Optional.of(OpenApiGateFixtures.BASE_SHA);
     fixtures.committedFiles.add(OpenApiGateFixtures.BASE_SHA + ":" + OpenApiGateFixtures.SPEC);
+    fixtures.committedContents.put(
+        OpenApiGateFixtures.BASE_SHA + ":" + OpenApiGateFixtures.SPEC,
+        OpenApiGateFixtures.DOCUMENT);
     return fixtures;
   }
 
   @Test
   void comparesWithMergeBaseOfOriginMain() {
-    final FakeCommandExecutor executor = new FakeCommandExecutor(0, "", "");
+    final OpenApiGateFixtures fixtures = branch();
+    fixtures.committedContents.put(
+        OpenApiGateFixtures.BASE_SHA + ":" + OpenApiGateFixtures.SPEC,
+        OpenApiGateFixtures.DOCUMENT.replace("    post:\n", "    put:\n"));
+    fixtures.committedContents.put(
+        OpenApiGateFixtures.HEAD_SHA + ":" + OpenApiGateFixtures.SPEC, "not: used\n");
 
     final GateResult result =
-        branch()
-            .gate(COMPAT, OpenApiGateFixtures.DIFF_COMMAND, executor)
-            .execute(OpenApiGateFixtures.PROJECT);
+        fixtures.gate(COMPAT, OpenApiGateFixtures.NO_COMMAND).execute(OpenApiGateFixtures.PROJECT);
 
-    assertThat(result.status()).isEqualTo(GateStatus.PASSED);
-    assertThat(executor.commands.getFirst())
-        .endsWith(
-            OpenApiGateFixtures.BASE_SHA + ":./" + OpenApiGateFixtures.SPEC,
-            OpenApiGateFixtures.SPEC);
+    assertThat(result.status()).isEqualTo(GateStatus.FAILED);
+    assertThat(result.findings().items())
+        .extracting(Finding::ruleId)
+        .containsExactly("ward:openapi/api-removed-without-deprecation");
   }
 
   @Test
-  void branchThatBreaksTheApiFails() {
+  void branchWithoutChangesPasses() {
     final GateResult result =
-        branch()
-            .gate(
-                COMPAT,
-                OpenApiGateFixtures.DIFF_COMMAND,
-                new FakeCommandExecutor(1, "1 changes: 1 error", ""))
-            .execute(OpenApiGateFixtures.PROJECT);
+        branch().gate(COMPAT, OpenApiGateFixtures.NO_COMMAND).execute(OpenApiGateFixtures.PROJECT);
 
-    assertThat(result.status()).isEqualTo(GateStatus.FAILED);
+    assertThat(result.status()).isEqualTo(GateStatus.PASSED);
+    assertThat(result.summary()).isEqualTo("No breaking changes.");
   }
 
   @Test
@@ -63,16 +64,14 @@ class OpenApiCompatGateTest {
     fixtures.mergeBase = Optional.of(OpenApiGateFixtures.HEAD_SHA);
     fixtures.revisions.put(OpenApiGateFixtures.HEAD_SHA + "^1", OpenApiGateFixtures.PARENT_SHA);
     fixtures.committedFiles.add(OpenApiGateFixtures.PARENT_SHA + ":" + OpenApiGateFixtures.SPEC);
-    final FakeCommandExecutor executor = new FakeCommandExecutor(0, "", "");
+    fixtures.committedContents.put(
+        OpenApiGateFixtures.PARENT_SHA + ":" + OpenApiGateFixtures.SPEC,
+        OpenApiGateFixtures.DOCUMENT.replace("    post:\n", "    put:\n"));
 
-    fixtures
-        .gate(COMPAT, OpenApiGateFixtures.DIFF_COMMAND, executor)
-        .execute(OpenApiGateFixtures.PROJECT);
+    final GateResult result =
+        fixtures.gate(COMPAT, OpenApiGateFixtures.NO_COMMAND).execute(OpenApiGateFixtures.PROJECT);
 
-    assertThat(executor.commands.getFirst())
-        .endsWith(
-            OpenApiGateFixtures.PARENT_SHA + ":./" + OpenApiGateFixtures.SPEC,
-            OpenApiGateFixtures.SPEC);
+    assertThat(result.status()).isEqualTo(GateStatus.FAILED);
   }
 
   @Test
@@ -81,9 +80,7 @@ class OpenApiCompatGateTest {
     fixtures.mergeBase = Optional.of(OpenApiGateFixtures.HEAD_SHA);
 
     final GateResult result =
-        fixtures
-            .gate(COMPAT, OpenApiGateFixtures.DIFF_COMMAND)
-            .execute(OpenApiGateFixtures.PROJECT);
+        fixtures.gate(COMPAT, OpenApiGateFixtures.NO_COMMAND).execute(OpenApiGateFixtures.PROJECT);
 
     assertThat(result.status()).isEqualTo(GateStatus.PASSED);
     assertThat(result.summary()).contains("No earlier revision");
@@ -95,9 +92,7 @@ class OpenApiCompatGateTest {
     fixtures.committedFiles.remove(OpenApiGateFixtures.BASE_SHA + ":" + OpenApiGateFixtures.SPEC);
 
     final GateResult result =
-        fixtures
-            .gate(COMPAT, OpenApiGateFixtures.DIFF_COMMAND)
-            .execute(OpenApiGateFixtures.PROJECT);
+        fixtures.gate(COMPAT, OpenApiGateFixtures.NO_COMMAND).execute(OpenApiGateFixtures.PROJECT);
 
     assertThat(result.status()).isEqualTo(GateStatus.PASSED);
     assertThat(result.summary()).contains("No baseline").contains(OpenApiGateFixtures.BASE_SHA);
@@ -108,7 +103,7 @@ class OpenApiCompatGateTest {
     final OpenApiGateFixtures fixtures = branch();
     fixtures.revisions.remove(ORIGIN_MAIN);
 
-    assertThatThrownBy(() -> fixtures.gate(COMPAT, OpenApiGateFixtures.DIFF_COMMAND))
+    assertThatThrownBy(() -> fixtures.gate(COMPAT, OpenApiGateFixtures.NO_COMMAND))
         .isInstanceOf(WardException.class)
         .hasMessageContaining(ORIGIN_MAIN);
   }
@@ -119,9 +114,7 @@ class OpenApiCompatGateTest {
     fixtures.mergeBase = Optional.empty();
 
     final GateResult result =
-        fixtures
-            .gate(COMPAT, OpenApiGateFixtures.DIFF_COMMAND)
-            .execute(OpenApiGateFixtures.PROJECT);
+        fixtures.gate(COMPAT, OpenApiGateFixtures.NO_COMMAND).execute(OpenApiGateFixtures.PROJECT);
 
     assertThat(result.status()).isEqualTo(GateStatus.FAILED);
     assertThat(result.summary()).contains("fetch the base branch history");
@@ -150,10 +143,10 @@ class OpenApiCompatGateTest {
     final Logger logger = Logger.getLogger(OpenApiDiffGate.class.getName());
     logger.addHandler(handler);
     try {
-      branch().gate(COMPAT, OpenApiGateFixtures.DIFF_COMMAND).execute(OpenApiGateFixtures.PROJECT);
+      branch().gate(COMPAT, OpenApiGateFixtures.NO_COMMAND).execute(OpenApiGateFixtures.PROJECT);
       final OpenApiGateFixtures newSpec = branch();
       newSpec.committedFiles.remove(OpenApiGateFixtures.BASE_SHA + ":" + OpenApiGateFixtures.SPEC);
-      newSpec.gate(COMPAT, OpenApiGateFixtures.DIFF_COMMAND).execute(OpenApiGateFixtures.PROJECT);
+      newSpec.gate(COMPAT, OpenApiGateFixtures.NO_COMMAND).execute(OpenApiGateFixtures.PROJECT);
     } finally {
       logger.removeHandler(handler);
     }
@@ -163,6 +156,7 @@ class OpenApiCompatGateTest {
         .containsExactly(
             "event=openapi-baseline gate=openapi-compat status=found revision="
                 + OpenApiGateFixtures.BASE_SHA,
+            "event=openapi-diff-done gate=openapi-compat findings=0",
             "event=openapi-baseline gate=openapi-compat status=none reason=new-spec revision="
                 + OpenApiGateFixtures.BASE_SHA)
         .noneMatch(message -> message.contains("openapi: 3.0.3"));

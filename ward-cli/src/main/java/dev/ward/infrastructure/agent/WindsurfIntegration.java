@@ -1,6 +1,5 @@
 package dev.ward.infrastructure.agent;
 
-import dev.ward.domain.agent.GuardMode;
 import dev.ward.domain.agent.IntegrationCapability;
 import dev.ward.domain.agent.NativeHookInput;
 import dev.ward.domain.agent.NativeHookOutcome;
@@ -10,9 +9,8 @@ import org.apache.fory.json.annotation.JsonProperty;
 import org.apache.fory.json.annotation.JsonType;
 
 /**
- * Native Windsurf (Cascade) hooks integration contract. Pre-hooks block with exit status 2 and the
- * agent sees stderr; post-hooks cannot reach the agent, so post-write findings are shown to the
- * user in the Cascade UI and there is no turn-end delivery.
+ * Native Windsurf (Cascade) hooks integration contract. Post-hooks cannot reach the agent, so
+ * post-write findings are shown to the user in the Cascade UI and there is no turn-end delivery.
  */
 public final class WindsurfIntegration implements NativeHarnessAdapter {
   private static final NativeAgentIntegration.Definition DEFINITION =
@@ -20,11 +18,8 @@ public final class WindsurfIntegration implements NativeHarnessAdapter {
           "windsurf",
           ".windsurf/hooks.json",
           ".windsurf/hooks/ward.sh",
-          "pre_write_code,pre_run_command,post_write_code",
-          Set.of(
-              IntegrationCapability.PRE_TOOL,
-              IntegrationCapability.POST_EDIT,
-              IntegrationCapability.APPROVED_ARTIFACT_GUARD));
+          "post_write_code",
+          Set.of(IntegrationCapability.POST_EDIT));
 
   @Override
   public NativeAgentIntegration.Definition definition() {
@@ -39,11 +34,7 @@ public final class WindsurfIntegration implements NativeHarnessAdapter {
   @Override
   public String configContent() {
     return "{\n  \"hooks\": {\n"
-        + "    \"pre_write_code\": ["
-        + hook("pre", false)
-        + "],\n    \"pre_run_command\": ["
-        + hook("pre", false)
-        + "],\n    \"post_write_code\": ["
+        + "    \"post_write_code\": ["
         + hook("post", true)
         + "]\n  }\n}\n";
   }
@@ -61,8 +52,8 @@ public final class WindsurfIntegration implements NativeHarnessAdapter {
   }
 
   @Override
-  public String hookContent(final GuardMode guardMode) {
-    return NativeHookText.phaseWrapper(DEFINITION.id(), DEFINITION.hookFile(), guardMode);
+  public String hookContent() {
+    return NativeHookText.wrapper(DEFINITION.id(), DEFINITION.hookFile());
   }
 
   /** Returns {@code reason} unchanged: Windsurf shows the text a blocking hook prints. */

@@ -7,8 +7,6 @@ import dagger.Module;
       ProcessBindingsModule.class,
       ProjectBindingsModule.class,
       InitBindingsModule.class,
-      TraceabilityBindingsModule.class,
-      ProvenanceBindingsModule.class,
       GateBindingsModule.class,
       ApiCompatBindingsModule.class,
       GateExtensionBindingsModule.class,
@@ -18,6 +16,7 @@ import dagger.Module;
       ReportBindingsModule.class,
       DoctorBindingsModule.class,
       DependencyBindingsModule.class,
+      BuildPolicyBindingsModule.class,
       RulesBindingsModule.class,
       VulnerabilityBindingsModule.class
     })

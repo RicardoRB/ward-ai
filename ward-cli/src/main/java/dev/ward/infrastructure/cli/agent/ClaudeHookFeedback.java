@@ -4,45 +4,26 @@ import dev.ward.domain.gate.CheckReport;
 import dev.ward.domain.gate.GateStatus;
 import dev.ward.domain.learning.LearningOutcome;
 import dev.ward.domain.learning.LearningPrompt;
-import dev.ward.domain.spec.SpecReportRenderer;
-import dev.ward.domain.spec.SpecValidationReport;
 import java.util.ArrayList;
 import java.util.List;
 
 /** Plain-text feedback the Claude Code hook gives the agent. */
 final class ClaudeHookFeedback {
-  private static final String SPEC_HEADER = "Ward spec validation found problems:\n";
-
   private ClaudeHookFeedback() {}
 
-  /** Failure lines for stderr: quality failures, spec findings, then learning prompts. */
-  static List<String> failures(
-      final CheckReport report, final SpecValidationReport specs, final LearningOutcome learning) {
+  /** Failure lines for stderr: quality failures, then learning prompts. */
+  static List<String> failures(final CheckReport report, final LearningOutcome learning) {
     final List<String> lines = new ArrayList<>();
     if (!report.passed()) {
       lines.add(qualityFailures(report));
-    }
-    if (specs.hasFindings()) {
-      lines.add(specFindings(specs));
     }
     learning.prompts().forEach(prompt -> lines.add(prompt.instruction()));
     return lines;
   }
 
-  /** Turn-end findings: quality failures, then spec findings. */
-  static String turnEnd(final CheckReport report, final SpecValidationReport specs) {
-    final List<String> lines = new ArrayList<>(2);
-    if (!report.passed()) {
-      lines.add(qualityFailures(report));
-    }
-    if (specs.hasFindings()) {
-      lines.add(specFindings(specs));
-    }
-    return String.join(System.lineSeparator(), lines);
-  }
-
-  static String specFindings(final SpecValidationReport specs) {
-    return SPEC_HEADER + SpecReportRenderer.render(specs);
+  /** Turn-end findings: the quality failures. */
+  static String turnEnd(final CheckReport report) {
+    return qualityFailures(report);
   }
 
   static String learningContext(final LearningOutcome learning) {

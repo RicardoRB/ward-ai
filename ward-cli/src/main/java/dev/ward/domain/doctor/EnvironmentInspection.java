@@ -20,16 +20,6 @@ public interface EnvironmentInspection {
         executable, Path.of(executable), available, available, available);
   }
 
-  /** Returns whether the project-root OpenSpec marker is a directory. */
-  default boolean hasOpenSpecDirectory(final Path projectRoot) {
-    return false;
-  }
-
-  /** Returns whether Git ignores the project-root {@code openspec/} directory. */
-  default boolean isOpenSpecDirectoryIgnored(final Path projectRoot) {
-    return false;
-  }
-
   /**
    * Returns the project-relative path of the Git-tracked OpenAPI spec of {@code projectRoot}: the
    * first tracked {@code openapi.yml}, {@code openapi.yaml}, or {@code openapi.json} under {@code

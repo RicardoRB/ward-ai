@@ -1,0 +1,16 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths: {}
+components:
+  schemas:
+    Typed:
+      type: object
+      additionalProperties:
+        type: string
+    Bounded:
+      type: object
+      maxProperties: 5
+      additionalProperties:
+        type: string

@@ -1,12 +1,10 @@
 package dev.ward.infrastructure.agent;
 
-import dev.ward.domain.agent.GuardMode;
 import java.util.Arrays;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
- * The two Cline hook files. Cline runs every file named after an event with {@code bash} and has no
+ * The Cline hook file. Cline runs every file named after an event with {@code bash} and has no
  * matcher, so each script filters the tool name itself before calling Ward.
  */
 final class ClineHookScripts {
@@ -19,19 +17,6 @@ final class ClineHookScripts {
         "PostToolUse",
         onlyTools("editor", "apply_patch")
             + "printf '%s' \"$payload\" | exec ward hook native --agent cline --event-stdin\n");
-  }
-
-  /** The PreToolUse hook: the approved-artifact guard for edits, patches and commands. */
-  static String preToolUse(final String marker, final GuardMode guardMode) {
-    return script(
-        marker,
-        "PreToolUse",
-        "[ \""
-            + guardMode.name().toLowerCase(Locale.ROOT)
-            + "\" = \"enable\" ] || exit 0\n"
-            + onlyTools("editor", "apply_patch", "run_commands")
-            + "printf '%s' \"$payload\" | exec ward hook native --agent cline"
-            + " --guard-approved-specs --event-stdin\n");
   }
 
   /** Lets the hook continue only for the named tools. */

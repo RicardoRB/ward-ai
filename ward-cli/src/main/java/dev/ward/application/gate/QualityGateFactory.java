@@ -1,13 +1,10 @@
 package dev.ward.application.gate;
 
 import dev.ward.application.gate.jvm.MavenTestGate;
-import dev.ward.application.gate.openapi.OpenApiCommandValidation;
-import dev.ward.application.gate.openspec.OpenSpecQualityGate;
 import dev.ward.application.gate.swift.SwiftGates;
 import dev.ward.domain.config.GateConfiguration;
 import dev.ward.domain.config.WardConfiguration;
 import dev.ward.domain.config.WardException;
-import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.gate.MutationReport;
 import dev.ward.domain.gate.QualityGate;
 import dev.ward.domain.gate.ReportDirectories;
@@ -16,8 +13,6 @@ import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Project;
-import dev.ward.domain.traceability.ScenarioInventory;
-import dev.ward.domain.traceability.TestMappingInventory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,10 +26,12 @@ public class QualityGateFactory {
       Set.of(
           SupportedQualityGates.ANALYSIS,
           SupportedQualityGates.FORMAT,
+          SupportedQualityGates.LICENSE,
           SupportedQualityGates.SECRETS,
           SupportedQualityGates.CRAP,
           SupportedQualityGates.COVERAGE,
-          SupportedQualityGates.VULNERABILITIES);
+          SupportedQualityGates.VULNERABILITIES,
+          SupportedQualityGates.BUILD_POLICY);
   private static final Set<String> REPORTING_GATES =
       Set.of(
           SupportedQualityGates.SECRETS,
@@ -67,8 +64,6 @@ public class QualityGateFactory {
           SupportedQualityGates.MUTATION, PIT_REPORT_HINT);
 
   private final CommandExecutor executor;
-  private final EnvironmentInspection environment;
-  private final TraceabilitySources traceability;
   private final ReportDirectories reportDirectories;
   private final MutationReport strykerReport;
   private final MutationReport pitReport;
@@ -78,22 +73,7 @@ public class QualityGateFactory {
 
   /** Creates a factory for command gates only. */
   public QualityGateFactory(final CommandExecutor executor) {
-    this(executor, null, null, null);
-  }
-
-  /** Creates a factory that can check executable availability. */
-  public QualityGateFactory(
-      final CommandExecutor executor, final EnvironmentInspection environment) {
-    this(executor, environment, null, null);
-  }
-
-  /** Creates a factory that can also build the traceability gate. */
-  public QualityGateFactory(
-      final CommandExecutor executor,
-      final EnvironmentInspection environment,
-      final ScenarioInventory scenarioInventory,
-      final TestMappingInventory testMappingInventory) {
-    this(executor, environment, scenarioInventory, testMappingInventory, ReportDirectories.NONE);
+    this(executor, ReportDirectories.NONE);
   }
 
   /**
@@ -101,17 +81,8 @@ public class QualityGateFactory {
    * their tools write reports.
    */
   public QualityGateFactory(
-      final CommandExecutor executor,
-      final EnvironmentInspection environment,
-      final ScenarioInventory scenarioInventory,
-      final TestMappingInventory testMappingInventory,
-      final ReportDirectories reportDirectories) {
-    this(
-        executor,
-        environment,
-        new TraceabilitySources(scenarioInventory, testMappingInventory),
-        new GateReportPorts(reportDirectories, null, null, null),
-        null);
+      final CommandExecutor executor, final ReportDirectories reportDirectories) {
+    this(executor, new GateReportPorts(reportDirectories, null, null, null), null);
   }
 
   /**
@@ -122,8 +93,6 @@ public class QualityGateFactory {
   @Inject
   public QualityGateFactory(
       final CommandExecutor executor,
-      final EnvironmentInspection environment,
-      final TraceabilitySources traceability,
       final GateReportPorts reports,
       final GateExtensions extensions) {
     this.reportDirectories = reports.directories();
@@ -132,8 +101,6 @@ public class QualityGateFactory {
     this.mutmutReport = reports.mutmut();
     this.reports = reports;
     this.executor = executor;
-    this.environment = environment;
-    this.traceability = traceability;
     this.extensions = extensions == null ? GateExtensions.NONE : extensions;
   }
 
@@ -195,16 +162,8 @@ public class QualityGateFactory {
     if (IN_PROCESS_GATES.contains(type)) {
       return inProcessGate(check, focus);
     }
-    if (SupportedQualityGates.specIds().contains(type)) {
-      return environment == null
-          ? new CommandQualityGate(name, executor, check.command())
-          : new OpenSpecQualityGate(name, executor, environment, check.command(), check.root());
-    }
     if (MavenTestGate.NAME.equals(type)) {
       return new MavenTestGate(executor, testsCommand(check.command(), project));
-    }
-    if (SupportedQualityGates.TRACEABILITY.equals(type)) {
-      return traceability.gate();
     }
     if (ZAP.equals(type)) {
       ZapTargetValidation.require(name, check.command());
@@ -267,6 +226,15 @@ public class QualityGateFactory {
    * report itself.
    */
   private QualityGate inProcessGate(final GateConfiguration check, final List<String> focus) {
+    if (SupportedQualityGates.BUILD_POLICY.equals(check.type())) {
+      if (extensions.buildPolicy() == null) {
+        throw new WardException("Build policy gate dependencies are unavailable.");
+      }
+      return extensions.buildPolicy().create(check.name(), check.rulesFile());
+    }
+    if (SupportedQualityGates.LICENSE.equals(check.type())) {
+      return extensions.licenseGate(check);
+    }
     if (REPORTING_GATES.contains(check.type())) {
       return ReportingGates.create(check, focus, executor, reports, extensions);
     }
@@ -282,7 +250,6 @@ public class QualityGateFactory {
   private QualityGate openApiGate(
       final String name, final GateConfiguration check, final Project project) {
     if (extensions.openApi() == null) {
-      OpenApiCommandValidation.require(name, check.command());
       throw new WardException("OpenAPI gate dependencies are unavailable.");
     }
     return extensions.openApi().create(name, check, project);

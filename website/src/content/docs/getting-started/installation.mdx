@@ -44,14 +44,14 @@ Then run `/ward-init` in your coding agent to set up Ward together with it.
 
 | Variable | Default | Purpose |
 |---|---|---|
-| `WARD_VERSION` | `latest` | Release tag to install, for example `v0.7.0`. |
+| `WARD_VERSION` | `latest` | Release tag to install, for example `v0.7.1`. |
 | `WARD_INSTALL_DIR` | `~/.local/bin` | Directory for the `ward` binary. |
 | `WARD_DOC_DIR` | `<install dir parent>/share/doc/ward` | Directory for `LICENSE` and `NOTICE`. |
 | `WARD_BASE_URL` | GitHub Releases | Download base URL, for mirrors. |
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.sh \
-  | WARD_VERSION=v0.7.0 WARD_INSTALL_DIR=/usr/local/bin sh
+  | WARD_VERSION=v0.7.1 WARD_INSTALL_DIR=/usr/local/bin sh
 ```
 
 ## Install script (Windows)
@@ -75,7 +75,7 @@ It reads the same `WARD_VERSION`, `WARD_INSTALL_DIR`, `WARD_DOC_DIR`, and `WARD_
 variables; `WARD_DOC_DIR` defaults to the install directory's parent:
 
 ```powershell
-$env:WARD_VERSION = 'v0.7.0'; irm https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.ps1 | iex
+$env:WARD_VERSION = 'v0.7.1'; irm https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.ps1 | iex
 ```
 
 ## Manual download
@@ -91,7 +91,8 @@ per platform with a `.sha256` checksum file. Each archive contains the binary, `
 | Windows x86_64 | `ward-windows-x86_64.zip` |
 
 `LICENSE`, `NOTICE`, `THIRD-PARTY-LICENSES` (the full license texts of every shipped dependency), and
-`sbom.json` (a CycloneDX software bill of materials) are also attached to each release.
+`sbom.json` (a CycloneDX software bill of materials) are also attached to each release. Both are
+written by Ward itself: see [`ward sbom` and `ward licenses`](/commands/sbom/).
 
 ```bash
 curl -fsSLO https://github.com/RicardoRB/ward-ai/releases/latest/download/ward-macos-aarch64.tar.gz

@@ -1,0 +1,15 @@
+openapi: 3.0.3
+info:
+  title: Pets
+  version: "1"
+paths:
+  /pets:
+    get:
+      responses:
+        '200':
+          description: ok
+  /owners:
+    get:
+      responses:
+        '200':
+          description: ok

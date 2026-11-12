@@ -1,0 +1,1 @@
+request-body-dependent-required-added	POST	/pets

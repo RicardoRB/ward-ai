@@ -1,6 +1,5 @@
 package dev.ward.infrastructure.agent;
 
-import dev.ward.domain.agent.GuardMode;
 import dev.ward.domain.agent.IntegrationCapability;
 import dev.ward.domain.agent.NativeHookInput;
 import dev.ward.domain.agent.NativeHookOutcome;
@@ -23,12 +22,8 @@ public final class JunieIntegration implements NativeHarnessAdapter {
           "junie",
           ".junie/config.json",
           ".junie/hooks/ward.sh",
-          "PreToolUse,Stop",
-          Set.of(
-              IntegrationCapability.PRE_TOOL,
-              IntegrationCapability.APPROVED_ARTIFACT_GUARD,
-              IntegrationCapability.TURN_END,
-              IntegrationCapability.FEEDBACK));
+          "Stop",
+          Set.of(IntegrationCapability.TURN_END, IntegrationCapability.FEEDBACK));
 
   @Override
   public NativeAgentIntegration.Definition definition() {
@@ -44,9 +39,7 @@ public final class JunieIntegration implements NativeHarnessAdapter {
   @Override
   public String configContent() {
     return "{\n  \"hooks\": {\n"
-        + "    \"PreToolUse\": [{\"matcher\": \"^(Write|Edit|Bash|apply_patch)$\", \"hooks\": ["
-        + command("pre", 0)
-        + "]}],\n    \"Stop\": [{\"hooks\": ["
+        + "    \"Stop\": [{\"hooks\": ["
         + command("post", CHECK_TIMEOUT_SECONDS)
         + "]}]\n  }\n}\n";
   }
@@ -65,8 +58,8 @@ public final class JunieIntegration implements NativeHarnessAdapter {
   }
 
   @Override
-  public String hookContent(final GuardMode guardMode) {
-    return NativeHookText.phaseWrapper(DEFINITION.id(), DEFINITION.hookFile(), guardMode);
+  public String hookContent() {
+    return NativeHookText.wrapper(DEFINITION.id(), DEFINITION.hookFile());
   }
 
   /**

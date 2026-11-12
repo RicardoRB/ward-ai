@@ -1,5 +1,6 @@
 package dev.ward.application.gate;
 
+import dev.ward.domain.gate.GateProgress;
 import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.QualityGate;
 import dev.ward.domain.project.Project;
@@ -24,5 +25,10 @@ final class TypedQualityGate implements QualityGate {
   @Override
   public GateResult execute(final Project project) {
     return delegate.execute(project).withType(type);
+  }
+
+  @Override
+  public GateResult execute(final Project project, final GateProgress progress) {
+    return delegate.execute(project, progress).withType(type);
   }
 }
