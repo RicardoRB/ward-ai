@@ -63,7 +63,15 @@ class ConfigurationTemplatePartialTest {
     final List<InitGateOption> options =
         List.of("compile", "tests", "coverage", "license", "mutation", "gitleaks", "semgrep")
             .stream()
-            .map(id -> new InitGateOption(id, id, List.of("tool", id), true, "available"))
+            .map(
+                id ->
+                    new InitGateOption(
+                        id,
+                        id,
+                        List.of("tool", id),
+                        true,
+                        "available",
+                        "coverage".equals(id) ? Map.of("minimum", "70") : Map.of()))
             .toList();
     final Path file = dir.resolve(WardConfiguration.FILE_NAME);
     Files.writeString(
