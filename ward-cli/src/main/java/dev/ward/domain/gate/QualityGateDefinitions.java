@@ -21,6 +21,7 @@ public final class QualityGateDefinitions {
           gate("zap", Phase.CI),
           gate("trivy", Phase.CI),
           gate("enforcer", Phase.LOCAL),
+          gate(SupportedQualityGates.BUILD_POLICY, Phase.LOCAL),
           gate("license", Phase.LOCAL),
           gate("api-compat", Phase.CI),
           gate(SupportedQualityGates.OPENAPI_LINT, Phase.FAST),

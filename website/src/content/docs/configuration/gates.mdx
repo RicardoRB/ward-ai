@@ -27,6 +27,7 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `trivy` | Trivy | Vulnerabilities in dependencies, containers, and IaC. |
 | Architecture | `ward` | Ward analysis rules | Run Ward's analysis rules over source syntax trees, with stable `ward:<language>/<rule>` ids, and the layer, slice cycle and feature independence rules `ward:architecture/*`. |
 | | `enforcer` | Maven Enforcer / Gradle checks | Dependency and build rules. |
+| | `build-policy` | Ward's native build policy rules | Pinned plugin versions, no dynamic versions, a minimum build tool version and duplicate dependency declarations in Maven, Gradle, Node and Python build files; see [Build policy rules](/reference/build-policy-rules/). |
 | Dependencies & Compliance | `license` | License Maven Plugin / Gradle License Report (`checkLicense`) | Dependency license policy. |
 | | `api-compat` | japicmp | Binary/API compatibility between versions. |
 | REST API contract | `openapi-lint` | vacuum | Lint the committed OpenAPI spec with every built-in rule. |

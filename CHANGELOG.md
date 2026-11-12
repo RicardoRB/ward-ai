@@ -8,6 +8,10 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Added
+
+- The `build-policy` check (`uses = "build-policy"`) runs the native `ward:build/*` rules over the build files of Maven, Gradle, Node and Python projects without starting a process: `plugin-version-pinned`, `no-dynamic-version`, `minimum-build-tool-version`, `duplicate-dependency-declaration` and `dependency-convergence`. See [Build policy rules](website/src/content/docs/reference/build-policy-rules.mdx) (#521).
+
 ## [0.7.0] - 2026-11-11
 
 ### Added

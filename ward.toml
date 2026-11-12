@@ -59,6 +59,11 @@ enabled = true
 profiles = ["pre-push", "ci"]
 command = "./mvnw -DskipTests package enforcer:enforce"
 
+[checks.build-policy]
+enabled = true
+profiles = ["pre-push", "ci"]
+uses = "build-policy"
+
 [checks.mutation]
 enabled = true
 profiles = ["ci"]

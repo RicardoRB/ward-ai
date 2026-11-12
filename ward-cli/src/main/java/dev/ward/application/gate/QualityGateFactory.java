@@ -28,7 +28,10 @@ import javax.inject.Inject;
 public class QualityGateFactory {
   private static final String ZAP = "zap";
   private static final Set<String> IN_PROCESS_GATES =
-      Set.of(SupportedQualityGates.ANALYSIS, SupportedQualityGates.FORMAT);
+      Set.of(
+          SupportedQualityGates.ANALYSIS,
+          SupportedQualityGates.FORMAT,
+          SupportedQualityGates.BUILD_POLICY);
 
   public static final List<String> SUPPORTED_GATES = SupportedQualityGates.IDS;
   private static final Set<String> PLATFORM_GATES =
@@ -242,6 +245,12 @@ public class QualityGateFactory {
    * Builds the gates that run inside Ward: the {@code ward} analysis and the {@code ward-format}.
    */
   private QualityGate inProcessGate(final GateConfiguration check, final List<String> focus) {
+    if (SupportedQualityGates.BUILD_POLICY.equals(check.type())) {
+      if (extensions.buildPolicy() == null) {
+        throw new WardException("Build policy gate dependencies are unavailable.");
+      }
+      return extensions.buildPolicy().create(check.name(), check.rulesFile());
+    }
     if (!SupportedQualityGates.FORMAT.equals(check.type())) {
       return AnalysisGates.create(check, extensions.analysis(), focus);
     }

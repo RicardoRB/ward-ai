@@ -27,6 +27,7 @@ final class ArchitectureBoundarySupport {
           "dev.ward.config.BuildToolBindingsModule",
           "dev.ward.config.DoctorBindingsModule",
           "dev.ward.config.DependencyBindingsModule",
+          "dev.ward.config.BuildPolicyBindingsModule",
           "dev.ward.config.NodeBindingsModule",
           "dev.ward.config.PythonBindingsModule",
           "dev.ward.config.SwiftBindingsModule",
@@ -69,6 +70,7 @@ final class ArchitectureBoundarySupport {
   static final Map<String, Set<String>> DOMAIN_FEATURE_EDGES =
       Map.ofEntries(
           Map.entry("agent", Set.of()),
+          Map.entry("buildpolicy", Set.of("dependency")),
           Map.entry("config", Set.of()),
           Map.entry("dependency", Set.of("config", "project", "process")),
           Map.entry("doctor", Set.of()),
@@ -93,8 +95,12 @@ final class ArchitectureBoundarySupport {
           Map.entry("loop", Set.of("dev.ward.application.gate.CheckService")),
           Map.entry("format", Set.of()),
           Map.entry(
+              "buildpolicy", Set.of("dev.ward.application.dependency.DependencyInventoryService")),
+          Map.entry(
               "gate",
               Set.of(
+                  "dev.ward.application.buildpolicy.BuildPolicyService",
+                  "dev.ward.application.buildpolicy.BuildPolicySetting",
                   "dev.ward.application.project.ProjectDetector",
                   "dev.ward.application.project.ProjectDiscovery",
                   "dev.ward.application.project.ProjectNotFoundException",
