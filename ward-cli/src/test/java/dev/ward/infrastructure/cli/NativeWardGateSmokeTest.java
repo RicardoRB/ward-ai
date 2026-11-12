@@ -15,7 +15,8 @@ import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.api.io.TempDir;
 
 /**
- * Runs a built executable's {@code ward} gate over a small project in every engine language.
+ * Runs a built executable's {@code ward} gate over a small project in every engine language, and
+ * its {@code build-policy} check over the POM.
  *
  * <p>The JVM tests cannot see what the native image leaves out: grammars, rule and taint resources,
  * reflective codecs. This test runs the real binary twice, so the second run also reads the
@@ -33,7 +34,9 @@ class NativeWardGateSmokeTest {
               "pom.xml",
               """
               <project><modelVersion>4.0.0</modelVersion><groupId>shop</groupId>
-              <artifactId>shop</artifactId><version>1</version></project>
+              <artifactId>shop</artifactId><version>1</version>
+              <dependencies><dependency><groupId>org.example</groupId><artifactId>lib</artifactId>
+              <version>[1.0,2.0)</version></dependency></dependencies></project>
               """),
           Map.entry("package.json", "{\"name\": \"shop\"}\n"),
           Map.entry(
@@ -95,6 +98,9 @@ class NativeWardGateSmokeTest {
 
       [checks.ward.cycles]
       roots = ["src/main/java/shop"]
+
+      [checks.build-policy]
+      uses = "build-policy"
       """;
 
   @TempDir Path project;
@@ -116,7 +122,8 @@ class NativeWardGateSmokeTest {
     assertThat(cold.stdout())
         .contains(RULES)
         .contains("ward:architecture/layers")
-        .contains("ward:architecture/cycles");
+        .contains("ward:architecture/cycles")
+        .contains("ward:build/no-dynamic-version");
     assertThat(warm.exitCode()).isEqualTo(FAILED);
     assertThat(warm.stdout()).isEqualTo(cold.stdout());
   }

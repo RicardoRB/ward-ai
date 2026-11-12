@@ -427,6 +427,15 @@ jobs:
           -Dward.parity.semgrep="$(command -v semgrep)"
           test
 
+      - name: Compare the build policy rules with Maven Enforcer
+        run: >-
+          ./mvnw -B
+          -pl ward-cli -am
+          -Dsurefire.failIfNoSpecifiedTests=false
+          -Dtest=EnforcerParitySmokeTest
+          -Dward.parity.enforcer=true
+          test
+
   # Reads the Xcode and fixture pairs and their runners from the
   # matrix data and skips the matrix for pull requests that change only website, openspec or Markdown
   # files.

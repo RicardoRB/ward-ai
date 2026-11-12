@@ -6,9 +6,9 @@
   <packaging>jar</packaging>
   <dependencies>
     <dependency>
-      <groupId>org.example</groupId>
-      <artifactId>lib</artifactId>
-      <version>[1.0,2.0)</version>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>[4.13,4.14)</version>
     </dependency>
   </dependencies>
   <build>
