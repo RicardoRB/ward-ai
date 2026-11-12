@@ -1,0 +1,128 @@
+---
+title: Security rules
+description: The security rules Ward provides for Java, JavaScript, TypeScript and Python, the weakness each one reports, and what it does not see.
+---
+
+Ward reports common security weaknesses in source code with its own rules, so a project needs no
+external scanner such as Semgrep. Every rule has the id `ward:<language>/<weakness>`, the category
+`security`, a CWE id of the weakness, and a catalog row that lists the public documents it was
+written from (see the [rule reference](/reference/rules/security/)).
+
+Rules that report injection, broken cryptography, certificate validation bypass, unsafe
+deserialization or hard-coded credentials have severity `error` and run in the `standard` and
+`strict` presets. Rules that report a hardening gap, such as cookie flags, CORS, CSRF, insecure
+random numbers, clear-text transport or dynamic markup, have severity `warning` and run in `strict`
+only. Change either with `severity` in `ward-rules.toml`, or skip paths with `exclude-paths`.
+
+## How the rules look
+
+**Injection rules** follow untrusted data inside one function. A source, such as a request
+parameter, that reaches a sensitive call without passing a sanitizer is reported at the call, and the
+JSON and SARIF output list the source, each write that carried the value, and the sink. A value that
+is a constant, a number, or the result of a sanitizer of the rule is not reported.
+
+The analysis is intra-procedural. A value that is returned to a caller, stored in a field, or passed
+to a helper is not followed, so those flows are missed. The sources and sinks are written as data in
+`taint/java/` and `taint/node/` ([writing taint specs](/reference/taint-specs/) describes the format).
+
+**Configuration rules** report a call, option or setting whose written value is known to be
+dangerous, such as `MessageDigest.getInstance("MD5")` or `rejectUnauthorized: false`, and not the
+safe form of the same API. They match the code as written: an algorithm name held in a constant, a
+renamed import or a value set in another file is not seen, and a setting that is dangerous only by
+its absence, such as a missing hardening call, is not reported.
+
+## Java
+
+| Rule | CWE | Severity | Presets | What it reports |
+|---|---|---|---|---|
+| `ward:java/xss` | CWE-79 | error | standard, strict | Request data written to the HTML response (`PrintWriter`, `ServletOutputStream`), inside one function |
+| `ward:java/open-redirect` | CWE-601 | error | standard, strict | Request data as the target of a redirect, inside one function |
+| `ward:java/ssrf` | CWE-918 | error | standard, strict | Request data as the address of an outgoing request, inside one function |
+| `ward:java/ldap-injection` | CWE-90 | error | standard, strict | Request data in an LDAP name or filter, inside one function |
+| `ward:java/xpath-injection` | CWE-643 | error | standard, strict | Request data in an XPath expression, inside one function |
+| `ward:java/log-forging` | CWE-117 | error | standard, strict | Request data in a log message, inside one function |
+| `ward:java/response-splitting` | CWE-113 | error | standard, strict | Request data in a response header, inside one function |
+| `ward:java/untrusted-deserialization` | CWE-502 | error | standard, strict | Request data given to a deserializer, inside one function |
+| `ward:java/code-injection` | CWE-94, CWE-95 | error | standard, strict | Request data run as script or code, inside one function |
+| `ward:java/expression-injection` | CWE-917 | error | standard, strict | Request data parsed as an expression language, inside one function |
+| `ward:java/jndi-injection` | CWE-99, CWE-74 | error | standard, strict | Request data as a JNDI name, inside one function |
+| `ward:java/unsafe-reflection` | CWE-470 | error | standard, strict | Request data as a class or member name, inside one function |
+| `ward:java/regex-injection` | CWE-1333, CWE-400 | error | standard, strict | Request data compiled as a regular expression, inside one function |
+| `ward:java/weak-hash` | CWE-328, CWE-327 | error | standard, strict | MD2, MD4, MD5 and SHA-1 are broken for integrity and signatures; use SHA-256 or stronger |
+| `ward:java/weak-cipher` | CWE-327 | error | standard, strict | DES, 3DES, RC2, RC4 and Blowfish are broken or too weak; use AES-GCM |
+| `ward:java/ecb-mode` | CWE-327 | error | standard, strict | ECB mode, which a bare AES name selects, encrypts equal blocks to equal output; use AES-GCM |
+| `ward:java/rsa-without-padding` | CWE-780, CWE-327 | error | standard, strict | RSA without padding is deterministic and malleable; use RSA/ECB/OAEPWithSHA-256AndMGF1Padding |
+| `ward:java/weak-key-size` | CWE-326 | error | standard, strict | A key of 1536 bits or fewer is too short for RSA, DSA and Diffie-Hellman; use at least 2048 bits |
+| `ward:java/insecure-random` | CWE-330, CWE-338 | warning | strict | Java.util.Random and Math.random are predictable; use SecureRandom for tokens, keys and identifiers |
+| `ward:java/hostname-verification-disabled` | CWE-297 | error | standard, strict | This verifier accepts every host name, so a certificate for any host is trusted; keep the default verifier |
+| `ward:java/trust-all-certificates` | CWE-295 | error | standard, strict | This trust manager or strategy accepts any certificate chain, so anyone can impersonate the server; trust a key store |
+| `ward:java/weak-tls-protocol` | CWE-327, CWE-326 | error | standard, strict | SSL, SSLv2, SSLv3, TLS 1.0 and TLS 1.1 are broken or retired; use TLSv1.2 or TLSv1.3 |
+| `ward:java/cleartext-transport` | CWE-319 | warning | strict | This address uses http or ftp, which send data in clear text; use https |
+| `ward:java/jwt-without-verification` | CWE-347 | error | standard, strict | This call reads a token without checking its signature, so anyone can forge it; verify it with a key |
+| `ward:java/hard-coded-password` | CWE-798, CWE-259 | error | standard, strict | This password is a string literal in the source; read it from the environment or a secret store |
+| `ward:java/xml-external-entities` | CWE-611 | error | standard, strict | This setting lets the XML parser load external entities or DTDs, which can read files and call servers; disable it |
+| `ward:java/unsafe-deserialization-settings` | CWE-502 | error | standard, strict | Default typing with no type restrictions lets the input choose the class to build; use a PolymorphicTypeValidator that lists the allowed types |
+| `ward:java/csrf-protection-disabled` | CWE-352 | warning | strict | CSRF protection is switched off; keep it on for browser clients, or document why this API has none |
+| `ward:java/permissive-cors` | CWE-942 | warning | strict | This setting lets every origin call the API from a browser; list the origins that need access |
+| `ward:java/insecure-cookie` | CWE-614, CWE-1004 | warning | strict | This cookie is allowed over plain http or from scripts; set Secure and HttpOnly |
+
+## JavaScript and TypeScript
+
+Each rule has a `ward:javascript/<weakness>` and a `ward:typescript/<weakness>` id, and the
+TypeScript id reports exactly what the JavaScript id does. The injection rules match sinks by the
+name of the variable that holds the receiver, such as `res`, `db` or `logger`, or by the module a
+function is imported from.
+
+| Rule | CWE | Severity | Presets | What it reports |
+|---|---|---|---|---|
+| `ward:javascript/sql-injection` | CWE-89 | error | standard, strict | Request data in the SQL text of a query, inside one function |
+| `ward:javascript/nosql-injection` | CWE-943 | error | standard, strict | Request data as a NoSQL query filter, inside one function |
+| `ward:javascript/code-injection` | CWE-94, CWE-95 | error | standard, strict | Request data run as script or code, inside one function |
+| `ward:javascript/open-redirect` | CWE-601 | error | standard, strict | Request data as the target of a redirect, inside one function |
+| `ward:javascript/ssrf` | CWE-918 | error | standard, strict | Request data as the address of an outgoing request, inside one function |
+| `ward:javascript/untrusted-deserialization` | CWE-502 | error | standard, strict | Request data given to a deserializer, inside one function |
+| `ward:javascript/template-injection` | CWE-1336, CWE-94 | error | standard, strict | Request data compiled as a template, inside one function |
+| `ward:javascript/log-forging` | CWE-117 | error | standard, strict | Request data in a log message, inside one function |
+| `ward:javascript/header-injection` | CWE-113 | error | standard, strict | Request data in a response header, inside one function |
+| `ward:javascript/regex-injection` | CWE-1333, CWE-400 | error | standard, strict | Request data compiled as a regular expression, inside one function |
+| `ward:javascript/weak-hash` | CWE-328, CWE-327 | error | standard, strict | MD2, MD4, MD5 and SHA-1 are broken for integrity and signatures; use SHA-256 or stronger |
+| `ward:javascript/weak-cipher` | CWE-327 | error | standard, strict | DES, 3DES, RC2, RC4 and Blowfish are broken or too weak; use aes-256-gcm |
+| `ward:javascript/ecb-mode` | CWE-327 | error | standard, strict | ECB mode encrypts equal blocks to equal output; use aes-256-gcm |
+| `ward:javascript/static-iv` | CWE-329 | error | standard, strict | A fixed initialization vector repeats across messages and leaks patterns; use crypto.randomBytes for each message |
+| `ward:javascript/weak-key-size` | CWE-326 | error | standard, strict | An RSA key of 1536 bits or fewer is too short; use at least 2048 bits |
+| `ward:javascript/insecure-random` | CWE-338, CWE-330 | warning | strict | Math.random is predictable; use crypto.randomBytes or crypto.randomUUID for tokens, keys and identifiers |
+| `ward:javascript/tls-verification-disabled` | CWE-295 | error | standard, strict | This setting turns off certificate checks, so anyone can impersonate the server; keep verification on |
+| `ward:javascript/cleartext-transport` | CWE-319 | warning | strict | This address uses http or ws, which send data in clear text; use https or wss |
+| `ward:javascript/jwt-without-verification` | CWE-347 | error | standard, strict | The none algorithm skips the signature, so anyone can forge the token; name a real algorithm |
+| `ward:javascript/hard-coded-secret` | CWE-798, CWE-259 | error | standard, strict | This secret is a string literal in the source; read it from the environment or a secret store |
+| `ward:javascript/insecure-cookie` | CWE-614, CWE-1004 | warning | strict | This cookie is allowed over plain http or from scripts; set secure and httpOnly |
+| `ward:javascript/permissive-cors` | CWE-942 | warning | strict | This setting lets every origin call the API from a browser; list the origins that need access |
+| `ward:javascript/wildcard-post-message` | CWE-345, CWE-346 | warning | strict | The target origin * sends the message to any page that holds the window; name the receiving origin |
+| `ward:javascript/dom-xss` | CWE-79 | warning | strict | This call writes a computed string as markup; use textContent, or sanitize the string first |
+| `ward:javascript/unsafe-framework-trust` | CWE-79 | error | standard, strict | This call tells Angular to skip its sanitizer for a computed value; sanitize it or bind it as text |
+| `ward:javascript/prototype-pollution` | CWE-1321 | error | standard, strict | This write changes the prototype shared by every object; build objects with Object.create(null) or a Map |
+| `ward:javascript/xml-external-entities` | CWE-611 | error | standard, strict | This option makes the XML parser expand external entities or load DTDs, which can read files; turn it off |
+| `ward:javascript/shell-option` | CWE-78 | warning | strict | The shell option runs the command through a shell, where metacharacters in any argument are interpreted; pass the arguments as an array without it |
+
+## Python
+
+Python has no taint analysis yet, so the Python rules match the call or assignment as written. The
+rules that look for request data use the names `request.args`, `request.form` and the like of Flask
+and Django.
+
+| Rule | CWE | Severity | Presets | What it reports |
+|---|---|---|---|---|
+| `ward:python/sql-string-formatting` | CWE-89 | error | standard, strict | The query text is built by formatting or concatenation; pass the values as parameters instead |
+| `ward:python/template-autoescape-disabled` | CWE-79 | warning | strict | Autoescaping is switched off, so values are written into pages without HTML escaping; turn it on with select_autoescape |
+| `ward:python/xml-external-entities` | CWE-611 | error | standard, strict | This setting lets the XML parser load external entities or DTDs, which can read files and call servers; disable it |
+| `ward:python/django-insecure-settings` | CWE-489, CWE-798, CWE-614, CWE-1004 | warning | strict | This Django setting is unsafe in production; read the secret from the environment and keep debug off and cookies secure |
+| `ward:python/flask-insecure-config` | CWE-798, CWE-614, CWE-1004 | warning | strict | This Flask setting is unsafe in production; read the secret from the environment and keep session cookies secure and HTTP-only |
+| `ward:python/ssrf` | CWE-918 | error | standard, strict | The address comes straight from the request, so a caller can reach internal hosts; check it against an allow-list first |
+| `ward:python/path-traversal` | CWE-22 | error | standard, strict | A path is built from request data or an archive is extracted without a filter, so a caller can reach files outside the intended folder |
+| `ward:python/weak-password-hash` | CWE-916, CWE-328 | error | standard, strict | A plain or weak hash is not a password hash; use a slow, salted one such as scrypt, argon2 or the Django hashers |
+
+## Later
+
+Inter-procedural taint with call summaries, taint rules for Python and Kotlin, and Swift rules are
+planned. The `semgrep` gate still works for projects that configure it, but `ward init` no longer
+offers it.

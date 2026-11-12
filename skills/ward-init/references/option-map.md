@@ -53,10 +53,10 @@ Strict preset, hexagonal layer boundaries, Claude Code integration, Git hooks:
 ward init --dry-run --preset strict --architecture hexagonal --integration claude-code --quality-hooks
 ```
 
-Custom selection without `mutation`, installing Semgrep after the user said yes to that install:
+Custom selection without `mutation`:
 
 ```sh
-ward init --dry-run --gate compile,tests,coverage,semgrep --install-tool semgrep --integration none
+ward init --dry-run --gate compile,tests,coverage,secrets --integration none
 ```
 
 Reconfiguring an existing setup after the user agreed to replace `ward.toml`:

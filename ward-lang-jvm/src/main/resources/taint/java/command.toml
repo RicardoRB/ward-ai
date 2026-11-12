@@ -27,6 +27,20 @@ name = "command"
 receiver = "java.lang.ProcessBuilder"
 arguments = [0, 1, 2, 3]
 
+# Apache Commons Exec parses its argument 0 into a program and arguments.
+
+[[sinks]]
+kind = "call"
+name = "parse"
+receiver = "org.apache.commons.exec.CommandLine"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "<init>"
+receiver = "org.apache.commons.exec.CommandLine"
+arguments = [0]
+
 [[sanitizers]]
 kind = "call"
 name = "parseInt"

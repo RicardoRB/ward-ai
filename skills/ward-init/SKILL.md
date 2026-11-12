@@ -186,7 +186,7 @@ order:
    Ward runs no external formatter, so do not offer one. Init writes an `.editorconfig` with
    Ward's defaults only when the project has none; an existing one is kept unchanged.
 5. **Tool installation** (one question per selected gate that has an `install` line). Show the exact
-   command from the plan, for example `brew install semgrep`. No is the default. Only a yes adds that
+   command from the plan, for example `brew install <tool>`. No is the default. Only a yes adds that
    gate to `--install-tool`. For `guidance` tools, give the link. They cannot be installed by init.
 6. **OpenSpec** (offer it only when the repository has an `openspec/` directory or the user mentions
    specs). Ask about `--tool openspec`, then separately about each validation (`openspec`,
@@ -301,7 +301,7 @@ Tell the user:
 1. What is configured now: preset, gates and the profiles they run in, integration, hooks.
    Mention any CI workflow or `AGENTS.md` section init wrote (`Wrote Ward section:` lines).
    Mention that Java and Kotlin projects get no separate style or bug-finding tool gate, and Python projects get no Ruff
-   gate: init writes `ward-rules.toml`, which selects the Ward rules of the preset for the project's JVM languages and Python. Mention that `ward.toml` has `paths` tables for ward-format, Semgrep, and
+   gate: init writes `ward-rules.toml`, which selects the Ward rules of the preset for the project's JVM languages and Python. Mention that `ward.toml` has `paths` tables for ward-format and
    `secrets` (when selected), and for the `ward` analysis
    check: the check after each agent edit, and the pre-commit hook, skip gates the change does not affect
    and narrow supported tools, and the `ward` analysis, to the edited or staged files. Claude Code and the

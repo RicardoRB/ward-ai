@@ -136,6 +136,10 @@ For each approved rule:
      project's secret store, and tell the user that the secret is in Git history and must be rotated.
    - **Vulnerable dependencies**: propose the smallest version that fixes the advisory, with its
      changelog risk, and change it only after a yes.
+   - **Security rules** (category `security` in the `ward` gate, such as `ward:java/open-redirect` or
+     `ward:javascript/weak-hash`): fix the weakness in the code. Validate or encode the untrusted
+     value, bind it as a parameter, or use the safe API the finding's message names. Never suppress
+     the rule, never change its severity, and never add a sanitizer only to hide the finding.
 2. Re-run the profile and read only that gate:
 
    ```sh

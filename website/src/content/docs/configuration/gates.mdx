@@ -21,7 +21,7 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `sonar` | SonarQube | Code smells, bugs, duplication, overall quality. |
 | | `ward-format` | Ward's native formatter | Check source formatting against `.editorconfig`. Always selected by `ward init`. |
 | | `crap` | Ward analysis and a coverage report | Fail functions that are both complex and untested, by their CRAP score. |
-| Security | `semgrep` | Semgrep | SAST and custom security rules. |
+| Security | `semgrep` | Semgrep | Optional external SAST. Ward's own [security rules](/reference/security-rules/) run in `ward`, so `ward init` does not offer this gate; a `[checks.semgrep]` table that you write keeps working. |
 | | `secrets` | Ward's native secret rules | Detect committed secrets with no tool to install. See [secret detection](/configuration/secrets/). |
 | | `vulnerabilities` | Ward and OSV advisories | Match the resolved dependencies against known vulnerabilities. See [vulnerabilities](/configuration/vulnerabilities/). |
 | | `zap` | OWASP ZAP | DAST against a running application. |

@@ -2771,6 +2771,25 @@
         }
       }
     },
+    "ward:java/cleartext-transport": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/clone-method-must-be-public": {
       "type": "object",
       "additionalProperties": false,
@@ -2981,6 +3000,25 @@
       }
     },
     "ward:java/co-self-no-object": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:java/code-injection": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -3543,6 +3581,25 @@
       }
     },
     "ward:java/crlf-injection-logs": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:java/csrf-protection-disabled": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -5870,6 +5927,25 @@
         }
       }
     },
+    "ward:java/ecb-mode": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/ei-expose-buf": {
       "type": "object",
       "additionalProperties": false,
@@ -6740,6 +6816,25 @@
         },
         "only-object-references": {
           "type": "boolean"
+        }
+      }
+    },
+    "ward:java/expression-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -7902,6 +7997,25 @@
         }
       }
     },
+    "ward:java/hard-coded-password": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/hashtable-contains": {
       "type": "object",
       "additionalProperties": false,
@@ -8078,6 +8192,25 @@
           }
         },
         "ignore-annotated-by": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:java/hostname-verification-disabled": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
           "type": "array",
           "items": {
             "type": "string"
@@ -9424,6 +9557,25 @@
         }
       }
     },
+    "ward:java/insecure-cookie": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/insecure-crypto-iv": {
       "type": "object",
       "additionalProperties": false,
@@ -9463,6 +9615,25 @@
       }
     },
     "ward:java/insecure-jms-deserialization": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:java/insecure-random": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -10812,6 +10983,25 @@
         }
       }
     },
+    "ward:java/jndi-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/joda-to-self": {
       "type": "object",
       "additionalProperties": false,
@@ -10851,6 +11041,25 @@
       }
     },
     "ward:java/jumbled-incrementer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:java/jwt-without-verification": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -10973,6 +11182,25 @@
       }
     },
     "ward:java/law-of-demeter": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:java/ldap-injection": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -11300,6 +11528,25 @@
       }
     },
     "ward:java/lock-on-boxed-primitive": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:java/log-forging": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -14660,6 +14907,25 @@
         }
       }
     },
+    "ward:java/open-redirect": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/openjdk-annotation-location": {
       "type": "object",
       "additionalProperties": false,
@@ -15368,6 +15634,25 @@
       }
     },
     "ward:java/perm-super-not-called-in-getpermissions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:java/permissive-cors": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -16424,6 +16709,25 @@
         }
       }
     },
+    "ward:java/regex-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/regexp-singleline": {
       "type": "object",
       "additionalProperties": false,
@@ -16619,6 +16923,25 @@
       }
     },
     "ward:java/required-modifiers": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:java/response-splitting": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -16881,6 +17204,25 @@
       }
     },
     "ward:java/rsa-no-padding": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:java/rsa-without-padding": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -18651,6 +18993,25 @@
         }
       }
     },
+    "ward:java/ssrf": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/st-write-to-static-from-instance-method": {
       "type": "object",
       "additionalProperties": false,
@@ -20155,6 +20516,25 @@
         }
       }
     },
+    "ward:java/trust-all-certificates": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/try-fail-throwable": {
       "type": "object",
       "additionalProperties": false,
@@ -21102,6 +21482,44 @@
         }
       }
     },
+    "ward:java/unsafe-deserialization-settings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:java/unsafe-reflection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/unsafe-wildcard": {
       "type": "object",
       "additionalProperties": false,
@@ -21141,6 +21559,25 @@
       }
     },
     "ward:java/unsynchronized-static-formatter": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:java/untrusted-deserialization": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -22545,7 +22982,83 @@
         }
       }
     },
+    "ward:java/weak-cipher": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:java/weak-hash": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:java/weak-key-size": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/weak-ssl-context": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:java/weak-tls-protocol": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -22811,6 +23324,25 @@
         }
       }
     },
+    "ward:java/xml-external-entities": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/xmlinputfactory-possible-xxe": {
       "type": "object",
       "additionalProperties": false,
@@ -22831,6 +23363,44 @@
       }
     },
     "ward:java/xor-power": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:java/xpath-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:java/xss": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -23068,6 +23638,44 @@
       }
     },
     "ward:javascript/chrome-remote-interface-compilescript-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/cleartext-transport": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/code-injection": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -23356,6 +23964,25 @@
         }
       }
     },
+    "ward:javascript/dom-xss": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:javascript/dot-notation": {
       "type": "object",
       "additionalProperties": false,
@@ -23408,6 +24035,25 @@
       }
     },
     "ward:javascript/dynamodb-request-object": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/ecb-mode": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -24064,6 +24710,25 @@
         }
       }
     },
+    "ward:javascript/hard-coded-secret": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:javascript/hardcoded-jwt-secret": {
       "type": "object",
       "additionalProperties": false,
@@ -24084,6 +24749,25 @@
       }
     },
     "ward:javascript/hardcoded-passport-secret": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/header-injection": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -24156,6 +24840,44 @@
         },
         "ignore-case": {
           "type": "boolean"
+        }
+      }
+    },
+    "ward:javascript/insecure-cookie": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/insecure-random": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -24337,6 +25059,25 @@
       }
     },
     "ward:javascript/jwt-simple-noverify": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/jwt-without-verification": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -24603,6 +25344,25 @@
       }
     },
     "ward:javascript/local-variable-name": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/log-forging": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -27875,7 +28635,45 @@
         }
       }
     },
+    "ward:javascript/nosql-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:javascript/one-statement-per-line": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/open-redirect": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -27956,6 +28754,25 @@
       }
     },
     "ward:javascript/path-traversal": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/permissive-cors": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -28227,6 +29044,25 @@
         }
       }
     },
+    "ward:javascript/prototype-pollution": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:javascript/radix": {
       "type": "object",
       "additionalProperties": false,
@@ -28342,6 +29178,25 @@
       }
     },
     "ward:javascript/react-unsanitized-property": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/regex-injection": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -28493,7 +29348,83 @@
         }
       }
     },
+    "ward:javascript/shell-option": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:javascript/single-line-javadoc": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/sql-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/ssrf": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/static-iv": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -28616,6 +29547,44 @@
         }
       }
     },
+    "ward:javascript/template-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/tls-verification-disabled": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:javascript/todo-comment": {
       "type": "object",
       "additionalProperties": false,
@@ -28655,6 +29624,44 @@
       }
     },
     "ward:javascript/unsafe-argon2-config": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/unsafe-framework-trust": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/untrusted-deserialization": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -29551,6 +30558,82 @@
         }
       }
     },
+    "ward:javascript/weak-cipher": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/weak-hash": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/weak-key-size": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/wildcard-post-message": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:javascript/wildcard-postmessage-configuration": {
       "type": "object",
       "additionalProperties": false,
@@ -29571,6 +30654,25 @@
       }
     },
     "ward:javascript/x-frame-options-misconfiguration": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/xml-external-entities": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -35591,6 +36693,25 @@
         }
       }
     },
+    "ward:python/django-insecure-settings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:python/dot-format-in-exception": {
       "type": "object",
       "additionalProperties": false,
@@ -36008,6 +37129,25 @@
       }
     },
     "ward:python/flask-debug-true": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:python/flask-insecure-config": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -39086,6 +40226,25 @@
         }
       }
     },
+    "ward:python/path-traversal": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:python/percent-format-expected-mapping": {
       "type": "object",
       "additionalProperties": false,
@@ -40245,6 +41404,44 @@
         }
       }
     },
+    "ward:python/sql-string-formatting": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:python/ssrf": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:python/star-arg-unpacking-after-keyword-arg": {
       "type": "object",
       "additionalProperties": false,
@@ -40892,6 +42089,25 @@
       }
     },
     "ward:python/sys-version2": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:python/template-autoescape-disabled": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -42987,6 +44203,25 @@
         }
       }
     },
+    "ward:python/weak-password-hash": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:python/while-used": {
       "type": "object",
       "additionalProperties": false,
@@ -43007,6 +44242,25 @@
       }
     },
     "ward:python/wrong-import-order": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:python/xml-external-entities": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -51743,6 +52997,44 @@
         }
       }
     },
+    "ward:typescript/cleartext-transport": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/code-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:typescript/command-injection": {
       "type": "object",
       "additionalProperties": false,
@@ -51880,6 +53172,25 @@
         }
       }
     },
+    "ward:typescript/dom-xss": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:typescript/dot-notation": {
       "type": "object",
       "additionalProperties": false,
@@ -51928,6 +53239,25 @@
         },
         "ignore-annotations": {
           "type": "boolean"
+        }
+      }
+    },
+    "ward:typescript/ecb-mode": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -52056,6 +53386,44 @@
         }
       }
     },
+    "ward:typescript/hard-coded-secret": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/header-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:typescript/hidden-field": {
       "type": "object",
       "additionalProperties": false,
@@ -52110,6 +53478,44 @@
         },
         "ignore-case": {
           "type": "boolean"
+        }
+      }
+    },
+    "ward:typescript/insecure-cookie": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/insecure-random": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -52234,6 +53640,25 @@
       }
     },
     "ward:typescript/javadoc-paragraph": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/jwt-without-verification": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -52538,6 +53963,25 @@
       }
     },
     "ward:typescript/local-variable-name": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/log-forging": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -56653,6 +58097,25 @@
         }
       }
     },
+    "ward:typescript/nosql-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:typescript/one-statement-per-line": {
       "type": "object",
       "additionalProperties": false,
@@ -56703,6 +58166,25 @@
         },
         "allow-throwing-unknown": {
           "type": "boolean"
+        }
+      }
+    },
+    "ward:typescript/open-redirect": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -56768,6 +58250,25 @@
       }
     },
     "ward:typescript/path-traversal": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/permissive-cors": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -57159,7 +58660,45 @@
         }
       }
     },
+    "ward:typescript/prototype-pollution": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:typescript/radix": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/regex-injection": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -57337,7 +58876,83 @@
         }
       }
     },
+    "ward:typescript/shell-option": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:typescript/single-line-javadoc": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/sql-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/ssrf": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/static-iv": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -57404,6 +59019,44 @@
       }
     },
     "ward:typescript/symbol-description": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/template-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/tls-verification-disabled": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -57489,6 +59142,44 @@
       }
     },
     "ward:typescript/unbound-method": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/unsafe-framework-trust": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/untrusted-deserialization": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -58423,6 +60114,101 @@
         }
       }
     },
+    "ward:typescript/weak-cipher": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/weak-hash": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/weak-key-size": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/wildcard-post-message": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/xml-external-entities": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:typescript/xss": {
       "type": "object",
       "additionalProperties": false,
@@ -58641,6 +60427,7 @@
               "java.class-member-implied-modifier",
               "java.class-name",
               "java.class-type-parameter-name",
+              "java.cleartext-transport",
               "java.clone-method-must-be-public",
               "java.clone-method-must-implement-cloneable",
               "java.clone-method-return-type-must-match-class-name",
@@ -58653,6 +60440,7 @@
               "java.co-compareto-incorrect-floating",
               "java.co-compareto-results-min-value",
               "java.co-self-no-object",
+              "java.code-injection",
               "java.cognitive-complexity",
               "java.collapsible-if-statements",
               "java.collection-incompatible-type",
@@ -58682,6 +60470,7 @@
               "java.control-statement-braces",
               "java.covariant-equals",
               "java.crlf-injection-logs",
+              "java.csrf-protection-disabled",
               "java.ct-constructor-throw",
               "java.custom-import-order",
               "java.cwo-closed-without-opened",
@@ -58801,6 +60590,7 @@
               "java.ec-unrelated-interfaces",
               "java.ec-unrelated-types-using-pointer-equality",
               "java.ecb-cipher",
+              "java.ecb-mode",
               "java.ei-expose-buf",
               "java.ei-expose-buf2",
               "java.ei-expose-rep",
@@ -58845,6 +60635,7 @@
               "java.executable-statement-count",
               "java.exhaustive-switch-has-default",
               "java.explicit-initialization",
+              "java.expression-injection",
               "java.extends-auto-value",
               "java.extends-object",
               "java.fall-through",
@@ -58905,6 +60696,7 @@
               "java.guice-assisted-parameters",
               "java.guice-inject-on-final-field",
               "java.hard-coded-crypto-key",
+              "java.hard-coded-password",
               "java.hashtable-contains",
               "java.he-equals-use-hashcode",
               "java.he-hashcode-no-equals",
@@ -58914,6 +60706,7 @@
               "java.he-use-of-unhashable-class",
               "java.hidden-field",
               "java.hide-utility-class-constructor",
+              "java.hostname-verification-disabled",
               "java.hrs-request-parameter-to-cookie",
               "java.hrs-request-parameter-to-http-header",
               "java.hsc-huge-shared-string-constant",
@@ -58980,9 +60773,11 @@
               "java.inject-on-member-and-constructor",
               "java.inline-me-validator",
               "java.inner-type-last",
+              "java.insecure-cookie",
               "java.insecure-crypto-iv",
               "java.insecure-crypto-usage",
               "java.insecure-jms-deserialization",
+              "java.insecure-random",
               "java.insecure-smtp-connection",
               "java.instant-temporal-unit",
               "java.instantiable-utility-class",
@@ -59050,15 +60845,18 @@
               "java.jlm-jsr166-lock-monitorenter",
               "java.jlm-jsr166-utilconcurrent-monitorenter",
               "java.jml-jsr166-calling-wait-rather-than-await",
+              "java.jndi-injection",
               "java.joda-to-self",
               "java.jua-dont-assert-instanceof-in-tests",
               "java.jumbled-incrementer",
+              "java.jwt-without-verification",
               "java.labeled-statement",
               "java.labelled-break-target",
               "java.lambda-body-length",
               "java.lambda-can-be-method-reference",
               "java.lambda-parameter-name",
               "java.law-of-demeter",
+              "java.ldap-injection",
               "java.left-curly",
               "java.lenient-format-string-validation",
               "java.lg-lost-logger-due-to-weak-reference",
@@ -59075,6 +60873,7 @@
               "java.local-variable-declaration-should-be-at-start-of-block",
               "java.local-variable-name",
               "java.lock-on-boxed-primitive",
+              "java.log-forging",
               "java.logic-inversion",
               "java.long-literal-ending-with-lowercase-l",
               "java.long-literal-lower-case-suffix",
@@ -59244,6 +61043,7 @@
               "java.odr-open-database-resource-exception-path",
               "java.one-statement-per-line",
               "java.one-top-level-class",
+              "java.open-redirect",
               "java.openjdk-annotation-location",
               "java.optimizable-to-array-call",
               "java.optional-equality",
@@ -59281,6 +61081,7 @@
               "java.period-get-temporal-unit",
               "java.period-time-math",
               "java.perm-super-not-called-in-getpermissions",
+              "java.permissive-cors",
               "java.pi-do-not-reuse-public-identifiers-class-names",
               "java.pi-do-not-reuse-public-identifiers-field-names",
               "java.pi-do-not-reuse-public-identifiers-local-variable-names",
@@ -59335,6 +61136,7 @@
               "java.refers-to-dagger-codegen",
               "java.reflc-reflection-may-increase-accessibility-of-class",
               "java.reflf-reflection-may-increase-accessibility-of-field",
+              "java.regex-injection",
               "java.regexp-singleline",
               "java.reliance-on-default-charset",
               "java.remote-interface-naming-convention",
@@ -59346,6 +61148,7 @@
               "java.replace-java-util-vector",
               "java.require-empty-line-before-block-tag-group",
               "java.required-modifiers",
+              "java.response-splitting",
               "java.restricted-api",
               "java.return-count",
               "java.return-empty-collection-rather-than-null",
@@ -59359,6 +61162,7 @@
               "java.rr-not-checked",
               "java.rs-readobject-sync",
               "java.rsa-no-padding",
+              "java.rsa-without-padding",
               "java.ru-invoke-run",
               "java.rv-01-to-int",
               "java.rv-absolute-value-of-hashcode",
@@ -59451,6 +61255,7 @@
               "java.sr-not-checked",
               "java.ss-should-be-static",
               "java.ssd-do-not-use-instance-lock-on-shared-static-data",
+              "java.ssrf",
               "java.st-write-to-static-from-instance-method",
               "java.star-import",
               "java.static-ejb-field-should-be-final",
@@ -59528,6 +61333,7 @@
               "java.tq-unknown-value-used-where-always-strictly-required",
               "java.transformerfactory-dtds-not-disabled",
               "java.tree-to-string",
+              "java.trust-all-certificates",
               "java.try-fail-throwable",
               "java.type-name",
               "java.type-name-mismatch",
@@ -59577,9 +61383,12 @@
               "java.unnecessary-varargs-array-creation",
               "java.unnecessary-warning-suppression",
               "java.unrecognized-nullness-annotation-location",
+              "java.unsafe-deserialization-settings",
+              "java.unsafe-reflection",
               "java.unsafe-wildcard",
               "java.unsupported-jdk-api-usage",
               "java.unsynchronized-static-formatter",
+              "java.untrusted-deserialization",
               "java.unused-anonymous-class",
               "java.unused-assignment",
               "java.unused-collection-modified-in-place",
@@ -59651,7 +61460,11 @@
               "java.vsc-vulnerable-security-check-methods",
               "java.wa-await-not-in-loop",
               "java.wa-not-in-loop",
+              "java.weak-cipher",
+              "java.weak-hash",
+              "java.weak-key-size",
               "java.weak-ssl-context",
+              "java.weak-tls-protocol",
               "java.while-loop-with-literal-boolean",
               "java.wl-using-getclass-rather-than-class-literal",
               "java.wmi-wrong-map-iterator",
@@ -59665,8 +61478,11 @@
               "java.wrong-test-annotation",
               "java.ws-writeobject-sync",
               "java.xfb-xml-factory-bypass",
+              "java.xml-external-entities",
               "java.xmlinputfactory-possible-xxe",
               "java.xor-power",
+              "java.xpath-injection",
+              "java.xss",
               "java.zone-id-of-z",
               "javascript.aead-no-final",
               "javascript.angular-bypasssecuritytrust",
@@ -59679,6 +61495,8 @@
               "javascript.bypass-tls-verification",
               "javascript.catch-parameter-name",
               "javascript.chrome-remote-interface-compilescript-injection",
+              "javascript.cleartext-transport",
+              "javascript.code-injection",
               "javascript.code-string-concat",
               "javascript.command-injection",
               "javascript.complexity",
@@ -59693,9 +61511,11 @@
               "javascript.detect-child-process",
               "javascript.detect-eval-with-expression",
               "javascript.direct-response-write",
+              "javascript.dom-xss",
               "javascript.dot-notation",
               "javascript.duplicate-code",
               "javascript.dynamodb-request-object",
+              "javascript.ecb-mode",
               "javascript.empty-catch-block",
               "javascript.eqeqeq",
               "javascript.express-check-directory-listing",
@@ -59729,10 +61549,14 @@
               "javascript.function-length",
               "javascript.gcm-no-tag-length",
               "javascript.getter-return",
+              "javascript.hard-coded-secret",
               "javascript.hardcoded-jwt-secret",
               "javascript.hardcoded-passport-secret",
+              "javascript.header-injection",
               "javascript.hidden-field",
               "javascript.illegal-token-text",
+              "javascript.insecure-cookie",
+              "javascript.insecure-random",
               "javascript.intercom-settings-user-identifier-without-user-hash",
               "javascript.invalid-javadoc-position",
               "javascript.javadoc-content-location",
@@ -59743,6 +61567,7 @@
               "javascript.js-open-redirect",
               "javascript.jwt-none-alg",
               "javascript.jwt-simple-noverify",
+              "javascript.jwt-without-verification",
               "javascript.knex-sqli",
               "javascript.knip-binaries",
               "javascript.knip-catalog",
@@ -59757,6 +61582,7 @@
               "javascript.knip-unresolved",
               "javascript.line-length",
               "javascript.local-variable-name",
+              "javascript.log-forging",
               "javascript.magic-number",
               "javascript.member-name",
               "javascript.method-name",
@@ -59921,11 +61747,14 @@
               "javascript.no-with",
               "javascript.no-xor-as-exponentiation",
               "javascript.node-knex-sqli",
+              "javascript.nosql-injection",
               "javascript.one-statement-per-line",
+              "javascript.open-redirect",
               "javascript.overload-methods-declaration-order",
               "javascript.parameter-count",
               "javascript.parameter-name",
               "javascript.path-traversal",
+              "javascript.permissive-cors",
               "javascript.pg-sqli",
               "javascript.prefer-arrow-callback",
               "javascript.prefer-const",
@@ -59938,6 +61767,7 @@
               "javascript.prefer-spread",
               "javascript.prefer-template",
               "javascript.preserve-caught-error",
+              "javascript.prototype-pollution",
               "javascript.radix",
               "javascript.raw-html-concat",
               "javascript.raw-html-format",
@@ -59945,6 +61775,7 @@
               "javascript.react-insecure-request",
               "javascript.react-unsanitized-method",
               "javascript.react-unsanitized-property",
+              "javascript.regex-injection",
               "javascript.regexp-singleline",
               "javascript.require-await",
               "javascript.require-empty-line-before-block-tag-group",
@@ -59952,15 +61783,23 @@
               "javascript.require-yield",
               "javascript.res-render-injection",
               "javascript.sequelize-sqli",
+              "javascript.shell-option",
               "javascript.single-line-javadoc",
+              "javascript.sql-injection",
+              "javascript.ssrf",
+              "javascript.static-iv",
               "javascript.strict",
               "javascript.summary-javadoc",
               "javascript.symbol-description",
               "javascript.tainted-html-response",
               "javascript.tainted-html-string",
+              "javascript.template-injection",
+              "javascript.tls-verification-disabled",
               "javascript.todo-comment",
               "javascript.type-name",
               "javascript.unsafe-argon2-config",
+              "javascript.unsafe-framework-trust",
+              "javascript.untrusted-deserialization",
               "javascript.unused-assignment",
               "javascript.unused-local-variable",
               "javascript.use-alt-text",
@@ -60007,8 +61846,13 @@
               "javascript.valid-typeof",
               "javascript.variable-declaration-usage-distance",
               "javascript.vm-runincontext-injection",
+              "javascript.weak-cipher",
+              "javascript.weak-hash",
+              "javascript.weak-key-size",
+              "javascript.wildcard-post-message",
               "javascript.wildcard-postmessage-configuration",
               "javascript.x-frame-options-misconfiguration",
+              "javascript.xml-external-entities",
               "javascript.xss",
               "kotlin.array-primitive",
               "kotlin.avoid-referential-equality",
@@ -60317,6 +62161,7 @@
               "python.dict-get-with-none-default",
               "python.dict-iter-missing-items",
               "python.disallowed-name",
+              "python.django-insecure-settings",
               "python.dot-format-in-exception",
               "python.duplicate-argument-name",
               "python.duplicate-bases",
@@ -60339,6 +62184,7 @@
               "python.f-string-missing-placeholders",
               "python.file-length",
               "python.flask-debug-true",
+              "python.flask-insecure-config",
               "python.format-string-without-interpolation",
               "python.forward-annotation-syntax-error",
               "python.fromisoformat-replace-z",
@@ -60499,6 +62345,7 @@
               "python.overridden-final-method",
               "python.parameter-count",
               "python.parameter-name",
+              "python.path-traversal",
               "python.percent-format-expected-mapping",
               "python.percent-format-expected-sequence",
               "python.percent-format-extra-named-arguments",
@@ -60560,6 +62407,8 @@
               "python.six-py3",
               "python.sorted-min-max",
               "python.split-static-string",
+              "python.sql-string-formatting",
+              "python.ssrf",
               "python.star-arg-unpacking-after-keyword-arg",
               "python.star-needs-assignment-target",
               "python.static-key-dict-comprehension",
@@ -60595,6 +62444,7 @@
               "python.sys-version-slice3",
               "python.sys-version0",
               "python.sys-version2",
+              "python.template-autoescape-disabled",
               "python.todo-comment",
               "python.too-few-public-methods",
               "python.too-many-ancestors",
@@ -60702,8 +62552,10 @@
               "python.useless-with-lock",
               "python.using-constant-test",
               "python.variable-declaration-usage-distance",
+              "python.weak-password-hash",
               "python.while-used",
               "python.wrong-import-order",
+              "python.xml-external-entities",
               "python.yield-from-in-async-function",
               "python.yield-outside-function",
               "python.yoda-conditions",
@@ -61120,6 +62972,8 @@
               "typescript.ban-ts-comment",
               "typescript.catch-parameter-name",
               "typescript.class-type-parameter-name",
+              "typescript.cleartext-transport",
+              "typescript.code-injection",
               "typescript.command-injection",
               "typescript.complexity",
               "typescript.consistent-type-exports",
@@ -61127,16 +62981,22 @@
               "typescript.constructor-super",
               "typescript.constructors-declaration-grouping",
               "typescript.contextual-lifecycle",
+              "typescript.dom-xss",
               "typescript.dot-notation",
               "typescript.duplicate-code",
+              "typescript.ecb-mode",
               "typescript.empty-catch-block",
               "typescript.eqeqeq",
               "typescript.file-length",
               "typescript.for-direction",
               "typescript.function-length",
               "typescript.getter-return",
+              "typescript.hard-coded-secret",
+              "typescript.header-injection",
               "typescript.hidden-field",
               "typescript.illegal-token-text",
+              "typescript.insecure-cookie",
+              "typescript.insecure-random",
               "typescript.interface-type-parameter-name",
               "typescript.invalid-javadoc-position",
               "typescript.javadoc-content-location",
@@ -61144,6 +63004,7 @@
               "typescript.javadoc-method",
               "typescript.javadoc-missing-leading-asterisk",
               "typescript.javadoc-paragraph",
+              "typescript.jwt-without-verification",
               "typescript.knip-binaries",
               "typescript.knip-catalog",
               "typescript.knip-catalog-references",
@@ -61160,6 +63021,7 @@
               "typescript.knip-unresolved",
               "typescript.line-length",
               "typescript.local-variable-name",
+              "typescript.log-forging",
               "typescript.magic-number",
               "typescript.member-name",
               "typescript.method-name",
@@ -61366,12 +63228,15 @@
               "typescript.no-with",
               "typescript.no-wrapper-object-types",
               "typescript.no-xor-as-exponentiation",
+              "typescript.nosql-injection",
               "typescript.one-statement-per-line",
               "typescript.only-throw-error",
+              "typescript.open-redirect",
               "typescript.overload-methods-declaration-order",
               "typescript.parameter-count",
               "typescript.parameter-name",
               "typescript.path-traversal",
+              "typescript.permissive-cors",
               "typescript.prefer-arrow-callback",
               "typescript.prefer-as-const",
               "typescript.prefer-const",
@@ -61390,21 +63255,31 @@
               "typescript.prefer-standalone",
               "typescript.prefer-template",
               "typescript.preserve-caught-error",
+              "typescript.prototype-pollution",
               "typescript.radix",
+              "typescript.regex-injection",
               "typescript.regexp-singleline",
               "typescript.require-await",
               "typescript.require-empty-line-before-block-tag-group",
               "typescript.require-yield",
               "typescript.restrict-plus-operands",
               "typescript.restrict-template-expressions",
+              "typescript.shell-option",
               "typescript.single-line-javadoc",
+              "typescript.sql-injection",
+              "typescript.ssrf",
+              "typescript.static-iv",
               "typescript.strict",
               "typescript.summary-javadoc",
               "typescript.symbol-description",
+              "typescript.template-injection",
+              "typescript.tls-verification-disabled",
               "typescript.todo-comment",
               "typescript.triple-slash-reference",
               "typescript.type-name",
               "typescript.unbound-method",
+              "typescript.unsafe-framework-trust",
+              "typescript.untrusted-deserialization",
               "typescript.unused-assignment",
               "typescript.unused-local-variable",
               "typescript.use-alt-text",
@@ -61453,6 +63328,11 @@
               "typescript.use-while",
               "typescript.valid-typeof",
               "typescript.variable-declaration-usage-distance",
+              "typescript.weak-cipher",
+              "typescript.weak-hash",
+              "typescript.weak-key-size",
+              "typescript.wildcard-post-message",
+              "typescript.xml-external-entities",
               "typescript.xss"
             ]
           }
@@ -61599,6 +63479,7 @@
               "java.class-member-implied-modifier",
               "java.class-name",
               "java.class-type-parameter-name",
+              "java.cleartext-transport",
               "java.clone-method-must-be-public",
               "java.clone-method-must-implement-cloneable",
               "java.clone-method-return-type-must-match-class-name",
@@ -61611,6 +63492,7 @@
               "java.co-compareto-incorrect-floating",
               "java.co-compareto-results-min-value",
               "java.co-self-no-object",
+              "java.code-injection",
               "java.cognitive-complexity",
               "java.collapsible-if-statements",
               "java.collection-incompatible-type",
@@ -61640,6 +63522,7 @@
               "java.control-statement-braces",
               "java.covariant-equals",
               "java.crlf-injection-logs",
+              "java.csrf-protection-disabled",
               "java.ct-constructor-throw",
               "java.custom-import-order",
               "java.cwo-closed-without-opened",
@@ -61759,6 +63642,7 @@
               "java.ec-unrelated-interfaces",
               "java.ec-unrelated-types-using-pointer-equality",
               "java.ecb-cipher",
+              "java.ecb-mode",
               "java.ei-expose-buf",
               "java.ei-expose-buf2",
               "java.ei-expose-rep",
@@ -61803,6 +63687,7 @@
               "java.executable-statement-count",
               "java.exhaustive-switch-has-default",
               "java.explicit-initialization",
+              "java.expression-injection",
               "java.extends-auto-value",
               "java.extends-object",
               "java.fall-through",
@@ -61863,6 +63748,7 @@
               "java.guice-assisted-parameters",
               "java.guice-inject-on-final-field",
               "java.hard-coded-crypto-key",
+              "java.hard-coded-password",
               "java.hashtable-contains",
               "java.he-equals-use-hashcode",
               "java.he-hashcode-no-equals",
@@ -61872,6 +63758,7 @@
               "java.he-use-of-unhashable-class",
               "java.hidden-field",
               "java.hide-utility-class-constructor",
+              "java.hostname-verification-disabled",
               "java.hrs-request-parameter-to-cookie",
               "java.hrs-request-parameter-to-http-header",
               "java.hsc-huge-shared-string-constant",
@@ -61938,9 +63825,11 @@
               "java.inject-on-member-and-constructor",
               "java.inline-me-validator",
               "java.inner-type-last",
+              "java.insecure-cookie",
               "java.insecure-crypto-iv",
               "java.insecure-crypto-usage",
               "java.insecure-jms-deserialization",
+              "java.insecure-random",
               "java.insecure-smtp-connection",
               "java.instant-temporal-unit",
               "java.instantiable-utility-class",
@@ -62008,15 +63897,18 @@
               "java.jlm-jsr166-lock-monitorenter",
               "java.jlm-jsr166-utilconcurrent-monitorenter",
               "java.jml-jsr166-calling-wait-rather-than-await",
+              "java.jndi-injection",
               "java.joda-to-self",
               "java.jua-dont-assert-instanceof-in-tests",
               "java.jumbled-incrementer",
+              "java.jwt-without-verification",
               "java.labeled-statement",
               "java.labelled-break-target",
               "java.lambda-body-length",
               "java.lambda-can-be-method-reference",
               "java.lambda-parameter-name",
               "java.law-of-demeter",
+              "java.ldap-injection",
               "java.left-curly",
               "java.lenient-format-string-validation",
               "java.lg-lost-logger-due-to-weak-reference",
@@ -62033,6 +63925,7 @@
               "java.local-variable-declaration-should-be-at-start-of-block",
               "java.local-variable-name",
               "java.lock-on-boxed-primitive",
+              "java.log-forging",
               "java.logic-inversion",
               "java.long-literal-ending-with-lowercase-l",
               "java.long-literal-lower-case-suffix",
@@ -62202,6 +64095,7 @@
               "java.odr-open-database-resource-exception-path",
               "java.one-statement-per-line",
               "java.one-top-level-class",
+              "java.open-redirect",
               "java.openjdk-annotation-location",
               "java.optimizable-to-array-call",
               "java.optional-equality",
@@ -62239,6 +64133,7 @@
               "java.period-get-temporal-unit",
               "java.period-time-math",
               "java.perm-super-not-called-in-getpermissions",
+              "java.permissive-cors",
               "java.pi-do-not-reuse-public-identifiers-class-names",
               "java.pi-do-not-reuse-public-identifiers-field-names",
               "java.pi-do-not-reuse-public-identifiers-local-variable-names",
@@ -62293,6 +64188,7 @@
               "java.refers-to-dagger-codegen",
               "java.reflc-reflection-may-increase-accessibility-of-class",
               "java.reflf-reflection-may-increase-accessibility-of-field",
+              "java.regex-injection",
               "java.regexp-singleline",
               "java.reliance-on-default-charset",
               "java.remote-interface-naming-convention",
@@ -62304,6 +64200,7 @@
               "java.replace-java-util-vector",
               "java.require-empty-line-before-block-tag-group",
               "java.required-modifiers",
+              "java.response-splitting",
               "java.restricted-api",
               "java.return-count",
               "java.return-empty-collection-rather-than-null",
@@ -62317,6 +64214,7 @@
               "java.rr-not-checked",
               "java.rs-readobject-sync",
               "java.rsa-no-padding",
+              "java.rsa-without-padding",
               "java.ru-invoke-run",
               "java.rv-01-to-int",
               "java.rv-absolute-value-of-hashcode",
@@ -62409,6 +64307,7 @@
               "java.sr-not-checked",
               "java.ss-should-be-static",
               "java.ssd-do-not-use-instance-lock-on-shared-static-data",
+              "java.ssrf",
               "java.st-write-to-static-from-instance-method",
               "java.star-import",
               "java.static-ejb-field-should-be-final",
@@ -62486,6 +64385,7 @@
               "java.tq-unknown-value-used-where-always-strictly-required",
               "java.transformerfactory-dtds-not-disabled",
               "java.tree-to-string",
+              "java.trust-all-certificates",
               "java.try-fail-throwable",
               "java.type-name",
               "java.type-name-mismatch",
@@ -62535,9 +64435,12 @@
               "java.unnecessary-varargs-array-creation",
               "java.unnecessary-warning-suppression",
               "java.unrecognized-nullness-annotation-location",
+              "java.unsafe-deserialization-settings",
+              "java.unsafe-reflection",
               "java.unsafe-wildcard",
               "java.unsupported-jdk-api-usage",
               "java.unsynchronized-static-formatter",
+              "java.untrusted-deserialization",
               "java.unused-anonymous-class",
               "java.unused-assignment",
               "java.unused-collection-modified-in-place",
@@ -62609,7 +64512,11 @@
               "java.vsc-vulnerable-security-check-methods",
               "java.wa-await-not-in-loop",
               "java.wa-not-in-loop",
+              "java.weak-cipher",
+              "java.weak-hash",
+              "java.weak-key-size",
               "java.weak-ssl-context",
+              "java.weak-tls-protocol",
               "java.while-loop-with-literal-boolean",
               "java.wl-using-getclass-rather-than-class-literal",
               "java.wmi-wrong-map-iterator",
@@ -62623,8 +64530,11 @@
               "java.wrong-test-annotation",
               "java.ws-writeobject-sync",
               "java.xfb-xml-factory-bypass",
+              "java.xml-external-entities",
               "java.xmlinputfactory-possible-xxe",
               "java.xor-power",
+              "java.xpath-injection",
+              "java.xss",
               "java.zone-id-of-z",
               "javascript.aead-no-final",
               "javascript.angular-bypasssecuritytrust",
@@ -62637,6 +64547,8 @@
               "javascript.bypass-tls-verification",
               "javascript.catch-parameter-name",
               "javascript.chrome-remote-interface-compilescript-injection",
+              "javascript.cleartext-transport",
+              "javascript.code-injection",
               "javascript.code-string-concat",
               "javascript.command-injection",
               "javascript.complexity",
@@ -62651,9 +64563,11 @@
               "javascript.detect-child-process",
               "javascript.detect-eval-with-expression",
               "javascript.direct-response-write",
+              "javascript.dom-xss",
               "javascript.dot-notation",
               "javascript.duplicate-code",
               "javascript.dynamodb-request-object",
+              "javascript.ecb-mode",
               "javascript.empty-catch-block",
               "javascript.eqeqeq",
               "javascript.express-check-directory-listing",
@@ -62687,10 +64601,14 @@
               "javascript.function-length",
               "javascript.gcm-no-tag-length",
               "javascript.getter-return",
+              "javascript.hard-coded-secret",
               "javascript.hardcoded-jwt-secret",
               "javascript.hardcoded-passport-secret",
+              "javascript.header-injection",
               "javascript.hidden-field",
               "javascript.illegal-token-text",
+              "javascript.insecure-cookie",
+              "javascript.insecure-random",
               "javascript.intercom-settings-user-identifier-without-user-hash",
               "javascript.invalid-javadoc-position",
               "javascript.javadoc-content-location",
@@ -62701,6 +64619,7 @@
               "javascript.js-open-redirect",
               "javascript.jwt-none-alg",
               "javascript.jwt-simple-noverify",
+              "javascript.jwt-without-verification",
               "javascript.knex-sqli",
               "javascript.knip-binaries",
               "javascript.knip-catalog",
@@ -62715,6 +64634,7 @@
               "javascript.knip-unresolved",
               "javascript.line-length",
               "javascript.local-variable-name",
+              "javascript.log-forging",
               "javascript.magic-number",
               "javascript.member-name",
               "javascript.method-name",
@@ -62879,11 +64799,14 @@
               "javascript.no-with",
               "javascript.no-xor-as-exponentiation",
               "javascript.node-knex-sqli",
+              "javascript.nosql-injection",
               "javascript.one-statement-per-line",
+              "javascript.open-redirect",
               "javascript.overload-methods-declaration-order",
               "javascript.parameter-count",
               "javascript.parameter-name",
               "javascript.path-traversal",
+              "javascript.permissive-cors",
               "javascript.pg-sqli",
               "javascript.prefer-arrow-callback",
               "javascript.prefer-const",
@@ -62896,6 +64819,7 @@
               "javascript.prefer-spread",
               "javascript.prefer-template",
               "javascript.preserve-caught-error",
+              "javascript.prototype-pollution",
               "javascript.radix",
               "javascript.raw-html-concat",
               "javascript.raw-html-format",
@@ -62903,6 +64827,7 @@
               "javascript.react-insecure-request",
               "javascript.react-unsanitized-method",
               "javascript.react-unsanitized-property",
+              "javascript.regex-injection",
               "javascript.regexp-singleline",
               "javascript.require-await",
               "javascript.require-empty-line-before-block-tag-group",
@@ -62910,15 +64835,23 @@
               "javascript.require-yield",
               "javascript.res-render-injection",
               "javascript.sequelize-sqli",
+              "javascript.shell-option",
               "javascript.single-line-javadoc",
+              "javascript.sql-injection",
+              "javascript.ssrf",
+              "javascript.static-iv",
               "javascript.strict",
               "javascript.summary-javadoc",
               "javascript.symbol-description",
               "javascript.tainted-html-response",
               "javascript.tainted-html-string",
+              "javascript.template-injection",
+              "javascript.tls-verification-disabled",
               "javascript.todo-comment",
               "javascript.type-name",
               "javascript.unsafe-argon2-config",
+              "javascript.unsafe-framework-trust",
+              "javascript.untrusted-deserialization",
               "javascript.unused-assignment",
               "javascript.unused-local-variable",
               "javascript.use-alt-text",
@@ -62965,8 +64898,13 @@
               "javascript.valid-typeof",
               "javascript.variable-declaration-usage-distance",
               "javascript.vm-runincontext-injection",
+              "javascript.weak-cipher",
+              "javascript.weak-hash",
+              "javascript.weak-key-size",
+              "javascript.wildcard-post-message",
               "javascript.wildcard-postmessage-configuration",
               "javascript.x-frame-options-misconfiguration",
+              "javascript.xml-external-entities",
               "javascript.xss",
               "kotlin.array-primitive",
               "kotlin.avoid-referential-equality",
@@ -63275,6 +65213,7 @@
               "python.dict-get-with-none-default",
               "python.dict-iter-missing-items",
               "python.disallowed-name",
+              "python.django-insecure-settings",
               "python.dot-format-in-exception",
               "python.duplicate-argument-name",
               "python.duplicate-bases",
@@ -63297,6 +65236,7 @@
               "python.f-string-missing-placeholders",
               "python.file-length",
               "python.flask-debug-true",
+              "python.flask-insecure-config",
               "python.format-string-without-interpolation",
               "python.forward-annotation-syntax-error",
               "python.fromisoformat-replace-z",
@@ -63457,6 +65397,7 @@
               "python.overridden-final-method",
               "python.parameter-count",
               "python.parameter-name",
+              "python.path-traversal",
               "python.percent-format-expected-mapping",
               "python.percent-format-expected-sequence",
               "python.percent-format-extra-named-arguments",
@@ -63518,6 +65459,8 @@
               "python.six-py3",
               "python.sorted-min-max",
               "python.split-static-string",
+              "python.sql-string-formatting",
+              "python.ssrf",
               "python.star-arg-unpacking-after-keyword-arg",
               "python.star-needs-assignment-target",
               "python.static-key-dict-comprehension",
@@ -63553,6 +65496,7 @@
               "python.sys-version-slice3",
               "python.sys-version0",
               "python.sys-version2",
+              "python.template-autoescape-disabled",
               "python.todo-comment",
               "python.too-few-public-methods",
               "python.too-many-ancestors",
@@ -63660,8 +65604,10 @@
               "python.useless-with-lock",
               "python.using-constant-test",
               "python.variable-declaration-usage-distance",
+              "python.weak-password-hash",
               "python.while-used",
               "python.wrong-import-order",
+              "python.xml-external-entities",
               "python.yield-from-in-async-function",
               "python.yield-outside-function",
               "python.yoda-conditions",
@@ -64078,6 +66024,8 @@
               "typescript.ban-ts-comment",
               "typescript.catch-parameter-name",
               "typescript.class-type-parameter-name",
+              "typescript.cleartext-transport",
+              "typescript.code-injection",
               "typescript.command-injection",
               "typescript.complexity",
               "typescript.consistent-type-exports",
@@ -64085,16 +66033,22 @@
               "typescript.constructor-super",
               "typescript.constructors-declaration-grouping",
               "typescript.contextual-lifecycle",
+              "typescript.dom-xss",
               "typescript.dot-notation",
               "typescript.duplicate-code",
+              "typescript.ecb-mode",
               "typescript.empty-catch-block",
               "typescript.eqeqeq",
               "typescript.file-length",
               "typescript.for-direction",
               "typescript.function-length",
               "typescript.getter-return",
+              "typescript.hard-coded-secret",
+              "typescript.header-injection",
               "typescript.hidden-field",
               "typescript.illegal-token-text",
+              "typescript.insecure-cookie",
+              "typescript.insecure-random",
               "typescript.interface-type-parameter-name",
               "typescript.invalid-javadoc-position",
               "typescript.javadoc-content-location",
@@ -64102,6 +66056,7 @@
               "typescript.javadoc-method",
               "typescript.javadoc-missing-leading-asterisk",
               "typescript.javadoc-paragraph",
+              "typescript.jwt-without-verification",
               "typescript.knip-binaries",
               "typescript.knip-catalog",
               "typescript.knip-catalog-references",
@@ -64118,6 +66073,7 @@
               "typescript.knip-unresolved",
               "typescript.line-length",
               "typescript.local-variable-name",
+              "typescript.log-forging",
               "typescript.magic-number",
               "typescript.member-name",
               "typescript.method-name",
@@ -64324,12 +66280,15 @@
               "typescript.no-with",
               "typescript.no-wrapper-object-types",
               "typescript.no-xor-as-exponentiation",
+              "typescript.nosql-injection",
               "typescript.one-statement-per-line",
               "typescript.only-throw-error",
+              "typescript.open-redirect",
               "typescript.overload-methods-declaration-order",
               "typescript.parameter-count",
               "typescript.parameter-name",
               "typescript.path-traversal",
+              "typescript.permissive-cors",
               "typescript.prefer-arrow-callback",
               "typescript.prefer-as-const",
               "typescript.prefer-const",
@@ -64348,21 +66307,31 @@
               "typescript.prefer-standalone",
               "typescript.prefer-template",
               "typescript.preserve-caught-error",
+              "typescript.prototype-pollution",
               "typescript.radix",
+              "typescript.regex-injection",
               "typescript.regexp-singleline",
               "typescript.require-await",
               "typescript.require-empty-line-before-block-tag-group",
               "typescript.require-yield",
               "typescript.restrict-plus-operands",
               "typescript.restrict-template-expressions",
+              "typescript.shell-option",
               "typescript.single-line-javadoc",
+              "typescript.sql-injection",
+              "typescript.ssrf",
+              "typescript.static-iv",
               "typescript.strict",
               "typescript.summary-javadoc",
               "typescript.symbol-description",
+              "typescript.template-injection",
+              "typescript.tls-verification-disabled",
               "typescript.todo-comment",
               "typescript.triple-slash-reference",
               "typescript.type-name",
               "typescript.unbound-method",
+              "typescript.unsafe-framework-trust",
+              "typescript.untrusted-deserialization",
               "typescript.unused-assignment",
               "typescript.unused-local-variable",
               "typescript.use-alt-text",
@@ -64411,6 +66380,11 @@
               "typescript.use-while",
               "typescript.valid-typeof",
               "typescript.variable-declaration-usage-distance",
+              "typescript.weak-cipher",
+              "typescript.weak-hash",
+              "typescript.weak-key-size",
+              "typescript.wildcard-post-message",
+              "typescript.xml-external-entities",
               "typescript.xss"
             ]
           }
@@ -64836,6 +66810,9 @@
             "class-type-parameter-name": {
               "$ref": "#/$defs/ward:java~1class-type-parameter-name"
             },
+            "cleartext-transport": {
+              "$ref": "#/$defs/ward:java~1cleartext-transport"
+            },
             "clone-method-must-be-public": {
               "$ref": "#/$defs/ward:java~1clone-method-must-be-public"
             },
@@ -64871,6 +66848,9 @@
             },
             "co-self-no-object": {
               "$ref": "#/$defs/ward:java~1co-self-no-object"
+            },
+            "code-injection": {
+              "$ref": "#/$defs/ward:java~1code-injection"
             },
             "cognitive-complexity": {
               "$ref": "#/$defs/ward:java~1cognitive-complexity"
@@ -64958,6 +66938,9 @@
             },
             "crlf-injection-logs": {
               "$ref": "#/$defs/ward:java~1crlf-injection-logs"
+            },
+            "csrf-protection-disabled": {
+              "$ref": "#/$defs/ward:java~1csrf-protection-disabled"
             },
             "ct-constructor-throw": {
               "$ref": "#/$defs/ward:java~1ct-constructor-throw"
@@ -65316,6 +67299,9 @@
             "ecb-cipher": {
               "$ref": "#/$defs/ward:java~1ecb-cipher"
             },
+            "ecb-mode": {
+              "$ref": "#/$defs/ward:java~1ecb-mode"
+            },
             "ei-expose-buf": {
               "$ref": "#/$defs/ward:java~1ei-expose-buf"
             },
@@ -65447,6 +67433,9 @@
             },
             "explicit-initialization": {
               "$ref": "#/$defs/ward:java~1explicit-initialization"
+            },
+            "expression-injection": {
+              "$ref": "#/$defs/ward:java~1expression-injection"
             },
             "extends-auto-value": {
               "$ref": "#/$defs/ward:java~1extends-auto-value"
@@ -65628,6 +67617,9 @@
             "hard-coded-crypto-key": {
               "$ref": "#/$defs/ward:java~1hard-coded-crypto-key"
             },
+            "hard-coded-password": {
+              "$ref": "#/$defs/ward:java~1hard-coded-password"
+            },
             "hashtable-contains": {
               "$ref": "#/$defs/ward:java~1hashtable-contains"
             },
@@ -65654,6 +67646,9 @@
             },
             "hide-utility-class-constructor": {
               "$ref": "#/$defs/ward:java~1hide-utility-class-constructor"
+            },
+            "hostname-verification-disabled": {
+              "$ref": "#/$defs/ward:java~1hostname-verification-disabled"
             },
             "hrs-request-parameter-to-cookie": {
               "$ref": "#/$defs/ward:java~1hrs-request-parameter-to-cookie"
@@ -65853,6 +67848,9 @@
             "inner-type-last": {
               "$ref": "#/$defs/ward:java~1inner-type-last"
             },
+            "insecure-cookie": {
+              "$ref": "#/$defs/ward:java~1insecure-cookie"
+            },
             "insecure-crypto-iv": {
               "$ref": "#/$defs/ward:java~1insecure-crypto-iv"
             },
@@ -65861,6 +67859,9 @@
             },
             "insecure-jms-deserialization": {
               "$ref": "#/$defs/ward:java~1insecure-jms-deserialization"
+            },
+            "insecure-random": {
+              "$ref": "#/$defs/ward:java~1insecure-random"
             },
             "insecure-smtp-connection": {
               "$ref": "#/$defs/ward:java~1insecure-smtp-connection"
@@ -66063,6 +68064,9 @@
             "jml-jsr166-calling-wait-rather-than-await": {
               "$ref": "#/$defs/ward:java~1jml-jsr166-calling-wait-rather-than-await"
             },
+            "jndi-injection": {
+              "$ref": "#/$defs/ward:java~1jndi-injection"
+            },
             "joda-to-self": {
               "$ref": "#/$defs/ward:java~1joda-to-self"
             },
@@ -66071,6 +68075,9 @@
             },
             "jumbled-incrementer": {
               "$ref": "#/$defs/ward:java~1jumbled-incrementer"
+            },
+            "jwt-without-verification": {
+              "$ref": "#/$defs/ward:java~1jwt-without-verification"
             },
             "labeled-statement": {
               "$ref": "#/$defs/ward:java~1labeled-statement"
@@ -66089,6 +68096,9 @@
             },
             "law-of-demeter": {
               "$ref": "#/$defs/ward:java~1law-of-demeter"
+            },
+            "ldap-injection": {
+              "$ref": "#/$defs/ward:java~1ldap-injection"
             },
             "left-curly": {
               "$ref": "#/$defs/ward:java~1left-curly"
@@ -66137,6 +68147,9 @@
             },
             "lock-on-boxed-primitive": {
               "$ref": "#/$defs/ward:java~1lock-on-boxed-primitive"
+            },
+            "log-forging": {
+              "$ref": "#/$defs/ward:java~1log-forging"
             },
             "logic-inversion": {
               "$ref": "#/$defs/ward:java~1logic-inversion"
@@ -66645,6 +68658,9 @@
             "one-top-level-class": {
               "$ref": "#/$defs/ward:java~1one-top-level-class"
             },
+            "open-redirect": {
+              "$ref": "#/$defs/ward:java~1open-redirect"
+            },
             "openjdk-annotation-location": {
               "$ref": "#/$defs/ward:java~1openjdk-annotation-location"
             },
@@ -66755,6 +68771,9 @@
             },
             "perm-super-not-called-in-getpermissions": {
               "$ref": "#/$defs/ward:java~1perm-super-not-called-in-getpermissions"
+            },
+            "permissive-cors": {
+              "$ref": "#/$defs/ward:java~1permissive-cors"
             },
             "pi-do-not-reuse-public-identifiers-class-names": {
               "$ref": "#/$defs/ward:java~1pi-do-not-reuse-public-identifiers-class-names"
@@ -66918,6 +68937,9 @@
             "reflf-reflection-may-increase-accessibility-of-field": {
               "$ref": "#/$defs/ward:java~1reflf-reflection-may-increase-accessibility-of-field"
             },
+            "regex-injection": {
+              "$ref": "#/$defs/ward:java~1regex-injection"
+            },
             "regexp-singleline": {
               "$ref": "#/$defs/ward:java~1regexp-singleline"
             },
@@ -66950,6 +68972,9 @@
             },
             "required-modifiers": {
               "$ref": "#/$defs/ward:java~1required-modifiers"
+            },
+            "response-splitting": {
+              "$ref": "#/$defs/ward:java~1response-splitting"
             },
             "restricted-api": {
               "$ref": "#/$defs/ward:java~1restricted-api"
@@ -66989,6 +69014,9 @@
             },
             "rsa-no-padding": {
               "$ref": "#/$defs/ward:java~1rsa-no-padding"
+            },
+            "rsa-without-padding": {
+              "$ref": "#/$defs/ward:java~1rsa-without-padding"
             },
             "ru-invoke-run": {
               "$ref": "#/$defs/ward:java~1ru-invoke-run"
@@ -67266,6 +69294,9 @@
             "ssd-do-not-use-instance-lock-on-shared-static-data": {
               "$ref": "#/$defs/ward:java~1ssd-do-not-use-instance-lock-on-shared-static-data"
             },
+            "ssrf": {
+              "$ref": "#/$defs/ward:java~1ssrf"
+            },
             "st-write-to-static-from-instance-method": {
               "$ref": "#/$defs/ward:java~1st-write-to-static-from-instance-method"
             },
@@ -67497,6 +69528,9 @@
             "tree-to-string": {
               "$ref": "#/$defs/ward:java~1tree-to-string"
             },
+            "trust-all-certificates": {
+              "$ref": "#/$defs/ward:java~1trust-all-certificates"
+            },
             "try-fail-throwable": {
               "$ref": "#/$defs/ward:java~1try-fail-throwable"
             },
@@ -67644,6 +69678,12 @@
             "unrecognized-nullness-annotation-location": {
               "$ref": "#/$defs/ward:java~1unrecognized-nullness-annotation-location"
             },
+            "unsafe-deserialization-settings": {
+              "$ref": "#/$defs/ward:java~1unsafe-deserialization-settings"
+            },
+            "unsafe-reflection": {
+              "$ref": "#/$defs/ward:java~1unsafe-reflection"
+            },
             "unsafe-wildcard": {
               "$ref": "#/$defs/ward:java~1unsafe-wildcard"
             },
@@ -67652,6 +69692,9 @@
             },
             "unsynchronized-static-formatter": {
               "$ref": "#/$defs/ward:java~1unsynchronized-static-formatter"
+            },
+            "untrusted-deserialization": {
+              "$ref": "#/$defs/ward:java~1untrusted-deserialization"
             },
             "unused-anonymous-class": {
               "$ref": "#/$defs/ward:java~1unused-anonymous-class"
@@ -67866,8 +69909,20 @@
             "wa-not-in-loop": {
               "$ref": "#/$defs/ward:java~1wa-not-in-loop"
             },
+            "weak-cipher": {
+              "$ref": "#/$defs/ward:java~1weak-cipher"
+            },
+            "weak-hash": {
+              "$ref": "#/$defs/ward:java~1weak-hash"
+            },
+            "weak-key-size": {
+              "$ref": "#/$defs/ward:java~1weak-key-size"
+            },
             "weak-ssl-context": {
               "$ref": "#/$defs/ward:java~1weak-ssl-context"
+            },
+            "weak-tls-protocol": {
+              "$ref": "#/$defs/ward:java~1weak-tls-protocol"
             },
             "while-loop-with-literal-boolean": {
               "$ref": "#/$defs/ward:java~1while-loop-with-literal-boolean"
@@ -67908,11 +69963,20 @@
             "xfb-xml-factory-bypass": {
               "$ref": "#/$defs/ward:java~1xfb-xml-factory-bypass"
             },
+            "xml-external-entities": {
+              "$ref": "#/$defs/ward:java~1xml-external-entities"
+            },
             "xmlinputfactory-possible-xxe": {
               "$ref": "#/$defs/ward:java~1xmlinputfactory-possible-xxe"
             },
             "xor-power": {
               "$ref": "#/$defs/ward:java~1xor-power"
+            },
+            "xpath-injection": {
+              "$ref": "#/$defs/ward:java~1xpath-injection"
+            },
+            "xss": {
+              "$ref": "#/$defs/ward:java~1xss"
             },
             "zone-id-of-z": {
               "$ref": "#/$defs/ward:java~1zone-id-of-z"
@@ -67956,6 +70020,12 @@
             "chrome-remote-interface-compilescript-injection": {
               "$ref": "#/$defs/ward:javascript~1chrome-remote-interface-compilescript-injection"
             },
+            "cleartext-transport": {
+              "$ref": "#/$defs/ward:javascript~1cleartext-transport"
+            },
+            "code-injection": {
+              "$ref": "#/$defs/ward:javascript~1code-injection"
+            },
             "code-string-concat": {
               "$ref": "#/$defs/ward:javascript~1code-string-concat"
             },
@@ -67998,6 +70068,9 @@
             "direct-response-write": {
               "$ref": "#/$defs/ward:javascript~1direct-response-write"
             },
+            "dom-xss": {
+              "$ref": "#/$defs/ward:javascript~1dom-xss"
+            },
             "dot-notation": {
               "$ref": "#/$defs/ward:javascript~1dot-notation"
             },
@@ -68006,6 +70079,9 @@
             },
             "dynamodb-request-object": {
               "$ref": "#/$defs/ward:javascript~1dynamodb-request-object"
+            },
+            "ecb-mode": {
+              "$ref": "#/$defs/ward:javascript~1ecb-mode"
             },
             "empty-catch-block": {
               "$ref": "#/$defs/ward:javascript~1empty-catch-block"
@@ -68106,17 +70182,29 @@
             "getter-return": {
               "$ref": "#/$defs/ward:javascript~1getter-return"
             },
+            "hard-coded-secret": {
+              "$ref": "#/$defs/ward:javascript~1hard-coded-secret"
+            },
             "hardcoded-jwt-secret": {
               "$ref": "#/$defs/ward:javascript~1hardcoded-jwt-secret"
             },
             "hardcoded-passport-secret": {
               "$ref": "#/$defs/ward:javascript~1hardcoded-passport-secret"
             },
+            "header-injection": {
+              "$ref": "#/$defs/ward:javascript~1header-injection"
+            },
             "hidden-field": {
               "$ref": "#/$defs/ward:javascript~1hidden-field"
             },
             "illegal-token-text": {
               "$ref": "#/$defs/ward:javascript~1illegal-token-text"
+            },
+            "insecure-cookie": {
+              "$ref": "#/$defs/ward:javascript~1insecure-cookie"
+            },
+            "insecure-random": {
+              "$ref": "#/$defs/ward:javascript~1insecure-random"
             },
             "intercom-settings-user-identifier-without-user-hash": {
               "$ref": "#/$defs/ward:javascript~1intercom-settings-user-identifier-without-user-hash"
@@ -68147,6 +70235,9 @@
             },
             "jwt-simple-noverify": {
               "$ref": "#/$defs/ward:javascript~1jwt-simple-noverify"
+            },
+            "jwt-without-verification": {
+              "$ref": "#/$defs/ward:javascript~1jwt-without-verification"
             },
             "knex-sqli": {
               "$ref": "#/$defs/ward:javascript~1knex-sqli"
@@ -68189,6 +70280,9 @@
             },
             "local-variable-name": {
               "$ref": "#/$defs/ward:javascript~1local-variable-name"
+            },
+            "log-forging": {
+              "$ref": "#/$defs/ward:javascript~1log-forging"
             },
             "magic-number": {
               "$ref": "#/$defs/ward:javascript~1magic-number"
@@ -68682,8 +70776,14 @@
             "node-knex-sqli": {
               "$ref": "#/$defs/ward:javascript~1node-knex-sqli"
             },
+            "nosql-injection": {
+              "$ref": "#/$defs/ward:javascript~1nosql-injection"
+            },
             "one-statement-per-line": {
               "$ref": "#/$defs/ward:javascript~1one-statement-per-line"
+            },
+            "open-redirect": {
+              "$ref": "#/$defs/ward:javascript~1open-redirect"
             },
             "overload-methods-declaration-order": {
               "$ref": "#/$defs/ward:javascript~1overload-methods-declaration-order"
@@ -68696,6 +70796,9 @@
             },
             "path-traversal": {
               "$ref": "#/$defs/ward:javascript~1path-traversal"
+            },
+            "permissive-cors": {
+              "$ref": "#/$defs/ward:javascript~1permissive-cors"
             },
             "pg-sqli": {
               "$ref": "#/$defs/ward:javascript~1pg-sqli"
@@ -68733,6 +70836,9 @@
             "preserve-caught-error": {
               "$ref": "#/$defs/ward:javascript~1preserve-caught-error"
             },
+            "prototype-pollution": {
+              "$ref": "#/$defs/ward:javascript~1prototype-pollution"
+            },
             "radix": {
               "$ref": "#/$defs/ward:javascript~1radix"
             },
@@ -68753,6 +70859,9 @@
             },
             "react-unsanitized-property": {
               "$ref": "#/$defs/ward:javascript~1react-unsanitized-property"
+            },
+            "regex-injection": {
+              "$ref": "#/$defs/ward:javascript~1regex-injection"
             },
             "regexp-singleline": {
               "$ref": "#/$defs/ward:javascript~1regexp-singleline"
@@ -68775,8 +70884,20 @@
             "sequelize-sqli": {
               "$ref": "#/$defs/ward:javascript~1sequelize-sqli"
             },
+            "shell-option": {
+              "$ref": "#/$defs/ward:javascript~1shell-option"
+            },
             "single-line-javadoc": {
               "$ref": "#/$defs/ward:javascript~1single-line-javadoc"
+            },
+            "sql-injection": {
+              "$ref": "#/$defs/ward:javascript~1sql-injection"
+            },
+            "ssrf": {
+              "$ref": "#/$defs/ward:javascript~1ssrf"
+            },
+            "static-iv": {
+              "$ref": "#/$defs/ward:javascript~1static-iv"
             },
             "strict": {
               "$ref": "#/$defs/ward:javascript~1strict"
@@ -68793,6 +70914,12 @@
             "tainted-html-string": {
               "$ref": "#/$defs/ward:javascript~1tainted-html-string"
             },
+            "template-injection": {
+              "$ref": "#/$defs/ward:javascript~1template-injection"
+            },
+            "tls-verification-disabled": {
+              "$ref": "#/$defs/ward:javascript~1tls-verification-disabled"
+            },
             "todo-comment": {
               "$ref": "#/$defs/ward:javascript~1todo-comment"
             },
@@ -68801,6 +70928,12 @@
             },
             "unsafe-argon2-config": {
               "$ref": "#/$defs/ward:javascript~1unsafe-argon2-config"
+            },
+            "unsafe-framework-trust": {
+              "$ref": "#/$defs/ward:javascript~1unsafe-framework-trust"
+            },
+            "untrusted-deserialization": {
+              "$ref": "#/$defs/ward:javascript~1untrusted-deserialization"
             },
             "unused-assignment": {
               "$ref": "#/$defs/ward:javascript~1unused-assignment"
@@ -68940,11 +71073,26 @@
             "vm-runincontext-injection": {
               "$ref": "#/$defs/ward:javascript~1vm-runincontext-injection"
             },
+            "weak-cipher": {
+              "$ref": "#/$defs/ward:javascript~1weak-cipher"
+            },
+            "weak-hash": {
+              "$ref": "#/$defs/ward:javascript~1weak-hash"
+            },
+            "weak-key-size": {
+              "$ref": "#/$defs/ward:javascript~1weak-key-size"
+            },
+            "wildcard-post-message": {
+              "$ref": "#/$defs/ward:javascript~1wildcard-post-message"
+            },
             "wildcard-postmessage-configuration": {
               "$ref": "#/$defs/ward:javascript~1wildcard-postmessage-configuration"
             },
             "x-frame-options-misconfiguration": {
               "$ref": "#/$defs/ward:javascript~1x-frame-options-misconfiguration"
+            },
+            "xml-external-entities": {
+              "$ref": "#/$defs/ward:javascript~1xml-external-entities"
             },
             "xss": {
               "$ref": "#/$defs/ward:javascript~1xss"
@@ -69888,6 +72036,9 @@
             "disallowed-name": {
               "$ref": "#/$defs/ward:python~1disallowed-name"
             },
+            "django-insecure-settings": {
+              "$ref": "#/$defs/ward:python~1django-insecure-settings"
+            },
             "dot-format-in-exception": {
               "$ref": "#/$defs/ward:python~1dot-format-in-exception"
             },
@@ -69953,6 +72104,9 @@
             },
             "flask-debug-true": {
               "$ref": "#/$defs/ward:python~1flask-debug-true"
+            },
+            "flask-insecure-config": {
+              "$ref": "#/$defs/ward:python~1flask-insecure-config"
             },
             "format-string-without-interpolation": {
               "$ref": "#/$defs/ward:python~1format-string-without-interpolation"
@@ -70434,6 +72588,9 @@
             "parameter-name": {
               "$ref": "#/$defs/ward:python~1parameter-name"
             },
+            "path-traversal": {
+              "$ref": "#/$defs/ward:python~1path-traversal"
+            },
             "percent-format-expected-mapping": {
               "$ref": "#/$defs/ward:python~1percent-format-expected-mapping"
             },
@@ -70617,6 +72774,12 @@
             "split-static-string": {
               "$ref": "#/$defs/ward:python~1split-static-string"
             },
+            "sql-string-formatting": {
+              "$ref": "#/$defs/ward:python~1sql-string-formatting"
+            },
+            "ssrf": {
+              "$ref": "#/$defs/ward:python~1ssrf"
+            },
             "star-arg-unpacking-after-keyword-arg": {
               "$ref": "#/$defs/ward:python~1star-arg-unpacking-after-keyword-arg"
             },
@@ -70721,6 +72884,9 @@
             },
             "sys-version2": {
               "$ref": "#/$defs/ward:python~1sys-version2"
+            },
+            "template-autoescape-disabled": {
+              "$ref": "#/$defs/ward:python~1template-autoescape-disabled"
             },
             "todo-comment": {
               "$ref": "#/$defs/ward:python~1todo-comment"
@@ -71043,11 +73209,17 @@
             "variable-declaration-usage-distance": {
               "$ref": "#/$defs/ward:python~1variable-declaration-usage-distance"
             },
+            "weak-password-hash": {
+              "$ref": "#/$defs/ward:python~1weak-password-hash"
+            },
             "while-used": {
               "$ref": "#/$defs/ward:python~1while-used"
             },
             "wrong-import-order": {
               "$ref": "#/$defs/ward:python~1wrong-import-order"
+            },
+            "xml-external-entities": {
+              "$ref": "#/$defs/ward:python~1xml-external-entities"
             },
             "yield-from-in-async-function": {
               "$ref": "#/$defs/ward:python~1yield-from-in-async-function"
@@ -72315,6 +74487,12 @@
             "class-type-parameter-name": {
               "$ref": "#/$defs/ward:typescript~1class-type-parameter-name"
             },
+            "cleartext-transport": {
+              "$ref": "#/$defs/ward:typescript~1cleartext-transport"
+            },
+            "code-injection": {
+              "$ref": "#/$defs/ward:typescript~1code-injection"
+            },
             "command-injection": {
               "$ref": "#/$defs/ward:typescript~1command-injection"
             },
@@ -72336,11 +74514,17 @@
             "contextual-lifecycle": {
               "$ref": "#/$defs/ward:typescript~1contextual-lifecycle"
             },
+            "dom-xss": {
+              "$ref": "#/$defs/ward:typescript~1dom-xss"
+            },
             "dot-notation": {
               "$ref": "#/$defs/ward:typescript~1dot-notation"
             },
             "duplicate-code": {
               "$ref": "#/$defs/ward:typescript~1duplicate-code"
+            },
+            "ecb-mode": {
+              "$ref": "#/$defs/ward:typescript~1ecb-mode"
             },
             "empty-catch-block": {
               "$ref": "#/$defs/ward:typescript~1empty-catch-block"
@@ -72360,11 +74544,23 @@
             "getter-return": {
               "$ref": "#/$defs/ward:typescript~1getter-return"
             },
+            "hard-coded-secret": {
+              "$ref": "#/$defs/ward:typescript~1hard-coded-secret"
+            },
+            "header-injection": {
+              "$ref": "#/$defs/ward:typescript~1header-injection"
+            },
             "hidden-field": {
               "$ref": "#/$defs/ward:typescript~1hidden-field"
             },
             "illegal-token-text": {
               "$ref": "#/$defs/ward:typescript~1illegal-token-text"
+            },
+            "insecure-cookie": {
+              "$ref": "#/$defs/ward:typescript~1insecure-cookie"
+            },
+            "insecure-random": {
+              "$ref": "#/$defs/ward:typescript~1insecure-random"
             },
             "interface-type-parameter-name": {
               "$ref": "#/$defs/ward:typescript~1interface-type-parameter-name"
@@ -72386,6 +74582,9 @@
             },
             "javadoc-paragraph": {
               "$ref": "#/$defs/ward:typescript~1javadoc-paragraph"
+            },
+            "jwt-without-verification": {
+              "$ref": "#/$defs/ward:typescript~1jwt-without-verification"
             },
             "knip-binaries": {
               "$ref": "#/$defs/ward:typescript~1knip-binaries"
@@ -72434,6 +74633,9 @@
             },
             "local-variable-name": {
               "$ref": "#/$defs/ward:typescript~1local-variable-name"
+            },
+            "log-forging": {
+              "$ref": "#/$defs/ward:typescript~1log-forging"
             },
             "magic-number": {
               "$ref": "#/$defs/ward:typescript~1magic-number"
@@ -73053,11 +75255,17 @@
             "no-xor-as-exponentiation": {
               "$ref": "#/$defs/ward:typescript~1no-xor-as-exponentiation"
             },
+            "nosql-injection": {
+              "$ref": "#/$defs/ward:typescript~1nosql-injection"
+            },
             "one-statement-per-line": {
               "$ref": "#/$defs/ward:typescript~1one-statement-per-line"
             },
             "only-throw-error": {
               "$ref": "#/$defs/ward:typescript~1only-throw-error"
+            },
+            "open-redirect": {
+              "$ref": "#/$defs/ward:typescript~1open-redirect"
             },
             "overload-methods-declaration-order": {
               "$ref": "#/$defs/ward:typescript~1overload-methods-declaration-order"
@@ -73070,6 +75278,9 @@
             },
             "path-traversal": {
               "$ref": "#/$defs/ward:typescript~1path-traversal"
+            },
+            "permissive-cors": {
+              "$ref": "#/$defs/ward:typescript~1permissive-cors"
             },
             "prefer-arrow-callback": {
               "$ref": "#/$defs/ward:typescript~1prefer-arrow-callback"
@@ -73125,8 +75336,14 @@
             "preserve-caught-error": {
               "$ref": "#/$defs/ward:typescript~1preserve-caught-error"
             },
+            "prototype-pollution": {
+              "$ref": "#/$defs/ward:typescript~1prototype-pollution"
+            },
             "radix": {
               "$ref": "#/$defs/ward:typescript~1radix"
+            },
+            "regex-injection": {
+              "$ref": "#/$defs/ward:typescript~1regex-injection"
             },
             "regexp-singleline": {
               "$ref": "#/$defs/ward:typescript~1regexp-singleline"
@@ -73146,8 +75363,20 @@
             "restrict-template-expressions": {
               "$ref": "#/$defs/ward:typescript~1restrict-template-expressions"
             },
+            "shell-option": {
+              "$ref": "#/$defs/ward:typescript~1shell-option"
+            },
             "single-line-javadoc": {
               "$ref": "#/$defs/ward:typescript~1single-line-javadoc"
+            },
+            "sql-injection": {
+              "$ref": "#/$defs/ward:typescript~1sql-injection"
+            },
+            "ssrf": {
+              "$ref": "#/$defs/ward:typescript~1ssrf"
+            },
+            "static-iv": {
+              "$ref": "#/$defs/ward:typescript~1static-iv"
             },
             "strict": {
               "$ref": "#/$defs/ward:typescript~1strict"
@@ -73157,6 +75386,12 @@
             },
             "symbol-description": {
               "$ref": "#/$defs/ward:typescript~1symbol-description"
+            },
+            "template-injection": {
+              "$ref": "#/$defs/ward:typescript~1template-injection"
+            },
+            "tls-verification-disabled": {
+              "$ref": "#/$defs/ward:typescript~1tls-verification-disabled"
             },
             "todo-comment": {
               "$ref": "#/$defs/ward:typescript~1todo-comment"
@@ -73169,6 +75404,12 @@
             },
             "unbound-method": {
               "$ref": "#/$defs/ward:typescript~1unbound-method"
+            },
+            "unsafe-framework-trust": {
+              "$ref": "#/$defs/ward:typescript~1unsafe-framework-trust"
+            },
+            "untrusted-deserialization": {
+              "$ref": "#/$defs/ward:typescript~1untrusted-deserialization"
             },
             "unused-assignment": {
               "$ref": "#/$defs/ward:typescript~1unused-assignment"
@@ -73313,6 +75554,21 @@
             },
             "variable-declaration-usage-distance": {
               "$ref": "#/$defs/ward:typescript~1variable-declaration-usage-distance"
+            },
+            "weak-cipher": {
+              "$ref": "#/$defs/ward:typescript~1weak-cipher"
+            },
+            "weak-hash": {
+              "$ref": "#/$defs/ward:typescript~1weak-hash"
+            },
+            "weak-key-size": {
+              "$ref": "#/$defs/ward:typescript~1weak-key-size"
+            },
+            "wildcard-post-message": {
+              "$ref": "#/$defs/ward:typescript~1wildcard-post-message"
+            },
+            "xml-external-entities": {
+              "$ref": "#/$defs/ward:typescript~1xml-external-entities"
             },
             "xss": {
               "$ref": "#/$defs/ward:typescript~1xss"
