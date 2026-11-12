@@ -13,7 +13,7 @@ import dev.ward.domain.process.CommandResult;
 import dev.ward.infrastructure.agent.CodexIntegration;
 import dev.ward.infrastructure.json.ForyJsonCodec;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
-import dev.ward.infrastructure.spec.FileSystemProjectPaths;
+import dev.ward.infrastructure.project.FileSystemProjectPaths;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;

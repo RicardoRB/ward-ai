@@ -10,8 +10,8 @@ import dev.ward.domain.process.CommandExecutor;
 import dev.ward.infrastructure.config.FilePathExistence;
 import dev.ward.infrastructure.config.TomlConfigurationReader;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
+import dev.ward.infrastructure.project.FileSystemProjectPaths;
 import dev.ward.infrastructure.project.node.NodeWorkspaceMembers;
-import dev.ward.infrastructure.spec.FileSystemProjectPaths;
 
 /** Wires real project detection, configuration, and paths around a test executor. */
 public final class SpecValidationFixtures {

@@ -1,6 +1,6 @@
-package dev.ward.infrastructure.spec;
+package dev.ward.infrastructure.project;
 
-import dev.ward.domain.spec.ProjectPaths;
+import dev.ward.domain.project.ProjectPaths;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;

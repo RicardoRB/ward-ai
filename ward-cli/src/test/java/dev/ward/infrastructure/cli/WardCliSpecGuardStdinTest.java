@@ -8,7 +8,7 @@ import dev.ward.application.project.ProjectDetector;
 import dev.ward.application.spec.ApprovedArtifactGuardService;
 import dev.ward.infrastructure.cli.spec.SpecGuardCommand;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
-import dev.ward.infrastructure.spec.FileSystemProjectPaths;
+import dev.ward.infrastructure.project.FileSystemProjectPaths;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;

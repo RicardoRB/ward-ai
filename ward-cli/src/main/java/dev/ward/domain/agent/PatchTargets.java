@@ -1,4 +1,4 @@
-package dev.ward.domain.spec;
+package dev.ward.domain.agent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public final class PatchTargets {
   private PatchTargets() {}
 
   /** Returns the patch targets in order, or empty when the patch cannot be inspected. */
-  public static Optional<List<GuardTarget>> parse(final String patch) {
+  public static Optional<List<PatchTarget>> parse(final String patch) {
     if (patch == null || patch.isBlank()) {
       return Optional.of(List.of());
     }
@@ -36,7 +36,7 @@ public final class PatchTargets {
   /** Line-oriented parser state for one {@link #parse} call. */
   private static final class Parser {
     private final String[] lines;
-    private final List<GuardTarget> targets = new ArrayList<>();
+    private final List<PatchTarget> targets = new ArrayList<>();
     private boolean recognized;
     private String updated;
 
@@ -66,23 +66,23 @@ public final class PatchTargets {
 
     private void header(final String line) {
       if (line.startsWith(ADD)) {
-        add(GuardOperation.WRITE, value(line, ADD));
+        add(PatchTarget.Kind.WRITE, value(line, ADD));
       } else if (line.startsWith(UPDATE)) {
         updated = value(line, UPDATE);
-        add(GuardOperation.WRITE, updated);
+        add(PatchTarget.Kind.WRITE, updated);
       } else if (line.startsWith(DELETE)) {
-        add(GuardOperation.DELETE, value(line, DELETE));
+        add(PatchTarget.Kind.DELETE, value(line, DELETE));
       } else if (line.startsWith(MOVE)) {
         if (updated != null) {
-          add(GuardOperation.MOVE_FROM, updated);
+          add(PatchTarget.Kind.MOVE_FROM, updated);
         }
-        add(GuardOperation.MOVE_TO, value(line, MOVE));
+        add(PatchTarget.Kind.MOVE_TO, value(line, MOVE));
       } else if (line.startsWith(RENAME_FROM)) {
-        add(GuardOperation.MOVE_FROM, unquote(line.substring(RENAME_FROM.length())));
+        add(PatchTarget.Kind.MOVE_FROM, unquote(line.substring(RENAME_FROM.length())));
       } else if (line.startsWith(RENAME_TO)) {
-        add(GuardOperation.MOVE_TO, unquote(line.substring(RENAME_TO.length())));
+        add(PatchTarget.Kind.MOVE_TO, unquote(line.substring(RENAME_TO.length())));
       } else if (line.startsWith(COPY_TO)) {
-        add(GuardOperation.WRITE, unquote(line.substring(COPY_TO.length())));
+        add(PatchTarget.Kind.WRITE, unquote(line.substring(COPY_TO.length())));
       }
     }
 
@@ -91,21 +91,21 @@ public final class PatchTargets {
       final String before = diffPath(oldLine.substring(OLD_FILE.length()));
       final String after = diffPath(newLine.substring(NEW_FILE.length()));
       if (before == null && after != null) {
-        add(GuardOperation.WRITE, after);
+        add(PatchTarget.Kind.WRITE, after);
       } else if (before != null && after == null) {
-        add(GuardOperation.DELETE, before);
+        add(PatchTarget.Kind.DELETE, before);
       } else if (before != null && before.equals(after)) {
-        add(GuardOperation.WRITE, after);
+        add(PatchTarget.Kind.WRITE, after);
       } else if (before != null) {
-        add(GuardOperation.MOVE_FROM, before);
-        add(GuardOperation.MOVE_TO, after);
+        add(PatchTarget.Kind.MOVE_FROM, before);
+        add(PatchTarget.Kind.MOVE_TO, after);
       }
     }
 
-    private void add(final GuardOperation operation, final String path) {
+    private void add(final PatchTarget.Kind kind, final String path) {
       recognized = true;
       if (!path.isEmpty()) {
-        targets.add(GuardTarget.of(operation, path));
+        targets.add(new PatchTarget(path, kind));
       }
     }
 

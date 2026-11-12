@@ -1,4 +1,4 @@
-package dev.ward.domain.spec;
+package dev.ward.domain.project;
 
 import java.nio.file.Path;
 import java.util.List;

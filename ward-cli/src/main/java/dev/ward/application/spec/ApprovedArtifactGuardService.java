@@ -2,15 +2,15 @@ package dev.ward.application.spec;
 
 import dev.ward.application.project.ProjectDetector;
 import dev.ward.application.project.ProjectNotFoundException;
+import dev.ward.domain.agent.PatchTargets;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.ProjectPaths;
 import dev.ward.domain.spec.GuardDecision;
 import dev.ward.domain.spec.GuardFeedback;
 import dev.ward.domain.spec.GuardOperation;
 import dev.ward.domain.spec.GuardRefusal;
 import dev.ward.domain.spec.GuardRequest;
 import dev.ward.domain.spec.GuardTarget;
-import dev.ward.domain.spec.PatchTargets;
-import dev.ward.domain.spec.ProjectPaths;
 import dev.ward.domain.spec.ShellCommandHeuristic;
 import dev.ward.domain.spec.ShellInspection;
 import dev.ward.domain.spec.SkillPolicy;
@@ -118,7 +118,17 @@ public final class ApprovedArtifactGuardService {
                   .toList());
       case PATCH ->
           PatchTargets.parse(text)
-              .map(targets -> targets(root, request, targets))
+              .map(
+                  patch ->
+                      targets(
+                          root,
+                          request,
+                          patch.stream()
+                              .map(
+                                  t ->
+                                      GuardTarget.of(
+                                          GuardOperation.valueOf(t.kind().name()), t.path()))
+                              .toList()))
               .orElseGet(() -> uninspectable("patch"));
       case SHELL -> shell(root, request, ShellCommandHeuristic.inspect(text));
       case SKILL ->

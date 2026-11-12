@@ -13,7 +13,7 @@ import dev.ward.domain.gate.ProjectFiles;
 import dev.ward.domain.gate.ReportSink;
 import dev.ward.domain.gate.RevisionFiles;
 import dev.ward.domain.project.ProjectChanges;
-import dev.ward.domain.spec.ProjectPaths;
+import dev.ward.domain.project.ProjectPaths;
 import dev.ward.domain.traceability.ScenarioInventory;
 import dev.ward.domain.traceability.TestMappingInventory;
 import dev.ward.infrastructure.cli.agent.HookChecks;

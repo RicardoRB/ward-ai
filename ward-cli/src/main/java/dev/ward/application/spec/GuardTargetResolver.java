@@ -1,11 +1,11 @@
 package dev.ward.application.spec;
 
+import dev.ward.domain.project.ProjectPaths;
 import dev.ward.domain.spec.ApprovedArtifactPolicy;
 import dev.ward.domain.spec.GlobPattern;
 import dev.ward.domain.spec.GuardOperation;
 import dev.ward.domain.spec.GuardRefusal;
 import dev.ward.domain.spec.GuardTarget;
-import dev.ward.domain.spec.ProjectPaths;
 import dev.ward.domain.spec.ProtectedArea;
 import java.nio.file.Path;
 import java.util.ArrayList;

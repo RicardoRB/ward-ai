@@ -10,7 +10,7 @@ import dev.ward.application.project.ProjectNotFoundException;
 import dev.ward.domain.spec.GuardDecision;
 import dev.ward.domain.spec.GuardRequest;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
-import dev.ward.infrastructure.spec.FileSystemProjectPaths;
+import dev.ward.infrastructure.project.FileSystemProjectPaths;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

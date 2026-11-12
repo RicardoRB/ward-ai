@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.domain.spec.ApprovedArtifactPolicy;
 import dev.ward.domain.spec.GuardOperation;
+import dev.ward.infrastructure.project.FileSystemProjectPaths;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
