@@ -8,6 +8,14 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Added
+
+- The native `vulnerabilities` check (`uses = "vulnerabilities"`): it matches the resolved dependencies of every toolchain against OSV advisories, with the version ordering of Maven, semver and PEP 440. Options `minimum-severity` and `max-age-days`. A reduced copy of each advisory database lives under `.ward/cache/vulnerabilities/`. `ward check --offline` makes no network request, and `ward vulnerabilities update` refreshes the databases (#519).
+
+### Changed
+
+- **Breaking (alpha, no migration):** the `trivy`, `dependency-check` and `pip-audit` gates are removed, with their init offers, the Trivy install and cache steps of the generated CI workflow, the `dependency-check` plugins of the Maven and Gradle tool configuration, the doctor checks of `NVD_API_KEY` and OSS Index, and their pages in the documentation. A check that runs one of those tools is now a plain `command` check; `uses = "trivy"`, `"dependency-check"` or `"pip-audit"` is a configuration error. Use `vulnerabilities` instead (#519).
+
 ## [0.7.0] - 2026-11-11
 
 ### Added

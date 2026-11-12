@@ -84,14 +84,14 @@ Node: JavaScript (CommonJS), npm, Node 24, sources in src/, no test runner
   both), so the `ward` gate applies them. Init writes no lint config, and formatting stays with
   `ward-format`.
 - **Gates.** Init also offers `stryker` (mutation testing, `ci` only; slow on Bun, which has no
-  Stryker runner plugin), `gitleaks`, `trivy`, and `zap`. Semgrep's JavaScript and TypeScript packs
+  Stryker runner plugin), `gitleaks`, `vulnerabilities`, and `zap`. Semgrep's JavaScript and TypeScript packs
   are not offered: Ward's rules cover those languages. The layer boundaries of the architecture
   style are written to `ward.toml` as `[[checks.ward.layers]]` for every Node project, and
   `strict` adds the slice cycle check (`[checks.ward.cycles]`).
 - **Probe.** For tool availability, probe only the gates init offers here:
 
   ```sh
-  ward init -C <dir> --dry-run --preset strict --integration none --gate gitleaks,trivy
+  ward init -C <dir> --dry-run --preset strict --integration none --gate gitleaks,vulnerabilities
   ```
 
 ## Reading the plan

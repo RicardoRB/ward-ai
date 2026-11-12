@@ -195,10 +195,10 @@ ward check --profile ci --format json > ward-report.json
 | Build and tests | Compiler, JUnit, JaCoCo coverage, PIT mutation testing |
 | Code quality | Ward rules, SonarQube |
 | Architecture | Ward's layer boundaries (Layered, Hexagonal, or Clean), slice cycles and feature independence, native `no-field-di` and `no-standard-streams` rules (`strict`), Maven Enforcer / Gradle checks |
-| Security | Gitleaks, Semgrep, OWASP Dependency-Check, Trivy, OWASP ZAP |
+| Security | Gitleaks, Semgrep, native vulnerability matching against OSV advisories, OWASP ZAP |
 | Compliance | License plugins, japicmp API compatibility |
 | TypeScript and JavaScript | `tsc`, Vitest / Jest / `bun test`, Stryker mutation testing, Ward's TypeScript and JavaScript rules (lint, selected in `ward-rules.toml`), framework checkers (`vue-tsc`, `svelte-check`, `astro check`, `ngc`) |
-| Python | Ward rules (lint, selected in `ward-rules.toml`), `ward-format` (format), mypy, pytest, coverage.py, pip-audit, mutmut mutation testing, `manage.py check` for Django |
+| Python | Ward rules (lint, selected in `ward-rules.toml`), `ward-format` (format), mypy, pytest, coverage.py, mutmut mutation testing, `manage.py check` for Django |
 | Swift | Ward rules (lint, selected in `ward-rules.toml`), `swift build`, `swift test` or `xcodebuild test`, llvm-cov / xccov coverage |
 | Android | Android lint (`lintDebug`), Android unit tests (`testDebugUnitTest`), debug unit-test coverage |
 | Anything else | Any command you add to `ward.toml` |

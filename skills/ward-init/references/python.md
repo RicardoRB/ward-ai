@@ -30,7 +30,6 @@ version by the Python matrix. Python 3.15 waits until mutmut installs on it. Dja
 | `mypy` | `mypy . -O json` | yes |
 | `pytest` | `coverage run -m pytest` | yes |
 | `coverage` | `coverage report`, `--fail-under=80` with a user config | yes |
-| `pip-audit` | `pip-audit` in `ci` | no, opt-in |
 
 `strict` adds `mutmut` (mutation testing in `ci`, with a 60% minimum). It also turns on mypy's strict
 mode, the strict Ward rules in `ward-rules.toml`, and branch coverage with an 85% total. Lint comes

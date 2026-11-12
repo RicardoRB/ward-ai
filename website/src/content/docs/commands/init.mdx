@@ -33,7 +33,7 @@ each choice for this codebase, and runs `init` with explicit options after you a
 | `--scheme <name>` | Xcode scheme that a Swift project's tests run, when the project has several. With `--yes`, a project with several schemes needs this option. |
 | `--tool openspec` | Add OpenSpec as a project tool. |
 | `--openspec-validation <id>[,...]` | Add the `openspec` (active) or `openspec-archived` validation gate. |
-| `--install-tool <tool\|gate>[,...]` | Consent to install a missing tool, such as `trivy` or `openspec`. |
+| `--install-tool <tool\|gate>[,...]` | Consent to install a missing tool, such as `gitleaks` or `openspec`. |
 | `--quality-hooks` | Add Ward checks to the Git pre-commit and pre-push hooks. |
 | `--remove-quality-hooks` | Remove only Ward's sections from those hooks. |
 | `--ci github` | Write a GitHub Actions workflow that runs the `ci` profile. |
@@ -75,8 +75,10 @@ Some gates need extra input:
   [OpenAPI contract gates](/configuration/gates/#openapi-contract-gates). When the project's
   framework serves HTTP (such as Spring Boot, FastAPI or Express) but has no tracked spec, init's plan
   says so and asks you to commit one first.
-- **`dependency-check` with `trivy`**: init warns that trivy already scans dependencies without an
-  API key, so you can usually drop one of them.
+- **`vulnerabilities`**: a native check that matches the resolved dependencies against OSV advisories.
+  No preset enables it. Init offers it for every toolchain, writes it with `uses = "vulnerabilities"`
+  in the `ci` profile, and asks no install question. See
+  [vulnerabilities](/configuration/vulnerabilities/).
 
 ### Profiles
 
@@ -206,8 +208,7 @@ mutation omitted: info.solidsoft.pitest needs JDK 8+; this project builds on JDK
 
 - A gate you pass with `--gate` that cannot run on your JDK stops init before it changes any file.
 - In the interactive gate list, such a gate is shown as unavailable and cannot be selected.
-- The Gradle `dependency-check` and `sonar` plugins need JDK 11, so on Gradle they are omitted on
-  JDK 8.
+- The Gradle `sonar` plugin needs JDK 11, so on Gradle it is omitted on JDK 8.
 - Above Java 25, init configures the project exactly as for JDK 25 and warns that Ward has not been
   tested on that JDK and does not support it.
 - Below Java 8, init warns that Ward supports Java 8 to 25 and may not work with that version.
@@ -409,7 +410,7 @@ and Ward does not run it.
 - JavaScript gets the same gates except `tsc`.
 - The test runner is the one the project declares: `vitest`, then `jest`. A Bun project without
   either gets `bun-test`, and any other project gets `vitest` with `@vitest/coverage-v8`. Their version follows the declared `vite`: the newest pinned release whose Vite range includes it (4.1.11 for Vite 6 to 8), and 4.0.18 without `vite`.
-- `gitleaks` and `trivy` are offered as for Java.
+- `gitleaks` is offered as for Java.
 
 | | `standard` | `strict` |
 |---|---|---|
@@ -520,7 +521,6 @@ projects are not supported yet, and init stops with an error that names the mana
 - The gates run through the manager: `uv run --group ward`, `poetry run`, or `.venv/bin/` for pip.
   `standard` selects `mypy`, `pytest`, and `coverage` (line coverage of 80%), and `ward-format`
   checks formatting.
-  `pip-audit` is opt-in.
 - Lint comes from Ward's Python rules: `ward-rules.toml` selects them for `"python"` with the
   preset.
 - Ward writes `mypy.ini` and `.coveragerc` only where the project has none. A config the
@@ -612,7 +612,7 @@ Init installs a missing tool only with your explicit consent, one tool at a time
 
 | Tool | How |
 |---|---|
-| Trivy, Gitleaks | Homebrew |
+| Gitleaks | Homebrew |
 | Semgrep | Homebrew, or pipx as a fallback |
 | vacuum (`openapi-lint`) | Homebrew |
 | oasdiff (`openapi-diff`, `openapi-compat`) | Homebrew |
@@ -622,13 +622,9 @@ Init installs a missing tool only with your explicit consent, one tool at a time
 - In the wizard, each unavailable tool gets a Yes/No question. No is the default, and blank input or
   end of input declines.
 - In non-interactive runs, consent with `--install-tool <gate>`, for example
-  `--install-tool trivy`.
+  `--install-tool gitleaks`.
 - `--yes` never installs tools and never bypasses unresolved prerequisites. `--dry-run` lists the
   install commands but runs none. `ward check` never installs gate tools.
-
-When `trivy` runs after a selected Maven or Gradle gate, init adds `--offline-scan`, so Trivy
-resolves dependencies from the local repository instead of Maven Central
-([why](/guides/ci-cd/#trivy-offline-scans)).
 
 ## Optional generated files
 
@@ -655,9 +651,9 @@ Without `--ci`, init does not generate a CI workflow. `--ci github` writes
 - installs the Ward release that ran init (`WARD_VERSION`);
 - for a Java project, sets up the JDK that runs your build (JDK 25 when init cannot read it), since
   the pinned tools were chosen for that JDK;
-- pins the tools the selected gates need (gitleaks, trivy, semgrep, OpenSpec);
-- fetches full history for gitleaks and caches the trivy database;
-- passes the `NVD_API_KEY` secret to `dependency-check`;
+- pins the tools the selected gates need (gitleaks, semgrep, OpenSpec);
+- fetches full history for gitleaks;
+- restores and saves `.ward/cache/vulnerabilities/` around the check when `vulnerabilities` is selected;
 - uploads the SARIF report to code scanning for pull requests from the same repository.
 
 In a Node project the workflow sets up Node or Bun instead of Java and installs the dependencies

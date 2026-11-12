@@ -92,7 +92,7 @@ Order the failing gates so that early fixes do not create work for later ones:
 5. Tests: `tests`, `vitest`, `jest`, `bun-test`, `ng-test`, `pytest`, `swift-test`
 6. `coverage` or `swift-coverage`, then `mutation`, `stryker` or `mutmut` (they measure the tests,
    so they come last)
-7. Security and dependencies: `gitleaks`, `dependency-check`, `trivy`, `pip-audit`, `license`
+7. Security and dependencies: `gitleaks`, `vulnerabilities`, `license`
 
 Within a gate, group the findings by `rule`. When `findingsTruncated` is `true`, the JSON lists only
 50; read the full tool report the gate writes (for example `.ward/reports/` or `build/reports/`)

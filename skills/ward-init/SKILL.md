@@ -137,14 +137,10 @@ order:
 3. **Gates.** Start from the preset's gates and ask what to add or remove. Mention what you found:
    - Gates whose tool is `UNAVAILABLE` and whether init can install the tool (an `install` line) or
      only point to a manual guide (a `guidance` line).
-   - `dependency-check` without `NVD_API_KEY`: the first scans are slow or rate-limited. The key is
-     read from the environment and never written to files.
-   - `dependency-check` OSS Index: init turns the analyzer off because Sonatype OSS Index needs
-     credentials. To use it, set `OSS_INDEX_PASSWORD` in the environment (Maven reads it through a
-     `settings.xml` server with id `ossindex`); never commit the credentials. `trivy` covers
-     dependency vulnerabilities without any key. When both `dependency-check` and `trivy` are
-     selected, the plan prints `Warning: trivy already scans dependencies`; recommend keeping only
-     `trivy` unless the user needs Dependency-Check's reports.
+   - `vulnerabilities` is a native check that matches the resolved dependencies against OSV
+     advisories. No preset enables it and it needs no tool or key. It downloads advisory data on
+     every online run, so offer it for the `ci` profile and mention `ward check --offline` and
+     `ward vulnerabilities update` for offline use.
    - `zap` needs a running application and a `<TARGET_URL>` that the user is authorized to scan.
      `check` fails until it is replaced.
    - `openapi-lint`, `openapi-diff`, and `openapi-compat` are offered only when Git tracks an
@@ -192,8 +188,8 @@ order:
    `--ci github` writes `.github/workflows/ward.yml`, which runs the `ci` profile, installs the
    gate tools, and uploads SARIF to code scanning. Recommend it when the project has no workflow that
    runs Ward. If `.github/workflows/ward.yml` already exists and is not Ward's, the plan
-   shows a `conflict`. Mention that `dependency-check` needs an `NVD_API_KEY` repository secret, and
-   that `zap` is not run by the workflow.
+   shows a `conflict`. When `vulnerabilities` is selected the workflow caches
+   `.ward/cache/vulnerabilities/`. Mention that `zap` is not run by the workflow.
 10. **Agent rules** (offer when an agent integration is selected). `--agent-rules` writes a
     Ward-owned section into `AGENTS.md` that lists the limits the gates enforce (file and method
     length, parameters, coverage and mutation minimums), so agents meet them before the first check
@@ -301,8 +297,7 @@ Tell the user:
    files changed since the branch's upstream, and runs in full without an upstream; CI always checks the
    whole project.
 2. Every manual step still open, taken from the output. For example: tools that are still
-   `UNAVAILABLE`, replacing `<TARGET_URL>` for `zap`, setting `NVD_API_KEY` for `dependency-check`
-   (as a repository secret too when `--ci github` was used), committing the generated workflow, or a
+   `UNAVAILABLE`, replacing `<TARGET_URL>` for `zap`, committing the generated workflow, or a
    declined compatibility update.
 3. How to run the gates: `ward check` (the `default` profile, fast gates) and
    `ward check --profile ci` (every gate). Offer to run the fast profile now. This session wrote
