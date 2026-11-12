@@ -28,8 +28,12 @@ final class GateLines {
   private static String sectionLine(final String gate, final GateSection section) {
     final String line = (section.errors() > 0 ? "✗ " : "✓ ") + gate + " · " + section.name();
     if (section.errors() > 0) {
-      return line + " — " + section.errors() + " errors";
+      return line + " — " + count(section.errors(), "error");
     }
-    return section.warnings() > 0 ? line + " — " + section.warnings() + " warnings" : line;
+    return section.warnings() > 0 ? line + " — " + count(section.warnings(), "warning") : line;
+  }
+
+  private static String count(final int number, final String noun) {
+    return number + " " + noun + (number == 1 ? "" : "s");
   }
 }

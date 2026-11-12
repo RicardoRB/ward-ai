@@ -76,6 +76,18 @@ class GateLinesTest {
   }
 
   @Test
+  void singleFindingIsNotPlural() {
+    assertThat(GateLines.of(failedWith(new GateSection("style", 1, 0))))
+        .isEqualTo("✗ ward · style — 1 error");
+    assertThat(GateLines.of(failedWith(new GateSection("docs", 0, 1))))
+        .isEqualTo("✓ ward · docs — 1 warning");
+  }
+
+  private static GateResult failedWith(final GateSection section) {
+    return GateResult.builder(GATE, GateStatus.FAILED).build().withSections(List.of(section));
+  }
+
+  @Test
   void singleSectionPrintsOneLine() {
     final GateResult result =
         GateResult.builder(GATE, GateStatus.PASSED)
