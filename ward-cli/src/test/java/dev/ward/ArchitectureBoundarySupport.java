@@ -85,6 +85,7 @@ final class ArchitectureBoundarySupport {
           Map.entry("learning", Set.of("gate")),
           Map.entry("spec", Set.of()),
           Map.entry("update", Set.of()),
+          Map.entry("vulnerability", Set.of("dependency", "gate")),
           Map.entry("traceability", Set.of()),
           Map.entry("rules", Set.of()));
 
