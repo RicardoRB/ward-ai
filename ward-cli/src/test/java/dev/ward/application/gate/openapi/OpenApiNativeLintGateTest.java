@@ -40,6 +40,13 @@ class OpenApiNativeLintGateTest {
   }
 
   @Test
+  void theGateKeepsOneLineWithoutCategorySections() throws IOException {
+    fixture.write(NativeLintFixture.SPEC, NativeLintFixture.CLEAN);
+
+    assertThat(fixture.lint().sections()).isEmpty();
+  }
+
+  @Test
   void aCleanSpecPasses() throws IOException {
     fixture.write(NativeLintFixture.SPEC, NativeLintFixture.CLEAN);
 
