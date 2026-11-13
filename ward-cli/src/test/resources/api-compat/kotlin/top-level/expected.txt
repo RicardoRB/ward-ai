@@ -1,0 +1,3 @@
+p/B.kt:3:1 api-compat:member-removed p.<top-level>#gone: public final void gone() -> removed
+p/B.kt:3:1 api-compat:member-removed p.<top-level>#kept: public final void kept() -> removed
+p/B.kt:5:1 api-compat:return-type-changed p.<top-level>#getFlag: public final boolean getFlag() -> public final int getFlag()

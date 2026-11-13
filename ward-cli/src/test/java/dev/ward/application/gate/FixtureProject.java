@@ -111,7 +111,6 @@ final class FixtureProject {
         BuildTool.MAVEN,
         Framework.NONE,
         false,
-        false,
         root,
         Set.of(),
         null,

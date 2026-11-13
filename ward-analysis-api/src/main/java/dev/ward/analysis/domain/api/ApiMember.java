@@ -84,10 +84,26 @@ public record ApiMember(
       return text.append(' ').append(type.text()).append(' ').append(name).toString();
     }
     final String arguments = arguments();
+    if (!typeParameters.isEmpty()) {
+      text.append(' ').append(typeParameterList());
+    }
     if (kind != Kind.CONSTRUCTOR) {
       text.append(' ').append(type.text());
     }
     return text.append(' ').append(name).append('(').append(arguments).append(')').toString();
+  }
+
+  private String typeParameterList() {
+    final List<String> texts = new ArrayList<>();
+    for (final ApiTypeParameter parameter : typeParameters) {
+      final String bounds =
+          parameter.bounds().isEmpty()
+              ? ""
+              : " extends "
+                  + String.join(" & ", parameter.bounds().stream().map(ApiTypeRef::text).toList());
+      texts.add(parameter.name() + bounds);
+    }
+    return "<" + String.join(", ", texts) + ">";
   }
 
   private List<String> modifiers() {
@@ -110,7 +126,7 @@ public record ApiMember(
   private String arguments() {
     final List<String> texts = new ArrayList<>();
     for (final ApiParameter parameter : parameters) {
-      texts.add(parameter.type().text());
+      texts.add(parameter.type().text() + (parameter.hasDefault() ? " = ..." : ""));
     }
     if (isVarargs && !texts.isEmpty()) {
       final String last = texts.getLast();

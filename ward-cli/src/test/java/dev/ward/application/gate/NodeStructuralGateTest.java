@@ -130,7 +130,6 @@ class NodeStructuralGateTest {
         BuildTool.NPM,
         Framework.NONE,
         false,
-        false,
         root,
         Set.of(),
         null,

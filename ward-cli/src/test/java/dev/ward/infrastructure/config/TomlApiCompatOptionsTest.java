@@ -59,9 +59,9 @@ class TomlApiCompatOptionsTest {
   @Test
   void commandVariantKeepsItsCommandAndOtherGatesHaveNoOptions() throws IOException {
     final WardConfiguration configuration =
-        read(reader, dir, HEADER + "command = \"gradle japicmp\"\n");
+        read(reader, dir, HEADER + "command = \"gradle apiCheck\"\n");
 
     assertThat(configuration.checks().get("api-compat").command())
-        .containsExactly("gradle", "japicmp");
+        .containsExactly("gradle", "apiCheck");
   }
 }

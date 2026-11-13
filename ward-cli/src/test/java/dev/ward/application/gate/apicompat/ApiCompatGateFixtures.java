@@ -1,6 +1,10 @@
 package dev.ward.application.gate.apicompat;
 
+import dev.ward.analysis.domain.api.ApiSurfaceReader;
+import dev.ward.analysis.domain.api.ApiType;
+import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.jvm.types.JavaApiSurfaceReader;
+import dev.ward.analysis.domain.jvm.types.KotlinApiSurfaceReader;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import dev.ward.domain.config.ApiCompatOptions;
 import dev.ward.domain.gate.GateResult;
@@ -11,6 +15,7 @@ import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.infrastructure.analysis.jvm.JvmSourceLayouts;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -65,12 +70,23 @@ final class ApiCompatGateFixtures {
         revisions,
         files,
         JvmSourceLayouts::mainRoots,
-        (root, units) ->
-            new JavaApiSurfaceReader()
-                .read(
-                    units,
-                    new AntlrLanguageFrontend(),
-                    name ->
-                        ClassLoader.getSystemResource(name.replace('.', '/') + ".class") != null));
+        (root, units) -> {
+          final List<ApiType> found = new ArrayList<>();
+          for (final ApiSurfaceReader reader :
+              List.of(new JavaApiSurfaceReader(), new KotlinApiSurfaceReader())) {
+            final List<SourceUnit> own =
+                units.stream().filter(unit -> unit.language() == reader.language()).toList();
+            if (!own.isEmpty()) {
+              found.addAll(
+                  reader.read(
+                      own,
+                      new AntlrLanguageFrontend(),
+                      name ->
+                          ClassLoader.getSystemResource(name.replace('.', '/') + ".class")
+                              != null));
+            }
+          }
+          return found;
+        });
   }
 }

@@ -12,31 +12,6 @@ final class PomTools {
   private static final String JACOCO = "jacoco-maven-plugin";
   private static final String PIT = "pitest-maven";
   private static final String ENFORCER = "maven-enforcer-plugin";
-  private static final String JAPICMP = "japicmp-maven-plugin";
-
-  private static final String JAPICMP_PLUGIN =
-      """
-              <plugin>
-                <groupId>com.github.siom79.japicmp</groupId>
-                <artifactId>japicmp-maven-plugin</artifactId>
-                <version>0.23.1</version>
-                <configuration>
-                  <oldVersion>
-                    <dependency>
-                      <groupId>${project.groupId}</groupId>
-                      <artifactId>${project.artifactId}</artifactId>
-                      <version>RELEASE</version>
-                      <type>jar</type>
-                    </dependency>
-                  </oldVersion>
-                  <newVersion><file><path>${project.build.directory}/${project.build.finalName}.jar</path></file></newVersion>
-                  <parameter>
-                    <breakBuildOnBinaryIncompatibleModifications>true</breakBuildOnBinaryIncompatibleModifications>
-                    <includes><include>${project.groupId}.*</include></includes>
-                  </parameter>
-                </configuration>
-              </plugin>
-            """;
 
   private static final String SONAR_PLUGIN =
       """
@@ -105,8 +80,7 @@ final class PomTools {
           Tool.modulePlugin("coverage", JACOCO, JACOCO_PLUGIN),
           Tool.modulePlugin("mutation", PIT, PIT_PLUGIN, PresetPluginSnippets::pit),
           Tool.modulePlugin(
-              "enforcer", ENFORCER, ENFORCER_PLUGIN, preset -> PresetPluginSnippets.enforcer()),
-          Tool.plugin("api-compat", JAPICMP, JAPICMP_PLUGIN));
+              "enforcer", ENFORCER, ENFORCER_PLUGIN, preset -> PresetPluginSnippets.enforcer()));
 
   private PomTools() {}
 

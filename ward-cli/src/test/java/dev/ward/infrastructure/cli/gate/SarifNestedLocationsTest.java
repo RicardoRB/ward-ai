@@ -88,7 +88,6 @@ class SarifNestedLocationsTest {
         BuildTool.MAVEN,
         Framework.NONE,
         false,
-        false,
         REPOSITORY,
         Set.of(),
         "",

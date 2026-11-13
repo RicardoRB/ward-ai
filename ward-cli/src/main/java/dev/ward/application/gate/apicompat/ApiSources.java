@@ -14,6 +14,7 @@ final class ApiSources {
   private static final String POM = "pom.xml";
   private static final List<String> GRADLE_SCRIPTS = List.of("build.gradle.kts", "build.gradle");
   private static final String JAVA = ".java";
+  private static final String KOTLIN = ".kt";
 
   private final ApiCompatPorts ports;
   private final Path root;
@@ -23,7 +24,7 @@ final class ApiSources {
     this.root = root;
   }
 
-  /** Returns the Java files of the main source roots at {@code baseline}. */
+  /** Returns the Java and Kotlin files of the main source roots at {@code baseline}. */
   List<SourceUnit> atBaseline(final Baseline baseline) {
     final RevisionFiles git = ports.revisions();
     final String commit = baseline.commit();
@@ -35,7 +36,7 @@ final class ApiSources {
         .flatMap(
             directory ->
                 git.files(root, commit, directory).stream()
-                    .filter(file -> file.endsWith(JAVA))
+                    .filter(ApiSources::isSource)
                     .map(file -> directory + "/" + file))
         .sorted()
         .map(
@@ -47,7 +48,7 @@ final class ApiSources {
         .toList();
   }
 
-  /** Returns the Java files of the main source roots in the working tree. */
+  /** Returns the Java and Kotlin files of the main source roots in the working tree. */
   List<SourceUnit> inWorkingTree() {
     final WorkingFiles working = ports.working();
     final List<String> roots =
@@ -56,7 +57,7 @@ final class ApiSources {
         .flatMap(
             directory ->
                 working.files(root, directory).stream()
-                    .filter(file -> file.endsWith(JAVA))
+                    .filter(ApiSources::isSource)
                     .map(file -> directory + "/" + file))
         .sorted()
         .map(
@@ -72,9 +73,15 @@ final class ApiSources {
     return GRADLE_SCRIPTS.stream().map(read).flatMap(Optional::stream).findFirst();
   }
 
+  private static boolean isSource(final String file) {
+    return file.endsWith(JAVA) || file.endsWith(KOTLIN);
+  }
+
   private static SourceUnit unit(
       final String path, final Optional<String> text, final String failure) {
     return new SourceUnit(
-        path, AnalysisLanguage.JAVA, text.orElseThrow(() -> new ApiCompatException(failure)));
+        path,
+        path.endsWith(KOTLIN) ? AnalysisLanguage.KOTLIN : AnalysisLanguage.JAVA,
+        text.orElseThrow(() -> new ApiCompatException(failure)));
   }
 }

@@ -1,0 +1,2 @@
+p/A.kt:3:8 api-compat:default-argument-removed p.A#<init>: public <init>(int = ...) -> public <init>(int)
+p/A.kt:4:3 api-compat:default-argument-removed p.A#f: public final void f(int = ..., int) -> public final void f(int, int)

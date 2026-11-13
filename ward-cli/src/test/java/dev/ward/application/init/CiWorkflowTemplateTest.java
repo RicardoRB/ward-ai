@@ -120,7 +120,6 @@ class CiWorkflowTemplateTest {
         BuildTool.MAVEN,
         Framework.NONE,
         false,
-        false,
         repository,
         Set.of(),
         "",

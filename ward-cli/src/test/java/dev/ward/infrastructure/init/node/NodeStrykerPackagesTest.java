@@ -99,7 +99,6 @@ class NodeStrykerPackagesTest {
         BuildTool.BUN,
         Framework.NONE,
         false,
-        false,
         root,
         Set.of(),
         node,

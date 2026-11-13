@@ -1,0 +1,2 @@
+p/A.kt:4:3 api-compat:nullability-narrowed p.A#f: public final void f(java.lang.String?) -> public final void f(java.lang.String)
+p/A.kt:5:3 api-compat:nullability-narrowed p.A#g: public final java.lang.String g() -> public final java.lang.String? g()

@@ -87,7 +87,6 @@ class NodeTestRunnerSelectionTest {
         manager,
         framework,
         false,
-        false,
         root,
         Set.of(),
         "24",

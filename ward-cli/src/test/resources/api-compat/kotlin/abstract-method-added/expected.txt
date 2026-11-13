@@ -1,0 +1,2 @@
+p/A.kt:5:3 api-compat:abstract-method-added p.A#b: none -> public abstract void b()
+p/I.kt:5:3 api-compat:abstract-method-added p.I#b: none -> public abstract void b()

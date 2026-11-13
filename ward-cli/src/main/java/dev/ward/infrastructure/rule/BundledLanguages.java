@@ -16,6 +16,7 @@ import dev.ward.analysis.application.swift.SwiftLintCheckProvider;
 import dev.ward.analysis.application.swift.SwiftRuleFiles;
 import dev.ward.analysis.domain.api.ApiSurfaceReader;
 import dev.ward.analysis.domain.jvm.types.JavaApiSurfaceReader;
+import dev.ward.analysis.domain.jvm.types.KotlinApiSurfaceReader;
 import java.util.List;
 
 /**
@@ -52,7 +53,7 @@ public final class BundledLanguages {
 
   /** Returns the API readers of the languages that can be compared by {@code api-compat}. */
   public static List<ApiSurfaceReader> apiSurfaceReaders() {
-    return List.of(new JavaApiSurfaceReader());
+    return List.of(new JavaApiSurfaceReader(), new KotlinApiSurfaceReader());
   }
 
   /** Returns the registry of every bundled check. */

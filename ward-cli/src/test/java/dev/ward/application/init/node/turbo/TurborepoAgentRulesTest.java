@@ -26,7 +26,6 @@ class TurborepoAgentRulesTest {
             BuildTool.PNPM,
             Framework.NONE,
             false,
-            false,
             Path.of("/work/monorepo"),
             Set.of(),
             "24",

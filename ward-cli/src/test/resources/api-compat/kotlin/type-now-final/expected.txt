@@ -1,0 +1,4 @@
+p/A.kt:3:1 api-compat:type-now-final p.A: public class p.A -> public final class p.A
+p/B.kt:3:1 api-compat:type-now-abstract p.B: public class p.B -> public sealed abstract class p.B
+p/B.kt:3:1 api-compat:type-now-final p.B: public class p.B -> public sealed abstract class p.B
+p/I.kt:3:1 api-compat:type-now-final p.I: public interface p.I -> public sealed interface p.I

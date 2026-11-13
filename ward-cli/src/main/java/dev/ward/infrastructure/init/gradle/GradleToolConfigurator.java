@@ -37,8 +37,7 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
       List.of(
           new GradlePlugin("coverage", "jacoco", false, true),
           new GradlePlugin("mutation", GradleToolCatalog.PITEST, true, true),
-          new GradlePlugin("sonar", "org.sonarqube", true, false),
-          new GradlePlugin("api-compat", "me.champeau.gradle.japicmp", true, false));
+          new GradlePlugin("sonar", "org.sonarqube", true, false));
 
   private static final String NO_KOTLIN_MODULE =
       "No module applies the Kotlin JVM plugin, or the Java plugin with Java sources, directly, so"

@@ -86,7 +86,6 @@ final class GradleToolVersions {
     tools.put("coverage", List.of(GradleToolCatalog.JACOCO_ENGINE));
     tools.put("mutation", List.of(GradleToolCatalog.PITEST, GradleToolCatalog.PITEST_ENGINE));
     tools.put("sonar", List.of("org.sonarqube"));
-    tools.put("api-compat", List.of("me.champeau.gradle.japicmp"));
     return Collections.unmodifiableMap(tools);
   }
 }

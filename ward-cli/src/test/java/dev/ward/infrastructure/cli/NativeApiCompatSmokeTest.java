@@ -27,26 +27,41 @@ class NativeApiCompatSmokeTest {
   private static final Duration RUN_TIMEOUT = Duration.ofMinutes(2);
   private static final int FAILED = 1;
   private static final String CLIENT = "src/main/java/shop/Client.java";
+  private static final String KOTLIN_CLIENT = "src/main/kotlin/shop/Client.kt";
 
   @TempDir Path project;
 
   @Test
   void apiCompatReportsAMethodRemovedSinceTheLatestReleaseTag() throws Exception {
-    final Path binary = Path.of(System.getProperty("ward.native.binary")).toAbsolutePath();
-    assertThat(binary).as("ward.native.binary; run native:compile first").isExecutable();
     write(
         "pom.xml",
         "<project><modelVersion>4.0.0</modelVersion><groupId>shop</groupId>"
             + "<artifactId>shop</artifactId><version>1</version></project>\n");
-    write("ward.toml", "version = 2\n\n[checks.api-compat]\nuses = \"api-compat\"\n");
     write(
         CLIENT,
         "package shop;\n\npublic class Client {\n  public void open() {}\n  public void close() {}\n}\n");
+
+    removeSinceTheTag(
+        CLIENT, "package shop;\n\npublic class Client {\n  public void open() {}\n}\n");
+  }
+
+  @Test
+  void apiCompatReportsAKotlinFunctionRemovedSinceTheLatestReleaseTag() throws Exception {
+    write("build.gradle.kts", "plugins { kotlin(\"jvm\") }\n");
+    write(KOTLIN_CLIENT, "package shop\n\nclass Client {\n  fun open() {}\n  fun close() {}\n}\n");
+
+    removeSinceTheTag(KOTLIN_CLIENT, "package shop\n\nclass Client {\n  fun open() {}\n}\n");
+  }
+
+  private void removeSinceTheTag(final String path, final String revised) throws Exception {
+    final Path binary = Path.of(System.getProperty("ward.native.binary")).toAbsolutePath();
+    assertThat(binary).as("ward.native.binary; run native:compile first").isExecutable();
+    write("ward.toml", "version = 2\n\n[checks.api-compat]\nuses = \"api-compat\"\n");
     git("init", "-q");
     git("add", "-A");
     git("commit", "-q", "-m", "release");
     git("tag", "v1.0.0");
-    write(CLIENT, "package shop;\n\npublic class Client {\n  public void open() {}\n}\n");
+    write(path, revised);
     git("add", "-A");
     git("commit", "-q", "-m", "remove close");
 

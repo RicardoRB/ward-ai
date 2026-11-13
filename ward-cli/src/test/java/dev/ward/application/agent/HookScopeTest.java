@@ -25,7 +25,6 @@ class HookScopeTest {
           BuildTool.MAVEN,
           Framework.NONE,
           false,
-          false,
           REPOSITORY,
           Set.of(),
           "",

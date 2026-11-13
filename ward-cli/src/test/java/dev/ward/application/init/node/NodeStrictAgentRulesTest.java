@@ -84,7 +84,6 @@ class NodeStrictAgentRulesTest {
             manager,
             Framework.NONE,
             false,
-            false,
             ROOT,
             Set.of(),
             "24",

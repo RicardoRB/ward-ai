@@ -75,7 +75,6 @@ public final class PythonProjectInspection {
         manager,
         PythonFrameworks.of(dir),
         manager == BuildTool.PIP && Files.isDirectory(dir.resolve(VENV)),
-        false,
         dir,
         Set.of(Language.PYTHON),
         version(dir, pyproject),
