@@ -27,6 +27,12 @@ your code, install the [agent skills](/integrations/agent-skills/) and ask it to
 
 For non-interactive setup, choose a preset or explicit gates:
 
+```bash
+ward init --preset standard --integration none
+ward init --preset strict --integration claude-code
+ward init --integration none --gate tests
+```
+
 Gradle projects use `build.gradle` or `build.gradle.kts`; Ward prefers `./gradlew` and falls back
 to `gradle` when no wrapper is available.
 
@@ -39,12 +45,6 @@ cd my-app
 ward detect   # Language: TypeScript, Build tool: pnpm, Framework: Vue, Node: 22
 ward init --preset strict --integration none
 ward check
-```
-
-```bash
-ward init --preset standard --integration none
-ward init --preset strict --integration claude-code
-ward init --integration none --gate tests
 ```
 
 A passing run ends with a summary such as:
