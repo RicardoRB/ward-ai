@@ -1,3 +1,5 @@
+package dev.ward.domain.buildpolicy;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.domain.dependency.Dependency;
