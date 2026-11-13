@@ -74,7 +74,7 @@ final class InventoryDecoder {
   }
 
   private static RequestedVersion decodeRequest(final Map<?, ?> map) {
-    return new RequestedVersion(text(map, "by"), text(map, VERSION));
+    return new RequestedVersion(text(map, "by"), text(map, VERSION), text(map, "premanaged"));
   }
 
   private static PackageId packageId(final Map<?, ?> map) {

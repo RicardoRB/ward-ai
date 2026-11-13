@@ -16,7 +16,7 @@ import java.util.Map;
  */
 final class InventoryJson {
   /** The version of the stored format; part of the cache key. */
-  static final int FORMAT = 1;
+  static final int FORMAT = 2;
 
   private static final String PATH = "path";
   private static final String DEPENDENCIES = "dependencies";
@@ -56,14 +56,16 @@ final class InventoryJson {
         entry.requested().stream()
             .sorted(
                 Comparator.comparing(RequestedVersion::requester)
-                    .thenComparing(RequestedVersion::version))
+                    .thenComparing(RequestedVersion::version)
+                    .thenComparing(RequestedVersion::premanaged))
             .map(InventoryJson::request)
             .toList());
     return map;
   }
 
   private static Map<String, Object> request(final RequestedVersion request) {
-    return Map.of("by", request.requester(), VERSION, request.version());
+    return Map.of(
+        "by", request.requester(), VERSION, request.version(), "premanaged", request.premanaged());
   }
 
   private static Map<String, Object> id(final PackageId id) {

@@ -2,8 +2,6 @@ package dev.ward.domain.buildpolicy;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.ward.domain.dependency.DependencyInventory;
-import dev.ward.domain.dependency.ModuleDependencies;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -40,30 +38,5 @@ class BuildPolicyToolAndConvergenceTest {
     assertThat(Versions.compare("3.10", "3.9")).isPositive();
     assertThat(Versions.compare("3.9", "3.9.0")).isZero();
     assertThat(Versions.compare("3.8.8", "3.9")).isNegative();
-  }
-
-  @Test
-  void convergenceReportsPackagesWithSeveralVersionsInOneModule() {
-    final DependencyInventory inventory =
-        new DependencyInventory(
-            List.of(
-                new ModuleDependencies(
-                    "",
-                    List.of(
-                        RuleModels.entry("semver", "6.3.1"),
-                        RuleModels.entry("semver", "7.6.0"),
-                        RuleModels.entry("left-pad", "1.3.0")))));
-    final List<BuildPolicyFinding> findings =
-        BuildPolicyRules.forRule(BuildRule.DEPENDENCY_CONVERGENCE)
-            .check(new BuildPolicyInput(BuildModel.EMPTY, () -> inventory, Map.of()));
-    assertThat(findings)
-        .singleElement()
-        .satisfies(
-            f -> assertThat(f.message()).contains("semver").contains("6.3.1").contains("7.6.0"));
-  }
-
-  @Test
-  void convergenceIsNotSelectedByTheStrictPreset() {
-    assertThat(BuildRule.DEPENDENCY_CONVERGENCE.strict()).isFalse();
   }
 }

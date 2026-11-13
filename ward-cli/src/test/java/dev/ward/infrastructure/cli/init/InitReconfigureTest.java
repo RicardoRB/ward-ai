@@ -27,7 +27,7 @@ class InitReconfigureTest {
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(init.output()).contains("Choose a preset [1-3, Enter=1]");
     assertThat(init.configuration())
-        .contains("[checks.enforcer]", "[[checks.ward.layers]]")
+        .contains("[checks.build-policy]", "[[checks.ward.layers]]")
         .doesNotContain("[checks.mutation]");
   }
 

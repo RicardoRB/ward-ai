@@ -116,13 +116,16 @@ Reconfiguring needs `--overwrite`. Without it, a non-interactive `ward init` pri
 Look for rule files that Ward presets write:
 
 ```sh
-head -1 ward-rules.toml config/enforcer-rules.xml 2>/dev/null
+head -1 ward-rules.toml config/enforcer-rules.xml 2>/dev/null   # the XML file is only left by Ward 0.7 and earlier
 ```
 
 - A first line `<!-- managed-by: ward preset=<id> -->` (or `# managed-by: ward preset=<id>` in
   `ward-rules.toml`) means the file is Ward-owned. A later
   `ward init` refreshes it, and the plan shows it as `modify`.
 - No marker means the file is user-owned. Init keeps it, and the plan lists it as `keep`.
+- `config/enforcer-rules.xml` is no longer written, because the `enforcer` gate is gone. Init
+  removes a copy with the marker (`remove` in the plan) and keeps and reports one without it; the
+  `maven-enforcer-plugin` entry in `pom.xml` is the user's to remove.
 
 Tell the user which rule files exist and who owns them. Tuned rules in a managed file are lost the
 next time init runs. That is why `ward-tune` offers to move ownership to the user.
@@ -134,7 +137,7 @@ selects every gate. `--dry-run` writes nothing, installs nothing, and runs no ga
 
 ```sh
 ward init -C <dir> --dry-run --preset strict --integration none --architecture layered \
-  --gate compile,tests,coverage,mutation,sonar,secrets,vulnerabilities,zap,build-policy,enforcer,license,api-compat
+  --gate compile,tests,coverage,mutation,sonar,secrets,vulnerabilities,zap,build-policy,license,api-compat
 ```
 
 Add `--overwrite` when `ward.toml` already exists. Without it the probe prints nothing useful.

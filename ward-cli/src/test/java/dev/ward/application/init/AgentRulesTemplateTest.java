@@ -36,7 +36,6 @@ class AgentRulesTemplateTest {
             "at least 60% of mutants killed",
             "- Architecture: `ward:architecture/layers` enforces",
             "- Build policy: plugin versions pinned",
-            "- Enforcer: dependencyConvergence, requireUpperBoundDeps.",
             "Do not add suppressions");
   }
 

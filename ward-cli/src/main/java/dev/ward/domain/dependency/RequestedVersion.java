@@ -6,9 +6,22 @@ package dev.ward.domain.dependency;
  * @param requester the Package URL of the package that asked for it, or an empty text when the
  *     module's own manifest asked for it
  * @param version the requested version as written: an exact version, a range or a property-free
- *     soft requirement; never parsed
+ *     soft requirement; never parsed. When the build tool's dependency management overrode it, the
+ *     version it was overridden to, which is what the tree holds
+ * @param premanaged the version the requester wrote before dependency management overrode it, or an
+ *     empty text when nothing overrode it
  */
-public record RequestedVersion(String requester, String version) {
+public record RequestedVersion(String requester, String version, String premanaged) {
+  /** Creates a request that dependency management did not change. */
+  public RequestedVersion(final String requester, final String version) {
+    this(requester, version, "");
+  }
+
+  /** Returns the version the requester wrote: {@link #premanaged} when set, else the version. */
+  public String written() {
+    return premanaged.isEmpty() ? version : premanaged;
+  }
+
   /** Creates the request of the module's own manifest. */
   public static RequestedVersion byModule(final String version) {
     return new RequestedVersion("", version);

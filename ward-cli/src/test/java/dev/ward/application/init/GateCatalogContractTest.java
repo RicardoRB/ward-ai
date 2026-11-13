@@ -38,11 +38,6 @@ class GateCatalogContractTest {
   private static final Set<String> NO_BUILD_FILE =
       Set.of("tests", "compile", "command", "build-policy", "api-compat");
 
-  /**
-   * Gates whose Gradle block needs another gate that Java no longer has: enforcement of Checkstyle.
-   */
-  private static final Set<String> NO_GRADLE_ENTRY = Set.of("enforcer");
-
   @TempDir Path root;
 
   @Test
@@ -156,7 +151,6 @@ class GateCatalogContractTest {
     final Project project = project(buildTool);
     jvmGates(project).stream()
         .filter(gate -> !NO_BUILD_FILE.contains(gate.id()))
-        .filter(gate -> buildTool != BuildTool.GRADLE || !NO_GRADLE_ENTRY.contains(gate.id()))
         .forEach(
             gate ->
                 assertThat(tools.plan(project, List.of(gate), null, true).action())

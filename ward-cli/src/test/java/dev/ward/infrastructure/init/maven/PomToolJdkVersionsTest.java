@@ -27,7 +27,7 @@ class PomToolJdkVersionsTest {
   private static final int JAVA_8 = 8;
   private static final int JAVA_25 = 25;
   private static final int JAVA_27 = 27;
-  private static final List<String> STRICT_GATES = List.of("coverage", "enforcer", "mutation");
+  private static final List<String> STRICT_GATES = List.of("coverage", "mutation");
 
   @Test
   void jdk8StrictProjectGetsTheJdk8Rows(@TempDir final Path root) throws IOException {

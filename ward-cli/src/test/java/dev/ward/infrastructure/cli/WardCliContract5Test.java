@@ -120,8 +120,8 @@ uses = "command"
                 command = ["./missing-lint", "scan"]
                 [checks.format]
                 command = "./mvnw test"
-                [checks.enforcer]
-uses = "enforcer"
+                [checks.rules]
+uses = "command"
                 command = "./mvnw test"
                 """);
 
@@ -134,12 +134,12 @@ uses = "enforcer"
     assertThat(json.get(CHECKS).get(0).get(STATUS).asString()).isNotEqualTo("PASSED");
     assertThat(json.get(CHECKS).get(1).get("name").asString()).isEqualTo("tests");
     assertThat(json.get(CHECKS).get(1).get(STATUS).asString()).isEqualTo("PASSED");
-    assertThat(json.get(CHECKS).get(2).get("name").asString()).isEqualTo("enforcer");
+    assertThat(json.get(CHECKS).get(2).get("name").asString()).isEqualTo("rules");
     assertThat(json.get(CHECKS).get(2).get(STATUS).asString()).isEqualTo("PASSED");
 
     out.getBuffer().setLength(0);
     run(CHECK, "-C", project.toString());
-    assertThat(out.toString()).contains("lint", "tests", "enforcer");
+    assertThat(out.toString()).contains("lint", "tests", "rules");
   }
 
   @Test

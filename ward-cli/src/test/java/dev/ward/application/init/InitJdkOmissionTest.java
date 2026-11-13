@@ -55,7 +55,7 @@ class InitJdkOmissionTest {
   @Test
   void strictOnAJdkThatCannotRunOneGateKeepsTheOtherGatesInOrder() {
     assertThat(catalog.presetGates(service.project(root), QualityPreset.STRICT))
-        .containsExactly("compile", "tests", "coverage", "build-policy", "enforcer");
+        .containsExactly("compile", "tests", "coverage", "build-policy");
   }
 
   @Test
@@ -74,7 +74,7 @@ class InitJdkOmissionTest {
     final InitResult result = service.initialize(root, strict(), false, false, finding -> true);
 
     final String configuration = Files.readString(root.resolve("ward.toml"));
-    assertThat(configuration).contains("[checks.enforcer]").doesNotContain("[checks.mutation]");
+    assertThat(configuration).contains("[checks.build-policy]").doesNotContain("[checks.mutation]");
     assertThat(result.pomWarnings()).contains(NOTE);
   }
 

@@ -6,6 +6,7 @@ import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.init.RuleFileChange;
 import dev.ward.domain.init.RuleFileGeneration;
+import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
@@ -21,10 +22,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 
-/**
- * Writes ownership-marked rule files: Maven rule files for a quality preset under {@code config/},
- * and the Node tool configs in the project root.
- */
+/** Writes ownership-marked rule files: and the Node tool configs in the project root. */
 public final class PresetRuleFileWriter implements RuleFileGeneration {
   private static final String WARD_RULES = "ward-rules.toml";
 
@@ -95,11 +93,7 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
     if (toolchain != null) {
       targets.addAll(toolchain.targets(project, preset, gates));
     } else {
-      enforcerTargets(project, preset, gates)
-          .forEach(
-              (file, content) ->
-                  targets.add(
-                      new ConfigTarget(file, ConfigTarget.Disposition.WRITE, content, null)));
+      targets.addAll(retiredEnforcerRules(project));
     }
     targets.add(
         ConfigTarget.write(
@@ -108,7 +102,8 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
                 + PresetRuleFileContent.wardRules(
                     preset,
                     wardLanguages(project),
-                    gates.stream().anyMatch(gate -> "build-policy".equals(gate.id())))));
+                    gates.stream().anyMatch(gate -> "build-policy".equals(gate.id())),
+                    project.buildTool() == BuildTool.MAVEN)));
     return targets;
   }
 
@@ -149,20 +144,29 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
     return ids;
   }
 
-  private static Map<Path, String> enforcerTargets(
-      final Project project, final QualityPreset preset, final List<InitGateOption> gates) {
-    if (preset == null) {
-      return Map.of();
+  /**
+   * The rule file an earlier init wrote for Maven Enforcer. Init no longer writes it, so a Ward
+   * copy is removed and a user-owned one is kept as written; the plugin entry in {@code pom.xml} is
+   * the user's to remove.
+   */
+  private static List<ConfigTarget> retiredEnforcerRules(final Project project) throws IOException {
+    final Path file = project.root().resolve("config").resolve("enforcer-rules.xml");
+    if (!Files.isRegularFile(file)) {
+      return List.of();
     }
-    final Path config = project.root().resolve("config");
-    final List<String> ids = gates.stream().map(InitGateOption::id).toList();
-    final Map<Path, String> targets = new LinkedHashMap<>();
-    if (ids.contains("enforcer")) {
-      targets.put(
-          config.resolve("enforcer-rules.xml"),
-          marked(preset, PresetRuleFileContent.enforcer(preset)));
+    final String rest =
+        "; ward:build/dependency-convergence and ward:build/require-upper-bound replace the"
+            + " Enforcer gate, so remove maven-enforcer-plugin from pom.xml if Ward added it";
+    if (Files.readString(file).startsWith(RuleFileActions.MARKER)) {
+      return List.of(
+          new ConfigTarget(
+              file,
+              ConfigTarget.Disposition.REMOVE,
+              null,
+              "removed: Ward's earlier config/enforcer-rules.xml" + rest));
     }
-    return targets;
+    return List.of(
+        ConfigTarget.keep(file, "kept: your config/enforcer-rules.xml is no longer used" + rest));
   }
 
   /** Applies one decision, and records what a rollback or the init output needs from it. */
@@ -211,10 +215,6 @@ public final class PresetRuleFileWriter implements RuleFileGeneration {
     }
     originals.put(file, Files.readString(file));
     Files.delete(file);
-  }
-
-  private static String marked(final QualityPreset preset, final String body) {
-    return RuleFileActions.MARKER + preset.id() + " -->\n" + body;
   }
 
   @Override

@@ -21,7 +21,7 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-/** The strict pins satisfy the native plugin version rule, with or without the enforcer gate. */
+/** The strict pins satisfy the native plugin version rule. */
 class PomLifecyclePinBuildPolicyTest {
   private static final String POM =
       "<project>\n  <modelVersion>4.0.0</modelVersion>\n  <groupId>a</groupId>\n"

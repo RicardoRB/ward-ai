@@ -60,7 +60,7 @@ class PomLifecyclePinTest {
   }
 
   @Test
-  void strictEnforcerPinsEveryUnpinnedLifecyclePlugin() throws IOException {
+  void strictPinsEveryUnpinnedLifecyclePlugin() throws IOException {
     final String pom = apply(POM, QualityPreset.STRICT);
 
     PresetPluginSnippets.LIFECYCLE_PLUGINS.forEach(
@@ -92,7 +92,9 @@ class PomLifecyclePinTest {
     Files.writeString(root.resolve("pom.xml"), POM);
 
     final List<String> details =
-        new PomToolConfigurator().plan(project(), enforcer(), QualityPreset.STRICT, true).details();
+        new PomToolConfigurator()
+            .plan(project(), buildPolicy(), QualityPreset.STRICT, true)
+            .details();
 
     assertThat(details).contains("+ maven-site-plugin 3.12.1 (pluginManagement)");
     assertThat(Files.readString(root.resolve("pom.xml"))).isEqualTo(POM);
@@ -100,7 +102,7 @@ class PomLifecyclePinTest {
 
   private String apply(final String pom, final QualityPreset preset) throws IOException {
     Files.writeString(root.resolve("pom.xml"), pom);
-    new PomToolConfigurator().apply(project(), enforcer(), preset);
+    new PomToolConfigurator().apply(project(), buildPolicy(), preset);
     return Files.readString(root.resolve("pom.xml"));
   }
 
@@ -108,8 +110,7 @@ class PomLifecyclePinTest {
     return new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE);
   }
 
-  private static List<InitGateOption> enforcer() {
-    return List.of(
-        new InitGateOption("enforcer", "enforcer", List.of("mvn", "enforcer:enforce"), true, "ok"));
+  private static List<InitGateOption> buildPolicy() {
+    return List.of(new InitGateOption("build-policy", "build-policy", List.of(), true, "ok"));
   }
 }

@@ -25,8 +25,7 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `vulnerabilities` | Ward and OSV advisories | Match the resolved dependencies against known vulnerabilities. See [vulnerabilities](/configuration/vulnerabilities/). |
 | | `zap` | OWASP ZAP | DAST against a running application. |
 | Architecture | `ward` | Ward analysis rules | Run Ward's analysis rules over source syntax trees, with stable `ward:<language>/<rule>` ids, and the layer, slice cycle and feature independence rules `ward:architecture/*`. |
-| | `enforcer` | Maven Enforcer / Gradle checks | Dependency and build rules. |
-| | `build-policy` | Ward's native build policy rules | Pinned plugin versions, no dynamic versions, a minimum build tool version and duplicate dependency declarations in Maven, Gradle, Node and Python build files; see [Build policy rules](/reference/build-policy-rules/). |
+| | `build-policy` | Ward's native build policy rules | Pinned plugin versions, no dynamic versions, a minimum build tool version and duplicate dependency declarations in Maven, Gradle, Node and Python build files, and on Maven one version of each dependency and no resolved version below a requested one; see [Build policy rules](/reference/build-policy-rules/). |
 | Dependencies & Compliance | `license` | Ward (native) | Licenses of the resolved dependencies against a deny or allow policy, for every toolchain. See [License gate](#license-gate). |
 | | `api-compat` | Ward | Compatibility of the public API with the latest release. |
 | REST API contract | `openapi-lint` | Ward's OpenAPI rules | Lint the committed OpenAPI spec with every rule, with no tool to install. |
@@ -65,7 +64,7 @@ deliberately, for example in a CI-only profile with `profiles = ["ci"]`:
 | Preset | Gates | Minimums |
 |---|---|---|
 | `standard` | compile, tests, coverage, `ward-format`, and the `ward` check with the standard Java rules of `ward-rules.toml` | 70% line coverage |
-| `strict` | `standard` plus the strict Java rules, the `ward` architecture tables, `build-policy`, Enforcer, and PIT mutation testing | 85% line, 75% branch, 60% mutation |
+| `strict` | `standard` plus the strict Java rules, the `ward` architecture tables, `build-policy` (with the Maven dependency rules), and PIT mutation testing | 85% line, 75% branch, 60% mutation |
 | `standard` (TypeScript) | `tsc`, the test runner (`vitest`, `jest` or `bun-test`), and the `ward` check with the standard TypeScript rules of `ward-rules.toml` | 70% line coverage |
 | `standard` (JavaScript) | the test runner (`vitest`, `jest` or `bun-test`), and the `ward` check with the standard JavaScript rules of `ward-rules.toml` | 70% line coverage |
 | `strict` (TypeScript) | `standard` plus `stryker`, with the strict TypeScript rules of `ward-rules.toml` | 85% line, 75% branch, 60% mutation |
@@ -89,8 +88,7 @@ writes a license allowlist instead of the GPL/AGPL denylist; see
 
 Presets may write these rule files:
 
-- `config/enforcer-rules.xml` (when the `enforcer` gate is selected): `dependencyConvergence`, and `requireUpperBoundDeps` for `strict`. The other Enforcer rules that earlier versions wrote are native `ward:build` rules now.
-- `ward-rules.toml`, which selects the Ward rules of the preset for the languages of the project, and for `strict` on Java the four `build.*` rules that the `build-policy` check runs
+- `ward-rules.toml`, which selects the Ward rules of the preset for the languages of the project, and for `strict` on Java the four `build.*` rules that the `build-policy` check runs, plus `build.dependency-convergence` and `build.require-upper-bound` on Maven (they replace the removed `enforcer` gate; see [moving from the `enforcer` gate](/reference/build-policy-rules/#moving-from-the-enforcer-gate))
 
 No project gets lint tool rule files under `config/`; the Ward rules in `ward-rules.toml` replace them. The files carry a `managed-by: ward` marker. Unmarked user files are never overwritten.
 
@@ -1164,8 +1162,9 @@ check the whole project.
 
 ## Legacy identifiers
 
-The legacy identifiers `compliance` (use `enforcer`; license
-checks now use `license`) are still read, so existing configurations need no change.
+The legacy identifier `architecture` is still read, so existing configurations need no change.
+The `compliance` identifier and the `enforcer` gate no longer exist: license checks use `license`
+and the Enforcer rules are native `ward:build` rules.
 
 Ward validates registry identifiers; the configured command is the gate-specific part and must be
 supplied. See [configuration syntax](/configuration/ward-toml/).

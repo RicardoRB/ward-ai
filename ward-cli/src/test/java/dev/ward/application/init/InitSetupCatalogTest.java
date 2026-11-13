@@ -93,10 +93,6 @@ class InitSetupCatalogTest {
     assertThat(QualityPreset.STRICT.rules().jacocoMinimums())
         .containsEntry("LINE", STRICT_LINE_MINIMUM)
         .containsEntry("BRANCH", STRICT_BRANCH_MINIMUM);
-    assertThat(QualityPreset.STRICT.rules().enforcerRules())
-        .containsExactly("dependencyConvergence", "requireUpperBoundDeps");
-    assertThat(QualityPreset.STANDARD.rules().enforcerRules())
-        .containsExactly("dependencyConvergence");
     assertThat(QualityPreset.STRICT.rules().mutationThreshold())
         .isEqualTo(STRICT_MUTATION_THRESHOLD);
     assertThat(QualityPreset.STRICT.rules().architectureCycles()).isTrue();
@@ -230,6 +226,8 @@ class InitSetupCatalogTest {
         .containsExactly("zap-baseline.py", "https://www.zaproxy.org/docs/docker/baseline-scan/");
     assertThat(catalog.gate(project, "secrets").command()).isEmpty();
     assertThat(catalog.gate(project, "secrets").available()).isTrue();
-    assertThat(catalog.gate(project, "enforcer").command()).endsWith("enforcer:enforce");
+    assertThat(catalog.gates(project, null))
+        .extracting(InitGateOption::id)
+        .doesNotContain("semgrep", "enforcer");
   }
 }

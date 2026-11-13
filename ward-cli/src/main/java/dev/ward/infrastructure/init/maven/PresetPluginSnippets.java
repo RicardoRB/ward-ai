@@ -19,14 +19,6 @@ final class PresetPluginSnippets {
 
   private PresetPluginSnippets() {}
 
-  static String enforcer() {
-    return """
-            <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-enforcer-plugin</artifactId><version>3.5.0</version>
-              <configuration><rules><externalRules><location>${project.basedir}/config/enforcer-rules.xml</location></externalRules></rules><fail>true</fail></configuration>
-            </plugin>
-          """;
-  }
-
   static String pit(final QualityPreset preset) {
     if (preset.rules().mutationThreshold() == null) {
       return PomTools.PIT_PLUGIN;
@@ -52,16 +44,15 @@ final class PresetPluginSnippets {
   }
 
   /**
-   * Pins each unpinned lifecycle plugin when the strict preset runs the {@code build-policy} or
-   * {@code enforcer} gate, which require plugin versions, recording one plan detail per pin.
+   * Pins each unpinned lifecycle plugin when the strict preset runs the {@code build-policy} gate,
+   * which requires plugin versions, recording one plan detail per pin.
    */
   static String pinLifecycle(
       final String pom,
       final Set<String> gates,
       final QualityPreset preset,
       final List<String> details) {
-    if (preset != QualityPreset.STRICT
-        || !(gates.contains("build-policy") || gates.contains("enforcer"))) {
+    if (preset != QualityPreset.STRICT || !gates.contains("build-policy")) {
       return pom;
     }
     String pinned = pom;
