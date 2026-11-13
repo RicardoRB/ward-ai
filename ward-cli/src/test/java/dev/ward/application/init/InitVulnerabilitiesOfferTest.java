@@ -15,10 +15,7 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-/**
- * Init offers {@code vulnerabilities} for every toolchain and enables it in no preset, and offers
- * {@code semgrep} for none.
- */
+/** Init offers {@code vulnerabilities} for every toolchain and enables it in no preset. */
 class InitVulnerabilitiesOfferTest {
   @TempDir Path dir;
 
@@ -55,22 +52,6 @@ class InitVulnerabilitiesOfferTest {
     Files.createDirectories(dir.resolve("src"));
     Files.writeString(dir.resolve("src/app.py"), "x = 1\n");
     assertOffered(detect("pyproject.toml", "[project]\nname = \"demo\"\nversion = \"1\"\n"));
-  }
-
-  @Test
-  void semgrepIsOfferedForNoToolchain() throws IOException {
-    Files.createDirectories(dir.resolve("src"));
-    Files.writeString(dir.resolve("src/app.py"), "x = 1\n");
-    final Project python =
-        detect("pyproject.toml", "[project]\nname = \"demo\"\nversion = \"1\"\n");
-    final InitSetupCatalog catalog = new InitSetupCatalog(new FakeEnvironmentInspection("semgrep"));
-
-    assertThat(catalog.gates(python, null))
-        .extracting(InitGateOption::id)
-        .doesNotContain("semgrep");
-    for (final QualityPreset preset : QualityPreset.values()) {
-      assertThat(catalog.presetGates(python, preset)).doesNotContain("semgrep");
-    }
   }
 
   @Test

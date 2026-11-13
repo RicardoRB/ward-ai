@@ -23,14 +23,6 @@ jobs:
           distribution: temurin
           java-version: '25'
           cache: maven
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.13'
-      - name: Install gate tools
-        run: |
-          set -eu
-          pip install semgrep==1.181.0
       - name: Install Ward
         env:
           WARD_VERSION: v0.1.1

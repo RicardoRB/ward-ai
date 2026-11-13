@@ -15,7 +15,6 @@ public final class QualityGateDefinitions {
           gate("coverage", Phase.LOCAL),
           gate("sonar", Phase.CI),
           gate("mutation", Phase.CI),
-          gate("semgrep", Phase.CI),
           new Definition(SupportedQualityGates.SECRETS, "secrets", Phase.FAST, true),
           gate("zap", Phase.CI),
           gate(SupportedQualityGates.VULNERABILITIES, Phase.CI),

@@ -5,14 +5,11 @@ import java.util.Optional;
 
 /**
  * Pure catalog of remediation links for gate executables. Init installs none of them: a gate whose
- * executable is missing is reported with the link, for a hand-written {@code semgrep} check or for
- * {@code zap}.
+ * executable is missing is reported with the link, for {@code zap}.
  */
 public final class GateToolInstallCatalog {
   private static final Map<String, Entry> ENTRIES =
       Map.of(
-          "semgrep",
-          new Entry("semgrep", "https://semgrep.dev/docs/getting-started/"),
           "zap-baseline.py",
           new Entry("zap-baseline.py", "https://www.zaproxy.org/docs/docker/baseline-scan/"));
 

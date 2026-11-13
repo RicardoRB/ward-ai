@@ -29,10 +29,8 @@ class NodePackageCatalogTest {
 
   @Test
   void everyOfferedNodeGateHasItsPackagesInTheCatalog() {
-    // Semgrep is a standalone binary, so no npm package backs it.
     final Set<String> standalone =
         new HashSet<>(gateIds(BuildTool.MAVEN, Language.JAVA, PackageManifest.EMPTY));
-    standalone.add("semgrep");
     final PackageManifest jest = new PackageManifest(Map.of("jest", "^30.0.0"), null, null);
     for (final Language language : List.of(Language.TYPESCRIPT, Language.JAVASCRIPT)) {
       final Set<String> node =

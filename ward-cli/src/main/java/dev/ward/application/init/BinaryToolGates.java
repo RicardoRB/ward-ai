@@ -70,8 +70,7 @@ record BinaryToolGates(EnvironmentInspection environment, Project project) {
 
   /**
    * The security gates: native secret detection and ZAP. Ward's own security rules run in the
-   * {@code ward} gate, so no external source scanner is offered; a {@code [checks.semgrep]} table
-   * that a project writes by hand still runs.
+   * {@code ward} gate, so no external source scanner is offered.
    */
   private List<InitGateOption> securityGates() {
     return List.of(

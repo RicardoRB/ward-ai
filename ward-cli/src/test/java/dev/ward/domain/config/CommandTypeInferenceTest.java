@@ -34,7 +34,6 @@ class CommandTypeInferenceTest {
         "tests|./gradlew test",
         "compile|./mvnw compile",
         "command|gitleaks detect --no-git",
-        "semgrep|semgrep scan --config p/typescript",
         "command|trivy fs .",
         "command|npx eslint . --format json",
         "tsc|pnpm exec tsc --noEmit",
