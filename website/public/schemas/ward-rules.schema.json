@@ -2160,25 +2160,6 @@
         }
       }
     },
-    "ward:java/blowfish-insufficient-key-size": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:java/boa-badly-overridden-adapter": {
       "type": "object",
       "additionalProperties": false,
@@ -2507,25 +2488,6 @@
         "pattern": {
           "type": "string",
           "description": "A regular expression."
-        }
-      }
-    },
-    "ward:java/cbc-padding-oracle": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
         }
       }
     },
@@ -3561,25 +3523,6 @@
         }
       }
     },
-    "ward:java/crlf-injection-logs": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:java/cross-site-scripting": {
       "type": "object",
       "additionalProperties": false,
@@ -4043,44 +3986,6 @@
       }
     },
     "ward:java/dereference-with-null-branch": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/des-is-deprecated": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/desede-is-deprecated": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -5439,82 +5344,6 @@
         }
       }
     },
-    "ward:java/documentbuilderfactory-disallow-doctype-decl-false": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/documentbuilderfactory-disallow-doctype-decl-missing": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/documentbuilderfactory-external-general-entities-true": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/documentbuilderfactory-external-parameter-entities-true": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:java/dont-call-thread-run": {
       "type": "object",
       "additionalProperties": false,
@@ -5890,25 +5719,6 @@
       }
     },
     "ward:java/ec-unrelated-types-using-pointer-equality": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/ecb-cipher": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -7320,25 +7130,6 @@
         }
       }
     },
-    "ward:java/find-sql-string-concatenation": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:java/fl-floats-as-loop-counters": {
       "type": "object",
       "additionalProperties": false,
@@ -7571,25 +7362,6 @@
         }
       }
     },
-    "ward:java/formatted-sql-string": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:java/from-temporal-accessor": {
       "type": "object",
       "additionalProperties": false,
@@ -7686,25 +7458,6 @@
       }
     },
     "ward:java/gc-unrelated-types": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/gcm-nonce-reuse": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -8295,63 +8048,6 @@
       }
     },
     "ward:java/hsm-hiding-method": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/http-response-splitting": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/httpget-http-request": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/httpservlet-path-traversal": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -9633,45 +9329,7 @@
         }
       }
     },
-    "ward:java/insecure-jms-deserialization": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:java/insecure-random": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/insecure-smtp-connection": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -10621,82 +10279,6 @@
         }
       }
     },
-    "ward:java/jackson-unsafe-deserialization": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/java-jwt-decode-without-verify": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/java-jwt-hardcoded-secret": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/java-jwt-none-alg": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:java/java-ncss": {
       "type": "object",
       "additionalProperties": false,
@@ -10889,25 +10471,6 @@
       }
     },
     "ward:java/javax-inject-on-abstract-method": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/jax-rs-path-traversal": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -11815,25 +11378,6 @@
       }
     },
     "ward:java/mc-overridable-method-call-in-read-object": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/md5-used-as-password": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -13701,25 +13245,6 @@
         }
       }
     },
-    "ward:java/no-direct-response-writer": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:java/no-enum-trailing-comma": {
       "type": "object",
       "additionalProperties": false,
@@ -13796,25 +13321,6 @@
         }
       }
     },
-    "ward:java/no-null-cipher": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:java/no-package": {
       "type": "object",
       "additionalProperties": false,
@@ -13835,25 +13341,6 @@
       }
     },
     "ward:java/no-standard-streams": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/no-static-initialization-vector": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -17184,25 +16671,6 @@
         }
       }
     },
-    "ward:java/rsa-no-padding": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:java/rsa-without-padding": {
       "type": "object",
       "additionalProperties": false,
@@ -17679,25 +17147,6 @@
       }
     },
     "ward:java/sa-local-self-computation": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/saxparserfactory-disallow-doctype-decl-missing": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -18211,25 +17660,6 @@
       }
     },
     "ward:java/server-side-request-forgery": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/servletresponse-writer-xss": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -18842,44 +18272,6 @@
       }
     },
     "ward:java/sp-spin-on-field": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/spring-sqli": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/spring-unvalidated-redirect": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -19695,234 +19087,6 @@
         }
       }
     },
-    "ward:java/tainted-cmd-from-http-request": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/tainted-env-from-http-request": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/tainted-file-path": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/tainted-html-string": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/tainted-ldapi-from-http-request": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/tainted-session-from-http-request": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/tainted-sql-from-http-request": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/tainted-sql-string": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/tainted-sqli": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/tainted-system-command": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/tainted-url-host": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/tainted-xpath-from-http-request": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:java/temporal-accessor-get-chrono-field": {
       "type": "object",
       "additionalProperties": false,
@@ -20478,25 +19642,6 @@
         }
       }
     },
-    "ward:java/transformerfactory-dtds-not-disabled": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:java/tree-to-string": {
       "type": "object",
       "additionalProperties": false,
@@ -20924,25 +20069,6 @@
       }
     },
     "ward:java/unconditional-if-statement": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/unencrypted-socket": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -21827,25 +20953,6 @@
         }
       }
     },
-    "ward:java/unvalidated-redirect": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:java/upm-uncalled-private-method": {
       "type": "object",
       "additionalProperties": false,
@@ -22189,196 +21296,6 @@
       }
     },
     "ward:java/use-notify-all-instead-of-notify": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/use-of-aes-ecb": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/use-of-blowfish": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/use-of-default-aes": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/use-of-md5": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/use-of-md5-digest-utils": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/use-of-rc2": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/use-of-rc4": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/use-of-sha1": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/use-of-sha224": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:java/use-of-weak-rsa-key": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -23058,25 +21975,6 @@
         }
       }
     },
-    "ward:java/weak-ssl-context": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:java/weak-tls-protocol": {
       "type": "object",
       "additionalProperties": false,
@@ -23362,25 +22260,6 @@
         }
       }
     },
-    "ward:java/xmlinputfactory-possible-xxe": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:java/xor-power": {
       "type": "object",
       "additionalProperties": false,
@@ -23438,44 +22317,6 @@
         }
       }
     },
-    "ward:javascript/aead-no-final": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/angular-bypasssecuritytrust": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:javascript/array-callback-return": {
       "type": "object",
       "additionalProperties": false,
@@ -23504,120 +22345,6 @@
         }
       }
     },
-    "ward:javascript/aws-cdk-bucket-enforcessl": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/awscdk-bucket-encryption": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/awscdk-bucket-grantpublicaccessmethod": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/awscdk-codebuild-project-public": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/awscdk-sqs-unencryptedqueue": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/bypass-tls-verification": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:javascript/catch-parameter-name": {
       "type": "object",
       "additionalProperties": false,
@@ -23637,45 +22364,7 @@
         }
       }
     },
-    "ward:javascript/chrome-remote-interface-compilescript-injection": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:javascript/cleartext-transport": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/code-string-concat": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -23774,177 +22463,6 @@
         }
       }
     },
-    "ward:javascript/cors-misconfiguration": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/create-de-cipher-no-iv": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/deno-dangerous-run": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/detect-angular-element-taint": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/detect-angular-sce-disabled": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/detect-angular-trust-as-method": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/detect-child-process": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/detect-eval-with-expression": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/direct-response-write": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:javascript/dom-xss": {
       "type": "object",
       "additionalProperties": false,
@@ -24015,25 +22533,6 @@
         }
       }
     },
-    "ward:javascript/dynamodb-request-object": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:javascript/ecb-mode": {
       "type": "object",
       "additionalProperties": false,
@@ -24073,500 +22572,6 @@
       }
     },
     "ward:javascript/eqeqeq": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-check-directory-listing": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-cookie-session-default-name": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-cookie-session-no-domain": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-cookie-session-no-expires": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-cookie-session-no-httponly": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-cookie-session-no-path": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-cookie-session-no-secure": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-expat-xxe": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-insecure-template-usage": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-jwt-hardcoded-secret": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-jwt-not-revoked": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-libxml-noent": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-open-redirect": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-path-join-resolve-traversal": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-phantom-injection": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-puppeteer-injection": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-res-sendfile": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-sandbox-code-injection": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-sequelize-injection": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-session-hardcoded-secret": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-ssrf": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-third-party-object-deserialization": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-vm-injection": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-vm2-injection": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-xml2json-xxe": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/express-xml2json-xxe-event": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -24650,25 +22655,6 @@
         }
       }
     },
-    "ward:javascript/gcm-no-tag-length": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:javascript/getter-return": {
       "type": "object",
       "additionalProperties": false,
@@ -24692,44 +22678,6 @@
       }
     },
     "ward:javascript/hard-coded-secret": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/hardcoded-jwt-secret": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/hardcoded-passport-secret": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -24844,25 +22792,6 @@
       }
     },
     "ward:javascript/insecure-random": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/intercom-settings-user-identifier-without-user-hash": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -25001,83 +22930,7 @@
         }
       }
     },
-    "ward:javascript/js-open-redirect": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/jwt-none-alg": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/jwt-simple-noverify": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:javascript/jwt-without-verification": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/knex-sqli": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -25498,25 +23351,6 @@
       }
     },
     "ward:javascript/multiple-variable-declarations": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/mysql-sqli": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -28597,25 +26431,6 @@
         }
       }
     },
-    "ward:javascript/node-knex-sqli": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:javascript/nosql-injection": {
       "type": "object",
       "additionalProperties": false,
@@ -28735,25 +26550,6 @@
       }
     },
     "ward:javascript/permissive-cors": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/pg-sqli": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -29044,120 +26840,6 @@
         }
       }
     },
-    "ward:javascript/raw-html-concat": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/raw-html-format": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/react-dangerouslysetinnerhtml": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/react-insecure-request": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/react-unsanitized-method": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/react-unsanitized-property": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:javascript/regex-injection": {
       "type": "object",
       "additionalProperties": false,
@@ -29234,25 +26916,6 @@
         }
       }
     },
-    "ward:javascript/require-request": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:javascript/require-yield": {
       "type": "object",
       "additionalProperties": false,
@@ -29272,45 +26935,7 @@
         }
       }
     },
-    "ward:javascript/res-render-injection": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:javascript/script-injection": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/sequelize-sqli": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -29490,44 +27115,6 @@
         }
       }
     },
-    "ward:javascript/tainted-html-response": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/tainted-html-string": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:javascript/template-injection": {
       "type": "object",
       "additionalProperties": false,
@@ -29586,25 +27173,6 @@
       }
     },
     "ward:javascript/type-name": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/unsafe-argon2-config": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -30539,25 +28107,6 @@
         }
       }
     },
-    "ward:javascript/vm-runincontext-injection": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "ward:javascript/weak-cipher": {
       "type": "object",
       "additionalProperties": false,
@@ -30616,44 +28165,6 @@
       }
     },
     "ward:javascript/wildcard-post-message": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/wildcard-postmessage-configuration": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "severity": {
-          "type": "string",
-          "enum": [
-            "error",
-            "warning"
-          ]
-        },
-        "exclude-paths": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ward:javascript/x-frame-options-misconfiguration": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -60397,7 +57908,6 @@
               "java.bit-ior-of-signed-byte",
               "java.bit-signed-check",
               "java.bit-signed-check-high-bit",
-              "java.blowfish-insufficient-key-size",
               "java.boa-badly-overridden-adapter",
               "java.boolean-expression-complexity",
               "java.boolean-get-method-name",
@@ -60415,7 +57925,6 @@
               "java.call-super-last",
               "java.cast-to-nonnull-arg-nonnull",
               "java.catch-parameter-name",
-              "java.cbc-padding-oracle",
               "java.chaining-constructor-ignores-parameter",
               "java.check-not-null-multiple-times",
               "java.check-result-set",
@@ -60468,7 +57977,6 @@
               "java.constructors-declaration-grouping",
               "java.control-statement-braces",
               "java.covariant-equals",
-              "java.crlf-injection-logs",
               "java.cross-site-scripting",
               "java.csrf-protection-disabled",
               "java.ct-constructor-throw",
@@ -60493,8 +58001,6 @@
               "java.dep-ann",
               "java.dereference-nullable",
               "java.dereference-with-null-branch",
-              "java.des-is-deprecated",
-              "java.desede-is-deprecated",
               "java.design-for-extension",
               "java.detached-test-case",
               "java.discarded-postfix-expression",
@@ -60565,10 +58071,6 @@
               "java.do-not-mock",
               "java.do-not-terminate-vm",
               "java.do-not-throw-exception-in-finally",
-              "java.documentbuilderfactory-disallow-doctype-decl-false",
-              "java.documentbuilderfactory-disallow-doctype-decl-missing",
-              "java.documentbuilderfactory-external-general-entities-true",
-              "java.documentbuilderfactory-external-parameter-entities-true",
               "java.dont-call-thread-run",
               "java.dont-use-float-type-for-loop-indices",
               "java.double-brace-initialization",
@@ -60589,7 +58091,6 @@
               "java.ec-unrelated-class-and-interface",
               "java.ec-unrelated-interfaces",
               "java.ec-unrelated-types-using-pointer-equality",
-              "java.ecb-cipher",
               "java.ecb-mode",
               "java.ei-expose-buf",
               "java.ei-expose-buf2",
@@ -60661,7 +58162,6 @@
               "java.finalize-only-calls-super-finalize",
               "java.finalize-overloaded",
               "java.finalize-should-be-protected",
-              "java.find-sql-string-concatenation",
               "java.fl-floats-as-loop-counters",
               "java.fl-math-using-float-precision",
               "java.flogger-format-string",
@@ -60674,14 +58174,12 @@
               "java.for-override",
               "java.format-string",
               "java.format-string-annotation",
-              "java.formatted-sql-string",
               "java.from-temporal-accessor",
               "java.fs-bad-date-format-flag-combo",
               "java.functional-interface-method-changed",
               "java.futures-get-checked-illegal-exception-type",
               "java.fuzzy-equals-should-not-be-used-in-equals-method",
               "java.gc-unrelated-types",
-              "java.gcm-nonce-reuse",
               "java.generic-inference-failure",
               "java.get-class-on-annotation",
               "java.get-class-on-class",
@@ -60712,9 +58210,6 @@
               "java.hrs-request-parameter-to-http-header",
               "java.hsc-huge-shared-string-constant",
               "java.hsm-hiding-method",
-              "java.http-response-splitting",
-              "java.httpget-http-request",
-              "java.httpservlet-path-traversal",
               "java.ia-ambiguous-invocation-of-inherited-or-outer-method",
               "java.ic-init-circularity",
               "java.ic-superclass-uses-subclass-during-initialization",
@@ -60777,9 +58272,7 @@
               "java.insecure-cookie",
               "java.insecure-crypto-iv",
               "java.insecure-crypto-usage",
-              "java.insecure-jms-deserialization",
               "java.insecure-random",
-              "java.insecure-smtp-connection",
               "java.instant-temporal-unit",
               "java.instantiable-utility-class",
               "java.instantiation-to-get-class",
@@ -60827,10 +58320,6 @@
               "java.j-unit4-test-not-run",
               "java.j-unit4-tests-not-run-within-enclosed",
               "java.j2-ee-store-of-non-serializable-object-into-session",
-              "java.jackson-unsafe-deserialization",
-              "java.java-jwt-decode-without-verify",
-              "java.java-jwt-hardcoded-secret",
-              "java.java-jwt-none-alg",
               "java.java-ncss",
               "java.java8-api-checker",
               "java.javadoc-content-location",
@@ -60841,7 +58330,6 @@
               "java.javadoc-paragraph",
               "java.javadoc-tag-continuation-indentation",
               "java.javax-inject-on-abstract-method",
-              "java.jax-rs-path-traversal",
               "java.jcip-field-isnt-final-in-immutable-class",
               "java.jlm-jsr166-lock-monitorenter",
               "java.jlm-jsr166-utilconcurrent-monitorenter",
@@ -60887,7 +58375,6 @@
               "java.mc-overridable-method-call-in-clone",
               "java.mc-overridable-method-call-in-constructor",
               "java.mc-overridable-method-call-in-read-object",
-              "java.md5-used-as-password",
               "java.mdb-and-session-bean-naming-convention",
               "java.me-enum-field-setter",
               "java.me-mutable-enum-field",
@@ -60980,15 +58467,12 @@
               "java.no-array-trailing-comma",
               "java.no-can-ignore-return-value-on-classes",
               "java.no-clone",
-              "java.no-direct-response-writer",
               "java.no-enum-trailing-comma",
               "java.no-field-di",
               "java.no-finalizer",
               "java.no-notify-not-notifyall",
-              "java.no-null-cipher",
               "java.no-package",
               "java.no-standard-streams",
-              "java.no-static-initialization-vector",
               "java.non-canonical-static-import",
               "java.non-case-label-in-switch",
               "java.non-empty-atclause-description",
@@ -61160,7 +58644,6 @@
               "java.rp-c-repeated-conditional-test",
               "java.rr-not-checked",
               "java.rs-readobject-sync",
-              "java.rsa-no-padding",
               "java.rsa-without-padding",
               "java.ru-invoke-run",
               "java.rv-01-to-int",
@@ -61187,7 +58670,6 @@
               "java.sa-local-self-assignment-instead-of-field",
               "java.sa-local-self-comparison",
               "java.sa-local-self-computation",
-              "java.saxparserfactory-disallow-doctype-decl-missing",
               "java.sbsc-use-stringbuffer-concatenation",
               "java.sc-start-in-ctor",
               "java.script-injection",
@@ -61215,7 +58697,6 @@
               "java.self-comparison",
               "java.self-equals",
               "java.server-side-request-forgery",
-              "java.servletresponse-writer-xss",
               "java.set-unrecognized",
               "java.sf-dead-store-due-to-switch-fallthrough",
               "java.sf-dead-store-due-to-switch-fallthrough-to-throw",
@@ -61248,8 +58729,6 @@
               "java.sio-superfluous-instanceof",
               "java.size-greater-than-or-equals-zero",
               "java.sp-spin-on-field",
-              "java.spring-sqli",
-              "java.spring-unvalidated-redirect",
               "java.sql-bad-prepared-statement-access",
               "java.sql-bad-resultset-access",
               "java.sql-injection",
@@ -61291,18 +58770,6 @@
               "java.swl-sleep-with-lock-held",
               "java.system-exit-outside-main",
               "java.system-println",
-              "java.tainted-cmd-from-http-request",
-              "java.tainted-env-from-http-request",
-              "java.tainted-file-path",
-              "java.tainted-html-string",
-              "java.tainted-ldapi-from-http-request",
-              "java.tainted-session-from-http-request",
-              "java.tainted-sql-from-http-request",
-              "java.tainted-sql-string",
-              "java.tainted-sqli",
-              "java.tainted-system-command",
-              "java.tainted-url-host",
-              "java.tainted-xpath-from-http-request",
               "java.temporal-accessor-get-chrono-field",
               "java.test-class-without-test-cases",
               "java.test-exception-checker",
@@ -61331,7 +58798,6 @@
               "java.tq-maybe-source-value-reaches-never-sink",
               "java.tq-never-value-used-where-always-required",
               "java.tq-unknown-value-used-where-always-strictly-required",
-              "java.transformerfactory-dtds-not-disabled",
               "java.tree-to-string",
               "java.trust-all-certificates",
               "java.try-fail-throwable",
@@ -61355,7 +58821,6 @@
               "java.umac-uncallable-method-of-anonymous-class",
               "java.unbox-nullable",
               "java.unconditional-if-statement",
-              "java.unencrypted-socket",
               "java.unicode-directionality-characters",
               "java.unicode-in-code",
               "java.unit-test-assertions-should-include-message",
@@ -61401,7 +58866,6 @@
               "java.unused-private-field",
               "java.unused-private-method",
               "java.unused-return-value",
-              "java.unvalidated-redirect",
               "java.upm-uncalled-private-method",
               "java.upper-ell",
               "java.ur-uninit-read",
@@ -61421,16 +58885,6 @@
               "java.use-io-streams-with-apache-commons-file-item",
               "java.use-locale-with-case-conversions",
               "java.use-notify-all-instead-of-notify",
-              "java.use-of-aes-ecb",
-              "java.use-of-blowfish",
-              "java.use-of-default-aes",
-              "java.use-of-md5",
-              "java.use-of-md5-digest-utils",
-              "java.use-of-rc2",
-              "java.use-of-rc4",
-              "java.use-of-sha1",
-              "java.use-of-sha224",
-              "java.use-of-weak-rsa-key",
               "java.use-proper-class-loader",
               "java.use-short-array-initializer",
               "java.use-standard-charsets",
@@ -61464,7 +58918,6 @@
               "java.weak-cipher",
               "java.weak-hash",
               "java.weak-key-size",
-              "java.weak-ssl-context",
               "java.weak-tls-protocol",
               "java.while-loop-with-literal-boolean",
               "java.wl-using-getclass-rather-than-class-literal",
@@ -61480,94 +58933,39 @@
               "java.ws-writeobject-sync",
               "java.xfb-xml-factory-bypass",
               "java.xml-external-entities",
-              "java.xmlinputfactory-possible-xxe",
               "java.xor-power",
               "java.xpath-injection",
               "java.zone-id-of-z",
-              "javascript.aead-no-final",
-              "javascript.angular-bypasssecuritytrust",
               "javascript.array-callback-return",
-              "javascript.aws-cdk-bucket-enforcessl",
-              "javascript.awscdk-bucket-encryption",
-              "javascript.awscdk-bucket-grantpublicaccessmethod",
-              "javascript.awscdk-codebuild-project-public",
-              "javascript.awscdk-sqs-unencryptedqueue",
-              "javascript.bypass-tls-verification",
               "javascript.catch-parameter-name",
-              "javascript.chrome-remote-interface-compilescript-injection",
               "javascript.cleartext-transport",
-              "javascript.code-string-concat",
               "javascript.command-injection",
               "javascript.complexity",
               "javascript.constructor-super",
               "javascript.constructors-declaration-grouping",
-              "javascript.cors-misconfiguration",
-              "javascript.create-de-cipher-no-iv",
-              "javascript.deno-dangerous-run",
-              "javascript.detect-angular-element-taint",
-              "javascript.detect-angular-sce-disabled",
-              "javascript.detect-angular-trust-as-method",
-              "javascript.detect-child-process",
-              "javascript.detect-eval-with-expression",
-              "javascript.direct-response-write",
               "javascript.dom-xss",
               "javascript.dot-notation",
               "javascript.duplicate-code",
-              "javascript.dynamodb-request-object",
               "javascript.ecb-mode",
               "javascript.empty-catch-block",
               "javascript.eqeqeq",
-              "javascript.express-check-directory-listing",
-              "javascript.express-cookie-session-default-name",
-              "javascript.express-cookie-session-no-domain",
-              "javascript.express-cookie-session-no-expires",
-              "javascript.express-cookie-session-no-httponly",
-              "javascript.express-cookie-session-no-path",
-              "javascript.express-cookie-session-no-secure",
-              "javascript.express-expat-xxe",
-              "javascript.express-insecure-template-usage",
-              "javascript.express-jwt-hardcoded-secret",
-              "javascript.express-jwt-not-revoked",
-              "javascript.express-libxml-noent",
-              "javascript.express-open-redirect",
-              "javascript.express-path-join-resolve-traversal",
-              "javascript.express-phantom-injection",
-              "javascript.express-puppeteer-injection",
-              "javascript.express-res-sendfile",
-              "javascript.express-sandbox-code-injection",
-              "javascript.express-sequelize-injection",
-              "javascript.express-session-hardcoded-secret",
-              "javascript.express-ssrf",
-              "javascript.express-third-party-object-deserialization",
-              "javascript.express-vm-injection",
-              "javascript.express-vm2-injection",
-              "javascript.express-xml2json-xxe",
-              "javascript.express-xml2json-xxe-event",
               "javascript.file-length",
               "javascript.for-direction",
               "javascript.function-length",
-              "javascript.gcm-no-tag-length",
               "javascript.getter-return",
               "javascript.hard-coded-secret",
-              "javascript.hardcoded-jwt-secret",
-              "javascript.hardcoded-passport-secret",
               "javascript.header-injection",
               "javascript.hidden-field",
               "javascript.illegal-token-text",
               "javascript.insecure-cookie",
               "javascript.insecure-random",
-              "javascript.intercom-settings-user-identifier-without-user-hash",
               "javascript.invalid-javadoc-position",
               "javascript.javadoc-content-location",
               "javascript.javadoc-leading-asterisk-align",
               "javascript.javadoc-method",
               "javascript.javadoc-missing-leading-asterisk",
               "javascript.javadoc-paragraph",
-              "javascript.js-open-redirect",
-              "javascript.jwt-none-alg",
-              "javascript.jwt-simple-noverify",
               "javascript.jwt-without-verification",
-              "javascript.knex-sqli",
               "javascript.knip-binaries",
               "javascript.knip-catalog",
               "javascript.knip-catalog-references",
@@ -61589,7 +58987,6 @@
               "javascript.missing-switch-default",
               "javascript.multiline-comment-leading-asterisk-presence",
               "javascript.multiple-variable-declarations",
-              "javascript.mysql-sqli",
               "javascript.naming",
               "javascript.need-braces",
               "javascript.nesting-depth",
@@ -61745,7 +59142,6 @@
               "javascript.no-void-elements-with-children",
               "javascript.no-with",
               "javascript.no-xor-as-exponentiation",
-              "javascript.node-knex-sqli",
               "javascript.nosql-injection",
               "javascript.one-statement-per-line",
               "javascript.overload-methods-declaration-order",
@@ -61753,7 +59149,6 @@
               "javascript.parameter-name",
               "javascript.path-traversal",
               "javascript.permissive-cors",
-              "javascript.pg-sqli",
               "javascript.prefer-arrow-callback",
               "javascript.prefer-const",
               "javascript.prefer-exponentiation-operator",
@@ -61767,21 +59162,12 @@
               "javascript.preserve-caught-error",
               "javascript.prototype-pollution",
               "javascript.radix",
-              "javascript.raw-html-concat",
-              "javascript.raw-html-format",
-              "javascript.react-dangerouslysetinnerhtml",
-              "javascript.react-insecure-request",
-              "javascript.react-unsanitized-method",
-              "javascript.react-unsanitized-property",
               "javascript.regex-injection",
               "javascript.regexp-singleline",
               "javascript.require-await",
               "javascript.require-empty-line-before-block-tag-group",
-              "javascript.require-request",
               "javascript.require-yield",
-              "javascript.res-render-injection",
               "javascript.script-injection",
-              "javascript.sequelize-sqli",
               "javascript.server-side-request-forgery",
               "javascript.shell-option",
               "javascript.single-line-javadoc",
@@ -61790,13 +59176,10 @@
               "javascript.strict",
               "javascript.summary-javadoc",
               "javascript.symbol-description",
-              "javascript.tainted-html-response",
-              "javascript.tainted-html-string",
               "javascript.template-injection",
               "javascript.tls-verification-disabled",
               "javascript.todo-comment",
               "javascript.type-name",
-              "javascript.unsafe-argon2-config",
               "javascript.unsafe-framework-trust",
               "javascript.untrusted-deserialization",
               "javascript.untrusted-redirect",
@@ -61845,13 +59228,10 @@
               "javascript.use-while",
               "javascript.valid-typeof",
               "javascript.variable-declaration-usage-distance",
-              "javascript.vm-runincontext-injection",
               "javascript.weak-cipher",
               "javascript.weak-hash",
               "javascript.weak-key-size",
               "javascript.wildcard-post-message",
-              "javascript.wildcard-postmessage-configuration",
-              "javascript.x-frame-options-misconfiguration",
               "javascript.xml-external-entities",
               "javascript.xss",
               "kotlin.array-primitive",
@@ -63449,7 +60829,6 @@
               "java.bit-ior-of-signed-byte",
               "java.bit-signed-check",
               "java.bit-signed-check-high-bit",
-              "java.blowfish-insufficient-key-size",
               "java.boa-badly-overridden-adapter",
               "java.boolean-expression-complexity",
               "java.boolean-get-method-name",
@@ -63467,7 +60846,6 @@
               "java.call-super-last",
               "java.cast-to-nonnull-arg-nonnull",
               "java.catch-parameter-name",
-              "java.cbc-padding-oracle",
               "java.chaining-constructor-ignores-parameter",
               "java.check-not-null-multiple-times",
               "java.check-result-set",
@@ -63520,7 +60898,6 @@
               "java.constructors-declaration-grouping",
               "java.control-statement-braces",
               "java.covariant-equals",
-              "java.crlf-injection-logs",
               "java.cross-site-scripting",
               "java.csrf-protection-disabled",
               "java.ct-constructor-throw",
@@ -63545,8 +60922,6 @@
               "java.dep-ann",
               "java.dereference-nullable",
               "java.dereference-with-null-branch",
-              "java.des-is-deprecated",
-              "java.desede-is-deprecated",
               "java.design-for-extension",
               "java.detached-test-case",
               "java.discarded-postfix-expression",
@@ -63617,10 +60992,6 @@
               "java.do-not-mock",
               "java.do-not-terminate-vm",
               "java.do-not-throw-exception-in-finally",
-              "java.documentbuilderfactory-disallow-doctype-decl-false",
-              "java.documentbuilderfactory-disallow-doctype-decl-missing",
-              "java.documentbuilderfactory-external-general-entities-true",
-              "java.documentbuilderfactory-external-parameter-entities-true",
               "java.dont-call-thread-run",
               "java.dont-use-float-type-for-loop-indices",
               "java.double-brace-initialization",
@@ -63641,7 +61012,6 @@
               "java.ec-unrelated-class-and-interface",
               "java.ec-unrelated-interfaces",
               "java.ec-unrelated-types-using-pointer-equality",
-              "java.ecb-cipher",
               "java.ecb-mode",
               "java.ei-expose-buf",
               "java.ei-expose-buf2",
@@ -63713,7 +61083,6 @@
               "java.finalize-only-calls-super-finalize",
               "java.finalize-overloaded",
               "java.finalize-should-be-protected",
-              "java.find-sql-string-concatenation",
               "java.fl-floats-as-loop-counters",
               "java.fl-math-using-float-precision",
               "java.flogger-format-string",
@@ -63726,14 +61095,12 @@
               "java.for-override",
               "java.format-string",
               "java.format-string-annotation",
-              "java.formatted-sql-string",
               "java.from-temporal-accessor",
               "java.fs-bad-date-format-flag-combo",
               "java.functional-interface-method-changed",
               "java.futures-get-checked-illegal-exception-type",
               "java.fuzzy-equals-should-not-be-used-in-equals-method",
               "java.gc-unrelated-types",
-              "java.gcm-nonce-reuse",
               "java.generic-inference-failure",
               "java.get-class-on-annotation",
               "java.get-class-on-class",
@@ -63764,9 +61131,6 @@
               "java.hrs-request-parameter-to-http-header",
               "java.hsc-huge-shared-string-constant",
               "java.hsm-hiding-method",
-              "java.http-response-splitting",
-              "java.httpget-http-request",
-              "java.httpservlet-path-traversal",
               "java.ia-ambiguous-invocation-of-inherited-or-outer-method",
               "java.ic-init-circularity",
               "java.ic-superclass-uses-subclass-during-initialization",
@@ -63829,9 +61193,7 @@
               "java.insecure-cookie",
               "java.insecure-crypto-iv",
               "java.insecure-crypto-usage",
-              "java.insecure-jms-deserialization",
               "java.insecure-random",
-              "java.insecure-smtp-connection",
               "java.instant-temporal-unit",
               "java.instantiable-utility-class",
               "java.instantiation-to-get-class",
@@ -63879,10 +61241,6 @@
               "java.j-unit4-test-not-run",
               "java.j-unit4-tests-not-run-within-enclosed",
               "java.j2-ee-store-of-non-serializable-object-into-session",
-              "java.jackson-unsafe-deserialization",
-              "java.java-jwt-decode-without-verify",
-              "java.java-jwt-hardcoded-secret",
-              "java.java-jwt-none-alg",
               "java.java-ncss",
               "java.java8-api-checker",
               "java.javadoc-content-location",
@@ -63893,7 +61251,6 @@
               "java.javadoc-paragraph",
               "java.javadoc-tag-continuation-indentation",
               "java.javax-inject-on-abstract-method",
-              "java.jax-rs-path-traversal",
               "java.jcip-field-isnt-final-in-immutable-class",
               "java.jlm-jsr166-lock-monitorenter",
               "java.jlm-jsr166-utilconcurrent-monitorenter",
@@ -63939,7 +61296,6 @@
               "java.mc-overridable-method-call-in-clone",
               "java.mc-overridable-method-call-in-constructor",
               "java.mc-overridable-method-call-in-read-object",
-              "java.md5-used-as-password",
               "java.mdb-and-session-bean-naming-convention",
               "java.me-enum-field-setter",
               "java.me-mutable-enum-field",
@@ -64032,15 +61388,12 @@
               "java.no-array-trailing-comma",
               "java.no-can-ignore-return-value-on-classes",
               "java.no-clone",
-              "java.no-direct-response-writer",
               "java.no-enum-trailing-comma",
               "java.no-field-di",
               "java.no-finalizer",
               "java.no-notify-not-notifyall",
-              "java.no-null-cipher",
               "java.no-package",
               "java.no-standard-streams",
-              "java.no-static-initialization-vector",
               "java.non-canonical-static-import",
               "java.non-case-label-in-switch",
               "java.non-empty-atclause-description",
@@ -64212,7 +61565,6 @@
               "java.rp-c-repeated-conditional-test",
               "java.rr-not-checked",
               "java.rs-readobject-sync",
-              "java.rsa-no-padding",
               "java.rsa-without-padding",
               "java.ru-invoke-run",
               "java.rv-01-to-int",
@@ -64239,7 +61591,6 @@
               "java.sa-local-self-assignment-instead-of-field",
               "java.sa-local-self-comparison",
               "java.sa-local-self-computation",
-              "java.saxparserfactory-disallow-doctype-decl-missing",
               "java.sbsc-use-stringbuffer-concatenation",
               "java.sc-start-in-ctor",
               "java.script-injection",
@@ -64267,7 +61618,6 @@
               "java.self-comparison",
               "java.self-equals",
               "java.server-side-request-forgery",
-              "java.servletresponse-writer-xss",
               "java.set-unrecognized",
               "java.sf-dead-store-due-to-switch-fallthrough",
               "java.sf-dead-store-due-to-switch-fallthrough-to-throw",
@@ -64300,8 +61650,6 @@
               "java.sio-superfluous-instanceof",
               "java.size-greater-than-or-equals-zero",
               "java.sp-spin-on-field",
-              "java.spring-sqli",
-              "java.spring-unvalidated-redirect",
               "java.sql-bad-prepared-statement-access",
               "java.sql-bad-resultset-access",
               "java.sql-injection",
@@ -64343,18 +61691,6 @@
               "java.swl-sleep-with-lock-held",
               "java.system-exit-outside-main",
               "java.system-println",
-              "java.tainted-cmd-from-http-request",
-              "java.tainted-env-from-http-request",
-              "java.tainted-file-path",
-              "java.tainted-html-string",
-              "java.tainted-ldapi-from-http-request",
-              "java.tainted-session-from-http-request",
-              "java.tainted-sql-from-http-request",
-              "java.tainted-sql-string",
-              "java.tainted-sqli",
-              "java.tainted-system-command",
-              "java.tainted-url-host",
-              "java.tainted-xpath-from-http-request",
               "java.temporal-accessor-get-chrono-field",
               "java.test-class-without-test-cases",
               "java.test-exception-checker",
@@ -64383,7 +61719,6 @@
               "java.tq-maybe-source-value-reaches-never-sink",
               "java.tq-never-value-used-where-always-required",
               "java.tq-unknown-value-used-where-always-strictly-required",
-              "java.transformerfactory-dtds-not-disabled",
               "java.tree-to-string",
               "java.trust-all-certificates",
               "java.try-fail-throwable",
@@ -64407,7 +61742,6 @@
               "java.umac-uncallable-method-of-anonymous-class",
               "java.unbox-nullable",
               "java.unconditional-if-statement",
-              "java.unencrypted-socket",
               "java.unicode-directionality-characters",
               "java.unicode-in-code",
               "java.unit-test-assertions-should-include-message",
@@ -64453,7 +61787,6 @@
               "java.unused-private-field",
               "java.unused-private-method",
               "java.unused-return-value",
-              "java.unvalidated-redirect",
               "java.upm-uncalled-private-method",
               "java.upper-ell",
               "java.ur-uninit-read",
@@ -64473,16 +61806,6 @@
               "java.use-io-streams-with-apache-commons-file-item",
               "java.use-locale-with-case-conversions",
               "java.use-notify-all-instead-of-notify",
-              "java.use-of-aes-ecb",
-              "java.use-of-blowfish",
-              "java.use-of-default-aes",
-              "java.use-of-md5",
-              "java.use-of-md5-digest-utils",
-              "java.use-of-rc2",
-              "java.use-of-rc4",
-              "java.use-of-sha1",
-              "java.use-of-sha224",
-              "java.use-of-weak-rsa-key",
               "java.use-proper-class-loader",
               "java.use-short-array-initializer",
               "java.use-standard-charsets",
@@ -64516,7 +61839,6 @@
               "java.weak-cipher",
               "java.weak-hash",
               "java.weak-key-size",
-              "java.weak-ssl-context",
               "java.weak-tls-protocol",
               "java.while-loop-with-literal-boolean",
               "java.wl-using-getclass-rather-than-class-literal",
@@ -64532,94 +61854,39 @@
               "java.ws-writeobject-sync",
               "java.xfb-xml-factory-bypass",
               "java.xml-external-entities",
-              "java.xmlinputfactory-possible-xxe",
               "java.xor-power",
               "java.xpath-injection",
               "java.zone-id-of-z",
-              "javascript.aead-no-final",
-              "javascript.angular-bypasssecuritytrust",
               "javascript.array-callback-return",
-              "javascript.aws-cdk-bucket-enforcessl",
-              "javascript.awscdk-bucket-encryption",
-              "javascript.awscdk-bucket-grantpublicaccessmethod",
-              "javascript.awscdk-codebuild-project-public",
-              "javascript.awscdk-sqs-unencryptedqueue",
-              "javascript.bypass-tls-verification",
               "javascript.catch-parameter-name",
-              "javascript.chrome-remote-interface-compilescript-injection",
               "javascript.cleartext-transport",
-              "javascript.code-string-concat",
               "javascript.command-injection",
               "javascript.complexity",
               "javascript.constructor-super",
               "javascript.constructors-declaration-grouping",
-              "javascript.cors-misconfiguration",
-              "javascript.create-de-cipher-no-iv",
-              "javascript.deno-dangerous-run",
-              "javascript.detect-angular-element-taint",
-              "javascript.detect-angular-sce-disabled",
-              "javascript.detect-angular-trust-as-method",
-              "javascript.detect-child-process",
-              "javascript.detect-eval-with-expression",
-              "javascript.direct-response-write",
               "javascript.dom-xss",
               "javascript.dot-notation",
               "javascript.duplicate-code",
-              "javascript.dynamodb-request-object",
               "javascript.ecb-mode",
               "javascript.empty-catch-block",
               "javascript.eqeqeq",
-              "javascript.express-check-directory-listing",
-              "javascript.express-cookie-session-default-name",
-              "javascript.express-cookie-session-no-domain",
-              "javascript.express-cookie-session-no-expires",
-              "javascript.express-cookie-session-no-httponly",
-              "javascript.express-cookie-session-no-path",
-              "javascript.express-cookie-session-no-secure",
-              "javascript.express-expat-xxe",
-              "javascript.express-insecure-template-usage",
-              "javascript.express-jwt-hardcoded-secret",
-              "javascript.express-jwt-not-revoked",
-              "javascript.express-libxml-noent",
-              "javascript.express-open-redirect",
-              "javascript.express-path-join-resolve-traversal",
-              "javascript.express-phantom-injection",
-              "javascript.express-puppeteer-injection",
-              "javascript.express-res-sendfile",
-              "javascript.express-sandbox-code-injection",
-              "javascript.express-sequelize-injection",
-              "javascript.express-session-hardcoded-secret",
-              "javascript.express-ssrf",
-              "javascript.express-third-party-object-deserialization",
-              "javascript.express-vm-injection",
-              "javascript.express-vm2-injection",
-              "javascript.express-xml2json-xxe",
-              "javascript.express-xml2json-xxe-event",
               "javascript.file-length",
               "javascript.for-direction",
               "javascript.function-length",
-              "javascript.gcm-no-tag-length",
               "javascript.getter-return",
               "javascript.hard-coded-secret",
-              "javascript.hardcoded-jwt-secret",
-              "javascript.hardcoded-passport-secret",
               "javascript.header-injection",
               "javascript.hidden-field",
               "javascript.illegal-token-text",
               "javascript.insecure-cookie",
               "javascript.insecure-random",
-              "javascript.intercom-settings-user-identifier-without-user-hash",
               "javascript.invalid-javadoc-position",
               "javascript.javadoc-content-location",
               "javascript.javadoc-leading-asterisk-align",
               "javascript.javadoc-method",
               "javascript.javadoc-missing-leading-asterisk",
               "javascript.javadoc-paragraph",
-              "javascript.js-open-redirect",
-              "javascript.jwt-none-alg",
-              "javascript.jwt-simple-noverify",
               "javascript.jwt-without-verification",
-              "javascript.knex-sqli",
               "javascript.knip-binaries",
               "javascript.knip-catalog",
               "javascript.knip-catalog-references",
@@ -64641,7 +61908,6 @@
               "javascript.missing-switch-default",
               "javascript.multiline-comment-leading-asterisk-presence",
               "javascript.multiple-variable-declarations",
-              "javascript.mysql-sqli",
               "javascript.naming",
               "javascript.need-braces",
               "javascript.nesting-depth",
@@ -64797,7 +62063,6 @@
               "javascript.no-void-elements-with-children",
               "javascript.no-with",
               "javascript.no-xor-as-exponentiation",
-              "javascript.node-knex-sqli",
               "javascript.nosql-injection",
               "javascript.one-statement-per-line",
               "javascript.overload-methods-declaration-order",
@@ -64805,7 +62070,6 @@
               "javascript.parameter-name",
               "javascript.path-traversal",
               "javascript.permissive-cors",
-              "javascript.pg-sqli",
               "javascript.prefer-arrow-callback",
               "javascript.prefer-const",
               "javascript.prefer-exponentiation-operator",
@@ -64819,21 +62083,12 @@
               "javascript.preserve-caught-error",
               "javascript.prototype-pollution",
               "javascript.radix",
-              "javascript.raw-html-concat",
-              "javascript.raw-html-format",
-              "javascript.react-dangerouslysetinnerhtml",
-              "javascript.react-insecure-request",
-              "javascript.react-unsanitized-method",
-              "javascript.react-unsanitized-property",
               "javascript.regex-injection",
               "javascript.regexp-singleline",
               "javascript.require-await",
               "javascript.require-empty-line-before-block-tag-group",
-              "javascript.require-request",
               "javascript.require-yield",
-              "javascript.res-render-injection",
               "javascript.script-injection",
-              "javascript.sequelize-sqli",
               "javascript.server-side-request-forgery",
               "javascript.shell-option",
               "javascript.single-line-javadoc",
@@ -64842,13 +62097,10 @@
               "javascript.strict",
               "javascript.summary-javadoc",
               "javascript.symbol-description",
-              "javascript.tainted-html-response",
-              "javascript.tainted-html-string",
               "javascript.template-injection",
               "javascript.tls-verification-disabled",
               "javascript.todo-comment",
               "javascript.type-name",
-              "javascript.unsafe-argon2-config",
               "javascript.unsafe-framework-trust",
               "javascript.untrusted-deserialization",
               "javascript.untrusted-redirect",
@@ -64897,13 +62149,10 @@
               "javascript.use-while",
               "javascript.valid-typeof",
               "javascript.variable-declaration-usage-distance",
-              "javascript.vm-runincontext-injection",
               "javascript.weak-cipher",
               "javascript.weak-hash",
               "javascript.weak-key-size",
               "javascript.wildcard-post-message",
-              "javascript.wildcard-postmessage-configuration",
-              "javascript.x-frame-options-misconfiguration",
               "javascript.xml-external-entities",
               "javascript.xss",
               "kotlin.array-primitive",
@@ -66720,9 +63969,6 @@
             "bit-signed-check-high-bit": {
               "$ref": "#/$defs/ward:java~1bit-signed-check-high-bit"
             },
-            "blowfish-insufficient-key-size": {
-              "$ref": "#/$defs/ward:java~1blowfish-insufficient-key-size"
-            },
             "boa-badly-overridden-adapter": {
               "$ref": "#/$defs/ward:java~1boa-badly-overridden-adapter"
             },
@@ -66773,9 +64019,6 @@
             },
             "catch-parameter-name": {
               "$ref": "#/$defs/ward:java~1catch-parameter-name"
-            },
-            "cbc-padding-oracle": {
-              "$ref": "#/$defs/ward:java~1cbc-padding-oracle"
             },
             "chaining-constructor-ignores-parameter": {
               "$ref": "#/$defs/ward:java~1chaining-constructor-ignores-parameter"
@@ -66933,9 +64176,6 @@
             "covariant-equals": {
               "$ref": "#/$defs/ward:java~1covariant-equals"
             },
-            "crlf-injection-logs": {
-              "$ref": "#/$defs/ward:java~1crlf-injection-logs"
-            },
             "cross-site-scripting": {
               "$ref": "#/$defs/ward:java~1cross-site-scripting"
             },
@@ -67007,12 +64247,6 @@
             },
             "dereference-with-null-branch": {
               "$ref": "#/$defs/ward:java~1dereference-with-null-branch"
-            },
-            "des-is-deprecated": {
-              "$ref": "#/$defs/ward:java~1des-is-deprecated"
-            },
-            "desede-is-deprecated": {
-              "$ref": "#/$defs/ward:java~1desede-is-deprecated"
             },
             "design-for-extension": {
               "$ref": "#/$defs/ward:java~1design-for-extension"
@@ -67224,18 +64458,6 @@
             "do-not-throw-exception-in-finally": {
               "$ref": "#/$defs/ward:java~1do-not-throw-exception-in-finally"
             },
-            "documentbuilderfactory-disallow-doctype-decl-false": {
-              "$ref": "#/$defs/ward:java~1documentbuilderfactory-disallow-doctype-decl-false"
-            },
-            "documentbuilderfactory-disallow-doctype-decl-missing": {
-              "$ref": "#/$defs/ward:java~1documentbuilderfactory-disallow-doctype-decl-missing"
-            },
-            "documentbuilderfactory-external-general-entities-true": {
-              "$ref": "#/$defs/ward:java~1documentbuilderfactory-external-general-entities-true"
-            },
-            "documentbuilderfactory-external-parameter-entities-true": {
-              "$ref": "#/$defs/ward:java~1documentbuilderfactory-external-parameter-entities-true"
-            },
             "dont-call-thread-run": {
               "$ref": "#/$defs/ward:java~1dont-call-thread-run"
             },
@@ -67295,9 +64517,6 @@
             },
             "ec-unrelated-types-using-pointer-equality": {
               "$ref": "#/$defs/ward:java~1ec-unrelated-types-using-pointer-equality"
-            },
-            "ecb-cipher": {
-              "$ref": "#/$defs/ward:java~1ecb-cipher"
             },
             "ecb-mode": {
               "$ref": "#/$defs/ward:java~1ecb-mode"
@@ -67512,9 +64731,6 @@
             "finalize-should-be-protected": {
               "$ref": "#/$defs/ward:java~1finalize-should-be-protected"
             },
-            "find-sql-string-concatenation": {
-              "$ref": "#/$defs/ward:java~1find-sql-string-concatenation"
-            },
             "fl-floats-as-loop-counters": {
               "$ref": "#/$defs/ward:java~1fl-floats-as-loop-counters"
             },
@@ -67551,9 +64767,6 @@
             "format-string-annotation": {
               "$ref": "#/$defs/ward:java~1format-string-annotation"
             },
-            "formatted-sql-string": {
-              "$ref": "#/$defs/ward:java~1formatted-sql-string"
-            },
             "from-temporal-accessor": {
               "$ref": "#/$defs/ward:java~1from-temporal-accessor"
             },
@@ -67571,9 +64784,6 @@
             },
             "gc-unrelated-types": {
               "$ref": "#/$defs/ward:java~1gc-unrelated-types"
-            },
-            "gcm-nonce-reuse": {
-              "$ref": "#/$defs/ward:java~1gcm-nonce-reuse"
             },
             "generic-inference-failure": {
               "$ref": "#/$defs/ward:java~1generic-inference-failure"
@@ -67664,15 +64874,6 @@
             },
             "hsm-hiding-method": {
               "$ref": "#/$defs/ward:java~1hsm-hiding-method"
-            },
-            "http-response-splitting": {
-              "$ref": "#/$defs/ward:java~1http-response-splitting"
-            },
-            "httpget-http-request": {
-              "$ref": "#/$defs/ward:java~1httpget-http-request"
-            },
-            "httpservlet-path-traversal": {
-              "$ref": "#/$defs/ward:java~1httpservlet-path-traversal"
             },
             "ia-ambiguous-invocation-of-inherited-or-outer-method": {
               "$ref": "#/$defs/ward:java~1ia-ambiguous-invocation-of-inherited-or-outer-method"
@@ -67860,14 +65061,8 @@
             "insecure-crypto-usage": {
               "$ref": "#/$defs/ward:java~1insecure-crypto-usage"
             },
-            "insecure-jms-deserialization": {
-              "$ref": "#/$defs/ward:java~1insecure-jms-deserialization"
-            },
             "insecure-random": {
               "$ref": "#/$defs/ward:java~1insecure-random"
-            },
-            "insecure-smtp-connection": {
-              "$ref": "#/$defs/ward:java~1insecure-smtp-connection"
             },
             "instant-temporal-unit": {
               "$ref": "#/$defs/ward:java~1instant-temporal-unit"
@@ -68010,18 +65205,6 @@
             "j2-ee-store-of-non-serializable-object-into-session": {
               "$ref": "#/$defs/ward:java~1j2-ee-store-of-non-serializable-object-into-session"
             },
-            "jackson-unsafe-deserialization": {
-              "$ref": "#/$defs/ward:java~1jackson-unsafe-deserialization"
-            },
-            "java-jwt-decode-without-verify": {
-              "$ref": "#/$defs/ward:java~1java-jwt-decode-without-verify"
-            },
-            "java-jwt-hardcoded-secret": {
-              "$ref": "#/$defs/ward:java~1java-jwt-hardcoded-secret"
-            },
-            "java-jwt-none-alg": {
-              "$ref": "#/$defs/ward:java~1java-jwt-none-alg"
-            },
             "java-ncss": {
               "$ref": "#/$defs/ward:java~1java-ncss"
             },
@@ -68051,9 +65234,6 @@
             },
             "javax-inject-on-abstract-method": {
               "$ref": "#/$defs/ward:java~1javax-inject-on-abstract-method"
-            },
-            "jax-rs-path-traversal": {
-              "$ref": "#/$defs/ward:java~1jax-rs-path-traversal"
             },
             "jcip-field-isnt-final-in-immutable-class": {
               "$ref": "#/$defs/ward:java~1jcip-field-isnt-final-in-immutable-class"
@@ -68189,9 +65369,6 @@
             },
             "mc-overridable-method-call-in-read-object": {
               "$ref": "#/$defs/ward:java~1mc-overridable-method-call-in-read-object"
-            },
-            "md5-used-as-password": {
-              "$ref": "#/$defs/ward:java~1md5-used-as-password"
             },
             "mdb-and-session-bean-naming-convention": {
               "$ref": "#/$defs/ward:java~1mdb-and-session-bean-naming-convention"
@@ -68469,9 +65646,6 @@
             "no-clone": {
               "$ref": "#/$defs/ward:java~1no-clone"
             },
-            "no-direct-response-writer": {
-              "$ref": "#/$defs/ward:java~1no-direct-response-writer"
-            },
             "no-enum-trailing-comma": {
               "$ref": "#/$defs/ward:java~1no-enum-trailing-comma"
             },
@@ -68484,17 +65658,11 @@
             "no-notify-not-notifyall": {
               "$ref": "#/$defs/ward:java~1no-notify-not-notifyall"
             },
-            "no-null-cipher": {
-              "$ref": "#/$defs/ward:java~1no-null-cipher"
-            },
             "no-package": {
               "$ref": "#/$defs/ward:java~1no-package"
             },
             "no-standard-streams": {
               "$ref": "#/$defs/ward:java~1no-standard-streams"
-            },
-            "no-static-initialization-vector": {
-              "$ref": "#/$defs/ward:java~1no-static-initialization-vector"
             },
             "non-canonical-static-import": {
               "$ref": "#/$defs/ward:java~1non-canonical-static-import"
@@ -69009,9 +66177,6 @@
             "rs-readobject-sync": {
               "$ref": "#/$defs/ward:java~1rs-readobject-sync"
             },
-            "rsa-no-padding": {
-              "$ref": "#/$defs/ward:java~1rsa-no-padding"
-            },
             "rsa-without-padding": {
               "$ref": "#/$defs/ward:java~1rsa-without-padding"
             },
@@ -69089,9 +66254,6 @@
             },
             "sa-local-self-computation": {
               "$ref": "#/$defs/ward:java~1sa-local-self-computation"
-            },
-            "saxparserfactory-disallow-doctype-decl-missing": {
-              "$ref": "#/$defs/ward:java~1saxparserfactory-disallow-doctype-decl-missing"
             },
             "sbsc-use-stringbuffer-concatenation": {
               "$ref": "#/$defs/ward:java~1sbsc-use-stringbuffer-concatenation"
@@ -69173,9 +66335,6 @@
             },
             "server-side-request-forgery": {
               "$ref": "#/$defs/ward:java~1server-side-request-forgery"
-            },
-            "servletresponse-writer-xss": {
-              "$ref": "#/$defs/ward:java~1servletresponse-writer-xss"
             },
             "set-unrecognized": {
               "$ref": "#/$defs/ward:java~1set-unrecognized"
@@ -69272,12 +66431,6 @@
             },
             "sp-spin-on-field": {
               "$ref": "#/$defs/ward:java~1sp-spin-on-field"
-            },
-            "spring-sqli": {
-              "$ref": "#/$defs/ward:java~1spring-sqli"
-            },
-            "spring-unvalidated-redirect": {
-              "$ref": "#/$defs/ward:java~1spring-unvalidated-redirect"
             },
             "sql-bad-prepared-statement-access": {
               "$ref": "#/$defs/ward:java~1sql-bad-prepared-statement-access"
@@ -69402,42 +66555,6 @@
             "system-println": {
               "$ref": "#/$defs/ward:java~1system-println"
             },
-            "tainted-cmd-from-http-request": {
-              "$ref": "#/$defs/ward:java~1tainted-cmd-from-http-request"
-            },
-            "tainted-env-from-http-request": {
-              "$ref": "#/$defs/ward:java~1tainted-env-from-http-request"
-            },
-            "tainted-file-path": {
-              "$ref": "#/$defs/ward:java~1tainted-file-path"
-            },
-            "tainted-html-string": {
-              "$ref": "#/$defs/ward:java~1tainted-html-string"
-            },
-            "tainted-ldapi-from-http-request": {
-              "$ref": "#/$defs/ward:java~1tainted-ldapi-from-http-request"
-            },
-            "tainted-session-from-http-request": {
-              "$ref": "#/$defs/ward:java~1tainted-session-from-http-request"
-            },
-            "tainted-sql-from-http-request": {
-              "$ref": "#/$defs/ward:java~1tainted-sql-from-http-request"
-            },
-            "tainted-sql-string": {
-              "$ref": "#/$defs/ward:java~1tainted-sql-string"
-            },
-            "tainted-sqli": {
-              "$ref": "#/$defs/ward:java~1tainted-sqli"
-            },
-            "tainted-system-command": {
-              "$ref": "#/$defs/ward:java~1tainted-system-command"
-            },
-            "tainted-url-host": {
-              "$ref": "#/$defs/ward:java~1tainted-url-host"
-            },
-            "tainted-xpath-from-http-request": {
-              "$ref": "#/$defs/ward:java~1tainted-xpath-from-http-request"
-            },
             "temporal-accessor-get-chrono-field": {
               "$ref": "#/$defs/ward:java~1temporal-accessor-get-chrono-field"
             },
@@ -69522,9 +66639,6 @@
             "tq-unknown-value-used-where-always-strictly-required": {
               "$ref": "#/$defs/ward:java~1tq-unknown-value-used-where-always-strictly-required"
             },
-            "transformerfactory-dtds-not-disabled": {
-              "$ref": "#/$defs/ward:java~1transformerfactory-dtds-not-disabled"
-            },
             "tree-to-string": {
               "$ref": "#/$defs/ward:java~1tree-to-string"
             },
@@ -69593,9 +66707,6 @@
             },
             "unconditional-if-statement": {
               "$ref": "#/$defs/ward:java~1unconditional-if-statement"
-            },
-            "unencrypted-socket": {
-              "$ref": "#/$defs/ward:java~1unencrypted-socket"
             },
             "unicode-directionality-characters": {
               "$ref": "#/$defs/ward:java~1unicode-directionality-characters"
@@ -69732,9 +66843,6 @@
             "unused-return-value": {
               "$ref": "#/$defs/ward:java~1unused-return-value"
             },
-            "unvalidated-redirect": {
-              "$ref": "#/$defs/ward:java~1unvalidated-redirect"
-            },
             "upm-uncalled-private-method": {
               "$ref": "#/$defs/ward:java~1upm-uncalled-private-method"
             },
@@ -69791,36 +66899,6 @@
             },
             "use-notify-all-instead-of-notify": {
               "$ref": "#/$defs/ward:java~1use-notify-all-instead-of-notify"
-            },
-            "use-of-aes-ecb": {
-              "$ref": "#/$defs/ward:java~1use-of-aes-ecb"
-            },
-            "use-of-blowfish": {
-              "$ref": "#/$defs/ward:java~1use-of-blowfish"
-            },
-            "use-of-default-aes": {
-              "$ref": "#/$defs/ward:java~1use-of-default-aes"
-            },
-            "use-of-md5": {
-              "$ref": "#/$defs/ward:java~1use-of-md5"
-            },
-            "use-of-md5-digest-utils": {
-              "$ref": "#/$defs/ward:java~1use-of-md5-digest-utils"
-            },
-            "use-of-rc2": {
-              "$ref": "#/$defs/ward:java~1use-of-rc2"
-            },
-            "use-of-rc4": {
-              "$ref": "#/$defs/ward:java~1use-of-rc4"
-            },
-            "use-of-sha1": {
-              "$ref": "#/$defs/ward:java~1use-of-sha1"
-            },
-            "use-of-sha224": {
-              "$ref": "#/$defs/ward:java~1use-of-sha224"
-            },
-            "use-of-weak-rsa-key": {
-              "$ref": "#/$defs/ward:java~1use-of-weak-rsa-key"
             },
             "use-proper-class-loader": {
               "$ref": "#/$defs/ward:java~1use-proper-class-loader"
@@ -69921,9 +66999,6 @@
             "weak-key-size": {
               "$ref": "#/$defs/ward:java~1weak-key-size"
             },
-            "weak-ssl-context": {
-              "$ref": "#/$defs/ward:java~1weak-ssl-context"
-            },
             "weak-tls-protocol": {
               "$ref": "#/$defs/ward:java~1weak-tls-protocol"
             },
@@ -69969,9 +67044,6 @@
             "xml-external-entities": {
               "$ref": "#/$defs/ward:java~1xml-external-entities"
             },
-            "xmlinputfactory-possible-xxe": {
-              "$ref": "#/$defs/ward:java~1xmlinputfactory-possible-xxe"
-            },
             "xor-power": {
               "$ref": "#/$defs/ward:java~1xor-power"
             },
@@ -69987,44 +67059,14 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "aead-no-final": {
-              "$ref": "#/$defs/ward:javascript~1aead-no-final"
-            },
-            "angular-bypasssecuritytrust": {
-              "$ref": "#/$defs/ward:javascript~1angular-bypasssecuritytrust"
-            },
             "array-callback-return": {
               "$ref": "#/$defs/ward:javascript~1array-callback-return"
-            },
-            "aws-cdk-bucket-enforcessl": {
-              "$ref": "#/$defs/ward:javascript~1aws-cdk-bucket-enforcessl"
-            },
-            "awscdk-bucket-encryption": {
-              "$ref": "#/$defs/ward:javascript~1awscdk-bucket-encryption"
-            },
-            "awscdk-bucket-grantpublicaccessmethod": {
-              "$ref": "#/$defs/ward:javascript~1awscdk-bucket-grantpublicaccessmethod"
-            },
-            "awscdk-codebuild-project-public": {
-              "$ref": "#/$defs/ward:javascript~1awscdk-codebuild-project-public"
-            },
-            "awscdk-sqs-unencryptedqueue": {
-              "$ref": "#/$defs/ward:javascript~1awscdk-sqs-unencryptedqueue"
-            },
-            "bypass-tls-verification": {
-              "$ref": "#/$defs/ward:javascript~1bypass-tls-verification"
             },
             "catch-parameter-name": {
               "$ref": "#/$defs/ward:javascript~1catch-parameter-name"
             },
-            "chrome-remote-interface-compilescript-injection": {
-              "$ref": "#/$defs/ward:javascript~1chrome-remote-interface-compilescript-injection"
-            },
             "cleartext-transport": {
               "$ref": "#/$defs/ward:javascript~1cleartext-transport"
-            },
-            "code-string-concat": {
-              "$ref": "#/$defs/ward:javascript~1code-string-concat"
             },
             "command-injection": {
               "$ref": "#/$defs/ward:javascript~1command-injection"
@@ -70038,33 +67080,6 @@
             "constructors-declaration-grouping": {
               "$ref": "#/$defs/ward:javascript~1constructors-declaration-grouping"
             },
-            "cors-misconfiguration": {
-              "$ref": "#/$defs/ward:javascript~1cors-misconfiguration"
-            },
-            "create-de-cipher-no-iv": {
-              "$ref": "#/$defs/ward:javascript~1create-de-cipher-no-iv"
-            },
-            "deno-dangerous-run": {
-              "$ref": "#/$defs/ward:javascript~1deno-dangerous-run"
-            },
-            "detect-angular-element-taint": {
-              "$ref": "#/$defs/ward:javascript~1detect-angular-element-taint"
-            },
-            "detect-angular-sce-disabled": {
-              "$ref": "#/$defs/ward:javascript~1detect-angular-sce-disabled"
-            },
-            "detect-angular-trust-as-method": {
-              "$ref": "#/$defs/ward:javascript~1detect-angular-trust-as-method"
-            },
-            "detect-child-process": {
-              "$ref": "#/$defs/ward:javascript~1detect-child-process"
-            },
-            "detect-eval-with-expression": {
-              "$ref": "#/$defs/ward:javascript~1detect-eval-with-expression"
-            },
-            "direct-response-write": {
-              "$ref": "#/$defs/ward:javascript~1direct-response-write"
-            },
             "dom-xss": {
               "$ref": "#/$defs/ward:javascript~1dom-xss"
             },
@@ -70073,9 +67088,6 @@
             },
             "duplicate-code": {
               "$ref": "#/$defs/ward:javascript~1duplicate-code"
-            },
-            "dynamodb-request-object": {
-              "$ref": "#/$defs/ward:javascript~1dynamodb-request-object"
             },
             "ecb-mode": {
               "$ref": "#/$defs/ward:javascript~1ecb-mode"
@@ -70086,84 +67098,6 @@
             "eqeqeq": {
               "$ref": "#/$defs/ward:javascript~1eqeqeq"
             },
-            "express-check-directory-listing": {
-              "$ref": "#/$defs/ward:javascript~1express-check-directory-listing"
-            },
-            "express-cookie-session-default-name": {
-              "$ref": "#/$defs/ward:javascript~1express-cookie-session-default-name"
-            },
-            "express-cookie-session-no-domain": {
-              "$ref": "#/$defs/ward:javascript~1express-cookie-session-no-domain"
-            },
-            "express-cookie-session-no-expires": {
-              "$ref": "#/$defs/ward:javascript~1express-cookie-session-no-expires"
-            },
-            "express-cookie-session-no-httponly": {
-              "$ref": "#/$defs/ward:javascript~1express-cookie-session-no-httponly"
-            },
-            "express-cookie-session-no-path": {
-              "$ref": "#/$defs/ward:javascript~1express-cookie-session-no-path"
-            },
-            "express-cookie-session-no-secure": {
-              "$ref": "#/$defs/ward:javascript~1express-cookie-session-no-secure"
-            },
-            "express-expat-xxe": {
-              "$ref": "#/$defs/ward:javascript~1express-expat-xxe"
-            },
-            "express-insecure-template-usage": {
-              "$ref": "#/$defs/ward:javascript~1express-insecure-template-usage"
-            },
-            "express-jwt-hardcoded-secret": {
-              "$ref": "#/$defs/ward:javascript~1express-jwt-hardcoded-secret"
-            },
-            "express-jwt-not-revoked": {
-              "$ref": "#/$defs/ward:javascript~1express-jwt-not-revoked"
-            },
-            "express-libxml-noent": {
-              "$ref": "#/$defs/ward:javascript~1express-libxml-noent"
-            },
-            "express-open-redirect": {
-              "$ref": "#/$defs/ward:javascript~1express-open-redirect"
-            },
-            "express-path-join-resolve-traversal": {
-              "$ref": "#/$defs/ward:javascript~1express-path-join-resolve-traversal"
-            },
-            "express-phantom-injection": {
-              "$ref": "#/$defs/ward:javascript~1express-phantom-injection"
-            },
-            "express-puppeteer-injection": {
-              "$ref": "#/$defs/ward:javascript~1express-puppeteer-injection"
-            },
-            "express-res-sendfile": {
-              "$ref": "#/$defs/ward:javascript~1express-res-sendfile"
-            },
-            "express-sandbox-code-injection": {
-              "$ref": "#/$defs/ward:javascript~1express-sandbox-code-injection"
-            },
-            "express-sequelize-injection": {
-              "$ref": "#/$defs/ward:javascript~1express-sequelize-injection"
-            },
-            "express-session-hardcoded-secret": {
-              "$ref": "#/$defs/ward:javascript~1express-session-hardcoded-secret"
-            },
-            "express-ssrf": {
-              "$ref": "#/$defs/ward:javascript~1express-ssrf"
-            },
-            "express-third-party-object-deserialization": {
-              "$ref": "#/$defs/ward:javascript~1express-third-party-object-deserialization"
-            },
-            "express-vm-injection": {
-              "$ref": "#/$defs/ward:javascript~1express-vm-injection"
-            },
-            "express-vm2-injection": {
-              "$ref": "#/$defs/ward:javascript~1express-vm2-injection"
-            },
-            "express-xml2json-xxe": {
-              "$ref": "#/$defs/ward:javascript~1express-xml2json-xxe"
-            },
-            "express-xml2json-xxe-event": {
-              "$ref": "#/$defs/ward:javascript~1express-xml2json-xxe-event"
-            },
             "file-length": {
               "$ref": "#/$defs/ward:javascript~1file-length"
             },
@@ -70173,20 +67107,11 @@
             "function-length": {
               "$ref": "#/$defs/ward:javascript~1function-length"
             },
-            "gcm-no-tag-length": {
-              "$ref": "#/$defs/ward:javascript~1gcm-no-tag-length"
-            },
             "getter-return": {
               "$ref": "#/$defs/ward:javascript~1getter-return"
             },
             "hard-coded-secret": {
               "$ref": "#/$defs/ward:javascript~1hard-coded-secret"
-            },
-            "hardcoded-jwt-secret": {
-              "$ref": "#/$defs/ward:javascript~1hardcoded-jwt-secret"
-            },
-            "hardcoded-passport-secret": {
-              "$ref": "#/$defs/ward:javascript~1hardcoded-passport-secret"
             },
             "header-injection": {
               "$ref": "#/$defs/ward:javascript~1header-injection"
@@ -70202,9 +67127,6 @@
             },
             "insecure-random": {
               "$ref": "#/$defs/ward:javascript~1insecure-random"
-            },
-            "intercom-settings-user-identifier-without-user-hash": {
-              "$ref": "#/$defs/ward:javascript~1intercom-settings-user-identifier-without-user-hash"
             },
             "invalid-javadoc-position": {
               "$ref": "#/$defs/ward:javascript~1invalid-javadoc-position"
@@ -70224,20 +67146,8 @@
             "javadoc-paragraph": {
               "$ref": "#/$defs/ward:javascript~1javadoc-paragraph"
             },
-            "js-open-redirect": {
-              "$ref": "#/$defs/ward:javascript~1js-open-redirect"
-            },
-            "jwt-none-alg": {
-              "$ref": "#/$defs/ward:javascript~1jwt-none-alg"
-            },
-            "jwt-simple-noverify": {
-              "$ref": "#/$defs/ward:javascript~1jwt-simple-noverify"
-            },
             "jwt-without-verification": {
               "$ref": "#/$defs/ward:javascript~1jwt-without-verification"
-            },
-            "knex-sqli": {
-              "$ref": "#/$defs/ward:javascript~1knex-sqli"
             },
             "knip-binaries": {
               "$ref": "#/$defs/ward:javascript~1knip-binaries"
@@ -70301,9 +67211,6 @@
             },
             "multiple-variable-declarations": {
               "$ref": "#/$defs/ward:javascript~1multiple-variable-declarations"
-            },
-            "mysql-sqli": {
-              "$ref": "#/$defs/ward:javascript~1mysql-sqli"
             },
             "naming": {
               "$ref": "#/$defs/ward:javascript~1naming"
@@ -70770,9 +67677,6 @@
             "no-xor-as-exponentiation": {
               "$ref": "#/$defs/ward:javascript~1no-xor-as-exponentiation"
             },
-            "node-knex-sqli": {
-              "$ref": "#/$defs/ward:javascript~1node-knex-sqli"
-            },
             "nosql-injection": {
               "$ref": "#/$defs/ward:javascript~1nosql-injection"
             },
@@ -70793,9 +67697,6 @@
             },
             "permissive-cors": {
               "$ref": "#/$defs/ward:javascript~1permissive-cors"
-            },
-            "pg-sqli": {
-              "$ref": "#/$defs/ward:javascript~1pg-sqli"
             },
             "prefer-arrow-callback": {
               "$ref": "#/$defs/ward:javascript~1prefer-arrow-callback"
@@ -70836,24 +67737,6 @@
             "radix": {
               "$ref": "#/$defs/ward:javascript~1radix"
             },
-            "raw-html-concat": {
-              "$ref": "#/$defs/ward:javascript~1raw-html-concat"
-            },
-            "raw-html-format": {
-              "$ref": "#/$defs/ward:javascript~1raw-html-format"
-            },
-            "react-dangerouslysetinnerhtml": {
-              "$ref": "#/$defs/ward:javascript~1react-dangerouslysetinnerhtml"
-            },
-            "react-insecure-request": {
-              "$ref": "#/$defs/ward:javascript~1react-insecure-request"
-            },
-            "react-unsanitized-method": {
-              "$ref": "#/$defs/ward:javascript~1react-unsanitized-method"
-            },
-            "react-unsanitized-property": {
-              "$ref": "#/$defs/ward:javascript~1react-unsanitized-property"
-            },
             "regex-injection": {
               "$ref": "#/$defs/ward:javascript~1regex-injection"
             },
@@ -70866,20 +67749,11 @@
             "require-empty-line-before-block-tag-group": {
               "$ref": "#/$defs/ward:javascript~1require-empty-line-before-block-tag-group"
             },
-            "require-request": {
-              "$ref": "#/$defs/ward:javascript~1require-request"
-            },
             "require-yield": {
               "$ref": "#/$defs/ward:javascript~1require-yield"
             },
-            "res-render-injection": {
-              "$ref": "#/$defs/ward:javascript~1res-render-injection"
-            },
             "script-injection": {
               "$ref": "#/$defs/ward:javascript~1script-injection"
-            },
-            "sequelize-sqli": {
-              "$ref": "#/$defs/ward:javascript~1sequelize-sqli"
             },
             "server-side-request-forgery": {
               "$ref": "#/$defs/ward:javascript~1server-side-request-forgery"
@@ -70905,12 +67779,6 @@
             "symbol-description": {
               "$ref": "#/$defs/ward:javascript~1symbol-description"
             },
-            "tainted-html-response": {
-              "$ref": "#/$defs/ward:javascript~1tainted-html-response"
-            },
-            "tainted-html-string": {
-              "$ref": "#/$defs/ward:javascript~1tainted-html-string"
-            },
             "template-injection": {
               "$ref": "#/$defs/ward:javascript~1template-injection"
             },
@@ -70922,9 +67790,6 @@
             },
             "type-name": {
               "$ref": "#/$defs/ward:javascript~1type-name"
-            },
-            "unsafe-argon2-config": {
-              "$ref": "#/$defs/ward:javascript~1unsafe-argon2-config"
             },
             "unsafe-framework-trust": {
               "$ref": "#/$defs/ward:javascript~1unsafe-framework-trust"
@@ -71070,9 +67935,6 @@
             "variable-declaration-usage-distance": {
               "$ref": "#/$defs/ward:javascript~1variable-declaration-usage-distance"
             },
-            "vm-runincontext-injection": {
-              "$ref": "#/$defs/ward:javascript~1vm-runincontext-injection"
-            },
             "weak-cipher": {
               "$ref": "#/$defs/ward:javascript~1weak-cipher"
             },
@@ -71084,12 +67946,6 @@
             },
             "wildcard-post-message": {
               "$ref": "#/$defs/ward:javascript~1wildcard-post-message"
-            },
-            "wildcard-postmessage-configuration": {
-              "$ref": "#/$defs/ward:javascript~1wildcard-postmessage-configuration"
-            },
-            "x-frame-options-misconfiguration": {
-              "$ref": "#/$defs/ward:javascript~1x-frame-options-misconfiguration"
             },
             "xml-external-entities": {
               "$ref": "#/$defs/ward:javascript~1xml-external-entities"
