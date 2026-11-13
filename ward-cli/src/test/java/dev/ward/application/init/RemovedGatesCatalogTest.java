@@ -10,6 +10,7 @@ import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
@@ -26,20 +27,19 @@ class RemovedGatesCatalogTest {
 
   @Test
   void removedGatesAreNeitherDefinedNorOffered() {
-    final InitGeneralCatalog catalog = new InitGeneralCatalog(new FakeEnvironmentInspection());
+    final List<String> offered = offered();
     for (final String removed : REMOVED_GATES) {
       assertThat(QualityGateDefinitions.find(removed)).as("definition of %s", removed).isEmpty();
-      assertThat(
-              Stream.of(BuildTool.MAVEN, BuildTool.GRADLE)
-                  .flatMap(
-                      buildTool ->
-                          catalog
-                              .gates(
-                                  new Project(root, Language.JAVA, buildTool, Framework.NONE), null)
-                              .stream()))
-          .extracting(InitGateOption::id)
-          .as("gates offered, without %s", removed)
-          .doesNotContain(removed);
+      assertThat(offered).as("gates offered, without %s", removed).doesNotContain(removed);
     }
+  }
+
+  private List<String> offered() {
+    final InitGeneralCatalog catalog = new InitGeneralCatalog(new FakeEnvironmentInspection());
+    return Stream.of(BuildTool.MAVEN, BuildTool.GRADLE)
+        .map(buildTool -> new Project(root, Language.JAVA, buildTool, Framework.NONE))
+        .flatMap(project -> catalog.gates(project, null).stream())
+        .map(InitGateOption::id)
+        .toList();
   }
 }
