@@ -9,33 +9,77 @@ import dev.ward.domain.FakeEnvironmentInspection;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.project.Project;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-/** Maven api-compat needs a released baseline, so init offers it only for published libraries. */
+/**
+ * api-compat compares sources with a release tag, so init offers it to Java and Kotlin projects
+ * with one.
+ */
 class InitApiCompatCatalogTest {
-  @Test
-  void offersMavenApiCompatOnlyForPublishedProjects(@TempDir final Path dir) throws Exception {
-    ProjectFixtures.withPom(
-        dir,
-        ProjectFixtures.PLAIN_POM.replace(
-            "</project>",
-            "<distributionManagement><repository><id>r</id><url>file:///r</url></repository>"
-                + "</distributionManagement></project>"));
-    final InitSetupCatalog catalog = new InitSetupCatalog(new FakeEnvironmentInspection());
-    final ProjectDetector detector = new ProjectDetector(new FileSystemProjectInspection());
-    final Project published = detector.detect(dir).orElseThrow();
-    final Project application =
-        new Project(dir, published.language(), published.buildTool(), published.framework());
+  private static final String API_COMPAT = "api-compat";
 
-    assertThat(published.publishesArtifacts()).isTrue();
-    assertThat(catalog.gate(published, "api-compat").command())
-        .endsWith("-DskipTests", "package", "japicmp:cmp");
-    assertThat(catalog.gates(application, null))
+  private static Project detect(final Path dir) {
+    return new ProjectDetector(new FileSystemProjectInspection()).detect(dir).orElseThrow();
+  }
+
+  @Test
+  void offersMavenApiCompatWithAReleaseTagAndNoCommand(@TempDir final Path dir) throws Exception {
+    ProjectFixtures.withPom(dir, ProjectFixtures.PLAIN_POM);
+    final Project project = detect(dir);
+    final InitSetupCatalog tagged =
+        new InitSetupCatalog(new FakeEnvironmentInspection().withReleaseTag());
+
+    final InitGateOption gate = tagged.gate(project, API_COMPAT);
+
+    assertThat(gate.command()).isEmpty();
+    assertThat(gate.available()).isTrue();
+    assertThat(tagged.gates(project, null)).extracting(InitGateOption::id).contains(API_COMPAT);
+  }
+
+  @Test
+  void hidesApiCompatWithoutAReleaseTagAndRefusesItByName(@TempDir final Path dir)
+      throws Exception {
+    ProjectFixtures.withPom(dir, ProjectFixtures.PLAIN_POM);
+    final Project project = detect(dir);
+    final InitSetupCatalog untagged = new InitSetupCatalog(new FakeEnvironmentInspection());
+
+    assertThat(untagged.gates(project, null))
         .extracting(InitGateOption::id)
-        .doesNotContain("api-compat");
-    assertThatThrownBy(() -> catalog.gate(application, "api-compat"))
-        .hasMessageContaining("<distributionManagement>");
+        .doesNotContain(API_COMPAT);
+    assertThatThrownBy(() -> untagged.gate(project, API_COMPAT))
+        .hasMessageContaining("release tag")
+        .hasMessageContaining("v1.2.3");
+  }
+
+  @Test
+  void offersGradleApiCompatWithAReleaseTagToo(@TempDir final Path dir) throws Exception {
+    Files.writeString(dir.resolve("build.gradle"), "plugins { id 'java' }\n");
+    final Project project = detect(dir);
+
+    assertThat(
+            new InitSetupCatalog(new FakeEnvironmentInspection("gradle").withReleaseTag())
+                .gate(project, API_COMPAT)
+                .command())
+        .isEmpty();
+    assertThat(new InitSetupCatalog(new FakeEnvironmentInspection("gradle")).gates(project, null))
+        .extracting(InitGateOption::id)
+        .doesNotContain(API_COMPAT);
+  }
+
+  @Test
+  void offersKotlinApiCompatWithAReleaseTagAndNoCommand(@TempDir final Path dir) throws Exception {
+    Files.writeString(dir.resolve("build.gradle.kts"), "plugins { kotlin(\"jvm\") }\n");
+    Files.createDirectories(dir.resolve("src/main/kotlin"));
+    Files.writeString(dir.resolve("src/main/kotlin/A.kt"), "class A\n");
+    final Project project = detect(dir);
+
+    assertThat(
+            new InitSetupCatalog(new FakeEnvironmentInspection("gradle").withReleaseTag())
+                .gate(project, API_COMPAT)
+                .command())
+        .isEmpty();
   }
 }

@@ -74,13 +74,18 @@ final class FixtureProject {
             null,
             null,
             null,
-            null,
             rules,
             null,
             List.of(),
             null,
             null,
-            rulesFile);
+            rulesFile,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null);
     final AnalysisPorts ports =
         new AnalysisPorts(
             new ProjectRuleSource(packaged),
@@ -105,7 +110,6 @@ final class FixtureProject {
         Language.JAVA,
         BuildTool.MAVEN,
         Framework.NONE,
-        false,
         false,
         root,
         Set.of(),

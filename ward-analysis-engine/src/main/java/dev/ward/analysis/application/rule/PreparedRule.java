@@ -29,13 +29,19 @@ record PreparedRule(Optional<CompiledRule> rule, List<AnalysisLanguage> runnable
     runnable = List.copyOf(runnable);
   }
 
-  /** Prepares {@code rules}; a rule a frontend cannot serve is recorded as not run. */
+  /**
+   * Prepares {@code rules}; a rule a frontend cannot serve is recorded as not run. A {@code TEXT}
+   * rule needs no frontend and runs through {@link RuleEngine#runText}, so it is left out.
+   */
   static List<PreparedRule> all(
       final List<RuleDefinition> rules,
       final Map<AnalysisLanguage, FrontendSupport> support,
       final RuleMatcher matcher,
       final RuleRunCollector collector) {
-    return rules.stream().map(rule -> of(rule, support, matcher, collector)).toList();
+    return rules.stream()
+        .filter(rule -> rule.capability() != RuleCapability.TEXT)
+        .map(rule -> of(rule, support, matcher, collector))
+        .toList();
   }
 
   /** The type-fact needs of the prepared {@code TYPES} rules, by language. */

@@ -1,0 +1,2 @@
+8:11	Schema of type integer must specify minimum and maximum.
+10:10	Schema of type integer must specify minimum and maximum.

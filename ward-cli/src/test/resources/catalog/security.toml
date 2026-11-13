@@ -1,0 +1,291 @@
+# Security rules that Ward provides itself, one [[rule]] per weakness. Every row has cwe (the MITRE CWE ids) and sources (the public documents the rule was written from); SecurityCatalogTest enforces both. The list of CWE ids is catalog/security/cwe-5.0.txt.
+
+[[rule]]
+name = "cleartext-transport"
+cwe = ["CWE-319"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/URL.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/URI.html", "https://cwe.mitre.org/data/definitions/319.html", "https://developer.mozilla.org/en-US/docs/Web/API/Window/fetch", "https://nodejs.org/docs/latest-v22.x/api/http.html"]
+
+[[rule]]
+name = "constant-gcm-nonce"
+cwe = ["CWE-323"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/crypto/spec/GCMParameterSpec.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/crypto/Cipher.html", "https://cwe.mitre.org/data/definitions/323.html"]
+
+[[rule]]
+name = "cookie-broad-scope"
+cwe = ["CWE-668"]
+sources = ["https://expressjs.com/en/5x/api.html#res.cookie", "https://github.com/expressjs/session#cookiedomain", "https://cwe.mitre.org/data/definitions/668.html"]
+
+[[rule]]
+name = "cookie-missing-http-only"
+cwe = ["CWE-1004"]
+sources = ["https://expressjs.com/en/5x/api.html#res.cookie", "https://cwe.mitre.org/data/definitions/1004.html"]
+
+[[rule]]
+name = "cookie-missing-same-site"
+cwe = ["CWE-1275"]
+sources = ["https://expressjs.com/en/5x/api.html#res.cookie", "https://github.com/expressjs/session#cookiesamesite", "https://cwe.mitre.org/data/definitions/1275.html"]
+
+[[rule]]
+name = "cookie-missing-secure"
+cwe = ["CWE-614"]
+sources = ["https://expressjs.com/en/5x/api.html#res.cookie", "https://github.com/expressjs/session#cookiesecure", "https://github.com/expressjs/cookie-session#cookie-options", "https://cwe.mitre.org/data/definitions/614.html"]
+
+[[rule]]
+name = "csrf-protection-disabled"
+cwe = ["CWE-352"]
+sources = ["https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html", "https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/config/annotation/web/builders/HttpSecurity.html", "https://cwe.mitre.org/data/definitions/352.html"]
+
+[[rule]]
+name = "django-insecure-settings"
+cwe = ["CWE-489", "CWE-798", "CWE-614", "CWE-1004"]
+sources = ["https://docs.djangoproject.com/en/5.1/ref/settings/#debug", "https://docs.djangoproject.com/en/5.1/ref/settings/#secret-key", "https://docs.djangoproject.com/en/5.1/ref/settings/#session-cookie-secure", "https://cwe.mitre.org/data/definitions/489.html", "https://cwe.mitre.org/data/definitions/798.html", "https://cwe.mitre.org/data/definitions/614.html", "https://cwe.mitre.org/data/definitions/1004.html"]
+
+[[rule]]
+name = "dom-xss"
+cwe = ["CWE-79"]
+sources = ["https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML#security_considerations", "https://developer.mozilla.org/en-US/docs/Web/API/Document/write", "https://cwe.mitre.org/data/definitions/79.html"]
+
+[[rule]]
+name = "ecb-mode"
+cwe = ["CWE-327"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/crypto/Cipher.html", "https://docs.oracle.com/en/java/javase/21/docs/specs/security/standard-names.html#cipher-algorithm-modes", "https://cwe.mitre.org/data/definitions/327.html", "https://nodejs.org/docs/latest-v22.x/api/crypto.html#cryptocreatecipherivalgorithm-key-iv-options"]
+
+[[rule]]
+name = "environment-injection"
+cwe = ["CWE-15", "CWE-454"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/ProcessBuilder.html#environment()", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Runtime.html", "https://cwe.mitre.org/data/definitions/15.html", "https://cwe.mitre.org/data/definitions/454.html"]
+
+[[rule]]
+name = "expression-injection"
+cwe = ["CWE-917"]
+sources = ["https://docs.spring.io/spring-framework/reference/core/expressions.html", "https://commons.apache.org/proper/commons-jexl/apidocs/org/apache/commons/jexl3/JexlEngine.html", "https://cwe.mitre.org/data/definitions/917.html"]
+
+[[rule]]
+name = "flask-insecure-config"
+cwe = ["CWE-798", "CWE-614", "CWE-1004"]
+sources = ["https://flask.palletsprojects.com/en/stable/config/#SESSION_COOKIE_SECURE", "https://flask.palletsprojects.com/en/stable/config/#SECRET_KEY", "https://cwe.mitre.org/data/definitions/798.html", "https://cwe.mitre.org/data/definitions/614.html", "https://cwe.mitre.org/data/definitions/1004.html"]
+
+[[rule]]
+name = "hard-coded-password"
+cwe = ["CWE-798", "CWE-259"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/DriverManager.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/crypto/spec/PBEKeySpec.html", "https://cwe.mitre.org/data/definitions/798.html", "https://cwe.mitre.org/data/definitions/259.html"]
+
+[[rule]]
+name = "hard-coded-secret"
+cwe = ["CWE-798", "CWE-259"]
+sources = ["https://github.com/expressjs/session#secret", "https://github.com/auth0/node-jsonwebtoken#jwtsignpayload-secretorprivatekey-options-callback", "https://cwe.mitre.org/data/definitions/798.html", "https://cwe.mitre.org/data/definitions/259.html"]
+
+[[rule]]
+name = "header-injection"
+cwe = ["CWE-113"]
+sources = ["https://expressjs.com/en/5x/api.html#res.set", "https://nodejs.org/docs/latest-v22.x/api/http.html#responsesetheadername-value", "https://cwe.mitre.org/data/definitions/113.html"]
+
+[[rule]]
+name = "header-splitting"
+cwe = ["CWE-113"]
+sources = ["https://jakarta.ee/specifications/servlet/6.0/apidocs/jakarta.servlet/jakarta/servlet/http/httpservletresponse#setHeader(java.lang.String,java.lang.String)", "https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/HttpHeaders.html", "https://cwe.mitre.org/data/definitions/113.html"]
+
+[[rule]]
+name = "hostname-verification-disabled"
+cwe = ["CWE-297"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/net/ssl/HostnameVerifier.html", "https://hc.apache.org/httpcomponents-client-4.5.x/current/httpclient/apidocs/org/apache/http/conn/ssl/NoopHostnameVerifier.html", "https://cwe.mitre.org/data/definitions/297.html"]
+
+[[rule]]
+name = "identity-cipher"
+cwe = ["CWE-327"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/crypto/NullCipher.html", "https://cwe.mitre.org/data/definitions/327.html"]
+
+[[rule]]
+name = "insecure-cookie"
+cwe = ["CWE-614", "CWE-1004"]
+sources = ["https://jakarta.ee/specifications/servlet/6.0/apidocs/jakarta.servlet/jakarta/servlet/http/cookie", "https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/ResponseCookie.html", "https://cwe.mitre.org/data/definitions/614.html", "https://cwe.mitre.org/data/definitions/1004.html", "https://expressjs.com/en/5x/api.html#res.cookie", "https://github.com/expressjs/session#cookie"]
+
+[[rule]]
+name = "insecure-random"
+cwe = ["CWE-330", "CWE-338"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Random.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/security/SecureRandom.html", "https://cwe.mitre.org/data/definitions/330.html", "https://cwe.mitre.org/data/definitions/338.html", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random", "https://nodejs.org/docs/latest-v22.x/api/crypto.html#cryptorandombytessize-callback"]
+
+[[rule]]
+name = "jndi-injection"
+cwe = ["CWE-99", "CWE-74"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.naming/javax/naming/Context.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.naming/javax/naming/InitialContext.html", "https://cwe.mitre.org/data/definitions/99.html", "https://cwe.mitre.org/data/definitions/74.html"]
+
+[[rule]]
+name = "jwt-without-verification"
+cwe = ["CWE-347"]
+sources = ["https://javadoc.io/doc/io.jsonwebtoken/jjwt-api/latest/io/jsonwebtoken/JwtParser.html", "https://javadoc.io/doc/com.auth0/java-jwt/latest/com/auth0/jwt/JWT.html", "https://cwe.mitre.org/data/definitions/347.html", "https://github.com/auth0/node-jsonwebtoken#jwtverifytoken-secretorpublickey-options-callback"]
+
+[[rule]]
+name = "ldap-injection"
+cwe = ["CWE-90"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.naming/javax/naming/directory/DirContext.html", "https://docs.spring.io/spring-ldap/docs/current/apidocs/org/springframework/ldap/core/LdapTemplate.html", "https://cwe.mitre.org/data/definitions/90.html"]
+
+[[rule]]
+name = "log-forging"
+cwe = ["CWE-117"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.logging/java/util/logging/Logger.html", "https://www.slf4j.org/apidocs/org/slf4j/Logger.html", "https://cwe.mitre.org/data/definitions/117.html", "https://github.com/winstonjs/winston#logging", "https://getpino.io/#/docs/api"]
+
+[[rule]]
+name = "missing-frame-protection"
+cwe = ["CWE-1021"]
+sources = ["https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Frame-Options", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/frame-ancestors", "https://helmetjs.github.io/", "https://cwe.mitre.org/data/definitions/1021.html"]
+
+[[rule]]
+name = "nosql-injection"
+cwe = ["CWE-943"]
+sources = ["https://www.mongodb.com/docs/manual/reference/operator/query/", "https://mongoosejs.com/docs/api/model.html", "https://cwe.mitre.org/data/definitions/943.html"]
+
+[[rule]]
+name = "permissive-cors"
+cwe = ["CWE-942"]
+sources = ["https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/servlet/config/annotation/CorsRegistration.html", "https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/cors/CorsConfiguration.html", "https://cwe.mitre.org/data/definitions/942.html", "https://github.com/expressjs/cors#configuration-options", "https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS"]
+
+[[rule]]
+name = "prototype-pollution"
+cwe = ["CWE-1321"]
+sources = ["https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/proto", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain", "https://cwe.mitre.org/data/definitions/1321.html"]
+
+[[rule]]
+name = "regex-injection"
+cwe = ["CWE-1333", "CWE-400"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/regex/Pattern.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html#matches(java.lang.String)", "https://cwe.mitre.org/data/definitions/1333.html", "https://cwe.mitre.org/data/definitions/400.html", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/RegExp", "https://nodejs.org/en/learn/getting-started/security-best-practices#denial-of-service-of-the-server-cwe-400"]
+
+[[rule]]
+name = "rsa-without-padding"
+cwe = ["CWE-780", "CWE-327"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/crypto/Cipher.html", "https://cwe.mitre.org/data/definitions/780.html", "https://cwe.mitre.org/data/definitions/327.html"]
+
+[[rule]]
+name = "script-injection"
+cwe = ["CWE-94", "CWE-95"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.scripting/javax/script/ScriptEngine.html", "https://docs.groovy-lang.org/latest/html/api/groovy/lang/GroovyShell.html", "https://cwe.mitre.org/data/definitions/94.html", "https://cwe.mitre.org/data/definitions/95.html", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval", "https://nodejs.org/docs/latest-v22.x/api/vm.html"]
+
+[[rule]]
+name = "server-side-request-forgery"
+cwe = ["CWE-918"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/URL.html", "https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html", "https://cwe.mitre.org/data/definitions/918.html", "https://developer.mozilla.org/en-US/docs/Web/API/Window/fetch", "https://axios-http.com/docs/req_config", "https://nodejs.org/docs/latest-v22.x/api/http.html#httprequesturl-options-callback", "https://requests.readthedocs.io/en/latest/api/#requests.request", "https://docs.python.org/3/library/urllib.request.html#urllib.request.urlopen"]
+
+[[rule]]
+name = "session-attribute-injection"
+cwe = ["CWE-501"]
+sources = ["https://jakarta.ee/specifications/servlet/6.0/apidocs/jakarta.servlet/jakarta/servlet/http/httpsession", "https://cwe.mitre.org/data/definitions/501.html"]
+
+[[rule]]
+name = "shell-option"
+cwe = ["CWE-78"]
+sources = ["https://nodejs.org/docs/latest-v22.x/api/child_process.html#child_processspawncommand-args-options", "https://cwe.mitre.org/data/definitions/78.html"]
+
+[[rule]]
+name = "sql-string-formatting"
+cwe = ["CWE-89"]
+sources = ["https://docs.python.org/3/library/sqlite3.html#sqlite3-placeholders", "https://peps.python.org/pep-0249/#paramstyle", "https://docs.djangoproject.com/en/5.1/topics/db/sql/#passing-parameters-into-raw", "https://cwe.mitre.org/data/definitions/89.html"]
+
+[[rule]]
+name = "static-iv"
+cwe = ["CWE-329", "CWE-1204"]
+sources = ["https://nodejs.org/docs/latest-v22.x/api/crypto.html#cryptocreatecipherivalgorithm-key-iv-options", "https://cwe.mitre.org/data/definitions/329.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/crypto/spec/IvParameterSpec.html", "https://cwe.mitre.org/data/definitions/1204.html"]
+
+[[rule]]
+name = "template-autoescape-disabled"
+cwe = ["CWE-79"]
+sources = ["https://jinja.palletsprojects.com/en/stable/api/#autoescaping", "https://jinja.palletsprojects.com/en/stable/api/#jinja2.Environment", "https://cwe.mitre.org/data/definitions/79.html"]
+
+[[rule]]
+name = "template-injection"
+cwe = ["CWE-1336", "CWE-94"]
+sources = ["https://ejs.co/#docs", "https://pugjs.org/api/reference.html", "https://handlebarsjs.com/api-reference/compilation.html", "https://mozilla.github.io/nunjucks/api.html", "https://cwe.mitre.org/data/definitions/1336.html", "https://cwe.mitre.org/data/definitions/94.html"]
+
+[[rule]]
+name = "tls-verification-disabled"
+cwe = ["CWE-295"]
+sources = ["https://nodejs.org/docs/latest-v22.x/api/tls.html#tlsconnectoptions-callback", "https://nodejs.org/docs/latest-v22.x/api/cli.html#node_tls_reject_unauthorizedvalue", "https://cwe.mitre.org/data/definitions/295.html"]
+
+[[rule]]
+name = "trust-all-certificates"
+cwe = ["CWE-295"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/net/ssl/X509TrustManager.html", "https://hc.apache.org/httpcomponents-core-5.2.x/5.2.4/httpcore5/apidocs/org/apache/hc/core5/ssl/TrustStrategy.html", "https://cwe.mitre.org/data/definitions/295.html"]
+
+[[rule]]
+name = "unauthenticated-cbc"
+cwe = ["CWE-649"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/specs/security/standard-names.html#cipher-algorithm-paddings", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/crypto/Cipher.html", "https://cwe.mitre.org/data/definitions/649.html"]
+
+[[rule]]
+name = "unfinished-aead"
+cwe = ["CWE-353"]
+sources = ["https://nodejs.org/docs/latest-v22.x/api/crypto.html#deciphersetauthtagbuffer-encoding", "https://nodejs.org/docs/latest-v22.x/api/crypto.html#decipherfinaloutputencoding", "https://cwe.mitre.org/data/definitions/353.html"]
+
+[[rule]]
+name = "unsafe-deserialization-settings"
+cwe = ["CWE-502"]
+sources = ["https://fasterxml.github.io/jackson-databind/javadoc/2.17/com/fasterxml/jackson/databind/ObjectMapper.html", "https://fasterxml.github.io/jackson-databind/javadoc/2.17/com/fasterxml/jackson/databind/jsontype/impl/LaissezFaireSubTypeValidator.html", "https://cwe.mitre.org/data/definitions/502.html"]
+
+[[rule]]
+name = "unsafe-framework-trust"
+cwe = ["CWE-79"]
+sources = ["https://angular.dev/api/platform-browser/DomSanitizer", "https://angular.dev/best-practices/security#trusting-safe-values", "https://cwe.mitre.org/data/definitions/79.html"]
+
+[[rule]]
+name = "unsafe-reflection"
+cwe = ["CWE-470"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Class.html#forName(java.lang.String)", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/ClassLoader.html", "https://cwe.mitre.org/data/definitions/470.html"]
+
+[[rule]]
+name = "untrusted-deserialization"
+cwe = ["CWE-502"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/ObjectInputStream.html", "https://docs.oracle.com/en/java/javase/21/core/serialization-filtering1.html", "https://cwe.mitre.org/data/definitions/502.html", "https://www.npmjs.com/package/node-serialize", "https://github.com/nodeca/js-yaml/blob/master/migrate_v3_to_v4.md"]
+
+[[rule]]
+name = "untrusted-redirect"
+cwe = ["CWE-601"]
+sources = ["https://jakarta.ee/specifications/servlet/6.0/apidocs/jakarta.servlet/jakarta/servlet/http/httpservletresponse#sendRedirect(java.lang.String)", "https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/servlet/view/RedirectView.html", "https://cwe.mitre.org/data/definitions/601.html", "https://expressjs.com/en/5x/api.html#res.redirect", "https://developer.mozilla.org/en-US/docs/Web/API/Location"]
+
+[[rule]]
+name = "weak-argon2-parameters"
+cwe = ["CWE-916"]
+sources = ["https://www.rfc-editor.org/rfc/rfc9106.html#name-parameter-choice", "https://github.com/ranisalt/node-argon2/wiki/Options", "https://cwe.mitre.org/data/definitions/916.html"]
+
+[[rule]]
+name = "weak-cipher"
+cwe = ["CWE-327"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/specs/security/standard-names.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/crypto/Cipher.html", "https://cwe.mitre.org/data/definitions/327.html", "https://nodejs.org/docs/latest-v22.x/api/crypto.html#cryptocreatecipherivalgorithm-key-iv-options"]
+
+[[rule]]
+name = "weak-gcm-tag-length"
+cwe = ["CWE-328", "CWE-353"]
+sources = ["https://nodejs.org/docs/latest-v22.x/api/crypto.html#ccm-mode", "https://nodejs.org/docs/latest-v22.x/api/crypto.html#cryptocreatedecipherivalgorithm-key-iv-options", "https://cwe.mitre.org/data/definitions/353.html"]
+
+[[rule]]
+name = "weak-hash"
+cwe = ["CWE-328", "CWE-327"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/specs/security/standard-names.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/security/MessageDigest.html", "https://commons.apache.org/proper/commons-codec/apidocs/org/apache/commons/codec/digest/DigestUtils.html", "https://cwe.mitre.org/data/definitions/328.html", "https://cwe.mitre.org/data/definitions/327.html", "https://nodejs.org/docs/latest-v22.x/api/crypto.html#cryptocreatehashalgorithm-options", "https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest"]
+
+[[rule]]
+name = "weak-key-size"
+cwe = ["CWE-326"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/security/KeyPairGenerator.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/security/spec/RSAKeyGenParameterSpec.html", "https://cwe.mitre.org/data/definitions/326.html", "https://nodejs.org/docs/latest-v22.x/api/crypto.html#cryptogeneratekeypairsynctype-options"]
+
+[[rule]]
+name = "weak-password-hash"
+cwe = ["CWE-916", "CWE-328"]
+sources = ["https://docs.python.org/3/library/hashlib.html#key-derivation", "https://docs.djangoproject.com/en/5.1/topics/auth/passwords/#included-hashers", "https://cwe.mitre.org/data/definitions/916.html", "https://cwe.mitre.org/data/definitions/328.html"]
+
+[[rule]]
+name = "weak-tls-protocol"
+cwe = ["CWE-327", "CWE-326"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/net/ssl/SSLContext.html", "https://docs.oracle.com/en/java/javase/21/docs/specs/security/standard-names.html#sslcontext-algorithms", "https://cwe.mitre.org/data/definitions/327.html", "https://cwe.mitre.org/data/definitions/326.html"]
+
+[[rule]]
+name = "wildcard-post-message"
+cwe = ["CWE-345", "CWE-346"]
+sources = ["https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#security_concerns", "https://cwe.mitre.org/data/definitions/345.html", "https://cwe.mitre.org/data/definitions/346.html"]
+
+[[rule]]
+name = "xml-external-entities"
+cwe = ["CWE-611"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/javax/xml/parsers/DocumentBuilderFactory.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/javax/xml/stream/XMLInputFactory.html", "https://cwe.mitre.org/data/definitions/611.html", "https://github.com/libxmljs/libxmljs/wiki/Parsing-XML", "https://owasp.org/www-community/vulnerabilities/XML_External_Entity_(XXE)_Processing", "https://lxml.de/parsing.html#parser-options", "https://docs.python.org/3/library/xml.sax.handler.html#xml.sax.handler.feature_external_ges"]
+
+[[rule]]
+name = "xpath-injection"
+cwe = ["CWE-643"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/javax/xml/xpath/XPath.html", "https://dom4j.github.io/javadoc/2.1.4/org/dom4j/Node.html", "https://cwe.mitre.org/data/definitions/643.html"]

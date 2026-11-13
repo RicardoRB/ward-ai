@@ -53,7 +53,6 @@ class NodeSupportTest {
         tool,
         Framework.NONE,
         false,
-        false,
         root,
         Set.of(),
         version,

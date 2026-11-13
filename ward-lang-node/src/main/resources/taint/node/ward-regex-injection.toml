@@ -1,0 +1,36 @@
+# Written for Ward from the documentation named in the catalog row of the rule; sources: taint/node/sources.toml.
+# Pattern sinks: the source of a RegExp.
+
+[[sinks]]
+kind = "call"
+name = "<init>"
+qualifier = "RegExp"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "RegExp"
+arguments = [0]
+
+
+[[sanitizers]]
+kind = "call"
+name = "escapeRegExp"
+
+[[sanitizers]]
+kind = "call"
+name = "escapeStringRegexp"
+
+
+[[sanitizers]]
+kind = "call"
+name = "Number"
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+
+[[sanitizers]]
+kind = "call"
+name = "parseFloat"
+

@@ -22,9 +22,11 @@ public final class CommandTypeInference {
   public static final Set<String> USES_ONLY =
       Set.of(
           "ward",
-          "openspec-archived",
-          "openspec-junit-traceability",
+          "secrets",
           "ward-format",
+          "vulnerabilities",
+          "crap",
+          "build-policy",
           "ng-test",
           "api-compat",
           "license",
@@ -48,21 +50,16 @@ public final class CommandTypeInference {
           new Rule(
               "coverage",
               anyOf(
-                  sequence("jacoco:check"),
-                  sequence("jacocoTestCoverageVerification"),
-                  sequence("coverage", "report"))),
+                  sequence("jacoco:report"),
+                  sequence("jacocoTestReport"),
+                  sequence("coverage", "lcov"))),
           new Rule("mutation", anyOf(sequence("pitest:mutationCoverage"), sequence("pitest"))),
           new Rule("stryker", sequence("stryker", "run")),
           new Rule("tests", CommandTypeInference::isUnfilteredBuildTest),
           new Rule("compile", buildWrapper(sequence("compile"))),
           new Rule("sonar", anyOf(sequence("sonar:sonar"), sequence("sonarqube"))),
-          new Rule(
-              "dependency-check",
-              anyOf(sequence("dependency-check:check"), sequence("dependencyCheckAnalyze"))),
           new Rule("enforcer", sequence("enforcer:enforce")),
-          new Rule("gitleaks", sequence("gitleaks")),
           new Rule("semgrep", sequence("semgrep")),
-          new Rule("trivy", sequence("trivy")),
           new Rule("tsc", sequence("tsc")),
           new Rule("vue-tsc", sequence("vue-tsc")),
           new Rule("svelte-check", sequence("svelte-check")),
@@ -71,12 +68,10 @@ public final class CommandTypeInference {
           new Rule("vitest", sequence("vitest")),
           new Rule("jest", sequence("jest")),
           new Rule("bun-test", sequence("bun", "test")),
-          new Rule("openspec", sequence("openspec", "validate")),
           new Rule("mypy", sequence("mypy")),
           new Rule("pytest", sequence("pytest")),
           new Rule("mutmut", sequence("mutmut", "run")),
           new Rule("django-check", sequence("manage.py", "check")),
-          new Rule("pip-audit", sequence("pip-audit")),
           new Rule("swift-build", sequence("swift", "build")),
           new Rule("swift-test", sequence("swift", "test")),
           new Rule("xcodebuild-test", sequence("xcodebuild", "test")),
@@ -90,8 +85,7 @@ public final class CommandTypeInference {
 
   /**
    * Returns the one type the command implies, or {@code command} when none or several match. The
-   * executable's file name counts, so {@code /usr/local/bin/openspec validate} is an OpenSpec
-   * check.
+   * executable's file name counts, so {@code /usr/local/bin/gitleaks} is a gitleaks check.
    */
   public static String infer(final List<String> command) {
     final List<String> tokens = new ArrayList<>(command);

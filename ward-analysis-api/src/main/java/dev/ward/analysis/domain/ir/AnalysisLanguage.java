@@ -7,5 +7,6 @@ public enum AnalysisLanguage {
   TYPESCRIPT,
   JAVASCRIPT,
   PYTHON,
-  SWIFT
+  SWIFT,
+  OPENAPI
 }

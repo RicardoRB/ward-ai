@@ -1,6 +1,5 @@
 package dev.ward.infrastructure.agent;
 
-import dev.ward.domain.agent.GuardMode;
 import dev.ward.domain.agent.IntegrationCapability;
 import dev.ward.domain.agent.NativeHookInput;
 import dev.ward.domain.agent.NativeHookOutcome;
@@ -13,23 +12,19 @@ import org.apache.fory.json.annotation.JsonType;
 
 /**
  * Native Cline v3 hooks integration contract, read from {@code @cline/core} 0.0.94. Cline runs each
- * file in {@code .cline/hooks/} named after an event with {@code bash}, waits for PreToolUse and
- * PostToolUse and reads their JSON control output; TaskComplete runs detached and its output is
- * ignored, so there is no turn-end delivery.
+ * file in {@code .cline/hooks/} named after an event with {@code bash}, waits for PostToolUse and
+ * reads its JSON control output; TaskComplete runs detached and its output is ignored, so there is
+ * no turn-end delivery.
  */
 public final class ClineIntegration implements NativeHarnessAdapter {
   private static final NativeAgentIntegration.Definition DEFINITION =
       new NativeAgentIntegration.Definition(
           "cline",
           ".cline/hooks/PostToolUse",
-          ".cline/hooks/PreToolUse",
-          "PreToolUse,PostToolUse",
-          Set.of(
-              IntegrationCapability.PRE_TOOL,
-              IntegrationCapability.POST_EDIT,
-              IntegrationCapability.FEEDBACK,
-              IntegrationCapability.APPROVED_ARTIFACT_GUARD),
-          ".cline/hooks/ward.sh");
+          "",
+          "PostToolUse",
+          Set.of(IntegrationCapability.POST_EDIT, IntegrationCapability.FEEDBACK),
+          List.of(".cline/hooks/PreToolUse"));
 
   @Override
   public NativeAgentIntegration.Definition definition() {
@@ -42,9 +37,10 @@ public final class ClineIntegration implements NativeHarnessAdapter {
     return ClineHookScripts.postToolUse(NativeHookText.marker(DEFINITION.id()));
   }
 
+  /** Cline needs no wrapper: the PostToolUse hook file is the whole integration. */
   @Override
-  public String hookContent(final GuardMode guardMode) {
-    return ClineHookScripts.preToolUse(NativeHookText.marker(DEFINITION.id()), guardMode);
+  public String hookContent() {
+    return "";
   }
 
   /** Returns the hook response that blocks the tool call and tells the agent {@code reason}. */

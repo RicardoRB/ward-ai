@@ -30,6 +30,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 /** The gates init offers a TypeScript project, and the standard preset's selection. */
 class TypeScriptGatesTest {
+  private static final int STANDARD_MINIMUM = 70;
   private static final PackageManifest NO_RUNNER = PackageManifest.EMPTY;
 
   @TempDir Path root;
@@ -68,7 +69,7 @@ class TypeScriptGatesTest {
             : new PackageManifest(Map.of(declared, "^1.0.0"), null, null);
 
     assertThat(catalog(manifest).presetGates(project(manager), QualityPreset.STANDARD))
-        .containsExactly("tsc", gate);
+        .containsExactly("tsc", gate, "coverage");
     assertThat(catalog(manifest).gates(project(manager), null))
         .extracting(InitGateOption::id)
         .contains(gate);
@@ -77,7 +78,7 @@ class TypeScriptGatesTest {
   @Test
   void strictPresetAddsStrykerAndIsOffered() {
     assertThat(catalog(NO_RUNNER).presetGates(project(BuildTool.NPM), QualityPreset.STRICT))
-        .containsExactly("tsc", "vitest", "stryker");
+        .containsExactly("tsc", "vitest", "coverage", "stryker");
     assertThat(catalog(NO_RUNNER).presets(project(BuildTool.NPM)))
         .containsExactly(QualityPreset.STANDARD, QualityPreset.STRICT);
   }
@@ -94,7 +95,9 @@ class TypeScriptGatesTest {
 
     final Map<String, GateConfiguration> gates = new TomlConfigurationReader().read(file).checks();
 
-    assertThat(gates).containsOnlyKeys("tsc", "vitest");
+    assertThat(gates).containsOnlyKeys("tsc", "vitest", "coverage");
+    assertThat(gates.get("coverage").profiles()).isEqualTo(Set.of("pre-push", "ci"));
+    assertThat(gates.get("coverage").minimum()).isEqualTo(STANDARD_MINIMUM);
     assertThat(gates.get("tsc").profiles()).isEqualTo(Set.of("pre-push", "ci"));
     assertThat(gates.get("vitest").profiles()).isEqualTo(Set.of("pre-push", "ci"));
   }
@@ -119,7 +122,6 @@ class TypeScriptGatesTest {
         Language.TYPESCRIPT,
         manager,
         Framework.NONE,
-        false,
         false,
         root,
         Set.of(),

@@ -29,7 +29,7 @@ class ClaudeCodeIntegrationTest {
     assertThat(Files.readString(hook))
         .contains(
             ClaudeCodeIntegration.HOOK_MARKER,
-            "exec ward hook claude-code --learn-after 3 --exclude-spec --event-stdin"
+            "exec ward hook claude-code --learn-after 3 --event-stdin"
                 + " -C \"${CLAUDE_PROJECT_DIR:-.}\"");
     final JsonTree hooks = JsonTree.parse(Files.readString(settings)).get(HOOKS_KEY);
     assertThat(hooks.get(POST_TOOL_USE).get(0).get(HOOKS_KEY).get(0).get("command").asString())
@@ -242,6 +242,6 @@ class ClaudeCodeIntegrationTest {
     assertThat(result.changed()).containsExactlyInAnyOrder(settings.toString(), hook.toString());
     assertThat(Files.readString(settings))
         .contains("\"Stop\"", ClaudeCodeIntegration.SETTINGS_MARKER);
-    assertThat(Files.readString(hook)).contains("--exclude-spec --event-stdin");
+    assertThat(Files.readString(hook)).contains("--learn-after 3 --event-stdin");
   }
 }

@@ -44,7 +44,7 @@ class InitOpenApiGatesTest {
     return new EnvironmentInspection() {
       @Override
       public EnvironmentFacts inspect(final Path projectRoot) {
-        return new EnvironmentFacts(Set.of("vacuum", "oasdiff"), Map.of());
+        return new EnvironmentFacts(Set.of(), Map.of());
       }
 
       @Override
@@ -61,12 +61,14 @@ class InitOpenApiGatesTest {
     assertThat(catalog.gates(project(), null))
         .extracting(InitGateOption::id)
         .contains(LINT, DIFF, COMPAT);
-    assertThat(catalog.gate(project(), LINT).command())
-        .containsExactly("vacuum", "lint", "-z", "-n", "warn");
+    assertThat(catalog.gate(project(), LINT).command()).isEmpty();
+    assertThat(catalog.gate(project(), LINT).available()).isTrue();
     assertThat(catalog.gate(project(), LINT).settings()).containsEntry("spec", SPEC);
     assertThat(catalog.gate(project(), COMPAT).settings())
         .containsExactly(Map.entry("spec", SPEC), Map.entry("base", "origin/main"));
     assertThat(catalog.gate(project(), DIFF).available()).isTrue();
+    assertThat(catalog.gate(project(), DIFF).command()).isEmpty();
+    assertThat(catalog.gate(project(), COMPAT).command()).isEmpty();
   }
 
   @Test

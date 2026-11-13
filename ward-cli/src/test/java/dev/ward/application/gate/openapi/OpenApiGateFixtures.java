@@ -3,16 +3,19 @@ package dev.ward.application.gate.openapi;
 import dev.ward.domain.FakeCommandExecutor;
 import dev.ward.domain.config.GateConfiguration;
 import dev.ward.domain.config.OpenApiGateOptions;
-import dev.ward.domain.doctor.EnvironmentFacts;
 import dev.ward.domain.gate.ProjectFiles;
 import dev.ward.domain.gate.QualityGate;
 import dev.ward.domain.gate.RevisionFiles;
+import dev.ward.domain.gate.RevisionReadException;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import java.nio.file.Path;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -28,21 +31,36 @@ final class OpenApiGateFixtures {
   static final String PARENT_SHA = "c".repeat(40);
   static final Project PROJECT =
       new Project(Path.of("/project"), Language.JAVA, BuildTool.MAVEN, Framework.SPRING_BOOT);
-  static final List<String> LINT_COMMAND = List.of("vacuum", "lint", "-z", "-n", "warn");
-  static final List<String> DIFF_COMMAND = List.of("oasdiff", "breaking", "--fail-on", "ERR");
+  static final List<String> NO_COMMAND = List.of();
+  static final Clock CLOCK = Clock.fixed(Instant.parse("2026-11-12T00:00:00Z"), ZoneOffset.UTC);
+  static final String DOCUMENT =
+      """
+      openapi: 3.0.3
+      info: {title: t, version: '1'}
+      paths:
+        /pets:
+          get:
+            responses:
+              '200': {description: ok}
+          post:
+            responses:
+              '200': {description: ok}
+      """;
 
   final Map<String, String> revisions = new HashMap<>();
   final Set<String> committedFiles = new HashSet<>();
   final Map<String, String> workingTree = new HashMap<>();
-  final Map<String, String> environment = new HashMap<>();
+  final Map<String, String> committedContents = new HashMap<>();
+  boolean unreadable;
   Optional<String> mergeBase = Optional.empty();
 
   /** A working tree containing the spec, committed at {@code HEAD}. */
   static OpenApiGateFixtures committedSpec() {
     final OpenApiGateFixtures fixtures = new OpenApiGateFixtures();
-    fixtures.workingTree.put(SPEC, "openapi: 3.0.3\n");
+    fixtures.workingTree.put(SPEC, DOCUMENT);
     fixtures.revisions.put("HEAD", HEAD_SHA);
     fixtures.committedFiles.add(HEAD_SHA + ":" + SPEC);
+    fixtures.committedContents.put(HEAD_SHA + ":" + SPEC, DOCUMENT);
     return fixtures;
   }
 
@@ -57,13 +75,18 @@ final class OpenApiGateFixtures {
                 command,
                 Set.of("ci"),
                 null,
-                null,
                 new OpenApiGateOptions(SPEC, null),
                 null,
                 null,
                 null,
                 null,
                 List.of(),
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
                 null,
                 null,
                 null),
@@ -76,25 +99,7 @@ final class OpenApiGateFixtures {
 
   OpenApiGates gates(final CommandExecutor executor) {
     return new OpenApiGates(
-        executor,
-        root -> new EnvironmentFacts(Set.of(), environment),
-        new RevisionFiles() {
-          @Override
-          public Optional<String> resolve(final Path root, final String revision) {
-            return Optional.ofNullable(revisions.get(revision));
-          }
-
-          @Override
-          public Optional<String> mergeBase(
-              final Path root, final String first, final String second) {
-            return mergeBase;
-          }
-
-          @Override
-          public boolean exists(final Path root, final String commit, final String path) {
-            return committedFiles.contains(commit + ":" + path);
-          }
-        },
+        revisionFiles(),
         new ProjectFiles() {
           @Override
           public boolean exists(final Path root, final String path) {
@@ -105,6 +110,60 @@ final class OpenApiGateFixtures {
           public boolean contains(final Path root, final String path, final String text) {
             return workingTree.getOrDefault(path, "").contains(text);
           }
-        });
+
+          @Override
+          public Optional<String> read(final Path root, final String path) {
+            return Optional.ofNullable(workingTree.get(path));
+          }
+        },
+        null,
+        CLOCK);
+  }
+
+  private RevisionFiles revisionFiles() {
+    return new RevisionFiles() {
+      @Override
+      public Optional<String> resolve(final Path root, final String revision) {
+        return Optional.ofNullable(revisions.get(revision));
+      }
+
+      @Override
+      public Optional<String> mergeBase(final Path root, final String first, final String second) {
+        return mergeBase;
+      }
+
+      @Override
+      public boolean exists(final Path root, final String commit, final String path) {
+        return committedFiles.contains(commit + ":" + path);
+      }
+
+      @Override
+      public List<String> files(final Path root, final String commit, final String directory) {
+        return List.of();
+      }
+
+      @Override
+      public Optional<String> read(final Path root, final String commit, final String path) {
+        if (unreadable) {
+          throw new RevisionReadException("git failed");
+        }
+        return Optional.ofNullable(committedContents.get(commit + ":" + path));
+      }
+
+      @Override
+      public List<String> tagsReachableFrom(final Path root, final String commit) {
+        return List.of();
+      }
+
+      @Override
+      public List<String> tagsAt(final Path root, final String commit) {
+        return List.of();
+      }
+
+      @Override
+      public boolean isShallow(final Path root) {
+        return false;
+      }
+    };
   }
 }

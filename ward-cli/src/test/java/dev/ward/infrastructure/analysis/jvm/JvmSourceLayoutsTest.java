@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -114,5 +115,24 @@ class JvmSourceLayoutsTest {
 
   private static void write(final Path file, final String text) throws IOException {
     Files.writeString(file, text);
+  }
+
+  @Test
+  void mainRootsOfBuildFileTextCustomSourceDirectory() {
+    final String pom =
+        "<project><build><sourceDirectory>src/app</sourceDirectory></build></project>";
+
+    assertThat(JvmSourceLayouts.mainRoots(Optional.of(pom), Optional.empty()))
+        .containsExactly("src/app", MAIN_KOTLIN);
+  }
+
+  @Test
+  void mainRootsOfGradleTextAndDefaults() {
+    final String gradle = "sourceSets { main { java { srcDir 'lib/java' } } }";
+
+    assertThat(JvmSourceLayouts.mainRoots(Optional.empty(), Optional.of(gradle)))
+        .containsExactly("lib/java", MAIN_KOTLIN);
+    assertThat(JvmSourceLayouts.mainRoots(Optional.empty(), Optional.empty()))
+        .containsExactly(MAIN_JAVA, MAIN_KOTLIN);
   }
 }

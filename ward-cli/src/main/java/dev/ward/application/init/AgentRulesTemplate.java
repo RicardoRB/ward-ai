@@ -1,5 +1,6 @@
 package dev.ward.application.init;
 
+import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.FormatGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.OwnedSection;
@@ -56,10 +57,8 @@ public final class AgentRulesTemplate {
             + " rules, or lower thresholds to make a gate pass.");
     lines.add(
         "- Run `ward check` after changes and `ward check --profile ci` before" + " finishing.");
-    // Python's coverage gate is not JaCoCo, so the Maven limit lines do not apply to it.
-    if (preset != null
-        && project.toolchain() != Toolchain.PYTHON
-        && project.toolchain() != Toolchain.SWIFT) {
+    // Only the JVM coverage check reads JaCoCo; the other toolchains state their own minimums.
+    if (preset != null && project.toolchain() == Toolchain.JVM) {
       lines.addAll(limits(ids, preset.rules()));
     }
     for (final Language language : List.of(Language.JAVA, Language.PYTHON)) {
@@ -80,11 +79,7 @@ public final class AgentRulesTemplate {
             + " `[[checks.ward.independence]]`, `ward:architecture/cycles` and"
             + " `ward:architecture/independence` enforce them; do not remove them or add"
             + " exemptions.");
-    if (ids.contains(FormatGates.WARD_FORMAT)) {
-      lines.add(
-          "- Format: `ward-format` must pass; format edited files with `ward format`, whose layout"
-              + " comes from `.editorconfig`.");
-    }
+    lines.addAll(gateLines(ids));
     InitToolchains.all()
         .forEach(support -> lines.addAll(support.agentRules(project, gates, preset, owned)));
     // Node projects keep blank lines around the markers, as their Markdown did under Prettier.
@@ -95,6 +90,22 @@ public final class AgentRulesTemplate {
         END,
         padding + String.join("\n", lines) + "\n" + padding,
         false);
+  }
+
+  /** Returns the lines of the gates that have no limit: the formatter and the crap gate. */
+  private static List<String> gateLines(final Set<String> ids) {
+    final List<String> lines = new ArrayList<>();
+    if (ids.contains(SupportedQualityGates.CRAP)) {
+      lines.add(
+          "- CRAP (`crap`): split or test every function the check reports; never raise `max` or"
+              + " exclude files to pass it.");
+    }
+    if (ids.contains(FormatGates.WARD_FORMAT)) {
+      lines.add(
+          "- Format: `ward-format` must pass; format edited files with `ward format`, whose layout"
+              + " comes from `.editorconfig`.");
+    }
+    return lines;
   }
 
   /** Returns the gates that can get a limit line, for the gate contract test. */
@@ -115,12 +126,19 @@ public final class AgentRulesTemplate {
     final Map<String, String> lines = new LinkedHashMap<>();
     lines.put(
         "coverage",
-        "- Coverage (JaCoCo): " + coverage(rules) + ". New code needs tests that assert behavior.");
+        "- Coverage (JaCoCo): "
+            + coverage(rules)
+            + ", set in `ward.toml` and checked from the JaCoCo XML report. New code needs tests"
+            + " that assert behavior.");
     if (rules.mutationThreshold() != null) {
       lines.put(
           "mutation",
           "- Mutation (PIT): at least " + rules.mutationThreshold() + "% of mutants killed.");
     }
+    lines.put(
+        "build-policy",
+        "- Build policy: plugin versions pinned, no dynamic versions, a minimum build tool version"
+            + " and no duplicate dependency declarations (ward:build rules).");
     lines.put("enforcer", "- Enforcer: " + String.join(", ", rules.enforcerRules()) + ".");
     return lines;
   }

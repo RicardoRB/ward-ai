@@ -1,0 +1,55 @@
+# Written for Ward from the documentation named in the catalog row of the rule; sources: taint/node/sources.toml.
+# Code sinks: eval, string timers and the vm module, whose argument 0 is source text.
+
+[[sinks]]
+kind = "call"
+name = "eval"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "setTimeout"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "setInterval"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "runInContext"
+qualifier = "vm"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "runInNewContext"
+qualifier = "vm"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "runInThisContext"
+qualifier = "vm"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "<init>"
+qualifier = "vm.Script"
+arguments = [0]
+
+
+[[sanitizers]]
+kind = "call"
+name = "Number"
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+
+[[sanitizers]]
+kind = "call"
+name = "parseFloat"
+

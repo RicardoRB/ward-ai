@@ -1,0 +1,147 @@
+# Written for Ward from the API documentation named in the catalog row of the rule; sources: taint/java/sources.toml.
+# HTML sinks: the writers that a servlet response gives. PrintWriter is matched by type, so any writer is a sink.
+
+[[sinks]]
+kind = "call"
+name = "print"
+receiver = "java.io.PrintWriter"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "println"
+receiver = "java.io.PrintWriter"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "write"
+receiver = "java.io.PrintWriter"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "append"
+receiver = "java.io.PrintWriter"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "printf"
+receiver = "java.io.PrintWriter"
+arguments = [0, 1, 2]
+
+[[sinks]]
+kind = "call"
+name = "format"
+receiver = "java.io.PrintWriter"
+arguments = [0, 1, 2]
+
+[[sinks]]
+kind = "call"
+name = "print"
+receiver = "javax.servlet.ServletOutputStream"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "print"
+receiver = "jakarta.servlet.ServletOutputStream"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "println"
+receiver = "javax.servlet.ServletOutputStream"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "println"
+receiver = "jakarta.servlet.ServletOutputStream"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "write"
+receiver = "javax.servlet.ServletOutputStream"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "write"
+receiver = "jakarta.servlet.ServletOutputStream"
+arguments = [0]
+
+
+[[sanitizers]]
+kind = "call"
+name = "htmlEscape"
+receiver = "org.springframework.web.util.HtmlUtils"
+
+[[sanitizers]]
+kind = "call"
+name = "escapeHtml4"
+receiver = "org.apache.commons.text.StringEscapeUtils"
+
+[[sanitizers]]
+kind = "call"
+name = "escapeHtml4"
+receiver = "org.apache.commons.lang3.StringEscapeUtils"
+
+[[sanitizers]]
+kind = "call"
+name = "escapeHtml3"
+receiver = "org.apache.commons.text.StringEscapeUtils"
+
+[[sanitizers]]
+kind = "call"
+name = "escapeHtml3"
+receiver = "org.apache.commons.lang3.StringEscapeUtils"
+
+[[sanitizers]]
+kind = "call"
+name = "forHtml"
+receiver = "org.owasp.encoder.Encode"
+
+[[sanitizers]]
+kind = "call"
+name = "forHtmlContent"
+receiver = "org.owasp.encoder.Encode"
+
+[[sanitizers]]
+kind = "call"
+name = "forHtmlAttribute"
+receiver = "org.owasp.encoder.Encode"
+
+[[sanitizers]]
+kind = "call"
+name = "forJavaScript"
+receiver = "org.owasp.encoder.Encode"
+
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "parseLong"
+receiver = "java.lang.Long"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Long"
+
+[[sanitizers]]
+kind = "call"
+name = "parseDouble"
+receiver = "java.lang.Double"
+

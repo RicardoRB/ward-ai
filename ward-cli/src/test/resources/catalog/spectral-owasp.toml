@@ -1,0 +1,125 @@
+# Rule catalog rows, one [[rule]] per Ward rule concept. Edit by hand; the reference page website/src/content/docs/reference/rules.mdx is generated from these files.
+
+[[rule]]
+name = "owasp-api1-2023-no-numeric-ids"
+spectral = ["owasp:api1:2023-no-numeric-ids"]
+
+[[rule]]
+name = "owasp-api2-2023-auth-insecure-schemes"
+spectral = ["owasp:api2:2023-auth-insecure-schemes"]
+
+[[rule]]
+name = "owasp-api2-2023-jwt-best-practices"
+spectral = ["owasp:api2:2023-jwt-best-practices"]
+
+[[rule]]
+name = "owasp-api2-2023-no-api-keys-in-url"
+spectral = ["owasp:api2:2023-no-api-keys-in-url"]
+
+[[rule]]
+name = "owasp-api2-2023-no-credentials-in-url"
+spectral = ["owasp:api2:2023-no-credentials-in-url"]
+
+[[rule]]
+name = "owasp-api2-2023-no-http-basic"
+spectral = ["owasp:api2:2023-no-http-basic"]
+
+[[rule]]
+name = "owasp-api2-2023-read-restricted"
+spectral = ["owasp:api2:2023-read-restricted"]
+
+[[rule]]
+name = "owasp-api2-2023-short-lived-access-tokens"
+spectral = ["owasp:api2:2023-short-lived-access-tokens"]
+
+[[rule]]
+name = "owasp-api2-2023-write-restricted"
+spectral = ["owasp:api2:2023-write-restricted"]
+
+[[rule]]
+name = "owasp-api3-2023-constrained-additional-properties"
+spectral = ["owasp:api3:2023-constrained-additionalProperties"]
+
+[[rule]]
+name = "owasp-api3-2023-constrained-unevaluated-properties"
+spectral = ["owasp:api3:2023-constrained-unevaluatedProperties"]
+
+[[rule]]
+name = "owasp-api3-2023-no-additional-properties"
+spectral = ["owasp:api3:2023-no-additionalProperties"]
+
+[[rule]]
+name = "owasp-api3-2023-no-unevaluated-properties"
+spectral = ["owasp:api3:2023-no-unevaluatedProperties"]
+
+[[rule]]
+name = "owasp-api4-2023-array-limit"
+spectral = ["owasp:api4:2023-array-limit"]
+
+[[rule]]
+name = "owasp-api4-2023-integer-format"
+spectral = ["owasp:api4:2023-integer-format"]
+
+[[rule]]
+name = "owasp-api4-2023-integer-limit"
+spectral = ["owasp:api4:2023-integer-limit"]
+
+[[rule]]
+name = "owasp-api4-2023-integer-limit-legacy"
+spectral = ["owasp:api4:2023-integer-limit-legacy"]
+
+[[rule]]
+name = "owasp-api4-2023-rate-limit"
+spectral = ["owasp:api4:2023-rate-limit"]
+
+[[rule]]
+name = "owasp-api4-2023-rate-limit-responses-429"
+spectral = ["owasp:api4:2023-rate-limit-responses-429"]
+
+[[rule]]
+name = "owasp-api4-2023-rate-limit-retry-after"
+spectral = ["owasp:api4:2023-rate-limit-retry-after"]
+
+[[rule]]
+name = "owasp-api4-2023-string-limit"
+spectral = ["owasp:api4:2023-string-limit"]
+
+[[rule]]
+name = "owasp-api4-2023-string-restricted"
+spectral = ["owasp:api4:2023-string-restricted"]
+
+[[rule]]
+name = "owasp-api5-2023-admin-security-unique"
+spectral = ["owasp:api5:2023-admin-security-unique"]
+
+[[rule]]
+name = "owasp-api7-2023-concerning-url-parameter"
+spectral = ["owasp:api7:2023-concerning-url-parameter"]
+
+[[rule]]
+name = "owasp-api8-2023-define-cors-origin"
+spectral = ["owasp:api8:2023-define-cors-origin"]
+
+[[rule]]
+name = "owasp-api8-2023-define-error-responses-401"
+spectral = ["owasp:api8:2023-define-error-responses-401"]
+
+[[rule]]
+name = "owasp-api8-2023-define-error-responses-500"
+spectral = ["owasp:api8:2023-define-error-responses-500"]
+
+[[rule]]
+name = "owasp-api8-2023-define-error-validation"
+spectral = ["owasp:api8:2023-define-error-validation"]
+
+[[rule]]
+name = "owasp-api8-2023-no-server-http"
+spectral = ["owasp:api8:2023-no-server-http"]
+
+[[rule]]
+name = "owasp-api9-2023-inventory-access"
+spectral = ["owasp:api9:2023-inventory-access"]
+
+[[rule]]
+name = "owasp-api9-2023-inventory-environment"
+spectral = ["owasp:api9:2023-inventory-environment"]

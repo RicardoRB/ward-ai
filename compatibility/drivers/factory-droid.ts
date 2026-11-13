@@ -1,5 +1,5 @@
 import type { LiveContext, LiveDriver } from "../src/live";
-import { hookScenarios, prepareSmokeFixture } from "./hook-scenarios";
+import { hookScenarios } from "./hook-scenarios";
 
 // Live Factory Droid driver. `droid exec` runs one headless turn in the fixture and `--auto high`
 // allows its edits and shell commands; Droid itself loads .factory/hooks.json and dispatches the
@@ -14,6 +14,5 @@ const turn = (context: LiveContext, prompt: string) =>
 export const factoryDroidDriver: LiveDriver = {
   harness: "factory-droid",
   missingPrerequisites: (env) => (env.FACTORY_API_KEY ? [] : ["FACTORY_API_KEY"]),
-  prepare: prepareSmokeFixture,
   scenarios: hookScenarios(turn),
 };

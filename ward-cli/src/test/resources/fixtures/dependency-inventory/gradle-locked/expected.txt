@@ -1,0 +1,14 @@
+[] MAVEN com.google.code.findbugs:jsr305 3.0.2 DIRECT PROVIDED from=gradle.lockfile in=build.gradle.kts
+[] MAVEN com.google.errorprone:error_prone_annotations 2.52.0 TRANSITIVE RUNTIME from=gradle.lockfile
+[] MAVEN com.google.guava:failureaccess 1.0.3 TRANSITIVE RUNTIME from=gradle.lockfile
+[] MAVEN com.google.guava:guava 33.8.0-jre DIRECT RUNTIME from=gradle.lockfile in=build.gradle.kts
+[] MAVEN com.google.guava:listenablefuture 9999.0-empty-to-avoid-conflict-with-guava TRANSITIVE RUNTIME from=gradle.lockfile
+[] MAVEN com.google.j2objc:j2objc-annotations 3.1 TRANSITIVE RUNTIME from=gradle.lockfile
+[] MAVEN org.apiguardian:apiguardian-api 1.1.2 TRANSITIVE TEST from=gradle.lockfile
+[] MAVEN org.jspecify:jspecify 1.0.1 TRANSITIVE RUNTIME from=gradle.lockfile
+[] MAVEN org.junit.jupiter:junit-jupiter-api 5.11.3 DIRECT TEST from=gradle.lockfile in=build.gradle.kts
+[] MAVEN org.junit.platform:junit-platform-commons 1.11.3 TRANSITIVE TEST from=gradle.lockfile
+[] MAVEN org.junit:junit-bom 5.11.3 TRANSITIVE TEST from=gradle.lockfile
+[] MAVEN org.mapstruct:mapstruct-processor 1.6.3 DIRECT DEVELOPMENT from=gradle.lockfile in=build.gradle.kts
+[] MAVEN org.opentest4j:opentest4j 1.3.0 TRANSITIVE TEST from=gradle.lockfile
+[] MAVEN org.slf4j:slf4j-api 2.0.16 DIRECT RUNTIME from=gradle.lockfile in=build.gradle.kts

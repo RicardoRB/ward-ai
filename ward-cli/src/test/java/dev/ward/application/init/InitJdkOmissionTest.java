@@ -55,7 +55,7 @@ class InitJdkOmissionTest {
   @Test
   void strictOnAJdkThatCannotRunOneGateKeepsTheOtherGatesInOrder() {
     assertThat(catalog.presetGates(service.project(root), QualityPreset.STRICT))
-        .containsExactly("compile", "tests", "coverage", "enforcer");
+        .containsExactly("compile", "tests", "coverage", "build-policy", "enforcer");
   }
 
   @Test
@@ -97,8 +97,6 @@ class InitJdkOmissionTest {
         catalog.presetGates(service.project(root), QualityPreset.STRICT),
         "layered",
         QualityPreset.STRICT,
-        List.of(),
-        List.of(),
         List.of(),
         false,
         null,

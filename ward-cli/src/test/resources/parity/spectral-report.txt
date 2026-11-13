@@ -1,0 +1,2 @@
+# rule, case, difference: tool-silent (Spectral reports nothing on the violating fixture), positions-differ, messages-differ, tool-extra (Spectral reports the passing fixture).
+# Regenerate with -Dward.parity.write=true.

@@ -1,0 +1,9 @@
+plugins { id 'java' }
+repositories { mavenCentral() }
+dependencies {
+    implementation project(':lib')
+    implementation 'com.google.guava:guava:33.0.0-jre'
+    compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.3'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
+}

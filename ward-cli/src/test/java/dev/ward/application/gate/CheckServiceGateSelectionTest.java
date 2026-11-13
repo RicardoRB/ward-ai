@@ -9,7 +9,6 @@ import dev.ward.application.project.ProjectDetector;
 import dev.ward.domain.FakeCommandExecutor;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.gate.CheckReport;
-import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.infrastructure.config.FilePathExistence;
 import dev.ward.infrastructure.config.TomlConfigurationReader;
 import dev.ward.infrastructure.project.FileSystemProjectInspection;
@@ -22,12 +21,12 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-/** Gate subsets and exclusions used by spec validation and agent hooks. */
+/** Gate subsets and exclusions of the check service. */
 class CheckServiceGateSelectionTest {
-  private static final String OPENSPEC = "openspec";
-  private static final String ARCHIVED = "openspec-archived";
-  private static final List<String> ACTIVE_COMMAND = List.of(OPENSPEC, "validate", "--all");
-  private static final List<String> ARCHIVED_COMMAND = List.of(OPENSPEC, "validate", "--archived");
+  private static final String MYPY = "mypy";
+  private static final String PYTEST = "pytest";
+  private static final List<String> MYPY_COMMAND = List.of(MYPY, ".");
+  private static final List<String> PYTEST_COMMAND = List.of(PYTEST);
   private static final List<String> TESTS_COMMAND = List.of("mvn", "test");
 
   @TempDir Path dir;
@@ -41,16 +40,16 @@ class CheckServiceGateSelectionTest {
         version = 2
         [checks.tests]
         command = "mvn test"
-        [checks.openspec]
-        command = "openspec validate --all"
-        [checks.openspec-archived]
-        command = "openspec validate --archived"
+        [checks.mypy]
+        command = "mypy ."
+        [checks.pytest]
+        command = "pytest"
         """);
 
-    final CheckReport report = service().check(dir, List.of(), Set.of(ARCHIVED, OPENSPEC));
+    final CheckReport report = service().check(dir, List.of(), Set.of(PYTEST, MYPY));
 
-    assertThat(report.results()).extracting("name").containsExactly(OPENSPEC, ARCHIVED);
-    assertThat(executor.commands).containsExactly(ACTIVE_COMMAND, ARCHIVED_COMMAND);
+    assertThat(report.results()).extracting("name").containsExactly(MYPY, PYTEST);
+    assertThat(executor.commands).containsExactly(MYPY_COMMAND, PYTEST_COMMAND);
   }
 
   @Test
@@ -60,12 +59,12 @@ class CheckServiceGateSelectionTest {
         version = 2
         [checks.tests]
         command = "mvn test"
-        [checks.openspec]
+        [checks.mypy]
         enabled = false
-        command = "openspec validate --all"
+        command = "mypy ."
         """);
 
-    final CheckReport report = service().check(dir, List.of(), Set.of(OPENSPEC));
+    final CheckReport report = service().check(dir, List.of(), Set.of(MYPY));
 
     assertThat(report.results()).isEmpty();
     assertThat(report.passed()).isTrue();
@@ -77,40 +76,34 @@ class CheckServiceGateSelectionTest {
     configure(
         """
         version = 2
-        [checks.openspec]
-        command = "openspec validate --all"
-        [checks.openspec-archived]
-        command = "openspec validate --archived"
+        [checks.mypy]
+        command = "mypy ."
+        [checks.pytest]
+        command = "pytest"
         profiles = ["ci"]
         """);
 
-    service().check(dir, List.of("ci"), Set.of(OPENSPEC, ARCHIVED));
+    service().check(dir, List.of("ci"), Set.of(MYPY, PYTEST));
 
-    assertThat(executor.commands).containsExactly(ARCHIVED_COMMAND);
-    assertThatThrownBy(() -> service().check(dir, List.of("nope"), Set.of(OPENSPEC)))
+    assertThat(executor.commands).containsExactly(PYTEST_COMMAND);
+    assertThatThrownBy(() -> service().check(dir, List.of("nope"), Set.of(MYPY)))
         .isInstanceOf(WardException.class)
         .hasMessageContaining("Unknown profiles");
   }
 
   @Test
-  void excludedSpecGatesDoNotRun() throws IOException {
+  void excludedGatesDoNotRun() throws IOException {
     configure(
         """
         version = 2
         [checks.tests]
         command = "mvn test"
-        [checks.openspec]
-        command = "openspec validate --all"
+        [checks.mypy]
+        command = "mypy ."
         """);
 
     final CheckReport report =
-        service()
-            .check(
-                dir,
-                List.of(),
-                CheckProgressListener.NO_OP,
-                false,
-                SupportedQualityGates.specIds());
+        service().check(dir, List.of(), CheckProgressListener.NO_OP, false, Set.of(MYPY, PYTEST));
 
     assertThat(report.results()).extracting("name").containsExactly("tests");
     assertThat(executor.commands).containsExactly(TESTS_COMMAND);
@@ -118,16 +111,10 @@ class CheckServiceGateSelectionTest {
 
   @Test
   void excludingEveryEnabledGateIsAnEmptyPass() throws IOException {
-    configure("version = 2\n[checks.openspec]\ncommand = \"openspec validate --all\"\n");
+    configure("version = 2\n[checks.mypy]\ncommand = \"mypy .\"\n");
 
     final CheckReport report =
-        service()
-            .check(
-                dir,
-                List.of(),
-                CheckProgressListener.NO_OP,
-                false,
-                SupportedQualityGates.specIds());
+        service().check(dir, List.of(), CheckProgressListener.NO_OP, false, Set.of(MYPY, PYTEST));
 
     assertThat(report.results()).isEmpty();
     assertThat(report.passed()).isTrue();
@@ -136,17 +123,13 @@ class CheckServiceGateSelectionTest {
 
   @Test
   void excludingNothingKeepsTheNoEnabledGatesError() throws IOException {
-    configure("version = 2\n[checks.openspec]\nenabled = false\ncommand = \"x\"\n");
+    configure("version = 2\n[checks.mypy]\nenabled = false\ncommand = \"mypy .\"\n");
 
     assertThatThrownBy(
             () ->
                 service()
                     .check(
-                        dir,
-                        List.of(),
-                        CheckProgressListener.NO_OP,
-                        false,
-                        SupportedQualityGates.specIds()))
+                        dir, List.of(), CheckProgressListener.NO_OP, false, Set.of(MYPY, PYTEST)))
         .isInstanceOf(WardException.class)
         .hasMessageContaining("No quality gates are enabled");
   }

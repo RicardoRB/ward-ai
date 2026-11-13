@@ -6,7 +6,7 @@ description: Run configured quality gates.
 `ward check` runs the quality gates configured in `ward.toml` and reports the result.
 
 ```sh
-ward check [-C <dir>] [--format text|json|sarif] [--severity error|warning|info] [--output <path>] [--profile <name>[,...]] [--path <path>] [--fail-fast] [--exclude-spec] [--learn-after <n>]
+ward check [-C <dir>] [--format text|json|sarif] [--severity error|warning|info] [--output <path>] [--profile <name>[,...]] [--path <path>] [--fail-fast] [--learn-after <n>]
 ```
 
 ## Options
@@ -20,8 +20,8 @@ ward check [-C <dir>] [--format text|json|sarif] [--severity error|warning|info]
 | `--output <path>` | Write the JSON or SARIF report to a file. See [Writing the report to a file](#writing-the-report-to-a-file). | stdout |
 | `--path <path>` | Run a [partial check](#partial-checks) for an edited file. Repeat for several. | no partial check |
 | `--fail-fast` | Stop after the first gate that does not pass. | off |
-| `--exclude-spec` | Skip the `openspec` and `openspec-archived` gates. See [Excluding spec gates](#excluding-spec-gates). | off |
 | `--learn-after <n>` | Record recurring rule findings after `n` occurrences. Must be at least `1`. See [Learning](#learning). | off |
+| `--offline` | Make no network request. The [`vulnerabilities`](/configuration/vulnerabilities/) check then reads its stored databases, and ends with an execution error that names `ward vulnerabilities update` when one is missing, stale or corrupt. Other gates are not affected. | off |
 | `--verbose` | Print diagnostics to stderr. See [Verbose diagnostics](#verbose-diagnostics). | off |
 
 An invalid option value is a usage error and produces no partial report.
@@ -33,7 +33,7 @@ An invalid option value is a usage error and produces no partial report.
 - Every selected gate runs, even after an earlier one fails, unless you pass `--fail-fast`.
 - With `--fail-fast`, Ward stops after the first gate that fails, is unavailable, or hits an
   execution error. Later gates are listed as skipped (`not run (fail-fast)`).
-- A gate whose standalone tool is missing, such as `gitleaks`, is reported as unavailable with
+- A gate whose standalone tool is missing, such as `semgrep`, is reported as unavailable with
   install guidance.
 - An enabled `zap` gate without an explicit `-t <url>` target is a configuration error.
 
@@ -72,18 +72,6 @@ Checks without `--path`, including Git hooks and CI, never apply `paths` setting
 without `--path` is the exception: checks with a `paths` table are skipped, the others run in full,
 and Ward warns on stderr that the `edit` profile expects edited paths.
 
-## Excluding spec gates
-
-`--exclude-spec` skips the spec validation gates, `openspec` and `openspec-archived`, and runs every
-other selected gate.
-
-The generated agent integrations pass it on each edit, because they validate specs separately with
-[`spec validate`](/commands/spec/): the edited change on each edit, and everything at the end of the
-turn.
-
-If excluding the spec gates leaves nothing enabled, the check passes with an empty report instead of
-failing with "No quality gates are enabled".
-
 ## Output formats
 
 ### Text
@@ -94,14 +82,24 @@ summary:
 ```text
 Ward 1.2.3
 
-✓ Ward rules
-✗ gitleaks
+✓ ward · complexity
+✓ ward · correctness
+✗ ward · style — 3 errors
+✓ ward · docs — 2 warnings
+✗ secrets
 
 Quality Gate: FAILED
-1 passed · 1 failed · 0 skipped
+0 passed · 2 failed · 0 skipped
 ```
 
+- The `ward` gate prints one line per rule category it checked, in name order, including the
+  categories with no finding. A rule without a category is listed under `other`. It is still one
+  gate in the tally, in `ward.toml` and in the JSON and SARIF output. When the gate could not run,
+  it prints its single line, for example `✗ ward — error`.
 - On an interactive terminal, the running gate's line is replaced in place by its final status.
+  While the `ward` gate runs, that line also names what it is doing: `… ward: loading rules`,
+  `reading sources`, `resolving dependencies`, `analyzing 12 of 812 files with 431 rules` (only
+  the files whose stored result cannot be reused are analyzed) and `project-wide rules`.
 - When output is redirected, `NO_COLOR` is set, or `TERM=dumb`, each gate is printed once on
   completion, without ANSI cursor-control sequences.
 - Failed gates show their command and visible findings. The captured output tail is shown when no
@@ -111,7 +109,7 @@ Quality Gate: FAILED
 
 Use `--format json` in scripts. Only the JSON report goes to stdout; diagnostics go to stderr.
 
-Failed `ward`, `gitleaks`, `compile`, and `format` gates include structured findings
+Failed `ward`, `secrets`, `compile`, and `format` gates include structured findings
 (rule, file, line, column, message), so agents can fix them without reading raw logs. See
 [structured findings](/configuration/gates/#structured-findings) and
 [JSON output](/reference/json-output/).
@@ -158,7 +156,7 @@ ward check --profile ci --format sarif --output build/ward.sarif
 
 ## Learning
 
-Learning is opt-in. `--learn-after <n>` records recurring Ward and gitleaks rule
+Learning is opt-in. `--learn-after <n>` records recurring Ward and secrets rule
 findings in `.ward/learning.json`:
 
 - A rule is counted once per failing episode.
@@ -167,16 +165,6 @@ findings in `.ward/learning.json`:
 - Ward never edits that file, and learning prompts do not change the exit code.
 
 See [learning](/configuration/learning/).
-
-## OpenSpec gates
-
-OpenSpec gates run their configured command vectors exactly.
-
-- They need both the configured executable and an `openspec/` directory at the project root.
-- A missing prerequisite is reported as a gate failure. Ward never installs the tool or scaffolds
-  the directory.
-- An installed CLI that rejects a required flag also fails. Ward does not remove the flag or
-  downgrade.
 
 ## Verbose diagnostics
 
@@ -198,8 +186,8 @@ A gate is `UNAVAILABLE` when the environment, not the code, stopped it. Ward exp
 how to fix it:
 
 - **Missing executable.** The gate's command could not start. The summary names the gate and the
-  executable. For the tools in Ward's install catalog (trivy, gitleaks, semgrep, zap-baseline.py,
-  vacuum and oasdiff) it gives the install command or link; for any other tool it says to install
+  executable. For the tools in Ward's install catalog (semgrep and zap-baseline.py) it gives the
+  install command or link; for any other tool it says to install
   it or add it to `PATH`.
 - **JDK older than the project.** When a Maven or Gradle gate fails and the build declares a Java
   release newer than the JDK that runs it, the gate is `UNAVAILABLE`. The summary names both
@@ -219,12 +207,12 @@ Each prerequisite is reported in every output format:
 
 ```json
 {
-  "name": "trivy",
+  "name": "zap",
   "status": "UNAVAILABLE",
   "prerequisite": {
     "kind": "executable",
-    "executable": "trivy",
-    "remediation": "Install trivy: https://trivy.dev/latest/getting-started/installation/"
+    "executable": "zap-baseline.py",
+    "remediation": "Install zap-baseline.py: https://www.zaproxy.org/docs/docker/baseline-scan/"
   }
 }
 ```

@@ -1,0 +1,1 @@
+response-media-type-name-generalized	GET	/pets

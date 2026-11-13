@@ -17,12 +17,10 @@ import java.util.stream.Stream;
  * @param tools the folder of the resolved tools
  * @param work the folder the run writes to
  * @param fixtures the folder of the Java fixtures
- * @param semgrep the Semgrep executable, if one is set
  */
-record ParityEnvironment(Path tools, Path work, Path fixtures, Optional<String> semgrep) {
+record ParityEnvironment(Path tools, Path work, Path fixtures) {
 
   static final String TOOLS_PROPERTY = "ward.parity.tools";
-  static final String SEMGREP_PROPERTY = "ward.parity.semgrep";
   private static final String VIOLATING = "violating";
   private static final String PASSING = "passing";
   private static final int PATH_PARTS = 2;
@@ -33,13 +31,11 @@ record ParityEnvironment(Path tools, Path work, Path fixtures, Optional<String> 
     if (tools.isBlank()) {
       return Optional.empty();
     }
-    final String semgrep = System.getProperty(SEMGREP_PROPERTY, "");
     return Optional.of(
         new ParityEnvironment(
             Path.of(tools).toAbsolutePath(),
             Path.of("target", "parity").toAbsolutePath(),
-            RuleFixtureSet.root().resolve("java"),
-            semgrep.isBlank() ? Optional.empty() : Optional.of(semgrep)));
+            RuleFixtureSet.root().resolve("java")));
   }
 
   /** Returns the class path of {@code tool}. */

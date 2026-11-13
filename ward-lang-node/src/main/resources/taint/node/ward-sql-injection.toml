@@ -1,0 +1,263 @@
+# Written for Ward from the documentation named in the catalog row of the rule; sources: taint/node/sources.toml.
+# SQL sinks: the statement text of the common drivers, query builders and ORMs, matched by the name of the connection variable.
+
+[[sinks]]
+kind = "call"
+name = "query"
+qualifier = "db"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "query"
+qualifier = "database"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "query"
+qualifier = "connection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "query"
+qualifier = "conn"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "query"
+qualifier = "pool"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "query"
+qualifier = "client"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "query"
+qualifier = "sequelize"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "query"
+qualifier = "manager"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "query"
+qualifier = "queryRunner"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "query"
+qualifier = "entityManager"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute"
+qualifier = "db"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute"
+qualifier = "database"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute"
+qualifier = "connection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute"
+qualifier = "conn"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute"
+qualifier = "pool"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute"
+qualifier = "client"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute"
+qualifier = "sequelize"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute"
+qualifier = "manager"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute"
+qualifier = "queryRunner"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute"
+qualifier = "entityManager"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "raw"
+qualifier = "knex"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "raw"
+qualifier = "db"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "raw"
+qualifier = "sequelize"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "all"
+qualifier = "db"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "all"
+qualifier = "database"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "get"
+qualifier = "db"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "get"
+qualifier = "database"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "run"
+qualifier = "db"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "run"
+qualifier = "database"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "exec"
+qualifier = "db"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "exec"
+qualifier = "database"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "$queryRawUnsafe"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "$executeRawUnsafe"
+arguments = [0]
+
+
+[[sanitizers]]
+kind = "call"
+name = "escape"
+qualifier = "mysql"
+
+[[sanitizers]]
+kind = "call"
+name = "escape"
+qualifier = "connection"
+
+[[sanitizers]]
+kind = "call"
+name = "escape"
+qualifier = "pool"
+
+[[sanitizers]]
+kind = "call"
+name = "escape"
+qualifier = "sqlstring"
+
+[[sanitizers]]
+kind = "call"
+name = "escape"
+qualifier = "SqlString"
+
+[[sanitizers]]
+kind = "call"
+name = "escapeId"
+qualifier = "mysql"
+
+[[sanitizers]]
+kind = "call"
+name = "escapeId"
+qualifier = "connection"
+
+[[sanitizers]]
+kind = "call"
+name = "escapeId"
+qualifier = "pool"
+
+[[sanitizers]]
+kind = "call"
+name = "escapeId"
+qualifier = "sqlstring"
+
+[[sanitizers]]
+kind = "call"
+name = "escapeId"
+qualifier = "SqlString"
+
+
+[[sanitizers]]
+kind = "call"
+name = "Number"
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+
+[[sanitizers]]
+kind = "call"
+name = "parseFloat"
+

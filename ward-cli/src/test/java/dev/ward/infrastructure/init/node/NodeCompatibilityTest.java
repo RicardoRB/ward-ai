@@ -88,7 +88,6 @@ class NodeCompatibilityTest {
         BuildTool.NPM,
         Framework.NONE,
         false,
-        false,
         root,
         Set.of(),
         node,

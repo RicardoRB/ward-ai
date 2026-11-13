@@ -1,0 +1,131 @@
+# Written for Ward from the API documentation named in the catalog row of the rule; sources: taint/java/sources.toml.
+# Request sinks: the address that java.net, Apache HttpClient and RestTemplate connect to.
+
+[[sinks]]
+kind = "call"
+name = "<init>"
+receiver = "java.net.URL"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "<init>"
+receiver = "java.net.URI"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "create"
+receiver = "java.net.URI"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "<init>"
+receiver = "org.apache.http.client.methods.HttpGet"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "<init>"
+receiver = "org.apache.http.client.methods.HttpPost"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "<init>"
+receiver = "org.apache.http.client.methods.HttpPut"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "<init>"
+receiver = "org.apache.http.client.methods.HttpDelete"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "getForObject"
+receiver = "org.springframework.web.client.RestTemplate"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "getForEntity"
+receiver = "org.springframework.web.client.RestTemplate"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "postForObject"
+receiver = "org.springframework.web.client.RestTemplate"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "postForEntity"
+receiver = "org.springframework.web.client.RestTemplate"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "exchange"
+receiver = "org.springframework.web.client.RestTemplate"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute"
+receiver = "org.springframework.web.client.RestTemplate"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "put"
+receiver = "org.springframework.web.client.RestTemplate"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "delete"
+receiver = "org.springframework.web.client.RestTemplate"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "headForHeaders"
+receiver = "org.springframework.web.client.RestTemplate"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "optionsForAllow"
+receiver = "org.springframework.web.client.RestTemplate"
+arguments = [0]
+
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "parseLong"
+receiver = "java.lang.Long"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Long"
+
+[[sanitizers]]
+kind = "call"
+name = "parseDouble"
+receiver = "java.lang.Double"
+

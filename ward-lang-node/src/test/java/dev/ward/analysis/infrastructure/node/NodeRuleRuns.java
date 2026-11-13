@@ -5,6 +5,7 @@ import dev.ward.analysis.application.rule.RuleEngine;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.AnalysisSeverity;
 import dev.ward.analysis.domain.ir.SourceUnit;
+import dev.ward.analysis.domain.rule.Measured;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleRunResult;
@@ -37,5 +38,17 @@ final class NodeRuleRuns {
         new FrontendSupport(language, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX));
     return new RuleEngine(new NodeRuleMatcher())
         .run(List.of(unit), List.of(support), List.of(rule));
+  }
+
+  /** Returns what one rule measures in {@code text}, parsed by the real frontend. */
+  static List<Measured> measure(
+      final String metric, final AnalysisLanguage language, final String text) {
+    final RuleDefinition rule =
+        new RuleDefinition(
+            id(language, metric), language, RuleCapability.SYNTAX, AnalysisSeverity.ERROR, "");
+    final SourceUnit unit = new SourceUnit("src/" + metric + ".txt", language, text);
+    return new NodeRuleMatcher()
+        .compile(rule)
+        .measures(new AntlrLanguageFrontend().parse(unit).tree());
   }
 }

@@ -29,7 +29,8 @@ class NodeStrictAgentRulesTest {
         .contains(
             "the Ward strict rules selected in `ward-rules.toml`",
             "Tests (Vitest)",
-            "at least 85% line and 75% branch coverage",
+            "the `coverage` check reads `coverage/lcov.info` and requires at least 85% line and 75%"
+                + " branch coverage, set in `ward.toml`",
             "Mutation testing (Stryker): `npx stryker` in `ci`",
             STRYKER_MINIMUM)
         .doesNotContain("JaCoCo", "PIT");
@@ -53,7 +54,8 @@ class NodeStrictAgentRulesTest {
     final String body = rules(Language.TYPESCRIPT, BuildTool.BUN, QualityPreset.STRICT, "bun-test");
 
     assertThat(body)
-        .contains("at least 85% line coverage set in `bunfig.toml`")
+        .contains("at least 85% line coverage, set in `ward.toml`")
+        .doesNotContain("bunfig.toml")
         .doesNotContain("branch");
   }
 
@@ -72,7 +74,7 @@ class NodeStrictAgentRulesTest {
       final QualityPreset preset,
       final String... ids) {
     final List<InitGateOption> gates =
-        Stream.concat(List.of(ids).stream(), Stream.of("stryker"))
+        Stream.concat(List.of(ids).stream(), Stream.of("coverage", "stryker"))
             .map(id -> new InitGateOption(id, id, List.of("npx", id), true, "ok"))
             .toList();
     final Project project =
@@ -81,7 +83,6 @@ class NodeStrictAgentRulesTest {
             language,
             manager,
             Framework.NONE,
-            false,
             false,
             ROOT,
             Set.of(),

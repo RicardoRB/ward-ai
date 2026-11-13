@@ -91,7 +91,8 @@ per platform with a `.sha256` checksum file. Each archive contains the binary, `
 | Windows x86_64 | `ward-windows-x86_64.zip` |
 
 `LICENSE`, `NOTICE`, `THIRD-PARTY-LICENSES` (the full license texts of every shipped dependency), and
-`sbom.json` (a CycloneDX software bill of materials) are also attached to each release.
+`sbom.json` (a CycloneDX software bill of materials) are also attached to each release. Both are
+written by Ward itself: see [`ward sbom` and `ward licenses`](/commands/sbom/).
 
 ```bash
 curl -fsSLO https://github.com/RicardoRB/ward-ai/releases/latest/download/ward-macos-aarch64.tar.gz

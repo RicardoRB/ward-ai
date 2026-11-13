@@ -31,7 +31,6 @@ class PartialCheckSnapshotTest {
           BuildTool.PNPM,
           Framework.NONE,
           false,
-          false,
           Path.of("/shop"),
           Set.of(),
           "24",
@@ -43,14 +42,10 @@ class PartialCheckSnapshotTest {
     assertThat(table("semgrep", MAVEN, QualityPreset.STANDARD))
         .isEqualTo(
             new PartialCheckDefaults.Table(WHOLE_PROJECT, List.of(".semgrep*"), PATHS, null, null));
-    assertThat(table("gitleaks", PNPM, QualityPreset.STANDARD))
+    assertThat(table("secrets", PNPM, QualityPreset.STANDARD))
         .isEqualTo(
             new PartialCheckDefaults.Table(
-                WHOLE_PROJECT,
-                List.of(".gitleaks*"),
-                List.of("--no-git", "--source={paths}"),
-                null,
-                null));
+                WHOLE_PROJECT, List.of("ward-rules.toml"), List.of(), null, null));
     assertThat(PartialCheckDefaults.forOpenApi(SupportedQualityGates.OPENAPI_LINT, "api.yaml"))
         .contains(
             new PartialCheckDefaults.Table(List.of("api.yaml"), List.of(), List.of(), null, null));

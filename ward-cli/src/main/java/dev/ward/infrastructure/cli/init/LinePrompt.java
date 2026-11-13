@@ -48,11 +48,6 @@ final class LinePrompt {
     return readOrDefault(question).map(answer -> "y".equalsIgnoreCase(answer.trim())).orElse(false);
   }
 
-  boolean confirmInstallation() {
-    final String answer = requireLine("OpenSpec installation consent");
-    return "y".equalsIgnoreCase(answer.trim()) || "yes".equalsIgnoreCase(answer.trim());
-  }
-
   /**
    * Reads numbers that toggle items of the initial selection; a blank line accepts it. Returns
    * empty when input ended, so the caller decides between a default and an error.

@@ -1,0 +1,1 @@
+response-body-max-items-unset	GET	/pets

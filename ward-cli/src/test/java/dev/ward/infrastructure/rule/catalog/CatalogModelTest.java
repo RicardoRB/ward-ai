@@ -6,13 +6,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 /** The validation of the catalog model, independent of the file format. */
 class CatalogModelTest {
 
-  private static final int TOOL_COUNT = 22;
+  private static final int TOOL_COUNT = 23;
 
   @Test
   void statusesCarryTheirIssueOrReason() {
@@ -54,7 +55,10 @@ class CatalogModelTest {
                 AnalysisLanguage.KOTLIN, LanguageStatus.planned("#294")),
             Map.of(AnalysisLanguage.JAVA, "ward:java/parameter-count"),
             Map.of("checkstyle", List.of("ParameterNumber")),
-            "catalog/x.toml");
+            "catalog/x.toml",
+            Optional.empty(),
+            List.of(),
+            List.of());
 
     assertThat(row.idFor(AnalysisLanguage.JAVA)).isEqualTo("ward:java/parameter-count");
     assertThat(row.idFor(AnalysisLanguage.KOTLIN)).isEqualTo("ward:kotlin/parameter-number");
@@ -64,7 +68,8 @@ class CatalogModelTest {
             AnalysisLanguage.TYPESCRIPT,
             AnalysisLanguage.JAVASCRIPT,
             AnalysisLanguage.PYTHON,
-            AnalysisLanguage.SWIFT);
+            AnalysisLanguage.SWIFT,
+            AnalysisLanguage.OPENAPI);
   }
 
   @Test
@@ -72,7 +77,16 @@ class CatalogModelTest {
     assertThatThrownBy(
             () ->
                 new CatalogRow(
-                    "x", "", Set.of(), Map.of(), Map.of(), Map.of("sonar", List.of("S1")), "f"))
+                    "x",
+                    "",
+                    Set.of(),
+                    Map.of(),
+                    Map.of(),
+                    Map.of("sonar", List.of("S1")),
+                    "f",
+                    Optional.empty(),
+                    List.of(),
+                    List.of()))
         .hasMessageContaining("'sonar' is not a tool of the catalog");
   }
 

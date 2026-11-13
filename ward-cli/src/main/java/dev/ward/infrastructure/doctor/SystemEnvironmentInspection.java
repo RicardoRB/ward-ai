@@ -3,11 +3,10 @@ package dev.ward.infrastructure.doctor;
 import dev.ward.domain.doctor.EnvironmentFacts;
 import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.doctor.ExecutableObservation;
-import dev.ward.domain.doctor.OssIndexSetting;
+import dev.ward.domain.gate.ReleaseTags;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
 import dev.ward.infrastructure.doctor.gradle.AndroidEnvironmentFacts;
-import dev.ward.infrastructure.doctor.jvm.DependencyCheckSettings;
 import dev.ward.infrastructure.doctor.python.FastApiAppInspection;
 import dev.ward.infrastructure.project.gradle.GradleKotlinModules;
 import dev.ward.infrastructure.project.gradle.GradleModuleScan;
@@ -54,12 +53,8 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
           "swift",
           "xcodebuild",
           "xcrun",
-          "trivy",
-          "gitleaks",
           "semgrep",
-          "zap-baseline.py",
-          "vacuum",
-          "oasdiff");
+          "zap-baseline.py");
   private static final List<String> OPENAPI_SPECS =
       List.of(
           "src/main/resources/openapi.yml",
@@ -104,9 +99,6 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
             "nativeExecutablePresent",
             Boolean.toString(NativeExecutableFact.present(Path.of(""))));
     final Map<String, String> observed = new HashMap<>(values);
-    observed.put("NVD_API_KEY", Boolean.toString(isSet("NVD_API_KEY")));
-    observed.put("OSS_INDEX_PASSWORD", Boolean.toString(isSet("OSS_INDEX_PASSWORD")));
-    observed.put("OASDIFF_CONFIG", Boolean.toString(isSet("OASDIFF_CONFIG")));
     observed.putAll(AndroidEnvironmentFacts.read(projectRoot));
     observed.put(
         "typescriptResolvable", Boolean.toString(TypeScriptPackages.resolvable(projectRoot)));
@@ -138,19 +130,6 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
         Files.isExecutable(candidate));
   }
 
-  @Override
-  public boolean hasOpenSpecDirectory(final Path projectRoot) {
-    return Files.isDirectory(projectRoot.resolve("openspec"));
-  }
-
-  /** Asks Git, so nested ignore files, global excludes, and negations all apply. */
-  @Override
-  public boolean isOpenSpecDirectoryIgnored(final Path projectRoot) {
-    final CommandResult result =
-        executor.execute(List.of("git", "check-ignore", "-q", "openspec"), projectRoot);
-    return result.executionError() == null && result.exitCode() == 0;
-  }
-
   /** Asks Git which candidates are tracked, so an untracked draft spec is never offered. */
   @Override
   public Optional<String> openApiSpec(final Path projectRoot) {
@@ -162,6 +141,14 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
     }
     final List<String> tracked = Arrays.asList(result.stdout().split("\\u0000"));
     return OPENAPI_SPECS.stream().filter(tracked::contains).findFirst();
+  }
+
+  @Override
+  public boolean hasReleaseTag(final Path projectRoot) {
+    final CommandResult result =
+        executor.execute(List.of("git", "tag", "--merged", "HEAD"), projectRoot);
+    return result.succeeded()
+        && ReleaseTags.highest(result.stdout().lines().map(String::trim).toList()).isPresent();
   }
 
   @Override
@@ -179,16 +166,5 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
     return Files.isRegularFile(projectRoot.resolve("pom.xml"))
         ? MavenJavaModules.skipped(projectRoot)
         : GradleModuleScan.skipped(projectRoot);
-  }
-
-  @Override
-  public OssIndexSetting ossIndexSetting(final Path projectRoot) {
-    return DependencyCheckSettings.read(projectRoot);
-  }
-
-  /** Only presence is recorded; values never leave this method. */
-  private static boolean isSet(final String name) {
-    final String value = System.getenv(name);
-    return value != null && !value.isBlank();
   }
 }

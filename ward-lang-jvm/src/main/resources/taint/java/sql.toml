@@ -120,6 +120,68 @@ name = "batchUpdate"
 receiver = "org.springframework.jdbc.core.JdbcTemplate"
 arguments = [0]
 
+# Hibernate and jOOQ run the SQL text of argument 0 (the plain-SQL overloads).
+
+[[sinks]]
+kind = "call"
+name = "createQuery"
+receiver = "org.hibernate.Session"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "createSQLQuery"
+receiver = "org.hibernate.Session"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "createNativeQuery"
+receiver = "org.hibernate.Session"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "fetch"
+receiver = "org.jooq.DSLContext"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "fetchOne"
+receiver = "org.jooq.DSLContext"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "fetchMany"
+receiver = "org.jooq.DSLContext"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "fetchLazy"
+receiver = "org.jooq.DSLContext"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execute"
+receiver = "org.jooq.DSLContext"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "query"
+receiver = "org.jooq.DSLContext"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "resultQuery"
+receiver = "org.jooq.DSLContext"
+arguments = [0]
+
 [[sanitizers]]
 kind = "call"
 name = "parseInt"

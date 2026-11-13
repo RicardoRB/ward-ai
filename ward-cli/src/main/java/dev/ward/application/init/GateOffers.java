@@ -13,23 +13,24 @@ final class GateOffers {
   /**
    * Checks that init offers gate {@code id} for {@code project}.
    *
-   * @throws WardException if {@code id} is an OpenSpec tool, or the project lacks what the gate
-   *     needs
+   * @throws WardException if the project lacks what the gate needs
    */
   static void require(
       final EnvironmentInspection environment, final Project project, final String id) {
-    if ("openspec".equals(id) || "openspec-archived".equals(id)) {
-      throw new WardException(
-          "OpenSpec validations are tools, not quality gates. Use --tool openspec and --openspec-validation "
-              + id
-              + ".");
-    }
-    if ("api-compat".equals(id) && !project.hasApiBaseline()) {
-      throw new WardException(
-          "api-compat compares against a released baseline, so it is offered only for Maven projects"
-              + " whose pom.xml declares <distributionManagement>.");
-    }
+    requireApiBaseline(environment, project, id);
     requireOpenApiSpec(environment, project, id);
+  }
+
+  private static void requireApiBaseline(
+      final EnvironmentInspection environment, final Project project, final String id) {
+    if (!SupportedQualityGates.API_COMPAT.equals(id)) {
+      return;
+    }
+    if (!environment.hasReleaseTag(project.root())) {
+      throw new WardException(
+          "api-compat compares sources with the latest release tag, so it is offered only when"
+              + " a tag such as v1.2.3 is reachable from HEAD. Fetch tags or create one.");
+    }
   }
 
   private static void requireOpenApiSpec(

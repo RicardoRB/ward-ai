@@ -1,6 +1,6 @@
 package dev.ward.analysis.domain.rule.check;
 
-import dev.ward.analysis.domain.flow.taint.TaintAnalysis;
+import dev.ward.analysis.domain.flow.taint.TaintFile;
 import dev.ward.analysis.domain.flow.taint.TaintFinding;
 import dev.ward.analysis.domain.flow.taint.TaintSpec;
 import dev.ward.analysis.domain.ir.SyntaxNode;
@@ -48,9 +48,7 @@ public final class TaintCheck implements RuleCheck {
   @Override
   public List<RuleMatch> matches(final SyntaxNode root, final FlowView flow) {
     final List<RuleMatch> found = new ArrayList<>();
-    flow.graphs()
-        .forEach(
-            graph -> TaintAnalysis.run(graph, spec).forEach(finding -> found.add(match(finding))));
+    TaintFile.run(flow.graphs(), spec).forEach(finding -> found.add(match(finding)));
     found.sort(Comparator.comparingInt((RuleMatch match) -> match.span().startOffset()));
     return found;
   }

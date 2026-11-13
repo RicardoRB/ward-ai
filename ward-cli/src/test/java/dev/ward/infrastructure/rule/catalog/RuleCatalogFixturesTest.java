@@ -2,12 +2,16 @@ package dev.ward.infrastructure.rule.catalog;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import dev.ward.analysis.application.rule.TextRules;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.domain.ir.TextFile;
 import dev.ward.analysis.domain.port.TypeFacts;
 import dev.ward.analysis.domain.rule.GraphRules;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleOptions;
+import dev.ward.analysis.domain.rule.RuleRunResult;
+import dev.ward.infrastructure.rule.BundledRuleMatchers;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -74,13 +78,57 @@ class RuleCatalogFixturesTest {
     assertThat(problems).isEmpty();
   }
 
+  static Stream<CatalogRow> textRows() {
+    return CATALOG.rows().stream().filter(CatalogRow::isText);
+  }
+
+  @ParameterizedTest(name = "{0}")
+  @MethodSource("textRows")
+  void textViolatingFixtureReportsExactlyTheExpectedPositionsAndPassingReportsNone(
+      final CatalogRow row) throws IOException {
+    final RuleDefinition rule = RULES.get(row.textId());
+    assertThat(rule).as("rule definition %s", row.textId()).isNotNull();
+    final RuleFixtureSet fixtures = RuleFixtureSet.ofText(RuleFixtureSet.root(), row);
+    assertThat(fixtures.complete()).as("fixtures of %s", fixtures.directory()).isTrue();
+    final List<String> problems = new ArrayList<>();
+    problems.addAll(checkText(rule, fixtures.violating(""), fixtures.expected("")));
+    problems.addAll(checkText(rule, fixtures.passing(""), List.of()));
+    assertThat(problems).isEmpty();
+  }
+
+  private static List<String> checkText(
+      final RuleDefinition rule, final Path file, final List<String> expected) throws IOException {
+    final RuleRunResult result =
+        new TextRules(BundledRuleMatchers.create(), List.of(rule))
+            .run(List.of(new TextFile(file.getFileName().toString(), Files.readString(file))));
+    final List<String> problems = new ArrayList<>();
+    if (!result.executionErrors().isEmpty()) {
+      problems.add(rule.id() + " has execution errors: " + result.executionErrors());
+    }
+    final List<String> found =
+        result.findings().stream()
+            .map(
+                finding ->
+                    (finding.line() == null ? 0 : finding.line())
+                        + ":"
+                        + (finding.column() == null ? 0 : finding.column()))
+            .toList();
+    if (!found.equals(expected)) {
+      problems.add(file.getFileName() + " expected " + expected + " but found " + found);
+    }
+    return problems;
+  }
+
   @Test
   void everyFixtureDirectoryBelongsToAnImplementedPair() throws IOException {
-    final List<String> expected =
-        implemented().stream()
-            .map(pair -> RuleFixtureSet.of(RuleFixtureSet.root(), pair.row(), pair.language()))
-            .map(set -> set.directory().toString())
-            .toList();
+    final List<String> expected = new ArrayList<>();
+    implemented().stream()
+        .map(pair -> RuleFixtureSet.of(RuleFixtureSet.root(), pair.row(), pair.language()))
+        .map(set -> set.directory().toString())
+        .forEach(expected::add);
+    textRows()
+        .map(row -> RuleFixtureSet.ofText(RuleFixtureSet.root(), row).directory().toString())
+        .forEach(expected::add);
     final List<String> found = new ArrayList<>();
     try (Stream<Path> languages = Files.list(RuleFixtureSet.root())) {
       for (final Path language : languages.toList()) {
@@ -128,6 +176,9 @@ class RuleCatalogFixturesTest {
   private static List<Pair> implemented() {
     final List<Pair> pairs = new ArrayList<>();
     for (final CatalogRow row : CATALOG.rows()) {
+      if (row.breaking()) {
+        continue;
+      }
       for (final AnalysisLanguage language : row.languages(CatalogStatus.IMPLEMENTED)) {
         pairs.add(new Pair(row, language));
       }

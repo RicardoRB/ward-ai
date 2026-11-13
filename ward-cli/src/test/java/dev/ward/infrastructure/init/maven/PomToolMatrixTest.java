@@ -23,9 +23,7 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.Profile;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -40,15 +38,7 @@ class PomToolMatrixTest {
 
   /** Gates that add Maven declarations, matching the configurator's tool table. */
   private static final List<String> MAVEN_GATES =
-      List.of(
-          "sonar",
-          "coverage",
-          "dependency-check",
-          "mutation",
-          "enforcer",
-          "format",
-          "license",
-          "api-compat");
+      List.of("sonar", "coverage", "mutation", "enforcer", "format", "api-compat");
 
   @ParameterizedTest(name = "{0}")
   @MethodSource("fixtures")
@@ -91,28 +81,6 @@ class PomToolMatrixTest {
             PresetPluginSnippets.LIFECYCLE_PLUGINS.stream()
                 .map(PresetPluginSnippets.LifecyclePlugin::artifact)
                 .toList());
-  }
-
-  @Test
-  void dependencyCheckDisablesOssIndexWithoutCredentials(@TempDir final Path root)
-      throws IOException {
-    Files.writeString(root.resolve("pom.xml"), Files.readString(FIXTURES.resolve("minimal.xml")));
-
-    new PomToolConfigurator()
-        .apply(
-            new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE),
-            List.of(gate("dependency-check")),
-            null);
-
-    final Plugin plugin =
-        read(Files.readString(root.resolve("pom.xml"))).getBuild().getPlugins().stream()
-            .filter(candidate -> "dependency-check-maven".equals(candidate.getArtifactId()))
-            .findFirst()
-            .orElseThrow();
-    final Xpp3Dom configuration = (Xpp3Dom) plugin.getConfiguration();
-    assertThat(configuration.getChild("ossindexAnalyzerEnabled").getValue()).isEqualTo("false");
-    assertThat(configuration.getChild("ossIndexServerId").getValue()).isEqualTo("ossindex");
-    assertThat(configuration.toString()).doesNotContainIgnoringCase("password");
   }
 
   static Stream<Path> fixtures() throws IOException {

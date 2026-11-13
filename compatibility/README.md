@@ -86,12 +86,8 @@ Windsurf runs Cascade hooks only inside the editor, so its live check is done by
 as `witnessed-live` evidence, never as an automated pass. With Windsurf 1.126.0 signed in:
 
 1. Build Ward and put it on `PATH`, then copy `ward-cli/src/test/resources/fixtures/maven-project` to a new
-   directory and run `ward init` and `ward integrate windsurf --guard-approved-specs` in it.
-2. Add `openspec/specs/smoke/spec.md` with any content and open the directory in Windsurf.
-3. Ask Cascade to change `openspec/specs/smoke/spec.md`. Expected: the write is refused, Cascade reports
-   Ward's reason, and the file is unchanged.
-4. Ask Cascade to run `rm openspec/specs/smoke/spec.md`. Expected: the command is refused.
-5. Create a file named `FAIL` in the directory, then ask Cascade to create `src/Smoke.java`. Expected:
+   directory and run `ward init` and `ward integrate windsurf` in it, then open the directory in Windsurf.
+2. Create a file named `FAIL` in the directory, then ask Cascade to create `src/Smoke.java`. Expected:
    the file is written and the Cascade UI shows Ward's quality findings for the hook. The agent
    does not receive them; Windsurf has no hook output that reaches the model after an action.
 

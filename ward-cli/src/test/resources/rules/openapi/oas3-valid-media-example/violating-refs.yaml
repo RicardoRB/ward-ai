@@ -1,0 +1,67 @@
+openapi: 3.0.3
+info: {title: T, version: "1", description: d}
+paths:
+  /a:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/Lim'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Pet'}
+              example: {id: 1, name: 7, extra: true, kind: cat, tags: [a, b, c]}
+              examples:
+                one: {value: {id: x}}
+                two: {$ref: '#/components/examples/Ex'}
+components:
+  examples:
+    Ex: {value: {name: 3}}
+  parameters:
+    Lim: {name: limit, in: query, schema: {type: integer, minimum: 1, maximum: 10}, example: 99}
+  schemas:
+    Pet:
+      type: object
+      required: [id, name]
+      additionalProperties: false
+      properties:
+        id: {type: integer, format: int64, example: 1.5}
+        name: {type: string, minLength: 2, default: x}
+        kind: {type: string, enum: [cat, dog], example: bird}
+        tags: {type: array, maxItems: 2, items: {type: string, pattern: '^[a-z]$'}}
+        owner: {$ref: '#/components/schemas/Owner'}
+    Owner:
+      type: object
+      properties:
+        email: {type: string, format: email, example: nope}
+        when: {type: string, format: date, example: 2020-13-45}
+        host: {type: string, format: hostname, example: "bad host"}
+        ip: {type: string, format: ipv4, example: 300.1.1.1}
+        site: {type: string, format: uri, example: "not a uri"}
+        n: {type: number, exclusiveMinimum: true, minimum: 0, example: 0}
+        m: {type: integer, enum: [1, 2], example: 3}
+        flag: {type: boolean, example: "yes"}
+        nothing: {type: string, nullable: true, example: null}
+        u: {type: string, nullable: true, enum: [a, b], example: c}
+        mix:
+          oneOf:
+            - {type: object, required: [a], properties: {a: {type: string}}}
+            - {type: object, required: [b], properties: {b: {type: integer}}}
+          example: {a: 1, b: x}
+        un: {type: object, additionalProperties: {type: integer}, example: {p: 1, q: x}}
+        pp:
+          type: object
+          patternProperties:
+            '^x-': {type: string}
+          additionalProperties: false
+          example: {x-a: 1, y: 2}
+        any:
+          type: string
+          not: {enum: [bad]}
+          example: bad
+    Loop:
+      type: object
+      properties:
+        next: {$ref: '#/components/schemas/Loop'}
+      example: {next: 5}

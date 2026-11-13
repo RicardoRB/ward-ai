@@ -1,0 +1,1 @@
+response-property-max-properties-unset	GET	/pets

@@ -16,13 +16,13 @@ import java.util.TreeMap;
 final class JavaParityReport {
 
   private static final List<String> TOOLS =
-      List.of("checkstyle", "pmd", "spotbugs", "errorprone", "nullaway", "semgrep");
+      List.of("checkstyle", "pmd", "spotbugs", "errorprone", "nullaway");
 
   private static final int NOTE_FIELDS = 4;
   private static final List<String> HEADER =
       List.of(
           "# Java parity report: Ward rules against Checkstyle 14.3.0, PMD 7.29.0, SpotBugs 4.9.7,",
-          "# Error Prone 2.50.0 with NullAway 0.14.2, and Semgrep p/java.",
+          "# Error Prone 2.50.0 with NullAway 0.14.2.",
           "# rule, tool, tool id, outcome, note. Regenerate with -Dward.parity.write=true.");
 
   private JavaParityReport() {}
@@ -102,12 +102,9 @@ final class JavaParityReport {
     return String.join("\n", lines) + "\n";
   }
 
-  /** The lines of a report that the committed copy pins: Semgrep's registry changes over time. */
+  /** The lines of a report that the committed copy pins: its rows, without the summary. */
   static List<String> pinned(final String report) {
-    return report
-        .lines()
-        .filter(line -> !line.startsWith("#") && !line.contains("\tsemgrep\t"))
-        .toList();
+    return report.lines().filter(line -> !line.startsWith("#")).toList();
   }
 
   /** Reads the committed report. */

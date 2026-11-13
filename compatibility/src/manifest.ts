@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-export const CAPABILITIES = ["post-edit", "feedback", "pre-tool-guard", "turn-end"] as const;
+export const CAPABILITIES = ["post-edit", "feedback", "turn-end"] as const;
 export type Capability = (typeof CAPABILITIES)[number];
 export type CapabilitySupport = "supported" | "unsupported";
 

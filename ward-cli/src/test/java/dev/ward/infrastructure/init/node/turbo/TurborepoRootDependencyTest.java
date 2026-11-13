@@ -68,7 +68,6 @@ class TurborepoRootDependencyTest {
         BuildTool.NPM,
         Framework.NONE,
         false,
-        false,
         root,
         Set.of(),
         "24",

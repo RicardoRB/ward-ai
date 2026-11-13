@@ -19,7 +19,9 @@ import java.util.regex.Pattern;
  * @param kind the kind of site the entry matches
  * @param name the called name, the member name, or the annotation of a parameter
  * @param receiver the receiver type the site must have, when the entry names one
- * @param qualifier the qualifier text the site must have, when the entry names one
+ * @param qualifier the qualifier text the site must have, when the entry names one; a text that
+ *     starts with {@code *} matches any qualifier that ends with the rest, such as {@code
+ *     *.environment()}
  * @param arguments the argument positions a sink guards; empty for other entries
  * @param pattern the literal-text pattern of a string entry, matched with {@code find}
  */
@@ -31,13 +33,17 @@ public record TaintEntry(
     List<Integer> arguments,
     Optional<Pattern> pattern) {
 
+  private static final String ANY_PREFIX = "*";
+
   /**
    * Creates an entry that has no literal-text pattern.
    *
    * @param kind the kind of site the entry matches
    * @param name the called name, the member name, or the annotation of a parameter
    * @param receiver the receiver type the site must have, when the entry names one
-   * @param qualifier the qualifier text the site must have, when the entry names one
+   * @param qualifier the qualifier text the site must have, when the entry names one; a text that
+   *     starts with {@code *} matches any qualifier that ends with the rest, such as {@code
+   *     *.environment()}
    * @param arguments the argument positions a sink guards; empty for other entries
    */
   public TaintEntry(
@@ -88,8 +94,15 @@ public record TaintEntry(
     if (receiver.isPresent()) {
       return site.receiverType()
           .map(receiver.get()::equals)
-          .orElseGet(() -> qualifier.isPresent() && qualifier.get().equals(site.qualifier()));
+          .orElseGet(() -> qualifier.isPresent() && qualifierMatches(qualifier.get(), site));
     }
-    return qualifier.map(site.qualifier()::equals).orElse(true);
+    return qualifier.map(text -> qualifierMatches(text, site)).orElse(true);
+  }
+
+  /** A qualifier that starts with {@code *} matches any qualifier that ends with the rest. */
+  private static boolean qualifierMatches(final String expected, final FlowSite site) {
+    return expected.startsWith(ANY_PREFIX)
+        ? site.qualifier().endsWith(expected.substring(ANY_PREFIX.length()))
+        : expected.equals(site.qualifier());
   }
 }

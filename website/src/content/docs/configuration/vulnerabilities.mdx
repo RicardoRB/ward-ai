@@ -1,0 +1,88 @@
+---
+title: vulnerabilities
+description: Match the resolved dependencies against OSV advisories, with no external scanner.
+---
+
+The `vulnerabilities` check reports known vulnerabilities in the packages your project resolves. It
+replaces Trivy, OWASP Dependency-Check and pip-audit with one check for Maven, Gradle, npm, pnpm, Yarn,
+Bun, Python and SwiftPM projects.
+
+```toml
+[checks.vulnerabilities]
+uses = "vulnerabilities"
+profiles = ["ci"]
+minimum-severity = "low"   # low, moderate, high or critical
+max-age-days = 7           # how old a stored database may be
+```
+
+It has no `command` and starts no process. `ward init --gate vulnerabilities` writes it. No preset
+enables it, because it needs advisory data from the network.
+
+## What it scans
+
+The check reads the [dependency inventory](/getting-started/how-it-works/): every direct and
+transitive package, in every ecosystem the project has. It never reads a lockfile itself. When the
+inventory cannot be resolved, the check ends with an execution error and never passes. A project with
+no dependencies passes, and the report says that zero packages were scanned.
+
+## Advisory data
+
+Advisories come from the public [OSV](https://osv.dev) archives, one per ecosystem (`Maven`, `npm`,
+`PyPI`, `SwiftURL`), downloaded only for the ecosystems the project uses. Ward stores a reduced copy
+under `.ward/cache/vulnerabilities/<Ecosystem>/`, which Git ignores. A request carries the archive
+name and the client name `ward/<version>`, and no package name, path or environment value. Ward
+bundles no advisory data. Each advisory keeps the license of the database it comes from, which OSV
+lists per source in its [data sources](https://google.github.io/osv.dev/data/); check those terms
+before you redistribute the stored copy or a report built from it.
+
+Every online run asks the server whether the data changed, using the stored `ETag`. An unchanged
+database costs one small request. When the download fails, Ward uses the stored copy if it was
+confirmed within `max-age-days`, and says so on stderr.
+
+## Offline
+
+`ward check --offline` makes no network request. The check then needs a stored copy of each
+ecosystem it scans. A copy that is missing, older than `max-age-days`, or corrupt is an execution
+error that names the ecosystem, the reason, and the command that fixes it:
+
+```sh
+ward vulnerabilities update
+```
+
+See [`ward vulnerabilities update`](/commands/vulnerabilities/). In CI, run it, or restore the cache
+directory, before an offline check.
+
+## Findings and severity
+
+A finding names the package, the installed version, the advisory id and its aliases, the severity,
+and the first fixed version above the installed one. Advisories that share an id or alias are one
+finding. Findings are ordered by package name, version and advisory id.
+
+Severity is the `database_specific.severity` label of the advisory. Without a label, Ward computes the
+base score of the CVSS v3.x vector. A CVSS v4-only advisory has severity `unknown`, and a base score of
+0.0 has no severity and is not reported.
+
+`minimum-severity` decides what is reported. An `unknown` severity is always reported and fails the
+gate. A critical or high finding is an `error`, a moderate or unknown one a `warning`, a low one a
+`note`. The `--severity` flag of `ward check` only hides findings of a gate that already failed.
+
+## Versions that cannot be compared
+
+Ward orders versions with the rules of each ecosystem: Maven's `ComparableVersion`, semantic
+versioning 2.0 for npm and SwiftPM, and PEP 440 for PyPI. A package whose version cannot be ordered, such
+as a Swift branch pin, a Git revision, a path, or a string that is not a version, is not matched. The
+check reports a `note` that names it. These notes never fail the gate.
+
+## The report
+
+The text and JSON reports name each scanned ecosystem with the date of its data, and mark an
+ecosystem that was read from the stored copy after a failed download:
+
+```text
+✓ vulnerabilities — 142 packages scanned, no known vulnerabilities (npm data 2026-11-10)
+```
+
+## Not covered
+
+Container images, operating-system packages, infrastructure misconfiguration, secrets, reachability
+of vulnerable code, distribution advisories, and ignoring an advisory by id.

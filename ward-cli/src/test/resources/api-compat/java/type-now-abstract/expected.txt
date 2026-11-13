@@ -1,0 +1,1 @@
+p/A.java:3:1 api-compat:type-now-abstract p.A: public class p.A -> public abstract class p.A

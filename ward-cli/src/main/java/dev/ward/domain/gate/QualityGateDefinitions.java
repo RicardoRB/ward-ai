@@ -14,13 +14,13 @@ public final class QualityGateDefinitions {
           gate("compile", Phase.LOCAL),
           gate("coverage", Phase.LOCAL),
           gate("sonar", Phase.CI),
-          new Definition("dependency-check", "OWASP Dependency-Check", Phase.CI, false),
           gate("mutation", Phase.CI),
           gate("semgrep", Phase.CI),
-          new Definition("gitleaks", "Gitleaks", Phase.FAST, true),
+          new Definition(SupportedQualityGates.SECRETS, "secrets", Phase.FAST, true),
           gate("zap", Phase.CI),
-          gate("trivy", Phase.CI),
+          gate(SupportedQualityGates.VULNERABILITIES, Phase.CI),
           gate("enforcer", Phase.LOCAL),
+          gate(SupportedQualityGates.BUILD_POLICY, Phase.LOCAL),
           gate("license", Phase.LOCAL),
           gate("api-compat", Phase.CI),
           gate(SupportedQualityGates.OPENAPI_LINT, Phase.FAST),
@@ -40,7 +40,6 @@ public final class QualityGateDefinitions {
           new Definition("pytest", "pytest", Phase.LOCAL, false),
           new Definition(SupportedQualityGates.MUTMUT, "mutmut", Phase.CI, false),
           new Definition("django-check", "Django system checks", Phase.LOCAL, false),
-          new Definition("pip-audit", "pip-audit", Phase.CI, false),
           new Definition("swift-build", "Swift build", Phase.LOCAL, false),
           new Definition("swift-test", "Swift tests", Phase.LOCAL, false),
           new Definition(SupportedQualityGates.XCODEBUILD_TEST, "Xcode tests", Phase.LOCAL, false),
@@ -51,13 +50,11 @@ public final class QualityGateDefinitions {
               SupportedQualityGates.ANDROID_UNIT_TEST, "Android unit tests", Phase.LOCAL, false),
           new Definition(
               SupportedQualityGates.ANDROID_COVERAGE, "Android coverage", Phase.LOCAL, false),
-          gate(SupportedQualityGates.TRACEABILITY, Phase.CI),
           new Definition(
               SupportedQualityGates.ANALYSIS, SupportedQualityGates.ANALYSIS, Phase.LOCAL, true),
           gate(SupportedQualityGates.FORMAT, Phase.FAST),
-          gate("command", Phase.LOCAL),
-          gate("openspec", Phase.CI),
-          gate("openspec-archived", Phase.CI));
+          gate(SupportedQualityGates.CRAP, Phase.LOCAL),
+          gate("command", Phase.LOCAL));
 
   /** When a gate runs: on every edit, before a push, only on staged diffs, or in CI. */
   public enum Phase {

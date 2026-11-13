@@ -1,0 +1,1 @@
+7:18	Declare intended environment in server descriptions using terms like local, staging, production.

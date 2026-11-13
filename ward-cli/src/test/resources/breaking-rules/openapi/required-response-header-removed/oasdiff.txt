@@ -1,0 +1,1 @@
+required-response-header-removed	GET	/pets

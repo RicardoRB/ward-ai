@@ -1,0 +1,1 @@
+# fixture	kind	check id	method	path	reason. A reviewed difference between oasdiff and Ward on a fixture pair; kind is oasdiff-only or ward-only.

@@ -1,0 +1,1 @@
+p/A.java:3:1 api-compat:type-removed p.A: public class p.A -> removed

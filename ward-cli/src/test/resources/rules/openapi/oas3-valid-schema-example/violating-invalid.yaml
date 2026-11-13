@@ -1,0 +1,21 @@
+openapi: 3.0.0
+info: {title: T, version: "1", description: d}
+paths: {}
+components:
+  schemas:
+    A:
+      type: object
+      required: true
+      properties:
+        a: {type: string, example: 5}
+      example: {a: 1}
+    B: {type: string, minimum: x, example: 1}
+    C: {type: array, items: [{type: string}], example: [1]}
+    D: {type: integer, exclusiveMinimum: 3, example: 5}
+    E: {type: object, additionalProperties: 7, example: {}}
+    F: {type: string, format: 3, example: x}
+    G: {enum: [], example: 1}
+    H: {type: strin, example: 1}
+    I: {type: string, minLength: -1, example: 1}
+    J: {type: string, pattern: "(", example: 1}
+    K: {type: object, properties: {a: {$ref: '#/components/schemas/H'}}, example: {a: 1}}

@@ -1,6 +1,8 @@
 package dev.ward.application.init.jvm;
 
 import dev.ward.application.init.CiWorkflowTemplate;
+import dev.ward.application.init.CrapInit;
+import dev.ward.application.init.CrapSetup;
 import dev.ward.application.init.InitInputs;
 import dev.ward.application.init.SourceLanguageGates;
 import dev.ward.application.init.SourceLanguages;
@@ -17,6 +19,7 @@ import dev.ward.domain.project.Project;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /** Init choices for Maven and Gradle projects. */
@@ -37,13 +40,31 @@ public final class JvmInitSupport implements ToolchainInitSupport {
 
   @Override
   public Gates gates(final Project project, final QualityPreset preset, final InitInputs inputs) {
-    final BuildToolGates buildTool = BuildToolGates.of(project, inputs.environment());
+    final BuildToolGates buildTool = BuildToolGates.of(project, inputs.environment(), preset);
     final boolean android = project.framework() == Framework.ANDROID;
     return new Gates(
         analysisGates(project, buildTool, android),
         buildTool.policyGates().stream()
-            .filter(gate -> !"api-compat".equals(gate.id()) || project.hasApiBaseline())
+            .map(gate -> apiCompat(gate, inputs, project))
+            .flatMap(Optional::stream)
             .toList());
+  }
+
+  /** The native source comparison is offered when a release tag exists to compare with. */
+  private static Optional<InitGateOption> apiCompat(
+      final InitGateOption gate, final InitInputs inputs, final Project project) {
+    if (!SupportedQualityGates.API_COMPAT.equals(gate.id())) {
+      return Optional.of(gate);
+    }
+    return inputs.environment().hasReleaseTag(project.root())
+        ? Optional.of(
+            new InitGateOption(
+                gate.id(),
+                "Compares the public API with the latest release tag, from sources.",
+                List.of(),
+                true,
+                "compares sources with the latest release tag; needs full Git history and tags"))
+        : Optional.empty();
   }
 
   /**
@@ -74,6 +95,14 @@ public final class JvmInitSupport implements ToolchainInitSupport {
       gates.addAll(ANDROID_GATES);
     }
     return gates;
+  }
+
+  /** Android's coverage report is not at the Gradle default location, so it is not offered. */
+  @Override
+  public Optional<CrapSetup> crap(final Project project, final InitInputs inputs) {
+    return project.framework() == Framework.ANDROID
+        ? Optional.empty()
+        : Optional.of(gates -> CrapInit.place(gates, COVERAGE, List.of(), List.of(), Map.of()));
   }
 
   @Override

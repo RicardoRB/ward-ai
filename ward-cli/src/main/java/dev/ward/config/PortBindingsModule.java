@@ -7,15 +7,17 @@ import dagger.Module;
       ProcessBindingsModule.class,
       ProjectBindingsModule.class,
       InitBindingsModule.class,
-      TraceabilityBindingsModule.class,
-      ProvenanceBindingsModule.class,
       GateBindingsModule.class,
+      ApiCompatBindingsModule.class,
       GateExtensionBindingsModule.class,
       RuleBindingsModule.class,
       GateExtensionsModule.class,
       FormatterBindingsModule.class,
       ReportBindingsModule.class,
       DoctorBindingsModule.class,
-      RulesBindingsModule.class
+      DependencyBindingsModule.class,
+      BuildPolicyBindingsModule.class,
+      RulesBindingsModule.class,
+      VulnerabilityBindingsModule.class
     })
 interface PortBindingsModule {}

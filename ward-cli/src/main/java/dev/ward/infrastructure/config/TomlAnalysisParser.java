@@ -68,7 +68,10 @@ final class TomlAnalysisParser {
    * check uses {@code ward-rules.toml}. The path must stay inside the project.
    */
   static String rulesFile(final String where, final String type, final TomlTable gate) {
-    if (!SupportedQualityGates.ANALYSIS.equals(type) || !gate.contains(RULES_FILE)) {
+    final boolean readsRules =
+        SupportedQualityGates.ANALYSIS.equals(type)
+            || SupportedQualityGates.BUILD_POLICY.equals(type);
+    if (!readsRules || !gate.contains(RULES_FILE)) {
       return null;
     }
     final String path = gate.isString(RULES_FILE) ? gate.getString(RULES_FILE) : null;

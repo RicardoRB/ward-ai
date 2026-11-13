@@ -1,0 +1,59 @@
+# Written for Ward from the API documentation named in the catalog row of the rule; sources: taint/java/sources.toml.
+# Redirect sinks: the target of a servlet redirect and of a Spring RedirectView.
+
+[[sinks]]
+kind = "call"
+name = "sendRedirect"
+receiver = "javax.servlet.http.HttpServletResponse"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "sendRedirect"
+receiver = "jakarta.servlet.http.HttpServletResponse"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "sendRedirect"
+receiver = "javax.servlet.ServletResponse"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "sendRedirect"
+receiver = "jakarta.servlet.ServletResponse"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "<init>"
+receiver = "org.springframework.web.servlet.view.RedirectView"
+arguments = [0]
+
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "parseLong"
+receiver = "java.lang.Long"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Long"
+
+[[sanitizers]]
+kind = "call"
+name = "parseDouble"
+receiver = "java.lang.Double"
+

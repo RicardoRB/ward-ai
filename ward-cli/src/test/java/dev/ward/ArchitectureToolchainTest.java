@@ -61,8 +61,7 @@ final class ArchitectureToolchainTest {
           Map.entry(
               "QualityGateFactory",
               "maps each gate id to its implementation, including the Maven and Swift gates"),
-          Map.entry(
-              "DoctorService", "the doctor facade, which runs the JVM dependency-check diagnosis"),
+          Map.entry("DoctorService", "the doctor facade, which runs the Swift toolchain diagnosis"),
           Map.entry(
               "SystemEnvironmentInspection",
               "reads each toolchain's environment facts for the doctor"),

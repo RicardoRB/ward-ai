@@ -1,8 +1,6 @@
 package dev.ward.infrastructure.cli.init;
 
 import dev.ward.domain.init.CompatibilityFinding;
-import dev.ward.domain.init.GateToolInstallCatalog;
-import dev.ward.domain.init.OpenSpecDistribution;
 import dev.ward.domain.init.ScriptReplacement;
 import java.io.PrintWriter;
 import java.nio.file.Path;
@@ -10,7 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-/** The yes/no questions init asks: overwrite, installation consent, hooks, review, updates. */
+/** The yes/no questions init asks: overwrite, hooks, review, updates. */
 final class InitConfirmations {
   private final LinePrompt prompt;
   private final PrintWriter out;
@@ -26,30 +24,6 @@ final class InitConfirmations {
     out.print(file + " already exists. Overwrite it? [y/N]: ");
     out.flush();
     return prompt.confirm("overwrite");
-  }
-
-  boolean openSpecInstallation(final Path destination) {
-    out.println("OpenSpec is unavailable and can be installed locally.");
-    out.println(
-        "Package: "
-            + OpenSpecDistribution.packageName()
-            + " ("
-            + OpenSpecDistribution.nodeRequirement()
-            + ")");
-    out.println("Destination: " + destination);
-    out.println("This may access the network and run npm lifecycle scripts.");
-    out.print("Install OpenSpec? [y/N]: ");
-    out.flush();
-    return prompt.confirmInstallation();
-  }
-
-  boolean gateToolInstallation(
-      final String tool, final GateToolInstallCatalog.InstallMethod method) {
-    out.println("The selected gate requires unavailable tool '" + tool + "'.");
-    out.println("Install command: " + String.join(" ", method.arguments()));
-    out.print("Install " + tool + "? [y/N]: ");
-    out.flush();
-    return prompt.confirmInstallation();
   }
 
   /** Asks to apply the reviewed plan; Enter means yes, and end of input means no. */

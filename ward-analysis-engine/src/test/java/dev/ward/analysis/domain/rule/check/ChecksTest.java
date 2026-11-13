@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.rule.Measured;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -57,6 +58,25 @@ class ChecksTest {
                     "{value}")
                 .matches(method))
         .isEmpty();
+  }
+
+  @Test
+  void descendantCountMeasuresEveryDeclarationEvenWithinTheLimit() {
+    final SyntaxNode method =
+        Trees.node(METHOD, 0, Trees.DECLARATION_END, 1, Trees.leaf(IF, "if", 0));
+    final DescendantCountCheck check =
+        new DescendantCountCheck(
+            Set.of(METHOD), CountedKinds.of(Set.of(IF)), 1, Trees.DESCENDANT_LIMIT, "{value}");
+
+    assertThat(check.measures(method)).extracting(Measured::value).containsExactly(2);
+    assertThat(check.matches(method)).isEmpty();
+  }
+
+  @Test
+  void aCheckThatMeasuresNothingReturnsNoMeasurements() {
+    final SyntaxNode body = Trees.node("methodBody", 0, Trees.SOURCE_LENGTH, 61);
+
+    assertThat(new LinesCheck(Set.of("methodBody"), 1, "{value}").measures(body)).isEmpty();
   }
 
   @Test

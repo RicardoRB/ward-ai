@@ -29,8 +29,9 @@ class RuleCatalogContractTest {
   private static final int FIRST_SPLIT_ISSUE = 446;
   private static final int LAST_SPLIT_ISSUE = 453;
   // Issues split out of roadmaps #455 (TypeScript and JavaScript engine and grammar) and #457
-  // (Swift module-aware dead code).
-  private static final Set<Integer> ENGINE_ISSUES = Set.of(462, 466);
+  // (Swift module-aware dead code), and the OpenAPI lint rules of roadmap #515 (#522) and the
+  // OpenAPI breaking-change rules (#523).
+  private static final Set<Integer> ENGINE_ISSUES = Set.of(462, 466, 522, 523, 538);
 
   private final RuleCatalog catalog = new RuleCatalogReader().load();
   private final List<RuleDefinition> definitions = CatalogRuleDefinitions.all();
@@ -39,10 +40,8 @@ class RuleCatalogContractTest {
   void everyRuleDefinitionThatShipsBelongsToExactlyOneImplementedRow() {
     final Map<String, List<String>> owners =
         catalog.rows().stream()
-            .flatMap(
-                row ->
-                    row.languages(CatalogStatus.IMPLEMENTED).stream()
-                        .map(language -> Map.entry(row.idFor(language), row.name())))
+            .filter(row -> !row.breaking())
+            .flatMap(row -> row.implementedIds().stream().map(id -> Map.entry(id, row.name())))
             .collect(
                 Collectors.groupingBy(
                     Map.Entry::getKey,
@@ -64,6 +63,17 @@ class RuleCatalogContractTest {
     final Map<String, RuleDefinition> byId = new HashMap<>();
     definitions.forEach(rule -> byId.put(rule.id(), rule));
     for (final CatalogRow row : catalog.rows()) {
+      if (row.breaking()) {
+        continue;
+      }
+      if (row.isText()) {
+        final RuleDefinition rule = byId.get(row.textId());
+        assertThat(rule.category()).as("category of %s", rule.id()).isEqualTo("secrets");
+        assertThat(rule.presets()).as("presets of %s", rule.id()).isEmpty();
+        assertThat(RuleFixtureSet.ofText(RuleFixtureSet.root(), row).complete())
+            .as("fixtures of %s", rule.id())
+            .isTrue();
+      }
       for (final AnalysisLanguage language : row.languages(CatalogStatus.IMPLEMENTED)) {
         final RuleDefinition rule = byId.get(row.idFor(language));
         assertThat(rule.category()).as("category of %s", rule.id()).isNotBlank();
@@ -111,7 +121,7 @@ class RuleCatalogContractTest {
   @Test
   void everyRowWithoutAnImplementedRuleHasACategoryAndALanguage() {
     for (final CatalogRow row : catalog.rows()) {
-      if (row.languages(CatalogStatus.IMPLEMENTED).isEmpty()) {
+      if (!row.breaking() && !row.isText() && row.languages(CatalogStatus.IMPLEMENTED).isEmpty()) {
         assertThat(row.category()).as("category of %s", row.name()).isNotBlank();
         assertThat(row.languages(CatalogStatus.PLANNED))
             .as("planned languages of %s", row.name())

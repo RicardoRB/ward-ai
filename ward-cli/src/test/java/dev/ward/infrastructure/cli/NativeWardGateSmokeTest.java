@@ -10,12 +10,14 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.api.io.TempDir;
 
 /**
- * Runs a built executable's {@code ward} gate over a small project in every engine language.
+ * Runs a built executable's {@code ward} gate over a small project in every engine language, and
+ * its {@code build-policy} check over the POM.
  *
  * <p>The JVM tests cannot see what the native image leaves out: grammars, rule and taint resources,
  * reflective codecs. This test runs the real binary twice, so the second run also reads the
@@ -33,7 +35,9 @@ class NativeWardGateSmokeTest {
               "pom.xml",
               """
               <project><modelVersion>4.0.0</modelVersion><groupId>shop</groupId>
-              <artifactId>shop</artifactId><version>1</version></project>
+              <artifactId>shop</artifactId><version>1</version>
+              <dependencies><dependency><groupId>org.example</groupId><artifactId>lib</artifactId>
+              <version>[1.0,2.0)</version></dependency></dependencies></project>
               """),
           Map.entry("package.json", "{\"name\": \"shop\"}\n"),
           Map.entry(
@@ -81,9 +85,15 @@ class NativeWardGateSmokeTest {
           "ward:swift/naming",
           "ward:kotlin/function-name");
 
+  // Built from two literals, so that no source file holds a token.
+  private static final String TOKEN = "ghp_" + "aB3dE5gH7jK9mN1pQ3sT5vW7yZ9bD1fH3jL5";
+
   private static final String WARD_TOML =
       """
       version = 2
+
+      [checks.secrets]
+      uses = "secrets"
 
       [checks.ward]
       uses = "ward"
@@ -95,7 +105,21 @@ class NativeWardGateSmokeTest {
 
       [checks.ward.cycles]
       roots = ["src/main/java/shop"]
+
+      [checks.coverage]
+      uses = "coverage"
+      minimum = 90
+      minimum-branches = 50
+      report = "coverage/lcov.info"
+
+      [checks.build-policy]
+      uses = "build-policy"
       """;
+
+  /** The lcov report of the coverage check: half the lines and branches of one file covered. */
+  private static final String LCOV =
+      "TN:\nSF:web/app.ts\nDA:1,1\nDA:2,0\nBRDA:1,0,0,1\nBRDA:1,0,1,0\nBRF:2\nBRH:1\n"
+          + "end_of_record\n";
 
   @TempDir Path project;
 
@@ -116,9 +140,49 @@ class NativeWardGateSmokeTest {
     assertThat(cold.stdout())
         .contains(RULES)
         .contains("ward:architecture/layers")
-        .contains("ward:architecture/cycles");
+        .contains("ward:architecture/cycles")
+        .contains("ward:secrets/github-pat")
+        .doesNotContain(TOKEN)
+        .contains("Line coverage 50% is below the minimum of 90%")
+        .contains("Branch coverage 50% meets the minimum of 50%")
+        .contains("ward:build/no-dynamic-version");
     assertThat(warm.exitCode()).isEqualTo(FAILED);
     assertThat(warm.stdout()).isEqualTo(cold.stdout());
+  }
+
+  @Test
+  void licenseGateSbomAndLicensesRunFromTheNativeImage() throws Exception {
+    final Path binary = Path.of(System.getProperty("ward.native.binary")).toAbsolutePath();
+    write(
+        "package.json",
+        "{\"name\":\"shop\",\"version\":\"1.0.0\",\"dependencies\":{\"left-pad\":\"1.3.0\"}}");
+    write(
+        "package-lock.json",
+        "{\"name\":\"shop\",\"version\":\"1.0.0\",\"lockfileVersion\":3,\"requires\":true,"
+            + "\"packages\":{\"\":{\"name\":\"shop\",\"version\":\"1.0.0\","
+            + "\"dependencies\":{\"left-pad\":\"1.3.0\"}},"
+            + "\"node_modules/left-pad\":{\"version\":\"1.3.0\"}}}");
+    write(
+        "node_modules/left-pad/package.json",
+        "{\"name\":\"left-pad\",\"version\":\"1.3.0\",\"license\":\"MIT\"}");
+    write("ward.toml", "version = 2\n\n[checks.license]\nuses = \"license\"\ndeny = [\"MIT\"]\n");
+
+    final Run gate = run(binary, "check", "--format", "json", "-C", project.toString());
+    final Run sbom = run(binary, "sbom", "--directory", project.toString());
+    final Run notice = run(binary, "licenses", "--directory", project.toString());
+
+    assertThat(gate.exitCode()).as(gate.stderr()).isEqualTo(FAILED);
+    assertThat(gate.stdout()).contains("ward:license/denied");
+    assertThat(sbom.exitCode()).as(sbom.stderr()).isZero();
+    assertThat(sbom.stdout()).contains("CycloneDX").contains("pkg:npm/left-pad@1.3.0");
+    assertThat(notice.exitCode()).as(notice.stderr()).isZero();
+    assertThat(notice.stdout()).contains("left-pad").contains("MIT");
+  }
+
+  private void write(final String name, final String content) throws IOException {
+    final Path file = project.resolve(name);
+    Files.createDirectories(file.getParent());
+    Files.writeString(file, content);
   }
 
   private void writeProject() throws IOException {
@@ -127,15 +191,26 @@ class NativeWardGateSmokeTest {
       Files.createDirectories(file.getParent());
       Files.writeString(file, source.getValue());
     }
+    Files.createDirectories(project.resolve("config"));
+    Files.writeString(project.resolve("config/app.yml"), "token: " + TOKEN + "\n");
     final String rules = String.join(", ", RULES.stream().map(id -> "\"" + id + "\"").toList());
     Files.writeString(project.resolve("ward.toml"), WARD_TOML.formatted(rules));
+    // Written last, so that no source file it names is newer than the report.
+    Files.createDirectories(project.resolve("coverage"));
+    Files.writeString(project.resolve("coverage/lcov.info"), LCOV);
   }
 
   private Run check(final Path binary) throws IOException, InterruptedException {
+    return run(binary, "check", "--format", "json", "-C", project.toString());
+  }
+
+  private Run run(final Path binary, final String... arguments)
+      throws IOException, InterruptedException {
     final Path stdout = Files.createTempFile("ward-out", ".json");
     final Path stderr = Files.createTempFile("ward-err", ".txt");
     final Process process =
-        new ProcessBuilder(binary.toString(), "check", "--format", "json", "-C", project.toString())
+        new ProcessBuilder(
+                Stream.concat(Stream.of(binary.toString()), Stream.of(arguments)).toList())
             .redirectOutput(stdout.toFile())
             .redirectError(stderr.toFile())
             .start();

@@ -1,104 +1,87 @@
-# Tuning the coverage threshold
+# Tuning the coverage minimum
 
-## Where the threshold lives
+## Where the minimum lives
 
-- **Maven:** in `pom.xml`, inside the `jacoco-maven-plugin` `<configuration><rules>`. Each `<limit>`
-  has a `<counter>` (`LINE`, `BRANCH`, `INSTRUCTION`, `METHOD`, `CLASS`, `COMPLEXITY`), a `<value>`
-  (usually `COVEREDRATIO`), and a `<minimum>` from `0` to `1`. The gate runs `./mvnw jacoco:check`.
-  - The strict preset writes `BRANCH` `0.75` and `LINE` `0.85`. A custom selection writes `LINE`
-    `0.80`. Read the actual values from the file.
-  - `jacoco:check` needs execution data from a test run. The plugin must also have a `prepare-agent`
-    execution, and the tests must run first, for example in the `tests` gate. If `target/jacoco.exec`
-    is missing, the check has nothing to measure. Report that instead of changing thresholds.
-- **Gradle:** init applies the `jacoco` plugin and writes a
-  `jacocoTestCoverageVerification { violationRules { rule { limit { ... } } } }` block, with the
-  preset's minimums or `LINE` `0.80` without a preset. The Kotlin DSL writes
-  `tasks.jacocoTestCoverageVerification { ... }`. The gate runs
-  `./gradlew jacocoTestCoverageVerification`, which fails below a minimum. A build set up by an older
-  Ward may run `jacocoTestReport` instead, which only reports and never fails. Enforcing a
-  threshold there needs the verification block **and** the gate command in `ward.toml`. Propose
-  both edits together as one strengthening.
+For Maven, Gradle, Node and Python the minimum lives in one place: the `coverage` check of
+`ward.toml`. Ward reads the coverage report the tool writes (JaCoCo XML or lcov, chosen from the
+file's content) and fails below the minimums. Init writes no minimum into `pom.xml`, the Gradle
+build, `vitest.config.mjs`, `jest.config.mjs`, `bunfig.toml` or `.coveragerc`.
 
-Init leaves the configuration of a JaCoCo plugin that already exists untouched, so threshold edits in
-the build file survive later `ward init` runs.
+```toml
+[checks.coverage]
+minimum = 85            # lines, percent from 0 to 100; required
+minimum-branches = 75   # optional; an error when the report records no branches
+report = "reports/lcov.info"   # optional path or array of paths inside the project
+```
 
-Init writes no `paths` table for `coverage`: coverage depends on the whole project, so the check
-after each agent edit runs it in full when it is in the `default` profile.
+- **Presets.** `standard` writes `minimum = 70` (Maven, Gradle, Node) or `80` (Python); `strict`
+  writes `minimum = 85` and `minimum-branches = 75` for every toolchain. A custom Maven or Gradle
+  selection writes `80`, a custom Node selection `70`. Bun measures no branches, so its check has
+  no `minimum-branches`.
+- **Report locations** without `report`: `target/site/jacoco/jacoco.xml` (Maven),
+  `build/reports/jacoco/test/jacocoTestReport.xml` (Gradle), `coverage/lcov.info` (Node) and
+  `.ward/reports/coverage.lcov` (Python, set by init), in the root and in every module directory.
+- **Totals.** Ward sums every report it reads, so a multi-module build is checked as one total; a
+  high-coverage module can hide a low one.
+- **Commands.** Maven runs `jacoco:report`, Gradle `jacocoTestReport` and Python `coverage lcov -o
+  .ward/reports/coverage.lcov`, after which Ward reads the report. The Node check has no command:
+  it reads what the test gate (`vitest`, `jest`, `bun-test`) wrote, so that gate must run first.
+- **Angular.** `ng-test` has no `coverage` check; its own `angular.json` or `karma.conf.js` sets any
+  threshold. A hand-written `[checks.coverage]` with `uses = "coverage"`, `report` and `minimum`
+  enforces one from `ward.toml`.
+- **A threshold the project owns still applies.** A Jest `coverageThreshold`, a Vitest threshold in
+  the project's own config, a `bunfig.toml` threshold or a `fail_under` in a project-owned coverage
+  config keeps failing the test tool. Ward does not read or edit them; tune them with the user as a
+  separate change.
+- **Unusable input is an execution error, never a pass:** no report, a report that is neither JaCoCo
+  XML nor lcov, no coverable line, a stale report (older than the command or than a source file
+  it names) or no branch data under `minimum-branches`. Fix the cause (run the test gate first);
+  do not change the minimum.
+
+Vitest and coverage.py list only the files the tests load, so the Node and Python minimums measure
+loaded files; JaCoCo analyzes every class. Setting `coverage.include` (Vitest) or
+`collectCoverageFrom` (Jest) is a strengthening: files no test imports start counting.
 
 ## Reading the current coverage
 
-Read the measured ratios from the report, not from memory:
-
-- Maven: `target/site/jacoco/jacoco.xml`. The strict preset binds the `report` goal to the `test`
-  phase, so the file exists only after a test run that passed. If tests fail, fix them or report
-  that first: a ratio measured on a failing suite is not meaningful. The last `<counter type="LINE" missed=".." covered=".."/>`
-  elements directly under `<report>` are the bundle totals. The ratio is
-  `covered / (missed + covered)`.
-- Gradle: `build/reports/jacoco/test/jacocoTestReport.xml`, with the same format. The verification
-  task does not write it, so run `./gradlew test jacocoTestReport` first.
-
-The `coverage` check in `ward check --format json` has no structured findings. Its `output` field
-holds the JaCoCo message, for example `lines covered ratio is 0.62, but expected minimum is 0.85`.
+The `coverage` finding states each measured value and its minimum, for example `Line coverage 62%
+is below the minimum of 85%.` To see per-file numbers, read the report: the last `<counter
+type="LINE" ../>` elements directly under `<report>` in the JaCoCo XML, or the `DA`, `BRDA` records
+of the lcov file. The Maven report exists only after a test run that passed. If tests fail, fix them
+or report that first: a ratio measured on a failing suite is not meaningful.
 
 ## Classifying a change
 
 | Change | Class |
 |---|---|
-| Raise a `<minimum>`, or add a counter such as `BRANCH` | strengthen |
-| Add a `PACKAGE` or `CLASS` rule for a critical package, for example `*.domain.*` at `0.90` | strengthen |
-| Lower a `<minimum>`, or remove a counter or rule | weaken |
-| Add `<excludes>` for classes or packages | weaken (it hides code from the measurement) |
-| Switch from `COVEREDRATIO` to `MISSEDCOUNT` with a generous maximum | weaken unless shown to be equivalent |
+| Raise `minimum`, or add `minimum-branches` | strengthen |
+| Lower `minimum` or `minimum-branches`, or remove the branch minimum | weaken |
+| Exclude files or packages from the coverage tool's report | weaken (it hides code from the measurement) |
+| Add `coverage.include` or `collectCoverageFrom` so unloaded files count | strengthen |
 
 ## Grounding proposals in the code
 
-- **Coverage is far above the threshold.** Propose raising the minimum close to the measured value,
-  for example from `0.80` to `0.85` when the measured value is `0.88`. This locks in the gain.
-- **Coverage is below the threshold and the user wants the gate to pass.** First offer to write
-  tests for the least covered classes that hold real logic. Name them, based on the per-class
-  counters in the report. Tests must assert behavior. A test that only executes code, without
-  assertions, is not an option. Only if the user still wants it, propose lowering the minimum as a
-  separate weakening. Show the old value, the new value, the measured value, and the reason, and
-  suggest a date or milestone for raising it again.
-- **Generated or trivial code drags the ratio down,** such as generated sources or DTOs. Excluding
-  it is still a weakening. Name every pattern and the number of classes it removes.
-
-## TypeScript and JavaScript test gates
-
-Where init puts the thresholds depends on whether the project had its own test config:
-
-- **Ward's config.** Without a user config, init writes `vitest.config.mjs` (Vitest) or
-  `jest.config.mjs` (Jest), marked `// managed-by: ward preset=<id>`, with
-  `coverage.thresholds` (Vitest) or `coverageThreshold.global` (Jest). `standard` writes
-  `lines: 70`; `strict` writes `lines: 85` and `branches: 75`. The gate command is then plain
-  `<runner> vitest run --coverage` or `<runner> jest --coverage`.
-- **The project's config.** With `vitest.config.*`, `vite.config.*`, `jest.config.*`, or a `"jest"`
-  key in `package.json`, init leaves that config alone and puts the thresholds in the command in
-  `ward.toml`: `--coverage.thresholds.lines=85 --coverage.thresholds.branches=75` for Vitest, or one
-  `--coverageThreshold={"global":{"lines":85,"branches":75}}` argument for Jest (no shell runs it).
-  A threshold in the project's own config is overridden by these flags.
-- **Bun.** `bun test --coverage` reads `coverageThreshold` from `bunfig.toml`. Init writes
-  `[test] coverageThreshold = { lines = 0.7 }` (`0.85` with `strict`) only when no `bunfig.toml`
-  existed. Bun measures no branches, so there is no branch threshold to tune.
-
-Edit the threshold where it lives. Treat a marked config like any managed rule file (Step 4): ask
-whether it should become the user's before the first edit, and remove the marker in the same
-approved edit, or a later `ward init` rewrites it with the preset's values. A threshold in a
-`ward.toml` command is also rewritten by a later `ward init`; say so.
-
-Read the measured value from the runner's summary in the gate output (`Lines : 62.5%`), or from
-`coverage/coverage-summary.json` when the project enables the `json-summary` reporter. Vitest and
-Jest measure only the files the tests load unless the config sets `coverage.include` (Vitest) or
-`collectCoverageFrom` (Jest). Setting it is a strengthening: files no test imports start counting.
-Classify threshold changes as in the table above.
+- **Coverage is far above the minimum.** Propose raising it close to the measured value, for
+  example from `80` to `85` when the measured value is `88`. This locks in the gain.
+- **Coverage is below the minimum and the user wants the gate to pass.** First offer to write tests
+  for the least covered classes that hold real logic. Name them, based on the per-file counters in
+  the report. Tests must assert behavior. A test that only executes code, without assertions, is
+  not an option. Only if the user still wants it, propose lowering the minimum as a separate
+  weakening. Show the old value, the new value, the measured value, and the reason, and suggest a
+  date or milestone for raising it again.
+- **Generated or trivial code drags the ratio down.** Excluding it is still a weakening. Name every
+  pattern and the number of files it removes.
+- `ward init --overwrite` regenerates `ward.toml`; tell the user a tuned `minimum` is rewritten by
+  it.
 
 ## Python
 
-- **Ward-owned:** `.coveragerc`, with `fail_under` from the preset: 80% of lines under standard, and
-  85% of lines and branches under strict. A user-owned `.coveragerc` or `[tool.coverage]` table is
-  reused, and init does not write `.coveragerc`.
-- **Tuning:** lower a minimum only with a reason from the code. A line that cannot run in tests is a
-  reason to change the test setup, not to add an exclusion.
+- **Where the tool measures:** init writes `.coveragerc` (marked `# managed-by: ward`) without
+  `fail_under`, and strict sets `branch = True` there. A user-owned `.coveragerc` or
+  `[tool.coverage]` table is reused and not changed; strict then passes `--branch` on the `pytest`
+  command.
+- **Tuning:** edit `minimum` and `minimum-branches` in `ward.toml`. A line that cannot run in tests
+  is a reason to change the test setup, not to add an exclusion.
 
 ## Swift coverage
 

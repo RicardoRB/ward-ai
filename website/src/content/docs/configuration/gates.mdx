@@ -15,30 +15,30 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 |---|---|---|---|
 | Build & Tests | `compile` | Maven Compiler / Gradle compilation | Compile the project. |
 | | `tests` | JUnit 5 | Run the project's automated tests. |
-| | `coverage` | JaCoCo / coverage.py | Enforce or report test coverage. |
+| | `coverage` | JaCoCo / lcov reports | Fail below a `minimum` line coverage and an optional `minimum-branches`, read by Ward from the tool's report. |
 | | `mutation` | PIT | Run mutation testing, optionally with a `minimum` score. |
 | Code Quality | `ward` | Ward rules | Check the style and bug rules that `ward-rules.toml` selects, for Java, Kotlin, TypeScript, JavaScript, Python and Swift. |
 | | `sonar` | SonarQube | Code smells, bugs, duplication, overall quality. |
 | | `ward-format` | Ward's native formatter | Check source formatting against `.editorconfig`. Always selected by `ward init`. |
-| Security | `semgrep` | Semgrep | SAST and custom security rules. |
-| | `gitleaks` | Gitleaks | Detect committed secrets. |
-| | `dependency-check` | OWASP Dependency-Check | Scan dependencies for known CVEs. |
+| | `crap` | Ward analysis and a coverage report | Fail functions that are both complex and untested, by their CRAP score. |
+| Security | `semgrep` | Semgrep | Optional external SAST. Ward's own [security rules](/reference/security-rules/) run in `ward`, so `ward init` does not offer this gate; a `[checks.semgrep]` table that you write keeps working. |
+| | `secrets` | Ward's native secret rules | Detect committed secrets with no tool to install. See [secret detection](/configuration/secrets/). |
+| | `vulnerabilities` | Ward and OSV advisories | Match the resolved dependencies against known vulnerabilities. See [vulnerabilities](/configuration/vulnerabilities/). |
 | | `zap` | OWASP ZAP | DAST against a running application. |
-| | `trivy` | Trivy | Vulnerabilities in dependencies, containers, and IaC. |
 | Architecture | `ward` | Ward analysis rules | Run Ward's analysis rules over source syntax trees, with stable `ward:<language>/<rule>` ids, and the layer, slice cycle and feature independence rules `ward:architecture/*`. |
 | | `enforcer` | Maven Enforcer / Gradle checks | Dependency and build rules. |
-| Dependencies & Compliance | `license` | License Maven Plugin / Gradle License Report (`checkLicense`) | Dependency license policy. |
-| | `api-compat` | japicmp | Binary/API compatibility between versions. |
-| REST API contract | `openapi-lint` | vacuum | Lint the committed OpenAPI spec with every built-in rule. |
-| | `openapi-diff` | oasdiff | Breaking changes in uncommitted spec edits. |
-| | `openapi-compat` | oasdiff | Breaking changes on the branch against `origin/main`. |
+| | `build-policy` | Ward's native build policy rules | Pinned plugin versions, no dynamic versions, a minimum build tool version and duplicate dependency declarations in Maven, Gradle, Node and Python build files; see [Build policy rules](/reference/build-policy-rules/). |
+| Dependencies & Compliance | `license` | Ward (native) | Licenses of the resolved dependencies against a deny or allow policy, for every toolchain. See [License gate](#license-gate). |
+| | `api-compat` | Ward | Compatibility of the public API with the latest release. |
+| REST API contract | `openapi-lint` | Ward's OpenAPI rules | Lint the committed OpenAPI spec with every rule, with no tool to install. |
+| | `openapi-diff` | Ward breaking-change rules | Breaking changes in uncommitted spec edits. |
+| | `openapi-compat` | Ward breaking-change rules | Breaking changes on the branch against `origin/main`. |
 | TypeScript & JavaScript | `tsc` | TypeScript compiler | Type-check the project. |
 | | `vitest` / `jest` / `bun-test` | Vitest / Jest / Bun test | Run the project's automated tests. |
 | | `stryker` | StrykerJS | Run mutation testing, optionally with a `minimum` score. |
 | Python | `mypy` | mypy | Type-check the project. |
 | | `pytest` | pytest | Run the project's automated tests. |
 | | `django-check` | Django system checks | Run `manage.py check` on a Django project. |
-| | `pip-audit` | pip-audit | Scan dependencies for known vulnerabilities. |
 | | `mutmut` | mutmut 3 | Run mutation testing, optionally with a `minimum` score. |
 | Swift | `swift-build` | Swift build | Compile the SwiftPM package. |
 | | `swift-test` | Swift tests | Run the SwiftPM package's tests. |
@@ -48,7 +48,6 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `android-unit-test` | Android unit tests | Run `testDebugUnitTest` through the Gradle wrapper. |
 | | `android-coverage` | AGP JaCoCo | Fail below a `minimum` line coverage of the debug unit tests. |
 | Custom | `command` | — | Run an arbitrary configured project check. |
-| Traceability | `openspec-junit-traceability` | Ward source analysis | Require one explicitly annotated JUnit mapping per live OpenSpec scenario. |
 
 ## Choosing gates
 
@@ -58,9 +57,8 @@ These gates need network access, a running application, or a comparison baseline
 deliberately, for example in a CI-only profile with `profiles = ["ci"]`:
 
 - `zap`
-- `trivy`
+- `vulnerabilities`
 - `sonar`
-- `dependency-check`
 - `api-compat`
 - `semgrep`
 
@@ -69,7 +67,7 @@ deliberately, for example in a CI-only profile with `profiles = ["ci"]`:
 | Preset | Gates | Minimums |
 |---|---|---|
 | `standard` | compile, tests, coverage, `ward-format`, and the `ward` check with the standard Java rules of `ward-rules.toml` | 70% line coverage |
-| `strict` | `standard` plus the strict Java rules, the `ward` architecture tables, Enforcer, and PIT mutation testing | 85% line, 75% branch, 60% mutation |
+| `strict` | `standard` plus the strict Java rules, the `ward` architecture tables, `build-policy`, Enforcer, and PIT mutation testing | 85% line, 75% branch, 60% mutation |
 | `standard` (TypeScript) | `tsc`, the test runner (`vitest`, `jest` or `bun-test`), and the `ward` check with the standard TypeScript rules of `ward-rules.toml` | 70% line coverage |
 | `standard` (JavaScript) | the test runner (`vitest`, `jest` or `bun-test`), and the `ward` check with the standard JavaScript rules of `ward-rules.toml` | 70% line coverage |
 | `strict` (TypeScript) | `standard` plus `stryker`, with the strict TypeScript rules of `ward-rules.toml` | 85% line, 75% branch, 60% mutation |
@@ -82,18 +80,19 @@ spec gets a note asking you to commit one, because the gates have nothing to che
 For TypeScript and JavaScript, presets write no rule files under `config/`. Init writes
 `ward-rules.toml`, which selects the preset's Ward rules for the project's languages, and adds the
 test and mutation tools to `package.json`. It writes their configs when the project has none:
-`vitest.config.mjs` or `jest.config.mjs` with the coverage thresholds, and `stryker.config.mjs`.
-Bun checks lines only, because it does not measure branch coverage. See
+`vitest.config.mjs` with the `text` and `lcov` reporters, and `stryker.config.mjs`. The coverage
+minimums are in the `coverage` check of `ward.toml`, not in a test config. Bun checks lines only,
+because it does not measure branch coverage. See
 [Node projects](/commands/init/#node-projects).
 
 Strict mutation testing can add a lot to check runtime. When `license` is selected, `strict`
 writes a license allowlist instead of the GPL/AGPL denylist; see
-[what init changes in your build](/commands/init/#generated-files).
+[License gate](#license-gate).
 
 Presets may write these rule files:
 
-- `config/enforcer-rules.xml` (strict)
-- `ward-rules.toml`, which selects the Ward rules of the preset for the languages of the project
+- `config/enforcer-rules.xml` (when the `enforcer` gate is selected): `dependencyConvergence`, and `requireUpperBoundDeps` for `strict`. The other Enforcer rules that earlier versions wrote are native `ward:build` rules now.
+- `ward-rules.toml`, which selects the Ward rules of the preset for the languages of the project, and for `strict` on Java the four `build.*` rules that the `build-policy` check runs
 
 No project gets lint tool rule files under `config/`; the Ward rules in `ward-rules.toml` replace them. The files carry a `managed-by: ward` marker. Unmarked user files are never overwritten.
 
@@ -112,10 +111,10 @@ the Groovy or the Kotlin build script. See [what init changes](/commands/init/#w
 
 ## Standalone tools
 
-`semgrep`, `gitleaks`, `trivy`, `zap-baseline.py`, `vacuum`, and `oasdiff` must already be on the path.
+`semgrep` and `zap-baseline.py` must already be on the path.
 
 - A missing tool is reported as unavailable with an install link, and other gates still run.
-- `ward init` can install supported tools with your consent; `check` never installs them.
+- `ward init` and `check` never install gate tools; the report links to the installation instructions.
 - When a command contains `--report-path <path>` inside the project, Ward creates the parent
   directory before running it. The command itself never changes.
 
@@ -173,7 +172,7 @@ command = ["pnpm", "exec", "turbo", "run", "check-types", "--log-prefix=task", "
 
 ## Python gates
 
-`mypy`, `pytest`, `coverage`, `pip-audit`, and `mutmut` run
+`mypy`, `pytest`, `coverage`, and `mutmut` run
 their `command` from the project root, exactly as written, and pass when it exits with code 0.
 
 - Ward does not add flags and does not choose a package manager. Put the runner in the command,
@@ -390,6 +389,169 @@ changes a file: run [`ward format`](/commands/format/) to fix the reported files
 On a partial run, such as the `edit` profile after one file changed, the gate checks only the changed
 files when its `paths` table matches them, as the analysis gate does. Results for files that are
 already formatted are cached by content and settings, so unchanged files cost nothing on the next run.
+
+## Coverage gate
+
+The `coverage` check reads a coverage report and fails below the minimums in `ward.toml`. The tool
+measures; Ward decides. Init writes no minimum into `pom.xml`, the Gradle build, a test runner config,
+`bunfig.toml` or `.coveragerc`.
+
+```toml
+[checks.coverage]
+profiles = ["pre-push", "ci"]
+command = "./mvnw jacoco:report"   # optional
+minimum = 85                        # required: line coverage in percent, 0 to 100
+minimum-branches = 75               # optional: branch coverage in percent
+report = "target/site/jacoco/jacoco.xml"   # optional: a path or an array of paths
+```
+
+- `minimum` is required; a `coverage` check without it is a configuration error that names the check
+  (exit code 2). `minimum-branches` is accepted only here; every other type, `swift-coverage` and
+  `android-coverage` included, rejects it.
+- With a `command`, Ward runs it, and reads the report only when it exits with code 0. Without one
+  (`uses = "coverage"`), Ward starts no process and reads the reports an earlier check wrote, which is
+  how Node projects work: the check follows the `vitest`, `jest` or `bun-test` gate. A command that
+  contains `jacoco:report`, `jacocoTestReport` or `coverage lcov` is inferred as a `coverage` check;
+  `jacoco:check`, `jacocoTestCoverageVerification` and `coverage report` are plain command checks.
+- Ward reads JaCoCo XML and lcov, choosing the format from the content of the file. A JaCoCo line or
+  branch is covered as JaCoCo counts it; an lcov line is covered when its `DA` hits are above 0, and
+  a branch when its `BRDA` taken count is above 0.
+- Line and branch coverage are the covered over the coverable count, summed over every file of every
+  report, so a multi-module Maven or Gradle build is checked as one total (a high-coverage module can
+  hide a low one). A line is covered when any report covers it.
+- Without `report`, Ward reads the build tool's default report in the project root and in every
+  module directory: `target/site/jacoco/jacoco.xml` (Maven),
+  `build/reports/jacoco/test/jacocoTestReport.xml` (Gradle), `coverage/lcov.info` (Node, Turborepo
+  members included) and `coverage.lcov` (Python; init sets `report = ".ward/reports/coverage.lcov"`).
+  A path outside the project is a configuration error.
+- The gate ends with an execution error, never a pass, when no report exists (it says to run the test
+  gate first), a file is neither JaCoCo XML nor lcov, an lcov file is truncated, there is no coverable
+  line, `minimum-branches` is set and no report records branches (Bun, or coverage.py without
+  `branch = True`), a check with a command finds no report written after the command started, or a
+  check without one finds a report older than a source file it names. A report that records branches
+  and has none passes the branch minimum.
+- Vitest and coverage.py list only the files the tests load, so a file no test imports does not lower
+  the measured number; JaCoCo analyzes every class.
+- Angular (`ng test`) gets no `coverage` check from init. Its own `angular.json` or `karma.conf.js`
+  sets any threshold. Add `[checks.coverage]` with `uses = "coverage"`, `minimum` and the `report`
+  path of the lcov file it writes to enforce a minimum from `ward.toml`.
+- A threshold in a config the project owns (a Jest `coverageThreshold`, a Vitest threshold, a
+  `bunfig.toml` threshold, a `fail_under`) keeps applying to its tool. Ward does not read or edit it.
+
+What `ward init` writes, by toolchain: the preset sets `minimum` (70 for Maven, Gradle and Node
+`standard`, 80 for Python `standard`, and 85 with `minimum-branches = 75` for `strict`; a custom Maven
+or Gradle selection writes 80, a custom Node selection 70; Bun's `strict` has no
+`minimum-branches`). Maven gets the JaCoCo plugin with `prepare-agent` and `report` executions and no
+`rules`; Gradle gets the XML report setting; Vitest gets a Ward-owned config with the `lcov`
+reporter, Jest and Bun get reporter flags on their command where needed.
+
+## CRAP gate
+
+`uses = "crap"` scores every function with the CRAP metric (Change Risk Anti-Patterns) and fails the
+functions above a limit. A function that is complex and untested scores high, even when the rest of
+the project is well covered, which neither the complexity rules nor the `coverage` minimum catch:
+
+```
+CRAP = complexity^2 * (1 - coverage)^3 + complexity
+```
+
+```toml
+[checks.coverage]
+profiles = ["ci"]
+command = "./mvnw -DskipTests package jacoco:report"
+minimum = 70
+
+[checks.crap]
+uses = "crap"
+profiles = ["ci"]
+max = 30
+```
+
+The gate runs no tests and no process. It reads the per-line coverage report that the coverage or
+test check wrote, so declare it after that check: checks run in the order `ward.toml` declares them.
+
+- **Complexity** is the value that Ward's complexity rule of the language computes for the function:
+  `ward:java/cyclomatic-complexity`, `ward:kotlin/cyclomatic-complexity`,
+  `ward:typescript/complexity`, `ward:javascript/complexity`, `ward:python/complexity` and
+  `ward:swift/complexity`. It does not matter whether the rule is selected in `ward-rules.toml` or
+  what limit it has.
+- **Coverage** of a function is its covered lines over its coverable lines, from the first to the
+  last line of its declaration. A line counts only for the innermost function that contains it, so a
+  nested function does not count for its outer function, while a lambda counts for its method.
+- A function with no coverable line in the reports, such as an interface method, or in a file that
+  no report names, is scored from its complexity alone.
+
+`max` is an integer of at least 1, 30 by default, the threshold of the original metric. A function
+fails when its score is above `max`; a score equal to it passes. Each failing function is one error
+finding at its declaration, for example `CRAP score 42 is above 30 (complexity 6, coverage 0%)`, and
+the summary states how many functions were scored and how many are above the limit.
+
+### Coverage reports
+
+The gate reads JaCoCo XML (Java, Kotlin, Android) and lcov (TypeScript, JavaScript, Python, SwiftPM),
+choosing the format from the content of the file. `report` is one project-relative path or an array
+of them, and a path outside the project is a configuration error. Without `report`, Ward reads the
+default report of the project's build tool, in the project root and in every module directory below
+it:
+
+| Build tool | Default report |
+|---|---|
+| Maven | `target/site/jacoco/jacoco.xml` |
+| Gradle | `build/reports/jacoco/test/jacocoTestReport.xml` |
+| npm, pnpm, Yarn, Bun | `coverage/lcov.info` |
+| uv, Poetry, PDM, Hatch, pip | `coverage.lcov` |
+| SwiftPM, Xcode | none: set `report` |
+
+When several reports name the same line, the line is covered when any of them marks it covered. An
+lcov path is taken as absolute, or resolved against the project root and then against each directory
+from the report's own directory up to the root. A JaCoCo entry matches the source file whose path ends
+with its package and file name, preferring the file in the module that holds the report.
+
+To make each tool write the report:
+
+- **Maven:** the `jacoco-maven-plugin` goal `prepare-agent` before the tests and `report` after them;
+  the XML report is written by default.
+- **Gradle:** the `jacoco` plugin with `jacocoTestReport { reports { xml.required = true } }`, run
+  after `test`.
+- **Vitest:** `coverage: { reporter: ['lcov'], include: ['src/**'] }` and `vitest run --coverage`.
+  **Jest:** `collectCoverageFrom` and `jest --coverage`, whose default reporters include `lcov`.
+  List the source files in `include` or `collectCoverageFrom`, or the files no test loads are absent
+  from the report.
+- **pytest:** `pytest --cov=<package> --cov-report=lcov`, which writes `coverage.lcov`.
+- **SwiftPM:** `swift test --enable-code-coverage`, then export the profile with
+  `xcrun llvm-cov export -format=lcov` to a file and name it in `report`. Xcode projects that measure
+  coverage with `xccov` have no lcov export and are not read.
+
+### What `ward init` writes for `crap`
+
+`crap` is opt-in: no preset selects it, and `ward init --preset standard --gate crap` adds it. It
+needs the gate that produces the coverage data (`coverage` for Maven and Gradle, the test gate for
+Node, `pytest` for Python); init stops with exit code 2 and writes no file when that gate is missing.
+Init writes `[checks.crap]` after the `coverage` check, in the `pre-push` and `ci` profiles. The
+`coverage` check already makes each tool write the report that `crap` reads (the JaCoCo XML report for
+Maven and Gradle, `coverage/lcov.info` for Vitest, Jest and Bun, `.ward/reports/coverage.lcov` for
+Python), so `crap` adds no report-writing of its own.
+
+Init does not offer `crap` for Swift, Android and Angular (`ng test`) projects, because it cannot
+make their coverage tool write a report at a known path. Add the table by hand with a `report`: for
+SwiftPM the `llvm-cov export -format=lcov` file above, for Android the JaCoCo XML report of your
+coverage task, and for Angular the lcov file that your Karma or Vitest reporter writes.
+
+### Reports that cannot be used
+
+The gate never passes on a report it cannot trust. It ends with an execution error that names the file
+and says the coverage check must run first when:
+
+- no report is found, or a configured `report` does not exist;
+- a report is neither JaCoCo XML nor lcov, or is truncated;
+- the reports name no source file of the project;
+- a source file that a report names was modified after the report was written, which usually means the
+  tests did not run since the edit. A fresh checkout can also trigger it, so run the coverage check
+  first;
+- a source file that a report names cannot be parsed.
+
+The gate is opt-in: no preset selects it. It does not honor `exclude-paths` of `ward-rules.toml` and
+does not run on partial (edit-hook) runs.
 
 ## Analysis gate
 
@@ -737,72 +899,174 @@ writing, the parse report lists `func run() async {` (first error at 6:18) and a
 declaration (2:8) as errors; the cause is not analyzed here. Limits are tuned in
 [`ward-rules.toml`](/configuration/ward-rules/), as for the Python rules.
 
-## Traceability gate
+## License gate
 
-`openspec-junit-traceability` is the one built-in gate that needs no `command`:
+The `license` gate is native: it reads the packages of the [dependency inventory](#structured-findings)
+and each package's declared license from local files, normalizes it to an SPDX expression, and
+checks it against a policy. It runs for Maven, Gradle, Node, Python and Swift projects, takes no
+`command`, and never uses the network or runs your build tool. A `command` on a `license` check is a
+configuration error.
 
 ```toml
-[checks.openspec-junit-traceability]
-enabled = true
+[checks.license]
+uses = "license"
+profiles = ["pre-push", "ci"]
+deny = ["GPL-*", "AGPL-*"]        # the default; or allow = ["Apache-2.0", "MIT"]
+exceptions = ["Classpath-exception-2.0"]
+scopes = ["runtime", "provided"]  # default: every scope
+unknown = "fail"                  # or "warn"
 ```
 
-Each mapping must be declared directly on a `@Test`, `@ParameterizedTest`, or `@RepeatedTest`
-method, using matching exact identities:
+| Key | Meaning |
+|---|---|
+| `deny` | SPDX identifiers, each optionally ending in `*` for a family. The default is `["GPL-*", "AGPL-*"]`; `GPL-*` does not match `LGPL-*`. |
+| `allow` | An allowlist in the same notation. Set `allow` or `deny`, not both. |
+| `exceptions` | `WITH` exceptions that waive a denied license (default `["Classpath-exception-2.0"]`); a deny policy only. |
+| `scopes` | Inventory scopes that are checked: `runtime`, `provided`, `test`, `development`. Default: all. |
+| `unknown` | `"fail"` (default) or `"warn"`: the severity of a license Ward cannot find or recognize. |
 
-```java
-@Tag("spec:identity/user-auth")
-@DisplayName("Successful sign-in")
-@Test
-void signsIn() {}
-```
+Where each ecosystem's license is read:
 
-- Only the existence of a mapping is checked, not test execution or assertions.
-- Empty live specs fail with `no scenarios found`.
-- Active-change specs are excluded.
+- **Maven and Gradle:** the POM in `~/.m2/repository` or the Gradle module cache, with the license of
+  the `<parent>` POM when a POM has none.
+- **Node:** `package.json` in `node_modules` (hoisted, nested or the `.pnpm` store); the version must
+  match the lockfile's.
+- **Python:** `License-Expression`, `License` or `License ::` classifiers in the `.dist-info` of the
+  project's virtual environment (`.venv`, `venv` or `VIRTUAL_ENV`).
+- **Swift:** `Package.swift` declares no license, so Ward matches the `LICENSE` or `COPYING` file of the
+  package checkout (`.build/checkouts`) against the bundled license texts.
+
+A package that is not installed locally, or whose license Ward does not recognize, is a
+`ward:license/unknown` finding, never an allowed one: install the dependencies before the gate runs,
+or set `unknown = "warn"`. Several declared licenses are alternatives, and an `OR` expression passes
+when one choice is allowed. The findings are `ward:license/denied`, `ward:license/not-allowed` and
+`ward:license/unknown`. If the dependencies cannot be resolved the gate reports an execution error
+instead of passing. `ward init --preset strict` writes an `allow` list of Apache-2.0, MIT,
+BSD-2-Clause, BSD-3-Clause, ISC, EPL-1.0, EPL-2.0 and CC0-1.0. See also
+[`ward sbom` and `ward licenses`](/commands/sbom/).
 
 ## API compatibility
 
-`api-compat` is for published libraries. It compares the latest released artifact (`RELEASE`) with
-the jar the current build produces, so a released baseline must be resolvable from a Maven
-repository.
+`api-compat` compares the public API of the project's main sources in the working tree with the
+public API of the same sources at an earlier Git revision, and reports each incompatible change.
+For Java it is a Ward check: it runs no build, no external tool and no network access, reads the
+baseline from Git objects (nothing is checked out), and works the same for Maven and Gradle.
 
-On Maven, init:
+```toml
+[checks.api-compat]
+uses = "api-compat"
+profiles = ["ci"]
+base = "v1.4.0"             # optional: a Git ref; default is the latest release tag
+include = ["com.acme.api"]  # optional: package prefixes that limit the API
+```
 
-- runs `-DskipTests package japicmp:cmp`;
-- points japicmp's new version at `${project.build.directory}/${project.build.finalName}.jar`, so a
-  custom `finalName` works;
-- limits the comparison to `${project.groupId}.*`, so classes bundled from dependencies are not
-  reported;
-- offers the gate only when `pom.xml` declares `<distributionManagement>`.
+- **Baseline.** `base` names a Git ref. Without it, the baseline is the highest release tag
+  reachable from `HEAD` (`v1.2.3` or `1.2`, any further numeric segments, no suffix), other than a
+  tag that points at `HEAD`. Pre-release tags such as `v1.0.0-rc1` are never a baseline. Ward never
+  fetches: CI needs full history and tags (`fetch-depth: 0`), which init's workflow sets.
+- **Scope.** Types in the main source roots, read from `pom.xml` or the Gradle script at each
+  revision. Test sources are not API. `include` limits the API to types whose qualified name starts
+  with one of the package prefixes. A top-level Kotlin declaration belongs to the type
+  `<package>.<top-level>`, so `include = ["com.acme.api"]` covers it.
+- **Java API.** `public` types and members, `protected` members of types that can be extended
+  outside their package, interface members, and nested types of API types. Package-private and
+  `private` declarations are not API.
+- **Kotlin API.** Kotlin visibility applies: a declaration is API when it is `public` (the default)
+  or, for a member of an open class, `protected`; `internal` and `private` are not API. A class is
+  closed unless it is `open`, `abstract` or `sealed`, and members are closed unless `open`,
+  `abstract` or `override`. `object`, `companion object`, `enum class`, `interface`, `data class` and
+  nested types are types of their own (`p.Outer.Companion`); an enum's entries are fields. A
+  property is its accessors: `val x` is `getX()`, a `var` also has `setX(...)`, and a name such as
+  `isReady` keeps `isReady()`, so a `var` that becomes a `val` reports `member-removed`. A `data
+  class` also has `componentN()` and `copy(...)`, so adding a constructor property reports the
+  removed `copy`. An extension receiver is the first parameter. The top-level functions and
+  properties of a package, from every file, are the members of one type, `<package>.<top-level>`,
+  because Kotlin callers do not see the file; moving a function between files of a package is not a
+  change.
+- **Execution errors, never a pass.** Not a Git repository, an unknown `base`, no release tag, a
+  baseline that has no sources for the project, a syntax error in a source file at either revision
+  (the message names the file and the revision), and an `include` prefix that matches no type at
+  the baseline.
+- **Findings.** `api-compat:<kind>`, with the qualified type, the member, the signature at the
+  baseline and the signature now (or `removed`). Kinds: `type-removed`, `type-less-visible`,
+  `type-kind-changed`, `type-now-final`, `type-now-abstract`, `supertype-removed`,
+  `type-parameters-changed`, `member-removed`, `member-less-visible`, `static-changed`,
+  `return-type-changed`, `field-type-changed`, `signature-changed`, `abstract-method-added`,
+  `method-now-abstract`, `method-now-final` and `field-now-final`; for Kotlin also
+  `nullability-narrowed` (a parameter that no longer accepts `null`, or a return type that may now
+  be `null`) and `default-argument-removed`. A method that moved to an API
+  supertype of the project is not reported as removed.
+- **Not reported.** Additions, widened visibility, abstract methods that become concrete, added
+  `default` methods, annotation, `throws`, parameter-name and constant-value changes, and
+  bridge or synthetic members. Narrowing a return type is reported, because callers compiled
+  against the old signature break.
+- **Limits.** The baseline is the tag's sources, not the published artifact, so a release built
+  from other code is not seen. Code generated by annotation processors or Lombok is not read, and a
+  type from a library that is not imported by name or on Ward's classpath is left out of both sides.
+- **Kotlin limits.** Types are compared as the JVM sees them, so `List` and `MutableList`, or `Int`
+  and `Int?` on a parameter, are not told apart by kind: the first pair is the same type, the second
+  differs and is reported as a changed or removed member. A return type or property type that is
+  inferred from the initializer is unknown: it is never reported as changed, and a `var` whose type
+  is inferred has a setter that cannot be matched when the type is written in the other revision.
+  A type Ward cannot resolve, including a function type, is compared by its written text. Not read:
+  annotations (`@JvmName`, `@JvmStatic`, `@JvmOverloads`, `@file:JvmName`, so the names Java callers
+  see are not compared), `typealias`, annotation class elements, `fun interface`, `expect` and
+  `actual`, `const` values, `inline` and `suspend`, context receivers, and code generated by KSP or
+  kapt.
+
+Init offers `api-compat` to a Java or Kotlin project (Maven or Gradle) when a release tag is
+reachable from `HEAD`, and writes `uses = "api-compat"` with no command and no build-file change.
+A `[checks.api-compat]` with a `command` runs that command as before; one without a `command` is the
+native check.
 
 Applications shipped as binaries, such as CLIs, have no Java API consumers and should not enable it.
 
 ## OpenAPI contract gates
 
 `openapi-lint`, `openapi-diff`, and `openapi-compat` check a committed (contract-first) OpenAPI
-spec. Each one needs a `spec` option with the project-relative path of that file. Ward appends the
-spec to the command, so the command names only the tool and its flags:
+spec. Each one needs a `spec` option with the project-relative path of that file.
+
+`openapi-lint` runs Ward's own `ward:openapi/*` rules, which follow the OpenAPI 3.x rules of
+Spectral (`spectral:oas` with every rule) and its OWASP ruleset, with the same severities, positions
+and messages. It takes no `command`, and a `command` on it is a configuration error (exit `2`). A
+warning or an error fails the gate; an `info` finding is a note. OpenAPI 3.0 and 3.1 documents are
+supported, and `$ref`s are followed to other files of the project, never fetched over the network. A
+Swagger 2.0 document, an OpenAPI 3.2 document, a syntax error or a reference that cannot be read
+ends the gate with an execution error that names the file and position. The `ward-rules.toml`
+file of the project (or `rules-file`) selects and configures the `openapi.*` rules like any other
+rule. `openapi-diff` and `openapi-compat` run inside Ward and take no `command`:
 
 ```toml
 [checks.openapi-lint]
 profiles = ["default", "pre-commit", "pre-push", "ci"]
-command = ["vacuum", "lint", "-z", "-n", "warn"]
 spec = "src/main/resources/openapi.yml"
 
 [checks.openapi-diff]
+uses = "openapi-diff"
 profiles = ["default", "pre-commit"]
-command = ["oasdiff", "breaking", "--fail-on", "ERR"]
 spec = "src/main/resources/openapi.yml"
 
 [checks.openapi-compat]
+uses = "openapi-compat"
 profiles = ["pre-push", "ci"]
-command = ["oasdiff", "breaking", "--fail-on", "ERR"]
 spec = "src/main/resources/openapi.yml"
 base = "origin/main" # the default
 ```
 
-`vacuum` and `oasdiff` must be on the path; a missing tool makes the gate unavailable. The flags
-and behavior below were verified with vacuum 0.35.1 and oasdiff 1.34.1.
+The gates need no tool. A `command` on `openapi-diff` or `openapi-compat` is a configuration
+error (exit `2`).
+
+### Breaking-change rules
+
+The two comparison gates load the spec at the baseline and in the working tree, follow the `$ref`s
+of each (the baseline's at its own commit), and run the breaking-change rules
+`ward:openapi/<check id>`: one per error-level check of oasdiff 1.37.0, with the same ids. A finding
+points at the changed node in the working-tree file. The gate fails on any finding. A spec that
+cannot be parsed, a `$ref` that cannot be resolved, a referenced file that is missing at the
+baseline, or a Git read failure is an execution error, never a pass. `oasdiff` is not used and
+`.oasdiff.*` files or `OASDIFF_CONFIG` change nothing. The rules cover OpenAPI 3.0 and 3.1; the
+list is in the OpenAPI rule reference. Sunset dates are judged against today, with no minimum
+deprecation period.
 
 ### Baselines
 
@@ -825,53 +1089,13 @@ Ward never fetches:
 
 These gates accept no way to silence a rule, in any profile:
 
-- `openapi-lint` requires `-z` (every built-in rule, including OWASP) and `-n` with `warn`,
-  `info`, or `hint`. Besides those it accepts only output flags: `-b`, `-q`, `-d`, `-s`, `-a`,
-  `-x`, `-m`, `-t` and their long forms, `--no-clip`, `--abs-paths`, `--pipeline-output`,
-  `--github-annotations`, `--no-update-check`, and `--min-score`. Rulesets (`-r`), ignore files,
-  and `--config` are rejected, because a ruleset can lower a rule's severity even in hard mode.
-- `openapi-diff` and `openapi-compat` require `--fail-on ERR` or `--fail-on WARN`, and accept only
-  `--format`, `--color`, `--lang`, `--flatten-allof`, `--flatten-params`, and
-  `--include-path-params`. Ignore files, path and extension filters, `--config`, `--open` (which
-  uploads the comparison), and `--fetch` are rejected.
+- `openapi-lint` has no inline or tool-level way to silence a rule: `x-lint-ignore` in the spec
+  fails the gate, a tool configuration file in the project root has no effect, and a rule is
+  switched off only by `exclude` in the committed `ward-rules.toml`.
+- `openapi-diff` and `openapi-compat` have no flags and no ignore file: every breaking change the
+  rules find fails the gate.
 
-Any other flag, a repeated flag, or a spec path in the command is a configuration error (exit `2`)
-that names the argument.
-
-Before running, the gates also fail when:
-
-- the project root contains a file the tool loads on its own: `vacuum.conf.yaml`, `.oasdiff.yaml`,
-  `.oasdiff.yml`, or `.oasdiff.json`;
-- `OASDIFF_CONFIG` is set;
-- the spec contains `x-lint-ignore`.
-
-## Dependency scanning credentials
-
-The Maven and Gradle `dependency-check` configurations read the NVD API key from the `NVD_API_KEY`
-environment variable and never write it to a build file. Without the variable, scans may be very slow
-or rate-limited. Request a key from the NVD API service.
-
-Sonatype OSS Index needs credentials, so init turns its analyzer off:
-`<ossindexAnalyzerEnabled>false` on Maven, `analyzers { ossIndex { enabled = false } }` on Gradle.
-
-To turn it on, set `OSS_INDEX_PASSWORD` (and `OSS_INDEX_USERNAME` if your token needs one) in the
-environment and flip the setting:
-
-- Gradle reads the variables directly.
-- Maven reads credentials from a `settings.xml` server whose id matches the generated
-  `ossIndexServerId` (`ossindex`). Reference the variables there instead of writing values to a file
-  in the project:
-
-```xml
-<server>
-  <id>ossindex</id>
-  <username>${env.OSS_INDEX_USERNAME}</username>
-  <password>${env.OSS_INDEX_PASSWORD}</password>
-</server>
-```
-
-If you do not want to manage NVD or OSS Index credentials, use the `trivy` gate. It also scans Maven
-and Gradle dependencies for known vulnerabilities and needs no API key.
+Before running, `openapi-lint` also fails when the spec contains `x-lint-ignore`.
 
 ## ZAP target
 
@@ -888,13 +1112,13 @@ You are responsible for being authorized to scan the target.
 
 ## Structured findings
 
-When `ward`, `gitleaks`, `compile`, `ward-format`, `tsc`, `mypy`, `swift-build`, or `xcodebuild-test` fails, Ward turns the tool's output
+When `ward`, `secrets`, `compile`, `ward-format`, `tsc`, `mypy`, `swift-build`, or `xcodebuild-test` fails, Ward turns the tool's output
 into findings with rule, severity, file, line, column, message, and a rule documentation link when
 known. They appear in [JSON](/reference/json-output/) and SARIF output.
 
 | Gate | Source | Maven | Gradle | TypeScript & JavaScript |
 |---|---|---|---|---|
-| `gitleaks` | SARIF report | `target/gitleaks.sarif` | `build/gitleaks.sarif` | `.ward/reports/gitleaks.sarif` |
+| `secrets` | Ward's own findings, with rule, file, line and column | | | |
 | `compile` | javac messages in the output | | | |
 | `ward-format` | Ward's own findings, one per unformatted file (file only, no line) | | | |
 | `tsc` | Compiler diagnostics in the output; the command must pass `--pretty false` | | | |
@@ -906,7 +1130,7 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
   instead of `target/` or `build/`. Stryker's mutation report is the exception: it stays at Stryker's own
   `reports/mutation/mutation.json`, because only Stryker's configuration file can move it.
 - A missing or malformed report never changes the gate result; the gate just has no findings.
-- Gitleaks findings never contain the matched secret.
+- `secrets` findings never contain the matched secret or any source text.
 - `mypy` reads the JSON lines of `mypy -O json`. Mypy `note` lines are skipped. A missing or unparseable JSON output gives no findings, and the gate result does not
   change. Only the structured formats are read: the command must pass them.
 - `tsc`'s pretty output gives no findings. The gate result does not change.
@@ -917,7 +1141,7 @@ known. They appear in [JSON](/reference/json-output/) and SARIF output.
 ## Partial checks
 
 `ward init` writes a [`[checks.<name>.paths]` table](/configuration/ward-toml/#partial-checks)
-for `semgrep`, `gitleaks`, `openapi-lint`, and
+for `semgrep`, `secrets`, `openapi-lint`, and
 `openapi-diff`. After an agent
 edit, and for the files a commit stages, a gate:
 
@@ -928,7 +1152,7 @@ edit, and for the files a commit stages, a gate:
 | Gate | Maven | Gradle |
 |---|---|---|
 | `semgrep` | each path as its own argument | each path as its own argument |
-| `gitleaks` | `--no-git --source=<path>` for each path, so uncommitted edits are scanned | same as Maven |
+| `secrets` | the edited files, scanned in Ward, so uncommitted edits are scanned | same as Maven |
 | `openapi-lint`, `openapi-diff` | full, only when the spec is edited | full, only when the spec is edited |
 
 `tsc` and the test runners have no table, so they run in full in `pre-push`
@@ -940,51 +1164,6 @@ In a Turborepo workspace, the type-check and test gates have no table and always
 The forms above were verified against the real tools: a path format a tool does not understand
 analyzes no files and passes. The full check at the end of an agent turn, Git hooks, and CI always
 check the whole project.
-
-## OpenSpec tool validations
-
-OpenSpec is an optional project tool, not a quality-gate menu entry. A configuration may register
-the two validations independently:
-
-```toml
-[checks.openspec]
-enabled = true
-command = ["openspec", "validate", "--all", "--strict", "--no-interactive"]
-
-[checks.openspec-archived]
-enabled = true
-command = ["openspec", "validate", "--archived", "--no-interactive"]
-```
-
-- The configured executable runs directly from the target root. Relative and absolute paths are
-  honored, with no PATH fallback.
-- Both validations need an `openspec/` directory at the project root.
-- A missing executable is reported as `UNAVAILABLE`. A missing or non-directory `openspec/` is a
-  `FAILED` result.
-- Check and doctor never install or scaffold OpenSpec.
-
-### OpenSpec in a monorepo
-
-In a monorepo, `openspec/` often lives at the repository root while the Java project sits in a
-subdirectory. Set `root` on each OpenSpec gate to the directory that holds `openspec/`, relative to
-the project root:
-
-```toml
-[checks.openspec]
-enabled = true
-command = ["openspec", "validate", "--all", "--strict", "--no-interactive"]
-root = "../.."
-```
-
-- The gate then requires `openspec/` in that directory and runs the command from it.
-- Ward never searches other parents. If `root` has no `openspec/`, the gate fails and names the
-  configured root.
-- `root` must be relative and stay inside the Git repository. An absolute path is a configuration
-  error, and a path that leaves the repository fails the gate without running it.
-- `ward init` writes `root` for a nested project without its own `openspec/` when the repository
-  root has one. Doctor reports the prerequisites of the configured root.
-- Targeted `ward spec validate -- <paths>` uses the same root, and the approved-artifact guard
-  protects that repository-level `openspec/` too.
 
 ## Legacy identifiers
 

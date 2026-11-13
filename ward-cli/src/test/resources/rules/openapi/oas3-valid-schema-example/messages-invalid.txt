@@ -1,0 +1,12 @@
+10:36	"example" property type must be string
+11:15	schema is invalid: data/required must be array
+12:44	schema is invalid: data/minimum must be number
+13:57	Item at index 0 must be string
+14:54	schema is invalid: data must have property minimum when property exclusiveMinimum is present
+15:56	schema is invalid: data/additionalProperties must be boolean, data/additionalProperties must be object, data/additionalProperties must match a schema in anyOf
+16:43	format value must be ["string"]
+17:28	schema is invalid: data/enum must NOT have fewer than 1 items
+18:31	schema is invalid: data/type must be equal to one of the allowed values, data/type must be array, data/type must match a schema in anyOf
+19:47	schema is invalid: data/minLength must be >= 0
+20:46	Invalid regular expression: /(/: Unterminated group
+21:82	schema is invalid: data/properties/a/type must be equal to one of the allowed values, data/properties/a/type must be array, data/properties/a/type must match a schema in anyOf

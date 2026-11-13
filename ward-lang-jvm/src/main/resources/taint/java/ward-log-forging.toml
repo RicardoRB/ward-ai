@@ -1,0 +1,167 @@
+# Written for Ward from the API documentation named in the catalog row of the rule; sources: taint/java/sources.toml.
+# Log sinks: the message of java.util.logging, SLF4J, Log4j 2 and Commons Logging; the message and its first two arguments are guarded.
+
+[[sinks]]
+kind = "call"
+name = "info"
+receiver = "java.util.logging.Logger"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "warning"
+receiver = "java.util.logging.Logger"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "severe"
+receiver = "java.util.logging.Logger"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "fine"
+receiver = "java.util.logging.Logger"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "finer"
+receiver = "java.util.logging.Logger"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "finest"
+receiver = "java.util.logging.Logger"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "config"
+receiver = "java.util.logging.Logger"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "log"
+receiver = "java.util.logging.Logger"
+arguments = [1]
+
+[[sinks]]
+kind = "call"
+name = "info"
+receiver = "org.slf4j.Logger"
+arguments = [0, 1, 2]
+
+[[sinks]]
+kind = "call"
+name = "info"
+receiver = "org.apache.logging.log4j.Logger"
+arguments = [0, 1, 2]
+
+[[sinks]]
+kind = "call"
+name = "info"
+receiver = "org.apache.commons.logging.Log"
+arguments = [0, 1, 2]
+
+[[sinks]]
+kind = "call"
+name = "warn"
+receiver = "org.slf4j.Logger"
+arguments = [0, 1, 2]
+
+[[sinks]]
+kind = "call"
+name = "warn"
+receiver = "org.apache.logging.log4j.Logger"
+arguments = [0, 1, 2]
+
+[[sinks]]
+kind = "call"
+name = "warn"
+receiver = "org.apache.commons.logging.Log"
+arguments = [0, 1, 2]
+
+[[sinks]]
+kind = "call"
+name = "error"
+receiver = "org.slf4j.Logger"
+arguments = [0, 1, 2]
+
+[[sinks]]
+kind = "call"
+name = "error"
+receiver = "org.apache.logging.log4j.Logger"
+arguments = [0, 1, 2]
+
+[[sinks]]
+kind = "call"
+name = "error"
+receiver = "org.apache.commons.logging.Log"
+arguments = [0, 1, 2]
+
+[[sinks]]
+kind = "call"
+name = "debug"
+receiver = "org.slf4j.Logger"
+arguments = [0, 1, 2]
+
+[[sinks]]
+kind = "call"
+name = "debug"
+receiver = "org.apache.logging.log4j.Logger"
+arguments = [0, 1, 2]
+
+[[sinks]]
+kind = "call"
+name = "debug"
+receiver = "org.apache.commons.logging.Log"
+arguments = [0, 1, 2]
+
+[[sinks]]
+kind = "call"
+name = "trace"
+receiver = "org.slf4j.Logger"
+arguments = [0, 1, 2]
+
+[[sinks]]
+kind = "call"
+name = "trace"
+receiver = "org.apache.logging.log4j.Logger"
+arguments = [0, 1, 2]
+
+[[sinks]]
+kind = "call"
+name = "trace"
+receiver = "org.apache.commons.logging.Log"
+arguments = [0, 1, 2]
+
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "parseLong"
+receiver = "java.lang.Long"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Long"
+
+[[sanitizers]]
+kind = "call"
+name = "parseDouble"
+receiver = "java.lang.Double"
+

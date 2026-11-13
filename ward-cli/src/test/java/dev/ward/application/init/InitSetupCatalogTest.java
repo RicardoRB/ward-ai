@@ -38,7 +38,7 @@ class InitSetupCatalogTest {
 
   /** Python gates are offered by init only for Python projects (#136). */
   private static final Set<String> PYTHON_GATES =
-      Set.of("mypy", "pytest", "mutmut", "pip-audit", "django-check");
+      Set.of("mypy", "pytest", "mutmut", "django-check");
 
   private static final Set<String> ANDROID_GATES =
       Set.of(
@@ -51,8 +51,6 @@ class InitSetupCatalogTest {
   private static final double STRICT_LINE_MINIMUM = 0.85;
   private static final double STRICT_BRANCH_MINIMUM = 0.75;
   private static final int STRICT_MUTATION_THRESHOLD = 60;
-  private static final String OPENSPEC = "openspec";
-  private static final String OPENSPEC_ARCHIVED = "openspec-archived";
   private static final String COMPILE = "compile";
   private static final String TESTS = "tests";
 
@@ -80,13 +78,6 @@ class InitSetupCatalogTest {
             catalog.gates(
                 new ProjectDetector(new FileSystemProjectInspection()).detect(dir).orElseThrow(),
                 null))
-        .extracting(InitGateOption::id)
-        .doesNotContain(OPENSPEC, OPENSPEC_ARCHIVED);
-    assertThat(QualityGateFactory.SUPPORTED_GATES).contains(OPENSPEC, OPENSPEC_ARCHIVED);
-    assertThat(
-            catalog.gates(
-                new ProjectDetector(new FileSystemProjectInspection()).detect(dir).orElseThrow(),
-                null))
         .allSatisfy(gate -> assertThat(gate.description()).isNotBlank());
   }
 
@@ -103,7 +94,9 @@ class InitSetupCatalogTest {
         .containsEntry("LINE", STRICT_LINE_MINIMUM)
         .containsEntry("BRANCH", STRICT_BRANCH_MINIMUM);
     assertThat(QualityPreset.STRICT.rules().enforcerRules())
-        .contains("requireUpperBoundDeps", "requirePluginVersions", "banDynamicVersions");
+        .containsExactly("dependencyConvergence", "requireUpperBoundDeps");
+    assertThat(QualityPreset.STANDARD.rules().enforcerRules())
+        .containsExactly("dependencyConvergence");
     assertThat(QualityPreset.STRICT.rules().mutationThreshold())
         .isEqualTo(STRICT_MUTATION_THRESHOLD);
     assertThat(QualityPreset.STRICT.rules().architectureCycles()).isTrue();
@@ -197,16 +190,16 @@ class InitSetupCatalogTest {
     Files.writeString(dir.resolve("build.gradle"), "plugins { id 'java' }\n");
     final Project project =
         new ProjectDetector(new FileSystemProjectInspection()).detect(dir).orElseThrow();
-    final InitSetupCatalog catalog = new InitSetupCatalog(new FakeEnvironmentInspection("gradle"));
+    final InitSetupCatalog catalog =
+        new InitSetupCatalog(new FakeEnvironmentInspection("gradle").withReleaseTag());
 
     assertThat(catalog.gates(project, null))
         .extracting(InitGateOption::id)
         .containsExactlyInAnyOrderElementsOf(
             QualityGateFactory.SUPPORTED_GATES.stream()
-                .filter(id -> !OPENSPEC.equals(id) && !OPENSPEC_ARCHIVED.equals(id))
                 // OpenAPI gates are offered only when the project commits a spec.
                 .filter(id -> !id.startsWith("openapi-"))
-                // Semgrep has no ruleset for JVM projects, so init does not offer it to them.
+                // Init offers semgrep for no language; Ward's own security rules replace it.
                 .filter(id -> !"semgrep".equals(id))
                 // The analysis gate is written by hand in ward.toml; init does not offer it.
                 .filter(id -> !SupportedQualityGates.ANALYSIS.equals(id))
@@ -221,11 +214,8 @@ class InitSetupCatalogTest {
                 .filter(id -> !ANDROID_GATES.contains(id))
                 .toList());
     assertThat(catalog.gate(project, "coverage").command())
-        .containsExactly("gradle", "jacocoTestCoverageVerification");
-    assertThat(catalog.gate(project, "dependency-check").command())
-        .containsExactly("gradle", "dependencyCheckAnalyze");
-    assertThat(catalog.gate(project, "gitleaks").command())
-        .endsWith("--report-format", "sarif", "--report-path", "build/gitleaks.sarif");
+        .containsExactly("gradle", "jacocoTestReport");
+    assertThat(catalog.gate(project, "secrets").command()).isEmpty();
   }
 
   @Test
@@ -236,16 +226,12 @@ class InitSetupCatalogTest {
     final InitSetupCatalog catalog = new InitSetupCatalog(new FakeEnvironmentInspection());
 
     assertThat(catalog.gate(project, "zap").command()).contains("-t", "<TARGET_URL>");
-    assertThat(catalog.gate(project, "gitleaks").command())
-        .containsExactly(
-            "gitleaks",
-            "detect",
-            "--no-banner",
-            "--redact",
-            "--report-format",
-            "sarif",
-            "--report-path",
-            "target/gitleaks.sarif");
+    assertThat(catalog.gateInstallation(project, catalog.gate(project, "zap")))
+        .get()
+        .extracting("tool", "guidance")
+        .containsExactly("zap-baseline.py", "https://www.zaproxy.org/docs/docker/baseline-scan/");
+    assertThat(catalog.gate(project, "secrets").command()).isEmpty();
+    assertThat(catalog.gate(project, "secrets").available()).isTrue();
     assertThat(catalog.gate(project, "enforcer").command()).endsWith("enforcer:enforce");
     assertThat(catalog.gates(project, null))
         .extracting(InitGateOption::id)

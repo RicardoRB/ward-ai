@@ -1,0 +1,2 @@
+p/A.kt:4:3 api-compat:method-now-final p.A#f: public void f() -> public final void f()
+p/A.kt:5:3 api-compat:method-now-final p.A#getV: public int getV() -> public final int getV()

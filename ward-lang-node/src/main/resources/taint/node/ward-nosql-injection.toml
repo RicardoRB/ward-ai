@@ -1,0 +1,529 @@
+# Written for Ward from the documentation named in the catalog row of the rule; sources: taint/node/sources.toml.
+# NoSQL sinks: the filter argument of the MongoDB driver and Mongoose queries, matched by the name of the collection or model variable.
+
+[[sinks]]
+kind = "call"
+name = "find"
+qualifier = "collection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "find"
+qualifier = "db"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "find"
+qualifier = "User"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "find"
+qualifier = "Users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "find"
+qualifier = "users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "find"
+qualifier = "user"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "find"
+qualifier = "Model"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOne"
+qualifier = "collection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOne"
+qualifier = "db"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOne"
+qualifier = "User"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOne"
+qualifier = "Users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOne"
+qualifier = "users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOne"
+qualifier = "user"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOne"
+qualifier = "Model"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOneAndUpdate"
+qualifier = "collection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOneAndUpdate"
+qualifier = "db"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOneAndUpdate"
+qualifier = "User"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOneAndUpdate"
+qualifier = "Users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOneAndUpdate"
+qualifier = "users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOneAndUpdate"
+qualifier = "user"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOneAndUpdate"
+qualifier = "Model"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOneAndDelete"
+qualifier = "collection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOneAndDelete"
+qualifier = "db"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOneAndDelete"
+qualifier = "User"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOneAndDelete"
+qualifier = "Users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOneAndDelete"
+qualifier = "users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOneAndDelete"
+qualifier = "user"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOneAndDelete"
+qualifier = "Model"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOneAndReplace"
+qualifier = "collection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOneAndReplace"
+qualifier = "db"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOneAndReplace"
+qualifier = "User"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOneAndReplace"
+qualifier = "Users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOneAndReplace"
+qualifier = "users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOneAndReplace"
+qualifier = "user"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "findOneAndReplace"
+qualifier = "Model"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "updateOne"
+qualifier = "collection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "updateOne"
+qualifier = "db"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "updateOne"
+qualifier = "User"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "updateOne"
+qualifier = "Users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "updateOne"
+qualifier = "users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "updateOne"
+qualifier = "user"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "updateOne"
+qualifier = "Model"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "updateMany"
+qualifier = "collection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "updateMany"
+qualifier = "db"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "updateMany"
+qualifier = "User"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "updateMany"
+qualifier = "Users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "updateMany"
+qualifier = "users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "updateMany"
+qualifier = "user"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "updateMany"
+qualifier = "Model"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "deleteOne"
+qualifier = "collection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "deleteOne"
+qualifier = "db"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "deleteOne"
+qualifier = "User"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "deleteOne"
+qualifier = "Users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "deleteOne"
+qualifier = "users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "deleteOne"
+qualifier = "user"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "deleteOne"
+qualifier = "Model"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "deleteMany"
+qualifier = "collection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "deleteMany"
+qualifier = "db"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "deleteMany"
+qualifier = "User"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "deleteMany"
+qualifier = "Users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "deleteMany"
+qualifier = "users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "deleteMany"
+qualifier = "user"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "deleteMany"
+qualifier = "Model"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "replaceOne"
+qualifier = "collection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "replaceOne"
+qualifier = "db"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "replaceOne"
+qualifier = "User"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "replaceOne"
+qualifier = "Users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "replaceOne"
+qualifier = "users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "replaceOne"
+qualifier = "user"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "replaceOne"
+qualifier = "Model"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "countDocuments"
+qualifier = "collection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "countDocuments"
+qualifier = "db"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "countDocuments"
+qualifier = "User"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "countDocuments"
+qualifier = "Users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "countDocuments"
+qualifier = "users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "countDocuments"
+qualifier = "user"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "countDocuments"
+qualifier = "Model"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "aggregate"
+qualifier = "collection"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "aggregate"
+qualifier = "db"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "aggregate"
+qualifier = "User"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "aggregate"
+qualifier = "Users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "aggregate"
+qualifier = "users"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "aggregate"
+qualifier = "user"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "aggregate"
+qualifier = "Model"
+arguments = [0]
+
+
+[[sanitizers]]
+kind = "call"
+name = "String"
+
+[[sanitizers]]
+kind = "call"
+name = "toString"
+
+
+[[sanitizers]]
+kind = "call"
+name = "Number"
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+
+[[sanitizers]]
+kind = "call"
+name = "parseFloat"
+

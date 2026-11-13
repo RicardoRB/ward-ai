@@ -43,23 +43,13 @@ final class InitResultPrinter {
                   + gateOption.id()
                   + " status="
                   + (gateOption.available() ? "available" : "unavailable"));
-      if ("dependency-check".equals(selectedGate) && !catalog.nvdApiKeySet(project)) {
-        out.println(
-            "Warning: NVD_API_KEY is not set; dependency-check scans may be very slow or rate-limited."
-                + " Request a key from the NVD API.");
-      }
-    }
-    if (selectedGates.contains("dependency-check") && selectedGates.contains("trivy")) {
-      out.println(
-          "Warning: trivy already scans dependencies for known vulnerabilities and needs no API"
-              + " key; consider keeping trivy and dropping dependency-check.");
     }
   }
 
   /** Prints the files a plan would change, relative to the project root. */
   void printPlan(final InitPlan plan, final Path root) {
     final List<PlannedFileChange> files = plan.visibleFiles();
-    if (files.isEmpty() && plan.installation().isEmpty() && plan.gateInstallations().isEmpty()) {
+    if (files.isEmpty() && plan.gateInstallations().isEmpty()) {
       out.println("No files would change.");
       return;
     }
@@ -77,23 +67,10 @@ final class InitResultPrinter {
     file.details().forEach(detail -> out.println("               " + detail));
   }
 
-  /** Prints the tool installations a plan would run, with paths relative to {@code root}. */
+  /** Prints where to install the executables that the selected gates need and lack. */
   void printInstallations(final InitPlan plan, final Path root) {
-    plan.installation()
-        .ifPresent(
-            installation ->
-                out.printf(
-                    "  %-10s %s %s into %s%n",
-                    "install",
-                    installation.tool(),
-                    installation.packageName(),
-                    root.relativize(installation.destination())));
     for (final PlannedGateInstallation installation : plan.gateInstallations()) {
-      if (installation.installable()) {
-        out.printf("  %-10s %s%n", "install", String.join(" ", installation.command()));
-      } else {
-        out.printf("  %-10s %s: %s%n", "guidance", installation.tool(), installation.guidance());
-      }
+      out.printf("  %-10s %s: %s%n", "guidance", installation.tool(), installation.guidance());
     }
   }
 

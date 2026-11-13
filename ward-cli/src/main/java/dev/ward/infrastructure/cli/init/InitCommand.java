@@ -59,21 +59,10 @@ public class InitCommand implements Callable<Integer> {
   private List<String> gates;
 
   @Option(
-      names = "--tool",
-      split = ",",
-      description = "Optional project tool(s): openspec. Repeat or comma-separate.")
-  private List<String> tools;
-
-  @Option(
-      names = "--openspec-validation",
-      split = ",",
-      description = "OpenSpec validation(s): openspec, openspec-archived.")
-  private List<String> openSpecValidations;
-
-  @Option(
       names = "--install-tool",
       split = ",",
-      description = "Explicitly consent to install a selected project tool or gate executable.")
+      description =
+          "Accepted for compatibility; init installs no gate executable, so it has no effect.")
   private List<String> installTools;
 
   @Option(names = "--preset", description = "Quality preset: standard or strict.")
@@ -216,8 +205,6 @@ public class InitCommand implements Callable<Integer> {
         integrations,
         gates,
         generatedFiles.architectureOrNull(),
-        tools,
-        openSpecValidations,
         installTools,
         qualityHooks,
         generatedFiles.ci(),

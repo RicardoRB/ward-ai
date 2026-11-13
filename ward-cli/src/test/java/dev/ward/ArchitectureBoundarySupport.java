@@ -26,14 +26,16 @@ final class ArchitectureBoundarySupport {
           "dev.ward.config.InitBindingsModule",
           "dev.ward.config.BuildToolBindingsModule",
           "dev.ward.config.DoctorBindingsModule",
+          "dev.ward.config.DependencyBindingsModule",
+          "dev.ward.config.BuildPolicyBindingsModule",
+          "dev.ward.config.VulnerabilityBindingsModule",
+          "dev.ward.config.LicenseBindingsModule",
           "dev.ward.config.NodeBindingsModule",
           "dev.ward.config.PythonBindingsModule",
           "dev.ward.config.SwiftBindingsModule",
           "dev.ward.config.CommandBindingsModule",
-          "dev.ward.config.SpecCommandBindingsModule",
-          "dev.ward.config.TraceabilityBindingsModule",
-          "dev.ward.config.ProvenanceBindingsModule",
           "dev.ward.config.GateBindingsModule",
+          "dev.ward.config.ApiCompatBindingsModule",
           "dev.ward.config.GateExtensionBindingsModule",
           "dev.ward.config.RuleBindingsModule",
           "dev.ward.config.GateExtensionsModule",
@@ -46,6 +48,7 @@ final class ArchitectureBoundarySupport {
   /** The analysis packages that every layer may hold. */
   static final Set<String> ANALYSIS_PACKAGES =
       Set.of(
+          "dev.ward.analysis.domain.api",
           "dev.ward.analysis.domain.graph",
           "dev.ward.analysis.domain.ir",
           "dev.ward.analysis.domain.port",
@@ -68,22 +71,25 @@ final class ArchitectureBoundarySupport {
   static final Map<String, Set<String>> DOMAIN_FEATURE_EDGES =
       Map.ofEntries(
           Map.entry("agent", Set.of()),
+          Map.entry("apicompat", Set.of()),
+          Map.entry("buildpolicy", Set.of("dependency")),
           Map.entry("config", Set.of()),
+          Map.entry("dependency", Set.of("config", "project", "process")),
           Map.entry("doctor", Set.of()),
           Map.entry("gate", Set.of("project", "process")),
           Map.entry("format", Set.of("config")),
           Map.entry("init", Set.of("agent", "gate", "project")),
           Map.entry("loop", Set.of("gate")),
           Map.entry("policy", Set.of("gate")),
-          Map.entry("provenance", Set.of()),
           Map.entry("process", Set.of()),
           Map.entry("terminal", Set.of()),
           Map.entry("project", Set.of()),
           Map.entry("json", Set.of()),
+          Map.entry("license", Set.of("config", "dependency", "project")),
           Map.entry("learning", Set.of("gate")),
-          Map.entry("spec", Set.of()),
+          Map.entry("secrets", Set.of()),
           Map.entry("update", Set.of()),
-          Map.entry("traceability", Set.of()),
+          Map.entry("vulnerability", Set.of("dependency", "gate")),
           Map.entry("rules", Set.of()));
 
   static final Map<String, Set<String>> APPLICATION_ENTRY_POINTS =
@@ -91,16 +97,27 @@ final class ArchitectureBoundarySupport {
           Map.entry("loop", Set.of("dev.ward.application.gate.CheckService")),
           Map.entry("format", Set.of()),
           Map.entry(
+              "buildpolicy", Set.of("dev.ward.application.dependency.DependencyInventoryService")),
+          Map.entry(
               "gate",
               Set.of(
+                  "dev.ward.application.buildpolicy.BuildPolicyService",
+                  "dev.ward.application.buildpolicy.BuildPolicySetting",
                   "dev.ward.application.project.ProjectDetector",
                   "dev.ward.application.project.ProjectDiscovery",
                   "dev.ward.application.project.ProjectNotFoundException",
-                  "dev.ward.application.traceability.TraceabilityPolicy",
-                  "dev.ward.application.gate.openspec.OpenSpecJunitTraceabilityGate",
                   "dev.ward.application.format.FormatService",
                   "dev.ward.application.format.FormatFileOutcome",
-                  "dev.ward.application.format.FormatFileOutcome$Verdict")),
+                  "dev.ward.application.format.FormatFileOutcome$Verdict",
+                  "dev.ward.application.vulnerability.EcosystemStatus",
+                  "dev.ward.application.vulnerability.ScanOptions",
+                  "dev.ward.application.vulnerability.ScanResult",
+                  "dev.ward.application.vulnerability.ScanResult$Located",
+                  "dev.ward.application.vulnerability.ScanResult$Unmatchable",
+                  "dev.ward.application.vulnerability.VulnerabilityRunMode",
+                  "dev.ward.application.vulnerability.VulnerabilityScan",
+                  "dev.ward.application.license.LicenseService",
+                  "dev.ward.application.license.PackageLicense")),
           Map.entry(
               "init",
               Set.of(
@@ -118,26 +135,19 @@ final class ArchitectureBoundarySupport {
                   "dev.ward.application.gate.AnalysisRuleSource",
                   "dev.ward.application.gate.RuleConfigurationCheck",
                   "dev.ward.application.gate.RuleSet")),
+          Map.entry("dependency", Set.of()),
+          Map.entry(
+              "vulnerability",
+              Set.of("dev.ward.application.dependency.DependencyInventoryService")),
+          Map.entry(
+              "license",
+              Set.of(
+                  "dev.ward.application.dependency.DependencyInventoryService",
+                  "dev.ward.application.project.ProjectDetector")),
           Map.entry("project", Set.of()),
           Map.entry("analysis", Set.of()),
           Map.entry("learning", Set.of()),
-          Map.entry(
-              "spec",
-              Set.of(
-                  "dev.ward.application.gate.CheckService",
-                  "dev.ward.application.gate.openspec.OpenSpecPrerequisites",
-                  "dev.ward.application.gate.openspec.OpenSpecPrerequisites$Problem",
-                  "dev.ward.application.gate.openspec.OpenSpecQualityGate",
-                  "dev.ward.application.project.ProjectDetector",
-                  "dev.ward.application.project.ProjectNotFoundException")),
-          Map.entry(
-              "provenance",
-              Set.of(
-                  "dev.ward.application.gate.CheckService",
-                  "dev.ward.application.project.ProjectDetector",
-                  "dev.ward.application.project.ProjectNotFoundException")),
           Map.entry("update", Set.of()),
-          Map.entry("traceability", Set.of()),
           Map.entry(
               "rules",
               Set.of(
@@ -217,12 +227,12 @@ final class ArchitectureBoundarySupport {
 
   /**
    * The packages of the frontend module, including its generated parsers, and of the structural
-   * rules and dependency summarizers of the Node, Python and Swift languages, which are the
-   * analysis adapters and domain for those rules.
+   * rules and dependency summarizers of the Node, Python and Swift languages, and the OpenAPI
+   * document model and rules, which are the analysis adapters and domain for those rules.
    */
   private static boolean isGeneratedFrontendPackage(final String packageName) {
     return packageName.matches(
-        "dev\\.ward\\.analysis\\.(frontend\\.antlr|domain\\.node|domain\\.jvm|domain\\.python|domain\\.swift|application\\.(?:jvm|node|python|swift)|infrastructure\\.node)(\\..*)?");
+        "dev\\.ward\\.analysis\\.(frontend\\.antlr|domain\\.node|domain\\.jvm|domain\\.python|domain\\.swift|domain\\.openapi|application\\.(?:jvm|node|python|swift|openapi)|infrastructure\\.node)(\\..*)?");
   }
 
   static boolean isDaggerGenerated(final String name) {

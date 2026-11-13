@@ -1,8 +1,8 @@
 import type { LiveContext, LiveDriver } from "../src/live";
-import { hookScenarios, prepareSmokeFixture } from "./hook-scenarios";
+import { hookScenarios } from "./hook-scenarios";
 
 // Live Cline driver. `cline --yolo` runs one headless turn in the fixture and skips approval prompts;
-// Cline loads .cline/hooks/PreToolUse and PostToolUse itself. HOME is isolated by the fixture, so the
+// Cline loads .cline/hooks/PostToolUse itself. HOME is isolated by the fixture, so the
 // provider is passed on the command line (-P, -m, -k) instead of from a saved sign-in. Cline has no
 // turn-end delivery, so the turn-end scenario is unsupported.
 
@@ -35,7 +35,6 @@ export const clineDriver: LiveDriver = {
     if (PROVIDER_KEYS[provider] && !env[PROVIDER_KEYS[provider]]) missing.push(PROVIDER_KEYS[provider]);
     return missing;
   },
-  prepare: prepareSmokeFixture,
   scenarios: hookScenarios(turn).map((scenario) =>
     scenario.id === "turn-end-feedback-limit"
       ? { id: scenario.id, unsupported: "TaskComplete hooks run detached; Cline ignores their output." }

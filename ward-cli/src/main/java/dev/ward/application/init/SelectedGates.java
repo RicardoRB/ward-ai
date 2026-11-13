@@ -1,6 +1,7 @@
 package dev.ward.application.init;
 
 import dev.ward.domain.config.WardException;
+import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.FormatGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.InitSelection;
@@ -8,49 +9,55 @@ import dev.ward.domain.init.PresetGateOrder;
 import dev.ward.domain.init.QualityPreset;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.Toolchain;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.IntStream;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /** Resolves a selection's gate ids into configured gates; shared by planning and applying. */
 final class SelectedGates {
-  private static final String TRIVY = "trivy";
-  private static final String OFFLINE_SCAN = "--offline-scan";
+  private static final Set<String> NODE_TEST_GATES = Set.of("vitest", "jest", "bun-test");
 
   private SelectedGates() {}
 
   /**
    * Returns the selected gates with the selected preset gates first, in preset order, followed by
-   * the other selected gates and the OpenSpec validations. Unselected preset gates are not added.
+   * the other selected gates. Unselected preset gates are not added.
    */
   static List<InitGateOption> resolve(
-      final InitSetupCatalog catalog,
-      final Project project,
-      final InitSelection selection,
-      final String openSpecExecutable) {
+      final InitSetupCatalog catalog, final Project project, final InitSelection selection) {
     final List<String> ids =
         Stream.concat(
-                Stream.concat(
-                    (selection.preset() == null
-                            ? selection.gates()
-                            : PresetGateOrder.orderSelected(
-                                catalog.presetGates(project, selection.preset()),
-                                selection.gates()))
-                        .stream(),
-                    selection.openSpecValidations().stream()),
+                (selection.preset() == null
+                        ? selection.gates()
+                        : PresetGateOrder.orderSelected(
+                            catalog.presetGates(project, selection.preset()), selection.gates()))
+                    .stream(),
                 Stream.of(FormatGates.WARD_FORMAT))
             .distinct()
             .toList();
     final List<InitGateOption> gates =
-        ids.stream()
-            .map(id -> option(catalog, project, selection, openSpecExecutable, id))
-            .toList();
-    if (gates.isEmpty() && selection.tools().isEmpty()) {
+        ids.stream().map(id -> option(catalog, project, selection, id)).toList();
+    if (gates.isEmpty()) {
       throw new WardException("Select at least one quality gate.");
     }
-    return offlineTrivy(gates, project);
+    requireNodeTestGate(project, gates);
+    return InitToolchains.find(project)
+        .flatMap(support -> support.crap(project, catalog.inputs))
+        .map(setup -> setup.apply(gates))
+        .orElse(gates);
+  }
+
+  /** A Node {@code coverage} check reads what a test runner wrote, so it needs that gate. */
+  private static void requireNodeTestGate(final Project project, final List<InitGateOption> gates) {
+    final List<String> ids = gates.stream().map(InitGateOption::id).toList();
+    if (project.toolchain() == Toolchain.NODE
+        && ids.contains(SupportedQualityGates.COVERAGE)
+        && ids.stream().noneMatch(NODE_TEST_GATES::contains)) {
+      throw new WardException(
+          "The coverage gate needs the vitest, jest or bun-test gate, which writes the report it"
+              + " reads. Select both gates.");
+    }
   }
 
   /** The {@code ward-format} gate: it has no command, because Ward runs it in-process. */
@@ -69,14 +76,11 @@ final class SelectedGates {
       final InitSetupCatalog catalog,
       final Project project,
       final InitSelection selection,
-      final String openSpecExecutable,
       final String id) {
     if (FormatGates.WARD_FORMAT.equals(id)) {
       return wardFormat();
     }
-    return catalog.openSpecValidations().contains(id)
-        ? catalog.openSpecValidation(project, id, openSpecExecutable)
-        : configured(catalog, project, id, selection.preset());
+    return configured(catalog, project, id, selection.preset());
   }
 
   /** Returns the offered gate {@code id}, with the command {@code preset} configures. */
@@ -92,42 +96,5 @@ final class SelectedGates {
             .filter(gate -> gate.id().equals(id))
             .findFirst()
             .orElse(offered);
-  }
-
-  /**
-   * Maven Central rate-limits CI runners, so Trivy resolves POMs from the local repository when an
-   * earlier Maven or Gradle gate has already filled it.
-   */
-  static List<InitGateOption> offlineTrivy(
-      final List<InitGateOption> gates, final Project project) {
-    if (project.toolchain() != Toolchain.JVM) {
-      return gates;
-    }
-    final int firstBuild =
-        IntStream.range(0, gates.size())
-            .filter(i -> isBuildGate(gates.get(i), project))
-            .findFirst()
-            .orElse(gates.size());
-    return IntStream.range(0, gates.size())
-        .mapToObj(i -> i > firstBuild ? offline(gates.get(i)) : gates.get(i))
-        .toList();
-  }
-
-  private static boolean isBuildGate(final InitGateOption gate, final Project project) {
-    return !gate.command().isEmpty() && project.buildExecutable().equals(gate.command().getFirst());
-  }
-
-  private static InitGateOption offline(final InitGateOption gate) {
-    if (!TRIVY.equals(gate.id()) || !isFilesystemScan(gate.command())) {
-      return gate;
-    }
-    final List<String> command = new ArrayList<>(gate.command());
-    command.add(2, OFFLINE_SCAN);
-    return new InitGateOption(
-        gate.id(), gate.description(), command, gate.available(), gate.availabilityMessage());
-  }
-
-  private static boolean isFilesystemScan(final List<String> command) {
-    return command.size() > 1 && "fs".equals(command.get(1)) && !command.contains(OFFLINE_SCAN);
   }
 }

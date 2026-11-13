@@ -1,0 +1,12 @@
+openapi: 3.1.0
+info:
+  title: Pets
+  version: "1"
+paths:
+  /pets:
+    get:
+      parameters:
+        - {name: X-H, in: header, schema: {type: object, properties: {a: {type: string}}}}
+      responses:
+        '200':
+          description: ok

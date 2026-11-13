@@ -1,0 +1,2 @@
+9:19	Operation "security" values must match a scheme defined in the "components.securitySchemes" object.
+19:11	API "security" values must match a scheme defined in the "components.securitySchemes" object.

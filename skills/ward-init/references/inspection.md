@@ -134,12 +134,12 @@ selects every gate. `--dry-run` writes nothing, installs nothing, and runs no ga
 
 ```sh
 ward init -C <dir> --dry-run --preset strict --integration none --architecture layered \
-  --gate compile,tests,coverage,mutation,sonar,semgrep,gitleaks,dependency-check,zap,trivy,enforcer,license,api-compat
+  --gate compile,tests,coverage,mutation,sonar,secrets,vulnerabilities,zap,build-policy,enforcer,license,api-compat
 ```
 
 Add `--overwrite` when `ward.toml` already exists. Without it the probe prints nothing useful.
-On a Maven project whose `pom.xml` has no `<distributionManagement>`, drop `api-compat` from the
-list: init offers it only for published libraries and rejects it otherwise.
+On a Java or Kotlin project with no release tag reachable from `HEAD` (such as `v1.2.3`), drop `api-compat`
+from the list: init offers it only when a tag exists and rejects it otherwise.
 When Git tracks an OpenAPI spec (`openapi.yml`, `openapi.yaml`, or `openapi.json` in
 `src/main/resources` or the project root), add `openapi-lint,openapi-diff,openapi-compat`; init
 rejects them otherwise.
@@ -150,13 +150,7 @@ Read these lines from the output:
 - `Selected quality gate '<id>': AVAILABLE` means the gate can run.
 - `Selected quality gate '<id>': UNAVAILABLE - <reason>` means its tool is missing. Keep the reason
   for when the user considers that gate.
-- `install    <command>` is the installation init would run if the user consents with
-  `--install-tool <id>`.
 - `guidance   <tool>: <url>` means the tool can only be installed by hand.
-- `Warning: NVD_API_KEY is not set` means `dependency-check` will be slow or rate-limited without a
-  key.
-- `Warning: openspec/ is ignored by Git` means the OpenSpec gate passes locally but fails in CI.
-  Ask whether to track `openspec/` or keep the validation out of the `ci` profile.
 
 Ignore the rest of the probe's plan. It reflects the probe's selection, not the user's.
 
@@ -185,7 +179,6 @@ Layout: com.acme.shop -> domain, application, infrastructure (looks hexagonal)
 Layers: controller, service, repository (layered boundaries written to ward.toml)
 Config: no ward.toml yet
 Rule files: none
-Unavailable tools: semgrep, gitleaks (brew can install them), zap (manual)
+Unavailable tools: zap (manual)
 CI: GitHub repository, no workflow runs Ward yet
-Notes: NVD_API_KEY is not set
 ```

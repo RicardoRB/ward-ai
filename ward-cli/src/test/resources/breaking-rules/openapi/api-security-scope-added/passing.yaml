@@ -1,0 +1,16 @@
+openapi: 3.1.0
+info:
+  title: Pets
+  version: "2"
+paths:
+  /pets:
+    get:
+      security:
+        - o: [read]
+      responses:
+        '200': {description: ok}
+components:
+  securitySchemes:
+    k: {type: apiKey, name: X-Key, in: header}
+    b: {type: http, scheme: bearer}
+    o: {type: oauth2, flows: {implicit: {authorizationUrl: 'https://a.example/auth', scopes: {read: r, write: w}}}}

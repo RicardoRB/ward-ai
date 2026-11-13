@@ -22,7 +22,17 @@ final class CatalogTables {
   private static final String NOT_APPLICABLE = "not-applicable";
   private static final String IDS = "ids";
   private static final Set<String> RESERVED =
-      Set.of("name", "category", "presets", STATUS, ISSUES, NOT_APPLICABLE, IDS);
+      Set.of(
+          "name",
+          "category",
+          "presets",
+          "scope",
+          "cwe",
+          "sources",
+          STATUS,
+          ISSUES,
+          NOT_APPLICABLE,
+          IDS);
 
   private CatalogTables() {}
 

@@ -123,7 +123,7 @@ class SarifReportRendererTest {
   @Test
   void unavailableGateIsReportedWithItsStatus() {
     final JsonTree only =
-        render(result("gitleaks", GateStatus.UNAVAILABLE)).get(RUNS).get(0).get(RESULTS).get(0);
+        render(result("trivy", GateStatus.UNAVAILABLE)).get(RUNS).get(0).get(RESULTS).get(0);
 
     assertThat(only.get("message").get("text").asString()).contains("UNAVAILABLE");
   }

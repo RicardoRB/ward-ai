@@ -1,0 +1,1 @@
+response-property-min-length-unset	GET	/pets

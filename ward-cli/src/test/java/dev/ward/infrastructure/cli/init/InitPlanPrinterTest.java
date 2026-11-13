@@ -5,12 +5,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.agent.PlannedFileChange.Action;
 import dev.ward.domain.init.InitPlan;
-import dev.ward.domain.init.PlannedInstallation;
+import dev.ward.domain.init.PlannedGateInstallation;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 class InitPlanPrinterTest {
@@ -19,7 +18,7 @@ class InitPlanPrinterTest {
   private final StringWriter output = new StringWriter();
 
   @Test
-  void rendersActionsDetailsAndInstallationRelativeToTheProject() {
+  void rendersActionsDetailsAndGateInstallationsRelativeToTheProject() {
     final InitPlan plan =
         new InitPlan(
             List.of(
@@ -30,9 +29,7 @@ class InitPlanPrinterTest {
                 change(".claude/settings.json", Action.CONFLICT),
                 change(".claude/hooks/old", Action.REMOVE),
                 change("config/pmd-ruleset.xml", Action.UNCHANGED)),
-            Optional.of(
-                new PlannedInstallation(
-                    "openspec", "@fission-ai/openspec@1.14.1", ROOT.resolve(".ward/tools"))));
+            List.of(new PlannedGateInstallation("zap-baseline.py", "https://zap.example/docs")));
 
     new InitResultPrinter(new PrintWriter(output, true)).printPlan(plan, ROOT);
 
@@ -45,14 +42,14 @@ class InitPlanPrinterTest {
             "  keep       config/checkstyle.xml  (user-owned, not changed)",
             "  conflict   .claude/settings.json  (user-owned, blocks initialization)",
             "  remove     .claude/hooks/old",
-            "  install    openspec @fission-ai/openspec@1.14.1 into .ward/tools")
+            "  guidance   zap-baseline.py: https://zap.example/docs")
         .doesNotContain("pmd-ruleset.xml");
   }
 
   @Test
   void emptyPlanSaysNothingWouldChange() {
     new InitResultPrinter(new PrintWriter(output, true))
-        .printPlan(new InitPlan(List.of(change("pom.xml", Action.UNCHANGED)), null), ROOT);
+        .printPlan(new InitPlan(List.of(change("pom.xml", Action.UNCHANGED))), ROOT);
 
     assertThat(output.toString()).contains("No files would change.");
   }

@@ -1,0 +1,113 @@
+# Security rules for Python, written from the Python, Django, Flask, lxml and requests documentation named in the catalog rows.
+
+[[rules]]
+id = "ward:python/sql-string-formatting"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^(?:\w+(?:\(\))?\.)+(?:execute|executemany|executescript|raw)\((?:[fF][rR]?(?:"[^"]*\{[^"]*"|\x27[^\x27]*\{[^\x27]*\x27)|(?:"[^"]*"|\x27[^\x27]*\x27)(?:%|\+|\.format\())'
+message = "the query text is built by formatting or concatenation; pass the values as parameters instead"
+'''
+
+[[rules]]
+id = "ward:python/template-autoescape-disabled"
+language = "python"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^(?:\w+\.)*(?:Environment|Template)\(.*\bautoescape=False\b.*\)$'
+message = "autoescaping is switched off, so values are written into pages without HTML escaping; turn it on with select_autoescape"
+'''
+
+[[rules]]
+id = "ward:python/xml-external-entities"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^(?:\w+\.)*XMLParser\(.*\b(?:resolve_entities|load_dtd)=True\b.*\)$|^(?:\w+\.)*XMLParser\(.*\bno_network=False\b.*\)$|^(?:\w+(?:\(\))?\.)*setFeature\((?:\w+\.)*feature_external_(?:ges|pes),True\)$'
+message = "this setting lets the XML parser load external entities or DTDs, which can read files and call servers; disable it"
+'''
+
+[[rules]]
+id = "ward:python/django-insecure-settings"
+language = "python"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = '^(?:DEBUG=True|SECRET_KEY=["\x27][^"\x27]+["\x27]|ALLOWED_HOSTS=\[["\x27]\*["\x27]\]|(?:SESSION_COOKIE_SECURE|CSRF_COOKIE_SECURE|SESSION_COOKIE_HTTPONLY|CSRF_COOKIE_HTTPONLY|SECURE_SSL_REDIRECT)=False)$'
+message = "this Django setting is unsafe in production; read the secret from the environment and keep debug off and cookies secure"
+'''
+
+[[rules]]
+id = "ward:python/flask-insecure-config"
+language = "python"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expr_stmt"]
+text = '^\w+\.config\[["\x27](?:SESSION_COOKIE_SECURE|SESSION_COOKIE_HTTPONLY|REMEMBER_COOKIE_SECURE|REMEMBER_COOKIE_HTTPONLY)["\x27]\]=False$|^\w+\.(?:secret_key|config\[["\x27]SECRET_KEY["\x27]\])=["\x27][^"\x27]+["\x27]$|^\w+\.config\.update\(.*\b(?:SESSION|REMEMBER)_COOKIE_(?:SECURE|HTTPONLY)=False\b.*\)$'
+message = "this Flask setting is unsafe in production; read the secret from the environment and keep session cookies secure and HTTP-only"
+'''
+
+[[rules]]
+id = "ward:python/server-side-request-forgery"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^(?:requests\.\w+|urllib\.request\.urlopen|urlopen|httpx\.\w+)\((?:[^,()]*[+{(])?request\.(?:args|GET|POST|form|values|json|data|files|cookies|headers)\b.*\)$'
+message = "the address comes straight from the request, so a caller can reach internal hosts; check it against an allow-list first"
+'''
+
+[[rules]]
+id = "ward:python/path-traversal"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr"]
+text = '^(?:open|send_file|Path|os\.remove|os\.listdir|shutil\.\w+)\(.*\brequest\.(?:args|GET|POST|form|values|json|data|files|cookies|headers)\b|^(?:tar|tf|tarball|tar_file|tarfile|tar_archive)\.extractall\((?![^)]*\bfilter=)|^tarfile\.open\(.*\)\.extractall\((?![^)]*\bfilter=)'
+message = "a path is built from request data or an archive is extracted without a filter, so a caller can reach files outside the intended folder"
+'''
+
+[[rules]]
+id = "ward:python/weak-password-hash"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["atom_expr", "expr_stmt"]
+text = '^(?:hashlib\.(?:md5|sha1|sha224|sha256|sha384|sha512)|md5|sha1)\(\w*(?:password|passwd|pwd)\w*(?:\.encode\([^()]*\))?\)(?:\.\w+\(\))?$|^(?:\w+\.)*make_password\(.*\bhasher=["\x27](?:md5|sha1|unsalted_md5|unsalted_sha1)["\x27].*\)$|^PASSWORD_HASHERS=\[.*(?:Unsalted)?(?:MD5|SHA1)PasswordHasher'
+message = "a plain or weak hash is not a password hash; use a slow, salted one such as scrypt, argon2 or the Django hashers"
+'''

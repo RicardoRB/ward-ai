@@ -5,17 +5,39 @@ import dev.ward.domain.config.WardException;
 import dev.ward.domain.gate.SupportedQualityGates;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import org.tomlj.TomlArray;
 import org.tomlj.TomlTable;
 
 /** Parses the {@code command} of one {@code [checks.<name>]} table: a string or an array. */
 final class TomlCommandParser {
   private static final String COMMAND = "command";
+  private static final Set<String> COMMAND_LESS =
+      Set.of(
+          SupportedQualityGates.ANALYSIS,
+          SupportedQualityGates.FORMAT,
+          SupportedQualityGates.CRAP,
+          SupportedQualityGates.COVERAGE,
+          SupportedQualityGates.SECRETS,
+          SupportedQualityGates.VULNERABILITIES,
+          SupportedQualityGates.BUILD_POLICY,
+          SupportedQualityGates.LICENSE,
+          SupportedQualityGates.API_COMPAT);
 
   private TomlCommandParser() {}
 
-  /** Returns the command; an empty command is allowed only for a traceability or analysis check. */
+  /**
+   * Returns the command; an empty command is allowed only for an analysis, format or api-compat
+   * check.
+   */
   static List<String> parse(final String where, final TomlTable gate, final String uses) {
+    if (SupportedQualityGates.OPENAPI_LINT.equals(uses)) {
+      return nativeCheck(where, gate, "openapi-lint runs Ward's own rules");
+    }
+    if (SupportedQualityGates.OPENAPI_DIFF.equals(uses)
+        || SupportedQualityGates.OPENAPI_COMPAT.equals(uses)) {
+      return nativeCheck(where, gate, uses + " compares the spec with Ward's own rules");
+    }
     if (!gate.contains(COMMAND)) {
       return missing(where, uses);
     }
@@ -26,10 +48,17 @@ final class TomlCommandParser {
     return command;
   }
 
+  /** The check runs inside Ward, so a command has nothing to run. */
+  private static List<String> nativeCheck(
+      final String where, final TomlTable gate, final String reason) {
+    if (gate.contains(COMMAND)) {
+      throw new WardException("'" + where + ".command' is not allowed: " + reason + ".");
+    }
+    return List.of();
+  }
+
   private static List<String> missing(final String where, final String uses) {
-    if (SupportedQualityGates.TRACEABILITY.equals(uses)
-        || SupportedQualityGates.ANALYSIS.equals(uses)
-        || SupportedQualityGates.FORMAT.equals(uses)) {
+    if (uses != null && COMMAND_LESS.contains(uses)) {
       return List.of();
     }
     throw new WardException("'" + where + ".command' is required");

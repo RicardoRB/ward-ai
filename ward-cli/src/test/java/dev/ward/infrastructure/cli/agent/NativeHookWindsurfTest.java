@@ -32,44 +32,6 @@ class NativeHookWindsurfTest {
   }
 
   @Test
-  void theGuardRefusesAWriteToAnApprovedSpecWithExitTwoAndTheReasonOnStderr() {
-    final String spec = root.resolve("openspec/specs/auth/spec.md").toString();
-    assertThat(
-            hook.run(
-                0,
-                event("pre_write_code", "{\"file_path\":\"" + spec + "\",\"edits\":[]}"),
-                "--guard-approved-specs"))
-        .isEqualTo(2);
-    assertThat(hook.err.toString()).contains("openspec/specs/auth/spec.md");
-    assertThat(hook.out.toString()).isEmpty();
-  }
-
-  @Test
-  void theGuardRefusesAProtectedCommandInItsDirectory() {
-    assertThat(
-            hook.run(
-                0,
-                event(
-                    "pre_run_command",
-                    "{\"command_line\":\"rm spec.md\",\"cwd\":\""
-                        + root.resolve("openspec/specs/auth")
-                        + "\"}"),
-                "--guard-approved-specs"))
-        .isEqualTo(2);
-  }
-
-  @Test
-  void theGuardAllowsAWriteOutsideApprovedSpecs() {
-    assertThat(
-            hook.run(
-                0,
-                event("pre_write_code", "{\"file_path\":\"" + root.resolve("src/A.java") + "\"}"),
-                "--guard-approved-specs"))
-        .isZero();
-    assertThat(hook.err.toString()).isEmpty();
-  }
-
-  @Test
   void failingChecksAfterAWriteAreReportedOnStderr() {
     assertThat(
             hook.run(

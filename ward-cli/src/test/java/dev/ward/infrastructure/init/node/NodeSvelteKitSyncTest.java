@@ -72,7 +72,6 @@ class NodeSvelteKitSyncTest {
         BuildTool.NPM,
         Framework.SVELTE,
         false,
-        false,
         root,
         Set.of(),
         "24",

@@ -1,0 +1,19 @@
+# The Juliet Java 1.3 weaknesses that the first slice of Ward's Java security rules covers: <CWE number>,<name>,<rule ids separated by ;>.
+# A Juliet directory CWE<number>_* holds the cases. Weaknesses with no rule yet, such as CWE-15 and CWE-134, are left out.
+23,Relative Path Traversal,ward:java/path-injection
+36,Absolute Path Traversal,ward:java/path-injection
+78,OS Command Injection,ward:java/command-injection
+80,Cross-Site Scripting,ward:java/cross-site-scripting
+83,XSS in an Attribute,ward:java/cross-site-scripting
+89,SQL Injection,ward:java/sql-injection
+90,LDAP Injection,ward:java/ldap-injection
+113,HTTP Response Splitting,ward:java/header-splitting
+259,Hard-Coded Password,ward:java/hard-coded-password
+321,Hard-Coded Cryptographic Key,ward:java/hard-coded-crypto-key
+327,Broken or Risky Cryptographic Algorithm,ward:java/weak-cipher;ward:java/ecb-mode
+328,Reversible One-Way Hash,ward:java/weak-hash
+338,Weak PRNG,ward:java/insecure-random
+470,Unsafe Reflection,ward:java/unsafe-reflection
+601,Open Redirect,ward:java/untrusted-redirect
+614,Sensitive Cookie Without Secure,ward:java/insecure-cookie
+643,XPath Injection,ward:java/xpath-injection

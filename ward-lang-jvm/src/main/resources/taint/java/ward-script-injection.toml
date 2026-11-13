@@ -1,0 +1,71 @@
+# Written for Ward from the API documentation named in the catalog row of the rule; sources: taint/java/sources.toml.
+# Script sinks: the source text of the JSR 223 engines, Beanshell, Groovy and Rhino.
+
+[[sinks]]
+kind = "call"
+name = "eval"
+receiver = "javax.script.ScriptEngine"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "eval"
+receiver = "javax.script.Compilable"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "eval"
+receiver = "bsh.Interpreter"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "compile"
+receiver = "javax.script.Compilable"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "evaluate"
+receiver = "groovy.lang.GroovyShell"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "parse"
+receiver = "groovy.lang.GroovyShell"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "evaluateString"
+receiver = "org.mozilla.javascript.Context"
+arguments = [1]
+
+
+[[sanitizers]]
+kind = "call"
+name = "parseInt"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Integer"
+
+[[sanitizers]]
+kind = "call"
+name = "parseLong"
+receiver = "java.lang.Long"
+
+[[sanitizers]]
+kind = "call"
+name = "valueOf"
+receiver = "java.lang.Long"
+
+[[sanitizers]]
+kind = "call"
+name = "parseDouble"
+receiver = "java.lang.Double"
+

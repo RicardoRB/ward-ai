@@ -1,7 +1,6 @@
 package dev.ward.infrastructure.agent;
 
 import dev.ward.domain.agent.AgentIntegration;
-import dev.ward.domain.agent.GuardMode;
 import dev.ward.domain.agent.IntegrationHealth;
 import dev.ward.domain.agent.IntegrationRequest;
 import dev.ward.domain.agent.IntegrationResult;
@@ -11,12 +10,12 @@ import java.util.List;
 
 /** Installs, refreshes, removes and diagnoses a native harness's Ward-owned files. */
 public interface NativeHarnessLifecycle extends AgentIntegration {
-  /** Returns the files installing under {@code root} with {@code guardMode} would write. */
-  NativeArtifactPlan artifacts(Path root, GuardMode guardMode);
+  /** Returns the files installing under {@code root} would write. */
+  NativeArtifactPlan artifacts(Path root);
 
   @Override
   default boolean installed(final Path projectRoot) {
-    return NativeIntegrationSupport.installed(projectRoot, artifacts(projectRoot, GuardMode.KEEP));
+    return NativeIntegrationSupport.installed(projectRoot, artifacts(projectRoot));
   }
 
   /**
@@ -35,12 +34,12 @@ public interface NativeHarnessLifecycle extends AgentIntegration {
 
   @Override
   default IntegrationHealth health(final Path projectRoot) {
-    return NativeIntegrationSupport.health(projectRoot, artifacts(projectRoot, GuardMode.KEEP));
+    return NativeIntegrationSupport.health(projectRoot, artifacts(projectRoot));
   }
 
   @Override
-  default List<PlannedFileChange> plan(final Path projectRoot, final GuardMode guard) {
-    return NativeArtifactPlans.plannedChanges(artifacts(projectRoot, guard));
+  default List<PlannedFileChange> plan(final Path projectRoot) {
+    return NativeArtifactPlans.plannedChanges(artifacts(projectRoot));
   }
 
   @Override
@@ -50,7 +49,6 @@ public interface NativeHarnessLifecycle extends AgentIntegration {
 
   @Override
   default IntegrationResult integrate(final Path projectRoot, final IntegrationRequest request) {
-    return NativeIntegrationSupport.integrate(
-        projectRoot, request, artifacts(projectRoot, request.guard()));
+    return NativeIntegrationSupport.integrate(projectRoot, request, artifacts(projectRoot));
   }
 }

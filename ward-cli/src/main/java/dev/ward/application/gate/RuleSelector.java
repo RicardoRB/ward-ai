@@ -1,6 +1,7 @@
 package dev.ward.application.gate;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RulePreset;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ final class RuleSelector {
   private static final String DEFAULT_PRESET = "standard";
   private static final String RULE_PREFIX = "ward:";
   private static final char ID_MARK = ':';
+  private static final String BUILD_PREFIX = "build.";
 
   private final RuleConfigFile.Select select;
   private final List<RuleDefinition> catalog;
@@ -43,7 +45,9 @@ final class RuleSelector {
     final Set<String> categories = categories();
     final Map<String, RuleDefinition> chosen = new LinkedHashMap<>();
     for (final RuleDefinition rule : catalog) {
-      if (preset.selects(rule.presets())
+      if (rule.capability() == RuleCapability.TEXT) {
+        chosen.put(rule.id(), rule);
+      } else if (preset.selects(rule.presets())
           && (languages.isEmpty() || languages.stream().anyMatch(rule::covers))
           && (categories.isEmpty() || categories.contains(rule.category()))) {
         chosen.put(rule.id(), rule);
@@ -116,6 +120,9 @@ final class RuleSelector {
   private List<RuleDefinition> known(final String key, final List<String> names) {
     final List<RuleDefinition> rules = new ArrayList<>();
     for (final String name : names) {
+      if (name.startsWith(BUILD_PREFIX)) {
+        continue;
+      }
       if (name.indexOf(ID_MARK) >= 0) {
         problems.add(SELECT, key, writeDotted(name));
         continue;

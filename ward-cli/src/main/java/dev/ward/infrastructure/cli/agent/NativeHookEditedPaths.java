@@ -1,7 +1,7 @@
 package dev.ward.infrastructure.cli.agent;
 
 import dev.ward.domain.agent.NativeHookInput;
-import dev.ward.domain.spec.PatchTargets;
+import dev.ward.domain.agent.PatchTargets;
 import java.nio.file.Path;
 import java.util.List;
 

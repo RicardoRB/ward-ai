@@ -15,15 +15,12 @@ as a whole is not that yes.
 | Gates | `--gate <id>[,<id>...]` | Gate ids from the gate reference | No |
 | Xcode scheme | `--scheme <name>` | An Xcode scheme of a Swift project with several shared schemes. With `--yes`, a project with several schemes needs this option, and the name must be one of them | No |
 | Architecture style | `--architecture <style>` | `layered` (default), `hexagonal`, or `clean`. It sets the layer boundaries of `[[checks.ward.layers]]` in `ward.toml`, which init always writes. Only the `strict` preset asks for it, so an interactive run offers the choice there | No |
-| Optional tools | `--tool openspec` | `openspec` | No |
-| OpenSpec validations | `--openspec-validation <id>[,<id>...]` | `openspec`, `openspec-archived`. Only together with `--tool openspec` | No |
 | Agent integrations | `--integration <id>[,<id>...]` | `none`, or any of `claude-code`, `opencode`, `codex`, `cursor`, `copilot`, `gemini`, `windsurf`, `cline`, `factory-droid`, `amp`, `junie` | No |
 | Git quality hooks | `--quality-hooks` | Present to install; leave it out to skip | No |
 | CI workflow | `--ci github` | `github`. Leave it out to skip | No |
 | Agent rules in `AGENTS.md` | `--agent-rules` | Present to write the section; leave it out to skip | No |
 | Remove quality hooks | `--remove-quality-hooks` | Present to remove Ward's hook sections | No |
 | Install a Node project's dev dependencies | none: applying a plan with `run <manager> install` runs it | Every `add devDependency` and `run ... install` line in the plan | **Yes, before applying** |
-| Install a missing tool | `--install-tool <id>[,<id>...]` | `openspec`, or a selected gate id that the plan shows with an `install` line | **Yes, per tool** |
 | Replace an existing `ward.toml` | `--overwrite` | Present | **Yes** |
 | Accept plugin version updates | `--accept-compatibility-updates` | Present | **Yes, after showing each `(requires approval)` line** |
 | Replace differing Turborepo member scripts | `--replace-scripts` | Each `replace <script> script (requires approval)` line in the plan | **Yes, once, after listing each member, script, current and proposed command** |
@@ -53,10 +50,10 @@ Strict preset, hexagonal layer boundaries, Claude Code integration, Git hooks:
 ward init --dry-run --preset strict --architecture hexagonal --integration claude-code --quality-hooks
 ```
 
-Custom selection without `mutation`, installing Semgrep after the user said yes to that install:
+Custom selection without `mutation`:
 
 ```sh
-ward init --dry-run --gate compile,tests,coverage,semgrep --install-tool semgrep --integration none
+ward init --dry-run --gate compile,tests,coverage,secrets --integration none
 ```
 
 Reconfiguring an existing setup after the user agreed to replace `ward.toml`:

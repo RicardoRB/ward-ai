@@ -1,0 +1,253 @@
+# Cryptography rules for JavaScript and TypeScript, written from the Node.js crypto documentation.
+
+[[rules]]
+id = "ward:javascript/weak-hash"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:\w+\.)?createHash\([\"\x27`](?i:md2|md4|md5|sha-?1)[\"\x27`]\)$|^(?:\w+\.)?createHmac\([\"\x27`](?i:md2|md4|md5|sha-?1)[\"\x27`],(?:[^()]|\([^()]*\))*\)$|^(?:\w+\.)*subtle\.digest\([\"\x27`](?i:sha-?1)[\"\x27`],(?:[^()]|\([^()]*\))*\)$'
+message = "MD2, MD4, MD5 and SHA-1 are broken for integrity and signatures; use SHA-256 or stronger"
+'''
+
+[[rules]]
+id = "ward:typescript/weak-hash"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:\w+\.)?createHash\([\"\x27`](?i:md2|md4|md5|sha-?1)[\"\x27`]\)$|^(?:\w+\.)?createHmac\([\"\x27`](?i:md2|md4|md5|sha-?1)[\"\x27`],(?:[^()]|\([^()]*\))*\)$|^(?:\w+\.)*subtle\.digest\([\"\x27`](?i:sha-?1)[\"\x27`],(?:[^()]|\([^()]*\))*\)$'
+message = "MD2, MD4, MD5 and SHA-1 are broken for integrity and signatures; use SHA-256 or stronger"
+'''
+
+[[rules]]
+id = "ward:javascript/weak-cipher"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:\w+\.)?create(?:Cipher|Cipheriv|Decipher|Decipheriv)\([\"\x27`](?i:des|des-[\w-]+|des3|rc2|rc2-[\w-]+|rc4|rc4-[\w-]+|bf|bf-[\w-]+|blowfish)[\"\x27`],(?:[^()]|\([^()]*\))*\)$'
+message = "DES, 3DES, RC2, RC4 and Blowfish are broken or too weak; use aes-256-gcm"
+'''
+
+[[rules]]
+id = "ward:typescript/weak-cipher"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:\w+\.)?create(?:Cipher|Cipheriv|Decipher|Decipheriv)\([\"\x27`](?i:des|des-[\w-]+|des3|rc2|rc2-[\w-]+|rc4|rc4-[\w-]+|bf|bf-[\w-]+|blowfish)[\"\x27`],(?:[^()]|\([^()]*\))*\)$'
+message = "DES, 3DES, RC2, RC4 and Blowfish are broken or too weak; use aes-256-gcm"
+'''
+
+[[rules]]
+id = "ward:javascript/ecb-mode"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:\w+\.)?create(?:Cipher|Cipheriv|Decipher|Decipheriv)\([\"\x27`][\w-]*-(?i:ecb)[\"\x27`],(?:[^()]|\([^()]*\))*\)$'
+message = "ECB mode encrypts equal blocks to equal output; use aes-256-gcm"
+'''
+
+[[rules]]
+id = "ward:typescript/ecb-mode"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:\w+\.)?create(?:Cipher|Cipheriv|Decipher|Decipheriv)\([\"\x27`][\w-]*-(?i:ecb)[\"\x27`],(?:[^()]|\([^()]*\))*\)$'
+message = "ECB mode encrypts equal blocks to equal output; use aes-256-gcm"
+'''
+
+[[rules]]
+id = "ward:javascript/static-iv"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:\w+\.)?create(?:Cipheriv|Decipheriv)\(.*,(?:"[^"]*"|\x27[^\x27]*\x27|Buffer\.alloc\(\d+\)|Buffer\.from\([\"\x27`][^"\x27]*[\"\x27`](?:,[\"\x27`]\w+[\"\x27`])?\))(?:,\{[^{}]*\})?\)$'
+message = "a fixed initialization vector repeats across messages and leaks patterns; use crypto.randomBytes for each message"
+'''
+
+[[rules]]
+id = "ward:typescript/static-iv"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:\w+\.)?create(?:Cipheriv|Decipheriv)\(.*,(?:"[^"]*"|\x27[^\x27]*\x27|Buffer\.alloc\(\d+\)|Buffer\.from\([\"\x27`][^"\x27]*[\"\x27`](?:,[\"\x27`]\w+[\"\x27`])?\))(?:,\{[^{}]*\})?\)$'
+message = "a fixed initialization vector repeats across messages and leaks patterns; use crypto.randomBytes for each message"
+'''
+
+[[rules]]
+id = "ward:javascript/weak-key-size"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:\w+\.)?generateKeyPair(?:Sync)?\([\"\x27`]rsa[\"\x27`],\{[^{}]*modulusLength:(?:512|768|1024|1536)\b[^{}]*\}(?:,(?:[^()]|\([^()]*\))*)?\)$'
+message = "an RSA key of 1536 bits or fewer is too short; use at least 2048 bits"
+'''
+
+[[rules]]
+id = "ward:typescript/weak-key-size"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:\w+\.)?generateKeyPair(?:Sync)?\([\"\x27`]rsa[\"\x27`],\{[^{}]*modulusLength:(?:512|768|1024|1536)\b[^{}]*\}(?:,(?:[^()]|\([^()]*\))*)?\)$'
+message = "an RSA key of 1536 bits or fewer is too short; use at least 2048 bits"
+'''
+
+[[rules]]
+id = "ward:javascript/insecure-random"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^Math\.random\(\)$'
+message = "Math.random is predictable; use crypto.randomBytes or crypto.randomUUID for tokens, keys and identifiers"
+'''
+
+[[rules]]
+id = "ward:typescript/insecure-random"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^Math\.random\(\)$'
+message = "Math.random is predictable; use crypto.randomBytes or crypto.randomUUID for tokens, keys and identifiers"
+'''
+
+[[rules]]
+id = "ward:javascript/unfinished-aead"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["functionBody"]
+text = '^(?!.*\.final\()(?!.*return(?:\w+\.)?create)(?=.*\.update\().*\bcreate(?:Cipheriv|Decipheriv)\([\"\x27`][\w-]*(?i:-gcm|-ccm|-ocb|chacha20-poly1305)[\"\x27`]'
+message = "this authenticated cipher is never finished: the authentication tag is checked only by final(), so call it and handle its error"
+'''
+
+[[rules]]
+id = "ward:javascript/weak-gcm-tag-length"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:\w+\.)?create(?:Cipheriv|Decipheriv)\([\"\x27`][\w-]*-gcm[\"\x27`],.*\bauthTagLength:(?:[0-9]|1[01])\b.*\)$|^(?:\w+\.)?createDecipheriv\([\"\x27`][\w-]*-gcm[\"\x27`],(?:[^,(){}]|\([^()]*\))+,(?:[^,(){}]|\([^()]*\))+(?:,\{(?:(?!authTagLength)[^{}])*\})?\)$'
+message = "a GCM tag shorter than 12 bytes, or a decipher that accepts any length, makes forgery cheap; pass authTagLength: 16"
+'''
+
+[[rules]]
+id = "ward:javascript/weak-argon2-parameters"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:\w+\.)?argon2\.hash\(.*,\{[^{}]*(?:\bmemoryCost:(?:\d{1,4}|1[0-8]\d{3}|19[0-3]\d{2}|194[0-4]\d|1945[0-5]|2\*\*(?:\d|1[0-3]))(?![\d*])|\btimeCost:[01]\b)[^{}]*\}\)$'
+message = "these Argon2 parameters are too cheap to slow password guessing; use at least 19456 KiB of memory and a timeCost of 2"
+'''
+
+[[rules]]
+id = "ward:typescript/unfinished-aead"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["functionBody"]
+text = '^(?!.*\.final\()(?!.*return(?:\w+\.)?create)(?=.*\.update\().*\bcreate(?:Cipheriv|Decipheriv)\([\"\x27`][\w-]*(?i:-gcm|-ccm|-ocb|chacha20-poly1305)[\"\x27`]'
+message = "this authenticated cipher is never finished: the authentication tag is checked only by final(), so call it and handle its error"
+'''
+
+[[rules]]
+id = "ward:typescript/weak-gcm-tag-length"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:\w+\.)?create(?:Cipheriv|Decipheriv)\([\"\x27`][\w-]*-gcm[\"\x27`],.*\bauthTagLength:(?:[0-9]|1[01])\b.*\)$|^(?:\w+\.)?createDecipheriv\([\"\x27`][\w-]*-gcm[\"\x27`],(?:[^,(){}]|\([^()]*\))+,(?:[^,(){}]|\([^()]*\))+(?:,\{(?:(?!authTagLength)[^{}])*\})?\)$'
+message = "a GCM tag shorter than 12 bytes, or a decipher that accepts any length, makes forgery cheap; pass authTagLength: 16"
+'''
+
+[[rules]]
+id = "ward:typescript/weak-argon2-parameters"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:\w+\.)?argon2\.hash\(.*,\{[^{}]*(?:\bmemoryCost:(?:\d{1,4}|1[0-8]\d{3}|19[0-3]\d{2}|194[0-4]\d|1945[0-5]|2\*\*(?:\d|1[0-3]))(?![\d*])|\btimeCost:[01]\b)[^{}]*\}\)$'
+message = "these Argon2 parameters are too cheap to slow password guessing; use at least 19456 KiB of memory and a timeCost of 2"
+'''

@@ -1,6 +1,7 @@
 package dev.ward.application.init.node;
 
 import dev.ward.application.init.SourceLanguageGates;
+import dev.ward.domain.gate.SupportedQualityGates;
 import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.QualityPreset;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ record JavaScriptGates(String testGate) implements SourceLanguageGates<NodeTools
   public List<InitGateOption> analysisGates(final NodeTools node) {
     final List<InitGateOption> gates = new ArrayList<>();
     gates.add(node.tests());
+    node.coverage().ifPresent(gates::add);
     gates.add(node.stryker());
     return List.copyOf(gates);
   }
@@ -24,6 +26,9 @@ record JavaScriptGates(String testGate) implements SourceLanguageGates<NodeTools
   @Override
   public List<String> presetGates(final QualityPreset preset) {
     final List<String> gates = new ArrayList<>(List.of(testGate));
+    if (!NodeTools.NG_TEST.equals(testGate)) {
+      gates.add(SupportedQualityGates.COVERAGE);
+    }
     if (preset == QualityPreset.STRICT) {
       gates.add("stryker");
     }

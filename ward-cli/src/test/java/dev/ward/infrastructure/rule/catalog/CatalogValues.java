@@ -1,8 +1,11 @@
 package dev.ward.infrastructure.rule.catalog;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import org.tomlj.Toml;
+import org.tomlj.TomlArray;
 import org.tomlj.TomlTable;
 
 /**
@@ -38,5 +41,21 @@ final class CatalogValues {
   static TomlTable table(final TomlTable row, final String key) {
     final TomlTable table = row.getTable(key);
     return table == null ? Toml.parse("") : table;
+  }
+
+  /** Returns the list of strings at {@code key}, empty when the row has no such key. */
+  static List<String> stringList(final TomlTable row, final String key) {
+    if (!row.contains(key)) {
+      return List.of();
+    }
+    final TomlArray array = row.getArray(key);
+    if (array == null) {
+      throw new IllegalArgumentException("'" + key + "' must be a list of strings");
+    }
+    final List<String> values = new ArrayList<>();
+    for (int index = 0; index < array.size(); index++) {
+      values.add(required(array.getString(index), key));
+    }
+    return values;
   }
 }

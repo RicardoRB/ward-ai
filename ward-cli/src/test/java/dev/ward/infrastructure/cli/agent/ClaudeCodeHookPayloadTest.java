@@ -9,23 +9,13 @@ import org.junit.jupiter.api.Test;
 class ClaudeCodeHookPayloadTest extends ClaudeCodeHookTestSupport {
   @Test
   void withoutTheStdinFlagThePayloadIsNotRead() {
-    assertThat(run(failingInput(), false, "--exclude-spec", "-C", root.toString()))
-        .isEqualTo(ExitCodes.OK);
+    assertThat(run(failingInput(), false, "-C", root.toString())).isEqualTo(ExitCodes.OK);
     assertThat(commands).containsExactly(List.of("mvn", "test"));
   }
 
   @Test
-  void withoutExcludeSpecTheQualityCheckStillRunsSpecGates() {
-    assertThat(run(failingInput(), false, "-C", root.toString())).isEqualTo(ExitCodes.OK);
-    assertThat(commands)
-        .containsExactly(
-            List.of("mvn", "test"),
-            List.of("openspec", "validate", "--all", "--strict", "--no-interactive"));
-  }
-
-  @Test
   void interactiveStdinIsNeverRead() {
-    assertThat(run(failingInput(), true, "--event-stdin", "--exclude-spec", "-C", root.toString()))
+    assertThat(run(failingInput(), true, "--event-stdin", "-C", root.toString()))
         .isEqualTo(ExitCodes.OK);
     assertThat(commands).containsExactly(List.of("mvn", "test"));
   }
@@ -41,7 +31,7 @@ class ClaudeCodeHookPayloadTest extends ClaudeCodeHookTestSupport {
 
   @Test
   void realisticPayloadWithUnknownFieldsRoutesTheEditedFile() {
-    specsValid = false;
+    testsPass = false;
 
     final int exit =
         hook(
@@ -51,15 +41,10 @@ class ClaudeCodeHookPayloadTest extends ClaudeCodeHookTestSupport {
              "tool_input":{"file_path":"%s","content":"# P\\n","replace_all":false,"edits":[{"a":1}]},
              "tool_response":{"filePath":"x","success":true},"tool_use_id":"t1"}
             """
-                .formatted(root, root.resolve("openspec/changes/foo/proposal.md")));
+                .formatted(root, root.resolve("src/main/java/App.java")));
 
     assertThat(exit).isEqualTo(ExitCodes.ERROR);
-    assertThat(err.toString())
-        .contains(
-            "Ward spec validation found problems:",
-            "openspec change foo: 1 error",
-            "ERROR x/spec.md: must include at least one scenario");
-    assertThat(err.toString()).doesNotContain("tests:");
+    assertThat(err.toString()).contains("tests: ");
     assertThat(out.toString()).isEmpty();
   }
 }

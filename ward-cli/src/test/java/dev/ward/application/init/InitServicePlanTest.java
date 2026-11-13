@@ -54,7 +54,6 @@ class InitServicePlanTest {
         .doesNotContainKeys(
             "config/pmd-ruleset.xml", "config/checkstyle.xml", "config/spotbugs-exclude.xml");
     assertThat(plan.hasConflict()).isFalse();
-    assertThat(plan.installation()).isEmpty();
     assertThat(ProjectSnapshot.of(dir)).isEqualTo(before);
   }
 
@@ -69,22 +68,6 @@ class InitServicePlanTest {
             .plan(dir, selection(List.of("claude-code"), List.of(), false), false);
 
     assertThat(plan.hasConflict()).isTrue();
-  }
-
-  @Test
-  void consentedInstallationIsDescribed(@TempDir final Path dir) throws IOException {
-    withPom(dir, PLAIN_POM);
-
-    final InitPlan plan =
-        service(new PomToolConfigurator())
-            .plan(dir, selection(List.of("none"), List.of("openspec"), false), false);
-
-    assertThat(plan.installation())
-        .hasValueSatisfying(
-            installation -> {
-              assertThat(installation.packageName()).startsWith("@fission-ai/openspec@");
-              assertThat(installation.destination()).isEqualTo(dir.resolve(".ward/tools/openspec"));
-            });
   }
 
   @Test
@@ -116,8 +99,6 @@ class InitServicePlanTest {
         JavaPresetGates.STANDARD,
         null,
         QualityPreset.STANDARD,
-        install.isEmpty() ? List.of() : List.of("openspec"),
-        List.of(),
         install,
         hooks,
         null,

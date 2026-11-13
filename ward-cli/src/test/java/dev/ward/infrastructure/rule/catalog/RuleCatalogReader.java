@@ -33,7 +33,11 @@ public final class RuleCatalogReader {
   public RuleCatalog load() {
     final List<CatalogRow> rows = new ArrayList<>();
     for (final String file : lines(INDEX)) {
-      rows.addAll(readFile(DIRECTORY + file + ".toml", CatalogStatusFiles.read(file)));
+      rows.addAll(
+          readFile(
+              DIRECTORY + file + ".toml",
+              CatalogStatusFiles.read(file),
+              CatalogStatusFiles.readText(file)));
     }
     LOG.fine(() -> "read " + rows.size() + " catalog rows");
     return new RuleCatalog(rows);
@@ -47,13 +51,14 @@ public final class RuleCatalogReader {
    * @throws RuleConfigurationException if the file or one of its rows is not valid
    */
   public List<CatalogRow> parse(final String source, final Reader reader) throws IOException {
-    return parse(source, reader, Map.of());
+    return parse(source, reader, Map.of(), Map.of());
   }
 
   private List<CatalogRow> parse(
       final String source,
       final Reader reader,
-      final Map<String, Map<AnalysisLanguage, CatalogStatusFiles.Entry>> statuses)
+      final Map<String, Map<AnalysisLanguage, CatalogStatusFiles.Entry>> statuses,
+      final Map<String, CatalogStatusFiles.Entry> textStatuses)
       throws IOException {
     final TomlParseResult toml = Toml.parse(reader);
     if (toml.hasErrors()) {
@@ -63,17 +68,19 @@ public final class RuleCatalogReader {
     final TomlArray tables = toml.getArray("rule");
     final List<CatalogRow> rows = new ArrayList<>();
     for (int index = 0; tables != null && index < tables.size(); index++) {
-      rows.add(row(source, tables.getTable(index), statuses));
+      rows.add(row(source, tables.getTable(index), statuses, textStatuses));
     }
-    rejectUnknownRows(source, rows, statuses);
+    rejectUnknownRows(source, rows, statuses.keySet());
+    rejectUnknownRows(source, rows, textStatuses.keySet());
     return rows;
   }
 
   private List<CatalogRow> readFile(
       final String resource,
-      final Map<String, Map<AnalysisLanguage, CatalogStatusFiles.Entry>> statuses) {
+      final Map<String, Map<AnalysisLanguage, CatalogStatusFiles.Entry>> statuses,
+      final Map<String, CatalogStatusFiles.Entry> textStatuses) {
     try (Reader reader = new InputStreamReader(open(resource), StandardCharsets.UTF_8)) {
-      return parse(resource, reader, statuses);
+      return parse(resource, reader, statuses, textStatuses);
     } catch (final IOException exception) {
       throw new RuleConfigurationException(
           "Catalog file '" + resource + "' could not be read", exception);
@@ -81,11 +88,9 @@ public final class RuleCatalogReader {
   }
 
   private static void rejectUnknownRows(
-      final String source,
-      final List<CatalogRow> rows,
-      final Map<String, Map<AnalysisLanguage, CatalogStatusFiles.Entry>> statuses) {
+      final String source, final List<CatalogRow> rows, final Set<String> statusNames) {
     final Set<String> names = rows.stream().map(CatalogRow::name).collect(Collectors.toSet());
-    for (final String name : statuses.keySet()) {
+    for (final String name : statusNames) {
       if (!names.contains(name)) {
         throw new RuleConfigurationException(
             "Catalog file '" + source + "' has no row '" + name + "' but a status file names it");
@@ -96,7 +101,8 @@ public final class RuleCatalogReader {
   private static CatalogRow row(
       final String source,
       final TomlTable table,
-      final Map<String, Map<AnalysisLanguage, CatalogStatusFiles.Entry>> statuses) {
+      final Map<String, Map<AnalysisLanguage, CatalogStatusFiles.Entry>> statuses,
+      final Map<String, CatalogStatusFiles.Entry> textStatuses) {
     final String name = table.getString("name");
     try {
       return new CatalogRow(
@@ -106,7 +112,10 @@ public final class RuleCatalogReader {
           CatalogTables.statuses(table, statuses.getOrDefault(name, Map.of())),
           CatalogTables.ids(table),
           CatalogTables.counterparts(table),
-          source);
+          source,
+          CatalogStatusFiles.textStatus(table, textStatuses.get(name)),
+          CatalogValues.stringList(table, "cwe"),
+          CatalogValues.stringList(table, "sources"));
     } catch (final IllegalArgumentException exception) {
       throw new RuleConfigurationException(
           "Catalog file '"

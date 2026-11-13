@@ -6,8 +6,8 @@ import java.util.Set;
 import org.tomlj.TomlTable;
 
 /**
- * Parses the {@code minimum} percentage of a mutation or Swift coverage gate: an integer from 0 to
- * 100, optional for mutation gates and required for {@code swift-coverage}.
+ * Parses the {@code minimum} percentage of a mutation or coverage gate: an integer from 0 to 100,
+ * optional for mutation gates and required for the coverage gates.
  */
 final class TomlMinimumParser {
   private static final String MINIMUM = "minimum";
@@ -17,10 +17,14 @@ final class TomlMinimumParser {
           SupportedQualityGates.STRYKER,
           SupportedQualityGates.MUTATION,
           SupportedQualityGates.MUTMUT,
+          SupportedQualityGates.COVERAGE,
           SupportedQualityGates.SWIFT_COVERAGE,
           SupportedQualityGates.ANDROID_COVERAGE);
   private static final Set<String> REQUIRED_MINIMUM =
-      Set.of(SupportedQualityGates.SWIFT_COVERAGE, SupportedQualityGates.ANDROID_COVERAGE);
+      Set.of(
+          SupportedQualityGates.COVERAGE,
+          SupportedQualityGates.SWIFT_COVERAGE,
+          SupportedQualityGates.ANDROID_COVERAGE);
 
   private TomlMinimumParser() {}
 
@@ -33,8 +37,8 @@ final class TomlMinimumParser {
       throw new WardException(
           "'"
               + key
-              + "' is only supported for the stryker, mutation, mutmut, swift-coverage and android-coverage"
-              + " checks");
+              + "' is only supported for the stryker, mutation, mutmut, coverage, swift-coverage and"
+              + " android-coverage checks");
     }
     final Long value = gate.isLong(MINIMUM) ? gate.getLong(MINIMUM) : null;
     if (value == null || value < 0 || value > MAXIMUM_SCORE) {

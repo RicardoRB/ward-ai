@@ -80,11 +80,11 @@ All skills follow the same rules, whatever the agent is asked:
   confirm the repository is trusted. See [Security](/security/).
 - **Gates are never weakened to make a check pass.** The agent does not drop gates, lower
   thresholds, or add suppressions (`@SuppressWarnings`, inline ignore comments, suppression files).
-- **Nothing is installed without a specific yes.** That covers the Ward installer and each gate
-  tool, such as `brew install semgrep`. Approving a plan is not consent to install.
+- **Nothing is installed without a specific yes.** That covers the Ward installer. Init installs no
+  gate tool. Approving a plan is not consent to install.
 - **Every answer comes from you.** `ward-init` passes each answer as an explicit
   [`init`](/commands/init/) option. It never uses `--yes` and never pipes answers into the wizard.
-  `--overwrite`, `--install-tool`, and `--accept-compatibility-updates` are asked about separately.
+  `--overwrite` and `--accept-compatibility-updates` are asked about separately.
 
 ## How `ward-init` applies changes
 
@@ -96,7 +96,7 @@ skill does that review instead:
 3. After you approve, it runs the identical command without `--dry-run`, and compares what changed
    with the plan.
 
-If the plan lists a `conflict`, or an installation you did not consent to, the skill does not apply
+If the plan lists a `conflict`, or an action you did not consent to, the skill does not apply
 it.
 
 ## How `ward-tune` handles rule changes

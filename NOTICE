@@ -19,6 +19,11 @@ Apache License, Version 2.0 (see LICENSE):
   * Picocli (https://github.com/remkop/picocli)
   * tomlj (https://github.com/tomlj/tomlj)
   * Apache Fory (https://fory.apache.org/)
+  * Plexus Common Utilities (https://codehaus-plexus.github.io/plexus-utils/)
+  * OSGi service prefs and annotations (https://docs.osgi.org/)
+  * Java Native Access (https://github.com/java-native-access/jna), which is
+    dual-licensed under Apache-2.0 or LGPL-2.1-or-later; Ward uses it under
+    Apache-2.0
 
 BSD 3-Clause License (license texts below):
 
@@ -26,10 +31,27 @@ BSD 3-Clause License (license texts below):
   * Kryo, portions included in Apache Fory
     (https://github.com/EsotericSoftware/kryo)
 
+Eclipse Public License, Version 2.0 (https://www.eclipse.org/legal/epl-2.0/):
+
+  * Eclipse Compiler for Java (ecj) and Java Development Tools Core
+    (https://github.com/eclipse-jdt/eclipse.jdt.core/)
+  * Eclipse Platform core, text and runtime bundles:
+    org.eclipse.core.commands, contenttype, expressions, filesystem, jobs,
+    resources and runtime, org.eclipse.text
+    (https://github.com/eclipse-platform/eclipse.platform/ and
+    https://github.com/eclipse-platform/eclipse.platform.ui/)
+  * Eclipse Equinox bundles: app, common, preferences, registry and osgi
+    (https://github.com/eclipse-equinox/equinox/)
+
+  These components are distributed unmodified. Their source code is available
+  at the URLs above.
+
 MIT License (license text below):
 
   * zmij, portions included in Apache Fory JSON
     (https://github.com/vitaut/zmij)
+  * Gitleaks default configuration, as Ward's secret detection rules
+    (https://github.com/gitleaks/gitleaks)
 
 ----------------------------------------------------------------
 Apache Fory NOTICE
@@ -299,3 +321,127 @@ Kotlin grammar (grammars-v4/kotlin/kotlin), Apache License, Version 2.0:
 
   The grammar is licensed under the Apache License, Version 2.0, the license
   that applies to Ward (see LICENSE). No separate notice text is required.
+
+Secret detection rules (derived from the Gitleaks 8.30.1 default configuration,
+https://github.com/gitleaks/gitleaks), MIT License:
+
+  Copyright (c) 2019 Zachary Rice
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+
+  The rules are in ward-cli/src/main/resources/rules/secrets/, generated from
+  the Gitleaks configuration by
+  ward-cli/src/test/resources/catalog/upstream/gitleaks-rules-generator.py.
+
+================================================================
+Rules, messages and data from other projects
+================================================================
+
+Besides the libraries above, Ward's distributed JAR and native binaries
+include rules, messages and data files that come from the projects below.
+Ward's own code implements the rules.
+
+Apache License, Version 2.0 (see LICENSE):
+
+  * Spectral 6.17.1 (https://github.com/stoplightio/spectral). The OpenAPI lint
+    rules in ward-lang-openapi follow the spectral:oas ruleset: they keep its
+    rule ids and reproduce its messages. The files stoplight-2020-12*.json in
+    ward-lang-openapi/src/main/resources/openapi/schemas are copied from
+    @stoplight/spectral-rulesets 1.23.1.
+  * OpenAPI Specification schemas (https://github.com/OAI/OpenAPI-Specification),
+    by the OpenAPI Initiative: oas-3.0.json and oas-3.1*.json in the same
+    folder. See ward-lang-openapi/BUNDLED-SCHEMAS.md.
+  * oasdiff (https://github.com/oasdiff/oasdiff). The OpenAPI breaking-change
+    rules keep the ids of its error-level checks.
+  * Apache Maven (https://maven.apache.org/). The Maven version order used by
+    the vulnerability check is a port of the algorithm of ComparableVersion.
+
+    Apache Maven
+    Copyright 2001-2026 The Apache Software Foundation
+
+    This product includes software developed at
+    The Apache Software Foundation (https://www.apache.org/).
+
+MIT License (the license text is the one printed below for Biome, with the
+copyright notice given for each project):
+
+  * Spectral OWASP ruleset 2.0.1
+    (https://github.com/stoplightio/spectral-owasp-ruleset), by Phil Sturgeon
+    and Stoplight. The owasp rules in ward-lang-openapi keep its rule ids and
+    reproduce its messages. The project publishes no copyright line.
+  * Ajv 8.20.0 and ajv-draft-04 1.0.0 (https://github.com/ajv-validator/ajv).
+    The files json-schema-2020-12*.json and json-schema-draft-04.json in
+    ward-lang-openapi/src/main/resources/openapi/schemas are the JSON Schema
+    meta-schemas as these packages ship them, and Ward's schema messages
+    follow the wording of Ajv.
+
+    Copyright (c) 2015-2021 Evgeny Poberezkin
+  * ESLint (https://github.com/eslint/eslint). Some JavaScript and TypeScript
+    checks are ports of the logic of the ESLint rule of the same name.
+
+    Copyright OpenJS Foundation and other contributors, <www.openjsf.org>
+
+Biome 2.5.15 (https://github.com/biomejs/biome), MIT License or Apache
+License, Version 2.0; Ward uses it under the MIT License. The ARIA data in
+ward-lang-node/src/main/resources/aria is generated from the ARIA metadata of
+Biome, which derives from the W3C WAI-ARIA specifications:
+
+  Copyright (c) 2023-present Biome Developers and Contributors.
+  Copyright (c) 2020-2023 Rome Tools is Rome Tools, Inc. and its affiliates.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+
+SPDX License List 3.29.0 (https://spdx.org/licenses/), by the Linux
+Foundation and its contributors: the license identifiers, names and texts
+under ward-cli/src/main/resources/dev/ward/license.
+
+Ward's style and bug rules for Java, Kotlin, JavaScript, TypeScript, Python
+and Swift follow the documented behaviour of Checkstyle, PMD, SpotBugs, Error
+Prone, detekt, ktlint, ESLint, typescript-eslint, angular-eslint, Ruff, Pylint
+and SwiftLint, and name the rule each one follows.
+
+================================================================
+MITRE CWE
+================================================================
+
+Ward's security rules, the rule reference and the pinned list
+ward-cli/src/test/resources/catalog/security/cwe-5.0.txt name weaknesses by
+their Common Weakness Enumeration (CWE) ids and names.
+
+Copyright (c) 2006-2026, The MITRE Corporation. All rights reserved.
+CWE and the CWE logo are trademarks of The MITRE Corporation. The CWE
+List is provided under the CWE Terms of Use (https://cwe.mitre.org/about/termsofuse.html),
+which grants a royalty-free license to copy and use it on condition that
+this copyright designation and the license are reproduced in any copy.

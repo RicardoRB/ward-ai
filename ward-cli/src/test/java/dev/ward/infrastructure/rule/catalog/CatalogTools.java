@@ -13,7 +13,6 @@ public final class CatalogTools {
           "spotbugs",
           "errorprone",
           "nullaway",
-          "semgrep",
           "eslint",
           "typescript-eslint",
           "angular-eslint",
@@ -29,7 +28,9 @@ public final class CatalogTools {
           "periphery",
           "cpd",
           "jscpd",
-          "gitleaks");
+          "gitleaks",
+          "spectral",
+          "oasdiff");
 
   private CatalogTools() {}
 }

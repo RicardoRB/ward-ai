@@ -15,7 +15,6 @@ final class RuleReferenceTools {
           Map.entry("spotbugs", "SpotBugs"),
           Map.entry("errorprone", "Error Prone"),
           Map.entry("nullaway", "NullAway"),
-          Map.entry("semgrep", "Semgrep"),
           Map.entry("eslint", "ESLint"),
           Map.entry("typescript-eslint", "typescript-eslint"),
           Map.entry("angular-eslint", "angular-eslint"),
@@ -31,7 +30,9 @@ final class RuleReferenceTools {
           Map.entry("periphery", "Periphery"),
           Map.entry("cpd", "PMD CPD"),
           Map.entry("jscpd", "jscpd"),
-          Map.entry("gitleaks", "Gitleaks"));
+          Map.entry("gitleaks", "Gitleaks"),
+          Map.entry("spectral", "Spectral"),
+          Map.entry("oasdiff", "oasdiff"));
 
   private RuleReferenceTools() {}
 
@@ -48,7 +49,21 @@ final class RuleReferenceTools {
         parts.add(TOOL_NAMES.get(tool) + " " + codes(rules));
       }
     }
+    if (!row.cwe().isEmpty()) {
+      parts.add(String.join(", ", row.cwe()));
+    }
+    if (!row.sources().isEmpty()) {
+      parts.add("sources " + sourceLinks(row.sources()));
+    }
     return parts.isEmpty() ? "none" : String.join("; ", parts);
+  }
+
+  private static String sourceLinks(final List<String> sources) {
+    final List<String> links = new ArrayList<>();
+    for (int index = 0; index < sources.size(); index++) {
+      links.add("[" + (index + 1) + "](" + sources.get(index) + ")");
+    }
+    return String.join(" ", links);
   }
 
   private static String codes(final List<String> rules) {

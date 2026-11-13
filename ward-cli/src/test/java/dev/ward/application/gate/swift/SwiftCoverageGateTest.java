@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import dev.ward.application.gate.GateReportPorts;
 import dev.ward.application.gate.PlatformGatePorts;
 import dev.ward.application.gate.QualityGateFactory;
-import dev.ward.application.gate.TraceabilitySources;
 import dev.ward.domain.FakeCommandExecutor;
 import dev.ward.domain.config.GateConfiguration;
 import dev.ward.domain.config.WardConfiguration;
@@ -61,7 +60,6 @@ class SwiftCoverageGateTest {
             Set.of("ci"),
             null,
             null,
-            null,
             minimum,
             null,
             null,
@@ -69,13 +67,14 @@ class SwiftCoverageGateTest {
             List.of(),
             null,
             null,
-            null);
-    return new QualityGateFactory(
-            new FakeCommandExecutor(exitCode, STDOUT, ""),
             null,
-            new TraceabilitySources(null, null),
-            ports,
-            null)
+            null,
+            null,
+            null,
+            null,
+            null,
+            null);
+    return new QualityGateFactory(new FakeCommandExecutor(exitCode, STDOUT, ""), ports, null)
         .create(new WardConfiguration(1, Map.of("coverage", check)))
         .getFirst()
         .execute(PROJECT);

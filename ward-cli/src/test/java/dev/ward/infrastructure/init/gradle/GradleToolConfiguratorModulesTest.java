@@ -36,12 +36,10 @@ class GradleToolConfiguratorModulesTest {
         .apply(project, ModuleFixtures.gates(COVERAGE, "mutation"), null, finding -> false);
 
     assertThat(ModuleFixtures.read(root, API))
-        .contains(
-            "id(\"jacoco\")", "jacocoTestCoverageVerification", "id(\"info.solidsoft.pitest\")");
+        .contains("id(\"jacoco\")", "wardCoverageData", "id(\"info.solidsoft.pitest\")");
     assertThat(ModuleFixtures.read(root, DOMAIN))
         .contains("id 'jacoco'", "id 'info.solidsoft.pitest'");
-    assertThat(ModuleFixtures.read(root, "build.gradle.kts"))
-        .doesNotContain("jacocoTestCoverageVerification");
+    assertThat(ModuleFixtures.read(root, "build.gradle.kts")).doesNotContain("wardCoverageData");
   }
 
   @Test
@@ -69,20 +67,8 @@ class GradleToolConfiguratorModulesTest {
         .apply(project, ModuleFixtures.gates(COVERAGE), null, finding -> false);
 
     assertThat(ModuleFixtures.read(root, DOMAIN))
-        .contains("jacocoTestCoverageVerification {")
-        .doesNotContain("tasks.jacocoTestCoverageVerification");
-  }
-
-  @Test
-  void dependencyCheckStaysInTheRootOnly() throws IOException {
-    final Project project = ModuleFixtures.copy(root);
-
-    new GradleToolConfigurator()
-        .apply(project, ModuleFixtures.gates("dependency-check", COVERAGE), null, finding -> false);
-
-    assertThat(ModuleFixtures.read(root, "build.gradle.kts")).contains("org.owasp.dependencycheck");
-    assertThat(ModuleFixtures.read(root, API)).doesNotContain("org.owasp.dependencycheck");
-    assertThat(ModuleFixtures.read(root, DOMAIN)).doesNotContain("org.owasp.dependencycheck");
+        .contains("tasks.register('wardCoverageData')")
+        .doesNotContain("tasks.register(\"wardCoverageData\")");
   }
 
   @Test
@@ -96,8 +82,7 @@ class GradleToolConfiguratorModulesTest {
         new GradleToolConfigurator()
             .apply(project, ModuleFixtures.gates(COVERAGE), null, finding -> false);
 
-    assertThat(ModuleFixtures.read(root, "build.gradle.kts"))
-        .contains("jacocoTestCoverageVerification");
+    assertThat(ModuleFixtures.read(root, "build.gradle.kts")).contains("wardCoverageData");
     assertThat(change.moduleScripts()).isEmpty();
   }
 

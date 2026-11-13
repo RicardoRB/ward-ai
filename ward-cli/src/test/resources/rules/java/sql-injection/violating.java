@@ -9,3 +9,15 @@ class Search {
     statement.executeQuery("select * from t where id = " + id);
   }
 }
+
+class Orm {
+  void hibernate(HttpServletRequest request, org.hibernate.Session session) {
+    String name = request.getParameter("name");
+    session.createQuery("from User where name = '" + name + "'");
+  }
+
+  void jooq(HttpServletRequest request, org.jooq.DSLContext create) {
+    String id = request.getParameter("id");
+    create.fetch("select * from t where id = " + id);
+  }
+}

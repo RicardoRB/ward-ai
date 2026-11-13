@@ -2,6 +2,7 @@ package dev.ward.infrastructure.rule;
 
 import dev.ward.analysis.domain.flow.taint.TaintAnalysis;
 import dev.ward.analysis.domain.flow.taint.TaintEntry;
+import dev.ward.analysis.domain.flow.taint.TaintFile;
 import dev.ward.analysis.domain.flow.taint.TaintFinding;
 import dev.ward.analysis.domain.flow.taint.TaintSpec;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
@@ -80,6 +81,14 @@ final class JavaTaintFixtures {
         .filter(graph -> graph.body().contains("#run("))
         .findFirst()
         .orElseThrow();
+  }
+
+  /** Lowers a whole source and runs the file-level analysis on every graph. */
+  static List<TaintFinding> runFile(final String source) {
+    final SourceUnit unit = new SourceUnit("src/Flow.java", AnalysisLanguage.JAVA, source);
+    final ParseResult parsed = new AntlrLanguageFrontend().parse(unit);
+    final ControlFlowResult result = new JavaControlFlow().lower(unit, parsed.tree());
+    return TaintFile.run(result.graphs(), SPEC);
   }
 
   /** The messages of the steps of a path, in order. */

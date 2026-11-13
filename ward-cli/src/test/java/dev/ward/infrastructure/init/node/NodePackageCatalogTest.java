@@ -96,7 +96,6 @@ class NodePackageCatalogTest {
                 buildTool,
                 Framework.NONE,
                 false,
-                false,
                 root,
                 Set.of(),
                 "24",

@@ -1,0 +1,4 @@
+16:22	Examples must have either "value" or "externalValue" field.
+19:25	Examples must have either "value" or "externalValue" field.
+23:11	Examples must have either "value" or "externalValue" field.
+32:13	Examples must have either "value" or "externalValue" field.

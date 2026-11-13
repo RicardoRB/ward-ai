@@ -1,6 +1,6 @@
 ---
 name: ward-tune
-description: Tune the rules of the quality gates Ward already runs in this Java, Kotlin, TypeScript, JavaScript, Python, or Swift project (the Ward rules that `ward-rules.toml` selects, the JaCoCo coverage threshold, PIT mutation testing, the Vitest, Jest, or Bun coverage thresholds, Stryker mutation testing, mypy rules, and mutmut) so they fit the real codebase instead of a generic preset. Every edit is grounded in evidence from the code, shown as a diff, and written only after approval. Weakening a rule needs its own approval and reason, and suppressions are never added. Use when the user wants to adjust, tighten, relax, or fix Ward's gate rules or thresholds, or after ward-init offers rule tuning.
+description: Tune the rules of the quality gates Ward already runs in this Java, Kotlin, TypeScript, JavaScript, Python, or Swift project (the Ward rules that `ward-rules.toml` selects, the coverage minimums in ward.toml, PIT mutation testing, the Vitest, Jest, or Bun coverage thresholds, Stryker mutation testing, mypy rules, and mutmut) so they fit the real codebase instead of a generic preset. Every edit is grounded in evidence from the code, shown as a diff, and written only after approval. Weakening a rule needs its own approval and reason, and suppressions are never added. Use when the user wants to adjust, tighten, relax, or fix Ward's gate rules or thresholds, or after ward-init offers rule tuning.
 license: Apache-2.0
 compatibility: Requires the ward CLI >= 0.6.0, a project with ward.toml, and a shell.
 metadata:
@@ -60,13 +60,13 @@ List the gates with `enabled = true`. This skill tunes these:
 
 | Gate id | What you tune | Reference |
 |---|---|---|
-| `coverage`, `swift-coverage`, `android-coverage` | JaCoCo minimum ratios, and the Swift and Android coverage minimums | [references/coverage.md](references/coverage.md) |
+| `coverage`, `swift-coverage`, `android-coverage` | The `minimum` and `minimum-branches` of the `coverage` check in `ward.toml`, and the Swift and Android coverage minimums | [references/coverage.md](references/coverage.md) |
 | `mutation` | PIT threshold, target classes, and threads | [references/mutation.md](references/mutation.md) |
 | `mypy` | mypy strict mode and the pydantic and Django plugins in `mypy.ini` | [references/mypy.md](references/mypy.md) |
 | `mutmut` | mutmut's source paths and its 60% minimum | [references/mutation.md](references/mutation.md#mutmut-python) |
 | `ward` | The Ward rules that `ward-rules.toml` selects for the project's languages (Java, Kotlin, TypeScript, JavaScript, Python, Swift), their severities and options | [references/ward-rules.md](references/ward-rules.md) |
 | `ward` (architecture) | `[[checks.ward.layers]]` boundaries, `[checks.ward.cycles]` source roots and `[[checks.ward.independence]]` module lists, written by `ward init`; the layer, slice cycle and feature independence rules | Not tuned here; edit the tables by hand or re-run `ward init` |
-| `vitest`, `jest`, `bun-test` | The line and branch coverage minimums | [references/coverage.md](references/coverage.md#typescript-and-javascript-test-gates) |
+| `vitest`, `jest`, `bun-test` | Their coverage minimums are on the `coverage` check, not on the test gate | [references/coverage.md](references/coverage.md) |
 | `stryker` | Stryker's `thresholds.break` and run settings | [references/mutation.md](references/mutation.md#stryker-typescript-and-javascript) |
 
 Ask which of the enabled ones the user wants to tune, or offer all of them. If the user asks for a
@@ -110,7 +110,7 @@ with the user before tuning anything else.
 For each rule file you might edit, read its first line:
 
 - `<!-- managed-by: ward preset=<id> -->` (or `// managed-by: ward` in `vitest.config.mjs`, `jest.config.mjs`
-  and `stryker.config.mjs`, `# managed-by: ward` in `bunfig.toml`) means Ward owns the file. The next `ward init`
+  and `stryker.config.mjs`, `# managed-by: ward` in `.coveragerc`) means Ward owns the file. The next `ward init`
   run refreshes it to the preset's content and **silently undoes any tuning**.
 - No marker means the user owns it. Init keeps it as it is and lists it as `keep`.
 
@@ -120,7 +120,7 @@ the same approved edit** as the tuning. A no means the file is not edited at all
 managed file and keep its marker.
 
 Build files (`pom.xml`, `build.gradle(.kts)`) carry no marker.
-Init does not rewrite an existing JaCoCo configuration.
+Init does not rewrite an existing JaCoCo configuration, and it holds no coverage minimum.
 
 ## Step 5: Propose changes, one at a time
 

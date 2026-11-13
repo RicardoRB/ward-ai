@@ -9,3 +9,10 @@ class Download {
     return new File("/data/" + name);
   }
 }
+
+class Report {
+  Object write(HttpServletRequest request) throws Exception {
+    String name = request.getParameter("name");
+    return new java.io.PrintWriter("/data/" + name);
+  }
+}

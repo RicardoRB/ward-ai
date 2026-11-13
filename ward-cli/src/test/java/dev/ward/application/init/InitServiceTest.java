@@ -10,7 +10,6 @@ import dev.ward.application.project.ProjectDetector;
 import dev.ward.application.project.ProjectNotFoundException;
 import dev.ward.domain.FakeEnvironmentInspection;
 import dev.ward.domain.agent.AgentIntegration;
-import dev.ward.domain.agent.GuardMode;
 import dev.ward.domain.agent.IntegrationResult;
 import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.config.WardConfiguration;
@@ -72,8 +71,7 @@ class InitServiceTest {
             new ProjectDetector(new FileSystemProjectInspection()),
             Set.of(),
             new InitSetupCatalog(new FakeEnvironmentInspection(), new QualityHookInstaller()),
-            InitFixtures.projectFiles(new PomToolConfigurator(), RuleFileTargetsFixtures.writer()),
-            new UnavailableToolInstaller());
+            InitFixtures.projectFiles(new PomToolConfigurator(), RuleFileTargetsFixtures.writer()));
 
     qualityService.initialize(
         dir,
@@ -82,8 +80,6 @@ class InitServiceTest {
             List.of(FORMAT, "mutation"),
             null,
             null,
-            List.of(),
-            List.of(),
             List.of(),
             true,
             null,
@@ -120,7 +116,7 @@ class InitServiceTest {
     final AgentIntegration conflict =
         new AgentIntegration() {
           @Override
-          public List<PlannedFileChange> plan(final Path projectRoot, final GuardMode guard) {
+          public List<PlannedFileChange> plan(final Path projectRoot) {
             return List.of();
           }
 

@@ -4,6 +4,8 @@ import dev.ward.analysis.application.jvm.JvmCheckProvider;
 import dev.ward.analysis.application.jvm.JvmRuleFiles;
 import dev.ward.analysis.application.node.NodeCheckProvider;
 import dev.ward.analysis.application.node.NodeRuleFiles;
+import dev.ward.analysis.application.openapi.OpenApiCheckProvider;
+import dev.ward.analysis.application.openapi.OpenApiRuleFiles;
 import dev.ward.analysis.application.python.PythonCheckProvider;
 import dev.ward.analysis.application.python.PythonRuleFiles;
 import dev.ward.analysis.application.rule.CheckProvider;
@@ -12,6 +14,9 @@ import dev.ward.analysis.application.rule.RuleFileProvider;
 import dev.ward.analysis.application.swift.SwiftCheckProvider;
 import dev.ward.analysis.application.swift.SwiftLintCheckProvider;
 import dev.ward.analysis.application.swift.SwiftRuleFiles;
+import dev.ward.analysis.domain.api.ApiSurfaceReader;
+import dev.ward.analysis.domain.jvm.types.JavaApiSurfaceReader;
+import dev.ward.analysis.domain.jvm.types.KotlinApiSurfaceReader;
 import java.util.List;
 
 /**
@@ -26,7 +31,12 @@ public final class BundledLanguages {
   /** Returns the rule file lists of every bundled language module. */
   public static List<RuleFileProvider> ruleFiles() {
     return List.of(
-        new JvmRuleFiles(), new NodeRuleFiles(), new PythonRuleFiles(), new SwiftRuleFiles());
+        new JvmRuleFiles(),
+        new NodeRuleFiles(),
+        new PythonRuleFiles(),
+        new SwiftRuleFiles(),
+        new SecretRuleFiles(),
+        new OpenApiRuleFiles());
   }
 
   /** Returns the check providers of the shared checks and of every bundled language module. */
@@ -37,7 +47,13 @@ public final class BundledLanguages {
         new NodeCheckProvider(),
         new PythonCheckProvider(),
         new SwiftCheckProvider(),
-        new SwiftLintCheckProvider());
+        new SwiftLintCheckProvider(),
+        new OpenApiCheckProvider());
+  }
+
+  /** Returns the API readers of the languages that can be compared by {@code api-compat}. */
+  public static List<ApiSurfaceReader> apiSurfaceReaders() {
+    return List.of(new JavaApiSurfaceReader(), new KotlinApiSurfaceReader());
   }
 
   /** Returns the registry of every bundled check. */

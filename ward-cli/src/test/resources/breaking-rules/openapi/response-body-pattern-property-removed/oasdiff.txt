@@ -1,0 +1,1 @@
+response-body-pattern-property-removed	GET	/pets

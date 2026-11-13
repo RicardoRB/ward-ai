@@ -1,8 +1,6 @@
 package dev.ward.infrastructure.cli.agent;
 
 import dev.ward.domain.gate.CheckReport;
-import dev.ward.domain.spec.SpecValidationReport;
-import java.util.List;
 
 /** Bounded, agent-facing messages written by the native hook. */
 final class NativeHookMessages {
@@ -11,28 +9,14 @@ final class NativeHookMessages {
 
   private NativeHookMessages() {}
 
-  static String failureText(final CheckReport report, final SpecValidationReport specs) {
-    final String quality =
+  static String failureText(final CheckReport report) {
+    return bounded(
         report.passed()
-            ? ""
+            ? "Ward validation failed."
             : report.results().stream()
                 .map(Object::toString)
                 .limit(MAX_ITEMS)
-                .reduce("Ward quality findings:", (a, b) -> a + "\n" + b);
-    final String spec = specs.hasFindings() ? feedback(specs) : "";
-    return bounded(
-        List.of(quality, spec).stream()
-            .filter(text -> !text.isBlank())
-            .reduce((a, b) -> a + "\n" + b)
-            .orElse("Ward validation failed."));
-  }
-
-  static String feedback(final SpecValidationReport report) {
-    return bounded(
-        report.items().stream()
-            .flatMap(item -> item.findings().stream().map(finding -> item.title() + ": " + finding))
-            .limit(MAX_ITEMS)
-            .reduce("Ward spec validation findings:", (a, b) -> a + "\n" + b));
+                .reduce("Ward quality findings:", (a, b) -> a + "\n" + b));
   }
 
   static String safeMessage(final Exception exception) {

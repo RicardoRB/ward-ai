@@ -2,13 +2,12 @@ package dev.ward.infrastructure.cli.agent;
 
 import dev.ward.domain.agent.NativeHookInput;
 import dev.ward.domain.gate.CheckReport;
-import dev.ward.domain.gate.SupportedQualityGates;
-import dev.ward.domain.spec.SpecValidationReport;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Runs a native hook's checks in each project the hook scope selects and collects their findings. A
@@ -25,18 +24,12 @@ final class NativeHookChecks {
         checks.scope().editedProjects(directory, NativeHookEditedPaths.of(event, directory));
     final List<String> findings = new ArrayList<>();
     projects.forEach(
-        (project, paths) -> {
-          final CheckReport report =
-              checks.checks().checkPartial(project, paths, SupportedQualityGates.specIds());
-          final SpecValidationReport specs =
-              event.path() == null
-                  ? SpecValidationReport.EMPTY
-                  : checks
-                      .specs()
-                      .validatePaths(
-                          project, List.of(), List.of(specPath(event, directory, project)));
-          collect(findings, directory, project, report, specs);
-        });
+        (project, paths) ->
+            collect(
+                findings,
+                directory,
+                project,
+                checks.checks().checkPartial(project, paths, Set.of())));
     return joined(findings);
   }
 
@@ -44,34 +37,20 @@ final class NativeHookChecks {
   static Optional<String> turnEnd(final HookChecks checks, final Path directory) {
     final List<String> findings = new ArrayList<>();
     for (final Path project : checks.scope().turnEndProjects(directory)) {
-      collect(
-          findings,
-          directory,
-          project,
-          checks.checks().checkExcluding(project, SupportedQualityGates.specIds()),
-          checks.specs().validateConfigured(project, List.of()));
+      collect(findings, directory, project, checks.checks().check(project));
     }
     return joined(findings);
-  }
-
-  /** The event's path as given in its own project, and resolved for a project below the hook. */
-  private static String specPath(
-      final NativeHookInput event, final Path directory, final Path project) {
-    return project.equals(directory)
-        ? event.path()
-        : directory.toAbsolutePath().resolve(event.path()).toString();
   }
 
   private static void collect(
       final List<String> findings,
       final Path directory,
       final Path project,
-      final CheckReport report,
-      final SpecValidationReport specs) {
-    if (report.passed() && !specs.hasFindings()) {
+      final CheckReport report) {
+    if (report.passed()) {
       return;
     }
-    final String text = NativeHookMessages.failureText(report, specs);
+    final String text = NativeHookMessages.failureText(report);
     findings.add(
         project.equals(directory)
             ? text

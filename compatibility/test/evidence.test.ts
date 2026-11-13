@@ -105,7 +105,7 @@ describe("matrix aggregation", () => {
   });
 
   test("evidenced unsupported scenarios do not fail a passing harness", () => {
-    const unsupported = record(live({ scenario: "guard", claimed: "unsupported", unsupportedProvenance: "post-hooks only" }), expected);
+    const unsupported = record(live({ scenario: "turn-end", claimed: "unsupported", unsupportedProvenance: "post-hooks only" }), expected);
     expect(aggregate([pass("codex"), unsupported], ["codex"], "automated-live").success).toBe(true);
   });
 });

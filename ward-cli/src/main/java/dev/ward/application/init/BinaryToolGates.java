@@ -3,15 +3,12 @@ package dev.ward.application.init;
 import dev.ward.domain.config.OpenApiGateOptions;
 import dev.ward.domain.doctor.EnvironmentInspection;
 import dev.ward.domain.gate.SupportedQualityGates;
-import dev.ward.domain.gate.ToolReports;
 import dev.ward.domain.init.InitGateOption;
-import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /** Gate choices that run a standalone executable, available only when it is on the path. */
 record BinaryToolGates(EnvironmentInspection environment, Project project) {
@@ -26,29 +23,31 @@ record BinaryToolGates(EnvironmentInspection environment, Project project) {
 
   /** The contract gates, offered only for a Git-tracked OpenAPI spec they can check. */
   private List<InitGateOption> openApiGates(final String spec) {
-    final List<String> diff = List.of("oasdiff", "breaking", "--fail-on", "ERR");
     return List.of(
         withSettings(
-            option(
+            new InitGateOption(
                 SupportedQualityGates.OPENAPI_LINT,
-                "Lints the committed OpenAPI spec with every built-in vacuum rule.",
-                List.of("vacuum", "lint", "-z", "-n", "warn"),
-                "Install vacuum."),
+                "Lints the committed OpenAPI spec with Ward's own rules; nothing to install.",
+                List.of(),
+                true,
+                "Ward's own rules; no executable is needed."),
             Map.of(SPEC, spec)),
         withSettings(
-            option(
+            nativeOption(
                 SupportedQualityGates.OPENAPI_DIFF,
-                "Reports breaking changes in uncommitted OpenAPI spec edits with oasdiff.",
-                diff,
-                "Install oasdiff."),
+                "Reports breaking changes in uncommitted OpenAPI spec edits."),
             Map.of(SPEC, spec)),
         withSettings(
-            option(
+            nativeOption(
                 SupportedQualityGates.OPENAPI_COMPAT,
-                "Reports breaking OpenAPI changes on the branch against origin/main with oasdiff.",
-                diff,
-                "Install oasdiff, and fetch origin/main before checking."),
+                "Reports breaking OpenAPI changes on the branch against origin/main."),
             orderedSettings(spec)));
+  }
+
+  /** A gate Ward runs itself: always available, with no command. */
+  private static InitGateOption nativeOption(final String id, final String description) {
+    return new InitGateOption(
+        id, description, List.of(), true, "Runs inside Ward; nothing to install.");
   }
 
   private static Map<String, String> orderedSettings(final String spec) {
@@ -69,53 +68,26 @@ record BinaryToolGates(EnvironmentInspection environment, Project project) {
         settings);
   }
 
-  /** Semgrep is offered only where a registry ruleset exists for the language. */
+  /**
+   * The security gates: native secret detection and ZAP. Ward's own security rules run in the
+   * {@code ward} gate, so no external source scanner is offered; a {@code [checks.semgrep]} table
+   * that a project writes by hand still runs.
+   */
   private List<InitGateOption> securityGates() {
-    final List<InitGateOption> gates = new ArrayList<>();
-    semgrepRuleset()
-        .ifPresent(
-            ruleset ->
-                gates.add(
-                    option(
-                        "semgrep",
-                        "Runs SAST and custom security rules with Semgrep.",
-                        List.of("semgrep", "scan", "--config", ruleset, "--error"),
-                        "Install Semgrep (needs network access to fetch the "
-                            + ruleset
-                            + " ruleset).")));
-    gates.addAll(
-        List.of(
-            option(
-                "gitleaks",
-                "Detects committed secrets with Gitleaks.",
-                List.of(
-                    "gitleaks",
-                    "detect",
-                    "--no-banner",
-                    "--redact",
-                    "--report-format",
-                    "sarif",
-                    "--report-path",
-                    ToolReports.gitleaksSarif(project)),
-                "Install Gitleaks."),
-            option(
-                "zap",
-                "Runs an OWASP ZAP baseline DAST scan against a running application; replace <TARGET_URL> in -t with an authorized target before running.",
-                List.of("zap-baseline.py", "-t", SupportedQualityGates.ZAP_TARGET_PLACEHOLDER),
-                "Install ZAP and replace "
-                    + SupportedQualityGates.ZAP_TARGET_PLACEHOLDER
-                    + " with a target you are authorized to scan before running."),
-            option(
-                "trivy",
-                "Scans dependencies, containers, and IaC with Trivy.",
-                List.of("trivy", "fs", "--exit-code", "1", "."),
-                "Install Trivy.")));
-    return gates;
-  }
-
-  /** The Semgrep registry ruleset for {@code project}'s language, or empty when there is none. */
-  private Optional<String> semgrepRuleset() {
-    return project.language() == Language.PYTHON ? Optional.of("p/python") : Optional.empty();
+    return List.of(
+        new InitGateOption(
+            SupportedQualityGates.SECRETS,
+            "Detects committed secrets with Ward's native secret rules (no install needed).",
+            List.of(),
+            true,
+            "Runs inside Ward; nothing to install."),
+        option(
+            "zap",
+            "Runs an OWASP ZAP baseline DAST scan against a running application; replace <TARGET_URL> in -t with an authorized target before running.",
+            List.of("zap-baseline.py", "-t", SupportedQualityGates.ZAP_TARGET_PLACEHOLDER),
+            "Install ZAP and replace "
+                + SupportedQualityGates.ZAP_TARGET_PLACEHOLDER
+                + " with a target you are authorized to scan before running."));
   }
 
   private InitGateOption option(

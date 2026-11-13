@@ -79,7 +79,7 @@ command = "gitleaks detect --no-banner --redact --report-format sarif --report-p
 [checks.gitleaks.paths]
 match = ["**"]
 full = [".gitleaks*"]
-args = ["--no-git", "--source={paths}"]
+args = ["--no-git", "--config=.gitleaks.toml", "--source={paths}"]
 
 [checks.semgrep]
 enabled = true

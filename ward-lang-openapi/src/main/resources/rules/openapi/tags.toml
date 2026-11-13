@@ -1,0 +1,78 @@
+# OpenAPI lint rules (tags), ported from the Spectral 6.17.1 rules of the same id. Each rule is a project check over the loaded document model.
+
+[[rules]]
+id = "ward:openapi/openapi-tags"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-openapi-tags"
+'''
+
+[[rules]]
+id = "ward:openapi/openapi-tags-alphabetical"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "docs"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-openapi-tags-alphabetical"
+'''
+
+[[rules]]
+id = "ward:openapi/tag-description"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "docs"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-tag-description"
+'''
+
+[[rules]]
+id = "ward:openapi/operation-tags"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "docs"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-operation-tags"
+'''
+
+[[rules]]
+id = "ward:openapi/operation-tag-defined"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "docs"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-operation-tag-defined"
+'''
+
+[[rules]]
+id = "ward:openapi/operation-singular-tag"
+language = "openapi"
+capability = "SYNTAX"
+severity = "warning"
+category = "docs"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-operation-singular-tag"
+'''
+
+[[rules]]
+id = "ward:openapi/openapi-tags-uniqueness"
+language = "openapi"
+capability = "SYNTAX"
+severity = "error"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "openapi-openapi-tags-uniqueness"
+'''

@@ -6,7 +6,6 @@ import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.agent.PlannedFileChange.Action;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 class InitPlanTest {
@@ -18,21 +17,19 @@ class InitPlanTest {
   @Test
   void conflictIsDetected() {
     final InitPlan plan =
-        new InitPlan(
-            List.of(CREATED, new PlannedFileChange(Path.of("hook"), Action.CONFLICT)),
-            Optional.empty());
+        new InitPlan(List.of(CREATED, new PlannedFileChange(Path.of("hook"), Action.CONFLICT)));
 
     assertThat(plan.hasConflict()).isTrue();
   }
 
   @Test
   void planWithoutConflictIsClean() {
-    assertThat(new InitPlan(List.of(CREATED, KEPT), Optional.empty()).hasConflict()).isFalse();
+    assertThat(new InitPlan(List.of(CREATED, KEPT)).hasConflict()).isFalse();
   }
 
   @Test
   void unchangedFilesAreNotVisible() {
-    assertThat(new InitPlan(List.of(CREATED, KEPT), null).visibleFiles()).containsExactly(CREATED);
+    assertThat(new InitPlan(List.of(CREATED, KEPT)).visibleFiles()).containsExactly(CREATED);
   }
 
   @Test

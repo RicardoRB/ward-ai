@@ -7,7 +7,7 @@ import java.util.List;
 public final class JavaPresetGates {
   public static final List<String> STANDARD = List.of("compile", "tests", "coverage");
   public static final List<String> STRICT =
-      List.of("compile", "tests", "coverage", "enforcer", "mutation");
+      List.of("compile", "tests", "coverage", "build-policy", "enforcer", "mutation");
 
   private JavaPresetGates() {}
 

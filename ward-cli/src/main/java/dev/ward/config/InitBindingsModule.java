@@ -11,10 +11,8 @@ import dev.ward.domain.init.OwnedSectionGeneration;
 import dev.ward.domain.init.QualityHookGeneration;
 import dev.ward.domain.init.RawTerminal;
 import dev.ward.domain.init.RuleFileGeneration;
-import dev.ward.domain.init.ToolInstaller;
 import dev.ward.domain.project.Toolchain;
 import dev.ward.domain.terminal.TerminalCapabilities;
-import dev.ward.infrastructure.init.CompositeToolInstaller;
 import dev.ward.infrastructure.init.FileConfigurationStorage;
 import dev.ward.infrastructure.init.OwnedSectionWriter;
 import dev.ward.infrastructure.init.PresetRuleFileWriter;
@@ -56,9 +54,6 @@ interface InitBindingsModule {
 
   @Binds
   OwnedSectionGeneration ownedSectionGeneration(OwnedSectionWriter implementation);
-
-  @Binds
-  ToolInstaller toolInstaller(CompositeToolInstaller implementation);
 
   /** The rule files of each toolchain that has its own; a JVM project has none here. */
   @Provides

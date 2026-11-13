@@ -1,0 +1,16 @@
+openapi: 3.0.3
+info:
+  title: T
+  version: "1"
+paths:
+  /pets:
+    get:
+      operationId: dup
+      responses: {}
+    post:
+      operationId: dup
+      responses: {}
+  /other:
+    put:
+      operationId: dup
+      responses: {}

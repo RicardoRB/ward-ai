@@ -4,7 +4,7 @@ description: How a taint rule finds untrusted values that reach sensitive operat
 ---
 
 A taint rule reports when a value from an untrusted **source** reaches a **sink** argument inside
-one function. Sources, sinks and sanitizers are written as data in TOML files, so a rule names the
+one file, following calls between its functions. Sources, sinks and sanitizers are written as data in TOML files, so a rule names the
 files it uses and the engine never needs code for each library.
 
 A rule body names its specification files and a message:
@@ -57,7 +57,8 @@ from = ["receiver", 0]
   resolves for the call.
   In Java, a constructor call such as `new File(name)` is a `call` named `<init>` whose receiver is
   the created type, so `name = "<init>"` with `receiver = "java.io.File"` guards that constructor.
-- `qualifier` is the receiver text as written, such as `req`.
+- `qualifier` is the receiver text as written, such as `req`. A text that starts with `*` matches
+  any qualifier that ends with the rest, so `*.environment()` matches `builder.environment()`.
 - `arguments` is required for a sink and lists the argument positions it guards, counted from 0.
   Other entries cannot name arguments.
 - `from` on a propagator lists its inputs, as argument positions or `"receiver"`. It is checked but
@@ -103,10 +104,21 @@ Each finding carries its path: the source, each write that carried the value on,
 that order. The path is deterministic for the same source and specifications. It appears as the
 `path` field in [JSON output](/reference/json-output/) and as `codeFlows` in SARIF output.
 
+## Bundled specifications
+
+Ward's own security rules use one specification file per weakness: `taint/java/ward-<weakness>.toml`
+and `taint/node/ward-<weakness>.toml`. Each lists the sinks of the platform documentation that the
+[security rules](/reference/security-rules/) page names, the argument positions each sink guards,
+and the sanitizers of that weakness. The sources are shared: `taint/java/sources.toml` and
+`taint/node/sources.toml`.
+
 ## Limits
 
-- A taint rule works within one function. Values passed to another function, or read from a field
-  or property of an object, are not followed.
+- A taint rule follows calls between the functions of one file, to a depth of four calls: a function
+  that returns a source value is a source for its callers, and a function whose parameter reaches a
+  sink is a sink for that argument. Calls are matched by name and argument count, with no qualifier,
+  `this` or the owner's name, and a name that two functions of the file share is not followed. Values
+  that cross into another file, or are read from a field or property of an object, are not followed.
 - Implicit flows through control conditions are not reported.
 - A variable's receiver type comes from the last declaration of its name in the function, which can
   differ from the declaration in scope when block-scoped names are reused.

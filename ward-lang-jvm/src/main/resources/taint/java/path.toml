@@ -54,6 +54,26 @@ name = "resolve"
 receiver = "java.nio.file.Path"
 arguments = [0]
 
+# Writers and archives that open a file by the name in argument 0.
+
+[[sinks]]
+kind = "call"
+name = "<init>"
+receiver = "java.io.PrintWriter"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "<init>"
+receiver = "java.io.PrintStream"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "<init>"
+receiver = "java.util.zip.ZipFile"
+arguments = [0]
+
 [[sanitizers]]
 kind = "call"
 name = "getName"

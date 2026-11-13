@@ -93,13 +93,24 @@ public class InitGeneralCatalog {
     final List<InitGateOption> options = new ArrayList<>(buildTool.analysis());
     options.addAll(new BinaryToolGates(environment, project).gates());
     options.addAll(buildTool.policy());
+    if (InitToolchains.support(project).crap(project, inputs).isPresent()) {
+      options.add(CrapInit.option());
+    }
     options.add(
         new InitGateOption(
-            SupportedQualityGates.TRACEABILITY,
-            "Maps live OpenSpec scenarios to explicitly annotated JUnit tests (opt-in).",
+            SupportedQualityGates.VULNERABILITIES,
+            "Matches the resolved dependencies against OSV advisories (opt-in).",
             List.of(),
             true,
-            "Source-level mapping analysis; it does not execute tests."));
+            "Downloads advisory data from osv.dev, and sends no project data."));
+    options.add(
+        new InitGateOption(
+            SupportedQualityGates.LICENSE,
+            "Checks the licenses of the resolved dependencies against a policy (native).",
+            List.of(),
+            true,
+            "Reads installed dependency metadata, so install dependencies before it runs;"
+                + " a license it cannot find is a finding."));
     return List.copyOf(options);
   }
 
@@ -143,11 +154,12 @@ public class InitGeneralCatalog {
   /**
    * Returns the gate choice with {@code id} for {@code project}.
    *
-   * @throws WardException if {@code id} is an OpenSpec tool, not a supported gate, or a gate the
-   *     project's runtime JDK cannot run
+   * @throws WardException if {@code id} is not a supported gate, or a gate the project's runtime
+   *     JDK cannot run
    */
   public InitGateOption gate(final Project project, final String id) {
     GateOffers.require(environment, project, id);
+    CrapInit.require(InitToolchains.support(project), project, inputs, id);
     InitToolchains.find(project)
         .map(support -> support.omissions(project, List.of(id), inputs))
         .orElse(List.of())
@@ -175,8 +187,8 @@ public class InitGeneralCatalog {
   }
 
   /**
-   * Plans how to install the executable a missing {@code gate} needs, preferring the first package
-   * manager found on the path; empty when the gate is available or runs no command.
+   * Describes where to install the executable a missing {@code gate} needs; empty when the gate is
+   * available, runs no command, or has no guidance in the catalog. Init installs nothing itself.
    */
   public Optional<PlannedGateInstallation> gateInstallation(
       final Project project, final InitGateOption gate) {
@@ -185,24 +197,7 @@ public class InitGeneralCatalog {
     }
     final String executable = gate.command().getFirst();
     return GateToolInstallCatalog.forExecutable(executable)
-        .map(
-            entry ->
-                entry.methods().stream()
-                    .filter(
-                        method ->
-                            environment.inspect(project.root()).hasExecutable(method.manager()))
-                    .findFirst()
-                    .map(
-                        method ->
-                            new PlannedGateInstallation(
-                                executable,
-                                method.manager(),
-                                method.arguments(),
-                                entry.manualGuidance()))
-                    .orElseGet(
-                        () ->
-                            new PlannedGateInstallation(
-                                executable, null, List.of(), entry.manualGuidance())));
+        .map(entry -> new PlannedGateInstallation(executable, entry.manualGuidance()));
   }
 
   /** Returns the quality presets init offers for {@code project}, in wizard order. */

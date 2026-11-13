@@ -38,7 +38,6 @@ class WardCliMonorepoInitTest extends WardCliIntegrationSupport {
     write("node_modules/left-pad/pom.xml", "<project/>");
     write(".git/hooks/pre-commit", USER_HOOK);
     write(".claude/settings.json", USER_SETTINGS);
-    Files.createDirectories(repository.resolve("openspec"));
     final Path api = repository.resolve(API);
     copyFixture(api);
     final Path pom = api.resolve("pom.xml");
@@ -81,7 +80,7 @@ class WardCliMonorepoInitTest extends WardCliIntegrationSupport {
     assertThat(repository.resolve(".github/workflows/ward-apps-api.yml")).exists();
     assertThat(repository.resolve(".github/workflows/ward-services-billing.yml")).exists();
     assertThat(repository.resolve(".opencode/plugins/ward-edit-write-apps-api.js")).exists();
-    assertThat(read(API + "/ward.toml")).contains("root = \"../..\"");
+    assertThat(read(API + "/ward.toml")).doesNotContain("root =");
     assertThat(repository.resolve(API + "/core/ward.toml")).doesNotExist();
     assertThat(repository.resolve(BILLING + "/domain/ward.toml")).doesNotExist();
     for (final String inside : List.of(API, BILLING)) {
@@ -106,10 +105,6 @@ class WardCliMonorepoInitTest extends WardCliIntegrationSupport {
                 TESTS,
                 INTEGRATION_OPTION,
                 "claude-code,opencode",
-                "--tool",
-                "openspec",
-                "--openspec-validation",
-                "openspec",
                 "--quality-hooks",
                 "--ci",
                 "github",

@@ -1,13 +1,12 @@
 # OpenCode V2 compatibility suite
 
-Executes the plugins that the real `ward integrate opencode --guard-approved-specs` generates
+Executes the plugins that the real `ward integrate opencode` generates
 against the pinned `@opencode/plugin` 2.0.30 package. `host.ts` reproduces the runtime semantics of
 opencode v2.0.30 that the plugins depend on (sources in `contract-fixtures.json`):
 
-- an `execute.before` rejection refuses that tool call alone;
 - an `execute.after` rejection is a defect, so feedback must be appended to the result content;
 - the model reads `normalizeContent(result.content, result.output)`;
-- `session.idle` events carry `data.sessionID`, and sessions report `location.directory`.
+- sessions report `location.directory`.
 
 This is deterministic evidence: it proves the generated plugins load and behave correctly against
 the package contract, not that a running OpenCode activates them.
@@ -33,6 +32,6 @@ runtime with a private `--standalone` server in a disposable fixture. Prerequisi
 - `WARD_COMPAT_OPENCODE_MODEL`: the model, as `provider/model`;
 - a provider key from the credential allowlist (for example `ANTHROPIC_API_KEY`).
 
-Each missing prerequisite is reported as `blocked` and the command exits non-zero. The idle-limit
-and reload scenarios have no driver yet and are always reported as blocked. Never run it against a
+Each missing prerequisite is reported as `blocked` and the command exits non-zero. The reload
+scenario has no driver yet and is always reported as blocked. Never run it against a
 user project.

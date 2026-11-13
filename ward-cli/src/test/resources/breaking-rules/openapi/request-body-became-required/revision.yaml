@@ -1,0 +1,15 @@
+openapi: 3.0.3
+info:
+  title: Pets
+  version: "1"
+paths:
+  /pets:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {type: object}
+      responses:
+        '200':
+          description: ok

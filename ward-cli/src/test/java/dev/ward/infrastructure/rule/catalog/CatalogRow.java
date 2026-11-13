@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -25,6 +26,12 @@ import java.util.regex.Pattern;
  * @param ids the id per language where it differs from the default
  * @param counterparts the upstream rule ids per tool key, see {@link CatalogTools}
  * @param source the catalog file the row was read from, for messages
+ * @param text the status of a row of the text scope, which reads the text of every file and has no
+ *     language; empty for a row of the languages
+ * @param cwe the CWE ids of the weakness the row describes, such as {@code CWE-89}; empty for a row
+ *     that is not a security row
+ * @param sources the public documents the rules of the row were written from; empty when no source
+ *     is recorded
  */
 public record CatalogRow(
     String name,
@@ -33,13 +40,16 @@ public record CatalogRow(
     Map<AnalysisLanguage, LanguageStatus> statuses,
     Map<AnalysisLanguage, String> ids,
     Map<String, List<String>> counterparts,
-    String source) {
+    String source,
+    Optional<LanguageStatus> text,
+    List<String> cwe,
+    List<String> sources) {
 
   /** The reason of a language that a row does not mention. */
   public static final String UNLISTED_REASON =
       "no rule of a tool in the roadmaps covers it in this language";
 
-  private static final Pattern NAME = Pattern.compile("[a-z][a-z0-9]*(-[a-z0-9]+)*");
+  private static final Pattern NAME = Pattern.compile("[a-z0-9]+(-[a-z0-9]+)*");
 
   /**
    * Validates the name, ids and counterpart tools, and copies every collection.
@@ -50,9 +60,12 @@ public record CatalogRow(
   public CatalogRow {
     Objects.requireNonNull(category, "category");
     Objects.requireNonNull(source, "source");
+    Objects.requireNonNull(text, "text");
     if (!NAME.matcher(Objects.requireNonNull(name, "name")).matches()) {
       throw new IllegalArgumentException("rule name '" + name + "' must be lower-case words");
     }
+    cwe = List.copyOf(cwe);
+    sources = List.copyOf(sources);
     presets = Set.copyOf(presets);
     statuses = Map.copyOf(statuses);
     ids = Map.copyOf(ids);
@@ -62,9 +75,38 @@ public record CatalogRow(
     ids.forEach((language, id) -> requireId(name, language, id));
   }
 
+  /** Tells whether this row is of the text scope. */
+  public boolean isText() {
+    return text.isPresent();
+  }
+
+  /** Returns the ids of the implemented rules of the row: one per language, or the text rule. */
+  public List<String> implementedIds() {
+    final List<String> implemented = new ArrayList<>();
+    languages(CatalogStatus.IMPLEMENTED).forEach(language -> implemented.add(idFor(language)));
+    if (text.isPresent() && text.get().status() == CatalogStatus.IMPLEMENTED) {
+      implemented.add(textId());
+    }
+    return implemented;
+  }
+
+  /** Returns the id of the rule of a text row, {@code ward:secrets/<name>}. */
+  public String textId() {
+    return "ward:secrets/" + name;
+  }
+
   /** Returns the status of the row in {@code language}; a language it omits does not apply. */
   public LanguageStatus status(final AnalysisLanguage language) {
     return statuses.getOrDefault(language, LanguageStatus.notApplicable(UNLISTED_REASON));
+  }
+
+  /**
+   * Tells whether the row is a breaking-change rule of the OpenAPI diff: a counterpart of oasdiff.
+   * Such a rule compares two documents, so it has no rule definition, no presets and no single
+   * document fixtures; {@code BreakingRulesCatalogTest} checks it instead.
+   */
+  public boolean breaking() {
+    return counterparts.containsKey("oasdiff");
   }
 
   /** Returns the id the rule has, or would have, in {@code language}. */

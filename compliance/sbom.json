@@ -389,6 +389,22 @@
       "purl" : "pkg:maven/dev.ward/ward-lang-swift@0.7.1?type=jar"
     },
     {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/dev.ward/ward-lang-openapi@0.7.1?type=jar",
+      "group" : "dev.ward",
+      "name" : "ward-lang-openapi",
+      "version" : "0.7.1",
+      "description" : "Ward OpenAPI lint rules: a YAML and JSON parser with positions, the OpenAPI document model with resolved references, and the rules over it",
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/dev.ward/ward-lang-openapi@0.7.1?type=jar"
+    },
+    {
       "type" : "application",
       "bom-ref" : "pkg:maven/dev.ward/ward-cli@0.7.1?type=jar",
       "group" : "dev.ward",
@@ -2206,6 +2222,7 @@
         "pkg:maven/dev.ward/ward-lang-node@0.7.1?type=jar",
         "pkg:maven/dev.ward/ward-lang-python@0.7.1?type=jar",
         "pkg:maven/dev.ward/ward-lang-swift@0.7.1?type=jar",
+        "pkg:maven/dev.ward/ward-lang-openapi@0.7.1?type=jar",
         "pkg:maven/dev.ward/ward-cli@0.7.1?type=jar"
       ]
     },
@@ -2268,6 +2285,14 @@
       ]
     },
     {
+      "ref" : "pkg:maven/dev.ward/ward-lang-openapi@0.7.1?type=jar",
+      "dependsOn" : [
+        "pkg:maven/dev.ward/ward-analysis-api@0.7.1?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-engine@0.7.1?type=jar",
+        "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar"
+      ]
+    },
+    {
       "ref" : "pkg:maven/dev.ward/ward-cli@0.7.1?type=jar",
       "dependsOn" : [
         "pkg:maven/com.google.dagger/dagger@2.60.1?type=jar",
@@ -2282,7 +2307,8 @@
         "pkg:maven/org.eclipse.jdt/org.eclipse.jdt.core@3.47.0?type=jar",
         "pkg:maven/dev.ward/ward-lang-node@0.7.1?type=jar",
         "pkg:maven/dev.ward/ward-lang-python@0.7.1?type=jar",
-        "pkg:maven/dev.ward/ward-lang-swift@0.7.1?type=jar"
+        "pkg:maven/dev.ward/ward-lang-swift@0.7.1?type=jar",
+        "pkg:maven/dev.ward/ward-lang-openapi@0.7.1?type=jar"
       ]
     },
     {
