@@ -1,18 +1,14 @@
 version = 2
 
-[checks.tests]
-enabled = true
-profiles = ["pre-push", "ci"]
-command = "./mvnw test"
-
+# Static gates come first: a style finding shows in a minute or two, before the tests run.
 [checks.format]
 enabled = true
 profiles = ["default", "pre-commit", "pre-push", "ci"]
 command = "./mvnw spotless:check"
 
 [checks.format.paths]
-match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java"]
-full = ["pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-python/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml"]
+match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java", "ward-lang-openapi/src/**/*.java"]
+full = ["pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-python/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml", "ward-lang-openapi/pom.xml"]
 args = ["-DspotlessFiles={paths}"]
 item = ".*/{path}"
 separator = ","
@@ -23,8 +19,8 @@ profiles = ["default", "pre-commit", "pre-push", "ci"]
 command = "./mvnw checkstyle:check"
 
 [checks.checkstyle.paths]
-match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java"]
-full = ["config/checkstyle.xml", "pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-python/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml"]
+match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java", "ward-lang-openapi/src/**/*.java"]
+full = ["config/checkstyle.xml", "pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-python/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml", "ward-lang-openapi/pom.xml"]
 args = ["-Dcheckstyle.includes={paths}"]
 item = "**/{name}"
 separator = ","
@@ -35,18 +31,48 @@ profiles = ["default", "pre-commit", "pre-push", "ci"]
 command = "./mvnw -DskipTests package pmd:check"
 
 [checks.pmd.paths]
-match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java"]
-full = ["config/pmd-ruleset.xml", "pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-python/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml"]
+match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java", "ward-lang-openapi/src/**/*.java"]
+full = ["config/pmd-ruleset.xml", "pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-python/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml", "ward-lang-openapi/pom.xml"]
+
+[checks.secrets]
+enabled = true
+uses = "secrets"
+profiles = ["default", "pre-commit", "pre-push", "ci"]
+# The secret rules, their fixtures and tests hold fake secrets; exclude-paths replaces the old .gitleaks.toml allowlist.
+exclude-paths = [
+  "ward-cli/src/main/resources/rules/secrets/**",
+  "ward-cli/src/test/resources/rules/secrets/**",
+  "ward-cli/src/test/resources/catalog/**",
+  "ward-cli/src/test/java/dev/ward/infrastructure/rule/SecretScan*Test.java",
+]
+
+[checks.secrets.paths]
+match = ["**"]
+full = ["ward-rules.toml"]
+
+[checks.build-policy]
+enabled = true
+uses = "build-policy"
+profiles = ["pre-push", "ci"]
+
+[checks.tests]
+enabled = true
+uses = "tests"
+profiles = ["pre-push", "ci"]
+# jacoco:report writes the per-module XML that the coverage and crap gates read.
+command = "./mvnw test jacoco:report"
+
+[checks.coverage]
+enabled = true
+uses = "coverage"
+profiles = ["pre-push", "ci"]
+minimum = 85
+minimum-branches = 75
 
 [checks.spotbugs]
 enabled = true
 profiles = ["pre-push", "ci"]
 command = "./mvnw -DskipTests package spotbugs:check"
-
-[checks.coverage]
-enabled = true
-profiles = ["pre-push", "ci"]
-command = "./mvnw -DskipTests package jacoco:check"
 
 [checks.archunit]
 enabled = true
@@ -54,72 +80,49 @@ enabled = true
 profiles = ["ci"]
 command = "./mvnw -Dsurefire.failIfNoSpecifiedTests=false -Dtest=ArchitectureAnalysisApiTest,ArchitectureBoundaryTest,ArchitectureFeatureGraphTest,ArchitectureLangJvmTest,ArchitectureLangNodeTest,ArchitectureLangPythonTest,ArchitectureLangSwiftTest,ArchitecturePlacementTest,ArchitectureRuleFixturesTest,ArchitectureToolchainTest,NativeCommandMetadataTest,NativeImageCompatibilityTest,NativeJsonCodecMetadataTest,NativeResourceGlobsTest,WardCliContract4Test test"
 
-[checks.enforcer]
-enabled = true
-profiles = ["pre-push", "ci"]
-command = "./mvnw -DskipTests package enforcer:enforce"
-
 [checks.mutation]
 enabled = true
 profiles = ["ci"]
 command = "./mvnw -DskipTests package pitest:mutationCoverage"
 
+# The slowest gate and rarely the one that fails on an ordinary change, so it runs in ci only.
 # Native goals resolve only in ward-cli, which declares the GraalVM plugin.
 [checks.native]
 enabled = true
-profiles = ["pre-push", "ci"]
+profiles = ["ci"]
 command = "./mvnw -B -q -Pnative -pl ward-cli -am -DskipTests package native:compile"
 
-[checks.gitleaks]
+# Needs the advisory data from the network, so it stays out of pre-push.
+[checks.vulnerabilities]
 enabled = true
-profiles = ["default", "pre-commit", "pre-push", "ci"]
-command = "gitleaks detect --no-banner --redact --report-format sarif --report-path target/gitleaks.sarif"
-
-# History scans miss uncommitted and staged edits, so edited and staged files are scanned directly.
-[checks.gitleaks.paths]
-match = ["**"]
-full = [".gitleaks*"]
-args = ["--no-git", "--config=.gitleaks.toml", "--source={paths}"]
-
-[checks.semgrep]
-enabled = true
+uses = "vulnerabilities"
 profiles = ["ci"]
-command = "semgrep scan --config p/java --error"
-
-[checks.semgrep.paths]
-match = ["**"]
-full = [".semgrep*"]
-args = ["{paths}"]
-
-# Disabled: trivy already scans Maven dependencies without an NVD API key.
-[checks.dependency-check]
-enabled = false
-profiles = ["ci"]
-command = "./mvnw -DskipTests package dependency-check:check"
-
-[checks.trivy]
-enabled = true
-profiles = ["ci"]
-# Offline: resolve Maven POMs from ~/.m2 (filled by earlier gates); Maven Central rate-limits CI runners.
-command = "trivy fs --offline-scan --exit-code 1 ."
+minimum-severity = "high"
 
 [checks.license]
 enabled = true
 uses = "license"
 profiles = ["pre-push", "ci"]
-# Regenerates THIRD-PARTY-LICENSES and the SBOM of the shipped ward-cli into ward-cli/target/compliance; the drift check below compares them.
-# The aggregate SBOM runs once at the root, so its directory is given from there. Drop both -D options to regenerate compliance/.
-# compile lets the goals resolve the dev.ward modules from the reactor; without it Maven looks for their jars in the local repository, which a clean CI runner lacks.
-command = ["./mvnw", "-q", "-pl", "ward-cli", "-am", "-Dcompliance.outputDirectory=target/compliance", "-Dcompliance.sbomDirectory=ward-cli/target/compliance", "compile", "license:add-third-party", "cyclonedx:makeAggregateBom"]
+# Allowlist: the shipped set is compile and runtime scope, the dependencies the shaded JAR contains.
+allow = ["Apache-2.0", "MIT", "BSD-3-Clause", "EPL-2.0", "LGPL-2.1-or-later"]
+scopes = ["runtime"]
 
-# Fails when the committed compliance files differ from the regenerated ones, and names the stale file.
+# Regenerate the release compliance files natively and fail when the committed ones are stale.
+[checks.sbom]
+enabled = true
+uses = "command"
+profiles = ["pre-push", "ci"]
+command = ["ward", "sbom", "--scopes", "runtime", "-o", "target/compliance/sbom.json"]
+
+[checks.licenses-notice]
+enabled = true
+uses = "command"
+profiles = ["pre-push", "ci"]
+command = ["ward", "licenses", "--scopes", "runtime", "-o", "target/compliance/THIRD-PARTY-LICENSES"]
+
+# Names the stale file.
 [checks.license-drift]
 enabled = true
+uses = "command"
 profiles = ["pre-push", "ci"]
-command = ["git", "diff", "--no-index", "--exit-code", "ward-cli/target/compliance", "compliance"]
-
-# Disabled until openspec/ is tracked in Git; it is gitignored, so CI has no specs to validate.
-[checks.openspec]
-enabled = false
-profiles = ["ci"]
-command = "openspec validate --all --strict --no-interactive"
+command = ["git", "diff", "--no-index", "--exit-code", "target/compliance", "compliance"]

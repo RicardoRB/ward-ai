@@ -1,0 +1,9 @@
+version = 1
+
+[select]
+include = [
+  "build.plugin-version-pinned",
+  "build.no-dynamic-version",
+  "build.minimum-build-tool-version",
+  "build.duplicate-dependency-declaration",
+]
