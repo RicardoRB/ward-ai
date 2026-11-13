@@ -32,7 +32,8 @@ class NativeApiCompatSmokeTest {
   @TempDir Path project;
 
   @Test
-  void apiCompatReportsAMethodRemovedSinceTheLatestReleaseTag() throws Exception {
+  void apiCompatReportsAMethodRemovedSinceTheLatestReleaseTag()
+      throws IOException, InterruptedException {
     write(
         "pom.xml",
         "<project><modelVersion>4.0.0</modelVersion><groupId>shop</groupId>"
@@ -41,19 +42,29 @@ class NativeApiCompatSmokeTest {
         CLIENT,
         "package shop;\n\npublic class Client {\n  public void open() {}\n  public void close() {}\n}\n");
 
-    removeSinceTheTag(
-        CLIENT, "package shop;\n\npublic class Client {\n  public void open() {}\n}\n");
+    assertThat(
+            removeSinceTheTag(
+                CLIENT, "package shop;\n\npublic class Client {\n  public void open() {}\n}\n"))
+        .contains("api-compat:member-removed")
+        .contains("shop.Client#close");
   }
 
   @Test
-  void apiCompatReportsAKotlinFunctionRemovedSinceTheLatestReleaseTag() throws Exception {
+  void apiCompatReportsAKotlinFunctionRemovedSinceTheLatestReleaseTag()
+      throws IOException, InterruptedException {
     write("build.gradle.kts", "plugins { kotlin(\"jvm\") }\n");
     write(KOTLIN_CLIENT, "package shop\n\nclass Client {\n  fun open() {}\n  fun close() {}\n}\n");
 
-    removeSinceTheTag(KOTLIN_CLIENT, "package shop\n\nclass Client {\n  fun open() {}\n}\n");
+    assertThat(
+            removeSinceTheTag(
+                KOTLIN_CLIENT, "package shop\n\nclass Client {\n  fun open() {}\n}\n"))
+        .contains("api-compat:member-removed")
+        .contains("shop.Client#close");
   }
 
-  private void removeSinceTheTag(final String path, final String revised) throws Exception {
+  /** Commits the project, tags it, commits {@code revised} and returns the stdout of the check. */
+  private String removeSinceTheTag(final String path, final String revised)
+      throws IOException, InterruptedException {
     final Path binary = Path.of(System.getProperty("ward.native.binary")).toAbsolutePath();
     assertThat(binary).as("ward.native.binary; run native:compile first").isExecutable();
     write("ward.toml", "version = 2\n\n[checks.api-compat]\nuses = \"api-compat\"\n");
@@ -77,9 +88,7 @@ class NativeApiCompatSmokeTest {
       final String err = Files.readString(stderr, StandardCharsets.UTF_8);
       assertThat(err).doesNotContain("Exception").doesNotContain("unexpected error");
       assertThat(process.exitValue()).as(err).isEqualTo(FAILED);
-      assertThat(Files.readString(stdout, StandardCharsets.UTF_8))
-          .contains("api-compat:member-removed")
-          .contains("shop.Client#close");
+      return Files.readString(stdout, StandardCharsets.UTF_8);
     } finally {
       process.destroyForcibly();
     }
