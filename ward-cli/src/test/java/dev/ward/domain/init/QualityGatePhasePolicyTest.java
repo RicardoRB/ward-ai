@@ -17,7 +17,7 @@ class QualityGatePhasePolicyTest {
 
   @Test
   void assignsSlowerLocalGatesToPushAndCi() {
-    for (final String gate : List.of("tests", "coverage", "mypy", "enforcer", "license")) {
+    for (final String gate : List.of("tests", "coverage", "mypy", "build-policy", "license")) {
       assertThat(QualityGatePhasePolicy.profilesFor(gate)).containsExactly("pre-push", "ci");
     }
   }

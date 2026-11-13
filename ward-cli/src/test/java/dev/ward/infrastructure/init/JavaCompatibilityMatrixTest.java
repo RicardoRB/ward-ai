@@ -53,7 +53,7 @@ class JavaCompatibilityMatrixTest {
   private static final String STRICT = "strict";
   private static final List<String> STANDARD =
       List.of("compile", "tests", "coverage", "ward-format");
-  private static final List<String> STRICT_EXTRAS = List.of("build-policy", "enforcer", "mutation");
+  private static final List<String> STRICT_EXTRAS = List.of("build-policy", "mutation");
 
   /**
    * Gates the combined violations do not target: the compile error and the untested class have

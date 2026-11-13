@@ -117,11 +117,6 @@ record BuildToolGates(
   List<InitGateOption> policyGates() {
     return List.of(
         buildPolicy(),
-        option(
-            "enforcer",
-            "Enforces dependency and build rules with Maven Enforcer.",
-            " (dependency and build rules are configured in pom.xml.)",
-            task("check", "enforcer:enforce")),
         apiCompat(),
         option(
             "command",

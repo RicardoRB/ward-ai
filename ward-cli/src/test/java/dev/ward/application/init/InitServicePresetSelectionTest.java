@@ -82,16 +82,15 @@ class InitServicePresetSelectionTest {
   }
 
   @Test
-  void unselectedPresetGateWritesNoRuleFile(@TempDir final Path dir) throws Exception {
+  void strictWritesNoEnforcerGateOrRuleFile(@TempDir final Path dir) throws Exception {
     withPom(dir, PLAIN_POM);
-    final List<String> strictWithoutEnforcer =
-        JavaPresetGates.STRICT.stream().filter(gate -> !"enforcer".equals(gate)).toList();
 
     service.initialize(
         dir,
-        new InitSelection(List.of("none"), strictWithoutEnforcer, "layered", QualityPreset.STRICT));
+        new InitSelection(
+            List.of("none"), JavaPresetGates.STRICT, "layered", QualityPreset.STRICT));
 
-    assertThat(Files.readString(dir.resolve(WARD_TOML))).doesNotContain("[checks.enforcer]");
+    assertThat(Files.readString(dir.resolve(WARD_TOML))).doesNotContain("enforcer");
     assertThat(dir.resolve("config/enforcer-rules.xml")).doesNotExist();
     assertThat(dir.resolve("config")).doesNotExist();
   }

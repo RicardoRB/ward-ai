@@ -11,7 +11,6 @@ final class PomTools {
   private static final String SONAR = "sonar-maven-plugin";
   private static final String JACOCO = "jacoco-maven-plugin";
   private static final String PIT = "pitest-maven";
-  private static final String ENFORCER = "maven-enforcer-plugin";
 
   private static final String SONAR_PLUGIN =
       """
@@ -58,29 +57,13 @@ final class PomTools {
                 </dependencies>
               </plugin>
             """;
-  private static final String ENFORCER_PLUGIN =
-      """
-              <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.5.0</version>
-                <configuration>
-                  <rules>
-                    <dependencyConvergence/>
-                  </rules>
-                  <fail>true</fail>
-                </configuration>
-              </plugin>
-            """;
 
   /** Tools in the order they are added to pom.xml. */
   static final List<Tool> TOOLS =
       List.of(
           Tool.plugin("sonar", SONAR, SONAR_PLUGIN),
           Tool.modulePlugin("coverage", JACOCO, JACOCO_PLUGIN),
-          Tool.modulePlugin("mutation", PIT, PIT_PLUGIN, PresetPluginSnippets::pit),
-          Tool.modulePlugin(
-              "enforcer", ENFORCER, ENFORCER_PLUGIN, preset -> PresetPluginSnippets.enforcer()));
+          Tool.modulePlugin("mutation", PIT, PIT_PLUGIN, PresetPluginSnippets::pit));
 
   private PomTools() {}
 

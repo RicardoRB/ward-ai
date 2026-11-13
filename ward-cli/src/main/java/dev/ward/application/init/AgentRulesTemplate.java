@@ -138,8 +138,9 @@ public final class AgentRulesTemplate {
     lines.put(
         "build-policy",
         "- Build policy: plugin versions pinned, no dynamic versions, a minimum build tool version"
-            + " and no duplicate dependency declarations (ward:build rules).");
-    lines.put("enforcer", "- Enforcer: " + String.join(", ", rules.enforcerRules()) + ".");
+            + " and no duplicate dependency declarations; on Maven also one version of each"
+            + " dependency and none below a version a dependency requests (ward:build"
+            + " rules).");
     return lines;
   }
 

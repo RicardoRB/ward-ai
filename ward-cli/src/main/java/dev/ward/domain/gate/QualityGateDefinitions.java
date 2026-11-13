@@ -19,7 +19,6 @@ public final class QualityGateDefinitions {
           new Definition(SupportedQualityGates.SECRETS, "secrets", Phase.FAST, true),
           gate("zap", Phase.CI),
           gate(SupportedQualityGates.VULNERABILITIES, Phase.CI),
-          gate("enforcer", Phase.LOCAL),
           gate(SupportedQualityGates.BUILD_POLICY, Phase.LOCAL),
           gate("license", Phase.LOCAL),
           gate("api-compat", Phase.CI),

@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 class ExtendedGatesTest {
   private static final String TRIVY = "trivy";
   private static final List<String> GATE_IDENTIFIERS =
-      List.of("semgrep", "enforcer", "api-compat", "compliance", "architecture");
+      List.of("semgrep", "api-compat", "architecture");
   private static final Project PROJECT =
       new Project(Path.of("/p"), Language.JAVA, BuildTool.MAVEN, Framework.NONE);
 

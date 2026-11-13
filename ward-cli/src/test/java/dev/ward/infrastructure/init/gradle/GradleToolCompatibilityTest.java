@@ -26,8 +26,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 class GradleToolCompatibilityTest {
   private static final int JAVA_7 = 7;
   private static final int JAVA_11 = 11;
-  private static final List<String> STRICT_GATES =
-      List.of("coverage", "archunit", "enforcer", "mutation");
+  private static final List<String> STRICT_GATES = List.of("coverage", "archunit", "mutation");
 
   private static final List<String> STRICT_TOOLS =
       List.of(

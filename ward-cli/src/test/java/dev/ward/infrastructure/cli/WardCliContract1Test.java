@@ -103,7 +103,7 @@ class WardCliContract1Test extends WardCliIntegrationSupport {
   }
 
   @Test
-  void strictPresetGeneratesArchitectureAndEnforcerFiles() throws IOException {
+  void strictPresetGeneratesArchitectureTablesAndNoEnforcerFile() throws IOException {
     assertThat(
             run(
                 INIT,
@@ -116,7 +116,7 @@ class WardCliContract1Test extends WardCliIntegrationSupport {
                 "-C",
                 project.toString()))
         .isZero();
-    assertThat(project.resolve("config/enforcer-rules.xml")).exists();
+    assertThat(project.resolve("config/enforcer-rules.xml")).doesNotExist();
     assertThat(Files.readString(project.resolve(WARD_TOML))).contains("checks.mutation");
     assertThat(Files.readString(project.resolve(WARD_TOML)))
         .contains("[[checks.ward.layers]]", "[checks.ward.cycles]");

@@ -18,8 +18,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** Gradle accepts the generated build script, and the plugins use what init generates. */
 class GradleQualityConfigurationTest {
-  private static final List<String> STRICT_GATES =
-      List.of("coverage", "archunit", "enforcer", "mutation");
+  private static final List<String> STRICT_GATES = List.of("coverage", "archunit", "mutation");
 
   @TempDir Path root;
 

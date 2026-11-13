@@ -39,9 +39,10 @@ class GateCatalogContractTest {
       Set.of("tests", "compile", "command", "build-policy", "api-compat");
 
   /**
-   * Gates whose Gradle block needs another gate that Java no longer has: enforcement of Checkstyle.
+   * Gates that were removed and must not come back: {@code enforcer}, whose rules are the native
+   * {@code ward:build/dependency-convergence} and {@code ward:build/require-upper-bound}.
    */
-  private static final Set<String> NO_GRADLE_ENTRY = Set.of("enforcer");
+  private static final Set<String> REMOVED_GATES = Set.of("enforcer");
 
   @TempDir Path root;
 
@@ -132,6 +133,20 @@ class GateCatalogContractTest {
   }
 
   @Test
+  void removedGatesAreNeitherDefinedNorOffered() {
+    final InitGeneralCatalog catalog = new InitGeneralCatalog(new FakeEnvironmentInspection());
+    for (final String removed : REMOVED_GATES) {
+      assertThat(QualityGateDefinitions.find(removed)).as("definition of %s", removed).isEmpty();
+      assertThat(
+              Stream.of(BuildTool.MAVEN, BuildTool.GRADLE)
+                  .flatMap(buildTool -> catalog.gates(project(buildTool), null).stream()))
+          .extracting(InitGateOption::id)
+          .as("gates offered, without %s", removed)
+          .doesNotContain(removed);
+    }
+  }
+
+  @Test
   void everyJvmGateConfiguresEachBuildTool() throws IOException {
     Files.writeString(
         root.resolve("pom.xml"), "<project><modelVersion>4.0.0</modelVersion></project>");
@@ -156,7 +171,6 @@ class GateCatalogContractTest {
     final Project project = project(buildTool);
     jvmGates(project).stream()
         .filter(gate -> !NO_BUILD_FILE.contains(gate.id()))
-        .filter(gate -> buildTool != BuildTool.GRADLE || !NO_GRADLE_ENTRY.contains(gate.id()))
         .forEach(
             gate ->
                 assertThat(tools.plan(project, List.of(gate), null, true).action())

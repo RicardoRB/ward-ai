@@ -72,7 +72,7 @@ final class ArchitectureBoundarySupport {
       Map.ofEntries(
           Map.entry("agent", Set.of()),
           Map.entry("apicompat", Set.of()),
-          Map.entry("buildpolicy", Set.of("dependency")),
+          Map.entry("buildpolicy", Set.of("dependency", "vulnerability")),
           Map.entry("config", Set.of()),
           Map.entry("dependency", Set.of("config", "project", "process")),
           Map.entry("doctor", Set.of()),

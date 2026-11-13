@@ -106,8 +106,7 @@ class MavenModuleConfiguratorTest {
     final List<String> maven =
         PomTools.TOOLS.stream().filter(PomTools.Tool::module).map(PomTools.Tool::gate).toList();
 
-    assertThat(maven).containsExactlyInAnyOrder("enforcer", "coverage", "mutation");
-    // Gradle has no enforcer block, so its module gates are the coverage and mutation blocks.
+    assertThat(maven).containsExactlyInAnyOrder("coverage", "mutation");
     assertThat(GradleBuildBlocks.moduleGates()).containsExactlyInAnyOrder("coverage", "mutation");
   }
 

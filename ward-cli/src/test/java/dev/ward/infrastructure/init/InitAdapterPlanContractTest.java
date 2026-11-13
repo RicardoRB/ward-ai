@@ -24,7 +24,7 @@ import org.junit.jupiter.api.io.TempDir;
 /** Each init adapter's plan matches what it writes, on a fresh run and on a re-run. */
 class InitAdapterPlanContractTest {
   private static final List<InitGateOption> GATES =
-      Stream.of("pmd", "checkstyle", "spotbugs", "enforcer", "archunit", "coverage")
+      Stream.of("pmd", "checkstyle", "spotbugs", "archunit", "coverage")
           .map(id -> new InitGateOption(id, id, List.of("mvn", id), true, "available"))
           .toList();
 
@@ -53,10 +53,25 @@ class InitAdapterPlanContractTest {
   }
 
   @Test
-  void ruleFilesMatchPlanIncludingUserOwnedAndOtherPresetFiles() throws IOException {
+  void ruleFilesMatchPlanIncludingOwnedFilesOfAnotherPreset() throws IOException {
     final PresetRuleFileWriter rules = new PresetRuleFileWriter(RuleFileTargetsFixtures.defaults());
     rules.apply(maven(), QualityPreset.STANDARD, GATES);
-    Files.writeString(root.resolve("config/checkstyle.xml"), "<module name=\"Checker\"/>\n");
+    Files.createDirectories(root.resolve("config"));
+    Files.writeString(
+        root.resolve("config/enforcer-rules.xml"),
+        "<!-- managed-by: ward preset=standard -->\n<enforcer/>\n");
+
+    assertPlanMatches(
+        root,
+        () -> rules.plan(maven(), QualityPreset.STRICT, GATES),
+        () -> rules.apply(maven(), QualityPreset.STRICT, GATES));
+  }
+
+  @Test
+  void aUserOwnedEnforcerFileIsPlannedAsKept() throws IOException {
+    final PresetRuleFileWriter rules = new PresetRuleFileWriter(RuleFileTargetsFixtures.defaults());
+    Files.createDirectories(root.resolve("config"));
+    Files.writeString(root.resolve("config/enforcer-rules.xml"), "<enforcer/>\n");
 
     assertPlanMatches(
         root,

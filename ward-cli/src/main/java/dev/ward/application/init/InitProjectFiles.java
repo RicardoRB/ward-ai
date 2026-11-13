@@ -13,7 +13,7 @@ import java.util.function.Supplier;
  * and rolled back together.
  *
  * @param buildTools writes quality plugins into the build file
- * @param ruleFiles writes the preset's enforcer rule file
+ * @param ruleFiles writes the preset's rule files
  * @param architectureTables answers the source roots and modules of the ward architecture tables
  * @param storage supplies the port that reads and writes {@code ward.toml}
  * @param sections writes the CI workflow and the agent rules section

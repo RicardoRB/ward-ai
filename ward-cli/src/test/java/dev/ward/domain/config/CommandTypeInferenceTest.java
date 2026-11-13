@@ -41,7 +41,7 @@ class CommandTypeInferenceTest {
         "command|npx biome check .",
         "command|openspec validate --all",
         "command|/usr/local/bin/openspec validate --all",
-        "enforcer|./mvnw enforcer:enforce",
+        "command|./mvnw enforcer:enforce",
         "command|swiftlint lint --reporter json",
         "command|swift run --package-path .ward/swift-tools SwiftLintBinary lint --reporter json",
         "swift-build|swift build --build-tests",

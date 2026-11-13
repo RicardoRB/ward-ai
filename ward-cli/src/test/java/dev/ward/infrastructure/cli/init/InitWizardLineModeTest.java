@@ -141,7 +141,7 @@ class InitWizardLineModeTest {
     assertThat(exit).as(output.toString()).isZero();
     assertThat(output.toString()).doesNotContain("Select an architecture style");
     assertThat(Files.readString(root.resolve("ward.toml")))
-        .contains("[checks.enforcer]", "[checks.mutation]", "[[checks.ward.layers]]");
+        .contains("[checks.build-policy]", "[checks.mutation]", "[[checks.ward.layers]]");
     assertThat(output.toString()).doesNotContain("Select an architecture style");
   }
 

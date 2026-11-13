@@ -60,11 +60,10 @@ class CoverageProjectMutationTest {
         configurator.apply(
             new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE), gates);
     assertThat(change.tools())
-        .containsExactly(
-            "sonar-maven-plugin", "jacoco-maven-plugin", "pitest-maven", "maven-enforcer-plugin");
+        .containsExactly("sonar-maven-plugin", "jacoco-maven-plugin", "pitest-maven");
     assertThat(Files.readString(root.resolve("pom.xml")))
-        .contains(
-            "jacoco-maven-plugin", "sonar-maven-plugin", "pitest-maven", "maven-enforcer-plugin");
+        .contains("jacoco-maven-plugin", "sonar-maven-plugin", "pitest-maven")
+        .doesNotContain("maven-enforcer-plugin");
     configurator.rollback(change);
     assertThat(Files.readString(root.resolve("pom.xml"))).isEqualTo(ProjectFixtures.PLAIN_POM);
     configurator.rollback(null);
@@ -73,8 +72,7 @@ class CoverageProjectMutationTest {
   }
 
   @Test
-  void presetPomSnippetsUseExternalRuleFilesAndStrictMutation(@TempDir final Path root)
-      throws IOException {
+  void presetPomSnippetsSetTheStrictMutationThreshold(@TempDir final Path root) throws IOException {
     ProjectFixtures.withPom(root, ProjectFixtures.PLAIN_POM);
     final InitSetupCatalog catalog = new InitSetupCatalog(new FakeEnvironmentInspection());
     final Project project = new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE);
@@ -85,8 +83,7 @@ class CoverageProjectMutationTest {
     final BuildFileChange change =
         new PomToolConfigurator().apply(project, gates, QualityPreset.STRICT);
     final String pom = Files.readString(root.resolve("pom.xml"));
-    assertThat(pom)
-        .contains("${project.basedir}/config/enforcer-rules.xml", "mutationThreshold>60");
+    assertThat(pom).contains("mutationThreshold>60").doesNotContain("enforcer");
     assertThat(change.tools()).contains("jacoco-maven-plugin");
     new PomToolConfigurator().rollback(change);
     assertThat(Files.readString(root.resolve("pom.xml"))).isEqualTo(ProjectFixtures.PLAIN_POM);

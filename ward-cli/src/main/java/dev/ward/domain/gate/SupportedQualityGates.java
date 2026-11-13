@@ -31,7 +31,7 @@ public final class SupportedQualityGates {
 
   private static final Set<String> OPENAPI_IDS = Set.of(OPENAPI_LINT, OPENAPI_DIFF, OPENAPI_COMPAT);
 
-  public static final List<String> LEGACY_IDS = List.of("architecture", "compliance");
+  public static final List<String> LEGACY_IDS = List.of("architecture");
 
   public static final String ZAP_TARGET_PLACEHOLDER = "<TARGET_URL>";
 

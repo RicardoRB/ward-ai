@@ -60,7 +60,7 @@ final class JavaMatrixFixtures {
 
   /**
    * Adds the common violations, and for Maven a dynamic dependency version for {@code build-policy}
-   * and a version conflict for Enforcer.
+   * and a version conflict for the dependency rules.
    */
   static void seedCommon(final Path project, final String buildTool) throws IOException {
     JavaMatrixProcesses.copyTree(VIOLATIONS.resolve("common"), project);
