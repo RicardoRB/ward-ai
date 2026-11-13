@@ -15,7 +15,6 @@ final class RuleReferenceTools {
           Map.entry("spotbugs", "SpotBugs"),
           Map.entry("errorprone", "Error Prone"),
           Map.entry("nullaway", "NullAway"),
-          Map.entry("semgrep", "Semgrep"),
           Map.entry("eslint", "ESLint"),
           Map.entry("typescript-eslint", "typescript-eslint"),
           Map.entry("angular-eslint", "angular-eslint"),

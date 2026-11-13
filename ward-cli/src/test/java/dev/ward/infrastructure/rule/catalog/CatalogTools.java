@@ -13,7 +13,6 @@ public final class CatalogTools {
           "spotbugs",
           "errorprone",
           "nullaway",
-          "semgrep",
           "eslint",
           "typescript-eslint",
           "angular-eslint",
