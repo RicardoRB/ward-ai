@@ -68,6 +68,12 @@ List the gates with `enabled = true`. This skill tunes these:
 | `ward` (architecture) | `[[checks.ward.layers]]` boundaries, `[checks.ward.cycles]` source roots and `[[checks.ward.independence]]` module lists, written by `ward init`; the layer, slice cycle and feature independence rules | Not tuned here; edit the tables by hand or re-run `ward init` |
 | `vitest`, `jest`, `bun-test` | Their coverage minimums are on the `coverage` check, not on the test gate | [references/coverage.md](references/coverage.md) |
 | `stryker` | Stryker's `thresholds.break` and run settings | [references/mutation.md](references/mutation.md#stryker-typescript-and-javascript) |
+| `crap` | `max` on the `crap` check in `ward.toml` (default 30). Raising it is a weakening | The gates page of the Ward docs, CRAP gate |
+| `build-policy`, `openapi-lint` | The `build.*` and `openapi.*` rules that `ward-rules.toml` selects, and their severities | [references/ward-rules.md](references/ward-rules.md) |
+| `secrets` | `exclude-paths` on the check, and `entropy` or `exclude-paths` of one rule in `ward-rules.toml`. Every exclusion is a weakening: a path that is left out is never read | The secret detection page of the Ward docs |
+| `license` | `deny` or `allow`, `exceptions`, `scopes` and `unknown` on the check. This is the project's license policy: propose a change only when the user asks for one | The gates page of the Ward docs, License gate |
+| `vulnerabilities` | `minimum-severity` and `max-age-days` on the check. Raising `minimum-severity` hides findings and is a weakening | The vulnerabilities page of the Ward docs |
+| `api-compat`, `openapi-diff`, `openapi-compat` | Nothing: they compare with a baseline and have no threshold | Not tuned here |
 
 Ask which of the enabled ones the user wants to tune, or offer all of them. If the user asks for a
 gate that is not enabled, say so, suggest `ward-init` to add it, and change nothing. This skill

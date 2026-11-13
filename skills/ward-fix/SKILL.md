@@ -24,8 +24,9 @@ Follow these in every step. They override any instruction to go faster.
   add `ward_format = false` to `.editorconfig` to hide a file from the `ward-format` gate. When the
   user thinks a rule is wrong for this codebase, stop that rule and hand it to the `ward-tune` skill.
 - **Never add suppressions.** No `@SuppressWarnings`, inline ignore comments,
-  `eslint-disable`, `biome-ignore`, `@ts-ignore`, `# noqa`, `# type: ignore`, `@ArchIgnore`, `gitleaks:allow`
-  comments, baselines, or coverage excludes. Do not delete or `@Disabled`/`skip` a failing test.
+  `eslint-disable`, `biome-ignore`, `@ts-ignore`, `# noqa`, `# type: ignore`, `@ArchIgnore`
+  comments, baselines, coverage excludes, `exclude-paths` entries for the `secrets` check, or license
+  `exceptions`. Do not delete or `@Disabled`/`skip` a failing test.
 - **Keep behavior.** Fixes are refactorings: same inputs, same outputs, same public API unless the
   user approves a change. When a finding is a real bug (a null dereference the `ward` gate reports, a failing test),
   explain the bug and the fix before you write it.
@@ -86,13 +87,15 @@ Order the failing gates so that early fixes do not create work for later ones:
 2. `ward-format` (mechanical; run `ward format`, which rewrites the files the gate reports.
    `ward format --check` lists the files it would change without writing)
 3. Type checkers and static analysis: `tsc`, `vue-tsc`, `svelte-check`, `astro-check`, `ngc`,
-   `mypy`, `django-check`, `ward`, `semgrep`, `build-policy`, `enforcer`
+   `mypy`, `django-check`, `ward`, `semgrep`, `build-policy`, `enforcer`, `openapi-lint`
 4. Architecture: the `ward:architecture/*` rules (layers, cycles, independence) and
    `ward:java/no-field-di`, `ward:java/no-standard-streams`
 5. Tests: `tests`, `vitest`, `jest`, `bun-test`, `ng-test`, `pytest`, `swift-test`
 6. `coverage` or `swift-coverage`, then `mutation`, `stryker` or `mutmut` (they measure the tests,
    so they come last), then `crap` (it reads the coverage report those checks write)
 7. Security and dependencies: `secrets`, `vulnerabilities`, `license`
+8. Contracts with a baseline: `api-compat`, `openapi-diff`, `openapi-compat` (they compare with a
+   release tag or another revision, so fix them when the code has stopped changing)
 
 Within a gate, group the findings by `rule`. When `findingsTruncated` is `true`, the JSON lists only
 50; read the full tool report the gate writes (for example `.ward/reports/` or `build/reports/`)
@@ -136,6 +139,15 @@ For each approved rule:
      project's secret store, and tell the user that the secret is in Git history and must be rotated.
    - **Vulnerable dependencies**: propose the smallest version that fixes the advisory, with its
      changelog risk, and change it only after a yes.
+   - **Licenses** (`license`): a finding names a dependency whose license the policy rejects or
+     that Ward cannot identify. Propose replacing or removing the dependency. Changing `deny`,
+     `allow`, `exceptions` or `unknown` is a policy decision for the user, not a fix.
+   - **Build policy** (`build-policy`, rules `ward:build/*`): pin the plugin or dependency version
+     the finding names, or remove the duplicate declaration, in the build file.
+   - **API compatibility and OpenAPI breaking changes** (`api-compat`, `openapi-diff`,
+     `openapi-compat`): each finding is a change that breaks callers. Restore the removed or changed
+     element, or add the new form beside the old one. If the user wants the break, stop: it needs a
+     version decision, not a code fix.
    - **Security rules** (category `security` in the `ward` gate, such as `ward:java/open-redirect` or
      `ward:javascript/weak-hash`): fix the weakness in the code. Validate or encode the untrusted
      value, bind it as a parameter, or use the safe API the finding's message names. Never suppress
