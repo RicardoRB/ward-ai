@@ -92,18 +92,28 @@ class EnforcerParitySmokeTest {
         final List<Finding> findings = nativeFindings(folder, pairing.rule());
         final Run enforcer = enforcer(folder, pairing.enforcerRule());
         final boolean enforcerFails = enforcer.exitCode() != 0;
-        if (enforcerFails != kind.startsWith("violating")) {
+        if (enforcerFails == kind.startsWith("violating")) {
+          disagreements.addAll(agreement(folder, findings, enforcer, pairing));
+        } else {
           disagreements.add(folder + ": the fixture is not a " + kind + " case for Enforcer");
-        } else if (enforcerFails == findings.isEmpty()) {
-          disagreements.add(folder + ": enforcer fails=" + enforcerFails + ", native=" + findings);
-        } else if (enforcerFails
-            && !(enforcer.output().contains(pairing.named())
-                && findings.stream().allMatch(f -> f.message().contains(pairing.named())))) {
-          disagreements.add(folder + ": the two name different culprits");
         }
       }
     }
     assertThat(disagreements).isEmpty();
+  }
+
+  private static List<String> agreement(
+      final Path folder, final List<Finding> findings, final Run enforcer, final Pairing pairing) {
+    final List<String> disagreements = new ArrayList<>();
+    final boolean enforcerFails = enforcer.exitCode() != 0;
+    if (enforcerFails == findings.isEmpty()) {
+      disagreements.add(folder + ": enforcer fails=" + enforcerFails + ", native=" + findings);
+    } else if (enforcerFails
+        && !(enforcer.output().contains(pairing.named())
+            && findings.stream().allMatch(f -> f.message().contains(pairing.named())))) {
+      disagreements.add(folder + ": the two name different culprits");
+    }
+    return disagreements;
   }
 
   /** The {@code violating*} and {@code passing*} folders of a pairing's rule, in name order. */

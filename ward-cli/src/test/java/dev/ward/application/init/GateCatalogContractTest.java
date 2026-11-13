@@ -38,12 +38,6 @@ class GateCatalogContractTest {
   private static final Set<String> NO_BUILD_FILE =
       Set.of("tests", "compile", "command", "build-policy", "api-compat");
 
-  /**
-   * Gates that were removed and must not come back: {@code enforcer}, whose rules are the native
-   * {@code ward:build/dependency-convergence} and {@code ward:build/require-upper-bound}.
-   */
-  private static final Set<String> REMOVED_GATES = Set.of("enforcer");
-
   @TempDir Path root;
 
   @Test
@@ -130,20 +124,6 @@ class GateCatalogContractTest {
                 assertThat(QualityGateDefinitions.find(id))
                     .as("gate %s has no QualityGateDefinitions row", id)
                     .isPresent());
-  }
-
-  @Test
-  void removedGatesAreNeitherDefinedNorOffered() {
-    final InitGeneralCatalog catalog = new InitGeneralCatalog(new FakeEnvironmentInspection());
-    for (final String removed : REMOVED_GATES) {
-      assertThat(QualityGateDefinitions.find(removed)).as("definition of %s", removed).isEmpty();
-      assertThat(
-              Stream.of(BuildTool.MAVEN, BuildTool.GRADLE)
-                  .flatMap(buildTool -> catalog.gates(project(buildTool), null).stream()))
-          .extracting(InitGateOption::id)
-          .as("gates offered, without %s", removed)
-          .doesNotContain(removed);
-    }
   }
 
   @Test

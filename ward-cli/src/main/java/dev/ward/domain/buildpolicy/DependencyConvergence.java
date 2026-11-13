@@ -17,6 +17,9 @@ import java.util.stream.Stream;
  * dependencyConvergence} counts.
  */
 final class DependencyConvergence implements BuildPolicyRule {
+  /** The number of versions from which a package no longer converges. */
+  private static final int DIVERGENT = 2;
+
   @Override
   public List<BuildPolicyFinding> check(final BuildPolicyInput input) {
     return input.inventory().get().modules().stream()
@@ -47,7 +50,7 @@ final class DependencyConvergence implements BuildPolicyRule {
                       request.requester().isEmpty() ? "the module" : request.requester(),
                       (first, second) -> first.compareTo(second) <= 0 ? first : second));
     }
-    if (versions.size() < 2) {
+    if (versions.size() < DIVERGENT) {
       return Optional.empty();
     }
     final Dependency first = entries.getFirst();

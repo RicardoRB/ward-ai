@@ -10,6 +10,11 @@ class PresetRuleFileContentTest {
   private static final String HIDDEN_FIELD =
       "[rules.java.hidden-field]\nignore-constructor-parameter";
 
+  private static final String FOUR =
+      "\"build.plugin-version-pinned\", \"build.no-dynamic-version\","
+          + " \"build.minimum-build-tool-version\","
+          + " \"build.duplicate-dependency-declaration\"";
+
   @Test
   void javaStrictSetsTheHiddenFieldOptions() {
     assertThat(PresetRuleFileContent.wardRules(QualityPreset.STRICT, List.of("java"), false, true))
@@ -30,11 +35,6 @@ class PresetRuleFileContentTest {
             PresetRuleFileContent.wardRules(QualityPreset.STANDARD, List.of("java"), false, true))
         .doesNotContain("hidden-field");
   }
-
-  private static final String FOUR =
-      "\"build.plugin-version-pinned\", \"build.no-dynamic-version\","
-          + " \"build.minimum-build-tool-version\","
-          + " \"build.duplicate-dependency-declaration\"";
 
   @Test
   void strictMavenWithBuildPolicyAlsoSelectsTheInventoryRulesThatReplacedEnforcer() {
