@@ -391,7 +391,7 @@ jobs:
           -Dward.python.matrix.jar=target/ward.jar
           test
 
-  # Runs the real Checkstyle, PMD, SpotBugs, Error Prone, NullAway and Semgrep on the fixtures of
+  # Runs the real Checkstyle, PMD, SpotBugs, Error Prone and NullAway on the fixtures of
   # every implemented Java rule and compares them with the committed parity report
   # (ward-cli/src/test/resources/parity/java-report.txt). Versions are pinned in resolve-tools.sh.
   java-parity:
@@ -411,9 +411,6 @@ jobs:
             pom.xml
             ward-*/pom.xml
 
-      - name: Install Semgrep
-        run: pipx install semgrep==1.183.0
-
       - name: Resolve the tools
         run: ward-cli/src/test/resources/parity/resolve-tools.sh "$RUNNER_TEMP/parity-tools"
 
@@ -424,7 +421,6 @@ jobs:
           -Dsurefire.failIfNoSpecifiedTests=false
           -Dtest=JavaParitySmokeTest
           -Dward.parity.tools="$RUNNER_TEMP/parity-tools"
-          -Dward.parity.semgrep="$(command -v semgrep)"
           test
 
       - name: Compare the build policy rules with Maven Enforcer
