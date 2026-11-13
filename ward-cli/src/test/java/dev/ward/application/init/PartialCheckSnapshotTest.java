@@ -19,11 +19,8 @@ import org.junit.jupiter.api.Test;
  * their toolchain support. A change to any of these tables is a change to what init writes.
  */
 class PartialCheckSnapshotTest {
-  private static final List<String> PATHS = List.of("{paths}");
   private static final List<String> WHOLE_PROJECT = List.of("**");
 
-  private static final Project MAVEN =
-      new Project(Path.of("/shop"), Language.JAVA, BuildTool.MAVEN, Framework.NONE);
   private static final Project PNPM =
       new Project(
           Path.of("/shop"),
@@ -39,9 +36,6 @@ class PartialCheckSnapshotTest {
 
   @Test
   void neutralGatesKeepTheirTablesForEveryProject() {
-    assertThat(table("semgrep", MAVEN, QualityPreset.STANDARD))
-        .isEqualTo(
-            new PartialCheckDefaults.Table(WHOLE_PROJECT, List.of(".semgrep*"), PATHS, null, null));
     assertThat(table("secrets", PNPM, QualityPreset.STANDARD))
         .isEqualTo(
             new PartialCheckDefaults.Table(

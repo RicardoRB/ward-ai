@@ -115,9 +115,9 @@ uses = "compile"
         project.resolve(WARD_TOML),
 """
                 version = 2
-                [checks.semgrep]
-uses = "semgrep"
-                command = ["./missing-semgrep", "scan"]
+                [checks.lint]
+uses = "command"
+                command = ["./missing-lint", "scan"]
                 [checks.format]
                 command = "./mvnw test"
                 [checks.enforcer]
@@ -130,7 +130,7 @@ uses = "enforcer"
     assertThat(exit).isNotZero();
     final JsonTree json = JsonTree.parse(out.toString());
     assertThat(json.get(CHECKS).size()).isEqualTo(CONFIGURED_GATES);
-    assertThat(json.get(CHECKS).get(0).get("name").asString()).isEqualTo("semgrep");
+    assertThat(json.get(CHECKS).get(0).get("name").asString()).isEqualTo("lint");
     assertThat(json.get(CHECKS).get(0).get(STATUS).asString()).isNotEqualTo("PASSED");
     assertThat(json.get(CHECKS).get(1).get("name").asString()).isEqualTo("tests");
     assertThat(json.get(CHECKS).get(1).get(STATUS).asString()).isEqualTo("PASSED");
@@ -139,7 +139,7 @@ uses = "enforcer"
 
     out.getBuffer().setLength(0);
     run(CHECK, "-C", project.toString());
-    assertThat(out.toString()).contains("semgrep", "tests", "enforcer");
+    assertThat(out.toString()).contains("lint", "tests", "enforcer");
   }
 
   @Test

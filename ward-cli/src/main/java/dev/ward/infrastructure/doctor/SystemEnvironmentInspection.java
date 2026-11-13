@@ -53,7 +53,6 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
           "swift",
           "xcodebuild",
           "xcrun",
-          "semgrep",
           "zap-baseline.py");
   private static final List<String> OPENAPI_SPECS =
       List.of(

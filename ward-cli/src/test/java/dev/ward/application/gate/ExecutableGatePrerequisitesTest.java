@@ -25,15 +25,15 @@ class ExecutableGatePrerequisitesTest {
                     GatePrerequisiteFixtures.MAVEN,
                     List.of(
                         GatePrerequisiteFixtures.gate(
-                            "semgrep", GatePrerequisiteFixtures.MISSING))));
+                            "zap-baseline.py", GatePrerequisiteFixtures.MISSING))));
 
     assertThat(result.status()).isEqualTo(GateStatus.UNAVAILABLE);
     assertThat(result.summary())
-        .startsWith("Gate 'semgrep' could not start 'semgrep'.")
-        .contains("Install semgrep:");
+        .startsWith("Gate 'zap-baseline.py' could not start 'zap-baseline.py'.")
+        .contains("Install zap-baseline.py:");
     assertThat(result.prerequisite().kind()).isEqualTo(GatePrerequisite.Kind.EXECUTABLE);
-    assertThat(result.prerequisite().executable()).isEqualTo("semgrep");
-    assertThat(result.prerequisite().remediation()).contains("semgrep");
+    assertThat(result.prerequisite().executable()).isEqualTo("zap-baseline.py");
+    assertThat(result.prerequisite().remediation()).contains("zap-baseline.py");
   }
 
   @Test
@@ -79,7 +79,7 @@ class ExecutableGatePrerequisitesTest {
                     GatePrerequisiteFixtures.MAVEN,
                     List.of(
                         GatePrerequisiteFixtures.gate(
-                            "semgrep", GatePrerequisiteFixtures.MISSING))));
+                            "zap-baseline.py", GatePrerequisiteFixtures.MISSING))));
 
     assertThat(result.prerequisite().kind()).isEqualTo(GatePrerequisite.Kind.EXECUTABLE);
   }
@@ -107,11 +107,14 @@ class ExecutableGatePrerequisitesTest {
               GatePrerequisiteFixtures.failing(), GatePrerequisiteFixtures.failing())
           .run(
               GatePrerequisiteFixtures.MAVEN,
-              List.of(GatePrerequisiteFixtures.gate("semgrep", GatePrerequisiteFixtures.MISSING)));
+              List.of(
+                  GatePrerequisiteFixtures.gate(
+                      "zap-baseline.py", GatePrerequisiteFixtures.MISSING)));
     } finally {
       logger.removeHandler(handler);
     }
 
-    assertThat(messages).containsExactly("event=gate-prerequisite gate=semgrep kind=executable");
+    assertThat(messages)
+        .containsExactly("event=gate-prerequisite gate=zap-baseline.py kind=executable");
   }
 }

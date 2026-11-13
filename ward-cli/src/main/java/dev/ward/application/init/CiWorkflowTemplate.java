@@ -6,7 +6,6 @@ import dev.ward.domain.init.InitGateOption;
 import dev.ward.domain.init.OwnedSection;
 import dev.ward.domain.project.Project;
 import dev.ward.domain.project.node.PackageManifest;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -20,7 +19,6 @@ public final class CiWorkflowTemplate {
   static final String END = "# ward-owned: github-ci v1 end";
   private static final String WORKFLOWS = ".github/workflows/";
   private static final String SARIF = "ward.sarif";
-  private static final String SEMGREP_VERSION = "1.181.0";
   public static final String STEP = "      - name: ";
 
   private CiWorkflowTemplate() {}
@@ -71,7 +69,6 @@ public final class CiWorkflowTemplate {
     }
     final Set<String> ids = gates.stream().map(InitGateOption::id).collect(Collectors.toSet());
     final StringBuilder body = new StringBuilder(header(ids, project, fileName(project), facts));
-    body.append(tools(ids));
     if (ids.contains(SupportedQualityGates.VULNERABILITIES)) {
       body.append(VulnerabilityCacheSteps.restore(project));
     }
@@ -153,29 +150,6 @@ public final class CiWorkflowTemplate {
         + InitToolchains.support(project).ciSetup(project, facts);
   }
 
-  private static String tools(final Set<String> ids) {
-    final List<String> install = new ArrayList<>();
-    if (ids.contains("semgrep")) {
-      install.add("          pip install semgrep==" + SEMGREP_VERSION + "\n");
-    }
-    // The runner's system Python refuses global pip installs.
-    final String python =
-        ids.contains("semgrep")
-            ? STEP
-                + "Set up Python\n"
-                + "        uses: actions/setup-python@v6\n"
-                + "        with:\n"
-                + "          python-version: '3.13'\n"
-            : "";
-    return install.isEmpty()
-        ? ""
-        : python
-            + STEP
-            + "Install gate tools\n        run: |\n          set -eu\n"
-            + String.join("", install);
-  }
-
-  /** Quotes {@code value} as a single-quoted YAML scalar. */
   private static String quoted(final String value) {
     return "'" + value.replace("'", "''") + "'";
   }

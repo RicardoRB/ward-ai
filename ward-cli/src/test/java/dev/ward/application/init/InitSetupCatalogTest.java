@@ -199,8 +199,6 @@ class InitSetupCatalogTest {
             QualityGateFactory.SUPPORTED_GATES.stream()
                 // OpenAPI gates are offered only when the project commits a spec.
                 .filter(id -> !id.startsWith("openapi-"))
-                // Init offers semgrep for no language; Ward's own security rules replace it.
-                .filter(id -> !"semgrep".equals(id))
                 // The analysis gate is written by hand in ward.toml; init does not offer it.
                 .filter(id -> !SupportedQualityGates.ANALYSIS.equals(id))
                 // Node gates are run by check only; init does not offer them for JVM projects.
@@ -233,8 +231,5 @@ class InitSetupCatalogTest {
     assertThat(catalog.gate(project, "secrets").command()).isEmpty();
     assertThat(catalog.gate(project, "secrets").available()).isTrue();
     assertThat(catalog.gate(project, "enforcer").command()).endsWith("enforcer:enforce");
-    assertThat(catalog.gates(project, null))
-        .extracting(InitGateOption::id)
-        .doesNotContain("semgrep");
   }
 }

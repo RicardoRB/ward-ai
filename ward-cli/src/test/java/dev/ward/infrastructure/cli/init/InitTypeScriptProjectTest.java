@@ -45,7 +45,7 @@ class InitTypeScriptProjectTest {
             "[checks.ward-format]",
             "[checks.ward]",
             "command = \"npx vitest run --coverage\"")
-        .doesNotContain("[checks.eslint]", "[checks.biome]", "[checks.semgrep]")
+        .doesNotContain("[checks.eslint]", "[checks.biome]")
         .doesNotContain("checkstyle", "mvnw");
     assertThat(fixture.read("package.json"))
         .contains("\"typescript\": \"^5.9.3\",", "\"@vitest/coverage-v8\": \"4.0.18\"")
