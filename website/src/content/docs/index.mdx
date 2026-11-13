@@ -51,6 +51,12 @@ Windsurf, Cline, Factory Droid, and Amp).
 Every language gets Ward's own rules, selected in [`ward-rules.toml`](/configuration/ward-rules/),
 and Ward's formatter. There is no separate lint or format tool to install.
 
+The checks that do not depend on the language also run inside Ward, with no tool to install:
+[secret detection](/configuration/secrets/), [vulnerable dependencies](/configuration/vulnerabilities/),
+licenses and the [SBOM](/commands/sbom/), build policy, API compatibility for Java and Kotlin, the
+OpenAPI lint and breaking-change rules, and the CRAP gate. See [quality gates](/configuration/gates/).
+[Security rules](/reference/security-rules/) cover Java, TypeScript, JavaScript and Python.
+
 Ward's compatibility matrices run the real CLI on each supported version: JDK 8, 11, 17, 21 and 25;
 Node 22 and 24, with Next.js, Vite with React, NestJS, Express, Vue, Astro, and Angular fixtures;
 Python 3.11 to 3.14 with uv, Poetry and pip, and Django, FastAPI and Flask fixtures; and Xcode 26.0
@@ -70,6 +76,7 @@ irm https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.ps1 | iex
 
 - Detect supported Java, Kotlin, TypeScript, JavaScript, Python, Swift, and Android projects and initialize configuration from `standard` or `strict` presets.
 - Run configured quality gates as text or machine-readable JSON, locally or in [CI](/guides/ci-cd/), using cumulative local and complete CI profiles.
+- Find committed secrets, vulnerable dependencies and license problems, and write a CycloneDX SBOM and a third-party license notice, without installing a scanner.
 - Install agent hooks that run checks after edits and writes.
 - Opt into managed Git quality hooks for fast pre-commit and cumulative pre-push checks.
 - Drive an external coding agent with [`ward loop`](/commands/loop/) until the gates pass.

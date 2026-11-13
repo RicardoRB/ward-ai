@@ -11,7 +11,7 @@ team, and Ward checks every change against them, from the first edit to producti
 [![Release](https://img.shields.io/github/v/release/RicardoRB/ward-ai?sort=semver&label=release)](https://github.com/RicardoRB/ward-ai/releases)
 [![Build](https://github.com/RicardoRB/ward-ai/actions/workflows/release.yml/badge.svg)](https://github.com/RicardoRB/ward-ai/actions/workflows/release.yml)
 [![Docs](https://github.com/RicardoRB/ward-ai/actions/workflows/docs.yml/badge.svg)](https://ricardorb.github.io/ward-ai/)
-[![Coverage](https://img.shields.io/badge/coverage-%E2%89%A580%25%20enforced-brightgreen)](#development)
+[![Coverage](https://img.shields.io/badge/coverage-%E2%89%A585%25%20enforced-brightgreen)](#development)
 ![Java 25](https://img.shields.io/badge/Java-25-orange)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue)](LICENSE)
 
@@ -63,8 +63,10 @@ forgets.
 Ward moves those rules out of your prompts and into your project:
 
 - **The rules live in the repository.** `ward.toml` lists the checks (tests, coverage,
-  Ward's own lint, format and architecture rules, security scanners, or any
-  command).
+  Ward's own lint, format, architecture and security rules, or any command).
+- **Most checks need no tool.** Lint, format, architecture, secrets, vulnerable dependencies,
+  licenses, build policy, API compatibility and OpenAPI rules run inside Ward, so there is nothing
+  extra to install or keep in step.
 - **Every agent gets the same feedback.** After each edit, Ward runs the fast checks and hands the
   exact failure back to the agent, which fixes it on its own.
 - **Stricter checks run later, automatically.** Commit, push, and CI each add more checks, so
@@ -192,19 +194,20 @@ ward check --profile ci --format json > ward-report.json
 
 | Category | Tools |
 |---|---|
-| Build and tests | Compiler, JUnit, JaCoCo coverage, PIT mutation testing |
-| Code quality | Ward rules, SonarQube |
+| Build and tests | Compiler, JUnit, a coverage minimum that Ward reads from the JaCoCo or lcov report, PIT mutation testing |
+| Code quality | Ward rules (lint), `ward format`, the CRAP gate (functions that are both complex and untested), SonarQube |
 | Architecture | Ward's layer boundaries (Layered, Hexagonal, or Clean), slice cycles and feature independence, native `no-field-di` and `no-standard-streams` rules (`strict`), native build policy rules (`build-policy`), Maven Enforcer / Gradle checks |
-| Security | Ward secret detection and security rules, native vulnerability matching against OSV advisories, OWASP ZAP |
-| Compliance | License plugins, native Java and Kotlin API compatibility |
+| Security | Ward secret detection, Ward security rules for Java, TypeScript, JavaScript and Python (injection, cryptography, cookies and more), native vulnerability matching against OSV advisories, OWASP ZAP |
+| Compliance | Native license check for every toolchain, `ward sbom` (CycloneDX) and `ward licenses`, native Java and Kotlin API compatibility |
+| REST API contract | Ward's OpenAPI lint rules and breaking-change rules for OpenAPI 3.0 and 3.1 |
 | TypeScript and JavaScript | `tsc`, Vitest / Jest / `bun test`, Stryker mutation testing, Ward's TypeScript and JavaScript rules (lint, selected in `ward-rules.toml`), framework checkers (`vue-tsc`, `svelte-check`, `astro check`, `ngc`) |
 | Python | Ward rules (lint, selected in `ward-rules.toml`), `ward-format` (format), mypy, pytest, coverage.py, mutmut mutation testing, `manage.py check` for Django |
 | Swift | Ward rules (lint, selected in `ward-rules.toml`), `swift build`, `swift test` or `xcodebuild test`, llvm-cov / xccov coverage |
 | Android | Android lint (`lintDebug`), Android unit tests (`testDebugUnitTest`), debug unit-test coverage |
 | Anything else | Any command you add to `ward.toml` |
 
-Ward runs the tools; the rules live in each tool's own configuration. Lint, format and architecture
-rules are Ward's own, for every language: `ward-rules.toml` selects them, and [`ward format`](https://ricardorb.github.io/ward-ai/commands/format/) applies the format. For TypeScript and JavaScript projects, `ward init`
+Lint, format and architecture rules are Ward's own, for every language, and its security rules cover
+Java, TypeScript, JavaScript and Python: `ward-rules.toml` selects them, and [`ward format`](https://ricardorb.github.io/ward-ai/commands/format/) applies the format. For TypeScript and JavaScript projects, `ward init`
 writes `ward-rules.toml` and the test runner's reporter config, such as `vitest.config.mjs`, and the coverage minimum sits in the `coverage` check of `ward.toml`. See [Node projects](https://ricardorb.github.io/ward-ai/commands/init/#node-projects). See
 [quality gates](https://ricardorb.github.io/ward-ai/configuration/gates/).
 
@@ -216,7 +219,8 @@ Cline, Factory Droid, and Amp. See [integrations](https://ricardorb.github.io/wa
 | Topic | Link |
 |---|---|
 | Getting started | [Installation](https://ricardorb.github.io/ward-ai/getting-started/installation/) · [How it works](https://ricardorb.github.io/ward-ai/getting-started/how-it-works/) · [Quick start](https://ricardorb.github.io/ward-ai/getting-started/quick-start/) |
-| Configuration | [`ward.toml`](https://ricardorb.github.io/ward-ai/configuration/ward-toml/) · [Quality gates](https://ricardorb.github.io/ward-ai/configuration/gates/) · [Learning](https://ricardorb.github.io/ward-ai/configuration/learning/) |
+| Configuration | [`ward.toml`](https://ricardorb.github.io/ward-ai/configuration/ward-toml/) · [Quality gates](https://ricardorb.github.io/ward-ai/configuration/gates/) · [Rules](https://ricardorb.github.io/ward-ai/configuration/ward-rules/) · [Learning](https://ricardorb.github.io/ward-ai/configuration/learning/) |
+| Security | [Secret detection](https://ricardorb.github.io/ward-ai/configuration/secrets/) · [Vulnerabilities](https://ricardorb.github.io/ward-ai/configuration/vulnerabilities/) · [Security rules](https://ricardorb.github.io/ward-ai/reference/security-rules/) · [SBOM and licenses](https://ricardorb.github.io/ward-ai/commands/sbom/) |
 | Agents | [Agent skills](https://ricardorb.github.io/ward-ai/integrations/agent-skills/) · [Claude Code](https://ricardorb.github.io/ward-ai/integrations/claude-code/) · [OpenCode](https://ricardorb.github.io/ward-ai/integrations/opencode/) · [Other agents](https://ricardorb.github.io/ward-ai/integrations/native-harnesses/) · [Git hooks](https://ricardorb.github.io/ward-ai/integrations/quality-hooks/) |
 | CI/CD | [CI/CD guide](https://ricardorb.github.io/ward-ai/guides/ci-cd/) · [JSON output](https://ricardorb.github.io/ward-ai/reference/json-output/) · [Exit codes](https://ricardorb.github.io/ward-ai/reference/exit-codes/) |
 | CLI reference | [`init`](https://ricardorb.github.io/ward-ai/commands/init/) · [`check`](https://ricardorb.github.io/ward-ai/commands/check/) · [`integrate`](https://ricardorb.github.io/ward-ai/commands/integrate/) · [`doctor`](https://ricardorb.github.io/ward-ai/commands/doctor/) · [`loop`](https://ricardorb.github.io/ward-ai/commands/loop/) · [all commands](https://ricardorb.github.io/ward-ai/commands/detect/) |
@@ -224,7 +228,7 @@ Cline, Factory Droid, and Amp. See [integrations](https://ricardorb.github.io/wa
 
 ## Project status
 
-**Alpha** (`0.7.1`). Runs as a native binary on Linux x86_64, macOS (Apple Silicon), and
+**Alpha** (`0.8.0`). Runs as a native binary on Linux x86_64, macOS (Apple Silicon), and
 Windows x86_64, or as a JAR built from source on JDK 25 (the way to run it on an Intel Mac). Only the
 latest release receives fixes. See
 [CHANGELOG.md](CHANGELOG.md) for what changed in each release.
@@ -236,7 +240,9 @@ latest release receives fixes. See
   layers without a setup step
 - Homebrew tap, Scoop and winget packages, and container image
 
-**Known limitations:** Ward never installs tools; a missing tool is reported as `UNAVAILABLE`.
+**Known limitations:** Ward never installs tools; a missing tool, such as a compiler or a test
+runner, is reported as `UNAVAILABLE`. The security rules follow data inside one file, not across
+files.
 Commands run without a shell, but that is **not a sandbox** (see below).
 
 ## Development
@@ -270,5 +276,6 @@ in a public issue. Read the full [security model](https://ricardorb.github.io/wa
 ## License
 
 [Apache License 2.0](LICENSE). Third-party notices, including the libraries Ward is built on, are
-in [`NOTICE`](NOTICE). The quality tools Ward runs are separate projects under their own licenses
-and are not bundled.
+in [`NOTICE`](NOTICE), with the projects whose rules and data Ward follows. The tools Ward runs,
+such as compilers and test runners, are separate projects under their own licenses and are not
+bundled.

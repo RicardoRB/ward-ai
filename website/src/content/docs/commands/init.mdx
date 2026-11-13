@@ -126,8 +126,8 @@ finding twice.
 
 ## What init changes in your build
 
-For `enforcer` and, on Kotlin projects, `api-compat`, init adds missing plugins using
-Ward's embedded Java compatibility catalog. Java `api-compat` adds no plugin.
+For `enforcer`, init adds missing plugins using Ward's embedded Java compatibility catalog.
+`api-compat` is native for Java and Kotlin and adds no plugin.
 
 - Existing compatible plugin versions are kept.
 - For an incompatible managed plugin, init shows the current version, the compatible version, the
