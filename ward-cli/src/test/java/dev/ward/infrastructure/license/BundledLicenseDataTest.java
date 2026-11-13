@@ -69,7 +69,8 @@ class BundledLicenseDataTest {
   void familyTextServesOnlyAndOrLaterIdentifiers() {
     assertThat(texts.text("GPL-2.0-only")).isPresent();
     assertThat(texts.text("GPL-2.0-or-later")).isEqualTo(texts.text("GPL-2.0-only"));
-    assertThat(texts.text("EPL-2.0")).isEmpty();
+    assertThat(texts.text("EPL-2.0").orElse("")).startsWith("Eclipse Public License - v 2.0");
+    assertThat(texts.text("EPL-1.0")).isEmpty();
     assertThat(texts.ids()).containsAll(List.of("Apache-2.0", "MIT", "BSD-3-Clause", "ISC"));
   }
 

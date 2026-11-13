@@ -31,7 +31,9 @@ Advisories come from the public [OSV](https://osv.dev) archives, one per ecosyst
 `PyPI`, `SwiftURL`), downloaded only for the ecosystems the project uses. Ward stores a reduced copy
 under `.ward/cache/vulnerabilities/<Ecosystem>/`, which Git ignores. A request carries the archive
 name and the client name `ward/<version>`, and no package name, path or environment value. Ward
-bundles no advisory data.
+bundles no advisory data. Each advisory keeps the license of the database it comes from, which OSV
+lists per source in its [data sources](https://google.github.io/osv.dev/data/); check those terms
+before you redistribute the stored copy or a report built from it.
 
 Every online run asks the server whether the data changed, using the stored `ETag`. An unchanged
 database costs one small request. When the download fails, Ward uses the stored copy if it was

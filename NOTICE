@@ -350,6 +350,89 @@ https://github.com/gitleaks/gitleaks), MIT License:
   ward-cli/src/test/resources/catalog/upstream/gitleaks-rules-generator.py.
 
 ================================================================
+Rules, messages and data from other projects
+================================================================
+
+Besides the libraries above, Ward's distributed JAR and native binaries
+include rules, messages and data files that come from the projects below.
+Ward's own code implements the rules.
+
+Apache License, Version 2.0 (see LICENSE):
+
+  * Spectral 6.17.1 (https://github.com/stoplightio/spectral). The OpenAPI lint
+    rules in ward-lang-openapi follow the spectral:oas ruleset: they keep its
+    rule ids and reproduce its messages. The files stoplight-2020-12*.json in
+    ward-lang-openapi/src/main/resources/openapi/schemas are copied from
+    @stoplight/spectral-rulesets 1.23.1.
+  * OpenAPI Specification schemas (https://github.com/OAI/OpenAPI-Specification),
+    by the OpenAPI Initiative: oas-3.0.json and oas-3.1*.json in the same
+    folder. See ward-lang-openapi/BUNDLED-SCHEMAS.md.
+  * oasdiff (https://github.com/oasdiff/oasdiff). The OpenAPI breaking-change
+    rules keep the ids of its error-level checks.
+  * Apache Maven (https://maven.apache.org/). The Maven version order used by
+    the vulnerability check is a port of the algorithm of ComparableVersion.
+
+    Apache Maven
+    Copyright 2001-2026 The Apache Software Foundation
+
+    This product includes software developed at
+    The Apache Software Foundation (https://www.apache.org/).
+
+MIT License (the license text is the one printed below for Biome, with the
+copyright notice given for each project):
+
+  * Spectral OWASP ruleset 2.0.1
+    (https://github.com/stoplightio/spectral-owasp-ruleset), by Phil Sturgeon
+    and Stoplight. The owasp rules in ward-lang-openapi keep its rule ids and
+    reproduce its messages. The project publishes no copyright line.
+  * Ajv 8.20.0 and ajv-draft-04 1.0.0 (https://github.com/ajv-validator/ajv).
+    The files json-schema-2020-12*.json and json-schema-draft-04.json in
+    ward-lang-openapi/src/main/resources/openapi/schemas are the JSON Schema
+    meta-schemas as these packages ship them, and Ward's schema messages
+    follow the wording of Ajv.
+
+    Copyright (c) 2015-2021 Evgeny Poberezkin
+  * ESLint (https://github.com/eslint/eslint). Some JavaScript and TypeScript
+    checks are ports of the logic of the ESLint rule of the same name.
+
+    Copyright OpenJS Foundation and other contributors, <www.openjsf.org>
+
+Biome 2.5.15 (https://github.com/biomejs/biome), MIT License or Apache
+License, Version 2.0; Ward uses it under the MIT License. The ARIA data in
+ward-lang-node/src/main/resources/aria is generated from the ARIA metadata of
+Biome, which derives from the W3C WAI-ARIA specifications:
+
+  Copyright (c) 2023-present Biome Developers and Contributors.
+  Copyright (c) 2020-2023 Rome Tools is Rome Tools, Inc. and its affiliates.
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+
+SPDX License List 3.29.0 (https://spdx.org/licenses/), by the Linux
+Foundation and its contributors: the license identifiers, names and texts
+under ward-cli/src/main/resources/dev/ward/license.
+
+Ward's style and bug rules for Java, Kotlin, JavaScript, TypeScript, Python
+and Swift follow the documented behaviour of Checkstyle, PMD, SpotBugs, Error
+Prone, detekt, ktlint, ESLint, typescript-eslint, angular-eslint, Ruff, Pylint
+and SwiftLint, and name the rule each one follows.
+
+================================================================
 MITRE CWE
 ================================================================
 
