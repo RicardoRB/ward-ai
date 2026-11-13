@@ -67,7 +67,7 @@ final class KotlinApiConstructors {
 
   private List<ApiParameter> primaryParameters(final SyntaxNode node) {
     return parameters(node).stream()
-        .map(parameter -> KotlinApiMembers.parameter(parameter, refs))
+        .map(parameter -> KotlinApiParameters.parameter(parameter, refs))
         .toList();
   }
 
@@ -75,10 +75,7 @@ final class KotlinApiConstructors {
     return constructor(
         secondary,
         KotlinApiModifiers.of(secondary).visibility(),
-        Syntax.children(secondary, "functionValueParameters").stream()
-            .flatMap(list -> Syntax.children(list, "functionValueParameter").stream())
-            .map(holder -> KotlinApiMembers.parameter(holder, refs))
-            .toList());
+        KotlinApiParameters.of(secondary, refs));
   }
 
   private ApiMember constructor(

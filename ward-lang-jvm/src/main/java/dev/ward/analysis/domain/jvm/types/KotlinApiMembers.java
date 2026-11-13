@@ -12,7 +12,6 @@ import java.util.Optional;
 /** Reads the functions and properties of a Kotlin class, object or file into API members. */
 final class KotlinApiMembers {
   private static final String PARAMETER_LIST = "functionValueParameters";
-  private static final String PARAMETER_HOLDER = "functionValueParameter";
   private static final String TYPE = "type";
   private static final String RECEIVER_TYPE = "receiverType";
   private static final String BODY = "functionBody";
@@ -65,7 +64,7 @@ final class KotlinApiMembers {
         .map(declared.refs()::of)
         .map(type -> new ApiParameter(type, false))
         .ifPresent(parameters::add);
-    parameters.addAll(parameters(function, declared.refs()));
+    parameters.addAll(KotlinApiParameters.of(function, declared.refs()));
     return Optional.of(
         new ApiMember(
             ApiMember.Kind.METHOD,
@@ -75,7 +74,7 @@ final class KotlinApiMembers {
             modality.isFinal(modifiers),
             modality.isAbstract(modifiers, body),
             modality.isDefault(modifiers, body),
-            hasVararg(function),
+            KotlinApiParameters.hasVararg(function),
             declared.parameters(),
             parameters,
             returns(function, declared.refs()),
@@ -98,29 +97,6 @@ final class KotlinApiMembers {
       }
     }
     return Optional.empty();
-  }
-
-  private static List<ApiParameter> parameters(
-      final SyntaxNode function, final KotlinApiRefs inner) {
-    return Syntax.children(function, PARAMETER_LIST).stream()
-        .flatMap(list -> Syntax.children(list, PARAMETER_HOLDER).stream())
-        .map(holder -> parameter(holder, inner))
-        .toList();
-  }
-
-  /** Returns a parameter; the type of a {@code vararg} is the array of its element type. */
-  static ApiParameter parameter(final SyntaxNode holder, final KotlinApiRefs inner) {
-    final ApiTypeRef type =
-        Syntax.find(holder, TYPE).map(inner::of).orElseGet(KotlinApiTypeRefs::inferred);
-    final boolean vararg = KotlinApiModifiers.of(holder).has("vararg");
-    return new ApiParameter(
-        vararg ? KotlinApiTypeRefs.array(type) : type, Syntax.hasToken(holder, "="));
-  }
-
-  private static boolean hasVararg(final SyntaxNode function) {
-    return Syntax.children(function, PARAMETER_LIST).stream()
-        .flatMap(list -> Syntax.children(list, PARAMETER_HOLDER).stream())
-        .anyMatch(holder -> KotlinApiModifiers.of(holder).has("vararg"));
   }
 
   /** The declared return type; {@code Unit} for a block or no body, unknown for {@code = expr}. */
