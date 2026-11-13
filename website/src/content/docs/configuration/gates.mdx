@@ -18,7 +18,6 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `coverage` | JaCoCo / lcov reports | Fail below a `minimum` line coverage and an optional `minimum-branches`, read by Ward from the tool's report. |
 | | `mutation` | PIT | Run mutation testing, optionally with a `minimum` score. |
 | Code Quality | `ward` | Ward rules | Check the style and bug rules that `ward-rules.toml` selects, for Java, Kotlin, TypeScript, JavaScript, Python and Swift. |
-| | `sonar` | SonarQube | Code smells, bugs, duplication, overall quality. |
 | | `ward-format` | Ward's native formatter | Check source formatting against `.editorconfig`. Always selected by `ward init`. |
 | | `crap` | Ward analysis and a coverage report | Fail functions that are both complex and untested, by their CRAP score. |
 | Security | `secrets` | Ward's native secret rules | Detect committed secrets with no tool to install. See [secret detection](/configuration/secrets/). |
@@ -56,8 +55,20 @@ deliberately, for example in a CI-only profile with `profiles = ["ci"]`:
 
 - `zap`
 - `vulnerabilities`
-- `sonar`
 - `api-compat`
+
+## Moving from the `sonar` gate
+
+Earlier versions of Ward offered a `sonar` gate that ran the SonarQube scanner. It is removed:
+`ward init` no longer offers it or writes `sonar-maven-plugin` or the `org.sonarqube` Gradle plugin,
+`--gate sonar` and `uses = "sonar"` are an unknown gate, and a check whose command runs
+`sonar:sonar` is a plain command check. The plugin entry in your build file is yours to remove.
+
+Ward's own rules, the `crap` gate and the `duplicate-code` rule (see
+[duplicate code](/configuration/ward-rules/#duplicate-code)) check code directly, with no server.
+Ward does not replace what a SonarQube server keeps: the history of results over time, its
+dashboards and the decoration of pull requests. A team that wants those can keep running the scanner
+as a command check.
 
 ## Quality presets
 

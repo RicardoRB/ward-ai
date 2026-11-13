@@ -430,7 +430,9 @@ under ward-cli/src/main/resources/dev/ward/license.
 Ward's style and bug rules for Java, Kotlin, JavaScript, TypeScript, Python
 and Swift follow the documented behaviour of Checkstyle, PMD, SpotBugs, Error
 Prone, detekt, ktlint, ESLint, typescript-eslint, angular-eslint, Ruff, Pylint
-and SwiftLint, and name the rule each one follows.
+and SwiftLint, and name the rule each one follows. The duplicate-code rule
+follows the documented behaviour of PMD CPD (BSD-style license); no code is
+copied.
 
 ================================================================
 MITRE CWE

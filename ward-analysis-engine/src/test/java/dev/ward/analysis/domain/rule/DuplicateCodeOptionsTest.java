@@ -21,7 +21,10 @@ class DuplicateCodeOptionsTest {
             ignore-annotations = true
             """);
 
-    assertThat(options).isEqualTo(new DuplicateCodeOptions(CUSTOM_MIN_TOKENS, true, true, true));
+    assertThat(options)
+        .isEqualTo(
+            new DuplicateCodeOptions(
+                CUSTOM_MIN_TOKENS, true, true, true, DuplicateCodeOptions.NO_SHARE_LIMIT));
   }
 
   @Test
@@ -30,12 +33,25 @@ class DuplicateCodeOptionsTest {
 
     assertThat(options)
         .isEqualTo(
-            new DuplicateCodeOptions(DuplicateCodeOptions.DEFAULT_MIN_TOKENS, false, false, false));
+            new DuplicateCodeOptions(
+                DuplicateCodeOptions.DEFAULT_MIN_TOKENS,
+                false,
+                false,
+                false,
+                DuplicateCodeOptions.NO_SHARE_LIMIT));
   }
 
   @Test
   void rejectsAMinimumBelowOne() {
     assertThatThrownBy(() -> DuplicateCodeOptions.parse("min-tokens = 0"))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void readsAndValidatesTheShareLimit() {
+    assertThat(DuplicateCodeOptions.parse("max-duplicated-percent = 5").maxDuplicatedPercent())
+        .isEqualTo(5);
+    assertThatThrownBy(() -> DuplicateCodeOptions.parse("max-duplicated-percent = 101"))
         .isInstanceOf(IllegalArgumentException.class);
   }
 }

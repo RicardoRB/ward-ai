@@ -8,18 +8,9 @@ import java.util.regex.Matcher;
 
 /** The Maven tools init can add to pom.xml, one row per gate, with their default declarations. */
 final class PomTools {
-  private static final String SONAR = "sonar-maven-plugin";
   private static final String JACOCO = "jacoco-maven-plugin";
   private static final String PIT = "pitest-maven";
 
-  private static final String SONAR_PLUGIN =
-      """
-              <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>5.1.0.4751</version>
-              </plugin>
-            """;
   private static final String JACOCO_PLUGIN =
       """
               <plugin>
@@ -61,7 +52,6 @@ final class PomTools {
   /** Tools in the order they are added to pom.xml. */
   static final List<Tool> TOOLS =
       List.of(
-          Tool.plugin("sonar", SONAR, SONAR_PLUGIN),
           Tool.modulePlugin("coverage", JACOCO, JACOCO_PLUGIN),
           Tool.modulePlugin("mutation", PIT, PIT_PLUGIN, PresetPluginSnippets::pit));
 

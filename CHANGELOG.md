@@ -8,6 +8,14 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Added
+
+- `ward:<language>/duplicate-code` gains the option `max-duplicated-percent` (default `100`, off): when the tokens inside copies, each counted once, exceed that share of the compared tokens of the language, one more finding reports the project (#547). The rule already had `min-tokens`, findings that list every copy, and Java, Kotlin, TypeScript, JavaScript, Python and Swift support. See [duplicate code](website/src/content/docs/configuration/ward-rules.mdx).
+
+### Changed
+
+- **Breaking (alpha):** The `sonar` gate is removed. `ward init` no longer offers it and writes no `sonar-maven-plugin` entry and no `org.sonarqube` Gradle plugin; `--gate sonar` and `uses = "sonar"` are rejected as an unknown gate, and a check whose command runs `sonar:sonar` or `sonarqube` is a plain command check. The plugin entry in your build file is yours to remove. Migration: select `ward:<language>/duplicate-code` and the `ward` and `crap` gates for duplication, style and complexity. Ward does not replace SonarQube's history, dashboards or pull request decoration (#547).
+
 ## [0.8.0] - 2026-11-13
 
 ### Added

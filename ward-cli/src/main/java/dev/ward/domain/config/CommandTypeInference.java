@@ -57,7 +57,6 @@ public final class CommandTypeInference {
           new Rule("stryker", sequence("stryker", "run")),
           new Rule("tests", CommandTypeInference::isUnfilteredBuildTest),
           new Rule("compile", buildWrapper(sequence("compile"))),
-          new Rule("sonar", anyOf(sequence("sonar:sonar"), sequence("sonarqube"))),
           new Rule("tsc", sequence("tsc")),
           new Rule("vue-tsc", sequence("vue-tsc")),
           new Rule("svelte-check", sequence("svelte-check")),
