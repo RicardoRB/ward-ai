@@ -618,8 +618,7 @@ error that names the generator.
 Init installs no gate tool. A gate whose executable is missing is configured anyway, and the plan
 prints a `guidance` line with a link for the executables the catalog knows, such as ZAP
 (`zap-baseline.py`). `ward check` reports such a gate as unavailable with the same link, and never
-installs anything. A `[checks.semgrep]` table that you write yourself keeps working and gets the same
-guidance when `semgrep` is missing.
+installs anything.
 
 `--install-tool <gate>[,...]` is still accepted so that existing command lines keep working. It has
 no effect, and init logs a warning when it is given.

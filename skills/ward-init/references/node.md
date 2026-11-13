@@ -85,7 +85,7 @@ Node: JavaScript (CommonJS), npm, Node 24, sources in src/, no test runner
   both), so the `ward` gate applies them. Init writes no lint config, and formatting stays with
   `ward-format`.
 - **Gates.** Init also offers `stryker` (mutation testing, `ci` only; slow on Bun, which has no
-  Stryker runner plugin), `secrets` (Ward's native check, nothing to install), `vulnerabilities`, and `zap`. Init offers no external security scanner such as Semgrep:
+  Stryker runner plugin), `secrets` (Ward's native check, nothing to install), `vulnerabilities`, and `zap`. Init offers no external security scanner:
   Ward's own security rules run in the `ward` gate. The layer boundaries of the architecture
   style are written to `ward.toml` as `[[checks.ward.layers]]` for every Node project, and
   `strict` adds the slice cycle check (`[checks.ward.cycles]`).

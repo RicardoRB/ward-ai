@@ -4,7 +4,7 @@ description: The security rules Ward provides for Java, JavaScript, TypeScript a
 ---
 
 Ward reports common security weaknesses in source code with its own rules, so a project needs no
-external scanner such as Semgrep. Every rule has the id `ward:<language>/<weakness>`, the category
+external scanner. Every rule has the id `ward:<language>/<weakness>`, the category
 `security`, a CWE id of the weakness, and a catalog row that lists the public documents it was
 written from (see the [rule reference](/reference/rules/security/)).
 
@@ -143,5 +143,4 @@ and Django.
 
 ## Later
 
-Taint across files, taint rules for Python and Kotlin, and Swift rules are planned. The `semgrep` gate still works for projects that configure it, but `ward init` no longer
-offers it.
+Taint across files, taint rules for Python and Kotlin, and Swift rules are planned.

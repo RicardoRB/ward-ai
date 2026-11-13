@@ -188,9 +188,9 @@ check runs narrowed to that path: it reports the findings of the edited files an
 them, and keeps its cache for the rest of the project. `full` still runs the whole check.
 
 ```toml
-[checks.semgrep.paths]
+[checks.scan.paths]
 match = ["**"]
-full = [".semgrep.yml", ".semgrepignore"]
+full = [".scan.yml", ".scanignore"]
 args = ["{paths}"]
 
 [checks.lint.paths]
@@ -200,7 +200,7 @@ args = ["{paths}"]
 command = ["npx", "lint-tool"]
 ```
 
-For example, a Semgrep edit receives the root-relative path as its own
+For example, the `scan` check of an edit receives the root-relative path as its own
 argument. A lint edit of `src/app.ts` runs `npx lint-tool src/app.ts` instead of `npx lint-tool .`. Other `args` entries are appended unchanged, and nothing passes through a
 shell.
 
