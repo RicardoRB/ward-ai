@@ -64,10 +64,9 @@ Some gates need extra input:
   written too; see [Generated files](#generated-files).
 - **`zap`** writes a `<TARGET_URL>` placeholder. Replace it with an authorized target before
   `check` will run the gate.
-- **`api-compat`** needs a baseline. A Java project (Maven or Gradle) is offered it when a release
+- **`api-compat`** needs a baseline. A Java or Kotlin project (Maven or Gradle) is offered it when a release
   tag such as `v1.2.3` is reachable from `HEAD`; otherwise `--gate api-compat` fails and says so.
-  Init writes `uses = "api-compat"` and changes no build file. A Kotlin project keeps the japicmp
-  command, which on Maven needs `<distributionManagement>`, until the native check reads Kotlin.
+  Init writes `uses = "api-compat"` and changes no build file, for either language.
   See [API compatibility](/configuration/gates/#api-compatibility).
 - **`openapi-lint`, `openapi-diff`, and `openapi-compat`** are offered only when Git tracks an
   `openapi.yml`, `openapi.yaml`, or `openapi.json` in `src/main/resources` or the project root.

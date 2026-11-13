@@ -49,7 +49,6 @@ public final class FileSystemProjectInspection implements ProjectInspection {
 
   private static final List<String> GRADLE_BUILD_FILES =
       List.of("build.gradle", "build.gradle.kts");
-  private static final String DISTRIBUTION_MANAGEMENT = "distributionManagement";
 
   /** Build-file markers in precedence order; the first match decides a directory's project. */
   private static final List<Marker> MARKERS =
@@ -140,7 +139,6 @@ public final class FileSystemProjectInspection implements ProjectInspection {
         BuildTool.MAVEN,
         pom.map(FileSystemProjectInspection::framework).orElse(Framework.NONE),
         Files.isRegularFile(dir.resolve("mvnw")),
-        pom.map(FileSystemProjectInspection::publishes).orElse(false),
         dir,
         languages,
         "",
@@ -156,7 +154,6 @@ public final class FileSystemProjectInspection implements ProjectInspection {
         BuildTool.GRADLE,
         gradleFramework(dir),
         Files.isExecutable(dir.resolve("gradlew")),
-        false,
         dir,
         languages,
         "",
@@ -222,17 +219,6 @@ public final class FileSystemProjectInspection implements ProjectInspection {
     } catch (IOException e) {
       return "";
     }
-  }
-
-  /** Only a direct child of {@code <project>} counts; profiles do not publish by default. */
-  private static boolean publishes(final Document pom) {
-    final NodeList children = pom.getDocumentElement().getChildNodes();
-    for (int i = 0; i < children.getLength(); i++) {
-      if (DISTRIBUTION_MANAGEMENT.equals(children.item(i).getNodeName())) {
-        return true;
-      }
-    }
-    return false;
   }
 
   private record Marker(String file, Function<Path, Project> project) {}

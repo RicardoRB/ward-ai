@@ -74,7 +74,6 @@ class SvelteCheckCommandTest {
         manager,
         Framework.SVELTE,
         false,
-        false,
         ROOT,
         Set.of(),
         "24",

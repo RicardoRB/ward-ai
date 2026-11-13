@@ -137,7 +137,6 @@ class KotlinStructuralGateTest {
         BuildTool.GRADLE,
         Framework.NONE,
         false,
-        false,
         root,
         Set.of(),
         null,

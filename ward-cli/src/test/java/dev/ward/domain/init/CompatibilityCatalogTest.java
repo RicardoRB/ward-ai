@@ -28,12 +28,7 @@ class CompatibilityCatalogTest {
   private static final Path CELLS = Path.of("src/test/resources/java-matrix/cells.csv");
 
   /** The tools of gates the matrix does not run, because they need network credentials. */
-  private static final Set<String> NOT_IN_MATRIX =
-      Set.of(
-          "sonar-maven-plugin",
-          "japicmp-maven-plugin",
-          "org.sonarqube",
-          "me.champeau.gradle.japicmp");
+  private static final Set<String> NOT_IN_MATRIX = Set.of("sonar-maven-plugin", "org.sonarqube");
 
   @Test
   void eachToolHasDisjointJdkRanges() {

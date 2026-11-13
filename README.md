@@ -196,7 +196,7 @@ ward check --profile ci --format json > ward-report.json
 | Code quality | Ward rules, SonarQube |
 | Architecture | Ward's layer boundaries (Layered, Hexagonal, or Clean), slice cycles and feature independence, native `no-field-di` and `no-standard-streams` rules (`strict`), native build policy rules (`build-policy`), Maven Enforcer / Gradle checks |
 | Security | Ward secret detection and security rules, native vulnerability matching against OSV advisories, OWASP ZAP |
-| Compliance | License plugins, native Java API compatibility (japicmp for Kotlin) |
+| Compliance | License plugins, native Java and Kotlin API compatibility |
 | TypeScript and JavaScript | `tsc`, Vitest / Jest / `bun test`, Stryker mutation testing, Ward's TypeScript and JavaScript rules (lint, selected in `ward-rules.toml`), framework checkers (`vue-tsc`, `svelte-check`, `astro check`, `ngc`) |
 | Python | Ward rules (lint, selected in `ward-rules.toml`), `ward-format` (format), mypy, pytest, coverage.py, mutmut mutation testing, `manage.py check` for Django |
 | Swift | Ward rules (lint, selected in `ward-rules.toml`), `swift build`, `swift test` or `xcodebuild test`, llvm-cov / xccov coverage |

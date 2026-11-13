@@ -1,0 +1,2 @@
+p/A.kt:3:1 api-compat:member-removed p.A#<init>: public <init>(int) -> removed
+p/A.kt:3:1 api-compat:member-removed p.A#copy: public final p.A copy(int = ...) -> removed

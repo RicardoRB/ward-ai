@@ -31,7 +31,6 @@ class PartialCheckSnapshotTest {
           BuildTool.PNPM,
           Framework.NONE,
           false,
-          false,
           Path.of("/shop"),
           Set.of(),
           "24",

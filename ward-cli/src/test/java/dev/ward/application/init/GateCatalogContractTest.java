@@ -36,7 +36,7 @@ class GateCatalogContractTest {
 
   /** Gates that run the build tool as it is and need no build-file entry. */
   private static final Set<String> NO_BUILD_FILE =
-      Set.of("tests", "compile", "command", "build-policy");
+      Set.of("tests", "compile", "command", "build-policy", "api-compat");
 
   /**
    * Gates whose Gradle block needs another gate that Java no longer has: enforcement of Checkstyle.
@@ -186,7 +186,6 @@ class GateCatalogContractTest {
         buildTool,
         Framework.NONE,
         false,
-        true,
         root,
         Set.of(),
         "",

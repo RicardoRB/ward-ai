@@ -49,7 +49,6 @@ class CoverageProjectMutationTest {
                 BuildTool.MAVEN,
                 Framework.NONE,
                 false,
-                true,
                 root,
                 Set.of(),
                 "",

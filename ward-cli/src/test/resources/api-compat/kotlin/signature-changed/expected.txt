@@ -1,0 +1,2 @@
+p/A.kt:4:3 api-compat:signature-changed p.A#f: public final void f(java.util.List<java.lang.String>) -> public final void f(java.util.List<java.lang.Integer>)
+p/A.kt:5:3 api-compat:signature-changed p.A#g: public final <T extends java.lang.Number> void g(T) -> public final <T extends java.lang.Number & java.lang.Comparable<T>> void g(T)

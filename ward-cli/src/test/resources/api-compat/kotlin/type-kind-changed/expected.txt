@@ -1,0 +1,2 @@
+p/A.kt:3:1 api-compat:type-kind-changed p.A: public interface p.A -> public abstract class p.A
+p/B.kt:3:1 api-compat:type-kind-changed p.B: public final class p.B -> public final object p.B

@@ -1,0 +1,2 @@
+p/A.kt:4:3 api-compat:member-less-visible p.A#f: public final void f() -> package final void f()
+p/A.kt:5:3 api-compat:member-less-visible p.A#getV: public final int getV() -> private final int getV()

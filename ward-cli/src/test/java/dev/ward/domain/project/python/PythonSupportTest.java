@@ -52,7 +52,6 @@ class PythonSupportTest {
         BuildTool.PIP,
         Framework.NONE,
         false,
-        false,
         root,
         Set.of(),
         version,

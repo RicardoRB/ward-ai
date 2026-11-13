@@ -123,7 +123,6 @@ class TypeScriptGatesTest {
         manager,
         Framework.NONE,
         false,
-        false,
         root,
         Set.of(),
         "24",

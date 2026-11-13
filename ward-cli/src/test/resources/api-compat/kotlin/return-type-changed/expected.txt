@@ -1,0 +1,2 @@
+p/A.kt:4:3 api-compat:return-type-changed p.A#f: public final int f() -> public final long f()
+p/A.kt:5:3 api-compat:return-type-changed p.A#getV: public final java.lang.String getV() -> public final int getV()

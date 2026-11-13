@@ -76,7 +76,6 @@ public final class NodeProjectInspection {
         manager(dir, manifest),
         framework(manifest),
         false,
-        false,
         dir,
         Set.of(language),
         version(dir, manifest),

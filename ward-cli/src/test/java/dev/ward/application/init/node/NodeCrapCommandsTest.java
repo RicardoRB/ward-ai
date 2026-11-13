@@ -65,16 +65,6 @@ class NodeCrapCommandsTest {
   private Project project(
       final BuildTool manager, final Framework framework, final TaskRunner runner) {
     return new Project(
-        root,
-        Language.TYPESCRIPT,
-        manager,
-        framework,
-        false,
-        false,
-        root,
-        Set.of(),
-        "24",
-        runner,
-        null);
+        root, Language.TYPESCRIPT, manager, framework, false, root, Set.of(), "24", runner, null);
   }
 }

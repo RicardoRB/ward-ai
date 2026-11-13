@@ -48,7 +48,6 @@ public final class SwiftProjectInspection {
                     tool,
                     Framework.NONE,
                     names.contains(PODFILE),
-                    false,
                     dir,
                     Set.of(Language.SWIFT),
                     version(dir, names, tool),

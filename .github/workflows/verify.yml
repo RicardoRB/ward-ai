@@ -466,6 +466,79 @@ jobs:
           -Dward.parity.oasdiff="$RUNNER_TEMP/oasdiff"
           test
 
+  # Runs the real Spectral and the OWASP ruleset on the violating and passing fixtures of every
+  # implemented OpenAPI lint rule and compares them with the committed report
+  # (ward-cli/src/test/resources/parity/spectral-report.txt).
+  spectral-parity:
+    name: OpenAPI lint parity with Spectral
+    if: inputs.compatibility-matrices
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+          cache-dependency-path: |
+            pom.xml
+            ward-*/pom.xml
+
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Install Spectral
+        run: >-
+          npm install --prefix "$RUNNER_TEMP/spectral"
+          @stoplight/spectral-cli@6.17.1
+          @stoplight/spectral-owasp-ruleset@2.0.1
+
+      - name: Compare the lint rules with Spectral
+        run: >-
+          ./mvnw -B
+          -pl ward-cli -am
+          -Dsurefire.failIfNoSpecifiedTests=false
+          -Dtest=SpectralParitySmokeTest
+          -Dward.spectral.dir="$RUNNER_TEMP/spectral"
+          test
+
+  # Runs the real Gitleaks over the fixtures of every secret rule and compares it with the
+  # committed report (ward-cli/src/test/resources/parity/gitleaks-report.txt).
+  gitleaks-parity:
+    name: Secret rule parity with Gitleaks
+    if: inputs.compatibility-matrices
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+          cache-dependency-path: |
+            pom.xml
+            ward-*/pom.xml
+
+      - name: Install Gitleaks
+        run: |
+          curl -sSfL --retry 5 --retry-all-errors "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
+            | tar -xz -C "$RUNNER_TEMP" gitleaks
+
+      - name: Compare the secret rules with Gitleaks
+        run: >-
+          ./mvnw -B
+          -pl ward-cli -am
+          -Dsurefire.failIfNoSpecifiedTests=false
+          -Dtest=GitleaksParitySmokeTest
+          -Dward.parity.gitleaks="$RUNNER_TEMP/gitleaks"
+          test
+
   # Reads the Xcode and fixture pairs and their runners from the
   # matrix data and skips the matrix for pull requests that change only website, openspec or Markdown
   # files.

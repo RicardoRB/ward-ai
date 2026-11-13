@@ -1,0 +1,1 @@
+p/A.kt:4:3 api-compat:method-now-abstract p.A#f: public void f() -> public abstract void f()

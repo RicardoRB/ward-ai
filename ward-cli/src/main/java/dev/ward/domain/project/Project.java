@@ -16,8 +16,6 @@ import java.util.Set;
  * @param mavenWrapperAvailable whether the build tool's wrapper, such as {@code mvnw}, is present;
  *     for pip, whether the project root has a {@code .venv} that the build runs through; for Swift,
  *     whether the project root has a CocoaPods {@code Podfile}
- * @param publishesArtifacts whether the Maven POM declares {@code <distributionManagement>}, the
- *     signal that a released library baseline exists
  * @param repositoryRoot the Git top-level containing the project, or {@code root} outside a Git
  *     work tree
  * @param languages every source language the project contains; always includes {@code language}
@@ -34,7 +32,6 @@ public record Project(
     BuildTool buildTool,
     Framework framework,
     boolean mavenWrapperAvailable,
-    boolean publishesArtifacts,
     Path repositoryRoot,
     Set<Language> languages,
     String languageVersion,
@@ -56,7 +53,7 @@ public record Project(
     this(root, language, buildTool, framework, false);
   }
 
-  /** Creates a project that does not publish artifacts. */
+  /** Creates a project with no workspace, task runner or Xcode scheme. */
   public Project(
       final Path root,
       final Language language,
@@ -69,7 +66,6 @@ public record Project(
         buildTool,
         framework,
         mavenWrapperAvailable,
-        false,
         root,
         Set.of(),
         "",
@@ -85,7 +81,6 @@ public record Project(
         buildTool,
         framework,
         mavenWrapperAvailable,
-        publishesArtifacts,
         repositoryRoot,
         languages,
         languageVersion,
@@ -101,7 +96,6 @@ public record Project(
         buildTool,
         framework,
         mavenWrapperAvailable,
-        publishesArtifacts,
         repositoryRoot,
         languages,
         languageVersion,
@@ -117,7 +111,6 @@ public record Project(
         buildTool,
         framework,
         mavenWrapperAvailable,
-        publishesArtifacts,
         repository,
         languages,
         languageVersion,
@@ -162,14 +155,6 @@ public record Project(
   /** Returns whether the project sits below the repository root rather than at it. */
   public boolean nested() {
     return !projectPath().isEmpty();
-  }
-
-  /**
-   * Returns whether an API-compatibility baseline can exist: Maven needs a released artifact, which
-   * only projects declaring {@code <distributionManagement>} publish; Gradle configures its own.
-   */
-  public boolean hasApiBaseline() {
-    return buildTool != BuildTool.MAVEN || publishesArtifacts;
   }
 
   /** Returns the toolchain of this project's build tool. */

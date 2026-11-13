@@ -34,7 +34,7 @@ class NoticeServiceTest {
         .contains("\nUnknown license\n    mystery:2.0.0 [npm]")
         .contains("\nMIT OR GPL-3.0-only\n    left-pad:1.3.0 [npm]");
     assertThat(text.indexOf("GNU GENERAL PUBLIC LICENSE")).isPositive();
-    assertThat(text).contains("The text of EPL-2.0 is not bundled with Ward.");
+    assertThat(text).contains("The text of EPL-1.0 is not bundled with Ward.");
     assertThat(text.indexOf(APACHE_BODY))
         .as("the Apache text appears once")
         .isPositive()

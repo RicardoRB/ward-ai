@@ -86,7 +86,6 @@ class NodeVersionWarningInitTest {
         manager,
         Framework.NONE,
         false,
-        false,
         root,
         Set.of(),
         node,

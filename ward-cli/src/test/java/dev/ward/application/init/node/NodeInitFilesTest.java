@@ -138,7 +138,6 @@ class NodeInitFilesTest {
         manager,
         Framework.NONE,
         false,
-        false,
         ROOT,
         Set.of(),
         node,

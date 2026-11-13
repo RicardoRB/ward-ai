@@ -58,7 +58,8 @@ final class SpectralParitySmokeTest {
     try {
       final Path root = RuleFixtureSet.root().resolve("openapi");
       for (final CatalogRow row : new RuleCatalogReader().load().rows()) {
-        if (row.languages(CatalogStatus.IMPLEMENTED).contains(AnalysisLanguage.OPENAPI)) {
+        if (row.counterparts().containsKey("spectral")
+            && row.languages(CatalogStatus.IMPLEMENTED).contains(AnalysisLanguage.OPENAPI)) {
           lines.addAll(differences(install, row, root.resolve(row.name())));
         }
       }

@@ -117,7 +117,7 @@ public final class LicenseFixtures {
             "@scope/pkg", declared("Apache-2.0"),
             "left-pad", declared("MIT OR GPL-3.0-only"),
             "com.example:lib", declared("GPL-2.0-only WITH Classpath-exception-2.0"),
-            "com.example:epl", declared("Eclipse Public License 2.0")));
+            "com.example:epl", declared("Eclipse Public License 1.0")));
   }
 
   /** A license service whose inventory fails as an unresolvable project does. */

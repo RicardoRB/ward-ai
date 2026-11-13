@@ -144,13 +144,14 @@ record BuildToolGates(
         Map.of());
   }
 
-  // japicmp:cmp compares the packaged jar, so Maven packages it first.
-  private InitGateOption apiCompat() {
-    final String description = "Checks binary/API compatibility between versions with japicmp.";
-    final String note = " (the comparison baseline is configured in pom.xml.)";
-    return gradle
-        ? option("api-compat", description, note, "japicmp")
-        : option("api-compat", description, note, "-DskipTests", "package", "japicmp:cmp");
+  private static InitGateOption apiCompat() {
+    return new InitGateOption(
+        SupportedQualityGates.API_COMPAT,
+        "Compares the public API with the latest release tag, from sources.",
+        List.of(),
+        true,
+        null,
+        Map.of());
   }
 
   private InitGateOption androidCoverage() {

@@ -66,7 +66,6 @@ class JavaReleaseTest {
         BuildTool.MAVEN,
         Framework.NONE,
         false,
-        false,
         Path.of("."),
         Set.of(),
         version,

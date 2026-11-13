@@ -30,7 +30,6 @@ class ProjectTest {
             BuildTool.NPM,
             Framework.NONE,
             false,
-            false,
             Path.of("app"),
             Set.of(),
             "",

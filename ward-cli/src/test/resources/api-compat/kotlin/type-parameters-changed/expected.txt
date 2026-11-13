@@ -1,0 +1,3 @@
+p/A.kt:3:1 api-compat:type-parameters-changed p.A: public final class p.A<T> -> public final class p.A<T extends java.lang.Comparable<T>>
+p/B.kt:3:1 api-compat:type-parameters-changed p.B: public interface p.B<out T> -> public interface p.B<T>
+p/C.kt:3:1 api-compat:type-parameters-changed p.C: public final class p.C<T> -> public final class p.C<T, U>

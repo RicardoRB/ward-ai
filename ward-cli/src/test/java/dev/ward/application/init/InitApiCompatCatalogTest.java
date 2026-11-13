@@ -14,7 +14,10 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-/** api-compat compares sources with a release tag, so init offers it to Java projects with one. */
+/**
+ * api-compat compares sources with a release tag, so init offers it to Java and Kotlin projects
+ * with one.
+ */
 class InitApiCompatCatalogTest {
   private static final String API_COMPAT = "api-compat";
 
@@ -67,7 +70,7 @@ class InitApiCompatCatalogTest {
   }
 
   @Test
-  void kotlinKeepsJapicmpUntilTheNativeCheckReadsKotlin(@TempDir final Path dir) throws Exception {
+  void offersKotlinApiCompatWithAReleaseTagAndNoCommand(@TempDir final Path dir) throws Exception {
     Files.writeString(dir.resolve("build.gradle.kts"), "plugins { kotlin(\"jvm\") }\n");
     Files.createDirectories(dir.resolve("src/main/kotlin"));
     Files.writeString(dir.resolve("src/main/kotlin/A.kt"), "class A\n");
@@ -77,6 +80,6 @@ class InitApiCompatCatalogTest {
             new InitSetupCatalog(new FakeEnvironmentInspection("gradle").withReleaseTag())
                 .gate(project, API_COMPAT)
                 .command())
-        .endsWith("japicmp");
+        .isEmpty();
   }
 }

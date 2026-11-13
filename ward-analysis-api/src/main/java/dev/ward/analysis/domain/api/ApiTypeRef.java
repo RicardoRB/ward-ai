@@ -12,6 +12,9 @@ import java.util.Objects;
  * @param nullable whether a language with null safety allows {@code null}; false elsewhere
  */
 public record ApiTypeRef(String text, String key, String erasure, boolean nullable) {
+  /** The key of a type that a declaration leaves to the compiler to infer, so it is unknown. */
+  public static final String INFERRED = "<inferred>";
+
   /**
    * Checks the fields.
    *
@@ -21,6 +24,11 @@ public record ApiTypeRef(String text, String key, String erasure, boolean nullab
     Objects.requireNonNull(text, "text");
     Objects.requireNonNull(key, "key");
     Objects.requireNonNull(erasure, "erasure");
+  }
+
+  /** Returns whether the declaration wrote no type, so the type is unknown. */
+  public boolean isInferred() {
+    return INFERRED.equals(key);
   }
 
   /** Returns a type with no type arguments and no type variables, that is not nullable. */

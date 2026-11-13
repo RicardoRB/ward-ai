@@ -1,0 +1,1 @@
+p/A.kt:3:1 api-compat:type-removed p.A: public final class p.A -> removed
