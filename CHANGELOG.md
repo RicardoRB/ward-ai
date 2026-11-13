@@ -8,6 +8,8 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-11-13
+
 ### Added
 
 - Native OpenAPI lint rules, `ward:openapi/*`, for OpenAPI 3.0 and 3.1 documents in YAML or JSON: the OpenAPI 3.x rules of Spectral 6.17.1 (`spectral:oas` with every rule) and of its OWASP ruleset 2.0.1, with Spectral's severities, positions and messages, a JSON Schema validator for the document and the examples, and `$ref` resolution inside the project (#522). `ward rules list` shows them, and `ward-rules.toml` configures them.
@@ -381,6 +383,7 @@ Initial release, published as `sentinel-ai`.
 - A bounded quality loop and a typed gate registry.
 - Starlight documentation site.
 
+[0.8.0]: https://github.com/RicardoRB/ward-ai/compare/v0.7.1...v0.8.0
 [0.7.1]: https://github.com/RicardoRB/ward-ai/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/RicardoRB/ward-ai/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/RicardoRB/ward-ai/compare/v0.5.0...v0.6.0
