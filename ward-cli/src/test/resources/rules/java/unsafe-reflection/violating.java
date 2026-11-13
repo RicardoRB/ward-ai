@@ -10,4 +10,14 @@ class Plugins {
     String name = "com.example.plugins." + type;
     return loader.loadClass(name);
   }
+
+  // A value that another method of the file returns is followed.
+  Object crossMethod(HttpServletRequest request) throws Exception {
+    String type = read(request);
+    return Class.forName(type);
+  }
+
+  String read(HttpServletRequest request) {
+    return request.getParameter("type");
+  }
 }

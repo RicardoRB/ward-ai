@@ -11,4 +11,14 @@ class Rules {
     String text = "#user." + field;
     return parser.parseExpression(text).getValue();
   }
+
+  // A value that another method of the file returns is followed.
+  Object crossMethod(HttpServletRequest request, ExpressionParser parser) {
+    String rule = read(request);
+    return parser.parseExpression(rule).getValue();
+  }
+
+  String read(HttpServletRequest request) {
+    return request.getParameter("rule");
+  }
 }

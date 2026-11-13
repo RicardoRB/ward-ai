@@ -27,7 +27,7 @@ import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
  *
  * <p>A finding on a line of a {@code bad} method is a true positive and one on a line of a {@code
  * good} method is a false positive. Most Juliet cases move the value across methods or classes, so
- * recall of the taint rules is low until call summaries exist.
+ * recall of the taint rules is limited to flows inside one file.
  */
 class SecurityBenchmarkSmokeTest {
 
@@ -38,9 +38,10 @@ class SecurityBenchmarkSmokeTest {
           + "# A finding in a bad method is a true positive (tp, at most one per case), a bad case"
           + " without one is a false negative (fn), and a finding in a good method is a false"
           + " positive (fp).\n"
-          + "# The taint rules find nothing here: Juliet imports types with wildcards (import"
-          + " java.sql.*), which the receiver types of the taint specifications do not follow, and"
-          + " most cases cross a method or a class, which intra-procedural taint does not follow.\n"
+          + "# The taint rules follow wildcard imports of JDK and servlet types and calls between the"
+          + " methods of one file. The remaining false negatives cross a class (the a/b/c variants),"
+          + " pass the value through a field, or read it from an object that the rules do not model,"
+          + " such as the response writer of the XSS cases.\n"
           + "# The CWE-327 false positives are the good cases that call Cipher.getInstance(\"AES\"),"
           + " which the JCA documentation maps to ECB mode, so ward:java/ecb-mode is right.\n"
           + "# Regenerate: ./mvnw -pl ward-cli -am -Dtest=SecurityBenchmarkSmokeTest"

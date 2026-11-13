@@ -11,4 +11,14 @@ class Import {
     String document = request.getParameter("config");
     return yaml.load(document);
   }
+
+  // A value that another method of the file returns is followed.
+  Object crossMethod(HttpServletRequest request, Yaml yaml) {
+    String document = read(request);
+    return yaml.load(document);
+  }
+
+  String read(HttpServletRequest request) {
+    return request.getParameter("config");
+  }
 }

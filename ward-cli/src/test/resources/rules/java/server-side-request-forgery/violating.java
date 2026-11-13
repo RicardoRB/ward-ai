@@ -12,4 +12,14 @@ class Fetcher {
     String address = "http://" + host + "/status";
     return rest.getForObject(address, String.class);
   }
+
+  // A value that another method of the file returns is followed.
+  Object crossMethod(HttpServletRequest request, RestTemplate rest) {
+    String address = read(request);
+    return rest.getForObject(address, String.class);
+  }
+
+  String read(HttpServletRequest request) {
+    return request.getParameter("url");
+  }
 }

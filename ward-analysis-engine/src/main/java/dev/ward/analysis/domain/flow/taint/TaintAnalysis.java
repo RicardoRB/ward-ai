@@ -9,6 +9,7 @@ import dev.ward.analysis.domain.ir.FlowSite;
 import dev.ward.analysis.domain.ir.FlowSiteKind;
 import dev.ward.analysis.domain.ir.FlowStep;
 import dev.ward.analysis.domain.ir.Span;
+import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.ir.VariableAccess;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,29 @@ public final class TaintAnalysis {
       }
     }
     return found;
+  }
+
+  /**
+   * Finds the taint that a return statement of the graph gives back.
+   *
+   * @param graph the control-flow graph of a function
+   * @param spec the taint specification
+   * @return the taint of the first returned value that a source reaches, if any
+   */
+  static Optional<Taint> returned(final ControlFlowGraph graph, final TaintSpec spec) {
+    final ReachingDefinitions reaching = ReachingDefinitions.of(graph);
+    final Map<AccessSite, Taint> origins = TaintOrigins.of(graph, reaching, spec);
+    for (final BasicBlock block : graph.blocks()) {
+      for (final SyntaxNode node : block.nodes()) {
+        final Optional<Taint> taint =
+            TaintReturns.value(node)
+                .flatMap(value -> taintOf(block, value, reaching, origins, spec));
+        if (taint.isPresent()) {
+          return taint;
+        }
+      }
+    }
+    return Optional.empty();
   }
 
   private static List<TaintFinding> sinkFindings(

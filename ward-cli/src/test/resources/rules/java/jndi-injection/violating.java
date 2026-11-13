@@ -11,4 +11,14 @@ class Resources {
     String full = "java:comp/env/" + name;
     return context.lookup(full);
   }
+
+  // A value that another method of the file returns is followed.
+  Object crossMethod(HttpServletRequest request, Context context) throws Exception {
+    String name = read(request);
+    return context.lookup(name);
+  }
+
+  String read(HttpServletRequest request) {
+    return request.getParameter("name");
+  }
 }

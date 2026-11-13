@@ -10,14 +10,4 @@ class Login {
     int page = Integer.parseInt(request.getParameter("page"));
     response.sendRedirect("/page/" + page);
   }
-
-  // The limit: a value that leaves the method is not followed.
-  void crossMethod(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    String next = read(request);
-    response.sendRedirect(next);
-  }
-
-  String read(HttpServletRequest request) {
-    return request.getParameter("next");
-  }
 }

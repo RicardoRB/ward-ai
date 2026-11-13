@@ -509,3 +509,46 @@ name = "org.springframework.web.bind.annotation.CookieValue"
 [[sources]]
 kind = "parameter"
 name = "org.springframework.web.bind.annotation.ModelAttribute"
+
+# Values that the process takes in from outside the program: the environment, system properties,
+# standard input, network sockets, database results, property files and files (CWE-20).
+
+[[sources]]
+kind = "call"
+name = "getenv"
+receiver = "java.lang.System"
+
+[[sources]]
+kind = "call"
+name = "getProperty"
+receiver = "java.lang.System"
+
+[[sources]]
+kind = "member"
+name = "in"
+receiver = "java.lang.System"
+
+[[sources]]
+kind = "call"
+name = "getInputStream"
+receiver = "java.net.Socket"
+
+[[sources]]
+kind = "call"
+name = "getString"
+receiver = "java.sql.ResultSet"
+
+[[sources]]
+kind = "call"
+name = "getProperty"
+receiver = "java.util.Properties"
+
+[[sources]]
+kind = "call"
+name = "<init>"
+receiver = "java.io.FileInputStream"
+
+[[sources]]
+kind = "call"
+name = "<init>"
+receiver = "java.io.FileReader"

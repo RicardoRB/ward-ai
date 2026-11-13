@@ -1,6 +1,7 @@
 package dev.ward.analysis.domain.jvm;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,31 +51,36 @@ final class JavaTypeNames {
       Set.of("boolean", "byte", "char", "short", "int", "long", "float", "double", "void");
 
   private final Map<String, String> imports;
+  private final List<String> wildcards;
   private final String packageName;
 
-  private JavaTypeNames(final Map<String, String> imports, final String packageName) {
+  private JavaTypeNames(
+      final Map<String, String> imports, final List<String> wildcards, final String packageName) {
     this.imports = imports;
+    this.wildcards = wildcards;
     this.packageName = packageName;
   }
 
   /**
-   * Reads the imports and package of a compilation unit. Static and wildcard imports name no single
-   * type, so they are not kept.
+   * Reads the imports and package of a compilation unit. Static imports name no single type, so
+   * they are not kept; the packages of wildcard imports are kept to resolve the types of {@link
+   * JdkTypes}.
    *
    * @param root the root of the syntax tree of the unit
    * @return the names of the unit
    */
   static JavaTypeNames of(final SyntaxNode root) {
     final Map<String, String> imports = new HashMap<>();
+    final List<String> wildcards = new ArrayList<>();
     String packageName = "";
     for (final SyntaxNode child : root.children()) {
       if (IMPORT_DECLARATION.equals(child.kind())) {
-        addImport(child, imports);
+        addImport(child, imports, wildcards);
       } else if (PACKAGE_DECLARATION.equals(child.kind())) {
         packageName = nameOf(child);
       }
     }
-    return new JavaTypeNames(imports, packageName);
+    return new JavaTypeNames(imports, wildcards, packageName);
   }
 
   /**
@@ -97,6 +103,10 @@ final class JavaTypeNames {
     }
     if (JAVA_LANG.contains(erased)) {
       return Optional.of("java.lang." + erased);
+    }
+    final String wildcard = JdkTypes.find(erased, wildcards);
+    if (wildcard != null) {
+      return Optional.of(wildcard);
     }
     return Optional.of(packageName.isEmpty() ? erased : packageName + DOT + erased);
   }
@@ -128,14 +138,17 @@ final class JavaTypeNames {
     return imports.getOrDefault(written, written);
   }
 
-  private static void addImport(final SyntaxNode node, final Map<String, String> imports) {
-    final List<SyntaxNode> parts = JavaFlowSyntax.parts(node);
-    final boolean named =
-        parts.stream()
-            .map(JavaFlowSyntax::text)
-            .noneMatch(text -> STATIC.equals(text) || WILDCARD.equals(text));
+  private static void addImport(
+      final SyntaxNode node, final Map<String, String> imports, final List<String> wildcards) {
+    final List<String> texts =
+        JavaFlowSyntax.parts(node).stream().map(JavaFlowSyntax::text).toList();
     final String name = nameOf(node);
-    if (named && !name.isEmpty()) {
+    if (name.isEmpty() || texts.contains(STATIC)) {
+      return;
+    }
+    if (texts.contains(WILDCARD)) {
+      wildcards.add(name);
+    } else {
       imports.put(name.substring(name.lastIndexOf('.') + 1), name);
     }
   }

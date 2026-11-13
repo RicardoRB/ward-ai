@@ -10,4 +10,14 @@ class Audit {
     String line = "login by " + user;
     log.warn(line);
   }
+
+  // A value that another method of the file returns is followed.
+  void crossMethod(HttpServletRequest request, org.slf4j.Logger log) {
+    String user = read(request);
+    log.info(user);
+  }
+
+  String read(HttpServletRequest request) {
+    return request.getParameter("user");
+  }
 }

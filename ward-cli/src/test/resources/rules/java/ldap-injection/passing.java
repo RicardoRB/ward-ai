@@ -12,14 +12,4 @@ class Directory {
   Object constant(DirContext context) throws Exception {
     return context.search("ou=people", "(objectClass=person)", new SearchControls());
   }
-
-  // The limit: a value that leaves the method is not followed.
-  Object crossMethod(HttpServletRequest request, DirContext context) throws Exception {
-    String filter = read(request);
-    return context.search("ou=people", filter, new SearchControls());
-  }
-
-  String read(HttpServletRequest request) {
-    return request.getParameter("filter");
-  }
 }

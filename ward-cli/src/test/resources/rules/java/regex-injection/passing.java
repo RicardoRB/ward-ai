@@ -9,14 +9,4 @@ class Search {
   Object constant() {
     return Pattern.compile("[a-z]+");
   }
-
-  // The limit: a value that leaves the method is not followed.
-  Object crossMethod(HttpServletRequest request) {
-    String pattern = read(request);
-    return Pattern.compile(pattern);
-  }
-
-  String read(HttpServletRequest request) {
-    return request.getParameter("pattern");
-  }
 }

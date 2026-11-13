@@ -10,14 +10,4 @@ class Resources {
     int shard = Integer.parseInt(request.getParameter("shard"));
     return context.lookup("java:comp/env/jdbc/shard" + shard);
   }
-
-  // The limit: a value that leaves the method is not followed.
-  Object crossMethod(HttpServletRequest request, Context context) throws Exception {
-    String name = read(request);
-    return context.lookup(name);
-  }
-
-  String read(HttpServletRequest request) {
-    return request.getParameter("name");
-  }
 }

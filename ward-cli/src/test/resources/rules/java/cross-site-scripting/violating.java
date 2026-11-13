@@ -11,4 +11,14 @@ class Greeting {
     String page = "<h1>" + name + "</h1>";
     out.write(page);
   }
+
+  // A value that another method of the file returns is followed.
+  void crossMethod(HttpServletRequest request, PrintWriter out) {
+    String name = read(request);
+    out.println(name);
+  }
+
+  String read(HttpServletRequest request) {
+    return request.getParameter("name");
+  }
 }

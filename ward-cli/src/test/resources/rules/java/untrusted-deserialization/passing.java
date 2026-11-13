@@ -10,14 +10,4 @@ class Import {
   Object fromFile(java.io.InputStream stored) throws Exception {
     return new ObjectInputStream(stored).readObject();
   }
-
-  // The limit: a value that leaves the method is not followed.
-  Object crossMethod(HttpServletRequest request, Yaml yaml) {
-    String document = read(request);
-    return yaml.load(document);
-  }
-
-  String read(HttpServletRequest request) {
-    return request.getParameter("config");
-  }
 }

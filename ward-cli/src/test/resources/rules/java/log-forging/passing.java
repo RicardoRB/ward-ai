@@ -10,14 +10,4 @@ class Audit {
   void constant(Logger log) {
     log.info("started");
   }
-
-  // The limit: a value that leaves the method is not followed.
-  void crossMethod(HttpServletRequest request, Logger log) {
-    String user = read(request);
-    log.info(user);
-  }
-
-  String read(HttpServletRequest request) {
-    return request.getParameter("user");
-  }
 }

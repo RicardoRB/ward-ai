@@ -63,3 +63,8 @@ kind = "call"
 name = "parseDouble"
 receiver = "java.lang.Double"
 
+
+[[sanitizers]]
+kind = "call"
+name = "encode"
+receiver = "java.net.URLEncoder"

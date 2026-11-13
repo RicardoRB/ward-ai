@@ -11,4 +11,14 @@ class Lookup {
     String expression = "//user[@name='" + name + "']";
     return xpath.evaluate(expression, document);
   }
+
+  // A value that another method of the file returns is followed.
+  Object crossMethod(HttpServletRequest request, XPath xpath, Object document) throws Exception {
+    String expression = read(request);
+    return xpath.evaluate(expression, document);
+  }
+
+  String read(HttpServletRequest request) {
+    return request.getParameter("query");
+  }
 }

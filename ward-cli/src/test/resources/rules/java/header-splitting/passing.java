@@ -10,14 +10,4 @@ class Headers {
     int version = Integer.parseInt(request.getParameter("version"));
     response.setHeader("X-Version", "v" + version);
   }
-
-  // The limit: a value that leaves the method is not followed.
-  void crossMethod(HttpServletRequest request, HttpServletResponse response) {
-    String origin = read(request);
-    response.setHeader("X-Origin", origin);
-  }
-
-  String read(HttpServletRequest request) {
-    return request.getParameter("origin");
-  }
 }

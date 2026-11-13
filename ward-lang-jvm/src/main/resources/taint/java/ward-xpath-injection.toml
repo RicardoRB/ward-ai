@@ -81,3 +81,23 @@ kind = "call"
 name = "parseDouble"
 receiver = "java.lang.Double"
 
+
+[[sanitizers]]
+kind = "call"
+name = "escapeXml"
+receiver = "org.apache.commons.lang.StringEscapeUtils"
+
+[[sanitizers]]
+kind = "call"
+name = "escapeXml10"
+receiver = "org.apache.commons.lang3.StringEscapeUtils"
+
+[[sanitizers]]
+kind = "call"
+name = "escapeXml10"
+receiver = "org.apache.commons.text.StringEscapeUtils"
+
+[[sanitizers]]
+kind = "call"
+name = "escapeXml11"
+receiver = "org.apache.commons.text.StringEscapeUtils"

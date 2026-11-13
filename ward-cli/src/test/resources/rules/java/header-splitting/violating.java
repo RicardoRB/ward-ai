@@ -11,4 +11,14 @@ class Headers {
     String value = "user=" + name;
     response.addHeader("X-User", value);
   }
+
+  // A value that another method of the file returns is followed.
+  void crossMethod(HttpServletRequest request, HttpServletResponse response) {
+    String origin = read(request);
+    response.setHeader("X-Origin", origin);
+  }
+
+  String read(HttpServletRequest request) {
+    return request.getParameter("origin");
+  }
 }

@@ -11,4 +11,14 @@ class Search {
     String expression = ".*" + term + ".*";
     return text.matches(expression);
   }
+
+  // A value that another method of the file returns is followed.
+  Object crossMethod(HttpServletRequest request) {
+    String pattern = read(request);
+    return Pattern.compile(pattern);
+  }
+
+  String read(HttpServletRequest request) {
+    return request.getParameter("pattern");
+  }
 }
