@@ -15,6 +15,15 @@ class TaintEntryTest {
   private static final Span SPAN = new Span(1, 1, 1, 2, 0, 1);
   private static final String QUERY = "query";
 
+  /** A qualifier that starts with a star matches any qualifier that ends with the rest. */
+  @Test
+  void starQualifierMatchesTheEndOfTheQualifier() {
+    final TaintEntry entry = entry("put", Optional.empty(), Optional.of("*.environment()"));
+
+    assertThat(entry.matches(call("put", Optional.empty(), "builder.environment()"))).isTrue();
+    assertThat(entry.matches(call("put", Optional.empty(), "builder.headers()"))).isFalse();
+  }
+
   /** A name must be equal, whatever the receiver. */
   @Test
   void nameMustBeEqual() {

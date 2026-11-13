@@ -1,0 +1,70 @@
+# Written for Ward from the API documentation named in the catalog row of the rule; sources: taint/java/sources.toml.
+# Session sinks: the name and the value that setAttribute and putValue store in an HttpSession.
+
+[[sinks]]
+kind = "call"
+name = "setAttribute"
+receiver = "javax.servlet.http.HttpSession"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "putValue"
+receiver = "javax.servlet.http.HttpSession"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "setAttribute"
+receiver = "jakarta.servlet.http.HttpSession"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "putValue"
+receiver = "jakarta.servlet.http.HttpSession"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "setAttribute"
+qualifier = "*.getSession()"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "putValue"
+qualifier = "*.getSession()"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "setAttribute"
+qualifier = "*.getSession(true)"
+arguments = [0, 1]
+
+[[sinks]]
+kind = "call"
+name = "putValue"
+qualifier = "*.getSession(true)"
+arguments = [0, 1]
+
+[[sanitizers]]
+kind = "call"
+name = "Integer parseInt"
+receiver = "java.lang."
+
+[[sanitizers]]
+kind = "call"
+name = "Integer valueOf"
+receiver = "java.lang."
+
+[[sanitizers]]
+kind = "call"
+name = "Long parseLong"
+receiver = "java.lang."
+
+[[sanitizers]]
+kind = "call"
+name = "Long valueOf"
+receiver = "java.lang."

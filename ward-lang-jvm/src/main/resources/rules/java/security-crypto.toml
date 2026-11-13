@@ -97,3 +97,59 @@ kinds = ["expression"]
 text = '^(?:java\.sql\.)?DriverManager\.getConnection\([^,()]+,[^,()]+,"[^"]+"\)$|^(?:\w+\.)*setPassword\("[^"]+"\)$|^new(?:java\.net\.)?PasswordAuthentication\([^,()]+,"[^"]+"\.toCharArray\(\)\)$|^new(?:javax\.crypto\.spec\.)?PBEKeySpec\("[^"]+"\.toCharArray\(\)(?:,[^()]*)?\)$'
 message = "this password is a string literal in the source; read it from the environment or a secret store"
 '''
+
+[[rules]]
+id = "ward:java/identity-cipher"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(?:javax\.crypto\.)?NullCipher\(\)$'
+message = "NullCipher returns its input unchanged, so nothing is encrypted; use a Cipher for AES-GCM"
+'''
+
+[[rules]]
+id = "ward:java/static-iv"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(?:javax\.crypto\.spec\.)?IvParameterSpec\((?:"[^"]*"\.getBytes\((?:[^()]|\([^()]*\))*\)|newbyte\[\d+\]|newbyte\[\]\{[^{}]*\})(?:,[^()]*)?\)$'
+message = "this IV is written into the source, so every message gets the same one; generate a random IV per message"
+'''
+
+[[rules]]
+id = "ward:java/constant-gcm-nonce"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^new(?:javax\.crypto\.spec\.)?GCMParameterSpec\(\d+,(?:"[^"]*"\.getBytes\((?:[^()]|\([^()]*\))*\)|newbyte\[\d+\]|newbyte\[\]\{[^{}]*\})(?:,[^()]*)?\)$'
+message = "this GCM nonce is written into the source; reusing a nonce under one key breaks both secrecy and authenticity, so generate a fresh one per message"
+'''
+
+[[rules]]
+id = "ward:java/unauthenticated-cbc"
+language = "java"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["expression"]
+text = '^(?:javax\.crypto\.)?Cipher\.getInstance\("[^"/]+/(?i:CBC)/(?i:PKCS5Padding|PKCS7Padding|ISO10126Padding)"(?:,[^()]*)?\)$'
+message = "CBC with padding does not authenticate the ciphertext, so a padding error can reveal the plaintext; use AES-GCM or add a MAC"
+'''

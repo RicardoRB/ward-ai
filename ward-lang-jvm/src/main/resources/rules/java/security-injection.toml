@@ -169,3 +169,29 @@ check = "taint"
 specs = ["taint/java/sources.toml", "taint/java/ward-regex-injection.toml"]
 message = "untrusted data from {source} becomes a regular expression in {sink}; quote it with Pattern.quote or limit its length"
 '''
+
+[[rules]]
+id = "ward:java/environment-injection"
+language = "java"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/java/ward-environment-injection.toml"]
+message = "untrusted data from {source} sets an environment variable of the process started by {sink}"
+'''
+
+[[rules]]
+id = "ward:java/session-attribute-injection"
+language = "java"
+capability = "DATAFLOW"
+severity = "warning"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/java/ward-session-attribute-injection.toml"]
+message = "untrusted data from {source} is stored in the session by {sink}, where the application treats it as trusted"
+'''

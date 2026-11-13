@@ -137,8 +137,8 @@ sources = ["https://docs.python.org/3/library/sqlite3.html#sqlite3-placeholders"
 
 [[rule]]
 name = "static-iv"
-cwe = ["CWE-329"]
-sources = ["https://nodejs.org/docs/latest-v22.x/api/crypto.html#cryptocreatecipherivalgorithm-key-iv-options", "https://cwe.mitre.org/data/definitions/329.html"]
+cwe = ["CWE-329", "CWE-1204"]
+sources = ["https://nodejs.org/docs/latest-v22.x/api/crypto.html#cryptocreatecipherivalgorithm-key-iv-options", "https://cwe.mitre.org/data/definitions/329.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/crypto/spec/IvParameterSpec.html", "https://cwe.mitre.org/data/definitions/1204.html"]
 
 [[rule]]
 name = "template-autoescape-disabled"
@@ -224,3 +224,28 @@ sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/javax/xm
 name = "xpath-injection"
 cwe = ["CWE-643"]
 sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/javax/xml/xpath/XPath.html", "https://dom4j.github.io/javadoc/2.1.4/org/dom4j/Node.html", "https://cwe.mitre.org/data/definitions/643.html"]
+
+[[rule]]
+name = "identity-cipher"
+cwe = ["CWE-327"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/crypto/NullCipher.html", "https://cwe.mitre.org/data/definitions/327.html"]
+
+[[rule]]
+name = "constant-gcm-nonce"
+cwe = ["CWE-323"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/crypto/spec/GCMParameterSpec.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/crypto/Cipher.html", "https://cwe.mitre.org/data/definitions/323.html"]
+
+[[rule]]
+name = "unauthenticated-cbc"
+cwe = ["CWE-649"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/specs/security/standard-names.html#cipher-algorithm-paddings", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/crypto/Cipher.html", "https://cwe.mitre.org/data/definitions/649.html"]
+
+[[rule]]
+name = "environment-injection"
+cwe = ["CWE-15", "CWE-454"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/ProcessBuilder.html#environment()", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Runtime.html", "https://cwe.mitre.org/data/definitions/15.html", "https://cwe.mitre.org/data/definitions/454.html"]
+
+[[rule]]
+name = "session-attribute-injection"
+cwe = ["CWE-501"]
+sources = ["https://jakarta.ee/specifications/servlet/6.0/apidocs/jakarta.servlet/jakarta/servlet/http/httpsession", "https://cwe.mitre.org/data/definitions/501.html"]
