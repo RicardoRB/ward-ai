@@ -13,7 +13,6 @@ import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.gate.GateStatus;
 import dev.ward.domain.gate.QualityGate;
 import dev.ward.domain.project.Project;
-import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -46,7 +45,6 @@ final class BuildPolicyGate implements QualityGate {
 
   @Override
   public GateResult execute(final Project project) {
-    final long start = System.nanoTime();
     final Optional<RuleConfigFile> file = rules.configuration(project.root(), rulesFile);
     final List<BuildPolicySetting> settings;
     if (file.isPresent()) {
@@ -62,18 +60,17 @@ final class BuildPolicyGate implements QualityGate {
       settings = BuildPolicyConfig.defaults();
     }
     try {
-      return result(service.run(project, name, settings), settings.size(), start);
+      return result(service.run(project, name, settings), settings.size());
     } catch (final BuildFileException | DependencyInventoryException exception) {
       LOGGER.log(Level.FINE, "event=build-policy-error");
       return error("Build policy could not run", exception.getMessage());
     }
   }
 
-  private GateResult result(final List<Finding> findings, final int ruleCount, final long start) {
+  private GateResult result(final List<Finding> findings, final int ruleCount) {
     final long errors =
         findings.stream().filter(finding -> finding.severity() == FindingSeverity.ERROR).count();
     return GateResult.builder(name, errors > 0 ? GateStatus.FAILED : GateStatus.PASSED)
-        .duration(Duration.ofNanos(System.nanoTime() - start))
         .summary(ruleCount + " rule(s), " + findings.size() + " finding(s)")
         .errors(Math.toIntExact(errors))
         .warnings(Math.toIntExact(findings.size() - errors))
