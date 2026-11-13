@@ -1,7 +1,0 @@
-# Process sinks of the Deno runtime: Deno.run executes its first argument array as a command.
-
-[[sinks]]
-kind = "call"
-name = "run"
-qualifier = "Deno"
-arguments = [0]
