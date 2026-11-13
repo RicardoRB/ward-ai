@@ -29,13 +29,13 @@ class CiWorkflowTemplateTest {
   }
 
   @Test
-  void installsOnlyTheToolsTheSelectedGatesRun() {
+  void installsNoExternalGateTools() {
     final String body =
-        CiWorkflowTemplate.render("github", MAVEN, gates("tests", "semgrep"), "0.0.12").body();
+        CiWorkflowTemplate.render("github", MAVEN, gates("tests", "secrets"), "0.0.12").body();
 
     assertThat(body)
-        .contains("pip install semgrep==", "actions/setup-python", "cache: maven")
-        .doesNotContain("gitleaks", "openspec", "fetch-depth");
+        .contains("cache: maven")
+        .doesNotContain("gitleaks", "openspec", "fetch-depth", "pip install", "setup-python");
   }
 
   @Test
@@ -80,7 +80,7 @@ class CiWorkflowTemplateTest {
   @Test
   void rootProjectWorkflowIsUnchanged() throws IOException {
     final OwnedSection workflow =
-        CiWorkflowTemplate.render("github", MAVEN, gates("tests", "secrets", "semgrep"), "0.1.1");
+        CiWorkflowTemplate.render("github", MAVEN, gates("tests", "secrets"), "0.1.1");
 
     assertThat(workflow.body())
         .isEqualTo(Files.readString(Path.of("src/test/resources/ci/ward-root.yml")));

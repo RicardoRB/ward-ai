@@ -18,7 +18,6 @@ import java.util.Set;
  */
 public final class PartialCheckDefaults {
   private static final List<String> WHOLE_PROJECT = List.of("**");
-  private static final List<String> PATHS = List.of("{paths}");
 
   /**
    * The {@code ward} analysis reads every language it has a frontend for, and its configuration and
@@ -53,8 +52,6 @@ public final class PartialCheckDefaults {
       Map.of(
           SupportedQualityGates.ANALYSIS,
           WARD,
-          "semgrep",
-          new Table(WHOLE_PROJECT, List.of(".semgrep*"), PATHS, null, null),
           // Ward scans the edited files itself, so the table names no argument.
           SupportedQualityGates.SECRETS,
           new Table(WHOLE_PROJECT, List.of("ward-rules.toml"), List.of(), null, null));

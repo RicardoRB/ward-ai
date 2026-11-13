@@ -26,16 +26,6 @@ class ConfigurationTemplatePartialTest {
   @TempDir Path dir;
 
   @Test
-  void semgrepPassesEachPathAsItsOwnArgument() throws IOException {
-    final Map<String, GateConfiguration> gates = parse(BuildTool.MAVEN, QualityPreset.STANDARD);
-
-    assertThat(gates.get("semgrep").partial())
-        .isEqualTo(
-            new PartialGateConfiguration(
-                List.of("**"), List.of(".semgrep*"), List.of("{paths}"), null, null));
-  }
-
-  @Test
   void secretsScansEachEditedFileThroughWard() throws IOException {
     final Map<String, GateConfiguration> gates = parse(BuildTool.MAVEN, QualityPreset.STANDARD);
 
@@ -57,8 +47,7 @@ class ConfigurationTemplatePartialTest {
   private Map<String, GateConfiguration> parse(
       final BuildTool buildTool, final QualityPreset preset) throws IOException {
     final List<InitGateOption> options =
-        List.of("compile", "tests", "coverage", "license", "mutation", "secrets", "semgrep")
-            .stream()
+        List.of("compile", "tests", "coverage", "license", "mutation", "secrets").stream()
             .map(
                 id ->
                     new InitGateOption(

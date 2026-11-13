@@ -77,7 +77,7 @@ class JavaScriptGatesTest {
   void noTypeCheckOrLintToolIsOfferedForJavaScript() {
     assertThat(catalog(NO_RUNNER).gates(project(BuildTool.NPM), null))
         .extracting(InitGateOption::id)
-        .doesNotContain("tsc", "eslint", "biome", "semgrep");
+        .doesNotContain("tsc", "eslint", "biome");
   }
 
   @Test
