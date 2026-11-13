@@ -18,8 +18,10 @@ import java.util.regex.Pattern;
 
 /**
  * A method or function of the analysed file that a call in the same file can name: its name, the
- * simple name of its owner, its arity and its graph. Two bodies with one name and arity, such as
- * overloads in two classes, cannot be told apart by a call site, so neither is a local method.
+ * simple name of its owner, its arity and its graph. Java bodies are named {@code
+ * Type#name(arity)}; Node bodies are named by the function name alone, and their arity is the
+ * number of parameters. Two bodies with one name and arity, such as overloads in two classes,
+ * cannot be told apart by a call site, so neither is a local method.
  *
  * @param name the method name
  * @param owner the simple name of the declaring type, or empty
@@ -28,7 +30,7 @@ import java.util.regex.Pattern;
  */
 record LocalMethod(String name, String owner, int arity, ControlFlowGraph graph) {
 
-  private static final Pattern BODY = Pattern.compile("^(?:(.*)#)?([\\w$]+)\\((\\d+)\\)$");
+  private static final Pattern BODY = Pattern.compile("^(?:(.*)#)?([\\w$]+)(?:\\((\\d+)\\))?$");
   private static final String THIS = "this";
   private static final String MARK = "ward:tainted-parameter";
 
@@ -58,8 +60,10 @@ record LocalMethod(String name, String owner, int arity, ControlFlowGraph graph)
     }
     final String scope = body.group(1) == null ? "" : body.group(1);
     final String owner = scope.substring(scope.lastIndexOf('.') + 1);
-    return Optional.of(
-        new LocalMethod(body.group(2), owner, Integer.parseInt(body.group(3)), graph));
+    final LocalMethod method = new LocalMethod(body.group(2), owner, 0, graph);
+    final int arity =
+        body.group(3) == null ? method.parameters().size() : Integer.parseInt(body.group(3));
+    return Optional.of(new LocalMethod(method.name, owner, arity, graph));
   }
 
   /** The key a call with this name and argument count looks up. */

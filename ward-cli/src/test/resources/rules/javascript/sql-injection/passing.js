@@ -10,13 +10,3 @@ export function numeric(req, connection) {
 export function constant(db) {
   db.query('SELECT 1');
 }
-
-// The limit: a value that leaves the function is not followed.
-export function crossFunction(req, db) {
-  const sql = read(req);
-  db.query(sql);
-}
-
-function read(req) {
-  return req.query.sql;
-}

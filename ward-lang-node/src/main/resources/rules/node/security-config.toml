@@ -335,3 +335,143 @@ kinds = ["propertyAssignment"]
 text = '^shell:(?:true|[\"\x27`][^\"\x27`]+[\"\x27`])$'
 message = "the shell option runs the command through a shell, where metacharacters in any argument are interpreted; pass the arguments as an array without it"
 '''
+
+[[rules]]
+id = "ward:javascript/cookie-missing-secure"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?!.*\bsecure:)(?:(?:res|response)\.cookie\((?:[^,(){}]|\([^()]*\))+,(?:[^,(){}]|\([^()]*\))+(?:,\{[^{}]*\})?\)|(?:session|cookieSession)\(\{.*\}\))$'
+message = "this cookie has no secure option, so the browser also sends it over plain http; set secure: true"
+'''
+
+[[rules]]
+id = "ward:javascript/cookie-missing-http-only"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?!.*\bhttpOnly:)(?:res|response)\.cookie\((?:[^,(){}]|\([^()]*\))+,(?:[^,(){}]|\([^()]*\))+(?:,\{[^{}]*\})?\)$'
+message = "res.cookie sets no httpOnly option, so page scripts can read this cookie; set httpOnly: true"
+'''
+
+[[rules]]
+id = "ward:javascript/cookie-missing-same-site"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?!.*\bsameSite:)(?:(?:res|response)\.cookie\((?:[^,(){}]|\([^()]*\))+,(?:[^,(){}]|\([^()]*\))+(?:,\{[^{}]*\})?\)|(?:session|cookieSession)\(\{.*\}\))$|^(?:(?:res|response)\.cookie|session|cookieSession)\(.*\bsameSite:(?:[\"\x27`](?i:none)[\"\x27`]|false).*\)$'
+message = "this cookie is sent with cross-site requests; set sameSite to 'lax' or 'strict'"
+'''
+
+[[rules]]
+id = "ward:javascript/cookie-broad-scope"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:(?:res|response)\.cookie|session|cookieSession)\(.*\b(?:domain:[\"\x27`]\.|path:[\"\x27`]/[\"\x27`]).*\)$'
+message = "this cookie is scoped to every subdomain or to the whole host; narrow its domain and path to the application that needs it"
+'''
+
+[[rules]]
+id = "ward:javascript/missing-frame-protection"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["program"]
+text = '^(?!.*(?i:x-frame-options|frame-ancestors|frameguard|helmet\())(?=.*\bexpress\(\))'
+message = "this Express application sets no X-Frame-Options or frame-ancestors, so other sites can frame it; use helmet or set the header"
+'''
+
+[[rules]]
+id = "ward:typescript/cookie-missing-secure"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?!.*\bsecure:)(?:(?:res|response)\.cookie\((?:[^,(){}]|\([^()]*\))+,(?:[^,(){}]|\([^()]*\))+(?:,\{[^{}]*\})?\)|(?:session|cookieSession)\(\{.*\}\))$'
+message = "this cookie has no secure option, so the browser also sends it over plain http; set secure: true"
+'''
+
+[[rules]]
+id = "ward:typescript/cookie-missing-http-only"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?!.*\bhttpOnly:)(?:res|response)\.cookie\((?:[^,(){}]|\([^()]*\))+,(?:[^,(){}]|\([^()]*\))+(?:,\{[^{}]*\})?\)$'
+message = "res.cookie sets no httpOnly option, so page scripts can read this cookie; set httpOnly: true"
+'''
+
+[[rules]]
+id = "ward:typescript/cookie-missing-same-site"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?!.*\bsameSite:)(?:(?:res|response)\.cookie\((?:[^,(){}]|\([^()]*\))+,(?:[^,(){}]|\([^()]*\))+(?:,\{[^{}]*\})?\)|(?:session|cookieSession)\(\{.*\}\))$|^(?:(?:res|response)\.cookie|session|cookieSession)\(.*\bsameSite:(?:[\"\x27`](?i:none)[\"\x27`]|false).*\)$'
+message = "this cookie is sent with cross-site requests; set sameSite to 'lax' or 'strict'"
+'''
+
+[[rules]]
+id = "ward:typescript/cookie-broad-scope"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:(?:res|response)\.cookie|session|cookieSession)\(.*\b(?:domain:[\"\x27`]\.|path:[\"\x27`]/[\"\x27`]).*\)$'
+message = "this cookie is scoped to every subdomain or to the whole host; narrow its domain and path to the application that needs it"
+'''
+
+[[rules]]
+id = "ward:typescript/missing-frame-protection"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["program"]
+text = '^(?!.*(?i:x-frame-options|frame-ancestors|frameguard|helmet\())(?=.*\bexpress\(\))'
+message = "this Express application sets no X-Frame-Options or frame-ancestors, so other sites can frame it; use helmet or set the header"
+'''

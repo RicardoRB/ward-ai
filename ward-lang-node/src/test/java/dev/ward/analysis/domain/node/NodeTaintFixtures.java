@@ -56,6 +56,16 @@ final class NodeTaintFixtures {
             .orElseThrow();
   }
 
+  /** Lowers a source and runs the file-level analysis on all of its graphs. */
+  static List<dev.ward.analysis.domain.flow.taint.TaintFinding> runFile(
+      final AnalysisLanguage language, final String source) {
+    final String file = language == AnalysisLanguage.TYPESCRIPT ? "src/a.ts" : "src/a.js";
+    final SourceUnit unit = new SourceUnit(file, language, source);
+    final ParseResult parsed = new AntlrLanguageFrontend().parse(unit);
+    return dev.ward.analysis.domain.flow.taint.TaintFile.run(
+        new NodeControlFlow().lower(unit, parsed.tree()).graphs(), SPEC);
+  }
+
   /** The messages of the steps of a path, in order. */
   static List<String> messages(final List<FlowStep> path) {
     return path.stream().map(FlowStep::message).toList();

@@ -42,8 +42,8 @@ public record TaintEntry(
    * @param name the called name, the member name, or the annotation of a parameter
    * @param receiver the receiver type the site must have, when the entry names one
    * @param qualifier the qualifier text the site must have, when the entry names one; a text that
- *     starts with {@code *} matches any qualifier that ends with the rest, such as {@code
- *     *.environment()}
+   *     starts with {@code *} matches any qualifier that ends with the rest, such as {@code
+   *     *.environment()}
    * @param arguments the argument positions a sink guards; empty for other entries
    */
   public TaintEntry(

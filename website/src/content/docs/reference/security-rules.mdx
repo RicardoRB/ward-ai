@@ -16,20 +16,26 @@ only. Change either with `severity` in `ward-rules.toml`, or skip paths with `ex
 
 ## How the rules look
 
-**Injection rules** follow untrusted data inside one function. A source, such as a request
+**Injection rules** follow untrusted data inside one file. A source, such as a request
 parameter, that reaches a sensitive call without passing a sanitizer is reported at the call, and the
 JSON and SARIF output list the source, each write that carried the value, and the sink. A value that
 is a constant, a number, or the result of a sanitizer of the rule is not reported.
 
-The analysis is intra-procedural. A value that is returned to a caller, stored in a field, or passed
-to a helper is not followed, so those flows are missed. The sources and sinks are written as data in
+The analysis follows calls between the functions of one file: a function that returns a value from a
+source is a source for its callers, and a function whose parameter reaches a sink is a sink for that
+argument, to a depth of four calls. A flow that crosses a class in another file, is stored in a field
+and read in another function, or goes through an overload of the same argument count is not followed,
+so those flows are missed. A finding that crosses a call is reported at the call in the caller. The
+sources include the environment, system properties, standard input, sockets, database results and
+files, as well as request data. The sources and sinks are written as data in
 `taint/java/` and `taint/node/` ([writing taint specs](/reference/taint-specs/) describes the format).
 
 **Configuration rules** report a call, option or setting whose written value is known to be
 dangerous, such as `MessageDigest.getInstance("MD5")` or `rejectUnauthorized: false`, and not the
 safe form of the same API. They match the code as written: an algorithm name held in a constant, a
 renamed import or a value set in another file is not seen, and a setting that is dangerous only by
-its absence, such as a missing hardening call, is not reported.
+its absence is reported only where a rule says so, such as a cookie with no `secure` option or an
+Express application with no frame protection.
 
 ## Java
 
@@ -65,6 +71,12 @@ its absence, such as a missing hardening call, is not reported.
 | `ward:java/csrf-protection-disabled` | CWE-352 | warning | strict | CSRF protection is switched off; keep it on for browser clients, or document why this API has none |
 | `ward:java/permissive-cors` | CWE-942 | warning | strict | This setting lets every origin call the API from a browser; list the origins that need access |
 | `ward:java/insecure-cookie` | CWE-614, CWE-1004 | warning | strict | This cookie is allowed over plain http or from scripts; set Secure and HttpOnly |
+| `ward:java/identity-cipher` | CWE-327 | error | standard, strict | `NullCipher` returns its input unchanged, so nothing is encrypted |
+| `ward:java/static-iv` | CWE-329, CWE-1204 | error | standard, strict | An `IvParameterSpec` built from a string, a zero array or an array literal, so every message gets the same IV |
+| `ward:java/constant-gcm-nonce` | CWE-323 | error | standard, strict | A `GCMParameterSpec` built from a constant nonce; reusing a nonce under one key breaks GCM |
+| `ward:java/unauthenticated-cbc` | CWE-649 | warning | strict | CBC with PKCS5, PKCS7 or ISO10126 padding, which does not authenticate the ciphertext and exposes a padding oracle |
+| `ward:java/environment-injection` | CWE-15, CWE-454 | error | standard, strict | Untrusted data as an environment variable of a started process (`ProcessBuilder.environment().put`, the `envp` of `Runtime.exec`) |
+| `ward:java/session-attribute-injection` | CWE-501 | warning | strict | Untrusted data stored with `HttpSession.setAttribute` or `putValue`, where the application treats it as trusted |
 
 ## JavaScript and TypeScript
 
@@ -103,6 +115,14 @@ function is imported from.
 | `ward:javascript/prototype-pollution` | CWE-1321 | error | standard, strict | This write changes the prototype shared by every object; build objects with Object.create(null) or a Map |
 | `ward:javascript/xml-external-entities` | CWE-611 | error | standard, strict | This option makes the XML parser expand external entities or load DTDs, which can read files; turn it off |
 | `ward:javascript/shell-option` | CWE-78 | warning | strict | The shell option runs the command through a shell, where metacharacters in any argument are interpreted; pass the arguments as an array without it |
+| `ward:javascript/cookie-missing-secure` | CWE-614 | warning | strict | `res.cookie`, `session` or `cookieSession` with an options literal that has no `secure` option |
+| `ward:javascript/cookie-missing-http-only` | CWE-1004 | warning | strict | `res.cookie` with no `httpOnly` option (`express-session` and `cookie-session` default to it) |
+| `ward:javascript/cookie-missing-same-site` | CWE-1275 | warning | strict | A cookie with no `sameSite` option, or with `sameSite` set to `none` or `false` |
+| `ward:javascript/cookie-broad-scope` | CWE-668 | warning | strict | A cookie whose `domain` starts with a dot, or whose `path` is `/`, so it reaches every subdomain or every application on the host |
+| `ward:javascript/missing-frame-protection` | CWE-1021 | warning | strict | A file that creates an Express application and mentions neither `X-Frame-Options`, `frame-ancestors`, `frameguard` nor `helmet()`; reported at the start of the file |
+| `ward:javascript/unfinished-aead` | CWE-353 | warning | strict | A function that creates a GCM, CCM, OCB or ChaCha20-Poly1305 cipher and calls `update` but never `final`, which is the call that checks the authentication tag |
+| `ward:javascript/weak-gcm-tag-length` | CWE-328, CWE-353 | error | standard, strict | A GCM `authTagLength` below 12, or a GCM decipher created without `authTagLength`, which accepts a truncated tag |
+| `ward:javascript/weak-argon2-parameters` | CWE-916 | error | standard, strict | `argon2.hash` with `memoryCost` below 19456 KiB or `timeCost` below 2 |
 
 ## Python
 
@@ -123,6 +143,5 @@ and Django.
 
 ## Later
 
-Inter-procedural taint with call summaries, taint rules for Python and Kotlin, and Swift rules are
-planned. The `semgrep` gate still works for projects that configure it, but `ward init` no longer
+Taint across files, taint rules for Python and Kotlin, and Swift rules are planned. The `semgrep` gate still works for projects that configure it, but `ward init` no longer
 offers it.

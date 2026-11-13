@@ -12,3 +12,13 @@ export function template(req: any, pool: any) {
   const name = req.body.name;
   pool.execute(`SELECT * FROM users WHERE name = '${name}'`);
 }
+
+// A value that another function of the file returns is followed.
+export function crossFunction(req: any, db: any) {
+  const sql = read(req);
+  db.query(sql);
+}
+
+function read(req: any) {
+  return req.query.sql;
+}

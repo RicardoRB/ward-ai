@@ -7,3 +7,13 @@ export function propagated(req: any, log: any) {
   const line = 'login by ' + user;
   log.warn(line);
 }
+
+// A value that another function of the file returns is followed.
+export function crossFunction(req: any, logger: any) {
+  const user = read(req);
+  logger.info(user);
+}
+
+function read(req: any) {
+  return req.query.user;
+}

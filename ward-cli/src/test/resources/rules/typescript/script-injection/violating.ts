@@ -7,3 +7,13 @@ export function propagated(req: any, vm: any) {
   const script = 'result = ' + expression;
   vm.runInNewContext(script);
 }
+
+// A value that another function of the file returns is followed.
+export function crossFunction(req: any) {
+  const code = read(req);
+  eval(code);
+}
+
+function read(req: any) {
+  return req.query.code;
+}

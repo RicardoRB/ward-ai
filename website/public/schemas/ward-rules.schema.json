@@ -3383,6 +3383,25 @@
         }
       }
     },
+    "ward:java/constant-gcm-nonce": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/constant-name": {
       "type": "object",
       "additionalProperties": false,
@@ -6037,6 +6056,25 @@
         }
       }
     },
+    "ward:java/environment-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/eos-bad-end-of-stream-check": {
       "type": "object",
       "additionalProperties": false,
@@ -8337,6 +8375,25 @@
       }
     },
     "ward:java/identity-binary-expression": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:java/identity-cipher": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -17678,6 +17735,25 @@
         }
       }
     },
+    "ward:java/session-attribute-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/set-unrecognized": {
       "type": "object",
       "additionalProperties": false,
@@ -18479,6 +18555,25 @@
           }
         },
         "excludes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:java/static-iv": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
           "type": "array",
           "items": {
             "type": "string"
@@ -20031,6 +20126,25 @@
       }
     },
     "ward:java/umac-uncallable-method-of-anonymous-class": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:java/unauthenticated-cbc": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -22463,6 +22577,82 @@
         }
       }
     },
+    "ward:javascript/cookie-broad-scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/cookie-missing-http-only": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/cookie-missing-same-site": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/cookie-missing-secure": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:javascript/dom-xss": {
       "type": "object",
       "additionalProperties": false,
@@ -23275,6 +23465,25 @@
       }
     },
     "ward:javascript/method-name": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/missing-frame-protection": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -27191,6 +27400,25 @@
         }
       }
     },
+    "ward:javascript/unfinished-aead": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:javascript/unsafe-framework-trust": {
       "type": "object",
       "additionalProperties": false,
@@ -28107,7 +28335,45 @@
         }
       }
     },
+    "ward:javascript/weak-argon2-parameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:javascript/weak-cipher": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:javascript/weak-gcm-tag-length": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -50664,6 +50930,82 @@
         }
       }
     },
+    "ward:typescript/cookie-broad-scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/cookie-missing-http-only": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/cookie-missing-same-site": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/cookie-missing-secure": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:typescript/dom-xss": {
       "type": "object",
       "additionalProperties": false,
@@ -51571,6 +51913,25 @@
       }
     },
     "ward:typescript/method-type-parameter-name": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/missing-frame-protection": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -56652,6 +57013,25 @@
         }
       }
     },
+    "ward:typescript/unfinished-aead": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:typescript/unsafe-framework-trust": {
       "type": "object",
       "additionalProperties": false,
@@ -57625,7 +58005,45 @@
         }
       }
     },
+    "ward:typescript/weak-argon2-parameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:typescript/weak-cipher": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:typescript/weak-gcm-tag-length": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -57970,6 +58388,7 @@
               "java.confusing-ternary",
               "java.consecutive-appends-should-reuse",
               "java.consecutive-literal-appends",
+              "java.constant-gcm-nonce",
               "java.constant-name",
               "java.constant-overflow",
               "java.constants-in-interface",
@@ -58106,6 +58525,7 @@
               "java.empty-statement",
               "java.enum-comparison",
               "java.env-use-property-instead-of-env",
+              "java.environment-injection",
               "java.eos-bad-end-of-stream-check",
               "java.eq-abstract-self",
               "java.eq-always-false",
@@ -58225,6 +58645,7 @@
               "java.identical-conditional-branches",
               "java.identifier-name",
               "java.identity-binary-expression",
+              "java.identity-cipher",
               "java.identity-hash-map-boxing",
               "java.iil-pattern-compile-in-loop",
               "java.iil-prepare-statement-in-loop",
@@ -58697,6 +59118,7 @@
               "java.self-comparison",
               "java.self-equals",
               "java.server-side-request-forgery",
+              "java.session-attribute-injection",
               "java.set-unrecognized",
               "java.sf-dead-store-due-to-switch-fallthrough",
               "java.sf-dead-store-due-to-switch-fallthrough-to-throw",
@@ -58739,6 +59161,7 @@
               "java.star-import",
               "java.static-ejb-field-should-be-final",
               "java.static-import",
+              "java.static-iv",
               "java.static-or-default-interface-method",
               "java.static-qualified-using-expression",
               "java.static-variable-name",
@@ -58819,6 +59242,7 @@
               "java.ul-unreleased-lock-exception-path",
               "java.um-unnecessary-math",
               "java.umac-uncallable-method-of-anonymous-class",
+              "java.unauthenticated-cbc",
               "java.unbox-nullable",
               "java.unconditional-if-statement",
               "java.unicode-directionality-characters",
@@ -58943,6 +59367,10 @@
               "javascript.complexity",
               "javascript.constructor-super",
               "javascript.constructors-declaration-grouping",
+              "javascript.cookie-broad-scope",
+              "javascript.cookie-missing-http-only",
+              "javascript.cookie-missing-same-site",
+              "javascript.cookie-missing-secure",
               "javascript.dom-xss",
               "javascript.dot-notation",
               "javascript.duplicate-code",
@@ -58983,6 +59411,7 @@
               "javascript.magic-number",
               "javascript.member-name",
               "javascript.method-name",
+              "javascript.missing-frame-protection",
               "javascript.missing-javadoc-type",
               "javascript.missing-switch-default",
               "javascript.multiline-comment-leading-asterisk-presence",
@@ -59180,6 +59609,7 @@
               "javascript.tls-verification-disabled",
               "javascript.todo-comment",
               "javascript.type-name",
+              "javascript.unfinished-aead",
               "javascript.unsafe-framework-trust",
               "javascript.untrusted-deserialization",
               "javascript.untrusted-redirect",
@@ -59228,7 +59658,9 @@
               "javascript.use-while",
               "javascript.valid-typeof",
               "javascript.variable-declaration-usage-distance",
+              "javascript.weak-argon2-parameters",
               "javascript.weak-cipher",
+              "javascript.weak-gcm-tag-length",
               "javascript.weak-hash",
               "javascript.weak-key-size",
               "javascript.wildcard-post-message",
@@ -60360,6 +60792,10 @@
               "typescript.constructor-super",
               "typescript.constructors-declaration-grouping",
               "typescript.contextual-lifecycle",
+              "typescript.cookie-broad-scope",
+              "typescript.cookie-missing-http-only",
+              "typescript.cookie-missing-same-site",
+              "typescript.cookie-missing-secure",
               "typescript.dom-xss",
               "typescript.dot-notation",
               "typescript.duplicate-code",
@@ -60405,6 +60841,7 @@
               "typescript.member-name",
               "typescript.method-name",
               "typescript.method-type-parameter-name",
+              "typescript.missing-frame-protection",
               "typescript.missing-javadoc-type",
               "typescript.missing-switch-default",
               "typescript.multiline-comment-leading-asterisk-presence",
@@ -60657,6 +61094,7 @@
               "typescript.triple-slash-reference",
               "typescript.type-name",
               "typescript.unbound-method",
+              "typescript.unfinished-aead",
               "typescript.unsafe-framework-trust",
               "typescript.untrusted-deserialization",
               "typescript.untrusted-redirect",
@@ -60708,7 +61146,9 @@
               "typescript.use-while",
               "typescript.valid-typeof",
               "typescript.variable-declaration-usage-distance",
+              "typescript.weak-argon2-parameters",
               "typescript.weak-cipher",
+              "typescript.weak-gcm-tag-length",
               "typescript.weak-hash",
               "typescript.weak-key-size",
               "typescript.wildcard-post-message",
@@ -60891,6 +61331,7 @@
               "java.confusing-ternary",
               "java.consecutive-appends-should-reuse",
               "java.consecutive-literal-appends",
+              "java.constant-gcm-nonce",
               "java.constant-name",
               "java.constant-overflow",
               "java.constants-in-interface",
@@ -61027,6 +61468,7 @@
               "java.empty-statement",
               "java.enum-comparison",
               "java.env-use-property-instead-of-env",
+              "java.environment-injection",
               "java.eos-bad-end-of-stream-check",
               "java.eq-abstract-self",
               "java.eq-always-false",
@@ -61146,6 +61588,7 @@
               "java.identical-conditional-branches",
               "java.identifier-name",
               "java.identity-binary-expression",
+              "java.identity-cipher",
               "java.identity-hash-map-boxing",
               "java.iil-pattern-compile-in-loop",
               "java.iil-prepare-statement-in-loop",
@@ -61618,6 +62061,7 @@
               "java.self-comparison",
               "java.self-equals",
               "java.server-side-request-forgery",
+              "java.session-attribute-injection",
               "java.set-unrecognized",
               "java.sf-dead-store-due-to-switch-fallthrough",
               "java.sf-dead-store-due-to-switch-fallthrough-to-throw",
@@ -61660,6 +62104,7 @@
               "java.star-import",
               "java.static-ejb-field-should-be-final",
               "java.static-import",
+              "java.static-iv",
               "java.static-or-default-interface-method",
               "java.static-qualified-using-expression",
               "java.static-variable-name",
@@ -61740,6 +62185,7 @@
               "java.ul-unreleased-lock-exception-path",
               "java.um-unnecessary-math",
               "java.umac-uncallable-method-of-anonymous-class",
+              "java.unauthenticated-cbc",
               "java.unbox-nullable",
               "java.unconditional-if-statement",
               "java.unicode-directionality-characters",
@@ -61864,6 +62310,10 @@
               "javascript.complexity",
               "javascript.constructor-super",
               "javascript.constructors-declaration-grouping",
+              "javascript.cookie-broad-scope",
+              "javascript.cookie-missing-http-only",
+              "javascript.cookie-missing-same-site",
+              "javascript.cookie-missing-secure",
               "javascript.dom-xss",
               "javascript.dot-notation",
               "javascript.duplicate-code",
@@ -61904,6 +62354,7 @@
               "javascript.magic-number",
               "javascript.member-name",
               "javascript.method-name",
+              "javascript.missing-frame-protection",
               "javascript.missing-javadoc-type",
               "javascript.missing-switch-default",
               "javascript.multiline-comment-leading-asterisk-presence",
@@ -62101,6 +62552,7 @@
               "javascript.tls-verification-disabled",
               "javascript.todo-comment",
               "javascript.type-name",
+              "javascript.unfinished-aead",
               "javascript.unsafe-framework-trust",
               "javascript.untrusted-deserialization",
               "javascript.untrusted-redirect",
@@ -62149,7 +62601,9 @@
               "javascript.use-while",
               "javascript.valid-typeof",
               "javascript.variable-declaration-usage-distance",
+              "javascript.weak-argon2-parameters",
               "javascript.weak-cipher",
+              "javascript.weak-gcm-tag-length",
               "javascript.weak-hash",
               "javascript.weak-key-size",
               "javascript.wildcard-post-message",
@@ -63281,6 +63735,10 @@
               "typescript.constructor-super",
               "typescript.constructors-declaration-grouping",
               "typescript.contextual-lifecycle",
+              "typescript.cookie-broad-scope",
+              "typescript.cookie-missing-http-only",
+              "typescript.cookie-missing-same-site",
+              "typescript.cookie-missing-secure",
               "typescript.dom-xss",
               "typescript.dot-notation",
               "typescript.duplicate-code",
@@ -63326,6 +63784,7 @@
               "typescript.member-name",
               "typescript.method-name",
               "typescript.method-type-parameter-name",
+              "typescript.missing-frame-protection",
               "typescript.missing-javadoc-type",
               "typescript.missing-switch-default",
               "typescript.multiline-comment-leading-asterisk-presence",
@@ -63578,6 +64037,7 @@
               "typescript.triple-slash-reference",
               "typescript.type-name",
               "typescript.unbound-method",
+              "typescript.unfinished-aead",
               "typescript.unsafe-framework-trust",
               "typescript.untrusted-deserialization",
               "typescript.untrusted-redirect",
@@ -63629,7 +64089,9 @@
               "typescript.use-while",
               "typescript.valid-typeof",
               "typescript.variable-declaration-usage-distance",
+              "typescript.weak-argon2-parameters",
               "typescript.weak-cipher",
+              "typescript.weak-gcm-tag-length",
               "typescript.weak-hash",
               "typescript.weak-key-size",
               "typescript.wildcard-post-message",
@@ -64155,6 +64617,9 @@
             "consecutive-literal-appends": {
               "$ref": "#/$defs/ward:java~1consecutive-literal-appends"
             },
+            "constant-gcm-nonce": {
+              "$ref": "#/$defs/ward:java~1constant-gcm-nonce"
+            },
             "constant-name": {
               "$ref": "#/$defs/ward:java~1constant-name"
             },
@@ -64563,6 +65028,9 @@
             "env-use-property-instead-of-env": {
               "$ref": "#/$defs/ward:java~1env-use-property-instead-of-env"
             },
+            "environment-injection": {
+              "$ref": "#/$defs/ward:java~1environment-injection"
+            },
             "eos-bad-end-of-stream-check": {
               "$ref": "#/$defs/ward:java~1eos-bad-end-of-stream-check"
             },
@@ -64919,6 +65387,9 @@
             },
             "identity-binary-expression": {
               "$ref": "#/$defs/ward:java~1identity-binary-expression"
+            },
+            "identity-cipher": {
+              "$ref": "#/$defs/ward:java~1identity-cipher"
             },
             "identity-hash-map-boxing": {
               "$ref": "#/$defs/ward:java~1identity-hash-map-boxing"
@@ -66336,6 +66807,9 @@
             "server-side-request-forgery": {
               "$ref": "#/$defs/ward:java~1server-side-request-forgery"
             },
+            "session-attribute-injection": {
+              "$ref": "#/$defs/ward:java~1session-attribute-injection"
+            },
             "set-unrecognized": {
               "$ref": "#/$defs/ward:java~1set-unrecognized"
             },
@@ -66461,6 +66935,9 @@
             },
             "static-import": {
               "$ref": "#/$defs/ward:java~1static-import"
+            },
+            "static-iv": {
+              "$ref": "#/$defs/ward:java~1static-iv"
             },
             "static-or-default-interface-method": {
               "$ref": "#/$defs/ward:java~1static-or-default-interface-method"
@@ -66701,6 +67178,9 @@
             },
             "umac-uncallable-method-of-anonymous-class": {
               "$ref": "#/$defs/ward:java~1umac-uncallable-method-of-anonymous-class"
+            },
+            "unauthenticated-cbc": {
+              "$ref": "#/$defs/ward:java~1unauthenticated-cbc"
             },
             "unbox-nullable": {
               "$ref": "#/$defs/ward:java~1unbox-nullable"
@@ -67080,6 +67560,18 @@
             "constructors-declaration-grouping": {
               "$ref": "#/$defs/ward:javascript~1constructors-declaration-grouping"
             },
+            "cookie-broad-scope": {
+              "$ref": "#/$defs/ward:javascript~1cookie-broad-scope"
+            },
+            "cookie-missing-http-only": {
+              "$ref": "#/$defs/ward:javascript~1cookie-missing-http-only"
+            },
+            "cookie-missing-same-site": {
+              "$ref": "#/$defs/ward:javascript~1cookie-missing-same-site"
+            },
+            "cookie-missing-secure": {
+              "$ref": "#/$defs/ward:javascript~1cookie-missing-secure"
+            },
             "dom-xss": {
               "$ref": "#/$defs/ward:javascript~1dom-xss"
             },
@@ -67199,6 +67691,9 @@
             },
             "method-name": {
               "$ref": "#/$defs/ward:javascript~1method-name"
+            },
+            "missing-frame-protection": {
+              "$ref": "#/$defs/ward:javascript~1missing-frame-protection"
             },
             "missing-javadoc-type": {
               "$ref": "#/$defs/ward:javascript~1missing-javadoc-type"
@@ -67791,6 +68286,9 @@
             "type-name": {
               "$ref": "#/$defs/ward:javascript~1type-name"
             },
+            "unfinished-aead": {
+              "$ref": "#/$defs/ward:javascript~1unfinished-aead"
+            },
             "unsafe-framework-trust": {
               "$ref": "#/$defs/ward:javascript~1unsafe-framework-trust"
             },
@@ -67935,8 +68433,14 @@
             "variable-declaration-usage-distance": {
               "$ref": "#/$defs/ward:javascript~1variable-declaration-usage-distance"
             },
+            "weak-argon2-parameters": {
+              "$ref": "#/$defs/ward:javascript~1weak-argon2-parameters"
+            },
             "weak-cipher": {
               "$ref": "#/$defs/ward:javascript~1weak-cipher"
+            },
+            "weak-gcm-tag-length": {
+              "$ref": "#/$defs/ward:javascript~1weak-gcm-tag-length"
             },
             "weak-hash": {
               "$ref": "#/$defs/ward:javascript~1weak-hash"
@@ -71367,6 +71871,18 @@
             "contextual-lifecycle": {
               "$ref": "#/$defs/ward:typescript~1contextual-lifecycle"
             },
+            "cookie-broad-scope": {
+              "$ref": "#/$defs/ward:typescript~1cookie-broad-scope"
+            },
+            "cookie-missing-http-only": {
+              "$ref": "#/$defs/ward:typescript~1cookie-missing-http-only"
+            },
+            "cookie-missing-same-site": {
+              "$ref": "#/$defs/ward:typescript~1cookie-missing-same-site"
+            },
+            "cookie-missing-secure": {
+              "$ref": "#/$defs/ward:typescript~1cookie-missing-secure"
+            },
             "dom-xss": {
               "$ref": "#/$defs/ward:typescript~1dom-xss"
             },
@@ -71501,6 +72017,9 @@
             },
             "method-type-parameter-name": {
               "$ref": "#/$defs/ward:typescript~1method-type-parameter-name"
+            },
+            "missing-frame-protection": {
+              "$ref": "#/$defs/ward:typescript~1missing-frame-protection"
             },
             "missing-javadoc-type": {
               "$ref": "#/$defs/ward:typescript~1missing-javadoc-type"
@@ -72258,6 +72777,9 @@
             "unbound-method": {
               "$ref": "#/$defs/ward:typescript~1unbound-method"
             },
+            "unfinished-aead": {
+              "$ref": "#/$defs/ward:typescript~1unfinished-aead"
+            },
             "unsafe-framework-trust": {
               "$ref": "#/$defs/ward:typescript~1unsafe-framework-trust"
             },
@@ -72411,8 +72933,14 @@
             "variable-declaration-usage-distance": {
               "$ref": "#/$defs/ward:typescript~1variable-declaration-usage-distance"
             },
+            "weak-argon2-parameters": {
+              "$ref": "#/$defs/ward:typescript~1weak-argon2-parameters"
+            },
             "weak-cipher": {
               "$ref": "#/$defs/ward:typescript~1weak-cipher"
+            },
+            "weak-gcm-tag-length": {
+              "$ref": "#/$defs/ward:typescript~1weak-gcm-tag-length"
             },
             "weak-hash": {
               "$ref": "#/$defs/ward:typescript~1weak-hash"

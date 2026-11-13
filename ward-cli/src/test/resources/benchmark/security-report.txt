@@ -1,6 +1,6 @@
 # Juliet Java 1.3 (NIST SARD 111, public domain) against Ward's Java security rules.
 # A finding in a bad method is a true positive (tp, at most one per case), a bad case without one is a false negative (fn), and a finding in a good method is a false positive (fp).
-# The taint rules find nothing here: Juliet imports types with wildcards (import java.sql.*), which the receiver types of the taint specifications do not follow, and most cases cross a method or a class, which intra-procedural taint does not follow.
+# The taint rules follow wildcard imports of JDK and servlet types and calls between the methods of one file. The remaining false negatives cross a class (the a/b/c variants), pass the value through a field, or read it from an object that the rules do not model, such as the response writer of the XSS cases.
 # The CWE-327 false positives are the good cases that call Cipher.getInstance("AES"), which the JCA documentation maps to ECB mode, so ward:java/ecb-mode is right.
 # Regenerate: ./mvnw -pl ward-cli -am -Dtest=SecurityBenchmarkSmokeTest -Dward.benchmark.juliet=<dir> -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
 CWE-23 Relative Path Traversal | cases 684 | tp 231 | fn 453 | fp 0 | ward:java/path-injection

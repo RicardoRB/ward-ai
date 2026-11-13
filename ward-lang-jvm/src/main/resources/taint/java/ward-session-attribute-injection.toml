@@ -51,20 +51,20 @@ arguments = [0, 1]
 
 [[sanitizers]]
 kind = "call"
-name = "Integer parseInt"
-receiver = "java.lang."
+name = "parseInt"
+receiver = "java.lang.Integer"
 
 [[sanitizers]]
 kind = "call"
-name = "Integer valueOf"
-receiver = "java.lang."
+name = "valueOf"
+receiver = "java.lang.Integer"
 
 [[sanitizers]]
 kind = "call"
-name = "Long parseLong"
-receiver = "java.lang."
+name = "parseLong"
+receiver = "java.lang.Long"
 
 [[sanitizers]]
 kind = "call"
-name = "Long valueOf"
-receiver = "java.lang."
+name = "valueOf"
+receiver = "java.lang.Long"

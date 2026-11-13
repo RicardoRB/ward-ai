@@ -61,13 +61,17 @@ A sanitizer's result is clean, and a read inside its argument is clean too:
 
 ## Limits
 
-- A rule works within one method. A tainted value passed to a helper method, or stored in a field
-  and read in another method, is not followed. Those cases are missed.
+- A rule follows calls between the methods of one file, matched by name and argument count. A value
+  that crosses into another class of another file, or is stored in a field and read in another
+  method, is not followed. Those cases are missed.
 - The receiver type of a call comes from a declared local, parameter or type name in the file. A
   call on the result of another call, such as `dataSource.getConnection().prepareStatement(...)`, has
   no receiver type and is not matched, except `Runtime.getRuntime().exec`.
-- Annotations resolve only through explicit imports. A spring annotation under a wildcard import
-  (`import org.springframework.web.bind.annotation.*`) is not matched.
+- Types resolve through explicit imports, and through a wildcard import for the types of the JDK
+  packages Ward lists (`java.io`, `java.net`, `java.sql`, `java.util`, `javax.crypto`, the JNDI and
+  XPath packages, and the servlet API). A type of any other wildcard import has no receiver type, and
+  an annotation under a wildcard import (`import org.springframework.web.bind.annotation.*`) is not
+  matched.
 - Taint follows whole statements, so a statement that reads a tainted value and also an unrelated
   value taints what it writes. This adds false positives, such as a whitelist that picks one of two
   constants from a tainted choice.

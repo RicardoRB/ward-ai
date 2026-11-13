@@ -167,3 +167,87 @@ kinds = ["singleExpression"]
 text = '^Math\.random\(\)$'
 message = "Math.random is predictable; use crypto.randomBytes or crypto.randomUUID for tokens, keys and identifiers"
 '''
+
+[[rules]]
+id = "ward:javascript/unfinished-aead"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["functionBody"]
+text = '^(?!.*\.final\()(?!.*return(?:\w+\.)?create)(?=.*\.update\().*\bcreate(?:Cipheriv|Decipheriv)\([\"\x27`][\w-]*(?i:-gcm|-ccm|-ocb|chacha20-poly1305)[\"\x27`]'
+message = "this authenticated cipher is never finished: the authentication tag is checked only by final(), so call it and handle its error"
+'''
+
+[[rules]]
+id = "ward:javascript/weak-gcm-tag-length"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:\w+\.)?create(?:Cipheriv|Decipheriv)\([\"\x27`][\w-]*-gcm[\"\x27`],.*\bauthTagLength:(?:[0-9]|1[01])\b.*\)$|^(?:\w+\.)?createDecipheriv\([\"\x27`][\w-]*-gcm[\"\x27`],(?:[^,(){}]|\([^()]*\))+,(?:[^,(){}]|\([^()]*\))+(?:,\{(?:(?!authTagLength)[^{}])*\})?\)$'
+message = "a GCM tag shorter than 12 bytes, or a decipher that accepts any length, makes forgery cheap; pass authTagLength: 16"
+'''
+
+[[rules]]
+id = "ward:javascript/weak-argon2-parameters"
+language = "JAVASCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:\w+\.)?argon2\.hash\(.*,\{[^{}]*(?:\bmemoryCost:(?:\d{1,4}|1[0-8]\d{3}|19[0-3]\d{2}|194[0-4]\d|1945[0-5]|2\*\*(?:\d|1[0-3]))(?![\d*])|\btimeCost:[01]\b)[^{}]*\}\)$'
+message = "these Argon2 parameters are too cheap to slow password guessing; use at least 19456 KiB of memory and a timeCost of 2"
+'''
+
+[[rules]]
+id = "ward:typescript/unfinished-aead"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "WARNING"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["functionBody"]
+text = '^(?!.*\.final\()(?!.*return(?:\w+\.)?create)(?=.*\.update\().*\bcreate(?:Cipheriv|Decipheriv)\([\"\x27`][\w-]*(?i:-gcm|-ccm|-ocb|chacha20-poly1305)[\"\x27`]'
+message = "this authenticated cipher is never finished: the authentication tag is checked only by final(), so call it and handle its error"
+'''
+
+[[rules]]
+id = "ward:typescript/weak-gcm-tag-length"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:\w+\.)?create(?:Cipheriv|Decipheriv)\([\"\x27`][\w-]*-gcm[\"\x27`],.*\bauthTagLength:(?:[0-9]|1[01])\b.*\)$|^(?:\w+\.)?createDecipheriv\([\"\x27`][\w-]*-gcm[\"\x27`],(?:[^,(){}]|\([^()]*\))+,(?:[^,(){}]|\([^()]*\))+(?:,\{(?:(?!authTagLength)[^{}])*\})?\)$'
+message = "a GCM tag shorter than 12 bytes, or a decipher that accepts any length, makes forgery cheap; pass authTagLength: 16"
+'''
+
+[[rules]]
+id = "ward:typescript/weak-argon2-parameters"
+language = "TYPESCRIPT"
+capability = "SYNTAX"
+severity = "ERROR"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "forbidden-node"
+kinds = ["singleExpression"]
+text = '^(?:\w+\.)?argon2\.hash\(.*,\{[^{}]*(?:\bmemoryCost:(?:\d{1,4}|1[0-8]\d{3}|19[0-3]\d{2}|194[0-4]\d|1945[0-5]|2\*\*(?:\d|1[0-3]))(?![\d*])|\btimeCost:[01]\b)[^{}]*\}\)$'
+message = "these Argon2 parameters are too cheap to slow password guessing; use at least 19456 KiB of memory and a timeCost of 2"
+'''

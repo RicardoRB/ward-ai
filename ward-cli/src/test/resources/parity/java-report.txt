@@ -1,7 +1,7 @@
 # Java parity report: Ward rules against Checkstyle 14.3.0, PMD 7.29.0, SpotBugs 4.9.7,
 # Error Prone 2.50.0 with NullAway 0.14.2.
 # rule, tool, tool id, outcome, note. Regenerate with -Dward.parity.write=true.
-# - no-counterpart: 45
+# - no-counterpart: 51
 # checkstyle agree: 79
 # checkstyle agree-lines: 45
 # checkstyle anchor-differs: 3
@@ -198,6 +198,7 @@ confusing-argument-to-varargs-method	pmd	ConfusingArgumentToVarargsMethod	agree-
 confusing-ternary	pmd	ConfusingTernary	approximation	PMD exempts a comparison with null (line 3) and reports the negated if with an else-if (passing line 11); Ward does the reverse
 consecutive-appends-should-reuse	pmd	ConsecutiveAppendsShouldReuse	agree	
 consecutive-literal-appends	pmd	ConsecutiveLiteralAppends	agree-lines	
+constant-gcm-nonce	-	-	no-counterpart	
 constant-name	checkstyle	ConstantName	agree	
 constant-overflow	errorprone	ConstantOverflow	approximation	Error Prone reports the multiplication of literals (line 3) but not Integer.MAX_VALUE + 1 (line 4), which Ward reports
 constants-in-interface	pmd	ConstantsInInterface	agree-lines	
@@ -344,6 +345,7 @@ empty-statement	checkstyle	EmptyStatement	agree
 empty-statement	pmd	UnnecessarySemicolon	agree	
 enum-comparison	pmd	EnumComparison	agree	
 env-use-property-instead-of-env	spotbugs	ENV_USE_PROPERTY_INSTEAD_OF_ENV	agree-lines	
+environment-injection	-	-	no-counterpart	
 eos-bad-end-of-stream-check	spotbugs	EOS_BAD_END_OF_STREAM_CHECK	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 eq-abstract-self	spotbugs	EQ_ABSTRACT_SELF	agree-lines	
 eq-always-false	spotbugs	EQ_ALWAYS_FALSE	anchor-differs	tool lines [3], on passing [], fixture [2]
@@ -487,6 +489,7 @@ identical-catch-branches	pmd	IdenticalCatchBranches	approximation	PMD also repor
 identical-conditional-branches	pmd	IdenticalConditionalBranches	agree	
 identifier-name	errorprone	IdentifierName	agree	
 identity-binary-expression	errorprone	IdentityBinaryExpression	agree-lines	
+identity-cipher	-	-	no-counterpart	
 identity-hash-map-boxing	errorprone	IdentityHashMapBoxing	not-comparable	the fixture does not compile
 iil-pattern-compile-in-loop	spotbugs	IIL_PATTERN_COMPILE_IN_LOOP	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 iil-prepare-statement-in-loop	spotbugs	IIL_PREPARE_STATEMENT_IN_LOOP	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
@@ -981,6 +984,7 @@ self-assignment	errorprone	SelfAssignment	agree-lines
 self-comparison	errorprone	SelfComparison	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 self-equals	errorprone	SelfEquals	agree-lines	
 server-side-request-forgery	-	-	no-counterpart	
+session-attribute-injection	-	-	no-counterpart	
 set-unrecognized	errorprone	SetUnrecognized	not-comparable	the fixture does not compile
 sf-dead-store-due-to-switch-fallthrough	spotbugs	SF_DEAD_STORE_DUE_TO_SWITCH_FALLTHROUGH	anchor-differs	tool lines [8], on passing [], fixture [4]
 sf-dead-store-due-to-switch-fallthrough-to-throw	spotbugs	SF_DEAD_STORE_DUE_TO_SWITCH_FALLTHROUGH_TO_THROW	not-comparable	the fixture does not compile
@@ -1028,6 +1032,7 @@ star-import	errorprone	WildcardImport	agree
 star-import	pmd	OnDemandImport	agree	
 static-ejb-field-should-be-final	pmd	StaticEJBFieldShouldBeFinal	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 static-import	checkstyle	AvoidStaticImport	agree-lines	
+static-iv	-	-	no-counterpart	
 static-or-default-interface-method	errorprone	StaticOrDefaultInterfaceMethod	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 static-qualified-using-expression	errorprone	StaticQualifiedUsingExpression	agree-lines	
 static-variable-name	checkstyle	StaticVariableName	agree	
@@ -1110,6 +1115,7 @@ ul-unreleased-lock	spotbugs	UL_UNRELEASED_LOCK	tool-silent	the tool reports noth
 ul-unreleased-lock-exception-path	spotbugs	UL_UNRELEASED_LOCK_EXCEPTION_PATH	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 um-unnecessary-math	spotbugs	UM_UNNECESSARY_MATH	agree-lines	
 umac-uncallable-method-of-anonymous-class	spotbugs	UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS	approximation	SpotBugs reports the anonymous class (line 3), and one in the passing fixture (line 10); Ward reports the uncallable method (line 7)
+unauthenticated-cbc	-	-	no-counterpart	
 unbox-nullable	nullaway	UNBOX_NULLABLE	approximation	NullAway also reports the return of an Integer assigned from a @Nullable parameter (passing line 13); Ward does not
 unconditional-if-statement	pmd	UnconditionalIfStatement	agree	
 unicode-directionality-characters	errorprone	UnicodeDirectionalityCharacters	not-comparable	the fixture does not compile
