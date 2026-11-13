@@ -24,6 +24,16 @@ class BuildPolicyGateTest {
             });
   }
 
+  /**
+   * The JSON report prints the duration in milliseconds. A measured wall-clock time made two runs
+   * over the same files print 1 and 0, so a cached run did not repeat a cold run on a slow machine.
+   */
+  @Test
+  void theResultCarriesNoMeasuredDuration() {
+    assertThat(GateFixtures.run(GateFixtures.model(), null).duration()).isZero();
+    assertThat(GateFixtures.run(root -> BuildModel.EMPTY, null).duration()).isZero();
+  }
+
   @Test
   void aProjectWithNoBuildFileGetsAPass() {
     assertThat(GateFixtures.run(root -> BuildModel.EMPTY, null).status())

@@ -1,7 +1,7 @@
 # Java parity report: Ward rules against Checkstyle 14.3.0, PMD 7.29.0, SpotBugs 4.9.7,
 # Error Prone 2.50.0 with NullAway 0.14.2.
 # rule, tool, tool id, outcome, note. Regenerate with -Dward.parity.write=true.
-# - no-counterpart: 16
+# - no-counterpart: 45
 # checkstyle agree: 79
 # checkstyle agree-lines: 45
 # checkstyle anchor-differs: 3
@@ -26,7 +26,7 @@
 # spotbugs agree-lines: 168
 # spotbugs anchor-differs: 41
 # spotbugs approximation: 16
-# spotbugs not-comparable: 117
+# spotbugs not-comparable: 120
 # spotbugs tool-silent: 126
 aa-assertion-of-arguments	spotbugs	AA_ASSERTION_OF_ARGUMENTS	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 abbreviation-as-word-in-name	checkstyle	AbbreviationAsWordInName	approximation	Ward's default pattern rejects any two consecutive capitals, as Google style does; Checkstyle allows up to four by default
@@ -164,6 +164,7 @@ class-fan-out-complexity	pmd	CouplingBetweenObjects	agree-lines
 class-member-implied-modifier	checkstyle	ClassMemberImpliedModifier	agree	
 class-name	errorprone	ClassName	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 class-type-parameter-name	checkstyle	ClassTypeParameterName	approximation	the passing fixture uses names such as KeyT, which Checkstyle's default pattern (one capital letter) rejects
+cleartext-transport	-	-	no-counterpart	
 clone-method-must-be-public	pmd	CloneMethodMustBePublic	agree-lines	
 clone-method-must-implement-cloneable	pmd	CloneMethodMustImplementCloneable	anchor-differs	tool lines [2], on passing [], fixture [1]
 clone-method-return-type-must-match-class-name	pmd	CloneMethodReturnTypeMustMatchClassName	agree-lines	
@@ -205,6 +206,10 @@ constructors-declaration-grouping	checkstyle	ConstructorsDeclarationGrouping	agr
 control-statement-braces	pmd	ControlStatementBraces	anchor-differs	tool lines [3, 4, 5, 8], on passing [], fixture [3, 4, 5, 6]
 covariant-equals	checkstyle	CovariantEquals	agree	
 covariant-equals	spotbugs	EQ_OTHER_USE_OBJECT	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
+cross-site-scripting	spotbugs	XSS_REQUEST_PARAMETER_TO_JSP_WRITER	not-comparable	the fixture does not compile
+cross-site-scripting	spotbugs	XSS_REQUEST_PARAMETER_TO_SEND_ERROR	not-comparable	the fixture does not compile
+cross-site-scripting	spotbugs	XSS_REQUEST_PARAMETER_TO_SERVLET_WRITER	not-comparable	the fixture does not compile
+csrf-protection-disabled	-	-	no-counterpart	
 ct-constructor-throw	spotbugs	CT_CONSTRUCTOR_THROW	approximation	SpotBugs reports the throw statement (line 4), also in a constructor of the passing fixture (line 22); Ward reports the constructor (line 2)
 custom-import-order	checkstyle	CustomImportOrder	approximation	Checkstyle's CustomImportOrder reports nothing on the violating fixture without a customImportOrderRules property and reports a line of the passing one; Ward orders static imports last
 cwo-closed-without-opened	spotbugs	CWO_CLOSED_WITHOUT_OPENED	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
@@ -321,6 +326,7 @@ ec-null-arg	spotbugs	EC_NULL_ARG	agree-lines
 ec-unrelated-class-and-interface	spotbugs	EC_UNRELATED_CLASS_AND_INTERFACE	not-comparable	the fixture does not compile
 ec-unrelated-interfaces	spotbugs	EC_UNRELATED_INTERFACES	not-comparable	the fixture does not compile
 ec-unrelated-types-using-pointer-equality	spotbugs	EC_UNRELATED_TYPES_USING_POINTER_EQUALITY	not-comparable	the fixture does not compile
+ecb-mode	-	-	no-counterpart	
 ei-expose-buf	spotbugs	EI_EXPOSE_BUF	not-comparable	the fixture does not compile
 ei-expose-buf2	spotbugs	EI_EXPOSE_BUF2	not-comparable	the fixture does not compile
 ei-expose-rep	spotbugs	EI_EXPOSE_REP	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
@@ -385,6 +391,7 @@ executable-statement-count	checkstyle	ExecutableStatementCount	agree
 exhaustive-switch-has-default	pmd	ExhaustiveSwitchHasDefault	anchor-differs	tool lines [8], on passing [], fixture [13]
 explicit-initialization	checkstyle	ExplicitInitialization	agree	
 explicit-initialization	pmd	RedundantFieldInitializer	agree	
+expression-injection	-	-	no-counterpart	
 extends-auto-value	errorprone	ExtendsAutoValue	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 extends-object	errorprone	ExtendsObject	not-comparable	the fixture does not compile
 extends-object	pmd	ExtendsObject	agree-lines	
@@ -448,6 +455,7 @@ guice-assisted-inject-scoping	errorprone	GuiceAssistedInjectScoping	not-comparab
 guice-assisted-parameters	errorprone	GuiceAssistedParameters	not-comparable	the fixture does not compile
 guice-inject-on-final-field	errorprone	GuiceInjectOnFinalField	not-comparable	the fixture does not compile
 hard-coded-crypto-key	pmd	HardCodedCryptoKey	agree-lines	
+hard-coded-password	-	-	no-counterpart	
 hashtable-contains	errorprone	HashtableContains	agree-lines	
 he-equals-use-hashcode	spotbugs	HE_EQUALS_USE_HASHCODE	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 he-hashcode-no-equals	spotbugs	HE_HASHCODE_NO_EQUALS	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
@@ -455,9 +463,11 @@ he-hashcode-use-object-equals	spotbugs	HE_HASHCODE_USE_OBJECT_EQUALS	not-compara
 he-inherits-equals-use-hashcode	spotbugs	HE_INHERITS_EQUALS_USE_HASHCODE	not-comparable	the fixture does not compile
 he-signature-declares-hashing-of-unhashable-class	spotbugs	HE_SIGNATURE_DECLARES_HASHING_OF_UNHASHABLE_CLASS	not-comparable	the fixture does not compile
 he-use-of-unhashable-class	spotbugs	HE_USE_OF_UNHASHABLE_CLASS	not-comparable	the fixture does not compile
+header-splitting	-	-	no-counterpart	
 hidden-field	checkstyle	HiddenField	agree	
 hide-utility-class-constructor	checkstyle	HideUtilityClassConstructor	agree-lines	
 hide-utility-class-constructor	pmd	UseUtilityClass	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
+hostname-verification-disabled	-	-	no-counterpart	
 hrs-request-parameter-to-cookie	spotbugs	HRS_REQUEST_PARAMETER_TO_COOKIE	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 hrs-request-parameter-to-http-header	spotbugs	HRS_REQUEST_PARAMETER_TO_HTTP_HEADER	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 hsc-huge-shared-string-constant	spotbugs	HSC_HUGE_SHARED_STRING_CONSTANT	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
@@ -524,8 +534,10 @@ inject-more-than-one-scope-annotation-on-class	errorprone	InjectMoreThanOneScope
 inject-on-member-and-constructor	errorprone	InjectOnMemberAndConstructor	not-comparable	the fixture does not compile
 inline-me-validator	errorprone	InlineMeValidator	not-comparable	the fixture does not compile
 inner-type-last	checkstyle	InnerTypeLast	agree	
+insecure-cookie	-	-	no-counterpart	
 insecure-crypto-iv	pmd	InsecureCryptoIv	agree-lines	
 insecure-crypto-usage	errorprone	InsecureCryptoUsage	agree-lines	
+insecure-random	-	-	no-counterpart	
 instant-temporal-unit	errorprone	InstantTemporalUnit	agree-lines	
 instantiable-utility-class	pmd	InstantiableUtilityClass	agree-lines	
 instantiation-to-get-class	pmd	InstantiationToGetClass	agree	
@@ -588,15 +600,18 @@ jcip-field-isnt-final-in-immutable-class	spotbugs	JCIP_FIELD_ISNT_FINAL_IN_IMMUT
 jlm-jsr166-lock-monitorenter	spotbugs	JLM_JSR166_LOCK_MONITORENTER	agree-lines	
 jlm-jsr166-utilconcurrent-monitorenter	spotbugs	JLM_JSR166_UTILCONCURRENT_MONITORENTER	agree-lines	
 jml-jsr166-calling-wait-rather-than-await	spotbugs	JML_JSR166_CALLING_WAIT_RATHER_THAN_AWAIT	agree-lines	
+jndi-injection	-	-	no-counterpart	
 joda-to-self	errorprone	JodaToSelf	not-comparable	the fixture does not compile
 jua-dont-assert-instanceof-in-tests	spotbugs	JUA_DONT_ASSERT_INSTANCEOF_IN_TESTS	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 jumbled-incrementer	pmd	JumbledIncrementer	agree	
+jwt-without-verification	-	-	no-counterpart	
 labeled-statement	pmd	LabeledStatement	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 labelled-break-target	errorprone	LabelledBreakTarget	agree	
 lambda-body-length	checkstyle	LambdaBodyLength	agree-lines	
 lambda-can-be-method-reference	pmd	LambdaCanBeMethodReference	agree	
 lambda-parameter-name	checkstyle	LambdaParameterName	agree	
 law-of-demeter	pmd	LawOfDemeter	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
+ldap-injection	-	-	no-counterpart	
 left-curly	checkstyle	LeftCurly	agree	
 lenient-format-string-validation	errorprone	LenientFormatStringValidation	not-comparable	the fixture does not compile
 lg-lost-logger-due-to-weak-reference	spotbugs	LG_LOST_LOGGER_DUE_TO_WEAK_REFERENCE	agree-lines	
@@ -614,6 +629,7 @@ local-variable-declaration-should-be-at-start-of-block	pmd	LocalVariableDeclarat
 local-variable-name	checkstyle	LocalVariableName	agree	
 local-variable-name	pmd	LocalVariableNamingConventions	agree	
 lock-on-boxed-primitive	errorprone	LockOnBoxedPrimitive	agree	
+log-forging	-	-	no-counterpart	
 logic-inversion	pmd	LogicInversion	agree-lines	
 long-literal-ending-with-lowercase-l	pmd	LongLiteralEndingWithLowercaseL	agree	
 long-literal-lower-case-suffix	errorprone	LongLiteralLowerCaseSuffix	agree	
@@ -831,6 +847,7 @@ period-from	errorprone	PeriodFrom	not-comparable	the fixture does not compile
 period-get-temporal-unit	errorprone	PeriodGetTemporalUnit	agree-lines	
 period-time-math	errorprone	PeriodTimeMath	not-comparable	the fixture does not compile
 perm-super-not-called-in-getpermissions	spotbugs	PERM_SUPER_NOT_CALLED_IN_GETPERMISSIONS	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
+permissive-cors	-	-	no-counterpart	
 pi-do-not-reuse-public-identifiers-class-names	spotbugs	PI_DO_NOT_REUSE_PUBLIC_IDENTIFIERS_CLASS_NAMES	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 pi-do-not-reuse-public-identifiers-field-names	spotbugs	PI_DO_NOT_REUSE_PUBLIC_IDENTIFIERS_FIELD_NAMES	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 pi-do-not-reuse-public-identifiers-local-variable-names	spotbugs	PI_DO_NOT_REUSE_PUBLIC_IDENTIFIERS_LOCAL_VARIABLE_NAMES	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
@@ -886,6 +903,7 @@ redundant-setter-call	errorprone	RedundantSetterCall	not-comparable	the fixture 
 refers-to-dagger-codegen	errorprone	RefersToDaggerCodegen	not-comparable	the fixture does not compile
 reflc-reflection-may-increase-accessibility-of-class	spotbugs	REFLC_REFLECTION_MAY_INCREASE_ACCESSIBILITY_OF_CLASS	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 reflf-reflection-may-increase-accessibility-of-field	spotbugs	REFLF_REFLECTION_MAY_INCREASE_ACCESSIBILITY_OF_FIELD	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
+regex-injection	-	-	no-counterpart	
 regexp-singleline	checkstyle	RegexpSingleline	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 reliance-on-default-charset	pmd	RelianceOnDefaultCharset	agree-lines	
 remote-interface-naming-convention	pmd	RemoteInterfaceNamingConvention	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
@@ -910,6 +928,7 @@ right-curly	checkstyle	RightCurly	agree
 rp-c-repeated-conditional-test	spotbugs	RpC_REPEATED_CONDITIONAL_TEST	approximation	SpotBugs reports the repeated operand of || (line 3) but not the repeated else-if test (line 7), which Ward reports
 rr-not-checked	spotbugs	RR_NOT_CHECKED	agree-lines	
 rs-readobject-sync	spotbugs	RS_READOBJECT_SYNC	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
+rsa-without-padding	-	-	no-counterpart	
 ru-invoke-run	spotbugs	RU_INVOKE_RUN	not-comparable	the fixture does not compile
 rv-01-to-int	spotbugs	RV_01_TO_INT	agree-lines	
 rv-absolute-value-of-hashcode	spotbugs	RV_ABSOLUTE_VALUE_OF_HASHCODE	agree-lines	
@@ -937,6 +956,7 @@ sa-local-self-comparison	spotbugs	SA_LOCAL_SELF_COMPARISON	agree-lines
 sa-local-self-computation	spotbugs	SA_LOCAL_SELF_COMPUTATION	agree-lines	
 sbsc-use-stringbuffer-concatenation	spotbugs	SBSC_USE_STRINGBUFFER_CONCATENATION	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 sc-start-in-ctor	spotbugs	SC_START_IN_CTOR	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
+script-injection	-	-	no-counterpart	
 se-bad-field	spotbugs	SE_BAD_FIELD	not-comparable	the fixture does not compile
 se-bad-field-inner-class	spotbugs	SE_BAD_FIELD_INNER_CLASS	not-comparable	the fixture does not compile
 se-bad-field-store	spotbugs	SE_BAD_FIELD_STORE	not-comparable	the fixture does not compile
@@ -960,6 +980,7 @@ self-assertion	errorprone	SelfAssertion	not-comparable	the fixture does not comp
 self-assignment	errorprone	SelfAssignment	agree-lines	
 self-comparison	errorprone	SelfComparison	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 self-equals	errorprone	SelfEquals	agree-lines	
+server-side-request-forgery	-	-	no-counterpart	
 set-unrecognized	errorprone	SetUnrecognized	not-comparable	the fixture does not compile
 sf-dead-store-due-to-switch-fallthrough	spotbugs	SF_DEAD_STORE_DUE_TO_SWITCH_FALLTHROUGH	anchor-differs	tool lines [8], on passing [], fixture [4]
 sf-dead-store-due-to-switch-fallthrough-to-throw	spotbugs	SF_DEAD_STORE_DUE_TO_SWITCH_FALLTHROUGH_TO_THROW	not-comparable	the fixture does not compile
@@ -1068,6 +1089,7 @@ tq-maybe-source-value-reaches-never-sink	spotbugs	TQ_MAYBE_SOURCE_VALUE_REACHES_
 tq-never-value-used-where-always-required	spotbugs	TQ_NEVER_VALUE_USED_WHERE_ALWAYS_REQUIRED	not-comparable	the fixture does not compile
 tq-unknown-value-used-where-always-strictly-required	spotbugs	TQ_UNKNOWN_VALUE_USED_WHERE_ALWAYS_STRICTLY_REQUIRED	not-comparable	the fixture does not compile
 tree-to-string	errorprone	TreeToString	not-comparable	the fixture does not compile
+trust-all-certificates	-	-	no-counterpart	
 try-fail-throwable	errorprone	TryFailThrowable	not-comparable	the fixture does not compile
 type-name	checkstyle	TypeName	agree	
 type-name	pmd	ClassNamingConventions	agree	
@@ -1119,9 +1141,13 @@ unnecessary-type-argument	errorprone	UnnecessaryTypeArgument	tool-silent	the too
 unnecessary-varargs-array-creation	pmd	UnnecessaryVarargsArrayCreation	agree-lines	
 unnecessary-warning-suppression	pmd	UnnecessaryWarningSuppression	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 unrecognized-nullness-annotation-location	nullaway	UNRECOGNIZED_NULLNESS_ANNOTATION_LOCATION	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
+unsafe-deserialization-settings	-	-	no-counterpart	
+unsafe-reflection	-	-	no-counterpart	
 unsafe-wildcard	errorprone	UnsafeWildcard	not-comparable	the fixture does not compile
 unsupported-jdk-api-usage	pmd	UnsupportedJdkApiUsage	agree	
 unsynchronized-static-formatter	pmd	UnsynchronizedStaticFormatter	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
+untrusted-deserialization	-	-	no-counterpart	
+untrusted-redirect	-	-	no-counterpart	
 unused-anonymous-class	errorprone	UnusedAnonymousClass	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 unused-assignment	pmd	UnusedAssignment	agree-lines	
 unused-collection-modified-in-place	errorprone	UnusedCollectionModifiedInPlace	not-comparable	the fixture does not compile
@@ -1189,6 +1215,10 @@ vo-volatile-reference-to-array	spotbugs	VO_VOLATILE_REFERENCE_TO_ARRAY	anchor-di
 vsc-vulnerable-security-check-methods	spotbugs	VSC_VULNERABLE_SECURITY_CHECK_METHODS	anchor-differs	tool lines [3], on passing [], fixture [2]
 wa-await-not-in-loop	spotbugs	WA_AWAIT_NOT_IN_LOOP	agree-lines	
 wa-not-in-loop	spotbugs	WA_NOT_IN_LOOP	agree-lines	
+weak-cipher	-	-	no-counterpart	
+weak-hash	-	-	no-counterpart	
+weak-key-size	-	-	no-counterpart	
+weak-tls-protocol	-	-	no-counterpart	
 while-loop-with-literal-boolean	pmd	WhileLoopWithLiteralBoolean	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 wl-using-getclass-rather-than-class-literal	spotbugs	WL_USING_GETCLASS_RATHER_THAN_CLASS_LITERAL	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 wmi-wrong-map-iterator	spotbugs	WMI_WRONG_MAP_ITERATOR	anchor-differs	tool lines [5], on passing [], fixture [4]
@@ -1202,5 +1232,7 @@ wrong-override-return-generic	nullaway	WRONG_OVERRIDE_RETURN_GENERIC	not-compara
 wrong-test-annotation	pmd	WrongTestAnnotation	approximation	PMD reports the @Test annotation (line 5) and the fully qualified @org.junit.Test of the passing fixture (line 18); Ward reports the import (line 1)
 ws-writeobject-sync	spotbugs	WS_WRITEOBJECT_SYNC	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 xfb-xml-factory-bypass	spotbugs	XFB_XML_FACTORY_BYPASS	not-comparable	the fixture does not compile
+xml-external-entities	-	-	no-counterpart	
 xor-power	errorprone	XorPower	agree-lines	
+xpath-injection	-	-	no-counterpart	
 zone-id-of-z	errorprone	ZoneIdOfZ	agree-lines	
