@@ -3,10 +3,10 @@
   <groupId>dev.example</groupId><artifactId>fixture</artifactId><version>1.0.0</version>
   <dependencyManagement>
     <dependencies>
-    <dependency><groupId>org.apache.commons</groupId><artifactId>commons-lang3</artifactId><version>3.0</version></dependency>
+    <dependency><groupId>org.apache.commons</groupId><artifactId>commons-lang3</artifactId><version>3.18.0</version></dependency>
   </dependencies>
   </dependencyManagement>
   <dependencies>
-    <dependency><groupId>org.apache.commons</groupId><artifactId>commons-text</artifactId><version>1.10.0</version></dependency>
+    <dependency><groupId>org.apache.commons</groupId><artifactId>commons-text</artifactId><version>1.15.0</version></dependency>
   </dependencies>
 </project>
