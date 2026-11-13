@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.ProjectSnapshot;
 import dev.ward.infrastructure.cli.ExitCodes;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -104,28 +105,33 @@ class InitMultiProjectPlanTest {
 
   @Test
   void failureNamesTheProjectsAlreadyConfigured() throws IOException {
-    write(BILLING + "/config", "a file where the rule directory belongs");
+    final File billing = root.resolve(BILLING).toFile();
+    assertThat(billing.setWritable(false)).isTrue();
 
-    final int exit =
-        init.run(
-            "",
-            "--project",
-            API,
-            "--project",
-            BILLING,
-            "--integration",
-            "none",
-            "--preset",
-            "strict",
-            "--architecture",
-            "layered",
-            "--yes");
+    try {
+      final int exit =
+          init.run(
+              "",
+              "--project",
+              API,
+              "--project",
+              BILLING,
+              "--integration",
+              "none",
+              "--preset",
+              "strict",
+              "--architecture",
+              "layered",
+              "--yes");
 
-    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.ERROR);
-    assertThat(init.output())
-        .contains("Could not initialize services/billing", "Already configured: apps/api");
-    assertThat(root.resolve(API).resolve("ward.toml")).exists();
-    assertThat(root.resolve(BILLING).resolve("ward.toml")).doesNotExist();
+      assertThat(exit).as(init.output()).isEqualTo(ExitCodes.ERROR);
+      assertThat(init.output())
+          .contains("Could not initialize services/billing", "Already configured: apps/api");
+      assertThat(root.resolve(API).resolve("ward.toml")).exists();
+      assertThat(root.resolve(BILLING).resolve("ward.toml")).doesNotExist();
+    } finally {
+      billing.setWritable(true);
+    }
   }
 
   private static String[] with(final String extra) {
