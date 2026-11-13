@@ -97,12 +97,10 @@ final class MavenTgf {
   private static void request(
       final ModuleBuilder builder, final TgfBlock block, final String key, final PackageId target) {
     final String parent = block.parent(key);
-    final String version = block.nodes().get(key).version();
-    builder.requested(
-        target,
-        parent.equals(block.root())
-            ? RequestedVersion.byModule(version)
-            : RequestedVersion.by(id(block.nodes().get(parent)), version));
+    final TgfNode node = block.nodes().get(key);
+    final String requester =
+        parent.equals(block.root()) ? "" : id(block.nodes().get(parent)).purl();
+    builder.requested(target, new RequestedVersion(requester, node.version(), node.premanaged()));
   }
 
   /** Adds the entry a node that Maven kept stands for, with its direct flag or its requirer. */

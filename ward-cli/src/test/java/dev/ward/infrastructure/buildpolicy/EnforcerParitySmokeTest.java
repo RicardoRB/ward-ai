@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 
@@ -42,6 +43,8 @@ import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
  * rule the wrapper that the project declares. {@code dependencyConvergence} and {@code
  * requireUpperBoundDeps} are compared on the fixtures under {@code build-policy/maven-inventory},
  * which need the dependency inventory and so a real Maven run; the offline fixture test skips them.
+ * A {@code violating-managed} fixture pins a lower version in {@code dependencyManagement}: the
+ * plugin reports it as an upper-bound error and not as a convergence error, and so do the rules.
  */
 @EnabledIfSystemProperty(named = "ward.parity.enforcer", matches = "true")
 class EnforcerParitySmokeTest {
@@ -84,12 +87,12 @@ class EnforcerParitySmokeTest {
   void enforcerAndTheNativeRulesAgreeOnTheMavenFixtures() throws Exception {
     final List<String> disagreements = new ArrayList<>();
     for (final Pairing pairing : PAIRINGS) {
-      for (final String kind : List.of("violating", "passing")) {
-        final Path folder = pairing.fixtures().resolve(pairing.rule().ruleName()).resolve(kind);
+      for (final Path folder : fixtureFolders(pairing)) {
+        final String kind = folder.getFileName().toString();
         final List<Finding> findings = nativeFindings(folder, pairing.rule());
         final Run enforcer = enforcer(folder, pairing.enforcerRule());
         final boolean enforcerFails = enforcer.exitCode() != 0;
-        if (enforcerFails != "violating".equals(kind)) {
+        if (enforcerFails != kind.startsWith("violating")) {
           disagreements.add(folder + ": the fixture is not a " + kind + " case for Enforcer");
         } else if (enforcerFails == findings.isEmpty()) {
           disagreements.add(folder + ": enforcer fails=" + enforcerFails + ", native=" + findings);
@@ -101,6 +104,13 @@ class EnforcerParitySmokeTest {
       }
     }
     assertThat(disagreements).isEmpty();
+  }
+
+  /** The {@code violating*} and {@code passing*} folders of a pairing's rule, in name order. */
+  private static List<Path> fixtureFolders(final Pairing pairing) throws IOException {
+    try (Stream<Path> folders = Files.list(pairing.fixtures().resolve(pairing.rule().ruleName()))) {
+      return folders.filter(Files::isDirectory).sorted().toList();
+    }
   }
 
   private static List<Finding> nativeFindings(final Path folder, final BuildRule rule) {

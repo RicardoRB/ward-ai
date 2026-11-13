@@ -96,6 +96,31 @@ class BuildPolicyToolAndConvergenceTest {
   }
 
   @Test
+  void upperBoundReadsTheVersionARequesterWroteBeforeManagementLoweredIt() {
+    final PackageId lib = new PackageId(Ecosystem.MAVEN, "g:lib", "3.0");
+    final PackageId text = new PackageId(Ecosystem.MAVEN, "g:text", "1.10.0");
+    final Dependency managed =
+        new Dependency(
+            lib,
+            DependencyRelation.TRANSITIVE,
+            DependencyScope.RUNTIME,
+            true,
+            "pom.xml",
+            "",
+            Set.of(text),
+            Set.of(new RequestedVersion(text.purl(), "3.0", "3.12.0")));
+    final DependencyInventory inventory =
+        new DependencyInventory(List.of(new ModuleDependencies("", List.of(managed))));
+    final BuildPolicyInput input =
+        new BuildPolicyInput(BuildModel.EMPTY, () -> inventory, Map.of());
+
+    assertThat(BuildPolicyRules.forRule(BuildRule.REQUIRE_UPPER_BOUND).check(input))
+        .singleElement()
+        .satisfies(f -> assertThat(f.message()).contains("resolves to 3.0").contains("3.12.0"));
+    assertThat(BuildPolicyRules.forRule(BuildRule.DEPENDENCY_CONVERGENCE).check(input)).isEmpty();
+  }
+
+  @Test
   void upperBoundIgnoresSourcesThatReportNoRequestsAndOtherEcosystems() {
     final DependencyInventory inventory =
         new DependencyInventory(

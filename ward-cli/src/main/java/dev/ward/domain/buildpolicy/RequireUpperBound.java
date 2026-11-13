@@ -15,7 +15,8 @@ import java.util.stream.Stream;
  * {@code ward:build/require-upper-bound}: a Maven package that resolves to a lower version than one
  * a dependency asks for, which is what Maven Enforcer's {@code requireUpperBoundDeps} reports. It
  * reads the versions requested before Maven mediated them, in every scope, and orders them the way
- * Maven does. A source that reports no requests gives no findings.
+ * Maven does. A version that {@code dependencyManagement} lowered counts as the version its
+ * requester wrote, as in the plugin. A source that reports no requests gives no findings.
  */
 final class RequireUpperBound implements BuildPolicyRule {
   private static final VersionOrder ORDER = new MavenVersionOrder();
@@ -35,9 +36,9 @@ final class RequireUpperBound implements BuildPolicyRule {
     final String resolved = dependency.id().version();
     final List<RequestedVersion> higher =
         dependency.requested().stream()
-            .filter(request -> ORDER.compare(resolved, request.version()) < 0)
+            .filter(request -> ORDER.compare(resolved, request.written()) < 0)
             .sorted(
-                Comparator.comparing(RequestedVersion::version, ORDER::compare)
+                Comparator.comparing(RequestedVersion::written, ORDER::compare)
                     .thenComparing(RequestedVersion::requester))
             .toList();
     if (higher.isEmpty()) {
@@ -45,7 +46,7 @@ final class RequireUpperBound implements BuildPolicyRule {
     }
     final String asked =
         higher.stream()
-            .map(request -> request.version() + " (" + requester(request) + ")")
+            .map(request -> request.written() + " (" + requester(request) + ")")
             .collect(Collectors.joining(", "));
     return Stream.of(
         new BuildPolicyFinding(

@@ -25,8 +25,9 @@ include = ["build.plugin-version-pinned", "build.no-dynamic-version"]
 severity = "warning"
 ```
 
-`preset = "strict"` selects every rule below except `dependency-convergence`. The default preset,
-`standard`, selects none, so write `include` (init does this for `strict`). Without a
+`preset = "strict"` selects every rule below that says `strict` in its "Selected by" column. The
+default preset, `standard`, selects none, so write `include` (init does this for `strict`, and adds
+`dependency-convergence` and `require-upper-bound` for Maven projects). Without a
 `ward-rules.toml`, the check runs the `strict` rules. The `ward` gate leaves `build.*` ids alone and
 this check leaves every other id alone, so one file can select rules for both.
 
@@ -65,7 +66,8 @@ says the version cannot be determined from the file. A plugin applied without a 
 | `ward:build/no-dynamic-version` | `strict` | A version that can resolve differently later: a Maven range, `LATEST`, `RELEASE` or `SNAPSHOT`; a Gradle `+`, `latest.*` or range; a Node dist-tag, wildcard or range; a Python requirement with no pin. |
 | `ward:build/minimum-build-tool-version` | `strict` | A declared build tool version below the minimum: the Maven or Gradle wrapper, `packageManager` in `package.json`, `required-version` of uv. |
 | `ward:build/duplicate-dependency-declaration` | `strict` | A Maven dependency declared twice with the same group, artifact, type and classifier in one section. |
-| `ward:build/dependency-convergence` | none | A package that the dependency inventory lists with more than one version in one module. |
+| `ward:build/dependency-convergence` | `init` on Maven | A package that a module resolves, or that a dependency requests, with more than one version. |
+| `ward:build/require-upper-bound` | `init` on Maven | A Maven package that resolves to a lower version than one a dependency requests. |
 
 ### Lockfiles
 
@@ -87,12 +89,43 @@ checked.
 gradle = "8.5"
 ```
 
-### Dependency convergence
+### Dependency convergence and upper bounds
 
-The rule uses the dependency inventory and starts no build tool. When the inventory cannot be
-resolved, the check ends with an execution error instead of passing. It is for graphs that hold
-several versions of a package, such as npm lockfiles. Maven resolves one version per artifact, so on
-Maven the `enforcer` gate keeps checking `dependencyConvergence` and `requireUpperBoundDeps`.
+Both rules read the dependency inventory and start no build tool of their own: on Maven the
+inventory comes from `maven-dependency-plugin` with the verbose tree, which lists the versions
+that Maven left out. When the inventory cannot be resolved, the check ends with an execution error
+instead of passing.
+
+`dependency-convergence` reports a package that appears with more than one version in a module,
+counting the version Maven resolved and every version that the module or a dependency requested
+before Maven chose one. It is the check of Maven Enforcer's `dependencyConvergence`. For an npm
+lockfile, which can hold several versions of a package, it counts the versions that the lockfile
+lists.
+
+`require-upper-bound` reports a Maven package whose resolved version is lower than a version that a
+dependency requests, such as `commons-lang3` resolved to 3.0 because the project declares it, while
+`commons-text` asks for 3.12.0. It is the check of Maven Enforcer's `requireUpperBoundDeps`. Versions
+are ordered the way Maven orders them (`3.9` is below `3.12.0`, and `3.12.0-rc1` is below `3.12.0`).
+
+Both rules follow the plugin's defaults:
+
+- **Scopes.** Every scope counts, test included, because Enforcer checks the whole tree. A version
+  requested only by a test dependency can fail the rule.
+- **Exclusions.** The rules have no exclusion option, and build rules accept no suppression. A
+  Maven `<exclusions>` entry removes the edge from the tree, so the excluded request is not counted;
+  a version pinned in `dependencyManagement` is the version the tree holds, so it converges, but
+  `require-upper-bound` still compares it with the version the dependency wrote, so pinning a
+  package below what a dependency asks for is reported, as the plugin does.
+- **Modules.** Each module is checked on its own. Dependencies on other modules of the reactor are
+  not packages and are skipped.
+- **Gradle, Node and Python.** `require-upper-bound` reads only Maven requests and reports nothing
+  for another build tool: Gradle picks the highest requested version by itself, and the other
+  sources record the version they resolved, not the requests.
+
+A finding names the package and the module's POM, for example `org.apache.commons:commons-lang3
+resolves to 3.0 but a higher version is requested: 3.12.0 (pkg:maven/org.apache.commons/commons-text@1.10.0).`
+`EnforcerParitySmokeTest` runs the real plugin over the fixtures of both rules and checks that the
+plugin fails exactly when the native rule reports, naming the same dependency.
 
 ## What replaces Maven Enforcer
 
@@ -102,4 +135,20 @@ Maven the `enforcer` gate keeps checking `dependencyConvergence` and `requireUpp
 | `banDynamicVersions` | `no-dynamic-version`, for versions in your own build files |
 | `requireMavenVersion` | `minimum-build-tool-version`, when the project has the Maven wrapper |
 | `banDuplicatePomDependencyVersions` | `duplicate-dependency-declaration` |
-| `dependencyConvergence`, `requireUpperBoundDeps` | none yet; the `enforcer` gate keeps them |
+| `dependencyConvergence` | `dependency-convergence` |
+| `requireUpperBoundDeps` | `require-upper-bound` |
+
+### Moving from the `enforcer` gate
+
+The `enforcer` gate no longer exists: `ward init` offers no such gate and writes no
+`maven-enforcer-plugin` entry, no `config/enforcer-rules.xml` and no Gradle equivalent (the gate ran
+`gradle check` there, which is the `tests` gate). `--gate enforcer` and `uses = "enforcer"` are
+rejected as an unknown gate; a check whose command runs `enforcer:enforce` is a plain command check.
+To move an existing project:
+
+1. Remove the `[checks.enforcer]` table from `ward.toml`, and make sure `[checks.build-policy]`
+   exists.
+2. Add `"build.dependency-convergence"` and `"build.require-upper-bound"` to `include` in
+   `ward-rules.toml`. Re-running `ward init --preset strict` on a Maven project does this.
+3. Remove `maven-enforcer-plugin` from `pom.xml` if Ward added it, and `config/enforcer-rules.xml`.
+   Init removes the rules file when it carries Ward's marker and keeps a file you edited, saying so.

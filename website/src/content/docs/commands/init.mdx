@@ -126,8 +126,16 @@ finding twice.
 
 ## What init changes in your build
 
-For `enforcer`, init adds missing plugins using Ward's embedded Java compatibility catalog.
-`api-compat` is native for Java and Kotlin and adds no plugin.
+For `coverage`, `mutation` and `sonar`, init adds missing plugins using Ward's embedded Java
+compatibility catalog. `build-policy` and `api-compat` are native and add no plugin.
+
+Earlier versions of Ward offered an `enforcer` gate that wrote `maven-enforcer-plugin` and
+`config/enforcer-rules.xml`. Init no longer writes either, and `--gate enforcer` is an unknown gate.
+When it finds `config/enforcer-rules.xml` it removes the file if it carries Ward's `managed-by`
+marker, and keeps and reports it otherwise. The plugin entry in `pom.xml` is yours to remove. On
+Maven, the `strict` preset selects `ward:build/dependency-convergence` and
+`ward:build/require-upper-bound` instead; see
+[moving from the `enforcer` gate](/reference/build-policy-rules/#moving-from-the-enforcer-gate).
 
 - Existing compatible plugin versions are kept.
 - For an incompatible managed plugin, init shows the current version, the compatible version, the
@@ -138,8 +146,8 @@ For `enforcer`, init adds missing plugins using Ward's embedded Java compatibili
 
 ### Multi-module Java builds
 
-In a multi-module Maven build, init places the `coverage` (JaCoCo), `mutation` (PIT), and
-`enforcer` gates in each module that has Java or Kotlin sources, so
+In a multi-module Maven build, init places the `coverage` (JaCoCo), and `mutation` (PIT)
+gates in each module that has Java or Kotlin sources, so
 each module's configuration and report live with its code. Other gates stay in the aggregator. The
 module-placed gates are the same for Gradle and Maven.
 
@@ -162,7 +170,7 @@ multi-module directory.
 
 When a Gradle build has modules that apply the Kotlin JVM plugin in their own build script (for
 example `kotlin("jvm")`, `org.jetbrains.kotlin.jvm`, or a catalog `alias` for `kotlin.jvm`), init
-writes the `coverage` (JaCoCo), `mutation` (PIT), and `enforcer` plugins and blocks into each of those module scripts, in that script's DSL. Other gates
+writes the `coverage` (JaCoCo) and `mutation` (PIT) plugins and blocks into each of those module scripts, in that script's DSL. Other gates
 stay in the root script.
 
 - The root script declares a versioned module plugin once, with its version and `apply false`.
@@ -202,7 +210,7 @@ Each version was run on a real JDK in Ward's compatibility matrix:
 |---|---|---|---|---|---|
 | PIT | 1.17.4 | 1.30.1 | 1.30.1 | 1.30.1 | 1.30.1 |
 
-JaCoCo 0.8.13 and Enforcer 3.5.0 use the same
+JaCoCo 0.8.13 uses the same
 version on every JDK.
 
 Every strict gate runs on each LTS JDK from 8 to 25. When no version of a gate's tool runs on your
@@ -228,7 +236,7 @@ mutation omitted: info.solidsoft.pitest needs JDK 8+; this project builds on JDK
   project-level `<dependencies>`. Missing sections are created.
 - Profiles, `dependencyManagement`, and plugin dependencies are never edited. A plugin declared
   only inside a profile is reported as not reconfigured.
-- The one addition to `<build><pluginManagement>` is the strict lifecycle plugin pins, written for the `build-policy` and `enforcer` gates, described in
+- The one addition to `<build><pluginManagement>` is the strict lifecycle plugin pins, written for the `build-policy` gate, described in
   [First failures under `strict`](#first-failures-under-strict). Existing entries there never
   change.
 - Compatibility updates change only the managed plugin's own project-level `<version>`.
@@ -664,7 +672,7 @@ Ward's marker blocks initialization as a conflict. Gates that need a running app
 ### Agent rules
 
 `--agent-rules` writes a Ward-owned section into `AGENTS.md` with the limits the selected gates
-enforce: the Ward rule preset for Java and Kotlin, coverage and mutation minimums, the build policy rules and the remaining Enforcer rules.
+enforce: the Ward rule preset for Java and Kotlin, coverage and mutation minimums, and the build policy rules, including the Maven dependency rules.
 
 - For TypeScript it names the `tsc` and test commands, the 70% line coverage minimum of the `coverage` check
   (85% of lines and 75% of branches with `strict`), Stryker (with its 60% minimum under `strict`), and the Ward
@@ -801,9 +809,9 @@ Ward will make these changes:
   create     ward.toml
   modify     pom.xml
                + jacoco-maven-plugin 0.8.13
-               ~ maven-enforcer-plugin 1.0.0 -> 3.5.0 (requires approval)
+               ~ jacoco-maven-plugin 0.8.5 -> 0.8.13 (requires approval)
   create     ward-rules.toml
-  keep       config/enforcer-rules.xml  (user-owned, not changed)
+  keep       config/enforcer-rules.xml  (user-owned, no longer used)
   create     .git/hooks/pre-commit
   create     .claude/settings.json
 

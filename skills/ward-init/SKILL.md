@@ -109,7 +109,7 @@ order:
    Ask whether to reconfigure. A yes here is consent for `--overwrite`. A no ends the skill with no
    changes.
 2. **Preset.** `standard` (fast, offline gates), `strict` (adds the strict Java rules,
-   coverage, build-policy, enforcer, and mutation testing), or a custom selection. To show exactly which
+   coverage, build-policy with the Maven dependency rules, and mutation testing), or a custom selection. To show exactly which
    gates a preset enables in this project, run a read-only preview and read its
    `Selected quality gate` lines:
 
@@ -127,10 +127,10 @@ order:
    gets Ward's TypeScript and JavaScript rules in `ward-rules.toml`, with no separate lint gate. Recommend `standard` for a first setup or a large
    legacy codebase. Recommend `strict` when the code already has tests and a clear structure.
    In a multi-module Gradle build where modules apply the Kotlin JVM plugin in their own build
-   script, `coverage`, `mutation` and `enforcer` are
+   script, `coverage` and `mutation` are
    written into each of those module scripts, and the root script declares their versions with
    `apply false`.
-   In a multi-module Maven build, `coverage`, `mutation` and `enforcer` are written into the `pom.xml` of each module that has Java sources, with their
+   In a multi-module Maven build, `coverage` and `mutation` are written into the `pom.xml` of each module that has Java sources, with their
    versions, and the aggregator pins the versions in `pluginManagement`. A module without Java sources
    is skipped, and init names it in its output. Gradle modules that apply `java` or `java-library` get
    the same gates.
