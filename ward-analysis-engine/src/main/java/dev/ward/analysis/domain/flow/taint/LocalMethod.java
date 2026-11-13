@@ -30,7 +30,8 @@ import java.util.regex.Pattern;
  */
 record LocalMethod(String name, String owner, int arity, ControlFlowGraph graph) {
 
-  private static final Pattern BODY = Pattern.compile("^(?:(.*)#)?([\\w$]+)(?:\\((\\d+)\\))?$");
+  private static final Pattern BODY =
+      Pattern.compile("^(?:(?<scope>.*)#)?(?<name>[\\w$]+)(?:\\((?<arity>\\d+)\\))?$");
   private static final String THIS = "this";
   private static final String MARK = "ward:tainted-parameter";
 
@@ -58,11 +59,13 @@ record LocalMethod(String name, String owner, int arity, ControlFlowGraph graph)
     if (!body.matches()) {
       return Optional.empty();
     }
-    final String scope = body.group(1) == null ? "" : body.group(1);
+    final String scope = body.group("scope") == null ? "" : body.group("scope");
     final String owner = scope.substring(scope.lastIndexOf('.') + 1);
-    final LocalMethod method = new LocalMethod(body.group(2), owner, 0, graph);
+    final LocalMethod method = new LocalMethod(body.group("name"), owner, 0, graph);
     final int arity =
-        body.group(3) == null ? method.parameters().size() : Integer.parseInt(body.group(3));
+        body.group("arity") == null
+            ? method.parameters().size()
+            : Integer.parseInt(body.group("arity"));
     return Optional.of(new LocalMethod(method.name, owner, arity, graph));
   }
 

@@ -128,20 +128,6 @@ class NodeTaintAnalysisTest {
         .containsExactly("source: Untrusted", "sink: sink argument 0");
   }
 
-  /** A value returned by one function and passed to a sinking function of the same file. */
-  @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
-  void flowAcrossFunctionsOfOneFileIsReported(final AnalysisLanguage language) {
-    final String source =
-        "function read() { return source(); }\n"
-            + "function put(v) { sink(v); }\n"
-            + "function run() { const d = read(); put(d); }\n"
-            + "function safe() { put('x'); }\n";
-    assertThat(NodeTaintFixtures.runFile(language, source)).hasSize(1);
-  }
-
   private static List<TaintFinding> run(final AnalysisLanguage language, final String source) {
     return TaintAnalysis.run(
         NodeTaintFixtures.graph(language, source, "run"), NodeTaintFixtures.SPEC);

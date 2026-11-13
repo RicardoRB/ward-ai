@@ -88,7 +88,9 @@ public final class TaintFile {
       }
       known = next;
     }
-    LOG.log(Level.FINE, "taint summaries for {0} local methods", methods.size());
+    if (LOG.isLoggable(Level.FINE)) {
+      LOG.log(Level.FINE, "taint summaries for {0} local methods", methods.size());
+    }
     return derived(spec, methods, known);
   }
 
@@ -100,10 +102,14 @@ public final class TaintFile {
       final boolean returns = TaintAnalysis.returned(method.graph(), spec).isPresent();
       final Set<Integer> sinks = sinkParameters(method, seeded);
       if (returns || !sinks.isEmpty()) {
-        found.put(method.key(), new Summary(returns, sinks));
+        found.put(method.key(), summary(returns, sinks));
       }
     }
     return found;
+  }
+
+  private static Summary summary(final boolean returns, final Set<Integer> sinks) {
+    return new Summary(returns, sinks);
   }
 
   private static Set<Integer> sinkParameters(final LocalMethod method, final TaintSpec seeded) {

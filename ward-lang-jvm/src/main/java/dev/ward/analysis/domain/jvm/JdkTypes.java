@@ -261,12 +261,16 @@ jakarta.servlet.http:
     return null;
   }
 
+  private static Set<String> empty() {
+    return new HashSet<>();
+  }
+
   private static Map<String, Set<String>> parse() {
     final Map<String, Set<String>> types = new HashMap<>();
-    Set<String> current = new HashSet<>();
+    Set<String> current = empty();
     for (final String line : CATALOG.split("\n")) {
       if (line.endsWith(":")) {
-        current = new HashSet<>();
+        current = empty();
         types.put(line.substring(0, line.length() - 1).strip(), current);
       } else {
         Collections.addAll(current, line.strip().split(" "));
