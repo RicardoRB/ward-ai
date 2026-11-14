@@ -1,8 +1,9 @@
-Lists of 38 third-party dependencies.
+Lists of 39 third-party dependencies.
     (Apache-2.0) Dagger (com.google.dagger:dagger:2.60.1 - https://github.com/google/dagger)
     (Apache-2.0) ward-analysis-api (dev.ward:ward-analysis-api:0.8.0 - no url defined)
     (Apache-2.0) ward-analysis-api (dev.ward:ward-analysis-engine:0.8.0 - no url defined)
     (Apache-2.0) ward-frontend-antlr (dev.ward:ward-frontend-antlr:0.8.0 - no url defined)
+    (Apache-2.0) ward-lang-android (dev.ward:ward-lang-android:0.8.0 - no url defined)
     (Apache-2.0) ward-lang-jvm (dev.ward:ward-lang-jvm:0.8.0 - no url defined)
     (Apache-2.0) ward-lang-node (dev.ward:ward-lang-node:0.8.0 - no url defined)
     (Apache-2.0) ward-lang-openapi (dev.ward:ward-lang-openapi:0.8.0 - no url defined)

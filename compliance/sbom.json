@@ -405,6 +405,22 @@
       "purl" : "pkg:maven/dev.ward/ward-lang-openapi@0.8.0?type=jar"
     },
     {
+      "type" : "library",
+      "bom-ref" : "pkg:maven/dev.ward/ward-lang-android@0.8.0?type=jar",
+      "group" : "dev.ward",
+      "name" : "ward-lang-android",
+      "version" : "0.8.0",
+      "description" : "Ward Android rules: an XML reader with positions for the manifest and resource files, and the rules over them",
+      "licenses" : [
+        {
+          "license" : {
+            "id" : "Apache-2.0"
+          }
+        }
+      ],
+      "purl" : "pkg:maven/dev.ward/ward-lang-android@0.8.0?type=jar"
+    },
+    {
       "type" : "application",
       "bom-ref" : "pkg:maven/dev.ward/ward-cli@0.8.0?type=jar",
       "group" : "dev.ward",
@@ -2223,6 +2239,7 @@
         "pkg:maven/dev.ward/ward-lang-python@0.8.0?type=jar",
         "pkg:maven/dev.ward/ward-lang-swift@0.8.0?type=jar",
         "pkg:maven/dev.ward/ward-lang-openapi@0.8.0?type=jar",
+        "pkg:maven/dev.ward/ward-lang-android@0.8.0?type=jar",
         "pkg:maven/dev.ward/ward-cli@0.8.0?type=jar"
       ]
     },
@@ -2293,6 +2310,14 @@
       ]
     },
     {
+      "ref" : "pkg:maven/dev.ward/ward-lang-android@0.8.0?type=jar",
+      "dependsOn" : [
+        "pkg:maven/dev.ward/ward-analysis-api@0.8.0?type=jar",
+        "pkg:maven/dev.ward/ward-analysis-engine@0.8.0?type=jar",
+        "pkg:maven/org.tomlj/tomlj@2.2.0?type=jar"
+      ]
+    },
+    {
       "ref" : "pkg:maven/dev.ward/ward-cli@0.8.0?type=jar",
       "dependsOn" : [
         "pkg:maven/com.google.dagger/dagger@2.60.1?type=jar",
@@ -2308,7 +2333,8 @@
         "pkg:maven/dev.ward/ward-lang-node@0.8.0?type=jar",
         "pkg:maven/dev.ward/ward-lang-python@0.8.0?type=jar",
         "pkg:maven/dev.ward/ward-lang-swift@0.8.0?type=jar",
-        "pkg:maven/dev.ward/ward-lang-openapi@0.8.0?type=jar"
+        "pkg:maven/dev.ward/ward-lang-openapi@0.8.0?type=jar",
+        "pkg:maven/dev.ward/ward-lang-android@0.8.0?type=jar"
       ]
     },
     {
