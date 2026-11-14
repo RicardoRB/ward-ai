@@ -1,7 +1,6 @@
 package dev.ward.application.gate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import dev.ward.domain.FakeCommandExecutor;
@@ -54,7 +53,7 @@ class ExtendedGatesTest {
     assertThatThrownBy(() -> factory.create(config("nope", List.of("x"))))
         .isInstanceOf(WardException.class)
         .hasMessageContaining(
-            "zap", "api-compat", "pmd", "openapi-lint", "openapi-diff", "openapi-compat");
+            "api-compat", "pmd", "openapi-lint", "openapi-diff", "openapi-compat");
   }
 
   @Test
@@ -79,39 +78,6 @@ class ExtendedGatesTest {
     assertThatThrownBy(() -> factory.create(config("biome", List.of("npx", "biome"))))
         .isInstanceOf(WardException.class)
         .hasMessageContaining("'biome'");
-  }
-
-  @Test
-  void zapRequiresExplicitTarget() {
-    final QualityGateFactory factory = new QualityGateFactory(new FakeCommandExecutor(0, "", ""));
-
-    assertThatThrownBy(() -> factory.create(config("zap", List.of("zap-baseline.py"))))
-        .isInstanceOf(WardException.class)
-        .hasMessageContaining("target");
-    assertThatThrownBy(() -> factory.create(config("zap", List.of("zap-baseline.py", "-t"))))
-        .isInstanceOf(WardException.class);
-    assertThatThrownBy(
-            () ->
-                factory.create(
-                    config(
-                        "zap", List.of("zap-baseline.py", "-t", ZapTargetValidation.PLACEHOLDER))))
-        .isInstanceOf(WardException.class);
-    assertThatCode(
-            () ->
-                factory.create(
-                    config("zap", List.of("zap-baseline.py", "-t", "http://localhost:8080"))))
-        .doesNotThrowAnyException();
-  }
-
-  @Test
-  void disabledZapWithoutTargetIsSkippedNotRejected() {
-    final Map<String, GateConfiguration> gates =
-        Map.of("zap", new GateConfiguration("zap", false, List.of("z")));
-
-    assertThat(
-            new QualityGateFactory(new FakeCommandExecutor(0, "", ""))
-                .create(new WardConfiguration(1, gates)))
-        .hasSize(1);
   }
 
   @Test
