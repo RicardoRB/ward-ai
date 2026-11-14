@@ -6,6 +6,7 @@ import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.jvm.JavaControlFlow;
 import dev.ward.analysis.domain.jvm.JavaScopeAnalysis;
+import dev.ward.analysis.domain.jvm.KotlinControlFlow;
 import dev.ward.analysis.domain.jvm.KotlinScopeAnalysis;
 import dev.ward.analysis.domain.node.NodeControlFlow;
 import dev.ward.analysis.domain.node.NodeScopeAnalysis;
@@ -44,9 +45,15 @@ public final class GateFrontends {
   /** Creates the support of every language over one parser. */
   public static List<FrontendSupport> create(final LanguageFrontend frontend) {
     // The sets are built here, not in static fields: a native image must not freeze enum sets.
-    final Set<RuleCapability> syntax = Set.of(RuleCapability.SYNTAX, RuleCapability.SCOPES);
     final Set<RuleCapability> symbols =
         Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS, RuleCapability.SCOPES);
+    final Set<RuleCapability> graphs =
+        Set.of(
+            RuleCapability.SYNTAX,
+            RuleCapability.CFG,
+            RuleCapability.DATAFLOW,
+            RuleCapability.TAINT,
+            RuleCapability.SCOPES);
     final Set<RuleCapability> flow =
         Set.of(
             RuleCapability.SYNTAX,
@@ -92,8 +99,8 @@ public final class GateFrontends {
         new FrontendSupport(
             AnalysisLanguage.KOTLIN,
             frontend,
-            syntax,
-            NO_GRAPHS,
+            graphs,
+            new KotlinControlFlow(),
             new CachedScopes(new KotlinScopeAnalysis(ClasspathBuiltinNames.kotlin()))),
         new FrontendSupport(
             AnalysisLanguage.OPENAPI, new OpenApiLanguageFrontend(), Set.of(RuleCapability.SYNTAX)),
