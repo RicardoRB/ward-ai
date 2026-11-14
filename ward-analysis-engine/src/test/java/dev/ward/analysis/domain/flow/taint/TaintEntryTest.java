@@ -71,6 +71,16 @@ class TaintEntryTest {
         .isFalse();
   }
 
+  /** A qualifier names any member of the receiver chain, so one more access does not hide it. */
+  @Test
+  void qualifierMatchesAnyMemberOfTheReceiverChain() {
+    final TaintEntry entry = entry("query", Optional.empty(), Optional.of("sequelize"));
+    assertThat(entry.matches(call("query", Optional.empty(), "models.sequelize"))).isTrue();
+    assertThat(entry.matches(call("query", Optional.empty(), "sequelize.a.b"))).isTrue();
+    assertThat(entry.matches(call("query", Optional.empty(), "this?.sequelize"))).isTrue();
+    assertThat(entry.matches(call("query", Optional.empty(), "models.mysequelize"))).isFalse();
+  }
+
   /** A site of another kind never matches, so a call entry does not match a member read. */
   @Test
   void kindMustMatch() {

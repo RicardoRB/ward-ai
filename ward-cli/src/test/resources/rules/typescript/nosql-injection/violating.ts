@@ -16,3 +16,8 @@ export function crossFunction(req: any, User: any) {
 function read(req: any) {
   return req.body;
 }
+
+// The collection can be a member of the database object.
+export function chained(req: any, db: any) {
+  db.ordersCollection.find({ $where: req.query.filter });
+}
