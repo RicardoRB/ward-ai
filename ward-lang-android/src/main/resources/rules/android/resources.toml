@@ -1,0 +1,34 @@
+# Android layout and resource rules. Each rule follows the documented behavior of the Android Lint check named in its catalog row; see NOTICE.
+
+[[rules]]
+id = "ward:android/hardcoded-text"
+language = "android"
+capability = "SYNTAX"
+severity = "warning"
+category = "correctness"
+presets = ["standard", "strict"]
+body = '''
+check = "android-hardcoded-text"
+'''
+
+[[rules]]
+id = "ward:android/missing-content-description"
+language = "android"
+capability = "SYNTAX"
+severity = "warning"
+category = "accessibility"
+presets = ["standard", "strict"]
+body = '''
+check = "android-content-description"
+'''
+
+[[rules]]
+id = "ward:android/unused-resources"
+language = "android"
+capability = "SYNTAX"
+severity = "warning"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "android-unused-resources"
+'''

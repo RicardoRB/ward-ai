@@ -2,6 +2,11 @@
 # A typed request (req: Request from express) names the Express receiver; an untyped one matches
 # by its name, through the qualifiers req and request.
 
+# A request member destructured in the parameter list: ({ params }: Request) => ...
+[[sources]]
+kind = "parameter"
+name = "express-request"
+
 [[sources]]
 kind = "member"
 name = "query"

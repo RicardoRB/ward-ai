@@ -40,6 +40,8 @@ import java.util.Set;
  * @param license the settings of a {@code license} check, or {@code null} for other checks
  * @param apiCompat the {@code base} and {@code include} options of an {@code api-compat} check, or
  *     {@code null} for others
+ * @param architectureFile the project-relative path of the architecture rule file, or {@code null}
+ *     for {@code ward-architecture.toml}; only {@code ward} checks read it
  */
 public record GateConfiguration(
     String name,
@@ -62,7 +64,8 @@ public record GateConfiguration(
     CoverageOptions coverage,
     VulnerabilityOptions vulnerabilities,
     LicenseSettings license,
-    ApiCompatOptions apiCompat) {
+    ApiCompatOptions apiCompat,
+    String architectureFile) {
 
   /** Copies the command, profiles and rule ids, keeping their order. */
   public GateConfiguration {
@@ -99,6 +102,7 @@ public record GateConfiguration(
         null,
         null,
         List.of(),
+        null,
         null,
         null,
         null,

@@ -10,3 +10,7 @@ export function numeric(req, connection) {
 export function constant(db) {
   db.query('SELECT 1');
 }
+
+export function chainedConstant(models) {
+  models.sequelize.query('SELECT 1');
+}

@@ -20,6 +20,7 @@ final-local-variable	checkstyle	FinalLocalVariable	Checkstyle and PMD report a v
 final-local-variable	pmd	LocalVariableCouldBeFinal	Checkstyle and PMD report a variable assigned once after its declaration (passing line 5); Ward does not
 gc-unrelated-types	spotbugs	GC_UNRELATED_TYPES	SpotBugs also reports List<String>.contains(Integer) in the passing fixture; Ward does not
 google-right-curly	checkstyle	GoogleRightCurly	Checkstyle also reports `if (a) {} else {}` on one line (passing line 15); Ward accepts the empty blocks
+hard-coded-crypto-key	pmd	HardCodedCryptoKey	PMD reports the literal where it is assigned (line 9) and the name passed to System.getenv in the passing fixture (line 12); Ward reports the SecretKeySpec that uses the key (line 10) and does not treat an environment value as hard-coded
 identical-catch-branches	pmd	IdenticalCatchBranches	PMD also reports the FileNotFoundException and IOException branches (passing line 14), which cannot become one multi-catch; Ward does not
 line-length	checkstyle	LineLength	Checkstyle's default limit of 80 applies to the long URL comment of the passing fixture; Ward accepts it
 loop-condition-checker	errorprone	LoopConditionChecker	Error Prone reports the for loop only (line 7); Ward also reports the while loop (line 4)

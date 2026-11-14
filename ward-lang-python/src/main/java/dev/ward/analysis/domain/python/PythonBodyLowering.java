@@ -5,8 +5,8 @@ import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import dev.ward.analysis.domain.ir.FlowEdgeKind;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
-import dev.ward.analysis.domain.ir.VariableAccess;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -20,6 +20,7 @@ final class PythonBodyLowering {
   private static final String NAMED_EXPR = "namedexpr_test";
   private static final Set<String> DEFINITIONS = Set.of("funcdef", "classdef", "decorated");
 
+  private final PythonAccesses accesses;
   private final ControlFlowBuilder flow;
   private final PythonLoopLowering loops;
   private final PythonHandlerLowering handlers;
@@ -29,10 +30,12 @@ final class PythonBodyLowering {
    *
    * @param excluded the names the body declares {@code global} or {@code nonlocal}
    * @param tracked false when a star import makes every name of the body possibly bound elsewhere
+   * @param imports what the names bound by the imports of the file stand for
    */
-  PythonBodyLowering(final Set<String> excluded, final boolean tracked) {
-    final PythonAccesses accesses = new PythonAccesses(excluded, tracked);
-    this.flow = new ControlFlowBuilder(accesses);
+  PythonBodyLowering(
+      final Set<String> excluded, final boolean tracked, final Map<String, String> imports) {
+    this.accesses = new PythonAccesses(excluded, tracked);
+    this.flow = new ControlFlowBuilder(accesses, new PythonFlowSites(imports));
     this.loops = new PythonLoopLowering(flow, accesses, this::statements);
     this.handlers = new PythonHandlerLowering(flow, this::statements);
   }
@@ -49,9 +52,10 @@ final class PythonBodyLowering {
   ControlFlowGraph lower(
       final String name,
       final SyntaxNode block,
-      final List<VariableAccess> parameters,
+      final PythonParameters parameters,
       final Span span) {
-    flow.record(parameters, List.of());
+    accesses.declare(parameters.accesses());
+    flow.record(parameters.accesses(), parameters.sites());
     statements(block);
     return flow.build(name, span);
   }

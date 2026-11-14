@@ -5,7 +5,7 @@
 
     <groupId>dev.ward</groupId>
     <artifactId>ward-parent</artifactId>
-    <version>0.8.0</version>
+    <version>0.9.0</version>
     <packaging>pom</packaging>
     <name>ward-parent</name>
     <description>Ward: a quality gate orchestrator for AI coding agents</description>
@@ -20,14 +20,12 @@
         <module>ward-lang-python</module>
         <module>ward-lang-swift</module>
         <module>ward-lang-openapi</module>
+        <module>ward-lang-android</module>
         <module>ward-analysis-bench</module>
     </modules>
 
     <properties>
         <java.version>25</java.version>
-        <!-- Committed THIRD-PARTY-LICENSES and sbom.json; the license gate writes its regenerated copies elsewhere. -->
-        <compliance.outputDirectory>${maven.multiModuleProjectDirectory}/compliance</compliance.outputDirectory>
-        <compliance.sbomDirectory>${compliance.outputDirectory}</compliance.sbomDirectory>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <picocli.version>4.7.7</picocli.version>
         <tomlj.version>2.2.0</tomlj.version>
@@ -44,6 +42,48 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- Pins the versions that the build-policy convergence rules found at more than one version. -->
+            <dependency>
+                <groupId>com.google.errorprone</groupId>
+                <artifactId>error_prone_annotations</artifactId>
+                <version>2.52.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.21.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpcore</artifactId>
+                <version>4.4.14</version>
+            </dependency>
+            <dependency>
+                <groupId>org.checkerframework</groupId>
+                <artifactId>checker-qual</artifactId>
+                <version>3.55.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.platform</groupId>
+                <artifactId>junit-platform-engine</artifactId>
+                <version>6.1.3</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jspecify</groupId>
+                <artifactId>jspecify</artifactId>
+                <version>1.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>2.0.19</version>
+            </dependency>
+            <!-- Guava arrives through Checkstyle; 33.4.8-jre has a high advisory fixed in 33.7.2. -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>33.8.0-jre</version>
+            </dependency>
             <dependency>
                 <groupId>com.google.dagger</groupId>
                 <artifactId>dagger</artifactId>
@@ -108,7 +148,7 @@
     </dependencyManagement>
 
     <build>
-        <!-- Pins the default lifecycle plugins for the enforcer requirePluginVersions rule. -->
+        <!-- Pins the default lifecycle plugins for the build-policy plugin-version-pinned rule. -->
         <pluginManagement>
             <plugins>
                 <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-clean-plugin</artifactId><version>3.5.0</version></plugin>
@@ -238,15 +278,6 @@
                     <version>3.6.2</version>
                 </plugin>
                 <plugin>
-                  <groupId>org.owasp</groupId>
-                  <artifactId>dependency-check-maven</artifactId>
-                  <version>12.2.2</version>
-                   <configuration>
-                     <failBuildOnCVSS>7</failBuildOnCVSS>
-                     <nvdApiKeyEnvironmentVariable>NVD_API_KEY</nvdApiKeyEnvironmentVariable>
-                   </configuration>
-                </plugin>
-                <plugin>
                   <groupId>org.pitest</groupId>
                   <artifactId>pitest-maven</artifactId>
                   <version>1.30.1</version>
@@ -269,58 +300,6 @@
                       <WARD_NO_UPDATE_CHECK>1</WARD_NO_UPDATE_CHECK>
                     </environmentVariables>
                     <mutationThreshold>60</mutationThreshold>
-                  </configuration>
-                </plugin>
-                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-enforcer-plugin</artifactId><version>3.7.0</version>
-                  <configuration><rules><externalRules><location>${maven.multiModuleProjectDirectory}/config/enforcer-rules.xml</location></externalRules></rules><fail>true</fail></configuration>
-                </plugin>
-                <plugin>
-                  <groupId>org.codehaus.mojo</groupId>
-                  <artifactId>license-maven-plugin</artifactId>
-                  <version>2.7.1</version>
-                  <configuration>
-                    <!-- Allowlist: POMs spell licenses many ways, so a GPL denylist misses variants. -->
-                    <failOnBlacklist>true</failOnBlacklist>
-                    <licenseMerges>
-                      <licenseMerge>Apache-2.0|Apache 2.0|Apache License 2.0|Apache License, Version 2.0|The Apache License, Version 2.0|The Apache Software License, Version 2.0|The Apache Software License, version 2.0</licenseMerge>
-                      <licenseMerge>MIT|MIT License|The MIT License</licenseMerge>
-                      <licenseMerge>BSD|BSD-3-Clause|BSD-style</licenseMerge>
-                      <licenseMerge>EPL-2.0|Eclipse Public License v2.0</licenseMerge>
-                    </licenseMerges>
-                    <includedLicenses>
-                      <includedLicense>Apache-2.0</includedLicense>
-                      <includedLicense>MIT</includedLicense>
-                      <includedLicense>BSD</includedLicense>
-                      <includedLicense>EPL-2.0</includedLicense>
-                      <includedLicense>LGPL-2.1-or-later</includedLicense>
-                    </includedLicenses>
-                    <!-- Shipped set: compile and runtime scope, the dependencies the shaded JAR contains. -->
-                    <includedScopes>compile,runtime</includedScopes>
-                    <outputDirectory>${compliance.outputDirectory}</outputDirectory>
-                    <thirdPartyFilename>THIRD-PARTY-LICENSES</thirdPartyFilename>
-                    <!-- Adds the full text of each license in the shipped set; see licenses/. -->
-                    <fileTemplate>${maven.multiModuleProjectDirectory}/licenses/third-party-licenses.ftl</fileTemplate>
-                    <!-- Keeps the repository root out of the resource directories of the JAR. -->
-                    <addOutputDirectoryAsResourceDir>false</addOutputDirectoryAsResourceDir>
-                  </configuration>
-                </plugin>
-                <plugin>
-                  <groupId>org.cyclonedx</groupId>
-                  <artifactId>cyclonedx-maven-plugin</artifactId>
-                  <version>2.9.3</version>
-                  <configuration>
-                    <projectType>application</projectType>
-                    <!-- Run as makeAggregateBom: it lists Ward's own modules without the hashes of their JARs, which change with every build. -->
-                    <outputDirectory>${compliance.sbomDirectory}</outputDirectory>
-                    <outputName>sbom</outputName>
-                    <outputFormat>json</outputFormat>
-                    <schemaVersion>1.6</schemaVersion>
-                    <!-- A random serial number and a build time would change the file on every run. A fixed output timestamp drops the build time from the BOM. -->
-                    <includeBomSerialNumber>false</includeBomSerialNumber>
-                    <outputTimestamp>2026-01-01T00:00:00Z</outputTimestamp>
-                    <includeTestScope>false</includeTestScope>
-                    <includeProvidedScope>false</includeProvidedScope>
-                    <includeSystemScope>false</includeSystemScope>
                   </configuration>
                 </plugin>
             </plugins>

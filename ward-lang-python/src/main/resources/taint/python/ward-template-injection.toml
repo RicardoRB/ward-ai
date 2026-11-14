@@ -1,0 +1,29 @@
+# Template source built from input: the template text is argument 0, so its syntax is attacker-controlled.
+
+[[sinks]]
+kind = "call"
+name = "render_template_string"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "Template"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "from_string"
+arguments = [0]
+
+[[sanitizers]]
+kind = "call"
+name = "int"
+
+[[sanitizers]]
+kind = "call"
+name = "float"
+
+[[sanitizers]]
+kind = "call"
+name = "bool"
+

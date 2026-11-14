@@ -8,5 +8,6 @@ public enum AnalysisLanguage {
   JAVASCRIPT,
   PYTHON,
   SWIFT,
-  OPENAPI
+  OPENAPI,
+  ANDROID
 }

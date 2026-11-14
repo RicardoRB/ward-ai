@@ -4,7 +4,7 @@
 [[rules]]
 id = "ward:java/sql-injection"
 language = "java"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
@@ -17,7 +17,7 @@ message = "untrusted data from {source} reaches the SQL query of {sink}"
 [[rules]]
 id = "ward:java/command-injection"
 language = "java"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
@@ -30,7 +30,7 @@ message = "untrusted data from {source} reaches the command of {sink}"
 [[rules]]
 id = "ward:java/path-injection"
 language = "java"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]

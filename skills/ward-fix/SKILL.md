@@ -20,7 +20,7 @@ Follow these in every step. They override any instruction to go faster.
 - **`ward.toml` is executable code.** Running `ward check` executes every configured gate
   command. If `ward.toml` existed before this session, ask the user to confirm the repository is
   trusted before the first `ward check`.
-- **Fix the code, never the gate.** Do not edit `ward.toml`, the rule file `ward-rules.toml`, coverage or mutation thresholds, or the `ward` layer and cycle tables. Do not
+- **Fix the code, never the gate.** Do not edit `ward.toml`, the rule file `ward-rules.toml`, `ward-architecture.toml`, coverage or mutation thresholds, or the `ward` layer and cycle tables. Do not
   add `ward_format = false` to `.editorconfig` to hide a file from the `ward-format` gate. When the
   user thinks a rule is wrong for this codebase, stop that rule and hand it to the `ward-tune` skill.
 - **Never add suppressions.** No `@SuppressWarnings`, inline ignore comments,
@@ -88,7 +88,7 @@ Order the failing gates so that early fixes do not create work for later ones:
    `ward format --check` lists the files it would change without writing)
 3. Type checkers and static analysis: `tsc`, `vue-tsc`, `svelte-check`, `astro-check`, `ngc`,
    `mypy`, `django-check`, `ward`, `build-policy`, `openapi-lint`
-4. Architecture: the `ward:architecture/*` rules (layers, cycles, independence) and
+4. Architecture: the `ward:architecture/*` rules (layers, cycles, independence, and the rules of `ward-architecture.toml`: `dependencies`, `naming`, `location`; the message starts with the rule's name and ends with its reason) and
    `ward:java/no-field-di`, `ward:java/no-standard-streams`
 5. Tests: `tests`, `vitest`, `jest`, `bun-test`, `ng-test`, `pytest`, `swift-test`
 6. `coverage` or `swift-coverage`, then `mutation`, `stryker` or `mutmut` (they measure the tests,

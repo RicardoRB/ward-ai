@@ -1,0 +1,237 @@
+# Injection rules for Kotlin. Each follows untrusted input from a web request, a Spring handler
+# parameter or a Ktor call to a sink within one function, with the taint specifications of Java
+# (the types are the same JDK, Servlet and Spring types) and taint/kotlin/sources.toml.
+
+[[rules]]
+id = "ward:kotlin/sql-injection"
+language = "kotlin"
+capability = "TAINT"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/kotlin/sources.toml", "taint/java/sql.toml"]
+message = "untrusted data from {source} reaches the SQL query of {sink}"
+'''
+
+[[rules]]
+id = "ward:kotlin/command-injection"
+language = "kotlin"
+capability = "TAINT"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/kotlin/sources.toml", "taint/java/command.toml"]
+message = "untrusted data from {source} reaches the command of {sink}"
+'''
+
+[[rules]]
+id = "ward:kotlin/path-injection"
+language = "kotlin"
+capability = "TAINT"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/kotlin/sources.toml", "taint/java/path.toml"]
+message = "untrusted data from {source} reaches the file path of {sink}"
+'''
+
+[[rules]]
+id = "ward:kotlin/cross-site-scripting"
+language = "kotlin"
+capability = "TAINT"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/kotlin/sources.toml", "taint/java/ward-cross-site-scripting.toml"]
+message = "untrusted data from {source} is written into the HTML response by {sink}; escape it for HTML first"
+'''
+
+[[rules]]
+id = "ward:kotlin/untrusted-redirect"
+language = "kotlin"
+capability = "TAINT"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/kotlin/sources.toml", "taint/java/ward-untrusted-redirect.toml"]
+message = "untrusted data from {source} decides where the response redirects, through {sink}; allow only known targets"
+'''
+
+[[rules]]
+id = "ward:kotlin/server-side-request-forgery"
+language = "kotlin"
+capability = "TAINT"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/kotlin/sources.toml", "taint/java/ward-server-side-request-forgery.toml"]
+message = "untrusted data from {source} chooses the address that {sink} requests; check the host against an allow-list"
+'''
+
+[[rules]]
+id = "ward:kotlin/ldap-injection"
+language = "kotlin"
+capability = "TAINT"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/kotlin/sources.toml", "taint/java/ward-ldap-injection.toml"]
+message = "untrusted data from {source} is part of the LDAP name or filter of {sink}; encode it with LdapEncoder"
+'''
+
+[[rules]]
+id = "ward:kotlin/xpath-injection"
+language = "kotlin"
+capability = "TAINT"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/kotlin/sources.toml", "taint/java/ward-xpath-injection.toml"]
+message = "untrusted data from {source} is part of the XPath expression of {sink}; bind it as a variable instead"
+'''
+
+[[rules]]
+id = "ward:kotlin/log-forging"
+language = "kotlin"
+capability = "TAINT"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/kotlin/sources.toml", "taint/java/ward-log-forging.toml"]
+message = "untrusted data from {source} is written to the log by {sink}; line breaks in it could forge log entries"
+'''
+
+[[rules]]
+id = "ward:kotlin/header-splitting"
+language = "kotlin"
+capability = "TAINT"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/kotlin/sources.toml", "taint/java/ward-header-splitting.toml"]
+message = "untrusted data from {source} is written into a response header by {sink}; a line break in it would split the response"
+'''
+
+[[rules]]
+id = "ward:kotlin/untrusted-deserialization"
+language = "kotlin"
+capability = "TAINT"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/kotlin/sources.toml", "taint/java/ward-untrusted-deserialization.toml"]
+message = "untrusted data from {source} is deserialized by {sink}, which can run attacker-chosen code; accept a data format instead"
+'''
+
+[[rules]]
+id = "ward:kotlin/script-injection"
+language = "kotlin"
+capability = "TAINT"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/kotlin/sources.toml", "taint/java/ward-script-injection.toml"]
+message = "untrusted data from {source} is run as code by {sink}; never build a script from request data"
+'''
+
+[[rules]]
+id = "ward:kotlin/expression-injection"
+language = "kotlin"
+capability = "TAINT"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/kotlin/sources.toml", "taint/java/ward-expression-injection.toml"]
+message = "untrusted data from {source} is evaluated as an expression by {sink}; use a fixed expression and pass the data as a variable"
+'''
+
+[[rules]]
+id = "ward:kotlin/jndi-injection"
+language = "kotlin"
+capability = "TAINT"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/kotlin/sources.toml", "taint/java/ward-jndi-injection.toml"]
+message = "untrusted data from {source} names the JNDI object that {sink} looks up; a remote name can load attacker code"
+'''
+
+[[rules]]
+id = "ward:kotlin/unsafe-reflection"
+language = "kotlin"
+capability = "TAINT"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/kotlin/sources.toml", "taint/java/ward-unsafe-reflection.toml"]
+message = "untrusted data from {source} chooses the class or member that {sink} resolves; map the input to a fixed set of names"
+'''
+
+[[rules]]
+id = "ward:kotlin/regex-injection"
+language = "kotlin"
+capability = "TAINT"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/kotlin/sources.toml", "taint/java/ward-regex-injection.toml"]
+message = "untrusted data from {source} becomes a regular expression in {sink}; quote it with Pattern.quote or limit its length"
+'''
+
+[[rules]]
+id = "ward:kotlin/environment-injection"
+language = "kotlin"
+capability = "TAINT"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/kotlin/sources.toml", "taint/java/ward-environment-injection.toml"]
+message = "untrusted data from {source} sets an environment variable of the process started by {sink}"
+'''
+
+[[rules]]
+id = "ward:kotlin/session-attribute-injection"
+language = "kotlin"
+capability = "TAINT"
+severity = "warning"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "taint"
+specs = ["taint/java/sources.toml", "taint/kotlin/sources.toml", "taint/java/ward-session-attribute-injection.toml"]
+message = "untrusted data from {source} is stored in the session by {sink}, where the application treats it as trusted"
+'''

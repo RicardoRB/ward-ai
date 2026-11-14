@@ -10,7 +10,7 @@ import java.util.Optional;
 /**
  * The {@code ward:architecture/layers} rule: reports every dependency edge that leaves a file in a
  * {@code from} layer for a file in a {@code forbidden} layer, once per boundary it breaks, at the
- * reference that creates the edge. Java and Swift test sources are not checked.
+ * reference that creates the edge. Java, Kotlin and Swift test sources are not checked.
  */
 public final class LayerDependencyRule implements CompiledRule {
 
@@ -70,24 +70,15 @@ public final class LayerDependencyRule implements CompiledRule {
   }
 
   private static String firstLayer(final String path, final List<String> layers) {
-    return layers.stream().filter(layer -> inLayer(path, layer)).findFirst().orElse(null);
-  }
-
-  /** A directory of {@code path} has the layer's name; Swift folders compare ignoring case. */
-  private static boolean inLayer(final String path, final String layer) {
-    final boolean fold = path.endsWith(".swift");
-    final String[] segments = path.split("/");
-    for (int index = 0; index < segments.length - 1; index++) {
-      if (fold ? segments[index].equalsIgnoreCase(layer) : segments[index].equals(layer)) {
-        return true;
-      }
-    }
-    return false;
+    return layers.stream()
+        .filter(layer -> LayerMembership.inLayer(path, layer))
+        .findFirst()
+        .orElse(null);
   }
 
   private static boolean isTestSource(final String path) {
     final String rooted = "/" + path;
-    return (path.endsWith(".java") && rooted.contains(JAVA_TEST_ROOT))
+    return ((path.endsWith(".java") || path.endsWith(".kt")) && rooted.contains(JAVA_TEST_ROOT))
         || (path.endsWith(".swift") && rooted.contains("/" + SWIFT_TEST_FOLDER + "/"));
   }
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Shop</string>
+    <string name="used_in_java">Java</string>
+    <string name="used_in_kotlin">Kotlin</string>
+    <string name="used_in_layout">Layout</string>
+    <style name="Theme.Shop" parent="Theme.Material3.Light" />
+    <string name="only_in_comment">Comment</string>
+    <string name="cancel">Cancel</string>
+    <color name="never_used_color">#000000</color>
+    <style name="Theme.Shop.Dark" />
+</resources>

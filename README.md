@@ -195,9 +195,9 @@ ward check --profile ci --format json > ward-report.json
 | Category | Tools |
 |---|---|
 | Build and tests | Compiler, JUnit, a coverage minimum that Ward reads from the JaCoCo or lcov report, PIT mutation testing |
-| Code quality | Ward rules (lint), `ward format`, the CRAP gate (functions that are both complex and untested), SonarQube |
-| Architecture | Ward's layer boundaries (Layered, Hexagonal, or Clean), slice cycles and feature independence, native `no-field-di` and `no-standard-streams` rules (`strict`), native build policy rules (`build-policy`, on Maven including dependency convergence and upper bounds) |
-| Security | Ward secret detection, Ward security rules for Java, TypeScript, JavaScript and Python (injection, cryptography, cookies and more), native vulnerability matching against OSV advisories, OWASP ZAP |
+| Code quality | Ward rules (lint), `ward format`, the CRAP gate (functions that are both complex and untested), duplicate code detection |
+| Architecture | Ward's layer boundaries (Layered, Hexagonal, or Clean), slice cycles and feature independence, your own dependency, naming and location rules in `ward-architecture.toml`, native `no-field-di` and `no-standard-streams` rules (`strict`), native build policy rules (`build-policy`, on Maven including dependency convergence and upper bounds) |
+| Security | Ward secret detection, Ward security rules for Java, Kotlin, TypeScript, JavaScript, Python and Swift (injection, cryptography, cookies and more) and native vulnerability matching against OSV advisories |
 | Compliance | Native license check for every toolchain, `ward sbom` (CycloneDX) and `ward licenses`, native Java and Kotlin API compatibility |
 | REST API contract | Ward's OpenAPI lint rules and breaking-change rules for OpenAPI 3.0 and 3.1 |
 | TypeScript and JavaScript | `tsc`, Vitest / Jest / `bun test`, Stryker mutation testing, Ward's TypeScript and JavaScript rules (lint, selected in `ward-rules.toml`), framework checkers (`vue-tsc`, `svelte-check`, `astro check`, `ngc`) |
@@ -207,7 +207,7 @@ ward check --profile ci --format json > ward-report.json
 | Anything else | Any command you add to `ward.toml` |
 
 Lint, format and architecture rules are Ward's own, for every language, and its security rules cover
-Java, TypeScript, JavaScript and Python: `ward-rules.toml` selects them, and [`ward format`](https://ricardorb.github.io/ward-ai/commands/format/) applies the format. For TypeScript and JavaScript projects, `ward init`
+Java, Kotlin, TypeScript, JavaScript, Python and Swift: `ward-rules.toml` selects them, and [`ward format`](https://ricardorb.github.io/ward-ai/commands/format/) applies the format. For TypeScript and JavaScript projects, `ward init`
 writes `ward-rules.toml` and the test runner's reporter config, such as `vitest.config.mjs`, and the coverage minimum sits in the `coverage` check of `ward.toml`. See [Node projects](https://ricardorb.github.io/ward-ai/commands/init/#node-projects). See
 [quality gates](https://ricardorb.github.io/ward-ai/configuration/gates/).
 
@@ -228,7 +228,7 @@ Cline, Factory Droid, and Amp. See [integrations](https://ricardorb.github.io/wa
 
 ## Project status
 
-**Alpha** (`0.8.0`). Runs as a native binary on Linux x86_64, macOS (Apple Silicon), and
+**Alpha** (`0.9.0`). Runs as a native binary on Linux x86_64, macOS (Apple Silicon), and
 Windows x86_64, or as a JAR built from source on JDK 25 (the way to run it on an Intel Mac). Only the
 latest release receives fixes. See
 [CHANGELOG.md](CHANGELOG.md) for what changed in each release.
@@ -241,8 +241,8 @@ latest release receives fixes. See
 - Homebrew tap, Scoop and winget packages, and container image
 
 **Known limitations:** Ward never installs tools; a missing tool, such as a compiler or a test
-runner, is reported as `UNAVAILABLE`. The security rules follow data inside one file, not across
-files.
+runner, is reported as `UNAVAILABLE`. The security rules follow data across files in Java and Kotlin, and inside
+one file in TypeScript, JavaScript and Python; the Swift rules match text patterns.
 Commands run without a shell, but that is **not a sandbox** (see below).
 
 ## Development

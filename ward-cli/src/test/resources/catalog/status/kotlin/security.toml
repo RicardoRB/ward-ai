@@ -1,0 +1,16 @@
+# Status of the security rows in kotlin: "implemented" or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+environment-injection = "implemented"
+expression-injection = "implemented"
+header-splitting = "implemented"
+jndi-injection = "implemented"
+ldap-injection = "implemented"
+log-forging = "implemented"
+regex-injection = "implemented"
+script-injection = "implemented"
+server-side-request-forgery = "implemented"
+session-attribute-injection = "implemented"
+unsafe-reflection = "implemented"
+untrusted-deserialization = "implemented"
+untrusted-redirect = "implemented"
+xpath-injection = "implemented"

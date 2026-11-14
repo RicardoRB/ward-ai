@@ -31,6 +31,7 @@ final class TomlAnalysisParser {
           RULES,
           JAVA_CLASSPATH,
           RULES_FILE,
+          TomlArchitectureParser.ARCHITECTURE_FILE,
           LAYERS,
           PATHS,
           TomlArchitectureParser.CYCLES,

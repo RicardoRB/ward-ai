@@ -93,7 +93,8 @@ array, `findingsTotal` `0`, `findingsHidden` `0`, and `findingsTruncated` `false
 
 - At most 50 visible findings are listed per check. `findingsTotal` is the full count, `findingsHidden`
   counts findings below the threshold, and
-  `findingsTruncated` is `true` when entries were left out.
+  `findingsTruncated` is `true` when entries were left out. The number left out is `findingsTotal`
+  minus `findingsHidden` minus the length of `findings`; the text format prints it as `… N more`.
 - `file` is relative to the project root with `/` separators. `file`, `line`, `column`, and
   `helpUri` are omitted when the tool does not report them; `ward-format` findings name only the file.
 - A taint finding has `path`: its steps in order, from the source to the sink. Each step has the

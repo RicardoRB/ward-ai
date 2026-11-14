@@ -3,6 +3,7 @@ package dev.ward.infrastructure.rule;
 import dev.ward.analysis.application.rule.TomlLists;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.RuleConfigurationException;
+import dev.ward.analysis.domain.rule.check.CompanionNodeCheck;
 import dev.ward.analysis.domain.rule.check.CountCheck;
 import dev.ward.analysis.domain.rule.check.DepthCheck;
 import dev.ward.analysis.domain.rule.check.DuplicateCheck;
@@ -60,6 +61,13 @@ final class GenericChecks {
               message);
       case FORBIDDEN_NODE -> new ForbiddenNodeCheck(filter, condition(toml), message);
       case REQUIRED_NODE -> new RequiredNodeCheck(filter, requirement(toml), message);
+      case COMPANION_NODE ->
+          new CompanionNodeCheck(
+              filter,
+              TomlValues.required(toml, "node"),
+              Pattern.compile(TomlValues.required(toml, "match")),
+              TomlValues.required(toml, "companion"),
+              message);
       case ORDER -> order(filter, toml, message);
       case DUPLICATE ->
           new DuplicateCheck(

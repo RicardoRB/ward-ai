@@ -21,7 +21,6 @@ import javax.inject.Inject;
 
 /** Resolves the typed built-in gate registry in stable configuration order. */
 public class QualityGateFactory {
-  private static final String ZAP = "zap";
   private static final Set<String> IN_PROCESS_GATES =
       Set.of(
           SupportedQualityGates.ANALYSIS,
@@ -164,9 +163,6 @@ public class QualityGateFactory {
     }
     if (MavenTestGate.NAME.equals(type)) {
       return new MavenTestGate(executor, testsCommand(check.command(), project));
-    }
-    if (ZAP.equals(type)) {
-      ZapTargetValidation.require(name, check.command());
     }
     if (SupportedQualityGates.openApiIds().contains(type)) {
       return openApiGate(name, check, project);

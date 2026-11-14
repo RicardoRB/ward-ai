@@ -74,7 +74,8 @@ final class RuleFixtureRunner {
     }
     final RuleEngine engine = new RuleEngine(BundledRuleMatchers.create());
     final List<SourceUnit> units = List.of(new SourceUnit(path, language, text));
-    final RuleRunResult result = engine.run(units, frontendsFor(rule, typeFacts), List.of(rule));
+    final RuleRunResult result =
+        DependentRun.run(engine, rule, units, project.sources(), frontendsFor(rule, typeFacts));
     assertThat(result.executionErrors()).as("execution errors of %s", rule.id()).isEmpty();
     assertThat(result.notRun()).as("rules not run: %s", rule.id()).isEmpty();
     final List<AnalysisFinding> all = new ArrayList<>(result.findings());

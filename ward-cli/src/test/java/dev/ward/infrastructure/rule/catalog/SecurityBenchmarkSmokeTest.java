@@ -3,6 +3,9 @@ package dev.ward.infrastructure.rule.catalog;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.ir.AnalysisFinding;
+import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.domain.ir.SourceUnit;
+import dev.ward.analysis.domain.rule.ProjectFiles;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.infrastructure.rule.catalog.JulietMethods.Kind;
 import java.io.IOException;
@@ -15,7 +18,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 
@@ -33,15 +39,25 @@ class SecurityBenchmarkSmokeTest {
 
   private static final String MAP = "/benchmark/security-cwe-map.csv";
   private static final String REPORT = "benchmark/security-report.txt";
+  private static final String SOURCE_ROOT = "src/main/java/";
+  private static final Pattern VARIANT = Pattern.compile("^(.*_\\d+)(?:[a-z]|_\\w+)\\.java$");
   private static final String HEADER =
       "# Juliet Java 1.3 (NIST SARD 111, public domain) against Ward's Java security rules.\n"
           + "# A finding in a bad method is a true positive (tp, at most one per case), a bad case"
           + " without one is a false negative (fn), and a finding in a good method is a false"
           + " positive (fp).\n"
-          + "# The taint rules follow wildcard imports of JDK and servlet types and calls between the"
-          + " methods of one file. The remaining false negatives cross a class (the a/b/c variants),"
-          + " pass the value through a field, or read it from an object that the rules do not model,"
-          + " such as the response writer of the XSS cases.\n"
+          + "# The taint rules follow wildcard imports of JDK and servlet types, calls between the methods"
+          + " of one file, and calls into the other files of the case (the a to e variants of one"
+          + " flow, given to the run as its project), through a variable, a field or a parameter"
+          + " whose class is decided (the class it was created as, else its declared class, and"
+          + " none when several are possible), and through an array, a holder object, a collection"
+          + " or a builder that received the value. The remaining false negatives are the files"
+          + " that only hold a sink or a source (b to e), flows through a static field, a"
+          + " serialized value or an abstract receiver that is not created in the body, and the"
+          + " cases that read from a class the rules do not model.\n"
+          + "# A sink on a chained receiver such as response.getWriter() is matched by the text of"
+          + " the receiver. The hard-coded password and key rules follow a string literal through"
+          + " a variable of one method.\n"
           + "# The CWE-327 false positives are the good cases that call Cipher.getInstance(\"AES\"),"
           + " which the JCA documentation maps to ECB mode, so ward:java/ecb-mode is right.\n"
           + "# Regenerate: ./mvnw -pl ward-cli -am -Dtest=SecurityBenchmarkSmokeTest"
@@ -113,10 +129,37 @@ class SecurityBenchmarkSmokeTest {
       found.addAll(
           runner.run(
               rule,
-              file.getFileName().toString(),
+              SOURCE_ROOT + file.getFileName(),
               source,
               FixtureTypeFacts.of(Optional.empty()),
-              FixtureProject.alone()));
+              new FixtureProject(ProjectFiles.empty(), siblings(file))));
+    }
+    return found;
+  }
+
+  /**
+   * The other files of the case: Juliet splits a flow over {@code ..._54a.java} to {@code
+   * ..._54e.java}, and variant 81 over {@code ..._81a.java}, {@code ..._81_base.java} and its
+   * subclasses, so the files of one directory with the same name up to the letter or the suffix
+   * belong to it.
+   */
+  private static List<SourceUnit> siblings(final Path file) throws IOException {
+    final Matcher variant = VARIANT.matcher(file.getFileName().toString());
+    if (!variant.matches()) {
+      return List.of();
+    }
+    final List<SourceUnit> found = new ArrayList<>();
+    try (Stream<Path> files = Files.list(file.getParent())) {
+      for (final Path other : files.sorted().toList()) {
+        final Matcher match = VARIANT.matcher(other.getFileName().toString());
+        if (!other.equals(file) && match.matches() && match.group(1).equals(variant.group(1))) {
+          found.add(
+              new SourceUnit(
+                  SOURCE_ROOT + other.getFileName(),
+                  AnalysisLanguage.JAVA,
+                  Files.readString(other, StandardCharsets.UTF_8)));
+        }
+      }
     }
     return found;
   }

@@ -46,7 +46,7 @@ final class TaintSeeds {
 
   private void seedSite(final BasicBlock block, final FlowSite site) {
     final Optional<TaintEntry> entry = TaintSpans.sourceOf(site, spec);
-    if (entry.isEmpty()) {
+    if (entry.isEmpty() || isArgumentLiteral(site)) {
       return;
     }
     if (site.kind() == FlowSiteKind.PARAMETER) {
@@ -54,6 +54,11 @@ final class TaintSeeds {
     } else if (!TaintSpans.sanitized(block, site.span(), spec)) {
       seedValue(block, site);
     }
+  }
+
+  /** A literal that is a call argument is a source only where it is a guarded argument. */
+  private static boolean isArgumentLiteral(final FlowSite site) {
+    return site.kind() == FlowSiteKind.LITERAL && "argument".equals(site.qualifier());
   }
 
   /** The incoming value of an annotated parameter is the source, so the entry write is tainted. */

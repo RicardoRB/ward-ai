@@ -7,3 +7,20 @@ presets = ["standard", "strict"]
 category = "correctness"
 vulture = ["V101"]
 
+[[rule]]
+name = "hardcoded-text"
+category = "correctness"
+presets = ["standard", "strict"]
+android-lint = ["HardcodedText"]
+
+[[rule]]
+name = "missing-content-description"
+category = "accessibility"
+presets = ["standard", "strict"]
+android-lint = ["ContentDescription"]
+
+[[rule]]
+name = "unused-resources"
+category = "dead-code"
+presets = ["standard", "strict"]
+android-lint = ["UnusedResources"]

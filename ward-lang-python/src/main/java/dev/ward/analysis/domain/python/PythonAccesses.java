@@ -1,9 +1,11 @@
 package dev.ward.analysis.domain.python;
 
+import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.ir.VariableAccess;
 import dev.ward.analysis.domain.ir.VariableAccesses;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,7 @@ final class PythonAccesses implements VariableAccesses {
   private final PythonNameAccesses names;
   private final PythonStatementAccesses statements;
   private final Map<SyntaxNode, List<VariableAccess>> planned = new IdentityHashMap<>();
+  private final Map<String, Span> declarations = new HashMap<>();
 
   /**
    * Creates the finder of one body.
@@ -53,6 +56,11 @@ final class PythonAccesses implements VariableAccesses {
     planned.put(node, found);
   }
 
+  /** Records the parameters, whose own spans are the declarations of their names. */
+  void declare(final List<VariableAccess> parameters) {
+    parameters.forEach(parameter -> declarations.putIfAbsent(parameter.name(), parameter.span()));
+  }
+
   @Override
   public List<VariableAccess> of(final SyntaxNode node) {
     if (!tracked) {
@@ -60,11 +68,21 @@ final class PythonAccesses implements VariableAccesses {
     }
     final List<VariableAccess> found = planned.get(node);
     if (found != null) {
-      return found;
+      return declared(found);
     }
     final List<VariableAccess> classified = new ArrayList<>();
     classify(node, classified);
-    return classified;
+    return declared(classified);
+  }
+
+  /** Python declares nothing: the first occurrence in the body is the declaration of a name. */
+  private List<VariableAccess> declared(final List<VariableAccess> found) {
+    final List<VariableAccess> out = new ArrayList<>();
+    for (final VariableAccess access : found) {
+      final Span declaration = declarations.computeIfAbsent(access.name(), name -> access.span());
+      out.add(new VariableAccess(access.name(), access.kind(), access.span(), declaration));
+    }
+    return out;
   }
 
   private void classify(final SyntaxNode node, final List<VariableAccess> out) {

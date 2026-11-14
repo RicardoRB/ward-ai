@@ -97,7 +97,7 @@ public final class TaintAnalysis {
   }
 
   /** The taint that reaches one guarded argument: a source written in it, or a tainted read. */
-  private static Optional<Taint> taintOf(
+  static Optional<Taint> taintOf(
       final BasicBlock block,
       final Span argument,
       final ReachingDefinitions reaching,
@@ -137,6 +137,7 @@ public final class TaintAnalysis {
     return block.sites().stream()
         .filter(site -> TaintSpans.contains(argument, site.span()))
         .filter(site -> site.kind() != FlowSiteKind.PARAMETER)
+        .filter(site -> site.kind() != FlowSiteKind.LITERAL || site.span().equals(argument))
         .filter(site -> TaintSpans.sourceOf(site, spec).isPresent())
         .filter(site -> !TaintSpans.sanitized(block, site.span(), spec))
         .findFirst()

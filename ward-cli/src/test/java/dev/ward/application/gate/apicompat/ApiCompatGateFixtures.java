@@ -13,6 +13,7 @@ import dev.ward.domain.project.BuildTool;
 import dev.ward.domain.project.Framework;
 import dev.ward.domain.project.Language;
 import dev.ward.domain.project.Project;
+import dev.ward.infrastructure.analysis.jvm.JvmModuleLayouts;
 import dev.ward.infrastructure.analysis.jvm.JvmSourceLayouts;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -70,6 +71,7 @@ final class ApiCompatGateFixtures {
         revisions,
         files,
         JvmSourceLayouts::mainRoots,
+        JvmModuleLayouts::listed,
         (root, units) -> {
           final List<ApiType> found = new ArrayList<>();
           for (final ApiSurfaceReader reader :

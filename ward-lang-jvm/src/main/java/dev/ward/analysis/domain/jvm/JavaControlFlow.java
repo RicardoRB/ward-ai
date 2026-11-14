@@ -37,7 +37,7 @@ public final class JavaControlFlow implements ControlFlowLowering {
   @Override
   public ControlFlowResult lower(final SourceUnit unit, final SyntaxNode tree) {
     final Collector collector = new Collector(unit, JavaTypeNames.of(tree));
-    collector.visit(tree, "");
+    collector.visit(tree, "", List.of());
     return new ControlFlowResult(collector.graphs, collector.failures);
   }
 
@@ -54,27 +54,32 @@ public final class JavaControlFlow implements ControlFlowLowering {
       this.types = types;
     }
 
-    void visit(final SyntaxNode node, final String owner) {
-      final String scope = TYPES.contains(node.kind()) ? typeScope(node, owner) : owner;
-      lowerBody(node, scope);
+    void visit(final SyntaxNode node, final String owner, final List<JavaClassFields.Field> outer) {
+      final boolean isType = TYPES.contains(node.kind());
+      final String scope = isType ? typeScope(node, owner) : owner;
+      final List<JavaClassFields.Field> fields =
+          isType ? JavaClassFields.merged(outer, node) : outer;
+      lowerBody(node, scope, fields);
       for (final SyntaxNode child : node.children()) {
-        visit(child, scope);
+        visit(child, scope, fields);
       }
     }
 
-    private void lowerBody(final SyntaxNode node, final String scope) {
+    private void lowerBody(
+        final SyntaxNode node, final String scope, final List<JavaClassFields.Field> fields) {
       switch (node.kind()) {
-        case "methodDeclaration" -> lowerMethod(node, scope);
-        case "constructorDeclaration" -> lowerConstructor(node, scope);
-        case "classBodyDeclaration" -> lowerInitializer(node, scope);
-        case "lambdaExpression" -> lowerLambda(node);
+        case "methodDeclaration" -> lowerMethod(node, scope, fields);
+        case "constructorDeclaration" -> lowerConstructor(node, scope, fields);
+        case "classBodyDeclaration" -> lowerInitializer(node, scope, fields);
+        case "lambdaExpression" -> lowerLambda(node, fields);
         default -> {
           // Other nodes hold no body of their own.
         }
       }
     }
 
-    private void lowerMethod(final SyntaxNode node, final String scope) {
+    private void lowerMethod(
+        final SyntaxNode node, final String scope, final List<JavaClassFields.Field> fields) {
       final SyntaxNode methodBody =
           JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(node), "methodBody");
       final SyntaxNode block =
@@ -88,31 +93,35 @@ public final class JavaControlFlow implements ControlFlowLowering {
         lower(
             scope + "#" + name + "(" + params + ")",
             JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(node), "formalParameters"),
-            block);
+            block,
+            fields);
       }
     }
 
-    private void lowerConstructor(final SyntaxNode node, final String scope) {
+    private void lowerConstructor(
+        final SyntaxNode node, final String scope, final List<JavaClassFields.Field> fields) {
       final SyntaxNode block = JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(node), BLOCK);
       if (block != null) {
         lower(
             scope + "#<init>(" + parameters(node) + ")",
             JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(node), "formalParameters"),
-            block);
+            block,
+            fields);
       }
     }
 
-    private void lowerInitializer(final SyntaxNode node, final String scope) {
+    private void lowerInitializer(
+        final SyntaxNode node, final String scope, final List<JavaClassFields.Field> fields) {
       final SyntaxNode block = JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(node), BLOCK);
       if (block != null) {
         final boolean isStatic =
             JavaFlowSyntax.parts(node).stream()
                 .anyMatch(part -> "static".equals(JavaFlowSyntax.text(part)));
-        lower(scope + (isStatic ? "#<clinit>(0)" : "#<init>(0)"), null, block);
+        lower(scope + (isStatic ? "#<clinit>(0)" : "#<init>(0)"), null, block, fields);
       }
     }
 
-    private void lowerLambda(final SyntaxNode node) {
+    private void lowerLambda(final SyntaxNode node, final List<JavaClassFields.Field> fields) {
       final SyntaxNode lambdaBody =
           JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(node), "lambdaBody");
       if (lambdaBody != null) {
@@ -120,13 +129,17 @@ public final class JavaControlFlow implements ControlFlowLowering {
         final Span span = body.span();
         final SyntaxNode parameters =
             JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(node), "lambdaParameters");
-        lower("<lambda>@" + span.startLine() + ":" + span.startColumn(), parameters, body);
+        lower("<lambda>@" + span.startLine() + ":" + span.startColumn(), parameters, body, fields);
       }
     }
 
-    private void lower(final String name, final SyntaxNode parameters, final SyntaxNode node) {
+    private void lower(
+        final String name,
+        final SyntaxNode parameters,
+        final SyntaxNode node,
+        final List<JavaClassFields.Field> fields) {
       try {
-        graphs.add(new JavaBodyLowering(types).lower(name, parameters, node, node.span()));
+        graphs.add(new JavaBodyLowering(types, fields).lower(name, parameters, node, node.span()));
       } catch (IllegalStateException failure) {
         failures.add(
             new AnalysisFinding(
@@ -141,10 +154,14 @@ public final class JavaControlFlow implements ControlFlowLowering {
       }
     }
 
-    private static String typeScope(final SyntaxNode node, final String owner) {
+    /** A top-level type is named {@code pkg:Type}, so the owner of a body carries its package. */
+    private String typeScope(final SyntaxNode node, final String owner) {
       final String name =
           JavaFlowSyntax.text(JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(node), IDENTIFIER));
-      return owner.isEmpty() ? name : owner + "." + name;
+      if (!owner.isEmpty()) {
+        return owner + "." + name;
+      }
+      return types.packageName().isEmpty() ? name : types.packageName() + ":" + name;
     }
 
     private static String parameters(final SyntaxNode node) {

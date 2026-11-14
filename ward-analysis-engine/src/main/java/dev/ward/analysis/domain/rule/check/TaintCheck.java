@@ -48,7 +48,8 @@ public final class TaintCheck implements RuleCheck {
   @Override
   public List<RuleMatch> matches(final SyntaxNode root, final FlowView flow) {
     final List<RuleMatch> found = new ArrayList<>();
-    TaintFile.run(flow.graphs(), spec).forEach(finding -> found.add(match(finding)));
+    TaintFile.run(flow.graphs(), flow.related(), spec)
+        .forEach(finding -> found.add(match(finding)));
     found.sort(Comparator.comparingInt((RuleMatch match) -> match.span().startOffset()));
     return found;
   }

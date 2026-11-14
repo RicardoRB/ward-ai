@@ -1,0 +1,51 @@
+# Untrusted input that only Kotlin code reads: console input of the Kotlin standard library and
+# the request of a Ktor handler, whose `call` is the receiver of the route lambda and so has no
+# declared type. The Servlet and Spring sources of taint/java/sources.toml apply to Kotlin as they
+# are.
+
+[[sources]]
+kind = "call"
+name = "readLine"
+
+[[sources]]
+kind = "call"
+name = "readln"
+
+[[sources]]
+kind = "call"
+name = "readlnOrNull"
+
+[[sources]]
+kind = "call"
+name = "receiveText"
+qualifier = "call"
+
+[[sources]]
+kind = "call"
+name = "receiveParameters"
+qualifier = "call"
+
+[[sources]]
+kind = "call"
+name = "receive"
+qualifier = "call"
+
+[[sources]]
+kind = "member"
+name = "parameters"
+qualifier = "call"
+
+[[sources]]
+kind = "member"
+name = "queryParameters"
+qualifier = "call.request"
+
+[[sources]]
+kind = "member"
+name = "headers"
+qualifier = "call.request"
+
+[[sources]]
+kind = "member"
+name = "cookies"
+qualifier = "call.request"

@@ -36,6 +36,28 @@ class TypeScriptPredicateTest {
   }
 
   @Test
+  void callInsideArrowBlockWithoutSemicolonParses() {
+    final String[] snippets = {
+      "const a = () => { return g(x) }",
+      "const a = () => { return g(1) }",
+      "const a = () => { return g() }",
+      "const a = () => { return g(x, y) }",
+      "const a = () => { return g(x); }",
+      "function f() { return g(x) }",
+    };
+    for (final String snippet : snippets) {
+      assertThat(parse(AnalysisLanguage.TYPESCRIPT, snippet).diagnostics()).as(snippet).isEmpty();
+    }
+  }
+
+  @Test
+  void typeLiteralMembersMaySitOnSeparateLines() {
+    final String text = "export type Point = {\n  x: number\n  y: number\n  run(): void\n}\n";
+
+    assertThat(parse(AnalysisLanguage.TYPESCRIPT, text).diagnostics()).isEmpty();
+  }
+
+  @Test
   void validTypeScriptConstructsParseWithoutDiagnostics() {
     final String[] snippets = {
       "const f = (x: number): x is number => x > 0;",

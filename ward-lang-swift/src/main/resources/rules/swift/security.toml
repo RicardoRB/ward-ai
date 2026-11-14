@@ -1,0 +1,86 @@
+# Security rules for Swift: insecure transport, cryptography and secret handling, read from the source lines.
+# Written from the Apple CryptoKit, CommonCrypto, App Transport Security and UserDefaults documentation.
+
+[[rules]]
+id = "ward:swift/cleartext-url"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = '\bURL\(string:\s*"http://(?!localhost|127\.0\.0\.1|\[::1\])'
+message = "the URL is plain http, so the traffic can be read and changed on the network; use https"
+'''
+
+[[rules]]
+id = "ward:swift/weak-hash"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = '\bInsecure\.(MD5|SHA1)\b|\bCC_(MD5|SHA1)\b'
+message = "MD5 and SHA-1 are broken hashes; use SHA-256 or stronger, and a password hash for passwords"
+'''
+
+[[rules]]
+id = "ward:swift/weak-cipher"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = '\bkCCAlgorithm(DES|3DES|RC2|RC4)\b|\bkCCOptionECBMode\b'
+message = "this CommonCrypto algorithm or mode is broken or leaks patterns; use AES-GCM from CryptoKit"
+'''
+
+[[rules]]
+id = "ward:swift/weak-random"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = '(?<![\w.])(rand|random|srand|srandom|drand48|lrand48)\('
+message = "the C library generator is predictable; use SystemRandomNumberGenerator or SecRandomCopyBytes for secrets"
+'''
+
+[[rules]]
+id = "ward:swift/hard-coded-credential"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = '\b(let|var)\s+\w*([Pp]assword|[Pp]asswd|[Ss]ecret|[Aa]pi[Kk]ey|[Tt]oken|[Pp]rivate[Kk]ey)\w*\s*(:\s*String\s*)?=\s*"[^"\s][^"]*"'
+message = "a credential is written in the source; read it from the Keychain or the environment"
+'''
+
+[[rules]]
+id = "ward:swift/userdefaults-secret"
+language = "swift"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "text-pattern"
+target = "lines"
+pattern = '(?i)\bUserDefaults\.\w+\.set\(.*forKey:\s*"[^"]*(password|secret|token|apikey)'
+message = "UserDefaults is not encrypted; store secrets in the Keychain"
+'''

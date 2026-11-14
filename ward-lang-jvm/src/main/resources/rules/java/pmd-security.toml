@@ -5,15 +5,14 @@
 [[rules]]
 id = "ward:java/hard-coded-crypto-key"
 language = "java"
-capability = "SYNTAX"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["expression"]
-text = '^new(?:javax\.crypto\.spec\.)?SecretKeySpec\((?:"[^"]*"\.getBytes\(\)|new\w*\[\]\{)[^()]*+(?:\([^()]*\)[^()]*+)*+\)$'
-message = "the encryption key is hard-coded; load it from configuration or a key store"
+check = "taint"
+specs = ["taint/java/ward-hard-coded-crypto-key.toml"]
+message = "this cryptographic key is a string literal in the source ({source}), used by {sink}; load it from a key store or a secret store"
 '''
 
 [[rules]]

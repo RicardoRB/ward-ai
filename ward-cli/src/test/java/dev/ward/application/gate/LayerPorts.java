@@ -73,9 +73,9 @@ public final class LayerPorts {
         .collect(Collectors.toSet());
   }
 
-  /** Every language of the layer rule has a frontend that provides symbols, as in the gate. */
+  /** Every language of the layer rule has a frontend that provides scopes, as in the gate. */
   private static List<FrontendSupport> frontends() {
-    final Set<RuleCapability> symbols = Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS);
+    final Set<RuleCapability> symbols = Set.of(RuleCapability.SYNTAX, RuleCapability.SCOPES);
     final AntlrLanguageFrontend frontend = new AntlrLanguageFrontend();
     return ArchitectureLayers.ENGINE_LANGUAGES.stream()
         .map(language -> new FrontendSupport(language, frontend, symbols))

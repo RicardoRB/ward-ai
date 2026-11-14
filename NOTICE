@@ -367,6 +367,12 @@ Apache License, Version 2.0 (see LICENSE):
   * OpenAPI Specification schemas (https://github.com/OAI/OpenAPI-Specification),
     by the OpenAPI Initiative: oas-3.0.json and oas-3.1*.json in the same
     folder. See ward-lang-openapi/BUNDLED-SCHEMAS.md.
+  * Android Lint (https://developer.android.com/studio/write/lint), part of the
+    Android Open Source Project. The Android rules in ward-lang-android follow
+    the ids and the documented behavior of its ExportedService,
+    ExportedReceiver, ExportedContentProvider, HardcodedDebugMode,
+    InsecureBaseConfiguration, AllowBackup, HardcodedText and ContentDescription
+    checks; no Lint source, message or test is copied.
   * oasdiff (https://github.com/oasdiff/oasdiff). The OpenAPI breaking-change
     rules keep the ids of its error-level checks.
   * Apache Maven (https://maven.apache.org/). The Maven version order used by
@@ -430,7 +436,9 @@ under ward-cli/src/main/resources/dev/ward/license.
 Ward's style and bug rules for Java, Kotlin, JavaScript, TypeScript, Python
 and Swift follow the documented behaviour of Checkstyle, PMD, SpotBugs, Error
 Prone, detekt, ktlint, ESLint, typescript-eslint, angular-eslint, Ruff, Pylint
-and SwiftLint, and name the rule each one follows.
+and SwiftLint, and name the rule each one follows. The duplicate-code rule
+follows the documented behaviour of PMD CPD (BSD-style license); no code is
+copied.
 
 ================================================================
 MITRE CWE

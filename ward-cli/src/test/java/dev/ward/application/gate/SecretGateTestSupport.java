@@ -103,6 +103,7 @@ class SecretGateTestSupport {
             null,
             null,
             null,
+            null,
             null);
     return gates
         .create(check, focus)

@@ -2,6 +2,7 @@ package dev.ward.analysis.domain.flow.taint;
 
 import dev.ward.analysis.domain.ir.FlowSite;
 import dev.ward.analysis.domain.ir.FlowSiteKind;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -14,7 +15,8 @@ import java.util.regex.Pattern;
  * <p>A parameter entry matches a parameter that carries an annotation of the same name, so its
  * {@code name} is the annotation. A sink entry names the argument positions it guards. A string
  * entry matches a string-building site whose literal text matches its {@code pattern}, and guards
- * every value part of that site.
+ * every value part of that site. A literal entry matches a literal whose text matches its {@code
+ * pattern}.
  *
  * @param kind the kind of site the entry matches
  * @param name the called name, the member name, or the annotation of a parameter
@@ -34,6 +36,7 @@ public record TaintEntry(
     Optional<Pattern> pattern) {
 
   private static final String ANY_PREFIX = "*";
+  private static final Pattern CHAIN_SEPARATOR = Pattern.compile("\\??\\.");
 
   /**
    * Creates an entry that has no literal-text pattern.
@@ -84,6 +87,9 @@ public record TaintEntry(
     if (kind == FlowSiteKind.STRING_BUILD) {
       return pattern.map(p -> p.matcher(site.name()).find()).orElse(false);
     }
+    if (kind == FlowSiteKind.LITERAL) {
+      return pattern.map(p -> p.matcher(site.name()).find()).orElse(true);
+    }
     if (kind == FlowSiteKind.PARAMETER) {
       return site.annotations().stream().anyMatch(name::equals);
     }
@@ -99,10 +105,15 @@ public record TaintEntry(
     return qualifier.map(text -> qualifierMatches(text, site)).orElse(true);
   }
 
-  /** A qualifier that starts with {@code *} matches any qualifier that ends with the rest. */
+  /**
+   * A qualifier that starts with {@code *} matches any qualifier that ends with the rest. Any other
+   * qualifier matches a receiver chain that has it as a member, at any depth: {@code db} and {@code
+   * sequelize} both match {@code db.sequelize}.
+   */
   private static boolean qualifierMatches(final String expected, final FlowSite site) {
     return expected.startsWith(ANY_PREFIX)
         ? site.qualifier().endsWith(expected.substring(ANY_PREFIX.length()))
-        : expected.equals(site.qualifier());
+        : expected.equals(site.qualifier())
+            || Arrays.asList(CHAIN_SEPARATOR.split(site.qualifier())).contains(expected);
   }
 }

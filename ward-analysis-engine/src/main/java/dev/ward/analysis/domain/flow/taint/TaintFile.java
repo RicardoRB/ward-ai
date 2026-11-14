@@ -1,8 +1,6 @@
 package dev.ward.analysis.domain.flow.taint;
 
-import dev.ward.analysis.domain.ir.BasicBlock;
 import dev.ward.analysis.domain.ir.ControlFlowGraph;
-import dev.ward.analysis.domain.ir.FlowSite;
 import dev.ward.analysis.domain.ir.FlowSiteKind;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,36 +44,51 @@ public final class TaintFile {
    * @return the findings of all graphs, graph by graph in the order given
    */
   public static List<TaintFinding> run(final List<ControlFlowGraph> graphs, final TaintSpec spec) {
-    final Map<String, LocalMethod> methods = called(graphs, LocalMethod.index(graphs));
+    return run(graphs, List.of(), spec);
+  }
+
+  /**
+   * Runs the analysis on every graph of a file, following calls into the graphs of the files it
+   * depends on. A call reaches another file's method when it names the owner type, as in {@code
+   * Owner.m(x)} or {@code (new Owner()).m(x)}; only the findings of {@code graphs} are returned.
+   *
+   * @param graphs the control-flow graphs of the file, in source order
+   * @param related the graphs of the files it depends on, directly or not
+   * @param spec the taint specification
+   * @return the findings of all graphs, graph by graph in the order given
+   */
+  public static List<TaintFinding> run(
+      final List<ControlFlowGraph> graphs,
+      final List<ControlFlowGraph> related,
+      final TaintSpec spec) {
+    final Set<String> known = new HashSet<>(LocalMethod.owned(graphs));
+    known.addAll(LocalMethod.owned(related));
+    final List<ControlFlowGraph> own = DispatchedCalls.apply(graphs, known, spec);
+    final Map<String, LocalMethod> methods = methodsOf(own, related, known, spec);
     TaintSpec effective = spec;
     if (!methods.isEmpty()) {
       effective = summarized(spec, methods);
     }
     final List<TaintFinding> found = new ArrayList<>();
-    for (final ControlFlowGraph graph : graphs) {
+    for (final ControlFlowGraph graph : own) {
       found.addAll(TaintAnalysis.run(graph, effective));
     }
     return found;
   }
 
-  /** Keeps the methods that some call of the file names with the right argument count. */
-  private static Map<String, LocalMethod> called(
-      final List<ControlFlowGraph> graphs, final Map<String, LocalMethod> methods) {
-    final Set<String> calls = new HashSet<>();
-    for (final ControlFlowGraph graph : graphs) {
-      for (final BasicBlock block : graph.blocks()) {
-        block.sites().stream()
-            .filter(site -> site.kind() == FlowSiteKind.CALL)
-            .forEach(site -> calls.add(callKey(site)));
-      }
-    }
-    final Map<String, LocalMethod> kept = new HashMap<>(methods);
-    kept.keySet().retainAll(calls);
-    return kept;
-  }
-
-  private static String callKey(final FlowSite site) {
-    return LocalMethod.key(site.name(), site.arguments().size());
+  /** The methods of the file and the reachable ones of other files, with their calls resolved. */
+  private static Map<String, LocalMethod> methodsOf(
+      final List<ControlFlowGraph> own,
+      final List<ControlFlowGraph> related,
+      final Set<String> known,
+      final TaintSpec spec) {
+    final Map<String, LocalMethod> methods = CalledMethods.local(own, LocalMethod.index(own));
+    CalledMethods.reachable(own, LocalMethod.indexExternal(related))
+        .forEach(
+            (key, method) ->
+                methods.put(
+                    key, method.withGraph(DispatchedCalls.apply(method.graph(), known, spec))));
+    return methods;
   }
 
   private static TaintSpec summarized(

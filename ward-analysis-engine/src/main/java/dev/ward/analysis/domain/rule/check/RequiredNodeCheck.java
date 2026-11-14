@@ -60,9 +60,19 @@ public final class RequiredNodeCheck implements UnitCheck {
 
     boolean met(final SyntaxWalk.Visit visit) {
       final SyntaxNode node = visit.node();
-      return (child.isEmpty() || hasChild(node, child))
-          && (descendant.isEmpty() || hasDescendant(node))
-          && (sibling.isEmpty() || hasSibling(visit));
+      return childMet(node) && descendantMet(node) && siblingMet(visit);
+    }
+
+    private boolean childMet(final SyntaxNode node) {
+      return child.isEmpty() || hasChild(node, child);
+    }
+
+    private boolean descendantMet(final SyntaxNode node) {
+      return descendant.isEmpty() || hasDescendant(node);
+    }
+
+    private boolean siblingMet(final SyntaxWalk.Visit visit) {
+      return sibling.isEmpty() || hasSibling(visit);
     }
 
     private static boolean hasChild(final SyntaxNode node, final Set<String> kinds) {

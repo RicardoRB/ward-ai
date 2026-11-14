@@ -1,0 +1,26 @@
+# The 16 challenge categories that OWASP Juice Shop v20.4.0 publishes (category of each entry of
+# data/static/challenges.yml; the number is how many challenges the category has), against Ward's
+# TypeScript and JavaScript security rules. Written by hand from the project's category list and
+# from reading the application code at the places the rules report; not compared by a test.
+# rule: whether a ward:typescript/* or ward:javascript/* security rule names the weakness.
+# found: whether Ward reported at least one real instance (a tp of juice-shop-labels.txt).
+# Ground truth stops at what a reader of the code can decide: a challenge solved by a request
+# sequence, by the data in the database or by the browser is not decidable from the source.
+#
+# category | challenges | rule | found | note
+Injection | 14 | yes | yes, 8 | eval, pug template and Content-Security-Policy header injection in routes/userProfile.ts, the SSRF of routes/profileImageUrlUpload.ts:24, the SQL injection of routes/login.ts:34 (models.sequelize.query, a chained receiver that the SQL sink now matches) and the two NoSQL operator injections of routes/likeProductReviews.ts:25 and :43 (tp). Missed: the SQL injection of routes/search.ts:23, and the NoSQL $where injections of routes/trackOrder.ts:18 and routes/showProductReviews.ts:36, where the value passes through a call or a ternary that carries no taint; routes/chat.ts reports nothing. Not seen by any rule: code in a string handed to vm.runInContext (routes/b2bOrder.ts:23), a prompt injection into a chatbot.
+XSS | 9 | yes | yes, 11 | bypassSecurityTrustHtml of the login IP (frontend last-login-ip.component.ts:40), the four coding-challenge snippets and, now that the files parse, the feedback comments, user email, product description, search query and order id of about, administration, search-result and track-result.component.ts (six tp). Server-side stored XSS needs the data flow through the database.
+Sensitive Data Exposure | 17 | partly | no | hard-coded-secret skips test sources, so the mock TOTP secrets of test/api/2fa.test.ts are no longer reported (they were fp). Missed: the hard-coded HMAC key and private key of lib/insecurity.ts, which is analysed but not reported by hard-coded-secret. The rest is exposed files, logs and API responses, which are not code weaknesses a rule can name.
+Broken Access Control | 13 | partly | yes, 4 | path traversal: params.file reaches res.sendFile in routes/fileServer.ts:18, routes/keyServer.ts:14, routes/logfileServer.ts:14 and routes/quarantineServer.ts:14 (tp), through a destructured Request parameter. Six reports are fp: values checked against a list or a prefix (server.ts:281, routes/vulnCodeSnippet.ts:89 and :90, routes/vulnCodeFixes.ts:83) or built from a session id and an allowlisted extension (routes/profileImageFileUpload.ts:42, routes/profileImageUrlUpload.ts:29). Missing authorization checks and IDOR are application logic.
+Improper Input Validation | 12 | no | n/a | the validation that is missing is application logic.
+Broken Authentication | 10 | partly | yes, 1 | jwt-without-verification and hard-coded-secret exist; the weak MD5 password hash of lib/insecurity.ts:41 is found (tp), the private key of that file and the logic of routes/verify.ts are not.
+Vulnerable Components | 9 | no | n/a | a dependency problem, found by the vulnerabilities gate and not by a source rule.
+Miscellaneous | 6 | no | n/a | not a code weakness.
+Security Misconfiguration | 5 | yes | yes, 5 | cors() with defaults (server.ts:184 and :185) and the session cookie without Secure, HttpOnly and SameSite (routes/updateUserProfile.ts:42). missing-frame-protection correctly stays silent: server.ts:189 enables helmet.frameguard().
+Cryptographic Issues | 5 | yes | yes, 3 | the MD5 password hash (lib/insecurity.ts:41), the Math.random JWT secret of denyAll (lib/insecurity.ts:53) and the Math.random conversation id of frontend conversation-storage.service.ts:15 (tp); the other reports are an MD5 build checksum and Math.random in vendored three.js (not Juice Shop code).
+Observability Failures | 4 | no | n/a | missing monitoring and logging, not a code weakness.
+Broken Anti Automation | 4 | no | n/a | missing rate limits and captchas that can be solved, which is application logic. insecure-random no longer reports the captcha operands of routes/captcha.ts, which are public values.
+Security through Obscurity | 3 | no | n/a | not a code weakness.
+Insecure Deserialization | 3 | yes | no | untrusted-deserialization reports nothing: the yaml.load of routes/fileUpload.ts:114 is inside a string handed to vm.runInContext, and the notevil eval of routes/b2bOrder.ts is a sandbox.
+XXE | 2 | yes | no | xml-external-entities reports nothing: lib/xml.ts parses with libxml2-wasm through a dynamic import and a string run in a vm, which no rule follows.
+Unvalidated Redirects | 2 | yes | yes, 1 | untrusted-redirect reports routes/redirect.ts:18, where the allowlist test is url.includes(allowed) and so accepts any URL that contains an allowed string (tp); the second challenge is not decidable from the source.

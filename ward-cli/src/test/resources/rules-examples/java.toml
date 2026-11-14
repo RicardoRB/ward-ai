@@ -161,3 +161,19 @@ group-by = "identifier"
 group-skip = ["modifier", "annotation", "typeTypeOrVoid", "typeType", "formalParameters", "methodBody"]
 message = "overload '{value}' must stay with the other methods of that name"
 '''
+
+[[rules]]
+id = "ward:java/example-add-needs-fix"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "companion-node"
+kinds = ["methodDeclaration"]
+node = "expression"
+match = '^add\((\w+)\)$'
+companion = '^{1}\.fix\(\)$'
+message = "add needs a fix call on the same value"
+'''

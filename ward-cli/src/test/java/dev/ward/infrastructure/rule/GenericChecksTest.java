@@ -28,6 +28,9 @@ class GenericChecksTest {
           "check = \"forbidden-node\"\nkinds = [\"a\"]" + MESSAGE,
           GenericKind.REQUIRED_NODE,
           "check = \"required-node\"\nkinds = [\"a\"]\nchild = [\"b\"]" + MESSAGE,
+          GenericKind.COMPANION_NODE,
+          "check = \"companion-node\"\nkinds = [\"a\"]\nnode = \"b\"\nmatch = \"(x)\"\ncompanion = \"{1}y\""
+              + MESSAGE,
           GenericKind.COUNT,
           "check = \"count\"\nkinds = [\"a\"]\ncounted = [\"b\"]\nmax = 1" + MESSAGE,
           GenericKind.DEPTH,
