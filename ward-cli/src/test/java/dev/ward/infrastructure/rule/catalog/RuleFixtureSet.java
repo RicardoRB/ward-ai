@@ -41,7 +41,8 @@ record RuleFixtureSet(AnalysisLanguage language, String name, Path directory) {
           AnalysisLanguage.JAVASCRIPT, "js",
           AnalysisLanguage.PYTHON, "py",
           AnalysisLanguage.SWIFT, "swift",
-          AnalysisLanguage.OPENAPI, "yaml");
+          AnalysisLanguage.OPENAPI, "yaml",
+          AnalysisLanguage.ANDROID, "xml");
 
   /** Returns the root of the fixtures, {@code rules} on the test classpath. */
   static Path root() {

@@ -8,6 +8,10 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Added
+
+- Native Android rules, `ward:android/*`, that run in the `ward` gate over `AndroidManifest.xml` and the XML files under `res/` (`layout`, `menu`, `xml`, `values`, `drawable`, `navigation`, `color`), with no Android SDK and no Gradle run: `exported-service`, `exported-receiver` and `exported-content-provider` (an exported component with no permission), `debuggable-application`, `cleartext-transport` (the manifest flag and `cleartextTrafficPermitted` in a network security config), `allow-backup`, `hardcoded-text` and `missing-content-description`. They follow the ids and documented behavior of Android Lint (Apache-2.0); the `standard` and `strict` presets select them. The `android-lint` gate stays for the checks that need the compiled platform API, such as `NewApi`. `tools:ignore` is not honored: turn a rule off in `ward-rules.toml`. Not in this version: `unused-resources`, which needs the references of the Java and Kotlin sources (#550).
+
 ## [0.8.0] - 2026-11-13
 
 ### Added

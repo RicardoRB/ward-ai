@@ -1,0 +1,4 @@
+# Status of the android-lint rows in android: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+hardcoded-text = "implemented"
+missing-content-description = "implemented"

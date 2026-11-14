@@ -274,6 +274,27 @@ profiles = ["pre-push"]
 exit status decides the gate. They are offered for any project that applies the Android Gradle
 Plugin, and `android-coverage` is described below.
 
+What the sources show does not need the SDK: the `ward` gate runs the native `ward:android/*` rules
+over `AndroidManifest.xml` and the XML files under `res/<type>/` (`layout`, `menu`, `xml`, `values`,
+`drawable`, `navigation` and `color`, with or without qualifiers such as `layout-land`). The rules
+follow the ids and documented behavior of Android Lint.
+
+| Rule | Android Lint | Reports |
+|---|---|---|
+| `ward:android/exported-service` | `ExportedService` | A `service` that is exported and has no `android:permission`. |
+| `ward:android/exported-receiver` | `ExportedReceiver` | A `receiver` that is exported and has no `android:permission`. |
+| `ward:android/exported-content-provider` | `ExportedContentProvider` | A `provider` with `android:exported="true"` and no permission, no read and write permission pair and no `path-permission`. |
+| `ward:android/debuggable-application` | `HardcodedDebugMode` | `android:debuggable="true"` on `application`. |
+| `ward:android/cleartext-transport` | `InsecureBaseConfiguration` | `android:usesCleartextTraffic="true"`, and `cleartextTrafficPermitted="true"` on `base-config` or `domain-config`. |
+| `ward:android/allow-backup` | `AllowBackup` | `android:allowBackup="true"`, or no `allowBackup`, `fullBackupContent` and `dataExtractionRules`. |
+| `ward:android/hardcoded-text` | `HardcodedText` | A literal in `android:text`, `hint`, `title`, `summary` or `label` of a layout, menu, navigation or preference file. |
+| `ward:android/missing-content-description` | `ContentDescription` | An `ImageView` or `ImageButton` with neither `android:contentDescription` nor `importantForAccessibility` of `no`. |
+
+A component is exported with `android:exported="true"`, or, for a service or receiver, with an
+`intent-filter` and no `exported` attribute. Prefixes are read as written (`android:`, `tools:`),
+and `tools:ignore` is not honored: turn a rule off in `ward-rules.toml`. `android-lint` stays for the
+checks that need the compiled platform API, such as `NewApi`. `unused-resources` is not yet native.
+
 ### Android coverage
 
 An `android-coverage` check needs `minimum`, the lowest line coverage in percent. Its command runs

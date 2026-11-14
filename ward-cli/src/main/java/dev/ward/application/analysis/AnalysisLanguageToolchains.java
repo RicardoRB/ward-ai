@@ -21,7 +21,7 @@ public final class AnalysisLanguageToolchains {
       case TYPESCRIPT, JAVASCRIPT -> Optional.of(Toolchain.NODE);
       case PYTHON -> Optional.of(Toolchain.PYTHON);
       case SWIFT -> Optional.of(Toolchain.SWIFT);
-      case OPENAPI -> Optional.empty();
+      case OPENAPI, ANDROID -> Optional.empty();
     };
   }
 }
