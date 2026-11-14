@@ -1,7 +1,7 @@
 # Java parity report: Ward rules against Checkstyle 14.3.0, PMD 7.29.0, SpotBugs 4.9.7,
 # Error Prone 2.50.0 with NullAway 0.14.2.
 # rule, tool, tool id, outcome, note. Regenerate with -Dward.parity.write=true.
-# - no-counterpart: 51
+# - no-counterpart: 53
 # checkstyle agree: 79
 # checkstyle agree-lines: 45
 # checkstyle anchor-differs: 3
@@ -19,9 +19,9 @@
 # nullaway not-comparable: 18
 # nullaway tool-silent: 3
 # pmd agree: 103
-# pmd agree-lines: 111
+# pmd agree-lines: 110
 # pmd anchor-differs: 19
-# pmd approximation: 16
+# pmd approximation: 17
 # pmd tool-silent: 39
 # spotbugs agree-lines: 168
 # spotbugs anchor-differs: 41
@@ -205,6 +205,7 @@ constants-in-interface	pmd	ConstantsInInterface	agree-lines
 constructor-calls-overridable-method	pmd	ConstructorCallsOverridableMethod	agree	
 constructors-declaration-grouping	checkstyle	ConstructorsDeclarationGrouping	agree	
 control-statement-braces	pmd	ControlStatementBraces	anchor-differs	tool lines [3, 4, 5, 8], on passing [], fixture [3, 4, 5, 6]
+cookie-missing-secure	-	-	no-counterpart	
 covariant-equals	checkstyle	CovariantEquals	agree	
 covariant-equals	spotbugs	EQ_OTHER_USE_OBJECT	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 cross-site-scripting	spotbugs	XSS_REQUEST_PARAMETER_TO_JSP_WRITER	not-comparable	the fixture does not compile
@@ -373,6 +374,7 @@ equals-on-unrelated-types	spotbugs	EC_UNRELATED_TYPES	agree-lines
 equals-reference	errorprone	EqualsReference	agree-lines	
 equals-wrong-thing	errorprone	EqualsWrongThing	agree-lines	
 es-comparing-parameter-string-with-eq	spotbugs	ES_COMPARING_PARAMETER_STRING_WITH_EQ	approximation	SpotBugs also reports == on a local String and on a field of the passing fixture (lines 5, 6); Ward reports only parameters
+example-add-needs-fix	-	-	no-counterpart	
 example-constant-name	-	-	no-counterpart	
 example-inline-conditional	-	-	no-counterpart	
 example-magic-number	-	-	no-counterpart	
@@ -456,7 +458,7 @@ guarded-by	errorprone	GuardedBy	not-comparable	the fixture does not compile
 guice-assisted-inject-scoping	errorprone	GuiceAssistedInjectScoping	not-comparable	the fixture does not compile
 guice-assisted-parameters	errorprone	GuiceAssistedParameters	not-comparable	the fixture does not compile
 guice-inject-on-final-field	errorprone	GuiceInjectOnFinalField	not-comparable	the fixture does not compile
-hard-coded-crypto-key	pmd	HardCodedCryptoKey	agree-lines	
+hard-coded-crypto-key	pmd	HardCodedCryptoKey	approximation	PMD reports the literal where it is assigned (line 9) and the name passed to System.getenv in the passing fixture (line 12); Ward reports the SecretKeySpec that uses the key (line 10) and does not treat an environment value as hard-coded
 hard-coded-password	-	-	no-counterpart	
 hashtable-contains	errorprone	HashtableContains	agree-lines	
 he-equals-use-hashcode	spotbugs	HE_EQUALS_USE_HASHCODE	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
