@@ -7,8 +7,8 @@ profiles = ["default", "pre-commit", "pre-push", "ci"]
 command = "./mvnw spotless:check"
 
 [checks.format.paths]
-match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java", "ward-lang-openapi/src/**/*.java"]
-full = ["pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-python/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml", "ward-lang-openapi/pom.xml"]
+match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java", "ward-lang-openapi/src/**/*.java", "ward-lang-android/src/**/*.java"]
+full = ["pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-python/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml", "ward-lang-openapi/pom.xml", "ward-lang-android/pom.xml"]
 args = ["-DspotlessFiles={paths}"]
 item = ".*/{path}"
 separator = ","
@@ -19,8 +19,8 @@ profiles = ["default", "pre-commit", "pre-push", "ci"]
 command = "./mvnw checkstyle:check"
 
 [checks.checkstyle.paths]
-match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java", "ward-lang-openapi/src/**/*.java"]
-full = ["config/checkstyle.xml", "pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-python/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml", "ward-lang-openapi/pom.xml"]
+match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java", "ward-lang-openapi/src/**/*.java", "ward-lang-android/src/**/*.java"]
+full = ["config/checkstyle.xml", "pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-python/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml", "ward-lang-openapi/pom.xml", "ward-lang-android/pom.xml"]
 args = ["-Dcheckstyle.includes={paths}"]
 item = "**/{name}"
 separator = ","
@@ -31,8 +31,8 @@ profiles = ["default", "pre-commit", "pre-push", "ci"]
 command = "./mvnw -DskipTests package pmd:check"
 
 [checks.pmd.paths]
-match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java", "ward-lang-openapi/src/**/*.java"]
-full = ["config/pmd-ruleset.xml", "pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-python/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml", "ward-lang-openapi/pom.xml"]
+match = ["ward-cli/src/**/*.java", "ward-analysis-api/src/**/*.java", "ward-lang-node/src/**/*.java", "ward-lang-python/src/**/*.java", "ward-lang-jvm/src/**/*.java", "ward-lang-swift/src/**/*.java", "ward-lang-openapi/src/**/*.java", "ward-lang-android/src/**/*.java"]
+full = ["config/pmd-ruleset.xml", "pom.xml", "ward-cli/pom.xml", "ward-analysis-api/pom.xml", "ward-lang-node/pom.xml", "ward-lang-python/pom.xml", "ward-lang-jvm/pom.xml", "ward-lang-swift/pom.xml", "ward-lang-openapi/pom.xml", "ward-lang-android/pom.xml"]
 
 [checks.secrets]
 enabled = true
@@ -78,7 +78,7 @@ command = "./mvnw -DskipTests package spotbugs:check"
 enabled = true
 # Not in pre-push: the tests gate already runs these classes.
 profiles = ["ci"]
-command = "./mvnw -Dsurefire.failIfNoSpecifiedTests=false -Dtest=ArchitectureAnalysisApiTest,ArchitectureBoundaryTest,ArchitectureFeatureGraphTest,ArchitectureLangJvmTest,ArchitectureLangNodeTest,ArchitectureLangPythonTest,ArchitectureLangSwiftTest,ArchitecturePlacementTest,ArchitectureRuleFixturesTest,ArchitectureToolchainTest,NativeCommandMetadataTest,NativeImageCompatibilityTest,NativeJsonCodecMetadataTest,NativeResourceGlobsTest,WardCliContract4Test test"
+command = "./mvnw -Dsurefire.failIfNoSpecifiedTests=false -Dtest=ArchitectureAnalysisApiTest,ArchitectureBoundaryTest,ArchitectureFeatureGraphTest,ArchitectureLangAndroidTest,ArchitectureLangJvmTest,ArchitectureLangNodeTest,ArchitectureLangPythonTest,ArchitectureLangSwiftTest,ArchitecturePlacementTest,ArchitectureRuleFixturesTest,ArchitectureToolchainTest,NativeCommandMetadataTest,NativeImageCompatibilityTest,NativeJsonCodecMetadataTest,NativeResourceGlobsTest,WardCliContract4Test test"
 
 [checks.mutation]
 enabled = true

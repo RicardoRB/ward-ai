@@ -5,6 +5,158 @@
   "type": "object",
   "additionalProperties": false,
   "$defs": {
+    "ward:android/allow-backup": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:android/cleartext-transport": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:android/debuggable-application": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:android/exported-content-provider": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:android/exported-receiver": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:android/exported-service": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:android/hardcoded-text": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:android/missing-content-description": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/aa-assertion-of-arguments": {
       "type": "object",
       "additionalProperties": false,
@@ -58185,7 +58337,8 @@
               "javascript",
               "python",
               "swift",
-              "openapi"
+              "openapi",
+              "android"
             ]
           }
         },
@@ -58219,6 +58372,14 @@
           "items": {
             "type": "string",
             "enum": [
+              "android.allow-backup",
+              "android.cleartext-transport",
+              "android.debuggable-application",
+              "android.exported-content-provider",
+              "android.exported-receiver",
+              "android.exported-service",
+              "android.hardcoded-text",
+              "android.missing-content-description",
               "java.aa-assertion-of-arguments",
               "java.abbreviation-as-word-in-name",
               "java.abstract-class-name",
@@ -61162,6 +61323,14 @@
           "items": {
             "type": "string",
             "enum": [
+              "android.allow-backup",
+              "android.cleartext-transport",
+              "android.debuggable-application",
+              "android.exported-content-provider",
+              "android.exported-receiver",
+              "android.exported-service",
+              "android.hardcoded-text",
+              "android.missing-content-description",
               "java.aa-assertion-of-arguments",
               "java.abbreviation-as-word-in-name",
               "java.abstract-class-name",
@@ -64106,6 +64275,36 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "android": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "allow-backup": {
+              "$ref": "#/$defs/ward:android~1allow-backup"
+            },
+            "cleartext-transport": {
+              "$ref": "#/$defs/ward:android~1cleartext-transport"
+            },
+            "debuggable-application": {
+              "$ref": "#/$defs/ward:android~1debuggable-application"
+            },
+            "exported-content-provider": {
+              "$ref": "#/$defs/ward:android~1exported-content-provider"
+            },
+            "exported-receiver": {
+              "$ref": "#/$defs/ward:android~1exported-receiver"
+            },
+            "exported-service": {
+              "$ref": "#/$defs/ward:android~1exported-service"
+            },
+            "hardcoded-text": {
+              "$ref": "#/$defs/ward:android~1hardcoded-text"
+            },
+            "missing-content-description": {
+              "$ref": "#/$defs/ward:android~1missing-content-description"
+            }
+          }
+        },
         "java": {
           "type": "object",
           "additionalProperties": false,

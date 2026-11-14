@@ -1,0 +1,72 @@
+# Android manifest and network security configuration rules. Each rule follows the documented behavior of the Android Lint check named in its catalog row; see NOTICE.
+
+[[rules]]
+id = "ward:android/exported-service"
+language = "android"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "android-exported-component"
+component = "service"
+'''
+
+[[rules]]
+id = "ward:android/exported-receiver"
+language = "android"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "android-exported-component"
+component = "receiver"
+'''
+
+[[rules]]
+id = "ward:android/exported-content-provider"
+language = "android"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "android-exported-component"
+component = "provider"
+'''
+
+[[rules]]
+id = "ward:android/debuggable-application"
+language = "android"
+capability = "SYNTAX"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "android-application-flag"
+attribute = "debuggable"
+message = "The application is debuggable: remove android:debuggable, the build sets it for debug builds only."
+'''
+
+[[rules]]
+id = "ward:android/cleartext-transport"
+language = "android"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "android-cleartext-traffic"
+'''
+
+[[rules]]
+id = "ward:android/allow-backup"
+language = "android"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "android-allow-backup"
+'''

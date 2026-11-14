@@ -1,0 +1,8 @@
+# Status of the security rows in android: "implemented" or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+allow-backup = "implemented"
+cleartext-transport = "implemented"
+debuggable-application = "implemented"
+exported-content-provider = "implemented"
+exported-receiver = "implemented"
+exported-service = "implemented"

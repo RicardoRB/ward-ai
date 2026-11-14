@@ -1,5 +1,6 @@
 package dev.ward.infrastructure.analysis;
 
+import dev.ward.analysis.application.android.AndroidXmlFrontend;
 import dev.ward.analysis.application.openapi.OpenApiLanguageFrontend;
 import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
@@ -94,8 +95,8 @@ public final class GateFrontends {
             NO_GRAPHS,
             new CachedScopes(new KotlinScopeAnalysis(ClasspathBuiltinNames.kotlin()))),
         new FrontendSupport(
-            AnalysisLanguage.OPENAPI,
-            new OpenApiLanguageFrontend(),
-            Set.of(RuleCapability.SYNTAX)));
+            AnalysisLanguage.OPENAPI, new OpenApiLanguageFrontend(), Set.of(RuleCapability.SYNTAX)),
+        new FrontendSupport(
+            AnalysisLanguage.ANDROID, new AndroidXmlFrontend(), Set.of(RuleCapability.SYNTAX)));
   }
 }

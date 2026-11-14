@@ -78,7 +78,7 @@ public final class DuplicateTokens {
         case TYPESCRIPT, JAVASCRIPT -> ecma();
         case PYTHON -> python();
         case SWIFT -> swift();
-        case OPENAPI -> new Vocabulary(Set.of(), Set.of(), Set.of());
+        case OPENAPI, ANDROID -> new Vocabulary(Set.of(), Set.of(), Set.of());
       };
     }
 

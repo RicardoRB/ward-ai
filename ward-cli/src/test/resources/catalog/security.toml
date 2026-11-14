@@ -1,9 +1,15 @@
 # Security rules that Ward provides itself, one [[rule]] per weakness. Every row has cwe (the MITRE CWE ids) and sources (the public documents the rule was written from); SecurityCatalogTest enforces both. The list of CWE ids is catalog/security/cwe-5.0.txt.
 
 [[rule]]
+name = "allow-backup"
+cwe = ["CWE-530"]
+sources = ["https://developer.android.com/guide/topics/manifest/application-element#allowbackup", "https://developer.android.com/identity/data/autobackup", "https://cwe.mitre.org/data/definitions/530.html"]
+
+[[rule]]
 name = "cleartext-transport"
 cwe = ["CWE-319"]
-sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/URL.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/URI.html", "https://cwe.mitre.org/data/definitions/319.html", "https://developer.mozilla.org/en-US/docs/Web/API/Window/fetch", "https://nodejs.org/docs/latest-v22.x/api/http.html"]
+sources = ["https://developer.android.com/privacy-and-security/security-config", "https://developer.android.com/guide/topics/manifest/application-element#usesCleartextTraffic", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/URL.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/URI.html", "https://cwe.mitre.org/data/definitions/319.html", "https://developer.mozilla.org/en-US/docs/Web/API/Window/fetch", "https://nodejs.org/docs/latest-v22.x/api/http.html"]
+android-lint = ["InsecureBaseConfiguration"]
 
 [[rule]]
 name = "constant-gcm-nonce"
@@ -36,6 +42,12 @@ cwe = ["CWE-352"]
 sources = ["https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html", "https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/config/annotation/web/builders/HttpSecurity.html", "https://cwe.mitre.org/data/definitions/352.html"]
 
 [[rule]]
+name = "debuggable-application"
+cwe = ["CWE-489"]
+sources = ["https://developer.android.com/guide/topics/manifest/application-element#debuggable", "https://developer.android.com/studio/debug", "https://cwe.mitre.org/data/definitions/489.html"]
+android-lint = ["HardcodedDebugMode"]
+
+[[rule]]
 name = "django-insecure-settings"
 cwe = ["CWE-489", "CWE-798", "CWE-614", "CWE-1004"]
 sources = ["https://docs.djangoproject.com/en/5.1/ref/settings/#debug", "https://docs.djangoproject.com/en/5.1/ref/settings/#secret-key", "https://docs.djangoproject.com/en/5.1/ref/settings/#session-cookie-secure", "https://cwe.mitre.org/data/definitions/489.html", "https://cwe.mitre.org/data/definitions/798.html", "https://cwe.mitre.org/data/definitions/614.html", "https://cwe.mitre.org/data/definitions/1004.html"]
@@ -54,6 +66,24 @@ sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/c
 name = "environment-injection"
 cwe = ["CWE-15", "CWE-454"]
 sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/ProcessBuilder.html#environment()", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Runtime.html", "https://cwe.mitre.org/data/definitions/15.html", "https://cwe.mitre.org/data/definitions/454.html"]
+
+[[rule]]
+name = "exported-content-provider"
+cwe = ["CWE-926"]
+sources = ["https://developer.android.com/guide/topics/manifest/provider-element", "https://developer.android.com/privacy-and-security/risks/android-exported", "https://cwe.mitre.org/data/definitions/926.html"]
+android-lint = ["ExportedContentProvider"]
+
+[[rule]]
+name = "exported-receiver"
+cwe = ["CWE-926"]
+sources = ["https://developer.android.com/guide/topics/manifest/receiver-element", "https://developer.android.com/privacy-and-security/risks/android-exported", "https://cwe.mitre.org/data/definitions/926.html"]
+android-lint = ["ExportedReceiver"]
+
+[[rule]]
+name = "exported-service"
+cwe = ["CWE-926"]
+sources = ["https://developer.android.com/guide/topics/manifest/service-element", "https://developer.android.com/privacy-and-security/risks/android-exported", "https://cwe.mitre.org/data/definitions/926.html"]
+android-lint = ["ExportedService"]
 
 [[rule]]
 name = "expression-injection"

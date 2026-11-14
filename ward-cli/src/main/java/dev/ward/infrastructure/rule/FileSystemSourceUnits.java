@@ -49,6 +49,12 @@ public final class FileSystemSourceUnits implements AnalysisSourceUnits {
       Set.of(AnalysisLanguage.JAVA, AnalysisLanguage.KOTLIN);
   private static final Pattern RESOURCE_FOLDER = Pattern.compile("(^|/)src/[^/]+/resources/");
 
+  /** The manifest, and the XML files of the resource folders whose rules read them. */
+  private static final Pattern ANDROID_FILE =
+      Pattern.compile(
+          "(^|/)(AndroidManifest\\.xml|res/(layout|menu|xml|values|drawable|navigation|color)"
+              + "(-[^/]+)?/[^/]+\\.xml)$");
+
   private final CommandExecutor executor;
 
   /**
@@ -119,8 +125,8 @@ public final class FileSystemSourceUnits implements AnalysisSourceUnits {
     @Override
     public FileVisitResult visitFile(final Path file, final BasicFileAttributes attributes)
         throws IOException {
-      final AnalysisLanguage language = language(nameOf(file));
       final String path = relative(file);
+      final AnalysisLanguage language = language(nameOf(file), path);
       if (language != null
           && languages.contains(language)
           && attributes.isRegularFile()
@@ -135,6 +141,11 @@ public final class FileSystemSourceUnits implements AnalysisSourceUnits {
     private String relative(final Path file) {
       return root.relativize(file).toString().replace('\\', '/');
     }
+  }
+
+  /** Returns the language of a file by its name, and by its path for Android XML. */
+  private static AnalysisLanguage language(final String fileName, final String path) {
+    return ANDROID_FILE.matcher(path).find() ? AnalysisLanguage.ANDROID : language(fileName);
   }
 
   /** Java or Kotlin under {@code src/<set>/resources} is data for the build, not a source file. */
