@@ -58,6 +58,11 @@ final class KotlinValueLowering {
    * @param result where its value goes, or null when the value is not used
    */
   void expression(final SyntaxNode node, final boolean mayThrow, final KotlinResult result) {
+    final SyntaxNode root = KotlinFlowSyntax.unwrap(node);
+    if (KotlinSplits.isConstruct(root)) {
+      statements.statement(root, result);
+      return;
+    }
     final List<KotlinSplits.Split> splits = KotlinSplits.of(node);
     final SyntaxNode shown = result == null ? node : valueNode(node);
     if (splits.isEmpty()) {
@@ -152,10 +157,14 @@ final class KotlinValueLowering {
       final List<KotlinSplits.Split> all) {
     final KotlinResult value = KotlinResult.of("value", split.span());
     final List<VariableAccess> reads = new ArrayList<>();
-    if (split.receiver() != null) {
-      receivers.lower(statement, split, all);
+    if (split.isLambda()) {
+      if (split.receiver() != null) {
+        receivers.lower(statement, split, all);
+      }
+      lambda(split, value);
+    } else {
+      statements.statement(split.node(), value);
     }
-    lambda(split, value);
     if (!RECEIVER_VALUE.contains(split.callee())) {
       reads.add(value.read(split.span()));
     }

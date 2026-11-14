@@ -19,7 +19,7 @@ final class KotlinIfLowering {
     this.statements = statements;
   }
 
-  void ifStatement(final SyntaxNode node) {
+  void ifStatement(final SyntaxNode node, final KotlinResult result) {
     final SyntaxNode condition = KotlinFlowSyntax.child(node, EXPRESSION);
     SyntaxNode thenBody = null;
     SyntaxNode elseBody = null;
@@ -42,11 +42,11 @@ final class KotlinIfLowering {
     statements.expression(condition, KotlinFlowSyntax.mayThrow(condition));
     flow.branch(thenBlock, elseBlock);
     flow.moveTo(thenBlock);
-    statements.controlBody(thenBody);
+    statements.controlBody(thenBody, result);
     flow.edge(flow.current(), after, FlowEdgeKind.NORMAL);
     if (hasElse) {
       flow.moveTo(elseBlock);
-      statements.controlBody(elseBody);
+      statements.controlBody(elseBody, result);
       flow.edge(flow.current(), after, FlowEdgeKind.NORMAL);
     }
     flow.moveTo(after);

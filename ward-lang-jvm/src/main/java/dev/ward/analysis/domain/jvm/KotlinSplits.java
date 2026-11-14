@@ -7,10 +7,11 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Finds the parts of a statement that are lowered into blocks of their own: today the lambdas. The
- * outermost ones are found; a part inside a part is found when that part's statements are lowered.
- * A lambda written as the trailing block of a call also reports the call's name, its label, and the
- * span of the receiver written before the call.
+ * Finds the parts of a statement that are lowered into blocks of their own: the lambdas, and the
+ * {@code if}, {@code when} and {@code try} that make a value, and the operands of {@code &&},
+ * {@code ||} and {@code ?:}. The outermost ones are found; a part inside a part is found when that
+ * part's statements are lowered. A lambda written as the trailing block of a call also reports the
+ * call's name, its label, and the span of the receiver written before the call.
  */
 final class KotlinSplits {
 
@@ -19,6 +20,10 @@ final class KotlinSplits {
   private static final String POSTFIX = "postfixUnaryExpression";
   private static final String MEMBER = "memberAccessOperator";
   private static final String ANNOTATED = "annotatedLambda";
+  private static final Set<String> CONTROL =
+      Set.of("ifExpression", "whenExpression", "tryExpression");
+  private static final Set<String> OPERATORS =
+      Set.of("conjunction", "disjunction", "elvisExpression");
   private static final Set<String> OTHER_BODIES =
       Set.of(
           "functionDeclaration",
@@ -41,6 +46,11 @@ final class KotlinSplits {
    * @param receiver where the receiver of that call is written, or null when it has none
    */
   record Split(SyntaxNode node, String callee, String label, Span receiver) {
+
+    /** Whether the part is a lambda, not an {@code if}, {@code when}, {@code try} or operator. */
+    boolean isLambda() {
+      return LAMBDA.equals(node.kind());
+    }
 
     /** The span of the part. */
     Span span() {
@@ -68,13 +78,19 @@ final class KotlinSplits {
     if (OTHER_BODIES.contains(node.kind())) {
       return;
     }
-    if (LAMBDA.equals(node.kind())) {
+    if (LAMBDA.equals(node.kind()) || isConstruct(node)) {
       found.add(new Split(node, "", "", null));
     } else if (POSTFIX.equals(node.kind())) {
       chain(node, null, found);
     } else {
       node.children().forEach(child -> walk(child, found));
     }
+  }
+
+  /** An operator chain with one operand is a wrapper; {@code if}, {@code when}, {@code try} not. */
+  static boolean isConstruct(final SyntaxNode node) {
+    return CONTROL.contains(node.kind())
+        || OPERATORS.contains(node.kind()) && KotlinFlowSyntax.parts(node).size() > 1;
   }
 
   /** One atom and its operations; {@code start} is where the whole chain begins, once nested. */

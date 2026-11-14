@@ -23,8 +23,18 @@ interface KotlinStatements {
   void expression(SyntaxNode node, boolean mayThrow);
 
   /** Lowers the body of a branch or loop: a block, or one expression. */
-  void controlBody(SyntaxNode body);
+  default void controlBody(final SyntaxNode body) {
+    controlBody(body, null);
+  }
+
+  /** Lowers the body of a branch whose last expression may make the value of the part. */
+  void controlBody(SyntaxNode body, KotlinResult result);
 
   /** Lowers the statements of a block. */
-  void block(SyntaxNode block);
+  default void block(final SyntaxNode block) {
+    block(block, null);
+  }
+
+  /** Lowers the statements of a block whose last expression may make the value of the part. */
+  void block(SyntaxNode block, KotlinResult result);
 }

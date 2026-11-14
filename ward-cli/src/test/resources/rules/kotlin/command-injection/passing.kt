@@ -27,4 +27,19 @@ class Subject {
       }
     }
   }
+
+  fun sanitizedBranch(request: HttpServletRequest) {
+    val port = if (request.getParameter("x") == null) "80" else Integer.parseInt(request.getParameter("x")).toString()
+    Runtime.getRuntime().exec("run " + port)
+  }
+
+  fun sanitizedLetWithDefault(request: HttpServletRequest) {
+    val port = request.getParameter("x")?.let { Integer.parseInt(it) } ?: 80
+    Runtime.getRuntime().exec("run " + port)
+  }
+
+  fun leavesWhenMissing(request: HttpServletRequest) {
+    val value = request.getParameter("x") ?: return
+    Runtime.getRuntime().exec("fixed")
+  }
 }

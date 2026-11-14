@@ -10,9 +10,9 @@ import java.util.Map;
 
 /**
  * Lowers the statements of one Kotlin body into a control-flow graph. A statement that does not
- * split the graph is one node; {@code if} and the jumps are lowered here, loops and the {@code try}
- * and {@code when} statements by their own classes, which share this body's builder. An {@code if},
- * {@code when} or {@code try} that is used as a value stays inside its statement.
+ * split the graph is one node; the jumps are lowered by {@link KotlinJumpLowering}, the branches,
+ * handlers, loops and operators by {@link KotlinConstructLowering}, and a statement that holds a
+ * lambda or a branching value by {@link KotlinValueLowering}.
  */
 final class KotlinBodyLowering implements KotlinStatements {
 
@@ -23,11 +23,9 @@ final class KotlinBodyLowering implements KotlinStatements {
 
   private final KotlinFlowSites sites;
   private final ControlFlowBuilder flow;
-  private final KotlinLoopLowering loops;
-  private final KotlinHandlerLowering handlers;
   private final KotlinValueLowering values;
+  private final KotlinConstructLowering constructs;
   private final KotlinJumpLowering jumps;
-  private final KotlinIfLowering branches;
 
   /**
    * Starts the lowering of one body.
@@ -40,11 +38,9 @@ final class KotlinBodyLowering implements KotlinStatements {
       final KotlinAccesses accesses, final KotlinFlowSites sites, final KotlinView view) {
     this.sites = sites;
     this.flow = new ControlFlowBuilder(accesses, sites);
-    this.loops = new KotlinLoopLowering(flow, this);
-    this.handlers = new KotlinHandlerLowering(flow, this);
     this.values = new KotlinValueLowering(flow, view, this);
     this.jumps = new KotlinJumpLowering(flow, values);
-    this.branches = new KotlinIfLowering(flow, this);
+    this.constructs = new KotlinConstructLowering(flow, values, this);
   }
 
   /**
@@ -87,20 +83,20 @@ final class KotlinBodyLowering implements KotlinStatements {
   }
 
   @Override
-  public void block(final SyntaxNode block) {
+  public void block(final SyntaxNode block, final KotlinResult result) {
     final SyntaxNode list = KotlinFlowSyntax.child(block, "statements");
     if (list != null) {
-      KotlinFlowSyntax.children(list, "statement").forEach(this::statement);
+      tail(list, result);
     }
   }
 
   @Override
-  public void controlBody(final SyntaxNode body) {
+  public void controlBody(final SyntaxNode body, final KotlinResult result) {
     final SyntaxNode block = KotlinFlowSyntax.child(body, BLOCK);
     if (block != null) {
-      block(block);
+      block(block, result);
     } else {
-      statement(body);
+      statement(body, result);
     }
   }
 
@@ -128,14 +124,8 @@ final class KotlinBodyLowering implements KotlinStatements {
     final String label = KotlinLabels.of(node);
     switch (construct.kind()) {
       case "declaration" -> declaration(construct);
-      case "ifExpression" -> branches.ifStatement(construct);
-      case "whenExpression" -> handlers.whenStatement(construct);
-      case "tryExpression" -> handlers.tryStatement(construct);
-      case "whileExpression" -> loops.whileLoop(construct, label);
-      case "doWhileExpression" -> loops.doWhileLoop(construct, label);
-      case "forExpression" -> loops.forLoop(construct, label);
       case "jumpExpression" -> jumps.jump(construct);
-      default -> values.expression(construct, KotlinFlowSyntax.mayThrow(construct), result);
+      default -> constructs.lower(construct, label, result);
     }
   }
 

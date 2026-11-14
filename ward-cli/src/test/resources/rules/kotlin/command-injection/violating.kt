@@ -26,4 +26,17 @@ class Subject {
   fun insideLet(request: HttpServletRequest) {
     request.getParameter("x")?.let { Runtime.getRuntime().exec(it) }
   }
+
+  fun fromWhen(request: HttpServletRequest, mode: Int) {
+    val value = when (mode) {
+      1 -> "fixed"
+      else -> request.getParameter("x")
+    }
+    Runtime.getRuntime().exec(value)
+  }
+
+  fun fromElvis(request: HttpServletRequest) {
+    val value = request.getParameter("x") ?: "fixed"
+    Runtime.getRuntime().exec(value)
+  }
 }
