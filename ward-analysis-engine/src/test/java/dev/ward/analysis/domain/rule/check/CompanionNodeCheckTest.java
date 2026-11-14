@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 class CompanionNodeCheckTest {
 
+  private static final String EXPRESSION = "expression";
   private static final String MATCH = "^add\\((\\w+)\\)$";
   private static final String COMPANION = "^{1}\\.fix\\(\\)$";
 
@@ -25,7 +26,7 @@ class CompanionNodeCheckTest {
 
   @Test
   void reportsANodeWhoseCompanionIsMissingFromItsBody() {
-    final SyntaxNode root = gen.node("unit", gen.node("method", gen.leaf("expression", "add(c)")));
+    final SyntaxNode root = gen.node("unit", gen.node("method", gen.leaf(EXPRESSION, "add(c)")));
 
     assertThat(TreeLayout.messages(check().matches(root))).containsExactly("missing");
   }
@@ -35,8 +36,7 @@ class CompanionNodeCheckTest {
     final SyntaxNode root =
         gen.node(
             "unit",
-            gen.node(
-                "method", gen.leaf("expression", "add(c)"), gen.leaf("expression", "c.fix()")));
+            gen.node("method", gen.leaf(EXPRESSION, "add(c)"), gen.leaf(EXPRESSION, "c.fix()")));
 
     assertThat(check().matches(root)).isEmpty();
   }
@@ -46,8 +46,7 @@ class CompanionNodeCheckTest {
     final SyntaxNode root =
         gen.node(
             "unit",
-            gen.node(
-                "method", gen.leaf("expression", "add(c)"), gen.leaf("expression", "d.fix()")));
+            gen.node("method", gen.leaf(EXPRESSION, "add(c)"), gen.leaf(EXPRESSION, "d.fix()")));
 
     assertThat(check().matches(root)).hasSize(1);
   }
@@ -57,8 +56,8 @@ class CompanionNodeCheckTest {
     final SyntaxNode root =
         gen.node(
             "unit",
-            gen.node("method", gen.leaf("expression", "add(c)")),
-            gen.node("method", gen.leaf("expression", "c.fix()")));
+            gen.node("method", gen.leaf(EXPRESSION, "add(c)")),
+            gen.node("method", gen.leaf(EXPRESSION, "c.fix()")));
 
     assertThat(check().matches(root)).hasSize(1);
   }

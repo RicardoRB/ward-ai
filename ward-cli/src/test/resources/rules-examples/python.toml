@@ -141,3 +141,19 @@ items = ["stmt"]
 key = "import_name"
 message = "duplicate import {value}"
 '''
+
+[[rules]]
+id = "ward:python/example-add-needs-fix"
+language = "python"
+capability = "SYNTAX"
+severity = "error"
+category = "coding"
+presets = ["standard", "strict"]
+body = '''
+check = "companion-node"
+kinds = ["function_def"]
+node = "expression_stmt"
+match = '^add\((\w+)\)$'
+companion = '^{1}\.fix\(\)$'
+message = "add needs a fix call on the same value"
+'''
