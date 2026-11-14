@@ -1017,6 +1017,7 @@ uses = "api-compat"
 profiles = ["ci"]
 base = "v1.4.0"             # optional: a Git ref; default is the latest release tag
 include = ["com.acme.api"]  # optional: package prefixes that limit the API
+modules = ["core", "api"]   # optional: module directories to compare; default every module
 ```
 
 - **Baseline.** `base` names a Git ref. Without it, the baseline is the highest release tag
@@ -1027,6 +1028,20 @@ include = ["com.acme.api"]  # optional: package prefixes that limit the API
   revision. Test sources are not API. `include` limits the API to types whose qualified name starts
   with one of the package prefixes. A top-level Kotlin declaration belongs to the type
   `<package>.<top-level>`, so `include = ["com.acme.api"]` covers it.
+- **Multi-module builds.** Ward finds the modules at the baseline and in the working tree: Maven
+  `<modules>` (followed recursively, profile modules included) and the projects of a Gradle
+  `include("a", ":b:c")` in `settings.gradle(.kts)`, and reads each module's source roots from its
+  own build file. All modules are read together, so a type that extends a type of another module
+  still resolves. A finding in a module other than the root starts with `[<module>]`. A module that
+  is new has no baseline and causes no finding. A module that was removed or whose directory was
+  renamed removes its API, so its types are reported `type-removed`. A type that keeps its
+  qualified name but is declared in another module is reported `api-compat:type-module-changed`,
+  because consumers of the old artifact lose it. `modules` limits the comparison to the API
+  declared in the named module directories (other modules still count as supertypes); a directory
+  that is a module neither at the baseline nor in the working tree is an execution error. Not read:
+  Gradle `projectDir` remapping, `includeBuild`, and `include` calls built from variables or split
+  over several lines; a Gradle project without a build script. Enable the gate only for the modules
+  that someone depends on as a library, with `modules`.
 - **Java API.** `public` types and members, `protected` members of types that can be extended
   outside their package, interface members, and nested types of API types. Package-private and
   `private` declarations are not API.
@@ -1078,7 +1093,9 @@ reachable from `HEAD`, and writes `uses = "api-compat"` with no command and no b
 A `[checks.api-compat]` with a `command` runs that command as before; one without a `command` is the
 native check.
 
-Applications shipped as binaries, such as CLIs, have no Java API consumers and should not enable it.
+Applications shipped as binaries, such as CLIs, have no Java API consumers and should not enable
+it. In a multi-module build that mixes a library with an application, name the library's modules
+with `modules`.
 
 ## OpenAPI contract gates
 
