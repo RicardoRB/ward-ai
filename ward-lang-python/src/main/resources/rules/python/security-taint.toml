@@ -1,0 +1,106 @@
+# Injection rules for Python: untrusted input from a web request reaches a sensitive call within one body.
+# Each follows the taint specifications taint/python/ward-<weakness>.toml and taint/python/sources.toml.
+
+[[rules]]
+id = "ward:python/sql-injection"
+language = "python"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/python/sources.toml", "taint/python/ward-sql-injection.toml"]
+message = "untrusted data from {source} is part of the SQL text that {sink} runs; pass it as a bound parameter instead"
+'''
+
+[[rules]]
+id = "ward:python/command-injection"
+language = "python"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/python/sources.toml", "taint/python/ward-command-injection.toml"]
+message = "untrusted data from {source} is part of the command that {sink} runs; pass an argument list and validate the value"
+'''
+
+[[rules]]
+id = "ward:python/code-injection"
+language = "python"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/python/sources.toml", "taint/python/ward-code-injection.toml"]
+message = "untrusted data from {source} is run as code by {sink}; never evaluate request data"
+'''
+
+[[rules]]
+id = "ward:python/untrusted-deserialization"
+language = "python"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/python/sources.toml", "taint/python/ward-untrusted-deserialization.toml"]
+message = "untrusted data from {source} is turned into objects by {sink}; use a data-only format such as JSON or yaml.safe_load"
+'''
+
+[[rules]]
+id = "ward:python/path-injection"
+language = "python"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/python/sources.toml", "taint/python/ward-path-injection.toml"]
+message = "untrusted data from {source} chooses the path that {sink} opens; reduce it with os.path.basename or secure_filename and check the folder"
+'''
+
+[[rules]]
+id = "ward:python/untrusted-request-url"
+language = "python"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/python/sources.toml", "taint/python/ward-untrusted-request-url.toml"]
+message = "untrusted data from {source} chooses the address that {sink} requests; check the host against an allow-list"
+'''
+
+[[rules]]
+id = "ward:python/untrusted-redirect"
+language = "python"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/python/sources.toml", "taint/python/ward-untrusted-redirect.toml"]
+message = "untrusted data from {source} decides where {sink} redirects; allow only known targets"
+'''
+
+[[rules]]
+id = "ward:python/template-injection"
+language = "python"
+capability = "DATAFLOW"
+severity = "error"
+category = "security"
+presets = ["standard", "strict"]
+body = '''
+check = "taint"
+specs = ["taint/python/sources.toml", "taint/python/ward-template-injection.toml"]
+message = "untrusted data from {source} is the template text of {sink}; pass it as a template variable instead"
+'''

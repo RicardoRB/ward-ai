@@ -3,10 +3,12 @@ package dev.ward.analysis.domain.python;
 import dev.ward.analysis.domain.ir.ControlFlowBuilder;
 import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import dev.ward.analysis.domain.ir.FlowEdgeKind;
+import dev.ward.analysis.domain.ir.FlowSite;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.ir.VariableAccess;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -20,6 +22,7 @@ final class PythonBodyLowering {
   private static final String NAMED_EXPR = "namedexpr_test";
   private static final Set<String> DEFINITIONS = Set.of("funcdef", "classdef", "decorated");
 
+  private final PythonAccesses accesses;
   private final ControlFlowBuilder flow;
   private final PythonLoopLowering loops;
   private final PythonHandlerLowering handlers;
@@ -29,10 +32,12 @@ final class PythonBodyLowering {
    *
    * @param excluded the names the body declares {@code global} or {@code nonlocal}
    * @param tracked false when a star import makes every name of the body possibly bound elsewhere
+   * @param imports what the names bound by the imports of the file stand for
    */
-  PythonBodyLowering(final Set<String> excluded, final boolean tracked) {
-    final PythonAccesses accesses = new PythonAccesses(excluded, tracked);
-    this.flow = new ControlFlowBuilder(accesses);
+  PythonBodyLowering(
+      final Set<String> excluded, final boolean tracked, final Map<String, String> imports) {
+    this.accesses = new PythonAccesses(excluded, tracked);
+    this.flow = new ControlFlowBuilder(accesses, new PythonFlowSites(imports));
     this.loops = new PythonLoopLowering(flow, accesses, this::statements);
     this.handlers = new PythonHandlerLowering(flow, this::statements);
   }
@@ -43,6 +48,7 @@ final class PythonBodyLowering {
    * @param name the name of the body
    * @param block the block or file that holds the statements
    * @param parameters the parameters, which are bound at the entry of the body
+   * @param parameterSites the flow sites of the parameters
    * @param span where the body is in the source
    * @return the graph of the body
    */
@@ -50,8 +56,10 @@ final class PythonBodyLowering {
       final String name,
       final SyntaxNode block,
       final List<VariableAccess> parameters,
+      final List<FlowSite> parameterSites,
       final Span span) {
-    flow.record(parameters, List.of());
+    accesses.declare(parameters);
+    flow.record(parameters, parameterSites);
     statements(block);
     return flow.build(name, span);
   }

@@ -1,0 +1,43 @@
+# Redirects whose target is argument 0: Flask and Django helpers and the Django and Starlette response classes.
+
+[[sinks]]
+kind = "call"
+name = "redirect"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "HttpResponseRedirect"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "HttpResponsePermanentRedirect"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "RedirectResponse"
+arguments = [0]
+
+[[sanitizers]]
+kind = "call"
+name = "int"
+
+[[sanitizers]]
+kind = "call"
+name = "float"
+
+[[sanitizers]]
+kind = "call"
+name = "bool"
+
+[[sanitizers]]
+kind = "call"
+name = "quote"
+receiver = "urllib.parse"
+
+[[sanitizers]]
+kind = "call"
+name = "url_has_allowed_host_and_scheme"
+

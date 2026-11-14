@@ -1,0 +1,167 @@
+# Untrusted input of Python web code: Flask, Django and Starlette/FastAPI request members, and the parameters
+# that a route decorator or a FastAPI parameter default fills from the request. A request object is matched by
+# the name request; a decorator is matched by its last name with an @ prefix (see PythonParameterSites).
+
+[[sources]]
+kind = "member"
+name = "args"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "form"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "values"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "cookies"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "headers"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "json"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "data"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "files"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "view_args"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "get_json"
+qualifier = "request"
+
+[[sources]]
+kind = "call"
+name = "get_data"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "GET"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "POST"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "COOKIES"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "META"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "body"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "FILES"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "query_params"
+qualifier = "request"
+
+[[sources]]
+kind = "member"
+name = "path_params"
+qualifier = "request"
+
+[[sources]]
+kind = "parameter"
+name = "@route"
+
+[[sources]]
+kind = "parameter"
+name = "@get"
+
+[[sources]]
+kind = "parameter"
+name = "@post"
+
+[[sources]]
+kind = "parameter"
+name = "@put"
+
+[[sources]]
+kind = "parameter"
+name = "@delete"
+
+[[sources]]
+kind = "parameter"
+name = "@patch"
+
+[[sources]]
+kind = "parameter"
+name = "@head"
+
+[[sources]]
+kind = "parameter"
+name = "@options"
+
+[[sources]]
+kind = "parameter"
+name = "@api_view"
+
+[[sources]]
+kind = "parameter"
+name = "@websocket"
+
+[[sources]]
+kind = "parameter"
+name = "Query"
+
+[[sources]]
+kind = "parameter"
+name = "Body"
+
+[[sources]]
+kind = "parameter"
+name = "Form"
+
+[[sources]]
+kind = "parameter"
+name = "Header"
+
+[[sources]]
+kind = "parameter"
+name = "Cookie"
+
+[[sources]]
+kind = "parameter"
+name = "Path"
+
+[[sources]]
+kind = "parameter"
+name = "File"
+

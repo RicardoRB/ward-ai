@@ -1,6 +1,7 @@
 package dev.ward.analysis.domain.python;
 
 import dev.ward.analysis.domain.ir.AccessKind;
+import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.ir.VariableAccess;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ final class PythonNameAccesses {
       Set.of(
           "funcdef", "classdef", "decorated", "lambdef", "lambdef_nocond", "comp_for", "comp_if");
 
+  private static final String STRING = "STRING";
   private static final Set<String> NOTHING = Set.of("global_stmt", "nonlocal_stmt", "pass_stmt");
 
   private final Set<String> excluded;
@@ -44,6 +46,8 @@ final class PythonNameAccesses {
   void reads(final SyntaxNode node, final List<VariableAccess> out) {
     if (NAME.equals(node.kind())) {
       add(node, AccessKind.READ, out);
+    } else if (STRING.equals(node.kind())) {
+      fstring(node, out);
     } else if (NAMED_EXPR.equals(node.kind())) {
       walrus(node, out);
     } else if (TRAILER.equals(node.kind())) {
@@ -53,6 +57,20 @@ final class PythonNameAccesses {
     } else if (!OTHER_SCOPE.contains(node.kind()) && !NOTHING.contains(node.kind())) {
       for (final SyntaxNode child : node.children()) {
         reads(child, out);
+      }
+    }
+  }
+
+  /** Records a read of each name in the replacement fields of an f-string token. */
+  private void fstring(final SyntaxNode token, final List<VariableAccess> out) {
+    final String text = PythonSyntax.text(token);
+    if (!PythonFStrings.isFString(text)) {
+      return;
+    }
+    for (final PythonFStrings.Use use : PythonFStrings.names(text)) {
+      if (!excluded.contains(use.name())) {
+        final Span span = PythonSpans.within(token.span(), text, use.from(), use.to());
+        out.add(new VariableAccess(use.name(), AccessKind.READ, span, span));
       }
     }
   }

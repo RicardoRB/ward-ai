@@ -1,4 +1,6 @@
 # Status of the ward-own rows in python: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
+command-injection = "implemented"
 naming = "implemented"
 path-traversal = "implemented"
+sql-injection = "implemented"

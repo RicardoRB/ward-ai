@@ -2,6 +2,7 @@ package dev.ward.analysis.domain.python;
 
 import dev.ward.analysis.domain.ir.AccessKind;
 import dev.ward.analysis.domain.ir.ControlFlowGraph;
+import dev.ward.analysis.domain.ir.FlowSite;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
@@ -11,6 +12,7 @@ import dev.ward.analysis.domain.port.ControlFlowResult;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -37,38 +39,61 @@ public final class PythonControlFlow implements ControlFlowLowering {
   @Override
   public ControlFlowResult lower(final SourceUnit unit, final SyntaxNode tree) {
     final List<ControlFlowGraph> graphs = new ArrayList<>();
-    graphs.add(body(MODULE, tree, List.of(), tree.span(), hasStarImport(tree)));
-    collectDefinitions(tree, graphs);
+    final Map<String, String> imports = PythonImportAliases.of(tree);
+    graphs.add(body(MODULE, tree, List.of(), List.of(), tree.span(), hasStarImport(tree), imports));
+    collectDefinitions(tree, graphs, imports, List.of());
     return new ControlFlowResult(graphs, List.of());
   }
 
   /** Adds the graph of every function and class under {@code node}, nested ones included. */
-  private static void collectDefinitions(final SyntaxNode node, final List<ControlFlowGraph> out) {
+  private static void collectDefinitions(
+      final SyntaxNode node,
+      final List<ControlFlowGraph> out,
+      final Map<String, String> imports,
+      final List<SyntaxNode> decorators) {
+    final List<SyntaxNode> inherited =
+        "decorated".equals(node.kind()) ? decoratorsOf(node) : decorators;
     for (final SyntaxNode child : node.children()) {
       if (FUNCDEF.equals(child.kind()) || CLASSDEF.equals(child.kind())) {
-        out.add(definition(child));
+        out.add(definition(child, imports, inherited));
       }
-      collectDefinitions(child, out);
+      collectDefinitions(child, out, imports, FUNCDEF.equals(child.kind()) ? List.of() : inherited);
     }
   }
 
-  private static ControlFlowGraph definition(final SyntaxNode definition) {
+  private static List<SyntaxNode> decoratorsOf(final SyntaxNode decorated) {
+    return PythonSyntax.children(decorated, "decorators").stream()
+        .flatMap(list -> PythonSyntax.children(list, "decorator").stream())
+        .toList();
+  }
+
+  private static ControlFlowGraph definition(
+      final SyntaxNode definition,
+      final Map<String, String> imports,
+      final List<SyntaxNode> decorators) {
     final SyntaxNode block = PythonSyntax.children(definition, BLOCK).get(0);
     return body(
         PythonSyntax.firstOfKind(definition, NAME).map(PythonControlFlow::text).orElse(MODULE),
         block,
         parameters(definition),
+        FUNCDEF.equals(definition.kind())
+            ? PythonParameterSites.of(definition, decorators)
+            : List.of(),
         definition.span(),
-        hasStarImport(block));
+        hasStarImport(block),
+        imports);
   }
 
   private static ControlFlowGraph body(
       final String name,
       final SyntaxNode block,
       final List<VariableAccess> parameters,
+      final List<FlowSite> parameterSites,
       final Span span,
-      final boolean star) {
-    return new PythonBodyLowering(declaredNames(block), !star).lower(name, block, parameters, span);
+      final boolean star,
+      final Map<String, String> imports) {
+    return new PythonBodyLowering(declaredNames(block), !star, imports)
+        .lower(name, block, parameters, parameterSites, span);
   }
 
   /** The parameters of a function, which are bound on entry; a class has none. */

@@ -12,6 +12,11 @@ sources = ["https://developer.android.com/privacy-and-security/security-config",
 android-lint = ["InsecureBaseConfiguration"]
 
 [[rule]]
+name = "code-injection"
+cwe = ["CWE-95"]
+sources = ["https://docs.python.org/3/library/functions.html#eval", "https://docs.python.org/3/library/functions.html#exec", "https://docs.python.org/3/library/ast.html#ast.literal_eval", "https://cwe.mitre.org/data/definitions/95.html", "https://bandit.readthedocs.io/en/latest/plugins/b307_eval.html"]
+
+[[rule]]
 name = "constant-gcm-nonce"
 cwe = ["CWE-323"]
 sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/crypto/spec/GCMParameterSpec.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/javax/crypto/Cipher.html", "https://cwe.mitre.org/data/definitions/323.html"]
@@ -166,6 +171,11 @@ cwe = ["CWE-943"]
 sources = ["https://www.mongodb.com/docs/manual/reference/operator/query/", "https://mongoosejs.com/docs/api/model.html", "https://cwe.mitre.org/data/definitions/943.html"]
 
 [[rule]]
+name = "path-injection"
+cwe = ["CWE-22"]
+sources = ["https://docs.python.org/3/library/functions.html#open", "https://docs.python.org/3/library/os.path.html#os.path.basename", "https://werkzeug.palletsprojects.com/en/stable/utils/#werkzeug.utils.secure_filename", "https://cwe.mitre.org/data/definitions/22.html"]
+
+[[rule]]
 name = "permissive-cors"
 cwe = ["CWE-942"]
 sources = ["https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/servlet/config/annotation/CorsRegistration.html", "https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/cors/CorsConfiguration.html", "https://cwe.mitre.org/data/definitions/942.html", "https://github.com/expressjs/cors#configuration-options", "https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS"]
@@ -223,7 +233,7 @@ sources = ["https://jinja.palletsprojects.com/en/stable/api/#autoescaping", "htt
 [[rule]]
 name = "template-injection"
 cwe = ["CWE-1336", "CWE-94"]
-sources = ["https://ejs.co/#docs", "https://pugjs.org/api/reference.html", "https://handlebarsjs.com/api-reference/compilation.html", "https://mozilla.github.io/nunjucks/api.html", "https://cwe.mitre.org/data/definitions/1336.html", "https://cwe.mitre.org/data/definitions/94.html"]
+sources = ["https://ejs.co/#docs", "https://pugjs.org/api/reference.html", "https://handlebarsjs.com/api-reference/compilation.html", "https://mozilla.github.io/nunjucks/api.html", "https://cwe.mitre.org/data/definitions/1336.html", "https://cwe.mitre.org/data/definitions/94.html", "https://flask.palletsprojects.com/en/stable/api/#flask.render_template_string", "https://jinja.palletsprojects.com/en/stable/api/#jinja2.Template"]
 
 [[rule]]
 name = "tls-verification-disabled"
@@ -263,12 +273,17 @@ sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/la
 [[rule]]
 name = "untrusted-deserialization"
 cwe = ["CWE-502"]
-sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/ObjectInputStream.html", "https://docs.oracle.com/en/java/javase/21/core/serialization-filtering1.html", "https://cwe.mitre.org/data/definitions/502.html", "https://www.npmjs.com/package/node-serialize", "https://github.com/nodeca/js-yaml/blob/master/migrate_v3_to_v4.md"]
+sources = ["https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/ObjectInputStream.html", "https://docs.oracle.com/en/java/javase/21/core/serialization-filtering1.html", "https://cwe.mitre.org/data/definitions/502.html", "https://www.npmjs.com/package/node-serialize", "https://github.com/nodeca/js-yaml/blob/master/migrate_v3_to_v4.md", "https://docs.python.org/3/library/pickle.html", "https://docs.python.org/3/library/marshal.html", "https://pyyaml.org/wiki/PyYAMLDocumentation", "https://bandit.readthedocs.io/en/latest/blacklists/blacklist_calls.html#b301-pickle"]
 
 [[rule]]
 name = "untrusted-redirect"
 cwe = ["CWE-601"]
-sources = ["https://jakarta.ee/specifications/servlet/6.0/apidocs/jakarta.servlet/jakarta/servlet/http/httpservletresponse#sendRedirect(java.lang.String)", "https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/servlet/view/RedirectView.html", "https://cwe.mitre.org/data/definitions/601.html", "https://expressjs.com/en/5x/api.html#res.redirect", "https://developer.mozilla.org/en-US/docs/Web/API/Location"]
+sources = ["https://jakarta.ee/specifications/servlet/6.0/apidocs/jakarta.servlet/jakarta/servlet/http/httpservletresponse#sendRedirect(java.lang.String)", "https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/servlet/view/RedirectView.html", "https://cwe.mitre.org/data/definitions/601.html", "https://expressjs.com/en/5x/api.html#res.redirect", "https://developer.mozilla.org/en-US/docs/Web/API/Location", "https://flask.palletsprojects.com/en/stable/api/#flask.redirect", "https://docs.djangoproject.com/en/5.1/ref/request-response/#django.http.HttpResponseRedirect"]
+
+[[rule]]
+name = "untrusted-request-url"
+cwe = ["CWE-918"]
+sources = ["https://requests.readthedocs.io/en/latest/api/#requests.request", "https://docs.python.org/3/library/urllib.request.html#urllib.request.urlopen", "https://www.python-httpx.org/api/", "https://cwe.mitre.org/data/definitions/918.html"]
 
 [[rule]]
 name = "weak-argon2-parameters"

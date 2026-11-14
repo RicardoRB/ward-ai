@@ -42,6 +42,7 @@ public final class PythonRuleFiles implements RuleFileProvider {
           "rules/python/refurb-calls.toml",
           "rules/python/refurb.toml",
           "rules/python/ruff-pylint.toml",
+          "rules/python/security-taint.toml",
           "rules/python/security.toml");
 
   @Override
