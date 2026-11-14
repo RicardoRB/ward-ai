@@ -66,7 +66,8 @@ final class PythonFlowSites implements FlowSites {
     final Chain chain = new Chain(atom);
     for (int index = 1; index < parts.size(); index++) {
       final SyntaxNode trailer = parts.get(index);
-      final boolean calledNext = index + 1 < parts.size() && opens(parts.get(index + 1), OPEN_CALL);
+      final boolean calledNext =
+          index + 1 < parts.size() && PythonCallArguments.opens(parts.get(index + 1), OPEN_CALL);
       step(chain, trailer, calledNext, found);
     }
   }
@@ -76,12 +77,12 @@ final class PythonFlowSites implements FlowSites {
       final SyntaxNode trailer,
       final boolean calledNext,
       final List<FlowSite> found) {
-    if (opens(trailer, OPEN_CALL)) {
-      final List<SyntaxNode> values = argumentValues(trailer);
+    if (PythonCallArguments.opens(trailer, OPEN_CALL)) {
+      final List<SyntaxNode> values = PythonCallArguments.values(trailer);
       values.forEach(value -> walk(value, found));
       call(chain, values).ifPresent(found::add);
       chain.afterCall(trailer);
-    } else if (opens(trailer, OPEN_INDEX)) {
+    } else if (PythonCallArguments.opens(trailer, OPEN_INDEX)) {
       trailer.children().forEach(child -> walk(child, found));
       chain.afterIndex(trailer);
     } else {
@@ -147,28 +148,6 @@ final class PythonFlowSites implements FlowSites {
       return Optional.empty();
     }
     return Optional.of(dot < 0 ? module : module + qualifier.substring(dot));
-  }
-
-  /** The values of the arguments of a call trailer, in order; a keyword's value is the argument. */
-  static List<SyntaxNode> argumentValues(final SyntaxNode trailer) {
-    final List<SyntaxNode> values = new ArrayList<>();
-    for (final SyntaxNode list : PythonSyntax.children(trailer, "arglist")) {
-      for (final SyntaxNode argument : PythonSyntax.children(list, "argument")) {
-        values.add(valueOf(argument));
-      }
-    }
-    return values;
-  }
-
-  private static SyntaxNode valueOf(final SyntaxNode argument) {
-    final List<SyntaxNode> children = argument.children();
-    final boolean prefixed = children.size() > 1 && children.get(0).children().isEmpty();
-    final boolean keyword = children.size() > 1 && PythonSyntax.isToken(children.get(1), "=");
-    return prefixed || keyword ? children.get(children.size() - 1) : children.get(0);
-  }
-
-  private static boolean opens(final SyntaxNode trailer, final String token) {
-    return !trailer.children().isEmpty() && PythonSyntax.isToken(trailer.children().get(0), token);
   }
 
   /** The running state of one atom and its trailers. */

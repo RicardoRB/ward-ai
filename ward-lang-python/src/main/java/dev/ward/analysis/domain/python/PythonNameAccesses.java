@@ -1,7 +1,6 @@
 package dev.ward.analysis.domain.python;
 
 import dev.ward.analysis.domain.ir.AccessKind;
-import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.ir.VariableAccess;
 import java.util.ArrayList;
@@ -47,7 +46,7 @@ final class PythonNameAccesses {
     if (NAME.equals(node.kind())) {
       add(node, AccessKind.READ, out);
     } else if (STRING.equals(node.kind())) {
-      fstring(node, out);
+      PythonFStrings.reads(node, excluded, out);
     } else if (NAMED_EXPR.equals(node.kind())) {
       walrus(node, out);
     } else if (TRAILER.equals(node.kind())) {
@@ -57,20 +56,6 @@ final class PythonNameAccesses {
     } else if (!OTHER_SCOPE.contains(node.kind()) && !NOTHING.contains(node.kind())) {
       for (final SyntaxNode child : node.children()) {
         reads(child, out);
-      }
-    }
-  }
-
-  /** Records a read of each name in the replacement fields of an f-string token. */
-  private void fstring(final SyntaxNode token, final List<VariableAccess> out) {
-    final String text = PythonSyntax.text(token);
-    if (!PythonFStrings.isFString(text)) {
-      return;
-    }
-    for (final PythonFStrings.Use use : PythonFStrings.names(text)) {
-      if (!excluded.contains(use.name())) {
-        final Span span = PythonSpans.within(token.span(), text, use.from(), use.to());
-        out.add(new VariableAccess(use.name(), AccessKind.READ, span, span));
       }
     }
   }

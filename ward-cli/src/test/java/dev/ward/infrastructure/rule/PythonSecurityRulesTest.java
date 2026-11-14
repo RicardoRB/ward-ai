@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 /** The bundled Python taint rules, on the scenarios of their specification. */
 class PythonSecurityRulesTest {
 
+  private static final int SINK_LINE = 6;
   private static final Path FIXTURES = Path.of("src/test/resources/rules/python");
 
   /** Scenario: a request value in a variable reaches execute, and the path lists the steps. */
@@ -30,7 +31,7 @@ class PythonSecurityRulesTest {
             """);
     assertThat(found).hasSize(1);
     assertThat(found.get(0).ruleId()).isEqualTo("ward:python/sql-injection");
-    assertThat(found.get(0).line()).isEqualTo(6);
+    assertThat(found.get(0).line()).isEqualTo(SINK_LINE);
     assertThat(found.get(0).path().stream().map(FlowStep::message).toList())
         .first()
         .isEqualTo("source: args");

@@ -33949,7 +33949,45 @@
         }
       }
     },
+    "ward:python/code-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:python/collapsible-if": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:python/command-injection": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -38194,6 +38232,25 @@
         }
       }
     },
+    "ward:python/path-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:python/path-traversal": {
       "type": "object",
       "additionalProperties": false,
@@ -39391,6 +39448,25 @@
         }
       }
     },
+    "ward:python/sql-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:python/sql-string-formatting": {
       "type": "object",
       "additionalProperties": false,
@@ -40076,6 +40152,25 @@
       }
     },
     "ward:python/template-autoescape-disabled": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:python/template-injection": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -41602,6 +41697,63 @@
       }
     },
     "ward:python/unsupported-membership-test": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:python/untrusted-deserialization": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:python/untrusted-redirect": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:python/untrusted-request-url": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -47447,6 +47599,25 @@
         }
       }
     },
+    "ward:swift/cleartext-url": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:swift/closure-parameter-position": {
       "type": "object",
       "additionalProperties": false,
@@ -48395,6 +48566,25 @@
       }
     },
     "ward:swift/google-right-curly": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:swift/hard-coded-credential": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -50692,6 +50882,25 @@
         }
       }
     },
+    "ward:swift/userdefaults-secret": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:swift/valid-ibinspectable": {
       "type": "object",
       "additionalProperties": false,
@@ -50787,7 +50996,64 @@
         }
       }
     },
+    "ward:swift/weak-cipher": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:swift/weak-delegate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:swift/weak-hash": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:swift/weak-random": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -60147,7 +60413,9 @@
               "python.chained-comparison",
               "python.chained-comparison-all-equal",
               "python.class-variable-slots-conflict",
+              "python.code-injection",
               "python.collapsible-if",
+              "python.command-injection",
               "python.comparison-of-constants",
               "python.comparison-with-callable",
               "python.comparison-with-itself",
@@ -60368,6 +60636,7 @@
               "python.overridden-final-method",
               "python.parameter-count",
               "python.parameter-name",
+              "python.path-injection",
               "python.path-traversal",
               "python.percent-format-expected-mapping",
               "python.percent-format-expected-sequence",
@@ -60431,6 +60700,7 @@
               "python.six-py3",
               "python.sorted-min-max",
               "python.split-static-string",
+              "python.sql-injection",
               "python.sql-string-formatting",
               "python.star-arg-unpacking-after-keyword-arg",
               "python.star-needs-assignment-target",
@@ -60468,6 +60738,7 @@
               "python.sys-version0",
               "python.sys-version2",
               "python.template-autoescape-disabled",
+              "python.template-injection",
               "python.todo-comment",
               "python.too-few-public-methods",
               "python.too-many-ancestors",
@@ -60546,6 +60817,9 @@
               "python.unsupported-assignment-operation",
               "python.unsupported-delete-operation",
               "python.unsupported-membership-test",
+              "python.untrusted-deserialization",
+              "python.untrusted-redirect",
+              "python.untrusted-request-url",
               "python.unused-annotation",
               "python.unused-argument",
               "python.unused-attribute",
@@ -60817,6 +61091,7 @@
               "swift.catch-parameter-name",
               "swift.class-delegate-protocol",
               "swift.class-type-parameter-name",
+              "swift.cleartext-url",
               "swift.closure-parameter-position",
               "swift.comment-spacing",
               "swift.compiler-protocol-init",
@@ -60865,6 +61140,7 @@
               "swift.google-method-name",
               "swift.google-non-constant-field-name",
               "swift.google-right-curly",
+              "swift.hard-coded-credential",
               "swift.hidden-field",
               "swift.ibinspectable-in-extension",
               "swift.identical-operands",
@@ -60982,12 +61258,16 @@
               "swift.unused-optional-binding",
               "swift.unused-parameter",
               "swift.unused-setter-value",
+              "swift.userdefaults-secret",
               "swift.valid-ibinspectable",
               "swift.variable-declaration-usage-distance",
               "swift.vertical-parameter-alignment",
               "swift.void-function-in-ternary",
               "swift.void-return",
+              "swift.weak-cipher",
               "swift.weak-delegate",
+              "swift.weak-hash",
+              "swift.weak-random",
               "swift.xctfail-message",
               "typescript.adjacent-overload-signatures",
               "typescript.array-callback-return",
@@ -63099,7 +63379,9 @@
               "python.chained-comparison",
               "python.chained-comparison-all-equal",
               "python.class-variable-slots-conflict",
+              "python.code-injection",
               "python.collapsible-if",
+              "python.command-injection",
               "python.comparison-of-constants",
               "python.comparison-with-callable",
               "python.comparison-with-itself",
@@ -63320,6 +63602,7 @@
               "python.overridden-final-method",
               "python.parameter-count",
               "python.parameter-name",
+              "python.path-injection",
               "python.path-traversal",
               "python.percent-format-expected-mapping",
               "python.percent-format-expected-sequence",
@@ -63383,6 +63666,7 @@
               "python.six-py3",
               "python.sorted-min-max",
               "python.split-static-string",
+              "python.sql-injection",
               "python.sql-string-formatting",
               "python.star-arg-unpacking-after-keyword-arg",
               "python.star-needs-assignment-target",
@@ -63420,6 +63704,7 @@
               "python.sys-version0",
               "python.sys-version2",
               "python.template-autoescape-disabled",
+              "python.template-injection",
               "python.todo-comment",
               "python.too-few-public-methods",
               "python.too-many-ancestors",
@@ -63498,6 +63783,9 @@
               "python.unsupported-assignment-operation",
               "python.unsupported-delete-operation",
               "python.unsupported-membership-test",
+              "python.untrusted-deserialization",
+              "python.untrusted-redirect",
+              "python.untrusted-request-url",
               "python.unused-annotation",
               "python.unused-argument",
               "python.unused-attribute",
@@ -63769,6 +64057,7 @@
               "swift.catch-parameter-name",
               "swift.class-delegate-protocol",
               "swift.class-type-parameter-name",
+              "swift.cleartext-url",
               "swift.closure-parameter-position",
               "swift.comment-spacing",
               "swift.compiler-protocol-init",
@@ -63817,6 +64106,7 @@
               "swift.google-method-name",
               "swift.google-non-constant-field-name",
               "swift.google-right-curly",
+              "swift.hard-coded-credential",
               "swift.hidden-field",
               "swift.ibinspectable-in-extension",
               "swift.identical-operands",
@@ -63934,12 +64224,16 @@
               "swift.unused-optional-binding",
               "swift.unused-parameter",
               "swift.unused-setter-value",
+              "swift.userdefaults-secret",
               "swift.valid-ibinspectable",
               "swift.variable-declaration-usage-distance",
               "swift.vertical-parameter-alignment",
               "swift.void-function-in-ternary",
               "swift.void-return",
+              "swift.weak-cipher",
               "swift.weak-delegate",
+              "swift.weak-hash",
+              "swift.weak-random",
               "swift.xctfail-message",
               "typescript.adjacent-overload-signatures",
               "typescript.array-callback-return",
@@ -69538,8 +69832,14 @@
             "class-variable-slots-conflict": {
               "$ref": "#/$defs/ward:python~1class-variable-slots-conflict"
             },
+            "code-injection": {
+              "$ref": "#/$defs/ward:python~1code-injection"
+            },
             "collapsible-if": {
               "$ref": "#/$defs/ward:python~1collapsible-if"
+            },
+            "command-injection": {
+              "$ref": "#/$defs/ward:python~1command-injection"
             },
             "comparison-of-constants": {
               "$ref": "#/$defs/ward:python~1comparison-of-constants"
@@ -70201,6 +70501,9 @@
             "parameter-name": {
               "$ref": "#/$defs/ward:python~1parameter-name"
             },
+            "path-injection": {
+              "$ref": "#/$defs/ward:python~1path-injection"
+            },
             "path-traversal": {
               "$ref": "#/$defs/ward:python~1path-traversal"
             },
@@ -70390,6 +70693,9 @@
             "split-static-string": {
               "$ref": "#/$defs/ward:python~1split-static-string"
             },
+            "sql-injection": {
+              "$ref": "#/$defs/ward:python~1sql-injection"
+            },
             "sql-string-formatting": {
               "$ref": "#/$defs/ward:python~1sql-string-formatting"
             },
@@ -70500,6 +70806,9 @@
             },
             "template-autoescape-disabled": {
               "$ref": "#/$defs/ward:python~1template-autoescape-disabled"
+            },
+            "template-injection": {
+              "$ref": "#/$defs/ward:python~1template-injection"
             },
             "todo-comment": {
               "$ref": "#/$defs/ward:python~1todo-comment"
@@ -70734,6 +71043,15 @@
             },
             "unsupported-membership-test": {
               "$ref": "#/$defs/ward:python~1unsupported-membership-test"
+            },
+            "untrusted-deserialization": {
+              "$ref": "#/$defs/ward:python~1untrusted-deserialization"
+            },
+            "untrusted-redirect": {
+              "$ref": "#/$defs/ward:python~1untrusted-redirect"
+            },
+            "untrusted-request-url": {
+              "$ref": "#/$defs/ward:python~1untrusted-request-url"
             },
             "unused-annotation": {
               "$ref": "#/$defs/ward:python~1unused-annotation"
@@ -71560,6 +71878,9 @@
             "class-type-parameter-name": {
               "$ref": "#/$defs/ward:swift~1class-type-parameter-name"
             },
+            "cleartext-url": {
+              "$ref": "#/$defs/ward:swift~1cleartext-url"
+            },
             "closure-parameter-position": {
               "$ref": "#/$defs/ward:swift~1closure-parameter-position"
             },
@@ -71703,6 +72024,9 @@
             },
             "google-right-curly": {
               "$ref": "#/$defs/ward:swift~1google-right-curly"
+            },
+            "hard-coded-credential": {
+              "$ref": "#/$defs/ward:swift~1hard-coded-credential"
             },
             "hidden-field": {
               "$ref": "#/$defs/ward:swift~1hidden-field"
@@ -72055,6 +72379,9 @@
             "unused-setter-value": {
               "$ref": "#/$defs/ward:swift~1unused-setter-value"
             },
+            "userdefaults-secret": {
+              "$ref": "#/$defs/ward:swift~1userdefaults-secret"
+            },
             "valid-ibinspectable": {
               "$ref": "#/$defs/ward:swift~1valid-ibinspectable"
             },
@@ -72070,8 +72397,17 @@
             "void-return": {
               "$ref": "#/$defs/ward:swift~1void-return"
             },
+            "weak-cipher": {
+              "$ref": "#/$defs/ward:swift~1weak-cipher"
+            },
             "weak-delegate": {
               "$ref": "#/$defs/ward:swift~1weak-delegate"
+            },
+            "weak-hash": {
+              "$ref": "#/$defs/ward:swift~1weak-hash"
+            },
+            "weak-random": {
+              "$ref": "#/$defs/ward:swift~1weak-random"
             },
             "xctfail-message": {
               "$ref": "#/$defs/ward:swift~1xctfail-message"

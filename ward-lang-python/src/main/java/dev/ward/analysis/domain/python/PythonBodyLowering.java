@@ -3,10 +3,8 @@ package dev.ward.analysis.domain.python;
 import dev.ward.analysis.domain.ir.ControlFlowBuilder;
 import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import dev.ward.analysis.domain.ir.FlowEdgeKind;
-import dev.ward.analysis.domain.ir.FlowSite;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
-import dev.ward.analysis.domain.ir.VariableAccess;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -48,18 +46,16 @@ final class PythonBodyLowering {
    * @param name the name of the body
    * @param block the block or file that holds the statements
    * @param parameters the parameters, which are bound at the entry of the body
-   * @param parameterSites the flow sites of the parameters
    * @param span where the body is in the source
    * @return the graph of the body
    */
   ControlFlowGraph lower(
       final String name,
       final SyntaxNode block,
-      final List<VariableAccess> parameters,
-      final List<FlowSite> parameterSites,
+      final PythonParameters parameters,
       final Span span) {
-    accesses.declare(parameters);
-    flow.record(parameters, parameterSites);
+    accesses.declare(parameters.accesses());
+    flow.record(parameters.accesses(), parameters.sites());
     statements(block);
     return flow.build(name, span);
   }

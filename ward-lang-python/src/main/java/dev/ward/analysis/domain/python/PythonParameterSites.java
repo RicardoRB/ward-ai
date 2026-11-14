@@ -17,6 +17,7 @@ import java.util.Set;
  */
 final class PythonParameterSites {
 
+  private static final String CALL_OPEN = "(";
   private static final String DECORATOR_MARK = "@";
   private static final Set<String> NOT_INPUT = Set.of("self", "cls", "request", "response");
 
@@ -51,23 +52,36 @@ final class PythonParameterSites {
       }
       final SyntaxNode name = PythonSyntax.children(child, PythonNames.NAME).get(0);
       final String identifier = PythonNames.identifier(name);
-      final List<String> annotations = new ArrayList<>();
-      if (!NOT_INPUT.contains(identifier)) {
-        annotations.addAll(marks);
-        defaultCall(children, index).ifPresent(annotations::add);
-      }
+      final List<String> annotations = annotationsOf(identifier, marks, children, index);
       if (!annotations.isEmpty()) {
-        sites.add(
-            new FlowSite(
-                FlowSiteKind.PARAMETER,
-                identifier,
-                "",
-                Optional.empty(),
-                annotations,
-                List.of(),
-                name.span()));
+        sites.add(site(identifier, annotations, name));
       }
     }
+  }
+
+  private static List<String> annotationsOf(
+      final String identifier,
+      final List<String> marks,
+      final List<SyntaxNode> children,
+      final int index) {
+    final List<String> annotations = new ArrayList<>();
+    if (!NOT_INPUT.contains(identifier)) {
+      annotations.addAll(marks);
+      defaultCall(children, index).ifPresent(annotations::add);
+    }
+    return annotations;
+  }
+
+  private static FlowSite site(
+      final String identifier, final List<String> annotations, final SyntaxNode name) {
+    return new FlowSite(
+        FlowSiteKind.PARAMETER,
+        identifier,
+        "",
+        Optional.empty(),
+        annotations,
+        List.of(),
+        name.span());
   }
 
   /**
@@ -92,7 +106,7 @@ final class PythonParameterSites {
   private static Optional<String> calledName(final SyntaxNode expression) {
     final StringBuilder text = new StringBuilder();
     for (final SyntaxNode token : PythonSyntax.tokens(expression)) {
-      if ("(".equals(PythonSyntax.text(token))) {
+      if (CALL_OPEN.equals(PythonSyntax.text(token))) {
         break;
       }
       text.append(PythonSyntax.text(token));
