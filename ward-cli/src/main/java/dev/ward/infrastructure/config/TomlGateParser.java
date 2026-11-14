@@ -51,7 +51,8 @@ final class TomlGateParser {
         TomlCoverageParser.parse(where, type, gate),
         TomlVulnerabilitiesParser.parse(where, type, gate),
         TomlLicenseParser.parse(where, type, gate, command),
-        TomlApiCompatParser.parse(where, type, gate));
+        TomlApiCompatParser.parse(where, type, gate),
+        TomlArchitectureParser.architectureFile(where, type, gate));
   }
 
   private static void rejectLegacyPartial(final String where, final TomlTable gate) {

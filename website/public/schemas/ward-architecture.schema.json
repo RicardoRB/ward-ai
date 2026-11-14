@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ward-architecture.toml",
+  "description": "General architecture rules of the ward gate: a selector, one constraint and a reason, the same in every language. The keys are the ones ArchitectureFileReader reads; ArchitectureSchemaTest keeps them equal.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version"],
+  "properties": {
+    "version": {
+      "const": 1,
+      "description": "The version of the file format."
+    },
+    "rule": {
+      "type": "array",
+      "description": "The rules, one [[rule]] table each.",
+      "items": { "$ref": "#/$defs/rule" }
+    }
+  },
+  "$defs": {
+    "selector": {
+      "type": "object",
+      "description": "Selects files by project-relative path. A file is selected when it matches an entry of each of paths and directories that is set, and no entry of exclude-paths.",
+      "additionalProperties": false,
+      "anyOf": [{ "required": ["paths"] }, { "required": ["directories"] }],
+      "properties": {
+        "paths": {
+          "description": "Globs on the project-relative path: *, **, ? and {a,b}.",
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "directories": {
+          "description": "Plain directory names; a file is selected when a directory of its path has one of these names (Swift paths compare ignoring case).",
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "exclude-paths": {
+          "description": "Globs of the paths that are left out. This is the only way to leave test sources out.",
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "description": "One rule: a name, a selector, exactly one constraint and a reason.",
+      "additionalProperties": false,
+      "required": ["name", "select", "because"],
+      "oneOf": [
+        { "required": ["must-not-depend-on"] },
+        { "required": ["may-only-depend-on"] },
+        { "required": ["only-accessed-by"] },
+        { "required": ["file-name"] },
+        { "required": ["must-be-in"] }
+      ],
+      "properties": {
+        "name": {
+          "description": "A name that is unique in the file and starts every finding.",
+          "type": "string",
+          "minLength": 1
+        },
+        "select": {
+          "description": "The files the rule is about.",
+          "$ref": "#/$defs/selector"
+        },
+        "must-not-depend-on": {
+          "description": "Reports every dependency edge from a selected file to a file of this selector (ward:architecture/dependencies).",
+          "$ref": "#/$defs/selector"
+        },
+        "may-only-depend-on": {
+          "description": "Reports every dependency edge from a selected file to a project file that is neither selected nor in this selector (ward:architecture/dependencies).",
+          "$ref": "#/$defs/selector"
+        },
+        "only-accessed-by": {
+          "description": "Reports every dependency edge into a selected file from a file that is neither selected nor in this selector (ward:architecture/dependencies).",
+          "$ref": "#/$defs/selector"
+        },
+        "file-name": {
+          "description": "A glob on the base name; reports every selected file whose name does not match (ward:architecture/naming).",
+          "type": "string",
+          "minLength": 1
+        },
+        "must-be-in": {
+          "description": "Reports every selected file that this selector does not select (ward:architecture/location).",
+          "$ref": "#/$defs/selector"
+        },
+        "because": {
+          "description": "The reason, shown at the end of every finding.",
+          "type": "string",
+          "minLength": 1
+        },
+        "allow-empty": {
+          "description": "Lets a rule that selects no file pass instead of failing the gate.",
+          "type": "boolean",
+          "default": false
+        }
+      }
+    }
+  }
+}

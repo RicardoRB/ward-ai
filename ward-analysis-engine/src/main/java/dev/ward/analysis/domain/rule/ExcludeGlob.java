@@ -1,4 +1,4 @@
-package dev.ward.application.gate;
+package dev.ward.analysis.domain.rule;
 
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  * {@code /} separators. {@code *} matches within a directory, {@code **} across directories, {@code
  * ?} one character, and {@code {a,b}} either text. Character classes are not supported.
  */
-final class ExcludeGlob {
+public final class ExcludeGlob {
   private static final Pattern TOKEN = Pattern.compile("\\*\\*|[*?{},\\[\\]]|.", Pattern.DOTALL);
 
   private static final Map<String, String> TRANSLATIONS =
@@ -25,7 +25,7 @@ final class ExcludeGlob {
    *
    * @throws IllegalArgumentException if the glob has unbalanced braces or a character class
    */
-  static Pattern compile(final String glob) {
+  public static Pattern compile(final String glob) {
     final StringBuilder regex = new StringBuilder();
     final Matcher tokens = TOKEN.matcher(glob);
     int depth = 0;

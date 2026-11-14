@@ -128,7 +128,8 @@ final class PartialGates {
         gate.coverage(),
         gate.vulnerabilities(),
         gate.license(),
-        gate.apiCompat());
+        gate.apiCompat(),
+        null);
   }
 
   private static GateScope scope(final PartialCheckPlan.GatePlan plan) {

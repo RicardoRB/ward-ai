@@ -70,19 +70,10 @@ public final class LayerDependencyRule implements CompiledRule {
   }
 
   private static String firstLayer(final String path, final List<String> layers) {
-    return layers.stream().filter(layer -> inLayer(path, layer)).findFirst().orElse(null);
-  }
-
-  /** A directory of {@code path} has the layer's name; Swift folders compare ignoring case. */
-  private static boolean inLayer(final String path, final String layer) {
-    final boolean fold = path.endsWith(".swift");
-    final String[] segments = path.split("/");
-    for (int index = 0; index < segments.length - 1; index++) {
-      if (fold ? segments[index].equalsIgnoreCase(layer) : segments[index].equals(layer)) {
-        return true;
-      }
-    }
-    return false;
+    return layers.stream()
+        .filter(layer -> LayerMembership.inLayer(path, layer))
+        .findFirst()
+        .orElse(null);
   }
 
   private static boolean isTestSource(final String path) {
