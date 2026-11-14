@@ -48,14 +48,14 @@ class SarifPrerequisiteReportTest {
     final JsonTree run =
         render(
                 withPrerequisite(
-                    "zap",
+                    "custom-lint",
                     new GatePrerequisite(
                         GatePrerequisite.Kind.EXECUTABLE,
-                        "zap-baseline.py",
+                        "custom-lint",
                         null,
                         null,
-                        "Install zap-baseline.py: https://www.zaproxy.org"),
-                    "Gate 'zap' could not start 'zap-baseline.py'. Install zap-baseline.py: https://www.zaproxy.org"))
+                        "Install custom-lint: https://lint.example"),
+                    "Gate 'custom-lint' could not start 'custom-lint'. Install custom-lint: https://lint.example"))
             .get(RUNS)
             .get(0);
 
@@ -64,7 +64,7 @@ class SarifPrerequisiteReportTest {
     assertThat(invocation.get("executionSuccessful").asBoolean()).isFalse();
     final JsonTree notification = invocation.get("toolExecutionNotifications").get(0);
     assertThat(notification.get("level").asString()).isEqualTo("error");
-    assertThat(notification.get("message").get("text").asString()).contains("zap");
+    assertThat(notification.get("message").get("text").asString()).contains("custom-lint");
   }
 
   @Test

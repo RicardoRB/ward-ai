@@ -30,7 +30,6 @@ public final class CommandTypeInference {
           "ng-test",
           "api-compat",
           "license",
-          "zap",
           "openapi-lint",
           "openapi-diff",
           "openapi-compat",

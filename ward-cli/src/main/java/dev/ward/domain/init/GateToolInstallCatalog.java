@@ -5,13 +5,10 @@ import java.util.Optional;
 
 /**
  * Pure catalog of remediation links for gate executables. Init installs none of them: a gate whose
- * executable is missing is reported with the link, for {@code zap}.
+ * executable is missing is reported with the link. It has no entry now.
  */
 public final class GateToolInstallCatalog {
-  private static final Map<String, Entry> ENTRIES =
-      Map.of(
-          "zap-baseline.py",
-          new Entry("zap-baseline.py", "https://www.zaproxy.org/docs/docker/baseline-scan/"));
+  private static final Map<String, Entry> ENTRIES = Map.of();
 
   private GateToolInstallCatalog() {}
 
