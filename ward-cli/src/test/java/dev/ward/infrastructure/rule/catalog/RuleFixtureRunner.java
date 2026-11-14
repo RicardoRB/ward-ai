@@ -2,10 +2,7 @@ package dev.ward.infrastructure.rule.catalog;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.ward.analysis.application.rule.DependencyAnalysis;
-import dev.ward.analysis.application.rule.DependencySnapshot;
 import dev.ward.analysis.application.rule.DuplicateCodeFindings;
-import dev.ward.analysis.application.rule.FileSummaryCache;
 import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.application.rule.RuleEngine;
 import dev.ward.analysis.application.rule.TypeFactsRun;
@@ -24,14 +21,11 @@ import dev.ward.analysis.domain.rule.RuleRunResult;
 import dev.ward.analysis.domain.swift.SwiftFileSummarizer;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import dev.ward.infrastructure.analysis.GateFrontends;
-import dev.ward.infrastructure.analysis.JvmDependencyAdapters;
 import dev.ward.infrastructure.rule.BundledRuleMatchers;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -80,7 +74,8 @@ final class RuleFixtureRunner {
     }
     final RuleEngine engine = new RuleEngine(BundledRuleMatchers.create());
     final List<SourceUnit> units = List.of(new SourceUnit(path, language, text));
-    final RuleRunResult result = runUnits(engine, rule, units, project, typeFacts);
+    final RuleRunResult result =
+        DependentRun.run(engine, rule, units, project.sources(), frontendsFor(rule, typeFacts));
     assertThat(result.executionErrors()).as("execution errors of %s", rule.id()).isEmpty();
     assertThat(result.notRun()).as("rules not run: %s", rule.id()).isEmpty();
     final List<AnalysisFinding> all = new ArrayList<>(result.findings());
@@ -95,41 +90,6 @@ final class RuleFixtureRunner {
         .filter(finding -> finding.ruleId().equals(rule.id()))
         .filter(finding -> !otherPaths.contains(finding.file()))
         .toList();
-  }
-
-  /**
-   * Runs the rule over the unit. A rule that follows calls into other files gets the dependencies
-   * that the project's other sources give the unit, as the {@code ward} gate resolves them.
-   */
-  private RuleRunResult runUnits(
-      final RuleEngine engine,
-      final RuleDefinition rule,
-      final List<SourceUnit> units,
-      final FixtureProject project,
-      final TypeFacts typeFacts) {
-    final List<FrontendSupport> support = frontendsFor(rule, typeFacts);
-    if (!rule.capability().readsDependencyBodies() || project.sources().isEmpty()) {
-      return engine.run(units, support, List.of(rule));
-    }
-    final List<SourceUnit> all = new ArrayList<>(units);
-    all.addAll(project.sources());
-    final DependencySnapshot snapshot =
-        new DependencyAnalysis(support, new JvmDependencyAdapters().forProject(Path.of("."), all))
-            .analyze(all, new NoSummaries());
-    return engine.run(units, support, List.of(rule), snapshot);
-  }
-
-  /** Keeps no summaries, so every run resolves the project again. */
-  private static final class NoSummaries implements FileSummaryCache {
-    @Override
-    public Optional<FileSummary> read(final SourceUnit unit) {
-      return Optional.empty();
-    }
-
-    @Override
-    public void write(final SourceUnit unit, final FileSummary summary) {
-      // nothing is kept
-    }
   }
 
   /** The frontends of the {@code ward} gate, for a graph rule over a project fixture. */
