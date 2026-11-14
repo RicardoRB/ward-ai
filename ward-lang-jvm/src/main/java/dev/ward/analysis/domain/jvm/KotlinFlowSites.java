@@ -16,8 +16,8 @@ import java.util.Set;
  * Finds the flow sites of one Kotlin body: calls and member reads with the receiver type of their
  * qualifier, the constructor calls, which are calls named {@code <init>} on the created type, and
  * the annotated parameters. Inner sites come before the sites that contain them, and a nested
- * function or class is another body, so it is not entered. A lambda is part of its statement, so
- * its calls are sites of that statement.
+ * function or class is another body, so it is not entered. A lambda is lowered as blocks of its
+ * own, so the view of {@link KotlinView} keeps its calls out of the statement that holds it.
  *
  * <p>Kotlin nests a member access to the right: {@code a.b().c()} is the atom {@code a} followed by
  * a member operation that holds {@code b().c()}. The chain is read with the qualifier text so far.
