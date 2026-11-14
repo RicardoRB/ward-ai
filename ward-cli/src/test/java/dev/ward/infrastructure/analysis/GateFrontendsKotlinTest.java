@@ -66,8 +66,9 @@ class GateFrontendsKotlinTest {
   }
 
   @Test
-  void theLayerRuleStillNamesNoKotlinSoItStillChecksNoKotlinFile() {
-    assertThat(ArchitectureLayers.ENGINE_LANGUAGES).doesNotContain(AnalysisLanguage.KOTLIN);
+  void theLayerRuleNamesKotlinAndNeedsOnlyTheScopesTheKotlinFrontendProvides() {
+    assertThat(ArchitectureLayers.ENGINE_LANGUAGES).contains(AnalysisLanguage.KOTLIN);
+    assertThat(kotlin.capabilities()).contains(RuleCapability.SCOPES);
     assertThat(kotlin.capabilities()).doesNotContain(RuleCapability.SYMBOLS);
   }
 }

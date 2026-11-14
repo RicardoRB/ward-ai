@@ -870,11 +870,10 @@ from = ["domain", "application"]
 forbidden = ["adapter", "infrastructure"]
 ```
 
-Both lists are non-empty and name plain directory names. The rule covers Java, Python, TypeScript,
-JavaScript and Swift (Swift folder names compare ignoring case; Swift edges exist when the folder is
-a SwiftPM or Xcode project). It does not check Kotlin files: a Kotlin import of a forbidden layer is
-not reported by this rule, while the rules of [`ward-architecture.toml`](/configuration/ward-architecture/)
-do cover Kotlin. Java and Swift test sources are not checked. `ward init` writes this table for the
+Both lists are non-empty and name plain directory names. The rule covers Java, Kotlin, Python,
+TypeScript, JavaScript and Swift (Swift folder names compare ignoring case; Swift edges exist when
+the folder is a SwiftPM or Xcode project). A Kotlin file importing a Java file of a forbidden layer,
+and the reverse, are both reported. Java, Kotlin and Swift test sources are not checked. `ward init` writes this table for the
 chosen style.
 
 The table is a shorthand of a `must-not-depend-on` rule of `ward-architecture.toml` that selects
@@ -912,7 +911,8 @@ A table of modules that are not nested equals one `must-not-depend-on` rule per 
 modules. Nested modules, where the longest module wins, and `cycles` have no longhand.
 
 Both lists are validated: `roots` is non-empty and holds project-relative directories, and each
-`modules` list has at least two entries. `ward init --preset strict` writes these tables. Init
+`modules` list has at least two entries. Both rules read the dependency edges of every language the
+engine resolves, Kotlin included. `ward init --preset strict` writes these tables. Init
 writes no external cycle or independence rule.
 
 ## Swift structural rules
