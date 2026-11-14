@@ -24,6 +24,7 @@ import org.junit.jupiter.api.io.TempDir;
  * one is not.
  */
 class SameNameClassTaintTest {
+  private static final int CALLS = 3;
   private static final String RULE = "ward:java/cross-site-scripting";
   private static final String UNSAFE_PAGE = "src/main/java/shop/UnsafePage.java";
   private static final String IMPORTS =
@@ -93,6 +94,6 @@ class SameNameClassTaintTest {
             .findings();
 
     assertThat(rules).hasSize(1);
-    assertThat(found).extracting(AnalysisFinding::file).containsOnly(UNSAFE_PAGE).hasSize(3);
+    assertThat(found).extracting(AnalysisFinding::file).containsOnly(UNSAFE_PAGE).hasSize(CALLS);
   }
 }

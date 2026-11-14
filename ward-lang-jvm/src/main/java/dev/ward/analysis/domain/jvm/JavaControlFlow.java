@@ -57,18 +57,12 @@ public final class JavaControlFlow implements ControlFlowLowering {
     void visit(final SyntaxNode node, final String owner, final List<JavaClassFields.Field> outer) {
       final boolean isType = TYPES.contains(node.kind());
       final String scope = isType ? typeScope(node, owner) : owner;
-      final List<JavaClassFields.Field> fields = isType ? withFieldsOf(node, outer) : outer;
+      final List<JavaClassFields.Field> fields =
+          isType ? JavaClassFields.merged(outer, node) : outer;
       lowerBody(node, scope, fields);
       for (final SyntaxNode child : node.children()) {
         visit(child, scope, fields);
       }
-    }
-
-    private static List<JavaClassFields.Field> withFieldsOf(
-        final SyntaxNode type, final List<JavaClassFields.Field> outer) {
-      final List<JavaClassFields.Field> fields = new ArrayList<>(outer);
-      fields.addAll(JavaClassFields.of(type));
-      return fields;
     }
 
     private void lowerBody(

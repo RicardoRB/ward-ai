@@ -24,6 +24,7 @@ import org.junit.jupiter.api.io.TempDir;
  * followed.
  */
 class VirtualDispatchTaintTest {
+  private static final String END = "  }\n";
   private static final String RULE = "ward:java/cross-site-scripting";
   private static final String DIR = "src/main/java/shop/";
   private static final String ROUTER = DIR + "Router.java";
@@ -41,14 +42,14 @@ class VirtualDispatchTaintTest {
           + "class Unsafe implements Handler {\n"
           + "  public void handle(String v, HttpServletResponse r) throws Exception {\n"
           + "    r.getWriter().println(v);\n"
-          + "  }\n"
+          + END
           + "}\n";
   private static final String SAFE =
       HEADER
           + "class Safe implements Handler {\n"
           + "  public void handle(String v, HttpServletResponse r) throws Exception {\n"
           + "    r.getWriter().println(HtmlUtils.htmlEscape(v));\n"
-          + "  }\n"
+          + END
           + "}\n";
   private static final String ROUTER_TEXT =
       HEADER
@@ -59,27 +60,27 @@ class VirtualDispatchTaintTest {
           + "  void viaCreation(HttpServletRequest q, HttpServletResponse r) throws Exception {\n"
           + "    Handler h = new Unsafe();\n"
           + "    h.handle(q.getParameter(\"n\"), r);\n"
-          + "  }\n"
+          + END
           + "  void viaSafeCreation(HttpServletRequest q, HttpServletResponse r) throws Exception {\n"
           + "    Handler s = new Safe();\n"
           + "    s.handle(q.getParameter(\"n\"), r);\n"
-          + "  }\n"
+          + END
           + "  void viaFinalField(HttpServletRequest q, HttpServletResponse r) throws Exception {\n"
           + "    fixed.handle(q.getParameter(\"n\"), r);\n"
-          + "  }\n"
+          + END
           + "  void viaDeclaredClass(Unsafe u, HttpServletRequest q, HttpServletResponse r)\n"
           + "      throws Exception {\n"
           + "    u.handle(q.getParameter(\"n\"), r);\n"
-          + "  }\n"
+          + END
           + "  void viaInterfaceField(HttpServletRequest q, HttpServletResponse r) throws Exception {\n"
           + "    held.handle(q.getParameter(\"n\"), r);\n"
-          + "  }\n"
+          + END
           + "  void viaTwoCreations(boolean c, HttpServletRequest q, HttpServletResponse r)\n"
           + "      throws Exception {\n"
           + "    Handler t;\n"
           + "    if (c) { t = new Unsafe(); } else { t = new Safe(); }\n"
           + "    t.handle(q.getParameter(\"n\"), r);\n"
-          + "  }\n"
+          + END
           + "}\n";
 
   @TempDir Path root;

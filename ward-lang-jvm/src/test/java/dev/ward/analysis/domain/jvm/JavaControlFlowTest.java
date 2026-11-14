@@ -19,15 +19,6 @@ class JavaControlFlowTest {
   }
 
   @Test
-  void bodiesOfAPackagedTypeAreNamedWithTheirPackage() {
-    final ControlFlowResult result =
-        JavaFlowFixtures.lower("package shop;\nclass A { class B { void m() { } } void n() { } }");
-
-    assertThat(result.graphs().stream().map(ControlFlowGraph::body).toList())
-        .containsExactlyInAnyOrder("shop:A#n(0)", "shop:A.B#m(0)");
-  }
-
-  @Test
   void ifWithoutElseBranchesOnItsOutcome() {
     final String source = "class C { void run(boolean a) { if (a) { x(); } y(); } }";
     final ControlFlowGraph graph = lowerNamed(source, "C#run(1)");

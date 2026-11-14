@@ -24,6 +24,7 @@ import org.junit.jupiter.api.io.TempDir;
  * constants is clean.
  */
 class ContainerStoreTaintTest {
+  private static final String END = "  }\n";
   private static final String RULE = "ward:java/cross-site-scripting";
   private static final String DIR = "src/main/java/shop/";
   private static final String PAGE = DIR + "Page.java";
@@ -38,13 +39,13 @@ class ContainerStoreTaintTest {
           + "  void fromArray(String[] a, HttpServletResponse r) throws Exception {\n"
           + "    String d = a[0];\n"
           + "    r.getWriter().println(d);\n"
-          + "  }\n"
+          + END
           + "  void fromBox(Box b, HttpServletResponse r) throws Exception {\n"
           + "    r.getWriter().println(b.value);\n"
-          + "  }\n"
+          + END
           + "  void fromList(List<String> l, HttpServletResponse r) throws Exception {\n"
           + "    r.getWriter().println(l.get(0));\n"
-          + "  }\n"
+          + END
           + "}\n";
   private static final String PAGE_TEXT =
       HEADER
@@ -53,27 +54,27 @@ class ContainerStoreTaintTest {
           + "    String[] a = new String[2];\n"
           + "    a[0] = q.getParameter(\"n\");\n"
           + "    (new Sink()).fromArray(a, r);\n"
-          + "  }\n"
+          + END
           + "  void holderStore(HttpServletRequest q, HttpServletResponse r) throws Exception {\n"
           + "    Box b = new Box();\n"
           + "    b.value = q.getParameter(\"n\");\n"
           + "    (new Sink()).fromBox(b, r);\n"
-          + "  }\n"
+          + END
           + "  void listStore(HttpServletRequest q, HttpServletResponse r) throws Exception {\n"
           + "    List<String> l = new ArrayList<>();\n"
           + "    l.add(q.getParameter(\"n\"));\n"
           + "    (new Sink()).fromList(l, r);\n"
-          + "  }\n"
+          + END
           + "  void constantStore(HttpServletRequest q, HttpServletResponse r) throws Exception {\n"
           + "    String[] a = new String[2];\n"
           + "    a[0] = \"x\";\n"
           + "    (new Sink()).fromArray(a, r);\n"
-          + "  }\n"
+          + END
           + "  void builderStore(HttpServletRequest q, HttpServletResponse r) throws Exception {\n"
           + "    StringBuilder sb = new StringBuilder();\n"
           + "    sb.append(q.getParameter(\"n\"));\n"
           + "    r.getWriter().println(sb.toString());\n"
-          + "  }\n"
+          + END
           + "}\n";
 
   @TempDir Path root;
@@ -105,17 +106,16 @@ class ContainerStoreTaintTest {
     assertThat(found)
         .extracting(AnalysisFinding::line)
         .containsExactlyInAnyOrder(
-            lineOf("fromArray(a, r);", 1),
-            lineOf("fromBox(b, r)", 1),
-            lineOf("fromList(l, r)", 1),
-            lineOf("println(sb.toString())", 1));
+            lineOf("fromArray(a, r);"),
+            lineOf("fromBox(b, r)"),
+            lineOf("fromList(l, r)"),
+            lineOf("println(sb.toString())"));
   }
 
-  private static int lineOf(final String text, final int occurrence) {
+  private static int lineOf(final String text) {
     final String[] lines = PAGE_TEXT.split("\n", -1);
-    int seen = 0;
     for (int index = 0; index < lines.length; index++) {
-      if (lines[index].contains(text) && ++seen == occurrence) {
+      if (lines[index].contains(text)) {
         return index + 1;
       }
     }

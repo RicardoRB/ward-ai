@@ -61,15 +61,7 @@ final class JavaFlowSites implements FlowSites {
     this.skipped = skipped;
     this.parameters = new JavaParameterSites(types, declared);
     this.creations = new JavaCreationTypes(types);
-    fields.forEach(this::declareField);
-  }
-
-  private void declareField(final JavaClassFields.Field field) {
-    declared.put(field.name(), field.type());
-    declared.put("this." + field.name(), field.type());
-    if (field.isFinal() && field.initializer() != null) {
-      creations.field(field.name(), field.initializer());
-    }
+    fields.forEach(field -> field.declareIn(declared, creations));
   }
 
   @Override

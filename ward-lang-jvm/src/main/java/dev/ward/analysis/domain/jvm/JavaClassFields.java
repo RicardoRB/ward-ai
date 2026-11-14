@@ -3,22 +3,13 @@ package dev.ward.analysis.domain.jvm;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The fields that a Java class declares, which the bodies of the class can call through: their
  * written type, whether they are final, and their initializer.
  */
 final class JavaClassFields {
-
-  /**
-   * One declared field.
-   *
-   * @param name the field name
-   * @param type the type as written
-   * @param isFinal whether the field is final, so only its initializer assigns it
-   * @param initializer the initializer node, or null
-   */
-  record Field(String name, String type, boolean isFinal, SyntaxNode initializer) {}
 
   private static final String CLASS_BODY = "classBody";
   private static final String MEMBER = "classBodyDeclaration";
@@ -30,8 +21,36 @@ final class JavaClassFields {
   private static final String DECLARATOR = "variableDeclarator";
   private static final String DECLARATOR_ID = "variableDeclaratorId";
   private static final String INITIALIZER = "variableInitializer";
+  private static final String THIS = "this.";
+
+  /**
+   * One declared field.
+   *
+   * @param name the field name
+   * @param type the type as written
+   * @param isFinal whether the field is final, so only its initializer assigns it
+   * @param initializer the initializer node, or null
+   */
+  record Field(String name, String type, boolean isFinal, SyntaxNode initializer) {
+
+    /** Gives a body the type of the field, and its creation when a final field is initialized. */
+    void declareIn(final Map<String, String> declared, final JavaCreationTypes creations) {
+      declared.put(name, type);
+      declared.put(THIS + name, type);
+      if (isFinal && initializer != null) {
+        creations.field(name, initializer);
+      }
+    }
+  }
 
   private JavaClassFields() {}
+
+  /** The fields of the classes around a type, then those of the type itself. */
+  static List<Field> merged(final List<Field> outer, final SyntaxNode type) {
+    final List<Field> fields = new ArrayList<>(outer);
+    fields.addAll(of(type));
+    return fields;
+  }
 
   /** Reads the fields of a class declaration's body; other type declarations have none. */
   static List<Field> of(final SyntaxNode type) {
