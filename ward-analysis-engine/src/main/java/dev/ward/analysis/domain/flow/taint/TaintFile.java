@@ -4,6 +4,7 @@ import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import dev.ward.analysis.domain.ir.FlowSiteKind;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -60,17 +61,34 @@ public final class TaintFile {
       final List<ControlFlowGraph> graphs,
       final List<ControlFlowGraph> related,
       final TaintSpec spec) {
-    final Map<String, LocalMethod> methods = CalledMethods.local(graphs, LocalMethod.index(graphs));
-    methods.putAll(CalledMethods.reachable(graphs, LocalMethod.indexExternal(related)));
+    final Set<String> known = new HashSet<>(LocalMethod.owned(graphs));
+    known.addAll(LocalMethod.owned(related));
+    final List<ControlFlowGraph> own = DispatchedCalls.apply(graphs, known, spec);
+    final Map<String, LocalMethod> methods = methodsOf(own, related, known, spec);
     TaintSpec effective = spec;
     if (!methods.isEmpty()) {
       effective = summarized(spec, methods);
     }
     final List<TaintFinding> found = new ArrayList<>();
-    for (final ControlFlowGraph graph : graphs) {
+    for (final ControlFlowGraph graph : own) {
       found.addAll(TaintAnalysis.run(graph, effective));
     }
     return found;
+  }
+
+  /** The methods of the file and the reachable ones of other files, with their calls resolved. */
+  private static Map<String, LocalMethod> methodsOf(
+      final List<ControlFlowGraph> own,
+      final List<ControlFlowGraph> related,
+      final Set<String> known,
+      final TaintSpec spec) {
+    final Map<String, LocalMethod> methods = CalledMethods.local(own, LocalMethod.index(own));
+    CalledMethods.reachable(own, LocalMethod.indexExternal(related))
+        .forEach(
+            (key, method) ->
+                methods.put(
+                    key, method.withGraph(DispatchedCalls.apply(method.graph(), known, spec))));
+    return methods;
   }
 
   private static TaintSpec summarized(

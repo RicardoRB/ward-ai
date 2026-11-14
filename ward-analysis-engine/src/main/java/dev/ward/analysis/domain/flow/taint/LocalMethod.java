@@ -73,6 +73,21 @@ record LocalMethod(String name, String owner, int arity, ControlFlowGraph graph,
         .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().get(0)));
   }
 
+  /** The {@code Owner#name/arity} keys of the bodies that have an owner. */
+  static Set<String> owned(final List<ControlFlowGraph> graphs) {
+    return graphs.stream()
+        .map(LocalMethod::parse)
+        .flatMap(Optional::stream)
+        .filter(method -> !method.owner().isEmpty())
+        .map(method -> method.owner() + "#" + key(method.name(), method.arity()))
+        .collect(Collectors.toSet());
+  }
+
+  /** Returns the method with another graph for its body. */
+  LocalMethod withGraph(final ControlFlowGraph replaced) {
+    return new LocalMethod(name, owner, arity, replaced, external);
+  }
+
   private static Optional<LocalMethod> parseExternal(final ControlFlowGraph graph) {
     return parse(graph)
         .filter(method -> !method.owner().isEmpty())

@@ -40,7 +40,7 @@ class SecurityBenchmarkSmokeTest {
   private static final String MAP = "/benchmark/security-cwe-map.csv";
   private static final String REPORT = "benchmark/security-report.txt";
   private static final String SOURCE_ROOT = "src/main/java/";
-  private static final Pattern VARIANT = Pattern.compile("^(.*_\\d+)[a-z]\\.java$");
+  private static final Pattern VARIANT = Pattern.compile("^(.*_\\d+)(?:[a-z]|_\\w+)\\.java$");
   private static final String HEADER =
       "# Juliet Java 1.3 (NIST SARD 111, public domain) against Ward's Java security rules.\n"
           + "# A finding in a bad method is a true positive (tp, at most one per case), a bad case"
@@ -136,7 +136,9 @@ class SecurityBenchmarkSmokeTest {
 
   /**
    * The other files of the case: Juliet splits a flow over {@code ..._54a.java} to {@code
-   * ..._54e.java}, so the files of one directory with the same name up to the letter belong to it.
+   * ..._54e.java}, and variant 81 over {@code ..._81a.java}, {@code ..._81_base.java} and its
+   * subclasses, so the files of one directory with the same name up to the letter or the suffix
+   * belong to it.
    */
   private static List<SourceUnit> siblings(final Path file) throws IOException {
     final Matcher variant = VARIANT.matcher(file.getFileName().toString());

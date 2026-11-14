@@ -75,6 +75,48 @@ class JavaFlowSitesTest {
     assertThat(sites.get(0).annotations()).containsExactly("Untrusted");
   }
 
+  private static final String CREATED =
+      """
+      class Router {
+        private final Base fixed = new Impl();
+        private Base held;
+
+        void run(boolean flag, Impl impl) {
+          Base once = new Impl();
+          once.go();
+          Base twice;
+          if (flag) { twice = new Impl(); } else { twice = new Other(); }
+          twice.go();
+          fixed.go();
+          held.go();
+          (new Impl()).go();
+          impl.go();
+          Base anonymous = new Base() { };
+          anonymous.go();
+        }
+      }
+      """;
+
+  /** A receiver created as one class names it; two classes, fields and anonymous classes do not. */
+  @Test
+  void receiverCreatedAsOneClassIsMarked() {
+    final List<FlowSite> calls = sitesOf(CREATED, "run(2)", FlowSiteKind.CALL, "go");
+    assertThat(calls.stream().map(FlowSite::qualifier).toList())
+        .containsExactly("once", "twice", "fixed", "held", "(newImpl())", "impl", "anonymous");
+    final String impl = JavaCreationTypes.MARK + "Impl";
+    assertThat(calls.stream().map(FlowSite::annotations).toList())
+        .containsExactly(
+            List.of(impl),
+            List.of(),
+            List.of(impl),
+            List.of(),
+            List.of(impl),
+            List.of(),
+            List.of());
+    assertThat(calls.get(3).receiverType()).contains("Base");
+    assertThat(calls.get(5).receiverType()).contains("Impl");
+  }
+
   private static List<FlowSite> sitesOf(
       final String source, final String body, final FlowSiteKind kind, final String name) {
     final ControlFlowResult result = JavaFlowFixtures.lower(source);

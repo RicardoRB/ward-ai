@@ -44,17 +44,32 @@ final class JavaFlowSites implements FlowSites {
   private final Predicate<SyntaxNode> skipped;
   private final Map<String, String> declared = new HashMap<>();
   private final JavaParameterSites parameters;
+  private final JavaCreationTypes creations;
 
   /**
    * Creates the finder of one body.
    *
    * @param types the imports and package of the file
    * @param skipped reports the nodes that the lowering added as blocks of their own
+   * @param fields the fields of the classes around the body, whose types the body can call through
    */
-  JavaFlowSites(final JavaTypeNames types, final Predicate<SyntaxNode> skipped) {
+  JavaFlowSites(
+      final JavaTypeNames types,
+      final Predicate<SyntaxNode> skipped,
+      final List<JavaClassFields.Field> fields) {
     this.types = types;
     this.skipped = skipped;
     this.parameters = new JavaParameterSites(types, declared);
+    this.creations = new JavaCreationTypes(types);
+    fields.forEach(this::declareField);
+  }
+
+  private void declareField(final JavaClassFields.Field field) {
+    declared.put(field.name(), field.type());
+    declared.put("this." + field.name(), field.type());
+    if (field.isFinal() && field.initializer() != null) {
+      creations.field(field.name(), field.initializer());
+    }
   }
 
   @Override
@@ -70,7 +85,7 @@ final class JavaFlowSites implements FlowSites {
     }
     switch (node.kind()) {
       case EXPRESSION -> expression(node, found);
-      case METHOD_CALL -> call(node, "", found);
+      case METHOD_CALL -> call(node, null, "", found);
       case FORMAL_PARAMETERS, LAMBDA_PARAMETERS -> found.addAll(parameters.of(node));
       case LOCAL_VARIABLE -> localVariable(node, found);
       default -> children(node, found);
@@ -93,6 +108,7 @@ final class JavaFlowSites implements FlowSites {
     if (parts.size() == MEMBER_PARTS && ASSIGN.equals(JavaFlowSyntax.text(parts.get(1)))) {
       children(node, found);
       JavaLiteralSites.of(parts.get(2), JavaLiteralSites.VALUE).ifPresent(found::add);
+      creations.assign(JavaFlowSyntax.text(parts.get(0)), parts.get(2));
       return;
     }
     if (parts.size() != MEMBER_PARTS || !DOT.equals(JavaFlowSyntax.text(parts.get(1)))) {
@@ -104,7 +120,7 @@ final class JavaFlowSites implements FlowSites {
     final String qualifier = JavaFlowSyntax.text(receiver);
     if (METHOD_CALL.equals(member.kind())) {
       walk(receiver, found);
-      call(member, qualifier, found);
+      call(member, receiver, qualifier, found);
     } else if (IDENTIFIER.equals(member.kind())) {
       walk(receiver, found);
       found.add(
@@ -122,7 +138,11 @@ final class JavaFlowSites implements FlowSites {
   }
 
   /** The arguments come first, so a call inside an argument is listed before this call. */
-  private void call(final SyntaxNode call, final String qualifier, final List<FlowSite> found) {
+  private void call(
+      final SyntaxNode call,
+      final SyntaxNode receiver,
+      final String qualifier,
+      final List<FlowSite> found) {
     final List<SyntaxNode> arguments = JavaCallArguments.of(call);
     arguments.forEach(argument -> walk(argument, found));
     arguments.forEach(argument -> JavaLiteralSites.addArgument(argument, found));
@@ -132,7 +152,7 @@ final class JavaFlowSites implements FlowSites {
             calledName(call),
             qualifier,
             receiverType(qualifier),
-            List.of(),
+            receiver == null ? List.of() : creations.annotations(receiver, qualifier),
             JavaCallArguments.spans(arguments),
             call.span()));
   }
@@ -171,11 +191,13 @@ final class JavaFlowSites implements FlowSites {
         JavaFlowSyntax.allOf(JavaFlowSyntax.parts(variables), VARIABLE_DECLARATOR)) {
       final SyntaxNode id =
           JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(declarator), VARIABLE_DECLARATOR_ID);
-      if (id != null) {
-        declareType(JavaFlowSyntax.text(JavaSyntaxNames.identifierOf(id)), type);
-      }
       final SyntaxNode initializer =
           JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(declarator), VARIABLE_INITIALIZER);
+      if (id != null) {
+        final String name = JavaFlowSyntax.text(JavaSyntaxNames.identifierOf(id));
+        declareType(name, type);
+        creations.declare(name, initializer);
+      }
       if (initializer != null) {
         JavaLiteralSites.of(initializer, JavaLiteralSites.VALUE).ifPresent(found::add);
       }
