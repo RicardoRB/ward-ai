@@ -3,6 +3,7 @@ package dev.ward.analysis.domain.graph;
 import dev.ward.analysis.domain.ir.DependencyEdge;
 import java.util.ArrayDeque;
 import java.util.Comparator;
+import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -60,7 +61,7 @@ public final class DependencyGraph {
    */
   public List<String> closureOf(final String path) {
     final Set<String> seen = new TreeSet<>();
-    final ArrayDeque<String> pending = new ArrayDeque<>(dependenciesOf(path));
+    final Deque<String> pending = new ArrayDeque<>(dependenciesOf(path));
     while (!pending.isEmpty()) {
       final String next = pending.poll();
       if (!next.equals(path) && seen.add(next)) {

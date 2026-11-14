@@ -16,7 +16,6 @@ import dev.ward.analysis.domain.rule.UnitViews;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.SortedMap;
 import java.util.stream.Collectors;
@@ -55,19 +54,6 @@ public final class RuleEngine {
       final List<FrontendSupport> frontends,
       final List<RuleDefinition> rules,
       final DependencySnapshot snapshot) {
-    return run(units, units, frontends, rules, snapshot);
-  }
-
-  /**
-   * Runs {@code rules} over {@code units}; a rule that reads the bodies of the files its unit
-   * depends on finds them among {@code known}, which holds every file of the run.
-   */
-  public RuleRunResult run(
-      final List<SourceUnit> units,
-      final List<SourceUnit> known,
-      final List<FrontendSupport> frontends,
-      final List<RuleDefinition> rules,
-      final DependencySnapshot snapshot) {
     final Map<AnalysisLanguage, FrontendSupport> support = supportByLanguage(frontends);
     final RuleRunCollector collector = new RuleRunCollector();
     final List<PreparedRule> prepared = PreparedRule.all(rules, support, matcher, collector);
@@ -77,7 +63,7 @@ public final class RuleEngine {
             new UnitTrees(support, PreparedRule.needs(prepared)),
             collector,
             snapshot,
-            known.stream().collect(Collectors.toMap(SourceUnit::path, unit -> unit, (a, b) -> a)));
+            new RelatedFlows(support, snapshot));
     for (final PreparedRule rule : prepared) {
       runRule(rule, units, state);
     }
@@ -145,7 +131,7 @@ public final class RuleEngine {
       UnitTrees trees,
       RuleRunCollector collector,
       DependencySnapshot snapshot,
-      Map<String, SourceUnit> known) {}
+      RelatedFlows related) {}
 
   private static Map<AnalysisLanguage, FrontendSupport> supportByLanguage(
       final List<FrontendSupport> frontends) {
@@ -176,7 +162,9 @@ public final class RuleEngine {
       final DependencyView dependencies = view(rule, unit, state);
       final UnitViews views =
           new UnitViews(
-              state.trees().flows(rule, unit, root.get(), collector, related(rule, unit, state)),
+              state
+                  .related()
+                  .with(rule, unit, state.trees().flows(rule, unit, root.get(), collector)),
               state.trees().scopes(rule, unit, root.get(), dependencies, collector),
               state.trees().types(rule, unit, root.get(), collector));
       rule.matches(root.get(), dependencies, views, unit)
@@ -185,18 +173,6 @@ public final class RuleEngine {
       collector.recordError(
           new RuleExecutionError(rule.definition().id(), unit.path(), "the rule could not run"));
     }
-  }
-
-  /** The files that a taint rule reads besides its unit: the ones it depends on, by path. */
-  private static List<SourceUnit> related(
-      final CompiledRule rule, final SourceUnit unit, final RunState state) {
-    if (!rule.definition().capability().readsDependencyBodies()) {
-      return List.of();
-    }
-    return state.snapshot().closureOf(unit.path()).stream()
-        .map(state.known()::get)
-        .filter(Objects::nonNull)
-        .toList();
   }
 
   /** Only a rule that reads {@code SYMBOLS} or {@code SCOPES} sees the files around the unit. */

@@ -1,7 +1,6 @@
 package dev.ward.analysis.application.rule;
 
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
-import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.port.AnalysisFailedException;
@@ -28,7 +27,6 @@ final class UnitTrees {
   private final Map<AnalysisLanguage, FrontendSupport> support;
   private final Map<SourceUnit, Optional<SyntaxNode>> parsed = new HashMap<>();
   private final Map<SourceUnit, FlowView> lowered = new IdentityHashMap<>();
-  private final Map<SourceUnit, FlowView> relatedLowered = new IdentityHashMap<>();
   private final Map<SourceUnit, UnitScopes> scoped = new IdentityHashMap<>();
 
   private final Map<SourceUnit, UnitTypeFacts> typed = new IdentityHashMap<>();
@@ -65,42 +63,8 @@ final class UnitTrees {
     }
   }
 
-  /**
-   * The graphs a rule reads: none unless the rule reads control flow or data flow. A taint rule
-   * also gets the graphs of {@code related}, the files its unit depends on; a file of them that
-   * does not parse has no graphs, and the error is not recorded, as the file is not being checked.
-   */
+  /** The graphs a rule reads: none unless the rule reads control flow or data flow. */
   FlowView flows(
-      final CompiledRule rule,
-      final SourceUnit unit,
-      final SyntaxNode root,
-      final RuleRunCollector collector,
-      final List<SourceUnit> related) {
-    final RuleCapability capability = rule.definition().capability();
-    if (capability == RuleCapability.TAINT) {
-      return new FlowView(ownGraphs(rule, unit, root, collector).graphs(), relatedGraphs(related));
-    }
-    return ownGraphs(rule, unit, root, collector);
-  }
-
-  private List<ControlFlowGraph> relatedGraphs(final List<SourceUnit> related) {
-    final RuleRunCollector ignored = new RuleRunCollector();
-    return related.stream()
-        .flatMap(
-            other ->
-                parse(other, ignored)
-                    .map(tree -> lowerQuietly(other, tree, ignored).graphs())
-                    .orElse(List.of())
-                    .stream())
-        .toList();
-  }
-
-  private FlowView lowerQuietly(
-      final SourceUnit unit, final SyntaxNode tree, final RuleRunCollector ignored) {
-    return relatedLowered.computeIfAbsent(unit, key -> lower(key, tree, "", ignored));
-  }
-
-  private FlowView ownGraphs(
       final CompiledRule rule,
       final SourceUnit unit,
       final SyntaxNode root,

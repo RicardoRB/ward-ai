@@ -1,12 +1,9 @@
 package dev.ward.analysis.domain.flow.taint;
 
-import dev.ward.analysis.domain.ir.BasicBlock;
 import dev.ward.analysis.domain.ir.ControlFlowGraph;
-import dev.ward.analysis.domain.ir.FlowSite;
 import dev.ward.analysis.domain.ir.FlowSiteKind;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -63,8 +60,8 @@ public final class TaintFile {
       final List<ControlFlowGraph> graphs,
       final List<ControlFlowGraph> related,
       final TaintSpec spec) {
-    final Map<String, LocalMethod> methods = called(graphs, LocalMethod.index(graphs));
-    methods.putAll(reachable(graphs, LocalMethod.indexExternal(related)));
+    final Map<String, LocalMethod> methods = CalledMethods.local(graphs, LocalMethod.index(graphs));
+    methods.putAll(CalledMethods.reachable(graphs, LocalMethod.indexExternal(related)));
     TaintSpec effective = spec;
     if (!methods.isEmpty()) {
       effective = summarized(spec, methods);
@@ -74,53 +71,6 @@ public final class TaintFile {
       found.addAll(TaintAnalysis.run(graph, effective));
     }
     return found;
-  }
-
-  /** Keeps the methods that some call of the file names with the right argument count. */
-  private static Map<String, LocalMethod> called(
-      final List<ControlFlowGraph> graphs, final Map<String, LocalMethod> methods) {
-    final Set<String> calls = callKeys(graphs);
-    final Map<String, LocalMethod> kept = new HashMap<>(methods);
-    kept.keySet().retainAll(calls);
-    return kept;
-  }
-
-  /**
-   * Keeps the methods of other files that a call in the file names, or that a kept method calls, so
-   * the analysis reads only what the file can reach.
-   */
-  private static Map<String, LocalMethod> reachable(
-      final List<ControlFlowGraph> graphs, final Map<String, LocalMethod> external) {
-    final Map<String, LocalMethod> kept = new HashMap<>();
-    final Set<String> calls = callKeys(graphs);
-    boolean grown = !external.isEmpty();
-    while (grown) {
-      grown = false;
-      for (final LocalMethod method : external.values()) {
-        if (calls.contains(LocalMethod.key(method.name(), method.arity()))
-            && kept.putIfAbsent(method.key(), method) == null) {
-          calls.addAll(callKeys(List.of(method.graph())));
-          grown = true;
-        }
-      }
-    }
-    return kept;
-  }
-
-  private static Set<String> callKeys(final List<ControlFlowGraph> graphs) {
-    final Set<String> calls = new HashSet<>();
-    for (final ControlFlowGraph graph : graphs) {
-      for (final BasicBlock block : graph.blocks()) {
-        block.sites().stream()
-            .filter(site -> site.kind() == FlowSiteKind.CALL)
-            .forEach(site -> calls.add(callKey(site)));
-      }
-    }
-    return calls;
-  }
-
-  private static String callKey(final FlowSite site) {
-    return LocalMethod.key(site.name(), site.arguments().size());
   }
 
   private static TaintSpec summarized(

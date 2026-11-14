@@ -116,7 +116,7 @@ final class RuleFixtureRunner {
     final DependencySnapshot snapshot =
         new DependencyAnalysis(support, new JvmDependencyAdapters().forProject(Path.of("."), all))
             .analyze(all, new NoSummaries());
-    return engine.run(units, all, support, List.of(rule), snapshot);
+    return engine.run(units, support, List.of(rule), snapshot);
   }
 
   /** Keeps no summaries, so every run resolves the project again. */

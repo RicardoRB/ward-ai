@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * A method or function of the analysed file that a call in the same file can name: its name, the
@@ -62,21 +63,20 @@ record LocalMethod(String name, String owner, int arity, ControlFlowGraph graph,
    * apart, so neither is indexed.
    */
   static Map<String, LocalMethod> indexExternal(final List<ControlFlowGraph> graphs) {
-    final Map<String, LocalMethod> found = new HashMap<>();
-    final Set<String> ambiguous = new HashSet<>();
-    for (final ControlFlowGraph graph : graphs) {
-      parse(graph)
-          .filter(method -> !method.owner().isEmpty())
-          .map(method -> new LocalMethod(method.name, method.owner, method.arity, graph, true))
-          .ifPresent(
-              method -> {
-                if (found.putIfAbsent(method.key(), method) != null) {
-                  ambiguous.add(method.key());
-                }
-              });
-    }
-    ambiguous.forEach(found::remove);
-    return found;
+    return graphs.stream()
+        .map(LocalMethod::parseExternal)
+        .flatMap(Optional::stream)
+        .collect(Collectors.groupingBy(LocalMethod::key))
+        .entrySet()
+        .stream()
+        .filter(entry -> entry.getValue().size() == 1)
+        .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().get(0)));
+  }
+
+  private static Optional<LocalMethod> parseExternal(final ControlFlowGraph graph) {
+    return parse(graph)
+        .filter(method -> !method.owner().isEmpty())
+        .map(method -> new LocalMethod(method.name, method.owner, method.arity, graph, true));
   }
 
   private static Optional<LocalMethod> parse(final ControlFlowGraph graph) {

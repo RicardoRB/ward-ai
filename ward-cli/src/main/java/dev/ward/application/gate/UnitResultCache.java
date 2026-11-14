@@ -24,7 +24,6 @@ import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -106,8 +105,6 @@ final class UnitResultCache {
     final DependencySnapshot snapshot =
         new DependencyAnalysis(frontends, dependencies)
             .analyze(units, new AnalysisSummaryCache(cache, codec, engineVersion));
-    final Map<String, SourceUnit> byPath =
-        units.stream().collect(Collectors.toMap(SourceUnit::path, unit -> unit, (a, b) -> a));
     final Map<SourceUnit, String> keys = new LinkedHashMap<>();
     final List<AnalysisFinding> reused = new ArrayList<>();
     final List<SourceUnit> misses = new ArrayList<>();
@@ -115,7 +112,7 @@ final class UnitResultCache {
     for (final SourceUnit unit : units) {
       final String ruleSet =
           ruleSets.computeIfAbsent(unit.language(), language -> ruleSet(language, unitRules));
-      final String key = key(ruleSet, unit, unitRules, snapshot, byPath);
+      final String key = key(ruleSet, unit, unitRules, snapshot);
       keys.put(unit, key);
       final Optional<List<AnalysisFinding>> stored = read(cache, key);
       if (stored.isPresent()) {
@@ -132,7 +129,7 @@ final class UnitResultCache {
             + " files with "
             + unitRules.size()
             + " rules");
-    final RuleRunResult analyzed = engine.run(misses, units, frontends, unitRules, snapshot);
+    final RuleRunResult analyzed = engine.run(misses, frontends, unitRules, snapshot);
     if (analyzed.executionErrors().isEmpty() && analyzed.notRun().isEmpty()) {
       store(cache, keys, misses, analyzed.findings());
       cache.write(AnalysisCacheKey.index(), codec.encodeIndex(snapshot.graph()));
@@ -172,17 +169,15 @@ final class UnitResultCache {
       final String ruleSet,
       final SourceUnit unit,
       final List<RuleDefinition> rules,
-      final DependencySnapshot snapshot,
-      final Map<String, SourceUnit> byPath) {
+      final DependencySnapshot snapshot) {
     if (!readsDependencies(unit.language(), rules)) {
       return AnalysisCacheKey.unit(ruleSet, unit);
     }
     if (!readsDependencyBodies(unit.language(), rules)) {
       return AnalysisCacheKey.unit(ruleSet, unit, snapshot.view(unit.path()));
     }
-    final List<SourceUnit> related =
-        snapshot.closureOf(unit.path()).stream().map(byPath::get).filter(Objects::nonNull).toList();
-    return AnalysisCacheKey.unit(ruleSet, unit, snapshot.view(unit.path()), related);
+    return AnalysisCacheKey.unit(
+        ruleSet, unit, snapshot.view(unit.path()), snapshot.closureOf(unit.path()));
   }
 
   /** A taint rule follows calls into other files, so its result depends on their text. */
