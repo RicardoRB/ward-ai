@@ -3,14 +3,11 @@ package dev.ward.infrastructure.rule.catalog;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.analysis.domain.ir.AnalysisFinding;
-import dev.ward.analysis.domain.rule.RuleDefinition;
-import dev.ward.infrastructure.rule.catalog.JulietMethods.Kind;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.rule.ProjectFiles;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
+import dev.ward.analysis.domain.rule.RuleDefinition;
+import dev.ward.infrastructure.rule.catalog.JulietMethods.Kind;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -21,7 +18,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 
@@ -46,9 +46,12 @@ class SecurityBenchmarkSmokeTest {
           + "# A finding in a bad method is a true positive (tp, at most one per case), a bad case"
           + " without one is a false negative (fn), and a finding in a good method is a false"
           + " positive (fp).\n"
-          + "# The taint rules follow wildcard imports of JDK and servlet types and calls between the"
-          + " methods of one file. The remaining false negatives cross a class (the a/b/c variants),"
-          + " pass the value through a field or a container.\n"
+          + "# The taint rules follow wildcard imports of JDK and servlet types, calls between the methods"
+          + " of one file, and calls into the other files of the case (the a to e variants of one"
+          + " flow, given to the run as its project). The remaining false negatives are the files"
+          + " that only hold a sink or a source (b to e), flows through a field, an array, a"
+          + " container or a virtual call, and the cases that read from a class the rules do not"
+          + " model.\n"
           + "# A sink on a chained receiver such as response.getWriter() is matched by the text of"
           + " the receiver. The hard-coded password and key rules follow a string literal through"
           + " a variable of one method.\n"

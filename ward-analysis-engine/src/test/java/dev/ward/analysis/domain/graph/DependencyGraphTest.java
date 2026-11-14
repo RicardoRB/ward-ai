@@ -48,8 +48,7 @@ class DependencyGraphTest {
 
   @Test
   void closureFollowsDependenciesThroughOtherFilesAndSurvivesCycles() {
-    final DependencyEdge aToC =
-        new DependencyEdge("A.java", "C.java", new Reference("C", AT_1));
+    final DependencyEdge aToC = new DependencyEdge("A.java", "C.java", new Reference("C", AT_1));
     final DependencyGraph chain = new DependencyGraph(List.of(B_TO_A, C_TO_B));
     final DependencyGraph cycle = new DependencyGraph(List.of(B_TO_A, C_TO_B, aToC));
 

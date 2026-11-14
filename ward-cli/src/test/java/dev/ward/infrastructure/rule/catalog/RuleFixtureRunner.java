@@ -2,14 +2,11 @@ package dev.ward.infrastructure.rule.catalog;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import dev.ward.analysis.application.rule.DuplicateCodeFindings;
-import dev.ward.analysis.application.rule.FrontendSupport;
-import java.util.Optional;
-import java.nio.file.Path;
-import dev.ward.infrastructure.analysis.JvmDependencyAdapters;
-import dev.ward.analysis.application.rule.FileSummaryCache;
-import dev.ward.analysis.application.rule.DependencySnapshot;
 import dev.ward.analysis.application.rule.DependencyAnalysis;
+import dev.ward.analysis.application.rule.DependencySnapshot;
+import dev.ward.analysis.application.rule.DuplicateCodeFindings;
+import dev.ward.analysis.application.rule.FileSummaryCache;
+import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.application.rule.RuleEngine;
 import dev.ward.analysis.application.rule.TypeFactsRun;
 import dev.ward.analysis.application.rule.UnusedDefinitionFindings;
@@ -27,11 +24,14 @@ import dev.ward.analysis.domain.rule.RuleRunResult;
 import dev.ward.analysis.domain.swift.SwiftFileSummarizer;
 import dev.ward.analysis.frontend.antlr.AntlrLanguageFrontend;
 import dev.ward.infrastructure.analysis.GateFrontends;
+import dev.ward.infrastructure.analysis.JvmDependencyAdapters;
 import dev.ward.infrastructure.rule.BundledRuleMatchers;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
