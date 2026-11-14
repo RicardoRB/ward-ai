@@ -89,9 +89,27 @@ export function validateManifest(manifest: Manifest, registered: string[]): stri
   return errors;
 }
 
+type Report = (message: string) => unknown;
+
 function validateHarness(harness: Harness): string[] {
   const errors: string[] = [];
-  const at = (message: string) => errors.push(`${harness.id}: ${message}`);
+  const at: Report = (message) => errors.push(`${harness.id}: ${message}`);
+  validateRuntime(harness, at);
+  errors.push(...validateInstall(harness).map((message) => `${harness.id}: ${message}`));
+  validateContracts(harness, at);
+  if (!harness.provenance?.length || !harness.provenance.every(isHttps)) {
+    at("provenance must list authoritative https URLs");
+  }
+  if (!harness.discovery?.length) at("discovery paths are required");
+  if (!harness.platforms?.length) at("platform constraints are required");
+  validateCapabilities(harness, at);
+  const mode = harness.verification?.mode;
+  if (mode !== "automated" && mode !== "witnessed") at("verification mode must be automated or witnessed");
+  if (!harness.verification?.prerequisites?.length) at("verification prerequisites must be named");
+  return errors;
+}
+
+function validateRuntime(harness: Harness, at: Report): void {
   const runtime = harness.runtime;
   if (!runtime?.executable) at("runtime executable is required");
   if (!/^WARD_COMPAT_[A-Z_]+_BIN$/.test(runtime?.executableEnv ?? "")) {
@@ -111,7 +129,10 @@ function validateHarness(harness: Harness): string[] {
     at("runtime versionPattern is not a valid expression");
   }
   if (!isHttps(runtime?.source)) at("runtime source must be an https URL");
-  errors.push(...validateInstall(harness).map((message) => `${harness.id}: ${message}`));
+}
+
+function validateContracts(harness: Harness, at: Report): void {
+  const runtime = harness.runtime;
   for (const contract of harness.contractPackages ?? []) {
     if (!isExactVersion(contract.version)) {
       at(`contract package ${contract.name}@${contract.version} is not an exact release`);
@@ -119,11 +140,9 @@ function validateHarness(harness: Harness): string[] {
       at(`contract package ${contract.name}@${contract.version} does not match runtime ${runtime?.version}`);
     }
   }
-  if (!harness.provenance?.length || !harness.provenance.every(isHttps)) {
-    at("provenance must list authoritative https URLs");
-  }
-  if (!harness.discovery?.length) at("discovery paths are required");
-  if (!harness.platforms?.length) at("platform constraints are required");
+}
+
+function validateCapabilities(harness: Harness, at: Report): void {
   for (const capability of CAPABILITIES) {
     const support = harness.capabilities?.[capability];
     if (support !== "supported" && support !== "unsupported") {
@@ -136,10 +155,6 @@ function validateHarness(harness: Harness): string[] {
     (key) => !(CAPABILITIES as readonly string[]).includes(key),
   );
   if (extra.length) at(`unknown capabilities ${extra.join(", ")}`);
-  const mode = harness.verification?.mode;
-  if (mode !== "automated" && mode !== "witnessed") at("verification mode must be automated or witnessed");
-  if (!harness.verification?.prerequisites?.length) at("verification prerequisites must be named");
-  return errors;
 }
 
 function validateInstall(harness: Harness): string[] {
