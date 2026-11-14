@@ -39,4 +39,13 @@ class Subject {
     val value = request.getParameter("x") ?: "fixed"
     Runtime.getRuntime().exec(value)
   }
+
+  fun fromProperty(request: HttpServletRequest) {
+    Runtime.getRuntime().exec(request.queryString)
+  }
+
+  val started = Runtime.getRuntime().exec(readLine())
+
+  val running: Process
+    get() = Runtime.getRuntime().exec(readLine())
 }

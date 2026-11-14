@@ -42,4 +42,11 @@ class Subject {
     val value = request.getParameter("x") ?: return
     Runtime.getRuntime().exec("fixed")
   }
+
+  val fixedProperty = Runtime.getRuntime().exec("fixed")
+
+  fun readsAProperty(request: HttpServletRequest) {
+    val unused = request.queryString
+    Runtime.getRuntime().exec("fixed")
+  }
 }

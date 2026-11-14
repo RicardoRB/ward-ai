@@ -25,6 +25,7 @@ public final class KotlinControlFlow implements ControlFlowLowering {
   private static final String FUNCTION = "functionDeclaration";
   private static final String CONSTRUCTOR = "secondaryConstructor";
   private static final String INITIALIZER = "anonymousInitializer";
+  private static final String PROPERTY = "propertyDeclaration";
   private static final String BLOCK = "block";
   private static final String BODY = "functionBody";
   private static final String PARAMETERS = "functionValueParameters";
@@ -54,7 +55,7 @@ public final class KotlinControlFlow implements ControlFlowLowering {
     final Map<Integer, Integer> writeEnds = new HashMap<>();
     KotlinWriteEnds.collect(tree, writeEnds);
     final Collector collector = new Collector(scopes, KotlinTypeNames.of(tree), writeEnds);
-    collector.visit(tree, "");
+    collector.visit(tree, "", false);
     return new ControlFlowResult(collector.graphs, List.of());
   }
 
@@ -73,17 +74,36 @@ public final class KotlinControlFlow implements ControlFlowLowering {
       this.writeEnds = writeEnds;
     }
 
-    void visit(final SyntaxNode node, final String owner) {
+    /** {@code insideBody} is true for the nodes of a function, whose properties are locals. */
+    void visit(final SyntaxNode node, final String owner, final boolean insideBody) {
       final String scope = TYPES.contains(node.kind()) ? typeScope(node, owner) : owner;
       switch (node.kind()) {
         case FUNCTION -> lowerFunction(node, scope);
         case CONSTRUCTOR -> lowerConstructor(node, scope);
         case INITIALIZER -> lowerInitializer(node, scope);
+        case PROPERTY -> lowerProperty(node, scope, insideBody);
         default -> {
           // Other nodes hold no body of their own.
         }
       }
-      node.children().forEach(child -> visit(child, scope));
+      final boolean inside = !TYPES.contains(node.kind()) && (insideBody || isBody(node));
+      node.children().forEach(child -> visit(child, scope, inside));
+    }
+
+    private static boolean isBody(final SyntaxNode node) {
+      return FUNCTION.equals(node.kind())
+          || CONSTRUCTOR.equals(node.kind())
+          || INITIALIZER.equals(node.kind())
+          || "objectLiteral".equals(node.kind());
+    }
+
+    /** A property of a type or of the file has its initializer and accessors as bodies. */
+    private void lowerProperty(final SyntaxNode node, final String scope, final boolean local) {
+      if (!local) {
+        for (final KotlinPropertyBodies.Body body : KotlinPropertyBodies.of(node)) {
+          lower(scope + "#" + body.name(), body.owner(), null, body.body());
+        }
+      }
     }
 
     private void lowerFunction(final SyntaxNode node, final String scope) {

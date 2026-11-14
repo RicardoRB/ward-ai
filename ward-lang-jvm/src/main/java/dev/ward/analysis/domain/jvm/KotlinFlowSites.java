@@ -104,7 +104,7 @@ final class KotlinFlowSites implements FlowSites {
       path.setLength(0);
       path.append(qualifier.isEmpty() ? name : qualifier + DOT + name);
       if (!qualifier.isEmpty() && !KotlinCalls.startsWithCall(operations)) {
-        found.add(read(name, qualifier, atom.span()));
+        found.addAll(reads(name, qualifier, atom.span()));
       }
     }
     String callee = name;
@@ -156,6 +156,23 @@ final class KotlinFlowSites implements FlowSites {
           new FlowSite(
               FlowSiteKind.CALL, name, qualifier, receiverType(qualifier), List.of(), spans, span));
     }
+  }
+
+  /**
+   * A member read, and the call of the Java getter that the property stands for, so a rule that
+   * names {@code getParameterMap} finds {@code request.parameterMap}.
+   */
+  private List<FlowSite> reads(final String name, final String qualifier, final Span span) {
+    return List.of(
+        read(name, qualifier, span),
+        new FlowSite(
+            FlowSiteKind.CALL,
+            KotlinCalls.javaGetter(name),
+            qualifier,
+            receiverType(qualifier),
+            List.of(),
+            List.of(),
+            span));
   }
 
   private FlowSite read(final String name, final String qualifier, final Span span) {

@@ -35,10 +35,12 @@ class KotlinTypedSitesTest {
     final List<FlowSite> found =
         sites("fun f(r: HttpServletRequest) { val m = r.parameterMap\n val n = m }", 1);
 
-    assertThat(found).hasSize(1);
+    assertThat(found).hasSize(2);
     assertThat(found.get(0).kind()).isEqualTo(FlowSiteKind.MEMBER_READ);
     assertThat(found.get(0).name()).isEqualTo("parameterMap");
     assertThat(found.get(0).qualifier()).isEqualTo("r");
+    assertThat(found.get(1).kind()).isEqualTo(FlowSiteKind.CALL);
+    assertThat(found.get(1).name()).isEqualTo("getParameterMap");
   }
 
   @Test
@@ -48,10 +50,10 @@ class KotlinTypedSitesTest {
     final List<FlowSite> found =
         KotlinFlowFixtures.graph(source, "C#f(1)").blocks().stream()
             .flatMap(block -> block.sites().stream())
-            .filter(site -> site.kind() == FlowSiteKind.CALL)
+            .filter(site -> site.kind() == FlowSiteKind.CALL && "<init>".equals(site.name()))
             .toList();
 
-    assertThat(found).extracting(FlowSite::name).containsExactly("<init>", "<init>");
+    assertThat(found).hasSize(2);
     assertThat(found)
         .extracting(FlowSite::receiverType)
         .containsOnly(java.util.Optional.of("java.io.File"));
