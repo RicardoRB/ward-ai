@@ -36,7 +36,7 @@ name = "path-traversal"
 ids = { java = "ward:java/path-injection", kotlin = "ward:kotlin/path-injection" }
 spotbugs = ["PT_ABSOLUTE_PATH_TRAVERSAL", "PT_RELATIVE_PATH_TRAVERSAL"]
 cwe = ["CWE-22"]
-sources = ["https://docs.python.org/3/library/tarfile.html#extraction-filters", "https://flask.palletsprojects.com/en/stable/api/#flask.send_from_directory", "https://cwe.mitre.org/data/definitions/22.html"]
+sources = ["https://docs.python.org/3/library/tarfile.html#extraction-filters", "https://flask.palletsprojects.com/en/stable/api/#flask.send_from_directory", "https://expressjs.com/en/api.html#res.sendFile", "https://nodejs.org/api/path.html#pathbasenamepath-suffix", "https://cwe.mitre.org/data/definitions/22.html"]
 
 [[rule]]
 name = "xss"

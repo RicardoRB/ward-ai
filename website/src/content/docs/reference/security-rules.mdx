@@ -108,6 +108,7 @@ function is imported from.
 | `ward:javascript/log-forging` | CWE-117 | error | standard, strict | Request data in a log message, inside one function |
 | `ward:javascript/header-injection` | CWE-113 | error | standard, strict | Request data in a response header, inside one function |
 | `ward:javascript/regex-injection` | CWE-1333, CWE-400 | error | standard, strict | Request data compiled as a regular expression, inside one function |
+| `ward:javascript/path-traversal` | CWE-22 | error | standard, strict | Untrusted data from a request reaches the path of an `fs` call, `res.sendFile` or `res.download`; `path.basename` is the only sanitizer, and a prefix check on `path.resolve` is not recognized |
 | `ward:javascript/weak-hash` | CWE-328, CWE-327 | error | standard, strict | MD2, MD4, MD5 and SHA-1 are broken for integrity and signatures; use SHA-256 or stronger |
 | `ward:javascript/weak-cipher` | CWE-327 | error | standard, strict | DES, 3DES, RC2, RC4 and Blowfish are broken or too weak; use aes-256-gcm |
 | `ward:javascript/ecb-mode` | CWE-327 | error | standard, strict | ECB mode encrypts equal blocks to equal output; use aes-256-gcm |
