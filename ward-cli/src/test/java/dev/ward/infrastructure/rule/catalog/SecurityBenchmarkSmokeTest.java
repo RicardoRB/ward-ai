@@ -5,6 +5,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.infrastructure.rule.catalog.JulietMethods.Kind;
+import dev.ward.analysis.domain.ir.AnalysisLanguage;
+import dev.ward.analysis.domain.ir.SourceUnit;
+import dev.ward.analysis.domain.rule.ProjectFiles;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -33,6 +39,8 @@ class SecurityBenchmarkSmokeTest {
 
   private static final String MAP = "/benchmark/security-cwe-map.csv";
   private static final String REPORT = "benchmark/security-report.txt";
+  private static final String SOURCE_ROOT = "src/main/java/";
+  private static final Pattern VARIANT = Pattern.compile("^(.*_\\d+)[a-z]\\.java$");
   private static final String HEADER =
       "# Juliet Java 1.3 (NIST SARD 111, public domain) against Ward's Java security rules.\n"
           + "# A finding in a bad method is a true positive (tp, at most one per case), a bad case"
@@ -115,10 +123,35 @@ class SecurityBenchmarkSmokeTest {
       found.addAll(
           runner.run(
               rule,
-              file.getFileName().toString(),
+              SOURCE_ROOT + file.getFileName(),
               source,
               FixtureTypeFacts.of(Optional.empty()),
-              FixtureProject.alone()));
+              new FixtureProject(ProjectFiles.empty(), siblings(file))));
+    }
+    return found;
+  }
+
+  /**
+   * The other files of the case: Juliet splits a flow over {@code ..._54a.java} to {@code
+   * ..._54e.java}, so the files of one directory with the same name up to the letter belong to it.
+   */
+  private static List<SourceUnit> siblings(final Path file) throws IOException {
+    final Matcher variant = VARIANT.matcher(file.getFileName().toString());
+    if (!variant.matches()) {
+      return List.of();
+    }
+    final List<SourceUnit> found = new ArrayList<>();
+    try (Stream<Path> files = Files.list(file.getParent())) {
+      for (final Path other : files.sorted().toList()) {
+        final Matcher match = VARIANT.matcher(other.getFileName().toString());
+        if (!other.equals(file) && match.matches() && match.group(1).equals(variant.group(1))) {
+          found.add(
+              new SourceUnit(
+                  SOURCE_ROOT + other.getFileName(),
+                  AnalysisLanguage.JAVA,
+                  Files.readString(other, StandardCharsets.UTF_8)));
+        }
+      }
     }
     return found;
   }

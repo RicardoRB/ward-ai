@@ -45,4 +45,16 @@ class DependencyGraphTest {
     assertThat(graph.dependentsOf("A.java")).isEmpty();
     assertThat(graph).isNotEqualTo(new DependencyGraph(List.of(B_TO_A)));
   }
+
+  @Test
+  void closureFollowsDependenciesThroughOtherFilesAndSurvivesCycles() {
+    final DependencyEdge aToC =
+        new DependencyEdge("A.java", "C.java", new Reference("C", AT_1));
+    final DependencyGraph chain = new DependencyGraph(List.of(B_TO_A, C_TO_B));
+    final DependencyGraph cycle = new DependencyGraph(List.of(B_TO_A, C_TO_B, aToC));
+
+    assertThat(chain.closureOf("C.java")).containsExactly("A.java", "B.java");
+    assertThat(chain.closureOf("A.java")).isEmpty();
+    assertThat(cycle.closureOf("A.java")).containsExactly("B.java", "C.java");
+  }
 }
