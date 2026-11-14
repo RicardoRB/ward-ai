@@ -157,6 +157,25 @@
         }
       }
     },
+    "ward:android/unused-resources": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/aa-assertion-of-arguments": {
       "type": "object",
       "additionalProperties": false,
@@ -58695,6 +58714,7 @@
               "android.exported-service",
               "android.hardcoded-text",
               "android.missing-content-description",
+              "android.unused-resources",
               "java.aa-assertion-of-arguments",
               "java.abbreviation-as-word-in-name",
               "java.abstract-class-name",
@@ -61661,6 +61681,7 @@
               "android.exported-service",
               "android.hardcoded-text",
               "android.missing-content-description",
+              "android.unused-resources",
               "java.aa-assertion-of-arguments",
               "java.abbreviation-as-word-in-name",
               "java.abstract-class-name",
@@ -64647,6 +64668,9 @@
             },
             "missing-content-description": {
               "$ref": "#/$defs/ward:android~1missing-content-description"
+            },
+            "unused-resources": {
+              "$ref": "#/$defs/ward:android~1unused-resources"
             }
           }
         },

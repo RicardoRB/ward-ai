@@ -11,7 +11,8 @@ import java.util.Optional;
  * that other applications can reach and that asks for no permission. A component is exported with
  * {@code android:exported="true"}, or, for a service or receiver, with an intent filter and no
  * {@code exported} attribute. A permission is {@code android:permission}; a provider also accepts a
- * read and a write permission together, or a {@code path-permission} child.
+ * read or a write permission, as Android Lint does (a read permission alone is its separate
+ * ProviderReadPermissionOnly check), or a {@code path-permission} child.
  */
 public final class ExportedComponentCheck implements RuleCheck {
 
@@ -62,7 +63,8 @@ public final class ExportedComponentCheck implements RuleCheck {
   private boolean protectedByPermission(final SyntaxNode element) {
     return has(element, PERMISSION)
         || PROVIDER.equals(component)
-            && (has(element, "readPermission") && has(element, "writePermission")
+            && (has(element, "readPermission")
+                || has(element, "writePermission")
                 || AndroidNodes.hasChild(element, "path-permission"));
   }
 

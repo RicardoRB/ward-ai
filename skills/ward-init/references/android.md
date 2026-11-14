@@ -21,7 +21,7 @@ alias). The build tool stays Gradle, so the Gradle wrapper, JDK and module rules
 - **Native rules.** No init option. The `ward` gate reads `AndroidManifest.xml` and the XML files
   under `res/` and runs the `ward:android/*` rules of the `standard` and `strict` presets (exported
   components without permission, debuggable, cleartext traffic, `allowBackup`, hard-coded text,
-  missing content descriptions). `android-lint` stays for checks that need the platform API.
+  missing content descriptions, unused resources). `android-lint` stays for checks that need the platform API.
 
 ## Blocking findings
 
@@ -33,5 +33,5 @@ alias). The build tool stays Gradle, so the Gradle wrapper, JDK and module rules
 
 - Java and Kotlin sources in an Android module do not get the `ward` gate in this version; it stays
   in the root, which applies no Java plugin.
-- `unused-resources` is not native yet.
+- `ward:android/unused-resources` reads `R.x` from Java and Kotlin and `@type/name` from XML; a resource read only through `getIdentifier` is reported.
 - Instrumented tests, PIT mutation testing and Kotlin Multiplatform are not covered.

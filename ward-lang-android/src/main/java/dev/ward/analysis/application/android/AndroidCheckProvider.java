@@ -9,6 +9,7 @@ import dev.ward.analysis.domain.android.rule.ContentDescriptionCheck;
 import dev.ward.analysis.domain.android.rule.ExportedComponentCheck;
 import dev.ward.analysis.domain.android.rule.HardcodedTextCheck;
 import dev.ward.analysis.domain.android.rule.NetworkConfigCleartextCheck;
+import dev.ward.analysis.domain.android.rule.UnusedResourcesCheck;
 import java.util.Map;
 
 /** The checks of the Android rules, named {@code android-} followed by what they look for. */
@@ -32,6 +33,8 @@ public final class AndroidCheckProvider implements CheckProvider {
         "android-hardcoded-text",
         toml -> new HardcodedTextCheck(),
         "android-content-description",
-        toml -> new ContentDescriptionCheck());
+        toml -> new ContentDescriptionCheck(),
+        "android-unused-resources",
+        toml -> new UnusedResourcesCheck());
   }
 }

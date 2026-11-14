@@ -298,17 +298,20 @@ follow the ids and documented behavior of Android Lint.
 |---|---|---|
 | `ward:android/exported-service` | `ExportedService` | A `service` that is exported and has no `android:permission`. |
 | `ward:android/exported-receiver` | `ExportedReceiver` | A `receiver` that is exported and has no `android:permission`. |
-| `ward:android/exported-content-provider` | `ExportedContentProvider` | A `provider` with `android:exported="true"` and no permission, no read and write permission pair and no `path-permission`. |
+| `ward:android/exported-content-provider` | `ExportedContentProvider` | A `provider` with `android:exported="true"` and no `permission`, `readPermission`, `writePermission` or `path-permission`. |
 | `ward:android/debuggable-application` | `HardcodedDebugMode` | `android:debuggable="true"` on `application`. |
 | `ward:android/cleartext-transport` | `InsecureBaseConfiguration` | `android:usesCleartextTraffic="true"`, and `cleartextTrafficPermitted="true"` on `base-config` or `domain-config`. |
 | `ward:android/allow-backup` | `AllowBackup` | `android:allowBackup="true"`, or no `allowBackup`, `fullBackupContent` and `dataExtractionRules`. |
 | `ward:android/hardcoded-text` | `HardcodedText` | A literal in `android:text`, `hint`, `title`, `summary` or `label` of a layout, menu, navigation or preference file. |
+| `ward:android/unused-resources` | `UnusedResources` | A resource that no XML file and no Java or Kotlin file refers to. |
 | `ward:android/missing-content-description` | `ContentDescription` | An `ImageView` or `ImageButton` with neither `android:contentDescription` nor `importantForAccessibility` of `no`. |
 
 A component is exported with `android:exported="true"`, or, for a service or receiver, with an
 `intent-filter` and no `exported` attribute. Prefixes are read as written (`android:`, `tools:`),
 and `tools:ignore` is not honored: turn a rule off in `ward-rules.toml`. `android-lint` stays for the
-checks that need the compiled platform API, such as `NewApi`. `unused-resources` is not yet native.
+checks that need the compiled platform API, such as `NewApi`. 
+
+`ward:android/unused-resources` (Lint `UnusedResources`) reports a resource that nothing refers to: a value of a `values` file (string, color, dimen, bool, integer, style, plurals, array, drawable) or a layout, menu, drawable, color, navigation or XML file. A reference is `@type/name` in any XML file (a style's `parent` and the part of its dotted name before the last dot count) or `R.type.name` in a Java or Kotlin file; a layout also counts as used when its view binding class (`ActivityMainBinding` for `activity_main`) is named. Ward does not follow references through unused files and reports a resource that is read only through `Resources.getIdentifier`.
 
 ### Android coverage
 

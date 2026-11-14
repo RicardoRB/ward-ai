@@ -578,7 +578,7 @@ It keeps the Gradle setup and adds the Android gates.
 - **Native rules.** The `ward` gate also reads `AndroidManifest.xml` and the XML files under `res/`
   and runs the `ward:android/*` rules of the `standard` and `strict` presets: exported services,
   receivers and content providers without a permission, `android:debuggable`, cleartext traffic,
-  `android:allowBackup`, hard-coded text and image views without a content description. They need no
+  `android:allowBackup`, hard-coded text, image views without a content description and unused resources. They need no
   SDK and no Gradle run, and init writes nothing extra for them. `android-lint` stays for the checks
   that need the compiled platform API.
 - **Doctor.** `ward doctor` warns when neither `ANDROID_HOME` nor `ANDROID_SDK_ROOT` names an existing
