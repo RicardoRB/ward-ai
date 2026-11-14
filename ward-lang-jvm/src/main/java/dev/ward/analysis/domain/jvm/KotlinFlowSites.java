@@ -32,11 +32,7 @@ final class KotlinFlowSites implements FlowSites {
   private static final String DOT = ".";
   private static final String CALL_SUFFIX = "callSuffix";
   private static final String MEMBER = "memberAccessOperator";
-  private static final String VALUE_ARGUMENTS = "valueArguments";
-  private static final String VALUE_ARGUMENT = "valueArgument";
-  private static final String EXPRESSION = "expression";
   private static final String SIMPLE = "simpleIdentifier";
-  private static final String POSTFIX_OPERATION = "postfixUnaryOperation";
   private static final String POSTFIX = "postfixUnaryExpression";
   private static final Set<String> OTHER_BODIES =
       Set.of(
@@ -70,11 +66,6 @@ final class KotlinFlowSites implements FlowSites {
     return found;
   }
 
-  /** Drops the {@code ?} of a nullable type, which no import names. */
-  static String erasedNullability(final String written) {
-    return written.replaceAll("\\?+$", "");
-  }
-
   private void walk(final SyntaxNode node, final List<FlowSite> found) {
     if (OTHER_BODIES.contains(node.kind())) {
       return;
@@ -92,7 +83,8 @@ final class KotlinFlowSites implements FlowSites {
     final SyntaxNode name = KotlinFlowSyntax.child(node, SIMPLE);
     final SyntaxNode type = KotlinFlowSyntax.child(node, "type");
     if (name != null && type != null) {
-      declared.put(KotlinFlowSyntax.text(name), erasedNullability(KotlinFlowSyntax.text(type)));
+      declared.put(
+          KotlinFlowSyntax.text(name), KotlinCalls.erasedNullability(KotlinFlowSyntax.text(type)));
     }
   }
 
@@ -101,13 +93,14 @@ final class KotlinFlowSites implements FlowSites {
     final List<SyntaxNode> parts = KotlinFlowSyntax.parts(node);
     final SyntaxNode atom = parts.get(0);
     final List<SyntaxNode> operations = parts.subList(1, parts.size());
-    final String name = nameOf(atom);
-    String path = KotlinFlowSyntax.text(atom);
+    final String name = KotlinCalls.nameOf(atom);
+    final StringBuilder path = new StringBuilder(KotlinFlowSyntax.text(atom));
     if (name.isEmpty()) {
       walk(atom, found);
     } else {
-      path = qualifier.isEmpty() ? name : qualifier + DOT + name;
-      if (!qualifier.isEmpty() && !startsWithCall(operations)) {
+      path.setLength(0);
+      path.append(qualifier.isEmpty() ? name : qualifier + DOT + name);
+      if (!qualifier.isEmpty() && !KotlinCalls.startsWithCall(operations)) {
         found.add(read(name, qualifier, atom.span()));
       }
     }
@@ -116,29 +109,16 @@ final class KotlinFlowSites implements FlowSites {
       final SyntaxNode suffix = KotlinFlowSyntax.child(operation, CALL_SUFFIX);
       if (suffix != null) {
         call(callee, qualifier, atom.span(), operation, found);
-        path = path + KotlinFlowSyntax.text(operation);
+        path.append(KotlinFlowSyntax.text(operation));
         callee = "";
       } else if (KotlinFlowSyntax.child(operation, MEMBER) != null) {
-        chain(KotlinFlowSyntax.child(operation, POSTFIX), path, found);
+        chain(KotlinFlowSyntax.child(operation, POSTFIX), path.toString(), found);
       } else {
         operation.children().forEach(child -> walk(child, found));
-        path = path + KotlinFlowSyntax.text(operation);
+        path.append(KotlinFlowSyntax.text(operation));
         callee = "";
       }
     }
-  }
-
-  private static boolean startsWithCall(final List<SyntaxNode> operations) {
-    return !operations.isEmpty() && KotlinFlowSyntax.child(operations.get(0), CALL_SUFFIX) != null;
-  }
-
-  private static String nameOf(final SyntaxNode atom) {
-    final List<SyntaxNode> parts = KotlinFlowSyntax.parts(atom);
-    return "atomicExpression".equals(atom.kind())
-            && parts.size() == 1
-            && SIMPLE.equals(parts.get(0).kind())
-        ? KotlinFlowSyntax.text(parts.get(0))
-        : "";
   }
 
   /** The arguments come first, so a call inside an argument is listed before this call. */
@@ -149,7 +129,7 @@ final class KotlinFlowSites implements FlowSites {
       final SyntaxNode operation,
       final List<FlowSite> found) {
     final SyntaxNode suffix = KotlinFlowSyntax.child(operation, CALL_SUFFIX);
-    final List<SyntaxNode> arguments = argumentsOf(suffix);
+    final List<SyntaxNode> arguments = KotlinCalls.argumentsOf(suffix);
     arguments.forEach(argument -> walk(argument, found));
     KotlinFlowSyntax.children(suffix, "annotatedLambda").forEach(lambda -> walk(lambda, found));
     if (name.isEmpty()) {
@@ -157,7 +137,7 @@ final class KotlinFlowSites implements FlowSites {
     }
     final List<Span> spans = arguments.stream().map(SyntaxNode::span).toList();
     final Span span = KotlinFlowSyntax.between(start, operation.span());
-    if (isConstructor(name, qualifier)) {
+    if (KotlinCalls.isConstructor(name, qualifier)) {
       final String written = qualifier.isEmpty() ? name : qualifier + DOT + name;
       found.add(
           new FlowSite(
@@ -173,23 +153,6 @@ final class KotlinFlowSites implements FlowSites {
           new FlowSite(
               FlowSiteKind.CALL, name, qualifier, receiverType(qualifier), List.of(), spans, span));
     }
-  }
-
-  private static boolean isConstructor(final String name, final String qualifier) {
-    return Character.isUpperCase(name.charAt(0))
-        && (qualifier.isEmpty() || qualifier.matches("[a-z][a-z0-9_.]*"));
-  }
-
-  /** The argument expressions of a call, named ones by their value; trailing lambdas are not. */
-  private static List<SyntaxNode> argumentsOf(final SyntaxNode suffix) {
-    final List<SyntaxNode> values = new ArrayList<>();
-    final SyntaxNode arguments = KotlinFlowSyntax.child(suffix, VALUE_ARGUMENTS);
-    if (arguments != null) {
-      for (final SyntaxNode argument : KotlinFlowSyntax.children(arguments, VALUE_ARGUMENT)) {
-        values.add(KotlinFlowSyntax.child(argument, EXPRESSION));
-      }
-    }
-    return values;
   }
 
   private FlowSite read(final String name, final String qualifier, final Span span) {

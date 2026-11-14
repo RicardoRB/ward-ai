@@ -44,24 +44,9 @@ public final class GateFrontends {
 
   /** Creates the support of every language over one parser. */
   public static List<FrontendSupport> create(final LanguageFrontend frontend) {
-    // The sets are built here, not in static fields: a native image must not freeze enum sets.
-    final Set<RuleCapability> symbols =
-        Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS, RuleCapability.SCOPES);
-    final Set<RuleCapability> graphs =
-        Set.of(
-            RuleCapability.SYNTAX,
-            RuleCapability.CFG,
-            RuleCapability.DATAFLOW,
-            RuleCapability.TAINT,
-            RuleCapability.SCOPES);
-    final Set<RuleCapability> flow =
-        Set.of(
-            RuleCapability.SYNTAX,
-            RuleCapability.SYMBOLS,
-            RuleCapability.CFG,
-            RuleCapability.DATAFLOW,
-            RuleCapability.TAINT,
-            RuleCapability.SCOPES);
+    final Set<RuleCapability> symbols = symbolCapabilities();
+    final Set<RuleCapability> graphs = graphCapabilities();
+    final Set<RuleCapability> flow = flowCapabilities();
     return List.of(
         new FrontendSupport(
             AnalysisLanguage.JAVA,
@@ -107,5 +92,29 @@ public final class GateFrontends {
         new FrontendSupport(
                 AnalysisLanguage.ANDROID, new AndroidXmlFrontend(), Set.of(RuleCapability.SYNTAX))
             .withProjectLanguages(Set.of(AnalysisLanguage.JAVA, AnalysisLanguage.KOTLIN)));
+  }
+
+  // The sets are built per call, not in static fields: a native image must not freeze enum sets.
+  private static Set<RuleCapability> symbolCapabilities() {
+    return Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS, RuleCapability.SCOPES);
+  }
+
+  private static Set<RuleCapability> graphCapabilities() {
+    return Set.of(
+        RuleCapability.SYNTAX,
+        RuleCapability.CFG,
+        RuleCapability.DATAFLOW,
+        RuleCapability.TAINT,
+        RuleCapability.SCOPES);
+  }
+
+  private static Set<RuleCapability> flowCapabilities() {
+    return Set.of(
+        RuleCapability.SYNTAX,
+        RuleCapability.SYMBOLS,
+        RuleCapability.CFG,
+        RuleCapability.DATAFLOW,
+        RuleCapability.TAINT,
+        RuleCapability.SCOPES);
   }
 }

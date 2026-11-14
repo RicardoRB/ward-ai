@@ -26,33 +26,37 @@ final class KotlinWriteEnds {
    * @param ends the end offset of the construct, by the start offset of the written name
    */
   static void collect(final SyntaxNode node, final Map<Integer, Integer> ends) {
-    final List<SyntaxNode> parts = KotlinFlowSyntax.parts(node);
     switch (node.kind()) {
       case "propertyDeclaration" -> declared(node, node.span().endOffset(), ends);
-      case "forExpression" -> {
-        final SyntaxNode iterable = KotlinFlowSyntax.child(node, "expression");
-        declared(node, iterable.span().endOffset(), ends);
-      }
-      case "expression" -> {
-        if (parts.size() == ASSIGNMENT_PARTS && ASSIGNMENT_OPERATOR.equals(parts.get(1).kind())) {
-          target(parts.get(0), node, ends);
-        }
-      }
-      case "postfixUnaryExpression" -> {
-        if (parts.size() == UPDATE_PARTS) {
-          target(parts.get(0), node, ends);
-        }
-      }
-      case "prefixUnaryExpression" -> {
-        if (parts.size() == UPDATE_PARTS) {
-          target(parts.get(1), node, ends);
-        }
-      }
+      case "forExpression" -> forLoop(node, ends);
+      case "expression" -> assignment(node, ends);
+      case "postfixUnaryExpression" -> update(node, 0, ends);
+      case "prefixUnaryExpression" -> update(node, 1, ends);
       default -> {
         // Other nodes write nothing themselves.
       }
     }
     node.children().forEach(child -> collect(child, ends));
+  }
+
+  private static void forLoop(final SyntaxNode node, final Map<Integer, Integer> ends) {
+    declared(node, KotlinFlowSyntax.child(node, "expression").span().endOffset(), ends);
+  }
+
+  private static void assignment(final SyntaxNode node, final Map<Integer, Integer> ends) {
+    final List<SyntaxNode> parts = KotlinFlowSyntax.parts(node);
+    if (parts.size() == ASSIGNMENT_PARTS && ASSIGNMENT_OPERATOR.equals(parts.get(1).kind())) {
+      target(parts.get(0), node, ends);
+    }
+  }
+
+  /** {@code a++} has the name first and {@code ++a} second. */
+  private static void update(
+      final SyntaxNode node, final int nameIndex, final Map<Integer, Integer> ends) {
+    final List<SyntaxNode> parts = KotlinFlowSyntax.parts(node);
+    if (parts.size() == UPDATE_PARTS) {
+      target(parts.get(nameIndex), node, ends);
+    }
   }
 
   private static void target(

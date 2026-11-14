@@ -61,7 +61,7 @@ final class KotlinParameterSites {
     final String identifier = KotlinFlowSyntax.text(name);
     final SyntaxNode type = KotlinFlowSyntax.child(parameter, "type");
     if (type != null) {
-      declared.put(identifier, KotlinFlowSites.erasedNullability(KotlinFlowSyntax.text(type)));
+      declared.put(identifier, KotlinCalls.erasedNullability(KotlinFlowSyntax.text(type)));
     }
     final List<String> annotations = annotationsOf(node);
     if (!annotations.isEmpty()) {

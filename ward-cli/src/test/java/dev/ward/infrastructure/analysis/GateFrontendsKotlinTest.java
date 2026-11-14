@@ -24,6 +24,8 @@ class GateFrontendsKotlinTest {
           RuleCapability.TAINT,
           RuleCapability.SYMBOLS);
 
+  private static final int TAINT_RULES = 18;
+
   private final FrontendSupport kotlin =
       GateFrontends.create(new AntlrLanguageFrontend()).stream()
           .filter(support -> support.language() == AnalysisLanguage.KOTLIN)
@@ -60,7 +62,7 @@ class GateFrontendsKotlinTest {
                 .collect(Collectors.toSet());
 
     assertThat(graphRules).allMatch(id -> id.startsWith("ward:kotlin/"));
-    assertThat(graphRules).hasSize(18);
+    assertThat(graphRules).hasSize(TAINT_RULES);
   }
 
   @Test

@@ -35,11 +35,10 @@ final class KotlinFlowSyntax {
           "postfixUnaryExpression",
           "atomicExpression",
           "conditionalExpression");
-  private static final Set<String> PREFIX_MARKS = Set.of("labelDefinition", "annotations");
-  private static final String PREFIX = "prefixUnaryExpression";
-  private static final String LABEL_DEFINITION = "labelDefinition";
   private static final String CALL_SUFFIX = "callSuffix";
   private static final String TEXT = "text";
+  private static final int SINGLE = 1;
+  static final String THROW = "throw";
 
   private KotlinFlowSyntax() {}
 
@@ -96,9 +95,9 @@ final class KotlinFlowSyntax {
     SyntaxNode current = node;
     while (WRAPPERS.contains(current.kind())) {
       final List<SyntaxNode> parts = parts(current);
-      if (parts.size() == 1) {
+      if (parts.size() == SINGLE) {
         current = parts.get(0);
-      } else if (isLabelled(current)) {
+      } else if (KotlinLabels.isLabelled(current)) {
         current = parts.get(parts.size() - 1);
       } else {
         break;
@@ -107,55 +106,9 @@ final class KotlinFlowSyntax {
     return current;
   }
 
-  /** The label written before a loop, or null when the statement has none. */
-  static String labelOf(final SyntaxNode node) {
-    SyntaxNode current = node;
-    while (WRAPPERS.contains(current.kind())) {
-      final List<SyntaxNode> parts = parts(current);
-      if (isLabelled(current)) {
-        return labelName(parts.get(0));
-      }
-      if (parts.size() != 1) {
-        return null;
-      }
-      current = parts.get(0);
-    }
-    return null;
-  }
-
-  private static boolean isLabelled(final SyntaxNode node) {
-    final List<SyntaxNode> parts = parts(node);
-    return PREFIX.equals(node.kind())
-        && parts.size() > 1
-        && parts.subList(0, parts.size() - 1).stream()
-            .allMatch(part -> PREFIX_MARKS.contains(part.kind()) || isMark(part));
-  }
-
-  private static boolean isMark(final SyntaxNode part) {
-    return "prefixUnaryOperation".equals(part.kind())
-        && parts(part).stream().allMatch(inner -> PREFIX_MARKS.contains(inner.kind()));
-  }
-
-  private static String labelName(final SyntaxNode mark) {
-    final SyntaxNode definition = LABEL_DEFINITION.equals(mark.kind()) ? mark : firstLabel(mark);
-    if (definition == null) {
-      return null;
-    }
-    final String written = text(definition);
-    return written.endsWith("@") ? written.substring(0, written.length() - 1) : written;
-  }
-
-  private static SyntaxNode firstLabel(final SyntaxNode node) {
-    for (final SyntaxNode child : parts(node)) {
-      if (LABEL_DEFINITION.equals(child.kind())) {
-        return child;
-      }
-      final SyntaxNode inner = firstLabel(child);
-      if (inner != null) {
-        return inner;
-      }
-    }
-    return null;
+  /** Whether {@code node} is one of the single-child wrappers of a statement. */
+  static boolean isWrapper(final SyntaxNode node) {
+    return WRAPPERS.contains(node.kind());
   }
 
   /** A call, a throw or a non-null assertion may raise, so an enclosing try can catch it. */
@@ -165,7 +118,7 @@ final class KotlinFlowSyntax {
     }
     if (node.children().isEmpty()) {
       final String token = tokenText(node);
-      return "throw".equals(token) || "!!".equals(token);
+      return THROW.equals(token) || "!!".equals(token);
     }
     return node.children().stream().anyMatch(KotlinFlowSyntax::mayThrow);
   }

@@ -22,6 +22,7 @@ final class KotlinBodyLowering implements KotlinStatements {
   private static final String BLOCK = "block";
   private static final String RETURN = "return";
   private static final String AT = "@";
+  private static final String ELSE = "else";
   private static final List<String> LEAVING_DECLARATIONS =
       List.of("functionDeclaration", "classDeclaration", "typeAlias");
 
@@ -103,7 +104,7 @@ final class KotlinBodyLowering implements KotlinStatements {
   @Override
   public void statement(final SyntaxNode node) {
     final SyntaxNode construct = KotlinFlowSyntax.unwrap(node);
-    final String label = KotlinFlowSyntax.labelOf(node);
+    final String label = KotlinLabels.of(node);
     switch (construct.kind()) {
       case "declaration" -> declaration(construct);
       case "ifExpression" -> ifStatement(construct);
@@ -133,7 +134,7 @@ final class KotlinBodyLowering implements KotlinStatements {
     SyntaxNode elseBody = null;
     boolean seenElse = false;
     for (final SyntaxNode part : KotlinFlowSyntax.parts(node)) {
-      if ("else".equals(KotlinFlowSyntax.tokenText(part))) {
+      if (ELSE.equals(KotlinFlowSyntax.tokenText(part))) {
         seenElse = true;
       } else if (BODY.equals(part.kind())) {
         if (seenElse) {
@@ -172,7 +173,7 @@ final class KotlinBodyLowering implements KotlinStatements {
     if (RETURN.equals(keyword)) {
       flow.add(node, KotlinFlowSyntax.mayThrow(node));
       flow.tries().returnFrom();
-    } else if ("throw".equals(keyword)) {
+    } else if (KotlinFlowSyntax.THROW.equals(keyword)) {
       flow.add(node, true);
       flow.tries().throwOut();
     } else if (keyword.startsWith("break")) {

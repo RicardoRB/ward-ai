@@ -21,6 +21,8 @@ import org.junit.jupiter.api.io.TempDir;
 /** A taint flow that crosses a file boundary is found between Kotlin files and Java files. */
 class KotlinCrossFileTaintTest {
 
+  private static final String END_METHOD = "  }\n";
+  private static final String END_CLASS = "}\n";
   private static final String KOTLIN_RULE = "ward:kotlin/cross-site-scripting";
   private static final String JAVA_RULE = "ward:java/cross-site-scripting";
   private static final String KOTLIN_IMPORTS =
@@ -36,64 +38,69 @@ class KotlinCrossFileTaintTest {
           + "  fun show(request: HttpServletRequest, response: HttpServletResponse) {\n"
           + "    val name = request.getParameter(\"n\")\n"
           + "    Middle().forward(name, response)\n"
-          + "  }\n"
+          + END_METHOD
           + "  fun fromKotlin(request: HttpServletRequest, response: HttpServletResponse) {\n"
           + "    val name = Source().read(request)\n"
           + "    response.getWriter().println(name)\n"
-          + "  }\n"
+          + END_METHOD
           + "  fun intoJava(request: HttpServletRequest, response: HttpServletResponse) {\n"
           + "    JavaSink().render(request.getParameter(\"n\"), response)\n"
-          + "  }\n"
+          + END_METHOD
           + "  fun fromJava(request: HttpServletRequest, response: HttpServletResponse) {\n"
           + "    val name = JavaSource().read(request)\n"
           + "    response.getWriter().println(name)\n"
-          + "  }\n"
-          + "}\n";
+          + END_METHOD
+          + END_CLASS;
   private static final String MIDDLE =
       KOTLIN_IMPORTS
           + "class Middle {\n"
           + "  fun forward(value: String?, response: HttpServletResponse) {\n"
           + "    response.getWriter().println(value)\n"
-          + "  }\n"
-          + "}\n";
+          + END_METHOD
+          + END_CLASS;
   private static final String SOURCE =
       KOTLIN_IMPORTS
           + "class Source {\n"
           + "  fun read(request: HttpServletRequest): String? = request.getParameter(\"n\")\n"
-          + "}\n";
+          + END_CLASS;
   private static final String JAVA_SINK =
       JAVA_IMPORTS
           + "class JavaSink {\n"
           + "  void render(String value, HttpServletResponse response) throws Exception {\n"
           + "    response.getWriter().println(value);\n"
-          + "  }\n"
-          + "}\n";
+          + END_METHOD
+          + END_CLASS;
   private static final String JAVA_SOURCE =
       JAVA_IMPORTS
           + "class JavaSource {\n"
           + "  String read(HttpServletRequest request) {\n"
           + "    return request.getParameter(\"n\");\n"
-          + "  }\n"
-          + "}\n";
+          + END_METHOD
+          + END_CLASS;
   private static final String JAVA_PAGE =
       JAVA_IMPORTS
           + "class JavaPage {\n"
           + "  void show(HttpServletRequest request, HttpServletResponse response) throws Exception {\n"
           + "    (new KotlinSink()).render(request.getParameter(\"n\"), response);\n"
-          + "  }\n"
+          + END_METHOD
           + "  void fromKotlin(HttpServletRequest request, HttpServletResponse response)\n"
           + "      throws Exception {\n"
           + "    String name = (new Source()).read(request);\n"
           + "    response.getWriter().println(name);\n"
-          + "  }\n"
-          + "}\n";
+          + END_METHOD
+          + END_CLASS;
   private static final String KOTLIN_SINK =
       KOTLIN_IMPORTS
           + "class KotlinSink {\n"
           + "  fun render(value: String?, response: HttpServletResponse) {\n"
           + "    response.getWriter().println(value)\n"
-          + "  }\n"
-          + "}\n";
+          + END_METHOD
+          + END_CLASS;
+
+  private static final int SHOW_LINE = 7;
+  private static final int FROM_KOTLIN_LINE = 11;
+  private static final int INTO_JAVA_LINE = 14;
+  private static final int FROM_JAVA_LINE = 18;
 
   @TempDir Path root;
 
@@ -138,7 +145,9 @@ class KotlinCrossFileTaintTest {
     assertThat(found)
         .extracting(AnalysisFinding::file)
         .containsOnly("src/main/kotlin/shop/Page.kt");
-    assertThat(found).extracting(AnalysisFinding::line).containsExactlyInAnyOrder(7, 11, 14, 18);
+    assertThat(found)
+        .extracting(AnalysisFinding::line)
+        .containsExactlyInAnyOrder(SHOW_LINE, FROM_KOTLIN_LINE, INTO_JAVA_LINE, FROM_JAVA_LINE);
   }
 
   @Test
@@ -158,8 +167,8 @@ class KotlinCrossFileTaintTest {
             + "class Middle {\n"
             + "  fun forward(value: String?, response: HttpServletResponse) {\n"
             + "    response.getWriter().println(\"fixed\")\n"
-            + "  }\n"
-            + "}\n";
+            + END_METHOD
+            + END_CLASS;
     final List<SourceUnit> safe =
         List.of(
             kotlin("Page", PAGE.replace("val name = Source().read(request)", "val name = \"x\"")),
