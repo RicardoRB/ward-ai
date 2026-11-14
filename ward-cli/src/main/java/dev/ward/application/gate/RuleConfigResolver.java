@@ -1,6 +1,7 @@
 package dev.ward.application.gate;
 
 import dev.ward.analysis.domain.ir.AnalysisSeverity;
+import dev.ward.analysis.domain.rule.ExcludeGlob;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleOption;
 import dev.ward.analysis.domain.rule.RuleOptions;

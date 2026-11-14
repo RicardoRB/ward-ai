@@ -1,4 +1,4 @@
-package dev.ward.application.gate;
+package dev.ward.analysis.domain.rule;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

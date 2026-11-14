@@ -2,6 +2,7 @@ package dev.ward.application.gate;
 
 import dev.ward.analysis.application.rule.TextRules;
 import dev.ward.analysis.domain.ir.AnalysisFindingOrder;
+import dev.ward.analysis.domain.rule.ExcludeGlob;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleExecutionError;

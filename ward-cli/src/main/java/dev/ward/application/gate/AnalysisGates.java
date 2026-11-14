@@ -46,7 +46,9 @@ final class AnalysisGates {
                 loaded.rules(),
                 architectureRules(check)),
             analysis.rules());
-    final RuleSetup setup = LanguageFilteredSetup.withoutOpenApi(configured);
+    final RuleSetup setup =
+        LanguageFilteredSetup.withoutOpenApi(
+            new ArchitectureFileSetup(configured, check.architectureFile(), analysis.rules()));
     return new AnalysisGate(check.name(), setup, analysis, check.javaClasspath(), focus);
   }
 

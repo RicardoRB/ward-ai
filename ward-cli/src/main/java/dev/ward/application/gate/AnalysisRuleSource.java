@@ -19,4 +19,14 @@ public interface AnalysisRuleSource {
   default Optional<RuleConfigFile> configuration(final Path root, final String file) {
     return Optional.empty();
   }
+
+  /**
+   * Reads the architecture rule file of the project at {@code root}. {@code file} is the
+   * project-relative path set by {@code architecture-file}, or {@code null} for {@code
+   * ward-architecture.toml}. Returns empty when the default file does not exist, and a file that
+   * reports a problem when a configured one cannot be used. The default has no such file.
+   */
+  default Optional<ArchitectureFile> architecture(final Path root, final String file) {
+    return Optional.empty();
+  }
 }

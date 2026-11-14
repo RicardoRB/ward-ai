@@ -2,6 +2,7 @@ package dev.ward.infrastructure.rule;
 
 import dev.ward.application.gate.AnalysisRuleLoad;
 import dev.ward.application.gate.AnalysisRuleSource;
+import dev.ward.application.gate.ArchitectureFile;
 import dev.ward.application.gate.RuleConfigFile;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -28,5 +29,10 @@ public final class ProjectRuleSource implements AnalysisRuleSource {
   @Override
   public Optional<RuleConfigFile> configuration(final Path root, final String file) {
     return RuleConfigFileReader.read(root, file);
+  }
+
+  @Override
+  public Optional<ArchitectureFile> architecture(final Path root, final String file) {
+    return ArchitectureFileReader.read(root, file);
   }
 }

@@ -40,6 +40,8 @@ import java.util.Set;
  * @param license the settings of a {@code license} check, or {@code null} for other checks
  * @param apiCompat the {@code base} and {@code include} options of an {@code api-compat} check, or
  *     {@code null} for others
+ * @param architectureFile the project-relative path of the architecture rule file, or {@code null}
+ *     for {@code ward-architecture.toml}; only {@code ward} checks read it
  */
 public record GateConfiguration(
     String name,
@@ -62,7 +64,8 @@ public record GateConfiguration(
     CoverageOptions coverage,
     VulnerabilityOptions vulnerabilities,
     LicenseSettings license,
-    ApiCompatOptions apiCompat) {
+    ApiCompatOptions apiCompat,
+    String architectureFile) {
 
   /** Copies the command, profiles and rule ids, keeping their order. */
   public GateConfiguration {
@@ -82,6 +85,54 @@ public record GateConfiguration(
 
   private static List<List<String>> copyTables(final List<List<String>> tables) {
     return tables.stream().map(List::copyOf).toList();
+  }
+
+  /** Creates a check that reads the default architecture rule file. */
+  public GateConfiguration(
+      final String name,
+      final String type,
+      final boolean enabled,
+      final List<String> command,
+      final Set<String> profiles,
+      final PartialGateConfiguration partial,
+      final OpenApiGateOptions openApi,
+      final Integer minimum,
+      final XcodePlatform platform,
+      final List<String> rules,
+      final String javaClasspath,
+      final List<LayerBoundary> layers,
+      final List<String> cycleRoots,
+      final List<List<String>> independence,
+      final String rulesFile,
+      final SecretsOptions secrets,
+      final CrapOptions crap,
+      final CoverageOptions coverage,
+      final VulnerabilityOptions vulnerabilities,
+      final LicenseSettings license,
+      final ApiCompatOptions apiCompat) {
+    this(
+        name,
+        type,
+        enabled,
+        command,
+        profiles,
+        partial,
+        openApi,
+        minimum,
+        platform,
+        rules,
+        javaClasspath,
+        layers,
+        cycleRoots,
+        independence,
+        rulesFile,
+        secrets,
+        crap,
+        coverage,
+        vulnerabilities,
+        license,
+        apiCompat,
+        null);
   }
 
   /** Creates a check in the {@code default} profile whose type is its name. */
