@@ -1,9 +1,15 @@
 # Status of the security rows in python: "implemented" or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
+code-injection = "implemented"
 django-insecure-settings = "implemented"
 flask-insecure-config = "implemented"
+path-injection = "implemented"
 server-side-request-forgery = "implemented"
 sql-string-formatting = "implemented"
 template-autoescape-disabled = "implemented"
+template-injection = "implemented"
+untrusted-deserialization = "implemented"
+untrusted-redirect = "implemented"
+untrusted-request-url = "implemented"
 weak-password-hash = "implemented"
 xml-external-entities = "implemented"

@@ -26,7 +26,7 @@ eslint = ["no-useless-assignment"]
 name = "sql-injection"
 spotbugs = ["SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE", "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING"]
 cwe = ["CWE-89"]
-sources = ["https://sidorares.github.io/node-mysql2/docs", "https://node-postgres.com/features/queries", "https://sequelize.org/docs/v6/core-concepts/raw-queries/", "https://www.prisma.io/docs/orm/prisma-client/queries/raw-database-access/raw-queries", "https://cwe.mitre.org/data/definitions/89.html"]
+sources = ["https://sidorares.github.io/node-mysql2/docs", "https://node-postgres.com/features/queries", "https://sequelize.org/docs/v6/core-concepts/raw-queries/", "https://www.prisma.io/docs/orm/prisma-client/queries/raw-database-access/raw-queries", "https://cwe.mitre.org/data/definitions/89.html", "https://peps.python.org/pep-0249/#paramstyle", "https://docs.python.org/3/library/sqlite3.html#sqlite3-placeholders", "https://docs.djangoproject.com/en/5.1/topics/db/sql/#passing-parameters-into-raw", "https://bandit.readthedocs.io/en/latest/plugins/b608_hardcoded_sql_expressions.html"]
 
 [[rule]]
 name = "command-injection"

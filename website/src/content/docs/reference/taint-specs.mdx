@@ -107,10 +107,17 @@ that order. The path is deterministic for the same source and specifications. It
 ## Bundled specifications
 
 Ward's own security rules use one specification file per weakness: `taint/java/ward-<weakness>.toml`
-and `taint/node/ward-<weakness>.toml`. Each lists the sinks of the platform documentation that the
+`taint/node/ward-<weakness>.toml` and `taint/python/ward-<weakness>.toml`. Each lists the sinks of the platform documentation that the
 [security rules](/reference/security-rules/) page names, the argument positions each sink guards,
 and the sanitizers of that weakness. The sources are shared: `taint/java/sources.toml` and
-`taint/node/sources.toml`.
+`taint/node/sources.toml` and `taint/python/sources.toml`.
+
+In Python a receiver type is the module that an `import` names, so `import subprocess as sp` makes
+`sp.run(...)` a call of `run` on `subprocess`, and `from os import system` makes `system(...)` a call
+of `system` on `os`. A request object (`request.args`, `request.GET`) is matched by the qualifier
+`request`, and a parameter of a function that a route decorator or a FastAPI default such as
+`Query()` fills is a source through the annotation `@route`, `@get` or `Query`. A DB-API cursor has
+no declared type, so the SQL sinks match the method name on any receiver.
 
 ## Limits
 
