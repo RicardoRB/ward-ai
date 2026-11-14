@@ -47,11 +47,29 @@ final class AnalysisCacheKey {
   }
 
   /**
-   * Hashes the rule set, the unit's path and full text, and the files around it. Used only when the
-   * rule set has a rule that reads dependencies.
+   * Hashes the rule set, the unit's path and full text, and the files around it, with the path and
+   * full text of each file in {@code related}. Used when the rule set has a rule that reads
+   * dependencies; {@code related} is empty unless it has a taint rule, since a value can cross a
+   * call into any file the unit depends on, so a change of one changes the findings. shortcut: the
+   * whole text is hashed, so a comment edit in a callee re-analyzes its dependents; upgrade by
+   * hashing a taint summary per file and rule specification.
    */
-  static String unit(final String ruleSetHash, final SourceUnit unit, final DependencyView view) {
-    return digest(List.of(ruleSetHash, unit.path(), unit.text(), dependencies(view)));
+  static String unit(
+      final String ruleSetHash,
+      final SourceUnit unit,
+      final DependencyView view,
+      final List<SourceUnit> related) {
+    final List<String> parts = new ArrayList<>();
+    parts.add(ruleSetHash);
+    parts.add(unit.path());
+    parts.add(unit.text());
+    parts.add(dependencies(view));
+    related.forEach(
+        other -> {
+          parts.add(other.path());
+          parts.add(other.text());
+        });
+    return digest(parts);
   }
 
   /** Hashes the rule set and the path and full text of a text file. */

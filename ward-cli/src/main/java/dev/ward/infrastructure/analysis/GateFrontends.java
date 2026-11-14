@@ -53,6 +53,7 @@ public final class GateFrontends {
             RuleCapability.SYMBOLS,
             RuleCapability.CFG,
             RuleCapability.DATAFLOW,
+            RuleCapability.TAINT,
             RuleCapability.SCOPES);
     return List.of(
         new FrontendSupport(

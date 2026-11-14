@@ -55,7 +55,10 @@ public final class DependencyAnalysis {
       edges.addAll(group.getKey().resolve(summariesOf(units, group.getValue(), summaries)));
     }
     return new DependencySnapshot(
-        new DependencyGraph(edges), summaries, DependencyEntries.of(dependencies));
+        new DependencyGraph(edges),
+        summaries,
+        DependencyEntries.of(dependencies),
+        units.stream().collect(Collectors.toMap(SourceUnit::path, unit -> unit, (a, b) -> a)));
   }
 
   private static List<FileSummary> summariesOf(

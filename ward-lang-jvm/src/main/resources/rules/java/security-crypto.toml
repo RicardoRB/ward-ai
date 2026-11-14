@@ -87,7 +87,7 @@ message = "java.util.Random and Math.random are predictable; use SecureRandom fo
 [[rules]]
 id = "ward:java/hard-coded-password"
 language = "java"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]

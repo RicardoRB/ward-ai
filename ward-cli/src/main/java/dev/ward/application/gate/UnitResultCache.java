@@ -170,16 +170,14 @@ final class UnitResultCache {
       final SourceUnit unit,
       final List<RuleDefinition> rules,
       final DependencySnapshot snapshot) {
-    if (!readsDependencies(unit.language(), rules)) {
+    if (!DependencyReads.dependencies(unit.language(), rules)) {
       return AnalysisCacheKey.unit(ruleSet, unit);
     }
-    return AnalysisCacheKey.unit(ruleSet, unit, snapshot.view(unit.path()));
-  }
-
-  private static boolean readsDependencies(
-      final AnalysisLanguage language, final List<RuleDefinition> rules) {
-    return rules.stream()
-        .anyMatch(rule -> rule.covers(language) && rule.capability().readsDependencies());
+    final List<SourceUnit> related =
+        DependencyReads.bodies(unit.language(), rules)
+            ? snapshot.closureOf(unit.path())
+            : List.of();
+    return AnalysisCacheKey.unit(ruleSet, unit, snapshot.view(unit.path()), related);
   }
 
   private Optional<List<AnalysisFinding>> read(final AnalysisCache cache, final String key) {

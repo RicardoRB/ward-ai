@@ -5,7 +5,7 @@
 [[rules]]
 id = "ward:java/hard-coded-crypto-key"
 language = "java"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]

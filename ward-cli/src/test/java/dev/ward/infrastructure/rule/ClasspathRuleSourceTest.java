@@ -170,6 +170,9 @@ class ClasspathRuleSourceTest {
     if (rule.capability() == RuleCapability.TYPES) {
       return RuleCapability.TYPES;
     }
+    if (rule.capability() == RuleCapability.TAINT) {
+      return RuleCapability.TAINT;
+    }
     return readsDataFlow(rule) ? RuleCapability.DATAFLOW : RuleCapability.SYNTAX;
   }
 

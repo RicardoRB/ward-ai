@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * A method or function of the analysed file that a call in the same file can name: its name, the
@@ -27,8 +28,10 @@ import java.util.regex.Pattern;
  * @param owner the simple name of the declaring type, or empty
  * @param arity the number of parameters
  * @param graph the graph of the body
+ * @param external whether the body is in another file, so only a call that names the owner can
+ *     reach it
  */
-record LocalMethod(String name, String owner, int arity, ControlFlowGraph graph) {
+record LocalMethod(String name, String owner, int arity, ControlFlowGraph graph, boolean external) {
 
   private static final Pattern BODY =
       Pattern.compile("^(?:(?<scope>.*)#)?(?<name>[\\w$]+)(?:\\((?<arity>\\d+)\\))?$");
@@ -54,6 +57,28 @@ record LocalMethod(String name, String owner, int arity, ControlFlowGraph graph)
     return found;
   }
 
+  /**
+   * Indexes the graphs of other files by owner, name and arity. A body with no owner cannot be
+   * named by a call in another file, and two bodies with one owner, name and arity cannot be told
+   * apart, so neither is indexed.
+   */
+  static Map<String, LocalMethod> indexExternal(final List<ControlFlowGraph> graphs) {
+    return graphs.stream()
+        .map(LocalMethod::parseExternal)
+        .flatMap(Optional::stream)
+        .collect(Collectors.groupingBy(LocalMethod::key))
+        .entrySet()
+        .stream()
+        .filter(entry -> entry.getValue().size() == 1)
+        .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().get(0)));
+  }
+
+  private static Optional<LocalMethod> parseExternal(final ControlFlowGraph graph) {
+    return parse(graph)
+        .filter(method -> !method.owner().isEmpty())
+        .map(method -> new LocalMethod(method.name, method.owner, method.arity, graph, true));
+  }
+
   private static Optional<LocalMethod> parse(final ControlFlowGraph graph) {
     final Matcher body = BODY.matcher(graph.body());
     if (!body.matches()) {
@@ -61,12 +86,12 @@ record LocalMethod(String name, String owner, int arity, ControlFlowGraph graph)
     }
     final String scope = body.group("scope") == null ? "" : body.group("scope");
     final String owner = scope.substring(scope.lastIndexOf('.') + 1);
-    final LocalMethod method = new LocalMethod(body.group("name"), owner, 0, graph);
+    final LocalMethod method = new LocalMethod(body.group("name"), owner, 0, graph, false);
     final int arity =
         body.group("arity") == null
             ? method.parameters().size()
             : Integer.parseInt(body.group("arity"));
-    return Optional.of(new LocalMethod(method.name, owner, arity, graph));
+    return Optional.of(new LocalMethod(method.name, owner, arity, graph, false));
   }
 
   /** The key a call with this name and argument count looks up. */
@@ -75,11 +100,17 @@ record LocalMethod(String name, String owner, int arity, ControlFlowGraph graph)
   }
 
   String key() {
-    return key(name, arity);
+    return external ? owner + "#" + key(name, arity) : key(name, arity);
   }
 
-  /** The qualifiers under which a call in the same file names this method. */
+  /**
+   * The qualifiers under which a call names this method: in the same file, the owner or none; from
+   * another file, the owner or a creation of it.
+   */
   List<String> qualifiers() {
+    if (external) {
+      return List.of(owner, "(new" + owner + "())");
+    }
     return owner.isEmpty() ? List.of("", THIS) : List.of("", THIS, owner);
   }
 
