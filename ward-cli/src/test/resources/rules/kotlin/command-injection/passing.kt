@@ -12,4 +12,19 @@ class Subject {
     value = "fixed"
     Runtime.getRuntime().exec(value)
   }
+
+  fun sanitizedInLet(request: HttpServletRequest) {
+    val port = request.getParameter("x").let { Integer.parseInt(it) }
+    Runtime.getRuntime().exec("run " + port)
+  }
+
+  fun branchInsideLet(request: HttpServletRequest) {
+    request.getParameter("x")?.let {
+      var value = it
+      if (value.isEmpty()) {
+        value = "fixed"
+        Runtime.getRuntime().exec(value)
+      }
+    }
+  }
 }

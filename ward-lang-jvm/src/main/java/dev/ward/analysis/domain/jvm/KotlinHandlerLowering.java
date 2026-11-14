@@ -50,7 +50,7 @@ final class KotlinHandlerLowering {
   void whenStatement(final SyntaxNode node) {
     final SyntaxNode subject = KotlinFlowSyntax.child(node, EXPRESSION);
     if (subject != null) {
-      flow.add(subject, KotlinFlowSyntax.mayThrow(subject));
+      statements.expression(subject, KotlinFlowSyntax.mayThrow(subject));
     }
     final int after = flow.newBlock();
     boolean closed = false;
@@ -71,7 +71,7 @@ final class KotlinHandlerLowering {
   private void entry(final SyntaxNode entry, final int after) {
     for (final SyntaxNode test : KotlinFlowSyntax.parts(entry)) {
       if ("whenCondition".equals(test.kind()) || "whenGuard".equals(test.kind())) {
-        flow.add(test, KotlinFlowSyntax.mayThrow(test));
+        statements.expression(test, KotlinFlowSyntax.mayThrow(test));
       }
     }
     final int then = flow.newBlock();

@@ -35,6 +35,7 @@ final class KotlinAccesses implements VariableAccesses {
   private final Span body;
   private final List<Span> nested;
   private final Map<Integer, Integer> writeEnds;
+  private final KotlinView view;
 
   /**
    * Creates the finder of one body.
@@ -44,13 +45,16 @@ final class KotlinAccesses implements VariableAccesses {
    * @param nested the spans of the functions and classes inside the body, which are other bodies
    * @param writeEnds the end offset of the assignment or declaration of each written name, by the
    *     start offset of the name
+   * @param view which part of a node is shown
    */
   KotlinAccesses(
       final UnitScopes scopes,
       final Span body,
       final List<Span> nested,
-      final Map<Integer, Integer> writeEnds) {
+      final Map<Integer, Integer> writeEnds,
+      final KotlinView view) {
     this.writeEnds = writeEnds;
+    this.view = view;
     this.references = scopes.references();
     this.body = body;
     this.nested = List.copyOf(nested);
@@ -69,7 +73,7 @@ final class KotlinAccesses implements VariableAccesses {
       }
     }
     found.sort(Comparator.comparingInt(Keyed::key));
-    return found.stream().map(Keyed::access).toList();
+    return found.stream().map(Keyed::access).filter(view::shows).toList();
   }
 
   /** An access and the offset at which it happens. */

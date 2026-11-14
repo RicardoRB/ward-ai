@@ -48,14 +48,17 @@ final class KotlinFlowSites implements FlowSites {
   private final JavaTypeNames types;
   private final Map<String, String> declared = new HashMap<>();
   private final KotlinParameterSites parameters;
+  private final KotlinView view;
 
   /**
    * Creates the finder of one body.
    *
    * @param types the imports and package of the file
+   * @param view which part of a node is shown
    */
-  KotlinFlowSites(final JavaTypeNames types) {
+  KotlinFlowSites(final JavaTypeNames types, final KotlinView view) {
     this.types = types;
+    this.view = view;
     this.parameters = new KotlinParameterSites(types, declared);
   }
 
@@ -63,7 +66,7 @@ final class KotlinFlowSites implements FlowSites {
   public List<FlowSite> of(final SyntaxNode node) {
     final List<FlowSite> found = new ArrayList<>();
     walk(node, found);
-    return found;
+    return found.stream().filter(site -> view.shows(site.span())).toList();
   }
 
   private void walk(final SyntaxNode node, final List<FlowSite> found) {

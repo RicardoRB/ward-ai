@@ -16,9 +16,9 @@ import java.util.Set;
 
 /**
  * Lowers every function, secondary constructor and {@code init} block of a Kotlin file into a
- * control-flow graph. The variable accesses come from the file's scope analysis. A lambda is not a
- * body of its own: its statements belong to the statement that holds it. Property initializers and
- * accessors are not lowered.
+ * control-flow graph. The variable accesses come from the file's scope analysis. A lambda is
+ * lowered inside the graph of the body that holds it; see {@link KotlinValueLowering}. Property
+ * initializers and accessors are not lowered.
  */
 public final class KotlinControlFlow implements ControlFlowLowering {
 
@@ -120,11 +120,13 @@ public final class KotlinControlFlow implements ControlFlowLowering {
         final SyntaxNode body) {
       final String name = base.endsWith("(0)") ? base : base + "(" + count(parameters) + ")";
       final Span span = owner.span();
-      final KotlinAccesses accesses = new KotlinAccesses(scopes, span, nested(owner), writeEnds);
+      final KotlinView view = new KotlinView();
+      final KotlinAccesses accesses =
+          new KotlinAccesses(scopes, span, nested(owner), writeEnds, view);
       final List<VariableAccess> entry =
           parameters == null ? List.of() : KotlinAccesses.parameters(scopes, parameters.span());
       graphs.add(
-          new KotlinBodyLowering(accesses, new KotlinFlowSites(types))
+          new KotlinBodyLowering(accesses, new KotlinFlowSites(types, view), view)
               .lower(name, entry, parameters, body, span));
     }
 

@@ -90,7 +90,7 @@ class KotlinFlowSitesTest {
   void aTrailingLambdaIsNotAnArgumentButItsCallsAreSites() {
     final List<FlowSite> found = calls("fun f(a: String) { run(a) { println(it) } }", 1);
 
-    assertThat(found).extracting(FlowSite::name).containsExactly("println", "run");
-    assertThat(found.get(1).arguments()).hasSize(1);
+    assertThat(found).extracting(FlowSite::name).containsExactly("run", "println");
+    assertThat(found.get(0).arguments()).hasSize(1);
   }
 }

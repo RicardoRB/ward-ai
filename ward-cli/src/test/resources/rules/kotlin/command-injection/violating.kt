@@ -22,4 +22,8 @@ class Subject {
   }
 
   fun read(request: HttpServletRequest): String? = request.getParameter("x")
+
+  fun insideLet(request: HttpServletRequest) {
+    request.getParameter("x")?.let { Runtime.getRuntime().exec(it) }
+  }
 }
