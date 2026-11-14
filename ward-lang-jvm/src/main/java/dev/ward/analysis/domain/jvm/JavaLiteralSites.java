@@ -28,6 +28,11 @@ final class JavaLiteralSites {
 
   private JavaLiteralSites() {}
 
+  /** Adds the site of a call argument, when the argument is a whole string literal. */
+  static void addArgument(final SyntaxNode argument, final List<FlowSite> found) {
+    of(argument, ARGUMENT).ifPresent(found::add);
+  }
+
   /**
    * Returns the site of a value, when it is a whole string literal.
    *

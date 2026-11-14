@@ -125,7 +125,7 @@ final class JavaFlowSites implements FlowSites {
   private void call(final SyntaxNode call, final String qualifier, final List<FlowSite> found) {
     final List<SyntaxNode> arguments = JavaCallArguments.of(call);
     arguments.forEach(argument -> walk(argument, found));
-    arguments.forEach(argument -> literalArgument(argument, found));
+    arguments.forEach(argument -> JavaLiteralSites.addArgument(argument, found));
     found.add(
         new FlowSite(
             FlowSiteKind.CALL,
@@ -137,10 +137,6 @@ final class JavaFlowSites implements FlowSites {
             call.span()));
   }
 
-  private static void literalArgument(final SyntaxNode argument, final List<FlowSite> found) {
-    JavaLiteralSites.of(argument, JavaLiteralSites.ARGUMENT).ifPresent(found::add);
-  }
-
   /**
    * Records {@code new T(args)} as a call named {@code <init>}. The arguments come first, so they
    * are listed before the creation; an array creation or an anonymous class body records no site.
@@ -148,7 +144,8 @@ final class JavaFlowSites implements FlowSites {
   private void creation(
       final SyntaxNode node, final SyntaxNode creator, final List<FlowSite> found) {
     children(creator, found);
-    JavaCreationSites.arguments(creator).forEach(argument -> literalArgument(argument, found));
+    JavaCreationSites.arguments(creator)
+        .forEach(argument -> JavaLiteralSites.addArgument(argument, found));
     JavaCreationSites.of(types, node, creator).ifPresent(found::add);
   }
 
