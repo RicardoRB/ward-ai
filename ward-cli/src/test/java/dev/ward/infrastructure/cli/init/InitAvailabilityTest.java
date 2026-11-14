@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import dev.ward.application.init.InitSetupCatalog;
 import dev.ward.application.init.jvm.JdkCatalogs;
-import dev.ward.domain.FakeEnvironmentInspection;
 import dev.ward.domain.agent.PlannedFileChange;
 import dev.ward.domain.init.BuildFileChange;
 import dev.ward.domain.init.BuildToolConfiguration;
@@ -35,35 +34,6 @@ class InitAvailabilityTest {
   @TempDir Path root;
 
   @Test
-  void numberedGateListMarksUnavailableGates() throws IOException {
-    final InitCommandFixture init = new InitCommandFixture(root);
-
-    init.run("3\n1\n1\n");
-
-    assertThat(init.output()).contains("zap - ", "[unavailable]").doesNotContain("[available]");
-  }
-
-  @Test
-  void rawGateMenuMarksUnavailableGates() {
-    final StringWriter output = new StringWriter();
-    final InitWizard wizard =
-        new InitWizard(
-            new LinePrompt(new BufferedReader(new StringReader(""))),
-            () -> Optional.of(new ScriptedSession(' ', '\n')),
-            new PrintWriter(output, true),
-            true);
-
-    final List<String> selected =
-        wizard.selectGates(
-            new InitSetupCatalog(new FakeEnvironmentInspection()),
-            new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE),
-            List.of());
-
-    assertThat(selected).containsExactly("tests");
-    assertThat(output.toString()).contains("zap - ").contains("[unavailable]");
-  }
-
-  @Test
   void interactiveGateListOnAnOlderJdkShowsTheGateUnavailableAndUnselectable() {
     final StringWriter output = new StringWriter();
     final InitWizard wizard =
@@ -86,20 +56,6 @@ class InitAvailabilityTest {
                 + " this project builds on JDK 8")
         .doesNotContain("mutation - ");
     assertThat(selected).containsExactly("tests");
-  }
-
-  @Test
-  void selectedUnavailableGateShowsItsRemediation() throws IOException {
-    final InitCommandFixture init = new InitCommandFixture(root);
-    final String remediation =
-        new InitSetupCatalog(new FakeEnvironmentInspection())
-            .gate(new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE), "zap")
-            .availabilityMessage();
-
-    final int exit = init.run("", "--integration", "none", "--gate", "zap");
-
-    assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
-    assertThat(init.output()).contains("Selected quality gate 'zap': UNAVAILABLE - " + remediation);
   }
 
   @Test

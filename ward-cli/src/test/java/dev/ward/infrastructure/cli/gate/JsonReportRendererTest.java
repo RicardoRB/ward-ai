@@ -24,8 +24,8 @@ class JsonReportRendererTest {
       new Project(Path.of("/p"), Language.JAVA, BuildTool.MAVEN, Framework.NONE);
 
   private static GateResult unavailableZap() {
-    return GateResult.builder("zap", GateStatus.UNAVAILABLE)
-        .command(List.of("zap-baseline.py", "-t"))
+    return GateResult.builder("custom-lint", GateStatus.UNAVAILABLE)
+        .command(List.of("custom-lint", "-t"))
         .exitCode(-1)
         .duration(Duration.ZERO)
         .stdout("")
@@ -34,10 +34,10 @@ class JsonReportRendererTest {
         .withPrerequisite(
             new GatePrerequisite(
                 GatePrerequisite.Kind.EXECUTABLE,
-                "zap-baseline.py",
+                "custom-lint",
                 null,
                 null,
-                "Install zap-baseline.py or add it to PATH."));
+                "Install custom-lint or add it to PATH."));
   }
 
   private static GateResult failedCheckstyle() {
@@ -61,9 +61,9 @@ class JsonReportRendererTest {
     final JsonTree prerequisite = render(unavailableZap()).get("checks").get(0).get("prerequisite");
 
     assertThat(prerequisite.get("kind").asString()).isEqualTo("executable");
-    assertThat(prerequisite.get("executable").asString()).isEqualTo("zap-baseline.py");
+    assertThat(prerequisite.get("executable").asString()).isEqualTo("custom-lint");
     assertThat(prerequisite.get("remediation").asString())
-        .isEqualTo("Install zap-baseline.py or add it to PATH.");
+        .isEqualTo("Install custom-lint or add it to PATH.");
     assertThat(prerequisite.has("required")).isFalse();
     assertThat(prerequisite.has("detected")).isFalse();
   }

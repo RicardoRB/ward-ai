@@ -66,7 +66,7 @@ class WardCliContract5Test extends WardCliIntegrationSupport {
 
   @Test
   void initDefaultsToLayeredArchitectureAtEof() throws IOException {
-    assertThat(runInitWithInput("3\n1\n8\n", "-C", project.toString())).isEqualTo(ExitCodes.OK);
+    assertThat(runInitWithInput("3\n1\n1\n", "-C", project.toString())).isEqualTo(ExitCodes.OK);
     assertThat(Files.readString(project.resolve(WARD_TOML)))
         .contains("[[checks.ward.layers]]", "from = [\"controller\"]");
   }

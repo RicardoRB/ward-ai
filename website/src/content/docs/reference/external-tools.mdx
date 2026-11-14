@@ -1,0 +1,70 @@
+---
+title: What stays external
+description: Which tools Ward runs as processes, and why type checkers, mutation engines, compilers, test runners and coverage instrumentation are not replaced.
+---
+
+Ward replaced most of the external scanners with native checks (secrets, vulnerabilities, licenses,
+build policy, OpenAPI, security rules). Four groups of tools stay external. This page records why
+and what would change that.
+
+## Type checkers
+
+Gates: `mypy`, `tsc`, `vue-tsc`, `svelte-check`, `astro-check`, `ngc`.
+
+**Decision: they stay external.**
+
+Ward's own type facts are an input for rules, not a checker. They are answered from the parsed
+source, the scope model and library declarations (`.d.ts` text, class files, `.pyi` stubs), with no
+process, and a fact Ward cannot determine is left out. The kinds a rule can ask for are the type of
+an expression, shape and supertypes, call target, annotations, overrides, thrown exceptions,
+constants and members. Python answers only the expression type and the call target. A rule that
+gets no fact stays silent, which is safe for a rule and wrong for a checker, whose job is to report
+every error.
+
+A native type check would need each language's full type system: generics and inference, narrowing,
+conditional and mapped types, overload resolution, declaration merging, and the framework layers
+(Vue and Svelte templates, Astro, Angular templates and decorators). That is the size of the
+reference checkers themselves, and the result would still differ from them on edge cases, which is
+the failure users notice most. The facts Ward has today are about 12,000 lines for Java and Kotlin
+and 7,500 for TypeScript and JavaScript, and they deliberately skip checking.
+
+**Would change if:** a reference checker ships as an embeddable library that Ward can run inside
+its native image without a runtime, or a rule needs facts that only checking provides and the
+partial facts cannot be extended to give them.
+
+## Mutation engines
+
+Gates: `mutation` (PIT), `stryker`, `mutmut`.
+
+**Decision: they stay external. A native engine is not a goal.**
+
+A mutation engine generates mutants, then runs the project's tests against each one, with test
+selection by coverage, per-mutant timeouts, isolation and a way to compile or load the mutant. That
+is a test runner integration per toolchain, not an analysis. Ward does not run tests itself; it runs
+the project's runner and reads its report. The three engines are also the reference that scores
+mean something against. Ward already reads their reports, enforces `minimum`, and runs them only in
+the `ci` profile.
+
+**Would change if:** Ward gains its own way to run a project's tests per toolchain, which is itself
+not planned.
+
+## Compilers, test runners and coverage instrumentation
+
+Gates: `compile`, `test`, `vitest`, `jest`, `bun-test`, `pytest`, `swift-build`, `swift-test`,
+`xcodebuild-test`, `android-unit-test`, `coverage` producers (JaCoCo and the like).
+
+**Decision: they stay external.**
+
+Ward cannot check a project without them. The compiler decides whether the code is valid, the test
+runner decides whether it behaves, and coverage data is produced by instrumenting that run. Ward
+reads their reports (the `coverage` and `crap` checks) and never replaces the producer.
+
+**Would change if:** nothing foreseeable.
+
+## What this means in practice
+
+- A missing tool is reported as unavailable with an install link; other gates still run.
+- Native checks need no executable and run in every profile, including offline.
+- Type facts keep improving for rules, under the same rule: no fact beats a wrong fact.
+
+See [quality gates](/configuration/gates/) for how each gate runs and is configured.

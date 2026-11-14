@@ -22,7 +22,6 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `crap` | Ward analysis and a coverage report | Fail functions that are both complex and untested, by their CRAP score. |
 | Security | `secrets` | Ward's native secret rules | Detect committed secrets with no tool to install. See [secret detection](/configuration/secrets/). |
 | | `vulnerabilities` | Ward and OSV advisories | Match the resolved dependencies against known vulnerabilities. See [vulnerabilities](/configuration/vulnerabilities/). |
-| | `zap` | OWASP ZAP | DAST against a running application. |
 | Architecture | `ward` | Ward analysis rules | Run Ward's analysis rules over source syntax trees, with stable `ward:<language>/<rule>` ids, and the layer, slice cycle and feature independence rules `ward:architecture/*`. |
 | | `build-policy` | Ward's native build policy rules | Pinned plugin versions, no dynamic versions, a minimum build tool version and duplicate dependency declarations in Maven, Gradle, Node and Python build files, and on Maven one version of each dependency and no resolved version below a requested one; see [Build policy rules](/reference/build-policy-rules/). |
 | Dependencies & Compliance | `license` | Ward (native) | Licenses of the resolved dependencies against a deny or allow policy, for every toolchain. See [License gate](#license-gate). |
@@ -50,10 +49,9 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 
 `ward init` offers every gate but selects none unless you choose a preset.
 
-These gates need network access, a running application, or a comparison baseline, so enable them
+These gates need network access or a comparison baseline, so enable them
 deliberately, for example in a CI-only profile with `profiles = ["ci"]`:
 
-- `zap`
 - `vulnerabilities`
 - `api-compat`
 
@@ -118,10 +116,16 @@ the Groovy or the Kotlin build script. See [what init changes](/commands/init/#w
 
 ## Standalone tools
 
-`zap-baseline.py` must already be on the path.
+Why type checkers, mutation engines, compilers and test runners are not native: [What stays external](/reference/external-tools/).
 
-- A missing tool is reported as unavailable with an install link, and other gates still run.
-- `ward init` and `check` never install gate tools; the report links to the installation instructions.
+Ward offers no dynamic scanning (DAST) and no gate for OWASP ZAP. To run ZAP or another scanner, add a
+plain `command` check, for example `command = ["zap-baseline.py", "-t", "https://staging.example.com"]`
+with `profiles = ["ci"]`. Ward runs it as written and reports only its exit status: it extracts no
+findings, gives no install guidance and does not check the target, which you must be authorized to
+scan.
+
+- A missing tool is reported as unavailable, and other gates still run.
+- `ward init` and `check` never install gate tools.
 - When a command contains `--report-path <path>` inside the project, Ward creates the parent
   directory before running it. The command itself never changes.
 
@@ -1103,19 +1107,6 @@ These gates accept no way to silence a rule, in any profile:
   rules find fails the gate.
 
 Before running, `openapi-lint` also fails when the spec contains `x-lint-ignore`.
-
-## ZAP target
-
-`zap` requires an explicit target in its command. Init writes `<TARGET_URL>` as a placeholder.
-Replace it with an authorized target before running `check`, for example
-`command = ["zap-baseline.py", "-t", "http://localhost:8080"]`.
-
-An enabled `zap` gate without `-t <url>`, or still containing `<TARGET_URL>`, is a configuration
-error (exit `2`). Ward never infers, starts, or scans a target on its own.
-
-<Aside type="caution">
-You are responsible for being authorized to scan the target.
-</Aside>
 
 ## Structured findings
 
