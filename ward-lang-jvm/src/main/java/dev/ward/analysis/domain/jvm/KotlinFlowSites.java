@@ -16,8 +16,8 @@ import java.util.Set;
  * Finds the flow sites of one Kotlin body: calls and member reads with the receiver type of their
  * qualifier, the constructor calls, which are calls named {@code <init>} on the created type, and
  * the annotated parameters. Inner sites come before the sites that contain them, and a nested
- * function or class is another body, so it is not entered. A lambda is part of its statement, so
- * its calls are sites of that statement.
+ * function or class is another body, so it is not entered. A lambda is lowered as blocks of its
+ * own, so the view of {@link KotlinView} keeps its calls out of the statement that holds it.
  *
  * <p>Kotlin nests a member access to the right: {@code a.b().c()} is the atom {@code a} followed by
  * a member operation that holds {@code b().c()}. The chain is read with the qualifier text so far.
@@ -34,6 +34,8 @@ final class KotlinFlowSites implements FlowSites {
   private static final String MEMBER = "memberAccessOperator";
   private static final String SIMPLE = "simpleIdentifier";
   private static final String POSTFIX = "postfixUnaryExpression";
+  private static final String PROPERTY = "propertyDeclaration";
+  private static final String ASSIGN = "=";
   private static final Set<String> OTHER_BODIES =
       Set.of(
           "functionDeclaration",
@@ -47,15 +49,19 @@ final class KotlinFlowSites implements FlowSites {
 
   private final JavaTypeNames types;
   private final Map<String, String> declared = new HashMap<>();
+  private final Map<String, String> constructed = new HashMap<>();
   private final KotlinParameterSites parameters;
+  private final KotlinView view;
 
   /**
    * Creates the finder of one body.
    *
    * @param types the imports and package of the file
+   * @param view which part of a node is shown
    */
-  KotlinFlowSites(final JavaTypeNames types) {
+  KotlinFlowSites(final JavaTypeNames types, final KotlinView view) {
     this.types = types;
+    this.view = view;
     this.parameters = new KotlinParameterSites(types, declared);
   }
 
@@ -63,7 +69,7 @@ final class KotlinFlowSites implements FlowSites {
   public List<FlowSite> of(final SyntaxNode node) {
     final List<FlowSite> found = new ArrayList<>();
     walk(node, found);
-    return found;
+    return found.stream().filter(site -> view.shows(site.span())).toList();
   }
 
   private void walk(final SyntaxNode node, final List<FlowSite> found) {
@@ -74,8 +80,50 @@ final class KotlinFlowSites implements FlowSites {
       case POSTFIX -> chain(node, "", found);
       case "functionValueParameters" -> found.addAll(parameters.of(node));
       case "variableDeclaration" -> variable(node);
+      case PROPERTY -> {
+        construction(node);
+        node.children().forEach(child -> walk(child, found));
+      }
       default -> node.children().forEach(child -> walk(child, found));
     }
+  }
+
+  /**
+   * A {@code val} with no declared type whose value is a constructor call has the type that it
+   * constructs, and a call on it is reported as a call on the construction, {@code Type()}, which
+   * is how a call into another file names its receiver.
+   */
+  private void construction(final SyntaxNode property) {
+    final SyntaxNode variable = KotlinFlowSyntax.child(property, "variableDeclaration");
+    if (variable == null
+        || KotlinFlowSyntax.child(variable, "type") != null
+        || !KotlinFlowSyntax.hasToken(property, "val")) {
+      return;
+    }
+    final List<SyntaxNode> parts = KotlinFlowSyntax.parts(property);
+    for (int index = 0; index < parts.size() - 1; index++) {
+      if (ASSIGN.equals(KotlinFlowSyntax.tokenText(parts.get(index)))) {
+        final String type = createdType(parts.get(index + 1));
+        if (!type.isEmpty()) {
+          final String name = KotlinFlowSyntax.text(KotlinScopeWalk.simple(variable));
+          declared.put(name, type);
+          constructed.put(name, type);
+        }
+      }
+    }
+  }
+
+  /** The type that an expression constructs, or an empty string when it is not just {@code T()}. */
+  private static String createdType(final SyntaxNode expression) {
+    final SyntaxNode value = KotlinFlowSyntax.unwrap(expression);
+    final List<SyntaxNode> parts = KotlinFlowSyntax.parts(value);
+    if (!POSTFIX.equals(value.kind())
+        || parts.size() != 2
+        || !KotlinCalls.startsWithCall(parts.subList(1, 2))) {
+      return "";
+    }
+    final String name = KotlinCalls.nameOf(parts.get(0));
+    return !name.isEmpty() && Character.isUpperCase(name.charAt(0)) ? name : "";
   }
 
   /** Records the declared type of a local, a for variable or a lambda parameter. */
@@ -101,7 +149,7 @@ final class KotlinFlowSites implements FlowSites {
       path.setLength(0);
       path.append(qualifier.isEmpty() ? name : qualifier + DOT + name);
       if (!qualifier.isEmpty() && !KotlinCalls.startsWithCall(operations)) {
-        found.add(read(name, qualifier, atom.span()));
+        found.addAll(reads(name, qualifier, atom.span()));
       }
     }
     String callee = name;
@@ -151,8 +199,31 @@ final class KotlinFlowSites implements FlowSites {
     } else {
       found.add(
           new FlowSite(
-              FlowSiteKind.CALL, name, qualifier, receiverType(qualifier), List.of(), spans, span));
+              FlowSiteKind.CALL,
+              name,
+              constructed.containsKey(qualifier) ? constructed.get(qualifier) + "()" : qualifier,
+              receiverType(qualifier),
+              List.of(),
+              spans,
+              span));
     }
+  }
+
+  /**
+   * A member read, and the call of the Java getter that the property stands for, so a rule that
+   * names {@code getParameterMap} finds {@code request.parameterMap}.
+   */
+  private List<FlowSite> reads(final String name, final String qualifier, final Span span) {
+    return List.of(
+        read(name, qualifier, span),
+        new FlowSite(
+            FlowSiteKind.CALL,
+            KotlinCalls.javaGetter(name),
+            qualifier,
+            receiverType(qualifier),
+            List.of(),
+            List.of(),
+            span));
   }
 
   private FlowSite read(final String name, final String qualifier, final Span span) {

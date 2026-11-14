@@ -1,4 +1,5 @@
 import javax.naming.Context
+import javax.naming.InitialContext
 import javax.servlet.http.HttpServletRequest
 import org.springframework.web.bind.annotation.RequestParam
 
@@ -23,4 +24,9 @@ class Subject {
   }
 
   fun read(request: HttpServletRequest): String? = request.getParameter("x")
+
+  fun constructedReceiver(request: HttpServletRequest) {
+    val context = InitialContext()
+    context.lookup(request.getParameter("x"))
+  }
 }

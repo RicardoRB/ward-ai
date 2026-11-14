@@ -12,6 +12,7 @@ final class KotlinCalls {
   private static final String VALUE_ARGUMENTS = "valueArguments";
   private static final String VALUE_ARGUMENT = "valueArgument";
   private static final String EXPRESSION = "expression";
+  private static final String IS = "is";
   private static final int SINGLE = 1;
 
   private KotlinCalls() {}
@@ -32,6 +33,16 @@ final class KotlinCalls {
             && SIMPLE.equals(parts.get(0).kind())
         ? KotlinFlowSyntax.text(parts.get(0))
         : "";
+  }
+
+  /**
+   * The Java getter that Kotlin shows as the property {@code name}: {@code parameterMap} is {@code
+   * getParameterMap()}, and {@code isSecure} is {@code isSecure()}.
+   */
+  static String javaGetter(final String name) {
+    final boolean isForm =
+        name.length() > IS.length() && name.startsWith(IS) && Character.isUpperCase(name.charAt(2));
+    return isForm ? name : "get" + Character.toUpperCase(name.charAt(0)) + name.substring(1);
   }
 
   static boolean isConstructor(final String name, final String qualifier) {

@@ -179,4 +179,28 @@ class KotlinCrossFileTaintTest {
 
     assertThat(run(KOTLIN_RULE, safe)).hasSize(2);
   }
+
+  @Test
+  void aReceiverThatIsAValHoldingANewObjectPairsWithTheClassInAnotherFile() {
+    final String held =
+        KOTLIN_IMPORTS
+            + "class Held {\n"
+            + "  fun show(request: HttpServletRequest, response: HttpServletResponse) {\n"
+            + "    val middle = Middle()\n"
+            + "    middle.forward(request.getParameter(\"n\"), response)\n"
+            + END_METHOD
+            + END_CLASS;
+    final List<SourceUnit> units = List.of(kotlin("Held", held), kotlin("Middle", MIDDLE));
+
+    assertThat(run(KOTLIN_RULE, units))
+        .extracting(AnalysisFinding::line)
+        .containsExactly(SHOW_LINE);
+    assertThat(
+            run(
+                KOTLIN_RULE,
+                List.of(
+                    kotlin("Held", held.replace("val middle", "var middle")),
+                    kotlin("Middle", MIDDLE))))
+        .isEmpty();
+  }
 }

@@ -27,7 +27,7 @@ final class KotlinLoopLowering {
     final int after = flow.newBlock();
     flow.edge(flow.current(), header, FlowEdgeKind.NORMAL);
     flow.moveTo(header);
-    flow.add(condition, KotlinFlowSyntax.mayThrow(condition));
+    statements.expression(condition, KotlinFlowSyntax.mayThrow(condition));
     flow.branch(body, after);
     loopBody(label, KotlinFlowSyntax.child(node, BODY), body, after, header);
   }
@@ -44,7 +44,7 @@ final class KotlinLoopLowering {
     flow.jumps().popFrame();
     flow.edge(flow.current(), check, FlowEdgeKind.NORMAL);
     flow.moveTo(check);
-    flow.add(condition, KotlinFlowSyntax.mayThrow(condition));
+    statements.expression(condition, KotlinFlowSyntax.mayThrow(condition));
     flow.branch(body, after);
     flow.moveTo(after);
   }
@@ -69,7 +69,7 @@ final class KotlinLoopLowering {
     flow.moveTo(header);
     flow.branch(body, after);
     flow.moveTo(body);
-    flow.add(both, KotlinFlowSyntax.mayThrow(iterable));
+    statements.expression(both, KotlinFlowSyntax.mayThrow(iterable));
     loopBody(label, KotlinFlowSyntax.child(node, BODY), body, after, header);
   }
 

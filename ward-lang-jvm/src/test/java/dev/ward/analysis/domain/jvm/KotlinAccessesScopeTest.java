@@ -14,17 +14,19 @@ class KotlinAccessesScopeTest {
   private static final String READ_A = "r:a";
 
   private static List<String> of(final String function, final int parameters) {
-    return accesses(graph("class C {\n" + function + "\n}\n", "C#f(" + parameters + ")"));
+    return accesses(graph("class C {\n" + function + "\n}\n", "C#f(" + parameters + ")")).stream()
+        .filter(access -> !access.contains("$"))
+        .toList();
   }
 
   @Test
-  void aLambdaIsPartOfItsStatementSoScopeFunctionsReadAndWriteTheNamesAroundThem() {
+  void aLambdaIsLoweredInPlaceSoScopeFunctionsReadAndWriteTheNamesAroundThem() {
     assertThat(of("fun f(a: String) { var t = \"\"\n val u = a.let { t = it\n it + t } }", 1))
         .contains(READ_A, "w:t", "w:u");
   }
 
   @Test
-  void theStatementsOfALambdaKeepTheirOrderInsideTheNodeThatHoldsIt() {
+  void theStatementsOfALambdaKeepTheirOrder() {
     assertThat(of("fun f(a: String) { run { val t = a\n use(t) } }", 1))
         .containsExactly(PARAM_A, READ_A, "w:t", "r:t");
   }
