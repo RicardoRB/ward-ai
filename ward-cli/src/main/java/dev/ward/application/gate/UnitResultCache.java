@@ -9,7 +9,6 @@ import dev.ward.analysis.application.rule.UnusedDefinitionFindings;
 import dev.ward.analysis.domain.graph.DependencyGraph;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisFindingOrder;
-import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.port.AnalysisCache;
 import dev.ward.analysis.domain.port.DependencySupport;
@@ -19,7 +18,6 @@ import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleRunResult;
 import dev.ward.domain.gate.GateProgress;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,14 +102,12 @@ final class UnitResultCache {
     final DependencySnapshot snapshot =
         new DependencyAnalysis(frontends, dependencies)
             .analyze(units, new AnalysisSummaryCache(cache, codec, engineVersion));
+    final UnitKeys unitKeys = new UnitKeys(engineVersion, unitRules, snapshot, cache, frontends);
     final Map<SourceUnit, String> keys = new LinkedHashMap<>();
     final List<AnalysisFinding> reused = new ArrayList<>();
     final List<SourceUnit> misses = new ArrayList<>();
-    final Map<AnalysisLanguage, String> ruleSets = new EnumMap<>(AnalysisLanguage.class);
     for (final SourceUnit unit : units) {
-      final String ruleSet =
-          ruleSets.computeIfAbsent(unit.language(), language -> ruleSet(language, unitRules));
-      final String key = key(ruleSet, unit, unitRules, snapshot);
+      final String key = unitKeys.of(unit);
       keys.put(unit, key);
       final Optional<List<AnalysisFinding>> stored = read(cache, key);
       if (stored.isPresent()) {
@@ -155,27 +151,6 @@ final class UnitResultCache {
             .map(support -> support.resolver().moduleOf(path))
             .flatMap(Optional::stream)
             .findFirst();
-  }
-
-  private String ruleSet(final AnalysisLanguage language, final List<RuleDefinition> rules) {
-    return AnalysisCacheKey.ruleSet(
-        engineVersion, rules.stream().filter(rule -> rule.covers(language)).toList());
-  }
-
-  /** A language whose rules read dependencies keys each unit on the files around it too. */
-  private String key(
-      final String ruleSet,
-      final SourceUnit unit,
-      final List<RuleDefinition> rules,
-      final DependencySnapshot snapshot) {
-    if (!DependencyReads.dependencies(unit.language(), rules)) {
-      return AnalysisCacheKey.unit(ruleSet, unit);
-    }
-    final List<SourceUnit> related =
-        DependencyReads.bodies(unit.language(), rules)
-            ? snapshot.closureOf(unit.path())
-            : List.of();
-    return AnalysisCacheKey.unit(ruleSet, unit, snapshot.view(unit.path()), related);
   }
 
   private Optional<List<AnalysisFinding>> read(final AnalysisCache cache, final String key) {

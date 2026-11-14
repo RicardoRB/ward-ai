@@ -40,7 +40,7 @@ class SecurityBenchmarkSmokeTest {
   private static final String MAP = "/benchmark/security-cwe-map.csv";
   private static final String REPORT = "benchmark/security-report.txt";
   private static final String SOURCE_ROOT = "src/main/java/";
-  private static final Pattern VARIANT = Pattern.compile("^(.*_\\d+)[a-z]\\.java$");
+  private static final Pattern VARIANT = Pattern.compile("^(.*_\\d+)(?:[a-z]|_\\w+)\\.java$");
   private static final String HEADER =
       "# Juliet Java 1.3 (NIST SARD 111, public domain) against Ward's Java security rules.\n"
           + "# A finding in a bad method is a true positive (tp, at most one per case), a bad case"
@@ -48,10 +48,13 @@ class SecurityBenchmarkSmokeTest {
           + " positive (fp).\n"
           + "# The taint rules follow wildcard imports of JDK and servlet types, calls between the methods"
           + " of one file, and calls into the other files of the case (the a to e variants of one"
-          + " flow, given to the run as its project). The remaining false negatives are the files"
-          + " that only hold a sink or a source (b to e), flows through a field, an array, a"
-          + " container or a virtual call, and the cases that read from a class the rules do not"
-          + " model.\n"
+          + " flow, given to the run as its project), through a variable, a field or a parameter"
+          + " whose class is decided (the class it was created as, else its declared class, and"
+          + " none when several are possible), and through an array, a holder object, a collection"
+          + " or a builder that received the value. The remaining false negatives are the files"
+          + " that only hold a sink or a source (b to e), flows through a static field, a"
+          + " serialized value or an abstract receiver that is not created in the body, and the"
+          + " cases that read from a class the rules do not model.\n"
           + "# A sink on a chained receiver such as response.getWriter() is matched by the text of"
           + " the receiver. The hard-coded password and key rules follow a string literal through"
           + " a variable of one method.\n"
@@ -136,7 +139,9 @@ class SecurityBenchmarkSmokeTest {
 
   /**
    * The other files of the case: Juliet splits a flow over {@code ..._54a.java} to {@code
-   * ..._54e.java}, so the files of one directory with the same name up to the letter belong to it.
+   * ..._54e.java}, and variant 81 over {@code ..._81a.java}, {@code ..._81_base.java} and its
+   * subclasses, so the files of one directory with the same name up to the letter or the suffix
+   * belong to it.
    */
   private static List<SourceUnit> siblings(final Path file) throws IOException {
     final Matcher variant = VARIANT.matcher(file.getFileName().toString());

@@ -18,25 +18,40 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * A method or function of the analysed file that a call in the same file can name: its name, the
- * simple name of its owner, its arity and its graph. Java bodies are named {@code
- * Type#name(arity)}; Node bodies are named by the function name alone, and their arity is the
- * number of parameters. Two bodies with one name and arity, such as overloads in two classes,
- * cannot be told apart by a call site, so neither is a local method.
+ * A method or function that a call can name: its name, its owner, its arity and its graph. Java
+ * bodies are named {@code pkg:Type#name(arity)}, or {@code Type#name(arity)} without a package;
+ * Node bodies are named by the function name alone, and their arity is the number of parameters.
+ * Two bodies with one name and arity, such as overloads in two classes of one file, cannot be told
+ * apart by a call site, so neither is a local method. Two classes of different packages that share
+ * a simple name are told apart by the owner, which carries the package.
  *
  * @param name the method name
- * @param owner the simple name of the declaring type, or empty
+ * @param owner the declaring type with its package when the body has one, or empty
  * @param arity the number of parameters
  * @param graph the graph of the body
  * @param external whether the body is in another file, so only a call that names the owner can
  *     reach it
+ * @param bare whether the simple name of the owner names it alone among the bodies of other files,
+ *     so a call that names it without a package can reach it
  */
-record LocalMethod(String name, String owner, int arity, ControlFlowGraph graph, boolean external) {
+record LocalMethod(
+    String name, String owner, int arity, ControlFlowGraph graph, boolean external, boolean bare) {
 
   private static final Pattern BODY =
       Pattern.compile("^(?:(?<scope>.*)#)?(?<name>[\\w$]+)(?:\\((?<arity>\\d+)\\))?$");
   private static final String THIS = "this";
+  private static final char PACKAGE_END = ':';
   private static final String MARK = "ward:tainted-parameter";
+
+  /** Creates a method that no bare owner name reaches. */
+  LocalMethod(
+      final String name,
+      final String owner,
+      final int arity,
+      final ControlFlowGraph graph,
+      final boolean external) {
+    this(name, owner, arity, graph, external, false);
+  }
 
   /** The marker that a seeded parameter carries as its annotation. */
   static String mark() {
@@ -60,12 +75,17 @@ record LocalMethod(String name, String owner, int arity, ControlFlowGraph graph,
   /**
    * Indexes the graphs of other files by owner, name and arity. A body with no owner cannot be
    * named by a call in another file, and two bodies with one owner, name and arity cannot be told
-   * apart, so neither is indexed.
+   * apart, so neither is indexed. A body whose simple owner name, name and arity another body
+   * shares can be reached only through its full owner name.
    */
   static Map<String, LocalMethod> indexExternal(final List<ControlFlowGraph> graphs) {
-    return graphs.stream()
-        .map(LocalMethod::parseExternal)
-        .flatMap(Optional::stream)
+    final List<LocalMethod> methods =
+        graphs.stream().map(LocalMethod::parseExternal).flatMap(Optional::stream).toList();
+    final Map<String, Long> simple =
+        methods.stream()
+            .collect(Collectors.groupingBy(LocalMethod::simpleKey, Collectors.counting()));
+    return methods.stream()
+        .map(method -> method.withBare(simple.get(method.simpleKey()) == 1))
         .collect(Collectors.groupingBy(LocalMethod::key))
         .entrySet()
         .stream()
@@ -73,10 +93,39 @@ record LocalMethod(String name, String owner, int arity, ControlFlowGraph graph,
         .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().get(0)));
   }
 
+  /** The {@code Owner#name/arity} keys of the bodies that have an owner. */
+  static Set<String> owned(final List<ControlFlowGraph> graphs) {
+    return graphs.stream()
+        .map(LocalMethod::parse)
+        .flatMap(Optional::stream)
+        .filter(method -> !method.owner().isEmpty())
+        .map(method -> method.owner() + "#" + key(method.name(), method.arity()))
+        .collect(Collectors.toSet());
+  }
+
+  /** Returns the method with another graph for its body. */
+  LocalMethod withGraph(final ControlFlowGraph replaced) {
+    return new LocalMethod(name, owner, arity, replaced, external, bare);
+  }
+
+  private LocalMethod withBare(final boolean unique) {
+    return new LocalMethod(name, owner, arity, graph, external, unique);
+  }
+
+  private String simpleKey() {
+    return simpleOwner() + "#" + key(name, arity);
+  }
+
+  /** The owner's name without its package and enclosing types. */
+  String simpleOwner() {
+    return owner.substring(owner.lastIndexOf('.') + 1);
+  }
+
   private static Optional<LocalMethod> parseExternal(final ControlFlowGraph graph) {
     return parse(graph)
         .filter(method -> !method.owner().isEmpty())
-        .map(method -> new LocalMethod(method.name, method.owner, method.arity, graph, true));
+        .map(
+            method -> new LocalMethod(method.name, method.owner, method.arity, graph, true, false));
   }
 
   private static Optional<LocalMethod> parse(final ControlFlowGraph graph) {
@@ -85,7 +134,10 @@ record LocalMethod(String name, String owner, int arity, ControlFlowGraph graph,
       return Optional.empty();
     }
     final String scope = body.group("scope") == null ? "" : body.group("scope");
-    final String owner = scope.substring(scope.lastIndexOf('.') + 1);
+    final int colon = scope.indexOf(PACKAGE_END);
+    final String chain = scope.substring(colon + 1);
+    final String owner =
+        colon < 0 || chain.isEmpty() ? chain : scope.substring(0, colon) + "." + chain;
     final LocalMethod method = new LocalMethod(body.group("name"), owner, 0, graph, false);
     final int arity =
         body.group("arity") == null
@@ -105,14 +157,15 @@ record LocalMethod(String name, String owner, int arity, ControlFlowGraph graph,
 
   /**
    * The qualifiers under which a call names this method: in the same file, the owner or none; from
-   * another file, the owner or a creation of it, written {@code new Owner()} in Java and {@code
-   * Owner()} in Kotlin.
+   * another file, the full owner, and the simple owner or a creation of it when no other body
+   * shares the simple name, written {@code (newOwner())} in Java and {@code Owner()} in Kotlin.
    */
   List<String> qualifiers() {
+    final String simple = simpleOwner();
     if (external) {
-      return List.of(owner, "(new" + owner + "())", owner + "()");
+      return bare ? List.of(owner, simple, "(new" + simple + "())", simple + "()") : List.of(owner);
     }
-    return owner.isEmpty() ? List.of("", THIS) : List.of("", THIS, owner);
+    return owner.isEmpty() ? List.of("", THIS) : List.of("", THIS, simple, owner);
   }
 
   /** The names of the parameters, in declaration order. */

@@ -552,3 +552,63 @@ receiver = "java.io.FileInputStream"
 kind = "call"
 name = "<init>"
 receiver = "java.io.FileReader"
+
+
+# Containers: a call that stores an argument into its receiver variable taints that variable, so a
+# list, set, map, queue or builder that received tainted data is tainted. The name alone decides,
+# whatever the receiver type, so a user class with an `add` method is a container too.
+
+[[propagators]]
+kind = "call"
+name = "add"
+from = [0, 1]
+
+[[propagators]]
+kind = "call"
+name = "addAll"
+from = [0, 1]
+
+[[propagators]]
+kind = "call"
+name = "addElement"
+from = [0]
+
+[[propagators]]
+kind = "call"
+name = "addFirst"
+from = [0]
+
+[[propagators]]
+kind = "call"
+name = "addLast"
+from = [0]
+
+[[propagators]]
+kind = "call"
+name = "offer"
+from = [0]
+
+[[propagators]]
+kind = "call"
+name = "push"
+from = [0]
+
+[[propagators]]
+kind = "call"
+name = "put"
+from = [0, 1]
+
+[[propagators]]
+kind = "call"
+name = "putAll"
+from = [0]
+
+[[propagators]]
+kind = "call"
+name = "set"
+from = [0, 1]
+
+[[propagators]]
+kind = "call"
+name = "append"
+from = [0]

@@ -96,6 +96,11 @@ final class JavaTypeNames {
     return new JavaTypeNames(Map.copyOf(imports), List.copyOf(wildcards), packageName);
   }
 
+  /** The package of the file, or an empty string. */
+  String packageName() {
+    return packageName;
+  }
+
   /**
    * Resolves a written type, such as {@code List<String>} or {@code Statement}, to its fully
    * qualified name.

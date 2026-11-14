@@ -160,10 +160,10 @@ final class TaintSpecFiles {
       throw new RuleConfigurationException(
           where + " names a pattern, which only string sinks take");
     }
-    final List<Integer> arguments = TaintSpecOptions.arguments(where, table, entry);
-    if (PROPAGATORS.equals(table)) {
-      TaintSpecOptions.from(where, entry);
-    }
+    final List<Integer> arguments =
+        PROPAGATORS.equals(table)
+            ? TaintSpecOptions.from(where, entry)
+            : TaintSpecOptions.arguments(where, table, entry);
     return new TaintEntry(
         KINDS.get(kind),
         text(where, entry, NAME),

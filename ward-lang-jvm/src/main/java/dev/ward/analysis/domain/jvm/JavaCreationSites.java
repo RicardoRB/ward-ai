@@ -49,6 +49,22 @@ final class JavaCreationSites {
             expression.span()));
   }
 
+  /**
+   * Returns the fully qualified type that a {@code new} expression creates, for a plain class
+   * creation: not an array, and not an anonymous class, whose body may override methods.
+   */
+  static Optional<String> createdType(final JavaTypeNames types, final SyntaxNode creator) {
+    final List<SyntaxNode> parts = JavaFlowSyntax.parts(creator);
+    final SyntaxNode created = JavaFlowSyntax.firstOf(parts, CREATED_NAME);
+    final SyntaxNode rest = JavaFlowSyntax.firstOf(parts, CLASS_CREATOR_REST);
+    if (created == null
+        || rest == null
+        || JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(rest), "classBody") != null) {
+      return Optional.empty();
+    }
+    return types.resolve(JavaFlowSyntax.text(created));
+  }
+
   /** Returns the argument nodes of a creation; empty for an array. */
   static List<SyntaxNode> arguments(final SyntaxNode creator) {
     final SyntaxNode rest =

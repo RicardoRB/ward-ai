@@ -14,6 +14,43 @@ import org.junit.jupiter.api.Test;
 class JavaFlowSitesTest {
 
   private static final int CALL_LINE = 7;
+  private static final int HELD = 3;
+  private static final int PARAMETER = 5;
+
+  private static final String CREATED =
+      """
+      class Router {
+        private final Base fixed = new Impl();
+        private Base held;
+
+        void run(boolean flag, Impl impl) {
+          Base once = new Impl();
+          once.go();
+          Base twice;
+          if (flag) { twice = new Impl(); } else { twice = new Other(); }
+          twice.go();
+          fixed.go();
+          held.go();
+          (new Impl()).go();
+          impl.go();
+          Base anonymous = new Base() { };
+          anonymous.go();
+        }
+      }
+      """;
+
+  private static final String STORES =
+      """
+      class Stores {
+        void run(String[] array, Box box, String value) {
+          array[2] = value;
+          box.field = value;
+          box.inner.field = value;
+          this.own = value;
+          local = value;
+        }
+      }
+      """;
 
   private static final String DB =
       """
@@ -73,6 +110,37 @@ class JavaFlowSitesTest {
     final List<FlowSite> sites = sitesOf(DB, "run(3)", FlowSiteKind.PARAMETER, "input");
     assertThat(sites).hasSize(1);
     assertThat(sites.get(0).annotations()).containsExactly("Untrusted");
+  }
+
+  /** A receiver created as one class names it; two classes, fields and anonymous classes do not. */
+  @Test
+  void receiverCreatedAsOneClassIsMarked() {
+    final List<FlowSite> calls = sitesOf(CREATED, "run(2)", FlowSiteKind.CALL, "go");
+    assertThat(calls.stream().map(FlowSite::qualifier).toList())
+        .containsExactly("once", "twice", "fixed", "held", "(newImpl())", "impl", "anonymous");
+    final String impl = JavaCreationTypes.MARK + "Impl";
+    assertThat(calls.stream().map(FlowSite::annotations).toList())
+        .containsExactly(
+            List.of(impl),
+            List.of(),
+            List.of(impl),
+            List.of(),
+            List.of(impl),
+            List.of(),
+            List.of());
+    assertThat(calls.get(HELD).receiverType()).contains("Base");
+    assertThat(calls.get(PARAMETER).receiverType()).contains("Impl");
+  }
+
+  /** An assignment to a member or an element is a member write on the variable it starts with. */
+  @Test
+  void assignmentToAMemberOrElementIsAMemberWrite() {
+    final List<FlowSite> writes = sitesOf(STORES, "run(3)", FlowSiteKind.MEMBER_WRITE, "");
+    assertThat(writes.stream().map(FlowSite::qualifier).toList())
+        .containsExactly("array", "box", "box", "this");
+    assertThat(writes.stream().map(FlowSite::name).toList())
+        .containsExactly("[]", "field", "field", "own");
+    assertThat(writes.get(0).arguments()).hasSize(1);
   }
 
   private static List<FlowSite> sitesOf(

@@ -97,7 +97,7 @@ public final class TaintAnalysis {
   }
 
   /** The taint that reaches one guarded argument: a source written in it, or a tainted read. */
-  private static Optional<Taint> taintOf(
+  static Optional<Taint> taintOf(
       final BasicBlock block,
       final Span argument,
       final ReachingDefinitions reaching,
