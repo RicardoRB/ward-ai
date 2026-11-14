@@ -48,17 +48,16 @@ final class AnalysisCacheKey {
 
   /**
    * Hashes the rule set, the unit's path and full text, and the files around it, with the path and
-   * full text of each file in {@code related}. Used when the rule set has a rule that reads
+   * flow digest of each file in {@code related}. Used when the rule set has a rule that reads
    * dependencies; {@code related} is empty unless it has a taint rule, since a value can cross a
-   * call into any file the unit depends on, so a change of one changes the findings. shortcut: the
-   * whole text is hashed, so a comment edit in a callee re-analyzes its dependents; upgrade by
-   * hashing a taint summary per file and rule specification.
+   * call into any file the unit depends on, so a change of one changes the findings. The digest
+   * ignores the layout of a file, see {@link FlowDigests}.
    */
   static String unit(
       final String ruleSetHash,
       final SourceUnit unit,
       final DependencyView view,
-      final List<SourceUnit> related) {
+      final List<FlowDigests.Related> related) {
     final List<String> parts = new ArrayList<>();
     parts.add(ruleSetHash);
     parts.add(unit.path());
@@ -67,7 +66,7 @@ final class AnalysisCacheKey {
     related.forEach(
         other -> {
           parts.add(other.path());
-          parts.add(other.text());
+          parts.add(other.digest());
         });
     return digest(parts);
   }
@@ -122,7 +121,7 @@ final class AnalysisCacheKey {
   }
 
   /** Hashes each part behind its length, so no two different part lists share a digest. */
-  private static String digest(final List<String> parts) {
+  static String digest(final List<String> parts) {
     try {
       final MessageDigest digest = MessageDigest.getInstance(ALGORITHM);
       for (final String part : parts) {

@@ -15,9 +15,11 @@ import dev.ward.infrastructure.analysis.JvmDependencyAdapters;
 import dev.ward.infrastructure.rule.ClasspathRuleSource;
 import dev.ward.infrastructure.rule.DeclarativeRuleMatcher;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -26,6 +28,7 @@ import org.junit.jupiter.api.io.TempDir;
  * what a cold run of the same files prints.
  */
 class CrossFileTaintCacheTest {
+  private static final int DEPENDENTS = 3;
   private static final String RULE = "ward:java/cross-site-scripting";
   private static final String PAGE = "src/main/java/shop/Page.java";
   private static final String MIDDLE = "src/main/java/shop/Middle.java";
@@ -85,11 +88,30 @@ class CrossFileTaintCacheTest {
   @TempDir Path root;
 
   private final Map<String, String> entries = new HashMap<>();
-  private final AnalysisCache warm = AnalysisCacheFixtures.memory(entries);
+  private final List<String> resultWrites = new ArrayList<>();
+  private final AnalysisCache warm = recording(AnalysisCacheFixtures.memory(entries));
   private final List<FrontendSupport> frontends = GateFrontends.create(new AntlrLanguageFrontend());
   private final List<RuleDefinition> rules =
       new ClasspathRuleSource()
           .load().rules().stream().filter(rule -> RULE.equals(rule.id())).toList();
+
+  /** Notes each write of a unit's findings, so a test can tell which units were analyzed. */
+  private AnalysisCache recording(final AnalysisCache inner) {
+    return new AnalysisCache() {
+      @Override
+      public Optional<String> read(final String key) {
+        return inner.read(key);
+      }
+
+      @Override
+      public void write(final String key, final String value) {
+        inner.write(key, value);
+        if (AnalysisCacheFixtures.codec().decode(key, value).isPresent()) {
+          resultWrites.add(key);
+        }
+      }
+    };
+  }
 
   private List<AnalysisFinding> run(final AnalysisCache cache, final List<SourceUnit> units) {
     return new UnitResultCache(
@@ -131,6 +153,27 @@ class CrossFileTaintCacheTest {
   @Test
   void aSanitizedSinkAndAConstantSourceInOtherFilesGiveNoFinding() {
     assertThat(run(AnalysisCacheFixtures.NO_CACHE, units(SINK_SAFE, SOURCE_CONSTANT))).isEmpty();
+  }
+
+  @Test
+  void aCommentEditOfACalleeKeepsTheCachedResultsOfItsDependents() {
+    final List<SourceUnit> unsafe = units(SINK_UNSAFE, SOURCE_TAINTED);
+    final List<AnalysisFinding> first = run(warm, unsafe);
+    resultWrites.clear();
+
+    final List<SourceUnit> commented =
+        units(
+            "// a note\n\n" + SINK_UNSAFE.replace("{\n    response", "{\n    // why\n    response"),
+            SOURCE_TAINTED + "\n// end\n");
+    final List<AnalysisFinding> second = run(warm, commented);
+
+    assertThat(second).isEqualTo(first);
+    assertThat(second).isEqualTo(run(AnalysisCacheFixtures.NO_CACHE, commented));
+    assertThat(resultWrites).hasSize(2);
+
+    resultWrites.clear();
+    run(warm, units(SINK_SAFE, SOURCE_TAINTED));
+    assertThat(resultWrites).hasSizeGreaterThanOrEqualTo(DEPENDENTS);
   }
 
   @Test
