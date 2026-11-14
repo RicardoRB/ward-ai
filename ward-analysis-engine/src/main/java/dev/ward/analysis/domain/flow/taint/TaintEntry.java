@@ -14,7 +14,8 @@ import java.util.regex.Pattern;
  * <p>A parameter entry matches a parameter that carries an annotation of the same name, so its
  * {@code name} is the annotation. A sink entry names the argument positions it guards. A string
  * entry matches a string-building site whose literal text matches its {@code pattern}, and guards
- * every value part of that site.
+ * every value part of that site. A literal entry matches a literal whose text matches its {@code
+ * pattern}.
  *
  * @param kind the kind of site the entry matches
  * @param name the called name, the member name, or the annotation of a parameter
@@ -83,6 +84,9 @@ public record TaintEntry(
     }
     if (kind == FlowSiteKind.STRING_BUILD) {
       return pattern.map(p -> p.matcher(site.name()).find()).orElse(false);
+    }
+    if (kind == FlowSiteKind.LITERAL) {
+      return pattern.map(p -> p.matcher(site.name()).find()).orElse(true);
     }
     if (kind == FlowSiteKind.PARAMETER) {
       return site.annotations().stream().anyMatch(name::equals);

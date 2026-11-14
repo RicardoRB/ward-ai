@@ -14,5 +14,11 @@ public enum FlowSiteKind {
    * A string built from literal and value parts, such as {@code "<p>" + x}: the name is the literal
    * text and the arguments are the spans of the value parts.
    */
-  STRING_BUILD
+  STRING_BUILD,
+  /**
+   * A string literal that is a whole value: an initializer, an assigned value or a whole call
+   * argument, with an optional {@code getBytes} or {@code toCharArray} conversion. The name is the
+   * literal contents and the qualifier is {@code value} or {@code argument}.
+   */
+  LITERAL
 }

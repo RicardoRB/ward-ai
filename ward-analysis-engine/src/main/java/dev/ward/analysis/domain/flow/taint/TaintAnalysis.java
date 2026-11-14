@@ -137,6 +137,7 @@ public final class TaintAnalysis {
     return block.sites().stream()
         .filter(site -> TaintSpans.contains(argument, site.span()))
         .filter(site -> site.kind() != FlowSiteKind.PARAMETER)
+        .filter(site -> site.kind() != FlowSiteKind.LITERAL || site.span().equals(argument))
         .filter(site -> TaintSpans.sourceOf(site, spec).isPresent())
         .filter(site -> !TaintSpans.sanitized(block, site.span(), spec))
         .findFirst()

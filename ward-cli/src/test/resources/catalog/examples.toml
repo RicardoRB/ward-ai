@@ -56,3 +56,6 @@ name = "example-undefined-name"
 
 [[rule]]
 name = "example-unused-binding"
+
+[[rule]]
+name = "example-add-needs-fix"

@@ -6,17 +6,17 @@
 CWE-23 Relative Path Traversal | cases 684 | tp 231 | fn 453 | fp 0 | ward:java/path-injection
 CWE-36 Absolute Path Traversal | cases 684 | tp 231 | fn 453 | fp 0 | ward:java/path-injection
 CWE-78 OS Command Injection | cases 684 | tp 231 | fn 453 | fp 0 | ward:java/command-injection
-CWE-80 Cross-Site Scripting | cases 1026 | tp 0 | fn 1026 | fp 0 | ward:java/cross-site-scripting
-CWE-83 XSS in an Attribute | cases 513 | tp 0 | fn 513 | fp 0 | ward:java/cross-site-scripting
+CWE-80 Cross-Site Scripting | cases 1026 | tp 336 | fn 690 | fp 0 | ward:java/cross-site-scripting
+CWE-83 XSS in an Attribute | cases 513 | tp 168 | fn 345 | fp 0 | ward:java/cross-site-scripting
 CWE-89 SQL Injection | cases 3420 | tp 1155 | fn 2265 | fp 0 | ward:java/sql-injection
 CWE-90 LDAP Injection | cases 684 | tp 231 | fn 453 | fp 0 | ward:java/ldap-injection
 CWE-113 HTTP Response Splitting | cases 2052 | tp 462 | fn 1590 | fp 0 | ward:java/header-splitting
-CWE-259 Hard-Coded Password | cases 171 | tp 0 | fn 171 | fp 0 | ward:java/hard-coded-password
-CWE-321 Hard-Coded Cryptographic Key | cases 57 | tp 0 | fn 57 | fp 0 | ward:java/hard-coded-crypto-key
+CWE-259 Hard-Coded Password | cases 171 | tp 42 | fn 129 | fp 0 | ward:java/hard-coded-password
+CWE-321 Hard-Coded Cryptographic Key | cases 57 | tp 21 | fn 36 | fp 0 | ward:java/hard-coded-crypto-key
 CWE-327 Broken or Risky Cryptographic Algorithm | cases 34 | tp 34 | fn 0 | fp 62 | ward:java/weak-cipher, ward:java/ecb-mode
 CWE-328 Reversible One-Way Hash | cases 51 | tp 51 | fn 0 | fp 0 | ward:java/weak-hash
 CWE-338 Weak PRNG | cases 34 | tp 34 | fn 0 | fp 0 | ward:java/insecure-random
 CWE-470 Unsafe Reflection | cases 684 | tp 231 | fn 453 | fp 0 | ward:java/unsafe-reflection
 CWE-601 Open Redirect | cases 513 | tp 168 | fn 345 | fp 0 | ward:java/untrusted-redirect
-CWE-614 Sensitive Cookie Without Secure | cases 17 | tp 0 | fn 17 | fp 0 | ward:java/insecure-cookie
+CWE-614 Sensitive Cookie Without Secure | cases 17 | tp 16 | fn 1 | fp 0 | ward:java/insecure-cookie, ward:java/cookie-missing-secure
 CWE-643 XPath Injection | cases 684 | tp 231 | fn 453 | fp 0 | ward:java/xpath-injection

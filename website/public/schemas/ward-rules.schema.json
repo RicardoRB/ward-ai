@@ -3675,6 +3675,25 @@
         }
       }
     },
+    "ward:java/cookie-missing-secure": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/covariant-equals": {
       "type": "object",
       "additionalProperties": false,
@@ -58586,6 +58605,7 @@
               "java.constructor-calls-overridable-method",
               "java.constructors-declaration-grouping",
               "java.control-statement-braces",
+              "java.cookie-missing-secure",
               "java.covariant-equals",
               "java.cross-site-scripting",
               "java.csrf-protection-disabled",
@@ -61537,6 +61557,7 @@
               "java.constructor-calls-overridable-method",
               "java.constructors-declaration-grouping",
               "java.control-statement-braces",
+              "java.cookie-missing-secure",
               "java.covariant-equals",
               "java.cross-site-scripting",
               "java.csrf-protection-disabled",
@@ -64866,6 +64887,9 @@
             },
             "control-statement-braces": {
               "$ref": "#/$defs/ward:java~1control-statement-braces"
+            },
+            "cookie-missing-secure": {
+              "$ref": "#/$defs/ward:java~1cookie-missing-secure"
             },
             "covariant-equals": {
               "$ref": "#/$defs/ward:java~1covariant-equals"
