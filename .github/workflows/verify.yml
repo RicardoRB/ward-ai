@@ -29,6 +29,8 @@ env:
   # Maven 3.9 reads MAVEN_ARGS; -ntp keeps artifact downloads out of the job logs.
   MAVEN_ARGS: -ntp
   GITLEAKS_VERSION: 8.30.1
+  # Only the vulnerability-parity job installs Trivy; no gate runs it.
+  TRIVY_VERSION: 0.76.0
 
 jobs:
   # Pull requests that change only website, openspec or Markdown files skip the native checks and
