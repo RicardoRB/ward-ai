@@ -195,7 +195,7 @@ ward check --profile ci --format json > ward-report.json
 | Category | Tools |
 |---|---|
 | Build and tests | Compiler, JUnit, a coverage minimum that Ward reads from the JaCoCo or lcov report, PIT mutation testing |
-| Code quality | Ward rules (lint), `ward format`, the CRAP gate (functions that are both complex and untested), SonarQube |
+| Code quality | Ward rules (lint), `ward format`, the CRAP gate (functions that are both complex and untested), duplicate code detection |
 | Architecture | Ward's layer boundaries (Layered, Hexagonal, or Clean), slice cycles and feature independence, native `no-field-di` and `no-standard-streams` rules (`strict`), native build policy rules (`build-policy`, on Maven including dependency convergence and upper bounds) |
 | Security | Ward secret detection, Ward security rules for Java, TypeScript, JavaScript and Python (injection, cryptography, cookies and more) and native vulnerability matching against OSV advisories |
 | Compliance | Native license check for every toolchain, `ward sbom` (CycloneDX) and `ward licenses`, native Java and Kotlin API compatibility |

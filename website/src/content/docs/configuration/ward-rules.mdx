@@ -98,6 +98,29 @@ limit it uses without the file:
 Option types are `integer` (with an allowed range), `boolean`, `string`, `regex`, `string-list` and
 `enum`. A `regex` is compiled when the file is read.
 
+## Duplicate code
+
+`ward:<language>/duplicate-code` exists for Java, Kotlin, TypeScript, JavaScript, Python and Swift.
+It compares the tokens of every file of one language, ignoring comments, and reports each sequence
+that occurs at two or more places as one finding at the first copy, with every copy as a step of
+the finding. It runs once over the whole project, not per file.
+
+| Option | Default | Meaning |
+|---|---|---|
+| `min-tokens` | `100` | The fewest tokens a copy must have. |
+| `ignore-literals` | `false` | Literals compare equal whatever their text. |
+| `ignore-identifiers` | `false` | Identifiers compare equal whatever their name. |
+| `ignore-annotations` | `false` | Annotations are left out of the comparison. |
+| `max-duplicated-percent` | `100` | When the tokens inside a copy, each counted once, are more than this percent of the compared tokens, one more finding reports the project, at the start of the file of the first copy. `100` turns the limit off. |
+
+```toml
+[rules.java.duplicate-code]
+min-tokens = 60
+max-duplicated-percent = 5
+```
+
+The rule keeps no history and has no dashboard.
+
 ## Editor support
 
 A JSON Schema describes `ward-rules.toml` to TOML editors: every rule id, the options of each rule

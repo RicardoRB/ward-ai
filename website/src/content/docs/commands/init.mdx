@@ -124,8 +124,12 @@ finding twice.
 
 ## What init changes in your build
 
-For `coverage`, `mutation` and `sonar`, init adds missing plugins using Ward's embedded Java
+For `coverage` and `mutation`, init adds missing plugins using Ward's embedded Java
 compatibility catalog. `build-policy` and `api-compat` are native and add no plugin.
+
+Earlier versions of Ward offered a `sonar` gate that wrote `sonar-maven-plugin` or `org.sonarqube`.
+Init no longer writes either, and `--gate sonar` is an unknown gate; the plugin entry in your build
+file is yours to remove. See [moving from the `sonar` gate](/configuration/gates/#moving-from-the-sonar-gate).
 
 Earlier versions of Ward offered an `enforcer` gate that wrote `maven-enforcer-plugin` and
 `config/enforcer-rules.xml`. Init no longer writes either, and `--gate enforcer` is an unknown gate.
@@ -221,7 +225,6 @@ mutation omitted: info.solidsoft.pitest needs JDK 8+; this project builds on JDK
 
 - A gate you pass with `--gate` that cannot run on your JDK stops init before it changes any file.
 - In the interactive gate list, such a gate is shown as unavailable and cannot be selected.
-- The Gradle `sonar` plugin needs JDK 11, so on Gradle it is omitted on JDK 8.
 - Above Java 25, init configures the project exactly as for JDK 25 and warns that Ward has not been
   tested on that JDK and does not support it.
 - Below Java 8, init warns that Ward supports Java 8 to 25 and may not work with that version.

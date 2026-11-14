@@ -16,7 +16,7 @@ final class JavaGates implements SourceLanguageGates<BuildToolGates> {
 
   @Override
   public List<InitGateOption> analysisGates(final BuildToolGates jvm) {
-    return List.of(jvm.tests(), jvm.compile(), jvm.coverage(), jvm.sonar(), jvm.mutation());
+    return List.of(jvm.tests(), jvm.compile(), jvm.coverage(), jvm.mutation());
   }
 
   @Override

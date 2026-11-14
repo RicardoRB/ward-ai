@@ -13,7 +13,6 @@ public final class QualityGateDefinitions {
           gate("tests", Phase.LOCAL),
           gate("compile", Phase.LOCAL),
           gate("coverage", Phase.LOCAL),
-          gate("sonar", Phase.CI),
           gate("mutation", Phase.CI),
           new Definition(SupportedQualityGates.SECRETS, "secrets", Phase.FAST, true),
           gate(SupportedQualityGates.VULNERABILITIES, Phase.CI),

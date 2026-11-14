@@ -5658,6 +5658,11 @@
         },
         "ignore-annotations": {
           "type": "boolean"
+        },
+        "max-duplicated-percent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
         }
       }
     },
@@ -22872,6 +22877,11 @@
         },
         "ignore-annotations": {
           "type": "boolean"
+        },
+        "max-duplicated-percent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
         }
       }
     },
@@ -28878,6 +28888,11 @@
         },
         "ignore-annotations": {
           "type": "boolean"
+        },
+        "max-duplicated-percent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
         }
       }
     },
@@ -34727,6 +34742,11 @@
         },
         "ignore-annotations": {
           "type": "boolean"
+        },
+        "max-duplicated-percent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
         }
       }
     },
@@ -47818,6 +47838,11 @@
         },
         "ignore-annotations": {
           "type": "boolean"
+        },
+        "max-duplicated-percent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
         }
       }
     },
@@ -51225,6 +51250,11 @@
         },
         "ignore-annotations": {
           "type": "boolean"
+        },
+        "max-duplicated-percent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
         }
       }
     },
