@@ -3,7 +3,6 @@ package dev.ward.analysis.domain.rule;
 import dev.ward.analysis.domain.rule.CloneDetector.Clone;
 import dev.ward.analysis.domain.rule.CloneDetector.Copy;
 import dev.ward.analysis.domain.rule.DuplicateTokens.Token;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
@@ -30,16 +29,18 @@ public final class DuplicatedShare {
     long duplicated = 0;
     long total = 0;
     for (final Map.Entry<String, List<Token>> file : files.entrySet()) {
-      final List<Copy> copies = new ArrayList<>();
-      for (final Clone clone : clones) {
-        clone.copies().stream()
-            .filter(copy -> copy.path().equals(file.getKey()))
-            .forEach(copies::add);
-      }
+      final List<Copy> copies = copiesIn(file.getKey(), clones);
       total += file.getValue().size();
       duplicated += file.getValue().stream().filter(token -> covered(token, copies)).count();
     }
     return new DuplicatedShare(duplicated, total);
+  }
+
+  private static List<Copy> copiesIn(final String path, final List<Clone> clones) {
+    return clones.stream()
+        .flatMap(clone -> clone.copies().stream())
+        .filter(copy -> copy.path().equals(path))
+        .toList();
   }
 
   private static boolean covered(final Token token, final List<Copy> copies) {

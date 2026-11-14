@@ -6,6 +6,7 @@ import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.rule.DuplicateTokens.Token;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedMap;
 import java.util.TreeMap;
 import org.junit.jupiter.api.Test;
 
@@ -13,6 +14,9 @@ class DuplicatedShareTest {
 
   private static final int TOKENS = 10;
   private static final int COPY_LENGTH = 3;
+  private static final int DUPLICATED = 7;
+  private static final int PERCENT = 70;
+  private static final int BELOW = 69;
 
   private static List<Token> tokens() {
     final List<Token> list = new ArrayList<>();
@@ -29,7 +33,7 @@ class DuplicatedShareTest {
 
   @Test
   void countsEachTokenOnceAndComparesWithoutRounding() {
-    final TreeMap<String, List<Token>> files = new TreeMap<>();
+    final SortedMap<String, List<Token>> files = new TreeMap<>();
     files.put("A", tokens());
     final CloneDetector.Clone first =
         new CloneDetector.Clone(COPY_LENGTH, List.of(copy(0), copy(5)));
@@ -37,11 +41,11 @@ class DuplicatedShareTest {
 
     final DuplicatedShare share = DuplicatedShare.of(files, List.of(first, overlapping));
 
-    assertThat(share.duplicatedTokens()).isEqualTo(7);
+    assertThat(share.duplicatedTokens()).isEqualTo(DUPLICATED);
     assertThat(share.totalTokens()).isEqualTo(TOKENS);
-    assertThat(share.percent()).isEqualTo(70);
-    assertThat(share.exceeds(69)).isTrue();
-    assertThat(share.exceeds(70)).isFalse();
+    assertThat(share.percent()).isEqualTo(PERCENT);
+    assertThat(share.exceeds(BELOW)).isTrue();
+    assertThat(share.exceeds(PERCENT)).isFalse();
   }
 
   @Test

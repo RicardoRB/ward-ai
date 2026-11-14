@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 class DuplicateCodeOptionsTest {
 
   private static final int CUSTOM_MIN_TOKENS = 12;
+  private static final int CUSTOM_SHARE = 5;
 
   @Test
   void readsEveryOptionFromTheBody() {
@@ -50,7 +51,7 @@ class DuplicateCodeOptionsTest {
   @Test
   void readsAndValidatesTheShareLimit() {
     assertThat(DuplicateCodeOptions.parse("max-duplicated-percent = 5").maxDuplicatedPercent())
-        .isEqualTo(5);
+        .isEqualTo(CUSTOM_SHARE);
     assertThatThrownBy(() -> DuplicateCodeOptions.parse("max-duplicated-percent = 101"))
         .isInstanceOf(IllegalArgumentException.class);
   }
