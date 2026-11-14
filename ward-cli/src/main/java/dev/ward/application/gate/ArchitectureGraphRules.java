@@ -77,7 +77,7 @@ final class ArchitectureGraphRules {
     return new RuleDefinition(
         id,
         ArchitectureLayers.ENGINE_LANGUAGES,
-        RuleCapability.SYMBOLS,
+        RuleCapability.SCOPES,
         AnalysisSeverity.ERROR,
         body);
   }
