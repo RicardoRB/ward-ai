@@ -6,4 +6,6 @@ include = [
   "build.no-dynamic-version",
   "build.minimum-build-tool-version",
   "build.duplicate-dependency-declaration",
+  "build.dependency-convergence",
+  "build.require-upper-bound",
 ]

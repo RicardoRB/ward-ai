@@ -89,16 +89,19 @@ final class JavaLocals {
       return Optional.of(array.component());
     }
     if (iterable.isPresent() && iterable.get() instanceof JType.ClassType site) {
-      return session
-          .hierarchy
-          .asSuper(site, "java.lang.Iterable")
-          .filter(view -> view.arguments().size() == 1)
-          .map(view -> view.arguments().get(0))
-          .map(
-              argument -> argument instanceof JType.Wildcard wildcard ? wildcard.bound() : argument)
-          .filter(Objects::nonNull);
+      return iterableElement(site);
     }
     return Optional.empty();
+  }
+
+  private Optional<JType> iterableElement(final JType.ClassType site) {
+    return session
+        .hierarchy
+        .asSuper(site, "java.lang.Iterable")
+        .filter(view -> view.arguments().size() == 1)
+        .map(view -> view.arguments().get(0))
+        .map(argument -> argument instanceof JType.Wildcard wildcard ? wildcard.bound() : argument)
+        .filter(Objects::nonNull);
   }
 
   void catchClause(final SyntaxNode node, final Ctx ctx) {

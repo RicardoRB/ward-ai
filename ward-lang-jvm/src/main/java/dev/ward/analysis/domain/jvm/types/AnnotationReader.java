@@ -109,18 +109,27 @@ final class AnnotationReader {
       compatible.clear();
       final List<String> names = list();
       final String value = compatible.isEmpty() ? "" : compatible.get(0);
-      if (index < compatibleWith.size()) {
-        if (!value.isEmpty()) {
-          compatibleWith.set(index, value);
-        }
-      } else {
-        compatibleWith.add(value);
+      record(into, compatibleWith, index, names, value);
+    }
+  }
+
+  private static void record(
+      final List<List<String>> into,
+      final List<String> compatibleWith,
+      final int index,
+      final List<String> names,
+      final String value) {
+    if (index < compatibleWith.size()) {
+      if (!value.isEmpty()) {
+        compatibleWith.set(index, value);
       }
-      if (index < into.size()) {
-        into.get(index).addAll(names);
-      } else {
-        into.add(new ArrayList<>(names));
-      }
+    } else {
+      compatibleWith.add(value);
+    }
+    if (index < into.size()) {
+      into.get(index).addAll(names);
+    } else {
+      into.add(new ArrayList<>(names));
     }
   }
 }

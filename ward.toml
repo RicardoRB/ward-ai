@@ -69,6 +69,13 @@ profiles = ["pre-push", "ci"]
 minimum = 85
 minimum-branches = 75
 
+# Fails functions that are both complex and untested; reads the reports the tests gate wrote.
+[checks.crap]
+enabled = true
+uses = "crap"
+profiles = ["pre-push", "ci"]
+max = 30
+
 [checks.spotbugs]
 enabled = true
 profiles = ["pre-push", "ci"]

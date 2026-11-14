@@ -276,6 +276,10 @@ final class RegexSyntax {
       if (pattern.charAt(at) == COMMA) {
         at = digitsEnd(pattern, at + 1);
       }
+      return closeAt(pattern, at);
+    }
+
+    private static int closeAt(final String pattern, final int at) {
       return at < pattern.length() && pattern.charAt(at) == CLOSE_BRACE ? at + 1 : NONE;
     }
 

@@ -41,8 +41,7 @@ public final class DuplicateTokens {
       final Vocabulary vocabulary,
       final DuplicateCodeOptions options,
       final List<Token> tokens) {
-    if (SKIPPED.contains(node.kind())
-        || options.ignoreAnnotations() && vocabulary.annotations().contains(node.kind())) {
+    if (skipped(node, vocabulary, options)) {
       return;
     }
     if (node.children().isEmpty()) {
@@ -54,7 +53,24 @@ public final class DuplicateTokens {
     }
   }
 
+  private static boolean skipped(
+      final SyntaxNode node, final Vocabulary vocabulary, final DuplicateCodeOptions options) {
+    return SKIPPED.contains(node.kind())
+        || options.ignoreAnnotations() && vocabulary.annotations().contains(node.kind());
+  }
+
   private static String value(
+      final SyntaxNode leaf, final Vocabulary vocabulary, final DuplicateCodeOptions options) {
+    final String abstracted = abstracted(leaf, vocabulary, options);
+    if (abstracted != null) {
+      return abstracted;
+    }
+    final String text = leaf.fields().get(TEXT);
+    // Layout tokens such as Python's NEWLINE carry the next line's indentation as their text.
+    return text.isBlank() ? leaf.kind() : leaf.kind() + SEPARATOR + text;
+  }
+
+  private static String abstracted(
       final SyntaxNode leaf, final Vocabulary vocabulary, final DuplicateCodeOptions options) {
     if (options.ignoreLiterals() && vocabulary.literals().contains(leaf.kind())) {
       return LITERAL;
@@ -62,9 +78,7 @@ public final class DuplicateTokens {
     if (options.ignoreIdentifiers() && vocabulary.identifiers().contains(leaf.kind())) {
       return IDENTIFIER;
     }
-    final String text = leaf.fields().get(TEXT);
-    // Layout tokens such as Python's NEWLINE carry the next line's indentation as their text.
-    return text.isBlank() ? leaf.kind() : leaf.kind() + SEPARATOR + text;
+    return null;
   }
 
   /** The token kinds and annotation rules of one grammar that the options act on. */
