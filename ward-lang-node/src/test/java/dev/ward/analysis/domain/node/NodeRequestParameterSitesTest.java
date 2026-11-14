@@ -31,9 +31,7 @@ class NodeRequestParameterSitesTest {
   }
 
   private static List<String> names(final String source) {
-    return NodeTaintFixtures.graph(AnalysisLanguage.TYPESCRIPT, source, "run")
-        .blocks()
-        .stream()
+    return NodeTaintFixtures.graph(AnalysisLanguage.TYPESCRIPT, source, "run").blocks().stream()
         .map(BasicBlock::sites)
         .flatMap(List::stream)
         .filter(site -> site.kind() == FlowSiteKind.PARAMETER)
