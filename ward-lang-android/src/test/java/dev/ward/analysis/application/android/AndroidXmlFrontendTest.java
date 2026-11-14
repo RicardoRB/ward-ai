@@ -51,7 +51,8 @@ class AndroidXmlFrontendTest {
             "android-cleartext-traffic",
             "android-allow-backup",
             "android-hardcoded-text",
-            "android-content-description");
+            "android-content-description",
+            "android-unused-resources");
     assertThat(
             checks
                 .get("android-application-flag")

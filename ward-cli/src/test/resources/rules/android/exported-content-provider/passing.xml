@@ -8,6 +8,11 @@
             android:exported="true"
             android:permission="com.example.NOTES" />
         <provider
+            android:name=".ReadOnlyProvider"
+            android:authorities="com.example.readonly"
+            android:exported="true"
+            android:readPermission="com.example.READ" />
+        <provider
             android:name=".SplitProvider"
             android:authorities="com.example.split"
             android:exported="true"

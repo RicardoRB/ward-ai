@@ -21,3 +21,14 @@ presets = ["standard", "strict"]
 body = '''
 check = "android-content-description"
 '''
+
+[[rules]]
+id = "ward:android/unused-resources"
+language = "android"
+capability = "SYNTAX"
+severity = "warning"
+category = "dead-code"
+presets = ["standard", "strict"]
+body = '''
+check = "android-unused-resources"
+'''

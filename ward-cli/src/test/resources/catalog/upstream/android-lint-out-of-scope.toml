@@ -444,7 +444,6 @@ rules = [
   "UnusedIds",
   "UnusedNamespace",
   "UnusedQuantity",
-  "UnusedResources",
   "UnusedTranslation",
   "UsableSpace",
   "UseAlpha2",

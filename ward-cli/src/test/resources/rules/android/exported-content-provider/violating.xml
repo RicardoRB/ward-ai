@@ -6,10 +6,5 @@
             android:name=".NotesProvider"
             android:authorities="com.example.notes"
             android:exported="true" />
-        <provider
-            android:name=".ReadOnlyProvider"
-            android:authorities="com.example.readonly"
-            android:exported="true"
-            android:readPermission="com.example.READ" />
     </application>
 </manifest>
