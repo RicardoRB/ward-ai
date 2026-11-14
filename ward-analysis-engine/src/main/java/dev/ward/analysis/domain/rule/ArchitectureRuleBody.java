@@ -19,6 +19,12 @@ public final class ArchitectureRuleBody {
   private static final String LIST_SEPARATOR = ";";
   private static final String ITEM_SEPARATOR = ",";
   private static final String NONE = "";
+  private static final int NAME = 0;
+  private static final int REASON = 1;
+  private static final int ALLOW_EMPTY = 2;
+  private static final int KIND = 3;
+  private static final int SELECT = 4;
+  private static final int VALUE = 5;
   private static final int FIELDS = 6;
   private static final int LISTS = 3;
 
@@ -61,17 +67,17 @@ public final class ArchitectureRuleBody {
     if (fields.length != FIELDS) {
       throw new IllegalArgumentException("an architecture rule has " + FIELDS + " fields");
     }
-    final ArchitectureConstraint.Kind kind = ArchitectureConstraint.Kind.valueOf(fields[3]);
+    final ArchitectureConstraint.Kind kind = ArchitectureConstraint.Kind.valueOf(fields[KIND]);
     final ArchitectureConstraint constraint =
         kind == ArchitectureConstraint.Kind.FILE_NAME
-            ? new ArchitectureConstraint(kind, null, plain(fields[5]))
-            : new ArchitectureConstraint(kind, selector(fields[5]), null);
+            ? new ArchitectureConstraint(kind, null, plain(fields[VALUE]))
+            : new ArchitectureConstraint(kind, selector(fields[VALUE]), null);
     return new ArchitectureRule(
-        plain(fields[0]),
-        selector(fields[4]),
+        plain(fields[NAME]),
+        selector(fields[SELECT]),
         constraint,
-        plain(fields[1]),
-        Boolean.parseBoolean(fields[2]));
+        plain(fields[REASON]),
+        Boolean.parseBoolean(fields[ALLOW_EMPTY]));
   }
 
   private static String selector(final ArchitectureSelector selector) {
@@ -95,7 +101,7 @@ public final class ArchitectureRuleBody {
   }
 
   private static List<String> items(final String list) {
-    return list.equals(NONE)
+    return list.isEmpty()
         ? List.of()
         : Arrays.stream(list.split(ITEM_SEPARATOR, -1)).map(ArchitectureRuleBody::plain).toList();
   }

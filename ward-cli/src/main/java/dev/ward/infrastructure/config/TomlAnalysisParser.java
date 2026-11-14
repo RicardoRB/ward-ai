@@ -17,7 +17,6 @@ final class TomlAnalysisParser {
   private static final String RULES = "rules";
   private static final String JAVA_CLASSPATH = "java-classpath";
   private static final String RULES_FILE = "rules-file";
-  private static final String ARCHITECTURE_FILE = "architecture-file";
   private static final String LAYERS = "layers";
   private static final String FROM = "from";
   private static final String FORBIDDEN = "forbidden";
@@ -32,7 +31,7 @@ final class TomlAnalysisParser {
           RULES,
           JAVA_CLASSPATH,
           RULES_FILE,
-          ARCHITECTURE_FILE,
+          TomlArchitectureParser.ARCHITECTURE_FILE,
           LAYERS,
           PATHS,
           TomlArchitectureParser.CYCLES,
@@ -84,26 +83,6 @@ final class TomlAnalysisParser {
               + "."
               + RULES_FILE
               + "' must be a relative path inside the project, such as ward-rules.toml");
-    }
-    return path;
-  }
-
-  /**
-   * Returns the project-relative path of the architecture rule file, or {@code null} when the check
-   * uses {@code ward-architecture.toml}. The path must stay inside the project.
-   */
-  static String architectureFile(final String where, final String type, final TomlTable gate) {
-    if (!SupportedQualityGates.ANALYSIS.equals(type) || !gate.contains(ARCHITECTURE_FILE)) {
-      return null;
-    }
-    final String path = gate.isString(ARCHITECTURE_FILE) ? gate.getString(ARCHITECTURE_FILE) : null;
-    if (path == null || path.isBlank() || path.startsWith("/") || path.contains("..")) {
-      throw new WardException(
-          "'"
-              + where
-              + "."
-              + ARCHITECTURE_FILE
-              + "' must be a relative path inside the project, such as ward-architecture.toml");
     }
     return path;
   }

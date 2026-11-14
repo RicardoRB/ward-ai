@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
  */
 class WardCliArchitectureRulesTest extends WardCliIntegrationSupport {
   private static final String DEPENDENCIES = "ward:architecture/dependencies";
+  private static final int IMPORT_LINE = 3;
   private static final String REASON = "because the domain must not know its adapters";
 
   private void configure() throws IOException {
@@ -56,7 +57,7 @@ class WardCliArchitectureRulesTest extends WardCliIntegrationSupport {
     assertThat(architecture).as(out.toString()).isNotNull();
     assertThat(architecture.get("file").asString())
         .isEqualTo("src/main/java/shop/domain/Order.java");
-    assertThat(architecture.get("line").asInt()).isEqualTo(3);
+    assertThat(architecture.get("line").asInt()).isEqualTo(IMPORT_LINE);
     assertThat(architecture.get("message").asString())
         .startsWith("domain-is-pure: ")
         .endsWith(REASON);

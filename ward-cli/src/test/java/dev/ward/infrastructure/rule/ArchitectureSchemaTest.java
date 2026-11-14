@@ -29,7 +29,7 @@ class ArchitectureSchemaTest {
 
   @Test
   void theRuleKeysAreTheReadersKeysAndTheFiveConstraints() throws IOException {
-    final Set<String> expected = new HashSet<>(ArchitectureFileReader.RULE_KEYS);
+    final Set<String> expected = new HashSet<>(ArchitectureRuleReader.RULE_KEYS);
     for (final ArchitectureConstraint.Kind kind : ArchitectureConstraint.Kind.values()) {
       expected.add(kind.key());
     }
@@ -41,7 +41,7 @@ class ArchitectureSchemaTest {
   @Test
   void theSelectorKeysAreTheReadersKeys() throws IOException {
     assertThat(child(definition("selector"), PROPERTIES).keySet())
-        .containsExactlyInAnyOrderElementsOf(ArchitectureFileReader.SELECTOR_KEYS);
+        .containsExactlyInAnyOrderElementsOf(ArchitectureSelectorReader.SELECTOR_KEYS);
   }
 
   @Test

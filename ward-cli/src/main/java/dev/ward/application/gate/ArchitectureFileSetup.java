@@ -42,7 +42,7 @@ final class ArchitectureFileSetup implements RuleSetup {
     final List<String> problems = new ArrayList<>(chosen.problems());
     problems.addAll(architecture.get().problems());
     final List<RuleDefinition> rules = new ArrayList<>(chosen.rules());
-    rules.addAll(ArchitectureGraphRules.general(architecture.get().rules()));
+    rules.addAll(ArchitectureRun.definitions(architecture.get().rules()));
     if (LOGGER.isLoggable(Level.FINE)) {
       LOGGER.fine(
           "event=architecture-rules file="

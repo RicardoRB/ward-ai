@@ -106,7 +106,7 @@ class ArchitectureRuleCompatibilityTest {
     assertThat(findings)
         .extracting(Finding::ruleId)
         .containsExactlyInAnyOrder(LAYERS, DEPENDENCIES);
-    assertThat(findings.stream().filter(finding -> finding.ruleId().equals(LAYERS)).toList())
+    assertThat(findings.stream().filter(finding -> LAYERS.equals(finding.ruleId())).toList())
         .singleElement()
         .satisfies(
             finding ->

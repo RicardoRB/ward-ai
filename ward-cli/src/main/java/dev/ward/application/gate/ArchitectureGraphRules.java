@@ -5,26 +5,16 @@ import dev.ward.analysis.domain.graph.ProjectFiles;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisSeverity;
 import dev.ward.analysis.domain.ir.Span;
-import dev.ward.analysis.domain.rule.ArchitectureRule;
-import dev.ward.analysis.domain.rule.ArchitectureRuleBody;
-import dev.ward.analysis.domain.rule.ArchitectureRuleCheck;
-import dev.ward.analysis.domain.rule.DependencyArchitectureRule;
 import dev.ward.analysis.domain.rule.GraphMatch;
 import dev.ward.analysis.domain.rule.GraphRuleBody;
 import dev.ward.analysis.domain.rule.GraphRules;
 import dev.ward.analysis.domain.rule.IndependenceRule;
-import dev.ward.analysis.domain.rule.LocationArchitectureRule;
-import dev.ward.analysis.domain.rule.NamingArchitectureRule;
 import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
-import dev.ward.analysis.domain.rule.RuleExecutionError;
 import dev.ward.analysis.domain.rule.SliceCycleRule;
 import dev.ward.analysis.domain.rule.UnusedFileRule;
 import dev.ward.domain.init.ArchitectureLayers;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Stream;
 
 /**
  * Builds the architecture graph rules of a check from its configured roots and modules, and turns
@@ -32,9 +22,6 @@ import java.util.stream.Stream;
  * per run and their findings are never cached per unit.
  */
 final class ArchitectureGraphRules {
-
-  private static final Set<String> GENERAL =
-      Set.of(DependencyArchitectureRule.ID, NamingArchitectureRule.ID, LocationArchitectureRule.ID);
 
   private ArchitectureGraphRules() {}
 
@@ -51,40 +38,6 @@ final class ArchitectureGraphRules {
   /** Returns the independence rule over {@code tables}, one module list per table. */
   static RuleDefinition independence(final List<List<String>> tables) {
     return definition(IndependenceRule.ID, GraphRuleBody.encodeTables(tables));
-  }
-
-  /**
-   * Returns the definitions of the general rules, one per rule family that has a rule; the rules
-   * travel in the body.
-   */
-  static List<RuleDefinition> general(final List<ArchitectureRule> rules) {
-    return Stream.of(
-            DependencyArchitectureRule.ID, NamingArchitectureRule.ID, LocationArchitectureRule.ID)
-        .map(id -> family(id, rules))
-        .flatMap(Optional::stream)
-        .toList();
-  }
-
-  private static Optional<RuleDefinition> family(
-      final String id, final List<ArchitectureRule> rules) {
-    final List<ArchitectureRule> own =
-        rules.stream().filter(rule -> rule.constraint().kind().ruleId().equals(id)).toList();
-    return own.isEmpty()
-        ? Optional.empty()
-        : Optional.of(definition(id, ArchitectureRuleBody.encode(own)));
-  }
-
-  /** The rules of the general rule definitions among {@code definitions} that cannot be checked. */
-  static List<RuleExecutionError> errors(
-      final List<RuleDefinition> definitions, final ProjectFiles project) {
-    return definitions.stream()
-        .filter(definition -> GENERAL.contains(definition.id()))
-        .flatMap(
-            definition ->
-                ArchitectureRuleCheck.errors(
-                    ArchitectureRuleBody.decode(definition.body()), project)
-                    .stream())
-        .toList();
   }
 
   /** The findings of every graph rule among {@code rules}, over {@code graph}. */
@@ -120,7 +73,7 @@ final class ArchitectureGraphRules {
         match.match().path());
   }
 
-  private static RuleDefinition definition(final String id, final String body) {
+  static RuleDefinition definition(final String id, final String body) {
     return new RuleDefinition(
         id,
         ArchitectureLayers.ENGINE_LANGUAGES,

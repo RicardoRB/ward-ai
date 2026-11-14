@@ -21,6 +21,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 class ArchitectureRuleFixturesTest {
   private static final Path FIXTURES = Path.of("src/test/resources/fixtures");
   private static final String DEPENDENCIES = "ward:architecture/dependencies";
+  private static final int JAVA_IMPORT_LINE = 3;
   private static final String VIOLATING =
       """
       version = 1
@@ -44,7 +45,7 @@ class ArchitectureRuleFixturesTest {
     assertThat(result.status()).isEqualTo(GateStatus.FAILED);
     final Finding finding = onlyFinding(result);
     assertThat(finding.file()).isEqualTo("src/main/java/shop/legacy/Coupon.java");
-    assertThat(finding.line()).isEqualTo(3);
+    assertThat(finding.line()).isEqualTo(JAVA_IMPORT_LINE);
     assertThat(finding.message())
         .startsWith("legacy-must-not-reach-domain: ")
         .contains("shop/domain/Discount.java")
@@ -77,7 +78,7 @@ class ArchitectureRuleFixturesTest {
                 .findFirst()
                 .orElseThrow()
                 .line())
-        .isEqualTo(3);
+        .isEqualTo(JAVA_IMPORT_LINE);
   }
 
   @ParameterizedTest

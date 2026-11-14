@@ -7,7 +7,6 @@ import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.application.rule.RuleEngine;
 import dev.ward.analysis.application.rule.UnusedDefinitionFindings;
 import dev.ward.analysis.domain.graph.DependencyGraph;
-import dev.ward.analysis.domain.graph.ProjectFiles;
 import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisFindingOrder;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
@@ -17,7 +16,6 @@ import dev.ward.analysis.domain.port.DependencySupport;
 import dev.ward.analysis.domain.rule.DuplicateCodeRule;
 import dev.ward.analysis.domain.rule.GraphRules;
 import dev.ward.analysis.domain.rule.RuleDefinition;
-import dev.ward.analysis.domain.rule.RuleExecutionError;
 import dev.ward.analysis.domain.rule.RuleRunResult;
 import dev.ward.domain.gate.GateProgress;
 import java.util.ArrayList;
@@ -136,29 +134,16 @@ final class UnitResultCache {
       cache.write(AnalysisCacheKey.index(), codec.encodeIndex(snapshot.graph()));
     }
     progress.step("project-wide rules");
-    final ProjectFiles project = projectFiles(snapshot, units);
     final List<AnalysisFinding> wholeRunFindings =
-        new ArrayList<>(ArchitectureGraphRules.findings(rules, snapshot.graph(), project));
+        new ArrayList<>(ArchitectureRun.findings(rules, snapshot, units));
     wholeRunFindings.addAll(DuplicateCodeFindings.findings(rules, units, frontends));
     wholeRunFindings.addAll(
         UnusedDefinitionFindings.findings(rules, snapshot.summaries(), moduleOf()));
     wholeRunFindings.addAll(engine.runProject(units, frontends, rules, files));
-    final List<RuleExecutionError> architectureErrors =
-        ArchitectureGraphRules.errors(rules, project);
     return new CachedRun(
-        merged(reused, analyzed, wholeRunFindings, architectureErrors), snapshot.graph());
-  }
-
-  /** The summarized files, the entries, and the language of every source file of the run. */
-  private static ProjectFiles projectFiles(
-      final DependencySnapshot snapshot, final List<SourceUnit> units) {
-    final Map<String, AnalysisLanguage> sources = new LinkedHashMap<>();
-    for (final SourceUnit unit : units) {
-      if (unit.language() != AnalysisLanguage.OPENAPI) {
-        sources.put(unit.path(), unit.language());
-      }
-    }
-    return new ProjectFiles(snapshot.summaries().keySet(), snapshot.entries(), sources);
+        ArchitectureRun.withErrors(
+            merged(reused, analyzed, wholeRunFindings), rules, snapshot, units),
+        snapshot.graph());
   }
 
   /**
@@ -214,14 +199,11 @@ final class UnitResultCache {
   private static RuleRunResult merged(
       final List<AnalysisFinding> reused,
       final RuleRunResult analyzed,
-      final List<AnalysisFinding> graphFindings,
-      final List<RuleExecutionError> architectureErrors) {
+      final List<AnalysisFinding> graphFindings) {
     final List<AnalysisFinding> all = new ArrayList<>(reused);
     all.addAll(analyzed.findings());
     all.addAll(graphFindings);
     all.sort(AnalysisFindingOrder.ORDER);
-    final List<RuleExecutionError> errors = new ArrayList<>(analyzed.executionErrors());
-    errors.addAll(architectureErrors);
-    return new RuleRunResult(all, errors, analyzed.notRun());
+    return new RuleRunResult(all, analyzed.executionErrors(), analyzed.notRun());
   }
 }

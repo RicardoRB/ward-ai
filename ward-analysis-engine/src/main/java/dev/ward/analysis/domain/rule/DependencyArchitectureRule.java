@@ -64,22 +64,32 @@ public final class DependencyArchitectureRule implements GraphRule {
       final DependencyEdge edge,
       final Predicate<String> selected,
       final Predicate<String> target) {
-    final boolean from = selected.test(edge.from());
-    final boolean to = selected.test(edge.to());
     return switch (rule.constraint().kind()) {
-      case MUST_NOT_DEPEND_ON ->
-          from && target.test(edge.to())
-              ? Optional.of(edge.from() + " must not depend on " + edge.to())
-              : Optional.empty();
-      case MAY_ONLY_DEPEND_ON ->
-          from && !to && !target.test(edge.to())
-              ? Optional.of(edge.from() + " may not depend on " + edge.to())
-              : Optional.empty();
-      case ONLY_ACCESSED_BY ->
-          to && !from && !target.test(edge.from())
-              ? Optional.of(edge.to() + " may not be accessed by " + edge.from())
-              : Optional.empty();
+      case MUST_NOT_DEPEND_ON -> forbidden(edge, selected, target);
+      case MAY_ONLY_DEPEND_ON -> outside(edge, selected, target);
+      case ONLY_ACCESSED_BY -> accessed(edge, selected, target);
       default -> Optional.empty();
     };
+  }
+
+  private static Optional<String> forbidden(
+      final DependencyEdge edge, final Predicate<String> selected, final Predicate<String> target) {
+    return selected.test(edge.from()) && target.test(edge.to())
+        ? Optional.of(edge.from() + " must not depend on " + edge.to())
+        : Optional.empty();
+  }
+
+  private static Optional<String> outside(
+      final DependencyEdge edge, final Predicate<String> selected, final Predicate<String> target) {
+    return selected.test(edge.from()) && !selected.test(edge.to()) && !target.test(edge.to())
+        ? Optional.of(edge.from() + " may not depend on " + edge.to())
+        : Optional.empty();
+  }
+
+  private static Optional<String> accessed(
+      final DependencyEdge edge, final Predicate<String> selected, final Predicate<String> target) {
+    return selected.test(edge.to()) && !selected.test(edge.from()) && !target.test(edge.from())
+        ? Optional.of(edge.to() + " may not be accessed by " + edge.from())
+        : Optional.empty();
   }
 }

@@ -17,6 +17,7 @@ import org.tomlj.TomlTable;
 final class TomlArchitectureParser {
   static final String CYCLES = "cycles";
   static final String INDEPENDENCE = "independence";
+  static final String ARCHITECTURE_FILE = "architecture-file";
   static final Set<String> CYCLE_KEYS = Set.of("roots");
   static final Set<String> INDEPENDENCE_KEYS = Set.of("modules");
   private static final String ROOTS = "roots";
@@ -27,6 +28,26 @@ final class TomlArchitectureParser {
   private static final String PARENT = "..";
 
   private TomlArchitectureParser() {}
+
+  /**
+   * Returns the project-relative path of the architecture rule file, or {@code null} when the check
+   * uses {@code ward-architecture.toml}. The path must stay inside the project.
+   */
+  static String architectureFile(final String where, final String type, final TomlTable gate) {
+    if (!SupportedQualityGates.ANALYSIS.equals(type) || !gate.contains(ARCHITECTURE_FILE)) {
+      return null;
+    }
+    final String path = gate.isString(ARCHITECTURE_FILE) ? gate.getString(ARCHITECTURE_FILE) : null;
+    if (path == null || path.isBlank() || path.startsWith("/") || path.contains("..")) {
+      throw new WardException(
+          "'"
+              + where
+              + "."
+              + ARCHITECTURE_FILE
+              + "' must be a relative path inside the project, such as ward-architecture.toml");
+    }
+    return path;
+  }
 
   /** Returns the cycle roots of a {@code ward} check, or an empty list when it sets none. */
   static List<String> cycleRoots(final String where, final String type, final TomlTable gate) {

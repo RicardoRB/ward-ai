@@ -87,54 +87,6 @@ public record GateConfiguration(
     return tables.stream().map(List::copyOf).toList();
   }
 
-  /** Creates a check that reads the default architecture rule file. */
-  public GateConfiguration(
-      final String name,
-      final String type,
-      final boolean enabled,
-      final List<String> command,
-      final Set<String> profiles,
-      final PartialGateConfiguration partial,
-      final OpenApiGateOptions openApi,
-      final Integer minimum,
-      final XcodePlatform platform,
-      final List<String> rules,
-      final String javaClasspath,
-      final List<LayerBoundary> layers,
-      final List<String> cycleRoots,
-      final List<List<String>> independence,
-      final String rulesFile,
-      final SecretsOptions secrets,
-      final CrapOptions crap,
-      final CoverageOptions coverage,
-      final VulnerabilityOptions vulnerabilities,
-      final LicenseSettings license,
-      final ApiCompatOptions apiCompat) {
-    this(
-        name,
-        type,
-        enabled,
-        command,
-        profiles,
-        partial,
-        openApi,
-        minimum,
-        platform,
-        rules,
-        javaClasspath,
-        layers,
-        cycleRoots,
-        independence,
-        rulesFile,
-        secrets,
-        crap,
-        coverage,
-        vulnerabilities,
-        license,
-        apiCompat,
-        null);
-  }
-
   /** Creates a check in the {@code default} profile whose type is its name. */
   public GateConfiguration(final String name, final boolean enabled, final List<String> command) {
     this(
@@ -150,6 +102,7 @@ public record GateConfiguration(
         null,
         null,
         List.of(),
+        null,
         null,
         null,
         null,
