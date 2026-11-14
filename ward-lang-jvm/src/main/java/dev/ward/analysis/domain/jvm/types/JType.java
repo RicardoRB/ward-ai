@@ -2,6 +2,7 @@ package dev.ward.analysis.domain.jvm.types;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * A type as a class file or a source declaration writes it. Class names are binary names with dots
@@ -69,5 +70,10 @@ public sealed interface JType {
    * @param bound the bound, or {@code null} for an unbounded wildcard
    * @param upper whether the bound is an upper bound ({@code extends}), else a lower one
    */
-  record Wildcard(JType bound, boolean upper) implements JType {}
+  record Wildcard(JType bound, boolean upper) implements JType {
+    /** The bound when this is an upper-bounded wildcard, else empty. */
+    Optional<JType> upperBound() {
+      return Optional.ofNullable(bound).filter(found -> upper);
+    }
+  }
 }

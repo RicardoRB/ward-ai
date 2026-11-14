@@ -138,11 +138,19 @@ final class EcmaBrackets {
   /** A colon after an object key, which starts an object as its value. */
   private boolean isPropertyColon(final int colon) {
     final int key = previousCode(colon);
-    if (key < 0 || DEFAULT.equals(text(key)) || CASE.equals(text(key))) {
+    if (key < 0 || isSwitchLabel(text(key))) {
       return false;
     }
     final int before = previousCode(key);
-    return before >= 0 && (OPEN_BRACE.equals(text(before)) || COMMA.equals(text(before)));
+    return before >= 0 && isPropertyStart(text(before));
+  }
+
+  private static boolean isSwitchLabel(final String word) {
+    return DEFAULT.equals(word) || CASE.equals(word);
+  }
+
+  private static boolean isPropertyStart(final String word) {
+    return OPEN_BRACE.equals(word) || COMMA.equals(word);
   }
 
   private boolean wrapsOneBracket(final int open, final int close) {
