@@ -52,8 +52,7 @@ public final class SystemEnvironmentInspection implements EnvironmentInspection 
           "poetry",
           "swift",
           "xcodebuild",
-          "xcrun",
-          "zap-baseline.py");
+          "xcrun");
   private static final List<String> OPENAPI_SPECS =
       List.of(
           "src/main/resources/openapi.yml",

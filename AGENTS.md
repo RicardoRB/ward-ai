@@ -96,9 +96,9 @@ Gates in `ward.toml`; edit hooks run the `default` profile (format, checkstyle, 
 - SpotBugs: effort Max, threshold Medium; only generated Dagger/Fory classes excluded. Copy mutable collections in and out of records/constructors.
 - Coverage: the `coverage` check of `ward.toml` (≥85% line, ≥75% branch) sums the JaCoCo XML report of every module; the minimum is in `ward.toml`, not in `pom.xml`. Mutation (PIT, `ci`): ≥60%; pull request CI mutates only the domain/application classes the change touches (`PIT_TARGET_CLASSES`), releases mutate all. New code needs tests that assert behavior.
 - ArchUnit gate runs a fixed test list; add any new architecture/native contract test to that command.
-- Enforcer (`config/enforcer-rules.xml`): pin every plugin version, no dynamic versions, converging dependencies, Maven ≥3.9.
-- License: no GPL/AGPL dependencies.
-- secrets (Ward's native check): no secrets, including in tests and fixtures; the fixtures of the secret rules under `ward-cli/src/test/resources/rules/secrets/` hold fake secrets and are excluded in `ward.toml`. Semgrep `p/java` and Trivy (any vulnerable dependency, including `website/`) run in `ci`.
+- Build policy (`build-policy`, rules in `ward-rules.toml`): pin every plugin version, no dynamic versions, no duplicate dependency declarations, Maven ≥3.9. The convergence rules are not selected yet.
+- License (native `license` gate): only Apache-2.0, MIT, BSD-3-Clause, EPL-2.0 and LGPL-2.1-or-later in the runtime scope. `compliance/` holds the committed `ward sbom` and `ward licenses` output; regenerate it with `ward sbom --scopes runtime -o compliance/sbom.json` and `ward licenses --scopes runtime -o compliance/THIRD-PARTY-LICENSES`. The `native` gate runs in `ci`, not in `pre-push`.
+- secrets (Ward's native check): no secrets, including in tests and fixtures; the fixtures of the secret rules under `ward-cli/src/test/resources/rules/secrets/` hold fake secrets and are excluded by `exclude-paths` of the `secrets` check in `ward.toml`. The native `vulnerabilities` gate (any vulnerable resolved dependency) runs in `ci`.
 
 ## Testing
 
