@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 /**
@@ -29,6 +30,11 @@ final class JuiceShopCorpus {
   private static final String DECLARATIONS = ".d.ts";
   private static final String DEPENDENCIES = "node_modules";
 
+  /** The folders and minified scripts that the gate's source reader skips too. */
+  private static final Set<String> SKIPPED_FOLDERS = Set.of("target", "build", "dist", "mutants");
+
+  private static final Pattern MINIFIED = Pattern.compile("\\.min\\.[cm]?js$");
+
   private final Path root;
 
   /** Reads the sources below {@code root}, the directory the archive was extracted to. */
@@ -43,11 +49,22 @@ final class JuiceShopCorpus {
           .filter(Files::isRegularFile)
           .filter(file -> !root.relativize(file).toString().contains(DEPENDENCIES))
           .filter(file -> !file.toString().endsWith(DECLARATIONS))
+          .filter(file -> !MINIFIED.matcher(file.getFileName().toString()).find())
+          .filter(file -> !skippedFolder(file))
           .filter(file -> language(file) != null)
           .sorted()
           .map(this::unit)
           .toList();
     }
+  }
+
+  private boolean skippedFolder(final Path file) {
+    for (final Path part : root.relativize(file.getParent())) {
+      if (SKIPPED_FOLDERS.contains(part.toString())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private SourceUnit unit(final Path file) {

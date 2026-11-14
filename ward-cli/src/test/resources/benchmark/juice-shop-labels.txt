@@ -2,24 +2,8 @@
 # Format: rule | file:line | tp, fp or un | reason.
 # tp: the line is a real instance of the weakness the rule names. fp: it is not. un: it cannot be
 # decided from the code, or the code is not Juice Shop's own (vendored libraries).
-ward:javascript/dom-xss | frontend/src/assets/private/dat.gui.min.js:1 | un | vendored third-party library, not Juice Shop code
-ward:javascript/dom-xss | frontend/src/assets/private/dat.gui.min.js:13 | un | vendored third-party library, not Juice Shop code
-ward:javascript/dom-xss | frontend/src/assets/private/dat.gui.min.js:23 | un | vendored third-party library, not Juice Shop code
-ward:javascript/dom-xss | frontend/src/assets/private/dat.gui.min.js:33 | un | vendored third-party library, not Juice Shop code
-ward:javascript/dom-xss | frontend/src/assets/private/dat.gui.min.js:35 | un | vendored third-party library, not Juice Shop code
-ward:javascript/dom-xss | frontend/src/assets/private/dat.gui.min.js:44 | un | vendored third-party library, not Juice Shop code
-ward:javascript/dom-xss | frontend/src/assets/private/dat.gui.min.js:48 | un | vendored third-party library, not Juice Shop code
-ward:javascript/dom-xss | frontend/src/assets/private/dat.gui.min.js:49 | un | vendored third-party library, not Juice Shop code
-ward:javascript/dom-xss | frontend/src/assets/private/dat.gui.min.js:55 | un | vendored third-party library, not Juice Shop code
-ward:javascript/dom-xss | frontend/src/assets/private/three.js:11375 | un | vendored third-party library, not Juice Shop code
-ward:javascript/insecure-random | frontend/src/assets/private/three.js:6359 | fp | Math.random for geometry and colors in a vendored library
-ward:javascript/insecure-random | frontend/src/assets/private/three.js:6426 | fp | Math.random for geometry and colors in a vendored library
-ward:javascript/insecure-random | frontend/src/assets/private/three.js:6434 | fp | Math.random for geometry and colors in a vendored library
-ward:javascript/insecure-random | frontend/src/assets/private/three.js:6442 | fp | Math.random for geometry and colors in a vendored library
-ward:javascript/insecure-random | frontend/src/assets/private/three.js:6450 | fp | Math.random for geometry and colors in a vendored library
-ward:javascript/insecure-random | frontend/src/assets/private/three.js:15504 | fp | Math.random for geometry and colors in a vendored library
-ward:javascript/insecure-random | frontend/src/assets/private/three.js:15534 | fp | Math.random for geometry and colors in a vendored library
-ward:javascript/insecure-random | frontend/src/assets/private/three.js:15567 | fp | Math.random for geometry and colors in a vendored library
+ward:javascript/dom-xss | frontend/src/assets/private/three.js:11375 | fp | innerHTML is set to a message built from numeric progress values and constants; vendored three.js
+ward:javascript/insecure-random | frontend/src/assets/private/three.js:6337 | un | vendored three.js generateUUID built from Math.random; third-party code, not Juice Shop code
 ward:javascript/weak-hash | scripts/package.mjs:122 | un | MD5 as a checksum of build artifacts; weak against deliberate collisions, no documented challenge
 ward:typescript/cookie-missing-http-only | lib/insecurity.ts:192 | tp | the session token cookie is set with no options
 ward:typescript/cookie-missing-http-only | routes/updateUserProfile.ts:42 | tp | the session token cookie is set with no options
@@ -29,38 +13,26 @@ ward:typescript/cookie-missing-secure | lib/insecurity.ts:192 | tp | the session
 ward:typescript/cookie-missing-secure | routes/updateUserProfile.ts:42 | tp | the session token cookie is set with no options
 ward:typescript/dom-xss | frontend/src/hacking-instructor/helpers/helpers.ts:138 | fp | innerHTML is read and compared, never assigned
 ward:typescript/dom-xss | frontend/src/hacking-instructor/index.ts:126 | fp | the hint text is Juice Shop's own static content, not attacker input
-ward:typescript/hard-coded-secret | frontend/src/app/two-factor-auth/two-factor-auth.component.spec.ts:95 | fp | placeholder value in a unit test mock
-ward:typescript/hard-coded-secret | frontend/src/app/two-factor-auth/two-factor-auth.component.spec.ts:106 | fp | placeholder value in a unit test mock
-ward:typescript/hard-coded-secret | frontend/src/app/two-factor-auth/two-factor-auth.component.spec.ts:145 | fp | placeholder value in a unit test mock
-ward:typescript/hard-coded-secret | frontend/src/app/two-factor-auth/two-factor-auth.component.spec.ts:202 | fp | placeholder value in a unit test mock
-ward:typescript/hard-coded-secret | frontend/src/app/two-factor-auth/two-factor-auth.component.spec.ts:213 | fp | placeholder value in a unit test mock
-ward:typescript/hard-coded-secret | frontend/src/app/two-factor-auth/two-factor-auth.component.spec.ts:231 | fp | placeholder value in a unit test mock
-ward:typescript/hard-coded-secret | frontend/src/app/two-factor-auth/two-factor-auth.component.spec.ts:243 | fp | placeholder value in a unit test mock
-ward:typescript/hard-coded-secret | test/api/2fa.test.ts:42 | tp | TOTP secret of a seeded demo account, also in data/static/users.yml
-ward:typescript/hard-coded-secret | test/api/2fa.test.ts:66 | fp | test-only TOTP secret
-ward:typescript/hard-coded-secret | test/api/2fa.test.ts:80 | tp | TOTP secret of a seeded demo account, also in data/static/users.yml
-ward:typescript/hard-coded-secret | test/api/2fa.test.ts:85 | tp | TOTP secret of a seeded demo account, also in data/static/users.yml
-ward:typescript/hard-coded-secret | test/api/2fa.test.ts:104 | tp | TOTP secret of a seeded demo account, also in data/static/users.yml
-ward:typescript/hard-coded-secret | test/api/2fa.test.ts:123 | tp | TOTP secret of a seeded demo account, also in data/static/users.yml
-ward:typescript/hard-coded-secret | test/api/2fa.test.ts:257 | fp | test-only TOTP secret
 ward:typescript/header-injection | routes/userProfile.ts:97 | tp | profile image URL of the user goes into the Content-Security-Policy header
-ward:typescript/insecure-random | data/datacreator.ts:320 | fp | not a secret: seed data, captcha operands, UI choices or a storage key
-ward:typescript/insecure-random | data/datacreator.ts:338 | fp | not a secret: seed data, captcha operands, UI choices or a storage key
-ward:typescript/insecure-random | data/datacreator.ts:396 | fp | not a secret: seed data, captcha operands, UI choices or a storage key
-ward:typescript/insecure-random | data/datacreator.ts:771 | fp | not a secret: seed data, captcha operands, UI choices or a storage key
-ward:typescript/insecure-random | frontend/src/app/Services/conversation-storage.service.ts:17 | fp | not a secret: seed data, captcha operands, UI choices or a storage key
-ward:typescript/insecure-random | frontend/src/app/chatbot/chat-welcome-screen/chat-welcome-screen.component.ts:67 | fp | not a secret: seed data, captcha operands, UI choices or a storage key
-ward:typescript/insecure-random | frontend/src/app/coding-challenge-page/components/coding-challenge-fix-it/coding-challenge-fix-it.component.ts:120 | fp | not a secret: seed data, captcha operands, UI choices or a storage key
+ward:typescript/insecure-random | frontend/src/app/Services/conversation-storage.service.ts:15 | tp | the identifier of a stored conversation is built from Math.random; predictable, though the id guards nothing
 ward:typescript/insecure-random | lib/insecurity.ts:53 | tp | Math.random builds the JWT secret of denyAll
-ward:typescript/insecure-random | routes/captcha.ts:14 | fp | not a secret: seed data, captcha operands, UI choices or a storage key
-ward:typescript/insecure-random | routes/captcha.ts:15 | fp | not a secret: seed data, captcha operands, UI choices or a storage key
-ward:typescript/insecure-random | routes/captcha.ts:16 | fp | not a secret: seed data, captcha operands, UI choices or a storage key
-ward:typescript/insecure-random | routes/captcha.ts:18 | fp | not a secret: seed data, captcha operands, UI choices or a storage key
-ward:typescript/insecure-random | routes/captcha.ts:19 | fp | not a secret: seed data, captcha operands, UI choices or a storage key
+ward:typescript/nosql-injection | routes/likeProductReviews.ts:25 | tp | req.body.id is passed to findOne as the filter; an operator object such as {"$ne": -1} changes the query
+ward:typescript/nosql-injection | routes/likeProductReviews.ts:43 | tp | the same req.body.id reaches the second findOne filter
+ward:typescript/path-traversal | routes/fileServer.ts:18 | tp | params.file reaches res.sendFile(path.resolve(...)); only a slash test and a null-byte cut guard it
+ward:typescript/path-traversal | routes/keyServer.ts:14 | tp | params.file reaches res.sendFile(path.resolve(...)) of the key folder; only a slash test guards it
+ward:typescript/path-traversal | routes/logfileServer.ts:14 | tp | params.file reaches res.sendFile(path.resolve(...)) of the log folder; only a slash test guards it
+ward:typescript/path-traversal | routes/profileImageFileUpload.ts:42 | fp | the path holds a user id read from the session and an extension detected from the file bytes
+ward:typescript/path-traversal | routes/profileImageUrlUpload.ts:29 | fp | the extension comes from an allowlist with a jpg default and the id from the session
+ward:typescript/path-traversal | routes/quarantineServer.ts:14 | tp | params.file reaches res.sendFile(path.resolve(...)) of the quarantine folder; only a slash test guards it
+ward:typescript/path-traversal | routes/vulnCodeFixes.ts:83 | fp | readFixes(key) answers 404 unless a fix file starts with the key, so a traversal key never reaches this read
+ward:typescript/path-traversal | routes/vulnCodeSnippet.ts:89 | fp | the key was looked up among the known challenge keys, and the handler returned a 404 before this line otherwise
+ward:typescript/path-traversal | routes/vulnCodeSnippet.ts:90 | fp | the key was looked up among the known challenge keys, and the handler returned a 404 before this line otherwise
+ward:typescript/path-traversal | server.ts:281 | fp | the resolved path is checked with startsWith against the infrastructure folder before the read
 ward:typescript/permissive-cors | server.ts:184 | tp | cors() with defaults allows every origin
 ward:typescript/permissive-cors | server.ts:185 | tp | cors() with defaults allows every origin
 ward:typescript/script-injection | routes/userProfile.ts:65 | tp | eval of a substring of the user name
 ward:typescript/server-side-request-forgery | routes/profileImageUrlUpload.ts:24 | tp | fetch of a URL from the request body
+ward:typescript/sql-injection | routes/login.ts:34 | tp | req.body.email is concatenated into the SQL text of models.sequelize.query
 ward:typescript/template-injection | routes/userProfile.ts:90 | tp | pug.compile of a template that holds the user name
 ward:typescript/unsafe-framework-trust | data/static/codefixes/localXssChallenge_1.ts:6 | tp | snippet of the vulnerable variant shown by the coding challenges
 ward:typescript/unsafe-framework-trust | data/static/codefixes/localXssChallenge_3.ts:6 | tp | snippet of the vulnerable variant shown by the coding challenges
@@ -75,5 +47,6 @@ ward:typescript/unsafe-framework-trust | frontend/src/app/score-board/score-boar
 ward:typescript/unsafe-framework-trust | frontend/src/app/search-result/search-result.component.ts:113 | tp | the product description, editable through the API, goes into trusted HTML
 ward:typescript/unsafe-framework-trust | frontend/src/app/search-result/search-result.component.ts:146 | tp | the search query from the URL goes into trusted HTML
 ward:typescript/unsafe-framework-trust | frontend/src/app/track-result/track-result.component.ts:49 | tp | the order id taken from the URL query goes into trusted HTML
+ward:typescript/untrusted-redirect | routes/redirect.ts:18 | tp | the allowlist test is url.includes(allowed), so any URL that contains an allowed string is accepted
 ward:typescript/weak-hash | lib/insecurity.ts:41 | tp | MD5 is the password hash
 ward:typescript/weak-hash | lib/utils.ts:83 | fp | HMAC-SHA1 over a CTF flag, which does not rely on collision resistance
