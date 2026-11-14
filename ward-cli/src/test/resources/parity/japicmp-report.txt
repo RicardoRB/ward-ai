@@ -1,0 +1,24 @@
+# japicmp parity report: the native api-compat check against japicmp 0.23.1 on the api-compat fixtures.
+# fixture	kind	type or type#member	reason. A reviewed difference; kind is japicmp-only or ward-only.
+# Types and members are compared by name: japicmp reports a change when binary or source callers break.
+java/compatible	japicmp-only	p.F#hidden	japicmp reports the removed protected method of a final class; no subclass can exist, so Ward does not treat it as API
+java/protected-in-final	japicmp-only	p.A#m	japicmp reports the removed protected method of a final class; no subclass can exist, so Ward does not treat it as API
+java/signature-changed	ward-only	p.A#accept	japicmp compares erased signatures only, so a change of type arguments or type-parameter bounds is invisible to it; callers compiled against the old source break
+java/type-less-visible	japicmp-only	p.A#<init>	japicmp also reports the constructor of the class that is no longer visible; Ward reports the type once
+kotlin/default-argument-removed	ward-only	p.A#f	default values exist only in the synthetic f$default method and in Kotlin metadata, which japicmp does not read
+kotlin/internal-is-not-api	japicmp-only	p.A	internal is public in the class file; Ward treats internal declarations as outside the API, as Kotlin callers do
+kotlin/internal-is-not-api	japicmp-only	p.B#g$main	internal is public in the class file; Ward treats internal declarations as outside the API, as Kotlin callers do
+kotlin/nullability-narrowed	ward-only	p.A#f	nullability is in Kotlin metadata and annotations, not in the descriptor japicmp compares
+kotlin/nullability-narrowed	ward-only	p.A#g	nullability is in Kotlin metadata and annotations, not in the descriptor japicmp compares
+kotlin/signature-changed	ward-only	p.A#f	japicmp compares erased signatures only, so a change of type arguments or type-parameter bounds is invisible to it; callers compiled against the old source break
+kotlin/signature-changed	ward-only	p.A#g	japicmp compares erased signatures only, so a change of type arguments or type-parameter bounds is invisible to it; callers compiled against the old source break
+kotlin/top-level	japicmp-only	p.AKt	the fixture moves top-level functions to another file; the file facade AKt is gone for a Java caller, while Ward compares the package's top-level declarations as one namespace and Kotlin callers recompile (see the Kotlin limits in gates.mdx)
+kotlin/top-level	ward-only	p.<top-level>#getFlag	japicmp sees the file facades AKt and BKt, Ward the package's top-level declarations as one namespace
+kotlin/top-level	ward-only	p.<top-level>#gone	japicmp sees the file facades AKt and BKt, Ward the package's top-level declarations as one namespace
+kotlin/top-level	ward-only	p.<top-level>#kept	japicmp sees the file facades AKt and BKt, Ward the package's top-level declarations as one namespace
+kotlin/type-kind-changed	japicmp-only	p.B#<init>	a class that became an object only shows to japicmp as a private constructor; Ward reports the kind change on the type
+kotlin/type-kind-changed	ward-only	p.B	a class that became an object only shows to japicmp as a private constructor; Ward reports the kind change on the type
+kotlin/type-less-visible	ward-only	p.A	internal is public in the class file, so japicmp sees no change
+kotlin/type-now-final	japicmp-only	p.B#<init>	a sealed class has a private constructor in the class file; Ward reports the type once
+kotlin/type-now-final	ward-only	p.I	a sealed interface has no trace in the class file for the compiler's default JVM target, so japicmp sees no change
+kotlin/type-parameters-changed	ward-only	p.B	declaration-site variance (out, in) is not in the class file

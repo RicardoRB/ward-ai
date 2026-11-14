@@ -405,6 +405,219 @@ jobs:
           -Dward.parity.oasdiff="$RUNNER_TEMP/oasdiff"
           test
 
+  # Compiles the baseline and revision of every api-compat fixture (javac and kotlinc), runs the real
+  # japicmp on them and compares its incompatible changes with the native check; every difference
+  # must be listed in ward-cli/src/test/resources/parity/japicmp-report.txt.
+  japicmp-parity:
+    name: API compatibility parity with japicmp
+    if: inputs.compatibility-matrices
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+          cache-dependency-path: |
+            pom.xml
+            ward-*/pom.xml
+
+      # The jar is checked against the SHA-1 that Maven Central publishes beside it.
+      - name: Install japicmp
+        run: |
+          set -eu
+          base="https://repo1.maven.org/maven2/com/github/siom79/japicmp/japicmp/0.23.1"
+          jar="japicmp-0.23.1-jar-with-dependencies.jar"
+          curl -sSfL --retry 5 --retry-all-errors -o "$RUNNER_TEMP/japicmp.jar" "$base/$jar"
+          echo "$(curl -sSfL --retry 5 --retry-all-errors "$base/$jar.sha1" | cut -d' ' -f1)  $RUNNER_TEMP/japicmp.jar" | sha1sum -c -
+
+      - name: Install Kotlin compiler
+        env:
+          KOTLIN_VERSION: 2.2.21
+          KOTLIN_SHA256: a623871f1cd9c938946948b70ef9170879f0758043885bbd30c32f024e511714
+        run: |
+          set -eu
+          kotlin_dir="$RUNNER_TEMP/kotlin"
+          mkdir -p "$kotlin_dir"
+          curl -sSfL --retry 5 --retry-all-errors -o "$kotlin_dir/kotlin-compiler.zip" \
+            "https://github.com/JetBrains/kotlin/releases/download/v${KOTLIN_VERSION}/kotlin-compiler-${KOTLIN_VERSION}.zip"
+          echo "${KOTLIN_SHA256}  $kotlin_dir/kotlin-compiler.zip" | sha256sum -c -
+          unzip -q "$kotlin_dir/kotlin-compiler.zip" -d "$kotlin_dir"
+          echo "WARD_KOTLINC=$kotlin_dir/kotlinc/bin/kotlinc" >> "$GITHUB_ENV"
+
+      - name: Compare the api-compat check with japicmp
+        run: >-
+          ./mvnw -B
+          -pl ward-cli -am
+          -Dsurefire.failIfNoSpecifiedTests=false
+          -Dtest=ApiCompatJapicmpParitySmokeTest
+          -Dward.parity.japicmp="$RUNNER_TEMP/japicmp.jar"
+          -Dward.kotlinc.binary="$WARD_KOTLINC"
+          test
+
+  # Runs the native vulnerabilities scan and the real Trivy (and pip-audit on the pip fixture) over the
+  # dependency-inventory lockfiles with some versions replaced by vulnerable ones in a temporary copy,
+  # and compares package, version and advisory id with the committed report
+  # (ward-cli/src/test/resources/parity/vulnerability-report.txt). The test downloads the OSV archives.
+  vulnerability-parity:
+    name: Vulnerability parity with Trivy and pip-audit
+    if: inputs.compatibility-matrices
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+          cache-dependency-path: |
+            pom.xml
+            ward-*/pom.xml
+
+      - name: Install Trivy
+        run: |
+          set -eu
+          trivy_dir="$RUNNER_TEMP/trivy"
+          trivy_asset="trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz"
+          trivy_base="https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}"
+          mkdir -p "$trivy_dir"
+          curl -sSfL --retry 5 --retry-all-errors -o "$trivy_dir/$trivy_asset" "$trivy_base/$trivy_asset"
+          curl -sSfL --retry 5 --retry-all-errors -o "$trivy_dir/checksums.txt" "$trivy_base/trivy_${TRIVY_VERSION}_checksums.txt"
+          (cd "$trivy_dir" && grep " $trivy_asset\$" checksums.txt | sha256sum -c -)
+          tar -xzf "$trivy_dir/$trivy_asset" -C "$RUNNER_TEMP" trivy
+
+      - name: Install pip-audit
+        run: |
+          python3 -m venv "$RUNNER_TEMP/pip-audit"
+          "$RUNNER_TEMP/pip-audit/bin/pip" install pip-audit==2.9.0
+
+      - name: Compare the vulnerabilities scan with Trivy and pip-audit
+        run: >-
+          ./mvnw -B
+          -pl ward-cli -am
+          -Dsurefire.failIfNoSpecifiedTests=false
+          -Dtest=VulnerabilityParitySmokeTest
+          -Dward.parity.trivy="$RUNNER_TEMP/trivy"
+          -Dward.parity.pip-audit="$RUNNER_TEMP/pip-audit/bin/pip-audit"
+          test
+
+  # Compares the declared licenses Ward reads for a Gradle project with the committed listing of the
+  # Gradle license report plugin; Gradle first fills its module cache with the POMs.
+  license-gradle-parity:
+    name: License parity with the Gradle license report plugin
+    if: inputs.compatibility-matrices
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+          cache-dependency-path: |
+            pom.xml
+            ward-*/pom.xml
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v5
+        with:
+          gradle-version: '9.9.0'
+
+      - name: Compare the declared licenses with the plugin's listing
+        run: >-
+          ./mvnw -B
+          -pl ward-cli -am
+          -Dsurefire.failIfNoSpecifiedTests=false
+          -Dtest=PomLicenseGradleParitySmokeTest
+          -Dward.license.parity.gradle="$(command -v gradle)"
+          test
+
+  # Compares the Maven, PEP 440 and semver orders of domain/vulnerability with ComparableVersion
+  # (the maven-artifact jar of the Maven wrapper), packaging and the npm semver package.
+  version-order-parity:
+    name: Version order parity with Maven, packaging and semver
+    if: inputs.compatibility-matrices
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+          cache-dependency-path: |
+            pom.xml
+            ward-*/pom.xml
+
+      - name: Install the reference implementations
+        run: |
+          set -eu
+          ./mvnw -B -q -v
+          python3 -m venv "$RUNNER_TEMP/packaging"
+          "$RUNNER_TEMP/packaging/bin/pip" install packaging==25.0
+          mkdir -p "$RUNNER_TEMP/semver"
+          npm install --prefix "$RUNNER_TEMP/semver" semver@7.6.3
+          echo "MAVEN_ARTIFACT=$(ls "$HOME"/.m2/wrapper/dists/apache-maven-*/*/lib/maven-artifact-*.jar | head -1)" >> "$GITHUB_ENV"
+
+      - name: Compare the version orders
+        run: >-
+          ./mvnw -B
+          -pl ward-cli -am
+          -Dsurefire.failIfNoSpecifiedTests=false
+          -Dtest=VersionOrderParityTest
+          -Dward.parity.maven-artifact="$MAVEN_ARTIFACT"
+          -Dward.parity.python="$RUNNER_TEMP/packaging/bin/python"
+          -Dward.parity.semver="$RUNNER_TEMP/semver"
+          test
+
+  # Validates the generated SBOMs against the CycloneDX 1.6 JSON schema with cyclonedx-core-java.
+  sbom-schema:
+    name: SBOM schema validation
+    if: inputs.compatibility-matrices
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+          cache-dependency-path: |
+            pom.xml
+            ward-*/pom.xml
+
+      - name: Resolve cyclonedx-core-java
+        run: |
+          set -eu
+          mkdir -p "$RUNNER_TEMP/cyclonedx"
+          cat > "$RUNNER_TEMP/cyclonedx/pom.xml" <<'POM'
+          <project xmlns="http://maven.apache.org/POM/4.0.0"><modelVersion>4.0.0</modelVersion>
+            <groupId>x</groupId><artifactId>x</artifactId><version>1</version>
+            <dependencies><dependency><groupId>org.cyclonedx</groupId><artifactId>cyclonedx-core-java</artifactId><version>11.0.1</version></dependency></dependencies>
+          </project>
+          POM
+          ./mvnw -B -q -f "$RUNNER_TEMP/cyclonedx/pom.xml" dependency:build-classpath -Dmdep.outputFile="$RUNNER_TEMP/cyclonedx/classpath.txt"
+
+      - name: Validate the SBOMs
+        run: >-
+          ./mvnw -B
+          -pl ward-cli -am
+          -Dsurefire.failIfNoSpecifiedTests=false
+          -Dtest=SbomSchemaSmokeTest
+          -Dward.sbom.schema="$(cat "$RUNNER_TEMP/cyclonedx/classpath.txt")"
+          test
+
   # Runs the real Spectral and the OWASP ruleset on the violating and passing fixtures of every
   # implemented OpenAPI lint rule and compares them with the committed report
   # (ward-cli/src/test/resources/parity/spectral-report.txt).
@@ -668,7 +881,7 @@ jobs:
         run: >-
           ./mvnw -B
           -Dsurefire.failIfNoSpecifiedTests=false
-          -Dtest=NativeInitTerminalSmokeTest,NativeWardGateSmokeTest,NativeFormatSmokeTest
+          -Dtest=NativeInitTerminalSmokeTest,NativeWardGateSmokeTest,NativeFormatSmokeTest,NativeApiCompatSmokeTest
           -Dward.native.binary=target/ward
           test
 
