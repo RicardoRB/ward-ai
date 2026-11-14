@@ -8,6 +8,8 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-11-14
+
 ### Added
 
 - `api-compat` compares a multi-module Maven or Gradle build module by module (#560). It discovers the modules of the build at the baseline and in the working tree (Maven `<modules>`, recursive and with profile modules; Gradle `include(...)` of `settings.gradle(.kts)`), reads each module's main roots from its own build file, and names the module in each finding (`[core] p.Client#close: ...`). A new module is not an error, a removed or renamed module reports its types as `type-removed`, and a type that keeps its name but moves to another module is reported as the new `api-compat:type-module-changed`. The new option `modules = ["core"]` limits the compared API to the named module directories. A project with no listed module behaves as before. Gradle `projectDir` remapping, `includeBuild` and `include` calls built from variables or split over lines are not read.
@@ -409,6 +411,7 @@ Initial release, published as `sentinel-ai`.
 - A bounded quality loop and a typed gate registry.
 - Starlight documentation site.
 
+[0.9.0]: https://github.com/RicardoRB/ward-ai/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/RicardoRB/ward-ai/compare/v0.7.1...v0.8.0
 [0.7.1]: https://github.com/RicardoRB/ward-ai/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/RicardoRB/ward-ai/compare/v0.6.0...v0.7.0
