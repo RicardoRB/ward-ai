@@ -22,7 +22,7 @@ defines the actual tool invocation. Ward does not install gate tools during `che
 | | `crap` | Ward analysis and a coverage report | Fail functions that are both complex and untested, by their CRAP score. |
 | Security | `secrets` | Ward's native secret rules | Detect committed secrets with no tool to install. See [secret detection](/configuration/secrets/). |
 | | `vulnerabilities` | Ward and OSV advisories | Match the resolved dependencies against known vulnerabilities. See [vulnerabilities](/configuration/vulnerabilities/). |
-| Architecture | `ward` | Ward analysis rules | Run Ward's analysis rules over source syntax trees, with stable `ward:<language>/<rule>` ids, and the layer, slice cycle and feature independence rules `ward:architecture/*`. |
+| Architecture | `ward` | Ward analysis rules | Run Ward's analysis rules over source syntax trees, with stable `ward:<language>/<rule>` ids, the layer, slice cycle and feature independence rules, and the rules you write in `ward-architecture.toml`, all `ward:architecture/*`. |
 | | `build-policy` | Ward's native build policy rules | Pinned plugin versions, no dynamic versions, a minimum build tool version and duplicate dependency declarations in Maven, Gradle, Node and Python build files, and on Maven one version of each dependency and no resolved version below a requested one; see [Build policy rules](/reference/build-policy-rules/). |
 | Dependencies & Compliance | `license` | Ward (native) | Licenses of the resolved dependencies against a deny or allow policy, for every toolchain. See [License gate](#license-gate). |
 | | `api-compat` | Ward | Compatibility of the public API with the latest release. |
@@ -840,8 +840,20 @@ rules = [
 
 A file with a syntax error is not checked by these rules. It is reported as an execution error, and
 the gate does not pass. Limits are not keys of the check: a `ward` check accepts only `uses`,
-`enabled`, `profiles`, `rules`, `rules-file`, `java-classpath`, `layers`, `cycles` and
-`independence`. Tune a limit in [`ward-rules.toml`](/configuration/ward-rules/).
+`enabled`, `profiles`, `rules`, `rules-file`, `architecture-file`, `java-classpath`, `layers`,
+`cycles` and `independence`. Tune a limit in [`ward-rules.toml`](/configuration/ward-rules/).
+
+## Which rule goes in which file
+
+| Rule | File | Written by |
+|---|---|---|
+| Style, bug and security rules, their options and severity (`ward:<language>/*`) | [`ward-rules.toml`](/configuration/ward-rules/) | `ward init`, `ward rules` |
+| `ward:architecture/layers`, `/cycles`, `/independence` | the `layers`, `cycles` and `independence` tables of the `ward` check in `ward.toml` | `ward init` |
+| `ward:architecture/dependencies`, `/naming`, `/location`: your own architecture rules | [`ward-architecture.toml`](/configuration/ward-architecture/) | you |
+
+`ward.toml` does not accept the rules of `ward-architecture.toml`: an `architecture` table under the
+`ward` check is an unknown key. `architecture-file` in the check points at another path for the
+file, as `rules-file` does for `ward-rules.toml`.
 
 ## Layer boundaries
 
@@ -858,9 +870,17 @@ from = ["domain", "application"]
 forbidden = ["adapter", "infrastructure"]
 ```
 
-Both lists are non-empty and name plain directory names. The rule covers Java, Python, TypeScript and
-JavaScript. Java and Swift test sources are not checked. Swift is not yet covered, because its type
-name edges are not in this release. `ward init` writes this table for the chosen style.
+Both lists are non-empty and name plain directory names. The rule covers Java, Python, TypeScript,
+JavaScript and Swift (Swift folder names compare ignoring case; Swift edges exist when the folder is
+a SwiftPM or Xcode project). It does not check Kotlin files: a Kotlin import of a forbidden layer is
+not reported by this rule, while the rules of [`ward-architecture.toml`](/configuration/ward-architecture/)
+do cover Kotlin. Java and Swift test sources are not checked. `ward init` writes this table for the
+chosen style.
+
+The table is a shorthand of a `must-not-depend-on` rule of `ward-architecture.toml` that selects
+`directories = [<from>]` with `exclude-paths` for the Java and Swift test folders, and forbids
+`directories = [<forbidden>]`; both report the same files and lines. The table keeps the rule id
+`ward:architecture/layers` and its message.
 
 ## Slice cycles and feature independence
 
@@ -886,6 +906,10 @@ outside the list is allowed.
 [[checks.ward.independence]]
 modules = ["shop/orders", "shop/billing"]
 ```
+
+A table of modules that are not nested equals one `must-not-depend-on` rule per module in
+`ward-architecture.toml`, selecting `paths = ["<module>/**"]` and forbidding the paths of the other
+modules. Nested modules, where the longest module wins, and `cycles` have no longhand.
 
 Both lists are validated: `roots` is non-empty and holds project-relative directories, and each
 `modules` list has at least two entries. `ward init --preset strict` writes these tables. Init
