@@ -34,6 +34,8 @@ final class KotlinFlowSites implements FlowSites {
   private static final String MEMBER = "memberAccessOperator";
   private static final String SIMPLE = "simpleIdentifier";
   private static final String POSTFIX = "postfixUnaryExpression";
+  private static final String PROPERTY = "propertyDeclaration";
+  private static final String ASSIGN = "=";
   private static final Set<String> OTHER_BODIES =
       Set.of(
           "functionDeclaration",
@@ -47,6 +49,7 @@ final class KotlinFlowSites implements FlowSites {
 
   private final JavaTypeNames types;
   private final Map<String, String> declared = new HashMap<>();
+  private final Map<String, String> constructed = new HashMap<>();
   private final KotlinParameterSites parameters;
   private final KotlinView view;
 
@@ -77,8 +80,50 @@ final class KotlinFlowSites implements FlowSites {
       case POSTFIX -> chain(node, "", found);
       case "functionValueParameters" -> found.addAll(parameters.of(node));
       case "variableDeclaration" -> variable(node);
+      case PROPERTY -> {
+        construction(node);
+        node.children().forEach(child -> walk(child, found));
+      }
       default -> node.children().forEach(child -> walk(child, found));
     }
+  }
+
+  /**
+   * A {@code val} with no declared type whose value is a constructor call has the type that it
+   * constructs, and a call on it is reported as a call on the construction, {@code Type()}, which
+   * is how a call into another file names its receiver.
+   */
+  private void construction(final SyntaxNode property) {
+    final SyntaxNode variable = KotlinFlowSyntax.child(property, "variableDeclaration");
+    if (variable == null
+        || KotlinFlowSyntax.child(variable, "type") != null
+        || !KotlinFlowSyntax.hasToken(property, "val")) {
+      return;
+    }
+    final List<SyntaxNode> parts = KotlinFlowSyntax.parts(property);
+    for (int index = 0; index < parts.size() - 1; index++) {
+      if (ASSIGN.equals(KotlinFlowSyntax.tokenText(parts.get(index)))) {
+        final String type = createdType(parts.get(index + 1));
+        if (!type.isEmpty()) {
+          final String name = KotlinFlowSyntax.text(KotlinScopeWalk.simple(variable));
+          declared.put(name, type);
+          constructed.put(name, type);
+        }
+      }
+    }
+  }
+
+  /** The type that an expression constructs, or an empty string when it is not just {@code T()}. */
+  private static String createdType(final SyntaxNode expression) {
+    final SyntaxNode value = KotlinFlowSyntax.unwrap(expression);
+    final List<SyntaxNode> parts = KotlinFlowSyntax.parts(value);
+    if (!POSTFIX.equals(value.kind())
+        || parts.size() != 2
+        || !KotlinCalls.startsWithCall(parts.subList(1, 2))) {
+      return "";
+    }
+    final String name = KotlinCalls.nameOf(parts.get(0));
+    return !name.isEmpty() && Character.isUpperCase(name.charAt(0)) ? name : "";
   }
 
   /** Records the declared type of a local, a for variable or a lambda parameter. */
@@ -154,7 +199,13 @@ final class KotlinFlowSites implements FlowSites {
     } else {
       found.add(
           new FlowSite(
-              FlowSiteKind.CALL, name, qualifier, receiverType(qualifier), List.of(), spans, span));
+              FlowSiteKind.CALL,
+              name,
+              constructed.containsKey(qualifier) ? constructed.get(qualifier) + "()" : qualifier,
+              receiverType(qualifier),
+              List.of(),
+              spans,
+              span));
     }
   }
 
