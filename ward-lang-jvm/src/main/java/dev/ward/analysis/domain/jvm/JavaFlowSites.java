@@ -28,6 +28,8 @@ final class JavaFlowSites implements FlowSites {
   private static final String METHOD_CALL = "methodCall";
   private static final String IDENTIFIER = "identifier";
   private static final String DOT = ".";
+  private static final String ASSIGN = "=";
+  private static final String VARIABLE_INITIALIZER = "variableInitializer";
   private static final int MEMBER_PARTS = 3;
   private static final String VARIABLE_DECLARATORS = "variableDeclarators";
   private static final String VARIABLE_DECLARATOR = "variableDeclarator";
@@ -88,6 +90,11 @@ final class JavaFlowSites implements FlowSites {
       creation(node, parts.get(1), found);
       return;
     }
+    if (parts.size() == MEMBER_PARTS && ASSIGN.equals(JavaFlowSyntax.text(parts.get(1)))) {
+      children(node, found);
+      JavaLiteralSites.of(parts.get(2), JavaLiteralSites.VALUE).ifPresent(found::add);
+      return;
+    }
     if (parts.size() != MEMBER_PARTS || !DOT.equals(JavaFlowSyntax.text(parts.get(1)))) {
       children(node, found);
       return;
@@ -118,6 +125,7 @@ final class JavaFlowSites implements FlowSites {
   private void call(final SyntaxNode call, final String qualifier, final List<FlowSite> found) {
     final List<SyntaxNode> arguments = JavaCallArguments.of(call);
     arguments.forEach(argument -> walk(argument, found));
+    arguments.forEach(argument -> literalArgument(argument, found));
     found.add(
         new FlowSite(
             FlowSiteKind.CALL,
@@ -129,6 +137,10 @@ final class JavaFlowSites implements FlowSites {
             call.span()));
   }
 
+  private static void literalArgument(final SyntaxNode argument, final List<FlowSite> found) {
+    JavaLiteralSites.of(argument, JavaLiteralSites.ARGUMENT).ifPresent(found::add);
+  }
+
   /**
    * Records {@code new T(args)} as a call named {@code <init>}. The arguments come first, so they
    * are listed before the creation; an array creation or an anonymous class body records no site.
@@ -136,6 +148,7 @@ final class JavaFlowSites implements FlowSites {
   private void creation(
       final SyntaxNode node, final SyntaxNode creator, final List<FlowSite> found) {
     children(creator, found);
+    JavaCreationSites.arguments(creator).forEach(argument -> literalArgument(argument, found));
     JavaCreationSites.of(types, node, creator).ifPresent(found::add);
   }
 
@@ -163,6 +176,11 @@ final class JavaFlowSites implements FlowSites {
           JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(declarator), VARIABLE_DECLARATOR_ID);
       if (id != null) {
         declareType(JavaFlowSyntax.text(JavaSyntaxNames.identifierOf(id)), type);
+      }
+      final SyntaxNode initializer =
+          JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(declarator), VARIABLE_INITIALIZER);
+      if (initializer != null) {
+        JavaLiteralSites.of(initializer, JavaLiteralSites.VALUE).ifPresent(found::add);
       }
     }
   }

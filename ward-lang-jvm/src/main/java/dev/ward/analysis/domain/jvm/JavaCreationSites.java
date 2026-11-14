@@ -49,6 +49,13 @@ final class JavaCreationSites {
             expression.span()));
   }
 
+  /** Returns the argument nodes of a creation; empty for an array. */
+  static List<SyntaxNode> arguments(final SyntaxNode creator) {
+    final SyntaxNode rest =
+        JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(creator), CLASS_CREATOR_REST);
+    return rest == null ? List.of() : JavaCallArguments.of(rest);
+  }
+
   /** Reports whether the parts of an expression are the {@code new} keyword and a creator. */
   static boolean isCreation(final List<SyntaxNode> parts) {
     return parts.size() == 2 && NEW.equals(JavaFlowSyntax.text(parts.get(0)));

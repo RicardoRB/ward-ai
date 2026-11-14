@@ -22,11 +22,18 @@ public final class ControlFlowDump {
 
   private static final Map<FlowSiteKind, String> SITE_CODES =
       Map.of(
-          FlowSiteKind.CALL, "call",
-          FlowSiteKind.MEMBER_READ, "member",
-          FlowSiteKind.MEMBER_WRITE, "write",
-          FlowSiteKind.PARAMETER, "param",
-          FlowSiteKind.STRING_BUILD, "string");
+          FlowSiteKind.CALL,
+          "call",
+          FlowSiteKind.MEMBER_READ,
+          "member",
+          FlowSiteKind.MEMBER_WRITE,
+          "write",
+          FlowSiteKind.PARAMETER,
+          "param",
+          FlowSiteKind.STRING_BUILD,
+          "string",
+          FlowSiteKind.LITERAL,
+          "literal");
 
   private ControlFlowDump() {}
 

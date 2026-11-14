@@ -28,7 +28,7 @@ sources = ["https://expressjs.com/en/5x/api.html#res.cookie", "https://github.co
 [[rule]]
 name = "cookie-missing-secure"
 cwe = ["CWE-614"]
-sources = ["https://expressjs.com/en/5x/api.html#res.cookie", "https://github.com/expressjs/session#cookiesecure", "https://github.com/expressjs/cookie-session#cookie-options", "https://cwe.mitre.org/data/definitions/614.html"]
+sources = ["https://expressjs.com/en/5x/api.html#res.cookie", "https://github.com/expressjs/session#cookiesecure", "https://github.com/expressjs/cookie-session#cookie-options", "https://jakarta.ee/specifications/servlet/6.0/apidocs/jakarta.servlet/jakarta/servlet/http/cookie", "https://cwe.mitre.org/data/definitions/614.html"]
 
 [[rule]]
 name = "csrf-protection-disabled"

@@ -1,0 +1,30 @@
+# Written for Ward from the JDK documentation named in the catalog row of the rule.
+# A string literal that is a whole value (an initializer, an assigned value or a whole argument) is the source.
+# A literal that is only the argument of the call that produces a value, such as an environment variable name, is not a literal site.
+
+[[sources]]
+kind = "literal"
+pattern = ".+"
+
+[[sinks]]
+kind = "call"
+name = "<init>"
+receiver = "javax.crypto.spec.SecretKeySpec"
+arguments = [0]
+
+# A value read at run time is not a secret that is written into the source.
+
+[[sanitizers]]
+kind = "call"
+name = "getenv"
+receiver = "java.lang.System"
+
+[[sanitizers]]
+kind = "call"
+name = "getProperty"
+receiver = "java.lang.System"
+
+[[sanitizers]]
+kind = "call"
+name = "getProperty"
+receiver = "org.springframework.core.env.Environment"

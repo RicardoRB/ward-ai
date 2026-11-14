@@ -1,6 +1,12 @@
 import javax.crypto.spec.SecretKeySpec;
+
 class Keys {
-  SecretKeySpec a() {
-    return new SecretKeySpec("secret-key-16bit".getBytes(), "AES");
+  Object direct() {
+    return new SecretKeySpec("0123456789abcdef".getBytes(), "AES");
+  }
+
+  Object variable() throws Exception {
+    String key = "0123456789abcdef";
+    return new SecretKeySpec(key.getBytes("UTF-8"), "AES");
   }
 }

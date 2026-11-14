@@ -22,6 +22,7 @@ enum GenericKind {
       List.of("text", "with-child", "parent", "parent-path"),
       List.of(option("text", RuleOptionType.REGEX))),
   REQUIRED_NODE("required-node", List.of("child", "descendant", "skip", "sibling"), List.of()),
+  COMPANION_NODE("companion-node", List.of("node", "match", "companion"), List.of()),
   COUNT("count", List.of("counted", "skip", "max"), List.of(option("max", RuleOptionType.INTEGER))),
   DEPTH("depth", List.of("reset", "max"), List.of(option("max", RuleOptionType.INTEGER))),
   TEXT_PATTERN(
