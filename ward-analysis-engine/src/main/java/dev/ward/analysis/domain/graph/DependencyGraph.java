@@ -1,9 +1,11 @@
 package dev.ward.analysis.domain.graph;
 
 import dev.ward.analysis.domain.ir.DependencyEdge;
+import java.util.ArrayDeque;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.Function;
@@ -50,6 +52,22 @@ public final class DependencyGraph {
   /** Returns the sorted paths that {@code path} depends on directly. */
   public List<String> dependenciesOf(final String path) {
     return outgoing.getOrDefault(path, List.of());
+  }
+
+  /**
+   * Returns the sorted paths that {@code path} depends on directly or through other files, not
+   * including {@code path} itself.
+   */
+  public List<String> closureOf(final String path) {
+    final Set<String> seen = new TreeSet<>();
+    final ArrayDeque<String> pending = new ArrayDeque<>(dependenciesOf(path));
+    while (!pending.isEmpty()) {
+      final String next = pending.poll();
+      if (!next.equals(path) && seen.add(next)) {
+        pending.addAll(dependenciesOf(next));
+      }
+    }
+    return List.copyOf(seen);
   }
 
   /** Returns the edges that leave {@code path}, in the graph's order, with their references. */

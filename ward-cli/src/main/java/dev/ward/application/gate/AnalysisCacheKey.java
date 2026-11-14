@@ -54,6 +54,31 @@ final class AnalysisCacheKey {
     return digest(List.of(ruleSetHash, unit.path(), unit.text(), dependencies(view)));
   }
 
+  /**
+   * Hashes what {@link #unit(String, SourceUnit, DependencyView)} does, and the path and full text
+   * of each file the unit depends on, directly or not. Used when the rule set has a taint rule: a
+   * value can cross a call into any of those files, so a change of one changes the findings.
+   * shortcut: the whole text is hashed, so a comment edit in a callee re-analyzes its dependents;
+   * upgrade by hashing a taint summary per file and rule specification.
+   */
+  static String unit(
+      final String ruleSetHash,
+      final SourceUnit unit,
+      final DependencyView view,
+      final List<SourceUnit> related) {
+    final List<String> parts = new ArrayList<>();
+    parts.add(ruleSetHash);
+    parts.add(unit.path());
+    parts.add(unit.text());
+    parts.add(dependencies(view));
+    related.forEach(
+        other -> {
+          parts.add(other.path());
+          parts.add(other.text());
+        });
+    return digest(parts);
+  }
+
   /** Hashes the rule set and the path and full text of a text file. */
   static String text(final String ruleSetHash, final TextFile file) {
     return digest(List.of("text", ruleSetHash, file.path(), file.text()));

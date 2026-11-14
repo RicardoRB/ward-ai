@@ -50,6 +50,11 @@ public record DependencySnapshot(
         graph.outgoingEdgesOf(path));
   }
 
+  /** Returns the paths that the file at {@code path} depends on, directly or through others. */
+  public List<String> closureOf(final String path) {
+    return graph.closureOf(path);
+  }
+
   private List<FileSummary> summariesOf(final List<String> paths) {
     return paths.stream().map(summaries::get).filter(Objects::nonNull).toList();
   }
