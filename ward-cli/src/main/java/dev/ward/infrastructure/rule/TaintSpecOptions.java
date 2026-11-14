@@ -53,10 +53,14 @@ final class TaintSpecOptions {
     return positions;
   }
 
-  /** A propagator's inputs are argument positions or the receiver. */
-  static void from(final String where, final TomlTable entry) {
+  /**
+   * A propagator's inputs are argument positions or the receiver. The positions are the arguments
+   * that a call stores into its receiver.
+   */
+  static List<Integer> from(final String where, final TomlTable entry) {
+    final List<Integer> positions = new ArrayList<>();
     if (!entry.contains(FROM)) {
-      return;
+      return positions;
     }
     final TomlArray array = entry.getArray(FROM);
     if (array == null) {
@@ -69,6 +73,10 @@ final class TaintSpecOptions {
         throw new RuleConfigurationException(
             where + " has a 'from' input that is neither a position nor 'receiver'");
       }
+      if (position) {
+        positions.add((int) array.getLong(index));
+      }
     }
+    return positions;
   }
 }

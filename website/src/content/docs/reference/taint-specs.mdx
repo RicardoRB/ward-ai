@@ -61,8 +61,10 @@ from = ["receiver", 0]
   any qualifier that ends with the rest, so `*.environment()` matches `builder.environment()`.
 - `arguments` is required for a sink and lists the argument positions it guards, counted from 0.
   Other entries cannot name arguments.
-- `from` on a propagator lists its inputs, as argument positions or `"receiver"`. It is checked but
-  does not narrow the analysis yet.
+- `from` on a propagator lists its inputs, as argument positions or `"receiver"`. The argument
+  positions are the arguments that the call stores into its receiver variable, so `list.add(v)`
+  with `from = [0]` taints `list` when `v` is tainted. `"receiver"` is checked but does not change
+  the analysis yet.
 
 Unknown keys and unknown tables are errors, so a misspelt key cannot silently match nothing.
 
@@ -136,7 +138,14 @@ no declared type, so the SQL sinks match the method name on any receiver.
   followed, and a method that a subclass overrides is not followed when the receiver is declared as
   the superclass. When several implementations are possible, none is followed, so a flow that only
   one implementation carries is never reported through the others.
-- Values that are read from a field or property of an object are not followed.
+- A container that receives a tainted value is tainted: an element or member assignment
+  (`a[i] = v`, `box.f = v`, in Java) or a call that a propagator names (`list.add(v)`,
+  `map.put(k, v)`, `sb.append(v)`) taints the variable, so a callee that reads it from its
+  parameter sees the taint. One tainted element taints the whole container, the order of stores and
+  reads is ignored, and a store of a clean value afterwards does not clean it, so this reports more
+  than a precise model would. Only a variable named by itself is a container: `this.items`, nested
+  members such as `a.b.c`, a static field that another method reads, and a value that is serialized
+  and read back are not followed.
 - Implicit flows through control conditions are not reported.
 - A variable's receiver type comes from the last declaration of its name in the function, which can
   differ from the declaration in scope when block-scoped names are reused.

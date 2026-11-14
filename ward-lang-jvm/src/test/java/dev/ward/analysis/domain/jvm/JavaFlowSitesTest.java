@@ -117,6 +117,30 @@ class JavaFlowSitesTest {
     assertThat(calls.get(5).receiverType()).contains("Impl");
   }
 
+  private static final String STORES =
+      """
+      class Stores {
+        void run(String[] array, Box box, String value) {
+          array[2] = value;
+          box.field = value;
+          box.inner.field = value;
+          this.own = value;
+          local = value;
+        }
+      }
+      """;
+
+  /** An assignment to a member or an element is a member write on the variable it starts with. */
+  @Test
+  void assignmentToAMemberOrElementIsAMemberWrite() {
+    final List<FlowSite> writes = sitesOf(STORES, "run(3)", FlowSiteKind.MEMBER_WRITE, "");
+    assertThat(writes.stream().map(FlowSite::qualifier).toList())
+        .containsExactly("array", "box", "box", "this");
+    assertThat(writes.stream().map(FlowSite::name).toList())
+        .containsExactly("[]", "field", "field", "own");
+    assertThat(writes.get(0).arguments()).hasSize(1);
+  }
+
   private static List<FlowSite> sitesOf(
       final String source, final String body, final FlowSiteKind kind, final String name) {
     final ControlFlowResult result = JavaFlowFixtures.lower(source);

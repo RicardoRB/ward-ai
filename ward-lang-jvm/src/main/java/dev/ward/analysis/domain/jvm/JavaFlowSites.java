@@ -109,6 +109,7 @@ final class JavaFlowSites implements FlowSites {
       children(node, found);
       JavaLiteralSites.of(parts.get(2), JavaLiteralSites.VALUE).ifPresent(found::add);
       creations.assign(JavaFlowSyntax.text(parts.get(0)), parts.get(2));
+      JavaStoreSites.of(parts.get(0), parts.get(2), node.span()).ifPresent(found::add);
       return;
     }
     if (parts.size() != MEMBER_PARTS || !DOT.equals(JavaFlowSyntax.text(parts.get(1)))) {
