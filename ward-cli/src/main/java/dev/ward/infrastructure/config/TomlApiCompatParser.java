@@ -7,11 +7,15 @@ import java.util.List;
 import org.tomlj.TomlArray;
 import org.tomlj.TomlTable;
 
-/** Parses the {@code base} and {@code include} options of an {@code api-compat} gate table. */
+/**
+ * Parses the {@code base}, {@code include} and {@code modules} options of an {@code api-compat}
+ * gate table.
+ */
 final class TomlApiCompatParser {
   private static final String API_COMPAT = "api-compat";
   private static final String BASE = "base";
   private static final String INCLUDE = "include";
+  private static final String MODULES = "modules";
 
   private TomlApiCompatParser() {}
 
@@ -20,7 +24,8 @@ final class TomlApiCompatParser {
     if (!API_COMPAT.equals(type)) {
       return null;
     }
-    return new ApiCompatOptions(base(where, gate), include(where, gate));
+    return new ApiCompatOptions(
+        base(where, gate), strings(where, gate, INCLUDE), strings(where, gate, MODULES));
   }
 
   private static String base(final String where, final TomlTable gate) {
@@ -34,13 +39,14 @@ final class TomlApiCompatParser {
     return value.trim();
   }
 
-  private static List<String> include(final String where, final TomlTable gate) {
-    if (!gate.contains(INCLUDE)) {
+  private static List<String> strings(
+      final String where, final TomlTable gate, final String option) {
+    if (!gate.contains(option)) {
       return List.of();
     }
     final String key =
-        "'" + where + "." + INCLUDE + "' must be a non-empty array of non-blank strings";
-    final TomlArray array = gate.isArray(INCLUDE) ? gate.getArray(INCLUDE) : null;
+        "'" + where + "." + option + "' must be a non-empty array of non-blank strings";
+    final TomlArray array = gate.isArray(option) ? gate.getArray(option) : null;
     if (array == null || array.isEmpty()) {
       throw new WardException(key);
     }
