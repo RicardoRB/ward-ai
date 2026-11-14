@@ -8,6 +8,14 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Added
+
+- `ward sbom --name <name>` sets the name of the root component.
+
+### Changed
+
+- The root component of `ward sbom` is named after the project (Maven `artifactId`, Gradle `rootProject.name`, `package.json` `name`, `pyproject.toml` project name, `Package.swift` package name) instead of the folder, so the same project gives the same SBOM in any checkout. A project that declares no name keeps the folder name. `ward licenses` never used the folder name.
+
 ## [0.8.0] - 2026-11-13
 
 ### Added

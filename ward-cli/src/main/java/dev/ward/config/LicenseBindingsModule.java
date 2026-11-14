@@ -10,6 +10,8 @@ import dev.ward.domain.json.JsonCodec;
 import dev.ward.domain.license.LicenseCatalog;
 import dev.ward.domain.license.LicenseMetadata;
 import dev.ward.domain.license.LicenseTexts;
+import dev.ward.domain.project.ProjectNameReader;
+import dev.ward.domain.project.Toolchain;
 import dev.ward.infrastructure.cli.licenses.LicensesCommand;
 import dev.ward.infrastructure.cli.sbom.SbomCommand;
 import dev.ward.infrastructure.license.BundledLicenseCatalog;
@@ -18,6 +20,10 @@ import dev.ward.infrastructure.license.jvm.PomLicenseMetadata;
 import dev.ward.infrastructure.license.node.NodeLicenseMetadata;
 import dev.ward.infrastructure.license.python.PythonLicenseMetadata;
 import dev.ward.infrastructure.license.swift.SwiftLicenseMetadata;
+import dev.ward.infrastructure.project.jvm.JvmProjectName;
+import dev.ward.infrastructure.project.node.NodeProjectName;
+import dev.ward.infrastructure.project.python.PythonProjectName;
+import dev.ward.infrastructure.project.swift.SwiftProjectName;
 import java.nio.file.Path;
 import java.util.EnumMap;
 import java.util.Map;
@@ -65,5 +71,15 @@ abstract class LicenseBindingsModule {
     readers.put(Ecosystem.PYPI, new PythonLicenseMetadata(catalog, System.getenv("VIRTUAL_ENV")));
     readers.put(Ecosystem.SWIFT_URL, new SwiftLicenseMetadata(texts));
     return readers;
+  }
+
+  @Provides
+  static Map<Toolchain, ProjectNameReader> projectNames(
+      final JvmProjectName jvm,
+      final NodeProjectName node,
+      final PythonProjectName python,
+      final SwiftProjectName swift) {
+    return Map.of(
+        Toolchain.JVM, jvm, Toolchain.NODE, node, Toolchain.PYTHON, python, Toolchain.SWIFT, swift);
   }
 }

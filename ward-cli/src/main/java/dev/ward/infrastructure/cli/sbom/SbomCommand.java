@@ -9,12 +9,14 @@ import dev.ward.infrastructure.cli.ProjectOptions;
 import dev.ward.infrastructure.cli.licenses.DocumentOptions;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 import javax.inject.Inject;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Mixin;
 import picocli.CommandLine.Model.CommandSpec;
+import picocli.CommandLine.Option;
 import picocli.CommandLine.Spec;
 
 /** The {@code ward sbom} command: writes the CycloneDX 1.6 JSON bill of materials. */
@@ -36,6 +38,14 @@ public final class SbomCommand implements Callable<Integer> {
 
   @Mixin private final DocumentOptions document = new DocumentOptions();
 
+  @Option(
+      names = "--name",
+      paramLabel = "<name>",
+      description =
+          "Name of the root component (default: the name the build file declares, else the"
+              + " directory name).")
+  private String name;
+
   private final SbomService service;
   private final DocumentOutput output;
 
@@ -49,7 +59,8 @@ public final class SbomCommand implements Callable<Integer> {
   @Override
   public Integer call() {
     try {
-      final Document sbom = service.generate(options.directory(), document.scopes());
+      final Document sbom =
+          service.generate(options.directory(), document.scopes(), Optional.ofNullable(name));
       sbom.warnings().forEach(warning -> error().println(warning));
       LOGGER.fine(() -> "event=sbom-command warnings=" + sbom.warnings().size());
       if (document.output() == null) {

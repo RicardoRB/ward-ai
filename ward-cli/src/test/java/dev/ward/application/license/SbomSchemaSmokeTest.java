@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
@@ -35,10 +36,11 @@ class SbomSchemaSmokeTest {
   @Test
   void everyEcosystemAndLicenseShapeIsAValidDocument() throws Exception {
     final SbomService sbom =
-        new SbomService(LicenseFixtures.detector(), mixedEcosystems(), "1.2.3");
+        new SbomService(LicenseFixtures.detector(), mixedEcosystems(), Map.of(), "1.2.3");
 
     final Path file = work.resolve("sbom.json");
-    Files.writeString(file, sbom.generate(Path.of("/work/app"), Set.of()).content());
+    Files.writeString(
+        file, sbom.generate(Path.of("/work/app"), Set.of(), Optional.empty()).content());
 
     final Result result = validate(file);
 
