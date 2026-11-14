@@ -14,8 +14,10 @@ import java.util.stream.Stream;
  * reaches the method of that class, as {@code Owner.m(x)} does. The class is the one the receiver
  * was created as, when the frontend recorded it as a {@value #CREATED_AS} annotation of the call,
  * and otherwise the declared type of the receiver. A call is renamed only when that class declares
- * a body for the method that the project's graphs know and no entry of the specification already
- * matches the call, so calls to library types keep their own matching.
+ * a body for the method that the project's graphs know and no source, sink or sanitizer entry of
+ * the specification already matches the call, so calls to library types keep their own matching.
+ * The owner carries the package, so two classes with one simple name in different packages are told
+ * apart.
  *
  * <p>The policy for a receiver whose class cannot be decided is to follow nothing: an interface or
  * abstract method has no body, so a call through one is followed only when the receiver was created
@@ -54,19 +56,23 @@ final class DispatchedCalls {
     if (site.kind() != FlowSiteKind.CALL || site.qualifier().isEmpty() || matched(site, spec)) {
       return site;
     }
-    return ownerOf(site)
-        .filter(owner -> known.contains(owner + "#" + callKey(site)))
-        .map(owner -> named(site, owner))
-        .orElse(site);
+    return ownerOf(site, known).map(owner -> named(site, owner)).orElse(site);
   }
 
-  private static Optional<String> ownerOf(final FlowSite site) {
+  /**
+   * The owner that the call reaches: the type of the receiver with its package, or else its simple
+   * name, which only a body without a package (Kotlin, Node) can have as its owner.
+   */
+  private static Optional<String> ownerOf(final FlowSite site, final Set<String> known) {
     final Optional<String> created =
         site.annotations().stream()
             .filter(annotation -> annotation.startsWith(CREATED_AS))
             .map(annotation -> annotation.substring(CREATED_AS.length()))
             .findFirst();
-    return created.or(site::receiverType).map(DispatchedCalls::simpleName);
+    return created.or(site::receiverType).stream()
+        .flatMap(type -> Stream.of(type, simpleName(type)))
+        .filter(owner -> known.contains(owner + "#" + callKey(site)))
+        .findFirst();
   }
 
   private static String simpleName(final String type) {
@@ -78,7 +84,7 @@ final class DispatchedCalls {
   }
 
   private static boolean matched(final FlowSite site, final TaintSpec spec) {
-    return Stream.of(spec.sources(), spec.sinks(), spec.sanitizers(), spec.propagators())
+    return Stream.of(spec.sources(), spec.sinks(), spec.sanitizers())
         .flatMap(List::stream)
         .anyMatch(entry -> entry.matches(site));
   }

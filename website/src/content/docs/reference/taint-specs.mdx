@@ -129,7 +129,9 @@ no declared type, so the SQL sinks match the method name on any receiver.
   parameter reaches a sink is a sink for that argument. A call is matched by name and argument
   count. Within a file it has no qualifier, `this` or the owner's name; into another file it names
   the owner, as `Owner.m(x)` and `(new Owner()).m(x)` do. A name that two functions of the file
-  share is not followed.
+  share is not followed. In Java the owner carries its package, so two classes with one simple name,
+  method name and argument count in different packages are told apart by the import or package that
+  the call's type resolves through.
 - In Java, a call through a variable, a field or a parameter is followed when the class of the
   receiver is decided: the class the receiver was created as (`Base b = new Impl(); b.run(x)` calls
   `Impl.run`, when every value assigned to `b` in the body is a creation of that class, or a final

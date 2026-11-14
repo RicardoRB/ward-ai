@@ -160,10 +160,14 @@ public final class JavaControlFlow implements ControlFlowLowering {
       }
     }
 
-    private static String typeScope(final SyntaxNode node, final String owner) {
+    /** A top-level type is named {@code pkg:Type}, so the owner of a body carries its package. */
+    private String typeScope(final SyntaxNode node, final String owner) {
       final String name =
           JavaFlowSyntax.text(JavaFlowSyntax.firstOf(JavaFlowSyntax.parts(node), IDENTIFIER));
-      return owner.isEmpty() ? name : owner + "." + name;
+      if (!owner.isEmpty()) {
+        return owner + "." + name;
+      }
+      return types.packageName().isEmpty() ? name : types.packageName() + ":" + name;
     }
 
     private static String parameters(final SyntaxNode node) {
