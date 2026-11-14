@@ -151,6 +151,21 @@ Python rules match the call or assignment as written.
 | `ward:python/template-injection` | CWE-1336 | error | standard, strict | Request data is the template text of `render_template_string` or `Template` |
 | `ward:python/weak-password-hash` | CWE-916, CWE-328 | error | standard, strict | A plain or weak hash is not a password hash; use a slow, salted one such as scrypt, argon2 or the Django hashers |
 
+## Swift
+
+The Swift rules read the source lines, because Swift has no taint analysis yet, and report the line.
+A name that holds a literal and says token, secret or password is reported even when the literal is
+only a label.
+
+| Rule | CWE | Severity | Presets | What it reports |
+|---|---|---|---|---|
+| `ward:swift/cleartext-url` | CWE-319 | error | standard, strict | `URL(string:)` with an `http://` literal other than localhost |
+| `ward:swift/weak-hash` | CWE-328 | error | standard, strict | CryptoKit `Insecure.MD5` or `Insecure.SHA1`, or CommonCrypto `CC_MD5` or `CC_SHA1` |
+| `ward:swift/weak-cipher` | CWE-327 | error | standard, strict | CommonCrypto DES, 3DES, RC2, RC4 or ECB mode |
+| `ward:swift/weak-random` | CWE-338 | error | standard, strict | `rand`, `random`, `srand`, `drand48` and `lrand48` of the C library |
+| `ward:swift/hard-coded-credential` | CWE-798 | error | standard, strict | A password, secret, token or API key declared with a string literal |
+| `ward:swift/userdefaults-secret` | CWE-312 | error | standard, strict | A password, secret or token stored in `UserDefaults` |
+
 ## Later
 
 Taint across files, taint rules for Kotlin (which needs a Kotlin control-flow lowering first) and Swift rules are planned.
