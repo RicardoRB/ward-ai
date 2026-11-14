@@ -3,7 +3,7 @@
 # Every ward:typescript/* and ward:javascript/* rule of category security ran with the strict preset, over every .ts, .tsx, .js and .mjs file outside node_modules.
 # A finding is true (tp), false (fp) or undetermined (un), as read from the code at its line; the labels are in juice-shop-labels.txt and the categories in juice-shop-categories.txt.
 # Regenerate: ./mvnw -pl ward-cli -am -Dtest=JuiceShopBenchmarkSmokeTest -Dward.benchmark.juice-shop=<dir> -Dward.benchmark.write=true -Dsurefire.failIfNoSpecifiedTests=false test
-files 681 | not analysed (syntax errors) 151
+files 681 | not analysed (syntax errors) 30
 ward:javascript/cleartext-transport | findings 0 | tp 0 | fp 0 | un 0
 ward:javascript/cookie-broad-scope | findings 0 | tp 0 | fp 0 | un 0
 ward:javascript/cookie-missing-http-only | findings 0 | tp 0 | fp 0 | un 0
@@ -44,15 +44,15 @@ ward:javascript/wildcard-post-message | findings 0 | tp 0 | fp 0 | un 0
 ward:javascript/xml-external-entities | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/cleartext-transport | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/cookie-broad-scope | findings 0 | tp 0 | fp 0 | un 0
-ward:typescript/cookie-missing-http-only | findings 1 | tp 1 | fp 0 | un 0
-ward:typescript/cookie-missing-same-site | findings 1 | tp 1 | fp 0 | un 0
-ward:typescript/cookie-missing-secure | findings 1 | tp 1 | fp 0 | un 0
-ward:typescript/dom-xss | findings 1 | tp 0 | fp 1 | un 0
+ward:typescript/cookie-missing-http-only | findings 2 | tp 2 | fp 0 | un 0
+ward:typescript/cookie-missing-same-site | findings 2 | tp 2 | fp 0 | un 0
+ward:typescript/cookie-missing-secure | findings 2 | tp 2 | fp 0 | un 0
+ward:typescript/dom-xss | findings 2 | tp 0 | fp 2 | un 0
 ward:typescript/ecb-mode | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/hard-coded-secret | findings 14 | tp 5 | fp 9 | un 0
 ward:typescript/header-injection | findings 1 | tp 1 | fp 0 | un 0
 ward:typescript/insecure-cookie | findings 0 | tp 0 | fp 0 | un 0
-ward:typescript/insecure-random | findings 12 | tp 0 | fp 12 | un 0
+ward:typescript/insecure-random | findings 13 | tp 1 | fp 12 | un 0
 ward:typescript/jwt-without-verification | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/log-forging | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/missing-frame-protection | findings 0 | tp 0 | fp 0 | un 0
@@ -70,13 +70,13 @@ ward:typescript/static-iv | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/template-injection | findings 1 | tp 1 | fp 0 | un 0
 ward:typescript/tls-verification-disabled | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/unfinished-aead | findings 0 | tp 0 | fp 0 | un 0
-ward:typescript/unsafe-framework-trust | findings 6 | tp 5 | fp 1 | un 0
+ward:typescript/unsafe-framework-trust | findings 13 | tp 11 | fp 2 | un 0
 ward:typescript/untrusted-deserialization | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/untrusted-redirect | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/weak-argon2-parameters | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/weak-cipher | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/weak-gcm-tag-length | findings 0 | tp 0 | fp 0 | un 0
-ward:typescript/weak-hash | findings 0 | tp 0 | fp 0 | un 0
+ward:typescript/weak-hash | findings 2 | tp 1 | fp 1 | un 0
 ward:typescript/weak-key-size | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/wildcard-post-message | findings 0 | tp 0 | fp 0 | un 0
 ward:typescript/xml-external-entities | findings 0 | tp 0 | fp 0 | un 0
