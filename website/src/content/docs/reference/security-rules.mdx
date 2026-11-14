@@ -14,6 +14,17 @@ deserialization or hard-coded credentials have severity `error` and run in the `
 random numbers, clear-text transport or dynamic markup, have severity `warning` and run in `strict`
 only. Change either with `severity` in `ward-rules.toml`, or skip paths with `exclude-paths`.
 
+## Test files and vendored code
+
+`ward:typescript/hard-coded-secret` and `ward:javascript/hard-coded-secret` skip test sources
+(`*.test.*`, `*.spec.*`, and files under `test`, `tests` or `__tests__`), where a literal is a mock
+value. Ward reads no minified script (`*.min.js`, `*.min.mjs`, `*.min.cjs`) for any rule. A
+vendored library that is not minified is still read: leave it out with `exclude-paths` in
+`ward-rules.toml`, for example `exclude-paths = ["frontend/src/assets/private/**"]` under
+`[rules.javascript.dom-xss]`. The two rules have no option to read test sources too; the
+[`secrets` gate](/configuration/secrets/) reads every text file, tests included, and is the
+way to look for real credentials committed in a test.
+
 ## How the rules look
 
 **Injection rules** follow untrusted data inside one file. A source, such as a request
@@ -97,12 +108,13 @@ function is imported from.
 | `ward:javascript/log-forging` | CWE-117 | error | standard, strict | Request data in a log message, inside one function |
 | `ward:javascript/header-injection` | CWE-113 | error | standard, strict | Request data in a response header, inside one function |
 | `ward:javascript/regex-injection` | CWE-1333, CWE-400 | error | standard, strict | Request data compiled as a regular expression, inside one function |
+| `ward:javascript/path-traversal` | CWE-22 | error | standard, strict | Untrusted data from a request reaches the path of an `fs` call, `res.sendFile` or `res.download`; `path.basename` is the only sanitizer, and a prefix check on `path.resolve` is not recognized |
 | `ward:javascript/weak-hash` | CWE-328, CWE-327 | error | standard, strict | MD2, MD4, MD5 and SHA-1 are broken for integrity and signatures; use SHA-256 or stronger |
 | `ward:javascript/weak-cipher` | CWE-327 | error | standard, strict | DES, 3DES, RC2, RC4 and Blowfish are broken or too weak; use aes-256-gcm |
 | `ward:javascript/ecb-mode` | CWE-327 | error | standard, strict | ECB mode encrypts equal blocks to equal output; use aes-256-gcm |
 | `ward:javascript/static-iv` | CWE-329 | error | standard, strict | A fixed initialization vector repeats across messages and leaks patterns; use crypto.randomBytes for each message |
 | `ward:javascript/weak-key-size` | CWE-326 | error | standard, strict | An RSA key of 1536 bits or fewer is too short; use at least 2048 bits |
-| `ward:javascript/insecure-random` | CWE-338, CWE-330 | warning | strict | Math.random is predictable; use crypto.randomBytes or crypto.randomUUID for tokens, keys and identifiers |
+| `ward:javascript/insecure-random` | CWE-338, CWE-330 | warning | strict | Math.random is predictable and this name holds a token, key, secret, salt, session or identifier; use crypto.randomBytes or crypto.randomUUID. A random value in any other name is not reported |
 | `ward:javascript/tls-verification-disabled` | CWE-295 | error | standard, strict | This setting turns off certificate checks, so anyone can impersonate the server; keep verification on |
 | `ward:javascript/cleartext-transport` | CWE-319 | warning | strict | This address uses http or ws, which send data in clear text; use https or wss |
 | `ward:javascript/jwt-without-verification` | CWE-347 | error | standard, strict | The none algorithm skips the signature, so anyone can forge the token; name a real algorithm |

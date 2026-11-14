@@ -2,6 +2,7 @@ package dev.ward.analysis.domain.flow.taint;
 
 import dev.ward.analysis.domain.ir.FlowSite;
 import dev.ward.analysis.domain.ir.FlowSiteKind;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -35,6 +36,7 @@ public record TaintEntry(
     Optional<Pattern> pattern) {
 
   private static final String ANY_PREFIX = "*";
+  private static final Pattern CHAIN_SEPARATOR = Pattern.compile("\\??\\.");
 
   /**
    * Creates an entry that has no literal-text pattern.
@@ -103,10 +105,15 @@ public record TaintEntry(
     return qualifier.map(text -> qualifierMatches(text, site)).orElse(true);
   }
 
-  /** A qualifier that starts with {@code *} matches any qualifier that ends with the rest. */
+  /**
+   * A qualifier that starts with {@code *} matches any qualifier that ends with the rest. Any other
+   * qualifier matches a receiver chain that has it as a member, at any depth: {@code db} and {@code
+   * sequelize} both match {@code db.sequelize}.
+   */
   private static boolean qualifierMatches(final String expected, final FlowSite site) {
     return expected.startsWith(ANY_PREFIX)
         ? site.qualifier().endsWith(expected.substring(ANY_PREFIX.length()))
-        : expected.equals(site.qualifier());
+        : expected.equals(site.qualifier())
+            || Arrays.asList(CHAIN_SEPARATOR.split(site.qualifier())).contains(expected);
   }
 }
