@@ -1,15 +1,18 @@
-Lists of 32 third-party dependencies.
+Lists of 38 third-party dependencies.
 
 Apache-2.0
     com.google.dagger:dagger:2.60.1 [maven]
+    com.google.errorprone:error_prone_annotations:2.52.0 [maven]
     com.google.guava:guava:33.8.0-jre [maven]
     info.picocli:picocli:4.7.7 [maven]
     jakarta.inject:jakarta.inject-api:2.0.1 [maven]
     javax.inject:javax.inject:1 [maven]
+    org.apache.commons:commons-lang3:3.21.0 [maven]
     org.apache.fory:fory-core:1.7.7 [maven]
     org.apache.fory:fory-json:1.7.7 [maven]
+    org.apache.httpcomponents:httpcore:4.4.14 [maven]
     org.codehaus.plexus:plexus-utils:3.6.2 [maven]
-    org.jspecify:jspecify:1.0.0 [maven]
+    org.jspecify:jspecify:1.0.1 [maven]
     org.osgi:org.osgi.service.prefs:1.1.2 [maven]
     org.osgi:osgi.annotation:8.0.1 [maven]
     org.tomlj:tomlj:2.2.0 [maven]
@@ -35,10 +38,15 @@ EPL-2.0
     org.eclipse.platform:org.eclipse.equinox.registry:3.12.600 [maven]
     org.eclipse.platform:org.eclipse.osgi:3.24.300 [maven]
     org.eclipse.platform:org.eclipse.text:3.14.800 [maven]
+    org.junit.platform:junit-platform-engine:6.1.3 [maven]
 
 LGPL-2.1-or-later OR Apache-2.0
     net.java.dev.jna:jna-platform:5.19.1 [maven]
     net.java.dev.jna:jna:5.19.1 [maven]
+
+MIT
+    org.checkerframework:checker-qual:3.55.1 [maven]
+    org.slf4j:slf4j-api:2.0.19 [maven]
 
 ================================================================
 Apache-2.0
@@ -1052,3 +1060,17 @@ necessary.  Here is a sample; alter the names:
   Ty Coon, President of Vice
 
 That's all there is to it!
+
+================================================================
+MIT
+================================================================
+
+MIT License
+
+Copyright (c) <year> <copyright holders>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

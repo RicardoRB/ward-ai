@@ -15,7 +15,7 @@
     "component": {
       "type": "application",
       "bom-ref": "root",
-      "name": "blissful-dewdney-bdb85a"
+      "name": "ward-ai"
     }
   },
   "components": [
@@ -26,6 +26,21 @@
       "name": "dagger",
       "version": "2.60.1",
       "purl": "pkg:maven/com.google.dagger/dagger@2.60.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:maven/com.google.errorprone/error_prone_annotations@2.52.0",
+      "group": "com.google.errorprone",
+      "name": "error_prone_annotations",
+      "version": "2.52.0",
+      "purl": "pkg:maven/com.google.errorprone/error_prone_annotations@2.52.0",
       "licenses": [
         {
           "license": {
@@ -137,6 +152,21 @@
     },
     {
       "type": "library",
+      "bom-ref": "pkg:maven/org.apache.commons/commons-lang3@3.21.0",
+      "group": "org.apache.commons",
+      "name": "commons-lang3",
+      "version": "3.21.0",
+      "purl": "pkg:maven/org.apache.commons/commons-lang3@3.21.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ]
+    },
+    {
+      "type": "library",
       "bom-ref": "pkg:maven/org.apache.fory/fory-core@1.7.7",
       "group": "org.apache.fory",
       "name": "fory-core",
@@ -161,6 +191,36 @@
         {
           "license": {
             "id": "Apache-2.0"
+          }
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:maven/org.apache.httpcomponents/httpcore@4.4.14",
+      "group": "org.apache.httpcomponents",
+      "name": "httpcore",
+      "version": "4.4.14",
+      "purl": "pkg:maven/org.apache.httpcomponents/httpcore@4.4.14",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:maven/org.checkerframework/checker-qual@3.55.1",
+      "group": "org.checkerframework",
+      "name": "checker-qual",
+      "version": "3.55.1",
+      "purl": "pkg:maven/org.checkerframework/checker-qual@3.55.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
           }
         }
       ]
@@ -437,15 +497,30 @@
     },
     {
       "type": "library",
-      "bom-ref": "pkg:maven/org.jspecify/jspecify@1.0.0",
+      "bom-ref": "pkg:maven/org.jspecify/jspecify@1.0.1",
       "group": "org.jspecify",
       "name": "jspecify",
-      "version": "1.0.0",
-      "purl": "pkg:maven/org.jspecify/jspecify@1.0.0",
+      "version": "1.0.1",
+      "purl": "pkg:maven/org.jspecify/jspecify@1.0.1",
       "licenses": [
         {
           "license": {
             "id": "Apache-2.0"
+          }
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:maven/org.junit.platform/junit-platform-engine@6.1.3",
+      "group": "org.junit.platform",
+      "name": "junit-platform-engine",
+      "version": "6.1.3",
+      "purl": "pkg:maven/org.junit.platform/junit-platform-engine@6.1.3",
+      "licenses": [
+        {
+          "license": {
+            "id": "EPL-2.0"
           }
         }
       ]
@@ -476,6 +551,21 @@
         {
           "license": {
             "id": "Apache-2.0"
+          }
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:maven/org.slf4j/slf4j-api@2.0.19",
+      "group": "org.slf4j",
+      "name": "slf4j-api",
+      "version": "2.0.19",
+      "purl": "pkg:maven/org.slf4j/slf4j-api@2.0.19",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
           }
         }
       ]
@@ -514,6 +604,10 @@
       "dependsOn": []
     },
     {
+      "ref": "pkg:maven/com.google.errorprone/error_prone_annotations@2.52.0",
+      "dependsOn": []
+    },
+    {
       "ref": "pkg:maven/com.google.guava/guava@33.8.0-jre",
       "dependsOn": []
     },
@@ -542,11 +636,23 @@
       "dependsOn": []
     },
     {
+      "ref": "pkg:maven/org.apache.commons/commons-lang3@3.21.0",
+      "dependsOn": []
+    },
+    {
       "ref": "pkg:maven/org.apache.fory/fory-core@1.7.7",
       "dependsOn": []
     },
     {
       "ref": "pkg:maven/org.apache.fory/fory-json@1.7.7",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:maven/org.apache.httpcomponents/httpcore@4.4.14",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:maven/org.checkerframework/checker-qual@3.55.1",
       "dependsOn": []
     },
     {
@@ -622,7 +728,11 @@
       "dependsOn": []
     },
     {
-      "ref": "pkg:maven/org.jspecify/jspecify@1.0.0",
+      "ref": "pkg:maven/org.jspecify/jspecify@1.0.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:maven/org.junit.platform/junit-platform-engine@6.1.3",
       "dependsOn": []
     },
     {
@@ -631,6 +741,10 @@
     },
     {
       "ref": "pkg:maven/org.osgi/osgi.annotation@8.0.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:maven/org.slf4j/slf4j-api@2.0.19",
       "dependsOn": []
     },
     {

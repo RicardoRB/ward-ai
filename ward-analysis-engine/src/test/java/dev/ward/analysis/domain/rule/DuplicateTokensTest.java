@@ -12,9 +12,10 @@ import org.junit.jupiter.api.Test;
 
 class DuplicateTokensTest {
 
-  private static final DuplicateCodeOptions KEEP = new DuplicateCodeOptions(1, false, false, false);
+  private static final DuplicateCodeOptions KEEP =
+      new DuplicateCodeOptions(1, false, false, false, DuplicateCodeOptions.NO_SHARE_LIMIT);
   private static final DuplicateCodeOptions ABSTRACT =
-      new DuplicateCodeOptions(1, true, true, true);
+      new DuplicateCodeOptions(1, true, true, true, DuplicateCodeOptions.NO_SHARE_LIMIT);
   private static final Span SPAN = new Span(1, 1, 1, 2, 0, 1);
 
   @Test

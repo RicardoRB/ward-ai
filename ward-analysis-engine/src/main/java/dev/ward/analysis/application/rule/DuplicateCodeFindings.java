@@ -60,13 +60,8 @@ public final class DuplicateCodeFindings {
       return List.of();
     }
     final DuplicateCodeOptions options = DuplicateCodeOptions.parse(rule.body());
-    final SortedMap<String, List<DuplicateTokens.Token>> files = new TreeMap<>();
-    for (final SourceUnit unit : units) {
-      if (unit.language() == language) {
-        final SyntaxNode tree = frontend.frontend().parse(unit).tree();
-        files.put(unit.path(), DuplicateTokens.of(tree, language, options));
-      }
-    }
+    final SortedMap<String, List<DuplicateTokens.Token>> files =
+        tokensByFile(units, frontend, options);
     final List<AnalysisFinding> findings = new ArrayList<>();
     final List<CloneDetector.Clone> clones = CloneDetector.detect(files, options.minTokens());
     for (final CloneDetector.Clone clone : clones) {
@@ -77,6 +72,21 @@ public final class DuplicateCodeFindings {
       findings.add(shareFinding(rule, options, share, clones.get(0)));
     }
     return findings;
+  }
+
+  private static SortedMap<String, List<DuplicateTokens.Token>> tokensByFile(
+      final List<SourceUnit> units,
+      final FrontendSupport frontend,
+      final DuplicateCodeOptions options) {
+    final AnalysisLanguage language = frontend.language();
+    final SortedMap<String, List<DuplicateTokens.Token>> files = new TreeMap<>();
+    for (final SourceUnit unit : units) {
+      if (unit.language() == language) {
+        final SyntaxNode tree = frontend.frontend().parse(unit).tree();
+        files.put(unit.path(), DuplicateTokens.of(tree, language, options));
+      }
+    }
+    return files;
   }
 
   /** The project-level finding, placed at the start of the file of the first clone. */
