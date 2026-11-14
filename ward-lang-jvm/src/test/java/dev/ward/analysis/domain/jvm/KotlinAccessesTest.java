@@ -58,6 +58,12 @@ class KotlinAccessesTest {
   }
 
   @Test
+  void theStatementsOfALambdaKeepTheirOrderInsideTheNodeThatHoldsIt() {
+    assertThat(of("fun f(a: String) { run { val t = a\n use(t) } }", 1))
+        .containsExactly("p:a", "r:a", "w:t", "r:t");
+  }
+
+  @Test
   void aCatchParameterIsWrittenOnEntryToTheHandler() {
     assertThat(of("fun f() { try { risky() } catch (e: Exception) { log(e) } }", 0))
         .containsExactly("w:e", "r:e");
@@ -73,5 +79,11 @@ class KotlinAccessesTest {
   void aDestructuringDeclarationWritesEveryName() {
     assertThat(of("fun f(a: Pair<Int, Int>) { val (x, y) = a }", 1))
         .containsExactly("p:a", "r:a", "w:x", "w:y");
+  }
+
+  @Test
+  void aPrefixIncrementReadsThenWritesTheName() {
+    assertThat(of("fun f(a: Int) { var b = a\n ++b }", 1))
+        .containsExactly("p:a", "r:a", "w:b", "r:b", "w:b");
   }
 }

@@ -166,6 +166,43 @@ only a label.
 | `ward:swift/hard-coded-credential` | CWE-798 | error | standard, strict | A password, secret, token or API key declared with a string literal |
 | `ward:swift/userdefaults-secret` | CWE-312 | error | standard, strict | A password, secret or token stored in `UserDefaults` |
 
+## Kotlin
+
+The Kotlin rules are the injection rules of Java for Kotlin code, and they are taint rules: a value that a
+Servlet request getter (`getParameter`, `getHeader`), a Spring handler parameter (`@RequestParam`,
+`@PathVariable`, `@RequestBody`), a Ktor call (`call.parameters`, `call.receiveText()`) or console input
+(`readLine()`) gives a function, and that reaches the sink of the rule in the same function, directly or
+through variables, string templates, safe calls and `?:`, is reported. A value that another function
+returns, or that is passed into another function that reaches a sink, is followed, also across Kotlin and
+Java files; a call in another file must name the class (`Helper.run(x)`, `Helper().run(x)`).
+The rules use the specifications of Java (the types are the same) and `taint/kotlin/sources.toml`.
+
+A lambda is part of the statement that holds it, so the scope functions `let`, `also`, `apply`, `run` and
+`with` pass a value on as an expression does, but the branches inside a lambda are not separated. An
+`if`, `when` or `try` written as a value is one step. Property initializers and accessors are not
+analysed. See [taint specifications](/reference/taint-specs/).
+
+| Rule | CWE | Severity | Presets | What it reports |
+|---|---|---|---|---|
+| `ward:kotlin/sql-injection` | CWE-89 | error | standard, strict | Request data in the SQL text of a query, inside one function |
+| `ward:kotlin/command-injection` | CWE-78 | error | standard, strict | Request data in the program or arguments of a process, inside one function |
+| `ward:kotlin/path-injection` | CWE-22 | error | standard, strict | Request data in a file path, inside one function |
+| `ward:kotlin/cross-site-scripting` | CWE-79 | error | standard, strict | Request data written to the HTML response (`PrintWriter`, `ServletOutputStream`), inside one function |
+| `ward:kotlin/untrusted-redirect` | CWE-601 | error | standard, strict | Request data as the target of a redirect, inside one function |
+| `ward:kotlin/server-side-request-forgery` | CWE-918 | error | standard, strict | Request data as the address of an outgoing request, inside one function |
+| `ward:kotlin/ldap-injection` | CWE-90 | error | standard, strict | Request data in an LDAP name or filter, inside one function |
+| `ward:kotlin/xpath-injection` | CWE-643 | error | standard, strict | Request data in an XPath expression, inside one function |
+| `ward:kotlin/log-forging` | CWE-117 | error | standard, strict | Request data in a log message, inside one function |
+| `ward:kotlin/header-splitting` | CWE-113 | error | standard, strict | Request data in a response header, inside one function |
+| `ward:kotlin/untrusted-deserialization` | CWE-502 | error | standard, strict | Request data given to a deserializer, inside one function |
+| `ward:kotlin/script-injection` | CWE-94, CWE-95 | error | standard, strict | Request data run as script or code, inside one function |
+| `ward:kotlin/expression-injection` | CWE-917 | error | standard, strict | Request data parsed as an expression language, inside one function |
+| `ward:kotlin/jndi-injection` | CWE-99, CWE-74 | error | standard, strict | Request data as a JNDI name, inside one function |
+| `ward:kotlin/unsafe-reflection` | CWE-470 | error | standard, strict | Request data as a class or member name, inside one function |
+| `ward:kotlin/regex-injection` | CWE-1333, CWE-400 | error | standard, strict | Request data compiled as a regular expression, inside one function |
+| `ward:kotlin/environment-injection` | CWE-15, CWE-454 | error | standard, strict | Untrusted data as an environment variable of a started process (`ProcessBuilder.environment().put`, the `envp` of `Runtime.exec`) |
+| `ward:kotlin/session-attribute-injection` | CWE-501 | warning | strict | Untrusted data stored with `HttpSession.setAttribute` or `putValue`, where the application treats it as trusted |
+
 ## Later
 
-Taint across files, taint rules for Kotlin (which needs a Kotlin control-flow lowering first) and Swift rules are planned.
+Taint rules for Swift are planned.

@@ -11,7 +11,9 @@ import dev.ward.analysis.domain.scope.NameReference;
 import dev.ward.analysis.domain.scope.ReferenceAccess;
 import dev.ward.analysis.domain.scope.UnitScopes;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -21,8 +23,8 @@ import java.util.Set;
  * not recorded, and neither is anything inside a nested function or class.
  *
  * <p>The scope analysis lists references by position, so an assignment's target comes before the
- * names of its value. Within one node the reads are emitted first and the writes after, which is
- * the order in which one statement runs.
+ * names of its value. Within one node a read is ordered where it is written and a write where its
+ * assignment or declaration ends, which is the order in which the statements of the node run.
  */
 final class KotlinAccesses implements VariableAccesses {
 
@@ -32,6 +34,7 @@ final class KotlinAccesses implements VariableAccesses {
   private final List<NameReference> references;
   private final Span body;
   private final List<Span> nested;
+  private final Map<Integer, Integer> writeEnds;
 
   /**
    * Creates the finder of one body.
@@ -39,8 +42,15 @@ final class KotlinAccesses implements VariableAccesses {
    * @param scopes the scopes of the file
    * @param body the span of the body, whose declarations are the locals
    * @param nested the spans of the functions and classes inside the body, which are other bodies
+   * @param writeEnds the end offset of the assignment or declaration of each written name, by the
+   *     start offset of the name
    */
-  KotlinAccesses(final UnitScopes scopes, final Span body, final List<Span> nested) {
+  KotlinAccesses(
+      final UnitScopes scopes,
+      final Span body,
+      final List<Span> nested,
+      final Map<Integer, Integer> writeEnds) {
+    this.writeEnds = writeEnds;
     this.references = scopes.references();
     this.body = body;
     this.nested = List.copyOf(nested);
@@ -49,19 +59,21 @@ final class KotlinAccesses implements VariableAccesses {
   @Override
   public List<VariableAccess> of(final SyntaxNode node) {
     final Span span = node.span();
-    final List<VariableAccess> reads = new ArrayList<>();
-    final List<VariableAccess> writes = new ArrayList<>();
+    final List<Keyed> found = new ArrayList<>();
     for (int index = firstAtOrAfter(span.startOffset());
         index < references.size() && references.get(index).span().startOffset() < span.endOffset();
         index++) {
       final NameReference reference = references.get(index);
       if (reference.span().endOffset() <= span.endOffset() && isLocal(reference)) {
-        add(reference, reads, writes);
+        found.add(keyed(reference));
       }
     }
-    reads.addAll(writes);
-    return reads;
+    found.sort(Comparator.comparingInt(Keyed::key));
+    return found.stream().map(Keyed::access).toList();
   }
+
+  /** An access and the offset at which it happens. */
+  private record Keyed(int key, VariableAccess access) {}
 
   /**
    * The entry accesses of the parameters declared inside {@code parameters}.
@@ -95,10 +107,7 @@ final class KotlinAccesses implements VariableAccesses {
         KotlinFlowSyntax.text(name), AccessKind.WRITE, name.span(), name.span());
   }
 
-  private static void add(
-      final NameReference reference,
-      final List<VariableAccess> reads,
-      final List<VariableAccess> writes) {
+  private Keyed keyed(final NameReference reference) {
     final Binding binding = reference.resolved().orElseThrow();
     final boolean write = reference.access() == ReferenceAccess.WRITE;
     final VariableAccess access =
@@ -107,7 +116,9 @@ final class KotlinAccesses implements VariableAccesses {
             write ? AccessKind.WRITE : AccessKind.READ,
             reference.span(),
             binding.declaration());
-    (write ? writes : reads).add(access);
+    final int start = reference.span().startOffset();
+    return new Keyed(
+        write ? writeEnds.getOrDefault(start, reference.span().endOffset()) : start, access);
   }
 
   private boolean isLocal(final NameReference reference) {

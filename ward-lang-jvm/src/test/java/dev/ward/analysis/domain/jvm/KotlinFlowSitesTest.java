@@ -162,4 +162,22 @@ class KotlinFlowSitesTest {
 
     assertThat(found).extracting(FlowSite::name).containsExactly("shown");
   }
+
+  @Test
+  void aWildcardImportAndAnAliasResolveTheDeclaredTypes() {
+    final String source =
+        "import java.sql.*\nimport javax.servlet.http.HttpServletRequest as Req\n"
+            + "class C {\n fun f(st: Statement, r: Req) {\n st.close()\n r.getSession()\n }\n}\n";
+    final List<FlowSite> found =
+        KotlinFlowFixtures.graph(source, "C#f(2)").blocks().stream()
+            .flatMap(block -> block.sites().stream())
+            .filter(site -> site.kind() == FlowSiteKind.CALL)
+            .toList();
+
+    assertThat(found)
+        .extracting(FlowSite::receiverType)
+        .containsExactly(
+            java.util.Optional.of("java.sql.Statement"),
+            java.util.Optional.of("javax.servlet.http.HttpServletRequest"));
+  }
 }

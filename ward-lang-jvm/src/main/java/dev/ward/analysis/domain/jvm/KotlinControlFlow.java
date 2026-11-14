@@ -4,11 +4,14 @@ import dev.ward.analysis.domain.ir.ControlFlowGraph;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.analysis.domain.ir.Span;
 import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.ir.VariableAccess;
 import dev.ward.analysis.domain.port.ControlFlowLowering;
 import dev.ward.analysis.domain.port.ControlFlowResult;
 import dev.ward.analysis.domain.scope.UnitScopes;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -48,7 +51,9 @@ public final class KotlinControlFlow implements ControlFlowLowering {
   @Override
   public ControlFlowResult lower(final SourceUnit unit, final SyntaxNode tree) {
     final UnitScopes scopes = new KotlinScopeAnalysis(environments -> Set.of()).analyze(unit, tree);
-    final Collector collector = new Collector(scopes, KotlinTypeNames.of(tree));
+    final Map<Integer, Integer> writeEnds = new HashMap<>();
+    KotlinWriteEnds.collect(tree, writeEnds);
+    final Collector collector = new Collector(scopes, KotlinTypeNames.of(tree), writeEnds);
     collector.visit(tree, "");
     return new ControlFlowResult(collector.graphs, List.of());
   }
@@ -58,11 +63,14 @@ public final class KotlinControlFlow implements ControlFlowLowering {
 
     private final UnitScopes scopes;
     private final JavaTypeNames types;
+    private final Map<Integer, Integer> writeEnds;
     private final List<ControlFlowGraph> graphs = new ArrayList<>();
 
-    Collector(final UnitScopes scopes, final JavaTypeNames types) {
+    Collector(
+        final UnitScopes scopes, final JavaTypeNames types, final Map<Integer, Integer> writeEnds) {
       this.scopes = scopes;
       this.types = types;
+      this.writeEnds = writeEnds;
     }
 
     void visit(final SyntaxNode node, final String owner) {
@@ -112,8 +120,8 @@ public final class KotlinControlFlow implements ControlFlowLowering {
         final SyntaxNode body) {
       final String name = base.endsWith("(0)") ? base : base + "(" + count(parameters) + ")";
       final Span span = owner.span();
-      final KotlinAccesses accesses = new KotlinAccesses(scopes, span, nested(owner));
-      final List<dev.ward.analysis.domain.ir.VariableAccess> entry =
+      final KotlinAccesses accesses = new KotlinAccesses(scopes, span, nested(owner), writeEnds);
+      final List<VariableAccess> entry =
           parameters == null ? List.of() : KotlinAccesses.parameters(scopes, parameters.span());
       graphs.add(
           new KotlinBodyLowering(accesses, new KotlinFlowSites(types))
