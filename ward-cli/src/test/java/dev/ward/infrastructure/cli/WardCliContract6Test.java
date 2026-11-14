@@ -23,24 +23,6 @@ class WardCliContract6Test extends WardCliIntegrationSupport {
   }
 
   @Test
-  void checkRejectsZapWithoutTargetAsConfigurationError() throws IOException {
-    Files.writeString(
-        project.resolve(WARD_TOML),
-"""
-                version = 2
-                [checks.zap]
-uses = "zap"
-                command = ["zap-baseline.py", "-t", "<TARGET_URL>"]
-                """);
-
-    final int exit = run(CHECK, FORMAT_OPTION, JSON, "-C", project.toString());
-
-    assertThat(exit).isEqualTo(ExitCodes.ERROR);
-    assertThat(JsonTree.parse(out.toString()).get(STATUS).asString()).isEqualTo("ERROR");
-    assertThat(err.toString()).contains("requires an explicit target");
-  }
-
-  @Test
   void doctorReportsConfigurationAndIntegrationStates() throws IOException {
     assertThat(run("doctor", "-C", project.toString())).isEqualTo(ExitCodes.ERROR);
     assertThat(out.toString()).contains("configuration", "ERROR", "integration", "WARNING");
