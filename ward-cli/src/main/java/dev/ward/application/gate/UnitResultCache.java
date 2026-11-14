@@ -16,7 +16,6 @@ import dev.ward.analysis.domain.port.AnalysisCache;
 import dev.ward.analysis.domain.port.DependencySupport;
 import dev.ward.analysis.domain.rule.DuplicateCodeRule;
 import dev.ward.analysis.domain.rule.GraphRules;
-import dev.ward.analysis.domain.rule.RuleCapability;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleRunResult;
 import dev.ward.domain.gate.GateProgress;
@@ -27,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -172,21 +170,14 @@ final class UnitResultCache {
       final SourceUnit unit,
       final List<RuleDefinition> rules,
       final DependencySnapshot snapshot) {
-    if (!reads(unit.language(), rules, RuleCapability::readsDependencies)) {
+    if (!DependencyReads.dependencies(unit.language(), rules)) {
       return AnalysisCacheKey.unit(ruleSet, unit);
     }
     final List<SourceUnit> related =
-        reads(unit.language(), rules, RuleCapability::readsDependencyBodies)
+        DependencyReads.bodies(unit.language(), rules)
             ? snapshot.closureOf(unit.path())
             : List.of();
     return AnalysisCacheKey.unit(ruleSet, unit, snapshot.view(unit.path()), related);
-  }
-
-  private static boolean reads(
-      final AnalysisLanguage language,
-      final List<RuleDefinition> rules,
-      final Predicate<RuleCapability> reads) {
-    return rules.stream().anyMatch(rule -> rule.covers(language) && reads.test(rule.capability()));
   }
 
   private Optional<List<AnalysisFinding>> read(final AnalysisCache cache, final String key) {
