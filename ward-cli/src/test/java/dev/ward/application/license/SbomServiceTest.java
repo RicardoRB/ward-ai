@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import dev.ward.domain.config.WardException;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
@@ -13,11 +14,11 @@ class SbomServiceTest {
   private static final Path DIRECTORY = Path.of("/work/app");
 
   private final SbomService sbom =
-      new SbomService(LicenseFixtures.detector(), LicenseFixtures.mixed(), "1.2.3");
+      new SbomService(LicenseFixtures.detector(), LicenseFixtures.mixed(), Map.of(), "1.2.3");
 
   @Test
   void hasTheCycloneDxEnvelopeWithoutSerialNumberOrTimestamp() {
-    final String json = sbom.generate(DIRECTORY, Set.of()).content();
+    final String json = sbom.generate(DIRECTORY, Set.of(), Optional.empty()).content();
 
     assertThat(json)
         .contains("\"bomFormat\": \"CycloneDX\"", "\"specVersion\": \"1.6\"", "\"version\": 1")
@@ -28,7 +29,7 @@ class SbomServiceTest {
 
   @Test
   void componentsCarryPurlsGroupsAndLicenses() {
-    final String json = sbom.generate(DIRECTORY, Set.of()).content();
+    final String json = sbom.generate(DIRECTORY, Set.of(), Optional.empty()).content();
 
     assertThat(json)
         .contains("\"purl\": \"pkg:npm/%40scope/pkg@1.0.0\"")
@@ -41,7 +42,7 @@ class SbomServiceTest {
 
   @Test
   void rootHasEdgesToDirectPackagesOnlyAndComponentsSortByPurl() {
-    final String json = sbom.generate(DIRECTORY, Set.of()).content();
+    final String json = sbom.generate(DIRECTORY, Set.of(), Optional.empty()).content();
 
     final int root = json.indexOf("\"ref\": \"root\"");
     assertThat(root).isPositive();
@@ -54,7 +55,7 @@ class SbomServiceTest {
 
   @Test
   void leavesUnknownLicensesOutAndWarns() {
-    final Document document = sbom.generate(DIRECTORY, Set.of());
+    final Document document = sbom.generate(DIRECTORY, Set.of(), Optional.empty());
 
     assertThat(document.warnings()).singleElement().asString().contains("pkg:npm/mystery@2.0.0");
     final String mystery = document.content().substring(document.content().indexOf("mystery"));
@@ -63,7 +64,7 @@ class SbomServiceTest {
 
   @Test
   void honorsTheScopeFilter() {
-    final String json = sbom.generate(DIRECTORY, Set.of("runtime")).content();
+    final String json = sbom.generate(DIRECTORY, Set.of("runtime"), Optional.empty()).content();
 
     assertThat(json).doesNotContain("left-pad").contains("mystery");
   }
@@ -74,23 +75,25 @@ class SbomServiceTest {
         new SbomService(
             LicenseFixtures.detector(),
             LicenseFixtures.service(LicenseFixtures.inventory(), Map.of()),
+            Map.of(),
             "1.2.3");
 
-    assertThat(empty.generate(DIRECTORY, Set.of()).content()).contains("\"components\": []");
+    assertThat(empty.generate(DIRECTORY, Set.of(), Optional.empty()).content())
+        .contains("\"components\": []");
   }
 
   @Test
   void isByteIdenticalOnRepeatedRuns() {
-    assertThat(sbom.generate(DIRECTORY, Set.of()).content())
-        .isEqualTo(sbom.generate(DIRECTORY, Set.of()).content());
+    assertThat(sbom.generate(DIRECTORY, Set.of(), Optional.empty()).content())
+        .isEqualTo(sbom.generate(DIRECTORY, Set.of(), Optional.empty()).content());
   }
 
   @Test
   void anUnusableInventoryProducesNoDocument() {
     final SbomService failing =
-        new SbomService(LicenseFixtures.detector(), LicenseFixtures.failing(), "1");
+        new SbomService(LicenseFixtures.detector(), LicenseFixtures.failing(), Map.of(), "1");
 
-    assertThatThrownBy(() -> failing.generate(DIRECTORY, Set.of()))
+    assertThatThrownBy(() -> failing.generate(DIRECTORY, Set.of(), Optional.empty()))
         .isInstanceOf(WardException.class)
         .hasMessageContaining("npm install");
   }

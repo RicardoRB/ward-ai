@@ -4,12 +4,15 @@ import dev.ward.application.project.ProjectDetector;
 import dev.ward.domain.dependency.Dependency;
 import dev.ward.domain.license.LicenseExpression;
 import dev.ward.domain.project.Project;
+import dev.ward.domain.project.ProjectNameReader;
+import dev.ward.domain.project.Toolchain;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -29,6 +32,7 @@ public final class SbomService {
 
   private final ProjectDetector detector;
   private final LicenseService licenses;
+  private final Map<Toolchain, ProjectNameReader> names;
   private final String wardVersion;
 
   /** Creates the service. */
@@ -36,9 +40,11 @@ public final class SbomService {
   public SbomService(
       final ProjectDetector detector,
       final LicenseService licenses,
+      final Map<Toolchain, ProjectNameReader> names,
       @Named("ward.version") final String wardVersion) {
     this.detector = detector;
     this.licenses = licenses;
+    this.names = Map.copyOf(names);
     this.wardVersion = wardVersion;
   }
 
@@ -46,9 +52,12 @@ public final class SbomService {
    * Returns the SBOM of the project in {@code directory}.
    *
    * @param scopes the lower-case scope names to include; empty means every scope
+   * @param name the root component name; empty means the name the build file declares, then the
+   *     directory name
    * @throws dev.ward.domain.config.WardException if there is no project or its inventory fails
    */
-  public Document generate(final Path directory, final Set<String> scopes) {
+  public Document generate(
+      final Path directory, final Set<String> scopes, final Optional<String> name) {
     final Project project = Projects.detect(detector, directory);
     final List<PackageLicense> all =
         licenses.licenses(project, scopes).stream()
@@ -79,13 +88,20 @@ public final class SbomService {
     bom.put("bomFormat", "CycloneDX");
     bom.put("specVersion", SPEC_VERSION);
     bom.put(VERSION, 1);
-    bom.put("metadata", metadata(directory));
+    bom.put("metadata", metadata(rootName(project, directory, name)));
     bom.put("components", components);
     bom.put("dependencies", dependencies);
     return new Document(JsonTree.write(bom), warnings);
   }
 
-  private Map<String, Object> metadata(final Path directory) {
+  private String rootName(
+      final Project project, final Path directory, final Optional<String> chosen) {
+    return chosen
+        .or(() -> names.getOrDefault(project.toolchain(), none -> Optional.empty()).read(project))
+        .orElseGet(() -> String.valueOf(directory.toAbsolutePath().normalize().getFileName()));
+  }
+
+  private Map<String, Object> metadata(final String rootName) {
     final Map<String, Object> tool = new LinkedHashMap<>();
     tool.put("type", "application");
     tool.put(NAME, "ward");
@@ -93,7 +109,7 @@ public final class SbomService {
     final Map<String, Object> root = new LinkedHashMap<>();
     root.put("type", "application");
     root.put(REF, ROOT_REF);
-    root.put(NAME, String.valueOf(directory.toAbsolutePath().normalize().getFileName()));
+    root.put(NAME, rootName);
     final Map<String, Object> metadata = new LinkedHashMap<>();
     metadata.put("tools", Map.of("components", List.of(tool)));
     metadata.put("component", root);
