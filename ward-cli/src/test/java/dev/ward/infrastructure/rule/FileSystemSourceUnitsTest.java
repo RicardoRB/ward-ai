@@ -33,6 +33,15 @@ class FileSystemSourceUnitsTest {
   }
 
   @Test
+  void skipsMinifiedScripts() throws IOException {
+    write("src/App.js");
+    write("assets/private/dat.gui.min.js");
+    write("assets/lib.min.mjs");
+
+    assertThat(paths(Set.of(AnalysisLanguage.JAVASCRIPT))).containsExactly("src/App.js");
+  }
+
+  @Test
   void keepsOtherLanguagesInAResourcesFolder() throws IOException {
     write("src/pkg/resources/tool.py");
 

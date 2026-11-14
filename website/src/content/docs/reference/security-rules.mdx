@@ -14,6 +14,17 @@ deserialization or hard-coded credentials have severity `error` and run in the `
 random numbers, clear-text transport or dynamic markup, have severity `warning` and run in `strict`
 only. Change either with `severity` in `ward-rules.toml`, or skip paths with `exclude-paths`.
 
+## Test files and vendored code
+
+`ward:typescript/hard-coded-secret` and `ward:javascript/hard-coded-secret` skip test sources
+(`*.test.*`, `*.spec.*`, and files under `test`, `tests` or `__tests__`), where a literal is a mock
+value. Ward reads no minified script (`*.min.js`, `*.min.mjs`, `*.min.cjs`) for any rule. A
+vendored library that is not minified is still read: leave it out with `exclude-paths` in
+`ward-rules.toml`, for example `exclude-paths = ["frontend/src/assets/private/**"]` under
+`[rules.javascript.dom-xss]`. The two rules have no option to read test sources too; the
+[`secrets` gate](/configuration/secrets/) reads every text file, tests included, and is the
+way to look for real credentials committed in a test.
+
 ## How the rules look
 
 **Injection rules** follow untrusted data inside one file. A source, such as a request
