@@ -484,7 +484,8 @@ jobs:
       - name: Install Trivy
         run: |
           set -eu
-          trivy_dir="$RUNNER_TEMP/trivy"
+          # Not "$RUNNER_TEMP/trivy": the binary is unpacked to that path.
+          trivy_dir="$RUNNER_TEMP/trivy-download"
           trivy_asset="trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz"
           trivy_base="https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}"
           mkdir -p "$trivy_dir"
