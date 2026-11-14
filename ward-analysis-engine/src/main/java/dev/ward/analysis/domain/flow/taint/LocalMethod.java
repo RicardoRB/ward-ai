@@ -105,11 +105,12 @@ record LocalMethod(String name, String owner, int arity, ControlFlowGraph graph,
 
   /**
    * The qualifiers under which a call names this method: in the same file, the owner or none; from
-   * another file, the owner or a creation of it.
+   * another file, the owner or a creation of it, written {@code new Owner()} in Java and {@code
+   * Owner()} in Kotlin.
    */
   List<String> qualifiers() {
     if (external) {
-      return List.of(owner, "(new" + owner + "())");
+      return List.of(owner, "(new" + owner + "())", owner + "()");
     }
     return owner.isEmpty() ? List.of("", THIS) : List.of("", THIS, owner);
   }
