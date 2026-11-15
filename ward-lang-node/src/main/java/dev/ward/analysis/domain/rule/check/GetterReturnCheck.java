@@ -20,6 +20,7 @@ import java.util.Set;
  */
 public final class GetterReturnCheck implements RuleCheck {
   private static final String GETTER = "getter";
+  private static final Set<String> BODIES = Set.of("functionBody", "'{'");
   private static final String RETURN = "returnStatement";
   private static final String ARGUMENT = "expressionSequence";
   private static final Set<String> NESTED = NodeKinds.NESTED_BODIES;
@@ -59,8 +60,10 @@ public final class GetterReturnCheck implements RuleCheck {
     }
   }
 
+  /** A getter signature of a type or an ambient class has no body, so it returns nothing. */
   private static boolean isGetter(final SyntaxNode node) {
-    return node.children().stream().anyMatch(child -> GETTER.equals(child.kind()));
+    return node.children().stream().anyMatch(child -> GETTER.equals(child.kind()))
+        && node.children().stream().anyMatch(child -> BODIES.contains(child.kind()));
   }
 
   private void checkGetter(

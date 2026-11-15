@@ -13,17 +13,11 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 /**
- * The OWASP Juice Shop source (MIT license), read from an extracted release archive. The source is
- * never part of the repository and is only read: nothing in it is installed or run.
+ * The TypeScript and JavaScript sources of a measured corpus, read from an extracted source
+ * archive. The source is never part of the repository and is only read: nothing in it is installed
+ * or run.
  */
-final class JuiceShopCorpus {
-  /** The release the committed report measures. */
-  static final String TAG = "v20.4.0";
-
-  /** The SHA-256 of the source archive {@code juice-shop-v20.4.0.tar.gz} of that tag. */
-  static final String ARCHIVE_SHA256 =
-      "90551e4bcf83e7019de5bfcba8ab28b35df35b9243d91fbdc7c7e6db30c23e4e";
-
+final class NodeCorpus {
   private static final Set<String> TYPESCRIPT = Set.of(".ts", ".tsx", ".mts", ".cts");
   private static final Set<String> JAVASCRIPT = Set.of(".js", ".jsx", ".mjs", ".cjs");
   private static final String DECLARATIONS = ".d.ts";
@@ -37,7 +31,7 @@ final class JuiceShopCorpus {
   private final Path root;
 
   /** Reads the sources below {@code root}, the directory the archive was extracted to. */
-  JuiceShopCorpus(final Path root) {
+  NodeCorpus(final Path root) {
     this.root = root;
   }
 
