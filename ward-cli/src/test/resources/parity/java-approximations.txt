@@ -57,3 +57,4 @@ final-parameters	checkstyle	FinalParameters	Checkstyle also reports a parameter 
 simplify-boolean-expression	pmd	SimplifyBooleanExpressions	PMD reports only the comparison with a boolean literal (line 3); Ward and Checkstyle also report && true, !false and the ternary of literals
 unnecessary-parentheses	errorprone	UnnecessaryParentheses	Error Prone does not report the parentheses around an initializer (line 4); Ward and PMD do
 unused-private-field	checkstyle	UnusedPrivateField	Checkstyle also reports an annotated private field (line 4 of the passing fixture); Ward and PMD leave it alone
+unit-test-should-use-test-annotation	pmd	UnitTestShouldUseTestAnnotation	PMD 7 also reports a public test method that takes parameters, as in a JUnit Jupiter class that has a helper named testOrder(int); a method with parameters can never be a test, so Ward skips it

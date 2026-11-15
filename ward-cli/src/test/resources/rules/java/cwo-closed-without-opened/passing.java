@@ -14,5 +14,18 @@ class Sample {
       lock.unlock();
     }
   }
-}
 
+  void tried() {
+    if (tryLock()) {
+      try {
+        count++;
+      } finally {
+        lock.unlock();
+      }
+    }
+  }
+
+  private boolean tryLock() {
+    return lock.tryLock();
+  }
+}

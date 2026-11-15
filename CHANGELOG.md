@@ -8,6 +8,16 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+### Fixed
+
+- `ward:java/collection-incompatible-type` no longer reports `List<UUID>.get(int)`: `get`, `getOrDefault`, `containsKey` and `containsValue` apply only to `Map` types and `indexOf` and `lastIndexOf` only to `List` types (#573). A `methods` entry of `incompatible-argument` may end with `@key` to name the declaring types it applies to.
+- `ward:java/infinite-recursion` and `ward:java/il-infinite-recursive-loop` no longer report `return new Customer(...)` in a method named `newCustomer`: the check compares tokens, not the text of the statement without whitespace (#573).
+- `ward:java/j-unit4-test-not-run`, `j-unit4-set-up-not-run` and `j-unit4-tear-down-not-run` report only a file that uses JUnit 4 (an import of `org.junit` other than Jupiter, or of `junit.framework`) and stay silent when it imports `org.junit.jupiter`; a public `test...` method with parameters is never a missing `@Test` for `unit-test-should-use-test-annotation` either (#573).
+- `ward:java/law-of-demeter` trusts a call that returns the type of its receiver (builders), a receiver or call result whose type is in `java.` or `javax.` (`Optional`, streams, strings), a record receiver and a getter without arguments. The new option `trusted-types` lists patterns of further types to trust (#573).
+- `ward:java/static-or-default-interface-method`, which is about Android before 7.0, moves from the `standard` preset to `strict`: a rule sees one file and not the project, so it cannot tell an Android project from another (#573).
+- `ward:java/cwo-closed-without-opened` no longer reports `lock.unlock()` in a method that calls a method of the same file that acquires that lock, such as a private `tryLock()` (#573).
+- A `forbidden-node` rule whose pattern starts with a keyword (`^new(...)`, `^if(`, `^for`, ...) now needs that keyword as the node's first token, so a call to `newBoolean(...)` or `iffy(...)` is no longer read as `new Boolean(` or `if(`. This stops `ban-class-loader`, `dead-thread`, `dm-boolean-ctor`, `dm-number-ctor`, `dm-string-ctor` and `dp-create-classloader-inside-do-privileged` from reporting calls to methods named `newX` (#573).
+
 ## [0.9.0] - 2026-11-14
 
 ### Added

@@ -10,7 +10,9 @@ presets = ["standard", "strict"]
 body = '''
 check = "incompatible-argument"
 declaring-types = ["java.util.Collection", "java.util.List", "java.util.Set", "java.util.Map", "java.util.ArrayList", "java.util.LinkedList", "java.util.HashSet", "java.util.TreeSet", "java.util.HashMap", "java.util.TreeMap", "java.util.LinkedHashMap", "java.util.LinkedHashSet", "java.util.Queue", "java.util.Deque", "java.util.ArrayDeque"]
-methods = ["contains/1:r0:0", "indexOf/1:r0:0", "lastIndexOf/1:r0:0", "containsKey/1:r0:0", "get/1:r0:0", "containsValue/1:r1:0", "getOrDefault/2:r0:0"]
+map-types = ["java.util.Map", "java.util.HashMap", "java.util.TreeMap", "java.util.LinkedHashMap"]
+list-types = ["java.util.List", "java.util.ArrayList", "java.util.LinkedList"]
+methods = ["contains/1:r0:0", "indexOf/1:r0:0@list-types", "lastIndexOf/1:r0:0@list-types", "containsKey/1:r0:0@map-types", "get/1:r0:0@map-types", "containsValue/1:r1:0@map-types", "getOrDefault/2:r0:0@map-types"]
 message = "the argument can never equal an element of the collection, so the call is always false or null"
 '''
 

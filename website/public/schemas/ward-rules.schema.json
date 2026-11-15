@@ -11031,6 +11031,12 @@
           "items": {
             "type": "string"
           }
+        },
+        "trusted-types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },

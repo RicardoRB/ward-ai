@@ -9,7 +9,9 @@ import java.util.regex.Pattern;
 
 /**
  * Reports each public method named {@code test...} in a test class that has no test annotation. A
- * test class is one whose name matches the pattern, or one that extends {@code TestCase}.
+ * test class is one whose name matches the pattern, or one that extends {@code TestCase}. A method
+ * with parameters is not a test method of any JUnit version, so it is never reported. When {@code
+ * junit4Only} is set, only a file that uses JUnit 4 is read.
  */
 public final class UnitTestMissingAnnotationCheck implements UnitCheck {
 
@@ -17,20 +19,27 @@ public final class UnitTestMissingAnnotationCheck implements UnitCheck {
 
   private final Pattern classPattern;
   private final String message;
+  private final boolean junit4Only;
 
   /**
    * Creates the check.
    *
    * @param classPattern the pattern a test class name matches
    * @param message the message; {@code {value}} is the method name
+   * @param junit4Only whether to read only a file that uses JUnit 4
    */
-  public UnitTestMissingAnnotationCheck(final Pattern classPattern, final String message) {
+  public UnitTestMissingAnnotationCheck(
+      final Pattern classPattern, final String message, final boolean junit4Only) {
+    this.junit4Only = junit4Only;
     this.classPattern = Objects.requireNonNull(classPattern, "classPattern");
     this.message = Objects.requireNonNull(message, "message");
   }
 
   @Override
   public List<RuleMatch> check(final SyntaxNode root, final SourceFile file) {
+    if (junit4Only && !JUnitMembers.usesJunit4(root)) {
+      return List.of();
+    }
     return SyntaxWalk.visits(root, Set.of("classDeclaration")).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(this::isTestClass)
@@ -40,6 +49,7 @@ public final class UnitTestMissingAnnotationCheck implements UnitCheck {
         .filter(member -> !JUnitMembers.isTest(member))
         .flatMap(member -> JUnitMembers.method(member).stream())
         .filter(method -> JUnitMembers.name(method).startsWith("test"))
+        .filter(JUnitMembers::hasNoParameters)
         .map(
             method ->
                 CheckSupport.at(

@@ -41,14 +41,15 @@ public final class InfiniteRecursionCheck implements RuleCheck {
 
   private static boolean callsItself(final SyntaxNode method, final String name) {
     final Pattern call =
-        Pattern.compile("^(?:return)?(?:this\\.)?" + Pattern.quote(name) + "\\([^;{}?&|]*\\);$");
+        Pattern.compile(
+            "^(?:return )?(?:this \\. )?" + Pattern.quote(name) + " \\([^;{}?&|]*\\) ;$");
     return child(method, "methodBody")
         .flatMap(body -> child(body, "block"))
         .map(
             block ->
                 block.children().stream().filter(c -> "blockStatement".equals(c.kind())).toList())
         .filter(statements -> statements.size() == 1)
-        .map(statements -> call.matcher(SyntaxWalk.text(statements.get(0))).matches())
+        .map(statements -> call.matcher(SyntaxWalk.spacedText(statements.get(0))).matches())
         .orElse(false);
   }
 

@@ -24,5 +24,18 @@
         "primitive": true
       }
     }
+  },
+  "23:9": {
+    "call": {
+      "declaring": {
+        "name": "java.util.concurrent.locks.Lock"
+      },
+      "name": "unlock",
+      "params": [],
+      "returns": {
+        "name": "void",
+        "primitive": true
+      }
+    }
   }
 }

@@ -4,6 +4,7 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -25,7 +26,26 @@ final class JUnitMembers {
   private static final String IDENTIFIER = "identifier";
   private static final String METHOD_CALL = "methodCall";
 
+  private static final Pattern JUNIT4_IMPORT =
+      Pattern.compile(
+          "^import(?:static)?(?:org\\.junit\\.(?!jupiter|platform)|junit\\.framework\\.).*");
+  private static final String JUPITER_IMPORT = "org.junit.jupiter";
+
   private JUnitMembers() {}
+
+  /**
+   * Returns whether the file is a JUnit 4 (or 3) test file: it imports {@code org.junit} types
+   * other than Jupiter and platform ones, or {@code junit.framework}, and imports nothing of {@code
+   * org.junit.jupiter}.
+   */
+  static boolean usesJunit4(final SyntaxNode root) {
+    final List<String> imports =
+        SyntaxWalk.visits(root, Set.of("importDeclaration")).stream()
+            .map(visit -> SyntaxWalk.text(visit.node()))
+            .toList();
+    return imports.stream().noneMatch(text -> text.contains(JUPITER_IMPORT))
+        && imports.stream().anyMatch(text -> JUNIT4_IMPORT.matcher(text).matches());
+  }
 
   /** Returns the members of a class body, the {@code classBodyDeclaration} children. */
   static List<SyntaxNode> members(final SyntaxNode classBody) {
