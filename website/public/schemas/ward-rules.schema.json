@@ -3713,6 +3713,29 @@
         }
       }
     },
+    "ward:java/coupling-between-objects": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
     "ward:java/covariant-equals": {
       "type": "object",
       "additionalProperties": false,
@@ -59240,6 +59263,7 @@
               "java.constructors-declaration-grouping",
               "java.control-statement-braces",
               "java.cookie-missing-secure",
+              "java.coupling-between-objects",
               "java.covariant-equals",
               "java.cross-site-scripting",
               "java.csrf-protection-disabled",
@@ -62225,6 +62249,7 @@
               "java.constructors-declaration-grouping",
               "java.control-statement-braces",
               "java.cookie-missing-secure",
+              "java.coupling-between-objects",
               "java.covariant-equals",
               "java.cross-site-scripting",
               "java.csrf-protection-disabled",
@@ -65592,6 +65617,9 @@
             },
             "cookie-missing-secure": {
               "$ref": "#/$defs/ward:java~1cookie-missing-secure"
+            },
+            "coupling-between-objects": {
+              "$ref": "#/$defs/ward:java~1coupling-between-objects"
             },
             "covariant-equals": {
               "$ref": "#/$defs/ward:java~1covariant-equals"
