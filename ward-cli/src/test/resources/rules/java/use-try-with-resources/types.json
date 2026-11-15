@@ -1,0 +1,32 @@
+{
+  "8:7-8:8": {
+    "type": {
+      "name": "java.io.InputStream"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.io.Closeable"
+        },
+        {
+          "name": "java.lang.AutoCloseable"
+        },
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  },
+  "13:7-13:12": {
+    "type": {
+      "name": "Holder"
+    },
+    "members": {
+      "ancestors": [
+        {
+          "name": "java.lang.Object"
+        }
+      ]
+    }
+  }
+}

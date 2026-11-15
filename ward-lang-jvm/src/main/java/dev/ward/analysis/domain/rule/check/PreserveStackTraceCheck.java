@@ -8,11 +8,13 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Reports a {@code throw} inside a catch block that does not pass the caught exception itself: as
- * an argument of a constructor, or to {@code initCause}. Passing only its message loses the trace.
+ * Reports a {@code throw new} inside a catch block that does not pass the caught exception itself:
+ * as an argument of a constructor, or to {@code initCause}. Passing only its message loses the
+ * trace.
  */
 public final class PreserveStackTraceCheck implements UnitCheck {
 
+  private static final String CATCH = "catchClause";
   private static final String THROW = "'throw'";
   private static final String ARGUMENTS = "arguments";
   private static final String EXPRESSION = "expression";
@@ -52,10 +54,32 @@ public final class PreserveStackTraceCheck implements UnitCheck {
         .orElse("");
   }
 
+  /** The statements that throw a new exception; a nested catch clause answers for its own. */
   private static List<SyntaxNode> throwsIn(final SyntaxNode clause) {
-    return SyntaxWalk.descendants(clause).stream()
-        .filter(n -> n.children().stream().anyMatch(c -> THROW.equals(c.kind())))
-        .toList();
+    final List<SyntaxNode> found = new ArrayList<>();
+    for (final SyntaxNode child : clause.children()) {
+      collect(child, found);
+    }
+    return found;
+  }
+
+  private static void collect(final SyntaxNode node, final List<SyntaxNode> found) {
+    if (CATCH.equals(node.kind())) {
+      return;
+    }
+    if (isNewThrow(node)) {
+      found.add(node);
+    }
+    for (final SyntaxNode child : node.children()) {
+      collect(child, found);
+    }
+  }
+
+  private static boolean isNewThrow(final SyntaxNode node) {
+    final List<SyntaxNode> parts = node.children();
+    return parts.size() > 1
+        && THROW.equals(parts.get(0).kind())
+        && SyntaxWalk.text(parts.get(1)).startsWith("new");
   }
 
   private static boolean preserves(final SyntaxNode throwing, final String caught) {

@@ -74,6 +74,7 @@ final class ApiCompatGateFixtures {
         JvmModuleLayouts::listed,
         (root, units) -> {
           final List<ApiType> found = new ArrayList<>();
+          final AntlrLanguageFrontend frontend = new AntlrLanguageFrontend();
           for (final ApiSurfaceReader reader :
               List.of(new JavaApiSurfaceReader(), new KotlinApiSurfaceReader())) {
             final List<SourceUnit> own =
@@ -82,7 +83,7 @@ final class ApiCompatGateFixtures {
               found.addAll(
                   reader.read(
                       own,
-                      new AntlrLanguageFrontend(),
+                      frontend,
                       name ->
                           ClassLoader.getSystemResource(name.replace('.', '/') + ".class")
                               != null));

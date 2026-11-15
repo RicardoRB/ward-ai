@@ -6,4 +6,11 @@ final class Reader {
       throw new IllegalStateException(e);
     }
   }
+  void rethrow() {
+    try {
+      parse();
+    } catch (IllegalStateException e) {
+      throw e;
+    }
+  }
 }

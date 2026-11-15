@@ -6,4 +6,15 @@ final class Closer {
       stream.read();
     }
   }
+  void hold(Holder holder) {
+    try {
+      holder.hashCode();
+    } finally {
+      holder.close();
+    }
+  }
+  static final class Holder {
+    void close() {
+    }
+  }
 }

@@ -97,7 +97,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["statement"]
-text = '^\w+\s*:'
+text = '^\w+\s*:(?!:)'
 message = "labeled statement; restructure the loop without a label"
 '''
 
@@ -289,14 +289,12 @@ message = "array created for a call argument; pass the elements as varargs"
 id = "ward:java/use-try-with-resources"
 language = "java"
 min-java-release = 7
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "style"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["finallyBlock"]
-text = '\.close\(\)'
+check = "close-in-finally"
 message = "resource closed in finally; use try-with-resources"
 '''
 
@@ -324,7 +322,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["statement"]
-text = '^while\s*\(\s*(true|false)\s*\)'
+text = '(?s)^(?:while\s*\(\s*false\s*\)|do\s*\{.*\}\s*while\s*\(\s*(?:true|false)\s*\)\s*;$)'
 message = "while loop with a literal condition"
 '''
 
@@ -352,7 +350,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["statement"]
-text = '^try\b[\s\S]*\bfail\s*\('
+text = '^try\b[\s\S]*(?<![\w.])(?:(?:Assert|Assertions)\.)?fail\s*\('
 message = "test checks for an exception with try and fail(); use the expected attribute of @Test"
 '''
 
@@ -619,7 +617,7 @@ message = "parameter '{value}' is never used in the method body"
 [[rules]]
 id = "ward:java/for-loop-can-be-foreach"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "style"
 presets = ["standard", "strict"]

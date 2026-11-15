@@ -57,10 +57,14 @@ record PreparedRule(Optional<CompiledRule> rule, List<AnalysisLanguage> runnable
                       .forEach(
                           language ->
                               needs
-                                  .computeIfAbsent(language, key -> new ArrayList<>())
+                                  .computeIfAbsent(language, PreparedRule::noNeeds)
                                   .add(rule.factNeed())));
     }
     return needs;
+  }
+
+  private static List<FactNeed> noNeeds(final AnalysisLanguage language) {
+    return new ArrayList<>();
   }
 
   private static PreparedRule of(

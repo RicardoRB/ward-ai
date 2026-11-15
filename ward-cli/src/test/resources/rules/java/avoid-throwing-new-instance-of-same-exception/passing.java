@@ -11,3 +11,14 @@ final class Writer {
 
   void flush() throws IOException {}
 }
+
+final class Reader {
+  void read() {
+    try {
+      parse();
+    } catch (IllegalArgumentException exception) {
+      throw new IllegalArgumentException("context", exception);
+    }
+  }
+  void parse() {}
+}

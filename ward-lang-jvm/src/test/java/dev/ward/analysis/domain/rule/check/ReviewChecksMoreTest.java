@@ -73,8 +73,8 @@ class ReviewChecksMoreTest extends TreeBuilders {
   void aCountingLoopThatOnlyReadsElementsIsReported() {
     final SyntaxNode reads = unit(MethodTrees.countingLoop("values[i];"));
     final SyntaxNode scales = unit(MethodTrees.countingLoop("values[i] * i;"));
-    assertThat(run(new ForLoopCanBeForeachCheck(MESSAGE), reads)).hasSize(1);
-    assertThat(run(new ForLoopCanBeForeachCheck(MESSAGE), scales)).isEmpty();
+    assertThat(new ForLoopCanBeForeachCheck(MESSAGE).matches(reads)).hasSize(1);
+    assertThat(new ForLoopCanBeForeachCheck(MESSAGE).matches(scales)).isEmpty();
   }
 
   @Test

@@ -20,9 +20,9 @@
 # nullaway tool-silent: 3
 # pmd agree: 103
 # pmd agree-lines: 110
-# pmd anchor-differs: 19
+# pmd anchor-differs: 20
 # pmd approximation: 17
-# pmd tool-silent: 39
+# pmd tool-silent: 38
 # spotbugs agree-lines: 168
 # spotbugs anchor-differs: 41
 # spotbugs approximation: 16
@@ -1197,7 +1197,7 @@ use-short-array-initializer	pmd	UseShortArrayInitializer	agree-lines
 use-standard-charsets	pmd	UseStandardCharsets	agree-lines	
 use-string-buffer-for-string-appends	pmd	UseStringBufferForStringAppends	agree	
 use-string-buffer-length	pmd	UseStringBufferLength	agree	
-use-try-with-resources	pmd	UseTryWithResources	anchor-differs	tool lines [5], on passing [], fixture [7]
+use-try-with-resources	pmd	UseTryWithResources	anchor-differs	tool lines [5], on passing [], fixture [8]
 use-underscores-in-numeric-literals	pmd	UseUnderscoresInNumericLiterals	agree	
 use-varargs	pmd	UseVarargs	agree	
 useless-overriding-method	pmd	UselessOverridingMethod	agree-lines	
@@ -1227,7 +1227,7 @@ weak-cipher	-	-	no-counterpart
 weak-hash	-	-	no-counterpart	
 weak-key-size	-	-	no-counterpart	
 weak-tls-protocol	-	-	no-counterpart	
-while-loop-with-literal-boolean	pmd	WhileLoopWithLiteralBoolean	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
+while-loop-with-literal-boolean	pmd	WhileLoopWithLiteralBoolean	anchor-differs	tool lines [3, 8], on passing [], fixture [3, 6]
 wl-using-getclass-rather-than-class-literal	spotbugs	WL_USING_GETCLASS_RATHER_THAN_CLASS_LITERAL	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 wmi-wrong-map-iterator	spotbugs	WMI_WRONG_MAP_ITERATOR	anchor-differs	tool lines [5], on passing [], fixture [4]
 wrong-oneof	errorprone	WrongOneof	not-comparable	the fixture does not compile

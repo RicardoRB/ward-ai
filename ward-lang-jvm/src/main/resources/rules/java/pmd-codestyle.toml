@@ -68,7 +68,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["statement"]
-text = '^if\((?:[^()&|?]*!=[^()&|?]*|![^()&|?=]*)\)\{[^{}]*\}else(?!if)'
+text = '^if\((?:(?![^()&|?]*(?:!=null\)|null!=))[^()&|?]*!=[^()&|?]*|![^()&|?=]*)\)\{[^{}]*\}else(?!if)'
 message = "a negated condition with an else branch is hard to read; swap the branches"
 '''
 
@@ -80,9 +80,7 @@ severity = "error"
 category = "style"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["statement"]
-text = '^(?:(?:if|while|for)(\((?:[^()]|\([^()]*+(?:\([^()]*\)[^()]*+)*+\))*\))(?!\{)|do(?!\{)|if(\((?:[^()]|\([^()]*+(?:\([^()]*\)[^()]*+)*+\))*\))\{(?:[^{}]|\{[^{}]*\})*\}else(?!\{|if))'
+check = "control-body-braces"
 message = "this control statement has no braces; put its body in a block"
 '''
 
