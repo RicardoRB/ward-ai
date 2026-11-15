@@ -26,7 +26,6 @@ import org.tomlj.TomlTable;
  * {@code #} comment lines; its out-of-scope file is {@code <tool>-out-of-scope.toml}.
  */
 final class UpstreamLists {
-
   private static final String DIRECTORY = "catalog/upstream";
   private static final Pattern LIST_FILE = Pattern.compile("(.+)-[0-9][0-9.]*\\.txt");
   private static final String SUFFIX = "-out-of-scope.toml";
@@ -115,7 +114,7 @@ final class UpstreamLists {
     final Set<String> ids = new LinkedHashSet<>();
     for (final String line : lines(file)) {
       if (!line.startsWith("#") && !line.isBlank()) {
-        ids.add(line.split("\t", 2)[0]);
+        ids.add(line.split("\t", 2) [0]);
       }
     }
     return ids;

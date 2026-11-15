@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /** The bundled Python taint rules, on the scenarios of their specification. */
 class PythonSecurityRulesTest {
-
   private static final int SINK_LINE = 6;
   private static final Path FIXTURES = Path.of("src/test/resources/rules/python");
 
@@ -20,8 +19,7 @@ class PythonSecurityRulesTest {
   @Test
   void requestValueInAVariableReachesExecute() {
     final List<AnalysisFinding> found =
-        PythonSecurityRules.run(
-            """
+        PythonSecurityRules.run("""
             from flask import request
 
             def view(cursor):
@@ -40,9 +38,7 @@ class PythonSecurityRulesTest {
   /** Scenario: a value converted first reaches nothing. */
   @Test
   void convertedValueReportsNothing() {
-    assertThat(
-            PythonSecurityRules.run(
-                """
+    assertThat(PythonSecurityRules.run("""
                 from flask import request
 
                 def view(cursor):
@@ -56,8 +52,7 @@ class PythonSecurityRulesTest {
   @Test
   void aliasedSubprocessIsACommandSink() {
     final List<AnalysisFinding> found =
-        PythonSecurityRules.run(
-            """
+        PythonSecurityRules.run("""
             import subprocess as sp
             from flask import request
 
@@ -74,8 +69,7 @@ class PythonSecurityRulesTest {
   @Test
   void routeParameterIsASource() {
     final List<AnalysisFinding> found =
-        PythonSecurityRules.run(
-            """
+        PythonSecurityRules.run("""
             import os
 
             @app.get("/run")
@@ -99,22 +93,25 @@ class PythonSecurityRulesTest {
             "path-injection",
             "untrusted-request-url",
             "untrusted-redirect",
-            "template-injection")) {
+            "template-injection"
+        )) {
       final String violating = Files.readString(FIXTURES.resolve(rule).resolve("violating.py"));
       final List<String> expected =
           Files.readAllLines(FIXTURES.resolve(rule).resolve("expected.txt")).stream()
               .filter(line -> !line.isBlank())
               .toList();
       assertThat(
-              PythonSecurityRules.run(violating).stream()
-                  .map(finding -> finding.ruleId() + " " + finding.line() + ":" + finding.column())
-                  .toList())
+          PythonSecurityRules.run(violating).stream()
+              .map(finding -> finding.ruleId() + " " + finding.line() + ":" + finding.column())
+              .toList()
+      )
           .as(rule)
           .containsExactlyElementsOf(
-              expected.stream().map(position -> "ward:python/" + rule + " " + position).toList());
+              expected.stream().map(position -> "ward:python/" + rule + " " + position).toList()
+          );
       assertThat(
-              PythonSecurityRules.run(
-                  Files.readString(FIXTURES.resolve(rule).resolve("passing.py"))))
+          PythonSecurityRules.run(Files.readString(FIXTURES.resolve(rule).resolve("passing.py")))
+      )
           .as(rule + " passing")
           .isEmpty();
     }

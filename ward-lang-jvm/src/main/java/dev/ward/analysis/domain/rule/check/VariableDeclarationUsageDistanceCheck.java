@@ -17,7 +17,6 @@ import java.util.Set;
  * counts as a use too.
  */
 public final class VariableDeclarationUsageDistanceCheck implements UnitCheck {
-
   private static final String FINAL = "final";
   private static final String DECLARATOR = "variableDeclarator";
   private static final Set<String> NOT_ENTERED = Set.of("block", "classBody");
@@ -36,7 +35,10 @@ public final class VariableDeclarationUsageDistanceCheck implements UnitCheck {
    *     {max}} for the allowed distance
    */
   public VariableDeclarationUsageDistanceCheck(
-      final int allowedDistance, final boolean ignoreFinals, final String message) {
+      final int allowedDistance,
+      final boolean ignoreFinals,
+      final String message
+  ) {
     this.allowedDistance = CheckSupport.nonNegative(allowedDistance, "allowed-distance");
     this.ignoreFinals = ignoreFinals;
     this.message = message;
@@ -63,20 +65,27 @@ public final class VariableDeclarationUsageDistanceCheck implements UnitCheck {
       final SyntaxNode declaration,
       final List<SyntaxNode> statements,
       final int index,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     for (final SyntaxNode declarator : declarators(declaration)) {
       final SyntaxNode name = SyntaxWalk.leaves(declarator).get(0);
       final String text = SyntaxWalk.text(name);
       if (distanceToUse(statements, index, text) > allowedDistance) {
         matches.add(
             CheckSupport.at(
-                name.span(), CheckSupport.fill(message, text, Integer.toString(allowedDistance))));
+                name.span(),
+                CheckSupport.fill(message, text, Integer.toString(allowedDistance))
+            )
+        );
       }
     }
   }
 
   private static int distanceToUse(
-      final List<SyntaxNode> statements, final int declared, final String name) {
+      final List<SyntaxNode> statements,
+      final int declared,
+      final String name
+  ) {
     for (int index = declared + 1; index < statements.size(); index++) {
       final SyntaxNode statement = statements.get(index);
       if (usesOutsideNested(statement, name)) {
@@ -128,6 +137,7 @@ public final class VariableDeclarationUsageDistanceCheck implements UnitCheck {
         .anyMatch(
             child ->
                 SyntaxWalk.leaves(child).stream()
-                    .anyMatch(leaf -> FINAL.equals(SyntaxWalk.text(leaf))));
+                    .anyMatch(leaf -> FINAL.equals(SyntaxWalk.text(leaf)))
+        );
   }
 }

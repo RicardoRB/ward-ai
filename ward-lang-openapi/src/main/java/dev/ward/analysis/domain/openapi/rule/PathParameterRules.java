@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
 
 /** {@code path-params}: the parameters of a path template are defined, valid and used. */
 final class PathParameterRules {
-
   private static final Pattern TEMPLATE = Pattern.compile("(\\{;?\\??[a-zA-Z0-9_-]+\\*?\\})");
   private static final Pattern DECORATION = Pattern.compile("[{}?*;]");
   private static final List<String> METHODS =
@@ -37,7 +36,9 @@ final class PathParameterRules {
         findings.add(
             Findings.atValue(
                 item,
-                "Paths \"" + first + "\" and \"" + path.key() + "\" must not be equivalent."));
+                "Paths \"" + first + "\" and \"" + path.key() + "\" must not be equivalent."
+            )
+        );
       }
       inspect(document, path.key(), item, findings);
     }
@@ -48,7 +49,8 @@ final class PathParameterRules {
       final OpenApiDocument document,
       final String path,
       final DocNode item,
-      final List<OpenApiFinding> findings) {
+      final List<OpenApiFinding> findings
+  ) {
     final List<String> expected = expected(path, item, findings);
     final Map<String, DocNode> top = new LinkedHashMap<>();
     parameters(document, item, top, findings);
@@ -62,7 +64,10 @@ final class PathParameterRules {
   }
 
   private static List<String> expected(
-      final String path, final DocNode item, final List<OpenApiFinding> findings) {
+      final String path,
+      final DocNode item,
+      final List<OpenApiFinding> findings
+  ) {
     final List<String> names = new ArrayList<>();
     final Matcher matcher = TEMPLATE.matcher(path);
     while (matcher.find()) {
@@ -71,7 +76,9 @@ final class PathParameterRules {
         findings.add(
             Findings.atValue(
                 item,
-                "Path \"" + path + "\" must not use parameter \"{" + name + "}\" multiple times."));
+                "Path \"" + path + "\" must not use parameter \"{" + name + "}\" multiple times."
+            )
+        );
       } else {
         names.add(name);
       }
@@ -86,7 +93,8 @@ final class PathParameterRules {
       final OpenApiDocument document,
       final Template template,
       final DocNode operation,
-      final List<OpenApiFinding> findings) {
+      final List<OpenApiFinding> findings
+  ) {
     final String path = template.path();
     final List<String> expected = template.expected();
     final Map<String, DocNode> top = template.top();
@@ -99,7 +107,9 @@ final class PathParameterRules {
         findings.add(
             Findings.atValue(
                 parameter.getValue(),
-                "Parameter \"" + parameter.getKey() + "\" must be used in path \"" + path + "\"."));
+                "Parameter \"" + parameter.getKey() + "\" must be used in path \"" + path + "\"."
+            )
+        );
       }
     }
     for (final String name : expected) {
@@ -111,7 +121,9 @@ final class PathParameterRules {
                     + name
                     + "}\" as expected by path \""
                     + path
-                    + "\"."));
+                    + "\"."
+            )
+        );
       }
     }
   }
@@ -120,8 +132,10 @@ final class PathParameterRules {
   private static void parameters(
       final OpenApiDocument document,
       final DocNode owner,
-      final Map<String, DocNode> seen,
-      final List<OpenApiFinding> findings) {
+      final Map<String,
+      DocNode> seen,
+      final List<OpenApiFinding> findings
+  ) {
     final Optional<DocNode> list = document.get(owner, "parameters", View.RESOLVED);
     if (list.isEmpty() || list.get().kind() != DocNode.Kind.ARRAY) {
       return;
@@ -143,7 +157,9 @@ final class PathParameterRules {
                 parameter,
                 "Path parameter \""
                     + name.get().text()
-                    + "\" must have \"required\" property that is set to \"true\"."));
+                    + "\" must have \"required\" property that is set to \"true\"."
+            )
+        );
       }
       if (seen.containsKey(name.get().text())) {
         findings.add(
@@ -151,7 +167,9 @@ final class PathParameterRules {
                 parameter,
                 "Path parameter \""
                     + name.get().text()
-                    + "\" must not be defined multiple times."));
+                    + "\" must not be defined multiple times."
+            )
+        );
       } else {
         seen.put(name.get().text(), parameter);
       }

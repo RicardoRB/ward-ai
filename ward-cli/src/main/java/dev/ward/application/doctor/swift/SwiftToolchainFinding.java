@@ -16,10 +16,12 @@ import java.util.Optional;
 
 /** Checks the Swift tool chain, the selected Xcode, and setups Ward cannot configure yet. */
 public final class SwiftToolchainFinding implements ToolchainFinding {
-
   @Override
   public List<Finding> findings(
-      final Project detected, final EnvironmentFacts facts, final ToolchainContext context) {
+      final Project detected,
+      final EnvironmentFacts facts,
+      final ToolchainContext context
+  ) {
     final List<Finding> findings = new ArrayList<>();
     findings.add(executableFinding("swift", facts));
     if (detected.buildTool() != BuildTool.SWIFTPM) {
@@ -66,11 +68,15 @@ public final class SwiftToolchainFinding implements ToolchainFinding {
     return new Finding(
         tool.displayName().toLowerCase(Locale.ROOT),
         Status.WARNING,
-        "Ward does not support " + tool.displayName() + " yet.");
+        "Ward does not support " + tool.displayName() + " yet."
+    );
   }
 
   private static Finding cocoaPodsFinding() {
     return new Finding(
-        "cocoapods", Status.WARNING, "CocoaPods trunk is read-only; Ward does not install pods.");
+        "cocoapods",
+        Status.WARNING,
+        "CocoaPods trunk is read-only; Ward does not install pods."
+    );
   }
 }

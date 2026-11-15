@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
  * a sequence, when the type facts do not answer.
  */
 final class SwiftSyntaxSequence {
-
   private static final Pattern ARRAY_LITERAL = Pattern.compile("^\\[.*\\]$");
   private static final Pattern CONSTRUCTOR = Pattern.compile("^(\\w+)\\(\\)$");
   private static final Pattern NAME = Pattern.compile("^\\w+$");
@@ -27,7 +26,8 @@ final class SwiftSyntaxSequence {
     final Matcher constructor = CONSTRUCTOR.matcher(receiver);
     if (constructor.matches()) {
       return file.matches(
-          ".*(?:struct|class|enum)" + constructor.group(1) + ":[^{]*(?:" + SEQUENCE_TYPES + ").*");
+          ".*(?:struct|class|enum)" + constructor.group(1) + ":[^{]*(?:" + SEQUENCE_TYPES + ").*"
+      );
     }
     return NAME.matcher(receiver).matches() && hasSequenceType(receiver, file);
   }

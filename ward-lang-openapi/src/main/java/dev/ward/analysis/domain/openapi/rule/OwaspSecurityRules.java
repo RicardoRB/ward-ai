@@ -10,7 +10,6 @@ import java.util.Optional;
 
 /** The OWASP rules about the security requirements of operations. */
 final class OwaspSecurityRules {
-
   private static final String SECURITY = "security";
   private static final String ADMIN = "/admin";
 
@@ -21,7 +20,8 @@ final class OwaspSecurityRules {
     return restricted(
         document,
         List.of("post", "put", "patch", "delete"),
-        "This write operation is not protected by any security scheme.");
+        "This write operation is not protected by any security scheme."
+    );
   }
 
   /** {@code owasp-api2-2023-read-restricted}: a read operation has a security requirement. */
@@ -29,11 +29,15 @@ final class OwaspSecurityRules {
     return restricted(
         document,
         List.of("get", "head"),
-        "This read operation is not protected by any security scheme.");
+        "This read operation is not protected by any security scheme."
+    );
   }
 
   private static List<OpenApiFinding> restricted(
-      final OpenApiDocument document, final List<String> methods, final String message) {
+      final OpenApiDocument document,
+      final List<String> methods,
+      final String message
+  ) {
     final List<OpenApiFinding> findings = new ArrayList<>();
     final Optional<DocNode> global = document.get(document.root(), SECURITY, View.RESOLVED);
     for (final Operation operation : document.parts().operations()) {
@@ -79,7 +83,9 @@ final class OwaspSecurityRules {
                 admin.get(index),
                 "Admin endpoint "
                     + adminPaths.get(index)
-                    + " has the same security requirement as a non-admin endpoint."));
+                    + " has the same security requirement as a non-admin endpoint."
+            )
+        );
       }
     }
     return findings;
@@ -87,7 +93,9 @@ final class OwaspSecurityRules {
 
   /** The object or array requirements of the operation's own {@code security}. */
   private static List<DocNode> requirements(
-      final OpenApiDocument document, final Operation operation) {
+      final OpenApiDocument document,
+      final Operation operation
+  ) {
     return document
         .get(operation.node(), SECURITY, View.RESOLVED)
         .filter(security -> security.kind() == DocNode.Kind.ARRAY)
@@ -97,8 +105,10 @@ final class OwaspSecurityRules {
                     .filter(
                         entry ->
                             entry.kind() == DocNode.Kind.OBJECT
-                                || entry.kind() == DocNode.Kind.ARRAY)
-                    .toList())
+                                || entry.kind() == DocNode.Kind.ARRAY
+                    )
+                    .toList()
+        )
         .orElse(List.of());
   }
 }

@@ -6,7 +6,6 @@ import dev.ward.analysis.domain.types.TypeShape;
 
 /** Tells whether a value of one class or interface type can be cast to another. */
 final class TypeCasts {
-
   private TypeCasts() {}
 
   /** Tells whether a value of one class or interface type can be cast to the other. */

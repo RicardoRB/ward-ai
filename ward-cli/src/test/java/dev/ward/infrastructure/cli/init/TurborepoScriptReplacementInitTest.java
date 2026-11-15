@@ -86,7 +86,8 @@ class TurborepoScriptReplacementInitTest {
     Files.writeString(
         project.resolve(WEB + PACKAGE_JSON),
         "{\n  \"name\": \"web\",\n  \"private\": true,\n  \"scripts\": {\n"
-            + "    \"check-types\": \"tsc -p .\"\n  }\n}\n");
+            + "    \"check-types\": \"tsc -p .\"\n  }\n}\n"
+    );
   }
 
   private static String[] initArguments(final String... extra) {
@@ -100,7 +101,9 @@ class TurborepoScriptReplacementInitTest {
                 "none",
                 "--ci",
                 "github",
-                "--agent-rules"));
+                "--agent-rules"
+            )
+        );
     arguments.addAll(List.of(extra));
     return arguments.toArray(String[]::new);
   }

@@ -41,7 +41,8 @@ final class PresetRuleFileContent {
       final QualityPreset preset,
       final List<String> languages,
       final boolean buildPolicy,
-      final boolean maven) {
+      final boolean maven
+  ) {
     final QualityPreset chosen = preset == null ? QualityPreset.STANDARD : preset;
     return "version = 1\n\n[select]\npreset = \""
         + chosen.id()

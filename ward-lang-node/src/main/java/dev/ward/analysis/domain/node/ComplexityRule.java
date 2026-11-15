@@ -17,7 +17,6 @@ import java.util.List;
  * @param limit the largest allowed complexity
  */
 public record ComplexityRule(RuleDefinition definition, int limit) implements CompiledRule {
-
   private static final int BASE_COMPLEXITY = 1;
 
   @Override
@@ -37,7 +36,9 @@ public record ComplexityRule(RuleDefinition definition, int limit) implements Co
         matches.add(
             new RuleMatch(
                 function.span(),
-                "Function has complexity " + function.value() + " (limit " + limit + ")"));
+                "Function has complexity " + function.value() + " (limit " + limit + ")"
+            )
+        );
       }
     }
     return matches;

@@ -17,7 +17,6 @@ import java.util.Set;
  * separates two blocks and none appears inside a block. Directives of other kinds are not checked.
  */
 public final class ModuleDirectiveOrderCheck implements RuleCheck {
-
   private static final String MODULE_KIND = "moduleDeclaration";
   private static final String DIRECTIVE_KIND = "moduleDirective";
 
@@ -33,7 +32,10 @@ public final class ModuleDirectiveOrderCheck implements RuleCheck {
    * @param message the message; {@code {value}} is the directive keyword
    */
   public ModuleDirectiveOrderCheck(
-      final List<String> order, final boolean validateBlockSeparation, final String message) {
+      final List<String> order,
+      final boolean validateBlockSeparation,
+      final String message
+  ) {
     this.order = List.copyOf(order);
     this.validateBlockSeparation = validateBlockSeparation;
     this.message = Objects.requireNonNull(message, "message");
@@ -46,7 +48,10 @@ public final class ModuleDirectiveOrderCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return check(root, ImportLines.of(unit));
   }
 
@@ -59,7 +64,10 @@ public final class ModuleDirectiveOrderCheck implements RuleCheck {
   }
 
   private void checkModule(
-      final SyntaxNode module, final List<String> lines, final List<RuleMatch> matches) {
+      final SyntaxNode module,
+      final List<String> lines,
+      final List<RuleMatch> matches
+  ) {
     final Set<String> seen = new HashSet<>();
     String previousKeyword = null;
     Span previousSpan = null;
@@ -88,7 +96,8 @@ public final class ModuleDirectiveOrderCheck implements RuleCheck {
       final Span previousSpan,
       final SyntaxNode directive,
       final Set<String> seen,
-      final List<String> lines) {
+      final List<String> lines
+  ) {
     final String keyword = keyword(directive);
     if (keyword.equals(previousKeyword)) {
       final List<RuleMatch> found = new ArrayList<>();
@@ -106,7 +115,8 @@ public final class ModuleDirectiveOrderCheck implements RuleCheck {
       final SyntaxNode directive,
       final String keyword,
       final Set<String> seen,
-      final List<String> lines) {
+      final List<String> lines
+  ) {
     final List<RuleMatch> found = new ArrayList<>();
     if (!seen.add(keyword)) {
       found.add(at(directive.span(), keyword));
@@ -122,7 +132,10 @@ public final class ModuleDirectiveOrderCheck implements RuleCheck {
 
   /** Returns the blank lines before a directive, or -1 when the text is unknown. */
   private static int blankLines(
-      final List<String> lines, final Span previous, final SyntaxNode next) {
+      final List<String> lines,
+      final Span previous,
+      final SyntaxNode next
+  ) {
     if (lines.isEmpty()) {
       return -1;
     }

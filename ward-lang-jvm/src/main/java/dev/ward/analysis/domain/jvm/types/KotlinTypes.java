@@ -11,8 +11,25 @@ import java.util.Optional;
 final class KotlinTypes {
   private static final Map<String, String> PRIMITIVES =
       Map.of(
-          "Int", "int", "Long", "long", "Short", "short", "Byte", "byte", "Float", "float",
-          "Double", "double", "Boolean", "boolean", "Char", "char", "Unit", "void");
+          "Int",
+          "int",
+          "Long",
+          "long",
+          "Short",
+          "short",
+          "Byte",
+          "byte",
+          "Float",
+          "float",
+          "Double",
+          "double",
+          "Boolean",
+          "boolean",
+          "Char",
+          "char",
+          "Unit",
+          "void"
+      );
   private static final Map<String, String> CLASSES =
       Map.ofEntries(
           Map.entry("String", Types.STRING),
@@ -33,7 +50,8 @@ final class KotlinTypes {
           Map.entry("Map", "java.util.Map"),
           Map.entry("MutableMap", "java.util.Map"),
           Map.entry("Exception", "java.lang.Exception"),
-          Map.entry("RuntimeException", "java.lang.RuntimeException"));
+          Map.entry("RuntimeException", "java.lang.RuntimeException")
+      );
 
   private static final int ONE = 1;
 
@@ -62,9 +80,11 @@ final class KotlinTypes {
                             } else {
                               single.put(dotted.substring(dotted.lastIndexOf('.') + 1), dotted);
                             }
-                          });
+                          }
+                      );
                 }
-              });
+              }
+          );
     }
     return new Imports(packageOf(root), single, onDemand, Map.of(), List.of());
   }
@@ -114,7 +134,8 @@ final class KotlinTypes {
       final List<String> names,
       final List<JType> arguments,
       final boolean nullable,
-      final TypeScope scope) {
+      final TypeScope scope
+  ) {
     final String first = names.get(0);
     if (names.size() == ONE) {
       final Optional<JType> builtin = builtin(first, arguments, nullable, scope);
@@ -129,7 +150,8 @@ final class KotlinTypes {
       final String name,
       final List<JType> arguments,
       final boolean nullable,
-      final TypeScope scope) {
+      final TypeScope scope
+  ) {
     if (scope.isTypeVariable(name)) {
       return Optional.of(new JType.TypeVariable(name));
     }

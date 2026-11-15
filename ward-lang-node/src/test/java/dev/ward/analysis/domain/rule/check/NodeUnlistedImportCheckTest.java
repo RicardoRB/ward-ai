@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** The unlisted-import check: bare packages the nearest manifest does not list. */
 final class NodeUnlistedImportCheckTest {
-
   private static final String MESSAGE = "unlisted {value}";
   private static final String MANIFEST = "{\"dependencies\":{\"react\":\"^18\"}}";
 
@@ -19,8 +18,10 @@ final class NodeUnlistedImportCheckTest {
         new NodeUnlistedImportCheck(MESSAGE)
             .project(
                 ProjectFixtures.trees(
-                    Map.of("index.ts", "import _ from 'lodash';\nexport const a = _;")),
-                ProjectFixtures.manifests(Map.of("package.json", MANIFEST)));
+                    Map.of("index.ts", "import _ from 'lodash';\nexport const a = _;")
+                ),
+                ProjectFixtures.manifests(Map.of("package.json", MANIFEST))
+            );
 
     assertThat(ProjectFixtures.positions(found)).containsExactly("index.ts:1:15");
     assertThat(ProjectFixtures.messages(found)).containsExactly("unlisted lodash");
@@ -34,8 +35,11 @@ final class NodeUnlistedImportCheckTest {
                 ProjectFixtures.trees(
                     Map.of(
                         "index.ts",
-                        "import R from 'react';\nimport j from 'react/jsx-runtime';\nexport const a = R;")),
-                ProjectFixtures.manifests(Map.of("package.json", MANIFEST)));
+                        "import R from 'react';\nimport j from 'react/jsx-runtime';\nexport const a = R;"
+                    )
+                ),
+                ProjectFixtures.manifests(Map.of("package.json", MANIFEST))
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
@@ -50,8 +54,11 @@ final class NodeUnlistedImportCheckTest {
                         "index.ts",
                         "import fs from 'node:fs';\nimport p from 'path';\nimport l from './lib';\nimport x from '#internal';\nexport const a = [fs, p, l, x];",
                         "lib.ts",
-                        "export const b = 1;")),
-                ProjectFixtures.manifests(Map.of("package.json", MANIFEST)));
+                        "export const b = 1;"
+                    )
+                ),
+                ProjectFixtures.manifests(Map.of("package.json", MANIFEST))
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
@@ -62,8 +69,10 @@ final class NodeUnlistedImportCheckTest {
         new NodeUnlistedImportCheck(MESSAGE)
             .project(
                 ProjectFixtures.trees(
-                    Map.of("index.ts", "import _ from 'lodash';\nexport const a = _;")),
-                ProjectFixtures.manifests(Map.of()));
+                    Map.of("index.ts", "import _ from 'lodash';\nexport const a = _;")
+                ),
+                ProjectFixtures.manifests(Map.of())
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }
@@ -76,9 +85,13 @@ final class NodeUnlistedImportCheckTest {
                 ProjectFixtures.trees(
                     Map.of(
                         "packages/ui/test/order.test.ts",
-                        "import { a } from '@repo/ui/order';\nexport const b = a;")),
+                        "import { a } from '@repo/ui/order';\nexport const b = a;"
+                    )
+                ),
                 ProjectFixtures.manifests(
-                    Map.of("packages/ui/package.json", "{\"name\":\"@repo/ui\"}")));
+                    Map.of("packages/ui/package.json", "{\"name\":\"@repo/ui\"}")
+                )
+            );
 
     assertThat(ProjectFixtures.positions(found)).isEmpty();
   }

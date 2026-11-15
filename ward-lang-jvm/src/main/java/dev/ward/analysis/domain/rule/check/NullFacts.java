@@ -9,7 +9,6 @@ import java.util.Set;
 
 /** The joins of the backward half of the null data-flow. */
 final class NullFacts {
-
   private NullFacts() {}
 
   /** Returns what holds at the end of a block with no successor: nothing, or everything. */
@@ -37,7 +36,8 @@ final class NullFacts {
                 union.addAll(right.sites().get(variable));
                 met.put(variable, union);
               }
-            });
+            }
+        );
     return new NullBackward.Fact(false, met);
   }
 }

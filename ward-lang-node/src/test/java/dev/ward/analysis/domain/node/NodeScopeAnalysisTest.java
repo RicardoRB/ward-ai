@@ -11,13 +11,16 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class NodeScopeAnalysisTest {
-
   private static final int LINE_1 = 1;
   private static final int LINE_2 = 2;
   private static final int LINE_3 = 3;
 
   private static NameReference only(
-      final UnitScopes scopes, final String name, final int line, final ReferenceAccess access) {
+      final UnitScopes scopes,
+      final String name,
+      final int line,
+      final ReferenceAccess access
+  ) {
     final List<NameReference> found =
         scopes.references().stream()
             .filter(reference -> reference.name().equals(name))
@@ -43,7 +46,8 @@ class NodeScopeAnalysisTest {
   void varHoistsToTheFunctionAndLetStaysInTheBlock() {
     final UnitScopes scopes =
         NodeScopeFixtures.javascript(
-            "function f() {\n  if (a) { var v = 1; let l = 2; }\n  return v + l;\n}\n");
+            "function f() {\n  if (a) { var v = 1; let l = 2; }\n  return v + l;\n}\n"
+        );
 
     assertThat(only(scopes, "v", LINE_3, ReferenceAccess.READ).resolved()).isPresent();
     assertThat(only(scopes, "l", LINE_3, ReferenceAccess.READ).resolved()).isEmpty();

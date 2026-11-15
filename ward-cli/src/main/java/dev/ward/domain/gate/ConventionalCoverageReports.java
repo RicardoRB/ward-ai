@@ -24,7 +24,8 @@ public final class ConventionalCoverageReports {
           Map.entry(BuildTool.POETRY, PYTHON),
           Map.entry(BuildTool.PDM, PYTHON),
           Map.entry(BuildTool.HATCH, PYTHON),
-          Map.entry(BuildTool.PIP, PYTHON));
+          Map.entry(BuildTool.PIP, PYTHON)
+      );
 
   private ConventionalCoverageReports() {}
 

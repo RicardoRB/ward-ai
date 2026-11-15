@@ -6,7 +6,6 @@ import java.util.List;
 
 /** Builds the findings of the rules: a message at the key, or the value, of a node. */
 final class Findings {
-
   private Findings() {}
 
   /** A finding at {@code node}, where Spectral reports it: its value, which a key never is. */

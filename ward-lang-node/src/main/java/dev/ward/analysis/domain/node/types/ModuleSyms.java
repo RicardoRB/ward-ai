@@ -17,7 +17,8 @@ final class ModuleSyms {
         List.of(),
         TsType.UNKNOWN,
         target.decls(),
-        Decl.MODULE);
+        Decl.MODULE
+    );
   }
 
   static Sym starExport(final FileDecls.Export export, final Module target, final String name) {

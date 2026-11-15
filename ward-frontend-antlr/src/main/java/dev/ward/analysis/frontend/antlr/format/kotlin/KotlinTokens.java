@@ -7,7 +7,6 @@ import org.antlr.v4.runtime.Token;
 
 /** Classifies Kotlin tokens and reads the source gaps between them for the formatter. */
 final class KotlinTokens {
-
   /** The token type given to every comment, as the format checks expect. */
   static final String COMMENT = "comment";
 
@@ -22,7 +21,8 @@ final class KotlinTokens {
           KotlinLexer.LSQUARE,
           KotlinLexer.LCURL,
           KotlinLexer.LineStrExprStart,
-          KotlinLexer.MultiLineStrExprStart);
+          KotlinLexer.MultiLineStrExprStart
+      );
   private static final Set<Integer> CLOSERS =
       Set.of(KotlinLexer.RPAREN, KotlinLexer.RSQUARE, KotlinLexer.RCURL);
   private static final Set<Integer> STRING_PARTS =
@@ -39,13 +39,15 @@ final class KotlinTokens {
           KotlinLexer.MultiLineStrRef,
           KotlinLexer.MultiLineStrText,
           KotlinLexer.MultiLineStrEscapedChar,
-          KotlinLexer.MultiLineStrExprStart);
+          KotlinLexer.MultiLineStrExprStart
+      );
   private static final Set<Integer> DELIMITERS =
       Set.of(
           KotlinLexer.QUOTE_OPEN,
           KotlinLexer.QUOTE_CLOSE,
           KotlinLexer.TRIPLE_QUOTE_OPEN,
-          KotlinLexer.TRIPLE_QUOTE_CLOSE);
+          KotlinLexer.TRIPLE_QUOTE_CLOSE
+      );
 
   /** Whether the source space between two tokens becomes a space, none, or stays as written. */
   enum Spacing {
@@ -70,7 +72,8 @@ final class KotlinTokens {
           KotlinLexer.RSQUARE,
           KotlinLexer.RCURL,
           KotlinLexer.QUOTE_CLOSE,
-          KotlinLexer.TRIPLE_QUOTE_CLOSE);
+          KotlinLexer.TRIPLE_QUOTE_CLOSE
+      );
   private static final Set<Integer> NO_SPACE_BEFORE =
       Set.of(
           KotlinLexer.COMMA,
@@ -79,13 +82,19 @@ final class KotlinTokens {
           KotlinLexer.DOT,
           KotlinLexer.COLONCOLON,
           KotlinLexer.COLON,
-          KotlinLexer.SEMICOLON);
+          KotlinLexer.SEMICOLON
+      );
   private static final Set<Integer> NO_SPACE_AFTER =
       Set.of(KotlinLexer.LPAREN, KotlinLexer.LSQUARE, KotlinLexer.DOT, KotlinLexer.COLONCOLON);
   private static final Set<Integer> SPACE_AFTER = Set.of(KotlinLexer.COMMA, KotlinLexer.COLON);
   private static final Set<Integer> UNARY_PREFIX =
       Set.of(
-          KotlinLexer.ADD, KotlinLexer.SUB, KotlinLexer.EXCL, KotlinLexer.INCR, KotlinLexer.DECR);
+          KotlinLexer.ADD,
+          KotlinLexer.SUB,
+          KotlinLexer.EXCL,
+          KotlinLexer.INCR,
+          KotlinLexer.DECR
+      );
   private static final Set<Integer> BINARY =
       Set.of(
           KotlinLexer.MULT,
@@ -106,7 +115,8 @@ final class KotlinTokens {
           KotlinLexer.EXCL_EQ,
           KotlinLexer.EQEQ,
           KotlinLexer.LE,
-          KotlinLexer.GE);
+          KotlinLexer.GE
+      );
   private static final Set<Integer> USE_SITE_TARGETS =
       Set.of(
           KotlinLexer.FIELD_SITE,
@@ -117,10 +127,16 @@ final class KotlinTokens {
           KotlinLexer.RECEIVER_SITE,
           KotlinLexer.PARAM_SITE,
           KotlinLexer.SETPARAM_SITE,
-          KotlinLexer.DELEGATE_SITE);
+          KotlinLexer.DELEGATE_SITE
+      );
   private static final Set<Integer> KEYWORDS_BEFORE_PAREN =
       Set.of(
-          KotlinLexer.IF, KotlinLexer.FOR, KotlinLexer.WHILE, KotlinLexer.WHEN, KotlinLexer.CATCH);
+          KotlinLexer.IF,
+          KotlinLexer.FOR,
+          KotlinLexer.WHILE,
+          KotlinLexer.WHEN,
+          KotlinLexer.CATCH
+      );
 
   private KotlinTokens() {}
 
@@ -149,7 +165,10 @@ final class KotlinTokens {
   }
 
   private static boolean noSpaceBefore(
-      final Optional<Token> before, final Token prev, final Token next) {
+      final Optional<Token> before,
+      final Token prev,
+      final Token next
+  ) {
     final int p = prev.getType();
     final int n = next.getType();
     final boolean postfixBang =

@@ -9,7 +9,6 @@ import java.util.List;
 
 /** Formats TypeScript in Ward style: whitespace and line breaks only, never a token. */
 public final class TypeScriptFormatter implements SourceFormatter {
-
   @Override
   public AnalysisLanguage language() {
     return AnalysisLanguage.TYPESCRIPT;

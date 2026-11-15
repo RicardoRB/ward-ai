@@ -7,7 +7,6 @@ import java.util.Optional;
 
 /** Tree helpers shared by the TypeScript and JavaScript style checks. */
 final class NodeSyntax {
-
   private static final String IDENTIFIER = "Identifier";
   private static final String COMMENT = "comment";
 

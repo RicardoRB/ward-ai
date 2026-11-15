@@ -50,7 +50,8 @@ final class CoverageGateFixture {
       final int lines,
       final int covered,
       final int branches,
-      final int coveredBranches) {
+      final int coveredBranches
+  ) {
     final SortedMap<Integer, Integer> all = new TreeMap<>();
     final SortedMap<Integer, Integer> taken = new TreeMap<>();
     if (branches > 0) {
@@ -60,7 +61,8 @@ final class CoverageGateFixture {
     return new LineHits.Entry(
         LineHits.Kind.PACKAGE_FILE,
         name,
-        new FileLines(range(1, lines), range(1, covered), all, taken));
+        new FileLines(range(1, lines), range(1, covered), all, taken)
+    );
   }
 
   /** The lines {@code first} to {@code last}, or none when {@code last} is below {@code first}. */
@@ -76,7 +78,8 @@ final class CoverageGateFixture {
       final String path,
       final Instant when,
       final boolean recordsBranches,
-      final LineHits.Entry... entries) {
+      final LineHits.Entry... entries
+  ) {
     files.add(path);
     modified.put(path, when);
     hits.put(path, new LineHits(ROOT.resolve(path), List.of(entries), recordsBranches));
@@ -116,17 +119,20 @@ final class CoverageGateFixture {
               public GateResult execute(final Project project) {
                 commandRan = true;
                 return GateResult.builder(
-                        "coverage", exit == 0 ? GateStatus.PASSED : GateStatus.FAILED)
+                    "coverage",
+                    exit == 0 ? GateStatus.PASSED : GateStatus.FAILED
+                )
                     .exitCode(exit)
                     .duration(Duration.ZERO)
                     .build();
               }
             };
     return new CoverageReportGate(
-            check(minimum, options),
-            command,
-            CoverageGateFakes.ports(hits, modified, files, modules),
-            CoverageGateFakes.analysis(units))
+        check(minimum, options),
+        command,
+        CoverageGateFakes.ports(hits, modified, files, modules),
+        CoverageGateFakes.analysis(units)
+    )
         .execute(new Project(ROOT, Language.JAVA, BuildTool.MAVEN, Framework.NONE));
   }
 
@@ -153,6 +159,7 @@ final class CoverageGateFixture {
         null,
         null,
         null,
-        null);
+        null
+    );
   }
 }

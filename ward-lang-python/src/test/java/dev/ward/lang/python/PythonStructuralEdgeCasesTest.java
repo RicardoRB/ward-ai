@@ -8,42 +8,49 @@ import org.junit.jupiter.api.Test;
 
 /** Edge cases of the Python structural rules, written inline so each one reads with its source. */
 final class PythonStructuralEdgeCasesTest {
-
   private static final int NESTED_CAPACITY = 256;
   private static final int NESTED_DECISIONS = 10;
 
   @Test
   void receiverOfAMethodIsNotCounted() {
     assertThat(
-            PythonRuleRuns.run(
-                    "parameter-count", "class A:\n    def m(self, a, b, c, d, e):\n        pass\n")
-                .findings())
+        PythonRuleRuns.run(
+            "parameter-count",
+            "class A:\n    def m(self, a, b, c, d, e):\n        pass\n"
+        )
+            .findings()
+    )
         .isEmpty();
     assertThat(
-            PythonRuleRuns.run(
-                    "parameter-count",
-                    "class A:\n    def m(self, a, b, c, d, e, g):\n        pass\n")
-                .findings())
+        PythonRuleRuns.run(
+            "parameter-count",
+            "class A:\n    def m(self, a, b, c, d, e, g):\n        pass\n"
+        )
+            .findings()
+    )
         .hasSize(1);
   }
 
   @Test
   void selfOfATopLevelFunctionIsCounted() {
     assertThat(
-            PythonRuleRuns.run("parameter-count", "def f(self, a, b, c, d):\n    pass\n")
-                .findings())
+        PythonRuleRuns.run("parameter-count", "def f(self, a, b, c, d):\n    pass\n")
+            .findings()
+    )
         .isEmpty();
     assertThat(
-            PythonRuleRuns.run("parameter-count", "def f(self, a, b, c, d, e):\n    pass\n")
-                .findings())
+        PythonRuleRuns.run("parameter-count", "def f(self, a, b, c, d, e):\n    pass\n")
+            .findings()
+    )
         .hasSize(1);
   }
 
   @Test
   void keywordOnlyParametersAreCounted() {
     assertThat(
-            PythonRuleRuns.run("parameter-count", "def f(a, b, c, *, d, e, g):\n    pass\n")
-                .findings())
+        PythonRuleRuns.run("parameter-count", "def f(a, b, c, *, d, e, g):\n    pass\n")
+            .findings()
+    )
         .hasSize(1);
   }
 
@@ -92,8 +99,9 @@ final class PythonStructuralEdgeCasesTest {
   @Test
   void dunderAndPrivateNamesAreNotReportedWhenTheyFollowTheStyle() {
     assertThat(
-            PythonRuleRuns.run("naming", "class A:\n    def __init__(self):\n        self._x = 1\n")
-                .findings())
+        PythonRuleRuns.run("naming", "class A:\n    def __init__(self):\n        self._x = 1\n")
+            .findings()
+    )
         .isEmpty();
     assertThat(PythonRuleRuns.run("naming", "def _private_helper():\n    pass\n").findings())
         .isEmpty();

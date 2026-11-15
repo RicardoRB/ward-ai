@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** The Javadoc position, summary, paragraph and method checks on small trees. */
 class JavadocContentChecksTest extends TreeBuilders {
-
   private static final int COMMENT_OFFSET = 2;
   private static final int MEMBER_OFFSET = 30;
   private static final int NAME_OFFSET = 35;
@@ -74,14 +73,18 @@ class JavadocContentChecksTest extends TreeBuilders {
   }
 
   private static List<RuleMatch> method(
-      final String text, final String returnType, final String... parameters) {
+      final String text,
+      final String returnType,
+      final String... parameters
+  ) {
     final SyntaxNode[] formals = new SyntaxNode[parameters.length];
     for (int index = 0; index < parameters.length; index++) {
       formals[index] =
           n(
               FORMAL_PARAMETER,
               Trees.leaf("int", "int", PARAMETER_OFFSET),
-              n(PARAMETER_ID, Trees.leaf(TOKEN_IDENTIFIER, parameters[index], PARAMETER_OFFSET)));
+              n(PARAMETER_ID, Trees.leaf(TOKEN_IDENTIFIER, parameters[index], PARAMETER_OFFSET))
+          );
     }
     final SyntaxNode method =
         Trees.node(
@@ -91,7 +94,8 @@ class JavadocContentChecksTest extends TreeBuilders {
             1,
             n("typeTypeOrVoid", Trees.leaf(returnType, returnType, MEMBER_OFFSET)),
             n(IDENTIFIER, Trees.leaf(TOKEN_IDENTIFIER, "run", NAME_OFFSET)),
-            n(FORMAL_PARAMETERS, formals));
+            n(FORMAL_PARAMETERS, formals)
+        );
     final SyntaxNode wrapper =
         Trees.node(CLASS_BODY_DECLARATION, MEMBER_OFFSET, MEMBER_OFFSET + MEMBER_OFFSET, 1, method);
     final SyntaxNode body = n(CLASS_BODY, Trees.leaf("'{'", "{", 0), comment(text), wrapper);

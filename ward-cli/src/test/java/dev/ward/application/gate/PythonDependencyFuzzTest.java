@@ -29,7 +29,6 @@ import org.junit.jupiter.api.Test;
  * are cached per file and the edges are resolved again on each run.
  */
 final class PythonDependencyFuzzTest {
-
   private static final int SEQUENCES = 100;
   private static final int EDITS = 5;
   private static final int MAX_LINES = 4;
@@ -48,10 +47,14 @@ final class PythonDependencyFuzzTest {
           "def f(): ...",
           "value = 1",
           "__all__ = ['value', 'f']",
-          "# note");
+          "# note"
+      );
   private static final FrontendSupport PYTHON =
       new FrontendSupport(
-          AnalysisLanguage.PYTHON, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX));
+          AnalysisLanguage.PYTHON,
+          new AntlrLanguageFrontend(),
+          Set.of(RuleCapability.SYNTAX)
+      );
 
   @Test
   void incrementalGraphsEqualColdBuildsAfterEveryEdit() {
@@ -77,7 +80,9 @@ final class PythonDependencyFuzzTest {
   }
 
   private static void assertSameAsColdBuild(
-      final AnalysisCache cache, final List<SourceUnit> units) {
+      final AnalysisCache cache,
+      final List<SourceUnit> units
+  ) {
     final DependencyGraph warm = graph(cache, units);
     final DependencyGraph cold = graph(AnalysisCacheFixtures.NO_CACHE, units);
     assertThat(warm).isEqualTo(cold);
@@ -87,7 +92,9 @@ final class PythonDependencyFuzzTest {
   /** The graph of one run, with the summaries read from and written to {@code cache}. */
   private static DependencyGraph graph(final AnalysisCache cache, final List<SourceUnit> units) {
     return new DependencyAnalysis(
-            List.of(PYTHON), new PythonDependencyAdapters().forProject(root(), units))
+        List.of(PYTHON),
+        new PythonDependencyAdapters().forProject(root(), units)
+    )
         .analyze(units, new AnalysisSummaryCache(cache, AnalysisCacheFixtures.codec(), VERSION))
         .graph();
   }
@@ -95,10 +102,11 @@ final class PythonDependencyFuzzTest {
   /** Runs the unit cache too, so the stored reverse index is rewritten after each edit. */
   private static void runIndex(final AnalysisCache cache, final List<SourceUnit> units) {
     new UnitResultCache(
-            new RuleEngine(new MetricMatcher()),
-            AnalysisCacheFixtures.codec(),
-            VERSION,
-            new PythonDependencyAdapters().forProject(root(), units))
+        new RuleEngine(new MetricMatcher()),
+        AnalysisCacheFixtures.codec(),
+        VERSION,
+        new PythonDependencyAdapters().forProject(root(), units)
+    )
         .run(cache, units, List.of(PYTHON), List.of());
   }
 
@@ -110,7 +118,8 @@ final class PythonDependencyFuzzTest {
   private static List<SourceUnit> units(final Map<String, String> texts) {
     final List<SourceUnit> units = new ArrayList<>();
     PATHS.forEach(
-        path -> units.add(new SourceUnit(path, AnalysisLanguage.PYTHON, texts.get(path))));
+        path -> units.add(new SourceUnit(path, AnalysisLanguage.PYTHON, texts.get(path)))
+    );
     return units;
   }
 

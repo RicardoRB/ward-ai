@@ -17,7 +17,8 @@ class JsonTreeValue {
   protected final <T> T as(final Class<T> type) {
     if (!type.isInstance(value)) {
       throw new AssertionError(
-          "Expected JSON " + type.getSimpleName() + " but was " + Objects.toString(value));
+          "Expected JSON " + type.getSimpleName() + " but was " + Objects.toString(value)
+      );
     }
     return type.cast(value);
   }

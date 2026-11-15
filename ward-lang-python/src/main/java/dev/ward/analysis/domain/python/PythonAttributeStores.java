@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * last name of a target is read. Upgrade by reading every element of a target.
  */
 final class PythonAttributeStores {
-
   private static final Pattern IDENTIFIER = Pattern.compile("[A-Za-z_]\\w*");
   private static final String EXPR_STMT = "expr_stmt";
   private static final String ANNASSIGN = "annassign";
@@ -68,8 +67,9 @@ final class PythonAttributeStores {
         .ifPresent(
             name ->
                 found.add(
-                    new Symbol(
-                        PythonSyntax.text(name), node.children().get(0).span(), "attribute")));
+                    new Symbol(PythonSyntax.text(name), node.children().get(0).span(), "attribute")
+                )
+        );
     node.children().forEach(child -> collect(child, found));
   }
 }

@@ -11,7 +11,6 @@ import org.tomlj.TomlParseResult;
 
 /** Reads the options of the style checks from their rule bodies. */
 class StyleChecksTest {
-
   private static final String MAGIC = "node-magic-number";
 
   @Test

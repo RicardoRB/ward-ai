@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
  * whose targets are computed (a loop, a variable) is unreadable, so the caller falls back.
  */
 final class PackageManifestTargets {
-
   // shortcut: a computed manifest is unreadable and falls back to the implicit module, upgrade with
   // `swift package dump-package`
   private static final Pattern TARGET_CALL =
@@ -72,7 +71,8 @@ final class PackageManifestTargets {
     final String directory =
         path.find() ? normalized(path.group(1)) : defaultDirectory(kind, name.group(1));
     return Optional.of(
-        new SwiftTarget(name.group(1), List.of(directory), List.of(), dependenciesOf(arguments)));
+        new SwiftTarget(name.group(1), List.of(directory), List.of(), dependenciesOf(arguments))
+    );
   }
 
   private static String defaultDirectory(final String kind, final String name) {

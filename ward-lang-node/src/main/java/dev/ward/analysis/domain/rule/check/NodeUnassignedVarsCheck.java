@@ -25,7 +25,6 @@ import java.util.Optional;
  * Constants, declarations with an initializer and destructuring are not checked.
  */
 public final class NodeUnassignedVarsCheck implements RuleCheck {
-
   private static final String VARIABLE_LIST = "variableDeclarationList";
   private static final String VARIABLE_STATEMENT = "variableStatement";
   private static final String VAR_MODIFIER = "varModifier";
@@ -55,7 +54,11 @@ public final class NodeUnassignedVarsCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes();
     final Map<Integer, Span> declarators = new HashMap<>();
     collectDeclarators(root, declarators);
@@ -65,8 +68,8 @@ public final class NodeUnassignedVarsCheck implements RuleCheck {
           .filter(binding -> readOnly(scopes, binding))
           .ifPresent(
               binding ->
-                  matches.add(
-                      new RuleMatch(identifier, message.replace("{value}", binding.name()))));
+                  matches.add(new RuleMatch(identifier, message.replace("{value}", binding.name())))
+          );
     }
     return List.copyOf(matches);
   }
@@ -116,8 +119,9 @@ public final class NodeUnassignedVarsCheck implements RuleCheck {
                     ARRAY.equals(child.kind())
                         || OBJECT.equals(child.kind())
                         || ASSIGNABLE.equals(child.kind())
-                            && child.children().stream()
-                                .anyMatch(c -> ARRAY.equals(c.kind()) || OBJECT.equals(c.kind())));
+                        && child.children().stream()
+                            .anyMatch(c -> ARRAY.equals(c.kind()) || OBJECT.equals(c.kind()))
+            );
     if (valued || pattern) {
       return Optional.empty();
     }
@@ -143,7 +147,8 @@ public final class NodeUnassignedVarsCheck implements RuleCheck {
         .filter(
             binding ->
                 binding.kind() == BindingKind.VARIABLE
-                    && binding.declaration().startOffset() == offset)
+                    && binding.declaration().startOffset() == offset
+        )
         .findFirst();
   }
 

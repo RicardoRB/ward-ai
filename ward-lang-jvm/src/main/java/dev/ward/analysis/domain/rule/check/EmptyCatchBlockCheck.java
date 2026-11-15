@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * text between the braces.
  */
 public final class EmptyCatchBlockCheck implements UnitCheck {
-
   private static final String CATCH_CLAUSE = "catchClause";
   private static final String BLOCK = "block";
   private static final String IDENTIFIER = "identifier";
@@ -36,7 +35,10 @@ public final class EmptyCatchBlockCheck implements UnitCheck {
    * @param message the message
    */
   public EmptyCatchBlockCheck(
-      final Pattern commentFormat, final Pattern exceptionVariableName, final String message) {
+      final Pattern commentFormat,
+      final Pattern exceptionVariableName,
+      final String message
+  ) {
     this.commentFormat = Objects.requireNonNull(commentFormat, "commentFormat");
     this.exceptionVariableName = Objects.requireNonNull(exceptionVariableName, "exception");
     this.message = Objects.requireNonNull(message, "message");

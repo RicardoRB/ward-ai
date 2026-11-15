@@ -50,7 +50,8 @@ class RetiredEnforcerRulesTest {
             change -> {
               assertThat(change.file()).isEqualTo(root.resolve(RULES));
               assertThat(change.action()).isEqualTo(Action.REMOVE);
-            });
+            }
+        );
     final RuleFileChange change = writer.apply(project(root), QualityPreset.STRICT, List.of());
     assertThat(root.resolve(RULES)).doesNotExist();
 

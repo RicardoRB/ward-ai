@@ -31,9 +31,7 @@ class NodeStrictPresetTest {
   @TempDir Path root;
 
   @ParameterizedTest
-  @EnumSource(
-      value = Language.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = Language.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void strykerIsOfferedAndRunsThroughThePackageManager(final Language language) {
     assertThat(gate(project(language, BuildTool.PNPM), "stryker").command())
         .containsExactly("pnpm", "exec", "stryker", "run");
@@ -48,7 +46,11 @@ class NodeStrictPresetTest {
     Files.writeString(
         file,
         ConfigurationTemplate.render(
-            List.of(gate(project, "stryker")), QualityPreset.STRICT, project));
+            List.of(gate(project, "stryker")),
+            QualityPreset.STRICT,
+            project
+        )
+    );
 
     final GateConfiguration stryker =
         new TomlConfigurationReader().read(file).checks().get("stryker");
@@ -67,10 +69,12 @@ class NodeStrictPresetTest {
             new NodeInputs(
                 directory -> PackageManifest.EMPTY,
                 directory -> true,
-                (directory, gate) -> Optional.empty()),
+                (directory, gate) -> Optional.empty()
+            ),
             null,
             null,
-            "dev");
+            "dev"
+        );
     final InitSelection selection =
         new InitSelection(
             List.of("none"),
@@ -81,19 +85,20 @@ class NodeStrictPresetTest {
             false,
             null,
             false,
-            null);
+            null
+        );
 
     assertThat(
-            OwnedSections.of(
-                    catalog, project, selection, List.of(gate(project, "stryker")), List.of())
-                .getFirst()
-                .body())
+        OwnedSections.of(catalog, project, selection, List.of(gate(project, "stryker")), List.of())
+            .getFirst()
+            .body()
+    )
         .isEqualTo(".ward/reports/\n.stryker-tmp/\nreports/mutation/\n.ward/cache/\n");
     assertThat(
-            OwnedSections.of(
-                    catalog, project, selection, List.of(gate(project, "vitest")), List.of())
-                .getFirst()
-                .body())
+        OwnedSections.of(catalog, project, selection, List.of(gate(project, "vitest")), List.of())
+            .getFirst()
+            .body()
+    )
         .isEqualTo(".ward/reports/\ncoverage/\n.ward/cache/\n");
   }
 
@@ -109,7 +114,9 @@ class NodeStrictPresetTest {
         new InitInputs(
             new FakeEnvironmentInspection("npm", "pnpm"),
             directory -> PackageManifest.EMPTY,
-            directory -> true));
+            directory -> true
+        )
+    );
   }
 
   private Project project(final Language language, final BuildTool manager) {
@@ -123,6 +130,7 @@ class NodeStrictPresetTest {
         Set.of(),
         "24",
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 }

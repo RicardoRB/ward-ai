@@ -13,7 +13,6 @@ import org.antlr.v4.runtime.Token;
  * typed {@code comment}, the parse-tree rule kinds in pre-order, and the first syntax error line.
  */
 public final class JavaFormatSyntax implements FormatSyntax {
-
   private static final String COMMENT_TYPE = "comment";
 
   @Override

@@ -8,7 +8,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class CheckRegistryTest {
-
   private static final CheckFactory FACTORY = toml -> root -> List.of();
 
   @Test

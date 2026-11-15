@@ -8,7 +8,6 @@ import java.util.List;
 
 /** Runs a check over Kotlin source and reads its findings, for the Kotlin check tests. */
 final class KotlinCheckRuns {
-
   private KotlinCheckRuns() {}
 
   static List<RuleMatch> run(final UnitCheck check, final String source) {

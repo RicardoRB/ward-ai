@@ -17,7 +17,6 @@ import org.tomlj.TomlParseResult;
 
 /** The generated secret rules hold the rules of the pinned Gitleaks list and compile in Java. */
 final class SecretRuleDataTest {
-
   private static final Path PINNED =
       Path.of("src/test/resources/catalog/upstream/gitleaks-8.30.1.txt");
   private static final String PREFIX = "ward:secrets/";
@@ -30,7 +29,7 @@ final class SecretRuleDataTest {
     final List<String> pinned =
         Files.readAllLines(PINNED).stream()
             .filter(line -> !line.startsWith("#") && !line.isBlank())
-            .map(line -> PREFIX + line.split("\t")[0])
+            .map(line -> PREFIX + line.split("\t") [0])
             .sorted()
             .toList();
 

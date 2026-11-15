@@ -15,7 +15,8 @@ public record ToolchainSnapshot(
     Optional<Integer> runtimeJdk,
     Optional<Integer> declaredRelease,
     Optional<String> buildToolVersion,
-    Framework framework) {
+    Framework framework
+) {
   private static final int MINIMUM_SUPPORTED_JAVA = 1;
 
   /**

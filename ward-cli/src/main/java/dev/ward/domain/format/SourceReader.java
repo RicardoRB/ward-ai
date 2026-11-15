@@ -5,7 +5,6 @@ import java.nio.file.Path;
 /** Reads a source file for formatting. An adapter does the file system work. */
 @FunctionalInterface
 public interface SourceReader {
-
   /**
    * Reads a file as UTF-8, without its byte-order mark.
    *

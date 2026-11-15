@@ -13,7 +13,6 @@ import java.util.Set;
  * decision reads the last statement's syntax node, never its text.
  */
 public final class LoopEndsWithBranchCheck implements UnitCheck {
-
   private static final String STATEMENT = "statement";
   private static final String BLOCK = "block";
   private static final String BLOCK_STATEMENT = "blockStatement";

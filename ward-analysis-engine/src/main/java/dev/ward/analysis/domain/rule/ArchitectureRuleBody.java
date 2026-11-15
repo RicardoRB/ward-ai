@@ -59,7 +59,8 @@ public final class ArchitectureRuleBody {
         Boolean.toString(rule.allowEmpty()),
         constraint.kind().name(),
         selector(rule.select()),
-        value);
+        value
+    );
   }
 
   private static ArchitectureRule rule(final String line) {
@@ -77,7 +78,8 @@ public final class ArchitectureRuleBody {
         selector(fields[SELECT]),
         constraint,
         plain(fields[REASON]),
-        Boolean.parseBoolean(fields[ALLOW_EMPTY]));
+        Boolean.parseBoolean(fields[ALLOW_EMPTY])
+    );
   }
 
   private static String selector(final ArchitectureSelector selector) {
@@ -88,7 +90,8 @@ public final class ArchitectureRuleBody {
                     ? NONE
                     : items.stream()
                         .map(ArchitectureRuleBody::text)
-                        .collect(Collectors.joining(ITEM_SEPARATOR)))
+                        .collect(Collectors.joining(ITEM_SEPARATOR))
+        )
         .collect(Collectors.joining(LIST_SEPARATOR));
   }
 

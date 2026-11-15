@@ -11,39 +11,47 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class EqualsOnUnrelatedTypesKnownFactsTest {
-
   @Test
   void theSameTypeIsNotReported() {
     assertThat(
-            Calls.run(
-                Calls.call(Calls.EQUALS, Calls.ARGUMENT),
-                Calls.table(
-                    Calls.RECEIVER,
-                    Calls.type(Calls.TYPE_A, true),
-                    Calls.ARGUMENT,
-                    Calls.type(Calls.TYPE_A, true))))
+        Calls.run(
+            Calls.call(Calls.EQUALS, Calls.ARGUMENT),
+            Calls.table(
+                Calls.RECEIVER,
+                Calls.type(Calls.TYPE_A, true),
+                Calls.ARGUMENT,
+                Calls.type(Calls.TYPE_A, true)
+            )
+        )
+    )
         .isEmpty();
   }
 
   @Test
   void aNonFinalTypeOnEitherSideIsNotReported() {
     assertThat(
-            Calls.run(
-                Calls.call(Calls.EQUALS, Calls.ARGUMENT),
-                Calls.table(
-                    Calls.RECEIVER,
-                    Calls.type(Calls.TYPE_A, false),
-                    Calls.ARGUMENT,
-                    Calls.type(Calls.TYPE_B, true))))
+        Calls.run(
+            Calls.call(Calls.EQUALS, Calls.ARGUMENT),
+            Calls.table(
+                Calls.RECEIVER,
+                Calls.type(Calls.TYPE_A, false),
+                Calls.ARGUMENT,
+                Calls.type(Calls.TYPE_B, true)
+            )
+        )
+    )
         .isEmpty();
     assertThat(
-            Calls.run(
-                Calls.call(Calls.EQUALS, Calls.ARGUMENT),
-                Calls.table(
-                    Calls.RECEIVER,
-                    Calls.type(Calls.TYPE_A, true),
-                    Calls.ARGUMENT,
-                    Calls.type(Calls.TYPE_B, false))))
+        Calls.run(
+            Calls.call(Calls.EQUALS, Calls.ARGUMENT),
+            Calls.table(
+                Calls.RECEIVER,
+                Calls.type(Calls.TYPE_A, true),
+                Calls.ARGUMENT,
+                Calls.type(Calls.TYPE_B, false)
+            )
+        )
+    )
         .isEmpty();
   }
 
@@ -59,13 +67,15 @@ class EqualsOnUnrelatedTypesKnownFactsTest {
             List.of(),
             List.of(),
             null,
-            null);
+            null
+        );
 
     assertThat(
-            Calls.run(
-                Calls.call(Calls.EQUALS, Calls.ARGUMENT),
-                Calls.table(
-                    Calls.RECEIVER, primitive, Calls.ARGUMENT, Calls.type(Calls.TYPE_B, true))))
+        Calls.run(
+            Calls.call(Calls.EQUALS, Calls.ARGUMENT),
+            Calls.table(Calls.RECEIVER, primitive, Calls.ARGUMENT, Calls.type(Calls.TYPE_B, true))
+        )
+    )
         .isEmpty();
   }
 
@@ -81,18 +91,22 @@ class EqualsOnUnrelatedTypesKnownFactsTest {
             List.of(),
             List.of(),
             null,
-            null);
+            null
+        );
 
     assertThat(
-            Calls.run(
-                Calls.call(Calls.EQUALS, Calls.ARGUMENT),
-                Calls.table(
-                    Calls.RECEIVER, noShape, Calls.ARGUMENT, Calls.type(Calls.TYPE_B, true))))
+        Calls.run(
+            Calls.call(Calls.EQUALS, Calls.ARGUMENT),
+            Calls.table(Calls.RECEIVER, noShape, Calls.ARGUMENT, Calls.type(Calls.TYPE_B, true))
+        )
+    )
         .isEmpty();
     assertThat(
-            Calls.run(
-                Calls.call(Calls.EQUALS, Calls.ARGUMENT),
-                Calls.table(Calls.RECEIVER, Calls.type(Calls.TYPE_A, true))))
+        Calls.run(
+            Calls.call(Calls.EQUALS, Calls.ARGUMENT),
+            Calls.table(Calls.RECEIVER, Calls.type(Calls.TYPE_A, true))
+        )
+    )
         .isEmpty();
   }
 
@@ -105,7 +119,8 @@ class EqualsOnUnrelatedTypesKnownFactsTest {
             Calls.ARGUMENT,
             Calls.type(Calls.TYPE_B, true),
             Calls.SECOND,
-            Calls.type("c.C", true));
+            Calls.type("c.C", true)
+        );
 
     assertThat(Calls.run(Calls.call("compareTo", Calls.ARGUMENT), known)).isEmpty();
     assertThat(Calls.run(Calls.call(Calls.EQUALS), known)).isEmpty();

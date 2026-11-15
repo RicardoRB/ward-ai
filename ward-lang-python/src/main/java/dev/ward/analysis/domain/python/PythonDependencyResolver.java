@@ -19,7 +19,6 @@ import java.util.Optional;
  * module no file provides produces no edge.
  */
 public final class PythonDependencyResolver implements DependencyResolver {
-
   private static final String ABSOLUTE = "abs:";
   private static final String SEPARATOR = ":";
   private static final String DOT = ".";
@@ -54,7 +53,8 @@ public final class PythonDependencyResolver implements DependencyResolver {
               module -> {
                 owners.put(summary.path(), module);
                 files.merge(module.name(), summary.path(), this::preferred);
-              });
+              }
+          );
     }
     final List<DependencyEdge> edges = new ArrayList<>();
     for (final FileSummary summary : summaries) {
@@ -86,7 +86,11 @@ public final class PythonDependencyResolver implements DependencyResolver {
   }
 
   private static Optional<String> target(
-      final String specifier, final Optional<PythonModule> owner, final Map<String, String> files) {
+      final String specifier,
+      final Optional<PythonModule> owner,
+      final Map<String,
+      String> files
+  ) {
     if (specifier.startsWith(ABSOLUTE)) {
       return fileOf(specifier.substring(ABSOLUTE.length()), files);
     }
@@ -98,7 +102,11 @@ public final class PythonDependencyResolver implements DependencyResolver {
 
   /** The module a {@code from} import names: the imported submodule if it exists, else the base. */
   private static Optional<String> fromTarget(
-      final String base, final String name, final Map<String, String> files) {
+      final String base,
+      final String name,
+      final Map<String,
+      String> files
+  ) {
     if (STAR.equals(name)) {
       return fileOf(base, files);
     }
@@ -108,7 +116,10 @@ public final class PythonDependencyResolver implements DependencyResolver {
 
   /** The absolute module an import at {@code level} with {@code module} refers to. */
   private static Optional<String> base(
-      final int level, final String module, final Optional<PythonModule> owner) {
+      final int level,
+      final String module,
+      final Optional<PythonModule> owner
+  ) {
     if (level == 0) {
       return Optional.of(module);
     }

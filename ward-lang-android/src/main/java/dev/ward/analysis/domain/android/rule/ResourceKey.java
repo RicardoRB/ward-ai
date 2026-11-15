@@ -9,7 +9,6 @@ package dev.ward.analysis.domain.android.rule;
  * @param name the resource name with dots replaced by underscores
  */
 record ResourceKey(String type, String name) {
-
   /** Creates the key of a resource named as in XML or in the {@code R} class. */
   static ResourceKey of(final String type, final String name) {
     return new ResourceKey(type, name.replace('.', '_'));

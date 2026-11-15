@@ -10,7 +10,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class InterfaceMemberImpliedModifierCheckTest {
-
   private static final String MESSAGE = "message";
   private static final String ABSTRACT_METHOD = "abstractMethod";
   private static final String MODIFIER = "modifier";
@@ -31,7 +30,8 @@ class InterfaceMemberImpliedModifierCheckTest {
           "publicMethod",
           "publicNested",
           "staticField",
-          "staticNested");
+          "staticNested"
+      );
   private static final InterfaceMemberImpliedModifierCheck.Flags NONE = flags();
 
   @Test
@@ -47,7 +47,8 @@ class InterfaceMemberImpliedModifierCheckTest {
             n(MODIFIER, t(MODIFIER, PUBLIC)),
             n(MODIFIER, t(MODIFIER, STATIC)),
             n(MODIFIER, t(MODIFIER, FINAL)),
-            member(n(CONSTANT, t(IDENTIFIER, "X"))));
+            member(n(CONSTANT, t(IDENTIFIER, "X")))
+        );
     assertThat(run(ALL, complete)).isEmpty();
   }
 
@@ -71,7 +72,10 @@ class InterfaceMemberImpliedModifierCheckTest {
     assertThat(run(ALL, holder(member(n(NESTED, t(IDENTIFIER, "Inner")))))).hasSize(1);
     final SyntaxNode complete =
         holder(
-            n(MODIFIER, t(MODIFIER, PUBLIC)), n(MODIFIER, t(MODIFIER, STATIC)), member(n(NESTED)));
+            n(MODIFIER, t(MODIFIER, PUBLIC)),
+            n(MODIFIER, t(MODIFIER, STATIC)),
+            member(n(NESTED))
+        );
     assertThat(run(ALL, complete)).isEmpty();
     assertThat(run(flags("publicNested"), holder(member(n(NESTED))))).hasSize(1);
     assertThat(run(flags("staticNested"), holder(member(n(NESTED))))).hasSize(1);
@@ -82,12 +86,15 @@ class InterfaceMemberImpliedModifierCheckTest {
     assertThat(run(ALL, holder(n("otherMember")))).isEmpty();
     assertThat(run(ALL, n("interfaceBodyDeclaration"))).isEmpty();
     assertThat(
-            run(ALL, n("interfaceBodyDeclaration", t("'{'", "{"), n("interfaceMemberDeclaration"))))
+        run(ALL, n("interfaceBodyDeclaration", t("'{'", "{"), n("interfaceMemberDeclaration")))
+    )
         .isEmpty();
   }
 
   private static java.util.List<dev.ward.analysis.domain.rule.RuleMatch> run(
-      final InterfaceMemberImpliedModifierCheck.Flags flags, final SyntaxNode holder) {
+      final InterfaceMemberImpliedModifierCheck.Flags flags,
+      final SyntaxNode holder
+  ) {
     return unitMatches(new InterfaceMemberImpliedModifierCheck(flags, MESSAGE), holder);
   }
 
@@ -100,7 +107,8 @@ class InterfaceMemberImpliedModifierCheckTest {
         on.contains("publicMethod"),
         on.contains("publicNested"),
         on.contains("staticField"),
-        on.contains("staticNested"));
+        on.contains("staticNested")
+    );
   }
 
   private static SyntaxNode holder(final SyntaxNode... children) {
@@ -123,6 +131,7 @@ class InterfaceMemberImpliedModifierCheckTest {
         BODYLESS_METHOD,
         n("interfaceMethodModifier", t(MODIFIER, modifier)),
         t(IDENTIFIER, name),
-        body);
+        body
+    );
   }
 }

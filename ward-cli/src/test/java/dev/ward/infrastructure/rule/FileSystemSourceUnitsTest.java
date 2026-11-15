@@ -56,7 +56,13 @@ class FileSystemSourceUnitsTest {
     final FakeCommandExecutor git =
         new FakeCommandExecutor(
             new CommandResult(
-                0, "coverage/lcov-report/index.js\u0000", "", FakeCommandExecutor.DURATION, null));
+                0,
+                "coverage/lcov-report/index.js\u0000",
+                "",
+                FakeCommandExecutor.DURATION,
+                null
+            )
+        );
 
     assertThat(paths(git, Set.of(AnalysisLanguage.JAVASCRIPT))).containsExactly(APP_JS);
   }
@@ -67,7 +73,8 @@ class FileSystemSourceUnitsTest {
     write("coverage/lcov-report/index.js");
     final FakeCommandExecutor git =
         new FakeCommandExecutor(
-            new CommandResult(0, "coverage/\u0000", "", FakeCommandExecutor.DURATION, null));
+            new CommandResult(0, "coverage/\u0000", "", FakeCommandExecutor.DURATION, null)
+        );
 
     assertThat(paths(git, Set.of(AnalysisLanguage.JAVASCRIPT))).containsExactly(APP_JS);
   }
@@ -91,7 +98,9 @@ class FileSystemSourceUnitsTest {
   }
 
   private List<String> paths(
-      final CommandExecutor executor, final Set<AnalysisLanguage> languages) {
+      final CommandExecutor executor,
+      final Set<AnalysisLanguage> languages
+  ) {
     return new FileSystemSourceUnits(executor)
         .read(root, languages).stream().map(SourceUnit::path).toList();
   }

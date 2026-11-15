@@ -14,7 +14,6 @@ import java.util.Map;
  * direct members, so they are never compared.
  */
 public final class SwiftDuplicateEnumCasesCheck implements RuleCheck {
-
   private static final String ENUM = "enum_declaration";
   private static final String UNION_ENUM = "union_style_enum";
   private static final String MEMBERS = "union_style_enum_members";

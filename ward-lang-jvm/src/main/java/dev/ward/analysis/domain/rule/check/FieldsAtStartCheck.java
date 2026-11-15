@@ -15,7 +15,6 @@ import java.util.Set;
  * anonymous class is not reported. Interfaces are not checked.
  */
 public final class FieldsAtStartCheck implements UnitCheck {
-
   private static final String MEMBER = "classBodyDeclaration";
   private static final String DECLARATION = "memberDeclaration";
   private static final Set<String> BODIES = Set.of("classBody", "enumBodyDeclarations");

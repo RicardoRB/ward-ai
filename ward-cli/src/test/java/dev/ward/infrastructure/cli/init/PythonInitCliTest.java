@@ -37,7 +37,10 @@ class PythonInitCliTest {
     assertThat(exit).as(init.output()).isEqualTo(ExitCodes.OK);
     assertThat(init.output())
         .contains(
-            "add mypy==2.4.0 to the ward group", "run uv sync --group ward", "create     mypy.ini")
+            "add mypy==2.4.0 to the ward group",
+            "run uv sync --group ward",
+            "create     mypy.ini"
+        )
         .contains("create     .coveragerc")
         .doesNotContain("pom.xml");
     assertThat(ProjectSnapshot.of(root)).isEqualTo(before);
@@ -99,8 +102,11 @@ class PythonInitCliTest {
         InitCommandFixture.repository(
             root,
             new NodeBuildToolConfigurator(
-                new FileSystemPackageManifests(), new FakeCommandExecutor(0, "", "")),
-            "npm");
+                new FileSystemPackageManifests(),
+                new FakeCommandExecutor(0, "", "")
+            ),
+            "npm"
+        );
 
     final int exit = init.run("", "--preset", "standard", "--integration", "none", "--yes");
 
@@ -114,10 +120,15 @@ class PythonInitCliTest {
   void strictKeepsAProjectsOwnMypyTableAndPassesStrictOnTheCommand() throws IOException {
     writeUvProject();
     Files.writeString(
-        root.resolve("pyproject.toml"), PYPROJECT + "\n[tool.mypy]\nstrict = false\n");
+        root.resolve("pyproject.toml"),
+        PYPROJECT + "\n[tool.mypy]\nstrict = false\n"
+    );
     final InitCommandFixture init =
         InitCommandFixture.repository(
-            root, new PythonBuildToolConfigurator(new FakeCommandExecutor(0, "", "")), "uv");
+            root,
+            new PythonBuildToolConfigurator(new FakeCommandExecutor(0, "", "")),
+            "uv"
+        );
 
     final int exit = init.run("", "--preset", "strict", "--integration", "none", "--yes");
 
@@ -137,6 +148,9 @@ class PythonInitCliTest {
 
   private InitCommandFixture python() throws IOException {
     return InitCommandFixture.repository(
-        root, new PythonBuildToolConfigurator(new FakeCommandExecutor(0, "", "")), "uv");
+        root,
+        new PythonBuildToolConfigurator(new FakeCommandExecutor(0, "", "")),
+        "uv"
+    );
   }
 }

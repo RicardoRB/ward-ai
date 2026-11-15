@@ -8,7 +8,6 @@ import java.util.List;
  * without a default value, and the parameters and assignments of an initializer.
  */
 final class SwiftMemberwiseShape {
-
   private static final String STRUCT_BODY = "struct_body";
   private static final String MEMBER = "struct_member";
   private static final String DECLARATION = "declaration";

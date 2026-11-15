@@ -7,7 +7,6 @@ import java.util.List;
 
 /** The OWASP rules about objects that accept properties their schema does not name. */
 final class OwaspOpenObjectRules {
-
   private static final String TYPE = "type";
 
   private OwaspOpenObjectRules() {}
@@ -37,7 +36,10 @@ final class OwaspOpenObjectRules {
    * that lack {@code maxProperties}; without it, the keyword itself, which must be falsy.
    */
   private static List<OpenApiFinding> open(
-      final OpenApiDocument document, final String keyword, final boolean constrained) {
+      final OpenApiDocument document,
+      final String keyword,
+      final boolean constrained
+  ) {
     final List<OpenApiFinding> findings = new ArrayList<>();
     for (final Nodes.Located located : Nodes.resolved(document, document.root())) {
       final DocNode node = located.node();
@@ -49,12 +51,16 @@ final class OwaspOpenObjectRules {
       if (constrained) {
         if (!literal && node.get("maxProperties").isEmpty()) {
           findings.add(
-              Findings.atValue(node, "Objects should not allow unconstrained " + keyword + "."));
+              Findings.atValue(node, "Objects should not allow unconstrained " + keyword + ".")
+          );
         }
       } else {
         findings.add(
             Findings.atValue(
-                value, "If the " + keyword + " keyword is used it must be set to false."));
+                value,
+                "If the " + keyword + " keyword is used it must be set to false."
+            )
+        );
       }
     }
     return findings;

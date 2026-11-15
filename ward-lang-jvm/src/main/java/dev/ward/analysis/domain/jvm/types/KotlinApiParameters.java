@@ -26,7 +26,9 @@ final class KotlinApiParameters {
         Syntax.find(holder, "type").map(inner::of).orElseGet(KotlinApiTypeRefs::inferred);
     final boolean vararg = KotlinApiModifiers.of(holder).has("vararg");
     return new ApiParameter(
-        vararg ? KotlinApiTypeRefs.array(type) : type, Syntax.hasToken(holder, "="));
+        vararg ? KotlinApiTypeRefs.array(type) : type,
+        Syntax.hasToken(holder, "=")
+    );
   }
 
   /** Returns whether a parameter of {@code function} is a {@code vararg}. */

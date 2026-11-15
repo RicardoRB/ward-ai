@@ -6,7 +6,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import org.junit.jupiter.api.Test;
 
 class XmlParserTest {
-
   private static final int DEEP = 500;
   private static final String DECLARATION = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
 
@@ -90,7 +89,8 @@ class XmlParserTest {
             found -> {
               assertThat(found.message()).isEqualTo("end tag does not match b");
               assertThat(found.line() + ":" + found.column()).isEqualTo("3:1");
-            });
+            }
+        );
     assertThat(problem("<a").message()).isEqualTo("unterminated start tag");
     assertThat(problem("<a><b></a>").message()).contains("does not match");
     assertThat(problem("<a/><b/>").message()).contains("after the root");

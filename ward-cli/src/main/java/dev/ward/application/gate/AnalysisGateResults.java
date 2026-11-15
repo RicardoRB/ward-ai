@@ -35,7 +35,10 @@ final class AnalysisGateResults {
    * one section per rule category.
    */
   static GateResult result(
-      final String name, final RuleRunResult run, final List<RuleDefinition> rules) {
+      final String name,
+      final RuleRunResult run,
+      final List<RuleDefinition> rules
+  ) {
     return result(name, TOOL, run, rules)
         .withSections(AnalysisGateSections.of(run.findings(), rules));
   }
@@ -45,7 +48,8 @@ final class AnalysisGateResults {
       final String name,
       final String tool,
       final RuleRunResult run,
-      final List<RuleDefinition> rules) {
+      final List<RuleDefinition> rules
+  ) {
     final List<Finding> findings =
         run.findings().stream()
             .map(finding -> AnalysisFindingMapper.toFinding(name, tool, finding))
@@ -73,7 +77,10 @@ final class AnalysisGateResults {
   }
 
   private static String summary(
-      final RuleRunResult run, final List<Finding> findings, final List<RuleDefinition> rules) {
+      final RuleRunResult run,
+      final List<Finding> findings,
+      final List<RuleDefinition> rules
+  ) {
     if (!run.executionErrors().isEmpty()) {
       return run.executionErrors().size() + " analysis error(s)";
     }
@@ -122,6 +129,7 @@ final class AnalysisGateResults {
 
   private static int countOf(final List<Finding> findings, final FindingSeverity severity) {
     return Math.toIntExact(
-        findings.stream().filter(finding -> finding.severity() == severity).count());
+        findings.stream().filter(finding -> finding.severity() == severity).count()
+    );
   }
 }

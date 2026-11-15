@@ -13,7 +13,6 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.junit.jupiter.api.Test;
 
 class ArchitectureLangOpenApiTest {
-
   private static final String FRONTEND = "ward-frontend-antlr";
 
   @Test

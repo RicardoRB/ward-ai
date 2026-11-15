@@ -10,7 +10,6 @@ import org.w3c.dom.Element;
 
 /** Runs the real Android Lint on one fixture and reads the lines of its findings. */
 final class AndroidLintRun {
-
   private static final int SDK_LEVELS_UP = 4;
   private static final Map<String, String> LINT_IDS =
       Map.of(
@@ -31,7 +30,8 @@ final class AndroidLintRun {
           "missing-content-description",
           "ContentDescription",
           AndroidLintProject.UNUSED_RESOURCES,
-          "UnusedResources");
+          "UnusedResources"
+      );
 
   private AndroidLintRun() {}
 
@@ -45,7 +45,11 @@ final class AndroidLintRun {
    * in the fixture file.
    */
   static List<Integer> lines(
-      final Path lint, final String rule, final Path directory, final Path fixture)
+      final Path lint,
+      final String rule,
+      final Path directory,
+      final Path fixture
+  )
       throws IOException {
     final Path project = Files.createTempDirectory("ward-lint");
     final String target = AndroidLintProject.place(rule, directory, fixture, project);
@@ -58,7 +62,8 @@ final class AndroidLintRun {
             "--check",
             LINT_IDS.get(rule),
             "--quiet",
-            project.toString());
+            project.toString()
+        );
     builder.environment().put("ANDROID_HOME", sdk(lint).toString());
     try {
       builder

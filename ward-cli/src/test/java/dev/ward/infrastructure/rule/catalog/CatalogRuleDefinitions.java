@@ -10,10 +10,12 @@ import java.util.List;
  * the generic check kinds, which only tests load from {@code rules-examples/}.
  */
 final class CatalogRuleDefinitions {
-
   private static final List<String> EXAMPLE_FILES =
       List.of(
-          "rules-examples/java.toml", "rules-examples/python.toml", "rules-examples/scopes.toml");
+          "rules-examples/java.toml",
+          "rules-examples/python.toml",
+          "rules-examples/scopes.toml"
+      );
 
   private CatalogRuleDefinitions() {}
 

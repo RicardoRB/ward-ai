@@ -15,7 +15,6 @@ import java.util.Set;
  * computed access {@code arguments[0]} and any other use, such as a call argument, is reported.
  */
 public final class PreferRestParamsCheck implements RuleCheck {
-
   private static final String ARGUMENTS = "arguments";
   private static final String IDENTIFIER = "identifier";
   private static final String EXPRESSION = "singleExpression";
@@ -30,7 +29,8 @@ public final class PreferRestParamsCheck implements RuleCheck {
           "propertyMemberDeclaration",
           "getAccessor",
           "setAccessor",
-          "propertyAssignment");
+          "propertyAssignment"
+      );
 
   private final String message;
 
@@ -52,7 +52,10 @@ public final class PreferRestParamsCheck implements RuleCheck {
   }
 
   private void collect(
-      final SyntaxNode node, final Deque<SyntaxNode> ancestors, final List<RuleMatch> matches) {
+      final SyntaxNode node,
+      final Deque<SyntaxNode> ancestors,
+      final List<RuleMatch> matches
+  ) {
     if (IDENTIFIER.equals(node.kind()) && ARGUMENTS.equals(text(node)) && reportable(ancestors)) {
       matches.add(new RuleMatch(node.span(), message));
     }

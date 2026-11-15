@@ -6,7 +6,6 @@ import java.util.Optional;
 
 /** Reads the statements of a Kotlin {@code statements} node. */
 final class KotlinStatementLists {
-
   static final String STATEMENTS = "statements";
   private static final int SINGLE_CHILD = 1;
   private static final String STATEMENT = "statement";

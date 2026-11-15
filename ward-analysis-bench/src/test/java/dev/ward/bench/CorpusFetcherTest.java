@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class CorpusFetcherTest {
-
   private static final int GIT_FAILURE_EXIT = 128;
   private static final String SHA = "0123456789abcdef0123456789abcdef01234567";
   private static final String OTHER_SHA = "ffffffffffffffffffffffffffffffffffffffff";
@@ -31,7 +30,8 @@ class CorpusFetcherTest {
             List.of("git", "init", "--quiet"),
             List.of("git", "fetch", "--depth", "1", "--quiet", "https://example.com/p.git", SHA),
             List.of("git", "checkout", "--quiet", "FETCH_HEAD"),
-            List.of("git", "rev-parse", "HEAD"));
+            List.of("git", "rev-parse", "HEAD")
+        );
   }
 
   @Test

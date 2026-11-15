@@ -25,7 +25,8 @@ final class JavaApiTypeReader {
       final ApiType parent,
       final boolean parentIsInterface,
       final ApiTypeRefs outer,
-      final List<ApiType> found) {
+      final List<ApiType> found
+  ) {
     final JvmClass jvm = declaration.jvm();
     final ApiVisibility visibility = visibility(jvm.access(), parent == null, parentIsInterface);
     final ApiTypeRefs refs = outer.with("C", jvm.typeParameters());
@@ -42,7 +43,8 @@ final class JavaApiTypeReader {
             refs.parametersOf(jvm.typeParameters(), ""),
             supertypes(jvm, refs),
             new JavaApiMemberReader(path, declaration, refs, visibility, at).members(),
-            at);
+            at
+        );
     found.add(type);
     final boolean isInterface = JavaApiMemberReader.isInterface(jvm.kind());
     for (final SourceModel.ClassDecl nested : declaration.nested()) {
@@ -51,7 +53,10 @@ final class JavaApiTypeReader {
   }
 
   static ApiVisibility visibility(
-      final int access, final boolean topLevel, final boolean inInterface) {
+      final int access,
+      final boolean topLevel,
+      final boolean inInterface
+  ) {
     if (Flags.has(access, Flags.PUBLIC) || !topLevel && inInterface) {
       return Flags.has(access, Flags.PRIVATE) ? ApiVisibility.PRIVATE : ApiVisibility.PUBLIC;
     }

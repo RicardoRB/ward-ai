@@ -14,7 +14,6 @@ import java.util.Set;
  * &&} and {@code ||} operators plus one, and the rule reports when it reaches the threshold.
  */
 public final class KotlinComplexConditionCheck implements RuleCheck {
-
   private static final String CONDITION = "expression";
   private static final Set<String> OPERATORS = Set.of("'&&'", "'||'");
   private static final Set<String> LAMBDA = Set.of("functionLiteral", "objectLiteral");
@@ -31,7 +30,10 @@ public final class KotlinComplexConditionCheck implements RuleCheck {
    * @param message the message; {@code {value}} is the count and {@code {max}} the threshold
    */
   public KotlinComplexConditionCheck(
-      final Set<String> kinds, final int threshold, final String message) {
+      final Set<String> kinds,
+      final int threshold,
+      final String message
+  ) {
     this.kinds = Set.copyOf(kinds);
     this.threshold = CheckSupport.nonNegative(threshold, "threshold");
     this.message = Objects.requireNonNull(message, "message");
@@ -70,7 +72,9 @@ public final class KotlinComplexConditionCheck implements RuleCheck {
       matches.add(
           CheckSupport.at(
               condition.span(),
-              CheckSupport.fill(message, String.valueOf(count), String.valueOf(threshold))));
+              CheckSupport.fill(message, String.valueOf(count), String.valueOf(threshold))
+          )
+      );
     }
   }
 }

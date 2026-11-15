@@ -24,7 +24,6 @@ import java.util.Set;
 
 /** The frontends the fixture runner of this module gives the rule engine. */
 final class JvmFixtureFrontends {
-
   private JvmFixtureFrontends() {}
 
   static List<FrontendSupport> of(final AnalysisLanguage language) {
@@ -37,7 +36,9 @@ final class JvmFixtureFrontends {
               frontend,
               Set.of(RuleCapability.SYNTAX, RuleCapability.SCOPES),
               (unit, tree) -> new ControlFlowResult(List.of(), List.of()),
-              new CachedScopes(new KotlinScopeAnalysis(none))));
+              new CachedScopes(new KotlinScopeAnalysis(none))
+          )
+      );
     }
     return List.of(
         new FrontendSupport(
@@ -48,14 +49,20 @@ final class JvmFixtureFrontends {
                 RuleCapability.SYMBOLS,
                 RuleCapability.CFG,
                 RuleCapability.DATAFLOW,
-                RuleCapability.SCOPES),
+                RuleCapability.SCOPES
+            ),
             new JavaControlFlow(),
-            new CachedScopes(new JavaScopeAnalysis(none))));
+            new CachedScopes(new JavaScopeAnalysis(none))
+        )
+    );
   }
 
   /** A rule that needs types gets the facts of the fixture's {@code types.json}. */
   static List<FrontendSupport> forRule(
-      final RuleDefinition rule, final AnalysisLanguage language, final Path directory) {
+      final RuleDefinition rule,
+      final AnalysisLanguage language,
+      final Path directory
+  ) {
     final List<FrontendSupport> frontends = of(language);
     if (rule.capability() != RuleCapability.TYPES) {
       return frontends;

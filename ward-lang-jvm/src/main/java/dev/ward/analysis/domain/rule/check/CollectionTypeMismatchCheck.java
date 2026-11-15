@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
  * only these, whose relation the facts decide.
  */
 public final class CollectionTypeMismatchCheck extends FactsCheck {
-
   private static final String COLLECTION = "java.util.Collection";
   private static final String MAP = "java.util.Map";
   private static final String OBJECT = "java.lang.Object";
@@ -35,7 +34,8 @@ public final class CollectionTypeMismatchCheck extends FactsCheck {
           "removeFirstOccurrence",
           "removeLastOccurrence",
           "indexOf",
-          "lastIndexOf");
+          "lastIndexOf"
+      );
   private static final Set<String> KEY_LOOKUPS =
       Set.of("containsKey", "get", "getOrDefault", "remove");
   private static final Set<String> FINAL_TYPES =
@@ -48,7 +48,8 @@ public final class CollectionTypeMismatchCheck extends FactsCheck {
           "java.lang.Integer",
           "java.lang.Long",
           "java.lang.Float",
-          "java.lang.Double");
+          "java.lang.Double"
+      );
   private static final FactNeed NEED =
       new FactNeed(Set.of(EXPRESSION), Set.of(FactKind.CALL, FactKind.TYPE, FactKind.MEMBERS));
 
@@ -105,7 +106,10 @@ public final class CollectionTypeMismatchCheck extends FactsCheck {
 
   /** Returns the type the lookup compares with: the element of a collection, the key of a map. */
   private static Optional<TypeRef> elementType(
-      final SyntaxNode receiver, final String method, final UnitTypeFacts types) {
+      final SyntaxNode receiver,
+      final String method,
+      final UnitTypeFacts types
+  ) {
     final Optional<TypeRef> held = types.typeOf(receiver.span());
     final Set<String> ancestors =
         types.membersOf(receiver.span()).map(TypeMembers::ancestors).stream()

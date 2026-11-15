@@ -12,7 +12,6 @@ import java.util.Set;
  * syntax nodes, never its text.
  */
 public final class ControlBodyBracesCheck implements UnitCheck {
-
   private static final String STATEMENT = "statement";
   private static final String BLOCK = "block";
   private static final String IF = "'if'";
@@ -54,15 +53,18 @@ public final class ControlBodyBracesCheck implements UnitCheck {
   }
 
   private static boolean isAllowed(
-      final List<SyntaxNode> children, final int index, final boolean elseIf) {
+      final List<SyntaxNode> children,
+      final int index,
+      final boolean elseIf
+  ) {
     final SyntaxNode body = children.get(index);
     final List<SyntaxNode> parts = body.children();
     final boolean block = !parts.isEmpty() && BLOCK.equals(parts.get(0).kind());
     return block
         || elseIf
-            && index > 0
-            && ELSE.equals(children.get(index - 1).kind())
-            && !parts.isEmpty()
-            && IF.equals(parts.get(0).kind());
+        && index > 0
+        && ELSE.equals(children.get(index - 1).kind())
+        && !parts.isEmpty()
+        && IF.equals(parts.get(0).kind());
   }
 }

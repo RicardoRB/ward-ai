@@ -50,8 +50,11 @@ class PomLicenseGradleParitySmokeTest {
                 Ecosystem.MAVEN,
                 new PomLicenseMetadata(
                     home.resolve(".m2/repository"),
-                    home.resolve(".gradle/caches/modules-2/files-2.1"))),
-            new BundledLicenseCatalog());
+                    home.resolve(".gradle/caches/modules-2/files-2.1")
+                )
+            ),
+            new BundledLicenseCatalog()
+        );
 
     final Set<String> actual =
         service
@@ -67,12 +70,13 @@ class PomLicenseGradleParitySmokeTest {
   private void fillTheModuleCache() throws IOException, InterruptedException {
     final Process process =
         new ProcessBuilder(
-                System.getProperty("ward.license.parity.gradle"),
-                "--no-daemon",
-                "-q",
-                "dependencies",
-                "--configuration",
-                "runtimeClasspath")
+            System.getProperty("ward.license.parity.gradle"),
+            "--no-daemon",
+            "-q",
+            "dependencies",
+            "--configuration",
+            "runtimeClasspath"
+        )
             .directory(work.toFile())
             .redirectErrorStream(true)
             .redirectOutput(ProcessBuilder.Redirect.DISCARD)

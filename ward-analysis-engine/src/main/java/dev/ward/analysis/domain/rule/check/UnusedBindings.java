@@ -11,7 +11,6 @@ import java.util.Set;
 
 /** The local names that nothing reads, which the unused-variable checks judge. */
 public final class UnusedBindings {
-
   private static final String IGNORED_PREFIX = "_";
   private static final Set<ScopeKind> LOCAL_SCOPES =
       Set.of(ScopeKind.FUNCTION, ScopeKind.BLOCK, ScopeKind.LAMBDA, ScopeKind.COMPREHENSION);
@@ -19,7 +18,11 @@ public final class UnusedBindings {
       Set.of(BindingKind.VARIABLE, BindingKind.CONSTANT);
   private static final Set<BindingFlag> EXEMPT_FLAGS =
       Set.of(
-          BindingFlag.GLOBAL, BindingFlag.NONLOCAL, BindingFlag.DESTRUCTURED, BindingFlag.EXPORTED);
+          BindingFlag.GLOBAL,
+          BindingFlag.NONLOCAL,
+          BindingFlag.DESTRUCTURED,
+          BindingFlag.EXPORTED
+      );
 
   private UnusedBindings() {}
 

@@ -13,14 +13,17 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class BiomeJsxRequiredAttributeCheckTest {
-
   private static final BiomeJsxRequiredAttributeCheck BUTTON =
       new BiomeJsxRequiredAttributeCheck(
           Set.of("button"),
           "type",
           new BiomeJsxRequiredAttributeCheck.ValueRule(
-              Set.of("button", "submit", "reset"), null, true),
-          "message");
+              Set.of("button", "submit", "reset"),
+              null,
+              true
+          ),
+          "message"
+      );
 
   @Test
   void reportsAMissingAttributeAtTheElementAndAnUnknownValueAtTheValue() {
@@ -44,7 +47,8 @@ class BiomeJsxRequiredAttributeCheckTest {
             Set.of("input[type=image]"),
             "alt",
             BiomeJsxRequiredAttributeCheck.ValueRule.any(),
-            "message");
+            "message"
+        );
     assertThat(reported(image, "const a = <input type=\"image\" src=\"x\" />;\n"))
         .containsExactly("<input type=\"image\" src=\"x\" />");
     assertThat(reported(image, "const a = <input type=\"text\" />;\n")).isEmpty();
@@ -52,7 +56,9 @@ class BiomeJsxRequiredAttributeCheckTest {
   }
 
   private static List<String> reported(
-      final BiomeJsxRequiredAttributeCheck check, final String source) {
+      final BiomeJsxRequiredAttributeCheck check,
+      final String source
+  ) {
     final SyntaxNode root = parse(source);
     return check.matches(root).stream()
         .map(RuleMatch::span)

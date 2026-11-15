@@ -11,7 +11,6 @@ import java.util.function.Predicate;
 /** Port that reads the project's source files for the analysis gate. */
 @FunctionalInterface
 public interface AnalysisSourceUnits {
-
   /**
    * Reads the source files under {@code root} that are written in one of {@code languages}, sorted
    * by project-relative path. Returns no units when {@code languages} is empty.
@@ -35,7 +34,10 @@ public interface AnalysisSourceUnits {
    * by default.
    */
   default TextRead readText(
-      final Path root, final List<String> paths, final Predicate<String> excluded) {
+      final Path root,
+      final List<String> paths,
+      final Predicate<String> excluded
+  ) {
     return TextRead.EMPTY;
   }
 }

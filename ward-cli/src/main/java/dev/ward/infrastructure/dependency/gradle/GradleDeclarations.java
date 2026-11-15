@@ -28,7 +28,8 @@ final class GradleDeclarations {
       Pattern.compile("[\"']([\\w.\\-]+):([\\w.\\-]+)(?::[^\"'\\s]*)?[\"']");
   private static final Pattern MAP_NOTATION =
       Pattern.compile(
-          "group\\s*[:=]\\s*[\"']([^\"']+)[\"']\\s*,\\s*name\\s*[:=]\\s*[\"']([^\"']+)[\"']");
+          "group\\s*[:=]\\s*[\"']([^\"']+)[\"']\\s*,\\s*name\\s*[:=]\\s*[\"']([^\"']+)[\"']"
+      );
   private static final Pattern ALIAS = Pattern.compile("\\blibs\\.([A-Za-z0-9_.]+)");
 
   private final Map<String, String> catalog;
@@ -86,7 +87,8 @@ final class GradleDeclarations {
             .forEach(
                 key ->
                     module(table, key)
-                        .ifPresent(name -> libraries.put(key.replaceAll("[-_]", "."), name)));
+                        .ifPresent(name -> libraries.put(key.replaceAll("[-_]", "."), name))
+            );
       }
     } catch (IOException e) {
       throw new UncheckedIOException(e);

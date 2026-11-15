@@ -11,7 +11,7 @@ final class JsonValues {
   /** A Long when the digits have no fraction or exponent, else a Double. */
   static Object parseNumber(final String digits) {
     try {
-      return digits.matches("-?\\d+") ? (Object) Long.valueOf(digits) : Double.valueOf(digits);
+      return digits.matches("-?\\d+") ? (Object)Long.valueOf(digits) : Double.valueOf(digits);
     } catch (NumberFormatException malformed) {
       throw new IllegalArgumentException("bad number", malformed);
     }

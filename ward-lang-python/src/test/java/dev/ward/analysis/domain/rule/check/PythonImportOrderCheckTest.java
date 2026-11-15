@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
  * project, and reads first-party packages from the project's file paths.
  */
 final class PythonImportOrderCheckTest {
-
   private static final PythonImportOrderCheck CHECK = new PythonImportOrderCheck("out of order");
 
   @Test
@@ -30,7 +29,8 @@ final class PythonImportOrderCheckTest {
   void futureImportAfterThirdPartyIsReported() {
     final List<ProjectMatch> found =
         CHECK.project(
-            sorted(Map.of("m.py", "import requests\nfrom __future__ import annotations\n")));
+            sorted(Map.of("m.py", "import requests\nfrom __future__ import annotations\n"))
+        );
     assertThat(found).hasSize(1);
     assertThat(found.get(0).match().span().startLine()).isEqualTo(2);
   }
@@ -60,7 +60,9 @@ final class PythonImportOrderCheckTest {
   }
 
   private static SortedMap<String, dev.ward.analysis.domain.ir.SyntaxNode> sorted(
-      final Map<String, String> files) {
+      final Map<String,
+      String> files
+  ) {
     final SortedMap<String, dev.ward.analysis.domain.ir.SyntaxNode> trees = new TreeMap<>();
     files.forEach((path, source) -> trees.put(path, tree(source)));
     return trees;

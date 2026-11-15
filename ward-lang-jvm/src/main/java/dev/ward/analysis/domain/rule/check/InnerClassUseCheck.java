@@ -16,14 +16,14 @@ import java.util.Set;
  * instance explicitly is treated as using it.
  */
 public final class InnerClassUseCheck implements RuleCheck {
-
   private static final Set<String> TYPES =
       Set.of(
           "classDeclaration",
           "interfaceDeclaration",
           "enumDeclaration",
           "recordDeclaration",
-          "classCreatorRest");
+          "classCreatorRest"
+      );
   private static final String CREATOR_REST = "classCreatorRest";
   private static final String IDENTIFIER = "identifier";
   private static final String TYPE_PARAMETER = "typeParameter";
@@ -46,7 +46,10 @@ public final class InnerClassUseCheck implements RuleCheck {
    * @param message the message reported at the class
    */
   public InnerClassUseCheck(
-      final boolean anonymous, final boolean constructorOnly, final String message) {
+      final boolean anonymous,
+      final boolean constructorOnly,
+      final String message
+  ) {
     this.anonymous = anonymous;
     this.constructorOnly = constructorOnly;
     this.message = Objects.requireNonNull(message, "message");

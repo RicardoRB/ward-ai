@@ -40,7 +40,8 @@ final class ClaudeHookFeedback {
             result ->
                 result.name()
                     + ": "
-                    + (result.summary() == null ? result.status() : result.summary()))
+                    + (result.summary() == null ? result.status() : result.summary())
+        )
         .reduce((a, b) -> a + System.lineSeparator() + b)
         .orElse("Ward quality check failed");
   }

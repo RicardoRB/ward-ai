@@ -8,13 +8,19 @@ import org.junit.jupiter.api.Test;
 
 /** The inside filter of the forbidden-node check, with plain kinds and parent>child chains. */
 class ForbiddenNodeInsideTest {
-
   private final TreeLayout gen = new TreeLayout();
 
   private ForbiddenNodeCheck check(final Set<String> inside, final Set<String> notInside) {
     final NodeFilter filter =
         new NodeFilter(
-            Set.of("decl"), ModifierTable.NONE, Set.of(), Set.of(), inside, notInside, Sources.ALL);
+            Set.of("decl"),
+            ModifierTable.NONE,
+            Set.of(),
+            Set.of(),
+            inside,
+            notInside,
+            Sources.ALL
+        );
     return new ForbiddenNodeCheck(filter, ForbiddenNodeCheck.Condition.ANY, "found");
   }
 

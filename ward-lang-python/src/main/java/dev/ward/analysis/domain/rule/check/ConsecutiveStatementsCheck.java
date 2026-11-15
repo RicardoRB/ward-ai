@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * consider-using-assignment-expr} and {@code confusing-consecutive-elif}.
  */
 public final class ConsecutiveStatementsCheck implements RuleCheck {
-
   /** The shapes the check tells apart, one per rule. */
   public enum Problem {
     /** An assignment to a name followed by an {@code if} that tests that name. */
@@ -72,9 +71,11 @@ public final class ConsecutiveStatementsCheck implements RuleCheck {
         .map(
             node ->
                 Pattern.compile(
-                        "^if(?:not)?" + Pattern.quote(name) + "(?:is(?:not)?None|[=!]=[^:]+)?:")
+                    "^if(?:not)?" + Pattern.quote(name) + "(?:is(?:not)?None|[=!]=[^:]+)?:"
+                )
                     .matcher(SyntaxWalk.text(node))
-                    .find())
+                    .find()
+        )
         .orElse(false);
   }
 
@@ -94,7 +95,10 @@ public final class ConsecutiveStatementsCheck implements RuleCheck {
   }
 
   private void endsWithIf(
-      final SyntaxNode branch, final SyntaxNode keyword, final List<RuleMatch> found) {
+      final SyntaxNode branch,
+      final SyntaxNode keyword,
+      final List<RuleMatch> found
+  ) {
     final List<SyntaxNode> statements = StatementShapes.statements(branch);
     if (!statements.isEmpty()
         && StatementShapes.asIf(statements.get(statements.size() - 1)).isPresent()) {

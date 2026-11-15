@@ -19,7 +19,8 @@ final class CrapFindings {
       final String gate,
       final int max,
       final SourceUnit unit,
-      final CrapFunctions.Scored function) {
+      final CrapFunctions.Scored function
+  ) {
     final CrapScore score = function.score();
     return new Finding(
         gate,
@@ -39,6 +40,7 @@ final class CrapFindings {
         function.span().startLine(),
         function.span().startColumn(),
         null,
-        List.of());
+        List.of()
+    );
   }
 }

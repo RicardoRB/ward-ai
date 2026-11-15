@@ -8,12 +8,9 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 /** Runs the taint analysis over the functions of one TypeScript or JavaScript file. */
 class NodeTaintAcrossFunctionsTest {
-
   /** A value returned by one function and passed to a sinking function of the same file. */
   @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = AnalysisLanguage.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void flowAcrossFunctionsOfOneFileIsReported(final AnalysisLanguage language) {
     final String source =
         "function read() { return source(); }\n"

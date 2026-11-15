@@ -9,7 +9,6 @@ import org.antlr.v4.runtime.atn.LexerATNSimulator;
  * body is consumed through the lexer's interpreter, so its line count stays right.
  */
 final class PythonTemplateString {
-
   private static final int TRIPLE_QUOTES = 3;
   private static final int LOOKAHEAD_THIRD = 3;
   private static final int ESCAPE_LENGTH = 2;
@@ -45,7 +44,7 @@ final class PythonTemplateString {
 
   private static boolean isTripleQuoted(final String opening, final int quote) {
     return opening.length() > TRIPLE_QUOTES
-        && opening.endsWith(String.valueOf((char) quote).repeat(TRIPLE_QUOTES));
+        && opening.endsWith(String.valueOf((char)quote).repeat(TRIPLE_QUOTES));
   }
 
   private void scanTemplateBody(final int quote, final boolean triple) {

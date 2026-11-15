@@ -10,7 +10,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class CommentNodeTest {
-
   private static final int BLOCK_END_LINE = 3;
   private static final int BLOCK_END_COLUMN = 10;
 

@@ -21,7 +21,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** The {@code git} adapter of the history scan, with a fake executor and with a real repository. */
 class GitCliHistoryTest {
-
   private static final String MARKER = "\u0001ward-commit ";
 
   private static final LocalDate SINCE = LocalDate.of(2026, 1, 1);
@@ -40,7 +39,8 @@ class GitCliHistoryTest {
         new FakeCommandExecutor(
             new CommandResult(0, "false\n", "", TIME),
             new CommandResult(0, LOG, "", TIME),
-            new CommandResult(0, "", "", TIME));
+            new CommandResult(0, "", "", TIME)
+        );
     final List<List<HistoryPatch>> batches = new ArrayList<>();
 
     new GitCliHistory(executor).patches(Path.of("."), Optional.of(SINCE), batches::add);
@@ -64,7 +64,8 @@ class GitCliHistoryTest {
     final FakeCommandExecutor executor = new FakeCommandExecutor(0, "true\n", "");
 
     assertThatThrownBy(
-            () -> new GitCliHistory(executor).patches(Path.of("."), Optional.empty(), b -> {}))
+        () -> new GitCliHistory(executor).patches(Path.of("."), Optional.empty(), b -> {})
+    )
         .isInstanceOf(HistoryUnavailableException.class)
         .hasMessageContaining("shallow")
         .hasMessageContaining("fetch-depth: 0");
@@ -75,18 +76,22 @@ class GitCliHistoryTest {
     final CommandResult missing = new CommandResult(-1, "", "", TIME, "could not start git");
 
     assertThatThrownBy(
-            () ->
-                new GitCliHistory(new FakeCommandExecutor(missing))
-                    .patches(Path.of("."), Optional.empty(), b -> {}))
+        () ->
+            new GitCliHistory(new FakeCommandExecutor(missing))
+                .patches(Path.of("."), Optional.empty(), b -> {})
+    )
         .isInstanceOf(HistoryUnavailableException.class)
         .hasMessageContaining("git");
     assertThatThrownBy(
-            () ->
-                new GitCliHistory(
-                        new FakeCommandExecutor(
-                            new CommandResult(0, "false", "", TIME),
-                            new CommandResult(GIT_FATAL, "", "fatal", TIME)))
-                    .patches(Path.of("."), Optional.empty(), b -> {}))
+        () ->
+            new GitCliHistory(
+                new FakeCommandExecutor(
+                    new CommandResult(0, "false", "", TIME),
+                    new CommandResult(GIT_FATAL, "", "fatal", TIME)
+                )
+            )
+                .patches(Path.of("."), Optional.empty(), b -> {})
+    )
         .isInstanceOf(HistoryUnavailableException.class);
   }
 
@@ -95,12 +100,15 @@ class GitCliHistoryTest {
     final String big = LOG + "+" + "x".repeat(GitCliHistory.BATCH_LIMIT);
 
     assertThatThrownBy(
-            () ->
-                new GitCliHistory(
-                        new FakeCommandExecutor(
-                            new CommandResult(0, "false", "", TIME),
-                            new CommandResult(0, big, "", TIME)))
-                    .patches(Path.of("."), Optional.empty(), b -> {}))
+        () ->
+            new GitCliHistory(
+                new FakeCommandExecutor(
+                    new CommandResult(0, "false", "", TIME),
+                    new CommandResult(0, big, "", TIME)
+                )
+            )
+                .patches(Path.of("."), Optional.empty(), b -> {})
+    )
         .isInstanceOf(HistoryUnavailableException.class)
         .hasMessageContaining("01234567");
   }
@@ -145,9 +153,10 @@ class GitCliHistoryTest {
     git(work, "clone", "-q", "--depth", "1", origin.toUri().toString(), "clone");
 
     assertThatThrownBy(
-            () ->
-                new GitCliHistory(new ProcessCommandExecutor())
-                    .patches(work.resolve("clone"), Optional.empty(), b -> {}))
+        () ->
+            new GitCliHistory(new ProcessCommandExecutor())
+                .patches(work.resolve("clone"), Optional.empty(), b -> {})
+    )
         .isInstanceOf(HistoryUnavailableException.class)
         .hasMessageContaining("shallow");
   }

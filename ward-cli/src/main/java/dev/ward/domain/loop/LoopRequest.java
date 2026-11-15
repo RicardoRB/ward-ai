@@ -8,7 +8,8 @@ public record LoopRequest(
     Path workingDirectory,
     List<String> agentCommand,
     String task,
-    LoopConfiguration configuration) {
+    LoopConfiguration configuration
+) {
   /**
    * Validates the request and copies the agent command.
    *

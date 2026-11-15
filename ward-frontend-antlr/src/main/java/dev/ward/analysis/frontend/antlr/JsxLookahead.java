@@ -7,7 +7,6 @@ import org.antlr.v4.runtime.IntStream;
  * list. Shared by the TypeScript and JavaScript lexers, which both call it from their predicates.
  */
 public final class JsxLookahead {
-
   private static final int FIRST = 1;
   private static final int GREATER_THAN = '>';
   private static final int COMMA = ',';
@@ -32,8 +31,7 @@ public final class JsxLookahead {
     int offset = FIRST;
     while (isNamePart(input.LA(offset))) {
       offset++;
-    }
-    while (isSpace(input.LA(offset))) {
+    } while (isSpace(input.LA(offset))) {
       offset++;
     }
     return input.LA(offset) == COMMA || startsWordAt(input, offset, EXTENDS);

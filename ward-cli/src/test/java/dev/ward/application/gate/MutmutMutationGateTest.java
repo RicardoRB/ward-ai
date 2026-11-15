@@ -13,7 +13,10 @@ class MutmutMutationGateTest {
   private static final int HIGHER_MINIMUM = 80;
 
   private static GateResult run(
-      final int exitCode, final FakeReport report, final Integer minimum) {
+      final int exitCode,
+      final FakeReport report,
+      final Integer minimum
+  ) {
     return MutationGateFixtures.run(MutationGateFixtures.MUTMUT, exitCode, report, minimum);
   }
 
@@ -59,7 +62,8 @@ class MutmutMutationGateTest {
         run(
             0,
             new FakeReport(MutationCounts.unusable("mutmut's results under mutants/ are missing.")),
-            MutationGateFixtures.MINIMUM);
+            MutationGateFixtures.MINIMUM
+        );
 
     assertThat(result.status()).isEqualTo(GateStatus.EXECUTION_ERROR);
     assertThat(result.summary()).contains("mutants/", "`mutmut run` from mutmut 3");

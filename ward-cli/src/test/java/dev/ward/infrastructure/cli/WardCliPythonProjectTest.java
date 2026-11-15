@@ -36,9 +36,7 @@ class WardCliPythonProjectTest extends WardCliIntegrationSupport {
   @Test
   void jsonReportHasTheLanguageVersionOfAPythonProject() throws IOException {
     pythonProject();
-    Files.writeString(
-        python.resolve(WARD_TOML),
-        """
+    Files.writeString(python.resolve(WARD_TOML), """
         version = 2
         [checks.format]
         command = ["true"]

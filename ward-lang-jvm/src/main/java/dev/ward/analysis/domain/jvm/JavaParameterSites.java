@@ -14,7 +14,6 @@ import java.util.Optional;
  * a site that carries the annotation names.
  */
 final class JavaParameterSites {
-
   private static final String ANNOTATION = "annotation";
   private static final String QUALIFIED_NAME = "qualifiedName";
   private static final String VARIABLE_DECLARATOR_ID = "variableDeclaratorId";
@@ -67,7 +66,9 @@ final class JavaParameterSites {
               Optional.empty(),
               annotations,
               List.of(),
-              formal.span()));
+              formal.span()
+          )
+      );
     }
   }
 

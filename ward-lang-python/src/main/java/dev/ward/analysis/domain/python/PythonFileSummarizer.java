@@ -10,7 +10,6 @@ import dev.ward.analysis.domain.port.FileSummarizer;
  * and classes, and used names.
  */
 public final class PythonFileSummarizer implements FileSummarizer {
-
   @Override
   public FileSummary summarize(final SourceUnit unit, final SyntaxNode tree) {
     return new FileSummary(
@@ -18,6 +17,7 @@ public final class PythonFileSummarizer implements FileSummarizer {
         PythonExports.of(tree),
         PythonImportReferences.of(tree),
         PythonTopLevelDefinitions.declared(tree),
-        PythonTopLevelDefinitions.usedNames(tree));
+        PythonTopLevelDefinitions.usedNames(tree)
+    );
   }
 }

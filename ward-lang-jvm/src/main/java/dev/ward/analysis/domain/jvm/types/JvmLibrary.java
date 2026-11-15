@@ -8,7 +8,6 @@ import java.util.Optional;
  */
 @FunctionalInterface
 public interface JvmLibrary {
-
   /**
    * Returns the class with the binary name {@code name}, such as {@code java.util.Map$Entry}.
    *

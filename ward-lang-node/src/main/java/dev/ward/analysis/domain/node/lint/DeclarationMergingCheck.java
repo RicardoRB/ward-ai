@@ -12,7 +12,6 @@ import java.util.Set;
 
 /** Reports a class and an interface that share a name in one scope, which merge unsafely. */
 public final class DeclarationMergingCheck implements RuleCheck {
-
   private static final String CLASS = "class";
   private static final int BOTH_KINDS = 2;
   private static final String INTERFACE = "interface";
@@ -57,7 +56,9 @@ public final class DeclarationMergingCheck implements RuleCheck {
       final SyntaxNode scope,
       final SyntaxNode node,
       final List<SyntaxNode> names,
-      final Map<String, Set<String>> kinds) {
+      final Map<String,
+      Set<String>> kinds
+  ) {
     if (!node.equals(scope) && SCOPES.contains(node.kind())) {
       return;
     }

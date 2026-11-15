@@ -41,24 +41,32 @@ public final class OmissionNotes {
    * its coverage tool (Bun) measures no branches.
    */
   private static boolean lacksBranchMinimum(
-      final InitGeneralCatalog catalog, final Project project, final QualityPreset preset) {
+      final InitGeneralCatalog catalog,
+      final Project project,
+      final QualityPreset preset
+  ) {
     return preset != null
         && preset.rules().jacocoMinimums().containsKey(BRANCH)
         && catalog.gates(project, preset).stream()
             .anyMatch(
                 gate ->
                     SupportedQualityGates.COVERAGE.equals(gate.id())
-                        && !gate.settings().containsKey(BRANCH_MINIMUM));
+                        && !gate.settings().containsKey(BRANCH_MINIMUM)
+            );
   }
 
   /** Returns the notes for {@code project}, and for the gates {@code preset} omits, if any. */
   public static List<String> of(
-      final InitGeneralCatalog catalog, final Project project, final QualityPreset preset) {
+      final InitGeneralCatalog catalog,
+      final Project project,
+      final QualityPreset preset
+  ) {
     final List<String> notes = new ArrayList<>();
     final EnvironmentInspection environment = catalog.inputs.environment();
     if (project.framework().servesHttp() && environment.openApiSpec(project.root()).isEmpty()) {
       notes.add(
-          "The " + project.framework().displayName() + " project serves HTTP." + NO_SPEC_NOTE);
+          "The " + project.framework().displayName() + " project serves HTTP." + NO_SPEC_NOTE
+      );
     }
     if (project.language() == Language.TYPESCRIPT && project.framework() == Framework.ANGULAR) {
       if (!catalog.inputs.configs().angularCoverageThresholdsSet(project.root())) {

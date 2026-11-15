@@ -41,7 +41,8 @@ record OpenCodeFiles(String projectPath) {
     return new LegacyFiles(
         root.resolve(PLUGINS_DIRECTORY),
         Pattern.compile(GUARD_NAME + Pattern.quote(suffix() + ".js")),
-        Pattern.compile(GUARD_MARKER));
+        Pattern.compile(GUARD_MARKER)
+    );
   }
 
   String command(final String template) {
@@ -60,15 +61,19 @@ record OpenCodeFiles(String projectPath) {
             "import { Plugin } from \"@opencode/plugin\";",
             "import { dirname, isAbsolute, join } from \"node:path\";\n"
                 + "import { fileURLToPath } from \"node:url\";\n"
-                + "import { Plugin } from \"@opencode/plugin\";")
+                + "import { Plugin } from \"@opencode/plugin\";"
+        )
         .replace("const EDIT_TOOLS", projectConstant() + "const EDIT_TOOLS")
         .replace(SESSION_CWD, PROJECT_CWD)
         .replace(
             "const paths = editedPaths(event.input, event.result);",
             "const paths = editedPaths(event.input, event.result)"
-                + ".map((path) => (isAbsolute(path) ? path : join(directory, path)));")
+                + ".map((path) => (isAbsolute(path) ? path : join(directory, path)));"
+        )
         .replace(
-            "id: \"ward.edit-write\"", "id: \"ward.edit-write." + Project.slug(projectPath) + "\"");
+            "id: \"ward.edit-write\"",
+            "id: \"ward.edit-write." + Project.slug(projectPath) + "\""
+        );
   }
 
   /** The project directory: two levels above the plugin file, then the project path. */

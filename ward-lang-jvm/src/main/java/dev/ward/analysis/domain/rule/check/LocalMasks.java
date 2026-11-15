@@ -21,7 +21,8 @@ final class LocalMasks {
         .filter(
             field ->
                 accesses.accessesTo(field.name()).stream()
-                    .allMatch(access -> access.use() == FieldAccesses.Use.READ))
+                    .allMatch(access -> access.use() == FieldAccesses.Use.READ)
+        )
         .forEach(field -> unwritten.add(field.name()));
     return SyntaxWalk.descendants(type).stream()
         .filter(node -> DECLARATION.equals(node.kind()))

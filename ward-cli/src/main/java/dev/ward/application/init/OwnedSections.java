@@ -29,7 +29,8 @@ public final class OwnedSections {
       final Project project,
       final InitSelection selection,
       final List<InitGateOption> gates,
-      final List<Path> userOwnedRuleFiles) {
+      final List<Path> userOwnedRuleFiles
+  ) {
     final List<OwnedSection> sections =
         new ArrayList<>(ciSections(catalog, project, selection, gates));
     // The ward gate always runs, so its analysis cache is always Git-ignored.
@@ -41,7 +42,9 @@ public final class OwnedSections {
               GITIGNORE_BEGIN,
               GITIGNORE_END,
               ".ward/reports/\nmutants/\n.coverage\n" + analysisCache,
-              false));
+              false
+          )
+      );
     }
     InitToolchains.find(project)
         .flatMap(support -> support.gitignoreEntries(project, gates))
@@ -53,7 +56,10 @@ public final class OwnedSections {
                         GITIGNORE_BEGIN,
                         GITIGNORE_END,
                         entries + analysisCache,
-                        false)));
+                        false
+                    )
+                )
+        );
     if (!analysisCache.isEmpty() && sections.stream().noneMatch(OwnedSections::isGitignore)) {
       sections.add(
           new OwnedSection(
@@ -61,11 +67,14 @@ public final class OwnedSections {
               GITIGNORE_BEGIN,
               GITIGNORE_END,
               analysisCache,
-              false));
+              false
+          )
+      );
     }
     if (selection.agentRules()) {
       sections.add(
-          AgentRulesTemplate.render(project, gates, selection.preset(), userOwnedRuleFiles));
+          AgentRulesTemplate.render(project, gates, selection.preset(), userOwnedRuleFiles)
+      );
     }
     return sections;
   }
@@ -78,7 +87,8 @@ public final class OwnedSections {
       final List<OwnedSection> sections,
       final Project project,
       final List<InitGateOption> gates,
-      final Optional<String> existing) {
+      final Optional<String> existing
+  ) {
     final List<OwnedSection> all = new ArrayList<>(sections);
     EditorConfigTemplate.section(project, gates, existing).ifPresent(all::add);
     return List.copyOf(all);
@@ -93,7 +103,8 @@ public final class OwnedSections {
       final InitSetupCatalog catalog,
       final Project project,
       final InitSelection selection,
-      final List<InitGateOption> gates) {
+      final List<InitGateOption> gates
+  ) {
     if (selection.ci() == null) {
       return List.of();
     }

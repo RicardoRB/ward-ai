@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 /** The architecture cycle rule keeps counting imports under a type-checking guard as edges. */
 class SliceCycleTypeCheckingTest {
-
   private static final String ROOT = "src/main/java/com/acme";
 
   @Test
@@ -26,11 +25,14 @@ class SliceCycleTypeCheckingTest {
         new DependencyEdge(
             guarded.from(),
             guarded.to(),
-            new Reference(guarded.reference().specifier(), guarded.reference().span(), true));
+            new Reference(guarded.reference().specifier(), guarded.reference().span(), true)
+        );
     final DependencyGraph graph = graph(plain, typeOnly);
     final SliceCycleRule rule =
         new SliceCycleRule(
-            definition(SliceCycleRule.ID, GraphRuleBody.encodeRoots(List.of(ROOT))), List.of(ROOT));
+            definition(SliceCycleRule.ID, GraphRuleBody.encodeRoots(List.of(ROOT))),
+            List.of(ROOT)
+        );
 
     assertThat(rule.matches(graph)).hasSize(1);
   }

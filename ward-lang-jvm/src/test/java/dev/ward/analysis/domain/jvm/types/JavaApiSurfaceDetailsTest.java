@@ -16,10 +16,12 @@ class JavaApiSurfaceDetailsTest {
   void aClassWithOnlyPrivateConstructorsIsNotExtendable() {
     final ApiType api =
         ApiSurfaceFixtures.type(
-                ApiSurfaceFixtures.read(
-                    ApiSurfaceFixtures.PACKAGE
-                        + "public class S { private S() {} public static S of() { return null; } }"),
-                "p.S")
+            ApiSurfaceFixtures.read(
+                ApiSurfaceFixtures.PACKAGE
+                    + "public class S { private S() {} public static S of() { return null; } }"
+            ),
+            "p.S"
+        )
             .orElseThrow();
 
     assertThat(api.extendable()).isFalse();
@@ -30,17 +32,21 @@ class JavaApiSurfaceDetailsTest {
   void typeVariablesAreComparedByPositionAndErasedToTheirBound() {
     final ApiType first =
         ApiSurfaceFixtures.type(
-                ApiSurfaceFixtures.read(
-                    ApiSurfaceFixtures.PACKAGE
-                        + "public class Box<T extends Number> { public T get(T in) { return in; } }"),
-                "p.Box")
+            ApiSurfaceFixtures.read(
+                ApiSurfaceFixtures.PACKAGE
+                    + "public class Box<T extends Number> { public T get(T in) { return in; } }"
+            ),
+            "p.Box"
+        )
             .orElseThrow();
     final ApiType renamed =
         ApiSurfaceFixtures.type(
-                ApiSurfaceFixtures.read(
-                    ApiSurfaceFixtures.PACKAGE
-                        + "public class Box<E extends Number> { public E get(E in) { return in; } }"),
-                "p.Box")
+            ApiSurfaceFixtures.read(
+                ApiSurfaceFixtures.PACKAGE
+                    + "public class Box<E extends Number> { public E get(E in) { return in; } }"
+            ),
+            "p.Box"
+        )
             .orElseThrow();
 
     final ApiMember get = ApiSurfaceFixtures.member(first, "get(java.lang.Number)");
@@ -56,14 +62,16 @@ class JavaApiSurfaceDetailsTest {
   void genericArgumentsVarargsAndSupertypesAreRead() {
     final ApiType api =
         ApiSurfaceFixtures.type(
-                ApiSurfaceFixtures.read(
-                    ApiSurfaceFixtures.PACKAGE
-                        + "import java.util.*;\n"
-                        + "public class A extends AbstractList<String> implements java.io.Closeable {"
-                        + " public void log(String... parts) {} public void accept(List<? extends Object> items) {}"
-                        + " public void close() {} public String get(int i) { return null; }"
-                        + " public int size() { return 0; } }\n"),
-                "p.A")
+            ApiSurfaceFixtures.read(
+                ApiSurfaceFixtures.PACKAGE
+                    + "import java.util.*;\n"
+                    + "public class A extends AbstractList<String> implements java.io.Closeable {"
+                    + " public void log(String... parts) {} public void accept(List<? extends Object> items) {}"
+                    + " public void close() {} public String get(int i) { return null; }"
+                    + " public int size() { return 0; } }\n"
+            ),
+            "p.A"
+        )
             .orElseThrow();
 
     assertThat(api.supertypes())
@@ -71,11 +79,12 @@ class JavaApiSurfaceDetailsTest {
         .containsExactly("java.util.AbstractList<java.lang.String>", "java.io.Closeable");
     assertThat(ApiSurfaceFixtures.member(api, "log(java.lang.String[])").isVarargs()).isTrue();
     assertThat(
-            ApiSurfaceFixtures.member(api, "accept(java.util.List)")
-                .parameters()
-                .getFirst()
-                .type()
-                .text())
+        ApiSurfaceFixtures.member(api, "accept(java.util.List)")
+            .parameters()
+            .getFirst()
+            .type()
+            .text()
+    )
         .isEqualTo("java.util.List<? extends java.lang.Object>");
   }
 
@@ -83,9 +92,11 @@ class JavaApiSurfaceDetailsTest {
   void locationIsTheDeclaration() {
     final ApiType api =
         ApiSurfaceFixtures.type(
-                ApiSurfaceFixtures.read(
-                    ApiSurfaceFixtures.PACKAGE + "public class A {\n  public void m() {}\n}\n"),
-                "p.A")
+            ApiSurfaceFixtures.read(
+                ApiSurfaceFixtures.PACKAGE + "public class A {\n  public void m() {}\n}\n"
+            ),
+            "p.A"
+        )
             .orElseThrow();
 
     assertThat(api.location().line()).isEqualTo(2);
@@ -95,10 +106,11 @@ class JavaApiSurfaceDetailsTest {
   @Test
   void syntaxErrorNamesTheFile() {
     assertThatThrownBy(
-            () ->
-                ApiSurfaceFixtures.read(ApiSurfaceFixtures.PACKAGE + "public class A { void m( }"))
+        () ->
+            ApiSurfaceFixtures.read(ApiSurfaceFixtures.PACKAGE + "public class A { void m( }")
+    )
         .isInstanceOf(ApiSurfaceException.class)
-        .extracting(error -> ((ApiSurfaceException) error).path())
+        .extracting(error -> ((ApiSurfaceException)error).path())
         .isEqualTo("p/F0.java");
   }
 }

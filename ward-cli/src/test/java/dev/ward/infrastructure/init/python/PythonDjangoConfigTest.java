@@ -35,13 +35,16 @@ class PythonDjangoConfigTest {
   void wardMypyConfigNamesTheDjangoPluginAndTheSettings() throws IOException {
     Files.writeString(
         root.resolve("manage.py"),
-        "os.environ.setdefault(\"DJANGO_SETTINGS_MODULE\", \"mysite.settings\")\n");
+        "os.environ.setdefault(\"DJANGO_SETTINGS_MODULE\", \"mysite.settings\")\n"
+    );
 
     final String content = targets().getFirst().content();
 
     assertThat(content)
         .contains(
-            "plugins = mypy_django_plugin.main", "django_settings_module = \"mysite.settings\"");
+            "plugins = mypy_django_plugin.main",
+            "django_settings_module = \"mysite.settings\""
+        );
   }
 
   private List<ConfigTarget> targets() {
@@ -50,6 +53,7 @@ class PythonDjangoConfigTest {
         project,
         new FileSystemPythonToolConfigs(),
         QualityPreset.STANDARD,
-        List.of(new InitGateOption("mypy", List.of(), true, "")));
+        List.of(new InitGateOption("mypy", List.of(), true, ""))
+    );
   }
 }

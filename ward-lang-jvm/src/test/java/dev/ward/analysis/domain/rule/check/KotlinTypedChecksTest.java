@@ -35,8 +35,9 @@ final class KotlinTypedChecksTest {
     final UnitTypeFacts ints =
         KotlinTypedCheckFixtures.typed(root, "comparison", TypeRef.of("int"));
     assertThat(
-            new KotlinReferentialEqualityCheck(Set.of("kotlin.String"), MESSAGE)
-                .matches(root, null, null, ints, KotlinTypedCheckFixtures.unit(source)))
+        new KotlinReferentialEqualityCheck(Set.of("kotlin.String"), MESSAGE)
+            .matches(root, null, null, ints, KotlinTypedCheckFixtures.unit(source))
+    )
         .isEmpty();
   }
 
@@ -48,14 +49,16 @@ final class KotlinTypedChecksTest {
     final UnitTypeFacts maps =
         KotlinTypedCheckFixtures.typed(root, "atomicExpression", TypeRef.of("java.util.Map"));
     assertThat(
-            new KotlinMapGetNotNullCheck(MESSAGE)
-                .matches(root, null, null, maps, KotlinTypedCheckFixtures.unit(source)))
+        new KotlinMapGetNotNullCheck(MESSAGE)
+            .matches(root, null, null, maps, KotlinTypedCheckFixtures.unit(source))
+    )
         .extracting(match -> match.span().startLine())
         .containsExactly(2, SECOND_LOOKUP_LINE);
     final UnitTypeFacts none = UnitTypeFacts.none();
     assertThat(
-            new KotlinMapGetNotNullCheck(MESSAGE)
-                .matches(root, null, null, none, KotlinTypedCheckFixtures.unit(source)))
+        new KotlinMapGetNotNullCheck(MESSAGE)
+            .matches(root, null, null, none, KotlinTypedCheckFixtures.unit(source))
+    )
         .isEmpty();
   }
 
@@ -69,19 +72,23 @@ final class KotlinTypedChecksTest {
         new KotlinIgnoredReturnValueCheck(
             Set.of("*.CheckResult", "*.CheckReturnValue"),
             Set.of("*.CanIgnoreReturnValue"),
-            MESSAGE);
+            MESSAGE
+        );
     assertThat(check.matches(root, null, null, annotated, KotlinTypedCheckFixtures.unit(source)))
         .hasSize(1);
     final CallTarget exempt =
         KotlinTypedCheckFixtures.target(
-            List.of("com.x.CheckReturnValue", "com.x.CanIgnoreReturnValue"));
+            List.of("com.x.CheckReturnValue", "com.x.CanIgnoreReturnValue")
+        );
     assertThat(
-            check.matches(
-                root,
-                null,
-                null,
-                KotlinTypedCheckFixtures.calls(root, "2:5", exempt),
-                KotlinTypedCheckFixtures.unit(source)))
+        check.matches(
+            root,
+            null,
+            null,
+            KotlinTypedCheckFixtures.calls(root, "2:5", exempt),
+            KotlinTypedCheckFixtures.unit(source)
+        )
+    )
         .isEmpty();
   }
 
@@ -91,30 +98,36 @@ final class KotlinTypedChecksTest {
     final SyntaxNode root = KotlinTypedCheckFixtures.parse(source);
     final KotlinRedundantSuspendCheck check = new KotlinRedundantSuspendCheck(MESSAGE);
     assertThat(
-            check.matches(
-                root, null, null, UnitTypeFacts.none(), KotlinTypedCheckFixtures.unit(source)))
+        check.matches(root, null, null, UnitTypeFacts.none(), KotlinTypedCheckFixtures.unit(source))
+    )
         .extracting(match -> match.span().startLine())
         .containsExactly(1);
     final String withCall = "suspend fun a(): Int {\n    b()\n}\n";
     final SyntaxNode callRoot = KotlinTypedCheckFixtures.parse(withCall);
     final CallTarget suspending =
         KotlinTypedCheckFixtures.callTarget(
-            "b", List.of(TypeRef.of("kotlin.coroutines.Continuation")));
+            "b",
+            List.of(TypeRef.of("kotlin.coroutines.Continuation"))
+        );
     assertThat(
-            check.matches(
-                callRoot,
-                null,
-                null,
-                KotlinTypedCheckFixtures.calls(callRoot, "2:5", suspending),
-                KotlinTypedCheckFixtures.unit(withCall)))
+        check.matches(
+            callRoot,
+            null,
+            null,
+            KotlinTypedCheckFixtures.calls(callRoot, "2:5", suspending),
+            KotlinTypedCheckFixtures.unit(withCall)
+        )
+    )
         .isEmpty();
     assertThat(
-            check.matches(
-                callRoot,
-                null,
-                null,
-                UnitTypeFacts.none(),
-                KotlinTypedCheckFixtures.unit(withCall)))
+        check.matches(
+            callRoot,
+            null,
+            null,
+            UnitTypeFacts.none(),
+            KotlinTypedCheckFixtures.unit(withCall)
+        )
+    )
         .isEmpty();
   }
 
@@ -125,23 +138,35 @@ final class KotlinTypedChecksTest {
     final UnitTypeFacts nonNull =
         KotlinTypedCheckFixtures.marked(root, "atomicExpression", NON_NULL_MARKER);
     assertThat(
-            new KotlinNullableOperationCheck(
-                    KotlinNullableOperationCheck.Operation.NOT_NULL, Nullness.NON_NULL, MESSAGE)
-                .matches(root, null, null, nonNull, KotlinTypedCheckFixtures.unit(source)))
+        new KotlinNullableOperationCheck(
+            KotlinNullableOperationCheck.Operation.NOT_NULL,
+            Nullness.NON_NULL,
+            MESSAGE
+        )
+            .matches(root, null, null, nonNull, KotlinTypedCheckFixtures.unit(source))
+    )
         .extracting(match -> match.span().startLine())
         .containsExactly(2);
     assertThat(
-            new KotlinNullableOperationCheck(
-                    KotlinNullableOperationCheck.Operation.SAFE_CALL, Nullness.NON_NULL, MESSAGE)
-                .matches(root, null, null, nonNull, KotlinTypedCheckFixtures.unit(source)))
+        new KotlinNullableOperationCheck(
+            KotlinNullableOperationCheck.Operation.SAFE_CALL,
+            Nullness.NON_NULL,
+            MESSAGE
+        )
+            .matches(root, null, null, nonNull, KotlinTypedCheckFixtures.unit(source))
+    )
         .extracting(match -> match.span().startLine())
         .containsExactly(SAFE_CALL_LINE);
     final UnitTypeFacts nullable =
         KotlinTypedCheckFixtures.marked(root, "atomicExpression", NULLABLE_MARKER);
     assertThat(
-            new KotlinNullableOperationCheck(
-                    KotlinNullableOperationCheck.Operation.NOT_NULL, Nullness.NULLABLE, MESSAGE)
-                .matches(root, null, null, nullable, KotlinTypedCheckFixtures.unit(source)))
+        new KotlinNullableOperationCheck(
+            KotlinNullableOperationCheck.Operation.NOT_NULL,
+            Nullness.NULLABLE,
+            MESSAGE
+        )
+            .matches(root, null, null, nullable, KotlinTypedCheckFixtures.unit(source))
+    )
         .extracting(match -> match.span().startLine())
         .containsExactly(2);
   }

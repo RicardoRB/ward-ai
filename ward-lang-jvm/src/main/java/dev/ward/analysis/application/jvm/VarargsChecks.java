@@ -10,7 +10,6 @@ import java.util.Map;
 
 /** Builds the checks of the rules about array and varargs parameters. */
 final class VarargsChecks {
-
   private VarargsChecks() {}
 
   /** The checks this class provides, by name. */
@@ -18,9 +17,12 @@ final class VarargsChecks {
     return Map.ofEntries(
         entry(
             "array-last-parameter",
-            toml -> new ArrayLastParameterCheck(TomlValues.required(toml, "message"))),
+            toml -> new ArrayLastParameterCheck(TomlValues.required(toml, "message"))
+        ),
         entry(
             "unnecessary-varargs-array",
-            toml -> new UnnecessaryVarargsArrayCheck(TomlValues.required(toml, "message"))));
+            toml -> new UnnecessaryVarargsArrayCheck(TomlValues.required(toml, "message"))
+        )
+    );
   }
 }

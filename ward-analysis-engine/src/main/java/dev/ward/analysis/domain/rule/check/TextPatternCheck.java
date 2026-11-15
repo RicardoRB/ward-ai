@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * subtrees.
  */
 public final class TextPatternCheck implements RuleCheck {
-
   private final DeclarationFilter filter;
   private final String nameKind;
   private final Set<String> skip;
@@ -37,7 +36,8 @@ public final class TextPatternCheck implements RuleCheck {
       final String nameKind,
       final Set<String> skip,
       final String pattern,
-      final String message) {
+      final String message
+  ) {
     this.filter = Objects.requireNonNull(filter, "filter");
     this.nameKind = Objects.requireNonNull(nameKind, "nameKind");
     this.skip = Set.copyOf(skip);

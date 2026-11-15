@@ -49,12 +49,16 @@ public final class PythonDependencySource implements DependencySource {
                 + " modules="
                 + inventory.modules().size()
                 + " entries="
-                + inventory.entryCount());
+                + inventory.entryCount()
+    );
     return inventory;
   }
 
   private DependencyInventory locked(
-      final dev.ward.domain.project.Project project, final String lockName, final String fix) {
+      final dev.ward.domain.project.Project project,
+      final String lockName,
+      final String fix
+  ) {
     final Path root = project.root();
     final List<PythonManifest> members = new ArrayList<>();
     members.add(PythonManifest.read(root, root, project));
@@ -70,10 +74,12 @@ public final class PythonDependencySource implements DependencySource {
             root.toString(),
             lockName,
             "the project declares dependencies and has no lockfile",
-            "run `" + fix + "`");
+            "run `" + fix + "`"
+        );
       }
       return new DependencyInventory(
-          members.stream().map(m -> new ModuleDependencies(m.path(), List.of())).toList());
+          members.stream().map(m -> new ModuleDependencies(m.path(), List.of())).toList()
+      );
     }
     final String label = LockFiles.relative(root, lockFile);
     final PythonLock lock = parse(project, lockFile, label, fix);
@@ -88,7 +94,8 @@ public final class PythonDependencySource implements DependencySource {
       final dev.ward.domain.project.Project project,
       final Path file,
       final String label,
-      final String fix) {
+      final String fix
+  ) {
     try {
       final String text = Files.readString(file);
       return UV_LOCK.equals(LockFiles.fileName(file))
@@ -96,14 +103,20 @@ public final class PythonDependencySource implements DependencySource {
           : PoetryLockfile.read(text);
     } catch (IOException | UncheckedIOException e) {
       throw new DependencyInventoryException(
-          project.root().toString(), label, "it cannot be read", "check the file's permissions", e);
+          project.root().toString(),
+          label,
+          "it cannot be read",
+          "check the file's permissions",
+          e
+      );
     } catch (LockfileFormatException e) {
       throw new DependencyInventoryException(
           project.root().toString(),
           label,
           e.getMessage(),
           "run `" + fix + "` with a supported version",
-          e);
+          e
+      );
     }
   }
 
@@ -112,7 +125,8 @@ public final class PythonDependencySource implements DependencySource {
       final PythonLock lock,
       final String label,
       final String fix,
-      final PythonManifest member) {
+      final PythonManifest member
+  ) {
     final ModuleBuilder builder = new ModuleBuilder(label, true);
     final Map<String, PythonLock.Resolved> directs =
         lock.directs().getOrDefault(member.lockKey(), Map.of());
@@ -127,7 +141,8 @@ public final class PythonDependencySource implements DependencySource {
                     project.root().toString(),
                     label,
                     "the lockfile has no entry for " + name + " declared in " + member.manifest(),
-                    "run `" + fix + "`");
+                    "run `" + fix + "`"
+                );
               }
               for (final PackageId id : resolved.ids()) {
                 if (resolved.member()) {
@@ -137,13 +152,17 @@ public final class PythonDependencySource implements DependencySource {
                 }
                 seeds.add(id);
               }
-            });
+            }
+        );
     reach(builder, lock, seeds);
     return builder.build(member.path());
   }
 
   private static void reach(
-      final ModuleBuilder builder, final PythonLock lock, final List<PackageId> seeds) {
+      final ModuleBuilder builder,
+      final PythonLock lock,
+      final List<PackageId> seeds
+  ) {
     final Deque<PackageId> work = new ArrayDeque<>(seeds);
     final Set<PackageId> seen = new HashSet<>();
     while (!work.isEmpty()) {

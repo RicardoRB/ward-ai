@@ -31,7 +31,8 @@ class WardCliContract4Test extends WardCliIntegrationSupport {
   @Test
   void selectedCoverageAddsMissingMavenPluginAndReportsIt() throws IOException {
     assertThat(
-            run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "coverage", "-C", project.toString()))
+        run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "coverage", "-C", project.toString())
+    )
         .isZero();
     assertThat(Files.readString(project.resolve("pom.xml"))).contains("jacoco-maven-plugin");
     assertThat(out.toString()).contains("Updated pom.xml with Maven tools", "jacoco-maven-plugin");
@@ -41,16 +42,13 @@ class WardCliContract4Test extends WardCliIntegrationSupport {
   void existingMavenPluginIsNotDuplicated() throws IOException {
     final Path pom = project.resolve("pom.xml");
     final String original = Files.readString(pom);
-    Files.writeString(
-        pom,
-        original.replace(
-            "</project>",
-            """
+    Files.writeString(pom, original.replace("</project>", """
                 <build><plugins><plugin><artifactId>jacoco-maven-plugin</artifactId></plugin></plugins></build>
                 </project>"""));
 
     assertThat(
-            run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "coverage", "-C", project.toString()))
+        run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "coverage", "-C", project.toString())
+    )
         .isZero();
     final String updated = Files.readString(pom);
     assertThat(updated.indexOf("<artifactId>jacoco-maven-plugin</artifactId>"))
@@ -66,16 +64,18 @@ class WardCliContract4Test extends WardCliIntegrationSupport {
     final String originalPom = Files.readString(project.resolve("pom.xml"));
 
     assertThat(
-            run(
-                INIT,
-                INTEGRATION_OPTION,
-                NONE,
-                GATE_OPTION,
-                "archunit",
-                "--architecture",
-                "clean",
-                "-C",
-                project.toString()))
+        run(
+            INIT,
+            INTEGRATION_OPTION,
+            NONE,
+            GATE_OPTION,
+            "archunit",
+            "--architecture",
+            "clean",
+            "-C",
+            project.toString()
+        )
+    )
         .isEqualTo(ExitCodes.ERROR);
     assertThat(Files.readString(project.resolve("pom.xml"))).isEqualTo(originalPom);
     assertThat(project.resolve(WARD_TOML)).doesNotExist();

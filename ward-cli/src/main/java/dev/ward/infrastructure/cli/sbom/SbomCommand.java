@@ -25,9 +25,10 @@ import picocli.CommandLine.Spec;
     description = "Write the CycloneDX 1.6 JSON software bill of materials of the project.",
     mixinStandardHelpOptions = true,
     footer = {
-      "",
-      "Exit codes: 0 = written, 2 = error (for example an unusable dependency inventory)"
-    })
+        "",
+        "Exit codes: 0 = written, 2 = error (for example an unusable dependency inventory)"
+    }
+)
 public final class SbomCommand implements Callable<Integer> {
   private static final Logger LOGGER = Logger.getLogger(SbomCommand.class.getName());
 
@@ -43,7 +44,8 @@ public final class SbomCommand implements Callable<Integer> {
       paramLabel = "<name>",
       description =
           "Name of the root component (default: the name the build file declares, else the"
-              + " directory name).")
+              + " directory name)."
+  )
   private String name;
 
   private final SbomService service;

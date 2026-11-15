@@ -14,7 +14,6 @@ import java.util.Set;
  * default parameters and {@code try!} or {@code try?} keep the override, as in SwiftLint.
  */
 public final class SwiftUnneededOverrideCheck implements RuleCheck {
-
   private static final String FUNCTION = "function_declaration";
   private static final String HEAD = "function_head";
   private static final String NAME = "function_name";

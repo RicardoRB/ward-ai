@@ -26,12 +26,16 @@ final class NodeManifestFiles {
     }
     return List.of(
         "bunfig.toml is kept as you wrote it; a [test] coverageThreshold it sets still applies to"
-            + " bun-test, and Ward reads only the minimum of the coverage check in ward.toml.");
+            + " bun-test, and Ward reads only the minimum of the coverage check in ward.toml."
+    );
   }
 
   /** Returns the packages {@code project} needs for {@code gates}; a Turborepo root adds turbo. */
   static List<NodePackageCatalog.Package> missing(
-      final Project project, final List<InitGateOption> gates, final PackageManifest manifest) {
+      final Project project,
+      final List<InitGateOption> gates,
+      final PackageManifest manifest
+  ) {
     return NodePackageCatalog.missing(gates, manifest, project.taskRunner().packageName());
   }
 

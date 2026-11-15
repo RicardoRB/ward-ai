@@ -14,7 +14,6 @@ import java.util.Set;
  * nesting of the chain. The node fails when its score is above the limit.
  */
 public final class CognitiveComplexityCheck implements RuleCheck {
-
   private final Set<String> kinds;
   private final CognitiveTokens tokens;
   private final int max;
@@ -30,7 +29,11 @@ public final class CognitiveComplexityCheck implements RuleCheck {
    * @throws IllegalArgumentException if {@code max} is negative
    */
   public CognitiveComplexityCheck(
-      final Set<String> kinds, final CognitiveTokens tokens, final int max, final String message) {
+      final Set<String> kinds,
+      final CognitiveTokens tokens,
+      final int max,
+      final String message
+  ) {
     this.kinds = Set.copyOf(kinds);
     this.tokens = Objects.requireNonNull(tokens, "tokens");
     this.max = CheckSupport.nonNegative(max, "max");
@@ -47,7 +50,9 @@ public final class CognitiveComplexityCheck implements RuleCheck {
         matches.add(
             new RuleMatch(
                 node.span(),
-                CheckSupport.fill(message, String.valueOf(score), String.valueOf(max))));
+                CheckSupport.fill(message, String.valueOf(score), String.valueOf(max))
+            )
+        );
       }
     }
     return List.copyOf(matches);
@@ -68,7 +73,8 @@ public final class CognitiveComplexityCheck implements RuleCheck {
       final List<SyntaxNode> children,
       final int i,
       final int nesting,
-      final int inner) {
+      final int inner
+  ) {
     final SyntaxNode child = children.get(i);
     if (tokens.structures().counts(node, child)) {
       return 1 + nesting;

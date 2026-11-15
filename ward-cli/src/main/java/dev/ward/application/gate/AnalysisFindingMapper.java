@@ -10,11 +10,10 @@ import java.util.List;
 
 /** Maps engine findings to the gate finding record, in a stable report order. */
 public final class AnalysisFindingMapper {
-
   private static final Comparator<Finding> REPORT_ORDER =
-      Comparator.comparing(Finding::file, Comparator.nullsLast(Comparator.<String>naturalOrder()))
-          .thenComparing(Finding::line, Comparator.nullsLast(Comparator.<Integer>naturalOrder()))
-          .thenComparing(Finding::column, Comparator.nullsLast(Comparator.<Integer>naturalOrder()))
+      Comparator.comparing(Finding::file, Comparator.nullsLast(Comparator.<String> naturalOrder()))
+          .thenComparing(Finding::line, Comparator.nullsLast(Comparator.<Integer> naturalOrder()))
+          .thenComparing(Finding::column, Comparator.nullsLast(Comparator.<Integer> naturalOrder()))
           .thenComparing(Finding::ruleId)
           .thenComparing(Finding::message);
 
@@ -27,7 +26,10 @@ public final class AnalysisFindingMapper {
    * @return the mapped findings, sorted by file, line, column, rule id and message
    */
   public List<Finding> map(
-      final String gateId, final String tool, final List<AnalysisFinding> findings) {
+      final String gateId,
+      final String tool,
+      final List<AnalysisFinding> findings
+  ) {
     return findings.stream()
         .map(finding -> toFinding(gateId, tool, finding))
         .sorted(REPORT_ORDER)
@@ -43,7 +45,10 @@ public final class AnalysisFindingMapper {
    * @return the gate finding
    */
   public static Finding toFinding(
-      final String gateId, final String tool, final AnalysisFinding finding) {
+      final String gateId,
+      final String tool,
+      final AnalysisFinding finding
+  ) {
     return new Finding(
         gateId,
         tool,
@@ -54,7 +59,8 @@ public final class AnalysisFindingMapper {
         finding.line(),
         finding.column(),
         finding.helpUri(),
-        pathOf(finding));
+        pathOf(finding)
+    );
   }
 
   private static List<FindingStep> pathOf(final AnalysisFinding finding) {
@@ -65,7 +71,9 @@ public final class AnalysisFindingMapper {
                     step.file() == null ? finding.file() : step.file(),
                     step.span().startLine(),
                     step.span().startColumn(),
-                    step.message()))
+                    step.message()
+                )
+        )
         .toList();
   }
 

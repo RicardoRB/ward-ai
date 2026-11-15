@@ -19,7 +19,6 @@ import java.util.stream.Stream;
  * a comment node is left out, and the node itself stays.
  */
 final class GraphDigest {
-
   private static final String COMMENT = "comment";
   private static final String SEPARATOR = ";";
 
@@ -42,7 +41,8 @@ final class GraphDigest {
         graph.body(),
         String.valueOf(graph.entry()),
         String.valueOf(graph.exit()),
-        ranks.of(graph.span()));
+        ranks.of(graph.span())
+    );
     graph.blocks().forEach(this::block);
   }
 
@@ -80,7 +80,8 @@ final class GraphDigest {
         access.name(),
         access.kind().name(),
         ranks.of(access.span()),
-        ranks.of(access.declaration()));
+        ranks.of(access.declaration())
+    );
   }
 
   private void site(final FlowSite site) {
@@ -88,14 +89,16 @@ final class GraphDigest {
         site.arguments().stream().map(ranks::of).collect(Collectors.joining(","));
     line(
         Stream.of(
-                "s",
-                site.kind().name(),
-                site.name(),
-                site.qualifier(),
-                site.receiverType().orElse(""),
-                String.join(",", site.annotations()),
-                ranks.of(site.span()),
-                arguments)
-            .toArray(String[]::new));
+            "s",
+            site.kind().name(),
+            site.name(),
+            site.qualifier(),
+            site.receiverType().orElse(""),
+            String.join(",", site.annotations()),
+            ranks.of(site.span()),
+            arguments
+        )
+            .toArray(String[]::new)
+    );
   }
 }

@@ -4,7 +4,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 
 /** Builds the chains {@code receiver.lookup().use()} of the law-of-Demeter tests. */
 abstract class LawOfDemeterTrees extends ClassStatementTrees {
-
   static final String ANOTHER_METHOD = "again";
 
   SyntaxNode chainOf(final String receiver) {
@@ -23,9 +22,11 @@ abstract class LawOfDemeterTrees extends ClassStatementTrees {
             COLUMN + 1,
             node(EXPRESSION, LINE, COLUMN, leaf(TOKEN_IDENTIFIER, receiver, LINE, COLUMN)),
             leaf(DOT_KIND, DOT, LINE, COLUMN),
-            node(METHOD_CALL, LINE, COLUMN, ident(lookup))),
+            node(METHOD_CALL, LINE, COLUMN, ident(lookup))
+        ),
         leaf(DOT_KIND, DOT, LINE, COLUMN),
-        node(METHOD_CALL, LINE, COLUMN, ident(USE)));
+        node(METHOD_CALL, LINE, COLUMN, ident(USE))
+    );
   }
 
   SyntaxNode nestedChainOf() {
@@ -35,6 +36,7 @@ abstract class LawOfDemeterTrees extends ClassStatementTrees {
         COLUMN,
         chainOf(FOREIGN),
         leaf(DOT_KIND, DOT, LINE, COLUMN),
-        node(METHOD_CALL, LINE, COLUMN, ident(ANOTHER_METHOD)));
+        node(METHOD_CALL, LINE, COLUMN, ident(ANOTHER_METHOD))
+    );
   }
 }

@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
  *     CatalogStatus#NOT_APPLICABLE}
  */
 public record LanguageStatus(CatalogStatus status, String issue, String reason) {
-
   private static final Pattern ISSUE = Pattern.compile("#[1-9][0-9]*");
 
   /**

@@ -17,7 +17,6 @@ import java.util.SortedMap;
  * How the whole project uses one enum or namespace, through the imports that resolve to its file.
  */
 final class NodeMemberUses {
-
   private static final String NAMESPACE_IMPORT = "*";
 
   private NodeMemberUses() {}
@@ -28,8 +27,10 @@ final class NodeMemberUses {
   static MemberUsage of(
       final String path,
       final String name,
-      final SortedMap<String, SyntaxNode> trees,
-      final NodeModuleResolver resolver) {
+      final SortedMap<String,
+      SyntaxNode> trees,
+      final NodeModuleResolver resolver
+  ) {
     final List<MemberUsage> usages = new ArrayList<>();
     usages.add(NodeFileFacts.memberUsage(trees.get(path), name));
     for (final Map.Entry<String, SyntaxNode> entry : trees.entrySet()) {
@@ -49,7 +50,8 @@ final class NodeMemberUses {
       final String from,
       final String path,
       final String name,
-      final NodeModuleResolver resolver) {
+      final NodeModuleResolver resolver
+  ) {
     final List<MemberUsage> usages = new ArrayList<>();
     for (final ImportedName imported : NodeFileFacts.importedNames(tree)) {
       if (declares(resolver, from, imported, path)) {
@@ -63,7 +65,10 @@ final class NodeMemberUses {
    * The use an import makes of the declaring module's {@code name}, or empty when it names another.
    */
   private static Optional<MemberUsage> reachedBy(
-      final SyntaxNode tree, final ImportedName imported, final String name) {
+      final SyntaxNode tree,
+      final ImportedName imported,
+      final String name
+  ) {
     if (NAMESPACE_IMPORT.equals(imported.member())) {
       return Optional.of(new MemberUsage(Set.of(), true));
     }
@@ -77,7 +82,8 @@ final class NodeMemberUses {
       final NodeModuleResolver resolver,
       final String from,
       final ImportedName imported,
-      final String path) {
+      final String path
+  ) {
     return resolver.resolve(from, imported.specifier()).filter(path::equals).isPresent();
   }
 

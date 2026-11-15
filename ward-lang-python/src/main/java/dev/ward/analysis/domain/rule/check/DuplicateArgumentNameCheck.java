@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * leading identifier, so annotations and defaults are not parsed.
  */
 public final class DuplicateArgumentNameCheck implements RuleCheck {
-
   private static final Set<String> FUNCTIONS = Set.of("funcdef", "lambdef");
 
   /** The index of the last letter of {@code lambda}, before its parameters. */

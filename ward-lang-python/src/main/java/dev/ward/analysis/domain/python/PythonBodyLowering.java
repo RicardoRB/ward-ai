@@ -15,7 +15,6 @@ import java.util.Set;
  * statements are lowered by their own classes, which share this body's builder.
  */
 final class PythonBodyLowering {
-
   private static final String BLOCK = "block";
   private static final String NAMED_EXPR = "namedexpr_test";
   private static final Set<String> DEFINITIONS = Set.of("funcdef", "classdef", "decorated");
@@ -33,7 +32,11 @@ final class PythonBodyLowering {
    * @param imports what the names bound by the imports of the file stand for
    */
   PythonBodyLowering(
-      final Set<String> excluded, final boolean tracked, final Map<String, String> imports) {
+      final Set<String> excluded,
+      final boolean tracked,
+      final Map<String,
+      String> imports
+  ) {
     this.accesses = new PythonAccesses(excluded, tracked);
     this.flow = new ControlFlowBuilder(accesses, new PythonFlowSites(imports));
     this.loops = new PythonLoopLowering(flow, accesses, this::statements);
@@ -53,7 +56,8 @@ final class PythonBodyLowering {
       final String name,
       final SyntaxNode block,
       final PythonParameters parameters,
-      final Span span) {
+      final Span span
+  ) {
     accesses.declare(parameters.accesses());
     flow.record(parameters.accesses(), parameters.sites());
     statements(block);

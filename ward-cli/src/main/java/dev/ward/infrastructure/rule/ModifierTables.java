@@ -23,7 +23,6 @@ import org.tomlj.TomlTable;
  * to token texts. A language without a file has no table.
  */
 final class ModifierTables {
-
   private ModifierTables() {}
 
   /** Returns the table of the one language a rule covers; a rule over several has none. */
@@ -43,7 +42,9 @@ final class ModifierTables {
       return stream == null ? ModifierTable.NONE : read(resource, stream);
     } catch (final IOException exception) {
       throw new RuleConfigurationException(
-          "the modifier table " + resource + " is unreadable", exception);
+          "the modifier table " + resource + " is unreadable",
+          exception
+      );
     }
   }
 
@@ -53,7 +54,8 @@ final class ModifierTables {
       final TomlParseResult toml = Toml.parse(reader);
       if (toml.hasErrors()) {
         throw new RuleConfigurationException(
-            "the modifier table " + resource + " is not valid TOML");
+            "the modifier table " + resource + " is not valid TOML"
+        );
       }
       return new ModifierTable(TomlValues.strings(toml, "kinds"), texts(toml.getTable("texts")));
     }

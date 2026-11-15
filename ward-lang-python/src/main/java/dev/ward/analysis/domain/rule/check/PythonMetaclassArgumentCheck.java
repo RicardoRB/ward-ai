@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
  * base classes further.
  */
 public final class PythonMetaclassArgumentCheck implements RuleCheck {
-
   /** The mistake the check reports, one per rule. */
   public enum Problem {
     /** A class method of a metaclass whose first parameter is not {@code mcs}. */

@@ -39,7 +39,10 @@ class PipRequirementsSourceTest {
   void editableUrlAndVcsRequirementsAreErrors(@TempDir final Path dir) throws IOException {
     for (final String line :
         new String[] {
-          "-e .", "git+https://github.com/a/b.git#egg=b", "pkg @ https://x/y.whl", "./local"
+            "-e .",
+            "git+https://github.com/a/b.git#egg=b",
+            "pkg @ https://x/y.whl",
+            "./local"
         }) {
       Files.writeString(dir.resolve("requirements.txt"), line + "\n");
 
@@ -61,7 +64,8 @@ class PipRequirementsSourceTest {
       throws IOException {
     Files.writeString(
         dir.resolve("requirements.txt"),
-        "idna==3.10\n    # via requests\nrequests==2.32.3\n    # via -r requirements.in\n");
+        "idna==3.10\n    # via requests\nrequests==2.32.3\n    # via -r requirements.in\n"
+    );
 
     final List<Dependency> entries = read(dir, BuildTool.PIP).modules().getFirst().dependencies();
 

@@ -17,7 +17,6 @@ import java.util.Set;
  * unterminated block comment are not reported.
  */
 public final class BiomeCommentTextCheck implements RuleCheck {
-
   private static final String TEXT = "jsxText";
   private static final char SLASH = '/';
   private static final char STAR = '*';
@@ -45,7 +44,10 @@ public final class BiomeCommentTextCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     final String source = unit.text();
     return SyntaxWalk.visits(root, Set.of(TEXT)).stream()
         .flatMap(visit -> commentStarts(visit.node(), source).stream())
@@ -67,7 +69,11 @@ public final class BiomeCommentTextCheck implements RuleCheck {
 
   /** Records a comment that starts at the slash, and returns the index after it. */
   private static int commentAt(
-      final String raw, final int index, final int base, final List<Integer> starts) {
+      final String raw,
+      final int index,
+      final int base,
+      final List<Integer> starts
+  ) {
     final char next = raw.charAt(index + 1);
     if (next == SLASH && (index == 0 || raw.charAt(index - 1) != COLON)) {
       starts.add(base + index);
@@ -84,7 +90,11 @@ public final class BiomeCommentTextCheck implements RuleCheck {
    * Records a terminated block comment that starts at the slash, and returns the index after it.
    */
   private static int blockCommentEnd(
-      final String raw, final int index, final int base, final List<Integer> starts) {
+      final String raw,
+      final int index,
+      final int base,
+      final List<Integer> starts
+  ) {
     final int end = raw.indexOf("*/", index + 2);
     if (end < 0) {
       return raw.length();

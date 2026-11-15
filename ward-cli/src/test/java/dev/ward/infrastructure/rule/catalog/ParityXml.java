@@ -12,7 +12,6 @@ import org.xml.sax.SAXException;
 
 /** Reads the XML reports of the tools. */
 final class ParityXml {
-
   private ParityXml() {}
 
   /** Parses {@code file} without external entities or document types. */
@@ -32,7 +31,7 @@ final class ParityXml {
     final NodeList nodes = parent.getElementsByTagName(tag);
     final Element[] elements = new Element[nodes.getLength()];
     for (int index = 0; index < elements.length; index++) {
-      elements[index] = (Element) nodes.item(index);
+      elements[index] = (Element)nodes.item(index);
     }
     return elements;
   }

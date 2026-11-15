@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks the layout of the if-break document, flat and broken. */
 class DocPrinterIfBreakTest {
-
   private static final int WIDE = 100;
   private static final int FOUR = 4;
 
@@ -22,7 +21,9 @@ class DocPrinterIfBreakTest {
                 Document.text("["),
                 Document.text("1"),
                 Document.ifBreak(Document.text(","), Document.text("")),
-                Document.text("]")));
+                Document.text("]")
+            )
+        );
 
     assertThat(print(list)).isEqualTo("[1]");
   }
@@ -37,9 +38,13 @@ class DocPrinterIfBreakTest {
                     Document.concat(
                         Document.softLine(),
                         Document.text("1"),
-                        Document.ifBreak(Document.text(","), Document.text("")))),
+                        Document.ifBreak(Document.text(","), Document.text(""))
+                    )
+                ),
                 Document.hardLine(),
-                Document.text("]")));
+                Document.text("]")
+            )
+        );
 
     assertThat(print(list)).isEqualTo("[\n    1,\n]");
   }

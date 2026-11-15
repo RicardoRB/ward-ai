@@ -26,7 +26,8 @@ final class InitTargetAnswers {
       final InitPrompts prompts,
       final boolean terminal,
       final boolean overwrite,
-      final PrintWriter out) {
+      final PrintWriter out
+  ) {
     this.answers = answers;
     this.prompts = prompts;
     this.terminal = terminal;
@@ -47,7 +48,10 @@ final class InitTargetAnswers {
   }
 
   private Optional<InitApply.Target> target(
-      final InitService init, final Project project, final List<InitApply.Target> earlier) {
+      final InitService init,
+      final Project project,
+      final List<InitApply.Target> earlier
+  ) {
     final InitSetupCatalog catalog = init.catalog();
     final InitQuestions questions = new InitQuestions(answers, prompts, catalog, project, terminal);
     final boolean exists = init.configurationExists(project);

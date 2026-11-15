@@ -11,7 +11,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class JavadocAnnotationCheckTest {
-
   private static final String MESSAGE = "message";
   private static final String TAG = "@deprecated";
   private static final String ANNOTATION = "@Deprecated";
@@ -42,11 +41,15 @@ class JavadocAnnotationCheckTest {
   }
 
   private static List<RuleMatch> run(
-      final boolean methodsOnly, final String text, final SyntaxNode member) {
+      final boolean methodsOnly,
+      final String text,
+      final SyntaxNode member
+  ) {
     return fileMatches(
         new JavadocAnnotationCheck(TAG, ANNOTATION, methodsOnly, MESSAGE),
         text,
-        group("compilationUnit", member));
+        group("compilationUnit", member)
+    );
   }
 
   private static SyntaxNode member(final String modifier, final SyntaxNode... extra) {
@@ -62,7 +65,9 @@ class JavadocAnnotationCheckTest {
         tok("modifier", modifier, 2, MEMBER_OFFSET),
         group(
             "memberDeclaration",
-            group("methodDeclaration", tok("IDENTIFIER", "run", 2, RUN_COLUMN))));
+            group("methodDeclaration", tok("IDENTIFIER", "run", 2, RUN_COLUMN))
+        )
+    );
   }
 
   private static SyntaxNode annotation(final String text) {

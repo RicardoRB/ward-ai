@@ -7,7 +7,6 @@ import java.util.Set;
 
 /** The rules that a {@code [select]} table selects, for commands that show the selection. */
 public final class RuleSelection {
-
   private RuleSelection() {}
 
   /**
@@ -18,7 +17,9 @@ public final class RuleSelection {
    * @return the selected ids and the problems that the table reports
    */
   public static Result selected(
-      final RuleConfigFile.Select select, final List<RuleDefinition> catalog) {
+      final RuleConfigFile.Select select,
+      final List<RuleDefinition> catalog
+  ) {
     final RuleProblems problems = new RuleProblems(RuleConfigFile.DEFAULT_NAME, List.of());
     final Map<String, RuleDefinition> chosen =
         new RuleSelector(select, catalog, problems).selected();

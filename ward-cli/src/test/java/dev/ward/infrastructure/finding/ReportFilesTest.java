@@ -12,7 +12,8 @@ class ReportFilesTest {
   @Test
   void relativizeKeepsOutsidePathsAndHandlesFileUris() {
     assertThat(
-            ReportFiles.relativize(FindingFixtures.maven(root), "file://" + root + "/src/A.java"))
+        ReportFiles.relativize(FindingFixtures.maven(root), "file://" + root + "/src/A.java")
+    )
         .isEqualTo("src/A.java");
     assertThat(ReportFiles.relativize(FindingFixtures.maven(root), "/elsewhere/A.java"))
         .isEqualTo("/elsewhere/A.java");

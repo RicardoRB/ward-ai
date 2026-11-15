@@ -44,8 +44,8 @@ final class NodeCiSetup {
       // Yarn 1 has no --immutable; it is the default when packageManager names no version.
       case YARN ->
           packageManager != null
-                  && packageManager.startsWith("yarn@")
-                  && !packageManager.startsWith("yarn@1.")
+              && packageManager.startsWith("yarn@")
+              && !packageManager.startsWith("yarn@1.")
               ? "yarn install --immutable"
               : "yarn install --frozen-lockfile";
       default -> "npm ci";

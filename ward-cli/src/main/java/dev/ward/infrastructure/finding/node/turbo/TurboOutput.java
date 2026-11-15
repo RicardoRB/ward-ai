@@ -62,7 +62,11 @@ public final class TurboOutput {
   }
 
   private static void append(
-      final Map<String, StringBuilder> blocks, final String packageKey, final String text) {
+      final Map<String,
+      StringBuilder> blocks,
+      final String packageKey,
+      final String text
+  ) {
     blocks.computeIfAbsent(packageKey, key -> new StringBuilder()).append(text).append('\n');
   }
 }

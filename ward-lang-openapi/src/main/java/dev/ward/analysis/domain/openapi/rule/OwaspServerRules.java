@@ -10,12 +10,12 @@ import java.util.regex.Pattern;
 
 /** The OWASP rules about the {@code servers} of a document. */
 final class OwaspServerRules {
-
   private static final Pattern HTTP = Pattern.compile("^http:");
   private static final Pattern ENVIRONMENT =
       Pattern.compile(
           "(local|sandbox|alpha|beta|test|testing|stag|staging|prod|production|next|preprod|preproduction)",
-          Pattern.CASE_INSENSITIVE);
+          Pattern.CASE_INSENSITIVE
+      );
 
   private OwaspServerRules() {}
 
@@ -33,10 +33,13 @@ final class OwaspServerRules {
                   findings.add(
                       Findings.atValue(
                           located.node(),
-                          "Server URLs must not use http://. Use https:// or wss:// instead."));
+                          "Server URLs must not use http://. Use https:// or wss:// instead."
+                      )
+                  );
                 }
               }
-            });
+            }
+        );
     return findings;
   }
 
@@ -52,7 +55,9 @@ final class OwaspServerRules {
                 server,
                 "Declare intended audience of every server by defining servers["
                     + index
-                    + "].x-internal as true/false."));
+                    + "].x-internal as true/false."
+            )
+        );
       }
     }
     return findings;
@@ -70,7 +75,9 @@ final class OwaspServerRules {
             Findings.atValue(
                 description.get(),
                 "Declare intended environment in server descriptions using terms like local,"
-                    + " staging, production."));
+                    + " staging, production."
+            )
+        );
       }
     }
     return findings;

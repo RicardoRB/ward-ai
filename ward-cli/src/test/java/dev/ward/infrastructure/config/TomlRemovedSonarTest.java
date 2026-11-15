@@ -11,11 +11,12 @@ class TomlRemovedSonarTest {
   @Test
   void usesSonarIsAConfigurationError() {
     assertThatThrownBy(
-            () ->
-                new TomlConfigurationReader()
-                    .parse(
-                        Toml.parse(
-                            "version = 2\n[checks.x]\nuses = \"sonar\"\ncommand = \"tool\"\n")))
+        () ->
+            new TomlConfigurationReader()
+                .parse(
+                    Toml.parse("version = 2\n[checks.x]\nuses = \"sonar\"\ncommand = \"tool\"\n")
+                )
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("checks.x.uses");
   }

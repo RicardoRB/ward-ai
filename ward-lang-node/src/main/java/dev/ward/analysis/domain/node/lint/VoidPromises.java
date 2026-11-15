@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * declared as returning void, and a call argument whose parameter returns void.
  */
 final class VoidPromises {
-
   private static final String DECLARATION = "variableDeclaration";
   private static final String FUNCTION_DECLARATION = "functionDeclaration";
   private static final String ARROW_FUNCTION = "arrowFunctionDeclaration";
@@ -31,7 +30,10 @@ final class VoidPromises {
 
   /** Returns every promise that flows into a void return of the unit. */
   static List<RuleMatch> find(
-      final SyntaxNode root, final UnitTypeFacts types, final String message) {
+      final SyntaxNode root,
+      final UnitTypeFacts types,
+      final String message
+  ) {
     final List<RuleMatch> out = new ArrayList<>();
     functions(root, types, message, out);
     variables(root, types, message, out);
@@ -44,7 +46,8 @@ final class VoidPromises {
       final SyntaxNode root,
       final UnitTypeFacts types,
       final String message,
-      final List<RuleMatch> out) {
+      final List<RuleMatch> out
+  ) {
     for (final SyntaxNode function : SyntaxText.nodesOf(root, FUNCTION_DECLARATION)) {
       returnsOf(function, types, message, out);
     }
@@ -57,7 +60,8 @@ final class VoidPromises {
       final SyntaxNode function,
       final UnitTypeFacts types,
       final String message,
-      final List<RuleMatch> out) {
+      final List<RuleMatch> out
+  ) {
     for (final SyntaxNode value : VoidFunctions.returnedValues(function)) {
       if (promiseValue(types, value)
           || typeOf(types, value).filter(VoidPromises::isPromiseFunction).isPresent()) {
@@ -71,7 +75,8 @@ final class VoidPromises {
       final SyntaxNode root,
       final UnitTypeFacts types,
       final String message,
-      final List<RuleMatch> out) {
+      final List<RuleMatch> out
+  ) {
     for (final SyntaxNode declaration : SyntaxText.nodesOf(root, DECLARATION)) {
       final SyntaxNode value = SyntaxText.last(declaration);
       final boolean typedAsVoid =
@@ -90,7 +95,8 @@ final class VoidPromises {
       final SyntaxNode root,
       final UnitTypeFacts types,
       final String message,
-      final List<RuleMatch> out) {
+      final List<RuleMatch> out
+  ) {
     for (final SyntaxNode call : SyntaxText.nodesOf(root, EXPRESSION)) {
       final List<SyntaxNode> parts = call.children();
       if (parts.size() == 2 && CALL_ARGUMENTS.equals(parts.get(1).kind())) {
@@ -105,7 +111,8 @@ final class VoidPromises {
       final CallTarget target,
       final UnitTypeFacts types,
       final String message,
-      final List<RuleMatch> out) {
+      final List<RuleMatch> out
+  ) {
     final List<SyntaxNode> values = plainArguments(arguments);
     for (int index = 0; index < values.size() && index < target.parameters().size(); index++) {
       final SyntaxNode value = values.get(index);

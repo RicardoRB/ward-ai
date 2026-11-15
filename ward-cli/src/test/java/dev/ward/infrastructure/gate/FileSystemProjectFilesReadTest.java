@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class FileSystemProjectFilesReadTest {
-
   @TempDir Path root;
 
   private final FileSystemProjectFiles files = new FileSystemProjectFiles();

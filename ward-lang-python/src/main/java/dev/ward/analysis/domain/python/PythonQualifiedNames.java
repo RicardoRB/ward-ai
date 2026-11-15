@@ -2,7 +2,6 @@ package dev.ward.analysis.domain.python;
 
 /** Splits and joins the dotted names of stub modules and the classes and functions they declare. */
 final class PythonQualifiedNames {
-
   /** The module that holds the built-in classes and functions. */
   static final String BUILTINS = "builtins";
 

@@ -17,7 +17,6 @@ import java.util.Optional;
  * expression.
  */
 final class NodeMagicNumberRoles {
-
   private static final String LITERAL_EXPRESSION = "singleExpression";
   private static final String PROPERTY_ASSIGNMENT = "propertyAssignment";
   private static final String PROPERTY_NAME = "propertyName";

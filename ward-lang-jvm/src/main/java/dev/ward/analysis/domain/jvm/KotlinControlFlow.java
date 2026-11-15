@@ -21,7 +21,6 @@ import java.util.Set;
  * initializers and accessors are not lowered.
  */
 public final class KotlinControlFlow implements ControlFlowLowering {
-
   private static final String FUNCTION = "functionDeclaration";
   private static final String CONSTRUCTOR = "secondaryConstructor";
   private static final String INITIALIZER = "anonymousInitializer";
@@ -40,7 +39,8 @@ public final class KotlinControlFlow implements ControlFlowLowering {
           "objectDeclaration",
           "objectLiteral",
           "companionObject",
-          "typeAlias");
+          "typeAlias"
+      );
 
   /**
    * Lowers the bodies of the unit.
@@ -61,14 +61,17 @@ public final class KotlinControlFlow implements ControlFlowLowering {
 
   /** Walks the tree once, lowering each body and keeping the owning type's name in scope. */
   private static final class Collector {
-
     private final UnitScopes scopes;
     private final JavaTypeNames types;
     private final Map<Integer, Integer> writeEnds;
     private final List<ControlFlowGraph> graphs = new ArrayList<>();
 
     Collector(
-        final UnitScopes scopes, final JavaTypeNames types, final Map<Integer, Integer> writeEnds) {
+        final UnitScopes scopes,
+        final JavaTypeNames types,
+        final Map<Integer,
+        Integer> writeEnds
+    ) {
       this.scopes = scopes;
       this.types = types;
       this.writeEnds = writeEnds;
@@ -118,7 +121,8 @@ public final class KotlinControlFlow implements ControlFlowLowering {
           scope + "#" + name,
           node,
           KotlinFlowSyntax.child(node, PARAMETERS),
-          block == null ? body : block);
+          block == null ? body : block
+      );
     }
 
     private void lowerConstructor(final SyntaxNode node, final String scope) {
@@ -126,7 +130,8 @@ public final class KotlinControlFlow implements ControlFlowLowering {
           scope + "#<init>",
           node,
           KotlinFlowSyntax.child(node, PARAMETERS),
-          KotlinFlowSyntax.child(node, BLOCK));
+          KotlinFlowSyntax.child(node, BLOCK)
+      );
     }
 
     private void lowerInitializer(final SyntaxNode node, final String scope) {
@@ -137,7 +142,8 @@ public final class KotlinControlFlow implements ControlFlowLowering {
         final String base,
         final SyntaxNode owner,
         final SyntaxNode parameters,
-        final SyntaxNode body) {
+        final SyntaxNode body
+    ) {
       final String name = base.endsWith("(0)") ? base : base + "(" + count(parameters) + ")";
       final Span span = owner.span();
       final KotlinView view = new KotlinView();
@@ -147,7 +153,8 @@ public final class KotlinControlFlow implements ControlFlowLowering {
           parameters == null ? List.of() : KotlinAccesses.parameters(scopes, parameters.span());
       graphs.add(
           new KotlinBodyLowering(accesses, new KotlinFlowSites(types, view), view)
-              .lower(name, entry, parameters, body, span));
+              .lower(name, entry, parameters, body, span)
+      );
     }
 
     private static int count(final SyntaxNode parameters) {

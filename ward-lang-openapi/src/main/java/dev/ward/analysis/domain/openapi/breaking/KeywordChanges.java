@@ -12,7 +12,6 @@ import java.util.function.Predicate;
  * keywords whose value changing breaks both.
  */
 final class KeywordChanges {
-
   private static final Predicate<DocNode> ANY = node -> true;
   private static final Predicate<DocNode> OBJECT = node -> node.kind() == Kind.OBJECT;
   private static final Predicate<DocNode> TRUE = node -> "true".equals(node.text());
@@ -27,22 +26,40 @@ final class KeywordChanges {
           new Presence("contains", "contains-added", "contains-removed", ANY),
           new Presence("contentSchema", "content-schema-added", "content-schema-removed", ANY),
           new Presence(
-              "dependentRequired", "dependent-required-added", "dependent-required-removed", ANY),
+              "dependentRequired",
+              "dependent-required-added",
+              "dependent-required-removed",
+              ANY
+          ),
           new Presence(
-              "dependentSchemas", "dependent-schema-added", "dependent-schema-removed", ANY),
+              "dependentSchemas",
+              "dependent-schema-added",
+              "dependent-schema-removed",
+              ANY
+          ),
           new Presence("if", "if-added", "if-removed", ANY),
           new Presence("then", "then-added", "then-removed", ANY),
           new Presence("else", "else-added", "else-removed", ANY),
           new Presence(
-              "patternProperties", "pattern-property-added", "pattern-property-removed", ANY),
+              "patternProperties",
+              "pattern-property-added",
+              "pattern-property-removed",
+              ANY
+          ),
           new Presence("propertyNames", "property-names-added", "property-names-removed", ANY),
           new Presence(
-              "unevaluatedItems", "unevaluated-items-added", "unevaluated-items-removed", OBJECT),
+              "unevaluatedItems",
+              "unevaluated-items-added",
+              "unevaluated-items-removed",
+              OBJECT
+          ),
           new Presence(
               "unevaluatedProperties",
               "unevaluated-properties-added",
               "unevaluated-properties-removed",
-              OBJECT));
+              OBJECT
+          )
+      );
 
   private static final List<Changed> CHANGED =
       List.of(
@@ -50,11 +67,16 @@ final class KeywordChanges {
           new Changed("multipleOf", "multiple-of-changed"),
           new Changed("dependentRequired", "dependent-required-changed"),
           new Changed("contentEncoding", "content-encoding-changed"),
-          new Changed("contentMediaType", "content-media-type-changed"));
+          new Changed("contentMediaType", "content-media-type-changed")
+      );
 
   /** A keyword and the names of the checks for it appearing and for it disappearing. */
   private record Presence(
-      String keyword, String added, String removed, Predicate<DocNode> counts) {}
+      String keyword,
+      String added,
+      String removed,
+      Predicate<DocNode> counts
+  ) {}
 
   /** A keyword and the name of the check for its value changing. */
   private record Changed(String keyword, String kind) {}
@@ -63,7 +85,10 @@ final class KeywordChanges {
 
   /** The keyword changes of one schema pair. */
   static List<SchemaChange> changes(
-      final SchemaSides sides, final DocNode base, final DocNode revision) {
+      final SchemaSides sides,
+      final DocNode base,
+      final DocNode revision
+  ) {
     final List<SchemaChange> changes = new ArrayList<>();
     for (final Presence presence : PRESENCE) {
       presence(sides, base, revision, presence).ifPresent(changes::add);
@@ -75,7 +100,11 @@ final class KeywordChanges {
   }
 
   private static Optional<SchemaChange> presence(
-      final SchemaSides sides, final DocNode base, final DocNode revision, final Presence row) {
+      final SchemaSides sides,
+      final DocNode base,
+      final DocNode revision,
+      final Presence row
+  ) {
     final Optional<DocNode> before = base.get(row.keyword()).filter(row.counts());
     final Optional<DocNode> after = revision.get(row.keyword()).filter(row.counts());
     if (sides.request() && before.isEmpty()) {
@@ -88,7 +117,10 @@ final class KeywordChanges {
   }
 
   private static Optional<SchemaChange> changed(
-      final DocNode base, final DocNode revision, final Changed row) {
+      final DocNode base,
+      final DocNode revision,
+      final Changed row
+  ) {
     final Optional<DocNode> before = base.get(row.keyword());
     final Optional<DocNode> after = revision.get(row.keyword());
     if (before.isPresent() && after.isPresent() && !SameNodes.equal(before.get(), after.get())) {

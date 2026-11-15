@@ -41,7 +41,8 @@ class RuleEngineDependencyViewTest {
                 List.of(unit),
                 List.of(java()),
                 List.of(RuleEngineFixtures.rule(SYMBOLS_RULE, RuleCapability.SYMBOLS)),
-                snapshot);
+                snapshot
+            );
 
     assertThat(result.findings())
         .extracting(AnalysisFinding::message)
@@ -56,7 +57,8 @@ class RuleEngineDependencyViewTest {
                 List.of(RuleEngineFixtures.unit("B.java")),
                 List.of(java()),
                 List.of(RuleEngineFixtures.rule(SYNTAX_RULE, RuleCapability.SYNTAX)),
-                snapshot());
+                snapshot()
+            );
 
     assertThat(result.findings())
         .extracting(AnalysisFinding::message)
@@ -69,7 +71,8 @@ class RuleEngineDependencyViewTest {
         new FileSummary("B.java", List.of(), List.of(new Reference("A", AT_1)), List.of());
     final DependencyGraph graph =
         new DependencyGraph(
-            List.of(new DependencyEdge("B.java", "A.java", new Reference("A", AT_1))));
+            List.of(new DependencyEdge("B.java", "A.java", new Reference("A", AT_1)))
+        );
     return new DependencySnapshot(graph, Map.of("A.java", a, "B.java", b));
   }
 
@@ -77,7 +80,10 @@ class RuleEngineDependencyViewTest {
     final LanguageFrontend frontend =
         unit -> new ParseResult(new SyntaxNode("file", AT_1, Map.of(), List.of()), List.of());
     return new FrontendSupport(
-        AnalysisLanguage.JAVA, frontend, Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS));
+        AnalysisLanguage.JAVA,
+        frontend,
+        Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS)
+    );
   }
 
   /** Reports how many dependencies the rule was given; the syntax-only path ignores the view. */

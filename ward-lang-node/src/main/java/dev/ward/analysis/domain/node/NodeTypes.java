@@ -11,7 +11,6 @@ import java.util.Optional;
  * resolves to a receiver type only through the file's named imports.
  */
 final class NodeTypes {
-
   private static final String SINGLE = "singleExpression";
   private static final String NEW = "new";
   private static final String TYPE_ANNOTATION = "typeAnnotation";

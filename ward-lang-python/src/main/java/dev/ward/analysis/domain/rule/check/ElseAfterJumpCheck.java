@@ -14,7 +14,6 @@ import java.util.Set;
  * no-else-return} and its siblings: the branch after the jump needs no {@code else}.
  */
 public final class ElseAfterJumpCheck implements RuleCheck {
-
   private static final Set<String> KINDS = Set.of("if_stmt");
   private static final String BLOCK = "block";
   private static final String ELIF = "elif";

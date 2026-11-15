@@ -139,7 +139,8 @@ final class KotlinFileScan {
               name -> {
                 declared.add(new Symbol(JavaNames.qualify(owner, name), node.span()));
                 hasTopLevelMembers = true;
-              });
+              }
+          );
     }
     for (final SyntaxNode child : node.children()) {
       referencesOf.visit(child);

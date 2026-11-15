@@ -8,7 +8,6 @@ import java.util.Optional;
 
 /** The rules that read the document as written, before any reference is followed. */
 final class RefRules {
-
   private static final String ITEMS = "items";
   private static final String TYPE = "type";
   private static final String ARRAY = "array";
@@ -28,7 +27,10 @@ final class RefRules {
           if (!OpenApiDocument.REF.equals(entry.key())) {
             findings.add(
                 Findings.atValue(
-                    entry.value(), "$ref must not be placed next to any other properties"));
+                    entry.value(),
+                    "$ref must not be placed next to any other properties"
+                )
+            );
           }
         }
       }
@@ -47,7 +49,9 @@ final class RefRules {
                 document,
                 node,
                 "Schemas with \"type: array\", require a sibling \"items\" field",
-                ITEMS));
+                ITEMS
+            )
+        );
       }
     }
     return findings;

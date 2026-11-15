@@ -24,15 +24,17 @@ class GitProjectChangesTest {
   @Test
   void reportedChangesCount() {
     assertThat(
-            new GitProjectChanges(new FakeCommandExecutor(0, " M pom.xml\n", "")).changedBelow(API))
+        new GitProjectChanges(new FakeCommandExecutor(0, " M pom.xml\n", "")).changedBelow(API)
+    )
         .isTrue();
   }
 
   @Test
   void failingGitCountsAsChanged() {
     assertThat(
-            new GitProjectChanges(new FakeCommandExecutor(GIT_FAILURE, "", "fatal"))
-                .changedBelow(API))
+        new GitProjectChanges(new FakeCommandExecutor(GIT_FAILURE, "", "fatal"))
+            .changedBelow(API)
+    )
         .isTrue();
   }
 }

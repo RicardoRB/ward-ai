@@ -11,7 +11,6 @@ import java.util.Map;
 
 /** The checks of the rules about casts and instanceof tests that can never succeed. */
 final class ConversionChecks {
-
   private static final String MESSAGE = "message";
 
   private ConversionChecks() {}
@@ -26,8 +25,12 @@ final class ConversionChecks {
                     ImpossibleConversionCheck.Mode.valueOf(
                         TomlValues.required(toml, "mode")
                             .replace('-', '_')
-                            .toUpperCase(Locale.ROOT)),
-                    TomlValues.required(toml, MESSAGE))),
-        entry("to-array-cast", toml -> new ToArrayCastCheck(TomlValues.required(toml, MESSAGE))));
+                            .toUpperCase(Locale.ROOT)
+                    ),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
+        entry("to-array-cast", toml -> new ToArrayCastCheck(TomlValues.required(toml, MESSAGE)))
+    );
   }
 }

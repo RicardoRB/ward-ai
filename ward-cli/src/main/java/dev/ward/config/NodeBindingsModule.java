@@ -25,7 +25,8 @@ abstract class NodeBindingsModule {
       final PackageManifests manifests,
       final FileSystemNodeSources sources,
       final NodeToolConfigs configs,
-      final WorkspaceMembers members) {
+      final WorkspaceMembers members
+  ) {
     return new NodeInputs(manifests, sources, configs, members);
   }
 }

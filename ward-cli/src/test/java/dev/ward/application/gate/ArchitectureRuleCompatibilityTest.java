@@ -34,16 +34,14 @@ class ArchitectureRuleCompatibilityTest {
     Files.createDirectories(testSource.getParent());
     Files.writeString(
         testSource,
-        "package shop.legacy;\n\nimport shop.domain.Discount;\n\nclass CouponTest {}\n");
+        "package shop.legacy;\n\nimport shop.domain.Discount;\n\nclass CouponTest {}\n"
+    );
 
     final Set<String> shorthand =
         positions(LAYERS, wardToml("layers = [{ from = [\"legacy\"], forbidden = [\"domain\"] }]"));
     Files.delete(root.resolve("ward.toml"));
     final Set<String> longhand =
-        positions(
-            DEPENDENCIES,
-            architectureToml(
-                """
+        positions(DEPENDENCIES, architectureToml("""
                 [[rule]]
                 name = "legacy-layer"
                 select = { directories = ["legacy"], exclude-paths = ["src/test/**", "**/src/test/**"] }
@@ -63,13 +61,11 @@ class ArchitectureRuleCompatibilityTest {
     final Set<String> shorthand =
         positions(
             INDEPENDENCE,
-            wardToml("independence = [{ modules = [\"src/orders\", \"src/billing\"] }]"));
+            wardToml("independence = [{ modules = [\"src/orders\", \"src/billing\"] }]")
+        );
     Files.delete(root.resolve("ward.toml"));
     final Set<String> longhand =
-        positions(
-            DEPENDENCIES,
-            architectureToml(
-                """
+        positions(DEPENDENCIES, architectureToml("""
                 [[rule]]
                 name = "orders-independent"
                 select = { paths = ["src/orders/**"] }
@@ -92,8 +88,7 @@ class ArchitectureRuleCompatibilityTest {
     ArchitectureGateRun.copy(FIXTURES.resolve("java-resolution"), root, file -> true);
     final GateConfiguration check =
         wardToml("layers = [{ from = [\"legacy\"], forbidden = [\"domain\"] }]");
-    architectureToml(
-        """
+    architectureToml("""
         [[rule]]
         name = "legacy-layer"
         select = { directories = ["legacy"] }
@@ -111,7 +106,8 @@ class ArchitectureRuleCompatibilityTest {
         .satisfies(
             finding ->
                 assertThat(finding.message())
-                    .startsWith("Layer legacy must not depend on domain: "));
+                    .startsWith("Layer legacy must not depend on domain: ")
+        );
   }
 
   @Test
@@ -120,7 +116,9 @@ class ArchitectureRuleCompatibilityTest {
 
     final List<Finding> findings =
         ArchitectureGateRun.run(
-                root, wardToml("layers = [{ from = [\"legacy\"], forbidden = [\"domain\"] }]"))
+            root,
+            wardToml("layers = [{ from = [\"legacy\"], forbidden = [\"domain\"] }]")
+        )
             .findings()
             .items();
 

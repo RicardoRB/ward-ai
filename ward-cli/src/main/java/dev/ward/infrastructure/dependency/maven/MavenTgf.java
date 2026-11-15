@@ -34,26 +34,37 @@ final class MavenTgf {
    * @throws DependencyInventoryException if the output holds no module or a module is unknown
    */
   static DependencyInventory read(
-      final String project, final String output, final Map<String, String> modules) {
+      final String project,
+      final String output,
+      final Map<String,
+      String> modules
+  ) {
     final List<TgfBlock> blocks = TgfBlock.parse(output);
     if (blocks.isEmpty()) {
       throw failure(project, "the output holds no dependency tree");
     }
     final Set<String> reactor = new HashSet<>(modules.keySet());
     return new DependencyInventory(
-        blocks.stream().map(block -> module(project, block, reactor, modules)).toList());
+        blocks.stream().map(block -> module(project, block, reactor, modules)).toList()
+    );
   }
 
   private static DependencyInventoryException failure(final String project, final String reason) {
     return new DependencyInventoryException(
-        project, "the Maven dependency tree", reason, "run the Maven build to see why");
+        project,
+        "the Maven dependency tree",
+        reason,
+        "run the Maven build to see why"
+    );
   }
 
   private static ModuleDependencies module(
       final String project,
       final TgfBlock block,
       final Set<String> reactor,
-      final Map<String, String> modules) {
+      final Map<String,
+      String> modules
+  ) {
     final TgfNode self = block.nodes().get(block.root());
     if (self == null || !modules.containsKey(self.name())) {
       throw failure(project, "module " + block.artifactId() + " is not in the reactor's POMs");
@@ -70,7 +81,8 @@ final class MavenTgf {
               if (!node.omitted() && counts(located, key, node)) {
                 resolved.put(node.name(), id(node));
               }
-            });
+            }
+        );
     block
         .nodes()
         .forEach(
@@ -82,7 +94,8 @@ final class MavenTgf {
                   entry(builder, located, key, target);
                 }
               }
-            });
+            }
+        );
     return builder.build(path);
   }
 
@@ -95,7 +108,11 @@ final class MavenTgf {
 
   /** Records the version a node's parent asked for, kept even when Maven omitted the node. */
   private static void request(
-      final ModuleBuilder builder, final TgfBlock block, final String key, final PackageId target) {
+      final ModuleBuilder builder,
+      final TgfBlock block,
+      final String key,
+      final PackageId target
+  ) {
     final String parent = block.parent(key);
     final TgfNode node = block.nodes().get(key);
     final String requester =
@@ -108,7 +125,8 @@ final class MavenTgf {
       final ModuleBuilder builder,
       final Located located,
       final String key,
-      final PackageId target) {
+      final PackageId target
+  ) {
     final TgfBlock block = located.block();
     final TgfNode node = block.nodes().get(key);
     builder.add(target, released(node)).scope(target, scope(node.scope()));

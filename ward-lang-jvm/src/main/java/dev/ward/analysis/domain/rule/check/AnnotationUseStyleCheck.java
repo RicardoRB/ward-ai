@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * closing brace of an array. Each option accepts {@code ignore} to skip its check.
  */
 public final class AnnotationUseStyleCheck implements RuleCheck {
-
   private static final String ANNOTATION = "annotation";
   private static final char QUOTE = '"';
   private static final String ARGUMENTS = "annotationFieldValues";
@@ -53,7 +52,8 @@ public final class AnnotationUseStyleCheck implements RuleCheck {
       final String closingParens,
       final String elementStyle,
       final String trailingArrayComma,
-      final String message) {
+      final String message
+  ) {
     this.closingParens = option(closingParens, CLOSING, "closing-parens");
     this.elementStyle = option(elementStyle, ELEMENT, "element-style");
     this.trailingArrayComma = option(trailingArrayComma, TRAILING, "trailing-array-comma");

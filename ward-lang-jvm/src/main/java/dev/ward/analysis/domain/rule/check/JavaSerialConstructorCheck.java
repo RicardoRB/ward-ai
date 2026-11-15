@@ -18,7 +18,6 @@ import java.util.Set;
  * superclass that is not in the file is never reported.
  */
 public final class JavaSerialConstructorCheck implements RuleCheck {
-
   private static final String SERIALIZABLE = "Serializable";
   private static final String EXTERNALIZABLE = "Externalizable";
 
@@ -49,11 +48,15 @@ public final class JavaSerialConstructorCheck implements RuleCheck {
             clazz ->
                 externalizable
                     ? lacksPublicConstructor(clazz)
-                    : lacksSuperConstructor(clazz, classes, all))
+                    : lacksSuperConstructor(clazz, classes, all)
+        )
         .map(
             clazz ->
                 CheckSupport.at(
-                    clazz.span(), CheckSupport.fill(message, ClassMembers.nameOf(clazz), "")))
+                    clazz.span(),
+                    CheckSupport.fill(message, ClassMembers.nameOf(clazz), "")
+                )
+        )
         .toList();
   }
 
@@ -70,7 +73,11 @@ public final class JavaSerialConstructorCheck implements RuleCheck {
   }
 
   private static boolean lacksSuperConstructor(
-      final SyntaxNode clazz, final Map<String, SyntaxNode> classes, final List<SyntaxNode> all) {
+      final SyntaxNode clazz,
+      final Map<String,
+      SyntaxNode> classes,
+      final List<SyntaxNode> all
+  ) {
     if (!ClassTypeNames.implemented(clazz).contains(SERIALIZABLE)) {
       return false;
     }

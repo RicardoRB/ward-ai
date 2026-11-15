@@ -5,7 +5,6 @@ import java.util.List;
 
 /** Tells whether a resource is closed by a later statement of its block, after other calls. */
 final class CloseAfterCalls {
-
   private static final int FIRST_CLOSE = 1;
 
   private CloseAfterCalls() {}

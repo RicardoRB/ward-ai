@@ -56,7 +56,8 @@ public final class FloatingCompareToCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(EXPRESSION)).stream()
         .filter(visit -> IDIOM.matcher(SyntaxWalk.text(visit.node())).matches())
         .filter(visit -> inComparator(visit.ancestors()) && floating(visit.node(), types))

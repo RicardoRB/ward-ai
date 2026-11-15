@@ -9,7 +9,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class SyntaxWalkDescendantsTest {
-
   private static final Span SPAN = new Span(1, 1, 1, 2, 0, 1);
 
   @Test

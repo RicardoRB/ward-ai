@@ -6,7 +6,6 @@ import java.util.Set;
 
 /** The keywords of objects: size, required, and the dispatch to those of the properties. */
 final class ObjectKeywords {
-
   private ObjectKeywords() {}
 
   /** Checks the object keywords in ajv order. */
@@ -15,7 +14,8 @@ final class ObjectKeywords {
       final DocNode schema,
       final DocNode data,
       final String path,
-      final Set<String> evaluated) {
+      final Set<String> evaluated
+  ) {
     return Chain.run(
         validator,
         () -> count(validator, schema, "maxProperties", data, path),
@@ -28,7 +28,8 @@ final class ObjectKeywords {
         () -> PropertyKeywords.additional(validator, schema, data, path, evaluated),
         () -> PropertyKeywords.properties(validator, schema, data, path, evaluated),
         () -> PropertyKeywords.patterns(validator, schema, data, path, evaluated),
-        () -> PropertyKeywords.unevaluated(validator, schema, data, path, evaluated));
+        () -> PropertyKeywords.unevaluated(validator, schema, data, path, evaluated)
+    );
   }
 
   private static boolean count(
@@ -36,7 +37,8 @@ final class ObjectKeywords {
       final DocNode schema,
       final String keyword,
       final DocNode data,
-      final String path) {
+      final String path
+  ) {
     final Optional<DocNode> limit = schema.get(keyword);
     if (limit.isEmpty() || limit.get().kind() != DocNode.Kind.NUMBER) {
       return true;
@@ -54,7 +56,9 @@ final class ObjectKeywords {
             SchemaError.of(
                 keyword,
                 path,
-                "must NOT have " + direction + " than " + JsonValues.show(bound) + " properties"));
+                "must NOT have " + direction + " than " + JsonValues.show(bound) + " properties"
+            )
+        );
     return false;
   }
 
@@ -62,7 +66,8 @@ final class ObjectKeywords {
       final JsonSchemaValidator validator,
       final DocNode schema,
       final DocNode data,
-      final String path) {
+      final String path
+  ) {
     final Optional<DocNode> names = schema.get("required");
     if (names.isEmpty() || names.get().kind() != DocNode.Kind.ARRAY) {
       return true;
@@ -86,7 +91,10 @@ final class ObjectKeywords {
 
   /** Tells whether the property is left out of {@code required} by readOnly or writeOnly. */
   private static boolean relaxed(
-      final JsonSchemaValidator validator, final DocNode schema, final String name) {
+      final JsonSchemaValidator validator,
+      final DocNode schema,
+      final String name
+  ) {
     final String flag =
         switch (validator.getRelax()) {
           case READ_ONLY -> "readOnly";

@@ -6,7 +6,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import org.junit.jupiter.api.Test;
 
 class ErrorProneConstructorsTest extends ErrorProneTrees {
-
   private SyntaxNode assignment(final String target) {
     return node(
         EXPRESSION,
@@ -14,7 +13,8 @@ class ErrorProneConstructorsTest extends ErrorProneTrees {
         COLUMN,
         leaf(TOKEN_IDENTIFIER, target, LINE, COLUMN),
         leaf("'='", "=", LINE, COLUMN),
-        leaf("'1'", "1", LINE, COLUMN));
+        leaf("'1'", "1", LINE, COLUMN)
+    );
   }
 
   @Test
@@ -23,7 +23,8 @@ class ErrorProneConstructorsTest extends ErrorProneTrees {
         classNamed(
             CLASS_NAME,
             member(field("count"), STATIC),
-            member(constructorOf(assignment("count"), assignment("Sample.count"))));
+            member(constructorOf(assignment("count"), assignment("Sample.count")))
+        );
 
     assertThat(run(new AssignmentToNonFinalStaticCheck(MESSAGE), clazz)).hasSize(2);
   }
@@ -42,8 +43,11 @@ class ErrorProneConstructorsTest extends ErrorProneTrees {
                     assignment("value"),
                     assignment("Other.count"),
                     assignment("unknown"),
-                    node(EXPRESSION, LINE, COLUMN, leaf(TOKEN_IDENTIFIER, "count", LINE, COLUMN)))),
-            member(method("reset", 0, 0, assignment("count"))));
+                    node(EXPRESSION, LINE, COLUMN, leaf(TOKEN_IDENTIFIER, "count", LINE, COLUMN))
+                )
+            ),
+            member(method("reset", 0, 0, assignment("count")))
+        );
 
     assertThat(run(new AssignmentToNonFinalStaticCheck(MESSAGE), clazz)).isEmpty();
   }
@@ -63,7 +67,8 @@ class ErrorProneConstructorsTest extends ErrorProneTrees {
         COLUMN,
         node(EXPRESSION, LINE, COLUMN, leaf("'this'", "this", LINE, COLUMN)),
         leaf(DOT_KIND, DOT, LINE, COLUMN),
-        call(name));
+        call(name)
+    );
   }
 
   @Test
@@ -72,7 +77,8 @@ class ErrorProneConstructorsTest extends ErrorProneTrees {
         classNamed(
             CLASS_NAME,
             member(method(START, 0, 0)),
-            member(constructorOf(bareCall(START), thisCall(START))));
+            member(constructorOf(bareCall(START), thisCall(START)))
+        );
 
     assertThat(run(new ConstructorCallsOverridableMethodCheck(MESSAGE), clazz)).hasSize(2);
   }
@@ -86,7 +92,8 @@ class ErrorProneConstructorsTest extends ErrorProneTrees {
             COLUMN,
             node(EXPRESSION, LINE, COLUMN, leaf(TOKEN_IDENTIFIER, "other", LINE, COLUMN)),
             leaf(DOT_KIND, DOT, LINE, COLUMN),
-            call(START));
+            call(START)
+        );
     final SyntaxNode lambda = node("lambdaExpression", LINE, COLUMN, bareCall(START));
     final SyntaxNode clazz =
         classNamed(
@@ -102,21 +109,28 @@ class ErrorProneConstructorsTest extends ErrorProneTrees {
                     bareCall("sealed"),
                     bareCall("unknown"),
                     foreign,
-                    lambda)));
+                    lambda
+                )
+            )
+        );
 
     assertThat(run(new ConstructorCallsOverridableMethodCheck(MESSAGE), clazz)).isEmpty();
     assertThat(
-            run(
-                new ConstructorCallsOverridableMethodCheck(MESSAGE),
-                node(
-                    "typeDeclaration",
-                    1,
-                    1,
-                    node("classOrInterfaceModifier", 1, 1, leaf("'final'", "final", 1, 1)),
-                    classNamed(
-                        CLASS_NAME,
-                        member(method(START, 0, 0)),
-                        member(constructorOf(bareCall(START)))))))
+        run(
+            new ConstructorCallsOverridableMethodCheck(MESSAGE),
+            node(
+                "typeDeclaration",
+                1,
+                1,
+                node("classOrInterfaceModifier", 1, 1, leaf("'final'", "final", 1, 1)),
+                classNamed(
+                    CLASS_NAME,
+                    member(method(START, 0, 0)),
+                    member(constructorOf(bareCall(START)))
+                )
+            )
+        )
+    )
         .isEmpty();
   }
 
@@ -128,7 +142,8 @@ class ErrorProneConstructorsTest extends ErrorProneTrees {
             annotatedMember("@org.junit.jupiter.api.Test", method("works", 0, 0)),
             annotatedMember("@RepeatedTest(3)", method("again", 0, 0)),
             member(method("forgotten", 0, 0)),
-            member(method("alsoForgotten", 0, 0), PUBLIC));
+            member(method("alsoForgotten", 0, 0), PUBLIC)
+        );
 
     assertThat(run(new DetachedTestCaseCheck(MESSAGE), clazz)).hasSize(2);
   }
@@ -145,10 +160,14 @@ class ErrorProneConstructorsTest extends ErrorProneTrees {
             member(method("withArgument", 1, 0)),
             member(typedMethod("result", INT)),
             annotatedMember("@Before", method("setUp", 0, 0)),
-            member(field("count")));
+            member(field("count"))
+        );
     final SyntaxNode plain =
         classNamed(
-            "Plain", annotatedMember("@Other", method("run", 0, 0)), member(method("go", 0, 0)));
+            "Plain",
+            annotatedMember("@Other", method("run", 0, 0)),
+            member(method("go", 0, 0))
+        );
 
     assertThat(run(new DetachedTestCaseCheck(MESSAGE), helpers, plain)).isEmpty();
   }

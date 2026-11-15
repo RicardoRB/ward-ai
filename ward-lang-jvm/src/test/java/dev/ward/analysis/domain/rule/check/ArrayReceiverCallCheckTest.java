@@ -15,14 +15,17 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class ArrayReceiverCallCheckTest {
-
   private static final String HASH_CODE = "hashCode";
   private static final SpanFacts ARRAY =
       Calls.facts(new TypeRef("int", List.of(), 1, true), TypeShape.Kind.CLASS, false);
   private static final SpanFacts STRING = Calls.type("java.lang.String", true);
 
   private static List<RuleMatch> run(
-      final String method, final int arguments, final SyntaxNode root, final UnitTypeFacts types) {
+      final String method,
+      final int arguments,
+      final SyntaxNode root,
+      final UnitTypeFacts types
+  ) {
     return new ArrayReceiverCallCheck(method, arguments, "message")
         .matches(root, FlowView.NONE, ScopeView.NONE, types, Calls.UNIT);
   }
@@ -64,18 +67,12 @@ class ArrayReceiverCallCheckTest {
   @Test
   void anotherArgumentCountIsNotReported() {
     assertThat(
-            run(
-                HASH_CODE,
-                0,
-                Calls.call(HASH_CODE, Calls.ARGUMENT),
-                Calls.table(Calls.RECEIVER, ARRAY)))
+        run(HASH_CODE, 0, Calls.call(HASH_CODE, Calls.ARGUMENT), Calls.table(Calls.RECEIVER, ARRAY))
+    )
         .isEmpty();
     assertThat(
-            run(
-                "equals",
-                1,
-                Calls.call("equals", Calls.ARGUMENT),
-                Calls.table(Calls.RECEIVER, ARRAY)))
+        run("equals", 1, Calls.call("equals", Calls.ARGUMENT), Calls.table(Calls.RECEIVER, ARRAY))
+    )
         .hasSize(1);
   }
 }

@@ -18,7 +18,6 @@ import java.util.logging.Logger;
  * entry and job completed.
  */
 public final class AnalysisBenchmark {
-
   private static final Logger LOG = Logger.getLogger(AnalysisBenchmark.class.getName());
   private static final String USAGE =
       "Usage: --binary <ward native executable> --manifest <corpus.csv>"
@@ -65,7 +64,8 @@ public final class AnalysisBenchmark {
             binary,
             Path.of(options.getOrDefault("cache", DEFAULT_CACHE.toString())).toAbsolutePath(),
             Path.of(options.getOrDefault("work", DEFAULT_WORK.toString())).toAbsolutePath(),
-            repeats);
+            repeats
+        );
     final BenchmarkResult result = benchmark.run(entries, executable);
     write(Path.of(options.get("out")), ResultJson.render(result, Instant.now()));
     out.print(Summary.render(result));

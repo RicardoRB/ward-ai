@@ -9,7 +9,6 @@ import java.util.Set;
 
 /** Reports each assignment to a catch parameter inside its catch block. */
 public final class AvoidReassigningCatchVariablesCheck implements UnitCheck {
-
   private final String message;
 
   /**

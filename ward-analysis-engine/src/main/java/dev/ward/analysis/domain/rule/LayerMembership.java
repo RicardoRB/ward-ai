@@ -2,7 +2,6 @@ package dev.ward.analysis.domain.rule;
 
 /** Whether a file is in a layer: a directory of its path has the layer's name. */
 final class LayerMembership {
-
   private LayerMembership() {}
 
   /** A directory of {@code path} has the layer's name; Swift folders compare ignoring case. */

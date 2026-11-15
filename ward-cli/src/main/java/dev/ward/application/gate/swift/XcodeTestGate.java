@@ -44,7 +44,8 @@ final class XcodeTestGate implements QualityGate {
       final CommandExecutor executor,
       final List<String> command,
       final XcodePlatform platform,
-      final GateReportPorts ports) {
+      final GateReportPorts ports
+  ) {
     this.name = name;
     this.executor = executor;
     this.command = List.copyOf(command);
@@ -73,7 +74,9 @@ final class XcodeTestGate implements QualityGate {
       reportDirectories.prepareFresh(project.root(), RESULT_BUNDLE);
     } catch (ReportWriteException exception) {
       return executionError(
-          arguments, "Ward could not remove the earlier result bundle " + RESULT_BUNDLE + ".");
+          arguments,
+          "Ward could not remove the earlier result bundle " + RESULT_BUNDLE + "."
+      );
     }
     arguments.add(RESULT_BUNDLE_OPTION);
     arguments.add(RESULT_BUNDLE);
@@ -93,7 +96,8 @@ final class XcodeTestGate implements QualityGate {
             "event=xcode-destination gate="
                 + name
                 + " platform=ios-simulator ready="
-                + simulator.isReady());
+                + simulator.isReady()
+    );
     return simulator.isReady() ? Simulator.ready("id=" + simulator.deviceId()) : simulator;
   }
 

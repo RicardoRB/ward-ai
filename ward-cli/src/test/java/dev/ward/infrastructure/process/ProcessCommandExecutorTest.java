@@ -25,7 +25,9 @@ class ProcessCommandExecutorTest {
   void capturesStdoutStderrExitCodeAndDuration(@TempDir final Path dir) {
     final CommandResult result =
         executor.execute(
-            List.of("sh", "-c", "echo out; echo err >&2; exit " + SCRIPT_EXIT_CODE), dir);
+            List.of("sh", "-c", "echo out; echo err >&2; exit " + SCRIPT_EXIT_CODE),
+            dir
+        );
 
     assertThat(result.exitCode()).isEqualTo(SCRIPT_EXIT_CODE);
     assertThat(result.stdout()).isEqualTo("out\n");
@@ -84,8 +86,10 @@ class ProcessCommandExecutorTest {
                 "-c",
                 "i=0; while [ $i -lt "
                     + LARGE_OUTPUT_LINES
-                    + " ]; do echo line-$i; echo err-$i >&2; i=$((i+1)); done"),
-            dir);
+                    + " ]; do echo line-$i; echo err-$i >&2; i=$((i+1)); done"
+            ),
+            dir
+        );
 
     assertThat(result.exitCode()).isZero();
     assertThat(result.stdout().lines().count()).isEqualTo(LARGE_OUTPUT_LINES);

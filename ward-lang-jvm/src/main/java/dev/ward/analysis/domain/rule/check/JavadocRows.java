@@ -7,7 +7,6 @@ import java.util.List;
 
 /** The rows of a Javadoc comment, each with the position where it starts. */
 final class JavadocRows {
-
   private static final String TEXT = "text";
   private static final String OPEN = "/**";
   private static final String CLOSE = "*/";
@@ -24,7 +23,6 @@ final class JavadocRows {
    * @param offset the file offset where the row starts
    */
   record Row(String text, int index, int line, int column, int offset) {
-
     /** Returns the span of the character at {@code position} in this row. */
     Span at(final int position) {
       return new Span(
@@ -33,7 +31,8 @@ final class JavadocRows {
           line,
           column + position + 1,
           offset + position,
-          offset + position + 1);
+          offset + position + 1
+      );
     }
 
     /** Returns the position of the first character that is not a space, or the row length. */
@@ -51,8 +50,7 @@ final class JavadocRows {
       body = body.strip();
       if (body.endsWith(CLOSE)) {
         body = body.substring(0, body.length() - CLOSE.length()).strip();
-      }
-      while (index > 0 && body.startsWith("*")) {
+      } while (index > 0 && body.startsWith("*")) {
         body = body.substring(1).strip();
       }
       return body;

@@ -6,7 +6,6 @@ import java.util.List;
 
 /** One bracket scope of the layout: the documents written inside it and the text that closes it. */
 final class JavaFrame {
-
   /** The kinds of scope a frame can be. */
   enum Kind {
     /** The whole file. */
@@ -91,7 +90,11 @@ final class JavaFrame {
 
   /** Closes a group: its items break together, indented by the continuation levels. */
   void closeGroup(
-      final JavaFrame parent, final String closeText, final boolean hard, final int levels) {
+      final JavaFrame parent,
+      final String closeText,
+      final boolean hard,
+      final int levels
+  ) {
     continuations.end();
     if (!parts.isEmpty()) {
       final List<Document> items = new ArrayList<>();

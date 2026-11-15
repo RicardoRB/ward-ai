@@ -19,14 +19,14 @@ import java.util.Set;
  * digits of its value in that base.
  */
 public final class NodeLossOfPrecisionCheck implements RuleCheck {
-
   private static final Set<String> NUMBERS =
       Set.of(
           "DecimalLiteral",
           "HexIntegerLiteral",
           "OctalIntegerLiteral",
           "OctalIntegerLiteral2",
-          "BinaryIntegerLiteral");
+          "BinaryIntegerLiteral"
+      );
   private static final String PREFIX_LETTERS = "xXbBoO";
   private static final String OCTAL_LEGACY = "0[0-7]+";
   private static final String SEPARATOR = "_";
@@ -59,7 +59,6 @@ public final class NodeLossOfPrecisionCheck implements RuleCheck {
 
   /** A number as its significant digits and the order of magnitude of the first digit. */
   private record Scientific(String coefficient, int magnitude) {
-
     /** The normalization of an integer, whose trailing zeros are not significant. */
     static Scientific ofInteger(final String text) {
       final String trimmed = removeLeadingZeros(text);
@@ -147,7 +146,9 @@ public final class NodeLossOfPrecisionCheck implements RuleCheck {
       return base;
     }
     return new Scientific(
-        base.coefficient(), base.magnitude() + Integer.parseInt(lower.substring(exponentAt + ONE)));
+        base.coefficient(),
+        base.magnitude() + Integer.parseInt(lower.substring(exponentAt + ONE))
+    );
   }
 
   /** The value rounded to the given significant digits, as JavaScript {@code toPrecision} does. */
@@ -161,7 +162,7 @@ public final class NodeLossOfPrecisionCheck implements RuleCheck {
   /** The exact decimal value of a finite double, which a double constructor would also give. */
   private static BigDecimal exact(final double value) {
     final long bits = Double.doubleToRawLongBits(value);
-    final int biased = (int) (bits >>> MANTISSA_BITS) & EXPONENT_MASK;
+    final int biased = (int)(bits >>> MANTISSA_BITS) & EXPONENT_MASK;
     final long fraction = bits & MANTISSA_MASK;
     final long significand = biased == 0 ? fraction : fraction | HIDDEN_BIT;
     final int exponent = biased == 0 ? SUBNORMAL_EXPONENT : biased - EXPONENT_BIAS;
@@ -170,7 +171,9 @@ public final class NodeLossOfPrecisionCheck implements RuleCheck {
     }
     final int places = -exponent;
     return new BigDecimal(
-        BigInteger.valueOf(significand).multiply(BigInteger.valueOf(FIVE).pow(places)), places);
+        BigInteger.valueOf(significand).multiply(BigInteger.valueOf(FIVE).pow(places)),
+        places
+    );
   }
 
   private static boolean otherBaseLoses(final String raw) {

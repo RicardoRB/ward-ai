@@ -17,7 +17,8 @@ class ApiChangeTest {
             "name",
             "public java.lang.String name()",
             "public int name()",
-            AT);
+            AT
+        );
 
     assertThat(change.message())
         .isEqualTo("com.acme.User#name: public java.lang.String name() -> public int name()");
@@ -32,7 +33,8 @@ class ApiChangeTest {
             "",
             "public class com.acme.Client",
             ApiChange.REMOVED,
-            AT);
+            AT
+        );
 
     assertThat(change.message())
         .isEqualTo("com.acme.Client: public class com.acme.Client -> removed");

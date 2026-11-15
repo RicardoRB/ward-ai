@@ -55,19 +55,25 @@ public final class QualityHookInstaller implements QualityHookGeneration {
       QualityHookFileOperations.writeHook(
           paths.get(0),
           QualityHookFileOperations.update(originals.get(0), section, PRE_COMMIT),
-          changed);
+          changed
+      );
       QualityHookFileOperations.writeHook(
           paths.get(1),
           QualityHookFileOperations.update(originals.get(1), section, PRE_PUSH),
-          changed);
+          changed
+      );
       final IntegrationResult result =
           changed.isEmpty()
               ? new IntegrationResult(
                   IntegrationResult.Status.ALREADY_PRESENT,
                   List.of(),
-                  "Ward quality hooks are already present.")
+                  "Ward quality hooks are already present."
+              )
               : new IntegrationResult(
-                  IntegrationResult.Status.CHANGED, changed, "Installed Ward quality hooks.");
+                  IntegrationResult.Status.CHANGED,
+                  changed,
+                  "Installed Ward quality hooks."
+              );
       return new QualityHookChange(snapshots, result);
     } catch (IOException e) {
       throw new UncheckedIOException("Could not update quality hooks", e);
@@ -85,12 +91,18 @@ public final class QualityHookInstaller implements QualityHookGeneration {
           .map(
               path ->
                   new PlannedFileChange(
-                      path, PlannedFileChange.Action.CONFLICT, List.of(unsafe.getMessage())))
+                      path,
+                      PlannedFileChange.Action.CONFLICT,
+                      List.of(unsafe.getMessage())
+                  )
+          )
           .toList();
     }
     try {
       return List.of(
-          planHook(paths.get(0), section, PRE_COMMIT), planHook(paths.get(1), section, PRE_PUSH));
+          planHook(paths.get(0), section, PRE_COMMIT),
+          planHook(paths.get(1), section, PRE_PUSH)
+      );
     } catch (IOException e) {
       throw new UncheckedIOException("Could not read quality hooks", e);
     }
@@ -98,23 +110,35 @@ public final class QualityHookInstaller implements QualityHookGeneration {
 
   /** Uses the same read, marker check, and section update as {@link #apply}. */
   private static PlannedFileChange planHook(
-      final Path path, final HookSection section, final String profile) throws IOException {
+      final Path path,
+      final HookSection section,
+      final String profile
+  ) throws IOException {
     final String original = QualityHookFileOperations.readOrEmpty(path);
     try {
       QualityHookFileOperations.rejectMalformed(path, original, section);
     } catch (WardException malformed) {
       return new PlannedFileChange(
-          path, PlannedFileChange.Action.CONFLICT, List.of(malformed.getMessage()));
+          path,
+          PlannedFileChange.Action.CONFLICT,
+          List.of(malformed.getMessage())
+      );
     }
     final String updated = QualityHookFileOperations.update(original, section, profile);
     if (!Files.exists(path)) {
       return new PlannedFileChange(
-          path, PlannedFileChange.Action.CREATE, List.of("Ward " + profile + " section"));
+          path,
+          PlannedFileChange.Action.CREATE,
+          List.of("Ward " + profile + " section")
+      );
     }
     return updated.equals(original)
         ? new PlannedFileChange(path, PlannedFileChange.Action.UNCHANGED)
         : new PlannedFileChange(
-            path, PlannedFileChange.Action.MODIFY, List.of("Ward " + profile + " section"));
+            path,
+            PlannedFileChange.Action.MODIFY,
+            List.of("Ward " + profile + " section")
+        );
   }
 
   /** Removes only this project's Ward section, and hook files that held nothing else. */
@@ -128,9 +152,15 @@ public final class QualityHookInstaller implements QualityHookGeneration {
       }
       return changed.isEmpty()
           ? new IntegrationResult(
-              IntegrationResult.Status.NOT_FOUND, List.of(), "Ward quality hooks not found.")
+              IntegrationResult.Status.NOT_FOUND,
+              List.of(),
+              "Ward quality hooks not found."
+          )
           : new IntegrationResult(
-              IntegrationResult.Status.REMOVED, changed, "Removed Ward quality hooks.");
+              IntegrationResult.Status.REMOVED,
+              changed,
+              "Removed Ward quality hooks."
+          );
     } catch (IOException e) {
       throw new UncheckedIOException("Could not remove quality hooks", e);
     }
@@ -142,7 +172,10 @@ public final class QualityHookInstaller implements QualityHookGeneration {
   }
 
   private static void removeHook(
-      final Path path, final HookSection section, final List<String> changed) throws IOException {
+      final Path path,
+      final HookSection section,
+      final List<String> changed
+  ) throws IOException {
     if (!Files.exists(path)) {
       return;
     }

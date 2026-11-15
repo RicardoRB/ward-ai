@@ -6,7 +6,6 @@ import dev.ward.domain.config.LicenseSettings;
 import org.junit.jupiter.api.Test;
 
 class LicenseSettingsTest {
-
   @Test
   void defaultsDenyGplAndAgplWithTheClasspathException() {
     final LicenseSettings defaults = LicenseSettings.defaults();

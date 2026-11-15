@@ -12,7 +12,6 @@ import java.util.TreeSet;
  * <rule>/passing}.
  */
 final class ParityRun {
-
   private final Map<String, Set<String>> found = new HashMap<>();
   private final Map<String, String> fixtureReasons = new HashMap<>();
   private final Map<String, String> idReasons = new HashMap<>();

@@ -78,7 +78,8 @@ class ApiCompatJapicmpParitySmokeTest {
       ours.add(
           change.member().isEmpty()
               ? change.typeName()
-              : change.typeName() + "#" + change.member());
+              : change.typeName() + "#" + change.member()
+      );
     }
     final Set<String> differences = new TreeSet<>();
     theirs.stream()

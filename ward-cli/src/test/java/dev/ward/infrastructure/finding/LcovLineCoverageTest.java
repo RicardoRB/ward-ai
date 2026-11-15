@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class LcovLineCoverageTest {
-
   @TempDir Path temp;
 
   private Path write(final String content) throws IOException {
@@ -24,7 +23,8 @@ class LcovLineCoverageTest {
     final Path report =
         write(
             "TN:\nSF:src/cart.ts\nFN:1,f\nDA:12,3\nDA:13,0\nLF:2\nLH:1\nend_of_record\n"
-                + "SF:/abs/other.ts\nDA:1,1,abcdef\nend_of_record\n");
+                + "SF:/abs/other.ts\nDA:1,1,abcdef\nend_of_record\n"
+        );
 
     final LineHits hits = new LcovLineCoverage().read(report);
 

@@ -57,7 +57,10 @@ public final class DeclCodec {
   }
 
   private static void importEntry(
-      final DataOutputStream out, final Map.Entry<String, FileDecls.Import> entry)
+      final DataOutputStream out,
+      final Map.Entry<String,
+      FileDecls.Import> entry
+  )
       throws IOException {
     out.writeUTF(entry.getKey());
     out.writeUTF(entry.getValue().specifier());

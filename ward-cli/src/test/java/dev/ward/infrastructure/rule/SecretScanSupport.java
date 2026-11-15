@@ -14,7 +14,6 @@ import java.util.Set;
 
 /** The rule bodies, bundled rules and runners that the secret-scan tests share. */
 class SecretScanSupport {
-
   static final String RULE =
       """
       check = "secret-scan"
@@ -58,7 +57,12 @@ class SecretScanSupport {
 
   static RuleDefinition definition(final String body) {
     return new RuleDefinition(
-        "ward:secrets/test", Set.of(), RuleCapability.TEXT, AnalysisSeverity.ERROR, body);
+        "ward:secrets/test",
+        Set.of(),
+        RuleCapability.TEXT,
+        AnalysisSeverity.ERROR,
+        body
+    );
   }
 
   static List<RuleMatch> run(final String body, final String path, final String text) {

@@ -41,7 +41,8 @@ final class SwiftManifest {
     if (count(PACKAGE_CALL, code) != literals) {
       throw new LockfileFormatException(
           "a .package dependency has an argument that is not a string literal, so it cannot be"
-              + " matched to a pin");
+              + " matched to a pin"
+      );
     }
     return locations;
   }

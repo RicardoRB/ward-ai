@@ -16,7 +16,6 @@ import java.util.TreeSet;
  * duplicate_conditions}. Every repeated link or case is reported at its first condition.
  */
 public final class SwiftDuplicateConditionsCheck implements RuleCheck {
-
   private static final String IF = "if_statement";
   private static final String ELSE = "else_clause";
   private static final String CONDITION_LIST = "condition_list";
@@ -48,7 +47,10 @@ public final class SwiftDuplicateConditionsCheck implements RuleCheck {
 
   /** Visits every {@code if} that starts a chain, and every {@code switch}. */
   private void collectChains(
-      final SyntaxNode node, final boolean isElseIf, final List<RuleMatch> matches) {
+      final SyntaxNode node,
+      final boolean isElseIf,
+      final List<RuleMatch> matches
+  ) {
     if (IF.equals(node.kind()) && !isElseIf) {
       ifChain(node, matches);
     }
@@ -75,7 +77,10 @@ public final class SwiftDuplicateConditionsCheck implements RuleCheck {
   }
 
   private static void addLink(
-      final Map<Set<String>, List<SyntaxNode>> groups, final SyntaxNode list) {
+      final Map<Set<String>,
+      List<SyntaxNode>> groups,
+      final SyntaxNode list
+  ) {
     groups.computeIfAbsent(conditionsOf(list), key -> new ArrayList<>()).add(list);
   }
 
@@ -98,7 +103,10 @@ public final class SwiftDuplicateConditionsCheck implements RuleCheck {
   }
 
   private static void collectCaseItems(
-      final SyntaxNode node, final Map<String, List<SyntaxNode>> out) {
+      final SyntaxNode node,
+      final Map<String,
+      List<SyntaxNode>> out
+  ) {
     if (!CASE_CONTAINERS.contains(node.kind()) && !"switch_statement".equals(node.kind())) {
       return;
     }
@@ -110,7 +118,8 @@ public final class SwiftDuplicateConditionsCheck implements RuleCheck {
                     SwiftTrees.compact(pattern)
                         + SwiftTrees.child(node, WHERE).map(SwiftTrees::compact).orElse("");
                 out.computeIfAbsent(key, k -> new ArrayList<>()).add(node);
-              });
+              }
+          );
     }
     for (final SyntaxNode child : node.children()) {
       collectCaseItems(child, out);
@@ -118,7 +127,10 @@ public final class SwiftDuplicateConditionsCheck implements RuleCheck {
   }
 
   private void report(
-      final Map<Set<String>, List<SyntaxNode>> groups, final List<RuleMatch> matches) {
+      final Map<Set<String>,
+      List<SyntaxNode>> groups,
+      final List<RuleMatch> matches
+  ) {
     groups.values().stream()
         .filter(positions -> positions.size() > 1)
         .flatMap(List::stream)

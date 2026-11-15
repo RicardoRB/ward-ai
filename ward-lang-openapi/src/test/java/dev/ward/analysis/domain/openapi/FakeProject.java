@@ -9,7 +9,6 @@ import java.util.Optional;
 
 /** An in-memory project that records which files the loader reads. */
 final class FakeProject {
-
   /** The entry file of the loaded documents. */
   static final String ENTRY = "openapi.yaml";
 
@@ -31,7 +30,8 @@ final class FakeProject {
         path -> {
           reads.add(path);
           return Optional.ofNullable(files.get(path));
-        });
+        }
+    );
   }
 
   /** Loads {@code openapi.yaml} and asserts that it loaded. */

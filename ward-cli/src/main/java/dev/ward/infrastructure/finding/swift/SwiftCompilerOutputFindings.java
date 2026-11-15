@@ -21,7 +21,8 @@ final class SwiftCompilerOutputFindings implements GateFindingSource {
   // The source excerpt repeats it as "`- error: ...", which does not start with a path.
   private static final Pattern ERROR =
       Pattern.compile(
-          "^(?<file>/.+?\\.swift):(?<line>\\d+):(?<column>\\d+): error: (?<message>.*)$");
+          "^(?<file>/.+?\\.swift):(?<line>\\d+):(?<column>\\d+): error: (?<message>.*)$"
+      );
 
   private final String gate;
 
@@ -37,7 +38,10 @@ final class SwiftCompilerOutputFindings implements GateFindingSource {
 
   @Override
   public List<Finding> extract(
-      final Project project, final GateResult result, final Instant gateStart) {
+      final Project project,
+      final GateResult result,
+      final Instant gateStart
+  ) {
     // The compiler can print one error for several targets, so identical findings are kept once.
     final Set<Finding> findings = new LinkedHashSet<>();
     for (final String line : OutputText.lines(result)) {
@@ -61,7 +65,8 @@ final class SwiftCompilerOutputFindings implements GateFindingSource {
         positive(error.group("line")),
         positive(error.group("column")),
         null,
-        List.of());
+        List.of()
+    );
   }
 
   static Integer positive(final String value) {

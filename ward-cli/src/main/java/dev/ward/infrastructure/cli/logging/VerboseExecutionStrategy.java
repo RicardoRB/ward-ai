@@ -35,7 +35,8 @@ public final class VerboseExecutionStrategy implements CommandLine.IExecutionStr
             LOGGER.log(Level.INFO, () -> "event=command-complete status=completed exit=" + result);
           }
           return result;
-        });
+        }
+    );
   }
 
   private static String commandName(final CommandLine.ParseResult parseResult) {

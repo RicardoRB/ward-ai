@@ -10,7 +10,6 @@ import java.util.Set;
  * bracket lists may break as a group.
  */
 final class EcmaBrackets {
-
   private static final String COLON = ":";
   private static final String COMMA = ",";
   private static final String SEMICOLON = ";";

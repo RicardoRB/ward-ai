@@ -31,7 +31,8 @@ class InitNodeStrictProjectTest {
             "[checks.tsc]",
             "command = \"npx vitest run --coverage\"",
             "[checks.stryker]\nenabled = true\nprofiles = [\"ci\"]\n"
-                + "command = \"npx stryker run\"")
+                + "command = \"npx stryker run\""
+        )
         .contains("[checks.coverage]", "minimum = 85", "minimum-branches = 75");
     assertThat(fixture.read("package.json"))
         .contains("\"@stryker-mutator/core\": \"10.1.1\"", "\"@stryker-mutator/vitest-runner\"");
@@ -57,7 +58,8 @@ class InitNodeStrictProjectTest {
         project.resolve("package.json"),
         "{\n  \"name\": \"shop\",\n  \"private\": true,\n  \"scripts\": { \"test\": \"jest\" },\n"
             + "  \"devDependencies\": {\n"
-            + "    \"jest\": \"^30.0.0\"\n  }\n}\n");
+            + "    \"jest\": \"^30.0.0\"\n  }\n}\n"
+    );
 
     final NodeFixtureRun.Result init = init(fixture);
 
@@ -104,6 +106,7 @@ class InitNodeStrictProjectTest {
         "--ci",
         "github",
         "--agent-rules",
-        "--yes");
+        "--yes"
+    );
   }
 }

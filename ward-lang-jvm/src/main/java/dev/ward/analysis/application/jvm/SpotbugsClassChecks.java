@@ -19,7 +19,6 @@ import org.tomlj.TomlParseResult;
 
 /** The checks of the SpotBugs rules for Java that read classes, their members and arithmetic. */
 final class SpotbugsClassChecks {
-
   private static final String MESSAGE = "message";
 
   private SpotbugsClassChecks() {}
@@ -34,35 +33,47 @@ final class SpotbugsClassChecks {
                     EqualsInheritanceCheck.Mode.valueOf(
                         TomlValues.required(toml, "mode")
                             .replace('-', '_')
-                            .toUpperCase(Locale.ROOT)),
-                    TomlValues.required(toml, MESSAGE))),
+                            .toUpperCase(Locale.ROOT)
+                    ),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "ambiguous-invocation",
-            toml -> new AmbiguousInvocationCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new AmbiguousInvocationCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "inconsistent-sync",
-            toml -> new InconsistentSyncCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new InconsistentSyncCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "incompatible-equals-operand",
-            toml -> new IncompatibleEqualsOperandCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new IncompatibleEqualsOperandCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "parameter-string-comparison",
-            toml -> new ParameterStringComparisonCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new ParameterStringComparisonCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "lazy-static-init",
             toml ->
                 new LazyStaticInitCheck(
                     LazyStaticInitCheck.Mode.valueOf(mode(toml)),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "static-initialization",
             toml ->
                 new StaticInitializationCheck(
                     StaticInitializationCheck.Mode.valueOf(mode(toml)),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "static-class-instantiation",
-            toml -> new StaticClassInstantiationCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new StaticClassInstantiationCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "integer-arithmetic",
             toml ->
@@ -70,8 +81,12 @@ final class SpotbugsClassChecks {
                     IntegerArithmeticCheck.Mode.valueOf(
                         TomlValues.required(toml, "mode")
                             .replace('-', '_')
-                            .toUpperCase(Locale.ROOT)),
-                    TomlValues.required(toml, MESSAGE))));
+                            .toUpperCase(Locale.ROOT)
+                    ),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        )
+    );
   }
 
   private static String mode(final TomlParseResult toml) {

@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * compared; a key that is a call or any other expression is never a duplicate.
  */
 public final class SwiftDuplicatedDictionaryKeyCheck implements RuleCheck {
-
   private static final String LITERAL = "dictionary_literal";
   private static final String ITEMS = "dictionary_literal_items";
   private static final String ITEM = "dictionary_literal_item";

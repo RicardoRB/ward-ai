@@ -35,7 +35,11 @@ final class TomlLicenseParser {
 
   /** Returns the settings of a {@code license} check, or {@code null} for any other check. */
   static LicenseSettings parse(
-      final String where, final String type, final TomlTable gate, final List<String> command) {
+      final String where,
+      final String type,
+      final TomlTable gate,
+      final List<String> command
+  ) {
     if (!SupportedQualityGates.LICENSE.equals(type)) {
       return null;
     }
@@ -44,11 +48,13 @@ final class TomlLicenseParser {
           "'"
               + where
               + ".command' is not supported: the license gate is native and takes no command;"
-              + " remove it and set 'uses = \"license\"'");
+              + " remove it and set 'uses = \"license\"'"
+      );
     }
     if (gate.contains(DENY) && gate.contains(ALLOW)) {
       throw new WardException(
-          "'" + where + ".deny' and '" + where + ".allow' cannot both be set; choose one");
+          "'" + where + ".deny' and '" + where + ".allow' cannot both be set; choose one"
+      );
     }
     final boolean allow = gate.contains(ALLOW);
     return new LicenseSettings(
@@ -58,12 +64,16 @@ final class TomlLicenseParser {
             ? patterns(where + "." + EXCEPTIONS, gate, EXCEPTIONS)
             : LicenseSettings.DEFAULT_EXCEPTIONS,
         scopes(where + "." + SCOPES, gate),
-        unknownFails(where + "." + UNKNOWN, gate));
+        unknownFails(where + "." + UNKNOWN, gate)
+    );
   }
 
   /** Returns the allow list, the deny list, or the default deny list, whichever is set. */
   private static List<String> listed(
-      final String where, final TomlTable gate, final boolean allow) {
+      final String where,
+      final TomlTable gate,
+      final boolean allow
+  ) {
     if (allow) {
       return patterns(where + "." + ALLOW, gate, ALLOW);
     }
@@ -82,7 +92,8 @@ final class TomlLicenseParser {
       final String value = array.isString(i) ? array.getString(i) : null;
       if (value == null || !LicenseSettings.validPattern(value)) {
         throw new WardException(
-            "'" + key + "' must contain only SPDX identifiers, optionally ending in '*'");
+            "'" + key + "' must contain only SPDX identifiers, optionally ending in '*'"
+        );
       }
       patterns.add(value);
     }
@@ -96,7 +107,8 @@ final class TomlLicenseParser {
     final TomlArray array = gate.isArray(SCOPES) ? gate.getArray(SCOPES) : null;
     if (array == null) {
       throw new WardException(
-          "'" + key + "' must be an array of scope names: " + sorted(VALID_SCOPES));
+          "'" + key + "' must be an array of scope names: " + sorted(VALID_SCOPES)
+      );
     }
     final Set<String> scopes = new LinkedHashSet<>();
     for (int i = 0; i < array.size(); i++) {

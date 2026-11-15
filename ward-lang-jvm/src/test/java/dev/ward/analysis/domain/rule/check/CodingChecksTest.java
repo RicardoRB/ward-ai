@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** The switch and exception coding checks on small trees: their options and boundary cases. */
 class CodingChecksTest extends TreeBuilders {
-
   private static final String MESSAGE = "{value}";
   private static final String CASE = "case";
   private static final String DEFAULT = "default";
@@ -73,7 +72,8 @@ class CodingChecksTest extends TreeBuilders {
     final SyntaxNode pattern =
         switchOf(
             group(CASE, OTHER_STATEMENT),
-            n(LABEL, t(TOKEN_CASE, CASE), n(TYPE_TYPE, id("String"))));
+            n(LABEL, t(TOKEN_CASE, CASE), n(TYPE_TYPE, id("String")))
+        );
     assertThat(findings(new MissingSwitchDefaultCheck(MESSAGE), pattern)).isEmpty();
   }
 
@@ -86,15 +86,17 @@ class CodingChecksTest extends TreeBuilders {
     assertThat(findings(new IllegalThrowsCheck(Set.of(RUNTIME), Set.of(), true, MESSAGE), throwing))
         .hasSize(1);
     assertThat(
-            findings(
-                new IllegalThrowsCheck(Set.of(RUNTIME), Set.of("run"), true, MESSAGE), throwing))
+        findings(new IllegalThrowsCheck(Set.of(RUNTIME), Set.of("run"), true, MESSAGE), throwing)
+    )
         .isEmpty();
     final SyntaxNode overriding = overriding("run", RUNTIME);
     assertThat(
-            findings(new IllegalThrowsCheck(Set.of(RUNTIME), Set.of(), true, MESSAGE), overriding))
+        findings(new IllegalThrowsCheck(Set.of(RUNTIME), Set.of(), true, MESSAGE), overriding)
+    )
         .isEmpty();
     assertThat(
-            findings(new IllegalThrowsCheck(Set.of(RUNTIME), Set.of(), false, MESSAGE), overriding))
+        findings(new IllegalThrowsCheck(Set.of(RUNTIME), Set.of(), false, MESSAGE), overriding)
+    )
         .hasSize(1);
   }
 
@@ -128,7 +130,8 @@ class CodingChecksTest extends TreeBuilders {
     return n(
         "catchClause",
         t(TOKEN_CATCH, "catch"),
-        n("catchType", n(QUALIFIED_NAME, t(TOKEN_NAME, name))));
+        n("catchType", n(QUALIFIED_NAME, t(TOKEN_NAME, name)))
+    );
   }
 
   private static SyntaxNode throwing(final String name, final String thrown) {
@@ -138,13 +141,15 @@ class CodingChecksTest extends TreeBuilders {
         id(name),
         n("formalParameters"),
         t(TOKEN_THROWS, "throws"),
-        n(QUALIFIED_NAME_LIST, n(QUALIFIED_NAME, t(TOKEN_NAME, thrown))));
+        n(QUALIFIED_NAME_LIST, n(QUALIFIED_NAME, t(TOKEN_NAME, thrown)))
+    );
   }
 
   private static SyntaxNode overriding(final String name, final String thrown) {
     return n(
         CLASS_BODY_DECLARATION,
         n(MODIFIER, n(CLASS_OR_INTERFACE_MODIFIER, n(ANNOTATION, t(TOKEN_AT, "@Override")))),
-        n(MEMBER, throwing(name, thrown)));
+        n(MEMBER, throwing(name, thrown))
+    );
   }
 }

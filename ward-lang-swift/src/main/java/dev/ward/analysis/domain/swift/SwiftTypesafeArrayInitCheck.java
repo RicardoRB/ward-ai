@@ -30,7 +30,6 @@ import java.util.regex.Pattern;
  * spelling in another scope can match; upgrade when the type facts answer every receiver.
  */
 public final class SwiftTypesafeArrayInitCheck implements RuleCheck {
-
   private static final String CALL = "postfix_expression";
   private static final String MAP = "map";
   private static final String DOT = ".";
@@ -70,7 +69,8 @@ public final class SwiftTypesafeArrayInitCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return find(root, types);
   }
 
@@ -112,7 +112,8 @@ public final class SwiftTypesafeArrayInitCheck implements RuleCheck {
       final List<SyntaxNode> receiverLeaves,
       final String receiver,
       final UnitTypeFacts types,
-      final String file) {
+      final String file
+  ) {
     final Span span = spanOf(receiverLeaves);
     final Optional<TypeRef> type = types.typeOf(span);
     if (type.isPresent()) {
@@ -128,7 +129,8 @@ public final class SwiftTypesafeArrayInitCheck implements RuleCheck {
     }
     return shape
         .map(
-            s -> s.supertypes().stream().anyMatch(SwiftTypesafeArrayInitCheck::isSequenceSupertype))
+            s -> s.supertypes().stream().anyMatch(SwiftTypesafeArrayInitCheck::isSequenceSupertype)
+        )
         .orElse(false);
   }
 
@@ -145,6 +147,7 @@ public final class SwiftTypesafeArrayInitCheck implements RuleCheck {
         last.endLine(),
         last.endColumn(),
         first.startOffset(),
-        last.endOffset());
+        last.endOffset()
+    );
   }
 }

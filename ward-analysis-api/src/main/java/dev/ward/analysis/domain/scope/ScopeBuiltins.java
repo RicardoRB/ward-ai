@@ -9,7 +9,6 @@ import java.util.Set;
 
 /** Declares the built-in names of a language in the built-in scope of a unit. */
 final class ScopeBuiltins {
-
   private ScopeBuiltins() {}
 
   /** Returns {@code unit} with {@code names} declared and the unresolved uses of them resolved. */
@@ -30,7 +29,9 @@ final class ScopeBuiltins {
                         UnitScopes.NOWHERE,
                         Set.of(),
                         UnitScopes.BUILTIN_ID,
-                        Optional.empty()))
+                        Optional.empty()
+                    )
+            )
             .toList();
     final Map<String, Binding> byName = new HashMap<>();
     final Scope root = unit.scopes().get(UnitScopes.BUILTIN_ID);
@@ -40,9 +41,12 @@ final class ScopeBuiltins {
     final List<Scope> replaced = new ArrayList<>(unit.scopes());
     replaced.set(
         UnitScopes.BUILTIN_ID,
-        new Scope(root.id(), root.kind(), root.parent(), root.span(), all, root.open()));
+        new Scope(root.id(), root.kind(), root.parent(), root.span(), all, root.open())
+    );
     return new UnitScopes(
-        replaced, unit.references().stream().map(use -> bind(use, byName)).toList());
+        replaced,
+        unit.references().stream().map(use -> bind(use, byName)).toList()
+    );
   }
 
   private static NameReference bind(final NameReference reference, final Map<String, Binding> by) {
@@ -56,6 +60,7 @@ final class ScopeBuiltins {
         reference.access(),
         reference.scope(),
         Optional.of(builtin),
-        false);
+        false
+    );
   }
 }

@@ -44,7 +44,9 @@ final class LearningJsonContractFixtures {
                 .duration(TESTS_DURATION)
                 .stdout("ok\n")
                 .stderr("")
-                .build()));
+                .build()
+        )
+    );
   }
 
   static LearningLedger ledger() {
@@ -60,7 +62,9 @@ final class LearningJsonContractFixtures {
             LearningState.RESOLVED,
             TIME,
             TIME,
-            true));
+            true
+        )
+    );
     records.put(
         "checkstyle:MagicNumber",
         new LearningRecord(
@@ -72,7 +76,9 @@ final class LearningJsonContractFixtures {
             LearningState.FAILING,
             TIME.plusSeconds(CHECKSTYLE_FIRST_SEEN_SECONDS),
             TIME.plusSeconds(CHECKSTYLE_LAST_SEEN_SECONDS),
-            false));
+            false
+        )
+    );
     return new LearningLedger(LearningLedger.CURRENT_FORMAT_VERSION, records);
   }
 

@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the Kotlin code-style checks over real Kotlin source. */
 class KotlinStyleChecksTest {
-
   private static final String MESSAGE = "m";
 
   @Test

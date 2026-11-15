@@ -18,7 +18,8 @@ class PackageItemPlanTest {
   @Test
   void twoFilesInOnePackageRenderTheItemOnce() {
     assertThat(
-            plan("--filter=...{package}", PACKAGES, "packages/ui/src/a.ts", "packages/ui/src/b.ts"))
+        plan("--filter=...{package}", PACKAGES, "packages/ui/src/a.ts", "packages/ui/src/b.ts")
+    )
         .isEqualTo(PartialPlans.narrowed("--filter=...@repo/ui"));
   }
 
@@ -35,17 +36,23 @@ class PackageItemPlanTest {
   }
 
   private static PartialCheckPlan.GatePlan plan(
-      final String item, final Function<Path, Optional<String>> packages, final String... paths) {
+      final String item,
+      final Function<Path,
+      Optional<String>> packages,
+      final String... paths
+  ) {
     return PartialCheckPlan.create(
-            PartialPlans.ROOT,
-            Map.of(
-                PartialPlans.GATE,
-                PartialPlans.gate(
-                    PartialPlans.partial(
-                        List.of("**/*.ts"), List.of(), List.of("{paths}"), item, null))),
-            List.of(paths).stream().map(PartialPlans.ROOT::resolve).toList(),
-            PartialPlans.EVERYTHING_EXISTS,
-            packages)
+        PartialPlans.ROOT,
+        Map.of(
+            PartialPlans.GATE,
+            PartialPlans.gate(
+                PartialPlans.partial(List.of("**/*.ts"), List.of(), List.of("{paths}"), item, null)
+            )
+        ),
+        List.of(paths).stream().map(PartialPlans.ROOT::resolve).toList(),
+        PartialPlans.EVERYTHING_EXISTS,
+        packages
+    )
         .gates()
         .get(PartialPlans.GATE);
   }

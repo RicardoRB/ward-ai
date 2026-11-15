@@ -60,7 +60,9 @@ final class FactMembers {
             (method.access() & Flags.FINAL) != 0,
             method.annotationValues(),
             owner.annotationValues(),
-            (method.access() & Flags.ABSTRACT) != 0));
+            (method.access() & Flags.ABSTRACT) != 0
+        )
+    );
   }
 
   /** Returns what the class is and what it extends. */
@@ -84,14 +86,15 @@ final class FactMembers {
         type.isAbstract(),
         type.isFinal(),
         type.sealed(),
-        supertypes);
+        supertypes
+    );
   }
 
   /** Returns the checked exceptions among {@code thrown}. */
   List<TypeRef> checked(final List<JType> thrown) {
     return thrown.stream()
         .filter(JType.ClassType.class::isInstance)
-        .map(type -> ((JType.ClassType) type).name())
+        .map(type -> ((JType.ClassType)type).name())
         .filter(name -> hierarchy.find(name).isPresent())
         .filter(name -> !hierarchy.isSubclass(name, "java.lang.RuntimeException"))
         .filter(name -> !hierarchy.isSubclass(name, "java.lang.Error"))
@@ -125,12 +128,17 @@ final class FactMembers {
     return new JType.ClassType(
         owner.name(),
         owner.typeParameters().stream()
-            .map(parameter -> (JType) new JType.TypeVariable(parameter.name()))
-            .toList());
+            .map(parameter -> (JType)new JType.TypeVariable(parameter.name()))
+            .toList()
+    );
   }
 
   private static boolean overrides(
-      final JvmMethod method, final JvmMethod candidate, final Map<String, JType> bound) {
+      final JvmMethod method,
+      final JvmMethod candidate,
+      final Map<String,
+      JType> bound
+  ) {
     if (!candidate.name().equals(method.name())
         || candidate.isConstructor()
         || candidate.isStatic()

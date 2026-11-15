@@ -7,7 +7,6 @@ import java.util.List;
 
 /** Facts for the constant and the overridden-method tests. */
 final class ExtraFacts {
-
   private ExtraFacts() {}
 
   static SpanFacts constant(final Object value) {
@@ -20,11 +19,21 @@ final class ExtraFacts {
         List.of(),
         List.of(),
         new ConstantValue(value),
-        null);
+        null
+    );
   }
 
   static SpanFacts overriding(final CallTarget... overridden) {
     return new SpanFacts(
-        null, null, null, List.of(), List.of(), List.of(overridden), List.of(), null, null);
+        null,
+        null,
+        null,
+        List.of(),
+        List.of(),
+        List.of(overridden),
+        List.of(),
+        null,
+        null
+    );
   }
 }

@@ -23,7 +23,6 @@ import org.junit.jupiter.api.Test;
  * Checks that the members of a dependency never declare a bare name for the rules that read names.
  */
 final class ScopeViewMembersTest {
-
   private static final int POS_0 = 0;
   private static final int POS_5 = 5;
   private static final int POS_6 = 6;
@@ -43,7 +42,8 @@ final class ScopeViewMembersTest {
         new DependencyView(
             List.of(new FileSummary("a.py", List.of(), List.of(), List.of(method, function))),
             List.of(),
-            List.of());
+            List.of()
+        );
 
     final ScopeView view = ScopeView.of(UnitScopes.EMPTY, dependencies, NoScopes.INSTANCE);
 
@@ -62,9 +62,12 @@ final class ScopeViewMembersTest {
                     "A.java",
                     List.of(),
                     List.of(),
-                    List.of(new Symbol("helper", span(POS_5, POS_6), "method")))),
+                    List.of(new Symbol("helper", span(POS_5, POS_6), "method"))
+                )
+            ),
             List.of(),
-            List.of());
+            List.of()
+        );
 
     final List<RuleMatch> found =
         new UndefinedNameCheck("undefined '{value}'", Set.of())
@@ -72,7 +75,8 @@ final class ScopeViewMembersTest {
                 new SyntaxNode("file", span(POS_0, POS_100), Map.of(), List.of()),
                 FlowView.NONE,
                 ScopeView.of(scopes, dependencies, NoScopes.INSTANCE),
-                new SourceUnit("m.java", AnalysisLanguage.JAVA, ""));
+                new SourceUnit("m.java", AnalysisLanguage.JAVA, "")
+            );
 
     assertThat(found).extracting(RuleMatch::message).containsExactly("undefined 'helper'");
   }

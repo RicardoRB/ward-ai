@@ -23,7 +23,8 @@ class NativeAgentAdapterContractTest {
       final String config,
       final String hook,
       final boolean postEdit,
-      @TempDir final Path root)
+      @TempDir final Path root
+  )
       throws Exception {
     final IntegrationResult result = integration.integrate(root, IntegrationRequest.INSTALL);
 
@@ -52,7 +53,8 @@ class NativeAgentAdapterContractTest {
       final String config,
       final String hook,
       final boolean postEdit,
-      @TempDir final Path root)
+      @TempDir final Path root
+  )
       throws Exception {
     assertThat(integration.capabilities().contains(IntegrationCapability.POST_EDIT))
         .isEqualTo(postEdit);
@@ -79,15 +81,32 @@ class NativeAgentAdapterContractTest {
         Arguments.of(new CodexIntegration(), ".codex/hooks.json", ".codex/hooks/ward.sh", true),
         Arguments.of(new CursorIntegration(), ".cursor/hooks.json", ".cursor/hooks/ward.sh", true),
         Arguments.of(
-            new CopilotIntegration(), ".github/hooks/ward.json", ".github/hooks/ward.sh", true),
+            new CopilotIntegration(),
+            ".github/hooks/ward.json",
+            ".github/hooks/ward.sh",
+            true
+        ),
         Arguments.of(
-            new GeminiIntegration(), ".gemini/settings.json", ".gemini/hooks/ward.sh", true),
+            new GeminiIntegration(),
+            ".gemini/settings.json",
+            ".gemini/hooks/ward.sh",
+            true
+        ),
         Arguments.of(
-            new WindsurfIntegration(), ".windsurf/hooks.json", ".windsurf/hooks/ward.sh", true),
+            new WindsurfIntegration(),
+            ".windsurf/hooks.json",
+            ".windsurf/hooks/ward.sh",
+            true
+        ),
         Arguments.of(new ClineIntegration(), ".cline/hooks/PostToolUse", "", true),
         Arguments.of(
-            new FactoryDroidIntegration(), ".factory/hooks.json", ".factory/hooks/ward.sh", true),
+            new FactoryDroidIntegration(),
+            ".factory/hooks.json",
+            ".factory/hooks/ward.sh",
+            true
+        ),
         Arguments.of(new JunieIntegration(), ".junie/config.json", ".junie/hooks/ward.sh", false),
-        Arguments.of(new AmpIntegration(), ".amp/plugins/ward.ts", ".amp/plugins/ward.sh", true));
+        Arguments.of(new AmpIntegration(), ".amp/plugins/ward.ts", ".amp/plugins/ward.sh", true)
+    );
   }
 }

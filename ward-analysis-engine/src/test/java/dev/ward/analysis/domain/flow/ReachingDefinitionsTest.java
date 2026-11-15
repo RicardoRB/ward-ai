@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** Reaching definitions on hand-built graphs, one per scenario of the intraprocedural spec. */
 class ReachingDefinitionsTest {
-
   private static final int THIRD_LINE = 3;
 
   @Test
@@ -21,7 +20,8 @@ class ReachingDefinitionsTest {
             GraphFixtures.empty(),
             new Block().write("x", 2).edge(4),
             new Block().write("x", THIRD_LINE).edge(4),
-            new Block().read("x", 4));
+            new Block().read("x", 4)
+        );
     final ReachingDefinitions reaching = ReachingDefinitions.of(graph);
     final AccessSite read = reaching.uses().get(0);
 
@@ -33,7 +33,8 @@ class ReachingDefinitionsTest {
     final ControlFlowGraph graph =
         graph(
             new Block().write("x", 1).write("x", 2).read("x", THIRD_LINE).edge(1),
-            GraphFixtures.empty());
+            GraphFixtures.empty()
+        );
     final ReachingDefinitions reaching = ReachingDefinitions.of(graph);
 
     assertThat(lines(reaching.reaching(reaching.uses().get(0)))).containsExactly(2);
@@ -48,7 +49,8 @@ class ReachingDefinitionsTest {
             GraphFixtures.empty(),
             new Block().write("x", 2).exception(THIRD_LINE).edge(4),
             new Block().read("x", THIRD_LINE).edge(1),
-            GraphFixtures.empty().edge(1));
+            GraphFixtures.empty().edge(1)
+        );
     final ReachingDefinitions reaching = ReachingDefinitions.of(graph);
 
     assertThat(lines(reaching.reaching(reaching.uses().get(0)))).containsExactly(1, 2);
@@ -61,7 +63,8 @@ class ReachingDefinitionsTest {
             new Block().write("i", 1).edge(2),
             GraphFixtures.empty(),
             new Block().read("i", 2).edge(THIRD_LINE).edge(1),
-            new Block().read("i", THIRD_LINE).write("i", THIRD_LINE).edge(2));
+            new Block().read("i", THIRD_LINE).write("i", THIRD_LINE).edge(2)
+        );
     final ReachingDefinitions reaching = ReachingDefinitions.of(graph);
     final AccessSite condition = reaching.uses().get(0);
     final AccessSite increment = reaching.uses().get(1);
@@ -76,7 +79,8 @@ class ReachingDefinitionsTest {
         graph(
             new Block().edge(2),
             GraphFixtures.empty(),
-            new Block().write("x", THIRD_LINE).edge(2).edge(1));
+            new Block().write("x", THIRD_LINE).edge(2).edge(1)
+        );
     final ReachingDefinitions reaching = ReachingDefinitions.of(graph);
 
     assertThat(reaching.overwritten(reaching.definitions().get(0))).isFalse();
@@ -88,7 +92,8 @@ class ReachingDefinitionsTest {
         graph(
             new Block().write("x", 1).edge(2),
             GraphFixtures.empty(),
-            new Block().write("x", 2).edge(1));
+            new Block().write("x", 2).edge(1)
+        );
     final ReachingDefinitions reaching = ReachingDefinitions.of(graph);
 
     assertThat(reaching.overwritten(reaching.definitions().get(0))).isTrue();
@@ -122,7 +127,8 @@ class ReachingDefinitionsTest {
             GraphFixtures.empty(),
             new Block().write("x", 2).edge(4),
             new Block().write("x", THIRD_LINE).edge(4),
-            new Block().read("x", 4));
+            new Block().read("x", 4)
+        );
 
     assertThat(ReachingDefinitions.of(graph).uses())
         .isEqualTo(ReachingDefinitions.of(graph).uses());

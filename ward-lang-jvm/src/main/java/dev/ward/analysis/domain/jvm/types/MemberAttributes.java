@@ -36,7 +36,11 @@ final class MemberAttributes {
   }
 
   private void attribute(
-      final ByteBuffer in, final ConstantPool pool, final String owner, final String attribute) {
+      final ByteBuffer in,
+      final ConstantPool pool,
+      final String owner,
+      final String attribute
+  ) {
     switch (attribute) {
       case "Signature" -> signature(in, pool);
       case "ConstantValue" -> constant(in, pool);
@@ -47,7 +51,11 @@ final class MemberAttributes {
   }
 
   private void structure(
-      final ByteBuffer in, final ConstantPool pool, final String owner, final String attribute) {
+      final ByteBuffer in,
+      final ConstantPool pool,
+      final String owner,
+      final String attribute
+  ) {
     switch (attribute) {
       case "RuntimeVisibleParameterAnnotations", "RuntimeInvisibleParameterAnnotations" ->
           new AnnotationReader(in, pool).parameters(parameterAnnotations, compatibleWith);
@@ -66,7 +74,8 @@ final class MemberAttributes {
         .values()
         .forEach(
             (key, list) ->
-                annotationValues.computeIfAbsent(key, k -> new ArrayList<>()).addAll(list));
+                annotationValues.computeIfAbsent(key, k -> new ArrayList<>()).addAll(list)
+        );
   }
 
   private void signature(final ByteBuffer in, final ConstantPool pool) {

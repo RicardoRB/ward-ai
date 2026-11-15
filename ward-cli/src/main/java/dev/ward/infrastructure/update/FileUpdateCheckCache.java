@@ -36,7 +36,9 @@ public final class FileUpdateCheckCache implements UpdateCheckCache {
    * XDG_CACHE_HOME} is unset; {@code environment} reads environment variables.
    */
   public static FileUpdateCheckCache forUser(
-      final UnaryOperator<String> environment, final String userHome) {
+      final UnaryOperator<String> environment,
+      final String userHome
+  ) {
     final String xdg = environment.apply("XDG_CACHE_HOME");
     final Path base = xdg == null || xdg.isBlank() ? Path.of(userHome, ".cache") : Path.of(xdg);
     return new FileUpdateCheckCache(base.resolve("ward").resolve(FILE));
@@ -74,10 +76,15 @@ public final class FileUpdateCheckCache implements UpdateCheckCache {
       }
       Files.writeString(
           temporary,
-          CHECKED_AT + "=" + check.checkedAt() + "\n" + LATEST + "=" + check.latest() + "\n");
+          CHECKED_AT + "=" + check.checkedAt() + "\n" + LATEST + "=" + check.latest() + "\n"
+      );
       try {
         Files.move(
-            temporary, file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+            temporary,
+            file,
+            StandardCopyOption.ATOMIC_MOVE,
+            StandardCopyOption.REPLACE_EXISTING
+        );
       } catch (AtomicMoveNotSupportedException e) {
         Files.move(temporary, file, StandardCopyOption.REPLACE_EXISTING);
       }

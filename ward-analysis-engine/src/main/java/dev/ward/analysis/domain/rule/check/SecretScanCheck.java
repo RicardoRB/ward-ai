@@ -17,7 +17,6 @@ import java.util.regex.Matcher;
  * secret lives inside {@link #scan} and is dropped before it returns.
  */
 public final class SecretScanCheck implements TextCheck {
-
   /** The reason of the execution error when a rule goes over its work budget. */
   public static final String OVER_BUDGET = "the rule exceeded its work budget";
 
@@ -93,14 +92,19 @@ public final class SecretScanCheck implements TextCheck {
       final String text,
       final int[] region,
       final Matcher matcher,
-      final WorkBudget budget) {
+      final WorkBudget budget
+  ) {
     final String secret = SecretText.secret(matcher, rule.secretGroup());
     if (!exceedsEntropy(secret)) {
       return false;
     }
     final SecretAllowlist.Candidate candidate =
         new SecretAllowlist.Candidate(
-            path, secret, matcher.group(), SecretText.line(text, region, matcher.start()));
+            path,
+            secret,
+            matcher.group(),
+            SecretText.line(text, region, matcher.start())
+        );
     return global.stream().noneMatch(list -> list.allows(candidate, budget))
         && rule.allowlists().stream().noneMatch(list -> list.allows(candidate, budget));
   }

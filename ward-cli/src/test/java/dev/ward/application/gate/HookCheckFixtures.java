@@ -18,6 +18,7 @@ public final class HookCheckFixtures {
         new TomlConfigurationReader(),
         new QualityGateFactory(executor),
         new QualityGateRunner(),
-        new PartialPorts(new FilePathExistence(), new NodeWorkspaceMembers()));
+        new PartialPorts(new FilePathExistence(), new NodeWorkspaceMembers())
+    );
   }
 }

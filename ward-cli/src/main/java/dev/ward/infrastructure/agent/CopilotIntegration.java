@@ -29,7 +29,9 @@ public final class CopilotIntegration implements NativeHarnessAdapter {
           Set.of(
               IntegrationCapability.POST_EDIT,
               IntegrationCapability.TURN_END,
-              IntegrationCapability.FEEDBACK));
+              IntegrationCapability.FEEDBACK
+          )
+      );
 
   @Override
   public NativeAgentIntegration.Definition definition() {
@@ -133,7 +135,8 @@ public final class CopilotIntegration implements NativeHarnessAdapter {
           null,
           null,
           false,
-          Boolean.TRUE.equals(stopHookActive));
+          Boolean.TRUE.equals(stopHookActive)
+      );
     }
   }
 

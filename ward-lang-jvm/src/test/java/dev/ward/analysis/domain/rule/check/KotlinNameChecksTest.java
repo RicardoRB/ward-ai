@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the Kotlin package, file, member and object-property name checks over hand-made trees. */
 class KotlinNameChecksTest {
-
   private static final String MESSAGE = "m";
   private static final String NAME = "simpleIdentifier";
   private static final String IDENTIFIER = "identifier";
@@ -35,16 +34,19 @@ class KotlinNameChecksTest {
     final SyntaxNode file = packageFile("dev", "x");
 
     assertThat(
-            new KotlinPackageDirectoryCheck("", false)
-                .check(TreeBuilders.unit(file), new SourceFile(FILE_PATH, "")))
+        new KotlinPackageDirectoryCheck("", false)
+            .check(TreeBuilders.unit(file), new SourceFile(FILE_PATH, ""))
+    )
         .hasSize(1);
     assertThat(
-            new KotlinPackageDirectoryCheck("", false)
-                .check(TreeBuilders.unit(file), new SourceFile(DEV_PATH, "")))
+        new KotlinPackageDirectoryCheck("", false)
+            .check(TreeBuilders.unit(file), new SourceFile(DEV_PATH, ""))
+    )
         .isEmpty();
     assertThat(
-            new KotlinPackageDirectoryCheck("", false)
-                .check(TreeBuilders.unit(file), new SourceFile("", "")))
+        new KotlinPackageDirectoryCheck("", false)
+            .check(TreeBuilders.unit(file), new SourceFile("", ""))
+    )
         .isEmpty();
   }
 
@@ -53,8 +55,9 @@ class KotlinNameChecksTest {
     final SyntaxNode file = packageFile("dev", "x");
 
     assertThat(
-            new KotlinPackageDirectoryCheck("com.example", true)
-                .check(TreeBuilders.unit(file), new SourceFile(DEV_PATH, "")))
+        new KotlinPackageDirectoryCheck("com.example", true)
+            .check(TreeBuilders.unit(file), new SourceFile(DEV_PATH, ""))
+    )
         .hasSize(1);
   }
 
@@ -63,12 +66,14 @@ class KotlinNameChecksTest {
     final SyntaxNode file = topLevelClass("Thing");
 
     assertThat(
-            new KotlinMatchingDeclarationNameCheck(true, MESSAGE)
-                .check(TreeBuilders.unit(file), new SourceFile("src/Other.kt", "")))
+        new KotlinMatchingDeclarationNameCheck(true, MESSAGE)
+            .check(TreeBuilders.unit(file), new SourceFile("src/Other.kt", ""))
+    )
         .hasSize(1);
     assertThat(
-            new KotlinMatchingDeclarationNameCheck(true, MESSAGE)
-                .check(TreeBuilders.unit(file), new SourceFile("src/Thing.jvm.kt", "")))
+        new KotlinMatchingDeclarationNameCheck(true, MESSAGE)
+            .check(TreeBuilders.unit(file), new SourceFile("src/Thing.jvm.kt", ""))
+    )
         .isEmpty();
   }
 
@@ -103,9 +108,13 @@ class KotlinNameChecksTest {
                 group(
                     "propertyDeclaration",
                     group(MODIFIERS, leaf(TOKEN, mod)),
-                    group(VARIABLE, leaf(NAME, name))),
-                leaf("'val'", "val")),
-            leaf(CLOSE, "}")));
+                    group(VARIABLE, leaf(NAME, name))
+                ),
+                leaf("'val'", "val")
+            ),
+            leaf(CLOSE, "}")
+        )
+    );
   }
 
   private static SyntaxNode packageFile(final String first, final String second) {
@@ -114,7 +123,9 @@ class KotlinNameChecksTest {
         group(
             "packageHeader",
             leaf("'package'", "package"),
-            group(IDENTIFIER, leaf(NAME, first), leaf("'.'", "."), leaf(NAME, second))));
+            group(IDENTIFIER, leaf(NAME, first), leaf("'.'", "."), leaf(NAME, second))
+        )
+    );
   }
 
   private static SyntaxNode topLevelClass(final String name) {
@@ -122,7 +133,9 @@ class KotlinNameChecksTest {
         "kotlinFile",
         group(
             "topLevelObject",
-            group("classDeclaration", leaf("'class'", "class"), leaf(NAME, name))));
+            group("classDeclaration", leaf("'class'", "class"), leaf(NAME, name))
+        )
+    );
   }
 
   private static SyntaxNode classWithFunction(final String className, final String modifier) {
@@ -143,7 +156,11 @@ class KotlinNameChecksTest {
                     "functionDeclaration",
                     modifiers,
                     leaf("'fun'", "fun"),
-                    group(IDENTIFIER, leaf(NAME, className)))),
-            leaf(CLOSE, "}")));
+                    group(IDENTIFIER, leaf(NAME, className))
+                )
+            ),
+            leaf(CLOSE, "}")
+        )
+    );
   }
 }

@@ -14,7 +14,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 
 class CachedScopesTest {
-
   private static final int CALLS = 3;
 
   private static final SyntaxNode TREE =

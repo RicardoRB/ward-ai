@@ -15,7 +15,7 @@ import javax.inject.Inject;
 /** Builds the native {@code api-compat} gate. */
 public final class ApiCompatGates {
   /** The builder of a run without the dependencies: only a command-based check can be built. */
-  public static final ApiCompatGates UNAVAILABLE = new ApiCompatGates((ApiCompatPorts) null);
+  public static final ApiCompatGates UNAVAILABLE = new ApiCompatGates((ApiCompatPorts)null);
 
   private final ApiCompatPorts ports;
 
@@ -30,7 +30,8 @@ public final class ApiCompatGates {
       final WorkingFiles working,
       final MainSourceRoots layout,
       final ModuleDirectories modules,
-      final ApiSurfaces surfaces) {
+      final ApiSurfaces surfaces
+  ) {
     this.ports = new ApiCompatPorts(revisions, working, layout, modules, surfaces);
   }
 
@@ -39,7 +40,9 @@ public final class ApiCompatGates {
    * {@code legacy}, the gate that runs its command.
    */
   public QualityGate create(
-      final GateConfiguration configuration, final Supplier<QualityGate> legacy) {
+      final GateConfiguration configuration,
+      final Supplier<QualityGate> legacy
+  ) {
     if (!configuration.command().isEmpty()) {
       return legacy.get();
     }
@@ -49,6 +52,7 @@ public final class ApiCompatGates {
     return new ApiCompatGate(
         configuration.name(),
         Objects.requireNonNullElse(configuration.apiCompat(), ApiCompatOptions.DEFAULTS),
-        ports);
+        ports
+    );
   }
 }

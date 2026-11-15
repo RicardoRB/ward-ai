@@ -6,7 +6,6 @@ import java.util.List;
 
 /** Tells what the rules of one language read besides the unit they check. */
 final class DependencyReads {
-
   private DependencyReads() {}
 
   /** Reports whether a rule of the language reads the files around its unit. */

@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * for} loop, like {@code B031}: the first use exhausts it, so the second sees nothing.
  */
 public final class GroupbyReuseCheck implements RuleCheck {
-
   private static final Set<String> LOOPS = Set.of("for_stmt");
   private static final Pattern GROUPBY = Pattern.compile("^(itertools\\.)?groupby\\(");
   private static final String IN = "in";
@@ -58,7 +57,8 @@ public final class GroupbyReuseCheck implements RuleCheck {
                 SyntaxWalk.leaves(block).stream()
                     .filter(leaf -> group.equals(SyntaxWalk.text(leaf)))
                     .skip(FIRST_USE)
-                    .findFirst());
+                    .findFirst()
+        );
   }
 
   private static boolean iteratesGroupby(final List<SyntaxNode> children) {

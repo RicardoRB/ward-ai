@@ -39,7 +39,8 @@ import org.junit.jupiter.params.provider.CsvFileSource;
  */
 @EnabledIfSystemProperty(
     named = PythonCompatibilityMatrixTest.VERSION_PROPERTY,
-    matches = "\\d+\\.\\d+")
+    matches = "\\d+\\.\\d+"
+)
 class PythonCompatibilityMatrixTest {
   static final String VERSION_PROPERTY = "ward.python.matrix";
   private static final String FIXTURE_PROPERTY = "ward.python.matrix.fixture";
@@ -50,10 +51,15 @@ class PythonCompatibilityMatrixTest {
   /** The files the ward engine's layer rule flags in each fixture's seeded violations. */
   private static final Map<String, Set<String>> ENGINE_LAYER_VIOLATIONS =
       Map.of(
-          "basic-uv", Set.of("src/shop/controller/api.py"),
-          "basic-poetry", Set.of("src/shop/controller/api.py"),
-          "basic-pip", Set.of("src/shop/controller/api.py"),
-          "fastapi-uv", Set.of("app/routers/cross.py"));
+          "basic-uv",
+          Set.of("src/shop/controller/api.py"),
+          "basic-poetry",
+          Set.of("src/shop/controller/api.py"),
+          "basic-pip",
+          Set.of("src/shop/controller/api.py"),
+          "fastapi-uv",
+          Set.of("app/routers/cross.py")
+      );
 
   private static final Path COVERAGE_VIOLATIONS =
       Path.of("src/test/resources/python-matrix/coverage");
@@ -72,16 +78,23 @@ class PythonCompatibilityMatrixTest {
   @ParameterizedTest(name = "python {0} {1} {2} {3}")
   @CsvFileSource(resources = "/python-matrix/cells.csv", numLinesToSkip = 1)
   void cellInitsChecksAndCatchesEveryViolation(
-      final ArgumentsAccessor cell, @TempDir final Path project, @TempDir final Path bin)
+      final ArgumentsAccessor cell,
+      @TempDir final Path project,
+      @TempDir final Path bin
+  )
       throws IOException, InterruptedException {
     final String python = cell.getString(0);
     final String manager = cell.getString(1);
     final String preset = cell.getString(2);
     final String fixture = cell.getString(3);
     Assumptions.assumeTrue(
-        python.equals(System.getProperty(VERSION_PROPERTY)), "row is for Python " + python);
+        python.equals(System.getProperty(VERSION_PROPERTY)),
+        "row is for Python " + python
+    );
     Assumptions.assumeTrue(
-        fixture.equals(System.getProperty(FIXTURE_PROPERTY, fixture)), "row is for " + fixture);
+        fixture.equals(System.getProperty(FIXTURE_PROPERTY, fixture)),
+        "row is for " + fixture
+    );
     final Map<String, String> env = environment(python, bin);
     MatrixFileTrees.copy(FIXTURES.resolve(fixture), project);
     Files.writeString(project.resolve(".python-version"), python + "\n");
@@ -95,10 +108,11 @@ class PythonCompatibilityMatrixTest {
         checks(run(env, project, "check", "--profile", "ci", "--format", "json"));
     assertThat(clean).as("clean check").isNotEmpty();
     assertThat(
-            clean.entrySet().stream()
-                .filter(gate -> !"PASSED".equals(gate.getValue()))
-                .map(Map.Entry::getKey)
-                .toList())
+        clean.entrySet().stream()
+            .filter(gate -> !"PASSED".equals(gate.getValue()))
+            .map(Map.Entry::getKey)
+            .toList()
+    )
         .as("gates that fail on the clean project")
         .isEmpty();
 
@@ -126,16 +140,18 @@ class PythonCompatibilityMatrixTest {
             gate ->
                 assertThat(violated.get(gate))
                     .as("seeded violation for gate %s", gate)
-                    .isEqualTo("FAILED"));
+                    .isEqualTo("FAILED")
+        );
   }
 
   /** The layer files the ward engine flags in {@code project}, for the layered style. */
   private static Set<String> engineLayerFiles(final Path project, final String fixture) {
     final Framework framework = fixture.startsWith("fastapi") ? Framework.FASTAPI : Framework.NONE;
     return LayerPorts.layerFiles(
-            new Project(project, Language.PYTHON, BuildTool.UV, framework),
-            "layered",
-            new ProjectDependencyAdapters(List.of(new PythonDependencyAdapters())))
+        new Project(project, Language.PYTHON, BuildTool.UV, framework),
+        "layered",
+        new ProjectDependencyAdapters(List.of(new PythonDependencyAdapters()))
+    )
         .stream()
         .map(file -> file.toLowerCase(Locale.ROOT))
         .collect(Collectors.toSet());
@@ -153,7 +169,7 @@ class PythonCompatibilityMatrixTest {
     final Path pyproject = project.resolve("pyproject.toml");
     String text = Files.readString(pyproject);
     for (final String requirement : packages.split(" ")) {
-      final String name = requirement.split("[=<>~!]", 2)[0];
+      final String name = requirement.split("[=<>~!]", 2) [0];
       final Matcher pinned =
           Pattern.compile("\"" + Pattern.quote(name) + "[^\"]*\"", Pattern.CASE_INSENSITIVE)
               .matcher(text);
@@ -193,22 +209,27 @@ class PythonCompatibilityMatrixTest {
       final String manager,
       final String interpreter,
       final Path project,
-      final Map<String, String> env)
+      final Map<String,
+      String> env
+  )
       throws IOException, InterruptedException {
     if (PIP.equals(manager)) {
       assertThat(exec(env, project, List.of(interpreter, "-m", "venv", ".venv")).exit()).isZero();
       assertThat(
-              exec(
-                      env,
-                      project,
-                      List.of(
-                          project.resolve(".venv/bin/python").toString(),
-                          "-m",
-                          "pip",
-                          "install",
-                          "--upgrade",
-                          "pip"))
-                  .exit())
+          exec(
+              env,
+              project,
+              List.of(
+                  project.resolve(".venv/bin/python").toString(),
+                  "-m",
+                  "pip",
+                  "install",
+                  "--upgrade",
+                  "pip"
+              )
+          )
+              .exit()
+      )
           .isZero();
     } else if (POETRY.equals(manager)) {
       assertThat(exec(env, project, List.of("poetry", "env", "use", interpreter)).exit()).isZero();
@@ -222,7 +243,9 @@ class PythonCompatibilityMatrixTest {
             List.of(
                 "java",
                 "-jar",
-                Path.of(System.getProperty(JAR_PROPERTY)).toAbsolutePath().toString()));
+                Path.of(System.getProperty(JAR_PROPERTY)).toAbsolutePath().toString()
+            )
+        );
     command.addAll(List.of(args));
     return exec(env, project, command);
   }
@@ -235,7 +258,9 @@ class PythonCompatibilityMatrixTest {
     final Process process = builder.start();
     final String output =
         new String(
-            process.getInputStream().readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
+            process.getInputStream().readAllBytes(),
+            java.nio.charset.StandardCharsets.UTF_8
+        );
     return new Run(process.waitFor(), output);
   }
 

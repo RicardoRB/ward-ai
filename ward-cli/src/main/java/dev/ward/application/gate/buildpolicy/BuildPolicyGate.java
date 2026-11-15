@@ -31,7 +31,8 @@ final class BuildPolicyGate implements QualityGate {
       final String name,
       final String rulesFile,
       final BuildPolicyService service,
-      final AnalysisRuleSource rules) {
+      final AnalysisRuleSource rules
+  ) {
     this.name = name;
     this.rulesFile = rulesFile;
     this.service = service;
@@ -53,7 +54,8 @@ final class BuildPolicyGate implements QualityGate {
         LOGGER.log(Level.FINE, "event=build-policy-config-problems");
         return error(
             resolved.problems().size() + " rule configuration error(s)",
-            String.join("\n", resolved.problems()));
+            String.join("\n", resolved.problems())
+        );
       }
       settings = resolved.settings();
     } else {

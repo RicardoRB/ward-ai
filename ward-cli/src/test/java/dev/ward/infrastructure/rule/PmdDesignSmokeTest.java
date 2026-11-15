@@ -25,7 +25,6 @@ import org.junit.jupiter.api.Test;
  * belongs in the pull request with its reason.
  */
 class PmdDesignSmokeTest {
-
   private static final String BINARY_PROPERTY = "ward.pmd.binary";
   private static final String RULESET_PREFIX = "category/java/design.xml/";
   private static final int NO_VIOLATIONS = 0;
@@ -41,11 +40,14 @@ class PmdDesignSmokeTest {
           Map.entry("avoid-rethrowing-exception", "AvoidRethrowingException"),
           Map.entry(
               "avoid-throwing-new-instance-of-same-exception",
-              "AvoidThrowingNewInstanceOfSameException"),
+              "AvoidThrowingNewInstanceOfSameException"
+          ),
           Map.entry("avoid-throwing-null-pointer-exception", "AvoidThrowingNullPointerException"),
           Map.entry("collapsible-if-statements", "CollapsibleIfStatements"),
           Map.entry(
-              "avoid-unchecked-exceptions-in-signatures", "AvoidUncheckedExceptionsInSignatures"),
+              "avoid-unchecked-exceptions-in-signatures",
+              "AvoidUncheckedExceptionsInSignatures"
+          ),
           Map.entry("do-not-extend-java-lang-error", "DoNotExtendJavaLangError"),
           Map.entry("excessive-imports", "ExcessiveImports"),
           Map.entry("excessive-parameter-list", "ExcessiveParameterList"),
@@ -67,7 +69,8 @@ class PmdDesignSmokeTest {
           Map.entry("immutable-field", "ImmutableField"),
           Map.entry("singular-field", "SingularField"),
           Map.entry("instantiable-utility-class", "InstantiableUtilityClass"),
-          Map.entry("loose-package-coupling", "LoosePackageCoupling"));
+          Map.entry("loose-package-coupling", "LoosePackageCoupling")
+      );
 
   @Test
   void aRealPmdReportsTheFixtureLines()
@@ -101,18 +104,22 @@ class PmdDesignSmokeTest {
 
   /** Returns the line numbers PMD reports for the violating fixture under one rule. */
   private static Set<String> reportedLines(
-      final String binary, final Path directory, final String pmdRule)
+      final String binary,
+      final Path directory,
+      final String pmdRule
+  )
       throws IOException, InterruptedException {
     final Process process =
         new ProcessBuilder(
-                binary,
-                "check",
-                "--dir",
-                directory.toString(),
-                "--rulesets",
-                RULESET_PREFIX + pmdRule,
-                "--format",
-                "csv")
+            binary,
+            "check",
+            "--dir",
+            directory.toString(),
+            "--rulesets",
+            RULESET_PREFIX + pmdRule,
+            "--format",
+            "csv"
+        )
             .redirectError(ProcessBuilder.Redirect.DISCARD)
             .start();
     final String output =

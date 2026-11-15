@@ -18,7 +18,6 @@ import org.tomlj.TomlTable;
 
 /** Reads {@code ward.toml} version 2 into the configuration model. */
 public class TomlConfigurationReader implements WardConfigurationReader {
-
   /** The table that holds every check, one sub-table per check name. */
   static final String CHECKS = "checks";
 
@@ -69,7 +68,8 @@ public class TomlConfigurationReader implements WardConfigurationReader {
               + " (supported: "
               + WardConfiguration.SUPPORTED_VERSION
               + ")."
-              + MIGRATION);
+              + MIGRATION
+      );
     }
   }
 
@@ -78,7 +78,8 @@ public class TomlConfigurationReader implements WardConfigurationReader {
       if (PROFILES.equals(key)) {
         throw new WardException(
             "'[profiles]' is no longer supported; declare 'profiles = [...]' under [checks.<name>]"
-                + " instead.");
+                + " instead."
+        );
       }
       if (RENAMED_KEYS.contains(key)) {
         throw new WardException("'" + key + "' is no longer supported in ward.toml." + MIGRATION);

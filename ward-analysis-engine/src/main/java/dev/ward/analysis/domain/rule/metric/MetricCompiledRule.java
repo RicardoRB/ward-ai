@@ -10,7 +10,6 @@ import java.util.List;
 
 /** A metric rule ready to run: it visits every node of a tree and measures the target kinds. */
 final class MetricCompiledRule implements CompiledRule {
-
   private static final String CLASS = "classdef";
   private static final String FUNCTION = "funcdef";
   private static final String LAMBDA = "lambdef";
@@ -74,7 +73,8 @@ final class MetricCompiledRule implements CompiledRule {
       final SyntaxNode node,
       final MetricRule.Target target,
       final boolean method,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     rule.measurement()
         .measure()
         .check(node, target, method, rule)

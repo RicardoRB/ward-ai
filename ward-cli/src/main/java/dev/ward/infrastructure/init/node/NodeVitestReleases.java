@@ -15,7 +15,8 @@ final class NodeVitestReleases {
   private static final List<Release> RELEASES =
       List.of(
           new Release("4.1.11", VITE_4_1),
-          new Release(NodePackageCatalog.VITEST_VERSION, VITE_4_0));
+          new Release(NodePackageCatalog.VITEST_VERSION, VITE_4_0)
+      );
 
   /**
    * One pinned Vitest release.

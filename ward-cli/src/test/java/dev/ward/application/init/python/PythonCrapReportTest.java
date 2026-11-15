@@ -26,11 +26,13 @@ class PythonCrapReportTest {
       InitInputs.withoutManifests(new FakeEnvironmentInspection("uv", "poetry", "python3"));
 
   @ParameterizedTest
-  @CsvSource({
-    "UV,'uv run --group ward coverage lcov -o .ward/reports/coverage.lcov'",
-    "POETRY,'poetry run coverage lcov -o .ward/reports/coverage.lcov'",
-    "PIP,'.venv/bin/coverage lcov -o .ward/reports/coverage.lcov'"
-  })
+  @CsvSource(
+      {
+          "UV,'uv run --group ward coverage lcov -o .ward/reports/coverage.lcov'",
+          "POETRY,'poetry run coverage lcov -o .ward/reports/coverage.lcov'",
+          "PIP,'.venv/bin/coverage lcov -o .ward/reports/coverage.lcov'"
+      }
+  )
   void everyManagerWritesTheReportThroughItsPrefix(final BuildTool manager, final String command) {
     final String toml = toml(manager, true);
 
@@ -40,7 +42,8 @@ class PythonCrapReportTest {
                 + command
                 + "\"\nminimum = 80\nreport = \".ward/reports/coverage.lcov\"\n",
             "[checks.crap]\nenabled = true\nprofiles = [\"pre-push\", \"ci\"]\nuses = \"crap\"\n"
-                + "report = \".ward/reports/coverage.lcov\"\n")
+                + "report = \".ward/reports/coverage.lcov\"\n"
+        )
         .doesNotContain("crap-report");
   }
 
@@ -49,9 +52,10 @@ class PythonCrapReportTest {
     final String toml = toml(BuildTool.UV, true);
 
     assertThat(
-            List.of("pytest", "coverage", "crap").stream()
-                .map(id -> toml.indexOf("[checks." + id + "]"))
-                .toList())
+        List.of("pytest", "coverage", "crap").stream()
+            .map(id -> toml.indexOf("[checks." + id + "]"))
+            .toList()
+    )
         .isSorted()
         .doesNotContain(-1);
   }
@@ -67,11 +71,12 @@ class PythonCrapReportTest {
     final List<InitGateOption> gates =
         new InitGeneralCatalog(INPUTS)
             .gates(project, null).stream()
-                .filter(gate -> List.of("mypy", "crap").contains(gate.id()))
-                .toList();
+            .filter(gate -> List.of("mypy", "crap").contains(gate.id()))
+            .toList();
 
     assertThatThrownBy(
-            () -> new PythonInitSupport().crap(project, INPUTS).orElseThrow().apply(gates))
+        () -> new PythonInitSupport().crap(project, INPUTS).orElseThrow().apply(gates)
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("'pytest'");
   }
@@ -81,15 +86,17 @@ class PythonCrapReportTest {
     final List<InitGateOption> offered =
         new InitGeneralCatalog(INPUTS)
             .gates(project, QualityPreset.STANDARD).stream()
-                .filter(
-                    gate ->
-                        List.of("mypy", "pytest", "coverage").contains(gate.id())
-                            || crap && "crap".equals(gate.id()))
-                .toList();
+            .filter(
+                gate ->
+                    List.of("mypy", "pytest", "coverage").contains(gate.id())
+                        || crap && "crap".equals(gate.id())
+            )
+            .toList();
     return ConfigurationTemplate.render(
         new PythonInitSupport().crap(project, INPUTS).orElseThrow().apply(offered),
         QualityPreset.STANDARD,
-        project);
+        project
+    );
   }
 
   private static Project project(final BuildTool manager) {

@@ -11,7 +11,6 @@ import java.util.Objects;
  *     offset in it is an offset in {@code text}
  */
 public record TextFile(String path, String text, String lower) {
-
   private static final int UPPER_TO_LOWER = 'a' - 'A';
 
   /**

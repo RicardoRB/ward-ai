@@ -17,7 +17,6 @@ import java.util.Set;
  * superclass whose annotations are unknown is never reported.
  */
 public final class ExtendsAutoValueCheck extends FactsCheck {
-
   private static final String AUTO_VALUE = "com.google.auto.value.AutoValue";
   private static final String GENERATED_PREFIX = "AutoValue_";
   private static final String EXTENDS = "'extends'";
@@ -54,7 +53,10 @@ public final class ExtendsAutoValueCheck extends FactsCheck {
         if (members.filter(known -> known.annotations().contains(AUTO_VALUE)).isPresent()) {
           return List.of(
               CheckSupport.at(
-                  clazz.span(), CheckSupport.fill(message, SyntaxWalk.text(superclass), "")));
+                  clazz.span(),
+                  CheckSupport.fill(message, SyntaxWalk.text(superclass), "")
+              )
+          );
         }
       }
     }

@@ -38,7 +38,6 @@ public final class TypedCallCheck implements RuleCheck {
    * @param type matches the name of the static type of the receiver
    */
   public record Receiver(Optional<Pattern> text, Optional<Pattern> type) {
-
     /** The receiver that does not limit the call. */
     public static final Receiver ANY = new Receiver(Optional.empty(), Optional.empty());
 
@@ -61,7 +60,6 @@ public final class TypedCallCheck implements RuleCheck {
    * @param text matches the source text of the argument
    */
   public record Argument(int index, Set<String> types, Optional<Pattern> text) {
-
     /** The argument that does not limit the call. */
     public static final Argument ANY = new Argument(0, Set.of(), Optional.empty());
 
@@ -92,7 +90,8 @@ public final class TypedCallCheck implements RuleCheck {
       final Pattern method,
       final Receiver receiver,
       final Argument argument,
-      final String message) {
+      final String message
+  ) {
     this.method = Objects.requireNonNull(method, "method");
     this.receiver = Objects.requireNonNull(receiver, "receiver");
     this.argument = Objects.requireNonNull(argument, "argument");
@@ -115,7 +114,8 @@ public final class TypedCallCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts facts,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(EXPRESSION)).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(call -> reported(call, facts))
@@ -144,7 +144,10 @@ public final class TypedCallCheck implements RuleCheck {
   }
 
   private static boolean typeMatches(
-      final SyntaxNode node, final Pattern pattern, final UnitTypeFacts facts) {
+      final SyntaxNode node,
+      final Pattern pattern,
+      final UnitTypeFacts facts
+  ) {
     return facts
         .typeOf(node.span())
         .map(TypeRef::name)

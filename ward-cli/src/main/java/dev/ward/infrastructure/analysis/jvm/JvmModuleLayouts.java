@@ -31,7 +31,9 @@ public final class JvmModuleLayouts {
    * @param gradleSettingsText the text of the Gradle settings script, if there is one
    */
   public static List<String> listed(
-      final Optional<String> pomText, final Optional<String> gradleSettingsText) {
+      final Optional<String> pomText,
+      final Optional<String> gradleSettingsText
+  ) {
     if (pomText.isPresent()) {
       return maven(pomText.get());
     }
@@ -47,7 +49,8 @@ public final class JvmModuleLayouts {
           modules,
           listed.endsWith(POM_SUFFIX)
               ? listed.substring(0, listed.length() - POM_SUFFIX.length())
-              : listed);
+              : listed
+      );
     }
     return List.copyOf(modules);
   }

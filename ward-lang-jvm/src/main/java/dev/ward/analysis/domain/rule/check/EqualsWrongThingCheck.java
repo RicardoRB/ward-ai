@@ -17,11 +17,11 @@ import java.util.regex.Pattern;
  * other than {@code this}.
  */
 public final class EqualsWrongThingCheck implements UnitCheck {
-
   private static final Pattern PAIR =
       Pattern.compile(
           "(?:(?:java\\.util\\.)?Objects\\.equals\\(((?:this\\.)?\\w+(?:\\(\\))?),(\\w+\\.\\w+(?:\\(\\))?)\\)"
-              + "|((?:this\\.)?\\w+(?:\\(\\))?)\\.equals\\((\\w+\\.\\w+(?:\\(\\))?)\\))");
+              + "|((?:this\\.)?\\w+(?:\\(\\))?)\\.equals\\((\\w+\\.\\w+(?:\\(\\))?)\\))"
+      );
   private static final String THIS = "this.";
   private static final int OWN_OBJECTS = 1;
   private static final int OTHER_OBJECTS = 2;
@@ -68,7 +68,8 @@ public final class EqualsWrongThingCheck implements UnitCheck {
       return Optional.empty();
     }
     return Optional.of(
-        CheckSupport.at(expression.span(), CheckSupport.fill(message, otherMember, "")));
+        CheckSupport.at(expression.span(), CheckSupport.fill(message, otherMember, ""))
+    );
   }
 
   private static String member(final String text) {

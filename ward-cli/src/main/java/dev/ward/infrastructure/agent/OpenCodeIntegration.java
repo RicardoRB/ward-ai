@@ -169,10 +169,16 @@ public final class OpenCodeIntegration implements AgentIntegration {
       final Path plugin = root.resolve(files.pluginFile());
       plan.add(
           new PlannedFileChange(
-              command, IntegrationArtifacts.decide(command, MARKER, files.command(COMMAND))));
+              command,
+              IntegrationArtifacts.decide(command, MARKER, files.command(COMMAND))
+          )
+      );
       plan.add(
           new PlannedFileChange(
-              plugin, IntegrationArtifacts.decide(plugin, PLUGIN_MARKER, files.plugin(PLUGIN))));
+              plugin,
+              IntegrationArtifacts.decide(plugin, PLUGIN_MARKER, files.plugin(PLUGIN))
+          )
+      );
       final List<PlannedFileChange> conflicts =
           plan.stream()
               .filter(change -> change.action() == PlannedFileChange.Action.CONFLICT)
@@ -189,7 +195,11 @@ public final class OpenCodeIntegration implements AgentIntegration {
   }
 
   private IntegrationResult install(
-      final Path command, final Path plugin, final OpenCodeFiles files, final Path root)
+      final Path command,
+      final Path plugin,
+      final OpenCodeFiles files,
+      final Path root
+  )
       throws IOException {
     final IntegrationResult conflict =
         IntegrationArtifacts.preflight(command, MARKER, plugin, PLUGIN_MARKER);
@@ -198,19 +208,28 @@ public final class OpenCodeIntegration implements AgentIntegration {
     }
     final IntegrationResult commandResult =
         IntegrationArtifacts.installOrRefresh(
-            command, MARKER, files.command(COMMAND), "Updated Ward OpenCode integration.");
+            command,
+            MARKER,
+            files.command(COMMAND),
+            "Updated Ward OpenCode integration."
+        );
     if (commandResult.status() == IntegrationResult.Status.CONFLICT) {
       return commandResult;
     }
     final IntegrationResult pluginResult =
         IntegrationArtifacts.installOrRefresh(
-            plugin, PLUGIN_MARKER, files.plugin(PLUGIN), "Updated Ward OpenCode integration.");
+            plugin,
+            PLUGIN_MARKER,
+            files.plugin(PLUGIN),
+            "Updated Ward OpenCode integration."
+        );
     if (pluginResult.status() == IntegrationResult.Status.CONFLICT) {
       return pluginResult;
     }
     final List<Map.Entry<Path, IntegrationResult>> results =
         new ArrayList<>(
-            List.of(Map.entry(command, commandResult), Map.entry(plugin, pluginResult)));
+            List.of(Map.entry(command, commandResult), Map.entry(plugin, pluginResult))
+        );
     for (final Path old : files.legacyGuards(root).delete()) {
       results.add(
           Map.entry(
@@ -218,12 +237,16 @@ public final class OpenCodeIntegration implements AgentIntegration {
               new IntegrationResult(
                   IntegrationResult.Status.REMOVED,
                   List.of(old.toString()),
-                  "Removed the Ward-owned guard plugin of an earlier version.")));
+                  "Removed the Ward-owned guard plugin of an earlier version."
+              )
+          )
+      );
     }
     return IntegrationArtifacts.combine(
         results,
         "Ward OpenCode integration is already present.",
-        "Created Ward-owned OpenCode command and edit/write integration (or refreshed it).");
+        "Created Ward-owned OpenCode command and edit/write integration (or refreshed it)."
+    );
   }
 
   private IntegrationResult remove(final Path command, final Path plugin, final LegacyFiles guards)
@@ -238,7 +261,10 @@ public final class OpenCodeIntegration implements AgentIntegration {
     }
     if (!Files.exists(command) && !Files.exists(plugin) && guards.owned().isEmpty()) {
       return new IntegrationResult(
-          IntegrationResult.Status.NOT_FOUND, List.of(), "No Ward OpenCode integration found.");
+          IntegrationResult.Status.NOT_FOUND,
+          List.of(),
+          "No Ward OpenCode integration found."
+      );
     }
 
     final List<String> removed = new ArrayList<>();
@@ -254,6 +280,9 @@ public final class OpenCodeIntegration implements AgentIntegration {
     EmptyDirectories.delete(plugin.getParent());
     EmptyDirectories.delete(command.getParent());
     return new IntegrationResult(
-        IntegrationResult.Status.REMOVED, removed, "Removed Ward-owned OpenCode integration.");
+        IntegrationResult.Status.REMOVED,
+        removed,
+        "Removed Ward-owned OpenCode integration."
+    );
   }
 }

@@ -19,7 +19,11 @@ public class DependencyInventoryException extends WardException {
    * @param fix the command or step that fixes it
    */
   public DependencyInventoryException(
-      final String project, final String subject, final String reason, final String fix) {
+      final String project,
+      final String subject,
+      final String reason,
+      final String fix
+  ) {
     this(project, subject, reason, fix, null);
   }
 
@@ -37,7 +41,8 @@ public class DependencyInventoryException extends WardException {
       final String subject,
       final String reason,
       final String fix,
-      final Throwable cause) {
+      final Throwable cause
+  ) {
     super(
         "Cannot read the dependencies of "
             + project
@@ -47,6 +52,7 @@ public class DependencyInventoryException extends WardException {
             + reason
             + ". Fix: "
             + fix,
-        cause);
+        cause
+    );
   }
 }

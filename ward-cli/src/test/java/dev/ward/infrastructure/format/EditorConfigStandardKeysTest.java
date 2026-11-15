@@ -17,7 +17,6 @@ import java.util.OptionalInt;
 import org.junit.jupiter.api.Test;
 
 class EditorConfigStandardKeysTest extends EditorConfigTestSupport {
-
   @Test
   void tabIndentUsesTabWidth() throws IOException {
     write("[*]\nindent_style = tab\nindent_size = tab\ntab_width = 6\n");
@@ -63,9 +62,10 @@ class EditorConfigStandardKeysTest extends EditorConfigTestSupport {
   void declaredLanguageKeyIsAcceptedForItsLanguage() throws IOException {
     write("[*.java]\nward_continuation_indent_size = 12\n");
     assertThat(
-            resolve(JAVA_FILE, AnalysisLanguage.JAVA, JAVA_OPTIONS)
-                .options()
-                .get("continuation-indent-size"))
+        resolve(JAVA_FILE, AnalysisLanguage.JAVA, JAVA_OPTIONS)
+            .options()
+            .get("continuation-indent-size")
+    )
         .isEqualTo(String.valueOf(CONTINUATION_VALUE));
   }
 
@@ -86,7 +86,9 @@ class EditorConfigStandardKeysTest extends EditorConfigTestSupport {
   @Test
   void unreadableEditorConfigFailsWithItsPath() throws IOException {
     Files.write(
-        project().resolve(".editorconfig"), new byte[] {INVALID_LEAD_BYTE, INVALID_TRAIL_BYTE});
+        project().resolve(".editorconfig"),
+        new byte[] {INVALID_LEAD_BYTE, INVALID_TRAIL_BYTE}
+    );
     assertThatThrownBy(() -> resolve(JAVA_FILE, AnalysisLanguage.JAVA, JAVA_OPTIONS))
         .isInstanceOf(FormatConfigurationException.class)
         .hasMessageContaining(".editorconfig");

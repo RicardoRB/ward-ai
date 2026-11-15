@@ -21,7 +21,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class LicenseGateUnknownTest {
-
   private static final String PACKAGE_JSON = "package.json";
 
   private static LicenseSettings deny(final boolean unknownFails, final Set<String> scopes) {
@@ -30,7 +29,8 @@ class LicenseGateUnknownTest {
         LicenseSettings.DEFAULT_DENY,
         LicenseSettings.DEFAULT_EXCEPTIONS,
         scopes,
-        unknownFails);
+        unknownFails
+    );
   }
 
   private static GateResult run(final LicenseService service, final LicenseSettings settings) {
@@ -43,8 +43,15 @@ class LicenseGateUnknownTest {
         LicenseFixtures.service(
             LicenseFixtures.inventory(
                 LicenseFixtures.dependency(
-                    Ecosystem.NPM, "lodash", "4.17.21", DependencyScope.RUNTIME, "")),
-            Map.of());
+                    Ecosystem.NPM,
+                    "lodash",
+                    "4.17.21",
+                    DependencyScope.RUNTIME,
+                    ""
+                )
+            ),
+            Map.of()
+        );
 
     final GateResult result = run(service, LicenseSettings.defaults());
 
@@ -61,8 +68,15 @@ class LicenseGateUnknownTest {
         LicenseFixtures.service(
             LicenseFixtures.inventory(
                 LicenseFixtures.dependency(
-                    Ecosystem.NPM, "odd", "1.0.0", DependencyScope.RUNTIME, PACKAGE_JSON)),
-            Map.of("odd", LicenseFixtures.declared("See LICENSE file")));
+                    Ecosystem.NPM,
+                    "odd",
+                    "1.0.0",
+                    DependencyScope.RUNTIME,
+                    PACKAGE_JSON
+                )
+            ),
+            Map.of("odd", LicenseFixtures.declared("See LICENSE file"))
+        );
 
     final GateResult result = run(service, LicenseSettings.defaults());
 
@@ -76,8 +90,15 @@ class LicenseGateUnknownTest {
         LicenseFixtures.service(
             LicenseFixtures.inventory(
                 LicenseFixtures.dependency(
-                    Ecosystem.NPM, "odd", "1.0.0", DependencyScope.RUNTIME, PACKAGE_JSON)),
-            Map.of("odd", LicenseLookup.missing(LicenseLookup.Reason.NO_LICENSE_DECLARED, "none")));
+                    Ecosystem.NPM,
+                    "odd",
+                    "1.0.0",
+                    DependencyScope.RUNTIME,
+                    PACKAGE_JSON
+                )
+            ),
+            Map.of("odd", LicenseLookup.missing(LicenseLookup.Reason.NO_LICENSE_DECLARED, "none"))
+        );
 
     final GateResult result = run(service, deny(false, Set.of()));
 
@@ -92,7 +113,8 @@ class LicenseGateUnknownTest {
     final GateResult result =
         run(
             LicenseFixtures.service(LicenseFixtures.inventory(), Map.of()),
-            LicenseSettings.defaults());
+            LicenseSettings.defaults()
+        );
 
     assertThat(result.status()).isEqualTo(GateStatus.PASSED);
   }
@@ -103,9 +125,14 @@ class LicenseGateUnknownTest {
         LicenseFixtures.service(
             project -> {
               throw new DependencyInventoryException(
-                  "/work/app", "package-lock.json", "is stale", "npm install");
+                  "/work/app",
+                  "package-lock.json",
+                  "is stale",
+                  "npm install"
+              );
             },
-            Map.of());
+            Map.of()
+        );
 
     final GateResult result = run(service, LicenseSettings.defaults());
 
@@ -126,7 +153,8 @@ class LicenseGateUnknownTest {
             null,
             LicenseFixtures.service(LicenseFixtures.inventory(), Map.of()),
             null,
-            null);
+            null
+        );
 
     assertThat(extensions.licenseGate(check).execute(LicenseFixtures.NPM).status())
         .isEqualTo(GateStatus.PASSED);

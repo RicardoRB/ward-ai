@@ -18,7 +18,6 @@ import org.tomlj.TomlTable;
  * line}, and a {@code condition} of {@code or} or {@code and}.
  */
 final class SecretAllowlistParser {
-
   private static final Set<String> KEYS =
       Set.of("paths", "regexes", "stopwords", "regex-target", "condition");
 
@@ -39,7 +38,9 @@ final class SecretAllowlistParser {
       return Pattern.compile(regex, Pattern.UNIX_LINES);
     } catch (final PatternSyntaxException exception) {
       throw new RuleConfigurationException(
-          "'" + key + "' is not a valid regular expression", exception);
+          "'" + key + "' is not a valid regular expression",
+          exception
+      );
     }
   }
 
@@ -61,8 +62,10 @@ final class SecretAllowlistParser {
         patterns(table, "regexes"),
         strings(table, "stopwords").stream().map(word -> word.toLowerCase(Locale.ROOT)).toList(),
         SecretAllowlist.Target.valueOf(
-            oneOf(target, "regex-target", "secret", "match", "line").toUpperCase(Locale.ROOT)),
-        "and".equals(oneOf(condition, "condition", "or", "and")));
+            oneOf(target, "regex-target", "secret", "match", "line").toUpperCase(Locale.ROOT)
+        ),
+        "and".equals(oneOf(condition, "condition", "or", "and"))
+    );
   }
 
   private static String text(final TomlTable table, final String key, final String fallback) {
@@ -73,7 +76,8 @@ final class SecretAllowlistParser {
   private static String oneOf(final String value, final String key, final String... allowed) {
     if (!List.of(allowed).contains(value)) {
       throw new RuleConfigurationException(
-          "'" + key + "' must be one of " + String.join(", ", allowed));
+          "'" + key + "' must be one of " + String.join(", ", allowed)
+      );
     }
     return value;
   }

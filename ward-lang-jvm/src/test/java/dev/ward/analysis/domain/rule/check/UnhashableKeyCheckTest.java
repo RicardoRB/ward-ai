@@ -10,7 +10,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class UnhashableKeyCheckTest {
-
   private static final String SOURCE =
       "class C {\n  java.util.Set<Key> keys;\n  Object make() {\n    return new HashSet<Key>();\n  }\n}\n";
   private static final CallTarget EQUALS =
@@ -22,7 +21,10 @@ class UnhashableKeyCheckTest {
       ParsedFacts.method("app.Base", "hashCode", List.of());
 
   private static List<String> run(
-      final UnhashableKeyCheck.Use use, final String source, final TypeMembers key) {
+      final UnhashableKeyCheck.Use use,
+      final String source,
+      final TypeMembers key
+  ) {
     return new ParsedFacts(source)
         .at("typeType", "Key", ParsedFacts.members(key))
         .run(new UnhashableKeyCheck(use, "message"));
@@ -51,15 +53,17 @@ class UnhashableKeyCheckTest {
     assertThat(run(UnhashableKeyCheck.Use.CREATION, SOURCE, key(List.of(), OBJECT_HASH_CODE)))
         .isEmpty();
     assertThat(
-            run(
-                UnhashableKeyCheck.Use.CREATION,
-                SOURCE,
-                new TypeMembers(
-                    List.of(
-                        ParsedFacts.method("app.Key", "equals", List.of(TypeRef.of("app.Key")))),
-                    List.of(),
-                    List.of(),
-                    List.of())))
+        run(
+            UnhashableKeyCheck.Use.CREATION,
+            SOURCE,
+            new TypeMembers(
+                List.of(ParsedFacts.method("app.Key", "equals", List.of(TypeRef.of("app.Key")))),
+                List.of(),
+                List.of(),
+                List.of()
+            )
+        )
+    )
         .isEmpty();
   }
 
@@ -68,30 +72,38 @@ class UnhashableKeyCheckTest {
     final TypeMembers unhashable = key(List.of(EQUALS), OBJECT_HASH_CODE);
 
     assertThat(
-            new ParsedFacts(SOURCE)
-                .run(new UnhashableKeyCheck(UnhashableKeyCheck.Use.CREATION, "m")))
+        new ParsedFacts(SOURCE)
+            .run(new UnhashableKeyCheck(UnhashableKeyCheck.Use.CREATION, "m"))
+    )
         .isEmpty();
     assertThat(
-            run(
-                UnhashableKeyCheck.Use.CREATION,
-                "class C {\n  Object o = new ArrayList<Key>();\n}\n",
-                unhashable))
+        run(
+            UnhashableKeyCheck.Use.CREATION,
+            "class C {\n  Object o = new ArrayList<Key>();\n}\n",
+            unhashable
+        )
+    )
         .isEmpty();
     assertThat(
-            run(
-                UnhashableKeyCheck.Use.CREATION,
-                "class C {\n  Object o = new HashSet<>();\n}\n",
-                unhashable))
+        run(
+            UnhashableKeyCheck.Use.CREATION,
+            "class C {\n  Object o = new HashSet<>();\n}\n",
+            unhashable
+        )
+    )
         .isEmpty();
     assertThat(
-            run(
-                UnhashableKeyCheck.Use.SIGNATURE,
-                "class C {\n  java.util.List<Key> keys;\n}\n",
-                unhashable))
+        run(
+            UnhashableKeyCheck.Use.SIGNATURE,
+            "class C {\n  java.util.List<Key> keys;\n}\n",
+            unhashable
+        )
+    )
         .isEmpty();
     assertThat(
-            new ParsedFacts(SOURCE)
-                .plain(new UnhashableKeyCheck(UnhashableKeyCheck.Use.CREATION, "message")))
+        new ParsedFacts(SOURCE)
+            .plain(new UnhashableKeyCheck(UnhashableKeyCheck.Use.CREATION, "message"))
+    )
         .isEmpty();
   }
 }

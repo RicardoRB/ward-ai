@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
  * {@code null} inside the block: the lock would have thrown if it were null.
  */
 public final class SynchronizedNullCheckCheck implements RuleCheck {
-
   private static final String SYNCHRONIZED = "'synchronized'";
   private static final String THIS = "this.";
 
@@ -53,7 +52,8 @@ public final class SynchronizedNullCheckCheck implements RuleCheck {
     final String name = Pattern.quote(lock);
     return fields.contains(lock)
         && Pattern.compile(
-                "(?:\\b|this\\.)" + name + "[!=]=null|null[!=]=(?:this\\.)?" + name + "\\b")
+            "(?:\\b|this\\.)" + name + "[!=]=null|null[!=]=(?:this\\.)?" + name + "\\b"
+        )
             .matcher(text.substring(text.indexOf('{') < 0 ? 0 : text.indexOf('{')))
             .find();
   }

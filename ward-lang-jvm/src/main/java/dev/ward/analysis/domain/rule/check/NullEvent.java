@@ -16,8 +16,13 @@ import java.util.List;
  * @param name the method of a dereferencing call, or the field of a store
  */
 record NullEvent(
-    Kind kind, Span variable, SyntaxNode node, Operand operand, List<Arg> args, String name) {
-
+    Kind kind,
+    Span variable,
+    SyntaxNode node,
+    Operand operand,
+    List<Arg> args,
+    String name
+) {
   /** What an event does. */
   enum Kind {
     /** A local gets a value. */

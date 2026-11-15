@@ -59,7 +59,9 @@ class DependencyAnalysisSharedResolverTest {
   @Test
   void separateResolversEachReceiveOnlyTheirOwnLanguage() {
     analyze(
-        support(AnalysisLanguage.JAVA, recording()), support(AnalysisLanguage.KOTLIN, recording()));
+        support(AnalysisLanguage.JAVA, recording()),
+        support(AnalysisLanguage.KOTLIN, recording())
+    );
 
     assertThat(calls).hasSize(2);
     assertThat(calls.get(0)).containsExactly("A.java");
@@ -86,10 +88,12 @@ class DependencyAnalysisSharedResolverTest {
   }
 
   private static DependencySupport support(
-      final AnalysisLanguage language, final DependencyResolver resolver) {
+      final AnalysisLanguage language,
+      final DependencyResolver resolver
+  ) {
     final FileSummarizer summarizer =
         (unit, tree) ->
-            new FileSummary(unit.path(), List.of(), List.of(new Reference("A", AT_1)), List.of());
+        new FileSummary(unit.path(), List.of(), List.of(new Reference("A", AT_1)), List.of());
     return new DependencySupport(language, summarizer, resolver);
   }
 
@@ -98,7 +102,8 @@ class DependencyAnalysisSharedResolverTest {
         unit -> new ParseResult(new SyntaxNode("file", AT_1, Map.of(), List.of()), List.of());
     return List.of(
         new FrontendSupport(AnalysisLanguage.JAVA, frontend, Set.of(RuleCapability.SYNTAX)),
-        new FrontendSupport(AnalysisLanguage.KOTLIN, frontend, Set.of(RuleCapability.SYNTAX)));
+        new FrontendSupport(AnalysisLanguage.KOTLIN, frontend, Set.of(RuleCapability.SYNTAX))
+    );
   }
 
   /** Keeps summaries in memory, as the gate keeps them on disk. */

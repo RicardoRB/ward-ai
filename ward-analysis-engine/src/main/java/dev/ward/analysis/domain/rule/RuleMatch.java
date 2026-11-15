@@ -13,7 +13,6 @@ import java.util.Objects;
  * @param path the steps of the match's path in order; empty for a match without one
  */
 public record RuleMatch(Span span, String message, List<FlowStep> path) {
-
   /**
    * Creates a match without a path.
    *

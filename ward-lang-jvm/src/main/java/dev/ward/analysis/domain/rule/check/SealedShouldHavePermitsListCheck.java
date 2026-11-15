@@ -8,7 +8,6 @@ import java.util.Objects;
 
 /** Reports each sealed type that has no permits clause, as Checkstyle does. */
 public final class SealedShouldHavePermitsListCheck implements RuleCheck {
-
   private static final String SEALED = "sealed";
   private static final String PERMITS = "permits";
   private final String message;

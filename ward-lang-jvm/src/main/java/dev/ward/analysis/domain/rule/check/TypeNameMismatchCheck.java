@@ -12,7 +12,6 @@ import java.util.Set;
  * extension. A file with no name, such as a bare syntax tree, is not checked.
  */
 public final class TypeNameMismatchCheck implements UnitCheck {
-
   private static final String TYPE_DECLARATION = "typeDeclaration";
 
   private static final String EXTENSION = ".java";
@@ -46,7 +45,10 @@ public final class TypeNameMismatchCheck implements UnitCheck {
   }
 
   private void topLevelMismatch(
-      final SyntaxNode declaration, final String base, final List<RuleMatch> matches) {
+      final SyntaxNode declaration,
+      final String base,
+      final List<RuleMatch> matches
+  ) {
     for (final SyntaxNode child : declaration.children()) {
       if (TYPES.contains(child.kind())) {
         final String name =

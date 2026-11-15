@@ -47,10 +47,12 @@ public final class ResolvingDependencySource implements DependencySource {
    */
   public ResolvingDependencySource(
       final ResolvedGraphTool tool,
-      final Function<Project, List<Path>> buildFiles,
+      final Function<Project,
+      List<Path>> buildFiles,
       final String toolIdentity,
       final GraphCache cache,
-      final JsonCodec codec) {
+      final JsonCodec codec
+  ) {
     this.tool = tool;
     this.buildFiles = buildFiles;
     this.toolIdentity = toolIdentity;
@@ -67,7 +69,8 @@ public final class ResolvingDependencySource implements DependencySource {
         final DependencyInventory inventory = InventoryDecoder.decode(codec, stored.get());
         LOGGER.log(
             Level.FINE,
-            () -> "event=dependency-cache result=hit modules=" + inventory.modules().size());
+            () -> "event=dependency-cache result=hit modules=" + inventory.modules().size()
+        );
         return inventory;
       } catch (IllegalArgumentException e) {
         LOGGER.log(Level.WARNING, "event=dependency-cache result=discarded reason=invalid");
@@ -84,7 +87,8 @@ public final class ResolvingDependencySource implements DependencySource {
     try {
       final MessageDigest digest = MessageDigest.getInstance("SHA-256");
       digest.update(
-          (InventoryJson.FORMAT + "\n" + toolIdentity + "\n").getBytes(StandardCharsets.UTF_8));
+          (InventoryJson.FORMAT + "\n" + toolIdentity + "\n").getBytes(StandardCharsets.UTF_8)
+      );
       for (final Path file : buildFiles.apply(project).stream().sorted().toList()) {
         digest.update(
             project
@@ -92,10 +96,11 @@ public final class ResolvingDependencySource implements DependencySource {
                 .relativize(file)
                 .toString()
                 .replace('\\', '/')
-                .getBytes(StandardCharsets.UTF_8));
-        digest.update((byte) 0);
+                .getBytes(StandardCharsets.UTF_8)
+        );
+        digest.update((byte)0);
         digest.update(Files.readAllBytes(file));
-        digest.update((byte) 0);
+        digest.update((byte)0);
       }
       return HexFormat.of().formatHex(digest.digest());
     } catch (IOException | UncheckedIOException e) {
@@ -104,7 +109,8 @@ public final class ResolvingDependencySource implements DependencySource {
           "build files",
           "they cannot be read",
           "check their permissions",
-          e);
+          e
+      );
     } catch (NoSuchAlgorithmException e) {
       throw new IllegalStateException("SHA-256 is part of every Java runtime", e);
     }

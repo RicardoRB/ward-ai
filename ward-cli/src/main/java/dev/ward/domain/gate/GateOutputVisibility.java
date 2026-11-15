@@ -13,7 +13,9 @@ public enum GateOutputVisibility {
    * everything shows its findings and its output, which names what failed.
    */
   public static GateOutputVisibility of(
-      final GateResult result, final SeverityThreshold threshold) {
+      final GateResult result,
+      final SeverityThreshold threshold
+  ) {
     if (threshold.showsCapturedOutput()) {
       return FULL;
     }

@@ -88,7 +88,8 @@ class PythonBuildToolConfiguratorTest {
   void srcLayoutWithBuildSystemPlansNoSrcNote() throws IOException {
     Files.writeString(
         root.resolve(PYPROJECT_FILE),
-        PYPROJECT + "\n[build-system]\nrequires = [\"setuptools\"]\n");
+        PYPROJECT + "\n[build-system]\nrequires = [\"setuptools\"]\n"
+    );
     Files.createDirectories(root.resolve(".venv"));
     Files.createDirectories(root.resolve("src/shop"));
     final FakeCommandExecutor executor =
@@ -114,7 +115,8 @@ class PythonBuildToolConfiguratorTest {
         .contains("# managed-by: ward", "mypy==2.4.0");
     assertThat(executor.commands)
         .containsExactly(
-            List.of(".venv/bin/python", "-m", "pip", "install", "-r", "requirements-ward.txt"));
+            List.of(".venv/bin/python", "-m", "pip", "install", "-r", "requirements-ward.txt")
+        );
     new PythonBuildToolConfigurator(executor).rollback(change);
     assertThat(root.resolve("requirements-ward.txt")).doesNotExist();
   }
@@ -151,9 +153,10 @@ class PythonBuildToolConfiguratorTest {
     final Project pip = new Project(root, Language.PYTHON, BuildTool.PIP, Framework.NONE);
 
     assertThatThrownBy(
-            () ->
-                new PythonBuildToolConfigurator(new FakeCommandExecutor(0, "", ""))
-                    .apply(pip, GATES))
+        () ->
+            new PythonBuildToolConfigurator(new FakeCommandExecutor(0, "", ""))
+                .apply(pip, GATES)
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining(".venv");
     assertThat(Files.readString(root.resolve(PYPROJECT_FILE))).isEqualTo(PYPROJECT);

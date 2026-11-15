@@ -12,7 +12,6 @@ import java.util.Set;
  * {@code no-unit-return} rule asks to leave out.
  */
 public final class KotlinUnitReturnCheck implements RuleCheck {
-
   private static final String FUN = "functionDeclaration";
   private static final String TYPE = "type";
   private static final String FUNCTION_BODY = "functionBody";

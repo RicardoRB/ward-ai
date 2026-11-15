@@ -41,7 +41,8 @@ final class InitConfirmations {
             case "n", "no" -> false;
             default -> throw new InvalidAnswerException("Answer y or n.");
           };
-        });
+        }
+    );
   }
 
   boolean qualityHooks() {
@@ -66,7 +67,9 @@ final class InitConfirmations {
                     + ": "
                     + replacement.current()
                     + " -> "
-                    + replacement.proposed()));
+                    + replacement.proposed()
+            )
+    );
     out.print("Replace them? [y/n]: ");
     out.flush();
     return prompt.confirm("replace-scripts");
@@ -79,7 +82,8 @@ final class InitConfirmations {
             + ": "
             + finding.currentVersion()
             + " -> "
-            + finding.selectedVersion());
+            + finding.selectedVersion()
+    );
     out.println("Reason: " + finding.message());
     out.print("Apply this Maven plugin update? [y/N]: ");
     out.flush();

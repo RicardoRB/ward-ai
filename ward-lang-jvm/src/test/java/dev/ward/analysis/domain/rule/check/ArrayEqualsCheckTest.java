@@ -13,7 +13,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class ArrayEqualsCheckTest {
-
   private static final String EQUALS = "equals";
   private static final TypeRef INTS = MoreTrees.type("int", 1, true);
   private static final TypeRef INTS_2D = MoreTrees.type("int", 2, true);
@@ -32,13 +31,22 @@ class ArrayEqualsCheckTest {
         Calls.RECEIVER,
         Calls.facts(left, TypeShape.Kind.CLASS, false),
         Calls.ARGUMENT,
-        Calls.facts(right, TypeShape.Kind.CLASS, false));
+        Calls.facts(right, TypeShape.Kind.CLASS, false)
+    );
   }
 
   private static List<RuleMatch> run(
-      final ArrayEqualsCheck check, final String method, final UnitTypeFacts facts) {
+      final ArrayEqualsCheck check,
+      final String method,
+      final UnitTypeFacts facts
+  ) {
     return check.matches(
-        Calls.call(method, Calls.ARGUMENT), FlowView.NONE, ScopeView.NONE, facts, Calls.UNIT);
+        Calls.call(method, Calls.ARGUMENT),
+        FlowView.NONE,
+        ScopeView.NONE,
+        facts,
+        Calls.UNIT
+    );
   }
 
   @Test
@@ -76,16 +84,24 @@ class ArrayEqualsCheckTest {
 
     assertThat(run(NON_ARRAY, "hashCode", facts)).isEmpty();
     assertThat(
-            NON_ARRAY.matches(
-                Calls.call(EQUALS, Calls.ARGUMENT, Calls.SECOND),
-                FlowView.NONE,
-                ScopeView.NONE,
-                facts,
-                Calls.UNIT))
+        NON_ARRAY.matches(
+            Calls.call(EQUALS, Calls.ARGUMENT, Calls.SECOND),
+            FlowView.NONE,
+            ScopeView.NONE,
+            facts,
+            Calls.UNIT
+        )
+    )
         .isEmpty();
     assertThat(
-            NON_ARRAY.matches(
-                MoreTrees.node("expression", 1), FlowView.NONE, ScopeView.NONE, facts, Calls.UNIT))
+        NON_ARRAY.matches(
+            MoreTrees.node("expression", 1),
+            FlowView.NONE,
+            ScopeView.NONE,
+            facts,
+            Calls.UNIT
+        )
+    )
         .isEmpty();
   }
 }

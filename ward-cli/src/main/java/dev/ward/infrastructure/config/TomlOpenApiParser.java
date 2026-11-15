@@ -14,7 +14,11 @@ final class TomlOpenApiParser {
    * for a disabled gate without a {@code spec}.
    */
   static OpenApiGateOptions parse(
-      final String where, final String type, final TomlTable gate, final boolean enabled) {
+      final String where,
+      final String type,
+      final TomlTable gate,
+      final boolean enabled
+  ) {
     if (!SupportedQualityGates.openApiIds().contains(type)) {
       return null;
     }

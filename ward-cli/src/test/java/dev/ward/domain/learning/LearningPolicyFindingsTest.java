@@ -40,7 +40,11 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
 
     final LearningOutcome outcome =
         LearningPolicy.apply(
-            LearningLedger.empty(), failed(MYPY, findings.toArray(Finding[]::new)), 1, NOW);
+            LearningLedger.empty(),
+            failed(MYPY, findings.toArray(Finding[]::new)),
+            1,
+            NOW
+        );
 
     assertThat(outcome.ledger().records().values())
         .singleElement()
@@ -48,7 +52,8 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
             record -> {
               assertThat(record.occurrences()).isOne();
               assertThat(record.summary()).isEqualTo("first");
-            });
+            }
+        );
   }
 
   @Test
@@ -59,10 +64,17 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
             List.of(
                 failedResult(MYPY, finding(MYPY, "FinalParameters", "final")),
                 failedResult(
-                    LINT, finding(LINT, UNUSED, UNUSED_MESSAGE), finding(LINT, PRIVATE, "private")),
+                    LINT,
+                    finding(LINT, UNUSED, UNUSED_MESSAGE),
+                    finding(LINT, PRIVATE, "private")
+                ),
                 failedResult(
-                    "secrets", finding("secrets", "ward:secrets/generic-api-key", "secret")),
-                failedResult("ward", finding("ward", "ward:java/line-length", "long"))));
+                    "secrets",
+                    finding("secrets", "ward:secrets/generic-api-key", "secret")
+                ),
+                failedResult("ward", finding("ward", "ward:java/line-length", "long"))
+            )
+        );
 
     final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
 
@@ -72,7 +84,8 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
             UNUSED_KEY,
             PRIVATE_KEY,
             "secrets:ward:secrets/generic-api-key",
-            "ward:ward:java/line-length");
+            "ward:ward:java/line-length"
+        );
     assertThat(outcome.ledger().records().get(UNUSED_KEY).rule()).isEqualTo(UNUSED);
   }
 
@@ -88,7 +101,9 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
                 failedResult(LINT, finding(LINT, LINT, "blank rule")),
                 GateResult.builder(MYPY, GateStatus.PASSED)
                     .build()
-                    .withFindings(GateFindings.of(List.of(finding(MYPY, "MagicNumber", "warn"))))));
+                    .withFindings(GateFindings.of(List.of(finding(MYPY, "MagicNumber", "warn"))))
+            )
+        );
 
     final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
 
@@ -104,8 +119,11 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
                 failedResult(
                     LINT,
                     finding(LINT, "no-unused-vars", "x is never used"),
-                    finding(LINT, LINT, "Parsing error: ';' expected.")),
-                failedResult(TSC, finding(TSC, "TS2322", "not assignable"))));
+                    finding(LINT, LINT, "Parsing error: ';' expected.")
+                ),
+                failedResult(TSC, finding(TSC, "TS2322", "not assignable"))
+            )
+        );
 
     final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
 
@@ -125,7 +143,11 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
 
     final LearningRecord record =
         LearningPolicy.apply(
-                LearningLedger.empty(), new CheckReport(PROJECT, List.of(result)), 1, NOW)
+            LearningLedger.empty(),
+            new CheckReport(PROJECT, List.of(result)),
+            1,
+            NOW
+        )
             .ledger()
             .records()
             .get(UNUSED_KEY);
@@ -143,11 +165,15 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
                 failedResult(
                     TSC,
                     finding(TSC, "F401", "`os` imported but unused"),
-                    finding(TSC, TSC, "Expected a statement")),
+                    finding(TSC, TSC, "Expected a statement")
+                ),
                 failedResult(
                     "mypy",
                     finding("mypy", "arg-type", "Argument 1 has incompatible type"),
-                    finding("mypy", "mypy", "Plugin says no"))));
+                    finding("mypy", "mypy", "Plugin says no")
+                )
+            )
+        );
 
     final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
 
@@ -162,8 +188,12 @@ class LearningPolicyFindingsTest extends LearningPolicyTestSupport {
             List.of(
                 failedResult(TSC, finding(TSC, "no-undef", "'x' is not defined")),
                 failedResult(
-                    "swift-format", finding("swift-format", "Indentation", "unindent by 2 spaces")),
-                failedResult("swift-build", finding("swift-build", "swiftc", "cannot convert"))));
+                    "swift-format",
+                    finding("swift-format", "Indentation", "unindent by 2 spaces")
+                ),
+                failedResult("swift-build", finding("swift-build", "swiftc", "cannot convert"))
+            )
+        );
 
     final LearningOutcome outcome = LearningPolicy.apply(LearningLedger.empty(), report, 1, NOW);
 

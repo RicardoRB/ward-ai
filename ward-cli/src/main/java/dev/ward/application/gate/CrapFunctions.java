@@ -10,7 +10,6 @@ import java.util.OptionalDouble;
 
 /** Scores the functions of one file from their complexity and the lines a report covers. */
 final class CrapFunctions {
-
   /** A function with its score. */
   record Scored(Span span, CrapScore score) {}
 
@@ -33,14 +32,17 @@ final class CrapFunctions {
               covered[owner] += file.covered().contains(line) ? 1 : 0;
             }
           }
-        });
+        }
+    );
     final List<Scored> scored = new ArrayList<>();
     for (int index = 0; index < measured.size(); index++) {
       final Measured function = measured.get(index);
       scored.add(
           new Scored(
               function.span(),
-              CrapScore.of(function.value(), coverage(coverable[index], covered[index]))));
+              CrapScore.of(function.value(), coverage(coverable[index], covered[index]))
+          )
+      );
     }
     return scored;
   }
@@ -48,7 +50,7 @@ final class CrapFunctions {
   private static OptionalDouble coverage(final int coverable, final int covered) {
     return coverable == 0
         ? OptionalDouble.empty()
-        : OptionalDouble.of((double) covered / coverable);
+        : OptionalDouble.of((double)covered / coverable);
   }
 
   /** Returns the index of the smallest function that contains {@code line}, or -1. */

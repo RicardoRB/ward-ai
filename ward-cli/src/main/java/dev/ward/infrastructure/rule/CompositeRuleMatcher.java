@@ -12,7 +12,6 @@ import dev.ward.analysis.domain.rule.metric.MetricMatcher;
  * a declarative body is the one a rule author writes as TOML.
  */
 public final class CompositeRuleMatcher implements RuleMatcher {
-
   private final RuleMatcher declarative = new DeclarativeRuleMatcher();
   private final RuleMatcher metric = new MetricMatcher();
 

@@ -10,14 +10,19 @@ import org.junit.jupiter.api.Test;
 
 /** Checks that the {@code indent-style} option switches block indentation to tabs. */
 class EcmaIndentStyleTest {
-
   private static final FormatOptions TABS =
       new FormatOptions(
           Map.of(
-              "line-width", "100",
-              "indent-style", "tab",
-              "indent-width", "2",
-              "max-blank-lines", "1"));
+              "line-width",
+              "100",
+              "indent-style",
+              "tab",
+              "indent-width",
+              "2",
+              "max-blank-lines",
+              "1"
+          )
+      );
   private static final String SOURCE = "function f() {\nreturn 1;\n}\n";
   private static final FormatResult TABBED =
       new FormatResult.Formatted("function f() {\n\treturn 1;\n}\n");

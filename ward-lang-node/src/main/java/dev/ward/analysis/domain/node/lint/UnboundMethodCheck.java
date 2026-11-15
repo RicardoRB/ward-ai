@@ -19,7 +19,6 @@ import java.util.Set;
  * which loses the object as {@code this}. A property with the same name is not a method.
  */
 public final class UnboundMethodCheck extends TypedCheck {
-
   private static final String MEMBER = "identifierName";
   private static final String DOT = ".";
   private static final String ARGUMENTS = "arguments";
@@ -68,7 +67,10 @@ public final class UnboundMethodCheck extends TypedCheck {
 
   /** Reports whether the name is a method of the object, and not one of its fields. */
   private static boolean isMethod(
-      final UnitTypeFacts types, final SyntaxNode object, final String name) {
+      final UnitTypeFacts types,
+      final SyntaxNode object,
+      final String name
+  ) {
     final Optional<TypeMembers> members = types.membersOf(object.span());
     return members.isPresent()
         && (hasMethod(members.get().methods(), name)

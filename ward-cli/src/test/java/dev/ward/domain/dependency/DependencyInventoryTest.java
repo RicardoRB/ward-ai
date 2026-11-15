@@ -36,7 +36,8 @@ class DependencyInventoryTest {
     assertThat(entry(module, "g:guava").requested())
         .containsExactlyInAnyOrder(
             new RequestedVersion("", "33.0.0"),
-            new RequestedVersion("pkg:maven/x/lib@1.0", "30.0"));
+            new RequestedVersion("pkg:maven/x/lib@1.0", "30.0")
+        );
     assertThat(entry(module, "x:lib").requested()).isEmpty();
   }
 

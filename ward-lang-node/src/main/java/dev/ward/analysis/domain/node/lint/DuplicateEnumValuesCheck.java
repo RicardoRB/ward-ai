@@ -11,7 +11,6 @@ import java.util.Set;
 
 /** Reports an enum member whose literal value an earlier member of the same enum already has. */
 public final class DuplicateEnumValuesCheck implements RuleCheck {
-
   private static final String ENUM_MEMBER = "enumMember";
   private static final String ENUM_BODY = "enumBody";
   private static final String EXPRESSION = "singleExpression";

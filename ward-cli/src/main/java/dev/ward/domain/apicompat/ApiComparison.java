@@ -40,7 +40,10 @@ public final class ApiComparison {
    * accepts; the other types still count as supertypes.
    */
   public static List<ApiChange> compare(
-      final List<ApiType> baseline, final List<ApiType> current, final Predicate<String> inScope) {
+      final List<ApiType> baseline,
+      final List<ApiType> current,
+      final Predicate<String> inScope
+  ) {
     final ApiComparison comparison = new ApiComparison(baseline, current);
     baseline.stream()
         .filter(type -> inScope.test(type.name()) && comparison.before.isApi(type.name()))
@@ -53,7 +56,8 @@ public final class ApiComparison {
                 .thenComparing(ApiChange::kind)
                 .thenComparing(ApiChange::typeName)
                 .thenComparing(ApiChange::member)
-                .thenComparing(ApiChange::before))
+                .thenComparing(ApiChange::before)
+        )
         .toList();
   }
 
@@ -67,7 +71,9 @@ public final class ApiComparison {
               EMPTY,
               ApiSignatures.of(old),
               ApiChange.REMOVED,
-              old.location()));
+              old.location()
+          )
+      );
       return;
     }
     final ApiType now = found.get();
@@ -111,13 +117,21 @@ public final class ApiComparison {
                 member ->
                     member.kind() == ApiMember.Kind.CONSTRUCTOR
                         && member.visibility()
-                            == dev.ward.analysis.domain.api.ApiVisibility.PUBLIC);
+                        == dev.ward.analysis.domain.api.ApiVisibility.PUBLIC
+            );
   }
 
   private void typeChange(final String kind, final ApiType old, final ApiType now) {
     changes.add(
         new ApiChange(
-            kind, old.name(), EMPTY, ApiSignatures.of(old), ApiSignatures.of(now), now.location()));
+            kind,
+            old.name(),
+            EMPTY,
+            ApiSignatures.of(old),
+            ApiSignatures.of(now),
+            now.location()
+        )
+    );
   }
 
   private void removedSupertype(final ApiType old, final ApiType now, final String name) {
@@ -128,6 +142,8 @@ public final class ApiComparison {
             EMPTY,
             ApiSignatures.of(old) + " : " + name,
             ApiSignatures.of(now),
-            now.location()));
+            now.location()
+        )
+    );
   }
 }

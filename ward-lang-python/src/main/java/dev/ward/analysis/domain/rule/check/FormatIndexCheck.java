@@ -21,10 +21,11 @@ import java.util.regex.Pattern;
  * keyword argument are the argument-count rule's job and are not reported here.
  */
 public final class FormatIndexCheck implements RuleCheck {
-
   private static final Pattern CALL =
       Pattern.compile(
-          "^(\"(?:[^\"\\\\]|\\\\.)*\"|'(?:[^'\\\\]|\\\\.)*')\\.format\\((.*)\\)$", Pattern.DOTALL);
+          "^(\"(?:[^\"\\\\]|\\\\.)*\"|'(?:[^'\\\\]|\\\\.)*')\\.format\\((.*)\\)$",
+          Pattern.DOTALL
+      );
   private static final Pattern KEYWORD =
       Pattern.compile("^([A-Za-z_]\\w*)=(?!=)(.*)$", Pattern.DOTALL);
   private static final Set<String> CALLS = Set.of("atom_expr");
@@ -95,7 +96,10 @@ public final class FormatIndexCheck implements RuleCheck {
   }
 
   private static boolean fieldFails(
-      final String field, final AtomicInteger next, final Arguments args) {
+      final String field,
+      final AtomicInteger next,
+      final Arguments args
+  ) {
     final String name = field.replaceAll("[:!].*$", "");
     final int open = name.indexOf(OPEN_BRACKET);
     final String base = open < 0 ? name : name.substring(0, open);
@@ -110,7 +114,10 @@ public final class FormatIndexCheck implements RuleCheck {
   }
 
   private static boolean lookupFails(
-      final String base, final String accessor, final Arguments args) {
+      final String base,
+      final String accessor,
+      final Arguments args
+  ) {
     final Optional<String> value =
         base.chars().allMatch(Character::isDigit)
             ? args.positional(Integer.parseInt(base))
@@ -131,7 +138,6 @@ public final class FormatIndexCheck implements RuleCheck {
 
   /** The positional and keyword arguments of a call whose argument list is all literal-ish. */
   private record Arguments(List<String> positional, Map<String, String> keyword) {
-
     /** The arguments, or empty when a star argument makes the positions unknown. */
     static Optional<Arguments> of(final List<String> items) {
       final List<String> positional = new ArrayList<>();

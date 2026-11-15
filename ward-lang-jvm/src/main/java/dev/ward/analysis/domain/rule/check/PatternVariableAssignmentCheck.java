@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
  * the check does not resolve which declaration an assignment refers to.
  */
 public final class PatternVariableAssignmentCheck implements UnitCheck {
-
   private static final Pattern NAME = Pattern.compile("[A-Za-z_$][\\w$]*");
   private static final int MIN_LEAVES = 2;
   private static final String INSTANCEOF = "'instanceof'";
@@ -51,7 +50,10 @@ public final class PatternVariableAssignmentCheck implements UnitCheck {
         if (NAME.matcher(target).matches() && declares(variables, target, callable.get())) {
           matches.add(
               CheckSupport.at(
-                  assignment.children().get(1).span(), CheckSupport.fill(message, target, "")));
+                  assignment.children().get(1).span(),
+                  CheckSupport.fill(message, target, "")
+              )
+          );
         }
       }
     }
@@ -92,11 +94,15 @@ public final class PatternVariableAssignmentCheck implements UnitCheck {
   }
 
   private static boolean declares(
-      final List<PatternVariable> variables, final String name, final SyntaxNode callable) {
+      final List<PatternVariable> variables,
+      final String name,
+      final SyntaxNode callable
+  ) {
     return variables.stream()
         .anyMatch(
             variable ->
-                variable.name().equals(name) && variable.callable().span().equals(callable.span()));
+                variable.name().equals(name) && variable.callable().span().equals(callable.span())
+        );
   }
 
   private static Optional<SyntaxNode> nearestCallable(final List<SyntaxNode> ancestors) {

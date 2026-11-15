@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
 
 class TypedCallCheckTest {
-
   private static final String GET_INT = "getInt";
   private static final int RECEIVER = 1;
   private static final int ARGUMENT = 5;
@@ -24,19 +23,24 @@ class TypedCallCheckTest {
   private static SyntaxNode call(final String receiver, final String name, final String argument) {
     final SyntaxNode list =
         CorrectnessTrees.node(
-            "expressionList", ARGUMENT, CorrectnessTrees.expression(argument, ARGUMENT));
+            "expressionList",
+            ARGUMENT,
+            CorrectnessTrees.expression(argument, ARGUMENT)
+        );
     final SyntaxNode invoked =
         CorrectnessTrees.node(
             "methodCall",
             3,
             CorrectnessTrees.node("identifier", 3, CorrectnessTrees.leaf("IDENTIFIER", name, 3)),
-            CorrectnessTrees.node("arguments", 4, list));
+            CorrectnessTrees.node("arguments", 4, list)
+        );
     return CorrectnessTrees.node(
         "expression",
         1,
         CorrectnessTrees.expression(receiver, RECEIVER),
         CorrectnessTrees.leaf(".", ".", 2),
-        invoked);
+        invoked
+    );
   }
 
   private static SyntaxNode noArguments(final String receiver, final String name) {
@@ -45,29 +49,36 @@ class TypedCallCheckTest {
             "methodCall",
             3,
             CorrectnessTrees.node("identifier", 3, CorrectnessTrees.leaf("IDENTIFIER", name, 3)),
-            CorrectnessTrees.node("arguments", 4));
+            CorrectnessTrees.node("arguments", 4)
+        );
     return CorrectnessTrees.node(
         "expression",
         1,
         CorrectnessTrees.expression(receiver, RECEIVER),
         CorrectnessTrees.leaf(".", ".", 2),
-        invoked);
+        invoked
+    );
   }
 
   private static TypedCallCheck check(
       final Optional<Pattern> receiverText,
       final Optional<Pattern> receiverType,
       final Set<String> argumentTypes,
-      final Optional<Pattern> argumentText) {
+      final Optional<Pattern> argumentText
+  ) {
     return new TypedCallCheck(
         Pattern.compile("get\\w+"),
         new TypedCallCheck.Receiver(receiverText, receiverType),
         new TypedCallCheck.Argument(0, argumentTypes, argumentText),
-        "message");
+        "message"
+    );
   }
 
   private static List<RuleMatch> run(
-      final TypedCallCheck check, final SyntaxNode root, final UnitTypeFacts types) {
+      final TypedCallCheck check,
+      final SyntaxNode root,
+      final UnitTypeFacts types
+  ) {
     return check.matches(root, FlowView.NONE, ScopeView.NONE, types, Calls.UNIT);
   }
 
@@ -90,10 +101,12 @@ class TypedCallCheckTest {
 
     assertThat(run(check, CorrectnessTrees.expression(GET_INT, 1), UnitTypeFacts.none())).isEmpty();
     assertThat(
-            run(
-                check,
-                CorrectnessTrees.node("expression", 1, CorrectnessTrees.leaf("X", "a", 1)),
-                UnitTypeFacts.none()))
+        run(
+            check,
+            CorrectnessTrees.node("expression", 1, CorrectnessTrees.leaf("X", "a", 1)),
+            UnitTypeFacts.none()
+        )
+    )
         .isEmpty();
   }
 
@@ -112,18 +125,26 @@ class TypedCallCheckTest {
         check(Optional.empty(), Optional.of(Pattern.compile("a\\.B")), Set.of(), Optional.empty());
 
     assertThat(
-            run(
-                check,
-                call("rs", GET_INT, "0"),
-                CorrectnessTrees.table(
-                    RECEIVER, CorrectnessTrees.facts(CorrectnessTrees.type("a.B", false)))))
+        run(
+            check,
+            call("rs", GET_INT, "0"),
+            CorrectnessTrees.table(
+                RECEIVER,
+                CorrectnessTrees.facts(CorrectnessTrees.type("a.B", false))
+            )
+        )
+    )
         .hasSize(1);
     assertThat(
-            run(
-                check,
-                call("rs", GET_INT, "0"),
-                CorrectnessTrees.table(
-                    RECEIVER, CorrectnessTrees.facts(CorrectnessTrees.type("c.D", false)))))
+        run(
+            check,
+            call("rs", GET_INT, "0"),
+            CorrectnessTrees.table(
+                RECEIVER,
+                CorrectnessTrees.facts(CorrectnessTrees.type("c.D", false))
+            )
+        )
+    )
         .isEmpty();
     assertThat(run(check, call("rs", GET_INT, "0"), UnitTypeFacts.none())).isEmpty();
   }
@@ -136,18 +157,26 @@ class TypedCallCheckTest {
         check(Optional.empty(), Optional.empty(), Set.of(), Optional.of(Pattern.compile("0")));
 
     assertThat(
-            run(
-                typed,
-                call("rs", GET_INT, "x"),
-                CorrectnessTrees.table(
-                    ARGUMENT, CorrectnessTrees.facts(CorrectnessTrees.type("int", true)))))
+        run(
+            typed,
+            call("rs", GET_INT, "x"),
+            CorrectnessTrees.table(
+                ARGUMENT,
+                CorrectnessTrees.facts(CorrectnessTrees.type("int", true))
+            )
+        )
+    )
         .hasSize(1);
     assertThat(
-            run(
-                typed,
-                call("rs", GET_INT, "x"),
-                CorrectnessTrees.table(
-                    ARGUMENT, CorrectnessTrees.facts(CorrectnessTrees.type("long", true)))))
+        run(
+            typed,
+            call("rs", GET_INT, "x"),
+            CorrectnessTrees.table(
+                ARGUMENT,
+                CorrectnessTrees.facts(CorrectnessTrees.type("long", true))
+            )
+        )
+    )
         .isEmpty();
     assertThat(run(typed, call("rs", GET_INT, "x"), UnitTypeFacts.none())).isEmpty();
     assertThat(run(typed, noArguments("rs", GET_INT), UnitTypeFacts.none())).isEmpty();

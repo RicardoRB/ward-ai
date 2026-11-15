@@ -14,7 +14,6 @@ import java.util.Set;
  * {@code )}, {@code ,} or {@code }}.
  */
 public final class RightCurlyCheck implements RuleCheck {
-
   private static final String ALONE = "alone";
   private static final Set<String> CONTINUATIONS = Set.of("'else'", "'catch'", "'finally'");
   private static final Set<String> TRAILING = Set.of("';'", "')'", "','", "'}'");

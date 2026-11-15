@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks that a string entry matches string-building sites by their literal text. */
 class TaintStringEntryTest {
-
   private static final Span SPAN = new Span(1, 1, 1, 2, 0, 1);
 
   /** A string entry matches a string-building site whose literal text the pattern finds. */
@@ -25,7 +24,8 @@ class TaintStringEntryTest {
             Optional.empty(),
             Optional.empty(),
             List.of(),
-            Optional.of(Pattern.compile("<[a-zA-Z]")));
+            Optional.of(Pattern.compile("<[a-zA-Z]"))
+        );
 
     assertThat(entry.matches(stringBuild("<p></p>"))).isTrue();
     assertThat(entry.matches(stringBuild("id: "))).isFalse();
@@ -34,7 +34,14 @@ class TaintStringEntryTest {
 
   private static FlowSite stringBuild(final String literal) {
     return new FlowSite(
-        FlowSiteKind.STRING_BUILD, literal, "", Optional.empty(), List.of(), List.of(), SPAN);
+        FlowSiteKind.STRING_BUILD,
+        literal,
+        "",
+        Optional.empty(),
+        List.of(),
+        List.of(),
+        SPAN
+    );
   }
 
   private static FlowSite call() {

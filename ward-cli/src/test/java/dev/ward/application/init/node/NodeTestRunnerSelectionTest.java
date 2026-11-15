@@ -26,20 +26,23 @@ class NodeTestRunnerSelectionTest {
   @TempDir Path root;
 
   @ParameterizedTest
-  @CsvSource({
-    "ANGULAR, NPM, '', ng-test",
-    "ANGULAR, NPM, vitest, ng-test",
-    "ANGULAR, NPM, jest, jest",
-    "NONE, NPM, '', vitest",
-    "NONE, NPM, jest, jest",
-    "NONE, NPM, vitest, vitest",
-    "NONE, BUN, '', bun-test"
-  })
+  @CsvSource(
+      {
+          "ANGULAR, NPM, '', ng-test",
+          "ANGULAR, NPM, vitest, ng-test",
+          "ANGULAR, NPM, jest, jest",
+          "NONE, NPM, '', vitest",
+          "NONE, NPM, jest, jest",
+          "NONE, NPM, vitest, vitest",
+          "NONE, BUN, '', bun-test"
+      }
+  )
   void testGateFollowsDeclaredRunnerAndFramework(
       final Framework framework,
       final BuildTool manager,
       final String declared,
-      final String gate) {
+      final String gate
+  ) {
     final PackageManifest manifest =
         declared.isEmpty()
             ? PackageManifest.EMPTY
@@ -57,7 +60,8 @@ class NodeTestRunnerSelectionTest {
         .filteredOn(gate -> "ng-test".equals(gate.id()))
         .singleElement()
         .satisfies(
-            gate -> assertThat(commandOf(gate)).isEqualTo("npx ng test --watch=false --coverage"));
+            gate -> assertThat(commandOf(gate)).isEqualTo("npx ng test --watch=false --coverage")
+        );
   }
 
   @Test
@@ -77,7 +81,9 @@ class NodeTestRunnerSelectionTest {
         new InitInputs(
             new FakeEnvironmentInspection("npm", "pnpm", "yarn"),
             directory -> PackageManifest.EMPTY,
-            directory -> false));
+            directory -> false
+        )
+    );
   }
 
   private Project project(final BuildTool manager, final Framework framework) {
@@ -91,6 +97,7 @@ class NodeTestRunnerSelectionTest {
         Set.of(),
         "24",
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 }

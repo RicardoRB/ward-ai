@@ -13,7 +13,6 @@ import dev.ward.infrastructure.cli.rules.RulesShowCommand;
 /** Command bindings for the {@code ward rules} command group. */
 @Module
 interface RulesCommandBindingsModule {
-
   @Binds
   @IntoMap
   @ClassKey(RulesCommand.class)

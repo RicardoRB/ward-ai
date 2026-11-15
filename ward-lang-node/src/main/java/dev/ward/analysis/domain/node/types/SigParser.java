@@ -76,7 +76,11 @@ final class SigParser {
 
   /** Records a type parameter name when one is expected; returns whether another is expected. */
   private static boolean nextExpectation(
-      final String token, final int depth, final boolean expecting, final List<String> names) {
+      final String token,
+      final int depth,
+      final boolean expecting,
+      final List<String> names
+  ) {
     if (depth != TOP_LEVEL) {
       return expecting;
     }

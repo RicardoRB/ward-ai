@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
  * ({@code const { name } = x}). An identifier that is only a variable is not reported.
  */
 public final class BiomeMemberPropertyCheck implements RuleCheck {
-
   private static final Set<String> DOT_OPERATORS = Set.of("'.'", "'?.'");
   private static final String OPEN_BRACKET = "'['";
   private static final int GRANDPARENT = 1;
@@ -43,7 +42,10 @@ public final class BiomeMemberPropertyCheck implements RuleCheck {
    * @param message the message; {@code {value}} is the candidate's text
    */
   public BiomeMemberPropertyCheck(
-      final Set<String> kinds, final Pattern text, final String message) {
+      final Set<String> kinds,
+      final Pattern text,
+      final String message
+  ) {
     this.kinds = Set.copyOf(kinds);
     this.text = text;
     this.message = message;
@@ -58,7 +60,9 @@ public final class BiomeMemberPropertyCheck implements RuleCheck {
             visit ->
                 CheckSupport.at(
                     visit.node().span(),
-                    CheckSupport.fill(message, SyntaxWalk.text(visit.node()), "")))
+                    CheckSupport.fill(message, SyntaxWalk.text(visit.node()), "")
+                )
+        )
         .toList();
   }
 
@@ -125,8 +129,7 @@ public final class BiomeMemberPropertyCheck implements RuleCheck {
     final String parent = BiomeTree.up(ancestors, PATTERN_LEVEL).kind();
     return "variableDeclaration".equals(parent)
         || "assignable".equals(parent)
-            && ancestors.size() >= MIN_WRAPPED_DEPTH
-            && BiomeTree.isKind(
-                BiomeTree.up(ancestors, WRAPPER_PATTERN_LEVEL), "variableDeclaration");
+        && ancestors.size() >= MIN_WRAPPED_DEPTH
+        && BiomeTree.isKind(BiomeTree.up(ancestors, WRAPPER_PATTERN_LEVEL), "variableDeclaration");
   }
 }

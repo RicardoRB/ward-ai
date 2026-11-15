@@ -21,7 +21,6 @@ import java.util.Set;
  * read, and neither is a class whose supertypes are unknown.
  */
 public final class ComparisonContractCheck extends FactsCheck {
-
   private static final String EXPRESSION = "expression";
   private static final String STATEMENT = "statement";
   private static final Set<String> TYPES =
@@ -38,7 +37,8 @@ public final class ComparisonContractCheck extends FactsCheck {
   private static final FactNeed NEED =
       new FactNeed(
           Set.of("classDeclaration", "enumDeclaration", "recordDeclaration", EXPRESSION),
-          Set.of(FactKind.MEMBERS, FactKind.TYPE, FactKind.CONSTANT));
+          Set.of(FactKind.MEMBERS, FactKind.TYPE, FactKind.CONSTANT)
+      );
 
   private final String message;
 
@@ -79,7 +79,10 @@ public final class ComparisonContractCheck extends FactsCheck {
   }
 
   private Optional<RuleMatch> judge(
-      final TypeMethods.Member member, final boolean comparator, final UnitTypeFacts types) {
+      final TypeMethods.Member member,
+      final boolean comparator,
+      final UnitTypeFacts types
+  ) {
     final Optional<SyntaxNode> body = JavaNodes.kid(member.method(), "methodBody");
     if (body.isEmpty() || hasNested(body.get())) {
       return Optional.empty();
@@ -104,13 +107,18 @@ public final class ComparisonContractCheck extends FactsCheck {
 
   /** Returns where the report goes: the comparison when it can be replaced, else the method. */
   private static dev.ward.analysis.domain.ir.Span location(
-      final TypeMethods.Member member, final SyntaxNode body, final UnitTypeFacts types) {
+      final TypeMethods.Member member,
+      final SyntaxNode body,
+      final UnitTypeFacts types
+  ) {
     return replaceable(body, types).map(SyntaxNode::span).orElse(member.declaration().span());
   }
 
   /** Returns the conditional of {@code return a < b ? -1 : 1;} over ints or longs. */
   private static Optional<SyntaxNode> replaceable(
-      final SyntaxNode body, final UnitTypeFacts types) {
+      final SyntaxNode body,
+      final UnitTypeFacts types
+  ) {
     final List<SyntaxNode> statements =
         SyntaxWalk.descendants(body).stream()
             .filter(n -> "blockStatement".equals(n.kind()))
@@ -130,7 +138,9 @@ public final class ComparisonContractCheck extends FactsCheck {
   }
 
   private static boolean orderedPrimitives(
-      final SyntaxNode conditional, final UnitTypeFacts types) {
+      final SyntaxNode conditional,
+      final UnitTypeFacts types
+  ) {
     final List<SyntaxNode> parts = conditional.children();
     if (parts.size() != CONDITIONAL_PARTS) {
       return false;

@@ -5,7 +5,6 @@ import java.util.Optional;
 
 /** The syntax-tree reads that the Swift summarizer and its declaration and use scans share. */
 final class SwiftSyntax {
-
   private SwiftSyntax() {}
 
   /** The first direct child of {@code node} with {@code kind}, if there is one. */

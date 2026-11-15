@@ -5,7 +5,6 @@ import java.util.List;
 
 /** Shared builders and constants for the review check tests; the tests extend it. */
 final class MethodTrees extends TreeBuilders {
-
   private MethodTrees() {
     super();
   }
@@ -34,13 +33,16 @@ final class MethodTrees extends TreeBuilders {
                     n(
                         FORMAL_PARAMETER,
                         n("typeType", t("'String'", "String")),
-                        n(PARAMETER_ID, id("text"))),
+                        n(PARAMETER_ID, id("text"))
+                    ),
                     t("','", ","),
                     n(
                         FORMAL_PARAMETER,
                         n("typeType", t("'int'", "int")),
-                        n(PARAMETER_ID, id("count"))),
-                    t(TOKEN_CLOSE, ")")),
+                        n(PARAMETER_ID, id("count"))
+                    ),
+                    t(TOKEN_CLOSE, ")")
+                ),
                 n(
                     "methodBody",
                     n(
@@ -49,7 +51,13 @@ final class MethodTrees extends TreeBuilders {
                             STATEMENT,
                             t("'return'", "return"),
                             n(EXPRESSION, n(PRIMARY, id("text"))),
-                            t(TOKEN_SEMICOLON, ";")))))));
+                            t(TOKEN_SEMICOLON, ";")
+                        )
+                    )
+                )
+            )
+        )
+    );
   }
 
   static SyntaxNode countingLoop(final String body) {
@@ -68,15 +76,20 @@ final class MethodTrees extends TreeBuilders {
                         "variableDeclarator",
                         n(PARAMETER_ID, id("i")),
                         t(TOKEN_EQUALS, "="),
-                        t("0", "0")))),
+                        t("0", "0")
+                    )
+                )
+            ),
             n(
                 EXPRESSION,
                 id("i"),
                 t("'<'", "<"),
                 id("values"),
                 t(TOKEN_DOT, "."),
-                t("'length'", "length")),
-            n("expressionList", n(EXPRESSION, id("i"), t("'++'", "++")))),
+                t("'length'", "length")
+            ),
+            n("expressionList", n(EXPRESSION, id("i"), t("'++'", "++")))
+        ),
         n(
             BLOCK,
             n(
@@ -85,7 +98,11 @@ final class MethodTrees extends TreeBuilders {
                     STATEMENT,
                     n(EXPRESSION, id("values"), t("'['", "["), id("i"), t("']'", "]")),
                     tail,
-                    t(TOKEN_SEMICOLON, ";")))));
+                    t(TOKEN_SEMICOLON, ";")
+                )
+            )
+        )
+    );
   }
 
   static SyntaxNode testClass(final List<SyntaxNode> members) {
@@ -93,7 +110,8 @@ final class MethodTrees extends TreeBuilders {
         "classDeclaration",
         t("'class'", "class"),
         id("CounterTest"),
-        n(CLASS_BODY, members.toArray(SyntaxNode[]::new)));
+        n(CLASS_BODY, members.toArray(SyntaxNode[]::new))
+    );
   }
 
   static SyntaxNode namedClass(final String name, final List<SyntaxNode> members) {
@@ -101,7 +119,8 @@ final class MethodTrees extends TreeBuilders {
         "classDeclaration",
         t("'class'", "class"),
         id(name),
-        n(CLASS_BODY, members.toArray(SyntaxNode[]::new)));
+        n(CLASS_BODY, members.toArray(SyntaxNode[]::new))
+    );
   }
 
   static SyntaxNode testMethod(final int assertions) {
@@ -113,14 +132,18 @@ final class MethodTrees extends TreeBuilders {
               n(
                   METHOD_CALL,
                   id("assertEquals"),
-                  n("arguments", t(TOKEN_OPEN, "("), t(TOKEN_CLOSE, ")"))));
+                  n("arguments", t(TOKEN_OPEN, "("), t(TOKEN_CLOSE, ")"))
+              )
+          );
     }
     return n(
         CLASS_BODY_DECLARATION,
         n(MODIFIER, n(ANNOTATION, t("'@'", "@"), id("Test"))),
         n(
             MEMBER_DECLARATION,
-            n(METHOD_DECLARATION, t("'void'", "void"), id("countsUp"), n(BLOCK, calls))));
+            n(METHOD_DECLARATION, t("'void'", "void"), id("countsUp"), n(BLOCK, calls))
+        )
+    );
   }
 
   static SyntaxNode publicTestMethod(final boolean annotated) {
@@ -129,12 +152,14 @@ final class MethodTrees extends TreeBuilders {
             ? n(
                 MODIFIER,
                 n(ANNOTATION, t("'@'", "@"), id("Test")),
-                n(MODIFIER, t("'public'", PUBLIC)))
+                n(MODIFIER, t("'public'", PUBLIC))
+            )
             : n(MODIFIER, t("'public'", PUBLIC));
     return n(
         CLASS_BODY_DECLARATION,
         modifier,
-        n(MEMBER_DECLARATION, n(METHOD_DECLARATION, t("'void'", "void"), id("testCounts"))));
+        n(MEMBER_DECLARATION, n(METHOD_DECLARATION, t("'void'", "void"), id("testCounts")))
+    );
   }
 
   static SyntaxNode lifecycle(final String name, final boolean annotated) {
@@ -151,11 +176,16 @@ final class MethodTrees extends TreeBuilders {
                 METHOD_DECLARATION,
                 t("'void'", "void"),
                 id(name),
-                n(FORMAL_PARAMETERS, t(TOKEN_OPEN, "("), t(TOKEN_CLOSE, ")")))));
+                n(FORMAL_PARAMETERS, t(TOKEN_OPEN, "("), t(TOKEN_CLOSE, ")"))
+            )
+        )
+    );
   }
 
   static SyntaxNode typeNamed(final String name) {
     return n(
-        "typeDeclaration", n("classDeclaration", t("'class'", "class"), id(name), n(CLASS_BODY)));
+        "typeDeclaration",
+        n("classDeclaration", t("'class'", "class"), id(name), n(CLASS_BODY))
+    );
   }
 }

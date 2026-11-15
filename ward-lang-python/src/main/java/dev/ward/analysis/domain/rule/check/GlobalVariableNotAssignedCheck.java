@@ -9,7 +9,6 @@ import java.util.Set;
 
 /** Reports a {@code global} name that the function never assigns, like Pylint W0602. */
 public final class GlobalVariableNotAssignedCheck implements RuleCheck {
-
   private static final Set<String> FUNCTIONS = Set.of("funcdef");
   private static final Set<String> GLOBALS = Set.of("global_stmt");
   private static final String NAME = "name";

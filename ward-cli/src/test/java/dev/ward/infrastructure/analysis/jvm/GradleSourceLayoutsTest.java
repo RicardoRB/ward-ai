@@ -26,9 +26,7 @@ class GradleSourceLayoutsTest {
 
   @Test
   void gradleKotlinLiteralSourceSetDirectoryIsRead() throws IOException {
-    write(
-        root.resolve("build.gradle.kts"),
-        """
+    write(root.resolve("build.gradle.kts"), """
         sourceSets {
             main {
                 java {
@@ -47,14 +45,13 @@ class GradleSourceLayoutsTest {
             new JavaSourceRoot(TEST_JAVA, ROOT_MODULE, true),
             new JavaSourceRoot(MAIN_KOTLIN, ROOT_MODULE, false),
             new JavaSourceRoot("generated/kotlin", ROOT_MODULE, false),
-            new JavaSourceRoot(TEST_KOTLIN, ROOT_MODULE, true));
+            new JavaSourceRoot(TEST_KOTLIN, ROOT_MODULE, true)
+        );
   }
 
   @Test
   void gradleGroovyLiteralTestDirectoryIsRead() throws IOException {
-    write(
-        root.resolve("build.gradle"),
-        """
+    write(root.resolve("build.gradle"), """
         sourceSets {
             test {
                 java {
@@ -69,7 +66,8 @@ class GradleSourceLayoutsTest {
             new JavaSourceRoot(MAIN_JAVA, ROOT_MODULE, false),
             new JavaSourceRoot("generated/test", ROOT_MODULE, true),
             new JavaSourceRoot(MAIN_KOTLIN, ROOT_MODULE, false),
-            new JavaSourceRoot(TEST_KOTLIN, ROOT_MODULE, true));
+            new JavaSourceRoot(TEST_KOTLIN, ROOT_MODULE, true)
+        );
   }
 
   @Test
@@ -88,7 +86,8 @@ class GradleSourceLayoutsTest {
             new JavaSourceRoot("domain/src/main/java", DOMAIN, false),
             new JavaSourceRoot("domain/src/test/java", DOMAIN, true),
             new JavaSourceRoot("domain/src/main/kotlin", DOMAIN, false),
-            new JavaSourceRoot("domain/src/test/kotlin", DOMAIN, true));
+            new JavaSourceRoot("domain/src/test/kotlin", DOMAIN, true)
+        );
   }
 
   @Test
@@ -100,16 +99,19 @@ class GradleSourceLayoutsTest {
             new JavaSourceRoot("domain/src/main/java", DOMAIN, false),
             new JavaSourceRoot("domain/src/test/java", DOMAIN, true),
             new JavaSourceRoot("domain/src/main/kotlin", DOMAIN, false),
-            new JavaSourceRoot("domain/src/test/kotlin", DOMAIN, true));
+            new JavaSourceRoot("domain/src/test/kotlin", DOMAIN, true)
+        );
   }
 
   /** The java-matrix build files, each copied under the name its build tool reads. */
   @ParameterizedTest
-  @CsvSource({
-    "maven/pom.xml, pom.xml",
-    "gradle-kotlin/build.gradle.kts, build.gradle.kts",
-    "gradle-groovy/build.gradle, build.gradle"
-  })
+  @CsvSource(
+      {
+          "maven/pom.xml, pom.xml",
+          "gradle-kotlin/build.gradle.kts, build.gradle.kts",
+          "gradle-groovy/build.gradle, build.gradle"
+      }
+  )
   void theJavaMatrixBuildFilesUseTheDefaultRoots(final String fixture, final String name)
       throws IOException {
     Files.copy(Path.of(JAVA_MATRIX, fixture), root.resolve(name));
@@ -119,7 +121,8 @@ class GradleSourceLayoutsTest {
             new JavaSourceRoot(MAIN_JAVA, ROOT_MODULE, false),
             new JavaSourceRoot(TEST_JAVA, ROOT_MODULE, true),
             new JavaSourceRoot(MAIN_KOTLIN, ROOT_MODULE, false),
-            new JavaSourceRoot(TEST_KOTLIN, ROOT_MODULE, true));
+            new JavaSourceRoot(TEST_KOTLIN, ROOT_MODULE, true)
+        );
   }
 
   private static List<JavaSourceRoot> roots(final Path project) {

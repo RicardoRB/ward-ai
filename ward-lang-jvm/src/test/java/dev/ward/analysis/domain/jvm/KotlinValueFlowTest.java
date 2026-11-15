@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
  * An {@code if}, {@code when} or {@code try} that makes a value, and the short-circuit operators.
  */
 class KotlinValueFlowTest {
-
   @Test
   void anIfThatMakesAValueTaintsItWhenOneBranchIsTainted() {
     assertThat(count("val v = if (a.isEmpty()) src() else a\nsink(v)")).isOne();

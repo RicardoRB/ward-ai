@@ -17,7 +17,10 @@ final class ObjectTypeParser {
   private final SigParser signatures;
 
   ObjectTypeParser(
-      final TokenCursor cursor, final Supplier<TsType> type, final SigParser signatures) {
+      final TokenCursor cursor,
+      final Supplier<TsType> type,
+      final SigParser signatures
+  ) {
     this.cursor = cursor;
     this.type = type;
     this.signatures = signatures;

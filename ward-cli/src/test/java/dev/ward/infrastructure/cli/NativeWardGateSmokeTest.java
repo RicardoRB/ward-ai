@@ -30,19 +30,12 @@ class NativeWardGateSmokeTest {
   private static final int FAILED = 1;
 
   private static final Map<String, String> SOURCES =
-      Map.ofEntries(
-          Map.entry(
-              "pom.xml",
-              """
+      Map.ofEntries(Map.entry("pom.xml", """
               <project><modelVersion>4.0.0</modelVersion><groupId>shop</groupId>
               <artifactId>shop</artifactId><version>1</version>
               <dependencies><dependency><groupId>org.example</groupId><artifactId>lib</artifactId>
               <version>[1.0,2.0)</version></dependency></dependencies></project>
-              """),
-          Map.entry("package.json", "{\"name\": \"shop\"}\n"),
-          Map.entry(
-              "src/main/java/shop/domain/Order.java",
-              """
+              """), Map.entry("package.json", "{\"name\": \"shop\"}\n"), Map.entry("src/main/java/shop/domain/Order.java", """
               package shop.domain;
 
               import java.util.*;
@@ -51,10 +44,7 @@ class NativeWardGateSmokeTest {
               public class Order {
                 List<Store> stores;
               }
-              """),
-          Map.entry(
-              "src/main/java/shop/infrastructure/Store.java",
-              """
+              """), Map.entry("src/main/java/shop/infrastructure/Store.java", """
               package shop.infrastructure;
 
               import javax.servlet.http.HttpServletRequest;
@@ -68,12 +58,7 @@ class NativeWardGateSmokeTest {
                   Runtime.getRuntime().exec(cmd);
                 }
               }
-              """),
-          Map.entry("web/app.ts", "export const user_name = 1;\n"),
-          Map.entry("web/legacy.js", "const user_name = 1;\nmodule.exports = user_name;\n"),
-          Map.entry("tools/report.py", "def BadName():\n    return 1\n"),
-          Map.entry("Sources/Shop/Shape.swift", "struct bad_shape {}\n"),
-          Map.entry("app/Main.kt", "fun Bad_name() {}\n"));
+              """), Map.entry("web/app.ts", "export const user_name = 1;\n"), Map.entry("web/legacy.js", "const user_name = 1;\nmodule.exports = user_name;\n"), Map.entry("tools/report.py", "def BadName():\n    return 1\n"), Map.entry("Sources/Shop/Shape.swift", "struct bad_shape {}\n"), Map.entry("app/Main.kt", "fun Bad_name() {}\n"));
 
   private static final List<String> RULES =
       List.of(
@@ -83,7 +68,8 @@ class NativeWardGateSmokeTest {
           "ward:javascript/naming",
           "ward:python/naming",
           "ward:swift/naming",
-          "ward:kotlin/function-name");
+          "ward:kotlin/function-name"
+      );
 
   // Built from two literals, so that no source file holds a token.
   private static final String TOKEN = "ghp_" + "aB3dE5gH7jK9mN1pQ3sT5vW7yZ9bD1fH3jL5";
@@ -155,16 +141,19 @@ class NativeWardGateSmokeTest {
     final Path binary = Path.of(System.getProperty("ward.native.binary")).toAbsolutePath();
     write(
         "package.json",
-        "{\"name\":\"shop\",\"version\":\"1.0.0\",\"dependencies\":{\"left-pad\":\"1.3.0\"}}");
+        "{\"name\":\"shop\",\"version\":\"1.0.0\",\"dependencies\":{\"left-pad\":\"1.3.0\"}}"
+    );
     write(
         "package-lock.json",
         "{\"name\":\"shop\",\"version\":\"1.0.0\",\"lockfileVersion\":3,\"requires\":true,"
             + "\"packages\":{\"\":{\"name\":\"shop\",\"version\":\"1.0.0\","
             + "\"dependencies\":{\"left-pad\":\"1.3.0\"}},"
-            + "\"node_modules/left-pad\":{\"version\":\"1.3.0\"}}}");
+            + "\"node_modules/left-pad\":{\"version\":\"1.3.0\"}}}"
+    );
     write(
         "node_modules/left-pad/package.json",
-        "{\"name\":\"left-pad\",\"version\":\"1.3.0\",\"license\":\"MIT\"}");
+        "{\"name\":\"left-pad\",\"version\":\"1.3.0\",\"license\":\"MIT\"}"
+    );
     write("ward.toml", "version = 2\n\n[checks.license]\nuses = \"license\"\ndeny = [\"MIT\"]\n");
 
     final Run gate = run(binary, "check", "--format", "json", "-C", project.toString());
@@ -210,7 +199,8 @@ class NativeWardGateSmokeTest {
     final Path stderr = Files.createTempFile("ward-err", ".txt");
     final Process process =
         new ProcessBuilder(
-                Stream.concat(Stream.of(binary.toString()), Stream.of(arguments)).toList())
+            Stream.concat(Stream.of(binary.toString()), Stream.of(arguments)).toList()
+        )
             .redirectOutput(stdout.toFile())
             .redirectError(stderr.toFile())
             .start();
@@ -219,7 +209,8 @@ class NativeWardGateSmokeTest {
       return new Run(
           process.exitValue(),
           Files.readString(stdout, StandardCharsets.UTF_8),
-          Files.readString(stderr, StandardCharsets.UTF_8));
+          Files.readString(stderr, StandardCharsets.UTF_8)
+      );
     } finally {
       process.destroyForcibly();
     }

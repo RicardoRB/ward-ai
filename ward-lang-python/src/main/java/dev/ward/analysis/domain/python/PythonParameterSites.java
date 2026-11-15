@@ -16,7 +16,6 @@ import java.util.Set;
  * and response parameters of a handler carry nothing.
  */
 final class PythonParameterSites {
-
   private static final String CALL_OPEN = "(";
   private static final String DECORATOR_MARK = "@";
   private static final Set<String> NOT_INPUT = Set.of("self", "cls", "request", "response");
@@ -43,7 +42,10 @@ final class PythonParameterSites {
   }
 
   private static void parameters(
-      final SyntaxNode list, final List<String> marks, final List<FlowSite> sites) {
+      final SyntaxNode list,
+      final List<String> marks,
+      final List<FlowSite> sites
+  ) {
     final List<SyntaxNode> children = list.children();
     for (int index = 0; index < children.size(); index++) {
       final SyntaxNode child = children.get(index);
@@ -63,7 +65,8 @@ final class PythonParameterSites {
       final String identifier,
       final List<String> marks,
       final List<SyntaxNode> children,
-      final int index) {
+      final int index
+  ) {
     final List<String> annotations = new ArrayList<>();
     if (!NOT_INPUT.contains(identifier)) {
       annotations.addAll(marks);
@@ -73,7 +76,10 @@ final class PythonParameterSites {
   }
 
   private static FlowSite site(
-      final String identifier, final List<String> annotations, final SyntaxNode name) {
+      final String identifier,
+      final List<String> annotations,
+      final SyntaxNode name
+  ) {
     return new FlowSite(
         FlowSiteKind.PARAMETER,
         identifier,
@@ -81,7 +87,8 @@ final class PythonParameterSites {
         Optional.empty(),
         annotations,
         List.of(),
-        name.span());
+        name.span()
+    );
   }
 
   /**

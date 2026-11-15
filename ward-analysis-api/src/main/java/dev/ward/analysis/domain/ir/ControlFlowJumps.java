@@ -8,7 +8,6 @@ import dev.ward.analysis.domain.ir.ControlFlowFrames.FrameKind;
  * continue} and {@code yield} to jumps to their targets.
  */
 public final class ControlFlowJumps {
-
   private static final int NOT_FOUND = -1;
 
   private final ControlFlowFrames frames;

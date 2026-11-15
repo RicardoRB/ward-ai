@@ -47,9 +47,7 @@ class CoverageConfigurationTest {
     assertThatThrownBy(() -> CommandLineTokenizer.tokenize("'unterminated"))
         .isInstanceOf(WardException.class);
     final Path file = root.resolve("ward.toml");
-    Files.writeString(
-        file,
-        """
+    Files.writeString(file, """
                 version = 2
                 [checks.tests]
                 command = ["mvn", "test"]
@@ -105,17 +103,19 @@ class CoverageConfigurationTest {
     assertThat(new WardConfiguration(1, Map.of()).enabledGates()).isEmpty();
     assertThat(new AgentResult(true, "done", "").succeeded()).isTrue();
     assertThat(
-            new InitResult(
-                    Path.of("/tmp/ward.toml"),
-                    true,
-                    false,
-                    null,
-                    null,
-                    null,
-                    List.of(),
-                    List.of(),
-                    List.of())
-                .gates())
+        new InitResult(
+            Path.of("/tmp/ward.toml"),
+            true,
+            false,
+            null,
+            null,
+            null,
+            List.of(),
+            List.of(),
+            List.of()
+        )
+            .gates()
+    )
         .isEmpty();
   }
 

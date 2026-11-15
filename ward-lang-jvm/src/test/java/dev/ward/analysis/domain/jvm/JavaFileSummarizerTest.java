@@ -17,8 +17,7 @@ class JavaFileSummarizerTest {
   @Test
   void declaresEveryTypeIncludingNestedOnes() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             package shop.domain;
 
             public final class Order {
@@ -34,8 +33,7 @@ class JavaFileSummarizerTest {
   @Test
   void readsThePackageAndEveryImportForm() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             package shop.service;
 
             import java.util.List;
@@ -50,14 +48,14 @@ class JavaFileSummarizerTest {
             "package:shop.service",
             "import:java.util.List",
             "on-demand:shop.domain",
-            "static:shop.domain.Prices.ZERO");
+            "static:shop.domain.Prices.ZERO"
+        );
   }
 
   @Test
   void readsTypeNamesFromTypePositionsAndNestedNames() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             package shop.service;
 
             import java.util.List;
@@ -79,8 +77,7 @@ class JavaFileSummarizerTest {
   @Test
   void readsFullyQualifiedNamesFromTypesAndCreators() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             package shop.service;
 
             public final class Pricing {
@@ -96,8 +93,7 @@ class JavaFileSummarizerTest {
   @Test
   void readsQualifierOfAStaticMemberAccess() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             package shop.service;
 
             class Uses {
@@ -111,8 +107,7 @@ class JavaFileSummarizerTest {
   @Test
   void readsAnnotationNamesWithoutTheirArguments() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             package shop.service;
 
             @shop.Audited(Level.HIGH)
@@ -125,8 +120,7 @@ class JavaFileSummarizerTest {
   @Test
   void ignoresPrimitiveTypesAndJdkCommentsOnly() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             package shop.service;
 
             class Numbers {

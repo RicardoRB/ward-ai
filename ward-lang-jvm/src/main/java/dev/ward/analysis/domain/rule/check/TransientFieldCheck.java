@@ -12,7 +12,6 @@ import java.util.Set;
  * {@code readObject} or {@code readResolve}, so a deserialized object holds the default value.
  */
 public final class TransientFieldCheck implements RuleCheck {
-
   private static final String TRANSIENT = "transient";
   private static final Set<String> RESTORERS = Set.of("readObject", "readResolve");
   private static final int SEVERAL = 2;
@@ -50,7 +49,8 @@ public final class TransientFieldCheck implements RuleCheck {
       final SyntaxNode clazz,
       final SyntaxNode field,
       final String name,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     int writes = 0;
     int restores = 0;
     for (final SyntaxNode member : ClassMembers.members(clazz)) {

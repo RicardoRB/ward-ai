@@ -32,7 +32,9 @@ final class NamespaceReader {
           nested(
               TreeKit.children(name, "identifier").stream().map(TreeText::text).toList(),
               inner.decls(),
-              flags));
+              flags
+          )
+      );
     }
   }
 
@@ -53,6 +55,13 @@ final class NamespaceReader {
 
   private static Decl namespace(final String name, final List<Decl> body, final int flags) {
     return new Decl(
-        Decl.Kind.NAMESPACE, name, Decl.Header.NONE, List.of(), TsType.UNKNOWN, body, flags);
+        Decl.Kind.NAMESPACE,
+        name,
+        Decl.Header.NONE,
+        List.of(),
+        TsType.UNKNOWN,
+        body,
+        flags
+    );
   }
 }

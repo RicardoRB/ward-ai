@@ -13,7 +13,8 @@ import java.util.regex.Pattern;
 public final class GradleAndroidModules {
   private static final Pattern ANDROID =
       Pattern.compile(
-          "com\\.android\\.(application|library)|alias\\s*\\([^)]*android[.-](application|library)");
+          "com\\.android\\.(application|library)|alias\\s*\\([^)]*android[.-](application|library)"
+      );
 
   private GradleAndroidModules() {}
 

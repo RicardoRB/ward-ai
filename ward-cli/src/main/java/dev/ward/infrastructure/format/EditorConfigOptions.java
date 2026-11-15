@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
  * take. The shared options map to standard keys; language options map to {@code ward_} keys.
  */
 final class EditorConfigOptions {
-
   private static final String TAB = "tab";
   private static final String OFF = "off";
   private static final Set<String> SHARED_OPTIONS =
@@ -19,7 +18,8 @@ final class EditorConfigOptions {
           EditorConfigLayout.LINE_WIDTH_OPTION,
           EditorConfigLayout.INDENT_STYLE_OPTION,
           EditorConfigLayout.INDENT_WIDTH_OPTION,
-          EditorConfigLayout.MAX_BLANK_LINES_OPTION);
+          EditorConfigLayout.MAX_BLANK_LINES_OPTION
+      );
 
   private EditorConfigOptions() {}
 
@@ -42,7 +42,10 @@ final class EditorConfigOptions {
    * @return the EditorConfig key
    */
   static String sourceKey(
-      final String optionKey, final Map<String, EditorConfigValues.Setting> effective) {
+      final String optionKey,
+      final Map<String,
+      EditorConfigValues.Setting> effective
+  ) {
     return switch (optionKey) {
       case EditorConfigLayout.LINE_WIDTH_OPTION -> EditorConfigLayout.MAX_LINE_LENGTH;
       case EditorConfigLayout.INDENT_STYLE_OPTION -> EditorConfigLayout.INDENT_STYLE;

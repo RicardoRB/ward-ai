@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
  * aria-hidden} set to a value other than {@code false}, or with a non-literal one, is not reported.
  */
 public final class BiomeRedundantAltCheck implements RuleCheck {
-
   private static final String IMG = "img";
   private static final String ALT = "alt";
   private static final String ARIA_HIDDEN = "aria-hidden";
@@ -47,7 +46,10 @@ public final class BiomeRedundantAltCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(JsxAttributes.OPENING, JsxAttributes.SELF_CLOSING))
         .stream()
         .map(SyntaxWalk.Visit::node)
@@ -67,7 +69,8 @@ public final class BiomeRedundantAltCheck implements RuleCheck {
             attribute ->
                 JsxAttributes.value(attribute)
                     .map(value -> isFalse(JsxTruthiness.raw(value, source)))
-                    .orElse(false))
+                    .orElse(false)
+        )
         .orElse(true);
   }
 

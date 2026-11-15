@@ -13,7 +13,6 @@ import org.tomlj.Toml;
 
 /** The {@code secrets} check type and its keys in {@code ward.toml}. */
 class TomlSecretsCheckTest {
-
   private static final LocalDate SINCE = LocalDate.of(2026, 1, 1);
 
   private static GateConfiguration secrets(final String body) {
@@ -52,7 +51,8 @@ class TomlSecretsCheckTest {
     final GateConfiguration check =
         secrets(
             "uses = \"secrets\"\nscan-history = true\nhistory-since = \"2026-01-01\"\n"
-                + "exclude-paths = [\"fixtures/**\"]\n");
+                + "exclude-paths = [\"fixtures/**\"]\n"
+        );
 
     assertThat(check.secrets().scanHistory()).isTrue();
     assertThat(check.secrets().historySince()).isEqualTo(Optional.of(SINCE));
@@ -75,7 +75,8 @@ class TomlSecretsCheckTest {
             "exclude-paths = \"x\"\n",
             "exclude-paths = [1]\n",
             "command = \"x\"\n",
-            "extra = 1\n");
+            "extra = 1\n"
+        );
     for (final String body : bodies) {
       assertThatThrownBy(() -> secrets("uses = \"secrets\"\n" + body))
           .as(body)

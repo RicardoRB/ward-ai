@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * of its kind; a name of unknown type is not judged.
  */
 public final class ModifiedIterationCheck implements RuleCheck {
-
   /** The container kinds the check knows, one per rule. */
   public enum Kind {
     /** A dict: keys added, deleted or popped while iterating it. */
@@ -86,12 +85,14 @@ public final class ModifiedIterationCheck implements RuleCheck {
               List.of(
                   n + "\\[[^\\]]*\\]=(?!=)",
                   "del" + n + "\\[",
-                  n + "\\.(?:pop|popitem|update|clear|setdefault)\\(");
+                  n + "\\.(?:pop|popitem|update|clear|setdefault)\\("
+              );
           case LIST ->
               List.of(
                   n + "\\.(?:append|extend|insert|remove|pop|clear)\\(",
                   "del" + n + "\\[",
-                  n + "\\[[^\\]]*\\]=(?!=)");
+                  n + "\\[[^\\]]*\\]=(?!=)"
+              );
           case SET -> List.of(n + "\\.(?:add|discard|remove|pop|clear|update)\\(");
         };
     return patterns.stream().anyMatch(pattern -> Pattern.compile(pattern).matcher(body).find());

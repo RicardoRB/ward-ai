@@ -21,14 +21,15 @@ public final class FileSystemPythonToolConfigs implements PythonToolConfigs {
   private static final String WARD_MARKER = "# managed-by: ward";
   private static final Map<String, List<String>> FILES =
       Map.of(
-          "mypy", List.of("mypy.ini", ".mypy.ini"),
-          "coverage", List.of(".coveragerc"),
-          "pytest", List.of("pytest.ini", ".pytest.ini"));
+          "mypy",
+          List.of("mypy.ini", ".mypy.ini"),
+          "coverage",
+          List.of(".coveragerc"),
+          "pytest",
+          List.of("pytest.ini", ".pytest.ini")
+      );
   private static final Map<String, String> TABLES =
-      Map.of(
-          "mypy", "tool.mypy",
-          "coverage", "tool.coverage",
-          "pytest", "tool.pytest.ini_options");
+      Map.of("mypy", "tool.mypy", "coverage", "tool.coverage", "pytest", "tool.pytest.ini_options");
   private static final Map<String, String> INI_SECTIONS =
       Map.of("mypy", "mypy", "coverage", "coverage:", "pytest", "pytest");
 
@@ -100,7 +101,8 @@ public final class FileSystemPythonToolConfigs implements PythonToolConfigs {
                 line.startsWith("[")
                     && line.endsWith("]")
                     && (line.equals("[" + section + "]")
-                        || section.endsWith(":") && line.startsWith("[" + section)));
+                        || section.endsWith(":") && line.startsWith("[" + section))
+        );
   }
 
   private static String read(final Path file) {

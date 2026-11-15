@@ -31,8 +31,11 @@ class TurborepoScriptWriterTest {
     final TurborepoWriter.Result result =
         TurborepoWriter.apply(
             workspace(
-                ui, Map.of("check-types", "tsc --noEmit --pretty false", "lint", "biome ci .")),
-            false);
+                ui,
+                Map.of("check-types", "tsc --noEmit --pretty false", "lint", "biome ci .")
+            ),
+            false
+        );
 
     assertThat(Files.readString(ui.resolve(PACKAGE_JSON)))
         .contains("\"lint\": \"eslint .\"")
@@ -54,7 +57,10 @@ class TurborepoScriptWriterTest {
 
   private TurboWorkspace workspace(final Path ui, final Map<String, String> scripts) {
     return new TurboWorkspace(
-        root, List.of(new TurboWorkspace.Member(UI_NAME, ui, scripts)), TASKS);
+        root,
+        List.of(new TurboWorkspace.Member(UI_NAME, ui, scripts)),
+        TASKS
+    );
   }
 
   private void turbo() throws IOException {

@@ -15,7 +15,6 @@ import java.util.Optional;
  * from a Git revision) with {@link #load}.
  */
 public final class OpenApiDocuments {
-
   private OpenApiDocuments() {}
 
   /**
@@ -38,14 +37,17 @@ public final class OpenApiDocuments {
    */
   public static LoadResult fromTrees(final String entry, final Map<String, SyntaxNode> trees) {
     return new OpenApiLoader(
-            path ->
-                Optional.ofNullable(trees.get(path))
-                    .map(tree -> new OpenApiLoader.Parsed(DocNodes.build(path, tree), null)))
+        path ->
+            Optional.ofNullable(trees.get(path))
+                .map(tree -> new OpenApiLoader.Parsed(DocNodes.build(path, tree), null))
+    )
         .load(entry);
   }
 
   private static Optional<OpenApiLoader.Parsed> parsed(
-      final String path, final ProjectFileReader reader) {
+      final String path,
+      final ProjectFileReader reader
+  ) {
     return reader
         .read(path)
         .map(
@@ -54,6 +56,7 @@ public final class OpenApiDocuments {
               return result.valid()
                   ? new OpenApiLoader.Parsed(DocNodes.build(path, result.tree()), null)
                   : new OpenApiLoader.Parsed(null, result.diagnostics().getFirst());
-            });
+            }
+        );
   }
 }

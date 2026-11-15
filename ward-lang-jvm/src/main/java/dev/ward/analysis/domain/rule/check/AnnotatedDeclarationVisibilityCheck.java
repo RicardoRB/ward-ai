@@ -12,7 +12,6 @@ import java.util.Set;
  * {@code visibility} keywords. A declaration without an access keyword is package-private.
  */
 public final class AnnotatedDeclarationVisibilityCheck implements RuleCheck {
-
   private static final String PACKAGE = "package";
   private static final Set<String> ACCESS = Set.of("public", "protected", "private");
   private static final Set<String> MODIFIER_KINDS =
@@ -31,7 +30,10 @@ public final class AnnotatedDeclarationVisibilityCheck implements RuleCheck {
    * @param message the message
    */
   public AnnotatedDeclarationVisibilityCheck(
-      final Set<String> annotations, final Set<String> visibility, final String message) {
+      final Set<String> annotations,
+      final Set<String> visibility,
+      final String message
+  ) {
     this.annotations = Set.copyOf(annotations);
     this.visibility = Set.copyOf(visibility);
     this.message = Objects.requireNonNull(message, "message");
@@ -72,7 +74,7 @@ public final class AnnotatedDeclarationVisibilityCheck implements RuleCheck {
     if (!trimmed.startsWith("@")) {
       return false;
     }
-    final String name = trimmed.substring(1).split("\\(", 2)[0].trim();
+    final String name = trimmed.substring(1).split("\\(", 2) [0].trim();
     return annotations.stream().anyMatch(full -> full.equals(name) || full.endsWith("." + name));
   }
 }

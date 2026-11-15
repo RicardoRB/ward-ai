@@ -17,8 +17,8 @@ public record MenuSpec(
     List<String> labels,
     String emptySelectionMessage,
     Set<Integer> initialSelections,
-    boolean allowEmpty) {
-
+    boolean allowEmpty
+) {
   /** Copies the collections so the menu does not observe later changes. */
   public MenuSpec {
     labels = List.copyOf(labels);

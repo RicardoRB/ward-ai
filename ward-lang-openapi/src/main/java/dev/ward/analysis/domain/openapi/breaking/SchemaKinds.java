@@ -5,7 +5,6 @@ import java.util.List;
 
 /** The kinds of change that have a check at each place of a schema. */
 final class SchemaKinds {
-
   /** The kinds of request-body checks. */
   private static final String REQUEST_BODY =
       """

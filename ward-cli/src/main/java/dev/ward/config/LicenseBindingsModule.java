@@ -57,7 +57,10 @@ abstract class LicenseBindingsModule {
 
   @Provides
   static Map<Ecosystem, LicenseMetadata> licenseReaders(
-      final JsonCodec codec, final LicenseCatalog catalog, final LicenseTexts texts) {
+      final JsonCodec codec,
+      final LicenseCatalog catalog,
+      final LicenseTexts texts
+  ) {
     final Path home = Path.of(System.getProperty("user.home", ""));
     final String gradleHome = System.getenv("GRADLE_USER_HOME");
     final Path gradleCache =
@@ -66,7 +69,9 @@ abstract class LicenseBindingsModule {
             : Path.of(gradleHome).resolve("caches/modules-2/files-2.1");
     final Map<Ecosystem, LicenseMetadata> readers = new EnumMap<>(Ecosystem.class);
     readers.put(
-        Ecosystem.MAVEN, new PomLicenseMetadata(home.resolve(MAVEN_REPOSITORY), gradleCache));
+        Ecosystem.MAVEN,
+        new PomLicenseMetadata(home.resolve(MAVEN_REPOSITORY), gradleCache)
+    );
     readers.put(Ecosystem.NPM, new NodeLicenseMetadata(codec));
     readers.put(Ecosystem.PYPI, new PythonLicenseMetadata(catalog, System.getenv("VIRTUAL_ENV")));
     readers.put(Ecosystem.SWIFT_URL, new SwiftLicenseMetadata(texts));
@@ -78,8 +83,17 @@ abstract class LicenseBindingsModule {
       final JvmProjectName jvm,
       final NodeProjectName node,
       final PythonProjectName python,
-      final SwiftProjectName swift) {
+      final SwiftProjectName swift
+  ) {
     return Map.of(
-        Toolchain.JVM, jvm, Toolchain.NODE, node, Toolchain.PYTHON, python, Toolchain.SWIFT, swift);
+        Toolchain.JVM,
+        jvm,
+        Toolchain.NODE,
+        node,
+        Toolchain.PYTHON,
+        python,
+        Toolchain.SWIFT,
+        swift
+    );
   }
 }

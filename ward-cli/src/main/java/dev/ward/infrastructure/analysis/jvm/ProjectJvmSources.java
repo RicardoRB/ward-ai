@@ -54,7 +54,9 @@ public final class ProjectJvmSources implements JvmSources {
           new SourceUnit(
               path,
               ".kt".equals(suffix) ? AnalysisLanguage.KOTLIN : AnalysisLanguage.JAVA,
-              Files.readString(file)));
+              Files.readString(file)
+          )
+      );
     } catch (IOException unreadable) {
       LOGGER.log(Level.FINE, "event=jvm-source-unreadable");
       return Optional.empty();

@@ -22,7 +22,8 @@ final class TomlCommandParser {
           SupportedQualityGates.VULNERABILITIES,
           SupportedQualityGates.BUILD_POLICY,
           SupportedQualityGates.LICENSE,
-          SupportedQualityGates.API_COMPAT);
+          SupportedQualityGates.API_COMPAT
+      );
 
   private TomlCommandParser() {}
 
@@ -50,7 +51,10 @@ final class TomlCommandParser {
 
   /** The check runs inside Ward, so a command has nothing to run. */
   private static List<String> nativeCheck(
-      final String where, final TomlTable gate, final String reason) {
+      final String where,
+      final TomlTable gate,
+      final String reason
+  ) {
     if (gate.contains(COMMAND)) {
       throw new WardException("'" + where + ".command' is not allowed: " + reason + ".");
     }

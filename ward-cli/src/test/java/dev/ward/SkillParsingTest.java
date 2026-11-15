@@ -12,13 +12,16 @@ class SkillParsingTest {
   @Test
   void parsesQuotedAndNestedFrontmatter() {
     assertThat(
-            SkillFrontmatter.parse(
-                "---\nname: 'demo'\nmetadata:\n  min-ward-version: \"1.2.3\"\n---\nbody\n"))
+        SkillFrontmatter.parse(
+            "---\nname: 'demo'\nmetadata:\n  min-ward-version: \"1.2.3\"\n---\nbody\n"
+        )
+    )
         .hasValueSatisfying(
             values ->
                 assertThat(values)
                     .containsEntry("name", "demo")
-                    .containsEntry("metadata.min-ward-version", "1.2.3"));
+                    .containsEntry("metadata.min-ward-version", "1.2.3")
+        );
   }
 
   @Test

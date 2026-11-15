@@ -18,7 +18,8 @@ class AnalysisCacheKeyTest {
           AnalysisLanguage.JAVA,
           RuleCapability.SYNTAX,
           AnalysisSeverity.ERROR,
-          "body");
+          "body"
+      );
 
   @Test
   void ruleSetHashIgnoresTheOrderOfRules() {
@@ -28,7 +29,8 @@ class AnalysisCacheKeyTest {
             AnalysisLanguage.JAVA,
             RuleCapability.SYNTAX,
             AnalysisSeverity.WARNING,
-            "other");
+            "other"
+        );
 
     assertThat(AnalysisCacheKey.ruleSet(VERSION, List.of(LENGTH, naming)))
         .isEqualTo(AnalysisCacheKey.ruleSet(VERSION, List.of(naming, LENGTH)));
@@ -40,26 +42,34 @@ class AnalysisCacheKeyTest {
 
     assertThat(AnalysisCacheKey.ruleSet(VERSION, List.of(withBody("changed")))).isNotEqualTo(base);
     assertThat(
-            AnalysisCacheKey.ruleSet(
-                VERSION,
-                List.of(
-                    new RuleDefinition(
-                        LENGTH.id(),
-                        AnalysisLanguage.JAVA,
-                        RuleCapability.SYNTAX,
-                        AnalysisSeverity.WARNING,
-                        "body"))))
+        AnalysisCacheKey.ruleSet(
+            VERSION,
+            List.of(
+                new RuleDefinition(
+                    LENGTH.id(),
+                    AnalysisLanguage.JAVA,
+                    RuleCapability.SYNTAX,
+                    AnalysisSeverity.WARNING,
+                    "body"
+                )
+            )
+        )
+    )
         .isNotEqualTo(base);
     assertThat(
-            AnalysisCacheKey.ruleSet(
-                VERSION,
-                List.of(
-                    new RuleDefinition(
-                        LENGTH.id(),
-                        AnalysisLanguage.JAVA,
-                        RuleCapability.CFG,
-                        AnalysisSeverity.ERROR,
-                        "body"))))
+        AnalysisCacheKey.ruleSet(
+            VERSION,
+            List.of(
+                new RuleDefinition(
+                    LENGTH.id(),
+                    AnalysisLanguage.JAVA,
+                    RuleCapability.CFG,
+                    AnalysisSeverity.ERROR,
+                    "body"
+                )
+            )
+        )
+    )
         .isNotEqualTo(base);
     assertThat(AnalysisCacheKey.ruleSet("0.6.1", List.of(LENGTH))).isNotEqualTo(base);
   }
@@ -82,7 +92,12 @@ class AnalysisCacheKeyTest {
 
   private static RuleDefinition withBody(final String body) {
     return new RuleDefinition(
-        LENGTH.id(), AnalysisLanguage.JAVA, RuleCapability.SYNTAX, AnalysisSeverity.ERROR, body);
+        LENGTH.id(),
+        AnalysisLanguage.JAVA,
+        RuleCapability.SYNTAX,
+        AnalysisSeverity.ERROR,
+        body
+    );
   }
 
   private static SourceUnit unit(final String path, final String text) {

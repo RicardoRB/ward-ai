@@ -90,8 +90,10 @@ final class OpenApiGateFixtures {
                 null,
                 null,
                 null,
-                null),
-            PROJECT);
+                null
+            ),
+            PROJECT
+        );
   }
 
   QualityGate gate(final String id, final List<String> command) {
@@ -118,7 +120,8 @@ final class OpenApiGateFixtures {
           }
         },
         null,
-        CLOCK);
+        CLOCK
+    );
   }
 
   private RevisionFiles revisionFiles() {

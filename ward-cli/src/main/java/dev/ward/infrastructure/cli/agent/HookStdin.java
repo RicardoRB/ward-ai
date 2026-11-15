@@ -10,10 +10,11 @@ import java.util.function.BooleanSupplier;
  * @param interactive whether {@code stream} is a terminal, which carries no event payload
  */
 record HookStdin(InputStream stream, BooleanSupplier interactive) {
-
   /** Standard input, interactive when a console terminal is attached. */
   static HookStdin system() {
     return new HookStdin(
-        System.in, () -> System.console() != null && System.console().isTerminal());
+        System.in,
+        () -> System.console() != null && System.console().isTerminal()
+    );
   }
 }

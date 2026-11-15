@@ -33,7 +33,9 @@ final class JavaLocals {
                 Syntax.child(initializer, EXPRESSION)
                     .ifPresentOrElse(
                         value -> expressions.expression(value, ctx, declared),
-                        () -> initializer.children().forEach(child -> walkOther(child, ctx))));
+                        () -> initializer.children().forEach(child -> walkOther(child, ctx))
+                    )
+        );
   }
 
   private void walkOther(final SyntaxNode child, final Ctx ctx) {
@@ -50,7 +52,8 @@ final class JavaLocals {
       final Typed value = expressions.expression(inferred.get(), ctx, Optional.empty());
       Syntax.child(node, IDENTIFIER)
           .ifPresent(
-              name -> session.variable(name, value.type().filter(type -> !Types.isNull(type))));
+              name -> session.variable(name, value.type().filter(type -> !Types.isNull(type)))
+          );
       return;
     }
     final Optional<JType> base =
@@ -63,11 +66,12 @@ final class JavaLocals {
   private void declare(final SyntaxNode declarator, final Optional<JType> base, final Ctx ctx) {
     final SyntaxNode id = Syntax.child(declarator, DECLARATOR_ID).orElse(declarator);
     final int dimensions =
-        (int) id.children().stream().filter(child -> BRACKET.equals(Syntax.token(child))).count();
+        (int)id.children().stream().filter(child -> BRACKET.equals(Syntax.token(child))).count();
     Syntax.child(id, IDENTIFIER)
         .ifPresent(
             name ->
-                session.variable(name, base.map(found -> JavaTypes.arrayOf(found, dimensions))));
+                session.variable(name, base.map(found -> JavaTypes.arrayOf(found, dimensions)))
+        );
     declarator(declarator, ctx);
   }
 
@@ -109,7 +113,7 @@ final class JavaLocals {
         Syntax.child(node, "catchType").stream()
             .flatMap(types -> Syntax.children(types, "qualifiedName").stream())
             .map(name -> ctx.scope().resolve(List.of(Syntax.text(name).split("\\."))))
-            .map(binary -> binary.map(found -> (JType) JType.ClassType.of(found)))
+            .map(binary -> binary.map(found -> (JType)JType.ClassType.of(found)))
             .toList();
     Optional<JType> type = alternatives.isEmpty() ? Optional.empty() : alternatives.get(0);
     for (final Optional<JType> next : alternatives.stream().skip(1).toList()) {

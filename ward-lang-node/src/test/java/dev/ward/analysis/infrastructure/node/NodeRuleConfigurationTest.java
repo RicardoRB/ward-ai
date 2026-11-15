@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 /** Naming behavior and the handling of rule bodies and ids that cannot be read. */
 class NodeRuleConfigurationTest {
-
   private static final AnalysisLanguage TS = AnalysisLanguage.TYPESCRIPT;
 
   @Test

@@ -42,7 +42,9 @@ final class DependencyFixtureRule implements RuleMatcher {
 
   /** Reports each import whose target file, one of the dependencies, exports nothing. */
   private static List<RuleMatch> unexportedImports(
-      final SyntaxNode root, final DependencyView view) {
+      final SyntaxNode root,
+      final DependencyView view
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxNode node : root.children()) {
       if (IMPORT.equals(node.kind())) {
@@ -50,7 +52,8 @@ final class DependencyFixtureRule implements RuleMatcher {
         view.dependencies().stream()
             .filter(summary -> summary.path().equals(target) && summary.exports().isEmpty())
             .forEach(
-                summary -> matches.add(new RuleMatch(node.span(), target + " exports nothing")));
+                summary -> matches.add(new RuleMatch(node.span(), target + " exports nothing"))
+            );
       }
     }
     return matches;

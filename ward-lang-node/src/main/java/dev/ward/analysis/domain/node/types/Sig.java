@@ -10,7 +10,6 @@ import java.util.List;
  * @param returns the declared return type, or {@link TsType#UNKNOWN}
  */
 public record Sig(List<String> typeParams, List<Param> params, TsType returns) {
-
   /** Copies the lists. */
   public Sig {
     typeParams = List.copyOf(typeParams);

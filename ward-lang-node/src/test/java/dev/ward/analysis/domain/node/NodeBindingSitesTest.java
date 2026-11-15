@@ -16,7 +16,6 @@ import org.junit.jupiter.params.provider.EnumSource;
  * TypeScript and JavaScript.
  */
 class NodeBindingSitesTest {
-
   private static final String IMPORTS =
       """
       import { exec as run } from 'child_process';
@@ -43,9 +42,7 @@ class NodeBindingSitesTest {
 
   /** Scenario: Aliased named import. The call is listed under the imported name. */
   @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = AnalysisLanguage.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void aliasedNamedImportCallsTheImportedNameFromItsModule(final AnalysisLanguage language) {
     final FlowSite call = siteOn(graph(language, IMPORTS), "exec", "");
     assertThat(call.receiverType()).contains("child_process");
@@ -53,9 +50,7 @@ class NodeBindingSitesTest {
 
   /** Scenario: Default import. A qualifier bound to a default import is its module. */
   @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = AnalysisLanguage.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void defaultImportQualifierResolvesToItsModule(final AnalysisLanguage language) {
     final FlowSite call = siteOn(graph(language, IMPORTS), "exec", "cp");
     assertThat(call.receiverType()).contains("child_process");
@@ -63,9 +58,7 @@ class NodeBindingSitesTest {
 
   /** Scenario: Namespace import. The module keeps its path, so fs/promises stays distinct. */
   @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = AnalysisLanguage.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void namespaceImportKeepsTheModulePath(final AnalysisLanguage language) {
     final FlowSite call = siteOn(graph(language, IMPORTS), "readFile", "fsp");
     assertThat(call.receiverType()).contains("fs/promises");
@@ -73,9 +66,7 @@ class NodeBindingSitesTest {
 
   /** Scenario: Dotted qualifier. The first segment names the module, so fs.promises is fs. */
   @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = AnalysisLanguage.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void dottedQualifierResolvesToItsRootModule(final AnalysisLanguage language) {
     final FlowSite call = siteOn(graph(language, IMPORTS), "readFile", "fs.promises");
     assertThat(call.receiverType()).contains("fs");
@@ -83,9 +74,7 @@ class NodeBindingSitesTest {
 
   /** Scenario: require. A variable bound to require() is its module. */
   @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = AnalysisLanguage.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void requireBindingResolvesToItsModule(final AnalysisLanguage language) {
     final FlowSite call = siteOn(graph(language, REQUIRES), "exec", "child");
     assertThat(call.receiverType()).contains("child_process");
@@ -93,9 +82,7 @@ class NodeBindingSitesTest {
 
   /** Scenario: Destructured require. The call is listed under the required name. */
   @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = AnalysisLanguage.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void destructuredRequireCallsTheRequiredName(final AnalysisLanguage language) {
     final FlowSite call = siteOn(graph(language, REQUIRES), "execFile", "");
     assertThat(call.receiverType()).contains("child_process");
@@ -106,12 +93,16 @@ class NodeBindingSitesTest {
   }
 
   private static FlowSite siteOn(
-      final ControlFlowGraph graph, final String name, final String qualifier) {
+      final ControlFlowGraph graph,
+      final String name,
+      final String qualifier
+  ) {
     return sitesOf(graph).stream()
         .filter(site -> site.name().equals(name) && site.qualifier().equals(qualifier))
         .findFirst()
         .orElseThrow(
-            () -> new AssertionError("no site " + name + " on " + qualifier + "\n" + dump(graph)));
+            () -> new AssertionError("no site " + name + " on " + qualifier + "\n" + dump(graph))
+        );
   }
 
   private static String dump(final ControlFlowGraph graph) {

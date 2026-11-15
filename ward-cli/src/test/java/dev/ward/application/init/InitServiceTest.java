@@ -38,14 +38,17 @@ class InitServiceTest {
           new ProjectDetector(new FileSystemProjectInspection()),
           Set.of(),
           new InitSetupCatalog(new FakeEnvironmentInspection()),
-          InitFixtures.projectFiles(new PomToolConfigurator(), RuleFileTargetsFixtures.writer()));
+          InitFixtures.projectFiles(new PomToolConfigurator(), RuleFileTargetsFixtures.writer())
+      );
 
   @Test
   void generatedConfigurationAssignsCumulativeProfiles(@TempDir final Path dir) throws Exception {
     withPom(dir, PLAIN_POM);
 
     service.initialize(
-        dir, new InitSelection(List.of("none"), List.of(FORMAT, "tests", "mutation"), null, null));
+        dir,
+        new InitSelection(List.of("none"), List.of(FORMAT, "tests", "mutation"), null, null)
+    );
 
     final WardConfiguration configuration =
         new TomlConfigurationReader().read(dir.resolve(WARD_TOML));
@@ -71,7 +74,8 @@ class InitServiceTest {
             new ProjectDetector(new FileSystemProjectInspection()),
             Set.of(),
             new InitSetupCatalog(new FakeEnvironmentInspection(), new QualityHookInstaller()),
-            InitFixtures.projectFiles(new PomToolConfigurator(), RuleFileTargetsFixtures.writer()));
+            InitFixtures.projectFiles(new PomToolConfigurator(), RuleFileTargetsFixtures.writer())
+        );
 
     qualityService.initialize(
         dir,
@@ -84,7 +88,9 @@ class InitServiceTest {
             true,
             null,
             false,
-            null));
+            null
+        )
+    );
 
     final String configuration = Files.readString(dir.resolve(WARD_TOML));
     assertThat(configuration)
@@ -100,11 +106,12 @@ class InitServiceTest {
   void rejectsUnknownExplicitGateBeforeWriting(@TempDir final Path dir) throws Exception {
     withPom(dir, PLAIN_POM);
     assertThatThrownBy(
-            () ->
-                service.initialize(
-                    dir,
-                    new InitSelection(
-                        List.of("none"), List.of("nope"), null, QualityPreset.STANDARD)))
+        () ->
+            service.initialize(
+                dir,
+                new InitSelection(List.of("none"), List.of("nope"), null, QualityPreset.STANDARD)
+            )
+    )
         .hasMessageContaining("nope");
     assertThat(dir.resolve(WARD_TOML)).doesNotExist();
     assertThat(Files.readString(dir.resolve("pom.xml"))).isEqualTo(PLAIN_POM);
@@ -135,16 +142,20 @@ class InitServiceTest {
             new ProjectDetector(new FileSystemProjectInspection()),
             Set.of(conflict),
             new InitSetupCatalog(new FakeEnvironmentInspection()),
-            InitFixtures.projectFiles(new PomToolConfigurator(), RuleFileTargetsFixtures.writer()));
+            InitFixtures.projectFiles(new PomToolConfigurator(), RuleFileTargetsFixtures.writer())
+        );
     assertThatThrownBy(
-            () ->
-                conflicting.initialize(
-                    dir,
-                    new InitSelection(
-                        List.of("opencode"),
-                        JavaPresetGates.STANDARD,
-                        null,
-                        QualityPreset.STANDARD)))
+        () ->
+            conflicting.initialize(
+                dir,
+                new InitSelection(
+                    List.of("opencode"),
+                    JavaPresetGates.STANDARD,
+                    null,
+                    QualityPreset.STANDARD
+                )
+            )
+    )
         .hasMessageContaining("conflicts");
     assertThat(dir.resolve(WARD_TOML)).doesNotExist();
     assertThat(dir.resolve("config")).doesNotExist();
@@ -159,8 +170,7 @@ class InitServiceTest {
 
     assertThat(result.created()).isTrue();
     assertThat(Files.readString(dir.resolve(WARD_TOML)))
-        .isEqualTo(
-            """
+        .isEqualTo("""
                 version = 2
 
                 [checks.tests]
@@ -202,13 +212,15 @@ class InitServiceTest {
     final InitService failing = InitFailureFixtures.failingService(dir);
 
     assertThatThrownBy(
-            () ->
-                failing.initialize(
-                    dir,
-                    new InitSelection(List.of("none"), List.of("tests"), null, null),
-                    true,
-                    false,
-                    finding -> false))
+        () ->
+            failing.initialize(
+                dir,
+                new InitSelection(List.of("none"), List.of("tests"), null, null),
+                true,
+                false,
+                finding -> false
+            )
+    )
         .isInstanceOf(IllegalStateException.class)
         .hasMessage("setup failed");
   }

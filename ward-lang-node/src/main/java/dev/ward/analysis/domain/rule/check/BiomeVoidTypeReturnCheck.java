@@ -16,7 +16,6 @@ import java.util.Set;
  * return void expression} are not reported.
  */
 public final class BiomeVoidTypeReturnCheck implements RuleCheck {
-
   private static final String RETURN = "returnStatement";
   private static final String ARGUMENT = "expressionSequence";
   private static final String VOID = "void";
@@ -48,7 +47,10 @@ public final class BiomeVoidTypeReturnCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(RETURN)).stream()
         .filter(visit -> hasValue(visit.node()) && !voidArgument(visit.node()))
         .filter(visit -> enclosingReturnsVoid(visit.ancestors()))

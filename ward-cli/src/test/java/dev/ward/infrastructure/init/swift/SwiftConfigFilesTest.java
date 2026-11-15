@@ -38,7 +38,8 @@ class SwiftConfigFilesTest {
         .extracting(ConfigTarget::file, ConfigTarget::disposition)
         .containsExactly(
             tuple(root.resolve(".swiftlint.yml"), ConfigTarget.Disposition.REMOVE),
-            tuple(root.resolve(".ward/swiftlint-strict.yml"), ConfigTarget.Disposition.REMOVE));
+            tuple(root.resolve(".ward/swiftlint-strict.yml"), ConfigTarget.Disposition.REMOVE)
+        );
   }
 
   @Test
@@ -51,7 +52,8 @@ class SwiftConfigFilesTest {
             target -> {
               assertThat(target.disposition()).isEqualTo(ConfigTarget.Disposition.KEEP);
               assertThat(target.detail()).startsWith("kept: your .swiftlint.yml");
-            });
+            }
+        );
   }
 
   @Test
@@ -65,7 +67,8 @@ class SwiftConfigFilesTest {
             target -> {
               assertThat(target.file()).isEqualTo(root.resolve(".ward/swift-tools"));
               assertThat(target.disposition()).isEqualTo(ConfigTarget.Disposition.REMOVE);
-            });
+            }
+        );
   }
 
   @Test

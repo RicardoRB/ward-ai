@@ -62,7 +62,8 @@ public final class LlvmCovCoverageReport implements CoverageReport {
           "The llvm-cov export "
               + ReportFiles.relativize(project, reported)
               + " is missing."
-              + RUN_TESTS_FIRST);
+              + RUN_TESTS_FIRST
+      );
     }
     return read(project, export);
   }
@@ -74,7 +75,9 @@ public final class LlvmCovCoverageReport implements CoverageReport {
     } catch (IOException | JsonCodecException | IllegalArgumentException exception) {
       if (LOGGER.isLoggable(Level.INFO)) {
         LOGGER.log(
-            Level.INFO, "event=findings-parse-failed gate=" + SupportedQualityGates.SWIFT_COVERAGE);
+            Level.INFO,
+            "event=findings-parse-failed gate=" + SupportedQualityGates.SWIFT_COVERAGE
+        );
       }
       return LineCoverage.unusable("The llvm-cov export cannot be parsed.");
     }

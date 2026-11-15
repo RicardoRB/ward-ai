@@ -10,7 +10,8 @@ public enum BuildRule {
   MINIMUM_BUILD_TOOL_VERSION(
       "minimum-build-tool-version",
       true,
-      List.of("maven", "gradle", "npm", "pnpm", "yarn", "bun", "uv")),
+      List.of("maven", "gradle", "npm", "pnpm", "yarn", "bun", "uv")
+  ),
   DUPLICATE_DEPENDENCY_DECLARATION("duplicate-dependency-declaration", true, List.of()),
   DEPENDENCY_CONVERGENCE("dependency-convergence", false, List.of()),
   REQUIRE_UPPER_BOUND("require-upper-bound", false, List.of());

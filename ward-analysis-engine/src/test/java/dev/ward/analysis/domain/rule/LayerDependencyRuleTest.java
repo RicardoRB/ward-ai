@@ -13,7 +13,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class LayerDependencyRuleTest {
-
   private static final LayerBoundary DOMAIN_NO_INFRA =
       new LayerBoundary(List.of("domain"), List.of("infrastructure"));
 
@@ -63,8 +62,10 @@ class LayerDependencyRuleTest {
         match(
             List.of(
                 DOMAIN_NO_INFRA,
-                new LayerBoundary(List.of("domain"), List.of("infrastructure", "adapter"))),
-            edge);
+                new LayerBoundary(List.of("domain"), List.of("infrastructure", "adapter"))
+            ),
+            edge
+        );
 
     assertThat(matches).hasSize(2);
   }
@@ -90,7 +91,8 @@ class LayerDependencyRuleTest {
     final List<LayerBoundary> boundaries =
         List.of(
             DOMAIN_NO_INFRA,
-            new LayerBoundary(List.of("controller", "api"), List.of("repository")));
+            new LayerBoundary(List.of("controller", "api"), List.of("repository"))
+        );
 
     assertThat(LayerRuleBody.decode(LayerRuleBody.encode(boundaries))).isEqualTo(boundaries);
   }
@@ -113,27 +115,32 @@ class LayerDependencyRuleTest {
             Set.of(AnalysisLanguage.JAVA, AnalysisLanguage.TYPESCRIPT),
             RuleCapability.SYMBOLS,
             AnalysisSeverity.ERROR,
-            "");
+            ""
+        );
 
     assertThat(multi.covers(AnalysisLanguage.JAVA)).isTrue();
     assertThat(multi.covers(AnalysisLanguage.PYTHON)).isFalse();
     assertThatThrownBy(
-            () ->
-                new RuleDefinition(
-                    "ward:architecture/layers",
-                    AnalysisLanguage.JAVA,
-                    RuleCapability.SYMBOLS,
-                    AnalysisSeverity.ERROR,
-                    ""))
+        () ->
+            new RuleDefinition(
+                "ward:architecture/layers",
+                AnalysisLanguage.JAVA,
+                RuleCapability.SYMBOLS,
+                AnalysisSeverity.ERROR,
+                ""
+            )
+    )
         .isInstanceOf(IllegalArgumentException.class);
     assertThatThrownBy(
-            () ->
-                new RuleDefinition(
-                    "ward:java/layers",
-                    Set.of(AnalysisLanguage.JAVA, AnalysisLanguage.PYTHON),
-                    RuleCapability.SYMBOLS,
-                    AnalysisSeverity.ERROR,
-                    ""))
+        () ->
+            new RuleDefinition(
+                "ward:java/layers",
+                Set.of(AnalysisLanguage.JAVA, AnalysisLanguage.PYTHON),
+                RuleCapability.SYMBOLS,
+                AnalysisSeverity.ERROR,
+                ""
+            )
+    )
         .isInstanceOf(IllegalArgumentException.class);
   }
 }

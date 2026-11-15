@@ -60,7 +60,12 @@ final class GradleLockfiles {
       }
     } catch (IOException e) {
       throw new DependencyInventoryException(
-          project, LOCKFILE, "it cannot be read", "check its permissions", e);
+          project,
+          LOCKFILE,
+          "it cannot be read",
+          "check its permissions",
+          e
+      );
     }
     return locked;
   }
@@ -79,9 +84,11 @@ final class GradleLockfiles {
 
   private static void entry(
       final String project,
-      final Map<String, Set<String>> locked,
+      final Map<String,
+      Set<String>> locked,
       final String line,
-      final String configuration) {
+      final String configuration
+  ) {
     final String text = line.strip();
     if (text.isEmpty() || text.startsWith("#") || text.startsWith("empty=")) {
       return;
@@ -92,7 +99,8 @@ final class GradleLockfiles {
           project,
           LOCKFILE,
           "a line is not group:name:version=configurations",
-          "run `gradle dependencies --write-locks`");
+          "run `gradle dependencies --write-locks`"
+      );
     }
     final String coordinate = matcher.group(1) + ":" + matcher.group(2) + ":" + matcher.group(3);
     final Set<String> configurations =

@@ -47,23 +47,30 @@ public final class TextRules {
         rules.add(text);
       } else {
         compiled.recordError(
-            new RuleExecutionError(definition.id(), null, "the rule is not a text rule"));
+            new RuleExecutionError(definition.id(), null, "the rule is not a text rule")
+        );
       }
     } catch (final AnalysisFailedException exception) {
       compiled.recordError(
-          new RuleExecutionError(definition.id(), null, "the rule could not be compiled"));
+          new RuleExecutionError(definition.id(), null, "the rule could not be compiled")
+      );
     }
   }
 
   private static void runOn(
-      final TextCompiledRule rule, final TextFile file, final RuleRunCollector collector) {
+      final TextCompiledRule rule,
+      final TextFile file,
+      final RuleRunCollector collector
+  ) {
     try {
       rule.textMatches(file)
           .forEach(
-              match -> collector.finding(RuleFindings.at(rule.definition(), file.path(), match)));
+              match -> collector.finding(RuleFindings.at(rule.definition(), file.path(), match))
+          );
     } catch (final AnalysisFailedException exception) {
       collector.recordError(
-          new RuleExecutionError(rule.definition().id(), file.path(), exception.getMessage()));
+          new RuleExecutionError(rule.definition().id(), file.path(), exception.getMessage())
+      );
     }
   }
 }

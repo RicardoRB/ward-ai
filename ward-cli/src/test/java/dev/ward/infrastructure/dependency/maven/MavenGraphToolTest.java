@@ -77,7 +77,8 @@ class MavenGraphToolTest {
     assertThat(guava.requested())
         .containsExactlyInAnyOrder(
             RequestedVersion.byModule("33.8.0-jre"),
-            new RequestedVersion("pkg:maven/dev.example/domain@1.0.0", "33.7.2-jre"));
+            new RequestedVersion("pkg:maven/dev.example/domain@1.0.0", "33.7.2-jre")
+        );
   }
 
   @Test
@@ -95,7 +96,8 @@ class MavenGraphToolTest {
                 + MavenGraphTool.PLUGIN_VERSION
                 + ":tree",
             "-DoutputType=tgf",
-            "-Dverbose");
+            "-Dverbose"
+        );
     assertThat(executor.workingDirectories.getFirst()).isEqualTo(DIR);
   }
 

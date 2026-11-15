@@ -11,7 +11,6 @@ import java.util.Set;
  * and setup scripts, whose definitions are found by name.
  */
 final class PythonUnusedDefinitions implements UnusedDefinitionStrategy {
-
   /** The rule id for unused functions. */
   static final String FUNCTION_ID = "ward:python/unused-function";
 
@@ -29,11 +28,17 @@ final class PythonUnusedDefinitions implements UnusedDefinitionStrategy {
 
   private static final Map<String, UnusedDefinitionKind> KINDS =
       Map.of(
-          FUNCTION_ID, UnusedDefinitionKind.FUNCTION,
-          CLASS_ID, UnusedDefinitionKind.CLASS,
-          METHOD_ID, UnusedDefinitionKind.METHOD,
-          PROPERTY_ID, UnusedDefinitionKind.UNUSED_PROPERTY,
-          ATTRIBUTE_ID, UnusedDefinitionKind.ATTRIBUTE);
+          FUNCTION_ID,
+          UnusedDefinitionKind.FUNCTION,
+          CLASS_ID,
+          UnusedDefinitionKind.CLASS,
+          METHOD_ID,
+          UnusedDefinitionKind.METHOD,
+          PROPERTY_ID,
+          UnusedDefinitionKind.UNUSED_PROPERTY,
+          ATTRIBUTE_ID,
+          UnusedDefinitionKind.ATTRIBUTE
+      );
   private static final String PYTHON_SUFFIX = ".py";
   private static final String DUNDER = "__";
   private static final String TEST_PREFIX = "test";

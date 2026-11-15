@@ -11,7 +11,6 @@ import java.util.Objects;
  *     summarizer does not say
  */
 public record Symbol(String name, Span span, String kind) {
-
   /**
    * Validates the required fields.
    *

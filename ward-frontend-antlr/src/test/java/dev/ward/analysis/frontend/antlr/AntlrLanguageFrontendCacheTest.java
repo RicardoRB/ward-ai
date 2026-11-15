@@ -15,7 +15,6 @@ import java.util.concurrent.Future;
 import org.junit.jupiter.api.Test;
 
 class AntlrLanguageFrontendCacheTest {
-
   private static final int THREADS = 8;
 
   @Test
@@ -42,7 +41,9 @@ class AntlrLanguageFrontendCacheTest {
                 () -> {
                   start.await();
                   return frontend.parse(unit("class A {}"));
-                }));
+                }
+            )
+        );
       }
       start.countDown();
       final ParseResult first = results.get(0).get();

@@ -17,7 +17,6 @@ import java.util.Set;
  * it cannot read are left out.
  */
 public final class InconsistentSyncCheck implements RuleCheck {
-
   private static final String CLASS = "classDeclaration";
   private static final int MIN_SYNC_PERCENT = 50;
   private static final int PERCENT = 100;
@@ -66,7 +65,11 @@ public final class InconsistentSyncCheck implements RuleCheck {
                             out.add(
                                 CheckSupport.at(
                                     id.span(),
-                                    CheckSupport.fill(message, name, String.valueOf(percent))))));
+                                    CheckSupport.fill(message, name, String.valueOf(percent))
+                                )
+                            )
+                    )
+        );
   }
 
   /** Returns the percentage of locked accesses when the field is reported. */
@@ -97,7 +100,10 @@ public final class InconsistentSyncCheck implements RuleCheck {
   }
 
   private static boolean manyUnlockedReads(
-      final int readUnlocked, final int biasedUnlocked, final int biasedLocked) {
-    return readUnlocked > 0 && (int) (UNSYNC_FACTOR * (biasedUnlocked - 1)) > biasedLocked;
+      final int readUnlocked,
+      final int biasedUnlocked,
+      final int biasedLocked
+  ) {
+    return readUnlocked > 0 && (int)(UNSYNC_FACTOR * (biasedUnlocked - 1)) > biasedLocked;
   }
 }

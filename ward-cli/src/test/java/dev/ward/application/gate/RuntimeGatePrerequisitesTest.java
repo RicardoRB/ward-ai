@@ -23,13 +23,19 @@ class RuntimeGatePrerequisitesTest {
     final GateResult result =
         GatePrerequisiteFixtures.only(
             GatePrerequisiteFixtures.runner(
-                    GatePrerequisiteFixtures.jdk(RELEASE, OLDER_JDK, new AtomicInteger()),
-                    GatePrerequisiteFixtures.failing())
+                GatePrerequisiteFixtures.jdk(RELEASE, OLDER_JDK, new AtomicInteger()),
+                GatePrerequisiteFixtures.failing()
+            )
                 .run(
                     GatePrerequisiteFixtures.MAVEN,
                     List.of(
                         GatePrerequisiteFixtures.buildGate(
-                            "mvn", GatePrerequisiteFixtures.failingBuild()))));
+                            "mvn",
+                            GatePrerequisiteFixtures.failingBuild()
+                        )
+                    )
+                )
+        );
 
     assertThat(result.status()).isEqualTo(GateStatus.UNAVAILABLE);
     assertThat(result.prerequisite().kind()).isEqualTo(GatePrerequisite.Kind.RUNTIME);
@@ -43,14 +49,19 @@ class RuntimeGatePrerequisitesTest {
     final GateResult result =
         GatePrerequisiteFixtures.only(
             GatePrerequisiteFixtures.runner(
-                    GatePrerequisiteFixtures.jdk(
-                        COMPATIBLE_RELEASE, NEWER_JDK, new AtomicInteger()),
-                    GatePrerequisiteFixtures.failing())
+                GatePrerequisiteFixtures.jdk(COMPATIBLE_RELEASE, NEWER_JDK, new AtomicInteger()),
+                GatePrerequisiteFixtures.failing()
+            )
                 .run(
                     GatePrerequisiteFixtures.MAVEN,
                     List.of(
                         GatePrerequisiteFixtures.buildGate(
-                            "mvn", GatePrerequisiteFixtures.failingBuild()))));
+                            "mvn",
+                            GatePrerequisiteFixtures.failingBuild()
+                        )
+                    )
+                )
+        );
 
     assertThat(result.status()).isEqualTo(GateStatus.FAILED);
     assertThat(result.prerequisite()).isNull();
@@ -61,13 +72,19 @@ class RuntimeGatePrerequisitesTest {
     final GateResult result =
         GatePrerequisiteFixtures.only(
             GatePrerequisiteFixtures.runner(
-                    GatePrerequisiteFixtures.jdk(RELEASE, null, new AtomicInteger()),
-                    GatePrerequisiteFixtures.failing())
+                GatePrerequisiteFixtures.jdk(RELEASE, null, new AtomicInteger()),
+                GatePrerequisiteFixtures.failing()
+            )
                 .run(
                     GatePrerequisiteFixtures.MAVEN,
                     List.of(
                         GatePrerequisiteFixtures.buildGate(
-                            "mvn", GatePrerequisiteFixtures.failingBuild()))));
+                            "mvn",
+                            GatePrerequisiteFixtures.failingBuild()
+                        )
+                    )
+                )
+        );
 
     assertThat(result.status()).isEqualTo(GateStatus.FAILED);
     assertThat(result.prerequisite()).isNull();
@@ -78,12 +95,19 @@ class RuntimeGatePrerequisitesTest {
     final GateResult result =
         GatePrerequisiteFixtures.only(
             GatePrerequisiteFixtures.runner(
-                    GatePrerequisiteFixtures.failing(), GatePrerequisiteFixtures.failing())
+                GatePrerequisiteFixtures.failing(),
+                GatePrerequisiteFixtures.failing()
+            )
                 .run(
                     GatePrerequisiteFixtures.MAVEN,
                     List.of(
                         GatePrerequisiteFixtures.buildGate(
-                            "mvn", GatePrerequisiteFixtures.failingBuild()))));
+                            "mvn",
+                            GatePrerequisiteFixtures.failingBuild()
+                        )
+                    )
+                )
+        );
 
     assertThat(result.status()).isEqualTo(GateStatus.FAILED);
     assertThat(result.prerequisite()).isNull();
@@ -93,11 +117,13 @@ class RuntimeGatePrerequisitesTest {
   void passingRunNeverInspects() {
     final AtomicInteger calls = new AtomicInteger();
     GatePrerequisiteFixtures.runner(
-            GatePrerequisiteFixtures.jdk(RELEASE, OLDER_JDK, calls),
-            GatePrerequisiteFixtures.failing())
+        GatePrerequisiteFixtures.jdk(RELEASE, OLDER_JDK, calls),
+        GatePrerequisiteFixtures.failing()
+    )
         .run(
             GatePrerequisiteFixtures.MAVEN,
-            List.of(GatePrerequisiteFixtures.buildGate("mvn", new FakeCommandExecutor(0, "", ""))));
+            List.of(GatePrerequisiteFixtures.buildGate("mvn", new FakeCommandExecutor(0, "", "")))
+        );
 
     assertThat(calls).hasValue(0);
   }
@@ -108,10 +134,12 @@ class RuntimeGatePrerequisitesTest {
     final List<QualityGate> gates =
         List.of(
             GatePrerequisiteFixtures.buildGate("mvn", GatePrerequisiteFixtures.failingBuild()),
-            GatePrerequisiteFixtures.buildGate("mvn", GatePrerequisiteFixtures.failingBuild()));
+            GatePrerequisiteFixtures.buildGate("mvn", GatePrerequisiteFixtures.failingBuild())
+        );
     GatePrerequisiteFixtures.runner(
-            GatePrerequisiteFixtures.jdk(COMPATIBLE_RELEASE, NEWER_JDK, calls),
-            GatePrerequisiteFixtures.failing())
+        GatePrerequisiteFixtures.jdk(COMPATIBLE_RELEASE, NEWER_JDK, calls),
+        GatePrerequisiteFixtures.failing()
+    )
         .run(GatePrerequisiteFixtures.MAVEN, gates);
 
     assertThat(calls).hasValue(1);
@@ -129,7 +157,12 @@ class RuntimeGatePrerequisitesTest {
                     GatePrerequisiteFixtures.GRADLE,
                     List.of(
                         GatePrerequisiteFixtures.buildGate(
-                            "gradle", GatePrerequisiteFixtures.failingBuild()))));
+                            "gradle",
+                            GatePrerequisiteFixtures.failingBuild()
+                        )
+                    )
+                )
+        );
 
     assertThat(gradleCalls).hasValue(1);
     assertThat(result.status()).isEqualTo(GateStatus.UNAVAILABLE);

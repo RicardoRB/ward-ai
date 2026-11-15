@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
  * reads {@link #module()} to start. The model is immutable and built once per unit.
  */
 public final class UnitScopes {
-
   /** The id of the built-in scope. */
   public static final int BUILTIN_ID = 0;
 
@@ -28,8 +27,10 @@ public final class UnitScopes {
       new UnitScopes(
           List.of(
               new Scope(BUILTIN_ID, ScopeKind.BUILTIN, Scope.NO_PARENT, NOWHERE, List.of(), false),
-              new Scope(MODULE_ID, ScopeKind.MODULE, BUILTIN_ID, NOWHERE, List.of(), false)),
-          List.of());
+              new Scope(MODULE_ID, ScopeKind.MODULE, BUILTIN_ID, NOWHERE, List.of(), false)
+          ),
+          List.of()
+      );
 
   private final List<Scope> scopes;
   private final List<NameReference> references;

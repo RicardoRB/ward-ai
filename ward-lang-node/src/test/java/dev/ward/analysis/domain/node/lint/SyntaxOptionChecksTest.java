@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 /** The syntax-only checks whose options and redundant-member rules are tested. */
 class SyntaxOptionChecksTest {
-
   private static final String MESSAGE = "message";
   private static final int MIN_LENGTH = 3;
 
@@ -30,18 +29,22 @@ class SyntaxOptionChecksTest {
             + "// @ts-expect-error\nconst c = 3;\n";
 
     assertThat(
-            positions(
-                new BanTsCommentCheck(defaults(), MIN_LENGTH, "^: TS\\d+ because .+$", MESSAGE),
-                text))
+        positions(
+            new BanTsCommentCheck(defaults(), MIN_LENGTH, "^: TS\\d+ because .+$", MESSAGE),
+            text
+        )
+    )
         .containsExactly("1:1", "5:1");
   }
 
   @Test
   void banTsCommentReadsEachPragmaWithItsOwnOption() {
     assertThat(
-            positions(
-                new BanTsCommentCheck(defaults(), MIN_LENGTH, "", MESSAGE),
-                "// @ts-check\n// @ts-nocheck\nconst a = 1;\n// plain comment\n"))
+        positions(
+            new BanTsCommentCheck(defaults(), MIN_LENGTH, "", MESSAGE),
+            "// @ts-check\n// @ts-nocheck\nconst a = 1;\n// plain comment\n"
+        )
+    )
         .containsExactly("2:1");
   }
 
@@ -80,7 +83,8 @@ class SyntaxOptionChecksTest {
         "ts-check",
         "false",
         "ts-nocheck",
-        "true");
+        "true"
+    );
   }
 
   @Test
@@ -90,8 +94,8 @@ class SyntaxOptionChecksTest {
             + "/// <reference types=\"vite/client\" />\nimport \"node\";\n";
 
     assertThat(
-            positions(
-                new TripleSlashReferenceCheck("always", "never", "prefer-import", MESSAGE), text))
+        positions(new TripleSlashReferenceCheck("always", "never", "prefer-import", MESSAGE), text)
+    )
         .containsExactly("1:1", "2:1");
     assertThat(positions(new TripleSlashReferenceCheck("always", "always", "never", MESSAGE), text))
         .containsExactly("2:1", "3:1");

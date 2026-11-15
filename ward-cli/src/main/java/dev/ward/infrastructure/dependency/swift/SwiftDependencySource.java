@@ -57,7 +57,8 @@ public final class SwiftDependencySource implements DependencySource {
             root.toString(),
             RESOLVED,
             "the project declares packages and has no Package.resolved",
-            xcode ? "run `xcodebuild -resolvePackageDependencies`" : "run `swift package resolve`");
+            xcode ? "run `xcodebuild -resolvePackageDependencies`" : "run `swift package resolve`"
+        );
       }
       return new DependencyInventory(List.of(new ModuleDependencies("", List.of())));
     }
@@ -65,7 +66,8 @@ public final class SwiftDependencySource implements DependencySource {
     final List<PackageResolved.Pin> pins = pins(project, resolved.get(), label);
     final ModuleBuilder builder = new ModuleBuilder(label, false);
     pins.forEach(
-        pin -> builder.add(pin.id(), pin.released()).scope(pin.id(), DependencyScope.RUNTIME));
+        pin -> builder.add(pin.id(), pin.released()).scope(pin.id(), DependencyScope.RUNTIME)
+    );
     declared
         .locations()
         .forEach(
@@ -73,7 +75,9 @@ public final class SwiftDependencySource implements DependencySource {
                 builder.direct(
                     pinFor(project, pins, label, declared, location),
                     DependencyScope.RUNTIME,
-                    declared.file()));
+                    declared.file()
+                )
+        );
     final ModuleDependencies module = builder.build("");
     LOGGER.log(
         Level.FINE,
@@ -81,7 +85,8 @@ public final class SwiftDependencySource implements DependencySource {
             "event=dependency-source source="
                 + label
                 + " modules=1 entries="
-                + module.dependencies().size());
+                + module.dependencies().size()
+    );
     return new DependencyInventory(List.of(module));
   }
 
@@ -90,7 +95,8 @@ public final class SwiftDependencySource implements DependencySource {
       final List<PackageResolved.Pin> pins,
       final String label,
       final Declared declared,
-      final String location) {
+      final String location
+  ) {
     return pins.stream()
         .filter(pin -> pin.id().name().equals(location) || pin.identity().equals(location))
         .map(PackageResolved.Pin::id)
@@ -106,7 +112,9 @@ public final class SwiftDependencySource implements DependencySource {
                         + declared.file(),
                     project.buildTool() == BuildTool.XCODE
                         ? "run `xcodebuild -resolvePackageDependencies`"
-                        : "run `swift package resolve`"));
+                        : "run `swift package resolve`"
+                )
+        );
   }
 
   /** The locations a manifest names and the file that names them. */
@@ -125,14 +133,16 @@ public final class SwiftDependencySource implements DependencySource {
           PACKAGE_SWIFT,
           "it cannot be read",
           "check its permissions",
-          e);
+          e
+      );
     } catch (LockfileFormatException e) {
       throw new DependencyInventoryException(
           project.root().toString(),
           PACKAGE_SWIFT,
           e.getMessage(),
           "write each .package url as a string literal",
-          e);
+          e
+      );
     }
   }
 
@@ -151,7 +161,8 @@ public final class SwiftDependencySource implements DependencySource {
               declaringFile,
               "it cannot be read",
               "check its permissions",
-              e);
+              e
+          );
         }
       }
     }
@@ -159,15 +170,28 @@ public final class SwiftDependencySource implements DependencySource {
   }
 
   private List<PackageResolved.Pin> pins(
-      final Project project, final Path file, final String label) {
+      final Project project,
+      final Path file,
+      final String label
+  ) {
     try {
       return PackageResolved.read(Files.readString(file), codec);
     } catch (IOException | UncheckedIOException e) {
       throw new DependencyInventoryException(
-          project.root().toString(), label, "it cannot be read", "check its permissions", e);
+          project.root().toString(),
+          label,
+          "it cannot be read",
+          "check its permissions",
+          e
+      );
     } catch (LockfileFormatException e) {
       throw new DependencyInventoryException(
-          project.root().toString(), label, e.getMessage(), "run `swift package resolve`", e);
+          project.root().toString(),
+          label,
+          e.getMessage(),
+          "run `swift package resolve`",
+          e
+      );
     }
   }
 

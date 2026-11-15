@@ -17,7 +17,6 @@ import org.junit.jupiter.api.condition.EnabledIf;
  * Regenerate the report with {@code -Dward.parity.write=true}.
  */
 final class JavaParitySmokeTest {
-
   private static final String WRITE_PROPERTY = "ward.parity.write";
 
   /** Whether the opt-in property names the tools. */
@@ -35,18 +34,23 @@ final class JavaParitySmokeTest {
             new PmdParity(),
             new SpotBugsParity(),
             new ErrorProneParity(false),
-            new ErrorProneParity(true));
+            new ErrorProneParity(true)
+        );
     final String report = JavaParityReport.render(JavaParityReport.rows(environment, tools));
     if (Boolean.getBoolean(WRITE_PROPERTY)) {
       Files.writeString(
-          Path.of("src/test/resources/parity/java-report.txt"), report, StandardCharsets.UTF_8);
+          Path.of("src/test/resources/parity/java-report.txt"),
+          report,
+          StandardCharsets.UTF_8
+      );
     }
     assertThat(JavaParityReport.pinned(report))
         .isEqualTo(JavaParityReport.pinned(JavaParityReport.committed()));
     assertThat(
-            JavaParityReport.pinned(report).stream()
-                .filter(line -> line.contains("\tposition\t") || line.contains("\ttool-extra\t"))
-                .toList())
+        JavaParityReport.pinned(report).stream()
+            .filter(line -> line.contains("\tposition\t") || line.contains("\ttool-extra\t"))
+            .toList()
+    )
         .as("disagreements with a tool that no approximation explains")
         .isEmpty();
   }

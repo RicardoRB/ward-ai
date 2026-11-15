@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
  * Reads the names, types and annotations that Java declaration text holds for the design checks.
  */
 final class DeclarationText {
-
   private static final String DECLARATOR_ID = "variableDeclaratorId";
   private static final String CONSTANT_DECLARATOR = "constantDeclarator";
   private static final String IDENTIFIER = "identifier";
@@ -27,7 +26,8 @@ final class DeclarationText {
   static List<String> declaredNames(final SyntaxNode field) {
     return SyntaxWalk.descendants(field).stream()
         .filter(
-            node -> DECLARATOR_ID.equals(node.kind()) || CONSTANT_DECLARATOR.equals(node.kind()))
+            node -> DECLARATOR_ID.equals(node.kind()) || CONSTANT_DECLARATOR.equals(node.kind())
+        )
         .flatMap(node -> node.children().stream())
         .filter(child -> IDENTIFIER.equals(child.kind()))
         .map(SyntaxWalk::text)
@@ -63,7 +63,7 @@ final class DeclarationText {
 
   /** Returns the simple name of a type or annotation text: no package, no generic arguments. */
   static String simpleName(final String text) {
-    final String withoutGenerics = text.split(GENERIC_OPEN, 2)[0];
+    final String withoutGenerics = text.split(GENERIC_OPEN, 2) [0];
     return withoutGenerics.substring(withoutGenerics.lastIndexOf('.') + 1);
   }
 
@@ -71,7 +71,7 @@ final class DeclarationText {
   static Set<String> annotationNames(final List<String> modifiers) {
     return modifiers.stream()
         .filter(text -> text.startsWith(AT))
-        .map(text -> text.substring(1).split("\\(", 2)[0])
+        .map(text -> text.substring(1).split("\\(", 2) [0])
         .map(DeclarationText::simpleName)
         .collect(Collectors.toUnmodifiableSet());
   }

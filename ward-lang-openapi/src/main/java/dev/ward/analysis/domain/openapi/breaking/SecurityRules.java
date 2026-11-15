@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
  * its own, and the security schemes they name.
  */
 final class SecurityRules {
-
   private static final String SECURITY = "security";
 
   private SecurityRules() {}
@@ -23,12 +22,12 @@ final class SecurityRules {
     return List.of(
         operations("api-security-removed", SecurityRules::removed),
         operations("api-security-scope-added", SecurityRules::scopeAdded),
-        operations("api-security-anonymous-access-removed", SecurityRules::anonymousRemoved));
+        operations("api-security-anonymous-access-removed", SecurityRules::anonymousRemoved)
+    );
   }
 
   /** The security requirements an operation ends up with, where they are written. */
   private record Effective(Optional<DocNode> node, List<DocNode> alternatives) {
-
     boolean anonymous() {
       return alternatives.isEmpty()
           || alternatives.stream().anyMatch(alternative -> alternative.entries().isEmpty());
@@ -42,7 +41,11 @@ final class SecurityRules {
   }
 
   private static BreakingRule operations(
-      final String id, final BiFunction<Effective, Effective, Optional<String>> check) {
+      final String id,
+      final BiFunction<Effective,
+      Effective,
+      Optional<String>> check
+  ) {
     return RowRule.of(
         id,
         pair ->
@@ -60,10 +63,14 @@ final class SecurityRules {
                                   OperationIndex.method(now) + " " + now.path() + ": " + message,
                                   OperationIndex.method(now),
                                   now.path(),
-                                  after.node().orElse(now.node())))
+                                  after.node().orElse(now.node())
+                              )
+                      )
                       .stream()
                       .toList();
-                }));
+                }
+            )
+    );
   }
 
   /** The schemes a requirement names, sorted, as its identity. */
@@ -113,8 +120,11 @@ final class SecurityRules {
                                 .filter(
                                     old ->
                                         old.items().stream()
-                                            .anyMatch(item -> item.text().equals(scope.text())))
-                                .isEmpty()));
+                                            .anyMatch(item -> item.text().equals(scope.text()))
+                                )
+                                .isEmpty()
+                    )
+        );
   }
 
   private static Optional<String> anonymousRemoved(final Effective before, final Effective after) {

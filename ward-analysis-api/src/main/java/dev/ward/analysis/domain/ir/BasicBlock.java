@@ -17,8 +17,8 @@ public record BasicBlock(
     List<SyntaxNode> nodes,
     List<FlowEdge> successors,
     List<VariableAccess> accesses,
-    List<FlowSite> sites) {
-
+    List<FlowSite> sites
+) {
   /**
    * Creates a block without flow sites.
    *
@@ -31,7 +31,8 @@ public record BasicBlock(
       final int id,
       final List<SyntaxNode> nodes,
       final List<FlowEdge> successors,
-      final List<VariableAccess> accesses) {
+      final List<VariableAccess> accesses
+  ) {
     this(id, nodes, successors, accesses, List.of());
   }
 

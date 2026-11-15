@@ -33,7 +33,6 @@ import java.util.stream.Stream;
  * ward-architecture.toml} and the tables of {@code ward.toml} are in the run.
  */
 final class ArchitectureGateRun {
-
   private ArchitectureGateRun() {}
 
   /** Runs the gate of a default {@code ward} check in {@code root}. */
@@ -57,8 +56,11 @@ final class ArchitectureGateRun {
                     new NodeDependencyAdapters(),
                     new PythonDependencyAdapters(),
                     new SwiftDependencyAdapters(),
-                    new JvmDependencyAdapters())),
-            (unused, classpath) -> Map.of());
+                    new JvmDependencyAdapters()
+                )
+            ),
+            (unused, classpath) -> Map.of()
+        );
     return AnalysisGates.create(check, ports)
         .execute(new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE));
   }

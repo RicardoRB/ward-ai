@@ -31,7 +31,11 @@ final class Instantiate {
   }
 
   private static TsType named(
-      final TsType.Named named, final Map<String, TsType> subst, final Lookup scope) {
+      final TsType.Named named,
+      final Map<String,
+      TsType> subst,
+      final Lookup scope
+  ) {
     if (named.args().isEmpty() && subst.containsKey(named.name())) {
       return subst.get(named.name());
     }
@@ -52,7 +56,11 @@ final class Instantiate {
   }
 
   private static List<TsType> all(
-      final List<TsType> types, final Map<String, TsType> subst, final Lookup scope) {
+      final List<TsType> types,
+      final Map<String,
+      TsType> subst,
+      final Lookup scope
+  ) {
     final List<TsType> out = new ArrayList<>();
     for (final TsType type : types) {
       out.add(apply(type, subst, scope));
@@ -67,14 +75,18 @@ final class Instantiate {
     final List<Param> params = new ArrayList<>();
     for (final Param param : sig.params()) {
       params.add(
-          new Param(
-              param.name(), apply(param.type(), inner, scope), param.optional(), param.rest()));
+          new Param(param.name(), apply(param.type(), inner, scope), param.optional(), param.rest())
+      );
     }
     return new Sig(sig.typeParams(), params, apply(sig.returns(), inner, scope));
   }
 
   private static List<Member> members(
-      final List<Member> members, final Map<String, TsType> subst, final Lookup scope) {
+      final List<Member> members,
+      final Map<String,
+      TsType> subst,
+      final Lookup scope
+  ) {
     final List<Member> out = new ArrayList<>();
     for (final Member member : members) {
       out.add(member(member, subst, scope));
@@ -91,6 +103,7 @@ final class Instantiate {
         apply(member.type(), subst, scope),
         sigs,
         member.flags(),
-        member.decorators());
+        member.decorators()
+    );
   }
 }

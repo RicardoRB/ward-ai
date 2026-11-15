@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
  * not reported.
  */
 public final class AssignedCallCheck implements RuleCheck {
-
   /** The mistakes the check tells apart, one per rule. */
   public enum Problem {
     /** The function has no return statement at all. */
@@ -68,7 +67,10 @@ public final class AssignedCallCheck implements RuleCheck {
 
   /** The module function a plain call of the text invokes, if it is one. */
   private static Optional<SyntaxNode> callee(
-      final Map<String, SyntaxNode> definitions, final String value) {
+      final Map<String,
+      SyntaxNode> definitions,
+      final String value
+  ) {
     return PlainCall.of(value)
         .map(call -> definitions.get(call.callee()))
         .filter(definition -> SyntaxKinds.FUNCDEF.equals(definition.kind()));

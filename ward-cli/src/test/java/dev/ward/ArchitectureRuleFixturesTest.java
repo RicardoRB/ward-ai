@@ -20,7 +20,6 @@ import dev.ward.domain.architecturefixture.FullyQualifiedAdapterReference;
 import org.junit.jupiter.api.Test;
 
 class ArchitectureRuleFixturesTest {
-
   @Test
   void architectureRulesRejectForbiddenDependencyFixtures() {
     final JavaClasses dependencies =
@@ -30,20 +29,25 @@ class ArchitectureRuleFixturesTest {
                 DirectFilesystemAccess.class,
                 ExternalEffectAccess.class,
                 PrivateImplementationCoupling.class,
-                HiddenImplementation.class);
+                HiddenImplementation.class
+            );
     assertThatThrownBy(
-            () ->
-                assertNoDependencies(
-                    dependencies,
-                    "dev.ward.domain.architecturefixture..",
-                    target -> target.startsWith("dev.ward.infrastructure.")))
+        () ->
+            assertNoDependencies(
+                dependencies,
+                "dev.ward.domain.architecturefixture..",
+                target -> target.startsWith("dev.ward.infrastructure.")
+            )
+    )
         .isInstanceOf(AssertionError.class);
     assertThatThrownBy(
-            () ->
-                assertNoDependencies(
-                    dependencies,
-                    "dev.ward.domain.architecturefixture..",
-                    ArchitectureBoundarySupport::isInnerLayerExternalEffectApi))
+        () ->
+            assertNoDependencies(
+                dependencies,
+                "dev.ward.domain.architecturefixture..",
+                ArchitectureBoundarySupport::isInnerLayerExternalEffectApi
+            )
+    )
         .isInstanceOf(AssertionError.class);
     assertThatThrownBy(() -> assertApplicationEntryPoints(dependencies))
         .isInstanceOf(AssertionError.class);
@@ -58,14 +62,15 @@ class ArchitectureRuleFixturesTest {
     final JavaClasses rootToPython =
         new ClassFileImporter().importClasses(ArchitectureFixtureRootReachesPython.class);
     assertThatThrownBy(
-            () ->
-                ArchitectureToolchainTest.checkRootsReachToolchainsOnlyThroughTheRegistry(
-                    rootToPython))
+        () ->
+            ArchitectureToolchainTest.checkRootsReachToolchainsOnlyThroughTheRegistry(rootToPython)
+    )
         .isInstanceOf(AssertionError.class);
     final JavaClasses crossFeatureSlice =
         new ClassFileImporter().importClasses(ArchitectureFixturePythonReachesNodeDomain.class);
     assertThatThrownBy(
-            () -> ArchitectureToolchainTest.checkToolchainsStayIndependent(crossFeatureSlice))
+        () -> ArchitectureToolchainTest.checkToolchainsStayIndependent(crossFeatureSlice)
+    )
         .isInstanceOf(AssertionError.class);
     final JavaClasses jvmToGradle =
         new ClassFileImporter().importClasses(ArchitectureFixtureJvmReachesGradle.class);

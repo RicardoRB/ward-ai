@@ -38,7 +38,9 @@ final class BuildPolicyTables {
                 problems.add(
                     header(rule),
                     "",
-                    "the rule is not selected; add it to [select] include or remove this table"));
+                    "the rule is not selected; add it to [select] include or remove this table"
+                )
+        );
     return settings;
   }
 
@@ -52,9 +54,11 @@ final class BuildPolicyTables {
                 BuildRule.byName(name)
                     .ifPresentOrElse(
                         rule -> tables.put(rule, table),
-                        () -> problems.add("[rules.build." + name + "]", "", "unknown rule id"));
+                        () -> problems.add("[rules.build." + name + "]", "", "unknown rule id")
+                    );
               }
-            });
+            }
+        );
     return tables;
   }
 
@@ -67,7 +71,10 @@ final class BuildPolicyTables {
         warning = warning(rule, entry.getValue());
       } else if (EXCLUDE_PATHS.equals(key)) {
         problems.add(
-            header(rule), key, "build rules accept no suppression, so exclude-paths is refused");
+            header(rule),
+            key,
+            "build rules accept no suppression, so exclude-paths is refused"
+        );
       } else {
         option(rule, key, entry.getValue()).ifPresent(text -> options.put(key, text));
       }
@@ -92,7 +99,8 @@ final class BuildPolicyTables {
           key,
           "unknown option; this rule has "
               + (rule.options().isEmpty() ? "no options" : "options " + rule.options())
-              + ", besides severity");
+              + ", besides severity"
+      );
       return Optional.empty();
     }
     if (value instanceof String text && DOTTED.matcher(text).matches()) {

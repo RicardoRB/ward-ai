@@ -19,7 +19,6 @@ import java.util.Set;
  */
 @FunctionalInterface
 public interface TypeFacts extends TypeResolver {
-
   /**
    * Returns the facts of {@code kinds} for {@code spans} of {@code unit}.
    *

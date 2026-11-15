@@ -7,7 +7,6 @@ import java.util.List;
 
 /** {@code oas3-valid-schema-example}: the example and default of a schema fit the schema. */
 final class SchemaExampleRules {
-
   private static final List<String> SHAPE =
       List.of("enum", "type", "format", "$ref", "properties", "items");
 

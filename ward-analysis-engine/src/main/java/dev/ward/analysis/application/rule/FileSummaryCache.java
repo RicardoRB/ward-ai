@@ -6,7 +6,6 @@ import java.util.Optional;
 
 /** Keeps the summaries of source units between runs. */
 public interface FileSummaryCache {
-
   /**
    * Returns the stored summary of the unit, or empty when none is stored or the stored one does not
    * match the unit.

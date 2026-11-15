@@ -67,13 +67,16 @@ class SameNameClassTaintTest {
 
   private static SourceUnit util(final String pack, final String value) {
     return unit(
-        pack + "/Util.java", "package " + pack + ";\n" + IMPORTS + UTIL_BODY.formatted(value));
+        pack + "/Util.java",
+        "package " + pack + ";\n" + IMPORTS + UTIL_BODY.formatted(value)
+    );
   }
 
   private static SourceUnit page(final String name, final String imported) {
     return unit(
         "shop/" + name + ".java",
-        "package shop;\nimport " + imported + ".Util;\n" + IMPORTS + PAGE_BODY.formatted(name));
+        "package shop;\nimport " + imported + ".Util;\n" + IMPORTS + PAGE_BODY.formatted(name)
+    );
   }
 
   @Test
@@ -83,13 +86,15 @@ class SameNameClassTaintTest {
             util("unsafe", "v"),
             util("safe", "HtmlUtils.htmlEscape(v)"),
             page("UnsafePage", "unsafe"),
-            page("SafePage", "safe"));
+            page("SafePage", "safe")
+        );
     final List<AnalysisFinding> found =
         new UnitResultCache(
-                new RuleEngine(new DeclarativeRuleMatcher()),
-                AnalysisCacheFixtures.codec(),
-                "test",
-                new JvmDependencyAdapters().forProject(root, units))
+            new RuleEngine(new DeclarativeRuleMatcher()),
+            AnalysisCacheFixtures.codec(),
+            "test",
+            new JvmDependencyAdapters().forProject(root, units)
+        )
             .run(AnalysisCacheFixtures.NO_CACHE, units, frontends, rules)
             .findings();
 

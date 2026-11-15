@@ -29,28 +29,29 @@ import picocli.CommandLine.Spec;
     mixinStandardHelpOptions = true,
     versionProvider = VersionProvider.class,
     subcommands = {
-      DetectCommand.class,
-      InitCommand.class,
-      CheckCommand.class,
-      IntegrateCommand.class,
-      HookCommand.class,
-      DoctorCommand.class,
-      FormatCommand.class,
-      LoopCommand.class,
-      RulesCommand.class,
-      VulnerabilitiesCommand.class,
-      SbomCommand.class,
-      LicensesCommand.class
+        DetectCommand.class,
+        InitCommand.class,
+        CheckCommand.class,
+        IntegrateCommand.class,
+        HookCommand.class,
+        DoctorCommand.class,
+        FormatCommand.class,
+        LoopCommand.class,
+        RulesCommand.class,
+        VulnerabilitiesCommand.class,
+        SbomCommand.class,
+        LicensesCommand.class
     },
-    footer = {"", "Exit codes: 0 = ok, 1 = failed, 2 = error"})
+    footer = {"", "Exit codes: 0 = ok, 1 = failed, 2 = error"}
+)
 public class WardCommand implements Callable<Integer> {
-
   @Spec private CommandSpec spec;
 
   @Option(
       names = "--verbose",
       scope = ScopeType.INHERIT,
-      description = "Enable diagnostic logs on stderr.")
+      description = "Enable diagnostic logs on stderr."
+  )
   private boolean verbose;
 
   /** Creates the root command. */

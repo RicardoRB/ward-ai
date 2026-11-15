@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 
 /** Reports a variable or assignment that stores {@code this} under another name. */
 public final class ThisAliasCheck implements RuleCheck {
-
   private static final Pattern IDENTIFIER = Pattern.compile("[A-Za-z_$][A-Za-z0-9_$]*");
   private static final String THIS = "this";
   private static final String DECLARATION = "variableDeclaration";
@@ -23,7 +22,10 @@ public final class ThisAliasCheck implements RuleCheck {
 
   /** Creates the check with the rule's options and message. */
   public ThisAliasCheck(
-      final boolean allowDestructuring, final Set<String> allowedNames, final String message) {
+      final boolean allowDestructuring,
+      final Set<String> allowedNames,
+      final String message
+  ) {
     this.allowDestructuring = allowDestructuring;
     this.allowedNames = Set.copyOf(allowedNames);
     this.message = message;
@@ -51,7 +53,8 @@ public final class ThisAliasCheck implements RuleCheck {
       final List<RuleMatch> out,
       final SyntaxNode node,
       final SyntaxNode target,
-      final SyntaxNode value) {
+      final SyntaxNode value
+  ) {
     if (!THIS.equals(SyntaxText.of(value))) {
       return;
     }

@@ -22,7 +22,8 @@ class FastApiOpenApiHintTest {
   @Test
   void namesTheAppModuleAndTheExportCommand() {
     assertThatThrownBy(
-            () -> GateOffers.require(environment("app.main:app"), FASTAPI, "openapi-lint"))
+        () -> GateOffers.require(environment("app.main:app"), FASTAPI, "openapi-lint")
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("from app.main import app")
         .hasMessageContaining("app.openapi()")

@@ -19,7 +19,6 @@ import org.antlr.v4.runtime.Token;
  * order, the parse tree's facts, and the first syntax error.
  */
 final class KotlinParse {
-
   private static final int FIRST_LINE = 1;
   private static final String LEXER_UNIT = "kotlin-format";
 
@@ -32,7 +31,8 @@ final class KotlinParse {
       final int[] codePoints,
       final List<Token> items,
       final KotlinTreeWalk walk,
-      final OptionalInt errorLine) {
+      final OptionalInt errorLine
+  ) {
     this.codePoints = codePoints;
     this.items = items;
     this.walk = walk;
@@ -119,7 +119,10 @@ final class KotlinParse {
   }
 
   private static KotlinParse parse(
-      final String source, final Function<KotlinParser, ParserRuleContext> start) {
+      final String source,
+      final Function<KotlinParser,
+      ParserRuleContext> start
+  ) {
     final ErrorLines errors = new ErrorLines();
     final KotlinLexer lexer = new KotlinLexer(CharStreams.fromString(source));
     lexer.startFindings(LEXER_UNIT);
@@ -128,7 +131,10 @@ final class KotlinParse {
         new KotlinParser(stream) {
           @Override
           public void notifyErrorListeners(
-              final Token offending, final String message, final RecognitionException error) {
+              final Token offending,
+              final String message,
+              final RecognitionException error
+          ) {
             errors.record(offending == null ? FIRST_LINE : offending.getLine());
           }
         };
@@ -139,7 +145,8 @@ final class KotlinParse {
         source.codePoints().toArray(),
         significant(stream.getTokens()),
         new KotlinTreeWalk(root),
-        errors.first());
+        errors.first()
+    );
   }
 
   private static List<Token> significant(final List<Token> all) {

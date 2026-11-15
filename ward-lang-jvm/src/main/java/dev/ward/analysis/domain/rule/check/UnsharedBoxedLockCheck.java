@@ -24,7 +24,8 @@ public final class UnsharedBoxedLockCheck implements UnitCheck {
   private static final int LOCK = 2;
   private static final Pattern BOXED_NEW =
       Pattern.compile(
-          "^new(?:java\\.lang\\.)?(?:Integer|Long|Short|Byte|Character|Float|Double|Boolean)\\(");
+          "^new(?:java\\.lang\\.)?(?:Integer|Long|Short|Byte|Character|Float|Double|Boolean)\\("
+      );
 
   private final String message;
 
@@ -50,7 +51,8 @@ public final class UnsharedBoxedLockCheck implements UnitCheck {
     return ClassMembers.fieldMembers(clazz).stream()
         .flatMap(field -> SyntaxWalk.descendants(field).stream())
         .filter(
-            node -> DECLARATOR.equals(node.kind()) && node.children().size() == DECLARATOR_PARTS)
+            node -> DECLARATOR.equals(node.kind()) && node.children().size() == DECLARATOR_PARTS
+        )
         .filter(node -> BOXED_NEW.matcher(SyntaxWalk.text(node.children().get(2))).find())
         .map(node -> SyntaxWalk.text(node.children().get(0)))
         .collect(Collectors.toUnmodifiableSet());

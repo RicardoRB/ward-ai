@@ -14,8 +14,12 @@ import java.util.Objects;
  *     enclosing node that still exists
  */
 public record BreakingFinding(
-    String ruleId, String message, String method, String path, DocNode at) {
-
+    String ruleId,
+    String message,
+    String method,
+    String path,
+    DocNode at
+) {
   /**
    * Validates the parts.
    *

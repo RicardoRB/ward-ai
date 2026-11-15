@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
  * modifiers. Annotations are matched by simple name, so {@code @org.junit.Test} is {@code Test}.
  */
 final class JUnitMembers {
-
   /** The annotations that mark a JUnit 4 or 5 test method. */
   static final Set<String> TEST_ANNOTATIONS =
       Set.of("Test", "RepeatedTest", "ParameterizedTest", "TestFactory", "TestTemplate");
@@ -68,14 +67,16 @@ final class JUnitMembers {
   static boolean isPublic(final SyntaxNode member) {
     return member.children().stream()
         .anyMatch(
-            child -> MODIFIER.equals(child.kind()) && "public".equals(SyntaxWalk.text(child)));
+            child -> MODIFIER.equals(child.kind()) && "public".equals(SyntaxWalk.text(child))
+        );
   }
 
   /** Returns whether a member has the modifier {@code private}. */
   static boolean isPrivate(final SyntaxNode member) {
     return member.children().stream()
         .anyMatch(
-            child -> MODIFIER.equals(child.kind()) && "private".equals(SyntaxWalk.text(child)));
+            child -> MODIFIER.equals(child.kind()) && "private".equals(SyntaxWalk.text(child))
+        );
   }
 
   /** Returns whether a member is a test method: it has one of the test annotations. */

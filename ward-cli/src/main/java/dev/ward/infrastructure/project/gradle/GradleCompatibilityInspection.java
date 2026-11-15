@@ -31,15 +31,18 @@ public final class GradleCompatibilityInspection implements CompatibilityInspect
   private static final Pattern LAUNCHER_JVM = Pattern.compile("Launcher JVM:\\s+([0-9][^\\s]*)");
   private static final Pattern PLUGIN =
       Pattern.compile(
-          "id\\s*\\(?\\s*['\"]([\\w.-]+)['\"]\\s*\\)?\\s+version\\s+['\"]([^'\"]+)['\"]");
+          "id\\s*\\(?\\s*['\"]([\\w.-]+)['\"]\\s*\\)?\\s+version\\s+['\"]([^'\"]+)['\"]"
+      );
   private static final List<Pattern> RELEASES =
       List.of(
           Pattern.compile("JavaLanguageVersion\\.of\\(\\s*(\\d+)\\s*\\)"),
           Pattern.compile("release(?:\\.set\\(\\s*|\\s*=\\s*)(\\d+)"),
           Pattern.compile("sourceCompatibility\\s*=?\\s*JavaVersion\\.VERSION_(\\d+(?:_\\d+)?)"),
           Pattern.compile(
-              "sourceCompatibility\\s*=?\\s*JavaVersion\\.toVersion\\(\\s*['\"]?([\\d.]+)"),
-          Pattern.compile("sourceCompatibility\\s*=?\\s*['\"]?(\\d[\\d.]*)"));
+              "sourceCompatibility\\s*=?\\s*JavaVersion\\.toVersion\\(\\s*['\"]?([\\d.]+)"
+          ),
+          Pattern.compile("sourceCompatibility\\s*=?\\s*['\"]?(\\d[\\d.]*)")
+      );
   private final CommandExecutor commands;
 
   /** Creates the inspection; {@code commands} runs Gradle to read the toolchain. */
@@ -58,8 +61,10 @@ public final class GradleCompatibilityInspection implements CompatibilityInspect
             version.flatMap(output -> match(LAUNCHER_JVM, output)).map(JavaVersions::feature),
             release(script),
             version.flatMap(output -> match(GRADLE_VERSION, output)),
-            project.framework()),
-        plugins(script));
+            project.framework()
+        ),
+        plugins(script)
+    );
   }
 
   /** Returns the release that {@code script} declares, if a known pattern finds one. */

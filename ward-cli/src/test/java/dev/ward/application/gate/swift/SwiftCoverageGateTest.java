@@ -50,7 +50,12 @@ class SwiftCoverageGateTest {
     final CoverageReport xccov = recording(xccovReads);
     final GateReportPorts ports =
         new GateReportPorts(
-            ReportDirectories.NONE, null, null, null, new PlatformGatePorts(null, llvmCov, xccov));
+            ReportDirectories.NONE,
+            null,
+            null,
+            null,
+            new PlatformGatePorts(null, llvmCov, xccov)
+        );
     final GateConfiguration check =
         new GateConfiguration(
             "coverage",
@@ -74,7 +79,8 @@ class SwiftCoverageGateTest {
             null,
             null,
             null,
-            null);
+            null
+        );
     return new QualityGateFactory(new FakeCommandExecutor(exitCode, STDOUT, ""), ports, null)
         .create(new WardConfiguration(1, Map.of("coverage", check)))
         .getFirst()

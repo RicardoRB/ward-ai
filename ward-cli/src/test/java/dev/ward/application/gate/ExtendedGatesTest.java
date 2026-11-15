@@ -53,7 +53,12 @@ class ExtendedGatesTest {
     assertThatThrownBy(() -> factory.create(config("nope", List.of("x"))))
         .isInstanceOf(WardException.class)
         .hasMessageContaining(
-            "api-compat", "pmd", "openapi-lint", "openapi-diff", "openapi-compat");
+            "api-compat",
+            "pmd",
+            "openapi-lint",
+            "openapi-diff",
+            "openapi-compat"
+        );
   }
 
   @Test
@@ -84,7 +89,7 @@ class ExtendedGatesTest {
   void missingBinaryReportsInstallHint() {
     final CommandExecutor missing =
         (command, dir) ->
-            new CommandResult(-1, "", "", Duration.ZERO, "Could not start [trivy]: not found");
+        new CommandResult(-1, "", "", Duration.ZERO, "Could not start [trivy]: not found");
     final GateResult result =
         new QualityGateRunner()
             .run(PROJECT, List.of(new CommandQualityGate(TRIVY, missing, List.of(TRIVY, "detect"))))

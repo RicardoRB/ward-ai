@@ -15,7 +15,6 @@ import java.util.Set;
  * case.
  */
 public final class BiomeUnsafeIframeSandboxCheck implements RuleCheck {
-
   private static final String IFRAME = "iframe";
   private static final String SANDBOX = "sandbox";
   private static final String SCRIPTS = "allow-scripts";
@@ -40,7 +39,10 @@ public final class BiomeUnsafeIframeSandboxCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(JsxAttributes.OPENING, JsxAttributes.SELF_CLOSING))
         .stream()
         .filter(visit -> IFRAME.equals(JsxAttributes.elementName(visit.node())))

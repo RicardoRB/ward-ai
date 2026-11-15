@@ -11,7 +11,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class DuplicateTokensTest {
-
   private static final DuplicateCodeOptions KEEP =
       new DuplicateCodeOptions(1, false, false, false, DuplicateCodeOptions.NO_SHARE_LIMIT);
   private static final DuplicateCodeOptions ABSTRACT =
@@ -52,10 +51,15 @@ class DuplicateTokensTest {
       final String kindOne,
       final String textOne,
       final String kindTwo,
-      final String textTwo) {
+      final String textTwo
+  ) {
     final SyntaxNode root =
         new SyntaxNode(
-            "root", SPAN, Map.of(), List.of(leaf(kindOne, textOne), leaf(kindTwo, textTwo)));
+            "root",
+            SPAN,
+            Map.of(),
+            List.of(leaf(kindOne, textOne), leaf(kindTwo, textTwo))
+        );
     return DuplicateTokens.of(root, language, ABSTRACT);
   }
 

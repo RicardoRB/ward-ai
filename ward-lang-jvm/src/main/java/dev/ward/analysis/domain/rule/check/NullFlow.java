@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
  * which of those it checks or reassigns anywhere, so that a check can stay silent about them.
  */
 final class NullFlow {
-
   /** The assignment operator. */
   static final String ASSIGN = "=";
 
@@ -31,7 +30,10 @@ final class NullFlow {
 
   /** Tells whether a declaration is never null: annotated so, or unannotated in a marked type. */
   static boolean nonNull(
-      final NullModel.Notes notes, final boolean marked, final boolean primitive) {
+      final NullModel.Notes notes,
+      final boolean marked,
+      final boolean primitive
+  ) {
     return !primitive && !notes.nullable() && (marked || notes.nonNull());
   }
 
@@ -108,7 +110,10 @@ final class NullFlow {
 
   /** Tells whether {@code expression} is a name in {@code names} or a call of a nullable method. */
   static boolean nullable(
-      final SyntaxNode expression, final Set<String> names, final Set<String> calls) {
+      final SyntaxNode expression,
+      final Set<String> names,
+      final Set<String> calls
+  ) {
     final String text = NullSyntax.name(expression);
     if (NAME.matcher(text).matches()) {
       return names.contains(text);
@@ -121,7 +126,10 @@ final class NullFlow {
 
   /** Tells whether {@code expression} is the literal null or {@link #nullable} says it may be. */
   static boolean nullish(
-      final SyntaxNode expression, final Set<String> names, final Set<String> calls) {
+      final SyntaxNode expression,
+      final Set<String> names,
+      final Set<String> calls
+  ) {
     return NullSyntax.isNull(expression) || nullable(expression, names, calls);
   }
 

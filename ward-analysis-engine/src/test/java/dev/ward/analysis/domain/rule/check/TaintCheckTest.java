@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks that the taint check needs the data-flow graphs, as the unused-assignment check does. */
 class TaintCheckTest {
-
   private static final SyntaxNode ROOT = null;
 
   private final TaintCheck check =

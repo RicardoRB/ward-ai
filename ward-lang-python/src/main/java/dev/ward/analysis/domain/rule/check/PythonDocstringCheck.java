@@ -16,7 +16,6 @@ import java.util.function.Predicate;
  * convention. A name that starts with an underscore needs no docstring.
  */
 public final class PythonDocstringCheck implements RuleCheck {
-
   /** The problem the check reports, one per rule. */
   public enum Problem {
     /** The module has statements but no docstring. */
@@ -149,7 +148,9 @@ public final class PythonDocstringCheck implements RuleCheck {
   }
 
   private List<RuleMatch> atEach(
-      final List<SyntaxNode> leaves, final Predicate<SyntaxNode> reported) {
+      final List<SyntaxNode> leaves,
+      final Predicate<SyntaxNode> reported
+  ) {
     return leaves.stream()
         .filter(reported)
         .map(leaf -> new RuleMatch(leaf.span(), message))

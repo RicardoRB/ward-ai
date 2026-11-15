@@ -13,7 +13,15 @@ class PresetGateOrderTest {
   void explicitGatesFollowPresetGatesWithoutDuplicates() {
     assertThat(PresetGateOrder.withExplicitGates(STANDARD, List.of("trivy", "tests")))
         .containsExactly(
-            "compile", "tests", "format", "checkstyle", "pmd", "spotbugs", "coverage", "trivy");
+            "compile",
+            "tests",
+            "format",
+            "checkstyle",
+            "pmd",
+            "spotbugs",
+            "coverage",
+            "trivy"
+        );
   }
 
   @Test

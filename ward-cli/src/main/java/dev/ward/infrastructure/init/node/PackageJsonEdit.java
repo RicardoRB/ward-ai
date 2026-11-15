@@ -57,7 +57,11 @@ public final class PackageJsonEdit {
    * @throws WardException if the file is not a multi-line JSON object whose layout can be located
    */
   public static String addMembers(
-      final String content, final String key, final Map<String, String> members) {
+      final String content,
+      final String key,
+      final Map<String,
+      String> members
+  ) {
     final JsonLayout layout = JsonLayout.of(JsonText.mask(content));
     final String newline = content.contains("\r\n") ? "\r\n" : "\n";
     final Optional<JsonSpan> object = layout.member(key);
@@ -68,7 +72,8 @@ public final class PackageJsonEdit {
         content,
         object.get(),
         lines(members, entryIndent(content, layout, object.get()), newline),
-        newline);
+        newline
+    );
   }
 
   /** Adds {@code key} as the last member of the top-level object, holding {@code members}. */
@@ -76,8 +81,10 @@ public final class PackageJsonEdit {
       final String content,
       final JsonLayout layout,
       final String key,
-      final Map<String, String> members,
-      final String newline) {
+      final Map<String,
+      String> members,
+      final String newline
+  ) {
     final String indent = layout.indentUnit();
     final String object =
         quoted(key)
@@ -88,12 +95,20 @@ public final class PackageJsonEdit {
             + indent
             + "}";
     return insertLast(
-        content, new JsonSpan(layout.rootOpen(), layout.rootClose()), indent + object, newline);
+        content,
+        new JsonSpan(layout.rootOpen(), layout.rootClose()),
+        indent + object,
+        newline
+    );
   }
 
   /** Inserts {@code text} as the last member of the object {@code object}. */
   private static String insertLast(
-      final String content, final JsonSpan object, final String text, final String newline) {
+      final String content,
+      final JsonSpan object,
+      final String text,
+      final String newline
+  ) {
     final int open = object.open();
     int last = object.close() - 1;
     while (last > open && Character.isWhitespace(content.charAt(last))) {
@@ -116,7 +131,10 @@ public final class PackageJsonEdit {
    * key when it is empty.
    */
   private static String entryIndent(
-      final String content, final JsonLayout layout, final JsonSpan object) {
+      final String content,
+      final JsonLayout layout,
+      final JsonSpan object
+  ) {
     if (content.substring(object.open() + 1, object.close()).isBlank()) {
       return indentOfLine(content, object.open()) + layout.indentUnit();
     }
@@ -124,7 +142,8 @@ public final class PackageJsonEdit {
     if (newline < 0 || newline > object.close()) {
       throw new WardException(
           "Ward cannot edit this JSON file: an object is written on one line. Put each entry on"
-              + " its own line, then run init again.");
+              + " its own line, then run init again."
+      );
     }
     int end = newline + 1;
     while (end < object.close() && (content.charAt(end) == ' ' || content.charAt(end) == '\t')) {
@@ -134,7 +153,11 @@ public final class PackageJsonEdit {
   }
 
   private static String lines(
-      final Map<String, String> members, final String indent, final String newline) {
+      final Map<String,
+      String> members,
+      final String indent,
+      final String newline
+  ) {
     final List<String> lines =
         members.entrySet().stream()
             .map(entry -> indent + quoted(entry.getKey()) + ": " + entry.getValue())

@@ -7,7 +7,6 @@ import java.util.Optional;
 
 /** Reads children, names and token text from the syntax tree of a Python file. */
 final class PythonSyntax {
-
   /** The field that holds the text of a token node. */
   static final String TEXT = "text";
 

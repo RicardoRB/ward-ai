@@ -11,7 +11,6 @@ import java.util.Set;
  * target.
  */
 final class SwiftUseScan {
-
   private static final String IMPORT = "import_declaration";
   private static final String IDENTIFIER = "Identifier";
   private static final String TEXT = "text";
@@ -28,7 +27,10 @@ final class SwiftUseScan {
    * compound assignment reads its target, so it is left as a use.
    */
   static void collectAssignments(
-      final SyntaxNode node, final Set<Span> excluded, final Set<String> assigned) {
+      final SyntaxNode node,
+      final Set<Span> excluded,
+      final Set<String> assigned
+  ) {
     if (IMPORT.equals(node.kind())) {
       return;
     }
@@ -38,7 +40,8 @@ final class SwiftUseScan {
               target -> {
                 excluded.add(target.span());
                 assigned.add(SwiftSyntax.textOf(target));
-              });
+              }
+          );
     }
     for (final SyntaxNode child : node.children()) {
       collectAssignments(child, excluded, assigned);
@@ -67,7 +70,8 @@ final class SwiftUseScan {
       final SyntaxNode node,
       final Set<Span> excluded,
       final Set<String> used,
-      final boolean conformance) {
+      final boolean conformance
+  ) {
     if (IMPORT.equals(node.kind())) {
       return;
     }

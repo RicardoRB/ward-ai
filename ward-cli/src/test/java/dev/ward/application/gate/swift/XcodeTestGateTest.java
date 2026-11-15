@@ -58,7 +58,8 @@ class XcodeTestGateTest {
   private GateResult run(
       final FakeCommandExecutor executor,
       final List<String> command,
-      final XcodePlatform platform) {
+      final XcodePlatform platform
+  ) {
     final GateReportPorts ports =
         new GateReportPorts(
             directories,
@@ -71,7 +72,9 @@ class XcodeTestGateTest {
                   return simulator;
                 },
                 null,
-                null));
+                null
+            )
+        );
     final GateConfiguration check =
         new GateConfiguration(
             "xcode",
@@ -95,7 +98,8 @@ class XcodeTestGateTest {
             null,
             null,
             null,
-            null);
+            null
+        );
     return new QualityGateFactory(executor, ports, null)
         .create(new WardConfiguration(1, Map.of("xcode", check)))
         .getFirst()
@@ -128,7 +132,8 @@ class XcodeTestGateTest {
 
     assertThat(executor.commands)
         .containsExactly(
-            concat(concat(COMMAND, List.of("-destination", "platform=macOS")), BUNDLE));
+            concat(concat(COMMAND, List.of("-destination", "platform=macOS")), BUNDLE)
+        );
     assertThat(booted).isEmpty();
   }
 
@@ -150,7 +155,8 @@ class XcodeTestGateTest {
         run(
             new FakeCommandExecutor(TEST_FAILURE, "", "** TEST FAILED **"),
             COMMAND,
-            XcodePlatform.IOS_SIMULATOR);
+            XcodePlatform.IOS_SIMULATOR
+        );
 
     assertThat(result.status()).isEqualTo(GateStatus.FAILED);
     assertThat(result.exitCode()).isEqualTo(TEST_FAILURE);

@@ -13,7 +13,6 @@ import java.util.Set;
 
 /** Runs the lint checks over real Swift source, so every position is the parser's own. */
 final class LintRuns {
-
   static final String MESSAGE = "finding";
   static final int FIRST_LINE = 1;
   static final int SECOND_LINE = 2;

@@ -24,7 +24,13 @@ public final class CompatibilityFixtures {
             new CompatibilityProjectSnapshot(
                 project,
                 new ToolchainSnapshot(
-                    Optional.of(JAVA_17), Optional.empty(), Optional.of("3.9.0"), Framework.NONE),
-                Map.of("spotless-maven-plugin", "1.0.0")));
+                    Optional.of(JAVA_17),
+                    Optional.empty(),
+                    Optional.of("3.9.0"),
+                    Framework.NONE
+                ),
+                Map.of("spotless-maven-plugin", "1.0.0")
+            )
+    );
   }
 }

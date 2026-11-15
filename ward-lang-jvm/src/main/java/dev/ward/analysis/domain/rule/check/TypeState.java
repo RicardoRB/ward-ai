@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
  * type.
  */
 final class TypeState {
-
   private static final String EXPRESSION = "expression";
   private static final String DECLARATOR = "variableDeclarator";
   private static final String INITIALIZER = "variableInitializer";
@@ -50,7 +49,6 @@ final class TypeState {
   /** Receives each node of a block with the state before it. */
   @FunctionalInterface
   interface Visitor {
-
     /** Visits {@code node}, which lies in {@code block}, with the variables' state before it. */
     void visit(SyntaxNode node, BasicBlock block, Map<Span, Known> state);
   }
@@ -154,7 +152,8 @@ final class TypeState {
     return declarator.children().stream()
         .anyMatch(
             child ->
-                "variableDeclaratorId".equals(child.kind()) && child.span().equals(write.span()));
+                "variableDeclaratorId".equals(child.kind()) && child.span().equals(write.span())
+        );
   }
 
   private static Optional<SyntaxNode> expressionOf(final SyntaxNode initializer) {
@@ -186,9 +185,11 @@ final class TypeState {
                 s ->
                     s.isFinal()
                         || s.kind() == TypeShape.Kind.ENUM
-                        || s.kind() == TypeShape.Kind.RECORD)
+                        || s.kind() == TypeShape.Kind.RECORD
+            )
             .isPresent();
     return Optional.of(
-        new Known(type.get(), ancestors, !ancestors.isEmpty(), created || finalType));
+        new Known(type.get(), ancestors, !ancestors.isEmpty(), created || finalType)
+    );
   }
 }

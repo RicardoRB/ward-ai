@@ -11,7 +11,6 @@ import java.util.Map;
 
 /** Builds the syntax nodes and the type facts the class-level design check tests share. */
 class ClassTreeNodes {
-
   /** The line of every node the tests build, which the type facts key on. */
   static final int LINE = 2;
 
@@ -37,12 +36,17 @@ class ClassTreeNodes {
         kind,
         new Span(line, col, line, col + text.length(), col, col + text.length()),
         Map.of("text", text),
-        List.of());
+        List.of()
+    );
   }
 
   SyntaxNode node(final String kind, final int line, final int col, final SyntaxNode... children) {
     return new SyntaxNode(
-        kind, new Span(line, col, line, col, col, col), Map.of(), List.of(children));
+        kind,
+        new Span(line, col, line, col, col, col),
+        Map.of(),
+        List.of(children)
+    );
   }
 
   SyntaxNode ident(final String name) {
@@ -64,8 +68,10 @@ class ClassTreeNodes {
             1,
             leaf("'package'", "package", 1, 1),
             leaf("NAME", name, 1, NAME_COLUMN),
-            leaf("';'", ";", 1, NAME_COLUMN)),
-        clazz);
+            leaf("';'", ";", 1, NAME_COLUMN)
+        ),
+        clazz
+    );
   }
 
   SyntaxNode importOf(final String text) {
@@ -86,6 +92,15 @@ class ClassTreeNodes {
 
   private SpanFacts typed(final String type) {
     return new SpanFacts(
-        TypeRef.of(type), null, null, List.of(), List.of(), List.of(), List.of(), null, null);
+        TypeRef.of(type),
+        null,
+        null,
+        List.of(),
+        List.of(),
+        List.of(),
+        List.of(),
+        null,
+        null
+    );
   }
 }

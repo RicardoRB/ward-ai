@@ -19,7 +19,6 @@ import java.util.Locale;
  * and parameter lists, braces on the same line, and whitespace only. Ward's style is not ktlint's.
  */
 public final class KotlinFormatter implements SourceFormatter {
-
   /** The option for the printed line width, in columns. */
   public static final String LINE_WIDTH = "line-width";
 
@@ -48,10 +47,15 @@ public final class KotlinFormatter implements SourceFormatter {
     return List.of(
         new FormatOption(LINE_WIDTH, FormatOptionType.INTEGER, "100", List.of()),
         new FormatOption(
-            INDENT_STYLE, FormatOptionType.TEXT, SPACE_STYLE, List.of(SPACE_STYLE, TAB_STYLE)),
+            INDENT_STYLE,
+            FormatOptionType.TEXT,
+            SPACE_STYLE,
+            List.of(SPACE_STYLE, TAB_STYLE)
+        ),
         new FormatOption(INDENT_WIDTH, FormatOptionType.INTEGER, "4", List.of()),
         new FormatOption(MAX_BLANK_LINES, FormatOptionType.INTEGER, "1", List.of()),
-        new FormatOption(CONTINUATION_INDENT, FormatOptionType.INTEGER, "8", List.of()));
+        new FormatOption(CONTINUATION_INDENT, FormatOptionType.INTEGER, "8", List.of())
+    );
   }
 
   @Override
@@ -69,7 +73,8 @@ public final class KotlinFormatter implements SourceFormatter {
             options.integer(LINE_WIDTH),
             indentStyle(options.get(INDENT_STYLE)),
             indentWidth,
-            EndOfLine.LF);
+            EndOfLine.LF
+        );
     final String printed = new DocPrinter(style).print(document);
     return printed.equals(source)
         ? new FormatResult.Unchanged()

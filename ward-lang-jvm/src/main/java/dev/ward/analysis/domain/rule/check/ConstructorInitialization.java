@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 /** Reads the constructors of a class body for the check of fields that must not be null. */
 final class ConstructorInitialization {
-
   private static final String MEMBER = "memberDeclaration";
   private static final String BLOCK = "block";
 

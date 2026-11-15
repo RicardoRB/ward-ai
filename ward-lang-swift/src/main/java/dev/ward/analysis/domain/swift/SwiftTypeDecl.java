@@ -22,4 +22,5 @@ record SwiftTypeDecl(
     TypeShape.Kind kind,
     boolean isFinal,
     boolean isAbstract,
-    boolean isGeneric) {}
+    boolean isGeneric
+) {}

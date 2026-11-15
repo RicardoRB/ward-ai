@@ -18,7 +18,6 @@ import java.util.Set;
  * a star import, has no name accesses, so no rule reads it as bound or unbound.
  */
 public final class PythonControlFlow implements ControlFlowLowering {
-
   private static final String MODULE = "<module>";
   private static final String BLOCK = "block";
   private static final String NAME = "name";
@@ -44,8 +43,10 @@ public final class PythonControlFlow implements ControlFlowLowering {
   private static void collectDefinitions(
       final SyntaxNode node,
       final List<ControlFlowGraph> out,
-      final Map<String, String> imports,
-      final List<SyntaxNode> decorators) {
+      final Map<String,
+      String> imports,
+      final List<SyntaxNode> decorators
+  ) {
     final List<SyntaxNode> inherited =
         "decorated".equals(node.kind()) ? PythonParameters.decoratorsOf(node) : decorators;
     for (final SyntaxNode child : node.children()) {
@@ -58,15 +59,18 @@ public final class PythonControlFlow implements ControlFlowLowering {
 
   private static ControlFlowGraph definition(
       final SyntaxNode definition,
-      final Map<String, String> imports,
-      final List<SyntaxNode> decorators) {
+      final Map<String,
+      String> imports,
+      final List<SyntaxNode> decorators
+  ) {
     final SyntaxNode block = PythonSyntax.children(definition, BLOCK).get(0);
     return body(
         PythonSyntax.firstOfKind(definition, NAME).map(PythonControlFlow::text).orElse(MODULE),
         block,
         PythonParameters.of(definition, decorators),
         definition.span(),
-        imports);
+        imports
+    );
   }
 
   private static ControlFlowGraph body(
@@ -74,7 +78,9 @@ public final class PythonControlFlow implements ControlFlowLowering {
       final SyntaxNode block,
       final PythonParameters parameters,
       final Span span,
-      final Map<String, String> imports) {
+      final Map<String,
+      String> imports
+  ) {
     return new PythonBodyLowering(declaredNames(block), !hasStarImport(block), imports)
         .lower(name, block, parameters, span);
   }
@@ -107,7 +113,7 @@ public final class PythonControlFlow implements ControlFlowLowering {
   /** Reports whether a star import appears under {@code node}, which makes its names unknown. */
   private static boolean hasStarImport(final SyntaxNode node) {
     return IMPORT_FROM.equals(node.kind())
-            && node.children().stream().anyMatch(child -> STAR.equals(PythonSyntax.text(child)))
+        && node.children().stream().anyMatch(child -> STAR.equals(PythonSyntax.text(child)))
         || node.children().stream().anyMatch(PythonControlFlow::hasStarImport);
   }
 

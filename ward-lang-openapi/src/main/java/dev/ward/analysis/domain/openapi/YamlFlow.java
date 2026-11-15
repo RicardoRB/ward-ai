@@ -6,7 +6,6 @@ import java.util.List;
 
 /** Reads flow collections ({@code [a, b]} and {@code {a: b}}), which is all JSON uses. */
 final class YamlFlow {
-
   private static final int MAX_DEPTH = 256;
   private static final char ANCHOR = '&';
   private static final char ALIAS = '*';
@@ -32,7 +31,8 @@ final class YamlFlow {
       final YamlCursor cursor,
       final YamlLines lines,
       final YamlScalars scalars,
-      final YamlAnchors anchors) {
+      final YamlAnchors anchors
+  ) {
     this.cursor = cursor;
     this.lines = lines;
     this.scalars = scalars;

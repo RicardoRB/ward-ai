@@ -11,7 +11,6 @@ import java.util.Map;
  * skipped.
  */
 final class EditorConfigParser {
-
   private static final String ROOT_KEY = "root";
   private static final String TRUE = "true";
 
@@ -60,12 +59,16 @@ final class EditorConfigParser {
   }
 
   private static List<EditorConfigSection> sections(
-      final List<String> headers, final List<Map<String, String>> bodies) {
+      final List<String> headers,
+      final List<Map<String,
+      String>> bodies
+  ) {
     final List<EditorConfigSection> sections = new ArrayList<>();
     for (int index = 0; index < headers.size(); index++) {
       final String header = headers.get(index);
       sections.add(
-          new EditorConfigSection(header, EditorConfigGlob.compile(header), bodies.get(index)));
+          new EditorConfigSection(header, EditorConfigGlob.compile(header), bodies.get(index))
+      );
     }
     return sections;
   }

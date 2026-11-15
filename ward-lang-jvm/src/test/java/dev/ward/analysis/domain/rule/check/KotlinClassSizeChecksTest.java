@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the Kotlin class-lines and function-count checks over hand-made class trees. */
 class KotlinClassSizeChecksTest {
-
   private static final String MESSAGE = "m";
   private static final String CLASS = "classDeclaration";
   private static final String BODY = "classBody";
@@ -39,7 +38,9 @@ class KotlinClassSizeChecksTest {
         group(
             "functionDeclaration",
             tok("'fun'", "fun", line, OFFSET),
-            group("identifier", tok("simpleIdentifier", name, line, OFFSET))));
+            group("identifier", tok("simpleIdentifier", name, line, OFFSET))
+        )
+    );
   }
 
   @Test

@@ -36,7 +36,8 @@ public final class NodeProjectInspection {
           Map.entry("bun.lockb", BuildTool.BUN),
           Map.entry("pnpm-lock.yaml", BuildTool.PNPM),
           Map.entry("yarn.lock", BuildTool.YARN),
-          Map.entry("package-lock.json", BuildTool.NPM));
+          Map.entry("package-lock.json", BuildTool.NPM)
+      );
 
   /**
    * Framework packages in precedence order: one framework per project, so a site that declares
@@ -51,14 +52,20 @@ public final class NodeProjectInspection {
           Map.entry(Framework.NEXT, Set.of("next")),
           Map.entry(Framework.NEST, Set.of("@nestjs/core")),
           Map.entry(Framework.FASTIFY, Set.of("fastify")),
-          Map.entry(Framework.EXPRESS, Set.of("express")));
+          Map.entry(Framework.EXPRESS, Set.of("express"))
+      );
 
   private static final Map<String, BuildTool> MANAGERS =
       Map.of(
-          "npm", BuildTool.NPM,
-          "pnpm", BuildTool.PNPM,
-          "yarn", BuildTool.YARN,
-          "bun", BuildTool.BUN);
+          "npm",
+          BuildTool.NPM,
+          "pnpm",
+          BuildTool.PNPM,
+          "yarn",
+          BuildTool.YARN,
+          "bun",
+          BuildTool.BUN
+      );
 
   private NodeProjectInspection() {}
 
@@ -67,7 +74,7 @@ public final class NodeProjectInspection {
     final Map<?, ?> manifest = manifest(dir);
     final Language language =
         Files.isRegularFile(dir.resolve(TSCONFIG))
-                || NodeWorkspaces.hasTypeScriptMember(dir, manifest)
+            || NodeWorkspaces.hasTypeScriptMember(dir, manifest)
             ? Language.TYPESCRIPT
             : Language.JAVASCRIPT;
     return new Project(
@@ -80,7 +87,8 @@ public final class NodeProjectInspection {
         Set.of(language),
         version(dir, manifest),
         taskRunner(dir),
-        null);
+        null
+    );
   }
 
   /** Returns Turborepo when the workspace root holds {@code turbo.json}, else no task runner. */

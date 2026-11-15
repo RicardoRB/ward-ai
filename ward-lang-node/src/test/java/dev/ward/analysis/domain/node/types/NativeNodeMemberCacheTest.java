@@ -39,7 +39,10 @@ class NativeNodeMemberCacheTest {
   }
 
   private static TypeMembers members(
-      final UnitTypeFacts facts, final String text, final String token) {
+      final UnitTypeFacts facts,
+      final String text,
+      final String token
+  ) {
     return facts.membersOf(TypeProject.span(text, token)).orElse(null);
   }
 }

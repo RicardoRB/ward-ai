@@ -96,7 +96,8 @@ final class JavaCalls {
         site.map(found -> session.hierarchy.methods(found, JvmMethod.CONSTRUCTOR))
             .orElse(List.of()),
         prepared,
-        ctx);
+        ctx
+    );
   }
 
   /** Types {@code qualifier.name(args)}. */
@@ -126,7 +127,10 @@ final class JavaCalls {
     final Optional<SyntaxNode> lambda = JavaLambdas.lambdaOf(node);
     if (lambda.isPresent()) {
       return new Overloads.Argument(
-          Optional.empty(), lambdas.parameters(lambda.get()).size(), false);
+          Optional.empty(),
+          lambdas.parameters(lambda.get()).size(),
+          false
+      );
     }
     if (JavaLambdas.isReference(node)) {
       return new Overloads.Argument(Optional.empty(), -1, true);
@@ -136,7 +140,10 @@ final class JavaCalls {
 
   /** Picks the method among {@code candidates} and types the call. */
   Typed resolve(
-      final List<Hierarchy.Found<JvmMethod>> candidates, final Prepared prepared, final Ctx ctx) {
+      final List<Hierarchy.Found<JvmMethod>> candidates,
+      final Prepared prepared,
+      final Ctx ctx
+  ) {
     final Optional<Hierarchy.Found<JvmMethod>> chosen =
         session.overloads.select(candidates, prepared.arguments());
     final Map<String, JType> bound =
@@ -145,14 +152,17 @@ final class JavaCalls {
             .orElseGet(HashMap::new);
     final Set<String> variables = new HashSet<>();
     chosen.ifPresent(
-        found -> found.member().typeParameters().forEach(p -> variables.add(p.name())));
+        found -> found.member().typeParameters().forEach(p -> variables.add(p.name()))
+    );
     lambdas.deferredAll(prepared, chosen, bound, variables, ctx);
     if (chosen.isEmpty()) {
       return Typed.UNKNOWN;
     }
     final JType returned =
         Types.substitute(
-            Types.substitute(chosen.get().member().returnType(), chosen.get().bindings()), bound);
+            Types.substitute(chosen.get().member().returnType(), chosen.get().bindings()),
+            bound
+        );
     return JavaLambdas.cleanup(returned, variables)
         .map(Typed::of)
         .orElse(Typed.UNKNOWN)

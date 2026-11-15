@@ -25,7 +25,8 @@ final class TypeFactsJson {
   static Map<String, SpanFacts> spanFacts(final Map<?, ?> facts) {
     final Map<String, SpanFacts> result = new LinkedHashMap<>();
     facts.forEach(
-        (key, value) -> result.put(JsonValues.string(key), spanFact(JsonValues.object(value))));
+        (key, value) -> result.put(JsonValues.string(key), spanFact(JsonValues.object(value)))
+    );
     return result;
   }
 
@@ -39,7 +40,8 @@ final class TypeFactsJson {
         JsonValues.list(fact.get("overrides")).stream().map(TypeFactsJson::call).toList(),
         JsonValues.list(fact.get("thrown")).stream().map(TypeFactsJson::typeRef).toList(),
         fact.containsKey("constant") ? new ConstantValue(fact.get("constant")) : null,
-        fact.containsKey("members") ? members(JsonValues.object(fact.get("members"))) : null);
+        fact.containsKey("members") ? members(JsonValues.object(fact.get("members"))) : null
+    );
   }
 
   private static TypeMembers members(final Map<?, ?> members) {
@@ -51,7 +53,8 @@ final class TypeFactsJson {
         JsonValues.list(members.get("inheritedMethods")).stream().map(TypeFactsJson::call).toList(),
         JsonValues.list(members.get("inheritedFields")).stream().map(TypeFactsJson::field).toList(),
         values(members.get("annotationValues")),
-        JsonValues.list(members.get("components")).stream().map(TypeFactsJson::component).toList());
+        JsonValues.list(members.get("components")).stream().map(TypeFactsJson::component).toList()
+    );
   }
 
   private static TypeComponent component(final Object value) {
@@ -61,7 +64,8 @@ final class TypeFactsJson {
         component.containsKey("shape") ? shape(JsonValues.object(component.get("shape"))) : null,
         component.containsKey("members")
             ? members(JsonValues.object(component.get("members")))
-            : null);
+            : null
+    );
   }
 
   /** Reads {@code {"<annotation>#<element>": [values]}}; a single value may be written bare. */
@@ -75,7 +79,9 @@ final class TypeFactsJson {
                       JsonValues.string(key),
                       list instanceof List<?>
                           ? JsonValues.strings(list)
-                          : List.of(JsonValues.string(list))));
+                          : List.of(JsonValues.string(list))
+                  )
+          );
     }
     return values;
   }
@@ -86,7 +92,8 @@ final class TypeFactsJson {
         JsonValues.string(field.get("name")),
         field.containsKey("type") ? typeRef(field.get("type")) : null,
         JsonValues.flag(field.get("static")),
-        JsonValues.strings(field.get("annotations")));
+        JsonValues.strings(field.get("annotations"))
+    );
   }
 
   private static TypeShape shape(final Map<?, ?> shape) {
@@ -95,7 +102,8 @@ final class TypeFactsJson {
         JsonValues.flag(shape.get("abstract")),
         JsonValues.flag(shape.get("final")),
         JsonValues.flag(shape.get("sealed")),
-        JsonValues.list(shape.get("supertypes")).stream().map(TypeFactsJson::typeRef).toList());
+        JsonValues.list(shape.get("supertypes")).stream().map(TypeFactsJson::typeRef).toList()
+    );
   }
 
   private static CallTarget call(final Object value) {
@@ -116,7 +124,8 @@ final class TypeFactsJson {
         call.containsKey("final") ? JsonValues.flag(call.get("final")) : null,
         values(call.get("annotationValues")),
         values(call.get("declaringAnnotationValues")),
-        call.containsKey("abstract") ? JsonValues.flag(call.get("abstract")) : null);
+        call.containsKey("abstract") ? JsonValues.flag(call.get("abstract")) : null
+    );
   }
 
   private static TypeRef typeRef(final Object value) {
@@ -126,6 +135,7 @@ final class TypeFactsJson {
         JsonValues.string(type.get("name")),
         JsonValues.list(type.get("args")).stream().map(TypeFactsJson::typeRef).toList(),
         depth == null ? 0 : Math.toIntExact(JsonValues.number(depth)),
-        JsonValues.flag(type.get("primitive")));
+        JsonValues.flag(type.get("primitive"))
+    );
   }
 }

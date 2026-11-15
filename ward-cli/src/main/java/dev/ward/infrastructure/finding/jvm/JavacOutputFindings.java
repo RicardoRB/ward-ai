@@ -22,11 +22,13 @@ public final class JavacOutputFindings implements GateFindingSource {
   // Maven: [ERROR] /abs/Foo.java:[12,8] cannot find symbol
   private static final Pattern MAVEN =
       Pattern.compile(
-          "^\\[(?<level>ERROR|WARNING)\\]\\s+(?<file>\\S.*?\\.java):\\[(?<line>\\d+),(?<column>\\d+)\\]\\s*(?<message>.*)$");
+          "^\\[(?<level>ERROR|WARNING)\\]\\s+(?<file>\\S.*?\\.java):\\[(?<line>\\d+),(?<column>\\d+)\\]\\s*(?<message>.*)$"
+      );
   // Gradle: /abs/Foo.java:12: error: cannot find symbol
   private static final Pattern GRADLE =
       Pattern.compile(
-          "^(?<file>\\S.*?\\.java):(?<line>\\d+):\\s*(?<level>error|warning):\\s*(?<message>.*)$");
+          "^(?<file>\\S.*?\\.java):(?<line>\\d+):\\s*(?<level>error|warning):\\s*(?<message>.*)$"
+      );
 
   /** Creates the stateless adapter that Dagger injects. */
   @Inject
@@ -39,7 +41,10 @@ public final class JavacOutputFindings implements GateFindingSource {
 
   @Override
   public List<Finding> extract(
-      final Project project, final GateResult result, final Instant gateStart) {
+      final Project project,
+      final GateResult result,
+      final Instant gateStart
+  ) {
     // Maven repeats each error in its summary, so identical findings are kept once.
     final Set<Finding> findings = new LinkedHashSet<>();
     for (final String line : OutputText.lines(result)) {
@@ -50,7 +55,9 @@ public final class JavacOutputFindings implements GateFindingSource {
                 project,
                 "ERROR".equals(maven.group("level")),
                 new SourceLocation(maven.group("file"), maven.group("line"), maven.group("column")),
-                maven.group("message")));
+                maven.group("message")
+            )
+        );
         continue;
       }
       final Matcher gradle = GRADLE.matcher(line);
@@ -60,7 +67,9 @@ public final class JavacOutputFindings implements GateFindingSource {
                 project,
                 "error".equals(gradle.group("level")),
                 new SourceLocation(gradle.group("file"), gradle.group("line"), null),
-                gradle.group("message")));
+                gradle.group("message")
+            )
+        );
       }
     }
     return List.copyOf(findings);
@@ -70,7 +79,8 @@ public final class JavacOutputFindings implements GateFindingSource {
       final Project project,
       final boolean error,
       final SourceLocation location,
-      final String message) {
+      final String message
+  ) {
     return new Finding(
         GATE,
         TOOL,
@@ -81,7 +91,8 @@ public final class JavacOutputFindings implements GateFindingSource {
         positive(location.line()),
         positive(location.column()),
         null,
-        List.of());
+        List.of()
+    );
   }
 
   private static Integer positive(final String value) {

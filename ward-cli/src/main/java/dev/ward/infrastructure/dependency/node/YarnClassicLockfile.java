@@ -47,20 +47,26 @@ final class YarnClassicLockfile {
     stanzas.forEach(stanza -> stanza.descriptors.forEach(key -> byDescriptor.put(key, stanza)));
     final NodeLock.Collector collector = new NodeLock.Collector();
     stanzas.forEach(
-        stanza -> collector.add(id(stanza), released(stanza), required(stanza, byDescriptor)));
+        stanza -> collector.add(id(stanza), released(stanza), required(stanza, byDescriptor))
+    );
     return new NodeLock(
         collector.packages(),
         (member, name, range) ->
-            Optional.ofNullable(byDescriptor.get(name + "@" + range)).map(YarnClassicLockfile::id));
+            Optional.ofNullable(byDescriptor.get(name + "@" + range)).map(YarnClassicLockfile::id)
+    );
   }
 
   private static Set<PackageId> required(
-      final Stanza stanza, final Map<String, Stanza> byDescriptor) {
+      final Stanza stanza,
+      final Map<String,
+      Stanza> byDescriptor
+  ) {
     final Set<PackageId> required = new HashSet<>();
     stanza.requires.forEach(
         (name, range) ->
             Optional.ofNullable(byDescriptor.get(name + "@" + range))
-                .ifPresent(target -> required.add(id(target))));
+                .ifPresent(target -> required.add(id(target)))
+    );
     return required;
   }
 
@@ -90,7 +96,8 @@ final class YarnClassicLockfile {
     for (final Stanza stanza : stanzas) {
       if (stanza.version.isEmpty()) {
         throw new LockfileFormatException(
-            "package " + stanza.descriptors.getFirst() + " has no version");
+            "package " + stanza.descriptors.getFirst() + " has no version"
+        );
       }
     }
     return stanzas;
@@ -98,7 +105,11 @@ final class YarnClassicLockfile {
 
   /** Reads one line into the last stanza and returns the section that is open afterwards. */
   private static String accept(
-      final List<Stanza> stanzas, final String section, final String line, final int number) {
+      final List<Stanza> stanzas,
+      final String section,
+      final String line,
+      final int number
+  ) {
     final int indent = line.length() - line.stripLeading().length();
     final String content = line.strip();
     if (indent == 0 && content.endsWith(":")) {
@@ -160,8 +171,8 @@ final class YarnClassicLockfile {
       throw new LockfileFormatException("line " + number + " has a shape the reader does not know");
     }
     return new String[] {
-      YamlScalars.unquote(content.substring(0, split)),
-      YamlScalars.unquote(content.substring(split + 1).strip())
+        YamlScalars.unquote(content.substring(0, split)),
+        YamlScalars.unquote(content.substring(split + 1).strip())
     };
   }
 }

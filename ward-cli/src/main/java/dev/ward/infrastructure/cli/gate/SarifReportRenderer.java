@@ -53,7 +53,10 @@ public class SarifReportRenderer {
   }
 
   private static RunDto run(
-      final GateResult result, final SeverityThreshold threshold, final String prefix) {
+      final GateResult result,
+      final SeverityThreshold threshold,
+      final String prefix
+  ) {
     final GateFindings.Visible visible = result.findings().visible(threshold);
     final List<Finding> findings = visible.items();
     final Map<String, RuleDto> rules =
@@ -63,7 +66,9 @@ public class SarifReportRenderer {
                     Finding::ruleId,
                     finding -> new RuleDto(finding.ruleId(), finding.helpUri()),
                     (first, ignored) -> first,
-                    LinkedHashMap::new));
+                    LinkedHashMap::new
+                )
+            );
     final List<ResultDto> results =
         findings.stream()
             .map(finding -> ResultDto.from(finding, prefix))
@@ -80,12 +85,17 @@ public class SarifReportRenderer {
                       + result.name()
                       + "' did not pass (status "
                       + result.status()
-                      + ")."),
-              List.of()));
+                      + ")."
+              ),
+              List.of()
+          )
+      );
     }
     final DriverDto driver =
         new DriverDto(
-            TOOLS.getOrDefault(result.name(), result.name()), List.copyOf(rules.values()));
+            TOOLS.getOrDefault(result.name(), result.name()),
+            List.copyOf(rules.values())
+        );
     return new RunDto(
         new ToolDto(driver),
         results,
@@ -94,8 +104,10 @@ public class SarifReportRenderer {
             result.status().name(),
             visible.total(),
             visible.hidden(),
-            visible.truncated()),
-        invocations);
+            visible.truncated()
+        ),
+        invocations
+    );
   }
 
   /** A gate that could not run because of its environment is a failed invocation, not a result. */
@@ -105,7 +117,10 @@ public class SarifReportRenderer {
     }
     return List.of(
         new InvocationDto(
-            false, List.of(new NotificationDto("error", new MessageDto(result.summary())))));
+            false,
+            List.of(new NotificationDto("error", new MessageDto(result.summary())))
+        )
+    );
   }
 
   /**
@@ -136,7 +151,8 @@ public class SarifReportRenderer {
       ToolDto tool,
       List<ResultDto> results,
       RunPropertiesDto properties,
-      @JsonProperty(include = JsonProperty.Include.NON_EMPTY) List<InvocationDto> invocations) {
+      @JsonProperty(include = JsonProperty.Include.NON_EMPTY) List<InvocationDto> invocations
+  ) {
     /** Copies the results and invocations. */
     public RunDto {
       results = List.copyOf(results);
@@ -152,7 +168,9 @@ public class SarifReportRenderer {
    */
   @JsonType
   public record InvocationDto(
-      boolean executionSuccessful, List<NotificationDto> toolExecutionNotifications) {
+      boolean executionSuccessful,
+      List<NotificationDto> toolExecutionNotifications
+  ) {
     /** Copies the notifications. */
     public InvocationDto {
       toolExecutionNotifications = List.copyOf(toolExecutionNotifications);
@@ -214,7 +232,8 @@ public class SarifReportRenderer {
       String status,
       int findingsTotal,
       int findingsHidden,
-      boolean findingsTruncated) {}
+      boolean findingsTruncated
+  ) {}
 
   /**
    * A SARIF message.
@@ -239,7 +258,8 @@ public class SarifReportRenderer {
       String level,
       MessageDto message,
       List<LocationDto> locations,
-      @JsonProperty(include = JsonProperty.Include.NON_EMPTY) List<CodeFlowDto> codeFlows) {
+      @JsonProperty(include = JsonProperty.Include.NON_EMPTY) List<CodeFlowDto> codeFlows
+  ) {
     /** Copies the locations and code flows. */
     public ResultDto {
       locations = List.copyOf(locations);
@@ -251,7 +271,8 @@ public class SarifReportRenderer {
         final String ruleId,
         final String level,
         final MessageDto message,
-        final List<LocationDto> locations) {
+        final List<LocationDto> locations
+    ) {
       this(ruleId, level, message, locations, List.of());
     }
 
@@ -264,14 +285,18 @@ public class SarifReportRenderer {
                           new ArtifactLocationDto(uri(finding.file(), prefix)),
                           finding.line() == null
                               ? null
-                              : new RegionDto(finding.line(), finding.column()))))
+                              : new RegionDto(finding.line(), finding.column())
+                      )
+                  )
+              )
               : List.of();
       return new ResultDto(
           finding.ruleId(),
           finding.severity().label(),
           new MessageDto(finding.message()),
           locations,
-          codeFlows(finding, prefix));
+          codeFlows(finding, prefix)
+      );
     }
 
     /** One code flow whose single thread lists the path steps in order. */
@@ -288,8 +313,10 @@ public class SarifReportRenderer {
       return new FlowLocationDto(
           new PhysicalLocationDto(
               new ArtifactLocationDto(uri(step.file(), prefix)),
-              new RegionDto(step.line(), step.column())),
-          new MessageDto(step.message()));
+              new RegionDto(step.line(), step.column())
+          ),
+          new MessageDto(step.message())
+      );
     }
 
     private static String uri(final String file, final String prefix) {

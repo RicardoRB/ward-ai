@@ -15,7 +15,6 @@ import java.util.Set;
  * serializable.
  */
 public final class InnerSerializableCheck implements RuleCheck {
-
   private static final String MEMBER = "classBodyDeclaration";
   private static final String MEMBER_DECLARATION = "memberDeclaration";
   private static final String CLASS_BODY = "classBody";

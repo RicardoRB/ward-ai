@@ -11,7 +11,6 @@ import java.util.Locale;
  * differs in terms of the rule, the language and the line.
  */
 final class FixtureComparison {
-
   private FixtureComparison() {}
 
   /**
@@ -28,7 +27,8 @@ final class FixtureComparison {
       final AnalysisLanguage language,
       final String file,
       final List<String> expected,
-      final List<AnalysisFinding> findings) {
+      final List<AnalysisFinding> findings
+  ) {
     final List<String> reported = findings.stream().map(FixtureComparison::position).toList();
     final List<String> problems = new ArrayList<>();
     final String subject = ruleId + " (" + language.name().toLowerCase(Locale.ROOT) + ")";
@@ -40,13 +40,15 @@ final class FixtureComparison {
                 + file
                 + " expects a finding at "
                 + describe(position)
-                + " but the rule did not report it");
+                + " but the rule did not report it"
+        );
       }
     }
     for (final String position : reported) {
       if (!expected.contains(position)) {
         problems.add(
-            subject + ": " + file + " reports an unexpected finding at " + describe(position));
+            subject + ": " + file + " reports an unexpected finding at " + describe(position)
+        );
       }
     }
     if (problems.isEmpty() && !reported.equals(expected)) {

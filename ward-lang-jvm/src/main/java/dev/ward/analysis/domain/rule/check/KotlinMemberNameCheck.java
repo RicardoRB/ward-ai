@@ -14,7 +14,6 @@ import java.util.Set;
  * return type is the class, or it has an expression body) is a factory and is not reported.
  */
 public final class KotlinMemberNameCheck implements RuleCheck {
-
   private static final Set<String> OWNERS = Set.of("classDeclaration", "objectDeclaration");
   private static final String CLASS = "classDeclaration";
   private static final String INTERFACE = "'interface'";
@@ -72,11 +71,15 @@ public final class KotlinMemberNameCheck implements RuleCheck {
               if (CLASS.equals(owner.kind())) {
                 checkCompanion(classBody, name, out);
               }
-            });
+            }
+        );
   }
 
   private void checkCompanion(
-      final SyntaxNode classBody, final String name, final List<RuleMatch> out) {
+      final SyntaxNode classBody,
+      final String name,
+      final List<RuleMatch> out
+  ) {
     for (final SyntaxNode member : members(classBody)) {
       child(member, COMPANION)
           .flatMap(companion -> child(companion, CLASS_BODY))
@@ -85,7 +88,8 @@ public final class KotlinMemberNameCheck implements RuleCheck {
                 for (final SyntaxNode companionMember : members(body)) {
                   checkMember(companionMember, name, true, out);
                 }
-              });
+              }
+          );
     }
   }
 
@@ -93,7 +97,8 @@ public final class KotlinMemberNameCheck implements RuleCheck {
       final SyntaxNode member,
       final String className,
       final boolean companion,
-      final List<RuleMatch> out) {
+      final List<RuleMatch> out
+  ) {
     final SyntaxNode declaration = memberDeclaration(member);
     if (declaration == null || (ignoreOverridden && isOverride(declaration))) {
       return;

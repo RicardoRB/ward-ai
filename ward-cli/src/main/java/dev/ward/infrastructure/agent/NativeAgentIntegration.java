@@ -6,7 +6,6 @@ import java.util.Set;
 
 /** Metadata shared by concrete native harness adapters. */
 public interface NativeAgentIntegration {
-
   /**
    * Describes a native harness: its id, generated files, hook events and capabilities. {@code
    * hookFile} is empty when the harness needs only its configuration file. {@code legacyFiles} name
@@ -19,7 +18,8 @@ public interface NativeAgentIntegration {
       String hookFile,
       String events,
       Set<IntegrationCapability> capabilities,
-      List<String> legacyFiles) {
+      List<String> legacyFiles
+  ) {
     /** Copies the capabilities and legacy files. */
     public Definition {
       capabilities = Set.copyOf(capabilities);
@@ -32,7 +32,8 @@ public interface NativeAgentIntegration {
         final String configFile,
         final String hookFile,
         final String events,
-        final Set<IntegrationCapability> capabilities) {
+        final Set<IntegrationCapability> capabilities
+    ) {
       this(id, configFile, hookFile, events, capabilities, List.of());
     }
 

@@ -11,7 +11,6 @@ import java.util.List;
  * its recorded vector names that file as {@link #EDITED}, and the run substitutes its path.
  */
 record GateJob(String name, List<String> recordedCommand, boolean editHook, boolean wardProbe) {
-
   static final String WARD = "ward";
   static final String EDITED = "{edited}";
 

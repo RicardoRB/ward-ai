@@ -32,7 +32,8 @@ class LearningPolicyTest extends LearningPolicyTestSupport {
               assertThat(prompt.key()).isEqualTo(UNUSED_KEY);
               assertThat(prompt.rule()).isEqualTo(UNUSED);
               assertThat(prompt.occurrences()).isEqualTo(2);
-            });
+            }
+        );
     assertThat(secondFailure.ledger().records().get(UNUSED_KEY).summary())
         .hasSize(LearningRecord.MAX_SUMMARY_LENGTH);
     assertThat(secondFailure.ledger().records().get(UNUSED_KEY).firstSeen()).isEqualTo(NOW);
@@ -55,9 +56,7 @@ class LearningPolicyTest extends LearningPolicyTestSupport {
   }
 
   @ParameterizedTest
-  @EnumSource(
-      value = GateStatus.class,
-      names = {"SKIPPED", "UNAVAILABLE", "EXECUTION_ERROR"})
+  @EnumSource(value = GateStatus.class, names = {"SKIPPED", "UNAVAILABLE", "EXECUTION_ERROR"})
   void gatesNotEvaluatedKeepTheirRecords(final GateStatus status) {
     final LearningLedger failing =
         LearningPolicy.apply(LearningLedger.empty(), unusedVariable(), 1, NOW).ledger();

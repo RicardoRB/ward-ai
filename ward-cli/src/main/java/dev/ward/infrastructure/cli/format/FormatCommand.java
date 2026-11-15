@@ -30,10 +30,11 @@ import picocli.CommandLine.Spec;
     description = "Format the project's source files in Ward style.",
     mixinStandardHelpOptions = true,
     footer = {
-      "",
-      "Exit codes: 0 = formatted or already formatted, 1 = a file needs formatting (--check),"
-          + " 2 = error or a file was refused"
-    })
+        "",
+        "Exit codes: 0 = formatted or already formatted, 1 = a file needs formatting (--check),"
+            + " 2 = error or a file was refused"
+    }
+)
 public final class FormatCommand implements Callable<Integer> {
   private static final Logger LOGGER = Logger.getLogger(FormatCommand.class.getName());
   private static final String TEXT = "text";
@@ -51,13 +52,15 @@ public final class FormatCommand implements Callable<Integer> {
       names = "--format",
       paramLabel = "<format>",
       defaultValue = TEXT,
-      description = "Output format: text or json (default: ${DEFAULT-VALUE}).")
+      description = "Output format: text or json (default: ${DEFAULT-VALUE})."
+  )
   private String format;
 
   @Parameters(
       arity = "0..*",
       paramLabel = "<path>",
-      description = "Files or folders to format (default: the whole project).")
+      description = "Files or folders to format (default: the whole project)."
+  )
   private final List<Path> paths = new ArrayList<>();
 
   private final FormatService service;
@@ -102,7 +105,8 @@ public final class FormatCommand implements Callable<Integer> {
       case REFUSED ->
           error()
               .println(
-                  "refused " + outcome.path() + ":" + outcome.line() + ": " + outcome.reason());
+                  "refused " + outcome.path() + ":" + outcome.line() + ": " + outcome.reason()
+              );
       case FAILED -> error().println("failed " + outcome.path() + ": " + outcome.reason());
       default -> {
         // A file that is already formatted needs no report.
@@ -176,7 +180,8 @@ public final class FormatCommand implements Callable<Integer> {
           outcome.path(),
           outcome.verdict().name().toLowerCase(Locale.ROOT).replace('_', '-'),
           outcome.line(),
-          outcome.reason());
+          outcome.reason()
+      );
     }
   }
 }

@@ -13,9 +13,12 @@ final class ClaudeHookSettings {
 
   /** Replaces the hooks running {@code owned} commands with {@code desired}, keeping all others. */
   static void merge(
-      final Map<String, Object> existing,
-      final Map<String, Object> desired,
-      final Predicate<String> owned) {
+      final Map<String,
+      Object> existing,
+      final Map<String,
+      Object> desired,
+      final Predicate<String> owned
+  ) {
     for (final String event : MANAGED_EVENTS) {
       final List<?> current = entries(existing.get(event), event);
       final List<Object> preserved = withoutWardEntries(current, owned);
@@ -56,7 +59,8 @@ final class ClaudeHookSettings {
     throw conflict(
         "Claude Code settings hook event '"
             + event
-            + "' must be a JSON array; existing settings were preserved.");
+            + "' must be a JSON array; existing settings were preserved."
+    );
   }
 
   private static void rejectInvalidManagedEvent(final String event) {
@@ -64,12 +68,15 @@ final class ClaudeHookSettings {
       throw conflict(
           "Claude Code settings hook event '"
               + event
-              + "' must be a JSON array; existing settings were preserved.");
+              + "' must be a JSON array; existing settings were preserved."
+      );
     }
   }
 
   private static List<Object> withoutWardEntries(
-      final List<?> entries, final Predicate<String> owned) {
+      final List<?> entries,
+      final Predicate<String> owned
+  ) {
     final List<Object> preserved = new ArrayList<>();
     for (final Object entry : entries) {
       final Map<String, Object> mappedEntry = ClaudeSettingsDocument.object(entry);
@@ -86,16 +93,20 @@ final class ClaudeHookSettings {
   private static void preserveNonWardCommands(
       final List<Object> preserved,
       final Object originalEntry,
-      final Map<String, Object> mappedEntry,
+      final Map<String,
+      Object> mappedEntry,
       final Object commands,
-      final Predicate<String> owned) {
+      final Predicate<String> owned
+  ) {
     if (!(commands instanceof List<?> list)) {
       throw conflict(
-          "Claude Code hook entries must contain a JSON array; existing settings were preserved.");
+          "Claude Code hook entries must contain a JSON array; existing settings were preserved."
+      );
     }
     final List<Object> remaining =
         new ArrayList<>(
-            list.stream().filter(item -> !WardClaudeHooks.isHook(item, owned)).toList());
+            list.stream().filter(item -> !WardClaudeHooks.isHook(item, owned)).toList()
+        );
     if (remaining.size() == list.size()) {
       preserved.add(originalEntry);
     } else if (!remaining.isEmpty()) {
@@ -118,12 +129,16 @@ final class ClaudeHookSettings {
   }
 
   private static void insertDesiredEntries(
-      final List<Object> preserved, final Object desiredEntries, final int position) {
+      final List<Object> preserved,
+      final Object desiredEntries,
+      final int position
+  ) {
     if (desiredEntries instanceof List<?> list) {
       final List<Object> desired =
           list.stream()
               .filter(
-                  entry -> WardClaudeHooks.hasRegistration(ClaudeSettingsDocument.object(entry)))
+                  entry -> WardClaudeHooks.hasRegistration(ClaudeSettingsDocument.object(entry))
+              )
               .map(Object.class::cast)
               .toList();
       preserved.addAll(position < 0 ? preserved.size() : position, desired);

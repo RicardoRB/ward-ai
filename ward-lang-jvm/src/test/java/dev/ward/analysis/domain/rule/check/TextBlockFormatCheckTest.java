@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** The text block format check on tokens placed in a small source text. */
 class TextBlockFormatCheckTest extends TreeBuilders {
-
   private static final String QUOTES = "\"\"\"";
   private static final String BLOCK = QUOTES + "\n  hi\n  " + QUOTES;
 
@@ -34,7 +33,8 @@ class TextBlockFormatCheckTest extends TreeBuilders {
   @Test
   void aBareTreeWithoutSourceTextOnlyChecksTheClosingQuotes() {
     assertThat(
-            new TextBlockFormatCheck(MESSAGE).check(unit(Trees.leaf("TEXT_BLOCK", BLOCK, 0)), FILE))
+        new TextBlockFormatCheck(MESSAGE).check(unit(Trees.leaf("TEXT_BLOCK", BLOCK, 0)), FILE)
+    )
         .isEmpty();
   }
 

@@ -11,7 +11,6 @@ import java.util.Objects;
  * @param text the source text, or empty
  */
 record SourceFile(String path, String text) {
-
   /** The file of a check run over a bare syntax tree. */
   static final SourceFile UNKNOWN = new SourceFile("", "");
 

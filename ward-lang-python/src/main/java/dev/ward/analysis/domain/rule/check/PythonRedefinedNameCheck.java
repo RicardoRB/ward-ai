@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
  * scope; names of enclosing functions are not compared.
  */
 public final class PythonRedefinedNameCheck implements RuleCheck {
-
   private static final String NAME = "{value}";
   private static final Set<BindingKind> LOCAL_KINDS =
       Set.of(BindingKind.VARIABLE, BindingKind.PARAMETER, BindingKind.CONSTANT);
@@ -56,7 +55,11 @@ public final class PythonRedefinedNameCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes();
     final Set<String> outer =
         scopes.module().bindings().stream()

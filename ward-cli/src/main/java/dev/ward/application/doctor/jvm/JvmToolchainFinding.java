@@ -24,7 +24,10 @@ public final class JvmToolchainFinding implements ToolchainFinding {
 
   @Override
   public List<Finding> findings(
-      final Project detected, final EnvironmentFacts facts, final ToolchainContext context) {
+      final Project detected,
+      final EnvironmentFacts facts,
+      final ToolchainContext context
+  ) {
     final String toolName = detected.buildTool().displayName();
     final String wrapperName =
         detected.buildTool() == BuildTool.GRADLE ? "Gradle Wrapper" : "Maven Wrapper";
@@ -41,7 +44,9 @@ public final class JvmToolchainFinding implements ToolchainFinding {
         new Finding(
             toolName.toLowerCase(Locale.ROOT),
             wrapper || facts.hasExecutable(executable) ? Status.OK : Status.ERROR,
-            toolMessage));
+            toolMessage
+        )
+    );
     context.buildTools().ifPresent(tools -> findings.addAll(jdkFindings(detected, tools, context)));
     findings.add(JavaTypeInputsFinding.finding(facts));
     if (detected.framework() == Framework.ANDROID) {
@@ -52,7 +57,10 @@ public final class JvmToolchainFinding implements ToolchainFinding {
 
   /** The runtime JDK, the supported-range warning, and each pinned gate version it cannot run. */
   private static List<Finding> jdkFindings(
-      final Project detected, final BuildToolConfiguration tools, final ToolchainContext context) {
+      final Project detected,
+      final BuildToolConfiguration tools,
+      final ToolchainContext context
+  ) {
     final Optional<Integer> jdk = tools.runtimeJdk(detected);
     if (jdk.isEmpty()) {
       return List.of(
@@ -60,13 +68,16 @@ public final class JvmToolchainFinding implements ToolchainFinding {
               JDK,
               Status.WARNING,
               "The runtime JDK could not be determined: neither the build tool nor its wrapper"
-                  + " reported a Java version."));
+                  + " reported a Java version."
+          )
+      );
     }
     final List<Finding> findings = new ArrayList<>();
     findings.add(
         JavaSupport.warning(jdk.get())
             .map(message -> new Finding(JDK, Status.WARNING, message))
-            .orElseGet(() -> new Finding(JDK, Status.OK, "JDK " + jdk.get() + " runs the build.")));
+            .orElseGet(() -> new Finding(JDK, Status.OK, "JDK " + jdk.get() + " runs the build."))
+    );
     tools.unsupportedPins(detected, context.configuredGates()).stream()
         .map(pin -> new Finding(pin.gate(), Status.WARNING, pin.reason() + "."))
         .forEach(findings::add);

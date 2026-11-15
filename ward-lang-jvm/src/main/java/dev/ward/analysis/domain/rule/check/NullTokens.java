@@ -6,7 +6,6 @@ import java.util.List;
 
 /** Reads how a local variable of known nullness is used in a run of tokens. */
 final class NullTokens {
-
   private static final String DOT = ".";
   private static final String NULL = "null";
   private static final String RETURN = "return";

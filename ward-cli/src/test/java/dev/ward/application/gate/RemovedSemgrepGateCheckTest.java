@@ -26,10 +26,13 @@ class RemovedSemgrepGateCheckTest {
   void theGateFactoryRejectsTheSemgrepTypeAsUnknown() {
     final WardConfiguration configuration =
         new WardConfiguration(
-            1, Map.of("semgrep", new GateConfiguration("semgrep", true, List.of("semgrep"))));
+            1,
+            Map.of("semgrep", new GateConfiguration("semgrep", true, List.of("semgrep")))
+        );
 
     assertThatThrownBy(
-            () -> new QualityGateFactory(new FakeCommandExecutor(0, "", "")).create(configuration))
+        () -> new QualityGateFactory(new FakeCommandExecutor(0, "", "")).create(configuration)
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("'semgrep'");
   }
@@ -40,7 +43,8 @@ class RemovedSemgrepGateCheckTest {
     withPom(dir, PLAIN_POM);
     Files.writeString(
         dir.resolve("ward.toml"),
-        "version = 2\n[checks.scan]\ncommand = \"semgrep scan --error\"\n");
+        "version = 2\n[checks.scan]\ncommand = \"semgrep scan --error\"\n"
+    );
     final FakeCommandExecutor executor = new FakeCommandExecutor(1, "", "");
 
     final CheckReport report = CheckServiceFixtures.checks(executor).check(dir);
@@ -52,6 +56,7 @@ class RemovedSemgrepGateCheckTest {
             result -> {
               assertThat(result.type()).isEqualTo("command");
               assertThat(result.findings()).isEqualTo(GateFindings.NONE);
-            });
+            }
+        );
   }
 }

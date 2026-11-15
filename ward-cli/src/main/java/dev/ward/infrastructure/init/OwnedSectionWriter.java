@@ -31,7 +31,10 @@ public final class OwnedSectionWriter implements OwnedSectionGeneration {
     final Optional<String> updated = update(section, original);
     if (updated.isEmpty()) {
       return new PlannedFileChange(
-          file, PlannedFileChange.Action.CONFLICT, List.of(conflict(section)));
+          file,
+          PlannedFileChange.Action.CONFLICT,
+          List.of(conflict(section))
+      );
     }
     if (!Files.exists(file)) {
       return new PlannedFileChange(file, PlannedFileChange.Action.CREATE, List.of(DETAIL));

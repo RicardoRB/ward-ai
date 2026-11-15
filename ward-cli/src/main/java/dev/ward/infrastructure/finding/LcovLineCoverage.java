@@ -105,7 +105,9 @@ public final class LcovLineCoverage implements LineCoverageReport {
           new LineHits.Entry(
               LineHits.Kind.PATH,
               name,
-              new FileLines(coverable, covered, branches, coveredBranches)));
+              new FileLines(coverable, covered, branches, coveredBranches)
+          )
+      );
       name = NO_RECORD;
       coverable.clear();
       covered.clear();
@@ -116,7 +118,8 @@ public final class LcovLineCoverage implements LineCoverageReport {
     private void requireRecord() {
       if (NO_RECORD.equals(name)) {
         throw new LineCoverageException(
-            report.getFileName() + " is not an lcov report: a record has no SF line");
+            report.getFileName() + " is not an lcov report: a record has no SF line"
+        );
       }
     }
 
@@ -131,7 +134,9 @@ public final class LcovLineCoverage implements LineCoverageReport {
         }
       } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
         throw new LineCoverageException(
-            report.getFileName() + " is not an lcov report: a DA line is malformed", e);
+            report.getFileName() + " is not an lcov report: a DA line is malformed",
+            e
+        );
       }
     }
 
@@ -147,7 +152,9 @@ public final class LcovLineCoverage implements LineCoverageReport {
         }
       } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
         throw new LineCoverageException(
-            report.getFileName() + " is not an lcov report: a BRDA line is malformed", e);
+            report.getFileName() + " is not an lcov report: a BRDA line is malformed",
+            e
+        );
       }
     }
   }

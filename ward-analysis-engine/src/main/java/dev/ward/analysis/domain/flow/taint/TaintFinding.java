@@ -13,7 +13,6 @@ import java.util.Objects;
  * @param path the steps from the source to the sink, in order; the last step is the sink
  */
 public record TaintFinding(FlowSite sink, String source, List<FlowStep> path) {
-
   /**
    * Copies the path.
    *

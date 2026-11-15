@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 /** The package name a bare specifier names, as the dependency checks read it. */
 final class NodeFileFactsTest {
-
   @Test
   void namesThePackageOfAScopedOrPlainSpecifier() {
     assertThat(NodeFileFacts.packageName("lodash/fp")).isEqualTo("lodash");

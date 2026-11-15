@@ -12,7 +12,6 @@ import java.util.Set;
  * column than the first parameter, like SwiftLint's {@code vertical_parameter_alignment}.
  */
 public final class SwiftParameterAlignmentCheck implements RuleCheck {
-
   private static final Set<String> FUNCTIONS =
       Set.of("function_declaration", "initializer_declaration");
   private static final Set<String> BODIES =

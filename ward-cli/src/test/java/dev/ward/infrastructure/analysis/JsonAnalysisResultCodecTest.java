@@ -23,7 +23,8 @@ class JsonAnalysisResultCodecTest {
           3,
           5,
           "https://example.invalid/rule",
-          List.of());
+          List.of()
+      );
   private final AnalysisResultCodec codec = new JsonAnalysisResultCodec(new ForyJsonCodec());
 
   /** Scenario: a finding with a path keeps its steps, with their spans, in order. */
@@ -40,7 +41,9 @@ class JsonAnalysisResultCodecTest {
             null,
             List.of(
                 new FlowStep(new Span(7, 18, 7, 26, 100, 108), "source: source"),
-                new FlowStep(new Span(9, 5, 9, 16, 150, 161), "sink: sink argument 0")));
+                new FlowStep(new Span(9, 5, 9, 16, 150, 161), "sink: sink argument 0")
+            )
+        );
 
     assertThat(codec.decode(KEY, codec.encode(KEY, List.of(withPath)))).contains(List.of(withPath));
   }
@@ -75,7 +78,8 @@ class JsonAnalysisResultCodecTest {
             .encode(KEY, List.of(FINDING))
             .replace(
                 version(JsonAnalysisResultCodec.FORMAT_VERSION),
-                version(JsonAnalysisResultCodec.FORMAT_VERSION - 1));
+                version(JsonAnalysisResultCodec.FORMAT_VERSION - 1)
+            );
 
     assertThat(codec.decode(KEY, value)).isEmpty();
   }

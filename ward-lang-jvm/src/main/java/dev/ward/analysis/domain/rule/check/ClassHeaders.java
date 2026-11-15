@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 
 /** Reads what a class declaration says about its name, superclass and interfaces. */
 final class ClassHeaders {
-
   private static final String EXTENDS = "'extends'";
   private static final String IMPLEMENTS = "'implements'";
   private static final String IDENTIFIER = "identifier";

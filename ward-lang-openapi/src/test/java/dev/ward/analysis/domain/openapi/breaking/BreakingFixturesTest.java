@@ -22,7 +22,6 @@ import org.junit.jupiter.params.provider.MethodSource;
  * passing pair and the base against itself yield nothing.
  */
 class BreakingFixturesTest {
-
   private static final Path ROOT =
       Path.of("..", "ward-cli", "src", "test", "resources", "breaking-rules", "openapi");
   private static final LocalDate TODAY = LocalDate.of(2026, 11, 12);
@@ -47,14 +46,16 @@ class BreakingFixturesTest {
             .filter(finding -> finding.ruleId().equals("ward:openapi/" + name))
             .map(
                 finding ->
-                    finding.at().anchor().startLine() + ":" + finding.at().anchor().startColumn())
+                    finding.at().anchor().startLine() + ":" + finding.at().anchor().startColumn()
+            )
             .toList();
 
     assertThat(positions)
         .containsExactlyElementsOf(
             Files.readAllLines(directory.resolve("expected.txt")).stream()
                 .filter(line -> !line.isBlank())
-                .toList());
+                .toList()
+        );
   }
 
   @ParameterizedTest(name = "{0}")
@@ -68,20 +69,21 @@ class BreakingFixturesTest {
 
   private static List<BreakingFinding> run(final Path directory, final String revision) {
     return BreakingRules.run(
-        new DocumentPair(load(directory, "base.yaml"), load(directory, revision), TODAY));
+        new DocumentPair(load(directory, "base.yaml"), load(directory, revision), TODAY)
+    );
   }
 
   private static OpenApiDocument load(final Path directory, final String file) {
     return OpenApiDocuments.load(
-            file,
-            path -> {
-              try {
-                return Optional.of(
-                    Files.readString(directory.resolve(path), StandardCharsets.UTF_8));
-              } catch (final IOException unreadable) {
-                return Optional.empty();
-              }
-            })
+        file,
+        path -> {
+          try {
+            return Optional.of(Files.readString(directory.resolve(path), StandardCharsets.UTF_8));
+          } catch (final IOException unreadable) {
+            return Optional.empty();
+          }
+        }
+    )
         .document()
         .orElseThrow();
   }

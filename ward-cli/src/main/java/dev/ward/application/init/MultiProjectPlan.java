@@ -21,8 +21,10 @@ import java.util.stream.Collectors;
  * @param shared the files outside every project root, merged across plans
  */
 public record MultiProjectPlan(
-    List<Project> projects, List<InitPlan> plans, List<PlannedFileChange> shared) {
-
+    List<Project> projects,
+    List<InitPlan> plans,
+    List<PlannedFileChange> shared
+) {
   /** Copies the lists. */
   public MultiProjectPlan {
     projects = List.copyOf(projects);
@@ -38,9 +40,16 @@ public record MultiProjectPlan(
             .filter(file -> outside(projects, file.file()))
             .collect(
                 Collectors.groupingBy(
-                    PlannedFileChange::file, LinkedHashMap::new, Collectors.toList()));
+                    PlannedFileChange::file,
+                    LinkedHashMap::new,
+                    Collectors.toList()
+                )
+            );
     return new MultiProjectPlan(
-        projects, plans, byFile.values().stream().map(MultiProjectPlan::merge).toList());
+        projects,
+        plans,
+        byFile.values().stream().map(MultiProjectPlan::merge).toList()
+    );
   }
 
   /** Returns the files of the project at {@code index} that lie inside its root. */
@@ -72,7 +81,8 @@ public record MultiProjectPlan(
         change -> {
           actions.add(change.action());
           details.addAll(change.details());
-        });
+        }
+    );
     final Action action;
     if (actions.contains(Action.CONFLICT)) {
       action = Action.CONFLICT;

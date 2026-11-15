@@ -37,6 +37,6 @@ public record MutationCounts(int detected, int undetected, String problem) {
 
   /** Returns whether the exact score, detected / valid × 100, is below {@code minimum}. */
   public boolean below(final int minimum) {
-    return (long) detected * PERCENT < (long) minimum * valid();
+    return (long) detected * PERCENT < (long)minimum * valid();
   }
 }

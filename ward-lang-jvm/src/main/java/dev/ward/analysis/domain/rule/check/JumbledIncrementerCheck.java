@@ -16,7 +16,6 @@ import java.util.stream.Stream;
  * its own init is not reported.
  */
 public final class JumbledIncrementerCheck implements UnitCheck {
-
   private static final String FOR_CONTROL = "forControl";
   private static final String FOR_INIT = "forInit";
   private static final String EXPRESSION_LIST = "expressionList";

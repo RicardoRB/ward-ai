@@ -67,7 +67,8 @@ class NativeJvmTypesTest {
           facts.factsOf(
               new SourceUnit(PATH, AnalysisLanguage.JAVA, text),
               List.of(equalsCall, toString, read, kind, user),
-              EnumSet.allOf(FactKind.class));
+              EnumSet.allOf(FactKind.class)
+          );
       assertThat(actual.callTarget(equalsCall))
           .isEqualTo(expected.callTarget(equalsCall))
           .isPresent();
@@ -87,21 +88,26 @@ class NativeJvmTypesTest {
   void resolvesProjectLibraryAndJdkTypesWithoutAJdkProcess() throws IOException {
     final Path jar = project.resolve("libs/library.jar");
     Files.createDirectories(jar.getParent());
-    try (OutputStream out = Files.newOutputStream(jar);
-        JarOutputStream jarOut = new JarOutputStream(out);
-        InputStream in = Library.class.getResourceAsStream("NativeJvmTypesTest$Library.class")) {
+    try (OutputStream out = Files.newOutputStream(
+        jar
+    ); JarOutputStream jarOut = new JarOutputStream(
+        out
+    ); InputStream in = Library.class.getResourceAsStream("NativeJvmTypesTest$Library.class")) {
       jarOut.putNextEntry(new JarEntry("lib/Library.class"));
       jarOut.write(rename(in.readAllBytes()));
       jarOut.closeEntry();
     }
     final Path classpath =
         Files.writeString(
-            project.resolve("classpath.txt"), jar + "\n" + project.resolve("missing.jar"));
+            project.resolve("classpath.txt"),
+            jar + "\n" + project.resolve("missing.jar")
+        );
     final Path helper = project.resolve("src/main/java/app/Helper.java");
     Files.createDirectories(helper.getParent());
     Files.writeString(
         helper,
-        "package app;\npublic class Helper { public static String name() { return \"h\"; } }\n");
+        "package app;\npublic class Helper { public static String name() { return \"h\"; } }\n"
+    );
     final String text =
         "package app;\nimport java.util.Objects;\nclass Use {\n  void run() {\n    boolean a = Objects.equals(1, 2);\n    String b = Helper.name();\n    Object c = lib.Library.make();\n  }\n}\n";
 
@@ -115,7 +121,8 @@ class NativeJvmTypesTest {
           facts.factsOf(
               new SourceUnit("src/main/java/app/Use.java", AnalysisLanguage.JAVA, text),
               List.of(jdk, sources, library),
-              EnumSet.of(FactKind.TYPE, FactKind.CALL));
+              EnumSet.of(FactKind.TYPE, FactKind.CALL)
+          );
 
       assertThat(actual.callTarget(jdk).orElseThrow().declaringType().name())
           .isEqualTo("java.util.Objects");
@@ -131,9 +138,11 @@ class NativeJvmTypesTest {
   void readsTheMembersOfAClassInAClasspathJar() throws IOException {
     final Path jar = project.resolve("libs/library.jar");
     Files.createDirectories(jar.getParent());
-    try (OutputStream out = Files.newOutputStream(jar);
-        JarOutputStream jarOut = new JarOutputStream(out);
-        InputStream in = Library.class.getResourceAsStream("NativeJvmTypesTest$Library.class")) {
+    try (OutputStream out = Files.newOutputStream(
+        jar
+    ); JarOutputStream jarOut = new JarOutputStream(
+        out
+    ); InputStream in = Library.class.getResourceAsStream("NativeJvmTypesTest$Library.class")) {
       jarOut.putNextEntry(new JarEntry("lib/Library.class"));
       jarOut.write(rename(in.readAllBytes()));
       jarOut.closeEntry();
@@ -151,7 +160,8 @@ class NativeJvmTypesTest {
               .factsOf(
                   new SourceUnit("src/main/java/app/Use.java", AnalysisLanguage.JAVA, text),
                   List.of(kept),
-                  EnumSet.of(FactKind.TYPE, FactKind.MEMBERS));
+                  EnumSet.of(FactKind.TYPE, FactKind.MEMBERS)
+              );
 
       final TypeMembers members = actual.membersOf(kept).orElseThrow();
       assertThat(members.fields()).extracting(FieldRef::name).contains("LIMIT");
@@ -159,7 +169,8 @@ class NativeJvmTypesTest {
           .filteredOn(method -> "legacy".equals(method.name()))
           .singleElement()
           .satisfies(
-              method -> assertThat(method.annotations()).containsExactly("java.lang.Deprecated"));
+              method -> assertThat(method.annotations()).containsExactly("java.lang.Deprecated")
+          );
       assertThat(members.ancestors()).extracting(TypeRef::name).containsExactly("java.lang.Object");
       assertThat(members.methods())
           .filteredOn(method -> "find".equals(method.name()))
@@ -168,7 +179,8 @@ class NativeJvmTypesTest {
               method -> {
                 assertThat(method.compatibleWith()).containsExactly("T", "");
                 assertThat(method.typeParameters()).containsExactly("T");
-              });
+              }
+          );
     } finally {
       types.close();
     }
@@ -185,10 +197,10 @@ class NativeJvmTypesTest {
 
   private static Span span(final String text, final String token) {
     final int offset = text.lastIndexOf(token);
-    final int line = (int) text.substring(0, offset).chars().filter(c -> c == '\n').count() + 1;
+    final int line = (int)text.substring(0, offset).chars().filter(c -> c == '\n').count() + 1;
     final int column = offset - text.lastIndexOf('\n', offset - 1);
     final int end = offset + token.length();
-    final int endLine = (int) text.substring(0, end).chars().filter(c -> c == '\n').count() + 1;
+    final int endLine = (int)text.substring(0, end).chars().filter(c -> c == '\n').count() + 1;
     final int endColumn = end - text.lastIndexOf('\n', end - 1);
     return new Span(line, column, endLine, endColumn, offset, end);
   }
@@ -208,7 +220,8 @@ class NativeJvmTypesTest {
     /** Looks a key up. */
     static <T> Object find(
         @com.google.errorprone.annotations.CompatibleWith("T") final Object key,
-        final int ignored) {
+        final int ignored
+    ) {
       return key;
     }
 

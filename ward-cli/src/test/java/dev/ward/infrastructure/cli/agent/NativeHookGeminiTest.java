@@ -38,7 +38,8 @@ class NativeHookGeminiTest {
         .isZero();
     assertThat(hook.out.toString())
         .startsWith(
-            "{\"hookSpecificOutput\":{\"hookEventName\":\"AfterTool\",\"additionalContext\":")
+            "{\"hookSpecificOutput\":{\"hookEventName\":\"AfterTool\",\"additionalContext\":"
+        )
         .contains("Ward quality findings");
     assertThat(hook.err.toString()).isEmpty();
   }

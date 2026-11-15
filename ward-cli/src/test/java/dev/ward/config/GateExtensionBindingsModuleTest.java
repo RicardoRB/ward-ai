@@ -19,14 +19,18 @@ import org.junit.jupiter.api.Test;
 
 /** The analysis frontends the CLI binds, so every language with rules has a parser for them. */
 class GateExtensionBindingsModuleTest {
-
   @Test
   void bindsAFrontendForEachAnalysisLanguageWithRules() {
     final AnalysisRuleSource rules = () -> new AnalysisRuleLoad(List.of(), List.of());
 
     final AnalysisPorts ports =
         GateExtensionBindingsModule.analysisPorts(
-            rules, new MetricMatcher(), sources(), codec(), "test");
+            rules,
+            new MetricMatcher(),
+            sources(),
+            codec(),
+            "test"
+        );
 
     assertThat(ports.frontends())
         .extracting(FrontendSupport::language)
@@ -36,7 +40,8 @@ class GateExtensionBindingsModuleTest {
             AnalysisLanguage.TYPESCRIPT,
             AnalysisLanguage.JAVASCRIPT,
             AnalysisLanguage.SWIFT,
-            AnalysisLanguage.KOTLIN);
+            AnalysisLanguage.KOTLIN
+        );
   }
 
   private static AnalysisResultCodec codec() {

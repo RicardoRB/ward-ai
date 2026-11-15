@@ -14,8 +14,10 @@ import java.util.List;
  * @param outgoing the resolved edges from the file to each file it imports, with their references
  */
 public record DependencyView(
-    List<FileSummary> dependencies, List<FileSummary> dependents, List<DependencyEdge> outgoing) {
-
+    List<FileSummary> dependencies,
+    List<FileSummary> dependents,
+    List<DependencyEdge> outgoing
+) {
   /** The view of a rule that reads no dependencies. */
   public static final DependencyView NONE = new DependencyView(List.of(), List.of(), List.of());
 

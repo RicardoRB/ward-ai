@@ -16,7 +16,6 @@ import java.util.TreeSet;
  * given as options. The rule reads the whole graph once, so it is a graph rule.
  */
 public final class UnusedFileRule implements GraphRule {
-
   /** The id of the rule, the same in every language. */
   public static final String ID = "ward:architecture/unused-file";
 
@@ -65,7 +64,10 @@ public final class UnusedFileRule implements GraphRule {
   }
 
   private boolean isUsed(
-      final DependencyGraph graph, final ProjectFiles project, final String file) {
+      final DependencyGraph graph,
+      final ProjectFiles project,
+      final String file
+  ) {
     return project.entries().contains(file)
         || matchesEntryGlob(file)
         || !graph.dependentsOf(file).isEmpty();

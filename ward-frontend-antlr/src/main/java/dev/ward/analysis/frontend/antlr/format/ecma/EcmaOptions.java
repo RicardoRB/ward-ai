@@ -12,7 +12,6 @@ import java.util.List;
  * The options the TypeScript and JavaScript formatters declare, and how they map to a print style.
  */
 final class EcmaOptions {
-
   /** The longest line the printer fills before it breaks a group. */
   static final String LINE_WIDTH = "line-width";
 
@@ -34,7 +33,8 @@ final class EcmaOptions {
           new FormatOption(LINE_WIDTH, FormatOptionType.INTEGER, "100", List.of()),
           new FormatOption(INDENT_STYLE, FormatOptionType.TEXT, SPACE, List.of(SPACE, TAB)),
           new FormatOption(INDENT_WIDTH, FormatOptionType.INTEGER, "2", List.of()),
-          new FormatOption(MAX_BLANK_LINES, FormatOptionType.INTEGER, "1", List.of()));
+          new FormatOption(MAX_BLANK_LINES, FormatOptionType.INTEGER, "1", List.of())
+      );
 
   private EcmaOptions() {}
 
@@ -49,6 +49,7 @@ final class EcmaOptions {
         options.integer(LINE_WIDTH),
         TAB.equals(options.get(INDENT_STYLE)) ? IndentStyle.TAB : IndentStyle.SPACE,
         options.integer(INDENT_WIDTH),
-        EndOfLine.LF);
+        EndOfLine.LF
+    );
   }
 }

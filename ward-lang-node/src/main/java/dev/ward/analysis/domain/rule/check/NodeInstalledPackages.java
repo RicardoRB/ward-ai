@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
 
 /** The installed packages a project carries under {@code node_modules}, for the binary check. */
 final class NodeInstalledPackages {
-
   private static final String MANIFEST = "package.json";
   private static final Pattern INSTALLED =
       Pattern.compile("node_modules/((?:@[^/]+/)?[^/]+)/package\\.json");
@@ -37,7 +36,10 @@ final class NodeInstalledPackages {
   }
 
   private static Optional<Map.Entry<String, NodeManifests.Manifest>> installedAt(
-      final ProjectFiles files, final String path, final String name) {
+      final ProjectFiles files,
+      final String path,
+      final String name
+  ) {
     final String directory = path.substring(0, path.length() - MANIFEST.length() - 1);
     return files
         .text(path)

@@ -15,7 +15,6 @@ import java.util.Set;
  * as Biome 2.5.15's {@code useAriaPropsForRole} does. A separator without tabIndex is exempt.
  */
 public final class BiomeAriaPropsForRoleCheck implements RuleCheck {
-
   private static final String ROLE = "role";
   private static final String TABINDEX = "tabIndex";
   private static final String SEPARATOR = "separator";
@@ -42,7 +41,10 @@ public final class BiomeAriaPropsForRoleCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(JsxAttributes.OPENING, JsxAttributes.SELF_CLOSING))
         .stream()
         .flatMap(visit -> reported(visit.node(), unit.text()).stream())

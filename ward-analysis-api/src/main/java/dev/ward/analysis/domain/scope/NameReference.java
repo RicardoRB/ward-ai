@@ -21,8 +21,8 @@ public record NameReference(
     ReferenceAccess access,
     int scope,
     Optional<Binding> resolved,
-    boolean beforeDeclaration) {
-
+    boolean beforeDeclaration
+) {
   /**
    * Validates the fields.
    *

@@ -43,7 +43,8 @@ final class Calls {
         node(
             "identifier",
             RECEIVER,
-            new SyntaxNode("IDENTIFIER", RECEIVER, Map.of("text", method), List.of()));
+            new SyntaxNode("IDENTIFIER", RECEIVER, Map.of("text", method), List.of())
+        );
     final SyntaxNode list = new SyntaxNode("expressionList", ARGUMENT, Map.of(), expressions);
     final SyntaxNode args = node("arguments", ARGUMENT, list);
     return node(
@@ -51,7 +52,8 @@ final class Calls {
         CALL,
         node("expression", RECEIVER),
         new SyntaxNode(".", RECEIVER, Map.of("text", "."), List.of()),
-        node("methodCall", CALL, identifier, args));
+        node("methodCall", CALL, identifier, args)
+    );
   }
 
   static SyntaxNode node(final String kind, final Span span, final SyntaxNode... children) {
@@ -72,13 +74,14 @@ final class Calls {
         List.of(),
         List.of(),
         null,
-        null);
+        null
+    );
   }
 
   static UnitTypeFacts table(final Object... pairs) {
     final Map<String, SpanFacts> map = new HashMap<>();
     for (int i = 0; i < pairs.length; i += 2) {
-      map.put(UnitTypeFacts.key((Span) pairs[i]), (SpanFacts) pairs[i + 1]);
+      map.put(UnitTypeFacts.key((Span)pairs[i]), (SpanFacts)pairs[i + 1]);
     }
     return new UnitTypeFacts(map);
   }

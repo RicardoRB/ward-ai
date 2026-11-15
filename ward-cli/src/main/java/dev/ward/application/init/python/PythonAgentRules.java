@@ -25,7 +25,8 @@ final class PythonAgentRules {
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final Set<String> owned) {
+      final Set<String> owned
+  ) {
     final Map<String, String> rows =
         Map.of(
             "django-check",
@@ -46,14 +47,17 @@ final class PythonAgentRules {
                 + " coverage minimum in `ward.toml`; do not lower it.",
             "mutmut",
             "- Mutation testing (mutmut): `{command}` in `ci` must score at least 60%; kill the"
-                + " surviving mutants with tests, do not weaken the code under test.");
+                + " surviving mutants with tests, do not weaken the code under test."
+        );
     final List<String> gateLines =
         gates.stream()
             .filter(gate -> rows.containsKey(gate.id()))
             .map(gate -> rows.get(gate.id()).replace("{command}", String.join(" ", gate.command())))
             .toList();
     return java.util.stream.Stream.concat(
-            gateLines.stream(), frameworkLines(project.framework(), gates).stream())
+        gateLines.stream(),
+        frameworkLines(project.framework(), gates).stream()
+    )
         .toList();
   }
 
@@ -61,7 +65,9 @@ final class PythonAgentRules {
    * Returns the framework's own rule: FastAPI's openapi export when an openapi gate is selected.
    */
   private static List<String> frameworkLines(
-      final Framework framework, final List<InitGateOption> gates) {
+      final Framework framework,
+      final List<InitGateOption> gates
+  ) {
     return switch (framework) {
       case FASTAPI ->
           gates.stream().anyMatch(gate -> gate.id().startsWith("openapi"))

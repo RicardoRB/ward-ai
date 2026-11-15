@@ -9,7 +9,6 @@ import java.util.function.BiConsumer;
 
 /** The rules about where type arguments and nullness annotations may be written. */
 final class NullGenericUses {
-
   private static final String LOCAL = "localVariableDeclaration";
   private static final String TYPE_TYPE = "typeType";
   private static final Set<String> COLLECTION_FACTORIES = Set.of("List", "Set", "Arrays");
@@ -29,9 +28,10 @@ final class NullGenericUses {
       final String name = NullParameters.baseName(visit.node());
       final List<Boolean> declared = allowed.get(name);
       final List<Boolean> actual = NullArgs.of(visit.node()).orElse(List.of());
-      for (int index = 0;
-          declared != null && index < Math.min(declared.size(), actual.size());
-          index++) {
+      for (int index = 0; declared != null && index < Math.min(
+          declared.size(),
+          actual.size()
+      ); index++) {
         if (actual.get(index) && !declared.get(index)) {
           hits.add(NullHit.at(visit.node(), name));
         }
@@ -58,7 +58,8 @@ final class NullGenericUses {
                 .filter(value -> declaredArgs && nullElement(value))
                 .forEach(value -> hits.add(NullHit.at(value, SyntaxWalk.text(value))));
           }
-        });
+        }
+    );
   }
 
   private static boolean nullElement(final SyntaxNode value) {
@@ -89,10 +90,13 @@ final class NullGenericUses {
   /** Runs {@code action} for each rule of this class. */
   static void each(final BiConsumer<String, NullFinder> action) {
     action.accept(
-        "type-parameter-cannot-be-nullable", NullGenericUses::typeParameterCannotBeNullable);
+        "type-parameter-cannot-be-nullable",
+        NullGenericUses::typeParameterCannotBeNullable
+    );
     action.accept("generic-inference-failure", NullGenericUses::genericInferenceFailure);
     action.accept(
         "unrecognized-nullness-annotation-location",
-        NullGenericUses::unrecognizedNullnessAnnotationLocation);
+        NullGenericUses::unrecognizedNullnessAnnotationLocation
+    );
   }
 }

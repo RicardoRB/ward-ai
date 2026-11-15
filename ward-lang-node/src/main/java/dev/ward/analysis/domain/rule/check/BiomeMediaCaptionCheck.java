@@ -13,7 +13,6 @@ import java.util.Set;
  * self-closing media element has no track and is always reported.
  */
 public final class BiomeMediaCaptionCheck implements RuleCheck {
-
   private static final Set<String> MEDIA = Set.of("video", "audio");
   private static final String TRACK = "track";
   private static final String KIND = "kind";
@@ -56,7 +55,8 @@ public final class BiomeMediaCaptionCheck implements RuleCheck {
                 child ->
                     !OPENING.equals(child.kind())
                         && !CLOSING.equals(child.kind())
-                        && isCaptionsTrack(child));
+                        && isCaptionsTrack(child)
+            );
   }
 
   private static boolean mediaWithoutMutedOrSpread(final SyntaxNode element) {
@@ -83,6 +83,7 @@ public final class BiomeMediaCaptionCheck implements RuleCheck {
                 attribute ->
                     JsxAttributes.literal(attribute)
                         .filter(CAPTIONS::equalsIgnoreCase)
-                        .isPresent());
+                        .isPresent()
+            );
   }
 }

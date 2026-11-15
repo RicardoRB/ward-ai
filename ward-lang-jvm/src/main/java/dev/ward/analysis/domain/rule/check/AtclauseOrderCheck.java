@@ -13,7 +13,6 @@ import java.util.Set;
  * of a declaration of a target kind. Tags that are not in the order are ignored.
  */
 public final class AtclauseOrderCheck implements RuleCheck {
-
   private final Set<String> kinds;
   private final Set<String> modifierKinds;
   private final List<String> tagOrder;
@@ -31,7 +30,8 @@ public final class AtclauseOrderCheck implements RuleCheck {
       final Set<String> kinds,
       final Set<String> modifierKinds,
       final List<String> tagOrder,
-      final String message) {
+      final String message
+  ) {
     this.kinds = Set.copyOf(kinds);
     this.modifierKinds = Set.copyOf(modifierKinds);
     this.tagOrder = List.copyOf(tagOrder);

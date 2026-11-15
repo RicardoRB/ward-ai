@@ -14,7 +14,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class CyclicImportRuleTest {
-
   private static final String PY_A = "pkg/a.py";
   private static final String PY_B = "pkg/b.py";
   private static final String JAVA_A = "src/main/java/com/acme/A.java";
@@ -29,7 +28,9 @@ class CyclicImportRuleTest {
             Set.of(AnalysisLanguage.PYTHON),
             RuleCapability.SYMBOLS,
             AnalysisSeverity.ERROR,
-            "check = \"cyclic-import\""));
+            "check = \"cyclic-import\""
+        )
+    );
   }
 
   @Test
@@ -60,7 +61,8 @@ class CyclicImportRuleTest {
             edge(JAVA_A, JAVA_B, 1),
             edge(JAVA_B, JAVA_A, 2),
             edge(PY_A, PY_B, 3),
-            edge(PY_B, PY_A, 4));
+            edge(PY_B, PY_A, 4)
+        );
 
     final List<GraphMatch> matches = rule().matches(graph);
 
@@ -76,7 +78,8 @@ class CyclicImportRuleTest {
         new DependencyEdge(
             guarded.from(),
             guarded.to(),
-            new Reference(guarded.reference().specifier(), guarded.reference().span(), true));
+            new Reference(guarded.reference().specifier(), guarded.reference().span(), true)
+        );
 
     assertThat(rule().matches(graph(runtime, typeOnly))).isEmpty();
   }

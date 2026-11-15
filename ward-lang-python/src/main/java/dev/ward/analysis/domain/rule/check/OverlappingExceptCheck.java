@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * class of the module or a dotted name gives no finding.
  */
 public final class OverlappingExceptCheck implements RuleCheck {
-
   private static final Set<String> CLAUSES = Set.of("except_clause");
   private static final Pattern TUPLE =
       Pattern.compile("^except\\(([A-Za-z_][\\w]*(?:,[\\w]+)+)\\)");

@@ -48,24 +48,33 @@ final class FactTable {
         list(
             kinds,
             FactKind.ANNOTATIONS,
-            Optional.of(KotlinNullness.annotations(typed, declaration))),
+            Optional.of(KotlinNullness.annotations(typed, declaration))
+        ),
         list(
             kinds,
             FactKind.ANNOTATIONS,
-            declaration.map(found -> found.scopes().stream().map(FactRefs::display).toList())),
+            declaration.map(found -> found.scopes().stream().map(FactRefs::display).toList())
+        ),
         list(kinds, FactKind.OVERRIDES, Optional.of(overrides(declaration))),
         list(kinds, FactKind.THROWS, Optional.of(thrown(typed, declaration))),
         ask(kinds, FactKind.CONSTANT, () -> FactValues.constant(typed)).orElse(null),
-        ask(kinds, FactKind.MEMBERS, () -> typeMembers.of(typed, declaration)).orElse(null));
+        ask(kinds, FactKind.MEMBERS, () -> typeMembers.of(typed, declaration)).orElse(null)
+    );
   }
 
   private static <T> Optional<T> ask(
-      final Set<FactKind> kinds, final FactKind kind, final Supplier<Optional<T>> fact) {
+      final Set<FactKind> kinds,
+      final FactKind kind,
+      final Supplier<Optional<T>> fact
+  ) {
     return kinds.contains(kind) ? fact.get() : Optional.empty();
   }
 
   private static <T> List<T> list(
-      final Set<FactKind> kinds, final FactKind kind, final Optional<List<T>> facts) {
+      final Set<FactKind> kinds,
+      final FactKind kind,
+      final Optional<List<T>> facts
+  ) {
     return kinds.contains(kind) ? facts.orElse(List.of()) : List.of();
   }
 

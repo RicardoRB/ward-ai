@@ -14,7 +14,8 @@ final class JavaClassReader {
           "interfaceDeclaration",
           "enumDeclaration",
           "recordDeclaration",
-          "annotationTypeDeclaration");
+          "annotationTypeDeclaration"
+      );
   private static final String OBJECT = "java.lang.Object";
   private static final String IDENTIFIER = "identifier";
   private static final String EXTENDS = "extends";
@@ -49,8 +50,8 @@ final class JavaClassReader {
         .findFirst()
         .map(
             declaration ->
-                new Entry(
-                    holder, Syntax.children(holder, "classOrInterfaceModifier"), declaration));
+                new Entry(holder, Syntax.children(holder, "classOrInterfaceModifier"), declaration)
+        );
   }
 
   /** Returns the entries of the body of a type declaration. */
@@ -82,7 +83,8 @@ final class JavaClassReader {
         .filter(
             child ->
                 child.kind().endsWith("MemberDeclaration")
-                    || "memberDeclaration".equals(child.kind()))
+                    || "memberDeclaration".equals(child.kind())
+        )
         .findFirst()
         .flatMap(inner -> inner.children().stream().findFirst())
         .map(declaration -> new Entry(member, modifiers, declaration));
@@ -90,7 +92,10 @@ final class JavaClassReader {
 
   /** Reads {@code entry}, whose binary name is {@code prefix} followed by its name. */
   static SourceModel.ClassDecl read(
-      final Entry entry, final String prefix, final TypeScope outerScope) {
+      final Entry entry,
+      final String prefix,
+      final TypeScope outerScope
+  ) {
     final SyntaxNode declaration = entry.declaration();
     final String binary = prefix + entry.name();
     final List<String> variables =
@@ -129,7 +134,8 @@ final class JavaClassReader {
             nested.stream().map(inner -> inner.jvm().name()).toList(),
             JavaModifiers.has(entry.modifiers(), "sealed"),
             false,
-            AnnotationSourceValues.of(entry.modifiers(), scope));
+            AnnotationSourceValues.of(entry.modifiers(), scope)
+        );
     return new SourceModel.ClassDecl(jvm, declaration, entry.outer(), scope, read, nested);
   }
 
@@ -148,7 +154,8 @@ final class JavaClassReader {
       final JvmClass.Kind kind,
       final String binary,
       final TypeScope scope,
-      final List<JType.ClassType> interfaces) {
+      final List<JType.ClassType> interfaces
+  ) {
     Optional<JType.ClassType> superclass = Optional.empty();
     String keyword = "";
     for (final SyntaxNode child : declaration.children()) {
@@ -171,14 +178,19 @@ final class JavaClassReader {
   }
 
   private static Optional<JType.ClassType> classTypeOf(
-      final SyntaxNode written, final TypeScope scope) {
+      final SyntaxNode written,
+      final TypeScope scope
+  ) {
     return JavaTypes.type(written, scope)
         .filter(JType.ClassType.class::isInstance)
         .map(JType.ClassType.class::cast);
   }
 
   private static Optional<JType.ClassType> implicitSuperclass(
-      final JvmClass.Kind kind, final String binary, final Optional<JType.ClassType> declared) {
+      final JvmClass.Kind kind,
+      final String binary,
+      final Optional<JType.ClassType> declared
+  ) {
     return switch (kind) {
       case CLASS -> declared.or(() -> Optional.of(JType.ClassType.of(OBJECT)));
       case ENUM ->

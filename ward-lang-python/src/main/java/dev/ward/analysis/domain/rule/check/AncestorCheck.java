@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
  * outside an async function) and {@code PLE1700} (a {@code yield from} inside one).
  */
 public final class AncestorCheck implements RuleCheck {
-
   private final Set<String> kinds;
   private final Set<String> allowed;
   private final Set<String> stop;
@@ -41,7 +40,6 @@ public final class AncestorCheck implements RuleCheck {
    * @param stop the kinds at which the search ends without finding an allowed kind
    */
   public record Boundary(Set<String> allowed, Set<String> stop) {
-
     /** Copies both sets. */
     public Boundary {
       allowed = Set.copyOf(allowed);
@@ -63,7 +61,8 @@ public final class AncestorCheck implements RuleCheck {
       final Boundary boundary,
       final Mode mode,
       final Optional<Pattern> text,
-      final String message) {
+      final String message
+  ) {
     this.kinds = Set.copyOf(kinds);
     this.allowed = Set.copyOf(boundary.allowed());
     this.stop = Set.copyOf(boundary.stop());

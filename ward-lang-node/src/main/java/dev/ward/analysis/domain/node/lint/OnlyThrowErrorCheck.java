@@ -12,7 +12,6 @@ import java.util.Set;
 
 /** Reports a {@code throw} of a value whose known type is not an error. */
 public final class OnlyThrowErrorCheck extends TypedCheck {
-
   private static final String THROW = "throwStatement";
   private static final String CATCH = "catchProduction";
   private static final String IDENTIFIER = "identifier";
@@ -31,7 +30,8 @@ public final class OnlyThrowErrorCheck extends TypedCheck {
       final boolean allowThrowingAny,
       final boolean allowThrowingUnknown,
       final Set<String> allowed,
-      final String message) {
+      final String message
+  ) {
     super();
     this.allowRethrowing = allowRethrowing;
     this.allowThrowingAny = allowThrowingAny;

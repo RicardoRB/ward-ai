@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
  * volatile field does not make {@code x++} atomic.
  */
 public final class VolatileIncrementCheck implements UnitCheck {
-
   private static final String MODIFIER = "modifier";
 
   private final String message;
@@ -41,7 +40,8 @@ public final class VolatileIncrementCheck implements UnitCheck {
                 + ")(?:\\+\\+|--|[-+*/]=)|(?:\\+\\+|--)(?:this\\.)?"
                 + "(?:"
                 + alternatives
-                + "))$");
+                + "))$"
+        );
     return SyntaxWalk.descendants(root).stream()
         .filter(node -> "expression".equals(node.kind()))
         .filter(node -> update.matcher(SyntaxWalk.text(node)).matches())

@@ -13,7 +13,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class BiomeBlankTargetCheckTest {
-
   private static final BiomeBlankTargetCheck CHECK =
       new BiomeBlankTargetCheck(Set.of("x.com"), false, "message");
 

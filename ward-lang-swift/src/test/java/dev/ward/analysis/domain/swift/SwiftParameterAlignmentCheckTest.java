@@ -10,7 +10,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class SwiftParameterAlignmentCheckTest {
-
   private static final int FIRST_COLUMN = 16;
   private static final int OTHER_COLUMN = 9;
 

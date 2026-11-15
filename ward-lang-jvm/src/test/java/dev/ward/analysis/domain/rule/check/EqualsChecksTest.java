@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** The equals, hashCode and return-count coding checks on small trees. */
 class EqualsChecksTest extends TreeBuilders {
-
   private static final String MESSAGE = "{value}";
   private static final String OBJECT = "Object";
   private static final String VOID = "void";
@@ -63,7 +62,8 @@ class EqualsChecksTest extends TreeBuilders {
         .isEmpty();
     final SyntaxNode voidTwice = returns(VOID, returnStatement(), returnStatement());
     assertThat(
-            findings(new ReturnCountCheck(MAX_RETURNS, MAX_RETURNS_FOR_VOID, MESSAGE), voidTwice))
+        findings(new ReturnCountCheck(MAX_RETURNS, MAX_RETURNS_FOR_VOID, MESSAGE), voidTwice)
+    )
         .hasSize(1);
     assertThat(findings(new ReturnCountCheck(MAX_RETURNS, MAX_RETURNS, MESSAGE), voidTwice))
         .isEmpty();
@@ -100,7 +100,9 @@ class EqualsChecksTest extends TreeBuilders {
         n(
             METHOD_CALL,
             id(name),
-            n(ARGUMENTS, t(TOKEN_OPEN, "("), t(TOKEN_STRING, "\"ward\""), t(TOKEN_CLOSE, ")"))));
+            n(ARGUMENTS, t(TOKEN_OPEN, "("), t(TOKEN_STRING, "\"ward\""), t(TOKEN_CLOSE, ")"))
+        )
+    );
   }
 
   private static SyntaxNode returns(final String type, final SyntaxNode... statements) {

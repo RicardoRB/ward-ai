@@ -22,7 +22,11 @@ class PythonAgentRulesTest {
   void strictRulesNameTheBranchCoverageLimitAndTheMutationMinimum() {
     final List<String> lines =
         PythonAgentRules.lines(
-            PROJECT, gates("coverage", "mutmut"), QualityPreset.STRICT, Set.of());
+            PROJECT,
+            gates("coverage", "mutmut"),
+            QualityPreset.STRICT,
+            Set.of()
+        );
 
     assertThat(String.join("\n", lines))
         .contains("85% line and 75% branch coverage minimum in `ward.toml`")
@@ -51,10 +55,11 @@ class PythonAgentRulesTest {
         new Project(Path.of("/shop"), Language.PYTHON, BuildTool.UV, Framework.DJANGO);
 
     assertThat(
-            String.join(
-                "\n",
-                PythonAgentRules.lines(
-                    django, gates("django-check"), QualityPreset.STANDARD, Set.of())))
+        String.join(
+            "\n",
+            PythonAgentRules.lines(django, gates("django-check"), QualityPreset.STANDARD, Set.of())
+        )
+    )
         .contains("Django: `django-check` must report no issues");
   }
 
@@ -64,14 +69,18 @@ class PythonAgentRulesTest {
         new Project(Path.of("/shop"), Language.PYTHON, BuildTool.UV, Framework.FASTAPI);
 
     assertThat(
-            String.join(
-                "\n",
-                PythonAgentRules.lines(
-                    api, gates("openapi-diff"), QualityPreset.STANDARD, Set.of())))
+        String.join(
+            "\n",
+            PythonAgentRules.lines(api, gates("openapi-diff"), QualityPreset.STANDARD, Set.of())
+        )
+    )
         .contains("re-export openapi.json");
     assertThat(
-            String.join(
-                "\n", PythonAgentRules.lines(api, gates("mypy"), QualityPreset.STANDARD, Set.of())))
+        String.join(
+            "\n",
+            PythonAgentRules.lines(api, gates("mypy"), QualityPreset.STANDARD, Set.of())
+        )
+    )
         .doesNotContain("openapi.json");
   }
 
@@ -81,9 +90,11 @@ class PythonAgentRulesTest {
         new Project(Path.of("/shop"), Language.PYTHON, BuildTool.UV, Framework.FLASK);
 
     assertThat(
-            String.join(
-                "\n",
-                PythonAgentRules.lines(flask, gates("mypy"), QualityPreset.STANDARD, Set.of())))
+        String.join(
+            "\n",
+            PythonAgentRules.lines(flask, gates("mypy"), QualityPreset.STANDARD, Set.of())
+        )
+    )
         .contains("`create_app`");
   }
 

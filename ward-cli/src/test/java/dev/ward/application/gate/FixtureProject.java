@@ -50,7 +50,9 @@ final class FixtureProject {
     final Path file = root.resolve(path);
     Files.createDirectories(file.getParent());
     Files.writeString(
-        file, header + " {\n  void run() {\n" + "    int a = 0;\n".repeat(lines) + "  }\n}\n");
+        file,
+        header + " {\n  void run() {\n" + "    int a = 0;\n".repeat(lines) + "  }\n}\n"
+    );
   }
 
   void config(final String content) throws IOException {
@@ -62,7 +64,11 @@ final class FixtureProject {
   }
 
   GateResult run(
-      final List<String> rules, final String rulesFile, final Map<String, String> cache) {
+      final List<String> rules,
+      final String rulesFile,
+      final Map<String,
+      String> cache
+  ) {
     final GateConfiguration check =
         new GateConfiguration(
             "structure",
@@ -86,7 +92,8 @@ final class FixtureProject {
             null,
             null,
             null,
-            null);
+            null
+        );
     final AnalysisPorts ports =
         new AnalysisPorts(
             new ProjectRuleSource(packaged),
@@ -96,12 +103,15 @@ final class FixtureProject {
                 new FrontendSupport(
                     AnalysisLanguage.JAVA,
                     new AntlrLanguageFrontend(),
-                    Set.of(RuleCapability.SYNTAX))),
+                    Set.of(RuleCapability.SYNTAX)
+                )
+            ),
             unused -> AnalysisCacheFixtures.memory(cache),
             AnalysisCacheFixtures.codec(),
             "test",
             DependencyAdapters.none(),
-            (unused, classpath) -> Map.of());
+            (unused, classpath) -> Map.of()
+        );
     return AnalysisGates.create(check, ports).execute(project());
   }
 
@@ -116,6 +126,7 @@ final class FixtureProject {
         Set.of(),
         null,
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 }

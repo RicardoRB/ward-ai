@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** The behavior of the checks that the catalog fixtures, one file per case, cannot show. */
 class AndroidChecksTest {
-
   private static final String MANIFEST = "<manifest xmlns:android=\"urn:a\">\n%s</manifest>\n";
 
   private static List<RuleMatch> run(final RuleCheck check, final String text) {
@@ -53,7 +52,8 @@ class AndroidChecksTest {
   void aBlankPermissionIsNoPermission() {
     final String text =
         MANIFEST.formatted(
-            "<service android:name=\".S\" android:exported=\"true\" android:permission=\" \"/>\n");
+            "<service android:name=\".S\" android:exported=\"true\" android:permission=\" \"/>\n"
+        );
 
     assertThat(run(new ExportedComponentCheck("service"), text)).hasSize(1);
   }

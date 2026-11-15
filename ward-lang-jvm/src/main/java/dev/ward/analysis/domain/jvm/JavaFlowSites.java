@@ -23,7 +23,6 @@ import java.util.function.Predicate;
  * by reusing the scopes of {@link JavaAccesses} when a rule needs it.
  */
 final class JavaFlowSites implements FlowSites {
-
   private static final String EXPRESSION = "expression";
   private static final String METHOD_CALL = "methodCall";
   private static final String IDENTIFIER = "identifier";
@@ -56,7 +55,8 @@ final class JavaFlowSites implements FlowSites {
   JavaFlowSites(
       final JavaTypeNames types,
       final Predicate<SyntaxNode> skipped,
-      final List<JavaClassFields.Field> fields) {
+      final List<JavaClassFields.Field> fields
+  ) {
     this.types = types;
     this.skipped = skipped;
     this.parameters = new JavaParameterSites(types, declared);
@@ -124,7 +124,9 @@ final class JavaFlowSites implements FlowSites {
               receiverType(qualifier),
               List.of(),
               List.of(),
-              node.span()));
+              node.span()
+          )
+      );
     } else {
       children(node, found);
     }
@@ -135,7 +137,8 @@ final class JavaFlowSites implements FlowSites {
       final SyntaxNode call,
       final SyntaxNode receiver,
       final String qualifier,
-      final List<FlowSite> found) {
+      final List<FlowSite> found
+  ) {
     final List<SyntaxNode> arguments = JavaCallArguments.of(call);
     arguments.forEach(argument -> walk(argument, found));
     arguments.forEach(argument -> JavaLiteralSites.addArgument(argument, found));
@@ -147,7 +150,9 @@ final class JavaFlowSites implements FlowSites {
             receiverType(qualifier),
             receiver == null ? List.of() : creations.annotations(receiver, qualifier),
             JavaCallArguments.spans(arguments),
-            call.span()));
+            call.span()
+        )
+    );
   }
 
   /**
@@ -155,7 +160,10 @@ final class JavaFlowSites implements FlowSites {
    * are listed before the creation; an array creation or an anonymous class body records no site.
    */
   private void creation(
-      final SyntaxNode node, final SyntaxNode creator, final List<FlowSite> found) {
+      final SyntaxNode node,
+      final SyntaxNode creator,
+      final List<FlowSite> found
+  ) {
     children(creator, found);
     JavaCreationSites.arguments(creator)
         .forEach(argument -> JavaLiteralSites.addArgument(argument, found));

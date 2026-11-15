@@ -27,7 +27,6 @@ import java.util.List;
  * bindings and the tests that build the bundled rules without Dagger both read it.
  */
 public final class BundledLanguages {
-
   private BundledLanguages() {}
 
   /** Returns the rule file lists of every bundled language module. */
@@ -39,7 +38,8 @@ public final class BundledLanguages {
         new SwiftRuleFiles(),
         new SecretRuleFiles(),
         new OpenApiRuleFiles(),
-        new AndroidRuleFiles());
+        new AndroidRuleFiles()
+    );
   }
 
   /** Returns the check providers of the shared checks and of every bundled language module. */
@@ -52,7 +52,8 @@ public final class BundledLanguages {
         new SwiftCheckProvider(),
         new SwiftLintCheckProvider(),
         new OpenApiCheckProvider(),
-        new AndroidCheckProvider());
+        new AndroidCheckProvider()
+    );
   }
 
   /** Returns the API readers of the languages that can be compared by {@code api-compat}. */

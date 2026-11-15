@@ -26,7 +26,10 @@ final class KotlinApiProperties {
   private final KotlinApiModality modality;
 
   KotlinApiProperties(
-      final String path, final KotlinApiRefs refs, final KotlinApiModality modality) {
+      final String path,
+      final KotlinApiRefs refs,
+      final KotlinApiModality modality
+  ) {
     this.path = path;
     this.refs = refs;
     this.modality = modality;
@@ -41,7 +44,8 @@ final class KotlinApiProperties {
       ApiVisibility setterVisibility,
       List<ApiTypeParameter> typeParameters,
       boolean getterBody,
-      boolean setterBody) {}
+      boolean setterBody
+  ) {}
 
   /** Returns the accessors of a {@code val} or {@code var} constructor parameter. */
   List<ApiMember> ofParameter(final SyntaxNode parameter) {
@@ -57,9 +61,11 @@ final class KotlinApiProperties {
             modifiers.visibility(),
             List.of(),
             false,
-            false),
+            false
+        ),
         List.of(),
-        location(parameter));
+        location(parameter)
+    );
   }
 
   /** Returns the accessors of a property declaration, whose variable is {@code variable}. */
@@ -67,7 +73,8 @@ final class KotlinApiProperties {
       final SyntaxNode property,
       final SyntaxNode variable,
       final KotlinApiTypeParameters.Declared declared,
-      final Optional<SyntaxNode> receiver) {
+      final Optional<SyntaxNode> receiver
+  ) {
     final Optional<SyntaxNode> getter = Syntax.child(property, "getter");
     final Optional<SyntaxNode> setter = Syntax.child(property, "setter");
     final KotlinApiModifiers modifiers = KotlinApiModifiers.of(property);
@@ -87,10 +94,12 @@ final class KotlinApiProperties {
                 .orElse(modifiers.visibility()),
             declared.parameters(),
             getter.map(KotlinApiProperties::hasBody).orElse(false),
-            setter.map(KotlinApiProperties::hasBody).orElse(false)),
+            setter.map(KotlinApiProperties::hasBody).orElse(false)
+        ),
         receiver.map(declared.refs()::of).map(found -> new ApiParameter(found, false)).stream()
             .toList(),
-        location(property));
+        location(property)
+    );
   }
 
   private static boolean hasBody(final SyntaxNode accessor) {
@@ -103,10 +112,14 @@ final class KotlinApiProperties {
       List<ApiParameter> parameters,
       ApiTypeRef type,
       boolean body,
-      ApiVisibility visibility) {}
+      ApiVisibility visibility
+  ) {}
 
   private List<ApiMember> accessors(
-      final Property property, final List<ApiParameter> receiver, final ApiLocation at) {
+      final Property property,
+      final List<ApiParameter> receiver,
+      final ApiLocation at
+  ) {
     if (property.name().isEmpty()) {
       return List.of();
     }
@@ -119,8 +132,11 @@ final class KotlinApiProperties {
                 receiver,
                 property.type(),
                 property.getterBody(),
-                property.modifiers().visibility()),
-            at));
+                property.modifiers().visibility()
+            ),
+            at
+        )
+    );
     if (property.mutable()) {
       final List<ApiParameter> parameters = new ArrayList<>(receiver);
       parameters.add(new ApiParameter(property.type(), false));
@@ -132,8 +148,11 @@ final class KotlinApiProperties {
                   parameters,
                   KotlinApiTypeRefs.unit(),
                   property.setterBody(),
-                  property.setterVisibility()),
-              at));
+                  property.setterVisibility()
+              ),
+              at
+          )
+      );
     }
     return found;
   }
@@ -151,7 +170,8 @@ final class KotlinApiProperties {
         property.typeParameters(),
         accessor.parameters(),
         accessor.type(),
-        at);
+        at
+    );
   }
 
   /** A property named {@code isX} has the getter {@code isX}; any other has {@code getX}. */

@@ -2,7 +2,6 @@ package dev.ward.analysis.domain.rule;
 
 /** A rule catalog that cannot be used, such as one with duplicate rule ids. */
 public class RuleConfigurationException extends RuntimeException {
-
   private static final long serialVersionUID = 1L;
 
   /** Creates the exception with a message for the user. */

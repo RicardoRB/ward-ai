@@ -9,7 +9,6 @@ import java.util.List;
  * any result is written.
  */
 public interface SourceFormatter {
-
   /**
    * Returns the language this formatter handles.
    *

@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 
 /** Reads the annotations written on a declaration, as compact texts such as {@code @Named("a")}. */
 final class AnnotationTexts {
-
   private static final String VARIABLE_MODIFIER = "variableModifier";
   private static final String MARK = "@";
   private static final Pattern ARGUMENTS = Pattern.compile("\\(.*$", Pattern.DOTALL);

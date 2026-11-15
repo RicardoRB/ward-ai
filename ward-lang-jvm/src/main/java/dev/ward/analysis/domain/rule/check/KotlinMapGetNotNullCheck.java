@@ -63,7 +63,8 @@ public final class KotlinMapGetNotNullCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(POSTFIX)).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(lookup -> isMapLookup(lookup, types))

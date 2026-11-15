@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
 
 /** Builds the checks of the rules that read JUnit test classes. */
 final class UnitTestChecks {
-
   private static final String MESSAGE = "message";
   private static final String MAX = "max";
   private static final String JUNIT4_ONLY = "junit4-only";
@@ -25,19 +24,25 @@ final class UnitTestChecks {
     return Map.ofEntries(
         entry(
             "unit-test-without-assert",
-            toml -> new UnitTestWithoutAssertCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new UnitTestWithoutAssertCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "unit-test-assert-count",
             toml ->
                 new UnitTestAssertCountCheck(
-                    TomlValues.integer(toml, MAX), TomlValues.required(toml, MESSAGE))),
+                    TomlValues.integer(toml, MAX),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "unit-test-missing-annotation",
             toml ->
                 new UnitTestMissingAnnotationCheck(
                     Pattern.compile(TomlValues.required(toml, "class-pattern")),
                     TomlValues.required(toml, MESSAGE),
-                    toml.getBoolean(JUNIT4_ONLY, () -> false))),
+                    toml.getBoolean(JUNIT4_ONLY, () -> false)
+                )
+        ),
         entry(
             "unit-test-lifecycle",
             toml ->
@@ -45,6 +50,9 @@ final class UnitTestChecks {
                     TomlValues.required(toml, "method"),
                     TomlValues.strings(toml, "annotations"),
                     TomlValues.required(toml, MESSAGE),
-                    toml.getBoolean(JUNIT4_ONLY, () -> false))));
+                    toml.getBoolean(JUNIT4_ONLY, () -> false)
+                )
+        )
+    );
   }
 }

@@ -6,7 +6,6 @@ import java.util.Optional;
 
 /** Maps each analysis language to the existing toolchain that owns its build tools. */
 public final class AnalysisLanguageToolchains {
-
   private AnalysisLanguageToolchains() {}
 
   /**

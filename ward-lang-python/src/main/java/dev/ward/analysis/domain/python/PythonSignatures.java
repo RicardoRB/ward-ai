@@ -11,7 +11,6 @@ import java.util.Optional;
  * markers, or with a parameter that has no known type, has no known parameter list.
  */
 final class PythonSignatures {
-
   private static final String ANNOTATION_ARROW = "->";
   private static final String UNPACK = "*";
   private static final String KEYWORD_UNPACK = "**";
@@ -53,7 +52,8 @@ final class PythonSignatures {
   Optional<TypeRef> returns(final SyntaxNode definition, final String module) {
     return returnAnnotation(definition)
         .flatMap(
-            annotation -> new PythonAnnotationTypes(node -> stubName(module, node)).of(annotation));
+            annotation -> new PythonAnnotationTypes(node -> stubName(module, node)).of(annotation)
+        );
   }
 
   /** The annotation expression after {@code ->} in a function definition, if written. */
@@ -72,7 +72,8 @@ final class PythonSignatures {
         PythonSyntax.children(definition, PythonTypeKinds.PARAMETERS).stream()
             .flatMap(
                 parameters ->
-                    PythonSyntax.children(parameters, PythonTypeKinds.TYPEDARGSLIST).stream())
+                    PythonSyntax.children(parameters, PythonTypeKinds.TYPEDARGSLIST).stream()
+            )
             .findFirst();
     if (list.isEmpty()) {
       return Optional.of(items);

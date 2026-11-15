@@ -22,11 +22,12 @@ class NodeResolutionReferenceTest {
   @ParameterizedTest
   @ValueSource(
       strings = {
-        "node-resolution",
-        "turborepo-workspace",
-        "node-architecture/typescript",
-        "node-architecture/javascript"
-      })
+          "node-resolution",
+          "turborepo-workspace",
+          "node-architecture/typescript",
+          "node-architecture/javascript"
+      }
+  )
   void resolvedEdgesEqualTheCommittedDependencyCruiserEdges(final String fixture)
       throws IOException, URISyntaxException {
     assertThat(NodeDependencyEdgesTest.edgesOf(fixture))
@@ -36,11 +37,11 @@ class NodeResolutionReferenceTest {
   /** Reads the committed {@code [from, to]} pairs and sorts them the way the edges are sorted. */
   static List<String> goldenEdges(final Path golden) throws IOException {
     final Object parsed = new ForyJsonCodec().fromJson(Files.readString(golden), Object.class);
-    return ((List<?>) parsed)
+    return ((List<?>)parsed)
         .stream()
-            .map(pair -> (List<?>) pair)
-            .map(pair -> pair.get(0) + "->" + pair.get(1))
-            .sorted()
-            .toList();
+        .map(pair -> (List<?>)pair)
+        .map(pair -> pair.get(0) + "->" + pair.get(1))
+        .sorted()
+        .toList();
   }
 }

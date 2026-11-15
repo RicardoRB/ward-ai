@@ -13,7 +13,6 @@ import java.util.Map;
 
 /** Builds the Kotlin checks of detekt's style set that read the scopes of a unit. */
 final class KotlinScopeChecks {
-
   private static final String MESSAGE = "message";
 
   private KotlinScopeChecks() {}
@@ -23,18 +22,24 @@ final class KotlinScopeChecks {
     return Map.ofEntries(
         entry(
             "kotlin-unused-parameter",
-            toml -> new KotlinUnusedParameterCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new KotlinUnusedParameterCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "kotlin-unused-private-member",
-            toml -> new KotlinUnusedPrivateMemberCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new KotlinUnusedPrivateMemberCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "kotlin-unused-private-class",
-            toml -> new KotlinUnusedPrivateClassCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new KotlinUnusedPrivateClassCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "kotlin-var-could-be-val",
-            toml -> new KotlinVarCouldBeValCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new KotlinVarCouldBeValCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "kotlin-nested-classes-visibility",
-            toml -> new KotlinNestedClassesVisibilityCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new KotlinNestedClassesVisibilityCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 }

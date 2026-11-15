@@ -66,7 +66,8 @@ class TurborepoMultiLanguageSmokeTest {
             gate ->
                 assertThat(violated.get(gate))
                     .as("seeded violation for gate %s", gate)
-                    .isEqualTo("FAILED"));
+                    .isEqualTo("FAILED")
+        );
   }
 
   /** The Turbo, Maven and Python directories first on the PATH, and uv pinned to the Python. */
@@ -94,7 +95,9 @@ class TurborepoMultiLanguageSmokeTest {
     final Process process = builder.start();
     final String output =
         new String(
-            process.getInputStream().readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
+            process.getInputStream().readAllBytes(),
+            java.nio.charset.StandardCharsets.UTF_8
+        );
     return new Run(process.waitFor(), output);
   }
 

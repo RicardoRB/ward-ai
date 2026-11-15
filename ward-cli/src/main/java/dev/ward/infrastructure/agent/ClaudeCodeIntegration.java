@@ -93,7 +93,8 @@ public final class ClaudeCodeIntegration implements AgentIntegration {
     return Set.of(
         IntegrationCapability.POST_EDIT,
         IntegrationCapability.TURN_END,
-        IntegrationCapability.FEEDBACK);
+        IntegrationCapability.FEEDBACK
+    );
   }
 
   @Override
@@ -125,7 +126,9 @@ public final class ClaudeCodeIntegration implements AgentIntegration {
           : install(settings, hook, files, root);
     } catch (IOException e) {
       throw new UncheckedIOException(
-          "Could not update Claude Code integration: " + e.getMessage(), e);
+          "Could not update Claude Code integration: " + e.getMessage(),
+          e
+      );
     }
   }
 
@@ -147,13 +150,19 @@ public final class ClaudeCodeIntegration implements AgentIntegration {
     } catch (WardException unsafe) {
       return List.of(
           new PlannedFileChange(
-              settings, PlannedFileChange.Action.CONFLICT, List.of(unsafe.getMessage())));
+              settings,
+              PlannedFileChange.Action.CONFLICT,
+              List.of(unsafe.getMessage())
+          )
+      );
     }
     final Path hookFile = root.resolve(files.hookFile());
     try {
       final PlannedFileChange hook =
           new PlannedFileChange(
-              hookFile, IntegrationArtifacts.decide(hookFile, HOOK_MARKER, files.script(HOOK)));
+              hookFile,
+              IntegrationArtifacts.decide(hookFile, HOOK_MARKER, files.script(HOOK))
+          );
       if (hook.action() == PlannedFileChange.Action.CONFLICT) {
         return List.of(hook);
       }
@@ -161,11 +170,19 @@ public final class ClaudeCodeIntegration implements AgentIntegration {
       try {
         content =
             settingsDocument.merge(
-                settings, SETTINGS_MARKER, files.settings(SETTINGS), files.owns());
+                settings,
+                SETTINGS_MARKER,
+                files.settings(SETTINGS),
+                files.owns()
+            );
       } catch (ClaudeSettingsDocument.SettingsConflictException e) {
         return List.of(
             new PlannedFileChange(
-                settings, PlannedFileChange.Action.CONFLICT, List.of(e.getMessage())));
+                settings,
+                PlannedFileChange.Action.CONFLICT,
+                List.of(e.getMessage())
+            )
+        );
       }
       final List<PlannedFileChange> plan = new ArrayList<>();
       plan.add(new PlannedFileChange(settings, ClaudeSettingsDocument.action(settings, content)));
@@ -174,7 +191,9 @@ public final class ClaudeCodeIntegration implements AgentIntegration {
       return plan;
     } catch (IOException e) {
       throw new UncheckedIOException(
-          "Could not plan Claude Code integration: " + e.getMessage(), e);
+          "Could not plan Claude Code integration: " + e.getMessage(),
+          e
+      );
     }
   }
 
@@ -183,7 +202,11 @@ public final class ClaudeCodeIntegration implements AgentIntegration {
    * version is deleted after the settings that registered it are rewritten.
    */
   private IntegrationResult install(
-      final Path settings, final Path hook, final ClaudeCodeFiles files, final Path root)
+      final Path settings,
+      final Path hook,
+      final ClaudeCodeFiles files,
+      final Path root
+  )
       throws IOException {
     final IntegrationResult hookConflict = IntegrationArtifacts.preflight(hook, HOOK_MARKER);
     if (hookConflict != null) {
@@ -195,15 +218,21 @@ public final class ClaudeCodeIntegration implements AgentIntegration {
           settingsDocument.merge(settings, SETTINGS_MARKER, files.settings(SETTINGS), files.owns());
     } catch (ClaudeSettingsDocument.SettingsConflictException e) {
       return new IntegrationResult(
-          IntegrationResult.Status.CONFLICT, List.of(settings.toString()), e.getMessage());
+          IntegrationResult.Status.CONFLICT,
+          List.of(settings.toString()),
+          e.getMessage()
+      );
     }
     final List<Map.Entry<Path, IntegrationResult>> results = new ArrayList<>();
     results.add(
-        Map.entry(settings, ClaudeSettingsDocument.write(settings, settingsContent, UPDATED)));
+        Map.entry(settings, ClaudeSettingsDocument.write(settings, settingsContent, UPDATED))
+    );
     results.add(
         Map.entry(
             hook,
-            IntegrationArtifacts.installOrRefresh(hook, HOOK_MARKER, files.script(HOOK), UPDATED)));
+            IntegrationArtifacts.installOrRefresh(hook, HOOK_MARKER, files.script(HOOK), UPDATED)
+        )
+    );
     if (Files.exists(hook)) {
       IntegrationArtifacts.makeExecutable(hook);
     }
@@ -212,16 +241,26 @@ public final class ClaudeCodeIntegration implements AgentIntegration {
           Map.entry(
               old,
               new IntegrationResult(
-                  IntegrationResult.Status.REMOVED, List.of(old.toString()), UPDATED)));
+                  IntegrationResult.Status.REMOVED,
+                  List.of(old.toString()),
+                  UPDATED
+              )
+          )
+      );
     }
     return IntegrationArtifacts.combine(
         results,
         "Ward Claude Code integration is already present.",
-        "Created Ward-owned Claude Code edit/write integration (or refreshed it).");
+        "Created Ward-owned Claude Code edit/write integration (or refreshed it)."
+    );
   }
 
   private IntegrationResult remove(
-      final Path settings, final Path hook, final ClaudeCodeFiles files, final Path root)
+      final Path settings,
+      final Path hook,
+      final ClaudeCodeFiles files,
+      final Path root
+  )
       throws IOException {
     final IntegrationResult conflict = IntegrationArtifacts.preflight(hook, HOOK_MARKER);
     if (conflict != null) {
@@ -232,12 +271,18 @@ public final class ClaudeCodeIntegration implements AgentIntegration {
       update = settingsDocument.remove(settings, SETTINGS_MARKER, files.owns());
     } catch (ClaudeSettingsDocument.SettingsConflictException e) {
       return new IntegrationResult(
-          IntegrationResult.Status.CONFLICT, List.of(settings.toString()), e.getMessage());
+          IntegrationResult.Status.CONFLICT,
+          List.of(settings.toString()),
+          e.getMessage()
+      );
     }
     final LegacyFiles guards = files.legacyGuards(root);
     if (update == null && !Files.exists(hook) && guards.owned().isEmpty()) {
       return new IntegrationResult(
-          IntegrationResult.Status.NOT_FOUND, List.of(), "No Ward Claude Code integration found.");
+          IntegrationResult.Status.NOT_FOUND,
+          List.of(),
+          "No Ward Claude Code integration found."
+      );
     }
 
     final List<String> removed = new ArrayList<>();
@@ -253,6 +298,9 @@ public final class ClaudeCodeIntegration implements AgentIntegration {
     EmptyDirectories.delete(hook.getParent());
     EmptyDirectories.delete(settings.getParent());
     return new IntegrationResult(
-        IntegrationResult.Status.REMOVED, removed, "Removed Ward-owned Claude Code integration.");
+        IntegrationResult.Status.REMOVED,
+        removed,
+        "Removed Ward-owned Claude Code integration."
+    );
   }
 }

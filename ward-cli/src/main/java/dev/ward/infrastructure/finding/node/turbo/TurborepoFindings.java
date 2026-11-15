@@ -37,7 +37,10 @@ public final class TurborepoFindings implements GateFindingSource {
 
   @Override
   public List<Finding> extract(
-      final Project project, final GateResult result, final Instant gateStart) {
+      final Project project,
+      final GateResult result,
+      final Instant gateStart
+  ) {
     if (project.taskRunner() != TaskRunner.TURBO) {
       return delegate.extract(project, result, gateStart);
     }
@@ -55,7 +58,8 @@ public final class TurborepoFindings implements GateFindingSource {
                 .extract(member.project(), blockResult(result, block.text()), gateStart)
                 .stream()
                 .map(finding -> rebased(project.root(), member, finding))
-                .toList());
+                .toList()
+        );
       }
     }
     return List.copyOf(findings);
@@ -80,7 +84,10 @@ public final class TurborepoFindings implements GateFindingSource {
   }
 
   private static Finding rebased(
-      final Path root, final WorkspaceMember member, final Finding finding) {
+      final Path root,
+      final WorkspaceMember member,
+      final Finding finding
+  ) {
     final String file = finding.file();
     if (file == null || Path.of(file).isAbsolute()) {
       return finding;
@@ -99,7 +106,8 @@ public final class TurborepoFindings implements GateFindingSource {
         finding.line(),
         finding.column(),
         finding.helpUri(),
-        List.of());
+        List.of()
+    );
   }
 
   private static String output(final GateResult result) {

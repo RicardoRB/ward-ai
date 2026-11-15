@@ -23,15 +23,16 @@ public record InitProjectFiles(
     RuleFileGeneration ruleFiles,
     ArchitectureTables architectureTables,
     Supplier<ConfigurationStorage> storage,
-    OwnedSectionGeneration sections) {
-
+    OwnedSectionGeneration sections
+) {
   /** Groups the file-writing ports. */
   public InitProjectFiles(
       final BuildToolConfiguration buildTools,
       final RuleFileGeneration ruleFiles,
       final ArchitectureTables architectureTables,
       final ConfigurationStorage configuration,
-      final OwnedSectionGeneration sections) {
+      final OwnedSectionGeneration sections
+  ) {
     this(buildTools, ruleFiles, architectureTables, () -> configuration, sections);
   }
 
@@ -40,7 +41,8 @@ public record InitProjectFiles(
       final BuildToolConfiguration buildTools,
       final RuleFileGeneration ruleFiles,
       final ArchitectureTables architectureTables,
-      final ConfigurationStorage configuration) {
+      final ConfigurationStorage configuration
+  ) {
     this(buildTools, ruleFiles, architectureTables, configuration, new NoOwnedSectionGeneration());
   }
 
@@ -48,7 +50,8 @@ public record InitProjectFiles(
   public InitProjectFiles(
       final BuildToolConfiguration buildTools,
       final ArchitectureTables architectureTables,
-      final ConfigurationStorage configuration) {
+      final ConfigurationStorage configuration
+  ) {
     this(buildTools, new NoRuleFileGeneration(), architectureTables, configuration);
   }
 

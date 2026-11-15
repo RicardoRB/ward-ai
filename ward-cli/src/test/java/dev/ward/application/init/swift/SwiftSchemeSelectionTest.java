@@ -56,7 +56,9 @@ class SwiftSchemeSelectionTest {
   }
 
   private static List<String> testCommand(
-      final List<String> schemes, final Optional<String> scheme) {
+      final List<String> schemes,
+      final Optional<String> scheme
+  ) {
     final InitInputs inputs =
         new InitInputs(
             new FakeEnvironmentInspection(),
@@ -67,7 +69,8 @@ class SwiftSchemeSelectionTest {
             (root, tool) -> Optional.empty(),
             WorkspaceMembers.none(),
             new SwiftPorts(xcode(schemes), root -> List.of()),
-            BuildModulePlanning.none());
+            BuildModulePlanning.none()
+        );
     final Project project = XCODE.withXcodeScheme(scheme.orElse(null));
     final List<InitGateOption> gates =
         InitToolchains.support(project).gates(project, QualityPreset.STANDARD, inputs).analysis();

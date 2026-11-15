@@ -16,8 +16,11 @@ import java.util.Optional;
  * @param types the type facts of the file
  */
 record CallSite(
-    SyntaxNode expression, CallTarget target, List<SyntaxNode> arguments, UnitTypeFacts types) {
-
+    SyntaxNode expression,
+    CallTarget target,
+    List<SyntaxNode> arguments,
+    UnitTypeFacts types
+) {
   private static final int PARTS = 3;
 
   /** Reads the call that {@code node} is, when it is one whose target is known. */

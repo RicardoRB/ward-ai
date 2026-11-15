@@ -12,7 +12,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class BiomeConstantClampCheckTest {
-
   private static final BiomeConstantClampCheck CHECK = new BiomeConstantClampCheck("message");
 
   @Test

@@ -8,14 +8,14 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class LicensePolicyAllowTest {
-
   private static LicenseExpression expression(final String text) {
     return LicenseExpressionParser.parse(text).orElseThrow();
   }
 
   private static LicensePolicy allow(final String... ids) {
     return new LicensePolicy(
-        new LicenseSettings(LicenseSettings.Mode.ALLOW, List.of(ids), List.of(), Set.of(), true));
+        new LicenseSettings(LicenseSettings.Mode.ALLOW, List.of(ids), List.of(), Set.of(), true)
+    );
   }
 
   @Test

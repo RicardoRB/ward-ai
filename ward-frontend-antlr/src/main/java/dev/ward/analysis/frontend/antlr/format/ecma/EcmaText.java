@@ -4,7 +4,6 @@ import java.util.Set;
 
 /** Classifies token text for the layout: brackets, words and operands. */
 final class EcmaText {
-
   /** Words after which a brace opens an object literal rather than a block. */
   static final Set<String> OBJECT_KEYWORDS =
       Set.of(
@@ -26,7 +25,8 @@ final class EcmaText {
           "const",
           "let",
           "var",
-          "function");
+          "function"
+      );
 
   private EcmaText() {}
 

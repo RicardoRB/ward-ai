@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 /** The constant-name check reports a module name that is assigned once and is not UPPER_CASE. */
 final class PythonConstantNameCheckTest {
-
   private static final PythonConstantNameCheck CHECK = new PythonConstantNameCheck("not upper");
 
   @Test

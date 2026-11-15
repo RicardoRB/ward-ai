@@ -9,7 +9,8 @@ final class ReturnLiteral {
       Pattern.compile("[+-]?(0[xX][0-9a-fA-F_]+|0[oO][0-7_]+|0[bB][01_]+|\\d[\\d_]*)");
   private static final Pattern FLOAT_LITERAL =
       Pattern.compile(
-          "[+-]?(\\d[\\d_]*\\.[\\d_]*|\\.\\d[\\d_]*)([eE][+-]?\\d+)?|[+-]?\\d[\\d_]*[eE][+-]?\\d+");
+          "[+-]?(\\d[\\d_]*\\.[\\d_]*|\\.\\d[\\d_]*)([eE][+-]?\\d+)?|[+-]?\\d[\\d_]*[eE][+-]?\\d+"
+      );
 
   private ReturnLiteral() {}
 

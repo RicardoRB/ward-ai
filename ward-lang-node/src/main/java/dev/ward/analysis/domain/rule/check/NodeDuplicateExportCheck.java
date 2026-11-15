@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
  * declarations into the same binding.
  */
 public final class NodeDuplicateExportCheck implements RuleCheck, ProjectCheck {
-
   private static final String VALUE = "{value}";
 
   private final String message;
@@ -50,18 +49,25 @@ public final class NodeDuplicateExportCheck implements RuleCheck, ProjectCheck {
 
   @Override
   public List<ProjectMatch> project(
-      final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
+      final SortedMap<String,
+      SyntaxNode> trees,
+      final ProjectFiles files
+  ) {
     final List<ProjectMatch> found = new ArrayList<>();
     trees.forEach((path, tree) -> duplicates(path, tree, found));
     return List.copyOf(found);
   }
 
   private void duplicates(
-      final String path, final SyntaxNode tree, final List<ProjectMatch> found) {
+      final String path,
+      final SyntaxNode tree,
+      final List<ProjectMatch> found
+  ) {
     final Map<String, List<ExportAlias>> byLocal =
         NodeFileFacts.exportAliases(tree).stream()
             .collect(
-                Collectors.groupingBy(ExportAlias::local, LinkedHashMap::new, Collectors.toList()));
+                Collectors.groupingBy(ExportAlias::local, LinkedHashMap::new, Collectors.toList())
+            );
     for (final List<ExportAlias> exports : byLocal.values()) {
       final ExportAlias first = exports.get(0);
       for (final ExportAlias later : exports.subList(1, exports.size())) {
@@ -74,6 +80,8 @@ public final class NodeDuplicateExportCheck implements RuleCheck, ProjectCheck {
 
   private ProjectMatch report(final String path, final ExportAlias later) {
     return new ProjectMatch(
-        path, new RuleMatch(later.span(), message.replace(VALUE, later.local())));
+        path,
+        new RuleMatch(later.span(), message.replace(VALUE, later.local()))
+    );
   }
 }

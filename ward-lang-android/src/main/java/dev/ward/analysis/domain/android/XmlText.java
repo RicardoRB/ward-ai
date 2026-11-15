@@ -6,7 +6,6 @@ import java.util.Map;
 
 /** Reads the character data and CDATA sections between elements. */
 final class XmlText {
-
   static final String CDATA_START = "<![CDATA[";
   private static final String CDATA_END = "]]>";
 
@@ -47,6 +46,7 @@ final class XmlText {
         AndroidSyntax.TEXT,
         positions.span(start, end),
         Map.of(AndroidSyntax.VALUE, value),
-        List.of());
+        List.of()
+    );
   }
 }

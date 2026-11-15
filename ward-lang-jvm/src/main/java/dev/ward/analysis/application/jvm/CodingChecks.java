@@ -23,7 +23,6 @@ import java.util.Map;
  * equals and hashCode, and the exception types that catch and throws clauses name.
  */
 final class CodingChecks {
-
   private static final String MESSAGE = "message";
   private static final String MAX = "max";
 
@@ -41,39 +40,52 @@ final class CodingChecks {
             toml ->
                 new IfLiteralCheck(
                     TomlLists.optional(toml, "ignore-magic-numbers"),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "fall-through",
             toml ->
                 new FallThroughCheck(
                     toml.getBoolean("check-last-group", () -> false),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "missing-switch-default",
-            toml -> new MissingSwitchDefaultCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new MissingSwitchDefaultCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "return-count",
             toml ->
                 new ReturnCountCheck(
                     TomlValues.integer(toml, MAX),
                     TomlValues.integer(toml, "max-for-void"),
-                    TomlValues.required(toml, MESSAGE))));
+                    TomlValues.required(toml, MESSAGE)
+                )
+        )
+    );
   }
 
   private static Map<String, CheckFactory> buildEquality() {
     return Map.ofEntries(
         entry(
             "equals-hash-code",
-            toml -> new EqualsHashCodeCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new EqualsHashCodeCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "covariant-equals",
-            toml -> new CovariantEqualsCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new CovariantEqualsCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "equals-avoid-null",
             toml ->
                 new EqualsAvoidNullCheck(
                     toml.getBoolean("ignore-equals-ignore-case", () -> false),
-                    TomlValues.required(toml, MESSAGE))));
+                    TomlValues.required(toml, MESSAGE)
+                )
+        )
+    );
   }
 
   private static Map<String, CheckFactory> buildException() {
@@ -83,7 +95,9 @@ final class CodingChecks {
             toml ->
                 new IllegalCatchCheck(
                     TomlValues.strings(toml, "illegal-classes"),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "illegal-throws",
             toml ->
@@ -91,6 +105,9 @@ final class CodingChecks {
                     TomlValues.strings(toml, "illegal-classes"),
                     TomlValues.strings(toml, "ignored-method-names"),
                     toml.getBoolean("ignore-overridden-methods", () -> true),
-                    TomlValues.required(toml, MESSAGE))));
+                    TomlValues.required(toml, MESSAGE)
+                )
+        )
+    );
   }
 }

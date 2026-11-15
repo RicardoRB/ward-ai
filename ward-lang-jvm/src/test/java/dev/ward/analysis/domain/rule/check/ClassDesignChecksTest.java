@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** The class and interface design checks, run over small hand-made trees. */
 class ClassDesignChecksTest extends DesignInterfaceTrees {
-
   private static final String MESSAGE = "{value}";
   private static final String PUBLIC = "public";
   private static final String PRIVATE = "private";
@@ -24,14 +23,14 @@ class ClassDesignChecksTest extends DesignInterfaceTrees {
     final FinalClassCheck check = new FinalClassCheck(MESSAGE);
     assertThat(check.matches(root(classNode("Util", privateCtor("Util"))))).hasSize(1);
     assertThat(
-            check.matches(
-                root(classNode(List.of(mod(FINAL)), "FinalUtil", privateCtor("FinalUtil")))))
+        check.matches(root(classNode(List.of(mod(FINAL)), "FinalUtil", privateCtor("FinalUtil"))))
+    )
         .isEmpty();
     assertThat(
-            check.matches(
-                root(
-                    classNode(
-                        List.of(mod(ABSTRACT)), "AbstractUtil", privateCtor("AbstractUtil")))))
+        check.matches(
+            root(classNode(List.of(mod(ABSTRACT)), "AbstractUtil", privateCtor("AbstractUtil")))
+        )
+    )
         .isEmpty();
     final SyntaxNode child = classWithSuper("Child", "Base");
     assertThat(check.matches(root(classNode("Base", privateCtor("Base")), child))).isEmpty();
@@ -50,25 +49,31 @@ class ClassDesignChecksTest extends DesignInterfaceTrees {
         classNode(
             "Util2",
             member(List.of(mod(STATIC)), method("util")),
-            member(List.of(mod(PUBLIC)), constructor("Util2")));
+            member(List.of(mod(PUBLIC)), constructor("Util2"))
+        );
     assertThat(check.matches(root(publicCtor))).hasSize(1);
     final SyntaxNode privateCtor =
         classNode(
             "Util3",
             member(List.of(mod(STATIC)), method("util")),
-            member(List.of(mod(PRIVATE)), constructor("Util3")));
+            member(List.of(mod(PRIVATE)), constructor("Util3"))
+        );
     assertThat(check.matches(root(privateCtor))).isEmpty();
     final SyntaxNode mixed =
         classNode(
             "Mixed",
             member(List.of(mod(STATIC)), method("util")),
-            member(List.of(), method("inst")));
+            member(List.of(), method("inst"))
+        );
     assertThat(check.matches(root(mixed))).isEmpty();
     final SyntaxNode constants = classNode("Consts", member(List.of(mod(STATIC)), field(INT, "X")));
     assertThat(check.matches(root(constants))).hasSize(1);
     final SyntaxNode generated =
         classNode(
-            List.of(mod("@Generated")), "Generated1", member(List.of(mod(STATIC)), method("util")));
+            List.of(mod("@Generated")),
+            "Generated1",
+            member(List.of(mod(STATIC)), method("util"))
+        );
     assertThat(check.matches(root(generated))).isEmpty();
     assertThat(check.matches(root(classNode("Empty")))).isEmpty();
   }
@@ -87,7 +92,8 @@ class ClassDesignChecksTest extends DesignInterfaceTrees {
             "Outer",
             innerMember(),
             member(List.of(), method("run")),
-            n("classBodyDeclaration", t("';'", ";")));
+            n("classBodyDeclaration", t("';'", ";"))
+        );
     assertThat(check.matches(root(withSemicolon))).hasSize(1);
   }
 
@@ -106,14 +112,18 @@ class ClassDesignChecksTest extends DesignInterfaceTrees {
   void mutableExceptionReportsMutableFieldsOfMatchingExceptions() {
     final MutableExceptionCheck check =
         new MutableExceptionCheck(
-            Pattern.compile("Failure$"), Pattern.compile("^Exception$"), MESSAGE);
+            Pattern.compile("Failure$"),
+            Pattern.compile("^Exception$"),
+            MESSAGE
+        );
     final SyntaxNode failure =
         classWithSuper(
             "BadFailure",
             "Exception",
             member(List.of(), field(INT, "code")),
             member(List.of(mod(FINAL)), field(INT, "fixed")),
-            member(List.of(mod(STATIC)), field(INT, "count")));
+            member(List.of(mod(STATIC)), field(INT, "count"))
+        );
     assertThat(check.matches(root(failure))).hasSize(2);
     final SyntaxNode plain =
         classWithSuper("Plain", "Exception", member(List.of(), field(INT, "x")));

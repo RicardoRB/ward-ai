@@ -27,7 +27,6 @@ import java.util.stream.IntStream;
  * class with interfaces or namespaces, a function with namespaces, and an enum with namespaces.
  */
 public final class NodeRedeclareCheck implements RuleCheck {
-
   private static final int FIRST_DECLARATION = 1;
   private static final String BUILTIN_NAME = "{value}";
   private static final String CLASS = "classDeclaration";
@@ -59,7 +58,8 @@ public final class NodeRedeclareCheck implements RuleCheck {
       final boolean ignoreDeclarationMerge,
       final Set<String> environments,
       final String message,
-      final String builtinMessage) {
+      final String builtinMessage
+  ) {
     this.builtinGlobals = builtinGlobals;
     this.ignoreDeclarationMerge = ignoreDeclarationMerge;
     this.environments = Set.copyOf(environments);
@@ -74,7 +74,11 @@ public final class NodeRedeclareCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes(environments);
     final Set<String> builtins = builtinNames(scopes);
     final boolean script = !SourceKind.isModule(root);
@@ -109,26 +113,34 @@ public final class NodeRedeclareCheck implements RuleCheck {
   private void builtinRedeclarations(
       final List<Binding> bindings,
       final Set<String> builtins,
-      final Map<Integer, String> kinds,
-      final List<RuleMatch> matches) {
+      final Map<Integer,
+      String> kinds,
+      final List<RuleMatch> matches
+  ) {
     for (final Binding binding : bindings) {
       if (builtins.contains(binding.name())) {
         matches.add(
             new RuleMatch(
-                binding.declaration(), builtinMessage.replace(BUILTIN_NAME, binding.name())));
+                binding.declaration(),
+                builtinMessage.replace(BUILTIN_NAME, binding.name())
+            )
+        );
       }
     }
     redeclarations(
         bindings.stream().filter(binding -> !builtins.contains(binding.name())).toList(),
         kinds,
-        matches);
+        matches
+    );
   }
 
   /** The bindings of a scope grouped by name; each reported binding is a redeclaration. */
   private void redeclarations(
       final List<Binding> bindings,
-      final Map<Integer, String> kinds,
-      final List<RuleMatch> matches) {
+      final Map<Integer,
+      String> kinds,
+      final List<RuleMatch> matches
+  ) {
     final Map<String, List<Binding>> byName =
         bindings.stream()
             .collect(Collectors.groupingBy(Binding::name, LinkedHashMap::new, Collectors.toList()));
@@ -136,7 +148,8 @@ public final class NodeRedeclareCheck implements RuleCheck {
         byName.values().stream()
             .flatMap(group -> reportedOf(group, kinds).stream())
             .map(this::match)
-            .toList());
+            .toList()
+    );
   }
 
   private RuleMatch match(final Binding binding) {
@@ -173,7 +186,10 @@ public final class NodeRedeclareCheck implements RuleCheck {
 
   /** The declarations of {@code kind} when there are several; a single one merges safely. */
   private static List<Binding> onlyWhenRepeated(
-      final List<Binding> group, final List<String> found, final String kind) {
+      final List<Binding> group,
+      final List<String> found,
+      final String kind
+  ) {
     final List<Binding> same =
         IntStream.range(0, group.size())
             .filter(index -> kind.equals(found.get(index)))

@@ -12,7 +12,6 @@ import java.util.Set;
  * that merely ends in "hashcode" is a different method.
  */
 public final class SuspiciousHashCodeNameCheck implements RuleCheck {
-
   private static final String NAME = "hashcode";
   private static final String INT = "int";
 

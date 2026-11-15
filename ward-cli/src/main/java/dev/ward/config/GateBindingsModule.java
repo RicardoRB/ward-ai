@@ -45,7 +45,8 @@ interface GateBindingsModule {
       final CheckService checks,
       final ProjectDetector detector,
       final ProjectChanges changes,
-      final ProjectPaths paths) {
+      final ProjectPaths paths
+  ) {
     return new HookChecks(checks, new HookScope(detector, changes, paths));
   }
 
@@ -53,7 +54,8 @@ interface GateBindingsModule {
   static ReportRenderers reportRenderers(
       final TextReportRenderer text,
       final JsonReportRenderer json,
-      final SarifReportRenderer sarif) {
+      final SarifReportRenderer sarif
+  ) {
     return new ReportRenderers(text, json, sarif);
   }
 }

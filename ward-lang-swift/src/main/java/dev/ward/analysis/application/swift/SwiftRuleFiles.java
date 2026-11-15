@@ -8,7 +8,6 @@ import java.util.List;
  * other module lists it.
  */
 public final class SwiftRuleFiles implements RuleFileProvider {
-
   private static final List<String> FILES =
       List.of(
           "rules/duplication-swift.toml",
@@ -26,7 +25,8 @@ public final class SwiftRuleFiles implements RuleFileProvider {
           "rules/swift/performance.toml",
           "rules/swift/scope-style.toml",
           "rules/swift/security.toml",
-          "rules/swift/style.toml");
+          "rules/swift/style.toml"
+      );
 
   @Override
   public List<String> ruleFiles() {

@@ -28,13 +28,17 @@ final class InitPlanner {
             final Project project,
             final List<InitGateOption> gates,
             final QualityPreset preset,
-            final boolean approved) {
+            final boolean approved
+        ) {
           return InitPlanner.this.buildFiles(project, gates, preset, approved);
         }
 
         @Override
         public List<PlannedFileChange> ruleFiles(
-            final Project project, final QualityPreset preset, final List<InitGateOption> gates) {
+            final Project project,
+            final QualityPreset preset,
+            final List<InitGateOption> gates
+        ) {
           return files.ruleFiles().plan(project, preset, gates);
         }
 
@@ -47,7 +51,8 @@ final class InitPlanner {
   InitPlanner(
       final Supplier<InitSetupCatalog> catalog,
       final IntegrationInstaller installer,
-      final InitProjectFiles files) {
+      final InitProjectFiles files
+  ) {
     this.catalog = catalog;
     this.installer = installer;
     this.files = files;
@@ -65,7 +70,9 @@ final class InitPlanner {
             project.root().resolve("ward.toml"),
             gates,
             selection.preset(),
-            WardArchitecture.of(selection, project, files.architectureTables())));
+            WardArchitecture.of(selection, project, files.architectureTables())
+        )
+    );
     changes.addAll(installer.plan(project, selection.integrations()));
     if (selection.qualityHooks()) {
       changes.addAll(catalog.get().qualityHooks().plan(project));
@@ -75,8 +82,15 @@ final class InitPlanner {
             .map(
                 support ->
                     support.planMembers(
-                        project, gates, selection.preset(), approved, memberPlanning))
-            .orElse(List.of()));
+                        project,
+                        gates,
+                        selection.preset(),
+                        approved,
+                        memberPlanning
+                    )
+            )
+            .orElse(List.of())
+    );
     changes.addAll(buildFiles(project, gates, selection.preset(), approved));
     final List<PlannedFileChange> ruleFiles =
         files.ruleFiles().plan(project, selection.preset(), gates);
@@ -88,8 +102,10 @@ final class InitPlanner {
         InitToolchains.find(project)
             .map(
                 support ->
-                    support.scriptReplacements(project, selection.preset(), catalog.get().inputs))
-            .orElse(List.of()));
+                    support.scriptReplacements(project, selection.preset(), catalog.get().inputs)
+            )
+            .orElse(List.of())
+    );
   }
 
   /** Lists a project's build file, then each module build script that would change. */
@@ -97,7 +113,8 @@ final class InitPlanner {
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final boolean approved) {
+      final boolean approved
+  ) {
     final List<PlannedFileChange> changes = new ArrayList<>();
     changes.add(files.buildTools().plan(project, gates, preset, approved));
     changes.addAll(catalog.get().inputs.modules().planModules(project, gates, preset, approved));
@@ -105,7 +122,9 @@ final class InitPlanner {
   }
 
   private List<PlannedGateInstallation> gateInstallations(
-      final Project project, final List<InitGateOption> gates) {
+      final Project project,
+      final List<InitGateOption> gates
+  ) {
     return gates.stream()
         .map(gate -> catalog.get().gateInstallation(project, gate))
         .flatMap(Optional::stream)
@@ -120,7 +139,8 @@ final class InitPlanner {
       final Project project,
       final InitSelection selection,
       final List<InitGateOption> gates,
-      final List<PlannedFileChange> ruleFiles) {
+      final List<PlannedFileChange> ruleFiles
+  ) {
     final List<Path> userOwned =
         ruleFiles.stream()
             .filter(file -> file.action() == PlannedFileChange.Action.PRESERVE_USER_OWNED)
@@ -131,7 +151,8 @@ final class InitPlanner {
             OwnedSections.of(catalog.get(), project, selection, gates, userOwned),
             project,
             gates,
-            files.configuration().read(OwnedSections.editorConfigPath(project)));
+            files.configuration().read(OwnedSections.editorConfigPath(project))
+        );
     final List<PlannedFileChange> changes = new ArrayList<>();
     sections.stream().map(files.sections()::plan).forEach(changes::add);
     changes.addAll(existingEditorConfig(project, gates));
@@ -143,7 +164,9 @@ final class InitPlanner {
    * with it: init leaves that file byte for byte, so it is planned as unchanged.
    */
   private List<PlannedFileChange> existingEditorConfig(
-      final Project project, final List<InitGateOption> gates) {
+      final Project project,
+      final List<InitGateOption> gates
+  ) {
     final Path file = EditorConfigTemplate.path(project);
     if (gates.stream().noneMatch(gate -> FormatGates.WARD_FORMAT.equals(gate.id()))
         || files.configuration().read(file).isEmpty()) {
@@ -156,7 +179,10 @@ final class InitPlanner {
             PlannedFileChange.Action.PRESERVE_USER_OWNED,
             List.of(
                 "Ward formats with this .editorconfig; init leaves it byte for byte, and keys it"
-                    + " leaves unset use Ward's defaults.")));
+                    + " leaves unset use Ward's defaults."
+            )
+        )
+    );
   }
 
   private PlannedFileChange configuration(
@@ -164,7 +190,8 @@ final class InitPlanner {
       final Path file,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final WardArchitecture architecture) {
+      final WardArchitecture architecture
+  ) {
     final Optional<String> existing = files.configuration().read(file);
     final List<String> notes = OmissionNotes.of(catalog.get(), project, preset);
     if (existing.isEmpty()) {
@@ -175,6 +202,7 @@ final class InitPlanner {
         ConfigurationTemplate.render(gates, preset, project, architecture).equals(existing.get())
             ? PlannedFileChange.Action.UNCHANGED
             : PlannedFileChange.Action.MODIFY,
-        notes);
+        notes
+    );
   }
 }

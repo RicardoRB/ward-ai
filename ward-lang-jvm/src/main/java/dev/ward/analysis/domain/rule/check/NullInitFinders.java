@@ -8,7 +8,6 @@ import java.util.function.BiConsumer;
 
 /** The rules about fields that must not be null and are not set by every constructor. */
 final class NullInitFinders {
-
   private static final Set<String> NULLNESS = Set.of("NonNull", "Nonnull", "NotNull");
   private static final String INITIALIZER = "Initializer";
 
@@ -94,7 +93,9 @@ final class NullInitFinders {
   }
 
   private static List<String> missing(
-      final NullModel.Type type, final NullModel.Method constructor) {
+      final NullModel.Type type,
+      final NullModel.Method constructor
+  ) {
     final Set<String> shadowed = NullValueFinders.shadowed(constructor);
     return unset(type).stream()
         .map(NullModel.Field::name)

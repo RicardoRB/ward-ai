@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the TypeScript useless-constructor check on parsed sources. */
 class NodeUselessConstructorCheckTest {
-
   @Test
   void typedForwardingConstructorIsReported() {
     assertThat(run("class A extends B { constructor(v: number) { super(v); } }")).hasSize(1);

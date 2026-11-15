@@ -6,7 +6,6 @@ import java.util.List;
 
 /** Builds hand-made Python trees for the block and handler check tests. */
 final class PythonTrees {
-
   static final String BLOCK = "block";
   static final String COLON = ":";
   static final String PASS = "pass";
@@ -35,7 +34,8 @@ final class PythonTrees {
       all.add(
           STMT.equals(statement.kind())
               ? statement
-              : Layout.node(STMT, Layout.node("simple_stmts", statement)));
+              : Layout.node(STMT, Layout.node("simple_stmts", statement))
+      );
     }
     all.add(layout.token("DEDENT", ""));
     return Layout.node(BLOCK, all.toArray(SyntaxNode[]::new));
@@ -56,7 +56,10 @@ final class PythonTrees {
 
   private List<SyntaxNode> clauseParts(final String keyword) {
     return List.of(
-        layout.token(keyword, keyword), layout.token(COLON, COLON), block(List.of(simple(PASS))));
+        layout.token(keyword, keyword),
+        layout.token(COLON, COLON),
+        block(List.of(simple(PASS)))
+    );
   }
 
   /** A try holding the statements, followed by the flat clause parts of handlers and clauses. */
@@ -75,7 +78,8 @@ final class PythonTrees {
     return List.of(
         Layout.node("except_clause", layout.token("except", "except")),
         layout.token(COLON, COLON),
-        block(List.of(simple(body))));
+        block(List.of(simple(body)))
+    );
   }
 
   List<SyntaxNode> clause(final String keyword) {

@@ -56,7 +56,10 @@ public final class FileConfigurationStorage implements ConfigurationStorage {
   }
 
   private static void write(
-      final Path file, final String content, final StandardOpenOption... options) {
+      final Path file,
+      final String content,
+      final StandardOpenOption... options
+  ) {
     try {
       Files.writeString(file, content, options);
     } catch (IOException e) {

@@ -17,7 +17,6 @@ import java.util.Set;
  * default. Unknown {@code ward_} keys are errors; other keys that Ward does not use are ignored.
  */
 final class EditorConfigSettings {
-
   static final String WARD_PREFIX = "ward_";
   static final String WARD_FORMAT = "ward_format";
   static final String WARD_MAX_BLANK_LINES = "ward_max_blank_lines";
@@ -38,7 +37,8 @@ final class EditorConfigSettings {
   static FormatSettings resolve(
       final String relativePath,
       final List<FormatOption> declared,
-      final List<EditorConfigFile> files) {
+      final List<EditorConfigFile> files
+  ) {
     final Map<String, FormatOption> wardOptions = wardOptions(declared);
     final Map<String, Setting> effective = new LinkedHashMap<>();
     for (final EditorConfigFile file : files) {
@@ -60,26 +60,36 @@ final class EditorConfigSettings {
             EditorConfigLayout.declaredInt(
                 defaults,
                 EditorConfigLayout.MAX_BLANK_LINES_OPTION,
-                EditorConfigLayout.FALLBACK_MAX_BLANK_LINES)),
-        options(effective, declared));
+                EditorConfigLayout.FALLBACK_MAX_BLANK_LINES
+            )
+        ),
+        options(effective, declared)
+    );
   }
 
   private static void applySection(
-      final Map<String, Setting> effective,
-      final Map<String, FormatOption> wardOptions,
+      final Map<String,
+      Setting> effective,
+      final Map<String,
+      FormatOption> wardOptions,
       final EditorConfigFile file,
-      final EditorConfigSection section) {
+      final EditorConfigSection section
+  ) {
     for (final Map.Entry<String, String> entry : section.properties().entrySet()) {
       apply(effective, wardOptions, file, section, entry);
     }
   }
 
   private static void apply(
-      final Map<String, Setting> effective,
-      final Map<String, FormatOption> wardOptions,
+      final Map<String,
+      Setting> effective,
+      final Map<String,
+      FormatOption> wardOptions,
       final EditorConfigFile file,
       final EditorConfigSection section,
-      final Map.Entry<String, String> entry) {
+      final Map.Entry<String,
+      String> entry
+  ) {
     final String key = entry.getKey();
     final String value = entry.getValue();
     if (!isKnown(key, wardOptions)) {
@@ -105,7 +115,10 @@ final class EditorConfigSettings {
 
   /** An unknown {@code ward_} key is an error; an unknown key of another tool is ignored. */
   private static void rejectUnknownWardKey(
-      final EditorConfigFile file, final EditorConfigSection section, final String key) {
+      final EditorConfigFile file,
+      final EditorConfigSection section,
+      final String key
+  ) {
     if (key.startsWith(WARD_PREFIX)) {
       throw EditorConfigValues.invalid(file.path(), section.header(), key, "unknown Ward option");
     }
@@ -129,7 +142,10 @@ final class EditorConfigSettings {
    * does not set takes its declared default, and an undeclared shared option is not passed.
    */
   private static FormatOptions options(
-      final Map<String, Setting> effective, final List<FormatOption> declared) {
+      final Map<String,
+      Setting> effective,
+      final List<FormatOption> declared
+  ) {
     final Map<String, String> values = new LinkedHashMap<>();
     for (final FormatOption option : declared) {
       final String key = EditorConfigOptions.sourceKey(option.key(), effective);

@@ -6,12 +6,14 @@ import java.util.List;
 
 /** The required properties of an object schema: new ones in a request, lost ones in a response. */
 final class RequiredChanges {
-
   private RequiredChanges() {}
 
   /** The required-property changes of one object schema pair. */
   static List<SchemaChange> changes(
-      final SchemaSides sides, final DocNode base, final DocNode revision) {
+      final SchemaSides sides,
+      final DocNode base,
+      final DocNode revision
+  ) {
     if (!sides.request()) {
       return lost(base, revision);
     }
@@ -30,7 +32,8 @@ final class RequiredChanges {
         final boolean existed = hasProperty(base, name.text());
         final String suffix = hasDefault(revision, name.text()) ? "-with-default" : "";
         changes.add(
-            new SchemaChange((existed ? "became-required" : "new-required") + suffix, name));
+            new SchemaChange((existed ? "became-required" : "new-required") + suffix, name)
+        );
       }
     }
     return changes;

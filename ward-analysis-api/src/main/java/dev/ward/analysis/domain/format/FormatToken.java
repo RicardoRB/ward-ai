@@ -10,7 +10,6 @@ import java.util.Objects;
  * @param line the line where the token starts, from 1
  */
 public record FormatToken(String type, String text, int line) {
-
   /**
    * Checks the components.
    *

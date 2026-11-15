@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks that the safety checks refuse a layout that changes how a statement parses. */
 class EcmaFormatSafetyTest {
-
   private static final String RETURN_SOURCE = "function f() {\n  return 1;\n}\n";
   private static final String BROKEN_RETURN = "function f() {\n  return\n  1;\n}\n";
 
@@ -35,19 +34,22 @@ class EcmaFormatSafetyTest {
             .format(source, FormatOptions.defaults(new TypeScriptFormatter().options()));
 
     assertThat(result).isInstanceOf(FormatResult.Formatted.class);
-    assertThat(((FormatResult.Formatted) result).text())
+    assertThat(((FormatResult.Formatted)result).text())
         .contains("  return someFunctionName(\n    argumentOneValueWithLongName,");
   }
 
   private static void assertRefusesBreak(
-      final FormatSyntax syntax, final SourceFormatter formatter, final String source) {
+      final FormatSyntax syntax,
+      final SourceFormatter formatter,
+      final String source
+  ) {
     final SourceFormatter broken = new FixedFormatter(formatter, BROKEN_RETURN);
     final FormatResult result =
         new FormatSafety(syntax)
             .formatSafely(broken, FormatOptions.defaults(formatter.options()), source);
 
     assertThat(result).isInstanceOf(FormatResult.Refused.class);
-    assertThat(((FormatResult.Refused) result).reason())
+    assertThat(((FormatResult.Refused)result).reason())
         .isEqualTo("formatting changed the syntax tree");
   }
 }

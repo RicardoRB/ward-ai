@@ -5,7 +5,6 @@ import java.util.regex.Pattern;
 
 /** Reads the quoted scalars and resolves the type of plain scalars by the YAML 1.2 core schema. */
 final class YamlScalars {
-
   private static final Pattern INTEGER = Pattern.compile("[-+]?[0-9]+|0o[0-7]+|0x[0-9a-fA-F]+");
   private static final Pattern FLOAT =
       Pattern.compile("[-+]?(\\.[0-9]+|[0-9]+(\\.[0-9]*)?)([eE][-+]?[0-9]+)?");
@@ -38,7 +37,8 @@ final class YamlScalars {
           Map.entry('N', '\u0085'),
           Map.entry('_', ' '),
           Map.entry('L', ' '),
-          Map.entry('P', ' '));
+          Map.entry('P', ' ')
+      );
   private static final Map<Character, Integer> HEX_ESCAPES =
       Map.of('x', HEX_2, 'u', HEX_4, 'U', HEX_8);
 

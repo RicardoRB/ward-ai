@@ -7,7 +7,6 @@ import java.util.List;
  * A rule that can also report the value it measures for each declaration, not only the breaches.
  */
 public interface MeasuringRule {
-
   /**
    * Returns the value this rule measures for every declaration in the tree rooted at {@code root},
    * including those within its limit. A rule that measures nothing returns none, as this default

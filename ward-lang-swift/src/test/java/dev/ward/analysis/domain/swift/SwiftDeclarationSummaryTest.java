@@ -13,12 +13,10 @@ import org.junit.jupiter.api.Test;
 
 /** The declarations and uses the Swift summarizer records for the dead-code rules. */
 class SwiftDeclarationSummaryTest {
-
   @Test
   void declaresOnlyFunctionsNoProtocolSuperclassOrAttributeCanFix() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             func helper() {}
             public func exported() {}
             @objc func selectorTarget() {}
@@ -44,8 +42,7 @@ class SwiftDeclarationSummaryTest {
   @Test
   void usedNamesHoldCallsButNotFunctionNamesOrFixedFunctionNames() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             func helper() {}
             func caller() { helper() }
             struct Canvas: Drawable {
@@ -68,8 +65,7 @@ class SwiftDeclarationSummaryTest {
   @Test
   void declaresStoredPropertiesOfClosedTypesOnly() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             struct Plain {
                 private var count = 0
                 var label: String { return "x" }
@@ -85,15 +81,15 @@ class SwiftDeclarationSummaryTest {
             """);
 
     assertThat(
-            summary.declared().stream().filter(s -> "property".equals(s.kind())).map(Symbol::name))
+        summary.declared().stream().filter(s -> "property".equals(s.kind())).map(Symbol::name)
+    )
         .containsExactly("count");
   }
 
   @Test
   void recordsPlainAssignmentsAndKeepsCompoundAssignmentsAsReads() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             struct Plain {
                 private var written = 0
                 private var counted = 0
@@ -118,8 +114,7 @@ class SwiftDeclarationSummaryTest {
   @Test
   void aProtocolUsedOnlyToConformIsRecordedAsConformanceNotAsUse() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             protocol Drawable {
                 func draw()
             }
@@ -132,15 +127,15 @@ class SwiftDeclarationSummaryTest {
         .contains(SwiftFileSummarizer.CONFORMANCE_PREFIX + "Drawable")
         .doesNotContain("Drawable");
     assertThat(
-            summary.declared().stream().filter(s -> "protocol".equals(s.kind())).map(Symbol::name))
+        summary.declared().stream().filter(s -> "protocol".equals(s.kind())).map(Symbol::name)
+    )
         .containsExactly("Drawable");
   }
 
   @Test
   void aProtocolUsedAsATypeKeepsAPlainUse() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             protocol Drawable {}
             struct Canvas: Drawable {}
             let shape: Drawable = Canvas()

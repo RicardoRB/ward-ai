@@ -20,7 +20,8 @@ final class RuleModels {
       final BuildEcosystem ecosystem,
       final DeclarationKind kind,
       final String version,
-      final Declaration.Flag flag) {
+      final Declaration.Flag flag
+  ) {
     return new Declaration(ecosystem, kind, "x", version, "s", "x", "f", LINE, flag);
   }
 
@@ -46,6 +47,7 @@ final class RuleModels {
         "package-lock.json",
         "package.json",
         Set.of(),
-        Set.of());
+        Set.of()
+    );
   }
 }

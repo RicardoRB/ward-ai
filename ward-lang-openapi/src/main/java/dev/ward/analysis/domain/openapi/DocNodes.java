@@ -8,7 +8,6 @@ import java.util.Optional;
 
 /** Builds the {@link DocNode} tree of one file from the syntax tree {@link YamlParser} read. */
 final class DocNodes {
-
   private DocNodes() {}
 
   static DocNode build(final String file, final SyntaxNode root) {
@@ -16,7 +15,11 @@ final class DocNodes {
   }
 
   private static DocNode node(
-      final String file, final String pointer, final SyntaxNode syntax, final Span keySpan) {
+      final String file,
+      final String pointer,
+      final SyntaxNode syntax,
+      final Span keySpan
+  ) {
     final List<DocNode.Entry> entries = new ArrayList<>();
     final List<DocNode> items = new ArrayList<>();
     final DocNode.Kind kind = kind(syntax.kind());
@@ -30,7 +33,9 @@ final class DocNodes {
                 name,
                 key.span(),
                 node(file, child, entry.children().getLast(), key.span()),
-                key.fields().containsKey(YamlSyntax.NUMERIC)));
+                key.fields().containsKey(YamlSyntax.NUMERIC)
+            )
+        );
       }
     } else if (kind == DocNode.Kind.ARRAY) {
       for (final SyntaxNode item : syntax.children()) {
@@ -39,7 +44,15 @@ final class DocNodes {
     }
     final String text = syntax.fields().getOrDefault(YamlSyntax.VALUE, "");
     return new DocNode(
-        kind, text, file, pointer, syntax.span(), Optional.ofNullable(keySpan), entries, items);
+        kind,
+        text,
+        file,
+        pointer,
+        syntax.span(),
+        Optional.ofNullable(keySpan),
+        entries,
+        items
+    );
   }
 
   private static DocNode.Kind kind(final String syntax) {

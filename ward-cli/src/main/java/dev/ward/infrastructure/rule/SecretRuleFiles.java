@@ -8,7 +8,6 @@ import java.util.List;
  * configuration, with their regexes and allowlists as data.
  */
 public final class SecretRuleFiles implements RuleFileProvider {
-
   private static final List<String> FILES = List.of("rules/secrets/secrets.toml");
 
   @Override

@@ -20,7 +20,8 @@ final class KotlinSourceDirs {
       Pattern.compile("<sourceDir>\\s*([^<$]+?)\\s*</sourceDir>");
   private static final Pattern GRADLE_KOTLIN =
       Pattern.compile(
-          "(main|test)\\s*\\{\\s*(?:java\\s*\\{[^}]*\\}\\s*)?kotlin\\s*\\{\\s*srcDirs?\\s*[(=]?\\s*\\[?\\s*['\"]([^'\"$]+)['\"]");
+          "(main|test)\\s*\\{\\s*(?:java\\s*\\{[^}]*\\}\\s*)?kotlin\\s*\\{\\s*srcDirs?\\s*[(=]?\\s*\\[?\\s*['\"]([^'\"$]+)['\"]"
+      );
 
   private KotlinSourceDirs() {}
 

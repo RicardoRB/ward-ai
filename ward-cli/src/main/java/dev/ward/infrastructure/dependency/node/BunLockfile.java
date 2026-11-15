@@ -51,7 +51,8 @@ final class BunLockfile {
     if (!(root.get("lockfileVersion") instanceof Number version)
         || !VERSIONS.contains(version.intValue())) {
       throw new LockfileFormatException(
-          "unsupported lockfileVersion " + root.get("lockfileVersion"));
+          "unsupported lockfileVersion " + root.get("lockfileVersion")
+      );
     }
     return new BunLockfile(packages(root.get("packages")), workspaceNames(root.get("workspaces")))
         .toLock();
@@ -65,7 +66,8 @@ final class BunLockfile {
             if (value instanceof List<?> tuple && !tuple.isEmpty()) {
               packages.put(String.valueOf(key), tuple);
             }
-          });
+          }
+      );
     }
     return packages;
   }
@@ -77,9 +79,12 @@ final class BunLockfile {
           (path, body) ->
               names.put(
                   String.valueOf(path),
-                  body instanceof Map<?, ?> member && member.get("name") instanceof String name
+                  body instanceof Map<?,
+                  ?> member && member.get("name") instanceof String name
                       ? name
-                      : ""));
+                      : ""
+              )
+      );
     }
     return names;
   }
@@ -96,11 +101,13 @@ final class BunLockfile {
             }
             collector.add(id.get(), released(tuple), required);
           }
-        });
+        }
+    );
     return new NodeLock(
         collector.packages(),
         (member, name, range) ->
-            resolveKey(workspaceNames.getOrDefault(member, ""), name).flatMap(this::idAt));
+            resolveKey(workspaceNames.getOrDefault(member, ""), name).flatMap(this::idAt)
+    );
   }
 
   private Optional<PackageId> idAt(final String key) {

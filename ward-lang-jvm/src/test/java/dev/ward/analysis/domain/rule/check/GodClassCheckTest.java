@@ -9,7 +9,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class GodClassCheckTest extends ClassStatementTrees {
-
   private static final String MESSAGE = "{value}";
   private static final String GOD_METRICS = "WMC 48, ATFD 6, TCC 0%";
   private static final String ONLY_METHOD_METRICS = "WMC 47, ATFD 6, TCC 0%";
@@ -27,7 +26,8 @@ class GodClassCheckTest extends ClassStatementTrees {
   void reportsGodClassWhenMethodsSeldomShareFields() {
     final SyntaxNode root =
         compilationUnit(
-            classNamed(CLASS_NAME, fieldMember(), accessesMethod(false), branchesMethod(false)));
+            classNamed(CLASS_NAME, fieldMember(), accessesMethod(false), branchesMethod(false))
+        );
 
     assertThat(god(root, foreignTypes())).hasSize(1);
   }
@@ -42,7 +42,9 @@ class GodClassCheckTest extends ClassStatementTrees {
                 usingMethod("first"),
                 usingMethod("second"),
                 accessesMethod(true),
-                branchesMethod(true)));
+                branchesMethod(true)
+            )
+        );
 
     assertThat(god(root, foreignTypes())).isEmpty();
   }
@@ -93,11 +95,14 @@ class GodClassCheckTest extends ClassStatementTrees {
                 0,
                 0,
                 node(EXPRESSION, LINE, COLUMN, leaf("'?'", "?", LINE, COLUMN)),
-                node(EXPRESSION, LINE, COLUMN, leaf("'?'", "?", LINE, COLUMN))),
-            PUBLIC);
+                node(EXPRESSION, LINE, COLUMN, leaf("'?'", "?", LINE, COLUMN))
+            ),
+            PUBLIC
+        );
     final SyntaxNode root =
         compilationUnit(
-            classNamed(CLASS_NAME, inExpression, branchesMethod(false), accessesMethod(false)));
+            classNamed(CLASS_NAME, inExpression, branchesMethod(false), accessesMethod(false))
+        );
 
     assertThat(god(root, foreignTypes())).containsExactly(CONDITIONAL_METRICS);
   }

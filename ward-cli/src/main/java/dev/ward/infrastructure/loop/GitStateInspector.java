@@ -33,6 +33,7 @@ public final class GitStateInspector implements GitStateInspection {
         !status.stdout().isBlank(),
         status.stdout().isBlank()
             ? "Working tree clean."
-            : "Working tree has uncommitted changes.");
+            : "Working tree has uncommitted changes."
+    );
   }
 }

@@ -37,7 +37,9 @@ public final class NativeJvmTypeFacts implements TypeFacts {
   public NativeJvmTypeFacts(
       final JvmClasses classes,
       final LanguageFrontend frontend,
-      final Map<AnalysisLanguage, ScopeAnalysis> scopes) {
+      final Map<AnalysisLanguage,
+      ScopeAnalysis> scopes
+  ) {
     this.classes = classes;
     this.frontend = frontend;
     this.scopes = Map.copyOf(scopes);
@@ -45,7 +47,10 @@ public final class NativeJvmTypeFacts implements TypeFacts {
 
   @Override
   public UnitTypeFacts factsOf(
-      final SourceUnit unit, final List<Span> spans, final Set<FactKind> kinds) {
+      final SourceUnit unit,
+      final List<Span> spans,
+      final Set<FactKind> kinds
+  ) {
     final ScopeAnalysis analysis = scopes.get(unit.language());
     if (analysis == null || spans.isEmpty() || kinds.isEmpty()) {
       return UnitTypeFacts.none();

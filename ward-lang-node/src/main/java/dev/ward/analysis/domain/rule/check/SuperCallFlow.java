@@ -20,7 +20,6 @@ import java.util.Set;
  * it.
  */
 final class SuperCallFlow {
-
   private static final String EXPRESSION = "singleExpression";
   private static final String ARGUMENTS = "arguments";
   private static final String SUPER = "super";
@@ -33,7 +32,8 @@ final class SuperCallFlow {
           "constructorDeclaration",
           "methodDefinition",
           "propertyMemberDeclaration",
-          "classDeclaration");
+          "classDeclaration"
+      );
   private static final Set<FlowEdgeKind> RETURNING =
       EnumSet.of(FlowEdgeKind.NORMAL, FlowEdgeKind.TRUE, FlowEdgeKind.FALSE);
   private static final int NOT_CALLED = 1;
@@ -90,8 +90,10 @@ final class SuperCallFlow {
   private static void propagate(
       final BasicBlock block,
       final int state,
-      final Map<Integer, Integer> entering,
-      final Deque<Integer> pending) {
+      final Map<Integer,
+      Integer> entering,
+      final Deque<Integer> pending
+  ) {
     for (final FlowEdge edge : block.successors()) {
       if (RETURNING.contains(edge.kind())) {
         final int before = entering.getOrDefault(edge.target(), 0);

@@ -7,29 +7,32 @@ import picocli.CommandLine.Option;
  * scheme that the Swift test gate runs.
  */
 public class GeneratedFileOptions {
-
   // Picocli assigns annotated fields reflectively, so they cannot be final.
   @Option(
       names = "--ci",
-      description = "Write a Ward-owned CI workflow that runs the ci profile: github.")
+      description = "Write a Ward-owned CI workflow that runs the ci profile: github."
+  )
   private String ci;
 
   @Option(
       names = "--agent-rules",
-      description = "Write the selected gates' rules into a Ward-owned section of AGENTS.md.")
+      description = "Write the selected gates' rules into a Ward-owned section of AGENTS.md."
+  )
   private boolean agentRules;
 
   @Option(
       names = "--replace-scripts",
       description =
-          "Replace the Turborepo member scripts that differ from the plan, without asking.")
+          "Replace the Turborepo member scripts that differ from the plan, without asking."
+  )
   private boolean replaceScripts;
 
   @Option(
       names = "--architecture",
       description =
           "Architecture style of the ward layer boundaries in ward.toml: layered, hexagonal, or"
-              + " clean.")
+              + " clean."
+  )
   private String architecture;
 
   /** Returns the CI provider, or {@code null} when no workflow is requested. */

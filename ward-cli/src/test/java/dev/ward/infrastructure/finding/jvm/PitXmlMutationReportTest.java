@@ -103,7 +103,9 @@ class PitXmlMutationReportTest {
     FindingFixtures.write(root.resolve("api/build/reports/pitest/mutations.xml"), REPORT);
     FindingFixtures.write(root.resolve("domain/build/reports/pitest/mutations.xml"), REPORT);
     FindingFixtures.age(
-        root.resolve("domain/build/reports/pitest/mutations.xml"), Duration.ofHours(1));
+        root.resolve("domain/build/reports/pitest/mutations.xml"),
+        Duration.ofHours(1)
+    );
 
     final MutationCounts counts =
         report.read(FindingFixtures.gradle(root), FindingFixtures.justBefore());
@@ -116,7 +118,8 @@ class PitXmlMutationReportTest {
     FindingFixtures.write(root.resolve("api/build/reports/pitest/mutations.xml"), REPORT);
     FindingFixtures.write(
         root.resolve("domain/build/reports/pitest/mutations.xml"),
-        "<mutations><mutation detected='true'");
+        "<mutations><mutation detected='true'"
+    );
 
     final MutationCounts counts =
         report.read(FindingFixtures.gradle(root), FindingFixtures.justBefore());

@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks the tokens and error lines the safety checks read from the parsers. */
 class EcmaFormatSyntaxTest {
-
   @Test
   void commentsAreTypedAsComments() {
     final FormatSyntaxTree tree =

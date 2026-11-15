@@ -12,7 +12,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class TypeQualifierCheckTest {
-
   private static final String HEADER =
       "@TypeQualifier @interface Tainted { When when() default When.ALWAYS; }\n"
           + "@TypeQualifier @interface Strict {}\n"
@@ -40,17 +39,22 @@ class TypeQualifierCheckTest {
             null,
             Map.of(),
             Map.of(),
-            null),
+            null
+        ),
         List.of(),
         List.of(),
         List.of(),
         List.of(),
         null,
-        null);
+        null
+    );
   }
 
   private static List<String> run(
-      final TypeQualifierCheck.Mode mode, final String body, final String... calls) {
+      final TypeQualifierCheck.Mode mode,
+      final String body,
+      final String... calls
+  ) {
     ParsedFacts parsed = new ParsedFacts(HEADER + body + "}\n");
     for (final String text : calls) {
       final String name = text.substring(0, text.indexOf('('));
@@ -70,10 +74,10 @@ class TypeQualifierCheckTest {
         .isEmpty();
     assertThat(run(TypeQualifierCheck.Mode.ALWAYS_VALUE_USED_WHERE_NEVER_REQUIRED, body)).isEmpty();
     assertThat(
-            new TypeQualifierCheck(
-                    TypeQualifierCheck.Mode.ALWAYS_VALUE_USED_WHERE_NEVER_REQUIRED, "m")
-                .needs()
-                .facts())
+        new TypeQualifierCheck(TypeQualifierCheck.Mode.ALWAYS_VALUE_USED_WHERE_NEVER_REQUIRED, "m")
+            .needs()
+            .facts()
+    )
         .containsExactly(FactKind.CALL);
   }
 
@@ -93,11 +97,13 @@ class TypeQualifierCheckTest {
     final String body =
         "  void need(@Strict String s) {}\n  void t(String x, @Strict String ok) {\n    need(x);\n    need(ok);\n  }\n";
     assertThat(
-            run(
-                TypeQualifierCheck.Mode.UNKNOWN_VALUE_USED_WHERE_ALWAYS_STRICTLY_REQUIRED,
-                body,
-                NEED_X,
-                "need(ok)"))
+        run(
+            TypeQualifierCheck.Mode.UNKNOWN_VALUE_USED_WHERE_ALWAYS_STRICTLY_REQUIRED,
+            body,
+            NEED_X,
+            "need(ok)"
+        )
+    )
         .containsExactly("6:10");
   }
 
@@ -112,30 +118,34 @@ class TypeQualifierCheckTest {
         .containsExactly("7:10");
     final String maybeNever = maybe.replace(NEED_X, "never(x)");
     assertThat(
-            run(
-                TypeQualifierCheck.Mode.MAYBE_SOURCE_VALUE_REACHES_NEVER_SINK,
-                maybeNever,
-                "never(x)"))
+        run(TypeQualifierCheck.Mode.MAYBE_SOURCE_VALUE_REACHES_NEVER_SINK, maybeNever, "never(x)")
+    )
         .containsExactly("7:11");
     final String unknown =
         need + "  void t(@Tainted(when = When.UNKNOWN) String x) {\n    need(x);\n  }\n";
     assertThat(
-            run(
-                TypeQualifierCheck.Mode.EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_ALWAYS_SINK,
-                unknown,
-                NEED_X))
+        run(
+            TypeQualifierCheck.Mode.EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_ALWAYS_SINK,
+            unknown,
+            NEED_X
+        )
+    )
         .containsExactly("7:10");
     assertThat(
-            run(
-                TypeQualifierCheck.Mode.EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_NEVER_SINK,
-                unknown.replace(NEED_X, "never(x)"),
-                "never(x)"))
+        run(
+            TypeQualifierCheck.Mode.EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_NEVER_SINK,
+            unknown.replace(NEED_X, "never(x)"),
+            "never(x)"
+        )
+    )
         .containsExactly("7:11");
     assertThat(
-            run(
-                TypeQualifierCheck.Mode.EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_NEVER_SINK,
-                unknown,
-                NEED_X))
+        run(
+            TypeQualifierCheck.Mode.EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_NEVER_SINK,
+            unknown,
+            NEED_X
+        )
+    )
         .isEmpty();
   }
 
@@ -144,18 +154,23 @@ class TypeQualifierCheckTest {
     final String body =
         "  boolean t(@Tainted String a, @Tainted(when = When.NEVER) String b) {\n    return a == b;\n  }\n";
     assertThat(
-            run(TypeQualifierCheck.Mode.COMPARING_VALUES_WITH_INCOMPATIBLE_TYPE_QUALIFIERS, body))
+        run(TypeQualifierCheck.Mode.COMPARING_VALUES_WITH_INCOMPATIBLE_TYPE_QUALIFIERS, body)
+    )
         .containsExactly("5:12");
     assertThat(
-            run(
-                TypeQualifierCheck.Mode.COMPARING_VALUES_WITH_INCOMPATIBLE_TYPE_QUALIFIERS,
-                body.replace("a == b", "a.equals(b)"),
-                "a.equals(b)"))
+        run(
+            TypeQualifierCheck.Mode.COMPARING_VALUES_WITH_INCOMPATIBLE_TYPE_QUALIFIERS,
+            body.replace("a == b", "a.equals(b)"),
+            "a.equals(b)"
+        )
+    )
         .containsExactly("5:12");
     assertThat(
-            run(
-                TypeQualifierCheck.Mode.COMPARING_VALUES_WITH_INCOMPATIBLE_TYPE_QUALIFIERS,
-                body.replace("a == b", "a == \"x\"")))
+        run(
+            TypeQualifierCheck.Mode.COMPARING_VALUES_WITH_INCOMPATIBLE_TYPE_QUALIFIERS,
+            body.replace("a == b", "a == \"x\"")
+        )
+    )
         .isEmpty();
   }
 
@@ -165,26 +180,28 @@ class TypeQualifierCheckTest {
         "  @Tainted(when = When.NEVER) String make() { return null; }\n"
             + "  void need(@Tainted String s) {}\n  void t() {\n    need(make());\n  }\n";
     assertThat(
-            run(
-                TypeQualifierCheck.Mode.NEVER_VALUE_USED_WHERE_ALWAYS_REQUIRED,
-                body,
-                "need(make())",
-                "make()"))
+        run(
+            TypeQualifierCheck.Mode.NEVER_VALUE_USED_WHERE_ALWAYS_REQUIRED,
+            body,
+            "need(make())",
+            "make()"
+        )
+    )
         .containsExactly("7:10");
     final String field =
         "  @Tainted(when = When.NEVER) String f;\n  void need(@Tainted String s) {}\n  void t() {\n    need(this.f);\n  }\n";
     assertThat(
-            run(
-                TypeQualifierCheck.Mode.NEVER_VALUE_USED_WHERE_ALWAYS_REQUIRED,
-                field,
-                "need(this.f)"))
+        run(TypeQualifierCheck.Mode.NEVER_VALUE_USED_WHERE_ALWAYS_REQUIRED, field, "need(this.f)")
+    )
         .containsExactly("7:10");
     assertThat(
-            run(
-                TypeQualifierCheck.Mode.NEVER_VALUE_USED_WHERE_ALWAYS_REQUIRED,
-                body.replace("need(make())", "need(other())"),
-                "need(other())",
-                "other()"))
+        run(
+            TypeQualifierCheck.Mode.NEVER_VALUE_USED_WHERE_ALWAYS_REQUIRED,
+            body.replace("need(make())", "need(other())"),
+            "need(other())",
+            "other()"
+        )
+    )
         .isEmpty();
   }
 
@@ -208,8 +225,9 @@ class TypeQualifierCheckTest {
       assertThat(run(mode, fine, NEED_X)).isEmpty();
     }
     assertThat(
-            new ParsedFacts("class C {}")
-                .plain(new TypeQualifierCheck(TypeQualifierCheck.Mode.values()[0], "m")))
+        new ParsedFacts("class C {}")
+            .plain(new TypeQualifierCheck(TypeQualifierCheck.Mode.values() [0], "m"))
+    )
         .isEmpty();
   }
 }

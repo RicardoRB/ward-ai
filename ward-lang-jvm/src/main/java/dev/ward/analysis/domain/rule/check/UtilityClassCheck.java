@@ -13,7 +13,6 @@ import java.util.Set;
  * constructor.
  */
 public final class UtilityClassCheck implements UnitCheck {
-
   private static final String STATIC_INITIALIZER_MARKER = "static";
   private static final String MAIN = "main";
   private static final Set<String> HIERARCHY = Set.of("extends", "implements");
@@ -40,7 +39,9 @@ public final class UtilityClassCheck implements UnitCheck {
   }
 
   private static boolean isConcreteUtility(
-      final SyntaxNode clazz, final List<SyntaxNode> ancestors) {
+      final SyntaxNode clazz,
+      final List<SyntaxNode> ancestors
+  ) {
     final boolean abstractClass = hasModifier(ancestors, "abstract");
     final boolean privateClass = hasModifier(ancestors, MemberDeclarations.PRIVATE);
     final boolean hasSuperTypes =
@@ -92,6 +93,7 @@ public final class UtilityClassCheck implements UnitCheck {
             member ->
                 MemberDeclarations.declaration(member)
                     .map(declaration -> CONSTRUCTOR.equals(declaration.kind()))
-                    .orElse(false));
+                    .orElse(false)
+        );
   }
 }

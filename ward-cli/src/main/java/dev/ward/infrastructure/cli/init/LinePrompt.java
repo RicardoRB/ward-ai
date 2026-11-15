@@ -56,7 +56,8 @@ final class LinePrompt {
       final List<String> ids,
       final List<String> initial,
       final String label,
-      final String emptySelectionMessage) {
+      final String emptySelectionMessage
+  ) {
     final Optional<String> line = readLine("initialization selection");
     if (line.isEmpty()) {
       return Optional.empty();
@@ -70,13 +71,17 @@ final class LinePrompt {
 
   /** Reads an optional selection; a blank line or end of input selects nothing. */
   List<String> readOptionalSelection(
-      final List<String> ids, final String label, final String question) {
+      final List<String> ids,
+      final String label,
+      final String question
+  ) {
     return NumberedChoice.toggle(ids, List.of(), readOrDefault(question).orElse(""), label);
   }
 
   static void logDefault(final String question) {
     LOGGER.log(
         Level.INFO,
-        () -> "event=init-optional-default question=" + question + " reason=end-of-input");
+        () -> "event=init-optional-default question=" + question + " reason=end-of-input"
+    );
   }
 }

@@ -34,7 +34,10 @@ public final class JvmClasses {
    * @param frontend the parser for source files
    */
   public JvmClasses(
-      final JvmLibrary library, final JvmSources sources, final LanguageFrontend frontend) {
+      final JvmLibrary library,
+      final JvmSources sources,
+      final LanguageFrontend frontend
+  ) {
     this(new Shared(library, sources, frontend), Map.of());
   }
 

@@ -28,7 +28,10 @@ public final class ToolRuns {
    *     argument vector or the environment
    */
   public static String run(
-      final CommandExecutor executor, final Project project, final List<String> arguments) {
+      final CommandExecutor executor,
+      final Project project,
+      final List<String> arguments
+  ) {
     final String executable = arguments.getFirst();
     LOGGER.log(Level.FINE, () -> "event=dependency-tool-run executable=" + executable);
     final CommandResult result = executor.execute(new Command(arguments, project.root()), LIMIT);
@@ -41,14 +44,16 @@ public final class ToolRuns {
               : executable
                   + " was not found or could not be started: "
                   + firstLine(result.stderr()),
-          "install " + executable + " or add its wrapper to the project");
+          "install " + executable + " or add its wrapper to the project"
+      );
     }
     if (!result.succeeded()) {
       throw new DependencyInventoryException(
           project.root().toString(),
           executable,
           "it exited with status " + result.exitCode() + ": " + errorLine(result),
-          "make `" + executable + "` resolve the dependencies, then run again");
+          "make `" + executable + "` resolve the dependencies, then run again"
+      );
     }
     return result.stdout();
   }

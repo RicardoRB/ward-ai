@@ -59,7 +59,8 @@ public final class MavenGraphTool implements ResolvedGraphTool {
             "event=dependency-resolved tool=maven modules="
                 + inventory.modules().size()
                 + " entries="
-                + inventory.entryCount());
+                + inventory.entryCount()
+    );
     return inventory;
   }
 }

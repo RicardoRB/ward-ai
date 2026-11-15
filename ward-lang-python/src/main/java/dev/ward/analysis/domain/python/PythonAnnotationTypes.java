@@ -12,7 +12,6 @@ import java.util.function.Function;
  * a type; anything else (unions, strings, {@code Optional}, type variables) is unknown.
  */
 final class PythonAnnotationTypes {
-
   private static final String NONE = "None";
   private static final String OPEN_BRACKET = "[";
   private static final int MAX_DEPTH = 6;

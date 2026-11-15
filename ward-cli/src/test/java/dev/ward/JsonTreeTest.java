@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.Test;
 
 class JsonTreeTest {
-
   @Test
   void navigatesObjectsArraysAndScalars() {
     final JsonTree root = JsonTree.parse("{\"a\":[{\"n\":2,\"ok\":true,\"s\":\"x\"}]}");

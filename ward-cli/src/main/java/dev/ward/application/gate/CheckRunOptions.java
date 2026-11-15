@@ -15,8 +15,8 @@ public record CheckRunOptions(
     List<String> profiles,
     CheckProgressListener listener,
     boolean failFast,
-    Set<String> excludedGates) {
-
+    Set<String> excludedGates
+) {
   /** Copies the collections so later changes by the caller do not affect the run. */
   public CheckRunOptions {
     profiles = List.copyOf(profiles);

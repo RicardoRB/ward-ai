@@ -8,12 +8,10 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class OldStylePlistTest {
-
   @Test
   void readsDictionariesListsAndQuotedStringsAfterComments() {
     final Map<String, Object> plist =
-        OldStylePlist.parse(
-            """
+        OldStylePlist.parse("""
             // !$*UTF8*$!
             {
                 /* a block comment */

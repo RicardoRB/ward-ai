@@ -5,7 +5,6 @@ package dev.ward.analysis.domain.rule;
  * language, so they run once per run over the whole project, not per unit.
  */
 public final class DuplicateCodeRule {
-
   /** The rule name shared by every language, after the slash of its id. */
   public static final String NAME = "duplicate-code";
 

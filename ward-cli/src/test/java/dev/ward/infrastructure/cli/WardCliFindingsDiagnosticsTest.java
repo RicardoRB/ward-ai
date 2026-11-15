@@ -18,9 +18,7 @@ class WardCliFindingsDiagnosticsTest extends WardCliIntegrationSupport {
   void findingDiagnosticsNameEventsButNeverContentsOrPaths() throws IOException {
     Files.createDirectories(project.resolve("config"));
     Files.writeString(project.resolve("config/app.yml"), "token: " + SECRET + "\n");
-    Files.writeString(
-        project.resolve(WARD_TOML),
-        """
+    Files.writeString(project.resolve(WARD_TOML), """
         version = 2
         [checks.secrets]
         uses = "secrets"
@@ -35,7 +33,8 @@ class WardCliFindingsDiagnosticsTest extends WardCliIntegrationSupport {
         "--output",
         report.toString(),
         "-C",
-        project.toString());
+        project.toString()
+    );
     final List<String> messages = err.toString().lines().toList();
 
     assertThat(messages)
@@ -49,7 +48,9 @@ class WardCliFindingsDiagnosticsTest extends WardCliIntegrationSupport {
                         SECRET,
                         SECRET.substring(0, PREFIX_LENGTH),
                         "config/app.yml",
-                        project.toString()));
+                        project.toString()
+                    )
+        );
   }
 
   @Test
@@ -57,7 +58,9 @@ class WardCliFindingsDiagnosticsTest extends WardCliIntegrationSupport {
     Files.createDirectories(project.resolve("config"));
     Files.writeString(project.resolve("config/app.yml"), "token: " + SECRET + "\n");
     Files.writeString(
-        project.resolve(WARD_TOML), "version = 2\n[checks.secrets]\nuses = \"secrets\"\n");
+        project.resolve(WARD_TOML),
+        "version = 2\n[checks.secrets]\nuses = \"secrets\"\n"
+    );
 
     for (final String format : List.of("json", "sarif", "text")) {
       out.getBuffer().setLength(0);

@@ -36,7 +36,8 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
   private static final List<GradlePlugin> PLUGINS =
       List.of(
           new GradlePlugin("coverage", "jacoco", false, true),
-          new GradlePlugin("mutation", GradleToolCatalog.PITEST, true, true));
+          new GradlePlugin("mutation", GradleToolCatalog.PITEST, true, true)
+      );
 
   private static final String NO_KOTLIN_MODULE =
       "No module applies the Kotlin JVM plugin, or the Java plugin with Java sources, directly, so"
@@ -69,7 +70,8 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final Predicate<? super CompatibilityFinding> approval) {
+      final Predicate<? super CompatibilityFinding> approval
+  ) {
     final Computed computed = compute(project, gates, preset);
     GradleScriptFiles.writeAll(computed.edits());
     final GradleBuildFileEdit root = computed.root();
@@ -84,7 +86,8 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
         computed.modules().stream()
             .filter(module -> !module.tools().isEmpty())
             .map(module -> new ScriptEdit(module.buildFile(), module.original()))
-            .toList());
+            .toList()
+    );
   }
 
   @Override
@@ -92,7 +95,8 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final boolean approved) {
+      final boolean approved
+  ) {
     final Computed computed = compute(project, gates, preset);
     final List<String> details = new ArrayList<>(computed.warnings());
     details.addAll(computed.root().details());
@@ -101,7 +105,8 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
         computed.root().details().isEmpty()
             ? PlannedFileChange.Action.UNCHANGED
             : PlannedFileChange.Action.MODIFY,
-        details);
+        details
+    );
   }
 
   /** Describes the Kotlin module scripts the gates would change, without writing. */
@@ -109,13 +114,18 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final boolean approved) {
+      final boolean approved
+  ) {
     return compute(project, gates, preset).modules().stream()
         .filter(module -> !module.details().isEmpty())
         .map(
             module ->
                 new PlannedFileChange(
-                    module.buildFile(), PlannedFileChange.Action.MODIFY, module.details()))
+                    module.buildFile(),
+                    PlannedFileChange.Action.MODIFY,
+                    module.details()
+                )
+        )
         .toList();
   }
 
@@ -124,7 +134,8 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
     return compatibility
         .map(
             resolver ->
-                resolver.omissions(project, GradleToolVersions.toolsByGate(Set.copyOf(gateIds))))
+                resolver.omissions(project, GradleToolVersions.toolsByGate(Set.copyOf(gateIds)))
+        )
         .orElse(List.of());
   }
 
@@ -134,7 +145,10 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
         .map(
             resolver ->
                 resolver.unsupportedPins(
-                    project, GradleToolVersions.toolsByGate(Set.copyOf(gateIds))))
+                    project,
+                    GradleToolVersions.toolsByGate(Set.copyOf(gateIds))
+                )
+        )
         .orElse(List.of());
   }
 
@@ -147,7 +161,10 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
    * Builds the edited scripts in memory; shared by {@link #apply}, {@link #plan} and planModules.
    */
   private Computed compute(
-      final Project project, final List<InitGateOption> gates, final QualityPreset preset) {
+      final Project project,
+      final List<InitGateOption> gates,
+      final QualityPreset preset
+  ) {
     final Path buildFile = GradleScriptFiles.buildFile(project.root());
     final Set<String> requested =
         gates.stream().map(InitGateOption::id).collect(Collectors.toSet());
@@ -160,7 +177,8 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
             gate ->
                 versions
                     .unavailable(gate)
-                    .ifPresent(reason -> warnings.add(gate + " omitted: " + reason)));
+                    .ifPresent(reason -> warnings.add(gate + " omitted: " + reason))
+        );
     final Set<String> selected =
         requested.stream()
             .filter(gate -> versions.unavailable(gate).isEmpty())
@@ -179,7 +197,8 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
                 .filter(gate -> !moduleGates.contains(gate))
                 .collect(Collectors.toSet());
     root.addPlugins(
-        GradleScriptPlacement.rootDeclarations(root, PLUGINS, rootGates, moduleGates, versions));
+        GradleScriptPlacement.rootDeclarations(root, PLUGINS, rootGates, moduleGates, versions)
+    );
     GradleBuildBlocks.append(root, rootGates, preset, versions, false);
     final List<GradleBuildFileEdit> modules = new ArrayList<>();
     for (final Path module : kotlinModules) {
@@ -211,7 +230,10 @@ public final class GradleToolConfigurator implements BuildToolConfiguration {
 
   /** The root and module edits, and the warnings for the init output. */
   private record Computed(
-      GradleBuildFileEdit root, List<GradleBuildFileEdit> modules, List<String> warnings) {
+      GradleBuildFileEdit root,
+      List<GradleBuildFileEdit> modules,
+      List<String> warnings
+  ) {
     List<GradleBuildFileEdit> edits() {
       final List<GradleBuildFileEdit> edits = new ArrayList<>(List.of(root));
       edits.addAll(modules);

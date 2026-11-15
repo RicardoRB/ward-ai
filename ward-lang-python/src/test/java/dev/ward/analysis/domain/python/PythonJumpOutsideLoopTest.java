@@ -14,7 +14,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 /** A {@code break} or {@code continue} outside a loop must not abort the lowering of the unit. */
 final class PythonJumpOutsideLoopTest {
-
   @ParameterizedTest
   @ValueSource(strings = {"break", "continue"})
   void jumpAtModuleLevelStillBuildsTheGraphs(final String jump) {

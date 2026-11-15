@@ -27,7 +27,9 @@ final class GradleBuildFileEdit {
       return new GradleBuildFileEdit(buildFile, Files.readString(buildFile));
     } catch (IOException e) {
       throw new WardException(
-          "Could not configure Gradle tools in " + buildFile + ": " + e.getMessage(), e);
+          "Could not configure Gradle tools in " + buildFile + ": " + e.getMessage(),
+          e
+      );
     }
   }
 

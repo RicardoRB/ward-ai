@@ -8,17 +8,21 @@ import org.junit.jupiter.api.Test;
 
 /** The loops, handlers and jumps of Kotlin bodies in the graphs the lowering builds. */
 class KotlinJumpFlowTest {
-
   private static final String AFTER = "z()";
 
   private static ControlFlowGraph of(final String body) {
     return KotlinFlowFixtures.graph(
-        "class C {\n  fun f(c: Boolean) {\n" + body + "\n  }\n}\n", "C#f(1)");
+        "class C {\n  fun f(c: Boolean) {\n" + body + "\n  }\n}\n",
+        "C#f(1)"
+    );
   }
 
   private static int block(final String body, final String snippet) {
     return JavaFlowFixtures.blockWith(
-        of(body), "class C {\n  fun f(c: Boolean) {\n" + body + "\n  }\n}\n", snippet);
+        of(body),
+        "class C {\n  fun f(c: Boolean) {\n" + body + "\n  }\n}\n",
+        snippet
+    );
   }
 
   @Test
@@ -54,8 +58,8 @@ class KotlinJumpFlowTest {
     assertThat(JavaFlowFixtures.reachable(graph, block(body, "break@outer"), block(body, AFTER)))
         .isTrue();
     assertThat(
-            JavaFlowFixtures.reachable(
-                graph, block(body, "break@outer"), block(body, "afterInner()")))
+        JavaFlowFixtures.reachable(graph, block(body, "break@outer"), block(body, "afterInner()"))
+    )
         .isFalse();
   }
 
@@ -65,8 +69,13 @@ class KotlinJumpFlowTest {
     final ControlFlowGraph graph = of(body);
 
     assertThat(
-            JavaFlowFixtures.hasEdge(
-                graph, block(body, "continue"), block(body, "c"), FlowEdgeKind.NORMAL))
+        JavaFlowFixtures.hasEdge(
+            graph,
+            block(body, "continue"),
+            block(body, "c"),
+            FlowEdgeKind.NORMAL
+        )
+    )
         .isTrue();
     assertThat(JavaFlowFixtures.reachable(graph, block(body, "continue"), block(body, "rest()")))
         .isTrue();

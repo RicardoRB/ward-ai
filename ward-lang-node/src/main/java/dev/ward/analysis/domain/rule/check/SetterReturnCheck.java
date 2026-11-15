@@ -12,7 +12,6 @@ import java.util.Objects;
  * reported.
  */
 public final class SetterReturnCheck implements RuleCheck {
-
   private static final String SETTER = "setter";
   private static final String SET_ACCESSOR = "setAccessor";
   private static final String RETURN = "returnStatement";
@@ -42,7 +41,8 @@ public final class SetterReturnCheck implements RuleCheck {
       returnsIn(node.children(), returns);
       returns.stream()
           .filter(
-              statement -> statement.children().stream().anyMatch(c -> ARGUMENT.equals(c.kind())))
+              statement -> statement.children().stream().anyMatch(c -> ARGUMENT.equals(c.kind()))
+          )
           .forEach(statement -> matches.add(new RuleMatch(statement.span(), message)));
     }
     for (final SyntaxNode child : node.children()) {

@@ -15,7 +15,6 @@ import java.util.Set;
  * roles, hidden elements, interactive roles and dialogs are silent.
  */
 public final class BiomeNoninteractiveElementInteractionsCheck implements RuleCheck {
-
   private static final List<String> TYPES = List.of("focus", "image", "keyboard", "mouse");
 
   private final AriaRoleTable table;
@@ -28,7 +27,9 @@ public final class BiomeNoninteractiveElementInteractionsCheck implements RuleCh
    * @param message the message of each finding
    */
   public BiomeNoninteractiveElementInteractionsCheck(
-      final AriaRoleTable table, final String message) {
+      final AriaRoleTable table,
+      final String message
+  ) {
     this.table = Objects.requireNonNull(table, "table");
     this.message = Objects.requireNonNull(message, "message");
   }
@@ -41,7 +42,10 @@ public final class BiomeNoninteractiveElementInteractionsCheck implements RuleCh
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(JsxAttributes.OPENING, JsxAttributes.SELF_CLOSING))
         .stream()
         .filter(visit -> reported(visit.node(), unit.text()))
@@ -60,7 +64,10 @@ public final class BiomeNoninteractiveElementInteractionsCheck implements RuleCh
       return false;
     }
     return AriaElements.isNotInteractive(
-        table, JsxAttributes.elementName(element), AriaElements.Attributes.of(element));
+        table,
+        JsxAttributes.elementName(element),
+        AriaElements.Attributes.of(element)
+    );
   }
 
   /** Biome exempts a dialog by its implicit role, which the element has without any role. */

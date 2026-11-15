@@ -16,7 +16,6 @@ import java.util.stream.Stream;
  * copy. The suite is never part of the repository: a run downloads it and checks the archive.
  */
 final class JulietCorpus {
-
   /** The SHA-256 of {@code 2017-10-01-juliet-test-suite-for-java-v1-3.zip}. */
   static final String ARCHIVE_SHA256 =
       "d985f4177c2bcd7b03455a05c1c8f2e755f55c9eb250accd052f05f877347e60";

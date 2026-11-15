@@ -21,7 +21,6 @@ import java.util.regex.Pattern;
  * its calls exempt, since the name then is {@code sys.exit}.
  */
 public final class SysExitCallCheck implements RuleCheck {
-
   private static final Set<String> CALLS = Set.of("atom_expr");
   private static final Pattern EXIT = Pattern.compile("^(exit|quit)\\(");
   private static final Set<String> EXIT_NAMES = Set.of("exit", "quit");
@@ -51,7 +50,11 @@ public final class SysExitCallCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes();
     final List<RuleMatch> found = new ArrayList<>();
     if (scopes.scopes().stream().anyMatch(scope -> importsExit(scope.bindings()))) {
@@ -75,6 +78,7 @@ public final class SysExitCallCheck implements RuleCheck {
                     && binding
                         .origin()
                         .map(origin -> SYS.equals(origin.specifier()))
-                        .orElse(false));
+                        .orElse(false)
+        );
   }
 }

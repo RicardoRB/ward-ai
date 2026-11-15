@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
  * the empty string, as PMD's EmptyMethodInAbstractClassShouldBeAbstract does.
  */
 public final class JavaEmptyAbstractMethodCheck implements RuleCheck {
-
   private static final String ABSTRACT = "abstract";
   private static final Pattern TRIVIAL = Pattern.compile("^\\{;*(?:return(?:null|0|\"\");)?;*}$");
 

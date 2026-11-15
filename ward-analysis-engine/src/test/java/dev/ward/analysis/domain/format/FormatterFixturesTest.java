@@ -23,7 +23,6 @@ import org.junit.jupiter.params.provider.MethodSource;
  * refused. A language formatter passes by adding fixtures; this class needs no change.
  */
 class FormatterFixturesTest {
-
   private static final String FIXTURE_ROOT = "/format";
   private static final Map<AnalysisLanguage, FormatSyntax> SYNTAX =
       Map.of(AnalysisLanguage.JAVA, new FakeFormatSyntax());
@@ -31,12 +30,17 @@ class FormatterFixturesTest {
       new FormatterRegistry(
           Map.of(
               AnalysisLanguage.JAVA,
-              new FormatterEntry(new FakeJavaFormatter(), SYNTAX.get(AnalysisLanguage.JAVA))));
+              new FormatterEntry(new FakeJavaFormatter(), SYNTAX.get(AnalysisLanguage.JAVA))
+          )
+      );
 
   @ParameterizedTest(name = "{0} {1}")
   @MethodSource("cases")
   void fixtureMeetsEveryCheck(
-      final AnalysisLanguage language, final String caseName, final Path caseDir)
+      final AnalysisLanguage language,
+      final String caseName,
+      final Path caseDir
+  )
       throws IOException {
     final String extension = extension(language);
     final String input = Files.readString(caseDir.resolve("input." + extension));
@@ -48,7 +52,8 @@ class FormatterFixturesTest {
         new FormatFixtureChecks(
             formatter,
             new FormatSafety(SYNTAX.get(language)),
-            FormatOptions.defaults(formatter.options()));
+            FormatOptions.defaults(formatter.options())
+        );
 
     assertThat(checks.problems(input, expected)).isEmpty();
   }
@@ -66,7 +71,8 @@ class FormatterFixturesTest {
         children
             .sorted()
             .forEach(
-                child -> cases.add(Arguments.of(language, child.getFileName().toString(), child)));
+                child -> cases.add(Arguments.of(language, child.getFileName().toString(), child))
+            );
       } catch (IOException e) {
         throw new IllegalStateException("cannot list " + dir, e);
       }

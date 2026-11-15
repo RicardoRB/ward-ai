@@ -47,9 +47,9 @@ class TomlValidationTest {
     assertThatThrownBy(() -> read(reader, dir, "version = 2\n[checks.tests]\ncommand = \"  \""))
         .hasMessageContaining("empty");
     assertThatThrownBy(
-            () ->
-                read(
-                    reader, dir, "version = 2\n[checks.tests]\nenabled = \"yes\"\ncommand = \"x\""))
+        () ->
+            read(reader, dir, "version = 2\n[checks.tests]\nenabled = \"yes\"\ncommand = \"x\"")
+    )
         .hasMessageContaining("true or false");
   }
 
@@ -61,17 +61,20 @@ class TomlValidationTest {
         read(
             reader,
             dir,
-            "version = 2\n[checks.a]\ncommand = 'x'\nprofiles = [' ci ', 'fast']\nenabled = false");
+            "version = 2\n[checks.a]\ncommand = 'x'\nprofiles = [' ci ', 'fast']\nenabled = false"
+        );
     assertThat(configured.checks().get("a").profiles()).containsExactly("ci", "fast");
     for (final String value : List.of("[]", "[1]", "['  ']", "'not-an-array'")) {
       assertThatThrownBy(
-              () ->
-                  read(
-                      reader,
-                      dir,
-                      "version = 2\n[checks.a]\ncommand = 'x'\nprofiles = "
-                          + value
-                          + "\nenabled = false"))
+          () ->
+              read(
+                  reader,
+                  dir,
+                  "version = 2\n[checks.a]\ncommand = 'x'\nprofiles = "
+                      + value
+                      + "\nenabled = false"
+              )
+      )
           .isInstanceOf(WardException.class)
           .hasMessageContaining("checks.a.profiles");
     }

@@ -25,8 +25,8 @@ public record GateResult(
     GateFindings findings,
     GateScope scope,
     GatePrerequisite prerequisite,
-    List<GateSection> sections) {
-
+    List<GateSection> sections
+) {
   /**
    * Copies {@code command} and replaces missing findings with {@link GateFindings#NONE}. A missing
    * {@code type} is the check's name.
@@ -49,16 +49,19 @@ public record GateResult(
    * code.
    */
   public static GateResult from(
-      final String name, final List<String> command, final CommandResult result) {
+      final String name,
+      final List<String> command,
+      final CommandResult result
+  ) {
     final GateStatus status =
         result.hasExecutionError()
-                && result.exitCode() == -1
-                && (result.executionError().startsWith("PROCESS_START_FAILURE")
-                    || !result.executionError().contains("_"))
+            && result.exitCode() == -1
+            && (result.executionError().startsWith("PROCESS_START_FAILURE")
+                || !result.executionError().contains("_"))
             ? GateStatus.UNAVAILABLE
             : result.hasExecutionError()
-                ? GateStatus.EXECUTION_ERROR
-                : result.succeeded() ? GateStatus.PASSED : GateStatus.FAILED;
+            ? GateStatus.EXECUTION_ERROR
+            : result.succeeded() ? GateStatus.PASSED : GateStatus.FAILED;
     return builder(name, status)
         .command(List.copyOf(command))
         .exitCode(result.exitCode())
@@ -86,7 +89,8 @@ public record GateResult(
         findings,
         scope,
         prerequisite,
-        sections);
+        sections
+    );
   }
 
   /** Returns a copy of this result named {@code gateName}, keeping its check type. */
@@ -106,7 +110,8 @@ public record GateResult(
         findings,
         scope,
         prerequisite,
-        sections);
+        sections
+    );
   }
 
   /** Returns a copy of this result carrying {@code gateFindings}. */
@@ -126,7 +131,8 @@ public record GateResult(
         gateFindings,
         scope,
         prerequisite,
-        sections);
+        sections
+    );
   }
 
   /** Returns a copy carrying {@code gateSections}, the parts the gate checked. */
@@ -146,7 +152,8 @@ public record GateResult(
         findings,
         scope,
         prerequisite,
-        gateSections);
+        gateSections
+    );
   }
 
   /** Returns a copy carrying the partial-check scope. */
@@ -166,7 +173,8 @@ public record GateResult(
         findings,
         gateScope,
         prerequisite,
-        sections);
+        sections
+    );
   }
 
   /** Returns a copy carrying {@code gatePrerequisite}, why the gate could not run. */
@@ -186,7 +194,8 @@ public record GateResult(
         findings,
         scope,
         gatePrerequisite,
-        sections);
+        sections
+    );
   }
 
   /** Returns whether the gate passed. */
@@ -285,7 +294,8 @@ public record GateResult(
           GateFindings.NONE,
           null,
           null,
-          List.of());
+          List.of()
+      );
     }
   }
 }

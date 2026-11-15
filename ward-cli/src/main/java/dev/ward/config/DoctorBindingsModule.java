@@ -16,7 +16,8 @@ interface DoctorBindingsModule {
       final WardConfigurationReader configurationReader,
       final BuildToolConfiguration buildTools,
       final SwiftToolchainInspection swift,
-      final AnalysisRuleSource rules) {
+      final AnalysisRuleSource rules
+  ) {
     return new DoctorPorts(configurationReader, buildTools, swift, rules);
   }
 }

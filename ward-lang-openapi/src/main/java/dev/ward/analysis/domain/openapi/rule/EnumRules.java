@@ -8,7 +8,6 @@ import java.util.Optional;
 
 /** The rules about {@code enum}: no repeated value, and every value of the declared type. */
 final class EnumRules {
-
   private static final String ENUM = "enum";
   private static final String TYPE = "type";
   private static final String PROPERTIES = "properties";
@@ -31,7 +30,10 @@ final class EnumRules {
                             values.get(),
                             "\"enum\" property must not have duplicate items (items ## "
                                 + pair
-                                + " are identical)")));
+                                + " are identical)"
+                        )
+                    )
+            );
       }
     }
     return findings;
@@ -103,7 +105,10 @@ final class EnumRules {
       if (!types.contains(JavaScript.typeOf(value, integer))) {
         findings.add(
             Findings.atValue(
-                value, "Enum value " + JavaScript.print(value) + " must be \"" + shown + "\"."));
+                value,
+                "Enum value " + JavaScript.print(value) + " must be \"" + shown + "\"."
+            )
+        );
       }
     }
     return findings;

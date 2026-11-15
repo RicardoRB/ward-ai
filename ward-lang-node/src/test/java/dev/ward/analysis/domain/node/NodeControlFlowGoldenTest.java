@@ -22,7 +22,6 @@ import org.junit.jupiter.params.provider.MethodSource;
  * {@code .cfg} golden. Run with {@code -Dward.cfg.update=true} to rewrite the goldens for review.
  */
 class NodeControlFlowGoldenTest {
-
   private static final String UPDATE_PROPERTY = "ward.cfg.update";
 
   static List<Path> fixtures() throws IOException {

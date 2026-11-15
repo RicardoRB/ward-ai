@@ -12,7 +12,6 @@ import java.util.Set;
  * or a member's {@code classBodyDeclaration}.
  */
 public final class AbstractClassWithoutAbstractMethodCheck implements UnitCheck {
-
   private static final String CLASS_DECLARATION = "classDeclaration";
   private static final String MEMBER_DECLARATION = "memberDeclaration";
   private static final Set<String> HIERARCHY = Set.of("extends", "implements");

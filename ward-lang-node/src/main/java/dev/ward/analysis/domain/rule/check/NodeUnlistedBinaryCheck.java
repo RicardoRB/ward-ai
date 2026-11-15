@@ -28,7 +28,6 @@ import java.util.regex.Pattern;
  * reading each workspace's installed packages.
  */
 public final class NodeUnlistedBinaryCheck implements RuleCheck, ProjectCheck {
-
   private static final Set<String> SYSTEM_COMMANDS =
       Set.of(
           "node",
@@ -55,7 +54,8 @@ public final class NodeUnlistedBinaryCheck implements RuleCheck, ProjectCheck {
           "exit",
           "true",
           "false",
-          "sleep");
+          "sleep"
+      );
   private static final Pattern SEPARATORS = Pattern.compile("[\\s;&|()]+");
   private static final List<String> SECTIONS =
       List.of("dependencies", "devDependencies", "peerDependencies", "optionalDependencies");
@@ -84,7 +84,10 @@ public final class NodeUnlistedBinaryCheck implements RuleCheck, ProjectCheck {
 
   @Override
   public List<ProjectMatch> project(
-      final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
+      final SortedMap<String,
+      SyntaxNode> trees,
+      final ProjectFiles files
+  ) {
     final Map<String, String> providers = providers(files);
     final List<ProjectMatch> found = new ArrayList<>();
     final Map<String, NodeManifests.Manifest> manifests = NodeManifests.byDirectory(files);
@@ -112,7 +115,8 @@ public final class NodeUnlistedBinaryCheck implements RuleCheck, ProjectCheck {
         .forEach(
             (name, manifest) ->
                 NodeInstalledPackages.binaryNames(name, manifest.manifest())
-                    .forEach(command -> providers.put(command, name)));
+                    .forEach(command -> providers.put(command, name))
+        );
     return providers;
   }
 
@@ -121,7 +125,9 @@ public final class NodeUnlistedBinaryCheck implements RuleCheck, ProjectCheck {
    * tools there.
    */
   private static Set<String> listedFor(
-      final NodeManifests.Manifest owner, final Set<String> rootListed) {
+      final NodeManifests.Manifest owner,
+      final Set<String> rootListed
+  ) {
     final Set<String> listed = new HashSet<>(rootListed);
     listed.addAll(NodeManifests.names(owner.manifest(), SECTIONS));
     return listed;
@@ -132,8 +138,10 @@ public final class NodeUnlistedBinaryCheck implements RuleCheck, ProjectCheck {
       final String path,
       final Member script,
       final String command,
-      final Map<String, String> providers,
-      final Set<String> listed) {
+      final Map<String,
+      String> providers,
+      final Set<String> listed
+  ) {
     final Set<String> reported = new HashSet<>();
     final List<ProjectMatch> found = new ArrayList<>();
     for (final String token : SEPARATORS.split(command.strip())) {

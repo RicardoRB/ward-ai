@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.Test;
 
 class SpanTest {
-
   private static final int START_LINE = 2;
   private static final int START_COLUMN = 3;
   private static final int END_COLUMN = 9;

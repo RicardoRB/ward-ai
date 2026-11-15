@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
  * same scopes for the same class. Neither language declares {@code #count} as a member name yet.
  */
 class NodePrivateNameScopeTest {
-
   private static final String CLASS_WITH_PRIVATE_FIELD =
       "class Counter { #count = 0; read() { return this.#count; } }\n";
 
@@ -19,10 +18,12 @@ class NodePrivateNameScopeTest {
   void typeScriptPrivateNamesScopeLikeJavaScript() {
     final String typeScript =
         ScopeDump.of(
-            NodeScopeFixtures.scopes(AnalysisLanguage.TYPESCRIPT, CLASS_WITH_PRIVATE_FIELD));
+            NodeScopeFixtures.scopes(AnalysisLanguage.TYPESCRIPT, CLASS_WITH_PRIVATE_FIELD)
+        );
     final String javaScript =
         ScopeDump.of(
-            NodeScopeFixtures.scopes(AnalysisLanguage.JAVASCRIPT, CLASS_WITH_PRIVATE_FIELD));
+            NodeScopeFixtures.scopes(AnalysisLanguage.JAVASCRIPT, CLASS_WITH_PRIVATE_FIELD)
+        );
 
     assertThat(typeScript).isEqualTo(javaScript);
   }

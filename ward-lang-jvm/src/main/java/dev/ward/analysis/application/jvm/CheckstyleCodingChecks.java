@@ -24,7 +24,6 @@ import org.tomlj.TomlParseResult;
  * is a rule option, named after the Checkstyle property in kebab-case.
  */
 final class CheckstyleCodingChecks {
-
   private static final String MESSAGE = "message";
   private static final String ORDER_BY_ARITY = "order-by-increasing-parameter-count";
 
@@ -42,13 +41,18 @@ final class CheckstyleCodingChecks {
             toml ->
                 new OneStatementPerLineCheck(
                     flag(toml, "treat-try-resources-as-statement"),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "no-enum-trailing-comma",
-            toml -> new NoEnumTrailingCommaCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new NoEnumTrailingCommaCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "text-block-google-style-formatting",
-            toml -> new TextBlockFormatCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new TextBlockFormatCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 
   private static Map<String, CheckFactory> declarations() {
@@ -57,23 +61,35 @@ final class CheckstyleCodingChecks {
             "constructors-declaration-grouping",
             toml ->
                 new ConstructorsDeclarationGroupingCheck(
-                    flag(toml, ORDER_BY_ARITY), TomlValues.required(toml, MESSAGE))),
+                    flag(toml, ORDER_BY_ARITY),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "overload-methods-declaration-order",
             toml ->
                 new OverloadMethodsDeclarationOrderCheck(
-                    flag(toml, ORDER_BY_ARITY), TomlValues.required(toml, MESSAGE))),
+                    flag(toml, ORDER_BY_ARITY),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "explicit-initialization",
             toml ->
                 new ExplicitInitializationCheck(
-                    flag(toml, "only-object-references"), TomlValues.required(toml, MESSAGE))),
+                    flag(toml, "only-object-references"),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "array-trailing-comma",
             toml ->
                 new ArrayTrailingCommaCheck(
                     flag(toml, "always-demand-trailing-comma"),
-                    TomlValues.required(toml, MESSAGE))));
+                    TomlValues.required(toml, MESSAGE)
+                )
+        )
+    );
   }
 
   private static Map<String, CheckFactory> literals() {
@@ -86,7 +102,10 @@ final class CheckstyleCodingChecks {
                     flag(toml, "ignore-field-declaration"),
                     flag(toml, "ignore-annotation"),
                     flag(toml, "ignore-hash-code-method"),
-                    TomlValues.required(toml, MESSAGE))));
+                    TomlValues.required(toml, MESSAGE)
+                )
+        )
+    );
   }
 
   private static boolean flag(final TomlParseResult toml, final String key) {

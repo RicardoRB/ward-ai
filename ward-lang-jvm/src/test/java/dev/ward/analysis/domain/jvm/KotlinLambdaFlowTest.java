@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 /** A lambda is lowered into the graph of its body, with its receiver before it. */
 class KotlinLambdaFlowTest {
-
   @Test
   void aSanitizerAsTheLastExpressionOfLetCleansTheResult() {
     assertThat(count("val n = src().let { clean(it) }\nsink(n)")).isZero();

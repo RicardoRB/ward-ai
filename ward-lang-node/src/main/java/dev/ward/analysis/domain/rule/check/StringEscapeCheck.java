@@ -16,7 +16,6 @@ import java.util.Objects;
  * no-nonoctal-decimal-escape} does). The source is read line by line; strings are single-line.
  */
 public final class StringEscapeCheck implements RuleCheck {
-
   private static final String QUOTES = "'\"`";
   private static final char BACKSLASH = '\\';
 
@@ -42,7 +41,10 @@ public final class StringEscapeCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     int lineStart = 0;
     int line = 1;
@@ -56,7 +58,11 @@ public final class StringEscapeCheck implements RuleCheck {
 
   /** Scans one line for the strings on it, and reports the escapes inside each. */
   private void scan(
-      final String text, final int line, final int lineStart, final List<RuleMatch> matches) {
+      final String text,
+      final int line,
+      final int lineStart,
+      final List<RuleMatch> matches
+  ) {
     int index = 0;
     while (index < text.length()) {
       final int open = nextQuote(text, index);
@@ -82,7 +88,8 @@ public final class StringEscapeCheck implements RuleCheck {
       final int open,
       final int line,
       final int lineStart,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     final char quote = text.charAt(open);
     int index = open + 1;
     while (index < text.length()) {

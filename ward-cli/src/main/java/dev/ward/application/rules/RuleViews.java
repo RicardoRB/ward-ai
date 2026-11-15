@@ -33,7 +33,8 @@ final class RuleViews {
             .map(RulePreset::key)
             .toList(),
         message instanceof String text ? text : rule.id(),
-        rule.options().stream().map(option -> option(option, body)).toList());
+        rule.options().stream().map(option -> option(option, body)).toList()
+    );
   }
 
   private static OptionView option(final RuleOption option, final Map<String, Object> body) {
@@ -43,7 +44,8 @@ final class RuleViews {
         body.get(option.parameter()),
         bound(option.min()),
         bound(option.max()),
-        option.values());
+        option.values()
+    );
   }
 
   /** Returns the bound, or {@code null} when the option declares none. */

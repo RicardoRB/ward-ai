@@ -15,15 +15,17 @@ import java.util.function.BiConsumer;
  * caller.
  */
 final class NodeStringSites {
-
   private NodeStringSites() {}
 
   /** A chain of {@code +} with a string literal operand is one string-building site. */
   static void concatenation(
       final SyntaxNode node,
       final List<FlowSite> found,
-      final BiConsumer<SyntaxNode, List<FlowSite>> walk,
-      final BiConsumer<SyntaxNode, List<FlowSite>> children) {
+      final BiConsumer<SyntaxNode,
+      List<FlowSite>> walk,
+      final BiConsumer<SyntaxNode,
+      List<FlowSite>> children
+  ) {
     final List<SyntaxNode> operands = NodeStringBuilds.operands(node);
     if (hasLiteral(operands)) {
       stringBuild(node.span(), operands, found, walk);
@@ -37,8 +39,11 @@ final class NodeStringSites {
       final SyntaxNode node,
       final SyntaxNode template,
       final List<FlowSite> found,
-      final BiConsumer<SyntaxNode, List<FlowSite>> walk,
-      final BiConsumer<SyntaxNode, List<FlowSite>> children) {
+      final BiConsumer<SyntaxNode,
+      List<FlowSite>> walk,
+      final BiConsumer<SyntaxNode,
+      List<FlowSite>> children
+  ) {
     final List<SyntaxNode> values = NodeStringBuilds.substitutions(template);
     if (values.isEmpty()) {
       children.accept(node, found);
@@ -53,7 +58,9 @@ final class NodeStringSites {
             Optional.empty(),
             List.of(),
             NodeCallShapes.spans(values),
-            node.span()));
+            node.span()
+        )
+    );
   }
 
   /**
@@ -64,7 +71,9 @@ final class NodeStringSites {
       final Span span,
       final List<SyntaxNode> operands,
       final List<FlowSite> found,
-      final BiConsumer<SyntaxNode, List<FlowSite>> walk) {
+      final BiConsumer<SyntaxNode,
+      List<FlowSite>> walk
+  ) {
     final StringBuilder text = new StringBuilder();
     final List<SyntaxNode> values = new ArrayList<>();
     for (final SyntaxNode operand : operands) {
@@ -84,7 +93,9 @@ final class NodeStringSites {
             Optional.empty(),
             List.of(),
             NodeCallShapes.spans(values),
-            span));
+            span
+        )
+    );
   }
 
   static boolean hasLiteral(final List<SyntaxNode> operands) {

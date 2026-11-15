@@ -35,8 +35,10 @@ class TurborepoFindingsTest {
             FindingFixtures.failed(
                 "tsc",
                 "web:check-types: src/page.tsx(3,7): error TS2322: Type 'string' is not"
-                    + " assignable to type 'number'.\n"),
-            FindingFixtures.justBefore());
+                    + " assignable to type 'number'.\n"
+            ),
+            FindingFixtures.justBefore()
+        );
 
     assertThat(findings)
         .singleElement()
@@ -46,7 +48,8 @@ class TurborepoFindingsTest {
               assertThat(finding.file()).isEqualTo("apps/web/src/page.tsx");
               assertThat(finding.line()).isEqualTo(ERROR_LINE);
               assertThat(finding.column()).isEqualTo(ERROR_COLUMN);
-            });
+            }
+        );
   }
 
   @Test
@@ -57,15 +60,20 @@ class TurborepoFindingsTest {
         extractor.extract(
             turbo(),
             FindingFixtures.failed(
-                "tsc", "src/page.tsx(3,7): error TS2322: Type 'string' is not assignable.\n"),
-            FindingFixtures.justBefore());
+                "tsc",
+                "src/page.tsx(3,7): error TS2322: Type 'string' is not assignable.\n"
+            ),
+            FindingFixtures.justBefore()
+        );
 
     assertThat(findings).singleElement().extracting(Finding::file).isEqualTo("src/page.tsx");
   }
 
   private CompositeFindingExtractor extractor(final WorkspaceMember... members) {
     return new CompositeFindingExtractor(
-        List.of(new TscOutputFindings()), new FakeMembers(List.of(members)));
+        List.of(new TscOutputFindings()),
+        new FakeMembers(List.of(members))
+    );
   }
 
   private Project turbo() {

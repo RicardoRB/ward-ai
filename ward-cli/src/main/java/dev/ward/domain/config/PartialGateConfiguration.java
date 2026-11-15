@@ -14,8 +14,8 @@ public record PartialGateConfiguration(
     List<String> args,
     String item,
     String separator,
-    List<String> command) {
-
+    List<String> command
+) {
   /** Copies the lists. */
   public PartialGateConfiguration {
     match = List.copyOf(match);
@@ -31,7 +31,8 @@ public record PartialGateConfiguration(
       final List<String> full,
       final List<String> args,
       final String item,
-      final String separator) {
+      final String separator
+  ) {
     this(match, full, args, item, separator, List.of());
   }
 }

@@ -10,7 +10,6 @@ import java.util.Set;
  * is a {@code classBodyDeclaration}; its declaration sits under a {@code memberDeclaration}.
  */
 final class MemberDeclarations {
-
   static final String CLASS_BODY = "classBody";
   static final String CLASS = "classDeclaration";
   static final String METHOD = "methodDeclaration";

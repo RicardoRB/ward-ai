@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 /** An ignored folder covers every path under it, and nothing that only shares its prefix. */
 class GitIgnoredFilesTest {
-
   private static final Set<String> IGNORED = Set.of("coverage/", "src/gen.ts");
 
   @Test

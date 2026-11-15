@@ -13,14 +13,17 @@ import java.util.Set;
  * not known to be one, so it is not counted.
  */
 public final class QualifierCountCheck implements RuleCheck {
-
   private static final String ANNOTATION_TYPE = "annotationTypeDeclaration";
   private static final String IDENTIFIER = "identifier";
   private static final String NAMED = "Named";
   private static final String QUALIFIER = "Qualifier";
   private static final Set<String> DECLARATIONS =
       Set.of(
-          "formalParameter", "localVariableDeclaration", "classBodyDeclaration", "typeDeclaration");
+          "formalParameter",
+          "localVariableDeclaration",
+          "classBodyDeclaration",
+          "typeDeclaration"
+      );
   private static final int TWO = 2;
 
   private final String message;
@@ -62,7 +65,8 @@ public final class QualifierCountCheck implements RuleCheck {
               .filter(
                   wrapper ->
                       AnnotationTexts.of(wrapper).stream()
-                          .anyMatch(text -> QUALIFIER.equals(AnnotationTexts.simpleName(text))))
+                          .anyMatch(text -> QUALIFIER.equals(AnnotationTexts.simpleName(text)))
+              )
               .isPresent();
       visit.node().children().stream()
           .filter(child -> IDENTIFIER.equals(child.kind()))

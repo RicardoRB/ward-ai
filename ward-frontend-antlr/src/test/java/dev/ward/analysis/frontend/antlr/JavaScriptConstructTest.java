@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** Grammar predicates and actions for JavaScriptConstruct, exercised through the frontend. */
 class JavaScriptConstructTest {
-
   private static ParseResult parse(final AnalysisLanguage language, final String text) {
     return new AntlrLanguageFrontend().parse(new SourceUnit("sample", language, text));
   }
@@ -37,7 +36,8 @@ class JavaScriptConstructTest {
   @Test
   void javaScriptReturnWithLineTerminatorParses() {
     assertThat(
-            parse(AnalysisLanguage.JAVASCRIPT, "function f() {\n  return\n  1;\n}\n").diagnostics())
+        parse(AnalysisLanguage.JAVASCRIPT, "function f() {\n  return\n  1;\n}\n").diagnostics()
+    )
         .isEmpty();
   }
 
@@ -49,14 +49,14 @@ class JavaScriptConstructTest {
   @Test
   void validJavaScriptConstructsParseWithoutDiagnostics() {
     final String[] snippets = {
-      "var o = { get a() { return 1; }, set a(v) {} };",
-      "var t = `a${ {k:1}.k }b`;",
-      "var a = b\n++c",
-      "var r = x ? /a/ : /b/;",
-      "label: for (;;) { break label; }",
-      "class A { static m() {} }",
-      "'use strict'; function f() { var a = 1; }",
-      "var y = (a) / 2 / (b);",
+        "var o = { get a() { return 1; }, set a(v) {} };",
+        "var t = `a${ {k:1}.k }b`;",
+        "var a = b\n++c",
+        "var r = x ? /a/ : /b/;",
+        "label: for (;;) { break label; }",
+        "class A { static m() {} }",
+        "'use strict'; function f() { var a = 1; }",
+        "var y = (a) / 2 / (b);",
     };
     for (final String snippet : snippets) {
       assertThat(parse(AnalysisLanguage.JAVASCRIPT, snippet).diagnostics()).as(snippet).isEmpty();

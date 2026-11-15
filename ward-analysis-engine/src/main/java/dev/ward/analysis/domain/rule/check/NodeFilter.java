@@ -30,8 +30,8 @@ public record NodeFilter(
     Set<String> notModifiers,
     Set<String> inside,
     Set<String> notInside,
-    Sources sources) {
-
+    Sources sources
+) {
   /**
    * Copies the sets.
    *
@@ -50,7 +50,14 @@ public record NodeFilter(
   /** Looks at every node of {@code kinds} in every file. */
   public static NodeFilter of(final Set<String> kinds) {
     return new NodeFilter(
-        kinds, ModifierTable.NONE, Set.of(), Set.of(), Set.of(), Set.of(), Sources.ALL);
+        kinds,
+        ModifierTable.NONE,
+        Set.of(),
+        Set.of(),
+        Set.of(),
+        Set.of(),
+        Sources.ALL
+    );
   }
 
   /** Returns the nodes of the kinds that pass the filters, each with its ancestors. */

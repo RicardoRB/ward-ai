@@ -28,8 +28,8 @@ public final class GitRevisionFiles implements RevisionFiles {
   public Optional<String> resolve(final Path root, final String revision) {
     return commit(
         root,
-        List.of(
-            GIT, "rev-parse", "--verify", "--quiet", "--end-of-options", revision + "^{commit}"));
+        List.of(GIT, "rev-parse", "--verify", "--quiet", "--end-of-options", revision + "^{commit}")
+    );
   }
 
   @Override
@@ -51,7 +51,9 @@ public final class GitRevisionFiles implements RevisionFiles {
     final String base = directory.isEmpty() ? "." : directory;
     final CommandResult result =
         executor.execute(
-            List.of(GIT, "ls-tree", "-r", "-z", "--name-only", commit, "--", base), root);
+            List.of(GIT, "ls-tree", "-r", "-z", "--name-only", commit, "--", base),
+            root
+        );
     if (!result.succeeded()) {
       return List.of();
     }
@@ -93,7 +95,8 @@ public final class GitRevisionFiles implements RevisionFiles {
             executor
                 .execute(List.of(GIT, "rev-parse", "--is-shallow-repository"), root)
                 .stdout()
-                .trim());
+                .trim()
+        );
   }
 
   private static List<String> lines(final CommandResult result) {

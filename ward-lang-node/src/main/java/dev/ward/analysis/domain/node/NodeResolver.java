@@ -37,14 +37,16 @@ public final class NodeResolver implements DependencyResolver {
         .flatMap(
             pkg ->
                 Stream.concat(
-                        Stream.of(pkg.main(), pkg.module(), pkg.types()),
-                        pkg.exports().values().stream()
-                            .flatMap(List::stream)
-                            .map(NodeProjectLayout.ExportEntry::target))
+                    Stream.of(pkg.main(), pkg.module(), pkg.types()),
+                    pkg.exports().values().stream()
+                        .flatMap(List::stream)
+                        .map(NodeProjectLayout.ExportEntry::target)
+                )
                     .filter(Objects::nonNull)
                     .map(target -> NodePaths.join(pkg.directory(), target))
                     .flatMap(Optional::stream)
-                    .filter(layout.files()::contains))
+                    .filter(layout.files()::contains)
+        )
         .collect(Collectors.toUnmodifiableSet());
   }
 

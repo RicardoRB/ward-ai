@@ -14,7 +14,6 @@ import java.util.Set;
  * of each kind, public before protected before package before private. Inner types are not checked.
  */
 public final class DeclarationOrderCheck implements UnitCheck {
-
   private static final Set<String> FIELD = Set.of("fieldDeclaration");
   private static final Set<String> CONSTRUCTOR =
       Set.of("constructorDeclaration", "genericConstructorDeclaration");
@@ -102,7 +101,10 @@ public final class DeclarationOrderCheck implements UnitCheck {
   }
 
   private static int group(
-      final String kind, final SyntaxNode declaration, final SyntaxNode member) {
+      final String kind,
+      final SyntaxNode declaration,
+      final SyntaxNode member
+  ) {
     if (FIELD.contains(kind)) {
       return isStatic(declaration, member) ? STATIC_VARIABLE : INSTANCE_VARIABLE;
     }

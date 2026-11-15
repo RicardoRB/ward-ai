@@ -16,7 +16,6 @@ import java.util.Set;
  * script or a country, or a language with a script and a country; a dynamic value is not read.
  */
 public final class BiomeValidLangCheck implements RuleCheck {
-
   private static final String HTML = "html";
   private static final String LANG = "lang";
   private static final String SEPARATOR = "-";
@@ -43,7 +42,10 @@ public final class BiomeValidLangCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(JsxAttributes.OPENING, JsxAttributes.SELF_CLOSING))
         .stream()
         .map(SyntaxWalk.Visit::node)

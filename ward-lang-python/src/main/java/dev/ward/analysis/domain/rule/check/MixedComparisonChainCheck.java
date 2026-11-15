@@ -13,7 +13,6 @@ import java.util.Set;
  * The groups are the value comparisons, the identity tests and the membership tests.
  */
 public final class MixedComparisonChainCheck implements RuleCheck {
-
   private static final Set<String> COMPARISONS = Set.of("comparison");
   private static final String OPERATOR = "comp_op";
   private static final Set<String> VALUE = Set.of("<", "<=", ">", ">=", "!=", "==");

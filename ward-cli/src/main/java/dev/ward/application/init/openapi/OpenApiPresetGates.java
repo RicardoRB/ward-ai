@@ -15,7 +15,10 @@ public final class OpenApiPresetGates {
    * compatibility gate compares with the base branch, so only strict adds it.
    */
   public static List<String> of(
-      final EnvironmentInspection environment, final Project project, final QualityPreset preset) {
+      final EnvironmentInspection environment,
+      final Project project,
+      final QualityPreset preset
+  ) {
     if (preset == null || environment.openApiSpec(project.root()).isEmpty()) {
       return List.of();
     }
@@ -23,7 +26,8 @@ public final class OpenApiPresetGates {
         ? List.of(
             SupportedQualityGates.OPENAPI_LINT,
             SupportedQualityGates.OPENAPI_DIFF,
-            SupportedQualityGates.OPENAPI_COMPAT)
+            SupportedQualityGates.OPENAPI_COMPAT
+        )
         : List.of(SupportedQualityGates.OPENAPI_LINT, SupportedQualityGates.OPENAPI_DIFF);
   }
 }

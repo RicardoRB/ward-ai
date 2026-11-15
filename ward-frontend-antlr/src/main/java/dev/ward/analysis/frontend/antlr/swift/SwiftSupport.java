@@ -11,7 +11,6 @@ import org.antlr.v4.runtime.misc.Interval;
  * grammar's support class (BSD-3-Clause, Terence Parr).
  */
 public final class SwiftSupport {
-
   /** Number of code points in the Basic Multilingual Plane, the size of the operator bitsets. */
   private static final int BMP_SIZE = 0x10000;
 
@@ -26,28 +25,50 @@ public final class SwiftSupport {
    * {@code operator-head} rule.
    */
   private static final int[] OPERATOR_HEAD_RANGES = {
-    0x00A1, 0x00A7,
-    0x00A9, 0x00A9,
-    0x00AB, 0x00AB,
-    0x00AC, 0x00AC,
-    0x00AE, 0x00AE,
-    0x00B0, 0x00B1,
-    0x00B6, 0x00B6,
-    0x00BB, 0x00BB,
-    0x00BF, 0x00BF,
-    0x00D7, 0x00D7,
-    0x00F7, 0x00F7,
-    0x2016, 0x2017,
-    0x2020, 0x2027,
-    0x2030, 0x203E,
-    0x2041, 0x2053,
-    0x2055, 0x205E,
-    0x2190, 0x23FF,
-    0x2500, 0x2775,
-    0x2794, 0x2BFF,
-    0x2E00, 0x2E7F,
-    0x3001, 0x3003,
-    0x3008, 0x3030,
+      0x00A1,
+      0x00A7,
+      0x00A9,
+      0x00A9,
+      0x00AB,
+      0x00AB,
+      0x00AC,
+      0x00AC,
+      0x00AE,
+      0x00AE,
+      0x00B0,
+      0x00B1,
+      0x00B6,
+      0x00B6,
+      0x00BB,
+      0x00BB,
+      0x00BF,
+      0x00BF,
+      0x00D7,
+      0x00D7,
+      0x00F7,
+      0x00F7,
+      0x2016,
+      0x2017,
+      0x2020,
+      0x2027,
+      0x2030,
+      0x203E,
+      0x2041,
+      0x2053,
+      0x2055,
+      0x205E,
+      0x2190,
+      0x23FF,
+      0x2500,
+      0x2775,
+      0x2794,
+      0x2BFF,
+      0x2E00,
+      0x2E7F,
+      0x3001,
+      0x3003,
+      0x3008,
+      0x3030,
   };
 
   /**
@@ -56,11 +77,16 @@ public final class SwiftSupport {
    * Java characters are 16 bits wide.
    */
   private static final int[] OPERATOR_CHARACTER_RANGES = {
-    0x0300, 0x036F,
-    0x1DC0, 0x1DFF,
-    0x20D0, 0x20FF,
-    0xFE00, 0xFE0F,
-    0xFE20, 0xFE2F,
+      0x0300,
+      0x036F,
+      0x1DC0,
+      0x1DFF,
+      0x20D0,
+      0x20FF,
+      0xFE00,
+      0xFE0F,
+      0xFE20,
+      0xFE2F,
   };
 
   private static final BitSet OPERATOR_HEAD = new BitSet(BMP_SIZE);
@@ -75,7 +101,7 @@ public final class SwiftSupport {
     setRanges(OPERATOR_HEAD, OPERATOR_HEAD_RANGES);
 
     // operator-character includes every operator-head
-    OPERATOR_CHARACTER = (BitSet) OPERATOR_HEAD.clone();
+    OPERATOR_CHARACTER = (BitSet)OPERATOR_HEAD.clone();
     setRanges(OPERATOR_CHARACTER, OPERATOR_CHARACTER_RANGES);
 
     LEFT_WS.set(SwiftParser.WS);
@@ -266,7 +292,9 @@ public final class SwiftSupport {
    * Tells whether a newline or a semicolon separates the previous statement from the current one.
    */
   public static boolean isSeparatedStatement(
-      final TokenStream tokens, final int indexOfPreviousStatement) {
+      final TokenStream tokens,
+      final int indexOfPreviousStatement
+  ) {
     fillUp(tokens);
     int indexFrom = indexOfPreviousStatement - 1;
     final int indexTo = tokens.index() - 1;
@@ -274,8 +302,7 @@ public final class SwiftSupport {
     // Stupid check for new line and semicolon, can be optimized
     if (indexFrom < 0) {
       return true;
-    }
-    while (indexFrom >= 0 && tokens.get(indexFrom).getChannel() == Token.HIDDEN_CHANNEL) {
+    } while (indexFrom >= 0 && tokens.get(indexFrom).getChannel() == Token.HIDDEN_CHANNEL) {
       indexFrom--;
     }
     final String between = tokens.getText(Interval.of(indexFrom, indexTo));
@@ -284,7 +311,7 @@ public final class SwiftSupport {
 
   /** Reads the stream to its end, so that the lookahead the predicates use is available. */
   public static void fillUp(final TokenStream tokens) {
-    for (int jj = 1; ; ++jj) {
+    for (int jj = 1;; ++jj) {
       final int t = tokens.LA(jj);
       if (t == -1) {
         break;

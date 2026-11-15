@@ -15,7 +15,6 @@ import java.util.TreeSet;
  * matter.
  */
 public final class NodeJavadocPositionCheck implements RuleCheck {
-
   private static final String COMMENT = "comment";
   private static final String JAVADOC = "/**";
   private static final Set<String> MODIFIERS =
@@ -29,7 +28,8 @@ public final class NodeJavadocPositionCheck implements RuleCheck {
           "public",
           "private",
           "protected",
-          "readonly");
+          "readonly"
+      );
   private static final Set<String> BODIES = Set.of("functionBody", "block", "statementList");
   private static final Set<String> DECLARATIONS =
       Set.of(
@@ -43,7 +43,8 @@ public final class NodeJavadocPositionCheck implements RuleCheck {
           "constructorDeclaration",
           "methodDefinition",
           "propertyMemberDeclaration",
-          "fieldDefinition");
+          "fieldDefinition"
+      );
 
   private final String message;
 
@@ -79,7 +80,8 @@ public final class NodeJavadocPositionCheck implements RuleCheck {
       final boolean inBody,
       final List<SyntaxNode> javadocs,
       final List<SyntaxNode> tokens,
-      final Set<Integer> declarations) {
+      final Set<Integer> declarations
+  ) {
     if (isJavadoc(node)) {
       javadocs.add(inBody ? bodyMarker(node) : node);
       return;
@@ -133,7 +135,10 @@ public final class NodeJavadocPositionCheck implements RuleCheck {
    * modifiers such as {@code export}, which the tree keeps outside the declaration node.
    */
   private static boolean startsDeclaration(
-      final SyntaxNode javadoc, final List<SyntaxNode> tokens, final Set<Integer> declarations) {
+      final SyntaxNode javadoc,
+      final List<SyntaxNode> tokens,
+      final Set<Integer> declarations
+  ) {
     for (int index = 0; index < tokens.size(); index++) {
       final SyntaxNode token = tokens.get(index);
       if (token.span().startOffset() >= javadoc.span().endOffset()) {

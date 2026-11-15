@@ -9,7 +9,6 @@ import java.util.Optional;
 
 /** The token, call and number reading that the magic-number check shares. */
 final class NodeMagicNumberSyntax {
-
   private static final String ASSIGN = "=";
   private static final String PARSE_INT = "parseInt";
   private static final String NUMBER_PARSE_INT = "Number.parseInt";

@@ -14,7 +14,6 @@ import java.util.Set;
  * it, an allowed domain and its subdomains are exempt, and a dynamic {@code rel} stays silent.
  */
 public final class BiomeBlankTargetCheck implements RuleCheck {
-
   private static final Set<String> ELEMENTS = Set.of("a", "area");
   private static final String TARGET = "target";
   private static final String HREF = "href";
@@ -39,7 +38,10 @@ public final class BiomeBlankTargetCheck implements RuleCheck {
    * @param message the message; {@code {value}} is the target attribute's text
    */
   public BiomeBlankTargetCheck(
-      final Set<String> allowDomains, final boolean allowNoReferrer, final String message) {
+      final Set<String> allowDomains,
+      final boolean allowNoReferrer,
+      final String message
+  ) {
     this.allowDomains = Set.copyOf(allowDomains);
     this.allowNoReferrer = allowNoReferrer;
     this.message = Objects.requireNonNull(message, "message");
@@ -54,7 +56,10 @@ public final class BiomeBlankTargetCheck implements RuleCheck {
         .map(
             target ->
                 CheckSupport.at(
-                    target.span(), CheckSupport.fill(message, SyntaxWalk.text(target), "")))
+                    target.span(),
+                    CheckSupport.fill(message, SyntaxWalk.text(target), "")
+                )
+        )
         .toList();
   }
 

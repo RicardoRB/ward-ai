@@ -17,8 +17,12 @@ import java.util.TreeSet;
  * @param specs the format specs of the top-level fields, without the colon
  */
 record DotFormatString(
-    Set<String> names, Set<Integer> manual, int automatic, boolean invalid, List<String> specs) {
-
+    Set<String> names,
+    Set<Integer> manual,
+    int automatic,
+    boolean invalid,
+    List<String> specs
+) {
   /** Copies the collections. */
   DotFormatString {
     names = Set.copyOf(names);
@@ -35,7 +39,6 @@ record DotFormatString(
 
   /** One pass over a format string, collecting its fields. */
   private static final class Scanner {
-
     private static final char OPEN = '{';
     private static final char CLOSE = '}';
     private static final char SPEC = ':';

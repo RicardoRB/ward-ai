@@ -13,7 +13,6 @@ import java.util.List;
  */
 @FunctionalInterface
 public interface CommandExecutor {
-
   /** Runs {@code command} in its working directory. */
   default CommandResult execute(final Command command) {
     return execute(command.arguments(), command.workingDirectory());

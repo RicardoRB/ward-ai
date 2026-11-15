@@ -8,7 +8,6 @@ import java.util.Optional;
 
 /** The keywords of arrays: size, uniqueness and the schemas of the items. */
 final class ArrayKeywords {
-
   private ArrayKeywords() {}
 
   /** Checks the array keywords in ajv order. */
@@ -16,13 +15,15 @@ final class ArrayKeywords {
       final JsonSchemaValidator validator,
       final DocNode schema,
       final DocNode data,
-      final String path) {
+      final String path
+  ) {
     return Chain.run(
         validator,
         () -> size(validator, schema, "maxItems", data, path),
         () -> size(validator, schema, "minItems", data, path),
         () -> unique(validator, schema, data, path),
-        () -> items(validator, schema, data, path));
+        () -> items(validator, schema, data, path)
+    );
   }
 
   private static boolean size(
@@ -30,7 +31,8 @@ final class ArrayKeywords {
       final DocNode schema,
       final String keyword,
       final DocNode data,
-      final String path) {
+      final String path
+  ) {
     final Optional<DocNode> limit = schema.get(keyword);
     if (limit.isEmpty() || limit.get().kind() != DocNode.Kind.NUMBER) {
       return true;
@@ -51,7 +53,9 @@ final class ArrayKeywords {
                     + (max ? "more" : "fewer")
                     + " than "
                     + JsonValues.show(bound)
-                    + " items"));
+                    + " items"
+            )
+        );
     return false;
   }
 
@@ -59,7 +63,8 @@ final class ArrayKeywords {
       final JsonSchemaValidator validator,
       final DocNode schema,
       final DocNode data,
-      final String path) {
+      final String path
+  ) {
     if (!JsonValues.isTrue(schema.get("uniqueItems"))) {
       return true;
     }
@@ -95,7 +100,11 @@ final class ArrayKeywords {
   }
 
   private static boolean duplicate(
-      final JsonSchemaValidator validator, final String path, final int first, final int second) {
+      final JsonSchemaValidator validator,
+      final String path,
+      final int first,
+      final int second
+  ) {
     validator
         .getErrors()
         .add(
@@ -106,7 +115,9 @@ final class ArrayKeywords {
                     + first
                     + " and "
                     + second
-                    + " are identical)"));
+                    + " are identical)"
+            )
+        );
     return false;
   }
 
@@ -114,7 +125,8 @@ final class ArrayKeywords {
       final JsonSchemaValidator validator,
       final DocNode schema,
       final DocNode data,
-      final String path) {
+      final String path
+  ) {
     final boolean tuples = validator.getDialect() == JsonSchemaValidator.Dialect.DRAFT2020;
     final Optional<DocNode> prefix = tuples ? schema.get("prefixItems") : Optional.empty();
     final Optional<DocNode> items = schema.get("items");
@@ -134,7 +146,11 @@ final class ArrayKeywords {
       if (applicable.isPresent()) {
         valid &=
             validator.check(
-                applicable.get(), data.items().get(index), path + "/" + index, validator.scratch());
+                applicable.get(),
+                data.items().get(index),
+                path + "/" + index,
+                validator.scratch()
+            );
         if (!valid && !validator.isAllErrors()) {
           return false;
         }
@@ -145,7 +161,10 @@ final class ArrayKeywords {
 
   /** The schema of the items beyond the positional ones. */
   private static Optional<DocNode> rest(
-      final DocNode schema, final Optional<DocNode> items, final boolean tuple) {
+      final DocNode schema,
+      final Optional<DocNode> items,
+      final boolean tuple
+  ) {
     if (tuple && items.isPresent() && items.get().kind() == DocNode.Kind.ARRAY) {
       return schema.get("additionalItems");
     }

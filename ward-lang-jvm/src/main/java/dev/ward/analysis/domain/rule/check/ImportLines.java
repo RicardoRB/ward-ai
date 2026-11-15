@@ -5,7 +5,6 @@ import java.util.List;
 
 /** The lines of a unit, for the checks that tell a blank line from code and comments. */
 final class ImportLines {
-
   private static final String LINE_BREAK = "\r\n|\n|\r";
 
   private ImportLines() {}

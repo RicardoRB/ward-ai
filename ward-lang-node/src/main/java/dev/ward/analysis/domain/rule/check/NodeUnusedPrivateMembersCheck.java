@@ -16,7 +16,6 @@ import java.util.Set;
  * increment of {@code this.#x} leaves the member unused. Each class body is its own scope.
  */
 public final class NodeUnusedPrivateMembersCheck implements RuleCheck {
-
   private static final String CLASS_DECLARATION = "classDeclaration";
   private static final String CLASS_EXPRESSION = "classExpression";
   private static final String PRIVATE = "privateIdentifier";
@@ -53,7 +52,8 @@ public final class NodeUnusedPrivateMembersCheck implements RuleCheck {
     for (final Map.Entry<String, SyntaxNode> entry : declared.entrySet()) {
       if (!read.contains(entry.getKey())) {
         matches.add(
-            new RuleMatch(entry.getValue().span(), String.format(MESSAGE, HASH + entry.getKey())));
+            new RuleMatch(entry.getValue().span(), String.format(MESSAGE, HASH + entry.getKey()))
+        );
       }
     }
   }
@@ -61,8 +61,10 @@ public final class NodeUnusedPrivateMembersCheck implements RuleCheck {
   private void scan(
       final SyntaxNode node,
       final List<SyntaxNode> ancestors,
-      final Map<String, SyntaxNode> declared,
-      final Set<String> read) {
+      final Map<String,
+      SyntaxNode> declared,
+      final Set<String> read
+  ) {
     ancestors.add(node);
     if (PRIVATE.equals(node.kind())) {
       classify(node, ancestors, declared, read);
@@ -82,8 +84,10 @@ public final class NodeUnusedPrivateMembersCheck implements RuleCheck {
   private static void classify(
       final SyntaxNode node,
       final List<SyntaxNode> ancestors,
-      final Map<String, SyntaxNode> declared,
-      final Set<String> read) {
+      final Map<String,
+      SyntaxNode> declared,
+      final Set<String> read
+  ) {
     final String name = LeafText.of(node).replace(HASH, "");
     final Optional<SyntaxNode> access = nearestAccess(ancestors);
     if (access.isEmpty()) {
@@ -97,7 +101,8 @@ public final class NodeUnusedPrivateMembersCheck implements RuleCheck {
       final String name,
       final SyntaxNode access,
       final List<SyntaxNode> ancestors,
-      final Set<String> read) {
+      final Set<String> read
+  ) {
     if (!isWriteOnly(access, ancestors)) {
       read.add(name);
     }

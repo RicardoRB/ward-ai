@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 /** The classes of this module: their bases, members, and class-level assignments. */
 final class ClassIndex {
-
   private static final Pattern BASES =
       Pattern.compile("^(?:async\\s*)?class\\s*\\w+\\s*\\(([^)]*)\\)");
 
@@ -33,7 +32,8 @@ final class ClassIndex {
         .map(visit -> info(visit.node()))
         .flatMap(Optional::stream)
         .collect(
-            Collectors.toMap(Info::name, info -> info, (first, second) -> first, HashMap::new));
+            Collectors.toMap(Info::name, info -> info, (first, second) -> first, HashMap::new)
+        );
   }
 
   private static Optional<Info> info(final SyntaxNode node) {

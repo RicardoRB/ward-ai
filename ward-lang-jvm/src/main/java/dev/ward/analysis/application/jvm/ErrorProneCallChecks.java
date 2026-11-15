@@ -23,7 +23,6 @@ import java.util.Map;
 
 /** Builds the Error Prone checks that judge a call by the facts of its target and arguments. */
 final class ErrorProneCallChecks {
-
   private static final String MESSAGE = "message";
 
   private ErrorProneCallChecks() {}
@@ -33,45 +32,58 @@ final class ErrorProneCallChecks {
     return Map.ofEntries(
         entry(
             "deduplicate-constants",
-            toml -> new DeduplicateConstantsCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new DeduplicateConstantsCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry("do-not-mock", toml -> new DoNotMockCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "equals-wrong-thing",
-            toml -> new EqualsWrongThingCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new EqualsWrongThingCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "extends-auto-value",
-            toml -> new ExtendsAutoValueCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new ExtendsAutoValueCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "incompatible-argument-type",
-            toml -> new IncompatibleArgumentTypeCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new IncompatibleArgumentTypeCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "non-canonical-static-import",
-            toml -> new NonCanonicalStaticImportCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new NonCanonicalStaticImportCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry("wrong-oneof", toml -> new WrongOneofCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "format-string-annotation",
-            toml -> new FormatStringAnnotationCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new FormatStringAnnotationCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "format-string",
             toml ->
                 new FormatStringCheck(
                     TomlValues.strings(toml, "declaring-types"),
                     TomlValues.strings(toml, "names"),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry("restricted-api", toml -> new RestrictedApiCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "private-security-contract-proto-access",
             toml ->
-                new PrivateSecurityContractProtoAccessCheck(TomlValues.required(toml, MESSAGE))),
+                new PrivateSecurityContractProtoAccessCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "proto-truth-mixed-descriptors",
-            toml -> new ProtoTruthMixedDescriptorsCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new ProtoTruthMixedDescriptorsCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry("for-override", toml -> new ForOverrideCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "from-temporal-accessor",
-            toml -> new FromTemporalAccessorCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new FromTemporalAccessorCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "unnecessary-type-argument",
-            toml -> new UnnecessaryTypeArgumentCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new UnnecessaryTypeArgumentCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 }

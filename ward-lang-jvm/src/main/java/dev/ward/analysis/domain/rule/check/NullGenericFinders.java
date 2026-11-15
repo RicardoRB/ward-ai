@@ -9,7 +9,6 @@ import java.util.function.BiConsumer;
 
 /** The rules about the nullness of type arguments, such as {@code List<@Nullable String>}. */
 final class NullGenericFinders {
-
   private static final String LOCAL = "localVariableDeclaration";
   private static final String TYPE_TYPE = "typeType";
 
@@ -36,14 +35,17 @@ final class NullGenericFinders {
               target.ifPresent(flags -> widen(expression.children().get(2), flags, env, hits));
             }
           }
-        });
+        }
+    );
   }
 
   private static void widened(
       final SyntaxNode local,
       final List<Boolean> declared,
-      final Map<String, List<Boolean>> env,
-      final List<NullHit> hits) {
+      final Map<String,
+      List<Boolean>> env,
+      final List<NullHit> hits
+  ) {
     for (final SyntaxNode value : initializers(local)) {
       widen(value, declared, env, hits);
     }
@@ -59,8 +61,10 @@ final class NullGenericFinders {
   private static void widen(
       final SyntaxNode value,
       final List<Boolean> declared,
-      final Map<String, List<Boolean>> env,
-      final List<NullHit> hits) {
+      final Map<String,
+      List<Boolean>> env,
+      final List<NullHit> hits
+  ) {
     NullArgs.ofValue(value, env)
         .filter(actual -> NullArgs.widens(declared, actual))
         .ifPresent(actual -> hits.add(NullHit.at(value, SyntaxWalk.text(value))));
@@ -77,14 +81,17 @@ final class NullGenericFinders {
                 .filter(callee -> callee.owner().marked())
                 .ifPresent(callee -> passed(callee, NullFlow.arguments(expression), env, hits));
           }
-        });
+        }
+    );
   }
 
   private static void passed(
       final NullCallees.Callee callee,
       final List<SyntaxNode> args,
-      final Map<String, List<Boolean>> env,
-      final List<NullHit> hits) {
+      final Map<String,
+      List<Boolean>> env,
+      final List<NullHit> hits
+  ) {
     final List<NullModel.Param> params = callee.method().params();
     for (int index = 0; index < args.size(); index++) {
       final SyntaxNode arg = args.get(index);
@@ -107,8 +114,10 @@ final class NullGenericFinders {
           declared.ifPresent(
               flags ->
                   NullFlow.returned(method.body())
-                      .forEach(value -> widen(value, flags, env, hits)));
-        });
+                      .forEach(value -> widen(value, flags, env, hits))
+          );
+        }
+    );
   }
 
   static Optional<List<Boolean>> returnArgs(final NullModel.Method method) {

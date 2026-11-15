@@ -30,10 +30,12 @@ class NativeNodeExportFactsTest {
         .file("node_modules/c/package.json", "{\"types\":\"index.d.ts\"}")
         .file(
             "node_modules/c/index.d.ts",
-            "export * as ns from \"./inner\";\nexport { v as wide } from \"./inner\";\n")
+            "export * as ns from \"./inner\";\nexport { v as wide } from \"./inner\";\n"
+        )
         .file(
             "node_modules/c/inner.d.ts",
-            "export declare const v: boolean;\nexport declare function g(): number;\n")
+            "export declare const v: boolean;\nexport declare function g(): number;\n"
+        )
         .file("types/amb.d.ts", "declare module \"ambient\" { export const q: string; }\n")
         .file("src/k.js", "export class K { m(x) { return x; } static s() { return 1; } }\n");
   }

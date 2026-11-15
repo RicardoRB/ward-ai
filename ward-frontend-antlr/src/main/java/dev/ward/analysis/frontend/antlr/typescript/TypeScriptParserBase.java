@@ -102,7 +102,6 @@ public abstract class TypeScriptParserBase extends Parser {
    *     that contains a line terminator.
    */
   protected boolean lineTerminatorAhead() {
-
     // Get the token ahead of the current index.
     int possibleIndexEosToken = this.getCurrentToken().getTokenIndex() - 1;
     Token ahead = _input.get(possibleIndexEosToken);
@@ -129,7 +128,7 @@ public abstract class TypeScriptParserBase extends Parser {
 
     // Check if the token is, or contains a line terminator.
     return (type == TypeScriptParser.MultiLineComment
-            && (text.contains("\r") || text.contains("\n")))
+        && (text.contains("\r") || text.contains("\n")))
         || (type == TypeScriptParser.LineTerminator);
   }
 }

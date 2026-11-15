@@ -29,7 +29,11 @@ final class SuppressionSourceDetector {
   }
 
   private static Position scanToken(
-      final String source, final int index, final int line, final List<Diagnostic> diagnostics) {
+      final String source,
+      final int index,
+      final int line,
+      final List<Diagnostic> diagnostics
+  ) {
     final char current = source.charAt(index);
     if (current == DOUBLE_QUOTE) {
       if (source.startsWith("\"\"\"", index)) {
@@ -65,7 +69,11 @@ final class SuppressionSourceDetector {
   }
 
   private static void addAnnotation(
-      final String source, final int index, final int line, final List<Diagnostic> diagnostics) {
+      final String source,
+      final int index,
+      final int line,
+      final List<Diagnostic> diagnostics
+  ) {
     final String annotation = annotationName(source, index + ONE);
     final int separator = annotation.lastIndexOf('.');
     final String simpleName = annotation.substring(separator + ONE);
@@ -75,7 +83,10 @@ final class SuppressionSourceDetector {
   }
 
   private static void addCommentDiagnostic(
-      final String comment, final int line, final List<Diagnostic> diagnostics) {
+      final String comment,
+      final int line,
+      final List<Diagnostic> diagnostics
+  ) {
     final int marker = comment.indexOf("NOPMD");
     if (marker >= 0) {
       diagnostics.add(new Diagnostic(line + lines(comment, 0, marker), "NOPMD"));

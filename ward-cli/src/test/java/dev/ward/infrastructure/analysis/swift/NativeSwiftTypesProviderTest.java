@@ -19,7 +19,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** Checks that the native Swift provider reads a project's files without starting a process. */
 final class NativeSwiftTypesProviderTest {
-
   private static final String BINDING = "pattern_initializer";
 
   @Test
@@ -33,13 +32,15 @@ final class NativeSwiftTypesProviderTest {
         new SourceUnit(
             "Session.swift",
             AnalysisLanguage.SWIFT,
-            Files.readString(root.resolve("Session.swift")));
+            Files.readString(root.resolve("Session.swift"))
+        );
     final SyntaxNode binding = findBinding(new AntlrLanguageFrontend().parse(unit).tree());
     assertThat(
-            facts
-                .factsOf(unit, List.of(binding.span()), EnumSet.of(FactKind.TYPE))
-                .typeOf(binding.span())
-                .map(TypeRef::name))
+        facts
+            .factsOf(unit, List.of(binding.span()), EnumSet.of(FactKind.TYPE))
+            .typeOf(binding.span())
+            .map(TypeRef::name)
+    )
         .contains("Session");
   }
 

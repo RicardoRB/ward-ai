@@ -27,7 +27,6 @@ import java.util.Set;
  * assignment or declaration ends, which is the order in which the statements of the node run.
  */
 final class KotlinAccesses implements VariableAccesses {
-
   private static final Set<BindingKind> LOCAL =
       Set.of(BindingKind.VARIABLE, BindingKind.CONSTANT, BindingKind.PARAMETER);
 
@@ -51,8 +50,10 @@ final class KotlinAccesses implements VariableAccesses {
       final UnitScopes scopes,
       final Span body,
       final List<Span> nested,
-      final Map<Integer, Integer> writeEnds,
-      final KotlinView view) {
+      final Map<Integer,
+      Integer> writeEnds,
+      final KotlinView view
+  ) {
     this.writeEnds = writeEnds;
     this.view = view;
     this.references = scopes.references();
@@ -64,9 +65,11 @@ final class KotlinAccesses implements VariableAccesses {
   public List<VariableAccess> of(final SyntaxNode node) {
     final Span span = node.span();
     final List<Keyed> found = new ArrayList<>();
-    for (int index = firstAtOrAfter(span.startOffset());
-        index < references.size() && references.get(index).span().startOffset() < span.endOffset();
-        index++) {
+    for (int index = firstAtOrAfter(
+        span.startOffset()
+    ); index < references.size() && references.get(
+        index
+    ).span().startOffset() < span.endOffset(); index++) {
       final NameReference reference = references.get(index);
       if (reference.span().endOffset() <= span.endOffset() && isLocal(reference)) {
         found.add(keyed(reference));
@@ -96,7 +99,9 @@ final class KotlinAccesses implements VariableAccesses {
                     binding.name(),
                     AccessKind.PARAMETER,
                     binding.declaration(),
-                    binding.declaration()))
+                    binding.declaration()
+                )
+        )
         .toList();
   }
 
@@ -108,7 +113,11 @@ final class KotlinAccesses implements VariableAccesses {
    */
   static VariableAccess catchParameter(final SyntaxNode name) {
     return new VariableAccess(
-        KotlinFlowSyntax.text(name), AccessKind.WRITE, name.span(), name.span());
+        KotlinFlowSyntax.text(name),
+        AccessKind.WRITE,
+        name.span(),
+        name.span()
+    );
   }
 
   private Keyed keyed(final NameReference reference) {
@@ -119,10 +128,13 @@ final class KotlinAccesses implements VariableAccesses {
             reference.name(),
             write ? AccessKind.WRITE : AccessKind.READ,
             reference.span(),
-            binding.declaration());
+            binding.declaration()
+        );
     final int start = reference.span().startOffset();
     return new Keyed(
-        write ? writeEnds.getOrDefault(start, reference.span().endOffset()) : start, access);
+        write ? writeEnds.getOrDefault(start, reference.span().endOffset()) : start,
+        access
+    );
   }
 
   private boolean isLocal(final NameReference reference) {

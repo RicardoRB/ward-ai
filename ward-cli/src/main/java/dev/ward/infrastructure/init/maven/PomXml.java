@@ -37,7 +37,11 @@ final class PomXml {
     final Optional<Element> build = PomElements.child(pom, project, BUILD);
     if (build.isEmpty()) {
       return insertChild(
-          pom, project, "project", wrap(BUILD, wrap(PLUGIN_MANAGEMENT, wrap(PLUGINS, plugin))));
+          pom,
+          project,
+          "project",
+          wrap(BUILD, wrap(PLUGIN_MANAGEMENT, wrap(PLUGINS, plugin)))
+      );
     }
     final Optional<Element> management = PomElements.child(pom, build.get(), PLUGIN_MANAGEMENT);
     if (management.isEmpty()) {
@@ -77,7 +81,11 @@ final class PomXml {
    * @throws WardException when the declaration's version is not exactly {@code current}
    */
   static Optional<String> replacePluginVersion(
-      final String pom, final String artifact, final String current, final String selected) {
+      final String pom,
+      final String artifact,
+      final String current,
+      final String selected
+  ) {
     final Optional<Element> plugin =
         PomElements.child(pom, PomElements.project(pom), BUILD)
             .flatMap(build -> PomElements.child(pom, build, PLUGINS))
@@ -91,13 +99,20 @@ final class PomXml {
             .orElseThrow(
                 () ->
                     new WardException(
-                        "Could not safely update managed Maven plugin " + artifact + "."));
+                        "Could not safely update managed Maven plugin " + artifact + "."
+                    )
+            );
     return Optional.of(
-        pom.substring(0, version.openEnd()) + selected + pom.substring(version.closeStart()));
+        pom.substring(0, version.openEnd()) + selected + pom.substring(version.closeStart())
+    );
   }
 
   private static String insertChild(
-      final String xml, final Element parent, final String name, final String block) {
+      final String xml,
+      final Element parent,
+      final String name,
+      final String block
+  ) {
     final String parentIndent = lineIndent(xml, parent.openStart());
     final String childIndent = parentIndent + indentUnit(xml);
     final String content = indent(block, childIndent);

@@ -7,7 +7,6 @@ import java.util.Optional;
 
 /** The {@code type} keyword, with {@code nullable} of OpenAPI 3.0. */
 final class Types {
-
   private Types() {}
 
   /** Checks the type of {@code data}; {@code nullable: true} also lets null through. */
@@ -15,7 +14,8 @@ final class Types {
       final JsonSchemaValidator validator,
       final DocNode schema,
       final DocNode data,
-      final String path) {
+      final String path
+  ) {
     final List<String> types = declared(schema);
     if (types.isEmpty()) {
       return true;

@@ -60,9 +60,10 @@ class InitApiCompatCatalogTest {
     final Project project = detect(dir);
 
     assertThat(
-            new InitSetupCatalog(new FakeEnvironmentInspection("gradle").withReleaseTag())
-                .gate(project, API_COMPAT)
-                .command())
+        new InitSetupCatalog(new FakeEnvironmentInspection("gradle").withReleaseTag())
+            .gate(project, API_COMPAT)
+            .command()
+    )
         .isEmpty();
     assertThat(new InitSetupCatalog(new FakeEnvironmentInspection("gradle")).gates(project, null))
         .extracting(InitGateOption::id)
@@ -77,9 +78,10 @@ class InitApiCompatCatalogTest {
     final Project project = detect(dir);
 
     assertThat(
-            new InitSetupCatalog(new FakeEnvironmentInspection("gradle").withReleaseTag())
-                .gate(project, API_COMPAT)
-                .command())
+        new InitSetupCatalog(new FakeEnvironmentInspection("gradle").withReleaseTag())
+            .gate(project, API_COMPAT)
+            .command()
+    )
         .isEmpty();
   }
 }

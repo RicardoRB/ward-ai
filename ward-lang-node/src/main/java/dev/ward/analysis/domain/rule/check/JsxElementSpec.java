@@ -12,7 +12,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
  * @param value the static value the attribute must have, or empty for presence only
  */
 record JsxElementSpec(String name, String attribute, String value) {
-
   /** Reads a spec written as in the rule file. */
   static JsxElementSpec parse(final String text) {
     final int open = text.indexOf('[');
@@ -25,7 +24,10 @@ record JsxElementSpec(String name, String attribute, String value) {
       return new JsxElementSpec(text.substring(0, open), condition, "");
     }
     return new JsxElementSpec(
-        text.substring(0, open), condition.substring(0, equals), condition.substring(equals + 1));
+        text.substring(0, open),
+        condition.substring(0, equals),
+        condition.substring(equals + 1)
+    );
   }
 
   /** Whether the element is named by this spec and meets its condition. */
@@ -39,6 +41,7 @@ record JsxElementSpec(String name, String attribute, String value) {
             .anyMatch(
                 candidate ->
                     value.isEmpty()
-                        || JsxAttributes.literal(candidate).filter(value::equals).isPresent());
+                        || JsxAttributes.literal(candidate).filter(value::equals).isPresent()
+            );
   }
 }

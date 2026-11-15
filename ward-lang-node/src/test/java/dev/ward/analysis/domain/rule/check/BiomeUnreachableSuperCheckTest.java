@@ -13,7 +13,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class BiomeUnreachableSuperCheckTest {
-
   private static final BiomeUnreachableSuperCheck CHECK = new BiomeUnreachableSuperCheck("message");
 
   @Test
@@ -24,24 +23,24 @@ class BiomeUnreachableSuperCheckTest {
   @Test
   void reportsAConstructorThatReadsThisBeforeSuper() {
     assertThat(
-            reported(
-                "class A extends B {\n  constructor() {\n    this.x = 1;\n    super();\n  }\n}\n"))
+        reported("class A extends B {\n  constructor() {\n    this.x = 1;\n    super();\n  }\n}\n")
+    )
         .hasSize(1);
   }
 
   @Test
   void keepsAConstructorThatAlwaysCallsSuper() {
     assertThat(
-            reported(
-                "class A extends B {\n  constructor(c) {\n    super();\n    this.x = c;\n  }\n}\n"))
+        reported("class A extends B {\n  constructor(c) {\n    super();\n    this.x = c;\n  }\n}\n")
+    )
         .isEmpty();
   }
 
   @Test
   void reportsAConstructorThatCallsSuperTwiceOnAPath() {
     assertThat(
-            reported(
-                "class A extends B {\n  constructor() {\n    super();\n    super();\n  }\n}\n"))
+        reported("class A extends B {\n  constructor() {\n    super();\n    super();\n  }\n}\n")
+    )
         .hasSize(1);
   }
 

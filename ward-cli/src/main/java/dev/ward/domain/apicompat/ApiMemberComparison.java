@@ -18,7 +18,8 @@ final class ApiMemberComparison {
           "notifyAll()",
           "wait()",
           "wait(long)",
-          "wait(long,int)");
+          "wait(long,int)"
+      );
 
   private final ApiIndex before;
   private final ApiIndex after;
@@ -58,7 +59,9 @@ final class ApiMemberComparison {
               member.name(),
               member.signature(),
               found.get().signature(),
-              found.get().location()));
+              found.get().location()
+          )
+      );
     }
   }
 
@@ -73,7 +76,9 @@ final class ApiMemberComparison {
             member.name(),
             member.signature(),
             ApiChange.REMOVED,
-            now.location()));
+            now.location()
+        )
+    );
   }
 
   private boolean movedUp(final ApiType now, final ApiMember member) {
@@ -100,6 +105,8 @@ final class ApiMemberComparison {
             member.name(),
             "none",
             member.signature(),
-            member.location()));
+            member.location()
+        )
+    );
   }
 }

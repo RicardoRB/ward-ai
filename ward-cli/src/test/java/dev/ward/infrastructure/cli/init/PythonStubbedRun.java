@@ -36,7 +36,8 @@ final class PythonStubbedRun {
         .environment()
         .put(
             "PATH",
-            STUBS.toAbsolutePath() + File.pathSeparator + System.getenv().getOrDefault("PATH", ""));
+            STUBS.toAbsolutePath() + File.pathSeparator + System.getenv().getOrDefault("PATH", "")
+        );
     final Process process = builder.start();
     final String stdout =
         new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);

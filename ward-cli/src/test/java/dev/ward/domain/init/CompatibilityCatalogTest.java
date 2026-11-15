@@ -40,7 +40,9 @@ class CompatibilityCatalogTest {
             "spotbugs",
             List.of(
                 new ManagedPluginCandidate("spotbugs", "4.8.6", JDK_8, JDK_17, "7.1", "test"),
-                new ManagedPluginCandidate("spotbugs", "4.9.7", JDK_11, JDK_25, "7.1", "test")));
+                new ManagedPluginCandidate("spotbugs", "4.9.7", JDK_11, JDK_25, "7.1", "test")
+            )
+        );
 
     assertThat(overlaps(overlapping))
         .containsExactly("spotbugs 4.8.6 and 4.9.7 both run on JDK 11");
@@ -61,7 +63,8 @@ class CompatibilityCatalogTest {
     final Map<String, List<ManagedPluginCandidate>> catalog =
         Map.of(
             "pmd",
-            List.of(new ManagedPluginCandidate("pmd", "7.17.0", JDK_12, JDK_16, "8.6", "test")));
+            List.of(new ManagedPluginCandidate("pmd", "7.17.0", JDK_12, JDK_16, "8.6", "test"))
+        );
 
     assertThat(unused(catalog, Set.of(JDK_8, JDK_11, JDK_17))).containsExactly("pmd 7.17.0");
   }
@@ -84,17 +87,22 @@ class CompatibilityCatalogTest {
                         + " and "
                         + second.version()
                         + " both run on JDK "
-                        + shared);
+                        + shared
+                );
               }
             }
           }
-        });
+        }
+    );
     return overlaps;
   }
 
   /** The {@code tool version} of every matrix tool row whose range holds no matrix JDK. */
   private static List<String> unused(
-      final Map<String, List<ManagedPluginCandidate>> catalog, final Set<Integer> jdks) {
+      final Map<String,
+      List<ManagedPluginCandidate>> catalog,
+      final Set<Integer> jdks
+  ) {
     return catalog.values().stream()
         .flatMap(List::stream)
         .filter(row -> jdks.stream().noneMatch(row::runsOn))

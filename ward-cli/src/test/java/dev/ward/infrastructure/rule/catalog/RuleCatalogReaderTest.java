@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 /** The catalog format: what a row may say, and what makes a catalog unusable. */
 class RuleCatalogReaderTest {
-
   private static final String CATALOG = "/catalog/";
   private static final String ROW_HEADER = "[[rule]]";
 
@@ -69,7 +68,7 @@ class RuleCatalogReaderTest {
     int rows = 0;
     for (final String file : resourceLines(CATALOG + "files.txt")) {
       rows +=
-          (int) resourceLines(CATALOG + file + ".toml").stream().filter(ROW_HEADER::equals).count();
+          (int)resourceLines(CATALOG + file + ".toml").stream().filter(ROW_HEADER::equals).count();
     }
     return rows;
   }

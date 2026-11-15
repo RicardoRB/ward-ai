@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * class that is not in the file is never reported.
  */
 public final class StaticInitializationCheck implements RuleCheck {
-
   /** What the check looks for. */
   public enum Mode {
     /** Two classes whose static initializers use each other. */
@@ -37,10 +36,10 @@ public final class StaticInitializationCheck implements RuleCheck {
 
   /** A class of the file with the text of its static initializers. */
   private record Type(SyntaxNode node, String name, String superclass, String initializers) {
-
     boolean uses(final Type other) {
       return Pattern.compile(
-              "(?<![\\w.])new" + other.name() + "[(<]|(?<![\\w.])" + other.name() + "\\.")
+          "(?<![\\w.])new" + other.name() + "[(<]|(?<![\\w.])" + other.name() + "\\."
+      )
           .matcher(initializers)
           .find();
     }
@@ -100,8 +99,8 @@ public final class StaticInitializationCheck implements RuleCheck {
 
   private static boolean isStaticField(final SyntaxNode member) {
     return MemberDeclarations.declaration(member)
-            .filter(declaration -> MemberDeclarations.FIELD.equals(declaration.kind()))
-            .isPresent()
+        .filter(declaration -> MemberDeclarations.FIELD.equals(declaration.kind()))
+        .isPresent()
         && MemberDeclarations.modifiers(member).contains(MemberDeclarations.STATIC);
   }
 

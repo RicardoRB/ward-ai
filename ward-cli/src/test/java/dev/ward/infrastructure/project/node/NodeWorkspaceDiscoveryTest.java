@@ -53,7 +53,8 @@ class NodeWorkspaceDiscoveryTest {
     tree.write("frontend/" + PACKAGE_JSON, "{}");
     tree.write(
         "frontend/pnpm-workspace.yaml",
-        "packages:\n  - \"packages/*\"\n  - '!packages/ignored'\ncatalog:\n  - apps/*\n");
+        "packages:\n  - \"packages/*\"\n  - '!packages/ignored'\ncatalog:\n  - apps/*\n"
+    );
     tree.write("frontend/packages/core/" + PACKAGE_JSON, MEMBER);
     tree.write("frontend/apps/web/" + PACKAGE_JSON, MEMBER);
 

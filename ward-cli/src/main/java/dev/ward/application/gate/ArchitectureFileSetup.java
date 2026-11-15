@@ -48,7 +48,8 @@ final class ArchitectureFileSetup implements RuleSetup {
           "event=architecture-rules file="
               + architecture.get().name()
               + " rules="
-              + architecture.get().rules().size());
+              + architecture.get().rules().size()
+      );
     }
     return new RuleSet(rules, chosen.excludePaths(), problems);
   }

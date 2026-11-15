@@ -20,12 +20,14 @@ import java.util.Set;
  * qualifiers declared in the file, and methods and fields of the file, take part.
  */
 final class QualifierAnalysis {
-
   private QualifierAnalysis() {}
 
   /** Analyses {@code root}, the syntax of {@code unit}. */
   static List<QualChecks.Found> of(
-      final SyntaxNode root, final SourceUnit unit, final UnitTypeFacts types) {
+      final SyntaxNode root,
+      final SourceUnit unit,
+      final UnitTypeFacts types
+  ) {
     final QualifierScope scope = QualifierScope.of(root);
     final List<QualChecks.Found> found = new ArrayList<>();
     if (scope.qualifiers().isEmpty()) {
@@ -43,7 +45,8 @@ final class QualifierAnalysis {
       final ControlFlowGraph body,
       final QualifierScope scope,
       final QualifierScope.Qualifier qualifier,
-      final UnitTypeFacts types) {
+      final UnitTypeFacts types
+  ) {
     final String name = body.body();
     final int hash = name.indexOf('#');
     final String owner = hash < 0 ? "" : name.substring(0, hash);
@@ -64,7 +67,8 @@ final class QualifierAnalysis {
   private static Map<Span, QualState.Held> initial(
       final List<VariableAccess> parameters,
       final QualifierScope.Method method,
-      final QualifierScope.Qualifier qualifier) {
+      final QualifierScope.Qualifier qualifier
+  ) {
     final Map<Span, QualState.Held> state = new HashMap<>();
     for (int index = 0; index < parameters.size(); index++) {
       final QualWhen declared =

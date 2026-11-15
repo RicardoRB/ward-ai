@@ -16,7 +16,7 @@ public final class NodeProjectName implements ProjectNameReader {
   @Override
   public Optional<String> read(final Project project) {
     return NodeProjectInspection.manifest(project.root()).get("name") instanceof String name
-            && !name.isBlank()
+        && !name.isBlank()
         ? Optional.of(name)
         : Optional.empty();
   }

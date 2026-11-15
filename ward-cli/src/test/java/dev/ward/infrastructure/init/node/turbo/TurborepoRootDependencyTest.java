@@ -45,7 +45,8 @@ class TurborepoRootDependencyTest {
   void turborepoRootThatDeclaresTurboKeepsItsVersion() throws IOException {
     Files.writeString(
         root.resolve("package.json"),
-        "{\n  \"devDependencies\": {\n    \"turbo\": \"2.0.0\"\n  }\n}\n");
+        "{\n  \"devDependencies\": {\n    \"turbo\": \"2.0.0\"\n  }\n}\n"
+    );
 
     final BuildFileChange change = configurator.apply(project(TaskRunner.TURBO), List.of());
 
@@ -72,6 +73,7 @@ class TurborepoRootDependencyTest {
         Set.of(),
         "24",
         runner,
-        null);
+        null
+    );
   }
 }

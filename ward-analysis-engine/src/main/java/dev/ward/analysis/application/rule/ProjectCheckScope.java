@@ -19,7 +19,6 @@ import java.util.TreeMap;
  * the same name already reads.
  */
 final class ProjectCheckScope {
-
   private ProjectCheckScope() {}
 
   /**
@@ -30,7 +29,9 @@ final class ProjectCheckScope {
   static Set<AnalysisLanguage> reads(
       final PreparedRule prepared,
       final RuleDefinition definition,
-      final Map<AnalysisLanguage, FrontendSupport> support) {
+      final Map<AnalysisLanguage,
+      FrontendSupport> support
+  ) {
     final Set<AnalysisLanguage> reads = EnumSet.noneOf(AnalysisLanguage.class);
     reads.addAll(prepared.runnable());
     for (final AnalysisLanguage language : definition.languages()) {
@@ -41,7 +42,8 @@ final class ProjectCheckScope {
               extra ->
                   Optional.ofNullable(support.get(extra))
                       .filter(frontend -> frontend.capabilities().contains(definition.capability()))
-                      .ifPresent(frontend -> reads.add(extra)));
+                      .ifPresent(frontend -> reads.add(extra))
+          );
     }
     return reads;
   }
@@ -53,7 +55,9 @@ final class ProjectCheckScope {
   static boolean coveredByAnother(
       final RuleDefinition definition,
       final List<PreparedRule> prepared,
-      final Map<AnalysisLanguage, FrontendSupport> support) {
+      final Map<AnalysisLanguage,
+      FrontendSupport> support
+  ) {
     return prepared.stream()
         .flatMap(rule -> rule.rule().stream())
         .filter(CompiledRule::isProject)
@@ -66,14 +70,17 @@ final class ProjectCheckScope {
   private static boolean readsLanguagesOf(
       final RuleDefinition reader,
       final RuleDefinition read,
-      final Map<AnalysisLanguage, FrontendSupport> support) {
+      final Map<AnalysisLanguage,
+      FrontendSupport> support
+  ) {
     return reader.languages().stream()
         .anyMatch(
             language ->
                 Optional.ofNullable(support.get(language))
                     .map(FrontendSupport::projectLanguages)
                     .orElse(Set.of())
-                    .containsAll(read.languages()));
+                    .containsAll(read.languages())
+        );
   }
 
   /** The name of a rule after its language, such as {@code knip-unresolved}. */
@@ -86,7 +93,8 @@ final class ProjectCheckScope {
       final Set<AnalysisLanguage> reads,
       final List<SourceUnit> units,
       final UnitTrees trees,
-      final RuleRunCollector collector) {
+      final RuleRunCollector collector
+  ) {
     final SortedMap<String, SyntaxNode> parsed = new TreeMap<>();
     for (final SourceUnit unit : units) {
       if (reads.contains(unit.language())) {

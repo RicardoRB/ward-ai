@@ -8,7 +8,6 @@ import java.util.Map;
 
 /** The anchors of a document and the budget that stops an alias bomb. */
 final class YamlAnchors {
-
   /** The most nodes the aliases of one document may expand to. */
   static final long MAX_EXPANDED = 1_000_000L;
 

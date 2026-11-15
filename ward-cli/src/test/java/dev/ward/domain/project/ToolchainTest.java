@@ -35,7 +35,9 @@ class ToolchainTest {
                 Map.entry(BuildTool.SWIFTPM, Toolchain.SWIFT),
                 Map.entry(BuildTool.XCODE, Toolchain.SWIFT),
                 Map.entry(BuildTool.TUIST, Toolchain.SWIFT),
-                Map.entry(BuildTool.XCODEGEN, Toolchain.SWIFT)));
+                Map.entry(BuildTool.XCODEGEN, Toolchain.SWIFT)
+            )
+        );
   }
 
   @Test
@@ -48,15 +50,23 @@ class ToolchainTest {
                     tool -> tool,
                     tool ->
                         new Project(Path.of("app"), Language.SWIFT, tool, Framework.NONE)
-                            .buildExecutable()));
+                            .buildExecutable()
+                )
+            );
 
     assertThat(executables)
         .containsExactlyInAnyOrderEntriesOf(
             Map.of(
-                BuildTool.SWIFTPM, "swift",
-                BuildTool.XCODE, "xcodebuild",
-                BuildTool.TUIST, "xcodebuild",
-                BuildTool.XCODEGEN, "xcodebuild"));
+                BuildTool.SWIFTPM,
+                "swift",
+                BuildTool.XCODE,
+                "xcodebuild",
+                BuildTool.TUIST,
+                "xcodebuild",
+                BuildTool.XCODEGEN,
+                "xcodebuild"
+            )
+        );
   }
 
   @Test

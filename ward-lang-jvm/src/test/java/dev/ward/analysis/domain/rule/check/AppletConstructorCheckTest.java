@@ -6,7 +6,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class AppletConstructorCheckTest {
-
   private static final AppletConstructorCheck CHECK = new AppletConstructorCheck("message");
   private static final String CONSTRUCTOR =
       "  Clock() {\n    String s = getParameter(\"size\");\n  }\n";
@@ -20,24 +19,30 @@ class AppletConstructorCheckTest {
     assertThat(run("class Clock extends Applet", CONSTRUCTOR)).containsExactly("3:16");
     assertThat(run("class Clock extends java.applet.Applet", CONSTRUCTOR)).hasSize(1);
     assertThat(
-            run(
-                "class Clock extends javax.swing.JApplet",
-                CONSTRUCTOR.replace("getParameter(\"size\")", "getCodeBase()")))
+        run(
+            "class Clock extends javax.swing.JApplet",
+            CONSTRUCTOR.replace("getParameter(\"size\")", "getCodeBase()")
+        )
+    )
         .hasSize(1);
   }
 
   @Test
   void initOtherClassesOtherCallsAndNoSuperclassAreNotReported() {
     assertThat(
-            run(
-                "class Clock extends Applet",
-                "  public void init() {\n    getParameter(\"size\");\n  }\n"))
+        run(
+            "class Clock extends Applet",
+            "  public void init() {\n    getParameter(\"size\");\n  }\n"
+        )
+    )
         .isEmpty();
     assertThat(run("class Clock extends Panel", CONSTRUCTOR)).isEmpty();
     assertThat(
-            run(
-                "class Clock extends Applet",
-                CONSTRUCTOR.replace("getParameter(\"size\")", "toString()")))
+        run(
+            "class Clock extends Applet",
+            CONSTRUCTOR.replace("getParameter(\"size\")", "toString()")
+        )
+    )
         .isEmpty();
     assertThat(run("class Clock", CONSTRUCTOR)).isEmpty();
   }

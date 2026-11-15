@@ -55,7 +55,9 @@ public final class NodeLayouts {
                 exports(manifest.get(EXPORTS)),
                 text(manifest.get(TYPES)),
                 text(manifest.get(MODULE)),
-                text(manifest.get(MAIN))));
+                text(manifest.get(MAIN))
+            )
+        );
       }
     }
     return packages;
@@ -93,7 +95,8 @@ public final class NodeLayouts {
             final List<String> chain = new ArrayList<>(conditions);
             chain.add(String.valueOf(key));
             entries.addAll(entries(nested, chain));
-          });
+          }
+      );
     }
     return entries;
   }

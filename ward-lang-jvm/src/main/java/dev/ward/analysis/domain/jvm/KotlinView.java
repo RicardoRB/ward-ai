@@ -11,7 +11,6 @@ import java.util.List;
  * call is lowered before the lambda.
  */
 final class KotlinView {
-
   private List<Span> hidden = List.of();
   private Span only;
   private boolean reads = true;
@@ -29,7 +28,8 @@ final class KotlinView {
       final List<Span> hiddenSpans,
       final Span within,
       final boolean showReads,
-      final boolean showWrites) {
+      final boolean showWrites
+  ) {
     this.hidden = List.copyOf(hiddenSpans);
     this.only = within;
     this.reads = showReads;

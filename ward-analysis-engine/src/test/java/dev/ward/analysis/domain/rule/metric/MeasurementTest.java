@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 /** The four measurements, run through the matcher over hand-built trees. */
 final class MeasurementTest {
-
   private static final String FUNCTION = "funcdef";
   private static final String IF_STMT = "if_stmt";
   private static final String IF_TOKEN = "'if'";
@@ -49,7 +48,13 @@ final class MeasurementTest {
             List.of(
                 Trees.node("stmt", 1, 3),
                 new SyntaxNode(
-                    "EOF", Trees.span(4, 1, 4, 1), java.util.Map.of("text", "<EOF>"), List.of())));
+                    "EOF",
+                    Trees.span(4, 1, 4, 1),
+                    java.util.Map.of("text", "<EOF>"),
+                    List.of()
+                )
+            )
+        );
 
     assertThat(Trees.messages("measure=lines; node=file_input; max=2; message=file {value}", file))
         .containsExactly("file 3");
@@ -83,7 +88,8 @@ final class MeasurementTest {
                 2,
                 3,
                 Trees.token(IF_TOKEN, "if", 2, 5),
-                Trees.token("'elif'", "elif", 3, 1)),
+                Trees.token("'elif'", "elif", 3, 1)
+            ),
             Trees.node("while_stmt", 4, 4),
             Trees.node("test", 5, 5, Trees.token(IF_TOKEN, "if", 5, 9)),
             Trees.node("and_test", 6, 6, Trees.token("'and'", "and", 6, 5)),
@@ -94,7 +100,9 @@ final class MeasurementTest {
                 9,
                 Trees.node(IF_STMT, 8, 8),
                 Trees.node(IF_STMT, 8, 8),
-                Trees.node(IF_STMT, 8, 8)));
+                Trees.node(IF_STMT, 8, 8)
+            )
+        );
 
     assertThat(Trees.messages(DECISIONS, function)).containsExactly("function f has complexity 7");
   }
@@ -135,13 +143,16 @@ final class MeasurementTest {
                 8,
                 8,
                 Trees.node("testlist_star_expr", 8, 8, Trees.token(IDENTIFIER, "x", 8, 1)),
-                Trees.token("'+='", "+=", 8, 3)));
+                Trees.token("'+='", "+=", 8, 3)
+            )
+        );
 
     assertThat(Trees.messages(IDENTIFIERS, module))
         .containsExactly(
             "loadConfig should be snake_case",
             "user_store should be CapWords",
-            "myVar should be snake_case or UPPER_SNAKE_CASE");
+            "myVar should be snake_case or UPPER_SNAKE_CASE"
+        );
   }
 
   /** A function {@code f} with {@code count} parameters, the first named {@code self}. */
@@ -154,7 +165,12 @@ final class MeasurementTest {
     final SyntaxNode typedArgs =
         Trees.node("typedargslist", 1, 1, items.toArray(SyntaxNode[]::new));
     return Trees.node(
-        FUNCTION, 1, 1, Trees.named(NAME, "f", 1), Trees.node("parameters", 1, 1, typedArgs));
+        FUNCTION,
+        1,
+        1,
+        Trees.named(NAME, "f", 1),
+        Trees.node("parameters", 1, 1, typedArgs)
+    );
   }
 
   private static SyntaxNode assignment(final String target, final int line) {
@@ -163,6 +179,7 @@ final class MeasurementTest {
         line,
         line,
         Trees.node("testlist_star_expr", line, line, Trees.token(IDENTIFIER, target, line, 1)),
-        Trees.token("'='", "=", line, target.length() + 2));
+        Trees.token("'='", "=", line, target.length() + 2)
+    );
   }
 }

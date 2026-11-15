@@ -12,10 +12,14 @@ import dev.ward.analysis.domain.openapi.DocNode;
  * @param what what it is, for a message
  */
 record Subject(DocNode base, DocNode revision, String method, String path, String what) {
-
   /** A finding of {@code id} at {@code at}. */
   BreakingFinding finding(final String id, final DocNode at, final String message) {
     return new BreakingFinding(
-        RowRule.PREFIX + id, method + " " + path + ": " + message, method, path, at);
+        RowRule.PREFIX + id,
+        method + " " + path + ": " + message,
+        method,
+        path,
+        at
+    );
   }
 }

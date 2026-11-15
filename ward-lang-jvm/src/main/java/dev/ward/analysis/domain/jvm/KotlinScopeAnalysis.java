@@ -14,7 +14,6 @@ import java.util.Set;
  * analysis, so extension functions, receiver lambdas and classes with supertypes are open.
  */
 public final class KotlinScopeAnalysis implements ScopeAnalysis {
-
   private final BuiltinNames builtins;
 
   /** Creates the analysis over the names the Kotlin standard library imports by default. */

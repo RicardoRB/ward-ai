@@ -39,8 +39,8 @@ public record RuleDefinition(
     String category,
     Set<RulePreset> presets,
     List<RuleOption> options,
-    int minJavaRelease) {
-
+    int minJavaRelease
+) {
   private static final int SINGLE_LANGUAGE = 1;
 
   /** The id prefix of a rule that covers several languages. */
@@ -57,7 +57,8 @@ public record RuleDefinition(
       final Set<AnalysisLanguage> languages,
       final RuleCapability capability,
       final AnalysisSeverity severity,
-      final String body) {
+      final String body
+  ) {
     this(id, languages, capability, severity, body, "", Set.of(), List.of(), 0);
   }
 
@@ -73,7 +74,8 @@ public record RuleDefinition(
       final AnalysisLanguage language,
       final RuleCapability capability,
       final AnalysisSeverity severity,
-      final String body) {
+      final String body
+  ) {
     this(id, Set.of(Objects.requireNonNull(language, "language")), capability, severity, body);
   }
 
@@ -95,13 +97,15 @@ public record RuleDefinition(
       throw new IllegalArgumentException(
           text
               ? "rule '" + id + "' reads text and must name no language"
-              : "rule '" + id + "' must name at least one language");
+              : "rule '" + id + "' must name at least one language"
+      );
     }
     final String prefix = text ? TEXT_PREFIX : prefixFor(languages);
     final Matcher matcher = ID.matcher(id);
     if (!matcher.matches() || !matcher.group(1).equals(prefix)) {
       throw new IllegalArgumentException(
-          "rule id must be ward:" + prefix + "/<rule>, found '" + id + "'");
+          "rule id must be ward:" + prefix + "/<rule>, found '" + id + "'"
+      );
     }
     languages = Set.copyOf(languages);
     presets = Set.copyOf(presets);

@@ -20,7 +20,10 @@ final class KotlinNamedTypes {
    * Name}. A qualified or nullable target is not recorded, so its type stays unknown.
    */
   static void recordCastTarget(
-      final Session session, final SyntaxNode target, final TypeScope scope) {
+      final Session session,
+      final SyntaxNode target,
+      final TypeScope scope
+  ) {
     final String text = Syntax.text(target);
     if (text.matches(PLAIN_NAME)) {
       KotlinTypes.named(List.of(text), List.of(), false, scope)
@@ -30,7 +33,10 @@ final class KotlinNamedTypes {
 
   /** Records the class that the exception type of a catch clause names. */
   static void recordCatchType(
-      final Session session, final SyntaxNode catchBlock, final TypeScope scope) {
+      final Session session,
+      final SyntaxNode catchBlock,
+      final TypeScope scope
+  ) {
     Syntax.child(catchBlock, USER_TYPE)
         .ifPresent(
             userType -> {
@@ -38,10 +44,12 @@ final class KotlinNamedTypes {
                   Syntax.children(userType, SIMPLE_USER_TYPE).stream()
                       .map(
                           simple ->
-                              Syntax.text(Syntax.child(simple, SIMPLE_IDENTIFIER).orElse(simple)))
+                              Syntax.text(Syntax.child(simple, SIMPLE_IDENTIFIER).orElse(simple))
+                      )
                       .toList();
               KotlinTypes.named(names, List.of(), false, scope)
                   .ifPresent(type -> session.record(userType, Typed.of(type)));
-            });
+            }
+        );
   }
 }

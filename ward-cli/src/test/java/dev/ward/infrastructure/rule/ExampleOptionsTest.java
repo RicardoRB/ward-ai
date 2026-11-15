@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 
 /** The options the example rules declare are the ones their check kind lists, and they compile. */
 class ExampleOptionsTest {
-
   private static final long SAMPLE_NUMBER = 5;
 
   @Test
@@ -28,7 +27,8 @@ class ExampleOptionsTest {
                 kind -> {
                   assertThat(kind.name()).isEqualTo(option.name());
                   assertThat(kind.type()).isEqualTo(option.type());
-                });
+                }
+            );
       }
     }
   }
@@ -56,7 +56,8 @@ class ExampleOptionsTest {
             .anyMatch(
                 rule ->
                     rule.body().contains("check = \"" + kind.id() + "\"")
-                        && !rule.options().isEmpty());
+                        && !rule.options().isEmpty()
+            );
       }
     }
   }

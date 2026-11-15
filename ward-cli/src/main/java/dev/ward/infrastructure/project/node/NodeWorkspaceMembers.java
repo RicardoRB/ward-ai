@@ -32,7 +32,9 @@ public final class NodeWorkspaceMembers implements WorkspaceMembers {
                     name(root, dir),
                     dir,
                     NodeProjectInspection.project(dir).withTaskRunner(runner),
-                    scripts(dir)))
+                    scripts(dir)
+                )
+        )
         .toList();
   }
 
@@ -44,7 +46,8 @@ public final class NodeWorkspaceMembers implements WorkspaceMembers {
             dir ->
                 FileSystemProjectInspection.projectAt(dir)
                     .map(project -> new WorkspaceMember(name(root, dir), dir, project))
-                    .stream())
+                    .stream()
+        )
         .toList();
   }
 
@@ -65,7 +68,8 @@ public final class NodeWorkspaceMembers implements WorkspaceMembers {
             if (command instanceof String text) {
               scripts.put(String.valueOf(name), text);
             }
-          });
+          }
+      );
     }
     return scripts;
   }

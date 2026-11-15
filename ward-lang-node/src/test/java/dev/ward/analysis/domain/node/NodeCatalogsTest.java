@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 /** The pnpm-workspace.yaml catalog reader. */
 final class NodeCatalogsTest {
-
   private static final int REACT_LINE = 4;
   private static final int LODASH_ONLY_LINE = 3;
   private static final int NAMED_REACT_LINE = 4;
@@ -36,8 +35,8 @@ final class NodeCatalogsTest {
             new CatalogEntry("default", "react", "^18.2.0", REACT_LINE, ENTRY_COLUMN),
             new CatalogEntry("default", "lodash", "^4.17.21", LODASH_LINE, ENTRY_COLUMN),
             new CatalogEntry("react17", "react", "^17.0.2", REACT17_LINE, NAMED_ENTRY_COLUMN),
-            new CatalogEntry(
-                "react17", "react-dom", "^17.0.2", REACT_DOM_LINE, NAMED_ENTRY_COLUMN));
+            new CatalogEntry("react17", "react-dom", "^17.0.2", REACT_DOM_LINE, NAMED_ENTRY_COLUMN)
+        );
   }
 
   @Test
@@ -58,7 +57,8 @@ final class NodeCatalogsTest {
 
     assertThat(NodeCatalogs.parse(text))
         .containsExactly(
-            new CatalogEntry("default", "lodash", "^4", LODASH_ONLY_LINE, ENTRY_COLUMN));
+            new CatalogEntry("default", "lodash", "^4", LODASH_ONLY_LINE, ENTRY_COLUMN)
+        );
   }
 
   @Test
@@ -67,6 +67,7 @@ final class NodeCatalogsTest {
 
     assertThat(NodeCatalogs.parse(text))
         .containsExactly(
-            new CatalogEntry("named", "react", "^17", NAMED_REACT_LINE, NAMED_ENTRY_COLUMN));
+            new CatalogEntry("named", "react", "^17", NAMED_REACT_LINE, NAMED_ENTRY_COLUMN)
+        );
   }
 }

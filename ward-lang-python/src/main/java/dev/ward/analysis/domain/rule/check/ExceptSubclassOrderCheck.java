@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
  * neither gives no finding. Shortcut: a clause that catches a tuple of classes is not read.
  */
 public final class ExceptSubclassOrderCheck implements RuleCheck {
-
   private static final Set<String> TRIES = Set.of("try_stmt");
   private static final Set<String> CLASSES = Set.of("classdef");
   private static final String EXCEPT_KEYWORD = "except";
@@ -60,8 +59,10 @@ public final class ExceptSubclassOrderCheck implements RuleCheck {
   /** Reports each clause whose class is a subclass of a class caught by an earlier clause. */
   private void addFindings(
       final SyntaxNode tryStatement,
-      final Map<String, List<String>> moduleBases,
-      final List<RuleMatch> found) {
+      final Map<String,
+      List<String>> moduleBases,
+      final List<RuleMatch> found
+  ) {
     final List<String> caught = new ArrayList<>();
     for (final SyntaxNode clause : tryStatement.children()) {
       if (!EXCEPT_CLAUSE.equals(clause.kind())) {
@@ -111,7 +112,8 @@ public final class ExceptSubclassOrderCheck implements RuleCheck {
     final List<String> names = new ArrayList<>();
     for (final String base :
         ThreadInstantiationCheck.topLevelArguments(
-            text.substring(open + 1, text.lastIndexOf(')', colon)))) {
+            text.substring(open + 1, text.lastIndexOf(')', colon))
+        )) {
       final Matcher matcher = BASE_NAME.matcher(base);
       if (matcher.matches()) {
         names.add(matcher.group(1));

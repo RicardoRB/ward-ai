@@ -25,7 +25,11 @@ public final class FileReportSink implements ReportSink {
       final Path temporary = Files.createTempFile(directory, LockFiles.fileName(absolute), ".tmp");
       Files.writeString(temporary, content, StandardCharsets.UTF_8);
       Files.move(
-          temporary, absolute, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+          temporary,
+          absolute,
+          StandardCopyOption.ATOMIC_MOVE,
+          StandardCopyOption.REPLACE_EXISTING
+      );
     } catch (IOException exception) {
       throw new ReportWriteException("Cannot write " + absolute.getFileName(), exception);
     }

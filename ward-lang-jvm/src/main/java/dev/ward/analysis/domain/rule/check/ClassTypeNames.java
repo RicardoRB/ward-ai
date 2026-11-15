@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 
 /** Reads the type names a class declaration lists after {@code extends} and {@code implements}. */
 final class ClassTypeNames {
-
   private static final Pattern GENERICS = Pattern.compile("<.*>");
   private static final String EXTENDS = "'extends'";
   private static final String IMPLEMENTS = "'implements'";

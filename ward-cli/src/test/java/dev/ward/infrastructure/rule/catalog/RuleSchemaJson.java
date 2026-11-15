@@ -10,7 +10,6 @@ import java.util.Map;
  * text uses two-space indentation, so the committed file diffs cleanly.
  */
 final class RuleSchemaJson {
-
   private static final String INDENT = "  ";
 
   private RuleSchemaJson() {}
@@ -19,7 +18,7 @@ final class RuleSchemaJson {
   static Map<String, Object> obj(final Object... keysAndValues) {
     final Map<String, Object> map = new LinkedHashMap<>();
     for (int index = 0; index < keysAndValues.length; index += 2) {
-      map.put((String) keysAndValues[index], keysAndValues[index + 1]);
+      map.put((String)keysAndValues[index], keysAndValues[index + 1]);
     }
     return map;
   }
@@ -91,7 +90,7 @@ final class RuleSchemaJson {
       case '\t' -> "\\t";
       default ->
           character < ' '
-              ? String.format(Locale.ROOT, "\\u%04x", (int) character)
+              ? String.format(Locale.ROOT, "\\u%04x", (int)character)
               : String.valueOf(character);
     };
   }

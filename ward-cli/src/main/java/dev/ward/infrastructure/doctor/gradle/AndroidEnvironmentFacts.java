@@ -20,7 +20,8 @@ public final class AndroidEnvironmentFacts {
         "androidGradlePluginVersion",
         AndroidGradlePluginVersion.read(projectRoot).orElse(""),
         "gradleVersion",
-        GradleWrapperVersion.read(projectRoot).orElse(""));
+        GradleWrapperVersion.read(projectRoot).orElse("")
+    );
   }
 
   /** Whether the variable names an existing directory; its path never leaves this class. */

@@ -6,7 +6,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class OpenApiLoadErrorsTest {
-
   private static String schemaRef(final String reference) {
     return "openapi: 3.0.0\ncomponents:\n  schemas:\n    A:\n      $ref: '" + reference + "'\n";
   }
@@ -97,12 +96,15 @@ class OpenApiLoadErrorsTest {
             FakeProject.ENTRY,
             YamlParser.parse(schemaRef("a.yaml")).tree(),
             "a.yaml",
-            YamlParser.parse("type: string\n").tree());
+            YamlParser.parse("type: string\n").tree()
+        );
 
     assertThat(OpenApiDocuments.fromTrees(FakeProject.ENTRY, trees).loaded()).isTrue();
     final LoadResult without =
         OpenApiDocuments.fromTrees(
-            FakeProject.ENTRY, Map.of(FakeProject.ENTRY, trees.get(FakeProject.ENTRY)));
+            FakeProject.ENTRY,
+            Map.of(FakeProject.ENTRY, trees.get(FakeProject.ENTRY))
+        );
     assertThat(without.errors().getFirst().message()).contains("cannot be read");
   }
 }

@@ -12,7 +12,6 @@ import java.util.Optional;
  * other way round. Only the methods declared directly in the type's body count.
  */
 public final class EqualsHashCodeCheck implements UnitCheck {
-
   private static final String EQUALS = "equals";
   private static final String HASH_CODE = "hashCode";
 
@@ -45,7 +44,10 @@ public final class EqualsHashCodeCheck implements UnitCheck {
   }
 
   private static Optional<TypeMethods.Member> find(
-      final List<TypeMethods.Member> members, final String name, final boolean withObject) {
+      final List<TypeMethods.Member> members,
+      final String name,
+      final boolean withObject
+  ) {
     return members.stream()
         .filter(m -> name.equals(TypeMethods.name(m.method())))
         .filter(m -> matchesParameters(m.method(), withObject))

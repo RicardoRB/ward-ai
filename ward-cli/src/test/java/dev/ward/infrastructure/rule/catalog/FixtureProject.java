@@ -12,7 +12,6 @@ import java.util.List;
  * @param sources the other source files of the project
  */
 record FixtureProject(ProjectFiles manifests, List<SourceUnit> sources) {
-
   /** The project of a fixture with no other files. */
   static FixtureProject alone() {
     return new FixtureProject(ProjectFiles.empty(), List.of());

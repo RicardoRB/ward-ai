@@ -40,14 +40,17 @@ class KotlinResolutionGraphTest {
   void kotlinOnlyProjectGetsEdgesBetweenItsFiles() throws IOException {
     write(
         "src/main/kotlin/shop/domain/Price.kt",
-        "package shop.domain\n\nclass Price(val cents: Long)\n");
+        "package shop.domain\n\nclass Price(val cents: Long)\n"
+    );
     write(
         "src/main/kotlin/shop/service/Checkout.kt",
-        "package shop.service\n\nimport shop.domain.Price\n\nclass Checkout(val price: Price)\n");
+        "package shop.service\n\nimport shop.domain.Price\n\nclass Checkout(val price: Price)\n"
+    );
 
     assertThat(WardJavaEdges.of(kotlinOnly, Set.of(AnalysisLanguage.KOTLIN), Optional.empty()))
         .containsExactly(
-            "src/main/kotlin/shop/service/Checkout.kt -> src/main/kotlin/shop/domain/Price.kt");
+            "src/main/kotlin/shop/service/Checkout.kt -> src/main/kotlin/shop/domain/Price.kt"
+        );
   }
 
   private void write(final String relative, final String text) throws IOException {

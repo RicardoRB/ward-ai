@@ -13,7 +13,6 @@ import java.util.Map;
 
 /** Builds the small syntax trees and type facts of the array, instanceof and parameter tests. */
 final class MoreTrees {
-
   private MoreTrees() {}
 
   static Span span(final int column) {
@@ -42,7 +41,8 @@ final class MoreTrees {
         List.of(),
         List.of(),
         null,
-        null);
+        null
+    );
   }
 
   static SpanFacts called(final List<TypeRef> parameters, final boolean varargs) {
@@ -65,20 +65,22 @@ final class MoreTrees {
             null,
             Map.of(),
             Map.of(),
-            null),
+            null
+        ),
         List.of(),
         List.of(),
         List.of(),
         List.of(),
         null,
-        null);
+        null
+    );
   }
 
   static UnitTypeFacts table(final Object... pairs) {
     final Map<String, SpanFacts> map = new HashMap<>();
     for (int i = 0; i < pairs.length; i += 2) {
-      final Span key = pairs[i] instanceof Integer column ? span(column) : (Span) pairs[i];
-      map.put(UnitTypeFacts.key(key), (SpanFacts) pairs[i + 1]);
+      final Span key = pairs[i] instanceof Integer column ? span(column) : (Span)pairs[i];
+      map.put(UnitTypeFacts.key(key), (SpanFacts)pairs[i + 1]);
     }
     return new UnitTypeFacts(map);
   }

@@ -7,17 +7,33 @@ import java.util.regex.Pattern;
 
 /** Finds the identifiers in the expression of one f-string replacement field. */
 final class PythonFStringNames {
-
   private static final Pattern IDENTIFIER = Pattern.compile("[A-Za-z_][A-Za-z0-9_]*");
   private static final Set<String> KEYWORDS =
       Set.of(
-          "and", "or", "not", "in", "is", "if", "else", "for", "lambda", "None", "True", "False",
-          "await", "yield");
+          "and",
+          "or",
+          "not",
+          "in",
+          "is",
+          "if",
+          "else",
+          "for",
+          "lambda",
+          "None",
+          "True",
+          "False",
+          "await",
+          "yield"
+      );
 
   private PythonFStringNames() {}
 
   static void identifiers(
-      final String token, final int from, final int to, final List<PythonFStrings.Use> uses) {
+      final String token,
+      final int from,
+      final int to,
+      final List<PythonFStrings.Use> uses
+  ) {
     final String text = token.substring(from, Math.max(from, to));
     final Matcher matcher = IDENTIFIER.matcher(text);
     while (matcher.find()) {

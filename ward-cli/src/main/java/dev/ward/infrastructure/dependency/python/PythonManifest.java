@@ -27,7 +27,12 @@ import org.tomlj.TomlTable;
  * @param declared the normalized names it declares, with their widest scope
  */
 record PythonManifest(
-    String path, String manifest, String lockKey, Map<String, DependencyScope> declared) {
+    String path,
+    String manifest,
+    String lockKey,
+    Map<String,
+    DependencyScope> declared
+) {
   private static final Set<String> TEST_GROUPS = Set.of("test", "tests");
 
   /** Copies the declared names. */
@@ -58,23 +63,43 @@ record PythonManifest(
       collect(parsed, declared);
       final String name = parsed.getString("project.name");
       return new PythonManifest(
-          path, manifest, name == null ? "" : PyprojectDependencies.normalize(name), declared);
+          path,
+          manifest,
+          name == null ? "" : PyprojectDependencies.normalize(name),
+          declared
+      );
     } catch (IOException | UncheckedIOException e) {
       throw new DependencyInventoryException(
-          project.root().toString(), manifest, "it cannot be read", "check its permissions", e);
+          project.root().toString(),
+          manifest,
+          "it cannot be read",
+          "check its permissions",
+          e
+      );
     } catch (dev.ward.domain.config.WardException e) {
       throw new DependencyInventoryException(
-          project.root().toString(), manifest, e.getMessage(), "fix the TOML syntax", e);
+          project.root().toString(),
+          manifest,
+          e.getMessage(),
+          "fix the TOML syntax",
+          e
+      );
     }
   }
 
   private static void collect(
-      final TomlParseResult parsed, final Map<String, DependencyScope> declared) {
+      final TomlParseResult parsed,
+      final Map<String,
+      DependencyScope> declared
+  ) {
     requirements(declared, parsed.getArray("project.dependencies"), DependencyScope.RUNTIME);
     groups(declared, parsed.getTable("project.optional-dependencies"), false);
     groups(declared, parsed.getTable("dependency-groups"), true);
     requirements(
-        declared, parsed.getArray("tool.uv.dev-dependencies"), DependencyScope.DEVELOPMENT);
+        declared,
+        parsed.getArray("tool.uv.dev-dependencies"),
+        DependencyScope.DEVELOPMENT
+    );
     poetry(declared, parsed.getTable("tool.poetry.dependencies"), DependencyScope.RUNTIME);
     poetry(declared, parsed.getTable("tool.poetry.dev-dependencies"), DependencyScope.DEVELOPMENT);
     final TomlTable poetryGroups = parsed.getTable("tool.poetry.group");
@@ -86,7 +111,9 @@ record PythonManifest(
                   poetry(
                       declared,
                       parsed.getTable("tool.poetry.group." + group + ".dependencies"),
-                      groupScope(group)));
+                      groupScope(group)
+                  )
+          );
     }
   }
 
@@ -95,9 +122,11 @@ record PythonManifest(
   }
 
   private static void groups(
-      final Map<String, DependencyScope> declared,
+      final Map<String,
+      DependencyScope> declared,
       final TomlTable table,
-      final boolean dependencyGroups) {
+      final boolean dependencyGroups
+  ) {
     if (table != null) {
       table
           .keySet()
@@ -106,14 +135,18 @@ record PythonManifest(
                   requirements(
                       declared,
                       table.getArray(key),
-                      dependencyGroups ? groupScope(key) : DependencyScope.RUNTIME));
+                      dependencyGroups ? groupScope(key) : DependencyScope.RUNTIME
+                  )
+          );
     }
   }
 
   private static void requirements(
-      final Map<String, DependencyScope> declared,
+      final Map<String,
+      DependencyScope> declared,
       final TomlArray items,
-      final DependencyScope scope) {
+      final DependencyScope scope
+  ) {
     if (items == null) {
       return;
     }
@@ -126,16 +159,22 @@ record PythonManifest(
   }
 
   private static void poetry(
-      final Map<String, DependencyScope> declared,
+      final Map<String,
+      DependencyScope> declared,
       final TomlTable table,
-      final DependencyScope scope) {
+      final DependencyScope scope
+  ) {
     if (table != null) {
       table.keySet().stream()
           .filter(name -> !"python".equals(name))
           .forEach(
               name ->
                   declared.merge(
-                      PyprojectDependencies.normalize(name), scope, DependencyScope::widest));
+                      PyprojectDependencies.normalize(name),
+                      scope,
+                      DependencyScope::widest
+                  )
+          );
     }
   }
 }

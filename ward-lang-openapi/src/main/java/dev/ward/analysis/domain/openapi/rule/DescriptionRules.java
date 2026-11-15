@@ -10,7 +10,6 @@ import java.util.Optional;
 
 /** The rule that wants a description on every parameter. */
 final class DescriptionRules {
-
   private static final String PARAMETERS = "parameters";
 
   private DescriptionRules() {}
@@ -46,7 +45,9 @@ final class DescriptionRules {
                 document,
                 parameter,
                 "Parameter objects must have \"description\".",
-                "description"));
+                "description"
+            )
+        );
       }
     }
     return findings;

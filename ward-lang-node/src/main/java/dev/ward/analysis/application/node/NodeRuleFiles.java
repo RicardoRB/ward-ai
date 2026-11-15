@@ -8,7 +8,6 @@ import java.util.List;
  * alphabetical order; no other module lists it.
  */
 public final class NodeRuleFiles implements RuleFileProvider {
-
   private static final List<String> FILES =
       List.of(
           "rules/duplication-node.toml",
@@ -43,7 +42,8 @@ public final class NodeRuleFiles implements RuleFileProvider {
           "rules/node/style-typescript.toml",
           "rules/node/suggestion.toml",
           "rules/node/typescript-eslint-syntax.toml",
-          "rules/node/typescript-eslint-types.toml");
+          "rules/node/typescript-eslint-types.toml"
+      );
 
   @Override
   public List<String> ruleFiles() {

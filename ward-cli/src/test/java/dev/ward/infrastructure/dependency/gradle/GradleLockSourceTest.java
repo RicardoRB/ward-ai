@@ -30,10 +30,11 @@ class GradleLockSourceTest {
 
   private static DependencyInventory read(final Path dir, final CommandExecutor executor) {
     return new GradleDependencySource(
-            executor,
-            new dev.ward.infrastructure.dependency.FileGraphCache(),
-            new ForyJsonCodec(),
-            false)
+        executor,
+        new dev.ward.infrastructure.dependency.FileGraphCache(),
+        new ForyJsonCodec(),
+        false
+    )
         .read(project(dir, false));
   }
 
@@ -76,7 +77,8 @@ class GradleLockSourceTest {
             "org.slf4j:slf4j-api",
             "com.google.code.findbugs:jsr305",
             "org.junit.jupiter:junit-jupiter-api",
-            "org.mapstruct:mapstruct-processor");
+            "org.mapstruct:mapstruct-processor"
+        );
     assertThat(module.dependencies()).allMatch(d -> d.requiredBy().isEmpty());
   }
 
@@ -86,7 +88,8 @@ class GradleLockSourceTest {
     Files.writeString(
         work.resolve("build.gradle.kts"),
         Files.readString(work.resolve("build.gradle.kts"))
-            .replace("dependencyLocking { lockAllConfigurations() }", ""));
+            .replace("dependencyLocking { lockAllConfigurations() }", "")
+    );
     final FakeGradle gradle = new FakeGradle(MULTI.resolve("tsv"));
 
     read(work, gradle);

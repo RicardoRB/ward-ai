@@ -57,7 +57,11 @@ final class ClassMemberReader {
   }
 
   private void namedMethod(
-      final String name, final SyntaxNode node, final int flags, final List<String> decorators) {
+      final String name,
+      final SyntaxNode node,
+      final int flags,
+      final List<String> decorators
+  ) {
     final Sig sig = new Sig(List.of(), SigReader.params(node), TsType.UNKNOWN);
     if (CONSTRUCTOR.equals(name)) {
       sink.addConstruct(sig);
@@ -82,7 +86,11 @@ final class ClassMemberReader {
     final SyntaxNode signature = TreeKit.child(node, CALL_SIGNATURE);
     if (name != null && signature != null) {
       sink.method(
-          TreeText.unquote(TreeText.text(name)), SigReader.of(signature), flags, decorators);
+          TreeText.unquote(TreeText.text(name)),
+          SigReader.of(signature),
+          flags,
+          decorators
+      );
     } else if (name != null) {
       ClassFieldReader.property(sink, node, name, flags, decorators);
     } else {

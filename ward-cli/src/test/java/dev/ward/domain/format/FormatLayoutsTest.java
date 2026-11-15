@@ -10,7 +10,6 @@ import java.util.OptionalInt;
 import org.junit.jupiter.api.Test;
 
 class FormatLayoutsTest {
-
   private static final String SOURCE = "class A {}\n";
   private static final int WIDTH = 100;
   private static final int INDENT = 4;
@@ -25,7 +24,8 @@ class FormatLayoutsTest {
   @Test
   void aLayoutLineEndingWinsOverTheFile() {
     assertThat(
-            FormatLayouts.apply(SOURCE, layout(Optional.of(LineEnding.LF), true), LineEnding.CRLF))
+        FormatLayouts.apply(SOURCE, layout(Optional.of(LineEnding.LF), true), LineEnding.CRLF)
+    )
         .isEqualTo(SOURCE);
   }
 
@@ -58,7 +58,9 @@ class FormatLayoutsTest {
   }
 
   private static FormatLayout layout(
-      final Optional<LineEnding> ending, final boolean finalNewline) {
+      final Optional<LineEnding> ending,
+      final boolean finalNewline
+  ) {
     return new FormatLayout(
         OptionalInt.of(WIDTH),
         IndentStyle.SPACES,
@@ -66,7 +68,8 @@ class FormatLayoutsTest {
         INDENT,
         ending,
         finalNewline,
-        ByteOrderMark.PRESERVE);
+        ByteOrderMark.PRESERVE
+    );
   }
 
   private static FormatLayout bomLayout() {
@@ -77,6 +80,7 @@ class FormatLayoutsTest {
         INDENT,
         Optional.empty(),
         true,
-        ByteOrderMark.REQUIRED);
+        ByteOrderMark.REQUIRED
+    );
   }
 }

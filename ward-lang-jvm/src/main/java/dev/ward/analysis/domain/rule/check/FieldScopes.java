@@ -7,7 +7,6 @@ import java.util.Set;
 
 /** Reads the class members around a syntax node: its class body, static context and setters. */
 final class FieldScopes {
-
   private static final Set<String> CONTAINERS = Set.of("classBody", "enumBodyDeclarations");
   private static final Set<String> NOT_ENTERED = Set.of("classBody", "block");
   private static final Set<String> IMPLICITLY_STATIC =
@@ -15,7 +14,8 @@ final class FieldScopes {
           "interfaceDeclaration",
           "enumDeclaration",
           "recordDeclaration",
-          "annotationTypeDeclaration");
+          "annotationTypeDeclaration"
+      );
   private static final Set<String> OPENERS = Set.of("(", "{", "=");
   private static final String MEMBER = "classBodyDeclaration";
   private static final String DECLARATOR = "variableDeclarator";

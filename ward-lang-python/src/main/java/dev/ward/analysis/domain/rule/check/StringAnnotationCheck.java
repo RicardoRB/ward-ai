@@ -13,7 +13,6 @@ import java.util.Set;
  * end with an operator.
  */
 public final class StringAnnotationCheck implements RuleCheck {
-
   private static final Set<String> HOLDERS = Set.of("tfpdef", "annassign", "funcdef");
   private static final String OPENERS = "([{";
   private static final String CLOSERS = ")]}";

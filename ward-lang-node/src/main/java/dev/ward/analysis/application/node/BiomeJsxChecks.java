@@ -19,7 +19,6 @@ import java.util.Map;
 
 /** The JSX checks that read only the element and its text, such as sandbox, comments and alt. */
 final class BiomeJsxChecks {
-
   private static final String MESSAGE = "message";
 
   private BiomeJsxChecks() {}
@@ -29,37 +28,52 @@ final class BiomeJsxChecks {
     return Map.ofEntries(
         entry(
             "node-unsafe-iframe-sandbox",
-            toml -> new BiomeUnsafeIframeSandboxCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new BiomeUnsafeIframeSandboxCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "node-comment-text",
-            toml -> new BiomeCommentTextCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new BiomeCommentTextCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "node-header-scope",
-            toml -> new BiomeHeaderScopeCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new BiomeHeaderScopeCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "node-redundant-alt",
-            toml -> new BiomeRedundantAltCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new BiomeRedundantAltCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "node-ambiguous-anchor-text",
             toml ->
                 new BiomeAmbiguousAnchorTextCheck(
-                    TomlValues.strings(toml, "words"), TomlValues.required(toml, MESSAGE))),
+                    TomlValues.strings(toml, "words"),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
-            "node-valid-lang", toml -> new BiomeValidLangCheck(TomlValues.required(toml, MESSAGE))),
+            "node-valid-lang",
+            toml -> new BiomeValidLangCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "node-label-without-control",
-            toml -> new BiomeLabelWithoutControlCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new BiomeLabelWithoutControlCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "node-misplaced-list-element",
-            toml -> new BiomeMisplacedListElementCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new BiomeMisplacedListElementCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "node-suspicious-semicolon",
-            toml -> new BiomeSuspiciousSemicolonCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new BiomeSuspiciousSemicolonCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "node-google-font-display",
-            toml -> new BiomeGoogleFontDisplayCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new BiomeGoogleFontDisplayCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "node-valid-autocomplete",
-            toml -> new BiomeValidAutocompleteCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new BiomeValidAutocompleteCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 }

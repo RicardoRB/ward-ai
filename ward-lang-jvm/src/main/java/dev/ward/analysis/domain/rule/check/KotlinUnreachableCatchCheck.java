@@ -56,7 +56,8 @@ public final class KotlinUnreachableCatchCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(TRY)).stream()
         .map(SyntaxWalk.Visit::node)
         .flatMap(tryNode -> unreachable(tryNode, types).stream())
@@ -80,7 +81,10 @@ public final class KotlinUnreachableCatchCheck implements RuleCheck {
   }
 
   private static boolean isShadowed(
-      final SyntaxNode clause, final List<SyntaxNode> earlier, final UnitTypeFacts types) {
+      final SyntaxNode clause,
+      final List<SyntaxNode> earlier,
+      final UnitTypeFacts types
+  ) {
     final Optional<SyntaxNode> userType = userTypeOf(clause);
     final Optional<TypeRef> current = userType.flatMap(node -> types.typeOf(node.span()));
     if (current.isEmpty()) {

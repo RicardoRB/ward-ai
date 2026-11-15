@@ -20,7 +20,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class AnalysisFindingMapperTest {
-
   private static final int LINE = 4;
   private static final int COLUMN = 2;
   private static final int LATER_COLUMN = 5;
@@ -38,7 +37,8 @@ class AnalysisFindingMapperTest {
             4,
             2,
             "https://help",
-            List.of());
+            List.of()
+        );
 
     final Finding mapped = mapper.map("gate-x", "engine", List.of(source)).getFirst();
 
@@ -58,8 +58,8 @@ class AnalysisFindingMapperTest {
         Arrays.stream(AnalysisSeverity.values())
             .map(
                 severity ->
-                    new AnalysisFinding(
-                        "r", severity, "m", "a.java", LINE, COLUMN, null, List.of()))
+                    new AnalysisFinding("r", severity, "m", "a.java", LINE, COLUMN, null, List.of())
+            )
             .toList();
 
     assertThat(mapper.map("g", "t", sources))
@@ -87,7 +87,8 @@ class AnalysisFindingMapperTest {
   void outputOrderDoesNotDependOnInputOrder() {
     final List<AnalysisFinding> input =
         new ArrayList<>(
-            List.of(finding("x.java", 3, 1, "a", "m"), finding("x.java", 1, 1, "b", "m")));
+            List.of(finding("x.java", 3, 1, "a", "m"), finding("x.java", 1, 1, "b", "m"))
+        );
     final List<Finding> forward = mapper.map("g", "t", input);
     Collections.reverse(input);
 
@@ -98,8 +99,10 @@ class AnalysisFindingMapperTest {
   void fakeFrontendFindingsAreMappedInOrder() {
     final LanguageFrontend frontend =
         unit ->
-            new ParseResult(
-                new SyntaxNode("file", new Span(1, 1, 1, 2, 0, 1), Map.of(), List.of()), List.of());
+        new ParseResult(
+            new SyntaxNode("file", new Span(1, 1, 1, 2, 0, 1), Map.of(), List.of()),
+            List.of()
+        );
     final SyntaxNode root =
         frontend.parse(new SourceUnit("a.py", AnalysisLanguage.PYTHON, "x")).tree();
     final List<AnalysisFinding> found =
@@ -114,8 +117,17 @@ class AnalysisFindingMapperTest {
       final Integer line,
       final Integer column,
       final String rule,
-      final String message) {
+      final String message
+  ) {
     return new AnalysisFinding(
-        rule, AnalysisSeverity.ERROR, message, file, line, column, null, List.of());
+        rule,
+        AnalysisSeverity.ERROR,
+        message,
+        file,
+        line,
+        column,
+        null,
+        List.of()
+    );
   }
 }

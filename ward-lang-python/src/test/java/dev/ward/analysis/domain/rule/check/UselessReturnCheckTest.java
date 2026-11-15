@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 /** The trailing bare returns, and the bodies that end with something else. */
 final class UselessReturnCheckTest {
-
   private static final UselessReturnCheck CHECK = new UselessReturnCheck("m");
 
   @Test

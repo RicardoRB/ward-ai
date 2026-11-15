@@ -2,7 +2,6 @@ package dev.ward.analysis.domain.openapi;
 
 /** Looks ahead on a line to tell a mapping key from a scalar, and finds document markers. */
 final class YamlKeys {
-
   private static final String START = "---";
   private static final String END = "...";
   private static final char SINGLE = '\'';

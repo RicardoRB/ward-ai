@@ -8,7 +8,6 @@ package dev.ward.analysis.domain.rule.check;
  * on the file, so the time spent on a file stays bounded by one budget.
  */
 final class WorkBudget {
-
   /** The least work a region may use, however short it is. */
   static final long FLOOR = 1_000_000L;
 

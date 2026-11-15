@@ -69,7 +69,9 @@ class CoverageBranchReadingTest {
   void aBranchFoundRecordWithNoBranchesIsStillABranchReport() throws IOException {
     final Path report =
         Files.writeString(
-            temp.resolve("lcov.info"), "SF:a.ts\nDA:1,1\nBRF:0\nBRH:0\nend_of_record\n");
+            temp.resolve("lcov.info"),
+            "SF:a.ts\nDA:1,1\nBRF:0\nBRH:0\nend_of_record\n"
+        );
 
     final LineHits hits = reader.read(report);
 

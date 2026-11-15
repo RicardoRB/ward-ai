@@ -52,7 +52,8 @@ public final class VarargPrimitiveArrayCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts facts,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(EXPRESSION)).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(call -> spreadsPrimitiveArray(call, facts))
@@ -93,7 +94,8 @@ public final class VarargPrimitiveArrayCheck implements RuleCheck {
             invoked ->
                 SyntaxWalk.descendants(invoked).stream()
                     .filter(node -> "expressionList".equals(node.kind()))
-                    .findFirst())
+                    .findFirst()
+        )
         .map(list -> list.children().stream().filter(c -> EXPRESSION.equals(c.kind())).toList())
         .orElse(List.of());
   }

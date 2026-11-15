@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /** Reports a private member that is never read; a write alone does not use it. */
 class NodeUnusedPrivateMembersCheckTest {
-
   /** Scenario: a member that is never mentioned is reported with its name. */
   @Test
   void aNeverUsedMemberIsReported() {

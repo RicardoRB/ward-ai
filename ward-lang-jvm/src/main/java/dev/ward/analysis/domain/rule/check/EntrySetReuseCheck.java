@@ -52,7 +52,8 @@ public final class EntrySetReuseCheck implements UnitCheck {
     }
     final Pattern add =
         Pattern.compile(
-            "^[\\w.]+\\.add\\(" + Pattern.quote(SyntaxWalk.text(variable.get())) + "\\)$");
+            "^[\\w.]+\\.add\\(" + Pattern.quote(SyntaxWalk.text(variable.get())) + "\\)$"
+        );
     return SyntaxWalk.descendants(loop.children().get(loop.children().size() - 1)).stream()
         .filter(n -> EXPRESSION.equals(n.kind()) && add.matcher(SyntaxWalk.text(n)).matches())
         .toList();

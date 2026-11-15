@@ -16,11 +16,14 @@ class RuleSelectionEditDisableTest {
   void disableMovesAnIdFromIncludeToExclude() {
     final String text =
         RuleSelectionEdit.disable(
-            "[select]\ninclude = [\"" + FIELD + "\", \"" + METHOD_NAME + "\"]\n", List.of(METHOD));
+            "[select]\ninclude = [\"" + FIELD + "\", \"" + METHOD_NAME + "\"]\n",
+            List.of(METHOD)
+        );
 
     assertThat(text)
         .isEqualTo(
-            "[select]\nexclude = [\"" + METHOD_NAME + "\"]\ninclude = [\"" + FIELD + "\"]\n");
+            "[select]\nexclude = [\"" + METHOD_NAME + "\"]\ninclude = [\"" + FIELD + "\"]\n"
+        );
     assertValid(text);
   }
 
@@ -37,7 +40,8 @@ class RuleSelectionEditDisableTest {
     final String text =
         RuleSelectionEdit.disable(
             "[select]\ninclude = [\n    \"" + METHOD_NAME + "\",\n    \"" + FIELD + "\"\n]\n",
-            List.of(FIELD));
+            List.of(FIELD)
+        );
 
     assertThat(text)
         .isEqualTo(
@@ -45,7 +49,8 @@ class RuleSelectionEditDisableTest {
                 + FIELD
                 + "\"]\ninclude = [\n    \""
                 + METHOD_NAME
-                + "\",\n]\n");
+                + "\",\n]\n"
+        );
     assertValid(text);
   }
 

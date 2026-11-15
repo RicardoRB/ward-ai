@@ -29,7 +29,8 @@ class SwiftLicenseMetadataTest {
         .lookup(
             project(root, Language.SWIFT, BuildTool.SWIFTPM),
             "",
-            dependency(Ecosystem.SWIFT_URL, NAME, "2.0.0"));
+            dependency(Ecosystem.SWIFT_URL, NAME, "2.0.0")
+        );
   }
 
   @Test
@@ -47,7 +48,8 @@ class SwiftLicenseMetadataTest {
     write(
         root,
         CHECKOUT + "LICENSE.md",
-        texts.text("MIT").orElseThrow().replace("<year> <copyright holders>", "2021 Someone"));
+        texts.text("MIT").orElseThrow().replace("<year> <copyright holders>", "2021 Someone")
+    );
 
     assertThat(lookup().license().describe()).isEqualTo("MIT");
   }
@@ -57,13 +59,15 @@ class SwiftLicenseMetadataTest {
     write(
         root,
         CHECKOUT + "COPYING",
-        texts.text("GPL-3.0").orElseThrow() + "\nAn addendum the standard text lacks.\n");
+        texts.text("GPL-3.0").orElseThrow() + "\nAn addendum the standard text lacks.\n"
+    );
     assertThat(lookup().license().describe()).isEqualTo("GPL-3.0");
 
     write(
         root,
         CHECKOUT + "COPYING",
-        "MIT License\n\nPermission is hereby granted, but only for non-commercial use.\n");
+        "MIT License\n\nPermission is hereby granted, but only for non-commercial use.\n"
+    );
     assertThat(lookup().reason()).isEqualTo(LicenseLookup.Reason.UNRECOGNIZED);
   }
 

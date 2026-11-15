@@ -27,7 +27,6 @@ import org.junit.jupiter.api.Test;
  * and checks that the reverse-dependency index it stores holds the edge between the two members.
  */
 final class PythonDependencyIndexTest {
-
   private static final Path WORKSPACE = Path.of("src/test/resources/fixtures/python-uv-workspace");
   private static final String IMPORTER = "packages/shop/src/shop/checkout.py";
   private static final String IMPORTED = "packages/billing/src/billing/invoice.py";
@@ -49,14 +48,18 @@ final class PythonDependencyIndexTest {
         };
     final FrontendSupport python =
         new FrontendSupport(
-            AnalysisLanguage.PYTHON, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX));
+            AnalysisLanguage.PYTHON,
+            new AntlrLanguageFrontend(),
+            Set.of(RuleCapability.SYNTAX)
+        );
 
     final List<SourceUnit> units = pythonUnits();
     new UnitResultCache(
-            new RuleEngine(new MetricMatcher()),
-            AnalysisCacheFixtures.codec(),
-            "test",
-            new PythonDependencyAdapters().forProject(WORKSPACE, units))
+        new RuleEngine(new MetricMatcher()),
+        AnalysisCacheFixtures.codec(),
+        "test",
+        new PythonDependencyAdapters().forProject(WORKSPACE, units)
+    )
         .run(cache, units, List.of(python), List.of());
 
     assertThat(entries.values())
@@ -72,7 +75,8 @@ final class PythonDependencyIndexTest {
               file -> {
                 final String path = WORKSPACE.relativize(file).toString().replace('\\', '/');
                 return new SourceUnit(path, AnalysisLanguage.PYTHON, read(file));
-              })
+              }
+          )
           .toList();
     }
   }

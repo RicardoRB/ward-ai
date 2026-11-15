@@ -12,7 +12,6 @@ import java.util.Set;
  * another one is left alone, as the methods it inherits are unknown.
  */
 public final class ImplicitFunctionalInterfaceCheck implements UnitCheck {
-
   private static final String INTERFACE_DECLARATION = "interfaceDeclaration";
   private static final String MEMBER_DECLARATION = "memberDeclaration";
 
@@ -47,10 +46,12 @@ public final class ImplicitFunctionalInterfaceCheck implements UnitCheck {
   private static boolean annotated(final SyntaxNode wrapper) {
     return wrapper.children().stream()
         .filter(
-            c -> !INTERFACE_DECLARATION.equals(c.kind()) && !MEMBER_DECLARATION.equals(c.kind()))
+            c -> !INTERFACE_DECLARATION.equals(c.kind()) && !MEMBER_DECLARATION.equals(c.kind())
+        )
         .flatMap(c -> SyntaxWalk.descendants(c).stream())
         .anyMatch(
-            n -> "annotation".equals(n.kind()) && ANNOTATION.equals(simple(SyntaxWalk.text(n))));
+            n -> "annotation".equals(n.kind()) && ANNOTATION.equals(simple(SyntaxWalk.text(n)))
+        );
   }
 
   private static String simple(final String annotation) {

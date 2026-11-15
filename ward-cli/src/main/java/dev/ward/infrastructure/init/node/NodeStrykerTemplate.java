@@ -38,7 +38,10 @@ public final class NodeStrykerTemplate {
    * tests and config files out of the mutants.
    */
   public static String stryker(
-      final String testGate, final QualityPreset preset, final Framework framework) {
+      final String testGate,
+      final QualityPreset preset,
+      final Framework framework
+  ) {
     final Integer minimum = preset == null ? null : preset.rules().mutationThreshold();
     final String runner =
         "bun-test".equals(testGate) ? BUN_RUNNER : "  testRunner: \"" + testGate + "\",";

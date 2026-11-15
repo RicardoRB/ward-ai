@@ -20,7 +20,6 @@ import java.util.Set;
  * {@code java.lang} types do not count. The node kinds and the excluded names are not used then.
  */
 public final class ClassCouplingCheck implements RuleCheck {
-
   private static final String CLASS = "classDeclaration";
   private static final Set<String> CLASSES = Set.of(CLASS);
   private static final String TYPE_ARGUMENTS = "typeArguments";
@@ -44,7 +43,8 @@ public final class ClassCouplingCheck implements RuleCheck {
           "localVariableDeclaration",
           "formalParameter",
           "enhancedForControl",
-          "resource");
+          "resource"
+      );
   private static final Set<String> TYPE_PARTS = Set.of(TYPE_TYPE, "classOrInterfaceType");
   private static final Set<String> JAVA_LANG =
       Set.of(
@@ -94,7 +94,8 @@ public final class ClassCouplingCheck implements RuleCheck {
           "Deprecated",
           "SuppressWarnings",
           "FunctionalInterface",
-          "SafeVarargs");
+          "SafeVarargs"
+      );
 
   private final Counting counting;
   private final Set<String> typeKinds;
@@ -115,7 +116,8 @@ public final class ClassCouplingCheck implements RuleCheck {
       final Set<String> typeKinds,
       final Set<String> excluded,
       final int max,
-      final String message) {
+      final String message
+  ) {
     this(Counting.REFERENCES, typeKinds, excluded, max, message);
   }
 
@@ -135,7 +137,8 @@ public final class ClassCouplingCheck implements RuleCheck {
       final Set<String> typeKinds,
       final Set<String> excluded,
       final int max,
-      final String message) {
+      final String message
+  ) {
     this.counting = Objects.requireNonNull(counting, "counting");
     this.typeKinds = Set.copyOf(typeKinds);
     this.excluded = Set.copyOf(excluded);
@@ -155,12 +158,17 @@ public final class ClassCouplingCheck implements RuleCheck {
   }
 
   private void report(
-      final SyntaxNode node, final Set<String> types, final List<RuleMatch> matches) {
+      final SyntaxNode node,
+      final Set<String> types,
+      final List<RuleMatch> matches
+  ) {
     if (types.size() > max) {
       matches.add(
           new RuleMatch(
               node.span(),
-              CheckSupport.fill(message, String.valueOf(types.size()), String.valueOf(max))));
+              CheckSupport.fill(message, String.valueOf(types.size()), String.valueOf(max))
+          )
+      );
     }
   }
 

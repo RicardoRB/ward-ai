@@ -19,7 +19,6 @@ import java.util.stream.Stream;
  * @param fixtures the folder of the Java fixtures
  */
 record ParityEnvironment(Path tools, Path work, Path fixtures) {
-
   static final String TOOLS_PROPERTY = "ward.parity.tools";
   private static final String VIOLATING = "violating";
   private static final String PASSING = "passing";
@@ -35,7 +34,9 @@ record ParityEnvironment(Path tools, Path work, Path fixtures) {
         new ParityEnvironment(
             Path.of(tools).toAbsolutePath(),
             Path.of("target", "parity").toAbsolutePath(),
-            RuleFixtureSet.root().resolve("java")));
+            RuleFixtureSet.root().resolve("java")
+        )
+    );
   }
 
   /** Returns the class path of {@code tool}. */

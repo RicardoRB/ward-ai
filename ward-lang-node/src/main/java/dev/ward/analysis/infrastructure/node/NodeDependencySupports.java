@@ -12,7 +12,6 @@ import java.util.List;
  * one resolver over the project's layout, so a TypeScript file can reach a JavaScript file.
  */
 public final class NodeDependencySupports {
-
   private NodeDependencySupports() {}
 
   /** Returns the TypeScript and JavaScript supports that resolve against {@code layout}. */
@@ -21,6 +20,7 @@ public final class NodeDependencySupports {
     final NodeResolver resolver = new NodeResolver(layout);
     return List.of(
         new DependencySupport(AnalysisLanguage.TYPESCRIPT, summarizer, resolver),
-        new DependencySupport(AnalysisLanguage.JAVASCRIPT, summarizer, resolver));
+        new DependencySupport(AnalysisLanguage.JAVASCRIPT, summarizer, resolver)
+    );
   }
 }

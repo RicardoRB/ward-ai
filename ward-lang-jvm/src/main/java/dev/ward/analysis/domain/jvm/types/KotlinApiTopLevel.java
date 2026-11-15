@@ -51,6 +51,7 @@ final class KotlinApiTopLevel {
         List.of(),
         List.of(),
         own,
-        locations.get(name));
+        locations.get(name)
+    );
   }
 }

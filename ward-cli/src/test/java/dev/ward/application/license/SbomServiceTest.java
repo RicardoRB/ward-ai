@@ -76,7 +76,8 @@ class SbomServiceTest {
             LicenseFixtures.detector(),
             LicenseFixtures.service(LicenseFixtures.inventory(), Map.of()),
             Map.of(),
-            "1.2.3");
+            "1.2.3"
+        );
 
     assertThat(empty.generate(DIRECTORY, Set.of(), Optional.empty()).content())
         .contains("\"components\": []");

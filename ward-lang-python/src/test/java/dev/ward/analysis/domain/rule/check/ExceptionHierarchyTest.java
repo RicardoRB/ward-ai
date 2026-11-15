@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 /** The builtin exception table and the ancestor lookup that the subclass-order check uses. */
 final class ExceptionHierarchyTest {
-
   @Test
   void builtinSubclassesReachTheirBaseClassesTransitively() {
     assertThat(ExceptionHierarchy.ancestors("ValueError", Map.of()))

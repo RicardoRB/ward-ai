@@ -46,7 +46,9 @@ final class JsonDependencyCodec {
               all(dto.imports, ReferenceDto::toReference),
               all(dto.declared, SymbolDto::toSymbol),
               Set.copyOf(names(dto.usedNames)),
-              Set.copyOf(names(dto.assignedNames))));
+              Set.copyOf(names(dto.assignedNames))
+          )
+      );
     } catch (final JsonCodecException | IllegalArgumentException exception) {
       return Optional.empty();
     }
@@ -85,7 +87,13 @@ final class JsonDependencyCodec {
       throw new IllegalArgumentException("Cached span is missing");
     }
     return new Span(
-        dto.startLine, dto.startColumn, dto.endLine, dto.endColumn, dto.startOffset, dto.endOffset);
+        dto.startLine,
+        dto.startColumn,
+        dto.endLine,
+        dto.endColumn,
+        dto.startOffset,
+        dto.endOffset
+    );
   }
 
   /** One stored file summary; its public fields are serialized. */

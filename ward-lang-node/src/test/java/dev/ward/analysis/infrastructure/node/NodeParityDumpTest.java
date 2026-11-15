@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Test;
  * {@code ward-lang-node/parity} does.
  */
 class NodeParityDumpTest {
-
   private static final String OUTPUT_PROPERTY = "ward.parity.out";
   private static final int FIXTURE_COUNT = 36;
   private static final String ROOT = "fixtures/node-structural/";
@@ -32,7 +31,8 @@ class NodeParityDumpTest {
           "complexity",
           "file-length",
           "naming",
-          "nesting-depth");
+          "nesting-depth"
+      );
 
   @Test
   void dumpsFindingsForEveryFixture() throws IOException {
@@ -51,7 +51,8 @@ class NodeParityDumpTest {
       final List<String> entries,
       final String directory,
       final String extension,
-      final AnalysisLanguage language)
+      final AnalysisLanguage language
+  )
       throws IOException {
     for (final String metric : METRICS) {
       for (final String kind : List.of("violating", "passing")) {

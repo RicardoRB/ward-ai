@@ -43,7 +43,8 @@ final class WardProvidesModule {
         new ClineIntegration(),
         new FactoryDroidIntegration(),
         new AmpIntegration(),
-        new JunieIntegration());
+        new JunieIntegration()
+    );
   }
 
   @Provides

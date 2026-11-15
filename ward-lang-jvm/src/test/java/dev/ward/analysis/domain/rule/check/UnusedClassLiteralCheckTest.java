@@ -6,7 +6,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class UnusedClassLiteralCheckTest {
-
   private static List<String> run(final String body) {
     return new ParsedFacts("final class C {\n  Object t() {\n" + body + "  }\n}\n")
         .run(new UnusedClassLiteralCheck("message"));

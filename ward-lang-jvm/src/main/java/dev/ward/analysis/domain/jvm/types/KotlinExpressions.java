@@ -146,6 +146,7 @@ final class KotlinExpressions {
             ctx.scope()
                 .resolve(List.of(name))
                 .map(binary -> Typed.naming(JType.ClassType.of(binary)))
-                .orElseGet(() -> Typed.pkg(name)));
+                .orElseGet(() -> Typed.pkg(name))
+    );
   }
 }

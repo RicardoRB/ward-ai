@@ -20,7 +20,8 @@ public record LicenseSettings(
     List<String> patterns,
     List<String> exceptions,
     Set<String> scopes,
-    boolean unknownFails) {
+    boolean unknownFails
+) {
   /** The default deny list. */
   public static final List<String> DEFAULT_DENY = List.of("GPL-*", "AGPL-*");
 

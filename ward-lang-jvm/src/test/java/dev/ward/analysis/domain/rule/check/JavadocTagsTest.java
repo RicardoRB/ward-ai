@@ -9,7 +9,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class JavadocTagsTest {
-
   private static final int FIRST_LINE = 10;
   private static final int START_COLUMN = 3;
   private static final int END_LINE = 16;
@@ -33,9 +32,11 @@ class JavadocTagsTest {
                 END_LINE,
                 END_COLUMN,
                 START_OFFSET,
-                START_OFFSET + text.length()),
+                START_OFFSET + text.length()
+            ),
             Map.of("text", text),
-            List.of());
+            List.of()
+        );
 
     final List<JavadocTags.Tag> tags = JavadocTags.tags(comment);
 

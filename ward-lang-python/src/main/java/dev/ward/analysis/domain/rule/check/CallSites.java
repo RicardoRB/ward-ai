@@ -7,7 +7,6 @@ import java.util.Optional;
 
 /** Reads a call such as {@code f(1, b=2)} that names its callee directly, and its arguments. */
 final class CallSites {
-
   private static final String ATOM = "atom";
   private static final String NAME = "name";
   private static final String TRAILER = "trailer";
@@ -60,7 +59,7 @@ final class CallSites {
     final List<String> keywords =
         kinds.stream().filter(kind -> kind != null && !kind.isEmpty()).toList();
     final int positional =
-        (int) kinds.stream().filter(kind -> kind != null && kind.isEmpty()).count();
+        (int)kinds.stream().filter(kind -> kind != null && kind.isEmpty()).count();
     return new Arguments(positional, keywords, kinds.contains(null));
   }
 

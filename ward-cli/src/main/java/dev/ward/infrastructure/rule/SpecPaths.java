@@ -7,7 +7,6 @@ import org.tomlj.TomlParseResult;
 
 /** Reads the list of specification file names a taint rule names. */
 final class SpecPaths {
-
   private SpecPaths() {}
 
   /** Returns the classpath paths of the specification files a taint rule names, in order. */

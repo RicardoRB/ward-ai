@@ -40,17 +40,34 @@ public final class QualityGateDefinitions {
           new Definition("swift-test", "Swift tests", Phase.LOCAL, false),
           new Definition(SupportedQualityGates.XCODEBUILD_TEST, "Xcode tests", Phase.LOCAL, false),
           new Definition(
-              SupportedQualityGates.SWIFT_COVERAGE, "Swift coverage", Phase.LOCAL, false),
+              SupportedQualityGates.SWIFT_COVERAGE,
+              "Swift coverage",
+              Phase.LOCAL,
+              false
+          ),
           new Definition(SupportedQualityGates.ANDROID_LINT, "Android Lint", Phase.LOCAL, false),
           new Definition(
-              SupportedQualityGates.ANDROID_UNIT_TEST, "Android unit tests", Phase.LOCAL, false),
+              SupportedQualityGates.ANDROID_UNIT_TEST,
+              "Android unit tests",
+              Phase.LOCAL,
+              false
+          ),
           new Definition(
-              SupportedQualityGates.ANDROID_COVERAGE, "Android coverage", Phase.LOCAL, false),
+              SupportedQualityGates.ANDROID_COVERAGE,
+              "Android coverage",
+              Phase.LOCAL,
+              false
+          ),
           new Definition(
-              SupportedQualityGates.ANALYSIS, SupportedQualityGates.ANALYSIS, Phase.LOCAL, true),
+              SupportedQualityGates.ANALYSIS,
+              SupportedQualityGates.ANALYSIS,
+              Phase.LOCAL,
+              true
+          ),
           gate(SupportedQualityGates.FORMAT, Phase.FAST),
           gate(SupportedQualityGates.CRAP, Phase.LOCAL),
-          gate("command", Phase.LOCAL));
+          gate("command", Phase.LOCAL)
+      );
 
   /** When a gate runs: on every edit, before a push, only on staged diffs, or in CI. */
   public enum Phase {

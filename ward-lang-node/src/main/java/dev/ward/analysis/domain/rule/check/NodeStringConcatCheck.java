@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
  * reported. Parenthesized operands belong to the chain they sit in.
  */
 public final class NodeStringConcatCheck implements RuleCheck {
-
   private static final String EXPRESSION = "singleExpression";
   private static final String PLUS = "'+'";
   private static final String OPEN = "'('";

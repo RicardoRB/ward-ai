@@ -11,7 +11,6 @@ import java.util.Objects;
  * @param message what is wrong
  */
 public record LoadError(String file, int line, int column, String message) {
-
   /**
    * Validates the parts.
    *

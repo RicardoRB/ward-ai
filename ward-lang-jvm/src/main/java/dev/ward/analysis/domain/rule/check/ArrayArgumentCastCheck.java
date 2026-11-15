@@ -21,7 +21,6 @@ import java.util.Set;
  * argument is its element type. It reports nothing when a type, shape or supertype list is unknown.
  */
 public final class ArrayArgumentCastCheck extends FactsCheck {
-
   private static final String EXPRESSION = "expression";
   private static final String COLLECTION = "java.util.Collection";
   private static final String UTIL = "java.util.";
@@ -30,7 +29,8 @@ public final class ArrayArgumentCastCheck extends FactsCheck {
   private static final FactNeed NEED =
       new FactNeed(
           Set.of(EXPRESSION),
-          Set.of(FactKind.CALL, FactKind.TYPE, FactKind.MEMBERS, FactKind.SHAPE));
+          Set.of(FactKind.CALL, FactKind.TYPE, FactKind.MEMBERS, FactKind.SHAPE)
+      );
 
   private final String message;
 
@@ -79,7 +79,9 @@ public final class ArrayArgumentCastCheck extends FactsCheck {
 
   /** Returns the element type of a {@code java.util} collection with one type argument. */
   private static Optional<TypeComponent> elementOf(
-      final SyntaxNode receiver, final UnitTypeFacts types) {
+      final SyntaxNode receiver,
+      final UnitTypeFacts types
+  ) {
     final boolean util =
         types
             .typeOf(receiver.span())
@@ -87,15 +89,17 @@ public final class ArrayArgumentCastCheck extends FactsCheck {
             .isPresent();
     final boolean collection =
         types
-                .membersOf(receiver.span())
-                .filter(m -> m.ancestors().stream().anyMatch(a -> COLLECTION.equals(a.name())))
-                .isPresent()
+            .membersOf(receiver.span())
+            .filter(m -> m.ancestors().stream().anyMatch(a -> COLLECTION.equals(a.name())))
+            .isPresent()
             || types.typeOf(receiver.span()).filter(t -> COLLECTION.equals(t.name())).isPresent();
     return util && collection ? onlyComponent(receiver, types) : Optional.empty();
   }
 
   private static Optional<TypeComponent> onlyComponent(
-      final SyntaxNode expression, final UnitTypeFacts types) {
+      final SyntaxNode expression,
+      final UnitTypeFacts types
+  ) {
     return types
         .membersOf(expression.span())
         .map(TypeMembers::components)

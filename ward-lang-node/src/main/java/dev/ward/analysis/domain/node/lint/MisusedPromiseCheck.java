@@ -13,7 +13,6 @@ import java.util.Set;
  * promise-returning function passed where a void return is expected.
  */
 public final class MisusedPromiseCheck extends TypedCheck {
-
   private static final String IF = "ifStatement";
   private static final String PROPERTY = "propertyAssignment";
   private static final String SPREAD = "...";
@@ -28,7 +27,8 @@ public final class MisusedPromiseCheck extends TypedCheck {
       final boolean checksConditionals,
       final boolean checksSpreads,
       final boolean checksVoidReturn,
-      final String message) {
+      final String message
+  ) {
     super();
     this.checksConditionals = checksConditionals;
     this.checksSpreads = checksSpreads;
@@ -57,7 +57,10 @@ public final class MisusedPromiseCheck extends TypedCheck {
   }
 
   private void conditions(
-      final SyntaxNode root, final UnitTypeFacts types, final List<RuleMatch> out) {
+      final SyntaxNode root,
+      final UnitTypeFacts types,
+      final List<RuleMatch> out
+  ) {
     for (final SyntaxNode statement : SyntaxText.nodesOf(root, IF)) {
       for (final SyntaxNode condition : SyntaxText.childrenOf(statement, SEQUENCE)) {
         if (isPromise(types, condition)) {
@@ -68,7 +71,10 @@ public final class MisusedPromiseCheck extends TypedCheck {
   }
 
   private void spreads(
-      final SyntaxNode root, final UnitTypeFacts types, final List<RuleMatch> out) {
+      final SyntaxNode root,
+      final UnitTypeFacts types,
+      final List<RuleMatch> out
+  ) {
     for (final SyntaxNode property : SyntaxText.nodesOf(root, PROPERTY)) {
       final SyntaxNode operand = SyntaxText.last(property);
       if (SyntaxText.hasToken(property, SPREAD)

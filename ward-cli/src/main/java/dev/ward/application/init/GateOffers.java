@@ -16,25 +16,35 @@ final class GateOffers {
    * @throws WardException if the project lacks what the gate needs
    */
   static void require(
-      final EnvironmentInspection environment, final Project project, final String id) {
+      final EnvironmentInspection environment,
+      final Project project,
+      final String id
+  ) {
     requireApiBaseline(environment, project, id);
     requireOpenApiSpec(environment, project, id);
   }
 
   private static void requireApiBaseline(
-      final EnvironmentInspection environment, final Project project, final String id) {
+      final EnvironmentInspection environment,
+      final Project project,
+      final String id
+  ) {
     if (!SupportedQualityGates.API_COMPAT.equals(id)) {
       return;
     }
     if (!environment.hasReleaseTag(project.root())) {
       throw new WardException(
           "api-compat compares sources with the latest release tag, so it is offered only when"
-              + " a tag such as v1.2.3 is reachable from HEAD. Fetch tags or create one.");
+              + " a tag such as v1.2.3 is reachable from HEAD. Fetch tags or create one."
+      );
     }
   }
 
   private static void requireOpenApiSpec(
-      final EnvironmentInspection environment, final Project project, final String id) {
+      final EnvironmentInspection environment,
+      final Project project,
+      final String id
+  ) {
     if (SupportedQualityGates.openApiIds().contains(id)
         && environment.openApiSpec(project.root()).isEmpty()) {
       throw new WardException(
@@ -44,7 +54,8 @@ final class GateOffers {
               + " root."
               + (project.framework() == Framework.FASTAPI
                   ? fastApiExport(environment, project)
-                  : ""));
+                  : "")
+      );
     }
   }
 
@@ -53,7 +64,9 @@ final class GateOffers {
    * is the document the app serves at {@code /openapi.json}. Ward does not run it.
    */
   private static String fastApiExport(
-      final EnvironmentInspection environment, final Project project) {
+      final EnvironmentInspection environment,
+      final Project project
+  ) {
     final String target = environment.fastApiApp(project.root()).orElse("<module>:<app>");
     final String module = target.substring(0, target.indexOf(':'));
     final String attribute = target.substring(target.indexOf(':') + 1);

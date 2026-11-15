@@ -18,9 +18,11 @@ final class InstallToolOption {
         install -> {
           if (!gates.contains(install)) {
             throw new WardException(
-                "--install-tool " + install + " requires --gate " + install + ".");
+                "--install-tool " + install + " requires --gate " + install + "."
+            );
           }
-        });
+        }
+    );
     return installs;
   }
 }

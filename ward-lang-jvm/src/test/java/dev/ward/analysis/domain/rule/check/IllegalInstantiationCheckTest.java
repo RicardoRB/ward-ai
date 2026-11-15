@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** The illegal-instantiation check on {@code new} expressions and their listed classes. */
 class IllegalInstantiationCheckTest extends TreeBuilders {
-
   private static final String MESSAGE = "instantiates {value}";
 
   @Test
@@ -24,8 +23,9 @@ class IllegalInstantiationCheckTest extends TreeBuilders {
   @Test
   void newOfAnotherClassOrAnEmptyListIsNotReported() {
     assertThat(
-            new IllegalInstantiationCheck(Set.of("Date"), MESSAGE)
-                .check(unit(newOf("Object()")), FILE))
+        new IllegalInstantiationCheck(Set.of("Date"), MESSAGE)
+            .check(unit(newOf("Object()")), FILE)
+    )
         .isEmpty();
     assertThat(new IllegalInstantiationCheck(Set.of(), MESSAGE).check(unit(newOf("Date()")), FILE))
         .isEmpty();

@@ -40,8 +40,10 @@ public final class SbomService {
   public SbomService(
       final ProjectDetector detector,
       final LicenseService licenses,
-      final Map<Toolchain, ProjectNameReader> names,
-      @Named("ward.version") final String wardVersion) {
+      final Map<Toolchain,
+      ProjectNameReader> names,
+      @Named("ward.version") final String wardVersion
+  ) {
     this.detector = detector;
     this.licenses = licenses;
     this.names = Map.copyOf(names);
@@ -57,7 +59,10 @@ public final class SbomService {
    * @throws dev.ward.domain.config.WardException if there is no project or its inventory fails
    */
   public Document generate(
-      final Path directory, final Set<String> scopes, final Optional<String> name) {
+      final Path directory,
+      final Set<String> scopes,
+      final Optional<String> name
+  ) {
     final Project project = Projects.detect(detector, directory);
     final List<PackageLicense> all =
         licenses.licenses(project, scopes).stream()
@@ -80,7 +85,8 @@ public final class SbomService {
             "ward sbom: "
                 + dependency.purl()
                 + " has an unknown license: "
-                + entry.unknownReason());
+                + entry.unknownReason()
+        );
       }
     }
     dependencies.set(0, edge(ROOT_REF, direct));
@@ -95,7 +101,10 @@ public final class SbomService {
   }
 
   private String rootName(
-      final Project project, final Path directory, final Optional<String> chosen) {
+      final Project project,
+      final Path directory,
+      final Optional<String> chosen
+  ) {
     return chosen
         .or(() -> names.getOrDefault(project.toolchain(), none -> Optional.empty()).read(project))
         .orElseGet(() -> String.valueOf(directory.toAbsolutePath().normalize().getFileName()));

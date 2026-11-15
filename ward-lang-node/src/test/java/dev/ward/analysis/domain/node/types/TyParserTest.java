@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks that types read from tokens print the way the compiler prints them. */
 class TyParserTest {
-
   private static String printed(final String source) {
     return TyParser.parse(tokens(source)).print();
   }

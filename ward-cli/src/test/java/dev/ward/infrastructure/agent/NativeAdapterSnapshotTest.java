@@ -24,7 +24,8 @@ class NativeAdapterSnapshotTest {
         new FactoryDroidIntegration(),
         new GeminiIntegration(),
         new JunieIntegration(),
-        new WindsurfIntegration());
+        new WindsurfIntegration()
+    );
   }
 
   static String snapshot(final NativeHarnessAdapter adapter) {

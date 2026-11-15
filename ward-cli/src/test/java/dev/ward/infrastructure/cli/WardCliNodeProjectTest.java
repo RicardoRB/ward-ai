@@ -53,9 +53,7 @@ class WardCliNodeProjectTest extends WardCliIntegrationSupport {
   @Test
   void jsonReportHasTheLanguageVersionOfANodeProject() throws IOException {
     typeScriptProject();
-    Files.writeString(
-        node.resolve(WARD_TOML),
-        """
+    Files.writeString(node.resolve(WARD_TOML), """
         version = 2
         [checks.format]
         command = ["true"]
@@ -79,7 +77,8 @@ class WardCliNodeProjectTest extends WardCliIntegrationSupport {
   private void typeScriptProject() throws IOException {
     Files.writeString(
         node.resolve("package.json"),
-        "{\"packageManager\": \"pnpm@9.12.0\", \"engines\": {\"node\": \">=22\"}}");
+        "{\"packageManager\": \"pnpm@9.12.0\", \"engines\": {\"node\": \">=22\"}}"
+    );
     Files.writeString(node.resolve("tsconfig.json"), "{}");
   }
 }

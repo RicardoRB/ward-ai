@@ -22,7 +22,6 @@ import java.util.stream.Stream;
  * never read.
  */
 final class FileSystemManifests {
-
   private static final String NODE_MODULES = "node_modules";
   private static final String MANIFEST = "package.json";
 
@@ -35,7 +34,10 @@ final class FileSystemManifests {
    * @throws WardException if a folder cannot be listed or a file cannot be read
    */
   static ProjectFiles read(
-      final Path root, final Set<String> names, final CommandExecutor executor) {
+      final Path root,
+      final Set<String> names,
+      final CommandExecutor executor
+  ) {
     if (names.isEmpty()) {
       return ProjectFiles.empty();
     }
@@ -71,7 +73,9 @@ final class FileSystemManifests {
       }
     } catch (final IOException exception) {
       throw new WardException(
-          "Could not list the installed packages under " + modules + ".", exception);
+          "Could not list the installed packages under " + modules + ".",
+          exception
+      );
     }
   }
 
@@ -88,12 +92,17 @@ final class FileSystemManifests {
   }
 
   private static void addManifest(
-      final Path root, final Path directory, final Map<String, String> texts) throws IOException {
+      final Path root,
+      final Path directory,
+      final Map<String,
+      String> texts
+  ) throws IOException {
     final Path manifest = directory.resolve(MANIFEST);
     if (Files.isRegularFile(manifest)) {
       texts.put(
           root.relativize(manifest).toString().replace('\\', '/'),
-          Files.readString(manifest, StandardCharsets.UTF_8));
+          Files.readString(manifest, StandardCharsets.UTF_8)
+      );
     }
   }
 
@@ -114,8 +123,10 @@ final class FileSystemManifests {
         final Path root,
         final Set<String> names,
         final Set<String> ignored,
-        final Map<String, String> texts,
-        final Set<String> existing) {
+        final Map<String,
+        String> texts,
+        final Set<String> existing
+    ) {
       super();
       this.root = root;
       this.names = names;
@@ -126,7 +137,9 @@ final class FileSystemManifests {
 
     @Override
     public FileVisitResult preVisitDirectory(
-        final Path directory, final BasicFileAttributes attributes) {
+        final Path directory,
+        final BasicFileAttributes attributes
+    ) {
       final boolean skipped =
           !directory.equals(root) && FileSystemSourceUnits.skipsDirectory(nameOf(directory));
       return skipped ? FileVisitResult.SKIP_SUBTREE : FileVisitResult.CONTINUE;

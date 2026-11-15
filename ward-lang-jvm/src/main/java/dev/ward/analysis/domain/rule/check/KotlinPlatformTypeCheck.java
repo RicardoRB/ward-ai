@@ -67,7 +67,8 @@ public final class KotlinPlatformTypeCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(PROPERTY, FUNCTION)).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(declaration -> isPlatform(declaration, types))
@@ -92,7 +93,8 @@ public final class KotlinPlatformTypeCheck implements RuleCheck {
             .filter(
                 child ->
                     MODIFIER_LIST.equals(child.kind())
-                        || FUNCTION_MODIFIER_LIST.equals(child.kind()))
+                        || FUNCTION_MODIFIER_LIST.equals(child.kind())
+            )
             .findFirst()
             .flatMap(list -> SyntaxWalk.visits(list, Set.of(VISIBILITY)).stream().findFirst())
             .map(visit -> SyntaxWalk.text(visit.node()));
@@ -105,7 +107,8 @@ public final class KotlinPlatformTypeCheck implements RuleCheck {
       return declaration.children().stream()
           .filter(child -> VARIABLE.equals(child.kind()))
           .anyMatch(
-              variable -> variable.children().stream().anyMatch(part -> TYPE.equals(part.kind())));
+              variable -> variable.children().stream().anyMatch(part -> TYPE.equals(part.kind()))
+          );
     }
     return declaration.children().stream()
         .anyMatch(child -> TYPE.equals(child.kind()) || COLON.equals(child.kind()));
@@ -134,6 +137,6 @@ public final class KotlinPlatformTypeCheck implements RuleCheck {
         && returned != null
         && !returned.primitive()
         && NullnessAnnotations.of(target.annotations(), target.declaringAnnotations())
-            == Nullness.UNKNOWN;
+        == Nullness.UNKNOWN;
   }
 }

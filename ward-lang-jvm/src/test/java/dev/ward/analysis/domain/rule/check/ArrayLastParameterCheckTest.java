@@ -6,7 +6,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class ArrayLastParameterCheckTest {
-
   private static final ArrayLastParameterCheck CHECK = new ArrayLastParameterCheck("message");
 
   private static List<String> run(final String member) {

@@ -26,7 +26,6 @@ import org.junit.jupiter.api.condition.EnabledIf;
  * regenerate the report with {@code -Dward.parity.write=true}.
  */
 final class PylintParitySmokeTest {
-
   private static final String PYLINT_PROPERTY = "ward.pylint.binary";
   private static final String WRITE_PROPERTY = "ward.parity.write";
   private static final String REPORT_FILE = "src/test/resources/parity/pylint-report.txt";
@@ -60,13 +59,14 @@ final class PylintParitySmokeTest {
     final List<String> lines =
         new RuleCatalogReader()
             .load().rows().parallelStream()
-                .filter(
-                    row ->
-                        row.languages(CatalogStatus.IMPLEMENTED).contains(AnalysisLanguage.PYTHON))
-                .filter(row -> Files.exists(root.resolve(row.name()).resolve("violating.py")))
-                .flatMap(row -> differences(pylint, row, root.resolve(row.name())))
-                .sorted()
-                .toList();
+            .filter(
+                row ->
+                    row.languages(CatalogStatus.IMPLEMENTED).contains(AnalysisLanguage.PYTHON)
+            )
+            .filter(row -> Files.exists(root.resolve(row.name()).resolve("violating.py")))
+            .flatMap(row -> differences(pylint, row, root.resolve(row.name())))
+            .sorted()
+            .toList();
     final String report =
         "# row, pylint id, difference: tool-silent (Pylint reports nothing on the violating"
             + " fixture), anchor-differs (same number of findings on other lines),"
@@ -85,16 +85,23 @@ final class PylintParitySmokeTest {
   }
 
   private static Stream<String> differences(
-      final String pylint, final CatalogRow row, final Path directory) {
+      final String pylint,
+      final CatalogRow row,
+      final Path directory
+  ) {
     return row.counterparts().getOrDefault("pylint", List.of()).stream()
         .map(
             id ->
-                difference(pylint, id, directory).map(kind -> row.name() + "\t" + id + "\t" + kind))
+                difference(pylint, id, directory).map(kind -> row.name() + "\t" + id + "\t" + kind)
+        )
         .flatMap(Optional::stream);
   }
 
   private static Optional<String> difference(
-      final String pylint, final String id, final Path directory) {
+      final String pylint,
+      final String id,
+      final Path directory
+  ) {
     try {
       final List<String> kinds = kinds(pylint, id, directory);
       return kinds.isEmpty() ? Optional.empty() : Optional.of(String.join(",", kinds));
@@ -133,15 +140,16 @@ final class PylintParitySmokeTest {
       throws IOException, InterruptedException {
     final Process process =
         new ProcessBuilder(
-                pylint,
-                "--rcfile=/dev/null",
-                "--load-plugins=" + EXTENSIONS,
-                "--disable=all",
-                "--enable=" + id,
-                "--output-format=parseable",
-                "--score=n",
-                "--persistent=n",
-                file.toString())
+            pylint,
+            "--rcfile=/dev/null",
+            "--load-plugins=" + EXTENSIONS,
+            "--disable=all",
+            "--enable=" + id,
+            "--output-format=parseable",
+            "--score=n",
+            "--persistent=n",
+            file.toString()
+        )
             .redirectErrorStream(false)
             .start();
     final String output =

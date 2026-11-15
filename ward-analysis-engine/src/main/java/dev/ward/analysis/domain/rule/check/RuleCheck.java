@@ -13,7 +13,6 @@ import java.util.List;
 /** One check of a declarative rule, run over the syntax tree of a source unit. */
 @FunctionalInterface
 public interface RuleCheck {
-
   /**
    * Returns the places in {@code root} where the check fails, in source order.
    *
@@ -53,7 +52,10 @@ public interface RuleCheck {
    *     tree
    */
   default List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return matches(root, flow);
   }
 
@@ -66,7 +68,11 @@ public interface RuleCheck {
    *     tree
    */
   default List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView scopes, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView scopes,
+      final SourceUnit unit
+  ) {
     return matches(root, flow, unit);
   }
 
@@ -92,7 +98,8 @@ public interface RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return matches(root, flow, scopes, unit);
   }
 }

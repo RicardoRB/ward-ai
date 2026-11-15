@@ -10,7 +10,6 @@ import dev.ward.analysis.domain.types.TypeShape;
  * {@code equals(Object)} and {@code hashCode()}.
  */
 public final class AnnotationImplementation implements DeclarationFactTest {
-
   private static final String ANNOTATION = "java.lang.annotation.Annotation";
 
   @Override

@@ -11,7 +11,6 @@ import java.util.Set;
  * constructor that has both annotations.
  */
 public final class AutoFactoryInjected implements DeclarationFactTest {
-
   private static final String AUTO_FACTORY = "com.google.auto.factory.AutoFactory";
   private static final String CONSTRUCTOR = "<init>";
   private static final Set<String> INJECT =

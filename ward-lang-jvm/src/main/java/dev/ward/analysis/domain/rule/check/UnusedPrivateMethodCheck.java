@@ -17,7 +17,6 @@ import java.util.stream.Stream;
  * hook, or a parameterless method named by a JUnit {@code @MethodSource} is not reported.
  */
 public final class UnusedPrivateMethodCheck implements UnitCheck {
-
   /** PMD ignores a private method with one of these annotations, which a framework calls. */
   private static final Set<String> FRAMEWORK_ANNOTATIONS =
       Set.of("Deprecated", "PostConstruct", "PreDestroy", "Include");
@@ -46,18 +45,23 @@ public final class UnusedPrivateMethodCheck implements UnitCheck {
         .flatMap(visit -> JUnitMembers.members(visit.node()).stream())
         .filter(JUnitMembers::isPrivate)
         .filter(
-            member -> Collections.disjoint(JUnitMembers.annotations(member), FRAMEWORK_ANNOTATIONS))
+            member -> Collections.disjoint(JUnitMembers.annotations(member), FRAMEWORK_ANNOTATIONS)
+        )
         .flatMap(member -> JUnitMembers.method(member).stream())
         .filter(method -> !called.contains(JUnitMembers.name(method)))
         .filter(method -> !SERIALIZATION_METHODS.contains(JUnitMembers.name(method)))
         .filter(
             method ->
                 !(JUnitMethods.hasNoParameters(method)
-                    && sources.contains(JUnitMembers.name(method))))
+                    && sources.contains(JUnitMembers.name(method)))
+        )
         .map(
             method ->
                 CheckSupport.at(
-                    method.span(), CheckSupport.fill(message, JUnitMembers.name(method), "")))
+                    method.span(),
+                    CheckSupport.fill(message, JUnitMembers.name(method), "")
+                )
+        )
         .toList();
   }
 
@@ -83,11 +87,12 @@ public final class UnusedPrivateMethodCheck implements UnitCheck {
   private static Set<String> calledNames(final SyntaxNode root) {
     final List<SyntaxNode> nodes = SyntaxWalk.descendants(root);
     return Stream.concat(
-            nodes.stream()
-                .filter(node -> "methodCall".equals(node.kind()))
-                .flatMap(call -> call.children().stream())
-                .filter(child -> "identifier".equals(child.kind())),
-            nodes.stream().flatMap(UnusedPrivateMethodCheck::referenced))
+        nodes.stream()
+            .filter(node -> "methodCall".equals(node.kind()))
+            .flatMap(call -> call.children().stream())
+            .filter(child -> "identifier".equals(child.kind())),
+        nodes.stream().flatMap(UnusedPrivateMethodCheck::referenced)
+    )
         .map(SyntaxWalk::text)
         .collect(Collectors.toUnmodifiableSet());
   }

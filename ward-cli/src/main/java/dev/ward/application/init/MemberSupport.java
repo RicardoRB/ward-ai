@@ -23,13 +23,17 @@ interface MemberSupport {
       final List<InitGateOption> gates,
       final QualityPreset preset,
       final boolean approved,
-      final MemberPlanning planning) {
+      final MemberPlanning planning
+  ) {
     return List.of();
   }
 
   /** Returns the member scripts that differ from what init would write; empty by default. */
   default List<ScriptReplacement> scriptReplacements(
-      final Project project, final QualityPreset preset, final InitInputs inputs) {
+      final Project project,
+      final QualityPreset preset,
+      final InitInputs inputs
+  ) {
     return List.of();
   }
 }

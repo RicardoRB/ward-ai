@@ -25,7 +25,6 @@ import java.util.function.Function;
  * reported; upgrade by reading {@code pyproject.toml} entry points.
  */
 public final class UnusedDefinitionFindings {
-
   /** The rule id for unused functions. */
   public static final String FUNCTION_ID = PythonUnusedDefinitions.FUNCTION_ID;
 
@@ -58,7 +57,10 @@ public final class UnusedDefinitionFindings {
    * @throws NullPointerException if an argument is missing
    */
   public static List<AnalysisFinding> findings(
-      final List<RuleDefinition> rules, final Map<String, FileSummary> summaries) {
+      final List<RuleDefinition> rules,
+      final Map<String,
+      FileSummary> summaries
+  ) {
     return findings(rules, summaries, path -> Optional.empty());
   }
 
@@ -70,8 +72,11 @@ public final class UnusedDefinitionFindings {
    */
   public static List<AnalysisFinding> findings(
       final List<RuleDefinition> rules,
-      final Map<String, FileSummary> summaries,
-      final Function<String, Optional<String>> moduleOf) {
+      final Map<String,
+      FileSummary> summaries,
+      final Function<String,
+      Optional<String>> moduleOf
+  ) {
     Objects.requireNonNull(summaries, "summaries");
     Objects.requireNonNull(moduleOf, "moduleOf");
     final Set<String> used = new HashSet<>();
@@ -82,7 +87,8 @@ public final class UnusedDefinitionFindings {
             summary -> {
               used.addAll(summary.usedNames());
               assigned.addAll(summary.assignedNames());
-            });
+            }
+        );
     final List<AnalysisFinding> findings = new ArrayList<>();
     for (final RuleDefinition rule : rules) {
       if (SwiftModuleAccessibility.isRule(rule)) {
@@ -97,9 +103,11 @@ public final class UnusedDefinitionFindings {
   /** The findings of one rule, or none when the rule is not an unused-definition rule. */
   private static List<AnalysisFinding> findingsOf(
       final RuleDefinition rule,
-      final Map<String, FileSummary> summaries,
+      final Map<String,
+      FileSummary> summaries,
       final Set<String> used,
-      final Set<String> assigned) {
+      final Set<String> assigned
+  ) {
     final Optional<Binding> binding = binding(rule);
     if (binding.isEmpty()) {
       return List.of();
@@ -118,15 +126,19 @@ public final class UnusedDefinitionFindings {
   }
 
   private static Optional<Binding> bind(
-      final UnusedDefinitionStrategy strategy, final String ruleId) {
+      final UnusedDefinitionStrategy strategy,
+      final String ruleId
+  ) {
     return strategy.kindOf(ruleId).map(kind -> new Binding(strategy, kind));
   }
 
   private static List<AnalysisFinding> ruleFindings(
       final RuleDefinition rule,
       final Binding binding,
-      final Map<String, FileSummary> summaries,
-      final Names names) {
+      final Map<String,
+      FileSummary> summaries,
+      final Names names
+  ) {
     final List<AnalysisFinding> findings = new ArrayList<>();
     for (final FileSummary summary : summaries.values()) {
       if (binding.strategy().scans(summary.path())) {
@@ -149,7 +161,8 @@ public final class UnusedDefinitionFindings {
       final RuleDefinition rule,
       final String path,
       final Symbol symbol,
-      final UnusedDefinitionKind kind) {
+      final UnusedDefinitionKind kind
+  ) {
     return new AnalysisFinding(
         rule.id(),
         rule.severity(),
@@ -158,7 +171,8 @@ public final class UnusedDefinitionFindings {
         symbol.span().startLine(),
         symbol.span().startColumn(),
         null,
-        List.of());
+        List.of()
+    );
   }
 
   /** A rule's strategy and the kind it reports. */

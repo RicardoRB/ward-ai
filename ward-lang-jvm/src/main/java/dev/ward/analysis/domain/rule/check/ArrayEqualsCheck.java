@@ -20,7 +20,6 @@ import java.util.Set;
  * types or depths. It reports nothing when a type is unknown.
  */
 public final class ArrayEqualsCheck implements RuleCheck {
-
   /** What makes the two types incompatible. */
   public enum Mismatch {
     /** One side is an array and the other a type that no array has. */
@@ -66,7 +65,8 @@ public final class ArrayEqualsCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts facts,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(EXPRESSION)).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(call -> incompatible(call, facts))

@@ -52,7 +52,10 @@ final class JavaUnitModel {
   }
 
   private static void declaredNames(
-      final JavaClassReader.Entry entry, final String prefix, final Set<String> names) {
+      final JavaClassReader.Entry entry,
+      final String prefix,
+      final Set<String> names
+  ) {
     final String binary = prefix + entry.name();
     names.add(binary);
     JavaClassReader.bodyEntries(entry.declaration()).stream()

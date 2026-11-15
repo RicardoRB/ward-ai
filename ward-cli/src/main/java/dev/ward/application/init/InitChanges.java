@@ -40,7 +40,8 @@ final class InitChanges {
       final List<String> integrationIds,
       final InitProjectFiles files,
       final IntegrationInstaller installer,
-      final InitSetupCatalog catalog) {
+      final InitSetupCatalog catalog
+  ) {
     this.project = project;
     this.integrationIds = integrationIds;
     this.files = files;
@@ -57,7 +58,8 @@ final class InitChanges {
       final InitSelection selection,
       final List<InitGateOption> gates,
       final boolean replaceScripts,
-      final Predicate<? super CompatibilityFinding> approval) {
+      final Predicate<? super CompatibilityFinding> approval
+  ) {
     final QualityPreset preset = selection.preset();
     installer.install(project, selection.integrations(), installed);
     if (selection.qualityHooks()) {
@@ -74,7 +76,8 @@ final class InitChanges {
             OwnedSections.of(catalog, project, selection, gates, ruleFileChange.preserved()),
             project,
             gates,
-            files.configuration().read(OwnedSections.editorConfigPath(project)))) {
+            files.configuration().read(OwnedSections.editorConfigPath(project))
+        )) {
       sectionChanges.add(files.sections().apply(section));
     }
   }
@@ -84,7 +87,8 @@ final class InitChanges {
       final boolean created,
       final boolean overwrite,
       final List<InitGateOption> gates,
-      final List<String> warnings) {
+      final List<String> warnings
+  ) {
     final BuildFileChange appliedPom = pomChange;
     if (appliedPom == null) {
       throw new IllegalStateException("Initialization changes have not been applied");
@@ -103,7 +107,8 @@ final class InitChanges {
         sectionChanges.stream()
             .filter(OwnedSectionChange::changed)
             .map(OwnedSectionChange::file)
-            .toList());
+            .toList()
+    );
   }
 
   void rollback() {

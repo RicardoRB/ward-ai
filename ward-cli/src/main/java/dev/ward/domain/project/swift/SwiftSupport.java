@@ -37,7 +37,8 @@ public final class SwiftSupport {
             + MINIMUM_XCODE_MAJOR
             + "."
             + MINIMUM_XCODE_MINOR
-            + " or newer.");
+            + " or newer."
+    );
   }
 
   private static boolean isBelowMinimum(final int major, final int minor) {

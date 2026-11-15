@@ -49,7 +49,12 @@ final class KotlinTyper {
 
   private static DeclInfo classInfo(final JvmClass jvm) {
     return new DeclInfo(
-        Optional.of(jvm), Optional.empty(), Optional.empty(), Optional.empty(), List.of());
+        Optional.of(jvm),
+        Optional.empty(),
+        Optional.empty(),
+        Optional.empty(),
+        List.of()
+    );
   }
 
   private void declare(final SyntaxNode holder, final Ctx ctx) {
@@ -59,7 +64,8 @@ final class KotlinTyper {
             name -> {
               session.variable(name, written.flatMap(type -> KotlinTypes.type(type, ctx.scope())));
               nullness.remember(name, KotlinNullness.writtenNullness(written));
-            });
+            }
+        );
   }
 
   /** Types a class property with a written type; the property walk types the rest. */
@@ -76,10 +82,14 @@ final class KotlinTyper {
                         name -> {
                           session.variable(name, type);
                           nullness.remember(
-                              name, KotlinNullness.propertyNullness(property, written, false));
-                        });
+                              name,
+                              KotlinNullness.propertyNullness(property, written, false)
+                          );
+                        }
+                    );
               }
-            });
+            }
+        );
   }
 
   void walk(final SyntaxNode node, final Ctx ctx) {
@@ -114,9 +124,12 @@ final class KotlinTyper {
         .ifPresent(
             name -> {
               session.variable(
-                  name, written.or(() -> initial.type().filter(type -> !Types.isNull(type))));
+                  name,
+                  written.or(() -> initial.type().filter(type -> !Types.isNull(type)))
+              );
               nullness.remember(name, KotlinNullness.propertyNullness(node, writtenNode, literal));
-            });
+            }
+        );
   }
 
   private void function(final SyntaxNode node, final Ctx ctx) {

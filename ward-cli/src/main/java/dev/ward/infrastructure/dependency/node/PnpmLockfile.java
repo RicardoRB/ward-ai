@@ -47,13 +47,17 @@ final class PnpmLockfile {
           for (final String section : EDGES) {
             YamlScalars.map(YamlScalars.map(body).get(section))
                 .forEach(
-                    (name, value) -> toId(name, YamlScalars.text(value)).ifPresent(required::add));
+                    (name, value) -> toId(name, YamlScalars.text(value)).ifPresent(required::add)
+                );
           }
           collector.add(id, released(meta), required);
-        });
+        }
+    );
     final Map<String, Object> importers = importers(root);
     return new NodeLock(
-        collector.packages(), (member, name, range) -> direct(importers, member, name));
+        collector.packages(),
+        (member, name, range) -> direct(importers, member, name)
+    );
   }
 
   /** v6 without workspaces keeps the root importer's sections at the top. */
@@ -65,7 +69,11 @@ final class PnpmLockfile {
   }
 
   private static Optional<PackageId> direct(
-      final Map<String, Object> importers, final String member, final String name) {
+      final Map<String,
+      Object> importers,
+      final String member,
+      final String name
+  ) {
     final Map<String, Object> importer =
         YamlScalars.map(importers.get(member.isEmpty() ? "." : member));
     for (final String section : IMPORTER_SECTIONS) {

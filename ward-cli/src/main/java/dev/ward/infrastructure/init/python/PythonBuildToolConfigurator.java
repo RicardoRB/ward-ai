@@ -64,7 +64,8 @@ public final class PythonBuildToolConfigurator implements BuildToolConfiguration
             List.of(),
             lock,
             lock != null && Files.isRegularFile(lock) ? read(lock) : null,
-            List.of());
+            List.of()
+        );
     write(edit.file(), edit.edited());
     LOGGER.log(Level.INFO, () -> "event=python-dependencies-added count=" + edit.missing().size());
     install(project, change, commands(project, edit));
@@ -76,7 +77,8 @@ public final class PythonBuildToolConfigurator implements BuildToolConfiguration
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final boolean approved) {
+      final boolean approved
+  ) {
     final Edit edit = edit(project, gates);
     final List<String> problems = PythonInstall.problems(project, executor);
     if (!problems.isEmpty()) {
@@ -90,7 +92,9 @@ public final class PythonBuildToolConfigurator implements BuildToolConfiguration
         .forEach(
             tool ->
                 details.add(
-                    "add " + tool.requirement() + " to the " + PyprojectEdit.GROUP + " group"));
+                    "add " + tool.requirement() + " to the " + PyprojectEdit.GROUP + " group"
+                )
+        );
     commands(project, edit).forEach(command -> details.add("run " + String.join(" ", command)));
     if (isSrcWithoutBuildSystem(project, edit)) {
       details.add(SRC_NOTE);
@@ -125,7 +129,8 @@ public final class PythonBuildToolConfigurator implements BuildToolConfiguration
       boolean buildSystem,
       String original,
       String edited,
-      List<PythonPackageCatalog.Package> missing) {}
+      List<PythonPackageCatalog.Package> missing
+  ) {}
 
   private static Edit edit(final Project project, final List<InitGateOption> gates) {
     final Path root = project.root();
@@ -138,11 +143,12 @@ public final class PythonBuildToolConfigurator implements BuildToolConfiguration
             : PythonRequirementsFile.declaredNames(root);
     final List<PythonPackageCatalog.Package> missing =
         PythonPackageCatalog.missing(gates, declared, project.framework()).stream()
-            // pytest-flask needs an app factory; a Flask app without one imports its app directly.
+        // pytest-flask needs an app factory; a Flask app without one imports its app directly.
             .filter(
                 tool ->
                     !PythonPackageCatalog.PYTEST_FLASK.equals(tool.name())
-                        || FlaskPackages.hasAppFactory(project))
+                        || FlaskPackages.hasAppFactory(project)
+            )
             .toList();
     final boolean buildSystem =
         pyproject && PyprojectDependencies.parse(original).contains("build-system");
@@ -160,14 +166,23 @@ public final class PythonBuildToolConfigurator implements BuildToolConfiguration
 
   private static List<List<String>> commands(final Project project, final Edit edit) {
     return PythonInstall.commands(
-        project, edit.pyproject(), edit.buildSystem(), PyprojectEdit.GROUP);
+        project,
+        edit.pyproject(),
+        edit.buildSystem(),
+        PyprojectEdit.GROUP
+    );
   }
 
   private void install(
-      final Project project, final BuildFileChange change, final List<List<String>> commands) {
+      final Project project,
+      final BuildFileChange change,
+      final List<List<String>> commands
+  ) {
     for (final List<String> command : commands) {
       LOGGER.log(
-          Level.INFO, () -> "event=python-install-start manager=" + project.buildExecutable());
+          Level.INFO,
+          () -> "event=python-install-start manager=" + project.buildExecutable()
+      );
       final CommandResult result = executor.execute(command, project.root());
       LOGGER.log(Level.INFO, () -> "event=python-install-complete exit=" + result.exitCode());
       if (result.exitCode() != 0) {

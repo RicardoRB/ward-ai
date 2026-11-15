@@ -23,7 +23,6 @@ import java.util.Optional;
  * language may also narrow the functions with a {@link FunctionFilter}.
  */
 public final class UnusedParameterCheck implements RuleCheck {
-
   private static final String NAME = "{value}";
   private static final String IGNORED_PREFIX = "_";
 
@@ -37,7 +36,6 @@ public final class UnusedParameterCheck implements RuleCheck {
    */
   @FunctionalInterface
   public interface FunctionFilter {
-
     /** Whether the parameters of {@code function} are checked. */
     boolean checks(Scope function, SourceUnit unit);
   }
@@ -74,7 +72,11 @@ public final class UnusedParameterCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes();
     final List<RuleMatch> found = new ArrayList<>();
     for (final Scope scope : scopes.scopes()) {

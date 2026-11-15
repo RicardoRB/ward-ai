@@ -18,7 +18,6 @@ import java.util.Set;
  * upgrade when unary minus is read from the tree.
  */
 public final class MagicNumberCheck implements UnitCheck {
-
   private static final Set<String> LITERALS =
       Set.of(
           "DECIMAL_LITERAL",
@@ -26,7 +25,8 @@ public final class MagicNumberCheck implements UnitCheck {
           "OCT_LITERAL",
           "BINARY_LITERAL",
           "FLOAT_LITERAL",
-          "HEX_FLOAT_LITERAL");
+          "HEX_FLOAT_LITERAL"
+      );
   private static final String FIELD = "fieldDeclaration";
   private static final String ANNOTATION = "annotation";
   private static final String METHOD = "methodDeclaration";
@@ -61,7 +61,8 @@ public final class MagicNumberCheck implements UnitCheck {
       final boolean ignoreFieldDeclaration,
       final boolean ignoreAnnotation,
       final boolean ignoreHashCodeMethod,
-      final String message) {
+      final String message
+  ) {
     this.ignored = parseAll(ignoredNumbers);
     this.ignoreFieldDeclaration = ignoreFieldDeclaration;
     this.ignoreAnnotation = ignoreAnnotation;
@@ -102,7 +103,10 @@ public final class MagicNumberCheck implements UnitCheck {
   private static boolean isHashCode(final SyntaxNode node) {
     return METHOD.equals(node.kind())
         && SyntaxWalk.firstDescendant(
-                node, "identifier", Set.of("typeTypeOrVoid", "formalParameters"))
+            node,
+            "identifier",
+            Set.of("typeTypeOrVoid", "formalParameters")
+        )
             .map(SyntaxWalk::text)
             .filter(HASH_CODE::equals)
             .isPresent();

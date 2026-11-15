@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class BenchmarkRunnerTest {
-
   private static final String SHA = "0123456789abcdef0123456789abcdef01234567";
   private static final String URL = "https://example.com/p.git";
   private static final int BINARY_SIZE = 10;
@@ -88,7 +87,8 @@ class BenchmarkRunnerTest {
             job -> {
               assertThat(job.name()).isEqualTo("ward-gate-edit");
               assertThat(job.recordedCommand()).endsWith("--path", GateJob.EDITED);
-            });
+            }
+        );
     assertThat(BenchmarkRunner.jobsFor(PETCLINIC)).extracting(GateJob::wardProbe).contains(true);
   }
 }

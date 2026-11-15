@@ -40,7 +40,9 @@ final class OwnLanguageMemberChecks {
       final CheckReport own,
       final List<Path> directories,
       final boolean failFast,
-      final Function<Path, CheckReport> check) {
+      final Function<Path,
+      CheckReport> check
+  ) {
     final List<CheckReport> nested = new ArrayList<>();
     for (final Path directory : directories) {
       if (failFast && !merge(own, nested).passed()) {
@@ -59,7 +61,10 @@ final class OwnLanguageMemberChecks {
       final CheckReport own,
       final List<Path> directories,
       final List<Path> paths,
-      final BiFunction<Path, List<Path>, CheckReport> check) {
+      final BiFunction<Path,
+      List<Path>,
+      CheckReport> check
+  ) {
     final List<CheckReport> nested = new ArrayList<>();
     for (final Path directory : directories) {
       final List<Path> memberPaths =
@@ -91,7 +96,8 @@ final class OwnLanguageMemberChecks {
         report -> {
           final String label = label(root, report.project().root());
           report.results().forEach(result -> results.add(named(result, label)));
-        });
+        }
+    );
     return own.withResults(results);
   }
 
@@ -104,7 +110,8 @@ final class OwnLanguageMemberChecks {
   private static GateFindings rebased(final GateFindings findings, final String label) {
     return new GateFindings(
         findings.items().stream().map(finding -> rebased(finding, label)).toList(),
-        findings.total());
+        findings.total()
+    );
   }
 
   private static Finding rebased(final Finding finding, final String label) {
@@ -121,7 +128,8 @@ final class OwnLanguageMemberChecks {
         finding.line(),
         finding.column(),
         finding.helpUri(),
-        List.of());
+        List.of()
+    );
   }
 
   private static String label(final Path root, final Path member) {

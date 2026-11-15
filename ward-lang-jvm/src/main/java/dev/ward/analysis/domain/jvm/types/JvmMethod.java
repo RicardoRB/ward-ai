@@ -28,8 +28,9 @@ public record JvmMethod(
     List<String> annotations,
     List<List<String>> parameterAnnotations,
     List<String> compatibleWith,
-    Map<String, List<String>> annotationValues) {
-
+    Map<String,
+    List<String>> annotationValues
+) {
   public static final String CONSTRUCTOR = "<init>";
 
   /**

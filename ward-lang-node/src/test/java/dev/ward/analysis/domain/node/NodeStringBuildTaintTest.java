@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 
 /** An HTML-string sink on a TypeScript or JavaScript string built from an untrusted parameter. */
 class NodeStringBuildTaintTest {
-
   private static final Pattern HTML_TAG = Pattern.compile("<[a-zA-Z]");
 
   private static final TaintSpec HTML_SPEC =
@@ -26,7 +25,9 @@ class NodeStringBuildTaintTest {
                   "Untrusted",
                   Optional.empty(),
                   Optional.empty(),
-                  List.of())),
+                  List.of()
+              )
+          ),
           List.of(
               new TaintEntry(
                   FlowSiteKind.STRING_BUILD,
@@ -34,9 +35,12 @@ class NodeStringBuildTaintTest {
                   Optional.empty(),
                   Optional.empty(),
                   List.of(),
-                  Optional.of(HTML_TAG))),
+                  Optional.of(HTML_TAG)
+              )
+          ),
           List.of(),
-          List.of());
+          List.of()
+      );
 
   /** Scenario: an untrusted value in a {@code +} string with an HTML tag is reported once. */
   @Test
@@ -44,7 +48,8 @@ class NodeStringBuildTaintTest {
     final List<TaintFinding> found =
         run(
             "class Handler {\n  handle(@Untrusted input: string) {\n"
-                + "    return '<p>' + input + '</p>';\n  }\n}\n");
+                + "    return '<p>' + input + '</p>';\n  }\n}\n"
+        );
 
     assertThat(found).hasSize(1);
   }
@@ -55,7 +60,8 @@ class NodeStringBuildTaintTest {
     final List<TaintFinding> found =
         run(
             "class Handler {\n  handle(@Untrusted input: string) {\n"
-                + "    return `<div>${input}</div>`;\n  }\n}\n");
+                + "    return `<div>${input}</div>`;\n  }\n}\n"
+        );
 
     assertThat(found).hasSize(1);
   }
@@ -66,13 +72,16 @@ class NodeStringBuildTaintTest {
     final List<TaintFinding> found =
         run(
             "class Handler {\n  handle(@Untrusted input: string) {\n"
-                + "    return 'id: ' + input;\n  }\n}\n");
+                + "    return 'id: ' + input;\n  }\n}\n"
+        );
 
     assertThat(found).isEmpty();
   }
 
   private static List<TaintFinding> run(final String source) {
     return TaintAnalysis.run(
-        NodeTaintFixtures.graph(AnalysisLanguage.TYPESCRIPT, source, "handle"), HTML_SPEC);
+        NodeTaintFixtures.graph(AnalysisLanguage.TYPESCRIPT, source, "handle"),
+        HTML_SPEC
+    );
   }
 }

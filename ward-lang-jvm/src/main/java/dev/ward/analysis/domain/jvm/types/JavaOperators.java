@@ -31,7 +31,7 @@ final class JavaOperators {
     return array
         .type()
         .filter(JType.ArrayType.class::isInstance)
-        .map(found -> Typed.of(((JType.ArrayType) found).component()))
+        .map(found -> Typed.of(((JType.ArrayType)found).component()))
         .orElse(Typed.UNKNOWN);
   }
 

@@ -15,7 +15,6 @@ import java.util.Set;
  * identity, so {@code ==} is the intended comparison.
  */
 public final class EnumComparisonCheck implements RuleCheck {
-
   private static final String EQUALS = "equals";
   private static final String EXPRESSION = "expression";
 
@@ -46,7 +45,8 @@ public final class EnumComparisonCheck implements RuleCheck {
       final dev.ward.analysis.domain.rule.FlowView flow,
       final dev.ward.analysis.domain.rule.ScopeView scopes,
       final UnitTypeFacts types,
-      final dev.ward.analysis.domain.ir.SourceUnit unit) {
+      final dev.ward.analysis.domain.ir.SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(EXPRESSION))) {
       final SyntaxNode call = visit.node();

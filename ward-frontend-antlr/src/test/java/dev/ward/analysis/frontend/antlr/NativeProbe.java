@@ -15,7 +15,6 @@ import java.util.List;
  * and exits non-zero unless every parse succeeds with no diagnostics. Not shipped.
  */
 public final class NativeProbe {
-
   private static final int EXIT_OK = 0;
   private static final int EXIT_FAILED = 1;
   private static final int EXIT_USAGE = 2;
@@ -29,7 +28,8 @@ public final class NativeProbe {
           new Fixture(AnalysisLanguage.TYPESCRIPT, "typescript-valid.ts", "program"),
           new Fixture(AnalysisLanguage.JAVASCRIPT, "javascript-valid.js", "program"),
           new Fixture(AnalysisLanguage.PYTHON, "python-valid.py", "file_input"),
-          new Fixture(AnalysisLanguage.SWIFT, "swift-valid.swift", "top_level"));
+          new Fixture(AnalysisLanguage.SWIFT, "swift-valid.swift", "top_level")
+      );
 
   private NativeProbe() {}
 
@@ -66,7 +66,8 @@ public final class NativeProbe {
       final AntlrLanguageFrontend frontend,
       final Path directory,
       final Fixture fixture,
-      final PrintStream out) {
+      final PrintStream out
+  ) {
     try {
       final String text =
           Files.readString(directory.resolve(fixture.name()), StandardCharsets.UTF_8);

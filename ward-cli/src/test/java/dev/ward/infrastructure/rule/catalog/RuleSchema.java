@@ -15,7 +15,6 @@ import java.util.TreeMap;
  * RuleSchemaTest} compares it with the committed file.
  */
 final class RuleSchema {
-
   /** The JSON Schema dialect the file declares. */
   static final String DIALECT = "https://json-schema.org/draft/2020-12/schema";
 
@@ -41,7 +40,8 @@ final class RuleSchema {
     root.put(
         "description",
         "Rule selection, rule options, severity and excluded paths of the ward gate. Generated"
-            + " from the rule catalog by RuleSchemaTest; do not edit by hand.");
+            + " from the rule catalog by RuleSchemaTest; do not edit by hand."
+    );
     root.put(TYPE, OBJECT);
     root.put(ADDITIONAL, false);
     final Map<String, Object> defs = obj();
@@ -59,7 +59,10 @@ final class RuleSchema {
    * referenced from its {@code [rules.<group>.<name>]} key.
    */
   private static Map<String, Object> rules(
-      final List<RuleDefinition> definitions, final Map<String, Object> defs) {
+      final List<RuleDefinition> definitions,
+      final Map<String,
+      Object> defs
+  ) {
     final Map<String, Object> properties = obj();
     final Map<String, Map<String, Object>> groups = new TreeMap<>();
     final Map<String, RuleDefinition> byId = new TreeMap<>();
@@ -68,10 +71,12 @@ final class RuleSchema {
         (id, definition) -> {
           defs.put(id, RuleOptionSchema.rule(definition));
           groups.computeIfAbsent(group(id), key -> obj()).put(name(id), ref(id));
-        });
+        }
+    );
     groups.forEach(
         (group, members) ->
-            properties.put(group, obj(TYPE, OBJECT, ADDITIONAL, false, PROPERTIES, members)));
+            properties.put(group, obj(TYPE, OBJECT, ADDITIONAL, false, PROPERTIES, members))
+    );
     return obj(TYPE, OBJECT, ADDITIONAL, false, PROPERTIES, properties);
   }
 

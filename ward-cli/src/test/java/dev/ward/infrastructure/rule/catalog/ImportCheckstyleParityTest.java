@@ -25,7 +25,6 @@ import org.junit.jupiter.api.Test;
  * fails.
  */
 class ImportCheckstyleParityTest {
-
   private static final String CLASSPATH = System.getProperty("ward.checkstyle.classpath");
   private static final String TRUE = "true";
   private static final String CUSTOM_RULES = "STATIC###THIRD_PARTY_PACKAGE";
@@ -46,7 +45,8 @@ class ImportCheckstyleParityTest {
           "static-import-excludes",
           "Checkstyle reports the last dot of the name",
           "unnecessary-fully-qualified-type",
-          "Checkstyle reports the last dot before the type name");
+          "Checkstyle reports the last dot before the type name"
+      );
 
   private static final List<Mirror> MIRRORS =
       List.of(
@@ -55,22 +55,29 @@ class ImportCheckstyleParityTest {
               "static-import",
               "excludes",
               "AvoidStaticImport",
-              Map.of("excludes", "java.lang.Math.*")),
+              Map.of("excludes", "java.lang.Math.*")
+          ),
           new Mirror("illegal-import", "", "IllegalImport", Map.of()),
           new Mirror("illegal-import", "pkgs", "IllegalImport", Map.of("illegalPkgs", "java.util")),
           new Mirror(
               "illegal-import",
               "classes",
               "IllegalImport",
-              Map.of("illegalPkgs", "", "illegalClasses", "java.util.List")),
+              Map.of("illegalPkgs", "", "illegalClasses", "java.util.List")
+          ),
           new Mirror(
               "illegal-import",
               "regexp",
               "IllegalImport",
-              Map.of("regexp", TRUE, "illegalPkgs", FILTER_SUN)),
+              Map.of("regexp", TRUE, "illegalPkgs", FILTER_SUN)
+          ),
           new Mirror("redundant-import", "", "RedundantImport", Map.of()),
           new Mirror(
-              "unnecessary-fully-qualified-type", "", "UnnecessaryFullyQualifiedType", Map.of()),
+              "unnecessary-fully-qualified-type",
+              "",
+              "UnnecessaryFullyQualifiedType",
+              Map.of()
+          ),
           new Mirror("import-order", "", "ImportOrder", Map.of()),
           new Mirror("import-order", "groups", "ImportOrder", Map.of("groups", "javax, java")),
           new Mirror("import-order", "ordered", "ImportOrder", Map.of("ordered", "false")),
@@ -78,15 +85,25 @@ class ImportCheckstyleParityTest {
               "import-order",
               "separated",
               "ImportOrder",
-              Map.of("groups", "java, javax", "separated", TRUE)),
+              Map.of("groups", "java, javax", "separated", TRUE)
+          ),
           new Mirror(
-              "import-order", "case-sensitive", "ImportOrder", Map.of("caseSensitive", "false")),
+              "import-order",
+              "case-sensitive",
+              "ImportOrder",
+              Map.of("caseSensitive", "false")
+          ),
           new Mirror(
               "custom-import-order",
               "",
               "CustomImportOrder",
               customProperties(
-                  CUSTOM_RULES, TRUE, TRUE, new Patterns(NO_SPECIAL, GOOGLE_STANDARD, ANY))),
+                  CUSTOM_RULES,
+                  TRUE,
+                  TRUE,
+                  new Patterns(NO_SPECIAL, GOOGLE_STANDARD, ANY)
+              )
+          ),
           new Mirror(
               "custom-import-order",
               "rules",
@@ -95,19 +112,31 @@ class ImportCheckstyleParityTest {
                   "THIRD_PARTY_PACKAGE###STATIC",
                   TRUE,
                   TRUE,
-                  new Patterns(NO_SPECIAL, GOOGLE_STANDARD, ANY))),
+                  new Patterns(NO_SPECIAL, GOOGLE_STANDARD, ANY)
+              )
+          ),
           new Mirror(
               "custom-import-order",
               "sort",
               "CustomImportOrder",
               customProperties(
-                  CUSTOM_RULES, "false", TRUE, new Patterns(NO_SPECIAL, GOOGLE_STANDARD, ANY))),
+                  CUSTOM_RULES,
+                  "false",
+                  TRUE,
+                  new Patterns(NO_SPECIAL, GOOGLE_STANDARD, ANY)
+              )
+          ),
           new Mirror(
               "custom-import-order",
               "separate",
               "CustomImportOrder",
               customProperties(
-                  CUSTOM_RULES, TRUE, "false", new Patterns(NO_SPECIAL, GOOGLE_STANDARD, ANY))),
+                  CUSTOM_RULES,
+                  TRUE,
+                  "false",
+                  new Patterns(NO_SPECIAL, GOOGLE_STANDARD, ANY)
+              )
+          ),
           new Mirror(
               "custom-import-order",
               "special",
@@ -116,7 +145,9 @@ class ImportCheckstyleParityTest {
                   "SPECIAL_IMPORTS###STANDARD_JAVA_PACKAGE###THIRD_PARTY_PACKAGE",
                   TRUE,
                   TRUE,
-                  new Patterns("^org\\.example\\..*", GOOGLE_STANDARD, ANY))),
+                  new Patterns("^org\\.example\\..*", GOOGLE_STANDARD, ANY)
+              )
+          ),
           new Mirror(
               "custom-import-order",
               "standard",
@@ -125,7 +156,9 @@ class ImportCheckstyleParityTest {
                   "STANDARD_JAVA_PACKAGE###THIRD_PARTY_PACKAGE",
                   TRUE,
                   TRUE,
-                  new Patterns(NO_SPECIAL, "^org\\.example\\..*", ANY))),
+                  new Patterns(NO_SPECIAL, "^org\\.example\\..*", ANY)
+              )
+          ),
           new Mirror(
               "custom-import-order",
               "third",
@@ -134,37 +167,56 @@ class ImportCheckstyleParityTest {
                   "STANDARD_JAVA_PACKAGE###THIRD_PARTY_PACKAGE",
                   TRUE,
                   TRUE,
-                  new Patterns(NO_SPECIAL, GOOGLE_STANDARD, "^org\\..*"))),
+                  new Patterns(NO_SPECIAL, GOOGLE_STANDARD, "^org\\..*")
+              )
+          ),
           new Mirror("module-directive-order", "", "ModuleDirectiveOrder", Map.of()),
           new Mirror(
               "module-directive-order",
               "order",
               "ModuleDirectiveOrder",
-              Map.of("order", "exports, requires")),
+              Map.of("order", "exports, requires")
+          ),
           new Mirror(
               "module-directive-order",
               "separation",
               "ModuleDirectiveOrder",
-              Map.of("validateBlockSeparation", "false")),
+              Map.of("validateBlockSeparation", "false")
+          ),
           new Mirror("module-import-order", "", "ModuleImportOrder", Map.of()),
           new Mirror(
-              "module-import-order", "option", "ModuleImportOrder", Map.of("option", "bottom")),
+              "module-import-order",
+              "option",
+              "ModuleImportOrder",
+              Map.of("option", "bottom")
+          ),
           new Mirror(
-              "module-import-order", "separated", "ModuleImportOrder", Map.of("separated", TRUE)),
+              "module-import-order",
+              "separated",
+              "ModuleImportOrder",
+              Map.of("separated", TRUE)
+          ),
           new Mirror("avoid-module-import", "", "AvoidModuleImport", Map.of()),
           new Mirror(
               "avoid-module-import",
               "excludes",
               "AvoidModuleImport",
-              Map.of("excludes", "java.base")),
+              Map.of("excludes", "java.base")
+          ),
           new Mirror(
               "avoid-module-import",
               "max",
               "AvoidModuleImport",
-              Map.of("maxAllowedModuleImports", "1")));
+              Map.of("maxAllowedModuleImports", "1")
+          )
+      );
 
   private static Map<String, String> customProperties(
-      final String rules, final String sort, final String separate, final Patterns patterns) {
+      final String rules,
+      final String sort,
+      final String separate,
+      final Patterns patterns
+  ) {
     return Map.of(
         "customImportOrderRules",
         rules,
@@ -177,7 +229,8 @@ class ImportCheckstyleParityTest {
         "standardPackageRegExp",
         patterns.standard(),
         "thirdPartyPackageRegExp",
-        patterns.thirdParty());
+        patterns.thirdParty()
+    );
   }
 
   @Test
@@ -212,7 +265,7 @@ class ImportCheckstyleParityTest {
   }
 
   private static Set<String> lines(final Set<String> positions) {
-    return positions.stream().map(position -> position.split(":")[0]).collect(Collectors.toSet());
+    return positions.stream().map(position -> position.split(":") [0]).collect(Collectors.toSet());
   }
 
   private static Set<String> expectedPositions(final Path file) throws IOException {
@@ -232,7 +285,9 @@ class ImportCheckstyleParityTest {
         .forEach(
             (key, value) ->
                 properties.append(
-                    "<property name=\"%s\" value=\"%s\"/>".formatted(key, escape(value))));
+                    "<property name=\"%s\" value=\"%s\"/>".formatted(key, escape(value))
+                )
+        );
     return "<?xml version=\"1.0\"?>"
         + "<!DOCTYPE module PUBLIC \"-//Checkstyle//DTD Checkstyle Configuration 1.3//EN\""
         + " \"https://checkstyle.org/dtds/configuration_1_3.dtd\">"
@@ -254,13 +309,14 @@ class ImportCheckstyleParityTest {
     final String java = Path.of(System.getProperty("java.home"), "bin", "java").toString();
     final Process process =
         new ProcessBuilder(
-                java,
-                "-cp",
-                CLASSPATH,
-                "com.puppycrawl.tools.checkstyle.Main",
-                "-c",
-                config.toString(),
-                file.toString())
+            java,
+            "-cp",
+            CLASSPATH,
+            "com.puppycrawl.tools.checkstyle.Main",
+            "-c",
+            config.toString(),
+            file.toString()
+        )
             .redirectErrorStream(true)
             .start();
     final String output =

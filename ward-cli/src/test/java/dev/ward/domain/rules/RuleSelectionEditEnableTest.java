@@ -33,11 +33,14 @@ class RuleSelectionEditEnableTest {
   void enableAppendsToAnExistingInlineArray() {
     final String text =
         RuleSelectionEdit.enable(
-            "version = 1\n[select]\ninclude = [\"" + FIELD + "\"]\n", List.of(METHOD));
+            "version = 1\n[select]\ninclude = [\"" + FIELD + "\"]\n",
+            List.of(METHOD)
+        );
 
     assertThat(text)
         .isEqualTo(
-            "version = 1\n[select]\ninclude = [\"" + FIELD + "\", \"" + METHOD_NAME + "\"]\n");
+            "version = 1\n[select]\ninclude = [\"" + FIELD + "\", \"" + METHOD_NAME + "\"]\n"
+        );
     assertValid(text);
   }
 
@@ -81,7 +84,8 @@ class RuleSelectionEditEnableTest {
                 + "]\n"
                 + "\n"
                 + "[rules.java.method-length]\n"
-                + "max = 80\n");
+                + "max = 80\n"
+        );
     assertValid(text);
   }
 
@@ -89,7 +93,9 @@ class RuleSelectionEditEnableTest {
   void enableMovesAnIdOutOfExclude() {
     final String text =
         RuleSelectionEdit.enable(
-            "[select]\nexclude = [\"" + METHOD_NAME + "\"]\n", List.of(METHOD));
+            "[select]\nexclude = [\"" + METHOD_NAME + "\"]\n",
+            List.of(METHOD)
+        );
 
     assertThat(text).isEqualTo("[select]\ninclude = [\"" + METHOD_NAME + "\"]\nexclude = []\n");
     assertValid(text);
@@ -111,7 +117,8 @@ class RuleSelectionEditEnableTest {
   @Test
   void aKeyThatIsNotAnArrayIsRefused() {
     assertThatThrownBy(
-            () -> RuleSelectionEdit.enable("[select]\ninclude = \"x\"\n", List.of(METHOD)))
+        () -> RuleSelectionEdit.enable("[select]\ninclude = \"x\"\n", List.of(METHOD))
+    )
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("include");
   }

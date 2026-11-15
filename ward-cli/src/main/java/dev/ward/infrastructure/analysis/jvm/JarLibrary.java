@@ -59,7 +59,10 @@ public final class JarLibrary implements JvmLibrary {
         LOGGER.log(Level.FINE, "event=jar-index-hit");
         return Optional.of(
             new JarLibrary(
-                jar, new HashSet<>(Files.readAllLines(cached.get(), StandardCharsets.UTF_8))));
+                jar,
+                new HashSet<>(Files.readAllLines(cached.get(), StandardCharsets.UTF_8))
+            )
+        );
       }
       final Set<String> found = classNames(jar);
       cached.ifPresent(path -> store(path, found));
@@ -78,7 +81,8 @@ public final class JarLibrary implements JvmLibrary {
           .filter(entry -> entry.endsWith(CLASS_SUFFIX))
           .filter(entry -> !entry.startsWith(MULTI_RELEASE) && !entry.startsWith(MODULE_INFO))
           .map(
-              entry -> entry.substring(0, entry.length() - CLASS_SUFFIX.length()).replace('/', '.'))
+              entry -> entry.substring(0, entry.length() - CLASS_SUFFIX.length()).replace('/', '.')
+          )
           .forEach(found::add);
       return found;
     }

@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * not read it as a docstring, like pyflakes-style {@code B021}. The finding sits on the string.
  */
 public final class FStringDocstringCheck implements RuleCheck {
-
   private static final Set<String> SCOPES = Set.of("funcdef", "classdef");
   private static final String BLOCK = "block";
   private static final Pattern FSTRING = Pattern.compile("^[rRbBuU]{0,2}[fF][rRbBuU]?[\"'].*");

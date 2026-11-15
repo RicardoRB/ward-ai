@@ -24,7 +24,6 @@ import java.util.Optional;
  * and types are not checked, and the exports and initializer rules of ESLint are not applied.
  */
 public final class NodeUseBeforeDefineCheck implements RuleCheck {
-
   private static final String ENUM = "enumDeclaration";
   private static final String TYPE_ALIAS = "typeAliasDeclaration";
   private static final String INTERFACE = "interfaceDeclaration";
@@ -51,7 +50,11 @@ public final class NodeUseBeforeDefineCheck implements RuleCheck {
    * @param message the message of each finding, with {@code {value}} as the name
    */
   public NodeUseBeforeDefineCheck(
-      final Kinds kinds, final boolean allowNamedExports, final Types types, final String message) {
+      final Kinds kinds,
+      final boolean allowNamedExports,
+      final Types types,
+      final String message
+  ) {
     this.kinds = Objects.requireNonNull(kinds, "kinds");
     this.allowNamedExports = allowNamedExports;
     this.types = Objects.requireNonNull(types, "types");
@@ -65,7 +68,11 @@ public final class NodeUseBeforeDefineCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes();
     final Map<Integer, String> declared = DeclarationKinds.of(root);
     final List<Span> typeSpans = Declarations.spansOf(root, TYPE_REFERENCE);
@@ -93,7 +100,9 @@ public final class NodeUseBeforeDefineCheck implements RuleCheck {
       final UnitScopes scopes,
       final NameReference reference,
       final Binding binding,
-      final Map<Integer, String> declared) {
+      final Map<Integer,
+      String> declared
+  ) {
     return switch (binding.kind()) {
       case FUNCTION -> kinds.functions();
       case CLASS -> kinds.classes() || !upperFunction(scopes, reference, binding);
@@ -108,7 +117,10 @@ public final class NodeUseBeforeDefineCheck implements RuleCheck {
    * classes and variables options skip only those references: a use in the declaring scope is kept.
    */
   private static boolean upperFunction(
-      final UnitScopes scopes, final NameReference reference, final Binding binding) {
+      final UnitScopes scopes,
+      final NameReference reference,
+      final Binding binding
+  ) {
     Optional<Scope> current =
         scopes.scopes().stream().filter(scope -> scope.id() == reference.scope()).findFirst();
     while (current.isPresent() && current.get().id() != binding.scope()) {
@@ -127,7 +139,9 @@ public final class NodeUseBeforeDefineCheck implements RuleCheck {
       final UnitScopes scopes,
       final NameReference reference,
       final Binding binding,
-      final Map<Integer, String> declared) {
+      final Map<Integer,
+      String> declared
+  ) {
     final String declaration = declared.get(binding.declaration().startOffset());
     if (ENUM.equals(declaration)) {
       return types.enums() || !upperFunction(scopes, reference, binding);
@@ -137,7 +151,6 @@ public final class NodeUseBeforeDefineCheck implements RuleCheck {
 
   /** The tree queries that find the declarations, the type positions and the export clauses. */
   private static final class Declarations {
-
     static List<Span> spansOf(final SyntaxNode node, final String kind) {
       final List<Span> spans = new ArrayList<>();
       collectSpans(node, kind, spans);
@@ -156,7 +169,8 @@ public final class NodeUseBeforeDefineCheck implements RuleCheck {
           .anyMatch(
               span ->
                   span.startOffset() <= reference.startOffset()
-                      && reference.endOffset() <= span.endOffset());
+                      && reference.endOffset() <= span.endOffset()
+          );
     }
   }
 }

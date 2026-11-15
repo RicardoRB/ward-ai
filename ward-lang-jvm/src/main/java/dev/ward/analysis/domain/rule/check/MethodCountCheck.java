@@ -13,7 +13,6 @@ import java.util.Set;
  * in a class is package-private.
  */
 public final class MethodCountCheck implements RuleCheck {
-
   private static final Set<String> BODIES = Set.of("classBody", "interfaceBody");
   private static final Set<String> MEMBERS =
       Set.of("classBodyDeclaration", "interfaceBodyDeclaration");
@@ -22,7 +21,8 @@ public final class MethodCountCheck implements RuleCheck {
           "methodDeclaration",
           "genericMethodDeclaration",
           "interfaceMethodDeclaration",
-          "genericInterfaceMethodDeclaration");
+          "genericInterfaceMethodDeclaration"
+      );
   private static final String INTERFACE_BODY = "interfaceBody";
   private static final String MODIFIER = "modifier";
   private static final String PRIVATE = "private";
@@ -54,7 +54,6 @@ public final class MethodCountCheck implements RuleCheck {
    * @param pub the largest number of public methods
    */
   public record Limits(int total, int priv, int pkg, int prot, int pub) {
-
     /**
      * Validates the limits.
      *
@@ -85,11 +84,18 @@ public final class MethodCountCheck implements RuleCheck {
   }
 
   private void report(
-      final SyntaxNode body, final int value, final int max, final List<RuleMatch> matches) {
+      final SyntaxNode body,
+      final int value,
+      final int max,
+      final List<RuleMatch> matches
+  ) {
     if (value > max) {
       matches.add(
           new RuleMatch(
-              body.span(), CheckSupport.fill(message, String.valueOf(value), String.valueOf(max))));
+              body.span(),
+              CheckSupport.fill(message, String.valueOf(value), String.valueOf(max))
+          )
+      );
     }
   }
 

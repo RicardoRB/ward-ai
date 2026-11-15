@@ -16,7 +16,6 @@ import java.util.function.Function;
 
 /** Builds the summaries, modules and rule the module-scoped accessibility tests run on. */
 final class SwiftAccessibilityFixtures {
-
   static final String SHAPE = "Shape";
   static final String DECLARING = "Core/Shape.swift";
   static final String CORE_USER = "Core/Draw.swift";
@@ -28,7 +27,8 @@ final class SwiftAccessibilityFixtures {
           Set.of(AnalysisLanguage.SWIFT),
           RuleCapability.SYMBOLS,
           AnalysisSeverity.WARNING,
-          "check = \"swift-unused-definition\"");
+          "check = \"swift-unused-definition\""
+      );
 
   /** The modules of the files a test names; a file not named here is in no known module. */
   static final Map<String, String> CORE =
@@ -39,7 +39,11 @@ final class SwiftAccessibilityFixtures {
   private SwiftAccessibilityFixtures() {}
 
   static List<AnalysisFinding> findings(
-      final Map<String, FileSummary> files, final Map<String, String> modules) {
+      final Map<String,
+      FileSummary> files,
+      final Map<String,
+      String> modules
+  ) {
     final Function<String, Optional<String>> moduleOf =
         path -> Optional.ofNullable(modules.get(path));
     return SwiftModuleAccessibility.findings(RULE, files, moduleOf);
@@ -51,7 +55,8 @@ final class SwiftAccessibilityFixtures {
         List.of(new Symbol(name, SPAN, SwiftUnusedDefinitions.PUBLIC_KIND_PREFIX + "type")),
         List.of(),
         List.of(),
-        Set.of());
+        Set.of()
+    );
   }
 
   static FileSummary using(final String path, final String name) {

@@ -26,12 +26,15 @@ class OpenjdkAnnotationLocationCheckTest {
     assertThat(run(group(BODY, tok(ANNOTATION, "@A", 1, 0), tok(PUBLIC, PUBLIC, 2, NUMBER_4))))
         .isEmpty();
     assertThat(
-            run(
-                group(
-                    BODY,
-                    tok(ANNOTATION, "@A", 1, 0),
-                    tok(ANNOTATION, "@B", 1, NUMBER_4),
-                    tok(PUBLIC, PUBLIC, 2, NUMBER_8))))
+        run(
+            group(
+                BODY,
+                tok(ANNOTATION, "@A", 1, 0),
+                tok(ANNOTATION, "@B", 1, NUMBER_4),
+                tok(PUBLIC, PUBLIC, 2, NUMBER_8)
+            )
+        )
+    )
         .hasSize(1);
     assertThat(run(group(BODY, tok(PUBLIC, PUBLIC, 1, 0)))).isEmpty();
     assertThat(run(group("modifier", tok(ANNOTATION, "@A", 1, 0), tok("x", "x", 2, 0)))).isEmpty();

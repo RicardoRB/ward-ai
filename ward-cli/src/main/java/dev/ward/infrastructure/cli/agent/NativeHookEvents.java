@@ -15,7 +15,10 @@ final class NativeHookEvents {
   private NativeHookEvents() {}
 
   static NativeHookInput read(
-      final InputStream input, final NativeHookProtocol protocol, final JsonCodec codec) {
+      final InputStream input,
+      final NativeHookProtocol protocol,
+      final JsonCodec codec
+  ) {
     try {
       final byte[] bytes = input.readNBytes(MAX_PAYLOAD_BYTES + 1);
       if (bytes.length > MAX_PAYLOAD_BYTES) {

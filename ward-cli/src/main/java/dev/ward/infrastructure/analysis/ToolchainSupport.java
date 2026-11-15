@@ -10,7 +10,6 @@ import java.util.Set;
  * new toolchain must be classified before the build passes.
  */
 final class ToolchainSupport {
-
   /** The toolchains whose layout reader builds a dependency adapter. */
   static final Set<Toolchain> WITH_LAYOUT_READER =
       EnumSet.of(Toolchain.JVM, Toolchain.NODE, Toolchain.SWIFT);

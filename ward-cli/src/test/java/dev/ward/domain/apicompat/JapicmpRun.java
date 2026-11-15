@@ -26,7 +26,11 @@ final class JapicmpRun {
 
   /** Returns {@code type} or {@code type#member} for every incompatible change. */
   static Set<String> changes(
-      final boolean kotlin, final Path old, final Path revised, final Path xml)
+      final boolean kotlin,
+      final Path old,
+      final Path revised,
+      final Path xml
+  )
       throws IOException, InterruptedException, ParserConfigurationException, SAXException {
     final List<String> command =
         new ArrayList<>(
@@ -41,7 +45,9 @@ final class JapicmpRun {
                 revised.toString(),
                 "-x",
                 xml.toString(),
-                "--ignore-missing-classes"));
+                "--ignore-missing-classes"
+            )
+        );
     if (kotlin) {
       final String stdlib = JapicmpFixtureBuild.stdlib().toString();
       command.addAll(List.of("--old-classpath", stdlib, "--new-classpath", stdlib));
@@ -54,7 +60,7 @@ final class JapicmpRun {
             .getElementsByTagName("class");
     final Set<String> keys = new TreeSet<>();
     for (int index = 0; index < classes.getLength(); index++) {
-      collect((Element) classes.item(index), keys);
+      collect((Element)classes.item(index), keys);
     }
     return keys;
   }
@@ -71,7 +77,8 @@ final class JapicmpRun {
       for (final Element member : members(type, kind)) {
         if (breaking(member)) {
           keys.add(
-              name + "#" + (CONSTRUCTORS.equals(kind) ? "<init>" : member.getAttribute("name")));
+              name + "#" + (CONSTRUCTORS.equals(kind) ? "<init>" : member.getAttribute("name"))
+          );
         }
       }
     }
@@ -115,7 +122,8 @@ final class JapicmpRun {
         .anyMatch(
             change ->
                 !Boolean.parseBoolean(change.getAttribute(BINARY))
-                    || !Boolean.parseBoolean(change.getAttribute(SOURCE)));
+                    || !Boolean.parseBoolean(change.getAttribute(SOURCE))
+        );
   }
 
   private static boolean hasChange(final Element element, final String type) {

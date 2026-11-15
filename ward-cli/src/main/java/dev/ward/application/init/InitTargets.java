@@ -23,7 +23,10 @@ import java.util.stream.Stream;
  * @param choiceRequired whether discovery found several candidates the user must choose from
  */
 public record InitTargets(
-    List<DiscoveredProject> projects, boolean discovered, boolean choiceRequired) {
+    List<DiscoveredProject> projects,
+    boolean discovered,
+    boolean choiceRequired
+) {
   private static final Logger LOGGER = Logger.getLogger(InitTargets.class.getName());
 
   /** Copies {@code projects} so the targets stay immutable. */
@@ -45,14 +48,16 @@ public record InitTargets(
       final Path start,
       final List<String> explicit,
       final Predicate<Project> supported,
-      final WorkspaceMembers members) {
+      final WorkspaceMembers members
+  ) {
     final Path base = start.toAbsolutePath().normalize();
     if (!explicit.isEmpty()) {
       log("explicit", explicit.size());
       return new InitTargets(
           explicit.stream().map(dir -> named(detector, base, dir, supported)).toList(),
           false,
-          false);
+          false
+      );
     }
     final Optional<Project> containing = detector.detect(base);
     if (containing.filter(supported).isPresent()) {
@@ -62,7 +67,8 @@ public record InitTargets(
       return new InitTargets(
           Stream.concat(Stream.of(new DiscoveredProject(project, 0)), own.stream()).toList(),
           false,
-          false);
+          false
+      );
     }
     final List<DiscoveredProject> discovered =
         detector.discover(base).stream()
@@ -74,7 +80,7 @@ public record InitTargets(
       // No supported project below: an unsupported containing project must not get JVM files.
       throw containing
           .filter(InitToolchains::unknown)
-          .<RuntimeException>map(project -> new WardException(InitToolchains.unsupported(project)))
+          .<RuntimeException> map(project -> new WardException(InitToolchains.unsupported(project)))
           .orElseGet(ProjectNotFoundException::new);
     }
     return new InitTargets(discovered, true, discovered.size() > 1);
@@ -85,7 +91,10 @@ public record InitTargets(
    * configures each one as its own project. Other roots have none.
    */
   private static List<DiscoveredProject> ownLanguageMembers(
-      final Project root, final Predicate<Project> supported, final WorkspaceMembers members) {
+      final Project root,
+      final Predicate<Project> supported,
+      final WorkspaceMembers members
+  ) {
     if (!root.taskRunner().isRootRunner()) {
       return List.of();
     }
@@ -100,12 +109,14 @@ public record InitTargets(
       final ProjectDetector detector,
       final Path base,
       final String name,
-      final Predicate<Project> supported) {
+      final Predicate<Project> supported
+  ) {
     final Path dir = base.resolve(name).toAbsolutePath().normalize();
     final Optional<Project> project = detector.detect(dir).filter(supported);
     if (project.isEmpty()) {
       throw new WardException(
-          "'" + name + "' is not inside a Maven, Gradle, TypeScript or JavaScript project.");
+          "'" + name + "' is not inside a Maven, Gradle, TypeScript or JavaScript project."
+      );
     }
     final Path root = project.get().root();
     if (!root.equals(dir)) {
@@ -116,7 +127,8 @@ public record InitTargets(
               + display(base, root)
               + "'; use --project "
               + display(base, root)
-              + ".");
+              + "."
+      );
     }
     return new DiscoveredProject(project.get(), 0);
   }

@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** The ids and measurements declared in the Swift rule file. */
 final class SwiftRuleFileTest {
-
   private static final int RULE_COUNT = 6;
   private static final Set<String> MEASUREMENTS =
       Set.of("lines", "parameters", "decision-points", "identifier-case");

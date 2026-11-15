@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * from one, called on its own line.
  */
 public final class ExceptionStatementCheck implements RuleCheck {
-
   private static final Set<String> BUILTIN =
       Set.of(
           "ArithmeticError",
@@ -61,7 +60,8 @@ public final class ExceptionStatementCheck implements RuleCheck {
           "UnboundLocalError",
           "UnicodeError",
           "ValueError",
-          "ZeroDivisionError");
+          "ZeroDivisionError"
+      );
   private static final Set<String> CLASSES = Set.of("classdef");
   private static final Set<String> STATEMENTS = Set.of("expr_stmt");
   private static final Pattern CLASS_HEADER = Pattern.compile("^class(\\w+)\\(([^)]*)\\):");

@@ -11,7 +11,6 @@ import java.util.Objects;
  * @param fileName the glob on the base name, for {@code file-name}; {@code null} otherwise
  */
 public record ArchitectureConstraint(Kind kind, ArchitectureSelector target, String fileName) {
-
   /** The constraint keys of a rule, with the rule id of the family each one reports under. */
   public enum Kind {
     /** An edge from a selected file to a file of the target is a finding. */

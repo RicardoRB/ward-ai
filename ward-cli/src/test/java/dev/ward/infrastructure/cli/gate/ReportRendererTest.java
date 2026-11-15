@@ -37,7 +37,9 @@ class ReportRendererTest {
                 .duration(Duration.ofMillis(DURATION_MILLIS))
                 .stdout(stdout)
                 .stderr(stderr)
-                .build()));
+                .build()
+        )
+    );
   }
 
   @Test
@@ -93,7 +95,8 @@ class ReportRendererTest {
             "0 passed · 1 failed · 0 skipped",
             "Command:" + System.lineSeparator() + "./mvnw test",
             "line 100",
-            "boom")
+            "boom"
+        )
         .doesNotContain("line 60" + System.lineSeparator());
   }
 
@@ -116,7 +119,9 @@ class ReportRendererTest {
                     .duration(Duration.ZERO)
                     .stdout("")
                     .stderr("missing")
-                    .build()));
+                    .build()
+            )
+        );
 
     final String text = new TextReportRenderer().render(report);
 
@@ -138,7 +143,9 @@ class ReportRendererTest {
                     .stdout("")
                     .stderr("")
                     .summary("not run (fail-fast)")
-                    .build()));
+                    .build()
+            )
+        );
 
     assertThat(new TextReportRenderer().render(report))
         .contains("– compile — not run (fail-fast)", "0 passed · 0 failed · 1 skipped");
@@ -183,7 +190,11 @@ class ReportRendererTest {
                             "trivy",
                             null,
                             null,
-                            "Install trivy: https://trivy.dev/latest/getting-started/installation/"))));
+                            "Install trivy: https://trivy.dev/latest/getting-started/installation/"
+                        )
+                    )
+            )
+        );
 
     final String text = new TextReportRenderer().render(report);
 

@@ -8,7 +8,6 @@ import java.util.List;
 
 /** Looks up the blocks and accesses of a lowered Java body for the access tests. */
 final class JavaAccessFixtures {
-
   private JavaAccessFixtures() {}
 
   static List<BasicBlock> accessesOf(final String source, final String body) {
@@ -33,7 +32,8 @@ final class JavaAccessFixtures {
         .findFirst()
         .orElseThrow(
             () ->
-                new AssertionError("no graph " + prefix + " in " + JavaFlowFixtures.names(result)));
+                new AssertionError("no graph " + prefix + " in " + JavaFlowFixtures.names(result))
+        );
   }
 
   static List<VariableAccess> allAccesses(final ControlFlowGraph graph) {

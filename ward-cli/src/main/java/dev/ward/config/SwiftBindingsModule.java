@@ -16,19 +16,23 @@ import dev.ward.infrastructure.project.swift.XcodebuildSchemes;
 abstract class SwiftBindingsModule {
   @Binds
   abstract SwiftToolchainInspection swiftToolchainInspection(
-      ProcessSwiftToolchainInspection implementation);
+      ProcessSwiftToolchainInspection implementation
+  );
 
   @Binds
   abstract XcodeSchemes xcodeSchemes(XcodebuildSchemes implementation);
 
   @Binds
   abstract SwiftSourceDirectories swiftSourceDirectories(
-      FileSystemSwiftSourceDirectories implementation);
+      FileSystemSwiftSourceDirectories implementation
+  );
 
   /** Groups the Swift read ports init takes as one binding. */
   @Provides
   static SwiftPorts swiftPorts(
-      final XcodeSchemes xcode, final SwiftSourceDirectories swiftSources) {
+      final XcodeSchemes xcode,
+      final SwiftSourceDirectories swiftSources
+  ) {
     return new SwiftPorts(xcode, swiftSources);
   }
 }

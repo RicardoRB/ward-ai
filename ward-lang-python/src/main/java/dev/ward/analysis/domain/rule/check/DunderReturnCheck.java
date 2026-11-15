@@ -18,7 +18,6 @@ import java.util.Set;
  * are judged by their outer brackets only; upgrade with body analysis when type facts cover them.
  */
 public final class DunderReturnCheck implements RuleCheck {
-
   /** The literal type a returned value has, when its text shows it. */
   public enum Literal {
     NONE,
@@ -57,7 +56,8 @@ public final class DunderReturnCheck implements RuleCheck {
       final String method,
       final Literal expected,
       final boolean nonNegative,
-      final String message) {
+      final String message
+  ) {
     this.method = Objects.requireNonNull(method, "method");
     this.expected = Objects.requireNonNull(expected, "expected");
     this.nonNegative = nonNegative;

@@ -13,7 +13,6 @@ import java.util.Objects;
  * reported.
  */
 public final class UnnecessaryWarningSuppressionCheck implements UnitCheck {
-
   private static final String SUPPRESS = "SuppressWarnings";
   private static final String NO_PMD = "NOPMD";
   private static final String COMMENT = "comment";

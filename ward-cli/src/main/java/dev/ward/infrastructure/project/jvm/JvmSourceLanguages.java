@@ -42,7 +42,9 @@ public final class JvmSourceLanguages {
           new SimpleFileVisitor<>() {
             @Override
             public FileVisitResult preVisitDirectory(
-                final Path path, final BasicFileAttributes attributes) {
+                final Path path,
+                final BasicFileAttributes attributes
+            ) {
               if (!path.equals(dir) && RepositoryProjectScan.skipped(path)) {
                 return FileVisitResult.SKIP_SUBTREE;
               }
@@ -55,7 +57,8 @@ public final class JvmSourceLanguages {
               }
               return FileVisitResult.CONTINUE;
             }
-          });
+          }
+      );
     } catch (IOException e) {
       throw new IllegalStateException("Could not inspect project sources in " + dir, e);
     }

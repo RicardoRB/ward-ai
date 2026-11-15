@@ -21,7 +21,11 @@ final class NameTypes {
   private final Map<SyntaxNode, TsType> contextual = new IdentityHashMap<>();
 
   NameTypes(
-      final Function<SyntaxNode, TsType> typer, final UnitModel model, final ConstructTyper calls) {
+      final Function<SyntaxNode,
+      TsType> typer,
+      final UnitModel model,
+      final ConstructTyper calls
+  ) {
     this.typer = typer;
     this.model = model;
     this.calls = calls;

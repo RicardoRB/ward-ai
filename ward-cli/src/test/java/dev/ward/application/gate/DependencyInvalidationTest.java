@@ -30,7 +30,8 @@ class DependencyInvalidationTest {
           new RuleEngine(fixture.matcher()),
           AnalysisCacheFixtures.codec(),
           VERSION,
-          fixture.dependencies());
+          fixture.dependencies()
+      );
 
   @Test
   void warmRunSummarizesAndAnalyzesNothing() {
@@ -48,7 +49,9 @@ class DependencyInvalidationTest {
   void corruptSummaryIsSummarizedAgain() {
     run(units(A_TEXT, B_TEXT, C_TEXT));
     entries.put(
-        AnalysisCacheKey.summary(VERSION, DependencyFixtureLanguage.unit(A, A_TEXT)), "not json");
+        AnalysisCacheKey.summary(VERSION, DependencyFixtureLanguage.unit(A, A_TEXT)),
+        "not json"
+    );
     fixture.parsed.clear();
 
     run(units(A_TEXT, B_TEXT, C_TEXT));
@@ -108,14 +111,17 @@ class DependencyInvalidationTest {
                 DependencyFixtureLanguage.LANGUAGE,
                 dev.ward.analysis.domain.rule.RuleCapability.SYNTAX,
                 dev.ward.analysis.domain.ir.AnalysisSeverity.WARNING,
-                "body"));
+                "body"
+            )
+        );
     final SourceUnit unit = DependencyFixtureLanguage.unit(A, A_TEXT);
 
     new UnitResultCache(
-            new RuleEngine(fixture.matcher()),
-            AnalysisCacheFixtures.codec(),
-            VERSION,
-            fixture.dependencies())
+        new RuleEngine(fixture.matcher()),
+        AnalysisCacheFixtures.codec(),
+        VERSION,
+        fixture.dependencies()
+    )
         .run(cache, List.of(unit), List.of(fixture.frontend()), syntaxOnly);
 
     assertThat(entries)
@@ -128,10 +134,11 @@ class DependencyInvalidationTest {
 
   private RuleRunResult coldRun(final List<SourceUnit> units) {
     return new UnitResultCache(
-            new RuleEngine(fixture.matcher()),
-            AnalysisCacheFixtures.codec(),
-            VERSION,
-            fixture.dependencies())
+        new RuleEngine(fixture.matcher()),
+        AnalysisCacheFixtures.codec(),
+        VERSION,
+        fixture.dependencies()
+    )
         .run(AnalysisCacheFixtures.NO_CACHE, units, List.of(fixture.frontend()), rules);
   }
 
@@ -139,6 +146,7 @@ class DependencyInvalidationTest {
     return List.of(
         DependencyFixtureLanguage.unit(A, a),
         DependencyFixtureLanguage.unit(B, b),
-        DependencyFixtureLanguage.unit(C, c));
+        DependencyFixtureLanguage.unit(C, c)
+    );
   }
 }

@@ -37,14 +37,17 @@ public record CatalogRow(
     String name,
     String category,
     Set<RulePreset> presets,
-    Map<AnalysisLanguage, LanguageStatus> statuses,
-    Map<AnalysisLanguage, String> ids,
-    Map<String, List<String>> counterparts,
+    Map<AnalysisLanguage,
+    LanguageStatus> statuses,
+    Map<AnalysisLanguage,
+    String> ids,
+    Map<String,
+    List<String>> counterparts,
     String source,
     Optional<LanguageStatus> text,
     List<String> cwe,
-    List<String> sources) {
-
+    List<String> sources
+) {
   /** The reason of a language that a row does not mention. */
   public static final String UNLISTED_REASON =
       "no rule of a tool in the roadmaps covers it in this language";
@@ -131,11 +134,15 @@ public record CatalogRow(
   }
 
   private static void requireId(
-      final String name, final AnalysisLanguage language, final String id) {
+      final String name,
+      final AnalysisLanguage language,
+      final String id
+  ) {
     final String prefix = "ward:" + key(language) + "/";
     if (!id.startsWith(prefix) || !NAME.matcher(id.substring(prefix.length())).matches()) {
       throw new IllegalArgumentException(
-          "rule '" + name + "' has id '" + id + "', which must be " + prefix + "<name>");
+          "rule '" + name + "' has id '" + id + "', which must be " + prefix + "<name>"
+      );
     }
   }
 

@@ -19,7 +19,6 @@ import java.util.Set;
  * unknown.
  */
 public final class SynchronizedOnTypeCheck implements RuleCheck {
-
   private static final String STATEMENT = "statement";
   private static final String SYNCHRONIZED = "'synchronized'";
   private static final String EXPRESSION = "expression";
@@ -55,7 +54,8 @@ public final class SynchronizedOnTypeCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts facts,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(STATEMENT))) {
       final SyntaxNode statement = visit.node();
@@ -72,6 +72,7 @@ public final class SynchronizedOnTypeCheck implements RuleCheck {
     return statement.children().stream()
         .filter(child -> EXPRESSION.equals(child.kind()))
         .anyMatch(
-            lock -> facts.typeOf(lock.span()).filter(t -> types.contains(t.name())).isPresent());
+            lock -> facts.typeOf(lock.span()).filter(t -> types.contains(t.name())).isPresent()
+        );
   }
 }

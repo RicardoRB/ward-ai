@@ -34,8 +34,9 @@ class JvmClassLibrariesTest {
 
   private Path jarOf(final Class<?>... types) throws IOException {
     final Path jar = temp.resolve("lib.jar");
-    try (OutputStream out = Files.newOutputStream(jar);
-        JarOutputStream jarOut = new JarOutputStream(out)) {
+    try (OutputStream out = Files.newOutputStream(
+        jar
+    ); JarOutputStream jarOut = new JarOutputStream(out)) {
       for (final Class<?> type : types) {
         jarOut.putNextEntry(entryOf(type));
         jarOut.write(bytesOf(type));
@@ -99,7 +100,8 @@ class JvmClassLibrariesTest {
             temp,
             List.of("classes", "libs/notes.txt", "missing.jar", libs.toString()),
             Optional.of(HOME),
-            Optional.empty())) {
+            Optional.empty()
+        )) {
       assertThat(libraries.exists("app.Sample")).isTrue();
       assertThat(libraries.find("app.Sample")).isPresent();
       assertThat(new DirectoryLibrary(temp.resolve("classes")).find("app.Sample")).isPresent();
@@ -114,7 +116,8 @@ class JvmClassLibrariesTest {
     assertThat(JvmClassLibraries.jdkHome(Optional.of(HOME.toString()), Optional.empty()))
         .contains(HOME);
     assertThat(
-            JvmClassLibraries.jdkHome(Optional.of(temp.toString()), Optional.of(HOME.toString())))
+        JvmClassLibraries.jdkHome(Optional.of(temp.toString()), Optional.of(HOME.toString()))
+    )
         .contains(HOME);
     assertThat(JvmClassLibraries.jdkHome(Optional.empty(), Optional.empty())).isEmpty();
     assertThat(JvmClassLibraries.jdkHome(Optional.of(" "), Optional.of(temp.toString()))).isEmpty();

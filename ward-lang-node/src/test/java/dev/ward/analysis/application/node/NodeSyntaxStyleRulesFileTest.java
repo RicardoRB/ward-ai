@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
  * The syntax style rules of the suggestion and typescript-eslint files exist for their languages.
  */
 class NodeSyntaxStyleRulesFileTest {
-
   private static final String FILE = "rules/node/suggestion.toml";
   private static final String SYNTAX_FILE = "rules/node/typescript-eslint-syntax.toml";
   private static final List<String> BOTH =
@@ -21,14 +20,16 @@ class NodeSyntaxStyleRulesFileTest {
           "prefer-exponentiation-operator",
           "prefer-numeric-literals",
           "no-unneeded-ternary",
-          "use-nodejs-import-protocol");
+          "use-nodejs-import-protocol"
+      );
   private static final List<String> TYPESCRIPT_ONLY =
       List.of(
           "no-namespace",
           "prefer-namespace-keyword",
           "no-empty-object-type",
           "no-require-imports",
-          "triple-slash-reference");
+          "triple-slash-reference"
+      );
 
   @Test
   void ruleFilesListTheSuggestionFile() {

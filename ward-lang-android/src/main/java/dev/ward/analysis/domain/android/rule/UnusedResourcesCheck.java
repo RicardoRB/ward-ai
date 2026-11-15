@@ -20,7 +20,6 @@ import java.util.SortedMap;
  * binding is reported; the library resources of other modules are not known.
  */
 public final class UnusedResourcesCheck implements RuleCheck, ProjectCheck {
-
   private static final Comparator<ProjectMatch> ORDER =
       Comparator.comparing(ProjectMatch::path)
           .thenComparingInt(match -> match.match().span().startLine())
@@ -47,19 +46,24 @@ public final class UnusedResourcesCheck implements RuleCheck, ProjectCheck {
             tree ->
                 ResourceDefinitions.of(tree.getKey(), tree.getValue()).stream()
                     .filter(definition -> !references.uses(definition.key()))
-                    .map(definition -> match(tree.getKey(), definition)))
+                    .map(definition -> match(tree.getKey(), definition))
+        )
         .sorted(ORDER)
         .toList();
   }
 
   private static ProjectMatch match(
-      final String path, final ResourceDefinitions.Definition definition) {
+      final String path,
+      final ResourceDefinitions.Definition definition
+  ) {
     final ResourceKey key = definition.key();
     return new ProjectMatch(
         path,
         new RuleMatch(
             definition.node().span(),
-            "Unused resource " + key.type() + "/" + key.name() + ": nothing refers to it."));
+            "Unused resource " + key.type() + "/" + key.name() + ": nothing refers to it."
+        )
+    );
   }
 
   /** Tells whether a tree is an XML file of the Android language, not a Java or Kotlin file. */

@@ -35,9 +35,12 @@ final class BuildPolicyFixtures {
             new MavenBuildReader(),
             new GradleBuildReader(),
             new NodeBuildReader(codec),
-            new PythonBuildReader());
+            new PythonBuildReader()
+        );
     return new BuildPolicyService(
-        new FileSystemBuildFiles(readers), new DependencyInventoryService(Map.of()));
+        new FileSystemBuildFiles(readers),
+        new DependencyInventoryService(Map.of())
+    );
   }
 
   static Project project(final Path root) {
@@ -46,7 +49,11 @@ final class BuildPolicyFixtures {
 
   /** Returns the {@code path:line} of each finding of {@code rule} in {@code root}. */
   static List<String> findings(
-      final Path root, final BuildRule rule, final Map<String, String> options) {
+      final Path root,
+      final BuildRule rule,
+      final Map<String,
+      String> options
+  ) {
     return service()
         .run(project(root), "policy", List.of(new BuildPolicySetting(rule, false, options)))
         .stream()

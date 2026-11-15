@@ -19,7 +19,6 @@ import org.tomlj.TomlParseResult;
  * rule that names {@code allowlist = "default"}.
  */
 final class SecretAllowlistFile {
-
   /** The classpath resource of the global allowlist. */
   static final String RESOURCE = "rules/secrets/secrets-allowlist.toml";
 
@@ -44,7 +43,8 @@ final class SecretAllowlistFile {
               .map(word -> word.toLowerCase(Locale.ROOT))
               .toList(),
           SecretAllowlist.Target.SECRET,
-          false);
+          false
+      );
     } catch (final IOException exception) {
       throw new RuleConfigurationException(RESOURCE + " could not be read", exception);
     }

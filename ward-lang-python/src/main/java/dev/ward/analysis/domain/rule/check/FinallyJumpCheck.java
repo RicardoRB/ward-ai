@@ -13,7 +13,6 @@ import java.util.Set;
  * nested in the block belongs to that loop or function and is not reported.
  */
 public final class FinallyJumpCheck implements RuleCheck {
-
   private static final Set<String> TRIES = Set.of("try_stmt");
   private static final Set<String> JUMPS = Set.of("return_stmt", "break_stmt", "continue_stmt");
   private static final Set<String> LOOPS = Set.of("for_stmt", "while_stmt");

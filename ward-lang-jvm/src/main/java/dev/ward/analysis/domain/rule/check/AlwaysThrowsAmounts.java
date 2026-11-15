@@ -9,7 +9,6 @@ import java.util.Set;
 
 /** The calls of AlwaysThrows that fail on their arguments' shape: map duplicates, Instant math. */
 final class AlwaysThrowsAmounts {
-
   private static final String MAP = "com.google.common.collect.ImmutableMap";
   private static final String BIMAP = "com.google.common.collect.ImmutableBiMap";
   private static final String INSTANT = "java.time.Instant";
@@ -34,7 +33,8 @@ final class AlwaysThrowsAmounts {
             amount ->
                 "This call will fail at runtime with a UnsupportedTemporalTypeException: Instant"
                     + " does not support "
-                    + amount.target().name());
+                    + amount.target().name()
+        );
   }
 
   /** Returns why {@code ImmutableMap.of(k, v, ...)} fails on a repeated constant key. */
@@ -52,7 +52,8 @@ final class AlwaysThrowsAmounts {
             repeat ->
                 "This ImmutableMap construction will throw (or have known duplicates overwritten)"
                     + " due to duplicates: "
-                    + repeat.value());
+                    + repeat.value()
+        );
   }
 
   private static List<ConstantValue> at(final CallSite call, final int offset) {

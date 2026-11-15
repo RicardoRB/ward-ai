@@ -15,7 +15,6 @@ import java.util.Set;
  * open.
  */
 public final class SwiftScopeAnalysis implements ScopeAnalysis {
-
   private final BuiltinNames builtins;
 
   /** Creates the analysis over the names the Swift standard library provides. */

@@ -7,12 +7,12 @@ import java.util.regex.Pattern;
 
 /** Reads the JUnit version of a file and the parameters and assertions of a test method. */
 final class JUnitMethods {
-
   private static final String IDENTIFIER = "identifier";
   private static final String METHOD_CALL = "methodCall";
   private static final Pattern JUNIT4_IMPORT =
       Pattern.compile(
-          "^import(?:static)?(?:org\\.junit\\.(?!jupiter|platform)|junit\\.framework\\.).*");
+          "^import(?:static)?(?:org\\.junit\\.(?!jupiter|platform)|junit\\.framework\\.).*"
+      );
   private static final String JUPITER_IMPORT = "org.junit.jupiter";
 
   private JUnitMethods() {}
@@ -40,7 +40,9 @@ final class JUnitMethods {
                 node.children().stream()
                     .anyMatch(
                         c ->
-                            IDENTIFIER.equals(c.kind()) && SyntaxWalk.text(c).startsWith("assert")))
+                            IDENTIFIER.equals(c.kind()) && SyntaxWalk.text(c).startsWith("assert")
+                    )
+        )
         .count();
   }
 
@@ -59,7 +61,8 @@ final class JUnitMethods {
                 name.startsWith("assert")
                     || name.startsWith("check")
                     || name.startsWith("verify")
-                    || "fail".equals(name));
+                    || "fail".equals(name)
+        );
   }
 
   /** Returns whether a method has no formal parameters. */
@@ -67,6 +70,7 @@ final class JUnitMethods {
     return method.children().stream()
         .filter(child -> "formalParameters".equals(child.kind()))
         .allMatch(
-            child -> child.children().stream().noneMatch(c -> "formalParameter".equals(c.kind())));
+            child -> child.children().stream().noneMatch(c -> "formalParameter".equals(c.kind()))
+        );
   }
 }

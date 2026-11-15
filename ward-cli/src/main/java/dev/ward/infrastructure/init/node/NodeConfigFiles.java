@@ -34,7 +34,8 @@ final class NodeConfigFiles {
       final Project project,
       final NodeToolConfigs configs,
       final QualityPreset preset,
-      final List<InitGateOption> gates)
+      final List<InitGateOption> gates
+  )
       throws IOException {
     final Path root = project.root();
     final List<String> ids = gates.stream().map(InitGateOption::id).toList();
@@ -46,8 +47,10 @@ final class NodeConfigFiles {
           configs.userConfig(root, VITEST),
           ConfigTarget.write(
               root.resolve("vitest.config.mjs"),
-              ConfigFiles.marker(ConfigFiles.JS_MARKER, null) + NodeConfigTemplates.vitest()),
-          true);
+              ConfigFiles.marker(ConfigFiles.JS_MARKER, null) + NodeConfigTemplates.vitest()
+          ),
+          true
+      );
     }
     if (ids.contains(JEST)) {
       configs.userConfig(root, JEST).ifPresent(config -> keepOwn(targets, root, config, true));
@@ -62,8 +65,10 @@ final class NodeConfigFiles {
           ConfigTarget.write(
               root.resolve("stryker.config.mjs"),
               ConfigFiles.marker(ConfigFiles.JS_MARKER, preset)
-                  + NodeStrykerTemplate.stryker(testGate(ids), preset, project.framework())),
-          false);
+                  + NodeStrykerTemplate.stryker(testGate(ids), preset, project.framework())
+          ),
+          false
+      );
     }
     return targets;
   }
@@ -77,7 +82,8 @@ final class NodeConfigFiles {
       final Path root,
       final Optional<Path> userConfig,
       final ConfigTarget written,
-      final boolean coverageTool) {
+      final boolean coverageTool
+  ) {
     if (userConfig.isEmpty()) {
       targets.add(written);
     } else {
@@ -90,7 +96,8 @@ final class NodeConfigFiles {
       final List<ConfigTarget> targets,
       final Path root,
       final Path config,
-      final boolean coverageTool) {
+      final boolean coverageTool
+  ) {
     if (!config.equals(root.resolve(PACKAGE_JSON))) {
       targets.add(
           new ConfigTarget(
@@ -102,7 +109,9 @@ final class NodeConfigFiles {
                       + config.getFileName()
                       + "; a coverage threshold it sets still applies to the tool, and Ward reads"
                       + " only the minimum of the coverage check in ward.toml"
-                  : null));
+                  : null
+          )
+      );
     }
   }
 
@@ -118,7 +127,9 @@ final class NodeConfigFiles {
               file,
               Disposition.REMOVE,
               null,
-              "removed: Ward's earlier " + file.getFileName() + "; the minimum is in ward.toml"));
+              "removed: Ward's earlier " + file.getFileName() + "; the minimum is in ward.toml"
+          )
+      );
     }
   }
 

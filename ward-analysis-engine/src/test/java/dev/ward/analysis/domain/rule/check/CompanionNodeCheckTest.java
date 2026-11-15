@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
 
 class CompanionNodeCheckTest {
-
   private static final String EXPRESSION = "expression";
   private static final String MATCH = "^add\\((\\w+)\\)$";
   private static final String COMPANION = "^{1}\\.fix\\(\\)$";
@@ -21,7 +20,8 @@ class CompanionNodeCheckTest {
         "expression",
         Pattern.compile(MATCH),
         COMPANION,
-        "missing");
+        "missing"
+    );
   }
 
   @Test
@@ -36,7 +36,8 @@ class CompanionNodeCheckTest {
     final SyntaxNode root =
         gen.node(
             "unit",
-            gen.node("method", gen.leaf(EXPRESSION, "add(c)"), gen.leaf(EXPRESSION, "c.fix()")));
+            gen.node("method", gen.leaf(EXPRESSION, "add(c)"), gen.leaf(EXPRESSION, "c.fix()"))
+        );
 
     assertThat(check().matches(root)).isEmpty();
   }
@@ -46,7 +47,8 @@ class CompanionNodeCheckTest {
     final SyntaxNode root =
         gen.node(
             "unit",
-            gen.node("method", gen.leaf(EXPRESSION, "add(c)"), gen.leaf(EXPRESSION, "d.fix()")));
+            gen.node("method", gen.leaf(EXPRESSION, "add(c)"), gen.leaf(EXPRESSION, "d.fix()"))
+        );
 
     assertThat(check().matches(root)).hasSize(1);
   }
@@ -57,7 +59,8 @@ class CompanionNodeCheckTest {
         gen.node(
             "unit",
             gen.node("method", gen.leaf(EXPRESSION, "add(c)")),
-            gen.node("method", gen.leaf(EXPRESSION, "c.fix()")));
+            gen.node("method", gen.leaf(EXPRESSION, "c.fix()"))
+        );
 
     assertThat(check().matches(root)).hasSize(1);
   }

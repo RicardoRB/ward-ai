@@ -9,7 +9,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class UnrelatedArgumentCheckTest {
-
   private static final String LIST_NAME = "java.util.List";
 
   private static final UnrelatedArgumentCheck CHECK = new UnrelatedArgumentCheck("message");
@@ -27,7 +26,10 @@ class UnrelatedArgumentCheckTest {
   }
 
   private static List<String> run(
-      final String source, final TypeRef receiver, final SpanFacts argument) {
+      final String source,
+      final TypeRef receiver,
+      final SpanFacts argument
+  ) {
     return new ParsedFacts(source)
         .at("expression", "names", ParsedFacts.type(receiver))
         .at("expression", "id", argument)
@@ -54,20 +56,21 @@ class UnrelatedArgumentCheckTest {
   @Test
   void aNonFinalArgumentUnknownFactsOrAnArrayAreNotReported() {
     assertThat(
-            run(LIST_SOURCE, LIST, ParsedFacts.typed(INTEGER, TypeShape.Kind.CLASS, false, NUMBER)))
+        run(LIST_SOURCE, LIST, ParsedFacts.typed(INTEGER, TypeShape.Kind.CLASS, false, NUMBER))
+    )
         .isEmpty();
     assertThat(
-            run(
-                LIST_SOURCE,
-                LIST,
-                ParsedFacts.typed(INTEGER, TypeShape.Kind.INTERFACE, true, NUMBER)))
+        run(LIST_SOURCE, LIST, ParsedFacts.typed(INTEGER, TypeShape.Kind.INTERFACE, true, NUMBER))
+    )
         .isEmpty();
     assertThat(run(LIST_SOURCE, LIST, ParsedFacts.type(INTEGER))).isEmpty();
     assertThat(
-            run(
-                LIST_SOURCE,
-                LIST,
-                ParsedFacts.type(new TypeRef("java.lang.Integer", List.of(), 1, false))))
+        run(
+            LIST_SOURCE,
+            LIST,
+            ParsedFacts.type(new TypeRef("java.lang.Integer", List.of(), 1, false))
+        )
+    )
         .isEmpty();
     assertThat(new ParsedFacts(LIST_SOURCE).run(CHECK)).isEmpty();
     assertThat(new ParsedFacts(LIST_SOURCE).plain(CHECK)).isEmpty();
@@ -82,10 +85,12 @@ class UnrelatedArgumentCheckTest {
     assertThat(run(LIST_SOURCE, generic(LIST_NAME, INTEGER), primitive)).isEmpty();
     assertThat(run(LIST_SOURCE, generic(LIST_NAME, NUMBER), primitive)).isEmpty();
     assertThat(
-            run(
-                LIST_SOURCE,
-                generic(LIST_NAME, STRING),
-                ParsedFacts.type(new TypeRef("char", List.of(), 0, true))))
+        run(
+            LIST_SOURCE,
+            generic(LIST_NAME, STRING),
+            ParsedFacts.type(new TypeRef("char", List.of(), 0, true))
+        )
+    )
         .isEmpty();
   }
 
@@ -103,10 +108,10 @@ class UnrelatedArgumentCheckTest {
     assertThat(run(LIST_SOURCE.replace("contains(id)", "contains(id, id)"), LIST, integer))
         .isEmpty();
     assertThat(
-            new ParsedFacts(
-                    "class C {\n  int t(Object names) {\n    return names.size();\n  }\n}\n")
-                .at("expression", "names", ParsedFacts.type(LIST))
-                .run(CHECK))
+        new ParsedFacts("class C {\n  int t(Object names) {\n    return names.size();\n  }\n}\n")
+            .at("expression", "names", ParsedFacts.type(LIST))
+            .run(CHECK)
+    )
         .isEmpty();
   }
 }

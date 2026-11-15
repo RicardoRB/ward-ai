@@ -37,7 +37,8 @@ final class AnalysisCacheKey {
               parts.add(rule.capability().name());
               parts.add(rule.severity().name());
               parts.add(rule.body());
-            });
+            }
+        );
     return digest(parts);
   }
 
@@ -57,7 +58,8 @@ final class AnalysisCacheKey {
       final String ruleSetHash,
       final SourceUnit unit,
       final DependencyView view,
-      final List<FlowDigests.Related> related) {
+      final List<FlowDigests.Related> related
+  ) {
     final List<String> parts = new ArrayList<>();
     parts.add(ruleSetHash);
     parts.add(unit.path());
@@ -67,7 +69,8 @@ final class AnalysisCacheKey {
         other -> {
           parts.add(other.path());
           parts.add(other.digest());
-        });
+        }
+    );
     return digest(parts);
   }
 

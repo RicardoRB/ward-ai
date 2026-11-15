@@ -17,7 +17,6 @@ import java.util.Set;
  * or declared twice is not checked.
  */
 public final class ClassHierarchyCheck implements RuleCheck {
-
   /** The problem a class is reported for. */
   public enum Problem {
     /** A constructor does not call the constructor of its base class. */
@@ -64,9 +63,11 @@ public final class ClassHierarchyCheck implements RuleCheck {
   private void compare(
       final SyntaxNode child,
       final String baseName,
-      final Map<String, SyntaxNode> definitions,
+      final Map<String,
+      SyntaxNode> definitions,
       final Set<String> finals,
-      final List<RuleMatch> found) {
+      final List<RuleMatch> found
+  ) {
     if (problem == Problem.SUBCLASSED_FINAL) {
       if (finals.contains(baseName)) {
         found.add(new RuleMatch(child.span(), message));
@@ -85,7 +86,10 @@ public final class ClassHierarchyCheck implements RuleCheck {
   }
 
   private void superInit(
-      final SyntaxNode child, final SyntaxNode base, final List<RuleMatch> found) {
+      final SyntaxNode child,
+      final SyntaxNode base,
+      final List<RuleMatch> found
+  ) {
     final Optional<SyntaxNode> init = ModuleDefinitions.method(child, INIT);
     if (init.isPresent()
         && ModuleDefinitions.method(base, INIT).isPresent()
@@ -95,7 +99,10 @@ public final class ClassHierarchyCheck implements RuleCheck {
   }
 
   private void signatures(
-      final SyntaxNode child, final SyntaxNode base, final List<RuleMatch> found) {
+      final SyntaxNode child,
+      final SyntaxNode base,
+      final List<RuleMatch> found
+  ) {
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(child, Set.of(FUNCTION))) {
       if (visit.ancestors().stream().anyMatch(ancestor -> FUNCTION.equals(ancestor.kind()))) {
         continue;

@@ -13,8 +13,11 @@ import java.util.regex.Pattern;
  * @param problems the configuration problems; when it is not empty no rule runs
  */
 public record RuleSet(
-    List<RuleDefinition> rules, Map<String, List<Pattern>> excludePaths, List<String> problems) {
-
+    List<RuleDefinition> rules,
+    Map<String,
+    List<Pattern>> excludePaths,
+    List<String> problems
+) {
   /** Copies the parts. */
   public RuleSet {
     rules = List.copyOf(rules);

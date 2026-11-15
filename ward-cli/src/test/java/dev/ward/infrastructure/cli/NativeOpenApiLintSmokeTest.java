@@ -33,13 +33,15 @@ class NativeOpenApiLintSmokeTest {
     Files.writeString(
         project.resolve("pom.xml"),
         "<project><modelVersion>4.0.0</modelVersion><groupId>shop</groupId>"
-            + "<artifactId>shop</artifactId><version>1</version></project>\n");
+            + "<artifactId>shop</artifactId><version>1</version></project>\n"
+    );
     Files.writeString(project.resolve("ward.toml"), WARD_TOML);
     write(
         "openapi: 3.0.3\ninfo:\n  title: T\n  version: 1\npaths:\n  /pets:\n    get:\n"
             + "      summary: list\n      responses:\n        \"200\":\n          description: ok\n"
             + "          content:\n            application/json:\n              schema:\n"
-            + "                type: string\n                example: 5\n");
+            + "                type: string\n                example: 5\n"
+    );
 
     final Run seeded = check(binary);
 
@@ -48,7 +50,8 @@ class NativeOpenApiLintSmokeTest {
         .contains(
             "ward:openapi/operation-operation-id",
             "ward:openapi/oas3-schema",
-            "ward:openapi/oas3-valid-schema-example");
+            "ward:openapi/oas3-valid-schema-example"
+        );
     assertThat(seeded.stderr()).doesNotContain("Exception");
 
     write("openapi: 3.0.3\ninfo: [unclosed\n");
@@ -76,7 +79,8 @@ class NativeOpenApiLintSmokeTest {
       return new Run(
           process.exitValue(),
           Files.readString(stdout, StandardCharsets.UTF_8),
-          Files.readString(stderr, StandardCharsets.UTF_8));
+          Files.readString(stderr, StandardCharsets.UTF_8)
+      );
     } finally {
       process.destroyForcibly();
     }

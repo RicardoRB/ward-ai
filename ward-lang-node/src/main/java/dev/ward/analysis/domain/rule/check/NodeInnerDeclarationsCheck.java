@@ -13,7 +13,6 @@ import java.util.Set;
  * block-scoped function declaration is allowed unless {@code blockScopedFunctions} is disallowed.
  */
 public final class NodeInnerDeclarationsCheck implements RuleCheck {
-
   private static final String PROGRAM = "program";
   private static final String FUNCTION_BODY = "functionBody";
   private static final String SOURCE_ELEMENTS = "sourceElements";
@@ -38,7 +37,10 @@ public final class NodeInnerDeclarationsCheck implements RuleCheck {
    * @param message the message of each finding
    */
   public NodeInnerDeclarationsCheck(
-      final boolean both, final boolean allowBlockScopedFunctions, final String message) {
+      final boolean both,
+      final boolean allowBlockScopedFunctions,
+      final String message
+  ) {
     this.both = both;
     this.allowBlockScopedFunctions = allowBlockScopedFunctions;
     this.message = Objects.requireNonNull(message, "message");
@@ -56,7 +58,8 @@ public final class NodeInnerDeclarationsCheck implements RuleCheck {
       final SyntaxNode node,
       final String parentKind,
       final boolean root,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     if (SOURCE_ELEMENTS.equals(node.kind())) {
       final boolean childRoot = ROOT_OWNERS.contains(parentKind);
       node.children().forEach(child -> walk(child, node.kind(), childRoot, matches));

@@ -11,8 +11,10 @@ import java.util.Objects;
  * @param resolver resolves the references of a run
  */
 public record DependencySupport(
-    AnalysisLanguage language, FileSummarizer summarizer, DependencyResolver resolver) {
-
+    AnalysisLanguage language,
+    FileSummarizer summarizer,
+    DependencyResolver resolver
+) {
   /**
    * Validates the required fields.
    *

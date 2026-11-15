@@ -22,7 +22,11 @@ public final class WrapperVersions {
    * @throws BuildFileException if the URL names no version
    */
   public static Optional<ToolVersion> read(
-      final Path properties, final String shown, final String tool, final String distribution) {
+      final Path properties,
+      final String shown,
+      final String tool,
+      final String distribution
+  ) {
     if (!Files.isRegularFile(properties)) {
       return Optional.empty();
     }
@@ -38,6 +42,7 @@ public final class WrapperVersions {
       throw new BuildFileException(shown, KEY + " names no version");
     }
     return Optional.of(
-        new ToolVersion(tool, version.group(1), shown, BuildPaths.lineOf(text, KEY)));
+        new ToolVersion(tool, version.group(1), shown, BuildPaths.lineOf(text, KEY))
+    );
   }
 }

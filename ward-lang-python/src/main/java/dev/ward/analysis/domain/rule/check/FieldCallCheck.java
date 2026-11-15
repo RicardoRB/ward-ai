@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * pylint {@code invalid-field-call}.
  */
 public final class FieldCallCheck implements RuleCheck {
-
   private static final Set<String> CALLS = Set.of("atom_expr");
   private static final Pattern FIELD = Pattern.compile("^(?:dataclasses\\.)?field\\(");
   private static final Pattern MAKE_DATACLASS = Pattern.compile("^make_dataclass\\(");
@@ -75,7 +74,9 @@ public final class FieldCallCheck implements RuleCheck {
 
   /** True when an ancestor below the class is the annotated field assignment of this call. */
   private static boolean assignmentStatement(
-      final List<SyntaxNode> ancestors, final int classIndex) {
+      final List<SyntaxNode> ancestors,
+      final int classIndex
+  ) {
     for (int index = ancestors.size() - 1; index > classIndex; index--) {
       if (FIELD_VALUE.matcher(SyntaxWalk.text(ancestors.get(index))).find()) {
         return true;

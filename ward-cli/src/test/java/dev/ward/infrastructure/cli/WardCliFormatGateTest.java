@@ -56,16 +56,8 @@ class WardCliFormatGateTest extends WardCliIntegrationSupport {
     write(project, B, RAW_JAVA_B);
 
     assertThat(
-            run(
-                "check",
-                "-C",
-                project.toString(),
-                "--profile",
-                "edit",
-                "--path",
-                A,
-                "--format",
-                "json"))
+        run("check", "-C", project.toString(), "--profile", "edit", "--path", A, "--format", "json")
+    )
         .isEqualTo(ExitCodes.FAILED);
 
     assertThat(out.toString()).contains(A).doesNotContain(B);

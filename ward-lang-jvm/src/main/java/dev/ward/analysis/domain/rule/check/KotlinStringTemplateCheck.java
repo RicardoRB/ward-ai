@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * whose call is redundant. Multi-line strings are not checked.
  */
 public final class KotlinStringTemplateCheck implements RuleCheck {
-
   private static final String ENTRY = "lineStringExpression";
   private static final String EXPRESSION = "expression";
   private static final String CONTENT = "lineStringContent";
@@ -51,7 +50,10 @@ public final class KotlinStringTemplateCheck implements RuleCheck {
   }
 
   private void matchesEntry(
-      final SyntaxWalk.Visit visit, final SyntaxNode expression, final List<RuleMatch> matches) {
+      final SyntaxWalk.Visit visit,
+      final SyntaxNode expression,
+      final List<RuleMatch> matches
+  ) {
     final String text = SyntaxWalk.text(expression);
     final Matcher call = TO_STRING_CALL.matcher(text);
     if (call.matches()) {

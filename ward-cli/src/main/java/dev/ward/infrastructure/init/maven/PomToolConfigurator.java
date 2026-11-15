@@ -38,7 +38,8 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
   public PomToolConfigurator(final CompatibilityInspection compatibilityInspection) {
     this.compatibility =
         Optional.of(
-            new CompatibilityFindings(compatibilityInspection, ManagedPluginCatalog.entries()));
+            new CompatibilityFindings(compatibilityInspection, ManagedPluginCatalog.entries())
+        );
   }
 
   /** Legacy construction retained for focused configurator fixtures. */
@@ -53,7 +54,10 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
 
   @Override
   public BuildFileChange apply(
-      final Project project, final List<InitGateOption> gates, final QualityPreset preset) {
+      final Project project,
+      final List<InitGateOption> gates,
+      final QualityPreset preset
+  ) {
     return apply(project, gates, preset, finding -> false);
   }
 
@@ -62,7 +66,8 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final Predicate<? super CompatibilityFinding> approval) {
+      final Predicate<? super CompatibilityFinding> approval
+  ) {
     final PomEdit edit = compute(project, gates, preset, approval);
     PomFiles.writeAll(edit);
     return new BuildFileChange(
@@ -73,7 +78,8 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
         edit.warnings,
         null,
         null,
-        edit.moduleScripts());
+        edit.moduleScripts()
+    );
   }
 
   /** Describes, without writing, the module poms the gates would change. */
@@ -81,12 +87,14 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final boolean approved) {
+      final boolean approved
+  ) {
     return compute(project, gates, preset, finding -> approved).modules.stream()
         .filter(module -> !module.details.isEmpty())
         .map(
             module ->
-                new PlannedFileChange(module.pom, PlannedFileChange.Action.MODIFY, module.details))
+                new PlannedFileChange(module.pom, PlannedFileChange.Action.MODIFY, module.details)
+        )
         .toList();
   }
 
@@ -95,7 +103,8 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final boolean approved) {
+      final boolean approved
+  ) {
     final List<CompatibilityFinding> pending = new ArrayList<>();
     final PomEdit edit =
         compute(
@@ -107,7 +116,8 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
                 pending.add(finding);
               }
               return approved;
-            });
+            }
+        );
     final List<String> details = new ArrayList<>(edit.details);
     pending.forEach(
         finding ->
@@ -118,11 +128,14 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
                     + finding.currentVersion()
                     + " -> "
                     + finding.selectedVersion()
-                    + " (requires approval)"));
+                    + " (requires approval)"
+            )
+    );
     return new PlannedFileChange(
         edit.pom,
         details.isEmpty() ? PlannedFileChange.Action.UNCHANGED : PlannedFileChange.Action.MODIFY,
-        details);
+        details
+    );
   }
 
   /**
@@ -132,7 +145,8 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final Predicate<? super CompatibilityFinding> approval) {
+      final Predicate<? super CompatibilityFinding> approval
+  ) {
     final Set<String> selected = gates.stream().map(InitGateOption::id).collect(Collectors.toSet());
     final PomEdit edit = PomEdit.read(project.root().resolve("pom.xml"));
     final PomToolVersions versions = PomToolVersions.resolve(compatibility, project, selected);
@@ -142,7 +156,8 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
             warning -> {
               edit.warnings.add(warning);
               edit.details.add(warning);
-            });
+            }
+        );
     final List<PomEdit> modules =
         MavenJavaModules.of(project.root()).stream().map(PomEdit::read).toList();
     edit.modules.addAll(modules);
@@ -170,7 +185,9 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
                           } else {
                             PomToolPlacement.apply(tool, preset, versions, approval, edit);
                           }
-                        }));
+                        }
+                    )
+        );
     final String pinned =
         PresetPluginSnippets.pinLifecycle(edit.content, selected, preset, edit.details);
     if (!pinned.equals(edit.content) && edit.tools.isEmpty()) {
@@ -179,16 +196,20 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
     edit.content = pinned;
     if (!edit.tools.isEmpty()) {
       PomDeclarationValidator.validate(
-          edit.content, PomTools.addedDeclarations(edit.original, edit.content, rootGates));
+          edit.content,
+          PomTools.addedDeclarations(edit.original, edit.content, rootGates)
+      );
     }
     edit.modules.forEach(
         module -> {
           if (!module.tools.isEmpty()) {
             PomDeclarationValidator.validate(
                 module.content,
-                PomTools.addedDeclarations(module.original, module.content, selected));
+                PomTools.addedDeclarations(module.original, module.content, selected)
+            );
           }
-        });
+        }
+    );
     return edit;
   }
 
@@ -197,7 +218,8 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
     return compatibility
         .map(
             resolver ->
-                resolver.omissions(project, PomToolVersions.toolsByGate(Set.copyOf(gateIds))))
+                resolver.omissions(project, PomToolVersions.toolsByGate(Set.copyOf(gateIds)))
+        )
         .orElse(List.of());
   }
 
@@ -206,7 +228,8 @@ public final class PomToolConfigurator implements BuildToolConfiguration {
     return compatibility
         .map(
             resolver ->
-                resolver.unsupportedPins(project, PomToolVersions.toolsByGate(Set.copyOf(gateIds))))
+                resolver.unsupportedPins(project, PomToolVersions.toolsByGate(Set.copyOf(gateIds)))
+        )
         .orElse(List.of());
   }
 

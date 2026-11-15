@@ -44,7 +44,10 @@ final class WardJavaEdges {
    * Returns the edges of {@code project} for the given JVM languages, with the optional classpath.
    */
   static Set<String> of(
-      final Path project, final Set<AnalysisLanguage> languages, final Optional<String> classpath) {
+      final Path project,
+      final Set<AnalysisLanguage> languages,
+      final Optional<String> classpath
+  ) {
     final List<SourceUnit> units =
         new FileSystemSourceUnits(new ProcessCommandExecutor())
             .read(project, languages).stream().toList();
@@ -53,12 +56,17 @@ final class WardJavaEdges {
             .map(
                 language ->
                     new FrontendSupport(
-                        language, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX)))
+                        language,
+                        new AntlrLanguageFrontend(),
+                        Set.of(RuleCapability.SYNTAX)
+                    )
+            )
             .toList();
     final List<DependencyEdge> edges =
         new DependencyAnalysis(
-                frontends,
-                new JvmDependencyAdapters().forProject(project.toAbsolutePath(), units, classpath))
+            frontends,
+            new JvmDependencyAdapters().forProject(project.toAbsolutePath(), units, classpath)
+        )
             .analyze(units, NO_SUMMARIES)
             .graph()
             .edges();

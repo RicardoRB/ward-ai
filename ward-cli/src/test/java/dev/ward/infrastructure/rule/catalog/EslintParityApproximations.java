@@ -14,7 +14,6 @@ import java.util.TreeSet;
  * core rule does not read; the typescript-eslint parity test covers those fixtures.
  */
 final class EslintParityApproximations {
-
   private static final String RESOURCE = "/parity/eslint-approximations.txt";
   private static final String PARSE_ERROR = "ESLint parse error";
   private static final String CORE_CANNOT = "ESLint core cannot";

@@ -4,7 +4,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 
 /** Reads the nodes that are not block collections: aliases, scalars and flow collections. */
 final class YamlLeaves {
-
   private static final char SINGLE = '\'';
   private static final char DOUBLE = '"';
   private static final char ALIAS = '*';
@@ -24,7 +23,8 @@ final class YamlLeaves {
       final YamlLines lines,
       final YamlScalars scalars,
       final YamlAnchors anchors,
-      final YamlBlockCollections blocks) {
+      final YamlBlockCollections blocks
+  ) {
     this.cursor = cursor;
     this.lines = lines;
     this.scalars = scalars;
@@ -53,7 +53,10 @@ final class YamlLeaves {
 
   /** Fails when a block collection starts where only a value on the key's line may. */
   static void requireBlock(
-      final YamlCursor cursor, final boolean allowBlock, final String message) {
+      final YamlCursor cursor,
+      final boolean allowBlock,
+      final String message
+  ) {
     if (!allowBlock) {
       throw cursor.fail(message, cursor.pos());
     }

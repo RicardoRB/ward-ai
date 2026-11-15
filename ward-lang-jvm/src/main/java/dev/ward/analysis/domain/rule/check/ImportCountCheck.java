@@ -8,7 +8,6 @@ import java.util.Set;
 
 /** Reports a file that has at least the minimum number of imports, as PMD's excessive imports. */
 public final class ImportCountCheck implements UnitCheck {
-
   private static final String UNIT = "compilationunit";
   private static final String IMPORT = "importDeclaration";
 
@@ -42,6 +41,8 @@ public final class ImportCountCheck implements UnitCheck {
     return List.of(
         CheckSupport.at(
             unit.span(),
-            CheckSupport.fill(message, String.valueOf(count), String.valueOf(minimum))));
+            CheckSupport.fill(message, String.valueOf(count), String.valueOf(minimum))
+        )
+    );
   }
 }

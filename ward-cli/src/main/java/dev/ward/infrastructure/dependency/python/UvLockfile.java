@@ -32,15 +32,26 @@ final class UvLockfile {
 
   /** One {@code [[package]]} table. */
   private record Entry(
-      String name, String version, boolean member, boolean registry, TomlTable table) {
+      String name,
+      String version,
+      boolean member,
+      boolean registry,
+      TomlTable table
+  ) {
     static Entry of(
         final String name,
         final String version,
         final boolean member,
         final boolean registry,
-        final TomlTable table) {
+        final TomlTable table
+    ) {
       return new Entry(
-          name, version == null ? "" : version, member || version == null, registry, table);
+          name,
+          version == null ? "" : version,
+          member || version == null,
+          registry,
+          table
+      );
     }
 
     PackageId id() {
@@ -84,7 +95,8 @@ final class UvLockfile {
             version,
             member,
             source != null && source.contains("registry"),
-            table);
+            table
+        );
     byName.computeIfAbsent(entry.name(), key -> new ArrayList<>()).add(entry);
   }
 
@@ -100,7 +112,8 @@ final class UvLockfile {
               } else {
                 collector.add(entry.id(), entry.registry(), required(entry));
               }
-            });
+            }
+        );
     return new PythonLock(collector.packages(), directs);
   }
 
@@ -121,7 +134,8 @@ final class UvLockfile {
     if (target != null) {
       directs.put(
           PyprojectDependencies.normalize(Objects.requireNonNullElse(ref.getString(NAME), "")),
-          new PythonLock.Resolved(new ArrayList<>(real(ref, new HashSet<>())), target.member()));
+          new PythonLock.Resolved(new ArrayList<>(real(ref, new HashSet<>())), target.member())
+      );
     }
   }
 

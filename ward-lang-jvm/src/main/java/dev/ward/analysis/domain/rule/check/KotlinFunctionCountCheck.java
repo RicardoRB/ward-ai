@@ -16,7 +16,6 @@ import java.util.Set;
  * deprecated functions.
  */
 public final class KotlinFunctionCountCheck implements RuleCheck {
-
   private static final String FUNCTION = "functionDeclaration";
   private static final String MEMBER = "classMemberDeclaration";
   private static final String CLASS_BODY = "classBody";
@@ -55,7 +54,8 @@ public final class KotlinFunctionCountCheck implements RuleCheck {
       int enums,
       boolean ignorePrivate,
       boolean ignoreOverridden,
-      boolean ignoreDeprecated) {}
+      boolean ignoreDeprecated
+  ) {}
 
   /**
    * Creates the check.
@@ -88,13 +88,16 @@ public final class KotlinFunctionCountCheck implements RuleCheck {
       final SyntaxNode node,
       final List<SyntaxNode> functions,
       final int threshold,
-      final List<RuleMatch> out) {
+      final List<RuleMatch> out
+  ) {
     final long count = functions.stream().filter(this::counts).count();
     if (count >= threshold) {
       out.add(
           CheckSupport.at(
               node.span(),
-              CheckSupport.fill(message, String.valueOf(count), String.valueOf(threshold))));
+              CheckSupport.fill(message, String.valueOf(count), String.valueOf(threshold))
+          )
+      );
     }
   }
 
@@ -127,7 +130,8 @@ public final class KotlinFunctionCountCheck implements RuleCheck {
                     .filter(child -> MEMBER.equals(child.kind()))
                     .flatMap(member -> member.children().stream())
                     .filter(child -> FUNCTION.equals(child.kind()))
-                    .toList())
+                    .toList()
+        )
         .orElse(List.of());
   }
 
@@ -146,7 +150,8 @@ public final class KotlinFunctionCountCheck implements RuleCheck {
   private static boolean hasModifier(final SyntaxNode function, final String text) {
     return function.children().stream()
         .filter(
-            child -> child.kind().startsWith("modifier") || child.kind().endsWith("ModifierList"))
+            child -> child.kind().startsWith("modifier") || child.kind().endsWith("ModifierList")
+        )
         .anyMatch(child -> hasLeaf(child, text));
   }
 

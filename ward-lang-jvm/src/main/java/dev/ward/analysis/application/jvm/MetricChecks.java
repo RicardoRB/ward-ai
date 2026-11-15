@@ -18,7 +18,6 @@ import java.util.Map;
 
 /** Builds the Java size and metric checks that a rule body names, with their parameters. */
 final class MetricChecks {
-
   private static final String MAX = "max";
   private static final String MESSAGE = "message";
   private static final String TAB_WIDTH = "tab-width";
@@ -50,16 +49,22 @@ final class MetricChecks {
                     TomlValues.integer(toml, MAX),
                     TomlValues.integer(toml, TAB_WIDTH),
                     TomlValues.required(toml, IGNORE_PATTERN),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "boolean-operators",
             toml ->
                 new BooleanOperatorCheck(
-                    TomlValues.integer(toml, MAX), TomlValues.required(toml, MESSAGE))),
+                    TomlValues.integer(toml, MAX),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "npath",
             toml ->
-                new NPathCheck(TomlValues.integer(toml, MAX), TomlValues.required(toml, MESSAGE))),
+                new NPathCheck(TomlValues.integer(toml, MAX), TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "ncss",
             toml ->
@@ -67,7 +72,9 @@ final class MetricChecks {
                     TomlValues.integer(toml, METHOD_MAXIMUM),
                     TomlValues.integer(toml, CLASS_MAXIMUM),
                     TomlValues.integer(toml, FILE_MAXIMUM),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "method-count",
             toml ->
@@ -77,22 +84,32 @@ final class MetricChecks {
                         TomlValues.integer(toml, MAX_PRIVATE),
                         TomlValues.integer(toml, MAX_PACKAGE),
                         TomlValues.integer(toml, MAX_PROTECTED),
-                        TomlValues.integer(toml, MAX_PUBLIC)),
-                    TomlValues.required(toml, MESSAGE))),
+                        TomlValues.integer(toml, MAX_PUBLIC)
+                    ),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "class-coupling",
             toml ->
                 new ClassCouplingCheck(
                     ClassCouplingCheck.Counting.valueOf(
-                        toml.getString("count", () -> "references").toUpperCase(Locale.ROOT)),
+                        toml.getString("count", () -> "references").toUpperCase(Locale.ROOT)
+                    ),
                     TomlValues.optionalStrings(toml, TYPES),
                     TomlValues.optionalStrings(toml, EXCLUDED_CLASSES),
                     TomlValues.integer(toml, MAX),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "anonymous-lines",
             toml ->
                 new AnonymousLinesCheck(
-                    TomlValues.integer(toml, MAX), TomlValues.required(toml, MESSAGE))));
+                    TomlValues.integer(toml, MAX),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        )
+    );
   }
 }

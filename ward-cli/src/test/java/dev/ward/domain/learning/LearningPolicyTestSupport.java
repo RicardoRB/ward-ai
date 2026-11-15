@@ -30,7 +30,8 @@ class LearningPolicyTestSupport {
       final LearningOutcome previous,
       final CheckReport report,
       final int threshold,
-      final long seconds) {
+      final long seconds
+  ) {
     return LearningPolicy.apply(previous.ledger(), report, threshold, NOW.plusSeconds(seconds));
   }
 
@@ -45,7 +46,8 @@ class LearningPolicyTestSupport {
         1,
         null,
         null,
-        List.of());
+        List.of()
+    );
   }
 
   GateResult failedResult(final String gate, final Finding... findings) {

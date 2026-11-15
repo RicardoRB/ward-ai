@@ -34,7 +34,8 @@ final class BuildToolBindingsModule {
   @Provides
   @Named("gradle")
   static CompatibilityInspection gradleCompatibilityInspection(
-      final GradleCompatibilityInspection implementation) {
+      final GradleCompatibilityInspection implementation
+  ) {
     return implementation;
   }
 
@@ -45,7 +46,9 @@ final class BuildToolBindingsModule {
 
   @Provides
   static ToolchainPorts toolchainPorts(
-      final SwiftPorts swift, final BuildModulePlanning modulePlanning) {
+      final SwiftPorts swift,
+      final BuildModulePlanning modulePlanning
+  ) {
     return new ToolchainPorts(swift, modulePlanning);
   }
 
@@ -55,7 +58,8 @@ final class BuildToolBindingsModule {
       final NodeInputs node,
       final BuildToolConfiguration buildTools,
       final PythonToolConfigs python,
-      final ToolchainPorts toolchains) {
+      final ToolchainPorts toolchains
+  ) {
     return new InitPorts(environment, node, buildTools, python, toolchains);
   }
 
@@ -64,8 +68,17 @@ final class BuildToolBindingsModule {
       final JvmBuildToolConfigurator jvm,
       final NodeBuildToolConfigurator node,
       final PythonBuildToolConfigurator python,
-      final SwiftBuildToolConfigurator swift) {
+      final SwiftBuildToolConfigurator swift
+  ) {
     return Map.of(
-        Toolchain.JVM, jvm, Toolchain.NODE, node, Toolchain.PYTHON, python, Toolchain.SWIFT, swift);
+        Toolchain.JVM,
+        jvm,
+        Toolchain.NODE,
+        node,
+        Toolchain.PYTHON,
+        python,
+        Toolchain.SWIFT,
+        swift
+    );
   }
 }

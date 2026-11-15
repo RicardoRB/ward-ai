@@ -9,7 +9,6 @@ import java.util.OptionalInt;
  * and a word starting with {@code @@} is a syntax error.
  */
 final class StubFormatSyntax implements FormatSyntax {
-
   private static final String ERROR_MARK = "@@";
 
   @Override

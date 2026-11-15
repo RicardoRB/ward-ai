@@ -14,12 +14,13 @@ import java.util.function.Predicate;
  * rule over a file whose language has no dependency summary in the run.
  */
 public final class ArchitectureRuleCheck {
-
   private ArchitectureRuleCheck() {}
 
   /** Returns one error per rule of {@code rules} that cannot be evaluated over {@code project}. */
   public static List<RuleExecutionError> errors(
-      final List<ArchitectureRule> rules, final ProjectFiles project) {
+      final List<ArchitectureRule> rules,
+      final ProjectFiles project
+  ) {
     final List<RuleExecutionError> errors = new ArrayList<>();
     for (final ArchitectureRule rule : rules) {
       error(rule, project).ifPresent(errors::add);
@@ -28,7 +29,9 @@ public final class ArchitectureRuleCheck {
   }
 
   private static Optional<RuleExecutionError> error(
-      final ArchitectureRule rule, final ProjectFiles project) {
+      final ArchitectureRule rule,
+      final ProjectFiles project
+  ) {
     final Predicate<String> selected = rule.select().matcher();
     final List<String> files = sorted(project.sources(), selected);
     if (files.isEmpty()) {
@@ -48,7 +51,10 @@ public final class ArchitectureRuleCheck {
   }
 
   private static String noEdges(
-      final ArchitectureRule rule, final String path, final AnalysisLanguage language) {
+      final ArchitectureRule rule,
+      final String path,
+      final AnalysisLanguage language
+  ) {
     return "rule '"
         + rule.name()
         + "' cannot be evaluated: the run has no dependency edges for "
@@ -59,7 +65,10 @@ public final class ArchitectureRuleCheck {
   }
 
   private static List<String> sorted(
-      final Map<String, AnalysisLanguage> sources, final Predicate<String> selected) {
+      final Map<String,
+      AnalysisLanguage> sources,
+      final Predicate<String> selected
+  ) {
     return sources.keySet().stream().filter(selected).sorted().toList();
   }
 

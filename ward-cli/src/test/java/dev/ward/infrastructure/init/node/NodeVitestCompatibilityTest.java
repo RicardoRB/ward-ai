@@ -35,7 +35,8 @@ class NodeVitestCompatibilityTest {
               assertThat(finding.outcome()).isEqualTo(CompatibilityOutcome.INCOMPATIBLE);
               assertThat(finding.message())
                   .contains("vitest 4.0.18", "Vite 8.2.2", "^6.0.0 || ^7.0.0");
-            });
+            }
+        );
   }
 
   @Test
@@ -49,7 +50,8 @@ class NodeVitestCompatibilityTest {
               assertThat(finding.artifactId()).isEqualTo(VITEST);
               assertThat(finding.message())
                   .contains("No pinned vitest supports Vite 9.0.0", "^6.0.0 || ^7.0.0 || ^8.0.0");
-            });
+            }
+        );
   }
 
   @Test
@@ -98,6 +100,7 @@ class NodeVitestCompatibilityTest {
         Set.of(),
         "24",
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 }

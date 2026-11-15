@@ -4,7 +4,6 @@ import dev.ward.domain.config.WardException;
 
 /** A formatting configuration file sets an option Ward cannot read. The message names the file. */
 public final class FormatConfigurationException extends WardException {
-
   private static final long serialVersionUID = 1L;
 
   /**

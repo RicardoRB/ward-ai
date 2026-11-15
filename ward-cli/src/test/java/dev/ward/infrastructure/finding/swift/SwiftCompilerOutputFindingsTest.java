@@ -20,7 +20,8 @@ class SwiftCompilerOutputFindingsTest {
         .extract(
             FindingFixtures.xcode(root),
             FindingFixtures.failedWithStderr(gate, stderr),
-            FindingFixtures.justBefore());
+            FindingFixtures.justBefore()
+        );
   }
 
   @Test
@@ -37,11 +38,13 @@ class SwiftCompilerOutputFindingsTest {
               assertThat(finding.severity()).isEqualTo(FindingSeverity.ERROR);
               assertThat(finding.message())
                   .isEqualTo(
-                      "cannot convert return expression of type 'String' to return type 'Int'");
+                      "cannot convert return expression of type 'String' to return type 'Int'"
+                  );
               assertThat(finding.file()).isEqualTo("Sources/App/Price.swift");
               assertThat(finding.line()).isEqualTo(1);
               assertThat(finding.column()).isEqualTo(ERROR_COLUMN);
-            });
+            }
+        );
   }
 
   @Test
@@ -56,7 +59,8 @@ class SwiftCompilerOutputFindingsTest {
             finding -> {
               assertThat(finding.gateId()).isEqualTo("xcodebuild-test");
               assertThat(finding.file()).isEqualTo("Shop/Cart.swift");
-            });
+            }
+        );
   }
 
   @Test

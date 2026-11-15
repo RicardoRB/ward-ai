@@ -10,14 +10,14 @@ import org.junit.jupiter.api.Test;
 
 /** Checks the methods, properties and attributes that the unused-member rules read. */
 final class PythonMemberDefinitionsTest {
-
   @Test
   void declaresPlainStaticAndClassMethodsAsMethodsAndPropertiesAsProperties() {
     final FileSummary summary =
         summarize(
             "class C:\n    def m(self):\n        pass\n\n    @staticmethod\n    def s():\n"
                 + "        pass\n\n    @property\n    def p(self):\n        return 1\n\n"
-                + "    @functools.cached_property\n    def q(self):\n        return 2\n");
+                + "    @functools.cached_property\n    def q(self):\n        return 2\n"
+        );
 
     assertThat(summary.declared())
         .extracting(Symbol::kind)
@@ -30,7 +30,8 @@ final class PythonMemberDefinitionsTest {
     final FileSummary summary =
         summarize(
             "class C:\n    @app.route('/')\n    def page(self):\n        pass\n\n"
-                + "    @p.setter\n    def p(self, value):\n        pass\n");
+                + "    @p.setter\n    def p(self, value):\n        pass\n"
+        );
 
     assertThat(names(summary.declared())).containsExactly("C");
   }
@@ -41,7 +42,8 @@ final class PythonMemberDefinitionsTest {
         summarize(
             "class C:\n    def __init__(self):\n        self.a = 1\n        self.a = 2\n"
                 + "        self.b: int = 3\n\n    def run(self):\n        self.c += 1\n"
-                + "        return self.a\n\nconfig.verbose = True\n");
+                + "        return self.a\n\nconfig.verbose = True\n"
+        );
 
     assertThat(summary.declared())
         .extracting(Symbol::kind)
@@ -53,7 +55,8 @@ final class PythonMemberDefinitionsTest {
             "attribute",
             "attribute",
             "attribute",
-            "attribute");
+            "attribute"
+        );
     assertThat(names(summary.declared()))
         .containsExactly("C", "__init__", "run", "a", "a", "b", "c", "verbose");
   }
@@ -70,7 +73,8 @@ final class PythonMemberDefinitionsTest {
   void aGetattrOrHasattrStringNamesAnAttributeAsUsed() {
     final FileSummary summary =
         summarize(
-            "def f(obj):\n    return getattr(obj, 'port') if hasattr(obj, \"debug\") else 0\n");
+            "def f(obj):\n    return getattr(obj, 'port') if hasattr(obj, \"debug\") else 0\n"
+        );
 
     assertThat(summary.usedNames()).contains("port", "debug");
   }
@@ -79,7 +83,8 @@ final class PythonMemberDefinitionsTest {
   void importingUnittestUsesItsWhitelistedNames() {
     final FileSummary summary =
         summarize(
-            "import unittest\n\nclass T(unittest.TestCase):\n    def setUp(self):\n        pass\n");
+            "import unittest\n\nclass T(unittest.TestCase):\n    def setUp(self):\n        pass\n"
+        );
 
     assertThat(summary.usedNames()).contains("setUp", "tearDown", "setUpClass");
   }

@@ -22,7 +22,8 @@ public final class TscOutputFindings implements GateFindingSource {
   private static final Pattern DIAGNOSTIC =
       Pattern.compile(
           "^(?<file>\\S.*?)\\((?<line>\\d+),(?<column>\\d+)\\): (?<level>error|warning)"
-              + " (?<code>TS\\d+): (?<message>.*)$");
+              + " (?<code>TS\\d+): (?<message>.*)$"
+      );
 
   /** Creates the stateless adapter that Dagger injects. */
   @Inject
@@ -35,7 +36,10 @@ public final class TscOutputFindings implements GateFindingSource {
 
   @Override
   public List<Finding> extract(
-      final Project project, final GateResult result, final Instant gateStart) {
+      final Project project,
+      final GateResult result,
+      final Instant gateStart
+  ) {
     // Project references can report the same diagnostic twice, so identical findings are kept once.
     final Set<Finding> findings = new LinkedHashSet<>();
     for (final String line : OutputText.lines(result)) {
@@ -59,7 +63,8 @@ public final class TscOutputFindings implements GateFindingSource {
         positive(diagnostic.group("line")),
         positive(diagnostic.group("column")),
         null,
-        List.of());
+        List.of()
+    );
   }
 
   private static Integer positive(final String value) {

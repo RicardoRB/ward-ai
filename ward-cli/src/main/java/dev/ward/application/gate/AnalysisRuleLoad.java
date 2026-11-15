@@ -10,7 +10,6 @@ import java.util.List;
  * @param configurationErrors one message per skipped file, each naming the file
  */
 public record AnalysisRuleLoad(List<RuleDefinition> rules, List<String> configurationErrors) {
-
   /** Copies both lists. */
   public AnalysisRuleLoad {
     rules = List.copyOf(rules);

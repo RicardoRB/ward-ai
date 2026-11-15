@@ -45,9 +45,7 @@ class NativeHookPartialCheckTest {
   @BeforeEach
   void project() throws IOException {
     withPom(root, PLAIN_POM);
-    Files.writeString(
-        root.resolve("ward.toml"),
-        """
+    Files.writeString(root.resolve("ward.toml"), """
         version = 2
         [checks.tests]
         uses = "tests"
@@ -73,7 +71,9 @@ class NativeHookPartialCheckTest {
 
     assertThat(commands)
         .containsExactly(
-            TESTS, List.of("mvn", "lint:check", "-Dlint.includes=**/A.java,**/N.java"));
+            TESTS,
+            List.of("mvn", "lint:check", "-Dlint.includes=**/A.java,**/N.java")
+        );
   }
 
   @Test
@@ -105,8 +105,11 @@ class NativeHookPartialCheckTest {
     assertThat(NativeHookEditedPaths.of(event("src/A.java", null), directory))
         .containsExactly(directory.toAbsolutePath().resolve("src/A.java"));
     assertThat(
-            NativeHookEditedPaths.of(
-                event(null, PATCH.replace("\\n", "\n")), directory.toAbsolutePath()))
+        NativeHookEditedPaths.of(
+            event(null, PATCH.replace("\\n", "\n")),
+            directory.toAbsolutePath()
+        )
+    )
         .extracting(path -> directory.toAbsolutePath().relativize(path).toString())
         .containsExactly("src/A.java", "docs/b.md", "src/Old.java", "src/M.java", "src/N.java");
     assertThat(NativeHookEditedPaths.of(event(" ", null), directory)).isEmpty();
@@ -114,7 +117,16 @@ class NativeHookPartialCheckTest {
 
   private static NativeHookInput event(final String path, final String patch) {
     return new NativeHookInput(
-        "PostToolUse", "apply_patch", null, path, null, patch, null, false, false);
+        "PostToolUse",
+        "apply_patch",
+        null,
+        path,
+        null,
+        patch,
+        null,
+        false,
+        false
+    );
   }
 
   private static String postPatch(final String patch) {
@@ -135,7 +147,8 @@ class NativeHookPartialCheckTest {
             new HookChecks(HookCheckFixtures.checks(executor)),
             new ForyJsonCodec(),
             Set.of(new CodexIntegration()),
-            new ByteArrayInputStream(payload.getBytes(StandardCharsets.UTF_8)));
+            new ByteArrayInputStream(payload.getBytes(StandardCharsets.UTF_8))
+        );
     final CommandLine cli = new CommandLine(command);
     cli.setOut(new PrintWriter(new StringWriter(), true));
     cli.setErr(new PrintWriter(new StringWriter(), true));

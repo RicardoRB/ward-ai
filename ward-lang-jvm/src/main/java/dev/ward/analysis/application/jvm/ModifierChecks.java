@@ -28,7 +28,6 @@ import org.tomlj.TomlParseResult;
  * option, named after the Checkstyle property in kebab-case.
  */
 final class ModifierChecks {
-
   private static final String MESSAGE = "message";
   private static final String ALLOW_SINGLE_PARAMETERLESS =
       "allow-sameline-single-parameterless-annotation";
@@ -56,7 +55,8 @@ final class ModifierChecks {
           "openjdk-annotation-location",
           "class-member-implied-modifier",
           "interface-member-implied-modifier",
-          "annotation-use-style");
+          "annotation-use-style"
+      );
 
   private ModifierChecks() {}
 
@@ -81,12 +81,14 @@ final class ModifierChecks {
           new AnnotationLocationCheck(
               flag(toml, ALLOW_SINGLE_PARAMETERLESS, true),
               flag(toml, ALLOW_PARAMETERIZED, false),
-              message(toml));
+              message(toml)
+          );
       case "annotated-declaration-visibility" ->
           new AnnotatedDeclarationVisibilityCheck(
               TomlValues.strings(toml, ANNOTATIONS),
               TomlValues.strings(toml, VISIBILITY),
-              message(toml));
+              message(toml)
+          );
       case "redundant-modifier" -> new RedundantModifierCheck(message(toml));
       case "annotation-on-same-line" -> new AnnotationOnSameLineCheck(message(toml));
       case "openjdk-annotation-location" -> new OpenjdkAnnotationLocationCheck(message(toml));
@@ -99,16 +101,24 @@ final class ModifierChecks {
     return switch (name) {
       case "suppress-warnings" ->
           new SuppressWarningsCheck(
-              Pattern.compile(TomlValues.required(toml, FORMAT)), message(toml));
+              Pattern.compile(TomlValues.required(toml, FORMAT)),
+              message(toml)
+          );
       case "package-annotation" -> new PackageAnnotationCheck(message(toml));
       case "missing-override" ->
           new JavadocAnnotationCheck(
-              TomlValues.required(toml, TAG), TomlValues.required(toml, ANNOTATION),
-              flag(toml, METHODS_ONLY, true), message(toml));
+              TomlValues.required(toml, TAG),
+              TomlValues.required(toml, ANNOTATION),
+              flag(toml, METHODS_ONLY, true),
+              message(toml)
+          );
       case "missing-deprecated" ->
           new JavadocAnnotationCheck(
-              TomlValues.required(toml, TAG), TomlValues.required(toml, ANNOTATION),
-              flag(toml, METHODS_ONLY, false), message(toml));
+              TomlValues.required(toml, TAG),
+              TomlValues.required(toml, ANNOTATION),
+              flag(toml, METHODS_ONLY, false),
+              message(toml)
+          );
       default -> memberCheck(name, toml);
     };
   }
@@ -121,7 +131,8 @@ final class ModifierChecks {
               flag(toml, "violate-implied-static-on-nested-enum", true),
               flag(toml, "violate-implied-static-on-nested-interface", true),
               flag(toml, "violate-implied-static-on-nested-record", true),
-              message(toml));
+              message(toml)
+          );
       case "interface-member-implied-modifier" ->
           new InterfaceMemberImpliedModifierCheck(
               new InterfaceMemberImpliedModifierCheck.Flags(
@@ -131,20 +142,26 @@ final class ModifierChecks {
                   flag(toml, "violate-implied-public-method", true),
                   flag(toml, "violate-implied-public-nested", true),
                   flag(toml, "violate-implied-static-field", true),
-                  flag(toml, "violate-implied-static-nested", true)),
-              message(toml));
+                  flag(toml, "violate-implied-static-nested", true)
+              ),
+              message(toml)
+          );
       case "annotation-use-style" ->
           new AnnotationUseStyleCheck(
               TomlValues.required(toml, "closing-parens"),
               TomlValues.required(toml, "element-style"),
               TomlValues.required(toml, "trailing-array-comma"),
-              message(toml));
+              message(toml)
+          );
       default -> new RecordAccessorOverrideCheck(message(toml));
     };
   }
 
   private static boolean flag(
-      final TomlParseResult toml, final String key, final boolean fallback) {
+      final TomlParseResult toml,
+      final String key,
+      final boolean fallback
+  ) {
     return Optional.ofNullable(toml.getBoolean(key)).orElse(fallback);
   }
 

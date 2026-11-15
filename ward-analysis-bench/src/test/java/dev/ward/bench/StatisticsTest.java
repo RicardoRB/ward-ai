@@ -8,7 +8,6 @@ import java.util.stream.IntStream;
 import org.junit.jupiter.api.Test;
 
 class StatisticsTest {
-
   private static final int SAMPLE_COUNT = 20;
   private static final double FIRST = 1.0;
   private static final double MIDDLE = 3.0;
@@ -47,7 +46,7 @@ class StatisticsTest {
   @Test
   void nearestRankPercentilesOfTwentySamples() {
     final List<Double> samples =
-        IntStream.rangeClosed(1, SAMPLE_COUNT).mapToObj(i -> (double) i).toList();
+        IntStream.rangeClosed(1, SAMPLE_COUNT).mapToObj(i -> (double)i).toList();
     final Statistics stats = Statistics.of(samples);
 
     assertThat(stats.p50()).isEqualTo(P50_RANK);

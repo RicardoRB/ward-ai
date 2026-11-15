@@ -13,7 +13,6 @@ import java.util.function.Consumer;
  * the first iterable of a comprehension.
  */
 final class PythonDefinitions {
-
   /** The kind of a comprehension clause. */
   static final String COMP_FOR = "comp_for";
 
@@ -30,7 +29,10 @@ final class PythonDefinitions {
   private final Consumer<SyntaxNode> visit;
 
   PythonDefinitions(
-      final ScopeBuilder builder, final PythonBindings bindings, final Consumer<SyntaxNode> visit) {
+      final ScopeBuilder builder,
+      final PythonBindings bindings,
+      final Consumer<SyntaxNode> visit
+  ) {
     this.builder = builder;
     this.bindings = bindings;
     this.visit = visit;
@@ -40,7 +42,8 @@ final class PythonDefinitions {
     final List<SyntaxNode> parts = node.children();
     final List<SyntaxNode> parameters =
         bindings.parameters(
-            PythonSyntax.children(parts.get(PARAMETERS), "typedargslist").stream().findFirst());
+            PythonSyntax.children(parts.get(PARAMETERS), "typedargslist").stream().findFirst()
+        );
     final int arrow = PythonNames.indexOf(parts, ARROW);
     if (arrow >= 0) {
       visit.accept(parts.get(arrow + 1));

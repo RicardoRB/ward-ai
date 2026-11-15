@@ -9,7 +9,6 @@ import java.util.Set;
  * tokens cannot merge, so the text of each token stays exactly as written.
  */
 final class EcmaSpacing {
-
   private static final String EMPTY = "";
   private static final String SPACE = " ";
   private static final String COMMA = ",";
@@ -24,8 +23,19 @@ final class EcmaSpacing {
   private static final Set<String> ARITHMETIC = Set.of("+", "-", "*", "/", "%");
   private static final Set<String> KEYWORDS_BEFORE_PARENTHESIS =
       Set.of(
-          "if", "for", "while", "switch", "return", "typeof", "void", "delete", "await", "yield",
-          "throw", "case");
+          "if",
+          "for",
+          "while",
+          "switch",
+          "return",
+          "typeof",
+          "void",
+          "delete",
+          "await",
+          "yield",
+          "throw",
+          "case"
+      );
 
   private final List<EcmaToken> tokens;
 

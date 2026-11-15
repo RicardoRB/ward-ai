@@ -11,7 +11,6 @@ import org.tomlj.TomlTable;
  * the inputs a propagator names.
  */
 final class TaintSpecOptions {
-
   private static final String ARGUMENTS = "arguments";
   private static final String FROM = "from";
   private static final String RECEIVER = "receiver";
@@ -26,7 +25,8 @@ final class TaintSpecOptions {
     }
     if (!SINKS.equals(table)) {
       throw new RuleConfigurationException(
-          where + " names argument positions, which only sinks take");
+          where + " names argument positions, which only sinks take"
+      );
     }
     return positions(where, entry.getArray(ARGUMENTS));
   }
@@ -46,9 +46,10 @@ final class TaintSpecOptions {
     for (int index = 0; index < array.size(); index++) {
       if (!array.isLong(index) || array.getLong(index) < 0) {
         throw new RuleConfigurationException(
-            where + " has an argument position that is not 0 or more");
+            where + " has an argument position that is not 0 or more"
+        );
       }
-      positions.add((int) array.getLong(index));
+      positions.add((int)array.getLong(index));
     }
     return positions;
   }
@@ -71,10 +72,11 @@ final class TaintSpecOptions {
       final boolean receiver = array.isString(index) && RECEIVER.equals(array.getString(index));
       if (!position && !receiver) {
         throw new RuleConfigurationException(
-            where + " has a 'from' input that is neither a position nor 'receiver'");
+            where + " has a 'from' input that is neither a position nor 'receiver'"
+        );
       }
       if (position) {
-        positions.add((int) array.getLong(index));
+        positions.add((int)array.getLong(index));
       }
     }
     return positions;

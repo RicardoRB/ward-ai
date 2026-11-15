@@ -39,7 +39,8 @@ public final class FileSystemNodeToolConfigs implements NodeToolConfigs {
           JEST,
           "jest.config.*",
           "stryker",
-          "{stryker,.stryker}.{conf,config}.*");
+          "{stryker,.stryker}.{conf,config}.*"
+      );
 
   /** Creates the stateless adapter that Dagger injects. */
   @Inject
@@ -61,7 +62,9 @@ public final class FileSystemNodeToolConfigs implements NodeToolConfigs {
         found ->
             LOGGER.log(
                 Level.FINE,
-                () -> "event=node-user-config gate=" + gate + " file=" + found.getFileName()));
+                () -> "event=node-user-config gate=" + gate + " file=" + found.getFileName()
+            )
+    );
     return file;
   }
 

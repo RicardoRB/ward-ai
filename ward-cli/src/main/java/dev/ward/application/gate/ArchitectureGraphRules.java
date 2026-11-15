@@ -22,7 +22,6 @@ import java.util.List;
  * per run and their findings are never cached per unit.
  */
 final class ArchitectureGraphRules {
-
   private ArchitectureGraphRules() {}
 
   /** Returns the slice cycle rule over {@code roots}. */
@@ -42,7 +41,9 @@ final class ArchitectureGraphRules {
 
   /** The findings of every graph rule among {@code rules}, over {@code graph}. */
   static List<AnalysisFinding> findings(
-      final List<RuleDefinition> rules, final DependencyGraph graph) {
+      final List<RuleDefinition> rules,
+      final DependencyGraph graph
+  ) {
     return findings(rules, graph, ProjectFiles.EMPTY);
   }
 
@@ -50,13 +51,17 @@ final class ArchitectureGraphRules {
    * The findings of every graph rule among {@code rules}, over {@code graph} and {@code project}.
    */
   static List<AnalysisFinding> findings(
-      final List<RuleDefinition> rules, final DependencyGraph graph, final ProjectFiles project) {
+      final List<RuleDefinition> rules,
+      final DependencyGraph graph,
+      final ProjectFiles project
+  ) {
     return rules.stream()
         .filter(GraphRules::isGraphRule)
         .flatMap(
             rule ->
                 GraphRules.compile(rule).matches(graph, project).stream()
-                    .map(match -> finding(rule, match)))
+                    .map(match -> finding(rule, match))
+        )
         .toList();
   }
 
@@ -70,7 +75,8 @@ final class ArchitectureGraphRules {
         span == null ? null : span.startLine(),
         span == null ? null : span.startColumn(),
         null,
-        match.match().path());
+        match.match().path()
+    );
   }
 
   static RuleDefinition definition(final String id, final String body) {
@@ -79,6 +85,7 @@ final class ArchitectureGraphRules {
         ArchitectureLayers.ENGINE_LANGUAGES,
         RuleCapability.SCOPES,
         AnalysisSeverity.ERROR,
-        body);
+        body
+    );
   }
 }

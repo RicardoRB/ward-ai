@@ -26,7 +26,12 @@ class SwiftCiSetupTest {
     assertThat(body)
         .contains("runs-on: macos-26")
         .doesNotContain(
-            "setup-java", "setup-node", "setup-python", ".ward/swift-tools", "swiftlint");
+            "setup-java",
+            "setup-node",
+            "setup-python",
+            ".ward/swift-tools",
+            "swiftlint"
+        );
   }
 
   @Test

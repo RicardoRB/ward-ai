@@ -23,7 +23,9 @@ public final class IntegrationService {
 
   /** Creates the service offering {@code integrations} in the given order. */
   public IntegrationService(
-      final ProjectDetector detector, final List<AgentIntegration> integrations) {
+      final ProjectDetector detector,
+      final List<AgentIntegration> integrations
+  ) {
     this.detector = detector;
     this.integrations = List.copyOf(integrations);
   }
@@ -31,7 +33,9 @@ public final class IntegrationService {
   /** Creates the service offering every bound integration. */
   @Inject
   public IntegrationService(
-      final ProjectDetector detector, final Set<AgentIntegration> integrations) {
+      final ProjectDetector detector,
+      final Set<AgentIntegration> integrations
+  ) {
     this(detector, List.copyOf(integrations));
   }
 
@@ -45,14 +49,18 @@ public final class IntegrationService {
    * start}.
    */
   public IntegrationResult integrate(
-      final String agent, final Path start, final IntegrationRequest request) {
+      final String agent,
+      final Path start,
+      final IntegrationRequest request
+  ) {
     LOGGER.log(
         Level.INFO,
         () ->
             "event=integration-start agent="
                 + agent
                 + " operation="
-                + (request.remove() ? "remove" : "install"));
+                + (request.remove() ? "remove" : "install")
+    );
     final AgentIntegration adapter =
         integrations.stream()
             .filter(candidate -> candidate.id().equals(agent))
@@ -63,7 +71,9 @@ public final class IntegrationService {
                         "Unknown agent '"
                             + agent
                             + "'. Supported agents: "
-                            + SupportedAgents.idsText()));
+                            + SupportedAgents.idsText()
+                    )
+            );
     final Project project = detector.detect(start).orElseThrow(ProjectNotFoundException::new);
     // Agent sessions start at the repository root, so nested projects install there when they can.
     final boolean shared = adapter.installsAtRepositoryRoot();

@@ -32,7 +32,8 @@ class RemovedSonarGateContractTest {
         .allSatisfy(
             definition ->
                 assertThat(definition.id() + " " + definition.displayName())
-                    .doesNotContainPattern(SONAR));
+                    .doesNotContainPattern(SONAR)
+        );
   }
 
   @Test
@@ -43,7 +44,8 @@ class RemovedSonarGateContractTest {
         files.addAll(
             regularFiles(module.resolve("src/main"), ".*").stream()
                 .filter(file -> !file.toString().replace('\\', '/').contains("/rules/secrets/"))
-                .toList());
+                .toList()
+        );
       }
     }
     assertThat(violations(files)).as("production lines that name Sonar").isEmpty();

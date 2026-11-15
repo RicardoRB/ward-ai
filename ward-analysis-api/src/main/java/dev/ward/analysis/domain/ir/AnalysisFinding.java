@@ -26,8 +26,8 @@ public record AnalysisFinding(
     Integer line,
     Integer column,
     String helpUri,
-    List<FlowStep> path) {
-
+    List<FlowStep> path
+) {
   /**
    * Validates the required fields and the location, and copies the path.
    *

@@ -10,7 +10,6 @@ import java.util.List;
  * as it was.
  */
 final class JavaDocBuilder {
-
   private static final String SPACE = " ";
   private static final String EMPTY = "";
   private static final String BLANK_LINE = "\n";
@@ -37,7 +36,8 @@ final class JavaDocBuilder {
       final List<JavaAtom> atoms,
       final JavaTreeFacts facts,
       final int maxBlankLines,
-      final int continuationLevels) {
+      final int continuationLevels
+  ) {
     this.atoms = atoms;
     this.facts = facts;
     this.maxBlankLines = maxBlankLines;
@@ -106,7 +106,8 @@ final class JavaDocBuilder {
     separator.endCode(
         JavaBreakRules.afterToken(atom, facts, stack.blockTop(), groupTop),
         false,
-        facts.annotationEnds().contains(atom.index()));
+        facts.annotationEnds().contains(atom.index())
+    );
     if (JavaBreakRules.COLON.equals(atom.text()) && facts.hardAfter().contains(atom.index())) {
       stack.push(JavaFrame.Kind.CASE, EMPTY);
     }
@@ -146,7 +147,8 @@ final class JavaDocBuilder {
     separator.endCode(
         JavaBreak.UNSET,
         frame.kind() == JavaFrame.Kind.BLOCK,
-        facts.annotationEnds().contains(atom.index()));
+        facts.annotationEnds().contains(atom.index())
+    );
   }
 
   /** Writes the break decided for the next token, or nothing before the first output. */

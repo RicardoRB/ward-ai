@@ -19,7 +19,8 @@ public record NativeArtifactPlan(
     String configContent,
     String hookContent,
     Set<IntegrationCapability> capabilities,
-    List<Path> legacyPaths) {
+    List<Path> legacyPaths
+) {
   /** Copies the capabilities and legacy paths. */
   public NativeArtifactPlan {
     capabilities = Set.copyOf(capabilities);
@@ -41,6 +42,7 @@ public record NativeArtifactPlan(
     return new LegacyFiles(
         Objects.requireNonNull(legacyPath.getParent(), "legacy path must have a parent"),
         Pattern.compile(Pattern.quote(String.valueOf(legacyPath.getFileName()))),
-        Pattern.compile(Pattern.quote(marker)));
+        Pattern.compile(Pattern.quote(marker))
+    );
   }
 }

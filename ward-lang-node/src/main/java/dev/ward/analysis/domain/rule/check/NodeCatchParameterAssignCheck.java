@@ -14,7 +14,6 @@ import java.util.Set;
  * not searched.
  */
 public final class NodeCatchParameterAssignCheck implements RuleCheck {
-
   private static final String CATCH = "catchProduction";
   private static final String BLOCK = "block";
   private static final String EXPRESSION = "singleExpression";
@@ -61,7 +60,10 @@ public final class NodeCatchParameterAssignCheck implements RuleCheck {
   }
 
   private void writes(
-      final SyntaxNode catchClause, final String name, final List<RuleMatch> matches) {
+      final SyntaxNode catchClause,
+      final String name,
+      final List<RuleMatch> matches
+  ) {
     for (final SyntaxNode child : catchClause.children()) {
       if (BLOCK.equals(child.kind())) {
         writesIn(child, name, matches);

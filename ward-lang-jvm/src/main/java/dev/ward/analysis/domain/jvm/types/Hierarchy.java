@@ -54,7 +54,9 @@ final class Hierarchy {
               : JType.ClassType.of(
                   parameter.bounds().isEmpty()
                       ? Types.OBJECT
-                      : Types.erasedName(parameter.bounds().get(0))));
+                      : Types.erasedName(parameter.bounds().get(0))
+              )
+      );
     }
     return bound;
   }

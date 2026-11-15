@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
  * message for each error but the {@code if} ones, worded without grouping.
  */
 public final class DocumentSchemaMessages {
-
   private static final String ADDITIONAL = "additionalProperties";
   private static final Pattern QUOTES = Pattern.compile("['\"]");
 
@@ -24,7 +23,9 @@ public final class DocumentSchemaMessages {
    * @param input the validated document
    */
   public static List<SchemaMessages.Message> format(
-      final List<SchemaError> errors, final DocNode input) {
+      final List<SchemaError> errors,
+      final DocNode input
+  ) {
     final List<SchemaMessages.Message> messages = new ArrayList<>();
     for (final SchemaError error : errors) {
       if (!"if".equals(error.keyword())) {
@@ -58,7 +59,10 @@ public final class DocumentSchemaMessages {
   }
 
   private static String enumeration(
-      final SchemaError error, final DocNode input, final String property) {
+      final SchemaError error,
+      final DocNode input,
+      final String property
+  ) {
     final String printed =
         error.allowed().stream().map(Wording::allowed).collect(Collectors.joining(", "));
     final String suggestion =

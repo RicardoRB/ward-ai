@@ -22,8 +22,8 @@ record Typed(
     Optional<Object> constant,
     Optional<JType.ClassType> named,
     Optional<String> packageName,
-    Nullness nullness) {
-
+    Nullness nullness
+) {
   static final Typed UNKNOWN =
       new Typed(
           Optional.empty(),
@@ -31,7 +31,8 @@ record Typed(
           Optional.empty(),
           Optional.empty(),
           Optional.empty(),
-          Nullness.UNKNOWN);
+          Nullness.UNKNOWN
+      );
 
   static Typed of(final JType type) {
     return new Typed(
@@ -40,7 +41,8 @@ record Typed(
         Optional.empty(),
         Optional.empty(),
         Optional.empty(),
-        Nullness.UNKNOWN);
+        Nullness.UNKNOWN
+    );
   }
 
   static Typed of(final Optional<JType> type) {
@@ -54,7 +56,8 @@ record Typed(
         Optional.empty(),
         Optional.of(type),
         Optional.empty(),
-        Nullness.UNKNOWN);
+        Nullness.UNKNOWN
+    );
   }
 
   static Typed pkg(final String name) {
@@ -64,7 +67,8 @@ record Typed(
         Optional.empty(),
         Optional.empty(),
         Optional.of(name),
-        Nullness.UNKNOWN);
+        Nullness.UNKNOWN
+    );
   }
 
   Typed withConstant(final Optional<Object> value) {

@@ -37,7 +37,8 @@ class OutputFindingsTest {
             .extract(
                 FindingFixtures.maven(root),
                 FindingFixtures.failed("compile", output),
-                FindingFixtures.justBefore());
+                FindingFixtures.justBefore()
+            );
 
     assertThat(findings).hasSize(2);
     final Finding error = findings.getFirst();
@@ -61,7 +62,8 @@ class OutputFindingsTest {
                 + "/src/main/java/Foo.java:7: error: ';' expected\u001B[0m\n"
                 + "        int x = 1\n"
                 + "                 ^\n"
-                + "1 error\n");
+                + "1 error\n"
+        );
 
     final List<Finding> findings =
         new JavacOutputFindings()
@@ -75,17 +77,20 @@ class OutputFindingsTest {
               assertThat(finding.line()).isEqualTo(GRADLE_ERROR_LINE);
               assertThat(finding.column()).isNull();
               assertThat(finding.message()).isEqualTo("';' expected");
-            });
+            }
+        );
   }
 
   @Test
   void unmatchedCompileOutputProducesNoFindings() {
     assertThat(
-            new JavacOutputFindings()
-                .extract(
-                    FindingFixtures.maven(root),
-                    FindingFixtures.failed("compile", "BUILD FAILURE\nsomething else"),
-                    FindingFixtures.justBefore()))
+        new JavacOutputFindings()
+            .extract(
+                FindingFixtures.maven(root),
+                FindingFixtures.failed("compile", "BUILD FAILURE\nsomething else"),
+                FindingFixtures.justBefore()
+            )
+    )
         .isEmpty();
   }
 }

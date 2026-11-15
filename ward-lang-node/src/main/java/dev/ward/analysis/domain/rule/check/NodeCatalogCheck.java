@@ -25,7 +25,6 @@ import java.util.SortedMap;
  * default catalog.
  */
 public final class NodeCatalogCheck implements RuleCheck, ProjectCheck {
-
   private static final String WORKSPACE = "pnpm-workspace.yaml";
   private static final String CATALOG = "catalog:";
   private static final List<String> SECTIONS =
@@ -58,7 +57,10 @@ public final class NodeCatalogCheck implements RuleCheck, ProjectCheck {
 
   @Override
   public List<ProjectMatch> project(
-      final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
+      final SortedMap<String,
+      SyntaxNode> trees,
+      final ProjectFiles files
+  ) {
     final Optional<String> workspace = files.text(WORKSPACE);
     if (workspace.isEmpty()) {
       return List.of();
@@ -79,7 +81,8 @@ public final class NodeCatalogCheck implements RuleCheck, ProjectCheck {
   private List<ProjectMatch> references(
       final NodeManifests.Manifest owner,
       final List<CatalogEntry> catalogs,
-      final Set<String> referenced) {
+      final Set<String> referenced
+  ) {
     final List<ProjectMatch> found = new ArrayList<>();
     for (final String section : SECTIONS) {
       for (final Member dependency : owner.manifest().entries(section)) {
@@ -89,7 +92,10 @@ public final class NodeCatalogCheck implements RuleCheck, ProjectCheck {
           if (references && !defines(catalogs, catalog, dependency.key())) {
             found.add(
                 new ProjectMatch(
-                    owner.path(), match(dependency.line(), dependency.column(), dependency.key())));
+                    owner.path(),
+                    match(dependency.line(), dependency.column(), dependency.key())
+                )
+            );
           }
         }
       }
@@ -99,12 +105,15 @@ public final class NodeCatalogCheck implements RuleCheck, ProjectCheck {
 
   /** The catalog entries that no manifest references. */
   private List<ProjectMatch> unusedEntries(
-      final List<CatalogEntry> catalogs, final Set<String> referenced) {
+      final List<CatalogEntry> catalogs,
+      final Set<String> referenced
+  ) {
     final List<ProjectMatch> found = new ArrayList<>();
     for (final CatalogEntry entry : catalogs) {
       if (!referenced.contains(entry.catalog() + "/" + entry.dependency())) {
         found.add(
-            new ProjectMatch(WORKSPACE, match(entry.line(), entry.column(), entry.dependency())));
+            new ProjectMatch(WORKSPACE, match(entry.line(), entry.column(), entry.dependency()))
+        );
       }
     }
     return found;
@@ -116,10 +125,14 @@ public final class NodeCatalogCheck implements RuleCheck, ProjectCheck {
   }
 
   private static boolean defines(
-      final List<CatalogEntry> catalogs, final String catalog, final String dependency) {
+      final List<CatalogEntry> catalogs,
+      final String catalog,
+      final String dependency
+  ) {
     return catalogs.stream()
         .anyMatch(
-            entry -> entry.catalog().equals(catalog) && entry.dependency().equals(dependency));
+            entry -> entry.catalog().equals(catalog) && entry.dependency().equals(dependency)
+        );
   }
 
   private RuleMatch match(final int line, final int column, final String dependency) {

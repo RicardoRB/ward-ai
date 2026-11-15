@@ -44,7 +44,9 @@ final class NodeResolution {
       final NodeLock lock,
       final String lockPath,
       final String offset,
-      final Map<String, NodeMember> workspace) {
+      final Map<String,
+      NodeMember> workspace
+  ) {
     this.builder = new ModuleBuilder(lockPath, true);
     this.project = project;
     this.lock = lock;
@@ -61,7 +63,10 @@ final class NodeResolution {
   }
 
   private void declare(
-      final NodeMember member, final String name, final NodeMember.Declared declared) {
+      final NodeMember member,
+      final String name,
+      final NodeMember.Declared declared
+  ) {
     final NodeMember sibling = workspace.get(name);
     if (sibling != null) {
       siblings(sibling, declared.scope());
@@ -80,7 +85,8 @@ final class NodeResolution {
           project.root().toString(),
           lockPath,
           "the lockfile has no entry for " + name + " declared in " + manifest,
-          "run `" + project.buildTool().executable() + " install`");
+          "run `" + project.buildTool().executable() + " install`"
+      );
     }
   }
 
@@ -107,8 +113,10 @@ final class NodeResolution {
                       id -> {
                         builder.scope(id, scope);
                         seeds.add(id);
-                      });
-            });
+                      }
+                  );
+            }
+        );
   }
 
   /** Adds every package reachable from the seeds, with its edges. */

@@ -22,7 +22,10 @@ public final class PythonRuleFileTargets implements RuleFileTargets {
 
   @Override
   public List<ConfigTarget> targets(
-      final Project project, final QualityPreset preset, final List<InitGateOption> gates)
+      final Project project,
+      final QualityPreset preset,
+      final List<InitGateOption> gates
+  )
       throws IOException {
     return PythonConfigFiles.targets(project, pythonConfigs, preset, gates);
   }

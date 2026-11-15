@@ -22,7 +22,8 @@ final class SwiftAgentRules {
           "- Xcode tests: `{command}` must pass on the platform in `ward.toml`{warnings}.",
           SwiftTools.SWIFT_COVERAGE,
           "- Coverage: `{command}` must meet the {minimum}% minimum of line coverage; do not lower"
-              + " it.");
+              + " it."
+      );
 
   private SwiftAgentRules() {}
 
@@ -37,7 +38,7 @@ final class SwiftAgentRules {
   /** Names warnings as errors when the gate's command makes them so, which strict does. */
   private static String warnings(final List<String> command) {
     return command.contains("-warnings-as-errors")
-            || command.contains("SWIFT_TREAT_WARNINGS_AS_ERRORS=YES")
+        || command.contains("SWIFT_TREAT_WARNINGS_AS_ERRORS=YES")
         ? "; warnings are errors"
         : "";
   }
@@ -55,11 +56,13 @@ final class SwiftAgentRules {
     return lines.isEmpty()
         ? List.of()
         : Stream.concat(
-                Stream.of(
-                    "- Swift: the `ward` check applies the Ward "
-                        + (preset == null ? QualityPreset.STANDARD : preset).id()
-                        + " rules selected in `ward-rules.toml`; fix each finding at its cause."),
-                lines.stream())
+            Stream.of(
+                "- Swift: the `ward` check applies the Ward "
+                    + (preset == null ? QualityPreset.STANDARD : preset).id()
+                    + " rules selected in `ward-rules.toml`; fix each finding at its cause."
+            ),
+            lines.stream()
+        )
             .toList();
   }
 }

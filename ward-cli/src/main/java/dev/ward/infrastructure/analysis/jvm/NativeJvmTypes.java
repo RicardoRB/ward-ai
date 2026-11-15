@@ -88,14 +88,19 @@ public final class NativeJvmTypes {
             entries,
             JvmClassLibraries.jdkHome(
                 Optional.ofNullable(environment.apply("JAVA_HOME")),
-                Optional.ofNullable(System.getProperty("java.home"))),
-            Optional.of(projectRoot.resolve(CACHE_DIRECTORY)));
+                Optional.ofNullable(System.getProperty("java.home"))
+            ),
+            Optional.of(projectRoot.resolve(CACHE_DIRECTORY))
+        );
     final JvmClasses classes =
         new JvmClasses(
             libraries,
             new ProjectJvmSources(
-                projectRoot, JvmSourceLayouts.of(projectRoot, List.of(projectRoot))),
-            frontend);
+                projectRoot,
+                JvmSourceLayouts.of(projectRoot, List.of(projectRoot))
+            ),
+            frontend
+        );
     final TypeFacts facts =
         new CachedTypeFacts(
             new NativeJvmTypeFacts(
@@ -105,8 +110,11 @@ public final class NativeJvmTypes {
                     AnalysisLanguage.JAVA,
                     new JavaScopeAnalysis(ClasspathBuiltinNames.java()),
                     AnalysisLanguage.KOTLIN,
-                    new KotlinScopeAnalysis(ClasspathBuiltinNames.kotlin()))),
-            CachedTypeFacts.sha256(classpathText));
+                    new KotlinScopeAnalysis(ClasspathBuiltinNames.kotlin())
+                )
+            ),
+            CachedTypeFacts.sha256(classpathText)
+        );
     return new Running(libraries, facts);
   }
 

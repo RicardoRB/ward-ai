@@ -12,7 +12,6 @@ import org.antlr.v4.runtime.LexerNoViableAltException;
  * interface fixes; overriding {@link #notifyListeners} avoids that signature.
  */
 public abstract class WardLexerBase extends Lexer {
-
   private final SyntaxFindings findings = new SyntaxFindings();
 
   /**
@@ -47,6 +46,7 @@ public abstract class WardLexerBase extends Lexer {
     findings.add(
         _tokenStartLine,
         _tokenStartCharPositionInLine + 1,
-        "token recognition error at: '" + getText() + "'");
+        "token recognition error at: '" + getText() + "'"
+    );
   }
 }

@@ -15,7 +15,6 @@ import java.util.Objects;
  * before the line feed is not blank.
  */
 public final class KotlinTrailingWhitespaceCheck implements RuleCheck {
-
   private static final char LINE_FEED = '\n';
   private static final char CARRIAGE_RETURN = '\r';
   private static final char SPACE = ' ';
@@ -40,7 +39,10 @@ public final class KotlinTrailingWhitespaceCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     final String text = unit.text();
     final List<RuleMatch> found = new ArrayList<>();
     int lineStart = 0;

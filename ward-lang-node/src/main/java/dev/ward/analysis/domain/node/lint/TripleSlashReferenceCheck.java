@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * also imports that module under {@code prefer-import}.
  */
 public final class TripleSlashReferenceCheck implements RuleCheck {
-
   private static final String COMMENT = "comment";
   private static final String IMPORT = "importStatement";
   private static final String MODULE = "{module}";
@@ -33,7 +32,11 @@ public final class TripleSlashReferenceCheck implements RuleCheck {
 
   /** Creates the check with the value of each reference kind's option and the message. */
   public TripleSlashReferenceCheck(
-      final String lib, final String path, final String types, final String message) {
+      final String lib,
+      final String path,
+      final String types,
+      final String message
+  ) {
     this.lib = lib;
     this.path = path;
     this.types = types;

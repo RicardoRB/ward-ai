@@ -10,8 +10,13 @@ import dev.ward.analysis.domain.types.TypeRef;
  * call of a stub.
  */
 record PythonSubject(
-    Kind kind, TypeRef type, String name, SyntaxNode definition, String module, CallTarget call) {
-
+    Kind kind,
+    TypeRef type,
+    String name,
+    SyntaxNode definition,
+    String module,
+    CallTarget call
+) {
   /** The kinds of denotation. */
   enum Kind {
     /** A value of {@code type}, which may be unknown. */
@@ -62,6 +67,12 @@ record PythonSubject(
    */
   static PythonSubject stubFunction(final PythonStubs.StubFunction function, final String owner) {
     return new PythonSubject(
-        Kind.STUB_FUNCTION, null, owner, function.definition(), function.module(), null);
+        Kind.STUB_FUNCTION,
+        null,
+        owner,
+        function.definition(),
+        function.module(),
+        null
+    );
   }
 }

@@ -18,9 +18,9 @@ import picocli.CommandLine.Spec;
     name = "enable",
     description = "Enable analysis rules in ward-rules.toml (added to [select] include).",
     mixinStandardHelpOptions = true,
-    footer = {"", "Exit codes: 0 = written, 2 = error (unknown rule id or invalid file)"})
+    footer = {"", "Exit codes: 0 = written, 2 = error (unknown rule id or invalid file)"}
+)
 public final class RulesEnableCommand implements Callable<Integer> {
-
   @Spec private CommandSpec spec;
 
   // Picocli assigns annotated fields reflectively, so they cannot be final.

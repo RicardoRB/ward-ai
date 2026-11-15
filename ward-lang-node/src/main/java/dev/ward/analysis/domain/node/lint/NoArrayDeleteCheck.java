@@ -10,7 +10,6 @@ import java.util.List;
  * Reports a {@code delete} of an element of an array, which leaves a hole instead of removing it.
  */
 public final class NoArrayDeleteCheck extends TypedCheck {
-
   private static final String DELETE = "delete";
   private static final String OPEN_INDEX = "[";
 

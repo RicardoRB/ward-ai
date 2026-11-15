@@ -14,12 +14,19 @@ final class AndroidGradlePluginRequirements {
   private static final int PLUGIN_SEVEN = 7;
   private static final Map<String, String> GRADLE_MINIMUM =
       Map.of(
-          "8.3", "8.4",
-          "8.4", "8.6",
-          "8.9", "8.11.1",
-          "8.10", "8.11.1",
-          "8.11", "8.13",
-          "8.12", "8.13");
+          "8.3",
+          "8.4",
+          "8.4",
+          "8.6",
+          "8.9",
+          "8.11.1",
+          "8.10",
+          "8.11.1",
+          "8.11",
+          "8.13",
+          "8.12",
+          "8.13"
+      );
 
   private AndroidGradlePluginRequirements() {}
 

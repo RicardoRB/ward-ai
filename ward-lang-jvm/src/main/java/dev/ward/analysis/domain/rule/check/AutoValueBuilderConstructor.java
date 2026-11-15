@@ -6,7 +6,6 @@ import java.util.List;
 
 /** A class annotated {@code @AutoValue.Builder} with a constructor that runs statements. */
 public final class AutoValueBuilderConstructor implements DeclarationFactTest {
-
   private static final String BUILDER = "com.google.auto.value.AutoValue.Builder";
   private static final String CONSTRUCTOR = "constructorDeclaration";
   private static final String BLOCK = "block";

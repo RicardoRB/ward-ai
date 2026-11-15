@@ -119,10 +119,11 @@ class NativeNodeExpressionFactsTest {
         .extracting(TypeRef::display)
         .containsExactly("Base", "Named");
     assertThat(
-            facts
-                .shapeOf(TypeProject.span(unit, "interface Named { name: string }"))
-                .orElseThrow()
-                .kind())
+        facts
+            .shapeOf(TypeProject.span(unit, "interface Named { name: string }"))
+            .orElseThrow()
+            .kind()
+    )
         .isEqualTo(TypeShape.Kind.INTERFACE);
     assertThat(facts.at(TypeProject.span(unit, run)).overrides())
         .extracting(target -> target.declaringType().name() + "." + target.name())

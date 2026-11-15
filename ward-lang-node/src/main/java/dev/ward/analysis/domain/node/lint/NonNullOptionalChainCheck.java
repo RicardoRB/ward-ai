@@ -8,7 +8,6 @@ import java.util.List;
 
 /** Reports a non-null assertion on a parenthesized optional chain, such as {@code (a?.b)!}. */
 public final class NonNullOptionalChainCheck implements RuleCheck {
-
   private static final String ASSERTION = "!";
   private static final String OPTIONAL = "?.";
   private static final String QUESTION = "?";

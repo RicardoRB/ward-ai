@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 
 /** The rules about what an operation answers: statuses, media types and headers that went. */
 final class ResponseRules {
-
   private static final Pattern SUCCESS = Pattern.compile("2\\d\\d");
   private static final String RESPONSES = "responses";
 
@@ -20,13 +19,20 @@ final class ResponseRules {
         ResponseScope.rule("response-success-status-removed", ResponseRules::statusRemoved),
         ResponseScope.rule("response-body-media-type-schema-removed", ResponseRules::schemaRemoved),
         ResponseScope.rule(
-            "required-response-header-removed", (pair, op) -> headers(pair, op, true)),
+            "required-response-header-removed",
+            (pair, op) -> headers(pair, op, true)
+        ),
         ResponseScope.rule(
-            "response-header-became-optional", (pair, op) -> headers(pair, op, false)));
+            "response-header-became-optional",
+            (pair, op) -> headers(pair, op, false)
+        )
+    );
   }
 
   private static List<BreakingFinding> statusRemoved(
-      final DocumentPair pair, final ResponseScope scope) {
+      final DocumentPair pair,
+      final ResponseScope scope
+  ) {
     final List<BreakingFinding> findings = new ArrayList<>();
     final DocNode at = scope.now().node().get(RESPONSES).orElse(scope.now().node());
     for (final DocNode.Entry code :
@@ -41,7 +47,9 @@ final class ResponseRules {
   }
 
   private static List<BreakingFinding> schemaRemoved(
-      final DocumentPair pair, final ResponseScope scope) {
+      final DocumentPair pair,
+      final ResponseScope scope
+  ) {
     final List<BreakingFinding> findings = new ArrayList<>();
     for (final ResponseScope.Answer answer : ResponseScope.answers(scope)) {
       for (final DocNode.Entry type : Bodies.mediaTypes(pair.base(), answer.base())) {
@@ -51,7 +59,8 @@ final class ResponseRules {
             && Bodies.schema(pair.base(), pair.base().resolve(type.value())).isPresent()
             && Bodies.schema(pair.revision(), other.get()).isEmpty()) {
           findings.add(
-              scope.at(other.get(), "the schema of the media type " + type.key() + " was removed"));
+              scope.at(other.get(), "the schema of the media type " + type.key() + " was removed")
+          );
         }
       }
     }
@@ -59,7 +68,10 @@ final class ResponseRules {
   }
 
   private static List<BreakingFinding> headers(
-      final DocumentPair pair, final ResponseScope scope, final boolean removed) {
+      final DocumentPair pair,
+      final ResponseScope scope,
+      final boolean removed
+  ) {
     final List<BreakingFinding> findings = new ArrayList<>();
     for (final ResponseScope.Answer answer : ResponseScope.answers(scope)) {
       for (final DocNode.Entry header : NamedParts.entries(pair.base(), answer.base(), "headers")) {
@@ -73,7 +85,9 @@ final class ResponseRules {
           findings.add(
               scope.at(
                   answer.revision().get("headers").orElse(answer.revision()),
-                  "the required header " + header.key() + " was removed"));
+                  "the required header " + header.key() + " was removed"
+              )
+          );
         } else if (!removed && other.isPresent() && !Bodies.required(other.get())) {
           findings.add(scope.at(other.get(), "the header " + header.key() + " became optional"));
         }

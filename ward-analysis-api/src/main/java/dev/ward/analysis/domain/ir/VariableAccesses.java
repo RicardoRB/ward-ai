@@ -9,7 +9,6 @@ import java.util.List;
  */
 @FunctionalInterface
 public interface VariableAccesses {
-
   /** Records nothing; a graph built with it has no accesses. */
   VariableAccesses NONE = node -> List.of();
 

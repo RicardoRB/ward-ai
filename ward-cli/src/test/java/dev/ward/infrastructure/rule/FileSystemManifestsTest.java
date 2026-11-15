@@ -14,7 +14,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** The manifest reader: Git-ignored manifests are dropped, and a Git failure drops none. */
 class FileSystemManifestsTest {
-
   private static final String MANIFEST = "package.json";
   private static final Set<String> NAMES = Set.of(MANIFEST);
 
@@ -27,7 +26,13 @@ class FileSystemManifestsTest {
     final FakeCommandExecutor git =
         new FakeCommandExecutor(
             new CommandResult(
-                0, "examples/old/package.json\u0000", "", FakeCommandExecutor.DURATION, null));
+                0,
+                "examples/old/package.json\u0000",
+                "",
+                FakeCommandExecutor.DURATION,
+                null
+            )
+        );
 
     assertThat(FileSystemManifests.read(root, NAMES, git).paths()).containsExactly(MANIFEST);
     assertThat(git.commands.get(0))
@@ -40,7 +45,8 @@ class FileSystemManifestsTest {
     write("examples/old/package.json");
     final FakeCommandExecutor git =
         new FakeCommandExecutor(
-            new CommandResult(0, "examples/old/\u0000", "", FakeCommandExecutor.DURATION, null));
+            new CommandResult(0, "examples/old/\u0000", "", FakeCommandExecutor.DURATION, null)
+        );
 
     assertThat(FileSystemManifests.read(root, NAMES, git).paths()).containsExactly(MANIFEST);
   }
@@ -60,7 +66,8 @@ class FileSystemManifestsTest {
     write("coverage/package.json");
     final FakeCommandExecutor git =
         new FakeCommandExecutor(
-            new CommandResult(0, "coverage/\u0000", "", FakeCommandExecutor.DURATION, null));
+            new CommandResult(0, "coverage/\u0000", "", FakeCommandExecutor.DURATION, null)
+        );
 
     final ProjectFiles files = FileSystemManifests.read(root, NAMES, git);
 

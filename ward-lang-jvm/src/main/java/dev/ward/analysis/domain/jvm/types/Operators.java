@@ -19,7 +19,8 @@ final class Operators {
       final String operator,
       final Optional<Object> left,
       final Optional<Object> right,
-      final JType promoted) {
+      final JType promoted
+  ) {
     if (left.isEmpty() || right.isEmpty() || !(promoted instanceof JType.Primitive primitive)) {
       return Optional.empty();
     }
@@ -37,7 +38,7 @@ final class Operators {
   }
 
   private static Object narrow(final Long value, final JType.Primitive primitive) {
-    return "int".equals(primitive.name()) ? (Object) (long) value.intValue() : value;
+    return "int".equals(primitive.name()) ? (Object)(long)value.intValue() : value;
   }
 
   private static Optional<Long> integral(final String operator, final long a, final long b) {

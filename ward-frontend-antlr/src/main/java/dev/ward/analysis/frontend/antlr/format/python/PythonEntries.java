@@ -14,7 +14,6 @@ import org.antlr.v4.runtime.Token;
  * token, because strings and numbers are tokens.
  */
 final class PythonEntries {
-
   private static final String NEWLINE_TEXT = "\n";
   private static final String NO_TEXT = "";
   private static final char COMMENT_START = '#';
@@ -93,13 +92,19 @@ final class PythonEntries {
               token.getStopIndex(),
               token.getLine(),
               token.getCharPositionInLine(),
-              false));
+              false
+          )
+      );
       scanned = token.getStopIndex() + 1;
     }
   }
 
   private static PythonEntry marker(
-      final PythonEntry.Kind kind, final int type, final String text, final int line) {
+      final PythonEntry.Kind kind,
+      final int type,
+      final String text,
+      final int line
+  ) {
     return new PythonEntry(kind, type, text, NO_POSITION, NO_POSITION, line, 0, false);
   }
 
@@ -130,7 +135,9 @@ final class PythonEntries {
             lineEnd - 1,
             lineOf(at),
             at - lineStart,
-            own));
+            own
+        )
+    );
     return lineEnd;
   }
 

@@ -12,7 +12,6 @@ import java.util.Set;
  *     next sibling is a structure of their own (an {@code else if}, which counts itself)
  */
 public record CognitiveTokens(CountedKinds structures, Set<String> flat, Set<String> chaining) {
-
   /**
    * Copies the sets.
    *

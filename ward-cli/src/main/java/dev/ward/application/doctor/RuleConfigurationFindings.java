@@ -23,7 +23,8 @@ final class RuleConfigurationFindings {
       final WardConfigurationReader reader,
       final AnalysisRuleSource rules,
       final Path root,
-      final List<Finding> findings) {
+      final List<Finding> findings
+  ) {
     if (reader == null || rules == null) {
       return;
     }
@@ -33,7 +34,8 @@ final class RuleConfigurationFindings {
           .forEach(
               check ->
                   RuleConfigurationCheck.resolve(check, rules, root)
-                      .ifPresent(set -> findings.addAll(of(set))));
+                      .ifPresent(set -> findings.addAll(of(set)))
+          );
     } catch (WardException ignored) {
       // The configuration finding already reports malformed configuration.
     }
@@ -42,7 +44,8 @@ final class RuleConfigurationFindings {
   private static List<Finding> of(final RuleSet set) {
     if (set.problems().isEmpty()) {
       return List.of(
-          new Finding(NAME, Status.OK, set.rules().size() + " rule(s) selected and valid."));
+          new Finding(NAME, Status.OK, set.rules().size() + " rule(s) selected and valid.")
+      );
     }
     return set.problems().stream()
         .map(problem -> new Finding(NAME, Status.ERROR, problem))

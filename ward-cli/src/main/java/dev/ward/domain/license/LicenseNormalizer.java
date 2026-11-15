@@ -65,7 +65,9 @@ public final class LicenseNormalizer {
   }
 
   private Optional<LicenseExpression[]> pair(
-      final LicenseExpression left, final LicenseExpression right) {
+      final LicenseExpression left,
+      final LicenseExpression right
+  ) {
     final Optional<LicenseExpression> first = canonical(left);
     final Optional<LicenseExpression> second = canonical(right);
     return first.isPresent() && second.isPresent()

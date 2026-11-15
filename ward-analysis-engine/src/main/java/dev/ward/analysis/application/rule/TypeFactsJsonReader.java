@@ -99,7 +99,7 @@ final class TypeFactsJsonReader {
     position++;
     if (code == UNICODE_ESCAPE) {
       final char value =
-          (char) Integer.parseInt(text.substring(position, position + HEX_WIDTH), HEX_RADIX);
+          (char)Integer.parseInt(text.substring(position, position + HEX_WIDTH), HEX_RADIX);
       position += HEX_WIDTH;
       return value;
     }

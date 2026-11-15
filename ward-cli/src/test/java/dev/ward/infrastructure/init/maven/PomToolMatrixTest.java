@@ -52,7 +52,8 @@ class PomToolMatrixTest {
       final String fixtureName,
       final QualityPreset preset,
       final List<String> gates,
-      @TempDir final Path root)
+      @TempDir final Path root
+  )
       throws IOException {
     final String original = Files.readString(FIXTURES.resolve(fixtureName));
     Files.writeString(root.resolve("pom.xml"), original);
@@ -62,7 +63,8 @@ class PomToolMatrixTest {
             .apply(
                 new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE),
                 gates.stream().map(PomToolMatrixTest::gate).toList(),
-                preset);
+                preset
+            );
 
     final Model before = read(original);
     final Model after = read(Files.readString(root.resolve("pom.xml")));
@@ -80,7 +82,8 @@ class PomToolMatrixTest {
         .isSubsetOf(
             PresetPluginSnippets.LIFECYCLE_PLUGINS.stream()
                 .map(PresetPluginSnippets.LifecyclePlugin::artifact)
-                .toList());
+                .toList()
+        );
   }
 
   static Stream<Path> fixtures() throws IOException {
@@ -122,8 +125,9 @@ class PomToolMatrixTest {
         .map(
             build ->
                 build == null
-                    ? List.<String>of()
-                    : build.getPlugins().stream().map(Plugin::getArtifactId).toList())
+                    ? List.<String> of()
+                    : build.getPlugins().stream().map(Plugin::getArtifactId).toList()
+        )
         .toList();
   }
 

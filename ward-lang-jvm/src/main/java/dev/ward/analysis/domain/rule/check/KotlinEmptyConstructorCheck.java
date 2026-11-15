@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * break that call.
  */
 public final class KotlinEmptyConstructorCheck implements RuleCheck {
-
   private static final String PRIMARY = "primaryConstructor";
   private static final String CLASS = "classDeclaration";
   private static final String CLASS_BODY = "classBody";

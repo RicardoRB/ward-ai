@@ -10,7 +10,6 @@ import java.util.Set;
 
 /** Handles the properties, loops and lambdas of Kotlin bodies. */
 final class KotlinScopeBodies {
-
   private static final String CLASS_BODY = "classBody";
 
   private static final String LAMBDA_PARAMETERS = "lambdaParameters";
@@ -41,12 +40,14 @@ final class KotlinScopeBodies {
     node.children().stream()
         .filter(
             c ->
-                EXPRESSION.equals(c.kind()) || "getter".equals(c.kind()) || SETTER.equals(c.kind()))
+                EXPRESSION.equals(c.kind()) || "getter".equals(c.kind()) || SETTER.equals(c.kind())
+        )
         .forEach(walk::visit);
     final Set<BindingFlag> flags = EnumSet.noneOf(BindingFlag.class);
     if (node.children().stream()
         .anyMatch(
-            c -> "modifierList".equals(c.kind()) && KotlinScopeWalk.text(c).contains("const"))) {
+            c -> "modifierList".equals(c.kind()) && KotlinScopeWalk.text(c).contains("const")
+        )) {
       flags.add(BindingFlag.CONST);
     }
     final BindingKind kind = constant ? BindingKind.CONSTANT : BindingKind.VARIABLE;
@@ -64,10 +65,18 @@ final class KotlinScopeBodies {
   void accessor(final SyntaxNode node) {
     walk.builder.open(ScopeKind.FUNCTION, node.span());
     walk.builder.declare(
-        "field", BindingKind.VARIABLE, node.span(), EnumSet.noneOf(BindingFlag.class));
+        "field",
+        BindingKind.VARIABLE,
+        node.span(),
+        EnumSet.noneOf(BindingFlag.class)
+    );
     if (SETTER.equals(node.kind())) {
       walk.builder.declare(
-          "value", BindingKind.PARAMETER, node.span(), EnumSet.noneOf(BindingFlag.class));
+          "value",
+          BindingKind.PARAMETER,
+          node.span(),
+          EnumSet.noneOf(BindingFlag.class)
+      );
     }
     for (final SyntaxNode part : node.children()) {
       if (PARAMETER.equals(part.kind())) {
@@ -92,7 +101,8 @@ final class KotlinScopeBodies {
         KotlinSyntax.children(child, VARIABLE_DECLARATION)
             .forEach(
                 part ->
-                    walk.declare(KotlinScopeWalk.simple(part), BindingKind.VARIABLE, true, flags));
+                    walk.declare(KotlinScopeWalk.simple(part), BindingKind.VARIABLE, true, flags)
+            );
       } else if (!EXPRESSION.equals(child.kind())) {
         walk.visit(child);
       }
@@ -115,7 +125,11 @@ final class KotlinScopeBodies {
     if (!explicit) {
       walk.builder.markOpen(scope);
       walk.builder.declare(
-          "it", BindingKind.PARAMETER, node.span(), EnumSet.noneOf(BindingFlag.class));
+          "it",
+          BindingKind.PARAMETER,
+          node.span(),
+          EnumSet.noneOf(BindingFlag.class)
+      );
     }
     for (final SyntaxNode part : node.children()) {
       if (LAMBDA_PARAMETERS.equals(part.kind())) {
@@ -140,7 +154,9 @@ final class KotlinScopeBodies {
                           KotlinScopeWalk.simple(part),
                           BindingKind.PARAMETER,
                           false,
-                          Set.of(BindingFlag.DESTRUCTURED)));
+                          Set.of(BindingFlag.DESTRUCTURED)
+                      )
+              );
         }
       }
     }

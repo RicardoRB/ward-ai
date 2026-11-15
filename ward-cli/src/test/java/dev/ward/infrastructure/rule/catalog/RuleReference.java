@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
  * texts are the only output, so a test can compare them with the committed pages.
  */
 final class RuleReference {
-
   /** The index page, relative to {@code website/src/content/docs}. */
   static final String INDEX = "reference/rules.mdx";
 
@@ -28,18 +27,26 @@ final class RuleReference {
   static Map<String, String> pages(
       final RuleCatalog catalog,
       final List<RuleDefinition> definitions,
-      final Map<String, Map<String, String>> outOfScope) {
+      final Map<String,
+      Map<String,
+      String>> outOfScope
+  ) {
     final Map<String, List<CatalogRow>> byFile =
         catalog.rows().stream()
             .filter(row -> !row.isText())
             .collect(
                 Collectors.groupingBy(
-                    RuleReference::pageName, LinkedHashMap::new, Collectors.toList()));
+                    RuleReference::pageName,
+                    LinkedHashMap::new,
+                    Collectors.toList()
+                )
+            );
     final Map<String, String> pages = new LinkedHashMap<>();
     pages.put(INDEX, index(byFile));
     byFile.forEach(
         (name, rows) ->
-            pages.put("reference/rules/" + name + ".mdx", filePage(name, rows, definitions)));
+            pages.put("reference/rules/" + name + ".mdx", filePage(name, rows, definitions))
+    );
     return pages;
   }
 
@@ -53,7 +60,9 @@ final class RuleReference {
     lines.addAll(
         frontMatter(
             "Rule reference",
-            "Every Ward rule, the rules it replaces in other tools, and what is planned."));
+            "Every Ward rule, the rules it replaces in other tools, and what is planned."
+        )
+    );
     lines.add(GENERATED);
     lines.add("");
     lines.add(
@@ -63,7 +72,8 @@ final class RuleReference {
             + RuleReferenceRows.ISSUES
             + "306) or [#348]("
             + RuleReferenceRows.ISSUES
-            + "348) implements it, and `n/a` when the concept does not apply to the language.");
+            + "348) implements it, and `n/a` when the concept does not apply to the language."
+    );
     lines.add("");
     lines.add("## Tools");
     lines.add("");
@@ -76,7 +86,8 @@ final class RuleReference {
     lines.add("## Catalog pages");
     lines.add("");
     lines.add(
-        "Each page lists the rules of one catalog file, the Ward rules implemented for them, and");
+        "Each page lists the rules of one catalog file, the Ward rules implemented for them, and"
+    );
     lines.add("their counterparts in each tool.");
     lines.add("");
     byFile.keySet().forEach(name -> lines.add("- [" + name + "](/reference/rules/" + name + "/)"));
@@ -84,10 +95,14 @@ final class RuleReference {
   }
 
   private static String filePage(
-      final String name, final List<CatalogRow> rows, final List<RuleDefinition> definitions) {
+      final String name,
+      final List<CatalogRow> rows,
+      final List<RuleDefinition> definitions
+  ) {
     final List<String> lines = new ArrayList<>();
     lines.addAll(
-        frontMatter(name, "Rules of the catalog file " + name + " and their counterparts."));
+        frontMatter(name, "Rules of the catalog file " + name + " and their counterparts.")
+    );
     lines.add(GENERATED);
     lines.add("");
     lines.add("[Rule reference](/reference/rules/)");
@@ -109,7 +124,9 @@ final class RuleReference {
   }
 
   private static List<String> implementedRows(
-      final List<CatalogRow> rows, final List<RuleDefinition> definitions) {
+      final List<CatalogRow> rows,
+      final List<RuleDefinition> definitions
+  ) {
     final List<String> lines = new ArrayList<>();
     for (final CatalogRow row : rows) {
       for (final AnalysisLanguage language : row.languages(CatalogStatus.IMPLEMENTED)) {

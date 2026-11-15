@@ -10,11 +10,29 @@ import java.util.Set;
  * around it and from the parse tree.
  */
 final class JavaSpacing {
-
   private static final Set<String> MULTI_TOKEN =
       Set.of(
-          "<<", ">>", "<=", ">=", "==", "!=", "+=", "-=", "*=", "/=", "%=", "&=", "|=", "^=", "&&",
-          "||", "++", "--", "->", "::");
+          "<<",
+          ">>",
+          "<=",
+          ">=",
+          "==",
+          "!=",
+          "+=",
+          "-=",
+          "*=",
+          "/=",
+          "%=",
+          "&=",
+          "|=",
+          "^=",
+          "&&",
+          "||",
+          "++",
+          "--",
+          "->",
+          "::"
+      );
   private static final Set<String> NONE_BEFORE = Set.of(")", "]", ",", ";", ".", "::", "...", "}");
   private static final Set<String> NONE_AFTER = Set.of("(", "[", ".", "::", "@");
   private static final String OPEN_PAREN = "(";

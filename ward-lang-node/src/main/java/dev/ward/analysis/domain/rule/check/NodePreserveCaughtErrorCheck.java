@@ -15,7 +15,6 @@ import java.util.Set;
  * requireCatchParameter} is set. Causes that are not an object literal are not judged.
  */
 public final class NodePreserveCaughtErrorCheck implements RuleCheck {
-
   private static final String CATCH = "catchProduction";
   private static final String THROW = "throwStatement";
   private static final String SINGLE = "singleExpression";
@@ -43,7 +42,8 @@ public final class NodePreserveCaughtErrorCheck implements RuleCheck {
           "SyntaxError",
           "TypeError",
           "URIError",
-          AGGREGATE);
+          AGGREGATE
+      );
   private static final Set<String> FUNCTIONS =
       Set.of(
           "functionDeclaration",
@@ -52,7 +52,8 @@ public final class NodePreserveCaughtErrorCheck implements RuleCheck {
           "methodDefinition",
           "constructorDeclaration",
           "classDeclaration",
-          "classExpression");
+          "classExpression"
+      );
 
   private final Options options;
   private final String missingCauseMessage;
@@ -77,7 +78,8 @@ public final class NodePreserveCaughtErrorCheck implements RuleCheck {
       final String missingCauseMessage,
       final String partialMessage,
       final String missingParameterMessage,
-      final String incorrectCauseMessage) {
+      final String incorrectCauseMessage
+  ) {
     this.options = Objects.requireNonNull(options, "options");
     this.missingCauseMessage = Objects.requireNonNull(missingCauseMessage, "missingCauseMessage");
     this.partialMessage = Objects.requireNonNull(partialMessage, "partialMessage");
@@ -96,7 +98,10 @@ public final class NodePreserveCaughtErrorCheck implements RuleCheck {
 
   /** Walks the tree with the innermost catch parameter: its name, or empty when there is none. */
   private void walk(
-      final SyntaxNode node, final Optional<Caught> caught, final List<RuleMatch> matches) {
+      final SyntaxNode node,
+      final Optional<Caught> caught,
+      final List<RuleMatch> matches
+  ) {
     if (THROW.equals(node.kind())) {
       caught.ifPresent(scope -> checkThrow(node, scope, matches));
     }
@@ -145,7 +150,10 @@ public final class NodePreserveCaughtErrorCheck implements RuleCheck {
   private record Caught(String name) {}
 
   private void checkThrow(
-      final SyntaxNode throwStatement, final Caught caught, final List<RuleMatch> matches) {
+      final SyntaxNode throwStatement,
+      final Caught caught,
+      final List<RuleMatch> matches
+  ) {
     final Optional<SyntaxNode> expression = Calls.thrown(throwStatement);
     if (expression.isEmpty()) {
       return;
@@ -167,7 +175,8 @@ public final class NodePreserveCaughtErrorCheck implements RuleCheck {
       final SyntaxNode throwStatement,
       final BuiltInCall call,
       final String name,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     final List<SyntaxNode> values = Calls.argumentValues(call.arguments());
     final int index = AGGREGATE.equals(call.name()) ? AGGREGATE_CAUSE_INDEX : CAUSE_INDEX;
     if (values.size() <= index) {
@@ -181,7 +190,8 @@ public final class NodePreserveCaughtErrorCheck implements RuleCheck {
     final Optional<SyntaxNode> cause =
         object.get().children().stream()
             .filter(
-                c -> PROPERTY.equals(c.kind()) && CAUSE.equals(LeafText.of(c.children().get(0))))
+                c -> PROPERTY.equals(c.kind()) && CAUSE.equals(LeafText.of(c.children().get(0)))
+            )
             .findFirst();
     if (cause.isEmpty()) {
       matches.add(new RuleMatch(throwStatement.span(), missingCauseMessage));
@@ -197,7 +207,6 @@ public final class NodePreserveCaughtErrorCheck implements RuleCheck {
 
   /** The thrown expression, the built-in calls and the cause option of a throw. */
   private static final class Calls {
-
     /** The expression a throw statement throws, which a sequence may wrap. */
     private static Optional<SyntaxNode> thrown(final SyntaxNode throwStatement) {
       for (final SyntaxNode child : throwStatement.children()) {

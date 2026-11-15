@@ -20,16 +20,21 @@ import java.util.regex.Pattern;
  * reported.
  */
 public final class JavaJodaToSelfCheck implements RuleCheck {
-
   private static final String JODA = "org.joda.time.";
   private static final Pattern NO_ARGUMENTS = Pattern.compile("\\(\\)$");
   private static final Map<String, String> CONVERSIONS =
       Map.of(
-          "DateTime", "toDateTime",
-          "Duration", "toDuration",
-          "Instant", "toInstant",
-          "Interval", "toInterval",
-          "Period", "toPeriod");
+          "DateTime",
+          "toDateTime",
+          "Duration",
+          "toDuration",
+          "Instant",
+          "toInstant",
+          "Interval",
+          "toInterval",
+          "Period",
+          "toPeriod"
+      );
 
   private final List<CallMatchCheck> checks;
 
@@ -54,8 +59,12 @@ public final class JavaJodaToSelfCheck implements RuleCheck {
                         false,
                         Set.of(),
                         Set.of(),
-                        false),
-                    message)));
+                        false
+                    ),
+                    message
+                )
+            )
+    );
     checks = List.copyOf(built);
   }
 
@@ -75,7 +84,8 @@ public final class JavaJodaToSelfCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return checks.stream()
         .flatMap(check -> check.matches(root, flow, scopes, types, unit).stream())
         .toList();

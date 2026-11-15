@@ -26,7 +26,6 @@ import java.util.Set;
  * unknown is never reported.
  */
 public final class IncompatibleArgumentCheck implements RuleCheck {
-
   private static final String EXPRESSION = "expression";
   private static final String OBJECT = "java.lang.Object";
   private static final String NUMBER = "java.lang.Number";
@@ -39,21 +38,32 @@ public final class IncompatibleArgumentCheck implements RuleCheck {
           "java.lang.Integer",
           "java.lang.Long",
           "java.lang.Float",
-          "java.lang.Double");
+          "java.lang.Double"
+      );
   private static final Map<String, String> BOXES =
       Map.of(
-          "byte", "java.lang.Byte",
-          "short", "java.lang.Short",
-          "int", "java.lang.Integer",
-          "long", "java.lang.Long",
-          "float", "java.lang.Float",
-          "double", "java.lang.Double",
-          "char", "java.lang.Character",
-          "boolean", "java.lang.Boolean");
+          "byte",
+          "java.lang.Byte",
+          "short",
+          "java.lang.Short",
+          "int",
+          "java.lang.Integer",
+          "long",
+          "java.lang.Long",
+          "float",
+          "java.lang.Float",
+          "double",
+          "java.lang.Double",
+          "char",
+          "java.lang.Character",
+          "boolean",
+          "java.lang.Boolean"
+      );
   private static final FactNeed NEED =
       new FactNeed(
           Set.of(EXPRESSION),
-          Set.of(FactKind.CALL, FactKind.TYPE, FactKind.SHAPE, FactKind.MEMBERS));
+          Set.of(FactKind.CALL, FactKind.TYPE, FactKind.SHAPE, FactKind.MEMBERS)
+      );
 
   private final Set<String> declaringTypes;
   private final List<Entry> entries;
@@ -71,8 +81,13 @@ public final class IncompatibleArgumentCheck implements RuleCheck {
    * @param only the declaring types the entry applies to; empty for every declaring type
    */
   public record Entry(
-      String name, int arity, boolean fromReceiver, int source, int value, Set<String> only) {
-
+      String name,
+      int arity,
+      boolean fromReceiver,
+      int source,
+      int value,
+      Set<String> only
+  ) {
     /** Checks the name and copies the types. */
     public Entry {
       Objects.requireNonNull(name, "name");
@@ -88,7 +103,10 @@ public final class IncompatibleArgumentCheck implements RuleCheck {
    * @param message the message reported at the call
    */
   public IncompatibleArgumentCheck(
-      final Set<String> declaringTypes, final List<Entry> entries, final String message) {
+      final Set<String> declaringTypes,
+      final List<Entry> entries,
+      final String message
+  ) {
     this.declaringTypes = Set.copyOf(declaringTypes);
     this.entries = List.copyOf(entries);
     this.message = Objects.requireNonNull(message, "message");
@@ -110,7 +128,8 @@ public final class IncompatibleArgumentCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(EXPRESSION))) {
       final SyntaxNode call = visit.node();
@@ -133,7 +152,8 @@ public final class IncompatibleArgumentCheck implements RuleCheck {
         .filter(
             entry ->
                 entry.only().isEmpty()
-                    || entry.only().contains(target.get().declaringType().name()))
+                    || entry.only().contains(target.get().declaringType().name())
+        )
         .anyMatch(entry -> entryIncompatible(entry, call, arguments, types));
   }
 
@@ -141,7 +161,8 @@ public final class IncompatibleArgumentCheck implements RuleCheck {
       final Entry entry,
       final SyntaxNode call,
       final List<SyntaxNode> arguments,
-      final UnitTypeFacts types) {
+      final UnitTypeFacts types
+  ) {
     final Optional<TypeRef> expected = expected(entry, call, arguments, types);
     final SyntaxNode value = arguments.get(entry.value());
     return expected.isPresent()
@@ -153,7 +174,8 @@ public final class IncompatibleArgumentCheck implements RuleCheck {
       final Entry entry,
       final SyntaxNode call,
       final List<SyntaxNode> arguments,
-      final UnitTypeFacts types) {
+      final UnitTypeFacts types
+  ) {
     if (entry.fromReceiver()) {
       final List<SyntaxNode> parts = call.children();
       return parts.isEmpty()
@@ -172,7 +194,10 @@ public final class IncompatibleArgumentCheck implements RuleCheck {
 
   /** Tells whether no value of the argument's type can be an instance of the expected type. */
   private static boolean excludes(
-      final TypeRef expected, final SyntaxNode value, final UnitTypeFacts types) {
+      final TypeRef expected,
+      final SyntaxNode value,
+      final UnitTypeFacts types
+  ) {
     final Optional<TypeRef> type = types.typeOf(value.span());
     if (type.isEmpty() || type.get().arrayDepth() > 0) {
       return false;

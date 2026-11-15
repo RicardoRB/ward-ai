@@ -21,16 +21,20 @@ class LearningJsonContractTest {
   @Test
   void generatedCodecClassesBackStoreReportAndHookDtos() throws Exception {
     assertThat(
-            Class.forName(
-                "dev.ward.infrastructure.learning.JsonLearningStore_d_FileDto_ForyJsonCodec"))
+        Class.forName("dev.ward.infrastructure.learning.JsonLearningStore_d_FileDto_ForyJsonCodec")
+    )
         .isNotNull();
     assertThat(
-            Class.forName(
-                "dev.ward.infrastructure.cli.gate.JsonReportRenderer_d_ReportDto_ForyJsonCodec"))
+        Class.forName(
+            "dev.ward.infrastructure.cli.gate.JsonReportRenderer_d_ReportDto_ForyJsonCodec"
+        )
+    )
         .isNotNull();
     assertThat(
-            Class.forName(
-                "dev.ward.infrastructure.cli.agent.ClaudeCodeHookCommand_d_HookOutput_ForyJsonCodec"))
+        Class.forName(
+            "dev.ward.infrastructure.cli.agent.ClaudeCodeHookCommand_d_HookOutput_ForyJsonCodec"
+        )
+    )
         .isNotNull();
   }
 
@@ -41,11 +45,19 @@ class LearningJsonContractTest {
             LearningLedger.empty(),
             List.of(
                 new LearningPrompt(
-                    "pmd:UnusedLocalVariable", "pmd", "UnusedLocalVariable", 2, EXAMPLE)),
-            List.of());
+                    "pmd:UnusedLocalVariable",
+                    "pmd",
+                    "UnusedLocalVariable",
+                    2,
+                    EXAMPLE
+                )
+            ),
+            List.of()
+        );
 
     assertThat(
-            new JsonReportRenderer(new ForyJsonCodec()).render(report(), false, false, outcome, 2))
+        new JsonReportRenderer(new ForyJsonCodec()).render(report(), false, false, outcome, 2)
+    )
         .isEqualTo(fixture("report-with-learning.json"));
   }
 

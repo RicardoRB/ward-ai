@@ -11,7 +11,6 @@ import java.util.Set;
  * type, which uses an exception as a goto. Matching is by simple type name.
  */
 public final class ExceptionFlowCheck implements UnitCheck {
-
   private static final String STATEMENT = "statement";
   private static final String TRY_PREFIX = "try";
   private static final String BLOCK = "block";

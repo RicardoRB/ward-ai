@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
  * redundant ones and words each as a sentence.
  */
 public final class SchemaMessages {
-
   private SchemaMessages() {}
 
   /**
@@ -37,13 +36,17 @@ public final class SchemaMessages {
    *     a failing root value
    */
   public static List<Message> format(
-      final List<SchemaError> errors, final DocNode data, final List<String> propertyPath) {
+      final List<SchemaError> errors,
+      final DocNode data,
+      final List<String> propertyPath
+  ) {
     final Set<String> unmatched =
         errors.stream()
             .filter(
                 error ->
                     ("oneOf".equals(error.keyword()) || "anyOf".equals(error.keyword()))
-                        && error.combinatorUnmatched())
+                        && error.combinatorUnmatched()
+            )
             .map(SchemaError::instancePath)
             .collect(Collectors.toSet());
     return ErrorTree.flatten(errors).stream()
@@ -55,7 +58,8 @@ public final class SchemaMessages {
       final SchemaError error,
       final DocNode data,
       final List<String> propertyPath,
-      final Set<String> unmatched) {
+      final Set<String> unmatched
+  ) {
     final String pointer = error.instancePath();
     String text = Wording.of(error, data, propertyPath);
     text = describeArrayItem(text, pointer.substring(pointer.lastIndexOf('/') + 1));

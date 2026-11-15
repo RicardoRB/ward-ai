@@ -9,7 +9,6 @@ import java.util.EnumSet;
 
 /** Handles the patterns that bind names: declarations, conditions, loops and cases. */
 final class SwiftScopePatterns {
-
   private static final String IDENTIFIER_PATTERN = "identifier_pattern";
 
   private static final String IDENTIFIER = "declaration_identifier";
@@ -59,7 +58,11 @@ final class SwiftScopePatterns {
     walk.builder.open(ScopeKind.BLOCK, node.span());
     if (SwiftScopeWalk.child(node, PATTERN) == null) {
       walk.builder.declare(
-          "error", BindingKind.PARAMETER, node.span(), EnumSet.noneOf(BindingFlag.class));
+          "error",
+          BindingKind.PARAMETER,
+          node.span(),
+          EnumSet.noneOf(BindingFlag.class)
+      );
     }
     walk.generic(node);
     walk.builder.close();
@@ -106,7 +109,11 @@ final class SwiftScopePatterns {
   }
 
   void identifierPattern(
-      final SyntaxNode node, final boolean binding, final boolean written, final boolean tuple) {
+      final SyntaxNode node,
+      final boolean binding,
+      final boolean written,
+      final boolean tuple
+  ) {
     final SyntaxNode name = SwiftScopeWalk.child(node, IDENTIFIER);
     if (name == null) {
       return;

@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
  * @param forbidden the layer names the source layers must not depend on, never empty
  */
 public record LayerBoundary(List<String> from, List<String> forbidden) {
-
   private static final Pattern NAME = Pattern.compile("[A-Za-z0-9_.-]+");
 
   /**
@@ -38,7 +37,8 @@ public record LayerBoundary(List<String> from, List<String> forbidden) {
     for (final String name : names) {
       if (!NAME.matcher(name).matches() || ".".equals(name) || "..".equals(name)) {
         throw new IllegalArgumentException(
-            "'" + key + "' names '" + name + "', which is not a plain directory name");
+            "'" + key + "' names '" + name + "', which is not a plain directory name"
+        );
       }
     }
   }

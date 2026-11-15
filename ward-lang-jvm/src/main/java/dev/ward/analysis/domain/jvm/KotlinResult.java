@@ -14,7 +14,6 @@ import dev.ward.analysis.domain.ir.VariableAccess;
  * @param declaration where the value comes from, which tells two variables of one name apart
  */
 record KotlinResult(String name, Span declaration) {
-
   /** A variable for the value of the part that starts at {@code part}. */
   static KotlinResult of(final String kind, final Span part) {
     return new KotlinResult("$" + kind + "@" + part.startOffset(), part);
@@ -31,8 +30,10 @@ record KotlinResult(String name, Span declaration) {
             node.startLine(),
             node.startColumn(),
             node.startOffset(),
-            node.startOffset()),
-        declaration);
+            node.startOffset()
+        ),
+        declaration
+    );
   }
 
   /** The read that uses the value, at the place of the part that made it. */
@@ -49,6 +50,7 @@ record KotlinResult(String name, Span declaration) {
         node.endLine(),
         node.endColumn(),
         Math.max(0, node.startOffset() - 1),
-        node.endOffset());
+        node.endOffset()
+    );
   }
 }

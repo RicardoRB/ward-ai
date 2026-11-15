@@ -12,7 +12,6 @@ import org.antlr.v4.runtime.TokenStream;
  * grammars-v4 Java grammar (BSD-3-Clause).
  */
 public abstract class JavaParserBase extends Parser {
-
   /** Tokens that can be an identifier in an annotation value, where contextual keywords appear. */
   private static final Set<Integer> IDENTIFIER_LIKE =
       Set.of(
@@ -32,7 +31,8 @@ public abstract class JavaParserBase extends Parser {
           JavaParser.SEALED,
           JavaParser.PERMITS,
           JavaParser.RECORD,
-          JavaParser.VAR);
+          JavaParser.VAR
+      );
 
   /**
    * Creates the parser over the given token stream.
@@ -55,7 +55,7 @@ public abstract class JavaParserBase extends Parser {
       return true; // or throw if this is an unexpected state
     }
 
-    final JavaParser.RecordComponentListContext tctx = (JavaParser.RecordComponentListContext) ctx;
+    final JavaParser.RecordComponentListContext tctx = (JavaParser.RecordComponentListContext)ctx;
     final List<JavaParser.RecordComponentContext> rcs = tctx.recordComponent();
     if (rcs.isEmpty()) {
       return true;

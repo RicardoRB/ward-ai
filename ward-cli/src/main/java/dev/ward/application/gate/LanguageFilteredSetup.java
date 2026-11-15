@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * it and are only dropped from the run.
  */
 final class LanguageFilteredSetup implements RuleSetup {
-
   private final RuleSetup inner;
   private final Predicate<RuleDefinition> keep;
 

@@ -8,7 +8,6 @@ import java.util.regex.PatternSyntaxException;
 
 /** The keywords of numbers and strings, and the dispatch to those of arrays and objects. */
 final class Keywords {
-
   private Keywords() {}
 
   /** Checks the keywords that apply to the kind of {@code data}. */
@@ -17,7 +16,8 @@ final class Keywords {
       final DocNode schema,
       final DocNode data,
       final String path,
-      final Set<String> evaluated) {
+      final Set<String> evaluated
+  ) {
     return switch (data.kind()) {
       case NUMBER -> NumberKeywords.check(validator, schema, data, path);
       case STRING -> strings(validator, schema, data, path);
@@ -31,14 +31,16 @@ final class Keywords {
       final JsonSchemaValidator validator,
       final DocNode schema,
       final DocNode data,
-      final String path) {
+      final String path
+  ) {
     final String text = data.text();
     return Chain.run(
         validator,
         () -> length(validator, schema, "maxLength", text, path),
         () -> length(validator, schema, "minLength", text, path),
         () -> pattern(validator, schema, text, path),
-        () -> format(validator, schema, text, path));
+        () -> format(validator, schema, text, path)
+    );
   }
 
   private static boolean length(
@@ -46,7 +48,8 @@ final class Keywords {
       final DocNode schema,
       final String keyword,
       final String text,
-      final String path) {
+      final String path
+  ) {
     final Optional<DocNode> limit = schema.get(keyword);
     if (limit.isEmpty() || limit.get().kind() != DocNode.Kind.NUMBER) {
       return true;
@@ -67,7 +70,9 @@ final class Keywords {
                     + (max ? "more" : "fewer")
                     + " than "
                     + JsonValues.show(bound)
-                    + " characters"));
+                    + " characters"
+            )
+        );
     return false;
   }
 
@@ -75,7 +80,8 @@ final class Keywords {
       final JsonSchemaValidator validator,
       final DocNode schema,
       final String text,
-      final String path) {
+      final String path
+  ) {
     final Optional<DocNode> expression = schema.get("pattern");
     if (expression.isEmpty() || expression.get().kind() != DocNode.Kind.STRING) {
       return true;
@@ -91,7 +97,11 @@ final class Keywords {
         .getErrors()
         .add(
             SchemaError.of(
-                "pattern", path, "must match pattern \"" + expression.get().text() + "\""));
+                "pattern",
+                path,
+                "must match pattern \"" + expression.get().text() + "\""
+            )
+        );
     return false;
   }
 
@@ -99,7 +109,8 @@ final class Keywords {
       final JsonSchemaValidator validator,
       final DocNode schema,
       final String text,
-      final String path) {
+      final String path
+  ) {
     final Optional<DocNode> format = schema.get("format");
     if (format.isEmpty()
         || !validator.isAssertingFormats()

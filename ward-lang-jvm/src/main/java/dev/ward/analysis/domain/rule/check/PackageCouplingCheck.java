@@ -11,7 +11,6 @@ import java.util.Set;
  * that hierarchy, as PMD's loose package coupling does. No packages means nothing is reported.
  */
 public final class PackageCouplingCheck implements UnitCheck {
-
   private static final String UNIT = "compilationunit";
   private static final String IMPORT = "importDeclaration";
   private static final String PACKAGE = "packageDeclaration";
@@ -51,8 +50,8 @@ public final class PackageCouplingCheck implements UnitCheck {
         .filter(imported -> isOutside(importedName(imported), own))
         .map(
             imported ->
-                CheckSupport.at(
-                    imported.span(), message.replace("{value}", importedName(imported))))
+                CheckSupport.at(imported.span(), message.replace("{value}", importedName(imported)))
+        )
         .toList();
   }
 

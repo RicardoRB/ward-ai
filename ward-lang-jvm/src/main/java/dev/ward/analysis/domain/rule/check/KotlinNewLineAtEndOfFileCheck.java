@@ -13,7 +13,6 @@ import java.util.Objects;
  * whitespace, so the check reads the unit text.
  */
 public final class KotlinNewLineAtEndOfFileCheck implements RuleCheck {
-
   private static final char LINE_FEED = '\n';
 
   private final String message;
@@ -35,7 +34,10 @@ public final class KotlinNewLineAtEndOfFileCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     final String text = unit.text();
     if (text.isEmpty() || text.charAt(text.length() - 1) == LINE_FEED) {
       return List.of();

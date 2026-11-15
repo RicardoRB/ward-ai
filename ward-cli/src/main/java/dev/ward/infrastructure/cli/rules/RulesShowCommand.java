@@ -18,7 +18,8 @@ import picocli.CommandLine.Spec;
     name = "show",
     description = "Show one analysis rule with its options and presets.",
     mixinStandardHelpOptions = true,
-    footer = {"", "Exit codes: 0 = shown, 2 = error (unknown rule id)"})
+    footer = {"", "Exit codes: 0 = shown, 2 = error (unknown rule id)"}
+)
 public final class RulesShowCommand implements Callable<Integer> {
   private static final String TEXT = "text";
   private static final String JSON = "json";
@@ -28,14 +29,16 @@ public final class RulesShowCommand implements Callable<Integer> {
   @Parameters(
       index = "0",
       paramLabel = "<id>",
-      description = "The rule id, such as ward:java/method-length.")
+      description = "The rule id, such as ward:java/method-length."
+  )
   private String id;
 
   @Option(
       names = "--format",
       paramLabel = "<format>",
       defaultValue = TEXT,
-      description = "Output format: text or json (default: ${DEFAULT-VALUE}).")
+      description = "Output format: text or json (default: ${DEFAULT-VALUE})."
+  )
   private String format;
 
   private final RulesService service;

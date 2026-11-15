@@ -22,7 +22,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** The {@code partial} tables init writes, read back through the real configuration parser. */
 class ConfigurationTemplatePartialTest {
-
   @TempDir Path dir;
 
   @Test
@@ -32,7 +31,13 @@ class ConfigurationTemplatePartialTest {
     assertThat(gates.get("secrets").partial())
         .isEqualTo(
             new PartialGateConfiguration(
-                List.of("**"), List.of("ward-rules.toml"), List.of(), null, null));
+                List.of("**"),
+                List.of("ward-rules.toml"),
+                List.of(),
+                null,
+                null
+            )
+        );
   }
 
   @Test
@@ -45,7 +50,9 @@ class ConfigurationTemplatePartialTest {
   }
 
   private Map<String, GateConfiguration> parse(
-      final BuildTool buildTool, final QualityPreset preset) throws IOException {
+      final BuildTool buildTool,
+      final QualityPreset preset
+  ) throws IOException {
     final List<InitGateOption> options =
         List.of("compile", "tests", "coverage", "license", "mutation", "secrets").stream()
             .map(
@@ -56,13 +63,19 @@ class ConfigurationTemplatePartialTest {
                         List.of("tool", id),
                         true,
                         "available",
-                        "coverage".equals(id) ? Map.of("minimum", "70") : Map.of()))
+                        "coverage".equals(id) ? Map.of("minimum", "70") : Map.of()
+                    )
+            )
             .toList();
     final Path file = dir.resolve(WardConfiguration.FILE_NAME);
     Files.writeString(
         file,
         ConfigurationTemplate.render(
-            options, preset, new Project(dir, Language.JAVA, buildTool, Framework.NONE)));
+            options,
+            preset,
+            new Project(dir, Language.JAVA, buildTool, Framework.NONE)
+        )
+    );
     return new TomlConfigurationReader().read(file).checks();
   }
 }

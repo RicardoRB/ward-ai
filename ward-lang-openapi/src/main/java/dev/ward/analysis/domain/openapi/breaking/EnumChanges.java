@@ -7,12 +7,14 @@ import java.util.Optional;
 
 /** The values an enum lists: a request lost one, a response gained one. */
 final class EnumChanges {
-
   private EnumChanges() {}
 
   /** The enum changes of one schema pair. */
   static List<SchemaChange> changes(
-      final SchemaSides sides, final DocNode base, final DocNode revision) {
+      final SchemaSides sides,
+      final DocNode base,
+      final DocNode revision
+  ) {
     final List<SchemaChange> changes = new ArrayList<>();
     enumValues(sides, base, revision).ifPresent(changes::add);
     extensibleEnum(sides, base, revision).ifPresent(changes::add);
@@ -20,7 +22,10 @@ final class EnumChanges {
   }
 
   private static Optional<SchemaChange> enumValues(
-      final SchemaSides sides, final DocNode base, final DocNode revision) {
+      final SchemaSides sides,
+      final DocNode base,
+      final DocNode revision
+  ) {
     final Optional<DocNode> before = base.get("enum");
     final Optional<DocNode> after = revision.get("enum");
     if (before.isEmpty() || after.isEmpty()) {
@@ -37,7 +42,10 @@ final class EnumChanges {
 
   /** A value of {@code x-extensible-enum} that a request no longer lists. */
   private static Optional<SchemaChange> extensibleEnum(
-      final SchemaSides sides, final DocNode base, final DocNode revision) {
+      final SchemaSides sides,
+      final DocNode base,
+      final DocNode revision
+  ) {
     final Optional<DocNode> before = base.get("x-extensible-enum");
     final Optional<DocNode> after = revision.get("x-extensible-enum");
     if (sides.request()
@@ -53,6 +61,7 @@ final class EnumChanges {
   private static boolean lacks(final DocNode outer, final DocNode inner) {
     return inner.items().stream()
         .anyMatch(
-            value -> outer.items().stream().noneMatch(other -> SameNodes.equal(value, other)));
+            value -> outer.items().stream().noneMatch(other -> SameNodes.equal(value, other))
+        );
   }
 }

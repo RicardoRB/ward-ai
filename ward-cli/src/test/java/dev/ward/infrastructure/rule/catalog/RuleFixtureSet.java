@@ -32,17 +32,25 @@ import org.tomlj.TomlParseResult;
  * @param directory the fixture directory
  */
 record RuleFixtureSet(AnalysisLanguage language, String name, Path directory) {
-
   private static final Map<AnalysisLanguage, String> EXTENSIONS =
       Map.of(
-          AnalysisLanguage.JAVA, "java",
-          AnalysisLanguage.KOTLIN, "kt",
-          AnalysisLanguage.TYPESCRIPT, "ts",
-          AnalysisLanguage.JAVASCRIPT, "js",
-          AnalysisLanguage.PYTHON, "py",
-          AnalysisLanguage.SWIFT, "swift",
-          AnalysisLanguage.OPENAPI, "yaml",
-          AnalysisLanguage.ANDROID, "xml");
+          AnalysisLanguage.JAVA,
+          "java",
+          AnalysisLanguage.KOTLIN,
+          "kt",
+          AnalysisLanguage.TYPESCRIPT,
+          "ts",
+          AnalysisLanguage.JAVASCRIPT,
+          "js",
+          AnalysisLanguage.PYTHON,
+          "py",
+          AnalysisLanguage.SWIFT,
+          "swift",
+          AnalysisLanguage.OPENAPI,
+          "yaml",
+          AnalysisLanguage.ANDROID,
+          "xml"
+      );
 
   /** Returns the root of the fixtures, {@code rules} on the test classpath. */
   static Path root() {

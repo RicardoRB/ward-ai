@@ -8,7 +8,6 @@ import java.util.List;
 
 /** Reports a {@code for ... in} loop over an array, whose indices are strings and not elements. */
 public final class NoForInArrayCheck extends TypedCheck {
-
   private static final String LOOP = "iterationStatement";
   private static final String IN = "in";
 

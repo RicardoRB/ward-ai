@@ -17,10 +17,14 @@ public record NodeInputs(
     PackageManifests manifests,
     NodeSources sources,
     NodeToolConfigs configs,
-    WorkspaceMembers members) {
+    WorkspaceMembers members
+) {
   /** Inputs for a project whose workspace lists no members. */
   public NodeInputs(
-      final PackageManifests manifests, final NodeSources sources, final NodeToolConfigs configs) {
+      final PackageManifests manifests,
+      final NodeSources sources,
+      final NodeToolConfigs configs
+  ) {
     this(manifests, sources, configs, WorkspaceMembers.none());
   }
 }

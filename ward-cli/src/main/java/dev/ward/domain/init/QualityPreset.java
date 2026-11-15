@@ -29,7 +29,11 @@ public enum QualityPreset {
 
   /** The tool rules a preset writes into rule files and the build. */
   public record PresetRules(
-      Map<String, Double> jacocoMinimums, Integer mutationThreshold, boolean architectureCycles) {
+      Map<String,
+      Double> jacocoMinimums,
+      Integer mutationThreshold,
+      boolean architectureCycles
+  ) {
     /** Copies the collections. */
     public PresetRules {
       jacocoMinimums = Map.copyOf(jacocoMinimums);

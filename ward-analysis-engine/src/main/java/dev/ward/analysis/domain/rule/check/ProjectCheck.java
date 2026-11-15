@@ -13,7 +13,6 @@ import java.util.SortedMap;
  */
 @FunctionalInterface
 public interface ProjectCheck {
-
   /**
    * Returns the matches over all files.
    *
@@ -29,7 +28,10 @@ public interface ProjectCheck {
    * @param files the manifest files of the project
    */
   default List<ProjectMatch> project(
-      final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
+      final SortedMap<String,
+      SyntaxNode> trees,
+      final ProjectFiles files
+  ) {
     return project(trees);
   }
 }

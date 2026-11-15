@@ -15,7 +15,8 @@ class JavaApiSurfaceReaderTest {
         ApiSurfaceFixtures.read(
             ApiSurfaceFixtures.PACKAGE
                 + "public class A { void hidden() {} public void shown() {} private int x; }\n"
-                + "class B { public void m() {} }\n");
+                + "class B { public void m() {} }\n"
+        );
 
     assertThat(types.stream().filter(ApiType::isVisible))
         .extracting(ApiType::name)
@@ -32,7 +33,8 @@ class JavaApiSurfaceReaderTest {
         ApiSurfaceFixtures.read(
             ApiSurfaceFixtures.PACKAGE
                 + "public class Open { protected void m() {} }\n"
-                + "public final class Closed { protected void m() {} }\n");
+                + "public final class Closed { protected void m() {} }\n"
+        );
 
     assertThat(ApiSurfaceFixtures.ids(ApiSurfaceFixtures.type(types, "p.Open").orElseThrow()))
         .contains("m()");
@@ -44,11 +46,13 @@ class JavaApiSurfaceReaderTest {
   void interfaceMembersArePublicAndDefaultIsRecognized() {
     final ApiType api =
         ApiSurfaceFixtures.type(
-                ApiSurfaceFixtures.read(
-                    ApiSurfaceFixtures.PACKAGE
-                        + "public interface I { void close(); default void flush() {}"
-                        + " static void of() {} int LIMIT = 3; class Nested {} }\n"),
-                "p.I")
+            ApiSurfaceFixtures.read(
+                ApiSurfaceFixtures.PACKAGE
+                    + "public interface I { void close(); default void flush() {}"
+                    + " static void of() {} int LIMIT = 3; class Nested {} }\n"
+            ),
+            "p.I"
+        )
             .orElseThrow();
 
     final ApiMember close = ApiSurfaceFixtures.member(api, "close()");
@@ -68,7 +72,8 @@ class JavaApiSurfaceReaderTest {
                 + "public interface I { class Nested {} }\n"
                 + "public class C { public static class In {} private static class Hidden {}"
                 + " protected static class Sub {} static class Pkg {} }\n"
-                + "class P { public static class Out {} }\n");
+                + "class P { public static class Out {} }\n"
+        );
 
     assertThat(types.stream().filter(ApiType::isVisible))
         .extracting(ApiType::name)
@@ -83,16 +88,17 @@ class JavaApiSurfaceReaderTest {
             ApiSurfaceFixtures.PACKAGE
                 + "public class A {}\n"
                 + "public enum E { ONE, TWO; E() {} }\n"
-                + "public record R(int x, String y) {}\n");
+                + "public record R(int x, String y) {}\n"
+        );
 
     assertThat(ApiSurfaceFixtures.ids(ApiSurfaceFixtures.type(types, "p.A").orElseThrow()))
         .containsExactly("<init>()");
     assertThat(ApiSurfaceFixtures.ids(ApiSurfaceFixtures.type(types, "p.E").orElseThrow()))
         .containsExactlyInAnyOrder("ONE", "TWO", "values()", "valueOf(java.lang.String)");
     assertThat(
-            ApiSurfaceFixtures.member(
-                    ApiSurfaceFixtures.type(types, "p.E").orElseThrow(), "<init>()")
-                .visibility())
+        ApiSurfaceFixtures.member(ApiSurfaceFixtures.type(types, "p.E").orElseThrow(), "<init>()")
+            .visibility()
+    )
         .isEqualTo(ApiVisibility.PRIVATE);
     assertThat(ApiSurfaceFixtures.ids(ApiSurfaceFixtures.type(types, "p.R").orElseThrow()))
         .contains("<init>(int,java.lang.String)", "x()", "y()");

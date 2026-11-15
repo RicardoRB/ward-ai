@@ -21,7 +21,8 @@ final class KotlinResolverFixtures {
       List.of(
           new JavaSourceRoot("src/main/kotlin", "", false),
           new JavaSourceRoot("src/main/java", "", false),
-          new JavaSourceRoot("src/test/kotlin", "", true));
+          new JavaSourceRoot("src/test/kotlin", "", true)
+      );
 
   private KotlinResolverFixtures() {}
 

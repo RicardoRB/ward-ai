@@ -41,7 +41,8 @@ public final class CiWorkflowTemplate {
       final String provider,
       final Project project,
       final List<InitGateOption> gates,
-      final String wardVersion) {
+      final String wardVersion
+  ) {
     return render(provider, project, gates, wardVersion, PackageManifest.EMPTY);
   }
 
@@ -51,9 +52,15 @@ public final class CiWorkflowTemplate {
       final Project project,
       final List<InitGateOption> gates,
       final String wardVersion,
-      final PackageManifest manifest) {
+      final PackageManifest manifest
+  ) {
     return render(
-        provider, project, gates, wardVersion, new ProjectFacts(manifest, Optional.empty()));
+        provider,
+        project,
+        gates,
+        wardVersion,
+        new ProjectFacts(manifest, Optional.empty())
+    );
   }
 
   /** Returns the workflow for the project's {@code facts}: its manifest and runtime JDK. */
@@ -62,10 +69,12 @@ public final class CiWorkflowTemplate {
       final Project project,
       final List<InitGateOption> gates,
       final String wardVersion,
-      final ProjectFacts facts) {
+      final ProjectFacts facts
+  ) {
     if (!GITHUB.equals(provider)) {
       throw new WardException(
-          "Unknown CI provider '" + provider + "'. Supported providers: " + GITHUB);
+          "Unknown CI provider '" + provider + "'. Supported providers: " + GITHUB
+      );
     }
     final Set<String> ids = gates.stream().map(InitGateOption::id).collect(Collectors.toSet());
     final StringBuilder body = new StringBuilder(header(ids, project, fileName(project), facts));
@@ -81,7 +90,8 @@ public final class CiWorkflowTemplate {
         BEGIN,
         END,
         body.toString(),
-        true);
+        true
+    );
   }
 
   /** A root project keeps {@code ward.yml}; a nested one gets a file named after its path. */
@@ -103,7 +113,11 @@ public final class CiWorkflowTemplate {
   }
 
   private static String header(
-      final Set<String> ids, final Project project, final String file, final ProjectFacts facts) {
+      final Set<String> ids,
+      final Project project,
+      final String file,
+      final ProjectFacts facts
+  ) {
     final boolean nested = project.nested();
     final String paths =
         nested

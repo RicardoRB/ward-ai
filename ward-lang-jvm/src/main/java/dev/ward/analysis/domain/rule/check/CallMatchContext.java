@@ -12,7 +12,6 @@ import java.util.Set;
  * @param notInside selectors of which no ancestor may match
  */
 public record CallMatchContext(Set<String> inside, Set<String> notInside) {
-
   /** No limit on where the call sits. */
   public static final CallMatchContext ANYWHERE = new CallMatchContext(Set.of(), Set.of());
 

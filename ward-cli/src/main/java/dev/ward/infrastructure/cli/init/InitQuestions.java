@@ -42,7 +42,8 @@ final class InitQuestions {
       final InitPrompts prompts,
       final InitSetupCatalog catalog,
       final Project project,
-      final boolean terminal) {
+      final boolean terminal
+  ) {
     this.answers = answers;
     this.progress = prompts.progress();
     this.wizard = prompts.wizard();
@@ -83,7 +84,8 @@ final class InitQuestions {
         qualityHooks,
         answers.ci(),
         answers.agentRules(),
-        schemeQuestions.scheme(catalog, project));
+        schemeQuestions.scheme(catalog, project)
+    );
   }
 
   private QualityPreset preset(final boolean gatesGiven) {
@@ -114,7 +116,8 @@ final class InitQuestions {
               + project.buildTool().displayName()
               + " projects; use --preset "
               + offered.getFirst().id()
-              + ".");
+              + "."
+      );
     }
     return preset;
   }
@@ -132,7 +135,7 @@ final class InitQuestions {
 
   private List<String> gates(final boolean gatesGiven, final QualityPreset preset) {
     if (gatesGiven) {
-      final List<String> explicit = Objects.requireNonNullElse(answers.gates(), List.<String>of());
+      final List<String> explicit = Objects.requireNonNullElse(answers.gates(), List.<String> of());
       return preset == null
           ? explicit
           : PresetGateOrder.withExplicitGates(catalog.presetGates(project, preset), explicit);
@@ -146,7 +149,8 @@ final class InitQuestions {
         project,
         preset == null
             ? previous.map(PreviousChoices::gates).orElse(List.of())
-            : catalog.presetGates(project, preset));
+            : catalog.presetGates(project, preset)
+    );
   }
 
   /**
@@ -202,7 +206,8 @@ final class InitQuestions {
       String ci,
       boolean agentRules,
       boolean yes,
-      String scheme) {
+      String scheme
+  ) {
     boolean setupGiven() {
       return preset != null || gates != null || integrations != null;
     }

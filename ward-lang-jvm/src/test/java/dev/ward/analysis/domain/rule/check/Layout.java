@@ -10,7 +10,6 @@ import java.util.Map;
  * ends. A test keys its type facts by a node's start with {@link #startOf}.
  */
 final class Layout {
-
   private static final int LINE = 1;
   private static final int FIRST_COLUMN = 1;
 
@@ -21,7 +20,11 @@ final class Layout {
     final int start = column;
     column += text.length();
     return new SyntaxNode(
-        kind, new Span(LINE, start, LINE, column, start, column), Map.of("text", text), List.of());
+        kind,
+        new Span(LINE, start, LINE, column, start, column),
+        Map.of("text", text),
+        List.of()
+    );
   }
 
   /** A node whose span runs from its first child's start to its last child's end. */
@@ -36,9 +39,11 @@ final class Layout {
             last.endLine(),
             last.endColumn(),
             first.startOffset(),
-            last.endOffset()),
+            last.endOffset()
+        ),
         Map.of(),
-        List.of(children));
+        List.of(children)
+    );
   }
 
   /** The key of the type facts that name {@code node}'s start. */

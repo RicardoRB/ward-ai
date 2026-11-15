@@ -18,7 +18,9 @@ class NodeCheckerPackageCatalogTest {
                 name ->
                     !NodeVersionRange.matches(
                         NodePackageCatalog.CHECKER_SUPPORTED.get(name),
-                        NodePackageCatalog.find(name).orElseThrow().version()))
+                        NodePackageCatalog.find(name).orElseThrow().version()
+                    )
+            )
             .toList();
 
     assertThat(outside).isEmpty();
@@ -27,11 +29,13 @@ class NodeCheckerPackageCatalogTest {
   @Test
   void frameworkGatesAddTheirCheckerAndTypeScriptWhenMissing() {
     assertThat(
-            NodePackageCatalog.missing(
-                    List.of(gate("vue-tsc")),
-                    new PackageManifest(Map.of("vue", "3.5.0"), null, null))
-                .stream()
-                .map(NodePackageCatalog.Package::name))
+        NodePackageCatalog.missing(
+            List.of(gate("vue-tsc")),
+            new PackageManifest(Map.of("vue", "3.5.0"), null, null)
+        )
+            .stream()
+            .map(NodePackageCatalog.Package::name)
+    )
         .containsExactly("vue-tsc", "typescript");
   }
 

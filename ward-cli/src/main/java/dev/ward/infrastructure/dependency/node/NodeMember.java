@@ -61,17 +61,22 @@ record NodeMember(String path, String name, Map<String, Declared> declared) {
   }
 
   private static void section(
-      final Map<?, ?> manifest,
-      final Map<String, Declared> declared,
+      final Map<?,
+      ?> manifest,
+      final Map<String,
+      Declared> declared,
       final String section,
-      final DependencyScope scope) {
+      final DependencyScope scope
+  ) {
     if (manifest.get(section) instanceof Map<?, ?> dependencies) {
       dependencies.forEach(
           (name, range) ->
               declared.merge(
                   String.valueOf(name),
                   new Declared(String.valueOf(range), scope, PEERS.equals(section)),
-                  NodeMember::wider));
+                  NodeMember::wider
+              )
+      );
     }
   }
 
@@ -79,6 +84,7 @@ record NodeMember(String path, String name, Map<String, Declared> declared) {
     return new Declared(
         first.range(),
         DependencyScope.widest(first.scope(), second.scope()),
-        first.peer() && second.peer());
+        first.peer() && second.peer()
+    );
   }
 }

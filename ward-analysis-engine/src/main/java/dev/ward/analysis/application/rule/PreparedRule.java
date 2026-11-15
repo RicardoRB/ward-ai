@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
  * @param runnable the languages whose frontend provides the rule's capability
  */
 record PreparedRule(Optional<CompiledRule> rule, List<AnalysisLanguage> runnable) {
-
   /** Copies the languages. */
   PreparedRule {
     runnable = List.copyOf(runnable);
@@ -35,9 +34,11 @@ record PreparedRule(Optional<CompiledRule> rule, List<AnalysisLanguage> runnable
    */
   static List<PreparedRule> all(
       final List<RuleDefinition> rules,
-      final Map<AnalysisLanguage, FrontendSupport> support,
+      final Map<AnalysisLanguage,
+      FrontendSupport> support,
       final RuleMatcher matcher,
-      final RuleRunCollector collector) {
+      final RuleRunCollector collector
+  ) {
     return rules.stream()
         .filter(rule -> rule.capability() != RuleCapability.TEXT)
         .map(rule -> of(rule, support, matcher, collector))
@@ -52,19 +53,24 @@ record PreparedRule(Optional<CompiledRule> rule, List<AnalysisLanguage> runnable
         .flatMap(
             rule ->
                 rule.definition().languages().stream()
-                    .map(language -> Map.entry(language, rule.factNeed())))
+                    .map(language -> Map.entry(language, rule.factNeed()))
+        )
         .collect(
             Collectors.groupingBy(
                 Map.Entry::getKey,
                 () -> new EnumMap<>(AnalysisLanguage.class),
-                Collectors.mapping(Map.Entry::getValue, Collectors.toList())));
+                Collectors.mapping(Map.Entry::getValue, Collectors.toList())
+            )
+        );
   }
 
   private static PreparedRule of(
       final RuleDefinition definition,
-      final Map<AnalysisLanguage, FrontendSupport> support,
+      final Map<AnalysisLanguage,
+      FrontendSupport> support,
       final RuleMatcher matcher,
-      final RuleRunCollector collector) {
+      final RuleRunCollector collector
+  ) {
     final List<AnalysisLanguage> runnable =
         definition.languages().stream()
             .filter(language -> provides(support.get(language), definition.capability()))
@@ -83,12 +89,14 @@ record PreparedRule(Optional<CompiledRule> rule, List<AnalysisLanguage> runnable
   private static Optional<CompiledRule> compile(
       final RuleDefinition definition,
       final RuleMatcher matcher,
-      final RuleRunCollector collector) {
+      final RuleRunCollector collector
+  ) {
     try {
       return Optional.of(matcher.compile(definition));
     } catch (final AnalysisFailedException exception) {
       collector.recordError(
-          new RuleExecutionError(definition.id(), null, "the rule could not be compiled"));
+          new RuleExecutionError(definition.id(), null, "the rule could not be compiled")
+      );
       return Optional.empty();
     }
   }

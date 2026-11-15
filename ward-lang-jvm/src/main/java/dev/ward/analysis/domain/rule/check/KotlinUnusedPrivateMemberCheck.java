@@ -19,7 +19,6 @@ import java.util.Objects;
  * use. Annotated functions and operator functions are left alone.
  */
 public final class KotlinUnusedPrivateMemberCheck implements RuleCheck {
-
   private static final String NAME = "{value}";
   private static final String PRIVATE = "private";
   private static final String OPERATOR = "operator";
@@ -43,7 +42,11 @@ public final class KotlinUnusedPrivateMemberCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> found = new ArrayList<>();
     for (final Scope scope : view.scopes().scopes()) {
       if (scope.kind() == ScopeKind.CLASS) {
@@ -52,8 +55,9 @@ public final class KotlinUnusedPrivateMemberCheck implements RuleCheck {
             .forEach(
                 binding ->
                     found.add(
-                        new RuleMatch(
-                            binding.declaration(), message.replace(NAME, binding.name()))));
+                        new RuleMatch(binding.declaration(), message.replace(NAME, binding.name()))
+                    )
+            );
       }
     }
     return List.copyOf(found);

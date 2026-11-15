@@ -60,27 +60,32 @@ record TypeScriptGates(Framework framework, String testGate)
           node.option(
               VUE_TSC,
               "Type-checks Vue components and TypeScript with vue-tsc.",
-              node.command("vue-tsc", "--build"));
+              node.command("vue-tsc", "--build")
+          );
       case SVELTE ->
           node.option(
               SVELTE_CHECK,
               "Type-checks Svelte components and TypeScript with svelte-check.",
-              node.svelteCheckCommand());
+              node.svelteCheckCommand()
+          );
       case ASTRO ->
           node.option(
               ASTRO_CHECK,
               "Type-checks Astro components and TypeScript with astro check.",
-              node.command("astro", "check"));
+              node.command("astro", "check")
+          );
       case ANGULAR ->
           node.option(
               NGC,
               "Type-checks Angular components and their templates with ngc.",
-              node.command("ngc", "-p", "tsconfig.app.json", "--noEmit"));
+              node.command("ngc", "-p", "tsconfig.app.json", "--noEmit")
+          );
       default ->
           node.option(
               TSC,
               "Type-checks the project with the TypeScript compiler.",
-              node.command(TSC, "--noEmit", "--pretty", "false"));
+              node.command(TSC, "--noEmit", "--pretty", "false")
+          );
     };
   }
 

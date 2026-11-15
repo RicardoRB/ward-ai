@@ -11,7 +11,6 @@ import java.util.Map;
  * @param expected the {@code line:column} positions of {@code expected.txt}
  */
 record ParityTarget(String name, Map<String, List<String>> counterparts, List<String> expected) {
-
   ParityTarget {
     counterparts = Map.copyOf(counterparts);
     expected = List.copyOf(expected);

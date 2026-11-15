@@ -23,9 +23,9 @@ import picocli.CommandLine.Spec;
     name = "detect",
     description = "Detect the supported project in the current directory.",
     mixinStandardHelpOptions = true,
-    versionProvider = VersionProvider.class)
+    versionProvider = VersionProvider.class
+)
 public class DetectCommand implements Callable<Integer> {
-
   @Spec private CommandSpec spec;
 
   // Picocli assigns annotated fields reflectively, so they cannot be final.
@@ -54,7 +54,8 @@ public class DetectCommand implements Callable<Integer> {
       output()
           .printf(
               "Languages:    %s%n",
-              p.languages().stream().map(Language::displayName).collect(Collectors.joining(", ")));
+              p.languages().stream().map(Language::displayName).collect(Collectors.joining(", "))
+          );
     }
     output().printf("Build tool:   %s%n", p.buildTool().displayName());
     output().printf("Framework:    %s%n", p.framework().displayName());

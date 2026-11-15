@@ -29,7 +29,9 @@ public final class ProjectDirectories {
           new SimpleFileVisitor<>() {
             @Override
             public FileVisitResult preVisitDirectory(
-                final Path dir, final BasicFileAttributes attributes) {
+                final Path dir,
+                final BasicFileAttributes attributes
+            ) {
               if (!dir.equals(root) && RepositoryProjectScan.skipped(dir)) {
                 return FileVisitResult.SKIP_SUBTREE;
               }
@@ -40,7 +42,9 @@ public final class ProjectDirectories {
             /** Directories at the depth limit arrive here instead of in preVisitDirectory. */
             @Override
             public FileVisitResult visitFile(
-                final Path file, final BasicFileAttributes attributes) {
+                final Path file,
+                final BasicFileAttributes attributes
+            ) {
               if (attributes.isDirectory() && !RepositoryProjectScan.skipped(file)) {
                 directories.add(file);
               }
@@ -51,7 +55,8 @@ public final class ProjectDirectories {
             public FileVisitResult visitFileFailed(final Path file, final IOException failure) {
               return FileVisitResult.CONTINUE;
             }
-          });
+          }
+      );
     } catch (IOException e) {
       throw new IllegalStateException("Could not list project directories: " + e.getMessage(), e);
     }

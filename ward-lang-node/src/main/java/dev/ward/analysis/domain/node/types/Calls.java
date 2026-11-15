@@ -71,7 +71,9 @@ final class Calls {
       final TsType declared,
       final TsType argument,
       final List<String> params,
-      final Map<String, TsType> out) {
+      final Map<String,
+      TsType> out
+  ) {
     if (declared instanceof TsType.Named named) {
       unifyNamed(named, argument, params, out);
     } else if (declared instanceof TsType.Arr arr && argument instanceof TsType.Arr other) {
@@ -89,7 +91,9 @@ final class Calls {
       final TsType.Named named,
       final TsType argument,
       final List<String> params,
-      final Map<String, TsType> out) {
+      final Map<String,
+      TsType> out
+  ) {
     if (named.args().isEmpty() && params.contains(named.name())) {
       out.putIfAbsent(named.name(), Literals.widen(argument));
     } else if (argument instanceof TsType.Named other && other.name().equals(named.name())) {
@@ -101,7 +105,9 @@ final class Calls {
       final List<TsType> declared,
       final List<TsType> given,
       final List<String> params,
-      final Map<String, TsType> out) {
+      final Map<String,
+      TsType> out
+  ) {
     for (int index = 0; index < Math.min(declared.size(), given.size()); index++) {
       unify(declared.get(index), given.get(index), params, out);
     }

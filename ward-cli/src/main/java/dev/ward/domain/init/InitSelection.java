@@ -16,7 +16,8 @@ public record InitSelection(
     boolean qualityHooks,
     String ci,
     boolean agentRules,
-    String scheme) {
+    String scheme
+) {
   /** Copies the lists; missing optional lists mean empty. */
   public InitSelection {
     integrations = List.copyOf(integrations);
@@ -41,7 +42,10 @@ public record InitSelection(
 
   /** Selects {@code integrations} and {@code gates} with an architecture style. */
   public InitSelection(
-      final List<String> integrations, final List<String> gates, final String architecture) {
+      final List<String> integrations,
+      final List<String> gates,
+      final String architecture
+  ) {
     this(integrations, gates, architecture, null, List.of(), false, null, false, null);
   }
 
@@ -50,7 +54,8 @@ public record InitSelection(
       final List<String> integrations,
       final List<String> gates,
       final String architecture,
-      final QualityPreset preset) {
+      final QualityPreset preset
+  ) {
     this(integrations, gates, architecture, preset, List.of(), false, null, false, null);
   }
 }

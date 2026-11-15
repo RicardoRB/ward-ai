@@ -15,7 +15,8 @@ final class WardClaudeHooks {
   private static final Predicate<String> ROOT_COMMANDS = new ClaudeCodeFiles("").owns();
   private static final Pattern NESTED_COMMAND =
       Pattern.compile(
-          "\\$\\{CLAUDE_PROJECT_DIR}/\\.claude/hooks/ward-(edit-write|[a-z]+-guard)-[a-z0-9-]+");
+          "\\$\\{CLAUDE_PROJECT_DIR}/\\.claude/hooks/ward-(edit-write|[a-z]+-guard)-[a-z0-9-]+"
+      );
   private static final Predicate<String> ANY_PROJECT =
       command -> ROOT_COMMANDS.test(command) || NESTED_COMMAND.matcher(command).matches();
 
@@ -33,7 +34,10 @@ final class WardClaudeHooks {
 
   /** Returns whether the event entry registers a hook whose command {@code commands} accepts. */
   static boolean hasRegistration(
-      final Map<String, Object> eventEntry, final Predicate<String> commands) {
+      final Map<String,
+      Object> eventEntry,
+      final Predicate<String> commands
+  ) {
     final Object configured = eventEntry.get(ClaudeSettingsDocument.HOOKS_KEY);
     return configured instanceof List<?> list
         && list.stream().anyMatch(item -> isHook(item, commands));

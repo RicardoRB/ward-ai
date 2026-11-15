@@ -27,7 +27,6 @@ import java.util.TreeMap;
  * that Git does not ignore.
  */
 public final class FormatFileSelection {
-
   private final FormatConfiguration configuration;
   private final CommandExecutor executor;
 
@@ -39,7 +38,9 @@ public final class FormatFileSelection {
    * @throws NullPointerException if an argument is missing
    */
   public FormatFileSelection(
-      final FormatConfiguration configuration, final CommandExecutor executor) {
+      final FormatConfiguration configuration,
+      final CommandExecutor executor
+  ) {
     this.configuration = Objects.requireNonNull(configuration, "configuration");
     this.executor = Objects.requireNonNull(executor, "executor");
   }
@@ -54,7 +55,10 @@ public final class FormatFileSelection {
    * @throws dev.ward.domain.format.FormatConfigurationException if a configuration file is invalid
    */
   public List<FormatTarget> select(
-      final Path root, final Map<AnalysisLanguage, List<FormatOption>> declared) {
+      final Path root,
+      final Map<AnalysisLanguage,
+      List<FormatOption>> declared
+  ) {
     final Map<String, AnalysisLanguage> found = new TreeMap<>();
     final Set<String> ignored = GitIgnoredFiles.of(root, executor);
     try {
@@ -88,7 +92,9 @@ public final class FormatFileSelection {
         final Path root,
         final Set<AnalysisLanguage> languages,
         final Set<String> ignored,
-        final Map<String, AnalysisLanguage> found) {
+        final Map<String,
+        AnalysisLanguage> found
+    ) {
       super();
       this.root = root;
       this.languages = languages;
@@ -98,7 +104,9 @@ public final class FormatFileSelection {
 
     @Override
     public FileVisitResult preVisitDirectory(
-        final Path directory, final BasicFileAttributes attributes) {
+        final Path directory,
+        final BasicFileAttributes attributes
+    ) {
       if (directory.equals(root)) {
         return FileVisitResult.CONTINUE;
       }

@@ -27,7 +27,6 @@ import java.util.Set;
  * type annotation, type arguments or type parameters in the tree.
  */
 public final class NodeTypeOnlyImportCheck implements RuleCheck {
-
   private static final String IMPORT = "importStatement";
   private static final Set<String> TYPE_KINDS =
       Set.of("type_", "typeAnnotation", "typeArguments", "typeParameters", "implementsClause");
@@ -59,7 +58,11 @@ public final class NodeTypeOnlyImportCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes();
     final Map<Span, List<Use>> statements = new LinkedHashMap<>();
     for (final Scope scope : scopes.scopes()) {
@@ -80,13 +83,16 @@ public final class NodeTypeOnlyImportCheck implements RuleCheck {
       final SyntaxNode root,
       final UnitScopes scopes,
       final Binding binding,
-      final Map<Span, List<Use>> statements) {
+      final Map<Span,
+      List<Use>> statements
+  ) {
     importStatement(root, binding.declaration().startOffset())
         .ifPresent(
             statement ->
                 statements
                     .computeIfAbsent(statement, key -> new ArrayList<>())
-                    .add(new Use(binding.name(), typeOnly(root, binding, scopes))));
+                    .add(new Use(binding.name(), typeOnly(root, binding, scopes)))
+        );
   }
 
   /**
@@ -102,7 +108,10 @@ public final class NodeTypeOnlyImportCheck implements RuleCheck {
     } else {
       found.add(
           new RuleMatch(
-              statement, partialMessage.replace("{names}", TypeOnlyNames.quoted(typeNames))));
+              statement,
+              partialMessage.replace("{names}", TypeOnlyNames.quoted(typeNames))
+          )
+      );
     }
   }
 
@@ -111,7 +120,10 @@ public final class NodeTypeOnlyImportCheck implements RuleCheck {
 
   /** Whether the binding has uses and each of them is in a type position. */
   private static boolean typeOnly(
-      final SyntaxNode root, final Binding binding, final UnitScopes scopes) {
+      final SyntaxNode root,
+      final Binding binding,
+      final UnitScopes scopes
+  ) {
     final List<NameReference> uses =
         scopes.usesOf(binding).stream()
             .filter(use -> use.access() != ReferenceAccess.WRITE)
@@ -126,7 +138,10 @@ public final class NodeTypeOnlyImportCheck implements RuleCheck {
 
   /** Whether the leaf at {@code offset} sits under a type node; empty when no leaf is there. */
   private static Optional<Boolean> typeAt(
-      final SyntaxNode node, final int offset, final boolean inType) {
+      final SyntaxNode node,
+      final int offset,
+      final boolean inType
+  ) {
     if (!holds(node.span(), offset)) {
       return Optional.empty();
     }

@@ -13,8 +13,10 @@ import java.util.OptionalInt;
  * @param rules the rule kinds in pre-order, copied on construction
  */
 public record FormatSyntaxTree(
-    OptionalInt errorLine, List<FormatToken> tokens, List<FormatRule> rules) {
-
+    OptionalInt errorLine,
+    List<FormatToken> tokens,
+    List<FormatRule> rules
+) {
   /**
    * Copies the token and rule lists.
    *

@@ -13,7 +13,6 @@ import java.util.Set;
  * SwiftLint's {@code static_over_final_class}. Structs and enums do not count as the class context.
  */
 public final class SwiftStaticOverFinalClassCheck implements RuleCheck {
-
   private static final String CLASS = "class_declaration";
   private static final String FINAL = "final";
   private static final String CLASS_KEYWORD = "class";
@@ -40,7 +39,10 @@ public final class SwiftStaticOverFinalClassCheck implements RuleCheck {
   }
 
   private void collect(
-      final SyntaxNode node, final SyntaxNode enclosingClass, final List<RuleMatch> matches) {
+      final SyntaxNode node,
+      final SyntaxNode enclosingClass,
+      final List<RuleMatch> matches
+  ) {
     if (MEMBERS.contains(node.kind())
         && isClassMember(node)
         && isInFinalClass(node, enclosingClass)) {

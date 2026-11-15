@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** The flow sites that the Kotlin lowering records for the taint rules. */
 class KotlinTypedSitesTest {
-
   private static final String IMPORTS =
       "import javax.servlet.http.HttpServletRequest\n"
           + "import java.sql.Statement\n"
@@ -109,6 +108,7 @@ class KotlinTypedSitesTest {
         .extracting(FlowSite::receiverType)
         .containsExactly(
             java.util.Optional.of("java.sql.Statement"),
-            java.util.Optional.of("javax.servlet.http.HttpServletRequest"));
+            java.util.Optional.of("javax.servlet.http.HttpServletRequest")
+        );
   }
 }

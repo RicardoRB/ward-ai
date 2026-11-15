@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
  * rules.
  */
 final class MetricSyntaxExtensionsTest {
-
   private static final String NAME_LIST =
       "measure=identifier-case; node=struct_declaration:cap,class_declaration:cap; name=struct_name|class_name; message={name} should be {expected}";
 
@@ -32,7 +31,8 @@ final class MetricSyntaxExtensionsTest {
             1,
             2,
             Trees.node("struct_declaration", 1, 1, Trees.named("struct_name", "user_store", 1)),
-            Trees.node("class_declaration", 2, 2, Trees.named("class_name", "userStore", 2)));
+            Trees.node("class_declaration", 2, 2, Trees.named("class_name", "userStore", 2))
+        );
 
     assertThat(Trees.messages(NAME_LIST, root))
         .containsExactly("user_store should be CapWords", "userStore should be CapWords");
@@ -48,7 +48,8 @@ final class MetricSyntaxExtensionsTest {
             Trees.named("function_name", "f", 1),
             operator("&&", 2),
             operator("||", 3),
-            operator("+", 4));
+            operator("+", 4)
+        );
 
     assertThat(Trees.messages(KIND_AND_TEXT, function))
         .containsExactly("function f has complexity 3");
@@ -62,8 +63,8 @@ final class MetricSyntaxExtensionsTest {
             1,
             1,
             Trees.named("initializer_head", "init", 1),
-            Trees.node(
-                "parameter_clause", 1, 1, Trees.node("parameter_list", 1, 1, parameters(6))));
+            Trees.node("parameter_clause", 1, 1, Trees.node("parameter_list", 1, 1, parameters(6)))
+        );
     final SyntaxNode function =
         Trees.node(
             "function_declaration",
@@ -75,11 +76,20 @@ final class MetricSyntaxExtensionsTest {
                 2,
                 2,
                 Trees.node(
-                    "parameter_clause", 2, 2, Trees.node("parameter_list", 2, 2, parameters(2)))));
+                    "parameter_clause",
+                    2,
+                    2,
+                    Trees.node("parameter_list", 2, 2, parameters(2))
+                )
+            )
+        );
 
     assertThat(
-            Trees.messages(
-                PARAMETER_ALTERNATIVES, Trees.node("file_input", 1, 2, initializer, function)))
+        Trees.messages(
+            PARAMETER_ALTERNATIVES,
+            Trees.node("file_input", 1, 2, initializer, function)
+        )
+    )
         .containsExactly("init has 6 parameters");
   }
 
@@ -92,7 +102,12 @@ final class MetricSyntaxExtensionsTest {
             2,
             Trees.node("function_declaration", 1, 1, Trees.named("function_name", "`default`", 1)),
             Trees.node(
-                "function_declaration", 2, 2, Trees.named("function_name", "`load_config`", 2)));
+                "function_declaration",
+                2,
+                2,
+                Trees.named("function_name", "`load_config`", 2)
+            )
+        );
 
     assertThat(Trees.messages(BACKTICKS, root))
         .containsExactly("`load_config` should be lowerCamelCase");
@@ -102,12 +117,14 @@ final class MetricSyntaxExtensionsTest {
   void parsesAlternativeParameterPaths() {
     final MetricRule rule =
         MetricRuleBody.parse(
-            "measure=parameters; node=initializer_declaration; max=5; name=initializer_head; path=function_signature/parameter_clause/parameter_list/parameter|parameter_clause/parameter_list/parameter; message=m");
+            "measure=parameters; node=initializer_declaration; max=5; name=initializer_head; path=function_signature/parameter_clause/parameter_list/parameter|parameter_clause/parameter_list/parameter; message=m"
+        );
 
     assertThat(rule.keys().parameterPaths())
         .containsExactly(
             List.of("function_signature", "parameter_clause", "parameter_list", "parameter"),
-            List.of("parameter_clause", "parameter_list", "parameter"));
+            List.of("parameter_clause", "parameter_list", "parameter")
+        );
   }
 
   private static SyntaxNode operator(final String text, final int line) {

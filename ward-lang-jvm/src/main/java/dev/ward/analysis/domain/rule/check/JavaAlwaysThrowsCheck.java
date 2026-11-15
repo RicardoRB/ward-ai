@@ -23,14 +23,14 @@ import java.util.function.Function;
  * whose target or argument constants are unknown is never reported.
  */
 public final class JavaAlwaysThrowsCheck implements RuleCheck {
-
   private static final List<Function<CallSite, Optional<String>>> REASONS =
       List.of(
           AlwaysThrowsParse::time,
           AlwaysThrowsParse::uuid,
           AlwaysThrowsParse::hex,
           AlwaysThrowsAmounts::instant,
-          AlwaysThrowsAmounts::duplicates);
+          AlwaysThrowsAmounts::duplicates
+      );
 
   private final String message;
 
@@ -59,7 +59,8 @@ public final class JavaAlwaysThrowsCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("expression"))) {
       CallSite.of(visit.node(), types)
@@ -67,8 +68,9 @@ public final class JavaAlwaysThrowsCheck implements RuleCheck {
           .ifPresent(
               reason ->
                   matches.add(
-                      CheckSupport.at(
-                          visit.node().span(), CheckSupport.fill(message, reason, ""))));
+                      CheckSupport.at(visit.node().span(), CheckSupport.fill(message, reason, ""))
+                  )
+          );
     }
     return List.copyOf(matches);
   }

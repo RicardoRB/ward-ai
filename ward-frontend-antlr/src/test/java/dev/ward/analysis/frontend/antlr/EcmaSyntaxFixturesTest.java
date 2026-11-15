@@ -28,7 +28,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 /** Every syntax fixture parses without errors and formats to a stable result. */
 class EcmaSyntaxFixturesTest {
-
   private static final Path TYPESCRIPT = Path.of("src/test/resources/syntax/typescript");
   private static final Path JAVASCRIPT = Path.of("src/test/resources/syntax/javascript");
 
@@ -43,7 +42,8 @@ class EcmaSyntaxFixturesTest {
           Map.entry("call-in-arrow-block.ts", List.of("arrowFunctionBody", "functionBody")),
           Map.entry(
               "class-members-no-semicolon.ts",
-              List.of("propertyMemberDeclaration", "indexMemberDeclaration", "getAccessor")),
+              List.of("propertyMemberDeclaration", "indexMemberDeclaration", "getAccessor")
+          ),
           Map.entry("contextual-keyword-names.ts", List.of("usingDeclaration", "inferType")),
           Map.entry("generic-call.ts", List.of("typeArguments", "arguments")),
           Map.entry("interface-members-newline.ts", List.of("typeMemberList", "propertySignatur")),
@@ -64,13 +64,18 @@ class EcmaSyntaxFixturesTest {
           Map.entry("optional-call.ts", List.of("arguments")),
           Map.entry("private-names.ts", List.of("privateIdentifier")),
           Map.entry(
-              "static-accessors.ts", List.of("getAccessor", "setAccessor", "propertyMemberBase")),
+              "static-accessors.ts",
+              List.of("getAccessor", "setAccessor", "propertyMemberBase")
+          ),
           Map.entry("template-escapes.ts", List.of("TemplateStringEscapeAtom")),
           Map.entry(
-              "catch-patterns.ts", List.of("catchProduction", "objectLiteral", "arrayLiteral")),
+              "catch-patterns.ts",
+              List.of("catchProduction", "objectLiteral", "arrayLiteral")
+          ),
           Map.entry(
               "class-extends-expression.ts",
-              List.of("classExtendsClause", "typeReference", "singleExpression")),
+              List.of("classExtendsClause", "typeReference", "singleExpression")
+          ),
           Map.entry(
               "object-method-types.ts",
               List.of(
@@ -78,7 +83,9 @@ class EcmaSyntaxFixturesTest {
                   "getAccessor",
                   "setAccessor",
                   "typeAnnotation",
-                  "typeParameters")),
+                  "typeParameters"
+              )
+          ),
           Map.entry("readonly-operator.ts", List.of("readonlyType")),
           Map.entry("regex-v.ts", List.of("RegularExpressionLiteral")),
           Map.entry("satisfies.ts", List.of("satisfiesClause")),
@@ -86,7 +93,8 @@ class EcmaSyntaxFixturesTest {
           Map.entry("type-alias.ts", List.of("typeAliasDeclaration")),
           Map.entry("type-only-specifiers.ts", List.of("typeOnlyModifier")),
           Map.entry("using.ts", List.of("usingDeclaration")),
-          Map.entry("variance.ts", List.of("varianceModifier")));
+          Map.entry("variance.ts", List.of("varianceModifier"))
+      );
 
   /** The node kinds each JavaScript fixture must produce; see {@link #TYPESCRIPT_KINDS}. */
   private static final Map<String, List<String>> JAVASCRIPT_KINDS =
@@ -101,7 +109,8 @@ class EcmaSyntaxFixturesTest {
           Map.entry("private-names.js", List.of("privateIdentifier")),
           Map.entry("static-accessors.js", List.of("getter", "setter")),
           Map.entry("template-escapes.js", List.of("TemplateStringEscapeAtom")),
-          Map.entry("using.js", List.of("usingDeclaration")));
+          Map.entry("using.js", List.of("usingDeclaration"))
+      );
 
   static List<Path> typeScriptFixtures() throws IOException {
     return fixtures(TYPESCRIPT);
@@ -125,7 +134,8 @@ class EcmaSyntaxFixturesTest {
         new TypeScriptFormatter(),
         new FormatSafety(new TypeScriptFormatSyntax()),
         fixture,
-        TYPESCRIPT_KINDS);
+        TYPESCRIPT_KINDS
+    );
   }
 
   @ParameterizedTest(name = "javascript {0}")
@@ -136,7 +146,8 @@ class EcmaSyntaxFixturesTest {
         new JavaScriptFormatter(),
         new FormatSafety(new JavaScriptFormatSyntax()),
         fixture,
-        JAVASCRIPT_KINDS);
+        JAVASCRIPT_KINDS
+    );
   }
 
   @Test
@@ -152,7 +163,9 @@ class EcmaSyntaxFixturesTest {
       final SourceFormatter formatter,
       final FormatSafety safety,
       final Path fixture,
-      final Map<String, List<String>> kinds)
+      final Map<String,
+      List<String>> kinds
+  )
       throws IOException {
     final String text = Files.readString(fixture, StandardCharsets.UTF_8);
     final ParseResult parsed =

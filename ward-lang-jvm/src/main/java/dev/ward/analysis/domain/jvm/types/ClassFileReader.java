@@ -83,7 +83,8 @@ public final class ClassFileReader {
         final Header header,
         final List<JvmField> fields,
         final List<JvmMethod> methods,
-        final MemberAttributes attributes) {
+        final MemberAttributes attributes
+    ) {
       final boolean hasSuper = header.superIndex() != 0;
       Optional<JType.ClassType> superclass =
           hasSuper
@@ -112,7 +113,8 @@ public final class ClassFileReader {
           attributes.memberClasses,
           attributes.sealed,
           attributes.annotations.contains(KOTLIN_METADATA),
-          attributes.annotationValues);
+          attributes.annotationValues
+      );
     }
 
     private static JvmClass.Kind kind(final int access, final boolean record) {
@@ -140,12 +142,13 @@ public final class ClassFileReader {
           access,
           type,
           Optional.ofNullable(constantOf(type, attributes.constant)),
-          attributes.annotations);
+          attributes.annotations
+      );
     }
 
     private static Object constantOf(final JType type, final Object raw) {
       if (raw instanceof Long value && type instanceof JType.Primitive primitive) {
-        return "boolean".equals(primitive.name()) ? (Object) (value != 0) : value;
+        return "boolean".equals(primitive.name()) ? (Object)(value != 0) : value;
       }
       return raw;
     }
@@ -171,7 +174,8 @@ public final class ClassFileReader {
           attributes.annotations,
           attributes.parameterAnnotations,
           attributes.compatibleWith,
-          attributes.annotationValues);
+          attributes.annotationValues
+      );
     }
   }
 }

@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
  * reports nothing when the call is unknown.
  */
 public final class CompareToZeroCheck implements RuleCheck {
-
   private static final String EXPRESSION = "expression";
   private static final int OPERANDS = 3;
   private static final Set<String> OPERATORS = Set.of("==", "!=", "<", ">", "<=", ">=");
@@ -59,7 +58,8 @@ public final class CompareToZeroCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(EXPRESSION))) {
       if (reported(visit.node(), types)) {

@@ -31,13 +31,15 @@ final class WardAnalysisFixtures {
         new QualityGateFactory(
             executor,
             new GateReportPorts(ReportDirectories.NONE, null, null, null),
-            new GateExtensions(null, ports(), null, null, null, null, null, null, null));
+            new GateExtensions(null, ports(), null, null, null, null, null, null, null)
+        );
     return new CheckService(
         new ProjectDetector(new FileSystemProjectInspection()),
         new TomlConfigurationReader(),
         factory,
         new QualityGateRunner(),
-        new PartialPorts(new FilePathExistence(), new NodeWorkspaceMembers()));
+        new PartialPorts(new FilePathExistence(), new NodeWorkspaceMembers())
+    );
   }
 
   private static AnalysisPorts ports() {
@@ -47,11 +49,16 @@ final class WardAnalysisFixtures {
         new FileSystemSourceUnits(new ProcessCommandExecutor()),
         List.of(
             new FrontendSupport(
-                AnalysisLanguage.JAVA, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX))),
+                AnalysisLanguage.JAVA,
+                new AntlrLanguageFrontend(),
+                Set.of(RuleCapability.SYNTAX)
+            )
+        ),
         root -> AnalysisCacheFixtures.NO_CACHE,
         AnalysisCacheFixtures.codec(),
         "test",
         DependencyAdapters.none(),
-        (unused, classpath) -> Map.of());
+        (unused, classpath) -> Map.of()
+    );
   }
 }

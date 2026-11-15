@@ -13,7 +13,6 @@ import java.util.Optional;
  * types.json} the facts are unknown, so a rule that needs types reports not run, never a pass.
  */
 final class FixtureTypeFacts {
-
   private FixtureTypeFacts() {}
 
   /**

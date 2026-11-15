@@ -4,7 +4,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 
 /** What the Kotlin lowerings of loops, handlers and branches need from the body that owns them. */
 interface KotlinStatements {
-
   /** Lowers a statement, a block-level expression or an expression used as a statement. */
   void statement(SyntaxNode node);
 

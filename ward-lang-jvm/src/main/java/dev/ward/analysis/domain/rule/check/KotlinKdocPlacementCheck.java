@@ -15,7 +15,6 @@ import java.util.Set;
  * allowed when the first declaration after it, through the wrapper nodes, is one of those kinds.
  */
 public final class KotlinKdocPlacementCheck implements RuleCheck {
-
   private static final String COMMENT = SyntaxWalk.COMMENT_KIND;
   private static final Set<String> WRAPPERS =
       Set.of("topLevelObject", "classMemberDeclaration", "declaration", "statement");
@@ -30,7 +29,8 @@ public final class KotlinKdocPlacementCheck implements RuleCheck {
           "secondaryConstructor",
           "functionValueParameter",
           "classParameter",
-          "parameter");
+          "parameter"
+      );
   private static final Set<String> SKIPPED =
       Set.of(KotlinLeaves.NEWLINE, "anysemi", COMMENT, "preamble", "packageHeader", "importList");
 
@@ -43,7 +43,8 @@ public final class KotlinKdocPlacementCheck implements RuleCheck {
           "packageHeader",
           "importList",
           "importHeader",
-          "preamble");
+          "preamble"
+      );
 
   private final String message;
 
@@ -93,7 +94,9 @@ public final class KotlinKdocPlacementCheck implements RuleCheck {
   }
 
   private static Optional<SyntaxNode> nextSignificant(
-      final List<SyntaxNode> siblings, final SyntaxNode node) {
+      final List<SyntaxNode> siblings,
+      final SyntaxNode node
+  ) {
     for (int index = siblings.indexOf(node) + 1; index < siblings.size(); index++) {
       if (!SKIPPED.contains(siblings.get(index).kind())) {
         return Optional.of(siblings.get(index));

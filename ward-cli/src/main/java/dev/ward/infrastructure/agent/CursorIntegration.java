@@ -28,7 +28,9 @@ public final class CursorIntegration implements NativeHarnessAdapter {
           Set.of(
               IntegrationCapability.POST_EDIT,
               IntegrationCapability.TURN_END,
-              IntegrationCapability.FEEDBACK));
+              IntegrationCapability.FEEDBACK
+          )
+      );
 
   @Override
   public NativeAgentIntegration.Definition definition() {
@@ -130,7 +132,8 @@ public final class CursorIntegration implements NativeHarnessAdapter {
           null,
           null,
           false,
-          loopCount != null && loopCount > 0);
+          loopCount != null && loopCount > 0
+      );
     }
   }
 

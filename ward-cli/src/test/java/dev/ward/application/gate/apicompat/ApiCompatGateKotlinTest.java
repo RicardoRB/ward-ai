@@ -45,7 +45,8 @@ class ApiCompatGateKotlinTest {
     fixtures.baseline(PATH, CLIENT);
     fixtures.baseline(
         ApiCompatGateFixtures.CLIENT_PATH,
-        "package q;\npublic class J {\n  public void a() {}\n}\n");
+        "package q;\npublic class J {\n  public void a() {}\n}\n"
+    );
     fixtures.working.put(PATH, CLIENT);
     fixtures.working.put(ApiCompatGateFixtures.CLIENT_PATH, "package q;\npublic class J {}\n");
 

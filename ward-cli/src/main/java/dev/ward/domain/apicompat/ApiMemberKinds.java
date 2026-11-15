@@ -53,7 +53,8 @@ final class ApiMemberKinds {
             .anyMatch(
                 index ->
                     member.parameters().get(index).type().nullable()
-                        && !current.parameters().get(index).type().nullable());
+                        && !current.parameters().get(index).type().nullable()
+            );
   }
 
   private static boolean defaultRemoved(final ApiMember member, final ApiMember current) {
@@ -61,7 +62,8 @@ final class ApiMemberKinds {
         .anyMatch(
             index ->
                 member.parameters().get(index).hasDefault()
-                    && !current.parameters().get(index).hasDefault());
+                    && !current.parameters().get(index).hasDefault()
+        );
   }
 
   private static String shape(final ApiMember member, final ApiMember current) {
@@ -76,7 +78,7 @@ final class ApiMemberKinds {
 
   private static boolean signatureChanged(final ApiMember member, final ApiMember current) {
     return !ApiSignatures.parameterKeys(member.parameters())
-            .equals(ApiSignatures.parameterKeys(current.parameters()))
+        .equals(ApiSignatures.parameterKeys(current.parameters()))
         || member.isVarargs() != current.isVarargs()
         || !bounds(member.typeParameters()).equals(bounds(current.typeParameters()));
   }
@@ -85,13 +87,17 @@ final class ApiMemberKinds {
     return parameters.stream()
         .map(
             parameter ->
-                parameter.bounds().stream().map(ApiTypeRef::key).collect(Collectors.joining("&")))
+                parameter.bounds().stream().map(ApiTypeRef::key).collect(Collectors.joining("&"))
+        )
         .toList();
   }
 
   /** The changes that break callers or subclasses: a final field, an abstract or final method. */
   private static String inheritance(
-      final ApiType old, final ApiMember member, final ApiMember current) {
+      final ApiType old,
+      final ApiMember member,
+      final ApiMember current
+  ) {
     if (member.kind() == ApiMember.Kind.FIELD) {
       return !member.isFinal() && current.isFinal() ? "field-now-final" : null;
     }

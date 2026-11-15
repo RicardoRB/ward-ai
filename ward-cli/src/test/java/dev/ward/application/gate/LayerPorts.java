@@ -21,19 +21,20 @@ import java.util.stream.Collectors;
 
 /** Runs {@code ward:architecture/layers} through the ward gate, for the layer gate tests. */
 public final class LayerPorts {
-
   private LayerPorts() {}
 
   /** Returns the layer findings of {@code boundary} over {@code project}, resolving edges. */
   public static List<Finding> findings(
       final Project project,
       final LayerBoundary boundary,
-      final ProjectDependencyAdapters dependencies) {
+      final ProjectDependencyAdapters dependencies
+  ) {
     return ruleFindings(
         project,
         List.of(LayerRules.definition(List.of(boundary))),
         dependencies,
-        LayerDependencyRule.ID);
+        LayerDependencyRule.ID
+    );
   }
 
   /**
@@ -44,7 +45,8 @@ public final class LayerPorts {
       final Project project,
       final List<RuleDefinition> rules,
       final ProjectDependencyAdapters dependencies,
-      final String ruleId) {
+      final String ruleId
+  ) {
     final AnalysisPorts ports =
         new AnalysisPorts(
             () -> new AnalysisRuleLoad(List.of(), List.of()),
@@ -55,18 +57,22 @@ public final class LayerPorts {
             AnalysisCacheFixtures.codec(),
             "test",
             dependencies,
-            (unused, classpath) -> Map.of());
+            (unused, classpath) -> Map.of()
+        );
     return new AnalysisGate("ward", rules, ports, null)
         .execute(project).findings().items().stream()
-            .filter(finding -> ruleId.equals(finding.ruleId()))
-            .toList();
+        .filter(finding -> ruleId.equals(finding.ruleId()))
+        .toList();
   }
 
   /**
    * The files that {@code ward:architecture/layers} flags in {@code project}, for {@code style}.
    */
   public static Set<String> layerFiles(
-      final Project project, final String style, final ProjectDependencyAdapters dependencies) {
+      final Project project,
+      final String style,
+      final ProjectDependencyAdapters dependencies
+  ) {
     return findings(project, ArchitectureLayers.forStyle(style, project.framework()), dependencies)
         .stream()
         .map(Finding::file)

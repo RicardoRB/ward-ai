@@ -21,7 +21,6 @@ import org.junit.jupiter.params.provider.MethodSource;
  * none.
  */
 class NodeStructuralFixturesTest {
-
   private static final String ROOT = "fixtures/node-structural/";
   private static final List<String> METRICS =
       List.of(
@@ -30,7 +29,8 @@ class NodeStructuralFixturesTest {
           "complexity",
           "file-length",
           "naming",
-          "nesting-depth");
+          "nesting-depth"
+      );
 
   static Stream<Arguments> fixtures() {
     final List<Arguments> cases = new ArrayList<>();
@@ -44,7 +44,8 @@ class NodeStructuralFixturesTest {
       final List<Arguments> cases,
       final String directory,
       final String extension,
-      final AnalysisLanguage language) {
+      final AnalysisLanguage language
+  ) {
     for (final String metric : METRICS) {
       final String base = ROOT + directory + "/" + metric + "-";
       cases.add(fixture(base + "violating." + extension, language, metric, 1));
@@ -53,14 +54,22 @@ class NodeStructuralFixturesTest {
   }
 
   private static Arguments fixture(
-      final String path, final AnalysisLanguage language, final String metric, final int expected) {
+      final String path,
+      final AnalysisLanguage language,
+      final String metric,
+      final int expected
+  ) {
     return Arguments.of(path, language, metric, expected);
   }
 
   @ParameterizedTest(name = "{2} gives {3} finding(s) in {0}")
   @MethodSource("fixtures")
   void fixtureYieldsExpectedFindings(
-      final String path, final AnalysisLanguage language, final String metric, final int expected)
+      final String path,
+      final AnalysisLanguage language,
+      final String metric,
+      final int expected
+  )
       throws IOException {
     final RuleRunResult result = NodeRuleRuns.run(metric, language, "", read(path));
 

@@ -16,7 +16,6 @@ import org.tomlj.TomlParseResult;
  * parameters are configuration errors.
  */
 final class DeclarativeChecks {
-
   private static final String CHECK = "check";
 
   private final CheckRegistry registry;
@@ -57,10 +56,14 @@ final class DeclarativeChecks {
           : create(name, toml);
     } catch (final IllegalArgumentException exception) {
       throw new RuleConfigurationException(
-          "check '" + name + "' cannot be used: " + exception.getMessage(), exception);
+          "check '" + name + "' cannot be used: " + exception.getMessage(),
+          exception
+      );
     } catch (final TomlInvalidTypeException exception) {
       throw new RuleConfigurationException(
-          "check '" + name + "' has a parameter of the wrong type", exception);
+          "check '" + name + "' has a parameter of the wrong type",
+          exception
+      );
     }
   }
 

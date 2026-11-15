@@ -10,7 +10,6 @@ import java.util.Optional;
  * @param targets the modules the project declares
  */
 public record SwiftProjectLayout(List<SwiftTarget> targets) {
-
   /** The module of every file that no target owns. */
   public static final String IMPLICIT_MODULE = "(implicit)";
 

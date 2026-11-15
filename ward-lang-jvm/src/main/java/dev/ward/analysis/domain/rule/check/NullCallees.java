@@ -7,14 +7,16 @@ import java.util.Set;
 
 /** Resolves a call or an object creation to the method of this file that it runs. */
 final class NullCallees {
-
   private NullCallees() {}
 
   /** The method or constructor a call resolves to in this file, and the type that holds it. */
   record Callee(NullModel.Type owner, NullModel.Method method) {}
 
   static Optional<Callee> resolve(
-      final NullFinder.Unit unit, final NullModel.Type type, final SyntaxNode expression) {
+      final NullFinder.Unit unit,
+      final NullModel.Type type,
+      final SyntaxNode expression
+  ) {
     final Optional<NullFlow.Call> call = NullFlow.call(expression);
     if (call.isPresent()
         && ("".equals(call.get().receiver()) || "this".equals(call.get().receiver()))) {
@@ -38,7 +40,11 @@ final class NullCallees {
   }
 
   private static Optional<Callee> unique(
-      final NullModel.Type owner, final String name, final int arity, final boolean constructor) {
+      final NullModel.Type owner,
+      final String name,
+      final int arity,
+      final boolean constructor
+  ) {
     final List<NullModel.Method> found =
         owner.methods().stream()
             .filter(method -> method.constructor() == constructor)
@@ -53,7 +59,8 @@ final class NullCallees {
       final List<SyntaxNode> args,
       final Set<String> names,
       final Set<String> calls,
-      final List<NullHit> hits) {
+      final List<NullHit> hits
+  ) {
     final List<NullModel.Param> params = callee.method().params();
     for (int index = 0; index < args.size(); index++) {
       final NullModel.Param param = params.get(index);

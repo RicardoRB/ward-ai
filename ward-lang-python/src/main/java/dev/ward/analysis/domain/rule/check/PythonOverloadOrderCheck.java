@@ -17,7 +17,6 @@ import java.util.Set;
  * definition between them is reported.
  */
 public final class PythonOverloadOrderCheck implements RuleCheck {
-
   private static final String STMT = "stmt";
   private static final String COMPOUND = "compound_stmt";
   private static final String DECORATED = "decorated";

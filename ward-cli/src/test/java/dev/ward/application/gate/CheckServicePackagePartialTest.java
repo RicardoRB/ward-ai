@@ -73,11 +73,13 @@ class CheckServicePackagePartialTest {
             new TomlConfigurationReader(),
             new QualityGateFactory(executor),
             new QualityGateRunner(),
-            new PartialPorts(Files::exists, new PackageMembers(dir)));
+            new PartialPorts(Files::exists, new PackageMembers(dir))
+        );
     checks.checkPartial(
         dir,
         List.of(dir.resolve(path)),
-        new CheckRunOptions(List.of(), CheckProgressListener.NO_OP, false, Set.of()));
+        new CheckRunOptions(List.of(), CheckProgressListener.NO_OP, false, Set.of())
+    );
   }
 
   /** Names {@code packages/ui} as {@value #UI_PACKAGE} and lists no other members. */

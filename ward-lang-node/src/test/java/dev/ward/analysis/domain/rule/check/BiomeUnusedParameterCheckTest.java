@@ -16,7 +16,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class BiomeUnusedParameterCheckTest {
-
   @Test
   void reportsAnUnreadParameterAndSkipsAnUnderscoredOne() {
     assertThat(reported(true, "function f(a, _b) {\n  return 1;\n}\n")).containsExactly("a");
@@ -41,8 +40,8 @@ class BiomeUnusedParameterCheckTest {
     final UnitScopes scopes = analysis.analyze(unit, root);
     return new BiomeUnusedParameterCheck(ignoreRestSiblings, "parameter '{value}' is never used")
         .matches(root, null, new ScopeView(scopes, Map.of(), Set.of(), analysis), unit).stream()
-            .map(RuleMatch::span)
-            .map(span -> source.substring(span.startOffset(), span.endOffset()))
-            .toList();
+        .map(RuleMatch::span)
+        .map(span -> source.substring(span.startOffset(), span.endOffset()))
+        .toList();
   }
 }

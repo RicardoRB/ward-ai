@@ -8,7 +8,6 @@ import java.util.Map;
 
 /** Lays out hand-made syntax trees on one line, each token after the previous one. */
 final class TreeLayout {
-
   private int offset;
 
   /** A token with text. */
@@ -19,7 +18,8 @@ final class TreeLayout {
         kind,
         new Span(1, start + 1, 1, start + text.length(), start, start + text.length()),
         Map.of("text", text),
-        List.of());
+        List.of()
+    );
   }
 
   /** A node spanning its children, which must be given in source order. */
@@ -34,9 +34,11 @@ final class TreeLayout {
             last.endLine(),
             last.endColumn(),
             first.startOffset(),
-            last.endOffset()),
+            last.endOffset()
+        ),
         Map.of(),
-        List.of(children));
+        List.of(children)
+    );
   }
 
   /** The start offsets of the matches, to tell which token each one is at. */

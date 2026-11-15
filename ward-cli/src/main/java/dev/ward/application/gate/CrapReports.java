@@ -58,7 +58,8 @@ final class CrapReports {
             display(project.root(), report)
                 + " cannot be parsed as a JaCoCo XML or lcov report; no score was used."
                 + first,
-            e);
+            e
+        );
       }
     }
     LOGGER.log(Level.INFO, () -> "event=crap-reports gate=" + gate + " reports=" + hits.size());
@@ -80,7 +81,8 @@ final class CrapReports {
                   + " is older than "
                   + named.getKey()
                   + ", which it names."
-                  + first);
+                  + first
+          );
         }
       }
     }
@@ -103,7 +105,9 @@ final class CrapReports {
                 () ->
                     new CrapReportException(
                         project.buildTool().displayName()
-                            + " has no conventional coverage report location; set 'report'."));
+                            + " has no conventional coverage report location; set 'report'."
+                    )
+            );
     final List<Path> found =
         ports.files().moduleDirectories(root).stream()
             .map(directory -> directory.resolve(conventional))

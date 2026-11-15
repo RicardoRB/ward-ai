@@ -13,7 +13,10 @@ class ApiModelTest {
   private static final ApiTypeRef INT = ApiTypeRef.of("int");
 
   private static ApiMember method(
-      final String name, final ApiTypeRef returns, final ApiTypeRef... in) {
+      final String name,
+      final ApiTypeRef returns,
+      final ApiTypeRef... in
+  ) {
     return member(ApiMember.Kind.METHOD, name, returns, in);
   }
 
@@ -21,7 +24,8 @@ class ApiModelTest {
       final ApiMember.Kind kind,
       final String name,
       final ApiTypeRef type,
-      final ApiTypeRef... parameters) {
+      final ApiTypeRef... parameters
+  ) {
     return new ApiMember(
         kind,
         name,
@@ -34,14 +38,16 @@ class ApiModelTest {
         List.of(),
         java.util.Arrays.stream(parameters).map(found -> new ApiParameter(found, false)).toList(),
         type,
-        AT);
+        AT
+    );
   }
 
   private static ApiType type(
       final ApiType.Kind kind,
       final boolean isFinal,
       final boolean sealed,
-      final ApiMember... members) {
+      final ApiMember... members
+  ) {
     return new ApiType(
         "p.A",
         kind,
@@ -52,7 +58,8 @@ class ApiModelTest {
         List.of(),
         List.of(),
         List.of(members),
-        AT);
+        AT
+    );
   }
 
   @Test
@@ -103,7 +110,8 @@ class ApiModelTest {
             List.of(),
             List.of(),
             members,
-            AT);
+            AT
+        );
     members.clear();
 
     assertThat(api.members()).hasSize(1);

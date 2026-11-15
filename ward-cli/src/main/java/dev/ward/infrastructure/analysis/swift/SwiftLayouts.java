@@ -20,7 +20,6 @@ import java.util.stream.Stream;
  * project file changes. A file that cannot be read is logged and leaves its targets out.
  */
 public final class SwiftLayouts {
-
   private static final Logger LOGGER = Logger.getLogger(SwiftLayouts.class.getName());
   private static final String MANIFEST = "Package.swift";
   private static final String PROJECT_SUFFIX = ".xcodeproj";

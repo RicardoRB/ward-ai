@@ -12,7 +12,6 @@ import java.util.Set;
 
 /** Builders of the spans, syntax nodes and scope views that the Swift style check tests share. */
 final class SwiftCheckNodes {
-
   private SwiftCheckNodes() {}
 
   static Span span(final int start, final int end) {
@@ -20,13 +19,21 @@ final class SwiftCheckNodes {
   }
 
   static SyntaxNode node(
-      final String kind, final int start, final int end, final SyntaxNode... children) {
+      final String kind,
+      final int start,
+      final int end,
+      final SyntaxNode... children
+  ) {
     return new SyntaxNode(kind, span(start, end), Map.of(), List.of(children));
   }
 
   static SyntaxNode leaf(final String kind, final String text, final int start) {
     return new SyntaxNode(
-        kind, span(start, start + text.length()), Map.of("text", text), List.of());
+        kind,
+        span(start, start + text.length()),
+        Map.of("text", text),
+        List.of()
+    );
   }
 
   static ScopeView view(final UnitScopes scopes) {
@@ -44,6 +51,7 @@ final class SwiftCheckNodes {
           public Set<String> builtins(final Set<String> environments) {
             return Set.of();
           }
-        });
+        }
+    );
   }
 }

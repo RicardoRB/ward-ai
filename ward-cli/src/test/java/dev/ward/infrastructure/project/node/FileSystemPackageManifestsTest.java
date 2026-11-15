@@ -17,9 +17,7 @@ class FileSystemPackageManifestsTest {
 
   @Test
   void readsDeclaredDependenciesTypeAndPackageManager() throws IOException {
-    Files.writeString(
-        dir.resolve("package.json"),
-        """
+    Files.writeString(dir.resolve("package.json"), """
         {
           "type": "module",
           "packageManager": "pnpm@9.12.0",
@@ -44,7 +42,8 @@ class FileSystemPackageManifestsTest {
   void readsPrepareScript() throws IOException {
     Files.writeString(
         dir.resolve("package.json"),
-        "{\"scripts\": {\"prepare\": \"svelte-kit sync || echo ''\"}}");
+        "{\"scripts\": {\"prepare\": \"svelte-kit sync || echo ''\"}}"
+    );
 
     assertThat(manifests.read(dir).prepare()).isEqualTo("svelte-kit sync || echo ''");
   }

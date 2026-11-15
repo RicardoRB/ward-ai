@@ -25,13 +25,15 @@ final class ApiScope {
   void require(
       final List<ApiType> baselineApi,
       final List<String> baselineModules,
-      final List<String> currentModules) {
+      final List<String> currentModules
+  ) {
     for (final String prefix : options.include()) {
       if (baselineApi.stream().noneMatch(type -> matches(prefix, type.name()))) {
         throw new ApiCompatException(
             "The include prefix '"
                 + prefix
-                + "' of api-compat matches no type at the baseline; check the package name.");
+                + "' of api-compat matches no type at the baseline; check the package name."
+        );
       }
     }
     for (final String module : options.modules()) {
@@ -40,7 +42,8 @@ final class ApiScope {
             "The module '"
                 + module
                 + "' of api-compat is not a module of the build at the baseline or in the"
-                + " working tree; check the directory.");
+                + " working tree; check the directory."
+        );
       }
     }
   }
@@ -54,7 +57,8 @@ final class ApiScope {
                     options.modules().isEmpty()
                         || options
                             .modules()
-                            .contains(ApiModules.owner(type.location().path(), baselineModules)))
+                            .contains(ApiModules.owner(type.location().path(), baselineModules))
+            )
             .map(ApiType::name)
             .collect(Collectors.toSet());
     return typeName ->

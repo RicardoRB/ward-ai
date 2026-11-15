@@ -11,7 +11,6 @@ import java.util.Set;
  * overrides a superclass method is not reported.
  */
 public final class ProtectedInFinalCheck implements UnitCheck {
-
   private static final String OVERRIDE = "@Override";
 
   private final String message;

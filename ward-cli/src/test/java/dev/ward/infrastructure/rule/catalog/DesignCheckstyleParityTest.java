@@ -25,7 +25,6 @@ import org.junit.jupiter.api.Test;
  * difference fails.
  */
 class DesignCheckstyleParityTest {
-
   private static final String CLASSPATH = System.getProperty("ward.checkstyle.classpath");
   private static final Pattern FINDING = Pattern.compile(":(\\d+):(\\d+): ");
   private static final String TRUE = "true";
@@ -49,7 +48,8 @@ class DesignCheckstyleParityTest {
           "throws-count",
           "Checkstyle reports the throws keyword; Ward the start of the declaration",
           "design-for-extension",
-          "Checkstyle reports the start of the method's modifiers; Ward the return type");
+          "Checkstyle reports the start of the method's modifiers; Ward the return type"
+      );
 
   private static final List<Mirror> MIRRORS =
       List.of(
@@ -60,46 +60,62 @@ class DesignCheckstyleParityTest {
               "hide-utility-class-constructor",
               "annotated",
               "HideUtilityClassConstructor",
-              Map.of("ignoreAnnotatedBy", "Generated")),
+              Map.of("ignoreAnnotatedBy", "Generated")
+          ),
           new Mirror("inner-type-last", "", "InnerTypeLast", Map.of()),
           new Mirror("interface-is-type", "", "InterfaceIsType", Map.of()),
           new Mirror(
               "interface-is-type",
               "markers",
               "InterfaceIsType",
-              Map.of("allowMarkerInterfaces", FALSE)),
+              Map.of("allowMarkerInterfaces", FALSE)
+          ),
           new Mirror("mutable-exception", "", "MutableException", Map.of()),
           new Mirror(
               "mutable-exception",
               "names",
               "MutableException",
-              Map.of("format", "^.*Failure$", "extendedClassNameFormat", "^Exception$")),
+              Map.of("format", "^.*Failure$", "extendedClassNameFormat", "^Exception$")
+          ),
           new Mirror(
-              "sealed-should-have-permits-list", "", "SealedShouldHavePermitsList", Map.of()),
+              "sealed-should-have-permits-list",
+              "",
+              "SealedShouldHavePermitsList",
+              Map.of()
+          ),
           new Mirror("throws-count", "", "ThrowsCount", Map.of()),
           new Mirror(
               "throws-count",
               "strict",
               "ThrowsCount",
-              Map.of("max", "1", "ignorePrivateMethods", FALSE)),
+              Map.of("max", "1", "ignorePrivateMethods", FALSE)
+          ),
           new Mirror("visibility-modifier", "", "VisibilityModifier", Map.of()),
           new Mirror(
               "visibility-modifier",
               "allowed",
               "VisibilityModifier",
               Map.of(
-                  "allowPublicFinalFields", TRUE,
-                  "packageAllowed", TRUE,
-                  "protectedAllowed", TRUE,
-                  "publicMemberPattern", "^ID$",
-                  "ignoreAnnotationCanonicalNames", "Inject")),
+                  "allowPublicFinalFields",
+                  TRUE,
+                  "packageAllowed",
+                  TRUE,
+                  "protectedAllowed",
+                  TRUE,
+                  "publicMemberPattern",
+                  "^ID$",
+                  "ignoreAnnotationCanonicalNames",
+                  "Inject"
+              )
+          ),
           new Mirror("design-for-extension", "", "DesignForExtension", Map.of()),
           new Mirror(
               "design-for-extension",
               "phrase",
               "DesignForExtension",
-              Map.of(
-                  "ignoredAnnotations", "Override", "requiredJavadocPhrase", "Extension point")));
+              Map.of("ignoredAnnotations", "Override", "requiredJavadocPhrase", "Extension point")
+          )
+      );
 
   @Test
   void checkstyleReportsTheSamePositionsAsEveryDesignFixture()
@@ -135,7 +151,7 @@ class DesignCheckstyleParityTest {
   }
 
   private static Set<String> lines(final Set<String> positions) {
-    return positions.stream().map(position -> position.split(":")[0]).collect(Collectors.toSet());
+    return positions.stream().map(position -> position.split(":") [0]).collect(Collectors.toSet());
   }
 
   private static Set<String> expectedPositions(final Path file) throws IOException {
@@ -155,7 +171,9 @@ class DesignCheckstyleParityTest {
         .forEach(
             (key, value) ->
                 properties.append(
-                    "<property name=\"%s\" value=\"%s\"/>".formatted(key, escape(value))));
+                    "<property name=\"%s\" value=\"%s\"/>".formatted(key, escape(value))
+                )
+        );
     return "<?xml version=\"1.0\"?>"
         + "<!DOCTYPE module PUBLIC \"-//Checkstyle//DTD Checkstyle Configuration 1.3//EN\""
         + " \"https://checkstyle.org/dtds/configuration_1_3.dtd\">"
@@ -176,13 +194,14 @@ class DesignCheckstyleParityTest {
     final String java = Path.of(System.getProperty("java.home"), "bin", "java").toString();
     final Process process =
         new ProcessBuilder(
-                java,
-                "-cp",
-                CLASSPATH,
-                "com.puppycrawl.tools.checkstyle.Main",
-                "-c",
-                config.toString(),
-                file.toString())
+            java,
+            "-cp",
+            CLASSPATH,
+            "com.puppycrawl.tools.checkstyle.Main",
+            "-c",
+            config.toString(),
+            file.toString()
+        )
             .redirectErrorStream(true)
             .start();
     final String output =

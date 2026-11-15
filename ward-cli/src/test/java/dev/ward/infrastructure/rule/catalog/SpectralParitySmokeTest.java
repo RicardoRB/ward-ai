@@ -24,7 +24,6 @@ import org.junit.jupiter.api.condition.EnabledIf;
  * the report with {@code -Dward.parity.write=true}.
  */
 final class SpectralParitySmokeTest {
-
   private static final String DIRECTORY_PROPERTY = "ward.spectral.dir";
   private static final String WRITE_PROPERTY = "ward.parity.write";
   private static final String REPORT_FILE = "src/test/resources/parity/spectral-report.txt";
@@ -32,7 +31,8 @@ final class SpectralParitySmokeTest {
   private static final Pattern RESULT =
       Pattern.compile(
           "\"code\":\\s*\"([^\"]+)\",\\s*\"path\":\\s*\\[[^\\]]*\\],\\s*\"message\":\\s*\"((?:\\\\.|[^\"\\\\])*)\",[\\s\\S]*?"
-              + "\"range\":\\s*\\{\\s*\"start\":\\s*\\{\\s*\"line\":\\s*(\\d+),\\s*\"character\":\\s*(\\d+)");
+              + "\"range\":\\s*\\{\\s*\"start\":\\s*\\{\\s*\"line\":\\s*(\\d+),\\s*\"character\":\\s*(\\d+)"
+      );
   private static final int CODE = 1;
   private static final int MESSAGE = 2;
   private static final int LINE = 3;
@@ -53,7 +53,8 @@ final class SpectralParitySmokeTest {
         "import { oas } from '@stoplight/spectral-rulesets';\n"
             + "import owasp from '@stoplight/spectral-owasp-ruleset';\n"
             + "export default { extends: [[oas, 'all'], owasp] };\n",
-        StandardCharsets.UTF_8);
+        StandardCharsets.UTF_8
+    );
     final List<String> lines = new ArrayList<>();
     try {
       final Path root = RuleFixtureSet.root().resolve("openapi");
@@ -81,7 +82,10 @@ final class SpectralParitySmokeTest {
   }
 
   private static List<String> differences(
-      final Path install, final CatalogRow row, final Path directory)
+      final Path install,
+      final CatalogRow row,
+      final Path directory
+  )
       throws IOException, InterruptedException {
     final String id = row.counterparts().get("spectral").getFirst();
     final List<String> lines = new ArrayList<>();
@@ -100,7 +104,11 @@ final class SpectralParitySmokeTest {
   }
 
   private static String kind(
-      final Path install, final String id, final Path directory, final Path file)
+      final Path install,
+      final String id,
+      final Path directory,
+      final Path file
+  )
       throws IOException, InterruptedException {
     final List<String> reported = reported(install, id, file);
     final String name = file.getFileName().toString();
@@ -134,14 +142,15 @@ final class SpectralParitySmokeTest {
       throws IOException, InterruptedException {
     final Process process =
         new ProcessBuilder(
-                install.resolve("node_modules/.bin/spectral").toString(),
-                "lint",
-                "-r",
-                install.resolve(RULESET).toString(),
-                "-f",
-                "json",
-                "--ignore-unknown-format",
-                file.toString())
+            install.resolve("node_modules/.bin/spectral").toString(),
+            "lint",
+            "-r",
+            install.resolve(RULESET).toString(),
+            "-f",
+            "json",
+            "--ignore-unknown-format",
+            file.toString()
+        )
             .directory(install.toFile())
             .redirectErrorStream(false)
             .start();
@@ -157,7 +166,8 @@ final class SpectralParitySmokeTest {
                 + ":"
                 + (Integer.parseInt(matcher.group(CHARACTER)) + 1)
                 + "\t"
-                + matcher.group(MESSAGE).replace("\\\"", "\"").replace("\\\\", "\\"));
+                + matcher.group(MESSAGE).replace("\\\"", "\"").replace("\\\\", "\\")
+        );
       }
     }
     return found;

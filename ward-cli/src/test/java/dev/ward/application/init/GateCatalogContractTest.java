@@ -60,15 +60,18 @@ class GateCatalogContractTest {
     final InitGeneralCatalog swiftPm = new InitGeneralCatalog(new FakeEnvironmentInspection());
     final InitGeneralCatalog xcode = new InitGeneralCatalog(swiftInputs());
     assertThat(
-            Stream.concat(
-                swiftPm.gates(project(BuildTool.SWIFTPM, Language.SWIFT), null).stream(),
-                xcode.gates(project(BuildTool.XCODE, Language.SWIFT), null).stream()))
+        Stream.concat(
+            swiftPm.gates(project(BuildTool.SWIFTPM, Language.SWIFT), null).stream(),
+            xcode.gates(project(BuildTool.XCODE, Language.SWIFT), null).stream()
+        )
+    )
         .extracting(InitGateOption::id)
         .allSatisfy(
             id ->
                 assertThat(QualityGateDefinitions.find(id))
                     .as("gate %s has no QualityGateDefinitions row", id)
-                    .isPresent());
+                    .isPresent()
+        );
   }
 
   /** Swift inputs for an Xcode project with one shared scheme and no config of its own. */
@@ -99,37 +102,45 @@ class GateCatalogContractTest {
         (directory, tool) -> java.util.Optional.empty(),
         dev.ward.domain.project.WorkspaceMembers.none(),
         new SwiftPorts(xcode, directory -> List.of()),
-        dev.ward.domain.init.BuildModulePlanning.none());
+        dev.ward.domain.init.BuildModulePlanning.none()
+    );
   }
 
   @Test
   void everyOfferedGateIsDefined() {
     final InitGeneralCatalog catalog = new InitGeneralCatalog(new FakeEnvironmentInspection());
     assertThat(
-            Stream.concat(
-                Stream.of(BuildTool.MAVEN, BuildTool.GRADLE)
-                    .flatMap(buildTool -> catalog.gates(project(buildTool), null).stream()),
-                Stream.of(BuildTool.NPM, BuildTool.BUN)
-                    .flatMap(
-                        buildTool ->
-                            Stream.of(Language.TYPESCRIPT, Language.JAVASCRIPT)
-                                .flatMap(
-                                    language ->
-                                        catalog
-                                            .gates(project(buildTool, language), null)
-                                            .stream()))))
+        Stream.concat(
+            Stream.of(BuildTool.MAVEN, BuildTool.GRADLE)
+                .flatMap(buildTool -> catalog.gates(project(buildTool), null).stream()),
+            Stream.of(BuildTool.NPM, BuildTool.BUN)
+                .flatMap(
+                    buildTool ->
+                        Stream.of(Language.TYPESCRIPT, Language.JAVASCRIPT)
+                            .flatMap(
+                                language ->
+                                    catalog
+                                        .gates(project(buildTool, language), null)
+                                        .stream()
+                            )
+                )
+        )
+    )
         .extracting(InitGateOption::id)
         .allSatisfy(
             id ->
                 assertThat(QualityGateDefinitions.find(id))
                     .as("gate %s has no QualityGateDefinitions row", id)
-                    .isPresent());
+                    .isPresent()
+        );
   }
 
   @Test
   void everyJvmGateConfiguresEachBuildTool() throws IOException {
     Files.writeString(
-        root.resolve("pom.xml"), "<project><modelVersion>4.0.0</modelVersion></project>");
+        root.resolve("pom.xml"),
+        "<project><modelVersion>4.0.0</modelVersion></project>"
+    );
     Files.writeString(root.resolve("build.gradle"), "plugins {\n    id 'java'\n}\n");
     assertConfigures(BuildTool.MAVEN, new PomToolConfigurator());
     assertConfigures(BuildTool.GRADLE, new GradleToolConfigurator());
@@ -138,13 +149,17 @@ class GateCatalogContractTest {
   @Test
   void gateKeyedRowsNameDefinedGates() {
     assertThat(
-            Stream.concat(
-                PartialCheckDefaults.gates().stream(), AgentRulesTemplate.limitGates().stream()))
+        Stream.concat(
+            PartialCheckDefaults.gates().stream(),
+            AgentRulesTemplate.limitGates().stream()
+        )
+    )
         .allSatisfy(
             id ->
                 assertThat(QualityGateDefinitions.find(id))
                     .as("row for undefined gate %s", id)
-                    .isPresent());
+                    .isPresent()
+        );
   }
 
   private void assertConfigures(final BuildTool buildTool, final BuildToolConfiguration tools) {
@@ -155,7 +170,8 @@ class GateCatalogContractTest {
             gate ->
                 assertThat(tools.plan(project, List.of(gate), null, true).action())
                     .as("gate %s has no %s build-file entry", gate.id(), buildTool.displayName())
-                    .isEqualTo(PlannedFileChange.Action.MODIFY));
+                    .isEqualTo(PlannedFileChange.Action.MODIFY)
+        );
   }
 
   private static List<InitGateOption> jvmGates(final Project project) {
@@ -164,7 +180,8 @@ class GateCatalogContractTest {
             .gates(
                 project,
                 null,
-                InitInputs.withoutManifests(new FakeEnvironmentInspection().withReleaseTag()));
+                InitInputs.withoutManifests(new FakeEnvironmentInspection().withReleaseTag())
+            );
     return Stream.concat(gates.analysis().stream(), gates.policy().stream()).toList();
   }
 
@@ -184,6 +201,7 @@ class GateCatalogContractTest {
         Set.of(),
         "",
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 }

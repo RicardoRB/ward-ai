@@ -12,7 +12,6 @@ import java.util.Set;
  * {@code if}, like Ruff {@code SIM102}: the two conditions can be joined with {@code and}.
  */
 public final class CollapsibleIfCheck implements RuleCheck {
-
   private static final Set<String> KINDS = Set.of("if_stmt");
 
   private final String message;

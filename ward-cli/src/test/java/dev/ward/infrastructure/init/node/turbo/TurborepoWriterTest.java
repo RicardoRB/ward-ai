@@ -50,8 +50,7 @@ class TurborepoWriterTest {
     TurborepoWriter.apply(workspace(Map.of()), false);
 
     assertThat(Files.readString(turboJson()))
-        .isEqualTo(
-            """
+        .isEqualTo("""
             {
               "$schema": "https://turborepo.com/schema.json",
               "tasks": {
@@ -102,7 +101,9 @@ class TurborepoWriterTest {
 
     final TurborepoWriter.Result result =
         TurborepoWriter.apply(
-            workspace(Map.of("check-types", "tsc --noEmit --pretty false")), false);
+            workspace(Map.of("check-types", "tsc --noEmit --pretty false")),
+            false
+        );
     TurborepoWriter.rollback(result.written());
 
     assertThat(Files.readString(ui.resolve(PACKAGE_JSON))).isEqualTo(uiBefore);
@@ -119,16 +120,19 @@ class TurborepoWriterTest {
     final String turboBefore = Files.readString(turboJson());
 
     assertThatThrownBy(
-            () ->
-                TurborepoWriter.apply(
-                    new TurboWorkspace(
-                        root,
-                        List.of(
-                            new TurboWorkspace.Member("@repo/ui", ui, Map.of("lint", "biome ci .")),
-                            new TurboWorkspace.Member(
-                                "@repo/api", broken, Map.of("lint", "biome ci ."))),
-                        TASKS),
-                    false))
+        () ->
+            TurborepoWriter.apply(
+                new TurboWorkspace(
+                    root,
+                    List.of(
+                        new TurboWorkspace.Member("@repo/ui", ui, Map.of("lint", "biome ci .")),
+                        new TurboWorkspace.Member("@repo/api", broken, Map.of("lint", "biome ci ."))
+                    ),
+                    TASKS
+                ),
+                false
+            )
+    )
         .isInstanceOf(WardException.class);
 
     assertThat(Files.readString(ui.resolve(PACKAGE_JSON))).isEqualTo(uiBefore);
@@ -142,7 +146,10 @@ class TurborepoWriterTest {
       member("packages/ui", "{\n  \"name\": \"@repo/ui\"\n}\n");
     }
     return new TurboWorkspace(
-        root, List.of(new TurboWorkspace.Member("@repo/ui", ui, scripts)), TASKS);
+        root,
+        List.of(new TurboWorkspace.Member("@repo/ui", ui, scripts)),
+        TASKS
+    );
   }
 
   private void turbo(final String content) throws IOException {

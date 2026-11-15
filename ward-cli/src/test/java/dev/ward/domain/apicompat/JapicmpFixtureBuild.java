@@ -63,10 +63,10 @@ final class JapicmpFixtureBuild {
     final List<JavaFileObject> units =
         sources.stream().map(FixtureSource::new).map(JavaFileObject.class::cast).toList();
     assertThat(
-            ToolProvider.getSystemJavaCompiler()
-                .getTask(
-                    null, null, null, List.of("-d", classes.toString(), "-nowarn"), null, units)
-                .call())
+        ToolProvider.getSystemJavaCompiler()
+            .getTask(null, null, null, List.of("-d", classes.toString(), "-nowarn"), null, units)
+            .call()
+    )
         .isTrue();
   }
 
@@ -90,9 +90,9 @@ final class JapicmpFixtureBuild {
   }
 
   private static Path pack(final Path classes, final Path jar) throws IOException {
-    try (OutputStream out = Files.newOutputStream(jar);
-        JarOutputStream jarOut = new JarOutputStream(out);
-        Stream<Path> walk = Files.walk(classes)) {
+    try (OutputStream out = Files.newOutputStream(
+        jar
+    ); JarOutputStream jarOut = new JarOutputStream(out); Stream<Path> walk = Files.walk(classes)) {
       for (final Path file : walk.filter(Files::isRegularFile).sorted().toList()) {
         add(jarOut, classes, file);
       }

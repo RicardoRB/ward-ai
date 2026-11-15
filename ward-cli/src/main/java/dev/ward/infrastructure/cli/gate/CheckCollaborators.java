@@ -15,7 +15,8 @@ final class CheckCollaborators {
   CheckCollaborators(
       final LearningService learning,
       final CheckReportExport export,
-      final VulnerabilityRunMode runMode) {
+      final VulnerabilityRunMode runMode
+  ) {
     this.learning = learning;
     this.export = export;
     this.runMode = runMode;

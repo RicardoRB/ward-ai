@@ -15,13 +15,25 @@ public final class Versions {
   private static final List<String> NODE_TAGS = List.of("latest", "next", "*", "x", "");
   private static final List<String> NON_REGISTRY =
       List.of(
-          "git", "file:", "link:", "workspace:", "npm:", "http", "github:", "portal:", "patch:");
+          "git",
+          "file:",
+          "link:",
+          "workspace:",
+          "npm:",
+          "http",
+          "github:",
+          "portal:",
+          "patch:"
+      );
 
   private Versions() {}
 
   /** Returns how {@code version} of a {@code kind} in {@code ecosystem} can change. */
   public static Dynamism dynamism(
-      final BuildEcosystem ecosystem, final DeclarationKind kind, final String version) {
+      final BuildEcosystem ecosystem,
+      final DeclarationKind kind,
+      final String version
+  ) {
     final String text = version.strip();
     return switch (ecosystem) {
       case MAVEN -> maven(text);

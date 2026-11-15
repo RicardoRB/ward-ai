@@ -20,7 +20,8 @@ final class Exprs {
           "arrayLiteral",
           "objectLiteral",
           "anonymousFunction",
-          "arrowFunctionDeclaration");
+          "arrowFunctionDeclaration"
+      );
 
   private Exprs() {}
 
@@ -119,6 +120,6 @@ final class Exprs {
   static boolean isOptional(final List<SyntaxNode> parts) {
     return parts.stream().anyMatch(part -> "?.".equals(token(part)))
         || parts.stream().anyMatch(part -> "?".equals(token(part)))
-            && parts.stream().anyMatch(part -> ".".equals(token(part)));
+        && parts.stream().anyMatch(part -> ".".equals(token(part)));
   }
 }

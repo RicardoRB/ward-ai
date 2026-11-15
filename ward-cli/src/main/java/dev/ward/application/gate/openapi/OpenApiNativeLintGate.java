@@ -54,7 +54,8 @@ public final class OpenApiNativeLintGate implements QualityGate {
       final String spec,
       final String rulesFile,
       final AnalysisPorts ports,
-      final ProjectFiles files) {
+      final ProjectFiles files
+  ) {
     this.name = name;
     this.spec = spec;
     this.rulesFile = rulesFile;
@@ -85,7 +86,8 @@ public final class OpenApiNativeLintGate implements QualityGate {
       return OpenApiResults.stopped(
           name,
           GateStatus.FAILED,
-          "Inline lint ignores (" + INLINE_IGNORE + ") are not allowed in " + ignored.get() + ".");
+          "Inline lint ignores (" + INLINE_IGNORE + ") are not allowed in " + ignored.get() + "."
+      );
     }
     return lint(project, document);
   }
@@ -102,13 +104,15 @@ public final class OpenApiNativeLintGate implements QualityGate {
             ports.codec(),
             ports.engineVersion(),
             ports.dependencies(),
-            ports.nativeTypeFacts());
+            ports.nativeTypeFacts()
+        );
     final RuleSetup setup = OpenApiRuleSetups.create(name, rulesFile, own);
     final int rules = setup.resolve(project.root(), 0).rules().size();
     LOGGER.log(
         Level.INFO,
         () ->
-            "event=openapi-lint-start gate=" + name + " files=" + units.size() + " rules=" + rules);
+            "event=openapi-lint-start gate=" + name + " files=" + units.size() + " rules=" + rules
+    );
     // One check, one line: the per-category lines are for the ward gate only.
     final GateResult result =
         new AnalysisGate(name, setup, own, null, List.of())
@@ -116,14 +120,17 @@ public final class OpenApiNativeLintGate implements QualityGate {
             .withSections(List.of());
     final GateResult policed = failingOnWarnings(result);
     LOGGER.log(
-        Level.INFO, () -> "event=openapi-lint-done gate=" + name + " status=" + policed.status());
+        Level.INFO,
+        () -> "event=openapi-lint-done gate=" + name + " status=" + policed.status()
+    );
     return policed;
   }
 
   private GateResult loadError(final List<LoadError> errors) {
     LOGGER.log(
         Level.INFO,
-        () -> "event=openapi-lint-load-error gate=" + name + " problems=" + errors.size());
+        () -> "event=openapi-lint-load-error gate=" + name + " problems=" + errors.size()
+    );
     return GateResult.builder(name, GateStatus.EXECUTION_ERROR)
         .summary(errors.getFirst().describe())
         .stderr(String.join("\n", errors.stream().map(LoadError::describe).toList()))
@@ -152,7 +159,8 @@ public final class OpenApiNativeLintGate implements QualityGate {
         result.findings(),
         result.scope(),
         result.prerequisite(),
-        List.of());
+        List.of()
+    );
   }
 
   /** The first loaded file that has the {@code x-lint-ignore} key as an object key. */

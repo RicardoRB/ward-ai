@@ -14,18 +14,18 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 /** The Swift structural rules over one violating and one passing fixture per rule. */
 final class SwiftStructuralRulesTest {
-
   private static final String FIXTURES = "fixtures/swift-structural/";
 
   @ParameterizedTest
   @ValueSource(
       strings = {
-        "function-length",
-        "parameter-count",
-        "complexity",
-        "file-length",
-        "type-body-length"
-      })
+          "function-length",
+          "parameter-count",
+          "complexity",
+          "file-length",
+          "type-body-length"
+      }
+  )
   void violatingFixtureReportsOneError(final String rule) throws IOException {
     final RuleRunResult result =
         SwiftRuleRuns.run(rule, SwiftRuleRuns.read(FIXTURES + rule + "/violating.swift"));
@@ -38,13 +38,14 @@ final class SwiftStructuralRulesTest {
   @ParameterizedTest
   @ValueSource(
       strings = {
-        "function-length",
-        "parameter-count",
-        "complexity",
-        "file-length",
-        "type-body-length",
-        "naming"
-      })
+          "function-length",
+          "parameter-count",
+          "complexity",
+          "file-length",
+          "type-body-length",
+          "naming"
+      }
+  )
   void passingFixtureReportsNothing(final String rule) throws IOException {
     final RuleRunResult result =
         SwiftRuleRuns.run(rule, SwiftRuleRuns.read(FIXTURES + rule + "/passing.swift"));
@@ -64,7 +65,8 @@ final class SwiftStructuralRulesTest {
         .containsExactly(
             "userStore should be CapWords",
             "MyVar should be lowerCamelCase",
-            "load_config should be lowerCamelCase");
+            "load_config should be lowerCamelCase"
+        );
     assertThat(findings).allMatch(finding -> finding.severity() == AnalysisSeverity.WARNING);
   }
 
@@ -72,7 +74,9 @@ final class SwiftStructuralRulesTest {
   void functionLengthFindingPointsAtTheDeclarationLine() throws IOException {
     final AnalysisFinding finding =
         SwiftRuleRuns.run(
-                "function-length", SwiftRuleRuns.read(FIXTURES + "function-length/violating.swift"))
+            "function-length",
+            SwiftRuleRuns.read(FIXTURES + "function-length/violating.swift")
+        )
             .findings()
             .get(0);
 
@@ -84,7 +88,9 @@ final class SwiftStructuralRulesTest {
   void parameterCountCountsEveryParameterOfAMethod() throws IOException {
     final AnalysisFinding finding =
         SwiftRuleRuns.run(
-                "parameter-count", SwiftRuleRuns.read(FIXTURES + "parameter-count/violating.swift"))
+            "parameter-count",
+            SwiftRuleRuns.read(FIXTURES + "parameter-count/violating.swift")
+        )
             .findings()
             .get(0);
 
@@ -105,8 +111,9 @@ final class SwiftStructuralRulesTest {
   void typeBodyLengthCountsTheHeaderLinesOfTheType() throws IOException {
     final AnalysisFinding finding =
         SwiftRuleRuns.run(
-                "type-body-length",
-                SwiftRuleRuns.read(FIXTURES + "type-body-length/violating.swift"))
+            "type-body-length",
+            SwiftRuleRuns.read(FIXTURES + "type-body-length/violating.swift")
+        )
             .findings()
             .get(0);
 
@@ -135,7 +142,8 @@ final class SwiftStructuralRulesTest {
             SwiftRuleRuns.PREFIX + "complexity",
             SwiftRuleRuns.PREFIX + "file-length",
             SwiftRuleRuns.PREFIX + "type-body-length",
-            SwiftRuleRuns.PREFIX + "naming");
+            SwiftRuleRuns.PREFIX + "naming"
+        );
   }
 
   @Test

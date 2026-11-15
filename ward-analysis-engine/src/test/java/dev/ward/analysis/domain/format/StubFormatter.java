@@ -6,7 +6,6 @@ import java.util.function.Function;
 
 /** A formatter whose behavior is a function of the source, for the safety tests. */
 final class StubFormatter implements SourceFormatter {
-
   private final AnalysisLanguage language;
   private final Function<String, FormatResult> behavior;
 

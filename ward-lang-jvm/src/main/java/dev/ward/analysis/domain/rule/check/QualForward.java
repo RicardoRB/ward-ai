@@ -17,7 +17,6 @@ import java.util.Set;
  * promise, with where they come from. A variable without an entry is unknown.
  */
 final class QualForward {
-
   private final NullGraph graph;
   private final QualSites sites;
 
@@ -49,9 +48,13 @@ final class QualForward {
   }
 
   private static boolean merge(
-      final Map<Integer, Map<Span, QualState.Held>> entry,
+      final Map<Integer,
+      Map<Span,
+      QualState.Held>> entry,
       final int target,
-      final Map<Span, QualState.Held> sent) {
+      final Map<Span,
+      QualState.Held> sent
+  ) {
     final Map<Span, QualState.Held> known = entry.get(target);
     final Map<Span, QualState.Held> merged =
         known == null ? new HashMap<>(sent) : QualState.meetHeld(known, sent);
@@ -78,7 +81,10 @@ final class QualForward {
 
   /** Returns what the value of {@code operand} promises: a variable's value or a source's. */
   Optional<QualState.Held> held(
-      final Map<Span, QualState.Held> state, final NullEvent.Operand operand) {
+      final Map<Span,
+      QualState.Held> state,
+      final NullEvent.Operand operand
+  ) {
     if (operand.variable() != null) {
       return Optional.ofNullable(state.get(operand.variable()));
     }

@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * the rest of its block never assigns is followed; anything else means no finding.
  */
 public final class KnownNullCheck implements RuleCheck {
-
   /** What the check reports. */
   public enum Mode {
     /** A known null value is read, for instance passed on. */
@@ -95,7 +94,8 @@ public final class KnownNullCheck implements RuleCheck {
       final String name,
       final boolean nullThen,
       final List<SyntaxNode> branches,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     follow(name, branches.get(0), nullThen, matches);
     if (branches.size() > ELSE_AT) {
       follow(name, branches.get(1), !nullThen, matches);
@@ -129,7 +129,11 @@ public final class KnownNullCheck implements RuleCheck {
   }
 
   private void follow(
-      final String name, final SyntaxNode branch, final boolean isNull, final List<RuleMatch> out) {
+      final String name,
+      final SyntaxNode branch,
+      final boolean isNull,
+      final List<RuleMatch> out
+  ) {
     follow(name, List.of(branch), isNull, out);
   }
 
@@ -137,7 +141,8 @@ public final class KnownNullCheck implements RuleCheck {
       final String name,
       final List<SyntaxNode> scope,
       final boolean isNull,
-      final List<RuleMatch> out) {
+      final List<RuleMatch> out
+  ) {
     final List<SyntaxNode> tokens = NullTokens.tokens(scope);
     if (NullTokens.assigns(tokens, name)) {
       return;

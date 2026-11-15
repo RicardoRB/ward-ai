@@ -38,7 +38,8 @@ class FileSummaryTest {
   @Test
   void rejectsMissingElements() {
     assertThatThrownBy(
-            () -> new FileSummary("A.java", Arrays.asList((Symbol) null), List.of(), List.of()))
+        () -> new FileSummary("A.java", Arrays.asList((Symbol)null), List.of(), List.of())
+    )
         .isInstanceOf(NullPointerException.class);
   }
 

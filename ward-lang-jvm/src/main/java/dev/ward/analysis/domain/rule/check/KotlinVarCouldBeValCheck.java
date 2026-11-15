@@ -26,7 +26,6 @@ import java.util.Set;
  * properties. A write from a lambda counts as an assignment.
  */
 public final class KotlinVarCouldBeValCheck implements RuleCheck {
-
   private static final String NAME = "{value}";
   private static final String PRIVATE = "private";
   private static final Set<ScopeKind> LOCAL_SCOPES =
@@ -51,7 +50,11 @@ public final class KotlinVarCouldBeValCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes();
     final List<RuleMatch> found = new ArrayList<>();
     for (final Scope scope : scopes.scopes()) {
@@ -70,7 +73,9 @@ public final class KotlinVarCouldBeValCheck implements RuleCheck {
     final boolean privateProperty =
         scope.kind() == ScopeKind.CLASS
             && KotlinDeclarations.hasWord(
-                KotlinDeclarations.prefixOnLine(text, binding.declaration()), PRIVATE);
+                KotlinDeclarations.prefixOnLine(text, binding.declaration()),
+                PRIVATE
+            );
     return binding.kind() == BindingKind.VARIABLE
         && !binding.has(BindingFlag.DESTRUCTURED)
         && (local || privateProperty);

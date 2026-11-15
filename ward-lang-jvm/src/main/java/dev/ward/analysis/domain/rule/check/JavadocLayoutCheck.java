@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
  * JavadocContentLocation and RequireEmptyLineBeforeBlockTagGroup do.
  */
 public final class JavadocLayoutCheck implements UnitCheck {
-
   /** What the check looks for in each Javadoc comment. */
   public enum Mode {
     /** A comment on one line that holds a block tag. */
@@ -89,7 +88,10 @@ public final class JavadocLayoutCheck implements UnitCheck {
   }
 
   private void emptyLineBeforeTags(
-      final SyntaxNode comment, final List<JavadocRows.Row> rows, final List<RuleMatch> matches) {
+      final SyntaxNode comment,
+      final List<JavadocRows.Row> rows,
+      final List<RuleMatch> matches
+  ) {
     final List<JavadocTags.Tag> tags = JavadocTags.tags(comment);
     if (tags.isEmpty()) {
       return;

@@ -111,7 +111,9 @@ final class PomChain {
               .replaceAll(
                   match ->
                       Matcher.quoteReplacement(
-                          properties.getOrDefault(match.group(1), match.group())));
+                          properties.getOrDefault(match.group(1), match.group())
+                      )
+              );
       if (next.equals(result)) {
         break;
       }

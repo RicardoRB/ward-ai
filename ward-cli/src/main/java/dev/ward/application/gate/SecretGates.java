@@ -39,7 +39,8 @@ public final class SecretGates {
             check.name(),
             check.rulesFile(),
             new ConfiguredRuleSetup.Choices(text, false, loaded.rules(), List.of()),
-            ports.rules());
+            ports.rules()
+        );
     return new SecretGate(check, setup, ports, history, focus);
   }
 }

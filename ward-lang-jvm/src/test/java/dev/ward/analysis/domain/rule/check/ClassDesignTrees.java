@@ -6,7 +6,6 @@ import java.util.List;
 
 /** Builders for the type and member trees that the class design check tests run over. */
 class ClassDesignTrees extends TreeBuilders {
-
   private static final int UNIT_LENGTH = 100;
 
   protected ClassDesignTrees() {
@@ -30,19 +29,26 @@ class ClassDesignTrees extends TreeBuilders {
   }
 
   static SyntaxNode classNode(
-      final List<SyntaxNode> modifiers, final String name, final SyntaxNode... members) {
+      final List<SyntaxNode> modifiers,
+      final String name,
+      final SyntaxNode... members
+  ) {
     return typeDeclaration(modifiers, classDecl(name, members));
   }
 
   static SyntaxNode classWithSuper(
-      final String name, final String superName, final SyntaxNode... members) {
+      final String name,
+      final String superName,
+      final SyntaxNode... members
+  ) {
     final SyntaxNode decl =
         n(
             "classDeclaration",
             t("'class'", "class"),
             id(name),
             n("typeType", t(TOKEN_IDENTIFIER, superName)),
-            n("classBody", members));
+            n("classBody", members)
+        );
     return typeDeclaration(List.of(), decl);
   }
 

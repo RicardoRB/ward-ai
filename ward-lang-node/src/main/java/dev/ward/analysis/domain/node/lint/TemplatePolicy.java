@@ -23,8 +23,8 @@ public record TemplatePolicy(
     boolean allowNumber,
     boolean allowRegExp,
     boolean allowNever,
-    Set<String> allowedTypes) {
-
+    Set<String> allowedTypes
+) {
   /** Copies the set of allowed type names. */
   public TemplatePolicy {
     allowedTypes = Set.copyOf(allowedTypes);
@@ -33,15 +33,25 @@ public record TemplatePolicy(
   /** Reports whether a placeholder of this kind is allowed by the kind options. */
   boolean allows(final ValueKind kind) {
     return Map.of(
-            ValueKind.ANY, allowAny,
-            ValueKind.ARRAY, allowArray,
-            ValueKind.BOOLEAN, allowBoolean,
-            ValueKind.NULLISH, allowNullish,
-            ValueKind.NUMBER, allowNumber,
-            ValueKind.BIGINT, allowNumber,
-            ValueKind.REGEXP, allowRegExp,
-            ValueKind.NEVER, allowNever,
-            ValueKind.OBJECT, false)
+        ValueKind.ANY,
+        allowAny,
+        ValueKind.ARRAY,
+        allowArray,
+        ValueKind.BOOLEAN,
+        allowBoolean,
+        ValueKind.NULLISH,
+        allowNullish,
+        ValueKind.NUMBER,
+        allowNumber,
+        ValueKind.BIGINT,
+        allowNumber,
+        ValueKind.REGEXP,
+        allowRegExp,
+        ValueKind.NEVER,
+        allowNever,
+        ValueKind.OBJECT,
+        false
+    )
         .getOrDefault(kind, true);
   }
 }

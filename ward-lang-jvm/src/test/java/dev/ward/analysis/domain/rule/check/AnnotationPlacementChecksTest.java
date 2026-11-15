@@ -44,7 +44,8 @@ class AnnotationPlacementChecksTest {
     assertThat(unitMatches(new AnnotationLocationCheck(false, false, MESSAGE), notModifier))
         .isEmpty();
     assertThat(
-            unitMatches(new AnnotationLocationCheck(false, false, MESSAGE), group(MODIFIER, plain)))
+        unitMatches(new AnnotationLocationCheck(false, false, MESSAGE), group(MODIFIER, plain))
+    )
         .isEmpty();
   }
 
@@ -63,22 +64,24 @@ class AnnotationPlacementChecksTest {
   @Test
   void reportsAnAnnotationFollowedByANewLineAndIgnoresOtherHolders() {
     assertThat(
-            sameLine(
-                group(
-                    MODIFIER,
-                    tok(ANNOTATION, "@A", 1, 0),
-                    tok(PUBLIC, PUBLIC, 2, SAME_LINE_TOKEN_COLUMN))))
+        sameLine(
+            group(
+                MODIFIER,
+                tok(ANNOTATION, "@A", 1, 0),
+                tok(PUBLIC, PUBLIC, 2, SAME_LINE_TOKEN_COLUMN)
+            )
+        )
+    )
         .hasSize(1);
     assertThat(
-            sameLine(
-                group(MODIFIER, tok(ANNOTATION, "@A", 1, 0), tok(PUBLIC, PUBLIC, 1, NUMBER_4))))
+        sameLine(group(MODIFIER, tok(ANNOTATION, "@A", 1, 0), tok(PUBLIC, PUBLIC, 1, NUMBER_4)))
+    )
         .isEmpty();
     assertThat(
-            sameLine(
-                group(
-                    BODY,
-                    tok(ANNOTATION, "@A", 1, 0),
-                    tok(PUBLIC, PUBLIC, 2, SAME_LINE_TOKEN_COLUMN))))
+        sameLine(
+            group(BODY, tok(ANNOTATION, "@A", 1, 0), tok(PUBLIC, PUBLIC, 2, SAME_LINE_TOKEN_COLUMN))
+        )
+    )
         .isEmpty();
   }
 
@@ -93,7 +96,8 @@ class AnnotationPlacementChecksTest {
             tok("'@'", "@", 1, 0),
             tok("identifier", "SuppressWarnings", 1, 1),
             tok("stringLiteral", "\"", 1, ACCESS_COLUMN - 2),
-            tok("identifier", "x", 1, ACCESS_COLUMN - 1));
+            tok("identifier", "x", 1, ACCESS_COLUMN - 1)
+        );
     assertThat(suppress("x", stray)).isEmpty();
   }
 
@@ -101,16 +105,21 @@ class AnnotationPlacementChecksTest {
       final boolean singleParameterless,
       final boolean parameterized,
       final SyntaxNode annotation,
-      final int line) {
+      final int line
+  ) {
     final SyntaxNode decl =
         group(BODY, group(MODIFIER, annotation), tok(PUBLIC, PUBLIC, line, SAME_LINE_TOKEN_COLUMN));
     return unitMatches(
-        new AnnotationLocationCheck(singleParameterless, parameterized, MESSAGE), decl);
+        new AnnotationLocationCheck(singleParameterless, parameterized, MESSAGE),
+        decl
+    );
   }
 
   private static List<RuleMatch> visibility(final Set<String> annotations, final SyntaxNode decl) {
     return unitMatches(
-        new AnnotatedDeclarationVisibilityCheck(annotations, Set.of(PUBLIC), MESSAGE), decl);
+        new AnnotatedDeclarationVisibilityCheck(annotations, Set.of(PUBLIC), MESSAGE),
+        decl
+    );
   }
 
   private static List<RuleMatch> sameLine(final SyntaxNode decl) {
@@ -134,6 +143,7 @@ class AnnotationPlacementChecksTest {
         ANNOTATION,
         tok("'@'", "@", 1, 0),
         tok("identifier", "SuppressWarnings", 1, 1),
-        tok("stringLiteral", "\"" + name + "\"", 1, ACCESS_COLUMN - 2));
+        tok("stringLiteral", "\"" + name + "\"", 1, ACCESS_COLUMN - 2)
+    );
   }
 }

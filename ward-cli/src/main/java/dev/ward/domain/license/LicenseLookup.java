@@ -9,7 +9,6 @@ package dev.ward.domain.license;
  * @param detail a short note for reports: the source read, or what is missing; never file contents
  */
 public record LicenseLookup(DeclaredLicense license, Reason reason, String detail) {
-
   /** Why a package has no declared license. */
   public enum Reason {
     /** No metadata of the package exists locally. */

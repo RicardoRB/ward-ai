@@ -8,7 +8,6 @@ import java.util.Map;
 
 /** Builders and runners for the check tests that need tokens on given lines. */
 final class TokenTrees {
-
   private TokenTrees() {}
 
   /** A token of {@code kind} with {@code text} on {@code line}, starting at {@code offset}. */
@@ -17,7 +16,8 @@ final class TokenTrees {
         kind,
         new Span(line, offset + 1, line, offset + text.length(), offset, offset + text.length()),
         Map.of("text", text),
-        List.of());
+        List.of()
+    );
   }
 
   /** A node of {@code kind} that spans from its first child to its last. */
@@ -32,9 +32,11 @@ final class TokenTrees {
             last.endLine(),
             last.endColumn(),
             first.startOffset(),
-            last.endOffset()),
+            last.endOffset()
+        ),
         Map.of(),
-        List.of(children));
+        List.of(children)
+    );
   }
 
   /** The matches of a tree check over {@code root} wrapped in a unit. */
@@ -44,7 +46,10 @@ final class TokenTrees {
 
   /** The matches of a unit check over {@code root} in a file with {@code text}. */
   static List<RuleMatch> fileMatches(
-      final UnitCheck check, final String text, final SyntaxNode root) {
+      final UnitCheck check,
+      final String text,
+      final SyntaxNode root
+  ) {
     return check.check(TreeBuilders.unit(root), new SourceFile("p.java", text));
   }
 }

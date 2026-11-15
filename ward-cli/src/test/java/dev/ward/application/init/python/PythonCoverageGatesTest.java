@@ -35,10 +35,14 @@ class PythonCoverageGatesTest {
   }
 
   private static List<InitGateOption> gates(
-      final BuildTool manager, final QualityPreset preset, final boolean owned) {
+      final BuildTool manager,
+      final QualityPreset preset,
+      final boolean owned
+  ) {
     return new PythonGates()
         .analysisGates(
-            new PythonTools(manager, true, preset, Framework.NONE, owned, owned, Optional.empty()));
+            new PythonTools(manager, true, preset, Framework.NONE, owned, owned, Optional.empty())
+        );
   }
 
   private static List<String> command(final List<InitGateOption> gates, final String id) {

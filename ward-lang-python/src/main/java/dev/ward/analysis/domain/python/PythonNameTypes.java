@@ -13,11 +13,20 @@ import java.util.function.Function;
  * name stands for in an annotation.
  */
 final class PythonNameTypes {
-
   private static final String TYPING = "typing";
   private static final Map<String, String> TYPING_ALIASES =
       Map.of(
-          "List", "list", "Dict", "dict", "Set", "set", "FrozenSet", "frozenset", "Tuple", "tuple");
+          "List",
+          "list",
+          "Dict",
+          "dict",
+          "Set",
+          "set",
+          "FrozenSet",
+          "frozenset",
+          "Tuple",
+          "tuple"
+      );
 
   private final PythonTypeIndex index;
   private final PythonStubs stubs;
@@ -26,7 +35,10 @@ final class PythonNameTypes {
 
   /** Creates the resolver over the indexed file, its stubs and the members it can reach. */
   PythonNameTypes(
-      final PythonTypeIndex index, final PythonStubs stubs, final PythonMembers members) {
+      final PythonTypeIndex index,
+      final PythonStubs stubs,
+      final PythonMembers members
+  ) {
     this.index = index;
     this.stubs = stubs;
     this.members = members;
@@ -42,7 +54,10 @@ final class PythonNameTypes {
    * initializer, for a variable without an annotation.
    */
   PythonSubject subjectOf(
-      final SyntaxNode node, final Function<SyntaxNode, Optional<TypeRef>> initializerType) {
+      final SyntaxNode node,
+      final Function<SyntaxNode,
+      Optional<TypeRef>> initializerType
+  ) {
     final Optional<Binding> binding = index.bindingOf(node);
     return binding.isPresent()
         ? bound(binding.get(), initializerType)
@@ -85,7 +100,10 @@ final class PythonNameTypes {
   }
 
   private PythonSubject bound(
-      final Binding binding, final Function<SyntaxNode, Optional<TypeRef>> initializerType) {
+      final Binding binding,
+      final Function<SyntaxNode,
+      Optional<TypeRef>> initializerType
+  ) {
     return switch (binding.kind()) {
       case PARAMETER, VARIABLE ->
           PythonSubject.value(declaredType(binding, initializerType).orElse(null));
@@ -98,7 +116,10 @@ final class PythonNameTypes {
   }
 
   private Optional<TypeRef> declaredType(
-      final Binding binding, final Function<SyntaxNode, Optional<TypeRef>> initializerType) {
+      final Binding binding,
+      final Function<SyntaxNode,
+      Optional<TypeRef>> initializerType
+  ) {
     final Optional<TypeRef> annotated = index.annotation(binding).flatMap(annotations::of);
     return annotated.isPresent() ? annotated : index.initializer(binding).flatMap(initializerType);
   }

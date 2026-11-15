@@ -25,7 +25,6 @@ import java.util.Set;
  * members are unknown.
  */
 public final class InheritedMemberCheck implements RuleCheck {
-
   /** What the check looks for. */
   public enum Mode {
     /** A field with the name of an inherited field. */
@@ -77,7 +76,8 @@ public final class InheritedMemberCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(CLASS_DECLARATION))) {
       final TypeMembers inherited = types.membersOf(visit.node().span()).orElse(UNKNOWN);
@@ -93,7 +93,10 @@ public final class InheritedMemberCheck implements RuleCheck {
   }
 
   private void fieldMasks(
-      final SyntaxNode type, final TypeMembers inherited, final List<RuleMatch> matches) {
+      final SyntaxNode type,
+      final TypeMembers inherited,
+      final List<RuleMatch> matches
+  ) {
     final Set<String> names = new HashSet<>();
     inherited.inheritedFields().forEach(field -> names.add(field.name()));
     for (final FieldAccesses.Field field : FieldAccesses.of(type).fields()) {
@@ -104,7 +107,10 @@ public final class InheritedMemberCheck implements RuleCheck {
   }
 
   private void staticHiding(
-      final SyntaxNode type, final TypeMembers inherited, final List<RuleMatch> matches) {
+      final SyntaxNode type,
+      final TypeMembers inherited,
+      final List<RuleMatch> matches
+  ) {
     for (final DeclaredMethods.Method method : DeclaredMethods.of(type)) {
       if (method.isStatic()
           && inherited.inheritedMethods().stream().anyMatch(i -> hides(method, i))) {
@@ -117,13 +123,17 @@ public final class InheritedMemberCheck implements RuleCheck {
       final SyntaxNode type,
       final TypeMembers inherited,
       final boolean intentional,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     CaseConfusions.of(type, inherited, intentional)
         .forEach(method -> matches.add(CheckSupport.at(method.node().span(), message)));
   }
 
   private void adapterOverload(
-      final SyntaxNode type, final TypeMembers inherited, final List<RuleMatch> matches) {
+      final SyntaxNode type,
+      final TypeMembers inherited,
+      final List<RuleMatch> matches
+  ) {
     final boolean adapter =
         inherited.ancestors().stream().anyMatch(ancestor -> ancestor.name().endsWith(ADAPTER));
     if (!adapter) {
@@ -147,7 +157,9 @@ public final class InheritedMemberCheck implements RuleCheck {
   }
 
   private static boolean sameSignature(
-      final DeclaredMethods.Method method, final CallTarget inherited) {
+      final DeclaredMethods.Method method,
+      final CallTarget inherited
+  ) {
     return inherited.parameters().stream()
         .map(InheritedMemberCheck::simple)
         .toList()

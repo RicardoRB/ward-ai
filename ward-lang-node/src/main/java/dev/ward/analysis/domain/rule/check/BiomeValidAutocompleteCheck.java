@@ -19,7 +19,6 @@ import java.util.Set;
  * option is fixed to input, upgrade when the rule declares that option.
  */
 public final class BiomeValidAutocompleteCheck implements RuleCheck {
-
   private static final String INPUT = "input";
   private static final String AUTOCOMPLETE = "autocomplete";
   private static final String AUTOCOMPLETE_CAMEL = "autoComplete";
@@ -82,7 +81,8 @@ public final class BiomeValidAutocompleteCheck implements RuleCheck {
           "transaction-currency",
           "url",
           "username",
-          "webauthn");
+          "webauthn"
+      );
   private static final Set<String> BILLING_AND_SHIPPING_ADDRESS =
       Set.of(
           "address-level1",
@@ -95,7 +95,8 @@ public final class BiomeValidAutocompleteCheck implements RuleCheck {
           "country",
           "country-name",
           "postal-code",
-          "street-address");
+          "street-address"
+      );
 
   private final String message;
 
@@ -116,7 +117,10 @@ public final class BiomeValidAutocompleteCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(JsxAttributes.OPENING, JsxAttributes.SELF_CLOSING))
         .stream()
         .map(SyntaxWalk.Visit::node)
@@ -159,7 +163,8 @@ public final class BiomeValidAutocompleteCheck implements RuleCheck {
               return JsxTruthiness.isQuoted(inner)
                   ? Optional.of(inner.substring(1, inner.length() - 1))
                   : Optional.empty();
-            });
+            }
+        );
   }
 
   /** The whitespace-separated tokens, as Biome's split_ascii_whitespace reads them. */
@@ -185,7 +190,7 @@ public final class BiomeValidAutocompleteCheck implements RuleCheck {
     final String second = tokens[1];
     return first.startsWith(SECTION_PREFIX)
         || BILLING_SHIPPING.contains(first)
-            && (BILLING_AND_SHIPPING_ADDRESS.contains(second) || VALID_VALUES.contains(second))
+        && (BILLING_AND_SHIPPING_ADDRESS.contains(second) || VALID_VALUES.contains(second))
         || Arrays.stream(tokens).allMatch(VALID_VALUES::contains);
   }
 }

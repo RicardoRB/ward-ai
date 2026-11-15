@@ -28,7 +28,8 @@ class PythonMarkerDetectionTest {
             project -> {
               assertThat(project.language()).isEqualTo(Language.PYTHON);
               assertThat(project.buildTool()).isEqualTo(BuildTool.PIP);
-            });
+            }
+        );
   }
 
   @Test
@@ -40,7 +41,8 @@ class PythonMarkerDetectionTest {
             project -> {
               assertThat(project.language()).isEqualTo(Language.PYTHON);
               assertThat(project.buildTool()).isEqualTo(BuildTool.PIP);
-            });
+            }
+        );
   }
 
   @Test

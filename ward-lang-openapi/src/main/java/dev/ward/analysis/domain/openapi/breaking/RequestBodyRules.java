@@ -8,7 +8,6 @@ import java.util.Optional;
 
 /** The rules about the request body of an operation: added, required, removed, its media types. */
 final class RequestBodyRules {
-
   private RequestBodyRules() {}
 
   /** The request body rules. */
@@ -18,10 +17,14 @@ final class RequestBodyRules {
         RowRule.of("request-body-became-required", pair -> each(pair, RequestBodyRules::required)),
         RowRule.of("request-body-removed", pair -> each(pair, RequestBodyRules::removed)),
         RowRule.of(
-            "request-body-media-type-removed", pair -> each(pair, RequestBodyRules::typeRemoved)),
+            "request-body-media-type-removed",
+            pair -> each(pair, RequestBodyRules::typeRemoved)
+        ),
         RowRule.of(
             "request-body-media-type-schema-added",
-            pair -> each(pair, RequestBodyRules::schemaAdded)));
+            pair -> each(pair, RequestBodyRules::schemaAdded)
+        )
+    );
   }
 
   /** A check of one operation in both documents. */
@@ -35,17 +38,27 @@ final class RequestBodyRules {
   }
 
   private static List<BreakingFinding> added(
-      final DocumentPair pair, final Operation base, final Operation now) {
+      final DocumentPair pair,
+      final Operation base,
+      final Operation now
+  ) {
     final Optional<DocNode> body = Bodies.request(pair.revision(), now);
     if (Bodies.request(pair.base(), base).isEmpty() && body.filter(Bodies::required).isPresent()) {
       return one(
-          "request-body-added-required", now, body.get(), "a required request body was added");
+          "request-body-added-required",
+          now,
+          body.get(),
+          "a required request body was added"
+      );
     }
     return List.of();
   }
 
   private static List<BreakingFinding> required(
-      final DocumentPair pair, final Operation base, final Operation now) {
+      final DocumentPair pair,
+      final Operation base,
+      final Operation now
+  ) {
     final Optional<DocNode> before = Bodies.request(pair.base(), base);
     final Optional<DocNode> after = Bodies.request(pair.revision(), now);
     if (before.isPresent()
@@ -56,13 +69,17 @@ final class RequestBodyRules {
           "request-body-became-required",
           now,
           after.get().get("required").orElse(after.get()),
-          "the request body became required");
+          "the request body became required"
+      );
     }
     return List.of();
   }
 
   private static List<BreakingFinding> removed(
-      final DocumentPair pair, final Operation base, final Operation now) {
+      final DocumentPair pair,
+      final Operation base,
+      final Operation now
+  ) {
     if (Bodies.request(pair.base(), base).isPresent()
         && Bodies.request(pair.revision(), now).isEmpty()) {
       return one("request-body-removed", now, now.node(), "the request body was removed");
@@ -71,7 +88,10 @@ final class RequestBodyRules {
   }
 
   private static List<BreakingFinding> typeRemoved(
-      final DocumentPair pair, final Operation base, final Operation now) {
+      final DocumentPair pair,
+      final Operation base,
+      final Operation now
+  ) {
     final Optional<DocNode> before = Bodies.request(pair.base(), base);
     final Optional<DocNode> after = Bodies.request(pair.revision(), now);
     final List<BreakingFinding> findings = new ArrayList<>();
@@ -84,7 +104,9 @@ final class RequestBodyRules {
                   "request-body-media-type-removed",
                   now,
                   at,
-                  "the request body media type " + type.key() + " was removed"));
+                  "the request body media type " + type.key() + " was removed"
+              )
+          );
         }
       }
     }
@@ -92,7 +114,10 @@ final class RequestBodyRules {
   }
 
   private static List<BreakingFinding> schemaAdded(
-      final DocumentPair pair, final Operation base, final Operation now) {
+      final DocumentPair pair,
+      final Operation base,
+      final Operation now
+  ) {
     final Optional<DocNode> before = Bodies.request(pair.base(), base);
     final Optional<DocNode> after = Bodies.request(pair.revision(), now);
     final List<BreakingFinding> findings = new ArrayList<>();
@@ -108,7 +133,9 @@ final class RequestBodyRules {
                   "request-body-media-type-schema-added",
                   now,
                   type.value().get("schema").orElse(type.value()),
-                  "the request body media type " + type.key() + " got a schema"));
+                  "the request body media type " + type.key() + " got a schema"
+              )
+          );
         }
       }
     }
@@ -116,13 +143,19 @@ final class RequestBodyRules {
   }
 
   private static List<BreakingFinding> one(
-      final String id, final Operation operation, final DocNode at, final String message) {
+      final String id,
+      final Operation operation,
+      final DocNode at,
+      final String message
+  ) {
     return List.of(
         new BreakingFinding(
             RowRule.PREFIX + id,
             OperationIndex.method(operation) + " " + operation.path() + ": " + message,
             OperationIndex.method(operation),
             operation.path(),
-            at));
+            at
+        )
+    );
   }
 }

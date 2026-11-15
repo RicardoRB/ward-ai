@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the type-only export check on parsed TypeScript with the scopes of each unit. */
 class NodeTypeOnlyExportCheckTest {
-
   @Test
   void clauseOfOnlyInterfacesIsReportedWithTheWholeMessage() {
     final List<RuleMatch> found =

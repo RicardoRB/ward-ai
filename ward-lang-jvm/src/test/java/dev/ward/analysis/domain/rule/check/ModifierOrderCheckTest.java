@@ -11,7 +11,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class ModifierOrderCheckTest {
-
   private static final String MODIFIER = "modifier";
   private static final String MESSAGE = "message";
   private static final String BODY = "classBodyDeclaration";

@@ -39,7 +39,8 @@ public final class GradleCorePlugins {
           "project-report-plugin",
           "reporting-base",
           "lifecycle-base",
-          "wrapper");
+          "wrapper"
+      );
 
   private GradleCorePlugins() {}
 

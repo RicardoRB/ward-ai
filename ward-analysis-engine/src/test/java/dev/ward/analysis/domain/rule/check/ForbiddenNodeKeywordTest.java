@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** A text pattern that starts with a keyword needs that keyword as the node's first token. */
 class ForbiddenNodeKeywordTest {
-
   private static final String EXPRESSION = "expression";
   private static final String TOKEN = "tok";
 
@@ -20,8 +19,13 @@ class ForbiddenNodeKeywordTest {
     return new ForbiddenNodeCheck(
         NodeFilter.of(Set.of(EXPRESSION)),
         new ForbiddenNodeCheck.Condition(
-            Optional.of(Pattern.compile(text)), Set.of(), Set.of(), ""),
-        "found");
+            Optional.of(Pattern.compile(text)),
+            Set.of(),
+            Set.of(),
+            ""
+        ),
+        "found"
+    );
   }
 
   private SyntaxNode expression(final String... tokens) {

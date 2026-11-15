@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
  * when it is a generated message and not an {@code Iterable}; anything unknown reports nothing.
  */
 public final class ProtoTruthMixedDescriptorsCheck extends FactsCheck {
-
   private static final String TRUTH = "com.google.common.truth.extensions.proto.";
   private static final Set<String> ASSERTIONS =
       Set.of(TRUTH + "ProtoFluentAssertion", TRUTH + "ProtoSubject");
@@ -33,7 +32,8 @@ public final class ProtoTruthMixedDescriptorsCheck extends FactsCheck {
       Set.of(
           "com.google.protobuf.GeneratedMessage",
           "com.google.protobuf.GeneratedMessageV3",
-          "com.google.protobuf.GeneratedMessageLite");
+          "com.google.protobuf.GeneratedMessageLite"
+      );
   private static final String EXPRESSION = "expression";
   private static final int SINGLE = 1;
   private static final FactNeed NEED =
@@ -93,12 +93,16 @@ public final class ProtoTruthMixedDescriptorsCheck extends FactsCheck {
             type ->
                 types.membersOf(qualifier.span()).map(TypeMembers::ancestors).stream()
                     .flatMap(List::stream)
-                    .anyMatch(ancestor -> MESSAGE.equals(ancestor.name())))
+                    .anyMatch(ancestor -> MESSAGE.equals(ancestor.name()))
+        )
         .map(TypeRef::name);
   }
 
   private static boolean subjectDiffers(
-      final SyntaxNode call, final String owner, final UnitTypeFacts types) {
+      final SyntaxNode call,
+      final String owner,
+      final UnitTypeFacts types
+  ) {
     SyntaxNode node = call;
     while (!node.children().isEmpty() && EXPRESSION.equals(node.children().get(0).kind())) {
       node = node.children().get(0);
@@ -119,7 +123,10 @@ public final class ProtoTruthMixedDescriptorsCheck extends FactsCheck {
   }
 
   private static boolean generatedOtherThan(
-      final SyntaxNode subject, final String owner, final UnitTypeFacts types) {
+      final SyntaxNode subject,
+      final String owner,
+      final UnitTypeFacts types
+  ) {
     return types
         .typeOf(subject.span())
         .filter(type -> type.arrayDepth() == 0 && !owner.equals(type.name()))
@@ -127,7 +134,8 @@ public final class ProtoTruthMixedDescriptorsCheck extends FactsCheck {
             type ->
                 types.membersOf(subject.span()).map(TypeMembers::ancestors).stream()
                     .flatMap(List::stream)
-                    .anyMatch(ancestor -> GENERATED.contains(ancestor.name())))
+                    .anyMatch(ancestor -> GENERATED.contains(ancestor.name()))
+        )
         .isPresent();
   }
 }

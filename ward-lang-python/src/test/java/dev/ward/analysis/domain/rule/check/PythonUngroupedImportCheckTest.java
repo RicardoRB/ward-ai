@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
  * The ungrouped-imports check reports an import whose package was imported before, not just before.
  */
 final class PythonUngroupedImportCheckTest {
-
   private static java.util.List<String> run(final String source) {
     return positions(new PythonUngroupedImportCheck("ungrouped").matches(tree(source)));
   }

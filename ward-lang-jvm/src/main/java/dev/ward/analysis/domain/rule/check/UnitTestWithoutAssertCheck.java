@@ -8,7 +8,6 @@ import java.util.Set;
 
 /** Reports each JUnit test method whose body calls no assertion method. */
 public final class UnitTestWithoutAssertCheck implements UnitCheck {
-
   private final String message;
 
   /**
@@ -30,7 +29,10 @@ public final class UnitTestWithoutAssertCheck implements UnitCheck {
         .map(
             method ->
                 CheckSupport.at(
-                    method.span(), CheckSupport.fill(message, JUnitMembers.name(method), "")))
+                    method.span(),
+                    CheckSupport.fill(message, JUnitMembers.name(method), "")
+                )
+        )
         .toList();
   }
 }

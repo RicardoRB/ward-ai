@@ -27,7 +27,6 @@ import org.tomlj.TomlParseResult;
  * unknown parameter is a configuration error that names the rule's kind.
  */
 final class GenericChecks {
-
   private static final String MESSAGE = "message";
   private static final String MAX = "max";
   private static final String PATTERN = "pattern";
@@ -37,11 +36,15 @@ final class GenericChecks {
 
   /** Builds the check of {@code kind} from the body, reading modifiers through {@code table}. */
   static RuleCheck build(
-      final GenericKind kind, final TomlParseResult toml, final ModifierTable table) {
+      final GenericKind kind,
+      final TomlParseResult toml,
+      final ModifierTable table
+  ) {
     final List<String> unknown = kind.unknown(toml.keySet());
     if (!unknown.isEmpty()) {
       throw new RuleConfigurationException(
-          "check '" + kind.id() + "' does not accept " + String.join(", ", unknown));
+          "check '" + kind.id() + "' does not accept " + String.join(", ", unknown)
+      );
     }
     return create(kind, toml, filter(toml, table), TomlValues.required(toml, MESSAGE));
   }
@@ -50,7 +53,8 @@ final class GenericChecks {
       final GenericKind kind,
       final TomlParseResult toml,
       final NodeFilter filter,
-      final String message) {
+      final String message
+  ) {
     return switch (kind) {
       case IDENTIFIER_PATTERN ->
           new IdentifierPatternCheck(
@@ -58,7 +62,8 @@ final class GenericChecks {
               TomlValues.required(toml, "name"),
               TomlValues.optionalStrings(toml, SKIP),
               TomlValues.required(toml, PATTERN),
-              message);
+              message
+          );
       case FORBIDDEN_NODE -> new ForbiddenNodeCheck(filter, condition(toml), message);
       case REQUIRED_NODE -> new RequiredNodeCheck(filter, requirement(toml), message);
       case COMPANION_NODE ->
@@ -67,14 +72,16 @@ final class GenericChecks {
               TomlValues.required(toml, "node"),
               Pattern.compile(TomlValues.required(toml, "match")),
               TomlValues.required(toml, "companion"),
-              message);
+              message
+          );
       case ORDER -> order(filter, toml, message);
       case DUPLICATE ->
           new DuplicateCheck(
               filter,
               TomlValues.strings(toml, "items"),
               Optional.ofNullable(toml.getString("key")),
-              message);
+              message
+          );
       default -> measured(kind, toml, filter, message);
     };
   }
@@ -84,7 +91,8 @@ final class GenericChecks {
       final GenericKind kind,
       final TomlParseResult toml,
       final NodeFilter filter,
-      final String message) {
+      final String message
+  ) {
     return switch (kind) {
       case COUNT ->
           new CountCheck(
@@ -92,13 +100,15 @@ final class GenericChecks {
               TomlValues.strings(toml, "counted"),
               TomlValues.optionalStrings(toml, SKIP),
               TomlValues.integer(toml, MAX),
-              message);
+              message
+          );
       case DEPTH ->
           new DepthCheck(
               filter,
               TomlValues.optionalStrings(toml, "reset"),
               TomlValues.integer(toml, MAX),
-              message);
+              message
+          );
       case TEXT_PATTERN -> new TextMatchCheck(filter, textRule(toml), message);
       case LITERAL ->
           new LiteralCheck(
@@ -107,22 +117,29 @@ final class GenericChecks {
               TomlValues.optionalStrings(toml, "ignore-contexts"),
               new LiteralCheck.Limits(
                   TomlValues.optionalInteger(toml, "max-repeats", LiteralCheck.NO_REPEAT_LIMIT),
-                  TomlValues.optionalInteger(toml, "min-length", 0)),
-              message);
+                  TomlValues.optionalInteger(toml, "min-length", 0)
+              ),
+              message
+          );
       default -> throw new RuleConfigurationException("unknown check '" + kind.id() + "'");
     };
   }
 
   private static OrderCheck order(
-      final NodeFilter filter, final TomlParseResult toml, final String message) {
+      final NodeFilter filter,
+      final TomlParseResult toml,
+      final String message
+  ) {
     return new OrderCheck(
         filter,
         TomlLists.optional(toml, "order"),
         Optional.ofNullable(toml.getString("group-by"))
             .map(
                 name ->
-                    new OrderCheck.GroupBy(name, TomlValues.optionalStrings(toml, "group-skip"))),
-        message);
+                    new OrderCheck.GroupBy(name, TomlValues.optionalStrings(toml, "group-skip"))
+            ),
+        message
+    );
   }
 
   private static NodeFilter filter(final TomlParseResult toml, final ModifierTable table) {
@@ -133,7 +150,8 @@ final class GenericChecks {
         TomlValues.optionalStrings(toml, "not-modifiers"),
         TomlValues.optionalStrings(toml, "inside"),
         TomlValues.optionalStrings(toml, "not-inside"),
-        Sources.parse(toml.getString("sources", () -> "all")));
+        Sources.parse(toml.getString("sources", () -> "all"))
+    );
   }
 
   private static ForbiddenNodeCheck.Condition condition(final TomlParseResult toml) {
@@ -141,7 +159,8 @@ final class GenericChecks {
         Optional.ofNullable(toml.getString("text")).map(Pattern::compile),
         TomlValues.optionalStrings(toml, "with-child"),
         TomlValues.optionalStrings(toml, "parent"),
-        toml.getString("parent-path", () -> ""));
+        toml.getString("parent-path", () -> "")
+    );
   }
 
   private static RequiredNodeCheck.Requirement requirement(final TomlParseResult toml) {
@@ -149,7 +168,8 @@ final class GenericChecks {
         TomlValues.optionalStrings(toml, "child"),
         TomlValues.optionalStrings(toml, "descendant"),
         TomlValues.optionalStrings(toml, SKIP),
-        TomlValues.optionalStrings(toml, "sibling"));
+        TomlValues.optionalStrings(toml, "sibling")
+    );
   }
 
   private static TextMatchCheck.Rule textRule(final TomlParseResult toml) {
@@ -159,7 +179,8 @@ final class GenericChecks {
         Pattern.compile(TomlValues.required(toml, PATTERN)),
         required,
         TomlValues.optionalInteger(toml, "limit", required ? 1 : 0),
-        TomlValues.optionalInteger(toml, "header-lines", 1));
+        TomlValues.optionalInteger(toml, "header-lines", 1)
+    );
   }
 
   private static TextMatchCheck.Target target(final String value) {
@@ -171,7 +192,8 @@ final class GenericChecks {
       case "header" -> TextMatchCheck.Target.HEADER;
       default ->
           throw new RuleConfigurationException(
-              "target must be lines, comments, strings, filename or header");
+              "target must be lines, comments, strings, filename or header"
+          );
     };
   }
 }

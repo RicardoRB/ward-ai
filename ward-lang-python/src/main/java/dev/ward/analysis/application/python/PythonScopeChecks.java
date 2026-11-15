@@ -32,7 +32,6 @@ import org.tomlj.TomlParseResult;
 
 /** The declarative checks that read the scopes or the format strings of a literal. */
 final class PythonScopeChecks {
-
   private static final String MESSAGE = "message";
   private static final String KINDS = "kinds";
 
@@ -50,7 +49,8 @@ final class PythonScopeChecks {
         entry("redefinition", toml -> new RedefinitionCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "star-import-usage",
-            toml -> new StarImportUsageCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new StarImportUsageCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry("percent-format", PythonScopeChecks::percentFormat),
         entry("dot-format", PythonScopeChecks::dotFormat),
         entry("ancestor-check", PythonScopeChecks::ancestorCheck),
@@ -60,19 +60,25 @@ final class PythonScopeChecks {
         entry("handler-body", PythonScopeChecks::handlerBody),
         entry(
             "unused-import-binding",
-            toml -> new UnusedImportBindingCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new UnusedImportBindingCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "positional-parameter-count",
             toml ->
                 new PositionalParameterCountCheck(
                     TomlValues.integer(toml, "max-positional-arguments"),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "module-constant-name",
-            toml -> new PythonConstantNameCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new PythonConstantNameCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "redefined-outer-name",
-            toml -> new PythonRedefinedNameCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new PythonRedefinedNameCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 
   private static RuleCheck outsideScope(final TomlParseResult toml) {
@@ -81,7 +87,10 @@ final class PythonScopeChecks {
             .map(ScopeKind::valueOf)
             .collect(Collectors.toUnmodifiableSet());
     return new OutsideScopeCheck(
-        TomlValues.strings(toml, KINDS), within, TomlValues.required(toml, MESSAGE));
+        TomlValues.strings(toml, KINDS),
+        within,
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static RuleCheck ancestorCheck(final TomlParseResult toml) {
@@ -90,44 +99,56 @@ final class PythonScopeChecks {
     return new AncestorCheck(
         TomlValues.strings(toml, KINDS),
         new AncestorCheck.Boundary(
-            TomlValues.strings(toml, "allowed"), TomlValues.strings(toml, "stop")),
+            TomlValues.strings(toml, "allowed"),
+            TomlValues.strings(toml, "stop")
+        ),
         AncestorCheck.Mode.valueOf(mode),
         Optional.ofNullable(text).map(Pattern::compile),
-        TomlValues.required(toml, MESSAGE));
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static RuleCheck percentFormat(final TomlParseResult toml) {
     final String problem =
         TomlValues.required(toml, "problem").toUpperCase(Locale.ROOT).replace('-', '_');
     return new PercentFormatCheck(
-        PercentFormatCheck.Problem.valueOf(problem), TomlValues.required(toml, MESSAGE));
+        PercentFormatCheck.Problem.valueOf(problem),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static RuleCheck dotFormat(final TomlParseResult toml) {
     final String problem =
         TomlValues.required(toml, "problem").toUpperCase(Locale.ROOT).replace('-', '_');
     return new DotFormatCheck(
-        DotFormatCheck.Problem.valueOf(problem), TomlValues.required(toml, MESSAGE));
+        DotFormatCheck.Problem.valueOf(problem),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static RuleCheck moduleOrder(final TomlParseResult toml) {
     final String problem =
         TomlValues.required(toml, "problem").toUpperCase(Locale.ROOT).replace('-', '_');
     return new ModuleOrderCheck(
-        ModuleOrderCheck.Problem.valueOf(problem), TomlValues.required(toml, MESSAGE));
+        ModuleOrderCheck.Problem.valueOf(problem),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static RuleCheck loggingArgs(final TomlParseResult toml) {
     final String problem =
         TomlValues.required(toml, "problem").toUpperCase(Locale.ROOT).replace('-', '_');
     return new LoggingArgsCheck(
-        LoggingArgsCheck.Problem.valueOf(problem), TomlValues.required(toml, MESSAGE));
+        LoggingArgsCheck.Problem.valueOf(problem),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static RuleCheck handlerBody(final TomlParseResult toml) {
     return new HandlerBodyCheck(
         Pattern.compile(TomlValues.required(toml, "body")),
         Boolean.TRUE.equals(toml.getBoolean("sole")),
-        TomlValues.required(toml, MESSAGE));
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 }

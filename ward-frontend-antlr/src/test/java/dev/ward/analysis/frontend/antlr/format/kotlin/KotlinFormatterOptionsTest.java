@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks that the formatter reads its options from {@link FormatOptions}. */
 class KotlinFormatterOptionsTest {
-
   private static final KotlinFormatter FORMATTER = new KotlinFormatter();
 
   @Test

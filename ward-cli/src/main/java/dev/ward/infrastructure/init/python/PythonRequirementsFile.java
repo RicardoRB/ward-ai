@@ -27,7 +27,8 @@ final class PythonRequirementsFile {
               file ->
                   read(file)
                       .lines()
-                      .forEach(line -> PyprojectDependencies.nameOf(line).ifPresent(names::add)));
+                      .forEach(line -> PyprojectDependencies.nameOf(line).ifPresent(names::add))
+          );
     } catch (IOException e) {
       throw new WardException("Could not list " + root + ": " + e.getMessage(), e);
     }

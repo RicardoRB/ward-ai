@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
  * not checked, as PMD's default {@code allowPrivate} asks: only the class itself can call it.
  */
 public final class ArrayIsStoredDirectlyCheck implements UnitCheck {
-
   private static final String MEMBER_DECLARATION = "memberDeclaration";
   private static final String METHOD = "methodDeclaration";
   private static final String CONSTRUCTOR = "constructorDeclaration";
@@ -56,7 +55,10 @@ public final class ArrayIsStoredDirectlyCheck implements UnitCheck {
   }
 
   private void checkCallable(
-      final SyntaxNode callable, final Set<String> fields, final List<RuleMatch> matches) {
+      final SyntaxNode callable,
+      final Set<String> fields,
+      final List<RuleMatch> matches
+  ) {
     final Set<String> arrays = arrayParameters(callable);
     for (final SyntaxNode assignment : Assignments.in(callable)) {
       final String value = Assignments.value(assignment);
@@ -69,7 +71,8 @@ public final class ArrayIsStoredDirectlyCheck implements UnitCheck {
   private static Set<String> arrayParameters(final SyntaxNode callable) {
     return SyntaxWalk.descendants(callable).stream()
         .filter(
-            node -> "formalParameter".equals(node.kind()) && SyntaxWalk.text(node).contains("[]"))
+            node -> "formalParameter".equals(node.kind()) && SyntaxWalk.text(node).contains("[]")
+        )
         .flatMap(node -> node.children().stream())
         .filter(child -> "variableDeclaratorId".equals(child.kind()))
         .map(id -> SyntaxWalk.text(id.children().get(0)))

@@ -14,7 +14,6 @@ import java.util.Set;
  * LoopConditionChecker does for the plain case.
  */
 public final class JavaLoopConditionCheck implements RuleCheck {
-
   private static final Set<String> ASSIGNMENTS =
       Set.of("=", "+=", "-=", "*=", "/=", "%=", "&=", "|=", "^=", "<<=", ">>=", ">>>=", "++", "--");
   private static final Set<String> EXITS = Set.of("break", "return", "throw");
@@ -57,7 +56,8 @@ public final class JavaLoopConditionCheck implements RuleCheck {
             method ->
                 SyntaxWalk.descendants(method).stream()
                     .filter(node -> "variableDeclaratorId".equals(node.kind()))
-                    .forEach(node -> names.add(SyntaxWalk.text(node))));
+                    .forEach(node -> names.add(SyntaxWalk.text(node)))
+        );
     return names;
   }
 

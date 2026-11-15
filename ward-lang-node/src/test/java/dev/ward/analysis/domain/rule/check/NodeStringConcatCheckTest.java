@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the string concatenation check on parsed JavaScript; each finding is one match. */
 class NodeStringConcatCheckTest {
-
   @Test
   void chainWithStringAndVariableIsReportedOnce() {
     assertThat(run("const s = 'a' + b + 'c';")).hasSize(1);

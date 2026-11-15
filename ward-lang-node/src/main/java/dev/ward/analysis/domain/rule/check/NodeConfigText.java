@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
  * and the tslib that {@code importHelpers} uses. Each is knip's rule for the package it names.
  */
 final class NodeConfigText {
-
   private static final Pattern IMPORT_HELPERS = Pattern.compile("\"importHelpers\"\\s*:\\s*true");
   private static final Pattern EXTENDS =
       Pattern.compile("\"extends\"\\s*:\\s*(\\[[^\\]]*\\]|\"[^\"]*\")");
@@ -77,7 +76,8 @@ final class NodeConfigText {
                     .results()
                     .map(match -> packageOf(match.group(1)))
                     .filter(name -> !name.isEmpty())
-                    .forEach(packages::add));
+                    .forEach(packages::add)
+        );
     return packages;
   }
 
@@ -92,7 +92,8 @@ final class NodeConfigText {
                     .results()
                     .map(match -> packageOf(match.group(1)))
                     .filter(name -> !name.isEmpty())
-                    .forEach(packages::add));
+                    .forEach(packages::add)
+        );
     return packages;
   }
 

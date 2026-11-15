@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the Java example rule of each generic check kind over real sources. */
 class JavaExampleRulesTest {
-
   private static final String JAVA = "ward:java/example-";
   private static final String JAVA_SOURCE =
       """
@@ -94,14 +93,20 @@ class JavaExampleRulesTest {
     final String source = "class A {\n  void a() {}\n  void b() {}\n  void a(int x) {}\n}\n";
 
     assertThat(
-            ExampleRuns.lines(
-                ExampleRuns.run(AnalysisLanguage.JAVA, "java", source), JAVA + "overload-order"))
+        ExampleRuns.lines(
+            ExampleRuns.run(AnalysisLanguage.JAVA, "java", source),
+            JAVA + "overload-order"
+        )
+    )
         .containsExactlyElementsOf(ExampleRuns.at(source, "void a(int"));
     final String grouped = "class A {\n  void a() {}\n  void a(int x) {}\n  void b() {}\n}\n";
 
     assertThat(
-            ExampleRuns.lines(
-                ExampleRuns.run(AnalysisLanguage.JAVA, "java", grouped), JAVA + "overload-order"))
+        ExampleRuns.lines(
+            ExampleRuns.run(AnalysisLanguage.JAVA, "java", grouped),
+            JAVA + "overload-order"
+        )
+    )
         .isEmpty();
   }
 }

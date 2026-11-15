@@ -12,7 +12,6 @@ import java.util.Map;
  * Reports a union or intersection constituent that repeats an earlier constituent of the same type.
  */
 public final class DuplicateConstituentsCheck implements RuleCheck {
-
   private static final String OPERATION = "unionOrIntersectionOrPrimaryType";
   private static final String UNION = "|";
   private static final String INTERSECTION = "&";
@@ -25,7 +24,10 @@ public final class DuplicateConstituentsCheck implements RuleCheck {
 
   /** Creates the check with the rule's options and message. */
   public DuplicateConstituentsCheck(
-      final boolean ignoreUnions, final boolean ignoreIntersections, final String message) {
+      final boolean ignoreUnions,
+      final boolean ignoreIntersections,
+      final String message
+  ) {
     this.ignoreUnions = ignoreUnions;
     this.ignoreIntersections = ignoreIntersections;
     this.message = message;
@@ -84,7 +86,10 @@ public final class DuplicateConstituentsCheck implements RuleCheck {
   }
 
   private static void gather(
-      final SyntaxNode node, final String operator, final List<SyntaxNode> out) {
+      final SyntaxNode node,
+      final String operator,
+      final List<SyntaxNode> out
+  ) {
     for (final SyntaxNode child : node.children()) {
       if (OPERATION.equals(child.kind()) && operator.equals(operatorOf(child))) {
         gather(child, operator, out);

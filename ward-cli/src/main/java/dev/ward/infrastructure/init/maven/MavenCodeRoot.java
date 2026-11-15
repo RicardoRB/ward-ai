@@ -26,7 +26,12 @@ public final class MavenCodeRoot {
         .map(
             pom ->
                 new Project(
-                    pom.getParent(), project.language(), BuildTool.MAVEN, project.framework()))
+                    pom.getParent(),
+                    project.language(),
+                    BuildTool.MAVEN,
+                    project.framework()
+                )
+        )
         .orElse(project);
   }
 }

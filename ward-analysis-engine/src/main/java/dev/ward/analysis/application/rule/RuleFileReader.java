@@ -24,7 +24,6 @@ import org.tomlj.TomlTable;
  * {@code body}. A file that cannot be read fails as a whole with an error that names it.
  */
 public final class RuleFileReader {
-
   private static final String RULES = "rules";
   private static final String ID = "id";
   private static final String LANGUAGE = "language";
@@ -98,7 +97,8 @@ public final class RuleFileReader {
               RuleRowMetadata.category(table),
               RuleRowMetadata.presets(table),
               RuleRowMetadata.options(table),
-              RuleRowMetadata.minJavaRelease(table));
+              RuleRowMetadata.minJavaRelease(table)
+          );
     } catch (final IllegalArgumentException exception) {
       throw RuleFileProblems.problem(resource, exception.getMessage(), exception);
     }
@@ -111,7 +111,9 @@ public final class RuleFileReader {
     final boolean hasScope = table.contains(SCOPE);
     if (hasLanguage == hasScope) {
       throw RuleFileProblems.problem(
-          resource, "a rule must name either 'language' or scope = \"text\", not both or neither");
+          resource,
+          "a rule must name either 'language' or scope = \"text\", not both or neither"
+      );
     }
     if (hasLanguage) {
       return Set.of(constant(resource, table, LANGUAGE, AnalysisLanguage.class));
@@ -131,13 +133,20 @@ public final class RuleFileReader {
   }
 
   private static <E extends Enum<E>> E constant(
-      final String resource, final TomlTable table, final String key, final Class<E> type) {
+      final String resource,
+      final TomlTable table,
+      final String key,
+      final Class<E> type
+  ) {
     final String value = text(resource, table, key);
     try {
       return Enum.valueOf(type, value.toUpperCase(Locale.ROOT));
     } catch (final IllegalArgumentException exception) {
       throw RuleFileProblems.problem(
-          resource, "'" + key + "' value '" + value + "' is not supported", exception);
+          resource,
+          "'" + key + "' value '" + value + "' is not supported",
+          exception
+      );
     }
   }
 }

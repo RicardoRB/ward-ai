@@ -13,7 +13,6 @@ import java.util.Objects;
  * @param diagnostics one finding per syntax error, copied on construction
  */
 public record ParseResult(SyntaxNode tree, List<AnalysisFinding> diagnostics) {
-
   /**
    * Copies the diagnostics.
    *

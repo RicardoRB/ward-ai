@@ -20,7 +20,6 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * them, so a rule sees a documentation comment as the sibling of the declaration it documents.
  */
 final class SyntaxTreeMapper {
-
   /** The kind of a token the parser could not place in the tree. */
   static final String ERROR_KIND = "error";
 
@@ -57,7 +56,7 @@ final class SyntaxTreeMapper {
     if (node instanceof TerminalNode terminal) {
       return terminal(parser.getVocabulary(), terminal.getSymbol());
     }
-    return rule((ParserRuleContext) node);
+    return rule((ParserRuleContext)node);
   }
 
   private SyntaxNode rule(final ParserRuleContext context) {
@@ -67,7 +66,7 @@ final class SyntaxTreeMapper {
       children.addAll(commentsBefore(firstToken(child)));
       children.add(node(child));
     }
-    final String kind = parser.getRuleNames()[context.getRuleIndex()];
+    final String kind = parser.getRuleNames() [context.getRuleIndex()];
     return new SyntaxNode(kind, SyntaxSpans.span(context), Map.of(), children);
   }
 
@@ -75,7 +74,7 @@ final class SyntaxTreeMapper {
     if (node instanceof ParserRuleContext context) {
       return context.getStart();
     }
-    return ((TerminalNode) node).getSymbol();
+    return ((TerminalNode)node).getSymbol();
   }
 
   /** Emits the comments between the last emitted token and {@code first}, in source order. */
@@ -93,7 +92,11 @@ final class SyntaxTreeMapper {
 
   private static SyntaxNode comment(final Token token) {
     return new SyntaxNode(
-        COMMENT_KIND, SyntaxSpans.comment(token), Map.of("text", token.getText()), List.of());
+        COMMENT_KIND,
+        SyntaxSpans.comment(token),
+        Map.of("text", token.getText()),
+        List.of()
+    );
   }
 
   private static SyntaxNode terminal(final Vocabulary vocabulary, final Token token) {

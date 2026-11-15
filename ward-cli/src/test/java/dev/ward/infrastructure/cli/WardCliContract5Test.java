@@ -44,7 +44,8 @@ class WardCliContract5Test extends WardCliIntegrationSupport {
     Files.writeString(target, "user-owned\n");
 
     assertThat(
-            run(INIT, INTEGRATION_OPTION, "opencode", GATE_OPTION, TESTS, "-C", project.toString()))
+        run(INIT, INTEGRATION_OPTION, "opencode", GATE_OPTION, TESTS, "-C", project.toString())
+    )
         .isEqualTo(ExitCodes.ERROR);
     assertThat(err.toString()).contains("conflict with user-owned content");
     assertThat(project.resolve(WARD_TOML)).doesNotExist();
@@ -74,9 +75,7 @@ class WardCliContract5Test extends WardCliIntegrationSupport {
   @Test
   void checkSupportsProfilesAndStrictJson() throws IOException {
     run(INIT, INTEGRATION_OPTION, NONE, GATE_OPTION, "tests,compile", "-C", project.toString());
-    Files.writeString(
-        project.resolve(WARD_TOML),
-"""
+    Files.writeString(project.resolve(WARD_TOML), """
                 version = 2
                  [checks.tests]
 uses = "tests"
@@ -93,7 +92,8 @@ uses = "compile"
     assertThat(out.toString()).contains("\"policies\"", "\"status\":\"PASSED\"");
     out.getBuffer().setLength(0);
     assertThat(
-            run(CHECK, "--profile", "fast,strict", FORMAT_OPTION, JSON, "-C", project.toString()))
+        run(CHECK, "--profile", "fast,strict", FORMAT_OPTION, JSON, "-C", project.toString())
+    )
         .isZero();
     assertThat(out.toString()).contains("\"policies\"");
     out.getBuffer().setLength(0);
@@ -111,9 +111,7 @@ uses = "compile"
 
   @Test
   void checkReportsNewGatesAndMissingToolDoesNotStopOthers() throws IOException {
-    Files.writeString(
-        project.resolve(WARD_TOML),
-"""
+    Files.writeString(project.resolve(WARD_TOML), """
                 version = 2
                 [checks.lint]
 uses = "command"
@@ -145,9 +143,7 @@ uses = "command"
   @Test
   void failFastReportsSkippedGatesAndJsonFlag() throws IOException {
     Files.createFile(project.resolve("FAIL"));
-    Files.writeString(
-        project.resolve(WARD_TOML),
-"""
+    Files.writeString(project.resolve(WARD_TOML), """
             version = 2
             [checks.tests]
 uses = "tests"

@@ -11,7 +11,6 @@ import java.util.Set;
 /** Joins the rule files and the checks that each language module contributes. */
 @Module
 interface RuleBindingsModule {
-
   /** The rule file lists of the bundled language modules. */
   @Provides
   @ElementsIntoSet

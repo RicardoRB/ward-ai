@@ -29,13 +29,21 @@ public final class TernaryCoercionCheck implements RuleCheck {
   private static final FactNeed NEED = new FactNeed(Set.of(EXPRESSION), Set.of(FactKind.TYPE));
   private static final Map<String, String> BOXES =
       Map.of(
-          "java.lang.Byte", "byte",
-          "java.lang.Short", "short",
-          "java.lang.Character", "char",
-          "java.lang.Integer", "int",
-          "java.lang.Long", "long",
-          "java.lang.Float", "float",
-          "java.lang.Double", "double");
+          "java.lang.Byte",
+          "byte",
+          "java.lang.Short",
+          "short",
+          "java.lang.Character",
+          "char",
+          "java.lang.Integer",
+          "int",
+          "java.lang.Long",
+          "long",
+          "java.lang.Float",
+          "float",
+          "java.lang.Double",
+          "double"
+      );
   private static final Set<String> PRIMITIVES = Set.copyOf(BOXES.values());
 
   private final String message;
@@ -65,7 +73,8 @@ public final class TernaryCoercionCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(EXPRESSION)).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(node -> node.children().size() == PARTS && isConditional(node))

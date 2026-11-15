@@ -2,7 +2,6 @@ package dev.ward.bench;
 
 /** The short human-readable summary printed after a run. */
 final class Summary {
-
   private static final String LINE =
       "%-16s %-22s cold %8.0f ms (spread %.2f)  warm %8.0f ms (spread %.2f)"
           + "  peak RSS %9.0f KB%n";
@@ -15,7 +14,10 @@ final class Summary {
     text.append(
         String.format(
             "Native binary %d bytes, completed=%s%n",
-            result.binary().sizeBytes(), result.completed()));
+            result.binary().sizeBytes(),
+            result.completed()
+        )
+    );
     for (final BenchmarkResult.EntryResult entry : result.entries()) {
       for (final BenchmarkResult.JobResult job : entry.jobs()) {
         text.append(
@@ -27,11 +29,19 @@ final class Summary {
                 job.cold().spread(),
                 job.warm().median(),
                 job.warm().spread(),
-                job.peakRssKb().median()));
+                job.peakRssKb().median()
+            )
+        );
         if (job.edit() != null) {
           text.append(
               String.format(
-                  EDIT_LINE, job.name(), entry.entry().name(), job.edit().p50(), job.edit().p95()));
+                  EDIT_LINE,
+                  job.name(),
+                  entry.entry().name(),
+                  job.edit().p50(),
+                  job.edit().p95()
+              )
+          );
         }
       }
     }

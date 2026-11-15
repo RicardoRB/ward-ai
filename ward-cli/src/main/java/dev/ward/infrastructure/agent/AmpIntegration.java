@@ -19,7 +19,9 @@ public final class AmpIntegration implements NativeHarnessAdapter {
           Set.of(
               IntegrationCapability.POST_EDIT,
               IntegrationCapability.TURN_END,
-              IntegrationCapability.FEEDBACK));
+              IntegrationCapability.FEEDBACK
+          )
+      );
 
   // Amp plugin API (@ampcode/plugin): tool.result may replace the output the model reads, and
   // agent.end may continue the turn once.
@@ -160,7 +162,8 @@ public final class AmpIntegration implements NativeHarnessAdapter {
           first(patch, patchText),
           skill,
           false,
-          false);
+          false
+      );
     }
 
     private static String first(final String... values) {

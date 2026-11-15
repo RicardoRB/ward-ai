@@ -9,12 +9,22 @@ import java.util.Set;
  * the target expression, an assignment operator token and the value expression.
  */
 final class Assignments {
-
   /** The assignment operator tokens, quoted as the syntax tree names them. */
   static final Set<String> OPERATORS =
       Set.of(
-          "'='", "'+='", "'-='", "'*='", "'/='", "'%='", "'&='", "'|='", "'^='", "'<<='", "'>>='",
-          "'>>>='");
+          "'='",
+          "'+='",
+          "'-='",
+          "'*='",
+          "'/='",
+          "'%='",
+          "'&='",
+          "'|='",
+          "'^='",
+          "'<<='",
+          "'>>='",
+          "'>>>='"
+      );
 
   private static final String EXPRESSION = "expression";
   private static final int PARTS = 3;

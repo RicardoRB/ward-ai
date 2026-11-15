@@ -15,7 +15,6 @@ import org.antlr.v4.runtime.Token;
  * list on one source line that has a top-level comma, where Swift ignores newlines.
  */
 final class SwiftDocBuilder {
-
   private static final String OPEN_BRACE = "{";
   private static final String CLOSE_BRACE = "}";
   private static final String OPEN_PAREN = "(";

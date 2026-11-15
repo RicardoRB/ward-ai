@@ -9,17 +9,21 @@ import org.junit.jupiter.api.Test;
 
 /** The graphs that the Kotlin lowering builds: which bodies, and how statements join. */
 class KotlinControlFlowTest {
-
   private static final String AFTER = "z()";
 
   private static ControlFlowGraph of(final String body) {
     return KotlinFlowFixtures.graph(
-        "class C {\n  fun f(c: Boolean) {\n" + body + "\n  }\n}\n", "C#f(1)");
+        "class C {\n  fun f(c: Boolean) {\n" + body + "\n  }\n}\n",
+        "C#f(1)"
+    );
   }
 
   private static int block(final String body, final String snippet) {
     return JavaFlowFixtures.blockWith(
-        of(body), "class C {\n  fun f(c: Boolean) {\n" + body + "\n  }\n}\n", snippet);
+        of(body),
+        "class C {\n  fun f(c: Boolean) {\n" + body + "\n  }\n}\n",
+        snippet
+    );
   }
 
   @Test
@@ -45,7 +49,8 @@ class KotlinControlFlowTest {
             "C#local(1)",
             "C#g(0)",
             "C.Companion#make(0)",
-            "#top(0)");
+            "#top(0)"
+        );
   }
 
   @Test

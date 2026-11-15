@@ -40,7 +40,8 @@ class UnitResultCacheTest {
   private static final List<SourceUnit> UNITS =
       List.of(
           new SourceUnit(FLAGGED, AnalysisLanguage.JAVA, "class A {}"),
-          new SourceUnit(CLEAN, AnalysisLanguage.JAVA, "class B {}"));
+          new SourceUnit(CLEAN, AnalysisLanguage.JAVA, "class B {}")
+      );
 
   private final Map<String, String> entries = new HashMap<>();
   private final AnalysisCache cache =
@@ -69,27 +70,31 @@ class UnitResultCacheTest {
       };
   private final RuleMatcher matcher =
       definition ->
-          new CompiledRule() {
-            @Override
-            public RuleDefinition definition() {
-              return definition;
-            }
+      new CompiledRule() {
+        @Override
+        public RuleDefinition definition() {
+          return definition;
+        }
 
-            @Override
-            public List<RuleMatch> matches(final SyntaxNode root) {
-              if (failing.contains(root.kind())) {
-                throw new AnalysisFailedException("the rule broke");
-              }
-              return flagged.contains(root.kind())
-                  ? List.of(new RuleMatch(AT, "too long"))
-                  : List.of();
-            }
-          };
+        @Override
+        public List<RuleMatch> matches(final SyntaxNode root) {
+          if (failing.contains(root.kind())) {
+            throw new AnalysisFailedException("the rule broke");
+          }
+          return flagged.contains(root.kind())
+              ? List.of(new RuleMatch(AT, "too long"))
+              : List.of();
+        }
+      };
   private final List<FrontendSupport> frontends =
       List.of(new FrontendSupport(AnalysisLanguage.JAVA, frontend, Set.of(RuleCapability.SYNTAX)));
   private final UnitResultCache results =
       new UnitResultCache(
-          new RuleEngine(matcher), AnalysisCacheFixtures.codec(), "0.6.0", List.of());
+          new RuleEngine(matcher),
+          AnalysisCacheFixtures.codec(),
+          "0.6.0",
+          List.of()
+      );
   private final RuleDefinition rule = rule("body");
 
   @Test
@@ -173,6 +178,11 @@ class UnitResultCacheTest {
 
   private static RuleDefinition rule(final String body) {
     return new RuleDefinition(
-        LENGTH, AnalysisLanguage.JAVA, RuleCapability.SYNTAX, AnalysisSeverity.ERROR, body);
+        LENGTH,
+        AnalysisLanguage.JAVA,
+        RuleCapability.SYNTAX,
+        AnalysisSeverity.ERROR,
+        body
+    );
   }
 }

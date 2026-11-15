@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
  * The bundled Java and Kotlin complexity rules return every method's value, within the limit too.
  */
 final class ComplexityMeasuresTest {
-
   @Test
   void javaMeasuresEveryMethodIncludingThoseWithinTheLimit() {
     final String source =
@@ -59,20 +58,24 @@ final class ComplexityMeasuresTest {
   }
 
   private static List<String> measure(
-      final String id, final AnalysisLanguage language, final String text) {
+      final String id,
+      final AnalysisLanguage language,
+      final String text
+  ) {
     return new ClasspathRuleSource()
         .load().rules().stream()
-            .filter(rule -> rule.id().equals(id))
-            .findFirst()
-            .map(BundledRuleMatchers.create()::compile)
-            .orElseThrow()
-            .measures(
-                new AntlrLanguageFrontend()
-                    .parse(new SourceUnit("src/A.txt", language, text))
-                    .tree())
-            .stream()
-            .map(ComplexityMeasuresTest::line)
-            .toList();
+        .filter(rule -> rule.id().equals(id))
+        .findFirst()
+        .map(BundledRuleMatchers.create()::compile)
+        .orElseThrow()
+        .measures(
+            new AntlrLanguageFrontend()
+                .parse(new SourceUnit("src/A.txt", language, text))
+                .tree()
+        )
+        .stream()
+        .map(ComplexityMeasuresTest::line)
+        .toList();
   }
 
   private static String line(final Measured measured) {

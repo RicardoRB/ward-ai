@@ -23,7 +23,6 @@ import java.util.TreeMap;
  * compared with its own tokens only.
  */
 public final class DuplicateCodeFindings {
-
   private DuplicateCodeFindings() {}
 
   /**
@@ -34,7 +33,8 @@ public final class DuplicateCodeFindings {
   public static List<AnalysisFinding> findings(
       final List<RuleDefinition> rules,
       final List<SourceUnit> units,
-      final List<FrontendSupport> frontends) {
+      final List<FrontendSupport> frontends
+  ) {
     Objects.requireNonNull(units, "units");
     Objects.requireNonNull(frontends, "frontends");
     final List<AnalysisFinding> findings = new ArrayList<>();
@@ -49,7 +49,8 @@ public final class DuplicateCodeFindings {
   private static List<AnalysisFinding> ruleFindings(
       final RuleDefinition rule,
       final List<SourceUnit> units,
-      final List<FrontendSupport> frontends) {
+      final List<FrontendSupport> frontends
+  ) {
     final AnalysisLanguage language = rule.languages().iterator().next();
     final FrontendSupport frontend =
         frontends.stream()
@@ -77,7 +78,8 @@ public final class DuplicateCodeFindings {
   private static SortedMap<String, List<DuplicateTokens.Token>> tokensByFile(
       final List<SourceUnit> units,
       final FrontendSupport frontend,
-      final DuplicateCodeOptions options) {
+      final DuplicateCodeOptions options
+  ) {
     final AnalysisLanguage language = frontend.language();
     final SortedMap<String, List<DuplicateTokens.Token>> files = new TreeMap<>();
     for (final SourceUnit unit : units) {
@@ -94,7 +96,8 @@ public final class DuplicateCodeFindings {
       final RuleDefinition rule,
       final DuplicateCodeOptions options,
       final DuplicatedShare share,
-      final CloneDetector.Clone first) {
+      final CloneDetector.Clone first
+  ) {
     return new AnalysisFinding(
         rule.id(),
         rule.severity(),
@@ -111,11 +114,14 @@ public final class DuplicateCodeFindings {
         1,
         1,
         null,
-        List.of());
+        List.of()
+    );
   }
 
   private static AnalysisFinding finding(
-      final RuleDefinition rule, final CloneDetector.Clone clone) {
+      final RuleDefinition rule,
+      final CloneDetector.Clone clone
+  ) {
     final List<CloneDetector.Copy> copies = clone.copies();
     final List<FlowStep> steps = new ArrayList<>();
     for (int index = 0; index < copies.size(); index++) {
@@ -124,7 +130,9 @@ public final class DuplicateCodeFindings {
           new FlowStep(
               copy.span(),
               "copy " + (index + 1) + " of " + copies.size() + " of the duplicated code",
-              copy.path()));
+              copy.path()
+          )
+      );
     }
     final CloneDetector.Copy first = copies.get(0);
     return new AnalysisFinding(
@@ -139,6 +147,7 @@ public final class DuplicateCodeFindings {
         first.span().startLine(),
         first.span().startColumn(),
         null,
-        steps);
+        steps
+    );
   }
 }

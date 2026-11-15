@@ -27,8 +27,8 @@ record JavaTreeFacts(
     Set<Integer> hardAfter,
     Set<Integer> annotationEnds,
     Set<Integer> angleTokens,
-    Set<Integer> expressionBlocks) {
-
+    Set<Integer> expressionBlocks
+) {
   /** Copies the rules and the token sets. */
   JavaTreeFacts {
     rules = List.copyOf(rules);

@@ -12,7 +12,6 @@ import java.util.Set;
  * {@code null} label is exhaustive by the compiler's check and is not reported.
  */
 public final class MissingSwitchDefaultCheck implements UnitCheck {
-
   private static final String SWITCH = "'switch'";
   private static final String DEFAULT = "'default'";
   private static final String GROUP = "switchBlockStatementGroup";
@@ -51,7 +50,8 @@ public final class MissingSwitchDefaultCheck implements UnitCheck {
             label ->
                 NULL_LABEL.equals(SyntaxWalk.text(label))
                     || label.children().stream()
-                        .anyMatch(c -> DEFAULT.equals(c.kind()) || TYPE.equals(c.kind())));
+                        .anyMatch(c -> DEFAULT.equals(c.kind()) || TYPE.equals(c.kind()))
+        );
   }
 
   private static List<SyntaxNode> labels(final SyntaxNode switchNode) {

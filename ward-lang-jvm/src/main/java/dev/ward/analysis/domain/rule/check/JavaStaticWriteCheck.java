@@ -15,7 +15,6 @@ import java.util.Set;
  * or a local with the name of the field hides it and is not reported.
  */
 public final class JavaStaticWriteCheck implements RuleCheck {
-
   private static final String SYNCHRONIZED = "synchronized";
   private static final String STATEMENT = "statement";
   private static final String THIS = "this";
@@ -49,7 +48,10 @@ public final class JavaStaticWriteCheck implements RuleCheck {
   }
 
   private void instanceMethod(
-      final SyntaxNode member, final Set<String> statics, final List<RuleMatch> matches) {
+      final SyntaxNode member,
+      final Set<String> statics,
+      final List<RuleMatch> matches
+  ) {
     final List<String> modifiers = MemberDeclarations.modifiers(member);
     if (modifiers.contains(MemberDeclarations.STATIC)) {
       return;
@@ -65,7 +67,10 @@ public final class JavaStaticWriteCheck implements RuleCheck {
                 matches.add(
                     CheckSupport.at(
                         assignment.span(),
-                        CheckSupport.fill(message, written(Assignments.target(assignment)), ""))));
+                        CheckSupport.fill(message, written(Assignments.target(assignment)), "")
+                    )
+                )
+        );
   }
 
   private List<SyntaxNode> scopes(final SyntaxNode method, final boolean synchronizedMethod) {

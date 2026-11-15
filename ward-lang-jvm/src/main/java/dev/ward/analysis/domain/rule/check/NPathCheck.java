@@ -14,7 +14,6 @@ import java.util.Set;
  * in {@link NPathPaths} and {@link NPathBranches}.
  */
 public final class NPathCheck implements RuleCheck {
-
   private static final Set<String> SCOPES = Set.of("methodDeclaration", "constructorDeclaration");
   private static final String BLOCK = "block";
   private static final String METHOD_BODY = "methodBody";
@@ -49,7 +48,10 @@ public final class NPathCheck implements RuleCheck {
     if (score > max) {
       matches.add(
           new RuleMatch(
-              node.span(), CheckSupport.fill(message, String.valueOf(score), String.valueOf(max))));
+              node.span(),
+              CheckSupport.fill(message, String.valueOf(score), String.valueOf(max))
+          )
+      );
     }
   }
 

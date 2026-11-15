@@ -8,16 +8,12 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class ReviewChecksTest extends TreeBuilders {
-
   @Test
   void anUnusedLabelIsReportedAndAUsedOneIsNot() {
     final SyntaxNode unused =
         unit(
-            n(
-                STATEMENT,
-                id("outer"),
-                t("':'", ":"),
-                n(STATEMENT, n(STATEMENT, t("'for'", "for")))));
+            n(STATEMENT, id("outer"), t("':'", ":"), n(STATEMENT, n(STATEMENT, t("'for'", "for"))))
+        );
     final SyntaxNode used =
         unit(
             n(
@@ -26,7 +22,10 @@ class ReviewChecksTest extends TreeBuilders {
                 t("':'", ":"),
                 n(
                     STATEMENT,
-                    n(STATEMENT, t("'break'", "break"), id("outer"), t(TOKEN_SEMICOLON, ";")))));
+                    n(STATEMENT, t("'break'", "break"), id("outer"), t(TOKEN_SEMICOLON, ";"))
+                )
+            )
+        );
     assertThat(run(new UnusedLabelCheck(MESSAGE), unused)).hasSize(1);
     assertThat(run(new UnusedLabelCheck(MESSAGE), used)).isEmpty();
   }
@@ -40,17 +39,20 @@ class ReviewChecksTest extends TreeBuilders {
                 t(SWITCH, "switch"),
                 n(
                     "switchBlockStatementGroup",
-                    n("switchLabel", t("'default'", "default"), t("':'", ":"))),
-                n(
-                    "switchBlockStatementGroup",
-                    n("switchLabel", t("'case'", "case"), t("':'", ":")))));
+                    n("switchLabel", t("'default'", "default"), t("':'", ":"))
+                ),
+                n("switchBlockStatementGroup", n("switchLabel", t("'case'", "case"), t("':'", ":")))
+            )
+        );
     final SyntaxNode trailing =
         unit(
             n(
                 STATEMENT,
                 t(SWITCH, "switch"),
                 n("switchLabel", t("'case'", "case"), t("':'", ":")),
-                n("switchLabel", t("'default'", "default"), t("':'", ":"))));
+                n("switchLabel", t("'default'", "default"), t("':'", ":"))
+            )
+        );
     assertThat(run(new DefaultLabelNotLastCheck(MESSAGE), misplaced)).hasSize(1);
     assertThat(run(new DefaultLabelNotLastCheck(MESSAGE), trailing)).isEmpty();
   }
@@ -71,8 +73,11 @@ class ReviewChecksTest extends TreeBuilders {
             List.of(
                 n(
                     "classOrInterfaceModifier",
-                    n(ANNOTATION, t("'@'", "@"), id("FunctionalInterface")))),
-            List.of("greet"));
+                    n(ANNOTATION, t("'@'", "@"), id("FunctionalInterface"))
+                )
+            ),
+            List.of("greet")
+        );
     final SyntaxNode two = Declarations.interfaceUnit(List.of(), List.of("a", "b"));
     assertThat(run(new ImplicitFunctionalInterfaceCheck(MESSAGE), bare)).hasSize(1);
     assertThat(run(new ImplicitFunctionalInterfaceCheck(MESSAGE), annotated)).isEmpty();
@@ -109,8 +114,13 @@ class ReviewChecksTest extends TreeBuilders {
                         "forInit",
                         n(
                             "localVariableDeclaration",
-                            n("variableDeclarator", n(PARAMETER_ID, id("i")))))),
-                n(STATEMENT, n(BLOCK, assignment("i", "x")))));
+                            n("variableDeclarator", n(PARAMETER_ID, id("i")))
+                        )
+                    )
+                ),
+                n(STATEMENT, n(BLOCK, assignment("i", "x")))
+            )
+        );
     assertThat(run(new AvoidReassigningLoopVariablesCheck("deny", "deny", MESSAGE), loop))
         .hasSize(1);
     assertThat(run(new AvoidReassigningLoopVariablesCheck("allow", "deny", MESSAGE), loop))
@@ -126,13 +136,18 @@ class ReviewChecksTest extends TreeBuilders {
                 t("'for'", "for"),
                 n(
                     "forControl",
-                    n("enhancedForControl", n(PARAMETER_ID, id("v")), t("':'", ":"), id("xs"))),
+                    n("enhancedForControl", n(PARAMETER_ID, id("v")), t("':'", ":"), id("xs"))
+                ),
                 n(
                     STATEMENT,
                     n(
                         BLOCK,
                         n("blockStatement", assignment("v", "x")),
-                        n("blockStatement", assignment("v", "y"))))));
+                        n("blockStatement", assignment("v", "y"))
+                    )
+                )
+            )
+        );
     assertThat(run(new AvoidReassigningLoopVariablesCheck("allow", "firstOnly", MESSAGE), loop))
         .hasSize(1);
     assertThat(run(new AvoidReassigningLoopVariablesCheck("allow", "deny", MESSAGE), loop))
@@ -144,11 +159,14 @@ class ReviewChecksTest extends TreeBuilders {
     final SyntaxNode returns =
         unit(
             Declarations.classWith(
-                Declarations.arrayField("values"), Declarations.returnOf("values")));
+                Declarations.arrayField("values"),
+                Declarations.returnOf("values")
+            )
+        );
     final SyntaxNode returnsCopy =
         unit(
-            Declarations.classWith(
-                Declarations.arrayField("values"), Declarations.returnOf("copy")));
+            Declarations.classWith(Declarations.arrayField("values"), Declarations.returnOf("copy"))
+        );
     assertThat(run(new MethodReturnsInternalArrayCheck(MESSAGE), returns)).hasSize(1);
     assertThat(run(new MethodReturnsInternalArrayCheck(MESSAGE), returnsCopy)).isEmpty();
   }

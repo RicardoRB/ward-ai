@@ -27,7 +27,9 @@ class TypeFactsPrePassTest {
           Map.of(),
           List.of(
               new SyntaxNode("call", CALL, Map.of(), List.of()),
-              new SyntaxNode("field", FIELD, Map.of(), List.of())));
+              new SyntaxNode("field", FIELD, Map.of(), List.of())
+          )
+      );
 
   @Test
   void threeRulesForTheSameFileSendOneRequest() {
@@ -40,7 +42,9 @@ class TypeFactsPrePassTest {
         List.of(
             new FactNeed(Set.of("call"), Set.of(FactKind.CALL)),
             new FactNeed(Set.of("call", "field"), Set.of(FactKind.TYPE)),
-            new FactNeed(Set.of("field"), Set.of(FactKind.ANNOTATIONS))));
+            new FactNeed(Set.of("field"), Set.of(FactKind.ANNOTATIONS))
+        )
+    );
 
     assertThat(requests).hasSize(1);
     assertThat(requests.get(0).spans()).containsExactlyInAnyOrder(CALL, FIELD);
@@ -65,7 +69,8 @@ class TypeFactsPrePassTest {
 
     assertThat(prePass.run(UNIT, ROOT, List.of())).isEqualTo(UnitTypeFacts.none());
     assertThat(
-            prePass.run(UNIT, ROOT, List.of(new FactNeed(Set.of("absent"), Set.of(FactKind.TYPE)))))
+        prePass.run(UNIT, ROOT, List.of(new FactNeed(Set.of("absent"), Set.of(FactKind.TYPE))))
+    )
         .isEqualTo(UnitTypeFacts.none());
     assertThat(requests).isEmpty();
   }

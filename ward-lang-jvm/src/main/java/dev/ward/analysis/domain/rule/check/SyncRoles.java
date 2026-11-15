@@ -6,7 +6,6 @@ import java.util.Set;
 
 /** Tells how an expression that names a field uses it: read, write or null check. */
 final class SyncRoles {
-
   /** The field is read. */
   static final int READ = 0;
 

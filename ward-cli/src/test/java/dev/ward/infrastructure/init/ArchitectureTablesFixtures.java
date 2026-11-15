@@ -7,7 +7,6 @@ import dev.ward.infrastructure.init.swift.SwiftArchitectureTables;
 
 /** Builds the architecture tables of every toolchain, as the production wiring does. */
 public final class ArchitectureTablesFixtures {
-
   private ArchitectureTablesFixtures() {}
 
   /** Returns the tables that answer each project with its own toolchain's layout. */
@@ -16,6 +15,7 @@ public final class ArchitectureTablesFixtures {
         new JavaArchitectureTables(),
         new NodeArchitectureTables(),
         new PythonArchitectureTables(),
-        new SwiftArchitectureTables());
+        new SwiftArchitectureTables()
+    );
   }
 }

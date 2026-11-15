@@ -30,7 +30,8 @@ class ClaudeCodeIntegrationTest {
         .contains(
             ClaudeCodeIntegration.HOOK_MARKER,
             "exec ward hook claude-code --learn-after 3 --event-stdin"
-                + " -C \"${CLAUDE_PROJECT_DIR:-.}\"");
+                + " -C \"${CLAUDE_PROJECT_DIR:-.}\""
+        );
     final JsonTree hooks = JsonTree.parse(Files.readString(settings)).get(HOOKS_KEY);
     assertThat(hooks.get(POST_TOOL_USE).get(0).get(HOOKS_KEY).get(0).get("command").asString())
         .isEqualTo("${CLAUDE_PROJECT_DIR}/" + EDIT_WRITE_PATH);
@@ -63,9 +64,7 @@ class ClaudeCodeIntegrationTest {
     final Path root = Files.createTempDirectory("ward-claude-merge");
     final Path settings = root.resolve(SETTINGS_PATH);
     Files.createDirectories(settings.getParent());
-    Files.writeString(
-        settings,
-        """
+    Files.writeString(settings, """
         {
           "theme": {"name": "dark"},
           "hooks": {
@@ -83,14 +82,15 @@ class ClaudeCodeIntegrationTest {
     assertThat(merged.get("theme").get("name").asString()).isEqualTo("dark");
     assertThat(merged.get(HOOKS_KEY).get(POST_TOOL_USE).size()).isEqualTo(2);
     assertThat(
-            merged
-                .get(HOOKS_KEY)
-                .get(POST_TOOL_USE)
-                .get(0)
-                .get(HOOKS_KEY)
-                .get(0)
-                .get("command")
-                .asString())
+        merged
+            .get(HOOKS_KEY)
+            .get(POST_TOOL_USE)
+            .get(0)
+            .get(HOOKS_KEY)
+            .get(0)
+            .get("command")
+            .asString()
+    )
         .isEqualTo("user-hook");
     assertThat(integration.integrate(root, false).status())
         .isEqualTo(IntegrationResult.Status.ALREADY_PRESENT);
@@ -131,9 +131,7 @@ class ClaudeCodeIntegrationTest {
     final Path root = Files.createTempDirectory("ward-claude-remove-merge");
     final Path settings = root.resolve(SETTINGS_PATH);
     Files.createDirectories(settings.getParent());
-    Files.writeString(
-        settings,
-        """
+    Files.writeString(settings, """
         {
           "theme": "dark",
           "hooks": {
@@ -154,14 +152,15 @@ class ClaudeCodeIntegrationTest {
     assertThat(remaining.get("theme").asString()).isEqualTo("dark");
     assertThat(remaining.get(HOOKS_KEY).get(POST_TOOL_USE).size()).isEqualTo(1);
     assertThat(
-            remaining
-                .get(HOOKS_KEY)
-                .get(POST_TOOL_USE)
-                .get(0)
-                .get(HOOKS_KEY)
-                .get(0)
-                .get("command")
-                .asString())
+        remaining
+            .get(HOOKS_KEY)
+            .get(POST_TOOL_USE)
+            .get(0)
+            .get(HOOKS_KEY)
+            .get(0)
+            .get("command")
+            .asString()
+    )
         .isEqualTo("user-hook");
   }
 
@@ -186,14 +185,17 @@ class ClaudeCodeIntegrationTest {
     final Path hook = root.resolve(EDIT_WRITE_PATH);
     Files.createDirectories(hook.getParent());
     Files.writeString(
-        settings, "{\"wardOwnership\":\"" + ClaudeCodeIntegration.SETTINGS_MARKER + "\"}\n");
+        settings,
+        "{\"wardOwnership\":\"" + ClaudeCodeIntegration.SETTINGS_MARKER + "\"}\n"
+    );
     Files.writeString(
         hook,
         "#!/bin/sh\n"
             + "# "
             + ClaudeCodeIntegration.HOOK_MARKER
             + "\n"
-            + "exec ./verify-quality.sh\n");
+            + "exec ./verify-quality.sh\n"
+    );
 
     final IntegrationResult result = new ClaudeCodeIntegration().integrate(root, false);
 
@@ -228,13 +230,15 @@ class ClaudeCodeIntegrationTest {
           }
         }
         """
-            .formatted(ClaudeCodeIntegration.SETTINGS_MARKER));
+            .formatted(ClaudeCodeIntegration.SETTINGS_MARKER)
+    );
     Files.writeString(
         hook,
         "#!/bin/sh\n# "
             + ClaudeCodeIntegration.HOOK_MARKER
             + "\n# Event payload is intentionally ignored; Ward checks the current project state.\n"
-            + "exec ward hook claude-code --learn-after 3\n");
+            + "exec ward hook claude-code --learn-after 3\n"
+    );
 
     final IntegrationResult result = new ClaudeCodeIntegration().integrate(root, false);
 

@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * Shortcut: a name is judged by its text against the class and its direct bases, not by inference.
  */
 public final class BadSuperCallCheck implements RuleCheck {
-
   private static final Set<String> CALLS = Set.of("atom_expr");
   private static final Set<String> CLASSES = Set.of("classdef");
   private static final String SUPER = "super";
@@ -50,15 +49,18 @@ public final class BadSuperCallCheck implements RuleCheck {
           && enclosing != null
           && isBad(arguments, enclosing, visit.ancestors())) {
         found.add(
-            new RuleMatch(
-                visit.node().span(), message.replace(MESSAGE_ARGUMENT, arguments.get(0))));
+            new RuleMatch(visit.node().span(), message.replace(MESSAGE_ARGUMENT, arguments.get(0)))
+        );
       }
     }
     return List.copyOf(found);
   }
 
   private static boolean isBad(
-      final List<String> arguments, final String enclosing, final List<SyntaxNode> ancestors) {
+      final List<String> arguments,
+      final String enclosing,
+      final List<SyntaxNode> ancestors
+  ) {
     final String first = arguments.get(0);
     if (first.startsWith(TYPE_CALL)) {
       return true;

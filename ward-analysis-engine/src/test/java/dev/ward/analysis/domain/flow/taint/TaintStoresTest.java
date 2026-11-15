@@ -15,7 +15,8 @@ class TaintStoresTest {
           List.of(entry("source", List.of())),
           List.of(entry("sink", List.of(0))),
           List.of(),
-          List.of(entry("add", List.of(0))));
+          List.of(entry("add", List.of(0)))
+      );
 
   private static TaintEntry entry(final String name, final List<Integer> arguments) {
     return new TaintEntry(FlowSiteKind.CALL, name, Optional.empty(), Optional.empty(), arguments);

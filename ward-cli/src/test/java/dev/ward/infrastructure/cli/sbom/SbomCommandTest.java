@@ -16,7 +16,9 @@ class SbomCommandTest {
 
   private SbomCommand command(final LicenseService licenses) {
     return new SbomCommand(
-        new SbomService(LicenseFixtures.detector(), licenses, Map.of(), "9.9"), fixtures.output);
+        new SbomService(LicenseFixtures.detector(), licenses, Map.of(), "9.9"),
+        fixtures.output
+    );
   }
 
   @Test
@@ -37,7 +39,8 @@ class SbomCommandTest {
             "--directory",
             "/work/app",
             "--output",
-            "sbom.json");
+            "sbom.json"
+        );
 
     assertThat(code).isEqualTo(ExitCodes.OK);
     assertThat(fixtures.out.toString()).isEmpty();

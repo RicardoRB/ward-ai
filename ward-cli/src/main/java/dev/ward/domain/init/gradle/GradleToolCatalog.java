@@ -31,7 +31,8 @@ public final class GradleToolCatalog {
           row(PITEST, "1.15.0", JDK_8, JDK_10, "6.4"),
           row(PITEST, "1.19.0", JDK_11, JDK_25, "8.4"),
           row(PITEST_ENGINE, "1.17.4", JDK_8, JDK_10, "6.4"),
-          row(PITEST_ENGINE, "1.30.1", JDK_11, JDK_25, "6.4"));
+          row(PITEST_ENGINE, "1.30.1", JDK_11, JDK_25, "6.4")
+      );
 
   private GradleToolCatalog() {}
 
@@ -45,8 +46,15 @@ public final class GradleToolCatalog {
       final String version,
       final int minimumJdk,
       final int maximumJdk,
-      final String minimumGradle) {
+      final String minimumGradle
+  ) {
     return new ManagedPluginCandidate(
-        tool, version, minimumJdk, maximumJdk, minimumGradle, "measured");
+        tool,
+        version,
+        minimumJdk,
+        maximumJdk,
+        minimumGradle,
+        "measured"
+    );
   }
 }

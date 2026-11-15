@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
  * declarations.
  */
 class KotlinFilenameCheckTest {
-
   private static final String MESSAGE = "m";
   private static final String FILE_NAME = "Store.kt";
 

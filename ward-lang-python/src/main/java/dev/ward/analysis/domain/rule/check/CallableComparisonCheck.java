@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * Pylint; a function with any raise in its own body is left out.
  */
 public final class CallableComparisonCheck implements RuleCheck {
-
   private static final Set<String> COMPARISONS = Set.of("comparison");
   private static final int SINGLE_CALLABLE = 1;
   private static final int LEFT = 1;
@@ -55,7 +54,10 @@ public final class CallableComparisonCheck implements RuleCheck {
   }
 
   private static boolean bareCallable(
-      final Map<String, SyntaxNode> definitions, final String operand) {
+      final Map<String,
+      SyntaxNode> definitions,
+      final String operand
+  ) {
     final SyntaxNode definition = definitions.get(operand);
     return definition != null
         && SyntaxKinds.FUNCDEF.equals(definition.kind())

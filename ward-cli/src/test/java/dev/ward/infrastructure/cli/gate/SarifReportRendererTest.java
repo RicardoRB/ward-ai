@@ -53,13 +53,15 @@ class SarifReportRendererTest {
         line,
         null,
         "https://docs.pmd-code.org/" + rule,
-        List.of());
+        List.of()
+    );
   }
 
   private JsonTree render(final GateResult... results) {
     return JsonTree.parse(
         new SarifReportRenderer(new ForyJsonCodec())
-            .render(new CheckReport(project, List.of(results))));
+            .render(new CheckReport(project, List.of(results)))
+    );
   }
 
   @Test
@@ -68,7 +70,8 @@ class SarifReportRendererTest {
         render(
             result("checkstyle", GateStatus.PASSED),
             result("pmd", GateStatus.PASSED),
-            result("spotbugs", GateStatus.SKIPPED));
+            result("spotbugs", GateStatus.SKIPPED)
+        );
 
     assertThat(log.get("$schema").asString()).isEqualTo(SarifReportRenderer.SCHEMA);
     assertThat(log.get("version").asString()).isEqualTo("2.1.0");
@@ -87,7 +90,10 @@ class SarifReportRendererTest {
                 GateFindings.of(
                     List.of(
                         pmd(UNUSED_VARIABLE_LINE, "UnusedLocalVariable"),
-                        pmd(UNUSED_VARIABLE_LINE + 2, "UnusedLocalVariable"))));
+                        pmd(UNUSED_VARIABLE_LINE + 2, "UnusedLocalVariable")
+                    )
+                )
+            );
 
     final JsonTree run = render(pmd).get(RUNS).get(0);
 
@@ -134,7 +140,8 @@ class SarifReportRendererTest {
         GateFindings.of(
             IntStream.rangeClosed(1, REPORTED)
                 .mapToObj(i -> pmd(i, "R" + (i % DISTINCT_RULES)))
-                .toList());
+                .toList()
+        );
 
     final JsonTree run =
         render(result("pmd", GateStatus.FAILED).withFindings(findings)).get(RUNS).get(0);
@@ -157,7 +164,8 @@ class SarifReportRendererTest {
             null,
             null,
             null,
-            List.of());
+            List.of()
+        );
     final Finding outside =
         new Finding(
             "compile",
@@ -169,23 +177,26 @@ class SarifReportRendererTest {
             OUTSIDE_LINE,
             OUTSIDE_COLUMN,
             null,
-            List.of());
+            List.of()
+        );
 
     final JsonTree log =
         render(
             result("checkstyle", GateStatus.FAILED).withFindings(GateFindings.of(List.of(style))),
-            result("compile", GateStatus.FAILED).withFindings(GateFindings.of(List.of(outside))));
+            result("compile", GateStatus.FAILED).withFindings(GateFindings.of(List.of(outside)))
+        );
 
     final JsonTree formatRun = log.get(RUNS).get(0);
     assertThat(formatRun.get("tool").get("driver").get("name").asString()).isEqualTo("checkstyle");
     assertThat(
-            formatRun
-                .get(RESULTS)
-                .get(0)
-                .get("locations")
-                .get(0)
-                .get("physicalLocation")
-                .has("region"))
+        formatRun
+            .get(RESULTS)
+            .get(0)
+            .get("locations")
+            .get(0)
+            .get("physicalLocation")
+            .has("region")
+    )
         .isFalse();
     final JsonTree compileRun = log.get(RUNS).get(1);
     assertThat(compileRun.get("tool").get("driver").get("name").asString()).isEqualTo("javac");

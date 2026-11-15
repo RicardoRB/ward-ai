@@ -28,7 +28,6 @@ import java.util.SortedMap;
  * project layout to the check.
  */
 public final class NodeUnresolvedImportCheck implements RuleCheck, ProjectCheck {
-
   private static final String RELATIVE = ".";
   private static final String DOT = ".";
   private static final Set<String> CURRENT_OR_PARENT = Set.of(".", "..");
@@ -60,7 +59,10 @@ public final class NodeUnresolvedImportCheck implements RuleCheck, ProjectCheck 
 
   @Override
   public List<ProjectMatch> project(
-      final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
+      final SortedMap<String,
+      SyntaxNode> trees,
+      final ProjectFiles files
+  ) {
     final Set<String> known = new HashSet<>(trees.keySet());
     known.addAll(files.existingPaths());
     final NodeModuleResolver resolver =
@@ -74,7 +76,8 @@ public final class NodeUnresolvedImportCheck implements RuleCheck, ProjectCheck 
               found.add(new ProjectMatch(path, match(module)));
             }
           }
-        });
+        }
+    );
     return List.copyOf(found);
   }
 

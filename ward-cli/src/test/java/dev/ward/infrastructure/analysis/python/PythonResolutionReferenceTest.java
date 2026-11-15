@@ -27,7 +27,6 @@ import org.junit.jupiter.api.Test;
  * that is the graph Import Linter checks.
  */
 final class PythonResolutionReferenceTest {
-
   /** The fixtures that have a committed golden file, with their root packages. */
   static final List<Path> FIXTURES =
       List.of(
@@ -35,7 +34,8 @@ final class PythonResolutionReferenceTest {
           Path.of("src/test/resources/fixtures/python-uv-workspace"),
           Path.of("src/test/resources/fixtures/python-matrix/basic-uv"),
           Path.of("src/test/resources/fixtures/python-matrix/basic-poetry"),
-          Path.of("src/test/resources/fixtures/python-matrix/basic-pip"));
+          Path.of("src/test/resources/fixtures/python-matrix/basic-pip")
+      );
 
   private static final String GOLDEN = "import-linter-edges.json";
   private static final String PY = ".py";
@@ -78,13 +78,17 @@ final class PythonResolutionReferenceTest {
                 new SourceUnit(
                     fixture.relativize(file).toString().replace('\\', '/'),
                     AnalysisLanguage.PYTHON,
-                    read(file)))
+                    read(file)
+                )
+        )
         .toList();
   }
 
   /** Summarizes every unit, as the analysis does for a project. */
   private static List<FileSummary> summaries(
-      final List<SourceUnit> units, final DependencySupport python) {
+      final List<SourceUnit> units,
+      final DependencySupport python
+  ) {
     final AntlrLanguageFrontend frontend = new AntlrLanguageFrontend();
     return units.stream()
         .map(unit -> python.summarizer().summarize(unit, frontend.parse(unit).tree()))
@@ -112,7 +116,10 @@ final class PythonResolutionReferenceTest {
 
   /** Whether a file's module is in one of the root packages, found through its deepest root. */
   private static boolean inRoots(
-      final String path, final PythonProjectLayout layout, final List<String> roots) {
+      final String path,
+      final PythonProjectLayout layout,
+      final List<String> roots
+  ) {
     return topPackage(path, layout).filter(roots::contains).isPresent();
   }
 
@@ -126,7 +133,7 @@ final class PythonResolutionReferenceTest {
     }
     final String relative = path.substring(root.get().length(), path.length() - PY.length());
     final String module = relative.endsWith(INIT) ? parentOf(relative) : relative;
-    final String first = module.split(SEPARATOR, -1)[0];
+    final String first = module.split(SEPARATOR, -1) [0];
     return first.isEmpty() ? Optional.empty() : Optional.of(first);
   }
 

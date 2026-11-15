@@ -9,7 +9,6 @@ import java.util.List;
 
 /** Formats JavaScript in Ward style: whitespace and line breaks only, never a token. */
 public final class JavaScriptFormatter implements SourceFormatter {
-
   @Override
   public AnalysisLanguage language() {
     return AnalysisLanguage.JAVASCRIPT;

@@ -25,17 +25,13 @@ class WardCliFindingsTest extends WardCliIntegrationSupport {
   }
 
   private void configureFailingGates() throws IOException {
-    script(
-        "fake-tsc",
-        """
+    script("fake-tsc", """
         echo "src/main/java/Foo.java(42,5): error TS2322: Type 'string' is not assignable."
         exit 1
         """);
     Files.createDirectories(project.resolve("config"));
     Files.writeString(project.resolve("config/app.yml"), "a: 1\nb: 2\ntoken: " + SECRET + "\n");
-    Files.writeString(
-        project.resolve(WARD_TOML),
-        """
+    Files.writeString(project.resolve(WARD_TOML), """
         version = 2
         [checks.tsc]
         uses = "tsc"
@@ -115,7 +111,8 @@ class WardCliFindingsTest extends WardCliIntegrationSupport {
             OUTPUT_OPTION,
             report.toString(),
             "-C",
-            project.toString());
+            project.toString()
+        );
 
     assertThat(exit).isEqualTo(ExitCodes.FAILED);
     assertThat(out.toString()).contains("Quality Gate: FAILED").doesNotContain("\"runs\"");
@@ -128,18 +125,13 @@ class WardCliFindingsTest extends WardCliIntegrationSupport {
     pass();
     Files.writeString(
         project.resolve(WARD_TOML),
-        "version = 2\n[checks.tests]\nuses = \"tests\"\ncommand = \"./mvnw test\"\n");
+        "version = 2\n[checks.tests]\nuses = \"tests\"\ncommand = \"./mvnw test\"\n"
+    );
     final Path report = project.resolve("ward.json");
 
     assertThat(
-            run(
-                CHECK,
-                FORMAT_OPTION,
-                JSON,
-                OUTPUT_OPTION,
-                report.toString(),
-                "-C",
-                project.toString()))
+        run(CHECK, FORMAT_OPTION, JSON, OUTPUT_OPTION, report.toString(), "-C", project.toString())
+    )
         .isZero();
     assertThat(out.toString()).contains("Quality Gate: PASSED");
     assertThat(JsonTree.parse(Files.readString(report)).get(STATUS).asString()).isEqualTo("PASSED");
@@ -157,7 +149,8 @@ class WardCliFindingsTest extends WardCliIntegrationSupport {
             OUTPUT_OPTION,
             report.toString(),
             "-C",
-            project.toString());
+            project.toString()
+        );
 
     assertThat(exit).isEqualTo(ExitCodes.ERROR);
     assertThat(err.toString()).contains("--output requires --format json or --format sarif");
@@ -176,7 +169,8 @@ class WardCliFindingsTest extends WardCliIntegrationSupport {
     pass();
     Files.writeString(
         project.resolve(WARD_TOML),
-        "version = 2\n[checks.tests]\nuses = \"tests\"\ncommand = \"./mvnw test\"\n");
+        "version = 2\n[checks.tests]\nuses = \"tests\"\ncommand = \"./mvnw test\"\n"
+    );
     Files.writeString(project.resolve("blocker"), "a file, not a directory");
 
     final int exit =
@@ -187,7 +181,8 @@ class WardCliFindingsTest extends WardCliIntegrationSupport {
             OUTPUT_OPTION,
             project.resolve("blocker/report.sarif").toString(),
             "-C",
-            project.toString());
+            project.toString()
+        );
 
     assertThat(exit).isEqualTo(ExitCodes.ERROR);
     assertThat(err.toString()).contains("Cannot write report");

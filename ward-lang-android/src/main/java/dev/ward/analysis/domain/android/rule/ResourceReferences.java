@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
  * ActivityMainBinding} for {@code activity_main}.
  */
 final class ResourceReferences {
-
   private static final Pattern XML_REFERENCE =
       Pattern.compile("@\\+?(?:([\\w.]+):)?(\\w+)/([\\w.]+)");
   private static final String ANDROID = "android";
@@ -68,7 +67,8 @@ final class ResourceReferences {
         .map(AndroidNodes::value)
         .filter(name -> name.contains(DOT))
         .ifPresent(
-            name -> used.add(ResourceKey.of(STYLE, name.substring(0, name.lastIndexOf('.')))));
+            name -> used.add(ResourceKey.of(STYLE, name.substring(0, name.lastIndexOf('.'))))
+        );
   }
 
   /** Adds the references of a Java or Kotlin file, read from its tokens in order. */

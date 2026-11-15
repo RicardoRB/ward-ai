@@ -15,7 +15,6 @@ import java.util.function.Predicate;
  * applies to every language.
  */
 public final class LocationArchitectureRule implements GraphRule {
-
   /** The id of the rule, the same in every language. */
   public static final String ID = "ward:architecture/location";
 
@@ -66,7 +65,11 @@ public final class LocationArchitectureRule implements GraphRule {
                           path,
                           new RuleMatch(
                               FIRST_LINE,
-                              rule.message(path + " is not in the expected location")))));
+                              rule.message(path + " is not in the expected location")
+                          )
+                      )
+                  )
+          );
     }
     return List.copyOf(matches);
   }

@@ -12,7 +12,6 @@ import java.util.Optional;
  */
 record RevisionFileReader(RevisionFiles revisions, Path root, String commit)
     implements ProjectFileReader {
-
   @Override
   public Optional<String> read(final String path) {
     return revisions.read(root, commit, path);

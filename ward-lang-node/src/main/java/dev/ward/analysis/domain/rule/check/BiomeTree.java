@@ -5,7 +5,6 @@ import java.util.List;
 
 /** Reads the ancestors and children of a syntax node for the Biome lint checks. */
 final class BiomeTree {
-
   private BiomeTree() {}
 
   /** Returns the ancestor {@code level} steps above the node, where 0 is the parent. */

@@ -33,7 +33,9 @@ final class IntegrationArtifacts {
               PosixFilePermission.GROUP_READ,
               PosixFilePermission.GROUP_EXECUTE,
               PosixFilePermission.OTHERS_READ,
-              PosixFilePermission.OTHERS_EXECUTE));
+              PosixFilePermission.OTHERS_EXECUTE
+          )
+      );
     } catch (UnsupportedOperationException ignored) {
       file.toFile().setExecutable(true, false);
     }
@@ -46,12 +48,17 @@ final class IntegrationArtifacts {
     return new IntegrationResult(
         IntegrationResult.Status.CONFLICT,
         List.of(target.toString()),
-        "Existing user-owned integration preserved; resolve the conflict explicitly.");
+        "Existing user-owned integration preserved; resolve the conflict explicitly."
+    );
   }
 
   /** Returns the first conflict of two ownership-marked targets, or {@code null}. */
   static IntegrationResult preflight(
-      final Path first, final String firstMarker, final Path second, final String secondMarker)
+      final Path first,
+      final String firstMarker,
+      final Path second,
+      final String secondMarker
+  )
       throws IOException {
     final IntegrationResult conflict = preflight(first, firstMarker);
     return conflict == null ? preflight(second, secondMarker) : conflict;
@@ -62,9 +69,11 @@ final class IntegrationArtifacts {
    * conflict, if any, is returned as is.
    */
   static IntegrationResult combine(
-      final List<Map.Entry<Path, IntegrationResult>> results,
+      final List<Map.Entry<Path,
+      IntegrationResult>> results,
       final String presentMessage,
-      final String changedMessage) {
+      final String changedMessage
+  ) {
     final Optional<IntegrationResult> conflict =
         results.stream()
             .map(Map.Entry::getValue)
@@ -78,7 +87,8 @@ final class IntegrationArtifacts {
             .filter(
                 entry ->
                     entry.getValue().status() == IntegrationResult.Status.CHANGED
-                        || entry.getValue().status() == IntegrationResult.Status.REMOVED)
+                        || entry.getValue().status() == IntegrationResult.Status.REMOVED
+            )
             .map(entry -> entry.getKey().toString())
             .toList();
     return changed.isEmpty()
@@ -87,25 +97,34 @@ final class IntegrationArtifacts {
   }
 
   static IntegrationResult install(
-      final Path target, final String marker, final String content, final String message)
+      final Path target,
+      final String marker,
+      final String content,
+      final String message
+  )
       throws IOException {
     if (Files.exists(target)) {
       if (owned(target, marker)) {
         return new IntegrationResult(
             IntegrationResult.Status.ALREADY_PRESENT,
             List.of(),
-            "Ward integration is already present.");
+            "Ward integration is already present."
+        );
       }
       return new IntegrationResult(
           IntegrationResult.Status.CONFLICT,
           List.of(target.toString()),
-          "Existing user-owned integration preserved; resolve the conflict explicitly.");
+          "Existing user-owned integration preserved; resolve the conflict explicitly."
+      );
     }
     final Path parent = Objects.requireNonNull(target.getParent(), "target must have a parent");
     Files.createDirectories(parent);
     atomicWrite(target, content);
     return new IntegrationResult(
-        IntegrationResult.Status.CHANGED, List.of(target.toString()), message);
+        IntegrationResult.Status.CHANGED,
+        List.of(target.toString()),
+        message
+    );
   }
 
   /**
@@ -113,7 +132,10 @@ final class IntegrationArtifacts {
    * #installOrRefresh} acts on this decision, so a plan built from it matches the write.
    */
   static PlannedFileChange.Action decide(
-      final Path target, final String marker, final String content) throws IOException {
+      final Path target,
+      final String marker,
+      final String content
+  ) throws IOException {
     if (!Files.exists(target)) {
       return PlannedFileChange.Action.CREATE;
     }
@@ -126,7 +148,11 @@ final class IntegrationArtifacts {
   }
 
   static IntegrationResult installOrRefresh(
-      final Path target, final String marker, final String content, final String message)
+      final Path target,
+      final String marker,
+      final String content,
+      final String message
+  )
       throws IOException {
     return switch (decide(target, marker, content)) {
       case CREATE -> install(target, marker, content, message);
@@ -134,16 +160,21 @@ final class IntegrationArtifacts {
           new IntegrationResult(
               IntegrationResult.Status.CONFLICT,
               List.of(target.toString()),
-              "Existing user-owned integration preserved; resolve the conflict explicitly.");
+              "Existing user-owned integration preserved; resolve the conflict explicitly."
+          );
       case UNCHANGED ->
           new IntegrationResult(
               IntegrationResult.Status.ALREADY_PRESENT,
               List.of(),
-              "Ward integration is already present.");
+              "Ward integration is already present."
+          );
       default -> {
         atomicWrite(target, content);
         yield new IntegrationResult(
-            IntegrationResult.Status.CHANGED, List.of(target.toString()), message);
+            IntegrationResult.Status.CHANGED,
+            List.of(target.toString()),
+            message
+        );
       }
     };
   }
@@ -157,11 +188,15 @@ final class IntegrationArtifacts {
       return new IntegrationResult(
           IntegrationResult.Status.CONFLICT,
           List.of(target.toString()),
-          "Refusing to remove an integration not owned by Ward.");
+          "Refusing to remove an integration not owned by Ward."
+      );
     }
     Files.delete(target);
     return new IntegrationResult(
-        IntegrationResult.Status.REMOVED, List.of(target.toString()), message);
+        IntegrationResult.Status.REMOVED,
+        List.of(target.toString()),
+        message
+    );
   }
 
   private static void atomicWrite(final Path target, final String content) throws IOException {
@@ -169,12 +204,17 @@ final class IntegrationArtifacts {
         Files.createTempFile(
             Objects.requireNonNull(target.getParent(), "target must have a parent"),
             ".ward-",
-            ".tmp");
+            ".tmp"
+        );
     try {
       Files.writeString(temporary, content, StandardOpenOption.TRUNCATE_EXISTING);
       try {
         Files.move(
-            temporary, target, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+            temporary,
+            target,
+            StandardCopyOption.ATOMIC_MOVE,
+            StandardCopyOption.REPLACE_EXISTING
+        );
       } catch (UnsupportedOperationException exception) {
         Files.move(temporary, target, StandardCopyOption.REPLACE_EXISTING);
       }

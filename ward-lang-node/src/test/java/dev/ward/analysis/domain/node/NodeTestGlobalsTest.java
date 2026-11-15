@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 
 /** Test-framework globals resolve in a test file by its path, and nowhere else. */
 final class NodeTestGlobalsTest {
-
   private static final String JEST_TEST =
       "describe('a', () => { it('b', () => expect(1).toBe(1)); });\n";
 

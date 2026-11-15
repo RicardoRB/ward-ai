@@ -6,14 +6,14 @@ import java.util.List;
 
 /** Tells whether the body of a default method only calls the abstract method of its interface. */
 final class DefaultBodies {
-
   private DefaultBodies() {}
 
   static boolean preserves(
       final SyntaxNode method,
       final String own,
       final InterfaceSam.Sam sam,
-      final UnitTypeFacts types) {
+      final UnitTypeFacts types
+  ) {
     final List<SyntaxNode> statements =
         SyntaxWalk.descendants(method).stream()
             .filter(node -> "blockStatement".equals(node.kind()))
@@ -21,8 +21,9 @@ final class DefaultBodies {
             .toList();
     final boolean boxedVoid =
         NullSyntax.first(
-                NullSyntax.first(method, "interfaceCommonBodyDeclaration").orElse(method),
-                "typeTypeOrVoid")
+            NullSyntax.first(method, "interfaceCommonBodyDeclaration").orElse(method),
+            "typeTypeOrVoid"
+        )
             .map(type -> SyntaxWalk.text(type).endsWith("Void"))
             .orElse(false);
     if (boxedVoid) {
@@ -41,7 +42,8 @@ final class DefaultBodies {
             .filter(
                 block ->
                     block.span().startOffset() <= statement.span().startOffset()
-                        && block.span().endOffset() >= statement.span().endOffset())
+                        && block.span().endOffset() >= statement.span().endOffset()
+            )
             .count();
   }
 
@@ -49,7 +51,8 @@ final class DefaultBodies {
       final SyntaxNode statement,
       final String own,
       final InterfaceSam.Sam sam,
-      final UnitTypeFacts types) {
+      final UnitTypeFacts types
+  ) {
     return SyntaxWalk.descendants(statement).stream()
         .filter(node -> "expression".equals(node.kind()))
         .findFirst()
@@ -58,7 +61,8 @@ final class DefaultBodies {
             target ->
                 target.name().equals(sam.name())
                     && target.parameters().size() == sam.arity()
-                    && simple(target.declaringType().name()).equals(own))
+                    && simple(target.declaringType().name()).equals(own)
+        )
         .isPresent();
   }
 

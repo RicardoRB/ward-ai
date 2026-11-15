@@ -13,8 +13,11 @@ import java.util.regex.Pattern;
  * **kwargs} is present.
  */
 record MethodSignature(
-    List<Param> positional, List<Param> keywordOnly, boolean varargs, boolean kwargs) {
-
+    List<Param> positional,
+    List<Param> keywordOnly,
+    boolean varargs,
+    boolean kwargs
+) {
   private static final String STAR = "*";
   private static final String DOUBLE_STAR = "**";
   private static final String SLASH = "/";

@@ -9,15 +9,19 @@ import java.util.Locale;
 
 /** Warns that Ward does not check the build tool's toolchain yet. */
 final class UncheckedToolchainFinding implements ToolchainFinding {
-
   @Override
   public List<Finding> findings(
-      final Project detected, final EnvironmentFacts facts, final ToolchainContext context) {
+      final Project detected,
+      final EnvironmentFacts facts,
+      final ToolchainContext context
+  ) {
     final String toolName = detected.buildTool().displayName();
     return List.of(
         new Finding(
             toolName.toLowerCase(Locale.ROOT),
             Status.WARNING,
-            "Ward does not check the " + toolName + " toolchain yet."));
+            "Ward does not check the " + toolName + " toolchain yet."
+        )
+    );
   }
 }

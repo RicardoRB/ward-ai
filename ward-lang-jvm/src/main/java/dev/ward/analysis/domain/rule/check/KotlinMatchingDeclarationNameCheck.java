@@ -14,7 +14,6 @@ import java.util.Set;
  * multiplatform target suffix such as {@code .jvm}. A file without a path is not checked.
  */
 public final class KotlinMatchingDeclarationNameCheck implements UnitCheck {
-
   private static final String FILE = "kotlinFile";
   private static final String KT = ".kt";
   private static final String KTS = ".kts";
@@ -30,7 +29,8 @@ public final class KotlinMatchingDeclarationNameCheck implements UnitCheck {
           "objectDeclaration",
           "functionDeclaration",
           "propertyDeclaration",
-          TYPE_ALIAS);
+          TYPE_ALIAS
+      );
   private static final Set<String> TARGETS =
       Set.of(
           "ios",
@@ -42,7 +42,8 @@ public final class KotlinMatchingDeclarationNameCheck implements UnitCheck {
           "iosX64",
           "macosX64",
           "mingwX64",
-          "linuxX64");
+          "linuxX64"
+      );
 
   private final boolean mustBeFirst;
   private final String message;
@@ -71,7 +72,10 @@ public final class KotlinMatchingDeclarationNameCheck implements UnitCheck {
   }
 
   private void checkFile(
-      final SyntaxNode file, final String fileName, final List<RuleMatch> matches) {
+      final SyntaxNode file,
+      final String fileName,
+      final List<RuleMatch> matches
+  ) {
     final List<SyntaxNode> declarations = declarations(file);
     final List<SyntaxNode> publicTypes =
         declarations.stream()
@@ -107,7 +111,8 @@ public final class KotlinMatchingDeclarationNameCheck implements UnitCheck {
     return declarations.stream()
         .filter(decl -> TYPE_ALIAS.equals(decl.kind()))
         .anyMatch(
-            decl -> child(decl, NAME).map(n -> SyntaxWalk.text(n).equals(name)).orElse(false));
+            decl -> child(decl, NAME).map(n -> SyntaxWalk.text(n).equals(name)).orElse(false)
+        );
   }
 
   private static Optional<SyntaxNode> child(final SyntaxNode node, final String kind) {

@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** The declaration-order check on small class bodies: groups, access ranks and static variables. */
 class DeclarationOrderCheckTest extends TreeBuilders {
-
   private static final String MESSAGE = "out of order";
   private static final int MODIFIER_OFFSET = 0;
   private static final int MEMBER_OFFSET = 10;
@@ -41,7 +40,8 @@ class DeclarationOrderCheckTest extends TreeBuilders {
             field("static", "total"),
             field("public", "size"),
             field("private", "count"),
-            method("run"));
+            method("run")
+        );
     assertThat(findings(body)).isEmpty();
   }
 
@@ -66,7 +66,11 @@ class DeclarationOrderCheckTest extends TreeBuilders {
                 Trees.leaf("int", "int", MEMBER_OFFSET),
                 n(
                     "variableDeclarator",
-                    Trees.leaf(TOKEN_IDENTIFIER, name, MEMBER_OFFSET + FIELD_NAME_OFFSET)))));
+                    Trees.leaf(TOKEN_IDENTIFIER, name, MEMBER_OFFSET + FIELD_NAME_OFFSET)
+                )
+            )
+        )
+    );
   }
 
   private static SyntaxNode method(final String name) {
@@ -82,7 +86,10 @@ class DeclarationOrderCheckTest extends TreeBuilders {
                 Trees.leaf("void", "void", MEMBER_OFFSET),
                 Trees.leaf(TOKEN_IDENTIFIER, name, MEMBER_OFFSET + METHOD_NAME_OFFSET),
                 Trees.leaf(TOKEN_OPEN, "(", MEMBER_OFFSET + OPEN_OFFSET),
-                Trees.leaf(TOKEN_CLOSE, ")", MEMBER_OFFSET + CLOSE_OFFSET))));
+                Trees.leaf(TOKEN_CLOSE, ")", MEMBER_OFFSET + CLOSE_OFFSET)
+            )
+        )
+    );
   }
 
   private static SyntaxNode member(final String modifier, final SyntaxNode declaration) {
@@ -92,6 +99,7 @@ class DeclarationOrderCheckTest extends TreeBuilders {
     return n(
         CLASS_BODY_DECLARATION,
         Trees.leaf("'" + modifier + "'", modifier, MODIFIER_OFFSET),
-        declaration);
+        declaration
+    );
   }
 }

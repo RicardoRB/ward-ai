@@ -13,13 +13,16 @@ import java.util.stream.IntStream;
  * annotation forbids, or one that the called method of the file dereferences on every path.
  */
 final class NullCalls {
-
   private final UnitTypeFacts types;
   private final NullScope scope;
   private final Map<String, Set<Integer>> callees;
 
   NullCalls(
-      final UnitTypeFacts types, final NullScope scope, final Map<String, Set<Integer>> callees) {
+      final UnitTypeFacts types,
+      final NullScope scope,
+      final Map<String,
+      Set<Integer>> callees
+  ) {
     this.types = types;
     this.scope = scope;
     this.callees = Map.copyOf(callees);
@@ -27,7 +30,11 @@ final class NullCalls {
 
   /** Looks at the arguments of {@code call} that are certainly null. */
   Optional<NullAnalysis.Finding> passed(
-      final NullSolved body, final NullEvent call, final Map<Span, Nullity> normal) {
+      final NullSolved body,
+      final NullEvent call,
+      final Map<Span,
+      Nullity> normal
+  ) {
     final Optional<CallTarget> target = types.callTarget(call.node().span());
     if (target.isEmpty() || isEquals(target.get())) {
       return Optional.empty();
@@ -41,7 +48,11 @@ final class NullCalls {
   }
 
   private Optional<NullAnalysis.Pattern> parameter(
-      final NullSolved body, final NullEvent call, final CallTarget target, final int index) {
+      final NullSolved body,
+      final NullEvent call,
+      final CallTarget target,
+      final int index
+  ) {
     if (new NullSolved.Needs(types, scope, body.type(), body.method()).argument(call, index)
         != null) {
       return Optional.of(NullAnalysis.Pattern.NONNULL_PARAM_VIOLATION);

@@ -44,8 +44,10 @@ final class OpenApiDiffGate implements QualityGate {
       final String name,
       final OpenApiGates.Ports ports,
       final String spec,
-      final Function<Path, OpenApiBaseline> baseline,
-      final Clock clock) {
+      final Function<Path,
+      OpenApiBaseline> baseline,
+      final Clock clock
+  ) {
     this.name = name;
     this.ports = ports;
     this.spec = spec;
@@ -69,7 +71,8 @@ final class OpenApiDiffGate implements QualityGate {
     if (!resolved.found()) {
       LOGGER.log(
           Level.INFO,
-          () -> "event=openapi-baseline gate=" + name + " status=none reason=" + resolved.reason());
+          () -> "event=openapi-baseline gate=" + name + " status=none reason=" + resolved.reason()
+      );
       return OpenApiResults.stopped(name, resolved.status(), resolved.summary());
     }
     if (!ports.revisions().exists(root, resolved.commit(), spec)) {
@@ -79,16 +82,19 @@ final class OpenApiDiffGate implements QualityGate {
               "event=openapi-baseline gate="
                   + name
                   + " status=none reason=new-spec revision="
-                  + resolved.commit());
+                  + resolved.commit()
+      );
       return OpenApiResults.stopped(
           name,
           GateStatus.PASSED,
-          "No baseline: " + spec + " does not exist at " + resolved.commit() + ", so it is new.");
+          "No baseline: " + spec + " does not exist at " + resolved.commit() + ", so it is new."
+      );
     }
     LOGGER.log(
         Level.INFO,
         () ->
-            "event=openapi-baseline gate=" + name + " status=found revision=" + resolved.commit());
+            "event=openapi-baseline gate=" + name + " status=found revision=" + resolved.commit()
+    );
     return compare(root, resolved.commit());
   }
 
@@ -115,12 +121,14 @@ final class OpenApiDiffGate implements QualityGate {
     }
     LOGGER.log(
         Level.INFO,
-        () -> "event=openapi-diff-load-error gate=" + name + " problems=" + result.errors().size());
+        () -> "event=openapi-diff-load-error gate=" + name + " problems=" + result.errors().size()
+    );
     return Optional.of(
         GateResult.builder(name, GateStatus.EXECUTION_ERROR)
             .summary(result.errors().getFirst().describe() + " (" + where + ")")
             .stderr(String.join("\n", result.errors().stream().map(LoadError::describe).toList()))
-            .build());
+            .build()
+    );
   }
 
   private GateResult error(final String summary) {
@@ -131,7 +139,9 @@ final class OpenApiDiffGate implements QualityGate {
     final List<BreakingFinding> breaking =
         BreakingRules.run(new DocumentPair(base, revision, LocalDate.now(clock)));
     LOGGER.log(
-        Level.INFO, () -> "event=openapi-diff-done gate=" + name + " findings=" + breaking.size());
+        Level.INFO,
+        () -> "event=openapi-diff-done gate=" + name + " findings=" + breaking.size()
+    );
     final List<Finding> findings = breaking.stream().map(this::finding).toList();
     final GateStatus status = findings.isEmpty() ? GateStatus.PASSED : GateStatus.FAILED;
     final String summary =
@@ -156,6 +166,7 @@ final class OpenApiDiffGate implements QualityGate {
         breaking.at().anchor().startLine(),
         breaking.at().anchor().startColumn(),
         null,
-        List.of());
+        List.of()
+    );
   }
 }

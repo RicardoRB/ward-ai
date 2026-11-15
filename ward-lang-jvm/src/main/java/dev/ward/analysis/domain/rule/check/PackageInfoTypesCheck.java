@@ -10,7 +10,6 @@ import java.util.Set;
  * Reports each type declared in a {@code package-info.java} file, which is meant for annotations.
  */
 public final class PackageInfoTypesCheck implements UnitCheck {
-
   private static final String FILE = "package-info.java";
   private static final String TYPE = "typeDeclaration";
 

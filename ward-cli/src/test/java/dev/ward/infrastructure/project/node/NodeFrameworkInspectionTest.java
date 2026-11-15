@@ -20,18 +20,20 @@ class NodeFrameworkInspectionTest {
   @TempDir Path dir;
 
   @ParameterizedTest
-  @CsvSource({
-    "nuxt, VUE",
-    "vue, VUE",
-    "@sveltejs/kit, SVELTE",
-    "svelte, SVELTE",
-    "astro, ASTRO",
-    "@angular/core, ANGULAR",
-    "express, EXPRESS",
-    "fastify, FASTIFY",
-    "@nestjs/core, NEST",
-    "next, NEXT"
-  })
+  @CsvSource(
+      {
+          "nuxt, VUE",
+          "vue, VUE",
+          "@sveltejs/kit, SVELTE",
+          "svelte, SVELTE",
+          "astro, ASTRO",
+          "@angular/core, ANGULAR",
+          "express, EXPRESS",
+          "fastify, FASTIFY",
+          "@nestjs/core, NEST",
+          "next, NEXT"
+      }
+  )
   void declaredFrameworkPackageDecidesTheFramework(final String pkg, final Framework framework)
       throws IOException {
     write(PACKAGE_JSON, "{\"dependencies\": {\"" + pkg + "\": \"1.0.0\"}}");

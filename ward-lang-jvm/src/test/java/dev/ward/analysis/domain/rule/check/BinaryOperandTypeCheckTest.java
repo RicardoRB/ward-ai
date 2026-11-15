@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 class BinaryOperandTypeCheckTest {
-
   private static final int RIGHT = 3;
   private static final UnitTypeFacts BYTE =
       CorrectnessTrees.table(1, CorrectnessTrees.facts(CorrectnessTrees.type("byte", true)));
@@ -25,23 +24,27 @@ class BinaryOperandTypeCheckTest {
           1,
           CorrectnessTrees.facts(CorrectnessTrees.type("java.lang.Integer", false)),
           RIGHT,
-          CorrectnessTrees.facts(CorrectnessTrees.type("java.lang.Integer", false)));
+          CorrectnessTrees.facts(CorrectnessTrees.type("java.lang.Integer", false))
+      );
 
   private static BinaryOperandTypeCheck check(
       final Set<String> operators,
       final Set<String> types,
       final boolean both,
       final String min,
-      final String max) {
+      final String max
+  ) {
     final BinaryOperandTypeCheck.Range range =
         new BinaryOperandTypeCheck.Range(
             Optional.ofNullable(min).map(BigInteger::new),
-            Optional.ofNullable(max).map(BigInteger::new));
+            Optional.ofNullable(max).map(BigInteger::new)
+        );
     return new BinaryOperandTypeCheck(
         operators,
         types.stream().collect(Collectors.toMap(type -> type, type -> range)),
         both,
-        "message");
+        "message"
+    );
   }
 
   private static SyntaxNode binary(final String operator, final String right) {
@@ -50,11 +53,15 @@ class BinaryOperandTypeCheckTest {
         1,
         CorrectnessTrees.expression("b", 1),
         CorrectnessTrees.leaf("OP", operator, 2),
-        CorrectnessTrees.expression(right, RIGHT));
+        CorrectnessTrees.expression(right, RIGHT)
+    );
   }
 
   private static List<RuleMatch> run(
-      final BinaryOperandTypeCheck check, final SyntaxNode root, final UnitTypeFacts types) {
+      final BinaryOperandTypeCheck check,
+      final SyntaxNode root,
+      final UnitTypeFacts types
+  ) {
     return check.matches(root, FlowView.NONE, ScopeView.NONE, types, Calls.UNIT);
   }
 
@@ -74,11 +81,12 @@ class BinaryOperandTypeCheckTest {
     assertThat(run(check, binary("|", "1"), BYTE)).hasSize(1);
     assertThat(run(check, binary("&", "1"), BYTE)).isEmpty();
     assertThat(
-            run(
-                check,
-                binary("|", "1"),
-                CorrectnessTrees.table(
-                    1, CorrectnessTrees.facts(CorrectnessTrees.type("int", true)))))
+        run(
+            check,
+            binary("|", "1"),
+            CorrectnessTrees.table(1, CorrectnessTrees.facts(CorrectnessTrees.type("int", true)))
+        )
+    )
         .isEmpty();
   }
 
@@ -90,14 +98,16 @@ class BinaryOperandTypeCheckTest {
             "expression",
             1,
             CorrectnessTrees.expression("b", 1),
-            CorrectnessTrees.leaf("OP", "|", 2));
+            CorrectnessTrees.leaf("OP", "|", 2)
+        );
     final SyntaxNode token =
         CorrectnessTrees.node(
             "expression",
             1,
             CorrectnessTrees.leaf("X", "a", 1),
             CorrectnessTrees.leaf("OP", "|", 2),
-            CorrectnessTrees.leaf("X", "c", RIGHT));
+            CorrectnessTrees.leaf("X", "c", RIGHT)
+        );
 
     assertThat(run(check, notBinary, BYTE)).isEmpty();
     assertThat(run(check, token, BYTE)).isEmpty();
@@ -113,7 +123,8 @@ class BinaryOperandTypeCheckTest {
             CorrectnessTrees.expression("b", 1),
             CorrectnessTrees.leaf("GT", ">", 2),
             CorrectnessTrees.leaf("GT", ">", RIGHT),
-            CorrectnessTrees.expression("1", 4));
+            CorrectnessTrees.expression("1", 4)
+        );
 
     assertThat(run(check, shift, BYTE)).hasSize(1);
   }
@@ -125,11 +136,15 @@ class BinaryOperandTypeCheckTest {
 
     assertThat(run(check, binary("==", "c"), BOTH)).hasSize(1);
     assertThat(
-            run(
-                check,
-                binary("==", "c"),
-                CorrectnessTrees.table(
-                    1, CorrectnessTrees.facts(CorrectnessTrees.type("java.lang.Integer", false)))))
+        run(
+            check,
+            binary("==", "c"),
+            CorrectnessTrees.table(
+                1,
+                CorrectnessTrees.facts(CorrectnessTrees.type("java.lang.Integer", false))
+            )
+        )
+    )
         .isEmpty();
   }
 

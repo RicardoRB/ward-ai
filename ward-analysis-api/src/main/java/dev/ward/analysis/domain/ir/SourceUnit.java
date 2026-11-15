@@ -10,7 +10,6 @@ import java.util.Objects;
  * @param text the full source text
  */
 public record SourceUnit(String path, AnalysisLanguage language, String text) {
-
   /**
    * Validates the required fields and the path separator.
    *

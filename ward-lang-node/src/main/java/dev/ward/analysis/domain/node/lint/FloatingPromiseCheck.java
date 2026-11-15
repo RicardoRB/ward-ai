@@ -8,7 +8,6 @@ import java.util.List;
 
 /** Reports an expression statement that calls a promise and neither awaits nor handles it. */
 public final class FloatingPromiseCheck extends TypedCheck {
-
   private static final String STATEMENT = "expressionStatement";
   private static final String VOID = "void";
   private static final String CATCH = "catch";
@@ -21,7 +20,10 @@ public final class FloatingPromiseCheck extends TypedCheck {
 
   /** Creates the check with the rule's options and message. */
   public FloatingPromiseCheck(
-      final boolean ignoreVoid, final boolean ignoreIife, final String message) {
+      final boolean ignoreVoid,
+      final boolean ignoreIife,
+      final String message
+  ) {
     super();
     this.ignoreVoid = ignoreVoid;
     this.ignoreIife = ignoreIife;
@@ -57,7 +59,7 @@ public final class FloatingPromiseCheck extends TypedCheck {
       expression = expression.children().get(1);
     }
     return expression.children().size() == 2
-            && ARGUMENTS.equals(expression.children().get(1).kind())
+        && ARGUMENTS.equals(expression.children().get(1).kind())
         ? expression
         : null;
   }

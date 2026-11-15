@@ -16,7 +16,6 @@ import java.util.Set;
  * only the message of the exception is logged, not its stack trace.
  */
 public final class UseCorrectExceptionLoggingCheck extends FactsCheck {
-
   private static final String LOG = "org.apache.commons.logging.Log";
   private static final String OBJECT = "java.lang.Object";
   private static final String CATCH = "catchClause";
@@ -58,7 +57,10 @@ public final class UseCorrectExceptionLoggingCheck extends FactsCheck {
   }
 
   private static boolean logsOnly(
-      final SyntaxNode call, final String caught, final UnitTypeFacts types) {
+      final SyntaxNode call,
+      final String caught,
+      final UnitTypeFacts types
+  ) {
     final List<SyntaxNode> arguments = CallArgumentNodes.all(call);
     return !caught.isEmpty()
         && arguments.size() == 1

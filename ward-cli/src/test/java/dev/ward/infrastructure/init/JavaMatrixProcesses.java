@@ -68,7 +68,8 @@ final class JavaMatrixProcesses {
               source,
               target,
               StandardCopyOption.REPLACE_EXISTING,
-              StandardCopyOption.COPY_ATTRIBUTES);
+              StandardCopyOption.COPY_ATTRIBUTES
+          );
         }
       }
     }

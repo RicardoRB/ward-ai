@@ -11,7 +11,6 @@ import java.util.List;
  * @param errors the files that could not be read or are too large; each is an execution error
  */
 public record TextRead(List<TextFile> files, List<RuleExecutionError> errors) {
-
   /** No files and no errors. */
   public static final TextRead EMPTY = new TextRead(List.of(), List.of());
 

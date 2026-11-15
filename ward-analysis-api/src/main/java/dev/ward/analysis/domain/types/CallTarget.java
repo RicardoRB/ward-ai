@@ -45,10 +45,12 @@ public record CallTarget(
     List<String> typeParameters,
     List<String> declaringTypeParameters,
     Boolean isFinal,
-    Map<String, List<String>> annotationValues,
-    Map<String, List<String>> declaringAnnotationValues,
-    Boolean isAbstract) {
-
+    Map<String,
+    List<String>> annotationValues,
+    Map<String,
+    List<String>> declaringAnnotationValues,
+    Boolean isAbstract
+) {
   /**
    * Copies the parameters, annotations and annotation element values.
    *

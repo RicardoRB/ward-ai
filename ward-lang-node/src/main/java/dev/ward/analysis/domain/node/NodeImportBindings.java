@@ -5,7 +5,6 @@ import java.util.List;
 
 /** The names the import declarations of a file bind, for the type resolver. */
 public final class NodeImportBindings {
-
   private NodeImportBindings() {}
 
   /**
@@ -21,12 +20,14 @@ public final class NodeImportBindings {
   public static List<Import> of(final SyntaxNode tree) {
     return new NodeImportScan(tree)
         .bindings().stream()
-            .map(
-                binding ->
-                    new Import(
-                        NodeFlowSyntax.text(binding.local()),
-                        binding.member(),
-                        binding.specifier()))
-            .toList();
+        .map(
+            binding ->
+                new Import(
+                    NodeFlowSyntax.text(binding.local()),
+                    binding.member(),
+                    binding.specifier()
+                )
+        )
+        .toList();
   }
 }

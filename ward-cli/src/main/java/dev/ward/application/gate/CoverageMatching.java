@@ -19,7 +19,6 @@ import java.util.TreeSet;
  * @param namedBy the reports that name each matched source file
  */
 record CoverageMatching(Map<String, FileLines> lines, Map<String, Set<Path>> namedBy) {
-
   private static final String SLASH = "/";
 
   /**
@@ -27,7 +26,10 @@ record CoverageMatching(Map<String, FileLines> lines, Map<String, Set<Path>> nam
    * the source files. An entry that names no source file is dropped.
    */
   static CoverageMatching of(
-      final Path root, final List<LineHits> reports, final Set<String> sources) {
+      final Path root,
+      final List<LineHits> reports,
+      final Set<String> sources
+  ) {
     final Map<String, FileLines> lines = new TreeMap<>();
     final Map<String, Set<Path>> namedBy = new HashMap<>();
     for (final LineHits report : reports) {
@@ -46,11 +48,14 @@ record CoverageMatching(Map<String, FileLines> lines, Map<String, Set<Path>> nam
   }
 
   private static void record(
-      final Map<String, FileLines> lines,
-      final Map<String, Set<Path>> namedBy,
+      final Map<String,
+      FileLines> lines,
+      final Map<String,
+      Set<Path>> namedBy,
       final String source,
       final FileLines marks,
-      final Path report) {
+      final Path report
+  ) {
     lines.merge(source, marks, FileLines::merge);
     namedBy.computeIfAbsent(source, key -> namedByNew()).add(report);
   }
@@ -76,7 +81,8 @@ record CoverageMatching(Map<String, FileLines> lines, Map<String, Set<Path>> nam
       final Path root,
       final String name,
       final List<String> reportDirectory,
-      final Set<String> sources) {
+      final Set<String> sources
+  ) {
     final Path path = Path.of(name);
     if (path.isAbsolute()) {
       final Path base = root.toAbsolutePath().normalize();
@@ -104,7 +110,10 @@ record CoverageMatching(Map<String, FileLines> lines, Map<String, Set<Path>> nam
 
   /** A JaCoCo package and file: the source whose path ends with it, nearest to the report. */
   private static String byPackage(
-      final String name, final List<String> reportDirectory, final Set<String> sources) {
+      final String name,
+      final List<String> reportDirectory,
+      final Set<String> sources
+  ) {
     String best = null;
     int bestShared = -1;
     for (final String source : new TreeSet<>(sources)) {

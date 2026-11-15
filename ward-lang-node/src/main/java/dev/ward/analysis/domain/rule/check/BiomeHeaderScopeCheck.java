@@ -15,7 +15,6 @@ import java.util.Set;
  * false or empty does not.
  */
 public final class BiomeHeaderScopeCheck implements RuleCheck {
-
   private static final String SCOPE = "scope";
   private static final String HEADER = "th";
 
@@ -38,7 +37,10 @@ public final class BiomeHeaderScopeCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(JsxAttributes.OPENING, JsxAttributes.SELF_CLOSING))
         .stream()
         .map(SyntaxWalk.Visit::node)

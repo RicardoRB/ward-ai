@@ -24,15 +24,16 @@ class PresetRuleFileContentTest {
   @Test
   void nodeStrictOmitsTheJavaHiddenFieldOptions() {
     assertThat(
-            PresetRuleFileContent.wardRules(
-                QualityPreset.STRICT, List.of("typescript"), false, true))
+        PresetRuleFileContent.wardRules(QualityPreset.STRICT, List.of("typescript"), false, true)
+    )
         .doesNotContain("hidden-field");
   }
 
   @Test
   void javaStandardOmitsTheHiddenFieldOptions() {
     assertThat(
-            PresetRuleFileContent.wardRules(QualityPreset.STANDARD, List.of("java"), false, true))
+        PresetRuleFileContent.wardRules(QualityPreset.STANDARD, List.of("java"), false, true)
+    )
         .doesNotContain("hidden-field");
   }
 
@@ -42,7 +43,8 @@ class PresetRuleFileContentTest {
         .contains(
             "include = ["
                 + FOUR
-                + ", \"build.dependency-convergence\", \"build.require-upper-bound\"]");
+                + ", \"build.dependency-convergence\", \"build.require-upper-bound\"]"
+        );
   }
 
   @Test
@@ -51,8 +53,8 @@ class PresetRuleFileContentTest {
         .contains("include = [" + FOUR + "]")
         .doesNotContain("dependency-convergence");
     assertThat(
-            PresetRuleFileContent.wardRules(
-                QualityPreset.STRICT, List.of("typescript"), true, true))
+        PresetRuleFileContent.wardRules(QualityPreset.STRICT, List.of("typescript"), true, true)
+    )
         .contains("include = [" + FOUR + "]")
         .doesNotContain("require-upper-bound");
   }

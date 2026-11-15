@@ -40,7 +40,10 @@ final class ArgumentTyper {
       }
       if (!fitting.isEmpty() && index < fitting.get(0).params().size()) {
         ParamContext.contextualize(
-            value, fitting.get(0).params().get(index).type(), typer.names()::contextualize);
+            value,
+            fitting.get(0).params().get(index).type(),
+            typer.names()::contextualize
+        );
       }
       types.add(typer.typeOf(value));
     }

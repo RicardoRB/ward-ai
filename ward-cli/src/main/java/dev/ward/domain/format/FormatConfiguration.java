@@ -7,7 +7,6 @@ import java.util.List;
 /** Resolves the formatting settings of one project file from its configuration. */
 @FunctionalInterface
 public interface FormatConfiguration {
-
   /**
    * Resolves the settings that apply to one file.
    *
@@ -18,5 +17,8 @@ public interface FormatConfiguration {
    * @throws FormatConfigurationException if a configuration file sets an invalid option
    */
   FormatSettings resolve(
-      String relativePath, AnalysisLanguage language, List<FormatOption> declared);
+      String relativePath,
+      AnalysisLanguage language,
+      List<FormatOption> declared
+  );
 }

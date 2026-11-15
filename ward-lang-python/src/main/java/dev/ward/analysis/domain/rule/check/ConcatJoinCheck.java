@@ -66,7 +66,9 @@ public final class ConcatJoinCheck implements RuleCheck {
 
   /** The finding of a for statement that concatenates {@code result} with its loop variable. */
   private java.util.Optional<RuleMatch> concatenation(
-      final SyntaxNode statement, final String result) {
+      final SyntaxNode statement,
+      final String result
+  ) {
     final SyntaxNode loop = firstChild(statement, "for_stmt");
     if (loop == null) {
       return java.util.Optional.empty();

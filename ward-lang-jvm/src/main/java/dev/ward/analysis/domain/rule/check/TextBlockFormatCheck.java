@@ -15,7 +15,6 @@ import java.util.Set;
  * quotes sit on a line of their own. The indentation of the content is not checked.
  */
 public final class TextBlockFormatCheck implements UnitCheck {
-
   private static final String TEXT_BLOCK = "TEXT_BLOCK";
   private static final String QUOTES = "\"\"\"";
 
@@ -65,7 +64,7 @@ public final class TextBlockFormatCheck implements UnitCheck {
       return Optional.empty();
     }
     final Span span = block.span();
-    final int lines = (int) text.substring(0, quotes).chars().filter(c -> c == '\n').count();
+    final int lines = (int)text.substring(0, quotes).chars().filter(c -> c == '\n').count();
     final int column = quotes - lastBreak;
     return Optional.of(
         new Span(
@@ -74,6 +73,8 @@ public final class TextBlockFormatCheck implements UnitCheck {
             span.startLine() + lines,
             column + QUOTES.length(),
             span.startOffset() + quotes,
-            span.startOffset() + quotes + QUOTES.length()));
+            span.startOffset() + quotes + QUOTES.length()
+        )
+    );
   }
 }

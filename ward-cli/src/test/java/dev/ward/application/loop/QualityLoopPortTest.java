@@ -44,11 +44,15 @@ class QualityLoopPortTest {
             ignored ->
                 new WardConfiguration(
                     1,
-                    Map.of("tests", new GateConfiguration("tests", true, List.of("mvn", "test")))),
+                    Map.of("tests", new GateConfiguration("tests", true, List.of("mvn", "test")))
+                ),
             new QualityGateFactory(commands),
             new QualityGateRunner(),
             new dev.ward.application.gate.PartialPorts(
-                new FilePathExistence(), new NodeWorkspaceMembers()));
+                new FilePathExistence(),
+                new NodeWorkspaceMembers()
+            )
+        );
     final List<String> requested = new ArrayList<>();
     final AgentRunnerFactory agents =
         (workingDirectory, arguments) -> {
@@ -68,12 +72,20 @@ class QualityLoopPortTest {
         };
     final QualityLoopService loop =
         new QualityLoopService(
-            checks, agents, ignored -> new GitState(true, "main", false, "Working tree clean."));
+            checks,
+            agents,
+            ignored -> new GitState(true, "main", false, "Working tree clean.")
+        );
 
     final LoopResult result =
         loop.run(
             new LoopRequest(
-                root, List.of("agent", "--safe"), "fix it", new LoopConfiguration(1, 5, false)));
+                root,
+                List.of("agent", "--safe"),
+                "fix it",
+                new LoopConfiguration(1, 5, false)
+            )
+        );
 
     assertThat(result.state()).isEqualTo(LoopTerminalState.PASSED);
     assertThat(requested).containsExactly("agent", "--safe");

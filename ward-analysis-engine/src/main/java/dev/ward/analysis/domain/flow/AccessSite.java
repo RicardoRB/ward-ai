@@ -11,7 +11,6 @@ import java.util.Objects;
  * @param access the access itself
  */
 public record AccessSite(int block, int index, VariableAccess access) {
-
   /**
    * Validates the fields.
    *

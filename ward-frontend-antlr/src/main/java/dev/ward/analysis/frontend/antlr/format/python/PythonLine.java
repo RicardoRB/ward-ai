@@ -12,7 +12,6 @@ import java.util.List;
  * after a comma and before a closing bracket, so the printer breaks a long line there.
  */
 final class PythonLine {
-
   private static final String COMMENT_GAP = "  ";
   private static final String CONTINUATION = " \\";
   private static final char BACKSLASH = '\\';
@@ -129,7 +128,12 @@ final class PythonLine {
     final Document indented = Document.concat(Document.text(indentUnit.repeat(depth)), body);
     final String second = tokens.size() > 1 ? tokens.get(1).text() : "";
     return PythonChunk.code(
-        depth, tokens.getFirst().text(), second, COLON.equals(tokens.getLast().text()), indented);
+        depth,
+        tokens.getFirst().text(),
+        second,
+        COLON.equals(tokens.getLast().text()),
+        indented
+    );
   }
 
   private void closeFrame(final PythonEntry closer, final boolean backslash) {
@@ -143,7 +147,8 @@ final class PythonLine {
       final Document body = Document.concat(frame.items().toArray(Document[]::new));
       group =
           Document.group(
-              Document.concat(opened, Document.indent(body), closing(backslash), closed));
+              Document.concat(opened, Document.indent(body), closing(backslash), closed)
+          );
     }
     frames.peek().items().add(group);
   }

@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** What makes a catalog row or a catalog unusable. */
 class RuleCatalogRejectionTest {
-
   private static final String VALID =
       """
       [[rule]]
@@ -23,57 +22,53 @@ class RuleCatalogRejectionTest {
 
   @Test
   void aPlannedRowWithoutAnIssueFails() {
-    assertRejected(
-        """
+    assertRejected("""
         [[rule]]
         name = "x"
         category = "c"
         status = { java = "planned" }
-        """,
-        "a planned rule must name its issue");
+        """, "a planned rule must name its issue");
   }
 
   @Test
   void aNotApplicableRowWithoutAReasonFails() {
-    assertRejected(
-        """
+    assertRejected("""
         [[rule]]
         name = "x"
         status = { java = "not-applicable" }
-        """,
-        "a not-applicable rule must give a reason");
+        """, "a not-applicable rule must give a reason");
   }
 
   @Test
   void anImplementedRowThatNamesAnIssueFails() {
-    assertRejected(
-        """
+    assertRejected("""
         [[rule]]
         name = "x"
         status = { java = "implemented" }
         issues = { java = "#1" }
-        """,
-        "only a planned rule names an issue");
+        """, "only a planned rule names an issue");
   }
 
   @Test
   void anIssueForALanguageWithoutAStatusFails() {
-    assertRejected(
-        """
+    assertRejected("""
         [[rule]]
         name = "x"
         status = { java = "implemented" }
         issues = { kotlin = "#1" }
-        """,
-        "'issues' names kotlin with no status");
+        """, "'issues' names kotlin with no status");
   }
 
   @Test
   void anUnknownStatusLanguageToolOrKeyFails() {
     assertRejected(
-        "[[rule]]\nname = \"x\"\nstatus = { java = \"done\" }\n", "unknown status for java");
+        "[[rule]]\nname = \"x\"\nstatus = { java = \"done\" }\n",
+        "unknown status for java"
+    );
     assertRejected(
-        "[[rule]]\nname = \"x\"\nstatus = { cobol = \"planned\" }\n", "not an engine language");
+        "[[rule]]\nname = \"x\"\nstatus = { cobol = \"planned\" }\n",
+        "not an engine language"
+    );
     assertRejected("[[rule]]\nname = \"x\"\nsonar = [\"S1\"]\n", "unknown key 'sonar'");
     assertRejected("[[rule]]\nname = \"x\"\npresets = [\"loose\"]\n", "is not standard or strict");
   }
@@ -82,7 +77,9 @@ class RuleCatalogRejectionTest {
   void aBadNameOrIdFails() {
     assertRejected("[[rule]]\nname = \"Bad_Name\"\n", "must be lower-case words");
     assertRejected(
-        "[[rule]]\nname = \"x\"\nids = { java = \"ward:kotlin/x\" }\n", "must be ward:java/<name>");
+        "[[rule]]\nname = \"x\"\nids = { java = \"ward:kotlin/x\" }\n",
+        "must be ward:java/<name>"
+    );
     assertRejected("[[rule]]\nname = \"\"\n", "'name' must be a non-blank string");
   }
 

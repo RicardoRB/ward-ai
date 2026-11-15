@@ -31,7 +31,11 @@ final class DependencyConvergence implements BuildPolicyRule {
     return module.dependencies().stream()
         .collect(
             Collectors.groupingBy(
-                dependency -> dependency.id().key(), LinkedHashMap::new, Collectors.toList()))
+                dependency -> dependency.id().key(),
+                LinkedHashMap::new,
+                Collectors.toList()
+            )
+        )
         .values()
         .stream()
         .flatMap(entries -> finding(entries).stream());
@@ -48,7 +52,9 @@ final class DependencyConvergence implements BuildPolicyRule {
                   versions.merge(
                       request.version(),
                       request.requester().isEmpty() ? "the module" : request.requester(),
-                      (first, second) -> first.compareTo(second) <= 0 ? first : second));
+                      (first, second) -> first.compareTo(second) <= 0 ? first : second
+                  )
+          );
     }
     if (versions.size() < DIVERGENT) {
       return Optional.empty();
@@ -63,6 +69,8 @@ final class DependencyConvergence implements BuildPolicyRule {
             BuildRule.DEPENDENCY_CONVERGENCE,
             first.id().name() + " comes in " + versions.size() + " versions: " + listed + ".",
             first.source(),
-            0));
+            0
+        )
+    );
   }
 }

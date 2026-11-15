@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the javadoc alignment check on parsed JavaScript. */
 class NodeJavadocAlignCheckTest {
-
   private static final int MISALIGNED_LINE = 3;
   private static final int MISALIGNED_COLUMN = 4;
 

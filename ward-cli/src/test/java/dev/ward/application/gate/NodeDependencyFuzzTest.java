@@ -43,7 +43,8 @@ class NodeDependencyFuzzTest {
       new NodeProjectLayout(
           Set.copyOf(PATHS),
           List.of(),
-          List.of(new NodePackage("lib", "", Map.of(), null, null, null)));
+          List.of(new NodePackage("lib", "", Map.of(), null, null, null))
+      );
 
   @Test
   void incrementalGraphsEqualColdBuildsAfterEveryEdit() {
@@ -77,11 +78,14 @@ class NodeDependencyFuzzTest {
             new FrontendSupport(
                 AnalysisLanguage.TYPESCRIPT,
                 new AntlrLanguageFrontend(),
-                Set.of(RuleCapability.SYNTAX)),
+                Set.of(RuleCapability.SYNTAX)
+            ),
             new FrontendSupport(
                 AnalysisLanguage.JAVASCRIPT,
                 new AntlrLanguageFrontend(),
-                Set.of(RuleCapability.SYNTAX)));
+                Set.of(RuleCapability.SYNTAX)
+            )
+        );
     return new DependencyAnalysis(frontends, supports)
         .analyze(units, new AnalysisSummaryCache(cache, AnalysisCacheFixtures.codec(), VERSION))
         .graph();

@@ -20,13 +20,17 @@ import org.junit.jupiter.api.Test;
  * hint as note.
  */
 class SpectralSeverityTest {
-
   private static final Map<String, AnalysisSeverity> SEVERITIES =
       Map.of(
-          "error", AnalysisSeverity.ERROR,
-          "warn", AnalysisSeverity.WARNING,
-          "info", AnalysisSeverity.NOTE,
-          "hint", AnalysisSeverity.NOTE);
+          "error",
+          AnalysisSeverity.ERROR,
+          "warn",
+          AnalysisSeverity.WARNING,
+          "info",
+          AnalysisSeverity.NOTE,
+          "hint",
+          AnalysisSeverity.NOTE
+      );
 
   private static Map<String, String> severities() {
     final Map<String, String> severities = new HashMap<>();

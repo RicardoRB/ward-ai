@@ -21,7 +21,6 @@ import java.util.Map;
 
 /** The checks of the last SpotBugs ports for Java, which read classes, locks and field use. */
 final class SpotbugsFinalChecks {
-
   private static final String MESSAGE = "message";
   private static final String MODE = "mode";
 
@@ -35,50 +34,69 @@ final class SpotbugsFinalChecks {
             toml ->
                 new JavaSerialConstructorCheck(
                     "externalizable".equals(TomlValues.required(toml, MODE)),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "static-init-order",
-            toml -> new JavaStaticInitOrderCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavaStaticInitOrderCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "static-write-from-instance",
             toml ->
                 new JavaStaticWriteCheck(
                     "locked".equals(TomlValues.required(toml, MODE)),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "sync-set-unsync-get",
-            toml -> new JavaSyncAccessorCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavaSyncAccessorCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "wait-context",
             toml ->
                 new JavaWaitContextCheck(
                     JavaWaitContextCheck.Mode.valueOf(
-                        TomlValues.required(toml, MODE).toUpperCase(Locale.ROOT).replace('-', '_')),
-                    TomlValues.required(toml, MESSAGE))),
+                        TomlValues.required(toml, MODE).toUpperCase(Locale.ROOT).replace('-', '_')
+                    ),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "put-if-absent-ignored",
-            toml -> new JavaPutIfAbsentCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavaPutIfAbsentCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "useless-void-method",
-            toml -> new JavaUselessVoidMethodCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavaUselessVoidMethodCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "value-range-condition",
-            toml -> new JavaValueRangeCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavaValueRangeCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "type-range-condition",
-            toml -> new JavaTypeRangeCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavaTypeRangeCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "overridable-security-check",
-            toml -> new JavaOverridableSecurityCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavaOverridableSecurityCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "sealed-field-use",
             toml ->
                 new JavaSealedFieldUseCheck(
                     JavaSealedFieldUseCheck.Mode.valueOf(
-                        TomlValues.required(toml, MODE).toUpperCase(Locale.ROOT)),
-                    TomlValues.required(toml, MESSAGE))),
+                        TomlValues.required(toml, MODE).toUpperCase(Locale.ROOT)
+                    ),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "uninitialized-field",
-            toml -> new JavaUninitializedFieldCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new JavaUninitializedFieldCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 }

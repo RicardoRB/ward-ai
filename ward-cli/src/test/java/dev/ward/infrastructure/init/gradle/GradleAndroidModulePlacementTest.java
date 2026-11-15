@@ -92,9 +92,10 @@ class GradleAndroidModulePlacementTest {
     assumeFalse(Files.isWritable(core), "read-only files are writable for this user");
 
     assertThatThrownBy(
-            () ->
-                new GradleToolConfigurator()
-                    .apply(project, gates("android-coverage"), null, finding -> false))
+        () ->
+            new GradleToolConfigurator()
+                .apply(project, gates("android-coverage"), null, finding -> false)
+    )
         .isInstanceOf(WardException.class);
 
     assertThat(read(APP)).isEqualTo(app);

@@ -21,8 +21,8 @@ public record Binding(
     Span declaration,
     Set<BindingFlag> flags,
     int scope,
-    Optional<ImportOrigin> origin) {
-
+    Optional<ImportOrigin> origin
+) {
   /**
    * Copies the flags.
    *

@@ -11,7 +11,6 @@ import java.util.Optional;
  * that loads fixtures from any folder can reuse it.
  */
 public final class FormatFixtureChecks {
-
   private static final String COMMENT = "comment";
 
   private final SourceFormatter formatter;
@@ -27,7 +26,10 @@ public final class FormatFixtureChecks {
    * @throws NullPointerException if an argument is missing
    */
   public FormatFixtureChecks(
-      final SourceFormatter formatter, final FormatSafety safety, final FormatOptions options) {
+      final SourceFormatter formatter,
+      final FormatSafety safety,
+      final FormatOptions options
+  ) {
     this.formatter = Objects.requireNonNull(formatter, "formatter");
     this.safety = Objects.requireNonNull(safety, "safety");
     this.options = Objects.requireNonNull(options, "options");

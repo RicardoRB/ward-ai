@@ -44,7 +44,8 @@ class RuleEngineTest {
             .run(
                 List.of(RuleEngineFixtures.unit(UNIT_A)),
                 List.of(java(Set.of(RuleCapability.SYNTAX))),
-                List.of(RuleEngineFixtures.rule(JAVA_LENGTH, RuleCapability.SYNTAX)));
+                List.of(RuleEngineFixtures.rule(JAVA_LENGTH, RuleCapability.SYNTAX))
+            );
 
     assertThat(result.findings())
         .containsExactly(
@@ -56,7 +57,9 @@ class RuleEngineTest {
                 AT_2_5.startLine(),
                 AT_2_5.startColumn(),
                 null,
-                List.of()));
+                List.of()
+            )
+        );
     assertThat(result.notRun()).isEmpty();
     assertThat(result.executionErrors()).isEmpty();
   }
@@ -68,7 +71,8 @@ class RuleEngineTest {
             .run(
                 List.of(RuleEngineFixtures.unit(UNIT_A)),
                 List.of(java(Set.of(RuleCapability.SYNTAX))),
-                List.of(RuleEngineFixtures.rule(JAVA_FLOW, RuleCapability.DATAFLOW)));
+                List.of(RuleEngineFixtures.rule(JAVA_FLOW, RuleCapability.DATAFLOW))
+            );
 
     assertThat(result.notRun()).containsExactly(new RuleNotRun(JAVA_FLOW, RuleCapability.DATAFLOW));
     assertThat(result.findings()).isEmpty();
@@ -82,7 +86,8 @@ class RuleEngineTest {
             .run(
                 List.of(RuleEngineFixtures.unit(UNIT_A)),
                 List.of(),
-                List.of(RuleEngineFixtures.rule(JAVA_LENGTH, RuleCapability.SYNTAX)));
+                List.of(RuleEngineFixtures.rule(JAVA_LENGTH, RuleCapability.SYNTAX))
+            );
 
     assertThat(result.notRun()).containsExactly(new RuleNotRun(JAVA_LENGTH, RuleCapability.SYNTAX));
   }
@@ -91,22 +96,29 @@ class RuleEngineTest {
   void recordsParseFailureOnceAndAnalyzesTheOtherUnits() {
     final RuleRunResult result =
         engine(
-                Map.of(
-                    JAVA_LENGTH,
-                    root -> List.of(new RuleMatch(AT_2_5, "too long")),
-                    JAVA_NAMES,
-                    root -> List.of(new RuleMatch(AT_2_5, "name"))))
+            Map.of(
+                JAVA_LENGTH,
+                root -> List.of(new RuleMatch(AT_2_5, "too long")),
+                JAVA_NAMES,
+                root -> List.of(new RuleMatch(AT_2_5, "name"))
+            )
+        )
             .run(
                 List.of(
-                    RuleEngineFixtures.unit(FAILING_UNIT), RuleEngineFixtures.unit("Good.java")),
+                    RuleEngineFixtures.unit(FAILING_UNIT),
+                    RuleEngineFixtures.unit("Good.java")
+                ),
                 List.of(java(Set.of(RuleCapability.SYNTAX))),
                 List.of(
                     RuleEngineFixtures.rule(JAVA_LENGTH, RuleCapability.SYNTAX),
-                    RuleEngineFixtures.rule(JAVA_NAMES, RuleCapability.SYNTAX)));
+                    RuleEngineFixtures.rule(JAVA_NAMES, RuleCapability.SYNTAX)
+                )
+            );
 
     assertThat(result.executionErrors())
         .containsExactly(
-            new RuleExecutionError(null, FAILING_UNIT, "the unit could not be parsed"));
+            new RuleExecutionError(null, FAILING_UNIT, "the unit could not be parsed")
+        );
     assertThat(result.findings()).extracting(AnalysisFinding::file).containsOnly("Good.java");
     assertThat(result.findings()).hasSize(2);
     assertThat(parsed).containsExactly(FAILING_UNIT, "Good.java");
@@ -116,20 +128,24 @@ class RuleEngineTest {
   void recordsRuleFailureAndContinuesWithTheNextUnit() {
     final RuleRunResult result =
         engine(
-                Map.of(
-                    THROWING_RULE,
-                    root -> {
-                      throw new AnalysisFailedException("boom");
-                    }))
+            Map.of(
+                THROWING_RULE,
+                root -> {
+                  throw new AnalysisFailedException("boom");
+                }
+            )
+        )
             .run(
                 List.of(RuleEngineFixtures.unit(UNIT_A), RuleEngineFixtures.unit("B.java")),
                 List.of(java(Set.of(RuleCapability.SYNTAX))),
-                List.of(RuleEngineFixtures.rule(THROWING_RULE, RuleCapability.SYNTAX)));
+                List.of(RuleEngineFixtures.rule(THROWING_RULE, RuleCapability.SYNTAX))
+            );
 
     assertThat(result.executionErrors())
         .containsExactly(
             new RuleExecutionError(THROWING_RULE, UNIT_A, "the rule could not run"),
-            new RuleExecutionError(THROWING_RULE, "B.java", "the rule could not run"));
+            new RuleExecutionError(THROWING_RULE, "B.java", "the rule could not run")
+        );
     assertThat(result.findings()).isEmpty();
   }
 
@@ -140,11 +156,13 @@ class RuleEngineTest {
             .run(
                 List.of(RuleEngineFixtures.unit(UNIT_A)),
                 List.of(java(Set.of(RuleCapability.SYNTAX))),
-                List.of(RuleEngineFixtures.rule("ward:java/missing", RuleCapability.SYNTAX)));
+                List.of(RuleEngineFixtures.rule("ward:java/missing", RuleCapability.SYNTAX))
+            );
 
     assertThat(result.executionErrors())
         .containsExactly(
-            new RuleExecutionError("ward:java/missing", null, "the rule could not be compiled"));
+            new RuleExecutionError("ward:java/missing", null, "the rule could not be compiled")
+        );
   }
 
   @Test
@@ -153,15 +171,21 @@ class RuleEngineTest {
     final Span lengthAt = new Span(2, 1, 2, 2, 5, 6);
     final RuleRunResult result =
         engine(
-                Map.of(
-                    JAVA_NAMES, root -> List.of(new RuleMatch(namesAt, "names")),
-                    JAVA_LENGTH, root -> List.of(new RuleMatch(lengthAt, "length"))))
+            Map.of(
+                JAVA_NAMES,
+                root -> List.of(new RuleMatch(namesAt, "names")),
+                JAVA_LENGTH,
+                root -> List.of(new RuleMatch(lengthAt, "length"))
+            )
+        )
             .run(
                 List.of(RuleEngineFixtures.unit("B.java"), RuleEngineFixtures.unit(UNIT_A)),
                 List.of(java(Set.of(RuleCapability.SYNTAX))),
                 List.of(
                     RuleEngineFixtures.rule(JAVA_LENGTH, RuleCapability.SYNTAX),
-                    RuleEngineFixtures.rule(JAVA_NAMES, RuleCapability.SYNTAX)));
+                    RuleEngineFixtures.rule(JAVA_NAMES, RuleCapability.SYNTAX)
+                )
+            );
 
     assertThat(result.findings())
         .extracting(AnalysisFinding::file, AnalysisFinding::line, AnalysisFinding::ruleId)
@@ -169,7 +193,8 @@ class RuleEngineTest {
             tuple(UNIT_A, 1, JAVA_NAMES),
             tuple(UNIT_A, 2, JAVA_LENGTH),
             tuple("B.java", 1, JAVA_NAMES),
-            tuple("B.java", 2, JAVA_LENGTH));
+            tuple("B.java", 2, JAVA_LENGTH)
+        );
   }
 
   @Test
@@ -179,7 +204,8 @@ class RuleEngineTest {
             .run(
                 List.of(RuleEngineFixtures.unit(UNIT_A)),
                 List.of(java(Set.of(RuleCapability.SYNTAX))),
-                List.of(RuleEngineFixtures.rule(JAVA_LENGTH, RuleCapability.SYNTAX)));
+                List.of(RuleEngineFixtures.rule(JAVA_LENGTH, RuleCapability.SYNTAX))
+            );
 
     assertThat(result.findings())
         .containsExactly(
@@ -191,7 +217,9 @@ class RuleEngineTest {
                 null,
                 null,
                 null,
-                List.of()));
+                List.of()
+            )
+        );
   }
 
   private RuleEngine engine(final Map<String, MatchFunction> behaviors) {

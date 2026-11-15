@@ -21,7 +21,6 @@ import java.util.List;
 
 /** Builds the Java fixture's finding through the real pipeline, and renders it. */
 final class TaintPathFixtures {
-
   /** The file the fixture's findings are reported in. */
   static final String FILE = "src/Flow.java";
 
@@ -62,7 +61,8 @@ final class TaintPathFixtures {
           SINK_LINE,
           SINK_COLUMN,
           null,
-          List.of());
+          List.of()
+      );
     }
     final RuleMatch match = TaintPathMatch.match().get(0);
     final AnalysisFinding analysis =
@@ -74,7 +74,8 @@ final class TaintPathFixtures {
             match.span().startLine(),
             match.span().startColumn(),
             null,
-            match.path());
+            match.path()
+        );
     return new AnalysisFindingMapper().map("ward", "ward", List.of(analysis)).get(0);
   }
 

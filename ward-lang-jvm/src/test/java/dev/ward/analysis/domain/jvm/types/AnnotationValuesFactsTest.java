@@ -9,7 +9,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class AnnotationValuesFactsTest {
-
   private static final String DEPRECATED = "java.lang.Deprecated";
   private static final String HELPER =
       "package app;\n"
@@ -49,10 +48,11 @@ class AnnotationValuesFactsTest {
         .anyMatch(key -> key.endsWith("Pinned#value"))
         .anyMatch(key -> key.endsWith("Level#value"));
     assertThat(
-            target.annotationValues().entrySet().stream()
-                .filter(entry -> entry.getKey().endsWith("#value"))
-                .flatMap(entry -> entry.getValue().stream())
-                .toList())
+        target.annotationValues().entrySet().stream()
+            .filter(entry -> entry.getKey().endsWith("#value"))
+            .flatMap(entry -> entry.getValue().stream())
+            .toList()
+    )
         .contains("app.Helper", "STRICT", "3", "true");
   }
 

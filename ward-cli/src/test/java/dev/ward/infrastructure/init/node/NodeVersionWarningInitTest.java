@@ -90,7 +90,8 @@ class NodeVersionWarningInitTest {
         Set.of(),
         node,
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 
   private static List<InitGateOption> gates() {

@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * builder idiom in an assignment or a return, is left alone.
  */
 public final class KotlinUnnecessaryApplyCheck implements RuleCheck {
-
   private static final String CALL = "postfixUnaryExpression";
   private static final String STATEMENT = "statement";
   private static final String RETURN = "return";

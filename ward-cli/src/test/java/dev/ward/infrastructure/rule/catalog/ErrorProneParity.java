@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * check, so each of its diagnostics counts for every NullAway id of the rule.
  */
 final class ErrorProneParity implements ParityTool {
-
   private static final Pattern CHECK = Pattern.compile("^\\[(\\w+)\\]");
   private static final String NULLAWAY = "nullaway";
   private static final String NULLAWAY_CHECK = "NullAway";
@@ -55,7 +54,8 @@ final class ErrorProneParity implements ParityTool {
             nullaway ? NULLAWAY : "ep",
             fixtures,
             List.copyOf(checks),
-            environment.workFolder("unused"));
+            environment.workFolder("unused")
+        );
     final ParityRun run = new ParityRun();
     result
         .failed()
@@ -73,7 +73,8 @@ final class ErrorProneParity implements ParityTool {
       final ParityRun run,
       final List<ParityTarget> targets,
       final ParityJavac.Diagnostic diagnostic,
-      final String check) {
+      final String check
+  ) {
     if (nullaway) {
       recordNullAway(run, targets, diagnostic, check);
     } else {
@@ -85,7 +86,8 @@ final class ErrorProneParity implements ParityTool {
       final ParityRun run,
       final List<ParityTarget> targets,
       final ParityJavac.Diagnostic diagnostic,
-      final String check) {
+      final String check
+  ) {
     if (!NULLAWAY_CHECK.equals(check)) {
       return;
     }

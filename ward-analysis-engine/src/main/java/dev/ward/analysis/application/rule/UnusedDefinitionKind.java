@@ -53,7 +53,8 @@ enum UnusedDefinitionKind {
       final String name,
       final Set<String> used,
       final Set<String> assigned,
-      final Set<String> conformance) {
+      final Set<String> conformance
+  ) {
     if (used.contains(name)) {
       return false;
     }

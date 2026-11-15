@@ -41,10 +41,16 @@ final class PomFiles {
   static void write(final Path pom, final String content) {
     try {
       Files.writeString(
-          pom, content, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
+          pom,
+          content,
+          StandardOpenOption.TRUNCATE_EXISTING,
+          StandardOpenOption.WRITE
+      );
     } catch (IOException e) {
       throw new WardException(
-          "Could not configure Maven tools in " + pom + ": " + e.getMessage(), e);
+          "Could not configure Maven tools in " + pom + ": " + e.getMessage(),
+          e
+      );
     }
   }
 }

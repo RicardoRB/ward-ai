@@ -18,7 +18,6 @@ import org.tomlj.TomlParseResult;
 
 /** The checks of the SpotBugs correctness rules that read operand types, calls or literals. */
 final class CorrectnessChecks {
-
   private static final String MESSAGE = "message";
 
   private CorrectnessChecks() {}
@@ -33,30 +32,43 @@ final class CorrectnessChecks {
                     TomlValues.strings(toml, "operators"),
                     typeRanges(toml),
                     toml.getBoolean("both", () -> false),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "typed-call",
             toml ->
                 new TypedCallCheck(
                     Pattern.compile(TomlValues.required(toml, "method")),
                     new TypedCallCheck.Receiver(
-                        pattern(toml, "receiver-text"), pattern(toml, "receiver-type")),
+                        pattern(toml, "receiver-text"),
+                        pattern(toml, "receiver-type")
+                    ),
                     new TypedCallCheck.Argument(
                         TomlValues.optionalInteger(toml, "argument", 0),
                         TomlValues.optionalStrings(toml, "argument-types"),
-                        pattern(toml, "argument-text")),
-                    TomlValues.required(toml, MESSAGE))),
+                        pattern(toml, "argument-text")
+                    ),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "ignored-result",
             toml ->
                 new IgnoredResultCheck(
-                    TomlValues.strings(toml, "types"), TomlValues.required(toml, MESSAGE))),
+                    TomlValues.strings(toml, "types"),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "invalid-regex-literal",
-            toml -> new InvalidRegexLiteralCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new InvalidRegexLiteralCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "self-recursive-method",
-            toml -> new SelfRecursiveMethodCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new SelfRecursiveMethodCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 
   /**
@@ -70,14 +82,16 @@ final class CorrectnessChecks {
     final Map<String, BinaryOperandTypeCheck.Range> ranges = new HashMap<>();
     TomlValues.optionalStrings(toml, "types").forEach(type -> ranges.put(type, shared));
     TomlValues.optionalStrings(toml, "type-ranges")
-        .forEach(entry -> ranges.put(entry.split(":")[0], rangeOf(entry)));
+        .forEach(entry -> ranges.put(entry.split(":") [0], rangeOf(entry)));
     return ranges;
   }
 
   private static BinaryOperandTypeCheck.Range rangeOf(final String entry) {
     final String[] parts = entry.split(":");
     return new BinaryOperandTypeCheck.Range(
-        Optional.of(new BigInteger(parts[1])), Optional.of(new BigInteger(parts[2])));
+        Optional.of(new BigInteger(parts[1])),
+        Optional.of(new BigInteger(parts[2]))
+    );
   }
 
   private static Optional<Pattern> pattern(final TomlParseResult toml, final String key) {

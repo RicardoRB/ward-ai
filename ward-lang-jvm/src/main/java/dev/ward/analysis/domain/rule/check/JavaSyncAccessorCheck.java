@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * must be neither volatile nor final.
  */
 public final class JavaSyncAccessorCheck implements RuleCheck {
-
   private static final Pattern GETTER = Pattern.compile("^(?:get|is)([A-Z]\\w*)$");
   private static final Pattern RETURNS = Pattern.compile("^\\{return(?:this\\.)?(\\w+);\\}$");
   private static final String SYNCHRONIZED = "synchronized";
@@ -41,7 +40,9 @@ public final class JavaSyncAccessorCheck implements RuleCheck {
             .ifPresent(
                 name ->
                     matches.add(
-                        CheckSupport.at(getter.span(), CheckSupport.fill(message, name, ""))));
+                        CheckSupport.at(getter.span(), CheckSupport.fill(message, name, ""))
+                    )
+            );
       }
     }
     return List.copyOf(matches);
@@ -62,7 +63,8 @@ public final class JavaSyncAccessorCheck implements RuleCheck {
     return ClassShapes.methods(clazz).stream()
         .filter(JavaSyncAccessorCheck::isSynchronized)
         .filter(
-            member -> setter.equals(MemberDeclarations.name(ClassMembers.declarationOf(member))))
+            member -> setter.equals(MemberDeclarations.name(ClassMembers.declarationOf(member)))
+        )
         .filter(member -> writesField(ClassMembers.declarationOf(member), returned.get()))
         .findFirst()
         .map(member -> returned.get());
@@ -89,6 +91,7 @@ public final class JavaSyncAccessorCheck implements RuleCheck {
         .anyMatch(
             field ->
                 !MemberDeclarations.modifiers(field).contains("volatile")
-                    && !MemberDeclarations.modifiers(field).contains(MemberDeclarations.FINAL));
+                    && !MemberDeclarations.modifiers(field).contains(MemberDeclarations.FINAL)
+        );
   }
 }

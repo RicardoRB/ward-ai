@@ -36,7 +36,8 @@ class NodeVueMatrixCellsTest {
             "typescript@6.0.3",
             "vitest@4.1.11",
             "vitest@4.0.18",
-            "vite@7.3.7");
+            "vite@7.3.7"
+        );
     assertThat(vueRows.stream().map(row -> column(row, NODE_COLUMN))).contains("22.12", "24");
     assertThat(vueRows)
         .filteredOn(row -> column(row, PACKAGES_COLUMN).contains("vitest@4.0.18"))

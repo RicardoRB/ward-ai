@@ -11,7 +11,6 @@ import java.util.Objects;
  * asterisk than the offset.
  */
 public final class JavadocTagContinuationIndentationCheck implements RuleCheck {
-
   private final int offset;
   private final String message;
 
@@ -38,7 +37,11 @@ public final class JavadocTagContinuationIndentationCheck implements RuleCheck {
                 line ->
                     matches.add(
                         CheckSupport.at(
-                            line.span(), CheckSupport.fill(message, "", String.valueOf(offset)))));
+                            line.span(),
+                            CheckSupport.fill(message, "", String.valueOf(offset))
+                        )
+                    )
+            );
       }
     }
     return List.copyOf(matches);

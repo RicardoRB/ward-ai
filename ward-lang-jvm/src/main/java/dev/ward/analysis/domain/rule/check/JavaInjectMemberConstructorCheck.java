@@ -12,7 +12,6 @@ import java.util.Set;
  * annotated {@code @Inject}, as Error Prone's InjectOnMemberAndConstructor does.
  */
 public final class JavaInjectMemberConstructorCheck implements RuleCheck {
-
   private static final String INJECT = "Inject";
 
   private final String message;
@@ -35,7 +34,8 @@ public final class JavaInjectMemberConstructorCheck implements RuleCheck {
           members.stream()
               .anyMatch(
                   member ->
-                      "constructorDeclaration".equals(member.node().kind()) && injected(member));
+                      "constructorDeclaration".equals(member.node().kind()) && injected(member)
+              );
       if (constructor) {
         members.stream()
             .filter(member -> !"constructorDeclaration".equals(member.node().kind()))

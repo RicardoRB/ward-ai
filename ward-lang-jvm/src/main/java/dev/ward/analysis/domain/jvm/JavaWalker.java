@@ -7,7 +7,6 @@ import java.util.List;
 /** Walks a syntax subtree in evaluation order, adding the accesses it makes to the list. */
 @FunctionalInterface
 interface JavaWalker {
-
   /**
    * Adds the accesses of a subtree.
    *

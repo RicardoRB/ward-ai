@@ -14,7 +14,6 @@ import java.util.Set;
  * @param texts the token texts of each modifier name
  */
 public record ModifierTable(Set<String> kinds, Map<String, Set<String>> texts) {
-
   /** A table with no modifier kinds, for languages and rules that filter on no modifier. */
   public static final ModifierTable NONE = new ModifierTable(Set.of(), Map.of());
 

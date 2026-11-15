@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 /** Groups supports by their resolver, so a resolver shared by several languages is called once. */
 final class ResolverGroups {
-
   private ResolverGroups() {}
 
   /**
@@ -26,6 +25,9 @@ final class ResolverGroups {
                 LinkedHashMap::new,
                 Collectors.mapping(
                     DependencySupport::language,
-                    Collectors.toCollection(() -> EnumSet.noneOf(AnalysisLanguage.class)))));
+                    Collectors.toCollection(() -> EnumSet.noneOf(AnalysisLanguage.class))
+                )
+            )
+        );
   }
 }

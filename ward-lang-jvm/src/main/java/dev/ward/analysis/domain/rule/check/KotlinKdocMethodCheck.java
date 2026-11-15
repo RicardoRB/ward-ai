@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * tags of a method. Functions without a KDoc comment are left to the missing-doc rules.
  */
 public final class KotlinKdocMethodCheck implements UnitCheck {
-
   private static final String FUNCTION = "functionDeclaration";
   private static final String PARAMETERS = "functionValueParameters";
   private static final String PARAMETER = "functionValueParameter";

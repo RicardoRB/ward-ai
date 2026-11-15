@@ -15,7 +15,6 @@ import java.util.List;
  * answers unknown.
  */
 abstract class FactsCheck implements RuleCheck {
-
   private final FactNeed need;
 
   FactsCheck(final FactNeed need) {
@@ -38,7 +37,8 @@ abstract class FactsCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return check(root, types);
   }
 

@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * passes arguments, as pylint does.
  */
 public final class LoggingFormatCheck implements RuleCheck {
-
   /** The mistakes the check tells apart. */
   public enum Problem {
     /** The format ends inside a conversion specifier. */
@@ -29,7 +28,8 @@ public final class LoggingFormatCheck implements RuleCheck {
   private static final Pattern CALL =
       Pattern.compile(
           "^(?:\\w+\\.)*(?:logging|log|logger|_logger|LOGGER|LOG|getLogger\\([^()]*\\))"
-              + "\\.(?:critical|debug|error|exception|fatal|info|warn|warning)\\(");
+              + "\\.(?:critical|debug|error|exception|fatal|info|warn|warning)\\("
+      );
   private static final char BACKSLASH = '\\';
   private static final char DOUBLE_QUOTE = '"';
   private static final char SINGLE_QUOTE = '\'';

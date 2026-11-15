@@ -35,7 +35,8 @@ public record GateFindings(List<Finding> items, int total) {
         matching.subList(0, Math.min(LIMIT, matching.size())),
         total,
         total - matching.size(),
-        matching.size() > LIMIT);
+        matching.size() > LIMIT
+    );
   }
 
   /** Returns false: all extracted findings are kept, and only {@link #visible} caps them. */

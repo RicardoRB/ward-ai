@@ -5,7 +5,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 
 /** Picks the lowering of a Kotlin control construct: a branch, a handler, a loop or an operator. */
 final class KotlinConstructLowering {
-
   private final KotlinValueLowering values;
   private final KotlinLoopLowering loops;
   private final KotlinHandlerLowering handlers;
@@ -15,7 +14,8 @@ final class KotlinConstructLowering {
   KotlinConstructLowering(
       final ControlFlowBuilder flow,
       final KotlinValueLowering values,
-      final KotlinStatements statements) {
+      final KotlinStatements statements
+  ) {
     this.values = values;
     this.loops = new KotlinLoopLowering(flow, statements);
     this.handlers = new KotlinHandlerLowering(flow, statements);
@@ -41,7 +41,10 @@ final class KotlinConstructLowering {
   }
 
   private void loopOrExpression(
-      final SyntaxNode construct, final String label, final KotlinResult result) {
+      final SyntaxNode construct,
+      final String label,
+      final KotlinResult result
+  ) {
     switch (construct.kind()) {
       case "whileExpression" -> loops.whileLoop(construct, label);
       case "doWhileExpression" -> loops.doWhileLoop(construct, label);

@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 
 /** Applies the class, member, node and scope conditions of a decorated-class check. */
 final class DecoratedFilters {
-
   private final DecoratedClassCheck.Filters filters;
 
   DecoratedFilters(final DecoratedClassCheck.Filters filters) {
@@ -39,12 +38,16 @@ final class DecoratedFilters {
   }
 
   private static boolean anyEntryHolds(
-      final DecoratedSite site, final Map<Pattern, Pattern> entries) {
+      final DecoratedSite site,
+      final Map<Pattern,
+      Pattern> entries
+  ) {
     return entries.entrySet().stream()
         .anyMatch(
             entry ->
                 DecoratedTree.anyDecorator(site.cls, entry.getKey())
-                    && entry.getValue().matcher(site.text).find());
+                    && entry.getValue().matcher(site.text).find()
+        );
   }
 
   private boolean memberOk(final DecoratedSite site) {
@@ -57,7 +60,8 @@ final class DecoratedFilters {
         condition
             .notText()
             .map(
-                p -> site.member.isEmpty() || !p.matcher(SyntaxWalk.text(site.member.get())).find())
+                p -> site.member.isEmpty() || !p.matcher(SyntaxWalk.text(site.member.get())).find()
+            )
             .orElse(true);
     return decorated && has && notText;
   }

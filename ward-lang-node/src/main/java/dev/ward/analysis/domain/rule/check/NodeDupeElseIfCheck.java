@@ -18,7 +18,6 @@ import java.util.Set;
  * operands is.
  */
 public final class NodeDupeElseIfCheck implements RuleCheck {
-
   private static final String IF = "ifStatement";
   private static final String STATEMENT = "statement";
   private static final String TEST = "expressionSequence";
@@ -50,7 +49,10 @@ public final class NodeDupeElseIfCheck implements RuleCheck {
   }
 
   private void collect(
-      final SyntaxNode node, final List<RuleMatch> found, final Set<SyntaxNode> chained) {
+      final SyntaxNode node,
+      final List<RuleMatch> found,
+      final Set<SyntaxNode> chained
+  ) {
     if (IF.equals(node.kind()) && !chained.contains(node)) {
       chain(node, found, chained);
     }
@@ -60,7 +62,10 @@ public final class NodeDupeElseIfCheck implements RuleCheck {
   }
 
   private void chain(
-      final SyntaxNode first, final List<RuleMatch> found, final Set<SyntaxNode> chained) {
+      final SyntaxNode first,
+      final List<RuleMatch> found,
+      final Set<SyntaxNode> chained
+  ) {
     final Set<String> facts = new HashSet<>();
     SyntaxNode current = first;
     boolean firstCondition = true;
@@ -86,7 +91,8 @@ public final class NodeDupeElseIfCheck implements RuleCheck {
         .findFirst()
         .flatMap(
             sequence ->
-                sequence.children().stream().filter(c -> SINGLE.equals(c.kind())).findFirst());
+                sequence.children().stream().filter(c -> SINGLE.equals(c.kind())).findFirst()
+        );
   }
 
   /** The if statement of an else branch, when the branch is {@code else if}. */
@@ -122,9 +128,9 @@ public final class NodeDupeElseIfCheck implements RuleCheck {
     final SyntaxNode node = unwrap(expr);
     facts.add(LeafText.of(node));
     final Optional<SyntaxNode[]> logical = logical(node);
-    if (logical.isPresent() && OR.equals(LeafText.of(logical.get()[1]))) {
-      addFacts(logical.get()[0], facts);
-      addFacts(logical.get()[2], facts);
+    if (logical.isPresent() && OR.equals(LeafText.of(logical.get() [1]))) {
+      addFacts(logical.get() [0], facts);
+      addFacts(logical.get() [2], facts);
     }
   }
 

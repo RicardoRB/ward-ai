@@ -8,7 +8,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import org.junit.jupiter.api.Test;
 
 class EmptyBlockCheckTest {
-
   private static final String STATEMENT = "statement";
   private static final String STATEMENT_OPTION = "statement";
   private static final String TEXT_OPTION = "text";
@@ -21,11 +20,12 @@ class EmptyBlockCheckTest {
   void reportsEmptyBodiesUnderTheStatementOption() {
     assertThat(run(STATEMENT_OPTION, ifStatement(emptyBlock(0, 0)), "")).hasSize(1);
     assertThat(
-            run(
-                STATEMENT_OPTION,
-                TreeBuilders.n(
-                    STATEMENT, TreeBuilders.t("'try'", "try"), wrapped(emptyBlock(0, 0))),
-                ""))
+        run(
+            STATEMENT_OPTION,
+            TreeBuilders.n(STATEMENT, TreeBuilders.t("'try'", "try"), wrapped(emptyBlock(0, 0))),
+            ""
+        )
+    )
         .hasSize(1);
     assertThat(run(STATEMENT_OPTION, TreeBuilders.n("finallyBlock", emptyBlock(0, 0)), ""))
         .hasSize(1);
@@ -37,27 +37,38 @@ class EmptyBlockCheckTest {
   void ignoresBlocksThatHoldStatementsAndUnrelatedStatements() {
     final SyntaxNode filled =
         TreeBuilders.n(
-            "block", TreeBuilders.n("blockStatement", TreeBuilders.t("IDENTIFIER", "x")));
+            "block",
+            TreeBuilders.n("blockStatement", TreeBuilders.t("IDENTIFIER", "x"))
+        );
     assertThat(run(STATEMENT_OPTION, ifStatement(filled), "")).isEmpty();
     assertThat(
-            run(
-                STATEMENT_OPTION,
-                TreeBuilders.n(STATEMENT, TreeBuilders.t("'return'", "return"), emptyBlock(0, 0)),
-                ""))
+        run(
+            STATEMENT_OPTION,
+            TreeBuilders.n(STATEMENT, TreeBuilders.t("'return'", "return"), emptyBlock(0, 0)),
+            ""
+        )
+    )
         .isEmpty();
     assertThat(run(STATEMENT_OPTION, TreeBuilders.n(STATEMENT), "")).isEmpty();
     assertThat(
-            run(
-                STATEMENT_OPTION,
-                TreeBuilders.n(
-                    STATEMENT, TreeBuilders.t("'while'", "while"), TreeBuilders.n(STATEMENT)),
-                ""))
+        run(
+            STATEMENT_OPTION,
+            TreeBuilders.n(
+                STATEMENT,
+                TreeBuilders.t("'while'", "while"),
+                TreeBuilders.n(STATEMENT)
+            ),
+            ""
+        )
+    )
         .isEmpty();
     assertThat(
-            run(
-                STATEMENT_OPTION,
-                TreeBuilders.n("classBodyDeclaration", TreeBuilders.t("';'", ";")),
-                ""))
+        run(
+            STATEMENT_OPTION,
+            TreeBuilders.n("classBodyDeclaration", TreeBuilders.t("';'", ";")),
+            ""
+        )
+    )
         .isEmpty();
   }
 
@@ -78,7 +89,10 @@ class EmptyBlockCheckTest {
   }
 
   private static java.util.List<dev.ward.analysis.domain.rule.RuleMatch> run(
-      final String option, final SyntaxNode root, final String text) {
+      final String option,
+      final SyntaxNode root,
+      final String text
+  ) {
     return fileMatches(new EmptyBlockCheck(option, MESSAGE), text, root);
   }
 
@@ -88,7 +102,11 @@ class EmptyBlockCheckTest {
 
   private static SyntaxNode ifStatement(final SyntaxNode body) {
     return TreeBuilders.n(
-        STATEMENT, TreeBuilders.t("'if'", "if"), TreeBuilders.t("'('", "("), body);
+        STATEMENT,
+        TreeBuilders.t("'if'", "if"),
+        TreeBuilders.t("'('", "("),
+        body
+    );
   }
 
   private static SyntaxNode wrapped(final SyntaxNode block) {

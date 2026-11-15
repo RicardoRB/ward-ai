@@ -13,14 +13,18 @@ final class SiteDeclarer {
           "optionalParameter",
           "restParameter",
           "formalParameterArg",
-          "lastFormalParameterArg");
+          "lastFormalParameterArg"
+      );
 
   private SiteDeclarer() {}
 
   static void declare(
       final SyntaxNode node,
-      final Map<SyntaxNode, SyntaxNode> parents,
-      final Map<String, UnitModel.Site> sites) {
+      final Map<SyntaxNode,
+      SyntaxNode> parents,
+      final Map<String,
+      UnitModel.Site> sites
+  ) {
     switch (node.kind()) {
       case "variableDeclaration" -> {
         final SyntaxNode list = parents.get(node);
@@ -30,7 +34,12 @@ final class SiteDeclarer {
       }
       case "functionDeclaration" ->
           record(
-              sites, TreeKit.child(node, "identifier"), UnitModel.SiteKind.FUNCTION, node, false);
+              sites,
+              TreeKit.child(node, "identifier"),
+              UnitModel.SiteKind.FUNCTION,
+              node,
+              false
+          );
       case "classDeclaration" ->
           record(sites, TreeKit.child(node, "identifier"), UnitModel.SiteKind.CLASS, node, false);
       case "arrowFunctionParameters" -> {
@@ -42,7 +51,12 @@ final class SiteDeclarer {
       default -> {
         if (PARAMETER_KINDS.contains(node.kind())) {
           record(
-              sites, TreeKit.find(node, "identifier"), UnitModel.SiteKind.PARAMETER, node, false);
+              sites,
+              TreeKit.find(node, "identifier"),
+              UnitModel.SiteKind.PARAMETER,
+              node,
+              false
+          );
         }
       }
     }
@@ -54,11 +68,13 @@ final class SiteDeclarer {
   }
 
   private static void record(
-      final Map<String, UnitModel.Site> sites,
+      final Map<String,
+      UnitModel.Site> sites,
       final SyntaxNode name,
       final UnitModel.SiteKind kind,
       final SyntaxNode node,
-      final boolean isConst) {
+      final boolean isConst
+  ) {
     final SyntaxNode identifier =
         name == null
             ? null

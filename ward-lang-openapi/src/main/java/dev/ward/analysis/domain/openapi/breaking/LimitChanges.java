@@ -11,7 +11,6 @@ import java.util.Optional;
  * got looser in a response.
  */
 final class LimitChanges {
-
   private static final List<Limit> LIMITS =
       List.of(
           new Limit("max", "maximum", false),
@@ -25,7 +24,8 @@ final class LimitChanges {
           new Limit("max-properties", "maxProperties", false),
           new Limit("min-properties", "minProperties", true),
           new Limit("max-contains", "maxContains", false),
-          new Limit("min-contains", "minContains", true));
+          new Limit("min-contains", "minContains", true)
+      );
 
   /** A limit keyword, the name of its checks and whether a bigger value is the tighter one. */
   private record Limit(String name, String keyword, boolean tighterWhenBigger) {}
@@ -34,7 +34,10 @@ final class LimitChanges {
 
   /** The limit changes of one schema pair. */
   static List<SchemaChange> changes(
-      final SchemaSides sides, final DocNode base, final DocNode revision) {
+      final SchemaSides sides,
+      final DocNode base,
+      final DocNode revision
+  ) {
     final List<SchemaChange> changes = new ArrayList<>();
     for (final Limit limit : LIMITS) {
       change(sides, base, revision, limit).ifPresent(changes::add);
@@ -43,7 +46,11 @@ final class LimitChanges {
   }
 
   private static Optional<SchemaChange> change(
-      final SchemaSides sides, final DocNode base, final DocNode revision, final Limit limit) {
+      final SchemaSides sides,
+      final DocNode base,
+      final DocNode revision,
+      final Limit limit
+  ) {
     final Optional<DocNode> before = base.get(limit.keyword());
     final Optional<DocNode> after = revision.get(limit.keyword());
     if (sides.request() && before.isEmpty()) {
@@ -59,7 +66,11 @@ final class LimitChanges {
   }
 
   private static Optional<SchemaChange> moved(
-      final SchemaSides sides, final Limit limit, final DocNode before, final DocNode after) {
+      final SchemaSides sides,
+      final Limit limit,
+      final DocNode before,
+      final DocNode after
+  ) {
     final Optional<BigDecimal> from = number(before);
     final Optional<BigDecimal> to = number(after);
     if (from.isEmpty() || to.isEmpty()) {
@@ -70,7 +81,8 @@ final class LimitChanges {
     final boolean looser = order != 0 && !tighter;
     if (sides.request() ? tighter : looser) {
       return Optional.of(
-          new SchemaChange(limit.name() + "-" + moved(limit, sides.direction()), after));
+          new SchemaChange(limit.name() + "-" + moved(limit, sides.direction()), after)
+      );
     }
     return Optional.empty();
   }

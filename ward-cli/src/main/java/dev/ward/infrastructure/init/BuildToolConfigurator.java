@@ -38,14 +38,17 @@ public final class BuildToolConfigurator implements BuildToolConfiguration {
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final Predicate<? super CompatibilityFinding> approval) {
+      final Predicate<? super CompatibilityFinding> approval
+  ) {
     return adapter(project).apply(project, gates, preset, approval);
   }
 
   /** Turborepo workspaces are Node projects, so only the Node adapter writes them. */
   @Override
   public TurboWorkspaceChange applyWorkspace(
-      final TurboWorkspace workspace, final boolean replaceScripts) {
+      final TurboWorkspace workspace,
+      final boolean replaceScripts
+  ) {
     final BuildToolConfiguration node = adapters.get(Toolchain.NODE);
     return node == null
         ? new TurboWorkspaceChange(List.of(), List.of())
@@ -65,7 +68,8 @@ public final class BuildToolConfigurator implements BuildToolConfiguration {
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final boolean approved) {
+      final boolean approved
+  ) {
     return adapter(project).plan(project, gates, preset, approved);
   }
 
@@ -92,7 +96,8 @@ public final class BuildToolConfigurator implements BuildToolConfiguration {
     final BuildToolConfiguration adapter = adapters.get(change.toolchain());
     if (adapter == null) {
       throw new WardException(
-          "Ward cannot roll back " + change.toolchain() + " build files: no adapter is available.");
+          "Ward cannot roll back " + change.toolchain() + " build files: no adapter is available."
+      );
     }
     adapter.rollback(change);
   }
@@ -103,7 +108,8 @@ public final class BuildToolConfigurator implements BuildToolConfiguration {
       throw new WardException(
           "Ward does not configure "
               + project.buildTool().displayName()
-              + " build files; ward init supports Maven, Gradle, TypeScript, JavaScript and Python projects.");
+              + " build files; ward init supports Maven, Gradle, TypeScript, JavaScript and Python projects."
+      );
     }
     return adapter;
   }

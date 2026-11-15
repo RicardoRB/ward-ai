@@ -16,7 +16,6 @@ import java.util.Set;
  * included. Function types are not signatures and are never reported.
  */
 public final class SwiftRedundantVoidReturnCheck implements RuleCheck {
-
   private static final String FUNCTION_RESULT = "function_result";
   private static final String FUNCTION_SIGNATURE = "function_signature";
   private static final String CLOSURE_SIGNATURE = "closure_signature";
@@ -50,8 +49,10 @@ public final class SwiftRedundantVoidReturnCheck implements RuleCheck {
       final SyntaxNode node,
       final String parentKind,
       final List<SyntaxNode> leaves,
-      final Map<Integer, Integer> indexByOffset,
-      final List<RuleMatch> matches) {
+      final Map<Integer,
+      Integer> indexByOffset,
+      final List<RuleMatch> matches
+  ) {
     if (FUNCTION_RESULT.equals(node.kind())
         && (FUNCTION_SIGNATURE.equals(parentKind) || CLOSURE_SIGNATURE.equals(parentKind))
         && isVoid(node)) {
@@ -70,7 +71,9 @@ public final class SwiftRedundantVoidReturnCheck implements RuleCheck {
   private static Optional<SyntaxNode> previousLeaf(
       final SyntaxNode result,
       final List<SyntaxNode> leaves,
-      final Map<Integer, Integer> indexByOffset) {
+      final Map<Integer,
+      Integer> indexByOffset
+  ) {
     final List<SyntaxNode> own = SwiftTrees.leaves(result);
     if (own.isEmpty()) {
       return Optional.empty();

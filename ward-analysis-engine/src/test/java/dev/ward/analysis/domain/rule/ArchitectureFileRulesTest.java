@@ -23,7 +23,8 @@ class ArchitectureFileRulesTest {
             ArchitectureFixtures.paths("src/**/controller/**"),
             new ArchitectureConstraint(Kind.FILE_NAME, null, "*Controller.*"),
             "the web layer is found by its name",
-            false);
+            false
+        );
 
     final List<GraphMatch> matches =
         ArchitectureFixtures.files(
@@ -33,7 +34,9 @@ class ArchitectureFileRulesTest {
                 CONTROLLER,
                 AnalysisLanguage.JAVA,
                 "src/main/java/shop/controller/OrderController.java",
-                AnalysisLanguage.JAVA));
+                AnalysisLanguage.JAVA
+            )
+        );
 
     assertThat(matches).extracting(GraphMatch::file).containsExactly(CONTROLLER);
     assertThat(matches.getFirst().match().span().startLine()).isEqualTo(1);
@@ -49,9 +52,13 @@ class ArchitectureFileRulesTest {
             "controllers-in-folder",
             ArchitectureFixtures.paths("src/**/*Controller.*"),
             new ArchitectureConstraint(
-                Kind.MUST_BE_IN, ArchitectureFixtures.dirs("controller"), null),
+                Kind.MUST_BE_IN,
+                ArchitectureFixtures.dirs("controller"),
+                null
+            ),
             "the web layer is found by its folder",
-            false);
+            false
+        );
     final String stray = "src/shop/service/OrderController.ts";
 
     final List<GraphMatch> matches =
@@ -62,7 +69,9 @@ class ArchitectureFileRulesTest {
                 stray,
                 AnalysisLanguage.TYPESCRIPT,
                 "src/shop/controller/UserController.ts",
-                AnalysisLanguage.TYPESCRIPT));
+                AnalysisLanguage.TYPESCRIPT
+            )
+        );
 
     assertThat(matches).extracting(GraphMatch::file).containsExactly(stray);
   }
@@ -74,7 +83,8 @@ class ArchitectureFileRulesTest {
             "typo",
             ArchitectureFixtures.dirs("domian"),
             Kind.MUST_NOT_DEPEND_ON,
-            ArchitectureFixtures.dirs("infrastructure"));
+            ArchitectureFixtures.dirs("infrastructure")
+        );
     final ArchitectureRule lenient =
         new ArchitectureRule("typo", strict.select(), strict.constraint(), "why", true);
     final ProjectFiles project =
@@ -86,7 +96,8 @@ class ArchitectureFileRulesTest {
             error -> {
               assertThat(error.ruleId()).isEqualTo(DependencyArchitectureRule.ID);
               assertThat(error.reason()).contains("'typo'", "selects no file");
-            });
+            }
+        );
     assertThat(ArchitectureRuleCheck.errors(List.of(lenient), project)).isEmpty();
   }
 
@@ -95,24 +106,33 @@ class ArchitectureFileRulesTest {
     final ArchitectureSelector swift = ArchitectureFixtures.dirs("Domain");
     final ArchitectureRule dependency =
         ArchitectureFixtures.rule(
-            "swift-pure", swift, Kind.MUST_NOT_DEPEND_ON, ArchitectureFixtures.dirs("Infra"));
+            "swift-pure",
+            swift,
+            Kind.MUST_NOT_DEPEND_ON,
+            ArchitectureFixtures.dirs("Infra")
+        );
     final ArchitectureRule naming =
         new ArchitectureRule(
             "swift-named",
             swift,
             new ArchitectureConstraint(Kind.FILE_NAME, null, "*.swift"),
             "why",
-            false);
+            false
+        );
     final ProjectFiles project =
         new ProjectFiles(
-            Set.of(), Set.of(), Map.of("App/Domain/Order.swift", AnalysisLanguage.SWIFT));
+            Set.of(),
+            Set.of(),
+            Map.of("App/Domain/Order.swift", AnalysisLanguage.SWIFT)
+        );
 
     assertThat(ArchitectureRuleCheck.errors(List.of(dependency), project))
         .singleElement()
         .satisfies(
             error ->
                 assertThat(error.reason())
-                    .contains("'swift-pure'", "SWIFT", "App/Domain/Order.swift"));
+                    .contains("'swift-pure'", "SWIFT", "App/Domain/Order.swift")
+        );
     assertThat(ArchitectureRuleCheck.errors(List.of(naming), project)).isEmpty();
   }
 }

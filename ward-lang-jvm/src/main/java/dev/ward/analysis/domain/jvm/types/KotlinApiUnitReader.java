@@ -36,7 +36,8 @@ final class KotlinApiUnitReader {
     final KotlinApiRefs file =
         new KotlinApiRefs(
             new TypeScope(imports, name -> imported.contains(name) || exists.test(name)),
-            new ApiTypeRefs());
+            new ApiTypeRefs()
+        );
     final KotlinApiTypeReader types = new KotlinApiTypeReader(path);
     final KotlinApiMembers members = new KotlinApiMembers(path, file, false);
     final String facade = KotlinApiTopLevel.typeName(imports.packageName());
@@ -47,13 +48,17 @@ final class KotlinApiUnitReader {
                 types.read(
                     declaration,
                     BinaryNames.qualified(
-                        imports.packageName(), KotlinApiTypeReader.nameOf(declaration)),
+                        imports.packageName(),
+                        KotlinApiTypeReader.nameOf(declaration)
+                    ),
                     file,
-                    found);
+                    found
+                );
               } else {
                 final List<ApiMember> own = members.of(declaration);
                 topLevel.add(facade, own);
               }
-            });
+            }
+        );
   }
 }

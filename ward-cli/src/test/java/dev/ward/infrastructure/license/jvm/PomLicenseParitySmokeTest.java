@@ -58,13 +58,19 @@ class PomLicenseParitySmokeTest {
                         new ProcessCommandExecutor(),
                         new FileGraphCache(),
                         new ForyJsonCodec(),
-                        true))),
+                        true
+                    )
+                )
+            ),
             Map.of(
                 Ecosystem.MAVEN,
                 new PomLicenseMetadata(
                     home.resolve(".m2/repository"),
-                    home.resolve(".gradle/caches/modules-2/files-2.1"))),
-            new BundledLicenseCatalog());
+                    home.resolve(".gradle/caches/modules-2/files-2.1")
+                )
+            ),
+            new BundledLicenseCatalog()
+        );
 
     final Set<String> actual =
         service

@@ -8,7 +8,6 @@ import java.util.List;
  * no other module lists it.
  */
 public final class OpenApiRuleFiles implements RuleFileProvider {
-
   private static final List<String> FILES =
       List.of(
           "rules/openapi/descriptions.toml",
@@ -18,7 +17,8 @@ public final class OpenApiRuleFiles implements RuleFileProvider {
           "rules/openapi/schemas.toml",
           "rules/openapi/security.toml",
           "rules/openapi/tags.toml",
-          "rules/openapi/validation.toml");
+          "rules/openapi/validation.toml"
+      );
 
   @Override
   public List<String> ruleFiles() {

@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 /** The positional parameter count: markers stop it, and a leading self or cls is not counted. */
 final class PositionalParameterCountCheckTest {
-
   private static final String MESSAGE = "m";
   private static final int ROOMY = 3;
 
@@ -53,6 +52,7 @@ final class PositionalParameterCountCheckTest {
         Nodes.leaf("def"),
         Nodes.leaf("f"),
         Nodes.node("parameters", Nodes.leaf("("), typed, Nodes.leaf(")")),
-        Nodes.block(Nodes.leaf("pass")));
+        Nodes.block(Nodes.leaf("pass"))
+    );
   }
 }

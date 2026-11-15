@@ -10,7 +10,6 @@ import java.util.Map;
  * written. The scope analysis lists the name first.
  */
 final class KotlinWriteEnds {
-
   private static final String ASSIGNMENT_OPERATOR = "assignmentOperator";
   private static final String VARIABLE = "variableDeclaration";
   private static final String MULTI = "multiVariableDeclaration";
@@ -52,7 +51,11 @@ final class KotlinWriteEnds {
 
   /** {@code a++} has the name first and {@code ++a} second. */
   private static void update(
-      final SyntaxNode node, final int nameIndex, final Map<Integer, Integer> ends) {
+      final SyntaxNode node,
+      final int nameIndex,
+      final Map<Integer,
+      Integer> ends
+  ) {
     final List<SyntaxNode> parts = KotlinFlowSyntax.parts(node);
     if (parts.size() == UPDATE_PARTS) {
       target(parts.get(nameIndex), node, ends);
@@ -60,7 +63,11 @@ final class KotlinWriteEnds {
   }
 
   private static void target(
-      final SyntaxNode expression, final SyntaxNode statement, final Map<Integer, Integer> ends) {
+      final SyntaxNode expression,
+      final SyntaxNode statement,
+      final Map<Integer,
+      Integer> ends
+  ) {
     final SyntaxNode name = KotlinScopeExpressions.plainName(expression);
     if (name != null) {
       ends.put(name.span().startOffset(), statement.span().endOffset());
@@ -68,7 +75,11 @@ final class KotlinWriteEnds {
   }
 
   private static void declared(
-      final SyntaxNode node, final int end, final Map<Integer, Integer> ends) {
+      final SyntaxNode node,
+      final int end,
+      final Map<Integer,
+      Integer> ends
+  ) {
     for (final SyntaxNode part : KotlinFlowSyntax.parts(node)) {
       if (VARIABLE.equals(part.kind())) {
         final SyntaxNode name = KotlinFlowSyntax.child(part, "simpleIdentifier");

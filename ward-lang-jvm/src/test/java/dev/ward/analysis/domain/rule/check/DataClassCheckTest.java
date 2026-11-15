@@ -7,7 +7,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class DataClassCheckTest extends ClassMemberTrees {
-
   private static final String MESSAGE = "{value}";
   private static final String DATA_CLASS = "Point";
   private static final String GETTER = "getA";
@@ -23,7 +22,9 @@ class DataClassCheckTest extends ClassMemberTrees {
                 member(field("y"), PUBLIC),
                 member(field("z"), PUBLIC),
                 member(method("getX", 0, 0), PUBLIC),
-                member(method("setX", 1, 0), PUBLIC)));
+                member(method("setX", 1, 0), PUBLIC)
+            )
+        );
 
     assertThat(dataClass(root)).hasSize(1);
   }
@@ -40,7 +41,9 @@ class DataClassCheckTest extends ClassMemberTrees {
                 member(field("d"), PUBLIC),
                 member(method(GETTER, 0, 0), PUBLIC),
                 member(method(SETTER, 1, 0), PUBLIC),
-                member(method("heavy", 0, 30), PRIVATE)));
+                member(method("heavy", 0, 30), PRIVATE)
+            )
+        );
 
     assertThat(dataClass(root)).hasSize(1);
   }
@@ -57,11 +60,13 @@ class DataClassCheckTest extends ClassMemberTrees {
                 member(field("d"), PUBLIC),
                 member(method(GETTER, 0, 0), PUBLIC),
                 member(method(SETTER, 1, 0), PUBLIC),
-                member(method("heavy", 0, 46), PRIVATE)));
+                member(method("heavy", 0, 46), PRIVATE)
+            )
+        );
     final SyntaxNode fewRevealed =
         compilationUnit(
-            classNamed(
-                DATA_CLASS, member(field("a"), PUBLIC), member(method(GETTER, 0, 0), PUBLIC)));
+            classNamed(DATA_CLASS, member(field("a"), PUBLIC), member(method(GETTER, 0, 0), PUBLIC))
+        );
 
     assertThat(dataClass(highComplexity)).isEmpty();
     assertThat(dataClass(fewRevealed)).isEmpty();
@@ -78,7 +83,9 @@ class DataClassCheckTest extends ClassMemberTrees {
                 member(field("z"), PUBLIC),
                 member(method(GETTER, 0, 0), PUBLIC),
                 member(method(SETTER, 1, 0), PUBLIC),
-                member(method("compute", 0, 0), PUBLIC)));
+                member(method("compute", 0, 0), PUBLIC)
+            )
+        );
 
     assertThat(dataClass(root)).isEmpty();
   }

@@ -9,7 +9,6 @@ import org.tomlj.TomlParseResult;
 
 /** Reads a rule body with the TOML reader. A body that is not TOML has no values. */
 public final class TomlRuleBodyReader implements RuleBodyReader {
-
   /** Creates the reader; it holds no state. */
   @Inject
   public TomlRuleBodyReader() {

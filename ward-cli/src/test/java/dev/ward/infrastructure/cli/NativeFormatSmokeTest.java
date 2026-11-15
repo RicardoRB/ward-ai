@@ -31,12 +31,19 @@ class NativeFormatSmokeTest {
 
   private static final Map<String, String> SOURCES =
       Map.of(
-          "src/Main.java", "class Main{int x;}\n",
-          "app/Main.kt", "package app\n\nclass Main {\nval x:Int=1\n}\n",
-          "web/app.ts", "const a:number=1\n",
-          "web/app.js", "const b=2\n",
-          "py/main.py", "def f(x):\n      return x\n",
-          "ios/App.swift", "struct App{let x:Int}\n");
+          "src/Main.java",
+          "class Main{int x;}\n",
+          "app/Main.kt",
+          "package app\n\nclass Main {\nval x:Int=1\n}\n",
+          "web/app.ts",
+          "const a:number=1\n",
+          "web/app.js",
+          "const b=2\n",
+          "py/main.py",
+          "def f(x):\n      return x\n",
+          "ios/App.swift",
+          "struct App{let x:Int}\n"
+      );
 
   @TempDir Path project;
 
@@ -84,7 +91,8 @@ class NativeFormatSmokeTest {
       return new Run(
           process.exitValue(),
           Files.readString(stdout, StandardCharsets.UTF_8),
-          Files.readString(stderr, StandardCharsets.UTF_8));
+          Files.readString(stderr, StandardCharsets.UTF_8)
+      );
     } finally {
       process.destroyForcibly();
     }

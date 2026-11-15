@@ -17,4 +17,5 @@ public record NodeMagicNumberFlags(
     boolean ignoreArrayIndexes,
     boolean ignoreDefaultValues,
     boolean ignoreClassFieldInitialValues,
-    boolean enforceConst) {}
+    boolean enforceConst
+) {}

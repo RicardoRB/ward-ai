@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** The flow sites that the Kotlin lowering records for the taint rules. */
 class KotlinFlowSitesTest {
-
   private static final String IMPORTS =
       "import javax.servlet.http.HttpServletRequest\n"
           + "import java.sql.Statement\n"
@@ -54,7 +53,9 @@ class KotlinFlowSitesTest {
   void aSafeCallChainListsInnerCallsFirstAndKeepsTheQualifierText() {
     final List<FlowSite> found =
         calls(
-            "fun f(r: HttpServletRequest) { val v = r?.getParameter(\"a\")?.trim() ?: \"d\" }", 1);
+            "fun f(r: HttpServletRequest) { val v = r?.getParameter(\"a\")?.trim() ?: \"d\" }",
+            1
+        );
 
     assertThat(found).extracting(FlowSite::name).containsExactly("getParameter", "trim");
     assertThat(found.get(0).qualifier()).isEqualTo("r");
@@ -81,8 +82,8 @@ class KotlinFlowSitesTest {
 
     assertThat(call.arguments()).hasSize(2);
     assertThat(
-            source.substring(
-                call.arguments().get(0).startOffset(), call.arguments().get(0).endOffset()))
+        source.substring(call.arguments().get(0).startOffset(), call.arguments().get(0).endOffset())
+    )
         .isEqualTo("\"y\"");
   }
 

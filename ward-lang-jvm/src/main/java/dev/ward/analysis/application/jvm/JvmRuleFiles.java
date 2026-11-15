@@ -8,7 +8,6 @@ import java.util.List;
  * order; no other module lists it.
  */
 public final class JvmRuleFiles implements RuleFileProvider {
-
   private static final List<String> FILES =
       List.of(
           "rules/duplication-jvm.toml",
@@ -108,7 +107,8 @@ public final class JvmRuleFiles implements RuleFileProvider {
           "rules/kotlin/security-taint.toml",
           "rules/kotlin/size.toml",
           "rules/kotlin/style-checkstyle.toml",
-          "rules/kotlin/style.toml");
+          "rules/kotlin/style.toml"
+      );
 
   @Override
   public List<String> ruleFiles() {

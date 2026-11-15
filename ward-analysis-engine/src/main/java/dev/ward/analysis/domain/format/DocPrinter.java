@@ -13,7 +13,6 @@ import java.util.Objects;
  * their style and are safe to reuse.
  */
 public final class DocPrinter {
-
   private static final int ROOT_LEVEL = 0;
   private static final String LF = "\n";
   private static final String CRLF = "\r\n";
@@ -63,7 +62,10 @@ public final class DocPrinter {
   }
 
   private static void pushParts(
-      final Deque<Command> target, final Command parent, final List<Document> parts) {
+      final Deque<Command> target,
+      final Command parent,
+      final List<Document> parts
+  ) {
     for (int i = parts.size() - 1; i >= 0; i--) {
       target.push(new Command(parent.level(), parent.flat(), parts.get(i)));
     }
@@ -120,7 +122,6 @@ public final class DocPrinter {
 
   /** The state of one print: the output so far, the pending commands and the column. */
   private final class Layout {
-
     private final List<String> out = new ArrayList<>();
     private final Deque<Command> pending = new ArrayDeque<>();
     private int column;

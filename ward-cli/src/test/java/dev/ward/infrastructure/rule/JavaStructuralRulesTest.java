@@ -25,7 +25,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 /** Runs the packaged Java rules over the fixtures, one violating and one passing set per rule. */
 class JavaStructuralRulesTest {
-
   private static final String FIXTURES = "analysis/java/";
   private static final String VIOLATING = "violating";
   private static final String PASSING = "passing";
@@ -33,22 +32,23 @@ class JavaStructuralRulesTest {
   @ParameterizedTest
   @ValueSource(
       strings = {
-        "file-length",
-        "method-length",
-        "parameter-count",
-        "cyclomatic-complexity",
-        "cognitive-complexity",
-        "star-import",
-        "unused-import",
-        "missing-javadoc",
-        "type-name",
-        "method-name",
-        "member-name",
-        "parameter-name",
-        "local-variable-name",
-        "no-field-di",
-        "no-standard-streams"
-      })
+          "file-length",
+          "method-length",
+          "parameter-count",
+          "cyclomatic-complexity",
+          "cognitive-complexity",
+          "star-import",
+          "unused-import",
+          "missing-javadoc",
+          "type-name",
+          "method-name",
+          "member-name",
+          "parameter-name",
+          "local-variable-name",
+          "no-field-di",
+          "no-standard-streams"
+      }
+  )
   void violatingFixtureReportsItsRule(final String rule) throws IOException, URISyntaxException {
     assertThat(findingsOf(rule, VIOLATING)).isNotEmpty();
   }
@@ -56,22 +56,23 @@ class JavaStructuralRulesTest {
   @ParameterizedTest
   @ValueSource(
       strings = {
-        "file-length",
-        "method-length",
-        "parameter-count",
-        "cyclomatic-complexity",
-        "cognitive-complexity",
-        "star-import",
-        "unused-import",
-        "missing-javadoc",
-        "type-name",
-        "method-name",
-        "member-name",
-        "parameter-name",
-        "local-variable-name",
-        "no-field-di",
-        "no-standard-streams"
-      })
+          "file-length",
+          "method-length",
+          "parameter-count",
+          "cyclomatic-complexity",
+          "cognitive-complexity",
+          "star-import",
+          "unused-import",
+          "missing-javadoc",
+          "type-name",
+          "method-name",
+          "member-name",
+          "parameter-name",
+          "local-variable-name",
+          "no-field-di",
+          "no-standard-streams"
+      }
+  )
   void passingFixtureDoesNotReportItsRule(final String rule)
       throws IOException, URISyntaxException {
     assertThat(findingsOf(rule, PASSING)).isEmpty();
@@ -103,7 +104,10 @@ class JavaStructuralRulesTest {
     final List<RuleDefinition> rules = new ClasspathRuleSource().load().rules();
     final FrontendSupport java =
         new FrontendSupport(
-            AnalysisLanguage.JAVA, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX));
+            AnalysisLanguage.JAVA,
+            new AntlrLanguageFrontend(),
+            Set.of(RuleCapability.SYNTAX)
+        );
     return new RuleEngine(new DeclarativeRuleMatcher()).run(units, List.of(java), rules);
   }
 
@@ -125,7 +129,10 @@ class JavaStructuralRulesTest {
   private static SourceUnit unit(final Path path) {
     try {
       return new SourceUnit(
-          path.getFileName().toString(), AnalysisLanguage.JAVA, Files.readString(path));
+          path.getFileName().toString(),
+          AnalysisLanguage.JAVA,
+          Files.readString(path)
+      );
     } catch (final IOException exception) {
       throw new IllegalStateException("cannot read fixture " + path, exception);
     }

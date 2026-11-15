@@ -14,7 +14,6 @@ import java.util.Set;
  * valid escapes depend on the context, see {@link EscapeRules}.
  */
 public final class NodeUselessEscapeCheck implements RuleCheck {
-
   private static final String STRING = "StringLiteral";
   private static final String REGEX = "RegularExpressionLiteral";
   private static final String TEMPLATE = "templateStringLiteral";
@@ -111,7 +110,10 @@ public final class NodeUselessEscapeCheck implements RuleCheck {
 
   /** Appends the characters of a literal or substitution atom, each with its own position. */
   private static void appendAtom(
-      final SyntaxNode atom, final StringBuilder text, final List<int[]> positions) {
+      final SyntaxNode atom,
+      final StringBuilder text,
+      final List<int[]> positions
+  ) {
     if (!ATOM.equals(atom.kind())
         && !ESCAPE_ATOM.equals(atom.kind())
         && !SUBSTITUTION.equals(atom.kind())) {
@@ -122,24 +124,36 @@ public final class NodeUselessEscapeCheck implements RuleCheck {
       text.append(value.charAt(index));
       positions.add(
           new int[] {
-            atom.span().startLine(),
-            atom.span().startColumn() + index,
-            atom.span().startOffset() + index
-          });
+              atom.span().startLine(),
+              atom.span().startColumn() + index,
+              atom.span().startOffset() + index
+          }
+      );
     }
   }
 
   private RuleMatch report(
-      final SyntaxNode token, final int[] position, final int index, final char next) {
+      final SyntaxNode token,
+      final int[] position,
+      final int index,
+      final char next
+  ) {
     final int offset = token.span().startOffset() + index;
     return new RuleMatch(
         new Span(position[0], position[1], position[0], position[1] + 1, offset, offset + 1),
-        message(next));
+        message(next)
+    );
   }
 
   private static Span span(final int... position) {
     return new Span(
-        position[0], position[1], position[0], position[1] + 1, position[2], position[2] + 1);
+        position[0],
+        position[1],
+        position[0],
+        position[1] + 1,
+        position[2],
+        position[2] + 1
+    );
   }
 
   private String message(final char escaped) {

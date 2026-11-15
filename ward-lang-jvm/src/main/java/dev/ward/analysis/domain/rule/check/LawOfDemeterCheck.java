@@ -28,7 +28,6 @@ import java.util.regex.Pattern;
  * matches a trusted pattern.
  */
 public final class LawOfDemeterCheck implements RuleCheck {
-
   private static final String EXPRESSION = "expression";
   private static final int CHAIN_PARTS = 3;
   private static final String METHOD_CALL = "methodCall";
@@ -71,7 +70,8 @@ public final class LawOfDemeterCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(EXPRESSION)).stream()
         .flatMap(visit -> reportOf(visit, types).stream())
         .toList();
@@ -96,7 +96,10 @@ public final class LawOfDemeterCheck implements RuleCheck {
 
   /** Tells whether {@code inner} is {@code value.call()} on a value of a known outside type. */
   private static boolean isUntrustedCall(
-      final SyntaxNode inner, final String own, final UnitTypeFacts types) {
+      final SyntaxNode inner,
+      final String own,
+      final UnitTypeFacts types
+  ) {
     final List<SyntaxNode> parts = inner.children();
     if (parts.size() != CHAIN_PARTS
         || !EXPRESSION.equals(parts.get(0).kind())

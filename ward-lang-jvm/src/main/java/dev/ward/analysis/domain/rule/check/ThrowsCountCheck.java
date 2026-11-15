@@ -12,7 +12,6 @@ import java.util.Set;
  * left alone unless the check says otherwise.
  */
 public final class ThrowsCountCheck implements RuleCheck {
-
   private static final String PRIVATE = "private";
   private static final String THROWS_LIST = "qualifiedNameList";
   private static final String EXCEPTION = "qualifiedName";
@@ -46,7 +45,9 @@ public final class ThrowsCountCheck implements RuleCheck {
         matches.add(
             CheckSupport.at(
                 method.span(),
-                CheckSupport.fill(message, String.valueOf(count), String.valueOf(max))));
+                CheckSupport.fill(message, String.valueOf(count), String.valueOf(max))
+            )
+        );
       }
     }
     return List.copyOf(matches);

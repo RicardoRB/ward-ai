@@ -38,7 +38,8 @@ public final class AgentRulesTemplate {
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final List<Path> userOwned) {
+      final List<Path> userOwned
+  ) {
     final Set<String> ids = gates.stream().map(InitGateOption::id).collect(Collectors.toSet());
     final Set<String> owned =
         userOwned.stream()
@@ -50,13 +51,16 @@ public final class AgentRulesTemplate {
     lines.add(
         "`ward.toml` defines the checks: "
             + gates.stream().map(gate -> "`" + gate.id() + "`").collect(Collectors.joining(", "))
-            + ".");
+            + "."
+    );
     lines.add("");
     lines.add(
         "- Fix the cause of every finding. Do not add suppressions or exclusions, disable"
-            + " rules, or lower thresholds to make a gate pass.");
+            + " rules, or lower thresholds to make a gate pass."
+    );
     lines.add(
-        "- Run `ward check` after changes and `ward check --profile ci` before" + " finishing.");
+        "- Run `ward check` after changes and `ward check --profile ci` before" + " finishing."
+    );
     // Only the JVM coverage check reads JaCoCo; the other toolchains state their own minimums.
     if (preset != null && project.toolchain() == Toolchain.JVM) {
       lines.addAll(limits(ids, preset.rules()));
@@ -68,17 +72,20 @@ public final class AgentRulesTemplate {
                 + language.displayName()
                 + ": the `ward` check applies the Ward "
                 + (preset == null ? QualityPreset.STANDARD : preset).id()
-                + " rules selected in `ward-rules.toml`; fix each finding at its cause.");
+                + " rules selected in `ward-rules.toml`; fix each finding at its cause."
+        );
       }
     }
     lines.add(
         "- Architecture: `ward:architecture/layers` enforces the layer boundaries in"
-            + " `ward.toml`; do not remove them or add exemptions.");
+            + " `ward.toml`; do not remove them or add exemptions."
+    );
     lines.add(
         "- Architecture: when `ward.toml` configures `[checks.ward.cycles]` or"
             + " `[[checks.ward.independence]]`, `ward:architecture/cycles` and"
             + " `ward:architecture/independence` enforce them; do not remove them or add"
-            + " exemptions.");
+            + " exemptions."
+    );
     lines.addAll(gateLines(ids));
     InitToolchains.all()
         .forEach(support -> lines.addAll(support.agentRules(project, gates, preset, owned)));
@@ -89,7 +96,8 @@ public final class AgentRulesTemplate {
         BEGIN,
         END,
         padding + String.join("\n", lines) + "\n" + padding,
-        false);
+        false
+    );
   }
 
   /** Returns the lines of the gates that have no limit: the formatter and the crap gate. */
@@ -98,12 +106,14 @@ public final class AgentRulesTemplate {
     if (ids.contains(SupportedQualityGates.CRAP)) {
       lines.add(
           "- CRAP (`crap`): split or test every function the check reports; never raise `max` or"
-              + " exclude files to pass it.");
+              + " exclude files to pass it."
+      );
     }
     if (ids.contains(FormatGates.WARD_FORMAT)) {
       lines.add(
           "- Format: `ward-format` must pass; format edited files with `ward format`, whose layout"
-              + " comes from `.editorconfig`.");
+              + " comes from `.editorconfig`."
+      );
     }
     return lines;
   }
@@ -129,30 +139,34 @@ public final class AgentRulesTemplate {
         "- Coverage (JaCoCo): "
             + coverage(rules)
             + ", set in `ward.toml` and checked from the JaCoCo XML report. New code needs tests"
-            + " that assert behavior.");
+            + " that assert behavior."
+    );
     if (rules.mutationThreshold() != null) {
       lines.put(
           "mutation",
-          "- Mutation (PIT): at least " + rules.mutationThreshold() + "% of mutants killed.");
+          "- Mutation (PIT): at least " + rules.mutationThreshold() + "% of mutants killed."
+      );
     }
     lines.put(
         "build-policy",
         "- Build policy: plugin versions pinned, no dynamic versions, a minimum build tool version"
             + " and no duplicate dependency declarations; on Maven also one version of each"
             + " dependency and none below a version a dependency requests (ward:build"
-            + " rules).");
+            + " rules)."
+    );
     return lines;
   }
 
   private static String coverage(final PresetRules rules) {
     return new TreeMap<>(rules.jacocoMinimums())
         .entrySet().stream()
-            .map(
-                entry ->
-                    entry.getKey().toLowerCase(Locale.ROOT)
-                        + " at least "
-                        + Math.round(entry.getValue() * PERCENT)
-                        + "%")
-            .collect(Collectors.joining(", "));
+        .map(
+            entry ->
+                entry.getKey().toLowerCase(Locale.ROOT)
+                    + " at least "
+                    + Math.round(entry.getValue() * PERCENT)
+                    + "%"
+        )
+        .collect(Collectors.joining(", "));
   }
 }

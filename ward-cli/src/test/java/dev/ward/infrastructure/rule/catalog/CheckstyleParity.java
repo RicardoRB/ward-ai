@@ -17,7 +17,6 @@ import org.w3c.dom.Element;
  * that cannot be configured without properties is reported as not comparable.
  */
 final class CheckstyleParity implements ParityTool {
-
   private static final Set<String> CHECKER_MODULES =
       Set.of(
           "FileLength",
@@ -33,7 +32,8 @@ final class CheckstyleParity implements ParityTool {
           "JavadocPackage",
           "Translation",
           "Header",
-          "MultiFileRegexpHeader");
+          "MultiFileRegexpHeader"
+      );
   private static final Pattern REJECTED =
       Pattern.compile("(?:Unable to instantiate '|cannot initialize module )(?:[\\w.]*\\.)?(\\w+)");
   private static final String SUFFIX = "Check";
@@ -71,23 +71,30 @@ final class CheckstyleParity implements ParityTool {
               "xml",
               "-o",
               report.toString(),
-              environment.fixtures().toString()),
+              environment.fixtures().toString()
+          ),
           folder.resolve("stdout.txt"),
-          errors);
+          errors
+      );
       final Matcher rejected = REJECTED.matcher(Files.readString(errors, StandardCharsets.UTF_8));
       if (!rejected.find()) {
         break;
       }
       modules.remove(rejected.group(1));
       run.idNotComparable(
-          rejected.group(1), "Checkstyle cannot run this module without properties");
+          rejected.group(1),
+          "Checkstyle cannot run this module without properties"
+      );
     }
     read(environment, report, run);
     return run;
   }
 
   private static void read(
-      final ParityEnvironment environment, final Path report, final ParityRun run)
+      final ParityEnvironment environment,
+      final Path report,
+      final ParityRun run
+  )
       throws IOException {
     if (!Files.exists(report)) {
       return;
@@ -102,7 +109,11 @@ final class CheckstyleParity implements ParityTool {
           module = module.substring(0, module.length() - SUFFIX.length());
         }
         run.add(
-            fixture, module, ParityXml.number(error, "line"), ParityXml.number(error, "column"));
+            fixture,
+            module,
+            ParityXml.number(error, "line"),
+            ParityXml.number(error, "column")
+        );
       }
     }
   }

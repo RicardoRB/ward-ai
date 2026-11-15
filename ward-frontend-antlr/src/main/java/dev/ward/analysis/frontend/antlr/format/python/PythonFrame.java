@@ -9,7 +9,6 @@ import java.util.List;
  * frame may break after its opening bracket and before its closing bracket.
  */
 final class PythonFrame {
-
   private static final String OPENING_PARENTHESIS = "(";
   private static final String COLON = ":";
   private static final String COMMA = ",";

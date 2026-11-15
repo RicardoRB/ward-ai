@@ -32,17 +32,20 @@ class JsonLearningStoreTest {
             LearningState.FAILING,
             time,
             time,
-            false);
+            false
+        );
     store.save(
         root,
-        new LearningLedger(LearningLedger.CURRENT_FORMAT_VERSION, Map.of(record.key(), record)));
+        new LearningLedger(LearningLedger.CURRENT_FORMAT_VERSION, Map.of(record.key(), record))
+    );
     assertThat(store.load(root))
         .get()
         .extracting(LearningLedger::records)
         .satisfies(
             records -> {
               assertThat(records.get("pmd:UnusedLocalVariable")).isEqualTo(record);
-            });
+            }
+        );
     assertThat(Files.list(root.resolve(".ward")).toList()).singleElement();
   }
 
@@ -70,7 +73,8 @@ class JsonLearningStoreTest {
         "{\"formatVersion\":1,\"records\":{\"pmd:FAILED\":{\"key\":\"pmd:FAILED\","
             + "\"gate\":\"pmd\",\"status\":\"FAILED\",\"summary\":\"FAILED\",\"occurrences\":4,"
             + "\"state\":\"FAILING\",\"firstSeen\":\"2026-01-01T00:00:00Z\","
-            + "\"lastSeen\":\"2026-01-01T00:00:00Z\",\"prompted\":true}}}");
+            + "\"lastSeen\":\"2026-01-01T00:00:00Z\",\"prompted\":true}}}"
+    );
 
     assertThat(new JsonLearningStore(new ForyJsonCodec()).load(root))
         .contains(LearningLedger.empty());
@@ -122,10 +126,12 @@ class JsonLearningStoreTest {
             LearningState.FAILING,
             time,
             time,
-            false);
+            false
+        );
     store.save(
         root,
-        new LearningLedger(LearningLedger.CURRENT_FORMAT_VERSION, Map.of(first.key(), first)));
+        new LearningLedger(LearningLedger.CURRENT_FORMAT_VERSION, Map.of(first.key(), first))
+    );
 
     final LearningRecord second =
         new LearningRecord(
@@ -137,10 +143,12 @@ class JsonLearningStoreTest {
             LearningState.FAILING,
             time,
             time.plusSeconds(1),
-            false);
+            false
+        );
     store.save(
         root,
-        new LearningLedger(LearningLedger.CURRENT_FORMAT_VERSION, Map.of(second.key(), second)));
+        new LearningLedger(LearningLedger.CURRENT_FORMAT_VERSION, Map.of(second.key(), second))
+    );
 
     assertThat(store.load(root))
         .get()

@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * **} marker are not positional, and a leading {@code self} or {@code cls} is not counted.
  */
 public final class PositionalParameterCountCheck implements RuleCheck {
-
   private static final Set<String> KINDS = Set.of("funcdef");
   private static final Set<String> MARKERS = Set.of("*", "**");
   private static final String TFPDEF = "tfpdef";

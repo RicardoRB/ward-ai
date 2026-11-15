@@ -24,7 +24,6 @@ import org.junit.jupiter.api.io.TempDir;
 import picocli.CommandLine;
 
 class WardCliIntegrationSupport {
-
   protected static final String INIT = "init";
   protected static final String INTEGRATION_OPTION = "--integration";
   protected static final String NONE = "none";
@@ -58,16 +57,19 @@ class WardCliIntegrationSupport {
       }
     }
     Files.setPosixFilePermissions(
-        project.resolve("mvnw"), PosixFilePermissions.fromString("rwxr-xr-x"));
+        project.resolve("mvnw"),
+        PosixFilePermissions.fromString("rwxr-xr-x")
+    );
   }
 
   protected int run(final String... args) {
     final CommandLine cli =
         CommandLineRunnerImpl.createCommandLine(
-            (WardCommand) component.commands().get(WardCommand.class).get(),
+            (WardCommand)component.commands().get(WardCommand.class).get(),
             factory,
             new PrintWriter(out, true),
-            new PrintWriter(err, true));
+            new PrintWriter(err, true)
+        );
     return cli.execute(args);
   }
 
@@ -76,8 +78,10 @@ class WardCliIntegrationSupport {
         new IntegrateCommand(
             new IntegrationService(
                 new ProjectDetector(new FileSystemProjectInspection()),
-                List.of(new OpenCodeIntegration(), new ClaudeCodeIntegration())),
-            new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)));
+                List.of(new OpenCodeIntegration(), new ClaudeCodeIntegration())
+            ),
+            new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8))
+        );
     final CommandLine cli = new CommandLine(integrate);
     cli.setOut(new PrintWriter(out, true));
     cli.setErr(new PrintWriter(err, true));
@@ -98,7 +102,8 @@ class WardCliIntegrationSupport {
     final InitCommand init =
         new InitCommand(
             CliInitServices.openCodeAndClaude(),
-            new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)));
+            new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8))
+        );
     final CommandLine cli = new CommandLine(init);
     cli.setOut(new PrintWriter(out, true));
     cli.setErr(new PrintWriter(err, true));

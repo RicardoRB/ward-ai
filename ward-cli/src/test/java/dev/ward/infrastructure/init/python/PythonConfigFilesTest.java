@@ -26,7 +26,8 @@ class PythonConfigFilesTest {
             project(),
             (root, tool) -> Optional.empty(),
             QualityPreset.STANDARD,
-            gates("mypy", "coverage"));
+            gates("mypy", "coverage")
+        );
 
     assertThat(targets)
         .extracting(ConfigTarget::file)
@@ -40,15 +41,19 @@ class PythonConfigFilesTest {
   void keepsStandaloneUserConfigAndWritesNothingForSharedFile() {
     final PythonToolConfigs configs =
         (root, tool) ->
-            switch (tool) {
-              case "mypy" -> Optional.of(ROOT.resolve("mypy.ini"));
-              case "coverage" -> Optional.of(ROOT.resolve("pyproject.toml"));
-              default -> Optional.empty();
-            };
+        switch (tool) {
+          case "mypy" -> Optional.of(ROOT.resolve("mypy.ini"));
+          case "coverage" -> Optional.of(ROOT.resolve("pyproject.toml"));
+          default -> Optional.empty();
+        };
 
     final List<ConfigTarget> targets =
         PythonConfigFiles.targets(
-            project(), configs, QualityPreset.STANDARD, gates("mypy", "coverage"));
+            project(),
+            configs,
+            QualityPreset.STANDARD,
+            gates("mypy", "coverage")
+        );
 
     assertThat(targets).extracting(ConfigTarget::file).containsExactly(ROOT.resolve("mypy.ini"));
     assertThat(targets.getFirst().disposition()).isEqualTo(ConfigTarget.Disposition.KEEP);

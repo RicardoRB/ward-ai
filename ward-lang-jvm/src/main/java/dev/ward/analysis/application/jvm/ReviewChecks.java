@@ -30,7 +30,6 @@ import java.util.Map;
  * Other names are metric checks, which {@link MetricChecks} builds.
  */
 final class ReviewChecks {
-
   private static final String MESSAGE = "message";
 
   private ReviewChecks() {}
@@ -43,7 +42,8 @@ final class ReviewChecks {
   /** The checks over labels, declarations, assignments and unused names. */
   private static Map<String, CheckFactory> build() {
     return Map.ofEntries(
-        entry("unused-label", toml -> new UnusedLabelCheck(TomlValues.required(toml, MESSAGE))));
+        entry("unused-label", toml -> new UnusedLabelCheck(TomlValues.required(toml, MESSAGE)))
+    );
   }
 
   /** The checks over switch labels, abstract classes, interfaces and catch blocks. */
@@ -51,17 +51,22 @@ final class ReviewChecks {
     return Map.ofEntries(
         entry(
             "default-label-not-last",
-            toml -> new DefaultLabelNotLastCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new DefaultLabelNotLastCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "abstract-class-without-abstract-method",
             toml ->
-                new AbstractClassWithoutAbstractMethodCheck(TomlValues.required(toml, MESSAGE))),
+                new AbstractClassWithoutAbstractMethodCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "implicit-functional-interface",
-            toml -> new ImplicitFunctionalInterfaceCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new ImplicitFunctionalInterfaceCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "preserve-stack-trace",
-            toml -> new PreserveStackTraceCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new PreserveStackTraceCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 
   /** The checks over assignments, array fields and file names; other names go to the metrics. */
@@ -69,23 +74,30 @@ final class ReviewChecks {
     return Map.ofEntries(
         entry(
             "avoid-reassigning-catch-variables",
-            toml -> new AvoidReassigningCatchVariablesCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new AvoidReassigningCatchVariablesCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "avoid-reassigning-loop-variables",
             toml ->
                 new AvoidReassigningLoopVariablesCheck(
                     TomlValues.required(toml, "for-reassign"),
                     TomlValues.required(toml, "foreach-reassign"),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "method-returns-internal-array",
-            toml -> new MethodReturnsInternalArrayCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new MethodReturnsInternalArrayCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "array-is-stored-directly",
-            toml -> new ArrayIsStoredDirectlyCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new ArrayIsStoredDirectlyCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "type-name-mismatch",
-            toml -> new TypeNameMismatchCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new TypeNameMismatchCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 
   /** The checks over unused names, loops and suppressions; other names go to the metrics. */
@@ -93,25 +105,33 @@ final class ReviewChecks {
     return Map.ofEntries(
         entry(
             "unused-private-method",
-            toml -> new UnusedPrivateMethodCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new UnusedPrivateMethodCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "equals-on-unrelated-types",
-            toml -> new EqualsOnUnrelatedTypesCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new EqualsOnUnrelatedTypesCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "unused-formal-parameter",
             toml ->
                 new UnusedFormalParameterCheck(
-                    toml.getBoolean("check-all", () -> false), TomlValues.required(toml, MESSAGE))),
+                    toml.getBoolean("check-all", () -> false),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "for-loop-can-be-foreach",
-            toml -> new ForLoopCanBeForeachCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new ForLoopCanBeForeachCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "unnecessary-warning-suppression",
-            toml -> new UnnecessaryWarningSuppressionCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new UnnecessaryWarningSuppressionCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "bit-mask-comparison",
-            toml -> new BitMaskComparisonCheck(TomlValues.required(toml, MESSAGE))),
-        entry(
-            "constant-clamp", toml -> new ConstantClampCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new BitMaskComparisonCheck(TomlValues.required(toml, MESSAGE))
+        ),
+        entry("constant-clamp", toml -> new ConstantClampCheck(TomlValues.required(toml, MESSAGE)))
+    );
   }
 }

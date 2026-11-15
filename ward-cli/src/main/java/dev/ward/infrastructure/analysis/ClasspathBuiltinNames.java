@@ -36,7 +36,10 @@ public final class ClasspathBuiltinNames implements BuiltinNames {
    * @param defaults the environments that apply when none is requested
    */
   public ClasspathBuiltinNames(
-      final String directory, final List<String> base, final List<String> defaults) {
+      final String directory,
+      final List<String> base,
+      final List<String> defaults
+  ) {
     this.directory = directory;
     this.base = List.copyOf(base);
     this.defaults = List.copyOf(defaults);
@@ -50,13 +53,19 @@ public final class ClasspathBuiltinNames implements BuiltinNames {
   /** The globals of JavaScript: ECMAScript, plus {@code browser} and {@code node} by default. */
   public static ClasspathBuiltinNames javascript() {
     return new ClasspathBuiltinNames(
-        "node/builtins", List.of("es2024"), List.of("browser", "node"));
+        "node/builtins",
+        List.of("es2024"),
+        List.of("browser", "node")
+    );
   }
 
   /** The globals of TypeScript: those of JavaScript, plus the predefined types and utilities. */
   public static ClasspathBuiltinNames typescript() {
     return new ClasspathBuiltinNames(
-        "node/builtins", List.of("es2024", "typescript"), List.of("browser", "node"));
+        "node/builtins",
+        List.of("es2024", "typescript"),
+        List.of("browser", "node")
+    );
   }
 
   /** The names {@code java.lang} provides. */
@@ -94,7 +103,8 @@ public final class ClasspathBuiltinNames implements BuiltinNames {
     try (InputStream stream = ClasspathBuiltinNames.class.getResourceAsStream(resource)) {
       if (stream == null) {
         throw new AnalysisFailedException(
-            "no built-in names for environment '" + environment + "'");
+            "no built-in names for environment '" + environment + "'"
+        );
       }
       final Set<String> names = new LinkedHashSet<>();
       for (final String line :
@@ -105,12 +115,15 @@ public final class ClasspathBuiltinNames implements BuiltinNames {
       }
       if (LOGGER.isLoggable(Level.FINE)) {
         LOGGER.fine(
-            "event=builtin-names-loaded environment=" + environment + " count=" + names.size());
+            "event=builtin-names-loaded environment=" + environment + " count=" + names.size()
+        );
       }
       return Set.copyOf(names);
     } catch (final IOException exception) {
       throw new AnalysisFailedException(
-          "the built-in names of environment '" + environment + "' could not be read", exception);
+          "the built-in names of environment '" + environment + "' could not be read",
+          exception
+      );
     }
   }
 }

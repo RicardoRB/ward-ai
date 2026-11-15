@@ -36,21 +36,39 @@ final class FactBuilder {
         FactPick.asked(kinds, FactKind.MEMBERS, () -> FactPick.first(nodes, expressions::members));
     final ConstantValue constant =
         FactPick.asked(
-            kinds, FactKind.CONSTANT, () -> FactPick.first(nodes, expressions::constant));
+            kinds,
+            FactKind.CONSTANT,
+            () -> FactPick.first(nodes, expressions::constant)
+        );
     final List<String> annotations =
         FactPick.list(
-            kinds, FactKind.ANNOTATIONS, () -> FactPick.firstList(nodes, declarations::decorators));
+            kinds,
+            FactKind.ANNOTATIONS,
+            () -> FactPick.firstList(nodes, declarations::decorators)
+        );
     final List<String> scopes =
         annotations.isEmpty() ? List.of() : declarations.enclosing(nodes.get(nodes.size() - 1));
     final List<CallTarget> overrides =
         FactPick.list(
-            kinds, FactKind.OVERRIDES, () -> FactPick.firstList(nodes, declarations::overrides));
+            kinds,
+            FactKind.OVERRIDES,
+            () -> FactPick.firstList(nodes, declarations::overrides)
+        );
     final boolean none =
         type == null && shape == null && call == null && constant == null && overrides.isEmpty();
     return none && annotations.isEmpty()
         ? null
         : new SpanFacts(
-            type, shape, call, annotations, scopes, overrides, List.of(), constant, members);
+            type,
+            shape,
+            call,
+            annotations,
+            scopes,
+            overrides,
+            List.of(),
+            constant,
+            members
+        );
   }
 
   /** Returns the shape of the declaration a node declares, or the shape of its expression type. */

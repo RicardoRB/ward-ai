@@ -16,7 +16,6 @@ import java.util.List;
  * on its name, so two accesses of one name touch one variable.
  */
 public final class GraphFixtures {
-
   private static final int LINE_OFFSET = 100;
   private static final int NAME_MASK = 0xFFFF;
 
@@ -24,7 +23,6 @@ public final class GraphFixtures {
 
   /** One block: its variable accesses and its outgoing edges. */
   public static final class Block {
-
     private final List<VariableAccess> accesses = new ArrayList<>();
     private final List<FlowEdge> edges = new ArrayList<>();
 

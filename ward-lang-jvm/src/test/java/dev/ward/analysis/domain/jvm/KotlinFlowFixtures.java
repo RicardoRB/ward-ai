@@ -16,7 +16,6 @@ import java.util.List;
 
 /** Lowers Kotlin source for the control-flow, access and flow-site tests. */
 final class KotlinFlowFixtures {
-
   private KotlinFlowFixtures() {}
 
   static ControlFlowResult lower(final String source) {

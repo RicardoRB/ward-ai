@@ -55,7 +55,8 @@ public final class IgnoredResultCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts facts,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(STATEMENT)).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(statement -> dropsResult(statement, facts))

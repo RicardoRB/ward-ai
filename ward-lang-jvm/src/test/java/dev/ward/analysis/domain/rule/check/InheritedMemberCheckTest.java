@@ -21,7 +21,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class InheritedMemberCheckTest {
-
   private static final AntlrLanguageFrontend FRONTEND = new AntlrLanguageFrontend();
   private static final String BASE_NAME = "app.Base";
   private static final TypeRef BASE = TypeRef.of(BASE_NAME);
@@ -29,7 +28,10 @@ class InheritedMemberCheckTest {
   private static final TypeRef VOID = TypeRef.of("void");
 
   private static CallTarget method(
-      final String name, final boolean isStatic, final TypeRef... parameters) {
+      final String name,
+      final boolean isStatic,
+      final TypeRef... parameters
+  ) {
     return new CallTarget(
         BASE,
         name,
@@ -46,14 +48,16 @@ class InheritedMemberCheckTest {
         null,
         Map.of(),
         Map.of(),
-        null);
+        null
+    );
   }
 
   private static List<String> run(
       final InheritedMemberCheck.Mode mode,
       final String source,
       final TypeMembers inherited,
-      final String superType) {
+      final String superType
+  ) {
     final SourceUnit unit = new SourceUnit("A.java", AnalysisLanguage.JAVA, source);
     final SyntaxNode tree = FRONTEND.parse(unit).tree();
     final SyntaxNode type =
@@ -70,7 +74,8 @@ class InheritedMemberCheckTest {
             inherited.inheritedMethods(),
             inherited.inheritedFields(),
             Map.of(),
-            List.of());
+            List.of()
+        );
     final SpanFacts facts =
         new SpanFacts(null, null, null, List.of(), List.of(), List.of(), List.of(), null, members);
     final List<RuleMatch> found =
@@ -80,7 +85,8 @@ class InheritedMemberCheckTest {
                 FlowView.NONE,
                 ScopeView.NONE,
                 new UnitTypeFacts(Map.of(UnitTypeFacts.key(type.span()), facts)),
-                unit);
+                unit
+            );
     return found.stream().map(m -> m.span().startLine() + ":" + m.span().startColumn()).toList();
   }
 
@@ -93,7 +99,8 @@ class InheritedMemberCheckTest {
         List.of(targets),
         List.of(),
         Map.of(),
-        List.of());
+        List.of()
+    );
   }
 
   @Test
@@ -104,10 +111,12 @@ class InheritedMemberCheckTest {
     assertThat(check.needs().nodeKinds()).containsExactly("classDeclaration");
     assertThat(check.needs().facts()).containsExactly(FactKind.MEMBERS);
     assertThat(
-            check.matches(
-                FRONTEND
-                    .parse(new SourceUnit("A.java", AnalysisLanguage.JAVA, "class A {}"))
-                    .tree()))
+        check.matches(
+            FRONTEND
+                .parse(new SourceUnit("A.java", AnalysisLanguage.JAVA, "class A {}"))
+                .tree()
+        )
+    )
         .isEmpty();
   }
 
@@ -122,7 +131,8 @@ class InheritedMemberCheckTest {
             List.of(),
             List.of(new FieldRef("count", TypeRef.of("int"), false, List.of())),
             Map.of(),
-            List.of());
+            List.of()
+        );
     final String source = "class A extends Base {\n  int count;\n  int other;\n}\n";
 
     assertThat(run(InheritedMemberCheck.Mode.FIELD_MASKS, source, inherited, BASE_NAME))
@@ -139,11 +149,13 @@ class InheritedMemberCheckTest {
     assertThat(run(InheritedMemberCheck.Mode.STATIC_HIDING, hiding, inherited, BASE_NAME))
         .containsExactly("2:10");
     assertThat(
-            run(
-                InheritedMemberCheck.Mode.STATIC_HIDING,
-                "class A extends Base {\n  static void util(int s) {}\n  static void run(String s) {}\n  void util(String s) {}\n}\n",
-                inherited,
-                BASE_NAME))
+        run(
+            InheritedMemberCheck.Mode.STATIC_HIDING,
+            "class A extends Base {\n  static void util(int s) {}\n  static void run(String s) {}\n  void util(String s) {}\n}\n",
+            inherited,
+            BASE_NAME
+        )
+    )
         .isEmpty();
   }
 
@@ -155,11 +167,13 @@ class InheritedMemberCheckTest {
     assertThat(run(InheritedMemberCheck.Mode.CASE_CONFUSION, source, inherited, BASE_NAME))
         .containsExactly("2:3", "3:3");
     assertThat(
-            run(
-                InheritedMemberCheck.Mode.CASE_CONFUSION,
-                "class A {\n  void run() {}\n  void RUN() {}\n}\n",
-                NOTHING,
-                "java.lang.Object"))
+        run(
+            InheritedMemberCheck.Mode.CASE_CONFUSION,
+            "class A {\n  void run() {}\n  void RUN() {}\n}\n",
+            NOTHING,
+            "java.lang.Object"
+        )
+    )
         .containsExactly("3:3");
   }
 
@@ -173,27 +187,33 @@ class InheritedMemberCheckTest {
         "class A extends MouseAdapter {\n  void mouseClicked(MouseEvent e) {}\n}\n";
 
     assertThat(
-            run(
-                InheritedMemberCheck.Mode.ADAPTER_OVERLOAD,
-                overload,
-                inherited,
-                "java.awt.event.MouseAdapter"))
+        run(
+            InheritedMemberCheck.Mode.ADAPTER_OVERLOAD,
+            overload,
+            inherited,
+            "java.awt.event.MouseAdapter"
+        )
+    )
         .containsExactly("2:3");
     assertThat(
-            run(
-                InheritedMemberCheck.Mode.ADAPTER_OVERLOAD,
-                override,
-                inherited,
-                "java.awt.event.MouseAdapter"))
+        run(
+            InheritedMemberCheck.Mode.ADAPTER_OVERLOAD,
+            override,
+            inherited,
+            "java.awt.event.MouseAdapter"
+        )
+    )
         .isEmpty();
     assertThat(run(InheritedMemberCheck.Mode.ADAPTER_OVERLOAD, overload, inherited, BASE_NAME))
         .isEmpty();
     assertThat(
-            run(
-                InheritedMemberCheck.Mode.ADAPTER_OVERLOAD,
-                "class A extends MouseAdapter {\n  void other(KeyEvent e) {}\n}\n",
-                inherited,
-                "java.awt.event.MouseAdapter"))
+        run(
+            InheritedMemberCheck.Mode.ADAPTER_OVERLOAD,
+            "class A extends MouseAdapter {\n  void other(KeyEvent e) {}\n}\n",
+            inherited,
+            "java.awt.event.MouseAdapter"
+        )
+    )
         .isEmpty();
   }
 
@@ -203,11 +223,13 @@ class InheritedMemberCheckTest {
         methods(method("fill", true, new TypeRef("java.lang.String", List.of(), 1, false)));
 
     assertThat(
-            run(
-                InheritedMemberCheck.Mode.STATIC_HIDING,
-                "class A extends Base {\n  static void fill(java.lang.String[] a) {}\n}\n",
-                inherited,
-                BASE_NAME))
+        run(
+            InheritedMemberCheck.Mode.STATIC_HIDING,
+            "class A extends Base {\n  static void fill(java.lang.String[] a) {}\n}\n",
+            inherited,
+            BASE_NAME
+        )
+    )
         .hasSize(1);
     assertThat(DeclaredMethods.simpleName("java.util.List<java.util.Map<String, String>>"))
         .isEqualTo("List");

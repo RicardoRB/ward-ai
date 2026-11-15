@@ -50,7 +50,8 @@ public final class DependencyInventoryService {
                 + " modules="
                 + inventory.modules().size()
                 + " entries="
-                + inventory.entryCount());
+                + inventory.entryCount()
+    );
     return inventory;
   }
 }

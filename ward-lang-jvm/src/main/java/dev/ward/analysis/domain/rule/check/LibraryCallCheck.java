@@ -20,7 +20,6 @@ import java.util.regex.Pattern;
  * EasyMock {@code replay}, {@code verify} or {@code reset} without mocks.
  */
 public final class LibraryCallCheck implements RuleCheck {
-
   /** What the check reports. */
   public enum Mode {
     /** A null check or assertion applied to a String constant. */
@@ -70,7 +69,8 @@ public final class LibraryCallCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(EXPRESSION)).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(call -> reported(call, types))
@@ -85,7 +85,8 @@ public final class LibraryCallCheck implements RuleCheck {
             target ->
                 mode == Mode.EMPTY_MOCKS
                     ? emptyMocks(target, call)
-                    : constantNullCheck(target, CallArgumentNodes.all(call)))
+                    : constantNullCheck(target, CallArgumentNodes.all(call))
+        )
         .isPresent();
   }
 

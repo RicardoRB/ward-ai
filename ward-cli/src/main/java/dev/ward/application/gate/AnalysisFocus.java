@@ -20,7 +20,10 @@ final class AnalysisFocus {
 
   /** Creates the filter for the root-relative changed {@code paths} of a run over {@code rules}. */
   AnalysisFocus(
-      final List<String> paths, final List<RuleDefinition> rules, final DependencyGraph graph) {
+      final List<String> paths,
+      final List<RuleDefinition> rules,
+      final DependencyGraph graph
+  ) {
     this.paths = Set.copyOf(paths);
     this.dependencyRules =
         rules.stream()

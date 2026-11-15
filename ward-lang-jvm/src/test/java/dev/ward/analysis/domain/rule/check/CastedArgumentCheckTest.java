@@ -8,7 +8,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class CastedArgumentCheckTest {
-
   private static final CastedArgumentCheck CHECK =
       new CastedArgumentCheck("Math", "round", "float", Set.of("int", "long"), "message");
   private static final String SOURCE =

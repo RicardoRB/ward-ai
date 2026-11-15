@@ -53,7 +53,8 @@ public final class ConstructorThrowCheck implements UnitCheck {
             member ->
                 member.children().stream().anyMatch(c -> "final".equals(SyntaxWalk.text(c)))
                     && "finalize"
-                        .equals(MemberDeclarations.name(ClassMembers.declarationOf(member))));
+                        .equals(MemberDeclarations.name(ClassMembers.declarationOf(member)))
+        );
   }
 
   private static boolean throwsInBody(final SyntaxNode constructor) {

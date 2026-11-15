@@ -16,7 +16,6 @@ import java.util.Set;
 
 /** Parses Python source for the check tests, with its scopes and the view the engine gives. */
 final class PythonSources {
-
   private static final String PATH = "m.py";
 
   private PythonSources() {}

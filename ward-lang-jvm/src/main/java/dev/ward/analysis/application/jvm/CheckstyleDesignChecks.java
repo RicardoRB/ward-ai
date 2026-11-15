@@ -26,7 +26,6 @@ import org.tomlj.TomlParseResult;
  * is a rule option, named after the Checkstyle property in kebab-case.
  */
 final class CheckstyleDesignChecks {
-
   private static final String MESSAGE = "message";
   private static final String FORMAT = "format";
   private static final String EXTENDED_FORMAT = "extended-class-name-format";
@@ -46,24 +45,31 @@ final class CheckstyleDesignChecks {
         entry("inner-type-last", toml -> new InnerTypeLastCheck(message(toml))),
         entry(
             "sealed-should-have-permits-list",
-            toml -> new SealedShouldHavePermitsListCheck(message(toml))),
+            toml -> new SealedShouldHavePermitsListCheck(message(toml))
+        ),
         entry(
             "hide-utility-class-constructor",
             toml ->
                 new HideUtilityClassConstructorCheck(
-                    TomlValues.optionalStrings(toml, "ignore-annotated-by"), message(toml))),
+                    TomlValues.optionalStrings(toml, "ignore-annotated-by"),
+                    message(toml)
+                )
+        ),
         entry(
             "interface-is-type",
             toml ->
-                new InterfaceIsTypeCheck(
-                    flag(toml, "allow-marker-interfaces", true), message(toml))),
+                new InterfaceIsTypeCheck(flag(toml, "allow-marker-interfaces", true), message(toml))
+        ),
         entry(
             "mutable-exception",
             toml ->
                 new MutableExceptionCheck(
                     Pattern.compile(TomlValues.required(toml, FORMAT)),
                     Pattern.compile(TomlValues.required(toml, EXTENDED_FORMAT)),
-                    message(toml))));
+                    message(toml)
+                )
+        )
+    );
   }
 
   private static Map<String, CheckFactory> members() {
@@ -74,17 +80,23 @@ final class CheckstyleDesignChecks {
                 new ThrowsCountCheck(
                     TomlValues.integer(toml, "max"),
                     flag(toml, IGNORE_PRIVATE, true),
-                    message(toml))),
+                    message(toml)
+                )
+        ),
         entry(
             "visibility-modifier",
-            toml -> new VisibilityModifierCheck(visibility(toml), message(toml))),
+            toml -> new VisibilityModifierCheck(visibility(toml), message(toml))
+        ),
         entry(
             "design-for-extension",
             toml ->
                 new DesignForExtensionCheck(
                     TomlValues.optionalStrings(toml, "ignored-annotations"),
                     Pattern.compile(TomlValues.required(toml, "required-javadoc-phrase")),
-                    message(toml))));
+                    message(toml)
+                )
+        )
+    );
   }
 
   private static VisibilityModifierCheck.FieldVisibility visibility(final TomlParseResult toml) {
@@ -95,11 +107,15 @@ final class CheckstyleDesignChecks {
         flag(toml, "protected-allowed", false),
         Pattern.compile(TomlValues.required(toml, "public-member-pattern")),
         TomlValues.optionalStrings(toml, "ignore-annotation-canonical-names"),
-        TomlValues.optionalStrings(toml, "immutable-class-canonical-names"));
+        TomlValues.optionalStrings(toml, "immutable-class-canonical-names")
+    );
   }
 
   private static boolean flag(
-      final TomlParseResult toml, final String key, final boolean fallback) {
+      final TomlParseResult toml,
+      final String key,
+      final boolean fallback
+  ) {
     return Optional.ofNullable(toml.getBoolean(key)).orElse(fallback);
   }
 

@@ -8,7 +8,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import org.junit.jupiter.api.Test;
 
 class SelfRecursiveMethodCheckTest {
-
   private static final int BODY = 3;
 
   private static final SelfRecursiveMethodCheck CHECK = new SelfRecursiveMethodCheck("message");
@@ -22,7 +21,8 @@ class SelfRecursiveMethodCheckTest {
         "methodDeclaration",
         1,
         node("identifier", 2, leaf("IDENTIFIER", name, 2)),
-        node("methodBody", BODY, tokens));
+        node("methodBody", BODY, tokens)
+    );
   }
 
   @Test
@@ -43,7 +43,8 @@ class SelfRecursiveMethodCheckTest {
   void aMethodWithoutANameOrABodyIsSkipped() {
     assertThat(CHECK.matches(node("methodDeclaration", 1))).isEmpty();
     assertThat(
-            CHECK.matches(node("methodDeclaration", 1, node("identifier", 2, leaf("I", "f", 2)))))
+        CHECK.matches(node("methodDeclaration", 1, node("identifier", 2, leaf("I", "f", 2))))
+    )
         .isEmpty();
   }
 }

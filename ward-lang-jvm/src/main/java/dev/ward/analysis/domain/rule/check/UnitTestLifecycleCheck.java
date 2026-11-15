@@ -12,7 +12,6 @@ import java.util.Set;
  * file that uses JUnit 4 is read.
  */
 public final class UnitTestLifecycleCheck implements UnitCheck {
-
   private final String methodName;
   private final Set<String> annotations;
   private final String message;
@@ -30,7 +29,8 @@ public final class UnitTestLifecycleCheck implements UnitCheck {
       final String methodName,
       final Set<String> annotations,
       final String message,
-      final boolean junit4Only) {
+      final boolean junit4Only
+  ) {
     this.junit4Only = junit4Only;
     this.methodName = Objects.requireNonNull(methodName, "methodName");
     this.annotations = Set.copyOf(annotations);
@@ -47,14 +47,18 @@ public final class UnitTestLifecycleCheck implements UnitCheck {
         .filter(body -> JUnitMembers.members(body).stream().anyMatch(JUnitMembers::isTest))
         .flatMap(body -> JUnitMembers.members(body).stream())
         .filter(
-            member -> JUnitMembers.annotations(member).stream().noneMatch(annotations::contains))
+            member -> JUnitMembers.annotations(member).stream().noneMatch(annotations::contains)
+        )
         .flatMap(member -> JUnitMembers.method(member).stream())
         .filter(method -> methodName.equals(JUnitMembers.name(method)))
         .filter(JUnitMethods::hasNoParameters)
         .map(
             method ->
                 CheckSupport.at(
-                    method.span(), CheckSupport.fill(message, JUnitMembers.name(method), "")))
+                    method.span(),
+                    CheckSupport.fill(message, JUnitMembers.name(method), "")
+                )
+        )
         .toList();
   }
 }

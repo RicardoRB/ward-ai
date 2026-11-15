@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 /** The Javadoc asterisk and layout checks on small comments placed at column 3. */
 class JavadocLayoutChecksTest extends TreeBuilders {
-
   private static final int OFFSET = 2;
   private static final String ALIGNED = "/**\n   * Text.\n   */";
 
@@ -48,8 +47,8 @@ class JavadocLayoutChecksTest extends TreeBuilders {
   @Test
   void textOnTheOpeningLineOfAMultiLineCommentIsReported() {
     assertThat(
-            layout(
-                JavadocLayoutCheck.Mode.CONTENT_LOCATION, comment("/** Text.\n   * More.\n   */")))
+        layout(JavadocLayoutCheck.Mode.CONTENT_LOCATION, comment("/** Text.\n   * More.\n   */"))
+    )
         .hasSize(1);
     assertThat(layout(JavadocLayoutCheck.Mode.CONTENT_LOCATION, comment(ALIGNED))).isEmpty();
     assertThat(layout(JavadocLayoutCheck.Mode.CONTENT_LOCATION, comment("/** One line. */")))
@@ -72,12 +71,16 @@ class JavadocLayoutChecksTest extends TreeBuilders {
   }
 
   private static java.util.List<dev.ward.analysis.domain.rule.RuleMatch> asterisk(
-      final JavadocAsteriskCheck.Mode mode, final SyntaxNode comment) {
+      final JavadocAsteriskCheck.Mode mode,
+      final SyntaxNode comment
+  ) {
     return new JavadocAsteriskCheck(mode, MESSAGE).check(unit(comment), FILE);
   }
 
   private static java.util.List<dev.ward.analysis.domain.rule.RuleMatch> layout(
-      final JavadocLayoutCheck.Mode mode, final SyntaxNode comment) {
+      final JavadocLayoutCheck.Mode mode,
+      final SyntaxNode comment
+  ) {
     return new JavadocLayoutCheck(mode, MESSAGE).check(unit(comment), FILE);
   }
 }

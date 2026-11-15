@@ -14,13 +14,13 @@ import java.util.regex.Pattern;
  * __init__}, and is not reported there.
  */
 public final class PointlessStringCheck implements RuleCheck {
-
   private static final String MESSAGE =
       "string statement has no effect; remove it or make it a docstring";
   private static final Set<String> BLOCKS = Set.of("block");
   private static final Pattern STRING =
       Pattern.compile(
-          "(?s)^(?:[rRbBuUfF]{0,2}(?:'''[\\s\\S]*?'''|\"\"\"[\\s\\S]*?\"\"\"|'[^'\\n]*'|\"[^\"\\n]*\"))+$");
+          "(?s)^(?:[rRbBuUfF]{0,2}(?:'''[\\s\\S]*?'''|\"\"\"[\\s\\S]*?\"\"\"|'[^'\\n]*'|\"[^\"\\n]*\"))+$"
+      );
   private static final Pattern ASSIGNMENT =
       Pattern.compile("(?s)^[\\w.\\[\\]]+(?::[^=]*)?=(?!=)[\\s\\S]*$");
   private static final String DEF = "def";
@@ -37,7 +37,10 @@ public final class PointlessStringCheck implements RuleCheck {
   }
 
   private static void check(
-      final List<SyntaxNode> statements, final String owner, final List<RuleMatch> found) {
+      final List<SyntaxNode> statements,
+      final String owner,
+      final List<RuleMatch> found
+  ) {
     for (int index = 1; index < statements.size(); index++) {
       final SyntaxNode statement = statements.get(index);
       if (isString(SyntaxWalk.text(statement)) && !afterAssignmentIn(statements, index, owner)) {
@@ -47,7 +50,10 @@ public final class PointlessStringCheck implements RuleCheck {
   }
 
   private static boolean afterAssignmentIn(
-      final List<SyntaxNode> statements, final int index, final String owner) {
+      final List<SyntaxNode> statements,
+      final int index,
+      final String owner
+  ) {
     final boolean attributeScope =
         "module".equals(owner) || "classdef".equals(owner) || INIT.equals(owner);
     return attributeScope

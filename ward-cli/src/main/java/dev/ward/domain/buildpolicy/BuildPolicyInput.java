@@ -12,7 +12,11 @@ import java.util.function.Supplier;
  * @param options the rule's options by name
  */
 public record BuildPolicyInput(
-    BuildModel model, Supplier<DependencyInventory> inventory, Map<String, String> options) {
+    BuildModel model,
+    Supplier<DependencyInventory> inventory,
+    Map<String,
+    String> options
+) {
   /** Copies the options. */
   public BuildPolicyInput {
     options = Map.copyOf(options);

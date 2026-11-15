@@ -26,7 +26,8 @@ class SuppressionSourceDetectorTest {
             "SuppressWarnings",
             "edu.umd.cs.findbugs.annotations.SuppressFBWarnings",
             "NOPMD",
-            "NOPMD");
+            "NOPMD"
+        );
   }
 
   @Test
@@ -62,7 +63,8 @@ class SuppressionSourceDetectorTest {
               assertThat(violation.file()).isEqualTo(fixture);
               assertThat(violation.line()).isEqualTo(2);
               assertThat(violation.mechanism()).isEqualTo("SuppressWarnings");
-            });
+            }
+        );
   }
 
   private static List<SourceViolation> findSources(final Path mainRoot, final Path testRoot)
@@ -85,7 +87,9 @@ class SuppressionSourceDetectorTest {
                   SuppressionSourceDetector.find(read(path)).stream()
                       .map(
                           diagnostic ->
-                              new SourceViolation(path, diagnostic.line(), diagnostic.mechanism())))
+                              new SourceViolation(path, diagnostic.line(), diagnostic.mechanism())
+                      )
+          )
           .toList()
           .stream();
     }

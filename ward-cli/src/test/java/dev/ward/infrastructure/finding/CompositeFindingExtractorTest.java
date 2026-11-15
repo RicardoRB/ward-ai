@@ -17,10 +17,12 @@ class CompositeFindingExtractorTest {
         new CompositeFindingExtractor(List.of(new JavacOutputFindings()));
 
     assertThat(
-            extractor.extract(
-                FindingFixtures.maven(root),
-                FindingFixtures.failed("tests", ""),
-                FindingFixtures.justBefore()))
+        extractor.extract(
+            FindingFixtures.maven(root),
+            FindingFixtures.failed("tests", ""),
+            FindingFixtures.justBefore()
+        )
+    )
         .isEmpty();
   }
 }

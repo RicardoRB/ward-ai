@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 class YamlStructureRejectionsTest {
-
   @Test
   void rejectsADuplicateKeyNamingBothLines() {
     assertThat(YamlTrees.dump("get: 1\nput: 2\nget: 3\n"))

@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 /** Builds the TypeScript and JavaScript dependency adapters of a project from its manifests. */
 public final class NodeDependencyAdapters implements DependencyAdapters {
-
   @Override
   public List<DependencySupport> forProject(final Path projectRoot, final List<SourceUnit> units) {
     final Set<String> files =

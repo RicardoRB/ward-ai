@@ -6,7 +6,6 @@ import java.util.List;
 
 /** The read-only and write-only flags of the required properties of a schema. */
 final class AccessChanges {
-
   private AccessChanges() {}
 
   /** The required properties of the revision that a request now has to send. */
@@ -15,7 +14,8 @@ final class AccessChanges {
     for (final DocNode name : RequiredChanges.required(revision)) {
       if (flag(base, name.text(), "readOnly") && !flag(revision, name.text(), "readOnly")) {
         changes.add(
-            new SchemaChange("became-not-read-only", revision.get("properties").orElse(revision)));
+            new SchemaChange("became-not-read-only", revision.get("properties").orElse(revision))
+        );
       }
     }
     return changes;
@@ -28,7 +28,8 @@ final class AccessChanges {
       final boolean was = flag(base, name.text(), "writeOnly");
       if (!was && flag(revision, name.text(), "writeOnly")) {
         changes.add(
-            new SchemaChange("became-write-only", revision.get("properties").orElse(revision)));
+            new SchemaChange("became-write-only", revision.get("properties").orElse(revision))
+        );
       }
     }
     return changes;

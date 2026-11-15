@@ -7,7 +7,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class TimeFromIntCheckTest {
-
   private static final TimeFromIntCheck CHECK = new TimeFromIntCheck("message");
   private static final String DATE =
       "final class C {\n  Object t(int s) {\n    return new Date(s * 1000);\n  }\n}\n";

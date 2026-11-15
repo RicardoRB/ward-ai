@@ -33,12 +33,15 @@ class InitAdapterPlanContractTest {
   @Test
   void mavenBuildFileMatchesPlan() throws IOException {
     Files.writeString(
-        root.resolve("pom.xml"), "<project><modelVersion>4.0.0</modelVersion></project>");
+        root.resolve("pom.xml"),
+        "<project><modelVersion>4.0.0</modelVersion></project>"
+    );
     final PomToolConfigurator pom = new PomToolConfigurator();
 
     assertPlanMatchesTwice(
         () -> List.of(pom.plan(maven(), GATES, QualityPreset.STRICT, true)),
-        () -> pom.apply(maven(), GATES, QualityPreset.STRICT, finding -> false));
+        () -> pom.apply(maven(), GATES, QualityPreset.STRICT, finding -> false)
+    );
   }
 
   @Test
@@ -49,7 +52,8 @@ class InitAdapterPlanContractTest {
 
     assertPlanMatchesTwice(
         () -> List.of(gradle.plan(project, GATES, null, true)),
-        () -> gradle.apply(project, GATES, null, finding -> false));
+        () -> gradle.apply(project, GATES, null, finding -> false)
+    );
   }
 
   @Test
@@ -59,12 +63,14 @@ class InitAdapterPlanContractTest {
     Files.createDirectories(root.resolve("config"));
     Files.writeString(
         root.resolve("config/enforcer-rules.xml"),
-        "<!-- managed-by: ward preset=standard -->\n<enforcer/>\n");
+        "<!-- managed-by: ward preset=standard -->\n<enforcer/>\n"
+    );
 
     assertPlanMatches(
         root,
         () -> rules.plan(maven(), QualityPreset.STRICT, GATES),
-        () -> rules.apply(maven(), QualityPreset.STRICT, GATES));
+        () -> rules.apply(maven(), QualityPreset.STRICT, GATES)
+    );
   }
 
   @Test
@@ -76,7 +82,8 @@ class InitAdapterPlanContractTest {
     assertPlanMatches(
         root,
         () -> rules.plan(maven(), QualityPreset.STRICT, GATES),
-        () -> rules.apply(maven(), QualityPreset.STRICT, GATES));
+        () -> rules.apply(maven(), QualityPreset.STRICT, GATES)
+    );
   }
 
   @Test
@@ -88,12 +95,15 @@ class InitAdapterPlanContractTest {
 
     assertPlanMatchesTwice(
         () -> hooks.plan(ProjectFixtures.maven(root)),
-        () -> hooks.apply(ProjectFixtures.maven(root)));
+        () -> hooks.apply(ProjectFixtures.maven(root))
+    );
   }
 
   /** A fresh run and a re-run must both match their plans. */
   private void assertPlanMatchesTwice(
-      final Supplier<List<PlannedFileChange>> planner, final Runnable applier) {
+      final Supplier<List<PlannedFileChange>> planner,
+      final Runnable applier
+  ) {
     assertPlanMatches(root, planner, applier);
     assertPlanMatches(root, planner, applier);
   }

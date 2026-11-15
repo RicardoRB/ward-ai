@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** Grammar predicates and actions for PythonPredicate, exercised through the frontend. */
 class PythonPredicateTest {
-
   private static ParseResult parse(final AnalysisLanguage language, final String text) {
     return new AntlrLanguageFrontend().parse(new SourceUnit("sample", language, text));
   }
@@ -41,11 +40,11 @@ class PythonPredicateTest {
   @Test
   void validPythonConstructsParseWithoutDiagnostics() {
     final String[] snippets = {
-      "x = [\n    1,\n]\n",
-      "x = 1\n\n\ny = 2\n",
-      "# only a comment\nx = 1  # trailing\n",
-      "x = 1\r\ny = 2\r\n",
-      "def f(a,\n      b):\n    return a + b\n",
+        "x = [\n    1,\n]\n",
+        "x = 1\n\n\ny = 2\n",
+        "# only a comment\nx = 1  # trailing\n",
+        "x = 1\r\ny = 2\r\n",
+        "def f(a,\n      b):\n    return a + b\n",
     };
     for (final String snippet : snippets) {
       assertThat(parse(AnalysisLanguage.PYTHON, snippet).diagnostics()).as(snippet).isEmpty();

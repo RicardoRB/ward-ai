@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 /** Reads the field names of a class body, and which of them have an array type. */
 final class ClassFields {
-
   private static final String FIELD_DECLARATION = "fieldDeclaration";
   private static final String MEMBER_DECLARATION = "memberDeclaration";
   private static final String DECLARATOR_ID = "variableDeclaratorId";

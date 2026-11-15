@@ -25,7 +25,6 @@ import java.util.Set;
  * method, or when the facts about the superinterfaces or the overridden method are unknown.
  */
 public final class FunctionalInterfaceMethodChangedCheck implements RuleCheck {
-
   private static final String FUNCTIONAL = "FunctionalInterface";
   private static final String INTERFACE = "interfaceDeclaration";
   private static final Set<String> OBJECT_METHODS = Set.of("equals", "hashCode", "toString");
@@ -35,10 +34,13 @@ public final class FunctionalInterfaceMethodChangedCheck implements RuleCheck {
           "interfaceMemberDeclaration",
           "interfaceBodyDeclaration",
           "typeType",
-          "expression");
+          "expression"
+      );
   private static final FactNeed NEED =
       new FactNeed(
-          FACT_NODES, Set.of(FactKind.OVERRIDES, FactKind.MEMBERS, FactKind.TYPE, FactKind.CALL));
+          FACT_NODES,
+          Set.of(FactKind.OVERRIDES, FactKind.MEMBERS, FactKind.TYPE, FactKind.CALL)
+      );
 
   private final String message;
 
@@ -67,7 +69,8 @@ public final class FunctionalInterfaceMethodChangedCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(INTERFACE))) {
       if (functional(visit)) {
@@ -92,7 +95,9 @@ public final class FunctionalInterfaceMethodChangedCheck implements RuleCheck {
   }
 
   private static List<SyntaxNode> inInterface(
-      final SyntaxNode declaration, final UnitTypeFacts types) {
+      final SyntaxNode declaration,
+      final UnitTypeFacts types
+  ) {
     final Optional<InterfaceSam.Sam> sam = InterfaceSam.only(declaration);
     final Set<String> supers = functionalSupers(declaration, types);
     if (sam.isEmpty() || supers.isEmpty()) {
@@ -108,7 +113,9 @@ public final class FunctionalInterfaceMethodChangedCheck implements RuleCheck {
 
   /** The names of the interfaces the declaration extends that are themselves functional. */
   private static Set<String> functionalSupers(
-      final SyntaxNode declaration, final UnitTypeFacts types) {
+      final SyntaxNode declaration,
+      final UnitTypeFacts types
+  ) {
     final Set<String> names = new HashSet<>();
     for (final SyntaxNode type : SyntaxWalk.descendants(declaration)) {
       final boolean listed =
@@ -132,13 +139,17 @@ public final class FunctionalInterfaceMethodChangedCheck implements RuleCheck {
   }
 
   private static boolean overridesSam(
-      final SyntaxNode method, final Set<String> supers, final UnitTypeFacts types) {
+      final SyntaxNode method,
+      final Set<String> supers,
+      final UnitTypeFacts types
+  ) {
     return overridden(method, types).stream()
         .anyMatch(
             target ->
                 supers.contains(target.declaringType().name())
                     && Boolean.TRUE.equals(target.isAbstract())
-                    && !OBJECT_METHODS.contains(target.name()));
+                    && !OBJECT_METHODS.contains(target.name())
+        );
   }
 
   /**

@@ -15,8 +15,10 @@ import java.util.stream.Stream;
  * @param excludePaths globs of the paths that are left out
  */
 public record ArchitectureSelector(
-    List<String> paths, List<String> directories, List<String> excludePaths) {
-
+    List<String> paths,
+    List<String> directories,
+    List<String> excludePaths
+) {
   /**
    * Copies the lists and checks that the selector selects by {@code paths} or {@code directories}.
    *

@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
  * name; keyword-only parameters by name; and {@code *args} or {@code **kwargs} by presence.
  */
 final class ParameterComparison {
-
   /** The messages Pylint's comparison produces. */
   enum Kind {
     NUMBER,
@@ -137,13 +136,16 @@ final class ParameterComparison {
           "__truediv__",
           "__trunc__",
           "__unicode__",
-          "__xor__");
+          "__xor__"
+      );
 
   private ParameterComparison() {}
 
   /** The messages for the override of {@code parent} by {@code child}, in Pylint's order. */
   static List<Kind> differences(
-      final PythonClassModel.Method parent, final PythonClassModel.Method child) {
+      final PythonClassModel.Method parent,
+      final PythonClassModel.Method child
+  ) {
     final MethodSignature original = signature(parent);
     final MethodSignature overriding = signature(child);
     final List<MethodSignature.Param> originalPositional = bound(original, parent);
@@ -159,7 +161,8 @@ final class ParameterComparison {
     final List<Kind> out =
         combine(
             differentPositional(keptPositional, overridingPositional),
-            differentKeywords(originalKeywords, overriding.keywordOnly()));
+            differentKeywords(originalKeywords, overriding.keywordOnly())
+        );
     if (lostVariadics(original, overriding)) {
       out.add(Kind.VARIADICS);
     }
@@ -172,14 +175,18 @@ final class ParameterComparison {
   }
 
   private static boolean lostVariadics(
-      final MethodSignature original, final MethodSignature overriding) {
+      final MethodSignature original,
+      final MethodSignature overriding
+  ) {
     return (original.kwargs() && !overriding.kwargs())
         || (original.varargs() && !overriding.varargs());
   }
 
   /** The positional parameters, without the first one when the method is bound. */
   private static List<MethodSignature.Param> bound(
-      final MethodSignature signature, final PythonClassModel.Method method) {
+      final MethodSignature signature,
+      final PythonClassModel.Method method
+  ) {
     final List<MethodSignature.Param> positional = signature.positional();
     if (method.decoratedWith(STATIC) || positional.isEmpty()) {
       return positional;
@@ -188,14 +195,18 @@ final class ParameterComparison {
   }
 
   private static List<MethodSignature.Param> keepNamed(
-      final List<MethodSignature.Param> params, final List<MethodSignature.Param> kept) {
+      final List<MethodSignature.Param> params,
+      final List<MethodSignature.Param> kept
+  ) {
     final Set<String> names = new HashSet<>();
     kept.forEach(param -> names.add(param.name()));
     return params.stream().filter(param -> names.contains(param.name())).toList();
   }
 
   private static List<Kind> differentPositional(
-      final List<MethodSignature.Param> original, final List<MethodSignature.Param> overriding) {
+      final List<MethodSignature.Param> original,
+      final List<MethodSignature.Param> overriding
+  ) {
     final List<Kind> out = new ArrayList<>();
     final int size = Math.max(original.size(), overriding.size());
     for (int index = 0; index < size; index++) {
@@ -220,7 +231,9 @@ final class ParameterComparison {
   }
 
   private static List<Kind> differentKeywords(
-      final List<MethodSignature.Param> original, final List<MethodSignature.Param> overriding) {
+      final List<MethodSignature.Param> original,
+      final List<MethodSignature.Param> overriding
+  ) {
     final Set<String> originalNames = new HashSet<>();
     original.forEach(param -> originalNames.add(param.name()));
     final Set<String> overridingNames = new HashSet<>();

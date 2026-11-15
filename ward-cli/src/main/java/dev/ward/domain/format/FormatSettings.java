@@ -13,8 +13,11 @@ import java.util.TreeMap;
  * @param options the values of the language's declared options
  */
 public record FormatSettings(
-    boolean enabled, FormatLayout layout, int maxBlankLines, FormatOptions options) {
-
+    boolean enabled,
+    FormatLayout layout,
+    int maxBlankLines,
+    FormatOptions options
+) {
   /**
    * Checks the components.
    *

@@ -20,7 +20,8 @@ public final class ArchitectureLayers {
           AnalysisLanguage.TYPESCRIPT,
           AnalysisLanguage.JAVASCRIPT,
           AnalysisLanguage.SWIFT,
-          AnalysisLanguage.KOTLIN);
+          AnalysisLanguage.KOTLIN
+      );
 
   private static final List<String> FASTAPI_CONTROLLERS = List.of("routers", "api", "endpoints");
   private static final List<String> FASTAPI_REPOSITORIES = List.of("repositories", "crud");
@@ -37,7 +38,9 @@ public final class ArchitectureLayers {
       return base;
     }
     return new LayerBoundary(
-        concat(base.from(), FASTAPI_CONTROLLERS), concat(base.forbidden(), FASTAPI_REPOSITORIES));
+        concat(base.from(), FASTAPI_CONTROLLERS),
+        concat(base.forbidden(), FASTAPI_REPOSITORIES)
+    );
   }
 
   private static LayerBoundary base(final String style) {
@@ -46,7 +49,9 @@ public final class ArchitectureLayers {
           new LayerBoundary(List.of("domain", "application"), List.of("adapter", "infrastructure"));
       case "clean" ->
           new LayerBoundary(
-              List.of("domain", "core"), List.of("controller", "adapter", "infrastructure"));
+              List.of("domain", "core"),
+              List.of("controller", "adapter", "infrastructure")
+          );
       default -> new LayerBoundary(List.of("controller"), List.of("repository"));
     };
   }

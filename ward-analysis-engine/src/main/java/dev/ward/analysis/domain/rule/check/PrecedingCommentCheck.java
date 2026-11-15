@@ -13,7 +13,6 @@ import java.util.stream.IntStream;
  * wrapper. A declaration carrying the exempt annotation is never checked.
  */
 public final class PrecedingCommentCheck implements RuleCheck {
-
   private static final String AT = "@";
 
   private final DeclarationFilter filter;
@@ -30,7 +29,8 @@ public final class PrecedingCommentCheck implements RuleCheck {
   public PrecedingCommentCheck(
       final DeclarationFilter filter,
       final Optional<String> exemptAnnotation,
-      final String message) {
+      final String message
+  ) {
     this.filter = Objects.requireNonNull(filter, "filter");
     this.exemptAnnotation = Objects.requireNonNull(exemptAnnotation, "exemptAnnotation");
     this.message = Objects.requireNonNull(message, "message");
@@ -61,7 +61,8 @@ public final class PrecedingCommentCheck implements RuleCheck {
     return IntStream.range(0, ancestors.size())
         .filter(i -> filter.kinds().contains(ancestors.get(i).kind()))
         .anyMatch(
-            i -> lacksRequired(new SyntaxWalk.Visit(ancestors.get(i), ancestors.subList(0, i))));
+            i -> lacksRequired(new SyntaxWalk.Visit(ancestors.get(i), ancestors.subList(0, i)))
+        );
   }
 
   private boolean lacksRequired(final SyntaxWalk.Visit ancestor) {

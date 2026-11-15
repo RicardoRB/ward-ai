@@ -24,18 +24,20 @@ class NodeCompatibilityTest {
   @TempDir Path root;
 
   @ParameterizedTest
-  @CsvSource({
-    "'^22.13.0', 22.13.0, true",
-    "'^22.13.0', 22.12.9, false",
-    "'^22.13.0', 23.0.0, false",
-    "'>=4.8.4 <6.1.0', 6.0.3, true",
-    "'>=4.8.4 <6.1.0', 7.0.2, false",
-    "'>=4.8.4 <6.1.0', 4.8.3, false",
-    "'^18.18.0 || ^20.9.0 || >=21.1.0', 20.9.0, true",
-    "'^18.18.0 || ^20.9.0 || >=21.1.0', 19.0.0, false",
-    "'5.9.3', 5.9.3, true",
-    "'5.9.3', 5.9.4, false"
-  })
+  @CsvSource(
+      {
+          "'^22.13.0', 22.13.0, true",
+          "'^22.13.0', 22.12.9, false",
+          "'^22.13.0', 23.0.0, false",
+          "'>=4.8.4 <6.1.0', 6.0.3, true",
+          "'>=4.8.4 <6.1.0', 7.0.2, false",
+          "'>=4.8.4 <6.1.0', 4.8.3, false",
+          "'^18.18.0 || ^20.9.0 || >=21.1.0', 20.9.0, true",
+          "'^18.18.0 || ^20.9.0 || >=21.1.0', 19.0.0, false",
+          "'5.9.3', 5.9.3, true",
+          "'5.9.3', 5.9.4, false"
+      }
+  )
   void matchesTheCatalogsRangeForms(final String range, final String version, final boolean ok) {
     assertThat(NodeVersionRange.matches(range, version)).isEqualTo(ok);
   }
@@ -60,7 +62,8 @@ class NodeCompatibilityTest {
             finding -> {
               assertThat(finding.outcome()).isEqualTo(CompatibilityOutcome.INCOMPATIBLE);
               assertThat(finding.message()).contains("^20.0.0 || ^22.0.0 || >=24.0.0", "Node 18");
-            });
+            }
+        );
   }
 
   @Test
@@ -71,14 +74,18 @@ class NodeCompatibilityTest {
   }
 
   private NodeCompatibility check(
-      final String node, final PackageManifest manifest, final String... packages) {
+      final String node,
+      final PackageManifest manifest,
+      final String... packages
+  ) {
     return NodeCompatibility.check(
         project(node),
         manifest,
         List.of(packages).stream()
             .map(name -> NodePackageCatalog.find(name).orElseThrow())
             .toList(),
-        Set.of());
+        Set.of()
+    );
   }
 
   private Project project(final String node) {
@@ -92,6 +99,7 @@ class NodeCompatibilityTest {
         Set.of(),
         node,
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 }

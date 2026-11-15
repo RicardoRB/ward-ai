@@ -6,7 +6,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 
 /** Adds the statement nodes of a body, splitting the block at each suspension point. */
 final class NodeSteps {
-
   private static final String AWAIT = "await";
 
   private NodeSteps() {}

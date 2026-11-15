@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
  * false positive. Members of a case sit at four spaces of indentation.
  */
 final class JulietMethods {
-
   /** The kind of method that holds a line. */
   enum Kind {
     /** A method of the vulnerable flow. */
@@ -25,7 +24,8 @@ final class JulietMethods {
 
   private static final Pattern MEMBER =
       Pattern.compile(
-          "^ {4}(?:public |private |protected )(?:static )?(?:final )?[\\w<>\\[\\].]+ (\\w+) ?\\(");
+          "^ {4}(?:public |private |protected )(?:static )?(?:final )?[\\w<>\\[\\].]+ (\\w+) ?\\("
+      );
   private static final Pattern TYPE =
       Pattern.compile("^ {4}(?:public |private |static |final )*(?:class|interface|enum) ");
   private static final String BAD = "bad";

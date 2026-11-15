@@ -96,7 +96,9 @@ class GitRevisionFilesRepositoryTest {
                 "-c",
                 "commit.gpgsign=false",
                 "-c",
-                "tag.gpgsign=false"));
+                "tag.gpgsign=false"
+            )
+        );
     command.addAll(List.of(arguments));
     executor.execute(command, repository);
   }

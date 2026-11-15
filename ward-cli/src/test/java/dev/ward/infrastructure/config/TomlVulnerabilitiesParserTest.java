@@ -43,7 +43,8 @@ class TomlVulnerabilitiesParserTest {
         check(
             "uses = \"vulnerabilities\"\nminimum-severity = \"high\"\nmax-age-days = "
                 + AGE
-                + "\n");
+                + "\n"
+        );
     assertThat(check.vulnerabilities()).isEqualTo(new VulnerabilityOptions("high", AGE));
   }
 
@@ -66,13 +67,15 @@ class TomlVulnerabilitiesParserTest {
   @Test
   void rejectsTheOptionsOnAnotherCheck() {
     assertThatThrownBy(
-            () ->
-                read(
-                    reader,
-                    dir,
-                    "version = 2\n\n[checks.tests]\ncommand = \"./mvnw test\"\nmax-age-days = "
-                        + AGE
-                        + "\n"))
+        () ->
+            read(
+                reader,
+                dir,
+                "version = 2\n\n[checks.tests]\ncommand = \"./mvnw test\"\nmax-age-days = "
+                    + AGE
+                    + "\n"
+            )
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("only supported for the vulnerabilities check");
   }

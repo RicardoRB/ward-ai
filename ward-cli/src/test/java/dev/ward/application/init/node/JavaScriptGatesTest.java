@@ -93,11 +93,16 @@ class JavaScriptGatesTest {
             Set.of(),
             "24",
             TaskRunner.NONE,
-            null);
+            null
+        );
     final InitGeneralCatalog catalog =
         new InitGeneralCatalog(
             new InitInputs(
-                new FakeEnvironmentInspection("npm"), dir -> PackageManifest.EMPTY, dir -> true));
+                new FakeEnvironmentInspection("npm"),
+                dir -> PackageManifest.EMPTY,
+                dir -> true
+            )
+        );
     final List<String> selected = catalog.presetGates(project, QualityPreset.STANDARD);
     final List<InitGateOption> gates =
         catalog.gates(project, null).stream().filter(gate -> selected.contains(gate.id())).toList();
@@ -112,7 +117,8 @@ class JavaScriptGatesTest {
 
   private static InitGeneralCatalog catalog(final PackageManifest manifest) {
     return new InitGeneralCatalog(
-        new InitInputs(new FakeEnvironmentInspection("npm", "pnpm"), dir -> manifest, dir -> true));
+        new InitInputs(new FakeEnvironmentInspection("npm", "pnpm"), dir -> manifest, dir -> true)
+    );
   }
 
   private Project project(final BuildTool manager) {
@@ -126,6 +132,7 @@ class JavaScriptGatesTest {
         Set.of(),
         "24",
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 }

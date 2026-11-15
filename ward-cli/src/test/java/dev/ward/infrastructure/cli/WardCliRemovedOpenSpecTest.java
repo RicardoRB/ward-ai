@@ -32,16 +32,18 @@ class WardCliRemovedOpenSpecTest extends WardCliIntegrationSupport {
   @ValueSource(strings = {"--tool", "--openspec-validation"})
   void initRejectsTheRemovedOptions(final String option) {
     assertThat(
-            run(
-                INIT,
-                INTEGRATION_OPTION,
-                NONE,
-                GATE_OPTION,
-                TESTS,
-                option,
-                "openspec",
-                "-C",
-                project.toString()))
+        run(
+            INIT,
+            INTEGRATION_OPTION,
+            NONE,
+            GATE_OPTION,
+            TESTS,
+            option,
+            "openspec",
+            "-C",
+            project.toString()
+        )
+    )
         .isEqualTo(2);
     assertThat(err.toString()).contains(option);
     assertThat(project.resolve(WARD_TOML)).doesNotExist();
@@ -50,16 +52,18 @@ class WardCliRemovedOpenSpecTest extends WardCliIntegrationSupport {
   @Test
   void initRefusesToInstallOpenSpec() {
     assertThat(
-            run(
-                INIT,
-                INTEGRATION_OPTION,
-                NONE,
-                GATE_OPTION,
-                TESTS,
-                "--install-tool",
-                "openspec",
-                "-C",
-                project.toString()))
+        run(
+            INIT,
+            INTEGRATION_OPTION,
+            NONE,
+            GATE_OPTION,
+            TESTS,
+            "--install-tool",
+            "openspec",
+            "-C",
+            project.toString()
+        )
+    )
         .isEqualTo(2);
     assertThat(err.toString()).contains("--install-tool openspec requires --gate openspec.");
     assertThat(project.resolve(WARD_TOML)).doesNotExist();
@@ -78,14 +82,16 @@ class WardCliRemovedOpenSpecTest extends WardCliIntegrationSupport {
     assertThat(run("hook", CLAUDE_CODE, "--guard-approved-specs", "-C", project.toString()))
         .isEqualTo(2);
     assertThat(
-            run(
-                "hook",
-                "native",
-                "--agent",
-                "codex",
-                "--guard-approved-specs",
-                "-C",
-                project.toString()))
+        run(
+            "hook",
+            "native",
+            "--agent",
+            "codex",
+            "--guard-approved-specs",
+            "-C",
+            project.toString()
+        )
+    )
         .isEqualTo(2);
   }
 
@@ -94,7 +100,8 @@ class WardCliRemovedOpenSpecTest extends WardCliIntegrationSupport {
   void aRemovedCheckTypeIsAnUnknownType(final String type) throws IOException {
     Files.writeString(
         project.resolve(WARD_TOML),
-        "version = 2\n[checks.spec]\nuses = \"" + type + "\"\ncommand = \"true\"\n");
+        "version = 2\n[checks.spec]\nuses = \"" + type + "\"\ncommand = \"true\"\n"
+    );
 
     assertThat(run(CHECK, "-C", project.toString())).isEqualTo(2);
     assertThat(err.toString())

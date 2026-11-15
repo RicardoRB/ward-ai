@@ -12,7 +12,6 @@ import java.util.List;
  * continue} and {@code yield}, and the plain statements that never leave one.
  */
 final class JavaJumps {
-
   private static final int VALUE_INDEX = 1;
   private static final int LABEL_INDEX = 1;
   private static final int MIN_WITH_OPERAND = 2;

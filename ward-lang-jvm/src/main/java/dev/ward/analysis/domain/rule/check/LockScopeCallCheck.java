@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * of the lock or loop around it.
  */
 public final class LockScopeCallCheck implements UnitCheck {
-
   /** Whether a context must, must not or may surround the call. */
   public enum Presence {
     /** The context may or may not be there. */
@@ -49,7 +48,11 @@ public final class LockScopeCallCheck implements UnitCheck {
    * @param message the message
    */
   public LockScopeCallCheck(
-      final Pattern call, final Presence lock, final Presence loop, final String message) {
+      final Pattern call,
+      final Presence lock,
+      final Presence loop,
+      final String message
+  ) {
     this.call = Objects.requireNonNull(call, "call");
     this.lock = Objects.requireNonNull(lock, "lock");
     this.loop = Objects.requireNonNull(loop, "loop");

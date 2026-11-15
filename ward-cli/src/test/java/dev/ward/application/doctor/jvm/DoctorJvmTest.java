@@ -42,11 +42,13 @@ class DoctorJvmTest {
         root.resolve("pom.xml"),
         "<project><modelVersion>4.0.0</modelVersion><build><plugins><plugin>"
             + "<artifactId>pitest-maven</artifactId><version>1.30.1</version>"
-            + "</plugin></plugins></build></project>");
+            + "</plugin></plugins></build></project>"
+    );
     Files.writeString(
         root.resolve("ward.toml"),
         "version = 2\n\n[checks.mutation]\nenabled = true\nprofiles = [\"ci\"]\n"
-            + "command = \"mvn pitest:mutationCoverage\"\n");
+            + "command = \"mvn pitest:mutationCoverage\"\n"
+    );
   }
 
   @Test
@@ -70,7 +72,8 @@ class DoctorJvmTest {
             finding -> {
               assertThat(finding.status()).isEqualTo(Status.WARNING);
               assertThat(finding.message()).contains("Ward supports Java 8 to 25");
-            });
+            }
+        );
     assertThat(findings)
         .filteredOn(finding -> finding.status() == Status.ERROR)
         .extracting(Finding::name)
@@ -88,7 +91,9 @@ class DoctorJvmTest {
                 JDK,
                 Status.WARNING,
                 "Ward has not been tested on JDK 27 and does not support it; it is configured as"
-                    + " JDK 25."));
+                    + " JDK 25."
+            )
+        );
     assertThat(names(findings)).doesNotContain(MUTATION);
   }
 
@@ -102,7 +107,9 @@ class DoctorJvmTest {
             new Finding(
                 MUTATION,
                 Status.WARNING,
-                "pitest-maven 1.30.1 runs on JDK 11 to 25; this project builds on" + " JDK 8."));
+                "pitest-maven 1.30.1 runs on JDK 11 to 25; this project builds on" + " JDK 8."
+            )
+        );
   }
 
   @Test
@@ -116,7 +123,8 @@ class DoctorJvmTest {
             finding -> {
               assertThat(finding.status()).isEqualTo(Status.WARNING);
               assertThat(finding.message()).contains("could not be determined");
-            });
+            }
+        );
     assertThat(names(findings)).doesNotContain(MUTATION);
   }
 
@@ -127,14 +135,21 @@ class DoctorJvmTest {
                 new CompatibilityProjectSnapshot(
                     project,
                     new ToolchainSnapshot(
-                        jdk, Optional.empty(), Optional.of("3.9.11"), Framework.NONE),
-                    Map.of("pitest-maven", "1.30.1")));
+                        jdk,
+                        Optional.empty(),
+                        Optional.of("3.9.11"),
+                        Framework.NONE
+                    ),
+                    Map.of("pitest-maven", "1.30.1")
+                )
+        );
     return new DoctorService(
-            new ProjectDetector(new FileSystemProjectInspection()),
-            directory ->
-                new EnvironmentFacts(Set.of("mvn"), Map.of("configurationPresent", "true")),
-            new DoctorPorts(new TomlConfigurationReader(), maven, null, null),
-            Set.of())
+        new ProjectDetector(new FileSystemProjectInspection()),
+        directory ->
+            new EnvironmentFacts(Set.of("mvn"), Map.of("configurationPresent", "true")),
+        new DoctorPorts(new TomlConfigurationReader(), maven, null, null),
+        Set.of()
+    )
         .diagnose(root);
   }
 

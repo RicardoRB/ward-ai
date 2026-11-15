@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.tomlj.Toml;
 
 class TomlAnalysisCheckTest {
-
   @Test
   void parsesSelectedRuleIds() {
     final GateConfiguration check = check("rules = [\"ward:java/method-length\"]");

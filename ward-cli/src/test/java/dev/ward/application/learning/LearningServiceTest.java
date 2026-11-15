@@ -43,11 +43,15 @@ class LearningServiceTest {
             LearningState.FAILING,
             NOW.minusSeconds(10),
             NOW,
-            false);
+            false
+        );
     final FakeStore store =
         new FakeStore(
             new LearningLedger(
-                LearningLedger.CURRENT_FORMAT_VERSION, Map.of(failing.key(), failing)));
+                LearningLedger.CURRENT_FORMAT_VERSION,
+                Map.of(failing.key(), failing)
+            )
+        );
 
     final LearningOutcome outcome = new LearningService(store, CLOCK).learn(passingReport(), 2);
 
@@ -58,7 +62,8 @@ class LearningServiceTest {
               assertThat(prompt.gate()).isEqualTo("checkstyle");
               assertThat(prompt.occurrences()).isEqualTo(2);
               assertThat(prompt.instruction()).contains("AGENTS.md", "LineLength", "line too long");
-            });
+            }
+        );
     assertThat(outcome.warnings()).isEmpty();
     assertThat(store.saved).isNotNull();
     assertThat(store.saved.records().get("checkstyle:LineLength").state())
@@ -92,11 +97,15 @@ class LearningServiceTest {
             LearningState.FAILING,
             NOW.minusSeconds(10),
             NOW,
-            false);
+            false
+        );
     final FakeStore store =
         new FakeStore(
             new LearningLedger(
-                LearningLedger.CURRENT_FORMAT_VERSION, Map.of(failing.key(), failing)));
+                LearningLedger.CURRENT_FORMAT_VERSION,
+                Map.of(failing.key(), failing)
+            )
+        );
 
     final LearningOutcome outcome = new LearningService(store, CLOCK).learn(passingReport(), 2);
 
@@ -115,7 +124,9 @@ class LearningServiceTest {
                 .duration(Duration.ZERO)
                 .stdout("")
                 .stderr("")
-                .build()));
+                .build()
+        )
+    );
   }
 
   private static final class FakeStore implements LearningStore {

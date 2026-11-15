@@ -11,7 +11,6 @@ import java.util.Set;
 
 /** Reports a fixed set of executables instead of probing the host PATH. */
 public class FakeEnvironmentInspection implements EnvironmentInspection {
-
   public final List<Path> inspectedRoots = new ArrayList<>();
   private final EnvironmentFacts facts;
   private boolean releaseTag;

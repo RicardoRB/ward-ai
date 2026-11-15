@@ -9,7 +9,6 @@ import java.util.Optional;
  * its ancestors. The class element holds the member's decorators; the member holds its name.
  */
 final class DecoratedSite {
-
   static final String CLASS = "classDeclaration";
   static final String CLASS_ELEMENT = "classElement";
   static final String MEMBER = "propertyMemberDeclaration";

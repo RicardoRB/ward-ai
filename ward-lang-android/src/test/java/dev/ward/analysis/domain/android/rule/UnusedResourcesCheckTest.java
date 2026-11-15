@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 
 /** The whole-project facts of the check; the catalog fixture covers a values file. */
 class UnusedResourcesCheckTest {
-
   private static final Span SPAN = new Span(1, 1, 1, 1, 0, 0);
 
   private final SortedMap<String, SyntaxNode> trees = new TreeMap<>();
@@ -34,14 +33,16 @@ class UnusedResourcesCheckTest {
             Map.of(),
             java.util.Arrays.stream(tokens)
                 .map(token -> new SyntaxNode("token", SPAN, Map.of("text", token), List.of()))
-                .toList()));
+                .toList()
+        )
+    );
   }
 
   private List<String> unused() {
     return new UnusedResourcesCheck()
         .project(trees).stream()
-            .map(match -> match.path() + " " + match.match().message())
-            .toList();
+        .map(match -> match.path() + " " + match.match().message())
+        .toList();
   }
 
   @Test
@@ -57,7 +58,8 @@ class UnusedResourcesCheckTest {
     assertThat(unused())
         .containsExactly(
             "res/drawable-hdpi/icon.xml Unused resource drawable/icon: nothing refers to it.",
-            "res/drawable/logo.xml Unused resource drawable/logo: nothing refers to it.");
+            "res/drawable/logo.xml Unused resource drawable/logo: nothing refers to it."
+        );
   }
 
   @Test
@@ -82,12 +84,14 @@ class UnusedResourcesCheckTest {
     xml(
         "res/values/values.xml",
         "<resources><string name=\"a\">@string/b</string><string name=\"b\">x</string>"
-            + "<color name=\"c\">@android:color/white</color></resources>");
+            + "<color name=\"c\">@android:color/white</color></resources>"
+    );
 
     assertThat(unused())
         .containsExactly(
             "res/values/values.xml Unused resource string/a: nothing refers to it.",
-            "res/values/values.xml Unused resource color/c: nothing refers to it.");
+            "res/values/values.xml Unused resource color/c: nothing refers to it."
+        );
   }
 
   @Test
@@ -123,8 +127,10 @@ class UnusedResourcesCheckTest {
             match -> {
               assertThat(match.path()).isEqualTo("res/values/strings.xml");
               assertThat(
-                      match.match().span().startLine() + ":" + match.match().span().startColumn())
+                  match.match().span().startLine() + ":" + match.match().span().startColumn()
+              )
                   .isEqualTo("2:3");
-            });
+            }
+        );
   }
 }

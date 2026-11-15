@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
  * a name it cannot settle from the project is unknown, and so is every fact that depends on one.
  */
 public final class SwiftTypeFacts implements TypeFacts {
-
   private static final String TYPE_IDENTIFIER = "type_identifier";
 
   private final SwiftTypeIndex index;
@@ -38,14 +37,19 @@ public final class SwiftTypeFacts implements TypeFacts {
   public SwiftTypeFacts(final SwiftProjectLayout layout, final Map<String, SyntaxNode> trees) {
     this.index =
         SwiftTypeIndex.build(
-            Objects.requireNonNull(layout, "layout"), Objects.requireNonNull(trees, "trees"));
+            Objects.requireNonNull(layout, "layout"),
+            Objects.requireNonNull(trees, "trees")
+        );
     this.refs = new SwiftTypeRefs(index);
     this.expressions = new SwiftTypeExpressions(index, refs);
   }
 
   @Override
   public UnitTypeFacts factsOf(
-      final SourceUnit unit, final List<Span> spans, final Set<FactKind> kinds) {
+      final SourceUnit unit,
+      final List<Span> spans,
+      final Set<FactKind> kinds
+  ) {
     if (!index.has(unit.path()) || spans.isEmpty()) {
       return UnitTypeFacts.none();
     }
@@ -64,7 +68,10 @@ public final class SwiftTypeFacts implements TypeFacts {
   }
 
   private SpanFacts factsAt(
-      final String file, final SwiftTypeSyntax.Visit visit, final Set<FactKind> kinds) {
+      final String file,
+      final SwiftTypeSyntax.Visit visit,
+      final Set<FactKind> kinds
+  ) {
     final TypeRef type = kinds.contains(FactKind.TYPE) ? typeOf(file, visit) : null;
     final TypeShape shape = kinds.contains(FactKind.SHAPE) ? shapeOf(file, visit) : null;
     return new SpanFacts(type, shape, null, List.of(), List.of(), List.of(), List.of(), null, null);

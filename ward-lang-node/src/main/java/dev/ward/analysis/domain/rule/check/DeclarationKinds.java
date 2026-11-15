@@ -11,7 +11,6 @@ import java.util.Set;
  * kind is the grammar rule of the declaration, such as {@code interfaceDeclaration}.
  */
 final class DeclarationKinds {
-
   private static final Set<String> NAMED =
       Set.of(
           "interfaceDeclaration",
@@ -19,7 +18,8 @@ final class DeclarationKinds {
           "enumDeclaration",
           "classDeclaration",
           "namespaceDeclaration",
-          "functionDeclaration");
+          "functionDeclaration"
+      );
   private static final Set<String> NAME_RULES = Set.of("identifier", "namespaceName");
   private static final String IDENTIFIER_LEAF = "Identifier";
 

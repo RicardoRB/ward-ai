@@ -29,12 +29,12 @@ import java.util.stream.Stream;
  * built once per unit and shared by every rule and gate that reads them.
  */
 public final class GateFrontends {
-
   /** The manifests that the TypeScript and JavaScript project checks read. */
   private static final Set<String> NODE_MANIFESTS =
       Stream.concat(
-              Stream.of("package.json", "pnpm-workspace.yaml", "index.html"),
-              NodeImplicitUse.configFileNames().stream())
+          Stream.of("package.json", "pnpm-workspace.yaml", "index.html"),
+          NodeImplicitUse.configFileNames().stream()
+      )
           .collect(Collectors.toUnmodifiableSet());
 
   private static final ControlFlowLowering NO_GRAPHS =
@@ -53,45 +53,58 @@ public final class GateFrontends {
             frontend,
             flow,
             new JavaControlFlow(),
-            new CachedScopes(new JavaScopeAnalysis(ClasspathBuiltinNames.java()))),
+            new CachedScopes(new JavaScopeAnalysis(ClasspathBuiltinNames.java()))
+        ),
         new FrontendSupport(
             AnalysisLanguage.PYTHON,
             frontend,
             flow,
             new PythonControlFlow(),
-            new CachedScopes(new PythonScopes(ClasspathBuiltinNames.python()))),
+            new CachedScopes(new PythonScopes(ClasspathBuiltinNames.python()))
+        ),
         new FrontendSupport(
-                AnalysisLanguage.TYPESCRIPT,
-                frontend,
-                flow,
-                new NodeControlFlow(),
-                new CachedScopes(new NodeScopeAnalysis(ClasspathBuiltinNames.typescript())))
+            AnalysisLanguage.TYPESCRIPT,
+            frontend,
+            flow,
+            new NodeControlFlow(),
+            new CachedScopes(new NodeScopeAnalysis(ClasspathBuiltinNames.typescript()))
+        )
             .withManifests(NODE_MANIFESTS)
             .withProjectLanguages(Set.of(AnalysisLanguage.JAVASCRIPT)),
         new FrontendSupport(
-                AnalysisLanguage.JAVASCRIPT,
-                frontend,
-                flow,
-                new NodeControlFlow(),
-                new CachedScopes(new NodeScopeAnalysis(ClasspathBuiltinNames.javascript())))
+            AnalysisLanguage.JAVASCRIPT,
+            frontend,
+            flow,
+            new NodeControlFlow(),
+            new CachedScopes(new NodeScopeAnalysis(ClasspathBuiltinNames.javascript()))
+        )
             .withManifests(NODE_MANIFESTS),
         new FrontendSupport(
             AnalysisLanguage.SWIFT,
             frontend,
             symbols,
             NO_GRAPHS,
-            new CachedScopes(new SwiftScopeAnalysis(ClasspathBuiltinNames.swift()))),
+            new CachedScopes(new SwiftScopeAnalysis(ClasspathBuiltinNames.swift()))
+        ),
         new FrontendSupport(
             AnalysisLanguage.KOTLIN,
             frontend,
             graphs,
             new KotlinControlFlow(),
-            new CachedScopes(new KotlinScopeAnalysis(ClasspathBuiltinNames.kotlin()))),
+            new CachedScopes(new KotlinScopeAnalysis(ClasspathBuiltinNames.kotlin()))
+        ),
         new FrontendSupport(
-            AnalysisLanguage.OPENAPI, new OpenApiLanguageFrontend(), Set.of(RuleCapability.SYNTAX)),
+            AnalysisLanguage.OPENAPI,
+            new OpenApiLanguageFrontend(),
+            Set.of(RuleCapability.SYNTAX)
+        ),
         new FrontendSupport(
-                AnalysisLanguage.ANDROID, new AndroidXmlFrontend(), Set.of(RuleCapability.SYNTAX))
-            .withProjectLanguages(Set.of(AnalysisLanguage.JAVA, AnalysisLanguage.KOTLIN)));
+            AnalysisLanguage.ANDROID,
+            new AndroidXmlFrontend(),
+            Set.of(RuleCapability.SYNTAX)
+        )
+            .withProjectLanguages(Set.of(AnalysisLanguage.JAVA, AnalysisLanguage.KOTLIN))
+    );
   }
 
   // The sets are built per call, not in static fields: a native image must not freeze enum sets.
@@ -105,7 +118,8 @@ public final class GateFrontends {
         RuleCapability.CFG,
         RuleCapability.DATAFLOW,
         RuleCapability.TAINT,
-        RuleCapability.SCOPES);
+        RuleCapability.SCOPES
+    );
   }
 
   private static Set<RuleCapability> flowCapabilities() {
@@ -115,6 +129,7 @@ public final class GateFrontends {
         RuleCapability.CFG,
         RuleCapability.DATAFLOW,
         RuleCapability.TAINT,
-        RuleCapability.SCOPES);
+        RuleCapability.SCOPES
+    );
   }
 }

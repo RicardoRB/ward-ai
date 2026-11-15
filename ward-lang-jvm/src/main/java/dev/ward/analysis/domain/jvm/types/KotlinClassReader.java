@@ -15,7 +15,10 @@ final class KotlinClassReader {
   private KotlinClassReader() {}
 
   static KotlinUnitModel.Declared read(
-      final SyntaxNode node, final String binary, final TypeScope scope) {
+      final SyntaxNode node,
+      final String binary,
+      final TypeScope scope
+  ) {
     final List<TypeParameter> parameters = typeParameters(node);
     final TypeScope inner =
         scope.inClass(binary, parameters.stream().map(TypeParameter::name).toList());
@@ -48,7 +51,8 @@ final class KotlinClassReader {
             List.of(),
             false,
             true,
-            Map.of());
+            Map.of()
+        );
     return new KotlinUnitModel.Declared(jvm, node, inner, members);
   }
 
@@ -57,7 +61,8 @@ final class KotlinClassReader {
       final TypeScope inner,
       final boolean isInterface,
       final List<JvmField> fields,
-      final List<JvmMethod> methods) {
+      final List<JvmMethod> methods
+  ) {
     final List<JType> types = new ArrayList<>();
     boolean resolved = true;
     for (final SyntaxNode parameter : constructorParameters(node)) {
@@ -72,7 +77,8 @@ final class KotlinClassReader {
             type.get(),
             Syntax.hasToken(parameter, "var"),
             fields,
-            methods);
+            methods
+        );
       }
     }
     if (resolved && !isInterface) {
@@ -87,12 +93,17 @@ final class KotlinClassReader {
               List.of(),
               List.of(),
               List.of(),
-              Map.of()));
+              Map.of()
+          )
+      );
     }
   }
 
   private static Optional<JType.ClassType> supertypes(
-      final SyntaxNode node, final TypeScope inner, final List<JType.ClassType> interfaces) {
+      final SyntaxNode node,
+      final TypeScope inner,
+      final List<JType.ClassType> interfaces
+  ) {
     Optional<JType.ClassType> superclass = Optional.of(JType.ClassType.of(Types.OBJECT));
     final List<SyntaxNode> specifiers =
         Syntax.find(node, "delegationSpecifiers")
@@ -120,7 +131,9 @@ final class KotlinClassReader {
             parameter ->
                 new TypeParameter(
                     Syntax.text(Syntax.child(parameter, SIMPLE_IDENTIFIER).orElse(parameter)),
-                    List.of()))
+                    List.of()
+                )
+        )
         .toList();
   }
 
@@ -136,7 +149,8 @@ final class KotlinClassReader {
       final JType type,
       final boolean mutable,
       final List<JvmField> fields,
-      final List<JvmMethod> methods) {
+      final List<JvmMethod> methods
+  ) {
     fields.add(new JvmField(name, Flags.PRIVATE, type, Optional.empty(), List.of()));
     final String suffix = Character.toUpperCase(name.charAt(0)) + name.substring(1);
     final boolean flag = type.equals(new JType.Primitive("boolean"));
@@ -151,7 +165,9 @@ final class KotlinClassReader {
             List.of(),
             List.of(),
             List.of(),
-            Map.of()));
+            Map.of()
+        )
+    );
     if (mutable) {
       methods.add(
           new JvmMethod(
@@ -164,7 +180,9 @@ final class KotlinClassReader {
               List.of(),
               List.of(),
               List.of(),
-              Map.of()));
+              Map.of()
+          )
+      );
     }
   }
 
@@ -172,7 +190,8 @@ final class KotlinClassReader {
       final SyntaxNode member,
       final TypeScope inner,
       final List<JvmField> fields,
-      final List<JvmMethod> methods) {
+      final List<JvmMethod> methods
+  ) {
     final Optional<SyntaxNode> variable = Syntax.child(member, "variableDeclaration");
     final Optional<JType> type =
         variable
@@ -184,7 +203,8 @@ final class KotlinClassReader {
           type.get(),
           Syntax.hasToken(member, "var"),
           fields,
-          methods);
+          methods
+      );
     }
   }
 
@@ -220,6 +240,8 @@ final class KotlinClassReader {
                 List.of(),
                 List.of(),
                 List.of(),
-                Map.of()));
+                Map.of()
+            )
+    );
   }
 }

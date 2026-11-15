@@ -37,14 +37,14 @@ import org.junit.jupiter.api.io.TempDir;
  * nothing changed, reads its findings from the cache.
  */
 final class ScopeImportResolutionTest {
-
   private static final RuleDefinition RULE =
       new RuleDefinition(
           "ward:python/import-target",
           AnalysisLanguage.PYTHON,
           RuleCapability.SCOPES,
           AnalysisSeverity.WARNING,
-          "");
+          ""
+      );
 
   @TempDir Path root;
 
@@ -69,7 +69,8 @@ final class ScopeImportResolutionTest {
             final DependencyView dependencies,
             final FlowView flow,
             final ScopeView scopes,
-            final SourceUnit unit) {
+            final SourceUnit unit
+        ) {
           final List<RuleMatch> found = new ArrayList<>();
           scopes.scopes().bindings().stream()
               .filter(binding -> binding.kind() == BindingKind.IMPORT)
@@ -85,8 +86,12 @@ final class ScopeImportResolutionTest {
                                           resolved ->
                                               resolved.path()
                                                   + ":"
-                                                  + resolved.declaration().isPresent())
-                                      .orElse("external"))));
+                                                  + resolved.declaration().isPresent()
+                                      )
+                                      .orElse("external")
+                          )
+                      )
+              );
           return found;
         }
       };
@@ -95,10 +100,13 @@ final class ScopeImportResolutionTest {
 
   private List<SourceUnit> write() throws IOException {
     Files.writeString(
-        root.resolve("pyproject.toml"), "[project]\nname = \"app\"\nversion = \"1\"\n");
+        root.resolve("pyproject.toml"),
+        "[project]\nname = \"app\"\nversion = \"1\"\n"
+    );
     final List<SourceUnit> units = new ArrayList<>();
     units.add(
-        unit("shop.py", "import json\nfrom billing import total, missing\n\nprint(total, json)\n"));
+        unit("shop.py", "import json\nfrom billing import total, missing\n\nprint(total, json)\n")
+    );
     units.add(unit("billing.py", "def total():\n    return 1\n"));
     return units;
   }
@@ -114,13 +122,15 @@ final class ScopeImportResolutionTest {
             new RuleEngine(new ImportMatcher()),
             AnalysisCacheFixtures.codec(),
             "test",
-            new PythonDependencyAdapters().forProject(root, units));
+            new PythonDependencyAdapters().forProject(root, units)
+        );
     return cache
         .run(
             AnalysisCacheFixtures.memory(entries),
             units,
             GateFrontends.create(new AntlrLanguageFrontend()),
-            List.of(RULE))
+            List.of(RULE)
+        )
         .findings()
         .stream()
         .map(AnalysisFinding::message)
@@ -133,7 +143,10 @@ final class ScopeImportResolutionTest {
 
     assertThat(messages(new HashMap<>(), units))
         .containsExactlyInAnyOrder(
-            "json -> external", "total -> billing.py:true", "missing -> billing.py:false");
+            "json -> external",
+            "total -> billing.py:true",
+            "missing -> billing.py:false"
+        );
   }
 
   @Test
@@ -147,6 +160,9 @@ final class ScopeImportResolutionTest {
 
     assertThat(messages(entries, changed))
         .containsExactlyInAnyOrder(
-            "json -> external", "total -> billing.py:false", "missing -> billing.py:false");
+            "json -> external",
+            "total -> billing.py:false",
+            "missing -> billing.py:false"
+        );
   }
 }

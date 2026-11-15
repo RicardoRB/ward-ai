@@ -9,7 +9,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class JavaFormatterOptionsTest {
-
   private static final String NESTED_SOURCE = "class A {\nvoid f() {\nint x=1;\n}\n}\n";
   private static final String CALL_SOURCE = "class A {\nvoid f() {\nfoo(alpha, beta);\n}\n}\n";
 
@@ -31,9 +30,11 @@ class JavaFormatterOptionsTest {
     assertThat(defaults)
         .isEqualTo(
             new FormatResult.Formatted(
-                "class A {\n    void f() {\n        foo(alpha, beta);\n    }\n}\n"));
+                "class A {\n    void f() {\n        foo(alpha, beta);\n    }\n}\n"
+            )
+        );
     assertThat(narrow).isInstanceOf(FormatResult.Formatted.class);
-    assertThat(((FormatResult.Formatted) narrow).text()).contains("foo(\n");
+    assertThat(((FormatResult.Formatted)narrow).text()).contains("foo(\n");
   }
 
   private FormatOptions options(final String... pairs) {

@@ -45,7 +45,8 @@ public final class FileSystemProjectInspection implements ProjectInspection {
           new FrameworkGroup(Framework.HELIDON, "io.helidon"),
           new FrameworkGroup(Framework.DROPWIZARD, "io.dropwizard"),
           new FrameworkGroup(Framework.JAVALIN, "io.javalin"),
-          new FrameworkGroup(Framework.KTOR, "io.ktor"));
+          new FrameworkGroup(Framework.KTOR, "io.ktor")
+      );
 
   private static final List<String> GRADLE_BUILD_FILES =
       List.of("build.gradle", "build.gradle.kts");
@@ -64,7 +65,9 @@ public final class FileSystemProjectInspection implements ProjectInspection {
           new Marker("go.mod", dir -> new Project(dir, Language.GO, BuildTool.GO, Framework.NONE)),
           new Marker(
               "Cargo.toml",
-              dir -> new Project(dir, Language.RUST, BuildTool.CARGO, Framework.NONE)));
+              dir -> new Project(dir, Language.RUST, BuildTool.CARGO, Framework.NONE)
+          )
+      );
 
   /** Creates the stateless adapter that Dagger injects. */
   @Inject
@@ -97,7 +100,10 @@ public final class FileSystemProjectInspection implements ProjectInspection {
         .map(
             found ->
                 new DiscoveredProject(
-                    ProjectRoots.inRepository(found.project()), found.moduleCount()))
+                    ProjectRoots.inRepository(found.project()),
+                    found.moduleCount()
+                )
+        )
         .toList();
   }
 
@@ -143,7 +149,8 @@ public final class FileSystemProjectInspection implements ProjectInspection {
         languages,
         "",
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 
   private static Project gradleProject(final Path dir) {
@@ -158,7 +165,8 @@ public final class FileSystemProjectInspection implements ProjectInspection {
         languages,
         "",
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 
   /** Parses the POM securely; a malformed or hostile POM is still a Maven marker. */

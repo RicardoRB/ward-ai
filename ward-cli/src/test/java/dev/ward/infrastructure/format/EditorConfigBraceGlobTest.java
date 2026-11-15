@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
 
 class EditorConfigBraceGlobTest {
-
   @Test
   void bracesMatchAnyListedAlternative() {
     final Pattern pattern = EditorConfigGlob.compile("*.{ts,tsx}");

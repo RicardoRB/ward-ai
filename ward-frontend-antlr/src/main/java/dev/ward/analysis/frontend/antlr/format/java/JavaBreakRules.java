@@ -4,7 +4,6 @@ import java.util.Set;
 
 /** The token rules that decide where a Java line breaks and how a bracket scope is kept. */
 final class JavaBreakRules {
-
   static final String OPEN_BLOCK = "{";
   static final String OPEN_PAREN = "(";
   static final String OPEN_BRACKET = "[";
@@ -55,7 +54,8 @@ final class JavaBreakRules {
           "<<",
           ">>",
           ">>>",
-          "instanceof");
+          "instanceof"
+      );
   private static final Set<String> STATEMENT_ENDS = Set.of(SEMICOLON, OPEN_BLOCK, CLOSE_BLOCK);
 
   private JavaBreakRules() {}
@@ -131,7 +131,8 @@ final class JavaBreakRules {
       final JavaAtom atom,
       final JavaTreeFacts facts,
       final boolean blockTop,
-      final boolean groupTop) {
+      final boolean groupTop
+  ) {
     final String text = atom.text();
     if (facts.hardAfter().contains(atom.index())) {
       return JavaBreak.HARD;

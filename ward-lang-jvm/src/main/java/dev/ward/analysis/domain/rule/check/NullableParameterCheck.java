@@ -13,7 +13,6 @@ import java.util.Set;
  * passes on or assigns is left alone.
  */
 public final class NullableParameterCheck implements RuleCheck {
-
   private final String message;
 
   /**
@@ -41,7 +40,10 @@ public final class NullableParameterCheck implements RuleCheck {
   }
 
   private void report(
-      final SyntaxNode parameter, final List<SyntaxNode> bodies, final List<RuleMatch> matches) {
+      final SyntaxNode parameter,
+      final List<SyntaxNode> bodies,
+      final List<RuleMatch> matches
+  ) {
     final List<String> names = ClassMembers.fieldNames(parameter);
     if (names.size() != 1 || bodies.isEmpty()) {
       return;

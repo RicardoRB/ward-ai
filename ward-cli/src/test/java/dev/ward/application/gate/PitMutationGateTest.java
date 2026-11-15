@@ -13,7 +13,10 @@ class PitMutationGateTest {
   private static final int HIGHER_MINIMUM = 80;
 
   private static GateResult run(
-      final int exitCode, final FakeReport report, final Integer minimum) {
+      final int exitCode,
+      final FakeReport report,
+      final Integer minimum
+  ) {
     return MutationGateFixtures.run(MutationGateFixtures.PIT, exitCode, report, minimum);
   }
 
@@ -50,8 +53,11 @@ class PitMutationGateTest {
             0,
             new FakeReport(
                 MutationCounts.unusable(
-                    "PIT's XML report target/pit-reports/mutations.xml is missing.")),
-            MutationGateFixtures.MINIMUM);
+                    "PIT's XML report target/pit-reports/mutations.xml is missing."
+                )
+            ),
+            MutationGateFixtures.MINIMUM
+        );
 
     assertThat(result.status()).isEqualTo(GateStatus.EXECUTION_ERROR);
     assertThat(result.summary()).contains("mutations.xml", "-DoutputFormats=XML,HTML");

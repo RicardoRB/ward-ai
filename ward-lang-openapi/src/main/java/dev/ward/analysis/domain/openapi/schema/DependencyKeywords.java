@@ -6,14 +6,14 @@ import java.util.Optional;
 
 /** The keywords that tie properties to each other: dependencies and the names of properties. */
 final class DependencyKeywords {
-
   private DependencyKeywords() {}
 
   static boolean dependentRequired(
       final JsonSchemaValidator validator,
       final DocNode schema,
       final DocNode data,
-      final String path) {
+      final String path
+  ) {
     final Optional<DocNode> rules = schema.get("dependentRequired");
     if (!appliesDependentRequired(validator, rules)) {
       return true;
@@ -31,7 +31,9 @@ final class DependencyKeywords {
   }
 
   private static boolean appliesDependentRequired(
-      final JsonSchemaValidator validator, final Optional<DocNode> rules) {
+      final JsonSchemaValidator validator,
+      final Optional<DocNode> rules
+  ) {
     return rules.isPresent()
         && rules.get().kind() == DocNode.Kind.OBJECT
         && validator.getDialect() == JsonSchemaValidator.Dialect.DRAFT2020;
@@ -42,7 +44,8 @@ final class DependencyKeywords {
       final JsonSchemaValidator validator,
       final DocNode data,
       final DocNode.Entry rule,
-      final String path) {
+      final String path
+  ) {
     if (data.get(rule.key()).isEmpty()) {
       return true;
     }
@@ -60,19 +63,24 @@ final class DependencyKeywords {
   }
 
   private static SchemaError neededProperty(
-      final String path, final String present, final String needed) {
+      final String path,
+      final String present,
+      final String needed
+  ) {
     return SchemaError.about(
         "dependentRequired",
         path,
         "must have property " + needed + " when property " + present + " is present",
-        needed);
+        needed
+    );
   }
 
   static boolean dependentSchemas(
       final JsonSchemaValidator validator,
       final DocNode schema,
       final DocNode data,
-      final String path) {
+      final String path
+  ) {
     final Optional<DocNode> rules = schema.get("dependentSchemas");
     if (rules.isEmpty()
         || rules.get().kind() != DocNode.Kind.OBJECT
@@ -95,7 +103,8 @@ final class DependencyKeywords {
       final JsonSchemaValidator validator,
       final DocNode schema,
       final DocNode data,
-      final String path) {
+      final String path
+  ) {
     final Optional<DocNode> rule = schema.get("propertyNames");
     if (rule.isEmpty() || validator.getDialect() != JsonSchemaValidator.Dialect.DRAFT2020) {
       return true;
@@ -127,7 +136,8 @@ final class DependencyKeywords {
         entry.keySpan(),
         Optional.empty(),
         List.of(),
-        List.of());
+        List.of()
+    );
   }
 
   /** Draft 4 {@code dependencies}: a property list or a schema that applies when a key is there. */
@@ -135,7 +145,8 @@ final class DependencyKeywords {
       final JsonSchemaValidator validator,
       final DocNode schema,
       final DocNode data,
-      final String path) {
+      final String path
+  ) {
     final Optional<DocNode> rules = schema.get("dependencies");
     if (rules.isEmpty()
         || rules.get().kind() != DocNode.Kind.OBJECT
@@ -163,7 +174,8 @@ final class DependencyKeywords {
       final JsonSchemaValidator validator,
       final DocNode.Entry rule,
       final DocNode data,
-      final String path) {
+      final String path
+  ) {
     final List<String> missing =
         rule.value().items().stream()
             .map(DocNode::text)
@@ -184,7 +196,9 @@ final class DependencyKeywords {
                 "dependencies",
                 path,
                 "must have " + noun + " " + all + " when property " + rule.key() + " is present",
-                missing.getFirst()));
+                missing.getFirst()
+            )
+        );
     return false;
   }
 }

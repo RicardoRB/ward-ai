@@ -9,10 +9,11 @@ class CiWorkflowApiCompatTest {
   void apiCompatFetchesFullHistoryAndTags() {
     final String body =
         CiWorkflowTemplate.render(
-                "github",
-                CiWorkflowTemplateTest.MAVEN,
-                CiWorkflowTemplateTest.gates("tests", "api-compat"),
-                "0.0.12")
+            "github",
+            CiWorkflowTemplateTest.MAVEN,
+            CiWorkflowTemplateTest.gates("tests", "api-compat"),
+            "0.0.12"
+        )
             .body();
 
     assertThat(body).contains("fetch-depth: 0");
@@ -22,10 +23,11 @@ class CiWorkflowApiCompatTest {
   void withoutApiCompatTheCheckoutIsShallow() {
     final String body =
         CiWorkflowTemplate.render(
-                "github",
-                CiWorkflowTemplateTest.MAVEN,
-                CiWorkflowTemplateTest.gates("tests"),
-                "0.0.12")
+            "github",
+            CiWorkflowTemplateTest.MAVEN,
+            CiWorkflowTemplateTest.gates("tests"),
+            "0.0.12"
+        )
             .body();
 
     assertThat(body).doesNotContain("fetch-depth");

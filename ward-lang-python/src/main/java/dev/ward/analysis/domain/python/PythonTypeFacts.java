@@ -22,7 +22,6 @@ import java.util.Set;
  * unknown.
  */
 public final class PythonTypeFacts implements TypeFacts {
-
   private final LanguageFrontend parser;
   private final PythonStubs stubs;
   private final PythonScopes analysis = new PythonScopes(environments -> Set.of());
@@ -35,7 +34,10 @@ public final class PythonTypeFacts implements TypeFacts {
 
   @Override
   public UnitTypeFacts factsOf(
-      final SourceUnit unit, final List<Span> spans, final Set<FactKind> kinds) {
+      final SourceUnit unit,
+      final List<Span> spans,
+      final Set<FactKind> kinds
+  ) {
     final SyntaxNode tree = parser.parse(unit).tree();
     final UnitScopes scopes = analysis.analyze(unit, tree);
     final PythonTypeIndex index = new PythonTypeIndex(tree, scopes);
@@ -51,7 +53,10 @@ public final class PythonTypeFacts implements TypeFacts {
   }
 
   private static SpanFacts facts(
-      final SyntaxNode node, final Set<FactKind> kinds, final PythonExpressionTypes types) {
+      final SyntaxNode node,
+      final Set<FactKind> kinds,
+      final PythonExpressionTypes types
+  ) {
     final TypeRef type = kinds.contains(FactKind.TYPE) ? types.typeOf(node).orElse(null) : null;
     final CallTarget call = kinds.contains(FactKind.CALL) ? types.callOf(node).orElse(null) : null;
     return new SpanFacts(type, null, call, List.of(), List.of(), List.of(), List.of(), null, null);

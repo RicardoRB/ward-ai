@@ -17,7 +17,6 @@ import java.util.Set;
  * @param definition the rule this check was built from
  */
 public record NamingRule(RuleDefinition definition) implements CompiledRule {
-
   private static final String EDGE_UNDERSCORES = "^_+|_+$";
 
   /** Nodes whose first identifier is a name the rule checks. */
@@ -47,7 +46,9 @@ public record NamingRule(RuleDefinition definition) implements CompiledRule {
     matches.add(
         new RuleMatch(
             identifier.span(),
-            "Identifier '" + identifier.fields().get("text") + "' is not camelCase"));
+            "Identifier '" + identifier.fields().get("text") + "' is not camelCase"
+        )
+    );
   }
 
   private static boolean isUnderscored(final String name) {

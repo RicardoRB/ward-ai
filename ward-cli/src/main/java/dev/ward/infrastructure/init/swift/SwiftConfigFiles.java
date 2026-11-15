@@ -36,7 +36,9 @@ public final class SwiftConfigFiles {
               root.resolve(TOOLS_DIRECTORY),
               ConfigTarget.Disposition.REMOVE,
               null,
-              "removed: Ward's earlier SwiftLint tools package and its build cache"));
+              "removed: Ward's earlier SwiftLint tools package and its build cache"
+          )
+      );
     } else {
       retired(targets, manifest, "Package.swift");
     }
@@ -59,11 +61,16 @@ public final class SwiftConfigFiles {
               file,
               ConfigTarget.Disposition.REMOVE,
               null,
-              "removed: Ward's earlier " + name + "; the Ward rules replace SwiftLint"));
+              "removed: Ward's earlier " + name + "; the Ward rules replace SwiftLint"
+          )
+      );
     } else {
       targets.add(
           ConfigTarget.keep(
-              file, "kept: your " + name + " is no longer used; Ward runs its Swift rules"));
+              file,
+              "kept: your " + name + " is no longer used; Ward runs its Swift rules"
+          )
+      );
     }
   }
 }

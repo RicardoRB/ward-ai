@@ -21,7 +21,6 @@ import java.util.Set;
  * known here. It reports nothing when a type or its constructors are unknown.
  */
 public final class ComputeIfAbsentReferenceCheck extends FactsCheck {
-
   private static final String EXPRESSION = "expression";
   private static final String TYPE_TYPE = "typeType";
   private static final String MAP = "java.util.Map";
@@ -31,7 +30,9 @@ public final class ComputeIfAbsentReferenceCheck extends FactsCheck {
   private static final int REFERENCE_PARTS = 3;
   private static final FactNeed NEED =
       new FactNeed(
-          Set.of(EXPRESSION, TYPE_TYPE), Set.of(FactKind.CALL, FactKind.TYPE, FactKind.MEMBERS));
+          Set.of(EXPRESSION, TYPE_TYPE),
+          Set.of(FactKind.CALL, FactKind.TYPE, FactKind.MEMBERS)
+      );
 
   private final String message;
 
@@ -66,8 +67,8 @@ public final class ComputeIfAbsentReferenceCheck extends FactsCheck {
     final Optional<CallTarget> target = types.callTarget(call.span());
     final List<SyntaxNode> parts = call.children();
     return target
-            .filter(t -> COMPUTE_IF_ABSENT.equals(t.name()) && t.parameters().size() == ARGUMENTS)
-            .isPresent()
+        .filter(t -> COMPUTE_IF_ABSENT.equals(t.name()) && t.parameters().size() == ARGUMENTS)
+        .isPresent()
         && !parts.isEmpty()
         && EXPRESSION.equals(parts.get(0).kind())
         && isMap(parts.get(0), types);

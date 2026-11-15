@@ -35,7 +35,9 @@ final class InitFailureFixtures {
             failingRules(),
             ArchitectureTablesFixtures.create(),
             storageThatFailsToRestore(root.resolve("ward.toml")),
-            new OwnedSectionWriter()));
+            new OwnedSectionWriter()
+        )
+    );
   }
 
   private static ConfigurationStorage storageThatFailsToRestore(final Path configuration) {
@@ -72,7 +74,11 @@ final class InitFailureFixtures {
       @Override
       public BuildFileChange apply(final Project project, final List<InitGateOption> gates) {
         return new BuildFileChange(
-            Toolchain.JVM, project.root().resolve("pom.xml"), ProjectFixtures.PLAIN_POM, List.of());
+            Toolchain.JVM,
+            project.root().resolve("pom.xml"),
+            ProjectFixtures.PLAIN_POM,
+            List.of()
+        );
       }
 
       @Override
@@ -80,9 +86,12 @@ final class InitFailureFixtures {
           final Project project,
           final List<InitGateOption> gates,
           final QualityPreset preset,
-          final boolean approved) {
+          final boolean approved
+      ) {
         return new PlannedFileChange(
-            project.root().resolve("pom.xml"), PlannedFileChange.Action.UNCHANGED);
+            project.root().resolve("pom.xml"),
+            PlannedFileChange.Action.UNCHANGED
+        );
       }
 
       @Override
@@ -94,13 +103,19 @@ final class InitFailureFixtures {
     return new RuleFileGeneration() {
       @Override
       public RuleFileChange apply(
-          final Project project, final QualityPreset preset, final List<InitGateOption> gates) {
+          final Project project,
+          final QualityPreset preset,
+          final List<InitGateOption> gates
+      ) {
         throw new IllegalStateException("setup failed");
       }
 
       @Override
       public List<PlannedFileChange> plan(
-          final Project project, final QualityPreset preset, final List<InitGateOption> gates) {
+          final Project project,
+          final QualityPreset preset,
+          final List<InitGateOption> gates
+      ) {
         return List.of();
       }
 

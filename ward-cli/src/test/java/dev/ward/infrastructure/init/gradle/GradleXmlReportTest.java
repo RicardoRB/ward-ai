@@ -27,7 +27,8 @@ class GradleXmlReportTest {
     assertThat(script)
         .contains(
             "tasks.named('jacocoTestReport') {\n    reports { xml.required = true }\n}",
-            "tasks.named('jacocoTestReport') { dependsOn 'wardCoverageData' }")
+            "tasks.named('jacocoTestReport') { dependsOn 'wardCoverageData' }"
+        )
         .doesNotContain("violationRules", "jacocoTestCoverageVerification");
   }
 
@@ -39,7 +40,8 @@ class GradleXmlReportTest {
         .contains(
             "tasks.named<org.gradle.testing.jacoco.tasks.JacocoReport>(\"jacocoTestReport\") {",
             "reports { xml.required.set(true) }",
-            "tasks.named(\"jacocoTestReport\") { dependsOn(\"wardCoverageData\") }")
+            "tasks.named(\"jacocoTestReport\") { dependsOn(\"wardCoverageData\") }"
+        )
         .doesNotContain("violationRules", "jacocoTestCoverageVerification");
   }
 
@@ -63,7 +65,12 @@ class GradleXmlReportTest {
     final Project project = new Project(root, Language.JAVA, BuildTool.GRADLE, Framework.NONE);
     final InitGateOption coverage =
         new InitGateOption(
-            "coverage", "coverage", List.of("./gradlew", "jacocoTestReport"), true, "available");
+            "coverage",
+            "coverage",
+            List.of("./gradlew", "jacocoTestReport"),
+            true,
+            "available"
+        );
     new GradleToolConfigurator().apply(project, List.of(coverage), null, finding -> false);
     return Files.readString(root.resolve(name));
   }

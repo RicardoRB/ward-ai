@@ -49,13 +49,19 @@ public interface ToolchainInitSupport extends OwnedFileSupport, MemberSupport {
 
   /** Returns the gates of {@code gateIds} that the project's runtime cannot run. */
   default List<GateOmission> omissions(
-      final Project project, final List<String> gateIds, final InitInputs inputs) {
+      final Project project,
+      final List<String> gateIds,
+      final InitInputs inputs
+  ) {
     return List.of();
   }
 
   /** Returns the plan and output notes the toolchain adds for {@code project}. */
   default List<String> notes(
-      final Project project, final QualityPreset preset, final InitInputs inputs) {
+      final Project project,
+      final QualityPreset preset,
+      final InitInputs inputs
+  ) {
     return List.of();
   }
 

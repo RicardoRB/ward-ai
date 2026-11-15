@@ -12,7 +12,6 @@ import java.util.Objects;
  * JavadocMissingWhitespaceAfterAsterisk do. The first row is never checked.
  */
 public final class JavadocAsteriskCheck implements UnitCheck {
-
   /** What the check looks for in each row after the first. */
   public enum Mode {
     /** An asterisk that is not under the first asterisk of the opening delimiter. */
@@ -56,7 +55,10 @@ public final class JavadocAsteriskCheck implements UnitCheck {
   }
 
   private void matchRow(
-      final SyntaxNode comment, final JavadocRows.Row row, final List<RuleMatch> matches) {
+      final SyntaxNode comment,
+      final JavadocRows.Row row,
+      final List<RuleMatch> matches
+  ) {
     final int lead = row.lead();
     if (lead >= row.text().length()) {
       return;

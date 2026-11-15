@@ -21,7 +21,6 @@ import org.tomlj.TomlTable;
  * its Poetry {@code packages}, else its {@code src/} directory, else the project directory itself.
  */
 public final class PythonLayouts {
-
   private static final String UV_MEMBERS = "tool.uv.workspace.members";
   private static final String POETRY_PACKAGES = "tool.poetry.packages";
   private static final String FROM = "from";
@@ -59,13 +58,17 @@ public final class PythonLayouts {
                 + sorted.size()
                 + " source roots, "
                 + members.size()
-                + " workspace member globs");
+                + " workspace member globs"
+    );
     return new PythonProjectLayout(sorted);
   }
 
   /** The roots one project directory contributes, relative to {@code projectRoot}. */
   private static List<String> rootsOf(
-      final Path projectRoot, final Path dir, final TomlTable pyproject) {
+      final Path projectRoot,
+      final Path dir,
+      final TomlTable pyproject
+  ) {
     final List<String> packages = poetryFroms(pyproject);
     if (!packages.isEmpty()) {
       return packages.stream().map(from -> relativeRoot(projectRoot, dir.resolve(from))).toList();

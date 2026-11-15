@@ -65,8 +65,8 @@ public record GateConfiguration(
     VulnerabilityOptions vulnerabilities,
     LicenseSettings license,
     ApiCompatOptions apiCompat,
-    String architectureFile) {
-
+    String architectureFile
+) {
   /** Copies the command, profiles and rule ids, keeping their order. */
   public GateConfiguration {
     command = List.copyOf(command);
@@ -111,6 +111,7 @@ public record GateConfiguration(
         null,
         null,
         null,
-        null);
+        null
+    );
   }
 }

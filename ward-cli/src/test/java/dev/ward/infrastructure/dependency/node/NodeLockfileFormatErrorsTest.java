@@ -69,7 +69,8 @@ class NodeLockfileFormatErrorsTest {
         dir,
         "bun.lock",
         "{\"lockfileVersion\":1,\"workspaces\":{\"\":{}},\"packages\":{"
-            + "\"left-pad\":[\"left-pad@1.3.0\",\"\",{},\"sha\"],}}");
+            + "\"left-pad\":[\"left-pad@1.3.0\",\"\",{},\"sha\"],}}"
+    );
 
     final DependencyInventory inventory = NodeDependencySourceTest.read(dir, BuildTool.BUN);
 
@@ -85,7 +86,8 @@ class NodeLockfileFormatErrorsTest {
         dir,
         PACKAGE_LOCK,
         "{\"lockfileVersion\":3,\"packages\":{\"\":{},\"node_modules/left-pad\":"
-            + "{\"version\":\"1.3.0\",\"resolved\":\"git+ssh://git@github.com/a/left-pad.git#abc\"}}}");
+            + "{\"version\":\"1.3.0\",\"resolved\":\"git+ssh://git@github.com/a/left-pad.git#abc\"}}}"
+    );
 
     final Dependency entry =
         NodeDependencySourceTest.read(dir, BuildTool.NPM)
@@ -101,8 +103,9 @@ class NodeLockfileFormatErrorsTest {
   @Test
   void jsoncDropsCommentsAndTrailingCommasButKeepsStrings() {
     assertThat(
-            Jsonc.toJson("{\"a\": \"x // y,\", // note\n \"b\": [1, 2,], /* c */ }")
-                .replaceAll("\\s", ""))
+        Jsonc.toJson("{\"a\": \"x // y,\", // note\n \"b\": [1, 2,], /* c */ }")
+            .replaceAll("\\s", "")
+    )
         .isEqualTo("{\"a\":\"x//y,\",\"b\":[1,2]}");
   }
 }

@@ -4,7 +4,6 @@ import java.util.Optional;
 
 /** Stores analysis results by string key. */
 public interface AnalysisCache {
-
   /**
    * Reads the value stored under the key.
    *

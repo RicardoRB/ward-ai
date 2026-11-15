@@ -11,7 +11,6 @@ import java.util.Set;
  * Reports a loop with an {@code else} clause and no {@code break} of its own, like Pylint W0120.
  */
 public final class UselessElseOnLoopCheck implements RuleCheck {
-
   private static final Set<String> LOOPS = Set.of("for_stmt", "while_stmt");
   private static final Set<String> BREAKS = Set.of("break_stmt");
   private static final Set<String> LOOP_SKIP =

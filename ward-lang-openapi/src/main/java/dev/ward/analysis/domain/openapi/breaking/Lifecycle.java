@@ -8,7 +8,6 @@ import java.util.Optional;
 
 /** Reads the lifecycle extensions of an operation: {@code deprecated}, {@code x-sunset}. */
 final class Lifecycle {
-
   static final String SUNSET = "x-sunset";
   static final String STABILITY = "x-stability-level";
 

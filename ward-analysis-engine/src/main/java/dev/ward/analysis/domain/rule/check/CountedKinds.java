@@ -21,9 +21,11 @@ import java.util.Set;
  */
 public record CountedKinds(
     Set<String> kinds,
-    Map<String, String> requiresSibling,
-    Map<String, String> cancelledBySibling) {
-
+    Map<String,
+    String> requiresSibling,
+    Map<String,
+    String> cancelledBySibling
+) {
   /**
    * Copies the collections.
    *

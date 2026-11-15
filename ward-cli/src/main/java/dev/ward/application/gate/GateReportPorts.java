@@ -17,14 +17,15 @@ public record GateReportPorts(
     MutationReport stryker,
     MutationReport pit,
     MutationReport mutmut,
-    PlatformGatePorts swift) {
-
+    PlatformGatePorts swift
+) {
   /** Creates the ports without the Swift ones. */
   public GateReportPorts(
       final ReportDirectories directories,
       final MutationReport stryker,
       final MutationReport pit,
-      final MutationReport mutmut) {
+      final MutationReport mutmut
+  ) {
     this(directories, stryker, pit, mutmut, PlatformGatePorts.NONE);
   }
 }

@@ -14,7 +14,6 @@ import java.util.Set;
  * before its target is written. Nested classes are walked as part of the member that holds them.
  */
 final class FieldAccesses {
-
   private static final String CLASS_BODY = "classBody";
   private static final String MEMBER_DECLARATION = "memberDeclaration";
   private static final String FIELD_DECLARATION = "fieldDeclaration";
@@ -58,7 +57,8 @@ final class FieldAccesses {
       boolean initializedWithNull,
       boolean isPrivate,
       boolean isStatic,
-      boolean annotated) {}
+      boolean annotated
+  ) {}
 
   /**
    * One use of a field.
@@ -72,7 +72,6 @@ final class FieldAccesses {
 
   /** The accesses of one member, in source order; {@code name} is that of a method, else empty. */
   record Member(MemberKind kind, String name, List<Access> accesses) {
-
     /** Copies the accesses. */
     Member {
       accesses = List.copyOf(accesses);
@@ -153,7 +152,8 @@ final class FieldAccesses {
         initializer.map(SyntaxWalk::text).filter(NULL::equals).isPresent(),
         modifiers.contains("private"),
         modifiers.contains("static"),
-        modifiers.stream().anyMatch(modifier -> modifier.startsWith("@")));
+        modifiers.stream().anyMatch(modifier -> modifier.startsWith("@"))
+    );
   }
 
   private static Optional<SyntaxNode> fieldDeclaration(final SyntaxNode declaration) {

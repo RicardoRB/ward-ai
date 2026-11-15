@@ -48,7 +48,10 @@ final class JavaCreators {
     }
     final Typed constructed =
         calls.resolve(
-            session.hierarchy.methods(created.get(), JvmMethod.CONSTRUCTOR), prepared, ctx);
+            session.hierarchy.methods(created.get(), JvmMethod.CONSTRUCTOR),
+            prepared,
+            ctx
+        );
     final Typed typed = Typed.of(created.get());
     return constructed.call().map(typed::withCall).orElse(typed);
   }
@@ -56,16 +59,19 @@ final class JavaCreators {
   private Typed arrayCreation(final SyntaxNode name, final SyntaxNode rest, final Ctx ctx) {
     final Optional<JType> element =
         Syntax.child(name, "primitiveType")
-            .<JType>map(primitive -> new JType.Primitive(Syntax.text(primitive)))
+            .<JType> map(primitive -> new JType.Primitive(Syntax.text(primitive)))
             .or(() -> createdType(name, ctx, Optional.empty()).map(JType.class::cast));
     typer.walkChildren(rest, ctx);
     final int dimensions =
-        (int) rest.children().stream().filter(child -> BRACKET.equals(Syntax.token(child))).count();
+        (int)rest.children().stream().filter(child -> BRACKET.equals(Syntax.token(child))).count();
     return Typed.of(element.map(found -> JavaTypes.arrayOf(found, dimensions)));
   }
 
   private Optional<JType.ClassType> createdType(
-      final SyntaxNode name, final Ctx ctx, final Optional<JType> target) {
+      final SyntaxNode name,
+      final Ctx ctx,
+      final Optional<JType> target
+  ) {
     final List<String> segments = new ArrayList<>();
     Optional<SyntaxNode> arguments = Optional.empty();
     for (final SyntaxNode child : name.children()) {
@@ -86,7 +92,8 @@ final class JavaCreators {
       final String binary,
       final Optional<SyntaxNode> arguments,
       final Ctx ctx,
-      final Optional<JType> target) {
+      final Optional<JType> target
+  ) {
     final Optional<SyntaxNode> written =
         arguments.flatMap(found -> Syntax.child(found, "typeArguments"));
     if (written.isPresent()) {
@@ -112,7 +119,11 @@ final class JavaCreators {
     final Map<String, JType> bound = new HashMap<>();
     for (int index = 0; index < wanted.arguments().size(); index++) {
       session.inference.unify(
-          view.get().arguments().get(index), wanted.arguments().get(index), variables, bound);
+          view.get().arguments().get(index),
+          wanted.arguments().get(index),
+          variables,
+          bound
+      );
     }
     final List<JType> arguments =
         owner.get().typeParameters().stream().map(p -> bound.get(p.name())).toList();

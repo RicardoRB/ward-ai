@@ -22,7 +22,10 @@ final class RelatedFlows {
   private final Map<SourceUnit, List<ControlFlowGraph>> lowered = new IdentityHashMap<>();
 
   RelatedFlows(
-      final Map<AnalysisLanguage, FrontendSupport> support, final DependencySnapshot snapshot) {
+      final Map<AnalysisLanguage,
+      FrontendSupport> support,
+      final DependencySnapshot snapshot
+  ) {
     this.support = support;
     this.snapshot = snapshot;
   }

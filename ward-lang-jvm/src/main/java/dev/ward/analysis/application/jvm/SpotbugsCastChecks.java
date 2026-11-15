@@ -23,7 +23,6 @@ import java.util.Map;
  * The checks of the Java rules ported from SpotBugs that read class shape, casts and dead stores.
  */
 final class SpotbugsCastChecks {
-
   private static final String MESSAGE = "message";
 
   private SpotbugsCastChecks() {}
@@ -36,49 +35,68 @@ final class SpotbugsCastChecks {
             toml ->
                 new CovariantCompareToCheck(
                     toml.getBoolean("abstract-class", () -> false),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "constructor-throw",
-            toml -> new ConstructorThrowCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new ConstructorThrowCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "assert-on-parameter",
-            toml -> new AssertOnParameterCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new AssertOnParameterCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "cast-types",
             toml ->
                 new CastTypesCheck(
                     TomlValues.strings(toml, "from"),
                     TomlValues.strings(toml, "to"),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "ternary-coercion",
-            toml -> new TernaryCoercionCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new TernaryCoercionCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "floating-compare-to",
-            toml -> new FloatingCompareToCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new FloatingCompareToCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "unchecked-equals-cast",
-            toml -> new UncheckedEqualsCastCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new UncheckedEqualsCastCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "unconfirmed-cast",
             toml ->
                 new UnconfirmedCastCheck(
                     toml.getBoolean("call-result", () -> false),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
-            "entry-set-reuse", toml -> new EntrySetReuseCheck(TomlValues.required(toml, MESSAGE))),
+            "entry-set-reuse",
+            toml -> new EntrySetReuseCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "non-serializable-write",
-            toml -> new NonSerializableWriteCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new NonSerializableWriteCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "unshared-boxed-lock",
-            toml -> new UnsharedBoxedLockCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new UnsharedBoxedLockCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "dead-store",
             toml ->
                 new DeadStoreCheck(
                     DeadStoreCheck.Kind.valueOf(
-                        TomlValues.required(toml, "kind").toUpperCase(Locale.ROOT)),
-                    TomlValues.required(toml, MESSAGE))));
+                        TomlValues.required(toml, "kind").toUpperCase(Locale.ROOT)
+                    ),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        )
+    );
   }
 }

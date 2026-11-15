@@ -12,7 +12,6 @@ import java.util.SortedMap;
  * contain it, so the share is the tokens inside at least one copy over all tokens of the files.
  */
 public final class DuplicatedShare {
-
   private static final long PERCENT = 100L;
 
   private final long duplicated;
@@ -25,7 +24,10 @@ public final class DuplicatedShare {
 
   /** Measures {@code clones}, found among {@code files}, against the tokens of those files. */
   public static DuplicatedShare of(
-      final SortedMap<String, List<Token>> files, final List<Clone> clones) {
+      final SortedMap<String,
+      List<Token>> files,
+      final List<Clone> clones
+  ) {
     long duplicated = 0;
     long total = 0;
     for (final Map.Entry<String, List<Token>> file : files.entrySet()) {
@@ -48,7 +50,8 @@ public final class DuplicatedShare {
         .anyMatch(
             copy ->
                 token.span().startOffset() >= copy.span().startOffset()
-                    && token.span().startOffset() < copy.span().endOffset());
+                    && token.span().startOffset() < copy.span().endOffset()
+        );
   }
 
   /** The tokens inside at least one copy. */

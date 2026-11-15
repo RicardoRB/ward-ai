@@ -33,8 +33,8 @@ public record ApiMember(
     List<ApiTypeParameter> typeParameters,
     List<ApiParameter> parameters,
     ApiTypeRef type,
-    ApiLocation location) {
-
+    ApiLocation location
+) {
   /** The constructor name. */
   public static final String CONSTRUCTOR = "<init>";
 
@@ -132,7 +132,8 @@ public record ApiMember(
       final String last = texts.getLast();
       texts.set(
           texts.size() - 1,
-          last.endsWith("[]") ? last.substring(0, last.length() - 2) + "..." : last);
+          last.endsWith("[]") ? last.substring(0, last.length() - 2) + "..." : last
+      );
     }
     return String.join(", ", texts);
   }

@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
  * lcov reporter and pytest-cov with {@code --cov-report=lcov}.
  */
 class RealCoverageReportsTest {
-
   private static final Path DIRECTORY = Path.of("src", "test", "resources", "coverage");
 
   private final DetectedLineCoverage reader =

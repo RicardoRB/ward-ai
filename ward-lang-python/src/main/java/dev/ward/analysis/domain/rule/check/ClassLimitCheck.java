@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
  * own methods; bases are the names in its parenthesized list, which is the direct bases only.
  */
 public final class ClassLimitCheck implements RuleCheck {
-
   /** The size a class is reported for. */
   public enum Problem {
     /** More distinct instance attributes than the limit. */

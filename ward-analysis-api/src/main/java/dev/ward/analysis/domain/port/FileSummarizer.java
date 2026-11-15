@@ -7,7 +7,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 /** Builds the summary of one source unit from its text and syntax tree only. */
 @FunctionalInterface
 public interface FileSummarizer {
-
   /**
    * Summarizes the unit. The result must not depend on any other file.
    *

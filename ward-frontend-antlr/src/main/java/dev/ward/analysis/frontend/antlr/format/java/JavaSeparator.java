@@ -5,7 +5,6 @@ package dev.ward.analysis.frontend.antlr.format.java;
  * rule of the previous token first, then the next token's own rule, then the source whitespace.
  */
 final class JavaSeparator {
-
   private final JavaSpacing spacing;
   private JavaBreak pending = JavaBreak.UNSET;
   private boolean afterBlockClose;

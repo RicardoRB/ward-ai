@@ -12,7 +12,6 @@ import java.util.function.Consumer;
  */
 @FunctionalInterface
 public interface GitHistory {
-
   /**
    * Hands the added lines of every commit reachable from any ref to {@code sink}, in batches,
    * newest commit first. A merge commit adds no lines. Nothing is read from a remote.

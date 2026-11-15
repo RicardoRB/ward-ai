@@ -23,7 +23,9 @@ final class MinimumBuildToolVersion implements BuildPolicyRule {
                         + minimum(input, tool.tool())
                         + ".",
                     tool.file(),
-                    tool.line()))
+                    tool.line()
+                )
+        )
         .toList();
   }
 

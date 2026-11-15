@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the whole-project rule for unwritten public fields over several files at once. */
 class ProjectFieldRuleTest {
-
   private static final int SELECT_LINE = 3;
   private static final String RULE_ID = "ward:java/np-unwritten-public-or-protected-field";
   private static final String OWNER =
@@ -42,7 +41,8 @@ class ProjectFieldRuleTest {
         engine.runProject(
             List.of(unit("Owner.java", OWNER), unit("Reader.java", READER)),
             frontends,
-            List.of(rule));
+            List.of(rule)
+        );
 
     assertThat(findings)
         .extracting(AnalysisFinding::file, AnalysisFinding::line)
@@ -55,13 +55,16 @@ class ProjectFieldRuleTest {
         "class Writer {\n  void set(Owner owner) {\n    owner.name = \"a\";\n  }\n}\n";
 
     assertThat(
-            engine.runProject(
-                List.of(
-                    unit("Owner.java", OWNER),
-                    unit("Reader.java", READER),
-                    unit("Writer.java", writer)),
-                frontends,
-                List.of(rule)))
+        engine.runProject(
+            List.of(
+                unit("Owner.java", OWNER),
+                unit("Reader.java", READER),
+                unit("Writer.java", writer)
+            ),
+            frontends,
+            List.of(rule)
+        )
+    )
         .isEmpty();
   }
 
@@ -71,25 +74,30 @@ class ProjectFieldRuleTest {
         "class Writer {\n  void set(Owner owner) {\n    owner.name = null;\n  }\n}\n";
 
     assertThat(
-            engine.runProject(
-                List.of(
-                    unit("Owner.java", OWNER),
-                    unit("Reader.java", READER),
-                    unit("Writer.java", writer)),
-                frontends,
-                List.of(rule)))
+        engine.runProject(
+            List.of(
+                unit("Owner.java", OWNER),
+                unit("Reader.java", READER),
+                unit("Writer.java", writer)
+            ),
+            frontends,
+            List.of(rule)
+        )
+    )
         .hasSize(1);
   }
 
   @Test
   void aUnitRunAloneFindsNothingBecauseTheRuleIsAFactAboutTheProject() {
     assertThat(
-            engine
-                .run(
-                    List.of(unit("Owner.java", OWNER), unit("Reader.java", READER)),
-                    frontends,
-                    List.of(rule))
-                .findings())
+        engine
+            .run(
+                List.of(unit("Owner.java", OWNER), unit("Reader.java", READER)),
+                frontends,
+                List.of(rule)
+            )
+            .findings()
+    )
         .isEmpty();
   }
 }

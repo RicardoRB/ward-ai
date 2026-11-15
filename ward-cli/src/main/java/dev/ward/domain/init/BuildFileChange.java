@@ -25,7 +25,8 @@ public record BuildFileChange(
     List<String> warnings,
     Path lockFile,
     String lockOriginal,
-    List<ScriptEdit> moduleScripts) {
+    List<ScriptEdit> moduleScripts
+) {
   /** Copies the lists; missing warnings or module scripts mean none. */
   public BuildFileChange {
     tools = List.copyOf(tools);
@@ -39,7 +40,8 @@ public record BuildFileChange(
       final Path file,
       final String originalContent,
       final List<String> tools,
-      final List<String> warnings) {
+      final List<String> warnings
+  ) {
     this(toolchain, file, originalContent, tools, warnings, null, null, List.of());
   }
 
@@ -48,7 +50,8 @@ public record BuildFileChange(
       final Toolchain toolchain,
       final Path file,
       final String originalContent,
-      final List<String> tools) {
+      final List<String> tools
+  ) {
     this(toolchain, file, originalContent, tools, List.of());
   }
 

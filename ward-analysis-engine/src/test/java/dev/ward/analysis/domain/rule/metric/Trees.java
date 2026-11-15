@@ -19,7 +19,11 @@ final class Trees {
   private Trees() {}
 
   static SyntaxNode node(
-      final String kind, final int startLine, final int endLine, final SyntaxNode... children) {
+      final String kind,
+      final int startLine,
+      final int endLine,
+      final SyntaxNode... children
+  ) {
     return new SyntaxNode(kind, span(startLine, 1, endLine, 1), Map.of(), List.of(children));
   }
 
@@ -28,7 +32,8 @@ final class Trees {
         kind,
         span(line, column, line, column + text.length() - 1),
         Map.of("text", text),
-        List.of());
+        List.of()
+    );
   }
 
   static SyntaxNode named(final String kind, final String name, final int line) {
@@ -36,7 +41,11 @@ final class Trees {
   }
 
   static Span span(
-      final int startLine, final int startColumn, final int endLine, final int endColumn) {
+      final int startLine,
+      final int startColumn,
+      final int endLine,
+      final int endColumn
+  ) {
     return new Span(startLine, startColumn, endLine, endColumn, 0, 0);
   }
 
@@ -48,7 +57,8 @@ final class Trees {
             AnalysisLanguage.PYTHON,
             RuleCapability.SYNTAX,
             AnalysisSeverity.ERROR,
-            body);
+            body
+        );
     return new MetricMatcher()
         .compile(definition).matches(root).stream().map(RuleMatch::message).toList();
   }
@@ -61,7 +71,8 @@ final class Trees {
             AnalysisLanguage.PYTHON,
             RuleCapability.SYNTAX,
             AnalysisSeverity.ERROR,
-            body);
+            body
+        );
     return new MetricMatcher().compile(definition).measures(root);
   }
 
@@ -77,7 +88,8 @@ final class Trees {
         line,
         line,
         named("name", name, line),
-        node("parameters", line, line, typedArgs));
+        node("parameters", line, line, typedArgs)
+    );
   }
 
   static SyntaxNode withBody(final SyntaxNode function, final SyntaxNode body) {
@@ -87,7 +99,8 @@ final class Trees {
         "funcdef",
         function.span().startLine(),
         function.span().endLine(),
-        children.toArray(SyntaxNode[]::new));
+        children.toArray(SyntaxNode[]::new)
+    );
   }
 
   static SyntaxNode withParameters(final SyntaxNode typedArgs, final String name) {

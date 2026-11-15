@@ -7,7 +7,6 @@ import java.util.Set;
 
 /** Sequences and mappings written as literals in a call's arguments. */
 final class LiteralSequences {
-
   private static final char OPEN_BRACE = '{';
   private static final char CLOSE_BRACE = '}';
   private static final char OPEN_BRACKET = '[';

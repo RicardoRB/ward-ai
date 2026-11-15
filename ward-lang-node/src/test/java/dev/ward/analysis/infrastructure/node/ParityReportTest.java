@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** The committed parity report names every structural rule, so no rule ships unmeasured. */
 class ParityReportTest {
-
   private static final List<String> METRICS =
       List.of(
           "function-length",
@@ -18,7 +17,8 @@ class ParityReportTest {
           "complexity",
           "file-length",
           "naming",
-          "nesting-depth");
+          "nesting-depth"
+      );
 
   @Test
   void parityReportNamesEveryStructuralRule() throws IOException {

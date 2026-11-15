@@ -14,7 +14,6 @@ import java.util.Set;
  * name, anywhere at the top level, counts as a definition.
  */
 public final class GlobalUndefinedCheck implements RuleCheck {
-
   private static final Set<String> FUNCTIONS = Set.of(SyntaxKinds.FUNCDEF);
   private static final Set<String> GLOBALS = Set.of("global_stmt");
   private static final Set<String> IMPORTS = Set.of("import_name", "import_from");

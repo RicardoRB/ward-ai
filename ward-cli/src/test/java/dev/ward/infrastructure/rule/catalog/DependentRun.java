@@ -20,7 +20,6 @@ import java.util.Optional;
  * project's other sources give the units, as the {@code ward} gate resolves them.
  */
 final class DependentRun {
-
   private DependentRun() {}
 
   static RuleRunResult run(
@@ -28,7 +27,8 @@ final class DependentRun {
       final RuleDefinition rule,
       final List<SourceUnit> units,
       final List<SourceUnit> others,
-      final List<FrontendSupport> support) {
+      final List<FrontendSupport> support
+  ) {
     if (!rule.capability().readsDependencyBodies() || others.isEmpty()) {
       return engine.run(units, support, List.of(rule));
     }

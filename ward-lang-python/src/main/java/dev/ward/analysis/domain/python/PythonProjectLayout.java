@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  *     the project root
  */
 public record PythonProjectLayout(List<String> sourceRoots) {
-
   private static final String SEPARATOR = "/";
   private static final String PYTHON_SUFFIX = ".py";
   private static final String INIT = "__init__";

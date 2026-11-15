@@ -30,10 +30,11 @@ import java.util.stream.Stream;
  */
 public record ScopeView(
     UnitScopes scopes,
-    Map<Binding, ResolvedImport> imports,
+    Map<Binding,
+    ResolvedImport> imports,
     Set<String> projectNames,
-    ScopeAnalysis analysis) {
-
+    ScopeAnalysis analysis
+) {
   /** The view of a rule that reads no scopes. */
   public static final ScopeView NONE =
       new ScopeView(UnitScopes.EMPTY, Map.of(), Set.of(), NoScopes.INSTANCE);
@@ -76,7 +77,10 @@ public record ScopeView(
    * symbol the file declares under the imported name.
    */
   public static ScopeView of(
-      final UnitScopes scopes, final DependencyView dependencies, final ScopeAnalysis analysis) {
+      final UnitScopes scopes,
+      final DependencyView dependencies,
+      final ScopeAnalysis analysis
+  ) {
     final Map<Binding, ResolvedImport> resolved = new HashMap<>();
     for (final Binding binding : scopes.bindings()) {
       if (binding.kind() == BindingKind.IMPORT && binding.origin().isPresent()) {
@@ -91,7 +95,8 @@ public record ScopeView(
             summary ->
                 summary.declared().stream()
                     .filter(symbol -> !MEMBER_KINDS.contains(symbol.kind()))
-                    .forEach(symbol -> names.add(simple(symbol))));
+                    .forEach(symbol -> names.add(simple(symbol)))
+        );
     return new ScopeView(scopes, resolved, names, analysis);
   }
 
@@ -102,7 +107,9 @@ public record ScopeView(
 
   /** The edge from the import that declares {@code binding}, preferring the one for its member. */
   private static Optional<DependencyEdge> edgeOf(
-      final Binding binding, final DependencyView dependencies) {
+      final Binding binding,
+      final DependencyView dependencies
+  ) {
     final ImportOrigin origin = binding.origin().orElseThrow();
     DependencyEdge fallback = null;
     for (final DependencyEdge edge : dependencies.outgoing()) {
@@ -120,7 +127,10 @@ public record ScopeView(
   }
 
   private static ResolvedImport resolve(
-      final Binding binding, final DependencyEdge edge, final DependencyView dependencies) {
+      final Binding binding,
+      final DependencyEdge edge,
+      final DependencyView dependencies
+  ) {
     final String member = binding.origin().map(ImportOrigin::member).orElse("");
     final Optional<Symbol> symbol =
         dependencies.dependencies().stream()
@@ -134,9 +144,10 @@ public record ScopeView(
     return member.isEmpty()
         ? Optional.empty()
         : Stream.concat(
-                summary.declared().stream(),
-                summary.exports().stream()
-                    .filter(symbol -> !symbol.kind().startsWith(PUBLIC_EXPORT_PREFIX)))
+            summary.declared().stream(),
+            summary.exports().stream()
+                .filter(symbol -> !symbol.kind().startsWith(PUBLIC_EXPORT_PREFIX))
+        )
             .filter(symbol -> symbol.name().equals(member))
             .findFirst();
   }

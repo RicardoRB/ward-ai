@@ -33,19 +33,31 @@ public class JsonReportRenderer {
   /** Renders {@code report} with default options and no learning section. */
   public String render(final CheckReport report) {
     return render(
-        report, new JsonReportOptions(false, false, SeverityThreshold.WARNING), null, null);
+        report,
+        new JsonReportOptions(false, false, SeverityThreshold.WARNING),
+        null,
+        null
+    );
   }
 
   /** Renders {@code report}, applying the strict policies when {@code strict}. */
   public String render(final CheckReport report, final boolean strict) {
     return render(
-        report, new JsonReportOptions(strict, false, SeverityThreshold.WARNING), null, null);
+        report,
+        new JsonReportOptions(strict, false, SeverityThreshold.WARNING),
+        null,
+        null
+    );
   }
 
   /** Renders {@code report}, recording whether the run stopped after the first failure. */
   public String render(final CheckReport report, final boolean strict, final boolean failFast) {
     return render(
-        report, new JsonReportOptions(strict, failFast, SeverityThreshold.WARNING), null, null);
+        report,
+        new JsonReportOptions(strict, failFast, SeverityThreshold.WARNING),
+        null,
+        null
+    );
   }
 
   /** Renders {@code report} with the learning section {@code learning}, when present. */
@@ -53,9 +65,14 @@ public class JsonReportRenderer {
       final CheckReport report,
       final boolean strict,
       final boolean failFast,
-      final LearningOutcome learning) {
+      final LearningOutcome learning
+  ) {
     return render(
-        report, new JsonReportOptions(strict, failFast, SeverityThreshold.WARNING), learning, null);
+        report,
+        new JsonReportOptions(strict, failFast, SeverityThreshold.WARNING),
+        learning,
+        null
+    );
   }
 
   /**
@@ -67,12 +84,14 @@ public class JsonReportRenderer {
       final boolean strict,
       final boolean failFast,
       final LearningOutcome learning,
-      final Integer threshold) {
+      final Integer threshold
+  ) {
     return render(
         report,
         new JsonReportOptions(strict, failFast, SeverityThreshold.WARNING),
         learning,
-        threshold);
+        threshold
+    );
   }
 
   /** Renders {@code report}, listing findings at or above {@code severity}. */
@@ -81,7 +100,8 @@ public class JsonReportRenderer {
       final boolean strict,
       final boolean failFast,
       final LearningOutcome learning,
-      final SeverityThreshold severity) {
+      final SeverityThreshold severity
+  ) {
     return render(report, new JsonReportOptions(strict, failFast, severity), learning, null);
   }
 
@@ -93,7 +113,8 @@ public class JsonReportRenderer {
       final CheckReport report,
       final JsonReportOptions options,
       final LearningOutcome learning,
-      final Integer threshold) {
+      final Integer threshold
+  ) {
     final SeverityThreshold severity = options.severity();
     final List<CheckDto> checks = new ArrayList<>();
     for (final GateResult result : report.results()) {
@@ -104,7 +125,8 @@ public class JsonReportRenderer {
         .evaluate(report, options.strict())
         .forEach(
             policy ->
-                policies.add(new PolicyDto(policy.name(), policy.passed(), policy.message())));
+                policies.add(new PolicyDto(policy.name(), policy.passed(), policy.message()))
+        );
     final LearningDto learningDto =
         learning == null ? null : LearningDto.from(learning, threshold == null ? 0 : threshold);
     final ReportDto root =
@@ -117,7 +139,8 @@ public class JsonReportRenderer {
             checks,
             policies,
             learningDto,
-            report.partialPaths().isEmpty() ? null : new PartialDto(report.partialPaths()));
+            report.partialPaths().isEmpty() ? null : new PartialDto(report.partialPaths())
+        );
     return codec.toJson(root);
   }
 
@@ -140,7 +163,8 @@ public class JsonReportRenderer {
       List<CheckDto> checks,
       List<PolicyDto> policies,
       LearningDto learning,
-      PartialDto partial) {
+      PartialDto partial
+  ) {
     /** Copies the checks and policies. */
     public ReportDto {
       checks = List.copyOf(checks);
@@ -203,8 +227,8 @@ public class JsonReportRenderer {
       int findingsHidden,
       boolean findingsTruncated,
       String scope,
-      PrerequisiteDto prerequisite) {
-
+      PrerequisiteDto prerequisite
+  ) {
     /** Copies the findings. */
     public CheckDto {
       findings = List.copyOf(findings);
@@ -233,7 +257,8 @@ public class JsonReportRenderer {
           visible.hidden(),
           visible.truncated(),
           result.scope() == null ? null : result.scope().label(),
-          result.prerequisite() == null ? null : PrerequisiteDto.from(result.prerequisite()));
+          result.prerequisite() == null ? null : PrerequisiteDto.from(result.prerequisite())
+      );
     }
 
     /**
@@ -248,15 +273,20 @@ public class JsonReportRenderer {
      */
     @JsonType
     public record PrerequisiteDto(
-        String kind, String executable, String required, String detected, String remediation) {
-
+        String kind,
+        String executable,
+        String required,
+        String detected,
+        String remediation
+    ) {
       static PrerequisiteDto from(final GatePrerequisite prerequisite) {
         return new PrerequisiteDto(
             prerequisite.kind().name().toLowerCase(Locale.ROOT),
             prerequisite.executable(),
             prerequisite.required(),
             prerequisite.detected(),
-            prerequisite.remediation());
+            prerequisite.remediation()
+        );
       }
     }
 
@@ -335,14 +365,20 @@ public class JsonReportRenderer {
    */
   @JsonType
   public record PromptDto(
-      String key, String gate, int occurrences, String summary, String instruction) {
+      String key,
+      String gate,
+      int occurrences,
+      String summary,
+      String instruction
+  ) {
     static PromptDto from(final LearningPrompt prompt) {
       return new PromptDto(
           prompt.key(),
           prompt.gate(),
           prompt.occurrences(),
           prompt.summary(),
-          prompt.instruction());
+          prompt.instruction()
+      );
     }
   }
 

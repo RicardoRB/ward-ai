@@ -39,7 +39,8 @@ class TomlLicenseParserTest {
     final LicenseSettings settings =
         settings(
             "deny = [\"GPL-*\"]\nexceptions = []\nscopes = [\"runtime\", \"provided\"]\n"
-                + "unknown = \"warn\"\n");
+                + "unknown = \"warn\"\n"
+        );
 
     assertThat(settings.mode()).isEqualTo(LicenseSettings.Mode.DENY);
     assertThat(settings.patterns()).containsExactly("GPL-*");
@@ -68,12 +69,14 @@ class TomlLicenseParserTest {
   @Test
   void aCommandOnALicenseCheckIsAConfigurationError() {
     assertThatThrownBy(
-            () ->
-                read(
-                    reader,
-                    dir,
-                    "version = 2\n[checks.license]\nuses = \"license\"\n"
-                        + "command = [\"./mvnw\", \"license:add-third-party\"]\n"))
+        () ->
+            read(
+                reader,
+                dir,
+                "version = 2\n[checks.license]\nuses = \"license\"\n"
+                    + "command = [\"./mvnw\", \"license:add-third-party\"]\n"
+            )
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContainingAll("checks.license.command", "native", "no command");
   }
@@ -82,17 +85,18 @@ class TomlLicenseParserTest {
   @CsvSource(
       delimiter = '|',
       value = {
-        "allow = [\"MIT\"]; deny = [\"GPL-*\"]; |checks.license.allow|checks.license.deny",
-        "deny = \"GPL-*\"; |checks.license.deny|array",
-        "allow = [\"*MIT\"]; |checks.license.allow|SPDX",
-        "allow = [1]; |checks.license.allow|SPDX",
-        "exceptions = [\"a b\"]; |checks.license.exceptions|SPDX",
-        "scopes = [\"compile\"]; |checks.license.scopes|runtime",
-        "scopes = \"runtime\"; |checks.license.scopes|array",
-        "scopes = [3]; |checks.license.scopes|runtime",
-        "unknown = \"ignore\"; |checks.license.unknown|warn",
-        "unknown = true; |checks.license.unknown|warn"
-      })
+          "allow = [\"MIT\"]; deny = [\"GPL-*\"]; |checks.license.allow|checks.license.deny",
+          "deny = \"GPL-*\"; |checks.license.deny|array",
+          "allow = [\"*MIT\"]; |checks.license.allow|SPDX",
+          "allow = [1]; |checks.license.allow|SPDX",
+          "exceptions = [\"a b\"]; |checks.license.exceptions|SPDX",
+          "scopes = [\"compile\"]; |checks.license.scopes|runtime",
+          "scopes = \"runtime\"; |checks.license.scopes|array",
+          "scopes = [3]; |checks.license.scopes|runtime",
+          "unknown = \"ignore\"; |checks.license.unknown|warn",
+          "unknown = true; |checks.license.unknown|warn"
+      }
+  )
   void rejectsInvalidValuesAndNamesTheKey(final String body, final String key, final String hint) {
     assertThatThrownBy(() -> settings(body.replace(';', '\n')))
         .isInstanceOf(WardException.class)

@@ -16,7 +16,8 @@ final class JavaResolverFixtures {
   static final List<JavaSourceRoot> ROOTS =
       List.of(
           new JavaSourceRoot("src/main/java", "", false),
-          new JavaSourceRoot("src/test/java", "", true));
+          new JavaSourceRoot("src/test/java", "", true)
+      );
 
   private static final Span SPAN = new Span(1, 1, 1, 2, 0, 1);
 
@@ -24,13 +25,17 @@ final class JavaResolverFixtures {
 
   /** A summary of {@code path} that declares {@code declared} and has the given references. */
   static FileSummary file(
-      final String path, final List<String> declared, final List<String> references) {
+      final String path,
+      final List<String> declared,
+      final List<String> references
+  ) {
     final List<Symbol> symbols = declared.stream().map(name -> new Symbol(name, SPAN)).toList();
     return new FileSummary(
         path,
         symbols,
         references.stream().map(specifier -> new Reference(specifier, SPAN)).toList(),
-        symbols);
+        symbols
+    );
   }
 
   /** Resolves the summaries with the default source roots. */

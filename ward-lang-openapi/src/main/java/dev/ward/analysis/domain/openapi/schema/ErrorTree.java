@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * the {@code enum} errors of a value.
  */
 final class ErrorTree {
-
   private static final Pattern CHUNK = Pattern.compile("/[\\w$_-]+(/\\d+)?");
 
   private final Map<String, ErrorTree> children = new LinkedHashMap<>();

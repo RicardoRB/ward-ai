@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
  * change in the grammar shows up as a change in {@code corpus/parse-report.txt}.
  */
 final class SwiftCorpusTest {
-
   private static final String CORPUS = "corpus/";
   private static final List<String> SOURCES =
       List.of(
@@ -28,7 +27,8 @@ final class SwiftCorpusTest {
           "optional-binding.swift",
           "plain-types.swift",
           "property-wrappers.swift",
-          "result-builders.swift");
+          "result-builders.swift"
+      );
 
   @Test
   void parseReportMatchesTheCommittedReport() throws IOException {
@@ -48,7 +48,9 @@ final class SwiftCorpusTest {
                 new SourceUnit(
                     "broken.swift",
                     AnalysisLanguage.SWIFT,
-                    SwiftRuleRuns.read("fixtures/swift-structural/syntax-error.swift")));
+                    SwiftRuleRuns.read("fixtures/swift-structural/syntax-error.swift")
+                )
+            );
 
     assertThat(result.diagnostics()).isNotEmpty();
   }
@@ -62,7 +64,11 @@ final class SwiftCorpusTest {
           new AntlrLanguageFrontend()
               .parse(
                   new SourceUnit(
-                      source, AnalysisLanguage.SWIFT, SwiftRuleRuns.read(CORPUS + source)));
+                      source,
+                      AnalysisLanguage.SWIFT,
+                      SwiftRuleRuns.read(CORPUS + source)
+                  )
+              );
       if (result.diagnostics().isEmpty()) {
         return source + "\tparsed";
       }

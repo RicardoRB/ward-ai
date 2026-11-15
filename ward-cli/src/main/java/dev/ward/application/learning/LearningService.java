@@ -47,7 +47,9 @@ public final class LearningService {
     } catch (LearningStoreException exception) {
       LOGGER.log(Level.WARNING, "event=learning-store-failure category=store-error");
       return LearningOutcome.withoutPrompts(
-          LearningLedger.empty(), "Learning disabled for this run: " + exception.getMessage());
+          LearningLedger.empty(),
+          "Learning disabled for this run: " + exception.getMessage()
+      );
     }
   }
 }

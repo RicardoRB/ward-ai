@@ -19,7 +19,9 @@ public final class CodexIntegration implements NativeHarnessAdapter {
           Set.of(
               IntegrationCapability.POST_EDIT,
               IntegrationCapability.TURN_END,
-              IntegrationCapability.FEEDBACK));
+              IntegrationCapability.FEEDBACK
+          )
+      );
 
   @Override
   public NativeAgentIntegration.Definition definition() {
@@ -112,7 +114,8 @@ public final class CodexIntegration implements NativeHarnessAdapter {
           patch ? command : null,
           null,
           false,
-          Boolean.TRUE.equals(stopHookActive));
+          Boolean.TRUE.equals(stopHookActive)
+      );
     }
   }
 

@@ -46,8 +46,8 @@ final class KotlinApiMembers {
     return Syntax.child(property, "variableDeclaration")
         .map(
             variable ->
-                properties.ofDeclaration(
-                    property, variable, declared(property), receiver(property)))
+                properties.ofDeclaration(property, variable, declared(property), receiver(property))
+        )
         .orElse(List.of());
   }
 
@@ -78,7 +78,9 @@ final class KotlinApiMembers {
             declared.parameters(),
             parameters,
             returns(function, declared.refs()),
-            location(function)));
+            location(function)
+        )
+    );
   }
 
   private KotlinApiTypeParameters.Declared declared(final SyntaxNode owner) {

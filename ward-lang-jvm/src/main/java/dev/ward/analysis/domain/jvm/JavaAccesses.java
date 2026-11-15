@@ -15,7 +15,6 @@ import java.util.Set;
  * that resolves to no declaration (a field, a type, a name of another body) is not recorded.
  */
 final class JavaAccesses implements VariableAccesses {
-
   private static final String VARIABLE_DECLARATOR = "variableDeclarator";
   private static final String VARIABLE_DECLARATOR_ID = "variableDeclaratorId";
   private static final String RESOURCE = "resource";

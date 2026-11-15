@@ -8,7 +8,6 @@ import java.util.Set;
 
 /** The values of the forward and backward flow of one type qualifier, and their joins. */
 final class QualState {
-
   /** Where a value gets its qualifier from. */
   enum Origin {
     /** A parameter of the method. */
@@ -71,7 +70,9 @@ final class QualState {
 
   private static Held joinHeld(final Held left, final Held right) {
     return new Held(
-        QualFlow.meet(left.flow(), right.flow()), union(left.sources(), right.sources()));
+        QualFlow.meet(left.flow(), right.flow()),
+        union(left.sources(), right.sources())
+    );
   }
 
   /** Joins two backward states; a variable only one of them knows keeps its requirement. */

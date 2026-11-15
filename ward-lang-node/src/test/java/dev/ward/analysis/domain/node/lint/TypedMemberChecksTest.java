@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 /** The type-fact checks that read members, object conversions and enum comparisons. */
 class TypedMemberChecksTest {
-
   private static final String MESSAGE = "message";
 
   private static final TemplatePolicy TEMPLATE_DEFAULTS =
@@ -28,12 +27,15 @@ class TypedMemberChecksTest {
     assertThat(positions(new RestrictTemplateCheck(TEMPLATE_DEFAULTS, MESSAGE), text, facts))
         .containsExactly("2:14");
     assertThat(
-            positions(
-                new RestrictTemplateCheck(
-                    new TemplatePolicy(true, false, true, true, true, true, true, Set.of()),
-                    MESSAGE),
-                text,
-                facts))
+        positions(
+            new RestrictTemplateCheck(
+                new TemplatePolicy(true, false, true, true, true, true, true, Set.of()),
+                MESSAGE
+            ),
+            text,
+            facts
+        )
+    )
         .isEmpty();
   }
 
@@ -42,16 +44,20 @@ class TypedMemberChecksTest {
     final String text = "declare const n: number;\nconst m = (n) as number;\n";
 
     assertThat(
-            positions(
-                new UnnecessaryAssertionCheck(MESSAGE),
-                text,
-                new LintFixtures.Facts().typed("2:11", LintFixtures.primitive("number")).build()))
+        positions(
+            new UnnecessaryAssertionCheck(MESSAGE),
+            text,
+            new LintFixtures.Facts().typed("2:11", LintFixtures.primitive("number")).build()
+        )
+    )
         .containsExactly("2:11");
     assertThat(
-            positions(
-                new UnnecessaryAssertionCheck(MESSAGE),
-                text,
-                new LintFixtures.Facts().typed("2:11", LintFixtures.primitive("string")).build()))
+        positions(
+            new UnnecessaryAssertionCheck(MESSAGE),
+            text,
+            new LintFixtures.Facts().typed("2:11", LintFixtures.primitive("string")).build()
+        )
+    )
         .isEmpty();
   }
 
@@ -65,7 +71,8 @@ class TypedMemberChecksTest {
             List.of(LintFixtures.call("reset", LintFixtures.named("void"))),
             List.of(new FieldRef("label", LintFixtures.named("string"), false, List.of())),
             List.of(),
-            List.of());
+            List.of()
+        );
     final UnitTypeFacts facts =
         new LintFixtures.Facts().membered("2:15", members).membered("4:11", members).build();
 
@@ -82,13 +89,15 @@ class TypedMemberChecksTest {
             List.of(),
             List.of(new FieldRef("x", LintFixtures.named("number"), false, List.of())),
             List.of(),
-            List.of());
+            List.of()
+        );
     final TypeMembers tagged =
         new TypeMembers(
             List.of(LintFixtures.call("toString", LintFixtures.named("string"))),
             List.of(),
             List.of(),
-            List.of());
+            List.of()
+        );
     final UnitTypeFacts facts =
         new LintFixtures.Facts()
             .typed("3:14", LintFixtures.named("{ x: number; }"))
@@ -125,7 +134,8 @@ class TypedMemberChecksTest {
             List.of(),
             List.of(new FieldRef("x", LintFixtures.named("number"), false, List.of())),
             List.of(),
-            List.of());
+            List.of()
+        );
     final UnitTypeFacts facts =
         new LintFixtures.Facts()
             .typed("2:22", LintFixtures.named("{ x: number; }"))

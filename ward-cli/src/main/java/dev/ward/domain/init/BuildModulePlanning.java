@@ -15,7 +15,11 @@ public interface BuildModulePlanning {
    * Returns the module scripts {@code gates} would change, one entry per script that would change.
    */
   List<PlannedFileChange> planModules(
-      Project project, List<InitGateOption> gates, QualityPreset preset, boolean approved);
+      Project project,
+      List<InitGateOption> gates,
+      QualityPreset preset,
+      boolean approved
+  );
 
   /** Plans no module scripts, for a catalog whose projects have none. */
   static BuildModulePlanning none() {

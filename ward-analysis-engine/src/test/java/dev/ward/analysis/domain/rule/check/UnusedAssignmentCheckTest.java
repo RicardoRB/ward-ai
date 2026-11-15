@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 
 /** The unused-assignment rule on hand-built graphs, one case per scenario of the spec. */
 class UnusedAssignmentCheckTest {
-
   private static final int THIRD_LINE = 3;
 
   private static final String MESSAGE = "the value assigned to '{value}' is never read";
@@ -28,7 +27,8 @@ class UnusedAssignmentCheckTest {
     final ControlFlowGraph graph =
         GraphFixtures.graph(
             GraphFixtures.empty().write("x", 1).write("x", 2).read("x", THIRD_LINE).edge(1),
-            GraphFixtures.empty());
+            GraphFixtures.empty()
+        );
 
     assertThat(CheckResults.messages(graph))
         .containsExactly("the value assigned to 'x' is never read");
@@ -41,7 +41,8 @@ class UnusedAssignmentCheckTest {
     final ControlFlowGraph graph =
         GraphFixtures.graph(
             GraphFixtures.empty().parameter("total", 1).read("total", 2).write("result", 2).edge(1),
-            GraphFixtures.empty());
+            GraphFixtures.empty()
+        );
 
     assertThat(CheckResults.messages(graph))
         .containsExactly("the value assigned to 'result' is never read");
@@ -52,7 +53,9 @@ class UnusedAssignmentCheckTest {
     // int x = 1; Runnable r = () -> use(x);
     final ControlFlowGraph graph =
         GraphFixtures.graph(
-            GraphFixtures.empty().write("x", 1).capture("x", 2).edge(1), GraphFixtures.empty());
+            GraphFixtures.empty().write("x", 1).capture("x", 2).edge(1),
+            GraphFixtures.empty()
+        );
 
     assertThat(CheckResults.messages(graph)).isEmpty();
   }
@@ -63,7 +66,8 @@ class UnusedAssignmentCheckTest {
     final ControlFlowGraph graph =
         GraphFixtures.graph(
             GraphFixtures.empty().write("ignoredY", 1).write("ignoredY", 2).edge(1),
-            GraphFixtures.empty());
+            GraphFixtures.empty()
+        );
 
     assertThat(CheckResults.messages(graph))
         .containsExactly("the value assigned to 'ignoredY' is never read");
@@ -75,7 +79,9 @@ class UnusedAssignmentCheckTest {
     // int unusedValue = compute(); (no other write, no read)
     final ControlFlowGraph graph =
         GraphFixtures.graph(
-            GraphFixtures.empty().write("unusedValue", 1).edge(1), GraphFixtures.empty());
+            GraphFixtures.empty().write("unusedValue", 1).edge(1),
+            GraphFixtures.empty()
+        );
 
     assertThat(CheckResults.messages(graph)).isEmpty();
   }
@@ -96,7 +102,8 @@ class UnusedAssignmentCheckTest {
     final ControlFlowGraph graph =
         GraphFixtures.graph(
             GraphFixtures.empty().parameter("a", 1).write("a", 2).read("a", THIRD_LINE).edge(1),
-            GraphFixtures.empty());
+            GraphFixtures.empty()
+        );
 
     assertThat(CheckResults.messages(graph))
         .containsExactly("the value assigned to 'a' is never read");
@@ -108,11 +115,15 @@ class UnusedAssignmentCheckTest {
     // int f(int a) { a = THIRD_LINE; return 2; }
     final ControlFlowGraph graph =
         GraphFixtures.graph(
-            GraphFixtures.empty().parameter("a", 1).write("a", 2).edge(1), GraphFixtures.empty());
+            GraphFixtures.empty().parameter("a", 1).write("a", 2).edge(1),
+            GraphFixtures.empty()
+        );
 
     assertThat(CheckResults.messages(graph))
         .containsExactly(
-            "the value assigned to 'a' is never read", "the value assigned to 'a' is never read");
+            "the value assigned to 'a' is never read",
+            "the value assigned to 'a' is never read"
+        );
   }
 
   @Test

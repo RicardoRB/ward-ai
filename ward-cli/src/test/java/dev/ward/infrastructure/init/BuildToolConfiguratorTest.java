@@ -86,7 +86,8 @@ class BuildToolConfiguratorTest {
         final Project project,
         final List<InitGateOption> gates,
         final QualityPreset preset,
-        final boolean approved) {
+        final boolean approved
+    ) {
       calls.add("plan");
       return null;
     }

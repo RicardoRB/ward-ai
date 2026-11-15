@@ -41,7 +41,8 @@ public final class PitXmlMutationReport implements MutationReport {
     final List<Path> fresh = ReportFiles.fresh(SupportedQualityGates.MUTATION, since, present);
     if (fresh.isEmpty()) {
       return MutationCounts.unusable(
-          "PIT's XML report " + relative + " was written before the gate started.");
+          "PIT's XML report " + relative + " was written before the gate started."
+      );
     }
     int detected = 0;
     int undetected = 0;
@@ -53,12 +54,15 @@ public final class PitXmlMutationReport implements MutationReport {
       } catch (FindingExtractionException exception) {
         if (LOGGER.isLoggable(Level.INFO)) {
           LOGGER.log(
-              Level.INFO, "event=findings-parse-failed gate=" + SupportedQualityGates.MUTATION);
+              Level.INFO,
+              "event=findings-parse-failed gate=" + SupportedQualityGates.MUTATION
+          );
         }
         return MutationCounts.unusable(
             "PIT's XML report "
                 + ReportFiles.relativize(project, report.toString())
-                + " cannot be parsed.");
+                + " cannot be parsed."
+        );
       }
     }
     return MutationCounts.of(detected, undetected);
@@ -83,7 +87,8 @@ public final class PitXmlMutationReport implements MutationReport {
           if (MUTATION_ELEMENT.equals(reader.getLocalName())) {
             counts[Boolean.parseBoolean(reader.getAttributeValue(null, "detected")) ? 0 : 1]++;
           }
-        });
+        }
+    );
     return counts;
   }
 }

@@ -19,7 +19,6 @@ import java.util.Set;
  * wrapped in parentheses.
  */
 public final class NodeUnusedExpressionsCheck implements RuleCheck {
-
   private static final String SOURCE_ELEMENTS = "sourceElements";
   private static final String SOURCE_ELEMENT = "sourceElement";
   private static final Set<String> WRAPPERS = Set.of(SOURCE_ELEMENT, ExpressionShapes.STATEMENT);
@@ -38,8 +37,23 @@ public final class NodeUnusedExpressionsCheck implements RuleCheck {
   private static final Set<String> LOGICAL = Set.of("&&", "||", "??");
   private static final Set<String> ASSIGNMENTS =
       Set.of(
-          "=", "+=", "-=", "*=", "/=", "%=", "**=", "<<=", ">>=", ">>>=", "&=", "|=", "^=", "&&=",
-          "||=", "??=");
+          "=",
+          "+=",
+          "-=",
+          "*=",
+          "/=",
+          "%=",
+          "**=",
+          "<<=",
+          ">>=",
+          ">>>=",
+          "&=",
+          "|=",
+          "^=",
+          "&&=",
+          "||=",
+          "??="
+      );
   private static final Set<String> ALWAYS_DISALLOWED =
       Set.of(
           "identifier",
@@ -49,7 +63,8 @@ public final class NodeUnusedExpressionsCheck implements RuleCheck {
           "objectLiteral",
           "anonymousFunction",
           "arrowFunctionDeclaration",
-          "classExpression");
+          "classExpression"
+      );
   private static final int UNARY_OPERAND = 1;
   private static final int SINGLE_EXPRESSION = 1;
   private static final int CONDITIONAL_SIZE = 5;
@@ -66,7 +81,8 @@ public final class NodeUnusedExpressionsCheck implements RuleCheck {
       boolean allowTernary,
       boolean allowTaggedTemplates,
       boolean enforceForJsx,
-      boolean ignoreDirectives) {}
+      boolean ignoreDirectives
+  ) {}
 
   /**
    * Creates the check.
@@ -88,7 +104,10 @@ public final class NodeUnusedExpressionsCheck implements RuleCheck {
 
   /** Walks the tree; the leading string statements of a source element list are a prologue. */
   private void collect(
-      final SyntaxNode node, final boolean prologue, final List<RuleMatch> matches) {
+      final SyntaxNode node,
+      final boolean prologue,
+      final List<RuleMatch> matches
+  ) {
     if (SOURCE_ELEMENTS.equals(node.kind())) {
       boolean elementsPrologue = true;
       for (final SyntaxNode element : node.children()) {
@@ -105,7 +124,10 @@ public final class NodeUnusedExpressionsCheck implements RuleCheck {
   }
 
   private void checkStatement(
-      final SyntaxNode statement, final boolean prologue, final List<RuleMatch> matches) {
+      final SyntaxNode statement,
+      final boolean prologue,
+      final List<RuleMatch> matches
+  ) {
     final List<SyntaxNode> expressions = ExpressionShapes.singles(statement);
     if (prologue && ExpressionShapes.isDirective(expressions, options.ignoreDirectives())) {
       return;

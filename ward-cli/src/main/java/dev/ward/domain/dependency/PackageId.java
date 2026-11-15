@@ -85,7 +85,7 @@ public record PackageId(Ecosystem ecosystem, String name, String version)
   private static String encode(final String text) {
     final StringBuilder encoded = new StringBuilder();
     for (final byte value : text.getBytes(StandardCharsets.UTF_8)) {
-      final char character = (char) (value & BYTE_MASK);
+      final char character = (char)(value & BYTE_MASK);
       if (UNRESERVED.indexOf(character) >= 0) {
         encoded.append(character);
       } else {

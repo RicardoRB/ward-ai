@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * hold another value than the one the code goes on to use.
  */
 public final class JavaPutIfAbsentCheck implements RuleCheck {
-
   private static final Pattern PUT = Pattern.compile("^[\\w.]+\\.putIfAbsent\\(.*,(\\w+)\\);$");
 
   private final String message;
@@ -40,7 +39,10 @@ public final class JavaPutIfAbsentCheck implements RuleCheck {
             && usedAfter(statements.subList(index + 1, statements.size()), put.group(1))) {
           matches.add(
               CheckSupport.at(
-                  statements.get(index).span(), CheckSupport.fill(message, put.group(1), "")));
+                  statements.get(index).span(),
+                  CheckSupport.fill(message, put.group(1), "")
+              )
+          );
         }
       }
     }
@@ -51,6 +53,7 @@ public final class JavaPutIfAbsentCheck implements RuleCheck {
     return later.stream()
         .flatMap(statement -> SyntaxWalk.descendants(statement).stream())
         .anyMatch(
-            node -> JavaNodes.IDENTIFIER.equals(node.kind()) && name.equals(SyntaxWalk.text(node)));
+            node -> JavaNodes.IDENTIFIER.equals(node.kind()) && name.equals(SyntaxWalk.text(node))
+        );
   }
 }

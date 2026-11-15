@@ -6,7 +6,6 @@ import java.util.Optional;
 
 /** Reads the methods a class declares: the name, whether it is static and the parameter types. */
 final class DeclaredMethods {
-
   private static final String CLASS_BODY = "classBody";
   private static final String MODIFIER = "modifier";
   private static final String PARAMETER = "formalParameter";
@@ -26,7 +25,8 @@ final class DeclaredMethods {
       SyntaxNode node,
       boolean isStatic,
       List<String> parameterTypes,
-      List<SyntaxNode> parameterNodes) {}
+      List<SyntaxNode> parameterNodes
+  ) {}
 
   private DeclaredMethods() {}
 
@@ -51,9 +51,12 @@ final class DeclaredMethods {
                         .anyMatch(
                             child ->
                                 MODIFIER.equals(child.kind())
-                                    && "static".equals(SyntaxWalk.text(child))),
+                                    && "static".equals(SyntaxWalk.text(child))
+                        ),
                     parameterTypes(declaration),
-                    parameterNodes(declaration)));
+                    parameterNodes(declaration)
+                )
+        );
   }
 
   private static List<SyntaxNode> parameterNodes(final SyntaxNode method) {
@@ -73,7 +76,8 @@ final class DeclaredMethods {
                     .filter(child -> TYPE_TYPE.equals(child.kind()))
                     .findFirst()
                     .map(type -> simpleName(SyntaxWalk.text(type)))
-                    .orElse(""))
+                    .orElse("")
+        )
         .toList();
   }
 

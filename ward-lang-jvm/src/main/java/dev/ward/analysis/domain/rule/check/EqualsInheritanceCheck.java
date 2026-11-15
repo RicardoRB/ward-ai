@@ -19,7 +19,6 @@ import java.util.Set;
  * method.
  */
 public final class EqualsInheritanceCheck extends FactsCheck {
-
   /** What the check looks for. */
   public enum Mode {
     /**
@@ -79,8 +78,8 @@ public final class EqualsInheritanceCheck extends FactsCheck {
       SyntaxNode type,
       List<SyntaxNode> ancestors,
       List<TypeMethods.Member> own,
-      TypeMembers members) {
-
+      TypeMembers members
+  ) {
     boolean declaresEquals() {
       return EqualsMethods.find(own, true).isPresent();
     }
@@ -91,7 +90,10 @@ public final class EqualsInheritanceCheck extends FactsCheck {
   }
 
   private Optional<RuleMatch> judge(
-      final SyntaxWalk.Visit visit, final TypeMembers members, final UnitTypeFacts types) {
+      final SyntaxWalk.Visit visit,
+      final TypeMembers members,
+      final UnitTypeFacts types
+  ) {
     final Subject subject =
         new Subject(visit.node(), visit.ancestors(), TypeMethods.of(visit.node()), members);
     final Optional<SyntaxNode> at =
@@ -115,7 +117,8 @@ public final class EqualsInheritanceCheck extends FactsCheck {
             t ->
                 !subject.declaresEquals()
                     && subject.inheritsOtherEquals()
-                    && EqualsMethods.hasInstanceField(t));
+                    && EqualsMethods.hasInstanceField(t)
+        );
   }
 
   private static Optional<SyntaxNode> hashCodeWithObjectEquals(final Subject subject) {
@@ -124,11 +127,14 @@ public final class EqualsInheritanceCheck extends FactsCheck {
             h ->
                 !subject.declaresEquals()
                     && EqualsMethods.inherits(subject.members(), EQUALS, 1, true)
-                    && !subject.inheritsOtherEquals());
+                    && !subject.inheritsOtherEquals()
+        );
   }
 
   private static Optional<SyntaxNode> inheritedEqualsWithObjectHashCode(
-      final Subject subject, final UnitTypeFacts types) {
+      final Subject subject,
+      final UnitTypeFacts types
+  ) {
     final TypeMembers members = subject.members();
     return Optional.of(subject.type())
         .filter(
@@ -138,6 +144,7 @@ public final class EqualsInheritanceCheck extends FactsCheck {
                     && subject.inheritsOtherEquals()
                     && EqualsMethods.inherits(members, HASH_CODE, 0, true)
                     && !EqualsMethods.inherits(members, HASH_CODE, 0, false)
-                    && EqualsMethods.abstractSuperclass(t, types));
+                    && EqualsMethods.abstractSuperclass(t, types)
+        );
   }
 }

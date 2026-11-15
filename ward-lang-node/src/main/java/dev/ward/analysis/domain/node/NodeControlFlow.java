@@ -19,7 +19,6 @@ import java.util.Set;
  * still lowered.
  */
 public final class NodeControlFlow implements ControlFlowLowering {
-
   private static final String RULE_ID = "control-flow";
   private static final String SEMICOLON = ";";
   private static final String MODULE = "<module>";
@@ -43,7 +42,8 @@ public final class NodeControlFlow implements ControlFlowLowering {
           "expressionStatement",
           "expressionSequence",
           "singleExpression",
-          "anonymousFunction");
+          "anonymousFunction"
+      );
 
   /** Top-level statements that only declare; a file of only these has no module graph. */
   private static final Set<String> DECLARATION_ONLY =
@@ -56,7 +56,8 @@ public final class NodeControlFlow implements ControlFlowLowering {
           "abstractDeclaration",
           "namespaceDeclaration",
           "importStatement",
-          "emptyStatement_");
+          "emptyStatement_"
+      );
 
   /**
    * Lowers the bodies of the file.
@@ -117,7 +118,6 @@ public final class NodeControlFlow implements ControlFlowLowering {
    * Walks the tree once, lowering each body and carrying a variable's name down to its function.
    */
   private static final class Collector {
-
     private final SourceUnit unit;
     private final NodeImports imports;
     private final List<ControlFlowGraph> graphs = new ArrayList<>();
@@ -148,8 +148,8 @@ public final class NodeControlFlow implements ControlFlowLowering {
           program.span(),
           () ->
               new NodeBodyLowering(imports)
-                  .lowerStatements(
-                      MODULE, null, NodeFlowSyntax.statements(program), program.span()));
+                  .lowerStatements(MODULE, null, NodeFlowSyntax.statements(program), program.span())
+      );
     }
 
     private void lowerFunction(final SyntaxNode function, final String hint) {
@@ -159,7 +159,10 @@ public final class NodeControlFlow implements ControlFlowLowering {
     }
 
     private ControlFlowGraph lowerBody(
-        final String name, final SyntaxNode function, final SyntaxNode body) {
+        final String name,
+        final SyntaxNode function,
+        final SyntaxNode body
+    ) {
       if (ARROW_BODY.equals(body.kind())) {
         final SyntaxNode expression =
             NodeFlowSyntax.firstOf(NodeFlowSyntax.parts(body), SINGLE_EXPRESSION);
@@ -168,13 +171,19 @@ public final class NodeControlFlow implements ControlFlowLowering {
               .lowerExpression(name, function, expression, function.span());
         }
         return lowerStatements(
-            name, function, NodeFlowSyntax.firstOf(NodeFlowSyntax.parts(body), FUNCTION_BODY));
+            name,
+            function,
+            NodeFlowSyntax.firstOf(NodeFlowSyntax.parts(body), FUNCTION_BODY)
+        );
       }
       return lowerStatements(name, function, body);
     }
 
     private ControlFlowGraph lowerStatements(
-        final String name, final SyntaxNode function, final SyntaxNode body) {
+        final String name,
+        final SyntaxNode function,
+        final SyntaxNode body
+    ) {
       return new NodeBodyLowering(imports)
           .lowerStatements(name, function, NodeFlowSyntax.statements(body), function.span());
     }
@@ -192,7 +201,9 @@ public final class NodeControlFlow implements ControlFlowLowering {
                 span.startLine(),
                 span.startColumn(),
                 null,
-                List.of()));
+                List.of()
+            )
+        );
       }
     }
 
@@ -218,7 +229,6 @@ public final class NodeControlFlow implements ControlFlowLowering {
   /** A lowering of one body, which may fail with an {@link IllegalStateException}. */
   @FunctionalInterface
   private interface Lowering {
-
     ControlFlowGraph run();
   }
 }

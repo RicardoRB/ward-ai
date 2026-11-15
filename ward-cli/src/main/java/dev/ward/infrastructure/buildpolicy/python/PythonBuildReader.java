@@ -78,7 +78,8 @@ public final class PythonBuildReader implements BuildModelReader {
         final String name,
         final String version,
         final String section,
-        final int line) {
+        final int line
+    ) {
       declarations.add(
           new Declaration(
               BuildEcosystem.PYTHON,
@@ -89,7 +90,9 @@ public final class PythonBuildReader implements BuildModelReader {
               "",
               file,
               line,
-              locked ? Declaration.Flag.LOCKED : Declaration.Flag.NONE));
+              locked ? Declaration.Flag.LOCKED : Declaration.Flag.NONE
+          )
+      );
     }
   }
 
@@ -121,7 +124,8 @@ public final class PythonBuildReader implements BuildModelReader {
       final TomlParseResult toml,
       final String path,
       final DeclarationKind kind,
-      final Context context) {
+      final Context context
+  ) {
     final TomlArray array = toml.isArray(path) ? toml.getArray(path) : null;
     if (array == null) {
       return;
@@ -138,7 +142,8 @@ public final class PythonBuildReader implements BuildModelReader {
       final int line,
       final String section,
       final DeclarationKind kind,
-      final Context context) {
+      final Context context
+  ) {
     final Matcher matcher = REQUIREMENT.matcher(text);
     if (!matcher.matches() || text.contains(" @ ")) {
       return;
@@ -155,11 +160,16 @@ public final class PythonBuildReader implements BuildModelReader {
     for (final String name : table.keySet()) {
       final Object value = table.get(List.of(name));
       final String version =
-          value instanceof TomlTable details ? details.getString("version") : (String) value;
+          value instanceof TomlTable details ? details.getString("version") : (String)value;
       if (!"python".equals(name) && version != null) {
         final String spec = PLAIN_VERSION.matcher(version).matches() ? "==" + version : version;
         context.add(
-            DeclarationKind.DEPENDENCY, name, spec, path, TomlLines.of(table, List.of(name)));
+            DeclarationKind.DEPENDENCY,
+            name,
+            spec,
+            path,
+            TomlLines.of(table, List.of(name))
+        );
       }
     }
   }
@@ -175,7 +185,9 @@ public final class PythonBuildReader implements BuildModelReader {
       final TomlParseResult toml = Toml.parse(file);
       if (toml.hasErrors()) {
         throw new BuildFileException(
-            shown, "not valid TOML: " + toml.errors().getFirst().getMessage());
+            shown,
+            "not valid TOML: " + toml.errors().getFirst().getMessage()
+        );
       }
       return toml;
     } catch (final IOException exception) {

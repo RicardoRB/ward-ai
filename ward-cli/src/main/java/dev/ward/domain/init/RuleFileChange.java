@@ -13,9 +13,11 @@ import java.util.Map;
 public record RuleFileChange(
     Path configDirectory,
     boolean createdDirectory,
-    Map<Path, String> originals,
+    Map<Path,
+    String> originals,
     List<Path> preserved,
-    List<String> warnings) {
+    List<String> warnings
+) {
   /** Copies the originals, preserved files and warnings. */
   public RuleFileChange {
     originals = Collections.unmodifiableMap(new LinkedHashMap<>(originals));

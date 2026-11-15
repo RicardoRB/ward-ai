@@ -14,7 +14,6 @@ import java.util.Set;
  * only when {@code allowSamelineParameterizedAnnotation} holds.
  */
 public final class AnnotationLocationCheck implements RuleCheck {
-
   private static final String ANNOTATION = "annotation";
   private static final String ARGUMENTS = "annotationFieldValues";
   private static final Set<String> DECLARATION_HOLDERS =
@@ -34,7 +33,8 @@ public final class AnnotationLocationCheck implements RuleCheck {
   public AnnotationLocationCheck(
       final boolean allowSingleParameterless,
       final boolean allowParameterized,
-      final String message) {
+      final String message
+  ) {
     this.allowSingleParameterless = allowSingleParameterless;
     this.allowParameterized = allowParameterized;
     this.message = Objects.requireNonNull(message, "message");

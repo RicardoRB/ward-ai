@@ -51,7 +51,9 @@ final class JavaMemberReader {
               Optional.empty(),
               List.of(),
               List.of(),
-              Optional.of(node)));
+              Optional.of(node)
+          )
+      );
     }
     if (COMPACT.equals(nodeKind)) {
       return Optional.of(
@@ -62,7 +64,9 @@ final class JavaMemberReader {
               Optional.empty(),
               List.of(),
               List.of(),
-              Syntax.child(node, BLOCK)));
+              Syntax.child(node, BLOCK)
+          )
+      );
     }
     return JavaClassReader.isType(node)
         ? Optional.empty()
@@ -91,29 +95,41 @@ final class JavaMemberReader {
             .flatMap(Optional::stream)
             .toList();
     return new SourceModel.Member(
-        node, entry.outer(), scope, Optional.empty(), fields, variables, Optional.of(node));
+        node,
+        entry.outer(),
+        scope,
+        Optional.empty(),
+        fields,
+        variables,
+        Optional.of(node)
+    );
   }
 
   private static SourceModel.Variable variable(
-      final SyntaxNode declarator, final Optional<JType> base) {
+      final SyntaxNode declarator,
+      final Optional<JType> base
+  ) {
     final SyntaxNode id = Syntax.child(declarator, DECLARATOR_ID).orElse(declarator);
     return new SourceModel.Variable(
         Syntax.child(id, IDENTIFIER).orElse(declarator),
-        base.map(found -> JavaTypes.arrayOf(found, dimensions(id))));
+        base.map(found -> JavaTypes.arrayOf(found, dimensions(id)))
+    );
   }
 
   private static Optional<JvmField> field(
       final SyntaxNode declarator,
       final SourceModel.Variable variable,
       final int flags,
-      final List<String> annotations) {
+      final List<String> annotations
+  ) {
     final Optional<Object> value =
         Flags.has(flags, Flags.FINAL) ? constantOf(declarator) : Optional.empty();
     return variable
         .type()
         .map(
             type ->
-                new JvmField(Syntax.text(variable.identifier()), flags, type, value, annotations));
+                new JvmField(Syntax.text(variable.identifier()), flags, type, value, annotations)
+        );
   }
 
   private static List<SyntaxNode> declarators(final SyntaxNode node) {
@@ -124,8 +140,9 @@ final class JavaMemberReader {
                   case "variableDeclarators" ->
                       Syntax.children(child, "variableDeclarator").stream();
                   case "constantDeclarator" -> java.util.stream.Stream.of(child);
-                  default -> java.util.stream.Stream.<SyntaxNode>empty();
-                })
+                  default -> java.util.stream.Stream.<SyntaxNode> empty();
+                }
+        )
         .toList();
   }
 
@@ -140,7 +157,9 @@ final class JavaMemberReader {
 
   /** Returns the methods of the members, with the implicit ones of the kind of class. */
   List<JvmMethod> methods(
-      final List<SourceModel.Member> members, final boolean defaultConstructor) {
+      final List<SourceModel.Member> members,
+      final boolean defaultConstructor
+  ) {
     return JavaImplicitMembers.methods(members, owner, kind, defaultConstructor);
   }
 }

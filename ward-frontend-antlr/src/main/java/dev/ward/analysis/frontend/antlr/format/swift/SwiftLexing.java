@@ -10,7 +10,6 @@ import org.antlr.v4.runtime.Token;
 
 /** Lexes Swift source for the formatter; comments are typed {@code comment} as the core expects. */
 final class SwiftLexing {
-
   /** Unit path given to the lexer's findings; the formatter never reports them by path. */
   private static final String UNIT = "format";
 

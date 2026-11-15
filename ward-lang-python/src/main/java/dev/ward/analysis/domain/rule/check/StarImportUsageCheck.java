@@ -17,7 +17,6 @@ import java.util.Set;
  * import may define it, like pyflakes {@code F405}.
  */
 public final class StarImportUsageCheck implements RuleCheck {
-
   private static final String NAME = "{value}";
 
   private final String message;
@@ -44,7 +43,11 @@ public final class StarImportUsageCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes(Set.of());
     final List<RuleMatch> found = new ArrayList<>();
     for (final NameReference reference : scopes.unresolved()) {

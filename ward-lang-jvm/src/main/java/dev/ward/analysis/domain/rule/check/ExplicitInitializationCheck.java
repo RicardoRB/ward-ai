@@ -17,7 +17,6 @@ import java.util.Set;
  * initializer is its value. With the user option, only null is reported.
  */
 public final class ExplicitInitializationCheck implements UnitCheck {
-
   private static final Set<String> NUMERIC =
       Set.of("byte", "short", "int", "long", "float", "double");
   private static final Set<String> CHAR_ZEROES = Set.of("'\\0'", "'\\u0000'");

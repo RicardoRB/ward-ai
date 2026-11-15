@@ -12,7 +12,6 @@ import java.util.Set;
  * @param facts the kinds of fact it reads
  */
 public record FactNeed(Set<String> nodeKinds, Set<FactKind> facts) {
-
   /** The need of a rule that reads no type facts. */
   public static final FactNeed NONE = new FactNeed(Set.of(), Set.of());
 

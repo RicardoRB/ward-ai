@@ -6,7 +6,6 @@ import org.antlr.v4.runtime.Token;
 
 /** Converts ANTLR rule contexts and tokens to the 1-based {@link Span} of the shared shape. */
 final class SyntaxSpans {
-
   private SyntaxSpans() {}
 
   /**
@@ -35,7 +34,8 @@ final class SyntaxSpans {
         endLine,
         endColumn,
         startOffset,
-        endOffset);
+        endOffset
+    );
   }
 
   /** Returns the span of a single token. */
@@ -48,13 +48,14 @@ final class SyntaxSpans {
         token.getLine(),
         token.getCharPositionInLine() + width(token),
         startOffset,
-        endOffset);
+        endOffset
+    );
   }
 
   /** Returns the span of a comment token, which may cover several lines. */
   static Span comment(final Token token) {
     final String text = token.getText();
-    final int newlines = (int) text.chars().filter(c -> c == '\n').count();
+    final int newlines = (int)text.chars().filter(c -> c == '\n').count();
     final int endLine = token.getLine() + newlines;
     final int endColumn =
         newlines == 0
@@ -66,7 +67,8 @@ final class SyntaxSpans {
         endLine,
         endColumn,
         Math.max(0, token.getStartIndex()),
-        Math.max(0, token.getStopIndex() + 1));
+        Math.max(0, token.getStopIndex() + 1)
+    );
   }
 
   /** The line a rule ends on: the end-of-file token sits on the line after a final newline. */

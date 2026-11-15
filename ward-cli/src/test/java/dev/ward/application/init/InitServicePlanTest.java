@@ -32,7 +32,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class InitServicePlanTest {
-
   @Test
   void standardClaudeAndHooksListEveryFileAndWriteNothing(@TempDir final Path dir)
       throws IOException {
@@ -52,7 +51,10 @@ class InitServicePlanTest {
         .containsEntry("pom.xml", Action.MODIFY)
         .containsEntry("ward-rules.toml", Action.CREATE)
         .doesNotContainKeys(
-            "config/pmd-ruleset.xml", "config/checkstyle.xml", "config/spotbugs-exclude.xml");
+            "config/pmd-ruleset.xml",
+            "config/checkstyle.xml",
+            "config/spotbugs-exclude.xml"
+        );
     assertThat(plan.hasConflict()).isFalse();
     assertThat(ProjectSnapshot.of(dir)).isEqualTo(before);
   }
@@ -85,7 +87,9 @@ class InitServicePlanTest {
         .containsEntry("ward.toml", Action.UNCHANGED);
 
     Files.writeString(
-        configuration, written.replaceAll("(?s)\\n\\[checks\\.[a-z-]+\\.paths\\][^\\[]*", "\n"));
+        configuration,
+        written.replaceAll("(?s)\\n\\[checks\\.[a-z-]+\\.paths\\][^\\[]*", "\n")
+    );
 
     assertThat(Files.readString(configuration)).doesNotContain(".paths]");
     assertThat(actions(dir, service.plan(dir, selection, true)))
@@ -93,7 +97,10 @@ class InitServicePlanTest {
   }
 
   private static InitSelection selection(
-      final List<String> integrations, final List<String> install, final boolean hooks) {
+      final List<String> integrations,
+      final List<String> install,
+      final boolean hooks
+  ) {
     return new InitSelection(
         integrations,
         JavaPresetGates.STANDARD,
@@ -103,7 +110,8 @@ class InitServicePlanTest {
         hooks,
         null,
         false,
-        null);
+        null
+    );
   }
 
   private static InitService service(final PomToolConfigurator pom) {
@@ -116,13 +124,18 @@ class InitServicePlanTest {
             RuleFileTargetsFixtures.writer(),
             ArchitectureTablesFixtures.create(),
             new FileConfigurationStorage(),
-            new OwnedSectionWriter()));
+            new OwnedSectionWriter()
+        )
+    );
   }
 
   private static Map<String, Action> actions(final Path dir, final InitPlan plan) {
     return plan.files().stream()
         .collect(
             Collectors.toMap(
-                change -> dir.relativize(change.file()).toString(), PlannedFileChange::action));
+                change -> dir.relativize(change.file()).toString(),
+                PlannedFileChange::action
+            )
+        );
   }
 }

@@ -12,7 +12,6 @@ import java.util.Objects;
  *     Python's {@code if TYPE_CHECKING:}, so that it is not a runtime dependency
  */
 public record Reference(String specifier, Span span, boolean typeChecking) {
-
   /**
    * Creates a reference that is a runtime dependency.
    *

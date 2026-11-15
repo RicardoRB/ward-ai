@@ -14,7 +14,6 @@ import java.util.Set;
  * call's name, its label, and the span of the receiver written before the call.
  */
 final class KotlinSplits {
-
   private static final String LAMBDA = "functionLiteral";
   private static final String CALL_SUFFIX = "callSuffix";
   private static final String POSTFIX = "postfixUnaryExpression";
@@ -33,7 +32,8 @@ final class KotlinSplits {
           "companionObject",
           "secondaryConstructor",
           "anonymousInitializer",
-          "typeAlias");
+          "typeAlias"
+      );
 
   private KotlinSplits() {}
 
@@ -46,7 +46,6 @@ final class KotlinSplits {
    * @param receiver where the receiver of that call is written, or null when it has none
    */
   record Split(SyntaxNode node, String callee, String label, Span receiver) {
-
     /** Whether the part is a lambda, not an {@code if}, {@code when}, {@code try} or operator. */
     boolean isLambda() {
       return LAMBDA.equals(node.kind());
@@ -119,7 +118,11 @@ final class KotlinSplits {
 
   /** The arguments are parts of the statement; the trailing lambdas belong to the call. */
   private static void suffix(
-      final SyntaxNode suffix, final String callee, final Span receiver, final List<Split> found) {
+      final SyntaxNode suffix,
+      final String callee,
+      final Span receiver,
+      final List<Split> found
+  ) {
     for (final SyntaxNode part : KotlinFlowSyntax.parts(suffix)) {
       if (ANNOTATED.equals(part.kind())) {
         final SyntaxNode lambda = KotlinFlowSyntax.child(part, LAMBDA);
@@ -147,6 +150,7 @@ final class KotlinSplits {
         last.startLine(),
         last.startColumn(),
         first.startOffset(),
-        last.startOffset());
+        last.startOffset()
+    );
   }
 }

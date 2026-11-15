@@ -40,7 +40,8 @@ class JsonFindingsRendererTest {
         line,
         FINDING_COLUMN,
         "https://checkstyle.org/checks/javadoc/missingjavadocmethod.html",
-        List.of());
+        List.of()
+    );
   }
 
   private static GateResult result(final String name, final GateStatus status, final String out) {
@@ -56,7 +57,8 @@ class JsonFindingsRendererTest {
   private JsonTree render(final GateResult... results) {
     return JsonTree.parse(
         new JsonReportRenderer(new ForyJsonCodec())
-            .render(new CheckReport(project, List.of(results))));
+            .render(new CheckReport(project, List.of(results)))
+    );
   }
 
   private JsonTree renderInfo(final GateResult... results) {
@@ -67,7 +69,9 @@ class JsonFindingsRendererTest {
                 false,
                 false,
                 null,
-                SeverityThreshold.INFO));
+                SeverityThreshold.INFO
+            )
+    );
   }
 
   @Test
@@ -76,7 +80,8 @@ class JsonFindingsRendererTest {
         GateFindings.of(
             IntStream.rangeClosed(1, REPORTED)
                 .mapToObj(JsonFindingsRendererTest::finding)
-                .toList());
+                .toList()
+        );
 
     final JsonTree check =
         render(result("checkstyle", GateStatus.FAILED, "log").withFindings(findings))

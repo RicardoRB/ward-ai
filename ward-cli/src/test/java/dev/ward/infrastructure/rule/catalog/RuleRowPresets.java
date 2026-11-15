@@ -24,7 +24,10 @@ final class RuleRowPresets {
               .orElseThrow(
                   () ->
                       new IllegalArgumentException(
-                          "'" + PRESETS + "' value '" + key + "' is not standard or strict")));
+                          "'" + PRESETS + "' value '" + key + "' is not standard or strict"
+                      )
+              )
+      );
     }
     return presets;
   }

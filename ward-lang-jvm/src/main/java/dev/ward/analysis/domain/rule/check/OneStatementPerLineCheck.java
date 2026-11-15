@@ -14,7 +14,6 @@ import java.util.Set;
  * so.
  */
 public final class OneStatementPerLineCheck implements UnitCheck {
-
   private static final String SEMICOLON = "';'";
   private static final String RESOURCE = "resource";
   private static final Set<String> FOR_HEADER = Set.of("forControl");
@@ -33,7 +32,9 @@ public final class OneStatementPerLineCheck implements UnitCheck {
    * @param message the message reported at each extra statement
    */
   public OneStatementPerLineCheck(
-      final boolean treatTryResourcesAsStatement, final String message) {
+      final boolean treatTryResourcesAsStatement,
+      final String message
+  ) {
     this.treatTryResourcesAsStatement = treatTryResourcesAsStatement;
     this.message = Objects.requireNonNull(message, "message");
   }
@@ -55,7 +56,10 @@ public final class OneStatementPerLineCheck implements UnitCheck {
   }
 
   private void collect(
-      final SyntaxNode node, final boolean inResources, final List<SyntaxNode> terminators) {
+      final SyntaxNode node,
+      final boolean inResources,
+      final List<SyntaxNode> terminators
+  ) {
     final String kind = node.kind();
     if (FOR_HEADER.contains(kind)) {
       return;

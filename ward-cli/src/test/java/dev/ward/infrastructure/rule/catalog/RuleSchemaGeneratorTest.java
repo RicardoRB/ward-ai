@@ -14,7 +14,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class RuleSchemaGeneratorTest {
-
   private static final RuleDefinition SIZES =
       new RuleDefinition(
           "ward:java/method-length",
@@ -32,12 +31,15 @@ class RuleSchemaGeneratorTest {
                   null,
                   Long.MIN_VALUE,
                   Long.MAX_VALUE,
-                  List.of("a", "b")),
+                  List.of("a", "b")
+              ),
               new RuleOption("flag", RuleOptionType.BOOLEAN),
               new RuleOption("names", RuleOptionType.STRING_LIST),
               new RuleOption("pattern", RuleOptionType.REGEX),
-              new RuleOption("label", RuleOptionType.STRING)),
-          0);
+              new RuleOption("label", RuleOptionType.STRING)
+          ),
+          0
+      );
 
   private static final RuleDefinition NAMING =
       new RuleDefinition(
@@ -49,7 +51,8 @@ class RuleSchemaGeneratorTest {
           "naming",
           Set.of(),
           List.of(),
-          0);
+          0
+      );
 
   @Test
   void rulesListTheirOptionsWithTheirDeclaredTypesAndBounds() {
@@ -131,8 +134,11 @@ class RuleSchemaGeneratorTest {
                     null,
                     Long.MIN_VALUE,
                     Long.MAX_VALUE,
-                    List.of("say \"hi\" \\ twice"))),
-            0);
+                    List.of("say \"hi\" \\ twice")
+                )
+            ),
+            0
+        );
 
     assertThat(RuleSchema.render(List.of(quoted))).contains("\"say \\\"hi\\\" \\\\ twice\"");
   }

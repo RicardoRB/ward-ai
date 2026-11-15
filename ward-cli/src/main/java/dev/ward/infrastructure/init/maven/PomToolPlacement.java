@@ -14,7 +14,8 @@ final class PomToolPlacement {
       final QualityPreset preset,
       final PomToolVersions versions,
       final Predicate<? super CompatibilityFinding> approval,
-      final PomEdit edit) {
+      final PomEdit edit
+  ) {
     final CompatibilityFinding finding = versions.plugin(tool);
     if (finding != null && !PomTools.declares(edit.content, tool.artifact())) {
       edit.add(tool, preset, finding.selectedVersion());
@@ -26,12 +27,14 @@ final class PomToolPlacement {
         edit.warnings.add(
             "Compatibility update declined for "
                 + tool.artifact()
-                + "; selected gate was not reconfigured.");
+                + "; selected gate was not reconfigured."
+        );
       }
     } else if (PomTools.declares(edit.content, tool.artifact())) {
       if (preset != null && tool.presetSnippet() != null) {
         edit.warnings.add(
-            tool.artifact() + " already declared; " + preset.id() + " settings not applied");
+            tool.artifact() + " already declared; " + preset.id() + " settings not applied"
+        );
       }
     } else {
       edit.add(tool, preset, null);

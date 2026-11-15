@@ -22,7 +22,6 @@ import java.util.function.Consumer;
  * The calls that parse a constant text and so fail on it: the parts of AlwaysThrows that run it.
  */
 final class AlwaysThrowsParse {
-
   private static final String ILLEGAL = "This call will fail at runtime with a %s";
   private static final Map<String, Consumer<CharSequence>> VALIDATORS =
       Map.ofEntries(
@@ -37,7 +36,8 @@ final class AlwaysThrowsParse {
           Map.entry("java.time.Period", Period::parse),
           Map.entry("java.time.Year", Year::parse),
           Map.entry("java.time.YearMonth", YearMonth::parse),
-          Map.entry("java.time.ZonedDateTime", ZonedDateTime::parse));
+          Map.entry("java.time.ZonedDateTime", ZonedDateTime::parse)
+      );
 
   private AlwaysThrowsParse() {}
 
@@ -69,7 +69,9 @@ final class AlwaysThrowsParse {
   }
 
   private static Optional<String> failure(
-      final Consumer<CharSequence> validator, final String text) {
+      final Consumer<CharSequence> validator,
+      final String text
+  ) {
     try {
       validator.accept(text);
       return Optional.empty();

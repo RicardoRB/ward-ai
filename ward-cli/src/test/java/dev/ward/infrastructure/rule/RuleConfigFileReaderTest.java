@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class RuleConfigFileReaderTest {
-
   private static final long THREE = 3L;
   private static final long EIGHTY = 80L;
 
@@ -26,7 +25,8 @@ class RuleConfigFileReaderTest {
   void readsTheSelectionAndTheTables() throws IOException {
     write(
         "version = 1\n[select]\npreset = \"strict\"\nlanguages = [\"java\"]\n"
-            + "include = [\"java.x\"]\n[rules.java.y]\nmax = 3\nglobs = [\"a\"]\n");
+            + "include = [\"java.x\"]\n[rules.java.y]\nmax = 3\nglobs = [\"a\"]\n"
+    );
 
     final RuleConfigFile file = RuleConfigFileReader.read(root, null).orElseThrow();
 
@@ -43,7 +43,8 @@ class RuleConfigFileReaderTest {
   void reportsEveryShapeProblemWithItsTableAndKey() throws IOException {
     write(
         "version = 2\ncolor = 1\n[select]\npreset = 3\nlanguages = \"java\"\nwhat = 1\n"
-            + "[rules]\njava = 1\n");
+            + "[rules]\njava = 1\n"
+    );
 
     final List<String> problems = RuleConfigFileReader.read(root, null).orElseThrow().problems();
 
@@ -78,7 +79,8 @@ class RuleConfigFileReaderTest {
     assertThat(file.problems())
         .containsExactly(
             "ward-rules.toml: [rules.\"ward:java/method-length\"]: name the table"
-                + " [rules.<language>.<rule-name>]; write [rules.java.method-length]");
+                + " [rules.<language>.<rule-name>]; write [rules.java.method-length]"
+        );
   }
 
   @Test

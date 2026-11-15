@@ -26,7 +26,11 @@ class AgentRulesTemplateTest {
   void strictPresetStatesEveryLimitAgentsMustMeet() {
     final String body =
         AgentRulesTemplate.render(
-                PROJECT, gates(JavaPresetGates.STRICT), QualityPreset.STRICT, List.of())
+            PROJECT,
+            gates(JavaPresetGates.STRICT),
+            QualityPreset.STRICT,
+            List.of()
+        )
             .body();
 
     assertThat(body)
@@ -36,18 +40,27 @@ class AgentRulesTemplateTest {
             "at least 60% of mutants killed",
             "- Architecture: `ward:architecture/layers` enforces",
             "- Build policy: plugin versions pinned",
-            "Do not add suppressions");
+            "Do not add suppressions"
+        );
   }
 
   @Test
   void crapRuleIsNamedOnlyWhenTheGateIsSelected() {
     final String with =
         AgentRulesTemplate.render(
-                PROJECT, gates(List.of("coverage", "crap")), QualityPreset.STANDARD, List.of())
+            PROJECT,
+            gates(List.of("coverage", "crap")),
+            QualityPreset.STANDARD,
+            List.of()
+        )
             .body();
     final String without =
         AgentRulesTemplate.render(
-                PROJECT, gates(List.of("coverage")), QualityPreset.STANDARD, List.of())
+            PROJECT,
+            gates(List.of("coverage")),
+            QualityPreset.STANDARD,
+            List.of()
+        )
             .body();
 
     assertThat(with).contains("CRAP (`crap`)", "never raise `max`");
@@ -66,14 +79,17 @@ class AgentRulesTemplateTest {
                 List.of("swift", "build", "-Xswiftc", "-warnings-as-errors"),
                 true,
                 "",
-                Map.of()),
+                Map.of()
+            ),
             new InitGateOption(
                 "swift-coverage",
                 "Coverage",
                 List.of("swift", "test", "--show-codecov-path"),
                 true,
                 "",
-                Map.of("minimum", "85")));
+                Map.of("minimum", "85")
+            )
+        );
 
     final String body =
         AgentRulesTemplate.render(swift, gates, QualityPreset.STRICT, List.of()).body();
@@ -96,6 +112,7 @@ class AgentRulesTemplateTest {
             section -> {
               assertThat(section.file()).isEqualTo(Path.of("/p/AGENTS.md"));
               assertThat(section.wholeFile()).isFalse();
-            });
+            }
+        );
   }
 }

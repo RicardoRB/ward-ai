@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 
 /** The default overload of a project check, which ignores the manifest files. */
 final class ProjectCheckTest {
-
   private static final Span AT = new Span(1, 1, 1, 2, 0, 1);
 
   @Test

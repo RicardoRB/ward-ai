@@ -13,7 +13,6 @@ import java.util.Map;
  * rule declares, each with its declared type, bounds and enum values.
  */
 final class RuleOptionSchema {
-
   private static final String TYPE = "type";
   private static final String STRING = "string";
   private static final String ENUM = "enum";

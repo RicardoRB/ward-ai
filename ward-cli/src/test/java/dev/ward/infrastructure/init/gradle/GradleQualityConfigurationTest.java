@@ -39,7 +39,8 @@ class GradleQualityConfigurationTest {
         configure(
             "build.gradle",
             "buildscript {\n    repositories { mavenCentral() }\n}\napply plugin: 'java'\n",
-            null);
+            null
+        );
 
     assertThat(script)
         .startsWith("buildscript {\n    repositories { mavenCentral() }\n}\n\nplugins {\n")
@@ -63,13 +64,15 @@ class GradleQualityConfigurationTest {
             "reports { xml.required = true }",
             "pitest {\n    pitestVersion = '1.30.1'\n    junit5PluginVersion = '1.2.3'\n"
                 + "    outputFormats = ['XML', 'HTML']\n}\n"
-                + "tasks.named('pitest') { outputs.upToDateWhen { false } }")
+                + "tasks.named('pitest') { outputs.upToDateWhen { false } }"
+        )
         .doesNotContain(
             "mutationThreshold",
             "historyInputFile",
             "historyOutputFile",
             "violationRules",
-            "minimum = 0.");
+            "minimum = 0."
+        );
   }
 
   @Test
@@ -82,7 +85,8 @@ class GradleQualityConfigurationTest {
             "reports { xml.required.set(true) }",
             "pitestVersion = \"1.30.1\"",
             "junit5PluginVersion = \"1.2.3\"",
-            "outputFormats = listOf(\"XML\", \"HTML\")")
+            "outputFormats = listOf(\"XML\", \"HTML\")"
+        )
         .doesNotContain("historyInputFile", "historyOutputFile");
   }
 

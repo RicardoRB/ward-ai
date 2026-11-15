@@ -12,7 +12,6 @@ import java.util.Set;
  * that holds a comment is not empty, so the check looks at the comments as well as the entries.
  */
 public final class KotlinEmptyWhenCheck implements RuleCheck {
-
   private static final String WHEN = "whenExpression";
   private static final String ENTRY = "whenEntry";
   private static final String COMMENT = "comment";

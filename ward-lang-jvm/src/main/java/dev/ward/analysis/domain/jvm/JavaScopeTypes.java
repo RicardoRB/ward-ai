@@ -13,7 +13,6 @@ import java.util.Set;
 
 /** Handles imports, types, members and variable declarations of Java. */
 final class JavaScopeTypes {
-
   private static final String IDENTIFIER = "identifier";
   private static final String EXPRESSION = "expression";
   private static final String DECLARATOR_ID = "variableDeclaratorId";
@@ -39,7 +38,8 @@ final class JavaScopeTypes {
         JavaScopeWalk.text(last),
         last.span(),
         new ImportOrigin(JavaScopeWalk.text(name), JavaScopeWalk.text(last), node.span()),
-        EnumSet.noneOf(BindingFlag.class));
+        EnumSet.noneOf(BindingFlag.class)
+    );
   }
 
   void typeDeclaration(final SyntaxNode node) {
@@ -91,7 +91,8 @@ final class JavaScopeTypes {
         constant ? BindingKind.CONSTANT : BindingKind.VARIABLE,
         constant,
         initialized,
-        walk.inPattern);
+        walk.inPattern
+    );
     parts.stream().filter(part -> !DECLARATOR_ID.equals(part.kind())).forEach(walk::visit);
   }
 
@@ -105,7 +106,8 @@ final class JavaScopeTypes {
       final BindingKind kind,
       final boolean constant,
       final boolean written,
-      final boolean destructured) {
+      final boolean destructured
+  ) {
     final Set<BindingFlag> flags = EnumSet.noneOf(BindingFlag.class);
     if (constant) {
       flags.add(BindingFlag.CONST);
@@ -134,7 +136,8 @@ final class JavaScopeTypes {
           walk.finalLocal ? BindingKind.CONSTANT : BindingKind.VARIABLE,
           walk.finalLocal,
           true,
-          false);
+          false
+      );
     } else {
       walk.generic(node);
     }

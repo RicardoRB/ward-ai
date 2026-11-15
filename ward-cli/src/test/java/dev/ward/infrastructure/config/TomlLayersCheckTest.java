@@ -12,7 +12,6 @@ import org.tomlj.Toml;
 
 /** The {@code layers} tables of a {@code ward} check. */
 class TomlLayersCheckTest {
-
   @Test
   void parsesLayerBoundaries() {
     final GateConfiguration check =
@@ -37,7 +36,8 @@ class TomlLayersCheckTest {
   @Test
   void rejectsUnknownBoundaryKey() {
     assertThatThrownBy(
-            () -> check("layers = [{ from = [\"domain\"], forbidden = [\"x\"], color = \"red\" }]"))
+        () -> check("layers = [{ from = [\"domain\"], forbidden = [\"x\"], color = \"red\" }]")
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("checks.ward.layers.color");
   }

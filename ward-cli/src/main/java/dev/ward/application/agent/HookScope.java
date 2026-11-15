@@ -38,7 +38,10 @@ public final class HookScope {
    * whether it has a {@code ward.toml}.
    */
   public HookScope(
-      final ProjectDetector detector, final ProjectChanges changes, final ProjectPaths paths) {
+      final ProjectDetector detector,
+      final ProjectChanges changes,
+      final ProjectPaths paths
+  ) {
     this.detector = detector;
     this.changes = changes;
     this.paths = paths;
@@ -94,7 +97,9 @@ public final class HookScope {
                 Collectors.groupingBy(
                     Map.Entry::getKey,
                     LinkedHashMap::new,
-                    Collectors.mapping(Map.Entry::getValue, Collectors.toList())));
+                    Collectors.mapping(Map.Entry::getValue, Collectors.toList())
+                )
+            );
     LOGGER.log(Level.INFO, () -> "event=edit-scope routed=true projects=" + projects.size());
     return projects;
   }

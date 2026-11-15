@@ -12,7 +12,12 @@ import java.util.Objects;
  * @param summary one example finding message
  */
 public record LearningPrompt(
-    String key, String gate, String rule, int occurrences, String summary) {
+    String key,
+    String gate,
+    String rule,
+    int occurrences,
+    String summary
+) {
   /**
    * Validates the prompt.
    *

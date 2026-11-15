@@ -46,15 +46,18 @@ class PythonStrictRewriteTest {
   void userOwnedMypyConfigIsNeverRewrittenByStrict() throws IOException {
     Files.writeString(
         root.resolve("pyproject.toml"),
-        "[project]\nname = \"shop\"\n\n[tool.mypy]\nstrict = false\n");
+        "[project]\nname = \"shop\"\n\n[tool.mypy]\nstrict = false\n"
+    );
     final Project project = new Project(root, Language.PYTHON, BuildTool.UV, Framework.NONE);
     final List<InitGateOption> gates = List.of(new InitGateOption("mypy", List.of(), true, ""));
 
     new PresetRuleFileWriter(
-            RuleFileTargetsFixtures.of(
-                manifestRoot -> dev.ward.domain.project.node.PackageManifest.EMPTY,
-                (dir, tool) -> java.util.Optional.empty(),
-                new dev.ward.infrastructure.project.python.FileSystemPythonToolConfigs()))
+        RuleFileTargetsFixtures.of(
+            manifestRoot -> dev.ward.domain.project.node.PackageManifest.EMPTY,
+            (dir, tool) -> java.util.Optional.empty(),
+            new dev.ward.infrastructure.project.python.FileSystemPythonToolConfigs()
+        )
+    )
         .apply(project, QualityPreset.STRICT, gates);
 
     assertThat(Files.exists(root.resolve("mypy.ini"))).isFalse();

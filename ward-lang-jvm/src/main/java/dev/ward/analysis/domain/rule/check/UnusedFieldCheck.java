@@ -12,7 +12,6 @@ import java.util.Set;
  * annotation marks, is left alone, because another class or a framework may use it.
  */
 public final class UnusedFieldCheck implements UnitCheck {
-
   /** Which fields the check reports. */
   public enum Mode {
     /** A field that is written or initialized and never read. */
@@ -55,12 +54,17 @@ public final class UnusedFieldCheck implements UnitCheck {
         .map(
             field ->
                 CheckSupport.at(
-                    field.declarator().span(), CheckSupport.fill(message, field.name(), "")))
+                    field.declarator().span(),
+                    CheckSupport.fill(message, field.name(), "")
+                )
+        )
         .toList();
   }
 
   private boolean flagged(
-      final FieldAccesses.Field field, final List<FieldAccesses.Access> accesses) {
+      final FieldAccesses.Field field,
+      final List<FieldAccesses.Access> accesses
+  ) {
     final boolean read = accesses.stream().anyMatch(a -> a.use() == FieldAccesses.Use.READ);
     final boolean touched = field.initialized() || !accesses.isEmpty();
     return mode == Mode.UNREAD ? touched && !read : !touched;
@@ -68,7 +72,10 @@ public final class UnusedFieldCheck implements UnitCheck {
 
   /** Tells whether the file names the field more often than the class's own accesses do. */
   private static boolean namedElsewhere(
-      final SyntaxNode root, final String name, final List<FieldAccesses.Access> accesses) {
+      final SyntaxNode root,
+      final String name,
+      final List<FieldAccesses.Access> accesses
+  ) {
     final long total = identifiers(root, name);
     final long own = accesses.stream().mapToLong(a -> identifiers(a.node(), name)).sum();
     return total > own + 1;

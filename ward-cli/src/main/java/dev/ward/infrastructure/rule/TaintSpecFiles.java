@@ -28,7 +28,6 @@ import org.tomlj.TomlTable;
  * arguments}, and a propagator may name its {@code from} inputs.
  */
 final class TaintSpecFiles {
-
   private static final Logger LOGGER = Logger.getLogger(TaintSpecFiles.class.getName());
   private static final String SOURCES = "sources";
   private static final String SINKS = "sinks";
@@ -59,7 +58,8 @@ final class TaintSpecFiles {
           STRING,
           FlowSiteKind.STRING_BUILD,
           LITERAL,
-          FlowSiteKind.LITERAL);
+          FlowSiteKind.LITERAL
+      );
   private static final Set<String> SOURCE_KINDS = Set.of("call", "member", "parameter", LITERAL);
   private static final Set<String> SINK_KINDS = Set.of("call", "member-write", STRING);
   private static final Set<String> CALL_KIND = Set.of("call");
@@ -90,7 +90,9 @@ final class TaintSpecFiles {
       return new String(in.readAllBytes(), StandardCharsets.UTF_8);
     } catch (final IOException exception) {
       throw new RuleConfigurationException(
-          "taint specification " + path + " cannot be read", exception);
+          "taint specification " + path + " cannot be read",
+          exception
+      );
     }
   }
 
@@ -103,18 +105,24 @@ final class TaintSpecFiles {
     for (final String table : toml.keySet()) {
       if (!TABLES.contains(table)) {
         throw new RuleConfigurationException(
-            "taint specification " + file + " has an unknown table '" + table + "'");
+            "taint specification " + file + " has an unknown table '" + table + "'"
+        );
       }
     }
     return new TaintSpec(
         entries(file, toml, SOURCES, SOURCE_KINDS),
         entries(file, toml, SINKS, SINK_KINDS),
         entries(file, toml, SANITIZERS, CALL_KIND),
-        entries(file, toml, PROPAGATORS, CALL_KIND));
+        entries(file, toml, PROPAGATORS, CALL_KIND)
+    );
   }
 
   private static List<TaintEntry> entries(
-      final String file, final TomlParseResult toml, final String table, final Set<String> kinds) {
+      final String file,
+      final TomlParseResult toml,
+      final String table,
+      final Set<String> kinds
+  ) {
     final List<TaintEntry> found = new ArrayList<>();
     final TomlArray array = toml.getArray(table);
     if (array == null) {
@@ -123,7 +131,8 @@ final class TaintSpecFiles {
     for (int index = 0; index < array.size(); index++) {
       if (!array.isTable(index)) {
         throw new RuleConfigurationException(
-            "taint specification " + file + ": [" + table + "] must be a list of tables");
+            "taint specification " + file + ": [" + table + "] must be a list of tables"
+        );
       }
       found.add(entry(file, table, index + 1, array.getTable(index), kinds));
     }
@@ -135,7 +144,8 @@ final class TaintSpecFiles {
       final String table,
       final int number,
       final TomlTable entry,
-      final Set<String> kinds) {
+      final Set<String> kinds
+  ) {
     final String where = "entry " + number + " of [" + table + "] in " + file;
     for (final String key : entry.keySet()) {
       if (!KEYS.contains(key)) {
@@ -145,7 +155,8 @@ final class TaintSpecFiles {
     final String kind = text(where, entry, KIND);
     if (!kinds.contains(kind)) {
       throw new RuleConfigurationException(
-          where + " has kind '" + kind + "', which " + table + " do not accept");
+          where + " has kind '" + kind + "', which " + table + " do not accept"
+      );
     }
     if (STRING.equals(kind) || LITERAL.equals(kind)) {
       return patternEntry(where, KINDS.get(kind), entry);
@@ -155,10 +166,15 @@ final class TaintSpecFiles {
 
   /** A call, member or parameter entry, which takes a pattern in no table. */
   private static TaintEntry siteEntry(
-      final String where, final String table, final String kind, final TomlTable entry) {
+      final String where,
+      final String table,
+      final String kind,
+      final TomlTable entry
+  ) {
     if (entry.contains(PATTERN)) {
       throw new RuleConfigurationException(
-          where + " names a pattern, which only string sinks take");
+          where + " names a pattern, which only string sinks take"
+      );
     }
     final List<Integer> arguments =
         PROPAGATORS.equals(table)
@@ -169,12 +185,16 @@ final class TaintSpecFiles {
         text(where, entry, NAME),
         optional(where, entry, RECEIVER),
         optional(where, entry, QUALIFIER),
-        arguments);
+        arguments
+    );
   }
 
   /** A string sink or literal source matches the literal text of its site against its pattern. */
   private static TaintEntry patternEntry(
-      final String where, final FlowSiteKind kind, final TomlTable entry) {
+      final String where,
+      final FlowSiteKind kind,
+      final TomlTable entry
+  ) {
     final String pattern = text(where, entry, PATTERN);
     try {
       return new TaintEntry(
@@ -183,7 +203,8 @@ final class TaintSpecFiles {
           Optional.empty(),
           Optional.empty(),
           List.of(),
-          Optional.of(Pattern.compile(pattern)));
+          Optional.of(Pattern.compile(pattern))
+      );
     } catch (final PatternSyntaxException exception) {
       throw new RuleConfigurationException(where + " has an invalid pattern", exception);
     }
@@ -198,7 +219,10 @@ final class TaintSpecFiles {
   }
 
   private static Optional<String> optional(
-      final String where, final TomlTable entry, final String key) {
+      final String where,
+      final TomlTable entry,
+      final String key
+  ) {
     if (!entry.contains(key)) {
       return Optional.empty();
     }

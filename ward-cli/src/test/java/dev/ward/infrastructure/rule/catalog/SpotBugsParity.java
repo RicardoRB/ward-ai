@@ -15,7 +15,6 @@ import org.w3c.dom.Element;
  * lines only. A fixture that does not compile is not comparable.
  */
 final class SpotBugsParity implements ParityTool {
-
   private static final Pattern PACKAGE = Pattern.compile("^parity\\.p(\\d+)\\.");
 
   @Override
@@ -61,9 +60,11 @@ final class SpotBugsParity implements ParityTool {
             report.toString(),
             "-auxclasspath",
             environment.classpath("errorprone"),
-            classes.toString()),
+            classes.toString()
+        ),
         folder.resolve("stdout.txt"),
-        folder.resolve("stderr.txt"));
+        folder.resolve("stderr.txt")
+    );
     if (Files.exists(report)) {
       read(report, fixtures, run);
     }
@@ -84,7 +85,8 @@ final class SpotBugsParity implements ParityTool {
             fixtures.get(Integer.parseInt(owner.group(1))),
             bug.getAttribute("type"),
             ParityXml.number(line, "start"),
-            0);
+            0
+        );
       }
     }
   }

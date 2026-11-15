@@ -8,7 +8,6 @@ import java.util.Set;
 
 /** Reads the type references of TypeScript and declares its type parameters. */
 final class NodeScopeTypeRefs {
-
   private static final String TYPE_PARAMETER = "typeParameter";
 
   private static final String TYPE_QUERY = "typeQuery";
@@ -76,7 +75,8 @@ final class NodeScopeTypeRefs {
             NodeFlowSyntax.text(name),
             BindingKind.TYPE,
             name.span(),
-            Set.of(BindingFlag.TYPE_ONLY));
+            Set.of(BindingFlag.TYPE_ONLY)
+        );
       }
       parts.stream().skip(1).forEach(this::types);
     } else {

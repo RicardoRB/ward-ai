@@ -7,14 +7,15 @@ import org.junit.jupiter.api.Test;
 
 /** Lint checks of declarations and expressions, run over real Swift source. */
 class SwiftDeclarationLintChecksTest {
-
   @Test
   void duplicateEnumCasesReportsEveryDeclarationOfTheSameName() {
     final RuleCheck check = new SwiftDuplicateEnumCasesCheck(LintRuns.MESSAGE);
 
     assertThat(
-            LintRuns.lines(
-                LintRuns.run(check, "enum E {\n case a(x: Int)\n case b\n case a(y: Int)\n}\n")))
+        LintRuns.lines(
+            LintRuns.run(check, "enum E {\n case a(x: Int)\n case b\n case a(y: Int)\n}\n")
+        )
+    )
         .containsExactly(2, LintRuns.FOURTH_LINE);
     assertThat(LintRuns.run(check, "enum A {\n case add\n}\nenum B {\n case add\n}\n")).isEmpty();
   }
@@ -59,14 +60,17 @@ class SwiftDeclarationLintChecksTest {
     final RuleCheck check = new SwiftNsobjectPreferIsEqualCheck(LintRuns.MESSAGE);
 
     assertThat(
-            LintRuns.lines(
-                LintRuns.run(
-                    check,
-                    "class C: NSObject {\n static func == (lhs: C, rhs: C) -> Bool { true }\n}\n")))
+        LintRuns.lines(
+            LintRuns.run(
+                check,
+                "class C: NSObject {\n static func == (lhs: C, rhs: C) -> Bool { true }\n}\n"
+            )
+        )
+    )
         .containsExactly(2);
     assertThat(
-            LintRuns.run(
-                check, "class C {\n static func == (lhs: C, rhs: C) -> Bool { true }\n}\n"))
+        LintRuns.run(check, "class C {\n static func == (lhs: C, rhs: C) -> Bool { true }\n}\n")
+    )
         .isEmpty();
   }
 
@@ -106,8 +110,8 @@ class SwiftDeclarationLintChecksTest {
     assertThat(LintRuns.lines(LintRuns.run(check, "class F {\n @IBInspectable var x = 0\n}\n")))
         .containsExactly(2);
     assertThat(
-            LintRuns.lines(
-                LintRuns.run(check, "class F {\n @IBInspectable var x: UIEdgeInsets\n}\n")))
+        LintRuns.lines(LintRuns.run(check, "class F {\n @IBInspectable var x: UIEdgeInsets\n}\n"))
+    )
         .containsExactly(2);
     assertThat(LintRuns.run(check, "class F {\n @IBInspectable var x: String?\n}\n")).isEmpty();
     assertThat(LintRuns.run(check, "class F {\n var x = 0\n}\n")).isEmpty();
@@ -118,18 +122,27 @@ class SwiftDeclarationLintChecksTest {
     final RuleCheck check = new SwiftUnneededOverrideCheck(LintRuns.MESSAGE);
 
     assertThat(
-            LintRuns.lines(
-                LintRuns.run(
-                    check,
-                    "class A: B {\n override func foo(a: Int) {\n super.foo(a: a)\n }\n}\n")))
+        LintRuns.lines(
+            LintRuns.run(
+                check,
+                "class A: B {\n override func foo(a: Int) {\n super.foo(a: a)\n }\n}\n"
+            )
+        )
+    )
         .containsExactly(2);
     assertThat(
-            LintRuns.run(
-                check, "class A: B {\n override func foo(a: Int) {\n super.foo(a: a + 1)\n }\n}\n"))
+        LintRuns.run(
+            check,
+            "class A: B {\n override func foo(a: Int) {\n super.foo(a: a + 1)\n }\n}\n"
+        )
+    )
         .isEmpty();
     assertThat(
-            LintRuns.run(
-                check, "class A: B {\n override func foo(a: Int = 1) {\n super.foo(a: a)\n }\n}\n"))
+        LintRuns.run(
+            check,
+            "class A: B {\n override func foo(a: Int = 1) {\n super.foo(a: a)\n }\n}\n"
+        )
+    )
         .isEmpty();
   }
 }

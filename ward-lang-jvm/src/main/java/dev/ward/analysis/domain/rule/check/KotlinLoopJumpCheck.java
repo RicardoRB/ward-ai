@@ -13,7 +13,6 @@ import java.util.Set;
  * loop, so they are not counted for the outer one.
  */
 public final class KotlinLoopJumpCheck implements RuleCheck {
-
   private static final String JUMP = "jumpExpression";
   private static final Set<String> LOOPS =
       Set.of("forExpression", "whileExpression", "doWhileExpression");
@@ -44,7 +43,9 @@ public final class KotlinLoopJumpCheck implements RuleCheck {
         found.add(
             new RuleMatch(
                 visit.node().span(),
-                message.replace(VALUE, String.valueOf(count)).replace(LIMIT, String.valueOf(max))));
+                message.replace(VALUE, String.valueOf(count)).replace(LIMIT, String.valueOf(max))
+            )
+        );
       }
     }
     return List.copyOf(found);

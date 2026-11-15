@@ -25,7 +25,9 @@ public final class CompositeFindingExtractor implements FindingExtractor {
   /** Creates the extractor that delegates to the extractor of each supported gate. */
   @Inject
   public CompositeFindingExtractor(
-      final ToolchainFindingSources toolchains, final WorkspaceMembers members) {
+      final ToolchainFindingSources toolchains,
+      final WorkspaceMembers members
+  ) {
     this(toolchains.sources(), members);
   }
 
@@ -36,7 +38,9 @@ public final class CompositeFindingExtractor implements FindingExtractor {
 
   /** Creates the extractor for the given sources and workspace members. */
   public CompositeFindingExtractor(
-      final List<GateFindingSource> sources, final WorkspaceMembers members) {
+      final List<GateFindingSource> sources,
+      final WorkspaceMembers members
+  ) {
     final Map<String, GateFindingSource> byGate = new LinkedHashMap<>();
     sources.forEach(source -> byGate.put(source.gateId(), source));
     this.sources = Map.copyOf(byGate);
@@ -50,7 +54,10 @@ public final class CompositeFindingExtractor implements FindingExtractor {
 
   @Override
   public List<Finding> extract(
-      final Project project, final GateResult result, final Instant gateStart) {
+      final Project project,
+      final GateResult result,
+      final Instant gateStart
+  ) {
     final GateFindingSource source = sources.get(result.type());
     if (source == null) {
       LOGGER.log(Level.FINE, () -> "event=findings-unsupported gate=" + result.name());
@@ -66,7 +73,8 @@ public final class CompositeFindingExtractor implements FindingExtractor {
                 + " source="
                 + source.getClass().getSimpleName()
                 + " build-tool="
-                + project.buildTool());
+                + project.buildTool()
+    );
     return new TurborepoFindings(source, members).extract(project, result, gateStart);
   }
 }

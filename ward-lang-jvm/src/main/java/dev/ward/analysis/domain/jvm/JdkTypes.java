@@ -13,9 +13,8 @@ import java.util.Set;
  * resolves nothing.
  */
 final class JdkTypes {
-
   private static final String CATALOG =
-"""
+      """
 java.io:
               BufferedInputStream BufferedOutputStream BufferedReader BufferedWriter
               ByteArrayInputStream ByteArrayOutputStream CharArrayReader CharArrayWriter

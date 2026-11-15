@@ -14,13 +14,13 @@ import java.util.Optional;
  * clean(x)} is a sanitizer.
  */
 final class KotlinTaintFixtures {
-
   private static final TaintSpec SPEC =
       new TaintSpec(
           List.of(entry("src", List.of()), entry("getTainted", List.of())),
           List.of(entry("sink", List.of(0))),
           List.of(entry("clean", List.of())),
-          List.of());
+          List.of()
+      );
 
   private KotlinTaintFixtures() {}
 
@@ -32,7 +32,8 @@ final class KotlinTaintFixtures {
   static List<TaintFinding> findings(final String body) {
     return TaintAnalysis.run(
         KotlinFlowFixtures.graph("class C {\nfun f(a: String) {\n" + body + "\n}\n}\n", "C#f(1)"),
-        SPEC);
+        SPEC
+    );
   }
 
   /** The findings of the body called {@code body} in a file written as {@code source}. */

@@ -27,7 +27,8 @@ class OpenApiDiffGateTest {
     final OpenApiGateFixtures fixtures = OpenApiGateFixtures.committedSpec();
     fixtures.workingTree.put(
         OpenApiGateFixtures.SPEC,
-        OpenApiGateFixtures.DOCUMENT.replace("    post:\n", "    put:\n"));
+        OpenApiGateFixtures.DOCUMENT.replace("    post:\n", "    put:\n")
+    );
 
     final GateResult result = run(fixtures);
 
@@ -44,7 +45,9 @@ class OpenApiDiffGateTest {
   void aRemovedPathIsReportedWithItsOwnRule() {
     final OpenApiGateFixtures fixtures = OpenApiGateFixtures.committedSpec();
     fixtures.workingTree.put(
-        OpenApiGateFixtures.SPEC, OpenApiGateFixtures.DOCUMENT.replace("/pets:", "/animals:"));
+        OpenApiGateFixtures.SPEC,
+        OpenApiGateFixtures.DOCUMENT.replace("/pets:", "/animals:")
+    );
 
     final GateResult result = run(fixtures);
 

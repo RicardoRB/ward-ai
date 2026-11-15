@@ -21,7 +21,6 @@ import org.antlr.v4.runtime.Token;
  * The Swift grammar as the formatter's safety checks see it: tokens, rule kinds and syntax errors.
  */
 public final class SwiftFormatSyntax implements FormatSyntax {
-
   /** Marks that no syntax error has been seen yet. */
   private static final int NO_LINE = -1;
 
@@ -53,7 +52,10 @@ public final class SwiftFormatSyntax implements FormatSyntax {
   }
 
   private static void collectRules(
-      final ParserRuleContext context, final String[] names, final List<FormatRule> rules) {
+      final ParserRuleContext context,
+      final String[] names,
+      final List<FormatRule> rules
+  ) {
     rules.add(new FormatRule(names[context.getRuleIndex()], context.getStart().getLine()));
     for (int i = 0; i < context.getChildCount(); i++) {
       if (context.getChild(i) instanceof ParserRuleContext nested) {
@@ -67,7 +69,6 @@ public final class SwiftFormatSyntax implements FormatSyntax {
    * only the reporting is replaced, so no message reaches the console.
    */
   private static final class FirstSyntaxError extends DefaultErrorStrategy {
-
     private int first = NO_LINE;
 
     @Override

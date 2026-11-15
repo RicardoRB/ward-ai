@@ -4,7 +4,6 @@ import java.util.Set;
 
 /** The Node built-in module names that an import may name without a package. */
 final class NodeBuiltins {
-
   static final Set<String> NAMES =
       Set.of(
           "assert",
@@ -49,7 +48,8 @@ final class NodeBuiltins {
           "wasi",
           "worker_threads",
           "zlib",
-          "test");
+          "test"
+      );
 
   private NodeBuiltins() {}
 }

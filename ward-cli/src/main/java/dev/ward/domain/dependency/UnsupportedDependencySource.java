@@ -17,6 +17,7 @@ final class UnsupportedDependencySource implements DependencySource {
         project.root().toString(),
         tool.displayName(),
         tool.displayName() + " projects are not supported by the dependency inventory",
-        "use a supported build tool");
+        "use a supported build tool"
+    );
   }
 }

@@ -15,7 +15,6 @@ import java.util.Set;
  * supertypes is skipped.
  */
 public final class IdenticalCatchBranchesCheck implements RuleCheck {
-
   private static final String CATCH = "catchClause";
   private static final Set<String> BROAD =
       Set.of(
@@ -25,7 +24,8 @@ public final class IdenticalCatchBranchesCheck implements RuleCheck {
           "Error",
           "IOException",
           "ReflectiveOperationException",
-          "SQLException");
+          "SQLException"
+      );
 
   private final String message;
 
@@ -57,7 +57,9 @@ public final class IdenticalCatchBranchesCheck implements RuleCheck {
   }
 
   private static Optional<SyntaxNode> findEarlier(
-      final List<SyntaxNode> before, final SyntaxNode clause) {
+      final List<SyntaxNode> before,
+      final SyntaxNode clause
+  ) {
     final String body = body(clause);
     if (broad(clause)) {
       return Optional.empty();

@@ -26,7 +26,6 @@ import org.junit.jupiter.api.condition.EnabledIf;
  * -Dward.parity.write=true}.
  */
 final class GitleaksParitySmokeTest {
-
   private static final String GITLEAKS_PROPERTY = "ward.parity.gitleaks";
   private static final String WRITE_PROPERTY = "ward.parity.write";
 
@@ -40,7 +39,8 @@ final class GitleaksParitySmokeTest {
       Pattern.compile(
           "\\{[^{}]*?\"RuleID\":\\s*\"([^\"]+)\"[^{}]*?\"StartLine\":\\s*(\\d+)"
               + "[^{}]*?\"StartColumn\":\\s*(\\d+)[^{}]*?\"File\":\\s*\"([^\"]+)\"",
-          Pattern.DOTALL);
+          Pattern.DOTALL
+      );
 
   /** Whether the opt-in property names a Gitleaks binary. */
   static boolean gitleaksConfigured() {
@@ -78,17 +78,18 @@ final class GitleaksParitySmokeTest {
     final Path report = Files.createTempFile("gitleaks-parity", ".json");
     final Process process =
         new ProcessBuilder(
-                gitleaks,
-                "dir",
-                "--no-banner",
-                "--redact",
-                "--exit-code",
-                "0",
-                "--report-format",
-                "json",
-                "--report-path",
-                report.toString(),
-                root.toString())
+            gitleaks,
+            "dir",
+            "--no-banner",
+            "--redact",
+            "--exit-code",
+            "0",
+            "--report-format",
+            "json",
+            "--report-path",
+            report.toString(),
+            root.toString()
+        )
             .redirectErrorStream(true)
             .redirectOutput(ProcessBuilder.Redirect.DISCARD)
             .start();
@@ -106,12 +107,19 @@ final class GitleaksParitySmokeTest {
   }
 
   private static void record(
-      final Map<String, List<String>> positions, final String key, final String position) {
+      final Map<String,
+      List<String>> positions,
+      final String key,
+      final String position
+  ) {
     positions.computeIfAbsent(key, name -> new ArrayList<>()).add(position);
   }
 
   private static java.util.Optional<String> difference(
-      final Path folder, final Map<String, List<String>> reported) throws IOException {
+      final Path folder,
+      final Map<String,
+      List<String>> reported
+  ) throws IOException {
     final String rule = folder.getFileName().toString();
     final Path violating = fixture(folder, "violating");
     final Path passing = fixture(folder, "passing");
@@ -133,7 +141,8 @@ final class GitleaksParitySmokeTest {
       return java.util.Optional.empty();
     }
     return java.util.Optional.of(
-        approximations().contains(rule) ? "approximation" : String.join(",", kinds));
+        approximations().contains(rule) ? "approximation" : String.join(",", kinds)
+    );
   }
 
   private static java.util.Set<String> approximations() throws IOException {
@@ -144,10 +153,12 @@ final class GitleaksParitySmokeTest {
   }
 
   private static List<String> positions(
-      final Map<String, List<String>> reported,
+      final Map<String,
+      List<String>> reported,
       final String rule,
       final Path folder,
-      final Path file) {
+      final Path file
+  ) {
     final Path root = folder.getParent();
     return reported.getOrDefault(rule + "\t" + root.relativize(file), List.of());
   }

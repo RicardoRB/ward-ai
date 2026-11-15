@@ -12,14 +12,16 @@ import java.util.stream.Collectors;
 
 /** Formats the table rows of the generated rule reference. */
 final class RuleReferenceRows {
-
   static final String ISSUES = "https://github.com/RicardoRB/ward-ai/issues/";
 
   private RuleReferenceRows() {}
 
   /** Returns the row of one implemented rule, with the options its definition declares. */
   static String implementedRow(
-      final CatalogRow row, final AnalysisLanguage language, final List<RuleDefinition> rules) {
+      final CatalogRow row,
+      final AnalysisLanguage language,
+      final List<RuleDefinition> rules
+  ) {
     if (row.breaking()) {
       return "| `"
           + row.idFor(language)
@@ -36,7 +38,8 @@ final class RuleReferenceRows {
         rule.category(),
         presets(rule),
         options(rule),
-        RuleReferenceTools.counterparts(row) + " |");
+        RuleReferenceTools.counterparts(row) + " |"
+    );
   }
 
   /** Returns the row of one catalog row on a file page. */

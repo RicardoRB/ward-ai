@@ -50,7 +50,8 @@ public final class MustInvokeSuperCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(METHOD)).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(method -> overridesMarked(method, types) && !callsSuper(method))
@@ -62,7 +63,8 @@ public final class MustInvokeSuperCheck implements RuleCheck {
     return types.at(method.span()).overrides().stream()
         .flatMap(target -> target.annotations().stream())
         .anyMatch(
-            annotation -> MARKERS.contains(annotation.substring(annotation.lastIndexOf('.') + 1)));
+            annotation -> MARKERS.contains(annotation.substring(annotation.lastIndexOf('.') + 1))
+        );
   }
 
   private static boolean callsSuper(final SyntaxNode method) {

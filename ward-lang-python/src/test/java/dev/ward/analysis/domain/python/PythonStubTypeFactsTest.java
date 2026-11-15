@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** Tests the literal types and the unknown answers of the Python type facts. */
 class PythonStubTypeFactsTest {
-
   private static final Set<FactKind> TYPE = Set.of(FactKind.TYPE);
 
   @Test

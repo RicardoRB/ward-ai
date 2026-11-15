@@ -8,7 +8,6 @@ import java.util.Map;
 
 /** Reads the package and imports of a Kotlin file, for the receiver types of its flow sites. */
 final class KotlinTypeNames {
-
   private static final String PACKAGE_HEADER = "packageHeader";
   private static final String IMPORT_LIST = "importList";
   private static final String IMPORT_HEADER = "importHeader";
@@ -35,9 +34,11 @@ final class KotlinTypeNames {
 
   private static void visit(
       final SyntaxNode node,
-      final Map<String, String> imports,
+      final Map<String,
+      String> imports,
       final List<String> wildcards,
-      final StringBuilder packageName) {
+      final StringBuilder packageName
+  ) {
     switch (node.kind()) {
       case PACKAGE_HEADER -> packageName.append(nameOf(node));
       case IMPORT_HEADER -> addImport(node, imports, wildcards);
@@ -50,7 +51,11 @@ final class KotlinTypeNames {
   }
 
   private static void addImport(
-      final SyntaxNode node, final Map<String, String> imports, final List<String> wildcards) {
+      final SyntaxNode node,
+      final Map<String,
+      String> imports,
+      final List<String> wildcards
+  ) {
     final String name = nameOf(node);
     if (name.isEmpty()) {
       return;

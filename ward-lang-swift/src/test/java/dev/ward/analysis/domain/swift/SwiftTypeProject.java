@@ -16,7 +16,6 @@ import java.util.Optional;
 
 /** Builds parsed in-memory Swift projects and looks up nodes and facts in them for the tests. */
 final class SwiftTypeProject {
-
   private static final String BINDING = "pattern_initializer";
   private static final String TEXT = "text";
   private static final AntlrLanguageFrontend FRONTEND = new AntlrLanguageFrontend();
@@ -25,11 +24,18 @@ final class SwiftTypeProject {
           List.of(
               new SwiftTarget("Core", List.of("Core"), List.of(), List.of()),
               new SwiftTarget("Util", List.of("Util"), List.of(), List.of()),
-              new SwiftTarget("App", List.of("App"), List.of(), List.of())));
+              new SwiftTarget("App", List.of("App"), List.of(), List.of())
+          )
+      );
 
   /** A parsed project: its units and trees by path, and the facts over them. */
   record Project(
-      Map<String, SourceUnit> units, Map<String, SyntaxNode> trees, SwiftTypeFacts facts) {}
+      Map<String,
+      SourceUnit> units,
+      Map<String,
+      SyntaxNode> trees,
+      SwiftTypeFacts facts
+  ) {}
 
   private SwiftTypeProject() {}
 
@@ -41,12 +47,17 @@ final class SwiftTypeProject {
           final SourceUnit unit = new SourceUnit(path, AnalysisLanguage.SWIFT, text);
           units.put(path, unit);
           trees.put(path, FRONTEND.parse(unit).tree());
-        });
+        }
+    );
     return new Project(units, trees, new SwiftTypeFacts(LAYOUT, trees));
   }
 
   static Optional<TypeRef> typeOf(
-      final Project project, final String path, final String kind, final String prefix) {
+      final Project project,
+      final String path,
+      final String kind,
+      final String prefix
+  ) {
     final SyntaxNode node = firstNode(project.trees().get(path), kind, prefix);
     return project
         .facts()
@@ -55,7 +66,11 @@ final class SwiftTypeProject {
   }
 
   static Optional<TypeShape> shapeOf(
-      final Project project, final String path, final String kind, final String prefix) {
+      final Project project,
+      final String path,
+      final String kind,
+      final String prefix
+  ) {
     final SyntaxNode node = firstNode(project.trees().get(path), kind, prefix);
     return project
         .facts()
@@ -64,7 +79,11 @@ final class SwiftTypeProject {
   }
 
   static List<TypeRef> supertypesOf(
-      final Project project, final String path, final String kind, final String prefix) {
+      final Project project,
+      final String path,
+      final String kind,
+      final String prefix
+  ) {
     return shapeOf(project, path, kind, prefix).map(TypeShape::supertypes).orElse(List.of());
   }
 
@@ -75,7 +94,10 @@ final class SwiftTypeProject {
   }
 
   private static Optional<SyntaxNode> findNode(
-      final SyntaxNode node, final String kind, final String prefix) {
+      final SyntaxNode node,
+      final String kind,
+      final String prefix
+  ) {
     if (kind.equals(node.kind()) && text(node).startsWith(prefix)) {
       return Optional.of(node);
     }

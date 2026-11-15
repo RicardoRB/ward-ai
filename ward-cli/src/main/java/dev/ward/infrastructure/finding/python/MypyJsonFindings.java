@@ -37,7 +37,10 @@ public final class MypyJsonFindings implements GateFindingSource {
 
   @Override
   public List<Finding> extract(
-      final Project project, final GateResult result, final Instant gateStart) {
+      final Project project,
+      final GateResult result,
+      final Instant gateStart
+  ) {
     final String stdout = result.stdout();
     if (stdout == null) {
       return List.of();
@@ -78,7 +81,8 @@ public final class MypyJsonFindings implements GateFindingSource {
         // mypy's JSON column is 0-based, unlike its text output.
         diagnostic.column == null ? null : positive(diagnostic.column + 1),
         null,
-        List.of());
+        List.of()
+    );
   }
 
   private static Integer positive(final Integer value) {

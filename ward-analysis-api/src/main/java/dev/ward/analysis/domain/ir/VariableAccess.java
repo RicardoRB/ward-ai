@@ -14,7 +14,6 @@ import java.util.Objects;
  * @param declaration where the variable is declared
  */
 public record VariableAccess(String name, AccessKind kind, Span span, Span declaration) {
-
   /**
    * Validates the fields.
    *

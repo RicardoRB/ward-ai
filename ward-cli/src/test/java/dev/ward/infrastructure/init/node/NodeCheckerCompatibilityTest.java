@@ -24,14 +24,18 @@ class NodeCheckerCompatibilityTest {
   @TempDir Path root;
 
   @ParameterizedTest
-  @CsvSource({
-    "vue-tsc, ^2.0.0",
-    "svelte-check, ^3.0.0",
-    "@astrojs/check, ^0.8.0",
-    "@astrojs/check, ^1.0.0"
-  })
+  @CsvSource(
+      {
+          "vue-tsc, ^2.0.0",
+          "svelte-check, ^3.0.0",
+          "@astrojs/check, ^0.8.0",
+          "@astrojs/check, ^1.0.0"
+      }
+  )
   void declaredCheckerOutsideItsSupportedRangeIsIncompatible(
-      final String name, final String range) {
+      final String name,
+      final String range
+  ) {
     final List<CompatibilityFinding> findings =
         check("24", new PackageManifest(Map.of(name, range), null, null)).findings();
 
@@ -42,13 +46,15 @@ class NodeCheckerCompatibilityTest {
               assertThat(finding.artifactId()).isEqualTo(name);
               assertThat(finding.outcome()).isEqualTo(CompatibilityOutcome.INCOMPATIBLE);
               assertThat(finding.message()).contains(name + " " + range);
-            });
+            }
+        );
   }
 
   @Test
   void declaredCheckerInsideItsSupportedRangeIsCompatible() {
     assertThat(
-            check("24", new PackageManifest(Map.of("vue-tsc", "^3.3.12"), null, null)).findings())
+        check("24", new PackageManifest(Map.of("vue-tsc", "^3.3.12"), null, null)).findings()
+    )
         .isEmpty();
   }
 
@@ -67,6 +73,7 @@ class NodeCheckerCompatibilityTest {
         Set.of(),
         node,
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 }

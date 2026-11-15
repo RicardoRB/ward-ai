@@ -27,7 +27,8 @@ class DoctorToolchainTest {
 
     assertThat(findings)
         .contains(
-            new Finding("cargo", Status.WARNING, "Ward does not check the Cargo toolchain yet."));
+            new Finding("cargo", Status.WARNING, "Ward does not check the Cargo toolchain yet.")
+        );
     assertThat(findings).extracting(Finding::message).noneMatch(m -> m.contains("Maven"));
   }
 
@@ -52,7 +53,10 @@ class DoctorToolchainTest {
   void missingTypescriptIsAnOptionalWarningOnNodeProjects() {
     final List<Finding> findings =
         diagnose(
-            new Project(ROOT, Language.TYPESCRIPT, BuildTool.NPM, Framework.NONE), "node", "npm");
+            new Project(ROOT, Language.TYPESCRIPT, BuildTool.NPM, Framework.NONE),
+            "node",
+            "npm"
+        );
 
     assertThat(findings)
         .extracting(Finding::name, Finding::status)
@@ -63,7 +67,10 @@ class DoctorToolchainTest {
   void missingJavacIsAnOptionalWarningOnJavaProjects() {
     final List<Finding> findings =
         diagnose(
-            new Project(ROOT, Language.JAVA, BuildTool.GRADLE, Framework.NONE), "gradle", "java");
+            new Project(ROOT, Language.JAVA, BuildTool.GRADLE, Framework.NONE),
+            "gradle",
+            "java"
+        );
 
     assertThat(findings)
         .extracting(Finding::name, Finding::status)
@@ -72,8 +79,9 @@ class DoctorToolchainTest {
 
   private static List<Finding> diagnose(final Project project, final String... executables) {
     return new DoctorService(
-            new ProjectDetector(new FixedProjectInspection(project)),
-            new FakeEnvironmentInspection(executables))
+        new ProjectDetector(new FixedProjectInspection(project)),
+        new FakeEnvironmentInspection(executables)
+    )
         .diagnose(ROOT);
   }
 

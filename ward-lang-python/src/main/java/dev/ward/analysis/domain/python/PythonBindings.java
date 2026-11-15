@@ -21,7 +21,6 @@ import java.util.function.Consumer;
  * definition declares it each time, so a redefinition is visible to rules.
  */
 final class PythonBindings {
-
   private static final String STAR_EXPR = "star_expr";
   private static final String ATOM = "atom";
   private static final String PARENTHESIS = "(";
@@ -40,7 +39,8 @@ final class PythonBindings {
   PythonBindings(
       final ScopeBuilder builder,
       final Set<String> exported,
-      final Consumer<SyntaxNode> expression) {
+      final Consumer<SyntaxNode> expression
+  ) {
     this.builder = builder;
     this.exported = exported;
     this.expression = expression;
@@ -76,7 +76,12 @@ final class PythonBindings {
     if (here.isPresent() && here.get().has(BindingFlag.GLOBAL)) {
       if (!builder.declares(UnitScopes.MODULE_ID, identifier)) {
         builder.declareIn(
-            UnitScopes.MODULE_ID, identifier, BindingKind.VARIABLE, name.span(), Set.of());
+            UnitScopes.MODULE_ID,
+            identifier,
+            BindingKind.VARIABLE,
+            name.span(),
+            Set.of()
+        );
       }
     } else if (here.isEmpty()) {
       final Set<BindingFlag> flags = flags(identifier);
@@ -101,7 +106,12 @@ final class PythonBindings {
     final String identifier = PythonNames.identifier(name);
     if (!builder.declares(scope, identifier)) {
       builder.declareIn(
-          scope, identifier, BindingKind.VARIABLE, name.span(), flagsIn(scope, identifier));
+          scope,
+          identifier,
+          BindingKind.VARIABLE,
+          name.span(),
+          flagsIn(scope, identifier)
+      );
     }
     builder.referenceIn(scope, identifier, name.span(), ReferenceAccess.WRITE);
   }
@@ -150,7 +160,11 @@ final class PythonBindings {
     }
     for (final SyntaxNode name : PythonSyntax.children(statement, PythonNames.NAME)) {
       builder.declare(
-          PythonNames.identifier(name), BindingKind.VARIABLE, name.span(), Set.of(flag));
+          PythonNames.identifier(name),
+          BindingKind.VARIABLE,
+          name.span(),
+          Set.of(flag)
+      );
     }
   }
 }

@@ -19,7 +19,6 @@ import java.util.SortedMap;
 
 /** A rule whose matches come from one {@link RuleCheck}. */
 public final class CheckedRule implements TextCompiledRule {
-
   private final RuleDefinition definition;
   private final RuleCheck check;
 
@@ -50,7 +49,10 @@ public final class CheckedRule implements TextCompiledRule {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final DependencyView dependencies, final FlowView flow) {
+      final SyntaxNode root,
+      final DependencyView dependencies,
+      final FlowView flow
+  ) {
     return check.matches(root, flow);
   }
 
@@ -59,7 +61,8 @@ public final class CheckedRule implements TextCompiledRule {
       final SyntaxNode root,
       final DependencyView dependencies,
       final FlowView flow,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return check.matches(root, flow, unit);
   }
 
@@ -73,7 +76,8 @@ public final class CheckedRule implements TextCompiledRule {
       final SyntaxNode root,
       final DependencyView dependencies,
       final UnitViews views,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return check.matches(root, views.flow(), views.scopes(), views.types(), unit);
   }
 
@@ -89,7 +93,10 @@ public final class CheckedRule implements TextCompiledRule {
 
   @Override
   public List<ProjectMatch> project(
-      final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
+      final SortedMap<String,
+      SyntaxNode> trees,
+      final ProjectFiles files
+  ) {
     return check instanceof ProjectCheck project ? project.project(trees, files) : List.of();
   }
 

@@ -35,7 +35,10 @@ public final class NodeWorkspaces {
   /** Returns whether the workspace patterns of {@code root} match {@code candidate}. */
   public static boolean listsByPattern(final Path root, final Path candidate) {
     return WorkspaceGlobs.matchesAny(
-        patterns(root, NodeProjectInspection.manifest(root)), root, candidate);
+        patterns(root, NodeProjectInspection.manifest(root)),
+        root,
+        candidate
+    );
   }
 
   /** Returns whether a directory matched by the workspace patterns has {@code tsconfig.json}. */
@@ -74,7 +77,11 @@ public final class NodeWorkspaces {
   }
 
   private static List<Path> directories(
-      final Path root, final Map<?, ?> manifest, final boolean otherBuild) {
+      final Path root,
+      final Map<?,
+      ?> manifest,
+      final boolean otherBuild
+  ) {
     final List<String> patterns = patterns(root, manifest);
     if (patterns.isEmpty()) {
       return List.of();

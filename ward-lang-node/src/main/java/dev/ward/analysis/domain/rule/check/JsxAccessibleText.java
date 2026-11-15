@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
  * or the alt of an img, replaces its children's text; a hidden element contributes nothing.
  */
 final class JsxAccessibleText {
-
   private static final String ELEMENT = "jsxElement";
   private static final String TEXT = "jsxText";
   private static final String OPENING = JsxAttributes.OPENING;

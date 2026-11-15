@@ -45,7 +45,8 @@ class GitRevisionFilesReadTest {
     final FakeCommandExecutor onlyShowFails =
         new FakeCommandExecutor(
             new CommandResult(0, "", "", Duration.ZERO),
-            new CommandResult(1, "", "", Duration.ZERO));
+            new CommandResult(1, "", "", Duration.ZERO)
+        );
 
     assertThatThrownBy(() -> new GitRevisionFiles(onlyShowFails).read(root, "abc", SPEC))
         .isInstanceOf(RevisionReadException.class);
@@ -68,8 +69,10 @@ class GitRevisionFilesReadTest {
             "commit",
             "-q",
             "-m",
-            "x"),
-        root);
+            "x"
+        ),
+        root
+    );
     return executor.execute(List.of("git", "rev-parse", "HEAD"), root).stdout().trim();
   }
 }

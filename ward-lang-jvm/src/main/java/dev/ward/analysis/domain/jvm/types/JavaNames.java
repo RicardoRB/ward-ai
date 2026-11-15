@@ -20,7 +20,8 @@ final class JavaNames {
       final Session session,
       final JavaExpressions expressions,
       final JavaCalls calls,
-      final JavaTyper typer) {
+      final JavaTyper typer
+  ) {
     this.session = session;
     this.expressions = expressions;
     this.calls = calls;
@@ -40,7 +41,8 @@ final class JavaNames {
     final Optional<JType> type =
         Syntax.child(written, "typeType").flatMap(found -> JavaTypes.type(found, ctx.scope()));
     return type.map(
-            found -> Typed.of(new JType.ClassType("java.lang.Class", List.of(Types.boxed(found)))))
+        found -> Typed.of(new JType.ClassType("java.lang.Class", List.of(Types.boxed(found))))
+    )
         .orElse(Typed.UNKNOWN);
   }
 
@@ -65,7 +67,8 @@ final class JavaNames {
             ctx.scope()
                 .resolve(List.of(name))
                 .map(binary -> Typed.naming(JType.ClassType.of(binary)))
-                .orElseGet(() -> Typed.pkg(name)));
+                .orElseGet(() -> Typed.pkg(name))
+    );
   }
 
   private Optional<Typed> fieldOfEnclosing(final String name, final Ctx ctx) {
@@ -83,7 +86,8 @@ final class JavaNames {
             found -> {
               final JType type = Types.substitute(found.member().type(), found.bindings());
               return Typed.of(type).withConstant(found.member().constant());
-            });
+            }
+        );
   }
 
   /** Types {@code qualifier.name}, {@code qualifier.name(args)} and the like. */
@@ -121,7 +125,8 @@ final class JavaNames {
                 session
                     .hierarchy
                     .memberClass(owner.name(), name)
-                    .map(binary -> Typed.naming(JType.ClassType.of(binary))))
+                    .map(binary -> Typed.naming(JType.ClassType.of(binary)))
+        )
         .orElse(Typed.UNKNOWN);
   }
 
@@ -150,7 +155,8 @@ final class JavaNames {
           identifiers.subList(0, identifiers.size() - 1).stream().map(Syntax::text).toList();
       session.variable(
           identifiers.get(identifiers.size() - 1),
-          ctx.scope().resolve(segments).map(JType.ClassType::of));
+          ctx.scope().resolve(segments).map(JType.ClassType::of)
+      );
       return;
     }
     typer.declarePattern(pattern, ctx);

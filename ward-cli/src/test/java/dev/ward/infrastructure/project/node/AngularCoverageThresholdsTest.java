@@ -14,9 +14,7 @@ class AngularCoverageThresholdsTest {
 
   @Test
   void setLineThresholdInTheTestTargetIsDetected() throws IOException {
-    Files.writeString(
-        root.resolve("angular.json"),
-        """
+    Files.writeString(root.resolve("angular.json"), """
         {"projects": {"app": {"architect": {"test": {"options": {
           "coverageThresholds": {"lines": 80, "branches": 70}
         }}}}}}}
@@ -27,9 +25,7 @@ class AngularCoverageThresholdsTest {
 
   @Test
   void angularJsonWithoutThresholdsIsNotDetected() throws IOException {
-    Files.writeString(
-        root.resolve("angular.json"),
-        """
+    Files.writeString(root.resolve("angular.json"), """
         {"projects": {"app": {"architect": {"test": {"options": {"coverage": true}}}}}}
         """);
 

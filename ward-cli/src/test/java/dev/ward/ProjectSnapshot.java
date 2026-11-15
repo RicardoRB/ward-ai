@@ -36,7 +36,10 @@ public final class ProjectSnapshot {
    * modified, and removed are exactly the plan's writing entries.
    */
   public static void assertPlanMatches(
-      final Path root, final Supplier<List<PlannedFileChange>> planner, final Runnable applier) {
+      final Path root,
+      final Supplier<List<PlannedFileChange>> planner,
+      final Runnable applier
+  ) {
     final Map<String, String> before = of(root);
     final List<PlannedFileChange> plan = planner.get();
     assertThat(of(root)).as("planning must not write").isEqualTo(before);
@@ -52,7 +55,11 @@ public final class ProjectSnapshot {
 
   /** The files created, modified, or removed between two snapshots. */
   public static Map<String, Action> changes(
-      final Map<String, String> before, final Map<String, String> after) {
+      final Map<String,
+      String> before,
+      final Map<String,
+      String> after
+  ) {
     final Map<String, Action> changes = new TreeMap<>();
     after.forEach(
         (file, content) -> {
@@ -62,7 +69,8 @@ public final class ProjectSnapshot {
           } else if (!previous.equals(content)) {
             changes.put(file, Action.MODIFY);
           }
-        });
+        }
+    );
     before.keySet().stream()
         .filter(file -> !after.containsKey(file))
         .forEach(file -> changes.put(file, Action.REMOVE));

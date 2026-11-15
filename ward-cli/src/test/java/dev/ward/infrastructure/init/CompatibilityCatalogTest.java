@@ -20,7 +20,7 @@ class CompatibilityCatalogTest {
     final List<String> versions =
         Files.readAllLines(CELLS).stream()
             .skip(1)
-            .map(line -> line.split(",", -1)[0])
+            .map(line -> line.split(",", -1) [0])
             .distinct()
             .toList();
 
@@ -29,7 +29,8 @@ class CompatibilityCatalogTest {
             tool ->
                 assertThat(versions)
                     .as("matrix cell for %s in %s", tool.name(), tool.pythonRange())
-                    .anyMatch(version -> inRange(version, tool.pythonRange())));
+                    .anyMatch(version -> inRange(version, tool.pythonRange()))
+        );
   }
 
   /**

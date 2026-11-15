@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 
 /** The {@code secrets} gate: SecretGateHistoryTest. */
 final class SecretGateHistoryTest extends SecretGateTestSupport {
-
   @Test
   void theHistoryIsNotReadUnlessAsked() throws IOException {
     write(CONFIG, "clean\n");
@@ -36,7 +35,10 @@ final class SecretGateHistoryTest extends SecretGateTestSupport {
                 CONFIG,
                 List.of(
                     new AddedLine(HISTORY_LINE - 1, "a: 1"),
-                    new AddedLine(HISTORY_LINE, "token: " + TOKEN))));
+                    new AddedLine(HISTORY_LINE, "token: " + TOKEN)
+                )
+            )
+        );
 
     final GateResult result =
         run(new SecretsOptions(true, Optional.of(LocalDate.of(2026, 1, 1)), List.of()), List.of());

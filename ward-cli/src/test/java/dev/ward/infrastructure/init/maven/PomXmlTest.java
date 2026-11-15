@@ -40,8 +40,7 @@ class PomXmlTest {
         """;
 
     assertThat(PomXml.addPlugin(pom, PLUGIN))
-        .isEqualTo(
-            """
+        .isEqualTo("""
             <project>
                 <profiles>
                     <profile>
@@ -75,7 +74,8 @@ class PomXmlTest {
     assertThat(updated)
         .startsWith(
             "<project><build><!-- </plugins> --><pluginManagement><plugins></plugins>"
-                + "</pluginManagement><plugins><plugin/>\n")
+                + "</pluginManagement><plugins><plugin/>\n"
+        )
         .contains("<artifactId>new-plugin</artifactId>")
         .endsWith("</plugin>\n</plugins></build></project>");
   }
@@ -87,7 +87,8 @@ class PomXmlTest {
     assertThat(updated)
         .isEqualTo(
             "<project><build>\n  <plugins>\n    <plugin>\n      <artifactId>new-plugin</artifactId>\n"
-                + "    </plugin>\n  </plugins>\n</build></project>");
+                + "    </plugin>\n  </plugins>\n</build></project>"
+        );
   }
 
   @Test
@@ -98,7 +99,8 @@ class PomXmlTest {
         .isEqualTo(
             "<?xml version=\"1.0\"?>\n<project xmlns=\"urn:pom\">\n  <x/>\n  <build>\n"
                 + "    <plugins>\n      <plugin>\n        <artifactId>new-plugin</artifactId>\n"
-                + "      </plugin>\n    </plugins>\n  </build>\n</project>\n");
+                + "      </plugin>\n    </plugins>\n  </build>\n</project>\n"
+        );
   }
 
   @Test
@@ -114,7 +116,8 @@ class PomXmlTest {
     assertThat(updated)
         .endsWith(
             "<dependencies>\n  <dependency><artifactId>d</artifactId></dependency>\n"
-                + "</dependencies></project>");
+                + "</dependencies></project>"
+        );
   }
 
   @Test
@@ -152,7 +155,8 @@ class PomXmlTest {
         .contains(
             "</dependencies>\n        <configuration>\n          <mutationThreshold>"
                 + preset.rules().mutationThreshold()
-                + "</mutationThreshold>\n        </configuration>\n      </plugin>");
+                + "</mutationThreshold>\n        </configuration>\n      </plugin>"
+        );
   }
 
   @Test
@@ -166,7 +170,8 @@ class PomXmlTest {
               "<artifactId>pitest-maven</artifactId>\n",
               "<version>1.30.1</version>",
               "<artifactId>pitest-junit5-plugin</artifactId>",
-              "<version>1.2.3</version>")
+              "<version>1.2.3</version>"
+          )
           .doesNotContain("history");
     }
   }

@@ -25,7 +25,6 @@ import java.util.regex.Pattern;
  * are left out.
  */
 public final class JavaThreadResourceCheck implements RuleCheck {
-
   private static final Pattern THIS_REFERENCE = Pattern.compile("^this::(\\w+)$");
 
   private final String message;
@@ -37,7 +36,8 @@ public final class JavaThreadResourceCheck implements RuleCheck {
           MemberDeclarations.name(declaration),
           declaration,
           ClassShapes.declaredNames(declaration),
-          MemberDeclarations.modifiers(member).contains("synchronized"));
+          MemberDeclarations.modifiers(member).contains("synchronized")
+      );
     }
   }
 
@@ -72,7 +72,8 @@ public final class JavaThreadResourceCheck implements RuleCheck {
             region.node(),
             region.synced() ? FieldAccessScan.Lock.THIS : FieldAccessScan.Lock.NONE,
             region.key(),
-            region.shadow());
+            region.shadow()
+        );
         scan.callees(region.key()).stream()
             .filter(methods::containsKey)
             .forEach(callee -> queue.add(methods.get(callee)));
@@ -82,7 +83,10 @@ public final class JavaThreadResourceCheck implements RuleCheck {
   }
 
   private List<RuleMatch> fieldMatches(
-      final FieldAccessScan scan, final Set<String> imports, final String classText) {
+      final FieldAccessScan scan,
+      final Set<String> imports,
+      final String classText
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final FieldAccessScan.Field field : scan.fields().values()) {
       if (shared(field, imports, classText)) {
@@ -96,7 +100,11 @@ public final class JavaThreadResourceCheck implements RuleCheck {
               access ->
                   matches.add(
                       CheckSupport.at(
-                          access.node().span(), CheckSupport.fill(message, field.name(), ""))));
+                          access.node().span(),
+                          CheckSupport.fill(message, field.name(), "")
+                      )
+                  )
+          );
         }
       }
     }
@@ -113,17 +121,24 @@ public final class JavaThreadResourceCheck implements RuleCheck {
   }
 
   private static boolean shared(
-      final FieldAccessScan.Field field, final Set<String> imports, final String classText) {
+      final FieldAccessScan.Field field,
+      final Set<String> imports,
+      final String classText
+  ) {
     final String type = field.type().replaceAll("<.*>", "");
     final String simple = ClassMembers.simpleName(type);
     final boolean atomic =
         simple.startsWith("Atomic")
             && (type.startsWith("java.util.concurrent.atomic.")
                 || JavaAnnotations.resolves(
-                    imports, simple, "java.util.concurrent.atomic." + simple));
+                    imports,
+                    simple,
+                    "java.util.concurrent.atomic." + simple
+                ));
     final boolean wrapped =
         Pattern.compile(
-                "(?:this\\.)?" + Pattern.quote(field.name()) + "=Collections\\.synchronized")
+            "(?:this\\.)?" + Pattern.quote(field.name()) + "=Collections\\.synchronized"
+        )
             .matcher(classText)
             .find();
     return !atomic && !wrapped;
@@ -155,8 +170,10 @@ public final class JavaThreadResourceCheck implements RuleCheck {
   private static void seed(
       final SyntaxNode argument,
       final Set<String> shadow,
-      final Map<String, Region> methods,
-      final List<Region> seeds) {
+      final Map<String,
+      Region> methods,
+      final List<Region> seeds
+  ) {
     final List<SyntaxNode> parts = argument.children();
     if (parts.size() == 1 && "lambdaExpression".equals(parts.get(0).kind())) {
       final SyntaxNode lambda = parts.get(0);
@@ -180,7 +197,8 @@ public final class JavaThreadResourceCheck implements RuleCheck {
                         && JavaNodes.kid(node, "identifier")
                             .map(SyntaxWalk::text)
                             .filter("addShutdownHook"::equals)
-                            .isPresent());
+                            .isPresent()
+            );
     return ("Thread".equals(type) || "java.lang.Thread".equals(type)) && !hook;
   }
 

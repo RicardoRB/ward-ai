@@ -44,7 +44,8 @@ final class TomlArchitectureParser {
               + where
               + "."
               + ARCHITECTURE_FILE
-              + "' must be a relative path inside the project, such as ward-architecture.toml");
+              + "' must be a relative path inside the project, such as ward-architecture.toml"
+      );
     }
     return path;
   }
@@ -67,7 +68,10 @@ final class TomlArchitectureParser {
    * list when it sets none.
    */
   static List<List<String>> independence(
-      final String where, final String type, final TomlTable gate) {
+      final String where,
+      final String type,
+      final TomlTable gate
+  ) {
     if (!SupportedQualityGates.ANALYSIS.equals(type) || !gate.contains(INDEPENDENCE)) {
       return List.of();
     }
@@ -91,11 +95,15 @@ final class TomlArchitectureParser {
   }
 
   private static void rejectUnknownKeys(
-      final String key, final TomlTable table, final Set<String> allowed) {
+      final String key,
+      final TomlTable table,
+      final Set<String> allowed
+  ) {
     for (final String name : table.keySet()) {
       if (!allowed.contains(name)) {
         throw new WardException(
-            "'" + key + "." + name + "' is not a key of this table. Supported keys: " + allowed);
+            "'" + key + "." + name + "' is not a key of this table. Supported keys: " + allowed
+        );
       }
     }
   }
@@ -104,14 +112,18 @@ final class TomlArchitectureParser {
    * Returns the project-relative directories of {@code array}, at least {@code minimum} of them.
    */
   private static List<String> directories(
-      final String key, final TomlArray array, final int minimum) {
+      final String key,
+      final TomlArray array,
+      final int minimum
+  ) {
     if (array == null || array.size() < minimum) {
       throw new WardException(
           "'"
               + key
               + "' must be an array of at least "
               + minimum
-              + " project-relative directories");
+              + " project-relative directories"
+      );
     }
     final List<String> directories = new ArrayList<>();
     for (int index = 0; index < array.size(); index++) {
@@ -130,7 +142,8 @@ final class TomlArchitectureParser {
     final String path = withoutTrailingSlashes(text.replace('\\', '/'));
     if (!isInsideProject(path)) {
       throw new WardException(
-          "'" + key + "' names '" + text + "', which is not a project-relative directory");
+          "'" + key + "' names '" + text + "', which is not a project-relative directory"
+      );
     }
     return path;
   }
@@ -139,8 +152,7 @@ final class TomlArchitectureParser {
     String path = text;
     while (path.startsWith("./")) {
       path = path.substring(2);
-    }
-    while (path.endsWith(PATH_SEPARATOR) && path.length() > 1) {
+    } while (path.endsWith(PATH_SEPARATOR) && path.length() > 1) {
       path = path.substring(0, path.length() - 1);
     }
     return path;
@@ -150,9 +162,9 @@ final class TomlArchitectureParser {
   private static boolean isInsideProject(final String path) {
     return PROJECT_ROOT.equals(path)
         || !path.isEmpty()
-            && !path.startsWith(PATH_SEPARATOR)
-            && !path.contains(",")
-            && !path.contains(";")
-            && Arrays.stream(path.split(PATH_SEPARATOR, -1)).noneMatch(PARENT::equals);
+        && !path.startsWith(PATH_SEPARATOR)
+        && !path.contains(",")
+        && !path.contains(";")
+        && Arrays.stream(path.split(PATH_SEPARATOR, -1)).noneMatch(PARENT::equals);
   }
 }

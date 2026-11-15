@@ -11,7 +11,6 @@ import java.util.Set;
 
 /** Handles the imports, types, functions and declarations of Swift. */
 final class SwiftScopeTypes {
-
   private static final Set<String> NAMED_TYPES =
       Set.of("struct_name", "class_name", "enum_name", "protocol_name", "actor_name");
 
@@ -33,8 +32,10 @@ final class SwiftScopeTypes {
         new ImportOrigin(
             SwiftScopeWalk.text(path),
             SwiftScopeWalk.text(segments.get(segments.size() - 1)),
-            node.span()),
-        EnumSet.noneOf(BindingFlag.class));
+            node.span()
+        ),
+        EnumSet.noneOf(BindingFlag.class)
+    );
   }
 
   void typeLike(final SyntaxNode node) {
@@ -80,7 +81,8 @@ final class SwiftScopeTypes {
           SwiftScopeWalk.text(name),
           BindingKind.TYPE,
           name.span(),
-          EnumSet.of(BindingFlag.TYPE_ONLY));
+          EnumSet.of(BindingFlag.TYPE_ONLY)
+      );
     }
   }
 

@@ -6,7 +6,6 @@ import java.util.Set;
 
 /** Counts the NPath of the branching statements: if, loops, switch and try. */
 final class NPathBranches {
-
   private static final String BLOCK = "block";
   private static final String STATEMENT = "statement";
   private static final String BLOCK_STATEMENT = "blockStatement";

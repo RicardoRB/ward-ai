@@ -5,7 +5,6 @@ package dev.ward.analysis.domain.rule.check;
  * unsupported.
  */
 final class PercentFormatScanner {
-
   private static final String SUPPORTED = "diouxXeEfFgGcrs%a";
   private static final char PERCENT = '%';
   private static final char OPEN_PAREN = '(';

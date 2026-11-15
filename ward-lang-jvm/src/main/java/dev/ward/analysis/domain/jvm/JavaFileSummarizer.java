@@ -10,7 +10,6 @@ import dev.ward.analysis.domain.port.FileSummarizer;
  * imports and the type names it uses. The resolver turns these into edges between files.
  */
 public final class JavaFileSummarizer implements FileSummarizer {
-
   @Override
   public FileSummary summarize(final SourceUnit unit, final SyntaxNode tree) {
     return new JavaFileScan(unit.path()).scan(tree);

@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 
 /** One load of a document: the files read so far, the reference targets and the errors. */
 final class OpenApiLoader {
-
   private static final Logger LOG = Logger.getLogger(OpenApiLoader.class.getName());
 
   private final Function<String, Optional<Parsed>> source;
@@ -45,7 +44,9 @@ final class OpenApiLoader {
     }
     LOG.fine(() -> "openapi document loaded from " + files.size() + " files");
     return new LoadResult(
-        Optional.of(new OpenApiDocument(root.get(), version.get(), files, targets)), errors);
+        Optional.of(new OpenApiDocument(root.get(), version.get(), files, targets)),
+        errors
+    );
   }
 
   /** Reads a file once; a problem becomes an error at the reference that named it, if any. */
@@ -70,7 +71,9 @@ final class OpenApiLoader {
               path,
               parsed.problem().line(),
               parsed.problem().column(),
-              parsed.problem().message()));
+              parsed.problem().message()
+          )
+      );
       return Optional.empty();
     }
     files.put(path, parsed.root());
@@ -86,20 +89,26 @@ final class OpenApiLoader {
           LoadError.at(
               swagger.get(),
               file,
-              "Swagger " + swagger.get().text() + " is not supported; use OpenAPI 3.0 or 3.1"));
+              "Swagger " + swagger.get().text() + " is not supported; use OpenAPI 3.0 or 3.1"
+          )
+      );
       return Optional.empty();
     }
     if (openapi.isEmpty()) {
       errors.add(
-          new LoadError(
-              file, 1, 1, "the file is not an OpenAPI document: it has no 'openapi' key"));
+          new LoadError(file, 1, 1, "the file is not an OpenAPI document: it has no 'openapi' key")
+      );
       return Optional.empty();
     }
     final String version = openapi.get().text();
     if (!ReferenceTargets.supportedVersion(version)) {
       errors.add(
           LoadError.at(
-              openapi.get(), file, "OpenAPI " + version + " is not supported; use 3.0 or 3.1"));
+              openapi.get(),
+              file,
+              "OpenAPI " + version + " is not supported; use 3.0 or 3.1"
+          )
+      );
       return Optional.empty();
     }
     return Optional.of(version);
@@ -139,8 +148,8 @@ final class OpenApiLoader {
         ReferenceTargets.path(reference.file(), ReferenceTargets.decode(filePart));
     if (path.isEmpty()) {
       errors.add(
-          LoadError.at(
-              value, reference.file(), "the reference '" + target + "' leaves the project"));
+          LoadError.at(value, reference.file(), "the reference '" + target + "' leaves the project")
+      );
       return;
     }
     file(path.get(), value).ifPresent(root -> bind(reference, value, target, root, fragment));
@@ -151,15 +160,16 @@ final class OpenApiLoader {
       final DocNode value,
       final String target,
       final DocNode root,
-      final String fragment) {
+      final String fragment
+  ) {
     final Optional<DocNode> node =
         ReferenceTargets.pointer(root, ReferenceTargets.decode(fragment));
     if (node.isPresent()) {
       targets.put(reference, node.get());
     } else {
       errors.add(
-          LoadError.at(
-              value, reference.file(), "the reference '" + target + "' points at nothing"));
+          LoadError.at(value, reference.file(), "the reference '" + target + "' points at nothing")
+      );
     }
   }
 

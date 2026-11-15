@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /** Reports a number literal whose value cannot hold the digits written, as ESLint does. */
 class NodeLossOfPrecisionCheckTest {
-
   private static final String MESSAGE = "This number literal will lose precision at runtime.";
   private static final int COLUMN = 11;
   private static final int BINARY_DIGITS = 65;

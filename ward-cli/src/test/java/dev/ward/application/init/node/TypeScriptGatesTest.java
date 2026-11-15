@@ -36,12 +36,14 @@ class TypeScriptGatesTest {
   @TempDir Path root;
 
   @ParameterizedTest
-  @CsvSource({
-    "NPM, npx tsc --noEmit --pretty false",
-    "PNPM, pnpm exec tsc --noEmit --pretty false",
-    "YARN, yarn tsc --noEmit --pretty false",
-    "BUN, bunx tsc --noEmit --pretty false"
-  })
+  @CsvSource(
+      {
+          "NPM, npx tsc --noEmit --pretty false",
+          "PNPM, pnpm exec tsc --noEmit --pretty false",
+          "YARN, yarn tsc --noEmit --pretty false",
+          "BUN, bunx tsc --noEmit --pretty false"
+      }
+  )
   void nodeToolsRunThroughThePackageManager(final BuildTool manager, final String tsc) {
     assertThat(String.join(" ", gate(manager, NO_RUNNER, "tsc").command())).isEqualTo(tsc);
   }
@@ -54,15 +56,20 @@ class TypeScriptGatesTest {
   }
 
   @ParameterizedTest
-  @CsvSource({
-    "NPM, vitest, vitest",
-    "NPM, jest, jest",
-    "BUN, jest, jest",
-    "BUN, '', bun-test",
-    "PNPM, '', vitest"
-  })
+  @CsvSource(
+      {
+          "NPM, vitest, vitest",
+          "NPM, jest, jest",
+          "BUN, jest, jest",
+          "BUN, '', bun-test",
+          "PNPM, '', vitest"
+      }
+  )
   void declaredRunnerIsReusedAndVitestIsTheDefault(
-      final BuildTool manager, final String declared, final String gate) {
+      final BuildTool manager,
+      final String declared,
+      final String gate
+  ) {
     final PackageManifest manifest =
         declared.isEmpty()
             ? NO_RUNNER
@@ -103,7 +110,10 @@ class TypeScriptGatesTest {
   }
 
   private InitGateOption gate(
-      final BuildTool manager, final PackageManifest manifest, final String id) {
+      final BuildTool manager,
+      final PackageManifest manifest,
+      final String id
+  ) {
     return catalog(manifest).gates(project(manager), null).stream()
         .filter(gate -> gate.id().equals(id))
         .findFirst()
@@ -113,7 +123,11 @@ class TypeScriptGatesTest {
   private static InitGeneralCatalog catalog(final PackageManifest manifest) {
     return new InitGeneralCatalog(
         new InitInputs(
-            new FakeEnvironmentInspection("npm", "pnpm"), root -> manifest, root -> false));
+            new FakeEnvironmentInspection("npm", "pnpm"),
+            root -> manifest,
+            root -> false
+        )
+    );
   }
 
   private Project project(final BuildTool manager) {
@@ -127,6 +141,7 @@ class TypeScriptGatesTest {
         Set.of(),
         "24",
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 }

@@ -25,7 +25,8 @@ public final class SwiftGates implements SourceLanguageGates<SwiftTools> {
           SwiftTools.SWIFT_BUILD,
           SwiftTools.SWIFT_TEST,
           SwiftTools.XCODEBUILD_TEST,
-          SwiftTools.SWIFT_COVERAGE);
+          SwiftTools.SWIFT_COVERAGE
+      );
 
   @Override
   public List<InitGateOption> analysisGates(final SwiftTools swift) {
@@ -36,7 +37,9 @@ public final class SwiftGates implements SourceLanguageGates<SwiftTools> {
             SwiftTools.SWIFT_COVERAGE,
             "Fails below the line coverage minimum of the test run.",
             coverageCommand(swift),
-            Map.of(MINIMUM, swift.coverageMinimum())));
+            Map.of(MINIMUM, swift.coverageMinimum())
+        )
+    );
     return List.copyOf(gates);
   }
 
@@ -54,7 +57,9 @@ public final class SwiftGates implements SourceLanguageGates<SwiftTools> {
               SwiftTools.XCODEBUILD_TEST,
               "Runs the Xcode scheme's tests with code coverage on the platform below.",
               swift.xcodeTestCommand(),
-              Map.of(PLATFORM, swift.platform())));
+              Map.of(PLATFORM, swift.platform())
+          )
+      );
     }
     return List.of(
         option(
@@ -62,13 +67,16 @@ public final class SwiftGates implements SourceLanguageGates<SwiftTools> {
             SwiftTools.SWIFT_BUILD,
             "Builds the package and its tests.",
             swift.swiftBuildCommand(),
-            Map.of()),
+            Map.of()
+        ),
         option(
             swift,
             SwiftTools.SWIFT_TEST,
             "Runs the package's tests with code coverage.",
             swift.swiftTestCommand(),
-            Map.of()));
+            Map.of()
+        )
+    );
   }
 
   private static List<String> coverageCommand(final SwiftTools swift) {
@@ -81,7 +89,9 @@ public final class SwiftGates implements SourceLanguageGates<SwiftTools> {
       final String id,
       final String description,
       final List<String> command,
-      final Map<String, String> settings) {
+      final Map<String,
+      String> settings
+  ) {
     final String name = swift.xcode() ? "Xcode" : "SwiftPM";
     return new InitGateOption(
         id,
@@ -91,7 +101,8 @@ public final class SwiftGates implements SourceLanguageGates<SwiftTools> {
         swift.available()
             ? name + " command available."
             : name + " is unavailable; install Xcode 26 or newer before running this gate.",
-        settings);
+        settings
+    );
   }
 
   /** Whether {@code gate} exists for {@code buildTool}; each build tool has its own test gates. */

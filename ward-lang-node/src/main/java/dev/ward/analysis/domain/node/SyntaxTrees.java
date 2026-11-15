@@ -8,7 +8,6 @@ import java.util.Set;
 
 /** Reads the functions and declarations of a shared syntax tree for the structural rules. */
 final class SyntaxTrees {
-
   private static final String TEXT = "text";
   private static final String END_OF_FILE = "<EOF>";
   private static final String IDENTIFIER_TOKEN = "Identifier";
@@ -21,7 +20,8 @@ final class SyntaxTrees {
           "anonymousFunction",
           "arrowFunctionDeclaration",
           "methodDefinition",
-          "propertyMemberDeclaration");
+          "propertyMemberDeclaration"
+      );
 
   /** Children that hold a function's parameter list. */
   private static final Set<String> HEADER =

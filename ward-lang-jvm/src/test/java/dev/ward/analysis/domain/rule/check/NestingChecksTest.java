@@ -11,7 +11,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class NestingChecksTest {
-
   private static final String MESSAGE = "message";
   private static final String OPEN = "'{'";
   private static final String CLOSE = "'}'";
@@ -25,11 +24,11 @@ class NestingChecksTest {
   void avoidNestedBlocksReportsABlockInsideAStatement() {
     assertThat(nested(false, nestedBlock())).hasSize(1);
     assertThat(
-            nested(
-                false,
-                group(
-                    "statement",
-                    group("block", tok(OPEN, "{", 1, 0), tok(CLOSE, "}", 1, BLOCK_END)))))
+        nested(
+            false,
+            group("statement", group("block", tok(OPEN, "{", 1, 0), tok(CLOSE, "}", 1, BLOCK_END)))
+        )
+    )
         .isEmpty();
   }
 
@@ -61,7 +60,8 @@ class NestingChecksTest {
       final boolean interfaceFlag,
       final boolean recordFlag,
       final String nestedKind,
-      final boolean withStatic) {
+      final boolean withStatic
+  ) {
     final SyntaxNode declaration =
         group("memberDeclaration", group(nestedKind, tok(IDENTIFIER, "Inner", 1, 0)));
     final SyntaxNode decl =
@@ -69,12 +69,15 @@ class NestingChecksTest {
             ? group(BODY, declaration, group(MODIFIER, tok(MODIFIER, STATIC, 1, 0)))
             : group(BODY, declaration);
     return unitMatches(
-        new ClassMemberImpliedModifierCheck(enumFlag, interfaceFlag, recordFlag, MESSAGE), decl);
+        new ClassMemberImpliedModifierCheck(enumFlag, interfaceFlag, recordFlag, MESSAGE),
+        decl
+    );
   }
 
   private static SyntaxNode nestedBlock() {
     return group(
         "blockStatement",
-        group("statement", group("block", tok(OPEN, "{", 1, 0), tok(CLOSE, "}", 1, BLOCK_END))));
+        group("statement", group("block", tok(OPEN, "{", 1, 0), tok(CLOSE, "}", 1, BLOCK_END)))
+    );
   }
 }

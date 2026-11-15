@@ -73,11 +73,12 @@ class ArchitectureRuleFixturesTest {
         .contains("domain/src/main/java/shop/legacy/Report.java");
     assertThat(findings).extracting(Finding::ruleId).containsOnly(DEPENDENCIES);
     assertThat(
-            findings.stream()
-                .filter(finding -> finding.file().endsWith("LegacyBridge.kt"))
-                .findFirst()
-                .orElseThrow()
-                .line())
+        findings.stream()
+            .filter(finding -> finding.file().endsWith("LegacyBridge.kt"))
+            .findFirst()
+            .orElseThrow()
+            .line()
+    )
         .isEqualTo(JAVA_IMPORT_LINE);
   }
 
@@ -109,7 +110,8 @@ class ArchitectureRuleFixturesTest {
             finding -> {
               assertThat(finding.file()).isEqualTo("src/shop/controller/clean.py");
               assertThat(finding.ruleId()).isEqualTo(DEPENDENCIES);
-            });
+            }
+        );
   }
 
   @Test
@@ -133,7 +135,10 @@ class ArchitectureRuleFixturesTest {
     assertThat(result.status()).isEqualTo(GateStatus.EXECUTION_ERROR);
     assertThat(result.stdout() + result.stderr() + result.summary())
         .contains(
-            "controller-must-not-reach-service", "SWIFT", "App/Controller/OrderController.swift");
+            "controller-must-not-reach-service",
+            "SWIFT",
+            "App/Controller/OrderController.swift"
+        );
   }
 
   private void write(final String from, final String forbidden) throws IOException {
@@ -145,7 +150,9 @@ class ArchitectureRuleFixturesTest {
             from,
             forbidden,
             from.toLowerCase(java.util.Locale.ROOT),
-            forbidden.toLowerCase(java.util.Locale.ROOT)));
+            forbidden.toLowerCase(java.util.Locale.ROOT)
+        )
+    );
   }
 
   private static Finding onlyFinding(final GateResult result) {

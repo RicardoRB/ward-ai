@@ -35,9 +35,10 @@ class NodePackageCatalogTest {
     for (final Language language : List.of(Language.TYPESCRIPT, Language.JAVASCRIPT)) {
       final Set<String> node =
           Stream.of(
-                  gateIds(BuildTool.NPM, language, PackageManifest.EMPTY),
-                  gateIds(BuildTool.NPM, language, jest),
-                  gateIds(BuildTool.BUN, language, PackageManifest.EMPTY))
+              gateIds(BuildTool.NPM, language, PackageManifest.EMPTY),
+              gateIds(BuildTool.NPM, language, jest),
+              gateIds(BuildTool.BUN, language, PackageManifest.EMPTY)
+          )
               .flatMap(Set::stream)
               .filter(id -> !standalone.contains(id))
               .collect(Collectors.toSet());
@@ -51,7 +52,9 @@ class NodePackageCatalogTest {
                       name ->
                           assertThat(NodePackageCatalog.find(name))
                               .as("package %s of %s gate %s", name, language, gate)
-                              .isPresent()));
+                              .isPresent()
+                  )
+      );
     }
   }
 
@@ -67,7 +70,8 @@ class NodePackageCatalogTest {
         new PackageManifest(
             Map.of("vitest", "^4.0.0", "@vitest/coverage-v8", "^4.0.0", "typescript", "~5.9.3"),
             null,
-            null);
+            null
+        );
 
     assertThat(NodePackageCatalog.missing(List.of(gate("vitest"), gate("tsc")), manifest))
         .isEmpty();
@@ -77,15 +81,22 @@ class NodePackageCatalogTest {
   }
 
   private Set<String> gateIds(
-      final BuildTool buildTool, final Language language, final PackageManifest manifest) {
+      final BuildTool buildTool,
+      final Language language,
+      final PackageManifest manifest
+  ) {
     final InitSetupCatalog catalog =
         new InitSetupCatalog(
             new FakeEnvironmentInspection(),
             new NodeInputs(
-                directory -> manifest, directory -> true, (directory, gate) -> Optional.empty()),
+                directory -> manifest,
+                directory -> true,
+                (directory, gate) -> Optional.empty()
+            ),
             null,
             null,
-            "dev");
+            "dev"
+        );
     return catalog
         .gates(
             new Project(
@@ -98,8 +109,10 @@ class NodePackageCatalogTest {
                 Set.of(),
                 "24",
                 TaskRunner.NONE,
-                null),
-            null)
+                null
+            ),
+            null
+        )
         .stream()
         .map(InitGateOption::id)
         .collect(Collectors.toSet());

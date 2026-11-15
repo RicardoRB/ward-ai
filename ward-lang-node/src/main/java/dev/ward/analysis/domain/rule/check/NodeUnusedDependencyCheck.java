@@ -25,7 +25,6 @@ import java.util.SortedMap;
  * string) is reported; upgrade by reading those configs as knip's plugins do.
  */
 public final class NodeUnusedDependencyCheck implements RuleCheck, ProjectCheck {
-
   private static final String TYPES = "@types/";
   private static final String SCOPE_SEPARATOR = "__";
   private static final String VALUE = "{value}";
@@ -59,7 +58,10 @@ public final class NodeUnusedDependencyCheck implements RuleCheck, ProjectCheck 
 
   @Override
   public List<ProjectMatch> project(
-      final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
+      final SortedMap<String,
+      SyntaxNode> trees,
+      final ProjectFiles files
+  ) {
     final Map<String, NodeManifests.Manifest> manifests = NodeManifests.byDirectory(files);
     final Map<String, NodeManifests.Manifest> installed = NodeInstalledPackages.installed(files);
     final Map<String, Set<String>> imports = NodeImportUsage.importsByDirectory(trees, manifests);
@@ -82,14 +84,18 @@ public final class NodeUnusedDependencyCheck implements RuleCheck, ProjectCheck 
    */
   private static Set<String> usedBy(
       final NodeManifests.Manifest owner,
-      final Map<String, Set<String>> imports,
+      final Map<String,
+      Set<String>> imports,
       final ProjectFiles files,
-      final Map<String, NodeManifests.Manifest> installed) {
+      final Map<String,
+      NodeManifests.Manifest> installed
+  ) {
     final Set<String> used =
         new HashSet<>(
             owner.directory().isEmpty()
                 ? everywhere(imports)
-                : imports.getOrDefault(owner.directory(), Set.of()));
+                : imports.getOrDefault(owner.directory(), Set.of())
+        );
     used.addAll(NodeImplicitUse.of(owner, files, installed));
     used.addAll(NodeImplicitUse.peersOf(used, installed));
     return used;
@@ -103,7 +109,10 @@ public final class NodeUnusedDependencyCheck implements RuleCheck, ProjectCheck 
   }
 
   private static boolean isUsed(
-      final String name, final Set<String> used, final Set<String> scripts) {
+      final String name,
+      final Set<String> used,
+      final Set<String> scripts
+  ) {
     return ALWAYS_USED.contains(name)
         || used.contains(name)
         || scripts.contains(name)
@@ -140,7 +149,13 @@ public final class NodeUnusedDependencyCheck implements RuleCheck, ProjectCheck 
   private RuleMatch match(final Member dependency) {
     final Span at =
         new Span(
-            dependency.line(), dependency.column(), dependency.line(), dependency.column(), 0, 0);
+            dependency.line(),
+            dependency.column(),
+            dependency.line(),
+            dependency.column(),
+            0,
+            0
+        );
     return new RuleMatch(at, message.replace(VALUE, dependency.key()));
   }
 }

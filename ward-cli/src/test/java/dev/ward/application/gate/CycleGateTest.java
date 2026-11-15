@@ -20,7 +20,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** The cycle rule through the ward gate: a warm run with a cache gives what a cold run gives. */
 class CycleGateTest {
-
   private static final String ROOT = "src/main/java/shop";
   private static final String ORDER = ROOT + "/orders/Order.java";
   private static final String INVOICE = ROOT + "/billing/Invoice.java";
@@ -57,7 +56,8 @@ class CycleGateTest {
         new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE),
         List.of(ArchitectureGraphRules.cycles(List.of(ROOT))),
         new ProjectDependencyAdapters(List.of(new JvmDependencyAdapters())),
-        CYCLE);
+        CYCLE
+    );
   }
 
   private void writeCycle() throws IOException {
@@ -66,11 +66,13 @@ class CycleGateTest {
     Files.writeString(
         root.resolve(ORDER),
         "package shop.orders;\n\nimport shop.billing.Invoice;\n\npublic class Order {\n"
-            + "  Invoice invoice;\n}\n");
+            + "  Invoice invoice;\n}\n"
+    );
     Files.writeString(
         root.resolve(INVOICE),
         "package shop.billing;\n\nimport shop.orders.Order;\n\npublic class Invoice {\n"
-            + "  Order order;\n}\n");
+            + "  Order order;\n}\n"
+    );
   }
 
   private void deleteCache() throws IOException {

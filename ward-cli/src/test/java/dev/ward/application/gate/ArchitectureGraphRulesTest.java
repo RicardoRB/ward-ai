@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 
 /** The findings the architecture graph rules report over a dependency graph. */
 class ArchitectureGraphRulesTest {
-
   private static final String ROOT = "src/main/java/com/acme";
   private static final int IMPORT_LINE = 7;
   private static final int SECOND_LINE = 5;
@@ -27,11 +26,15 @@ class ArchitectureGraphRulesTest {
         new DependencyGraph(
             List.of(
                 edge(ROOT + "/orders/Order.java", ROOT + "/billing/Invoice.java", 3),
-                edge(ROOT + "/billing/Invoice.java", ROOT + "/orders/Order.java", SECOND_LINE)));
+                edge(ROOT + "/billing/Invoice.java", ROOT + "/orders/Order.java", SECOND_LINE)
+            )
+        );
 
     final List<AnalysisFinding> findings =
         ArchitectureGraphRules.findings(
-            List.of(ArchitectureGraphRules.cycles(List.of(ROOT))), graph);
+            List.of(ArchitectureGraphRules.cycles(List.of(ROOT))),
+            graph
+        );
 
     assertThat(findings).hasSize(1);
     final AnalysisFinding finding = findings.getFirst();
@@ -46,14 +49,16 @@ class ArchitectureGraphRulesTest {
   void reportsAnIndependenceImportAtItsLine() {
     final DependencyGraph graph =
         new DependencyGraph(
-            List.of(edge("shop/orders/A.java", "shop/billing/B.java", IMPORT_LINE)));
+            List.of(edge("shop/orders/A.java", "shop/billing/B.java", IMPORT_LINE))
+        );
 
     final List<AnalysisFinding> findings =
         ArchitectureGraphRules.findings(
             List.of(
-                ArchitectureGraphRules.independence(
-                    List.of(List.of("shop/orders", "shop/billing")))),
-            graph);
+                ArchitectureGraphRules.independence(List.of(List.of("shop/orders", "shop/billing")))
+            ),
+            graph
+        );
 
     assertThat(findings).hasSize(1);
     assertThat(findings.getFirst().ruleId()).isEqualTo(IndependenceRule.ID);

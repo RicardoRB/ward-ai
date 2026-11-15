@@ -17,7 +17,6 @@ import java.util.Set;
  * are skipped.
  */
 public final class NodeMissingJavadocTypeCheck implements RuleCheck {
-
   private static final String COMMENT = "comment";
   private static final String EXPORT = "export";
   private static final String JAVADOC = "/**";
@@ -62,7 +61,10 @@ public final class NodeMissingJavadocTypeCheck implements RuleCheck {
 
   /** Gathers the leaves, comments as single leaves, and the type declarations. */
   private static void collect(
-      final SyntaxNode node, final List<SyntaxNode> leaves, final List<SyntaxNode> declarations) {
+      final SyntaxNode node,
+      final List<SyntaxNode> leaves,
+      final List<SyntaxNode> declarations
+  ) {
     if (TYPES.contains(node.kind())) {
       declarations.add(node);
     }

@@ -10,7 +10,6 @@ import java.util.OptionalInt;
  * error.
  */
 final class FakeFormatSyntax implements FormatSyntax {
-
   private static final String COMMENT_START = "//";
   private static final String BLOCK_OPEN = "{";
   private static final String ERROR_MARK = "@@";
@@ -31,7 +30,8 @@ final class FakeFormatSyntax implements FormatSyntax {
       addCode(code, lineNumber, tokens, rules);
       if (comment >= 0) {
         tokens.add(
-            new FormatToken(COMMENT, lines[i].substring(comment).stripTrailing(), lineNumber));
+            new FormatToken(COMMENT, lines[i].substring(comment).stripTrailing(), lineNumber)
+        );
       }
       if (errorLine.isEmpty() && lines[i].contains(ERROR_MARK)) {
         errorLine = OptionalInt.of(lineNumber);
@@ -44,7 +44,8 @@ final class FakeFormatSyntax implements FormatSyntax {
       final String code,
       final int lineNumber,
       final List<FormatToken> tokens,
-      final List<FormatRule> rules) {
+      final List<FormatRule> rules
+  ) {
     for (final String word : code.trim().split("\\s+")) {
       if (word.isEmpty()) {
         continue;

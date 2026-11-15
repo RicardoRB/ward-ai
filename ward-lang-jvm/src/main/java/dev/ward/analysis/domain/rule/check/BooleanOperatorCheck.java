@@ -13,7 +13,6 @@ import java.util.Set;
  * inside a lambda or an anonymous class belong to that scope and are not counted.
  */
 public final class BooleanOperatorCheck implements RuleCheck {
-
   private static final String EXPRESSION = "expression";
   private static final Set<String> OPERATORS = Set.of("'&&'", "'||'", "'&'", "'|'", "'^'");
   private static final Set<String> SCOPES = Set.of("lambdaExpression", "classBody");
@@ -55,7 +54,10 @@ public final class BooleanOperatorCheck implements RuleCheck {
     if (count > max) {
       matches.add(
           new RuleMatch(
-              node.span(), CheckSupport.fill(message, String.valueOf(count), String.valueOf(max))));
+              node.span(),
+              CheckSupport.fill(message, String.valueOf(count), String.valueOf(max))
+          )
+      );
     }
   }
 

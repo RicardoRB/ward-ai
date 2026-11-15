@@ -18,7 +18,6 @@ import java.util.Map;
  * throws.
  */
 final class NullForward {
-
   private final NullGraph graph;
   private final boolean exceptional;
 
@@ -63,8 +62,11 @@ final class NullForward {
   private Map<Span, Nullity> along(
       final BasicBlock block,
       final FlowEdge edge,
-      final Map<Span, Nullity> state,
-      final List<Map<Span, Nullity>> before) {
+      final Map<Span,
+      Nullity> state,
+      final List<Map<Span,
+      Nullity>> before
+  ) {
     if (edge.kind() == FlowEdgeKind.EXCEPTION) {
       return exceptional ? thrown(state, before) : null;
     }
@@ -76,7 +78,11 @@ final class NullForward {
    * a block that has none, where the edge only enters a handler.
    */
   private static Map<Span, Nullity> thrown(
-      final Map<Span, Nullity> state, final List<Map<Span, Nullity>> before) {
+      final Map<Span,
+      Nullity> state,
+      final List<Map<Span,
+      Nullity>> before
+  ) {
     Map<Span, Nullity> met = before.isEmpty() ? state : before.get(0);
     for (final Map<Span, Nullity> each : before) {
       met = NullStates.meet(met, each);
@@ -85,9 +91,13 @@ final class NullForward {
   }
 
   private static boolean merge(
-      final Map<Integer, Map<Span, Nullity>> entry,
+      final Map<Integer,
+      Map<Span,
+      Nullity>> entry,
       final int target,
-      final Map<Span, Nullity> sent) {
+      final Map<Span,
+      Nullity> sent
+  ) {
     final Map<Span, Nullity> known = entry.get(target);
     final Map<Span, Nullity> merged =
         known == null ? new HashMap<>(sent) : NullStates.meet(known, sent);

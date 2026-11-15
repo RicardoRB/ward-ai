@@ -24,7 +24,6 @@ import org.junit.jupiter.api.Test;
 
 /** The reassigned-binding check on hand-built scopes, for each binding kind it reports. */
 class ReassignedBindingCheckTest {
-
   private static final String MESSAGE = "'{value}' is read-only";
   private static final int READ_OFFSET = 3;
   private static final SyntaxNode ROOT =
@@ -49,12 +48,17 @@ class ReassignedBindingCheckTest {
           public Set<String> builtins(final Set<String> environments) {
             return Set.of();
           }
-        });
+        }
+    );
   }
 
   private static List<RuleMatch> run(final ReassignedBindingCheck check, final UnitScopes scopes) {
     return check.matches(
-        ROOT, FlowView.NONE, view(scopes), new SourceUnit("m", AnalysisLanguage.JAVASCRIPT, ""));
+        ROOT,
+        FlowView.NONE,
+        view(scopes),
+        new SourceUnit("m", AnalysisLanguage.JAVASCRIPT, "")
+    );
   }
 
   @Test
@@ -67,7 +71,8 @@ class ReassignedBindingCheckTest {
     final List<RuleMatch> found =
         run(
             new ReassignedBindingCheck(Set.of(BindingKind.CONSTANT), "'{value}' is constant"),
-            builder.build());
+            builder.build()
+        );
 
     assertThat(found).extracting(RuleMatch::message).containsExactly("'limit' is constant");
     assertThat(found).extracting(match -> match.span().startOffset()).containsExactly(2);
@@ -80,7 +85,8 @@ class ReassignedBindingCheckTest {
     builder.reference("limit", at(1), ReferenceAccess.WRITE);
 
     assertThat(
-            run(new ReassignedBindingCheck(Set.of(BindingKind.CONSTANT), MESSAGE), builder.build()))
+        run(new ReassignedBindingCheck(Set.of(BindingKind.CONSTANT), MESSAGE), builder.build())
+    )
         .isEmpty();
   }
 
@@ -91,7 +97,8 @@ class ReassignedBindingCheckTest {
     builder.reference("count", at(2), ReferenceAccess.WRITE);
 
     assertThat(
-            run(new ReassignedBindingCheck(Set.of(BindingKind.CONSTANT), MESSAGE), builder.build()))
+        run(new ReassignedBindingCheck(Set.of(BindingKind.CONSTANT), MESSAGE), builder.build())
+    )
         .isEmpty();
   }
 
@@ -104,7 +111,8 @@ class ReassignedBindingCheckTest {
     final List<RuleMatch> found =
         run(
             ReassignedBindingCheck.of(List.of("FUNCTION"), "'{value}' is a function"),
-            builder.build());
+            builder.build()
+        );
 
     assertThat(found).extracting(RuleMatch::message).containsExactly("'parse' is a function");
   }
@@ -118,7 +126,8 @@ class ReassignedBindingCheckTest {
   @Test
   void theCheckCannotRunWithoutScopes() {
     assertThatThrownBy(
-            () -> new ReassignedBindingCheck(Set.of(BindingKind.CONSTANT), MESSAGE).matches(ROOT))
+        () -> new ReassignedBindingCheck(Set.of(BindingKind.CONSTANT), MESSAGE).matches(ROOT)
+    )
         .isInstanceOf(AnalysisFailedException.class);
   }
 }

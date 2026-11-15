@@ -8,7 +8,6 @@ import java.util.regex.PatternSyntaxException;
 
 /** The keywords that read the properties of an object: additional, declared and evaluated. */
 final class PropertyKeywords {
-
   private PropertyKeywords() {}
 
   static boolean additional(
@@ -16,7 +15,8 @@ final class PropertyKeywords {
       final DocNode schema,
       final DocNode data,
       final String path,
-      final Set<String> evaluated) {
+      final Set<String> evaluated
+  ) {
     final Optional<DocNode> rule = schema.get("additionalProperties");
     if (rule.isEmpty()) {
       return true;
@@ -40,7 +40,8 @@ final class PropertyKeywords {
       final DocNode rule,
       final DocNode.Entry entry,
       final String path,
-      final String keyword) {
+      final String keyword
+  ) {
     if (rule.kind() == DocNode.Kind.BOOLEAN && !JsonValues.isTrue(Optional.of(rule))) {
       final String message =
           "additionalProperties".equals(keyword)
@@ -79,7 +80,8 @@ final class PropertyKeywords {
       final DocNode schema,
       final DocNode data,
       final String path,
-      final Set<String> evaluated) {
+      final Set<String> evaluated
+  ) {
     final Optional<DocNode> declared = schema.get("properties");
     if (declared.isEmpty() || declared.get().kind() != DocNode.Kind.OBJECT) {
       return true;
@@ -91,7 +93,11 @@ final class PropertyKeywords {
         evaluated.add(property.key());
         valid &=
             validator.check(
-                property.value(), value.get(), child(path, property.key()), validator.scratch());
+                property.value(),
+                value.get(),
+                child(path, property.key()),
+                validator.scratch()
+            );
         if (!valid && !validator.isAllErrors()) {
           return false;
         }
@@ -105,7 +111,8 @@ final class PropertyKeywords {
       final DocNode schema,
       final DocNode data,
       final String path,
-      final Set<String> evaluated) {
+      final Set<String> evaluated
+  ) {
     final Optional<DocNode> declared = schema.get("patternProperties");
     if (declared.isEmpty() || declared.get().kind() != DocNode.Kind.OBJECT) {
       return true;
@@ -117,7 +124,11 @@ final class PropertyKeywords {
           evaluated.add(entry.key());
           valid &=
               validator.check(
-                  rule.value(), entry.value(), child(path, entry.key()), validator.scratch());
+                  rule.value(),
+                  entry.value(),
+                  child(path, entry.key()),
+                  validator.scratch()
+              );
           if (!valid && !validator.isAllErrors()) {
             return false;
           }
@@ -132,7 +143,8 @@ final class PropertyKeywords {
       final DocNode schema,
       final DocNode data,
       final String path,
-      final Set<String> evaluated) {
+      final Set<String> evaluated
+  ) {
     final Optional<DocNode> rule = schema.get("unevaluatedProperties");
     if (rule.isEmpty() || validator.getDialect() != JsonSchemaValidator.Dialect.DRAFT2020) {
       return true;

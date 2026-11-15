@@ -13,7 +13,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** Shared fixtures for the EditorConfig configuration tests: a temporary project and helpers. */
 class EditorConfigTestSupport {
-
   /** A Java file name used across the tests. */
   protected static final String JAVA_FILE = "A.java";
 
@@ -40,10 +39,15 @@ class EditorConfigTestSupport {
           INDENT_STYLE_OPTION,
           MAX_BLANK_LINES_OPTION,
           JAVA_INDENT_OPTION,
-          CONTINUATION);
+          CONTINUATION
+      );
   protected static final List<FormatOption> TYPESCRIPT_OPTIONS =
       List.of(
-          LINE_WIDTH_OPTION, INDENT_STYLE_OPTION, MAX_BLANK_LINES_OPTION, TYPESCRIPT_INDENT_OPTION);
+          LINE_WIDTH_OPTION,
+          INDENT_STYLE_OPTION,
+          MAX_BLANK_LINES_OPTION,
+          TYPESCRIPT_INDENT_OPTION
+      );
 
   protected static final int JAVA_INDENT = 4;
   protected static final int TYPESCRIPT_INDENT = 2;
@@ -56,7 +60,7 @@ class EditorConfigTestSupport {
   protected static final int TAB_WIDTH = 6;
   protected static final int BLANK_LINES = 2;
   protected static final int CONTINUATION_VALUE = 12;
-  protected static final byte INVALID_LEAD_BYTE = (byte) 0xC3;
+  protected static final byte INVALID_LEAD_BYTE = (byte)0xC3;
   protected static final byte INVALID_TRAIL_BYTE = 0x28;
 
   @TempDir private Path project;
@@ -68,7 +72,8 @@ class EditorConfigTestSupport {
   protected FormatSettings resolve(
       final String relativePath,
       final AnalysisLanguage language,
-      final List<FormatOption> declared) {
+      final List<FormatOption> declared
+  ) {
     return new EditorConfigFormatConfiguration(project).resolve(relativePath, language, declared);
   }
 
@@ -84,7 +89,9 @@ class EditorConfigTestSupport {
 
   /** The declared options of a formatter, with extra language options appended. */
   protected static List<FormatOption> with(
-      final List<FormatOption> base, final FormatOption... extra) {
+      final List<FormatOption> base,
+      final FormatOption... extra
+  ) {
     final List<FormatOption> all = new java.util.ArrayList<>(base);
     all.addAll(List.of(extra));
     return List.copyOf(all);

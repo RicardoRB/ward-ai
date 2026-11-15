@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks the flow sites that the Java lowering records on each block. */
 class JavaFlowSitesTest {
-
   private static final int CALL_LINE = 7;
   private static final int HELD = 3;
   private static final int PARAMETER = 5;
@@ -127,7 +126,8 @@ class JavaFlowSitesTest {
             List.of(),
             List.of(impl),
             List.of(),
-            List.of());
+            List.of()
+        );
     assertThat(calls.get(HELD).receiverType()).contains("Base");
     assertThat(calls.get(PARAMETER).receiverType()).contains("Impl");
   }
@@ -144,7 +144,11 @@ class JavaFlowSitesTest {
   }
 
   private static List<FlowSite> sitesOf(
-      final String source, final String body, final FlowSiteKind kind, final String name) {
+      final String source,
+      final String body,
+      final FlowSiteKind kind,
+      final String name
+  ) {
     final ControlFlowResult result = JavaFlowFixtures.lower(source);
     final ControlFlowGraph graph =
         result.graphs().stream()

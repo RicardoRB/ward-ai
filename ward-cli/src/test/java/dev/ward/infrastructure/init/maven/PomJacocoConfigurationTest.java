@@ -39,7 +39,8 @@ class PomJacocoConfigurationTest {
             "jacoco-maven-plugin",
             "<goal>prepare-agent</goal>",
             "<phase>test</phase>",
-            "<goal>report</goal>")
+            "<goal>report</goal>"
+        )
         .doesNotContain("<rules>", "<minimum>", "jacoco:check");
   }
 
@@ -50,8 +51,15 @@ class PomJacocoConfigurationTest {
             new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE),
             List.of(
                 new InitGateOption(
-                    "coverage", "coverage", List.of("mvn", "jacoco:report"), true, "ok")),
-            preset);
+                    "coverage",
+                    "coverage",
+                    List.of("mvn", "jacoco:report"),
+                    true,
+                    "ok"
+                )
+            ),
+            preset
+        );
     return Files.readString(root.resolve("pom.xml"));
   }
 }

@@ -130,7 +130,8 @@ public final class JsonAnalysisResultCodec implements AnalysisResultCodec {
           line,
           column,
           helpUri,
-          path == null ? List.of() : path.stream().map(StepDto::toStep).toList());
+          path == null ? List.of() : path.stream().map(StepDto::toStep).toList()
+      );
     }
   }
 
@@ -167,7 +168,8 @@ public final class JsonAnalysisResultCodec implements AnalysisResultCodec {
       return new FlowStep(
           new Span(startLine, startColumn, endLine, endColumn, startOffset, endOffset),
           message,
-          file);
+          file
+      );
     }
   }
 }

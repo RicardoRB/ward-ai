@@ -16,7 +16,6 @@ import java.util.Set;
 
 /** Runs one structural rule over one source through the real frontend and engine. */
 final class NodeRuleRuns {
-
   private NodeRuleRuns() {}
 
   /**
@@ -29,10 +28,19 @@ final class NodeRuleRuns {
 
   /** Runs one rule with {@code body} over {@code text}, as the {@code ward} gate would. */
   static RuleRunResult run(
-      final String metric, final AnalysisLanguage language, final String body, final String text) {
+      final String metric,
+      final AnalysisLanguage language,
+      final String body,
+      final String text
+  ) {
     final RuleDefinition rule =
         new RuleDefinition(
-            id(language, metric), language, RuleCapability.SYNTAX, AnalysisSeverity.ERROR, body);
+            id(language, metric),
+            language,
+            RuleCapability.SYNTAX,
+            AnalysisSeverity.ERROR,
+            body
+        );
     final SourceUnit unit = new SourceUnit("src/" + metric + ".txt", language, text);
     final FrontendSupport support =
         new FrontendSupport(language, new AntlrLanguageFrontend(), Set.of(RuleCapability.SYNTAX));
@@ -42,10 +50,18 @@ final class NodeRuleRuns {
 
   /** Returns what one rule measures in {@code text}, parsed by the real frontend. */
   static List<Measured> measure(
-      final String metric, final AnalysisLanguage language, final String text) {
+      final String metric,
+      final AnalysisLanguage language,
+      final String text
+  ) {
     final RuleDefinition rule =
         new RuleDefinition(
-            id(language, metric), language, RuleCapability.SYNTAX, AnalysisSeverity.ERROR, "");
+            id(language, metric),
+            language,
+            RuleCapability.SYNTAX,
+            AnalysisSeverity.ERROR,
+            ""
+        );
     final SourceUnit unit = new SourceUnit("src/" + metric + ".txt", language, text);
     return new NodeRuleMatcher()
         .compile(rule)

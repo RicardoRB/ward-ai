@@ -15,7 +15,6 @@ import java.util.Set;
  * requires of it, always or never having the qualifier, with where it requires it.
  */
 final class QualBackward {
-
   private final NullGraph graph;
   private final QualSites sites;
   private final Map<Integer, Map<Span, QualState.Need>> in = new HashMap<>();
@@ -72,7 +71,10 @@ final class QualBackward {
   }
 
   private Map<Span, QualState.Need> step(
-      final Map<Span, QualState.Need> after, final NullEvent event) {
+      final Map<Span,
+      QualState.Need> after,
+      final NullEvent event
+  ) {
     final Map<Span, QualState.Need> state = new HashMap<>(after);
     switch (event.kind()) {
       case CALL -> arguments(state, event);
@@ -103,10 +105,12 @@ final class QualBackward {
   }
 
   private static void require(
-      final Map<Span, QualState.Need> state,
+      final Map<Span,
+      QualState.Need> state,
       final NullEvent.Operand operand,
       final dev.ward.analysis.domain.ir.SyntaxNode node,
-      final Optional<QualWhen> when) {
+      final Optional<QualWhen> when
+  ) {
     final Optional<QualFlow> flow =
         when.map(QualFlow::of).filter(found -> found != QualFlow.UNKNOWN);
     if (flow.isPresent() && operand.variable() != null) {

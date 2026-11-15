@@ -41,14 +41,14 @@ final class ModifiedUtf8 {
       final int first = bytes[at] & UNSIGNED_BYTE;
       final int next = at + 1 < bytes.length ? bytes[at + 1] & LOW_SIX_BITS : 0;
       if (first < ASCII_LIMIT) {
-        text.append((char) first);
+        text.append((char)first);
         at += 1;
       } else if (first >> PREFIX_SHIFT == TWO_BYTE_PREFIX) {
-        text.append((char) ((first & LOW_FIVE_BITS) << SIX | next));
+        text.append((char)((first & LOW_FIVE_BITS) << SIX | next));
         at += 2;
       } else {
         final int last = at + 2 < bytes.length ? bytes[at + 2] & LOW_SIX_BITS : 0;
-        text.append((char) ((first & LOW_FOUR_BITS) << TWELVE | next << SIX | last));
+        text.append((char)((first & LOW_FOUR_BITS) << TWELVE | next << SIX | last));
         at += THREE_BYTES;
       }
     }

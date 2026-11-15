@@ -10,7 +10,6 @@ import java.util.Optional;
  * itself.
  */
 final class SliceMembership {
-
   /** The root that stands for the project itself, so every top-level directory is a slice. */
   private static final String PROJECT_ROOT = ".";
 

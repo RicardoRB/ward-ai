@@ -20,7 +20,6 @@ import java.util.function.Consumer;
  * the nodes that open scopes and bind names.
  */
 final class PythonScopeWalk {
-
   /** Names that can create or read names the walk cannot see. */
   private static final Set<String> OPENS_SCOPE = Set.of("exec", "eval", "locals", "vars");
 
@@ -113,7 +112,9 @@ final class PythonScopeWalk {
                     builder.reference(
                         use.name(),
                         PythonSpans.within(string.span(), text, use.from(), use.to()),
-                        ReferenceAccess.READ));
+                        ReferenceAccess.READ
+                    )
+            );
       }
     }
   }

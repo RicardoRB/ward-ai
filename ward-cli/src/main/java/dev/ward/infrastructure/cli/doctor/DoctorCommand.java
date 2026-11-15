@@ -22,7 +22,8 @@ import picocli.CommandLine.Spec;
 @Command(
     name = "doctor",
     description = "Diagnose Ward project and integration prerequisites.",
-    mixinStandardHelpOptions = true)
+    mixinStandardHelpOptions = true
+)
 public final class DoctorCommand implements Callable<Integer> {
   @Spec private CommandSpec spec;
 

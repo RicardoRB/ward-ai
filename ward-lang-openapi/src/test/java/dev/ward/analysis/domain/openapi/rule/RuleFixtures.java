@@ -8,7 +8,6 @@ import java.util.Map;
 
 /** Runs a named rule over a document written in the test, and lists where it reports. */
 final class RuleFixtures {
-
   private RuleFixtures() {}
 
   /** The {@code line:column} of each finding of rule {@code name} in the spec {@code text}. */

@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * until 1} or {@code 1 downTo 5}. The text of a node has no whitespace, since it joins the tokens.
  */
 public final class InvalidRangeCheck implements UnitCheck {
-
   private static final String RANGE = "rangeExpression";
   private static final String INFIX = "infixFunctionCall";
   private static final String DOWN_TO = "downTo";

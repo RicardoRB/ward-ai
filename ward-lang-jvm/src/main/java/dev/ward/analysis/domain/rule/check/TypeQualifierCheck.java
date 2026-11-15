@@ -19,7 +19,6 @@ import java.util.Set;
  * types or flow.
  */
 public final class TypeQualifierCheck implements RuleCheck {
-
   /** The patterns the check can report. */
   public enum Mode {
     /** A value that always has the qualifier reaches a place that requires it never. */
@@ -28,20 +27,24 @@ public final class TypeQualifierCheck implements RuleCheck {
     NEVER_VALUE_USED_WHERE_ALWAYS_REQUIRED(QualPattern.NEVER_VALUE_USED_WHERE_ALWAYS_REQUIRED),
     /** An unknown value reaches a place that strictly requires the qualifier. */
     UNKNOWN_VALUE_USED_WHERE_ALWAYS_STRICTLY_REQUIRED(
-        QualPattern.UNKNOWN_VALUE_USED_WHERE_ALWAYS_STRICTLY_REQUIRED),
+        QualPattern.UNKNOWN_VALUE_USED_WHERE_ALWAYS_STRICTLY_REQUIRED
+    ),
     /** Two values with conflicting qualifiers are compared. */
     COMPARING_VALUES_WITH_INCOMPATIBLE_TYPE_QUALIFIERS(
-        QualPattern.COMPARING_VALUES_WITH_INCOMPATIBLE_TYPE_QUALIFIERS),
+        QualPattern.COMPARING_VALUES_WITH_INCOMPATIBLE_TYPE_QUALIFIERS
+    ),
     /** A value that may have the qualifier reaches a place that requires it always. */
     MAYBE_SOURCE_VALUE_REACHES_ALWAYS_SINK(QualPattern.MAYBE_SOURCE_VALUE_REACHES_ALWAYS_SINK),
     /** A value that may have the qualifier reaches a place that requires it never. */
     MAYBE_SOURCE_VALUE_REACHES_NEVER_SINK(QualPattern.MAYBE_SOURCE_VALUE_REACHES_NEVER_SINK),
     /** A parameter explicitly marked unknown reaches a place that requires it always. */
     EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_ALWAYS_SINK(
-        QualPattern.EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_ALWAYS_SINK),
+        QualPattern.EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_ALWAYS_SINK
+    ),
     /** A parameter explicitly marked unknown reaches a place that requires it never. */
     EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_NEVER_SINK(
-        QualPattern.EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_NEVER_SINK);
+        QualPattern.EXPLICIT_UNKNOWN_SOURCE_VALUE_REACHES_NEVER_SINK
+    );
 
     private final QualPattern pattern;
 
@@ -82,7 +85,8 @@ public final class TypeQualifierCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return QualifierAnalysis.of(root, unit, types).stream()
         .filter(found -> found.pattern() == mode.pattern)
         .map(found -> CheckSupport.at(found.at(), message))

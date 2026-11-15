@@ -9,7 +9,6 @@ import dev.ward.analysis.domain.port.ControlFlowResult;
 import org.junit.jupiter.api.Test;
 
 class JavaControlFlowTest {
-
   @Test
   void emptyMethodHasOnlyAnEdgeFromEntryToExit() {
     final ControlFlowGraph graph = lowerNamed("class C { void run() { } }", "C#run(0)");
@@ -25,18 +24,22 @@ class JavaControlFlowTest {
 
     final int condition = JavaFlowFixtures.blockWith(graph, source, "a");
     assertThat(
-            JavaFlowFixtures.hasEdge(
-                graph,
-                condition,
-                JavaFlowFixtures.blockWith(graph, source, "x()"),
-                FlowEdgeKind.TRUE))
+        JavaFlowFixtures.hasEdge(
+            graph,
+            condition,
+            JavaFlowFixtures.blockWith(graph, source, "x()"),
+            FlowEdgeKind.TRUE
+        )
+    )
         .isTrue();
     assertThat(
-            JavaFlowFixtures.hasEdge(
-                graph,
-                condition,
-                JavaFlowFixtures.blockWith(graph, source, "y()"),
-                FlowEdgeKind.FALSE))
+        JavaFlowFixtures.hasEdge(
+            graph,
+            condition,
+            JavaFlowFixtures.blockWith(graph, source, "y()"),
+            FlowEdgeKind.FALSE
+        )
+    )
         .isTrue();
   }
 
@@ -60,8 +63,13 @@ class JavaControlFlowTest {
 
     final int jump = JavaFlowFixtures.blockWith(graph, source, "continue outer");
     assertThat(
-            JavaFlowFixtures.hasEdge(
-                graph, jump, JavaFlowFixtures.blockWith(graph, source, "i++"), FlowEdgeKind.NORMAL))
+        JavaFlowFixtures.hasEdge(
+            graph,
+            jump,
+            JavaFlowFixtures.blockWith(graph, source, "i++"),
+            FlowEdgeKind.NORMAL
+        )
+    )
         .isTrue();
   }
 
@@ -72,11 +80,13 @@ class JavaControlFlowTest {
     final ControlFlowGraph graph = lowerNamed(source, "C#run(1)");
 
     assertThat(
-            JavaFlowFixtures.hasEdge(
-                graph,
-                JavaFlowFixtures.blockWith(graph, source, "one()"),
-                JavaFlowFixtures.blockWith(graph, source, "two()"),
-                FlowEdgeKind.NORMAL))
+        JavaFlowFixtures.hasEdge(
+            graph,
+            JavaFlowFixtures.blockWith(graph, source, "one()"),
+            JavaFlowFixtures.blockWith(graph, source, "two()"),
+            FlowEdgeKind.NORMAL
+        )
+    )
         .isTrue();
   }
 
@@ -109,7 +119,8 @@ class JavaControlFlowTest {
     final ControlFlowResult result =
         JavaFlowFixtures.lower(
             "class C { void bad() { break; } void cont() { continue; }"
-                + " void lbl() { while (true) { break nowhere; } } void good() { x(); } }");
+                + " void lbl() { while (true) { break nowhere; } } void good() { x(); } }"
+        );
 
     assertThat(result.failures()).isEmpty();
     assertThat(JavaFlowFixtures.names(result))

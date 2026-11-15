@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class ProjectDetectorTest {
-
   private final ProjectDetector detector = new ProjectDetector(new FileSystemProjectInspection());
 
   @Test
@@ -37,7 +36,9 @@ class ProjectDetectorTest {
     Files.writeString(dir.resolve("build.gradle"), "plugins { id 'java' }\n");
     Files.writeString(dir.resolve("gradlew"), "#!/bin/sh\nexit 0\n");
     Files.setPosixFilePermissions(
-        dir.resolve("gradlew"), PosixFilePermissions.fromString("rwxr-xr-x"));
+        dir.resolve("gradlew"),
+        PosixFilePermissions.fromString("rwxr-xr-x")
+    );
 
     final Project project = detector.detect(dir).orElseThrow();
 
@@ -50,7 +51,9 @@ class ProjectDetectorTest {
   @Test
   void detectsGradleKotlinDslWithoutWrapper(@TempDir final Path dir) throws Exception {
     Files.writeString(
-        dir.resolve("build.gradle.kts"), "plugins { kotlin(\"jvm\") version \"2.0.0\" }\n");
+        dir.resolve("build.gradle.kts"),
+        "plugins { kotlin(\"jvm\") version \"2.0.0\" }\n"
+    );
     Files.createDirectories(dir.resolve("src/main/kotlin"));
 
     final Project project = detector.detect(dir).orElseThrow();
@@ -83,7 +86,8 @@ class ProjectDetectorTest {
   void rejectsPomWithDoctype(@TempDir final Path dir) {
     withPom(
         dir,
-        "<!DOCTYPE project [<!ENTITY x SYSTEM \"file:///etc/passwd\">]><project>&x;</project>");
+        "<!DOCTYPE project [<!ENTITY x SYSTEM \"file:///etc/passwd\">]><project>&x;</project>"
+    );
 
     assertThat(detector.detect(dir)).get().extracting(Project::framework).isEqualTo(Framework.NONE);
   }

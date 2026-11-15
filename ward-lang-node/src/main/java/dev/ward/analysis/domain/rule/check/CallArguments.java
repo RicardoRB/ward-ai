@@ -9,7 +9,6 @@ import java.util.Optional;
  * respected.
  */
 final class CallArguments {
-
   private static final char CLOSE = ')';
   private static final char COMMA = ',';
   private static final String OPENERS = "([{";
@@ -40,7 +39,11 @@ final class CallArguments {
   }
 
   private static boolean atTopLevel(
-      final char quote, final int depth, final char c, final char wanted) {
+      final char quote,
+      final int depth,
+      final char c,
+      final char wanted
+  ) {
     return quote == 0 && depth == 0 && c == wanted;
   }
 

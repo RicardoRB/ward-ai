@@ -52,7 +52,12 @@ final class NodeLockfiles {
       text = Files.readString(file);
     } catch (IOException | UncheckedIOException e) {
       throw new DependencyInventoryException(
-          project.root().toString(), label, "it cannot be read", "check the file's permissions", e);
+          project.root().toString(),
+          label,
+          "it cannot be read",
+          "check the file's permissions",
+          e
+      );
     }
     try {
       return switch (project.buildTool()) {
@@ -67,7 +72,8 @@ final class NodeLockfiles {
           label,
           e.getMessage(),
           "run `" + project.buildTool().executable() + " install` with a supported version",
-          e);
+          e
+      );
     }
   }
 

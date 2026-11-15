@@ -33,13 +33,14 @@ class NodeCrapCommandsTest {
     final List<InitGateOption> offered =
         new InitGeneralCatalog(inputs)
             .gates(project, QualityPreset.STANDARD).stream()
-                .filter(gate -> List.of("vitest", "coverage", "crap").contains(gate.id()))
-                .toList();
+            .filter(gate -> List.of("vitest", "coverage", "crap").contains(gate.id()))
+            .toList();
 
     assertThat(
-            new NodeInitSupport()
-                .crap(project, inputs).map(setup -> setup.apply(offered)).orElse(offered).stream()
-                    .map(InitGateOption::id))
+        new NodeInitSupport()
+            .crap(project, inputs).map(setup -> setup.apply(offered)).orElse(offered).stream()
+            .map(InitGateOption::id)
+    )
         .containsExactly("vitest", "coverage", "crap");
   }
 
@@ -59,12 +60,26 @@ class NodeCrapCommandsTest {
         directory -> manifest,
         directory -> false,
         (directory, gate) ->
-            own ? Optional.of(directory.resolve("vite.config.ts")) : Optional.empty());
+            own ? Optional.of(directory.resolve("vite.config.ts")) : Optional.empty()
+    );
   }
 
   private Project project(
-      final BuildTool manager, final Framework framework, final TaskRunner runner) {
+      final BuildTool manager,
+      final Framework framework,
+      final TaskRunner runner
+  ) {
     return new Project(
-        root, Language.TYPESCRIPT, manager, framework, false, root, Set.of(), "24", runner, null);
+        root,
+        Language.TYPESCRIPT,
+        manager,
+        framework,
+        false,
+        root,
+        Set.of(),
+        "24",
+        runner,
+        null
+    );
   }
 }

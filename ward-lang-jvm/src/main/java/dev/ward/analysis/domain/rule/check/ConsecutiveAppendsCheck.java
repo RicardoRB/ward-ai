@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
  * text without their types.
  */
 public final class ConsecutiveAppendsCheck implements UnitCheck {
-
   private static final String BLOCK = "block";
   private static final Pattern APPEND =
       Pattern.compile("^(\\w+)\\.append\\((?:[^()]|\\([^()]*\\))*\\);$");

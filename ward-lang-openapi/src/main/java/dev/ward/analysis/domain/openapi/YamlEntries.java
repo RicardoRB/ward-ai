@@ -11,7 +11,6 @@ import java.util.Set;
 
 /** Collects the entries of one mapping: rejects duplicate keys and applies {@code <<} merges. */
 final class YamlEntries {
-
   private final YamlCursor cursor;
   private final YamlLines lines;
   private final List<SyntaxNode> entries = new ArrayList<>();
@@ -36,7 +35,8 @@ final class YamlEntries {
       final int first = lines.line(entries.get(at).span().startOffset());
       throw cursor.fail(
           "duplicate key '" + name + "' (lines " + first + " and " + key.span().startLine() + ")",
-          key.span().startOffset());
+          key.span().startOffset()
+      );
     }
   }
 

@@ -49,7 +49,10 @@ public final class ModuleBuilder {
 
   /** Marks {@code id} as declared by the module, in {@code declaredIn}, with {@code scope}. */
   public ModuleBuilder direct(
-      final PackageId id, final DependencyScope scope, final String declaredIn) {
+      final PackageId id,
+      final DependencyScope scope,
+      final String declaredIn
+  ) {
     final PendingPackage node = node(id);
     node.direct = true;
     node.declaredIn = node.declaredIn.isEmpty() ? declaredIn : min(node.declaredIn, declaredIn);
@@ -93,7 +96,9 @@ public final class ModuleBuilder {
               source,
               node.direct ? node.declaredIn : "",
               node.requiredBy,
-              node.requested));
+              node.requested
+          )
+      );
     }
     return new ModuleDependencies(modulePath, entries);
   }
@@ -104,14 +109,17 @@ public final class ModuleBuilder {
     nodes.forEach(
         (id, node) ->
             node.requiredBy.forEach(
-                parent -> children.computeIfAbsent(parent, key -> new TreeSet<>()).add(id)));
+                parent -> children.computeIfAbsent(parent, key -> new TreeSet<>()).add(id)
+            )
+    );
     final Deque<PackageId> work = new ArrayDeque<>();
     nodes.forEach(
         (id, node) -> {
           if (node.scope != null) {
             work.add(id);
           }
-        });
+        }
+    );
     while (!work.isEmpty()) {
       final PackageId parent = work.poll();
       for (final PackageId child : children.getOrDefault(parent, Set.of())) {

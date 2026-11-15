@@ -7,7 +7,6 @@ import java.util.Set;
 
 /** Reports whether a Python {@code while} loop ends a body, as Pylint's return-ended test does. */
 final class ReturnLoops {
-
   private static final String BREAK = "break_stmt";
   private static final String BLOCK = "block";
   private static final String NAMED_EXPR = "namedexpr_test";

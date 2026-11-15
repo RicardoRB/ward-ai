@@ -11,13 +11,13 @@ import java.util.regex.Pattern;
 
 /** The OWASP rules about parameters: guessable ids, credentials in URLs and URL parameters. */
 final class OwaspParameterRules {
-
   private static final String PARAMETERS = "parameters";
   private static final Pattern ID_NAME = Pattern.compile("(_id|Id|-id)\\z");
   private static final Pattern CREDENTIAL =
       Pattern.compile(
           "^.*(client_?secret|token|access_?token|refresh_?token|id_?token|password|secret|api-?key).*$",
-          Pattern.CASE_INSENSITIVE);
+          Pattern.CASE_INSENSITIVE
+      );
   private static final Pattern URL_NAME =
       Pattern.compile("(^(callback|redirect)|(_url|Url|-url))\\z");
 
@@ -38,7 +38,9 @@ final class OwaspParameterRules {
             Findings.atValue(
                 schema.get(),
                 "Use random IDs that cannot be guessed. UUIDs are preferred but any other random"
-                    + " string will do."));
+                    + " string will do."
+            )
+        );
       }
     }
     return findings;
@@ -65,7 +67,9 @@ final class OwaspParameterRules {
         findings.add(
             Findings.atValue(
                 name.get(),
-                "Security credentials detected in path parameter: " + name.get().text() + "."));
+                "Security credentials detected in path parameter: " + name.get().text() + "."
+            )
+        );
       }
     }
     return findings;
@@ -93,7 +97,10 @@ final class OwaspParameterRules {
                         Findings.atValue(
                             name,
                             "Make sure to review the way this URL is handled to protect against"
-                                + " Server Side Request Forgery.")));
+                                + " Server Side Request Forgery."
+                        )
+                    )
+            );
       }
     }
     return findings;

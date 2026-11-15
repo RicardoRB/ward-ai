@@ -15,10 +15,12 @@ import java.util.Optional;
 
 /** Checks the Python interpreter, the package manager or virtual environment, and the version. */
 public final class PythonToolchainFinding implements ToolchainFinding {
-
   @Override
   public List<Finding> findings(
-      final Project detected, final EnvironmentFacts facts, final ToolchainContext context) {
+      final Project detected,
+      final EnvironmentFacts facts,
+      final ToolchainContext context
+  ) {
     final List<Finding> findings = new ArrayList<>();
     findings.add(interpreterFinding(detected, facts));
     managerFinding(detected, facts).ifPresent(findings::add);
@@ -34,12 +36,17 @@ public final class PythonToolchainFinding implements ToolchainFinding {
     }
     return detected.buildTool() == BuildTool.UV
         ? new Finding(
-            "python", Status.WARNING, "python3 is not on PATH; uv installs its own interpreter.")
+            "python",
+            Status.WARNING,
+            "python3 is not on PATH; uv installs its own interpreter."
+        )
         : new Finding("python", Status.ERROR, "python3 or python is required on PATH.");
   }
 
   private static Optional<Finding> managerFinding(
-      final Project detected, final EnvironmentFacts facts) {
+      final Project detected,
+      final EnvironmentFacts facts
+  ) {
     return switch (detected.buildTool()) {
       case UV, POETRY -> Optional.of(executableFinding(detected.buildExecutable(), facts));
       case PDM, HATCH -> Optional.of(unsupportedFinding(detected.buildTool()));
@@ -58,7 +65,8 @@ public final class PythonToolchainFinding implements ToolchainFinding {
     return new Finding(
         tool.displayName().toLowerCase(Locale.ROOT),
         Status.WARNING,
-        "Ward does not support " + tool.displayName() + " yet.");
+        "Ward does not support " + tool.displayName() + " yet."
+    );
   }
 
   private static Finding venvFinding(final Project detected) {
@@ -67,6 +75,7 @@ public final class PythonToolchainFinding implements ToolchainFinding {
         : new Finding(
             "venv",
             Status.WARNING,
-            "No .venv in the project root; create one with 'python3 -m venv .venv'.");
+            "No .venv in the project root; create one with 'python3 -m venv .venv'."
+        );
   }
 }

@@ -6,7 +6,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 import org.junit.jupiter.api.Test;
 
 class OverwrittenParameterCheckTest {
-
   private static final String COUNT = "count";
 
   private static final int NAME = 3;
@@ -20,17 +19,22 @@ class OverwrittenParameterCheckTest {
     }
     final SyntaxNode type =
         MoreTrees.node(
-            "typeType", 2, MoreTrees.node("identifier", 2, MoreTrees.leaf("I", "int", 2)));
+            "typeType",
+            2,
+            MoreTrees.node("identifier", 2, MoreTrees.leaf("I", "int", 2))
+        );
     final SyntaxNode declared =
         MoreTrees.node(
             "variableDeclaratorId",
             NAME,
-            MoreTrees.node("identifier", NAME, MoreTrees.leaf("I", parameter, NAME)));
+            MoreTrees.node("identifier", NAME, MoreTrees.leaf("I", parameter, NAME))
+        );
     return MoreTrees.node(
         "methodDeclaration",
         1,
         MoreTrees.node("formalParameters", 2, MoreTrees.node("formalParameter", 2, type, declared)),
-        MoreTrees.node("methodBody", BODY, tokens));
+        MoreTrees.node("methodBody", BODY, tokens)
+    );
   }
 
   @Test
@@ -50,12 +54,15 @@ class OverwrittenParameterCheckTest {
   void aMethodWithoutParametersOrABodyIsSkipped() {
     assertThat(CHECK.matches(MoreTrees.node("methodDeclaration", 1))).isEmpty();
     assertThat(
-            CHECK.matches(
-                MoreTrees.node(
-                    "methodDeclaration",
-                    1,
-                    MoreTrees.node("formalParameter", 2),
-                    MoreTrees.node("methodBody", BODY))))
+        CHECK.matches(
+            MoreTrees.node(
+                "methodDeclaration",
+                1,
+                MoreTrees.node("formalParameter", 2),
+                MoreTrees.node("methodBody", BODY)
+            )
+        )
+    )
         .isEmpty();
   }
 }

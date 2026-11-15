@@ -9,7 +9,6 @@ import java.util.List;
  * module are not local bindings and are skipped.
  */
 final class NodeExportAliasScan {
-
   private static final String IDENTIFIER = "Identifier";
   private static final String EXPORT = "export";
   private static final String DEFAULT = "default";
@@ -46,7 +45,8 @@ final class NodeExportAliasScan {
         && i + 2 < tokens.size()
         && IDENTIFIER.equals(tokens.kind(i + 2))) {
       aliases.add(
-          new NodeFileFacts.ExportAlias(tokens.text(i + 2), DEFAULT, tokens.leaf(i + 1).span()));
+          new NodeFileFacts.ExportAlias(tokens.text(i + 2), DEFAULT, tokens.leaf(i + 1).span())
+      );
     }
   }
 
@@ -60,7 +60,11 @@ final class NodeExportAliasScan {
         final int exportedAt = renamed ? j + 2 : j;
         items.add(
             new NodeFileFacts.ExportAlias(
-                tokens.text(j), tokens.text(exportedAt), tokens.leaf(exportedAt).span()));
+                tokens.text(j),
+                tokens.text(exportedAt),
+                tokens.leaf(exportedAt).span()
+            )
+        );
         j = renamed ? j + ALIASED_ITEM_TOKENS : j + 1;
       } else {
         j++;

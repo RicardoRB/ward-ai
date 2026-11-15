@@ -12,8 +12,11 @@ import java.util.Objects;
  * @param endOfLine the line ending written at every break
  */
 public record PrintStyle(
-    int lineWidth, IndentStyle indentStyle, int indentWidth, EndOfLine endOfLine) {
-
+    int lineWidth,
+    IndentStyle indentStyle,
+    int indentWidth,
+    EndOfLine endOfLine
+) {
   private static final int MINIMUM = 1;
 
   /**

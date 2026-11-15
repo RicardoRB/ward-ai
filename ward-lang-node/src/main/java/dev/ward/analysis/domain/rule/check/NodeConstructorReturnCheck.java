@@ -14,7 +14,6 @@ import java.util.Set;
  * as a constructor declaration.
  */
 public final class NodeConstructorReturnCheck implements RuleCheck {
-
   private static final String RETURN = "returnStatement";
   private static final String VALUE = "expressionSequence";
   private static final String METHOD = "methodDefinition";
@@ -29,7 +28,8 @@ public final class NodeConstructorReturnCheck implements RuleCheck {
           "arrowFunctionDeclaration",
           "methodDefinition",
           "constructorDeclaration",
-          "classDeclaration");
+          "classDeclaration"
+      );
 
   private final String message;
 
@@ -77,8 +77,8 @@ public final class NodeConstructorReturnCheck implements RuleCheck {
   private static boolean isConstructor(final SyntaxNode node) {
     return CONSTRUCTOR_DECLARATION.equals(node.kind())
         || METHOD.equals(node.kind())
-            && node.children().stream()
-                .filter(child -> NAME.equals(child.kind()))
-                .anyMatch(name -> CONSTRUCTOR.equals(LeafText.of(name)));
+        && node.children().stream()
+            .filter(child -> NAME.equals(child.kind()))
+            .anyMatch(name -> CONSTRUCTOR.equals(LeafText.of(name)));
   }
 }

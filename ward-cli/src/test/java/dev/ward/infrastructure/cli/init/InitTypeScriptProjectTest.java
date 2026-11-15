@@ -35,7 +35,8 @@ class InitTypeScriptProjectTest {
             "--ci",
             "github",
             "--agent-rules",
-            "--yes");
+            "--yes"
+        );
 
     assertThat(init.exit()).as(init.output()).isZero();
     assertThat(fixture.read("ward.toml"))
@@ -44,7 +45,8 @@ class InitTypeScriptProjectTest {
             "[checks.vitest]",
             "[checks.ward-format]",
             "[checks.ward]",
-            "command = \"npx vitest run --coverage\"")
+            "command = \"npx vitest run --coverage\""
+        )
         .doesNotContain("[checks.eslint]", "[checks.biome]")
         .doesNotContain("checkstyle", "mvnw");
     assertThat(fixture.read("package.json"))

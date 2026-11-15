@@ -11,7 +11,6 @@ import java.util.Set;
  * element, as Biome 2.5.15's {@code noAriaUnsupportedElements} does.
  */
 public final class BiomeAriaUnsupportedElementsCheck implements RuleCheck {
-
   private static final Set<String> UNSUPPORTED = Set.of("meta", "html", "script", "style");
   private static final String ROLE = "role";
   private static final String PREFIX = "aria-";
@@ -39,7 +38,8 @@ public final class BiomeAriaUnsupportedElementsCheck implements RuleCheck {
             visit ->
                 JsxAttributes.of(visit.node()).stream()
                     .map(JsxAttributes::name)
-                    .anyMatch(this::knownRoleOrAria))
+                    .anyMatch(this::knownRoleOrAria)
+        )
         .map(visit -> CheckSupport.at(visit.node().span(), message))
         .toList();
   }

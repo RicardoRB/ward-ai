@@ -9,7 +9,6 @@ import java.util.Set;
  * change: the decision never adds or removes a token.
  */
 final class PythonSpacing {
-
   private static final Set<String> OPENERS = Set.of("(", "[", "{");
   private static final Set<String> CLOSERS = Set.of(")", "]", "}");
   private static final Set<String> BEFORE_NO_SPACE = Set.of(",", ";", ":");
@@ -48,12 +47,47 @@ final class PythonSpacing {
           "try",
           "while",
           "with",
-          "yield");
+          "yield"
+      );
   private static final Set<String> OPERATORS =
       Set.of(
-          "=", "+=", "-=", "*=", "/=", "//=", "%=", "**=", ">>=", "<<=", "&=", "|=", "^=", "@=",
-          ":=", "->", "==", "!=", "<", ">", "<=", ">=", "+", "-", "*", "/", "//", "%", "**", "<<",
-          ">>", "&", "|", "^", "@", "~");
+          "=",
+          "+=",
+          "-=",
+          "*=",
+          "/=",
+          "//=",
+          "%=",
+          "**=",
+          ">>=",
+          "<<=",
+          "&=",
+          "|=",
+          "^=",
+          "@=",
+          ":=",
+          "->",
+          "==",
+          "!=",
+          "<",
+          ">",
+          "<=",
+          ">=",
+          "+",
+          "-",
+          "*",
+          "/",
+          "//",
+          "%",
+          "**",
+          "<<",
+          ">>",
+          "&",
+          "|",
+          "^",
+          "@",
+          "~"
+      );
   private static final Set<String> UNARY_CAPABLE = Set.of("+", "-", "*", "**", "~");
   private static final String DECORATOR = "@";
   private static final String COLON = ":";
@@ -155,7 +189,8 @@ final class PythonSpacing {
       final PythonEntry beforePrevious,
       final PythonEntry previous,
       final PythonEntry next,
-      final PythonFrame frame) {
+      final PythonFrame frame
+  ) {
     final String prev = previous.text();
     final String nextText = next.text();
     if (frame.isParenthesis() && (EQUALS.equals(prev) || EQUALS.equals(nextText))) {
@@ -167,7 +202,10 @@ final class PythonSpacing {
 
   /** Decides the spaces next to brackets and separators; empty when operators decide. */
   private static Optional<Boolean> punctuationSpace(
-      final String prev, final String next, final PythonFrame frame) {
+      final String prev,
+      final String next,
+      final PythonFrame frame
+  ) {
     if (isCloser(next) || OPENERS.contains(prev) || BEFORE_NO_SPACE.contains(next)) {
       return Optional.of(false);
     }
@@ -181,7 +219,10 @@ final class PythonSpacing {
   }
 
   private static boolean operatorSpace(
-      final PythonEntry beforePrevious, final PythonEntry previous, final PythonEntry next) {
+      final PythonEntry beforePrevious,
+      final PythonEntry previous,
+      final PythonEntry next
+  ) {
     final String nextText = next.text();
     if (isOperator(previous.text()) && isUnary(beforePrevious, previous.text())) {
       return false;

@@ -8,7 +8,6 @@ import java.util.Set;
  * Tells whether a class is multi-threaded the way SpotBugs' SharedVariableAtomicityDetector does.
  */
 final class MultiThreaded {
-
   private static final Set<String> ATOMIC_EXTRA =
       Set.of("LongAdder", "DoubleAdder", "LongAccumulator", "DoubleAccumulator");
   private static final Set<String> LOCKS = Set.of("Lock", "ReentrantLock");
@@ -38,7 +37,9 @@ final class MultiThreaded {
                 MemberDeclarations.modifiers(field).contains("volatile")
                     || concurrent(
                         ClassMembers.typeText(ClassMembers.declarationOf(field)).orElse(""),
-                        imports));
+                        imports
+                    )
+        );
   }
 
   private static boolean concurrent(final String type, final Set<String> imports) {
@@ -49,7 +50,11 @@ final class MultiThreaded {
   }
 
   private static boolean inPackage(
-      final String type, final String simple, final String pack, final Set<String> imports) {
+      final String type,
+      final String simple,
+      final String pack,
+      final Set<String> imports
+  ) {
     return type.startsWith(pack + ".")
         || JavaAnnotations.resolves(imports, simple, pack + "." + simple);
   }
@@ -62,6 +67,7 @@ final class MultiThreaded {
                 node ->
                     "statement".equals(node.kind())
                         && !node.children().isEmpty()
-                        && "'synchronized'".equals(node.children().get(0).kind()));
+                        && "'synchronized'".equals(node.children().get(0).kind())
+            );
   }
 }

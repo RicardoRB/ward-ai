@@ -15,7 +15,6 @@ import java.util.Set;
  * used-prior-global-declaration}). Nested functions, classes and lambdas are not entered.
  */
 public final class MethodBodyCheck implements RuleCheck {
-
   /** The problem a function is reported for. */
   public enum Problem {
     /** A constructor returns a value other than None. */
@@ -104,7 +103,10 @@ public final class MethodBodyCheck implements RuleCheck {
 
   /** Reports each name of the function's own body used before a global statement declares it. */
   private static void usesBeforeGlobal(
-      final SyntaxNode function, final List<RuleMatch> found, final String message) {
+      final SyntaxNode function,
+      final List<RuleMatch> found,
+      final String message
+  ) {
     final List<String> globals = new ArrayList<>();
     final List<Integer> lines = new ArrayList<>();
     declaredGlobals(function, globals, lines);
@@ -123,7 +125,10 @@ public final class MethodBodyCheck implements RuleCheck {
 
   /** Collects the names of the global statements of a function, with the line of each statement. */
   private static void declaredGlobals(
-      final SyntaxNode function, final List<String> globals, final List<Integer> lines) {
+      final SyntaxNode function,
+      final List<String> globals,
+      final List<Integer> lines
+  ) {
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(function, Set.of("global_stmt"))) {
       if (!nested(visit.ancestors())) {
         for (final SyntaxNode leaf : SyntaxWalk.leaves(visit.node())) {
@@ -161,6 +166,7 @@ public final class MethodBodyCheck implements RuleCheck {
     return ancestors.stream()
         .skip(1)
         .anyMatch(
-            a -> FUNCTION.equals(a.kind()) || CLASS.equals(a.kind()) || LAMBDA.equals(a.kind()));
+            a -> FUNCTION.equals(a.kind()) || CLASS.equals(a.kind()) || LAMBDA.equals(a.kind())
+        );
   }
 }

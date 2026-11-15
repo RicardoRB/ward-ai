@@ -10,17 +10,17 @@ import org.junit.jupiter.api.Test;
 
 /** The ancestor check's placement modes and the str.format check's argument handling. */
 final class AncestorAndDotChecksTest {
-
   @Test
   void ancestorOutsideReportsABreakNotInsideALoop() {
     final AncestorCheck outside = outside("break_stmt", "for_stmt");
 
     assertThat(
-            outside.matches(
-                Nodes.node("file_input", Nodes.node("break_stmt", Nodes.leaf("break")))))
+        outside.matches(Nodes.node("file_input", Nodes.node("break_stmt", Nodes.leaf("break"))))
+    )
         .hasSize(1);
     assertThat(
-            outside.matches(Nodes.node("file_input", Nodes.node("for_stmt", Nodes.leaf("break")))))
+        outside.matches(Nodes.node("file_input", Nodes.node("for_stmt", Nodes.leaf("break"))))
+    )
         .isEmpty();
   }
 
@@ -29,7 +29,9 @@ final class AncestorAndDotChecksTest {
     final AncestorCheck inside = inside("yield_expr", "async_funcdef");
     final SyntaxNode asyncYield =
         Nodes.node(
-            "async_funcdef", Nodes.node("funcdef", Nodes.node("yield_expr", Nodes.leaf("yield"))));
+            "async_funcdef",
+            Nodes.node("funcdef", Nodes.node("yield_expr", Nodes.leaf("yield")))
+        );
     final SyntaxNode plainYield =
         Nodes.node("funcdef", Nodes.node("yield_expr", Nodes.leaf("yield")));
 
@@ -45,7 +47,8 @@ final class AncestorAndDotChecksTest {
             new AncestorCheck.Boundary(Set.of("async_funcdef"), Set.of("funcdef")),
             AncestorCheck.Mode.OUTSIDE,
             Optional.of(Pattern.compile("^await")),
-            "await outside async");
+            "await outside async"
+        );
     final SyntaxNode awaiting = Nodes.node("funcdef", Nodes.node("atom_expr", Nodes.leaf("await")));
     final SyntaxNode notAwait = Nodes.node("funcdef", Nodes.node("atom_expr", Nodes.leaf("h")));
 
@@ -83,7 +86,8 @@ final class AncestorAndDotChecksTest {
         new AncestorCheck.Boundary(Set.of(allowed), Set.of("funcdef")),
         AncestorCheck.Mode.OUTSIDE,
         Optional.empty(),
-        "outside");
+        "outside"
+    );
   }
 
   private static AncestorCheck inside(final String kind, final String allowed) {
@@ -92,6 +96,7 @@ final class AncestorAndDotChecksTest {
         new AncestorCheck.Boundary(Set.of(allowed), Set.of("funcdef")),
         AncestorCheck.Mode.INSIDE,
         Optional.empty(),
-        "inside");
+        "inside"
+    );
   }
 }

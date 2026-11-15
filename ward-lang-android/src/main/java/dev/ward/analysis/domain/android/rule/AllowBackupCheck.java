@@ -12,7 +12,6 @@ import java.util.Optional;
  * {@code dataExtractionRules} to say what is saved.
  */
 public final class AllowBackupCheck implements RuleCheck {
-
   private static final String ALLOW = "allowBackup";
   private static final String MESSAGE =
       "The application data can be backed up: set android:allowBackup=\"false\" or limit it with"

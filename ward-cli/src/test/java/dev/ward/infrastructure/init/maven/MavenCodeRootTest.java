@@ -17,7 +17,9 @@ class MavenCodeRootTest {
   void aggregatorWithoutSourcesResolvesToItsModuleWithSources(@TempDir final Path root)
       throws IOException {
     write(
-        root.resolve("pom.xml"), "<project><modules><module>ward-cli</module></modules></project>");
+        root.resolve("pom.xml"),
+        "<project><modules><module>ward-cli</module></modules></project>"
+    );
     write(root.resolve("ward-cli/pom.xml"), "<project/>");
     Files.createDirectories(root.resolve("ward-cli/src/main/java"));
 
@@ -27,7 +29,9 @@ class MavenCodeRootTest {
   @Test
   void projectWithOwnSourcesIsUnchanged(@TempDir final Path root) throws IOException {
     write(
-        root.resolve("pom.xml"), "<project><modules><module>ward-cli</module></modules></project>");
+        root.resolve("pom.xml"),
+        "<project><modules><module>ward-cli</module></modules></project>"
+    );
     Files.createDirectories(root.resolve("src/main/java"));
     Files.createDirectories(root.resolve("ward-cli/src/main/java"));
 
@@ -37,7 +41,9 @@ class MavenCodeRootTest {
   @Test
   void aggregatorWithoutModuleSourcesIsUnchanged(@TempDir final Path root) throws IOException {
     write(
-        root.resolve("pom.xml"), "<project><modules><module>ward-cli</module></modules></project>");
+        root.resolve("pom.xml"),
+        "<project><modules><module>ward-cli</module></modules></project>"
+    );
     write(root.resolve("ward-cli/pom.xml"), "<project/>");
 
     assertThat(MavenCodeRoot.of(maven(root))).isEqualTo(maven(root));

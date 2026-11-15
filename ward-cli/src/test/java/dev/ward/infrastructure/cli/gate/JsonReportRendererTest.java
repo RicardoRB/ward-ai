@@ -37,7 +37,9 @@ class JsonReportRendererTest {
                 "custom-lint",
                 null,
                 null,
-                "Install custom-lint or add it to PATH."));
+                "Install custom-lint or add it to PATH."
+            )
+        );
   }
 
   private static GateResult failedCheckstyle() {
@@ -53,7 +55,8 @@ class JsonReportRendererTest {
   private JsonTree render(final GateResult... results) {
     return JsonTree.parse(
         new JsonReportRenderer(new ForyJsonCodec())
-            .render(new CheckReport(project, List.of(results))));
+            .render(new CheckReport(project, List.of(results)))
+    );
   }
 
   @Test

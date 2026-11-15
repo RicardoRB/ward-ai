@@ -13,7 +13,6 @@ import java.util.Set;
  * the whole codebase from its classpath; this check reads the imports of the file.
  */
 public final class WrongTestAnnotationCheck implements UnitCheck {
-
   private static final String JUNIT4_TEST = "org.junit.Test";
   private static final String JUPITER_TEST = "org.junit.jupiter.api.Test";
   private static final String JUPITER = "org.junit.jupiter.";
@@ -43,7 +42,8 @@ public final class WrongTestAnnotationCheck implements UnitCheck {
     final boolean junit4 = imports.stream().anyMatch(i -> isJunit4Other(i.name()));
     return imports.stream()
         .filter(
-            i -> jupiter && JUNIT4_TEST.equals(i.name()) || junit4 && JUPITER_TEST.equals(i.name()))
+            i -> jupiter && JUNIT4_TEST.equals(i.name()) || junit4 && JUPITER_TEST.equals(i.name())
+        )
         .map(i -> CheckSupport.at(i.node().span(), message))
         .toList();
   }

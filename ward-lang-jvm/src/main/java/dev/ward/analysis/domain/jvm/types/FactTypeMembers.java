@@ -50,7 +50,7 @@ final class FactTypeMembers {
     return typed
         .type()
         .filter(JType.ClassType.class::isInstance)
-        .map(found -> ((JType.ClassType) found).name())
+        .map(found -> ((JType.ClassType)found).name())
         .flatMap(hierarchy::find);
   }
 
@@ -79,7 +79,8 @@ final class FactTypeMembers {
         inheritedMethods,
         inheritedFields,
         type.annotationValues(),
-        List.of());
+        List.of()
+    );
   }
 
   /** Returns the classes of the ancestors of {@code type} that the hierarchy holds. */
@@ -96,7 +97,8 @@ final class FactTypeMembers {
         field.name(),
         FactRefs.erased(field.type(), Map.of()).orElse(null),
         field.isStatic(),
-        FactRefs.displayAll(field.annotations()));
+        FactRefs.displayAll(field.annotations())
+    );
   }
 
   /**

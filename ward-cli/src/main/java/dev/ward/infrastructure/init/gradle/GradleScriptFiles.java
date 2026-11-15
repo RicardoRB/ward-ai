@@ -58,16 +58,23 @@ final class GradleScriptFiles {
       return groovy;
     }
     throw new WardException(
-        "Could not configure Gradle tools: no build.gradle or build.gradle.kts found.");
+        "Could not configure Gradle tools: no build.gradle or build.gradle.kts found."
+    );
   }
 
   private static void write(final Path file, final String content) {
     try {
       Files.writeString(
-          file, content, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
+          file,
+          content,
+          StandardOpenOption.TRUNCATE_EXISTING,
+          StandardOpenOption.WRITE
+      );
     } catch (IOException e) {
       throw new WardException(
-          "Could not configure Gradle tools in " + file + ": " + e.getMessage(), e);
+          "Could not configure Gradle tools in " + file + ": " + e.getMessage(),
+          e
+      );
     }
   }
 }

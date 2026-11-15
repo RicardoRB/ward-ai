@@ -17,8 +17,10 @@ import java.util.List;
  * @param independence the module directories of {@code [[checks.ward.independence]]}
  */
 record WardArchitecture(
-    List<LayerBoundary> layers, List<String> cycleRoots, List<String> independence) {
-
+    List<LayerBoundary> layers,
+    List<String> cycleRoots,
+    List<String> independence
+) {
   /** The style init writes when none is chosen, as the planner and the wizard default to it. */
   private static final String DEFAULT_STYLE = "layered";
 
@@ -42,7 +44,10 @@ record WardArchitecture(
    * source roots and modules of its toolchain.
    */
   static WardArchitecture of(
-      final InitSelection selection, final Project project, final ArchitectureTables tables) {
+      final InitSelection selection,
+      final Project project,
+      final ArchitectureTables tables
+  ) {
     final String style = style(selection);
     final List<LayerBoundary> layers =
         List.of(ArchitectureLayers.forStyle(style, project.framework()));
@@ -50,7 +55,10 @@ record WardArchitecture(
       return new WardArchitecture(layers, List.of(), List.of());
     }
     return new WardArchitecture(
-        layers, tables.cycleRoots(project), tables.independenceModules(project, style));
+        layers,
+        tables.cycleRoots(project),
+        tables.independenceModules(project, style)
+    );
   }
 
   /** The style the selection checks: the chosen one, or the default when none is chosen. */

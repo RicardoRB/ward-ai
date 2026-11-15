@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Test;
  * JSX in {@code .tsx} and {@code .jsx} units, and the TypeScript cast that must keep its meaning.
  */
 class JsxSyntaxTest {
-
   private static final Path SYNTAX = Path.of("src/test/resources/syntax");
 
   private static final List<String> JSX_KINDS =
@@ -36,7 +35,8 @@ class JsxSyntaxTest {
           "jsxAttributeValue",
           "jsxExpressionContainer",
           "jsxText",
-          "jsxElementName");
+          "jsxElementName"
+      );
 
   @Test
   void tsxComponentParsesWithEveryJsxNodeKind() throws IOException {
@@ -86,7 +86,8 @@ class JsxSyntaxTest {
         parseText(
             AnalysisLanguage.TYPESCRIPT,
             "frag.tsx",
-            "const v = <><svg:rect x=\"1\" /><ui.Header/></>;\n");
+            "const v = <><svg:rect x=\"1\" /><ui.Header/></>;\n"
+        );
 
     assertThat(result.diagnostics()).isEmpty();
     assertThat(kindsOf(result.tree())).contains("jsxFragment", "jsxElementName");
@@ -115,14 +116,18 @@ class JsxSyntaxTest {
   }
 
   private static ParseResult parseText(
-      final AnalysisLanguage language, final String path, final String text) {
+      final AnalysisLanguage language,
+      final String path,
+      final String text
+  ) {
     return new AntlrLanguageFrontend().parse(new SourceUnit(path, language, text));
   }
 
   private static List<String> kindsOf(final SyntaxNode node) {
     return Stream.concat(
-            Stream.of(node.kind()),
-            node.children().stream().flatMap(child -> kindsOf(child).stream()))
+        Stream.of(node.kind()),
+        node.children().stream().flatMap(child -> kindsOf(child).stream())
+    )
         .toList();
   }
 }

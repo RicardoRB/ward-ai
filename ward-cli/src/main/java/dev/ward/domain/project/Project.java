@@ -36,7 +36,8 @@ public record Project(
     Set<Language> languages,
     String languageVersion,
     TaskRunner taskRunner,
-    String xcodeScheme) {
+    String xcodeScheme
+) {
   /** Copies {@code languages}, in declaration order, and adds the primary language. */
   public Project {
     final Set<Language> all = EnumSet.of(language);
@@ -49,7 +50,8 @@ public record Project(
       final Path root,
       final Language language,
       final BuildTool buildTool,
-      final Framework framework) {
+      final Framework framework
+  ) {
     this(root, language, buildTool, framework, false);
   }
 
@@ -59,7 +61,8 @@ public record Project(
       final Language language,
       final BuildTool buildTool,
       final Framework framework,
-      final boolean mavenWrapperAvailable) {
+      final boolean mavenWrapperAvailable
+  ) {
     this(
         root,
         language,
@@ -70,7 +73,8 @@ public record Project(
         Set.of(),
         "",
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 
   /** Returns this project with {@code runner} as its task runner. */
@@ -85,7 +89,8 @@ public record Project(
         languages,
         languageVersion,
         runner,
-        xcodeScheme);
+        xcodeScheme
+    );
   }
 
   /** Returns this project whose Xcode tests run {@code scheme}. */
@@ -100,7 +105,8 @@ public record Project(
         languages,
         languageVersion,
         taskRunner,
-        scheme);
+        scheme
+    );
   }
 
   /** Returns this project inside the Git work tree whose top-level is {@code repository}. */
@@ -115,7 +121,8 @@ public record Project(
         languages,
         languageVersion,
         taskRunner,
-        xcodeScheme);
+        xcodeScheme
+    );
   }
 
   /**

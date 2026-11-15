@@ -12,7 +12,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class RedundantInstanceofCheckTest {
-
   private static final int OPERATOR = 2;
   private static final int TARGET = 3;
   private static final String STRING = "java.lang.String";
@@ -24,7 +23,8 @@ class RedundantInstanceofCheckTest {
         1,
         MoreTrees.node("expression", 1),
         MoreTrees.leaf("'instanceof'", "instanceof", OPERATOR),
-        target);
+        target
+    );
   }
 
   private static SyntaxNode typeTarget() {
@@ -36,7 +36,8 @@ class RedundantInstanceofCheckTest {
         1,
         MoreTrees.typed(MoreTrees.type(STRING, operandDepth, primitive)),
         TARGET,
-        MoreTrees.typed(MoreTrees.type(STRING, 0, false)));
+        MoreTrees.typed(MoreTrees.type(STRING, 0, false))
+    );
   }
 
   private static List<RuleMatch> run(final SyntaxNode root, final UnitTypeFacts types) {
@@ -63,13 +64,16 @@ class RedundantInstanceofCheckTest {
     assertThat(run(test(typeTarget()), facts(0, true))).isEmpty();
     assertThat(run(test(typeTarget()), UnitTypeFacts.none())).isEmpty();
     assertThat(
-            run(
-                test(typeTarget()),
-                MoreTrees.table(
-                    1,
-                    MoreTrees.typed(MoreTrees.type("java.lang.Object", 0, false)),
-                    TARGET,
-                    MoreTrees.typed(MoreTrees.type(STRING, 0, false)))))
+        run(
+            test(typeTarget()),
+            MoreTrees.table(
+                1,
+                MoreTrees.typed(MoreTrees.type("java.lang.Object", 0, false)),
+                TARGET,
+                MoreTrees.typed(MoreTrees.type(STRING, 0, false))
+            )
+        )
+    )
         .isEmpty();
   }
 
@@ -81,7 +85,8 @@ class RedundantInstanceofCheckTest {
             1,
             MoreTrees.node("expression", 1),
             MoreTrees.leaf("'+'", "+", OPERATOR),
-            typeTarget());
+            typeTarget()
+        );
 
     assertThat(run(other, facts(0, false))).isEmpty();
     assertThat(run(MoreTrees.node("expression", 1), facts(0, false))).isEmpty();

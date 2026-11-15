@@ -7,7 +7,6 @@ import java.util.List;
 
 /** Collects the syntax errors of one parse, from the lexer and the parser, as findings. */
 public final class SyntaxFindings {
-
   /** The rule id of every syntax finding. */
   public static final String RULE_ID = "syntax";
 
@@ -41,7 +40,9 @@ public final class SyntaxFindings {
             Math.max(1, line),
             Math.max(1, column),
             null,
-            List.of()));
+            List.of()
+        )
+    );
   }
 
   /**

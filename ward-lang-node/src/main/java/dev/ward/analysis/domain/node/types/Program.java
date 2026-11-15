@@ -46,7 +46,10 @@ public final class Program {
       final DeclarationCache cache,
       final LanguageFrontend frontend,
       final Set<String> projectFiles,
-      final BiFunction<String, String, Optional<String>> projectResolver) {
+      final BiFunction<String,
+      String,
+      Optional<String>> projectResolver
+  ) {
     this.files = files;
     this.cache = cache;
     this.frontend = frontend;
@@ -57,7 +60,8 @@ public final class Program {
             this,
             projectFiles.stream()
                 .filter(path -> path.endsWith(".d.ts") && !path.contains(NODE_MODULES + "/"))
-                .collect(java.util.stream.Collectors.toSet()));
+                .collect(java.util.stream.Collectors.toSet())
+        );
   }
 
   Globals globals() {
@@ -127,7 +131,9 @@ public final class Program {
     try {
       final FileDecls decls = file(path);
       return modules.computeIfAbsent(
-          path, key -> new Module(this, key, decls, decls.decls(), Module.Kind.FILE));
+          path,
+          key -> new Module(this, key, decls, decls.decls(), Module.Kind.FILE)
+      );
     } finally {
       lock.unlock();
     }

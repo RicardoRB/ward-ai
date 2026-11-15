@@ -16,7 +16,6 @@ import java.util.Set;
  * undefined value is skipped, and so is a role-less element's global attribute.
  */
 public final class BiomeAriaPropsSupportedByRoleCheck implements RuleCheck {
-
   private static final String PREFIX = "aria-";
   private static final Set<String> NULL_VALUES = Set.of("{null}", "{undefined}");
 
@@ -42,7 +41,10 @@ public final class BiomeAriaPropsSupportedByRoleCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(JsxAttributes.OPENING, JsxAttributes.SELF_CLOSING))
         .stream()
         .filter(visit -> JsxAttributes.isDomElement(visit.node()))
@@ -64,10 +66,13 @@ public final class BiomeAriaPropsSupportedByRoleCheck implements RuleCheck {
         .filter(
             attribute ->
                 !NULL_VALUES.contains(
-                    JsxAttributes.value(attribute).map(SyntaxWalk::text).orElse("")))
+                    JsxAttributes.value(attribute).map(SyntaxWalk::text).orElse("")
+                )
+        )
         .map(JsxAttributes::name)
         .anyMatch(
             name ->
-                prohibited.contains(name) || !global.contains(name) && !supported.contains(name));
+                prohibited.contains(name) || !global.contains(name) && !supported.contains(name)
+        );
   }
 }

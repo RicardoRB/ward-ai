@@ -12,7 +12,6 @@ import java.util.Set;
  * the next statement, as PMD's VariableCanBeInlined does.
  */
 public final class VariableCanBeInlinedCheck implements RuleCheck {
-
   private static final String DECLARATOR = "variableDeclarator";
   private static final Set<String> EXITS = Set.of("return", "throw", "yield");
 
@@ -36,7 +35,8 @@ public final class VariableCanBeInlinedCheck implements RuleCheck {
         final String name = declared(statements.get(index));
         if (!name.isEmpty() && exits(statements.get(index + 1), name)) {
           matches.add(
-              CheckSupport.at(statements.get(index).span(), CheckSupport.fill(message, name, "")));
+              CheckSupport.at(statements.get(index).span(), CheckSupport.fill(message, name, ""))
+          );
         }
       }
     }

@@ -66,13 +66,13 @@ final class ConstantPool {
   }
 
   private static Object other(final ByteBuffer in, final int tag) throws ClassFileException {
-    return REFERENCE_TAGS.contains(tag) ? (Object) tag : skipFourBytes(in, tag);
+    return REFERENCE_TAGS.contains(tag) ? (Object)tag : skipFourBytes(in, tag);
   }
 
   private static Object number(final ByteBuffer in, final int tag) {
     return switch (tag) {
-      case INTEGER -> (long) in.getInt();
-      case FLOAT -> (double) in.getFloat();
+      case INTEGER -> (long)in.getInt();
+      case FLOAT -> (double)in.getFloat();
       case LONG -> in.getLong();
       default -> in.getDouble();
     };

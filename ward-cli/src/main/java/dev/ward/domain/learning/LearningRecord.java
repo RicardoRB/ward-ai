@@ -25,7 +25,8 @@ public record LearningRecord(
     LearningState state,
     Instant firstSeen,
     Instant lastSeen,
-    boolean prompted) {
+    boolean prompted
+) {
   public static final int MAX_SUMMARY_LENGTH = 200;
 
   /**
@@ -58,8 +59,20 @@ public record LearningRecord(
 
   /** Returns a copy in {@code nextState}, last seen at {@code seen}. */
   public LearningRecord withState(
-      final LearningState nextState, final Instant seen, final boolean nextPrompted) {
+      final LearningState nextState,
+      final Instant seen,
+      final boolean nextPrompted
+  ) {
     return new LearningRecord(
-        key, gate, rule, summary, occurrences, nextState, firstSeen, seen, nextPrompted);
+        key,
+        gate,
+        rule,
+        summary,
+        occurrences,
+        nextState,
+        firstSeen,
+        seen,
+        nextPrompted
+    );
   }
 }

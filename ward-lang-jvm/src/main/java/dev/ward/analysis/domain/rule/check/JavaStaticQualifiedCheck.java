@@ -19,7 +19,6 @@ import java.util.Set;
  * is never reported.
  */
 public final class JavaStaticQualifiedCheck implements RuleCheck {
-
   private final String message;
 
   /**
@@ -47,7 +46,8 @@ public final class JavaStaticQualifiedCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("expression"))) {
       final SyntaxNode call = visit.node();
@@ -58,7 +58,9 @@ public final class JavaStaticQualifiedCheck implements RuleCheck {
           .ifPresent(
               target ->
                   matches.add(
-                      CheckSupport.at(call.span(), CheckSupport.fill(message, target.name(), ""))));
+                      CheckSupport.at(call.span(), CheckSupport.fill(message, target.name(), ""))
+                  )
+          );
     }
     return List.copyOf(matches);
   }

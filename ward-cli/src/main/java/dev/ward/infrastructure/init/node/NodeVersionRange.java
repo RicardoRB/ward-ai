@@ -25,7 +25,8 @@ final class NodeVersionRange {
       return Optional.empty();
     }
     return Optional.of(
-        String.join(".", Arrays.stream(parse(matcher)).mapToObj(String::valueOf).toList()));
+        String.join(".", Arrays.stream(parse(matcher)).mapToObj(String::valueOf).toList())
+    );
   }
 
   /** Returns whether {@code version}, a full {@code major.minor.patch}, satisfies {@code range}. */
@@ -42,7 +43,10 @@ final class NodeVersionRange {
   }
 
   private static Optional<String> minimum(
-      final String range, final String version, final boolean majorOnly) {
+      final String range,
+      final String version,
+      final boolean majorOnly
+  ) {
     final int[] actual = parse(version);
     for (final String alternative : range.split("\\|\\|")) {
       final String trimmed = alternative.trim();
@@ -55,7 +59,10 @@ final class NodeVersionRange {
   }
 
   private static boolean satisfies(
-      final String comparator, final int[] actual, final boolean majorOnly) {
+      final String comparator,
+      final int[] actual,
+      final boolean majorOnly
+  ) {
     if (comparator.startsWith(">=")) {
       return compare(actual, parse(comparator.substring(2)), majorOnly) >= 0;
     }

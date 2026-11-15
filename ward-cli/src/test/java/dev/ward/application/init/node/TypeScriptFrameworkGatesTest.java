@@ -25,17 +25,23 @@ class TypeScriptFrameworkGatesTest {
   @TempDir Path root;
 
   @ParameterizedTest
-  @CsvSource({
-    "VUE, NPM, npx vue-tsc --build, vue-tsc",
-    "SVELTE, PNPM, pnpm exec svelte-check, svelte-check",
-    "ASTRO, YARN, yarn astro check, astro-check",
-    "ANGULAR, NPM, npx ngc -p tsconfig.app.json --noEmit, ngc",
-    "ANGULAR, PNPM, pnpm exec ngc -p tsconfig.app.json --noEmit, ngc",
-    "ANGULAR, YARN, yarn ngc -p tsconfig.app.json --noEmit, ngc",
-    "NONE, NPM, npx tsc --noEmit --pretty false, tsc"
-  })
+  @CsvSource(
+      {
+          "VUE, NPM, npx vue-tsc --build, vue-tsc",
+          "SVELTE, PNPM, pnpm exec svelte-check, svelte-check",
+          "ASTRO, YARN, yarn astro check, astro-check",
+          "ANGULAR, NPM, npx ngc -p tsconfig.app.json --noEmit, ngc",
+          "ANGULAR, PNPM, pnpm exec ngc -p tsconfig.app.json --noEmit, ngc",
+          "ANGULAR, YARN, yarn ngc -p tsconfig.app.json --noEmit, ngc",
+          "NONE, NPM, npx tsc --noEmit --pretty false, tsc"
+      }
+  )
   void frameworkCheckerReplacesTscInTheTypeCheckGate(
-      final Framework framework, final BuildTool manager, final String command, final String id) {
+      final Framework framework,
+      final BuildTool manager,
+      final String command,
+      final String id
+  ) {
     final Project project = project(manager, framework);
 
     assertThat(catalog().presetGates(project, QualityPreset.STANDARD)).first().isEqualTo(id);
@@ -70,7 +76,9 @@ class TypeScriptFrameworkGatesTest {
         new InitInputs(
             new FakeEnvironmentInspection("npm", "pnpm", "yarn"),
             directory -> PackageManifest.EMPTY,
-            directory -> false));
+            directory -> false
+        )
+    );
   }
 
   private Project project(final BuildTool manager, final Framework framework) {
@@ -84,6 +92,7 @@ class TypeScriptFrameworkGatesTest {
         Set.of(),
         "24",
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 }

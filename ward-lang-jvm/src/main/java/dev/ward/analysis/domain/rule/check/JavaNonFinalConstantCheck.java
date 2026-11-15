@@ -12,7 +12,6 @@ import java.util.Set;
  * NonFinalCompileTimeConstant does.
  */
 public final class JavaNonFinalConstantCheck implements RuleCheck {
-
   private static final Set<String> METHODS = Set.of("methodDeclaration", "constructorDeclaration");
 
   private final String message;
@@ -40,7 +39,7 @@ public final class JavaNonFinalConstantCheck implements RuleCheck {
 
   private static boolean isConstant(final SyntaxNode parameter) {
     return JavaAnnotations.of(parameter).stream()
-            .anyMatch(a -> "CompileTimeConstant".equals(JavaAnnotations.simpleName(a)))
+        .anyMatch(a -> "CompileTimeConstant".equals(JavaAnnotations.simpleName(a)))
         && !JavaAnnotations.keywords(parameter).contains("final");
   }
 

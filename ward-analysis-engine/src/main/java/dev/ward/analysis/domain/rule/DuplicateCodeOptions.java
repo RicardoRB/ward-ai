@@ -22,8 +22,8 @@ public record DuplicateCodeOptions(
     boolean ignoreLiterals,
     boolean ignoreIdentifiers,
     boolean ignoreAnnotations,
-    int maxDuplicatedPercent) {
-
+    int maxDuplicatedPercent
+) {
   /** The copy length that PMD CPD and jscpd default to. */
   public static final int DEFAULT_MIN_TOKENS = 100;
 
@@ -73,11 +73,16 @@ public record DuplicateCodeOptions(
         flag(values, IGNORE_LITERALS),
         flag(values, IGNORE_IDENTIFIERS),
         flag(values, IGNORE_ANNOTATIONS),
-        number(values, MAX_PERCENT, NO_SHARE_LIMIT));
+        number(values, MAX_PERCENT, NO_SHARE_LIMIT)
+    );
   }
 
   private static int number(
-      final Map<String, String> values, final String key, final int fallback) {
+      final Map<String,
+      String> values,
+      final String key,
+      final int fallback
+  ) {
     final String text = values.get(key);
     return text == null ? fallback : Integer.parseInt(text);
   }

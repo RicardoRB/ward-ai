@@ -11,7 +11,6 @@ import java.util.Map;
  * can reach. A write that reaches nothing has an empty list.
  */
 public final class DefUseChains {
-
   private final Map<AccessSite, List<AccessSite>> chains;
 
   private DefUseChains(final Map<AccessSite, List<AccessSite>> chains) {

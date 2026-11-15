@@ -24,7 +24,12 @@ final class PomTags {
     final boolean closing = xml.startsWith("</", lt);
     final int nameStart = closing ? lt + 2 : lt + 1;
     return new Tag(
-        lt, end, tagName(xml, nameStart), closing, xml.substring(lt, end).endsWith("/>"));
+        lt,
+        end,
+        tagName(xml, nameStart),
+        closing,
+        xml.substring(lt, end).endsWith("/>")
+    );
   }
 
   private static boolean isMarkup(final String xml, final int lt) {

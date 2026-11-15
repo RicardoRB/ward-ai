@@ -8,7 +8,6 @@ import java.util.Optional;
 
 /** The types of literal tokens and of list, set and dict displays. */
 final class PythonLiterals {
-
   private static final String TRUE = "True";
   private static final String FALSE = "False";
   private static final String NONE = "None";

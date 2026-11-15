@@ -17,7 +17,6 @@ import java.util.Set;
  * runs. It reports nothing when the inherited methods of the nested class are unknown.
  */
 public final class AmbiguousInvocationCheck extends FactsCheck {
-
   private static final String CLASS = "classDeclaration";
   private static final String EXPRESSION = "expression";
   private static final String METHOD_CALL = "methodCall";
@@ -54,7 +53,8 @@ public final class AmbiguousInvocationCheck extends FactsCheck {
       final SyntaxNode inner,
       final List<SyntaxNode> outer,
       final TypeMembers members,
-      final List<RuleMatch> out) {
+      final List<RuleMatch> out
+  ) {
     final Set<String> own = new java.util.HashSet<>();
     DeclaredMethods.of(inner).forEach(method -> own.add(method.name()));
     for (final SyntaxNode call : SyntaxWalk.descendants(inner)) {
@@ -87,7 +87,8 @@ public final class AmbiguousInvocationCheck extends FactsCheck {
             method ->
                 name.equals(method.name())
                     && method.parameters().size() == count
-                    && !OBJECT.equals(method.declaringType().name()));
+                    && !OBJECT.equals(method.declaringType().name())
+        );
   }
 
   private static boolean declares(final SyntaxNode type, final String name, final int count) {

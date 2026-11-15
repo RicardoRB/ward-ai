@@ -24,7 +24,9 @@ class PythonDjangoPytestTest {
                     Framework.DJANGO,
                     false,
                     false,
-                    Optional.of("mysite.settings")));
+                    Optional.of("mysite.settings")
+                )
+            );
 
     assertThat(command(gates, "pytest")).contains("--ds=mysite.settings");
   }

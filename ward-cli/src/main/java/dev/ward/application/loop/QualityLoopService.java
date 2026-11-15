@@ -43,7 +43,10 @@ public final class QualityLoopService {
    */
   @Inject
   public QualityLoopService(
-      final CheckService checks, final AgentRunnerFactory agents, final GitStateInspection git) {
+      final CheckService checks,
+      final AgentRunnerFactory agents,
+      final GitStateInspection git
+  ) {
     this.checks = checks;
     this.agents = agents;
     this.git = git;
@@ -62,7 +65,8 @@ public final class QualityLoopService {
           LoopTerminalState.GATE_ERROR,
           0,
           List.of(),
-          "Refusing to start with a dirty working tree.");
+          "Refusing to start with a dirty working tree."
+      );
     }
     final LoopContext context = new LoopContext(agent, root, config.timeoutSeconds());
     final List<CheckReport> history = new ArrayList<>();
@@ -78,7 +82,8 @@ public final class QualityLoopService {
                 "event=loop-terminal iteration="
                     + currentIteration
                     + " status="
-                    + outcome.get().state());
+                    + outcome.get().state()
+        );
         return outcome.get();
       }
       feedback = feedback(history.getLast());
@@ -88,7 +93,8 @@ public final class QualityLoopService {
         LoopTerminalState.MAX_ITERATIONS_REACHED,
         config.maxIterations(),
         history,
-        "Maximum iterations reached.");
+        "Maximum iterations reached."
+    );
   }
 
   /** Runs one agent attempt and quality check; returns a result when the loop must stop. */
@@ -96,35 +102,42 @@ public final class QualityLoopService {
       final LoopContext context,
       final String task,
       final int iteration,
-      final List<CheckReport> history) {
+      final List<CheckReport> history
+  ) {
     final AgentResult agentResult;
     try {
       agentResult = runAgent(context.agent(), task, context.timeoutSeconds());
     } catch (TimeoutException e) {
       LOGGER.log(Level.WARNING, "event=loop-terminal status=timeout");
       return Optional.of(
-          new LoopResult(LoopTerminalState.TIMEOUT, iteration, history, "Agent timeout."));
+          new LoopResult(LoopTerminalState.TIMEOUT, iteration, history, "Agent timeout.")
+      );
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
       LOGGER.log(Level.WARNING, "event=loop-terminal status=interrupted");
       return Optional.of(
-          new LoopResult(LoopTerminalState.TIMEOUT, iteration, history, "Loop interrupted."));
+          new LoopResult(LoopTerminalState.TIMEOUT, iteration, history, "Loop interrupted.")
+      );
     } catch (ExecutionException e) {
       LOGGER.log(Level.WARNING, "event=loop-terminal status=agent-error");
       return Optional.of(
-          new LoopResult(
-              LoopTerminalState.AGENT_ERROR, iteration, history, e.getCause().toString()));
+          new LoopResult(LoopTerminalState.AGENT_ERROR, iteration, history, e.getCause().toString())
+      );
     }
     if (!agentResult.succeeded()) {
       LOGGER.log(Level.INFO, "event=loop-terminal status=agent-error");
       return Optional.of(
-          new LoopResult(LoopTerminalState.AGENT_ERROR, iteration, history, agentResult.summary()));
+          new LoopResult(LoopTerminalState.AGENT_ERROR, iteration, history, agentResult.summary())
+      );
     }
     return checkQuality(context.root(), iteration, history);
   }
 
   private static AgentResult runAgent(
-      final AgentRunner agent, final String task, final int timeoutSeconds)
+      final AgentRunner agent,
+      final String task,
+      final int timeoutSeconds
+  )
       throws TimeoutException, InterruptedException, ExecutionException {
     try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {
       final Future<AgentResult> future =
@@ -140,7 +153,10 @@ public final class QualityLoopService {
 
   // Any gate failure must end the loop as GATE_ERROR rather than escape it.
   private Optional<LoopResult> checkQuality(
-      final Path root, final int iteration, final List<CheckReport> history) {
+      final Path root,
+      final int iteration,
+      final List<CheckReport> history
+  ) {
     final CheckReport report;
     final FutureTask<CheckReport> check = new FutureTask<>(() -> checks.check(root));
     check.run();
@@ -150,7 +166,8 @@ public final class QualityLoopService {
       Thread.currentThread().interrupt();
       LOGGER.log(Level.WARNING, "event=loop-terminal status=gate-interrupted");
       return Optional.of(
-          new LoopResult(LoopTerminalState.GATE_ERROR, iteration, history, "Loop interrupted."));
+          new LoopResult(LoopTerminalState.GATE_ERROR, iteration, history, "Loop interrupted.")
+      );
     } catch (ExecutionException failure) {
       LOGGER.log(Level.WARNING, "event=loop-terminal status=gate-error");
       final Throwable cause = failure.getCause();
@@ -159,14 +176,16 @@ public final class QualityLoopService {
               LoopTerminalState.GATE_ERROR,
               iteration,
               history,
-              cause == null ? failure.getMessage() : cause.getMessage()));
+              cause == null ? failure.getMessage() : cause.getMessage()
+          )
+      );
     }
     history.add(report);
     if (report.passed()) {
       LOGGER.log(Level.INFO, "event=loop-terminal status=passed");
       return Optional.of(
-          new LoopResult(
-              LoopTerminalState.PASSED, iteration, history, "All quality gates passed."));
+          new LoopResult(LoopTerminalState.PASSED, iteration, history, "All quality gates passed.")
+      );
     }
     return Optional.empty();
   }
@@ -182,7 +201,8 @@ public final class QualityLoopService {
                     + result.status()
                     + " output="
                     + result.stdout()
-                    + result.stderr())
+                    + result.stderr()
+        )
         .reduce("Fix these failed quality gates:\n", (a, b) -> a + b + "\n");
   }
 

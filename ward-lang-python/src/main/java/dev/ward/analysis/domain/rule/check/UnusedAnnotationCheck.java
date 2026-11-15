@@ -21,7 +21,6 @@ import java.util.Set;
  * {@code F842}. A bare annotation binds nothing at run time, so an unread one is dead.
  */
 public final class UnusedAnnotationCheck implements RuleCheck {
-
   private static final Set<String> STATEMENTS = Set.of("expr_stmt");
   private static final String ANNOTATION = "annassign";
   private static final String ASSIGN = "=";
@@ -46,7 +45,11 @@ public final class UnusedAnnotationCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes(Set.of());
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, STATEMENTS)) {

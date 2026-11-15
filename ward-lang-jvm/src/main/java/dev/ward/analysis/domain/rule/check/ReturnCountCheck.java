@@ -13,7 +13,6 @@ import java.util.Set;
  * classes belong to those bodies and are not counted.
  */
 public final class ReturnCountCheck implements UnitCheck {
-
   private static final String RETURN = "'return'";
   private static final String VOID = "void";
   private static final String TYPE_OR_VOID = "typeTypeOrVoid";
@@ -49,7 +48,9 @@ public final class ReturnCountCheck implements UnitCheck {
         matches.add(
             CheckSupport.at(
                 method.span(),
-                CheckSupport.fill(message, String.valueOf(count), String.valueOf(limit))));
+                CheckSupport.fill(message, String.valueOf(count), String.valueOf(limit))
+            )
+        );
       }
     }
     return List.copyOf(matches);

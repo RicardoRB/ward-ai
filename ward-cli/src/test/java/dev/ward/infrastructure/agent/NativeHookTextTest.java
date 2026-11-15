@@ -14,9 +14,10 @@ class NativeHookTextTest {
 
     assertThat(json).doesNotContain("\n", "\r", "\t", "\u0001");
     assertThat(
-            new ForyJsonCodec()
-                .fromJson("{\"command\":" + json + "}", CodexIntegration.ToolInput.class)
-                .command)
+        new ForyJsonCodec()
+            .fromJson("{\"command\":" + json + "}", CodexIntegration.ToolInput.class)
+            .command
+    )
         .isEqualTo(reason);
   }
 

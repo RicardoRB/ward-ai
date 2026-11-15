@@ -5,7 +5,6 @@ import java.util.Set;
 /** Supplies the names a language provides without a declaration, such as Python's builtins. */
 @FunctionalInterface
 public interface BuiltinNames {
-
   /**
    * Returns the built-in names of the environments.
    *

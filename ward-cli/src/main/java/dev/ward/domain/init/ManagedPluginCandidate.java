@@ -21,7 +21,8 @@ public record ManagedPluginCandidate(
     int minimumJdk,
     int maximumJdk,
     String minimumBuildTool,
-    String label) {
+    String label
+) {
   /**
    * Validates the row.
    *
@@ -39,12 +40,18 @@ public record ManagedPluginCandidate(
 
   /** Groups catalog {@code rows} by tool, keeping their order. */
   public static Map<String, List<ManagedPluginCandidate>> byTool(
-      final List<ManagedPluginCandidate> rows) {
+      final List<ManagedPluginCandidate> rows
+  ) {
     return Map.copyOf(
         rows.stream()
             .collect(
                 Collectors.groupingBy(
-                    ManagedPluginCandidate::tool, LinkedHashMap::new, Collectors.toList())));
+                    ManagedPluginCandidate::tool,
+                    LinkedHashMap::new,
+                    Collectors.toList()
+                )
+            )
+    );
   }
 
   /** Returns whether {@code jdk} is inside this row's JDK range. */

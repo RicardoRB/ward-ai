@@ -6,7 +6,6 @@ import java.util.Optional;
 /** Takes one measurement of a node and reports a violation when it breaks the rule. */
 @FunctionalInterface
 interface Measure {
-
   /**
    * Returns a violation when {@code node} breaks the rule.
    *
@@ -16,7 +15,11 @@ interface Measure {
    * @param rule the rule being checked
    */
   Optional<Violation> check(
-      SyntaxNode node, MetricRule.Target target, boolean method, MetricRule rule);
+      SyntaxNode node,
+      MetricRule.Target target,
+      boolean method,
+      MetricRule rule
+  );
 
   /**
    * Returns the measured value of {@code node} whether or not it breaks the limit, as a violation
@@ -27,7 +30,8 @@ interface Measure {
       final SyntaxNode node,
       final MetricRule.Target target,
       final boolean method,
-      final MetricRule rule) {
+      final MetricRule rule
+  ) {
     return Optional.empty();
   }
 }

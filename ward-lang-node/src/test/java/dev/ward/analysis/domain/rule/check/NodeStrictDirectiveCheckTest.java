@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 /** The strict directive check reads each file's source type from its path, as ESLint does. */
 class NodeStrictDirectiveCheckTest {
-
   private static final String TOP = "\"use strict\";\nconst a = 1;\n";
   private static final String NONE = "const a = 1;\n";
 
@@ -59,7 +58,10 @@ class NodeStrictDirectiveCheckTest {
   }
 
   private static List<RuleMatch> run(
-      final String path, final NodeStrictDirectiveCheck.Mode mode, final String source) {
+      final String path,
+      final NodeStrictDirectiveCheck.Mode mode,
+      final String source
+  ) {
     final SourceUnit unit = new SourceUnit(path, AnalysisLanguage.JAVASCRIPT, source);
     final SyntaxNode root = new AntlrLanguageFrontend().parse(unit).tree();
     return new NodeStrictDirectiveCheck(mode, messages()).matches(root, null, unit);
@@ -68,15 +70,25 @@ class NodeStrictDirectiveCheckTest {
   /** Each message id maps to itself, so a match names the id it was reported under. */
   private static Map<String, String> messages() {
     return Map.of(
-        "module", "module",
-        "global", "global",
-        "function", "function",
-        "never", "never",
-        "multiple", "multiple",
-        "unnecessary", "unnecessary",
-        "unnecessaryInClasses", "unnecessaryInClasses",
-        "nonSimpleParameterList", "nonSimpleParameterList",
-        "wrap", "wrap");
+        "module",
+        "module",
+        "global",
+        "global",
+        "function",
+        "function",
+        "never",
+        "never",
+        "multiple",
+        "multiple",
+        "unnecessary",
+        "unnecessary",
+        "unnecessaryInClasses",
+        "unnecessaryInClasses",
+        "nonSimpleParameterList",
+        "nonSimpleParameterList",
+        "wrap",
+        "wrap"
+    );
   }
 
   private static List<String> messages(final List<RuleMatch> found) {

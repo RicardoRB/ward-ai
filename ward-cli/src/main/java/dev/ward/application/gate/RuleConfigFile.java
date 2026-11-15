@@ -18,8 +18,13 @@ import java.util.Objects;
  * @param problems the shape problems the reader found, each already naming the file, table and key
  */
 public record RuleConfigFile(
-    String name, Select select, Map<String, Map<String, Object>> rules, List<String> problems) {
-
+    String name,
+    Select select,
+    Map<String,
+    Map<String,
+    Object>> rules,
+    List<String> problems
+) {
   /** The file name {@code ward-rules.toml} at the project root, used when no path is configured. */
   public static final String DEFAULT_NAME = "ward-rules.toml";
 
@@ -49,10 +54,14 @@ public record RuleConfigFile(
   }
 
   private static Map<String, Map<String, Object>> copyTables(
-      final Map<String, Map<String, Object>> tables) {
+      final Map<String,
+      Map<String,
+      Object>> tables
+  ) {
     final Map<String, Map<String, Object>> copy = new LinkedHashMap<>();
     tables.forEach(
-        (id, table) -> copy.put(id, Collections.unmodifiableMap(new LinkedHashMap<>(table))));
+        (id, table) -> copy.put(id, Collections.unmodifiableMap(new LinkedHashMap<>(table)))
+    );
     return Collections.unmodifiableMap(copy);
   }
 
@@ -71,8 +80,8 @@ public record RuleConfigFile(
       List<String> languages,
       List<String> categories,
       List<String> include,
-      List<String> exclude) {
-
+      List<String> exclude
+  ) {
     /** A table that sets nothing. */
     public static final Select EMPTY = new Select(null, List.of(), List.of(), List.of(), List.of());
 

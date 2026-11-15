@@ -48,8 +48,10 @@ class NodeInstallDiagnosticsTest {
                   Set.of(),
                   "24",
                   TaskRunner.NONE,
-                  null),
-              List.of(new InitGateOption("vitest", "Vitest", List.of("npx"), true, "ok")));
+                  null
+              ),
+              List.of(new InitGateOption("vitest", "Vitest", List.of("npx"), true, "ok"))
+          );
     } finally {
       logger.removeHandler(handler);
     }
@@ -59,7 +61,8 @@ class NodeInstallDiagnosticsTest {
         .containsExactly(
             "event=node-dependencies-added count=2 manager=npm",
             "event=node-install-start manager=npm",
-            "event=node-install-complete exit=0");
+            "event=node-install-complete exit=0"
+        );
   }
 
   private static Handler handler(final List<LogRecord> records) {

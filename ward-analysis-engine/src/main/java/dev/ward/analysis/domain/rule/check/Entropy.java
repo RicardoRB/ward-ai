@@ -6,7 +6,6 @@ import java.util.Map;
 
 /** The Shannon entropy of a secret, as Gitleaks 8.30.1 computes it. */
 final class Entropy {
-
   private static final double LOG2 = Math.log(2);
 
   private Entropy() {}

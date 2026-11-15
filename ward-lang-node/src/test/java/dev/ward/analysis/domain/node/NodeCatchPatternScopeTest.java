@@ -10,12 +10,12 @@ import org.junit.jupiter.api.Test;
 
 /** A destructured catch parameter declares the names it binds, so later reads resolve. */
 class NodeCatchPatternScopeTest {
-
   @Test
   void objectPatternNamesResolveInsideTheCatchBlock() {
     final UnitScopes scopes =
         NodeScopeFixtures.typescript(
-            "function run() { try { work(); } catch ({ message }) { log(message); } }\n");
+            "function run() { try { work(); } catch ({ message }) { log(message); } }\n"
+        );
 
     assertThat(readOf(scopes, "message").resolved()).isPresent();
   }
@@ -24,7 +24,8 @@ class NodeCatchPatternScopeTest {
   void arrayPatternNamesResolveInsideTheCatchBlock() {
     final UnitScopes scopes =
         NodeScopeFixtures.typescript(
-            "function run() { try { work(); } catch ([first]) { log(first); } }\n");
+            "function run() { try { work(); } catch ([first]) { log(first); } }\n"
+        );
 
     assertThat(readOf(scopes, "first").resolved()).isPresent();
   }

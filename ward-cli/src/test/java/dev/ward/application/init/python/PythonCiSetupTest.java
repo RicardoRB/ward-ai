@@ -19,7 +19,10 @@ class PythonCiSetupTest {
 
     assertThat(steps)
         .contains(
-            "actions/setup-python@v6", "astral-sh/setup-uv@v7", "uv sync --locked --group ward")
+            "actions/setup-python@v6",
+            "astral-sh/setup-uv@v7",
+            "uv sync --locked --group ward"
+        )
         .doesNotContain("setup-java", "setup-node");
   }
 

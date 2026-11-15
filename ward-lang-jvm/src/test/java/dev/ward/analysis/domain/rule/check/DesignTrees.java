@@ -10,7 +10,6 @@ import java.util.List;
  * tests extend it, as the other check tests extend {@link TreeBuilders}.
  */
 class DesignTrees extends TreeBuilders {
-
   private static final String CLASS_NAME = "Sample";
 
   protected DesignTrees() {
@@ -28,7 +27,8 @@ class DesignTrees extends TreeBuilders {
             : n(
                 "typeDeclaration",
                 n("classOrInterfaceModifier", t(quoted(modifier), modifier)),
-                clazz);
+                clazz
+            );
     return compilationUnit(wrapper);
   }
 
@@ -68,7 +68,8 @@ class DesignTrees extends TreeBuilders {
     return n(
         "fieldDeclaration",
         t("'int'", "int"),
-        n("variableDeclarator", n("variableDeclaratorId", id(name))));
+        n("variableDeclarator", n("variableDeclaratorId", id(name)))
+    );
   }
 
   static SyntaxNode parameters(final String... names) {
@@ -76,7 +77,8 @@ class DesignTrees extends TreeBuilders {
         Arrays.stream(names)
             .map(
                 name ->
-                    n("formalParameter", t("'int'", "int"), n("variableDeclaratorId", id(name))))
+                    n("formalParameter", t("'int'", "int"), n("variableDeclaratorId", id(name)))
+            )
             .toArray(SyntaxNode[]::new);
     return n("formalParameters", params);
   }

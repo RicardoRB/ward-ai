@@ -12,7 +12,6 @@ import java.util.Set;
  * values of its enum.
  */
 final class TypeChanges {
-
   private static final String NULL = "null";
   private static final String INTEGER = "integer";
   private static final String NUMBER = "number";
@@ -21,7 +20,10 @@ final class TypeChanges {
 
   /** The type changes of one schema pair. */
   static List<SchemaChange> changes(
-      final SchemaSides sides, final DocNode base, final DocNode revision) {
+      final SchemaSides sides,
+      final DocNode base,
+      final DocNode revision
+  ) {
     final List<SchemaChange> changes = new ArrayList<>();
     type(sides, base, revision).ifPresent(changes::add);
     nullable(sides, base, revision).ifPresent(changes::add);
@@ -30,7 +32,10 @@ final class TypeChanges {
   }
 
   private static Optional<SchemaChange> type(
-      final SchemaSides sides, final DocNode base, final DocNode revision) {
+      final SchemaSides sides,
+      final DocNode base,
+      final DocNode revision
+  ) {
     final Set<String> before = types(base);
     final Set<String> after = types(revision);
     if (before.isEmpty() || after.isEmpty()) {
@@ -67,7 +72,8 @@ final class TypeChanges {
               } else {
                 node.items().forEach(item -> types.add(item.text()));
               }
-            });
+            }
+        );
     types.remove(NULL);
     return types;
   }
@@ -83,7 +89,10 @@ final class TypeChanges {
   }
 
   private static Optional<SchemaChange> nullable(
-      final SchemaSides sides, final DocNode base, final DocNode revision) {
+      final SchemaSides sides,
+      final DocNode base,
+      final DocNode revision
+  ) {
     final boolean before = nullable(base);
     final boolean after = nullable(revision);
     if (sides.request() && before && !after) {
@@ -96,7 +105,10 @@ final class TypeChanges {
   }
 
   private static Optional<SchemaChange> falseSchema(
-      final SchemaSides sides, final DocNode base, final DocNode revision) {
+      final SchemaSides sides,
+      final DocNode base,
+      final DocNode revision
+  ) {
     final boolean before = isFalse(base);
     final boolean after = isFalse(revision);
     if (sides.request()) {
@@ -106,7 +118,8 @@ final class TypeChanges {
     }
     if (before != after) {
       return Optional.of(
-          new SchemaChange(before ? "schema-became-not-false" : "schema-became-false", revision));
+          new SchemaChange(before ? "schema-became-not-false" : "schema-became-false", revision)
+      );
     }
     return Optional.empty();
   }

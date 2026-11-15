@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
  * <p>Shortcut: a backing property of a companion object is searched in its own class body only.
  */
 public final class KotlinBackingPropertyNamingCheck implements RuleCheck {
-
   private static final Pattern BACKING_NAME = Pattern.compile("_[a-z][a-zA-Z0-9]*");
   private static final String PROPERTY = "propertyDeclaration";
   private static final String FUN = "functionDeclaration";
@@ -70,7 +69,10 @@ public final class KotlinBackingPropertyNamingCheck implements RuleCheck {
   }
 
   private static boolean isValidBacking(
-      final SyntaxNode property, final String name, final Optional<SyntaxNode> body) {
+      final SyntaxNode property,
+      final String name,
+      final Optional<SyntaxNode> body
+  ) {
     return BACKING_NAME.matcher(name).matches()
         && hasModifier(property, PRIVATE)
         && body.map(classBody -> hasPublicCorrelate(classBody, name.substring(UNDERSCORE_LENGTH)))
@@ -99,7 +101,8 @@ public final class KotlinBackingPropertyNamingCheck implements RuleCheck {
         .noneMatch(
             parameters ->
                 parameters.children().stream()
-                    .anyMatch(child -> VALUE_PARAMETER.equals(child.kind())));
+                    .anyMatch(child -> VALUE_PARAMETER.equals(child.kind()))
+        );
   }
 
   private static List<SyntaxNode> members(final SyntaxNode body, final String kind) {
@@ -120,7 +123,9 @@ public final class KotlinBackingPropertyNamingCheck implements RuleCheck {
   }
 
   private static Optional<SyntaxNode> declaredName(
-      final SyntaxNode declaration, final String group) {
+      final SyntaxNode declaration,
+      final String group
+  ) {
     return declaration.children().stream()
         .filter(child -> group.equals(child.kind()))
         .flatMap(child -> child.children().stream())

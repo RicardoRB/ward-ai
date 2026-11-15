@@ -22,12 +22,9 @@ import java.util.Set;
  * facts are unknown is never reported.
  */
 public final class JavaLossyCompareCheck implements RuleCheck {
-
   private static final String COMPARE = "compare";
   private static final Map<String, Set<String>> LOSSY =
-      Map.of(
-          "java.lang.Float", Set.of("int", "long"),
-          "java.lang.Double", Set.of("long"));
+      Map.of("java.lang.Float", Set.of("int", "long"), "java.lang.Double", Set.of("long"));
 
   private final String message;
 
@@ -56,14 +53,17 @@ public final class JavaLossyCompareCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("expression"))) {
       lossy(visit.node(), types)
           .ifPresent(
               type ->
                   matches.add(
-                      CheckSupport.at(visit.node().span(), CheckSupport.fill(message, type, ""))));
+                      CheckSupport.at(visit.node().span(), CheckSupport.fill(message, type, ""))
+                  )
+          );
     }
     return List.copyOf(matches);
   }

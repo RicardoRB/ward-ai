@@ -37,7 +37,8 @@ public final class UpdateNoticeService {
   public UpdateNoticeService(
       @Named("ward.version") final String runningVersion,
       final LatestReleaseLookup lookup,
-      final UpdateCheckCache cache) {
+      final UpdateCheckCache cache
+  ) {
     this(runningVersion, lookup, cache, UpdateContext.system());
   }
 
@@ -46,7 +47,8 @@ public final class UpdateNoticeService {
       final String runningVersion,
       final LatestReleaseLookup lookup,
       final UpdateCheckCache cache,
-      final UpdateContext context) {
+      final UpdateContext context
+  ) {
     this.runningVersion = runningVersion;
     this.lookup = lookup;
     this.cache = () -> cache;
@@ -64,7 +66,8 @@ public final class UpdateNoticeService {
       LOGGER.log(
           Level.FINE,
           () ->
-              "event=update-check status=skipped reason=" + (skip == null ? "development" : skip));
+              "event=update-check status=skipped reason=" + (skip == null ? "development" : skip)
+      );
       return Optional.empty();
     }
     final Instant now = context.clock().instant();
@@ -80,7 +83,8 @@ public final class UpdateNoticeService {
           Level.FINE,
           () ->
               "event=update-check status=looked-up result="
-                  + (found.isPresent() ? "found" : "unknown"));
+                  + (found.isPresent() ? "found" : "unknown")
+      );
       // An unknown result is cached as current so an offline machine waits a day before retrying.
       latest = found.orElse(running.get());
       cache.get().write(new CachedCheck(now, latest));
@@ -94,23 +98,30 @@ public final class UpdateNoticeService {
   public UpdateStatus freshStatus() {
     if (isSet(OPT_OUT)) {
       return new UpdateStatus(
-          UpdateStatus.State.SKIPPED, "Update check disabled by " + OPT_OUT + ".");
+          UpdateStatus.State.SKIPPED,
+          "Update check disabled by " + OPT_OUT + "."
+      );
     }
     final Optional<ReleaseVersion> running = ReleaseVersion.parse(runningVersion);
     if (running.isEmpty()) {
       return new UpdateStatus(
-          UpdateStatus.State.SKIPPED, "Development build " + runningVersion + ".");
+          UpdateStatus.State.SKIPPED,
+          "Development build " + runningVersion + "."
+      );
     }
     final Optional<ReleaseVersion> latest = lookup.latest();
     if (latest.isEmpty()) {
       return new UpdateStatus(
           UpdateStatus.State.UNKNOWN,
-          "Could not determine the latest release (you have v" + running.get() + ").");
+          "Could not determine the latest release (you have v" + running.get() + ")."
+      );
     }
     return latest.get().isNewerThan(running.get())
         ? new UpdateStatus(UpdateStatus.State.OUTDATED, outdated(latest.get(), running.get()))
         : new UpdateStatus(
-            UpdateStatus.State.CURRENT, "v" + running.get() + " is the latest release.");
+            UpdateStatus.State.CURRENT,
+            "v" + running.get() + " is the latest release."
+        );
   }
 
   private String outdated(final ReleaseVersion latest, final ReleaseVersion running) {

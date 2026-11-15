@@ -6,7 +6,6 @@ import java.util.Deque;
 
 /** The open bracket scopes of one layout, innermost first, with the switch-label handling. */
 final class JavaFrameStack {
-
   private final JavaFrame root = new JavaFrame(JavaFrame.Kind.ROOT, "");
   private final Deque<JavaFrame> frames = new ArrayDeque<>();
 

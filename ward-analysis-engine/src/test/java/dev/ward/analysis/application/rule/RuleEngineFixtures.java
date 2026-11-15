@@ -16,6 +16,11 @@ final class RuleEngineFixtures {
 
   static RuleDefinition rule(final String id, final RuleCapability capability) {
     return new RuleDefinition(
-        id, AnalysisLanguage.JAVA, capability, AnalysisSeverity.WARNING, "body");
+        id,
+        AnalysisLanguage.JAVA,
+        capability,
+        AnalysisSeverity.WARNING,
+        "body"
+    );
   }
 }

@@ -12,7 +12,8 @@ class GateResultTest {
           "trivy",
           null,
           null,
-          "Install trivy or add it to PATH.");
+          "Install trivy or add it to PATH."
+      );
 
   private static GateResult unavailable() {
     return GateResult.builder("trivy", GateStatus.UNAVAILABLE)

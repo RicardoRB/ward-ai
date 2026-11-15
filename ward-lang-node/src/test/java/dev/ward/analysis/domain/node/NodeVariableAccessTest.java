@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks the variable accesses the TypeScript and JavaScript lowerings record on each block. */
 class NodeVariableAccessTest {
-
   @Test
   void selfAssignmentReadsBeforeItWrites() {
     final String source = "function f() { let x = 1; x = x + 1; }";
@@ -63,7 +62,8 @@ class NodeVariableAccessTest {
             "DECLARE d",
             "WRITE d",
             "READ b",
-            "READ d");
+            "READ d"
+        );
   }
 
   @Test
@@ -87,6 +87,13 @@ class NodeVariableAccessTest {
 
     assertThat(NodeAccessFixtures.kinds(NodeAccessFixtures.javaScript(source, "f")))
         .containsExactly(
-            "PARAMETER n", "DECLARE i", "WRITE i", "READ i", "READ n", "READ i", "WRITE i");
+            "PARAMETER n",
+            "DECLARE i",
+            "WRITE i",
+            "READ i",
+            "READ n",
+            "READ i",
+            "WRITE i"
+        );
   }
 }

@@ -11,7 +11,6 @@ import java.util.Objects;
  * @param message what happens at the step
  */
 public record FindingStep(String file, int line, int column, String message) {
-
   /**
    * Validates the fields.
    *

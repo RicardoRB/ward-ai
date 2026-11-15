@@ -44,7 +44,11 @@ final class ApiTypeRefs {
     for (final TypeParameter parameter : parameters) {
       found.add(
           new ApiTypeParameter(
-              parameter.name(), parameter.bounds().stream().map(this::of).toList(), variance));
+              parameter.name(),
+              parameter.bounds().stream().map(this::of).toList(),
+              variance
+          )
+      );
     }
     return found;
   }
@@ -94,14 +98,20 @@ final class ApiTypeRefs {
   }
 
   private static String arguments(
-      final JType.ClassType type, final java.util.function.Function<JType, String> writer) {
+      final JType.ClassType type,
+      final java.util.function.Function<JType,
+      String> writer
+  ) {
     return type.arguments().isEmpty()
         ? ""
         : type.arguments().stream().map(writer).collect(Collectors.joining(SEPARATOR, "<", ">"));
   }
 
   private static String wildcard(
-      final JType.Wildcard wildcard, final java.util.function.Function<JType, String> writer) {
+      final JType.Wildcard wildcard,
+      final java.util.function.Function<JType,
+      String> writer
+  ) {
     if (wildcard.bound() == null) {
       return "?";
     }

@@ -10,7 +10,6 @@ import dev.ward.analysis.domain.port.FileSummarizer;
  * (static, type-only, {@code require}, dynamic literal {@code import()}) and its exported names.
  */
 public final class NodeFileSummarizer implements FileSummarizer {
-
   @Override
   public FileSummary summarize(final SourceUnit unit, final SyntaxNode tree) {
     final NodeModuleScan scan = new NodeModuleScan(tree);

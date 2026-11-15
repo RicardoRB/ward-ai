@@ -13,7 +13,6 @@ import java.util.Optional;
  * resolves only when exactly one visible declaration has it, so an ambiguous name is unknown.
  */
 final class SwiftTypeIndex {
-
   private final SwiftProjectLayout layout;
   private final Map<String, FileTypes> files;
   private final Map<String, List<SwiftTypeDecl>> declared;
@@ -24,7 +23,8 @@ final class SwiftTypeIndex {
       String module,
       List<String> imports,
       List<String> localNames,
-      List<SwiftTypeSyntax.Visit> visits) {}
+      List<SwiftTypeSyntax.Visit> visits
+  ) {}
 
   /** A type declaration with the syntax of the types it inherits from. */
   record Declaration(SwiftTypeDecl decl, List<SyntaxNode> inherits) {}
@@ -34,8 +34,11 @@ final class SwiftTypeIndex {
 
   private SwiftTypeIndex(
       final SwiftProjectLayout layout,
-      final Map<String, FileTypes> files,
-      final Map<String, List<SwiftTypeDecl>> declared) {
+      final Map<String,
+      FileTypes> files,
+      final Map<String,
+      List<SwiftTypeDecl>> declared
+  ) {
     this.layout = layout;
     this.files = files;
     this.declared = declared;
@@ -43,7 +46,10 @@ final class SwiftTypeIndex {
 
   /** Indexes the parsed files, keyed by project-relative path. */
   static SwiftTypeIndex build(
-      final SwiftProjectLayout layout, final Map<String, SyntaxNode> trees) {
+      final SwiftProjectLayout layout,
+      final Map<String,
+      SyntaxNode> trees
+  ) {
     final Map<String, FileTypes> files = new HashMap<>();
     final List<Declaration> declarations = new ArrayList<>();
     final List<Extension> extensions = new ArrayList<>();
@@ -86,7 +92,9 @@ final class SwiftTypeIndex {
               decl ->
                   unique(
                       decl.module(),
-                      decl.qualifiedName() + SwiftTypeSyntax.NAME_SEPARATOR + segment));
+                      decl.qualifiedName() + SwiftTypeSyntax.NAME_SEPARATOR + segment
+                  )
+          );
     }
     return head;
   }
@@ -102,7 +110,12 @@ final class SwiftTypeIndex {
   /** Returns the shape of a declared type, with the supertypes that resolved. */
   TypeShape shapeOf(final SwiftTypeDecl decl) {
     return new TypeShape(
-        decl.kind(), decl.isAbstract(), decl.isFinal(), false, supertypes.of(decl));
+        decl.kind(),
+        decl.isAbstract(),
+        decl.isFinal(),
+        false,
+        supertypes.of(decl)
+    );
   }
 
   /** Returns the name a type reference carries for {@code decl}: its module, then its name. */
@@ -113,7 +126,10 @@ final class SwiftTypeIndex {
   }
 
   private Optional<SwiftTypeDecl> resolveHead(
-      final FileTypes info, final String scope, final String first) {
+      final FileTypes info,
+      final String scope,
+      final String first
+  ) {
     for (final String candidate : SwiftTypeSyntax.enclosingNames(scope, first)) {
       final Optional<SwiftTypeDecl> found = unique(info.module(), candidate);
       if (found.isPresent()) {

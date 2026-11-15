@@ -26,7 +26,6 @@ import org.junit.jupiter.api.Test;
  * The test is skipped when the property is not set.
  */
 class TypeScriptEslintParitySmokeTest {
-
   private static final String BINARY_PROPERTY = "ward.typescript-eslint.binary";
   private static final String PARSER = "@typescript-eslint/parser/dist/index.js";
   private static final String PLUGIN = "@typescript-eslint/eslint-plugin/dist/index.js";
@@ -59,7 +58,13 @@ class TypeScriptEslintParitySmokeTest {
 
   /** One fixture file of a row: its workspace path, expected lines and option values. */
   private record Case(
-      String row, String path, List<String> expected, Map<String, Object> options, String text) {}
+      String row,
+      String path,
+      List<String> expected,
+      Map<String,
+      Object> options,
+      String text
+  ) {}
 
   @Test
   void typescriptEslintReportsTheSameLinesAsTheFixtures() throws IOException, InterruptedException {
@@ -101,7 +106,11 @@ class TypeScriptEslintParitySmokeTest {
   }
 
   private static Case caseOf(
-      final String row, final String kind, final String name, final RuleFixtureSet set)
+      final String row,
+      final String kind,
+      final String name,
+      final RuleFixtureSet set
+  )
       throws IOException {
     final String suffix = name.isEmpty() ? "" : "-" + name;
     final Path source = "violating".equals(kind) ? set.violating(name) : set.passing(name);
@@ -114,7 +123,8 @@ class TypeScriptEslintParitySmokeTest {
         TYPESCRIPT_DIR + "/" + row + "/" + kind + suffix + extension,
         expected,
         set.options(name),
-        text);
+        text
+    );
   }
 
   private static List<String> lines(final List<String> expected) {
@@ -138,15 +148,17 @@ class TypeScriptEslintParitySmokeTest {
 
   private static String entry(final Case testCase, final Path workspace) {
     return "  { files: [%s], languageOptions: { %sparser: tsParser, parserOptions: "
-            .formatted(
-                TypeScriptEslintOptions.json(testCase.path()),
-                TypeScriptParityModules.sourceType(testCase.row()))
+        .formatted(
+            TypeScriptEslintOptions.json(testCase.path()),
+            TypeScriptParityModules.sourceType(testCase.row())
+        )
         + "{ project: \"./%s\", tsconfigRootDir: %s } }, plugins: { \"@typescript-eslint\": tsPlugin },"
-            .formatted(TSCONFIG, TypeScriptEslintOptions.json(workspace.toString()))
+        .formatted(TSCONFIG, TypeScriptEslintOptions.json(workspace.toString()))
         + " rules: { %s: [\"error\"%s] } },\n"
-            .formatted(
-                TypeScriptEslintOptions.json(PREFIX + testCase.row()),
-                TypeScriptEslintOptions.options(testCase.options()));
+        .formatted(
+            TypeScriptEslintOptions.json(PREFIX + testCase.row()),
+            TypeScriptEslintOptions.options(testCase.options())
+        );
   }
 
   private static List<String> run(final Path workspace) throws IOException, InterruptedException {
@@ -177,14 +189,21 @@ class TypeScriptEslintParitySmokeTest {
                     fields -> fields[FILE] + "#" + fields[RULE],
                     TreeMap::new,
                     Collectors.mapping(
-                        fields -> fields[LINE], Collectors.toCollection(TreeSet::new))));
+                        fields -> fields[LINE],
+                        Collectors.toCollection(TreeSet::new)
+                    )
+                )
+            );
     final List<String> problems = new ArrayList<>();
     cases.forEach(testCase -> problemOf(testCase, found).ifPresent(problems::add));
     return problems;
   }
 
   private static Optional<String> problemOf(
-      final Case testCase, final Map<String, Set<String>> found) {
+      final Case testCase,
+      final Map<String,
+      Set<String>> found
+  ) {
     final Set<String> expected = new TreeSet<>(testCase.expected());
     final Set<String> actual = found.getOrDefault(ruleKey(testCase), new TreeSet<>());
     if (actual.equals(expected)) {
@@ -195,6 +214,7 @@ class TypeScriptEslintParitySmokeTest {
             + " typescript-eslint lines "
             + actual
             + " but fixture expects "
-            + expected);
+            + expected
+    );
   }
 }

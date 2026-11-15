@@ -20,7 +20,8 @@ import java.util.Optional;
 public record ToolchainContext(
     Optional<BuildToolConfiguration> buildTools,
     Optional<SwiftToolchainInspection> swift,
-    List<String> configuredGates) {
+    List<String> configuredGates
+) {
   /** Copies the configured gates so the record cannot change after construction. */
   public ToolchainContext {
     configuredGates = List.copyOf(configuredGates);
@@ -35,7 +36,8 @@ public record ToolchainContext(
       final Optional<SwiftToolchainInspection> swift,
       final WardConfigurationReader reader,
       final Path root,
-      final boolean present) {
+      final boolean present
+  ) {
     if (reader == null || !present) {
       return new ToolchainContext(buildTools, swift, List.of());
     }
@@ -45,7 +47,8 @@ public record ToolchainContext(
           swift,
           reader.read(root.resolve(WardConfiguration.FILE_NAME)).enabledGates().values().stream()
               .map(GateConfiguration::type)
-              .toList());
+              .toList()
+      );
     } catch (WardException unreadable) {
       return new ToolchainContext(buildTools, swift, List.of());
     }

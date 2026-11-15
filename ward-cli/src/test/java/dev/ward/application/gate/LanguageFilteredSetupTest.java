@@ -9,7 +9,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class LanguageFilteredSetupTest {
-
   private static final String RULE = "ward:openapi/operation-operation-id";
 
   private final List<RuleDefinition> all = new ClasspathRuleSource().load().rules();

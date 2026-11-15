@@ -20,7 +20,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** A fixture folder with a types.json gives its facts to type-aware rules. */
 class FixtureTypeFactsTest {
-
   private static final Span CALL = new Span(5, 9, 5, 25, 70, 86);
   private static final SourceUnit UNIT =
       new SourceUnit("A.java", AnalysisLanguage.JAVA, "class A {}");
@@ -32,7 +31,8 @@ class FixtureTypeFactsTest {
     final Path file =
         Files.writeString(
             folder.resolve("types.json"),
-            "{\"5:9-5:25\": {\"type\": {\"name\": \"java.lang.String\"}}}");
+            "{\"5:9-5:25\": {\"type\": {\"name\": \"java.lang.String\"}}}"
+        );
 
     final TypeFacts facts = FixtureTypeFacts.of(Optional.of(file));
 

@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 
 /** {@code oas3-server-variables}: the variables of a server URL are defined, used and valid. */
 final class ServerVariableRules {
-
   private static final Pattern VARIABLE = Pattern.compile("\\{(.+?)\\}");
   private static final String VARIABLES = "variables";
   private static final String DEFAULT = "default";
@@ -41,17 +40,24 @@ final class ServerVariableRules {
   }
 
   private static void servers(
-      final OpenApiDocument document, final DocNode owner, final List<OpenApiFinding> findings) {
+      final OpenApiDocument document,
+      final DocNode owner,
+      final List<OpenApiFinding> findings
+  ) {
     document
         .get(owner, "servers", View.RESOLVED)
         .filter(list -> list.kind() == DocNode.Kind.ARRAY)
         .ifPresent(
             list ->
-                list.items().forEach(item -> check(document, document.resolve(item), findings)));
+                list.items().forEach(item -> check(document, document.resolve(item), findings))
+        );
   }
 
   private static void check(
-      final OpenApiDocument document, final DocNode server, final List<OpenApiFinding> findings) {
+      final OpenApiDocument document,
+      final DocNode server,
+      final List<OpenApiFinding> findings
+  ) {
     final Optional<DocNode> url = server.get("url");
     if (server.kind() != DocNode.Kind.OBJECT
         || url.isEmpty()
@@ -77,7 +83,9 @@ final class ServerVariableRules {
         findings.add(
             Findings.atValue(
                 variables.orElseThrow().get(name).orElseThrow(),
-                "Server's \"variables\" object has unused defined \"" + name + "\" url variable."));
+                "Server's \"variables\" object has unused defined \"" + name + "\" url variable."
+            )
+        );
       }
     }
     if (found.isEmpty()) {
@@ -90,7 +98,9 @@ final class ServerVariableRules {
               variables.orElse(server),
               "Not all server's variables are described with \"variables\" object. Missed: "
                   + String.join(", ", missing)
-                  + "."));
+                  + "."
+          )
+      );
     }
     variables.ifPresent(node -> described(node, found, url.get().text(), findings));
   }
@@ -99,7 +109,8 @@ final class ServerVariableRules {
       final DocNode variables,
       final List<String> found,
       final String url,
-      final List<OpenApiFinding> findings) {
+      final List<OpenApiFinding> findings
+  ) {
     final Map<String, List<String>> pairs = new LinkedHashMap<>();
     for (final DocNode.Entry entry : variables.entries()) {
       if (!found.contains(entry.key()) || entry.value().kind() != DocNode.Kind.OBJECT) {
@@ -115,7 +126,9 @@ final class ServerVariableRules {
           findings.add(
               Findings.atValue(
                   fallback.get(),
-                  "Server Variable \"" + entry.key() + "\" has a default not listed in the enum."));
+                  "Server Variable \"" + entry.key() + "\" has a default not listed in the enum."
+              )
+          );
         }
       } else {
         pairs.put(entry.key(), fallback.map(node -> List.of(node.text())).orElse(List.of()));
@@ -123,7 +136,10 @@ final class ServerVariableRules {
       if (fallback.isEmpty()) {
         findings.add(
             Findings.atValue(
-                entry.value(), "Server Variable \"" + entry.key() + "\" has a missing default."));
+                entry.value(),
+                "Server Variable \"" + entry.key() + "\" has a missing default."
+            )
+        );
       }
     }
     substitutions(variables, url, pairs, findings);
@@ -132,8 +148,10 @@ final class ServerVariableRules {
   private static void substitutions(
       final DocNode variables,
       final String url,
-      final Map<String, List<String>> pairs,
-      final List<OpenApiFinding> findings) {
+      final Map<String,
+      List<String>> pairs,
+      final List<OpenApiFinding> findings
+  ) {
     if (pairs.isEmpty() || pairs.values().stream().anyMatch(List::isEmpty)) {
       return;
     }
@@ -145,21 +163,27 @@ final class ServerVariableRules {
               variables,
               "At least 5 substitutions of server variables resulted in invalid URLs: "
                   + String.join(", ", invalid.subList(0, INVALID_LIMIT))
-                  + " and more"));
+                  + " and more"
+          )
+      );
     } else if (!invalid.isEmpty()) {
       findings.add(
           Findings.atValue(
               variables,
               "A few substitutions of server variables resulted in invalid URLs: "
-                  + String.join(", ", invalid)));
+                  + String.join(", ", invalid)
+          )
+      );
     }
   }
 
   private static void expand(
       final String url,
-      final List<Map.Entry<String, List<String>>> pairs,
+      final List<Map.Entry<String,
+      List<String>>> pairs,
       final int index,
-      final List<String> invalid) {
+      final List<String> invalid
+  ) {
     final Map.Entry<String, List<String>> pair = pairs.get(index);
     for (final String value : pair.getValue()) {
       if (invalid.size() >= INVALID_LIMIT) {

@@ -23,7 +23,6 @@ import java.util.Optional;
 
 /** A taint rule and the graph it reads, for the rule engine's data-flow tests. */
 final class RuleEngineTaintFixtures {
-
   private static final Span AT = new Span(1, 1, 1, 2, 0, 1);
   private static final String MESSAGE = "untrusted {source} reaches {sink}";
 
@@ -31,12 +30,25 @@ final class RuleEngineTaintFixtures {
       new TaintSpec(
           List.of(
               new TaintEntry(
-                  FlowSiteKind.CALL, "source", Optional.empty(), Optional.empty(), List.of())),
+                  FlowSiteKind.CALL,
+                  "source",
+                  Optional.empty(),
+                  Optional.empty(),
+                  List.of()
+              )
+          ),
           List.of(
               new TaintEntry(
-                  FlowSiteKind.CALL, "sink", Optional.empty(), Optional.empty(), List.of(0))),
+                  FlowSiteKind.CALL,
+                  "sink",
+                  Optional.empty(),
+                  Optional.empty(),
+                  List.of(0)
+              )
+          ),
           List.of(),
-          List.of());
+          List.of()
+      );
 
   private RuleEngineTaintFixtures() {}
 
@@ -67,7 +79,8 @@ final class RuleEngineTaintFixtures {
             List.of(new FlowEdge(1, FlowEdgeKind.NORMAL)),
             List.of(
                 new VariableAccess("x", AccessKind.WRITE, write, declaration),
-                new VariableAccess("x", AccessKind.READ, read, declaration)),
+                new VariableAccess("x", AccessKind.READ, read, declaration)
+            ),
             List.of(
                 new FlowSite(
                     FlowSiteKind.CALL,
@@ -76,7 +89,8 @@ final class RuleEngineTaintFixtures {
                     Optional.empty(),
                     List.of(),
                     List.of(),
-                    source),
+                    source
+                ),
                 new FlowSite(
                     FlowSiteKind.CALL,
                     "sink",
@@ -84,7 +98,10 @@ final class RuleEngineTaintFixtures {
                     Optional.empty(),
                     List.of(),
                     List.of(read),
-                    sink)));
+                    sink
+                )
+            )
+        );
     final BasicBlock exit = new BasicBlock(1, List.of(), List.of());
     return new ControlFlowGraph("taint", AT, List.of(body, exit), 0, 1);
   }

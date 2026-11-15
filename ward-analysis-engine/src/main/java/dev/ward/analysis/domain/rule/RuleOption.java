@@ -28,8 +28,13 @@ import java.util.regex.PatternSyntaxException;
  * @param values the allowed texts of an enum option, empty for other types
  */
 public record RuleOption(
-    String name, RuleOptionType type, String parameter, long min, long max, List<String> values) {
-
+    String name,
+    RuleOptionType type,
+    String parameter,
+    long min,
+    long max,
+    List<String> values
+) {
   private static final Pattern NAME = Pattern.compile("[a-z][a-z0-9-]*");
 
   /**

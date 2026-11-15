@@ -7,7 +7,6 @@ import java.util.Set;
  * a file with no import or export as a script, so the rows of script rules are linted as scripts.
  */
 final class TypeScriptParityModules {
-
   private static final String MODULE_MARKER = "\nexport {};\n";
   private static final String NO_MARKER_ROW = "no-useless-empty-export";
   private static final Set<String> SCRIPT_ROWS = Set.of("no-redeclare");

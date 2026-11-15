@@ -27,7 +27,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the Kotlin scope checks over hand-made scopes that match the text of a small file. */
 class KotlinScopeChecksTest {
-
   private static final String MESSAGE = "m";
   private static final SyntaxNode ROOT =
       new SyntaxNode("kotlinFile", new Span(1, 1, 1, 1, 0, 0), Map.of(), List.of());
@@ -51,7 +50,8 @@ class KotlinScopeChecksTest {
       final ScopeKind kind,
       final int parent,
       final Span span,
-      final List<Binding> bindings) {
+      final List<Binding> bindings
+  ) {
     return new Scope(id, kind, parent, span, bindings, false);
   }
 
@@ -68,12 +68,17 @@ class KotlinScopeChecksTest {
       final BindingKind kind,
       final Span declaration,
       final int scope,
-      final BindingFlag... flags) {
+      final BindingFlag... flags
+  ) {
     return new Binding(name, kind, declaration, Set.of(flags), scope, Optional.empty());
   }
 
   private static NameReference use(
-      final Span span, final ReferenceAccess access, final int scope, final Binding resolved) {
+      final Span span,
+      final ReferenceAccess access,
+      final int scope,
+      final Binding resolved
+  ) {
     return new NameReference("x", span, access, scope, Optional.ofNullable(resolved), false);
   }
 
@@ -92,7 +97,8 @@ class KotlinScopeChecksTest {
           public Set<String> builtins(final Set<String> environments) {
             return Set.of();
           }
-        });
+        }
+    );
   }
 
   private static SourceUnit unit(final String text) {
@@ -101,7 +107,6 @@ class KotlinScopeChecksTest {
 
   @Nested
   class UnusedParameter {
-
     @Test
     void reportsAParameterTheBodyNeverReads() {
       final String text = "fun f(a: Int, b: Int) = a";
@@ -112,9 +117,10 @@ class KotlinScopeChecksTest {
               List.of(
                   builtins(text),
                   module(text, List.of()),
-                  scope(
-                      FUNCTION_SCOPE, ScopeKind.FUNCTION, MODULE, span(text, text), List.of(a, b))),
-              List.of(use(spanAfter(text, "a", 20), ReferenceAccess.READ, FUNCTION_SCOPE, a)));
+                  scope(FUNCTION_SCOPE, ScopeKind.FUNCTION, MODULE, span(text, text), List.of(a, b))
+              ),
+              List.of(use(spanAfter(text, "a", 20), ReferenceAccess.READ, FUNCTION_SCOPE, a))
+          );
 
       final List<RuleMatch> found =
           new KotlinUnusedParameterCheck(MESSAGE)
@@ -133,19 +139,21 @@ class KotlinScopeChecksTest {
               List.of(
                   builtins(text),
                   module(text, List.of()),
-                  scope(FUNCTION_SCOPE, ScopeKind.FUNCTION, MODULE, span(text, text), List.of(a))),
-              List.of());
+                  scope(FUNCTION_SCOPE, ScopeKind.FUNCTION, MODULE, span(text, text), List.of(a))
+              ),
+              List.of()
+          );
 
       assertThat(
-              new KotlinUnusedParameterCheck(MESSAGE)
-                  .matches(ROOT, FlowView.NONE, view(scopes), unit(text)))
+          new KotlinUnusedParameterCheck(MESSAGE)
+              .matches(ROOT, FlowView.NONE, view(scopes), unit(text))
+      )
           .isEmpty();
     }
   }
 
   @Nested
   class UnusedPrivateMember {
-
     @Test
     void reportsAPrivateFunctionThatTheFileNeverMentions() {
       final String text = "class C {\n    private fun reset() = 0\n    fun total() = 1\n}";
@@ -156,12 +164,15 @@ class KotlinScopeChecksTest {
               List.of(
                   builtins(text),
                   module(text, List.of()),
-                  scope(CLASS_SCOPE, ScopeKind.CLASS, MODULE, span(text, text), List.of(reset))),
-              List.of());
+                  scope(CLASS_SCOPE, ScopeKind.CLASS, MODULE, span(text, text), List.of(reset))
+              ),
+              List.of()
+          );
 
       assertThat(
-              new KotlinUnusedPrivateMemberCheck(MESSAGE)
-                  .matches(ROOT, FlowView.NONE, view(scopes), unit(text)))
+          new KotlinUnusedPrivateMemberCheck(MESSAGE)
+              .matches(ROOT, FlowView.NONE, view(scopes), unit(text))
+      )
           .hasSize(1);
     }
 
@@ -175,19 +186,21 @@ class KotlinScopeChecksTest {
               List.of(
                   builtins(text),
                   module(text, List.of()),
-                  scope(CLASS_SCOPE, ScopeKind.CLASS, MODULE, span(text, text), List.of(reset))),
-              List.of());
+                  scope(CLASS_SCOPE, ScopeKind.CLASS, MODULE, span(text, text), List.of(reset))
+              ),
+              List.of()
+          );
 
       assertThat(
-              new KotlinUnusedPrivateMemberCheck(MESSAGE)
-                  .matches(ROOT, FlowView.NONE, view(scopes), unit(text)))
+          new KotlinUnusedPrivateMemberCheck(MESSAGE)
+              .matches(ROOT, FlowView.NONE, view(scopes), unit(text))
+      )
           .isEmpty();
     }
   }
 
   @Nested
   class UnusedPrivateClass {
-
     @Test
     void reportsAPrivateClassThatTheFileNeverMentions() {
       final String text = "private class Helper\n\nfun use() = 1";
@@ -196,15 +209,15 @@ class KotlinScopeChecksTest {
           new UnitScopes(List.of(builtins(text), module(text, List.of(helper))), List.of());
 
       assertThat(
-              new KotlinUnusedPrivateClassCheck(MESSAGE)
-                  .matches(ROOT, FlowView.NONE, view(scopes), unit(text)))
+          new KotlinUnusedPrivateClassCheck(MESSAGE)
+              .matches(ROOT, FlowView.NONE, view(scopes), unit(text))
+      )
           .hasSize(1);
     }
   }
 
   @Nested
   class VarCouldBeVal {
-
     @Test
     void reportsALocalVarThatIsNeverAssignedAgain() {
       final String text = "fun t() {\n    var sum = 0\n    return sum\n}";
@@ -215,13 +228,15 @@ class KotlinScopeChecksTest {
               List.of(
                   builtins(text),
                   module(text, List.of()),
-                  scope(
-                      FUNCTION_SCOPE, ScopeKind.FUNCTION, MODULE, span(text, text), List.of(sum))),
-              List.of(use(declaration, ReferenceAccess.WRITE, FUNCTION_SCOPE, sum)));
+                  scope(FUNCTION_SCOPE, ScopeKind.FUNCTION, MODULE, span(text, text), List.of(sum))
+              ),
+              List.of(use(declaration, ReferenceAccess.WRITE, FUNCTION_SCOPE, sum))
+          );
 
       assertThat(
-              new KotlinVarCouldBeValCheck(MESSAGE)
-                  .matches(ROOT, FlowView.NONE, view(scopes), unit(text)))
+          new KotlinVarCouldBeValCheck(MESSAGE)
+              .matches(ROOT, FlowView.NONE, view(scopes), unit(text))
+      )
           .hasSize(1);
     }
 
@@ -235,26 +250,29 @@ class KotlinScopeChecksTest {
               List.of(
                   builtins(text),
                   module(text, List.of()),
-                  scope(
-                      FUNCTION_SCOPE, ScopeKind.FUNCTION, MODULE, span(text, text), List.of(sum))),
+                  scope(FUNCTION_SCOPE, ScopeKind.FUNCTION, MODULE, span(text, text), List.of(sum))
+              ),
               List.of(
                   use(declaration, ReferenceAccess.WRITE, FUNCTION_SCOPE, sum),
                   use(
                       spanAfter(text, "sum", declaration.endOffset()),
                       ReferenceAccess.WRITE,
                       FUNCTION_SCOPE,
-                      sum)));
+                      sum
+                  )
+              )
+          );
 
       assertThat(
-              new KotlinVarCouldBeValCheck(MESSAGE)
-                  .matches(ROOT, FlowView.NONE, view(scopes), unit(text)))
+          new KotlinVarCouldBeValCheck(MESSAGE)
+              .matches(ROOT, FlowView.NONE, view(scopes), unit(text))
+      )
           .isEmpty();
     }
   }
 
   @Nested
   class NestedClassesVisibility {
-
     @Test
     void reportsAnExplicitPublicNestedClassOfAnInternalClass() {
       final String text = "internal class Outer {\n    public class Inner\n}";
@@ -265,8 +283,10 @@ class KotlinScopeChecksTest {
               List.of(
                   builtins(text),
                   module(text, List.of(outer)),
-                  scope(CLASS_SCOPE, ScopeKind.CLASS, MODULE, span(text, text), List.of(inner))),
-              List.of());
+                  scope(CLASS_SCOPE, ScopeKind.CLASS, MODULE, span(text, text), List.of(inner))
+              ),
+              List.of()
+          );
 
       final List<RuleMatch> found =
           new KotlinNestedClassesVisibilityCheck(MESSAGE)
@@ -286,12 +306,15 @@ class KotlinScopeChecksTest {
               List.of(
                   builtins(text),
                   module(text, List.of(outer)),
-                  scope(CLASS_SCOPE, ScopeKind.CLASS, MODULE, span(text, text), List.of(inner))),
-              List.of());
+                  scope(CLASS_SCOPE, ScopeKind.CLASS, MODULE, span(text, text), List.of(inner))
+              ),
+              List.of()
+          );
 
       assertThat(
-              new KotlinNestedClassesVisibilityCheck(MESSAGE)
-                  .matches(ROOT, FlowView.NONE, view(scopes), unit(text)))
+          new KotlinNestedClassesVisibilityCheck(MESSAGE)
+              .matches(ROOT, FlowView.NONE, view(scopes), unit(text))
+      )
           .isEmpty();
     }
   }

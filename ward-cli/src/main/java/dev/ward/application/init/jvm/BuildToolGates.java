@@ -17,7 +17,8 @@ record BuildToolGates(
     boolean available,
     String availability,
     String executable,
-    QualityPreset preset) {
+    QualityPreset preset
+) {
   /** The line coverage minimum of the Android coverage gate, in percent. */
   // shortcut: one minimum for both presets; strict should raise it to 85 like Swift.
   static final int ANDROID_COVERAGE_MINIMUM = 80;
@@ -45,14 +46,16 @@ record BuildToolGates(
             "coverage",
             "Enforces minimum test coverage.",
             " (the minimum is configured in ward.toml; the build writes the JaCoCo XML report.)",
-            task("jacocoTestReport", "jacoco:report"));
+            task("jacocoTestReport", "jacoco:report")
+        );
     return new InitGateOption(
         report.id(),
         report.description(),
         report.command(),
         report.available(),
         report.availabilityMessage(),
-        coverageMinimums());
+        coverageMinimums()
+    );
   }
 
   /**
@@ -80,12 +83,17 @@ record BuildToolGates(
         "mutation",
         "Measures test strength with mutation testing.",
         "pitest",
-        "pitest:mutationCoverage");
+        "pitest:mutationCoverage"
+    );
   }
 
   /** A source-language tool gate that runs {@code gradleTask} or {@code mavenTask}. */
   InitGateOption tool(
-      final String id, final String description, final String gradleTask, final String mavenTask) {
+      final String id,
+      final String description,
+      final String gradleTask,
+      final String mavenTask
+  ) {
     return option(id, description, "", task(gradleTask, mavenTask));
   }
 
@@ -99,13 +107,16 @@ record BuildToolGates(
             SupportedQualityGates.ANDROID_LINT,
             "Checks Android sources with Android Lint, debug variant.",
             "lintDebug",
-            "lintDebug"),
+            "lintDebug"
+        ),
         tool(
             SupportedQualityGates.ANDROID_UNIT_TEST,
             "Runs the debug unit tests.",
             "testDebugUnitTest",
-            "testDebugUnitTest"),
-        androidCoverage());
+            "testDebugUnitTest"
+        ),
+        androidCoverage()
+    );
   }
 
   /** Gates that enforce build, compatibility, or custom policies, in wizard order. */
@@ -117,7 +128,9 @@ record BuildToolGates(
             "command",
             "Runs a custom command from ward.toml.",
             " (customize the command in ward.toml after initialization.)",
-            "test"));
+            "test"
+        )
+    );
   }
 
   /**
@@ -131,7 +144,8 @@ record BuildToolGates(
         List.of(),
         true,
         null,
-        Map.of());
+        Map.of()
+    );
   }
 
   private static InitGateOption apiCompat() {
@@ -141,7 +155,8 @@ record BuildToolGates(
         List.of(),
         true,
         null,
-        Map.of());
+        Map.of()
+    );
   }
 
   private InitGateOption androidCoverage() {
@@ -151,7 +166,8 @@ record BuildToolGates(
         List.of(executable, "createDebugUnitTestCoverageReport"),
         available,
         availability,
-        Map.of(MINIMUM, String.valueOf(ANDROID_COVERAGE_MINIMUM)));
+        Map.of(MINIMUM, String.valueOf(ANDROID_COVERAGE_MINIMUM))
+    );
   }
 
   private String task(final String gradleTask, final String mavenTask) {
@@ -159,7 +175,11 @@ record BuildToolGates(
   }
 
   private InitGateOption option(
-      final String id, final String description, final String note, final String... arguments) {
+      final String id,
+      final String description,
+      final String note,
+      final String... arguments
+  ) {
     final List<String> command = new ArrayList<>(List.of(arguments));
     command.addFirst(executable);
     return new InitGateOption(id, description, command, available, availability + note);
@@ -167,7 +187,10 @@ record BuildToolGates(
 
   /** Returns the Maven or Gradle gate choices with the tool's availability resolved. */
   static BuildToolGates of(
-      final Project project, final EnvironmentInspection environment, final QualityPreset preset) {
+      final Project project,
+      final EnvironmentInspection environment,
+      final QualityPreset preset
+  ) {
     final boolean gradle = project.buildTool() == BuildTool.GRADLE;
     final String executable = project.buildExecutable();
     final String toolName = gradle ? "Gradle" : "Maven";

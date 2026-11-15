@@ -28,15 +28,22 @@ class NodeAngularCompatibilityTest {
                 NodePackageCatalog.ANGULAR_CORE,
                 "^21.2.0",
                 NodePackageCatalog.TYPESCRIPT,
-                "~5.9.3"),
+                "~5.9.3"
+            ),
             null,
-            null);
+            null
+        );
     final PackageManifest angular22 =
         new PackageManifest(
             Map.of(
-                NodePackageCatalog.ANGULAR_CORE, "^22.2.0", NodePackageCatalog.TYPESCRIPT, "6.0.3"),
+                NodePackageCatalog.ANGULAR_CORE,
+                "^22.2.0",
+                NodePackageCatalog.TYPESCRIPT,
+                "6.0.3"
+            ),
             null,
-            null);
+            null
+        );
 
     assertThat(check("22", angular21).findings()).isEmpty();
     assertThat(check("22", angular22).findings()).isEmpty();
@@ -47,9 +54,14 @@ class NodeAngularCompatibilityTest {
     final PackageManifest manifest =
         new PackageManifest(
             Map.of(
-                NodePackageCatalog.ANGULAR_CORE, "^19.0.0", NodePackageCatalog.TYPESCRIPT, "7.0.2"),
+                NodePackageCatalog.ANGULAR_CORE,
+                "^19.0.0",
+                NodePackageCatalog.TYPESCRIPT,
+                "7.0.2"
+            ),
             null,
-            null);
+            null
+        );
 
     assertThat(check("20", manifest).findings())
         .singleElement()
@@ -58,7 +70,8 @@ class NodeAngularCompatibilityTest {
               assertThat(finding.artifactId()).isEqualTo(NodePackageCatalog.ANGULAR_CORE);
               assertThat(finding.outcome()).isEqualTo(CompatibilityOutcome.INCOMPATIBLE);
               assertThat(finding.message()).contains("supported Angular majors 21, 22");
-            });
+            }
+        );
   }
 
   @Test
@@ -66,9 +79,14 @@ class NodeAngularCompatibilityTest {
     final PackageManifest manifest =
         new PackageManifest(
             Map.of(
-                NodePackageCatalog.ANGULAR_CORE, "^21.2.0", NodePackageCatalog.TYPESCRIPT, "6.1.0"),
+                NodePackageCatalog.ANGULAR_CORE,
+                "^21.2.0",
+                NodePackageCatalog.TYPESCRIPT,
+                "6.1.0"
+            ),
             null,
-            null);
+            null
+        );
 
     assertThat(check("24", manifest).findings())
         .singleElement()
@@ -77,7 +95,8 @@ class NodeAngularCompatibilityTest {
               assertThat(finding.artifactId()).isEqualTo(NodePackageCatalog.TYPESCRIPT);
               assertThat(finding.outcome()).isEqualTo(CompatibilityOutcome.INCOMPATIBLE);
               assertThat(finding.message()).contains(">=5.9 <6.1", "TypeScript 6.1.0");
-            });
+            }
+        );
   }
 
   @Test
@@ -92,18 +111,23 @@ class NodeAngularCompatibilityTest {
               assertThat(finding.artifactId()).isEqualTo(NodePackageCatalog.ANGULAR_CORE);
               assertThat(finding.outcome()).isEqualTo(CompatibilityOutcome.INCOMPATIBLE);
               assertThat(finding.message()).contains("^22.22.3 || ^24.15.0 || >=26.0.0", "Node 20");
-            });
+            }
+        );
   }
 
   private NodeCompatibility check(
-      final String node, final PackageManifest manifest, final String... packages) {
+      final String node,
+      final PackageManifest manifest,
+      final String... packages
+  ) {
     return NodeCompatibility.check(
         project(node),
         manifest,
         List.of(packages).stream()
             .map(name -> NodePackageCatalog.find(name).orElseThrow())
             .toList(),
-        Set.of());
+        Set.of()
+    );
   }
 
   private Project project(final String node) {
@@ -117,6 +141,7 @@ class NodeAngularCompatibilityTest {
         Set.of(),
         node,
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 }

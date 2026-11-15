@@ -78,7 +78,10 @@ class WardCliContract3Test extends WardCliIntegrationSupport {
 
     assertThat(out.toString())
         .contains(
-            "enter numbers separated by spaces", "Toggle integrations", "Toggle quality gates");
+            "enter numbers separated by spaces",
+            "Toggle integrations",
+            "Toggle quality gates"
+        );
     assertThat(project.resolve(WARD_TOML)).exists();
   }
 }

@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class OpenApiNativeLintGateTest {
-
   @TempDir Path root;
 
   private NativeLintFixture fixture;
@@ -36,7 +35,8 @@ class OpenApiNativeLintGateTest {
               assertThat(finding.ruleId()).isEqualTo("ward:openapi/operation-operation-id");
               assertThat(finding.file()).isEqualTo(NativeLintFixture.SPEC);
               assertThat(finding.line() + ":" + finding.column()).isEqualTo("4:9");
-            });
+            }
+        );
   }
 
   @Test
@@ -67,7 +67,8 @@ class OpenApiNativeLintGateTest {
     fixture.write(
         "ward-rules.toml",
         NativeLintFixture.ONLY_OPERATION_ID
-            + "[rules.openapi.operation-operation-id]\nseverity = \"warning\"\n");
+            + "[rules.openapi.operation-operation-id]\nseverity = \"warning\"\n"
+    );
 
     final GateResult result = fixture.lint();
 
@@ -79,10 +80,12 @@ class OpenApiNativeLintGateTest {
   void aRuleExcludedInTheRuleFileDoesNotRun() throws IOException {
     fixture.write(
         NativeLintFixture.SPEC,
-        "openapi: 3.0.3\ninfo:\n  title: T\npaths:\n  /pets:\n    get:\n      summary: l\n");
+        "openapi: 3.0.3\ninfo:\n  title: T\npaths:\n  /pets:\n    get:\n      summary: l\n"
+    );
     fixture.write(
         "ward-rules.toml",
-        "version = 1\n[select]\npreset = \"none\"\ninclude = [\"openapi.operation-operation-id\", \"openapi.info-contact\"]\nexclude = [\"openapi.operation-operation-id\"]\n");
+        "version = 1\n[select]\npreset = \"none\"\ninclude = [\"openapi.operation-operation-id\", \"openapi.info-contact\"]\nexclude = [\"openapi.operation-operation-id\"]\n"
+    );
 
     final GateResult result = fixture.lint();
 
@@ -98,7 +101,8 @@ class OpenApiNativeLintGateTest {
     fixture.write(
         "ward-rules.toml",
         NativeLintFixture.ONLY_OPERATION_ID
-            + "[rules.openapi.no-such-rule]\nseverity = \"warning\"\n");
+            + "[rules.openapi.no-such-rule]\nseverity = \"warning\"\n"
+    );
 
     final GateResult result = fixture.lint();
 
@@ -109,7 +113,9 @@ class OpenApiNativeLintGateTest {
   @Test
   void findingsInAReferencedFilePointAtThatFile() throws IOException {
     fixture.write(
-        NativeLintFixture.SPEC, "openapi: 3.0.3\npaths:\n  /pets:\n    $ref: 'pets.yaml'\n");
+        NativeLintFixture.SPEC,
+        "openapi: 3.0.3\npaths:\n  /pets:\n    $ref: 'pets.yaml'\n"
+    );
     fixture.write("api/pets.yaml", "get:\n  summary: x\n");
 
     final GateResult result = fixture.lint();

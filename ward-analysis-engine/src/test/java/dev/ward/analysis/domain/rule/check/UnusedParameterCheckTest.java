@@ -23,7 +23,6 @@ import org.junit.jupiter.api.Test;
 
 /** The unused-parameter check on hand-built scopes: parameters no function body reads. */
 class UnusedParameterCheckTest {
-
   private static final String MESSAGE = "parameter '{value}' is never used";
   private static final SyntaxNode ROOT =
       new SyntaxNode("file", new Span(1, 1, 1, 1, 0, 0), Map.of(), List.of());
@@ -52,7 +51,8 @@ class UnusedParameterCheckTest {
           public Set<String> builtins(final Set<String> environments) {
             return Set.of();
           }
-        });
+        }
+    );
   }
 
   private static List<RuleMatch> run(final UnusedParameterCheck check, final UnitScopes scopes) {

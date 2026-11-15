@@ -36,7 +36,6 @@ import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
  * recall of the taint rules is limited to flows inside one file.
  */
 class SecurityBenchmarkSmokeTest {
-
   private static final String MAP = "/benchmark/security-cwe-map.csv";
   private static final String REPORT = "benchmark/security-report.txt";
   private static final String SOURCE_ROOT = "src/main/java/";
@@ -98,8 +97,10 @@ class SecurityBenchmarkSmokeTest {
   private static Counts count(
       final JulietCorpus corpus,
       final RuleFixtureRunner runner,
-      final Map<String, RuleDefinition> rules,
-      final Row row)
+      final Map<String,
+      RuleDefinition> rules,
+      final Row row
+  )
       throws IOException {
     int cases = 0;
     int truePositives = 0;
@@ -117,10 +118,12 @@ class SecurityBenchmarkSmokeTest {
 
   private static List<AnalysisFinding> findings(
       final RuleFixtureRunner runner,
-      final Map<String, RuleDefinition> rules,
+      final Map<String,
+      RuleDefinition> rules,
       final Row row,
       final Path file,
-      final String source)
+      final String source
+  )
       throws IOException {
     final List<AnalysisFinding> found = new ArrayList<>();
     for (final String id : row.rules()) {
@@ -132,7 +135,9 @@ class SecurityBenchmarkSmokeTest {
               SOURCE_ROOT + file.getFileName(),
               source,
               FixtureTypeFacts.of(Optional.empty()),
-              new FixtureProject(ProjectFiles.empty(), siblings(file))));
+              new FixtureProject(ProjectFiles.empty(), siblings(file))
+          )
+      );
     }
     return found;
   }
@@ -157,7 +162,9 @@ class SecurityBenchmarkSmokeTest {
               new SourceUnit(
                   SOURCE_ROOT + other.getFileName(),
                   AnalysisLanguage.JAVA,
-                  Files.readString(other, StandardCharsets.UTF_8)));
+                  Files.readString(other, StandardCharsets.UTF_8)
+              )
+          );
         }
       }
     }
@@ -165,7 +172,10 @@ class SecurityBenchmarkSmokeTest {
   }
 
   private static int hit(
-      final List<AnalysisFinding> findings, final List<Kind> kinds, final Kind kind) {
+      final List<AnalysisFinding> findings,
+      final List<Kind> kinds,
+      final Kind kind
+  ) {
     int hits = 0;
     for (final AnalysisFinding finding : findings) {
       final int index = finding.line() == null ? 0 : finding.line() - 1;
@@ -183,7 +193,8 @@ class SecurityBenchmarkSmokeTest {
             counts.truePositives(),
             counts.cases() - counts.truePositives(),
             counts.falsePositives(),
-            String.join(", ", row.rules()));
+            String.join(", ", row.rules())
+        );
   }
 
   private static List<Row> rows() throws IOException {
@@ -199,8 +210,11 @@ class SecurityBenchmarkSmokeTest {
                     new Row(
                         Integer.parseInt(parts[0].trim()),
                         parts[1].trim(),
-                        List.of(parts[2].trim().split(";"))));
-              });
+                        List.of(parts[2].trim().split(";"))
+                    )
+                );
+              }
+          );
       return rows;
     }
   }

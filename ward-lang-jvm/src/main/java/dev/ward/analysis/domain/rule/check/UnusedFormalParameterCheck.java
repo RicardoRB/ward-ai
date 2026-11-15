@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
  * {@code checkAll} is set, which also checks the other methods that have a body.
  */
 public final class UnusedFormalParameterCheck implements UnitCheck {
-
   private final boolean checkAll;
   private final String message;
 

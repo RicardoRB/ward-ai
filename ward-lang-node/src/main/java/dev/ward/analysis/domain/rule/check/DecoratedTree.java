@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 
 /** Tree queries shared by the decorated-class conditions. */
 final class DecoratedTree {
-
   private static final String DECORATOR_LIST = "decoratorList";
   private static final String DECORATOR = "decorator";
   private static final String HERITAGE = "classHeritage";
@@ -39,7 +38,8 @@ final class DecoratedTree {
             .filter(child -> HERITAGE.equals(child.kind()))
             .flatMap(heritage -> SyntaxWalk.leaves(heritage).stream())
             .anyMatch(
-                leaf -> IDENTIFIER.equals(leaf.kind()) && name.equals(leaf.fields().get("text")));
+                leaf -> IDENTIFIER.equals(leaf.kind()) && name.equals(leaf.fields().get("text"))
+            );
   }
 
   /** Tells whether the ancestors place the node inside a decorator of its class. */

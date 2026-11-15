@@ -77,7 +77,9 @@ public final class PosixRawTerminal implements RawTerminal {
                       sessionArena.arena,
                       saved.toArray(ValueLayout.JAVA_BYTE),
                       functions.read(),
-                      functions.tcsetattr()));
+                      functions.tcsetattr()
+                  )
+          );
       session.run();
       try {
         final Session value = session.get();
@@ -93,7 +95,10 @@ public final class PosixRawTerminal implements RawTerminal {
   }
 
   private boolean enableRawMode(
-      final Arena arena, final MemorySegment saved, final Tcsetattr tcsetattr) {
+      final Arena arena,
+      final MemorySegment saved,
+      final Tcsetattr tcsetattr
+  ) {
     final MemorySegment raw = arena.allocate(layout.size);
     raw.copyFrom(saved);
     final long flags =
@@ -101,12 +106,12 @@ public final class PosixRawTerminal implements RawTerminal {
             ? Integer.toUnsignedLong(raw.get(ValueLayout.JAVA_INT, layout.flagOffset))
             : raw.get(ValueLayout.JAVA_LONG, layout.flagOffset);
     if (layout.flagBytes == INT_FLAG_BYTES) {
-      raw.set(ValueLayout.JAVA_INT, layout.flagOffset, (int) (flags & ~layout.disableFlags));
+      raw.set(ValueLayout.JAVA_INT, layout.flagOffset, (int)(flags & ~layout.disableFlags));
     } else {
       raw.set(ValueLayout.JAVA_LONG, layout.flagOffset, flags & ~layout.disableFlags);
     }
-    raw.set(ValueLayout.JAVA_BYTE, layout.ccOffset + layout.vmin, (byte) 1);
-    raw.set(ValueLayout.JAVA_BYTE, layout.ccOffset + layout.vtime, (byte) 0);
+    raw.set(ValueLayout.JAVA_BYTE, layout.ccOffset + layout.vmin, (byte)1);
+    raw.set(ValueLayout.JAVA_BYTE, layout.ccOffset + layout.vtime, (byte)0);
     return tcsetattr.call(STDIN, 0, raw) == 0;
   }
 
@@ -119,18 +124,23 @@ public final class PosixRawTerminal implements RawTerminal {
     return type.cast(
         Proxy.newProxyInstance(
             Thread.currentThread().getContextClassLoader(),
-            new Class<?>[] {type},
-            (instance, method, arguments) -> handle.invokeWithArguments(arguments)));
+            new Class<?> [] {type},
+            (instance, method, arguments) -> handle.invokeWithArguments(arguments)
+        )
+    );
   }
 
   private static MethodHandle downcall(
       final Linker linker,
       final String name,
       final MethodType type,
-      final FunctionDescriptor descriptor) {
+      final FunctionDescriptor descriptor
+  ) {
     final MethodHandle handle =
         linker.downcallHandle(
-            Linker.nativeLinker().defaultLookup().find(name).orElseThrow(), descriptor);
+            Linker.nativeLinker().defaultLookup().find(name).orElseThrow(),
+            descriptor
+        );
     if (!handle.type().equals(type)) {
       throw new IllegalArgumentException("Unexpected native signature for " + name);
     }
@@ -138,7 +148,11 @@ public final class PosixRawTerminal implements RawTerminal {
   }
 
   private record NativeFunctions(
-      Isatty isatty, Tcgetattr tcgetattr, Tcsetattr tcsetattr, NativeRead read) {
+      Isatty isatty,
+      Tcgetattr tcgetattr,
+      Tcsetattr tcsetattr,
+      NativeRead read
+  ) {
     static NativeFunctions create(final Linker linker) {
       return new NativeFunctions(
           proxy(
@@ -147,7 +161,9 @@ public final class PosixRawTerminal implements RawTerminal {
                   linker,
                   "isatty",
                   MethodType.methodType(int.class, int.class),
-                  FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_INT))),
+                  FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_INT)
+              )
+          ),
           proxy(
               Tcgetattr.class,
               downcall(
@@ -155,7 +171,12 @@ public final class PosixRawTerminal implements RawTerminal {
                   "tcgetattr",
                   MethodType.methodType(int.class, int.class, MemorySegment.class),
                   FunctionDescriptor.of(
-                      ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.ADDRESS))),
+                      ValueLayout.JAVA_INT,
+                      ValueLayout.JAVA_INT,
+                      ValueLayout.ADDRESS
+                  )
+              )
+          ),
           proxy(
               Tcsetattr.class,
               downcall(
@@ -166,7 +187,10 @@ public final class PosixRawTerminal implements RawTerminal {
                       ValueLayout.JAVA_INT,
                       ValueLayout.JAVA_INT,
                       ValueLayout.JAVA_INT,
-                      ValueLayout.ADDRESS))),
+                      ValueLayout.ADDRESS
+                  )
+              )
+          ),
           proxy(
               NativeRead.class,
               downcall(
@@ -177,7 +201,11 @@ public final class PosixRawTerminal implements RawTerminal {
                       ValueLayout.JAVA_LONG,
                       ValueLayout.JAVA_INT,
                       ValueLayout.ADDRESS,
-                      ValueLayout.JAVA_LONG))));
+                      ValueLayout.JAVA_LONG
+                  )
+              )
+          )
+      );
     }
   }
 
@@ -209,7 +237,8 @@ public final class PosixRawTerminal implements RawTerminal {
         final Arena arena,
         final byte[] savedAttributes,
         final NativeRead read,
-        final Tcsetattr tcsetattr) {
+        final Tcsetattr tcsetattr
+    ) {
       this.arena = arena;
       this.savedAttributes = savedAttributes.clone();
       this.read = read;
@@ -244,7 +273,10 @@ public final class PosixRawTerminal implements RawTerminal {
     }
 
     private static void restoreAttributes(
-        final Arena targetArena, final byte[] savedAttributes, final Tcsetattr tcsetattr) {
+        final Arena targetArena,
+        final byte[] savedAttributes,
+        final Tcsetattr tcsetattr
+    ) {
       final MemorySegment saved = targetArena.allocate(savedAttributes.length);
       saved.copyFrom(MemorySegment.ofArray(savedAttributes));
       final int status = tcsetattr.call(STDIN, 0, saved);
@@ -292,7 +324,8 @@ public final class PosixRawTerminal implements RawTerminal {
       long ccOffset,
       int vmin,
       int vtime,
-      long disableFlags) {
+      long disableFlags
+  ) {
     // c_lflag bits from <termios.h>: canonical input, echo, and signal keys.
     private static final long LINUX_ICANON = 0x00000002L;
     private static final long LINUX_ECHO = 0x00000008L;

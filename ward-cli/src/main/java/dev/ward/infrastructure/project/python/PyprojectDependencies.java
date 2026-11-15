@@ -86,7 +86,8 @@ public final class PyprojectDependencies {
     final TomlParseResult parsed = Toml.parse(toml);
     if (parsed.hasErrors()) {
       throw new WardException(
-          "pyproject.toml is not valid TOML: " + parsed.errors().getFirst().getMessage());
+          "pyproject.toml is not valid TOML: " + parsed.errors().getFirst().getMessage()
+      );
     }
     return parsed;
   }

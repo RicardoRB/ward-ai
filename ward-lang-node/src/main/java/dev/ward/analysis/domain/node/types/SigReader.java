@@ -14,7 +14,10 @@ final class SigReader {
   /** Returns the signature whose type parameters, parameters and return type are under holder. */
   static Sig of(final SyntaxNode holder) {
     return new Sig(
-        typeParams(TreeKit.child(holder, "typeParameters")), params(holder), returns(holder));
+        typeParams(TreeKit.child(holder, "typeParameters")),
+        params(holder),
+        returns(holder)
+    );
   }
 
   /** Returns the type declared by an annotation node, or {@link TsType#UNKNOWN}. */

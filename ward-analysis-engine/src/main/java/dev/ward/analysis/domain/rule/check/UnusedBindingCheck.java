@@ -21,7 +21,6 @@ import java.util.List;
  * nonlocal}.
  */
 public final class UnusedBindingCheck implements RuleCheck {
-
   private static final String NAME = "{value}";
 
   private final String message;
@@ -48,7 +47,11 @@ public final class UnusedBindingCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes();
     final List<RuleMatch> found = new ArrayList<>();
     for (final Scope scope : scopes.scopes()) {

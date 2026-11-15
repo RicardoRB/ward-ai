@@ -48,6 +48,7 @@ class SbomRootNameTest {
         LicenseFixtures.detector(),
         LicenseFixtures.mixed(),
         Map.of(Toolchain.NODE, project -> declared),
-        "1.2.3");
+        "1.2.3"
+    );
   }
 }

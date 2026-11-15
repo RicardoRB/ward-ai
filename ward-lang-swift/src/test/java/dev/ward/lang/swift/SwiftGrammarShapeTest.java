@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
  * change that renames a kind fails here before the rule fixtures do.
  */
 final class SwiftGrammarShapeTest {
-
   private static final String SAMPLE = "fixtures/swift-structural/grammar-shapes.swift";
 
   @Test
@@ -68,7 +67,8 @@ final class SwiftGrammarShapeTest {
             "binary_operator",
             "do_statement",
             "catch_clause",
-            "closure_expression");
+            "closure_expression"
+        );
   }
 
   @Test
@@ -82,7 +82,11 @@ final class SwiftGrammarShapeTest {
     return new AntlrLanguageFrontend()
         .parse(
             new SourceUnit(
-                "grammar-shapes.swift", AnalysisLanguage.SWIFT, SwiftRuleRuns.read(SAMPLE)));
+                "grammar-shapes.swift",
+                AnalysisLanguage.SWIFT,
+                SwiftRuleRuns.read(SAMPLE)
+            )
+        );
   }
 
   private static Set<String> kinds(final SyntaxNode node) {

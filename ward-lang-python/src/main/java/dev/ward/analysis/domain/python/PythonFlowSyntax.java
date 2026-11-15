@@ -6,7 +6,6 @@ import java.util.Set;
 
 /** The syntax predicates that the Python control-flow lowering and its flow rules share. */
 public final class PythonFlowSyntax {
-
   private static final String CALL = "(";
   private static final String AWAIT = "await";
   private static final String TRUE = "True";

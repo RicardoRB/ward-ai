@@ -34,11 +34,13 @@ class EmptyCatchBlockCheckTest {
     final SyntaxNode filled =
         catchClause("e", Trees.node("block", 0, 2, 1, n("blockStatement", t(IDENTIFIER, "x"))));
     assertThat(
-            fileMatches(new EmptyCatchBlockCheck(ANY_COMMENT, NO_COMMENT, MESSAGE), "{}", filled))
+        fileMatches(new EmptyCatchBlockCheck(ANY_COMMENT, NO_COMMENT, MESSAGE), "{}", filled)
+    )
         .isEmpty();
     final SyntaxNode notBlock = n("catchClause", t("'catch'", "catch"), t(IDENTIFIER, "e"));
     assertThat(
-            fileMatches(new EmptyCatchBlockCheck(ANY_COMMENT, NO_COMMENT, MESSAGE), "", notBlock))
+        fileMatches(new EmptyCatchBlockCheck(ANY_COMMENT, NO_COMMENT, MESSAGE), "", notBlock)
+    )
         .isEmpty();
   }
 
@@ -67,11 +69,13 @@ class EmptyCatchBlockCheckTest {
       final Pattern exception,
       final String text,
       final String name,
-      final int end) {
+      final int end
+  ) {
     return fileMatches(
         new EmptyCatchBlockCheck(comment, exception, MESSAGE),
         text,
-        catchClause(name, Trees.node("block", 0, end, 1)));
+        catchClause(name, Trees.node("block", 0, end, 1))
+    );
   }
 
   private static SyntaxNode catchClause(final String name, final SyntaxNode block) {

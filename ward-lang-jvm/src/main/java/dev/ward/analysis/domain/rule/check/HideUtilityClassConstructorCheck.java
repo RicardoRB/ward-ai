@@ -15,7 +15,6 @@ import java.util.Set;
  * code can construct it) and a class with an inner class, which needs an instance.
  */
 public final class HideUtilityClassConstructorCheck implements RuleCheck {
-
   private static final String CLASS = "classDeclaration";
   private static final String CONSTRUCTOR = "constructorDeclaration";
   private static final String METHOD = "methodDeclaration";
@@ -32,7 +31,9 @@ public final class HideUtilityClassConstructorCheck implements RuleCheck {
    * @param message the message; {@code {value}} is the class name
    */
   public HideUtilityClassConstructorCheck(
-      final Set<String> ignoredAnnotations, final String message) {
+      final Set<String> ignoredAnnotations,
+      final String message
+  ) {
     this.ignoredAnnotations = Set.copyOf(ignoredAnnotations);
     this.message = Objects.requireNonNull(message, "message");
   }
@@ -44,12 +45,15 @@ public final class HideUtilityClassConstructorCheck implements RuleCheck {
       final SyntaxNode type = visit.node();
       if (CLASS.equals(type.kind())
           && Collections.disjoint(
-              DeclarationText.annotationNames(DesignMembers.modifiers(visit)), ignoredAnnotations)
+              DeclarationText.annotationNames(DesignMembers.modifiers(visit)),
+              ignoredAnnotations
+          )
           && JavaNodes.kid(type, EXTENDS).isEmpty()
           && !isPrivate(visit)
           && isUtility(type)) {
         matches.add(
-            CheckSupport.at(type.span(), CheckSupport.fill(message, JUnitMembers.name(type), "")));
+            CheckSupport.at(type.span(), CheckSupport.fill(message, JUnitMembers.name(type), ""))
+        );
       }
     }
     return List.copyOf(matches);

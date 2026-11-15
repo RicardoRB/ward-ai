@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 
 /** Finds the docstrings of Python modules, classes and functions, and reads their text. */
 final class DocstringText {
-
   private static final String STRING = "STRING";
   private static final String EOF = "EOF";
   private static final String BLOCK = "block";
@@ -81,7 +80,7 @@ final class DocstringText {
 
   /** Tells whether the summary, the first line of a docstring, ends with a period. */
   static boolean periodEnds(final String text) {
-    final String summary = text.strip().split("\n", 2)[0].strip();
+    final String summary = text.strip().split("\n", 2) [0].strip();
     return summary.endsWith(PERIOD);
   }
 

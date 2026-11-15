@@ -15,7 +15,6 @@ import java.util.Map;
  * variable.
  */
 final class KotlinReceiverLowering {
-
   private final ControlFlowBuilder flow;
   private final KotlinView view;
 
@@ -41,7 +40,8 @@ final class KotlinReceiverLowering {
   void lower(
       final SyntaxNode statement,
       final KotlinSplits.Split split,
-      final List<KotlinSplits.Split> all) {
+      final List<KotlinSplits.Split> all
+  ) {
     final Span region = split.receiver();
     fresh();
     final List<Span> hide = new ArrayList<>();
@@ -71,7 +71,10 @@ final class KotlinReceiverLowering {
    * take their taint from that variable, not from the source.
    */
   private void parameters(
-      final KotlinSplits.Split split, final KotlinResult receiver, final SyntaxNode part) {
+      final KotlinSplits.Split split,
+      final KotlinResult receiver,
+      final SyntaxNode part
+  ) {
     final int next = flow.newBlock();
     flow.edge(flow.current(), next, FlowEdgeKind.NORMAL);
     flow.moveTo(next);
@@ -88,7 +91,9 @@ final class KotlinReceiverLowering {
    * The values of the lambdas written inside this lambda's receiver, as in {@code a.let{}.map{}}.
    */
   private List<VariableAccess> earlierValues(
-      final KotlinSplits.Split split, final List<KotlinSplits.Split> all) {
+      final KotlinSplits.Split split,
+      final List<KotlinSplits.Split> all
+  ) {
     final List<VariableAccess> reads = new ArrayList<>();
     for (final KotlinSplits.Split earlier : all) {
       if (!earlier.equals(split) && KotlinView.contains(split.receiver(), earlier.span())) {

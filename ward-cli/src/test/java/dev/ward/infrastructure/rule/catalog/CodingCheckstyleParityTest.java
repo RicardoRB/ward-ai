@@ -22,7 +22,6 @@ import org.junit.jupiter.api.Test;
  * -Dward.checkstyle.classpath} names the jars of Checkstyle 14.3.0 and its dependencies.
  */
 class CodingCheckstyleParityTest {
-
   private static final String CLASSPATH = System.getProperty("ward.checkstyle.classpath");
   private static final Pattern FINDING = Pattern.compile(":(\\d+):(\\d+): ");
   private static final String TRUE = "true";
@@ -37,7 +36,8 @@ class CodingCheckstyleParityTest {
           "string-literal-equality",
           "Checkstyle reports the == or != operator; Ward reports the comparison",
           "avoid-inline-conditionals",
-          "Checkstyle reports the ? operator; Ward reports the conditional expression");
+          "Checkstyle reports the ? operator; Ward reports the conditional expression"
+      );
 
   private static final List<Mirror> MIRRORS =
       List.of(
@@ -45,19 +45,25 @@ class CodingCheckstyleParityTest {
           new Mirror("equals-hash-code", "", "EqualsHashCode", Map.of()),
           new Mirror("fall-through", "", "FallThrough", Map.of()),
           new Mirror(
-              "fall-through", "check-last", "FallThrough", Map.of("checkLastCaseGroup", TRUE)),
+              "fall-through",
+              "check-last",
+              "FallThrough",
+              Map.of("checkLastCaseGroup", TRUE)
+          ),
           new Mirror("illegal-catch", "", "IllegalCatch", Map.of()),
           new Mirror(
               "illegal-catch",
               "custom",
               "IllegalCatch",
-              Map.of("illegalClassNames", "IllegalStateException")),
+              Map.of("illegalClassNames", "IllegalStateException")
+          ),
           new Mirror("illegal-throws", "", "IllegalThrows", Map.of()),
           new Mirror(
               "illegal-throws",
               "override",
               "IllegalThrows",
-              Map.of("ignoreOverriddenMethods", "false")),
+              Map.of("ignoreOverriddenMethods", "false")
+          ),
           new Mirror("missing-switch-default", "", "MissingSwitchDefault", Map.of()),
           new Mirror("string-literal-equality", "", "StringLiteralEquality", Map.of()),
           new Mirror("avoid-inline-conditionals", "", "AvoidInlineConditionals", Map.of()),
@@ -68,12 +74,14 @@ class CodingCheckstyleParityTest {
               "equals-avoid-null",
               "ignore-case",
               "EqualsAvoidNull",
-              Map.of("ignoreEqualsIgnoreCase", TRUE)),
+              Map.of("ignoreEqualsIgnoreCase", TRUE)
+          ),
           new Mirror("return-count", "", "ReturnCount", Map.of()),
           new Mirror("return-count", "void", "ReturnCount", Map.of("maxForVoid", "2")),
           new Mirror("nested-if-depth", "", "NestedIfDepth", Map.of()),
           new Mirror("nested-for-depth", "", "NestedForDepth", Map.of()),
-          new Mirror("nested-try-depth", "", "NestedTryDepth", Map.of()));
+          new Mirror("nested-try-depth", "", "NestedTryDepth", Map.of())
+      );
 
   @Test
   void checkstyleReportsTheSamePositionsAsEveryCodingFixture() throws Exception {
@@ -117,7 +125,8 @@ class CodingCheckstyleParityTest {
         .properties()
         .forEach(
             (key, value) ->
-                properties.append("<property name=\"%s\" value=\"%s\"/>".formatted(key, value)));
+                properties.append("<property name=\"%s\" value=\"%s\"/>".formatted(key, value))
+        );
     return "<?xml version=\"1.0\"?>"
         + "<!DOCTYPE module PUBLIC \"-//Checkstyle//DTD Checkstyle Configuration 1.3//EN\""
         + " \"https://checkstyle.org/dtds/configuration_1_3.dtd\">"
@@ -133,13 +142,14 @@ class CodingCheckstyleParityTest {
     final String java = Path.of(System.getProperty("java.home"), "bin", "java").toString();
     final Process process =
         new ProcessBuilder(
-                java,
-                "-cp",
-                CLASSPATH,
-                "com.puppycrawl.tools.checkstyle.Main",
-                "-c",
-                config.toString(),
-                file.toString())
+            java,
+            "-cp",
+            CLASSPATH,
+            "com.puppycrawl.tools.checkstyle.Main",
+            "-c",
+            config.toString(),
+            file.toString()
+        )
             .redirectErrorStream(true)
             .start();
     final String output =

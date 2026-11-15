@@ -32,7 +32,11 @@ final class WardProbe {
   static void install(final Path copy) {
     try {
       Files.writeString(
-          copy.resolve("ward.toml"), SECTION, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+          copy.resolve("ward.toml"),
+          SECTION,
+          StandardOpenOption.CREATE,
+          StandardOpenOption.APPEND
+      );
     } catch (IOException e) {
       throw new UncheckedIOException("Could not add the ward probe to the working copy", e);
     }

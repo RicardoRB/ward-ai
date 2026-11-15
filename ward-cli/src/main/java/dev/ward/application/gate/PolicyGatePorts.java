@@ -13,4 +13,7 @@ import dev.ward.application.license.LicenseService;
  * @param apiCompat builds the native {@code api-compat} gate, or {@code null}
  */
 public record PolicyGatePorts(
-    LicenseService license, BuildPolicyGates buildPolicy, ApiCompatGates apiCompat) {}
+    LicenseService license,
+    BuildPolicyGates buildPolicy,
+    ApiCompatGates apiCompat
+) {}

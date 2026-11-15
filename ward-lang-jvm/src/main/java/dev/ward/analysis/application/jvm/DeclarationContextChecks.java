@@ -15,7 +15,6 @@ import java.util.Map;
 
 /** Builds the checks that read what one file declares: annotations, fields and type parameters. */
 final class DeclarationContextChecks {
-
   private static final String MESSAGE = "message";
 
   private DeclarationContextChecks() {}
@@ -25,22 +24,32 @@ final class DeclarationContextChecks {
     return Map.ofEntries(
         entry(
             "package-info-types",
-            toml -> new PackageInfoTypesCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new PackageInfoTypesCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "private-lambda-field",
-            toml -> new PrivateLambdaFieldCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new PrivateLambdaFieldCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "unused-collection-modified",
-            toml -> new UnusedCollectionModifiedCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new UnusedCollectionModifiedCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
-            "misplaced-scope", toml -> new MisplacedScopeCheck(TomlValues.required(toml, MESSAGE))),
+            "misplaced-scope",
+            toml -> new MisplacedScopeCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
-            "qualifier-count", toml -> new QualifierCountCheck(TomlValues.required(toml, MESSAGE))),
+            "qualifier-count",
+            toml -> new QualifierCountCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "non-runtime-annotation-lookup",
-            toml -> new NonRuntimeAnnotationCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new NonRuntimeAnnotationCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "type-parameter-qualifier",
-            toml -> new TypeParameterQualifierCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new TypeParameterQualifierCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 }

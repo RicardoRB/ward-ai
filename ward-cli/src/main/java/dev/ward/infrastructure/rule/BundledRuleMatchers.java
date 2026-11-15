@@ -9,12 +9,12 @@ import dev.ward.analysis.infrastructure.node.NodeRuleMatcher;
  * both use it, so a rule the loader accepts is a rule the gate can run.
  */
 public final class BundledRuleMatchers {
-
   private BundledRuleMatchers() {}
 
   /** Creates the matcher for the bundled rules. */
   public static RuleMatcher create() {
     return new LayerRuleMatcher(
-        new LanguageRuleMatcher(new NodeRuleMatcher(), new CompositeRuleMatcher()));
+        new LanguageRuleMatcher(new NodeRuleMatcher(), new CompositeRuleMatcher())
+    );
   }
 }

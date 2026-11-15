@@ -16,7 +16,6 @@ import java.util.Set;
  * enum's members never equal in a type-safe way.
  */
 public final class EnumComparisonCheck extends TypedCheck {
-
   private static final Set<String> EQUALITY = Set.of("==", "!=", "===", "!==");
   private static final Set<ValueKind> PRIMITIVE_KINDS =
       Set.of(ValueKind.NUMBER, ValueKind.STRING, ValueKind.BOOLEAN, ValueKind.BIGINT);
@@ -49,7 +48,10 @@ public final class EnumComparisonCheck extends TypedCheck {
   }
 
   private static boolean mixesEnumAndPrimitive(
-      final UnitTypeFacts types, final SyntaxNode left, final SyntaxNode right) {
+      final UnitTypeFacts types,
+      final SyntaxNode left,
+      final SyntaxNode right
+  ) {
     return isEnum(types, left) && isPrimitive(types, right)
         || isEnum(types, right) && isPrimitive(types, left);
   }

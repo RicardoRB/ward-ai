@@ -53,7 +53,8 @@ final class PomTools {
   static final List<Tool> TOOLS =
       List.of(
           Tool.modulePlugin("coverage", JACOCO, JACOCO_PLUGIN),
-          Tool.modulePlugin("mutation", PIT, PIT_PLUGIN, PresetPluginSnippets::pit));
+          Tool.modulePlugin("mutation", PIT, PIT_PLUGIN, PresetPluginSnippets::pit)
+      );
 
   private PomTools() {}
 
@@ -64,7 +65,10 @@ final class PomTools {
 
   /** Declarations for the selected tools that a run added to the pom. */
   static List<PomDeclarationValidator.Declaration> addedDeclarations(
-      final String original, final String updated, final Set<String> selected) {
+      final String original,
+      final String updated,
+      final Set<String> selected
+  ) {
     return TOOLS.stream()
         .filter(tool -> selected.contains(tool.gate()))
         .filter(tool -> !declares(original, tool.artifact()))
@@ -82,9 +86,11 @@ final class PomTools {
       String gate,
       String artifact,
       String snippet,
-      Function<QualityPreset, String> presetSnippet,
+      Function<QualityPreset,
+      String> presetSnippet,
       boolean dependency,
-      boolean module) {
+      boolean module
+  ) {
     private static final String VERSION_START = "<version>";
     private static final String GROUP_START = "<groupId>";
 
@@ -96,7 +102,9 @@ final class PomTools {
         final String gate,
         final String artifact,
         final String snippet,
-        final Function<QualityPreset, String> presetSnippet) {
+        final Function<QualityPreset,
+        String> presetSnippet
+    ) {
       return new Tool(gate, artifact, snippet, presetSnippet, false, false);
     }
 
@@ -109,7 +117,9 @@ final class PomTools {
         final String gate,
         final String artifact,
         final String snippet,
-        final Function<QualityPreset, String> presetSnippet) {
+        final Function<QualityPreset,
+        String> presetSnippet
+    ) {
       return new Tool(gate, artifact, snippet, presetSnippet, false, true);
     }
 
@@ -120,7 +130,8 @@ final class PomTools {
           ? chosen
           : chosen.replaceFirst(
               "<version>[^<]+</version>",
-              Matcher.quoteReplacement("<version>" + selectedVersion + "</version>"));
+              Matcher.quoteReplacement("<version>" + selectedVersion + "</version>")
+          );
     }
 
     String addTo(final String pom, final QualityPreset preset, final String selectedVersion) {

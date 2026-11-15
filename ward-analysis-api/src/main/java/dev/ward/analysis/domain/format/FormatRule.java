@@ -9,7 +9,6 @@ import java.util.Objects;
  * @param line the line where the node starts, from 1
  */
 public record FormatRule(String kind, int line) {
-
   /**
    * Checks the kind.
    *

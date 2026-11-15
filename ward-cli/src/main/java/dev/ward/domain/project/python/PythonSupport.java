@@ -46,7 +46,8 @@ public final class PythonSupport {
             + MINIMUM_MAJOR
             + "."
             + MAXIMUM_MINOR
-            + ".");
+            + "."
+    );
   }
 
   private static boolean isBelowMinimum(final int major, final int minor) {

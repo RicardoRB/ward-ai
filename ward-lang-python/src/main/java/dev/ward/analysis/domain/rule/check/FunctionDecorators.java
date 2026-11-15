@@ -8,7 +8,6 @@ import java.util.Set;
 
 /** Decorators of a function that exempt it from the self rule. */
 final class FunctionDecorators {
-
   private static final Set<String> EXEMPT_DECORATORS = Set.of("staticmethod", "classmethod");
 
   private FunctionDecorators() {}

@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** Edge cases of the optional Pylint extension checks, parsed from inline source. */
 final class PylintOptionalChecksTest {
-
   private static final String MESSAGE = "message";
 
   private static SyntaxNode root(final String source) {
@@ -38,9 +37,11 @@ final class PylintOptionalChecksTest {
         new ClassProtocolCheck(ClassProtocolCheck.Problem.EQ_WITHOUT_HASH, MESSAGE);
     assertThat(count(check, "class A:\n    def __eq__(self, o):\n        return True\n")).isOne();
     assertThat(
-            count(
-                check,
-                "class A:\n    __hash__ = None\n\n    def __eq__(self, o):\n        return True\n"))
+        count(
+            check,
+            "class A:\n    __hash__ = None\n\n    def __eq__(self, o):\n        return True\n"
+        )
+    )
         .isZero();
   }
 
@@ -60,7 +61,8 @@ final class PylintOptionalChecksTest {
         new ConsecutiveStatementsCheck(ConsecutiveStatementsCheck.Problem.CONFUSING_ELIF, MESSAGE);
     assertThat(count(check, "if a:\n    if b:\n        pass\nelif c:\n    pass\n")).isOne();
     assertThat(
-            count(check, "if a:\n    pass\nelif c:\n    if d:\n        pass\nelif e:\n    pass\n"))
+        count(check, "if a:\n    pass\nelif c:\n    if d:\n        pass\nelif e:\n    pass\n")
+    )
         .isOne();
     assertThat(count(check, "if a:\n    if b:\n        pass\n    x = 1\nelif c:\n    pass\n"))
         .isZero();

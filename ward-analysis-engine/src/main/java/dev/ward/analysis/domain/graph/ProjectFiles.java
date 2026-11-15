@@ -14,8 +14,11 @@ import java.util.Set;
  * @param sources the language of every source file of the run, summary or not
  */
 public record ProjectFiles(
-    Set<String> files, Set<String> entries, Map<String, AnalysisLanguage> sources) {
-
+    Set<String> files,
+    Set<String> entries,
+    Map<String,
+    AnalysisLanguage> sources
+) {
   /** No files and no entries: a whole-project rule reports nothing over it. */
   public static final ProjectFiles EMPTY = new ProjectFiles(Set.of(), Set.of());
 

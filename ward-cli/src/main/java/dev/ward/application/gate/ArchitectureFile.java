@@ -13,7 +13,6 @@ import java.util.Objects;
  * @param problems the problems of the file, each naming the file, the rule and the key
  */
 public record ArchitectureFile(String name, List<ArchitectureRule> rules, List<String> problems) {
-
   /** The file name {@code ward-architecture.toml} at the project root, used by default. */
   public static final String DEFAULT_NAME = "ward-architecture.toml";
 

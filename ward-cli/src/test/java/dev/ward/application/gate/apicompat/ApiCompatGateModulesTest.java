@@ -79,7 +79,8 @@ class ApiCompatGateModulesTest {
   void newModuleHasNoBaselineAndIsNotAnError() {
     both(
         "pom.xml",
-        "<project><modules><module>core</module><module>web</module></modules></project>");
+        "<project><modules><module>core</module><module>web</module></modules></project>"
+    );
     both("core/pom.xml", POM);
     both(CORE, CLIENT);
     fixtures.working.put("web/pom.xml", POM);

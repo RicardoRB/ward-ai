@@ -47,7 +47,9 @@ public final class XccovCoverageReport implements CoverageReport {
     } catch (JsonCodecException | IllegalArgumentException exception) {
       if (LOGGER.isLoggable(Level.INFO)) {
         LOGGER.log(
-            Level.INFO, "event=findings-parse-failed gate=" + SupportedQualityGates.SWIFT_COVERAGE);
+            Level.INFO,
+            "event=findings-parse-failed gate=" + SupportedQualityGates.SWIFT_COVERAGE
+        );
       }
       return LineCoverage.unusable("xccov's JSON report cannot be parsed.");
     }
@@ -62,7 +64,8 @@ public final class XccovCoverageReport implements CoverageReport {
     if (executable == 0) {
       return LineCoverage.unusable(
           "xccov's report has no executable production lines. Enable code coverage for the"
-              + " scheme's test action.");
+              + " scheme's test action."
+      );
     }
     return LineCoverage.of(covered, executable);
   }

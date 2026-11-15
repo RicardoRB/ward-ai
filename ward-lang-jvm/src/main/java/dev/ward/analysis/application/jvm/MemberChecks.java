@@ -15,7 +15,6 @@ import org.tomlj.TomlParseResult;
 
 /** The checks of the rules that read the member facts, the shapes and the overridden methods. */
 final class MemberChecks {
-
   private MemberChecks() {}
 
   /** The checks this class provides, by name. */
@@ -26,26 +25,35 @@ final class MemberChecks {
             toml ->
                 new InheritedSignatureCheck(
                     InheritedSignatureCheck.Mode.valueOf(constant(toml, "mode")),
-                    TomlValues.required(toml, "message"))),
+                    TomlValues.required(toml, "message")
+                )
+        ),
         entry(
             "unhashable-key",
             toml ->
                 new UnhashableKeyCheck(
                     UnhashableKeyCheck.Use.valueOf(constant(toml, "use")),
-                    TomlValues.required(toml, "message"))),
+                    TomlValues.required(toml, "message")
+                )
+        ),
         entry(
             "related-types",
             toml ->
                 new RelatedTypesCheck(
                     RelatedTypesCheck.Comparison.valueOf(constant(toml, "comparison")),
                     RelatedTypesCheck.Pair.valueOf(constant(toml, "pair")),
-                    TomlValues.required(toml, "message"))),
+                    TomlValues.required(toml, "message")
+                )
+        ),
         entry(
             "unrelated-argument",
-            toml -> new UnrelatedArgumentCheck(TomlValues.required(toml, "message"))),
+            toml -> new UnrelatedArgumentCheck(TomlValues.required(toml, "message"))
+        ),
         entry(
             "must-invoke-super",
-            toml -> new MustInvokeSuperCheck(TomlValues.required(toml, "message"))));
+            toml -> new MustInvokeSuperCheck(TomlValues.required(toml, "message"))
+        )
+    );
   }
 
   private static String constant(final TomlParseResult toml, final String key) {

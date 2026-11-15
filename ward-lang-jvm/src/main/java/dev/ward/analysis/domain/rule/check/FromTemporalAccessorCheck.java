@@ -18,7 +18,6 @@ import java.util.Set;
  * FromTemporalAccessor does. A call whose target or argument type is unknown is never reported.
  */
 public final class FromTemporalAccessorCheck extends FactsCheck {
-
   private static final String PACKAGE = "java.time.";
   private static final String INSTANT = PACKAGE + "Instant";
   private static final String LOCAL_DATE = PACKAGE + "LocalDate";
@@ -33,13 +32,21 @@ public final class FromTemporalAccessorCheck extends FactsCheck {
       Set.of(INSTANT, LOCAL_DATE, LOCAL_TIME, LOCAL_DATE_TIME, OFFSET_TIME);
   private static final Map<String, Set<String>> FAILS =
       Map.of(
-          INSTANT, Set.of(LOCAL_DATE, LOCAL_TIME, LOCAL_DATE_TIME, OFFSET_TIME),
-          LOCAL_DATE, Set.of(INSTANT, LOCAL_TIME, OFFSET_TIME),
-          LOCAL_TIME, Set.of(INSTANT, LOCAL_DATE),
-          LOCAL_DATE_TIME, Set.of(INSTANT, LOCAL_DATE, LOCAL_TIME, OFFSET_TIME),
-          OFFSET_TIME, Set.of(INSTANT, LOCAL_DATE, LOCAL_TIME, LOCAL_DATE_TIME),
-          OFFSET_DATE_TIME, NO_ZONE,
-          ZONED_DATE_TIME, NO_ZONE);
+          INSTANT,
+          Set.of(LOCAL_DATE, LOCAL_TIME, LOCAL_DATE_TIME, OFFSET_TIME),
+          LOCAL_DATE,
+          Set.of(INSTANT, LOCAL_TIME, OFFSET_TIME),
+          LOCAL_TIME,
+          Set.of(INSTANT, LOCAL_DATE),
+          LOCAL_DATE_TIME,
+          Set.of(INSTANT, LOCAL_DATE, LOCAL_TIME, OFFSET_TIME),
+          OFFSET_TIME,
+          Set.of(INSTANT, LOCAL_DATE, LOCAL_TIME, LOCAL_DATE_TIME),
+          OFFSET_DATE_TIME,
+          NO_ZONE,
+          ZONED_DATE_TIME,
+          NO_ZONE
+      );
   private static final FactNeed NEED =
       new FactNeed(Set.of(EXPRESSION), Set.of(FactKind.CALL, FactKind.TYPE));
 

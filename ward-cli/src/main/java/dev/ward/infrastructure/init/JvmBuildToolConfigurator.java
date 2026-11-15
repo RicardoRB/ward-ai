@@ -26,7 +26,9 @@ public final class JvmBuildToolConfigurator implements BuildToolConfiguration, B
   /** Creates the configurator that delegates to the Maven or Gradle configurator. */
   @Inject
   public JvmBuildToolConfigurator(
-      final PomToolConfigurator maven, final GradleToolConfigurator gradle) {
+      final PomToolConfigurator maven,
+      final GradleToolConfigurator gradle
+  ) {
     this.maven = maven;
     this.gradle = gradle;
   }
@@ -41,7 +43,8 @@ public final class JvmBuildToolConfigurator implements BuildToolConfiguration, B
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final Predicate<? super CompatibilityFinding> approval) {
+      final Predicate<? super CompatibilityFinding> approval
+  ) {
     return adapter(project).apply(project, gates, preset, approval);
   }
 
@@ -50,7 +53,8 @@ public final class JvmBuildToolConfigurator implements BuildToolConfiguration, B
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final boolean approved) {
+      final boolean approved
+  ) {
     return adapter(project).plan(project, gates, preset, approved);
   }
 
@@ -60,7 +64,8 @@ public final class JvmBuildToolConfigurator implements BuildToolConfiguration, B
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final boolean approved) {
+      final boolean approved
+  ) {
     return switch (project.buildTool()) {
       case GRADLE -> gradle.planModules(project, gates, preset, approved);
       case MAVEN -> maven.planModules(project, gates, preset, approved);

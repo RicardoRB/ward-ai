@@ -19,7 +19,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class SwiftHiddenFieldCheckTest {
-
   private static final SyntaxNode ROOT = SwiftCheckNodes.node("file", 0, 0);
   private static final SourceUnit EMPTY = new SourceUnit("m.swift", AnalysisLanguage.SWIFT, "");
   private static final String INIT_TEXT = "init(x: Int) {}";
@@ -46,10 +45,18 @@ class SwiftHiddenFieldCheckTest {
         new ScopeBuilder(SwiftCheckNodes.span(0, VALUE_100), ClassScopes.VISIBLE);
     builder.open(ScopeKind.CLASS, SwiftCheckNodes.span(0, VALUE_90));
     builder.declare(
-        memberName, BindingKind.VARIABLE, SwiftCheckNodes.span(VALUE_10, VALUE_11), Set.of());
+        memberName,
+        BindingKind.VARIABLE,
+        SwiftCheckNodes.span(VALUE_10, VALUE_11),
+        Set.of()
+    );
     builder.open(ScopeKind.FUNCTION, SwiftCheckNodes.span(VALUE_51, VALUE_80));
     builder.declare(
-        paramName, BindingKind.PARAMETER, SwiftCheckNodes.span(VALUE_60, VALUE_61), Set.of());
+        paramName,
+        BindingKind.PARAMETER,
+        SwiftCheckNodes.span(VALUE_60, VALUE_61),
+        Set.of()
+    );
     builder.close();
     builder.close();
     return builder.build();
@@ -85,10 +92,18 @@ class SwiftHiddenFieldCheckTest {
         new ScopeBuilder(SwiftCheckNodes.span(0, VALUE_100), ClassScopes.VISIBLE);
     builder.open(ScopeKind.CLASS, SwiftCheckNodes.span(0, VALUE_90));
     builder.declare(
-        "count", BindingKind.VARIABLE, SwiftCheckNodes.span(VALUE_10, VALUE_15), Set.of());
+        "count",
+        BindingKind.VARIABLE,
+        SwiftCheckNodes.span(VALUE_10, VALUE_15),
+        Set.of()
+    );
     builder.open(ScopeKind.BLOCK, SwiftCheckNodes.span(VALUE_51, VALUE_80));
     builder.declare(
-        "count", BindingKind.CONSTANT, SwiftCheckNodes.span(VALUE_60, VALUE_65), Set.of());
+        "count",
+        BindingKind.CONSTANT,
+        SwiftCheckNodes.span(VALUE_60, VALUE_65),
+        Set.of()
+    );
     builder.close();
     builder.close();
 

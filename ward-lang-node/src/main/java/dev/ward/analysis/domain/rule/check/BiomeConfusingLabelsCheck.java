@@ -15,7 +15,6 @@ import java.util.Set;
  * so is one named in the allowedLabels option.
  */
 public final class BiomeConfusingLabelsCheck implements RuleCheck {
-
   private static final String LABELLED = "labelledStatement";
   private static final String STATEMENT = "statement";
   private static final String LOOP = "iterationStatement";
@@ -42,7 +41,10 @@ public final class BiomeConfusingLabelsCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(LABELLED)).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(this::confusing)

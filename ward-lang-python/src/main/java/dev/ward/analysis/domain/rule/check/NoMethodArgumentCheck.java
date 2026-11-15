@@ -13,7 +13,6 @@ import java.util.Set;
  * {@code __new__} without parameters is reported too.
  */
 public final class NoMethodArgumentCheck implements RuleCheck {
-
   private static final Set<String> SCOPES = Set.of("funcdef", "classdef", "lambdef");
   private static final Set<String> STATIC_DECORATORS =
       Set.of("staticmethod", "builtins.staticmethod");

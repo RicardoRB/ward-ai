@@ -5,7 +5,6 @@ import java.util.List;
 
 /** Tells whether the writes of a field are plain statements of the bodies of constructors. */
 final class ConstructorWrites {
-
   private static final int CONSTRUCTOR_PATH = 4;
   private static final int BLOCK_PATH = 3;
   private static final int BLOCK_STATEMENT_PATH = 2;
@@ -24,13 +23,17 @@ final class ConstructorWrites {
 
   /** Whether each constructor writes once, or delegates to another one and writes nothing. */
   static boolean eachAssignsOnce(
-      final List<SyntaxWalk.Visit> writes, final List<SyntaxNode> constructors) {
+      final List<SyntaxWalk.Visit> writes,
+      final List<SyntaxNode> constructors
+  ) {
     return !constructors.isEmpty()
         && constructors.stream().allMatch(constructor -> assignsOnce(writes, constructor));
   }
 
   private static boolean assignsOnce(
-      final List<SyntaxWalk.Visit> writes, final SyntaxNode constructor) {
+      final List<SyntaxWalk.Visit> writes,
+      final SyntaxNode constructor
+  ) {
     final long count =
         writes.stream()
             .filter(
@@ -38,7 +41,8 @@ final class ConstructorWrites {
                     write
                         .ancestors()
                         .get(write.ancestors().size() - CONSTRUCTOR_PATH)
-                        .equals(constructor))
+                        .equals(constructor)
+            )
             .count();
     return count == 1 || count == 0 && delegates(constructor);
   }

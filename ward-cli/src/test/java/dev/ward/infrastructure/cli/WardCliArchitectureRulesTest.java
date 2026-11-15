@@ -23,12 +23,13 @@ class WardCliArchitectureRulesTest extends WardCliIntegrationSupport {
     Files.createDirectories(infrastructure);
     Files.writeString(
         domain.resolve("Order.java"),
-        "package shop.domain;\n\nimport shop.infrastructure.Db;\n\npublic class Order {}\n");
+        "package shop.domain;\n\nimport shop.infrastructure.Db;\n\npublic class Order {}\n"
+    );
     Files.writeString(
-        infrastructure.resolve("Db.java"), "package shop.infrastructure;\n\npublic class Db {}\n");
-    Files.writeString(
-        project.resolve("ward-architecture.toml"),
-        """
+        infrastructure.resolve("Db.java"),
+        "package shop.infrastructure;\n\npublic class Db {}\n"
+    );
+    Files.writeString(project.resolve("ward-architecture.toml"), """
         version = 1
 
         [[rule]]

@@ -27,7 +27,8 @@ class UpdateNoticeServiceTest {
     assertThat(notice)
         .contains(
             "ward: v0.4.0 is available (you have v0.3.1). Update: curl -fsSL"
-                + " https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.sh | sh");
+                + " https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.sh | sh"
+        );
     assertThat(fixtures.lookups).hasValue(1);
     assertThat(fixtures.cache.stored).contains(new CachedCheck(NOW, NEWER));
   }
@@ -62,21 +63,23 @@ class UpdateNoticeServiceTest {
     assertThat(fixtures.service(RUNNING, Optional.of(NEWER), Map.of(), true).automaticNotice())
         .contains(
             "ward: v0.4.0 is available (you have v0.3.1). Update: irm"
-                + " https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.ps1 | iex");
+                + " https://raw.githubusercontent.com/RicardoRB/ward-ai/main/install.ps1 | iex"
+        );
   }
 
   @Test
   void optOutAndContinuousIntegrationSkipTheLookup() {
     assertThat(
-            fixtures
-                .service(
-                    RUNNING, Optional.of(NEWER), Map.of(UpdateNoticeService.OPT_OUT, "1"), false)
-                .automaticNotice())
+        fixtures
+            .service(RUNNING, Optional.of(NEWER), Map.of(UpdateNoticeService.OPT_OUT, "1"), false)
+            .automaticNotice()
+    )
         .isEmpty();
     assertThat(
-            fixtures
-                .service(RUNNING, Optional.of(NEWER), Map.of("CI", "true"), false)
-                .automaticNotice())
+        fixtures
+            .service(RUNNING, Optional.of(NEWER), Map.of("CI", "true"), false)
+            .automaticNotice()
+    )
         .isEmpty();
     assertThat(fixtures.lookups).hasValue(0);
   }
@@ -84,13 +87,15 @@ class UpdateNoticeServiceTest {
   @Test
   void emptyEnvironmentValuesDoNotOptOut() {
     assertThat(
-            fixtures
-                .service(
-                    RUNNING,
-                    Optional.of(NEWER),
-                    Map.of(UpdateNoticeService.OPT_OUT, "", "CI", ""),
-                    false)
-                .automaticNotice())
+        fixtures
+            .service(
+                RUNNING,
+                Optional.of(NEWER),
+                Map.of(UpdateNoticeService.OPT_OUT, "", "CI", ""),
+                false
+            )
+            .automaticNotice()
+    )
         .isPresent();
   }
 }

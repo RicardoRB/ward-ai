@@ -7,7 +7,6 @@ import java.util.Set;
 
 /** Navigates the Swift syntax tree for type names, type syntax and inheritance clauses. */
 final class SwiftNodes {
-
   /** The kind of a type identifier, which may continue a dotted name. */
   static final String TYPE_IDENTIFIER = "type_identifier";
 

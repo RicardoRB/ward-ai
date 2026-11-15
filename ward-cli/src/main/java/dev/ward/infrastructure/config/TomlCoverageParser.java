@@ -37,7 +37,8 @@ final class TomlCoverageParser {
   private static void rejectBranches(final String where, final TomlTable gate) {
     if (gate.contains(BRANCHES)) {
       throw new WardException(
-          "'" + where + "." + BRANCHES + "' is supported only for the coverage check");
+          "'" + where + "." + BRANCHES + "' is supported only for the coverage check"
+      );
     }
   }
 }

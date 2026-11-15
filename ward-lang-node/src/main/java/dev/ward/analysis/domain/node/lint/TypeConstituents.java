@@ -6,7 +6,6 @@ import java.util.List;
 
 /** Reads the members of a written union or intersection type, flattening nested ones. */
 final class TypeConstituents {
-
   static final String OPERATION = "unionOrIntersectionOrPrimaryType";
   static final String UNION = "|";
   static final String INTERSECTION = "&";
@@ -37,7 +36,10 @@ final class TypeConstituents {
   }
 
   private static void collect(
-      final SyntaxNode node, final String operator, final List<SyntaxNode> out) {
+      final SyntaxNode node,
+      final String operator,
+      final List<SyntaxNode> out
+  ) {
     for (final SyntaxNode child : node.children()) {
       if (OPERATION.equals(child.kind()) && operator.equals(operatorOf(child))) {
         collect(child, operator, out);

@@ -42,11 +42,20 @@ class InitWardFormatNodeTest {
         project.resolve("package.json"),
         manifest.replaceFirst(
             "\"devDependencies\": \\{",
-            "\"devDependencies\": {\n    \"@biomejs/biome\": \"2.5.15\","));
+            "\"devDependencies\": {\n    \"@biomejs/biome\": \"2.5.15\","
+        )
+    );
 
     final NodeFixtureRun.Result init =
         fixture.ward(
-            "init", "--preset", "standard", "--integration", "none", "--agent-rules", "--yes");
+            "init",
+            "--preset",
+            "standard",
+            "--integration",
+            "none",
+            "--agent-rules",
+            "--yes"
+        );
 
     assertThat(init.exit()).as(init.output()).isZero();
     assertThat(fixture.read("AGENTS.md"))

@@ -13,7 +13,6 @@ import java.util.Set;
  * base-config} or {@code domain-config} of a network security configuration.
  */
 public final class NetworkConfigCleartextCheck implements RuleCheck {
-
   private static final Set<String> CONFIGS = Set.of("base-config", "domain-config");
   private static final String PERMITTED = "cleartextTrafficPermitted";
   private static final String MESSAGE =

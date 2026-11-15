@@ -11,7 +11,6 @@ import java.util.Set;
 
 /** Builders for the hand-made syntax trees the check tests run over. */
 final class Trees {
-
   static final String COMMENT = "comment";
   static final String IDENTIFIER = "identifier";
   static final int METHOD_LIMIT = 60;
@@ -27,7 +26,10 @@ final class Trees {
 
   /** Filters declarations of {@code kinds} by modifiers, with the usual modifier kinds. */
   static DeclarationFilter filter(
-      final Set<String> kinds, final Optional<String> required, final Optional<String> excluded) {
+      final Set<String> kinds,
+      final Optional<String> required,
+      final Optional<String> excluded
+  ) {
     return new DeclarationFilter(kinds, MODIFIERS, required, excluded);
   }
 
@@ -37,7 +39,8 @@ final class Trees {
         kind,
         new Span(1, offset + 1, 1, offset + text.length(), offset, offset + text.length()),
         Map.of("text", text),
-        List.of());
+        List.of()
+    );
   }
 
   /** A rule node on line 1 through {@code endLine}, covering {@code start} to {@code end}. */
@@ -46,7 +49,8 @@ final class Trees {
       final int start,
       final int end,
       final int endLine,
-      final SyntaxNode... children) {
+      final SyntaxNode... children
+  ) {
     return new SyntaxNode(kind, span(start, end, 1, endLine), Map.of(), List.of(children));
   }
 
@@ -70,7 +74,9 @@ final class Trees {
             offset + IMPORT_KEYWORD_LENGTH,
             end - 1,
             1,
-            leaf(IDENTIFIER, simple, end - NAME_OFFSET_FROM_END)));
+            leaf(IDENTIFIER, simple, end - NAME_OFFSET_FROM_END)
+        )
+    );
   }
 
   /**
@@ -85,7 +91,8 @@ final class Trees {
             DECLARATION_END,
             2,
             leaf("CLASS", "class", 12),
-            leaf(IDENTIFIER, "Order", 18));
+            leaf(IDENTIFIER, "Order", 18)
+        );
     final SyntaxNode wrapper =
         node(
             "typeDeclaration",
@@ -93,7 +100,8 @@ final class Trees {
             DECLARATION_END,
             2,
             node("modifier", 7, 13, 2, leaf("'public'", "public", 7)),
-            clazz);
+            clazz
+        );
     final List<SyntaxNode> children = new ArrayList<>();
     if (withComment) {
       children.add(leaf(COMMENT, "/** Doc. */", 0));

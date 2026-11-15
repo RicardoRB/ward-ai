@@ -14,7 +14,6 @@ import java.util.function.ToIntFunction;
  * FormatResult.Refused}, so the caller never writes the file.
  */
 public final class FormatSafety {
-
   private static final String NEWLINE = "\n";
   private static final String CRLF = "\r\n";
   private static final int FIRST_LINE = 1;
@@ -43,7 +42,10 @@ public final class FormatSafety {
    * @throws NullPointerException if an argument is missing
    */
   public FormatResult formatSafely(
-      final SourceFormatter formatter, final FormatOptions options, final String source) {
+      final SourceFormatter formatter,
+      final FormatOptions options,
+      final String source
+  ) {
     Objects.requireNonNull(formatter, "formatter");
     Objects.requireNonNull(options, "options");
     Objects.requireNonNull(source, "source");
@@ -75,13 +77,14 @@ public final class FormatSafety {
       final FormatOptions options,
       final FormatSyntaxTree input,
       final String source,
-      final String output) {
+      final String output
+  ) {
     if (output.equals(source)) {
       return new FormatResult.Unchanged();
     }
     final Optional<FormatResult.Refused> refusal = verify(formatter, options, input, output);
     return refusal
-        .<FormatResult>map(refused -> refused)
+        .<FormatResult> map(refused -> refused)
         .orElseGet(() -> new FormatResult.Formatted(output));
   }
 
@@ -89,7 +92,8 @@ public final class FormatSafety {
       final SourceFormatter formatter,
       final FormatOptions options,
       final FormatSyntaxTree input,
-      final String output) {
+      final String output
+  ) {
     final FormatSyntaxTree parsed = syntax.parse(output);
     Optional<FormatResult.Refused> refusal =
         syntaxRefusal(parsed, "formatted output has a syntax error");
@@ -110,7 +114,9 @@ public final class FormatSafety {
   }
 
   private static Optional<FormatResult.Refused> syntaxRefusal(
-      final FormatSyntaxTree tree, final String reason) {
+      final FormatSyntaxTree tree,
+      final String reason
+  ) {
     final OptionalInt errorLine = tree.errorLine();
     if (errorLine.isEmpty()) {
       return Optional.empty();
@@ -126,8 +132,10 @@ public final class FormatSafety {
   private static <T> Optional<Integer> mismatch(
       final List<T> expected,
       final List<T> actual,
-      final Function<T, Object> key,
-      final ToIntFunction<T> line) {
+      final Function<T,
+      Object> key,
+      final ToIntFunction<T> line
+  ) {
     final int shared = Math.min(expected.size(), actual.size());
     for (int i = 0; i < shared; i++) {
       if (!key.apply(expected.get(i)).equals(key.apply(actual.get(i)))) {
@@ -141,7 +149,10 @@ public final class FormatSafety {
   }
 
   private static Optional<FormatResult.Refused> unstable(
-      final SourceFormatter formatter, final FormatOptions options, final String output) {
+      final SourceFormatter formatter,
+      final FormatOptions options,
+      final String output
+  ) {
     final FormatResult again = formatter.format(output, options);
     if (again instanceof FormatResult.Unchanged) {
       return Optional.empty();
@@ -150,10 +161,13 @@ public final class FormatSafety {
       final int line = firstDifferentLine(output, formatted.text());
       return Optional.of(new FormatResult.Refused("formatting is not stable", line));
     }
-    final FormatResult.Refused refused = (FormatResult.Refused) again;
+    final FormatResult.Refused refused = (FormatResult.Refused)again;
     return Optional.of(
         new FormatResult.Refused(
-            "formatted output cannot be formatted again: " + refused.reason(), refused.line()));
+            "formatted output cannot be formatted again: " + refused.reason(),
+            refused.line()
+        )
+    );
   }
 
   private static int firstDifferentLine(final String first, final String second) {

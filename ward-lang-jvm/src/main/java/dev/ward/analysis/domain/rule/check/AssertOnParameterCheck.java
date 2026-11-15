@@ -60,7 +60,8 @@ public final class AssertOnParameterCheck implements UnitCheck {
     final Set<String> parameters = parameterNames(callable.get());
     return SyntaxWalk.descendants(visit.node().children().get(1)).stream()
         .anyMatch(
-            node -> IDENTIFIER.equals(node.kind()) && parameters.contains(SyntaxWalk.text(node)));
+            node -> IDENTIFIER.equals(node.kind()) && parameters.contains(SyntaxWalk.text(node))
+        );
   }
 
   private static Set<String> parameterNames(final SyntaxNode callable) {

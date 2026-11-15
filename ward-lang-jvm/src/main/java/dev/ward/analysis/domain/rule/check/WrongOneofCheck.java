@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
  * constants are unknown is never reported.
  */
 public final class WrongOneofCheck extends FactsCheck {
-
   private static final Pattern SELECTOR = Pattern.compile("^(.+)\\.get\\w+Case\\(\\)$");
   private static final Pattern CAMEL = Pattern.compile("(?<=[a-z0-9])(?=[A-Z])");
   private static final String STATEMENT = "statement";
@@ -76,7 +75,10 @@ public final class WrongOneofCheck extends FactsCheck {
   }
 
   private List<RuleMatch> readsIn(
-      final SyntaxNode group, final Set<String> cases, final Pattern read) {
+      final SyntaxNode group,
+      final Set<String> cases,
+      final Pattern read
+  ) {
     final Set<String> labels =
         group.children().stream()
             .filter(child -> LABEL.equals(child.kind()))
@@ -95,7 +97,8 @@ public final class WrongOneofCheck extends FactsCheck {
       final SyntaxNode expression,
       final Pattern read,
       final Set<String> cases,
-      final Set<String> labels) {
+      final Set<String> labels
+  ) {
     final Matcher matcher = read.matcher(SyntaxWalk.text(expression));
     if (!matcher.matches() || labels.isEmpty()) {
       return Optional.empty();
@@ -104,7 +107,8 @@ public final class WrongOneofCheck extends FactsCheck {
         CAMEL.matcher(matcher.group(1)).replaceAll("_").toUpperCase(Locale.ROOT);
     return cases.contains(constant) && !labels.contains(constant)
         ? Optional.of(
-            CheckSupport.at(expression.span(), CheckSupport.fill(message, matcher.group(1), "")))
+            CheckSupport.at(expression.span(), CheckSupport.fill(message, matcher.group(1), ""))
+        )
         : Optional.empty();
   }
 }

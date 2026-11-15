@@ -13,7 +13,6 @@ import java.util.Set;
  * RepeatedTest, TestFactory and TestTemplate.
  */
 public final class DetachedTestCaseCheck implements UnitCheck {
-
   private static final Set<String> TESTS =
       Set.of("Test", "ParameterizedTest", "RepeatedTest", "TestFactory", "TestTemplate");
   private static final String VOID = "void";

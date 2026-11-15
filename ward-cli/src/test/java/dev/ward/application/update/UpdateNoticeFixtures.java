@@ -21,8 +21,10 @@ final class UpdateNoticeFixtures {
   UpdateNoticeService service(
       final String running,
       final Optional<ReleaseVersion> latest,
-      final Map<String, String> env,
-      final boolean windows) {
+      final Map<String,
+      String> env,
+      final boolean windows
+  ) {
     return new UpdateNoticeService(
         running,
         () -> {
@@ -30,7 +32,8 @@ final class UpdateNoticeFixtures {
           return latest;
         },
         cache,
-        new UpdateContext(InstantSource.fixed(NOW), env::get, windows));
+        new UpdateContext(InstantSource.fixed(NOW), env::get, windows)
+    );
   }
 
   UpdateNoticeService service(final Optional<ReleaseVersion> latest) {

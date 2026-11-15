@@ -2,7 +2,6 @@ package dev.ward.analysis.domain.rule.check;
 
 /** A view of a text that charges every character the regex reads to a {@link WorkBudget}. */
 final class BudgetedText implements CharSequence {
-
   private final String text;
   private final int start;
   private final int end;

@@ -19,7 +19,8 @@ public final class WindsurfIntegration implements NativeHarnessAdapter {
           ".windsurf/hooks.json",
           ".windsurf/hooks/ward.sh",
           "post_write_code",
-          Set.of(IntegrationCapability.POST_EDIT));
+          Set.of(IntegrationCapability.POST_EDIT)
+      );
 
   @Override
   public NativeAgentIntegration.Definition definition() {
@@ -104,7 +105,8 @@ public final class WindsurfIntegration implements NativeHarnessAdapter {
           null,
           null,
           false,
-          false);
+          false
+      );
     }
   }
 

@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
  * is not judged.
  */
 public final class MissingParenthesesCheck implements RuleCheck {
-
   private static final String DEF = "def";
   private static final Set<String> TESTS = Set.of("if_stmt", "while_stmt", "assert_stmt");
   private static final Set<String> SCOPES = Set.of("funcdef", "classdef", "lambdef");

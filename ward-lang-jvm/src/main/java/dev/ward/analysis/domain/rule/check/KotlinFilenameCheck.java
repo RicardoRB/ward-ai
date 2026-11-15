@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
  * file is named in PascalCase.
  */
 public final class KotlinFilenameCheck implements UnitCheck {
-
   private static final Pattern PASCAL_CASE = Pattern.compile("[A-Z][A-Za-z\\d]*");
   private static final String KOTLIN_EXTENSION = ".kt";
   private static final String PACKAGE_FILE = "package.kt";
@@ -58,7 +57,9 @@ public final class KotlinFilenameCheck implements UnitCheck {
   }
 
   private static boolean matchesDeclarations(
-      final String base, final List<SyntaxNode> declarations) {
+      final String base,
+      final List<SyntaxNode> declarations
+  ) {
     final List<SyntaxNode> classes = ofKind(declarations, CLASS);
     if (classes.size() == SINGLE) {
       final String className = identifier(classes.get(0));
@@ -73,13 +74,16 @@ public final class KotlinFilenameCheck implements UnitCheck {
   }
 
   private static boolean hasNotExtending(
-      final List<SyntaxNode> declarations, final String className) {
+      final List<SyntaxNode> declarations,
+      final String className
+  ) {
     return declarations.stream()
         .anyMatch(
             declaration ->
                 OBJECT.equals(declaration.kind())
                     || PROPERTY.equals(declaration.kind())
-                    || (FUN.equals(declaration.kind()) && !extendsClass(declaration, className)));
+                    || (FUN.equals(declaration.kind()) && !extendsClass(declaration, className))
+        );
   }
 
   private static boolean extendsClass(final SyntaxNode function, final String className) {

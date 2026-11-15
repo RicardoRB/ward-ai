@@ -17,7 +17,6 @@ import java.util.Set;
  * no members here.
  */
 final class MemberFacts {
-
   private static final int MAX_DEPTH = 8;
   private static final Set<Decl.Kind> DECLARED_KINDS =
       Set.of(Decl.Kind.CLASS, Decl.Kind.INTERFACE, Decl.Kind.ENUM);
@@ -61,7 +60,15 @@ final class MemberFacts {
       fields.addAll(inherited.fields());
     }
     return new TypeMembers(
-        self.methods(), self.fields(), ancestors, List.of(), methods, fields, Map.of(), List.of());
+        self.methods(),
+        self.fields(),
+        ancestors,
+        List.of(),
+        methods,
+        fields,
+        Map.of(),
+        List.of()
+    );
   }
 
   /** The members of {@code type} with those of every supertype above it, or null if unknown. */
@@ -99,11 +106,17 @@ final class MemberFacts {
     for (final Member member : members) {
       if (member.isMethod()) {
         methods.add(
-            TypeRefs.target(owner, member.name(), member.sigs().get(0), member.has(Member.STATIC)));
+            TypeRefs.target(owner, member.name(), member.sigs().get(0), member.has(Member.STATIC))
+        );
       } else {
         fields.add(
             new FieldRef(
-                member.name(), TypeRefs.of(member.type()), member.has(Member.STATIC), List.of()));
+                member.name(),
+                TypeRefs.of(member.type()),
+                member.has(Member.STATIC),
+                List.of()
+            )
+        );
       }
     }
     return new Own(methods, fields);
@@ -118,7 +131,8 @@ final class MemberFacts {
               final Decl decl = located.decl();
               decl.header().extendsTypes().forEach(base -> bases.add(resolved(base, located)));
               decl.header().implementsTypes().forEach(base -> bases.add(resolved(base, located)));
-            });
+            }
+        );
     return bases;
   }
 

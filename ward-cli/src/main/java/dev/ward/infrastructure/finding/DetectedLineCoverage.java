@@ -35,7 +35,9 @@ public final class DetectedLineCoverage implements LineCoverageReport {
         .orElseThrow(
             () ->
                 new LineCoverageException(
-                    report.getFileName() + " is neither a JaCoCo XML report nor an lcov report"))
+                    report.getFileName() + " is neither a JaCoCo XML report nor an lcov report"
+                )
+        )
         .read(report);
   }
 

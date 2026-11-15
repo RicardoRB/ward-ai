@@ -9,7 +9,6 @@ import java.util.List;
 
 /** Lowers the {@code try} and {@code synchronized} statements of a Java body. */
 final class JavaTries {
-
   private static final String BLOCK = "block";
   private static final String IDENTIFIER = "identifier";
   private static final String CATCH_CLAUSE = "catchClause";
@@ -25,7 +24,10 @@ final class JavaTries {
   private final JavaAccesses accesses;
 
   JavaTries(
-      final ControlFlowBuilder flow, final JavaStatements statements, final JavaAccesses accesses) {
+      final ControlFlowBuilder flow,
+      final JavaStatements statements,
+      final JavaAccesses accesses
+  ) {
     this.accesses = accesses;
     this.flow = flow;
     this.statements = statements;
@@ -65,7 +67,9 @@ final class JavaTries {
   private void catchClause(final SyntaxNode catchClause) {
     accesses.enterScope();
     flow.record(
-        accesses.catchParameter(JavaFlowSyntax.firstOf(parts(catchClause), IDENTIFIER)), List.of());
+        accesses.catchParameter(JavaFlowSyntax.firstOf(parts(catchClause), IDENTIFIER)),
+        List.of()
+    );
     statements.blockStatements(requireBlock(JavaFlowSyntax.firstOf(parts(catchClause), BLOCK)));
     accesses.exitScope();
   }

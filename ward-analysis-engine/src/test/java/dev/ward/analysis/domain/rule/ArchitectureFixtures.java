@@ -25,7 +25,11 @@ final class ArchitectureFixtures {
   }
 
   static List<GraphMatch> files(
-      final String id, final ArchitectureRule rule, final Map<String, AnalysisLanguage> sources) {
+      final String id,
+      final ArchitectureRule rule,
+      final Map<String,
+      AnalysisLanguage> sources
+  ) {
     return GraphRules.compile(definition(id, List.of(rule)))
         .matches(new DependencyGraph(List.of()), project(sources));
   }
@@ -40,16 +44,23 @@ final class ArchitectureFixtures {
         Set.of(AnalysisLanguage.JAVA, AnalysisLanguage.PYTHON),
         RuleCapability.SYMBOLS,
         AnalysisSeverity.ERROR,
-        ArchitectureRuleBody.encode(rules));
+        ArchitectureRuleBody.encode(rules)
+    );
   }
 
   static ArchitectureRule rule(
       final String name,
       final ArchitectureSelector select,
       final Kind kind,
-      final ArchitectureSelector target) {
+      final ArchitectureSelector target
+  ) {
     return new ArchitectureRule(
-        name, select, new ArchitectureConstraint(kind, target, null), "the reason", false);
+        name,
+        select,
+        new ArchitectureConstraint(kind, target, null),
+        "the reason",
+        false
+    );
   }
 
   static ArchitectureSelector dirs(final String... names) {

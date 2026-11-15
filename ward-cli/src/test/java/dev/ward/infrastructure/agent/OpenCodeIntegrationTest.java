@@ -31,7 +31,8 @@ class OpenCodeIntegrationTest {
             "ward",
             "--learn-after",
             "multiedit",
-            "patch");
+            "patch"
+        );
     assertThat(integration.integrate(root, false).status())
         .isEqualTo(IntegrationResult.Status.ALREADY_PRESENT);
     assertThat(integration.integrate(root, true).status())
@@ -46,9 +47,10 @@ class OpenCodeIntegrationTest {
     Files.createDirectories(target.getParent());
     Files.writeString(target, "user-owned");
     assertThat(
-            new OpenCodeIntegration()
-                .integrate(target.getParent().getParent().getParent(), false)
-                .status())
+        new OpenCodeIntegration()
+            .integrate(target.getParent().getParent().getParent(), false)
+            .status()
+    )
         .isEqualTo(IntegrationResult.Status.CONFLICT);
   }
 
@@ -84,7 +86,8 @@ class OpenCodeIntegrationTest {
             "const checkArgs = paths.flatMap((path) => [\"--path\", path])",
             "[\"check\", \"--profile\", \"edit\", \"--format\", \"json\", \"--learn-after\", \"3\"]",
             "content: [...contentOf(event.result), { type: \"text\", text: feedback }]",
-            "after.dispose")
+            "after.dispose"
+        )
         .doesNotContain("spec", "session.idle", "ctx.event", "ctx.session.prompt");
   }
 
@@ -98,7 +101,8 @@ class OpenCodeIntegrationTest {
         "// "
             + OpenCodeIntegration.PLUGIN_MARKER
             + "\n// OpenCode post-tool hook for Edit and Write operations.\n"
-            + "export default async () => ({});\n");
+            + "export default async () => ({});\n"
+    );
 
     final IntegrationResult result = new OpenCodeIntegration().integrate(root, false);
 

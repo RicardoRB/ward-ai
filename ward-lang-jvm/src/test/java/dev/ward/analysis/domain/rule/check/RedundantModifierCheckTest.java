@@ -30,21 +30,26 @@ class RedundantModifierCheckTest {
             modifier(MODIFIER, "public"),
             modifier(MODIFIER, "static"),
             modifier(MODIFIER, "final"),
-            n(INTERFACE_MEMBER, n("constDeclaration", t(IDENTIFIER, "X"))));
+            n(INTERFACE_MEMBER, n("constDeclaration", t(IDENTIFIER, "X")))
+        );
     assertThat(run(constant)).hasSize(NUMBER_3);
     assertThat(
-            run(
-                n(
-                    INTERFACE_BODY,
-                    modifier(MODIFIER, "private"),
-                    n(INTERFACE_MEMBER, n("constDeclaration")))))
+        run(
+            n(
+                INTERFACE_BODY,
+                modifier(MODIFIER, "private"),
+                n(INTERFACE_MEMBER, n("constDeclaration"))
+            )
+        )
+    )
         .isEmpty();
     final SyntaxNode method =
         n(
             "interfaceMethodDeclaration",
             modifier(INTERFACE_MODIFIER, "public"),
             modifier(INTERFACE_MODIFIER, "abstract"),
-            t(IDENTIFIER, "run"));
+            t(IDENTIFIER, "run")
+        );
     assertThat(run(n(INTERFACE_BODY, n(INTERFACE_MEMBER, method)))).hasSize(2);
   }
 
@@ -54,12 +59,14 @@ class RedundantModifierCheckTest {
         n(
             CLASS_BODY,
             modifier(MODIFIER, "static"),
-            n(MEMBER, n("enumDeclaration", t(IDENTIFIER, "Color"))));
+            n(MEMBER, n("enumDeclaration", t(IDENTIFIER, "Color")))
+        );
     final SyntaxNode interfaceHolder =
         n(
             INTERFACE_BODY,
             modifier(MODIFIER, "static"),
-            n(INTERFACE_MEMBER, n("interfaceDeclaration")));
+            n(INTERFACE_MEMBER, n("interfaceDeclaration"))
+        );
     assertThat(run(enumHolder)).hasSize(1);
     assertThat(run(interfaceHolder)).hasSize(1);
   }

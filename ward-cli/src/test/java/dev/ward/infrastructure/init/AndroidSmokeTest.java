@@ -38,7 +38,8 @@ class AndroidSmokeTest {
   void androidGatesRunAndWriteTheCoverageReport() throws IOException, InterruptedException {
     assumeTrue(
         System.getenv("ANDROID_HOME") != null || System.getenv("ANDROID_SDK_ROOT") != null,
-        "The Android SDK must be set in ANDROID_HOME or ANDROID_SDK_ROOT.");
+        "The Android SDK must be set in ANDROID_HOME or ANDROID_SDK_ROOT."
+    );
     copyFixture();
     new GradleToolConfigurator()
         .apply(
@@ -46,19 +47,22 @@ class AndroidSmokeTest {
             List.of(
                 gate("android-lint", List.of("lintDebug")),
                 gate("android-unit-test", List.of("testDebugUnitTest")),
-                gate("android-coverage", List.of("createDebugUnitTestCoverageReport"))),
+                gate("android-coverage", List.of("createDebugUnitTestCoverageReport"))
+            ),
             QualityPreset.STANDARD,
-            finding -> false);
+            finding -> false
+        );
 
     final Path log = root.resolve("gradle.log");
     final Process process =
         new ProcessBuilder(
-                System.getProperty("ward.gradle.binary", "gradle"),
-                "--no-daemon",
-                "-q",
-                "lintDebug",
-                "testDebugUnitTest",
-                "createDebugUnitTestCoverageReport")
+            System.getProperty("ward.gradle.binary", "gradle"),
+            "--no-daemon",
+            "-q",
+            "lintDebug",
+            "testDebugUnitTest",
+            "createDebugUnitTestCoverageReport"
+        )
             .directory(root.toFile())
             .redirectErrorStream(true)
             .redirectOutput(log.toFile())

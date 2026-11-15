@@ -15,7 +15,6 @@ import java.util.Set;
  * parameters and catch parameters are not checked.
  */
 public final class HiddenFieldCheck implements UnitCheck {
-
   // shortcut: lambda and catch parameters are not checked, Checkstyle's LAMBDA token is not
   // reproduced; upgrade when a fixture needs them.
   private static final Set<String> LOCAL_OWNERS = Set.of("localVariableDeclaration");
@@ -34,7 +33,10 @@ public final class HiddenFieldCheck implements UnitCheck {
    * @param message the message of each finding; {@code {value}} stands for the name
    */
   public HiddenFieldCheck(
-      final boolean ignoreConstructorParameter, final boolean ignoreSetter, final String message) {
+      final boolean ignoreConstructorParameter,
+      final boolean ignoreSetter,
+      final String message
+  ) {
     this.ignoreConstructorParameter = ignoreConstructorParameter;
     this.ignoreSetter = ignoreSetter;
     this.message = Objects.requireNonNull(message, "message");
@@ -45,7 +47,11 @@ public final class HiddenFieldCheck implements UnitCheck {
 
   /** A local or parameter that may hide a field. */
   private record Candidate(
-      SyntaxNode name, boolean parameter, SyntaxNode callable, List<SyntaxNode> ancestors) {}
+      SyntaxNode name,
+      boolean parameter,
+      SyntaxNode callable,
+      List<SyntaxNode> ancestors
+  ) {}
 
   @Override
   public List<RuleMatch> check(final SyntaxNode root, final SourceFile file) {
@@ -68,7 +74,8 @@ public final class HiddenFieldCheck implements UnitCheck {
       final boolean isStatic = FieldScopes.staticContext(visit.ancestors());
       for (final SyntaxNode declarator : FieldScopes.declarators(visit.node())) {
         fields.add(
-            new Field(SyntaxWalk.text(FieldScopes.firstLeaf(declarator)), isStatic, container));
+            new Field(SyntaxWalk.text(FieldScopes.firstLeaf(declarator)), isStatic, container)
+        );
       }
     }
     return fields;
@@ -90,7 +97,8 @@ public final class HiddenFieldCheck implements UnitCheck {
                   .orElse(visit.node())
               : FieldScopes.firstLeaf(visit.node());
       found.add(
-          new Candidate(name, parameter, Callables.nearest(ancestors).orElse(null), ancestors));
+          new Candidate(name, parameter, Callables.nearest(ancestors).orElse(null), ancestors)
+      );
     }
     return found;
   }
@@ -104,13 +112,17 @@ public final class HiddenFieldCheck implements UnitCheck {
   }
 
   private static boolean hidesField(
-      final Candidate candidate, final String name, final List<Field> fields) {
+      final Candidate candidate,
+      final String name,
+      final List<Field> fields
+  ) {
     return fields.stream()
         .filter(field -> field.name().equals(name))
         .filter(
             field ->
                 field.isStatic()
-                    || !FieldScopes.staticPath(candidate.ancestors(), field.container()))
+                    || !FieldScopes.staticPath(candidate.ancestors(), field.container())
+        )
         .anyMatch(field -> candidate.ancestors().contains(field.container()));
   }
 

@@ -28,7 +28,6 @@ import org.tomlj.TomlParseResult;
  * checks of the Pylint rows of part C. Each check takes its {@code problem} from the rule body.
  */
 final class PythonShapeChecks {
-
   private static final String MESSAGE = "message";
   private static final String PROBLEM = "problem";
   private static final String MAX = "max";
@@ -45,55 +44,75 @@ final class PythonShapeChecks {
         entry("class-limit", PythonShapeChecks::classLimit),
         entry("index-range", toml -> new IndexRangeCheck(TomlValues.required(toml, MESSAGE))),
         entry(
-            "shadowed-import", toml -> new ShadowedImportCheck(TomlValues.required(toml, MESSAGE))),
+            "shadowed-import",
+            toml -> new ShadowedImportCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "simplifiable-condition",
-            toml -> new SimplifiableConditionCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new SimplifiableConditionCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry("pattern-count", toml -> new PatternCountCheck(TomlValues.required(toml, MESSAGE))),
         entry("unpacking-count", PythonShapeChecks::unpackingCount),
         entry("unused-name", PythonShapeChecks::unusedName),
         entry("statement-list", PythonShapeChecks::statementList),
         entry(
             "raise-non-exception",
-            toml -> new RaiseNonExceptionCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new RaiseNonExceptionCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "repeated-keyword",
-            toml -> new RepeatedKeywordCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new RepeatedKeywordCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 
   private static <E extends Enum<E>> E problem(final TomlParseResult toml, final Class<E> type) {
     return Enum.valueOf(
-        type, TomlValues.required(toml, PROBLEM).toUpperCase(Locale.ROOT).replace('-', '_'));
+        type,
+        TomlValues.required(toml, PROBLEM).toUpperCase(Locale.ROOT).replace('-', '_')
+    );
   }
 
   private static RuleCheck callSignature(final TomlParseResult toml) {
     return new CallSignatureCheck(
-        problem(toml, CallSignatureCheck.Problem.class), TomlValues.required(toml, MESSAGE));
+        problem(toml, CallSignatureCheck.Problem.class),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static RuleCheck classHierarchy(final TomlParseResult toml) {
     return new ClassHierarchyCheck(
-        problem(toml, ClassHierarchyCheck.Problem.class), TomlValues.required(toml, MESSAGE));
+        problem(toml, ClassHierarchyCheck.Problem.class),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static RuleCheck methodBody(final TomlParseResult toml) {
     return new MethodBodyCheck(
-        problem(toml, MethodBodyCheck.Problem.class), TomlValues.required(toml, MESSAGE));
+        problem(toml, MethodBodyCheck.Problem.class),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static RuleCheck unusedName(final TomlParseResult toml) {
     return new UnusedNameCheck(
-        problem(toml, UnusedNameCheck.Problem.class), TomlValues.required(toml, MESSAGE));
+        problem(toml, UnusedNameCheck.Problem.class),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static RuleCheck statementList(final TomlParseResult toml) {
     return new StatementListCheck(
-        problem(toml, StatementListCheck.Problem.class), TomlValues.required(toml, MESSAGE));
+        problem(toml, StatementListCheck.Problem.class),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static RuleCheck unpackingCount(final TomlParseResult toml) {
     return new UnpackingCountCheck(
-        problem(toml, UnpackingCountCheck.Problem.class), TomlValues.required(toml, MESSAGE));
+        problem(toml, UnpackingCountCheck.Problem.class),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static RuleCheck classLimit(final TomlParseResult toml) {
@@ -101,6 +120,7 @@ final class PythonShapeChecks {
     return new ClassLimitCheck(
         problem(toml, ClassLimitCheck.Problem.class),
         TomlValues.integer(toml, minimum ? MIN : MAX),
-        TomlValues.required(toml, MESSAGE));
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 }

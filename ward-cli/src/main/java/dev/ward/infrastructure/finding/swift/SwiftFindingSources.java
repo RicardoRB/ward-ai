@@ -15,7 +15,8 @@ public final class SwiftFindingSources {
     this.sources =
         List.of(
             new SwiftCompilerOutputFindings("swift-build"),
-            new SwiftCompilerOutputFindings(SupportedQualityGates.XCODEBUILD_TEST));
+            new SwiftCompilerOutputFindings(SupportedQualityGates.XCODEBUILD_TEST)
+        );
   }
 
   /** Returns the finding sources of the Swift gates. */

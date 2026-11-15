@@ -17,7 +17,6 @@ import java.util.Map;
 
 /** The Pylint checks of part A2 that are declarative rules over the syntax tree or the scopes. */
 final class PylintPartA2Checks {
-
   private static final String MESSAGE = "message";
 
   private PylintPartA2Checks() {}
@@ -33,23 +32,35 @@ final class PylintPartA2Checks {
             "abstract-class-instantiated",
             toml ->
                 new AbstractClassCheck(
-                    AbstractClassCheck.Problem.INSTANTIATED, TomlValues.required(toml, MESSAGE))),
+                    AbstractClassCheck.Problem.INSTANTIATED,
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "abstract-method-not-overridden",
             toml ->
                 new AbstractClassCheck(
                     AbstractClassCheck.Problem.METHOD_NOT_OVERRIDDEN,
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "inconsistent-mro",
             toml ->
                 new ClassBaseCheck(
-                    ClassBaseCheck.Problem.INCONSISTENT_MRO, TomlValues.required(toml, MESSAGE))),
+                    ClassBaseCheck.Problem.INCONSISTENT_MRO,
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "inherit-non-class",
             toml ->
                 new ClassBaseCheck(
-                    ClassBaseCheck.Problem.NON_CLASS_BASE, TomlValues.required(toml, MESSAGE))));
+                    ClassBaseCheck.Problem.NON_CLASS_BASE,
+                    TomlValues.required(toml, MESSAGE)
+                )
+        )
+    );
   }
 
   private static Map<String, CheckFactory> signatureChecks() {
@@ -58,15 +69,23 @@ final class PylintPartA2Checks {
             "override-signature-differs",
             toml ->
                 new SignatureOverrideCheck(
-                    SignatureOverrideCheck.Problem.DIFFERS, TomlValues.required(toml, MESSAGE))),
+                    SignatureOverrideCheck.Problem.DIFFERS,
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "override-parameter-renamed",
             toml ->
                 new SignatureOverrideCheck(
-                    SignatureOverrideCheck.Problem.RENAMED, TomlValues.required(toml, MESSAGE))),
+                    SignatureOverrideCheck.Problem.RENAMED,
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "call-arguments-out-of-order",
-            toml -> new ArgumentOrderCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new ArgumentOrderCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 
   private static Map<String, CheckFactory> assignmentChecks() {
@@ -75,17 +94,26 @@ final class PylintPartA2Checks {
             "assigned-call-no-return",
             toml ->
                 new AssignedCallCheck(
-                    AssignedCallCheck.Problem.NO_RETURN, TomlValues.required(toml, MESSAGE))),
+                    AssignedCallCheck.Problem.NO_RETURN,
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "assigned-call-none",
             toml ->
                 new AssignedCallCheck(
-                    AssignedCallCheck.Problem.NONE, TomlValues.required(toml, MESSAGE))),
+                    AssignedCallCheck.Problem.NONE,
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "callable-comparison",
-            toml -> new CallableComparisonCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new CallableComparisonCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "global-undefined",
-            toml -> new GlobalUndefinedCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new GlobalUndefinedCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 }

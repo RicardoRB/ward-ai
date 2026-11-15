@@ -15,7 +15,6 @@ import java.util.Set;
  * and left out.
  */
 final class SyncAccesses {
-
   /** Index of the locked reads in a count array. */
   static final int READ_LOCKED = 0;
 
@@ -62,7 +61,11 @@ final class SyncAccesses {
   }
 
   private static void scanMethod(
-      final SyncModel model, final SyncMethod method, final Map<String, int[]> counts) {
+      final SyncModel model,
+      final SyncMethod method,
+      final Map<String,
+      int[]> counts
+  ) {
     final Set<String> locals = new HashSet<>();
     SyntaxWalk.descendants(method.node()).stream()
         .filter(n -> "variableDeclaratorId".equals(n.kind()))
@@ -88,13 +91,18 @@ final class SyncAccesses {
       final SyncModel model,
       final SyncMethod method,
       final SyntaxWalk.Visit visit,
-      final boolean getter) {
+      final boolean getter
+  ) {
     final boolean explicit = method.locksThis() || SyncLocking.insideLockOnThis(visit.ancestors());
     return new Held(explicit, explicit || model.lockedMethod(method), getter);
   }
 
   private static void record(
-      final int[] count, final int role, final Held held, final String methodName) {
+      final int[] count,
+      final int role,
+      final Held held,
+      final String methodName
+  ) {
     if (held.explicit()) {
       count[LOCAL_LOCKS]++;
     }
@@ -108,7 +116,10 @@ final class SyncAccesses {
 
   /** Returns the name of the field that the expression is, as {@code f} or {@code this.f}. */
   private static Optional<String> reference(
-      final SyntaxNode expression, final Set<String> fields, final Set<String> locals) {
+      final SyntaxNode expression,
+      final Set<String> fields,
+      final Set<String> locals
+  ) {
     final String text = SyntaxWalk.text(expression);
     final boolean qualified = text.startsWith(THIS_DOT);
     final String name = qualified ? text.substring(THIS_DOT.length()) : text;
@@ -122,7 +133,10 @@ final class SyncAccesses {
    * when it certainly reads two fields of the class, writes one, or indexes an array.
    */
   private static boolean possibleGetter(
-      final SyncModel model, final List<SyntaxWalk.Visit> visits, final Set<String> locals) {
+      final SyncModel model,
+      final List<SyntaxWalk.Visit> visits,
+      final Set<String> locals
+  ) {
     int reads = 0;
     for (final SyntaxWalk.Visit visit : visits) {
       final List<SyntaxNode> parts = visit.node().children();

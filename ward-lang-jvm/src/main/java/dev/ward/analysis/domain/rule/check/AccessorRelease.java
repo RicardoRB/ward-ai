@@ -11,7 +11,6 @@ import java.util.Set;
  * or less is unknown and such a rule reports nothing.
  */
 final class AccessorRelease {
-
   /** The first release whose nestmates make the accessors unnecessary. */
   static final int NESTMATES = 11;
 

@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
  * declare, as Error Prone's JUnitParameterMethodNotFound does for methods of the same class.
  */
 public final class JavaJUnitParameterMethodCheck implements RuleCheck {
-
   private static final String ANNOTATION = "annotation";
   private static final Pattern PARAMETERS =
       Pattern.compile("^@(?:\\w+\\.)*Parameters\\(.*?method=\"([^\"]*)\"");
@@ -48,7 +47,10 @@ public final class JavaJUnitParameterMethodCheck implements RuleCheck {
   }
 
   private void check(
-      final JavaNodes.Member member, final Set<String> methods, final List<RuleMatch> matches) {
+      final JavaNodes.Member member,
+      final Set<String> methods,
+      final List<RuleMatch> matches
+  ) {
     for (final SyntaxNode node : SyntaxWalk.descendants(member.holder())) {
       if (ANNOTATION.equals(node.kind())) {
         final Matcher found = PARAMETERS.matcher(SyntaxWalk.text(node));
@@ -59,7 +61,9 @@ public final class JavaJUnitParameterMethodCheck implements RuleCheck {
               .forEach(
                   name ->
                       matches.add(
-                          CheckSupport.at(node.span(), CheckSupport.fill(message, name, ""))));
+                          CheckSupport.at(node.span(), CheckSupport.fill(message, name, ""))
+                      )
+              );
         }
       }
     }

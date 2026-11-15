@@ -36,7 +36,10 @@ public final class KotlinIgnoredReturnValueCheck implements RuleCheck {
    * @param message the message reported at the call
    */
   public KotlinIgnoredReturnValueCheck(
-      final Set<String> returnValue, final Set<String> ignored, final String message) {
+      final Set<String> returnValue,
+      final Set<String> ignored,
+      final String message
+  ) {
     this.returnValue = Set.copyOf(returnValue);
     this.ignored = Set.copyOf(ignored);
     this.message = Objects.requireNonNull(message, "message");
@@ -58,7 +61,8 @@ public final class KotlinIgnoredReturnValueCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(STATEMENT)).stream()
         .map(SyntaxWalk.Visit::node)
         .flatMap(statement -> KotlinStatementLists.expression(statement, POSTFIX).stream())
@@ -73,7 +77,8 @@ public final class KotlinIgnoredReturnValueCheck implements RuleCheck {
         .filter(
             target ->
                 anyMatches(returnValue, target.annotations())
-                    && !anyMatches(ignored, target.annotations()))
+                    && !anyMatches(ignored, target.annotations())
+        )
         .isPresent();
   }
 

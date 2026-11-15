@@ -32,7 +32,6 @@ import org.tomlj.TomlParseResult;
  * The declarative checks of Python's comparisons, handlers, loop variables and module-level names.
  */
 final class PythonOrderChecks {
-
   private static final String MESSAGE = "message";
   private static final String PROBLEM = "problem";
 
@@ -54,22 +53,28 @@ final class PythonOrderChecks {
         entry("except-order", toml -> new ExceptOrderCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "raise-without-from",
-            toml -> new RaiseWithoutFromCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new RaiseWithoutFromCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "undefined-export",
-            toml -> new UndefinedExportCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new UndefinedExportCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "duplicate-handler",
-            toml -> new DuplicateHandlerCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new DuplicateHandlerCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "fstring-docstring",
-            toml -> new FStringDocstringCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new FStringDocstringCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry("unbound-local", toml -> new UnboundLocalCheck(TomlValues.required(toml, MESSAGE))),
         entry("loop-closure", toml -> new LoopClosureCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "empty-abstract-method",
-            toml -> new EmptyAbstractMethodCheck(TomlValues.required(toml, MESSAGE))),
-        entry("finally-jump", toml -> new FinallyJumpCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new EmptyAbstractMethodCheck(TomlValues.required(toml, MESSAGE))
+        ),
+        entry("finally-jump", toml -> new FinallyJumpCheck(TomlValues.required(toml, MESSAGE)))
+    );
   }
 
   private static Map<String, CheckFactory> buildSecond() {
@@ -77,17 +82,22 @@ final class PythonOrderChecks {
         entry("set-duplicates", toml -> new SetDuplicatesCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "unused-annotation",
-            toml -> new UnusedAnnotationCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new UnusedAnnotationCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry("groupby-reuse", toml -> new GroupbyReuseCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "string-annotation",
-            toml -> new StringAnnotationCheck(TomlValues.required(toml, MESSAGE))),
-        entry("strict-call", PythonOrderChecks::strictCall));
+            toml -> new StringAnnotationCheck(TomlValues.required(toml, MESSAGE))
+        ),
+        entry("strict-call", PythonOrderChecks::strictCall)
+    );
   }
 
   private static RuleCheck comparisonOperator(final TomlParseResult toml) {
     return new ComparisonOperatorCheck(
-        ComparisonOperatorCheck.Problem.valueOf(problem(toml)), TomlValues.required(toml, MESSAGE));
+        ComparisonOperatorCheck.Problem.valueOf(problem(toml)),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static RuleCheck strictCall(final TomlParseResult toml) {
@@ -95,14 +105,20 @@ final class PythonOrderChecks {
         new StrictCallCheck.Rule(
             Pattern.compile(TomlValues.required(toml, "call")),
             TomlValues.integer(toml, "minimum-minor"),
-            TomlValues.integer(toml, "minimum-arguments"));
+            TomlValues.integer(toml, "minimum-arguments")
+        );
     return new StrictCallCheck(
-        rule, TomlValues.required(toml, "target"), TomlValues.required(toml, MESSAGE));
+        rule,
+        TomlValues.required(toml, "target"),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   private static RuleCheck loopVariable(final TomlParseResult toml) {
     return new LoopVariableCheck(
-        LoopVariableCheck.Problem.valueOf(problem(toml)), TomlValues.required(toml, MESSAGE));
+        LoopVariableCheck.Problem.valueOf(problem(toml)),
+        TomlValues.required(toml, MESSAGE)
+    );
   }
 
   /** The {@code problem} key as an enum constant name: {@code not-in} becomes {@code NOT_IN}. */

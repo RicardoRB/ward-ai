@@ -42,7 +42,8 @@ public final class SwiftBuildToolConfigurator implements BuildToolConfiguration 
       final Project project,
       final List<InitGateOption> gates,
       final QualityPreset preset,
-      final boolean approved) {
+      final boolean approved
+  ) {
     final Path manifest = project.root().resolve(PACKAGE_MANIFEST);
     final List<String> problems = SwiftCompatibility.problems(project, toolchain);
     if (!problems.isEmpty()) {

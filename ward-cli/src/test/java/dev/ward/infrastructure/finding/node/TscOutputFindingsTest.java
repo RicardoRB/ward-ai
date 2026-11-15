@@ -23,14 +23,16 @@ class TscOutputFindingsTest {
     return source.extract(
         FindingFixtures.typescript(root),
         FindingFixtures.failed(GATE, stdout),
-        FindingFixtures.justBefore());
+        FindingFixtures.justBefore()
+    );
   }
 
   @Test
   void mapsAnErrorToItsDiagnosticCodeAndLocation() {
     final List<Finding> findings =
         extract(
-            "src/app.ts(3,7): error TS2322: Type 'string' is not assignable to type 'number'.\n");
+            "src/app.ts(3,7): error TS2322: Type 'string' is not assignable to type 'number'.\n"
+        );
 
     assertThat(findings)
         .singleElement()
@@ -45,7 +47,8 @@ class TscOutputFindingsTest {
               assertThat(finding.file()).isEqualTo("src/app.ts");
               assertThat(finding.line()).isEqualTo(ERROR_LINE);
               assertThat(finding.column()).isEqualTo(ERROR_COLUMN);
-            });
+            }
+        );
   }
 
   @Test
@@ -59,7 +62,8 @@ class TscOutputFindingsTest {
             finding -> {
               assertThat(finding.severity()).isEqualTo(FindingSeverity.WARNING);
               assertThat(finding.file()).isEqualTo("src/old.ts");
-            });
+            }
+        );
   }
 
   @Test

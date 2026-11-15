@@ -29,14 +29,15 @@ class DependencyPythonParitySmokeTest {
     final Set<String> listed = new TreeSet<>();
     for (final String line :
         ParitySupport.run(
-                dir,
-                "uv",
-                "export",
-                "--no-hashes",
-                "--all-packages",
-                "--all-groups",
-                "--all-extras",
-                "--frozen")
+            dir,
+            "uv",
+            "export",
+            "--no-hashes",
+            "--all-packages",
+            "--all-groups",
+            "--all-extras",
+            "--frozen"
+        )
             .lines()
             .toList()) {
       final Matcher pin = PYTHON_PIN.matcher(line);
@@ -44,7 +45,8 @@ class DependencyPythonParitySmokeTest {
         listed.add(
             pin.group(1).toLowerCase(java.util.Locale.ROOT).replaceAll("[-_.]+", "-")
                 + "@"
-                + pin.group(2));
+                + pin.group(2)
+        );
       }
     }
 

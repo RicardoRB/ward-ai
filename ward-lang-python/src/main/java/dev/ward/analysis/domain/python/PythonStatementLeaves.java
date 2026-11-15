@@ -10,12 +10,17 @@ import java.util.Set;
  * statements, such as an {@code if}, is one entry; its body is read from its own block.
  */
 public final class PythonStatementLeaves {
-
   private static final Set<String> SEQUENCES =
       Set.of("file_input", "block", "stmt", "simple_stmts");
   private static final Set<String> WRAPPERS =
       Set.of(
-          "simple_stmt", "small_stmt", "flow_stmt", "import_stmt", "compound_stmt", "async_stmt");
+          "simple_stmt",
+          "small_stmt",
+          "flow_stmt",
+          "import_stmt",
+          "compound_stmt",
+          "async_stmt"
+      );
 
   private PythonStatementLeaves() {}
 

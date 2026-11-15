@@ -12,7 +12,6 @@ import dev.ward.analysis.domain.rule.RuleMatcher;
  * configured it. Every other rule goes to the matcher it wraps.
  */
 public final class LayerRuleMatcher implements RuleMatcher {
-
   private final RuleMatcher next;
 
   /** Creates the matcher that compiles the layer rule and passes other rules to {@code next}. */

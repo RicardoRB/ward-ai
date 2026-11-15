@@ -32,7 +32,9 @@ class CoverageProjectDiscoveryTest {
     Files.writeString(root.resolve("javascript/yarn.lock"), "");
     Files.createDirectories(root.resolve("python-poetry"));
     Files.writeString(
-        root.resolve("python-poetry/pyproject.toml"), "[tool.poetry]\nname = \"demo\"\n");
+        root.resolve("python-poetry/pyproject.toml"),
+        "[tool.poetry]\nname = \"demo\"\n"
+    );
     Files.createDirectories(root.resolve("python-pip"));
     Files.writeString(root.resolve("python-pip/requirements.txt"), "");
     Files.createDirectories(root.resolve("go"));
@@ -54,9 +56,11 @@ class CoverageProjectDiscoveryTest {
             Language.PYTHON,
             Language.GO,
             Language.RUST,
-            Language.CSHARP);
+            Language.CSHARP
+        );
     assertThat(
-            new ProjectDiscovery(new FileSystemProjectInspection()).discover(root.resolve("maven")))
+        new ProjectDiscovery(new FileSystemProjectInspection()).discover(root.resolve("maven"))
+    )
         .hasSize(1);
   }
 
@@ -65,20 +69,22 @@ class CoverageProjectDiscoveryTest {
     Files.writeString(root.resolve("package.json"), "{}");
     Files.writeString(root.resolve("pnpm-lock.yaml"), "");
     assertThat(
-            new ProjectDiscovery(new FileSystemProjectInspection())
-                .discover(root)
-                .getFirst()
-                .project()
-                .buildTool())
+        new ProjectDiscovery(new FileSystemProjectInspection())
+            .discover(root)
+            .getFirst()
+            .project()
+            .buildTool()
+    )
         .isEqualTo(BuildTool.PNPM);
     Files.delete(root.resolve("pnpm-lock.yaml"));
     Files.writeString(root.resolve("yarn.lock"), "");
     assertThat(
-            new ProjectDiscovery(new FileSystemProjectInspection())
-                .discover(root)
-                .getFirst()
-                .project()
-                .buildTool())
+        new ProjectDiscovery(new FileSystemProjectInspection())
+            .discover(root)
+            .getFirst()
+            .project()
+            .buildTool()
+    )
         .isEqualTo(BuildTool.YARN);
   }
 }

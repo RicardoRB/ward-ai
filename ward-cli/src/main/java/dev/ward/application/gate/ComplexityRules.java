@@ -16,16 +16,26 @@ import java.util.stream.Collectors;
  * @param frontends the frontend of each of those languages
  */
 record ComplexityRules(
-    Map<AnalysisLanguage, CompiledRule> rules, Map<AnalysisLanguage, FrontendSupport> frontends) {
-
+    Map<AnalysisLanguage,
+    CompiledRule> rules,
+    Map<AnalysisLanguage,
+    FrontendSupport> frontends
+) {
   private static final Map<AnalysisLanguage, String> IDS =
       Map.of(
-          AnalysisLanguage.JAVA, "ward:java/cyclomatic-complexity",
-          AnalysisLanguage.KOTLIN, "ward:kotlin/cyclomatic-complexity",
-          AnalysisLanguage.TYPESCRIPT, "ward:typescript/complexity",
-          AnalysisLanguage.JAVASCRIPT, "ward:javascript/complexity",
-          AnalysisLanguage.PYTHON, "ward:python/complexity",
-          AnalysisLanguage.SWIFT, "ward:swift/complexity");
+          AnalysisLanguage.JAVA,
+          "ward:java/cyclomatic-complexity",
+          AnalysisLanguage.KOTLIN,
+          "ward:kotlin/cyclomatic-complexity",
+          AnalysisLanguage.TYPESCRIPT,
+          "ward:typescript/complexity",
+          AnalysisLanguage.JAVASCRIPT,
+          "ward:javascript/complexity",
+          AnalysisLanguage.PYTHON,
+          "ward:python/complexity",
+          AnalysisLanguage.SWIFT,
+          "ward:swift/complexity"
+      );
 
   /** Copies the maps. */
   ComplexityRules {
@@ -46,7 +56,11 @@ record ComplexityRules(
             .filter(support -> IDS.containsKey(support.language()))
             .collect(
                 Collectors.toMap(
-                    FrontendSupport::language, support -> support, (first, second) -> first));
+                    FrontendSupport::language,
+                    support -> support,
+                    (first, second) -> first
+                )
+            );
     final Map<AnalysisLanguage, CompiledRule> rules = new EnumMap<>(AnalysisLanguage.class);
     final Map<AnalysisLanguage, FrontendSupport> usable = new EnumMap<>(AnalysisLanguage.class);
     frontends.forEach(
@@ -56,7 +70,8 @@ record ComplexityRules(
             rules.put(language, analysis.matcher().compile(definition));
             usable.put(language, support);
           }
-        });
+        }
+    );
     return new ComplexityRules(rules, usable);
   }
 }

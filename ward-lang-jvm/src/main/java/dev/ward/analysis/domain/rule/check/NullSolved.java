@@ -27,13 +27,20 @@ record NullSolved(
     NullGraph graph,
     String type,
     NullScope.Method method,
-    Map<Integer, Map<Span, Nullity>> normal,
-    Map<Integer, Map<Span, Nullity>> thrown,
-    NullBackward backward) {
-
+    Map<Integer,
+    Map<Span,
+    Nullity>> normal,
+    Map<Integer,
+    Map<Span,
+    Nullity>> thrown,
+    NullBackward backward
+) {
   /** Solves {@code body}, whose name is {@code Type#name(count)} or a lambda. */
   static NullSolved of(
-      final ControlFlowGraph body, final NullScope scope, final UnitTypeFacts types) {
+      final ControlFlowGraph body,
+      final NullScope scope,
+      final UnitTypeFacts types
+  ) {
     final NullGraph graph = NullGraph.of(body);
     final int hash = body.body().indexOf('#');
     final String owner = hash < 0 ? "" : body.body().substring(0, hash);
@@ -49,7 +56,8 @@ record NullSolved(
         method,
         new NullForward(graph, false).entries(initial),
         new NullForward(graph, true).entries(initial),
-        backward);
+        backward
+    );
   }
 
   private static Map<Span, Nullity> initial(final ControlFlowGraph body, final NullScope scope) {
@@ -71,7 +79,6 @@ record NullSolved(
   /** The uses that need a value that is not null, as the annotations of the file and calls say. */
   record Needs(UnitTypeFacts types, NullScope scope, String type, NullScope.Method method)
       implements NullBackward.Needs {
-
     @Override
     public NullBackward.Use argument(final NullEvent call, final int index) {
       final boolean required =

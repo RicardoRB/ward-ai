@@ -14,7 +14,6 @@ import java.util.Set;
  * utility class.
  */
 public final class KotlinUtilityClassCheck implements RuleCheck {
-
   private static final String CLASS = "classDeclaration";
   private static final String BODY = "classBody";
   private static final String MEMBER = "classMemberDeclaration";
@@ -67,7 +66,8 @@ public final class KotlinUtilityClassCheck implements RuleCheck {
                 member ->
                     MEMBER.equals(member.kind())
                         && member.children().stream()
-                            .anyMatch(child -> COMPANION.equals(child.kind())));
+                            .anyMatch(child -> COMPANION.equals(child.kind()))
+            );
   }
 
   private static List<String> header(final SyntaxNode node) {

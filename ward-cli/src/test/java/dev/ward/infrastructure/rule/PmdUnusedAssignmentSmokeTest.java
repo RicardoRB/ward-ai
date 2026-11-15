@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Test;
  * with.
  */
 class PmdUnusedAssignmentSmokeTest {
-
   private static final String BINARY_PROPERTY = "ward.pmd.binary";
   private static final String RULESET = "category/java/bestpractices.xml/UnusedAssignment";
   private static final int NO_VIOLATIONS = 0;
@@ -38,14 +37,15 @@ class PmdUnusedAssignmentSmokeTest {
         UnusedAssignmentPmdReferenceTest.resource(UnusedAssignmentPmdReferenceTest.FIXTURES);
     final Process process =
         new ProcessBuilder(
-                binary,
-                "check",
-                "--dir",
-                fixtures.toString(),
-                "--rulesets",
-                RULESET,
-                "--format",
-                "csv")
+            binary,
+            "check",
+            "--dir",
+            fixtures.toString(),
+            "--rulesets",
+            RULESET,
+            "--format",
+            "csv"
+        )
             .redirectError(ProcessBuilder.Redirect.DISCARD)
             .start();
     final String output =
@@ -82,7 +82,9 @@ class PmdUnusedAssignmentSmokeTest {
         UnusedAssignmentPmdReferenceTest.row(
             Path.of(record.get(header.indexOf("file"))).getFileName().toString(),
             Integer.valueOf(record.get(header.indexOf("line"))),
-            variable.group(1)));
+            variable.group(1)
+        )
+    );
   }
 
   /** Returns the quoted fields of one CSV line, with doubled quotes unescaped. */

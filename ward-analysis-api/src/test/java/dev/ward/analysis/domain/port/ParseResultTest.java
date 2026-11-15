@@ -13,12 +13,19 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class ParseResultTest {
-
   private static final SyntaxNode TREE =
       new SyntaxNode("file", new Span(1, 1, 1, 1, 0, 0), Map.of(), List.of());
   private static final AnalysisFinding ERROR =
       new AnalysisFinding(
-          "syntax", AnalysisSeverity.ERROR, "missing ';'", "A.java", 2, 19, null, List.of());
+          "syntax",
+          AnalysisSeverity.ERROR,
+          "missing ';'",
+          "A.java",
+          2,
+          19,
+          null,
+          List.of()
+      );
 
   @Test
   void copiesDiagnosticsOnConstruction() {

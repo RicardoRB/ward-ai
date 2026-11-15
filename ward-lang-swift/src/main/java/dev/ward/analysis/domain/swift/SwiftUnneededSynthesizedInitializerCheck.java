@@ -15,7 +15,6 @@ import java.util.Optional;
  * failable or throwing initializer is never reported.
  */
 public final class SwiftUnneededSynthesizedInitializerCheck implements RuleCheck {
-
   private static final String STRUCT = "struct_declaration";
   private static final String DECLARATION = "declaration";
   private static final String INITIALIZER = "initializer_declaration";
@@ -85,7 +84,9 @@ public final class SwiftUnneededSynthesizedInitializerCheck implements RuleCheck
   }
 
   private static boolean assignsEachFromItsParameter(
-      final SyntaxNode init, final List<String[]> properties) {
+      final SyntaxNode init,
+      final List<String[]> properties
+  ) {
     final List<String> expected = new ArrayList<>();
     for (final String[] property : properties) {
       expected.add("self." + property[0] + "=" + property[0]);

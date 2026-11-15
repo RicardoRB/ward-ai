@@ -11,7 +11,6 @@ import java.util.Set;
  * computed key is read where the pattern reaches it; a member target inside the pattern is read.
  */
 final class NodePatternWrites {
-
   private static final String EQUALS = "=";
   private static final String COLON = ":";
   private static final String SINGLE = "singleExpression";

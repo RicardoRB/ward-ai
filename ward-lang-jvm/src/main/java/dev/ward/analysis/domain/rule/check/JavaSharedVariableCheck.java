@@ -18,7 +18,6 @@ import java.util.Set;
  * volatile or atomic or lock field, or has a synchronized method or block.
  */
 public final class JavaSharedVariableCheck implements RuleCheck {
-
   /** What the check reports. */
   public enum Mode {
     /** A read-modify-write of a shared field. */
@@ -69,7 +68,10 @@ public final class JavaSharedVariableCheck implements RuleCheck {
         .map(
             access ->
                 CheckSupport.at(
-                    access.node().span(), CheckSupport.fill(message, access.field().name(), "")))
+                    access.node().span(),
+                    CheckSupport.fill(message, access.field().name(), "")
+                )
+        )
         .toList();
   }
 
@@ -87,7 +89,8 @@ public final class JavaSharedVariableCheck implements RuleCheck {
                         && read.kind() == FieldAccessScan.Kind.READ
                         && read.lock() == FieldAccessScan.Lock.NONE
                         && !read.method().equals(write.method())
-                        && scan.reachable(read.method()));
+                        && scan.reachable(read.method())
+            );
   }
 
   private static Optional<Mode> classify(final FieldAccessScan.Access write) {

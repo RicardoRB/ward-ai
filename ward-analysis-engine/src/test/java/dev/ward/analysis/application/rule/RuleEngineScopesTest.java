@@ -30,7 +30,6 @@ import org.junit.jupiter.api.Test;
 
 /** The {@code SCOPES} capability in the rule engine: gating, sharing and failures. */
 class RuleEngineScopesTest {
-
   private static final int RULES = 3;
 
   private static final Span AT = new Span(1, 1, 1, 2, 0, 1);
@@ -82,7 +81,8 @@ class RuleEngineScopesTest {
             final dev.ward.analysis.domain.rule.DependencyView dependencies,
             final dev.ward.analysis.domain.rule.FlowView flow,
             final ScopeView scopes,
-            final SourceUnit unit) {
+            final SourceUnit unit
+        ) {
           final List<RuleMatch> found = new ArrayList<>();
           scopes
               .scopes(Set.of())
@@ -95,12 +95,20 @@ class RuleEngineScopesTest {
   }
 
   private static RuleRunResult run(
-      final CountingAnalysis analysis, final Set<RuleCapability> capabilities, final int rules) {
+      final CountingAnalysis analysis,
+      final Set<RuleCapability> capabilities,
+      final int rules
+  ) {
     final LanguageFrontend frontend =
         unit -> new ParseResult(new SyntaxNode("file", AT, Map.of(), List.of()), List.of());
     final FrontendSupport support =
         new FrontendSupport(
-            AnalysisLanguage.JAVA, frontend, capabilities, (unit, tree) -> null, analysis);
+            AnalysisLanguage.JAVA,
+            frontend,
+            capabilities,
+            (unit, tree) -> null,
+            analysis
+        );
     final List<RuleDefinition> definitions = new ArrayList<>();
     for (int index = 0; index < rules; index++) {
       definitions.add(RuleEngineFixtures.rule("ward:java/scope-" + index, RuleCapability.SCOPES));
@@ -141,13 +149,15 @@ class RuleEngineScopesTest {
             frontend,
             Set.of(RuleCapability.SYNTAX, RuleCapability.SCOPES),
             (unit, tree) -> null,
-            analysis);
+            analysis
+        );
 
     new RuleEngine(new ScopeMatcher())
         .run(
             List.of(RuleEngineFixtures.unit("src/X.java")),
             List.of(support),
-            List.of(RuleEngineFixtures.rule("ward:java/syntax", RuleCapability.SYNTAX)));
+            List.of(RuleEngineFixtures.rule("ward:java/syntax", RuleCapability.SYNTAX))
+        );
 
     assertThat(analysis.calls).isZero();
   }

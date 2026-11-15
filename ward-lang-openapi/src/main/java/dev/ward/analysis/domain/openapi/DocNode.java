@@ -31,8 +31,8 @@ public record DocNode(
     Span span,
     Optional<Span> keySpan,
     List<Entry> entries,
-    List<DocNode> items) {
-
+    List<DocNode> items
+) {
   /**
    * Copies the entries and items.
    *
@@ -97,7 +97,8 @@ public record DocNode(
         span.endLine(),
         span.endColumn(),
         key.endOffset() + 1,
-        span.endOffset());
+        span.endOffset()
+    );
   }
 
   /** Tells whether the node is a scalar. */
@@ -145,7 +146,6 @@ public record DocNode(
    * @param numericKey whether the key was written without quotes and YAML reads it as a number
    */
   public record Entry(String key, Span keySpan, DocNode value, boolean numericKey) {
-
     /**
      * Validates the parts.
      *

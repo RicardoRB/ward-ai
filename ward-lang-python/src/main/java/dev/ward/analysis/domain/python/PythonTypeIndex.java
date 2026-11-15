@@ -17,7 +17,6 @@ import java.util.Optional;
  * scopes.
  */
 final class PythonTypeIndex {
-
   private final PythonDeclarations declarations;
   private final Map<String, NameReference> references = new HashMap<>();
   private final Map<String, Binding> bindings = new HashMap<>();
@@ -77,7 +76,8 @@ final class PythonTypeIndex {
         .anyMatch(
             use ->
                 use.access() != ReferenceAccess.READ
-                    && !declaration.equals(UnitTypeFacts.startKey(use.span())));
+                    && !declaration.equals(UnitTypeFacts.startKey(use.span()))
+        );
   }
 
   private static String declarationKey(final Binding binding) {

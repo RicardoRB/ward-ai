@@ -16,7 +16,7 @@ import picocli.CommandLine.Command;
 class WardCliContract1Test extends WardCliIntegrationSupport {
   @Test
   void factoryResolvesEveryWardSubcommand() throws Exception {
-    final Class<?>[] subcommands = WardCommand.class.getAnnotation(Command.class).subcommands();
+    final Class<?> [] subcommands = WardCommand.class.getAnnotation(Command.class).subcommands();
     assertThat(subcommands).isNotEmpty();
     for (final Class<?> subcommand : subcommands) {
       assertThat(factory.create(subcommand)).isInstanceOf(subcommand);
@@ -56,7 +56,11 @@ class WardCliContract1Test extends WardCliIntegrationSupport {
     assertThat(run(CHECK, "-C", project.toString())).isEqualTo(ExitCodes.OK);
     assertThat(out.toString())
         .contains(
-            "Ward " + VersionProvider.current(), "✓ ward-format", "PASSED", "Quality Gate: PASSED");
+            "Ward " + VersionProvider.current(),
+            "✓ ward-format",
+            "PASSED",
+            "Quality Gate: PASSED"
+        );
   }
 
   @Test
@@ -65,7 +69,9 @@ class WardCliContract1Test extends WardCliIntegrationSupport {
     Files.writeString(project.resolve("build.gradle.kts"), "plugins { java }\n");
     Files.writeString(project.resolve("gradlew"), "#!/bin/sh\nexit 0\n");
     Files.setPosixFilePermissions(
-        project.resolve("gradlew"), PosixFilePermissions.fromString("rwxr-xr-x"));
+        project.resolve("gradlew"),
+        PosixFilePermissions.fromString("rwxr-xr-x")
+    );
 
     assertThat(run("detect", "-C", project.toString())).isZero();
     assertThat(out.toString()).contains("Java", "Gradle", project.toString());
@@ -83,7 +89,8 @@ class WardCliContract1Test extends WardCliIntegrationSupport {
   @Test
   void presetStandardWritesConfigurationAndRuleFiles() throws IOException {
     assertThat(
-            run(INIT, "--preset", "standard", INTEGRATION_OPTION, NONE, "-C", project.toString()))
+        run(INIT, "--preset", "standard", INTEGRATION_OPTION, NONE, "-C", project.toString())
+    )
         .isZero();
     assertThat(Files.readString(project.resolve(WARD_TOML)))
         .contains("version = 2", "[checks.coverage]")
@@ -96,7 +103,8 @@ class WardCliContract1Test extends WardCliIntegrationSupport {
   @Test
   void unknownPresetChangesNothing() throws IOException {
     assertThat(
-            run(INIT, "--preset", "paranoid", INTEGRATION_OPTION, NONE, "-C", project.toString()))
+        run(INIT, "--preset", "paranoid", INTEGRATION_OPTION, NONE, "-C", project.toString())
+    )
         .isEqualTo(ExitCodes.ERROR);
     assertThat(project.resolve(WARD_TOML)).doesNotExist();
     assertThat(project.resolve("config")).doesNotExist();
@@ -105,16 +113,18 @@ class WardCliContract1Test extends WardCliIntegrationSupport {
   @Test
   void strictPresetGeneratesArchitectureTablesAndNoEnforcerFile() throws IOException {
     assertThat(
-            run(
-                INIT,
-                "--preset",
-                "strict",
-                INTEGRATION_OPTION,
-                NONE,
-                "--architecture",
-                "layered",
-                "-C",
-                project.toString()))
+        run(
+            INIT,
+            "--preset",
+            "strict",
+            INTEGRATION_OPTION,
+            NONE,
+            "--architecture",
+            "layered",
+            "-C",
+            project.toString()
+        )
+    )
         .isZero();
     assertThat(project.resolve("config/enforcer-rules.xml")).doesNotExist();
     assertThat(Files.readString(project.resolve(WARD_TOML))).contains("checks.mutation");
@@ -125,16 +135,18 @@ class WardCliContract1Test extends WardCliIntegrationSupport {
   @Test
   void presetCanAddExplicitGate() throws IOException {
     assertThat(
-            run(
-                INIT,
-                "--preset",
-                "standard",
-                GATE_OPTION,
-                "secrets",
-                INTEGRATION_OPTION,
-                NONE,
-                "-C",
-                project.toString()))
+        run(
+            INIT,
+            "--preset",
+            "standard",
+            GATE_OPTION,
+            "secrets",
+            INTEGRATION_OPTION,
+            NONE,
+            "-C",
+            project.toString()
+        )
+    )
         .isZero();
     assertThat(Files.readString(project.resolve(WARD_TOML))).contains("checks.secrets");
   }

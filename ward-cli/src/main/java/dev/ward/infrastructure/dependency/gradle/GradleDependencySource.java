@@ -34,14 +34,16 @@ public final class GradleDependencySource implements DependencySource {
       final CommandExecutor executor,
       final GraphCache cache,
       final JsonCodec codec,
-      final boolean offline) {
+      final boolean offline
+  ) {
     this.tool =
         new ResolvingDependencySource(
             new GradleGraphTool(executor, offline),
             project -> GradleModules.buildFiles(project.root()),
             "ward-dependencies.init.gradle:" + scriptHash(),
             cache,
-            codec);
+            codec
+        );
   }
 
   @Override

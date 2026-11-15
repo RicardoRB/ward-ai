@@ -14,7 +14,6 @@ import java.util.Map;
  * The block scopes of one TypeScript or JavaScript body, each mapping the names to declarations.
  */
 final class NodeScopes {
-
   private final Deque<Map<String, Span>> scopes = new ArrayDeque<>();
 
   /** Creates the scope of the body's parameters and top-level declarations. */
@@ -55,7 +54,8 @@ final class NodeScopes {
       final AccessKind kind,
       final SyntaxNode name,
       final Span span,
-      final List<VariableAccess> found) {
+      final List<VariableAccess> found
+  ) {
     final String text = NodeFlowSyntax.text(name);
     final Span declaration = resolve(text);
     if (declaration != null) {

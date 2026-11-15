@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 /** Proves that the pinned lists are fully classified, and that the check itself can fail. */
 class UpstreamCoverageTest {
-
   private static final String ROWS =
       """
       [[rule]]
@@ -51,7 +50,10 @@ class UpstreamCoverageTest {
   void aCheckstyleCheckThatIsNeitherMappedNorExcludedFailsAndIsNamed() throws IOException {
     final List<String> problems =
         UpstreamCoverage.problems(
-            catalog(ROWS), Map.of("checkstyle", Set.of("MethodLength", "NewCheck")), Map.of());
+            catalog(ROWS),
+            Map.of("checkstyle", Set.of("MethodLength", "NewCheck")),
+            Map.of()
+        );
 
     assertThat(problems)
         .containsExactly("checkstyle rule 'NewCheck' is neither in a catalog row nor out of scope");
@@ -64,7 +66,8 @@ class UpstreamCoverageTest {
 
     assertThat(problems)
         .contains(
-            "row 'method-length' names the ruff rule 'PLR0915', which is not in the pinned list")
+            "row 'method-length' names the ruff rule 'PLR0915', which is not in the pinned list"
+        )
         .contains("ruff rule 'PLR0913' is neither in a catalog row nor out of scope");
   }
 
@@ -74,7 +77,8 @@ class UpstreamCoverageTest {
         UpstreamCoverage.problems(
             catalog(ROWS),
             Map.of("checkstyle", Set.of("MethodLength")),
-            Map.of("checkstyle", Map.of("MethodLength", "formatting")));
+            Map.of("checkstyle", Map.of("MethodLength", "formatting"))
+        );
 
     assertThat(problems)
         .containsExactly("checkstyle rule 'MethodLength' is in a catalog row and out of scope");
@@ -86,12 +90,14 @@ class UpstreamCoverageTest {
         UpstreamCoverage.problems(
             catalog(ROWS),
             Map.of("checkstyle", Set.of("MethodLength")),
-            Map.of("checkstyle", Map.of("Gone", " ")));
+            Map.of("checkstyle", Map.of("Gone", " "))
+        );
 
     assertThat(problems)
         .containsExactly(
             "checkstyle out-of-scope rule 'Gone' is not in the pinned list",
-            "checkstyle out-of-scope rule 'Gone' has no reason");
+            "checkstyle out-of-scope rule 'Gone' has no reason"
+        );
   }
 
   private static RuleCatalog catalog(final String rows) throws IOException {

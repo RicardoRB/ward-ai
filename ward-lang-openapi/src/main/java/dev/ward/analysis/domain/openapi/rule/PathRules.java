@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 
 /** The rules about the keys of {@code paths}. */
 final class PathRules {
-
   private static final Pattern EMPTY_PARAMETER = Pattern.compile("\\{}");
   private static final Pattern TRAILING_SLASH = Pattern.compile(".+/\\z");
   private static final Pattern QUERY = Pattern.compile("\\?");
@@ -20,7 +19,8 @@ final class PathRules {
     return keys(
         document,
         EMPTY_PARAMETER,
-        "Path parameter declarations must not be empty, ex.\"/given/{}\" is invalid.");
+        "Path parameter declarations must not be empty, ex.\"/given/{}\" is invalid."
+    );
   }
 
   /** {@code path-keys-no-trailing-slash}: no path ends with a slash. */
@@ -34,7 +34,10 @@ final class PathRules {
   }
 
   private static List<OpenApiFinding> keys(
-      final OpenApiDocument document, final Pattern pattern, final String message) {
+      final OpenApiDocument document,
+      final Pattern pattern,
+      final String message
+  ) {
     final List<OpenApiFinding> findings = new ArrayList<>();
     for (final DocNode.Entry path : document.parts().paths()) {
       if (pattern.matcher(path.key()).find()) {

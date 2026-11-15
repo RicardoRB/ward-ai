@@ -10,7 +10,6 @@ import java.util.Optional;
 
 /** The rules about where an object may appear: callbacks, webhooks and examples. */
 final class PlacementRules {
-
   private static final String CALLBACKS = "callbacks";
   private static final String EXAMPLES = "examples";
   private static final String SERVERS = "servers";
@@ -32,7 +31,11 @@ final class PlacementRules {
                     nested ->
                         findings.add(
                             Findings.atValue(
-                                nested, "Callbacks should not be defined within a callback")));
+                                nested,
+                                "Callbacks should not be defined within a callback"
+                            )
+                        )
+                );
           }
         }
       }
@@ -51,7 +54,9 @@ final class PlacementRules {
           .ifPresent(
               servers ->
                   findings.add(
-                      Findings.atValue(servers, "Servers should not be defined in a webhook.")));
+                      Findings.atValue(servers, "Servers should not be defined in a webhook.")
+                  )
+          );
       for (final DocNode item : children(document, webhooks.get(), null)) {
         for (final DocNode operation : children(document, item, null)) {
           document
@@ -59,8 +64,9 @@ final class PlacementRules {
               .ifPresent(
                   servers ->
                       findings.add(
-                          Findings.atValue(
-                              servers, "Servers should not be defined in a webhook.")));
+                          Findings.atValue(servers, "Servers should not be defined in a webhook.")
+                      )
+              );
         }
       }
     }
@@ -80,7 +86,11 @@ final class PlacementRules {
                   callbacks ->
                       findings.add(
                           Findings.atValue(
-                              callbacks, "Callbacks should not be defined in a webhook.")));
+                              callbacks,
+                              "Callbacks should not be defined in a webhook."
+                          )
+                      )
+              );
         }
       }
     }
@@ -127,7 +137,10 @@ final class PlacementRules {
   }
 
   private static List<DocNode> holders(
-      final OpenApiDocument document, final DocNode item, final String container) {
+      final OpenApiDocument document,
+      final DocNode item,
+      final String container
+  ) {
     final List<DocNode> examples = new ArrayList<>();
     for (final DocNode found : Nodes.named(document, item, container)) {
       for (final DocNode holder : children(document, found, null)) {
@@ -154,7 +167,10 @@ final class PlacementRules {
 
   /** The values of an object or the items of an array, each read as its target. */
   private static List<DocNode> children(
-      final OpenApiDocument document, final DocNode node, final String key) {
+      final OpenApiDocument document,
+      final DocNode node,
+      final String key
+  ) {
     final List<DocNode> values = new ArrayList<>();
     final DocNode resolved = document.resolve(node);
     if (key == null) {

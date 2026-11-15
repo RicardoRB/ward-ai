@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class PomLicenseMetadataTest {
-
   @TempDir Path home;
 
   private PomLicenseMetadata reader() {
@@ -27,7 +26,8 @@ class PomLicenseMetadataTest {
         .lookup(
             project(home.resolve("project"), Language.JAVA, BuildTool.MAVEN),
             "",
-            dependency(Ecosystem.MAVEN, name, version));
+            dependency(Ecosystem.MAVEN, name, version)
+        );
   }
 
   private static String pom(final String body) {
@@ -35,7 +35,11 @@ class PomLicenseMetadataTest {
   }
 
   private void maven(
-      final String group, final String artifact, final String version, final String body)
+      final String group,
+      final String artifact,
+      final String version,
+      final String body
+  )
       throws IOException {
     write(
         home.resolve("m2"),
@@ -49,7 +53,8 @@ class PomLicenseMetadataTest {
             + "-"
             + version
             + ".pom",
-        pom(body));
+        pom(body)
+    );
   }
 
   @Test
@@ -59,7 +64,8 @@ class PomLicenseMetadataTest {
         "lib",
         "1.0",
         "<licenses><license><name>Apache License 2.0</name><url>https://x/y</url></license>"
-            + "<license><name>MIT</name></license></licenses>");
+            + "<license><name>MIT</name></license></licenses>"
+    );
 
     final LicenseLookup result = lookup("com.example:lib", "1.0");
 
@@ -75,7 +81,8 @@ class PomLicenseMetadataTest {
     write(
         home.resolve("gradle"),
         "com.example/lib/2.0/abc123/lib-2.0.pom",
-        pom("<licenses><license><name>MIT License</name></license></licenses>"));
+        pom("<licenses><license><name>MIT License</name></license></licenses>")
+    );
 
     assertThat(lookup("com.example:lib", "2.0").license().describe()).isEqualTo("MIT License");
   }
@@ -95,7 +102,9 @@ class PomLicenseMetadataTest {
         "pom.xml",
         pom(
             "<groupId>g</groupId><artifactId>own</artifactId><version>1</version>"
-                + "<licenses><license><name>MIT</name></license></licenses>"));
+                + "<licenses><license><name>MIT</name></license></licenses>"
+        )
+    );
 
     assertThat(lookup("g:own", "1").license().describe()).isEqualTo("MIT");
     assertThat(lookup("g:own", "2").present()).isFalse();
@@ -106,7 +115,8 @@ class PomLicenseMetadataTest {
     write(
         home.resolve("m2"),
         "g/evil/1/evil-1.pom",
-        "<!DOCTYPE project [<!ENTITY x SYSTEM \"file:///etc/passwd\">]><project/>");
+        "<!DOCTYPE project [<!ENTITY x SYSTEM \"file:///etc/passwd\">]><project/>"
+    );
 
     assertThat(lookup("g:evil", "1").reason()).isEqualTo(LicenseLookup.Reason.NOT_INSTALLED);
   }

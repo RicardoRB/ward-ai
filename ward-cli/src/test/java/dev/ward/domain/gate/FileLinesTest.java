@@ -7,7 +7,6 @@ import java.util.TreeSet;
 import org.junit.jupiter.api.Test;
 
 class FileLinesTest {
-
   private static final int TEN = 10;
   private static final int ELEVEN = 11;
   private static final int TWENTY = 20;
@@ -53,13 +52,15 @@ class FileLinesTest {
             new TreeSet<>(Set.of(1)),
             new TreeSet<>(Set.of(1)),
             new java.util.TreeMap<>(java.util.Map.of(1, 4, 2, 2)),
-            new java.util.TreeMap<>(java.util.Map.of(1, 1, 2, 0)));
+            new java.util.TreeMap<>(java.util.Map.of(1, 1, 2, 0))
+        );
     final FileLines second =
         new FileLines(
             new TreeSet<>(Set.of(1)),
             new TreeSet<>(Set.of(1)),
             new java.util.TreeMap<>(java.util.Map.of(1, 4)),
-            new java.util.TreeMap<>(java.util.Map.of(1, 3)));
+            new java.util.TreeMap<>(java.util.Map.of(1, 3))
+        );
 
     final FileLines merged = first.merge(second);
 

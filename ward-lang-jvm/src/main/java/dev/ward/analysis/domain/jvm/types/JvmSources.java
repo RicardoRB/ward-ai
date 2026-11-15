@@ -6,7 +6,6 @@ import java.util.Optional;
 /** The source files of the project, found by the qualified name of the top-level type they hold. */
 @FunctionalInterface
 public interface JvmSources {
-
   /**
    * Returns the source file that declares the top-level type {@code qualifiedName}.
    *

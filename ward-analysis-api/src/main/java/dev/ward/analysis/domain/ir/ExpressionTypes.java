@@ -11,7 +11,6 @@ import java.util.Objects;
  * @param types the fully qualified type name of each answered span
  */
 public record ExpressionTypes(Map<Span, String> types) {
-
   /**
    * Copies the map so the record cannot change after construction.
    *

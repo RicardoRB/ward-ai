@@ -12,7 +12,6 @@ import java.util.Objects;
  * @param today the day that sunset dates are measured against
  */
 public record DocumentPair(OpenApiDocument base, OpenApiDocument revision, LocalDate today) {
-
   /**
    * Validates the parts.
    *

@@ -10,7 +10,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** Tests where the Python stub lookup finds {@code .pyi} text, and what it refuses. */
 class PythonStubFilesTest {
-
   @TempDir Path project;
 
   @Test

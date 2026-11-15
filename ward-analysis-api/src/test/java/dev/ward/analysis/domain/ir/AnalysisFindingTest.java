@@ -7,7 +7,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class AnalysisFindingTest {
-
   @Test
   void allowsMissingLocation() {
     final AnalysisFinding finding =
@@ -20,25 +19,25 @@ class AnalysisFindingTest {
   @Test
   void requiresRuleSeverityAndMessage() {
     assertThatThrownBy(
-            () ->
-                new AnalysisFinding(
-                    null, AnalysisSeverity.NOTE, "m", null, null, null, null, List.of()))
+        () ->
+            new AnalysisFinding(null, AnalysisSeverity.NOTE, "m", null, null, null, null, List.of())
+    )
         .isInstanceOf(NullPointerException.class);
     assertThatThrownBy(() -> new AnalysisFinding("R", null, "m", null, null, null, null, List.of()))
         .isInstanceOf(NullPointerException.class);
     assertThatThrownBy(
-            () ->
-                new AnalysisFinding(
-                    "R", AnalysisSeverity.NOTE, null, null, null, null, null, List.of()))
+        () ->
+            new AnalysisFinding("R", AnalysisSeverity.NOTE, null, null, null, null, null, List.of())
+    )
         .isInstanceOf(NullPointerException.class);
   }
 
   @Test
   void rejectsNonPositiveLocation() {
     assertThatThrownBy(
-            () ->
-                new AnalysisFinding(
-                    "R", AnalysisSeverity.ERROR, "m", "a.java", 0, 1, null, List.of()))
+        () ->
+            new AnalysisFinding("R", AnalysisSeverity.ERROR, "m", "a.java", 0, 1, null, List.of())
+    )
         .isInstanceOf(IllegalArgumentException.class);
   }
 }

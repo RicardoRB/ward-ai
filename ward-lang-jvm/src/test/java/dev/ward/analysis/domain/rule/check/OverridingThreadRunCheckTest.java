@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 /** The overriding-thread-run check: a run method with no parameters in a Thread subclass. */
 class OverridingThreadRunCheckTest extends TreeBuilders {
-
   private static final String RUN = "run";
   private static final String EXTENDS = "'extends'";
 
@@ -51,7 +50,8 @@ class OverridingThreadRunCheckTest extends TreeBuilders {
         id("Worker"),
         t(EXTENDS, "extends"),
         n("typeType", n(EXPRESSION, t(TOKEN_IDENTIFIER, superclass))),
-        n(CLASS_BODY, n(CLASS_BODY_DECLARATION, n(MEMBER_DECLARATION, member))));
+        n(CLASS_BODY, n(CLASS_BODY_DECLARATION, n(MEMBER_DECLARATION, member)))
+    );
   }
 
   private static SyntaxNode runMethod(final boolean withParameter) {

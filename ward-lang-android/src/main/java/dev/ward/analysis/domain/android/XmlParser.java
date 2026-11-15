@@ -12,7 +12,6 @@ import java.util.Map;
  * expanded or fetched, and it never throws: a problem is a diagnostic next to an empty document.
  */
 public final class XmlParser {
-
   private static final int MAX_DEPTH = 200;
   private static final char BOM = '﻿';
   private static final char TAG_OPEN = '<';
@@ -48,7 +47,10 @@ public final class XmlParser {
       final int offset = Math.min(problem.offset(), text.length());
       final XmlDiagnostic diagnostic =
           new XmlDiagnostic(
-              problem.getMessage(), parser.positions.line(offset), parser.positions.column(offset));
+              problem.getMessage(),
+              parser.positions.line(offset),
+              parser.positions.column(offset)
+          );
       final SyntaxNode empty =
           new SyntaxNode(AndroidSyntax.DOCUMENT, parser.positions.span(0, 0), Map.of(), List.of());
       return new XmlResult(empty, List.of(diagnostic));
@@ -108,7 +110,8 @@ public final class XmlParser {
         AndroidSyntax.ELEMENT,
         positions.span(start, cursor.position()),
         Map.of(AndroidSyntax.NAME, name),
-        children);
+        children
+    );
   }
 
   /** Reads the content of an element up to and including its end tag. */

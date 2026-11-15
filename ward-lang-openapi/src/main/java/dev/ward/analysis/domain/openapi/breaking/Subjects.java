@@ -9,7 +9,6 @@ import java.util.Map;
 
 /** Finds what both documents have and a lifecycle can apply to. */
 final class Subjects {
-
   private Subjects() {}
 
   /** The operations both documents have. */
@@ -19,7 +18,14 @@ final class Subjects {
         (base, now) ->
             List.of(
                 new Subject(
-                    base.node(), now.node(), OperationIndex.method(now), now.path(), "operation")));
+                    base.node(),
+                    now.node(),
+                    OperationIndex.method(now),
+                    now.path(),
+                    "operation"
+                )
+            )
+    );
   }
 
   /** The parameters both documents have, by place and name. */
@@ -35,9 +41,11 @@ final class Subjects {
                     if (after.containsKey(key)) {
                       subjects.add(subject(now, before, after.get(key), "parameter"));
                     }
-                  });
+                  }
+              );
           return subjects;
-        });
+        }
+    );
   }
 
   /** The properties below the request body schemas both documents have. */
@@ -51,7 +59,10 @@ final class Subjects {
   }
 
   private static List<Subject> properties(
-      final DocumentPair pair, final List<Site> sites, final Direction direction) {
+      final DocumentPair pair,
+      final List<Site> sites,
+      final Direction direction
+  ) {
     final SchemaSides sides = new SchemaSides(pair.base(), pair.revision(), direction);
     final List<Subject> subjects = new ArrayList<>();
     for (final Site site : sites) {
@@ -63,7 +74,11 @@ final class Subjects {
   }
 
   private static Subject subject(
-      final Operation operation, final DocNode base, final DocNode revision, final String what) {
+      final Operation operation,
+      final DocNode base,
+      final DocNode revision,
+      final String what
+  ) {
     return new Subject(base, revision, OperationIndex.method(operation), operation.path(), what);
   }
 }

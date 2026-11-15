@@ -17,7 +17,10 @@ class ArchitectureFileReaderTest {
   @Test
   void readsTheDefaultFileWhenItExists() throws IOException {
     ArchitectureFiles.write(
-        root, "ward-architecture.toml", "version = 1\n\n" + ArchitectureFiles.VALID_RULE);
+        root,
+        "ward-architecture.toml",
+        "version = 1\n\n" + ArchitectureFiles.VALID_RULE
+    );
 
     final ArchitectureFile file = ArchitectureFileReader.read(root, null).orElseThrow();
 
@@ -40,7 +43,10 @@ class ArchitectureFileReaderTest {
   void aConfiguredPathIsReadInsteadOfTheDefault() throws IOException {
     ArchitectureFiles.write(root, "ward-architecture.toml", "version = 1\n");
     ArchitectureFiles.write(
-        root, "config/architecture.toml", "version = 1\n\n" + ArchitectureFiles.VALID_RULE);
+        root,
+        "config/architecture.toml",
+        "version = 1\n\n" + ArchitectureFiles.VALID_RULE
+    );
 
     final ArchitectureFile file =
         ArchitectureFileReader.read(root, "config/architecture.toml").orElseThrow();

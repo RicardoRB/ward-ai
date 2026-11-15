@@ -31,7 +31,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class CheckServiceTest {
-
   @Test
   void orchestratesWithInMemoryProjectAndConfigurationPorts() {
     final Path root = Path.of("in-memory-project");
@@ -44,10 +43,12 @@ class CheckServiceTest {
             file ->
                 new WardConfiguration(
                     1,
-                    Map.of("tests", new GateConfiguration("tests", true, List.of("mvn", "test")))),
+                    Map.of("tests", new GateConfiguration("tests", true, List.of("mvn", "test")))
+                ),
             new QualityGateFactory(executor),
             new QualityGateRunner(),
-            new PartialPorts(Files::exists, new NodeWorkspaceMembers()));
+            new PartialPorts(Files::exists, new NodeWorkspaceMembers())
+        );
 
     final CheckReport report = checks.check(root);
 
@@ -63,9 +64,7 @@ class CheckServiceTest {
   @Test
   void runsConfiguredCommandNotAHardcodedOne(@TempDir final Path dir) throws Exception {
     withPom(dir, PLAIN_POM);
-    Files.writeString(
-        dir.resolve("ward.toml"),
-        """
+    Files.writeString(dir.resolve("ward.toml"), """
                 version = 2
                 [checks.tests]
                 uses = "tests"
@@ -82,9 +81,7 @@ class CheckServiceTest {
   @Test
   void disabledGatesAreNotExecuted(@TempDir final Path dir) throws Exception {
     withPom(dir, PLAIN_POM);
-    Files.writeString(
-        dir.resolve("ward.toml"),
-        """
+    Files.writeString(dir.resolve("ward.toml"), """
                 version = 2
                 [checks.tests]
                 uses = "tests"
@@ -106,7 +103,8 @@ class CheckServiceTest {
     withPom(dir, PLAIN_POM);
     Files.writeString(
         dir.resolve("ward.toml"),
-        "version = 2\n[checks.tests]\nuses = \"tests\"\ncommand = \"mvn test\"\nenabled = false\n");
+        "version = 2\n[checks.tests]\nuses = \"tests\"\ncommand = \"mvn test\"\nenabled = false\n"
+    );
 
     assertThatThrownBy(() -> service(new FakeCommandExecutor(0, "", "")).check(dir))
         .isInstanceOf(WardException.class)
@@ -118,7 +116,8 @@ class CheckServiceTest {
     withPom(dir, PLAIN_POM);
     Files.writeString(
         dir.resolve("ward.toml"),
-        "version = 2\n[checks.mutation]\nuses = \"mutation\"\ncommand = \"mutate agentic\"\n");
+        "version = 2\n[checks.mutation]\nuses = \"mutation\"\ncommand = \"mutate agentic\"\n"
+    );
 
     assertThat(service(new FakeCommandExecutor(0, "", "")).check(dir).results())
         .singleElement()
@@ -140,9 +139,7 @@ class CheckServiceTest {
   void selectsUnionOnceInDeclarationOrderAndDefaultsToDefault(@TempDir final Path dir)
       throws Exception {
     withPom(dir, PLAIN_POM);
-    Files.writeString(
-        dir.resolve("ward.toml"),
-        """
+    Files.writeString(dir.resolve("ward.toml"), """
             version = 2
             [checks.tests]
             uses = "tests"
@@ -184,7 +181,8 @@ class CheckServiceTest {
         .hasMessageContaining("must not be blank");
     Files.writeString(
         dir.resolve("ward.toml"),
-        "version = 2\n[checks.compile]\nuses = \"compile\"\nenabled = false\ncommand = 'unused'\nprofiles = ['disabled']\n");
+        "version = 2\n[checks.compile]\nuses = \"compile\"\nenabled = false\ncommand = 'unused'\nprofiles = ['disabled']\n"
+    );
     executed.clear();
     assertThatThrownBy(() -> checks.check(dir, List.of("disabled")))
         .isInstanceOf(WardException.class)

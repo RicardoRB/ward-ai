@@ -24,10 +24,13 @@ class RemovedZapGateCheckTest {
   void theGateFactoryRejectsTheZapTypeAsUnknown() {
     final WardConfiguration configuration =
         new WardConfiguration(
-            1, Map.of("zap", new GateConfiguration("zap", true, List.of("zap-baseline.py"))));
+            1,
+            Map.of("zap", new GateConfiguration("zap", true, List.of("zap-baseline.py")))
+        );
 
     assertThatThrownBy(
-            () -> new QualityGateFactory(new FakeCommandExecutor(0, "", "")).create(configuration))
+        () -> new QualityGateFactory(new FakeCommandExecutor(0, "", "")).create(configuration)
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("'zap'");
   }
@@ -38,7 +41,8 @@ class RemovedZapGateCheckTest {
     withPom(dir, PLAIN_POM);
     Files.writeString(
         dir.resolve("ward.toml"),
-        "version = 2\n[checks.scan]\ncommand = \"zap-baseline.py -t http://localhost:8080\"\n");
+        "version = 2\n[checks.scan]\ncommand = \"zap-baseline.py -t http://localhost:8080\"\n"
+    );
     final FakeCommandExecutor executor = new FakeCommandExecutor(1, "", "");
 
     final CheckReport report = CheckServiceFixtures.checks(executor).check(dir);
@@ -51,6 +55,7 @@ class RemovedZapGateCheckTest {
             result -> {
               assertThat(result.type()).isEqualTo("command");
               assertThat(result.findings()).isEqualTo(GateFindings.NONE);
-            });
+            }
+        );
   }
 }

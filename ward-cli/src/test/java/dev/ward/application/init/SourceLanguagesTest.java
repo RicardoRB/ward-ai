@@ -62,11 +62,11 @@ class SourceLanguagesTest {
 
   private static List<String> gateIds(final Project project) {
     return new JvmInitSupport()
-            .gates(project, null, InitInputs.withoutManifests(new FakeEnvironmentInspection()))
-            .analysis()
-            .stream()
-            .map(InitGateOption::id)
-            .toList();
+        .gates(project, null, InitInputs.withoutManifests(new FakeEnvironmentInspection()))
+        .analysis()
+        .stream()
+        .map(InitGateOption::id)
+        .toList();
   }
 
   private static Project project(final Language language, final Set<Language> others) {
@@ -80,7 +80,8 @@ class SourceLanguagesTest {
         others,
         "",
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 
   private static SourceLanguageGates<String> fixed(final String... ids) {

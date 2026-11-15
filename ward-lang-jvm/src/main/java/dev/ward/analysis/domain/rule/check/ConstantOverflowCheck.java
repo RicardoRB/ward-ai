@@ -16,7 +16,6 @@ import java.util.Optional;
  * {@code -} and {@code *}. It is a long when one of its operands is, and an int otherwise.
  */
 public final class ConstantOverflowCheck implements RuleCheck {
-
   private static final String EXPRESSION = "expression";
   private static final String PRIMARY = "primary";
   private static final String LITERAL = "literal";
@@ -28,17 +27,19 @@ public final class ConstantOverflowCheck implements RuleCheck {
   private static final Map<String, Value> NAMED =
       Map.of(
           "Integer.MAX_VALUE",
-              Value.of(BigInteger.ONE.shiftLeft(INT_BITS - 1).subtract(BigInteger.ONE), false),
-          "Integer.MIN_VALUE", Value.of(BigInteger.ONE.shiftLeft(INT_BITS - 1).negate(), false),
+          Value.of(BigInteger.ONE.shiftLeft(INT_BITS - 1).subtract(BigInteger.ONE), false),
+          "Integer.MIN_VALUE",
+          Value.of(BigInteger.ONE.shiftLeft(INT_BITS - 1).negate(), false),
           "Long.MAX_VALUE",
-              Value.of(BigInteger.ONE.shiftLeft(LONG_BITS - 1).subtract(BigInteger.ONE), true),
-          "Long.MIN_VALUE", Value.of(BigInteger.ONE.shiftLeft(LONG_BITS - 1).negate(), true));
+          Value.of(BigInteger.ONE.shiftLeft(LONG_BITS - 1).subtract(BigInteger.ONE), true),
+          "Long.MIN_VALUE",
+          Value.of(BigInteger.ONE.shiftLeft(LONG_BITS - 1).negate(), true)
+      );
 
   private final String message;
 
   /** A constant: its exact value, whether it is a long, and whether a step overflowed. */
   private record Value(BigInteger number, boolean isLong, boolean overflow) {
-
     static Value of(final BigInteger number, final boolean isLong) {
       return new Value(number, isLong, false);
     }

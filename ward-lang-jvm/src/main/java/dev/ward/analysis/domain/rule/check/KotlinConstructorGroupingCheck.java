@@ -13,7 +13,6 @@ import java.util.Set;
  * together, as Checkstyle's ConstructorsDeclarationGrouping requires.
  */
 public final class KotlinConstructorGroupingCheck implements UnitCheck {
-
   private static final String CLASS_BODY = "classBody";
   private static final String MEMBER = "classMemberDeclaration";
   private static final String CONSTRUCTOR = "secondaryConstructor";

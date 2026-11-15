@@ -37,13 +37,18 @@ public final class SwiftLicenseMetadata implements LicenseMetadata {
 
   @Override
   public LicenseLookup lookup(
-      final Project project, final String modulePath, final Dependency dependency) {
+      final Project project,
+      final String modulePath,
+      final Dependency dependency
+  ) {
     final String name = dependency.id().name();
     final String repository = name.substring(name.lastIndexOf('/') + 1);
     final Optional<Path> checkout = checkout(project.root(), modulePath, repository);
     if (checkout.isEmpty()) {
       return LicenseLookup.missing(
-          LicenseLookup.Reason.NOT_INSTALLED, repository + " has no local checkout");
+          LicenseLookup.Reason.NOT_INSTALLED,
+          repository + " has no local checkout"
+      );
     }
     for (final String file : FILES) {
       final Path path = checkout.get().resolve(file);
@@ -52,7 +57,9 @@ public final class SwiftLicenseMetadata implements LicenseMetadata {
       }
     }
     return LicenseLookup.missing(
-        LicenseLookup.Reason.NO_LICENSE_DECLARED, "the checkout has no license file");
+        LicenseLookup.Reason.NO_LICENSE_DECLARED,
+        "the checkout has no license file"
+    );
   }
 
   private LicenseLookup read(final Path path, final String file) {
@@ -64,14 +71,19 @@ public final class SwiftLicenseMetadata implements LicenseMetadata {
               () ->
                   LicenseLookup.missing(
                       LicenseLookup.Reason.UNRECOGNIZED,
-                      "the text of " + file + " matches no bundled license"));
+                      "the text of " + file + " matches no bundled license"
+                  )
+          );
     } catch (IOException exception) {
       return LicenseLookup.missing(LicenseLookup.Reason.UNRECOGNIZED, file + " is unreadable");
     }
   }
 
   private static Optional<Path> checkout(
-      final Path root, final String modulePath, final String repository) {
+      final Path root,
+      final String modulePath,
+      final String repository
+  ) {
     for (final Path base : List.of(root.resolve(modulePath), root)) {
       for (final String checkouts : CHECKOUTS) {
         final Optional<Path> found = named(base.resolve(checkouts), repository);

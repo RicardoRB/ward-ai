@@ -10,7 +10,6 @@ import java.util.Set;
 
 /** Reports a bare {@code return} or {@code return None} as the last statement of a function. */
 public final class UselessReturnCheck implements RuleCheck {
-
   private static final Set<String> FUNCTIONS = Set.of("funcdef");
   private static final Set<String> DESCEND =
       Set.of("block", "stmt", "simple_stmts", "simple_stmt", "flow_stmt");

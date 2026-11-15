@@ -42,7 +42,8 @@ public final class DependencyGraph {
     this.outgoingEdges =
         this.edges.stream()
             .collect(
-                Collectors.groupingBy(DependencyEdge::from, TreeMap::new, Collectors.toList()));
+                Collectors.groupingBy(DependencyEdge::from, TreeMap::new, Collectors.toList())
+            );
   }
 
   /** Returns every edge, sorted by source, target and reference. */
@@ -82,7 +83,11 @@ public final class DependencyGraph {
   }
 
   private Map<String, List<String>> adjacency(
-      final Function<DependencyEdge, String> key, final Function<DependencyEdge, String> value) {
+      final Function<DependencyEdge,
+      String> key,
+      final Function<DependencyEdge,
+      String> value
+  ) {
     return edges.stream()
         .collect(
             Collectors.groupingBy(
@@ -91,7 +96,12 @@ public final class DependencyGraph {
                 Collectors.mapping(
                     value,
                     Collectors.collectingAndThen(
-                        Collectors.toCollection(TreeSet::new), List::copyOf))));
+                        Collectors.toCollection(TreeSet::new),
+                        List::copyOf
+                    )
+                )
+            )
+        );
   }
 
   @Override

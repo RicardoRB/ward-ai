@@ -9,7 +9,6 @@ import java.util.Objects;
  * @param missing the capability the rule requires and the frontend does not provide
  */
 public record RuleNotRun(String ruleId, RuleCapability missing) {
-
   /**
    * Validates the fields.
    *

@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** Summarizes parsed Python source and checks each import form and exported name. */
 final class PythonFileSummarizerTest {
-
   @Test
   void recordsAbsoluteImportsOfDottedModules() {
     final FileSummary summary = summarize("import shop.repository.store\nimport json as j\n");
@@ -25,7 +24,10 @@ final class PythonFileSummarizerTest {
 
     assertThat(specifiers(summary))
         .containsExactly(
-            "from:0:shop.repository:store", "from:0:shop.repository:Store", "from:1::views");
+            "from:0:shop.repository:store",
+            "from:0:shop.repository:Store",
+            "from:1::views"
+        );
   }
 
   @Test
@@ -46,8 +48,7 @@ final class PythonFileSummarizerTest {
   @Test
   void recordsImportsInsideFunctionsTryBlocksAndTypeCheckingBlocks() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             from typing import TYPE_CHECKING
             if TYPE_CHECKING:
                 from shop.a import A
@@ -61,14 +62,17 @@ final class PythonFileSummarizerTest {
 
     assertThat(specifiers(summary))
         .containsExactly(
-            "from:0:typing:TYPE_CHECKING", "from:0:shop.a:A", "abs:shop.b", "from:0:shop.c:c");
+            "from:0:typing:TYPE_CHECKING",
+            "from:0:shop.a:A",
+            "abs:shop.b",
+            "from:0:shop.c:c"
+        );
   }
 
   @Test
   void exportsTopLevelDefinitionsClassesAndAssignments() {
     final FileSummary summary =
-        summarize(
-            """
+        summarize("""
             LIMIT = 3
             total: int = 0
             total += 1

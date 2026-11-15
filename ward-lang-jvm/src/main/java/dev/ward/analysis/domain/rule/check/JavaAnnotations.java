@@ -7,7 +7,6 @@ import java.util.Set;
 
 /** Reads the annotations of a declaration holder and the imports of a file. */
 final class JavaAnnotations {
-
   private static final Set<String> HOLDERS =
       Set.of("modifier", "classOrInterfaceModifier", "variableModifier");
 
@@ -29,7 +28,8 @@ final class JavaAnnotations {
         .filter(
             child ->
                 SyntaxWalk.descendants(child).stream()
-                    .noneMatch(n -> "annotation".equals(n.kind())))
+                    .noneMatch(n -> "annotation".equals(n.kind()))
+        )
         .map(SyntaxWalk::text)
         .toList();
   }

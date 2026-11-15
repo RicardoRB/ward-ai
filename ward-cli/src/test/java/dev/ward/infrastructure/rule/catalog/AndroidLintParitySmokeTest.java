@@ -26,7 +26,6 @@ import org.junit.jupiter.api.condition.EnabledIf;
  * <sdk>/cmdline-tools/<version>/bin}. Regenerate the report with {@code -Dward.parity.write=true}.
  */
 final class AndroidLintParitySmokeTest {
-
   private static final String LINT_PROPERTY = "ward.parity.android-lint";
   private static final String WRITE_PROPERTY = "ward.parity.write";
   private static final String REPORT_FILE = "src/test/resources/parity/android-lint-report.txt";
@@ -95,14 +94,20 @@ final class AndroidLintParitySmokeTest {
       final Path root,
       final String rule,
       final String caseName,
-      final Map<String, String> approved)
+      final Map<String,
+      String> approved
+  )
       throws IOException {
     final Path directory = root.resolve(rule);
     final String suffix = "default".equals(caseName) ? "" : "-" + caseName;
     final List<Integer> expected = expectedLines(directory.resolve("expected" + suffix + ".txt"));
     final List<Integer> violating =
         AndroidLintRun.lines(
-            lint, rule, directory, directory.resolve("violating" + suffix + ".xml"));
+            lint,
+            rule,
+            directory,
+            directory.resolve("violating" + suffix + ".xml")
+        );
     final Path passingFile = directory.resolve("passing" + suffix + ".xml");
     final List<Integer> passing =
         Files.exists(passingFile)
@@ -116,7 +121,10 @@ final class AndroidLintParitySmokeTest {
   }
 
   private static String kind(
-      final List<Integer> expected, final List<Integer> violating, final List<Integer> passing) {
+      final List<Integer> expected,
+      final List<Integer> violating,
+      final List<Integer> passing
+  ) {
     if (violating.isEmpty()) {
       return "tool-silent";
     }

@@ -43,7 +43,10 @@ public final class BuildPolicyService {
    *     inventory that cannot be resolved
    */
   public List<Finding> run(
-      final Project project, final String gate, final List<BuildPolicySetting> settings) {
+      final Project project,
+      final String gate,
+      final List<BuildPolicySetting> settings
+  ) {
     LOGGER.log(Level.FINE, () -> "event=build-policy-start rules=" + settings.size());
     final BuildModel model = files.read(project.root());
     LOGGER.log(
@@ -52,7 +55,8 @@ public final class BuildPolicyService {
             "event=build-policy-read declarations="
                 + model.declarations().size()
                 + " tools="
-                + model.tools().size());
+                + model.tools().size()
+    );
     final List<Finding> findings =
         settings.stream().flatMap(setting -> check(project, gate, model, setting)).toList();
     LOGGER.log(Level.FINE, () -> "event=build-policy-done findings=" + findings.size());
@@ -63,7 +67,8 @@ public final class BuildPolicyService {
       final Project project,
       final String gate,
       final BuildModel model,
-      final BuildPolicySetting setting) {
+      final BuildPolicySetting setting
+  ) {
     final BuildPolicyInput input =
         new BuildPolicyInput(model, () -> inventory.inventory(project), setting.options());
     return BuildPolicyRules.forRule(setting.rule()).check(input).stream()
@@ -71,7 +76,10 @@ public final class BuildPolicyService {
   }
 
   private static Finding toFinding(
-      final String gate, final BuildPolicySetting setting, final BuildPolicyFinding found) {
+      final String gate,
+      final BuildPolicySetting setting,
+      final BuildPolicyFinding found
+  ) {
     final BuildRule rule = found.rule();
     return new Finding(
         gate,
@@ -83,6 +91,7 @@ public final class BuildPolicyService {
         found.line() > 0 ? found.line() : null,
         null,
         null,
-        List.of());
+        List.of()
+    );
   }
 }

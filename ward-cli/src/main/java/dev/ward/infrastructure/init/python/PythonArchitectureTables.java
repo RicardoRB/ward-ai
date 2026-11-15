@@ -7,7 +7,6 @@ import javax.inject.Inject;
 
 /** The Python architecture tables: the packages of each root, and the features of the style. */
 public final class PythonArchitectureTables implements ArchitectureTables {
-
   /** Creates the stateless adapter that Dagger injects. */
   @Inject
   public PythonArchitectureTables() {}

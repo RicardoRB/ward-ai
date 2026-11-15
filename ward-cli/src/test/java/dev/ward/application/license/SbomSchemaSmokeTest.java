@@ -40,7 +40,9 @@ class SbomSchemaSmokeTest {
 
     final Path file = work.resolve("sbom.json");
     Files.writeString(
-        file, sbom.generate(Path.of("/work/app"), Set.of(), Optional.empty()).content());
+        file,
+        sbom.generate(Path.of("/work/app"), Set.of(), Optional.empty()).content()
+    );
 
     final Result result = validate(file);
 
@@ -51,27 +53,54 @@ class SbomSchemaSmokeTest {
     return LicenseFixtures.service(
         LicenseFixtures.inventory(
             LicenseFixtures.dependency(
-                Ecosystem.NPM, "@scope/pkg", "1.0.0", DependencyScope.RUNTIME, RUNTIME),
+                Ecosystem.NPM,
+                "@scope/pkg",
+                "1.0.0",
+                DependencyScope.RUNTIME,
+                RUNTIME
+            ),
             LicenseFixtures.dependency(
-                Ecosystem.MAVEN, "com.example:lib", "1.0", DependencyScope.RUNTIME, ""),
+                Ecosystem.MAVEN,
+                "com.example:lib",
+                "1.0",
+                DependencyScope.RUNTIME,
+                ""
+            ),
             LicenseFixtures.dependency(
-                Ecosystem.PYPI, "requests", "2.32.0", DependencyScope.TEST, ""),
+                Ecosystem.PYPI,
+                "requests",
+                "2.32.0",
+                DependencyScope.TEST,
+                ""
+            ),
             LicenseFixtures.dependency(
                 Ecosystem.SWIFT_URL,
                 "https://github.com/apple/swift-log",
                 "1.5.0",
                 DependencyScope.RUNTIME,
-                ""),
+                ""
+            ),
             LicenseFixtures.dependency(
-                Ecosystem.NPM, "mystery", "2.0.0", DependencyScope.RUNTIME, RUNTIME)),
+                Ecosystem.NPM,
+                "mystery",
+                "2.0.0",
+                DependencyScope.RUNTIME,
+                RUNTIME
+            )
+        ),
         Map.of(
-            "@scope/pkg", LicenseFixtures.declared("Apache-2.0"),
+            "@scope/pkg",
+            LicenseFixtures.declared("Apache-2.0"),
             "com.example:lib",
-                LicenseFixtures.declared("GPL-2.0-only WITH Classpath-exception-2.0"),
-            "requests", LicenseFixtures.declared("MIT OR GPL-3.0-only"),
+            LicenseFixtures.declared("GPL-2.0-only WITH Classpath-exception-2.0"),
+            "requests",
+            LicenseFixtures.declared("MIT OR GPL-3.0-only"),
             "https://github.com/apple/swift-log",
-                LicenseFixtures.declared("Eclipse Public License 2.0"),
-            "mystery", LicenseLookup.missing(LicenseLookup.Reason.NO_LICENSE_DECLARED, "none")));
+            LicenseFixtures.declared("Eclipse Public License 2.0"),
+            "mystery",
+            LicenseLookup.missing(LicenseLookup.Reason.NO_LICENSE_DECLARED, "none")
+        )
+    );
   }
 
   private Result validate(final Path file) throws IOException, InterruptedException {
@@ -82,13 +111,14 @@ class SbomSchemaSmokeTest {
     final Path java = Path.of(System.getProperty("java.home"), "bin", "java");
     final Process process =
         new ProcessBuilder(
-                java.toString(),
-                "--source",
-                "25",
-                "-cp",
-                System.getProperty("ward.sbom.schema"),
-                validator.toString(),
-                file.toString())
+            java.toString(),
+            "--source",
+            "25",
+            "-cp",
+            System.getProperty("ward.sbom.schema"),
+            validator.toString(),
+            file.toString()
+        )
             .redirectErrorStream(true)
             .start();
     final String output =

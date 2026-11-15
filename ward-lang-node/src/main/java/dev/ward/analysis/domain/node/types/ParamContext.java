@@ -16,7 +16,11 @@ final class ParamContext {
 
   /** Gives the parameters of the function expression {@code node} the types of {@code expected}. */
   static void contextualize(
-      final SyntaxNode node, final TsType expected, final BiConsumer<SyntaxNode, TsType> sink) {
+      final SyntaxNode node,
+      final TsType expected,
+      final BiConsumer<SyntaxNode,
+      TsType> sink
+  ) {
     final SyntaxNode function = functionOf(node);
     if (!(expected instanceof TsType.Fn fn) || function == null) {
       return;

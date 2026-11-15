@@ -10,7 +10,6 @@ import org.tomlj.Toml;
 
 /** The {@code architecture-file} key of a {@code ward} check, and the rules that stay out of it. */
 class TomlArchitectureFileKeyTest {
-
   private static GateConfiguration check(final String extra) {
     return new TomlConfigurationReader()
         .parse(Toml.parse("version = 2\n[checks.ward]\nuses = \"ward\"\n" + extra + "\n"))

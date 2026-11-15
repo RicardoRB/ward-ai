@@ -35,9 +35,10 @@ class AnalysisGateProgressTest {
 
     final GateResult result =
         AnalysisGateTest.gate(
-                List.of(categorized(LENGTH, "complexity"), categorized(NAMING, "naming")),
-                Map.of(LENGTH, List.of(new RuleMatch(AT, "too long")), NAMING, List.of()),
-                Set.of(RuleCapability.SYNTAX))
+            List.of(categorized(LENGTH, "complexity"), categorized(NAMING, "naming")),
+            Map.of(LENGTH, List.of(new RuleMatch(AT, "too long")), NAMING, List.of()),
+            Set.of(RuleCapability.SYNTAX)
+        )
             .execute(PROJECT, steps::add);
 
     assertThat(result.sections())
@@ -48,16 +49,18 @@ class AnalysisGateProgressTest {
             "reading sources",
             "resolving dependencies",
             "analyzing 1 of 1 files with 2 rules",
-            "project-wide rules");
+            "project-wide rules"
+        );
   }
 
   @Test
   void ruleWithoutCategoryGoesUnderOtherAndSingleCategoryGivesOneSection() {
     final GateResult result =
         AnalysisGateTest.gate(
-                List.of(categorized(LENGTH, ""), categorized(NAMING, "")),
-                Map.of(LENGTH, List.of(new RuleMatch(AT, "too long")), NAMING, List.of()),
-                Set.of(RuleCapability.SYNTAX))
+            List.of(categorized(LENGTH, ""), categorized(NAMING, "")),
+            Map.of(LENGTH, List.of(new RuleMatch(AT, "too long")), NAMING, List.of()),
+            Set.of(RuleCapability.SYNTAX)
+        )
             .execute(PROJECT, GateProgress.NONE);
 
     assertThat(result.sections()).containsExactly(new GateSection("other", 1, 0));
@@ -73,6 +76,7 @@ class AnalysisGateProgressTest {
         category,
         Set.of(),
         List.of(),
-        0);
+        0
+    );
   }
 }

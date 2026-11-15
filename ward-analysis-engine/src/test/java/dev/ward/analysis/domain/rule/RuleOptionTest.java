@@ -8,7 +8,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class RuleOptionTest {
-
   private static final long FIVE = 5L;
 
   @Test
@@ -26,7 +25,13 @@ class RuleOptionTest {
     assertThat(new RuleOption("l", RuleOptionType.STRING_LIST).problem(List.of("a"))).isEmpty();
     final RuleOption mode =
         new RuleOption(
-            "mode", RuleOptionType.ENUM, null, Long.MIN_VALUE, Long.MAX_VALUE, List.of("a", "b"));
+            "mode",
+            RuleOptionType.ENUM,
+            null,
+            Long.MIN_VALUE,
+            Long.MAX_VALUE,
+            List.of("a", "b")
+        );
     assertThat(mode.problem("c")).contains("expected one of [a, b], got \"c\"");
     assertThat(mode.problem("a")).isEmpty();
   }

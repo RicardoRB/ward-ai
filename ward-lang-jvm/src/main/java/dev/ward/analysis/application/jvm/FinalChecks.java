@@ -18,7 +18,6 @@ import java.util.Map;
 
 /** The checks of the library call, single precision and null data-flow rules of Java. */
 final class FinalChecks {
-
   private static final String MESSAGE = "message";
   private static final String MODE = "mode";
 
@@ -31,35 +30,51 @@ final class FinalChecks {
             "library-call",
             toml ->
                 new LibraryCallCheck(
-                    LibraryCallCheck.Mode.valueOf(mode(toml)), TomlValues.required(toml, MESSAGE))),
+                    LibraryCallCheck.Mode.valueOf(mode(toml)),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
-            "float-precision", toml -> new FloatPrecisionCheck(TomlValues.required(toml, MESSAGE))),
+            "float-precision",
+            toml -> new FloatPrecisionCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "uncallable-anonymous-method",
-            toml -> new UncallableAnonymousMethodCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new UncallableAnonymousMethodCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "null-dataflow",
             toml ->
                 new NullDataflowCheck(
                     NullDataflowCheck.Mode.valueOf(mode(toml)),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "type-qualifier",
             toml ->
                 new TypeQualifierCheck(
                     TypeQualifierCheck.Mode.valueOf(mode(toml)),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "functional-interface-method-changed",
-            toml -> new FunctionalInterfaceMethodChangedCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new FunctionalInterfaceMethodChangedCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
-            "unsafe-wildcard", toml -> new UnsafeWildcardCheck(TomlValues.required(toml, MESSAGE))),
+            "unsafe-wildcard",
+            toml -> new UnsafeWildcardCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "value-class-identity",
-            toml -> new ValueClassIdentityCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new ValueClassIdentityCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "nonnull-field-init",
-            toml -> new NonNullFieldInitCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new NonNullFieldInitCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 
   private static String mode(final org.tomlj.TomlParseResult toml) {

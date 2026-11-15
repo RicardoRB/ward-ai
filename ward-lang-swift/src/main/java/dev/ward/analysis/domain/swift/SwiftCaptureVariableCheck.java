@@ -28,7 +28,6 @@ import java.util.Set;
  * needs local captures.
  */
 public final class SwiftCaptureVariableCheck implements RuleCheck {
-
   private static final String CAPTURE_ITEM = "capture_list_item";
   private static final String VARIABLE = "variable_declaration";
   private static final String IDENTIFIER = "declaration_identifier";
@@ -62,7 +61,11 @@ public final class SwiftCaptureVariableCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes();
     final Set<Integer> lazyNames = lazyDeclarationOffsets(root);
     final List<RuleMatch> matches = new ArrayList<>();
@@ -80,7 +83,10 @@ public final class SwiftCaptureVariableCheck implements RuleCheck {
   }
 
   private static boolean isCapturedVariable(
-      final SyntaxNode name, final UnitScopes scopes, final Set<Integer> lazyNames) {
+      final SyntaxNode name,
+      final UnitScopes scopes,
+      final Set<Integer> lazyNames
+  ) {
     return resolvedAt(name, scopes)
         .filter(binding -> binding.kind() == BindingKind.VARIABLE)
         .filter(binding -> !lazyNames.contains(binding.declaration().startOffset()))
@@ -96,7 +102,9 @@ public final class SwiftCaptureVariableCheck implements RuleCheck {
   }
 
   private static boolean isDeclaredOutsideFunctions(
-      final Binding binding, final UnitScopes scopes) {
+      final Binding binding,
+      final UnitScopes scopes
+  ) {
     return scopes.scopes().stream()
         .filter(scope -> scope.id() == binding.scope())
         .map(Scope::kind)

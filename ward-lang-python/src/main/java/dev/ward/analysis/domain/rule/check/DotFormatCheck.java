@@ -14,7 +14,6 @@ import java.util.Set;
  * arguments are not known.
  */
 public final class DotFormatCheck implements RuleCheck {
-
   /** The mistakes the check tells apart, one per rule. */
   public enum Problem {
     /** The braces are unbalanced. */

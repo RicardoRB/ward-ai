@@ -35,8 +35,9 @@ public record JvmClass(
     List<String> memberClasses,
     boolean sealed,
     boolean kotlin,
-    Map<String, List<String>> annotationValues) {
-
+    Map<String,
+    List<String>> annotationValues
+) {
   /** The kinds of class. */
   public enum Kind {
     /** A class. */

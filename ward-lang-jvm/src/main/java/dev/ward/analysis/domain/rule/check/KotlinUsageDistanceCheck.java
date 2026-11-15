@@ -15,7 +15,6 @@ import java.util.Set;
  * nested block is not reported, as with Checkstyle's {@code validateBetweenScopes=false}.
  */
 public final class KotlinUsageDistanceCheck implements UnitCheck {
-
   /** The statements a variable may be away from its first use, as Checkstyle's default. */
   static final int ALLOWED_DISTANCE = 3;
 
@@ -53,7 +52,10 @@ public final class KotlinUsageDistanceCheck implements UnitCheck {
   }
 
   private void checkDeclaration(
-      final List<SyntaxNode> statements, final int index, final List<RuleMatch> matches) {
+      final List<SyntaxNode> statements,
+      final int index,
+      final List<RuleMatch> matches
+  ) {
     variableOf(statements.get(index))
         .ifPresent(
             variable -> {
@@ -61,7 +63,8 @@ public final class KotlinUsageDistanceCheck implements UnitCheck {
               if (distanceToUse(statements, index, name) > ALLOWED_DISTANCE) {
                 matches.add(CheckSupport.at(variable.span(), message.replace(VALUE, name)));
               }
-            });
+            }
+        );
   }
 
   /** Returns the name leaf of a {@code var} that the statement declares, if it declares one. */
@@ -84,7 +87,10 @@ public final class KotlinUsageDistanceCheck implements UnitCheck {
   }
 
   private static int distanceToUse(
-      final List<SyntaxNode> statements, final int declared, final String name) {
+      final List<SyntaxNode> statements,
+      final int declared,
+      final String name
+  ) {
     for (int index = declared + 1; index < statements.size(); index++) {
       final SyntaxNode statement = statements.get(index);
       if (usesOutsideNested(statement, name)) {

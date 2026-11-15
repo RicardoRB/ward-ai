@@ -38,7 +38,13 @@ class SwiftGatesTest {
     assertThat(setting(gates, "xcodebuild-test", "platform")).isEqualTo("iOS Simulator");
     assertThat(command(gates, COVERAGE))
         .containsExactly(
-            "xcrun", "xccov", "view", "--report", "--json", ".ward/reports/xcode/tests.xcresult");
+            "xcrun",
+            "xccov",
+            "view",
+            "--report",
+            "--json",
+            ".ward/reports/xcode/tests.xcresult"
+        );
     assertThat(setting(gates, COVERAGE, "minimum")).isEqualTo("80");
   }
 
@@ -56,7 +62,8 @@ class SwiftGatesTest {
             "-scheme",
             "Shop",
             "-enableCodeCoverage",
-            "YES");
+            "YES"
+        );
     assertThat(setting(gates, "xcodebuild-test", "platform")).isEqualTo("macOS");
   }
 
@@ -80,7 +87,10 @@ class SwiftGatesTest {
 
   /** Returns the setting {@code key} of the gate {@code id}. */
   private static String setting(
-      final List<InitGateOption> gates, final String id, final String key) {
+      final List<InitGateOption> gates,
+      final String id,
+      final String key
+  ) {
     final Map<String, String> settings =
         gates.stream().filter(gate -> gate.id().equals(id)).findFirst().orElseThrow().settings();
     return settings.get(key);

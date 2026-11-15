@@ -49,7 +49,10 @@ final class NodePackageResolver {
   }
 
   private Optional<String> resolvePackage(
-      final NodePackage pkg, final String rest, final NodeReference reference) {
+      final NodePackage pkg,
+      final String rest,
+      final NodeReference reference
+  ) {
     if (!pkg.exports().isEmpty()) {
       return viaExports(pkg, rest, reference);
     }
@@ -73,7 +76,10 @@ final class NodePackageResolver {
   }
 
   private Optional<String> viaExports(
-      final NodePackage pkg, final String rest, final NodeReference reference) {
+      final NodePackage pkg,
+      final String rest,
+      final NodeReference reference
+  ) {
     final String subpath = rest.isEmpty() ? DOT : DOT + SEPARATOR + rest;
     final Set<String> active = reference.isRequire() ? REQUIRE_CONDITIONS : IMPORT_CONDITIONS;
     final Optional<Entries> entries = entriesFor(pkg.exports(), subpath);
@@ -94,7 +100,10 @@ final class NodePackageResolver {
 
   /** Returns the exact subpath's entries, or those of the pattern with the longest prefix. */
   private static Optional<Entries> entriesFor(
-      final Map<String, List<ExportEntry>> exports, final String subpath) {
+      final Map<String,
+      List<ExportEntry>> exports,
+      final String subpath
+  ) {
     if (exports.containsKey(subpath)) {
       return Optional.of(new Entries(exports.get(subpath), ""));
     }
@@ -102,7 +111,10 @@ final class NodePackageResolver {
   }
 
   private static Optional<Entries> longestPattern(
-      final Map<String, List<ExportEntry>> exports, final String subpath) {
+      final Map<String,
+      List<ExportEntry>> exports,
+      final String subpath
+  ) {
     String bestKey = null;
     String bestCapture = null;
     for (final String key : exports.keySet()) {

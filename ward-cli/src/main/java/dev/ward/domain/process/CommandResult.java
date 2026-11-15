@@ -12,10 +12,19 @@ import java.time.Duration;
  * @param executionError why it could not run, or {@code null}
  */
 public record CommandResult(
-    int exitCode, String stdout, String stderr, Duration duration, String executionError) {
+    int exitCode,
+    String stdout,
+    String stderr,
+    Duration duration,
+    String executionError
+) {
   /** Creates the result of a process that ran. */
   public CommandResult(
-      final int exitCode, final String stdout, final String stderr, final Duration duration) {
+      final int exitCode,
+      final String stdout,
+      final String stderr,
+      final Duration duration
+  ) {
     this(exitCode, stdout, stderr, duration, null);
   }
 

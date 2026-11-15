@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 /** A parameter typed Request that destructures request members gets one parameter site each. */
 class NodeRequestParameterSitesTest {
-
   @Test
   void destructuredRequestMembersAreParameterSites() {
     assertThat(names("function run({ params, query }: Request, res) {}"))

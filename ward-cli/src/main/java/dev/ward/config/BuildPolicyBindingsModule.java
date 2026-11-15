@@ -23,7 +23,8 @@ interface BuildPolicyBindingsModule {
             new MavenBuildReader(),
             new GradleBuildReader(),
             new NodeBuildReader(codec),
-            new PythonBuildReader());
+            new PythonBuildReader()
+        );
     return new FileSystemBuildFiles(readers);
   }
 }

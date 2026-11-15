@@ -17,9 +17,11 @@ import java.util.TreeSet;
 public record FileLines(
     SortedSet<Integer> coverable,
     SortedSet<Integer> covered,
-    SortedMap<Integer, Integer> branches,
-    SortedMap<Integer, Integer> coveredBranches) {
-
+    SortedMap<Integer,
+    Integer> branches,
+    SortedMap<Integer,
+    Integer> coveredBranches
+) {
   /** Copies both sets and keeps only covered lines that are coverable. */
   public FileLines {
     coverable = Collections.unmodifiableSortedSet(new TreeSet<>(coverable));
@@ -45,7 +47,8 @@ public record FileLines(
         allCoverable,
         allCovered,
         larger(branches, other.branches),
-        larger(coveredBranches, other.coveredBranches));
+        larger(coveredBranches, other.coveredBranches)
+    );
   }
 
   /** Returns the number of branches in the file. */
@@ -63,7 +66,11 @@ public record FileLines(
    * count stands for the same branches; upgrade when a report names its branches.
    */
   private static SortedMap<Integer, Integer> larger(
-      final SortedMap<Integer, Integer> first, final SortedMap<Integer, Integer> second) {
+      final SortedMap<Integer,
+      Integer> first,
+      final SortedMap<Integer,
+      Integer> second
+  ) {
     final SortedMap<Integer, Integer> merged = new TreeMap<>(first);
     second.forEach((line, count) -> merged.merge(line, count, Math::max));
     return merged;

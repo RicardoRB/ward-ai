@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 
 class ProcessTreeRssTest {
-
   private static final long ROOT = 1;
   private static final long UNRELATED_PID = 300;
   private static final long PARENT = 200;

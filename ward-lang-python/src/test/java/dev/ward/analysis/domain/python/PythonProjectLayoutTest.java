@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 /** Maps file paths to module names through the deepest containing source root. */
 final class PythonProjectLayoutTest {
-
   @Test
   void mapsASrcLayoutFileToItsDottedModule() {
     final PythonProjectLayout layout = new PythonProjectLayout(List.of("src/"));

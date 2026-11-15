@@ -11,7 +11,6 @@ import java.util.Set;
  * one file, so a declaration in another file is unknown and a check reports nothing about it.
  */
 final class NullModel {
-
   private static final String TYPE_TYPE = "typeType";
   private static final String IDENTIFIER = "identifier";
 
@@ -23,7 +22,8 @@ final class NullModel {
       List<String> supertypes,
       List<Field> fields,
       List<Method> methods,
-      List<SyntaxNode> initializers) {}
+      List<SyntaxNode> initializers
+  ) {}
 
   /** A field declarator. */
   record Field(
@@ -34,7 +34,8 @@ final class NullModel {
       boolean array,
       boolean init,
       boolean isStatic,
-      SyntaxNode type) {}
+      SyntaxNode type
+  ) {}
 
   /** What a method returns. */
   enum Returns {
@@ -54,14 +55,14 @@ final class NullModel {
       List<Param> params,
       Notes notes,
       boolean constructor,
-      Returns returns) {}
+      Returns returns
+  ) {}
 
   /** A formal parameter. */
   record Param(String name, SyntaxNode node, Notes notes, boolean primitive, boolean varargs) {}
 
   /** The annotations of one declaration: their nodes and their simple names. */
   record Notes(List<SyntaxNode> nodes, Set<String> names) {
-
     /** Tells whether the declaration carries an annotation named {@code name}. */
     boolean has(final String name) {
       return names.contains(name);
@@ -105,7 +106,14 @@ final class NullModel {
     }
     final String name = NullSyntax.first(node, IDENTIFIER).map(SyntaxWalk::text).orElse("");
     return new Type(
-        name, node, marked || packageMarked(root), supertypes(node), fields, methods, initializers);
+        name,
+        node,
+        marked || packageMarked(root),
+        supertypes(node),
+        fields,
+        methods,
+        initializers
+    );
   }
 
   /** Tells whether the type or a type around it is annotated {@code @NullMarked}. */

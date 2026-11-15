@@ -18,11 +18,13 @@ import java.util.stream.Collectors;
  */
 record Imports(
     String packageName,
-    Map<String, String> single,
+    Map<String,
+    String> single,
     List<String> onDemand,
-    Map<String, List<String>> staticSingle,
-    List<String> staticOnDemand) {
-
+    Map<String,
+    List<String>> staticSingle,
+    List<String> staticOnDemand
+) {
   private static final String PACKAGE = "packageDeclaration";
   private static final String IMPORT = "importDeclaration";
   private static final String STATIC = "static";
@@ -74,11 +76,14 @@ record Imports(
             .collect(
                 Collectors.groupingBy(
                     Declaration::simpleName,
-                    Collectors.mapping(Declaration::owner, Collectors.toList()))),
+                    Collectors.mapping(Declaration::owner, Collectors.toList())
+                )
+            ),
         declarations.stream()
             .filter(found -> found.wildcard() && found.isStatic())
             .map(Declaration::name)
-            .toList());
+            .toList()
+    );
   }
 
   /** Returns the imports of a file that declares package {@code packageName} and imports none. */
@@ -91,7 +96,11 @@ record Imports(
         .map(
             name ->
                 new Declaration(
-                    name, Syntax.hasToken(node, WILDCARD), Syntax.hasToken(node, STATIC)));
+                    name,
+                    Syntax.hasToken(node, WILDCARD),
+                    Syntax.hasToken(node, STATIC)
+                )
+        );
   }
 
   private static Optional<String> nameOf(final SyntaxNode declaration) {

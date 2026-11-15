@@ -27,7 +27,8 @@ class PythonLicenseLocationTest {
         .lookup(
             project(root, Language.PYTHON, BuildTool.UV),
             "",
-            dependency(Ecosystem.PYPI, name, version));
+            dependency(Ecosystem.PYPI, name, version)
+        );
   }
 
   private void metadata(final String directory, final String headers) throws IOException {
@@ -62,7 +63,8 @@ class PythonLicenseLocationTest {
     write(
         root,
         "elsewhere/lib/python3.11/site-packages/pkg-1.0.dist-info/METADATA",
-        "Name: pkg\nVersion: 1.0\nLicense-Expression: ISC\n");
+        "Name: pkg\nVersion: 1.0\nLicense-Expression: ISC\n"
+    );
 
     assertThat(lookup(root.resolve("elsewhere").toString(), "pkg", VERSION).license().describe())
         .isEqualTo("ISC");
@@ -73,7 +75,8 @@ class PythonLicenseLocationTest {
     write(
         root,
         SITE + "old-1.0.egg-info/PKG-INFO",
-        "Metadata-Version: 1.1\nName: old\nVersion: 1.0\nLicense: BSD-3-Clause\n");
+        "Metadata-Version: 1.1\nName: old\nVersion: 1.0\nLicense: BSD-3-Clause\n"
+    );
 
     assertThat(lookup(null, "old", VERSION).license().describe()).isEqualTo("BSD-3-Clause");
   }

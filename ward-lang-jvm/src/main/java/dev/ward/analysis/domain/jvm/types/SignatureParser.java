@@ -22,8 +22,25 @@ final class SignatureParser {
   private static final char WILDCARD = '*';
   private static final Map<Character, String> PRIMITIVES =
       Map.of(
-          'B', "byte", 'C', "char", 'D', "double", 'F', "float", 'I', "int", 'J', "long", 'S',
-          "short", 'Z', "boolean", 'V', "void");
+          'B',
+          "byte",
+          'C',
+          "char",
+          'D',
+          "double",
+          'F',
+          "float",
+          'I',
+          "int",
+          'J',
+          "long",
+          'S',
+          "short",
+          'Z',
+          "boolean",
+          'V',
+          "void"
+      );
 
   private final String text;
   private int position;
@@ -37,13 +54,15 @@ final class SignatureParser {
       List<TypeParameter> typeParameters,
       List<JType> parameters,
       JType returnType,
-      List<JType> thrown) {}
+      List<JType> thrown
+  ) {}
 
   /** The parsed parts of a class signature. */
   record ClassSignature(
       List<TypeParameter> typeParameters,
       JType.ClassType superclass,
-      List<JType.ClassType> interfaces) {}
+      List<JType.ClassType> interfaces
+  ) {}
 
   /** Parses a field signature or descriptor. */
   static JType field(final String signature) {

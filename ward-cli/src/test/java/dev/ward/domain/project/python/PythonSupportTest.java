@@ -22,7 +22,8 @@ class PythonSupportTest {
             message ->
                 assertThat(message)
                     .contains("Python " + version + " is INCOMPATIBLE")
-                    .contains("3.11 to 3.14"));
+                    .contains("3.11 to 3.14")
+        );
   }
 
   @ParameterizedTest
@@ -39,8 +40,10 @@ class PythonSupportTest {
   @Test
   void projectWithoutVersionIsNotIncompatible() {
     assertThat(
-            PythonSupport.incompatibility(
-                new Project(Path.of("app"), Language.PYTHON, BuildTool.PIP, Framework.NONE)))
+        PythonSupport.incompatibility(
+            new Project(Path.of("app"), Language.PYTHON, BuildTool.PIP, Framework.NONE)
+        )
+    )
         .isEmpty();
   }
 
@@ -56,6 +59,7 @@ class PythonSupportTest {
         Set.of(),
         version,
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 }

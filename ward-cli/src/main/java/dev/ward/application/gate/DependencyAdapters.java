@@ -13,7 +13,6 @@ import java.util.Optional;
  */
 @FunctionalInterface
 public interface DependencyAdapters {
-
   /** Adapters that contribute no edges, for a build with no dependency language. */
   static DependencyAdapters none() {
     return (projectRoot, units) -> List.of();
@@ -38,7 +37,10 @@ public interface DependencyAdapters {
    * @return the dependency supports to resolve the run with
    */
   default List<DependencySupport> forProject(
-      final Path projectRoot, final List<SourceUnit> units, final Optional<String> javaClasspath) {
+      final Path projectRoot,
+      final List<SourceUnit> units,
+      final Optional<String> javaClasspath
+  ) {
     return forProject(projectRoot, units);
   }
 }

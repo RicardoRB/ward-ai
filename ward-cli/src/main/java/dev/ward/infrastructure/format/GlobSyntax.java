@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
  * The brace parts of an EditorConfig glob: the matching brace, the alternatives and number ranges.
  */
 final class GlobSyntax {
-
   private static final char OPEN_BRACE = '{';
   private static final char CLOSE_BRACE = '}';
   private static final char COMMA = ',';

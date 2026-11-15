@@ -14,7 +14,6 @@ import java.util.Set;
  * type.
  */
 public final class DuplicateHandlerCheck implements RuleCheck {
-
   private static final Set<String> TRIES = Set.of("try_stmt");
   private static final String HANDLER = "except_clause";
   private static final String EXCEPT = "except";

@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
  * test is an approximation of the scope analysis.
  */
 public final class NonlocalCheck implements RuleCheck {
-
   private static final Set<String> NONLOCAL = Set.of("nonlocal_stmt");
   private static final Set<String> FUNCTIONS = Set.of("funcdef", "async_funcdef");
   private static final Pattern NAMES = Pattern.compile("^(?:nonlocal|global)(.*)$", Pattern.DOTALL);
@@ -47,7 +46,10 @@ public final class NonlocalCheck implements RuleCheck {
   }
 
   private static boolean unbound(
-      final List<SyntaxNode> ancestors, final SyntaxNode enclosing, final List<String> names) {
+      final List<SyntaxNode> ancestors,
+      final SyntaxNode enclosing,
+      final List<String> names
+  ) {
     if (enclosing == null) {
       return true;
     }
@@ -61,7 +63,9 @@ public final class NonlocalCheck implements RuleCheck {
 
   /** The nearest function above {@code inner} in the ancestor list, or null. */
   private static SyntaxNode enclosingFunctionAbove(
-      final List<SyntaxNode> ancestors, final SyntaxNode inner) {
+      final List<SyntaxNode> ancestors,
+      final SyntaxNode inner
+  ) {
     for (int index = ancestors.indexOf(inner) - 1; index >= 0; index--) {
       if (FUNCTIONS.contains(ancestors.get(index).kind())) {
         return ancestors.get(index);

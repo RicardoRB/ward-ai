@@ -22,7 +22,9 @@ final class PartialArguments {
   static List<String> items(
       final String item,
       final List<EditedPath> paths,
-      final Function<Path, Optional<String>> packages) {
+      final Function<Path,
+      Optional<String>> packages
+  ) {
     return paths.stream()
         .map(path -> renderItem(item, path, packages))
         .flatMap(Optional::stream)
@@ -31,7 +33,11 @@ final class PartialArguments {
   }
 
   private static Optional<String> renderItem(
-      final String item, final EditedPath path, final Function<Path, Optional<String>> packages) {
+      final String item,
+      final EditedPath path,
+      final Function<Path,
+      Optional<String>> packages
+  ) {
     if (!item.contains(PACKAGE)) {
       return Optional.of(fill(item, path));
     }
@@ -56,7 +62,10 @@ final class PartialArguments {
 
   /** One argument per item, or one argument joining the items with {@code separator}. */
   private static List<String> substituted(
-      final String argument, final List<String> items, final String separator) {
+      final String argument,
+      final List<String> items,
+      final String separator
+  ) {
     if (separator == null) {
       return items.stream().map(value -> argument.replace(PATHS, value)).toList();
     }

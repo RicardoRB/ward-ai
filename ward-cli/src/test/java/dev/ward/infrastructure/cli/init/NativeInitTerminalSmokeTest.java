@@ -47,8 +47,7 @@ class NativeInitTerminalSmokeTest {
     assertThat(binary).as("ward.native.binary; run native:compile first").isExecutable();
     final Path project = copyFixture(workspace.resolve("project"));
 
-    try (Arena arena = Arena.ofConfined();
-        PseudoTerminal terminal = PseudoTerminal.open(arena)) {
+    try (Arena arena = Arena.ofConfined(); PseudoTerminal terminal = PseudoTerminal.open(arena)) {
       final File device = new File(terminal.devicePath());
       final Process process =
           new ProcessBuilder(binary.toString(), "init")
@@ -86,8 +85,7 @@ class NativeInitTerminalSmokeTest {
     final Path project = copyFixture(workspace.resolve("complete"));
     Files.createDirectories(project.resolve(".git/hooks"));
 
-    try (Arena arena = Arena.ofConfined();
-        PseudoTerminal terminal = PseudoTerminal.open(arena)) {
+    try (Arena arena = Arena.ofConfined(); PseudoTerminal terminal = PseudoTerminal.open(arena)) {
       final File device = new File(terminal.devicePath());
       final Process process =
           new ProcessBuilder(binary.toString(), "init")
@@ -104,7 +102,8 @@ class NativeInitTerminalSmokeTest {
                 "create     .git/hooks/pre-commit",
                 "Step 1 of 4",
                 "Step 4 of 4",
-                "Enter=1]")
+                "Enter=1]"
+            )
             .doesNotContain("\033[2J");
         terminal.write("\n".getBytes(StandardCharsets.US_ASCII));
         declineCompatibilityUpdatesUntilExit(terminal, process);
@@ -127,7 +126,9 @@ class NativeInitTerminalSmokeTest {
   }
 
   private static void answerEveryScreenUntickingCoverage(
-      final PseudoTerminal terminal, final Process process) throws InterruptedException {
+      final PseudoTerminal terminal,
+      final Process process
+  ) throws InterruptedException {
     terminal.awaitOutput(process, "Choose a preset", PROMPT_TIMEOUT);
     terminal.write("1\n".getBytes(StandardCharsets.US_ASCII));
     terminal.awaitOutput(process, "Select agent integrations", PROMPT_TIMEOUT);
@@ -153,8 +154,7 @@ class NativeInitTerminalSmokeTest {
     final Path project = copyFixture(workspace.resolve("declined"));
     final String pom = Files.readString(project.resolve("pom.xml"));
 
-    try (Arena arena = Arena.ofConfined();
-        PseudoTerminal terminal = PseudoTerminal.open(arena)) {
+    try (Arena arena = Arena.ofConfined(); PseudoTerminal terminal = PseudoTerminal.open(arena)) {
       final File device = new File(terminal.devicePath());
       final Process process =
           new ProcessBuilder(binary.toString(), "init", "--integration", "none", "--gate", "tests")
@@ -196,7 +196,8 @@ class NativeInitTerminalSmokeTest {
             "--integration",
             "none",
             "--architecture",
-            "layered");
+            "layered"
+        );
 
     assertThat(result.exitCode()).as(result.output()).isZero();
     assertThat(result.output())
@@ -209,7 +210,9 @@ class NativeInitTerminalSmokeTest {
 
   /** Answers "n" to every Maven compatibility prompt until the executable exits. */
   private static void declineCompatibilityUpdatesUntilExit(
-      final PseudoTerminal terminal, final Process process) throws InterruptedException {
+      final PseudoTerminal terminal,
+      final Process process
+  ) throws InterruptedException {
     final long deadline = System.nanoTime() + PROMPT_TIMEOUT.toNanos();
     int answered = 0;
     while (process.isAlive()) {
@@ -242,7 +245,9 @@ class NativeInitTerminalSmokeTest {
     final Path project = copyFixture(workspace.resolve("invalid"));
     final Path pom = project.resolve("pom.xml");
     Files.writeString(
-        pom, Files.readString(pom).replace("<version>1.0.0</version>", "<version>&bad;</version>"));
+        pom,
+        Files.readString(pom).replace("<version>1.0.0</version>", "<version>&bad;</version>")
+    );
     final String original = Files.readString(pom);
 
     final Result result = run(project, "init", "--integration", "none", "--gate", "coverage");

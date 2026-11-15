@@ -31,7 +31,8 @@ public record LearningLedger(int formatVersion, Map<String, LearningRecord> reco
             throw new IllegalArgumentException("Learning record key does not match its value");
           }
           copy.put(key, Objects.requireNonNull(value));
-        });
+        }
+    );
     records = Map.copyOf(copy);
   }
 

@@ -28,7 +28,6 @@ import java.util.Set;
  * upgrade with a call graph when a rule needs the later call.
  */
 final class KotlinValueLowering {
-
   private static final Set<String> LAMBDA_VALUE =
       Set.of("let", "run", "with", "use", "synchronized");
   private static final Set<String> RECEIVER_VALUE = Set.of("also", "apply", "takeIf", "takeUnless");
@@ -43,7 +42,10 @@ final class KotlinValueLowering {
   private record Frame(String callee, String label, KotlinResult value, int after) {}
 
   KotlinValueLowering(
-      final ControlFlowBuilder flow, final KotlinView view, final KotlinStatements statements) {
+      final ControlFlowBuilder flow,
+      final KotlinView view,
+      final KotlinStatements statements
+  ) {
     this.flow = flow;
     this.view = view;
     this.statements = statements;
@@ -125,13 +127,16 @@ final class KotlinValueLowering {
 
   /** A lambda written inside the receiver of another call gives its value to that call. */
   private static boolean isReceivedByAnother(
-      final KotlinSplits.Split split, final List<KotlinSplits.Split> all) {
+      final KotlinSplits.Split split,
+      final List<KotlinSplits.Split> all
+  ) {
     return all.stream()
         .anyMatch(
             other ->
                 !other.equals(split)
                     && other.receiver() != null
-                    && KotlinView.contains(other.receiver(), split.span()));
+                    && KotlinView.contains(other.receiver(), split.span())
+        );
   }
 
   /** The names that the statement itself reads: not the lambdas, nor the receivers before them. */
@@ -154,7 +159,8 @@ final class KotlinValueLowering {
   private List<VariableAccess> lowerSplit(
       final SyntaxNode statement,
       final KotlinSplits.Split split,
-      final List<KotlinSplits.Split> all) {
+      final List<KotlinSplits.Split> all
+  ) {
     final KotlinResult value = KotlinResult.of("value", split.span());
     final List<VariableAccess> reads = new ArrayList<>();
     if (split.isLambda()) {

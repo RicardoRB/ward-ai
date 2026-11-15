@@ -14,7 +14,6 @@ import java.util.Set;
  * com.google.errorprone.annotations.Immutable}.
  */
 public final class JavaImmutableCheck implements RuleCheck {
-
   private static final Set<String> ERROR_PRONE =
       Set.of("com.google.errorprone.annotations.Immutable");
   private static final Set<String> UTIL_TYPES =
@@ -34,7 +33,8 @@ public final class JavaImmutableCheck implements RuleCheck {
           "Deque",
           "ArrayDeque",
           "Queue",
-          "Date");
+          "Date"
+      );
   private static final Set<String> LANG_TYPES = Set.of("StringBuilder", "StringBuffer");
 
   private final Set<String> annotations;
@@ -59,7 +59,10 @@ public final class JavaImmutableCheck implements RuleCheck {
    * @param message the message; {@code {value}} is the field name
    */
   public JavaImmutableCheck(
-      final Set<String> annotations, final boolean finalOnly, final String message) {
+      final Set<String> annotations,
+      final boolean finalOnly,
+      final String message
+  ) {
     this.annotations = annotations.isEmpty() ? ERROR_PRONE : Set.copyOf(annotations);
     this.finalOnly = finalOnly;
     this.message = Objects.requireNonNull(message, "message");
@@ -99,7 +102,9 @@ public final class JavaImmutableCheck implements RuleCheck {
                     .anyMatch(
                         name ->
                             text.startsWith("@" + name)
-                                || text.startsWith("@Immutable") && imports.contains(name)));
+                                || text.startsWith("@Immutable") && imports.contains(name)
+                    )
+        );
   }
 
   private boolean mutable(final JavaNodes.Member member, final Set<String> imports) {
@@ -117,9 +122,9 @@ public final class JavaImmutableCheck implements RuleCheck {
     final String simple = text.replaceAll("<.*", "");
     return text.endsWith("]")
         || UTIL_TYPES.contains(simple)
-            && JavaAnnotations.resolves(imports, simple, "java.util." + simple)
+        && JavaAnnotations.resolves(imports, simple, "java.util." + simple)
         || LANG_TYPES.contains(simple)
         || simple.startsWith("java.util.")
-            && UTIL_TYPES.contains(simple.substring("java.util.".length()));
+        && UTIL_TYPES.contains(simple.substring("java.util.".length()));
   }
 }

@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
 
 class EditorConfigGlobTest {
-
   @Test
   void starMatchesWithinOneFolderName() {
     assertThat(EditorConfigGlob.compile("src/*.java").matcher("src/Main.java").matches()).isTrue();

@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
  * which this check does not.
  */
 public final class ConstructorCallsOverridableMethodCheck implements UnitCheck {
-
   private static final String METHOD_CALL = "methodCall";
   private static final String EXPRESSION = "expression";
   private static final String THIS = "this";
@@ -60,7 +59,8 @@ public final class ConstructorCallsOverridableMethodCheck implements UnitCheck {
   private static boolean isFinal(final List<SyntaxNode> ancestors) {
     return MemberDeclarations.wrapper(ancestors).stream()
         .anyMatch(
-            wrapper -> MemberDeclarations.modifiers(wrapper).contains(MemberDeclarations.FINAL));
+            wrapper -> MemberDeclarations.modifiers(wrapper).contains(MemberDeclarations.FINAL)
+        );
   }
 
   private List<RuleMatch> reportsOf(final SyntaxNode clazz) {
@@ -85,7 +85,10 @@ public final class ConstructorCallsOverridableMethodCheck implements UnitCheck {
   }
 
   private void collect(
-      final SyntaxNode node, final Set<String> overridable, final List<RuleMatch> reports) {
+      final SyntaxNode node,
+      final Set<String> overridable,
+      final List<RuleMatch> reports
+  ) {
     for (final SyntaxNode child : node.children()) {
       if (NESTED.contains(child.kind())) {
         continue;

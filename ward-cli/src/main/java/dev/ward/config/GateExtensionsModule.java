@@ -30,7 +30,8 @@ interface GateExtensionsModule {
       final AnalysisPorts analysis,
       final FormatGates format,
       final ReportingGatePorts reporting,
-      final PolicyGatePorts policy) {
+      final PolicyGatePorts policy
+  ) {
     return new GateExtensions(
         openApi,
         analysis,
@@ -40,7 +41,8 @@ interface GateExtensionsModule {
         reporting.vulnerabilities(),
         policy.license(),
         policy.buildPolicy(),
-        policy.apiCompat());
+        policy.apiCompat()
+    );
   }
 
   /** Gathers the gates that check a policy: licenses, build files and the public API. */
@@ -48,14 +50,18 @@ interface GateExtensionsModule {
   static PolicyGatePorts policyGates(
       final LicenseService license,
       final BuildPolicyGates buildPolicy,
-      final ApiCompatGates apiCompat) {
+      final ApiCompatGates apiCompat
+  ) {
     return new PolicyGatePorts(license, buildPolicy, apiCompat);
   }
 
   /** Gathers the gates that read a report or the dependency inventory themselves. */
   @Provides
   static ReportingGatePorts reportingGates(
-      final SecretGates secrets, final CrapPorts crap, final VulnerabilityGates vulnerabilities) {
+      final SecretGates secrets,
+      final CrapPorts crap,
+      final VulnerabilityGates vulnerabilities
+  ) {
     return new ReportingGatePorts(secrets, crap, vulnerabilities);
   }
 

@@ -11,7 +11,6 @@ import java.util.Set;
 
 /** Handles the loops, variable declarations and catch clauses of a script. */
 final class NodeScopeStatements {
-
   private static final Set<ScopeKind> HOIST_TARGETS =
       Set.of(ScopeKind.FUNCTION, ScopeKind.LAMBDA, ScopeKind.MODULE);
   private static final String SINGLE = "singleExpression";
@@ -136,6 +135,7 @@ final class NodeScopeStatements {
         scope,
         CONST.equals(keyword) ? BindingKind.CONSTANT : BindingKind.VARIABLE,
         flags,
-        loop);
+        loop
+    );
   }
 }

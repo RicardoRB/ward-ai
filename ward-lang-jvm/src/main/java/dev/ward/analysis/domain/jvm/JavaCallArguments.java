@@ -6,7 +6,6 @@ import java.util.List;
 
 /** Reads the argument lists of Java calls and class creations, for flow sites. */
 final class JavaCallArguments {
-
   private static final String ARGUMENTS = "arguments";
   private static final String EXPRESSION_LIST = "expressionList";
   private static final String EXPRESSION = "expression";

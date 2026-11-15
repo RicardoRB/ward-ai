@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** The metaclass check names the first parameter of a metaclass method and class method. */
 final class PythonMetaclassArgumentCheckTest {
-
   private static java.util.List<String> run(final Problem problem, final String source) {
     return positions(new PythonMetaclassArgumentCheck(problem, "wrong name").matches(tree(source)));
   }

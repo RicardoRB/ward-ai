@@ -17,7 +17,6 @@ import java.util.Set;
  * auto, block or fallback, at the href value, as Biome 2.5.15's {@code useGoogleFontDisplay} does.
  */
 public final class BiomeGoogleFontDisplayCheck implements RuleCheck {
-
   private static final String LINK = "link";
   private static final String HREF = "href";
   private static final String FONTS_PREFIX = "https://fonts.googleapis.com/css";
@@ -43,7 +42,10 @@ public final class BiomeGoogleFontDisplayCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(JsxAttributes.OPENING, JsxAttributes.SELF_CLOSING))
         .stream()
         .map(SyntaxWalk.Visit::node)
@@ -69,8 +71,10 @@ public final class BiomeGoogleFontDisplayCheck implements RuleCheck {
             span.endLine(),
             span.endColumn(),
             span.startOffset() + shift,
-            span.endOffset()),
-        message);
+            span.endOffset()
+        ),
+        message
+    );
   }
 
   private static int indexOfQuote(final String raw) {

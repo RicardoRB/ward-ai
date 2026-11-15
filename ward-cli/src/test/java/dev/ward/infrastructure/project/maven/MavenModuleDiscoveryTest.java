@@ -43,7 +43,8 @@ class MavenModuleDiscoveryTest {
     tree.write(
         POM,
         "<project><profiles><profile><modules><module>extra</module></modules></profile>"
-            + "</profiles></project>");
+            + "</profiles></project>"
+    );
     tree.write("extra/" + POM, LEAF);
 
     assertThat(ProjectTree.roots(inspection.discover(root))).containsExactly(tree.path(""));
@@ -77,7 +78,10 @@ class MavenModuleDiscoveryTest {
 
     assertThat(ProjectTree.roots(inspection.discover(root)))
         .containsExactly(
-            tree.path("apps/api"), tree.path("apps/api/samples"), tree.path("tools/generator"));
+            tree.path("apps/api"),
+            tree.path("apps/api/samples"),
+            tree.path("tools/generator")
+        );
     assertThat(inspection.detect(root.resolve("tools/generator")).map(Project::root))
         .contains(tree.path("tools/generator"));
   }

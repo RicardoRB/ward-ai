@@ -19,9 +19,7 @@ class WardCliWardPartialTest extends WardCliIntegrationSupport {
 
   @BeforeEach
   void configure() throws IOException {
-    Files.writeString(
-        project.resolve(WARD_TOML),
-        """
+    Files.writeString(project.resolve(WARD_TOML), """
         version = 2
         [checks.ward]
         uses = "ward"

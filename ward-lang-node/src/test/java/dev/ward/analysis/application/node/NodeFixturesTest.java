@@ -38,7 +38,6 @@ import org.tomlj.TomlParseResult;
  * one nothing, with the rule's default options or those of the case.
  */
 class NodeFixturesTest {
-
   private static final Path FIXTURES =
       Path.of("..", "ward-cli", "src", "test", "resources", "rules");
   private static final String CHECK = "check";
@@ -96,7 +95,8 @@ class NodeFixturesTest {
   @ParameterizedTest(name = "{0}")
   @MethodSource("ownedRules")
   void violatingFixtureReportsExactlyTheExpectedPositionsAndPassingReportsNone(
-      final OwnedRule owned) throws IOException {
+      final OwnedRule owned
+  ) throws IOException {
     final String extension = extension(owned.rule());
     for (final String caseName : cases(owned.directory())) {
       final String suffix = caseName.isEmpty() ? "" : "-" + caseName;
@@ -177,7 +177,9 @@ class NodeFixturesTest {
             new SourceUnit(
                 file.getFileName().toString(),
                 language,
-                Files.readString(file, StandardCharsets.UTF_8)));
+                Files.readString(file, StandardCharsets.UTF_8)
+            )
+        );
     final List<FrontendSupport> frontends = NodeFixtureFrontends.forFolder(owned.directory());
     final RuleRunResult result = engine.run(units, frontends, List.of(rule));
     assertThat(result.executionErrors()).as("execution errors of %s", rule.id()).isEmpty();
@@ -191,7 +193,10 @@ class NodeFixturesTest {
   }
 
   private static CompiledRule compile(
-      final RuleDefinition definition, final Map<String, CheckFactory> factories) {
+      final RuleDefinition definition,
+      final Map<String,
+      CheckFactory> factories
+  ) {
     final TomlParseResult toml = Toml.parse(definition.body());
     return new CheckedRule(definition, factories.get(toml.getString(CHECK)).create(toml));
   }

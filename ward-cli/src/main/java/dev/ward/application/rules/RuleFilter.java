@@ -17,8 +17,11 @@ import java.util.stream.Collectors;
  * @param selected whether to keep only the rules {@code ward-rules.toml} selects
  */
 public record RuleFilter(
-    RulePreset preset, AnalysisLanguage language, String category, boolean selected) {
-
+    RulePreset preset,
+    AnalysisLanguage language,
+    String category,
+    boolean selected
+) {
   private static final String NONE = "none";
 
   /**
@@ -27,12 +30,17 @@ public record RuleFilter(
    * @throws WardException if a value is not a known preset or language
    */
   public static RuleFilter parse(
-      final String preset, final String language, final String category, final boolean selected) {
+      final String preset,
+      final String language,
+      final String category,
+      final boolean selected
+  ) {
     return new RuleFilter(
         preset == null ? null : presetOf(preset),
         language == null ? null : languageOf(language),
         category,
-        selected);
+        selected
+    );
   }
 
   private static RulePreset presetOf(final String key) {
@@ -50,7 +58,9 @@ public record RuleFilter(
                             .collect(Collectors.joining(", "))
                         + "; got \""
                         + key
-                        + "\""));
+                        + "\""
+                )
+        );
   }
 
   private static AnalysisLanguage languageOf(final String name) {
@@ -65,7 +75,8 @@ public record RuleFilter(
               + "; got \""
               + name
               + "\"",
-          exception);
+          exception
+      );
     }
   }
 }

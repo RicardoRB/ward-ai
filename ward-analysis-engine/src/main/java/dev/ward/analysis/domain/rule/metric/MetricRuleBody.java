@@ -28,7 +28,8 @@ final class MetricRuleBody {
       final String[] parts = pair.trim().split("=", KEY_AND_VALUE);
       if (parts.length != KEY_AND_VALUE) {
         throw new AnalysisFailedException(
-            "metric rule body has a part without '=': " + pair.trim());
+            "metric rule body has a part without '=': " + pair.trim()
+        );
       }
       pairs.put(parts[0].trim(), parts[1].trim());
     }
@@ -46,7 +47,8 @@ final class MetricRuleBody {
         targets(),
         pairs.containsKey("max") ? Integer.parseInt(required("max")) : 0,
         required("message"),
-        keys());
+        keys()
+    );
   }
 
   private Measurement measurement() {
@@ -79,7 +81,8 @@ final class MetricRuleBody {
         paths(pairs.getOrDefault("path", "")),
         set(pairs.get("receivers")),
         set(pairs.get("nested")),
-        set(pairs.get("decisions")));
+        set(pairs.get("decisions"))
+    );
   }
 
   /** Parses {@code a/b|c/d} into the alternative paths, each a list of kinds. */

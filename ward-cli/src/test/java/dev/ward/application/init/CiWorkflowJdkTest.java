@@ -19,11 +19,12 @@ class CiWorkflowJdkTest {
   void jdk11ProjectSetsUpJdk11() {
     final String body =
         CiWorkflowTemplate.render(
-                GITHUB,
-                MAVEN,
-                gates(TESTS),
-                DEV,
-                new CiWorkflowTemplate.ProjectFacts(PackageManifest.EMPTY, Optional.of(JAVA_11)))
+            GITHUB,
+            MAVEN,
+            gates(TESTS),
+            DEV,
+            new CiWorkflowTemplate.ProjectFacts(PackageManifest.EMPTY, Optional.of(JAVA_11))
+        )
             .body();
 
     assertThat(body).contains("distribution: temurin\n          java-version: '11'\n");

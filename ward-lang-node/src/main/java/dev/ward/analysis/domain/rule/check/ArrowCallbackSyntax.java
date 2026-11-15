@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
  * The tree walks of the arrow callback check: what a function uses in its own scope and its name.
  */
 final class ArrowCallbackSyntax {
-
   /** The head of a function expression: the optional generator star and the optional name. */
   static final Pattern FUNCTION =
       Pattern.compile("^(?:async)?function(\\*)?([A-Za-z_$][\\w$]*)?\\(");
@@ -49,7 +48,10 @@ final class ArrowCallbackSyntax {
   }
 
   private static void collectOwn(
-      final SyntaxNode node, final List<String> tokens, final boolean root) {
+      final SyntaxNode node,
+      final List<String> tokens,
+      final boolean root
+  ) {
     if (!root && nestedFunction(node)) {
       return;
     }

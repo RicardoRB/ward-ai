@@ -26,7 +26,8 @@ public final class AnnotationReflectionCheck implements UnitCheck {
   private static final Pattern QUERY =
       Pattern.compile(
           "^(isAnnotationPresent|getAnnotation|getDeclaredAnnotation|getAnnotationsByType"
-              + "|getDeclaredAnnotationsByType)\\((?:[\\w.]*\\.)?(\\w+)\\.class[,)]");
+              + "|getDeclaredAnnotationsByType)\\((?:[\\w.]*\\.)?(\\w+)\\.class[,)]"
+      );
 
   private final String message;
 

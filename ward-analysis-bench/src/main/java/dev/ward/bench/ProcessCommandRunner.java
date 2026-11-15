@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 
 /** Runs commands on {@link ProcessBuilder} and samples the process tree's resident memory. */
 final class ProcessCommandRunner implements CommandRunner {
-
   private static final long SAMPLE_INTERVAL_MILLIS = 50;
   private static final Duration TIMEOUT = Duration.ofMinutes(30);
   private static final List<String> PROCESS_TABLE = List.of("ps", "-A", "-o", "pid=,ppid=,rss=");
@@ -78,7 +77,10 @@ final class ProcessCommandRunner implements CommandRunner {
   }
 
   private static Process start(
-      final List<String> command, final Path directory, final ProcessBuilder.Redirect stdout) {
+      final List<String> command,
+      final Path directory,
+      final ProcessBuilder.Redirect stdout
+  ) {
     final List<String> vector = new ArrayList<>(command);
     if (directory != null && vector.get(0).startsWith("./")) {
       vector.set(0, directory.resolve(vector.get(0).substring(2)).toString());

@@ -12,7 +12,6 @@ import java.util.Set;
 
 /** Reports the {@code default} label of a switch that already covers every constant of its enum. */
 public final class ExhaustiveSwitchHasDefaultCheck implements RuleCheck {
-
   private static final String STATEMENT = "statement";
 
   private final String message;
@@ -42,7 +41,8 @@ public final class ExhaustiveSwitchHasDefaultCheck implements RuleCheck {
       final dev.ward.analysis.domain.rule.FlowView flow,
       final dev.ward.analysis.domain.rule.ScopeView scopes,
       final UnitTypeFacts types,
-      final dev.ward.analysis.domain.ir.SourceUnit unit) {
+      final dev.ward.analysis.domain.ir.SourceUnit unit
+  ) {
     final Map<String, Set<String>> declared = EnumSwitch.declaredConstants(root);
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(STATEMENT))) {

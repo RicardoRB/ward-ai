@@ -13,7 +13,6 @@ import java.util.Set;
  * check, goes to the shared matcher. Every other language uses the shared matcher.
  */
 public final class LanguageRuleMatcher implements RuleMatcher {
-
   private static final Set<AnalysisLanguage> STRUCTURAL =
       Set.of(AnalysisLanguage.TYPESCRIPT, AnalysisLanguage.JAVASCRIPT);
 

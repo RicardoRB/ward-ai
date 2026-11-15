@@ -31,7 +31,8 @@ class RemovedZapGateContractTest {
         .allSatisfy(
             definition ->
                 assertThat(definition.id() + " " + definition.displayName())
-                    .doesNotContainPattern(ZAP));
+                    .doesNotContainPattern(ZAP)
+        );
   }
 
   @Test
@@ -53,7 +54,8 @@ class RemovedZapGateContractTest {
         regularFiles(ROOT.resolve("website/src/content/docs"), ".*\\.(md|mdx)").stream()
             .filter(file -> !file.toString().replace('\\', '/').contains("/reference/rules"))
             .filter(file -> !file.endsWith("configuration/gates.mdx"))
-            .toList());
+            .toList()
+    );
     assertThat(violations(files)).as("doc lines that name Zap").isEmpty();
   }
 

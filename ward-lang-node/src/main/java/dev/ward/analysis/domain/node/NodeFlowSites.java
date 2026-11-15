@@ -16,7 +16,6 @@ import java.util.function.Predicate;
  * nested function or class is another body, so it is not entered.
  */
 final class NodeFlowSites implements FlowSites {
-
   private static final String SINGLE = "singleExpression";
   private static final String ARGUMENTS = "arguments";
   private static final String VARIABLE_DECLARATION = "variableDeclaration";
@@ -81,7 +80,12 @@ final class NodeFlowSites implements FlowSites {
       found.add(siteOf(FlowSiteKind.MEMBER_READ, node, parts, List.of()));
     } else if (NodeStringBuilds.templateOf(node).isPresent()) {
       NodeStringSites.template(
-          node, NodeStringBuilds.templateOf(node).get(), found, this::walk, this::children);
+          node,
+          NodeStringBuilds.templateOf(node).get(),
+          found,
+          this::walk,
+          this::children
+      );
     } else if (NodeStringBuilds.isChain(parts)) {
       NodeStringSites.concatenation(node, found, this::walk, this::children);
     } else if (NodeCallShapes.isNew(parts)) {
@@ -103,7 +107,8 @@ final class NodeFlowSites implements FlowSites {
         types.receiverType(qualifier),
         List.of(),
         NodeCallShapes.spans(NodeCallShapes.argumentValues(parts.get(2))),
-        node.span());
+        node.span()
+    );
   }
 
   /**
@@ -127,13 +132,18 @@ final class NodeFlowSites implements FlowSites {
                   types.receiverType(qualifier),
                   List.of(),
                   NodeCallShapes.spans(List.of(parts.get(2))),
-                  node.span());
-            });
+                  node.span()
+              );
+            }
+        );
   }
 
   /** The callee's receiver and the arguments come first, so inner sites are listed before. */
   private void call(
-      final SyntaxNode callee, final List<SyntaxNode> values, final List<FlowSite> found) {
+      final SyntaxNode callee,
+      final List<SyntaxNode> values,
+      final List<FlowSite> found
+  ) {
     final List<SyntaxNode> calleeParts = NodeFlowSyntax.parts(callee);
     final Optional<SyntaxNode> receiver = NodeStringBuilds.concatReceiver(calleeParts);
     if (receiver.isPresent()) {
@@ -158,7 +168,9 @@ final class NodeFlowSites implements FlowSites {
               types.calleeReceiver(written),
               List.of(),
               NodeCallShapes.spans(values),
-              callee.span()));
+              callee.span()
+          )
+      );
     }
   }
 
@@ -166,7 +178,8 @@ final class NodeFlowSites implements FlowSites {
       final FlowSiteKind kind,
       final SyntaxNode node,
       final List<SyntaxNode> parts,
-      final List<SyntaxNode> values) {
+      final List<SyntaxNode> values
+  ) {
     final String qualifier = NodeFlowSyntax.text(parts.get(0));
     return new FlowSite(
         kind,
@@ -175,7 +188,8 @@ final class NodeFlowSites implements FlowSites {
         types.receiverType(qualifier),
         List.of(),
         NodeCallShapes.spans(values),
-        node.span());
+        node.span()
+    );
   }
 
   /** A dotted name ends in a member name, with a member token before it. */

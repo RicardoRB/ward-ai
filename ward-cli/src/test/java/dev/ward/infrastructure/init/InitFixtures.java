@@ -16,12 +16,15 @@ public final class InitFixtures {
 
   /** Returns the file-writing ports for {@code buildTools} and {@code ruleFiles}. */
   public static InitProjectFiles projectFiles(
-      final BuildToolConfiguration buildTools, final RuleFileGeneration ruleFiles) {
+      final BuildToolConfiguration buildTools,
+      final RuleFileGeneration ruleFiles
+  ) {
     return new InitProjectFiles(
         buildTools,
         ruleFiles,
         ArchitectureTablesFixtures.create(),
         new FileConfigurationStorage(),
-        new OwnedSectionWriter());
+        new OwnedSectionWriter()
+    );
   }
 }

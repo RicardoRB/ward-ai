@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 /** Turns character offsets of one text into 1-based lines and columns. */
 final class XmlPositions {
-
   private final int[] lineStarts;
   private final int length;
 

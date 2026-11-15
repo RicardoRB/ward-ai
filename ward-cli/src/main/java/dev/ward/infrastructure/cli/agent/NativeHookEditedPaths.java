@@ -25,7 +25,8 @@ final class NativeHookEditedPaths {
                 targets.stream()
                     .map(target -> base.resolve(target.path()).normalize())
                     .distinct()
-                    .toList())
+                    .toList()
+        )
         .orElse(List.of());
   }
 }

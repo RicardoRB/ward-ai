@@ -6,8 +6,13 @@ import java.util.Set;
 
 /** A method with a body, as the inconsistent-synchronization check reads it. */
 record SyncMethod(
-    SyntaxNode node, String name, int arity, boolean isPublic, boolean isStatic, boolean sync) {
-
+    SyntaxNode node,
+    String name,
+    int arity,
+    boolean isPublic,
+    boolean isStatic,
+    boolean sync
+) {
   private static final String METHOD = "methodDeclaration";
   private static final Set<String> SPECIAL =
       Set.of(
@@ -18,7 +23,8 @@ record SyncMethod(
           "writeObject",
           "_jspInit",
           "_jspDestroy",
-          "this");
+          "this"
+      );
 
   /** Tells whether calling the method takes the lock on {@code this}. */
   boolean locksThis() {
@@ -42,7 +48,9 @@ record SyncMethod(
                     arity(m.node()),
                     m.has("public"),
                     m.has("static"),
-                    m.has("synchronized")))
+                    m.has("synchronized")
+                )
+        )
         .toList();
   }
 
@@ -50,7 +58,8 @@ record SyncMethod(
     return (int)
         SyntaxWalk.descendants(JavaNodes.kid(method, "formalParameters").orElse(method)).stream()
             .filter(
-                n -> "formalParameter".equals(n.kind()) || "lastFormalParameter".equals(n.kind()))
+                n -> "formalParameter".equals(n.kind()) || "lastFormalParameter".equals(n.kind())
+            )
             .count();
   }
 

@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
  * literal, a template literal with substitutions, and {@code .concat} on a string literal.
  */
 final class NodeStringBuilds {
-
   private static final String PLUS = "+";
   private static final String DOT = ".";
   private static final String CONCAT = "concat";

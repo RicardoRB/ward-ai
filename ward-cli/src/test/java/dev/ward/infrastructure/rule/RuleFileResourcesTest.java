@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
  * are checked by {@code NativeResourceGlobsTest}, which covers every packaged resource.
  */
 class RuleFileResourcesTest {
-
   @Test
   void everyRuleFileExistsOnTheClasspath() {
     for (final String file : bundledFiles()) {

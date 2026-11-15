@@ -8,7 +8,6 @@ import java.util.List;
  * Each toolchain answers for its own layout.
  */
 public interface ArchitectureTables {
-
   /**
    * Returns the project-relative source roots whose slices the cycle check covers; none when the
    * toolchain gives no roots.

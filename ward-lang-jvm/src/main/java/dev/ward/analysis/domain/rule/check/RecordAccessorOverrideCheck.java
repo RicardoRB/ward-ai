@@ -12,7 +12,6 @@ import java.util.Set;
  * parameters, that lacks {@code @Override}.
  */
 public final class RecordAccessorOverrideCheck implements RuleCheck {
-
   private static final String RECORD = "recordDeclaration";
   private static final String RECORD_BODY = "recordBody";
   private static final String RECORD_HEADER = "recordHeader";
@@ -67,7 +66,10 @@ public final class RecordAccessorOverrideCheck implements RuleCheck {
   }
 
   private void checkMember(
-      final SyntaxNode member, final Set<String> components, final List<RuleMatch> matches) {
+      final SyntaxNode member,
+      final Set<String> components,
+      final List<RuleMatch> matches
+  ) {
     if (!"classBodyDeclaration".equals(member.kind())) {
       return;
     }

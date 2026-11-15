@@ -8,7 +8,6 @@ import java.util.List;
  * oasdiff list that Ward implements, grouped in families by what they compare.
  */
 public final class BreakingRules {
-
   private BreakingRules() {}
 
   /** Returns every rule, in the order of its family. */

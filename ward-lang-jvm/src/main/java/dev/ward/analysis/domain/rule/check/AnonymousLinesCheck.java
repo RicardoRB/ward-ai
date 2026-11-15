@@ -12,7 +12,6 @@ import java.util.Set;
  * of a class creation, so a named nested class is not measured.
  */
 public final class AnonymousLinesCheck implements RuleCheck {
-
   private static final String CREATION = "classCreatorRest";
   private static final String BODY = "classBody";
 
@@ -47,7 +46,10 @@ public final class AnonymousLinesCheck implements RuleCheck {
     if (lines > max) {
       matches.add(
           new RuleMatch(
-              body.span(), CheckSupport.fill(message, String.valueOf(lines), String.valueOf(max))));
+              body.span(),
+              CheckSupport.fill(message, String.valueOf(lines), String.valueOf(max))
+          )
+      );
     }
   }
 }

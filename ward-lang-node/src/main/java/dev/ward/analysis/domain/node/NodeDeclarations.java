@@ -12,7 +12,6 @@ import java.util.List;
  * writes it at the declaration, as an initializer is.
  */
 final class NodeDeclarations {
-
   private static final String VARIABLE_LIST = "variableDeclarationList";
   private static final String BINDING_PATTERN = "bindingPattern";
   private static final String INITIALIZER = "initializer";
@@ -64,7 +63,10 @@ final class NodeDeclarations {
 
   /** Adds the declarators of a list, each declaring its names when the list has a modifier. */
   void declarationList(
-      final SyntaxNode list, final boolean declares, final List<VariableAccess> found) {
+      final SyntaxNode list,
+      final boolean declares,
+      final List<VariableAccess> found
+  ) {
     for (final SyntaxNode declaration :
         NodeFlowSyntax.allOf(NodeFlowSyntax.parts(list), VARIABLE_DECLARATION)) {
       declarator(declaration, declares, found);
@@ -155,7 +157,10 @@ final class NodeDeclarations {
    * parts are read as expressions.
    */
   private void declarator(
-      final SyntaxNode declaration, final boolean declares, final List<VariableAccess> found) {
+      final SyntaxNode declaration,
+      final boolean declares,
+      final List<VariableAccess> found
+  ) {
     final List<SyntaxNode> parts = NodeFlowSyntax.parts(declaration);
     final boolean assigns = NodeSyntax.hasToken(parts, EQUALS);
     if (!declares && !assigns) {

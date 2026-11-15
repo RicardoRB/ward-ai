@@ -14,7 +14,6 @@ import java.util.Set;
  * same type: the type is imported, lies in {@code java.lang}, or lies in the unit's own package.
  */
 public final class UnnecessaryFullyQualifiedTypeCheck implements RuleCheck {
-
   private static final String TYPE_KIND = "classType";
   private static final String PACKAGE_KIND = "packageName";
   private static final String TYPE_NAME_KIND = "typeIdentifier";
@@ -40,7 +39,8 @@ public final class UnnecessaryFullyQualifiedTypeCheck implements RuleCheck {
       final Optional<String> qualified = qualifiedName(visit.node());
       if (qualified.isPresent() && unnecessary(qualified.get(), imported, unitPackage)) {
         matches.add(
-            CheckSupport.at(visit.node().span(), CheckSupport.fill(message, qualified.get(), "")));
+            CheckSupport.at(visit.node().span(), CheckSupport.fill(message, qualified.get(), ""))
+        );
       }
     }
     return List.copyOf(matches);
@@ -69,7 +69,10 @@ public final class UnnecessaryFullyQualifiedTypeCheck implements RuleCheck {
   }
 
   private static boolean unnecessary(
-      final String qualified, final Set<String> imported, final Optional<String> unitPackage) {
+      final String qualified,
+      final Set<String> imported,
+      final Optional<String> unitPackage
+  ) {
     final int dot = qualified.lastIndexOf('.');
     final String pkg = qualified.substring(0, dot);
     return imported.contains(qualified)

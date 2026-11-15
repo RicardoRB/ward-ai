@@ -12,7 +12,11 @@ final class MemberViews {
   private MemberViews() {}
 
   static Optional<Hierarchy.Found<JvmField>> field(
-      final JvmClass owner, final String name, final Map<String, JType> bound) {
+      final JvmClass owner,
+      final String name,
+      final Map<String,
+      JType> bound
+  ) {
     return owner.fields().stream()
         .filter(candidate -> candidate.name().equals(name))
         .findFirst()
@@ -21,19 +25,25 @@ final class MemberViews {
 
   static List<Hierarchy.Found<JvmMethod>> methods(
       final JvmClass owner,
-      final Map<String, JType> bound,
+      final Map<String,
+      JType> bound,
       final String name,
-      final Set<String> signatures) {
+      final Set<String> signatures
+  ) {
     return owner.methods().stream()
         .filter(
-            method -> method.name().equals(name) && !Flags.has(method.access(), Flags.SYNTHETIC))
+            method -> method.name().equals(name) && !Flags.has(method.access(), Flags.SYNTHETIC)
+        )
         .filter(method -> signatures.add(signature(method, bound)))
         .map(method -> new Hierarchy.Found<>(method, owner, visible(method, bound)))
         .toList();
   }
 
   private static Map<String, JType> visible(
-      final JvmMethod method, final Map<String, JType> bound) {
+      final JvmMethod method,
+      final Map<String,
+      JType> bound
+  ) {
     final Map<String, JType> visible = new HashMap<>(bound);
     method.typeParameters().forEach(parameter -> visible.remove(parameter.name()));
     return visible;

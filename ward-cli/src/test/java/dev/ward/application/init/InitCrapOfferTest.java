@@ -26,9 +26,7 @@ class InitCrapOfferTest {
   private final InitSetupCatalog catalog = new InitSetupCatalog(new FakeEnvironmentInspection());
 
   @ParameterizedTest
-  @EnumSource(
-      value = BuildTool.class,
-      names = {"MAVEN", "GRADLE"})
+  @EnumSource(value = BuildTool.class, names = {"MAVEN", "GRADLE"})
   void jvmOffersTheGateButNoPresetSelectsIt(final BuildTool tool) {
     final Project project = new Project(ROOT, Language.JAVA, tool, Framework.NONE);
 
@@ -37,10 +35,12 @@ class InitCrapOfferTest {
       assertThat(catalog.presetGates(project, preset)).doesNotContain(CRAP);
     }
     assertThat(
-            ConfigurationTemplate.render(
-                resolve(project, QualityPreset.STRICT, presetGates(project, QualityPreset.STRICT)),
-                QualityPreset.STRICT,
-                project))
+        ConfigurationTemplate.render(
+            resolve(project, QualityPreset.STRICT, presetGates(project, QualityPreset.STRICT)),
+            QualityPreset.STRICT,
+            project
+        )
+    )
         .doesNotContain("crap");
   }
 
@@ -57,7 +57,8 @@ class InitCrapOfferTest {
         .containsSubsequence("coverage", CRAP);
     assertThat(toml)
         .contains(
-            "[checks.crap]\nenabled = true\nprofiles = [\"pre-push\", \"ci\"]\nuses = \"crap\"\n")
+            "[checks.crap]\nenabled = true\nprofiles = [\"pre-push\", \"ci\"]\nuses = \"crap\"\n"
+        )
         .doesNotContain("[checks.crap.paths]");
     assertThat(toml.substring(toml.indexOf("[checks.crap]"))).doesNotContain("command =");
   }
@@ -82,9 +83,7 @@ class InitCrapOfferTest {
   }
 
   @ParameterizedTest
-  @EnumSource(
-      value = BuildTool.class,
-      names = {"SWIFTPM", "XCODE"})
+  @EnumSource(value = BuildTool.class, names = {"SWIFTPM", "XCODE"})
   void swiftIsNotOfferedTheGateAndTheErrorSaysHowToAddItByHand(final BuildTool tool) {
     final Project project = new Project(ROOT, Language.SWIFT, tool, Framework.NONE);
 
@@ -110,8 +109,14 @@ class InitCrapOfferTest {
   }
 
   private List<InitGateOption> resolve(
-      final Project project, final QualityPreset preset, final List<String> ids) {
+      final Project project,
+      final QualityPreset preset,
+      final List<String> ids
+  ) {
     return SelectedGates.resolve(
-        catalog, project, new InitSelection(List.of("none"), ids, null, preset));
+        catalog,
+        project,
+        new InitSelection(List.of("none"), ids, null, preset)
+    );
   }
 }

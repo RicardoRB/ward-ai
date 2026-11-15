@@ -28,7 +28,9 @@ final class Inference {
 
   /** Binds the method's type parameters from the argument types. */
   Map<String, JType> infer(
-      final Hierarchy.Found<JvmMethod> chosen, final List<Overloads.Argument> arguments) {
+      final Hierarchy.Found<JvmMethod> chosen,
+      final List<Overloads.Argument> arguments
+  ) {
     final Set<String> variables = new HashSet<>();
     chosen.member().typeParameters().forEach(parameter -> variables.add(parameter.name()));
     final Map<String, JType> bound = new HashMap<>();
@@ -47,7 +49,8 @@ final class Inference {
             Overloads.parameterAt(parameters, index, varargs),
             argument.type().get(),
             variables,
-            bound);
+            bound
+        );
       }
     }
     return bound;
@@ -58,7 +61,9 @@ final class Inference {
       final JType pattern,
       final JType actual,
       final Set<String> variables,
-      final Map<String, JType> bound) {
+      final Map<String,
+      JType> bound
+  ) {
     if (pattern instanceof JType.TypeVariable variable && variables.contains(variable.name())) {
       bind(variable.name(), Types.boxed(actual), bound);
     } else if (pattern instanceof JType.ArrayType array
@@ -75,7 +80,9 @@ final class Inference {
       final JType.ClassType pattern,
       final JType.ClassType site,
       final Set<String> variables,
-      final Map<String, JType> bound) {
+      final Map<String,
+      JType> bound
+  ) {
     final Optional<JType.ClassType> view = hierarchy.asSuper(site, pattern.name());
     if (view.isEmpty() || view.get().arguments().size() != pattern.arguments().size()) {
       return;
@@ -118,7 +125,9 @@ final class Inference {
     return Optional.of(
         new Shape(
             single.member().parameters().stream().map(p -> Types.substitute(p, stripped)).toList(),
-            Types.substitute(single.member().returnType(), stripped)));
+            Types.substitute(single.member().returnType(), stripped)
+        )
+    );
   }
 
   private static JType strip(final JType type) {
@@ -131,7 +140,8 @@ final class Inference {
   private void collectAbstract(
       final JType.ClassType site,
       final List<Hierarchy.Found<JvmMethod>> out,
-      final Set<String> seen) {
+      final Set<String> seen
+  ) {
     final Optional<JvmClass> owner = hierarchy.find(site.name());
     if (owner.isEmpty() || !seen.add(site.name())) {
       return;

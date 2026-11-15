@@ -23,8 +23,8 @@ public record FormatLayout(
     int tabWidth,
     Optional<LineEnding> lineEnding,
     boolean insertFinalNewline,
-    ByteOrderMark byteOrderMark) {
-
+    ByteOrderMark byteOrderMark
+) {
   /**
    * Checks the components.
    *

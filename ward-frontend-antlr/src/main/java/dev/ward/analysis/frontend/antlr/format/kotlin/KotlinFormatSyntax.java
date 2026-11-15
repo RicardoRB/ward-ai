@@ -5,7 +5,6 @@ import dev.ward.analysis.domain.format.FormatSyntaxTree;
 
 /** Parses Kotlin for the format safety checks: tokens, rule kinds and the first syntax error. */
 public final class KotlinFormatSyntax implements FormatSyntax {
-
   @Override
   public FormatSyntaxTree parse(final String source) {
     final KotlinParse parse = KotlinParse.of(source);

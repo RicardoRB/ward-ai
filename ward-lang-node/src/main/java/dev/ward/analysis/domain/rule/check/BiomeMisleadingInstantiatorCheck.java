@@ -17,7 +17,6 @@ import java.util.Set;
  * first method is named constructor.
  */
 public final class BiomeMisleadingInstantiatorCheck implements RuleCheck {
-
   private static final String INTERFACE = "interfaceDeclaration";
   private static final String CLASS = "classDeclaration";
   private static final String TYPE_ALIAS = "typeAliasDeclaration";
@@ -54,7 +53,10 @@ public final class BiomeMisleadingInstantiatorCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(INTERFACE, CLASS, TYPE_ALIAS)).stream()
         .flatMap(visit -> finding(visit.node()).stream())
         .map(member -> CheckSupport.at(member.span(), message))
@@ -81,7 +83,9 @@ public final class BiomeMisleadingInstantiatorCheck implements RuleCheck {
                         () ->
                             childOfKind(member, METHOD)
                                 .filter(method -> CONSTRUCTOR.equals(textOf(method, NAME)))
-                                .isPresent()))
+                                .isPresent()
+                    )
+        )
         .findFirst();
   }
 
@@ -110,7 +114,8 @@ public final class BiomeMisleadingInstantiatorCheck implements RuleCheck {
             type ->
                 members(type).stream()
                     .filter(member -> childOfKind(member, METHOD).isPresent())
-                    .findFirst())
+                    .findFirst()
+        )
         .filter(member -> CONSTRUCTOR.equals(textOf(childOfKind(member, METHOD).get(), NAME)))
         .map(member -> childOfKind(member, METHOD).get());
   }

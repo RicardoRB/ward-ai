@@ -12,7 +12,6 @@ import java.util.Optional;
  * points at the attribute.
  */
 public final class ApplicationFlagCheck implements RuleCheck {
-
   private final String attribute;
   private final String message;
 

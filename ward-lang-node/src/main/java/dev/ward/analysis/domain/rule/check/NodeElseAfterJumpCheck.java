@@ -12,7 +12,6 @@ import java.util.Set;
  * no-else-return. An {@code else if} is reported only when {@code allowElseIf} is false.
  */
 public final class NodeElseAfterJumpCheck implements RuleCheck {
-
   private static final String ELSE = "'else'";
   private static final String IF = "ifStatement";
   private static final Set<String> WRAPPERS = Set.of("statement", "block", "statementList");

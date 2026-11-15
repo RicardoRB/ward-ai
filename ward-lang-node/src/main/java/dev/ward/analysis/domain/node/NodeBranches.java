@@ -10,7 +10,6 @@ import java.util.List;
  * operator, a conditional operator, or the right-hand side of an assignment that holds either.
  */
 final class NodeBranches {
-
   private static final String AND = "&&";
   private static final int RIGHT_INDEX = 2;
   private static final int DECLARATION_PARTS = 3;
@@ -30,7 +29,10 @@ final class NodeBranches {
    * statement is an assignment or a return.
    */
   void valueStatement(
-      final SyntaxNode statement, final SyntaxNode expression, final boolean wholeStatement) {
+      final SyntaxNode statement,
+      final SyntaxNode expression,
+      final boolean wholeStatement
+  ) {
     final SyntaxNode value = NodeFlowSyntax.unwrap(expression);
     final SyntaxNode split = NodeExpressions.assignedValue(value);
     if (!NodeExpressions.isLogical(split) && !NodeExpressions.isTernary(split)) {

@@ -14,21 +14,25 @@ import org.junit.jupiter.api.Test;
 /** Native images contain only build-time classes; JVM tests cannot see violations at run time. */
 @AnalyzeClasses(packages = "dev.ward", importOptions = ImportOption.DoNotIncludeTests.class)
 class NativeImageCompatibilityTest {
-
   @ArchTest
   static void productionCodeDoesNotDefineOrLoadClassesAtRunTime(final JavaClasses classes) {
     assertNoDependencies(
-        classes, "dev.ward..", ArchitectureBoundarySupport::isNativeImageIncompatibleApi);
+        classes,
+        "dev.ward..",
+        ArchitectureBoundarySupport::isNativeImageIncompatibleApi
+    );
   }
 
   @Test
   void ruleRejectsRunTimeProxyClassGeneration() {
     assertThatThrownBy(
-            () ->
-                assertNoDependencies(
-                    new ClassFileImporter().importClasses(NativeImageIncompatibleAccess.class),
-                    "dev.ward.domain.architecturefixture..",
-                    ArchitectureBoundarySupport::isNativeImageIncompatibleApi))
+        () ->
+            assertNoDependencies(
+                new ClassFileImporter().importClasses(NativeImageIncompatibleAccess.class),
+                "dev.ward.domain.architecturefixture..",
+                ArchitectureBoundarySupport::isNativeImageIncompatibleApi
+            )
+    )
         .isInstanceOf(AssertionError.class)
         .hasMessageContaining("MethodHandleProxies");
   }

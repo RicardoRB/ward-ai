@@ -32,7 +32,6 @@ import java.util.Optional;
  * a variable read before its single assignment instead of reporting its declaration.
  */
 public final class NodePreferConstCheck implements RuleCheck {
-
   private static final String NAME = "{value}";
   private static final int SINGLE_WRITE = 1;
 
@@ -48,7 +47,10 @@ public final class NodePreferConstCheck implements RuleCheck {
    * @param message the message of each finding; {@code {value}} stands for the name
    */
   public NodePreferConstCheck(
-      final boolean allDestructured, final boolean ignoreReadBeforeAssign, final String message) {
+      final boolean allDestructured,
+      final boolean ignoreReadBeforeAssign,
+      final String message
+  ) {
     this.allDestructured = allDestructured;
     this.ignoreReadBeforeAssign = ignoreReadBeforeAssign;
     this.message = message;
@@ -66,7 +68,11 @@ public final class NodePreferConstCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes();
     final List<RuleMatch> found = new ArrayList<>();
     final Map<Span, List<Optional<RuleMatch>>> groups = new LinkedHashMap<>();
@@ -95,14 +101,17 @@ public final class NodePreferConstCheck implements RuleCheck {
       final SyntaxNode root,
       final SourceUnit unit,
       final UnitScopes scopes,
-      final Binding binding) {
+      final Binding binding
+  ) {
     final Optional<SyntaxNode> declaration =
         PreferConstSyntax.enclosingDeclaration(root, binding.declaration());
     final String pattern = declaration.map(PreferConstSyntax::patternText).orElse("");
     final boolean initialized =
         pattern.isEmpty()
             ? PreferConstSyntax.assignsAfter(
-                binding.declaration().startOffset() + binding.name().length(), unit)
+                binding.declaration().startOffset() + binding.name().length(),
+                unit
+            )
             : PreferConstSyntax.initializedAfterPattern(pattern);
     final Optional<Span> host =
         pattern.isEmpty() ? Optional.empty() : declaration.map(SyntaxNode::span);
@@ -112,7 +121,9 @@ public final class NodePreferConstCheck implements RuleCheck {
   private static void collect(
       final Verdict verdict,
       final List<RuleMatch> found,
-      final Map<Span, List<Optional<RuleMatch>>> groups) {
+      final Map<Span,
+      List<Optional<RuleMatch>>> groups
+  ) {
     if (verdict.destructuring().isEmpty()) {
       verdict.match().ifPresent(found::add);
     } else {
@@ -132,7 +143,8 @@ public final class NodePreferConstCheck implements RuleCheck {
       final Binding binding,
       final boolean initialized,
       final UnitScopes scopes,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<NameReference> uses = scopes.usesOf(binding);
     final List<NameReference> writes =
         uses.stream()
@@ -154,7 +166,8 @@ public final class NodePreferConstCheck implements RuleCheck {
       final Binding binding,
       final List<NameReference> uses,
       final NameReference write,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     if (write.scope() != binding.scope()
         || !PreferConstSyntax.plainAssignment(write.span(), unit)) {
       return Optional.empty();
@@ -172,7 +185,8 @@ public final class NodePreferConstCheck implements RuleCheck {
         .anyMatch(
             use ->
                 use.access() != ReferenceAccess.WRITE
-                    && use.span().startOffset() < write.startOffset());
+                    && use.span().startOffset() < write.startOffset()
+        );
   }
 
   private RuleMatch match(final Binding binding, final Span at) {

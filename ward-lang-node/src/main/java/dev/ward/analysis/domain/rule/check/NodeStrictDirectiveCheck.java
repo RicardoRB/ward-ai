@@ -18,7 +18,6 @@ import java.util.Set;
  * in a strict one, {@code never} forbids it, and {@code safe} is {@code function} for a script.
  */
 public final class NodeStrictDirectiveCheck implements RuleCheck {
-
   /** The modes of the rule, as ESLint names them. */
   public enum Mode {
     NEVER,
@@ -71,7 +70,6 @@ public final class NodeStrictDirectiveCheck implements RuleCheck {
 
   /** The walk over one unit: the scope stack of functions, and the depth of class bodies. */
   private final class DirectiveWalk {
-
     /**
      * The mode a commonjs source follows, or null for a module, where every directive is unneeded.
      */
@@ -159,7 +157,10 @@ public final class NodeStrictDirectiveCheck implements RuleCheck {
     }
 
     private void reportOrNonSimple(
-        final SyntaxNode function, final List<SyntaxNode> directives, final String id) {
+        final SyntaxNode function,
+        final List<SyntaxNode> directives,
+        final String id
+    ) {
       if (simpleParameters(function)) {
         all(directives, id);
       } else {
@@ -170,7 +171,8 @@ public final class NodeStrictDirectiveCheck implements RuleCheck {
 
     private void all(final List<SyntaxNode> directives, final String id) {
       directives.forEach(
-          directive -> matches.add(new RuleMatch(directive.span(), messages.get(id))));
+          directive -> matches.add(new RuleMatch(directive.span(), messages.get(id)))
+      );
     }
 
     private void allExceptFirst(final List<SyntaxNode> directives, final String id) {
@@ -182,7 +184,10 @@ public final class NodeStrictDirectiveCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return walk(root, COMMONJS_EXTENSIONS.stream().anyMatch(unit.path()::endsWith));
   }
 
@@ -207,7 +212,8 @@ public final class NodeStrictDirectiveCheck implements RuleCheck {
             elements -> {
               walk.program(elements);
               elements.children().forEach(walk::visit);
-            });
+            }
+        );
     return List.copyOf(walk.matches);
   }
 
@@ -235,7 +241,8 @@ public final class NodeStrictDirectiveCheck implements RuleCheck {
         break;
       }
       if (USE_STRICT.equals(
-          LeafText.of(element).replace("\"", "").replace("'", "").replace(";", ""))) {
+          LeafText.of(element).replace("\"", "").replace("'", "").replace(";", "")
+      )) {
         found.add(element);
       }
     }
@@ -252,7 +259,8 @@ public final class NodeStrictDirectiveCheck implements RuleCheck {
     return findBody(function)
         .flatMap(
             body ->
-                body.children().stream().filter(c -> SOURCE_ELEMENTS.equals(c.kind())).findFirst());
+                body.children().stream().filter(c -> SOURCE_ELEMENTS.equals(c.kind())).findFirst()
+        );
   }
 
   private static Optional<SyntaxNode> findBody(final SyntaxNode node) {
@@ -283,6 +291,6 @@ public final class NodeStrictDirectiveCheck implements RuleCheck {
     return FUNCTION_DECLARATION.equals(node.kind())
         || ARROW.equals(node.kind())
         || FUNCTION_EXPRESSION.equals(node.kind())
-            && node.children().stream().noneMatch(c -> ARROW.equals(c.kind()));
+        && node.children().stream().noneMatch(c -> ARROW.equals(c.kind()));
   }
 }

@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Test;
  * The docstring check reports parameters that the Args section of a docstring does not document.
  */
 final class PythonDocstringArgsCheckTest {
-
   private static List<String> run(final String source) {
     return positions(
-        new PythonDocstringCheck(Problem.UNDOCUMENTED_PARAM, "undocumented").matches(tree(source)));
+        new PythonDocstringCheck(Problem.UNDOCUMENTED_PARAM, "undocumented").matches(tree(source))
+    );
   }
 
   @Test

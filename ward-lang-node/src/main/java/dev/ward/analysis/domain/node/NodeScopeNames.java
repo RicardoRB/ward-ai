@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * an identifier, or an array or object literal of patterns; the grammars share these shapes.
  */
 final class NodeScopeNames {
-
   private static final int TRIPLE = 3;
 
   private static final Pattern WORD = Pattern.compile("[A-Za-z_$][A-Za-z0-9_$]*");
@@ -31,7 +30,8 @@ final class NodeScopeNames {
           "arrayElement",
           "expressionSequence",
           "bindingPattern",
-          "moduleExportName");
+          "moduleExportName"
+      );
   private static final Set<String> RESERVED = Set.of("this", "super", "null", "true", "false");
   private static final Set<String> TYPE_NODES =
       Set.of("typeAnnotation", "typeParameters", "typeArguments");
@@ -79,7 +79,8 @@ final class NodeScopeNames {
       final int scope,
       final BindingKind kind,
       final Set<BindingFlag> flags,
-      final boolean destructured) {
+      final boolean destructured
+  ) {
     final SyntaxNode inner = unwrap(pattern);
     if (TYPE_NODES.contains(inner.kind())) {
       return;
@@ -100,7 +101,8 @@ final class NodeScopeNames {
       final int scope,
       final BindingKind kind,
       final Set<BindingFlag> flags,
-      final boolean destructured) {
+      final boolean destructured
+  ) {
     final List<SyntaxNode> parts = NodeFlowSyntax.parts(inner);
     if (PROPERTY_ASSIGNMENT.equals(inner.kind()) && hasToken(inner, COLON)) {
       expression.accept(parts.get(0));
@@ -140,7 +142,8 @@ final class NodeScopeNames {
       final int scope,
       final BindingKind kind,
       final Set<BindingFlag> flags,
-      final boolean destructured) {
+      final boolean destructured
+  ) {
     final Set<BindingFlag> all = EnumSet.noneOf(BindingFlag.class);
     all.addAll(flags);
     if (destructured) {

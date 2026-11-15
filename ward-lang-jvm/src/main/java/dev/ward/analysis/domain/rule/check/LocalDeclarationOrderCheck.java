@@ -13,7 +13,6 @@ import java.util.Set;
  * whose type is {@code var} must be initialized and is skipped.
  */
 public final class LocalDeclarationOrderCheck implements RuleCheck {
-
   private static final String VAR = "'var'";
   private static final String INITIALIZER = "'='";
 

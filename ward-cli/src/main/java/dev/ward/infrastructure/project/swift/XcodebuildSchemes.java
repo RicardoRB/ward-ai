@@ -54,7 +54,8 @@ public final class XcodebuildSchemes implements XcodeSchemes {
       command.addAll(List.of("-workspace", workspace.get()));
     } else {
       command.addAll(
-          List.of("-project", named(root, PROJECT_SUFFIX).findFirst().orElseThrow(this::noXcode)));
+          List.of("-project", named(root, PROJECT_SUFFIX).findFirst().orElseThrow(this::noXcode))
+      );
     }
     final CommandResult result = executor.execute(List.copyOf(command), root);
     if (result.hasExecutionError() || !result.succeeded()) {

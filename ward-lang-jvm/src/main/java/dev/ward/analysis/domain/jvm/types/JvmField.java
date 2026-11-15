@@ -15,7 +15,12 @@ import java.util.Optional;
  * @param annotations the qualified names of its annotations
  */
 public record JvmField(
-    String name, int access, JType type, Optional<Object> constant, List<String> annotations) {
+    String name,
+    int access,
+    JType type,
+    Optional<Object> constant,
+    List<String> annotations
+) {
   /**
    * Copies the annotations.
    *

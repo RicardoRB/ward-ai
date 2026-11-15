@@ -24,7 +24,6 @@ import java.util.Set;
  * rest element; upgrade when the pattern's rest element is visible to the check
  */
 public final class BiomeUnusedParameterCheck implements RuleCheck {
-
   private static final Set<ScopeKind> FUNCTIONS = Set.of(ScopeKind.FUNCTION, ScopeKind.LAMBDA);
   private static final String IGNORED_PREFIX = "_";
 
@@ -55,7 +54,11 @@ public final class BiomeUnusedParameterCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes();
     return scopes.scopes().stream()
         .filter(scope -> FUNCTIONS.contains(scope.kind()) && !scope.open())
@@ -64,7 +67,10 @@ public final class BiomeUnusedParameterCheck implements RuleCheck {
         .map(
             binding ->
                 CheckSupport.at(
-                    binding.declaration(), CheckSupport.fill(message, binding.name(), "")))
+                    binding.declaration(),
+                    CheckSupport.fill(message, binding.name(), "")
+                )
+        )
         .sorted(Comparator.comparingInt(match -> match.span().startOffset()))
         .toList();
   }

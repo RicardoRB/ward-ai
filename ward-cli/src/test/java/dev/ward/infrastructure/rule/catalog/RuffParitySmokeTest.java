@@ -22,7 +22,6 @@ import org.junit.jupiter.api.condition.EnabledIf;
  * executable; the comparison is by line only, since Ruff's columns differ for some rules.
  */
 final class RuffParitySmokeTest {
-
   private static final String RUFF_PROPERTY = "ward.ruff.binary";
   private static final Pattern ROW = Pattern.compile(":(\\d+):\\d+: ");
   private static final Pattern TARGET = Pattern.compile("target-version\\s*=\\s*\"(py\\d+)\"");
@@ -90,7 +89,11 @@ final class RuffParitySmokeTest {
    * Compares one case, passing the case's {@code target-version} option to Ruff when it has one.
    */
   private static List<String> compareCase(
-      final String ruff, final String id, final Path directory, final String caseName)
+      final String ruff,
+      final String id,
+      final Path directory,
+      final String caseName
+  )
       throws IOException, InterruptedException {
     final Path options = directory.resolve("options-" + caseName + ".toml");
     final List<String> extra = new ArrayList<>();
@@ -117,7 +120,11 @@ final class RuffParitySmokeTest {
   }
 
   private static List<Integer> reportedLines(
-      final String ruff, final String id, final Path file, final List<String> extra)
+      final String ruff,
+      final String id,
+      final Path file,
+      final List<String> extra
+  )
       throws IOException, InterruptedException {
     final List<String> command =
         new ArrayList<>(
@@ -129,7 +136,9 @@ final class RuffParitySmokeTest {
                 "--select",
                 id,
                 "--output-format",
-                "concise"));
+                "concise"
+            )
+        );
     command.addAll(extra);
     command.add(file.toString());
     final Process process = new ProcessBuilder(command).redirectErrorStream(false).start();

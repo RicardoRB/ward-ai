@@ -9,7 +9,6 @@ import java.util.Optional;
 
 /** Positional helpers shared by the taint steps: statement containment and sanitized spans. */
 final class TaintSpans {
-
   private TaintSpans() {}
 
   /** Reports whether {@code inner} lies within {@code outer}. */

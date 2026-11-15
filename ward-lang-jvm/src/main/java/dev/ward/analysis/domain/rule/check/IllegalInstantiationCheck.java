@@ -13,7 +13,6 @@ import java.util.Set;
  * simple or qualified, without its type arguments.
  */
 public final class IllegalInstantiationCheck implements UnitCheck {
-
   private static final String NEW = "new";
   private static final String EXPRESSION = "expression";
   private static final String CREATOR_STOPS = "(<[{";
@@ -41,7 +40,10 @@ public final class IllegalInstantiationCheck implements UnitCheck {
         if (classes.contains(name)) {
           matches.add(
               CheckSupport.at(
-                  expression.children().get(0).span(), CheckSupport.fill(message, name, "")));
+                  expression.children().get(0).span(),
+                  CheckSupport.fill(message, name, "")
+              )
+          );
         }
       }
     }

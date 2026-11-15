@@ -13,7 +13,6 @@ import java.util.Set;
  * placeholder is not reported.
  */
 public final class StatementListCheck implements RuleCheck {
-
   /** The placeholder statement a block is reported for. */
   public enum Problem {
     /** A {@code pass} next to other statements. */

@@ -6,7 +6,6 @@ package dev.ward.analysis.domain.rule;
  */
 @FunctionalInterface
 public interface RuleMatcher {
-
   /**
    * Builds the rule that {@code definition} describes.
    *

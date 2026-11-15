@@ -11,17 +11,23 @@ import java.util.TreeSet;
 import org.junit.jupiter.api.Test;
 
 class CoverageMatchingTest {
-
   private static final int TWELVE = 12;
   private static final Path ROOT = Path.of("/proj");
 
   private static LineHits.Entry entry(
-      final LineHits.Kind kind, final String name, final int line, final boolean covered) {
+      final LineHits.Kind kind,
+      final String name,
+      final int line,
+      final boolean covered
+  ) {
     return new LineHits.Entry(
         kind,
         name,
         new FileLines(
-            new TreeSet<>(Set.of(line)), covered ? new TreeSet<>(Set.of(line)) : new TreeSet<>()));
+            new TreeSet<>(Set.of(line)),
+            covered ? new TreeSet<>(Set.of(line)) : new TreeSet<>()
+        )
+    );
   }
 
   private static LineHits report(final String path, final LineHits.Entry... entries) {
@@ -47,11 +53,15 @@ class CoverageMatchingTest {
             "coverage/lcov.info",
             entry(LineHits.Kind.PATH, "src/a.ts", 1, true),
             entry(LineHits.Kind.PATH, "/proj/src/b.ts", 1, true),
-            entry(LineHits.Kind.PATH, "/elsewhere/src/c.ts", 1, true));
+            entry(LineHits.Kind.PATH, "/elsewhere/src/c.ts", 1, true)
+        );
 
     final CoverageMatching matching =
         CoverageMatching.of(
-            ROOT, List.of(report), Set.of("src/a.ts", "src/b.ts", "src/c.ts", "coverage/src/a.ts"));
+            ROOT,
+            List.of(report),
+            Set.of("src/a.ts", "src/b.ts", "src/c.ts", "coverage/src/a.ts")
+        );
 
     assertThat(matching.lines()).containsOnlyKeys("src/a.ts", "src/b.ts");
   }
@@ -61,13 +71,15 @@ class CoverageMatchingTest {
     final LineHits report =
         report(
             "target/site/jacoco/jacoco.xml",
-            entry(LineHits.Kind.PACKAGE_FILE, "com/shop/Cart.java", 3, false));
+            entry(LineHits.Kind.PACKAGE_FILE, "com/shop/Cart.java", 3, false)
+        );
 
     final CoverageMatching matching =
         CoverageMatching.of(
             ROOT,
             List.of(report),
-            Set.of("src/main/java/com/shop/Cart.java", "src/main/java/Cart.java"));
+            Set.of("src/main/java/com/shop/Cart.java", "src/main/java/Cart.java")
+        );
 
     assertThat(matching.lines()).containsOnlyKeys("src/main/java/com/shop/Cart.java");
   }
@@ -77,14 +89,18 @@ class CoverageMatchingTest {
     final LineHits report =
         report(
             "api/target/site/jacoco/jacoco.xml",
-            entry(LineHits.Kind.PACKAGE_FILE, "com/shop/Cart.java", 3, true));
+            entry(LineHits.Kind.PACKAGE_FILE, "com/shop/Cart.java", 3, true)
+        );
 
     final CoverageMatching matching =
         CoverageMatching.of(
             ROOT,
             List.of(report),
             Set.of(
-                "domain/src/main/java/com/shop/Cart.java", "api/src/main/java/com/shop/Cart.java"));
+                "domain/src/main/java/com/shop/Cart.java",
+                "api/src/main/java/com/shop/Cart.java"
+            )
+        );
 
     assertThat(matching.lines()).containsOnlyKeys("api/src/main/java/com/shop/Cart.java");
   }

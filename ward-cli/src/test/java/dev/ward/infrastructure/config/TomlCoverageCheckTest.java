@@ -49,9 +49,10 @@ class TomlCoverageCheckTest {
   @Test
   void reportMayBeAnArray() throws IOException {
     assertThat(
-            coverage("minimum = 70\nreport = [\"a/lcov.info\", \"b/lcov.info\"]")
-                .coverage()
-                .reports())
+        coverage("minimum = 70\nreport = [\"a/lcov.info\", \"b/lcov.info\"]")
+            .coverage()
+            .reports()
+    )
         .containsExactly("a/lcov.info", "b/lcov.info");
   }
 
@@ -84,9 +85,10 @@ class TomlCoverageCheckTest {
   void aCommandThatRunsTheReportGoalInfersTheType() throws IOException {
     final GateConfiguration check =
         read(
-                reader,
-                dir,
-                "version = 2\n[checks.coverage]\ncommand = \"./mvnw jacoco:report\"\nminimum = 70")
+            reader,
+            dir,
+            "version = 2\n[checks.coverage]\ncommand = \"./mvnw jacoco:report\"\nminimum = 70"
+        )
             .checks()
             .get("coverage");
 
@@ -108,12 +110,14 @@ class TomlCoverageCheckTest {
   @Test
   void aBranchMinimumOnAnotherTypeIsRejected() {
     assertThatThrownBy(
-            () ->
-                read(
-                    reader,
-                    dir,
-                    "version = 2\n[checks.coverage]\nuses = \"swift-coverage\"\n"
-                        + "command = [\"swift\", \"test\"]\nminimum = 60\nminimum-branches = 50"))
+        () ->
+            read(
+                reader,
+                dir,
+                "version = 2\n[checks.coverage]\nuses = \"swift-coverage\"\n"
+                    + "command = [\"swift\", \"test\"]\nminimum = 60\nminimum-branches = 50"
+            )
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("minimum-branches")
         .hasMessageContaining("only for the coverage check");

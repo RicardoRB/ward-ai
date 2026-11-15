@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * junit4Only} is set, only a file that uses JUnit 4 is read.
  */
 public final class UnitTestMissingAnnotationCheck implements UnitCheck {
-
   private static final String TEST_CASE = "TestCase";
 
   private final Pattern classPattern;
@@ -29,7 +28,10 @@ public final class UnitTestMissingAnnotationCheck implements UnitCheck {
    * @param junit4Only whether to read only a file that uses JUnit 4
    */
   public UnitTestMissingAnnotationCheck(
-      final Pattern classPattern, final String message, final boolean junit4Only) {
+      final Pattern classPattern,
+      final String message,
+      final boolean junit4Only
+  ) {
     this.junit4Only = junit4Only;
     this.classPattern = Objects.requireNonNull(classPattern, "classPattern");
     this.message = Objects.requireNonNull(message, "message");
@@ -53,7 +55,10 @@ public final class UnitTestMissingAnnotationCheck implements UnitCheck {
         .map(
             method ->
                 CheckSupport.at(
-                    method.span(), CheckSupport.fill(message, JUnitMembers.name(method), "")))
+                    method.span(),
+                    CheckSupport.fill(message, JUnitMembers.name(method), "")
+                )
+        )
         .toList();
   }
 
@@ -69,6 +74,7 @@ public final class UnitTestMissingAnnotationCheck implements UnitCheck {
             node ->
                 node.children().isEmpty()
                     && (TEST_CASE.equals(SyntaxWalk.text(node))
-                        || SyntaxWalk.text(node).endsWith("." + TEST_CASE)));
+                        || SyntaxWalk.text(node).endsWith("." + TEST_CASE))
+        );
   }
 }

@@ -16,7 +16,6 @@ import org.antlr.v4.runtime.Token;
  * that breaks one item per line, with the continuation indent, when it does not fit.
  */
 final class KotlinLayout {
-
   private static final String SPACE = " ";
   private static final char NEWLINE = '\n';
   private static final int OUTER_CONTRIBUTION = 1;
@@ -160,7 +159,7 @@ final class KotlinLayout {
 
   private void separateNormally(final Token prev, final Token next, final int depth) {
     final String gap = KotlinTokens.gap(codePoints, prev, next);
-    final int newlines = (int) gap.chars().filter(c -> c == NEWLINE).count();
+    final int newlines = (int)gap.chars().filter(c -> c == NEWLINE).count();
     if (newlines == 0) {
       addSpacing(prev, next);
       return;

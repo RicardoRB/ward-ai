@@ -13,14 +13,18 @@ import java.util.Set;
  * Scripts and gate commands are read the same way.
  */
 final class NodeCommands {
-
   /** Commands that a package installs, for a script run when node_modules is not installed. */
   private static final Map<String, String> KNOWN_BINARIES =
       Map.of(
-          "tsc", "typescript",
-          "playwright", "@playwright/test",
-          "babel", "@babel/cli",
-          "stryker", "@stryker-mutator/core");
+          "tsc",
+          "typescript",
+          "playwright",
+          "@playwright/test",
+          "babel",
+          "@babel/cli",
+          "stryker",
+          "@stryker-mutator/core"
+      );
 
   private NodeCommands() {}
 
@@ -30,7 +34,8 @@ final class NodeCommands {
     installed.forEach(
         (name, owner) ->
             NodeInstalledPackages.binaryNames(name, owner.manifest())
-                .forEach(command -> providers.put(command, name)));
+                .forEach(command -> providers.put(command, name))
+    );
     return providers;
   }
 
@@ -44,7 +49,8 @@ final class NodeCommands {
     tokens.forEach(
         token ->
             Optional.ofNullable(providers.getOrDefault(token, KNOWN_BINARIES.get(token)))
-                .ifPresent(packages::add));
+                .ifPresent(packages::add)
+    );
     return packages;
   }
 }

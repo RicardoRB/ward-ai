@@ -7,7 +7,6 @@ import java.util.Set;
 
 /** Reads names and target lists from the expression nodes of the Python grammar. */
 final class PythonNames {
-
   /** The kind of a name node. */
   static final String NAME = "name";
 
@@ -36,7 +35,8 @@ final class PythonNames {
           "testlist",
           "exprlist",
           "testlist_comp",
-          "namedexpr_test");
+          "namedexpr_test"
+      );
 
   private static final Set<String> LISTS =
       Set.of("testlist_star_expr", "testlist", "exprlist", "testlist_comp");

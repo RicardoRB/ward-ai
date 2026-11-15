@@ -11,7 +11,6 @@ import java.util.Set;
  * neither final nor static, as PMD's too-many-fields does.
  */
 public final class FieldLimitCheck implements UnitCheck {
-
   private final int max;
   private final String message;
 
@@ -45,14 +44,17 @@ public final class FieldLimitCheck implements UnitCheck {
     }
     return List.of(
         CheckSupport.at(
-            clazz.span(), CheckSupport.fill(message, String.valueOf(count), String.valueOf(max))));
+            clazz.span(),
+            CheckSupport.fill(message, String.valueOf(count), String.valueOf(max))
+        )
+    );
   }
 
   private static boolean isCountedField(final SyntaxNode member) {
     final List<String> modifiers = MemberDeclarations.modifiers(member);
     return MemberDeclarations.declaration(member)
-            .filter(declaration -> MemberDeclarations.FIELD.equals(declaration.kind()))
-            .isPresent()
+        .filter(declaration -> MemberDeclarations.FIELD.equals(declaration.kind()))
+        .isPresent()
         && !modifiers.contains(MemberDeclarations.FINAL)
         && !modifiers.contains(MemberDeclarations.STATIC);
   }

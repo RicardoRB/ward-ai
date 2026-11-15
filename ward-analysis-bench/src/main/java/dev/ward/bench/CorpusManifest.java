@@ -10,7 +10,6 @@ import java.util.List;
 
 /** Reads {@code corpus.csv}: a header line followed by {@code language,name,url,commit} rows. */
 final class CorpusManifest {
-
   private static final String HEADER = "language,name,url,commit";
   private static final int COLUMNS = 4;
   private static final int FIRST = 0;

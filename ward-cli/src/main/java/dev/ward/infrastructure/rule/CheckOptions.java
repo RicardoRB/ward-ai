@@ -7,7 +7,6 @@ import org.tomlj.TomlParseResult;
 
 /** Lists the user options of a generic check with the values its rule body sets. */
 final class CheckOptions {
-
   private CheckOptions() {}
 
   /**

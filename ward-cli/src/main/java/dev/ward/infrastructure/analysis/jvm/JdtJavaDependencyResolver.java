@@ -54,7 +54,10 @@ public final class JdtJavaDependencyResolver implements DependencyResolver {
    * @param roots the source roots of the project, which the bindings resolve source types from
    */
   public JdtJavaDependencyResolver(
-      final Path projectRoot, final List<String> classpath, final List<JavaSourceRoot> roots) {
+      final Path projectRoot,
+      final List<String> classpath,
+      final List<JavaSourceRoot> roots
+  ) {
     this.projectRoot = projectRoot;
     this.classpath = List.copyOf(classpath);
     this.roots = List.copyOf(roots);
@@ -100,7 +103,8 @@ public final class JdtJavaDependencyResolver implements DependencyResolver {
                 + inferred.size()
                 + " binding edges, "
                 + union.size()
-                + " edges in total");
+                + " edges in total"
+    );
     return new ArrayList<>(union.values());
   }
 
@@ -116,7 +120,10 @@ public final class JdtJavaDependencyResolver implements DependencyResolver {
   }
 
   private List<DependencyEdge> bindingEdges(
-      final List<FileSummary> summaries, final Map<String, String> declaringFile) {
+      final List<FileSummary> summaries,
+      final Map<String,
+      String> declaringFile
+  ) {
     final String[] paths =
         summaries.stream()
             .map(FileSummary::path)
@@ -130,7 +137,8 @@ public final class JdtJavaDependencyResolver implements DependencyResolver {
             null,
             new String[0],
             new BindingCollector(projectRoot, declaringFile, edges),
-            null);
+            null
+        );
     return edges;
   }
 
@@ -173,8 +181,10 @@ public final class JdtJavaDependencyResolver implements DependencyResolver {
 
     BindingCollector(
         final Path projectRoot,
-        final Map<String, String> declaringFile,
-        final List<DependencyEdge> edges) {
+        final Map<String,
+        String> declaringFile,
+        final List<DependencyEdge> edges
+    ) {
       super();
       this.projectRoot = projectRoot;
       this.declaringFile = declaringFile;
@@ -198,18 +208,21 @@ public final class JdtJavaDependencyResolver implements DependencyResolver {
                     node,
                     declaration.resolveBinding() == null
                         ? null
-                        : declaration.resolveBinding().getType());
+                        : declaration.resolveBinding().getType()
+                );
               }
               return true;
             }
-          });
+          }
+      );
     }
 
     private void addType(
         final String from,
         final CompilationUnit ast,
         final ASTNode node,
-        final ITypeBinding binding) {
+        final ITypeBinding binding
+    ) {
       final Optional<String> qualified = projectType(binding);
       if (qualified.isEmpty()) {
         return;
@@ -217,8 +230,8 @@ public final class JdtJavaDependencyResolver implements DependencyResolver {
       final String to = declaringFile.get(qualified.get());
       if (to != null && !to.equals(from)) {
         edges.add(
-            new DependencyEdge(
-                from, to, new Reference(BINDING + qualified.get(), span(ast, node))));
+            new DependencyEdge(from, to, new Reference(BINDING + qualified.get(), span(ast, node)))
+        );
       }
     }
 

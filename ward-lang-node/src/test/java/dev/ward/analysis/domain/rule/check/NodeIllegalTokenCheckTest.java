@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the illegal token check on parsed JavaScript. */
 class NodeIllegalTokenCheckTest {
-
   @Test
   void noTokenKindsMeansNothingIsReported() {
     assertThat(run(Set.of(), "^'", "const s = 'x';")).isEmpty();
@@ -30,7 +29,10 @@ class NodeIllegalTokenCheckTest {
   }
 
   private static List<RuleMatch> run(
-      final Set<String> tokens, final String format, final String source) {
+      final Set<String> tokens,
+      final String format,
+      final String source
+  ) {
     final SyntaxNode root =
         new AntlrLanguageFrontend()
             .parse(new SourceUnit("m", AnalysisLanguage.JAVASCRIPT, source))

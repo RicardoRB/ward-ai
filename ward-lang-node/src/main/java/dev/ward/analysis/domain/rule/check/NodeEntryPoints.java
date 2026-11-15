@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * and config files. Unused-file and unused-export reports skip them.
  */
 final class NodeEntryPoints {
-
   private static final List<String> ENTRY_FIELDS =
       List.of("main", "module", "types", "typings", "bin", "exports");
   private static final String WILDCARD = "*";
@@ -26,7 +25,8 @@ final class NodeEntryPoints {
   private static final Pattern CONVENTIONAL_ENTRY =
       Pattern.compile(
           "(^|/)index\\.(ts|tsx|js|jsx|mjs|cjs|mts|cts)$"
-              + "|\\.(test|spec|config)\\.(ts|tsx|js|jsx|mjs|cjs|mts|cts)$");
+              + "|\\.(test|spec|config)\\.(ts|tsx|js|jsx|mjs|cjs|mts|cts)$"
+      );
 
   private NodeEntryPoints() {}
 
@@ -62,15 +62,19 @@ final class NodeEntryPoints {
                     .map(match -> match.group(1))
                     .map(
                         source ->
-                            resolveFrom("", source.startsWith("/") ? source.substring(1) : source))
+                            resolveFrom("", source.startsWith("/") ? source.substring(1) : source)
+                    )
                     .filter(paths::contains)
-                    .forEach(entries::add));
+                    .forEach(entries::add)
+        );
     return entries;
   }
 
   /** The source files that a manifest's scripts name. */
   private static Set<String> scriptEntries(
-      final NodeManifests.Manifest owner, final Set<String> paths) {
+      final NodeManifests.Manifest owner,
+      final Set<String> paths
+  ) {
     final Set<String> entries = new HashSet<>();
     for (final String script : NodeManifests.texts(owner.manifest(), "scripts")) {
       for (final String token : script.trim().split("\\s+")) {
@@ -85,7 +89,9 @@ final class NodeEntryPoints {
 
   /** The files that a manifest's entry fields name. */
   private static Set<String> fieldEntries(
-      final NodeManifests.Manifest owner, final Set<String> paths) {
+      final NodeManifests.Manifest owner,
+      final Set<String> paths
+  ) {
     final Set<String> entries = new HashSet<>();
     for (final String field : ENTRY_FIELDS) {
       owner
@@ -101,7 +107,8 @@ final class NodeEntryPoints {
       final NodeManifests.Manifest owner,
       final Value value,
       final Set<String> paths,
-      final Set<String> entries) {
+      final Set<String> entries
+  ) {
     for (final String text : textLeaves(value)) {
       final String path = resolveFrom(owner.directory(), text);
       if (text.contains(WILDCARD)) {
@@ -116,8 +123,8 @@ final class NodeEntryPoints {
   private static Set<String> matching(final String pattern, final Set<String> paths) {
     final Pattern regex =
         Pattern.compile(
-            String.join(
-                ".*", Arrays.stream(pattern.split("\\*", -1)).map(Pattern::quote).toList()));
+            String.join(".*", Arrays.stream(pattern.split("\\*", -1)).map(Pattern::quote).toList())
+        );
     final Set<String> found = new HashSet<>();
     paths.stream().filter(path -> regex.matcher(path).matches()).forEach(found::add);
     return found;

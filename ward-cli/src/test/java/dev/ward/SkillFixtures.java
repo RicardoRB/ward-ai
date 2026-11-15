@@ -16,22 +16,30 @@ final class SkillFixtures {
   /** A checker wired to the real {@code ward init} and root command options. */
   static AgentSkillsConsistency consistency(final Path root) {
     return new AgentSkillsConsistency(
-        root, CliOptionNames.of(InitCommand.class, WardCommand.class));
+        root,
+        CliOptionNames.of(InitCommand.class, WardCommand.class)
+    );
   }
 
   /** Writes a pom, a plugin manifest, and one skill with the given minimum version and body. */
   static Path write(
-      final Path root, final String minimum, final String body, final String pluginVersion)
+      final Path root,
+      final String minimum,
+      final String body,
+      final String pluginVersion
+  )
       throws IOException {
     Files.writeString(
         root.resolve("pom.xml"),
         "<project>\n  <artifactId>ward-parent</artifactId>\n  <version>"
             + VERSION
-            + "</version>\n</project>\n");
+            + "</version>\n</project>\n"
+    );
     Files.createDirectories(root.resolve(".claude-plugin"));
     Files.writeString(
         root.resolve(".claude-plugin/plugin.json"),
-        "{\n  \"name\": \"ward\",\n  \"version\": \"" + pluginVersion + "\"\n}\n");
+        "{\n  \"name\": \"ward\",\n  \"version\": \"" + pluginVersion + "\"\n}\n"
+    );
     final Path skill = Files.createDirectories(root.resolve("skills/" + SKILL));
     return Files.writeString(
         skill.resolve("SKILL.md"),
@@ -44,7 +52,9 @@ final class SkillFixtures {
             "  min-ward-version: \"" + minimum + "\"",
             "---",
             body,
-            ""));
+            ""
+        )
+    );
   }
 
   /** Writes a consistent fixture whose skill body is {@code body}. */

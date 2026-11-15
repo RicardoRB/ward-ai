@@ -22,7 +22,6 @@ import org.tomlj.TomlParseResult;
  * the Checkstyle property in kebab-case.
  */
 final class BlockChecks {
-
   private static final String MESSAGE = "message";
   private static final String COMMENT_FORMAT = "comment-format";
   private static final String EXCEPTION_VARIABLE_NAME = "exception-variable-name";
@@ -40,7 +39,8 @@ final class BlockChecks {
           "empty-catch-block",
           "avoid-nested-blocks",
           "right-curly",
-          "empty-block");
+          "empty-block"
+      );
 
   private BlockChecks() {}
 
@@ -76,11 +76,15 @@ final class BlockChecks {
     return new EmptyCatchBlockCheck(
         Pattern.compile(Optional.ofNullable(toml.getString(COMMENT_FORMAT)).orElse(".*")),
         Pattern.compile(Optional.ofNullable(toml.getString(EXCEPTION_VARIABLE_NAME)).orElse("^$")),
-        message(toml));
+        message(toml)
+    );
   }
 
   private static boolean flag(
-      final TomlParseResult toml, final String key, final boolean fallback) {
+      final TomlParseResult toml,
+      final String key,
+      final boolean fallback
+  ) {
     return Optional.ofNullable(toml.getBoolean(key)).orElse(fallback);
   }
 

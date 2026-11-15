@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * The user options are {@code text} and the filters' {@code kinds}.
  */
 public final class ForbiddenNodeCheck implements UnitCheck {
-
   private static final Set<String> KEYWORDS =
       Set.of(
           "new",
@@ -30,7 +29,8 @@ public final class ForbiddenNodeCheck implements UnitCheck {
           "synchronized",
           "catch",
           "else",
-          "super");
+          "super"
+      );
   private static final char ESCAPE = '\\';
   private static final Pattern LEADING_KEYWORD = Pattern.compile("^\\^([a-z]+)(?![a-zA-Z])");
 
@@ -40,7 +40,10 @@ public final class ForbiddenNodeCheck implements UnitCheck {
 
   /** Creates the check; {@code {value}} in the message is the node's text. */
   public ForbiddenNodeCheck(
-      final NodeFilter filter, final Condition condition, final String message) {
+      final NodeFilter filter,
+      final Condition condition,
+      final String message
+  ) {
     this.filter = Objects.requireNonNull(filter, "filter");
     this.condition = Objects.requireNonNull(condition, "condition");
     this.message = Objects.requireNonNull(message, "message");
@@ -53,7 +56,10 @@ public final class ForbiddenNodeCheck implements UnitCheck {
         .map(
             v ->
                 CheckSupport.at(
-                    v.node().span(), CheckSupport.fill(message, SyntaxWalk.text(v.node()), "")))
+                    v.node().span(),
+                    CheckSupport.fill(message, SyntaxWalk.text(v.node()), "")
+                )
+        )
         .toList();
   }
 
@@ -67,14 +73,20 @@ public final class ForbiddenNodeCheck implements UnitCheck {
    *     may list alternatives as {@code a|b}; empty does not limit
    */
   public record Condition(
-      Optional<Pattern> text, Set<String> withChild, Set<String> parent, String path) {
-
+      Optional<Pattern> text,
+      Set<String> withChild,
+      Set<String> parent,
+      String path
+  ) {
     /** The condition that every node meets. */
     public static final Condition ANY = new Condition(Optional.empty(), Set.of(), Set.of());
 
     /** Creates a condition without an ancestor path. */
     public Condition(
-        final Optional<Pattern> text, final Set<String> withChild, final Set<String> parent) {
+        final Optional<Pattern> text,
+        final Set<String> withChild,
+        final Set<String> parent
+    ) {
       this(text, withChild, parent, "");
     }
 

@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
  * so the edges are the two-string arrays that follow the {@code "edges"} key.
  */
 final class GoldenEdges {
-
   private static final String ROOTS_KEY = "\"roots\"";
   private static final String EDGES_KEY = "\"edges\"";
   private static final Pattern PAIR = Pattern.compile("\\[\\s*\"([^\"]+)\",\\s*\"([^\"]+)\"\\s*]");

@@ -17,8 +17,10 @@ import java.util.Set;
  * @param packages the workspace packages, the root package included when it has a name
  */
 public record NodeProjectLayout(
-    Set<String> files, List<NodeTsConfig> tsconfigs, List<NodePackage> packages) {
-
+    Set<String> files,
+    List<NodeTsConfig> tsconfigs,
+    List<NodePackage> packages
+) {
   /**
    * Copies the collections.
    *
@@ -42,8 +44,12 @@ public record NodeProjectLayout(
    * @param paths the {@code paths} patterns and their targets, in declaration order
    */
   public record NodeTsConfig(
-      String directory, String baseUrl, String pathsBase, Map<String, List<String>> paths) {
-
+      String directory,
+      String baseUrl,
+      String pathsBase,
+      Map<String,
+      List<String>> paths
+  ) {
     /**
      * Copies the paths.
      *
@@ -69,11 +75,12 @@ public record NodeProjectLayout(
   public record NodePackage(
       String name,
       String directory,
-      Map<String, List<ExportEntry>> exports,
+      Map<String,
+      List<ExportEntry>> exports,
       String types,
       String module,
-      String main) {
-
+      String main
+  ) {
     /**
      * Copies the exports.
      *
@@ -94,7 +101,6 @@ public record NodeProjectLayout(
    * @param target the target path, relative to the package directory
    */
   public record ExportEntry(List<String> conditions, String target) {
-
     /**
      * Copies the conditions.
      *

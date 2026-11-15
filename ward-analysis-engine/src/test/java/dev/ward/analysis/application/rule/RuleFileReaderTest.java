@@ -11,7 +11,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class RuleFileReaderTest {
-
   private static final String DIRECTORY = "rule-files/";
 
   @Test
@@ -44,15 +43,16 @@ class RuleFileReaderTest {
   @ParameterizedTest
   @ValueSource(
       strings = {
-        "malformed",
-        "bad-language",
-        "missing-body",
-        "bad-preset",
-        "bad-option-key",
-        "bad-option-type",
-        "both-language-and-scope",
-        "neither-language-nor-scope",
-      })
+          "malformed",
+          "bad-language",
+          "missing-body",
+          "bad-preset",
+          "bad-option-key",
+          "bad-option-type",
+          "both-language-and-scope",
+          "neither-language-nor-scope",
+      }
+  )
   void anUnusableFileFailsAsAWholeAndNamesTheFile(final String name) {
     assertThatThrownBy(() -> RuleFileReader.read(DIRECTORY + name + ".toml"))
         .isInstanceOf(RuleConfigurationException.class)

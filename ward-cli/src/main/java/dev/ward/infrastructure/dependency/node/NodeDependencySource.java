@@ -57,8 +57,10 @@ public final class NodeDependencySource implements DependencySource {
                 .map(
                     member ->
                         new NodeResolution(project, lock, lockPath, offset, workspace)
-                            .resolve(member))
-                .toList());
+                            .resolve(member)
+                )
+                .toList()
+        );
     LOGGER.log(
         Level.FINE,
         () ->
@@ -67,12 +69,16 @@ public final class NodeDependencySource implements DependencySource {
                 + " modules="
                 + inventory.modules().size()
                 + " entries="
-                + inventory.entryCount());
+                + inventory.entryCount()
+    );
     return inventory;
   }
 
   private static DependencyInventory missing(
-      final Project project, final List<NodeMember> members, final Path lockRoot) {
+      final Project project,
+      final List<NodeMember> members,
+      final Path lockRoot
+  ) {
     if (members.stream().anyMatch(NodeMember::declaresPackages)) {
       final boolean bun = project.buildTool() == BuildTool.BUN;
       throw new DependencyInventoryException(
@@ -84,10 +90,12 @@ public final class NodeDependencySource implements DependencySource {
                   : ""),
           bun
               ? "run `bun install --save-text-lockfile`"
-              : "run `" + project.buildTool().executable() + " install`");
+              : "run `" + project.buildTool().executable() + " install`"
+      );
     }
     LOGGER.log(Level.FINE, "event=dependency-source source=none reason=no-dependencies");
     return new DependencyInventory(
-        members.stream().map(m -> new ModuleDependencies(m.path(), List.of())).toList());
+        members.stream().map(m -> new ModuleDependencies(m.path(), List.of())).toList()
+    );
   }
 }

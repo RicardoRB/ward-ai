@@ -12,20 +12,23 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class NodeResolverTest {
-
   @Test
   void resolvesRelativeSpecifiersExtensionIndexAndJsToTs() {
     final NodeProjectLayout layout =
         layout(
             List.of("src/a.ts", "src/users.ts", "src/domain/index.ts", "src/place.ts"),
             List.of(),
-            List.of());
+            List.of()
+        );
 
     assertThat(
-            edges(
-                layout, file("src/a.ts", "static:./users", "static:./domain", "static:./place.js")))
+        edges(layout, file("src/a.ts", "static:./users", "static:./domain", "static:./place.js"))
+    )
         .containsExactly(
-            "src/a.ts->src/users.ts", "src/a.ts->src/domain/index.ts", "src/a.ts->src/place.ts");
+            "src/a.ts->src/users.ts",
+            "src/a.ts->src/domain/index.ts",
+            "src/a.ts->src/place.ts"
+        );
   }
 
   @Test
@@ -43,7 +46,8 @@ class NodeResolverTest {
         layout(
             List.of("src/application/a.ts", "src/domain/order.ts"),
             List.of(new NodeTsConfig("", null, "src", Map.of("@app/*", List.of("*")))),
-            List.of());
+            List.of()
+        );
 
     assertThat(edges(layout, file("src/application/a.ts", "static:@app/domain/order")))
         .containsExactly("src/application/a.ts->src/domain/order.ts");

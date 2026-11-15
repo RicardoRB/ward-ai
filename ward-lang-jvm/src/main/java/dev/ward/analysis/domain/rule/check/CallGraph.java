@@ -11,7 +11,6 @@ import java.util.Set;
  * lock held.
  */
 final class CallGraph {
-
   private final List<Call> calls = new ArrayList<>();
   private final Set<String> publicMethods = new HashSet<>();
   private final Set<String> nonPrivateMethods = new HashSet<>();
@@ -72,10 +71,10 @@ final class CallGraph {
   private boolean reachable(final String method, final Set<String> visited) {
     return nonPrivateMethods.contains(method)
         || visited.add(method)
-            && calls.stream()
-                .filter(call -> call.callee().equals(method) && !call.caller().equals(method))
-                .filter(call -> call.lock() == FieldAccessScan.Lock.NONE)
-                .anyMatch(call -> reachable(call.caller(), visited));
+        && calls.stream()
+            .filter(call -> call.callee().equals(method) && !call.caller().equals(method))
+            .filter(call -> call.lock() == FieldAccessScan.Lock.NONE)
+            .anyMatch(call -> reachable(call.caller(), visited));
   }
 
   private boolean onlyLocked(final String name) {
@@ -88,6 +87,7 @@ final class CallGraph {
             .allMatch(
                 call ->
                     call.lock() == FieldAccessScan.Lock.THIS
-                        || lockedMethods.contains(call.caller()));
+                        || lockedMethods.contains(call.caller())
+            );
   }
 }

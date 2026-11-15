@@ -9,7 +9,6 @@ import java.util.Set;
 
 /** Reads the attributes of a start tag. */
 final class XmlAttributes {
-
   private static final String SELF_CLOSE = "/>";
 
   private final XmlCursor cursor;
@@ -68,8 +67,10 @@ final class XmlAttributes {
             AndroidSyntax.LOCAL,
             name.substring(colon + 1),
             AndroidSyntax.VALUE,
-            value),
-        List.of());
+            value
+        ),
+        List.of()
+    );
   }
 
   private char quote() {

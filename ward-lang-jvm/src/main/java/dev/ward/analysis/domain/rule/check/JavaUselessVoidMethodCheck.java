@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * effect. A method annotated {@code @Override} is left alone.
  */
 public final class JavaUselessVoidMethodCheck implements RuleCheck {
-
   private static final Pattern UPDATE =
       Pattern.compile("^(\\w+)(?:\\+\\+|--|(?:[-+*/%&|^]|<<|>>>?)?=(?!=)(.*))?;$");
   private static final Pattern RETURN = Pattern.compile("^return;$");
@@ -41,7 +40,10 @@ public final class JavaUselessVoidMethodCheck implements RuleCheck {
       if (isUseless(method) && !overrides(visit)) {
         matches.add(
             CheckSupport.at(
-                method.span(), CheckSupport.fill(message, MemberDeclarations.name(method), "")));
+                method.span(),
+                CheckSupport.fill(message, MemberDeclarations.name(method), "")
+            )
+        );
       }
     }
     return List.copyOf(matches);

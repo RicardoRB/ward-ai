@@ -62,7 +62,8 @@ public final class KotlinUnsafeCastCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(CAST)).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(cast -> isUnsafe(cast, types))
@@ -116,7 +117,8 @@ public final class KotlinUnsafeCastCheck implements RuleCheck {
       final Span from,
       final TypeRef target,
       final Span to,
-      final UnitTypeFacts types) {
+      final UnitTypeFacts types
+  ) {
     final Optional<TypeMembers> sourceMembers = types.membersOf(from);
     final Optional<TypeMembers> targetMembers = types.membersOf(to);
     if (sourceMembers.isEmpty() || targetMembers.isEmpty()) {

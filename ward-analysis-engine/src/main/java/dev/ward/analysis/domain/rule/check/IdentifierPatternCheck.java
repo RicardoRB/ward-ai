@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * subtrees. The user option is {@code pattern}.
  */
 public final class IdentifierPatternCheck implements UnitCheck {
-
   private final NodeFilter filter;
   private final String nameKind;
   private final Set<String> skip;
@@ -36,7 +35,8 @@ public final class IdentifierPatternCheck implements UnitCheck {
       final String nameKind,
       final Set<String> skip,
       final String pattern,
-      final String message) {
+      final String message
+  ) {
     this.filter = Objects.requireNonNull(filter, "filter");
     this.nameKind = Objects.requireNonNull(nameKind, "nameKind");
     this.skip = Set.copyOf(skip);
@@ -52,7 +52,8 @@ public final class IdentifierPatternCheck implements UnitCheck {
         .filter(name -> !pattern.matcher(SyntaxWalk.text(name)).matches())
         .map(
             name ->
-                CheckSupport.at(name.span(), CheckSupport.fill(message, SyntaxWalk.text(name), "")))
+                CheckSupport.at(name.span(), CheckSupport.fill(message, SyntaxWalk.text(name), ""))
+        )
         .toList();
   }
 }

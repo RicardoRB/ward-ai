@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
  * names.
  */
 final class PythonDocstringCheckTest {
-
   private static final String MESSAGE = "docstring problem";
 
   private static java.util.List<String> run(final Problem problem, final String source) {

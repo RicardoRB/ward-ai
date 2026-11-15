@@ -14,7 +14,6 @@ import java.util.Set;
  * not entered, because their returns are not the method's.
  */
 public final class ReturnEmptyCollectionCheck implements UnitCheck {
-
   private static final Set<String> COLLECTIONS =
       Set.of(
           "Collection",
@@ -36,7 +35,8 @@ public final class ReturnEmptyCollectionCheck implements UnitCheck {
           "LinkedHashMap",
           "TreeMap",
           "Vector",
-          "ArrayDeque");
+          "ArrayDeque"
+      );
   private static final Set<String> NESTED = Set.of("lambdaExpression", "classBody");
   private static final String RETURN_NULL = "returnnull;";
   private static final String STATEMENT = "statement";
@@ -69,7 +69,8 @@ public final class ReturnEmptyCollectionCheck implements UnitCheck {
               final int generic = type.indexOf('<');
               final String head = generic < 0 ? type : type.substring(0, generic);
               return type.endsWith("]") || COLLECTIONS.contains(ClassMembers.simpleName(head));
-            })
+            }
+        )
         .orElse(false);
   }
 

@@ -15,7 +15,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 /** The hard-coded-secret rule leaves out test sources and still reports production code. */
 class NodeTestSourceRulesTest {
-
   private static final String SECRET = "export const options = { secret: 'abcdef' };\n";
 
   @ParameterizedTest
@@ -34,20 +33,22 @@ class NodeTestSourceRulesTest {
     final RuleDefinition rule =
         new ClasspathRuleSource()
             .load().rules().stream()
-                .filter(candidate -> "ward:typescript/hard-coded-secret".equals(candidate.id()))
-                .findFirst()
-                .orElseThrow();
+            .filter(candidate -> "ward:typescript/hard-coded-secret".equals(candidate.id()))
+            .findFirst()
+            .orElseThrow();
     final FrontendSupport support =
         new FrontendSupport(
             AnalysisLanguage.TYPESCRIPT,
             new AntlrLanguageFrontend(),
             DataFlowFixtures.FLOW,
-            new NodeControlFlow());
+            new NodeControlFlow()
+        );
     return new RuleEngine(BundledRuleMatchers.create())
         .run(
             List.of(new SourceUnit(path, AnalysisLanguage.TYPESCRIPT, SECRET)),
             List.of(support),
-            List.of(rule))
+            List.of(rule)
+        )
         .findings()
         .size();
   }

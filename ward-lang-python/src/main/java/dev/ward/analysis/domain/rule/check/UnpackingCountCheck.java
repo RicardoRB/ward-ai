@@ -15,7 +15,6 @@ import java.util.Set;
  * not checked.
  */
 public final class UnpackingCountCheck implements RuleCheck {
-
   /** The display that the assignment unpacks. */
   public enum Problem {
     /** A tuple or list display. */

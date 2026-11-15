@@ -36,8 +36,8 @@ public record FrontendSupport(
     ScopeAnalysis scopes,
     Optional<TypeFacts> types,
     Set<String> manifests,
-    Set<AnalysisLanguage> projectLanguages) {
-
+    Set<AnalysisLanguage> projectLanguages
+) {
   /** A lowering for a language that has no control-flow graphs yet. */
   private static final ControlFlowLowering NO_GRAPHS =
       (unit, tree) -> new ControlFlowResult(List.of(), List.of());
@@ -50,7 +50,15 @@ public record FrontendSupport(
    */
   public FrontendSupport withManifests(final Set<String> names) {
     return new FrontendSupport(
-        language, frontend, capabilities, lowering, scopes, types, names, projectLanguages);
+        language,
+        frontend,
+        capabilities,
+        lowering,
+        scopes,
+        types,
+        names,
+        projectLanguages
+    );
   }
 
   /**
@@ -61,7 +69,15 @@ public record FrontendSupport(
    */
   public FrontendSupport withProjectLanguages(final Set<AnalysisLanguage> languages) {
     return new FrontendSupport(
-        language, frontend, capabilities, lowering, scopes, types, manifests, languages);
+        language,
+        frontend,
+        capabilities,
+        lowering,
+        scopes,
+        types,
+        manifests,
+        languages
+    );
   }
 
   /**
@@ -78,7 +94,8 @@ public record FrontendSupport(
       final LanguageFrontend frontend,
       final Set<RuleCapability> capabilities,
       final ControlFlowLowering lowering,
-      final ScopeAnalysis scopes) {
+      final ScopeAnalysis scopes
+  ) {
     this(language, frontend, capabilities, lowering, scopes, Optional.empty(), Set.of(), Set.of());
   }
 
@@ -92,7 +109,8 @@ public record FrontendSupport(
   public FrontendSupport(
       final AnalysisLanguage language,
       final LanguageFrontend frontend,
-      final Set<RuleCapability> capabilities) {
+      final Set<RuleCapability> capabilities
+  ) {
     this(language, frontend, capabilities, NO_GRAPHS, NoScopes.INSTANCE);
   }
 
@@ -108,7 +126,8 @@ public record FrontendSupport(
       final AnalysisLanguage language,
       final LanguageFrontend frontend,
       final Set<RuleCapability> capabilities,
-      final ControlFlowLowering lowering) {
+      final ControlFlowLowering lowering
+  ) {
     this(language, frontend, capabilities, lowering, NoScopes.INSTANCE);
   }
 

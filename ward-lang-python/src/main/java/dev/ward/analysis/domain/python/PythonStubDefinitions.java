@@ -7,7 +7,6 @@ import java.util.Optional;
 
 /** Finds the definitions a stub module or class declares, without looking into function bodies. */
 final class PythonStubDefinitions {
-
   private PythonStubDefinitions() {}
 
   /** The {@code kind} definitions named {@code name} directly in {@code scope}. */
@@ -40,10 +39,7 @@ final class PythonStubDefinitions {
     for (final SyntaxNode child : node.children()) {
       switch (child.kind()) {
         case PythonTypeKinds.FUNCDEF, PythonTypeKinds.CLASSDEF -> found.add(child);
-        case PythonTypeKinds.STMT,
-            PythonTypeKinds.COMPOUND_STMT,
-            PythonTypeKinds.BLOCK,
-            PythonTypeKinds.DECORATED ->
+        case PythonTypeKinds.STMT, PythonTypeKinds.COMPOUND_STMT, PythonTypeKinds.BLOCK, PythonTypeKinds.DECORATED ->
             collect(child, found);
         default -> {
           // Other statements declare nothing that a stub member needs.

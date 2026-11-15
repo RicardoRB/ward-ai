@@ -88,7 +88,8 @@ class CheckServiceMixedWorkspaceTest {
         .containsExactly(
             tuple("lint", GateStatus.PASSED),
             tuple("apps/api: lint", GateStatus.PASSED),
-            tuple("services/ingest: python-check", GateStatus.PASSED));
+            tuple("services/ingest: python-check", GateStatus.PASSED)
+        );
   }
 
   @Test
@@ -123,7 +124,8 @@ class CheckServiceMixedWorkspaceTest {
         .checkPartial(
             dir,
             List.of(dir.resolve(path)),
-            new CheckRunOptions(List.of(), CheckProgressListener.NO_OP, false, Set.of()));
+            new CheckRunOptions(List.of(), CheckProgressListener.NO_OP, false, Set.of())
+        );
   }
 
   private CheckService service() {
@@ -132,7 +134,8 @@ class CheckServiceMixedWorkspaceTest {
         new TomlConfigurationReader(),
         new QualityGateFactory(executor),
         new QualityGateRunner(),
-        new PartialPorts(Files::exists, new NodeWorkspaceMembers()));
+        new PartialPorts(Files::exists, new NodeWorkspaceMembers())
+    );
   }
 
   private void write(final String relative, final String content) throws IOException {

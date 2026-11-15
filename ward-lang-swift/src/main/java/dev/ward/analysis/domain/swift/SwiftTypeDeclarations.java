@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 /** Reads the type declarations, extensions and imports one Swift file contributes to the index. */
 final class SwiftTypeDeclarations {
-
   private static final String KEY_SEPARATOR = "|";
   private static final String IMPORT = "import_declaration";
   private static final String IMPORT_PATH = "import_path";
@@ -24,7 +23,9 @@ final class SwiftTypeDeclarations {
 
   /** The declarations and extensions that one file contributes. */
   record Found(
-      List<SwiftTypeIndex.Declaration> declarations, List<SwiftTypeIndex.Extension> extensions) {}
+      List<SwiftTypeIndex.Declaration> declarations,
+      List<SwiftTypeIndex.Extension> extensions
+  ) {}
 
   private SwiftTypeDeclarations() {}
 
@@ -35,19 +36,24 @@ final class SwiftTypeDeclarations {
 
   /** Groups the declared types by {@link #key}, so each name lists the types that declare it. */
   static Map<String, List<SwiftTypeDecl>> byKey(
-      final List<SwiftTypeIndex.Declaration> declarations) {
+      final List<SwiftTypeIndex.Declaration> declarations
+  ) {
     return declarations.stream()
         .map(SwiftTypeIndex.Declaration::decl)
         .collect(
             Collectors.groupingBy(
                 decl -> key(decl.module(), decl.qualifiedName()),
                 HashMap::new,
-                Collectors.toList()));
+                Collectors.toList()
+            )
+        );
   }
 
   /** Returns the module, the imports and the local type names of a file. */
   static SwiftTypeIndex.FileTypes fileTypes(
-      final String module, final List<SwiftTypeSyntax.Visit> visits) {
+      final String module,
+      final List<SwiftTypeSyntax.Visit> visits
+  ) {
     final List<String> imports = new ArrayList<>();
     final List<String> locals = new ArrayList<>();
     for (final SwiftTypeSyntax.Visit visit : visits) {
@@ -64,7 +70,10 @@ final class SwiftTypeDeclarations {
 
   /** Returns the types and extensions declared at the level of file {@code file}. */
   static Found collect(
-      final String file, final String module, final List<SwiftTypeSyntax.Visit> visits) {
+      final String file,
+      final String module,
+      final List<SwiftTypeSyntax.Visit> visits
+  ) {
     final List<SwiftTypeIndex.Declaration> declarations = new ArrayList<>();
     final List<SwiftTypeIndex.Extension> extensions = new ArrayList<>();
     for (final SwiftTypeSyntax.Visit visit : visits) {
@@ -81,13 +90,18 @@ final class SwiftTypeDeclarations {
   }
 
   private static Optional<SwiftTypeIndex.Declaration> declaration(
-      final String file, final String module, final SwiftTypeSyntax.Visit visit) {
+      final String file,
+      final String module,
+      final SwiftTypeSyntax.Visit visit
+  ) {
     return SwiftTypeSyntax.nameOf(visit.node())
         .map(
             name ->
                 new SwiftTypeIndex.Declaration(
                     declaredType(file, module, visit.scope(), visit.node(), name),
-                    SwiftNodes.inheritedTypes(visit.node())));
+                    SwiftNodes.inheritedTypes(visit.node())
+                )
+        );
   }
 
   private static SwiftTypeDecl declaredType(
@@ -95,19 +109,44 @@ final class SwiftTypeDeclarations {
       final String module,
       final String scope,
       final SyntaxNode node,
-      final String name) {
+      final String name
+  ) {
     final String qualified = SwiftTypeSyntax.qualify(scope, name);
     final boolean generic = SwiftNodes.hasChild(node, GENERIC_PARAMETERS);
     return switch (node.kind()) {
       case STRUCT ->
           new SwiftTypeDecl(
-              module, file, qualified, scope, TypeShape.Kind.CLASS, true, false, generic);
+              module,
+              file,
+              qualified,
+              scope,
+              TypeShape.Kind.CLASS,
+              true,
+              false,
+              generic
+          );
       case ENUM ->
           new SwiftTypeDecl(
-              module, file, qualified, scope, TypeShape.Kind.ENUM, true, false, generic);
+              module,
+              file,
+              qualified,
+              scope,
+              TypeShape.Kind.ENUM,
+              true,
+              false,
+              generic
+          );
       case PROTOCOL ->
           new SwiftTypeDecl(
-              module, file, qualified, scope, TypeShape.Kind.INTERFACE, false, true, false);
+              module,
+              file,
+              qualified,
+              scope,
+              TypeShape.Kind.INTERFACE,
+              false,
+              true,
+              false
+          );
       default ->
           new SwiftTypeDecl(
               module,
@@ -117,18 +156,26 @@ final class SwiftTypeDeclarations {
               TypeShape.Kind.CLASS,
               SwiftNodes.hasChild(node, FINAL),
               false,
-              generic);
+              generic
+          );
     };
   }
 
   private static Optional<SwiftTypeIndex.Extension> extension(
-      final String file, final SwiftTypeSyntax.Visit visit) {
+      final String file,
+      final SwiftTypeSyntax.Visit visit
+  ) {
     final SyntaxNode extended = SwiftNodes.child(visit.node(), SwiftNodes.TYPE_IDENTIFIER);
     return extended == null
         ? Optional.empty()
         : Optional.of(
             new SwiftTypeIndex.Extension(
-                file, visit.scope(), extended, SwiftNodes.inheritedTypes(visit.node())));
+                file,
+                visit.scope(),
+                extended,
+                SwiftNodes.inheritedTypes(visit.node())
+            )
+        );
   }
 
   private static Optional<String> importedModule(final SyntaxNode importDeclaration) {

@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
  * JavaScript grammar writes class methods as method definitions.
  */
 class GrammarKindsTest {
-
   private static final String TYPESCRIPT_SAMPLE =
       """
       function helper(p: number) { return p; }
@@ -70,7 +69,8 @@ class GrammarKindsTest {
           "'??'",
           "'?'",
           "Identifier",
-          "EOF");
+          "EOF"
+      );
 
   @Test
   void typeScriptGrammarNamesEveryKindTheRulesRead() {
@@ -81,7 +81,8 @@ class GrammarKindsTest {
             "functionDeclaration",
             "propertyMemberDeclaration",
             "formalParameterList",
-            "parameter");
+            "parameter"
+        );
   }
 
   @Test
@@ -89,7 +90,11 @@ class GrammarKindsTest {
     assertThat(kindsOf(AnalysisLanguage.JAVASCRIPT, JAVASCRIPT_SAMPLE))
         .containsAll(SHARED_KINDS)
         .contains(
-            "functionDeclaration", "methodDefinition", "formalParameterList", "formalParameterArg");
+            "functionDeclaration",
+            "methodDefinition",
+            "formalParameterList",
+            "formalParameterArg"
+        );
   }
 
   private static Set<String> kindsOf(final AnalysisLanguage language, final String text) {

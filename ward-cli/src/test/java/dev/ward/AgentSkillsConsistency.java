@@ -105,7 +105,8 @@ final class AgentSkillsConsistency {
                 + ": "
                 + root.relativize(markdown)
                 + " uses unknown ward init option "
-                + matcher.group());
+                + matcher.group()
+        );
       }
     }
   }
@@ -116,7 +117,8 @@ final class AgentSkillsConsistency {
       problems.add(".claude-plugin/plugin.json is missing");
     } else if (!projectVersion.equals(plugin.get())) {
       problems.add(
-          ".claude-plugin/plugin.json version must equal pom.xml version " + projectVersion);
+          ".claude-plugin/plugin.json version must equal pom.xml version " + projectVersion
+      );
     }
   }
 }

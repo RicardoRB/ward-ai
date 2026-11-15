@@ -12,7 +12,6 @@ import java.util.Objects;
  * @param failures one finding per body that could not be lowered, copied on construction
  */
 public record ControlFlowResult(List<ControlFlowGraph> graphs, List<AnalysisFinding> failures) {
-
   /**
    * Copies the lists.
    *

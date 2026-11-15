@@ -14,14 +14,23 @@ final class Types {
       List.of("byte", "short", "int", "long", "float", "double");
   private static final Map<String, String> BOXES =
       Map.of(
-          "boolean", "java.lang.Boolean",
-          "byte", "java.lang.Byte",
-          "short", "java.lang.Short",
-          "char", "java.lang.Character",
-          "int", "java.lang.Integer",
-          "long", "java.lang.Long",
-          "float", "java.lang.Float",
-          "double", "java.lang.Double");
+          "boolean",
+          "java.lang.Boolean",
+          "byte",
+          "java.lang.Byte",
+          "short",
+          "java.lang.Short",
+          "char",
+          "java.lang.Character",
+          "int",
+          "java.lang.Integer",
+          "long",
+          "java.lang.Long",
+          "float",
+          "java.lang.Float",
+          "double",
+          "java.lang.Double"
+      );
 
   private Types() {}
 
@@ -93,7 +102,9 @@ final class Types {
     }
     if (type instanceof JType.ClassType named) {
       return new JType.ClassType(
-          named.name(), named.arguments().stream().map(arg -> substitute(arg, bindings)).toList());
+          named.name(),
+          named.arguments().stream().map(arg -> substitute(arg, bindings)).toList()
+      );
     }
     if (type instanceof JType.ArrayType array) {
       return new JType.ArrayType(substitute(array.component(), bindings));

@@ -9,7 +9,6 @@ import java.util.List;
  * check can look at the token before or after one. Comments are not tokens.
  */
 final class TokenSequence {
-
   private static final String LITERAL_TOKEN_PREFIX = "'";
 
   private final List<Token> tokens;
@@ -26,7 +25,10 @@ final class TokenSequence {
   }
 
   private static void collect(
-      final SyntaxNode node, final String parentKind, final List<Token> tokens) {
+      final SyntaxNode node,
+      final String parentKind,
+      final List<Token> tokens
+  ) {
     if (node.children().isEmpty()) {
       if (node.fields().containsKey("text") && !SyntaxWalk.COMMENT_KIND.equals(node.kind())) {
         tokens.add(new Token(node, parentKind, tokens.size()));

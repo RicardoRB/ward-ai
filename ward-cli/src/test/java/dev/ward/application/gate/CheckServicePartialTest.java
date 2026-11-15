@@ -77,7 +77,8 @@ class CheckServicePartialTest {
         .containsExactly(
             tuple("format", GateStatus.PASSED, GateScope.FULL),
             tuple("lint", GateStatus.SKIPPED, GateScope.SKIPPED),
-            tuple("style", GateStatus.SKIPPED, GateScope.SKIPPED));
+            tuple("style", GateStatus.SKIPPED, GateScope.SKIPPED)
+        );
     assertThat(report.results().get(1).summary()).isEqualTo(PartialGates.NOT_AFFECTED);
     assertThat(report.partialPaths()).containsExactly("README.md");
   }
@@ -88,7 +89,10 @@ class CheckServicePartialTest {
 
     assertThat(executor.commands)
         .containsExactly(
-            FORMAT, List.of("mvn", "lint:check", "--lint-includes=**/Order.java"), PMD);
+            FORMAT,
+            List.of("mvn", "lint:check", "--lint-includes=**/Order.java"),
+            PMD
+        );
     assertThat(report.results())
         .extracting(GateResult::scope)
         .containsExactly(GateScope.FULL, GateScope.NARROWED, GateScope.FULL);
@@ -127,7 +131,12 @@ class CheckServicePartialTest {
                 dir,
                 List.of(dir.resolve(ORDER)),
                 new CheckRunOptions(
-                    List.of("pre-push"), CheckProgressListener.NO_OP, false, Set.of()));
+                    List.of("pre-push"),
+                    CheckProgressListener.NO_OP,
+                    false,
+                    Set.of()
+                )
+            );
 
     assertThat(report.results()).extracting(GateResult::name).containsExactly("tests");
     assertThat(report.results().getFirst().scope()).isEqualTo(GateScope.FULL);
@@ -152,7 +161,9 @@ class CheckServicePartialTest {
                       }
                     },
                     true,
-                    Set.of()));
+                    Set.of()
+                )
+            );
 
     assertThat(executor.commands).containsExactly(FORMAT);
     assertThat(finished).containsExactly("format", "lint", "style");
@@ -161,9 +172,7 @@ class CheckServicePartialTest {
 
   @Test
   void excludingEveryRemainingGateReturnsAnEmptyReport() throws IOException {
-    Files.writeString(
-        dir.resolve("ward.toml"),
-        """
+    Files.writeString(dir.resolve("ward.toml"), """
         version = 2
         [checks.mypy]
         profiles = ["default", "edit"]

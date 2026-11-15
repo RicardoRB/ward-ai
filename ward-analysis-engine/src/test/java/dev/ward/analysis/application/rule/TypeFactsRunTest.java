@@ -40,7 +40,8 @@ class TypeFactsRunTest {
 
     assertThat(supports)
         .allSatisfy(
-            support -> assertThat(support.capabilities()).doesNotContain(RuleCapability.TYPES));
+            support -> assertThat(support.capabilities()).doesNotContain(RuleCapability.TYPES)
+        );
   }
 
   @Test
@@ -52,7 +53,9 @@ class TypeFactsRunTest {
   }
 
   private static Set<RuleCapability> capabilities(
-      final List<FrontendSupport> supports, final AnalysisLanguage language) {
+      final List<FrontendSupport> supports,
+      final AnalysisLanguage language
+  ) {
     return supports.stream()
         .filter(support -> support.language() == language)
         .findFirst()
@@ -65,11 +68,14 @@ class TypeFactsRunTest {
         new FrontendSupport(
             AnalysisLanguage.JAVA,
             unit -> new ParseResult(root(), List.of()),
-            Set.of(RuleCapability.SYNTAX)),
+            Set.of(RuleCapability.SYNTAX)
+        ),
         new FrontendSupport(
             AnalysisLanguage.PYTHON,
             unit -> new ParseResult(root(), List.of()),
-            Set.of(RuleCapability.SYNTAX)));
+            Set.of(RuleCapability.SYNTAX)
+        )
+    );
   }
 
   private static SyntaxNode root() {

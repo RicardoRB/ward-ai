@@ -37,7 +37,9 @@ class QualityLoopScenarioTest {
   void passesAfterAgentAttempt(@TempDir final Path dir) throws Exception {
     withPom(dir, PLAIN_POM);
     Files.writeString(
-        dir.resolve("ward.toml"), "version = 2\n[checks.tests]\ncommand = \"verify\"\n");
+        dir.resolve("ward.toml"),
+        "version = 2\n[checks.tests]\ncommand = \"verify\"\n"
+    );
     final FakeCommandExecutor executor = new FakeCommandExecutor(0, "", "");
     final CheckService checks = CheckServiceFixtures.checks(executor);
     final AgentRunner agent =
@@ -57,7 +59,8 @@ class QualityLoopScenarioTest {
             checks,
             agent,
             new GitStateInspector(executor),
-            request(dir, "fix it", new LoopConfiguration(2, 2, true)));
+            request(dir, "fix it", new LoopConfiguration(2, 2, true))
+        );
     assertThat(result.state()).isEqualTo(LoopTerminalState.PASSED);
     assertThat(result.iterations()).isEqualTo(1);
   }
@@ -66,7 +69,9 @@ class QualityLoopScenarioTest {
   void stopsAtMaximumIterations(@TempDir final Path dir) throws Exception {
     withPom(dir, PLAIN_POM);
     Files.writeString(
-        dir.resolve("ward.toml"), "version = 2\n[checks.tests]\ncommand = \"verify\"\n");
+        dir.resolve("ward.toml"),
+        "version = 2\n[checks.tests]\ncommand = \"verify\"\n"
+    );
     final FakeCommandExecutor executor = new FakeCommandExecutor(1, "failure", "");
     final CheckService checks = CheckServiceFixtures.checks(executor);
     final AgentRunner agent =
@@ -86,7 +91,8 @@ class QualityLoopScenarioTest {
             checks,
             agent,
             new GitStateInspector(executor),
-            request(dir, "fix it", new LoopConfiguration(2, 2, true)));
+            request(dir, "fix it", new LoopConfiguration(2, 2, true))
+        );
     assertThat(result.state()).isEqualTo(LoopTerminalState.MAX_ITERATIONS_REACHED);
     assertThat(result.iterations()).isEqualTo(2);
   }
@@ -95,7 +101,9 @@ class QualityLoopScenarioTest {
   void distinguishesAgentTimeoutAndFailure(@TempDir final Path dir) throws Exception {
     withPom(dir, PLAIN_POM);
     Files.writeString(
-        dir.resolve("ward.toml"), "version = 2\n[checks.tests]\ncommand = \"verify\"\n");
+        dir.resolve("ward.toml"),
+        "version = 2\n[checks.tests]\ncommand = \"verify\"\n"
+    );
     final FakeCommandExecutor executor = new FakeCommandExecutor(0, "", "");
     final CheckService checks = CheckServiceFixtures.checks(executor);
     final AgentRunner timeout =
@@ -116,12 +124,14 @@ class QualityLoopScenarioTest {
           }
         };
     assertThat(
-            run(
-                    checks,
-                    timeout,
-                    new GitStateInspector(executor),
-                    request(dir, "wait", new LoopConfiguration(1, 1, true)))
-                .state())
+        run(
+            checks,
+            timeout,
+            new GitStateInspector(executor),
+            request(dir, "wait", new LoopConfiguration(1, 1, true))
+        )
+            .state()
+    )
         .isEqualTo(LoopTerminalState.TIMEOUT);
     final AgentRunner failure =
         new AgentRunner() {
@@ -136,12 +146,14 @@ class QualityLoopScenarioTest {
           }
         };
     assertThat(
-            run(
-                    checks,
-                    failure,
-                    new GitStateInspector(executor),
-                    request(dir, "fail", new LoopConfiguration(1, 1, true)))
-                .state())
+        run(
+            checks,
+            failure,
+            new GitStateInspector(executor),
+            request(dir, "fail", new LoopConfiguration(1, 1, true))
+        )
+            .state()
+    )
         .isEqualTo(LoopTerminalState.AGENT_ERROR);
   }
 
@@ -149,7 +161,9 @@ class QualityLoopScenarioTest {
   void retriesWithFeedbackUntilSuccess(@TempDir final Path dir) throws Exception {
     withPom(dir, PLAIN_POM);
     Files.writeString(
-        dir.resolve("ward.toml"), "version = 2\n[checks.tests]\ncommand = \"verify\"\n");
+        dir.resolve("ward.toml"),
+        "version = 2\n[checks.tests]\ncommand = \"verify\"\n"
+    );
     final int[] calls = {0};
     final CommandExecutor executor =
         (command, root) -> {
@@ -179,7 +193,8 @@ class QualityLoopScenarioTest {
             checks,
             agent,
             new GitStateInspector(executor),
-            request(dir, "fix it", new LoopConfiguration(3, 2, true)));
+            request(dir, "fix it", new LoopConfiguration(3, 2, true))
+        );
     assertThat(result.state()).isEqualTo(LoopTerminalState.PASSED);
     assertThat(agentCalls[0]).isEqualTo(2);
   }
@@ -211,7 +226,8 @@ class QualityLoopScenarioTest {
             checks,
             agent,
             ignored -> new GitState(false, "main", false, "clean"),
-            request(dir, "fix it", new LoopConfiguration(1, 2, true)));
+            request(dir, "fix it", new LoopConfiguration(1, 2, true))
+        );
 
     assertThat(result.state()).isEqualTo(LoopTerminalState.GATE_ERROR);
     assertThat(result.message()).isEqualTo("gate exploded");
@@ -221,12 +237,16 @@ class QualityLoopScenarioTest {
       final CheckService checks,
       final AgentRunner agent,
       final GitStateInspection git,
-      final LoopRequest request) {
+      final LoopRequest request
+  ) {
     return new QualityLoopService(checks, (directory, arguments) -> agent, git).run(request);
   }
 
   private static LoopRequest request(
-      final Path root, final String task, final LoopConfiguration configuration) {
+      final Path root,
+      final String task,
+      final LoopConfiguration configuration
+  ) {
     return new LoopRequest(root, List.of("fake"), task, configuration);
   }
 }

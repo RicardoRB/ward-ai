@@ -42,7 +42,8 @@ class NativeHookFailureTest {
     withPom(root, PLAIN_POM);
     Files.writeString(
         root.resolve("ward.toml"),
-        "version = 2\n[checks.tests]\nuses = \"tests\"\nprofiles = [\"default\", \"edit\"]\ncommand = \"mvn test\"\n");
+        "version = 2\n[checks.tests]\nuses = \"tests\"\nprofiles = [\"default\", \"edit\"]\ncommand = \"mvn test\"\n"
+    );
   }
 
   private int run(final String payload, final String... args) {
@@ -51,7 +52,8 @@ class NativeHookFailureTest {
             new HookChecks(HookCheckFixtures.checks(passing)),
             new ForyJsonCodec(),
             Set.of(new CodexIntegration()),
-            new ByteArrayInputStream(payload.getBytes(StandardCharsets.UTF_8)));
+            new ByteArrayInputStream(payload.getBytes(StandardCharsets.UTF_8))
+        );
     final CommandLine cli = new CommandLine(command);
     cli.setOut(new PrintWriter(out, true));
     cli.setErr(new PrintWriter(err, true));
@@ -85,7 +87,8 @@ class NativeHookFailureTest {
         .isEqualTo(
             "Ward native hook could not complete validation: Unsupported native hook agent:"
                 + " nope"
-                + System.lineSeparator());
+                + System.lineSeparator()
+        );
   }
 
   @Test

@@ -13,7 +13,6 @@ import java.util.Set;
  * public} and {@code static} on nested types. Each check runs only when its flag holds.
  */
 public final class InterfaceMemberImpliedModifierCheck implements RuleCheck {
-
   private static final String INTERFACE_BODY = "interfaceBodyDeclaration";
   private static final String MEMBER = "interfaceMemberDeclaration";
   private static final Set<String> MODIFIER_KINDS =
@@ -50,7 +49,8 @@ public final class InterfaceMemberImpliedModifierCheck implements RuleCheck {
       boolean publicMethod,
       boolean publicNested,
       boolean staticField,
-      boolean staticNested) {}
+      boolean staticNested
+  ) {}
 
   /**
    * Creates the check.

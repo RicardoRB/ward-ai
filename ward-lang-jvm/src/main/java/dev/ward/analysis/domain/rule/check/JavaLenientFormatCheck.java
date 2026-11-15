@@ -23,7 +23,6 @@ import java.util.regex.Pattern;
  * is not one plain literal, or an argument array, is not read.
  */
 public final class JavaLenientFormatCheck implements RuleCheck {
-
   private static final Pattern LITERAL = Pattern.compile("^\"(?:[^\"\\\\]|\\\\.)*\"$");
   private static final String PLACEHOLDER = "%s";
   private static final String PRECONDITIONS = "com.google.common.base.Preconditions";
@@ -41,7 +40,8 @@ public final class JavaLenientFormatCheck implements RuleCheck {
           VERIFY + "#verify",
           1,
           VERIFY + "#verifyNotNull",
-          1);
+          1
+      );
 
   private final String message;
 
@@ -71,7 +71,8 @@ public final class JavaLenientFormatCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("expression"))) {
       final SyntaxNode call = visit.node();
@@ -96,7 +97,8 @@ public final class JavaLenientFormatCheck implements RuleCheck {
       final SyntaxNode call,
       final List<SyntaxNode> arguments,
       final int index,
-      final UnitTypeFacts types) {
+      final UnitTypeFacts types
+  ) {
     final String template = SyntaxWalk.text(arguments.get(index));
     final int values = arguments.size() - index - 1;
     final boolean array =
@@ -114,6 +116,8 @@ public final class JavaLenientFormatCheck implements RuleCheck {
         : Optional.of(
             CheckSupport.at(
                 call.span(),
-                CheckSupport.fill(message, String.valueOf(placeholders), String.valueOf(values))));
+                CheckSupport.fill(message, String.valueOf(placeholders), String.valueOf(values))
+            )
+        );
   }
 }

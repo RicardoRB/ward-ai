@@ -30,24 +30,36 @@ record BinaryToolGates(EnvironmentInspection environment, Project project) {
                 "Lints the committed OpenAPI spec with Ward's own rules; nothing to install.",
                 List.of(),
                 true,
-                "Ward's own rules; no executable is needed."),
-            Map.of(SPEC, spec)),
+                "Ward's own rules; no executable is needed."
+            ),
+            Map.of(SPEC, spec)
+        ),
         withSettings(
             nativeOption(
                 SupportedQualityGates.OPENAPI_DIFF,
-                "Reports breaking changes in uncommitted OpenAPI spec edits."),
-            Map.of(SPEC, spec)),
+                "Reports breaking changes in uncommitted OpenAPI spec edits."
+            ),
+            Map.of(SPEC, spec)
+        ),
         withSettings(
             nativeOption(
                 SupportedQualityGates.OPENAPI_COMPAT,
-                "Reports breaking OpenAPI changes on the branch against origin/main."),
-            orderedSettings(spec)));
+                "Reports breaking OpenAPI changes on the branch against origin/main."
+            ),
+            orderedSettings(spec)
+        )
+    );
   }
 
   /** A gate Ward runs itself: always available, with no command. */
   private static InitGateOption nativeOption(final String id, final String description) {
     return new InitGateOption(
-        id, description, List.of(), true, "Runs inside Ward; nothing to install.");
+        id,
+        description,
+        List.of(),
+        true,
+        "Runs inside Ward; nothing to install."
+    );
   }
 
   private static Map<String, String> orderedSettings(final String spec) {
@@ -58,14 +70,18 @@ record BinaryToolGates(EnvironmentInspection environment, Project project) {
   }
 
   private static InitGateOption withSettings(
-      final InitGateOption option, final Map<String, String> settings) {
+      final InitGateOption option,
+      final Map<String,
+      String> settings
+  ) {
     return new InitGateOption(
         option.id(),
         option.description(),
         option.command(),
         option.available(),
         option.availabilityMessage(),
-        settings);
+        settings
+    );
   }
 
   /**
@@ -79,6 +95,8 @@ record BinaryToolGates(EnvironmentInspection environment, Project project) {
             "Detects committed secrets with Ward's native secret rules (no install needed).",
             List.of(),
             true,
-            "Runs inside Ward; nothing to install."));
+            "Runs inside Ward; nothing to install."
+        )
+    );
   }
 }

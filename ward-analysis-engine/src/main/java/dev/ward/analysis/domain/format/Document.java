@@ -9,13 +9,7 @@ import java.util.Objects;
  * DocPrinter} lays it out for a line width and indentation style.
  */
 public sealed interface Document
-    permits Document.Text,
-        Document.Line,
-        Document.Indent,
-        Document.Group,
-        Document.Concat,
-        Document.IfBreak {
-
+    permits Document.Text, Document.Line, Document.Indent, Document.Group, Document.Concat, Document.IfBreak {
   /**
    * Verbatim text. It must not carry a line break except inside a token that the source already had
    * on several lines.
@@ -23,7 +17,6 @@ public sealed interface Document
    * @param text the text
    */
   record Text(String text) implements Document {
-
     /**
      * Checks the text.
      *
@@ -41,7 +34,6 @@ public sealed interface Document
    * @param forced whether the line always breaks, which also forces every enclosing group to break
    */
   record Line(String flat, boolean forced) implements Document {
-
     /**
      * Checks the flat text.
      *
@@ -58,7 +50,6 @@ public sealed interface Document
    * @param body the indented document
    */
   record Indent(Document body) implements Document {
-
     /**
      * Checks the body.
      *
@@ -76,7 +67,6 @@ public sealed interface Document
    * @param body the grouped document
    */
   record Group(Document body) implements Document {
-
     /**
      * Checks the body.
      *
@@ -93,7 +83,6 @@ public sealed interface Document
    * @param parts the parts, copied on construction
    */
   record Concat(List<Document> parts) implements Document {
-
     /**
      * Copies the parts.
      *
@@ -112,7 +101,6 @@ public sealed interface Document
    * @param flat the document printed when the group stays flat
    */
   record IfBreak(Document broken, Document flat) implements Document {
-
     /**
      * Checks both documents.
      *

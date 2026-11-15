@@ -21,7 +21,6 @@ import java.util.SortedMap;
  * reported.
  */
 public final class UnwrittenPublicFieldCheck implements RuleCheck, ProjectCheck {
-
   private static final Set<String> PRIMITIVES =
       Set.of("int", "long", "short", "byte", "char", "boolean", "float", "double");
   private static final Set<String> COMPOUND_ENDS = Set.of("++", "--");
@@ -66,7 +65,9 @@ public final class UnwrittenPublicFieldCheck implements RuleCheck, ProjectCheck 
       final SyntaxNode tree,
       final Set<String> written,
       final Set<String> candidates,
-      final Map<String, ProjectMatch> found) {
+      final Map<String,
+      ProjectMatch> found
+  ) {
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(tree, Set.of("classDeclaration"))) {
       final FieldAccesses accesses = FieldAccesses.of(visit.node());
       for (final String name : candidateNames(visit.node())) {
@@ -106,7 +107,9 @@ public final class UnwrittenPublicFieldCheck implements RuleCheck, ProjectCheck 
       final String path,
       final List<SyntaxNode> tokens,
       final Set<String> candidates,
-      final Map<String, ProjectMatch> found) {
+      final Map<String,
+      ProjectMatch> found
+  ) {
     for (int index = 2; index + AFTER_NEXT < tokens.size(); index++) {
       final String name = text(tokens, index);
       final boolean selected =
@@ -121,14 +124,17 @@ public final class UnwrittenPublicFieldCheck implements RuleCheck, ProjectCheck 
   }
 
   private void add(
-      final Map<String, ProjectMatch> found,
+      final Map<String,
+      ProjectMatch> found,
       final String path,
       final SyntaxNode node,
-      final String name) {
+      final String name
+  ) {
     final String key = path + ":" + node.span().startLine() + ":" + node.span().startColumn();
     found.putIfAbsent(
         key,
-        new ProjectMatch(path, new RuleMatch(node.span(), CheckSupport.fill(message, name, ""))));
+        new ProjectMatch(path, new RuleMatch(node.span(), CheckSupport.fill(message, name, "")))
+    );
   }
 
   /** The names that some statement of the tokens assigns a non-null value to or updates. */

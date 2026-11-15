@@ -7,7 +7,6 @@ import java.util.List;
 
 /** Lowers the {@code try} and {@code when} statements of a Kotlin body. */
 final class KotlinHandlerLowering {
-
   private static final String BLOCK = "block";
   private static final String BODY = "controlStructureBody";
   private static final String EXPRESSION = "expression";
@@ -31,8 +30,10 @@ final class KotlinHandlerLowering {
       flow.tries().beginCatch();
       flow.record(
           List.of(
-              KotlinAccesses.catchParameter(KotlinFlowSyntax.child(clause, "simpleIdentifier"))),
-          List.of());
+              KotlinAccesses.catchParameter(KotlinFlowSyntax.child(clause, "simpleIdentifier"))
+          ),
+          List.of()
+      );
       statements.block(KotlinFlowSyntax.child(clause, BLOCK), result);
       flow.tries().endCatch();
     }

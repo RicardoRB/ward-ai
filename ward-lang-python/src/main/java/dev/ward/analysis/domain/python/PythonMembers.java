@@ -9,14 +9,16 @@ import java.util.Optional;
 
 /** The members that expressions reach through a module, a class or a value, and calls of stubs. */
 final class PythonMembers {
-
   private final PythonTypeIndex index;
   private final PythonStubs stubs;
   private final PythonSignatures signatures;
 
   /** Creates the members over the indexed file, its stubs and their signatures. */
   PythonMembers(
-      final PythonTypeIndex index, final PythonStubs stubs, final PythonSignatures signatures) {
+      final PythonTypeIndex index,
+      final PythonStubs stubs,
+      final PythonSignatures signatures
+  ) {
     this.index = index;
     this.stubs = stubs;
     this.signatures = signatures;
@@ -72,7 +74,8 @@ final class PythonMembers {
             null,
             Map.of(),
             Map.of(),
-            null);
+            null
+        );
     return PythonSubject.called(returns, call);
   }
 

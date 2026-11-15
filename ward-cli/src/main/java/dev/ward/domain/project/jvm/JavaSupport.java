@@ -26,13 +26,15 @@ public final class JavaSupport {
       return Optional.of(
           "Ward has not been tested on JDK "
               + jdk
-              + " and does not support it; it is configured as JDK 25.");
+              + " and does not support it; it is configured as JDK 25."
+      );
     }
     if (jdk < MINIMUM_JDK) {
       return Optional.of(
           "Ward supports Java 8 to 25; the project builds on JDK "
               + jdk
-              + ", and Ward may not work with it.");
+              + ", and Ward may not work with it."
+      );
     }
     return Optional.empty();
   }

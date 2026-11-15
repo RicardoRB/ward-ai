@@ -24,7 +24,6 @@ import org.junit.jupiter.api.Test;
  * parity/biome-approximations.txt} with its reason.
  */
 class BiomeParitySmokeTest {
-
   private static final String BINARY = System.getProperty("ward.biome.binary", "");
   private static final Pattern DIAGNOSTIC = Pattern.compile(":(\\d+):(\\d+) lint/");
   private static final Path APPROXIMATIONS =
@@ -35,7 +34,9 @@ class BiomeParitySmokeTest {
   private static final Map<String, String> BIOME =
       Map.ofEntries(
           Map.entry(
-              "no-approximative-numeric-constant", "suspicious/noApproximativeNumericConstant"),
+              "no-approximative-numeric-constant",
+              "suspicious/noApproximativeNumericConstant"
+          ),
           Map.entry("use-flat-math-min-max", "nursery/useFlatMathMinMax"),
           Map.entry("use-math-min-max", "nursery/useMathMinMax"),
           Map.entry("use-modern-math-apis", "nursery/useModernMathApis"),
@@ -48,7 +49,9 @@ class BiomeParitySmokeTest {
           Map.entry("no-return-in-finally", "nursery/noReturnInFinally"),
           Map.entry("no-constant-math-min-max-clamp", "correctness/noConstantMathMinMaxClamp"),
           Map.entry(
-              "no-dynamic-namespace-import-access", "performance/noDynamicNamespaceImportAccess"),
+              "no-dynamic-namespace-import-access",
+              "performance/noDynamicNamespaceImportAccess"
+          ),
           Map.entry("no-unused-function-parameters", "correctness/noUnusedFunctionParameters"),
           Map.entry("no-base-to-string", "nursery/noBaseToString"),
           Map.entry("no-unreachable-super", "correctness/noUnreachableSuper"),
@@ -77,9 +80,12 @@ class BiomeParitySmokeTest {
           Map.entry("no-noninteractive-tabindex", "a11y/noNoninteractiveTabindex"),
           Map.entry(
               "no-noninteractive-element-to-interactive-role",
-              "a11y/noNoninteractiveElementToInteractiveRole"),
+              "a11y/noNoninteractiveElementToInteractiveRole"
+          ),
           Map.entry(
-              "no-noninteractive-element-interactions", "a11y/noNoninteractiveElementInteractions"),
+              "no-noninteractive-element-interactions",
+              "a11y/noNoninteractiveElementInteractions"
+          ),
           Map.entry("no-static-element-interactions", "a11y/noStaticElementInteractions"),
           Map.entry("use-aria-props-for-role", "a11y/useAriaPropsForRole"),
           Map.entry("use-aria-props-supported-by-role", "a11y/useAriaPropsSupportedByRole"),
@@ -107,13 +113,16 @@ class BiomeParitySmokeTest {
           Map.entry("no-unsafe-iframe-sandbox", "nursery/noUnsafeIframeSandbox"),
           Map.entry(
               "use-aria-activedescendant-with-tabindex",
-              "a11y/useAriaActivedescendantWithTabindex"),
+              "a11y/useAriaActivedescendantWithTabindex"
+          ),
           Map.entry("use-media-caption", "a11y/useMediaCaption"),
           Map.entry("use-semantic-elements", "a11y/useSemanticElements"),
           Map.entry("no-svg-without-title", "a11y/noSvgWithoutTitle"),
           Map.entry(
               "no-interactive-element-to-noninteractive-role",
-              "a11y/noInteractiveElementToNoninteractiveRole"));
+              "a11y/noInteractiveElementToNoninteractiveRole"
+          )
+      );
 
   @Test
   void biomeReportsTheSamePositionsAsTheFixtures() throws IOException, InterruptedException {
@@ -156,14 +165,20 @@ class BiomeParitySmokeTest {
         Files.readAllLines(dir.resolve("expected.txt")).stream()
             .map(String::strip)
             .filter(line -> !line.isEmpty())
-            .toList());
+            .toList()
+    );
   }
 
   private static Set<String> biome(final Path file, final String group)
       throws IOException, InterruptedException {
     final Process process =
         new ProcessBuilder(
-                BINARY, "lint", "--only=" + group, "--max-diagnostics=200", file.toString())
+            BINARY,
+            "lint",
+            "--only=" + group,
+            "--max-diagnostics=200",
+            file.toString()
+        )
             .redirectErrorStream(true)
             .start();
     final String output =
@@ -185,7 +200,7 @@ class BiomeParitySmokeTest {
     for (final String line : Files.readAllLines(APPROXIMATIONS)) {
       final String entry = line.strip();
       if (!entry.isEmpty() && !entry.startsWith("#")) {
-        names.add(entry.split(" ", 2)[0]);
+        names.add(entry.split(" ", 2) [0]);
       }
     }
     return names;

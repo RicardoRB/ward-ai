@@ -14,7 +14,6 @@ import java.util.List;
  * Builds the Swift dependency adapter of a project from its SwiftPM manifest and Xcode projects.
  */
 public final class SwiftDependencyAdapters implements DependencyAdapters {
-
   @Override
   public List<DependencySupport> forProject(final Path projectRoot, final List<SourceUnit> units) {
     if (units.stream().noneMatch(unit -> unit.language() == AnalysisLanguage.SWIFT)
@@ -24,6 +23,10 @@ public final class SwiftDependencyAdapters implements DependencyAdapters {
     final SwiftProjectLayout layout = SwiftLayouts.read(projectRoot);
     return List.of(
         new DependencySupport(
-            AnalysisLanguage.SWIFT, new SwiftFileSummarizer(), new SwiftModuleResolver(layout)));
+            AnalysisLanguage.SWIFT,
+            new SwiftFileSummarizer(),
+            new SwiftModuleResolver(layout)
+        )
+    );
   }
 }

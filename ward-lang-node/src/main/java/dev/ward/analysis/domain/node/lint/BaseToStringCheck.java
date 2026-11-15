@@ -19,7 +19,6 @@ import java.util.stream.Stream;
  * toString}, so it prints as {@code [object Object]}.
  */
 public final class BaseToStringCheck extends TypedCheck {
-
   private static final String TEMPLATE_OPEN = "${";
   private static final String TO_STRING = "toString";
   private static final String STRING_CALL = "String";
@@ -59,7 +58,10 @@ public final class BaseToStringCheck extends TypedCheck {
 
   /** Reports {@code String(value)} and {@code value.toString()} of a value without a toString. */
   private void stringConversion(
-      final SyntaxNode call, final UnitTypeFacts types, final List<RuleMatch> out) {
+      final SyntaxNode call,
+      final UnitTypeFacts types,
+      final List<RuleMatch> out
+  ) {
     final List<SyntaxNode> parts = call.children();
     if (parts.size() != 2 || !ARGUMENTS.equals(parts.get(1).kind())) {
       return;
@@ -99,7 +101,10 @@ public final class BaseToStringCheck extends TypedCheck {
   }
 
   private void reportIfBase(
-      final UnitTypeFacts types, final SyntaxNode value, final List<RuleMatch> out) {
+      final UnitTypeFacts types,
+      final SyntaxNode value,
+      final List<RuleMatch> out
+  ) {
     if (isBase(types, value)) {
       out.add(new RuleMatch(value.span(), message));
     }

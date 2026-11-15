@@ -46,7 +46,8 @@ final class FileSystemTextFiles {
       final Path root,
       final List<String> paths,
       final Predicate<String> excluded,
-      final CommandExecutor executor) {
+      final CommandExecutor executor
+  ) {
     final Set<String> ignored = GitIgnoredFiles.of(root, executor);
     final List<TextFile> files = new ArrayList<>();
     final List<RuleExecutionError> errors = new ArrayList<>();
@@ -70,7 +71,8 @@ final class FileSystemTextFiles {
               + " binary="
               + reader.binary
               + " errors="
-              + errors.size());
+              + errors.size()
+      );
     }
     return new TextRead(files, errors);
   }
@@ -90,7 +92,8 @@ final class FileSystemTextFiles {
         final Set<String> ignored,
         final Predicate<String> excluded,
         final List<TextFile> files,
-        final List<RuleExecutionError> errors) {
+        final List<RuleExecutionError> errors
+    ) {
       super();
       this.root = root;
       this.ignored = ignored;
@@ -101,7 +104,9 @@ final class FileSystemTextFiles {
 
     @Override
     public FileVisitResult preVisitDirectory(
-        final Path directory, final BasicFileAttributes attributes) {
+        final Path directory,
+        final BasicFileAttributes attributes
+    ) {
       if (directory.equals(root)) {
         return FileVisitResult.CONTINUE;
       }

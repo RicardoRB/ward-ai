@@ -10,7 +10,6 @@ import java.util.Map;
  * dictionaries become maps, lists become lists, and strings stay strings, quoted or not.
  */
 final class OldStylePlist {
-
   private static final String UNQUOTED_EXTRA = "_$/:.-+";
   private static final char DICTIONARY_START = '{';
   private static final char LIST_START = '(';

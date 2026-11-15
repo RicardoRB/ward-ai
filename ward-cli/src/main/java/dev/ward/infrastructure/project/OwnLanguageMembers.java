@@ -35,8 +35,8 @@ final class OwnLanguageMembers {
    */
   static Project ownLanguage(final Path dir, final Project project) {
     return project.toolchain() == Toolchain.NODE
-            && PythonProjectInspection.hasMarker(dir)
-            && listedByAncestor(dir)
+        && PythonProjectInspection.hasMarker(dir)
+        && listedByAncestor(dir)
         ? PythonProjectInspection.project(dir)
         : project;
   }

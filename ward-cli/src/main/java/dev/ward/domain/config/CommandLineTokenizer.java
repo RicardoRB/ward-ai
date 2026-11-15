@@ -11,7 +11,6 @@ import java.util.List;
  * TOML array form for arguments that need exact control.
  */
 public final class CommandLineTokenizer {
-
   private CommandLineTokenizer() {}
 
   /**

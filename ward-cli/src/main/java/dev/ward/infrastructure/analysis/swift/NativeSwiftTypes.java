@@ -24,7 +24,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * question a rule asks, so a run without a type rule parses nothing. No process starts.
  */
 public final class NativeSwiftTypes implements TypeFacts {
-
   private final Path projectRoot;
   private final LanguageFrontend frontend;
   private final ReentrantLock lock = new ReentrantLock();
@@ -46,7 +45,10 @@ public final class NativeSwiftTypes implements TypeFacts {
 
   @Override
   public UnitTypeFacts factsOf(
-      final SourceUnit unit, final List<Span> spans, final Set<FactKind> kinds) {
+      final SourceUnit unit,
+      final List<Span> spans,
+      final Set<FactKind> kinds
+  ) {
     return delegate().factsOf(unit, spans, kinds);
   }
 

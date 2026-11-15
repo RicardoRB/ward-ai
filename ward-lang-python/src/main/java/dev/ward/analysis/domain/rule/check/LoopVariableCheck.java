@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * F402}). A name starting with {@code _} is not reported as unused.
  */
 public final class LoopVariableCheck implements RuleCheck {
-
   /** The mistakes the check tells apart, one per rule. */
   public enum Problem {
     /** The loop variable is never used in the body. */

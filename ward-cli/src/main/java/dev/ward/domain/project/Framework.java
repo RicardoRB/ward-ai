@@ -41,7 +41,8 @@ public enum Framework {
           NEXT,
           NEST,
           FASTIFY,
-          EXPRESS);
+          EXPRESS
+      );
 
   private final String displayName;
 

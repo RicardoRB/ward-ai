@@ -25,8 +25,8 @@ public record Declaration(
     String identity,
     String file,
     int line,
-    Flag flag) {
-
+    Flag flag
+) {
   /** A fact about a declaration that is not its text. */
   public enum Flag {
     /** Nothing special. */

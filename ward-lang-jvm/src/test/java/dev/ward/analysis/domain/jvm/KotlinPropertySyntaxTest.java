@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** Kotlin shows a Java getter as a property; a rule that names the getter still finds it. */
 class KotlinPropertySyntaxTest {
-
   @Test
   void aPropertyReadIsAlsoTheCallOfItsJavaGetter() {
     final List<FlowSite> sites =

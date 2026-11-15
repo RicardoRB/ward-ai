@@ -17,7 +17,6 @@ import java.util.SortedSet;
  * the order Tarjan closes them, so callers that need an order sort them.
  */
 final class StronglyConnectedComponents {
-
   private final Map<String, SortedSet<String>> successors;
   private final Map<String, Integer> index = new HashMap<>();
   private final Map<String, Integer> lowLink = new HashMap<>();

@@ -11,7 +11,6 @@ import java.util.Optional;
  * type.
  */
 public final class ComparableTypeMismatch implements DeclarationFactTest {
-
   private static final String COMPARABLE = "java.lang.Comparable";
   private static final String IDENTIFIER = "identifier";
   private static final String TYPE_PARAMETERS = "typeParameters";
@@ -36,7 +35,10 @@ public final class ComparableTypeMismatch implements DeclarationFactTest {
   }
 
   private static boolean relatedTo(
-      final String self, final TypeRef argument, final SpanFacts facts) {
+      final String self,
+      final TypeRef argument,
+      final SpanFacts facts
+  ) {
     final String simple = argument.name().substring(argument.name().lastIndexOf('.') + 1);
     return simple.equals(self)
         || facts.members().ancestors().stream()

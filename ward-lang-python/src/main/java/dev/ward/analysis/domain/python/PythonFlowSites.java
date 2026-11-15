@@ -17,7 +17,6 @@ import java.util.Set;
  * nested function, class or lambda is another body, so it is not entered.
  */
 final class PythonFlowSites implements FlowSites {
-
   private static final String ATOM_EXPR = "atom_expr";
   private static final String OPEN_CALL = "(";
   private static final String OPEN_INDEX = "[";
@@ -76,7 +75,8 @@ final class PythonFlowSites implements FlowSites {
       final Chain chain,
       final SyntaxNode trailer,
       final boolean calledNext,
-      final List<FlowSite> found) {
+      final List<FlowSite> found
+  ) {
     if (PythonCallArguments.opens(trailer, OPEN_CALL)) {
       final List<SyntaxNode> values = PythonCallArguments.values(trailer);
       values.forEach(value -> walk(value, found));
@@ -102,7 +102,8 @@ final class PythonFlowSites implements FlowSites {
         receiverOf(qualifier),
         List.of(),
         List.of(),
-        chain.span());
+        chain.span()
+    );
   }
 
   private Optional<FlowSite> call(final Chain chain, final List<SyntaxNode> values) {
@@ -120,7 +121,9 @@ final class PythonFlowSites implements FlowSites {
               "",
               Optional.of(module).filter(m -> !m.isEmpty()),
               chain,
-              values));
+              values
+          )
+      );
     }
     return Optional.of(site(chain.name(), qualifier, receiverOf(qualifier), chain, values));
   }
@@ -130,10 +133,18 @@ final class PythonFlowSites implements FlowSites {
       final String qualifier,
       final Optional<String> receiver,
       final Chain chain,
-      final List<SyntaxNode> values) {
+      final List<SyntaxNode> values
+  ) {
     final List<Span> spans = values.stream().map(SyntaxNode::span).toList();
     return new FlowSite(
-        FlowSiteKind.CALL, name, qualifier, receiver, List.of(), spans, chain.span());
+        FlowSiteKind.CALL,
+        name,
+        qualifier,
+        receiver,
+        List.of(),
+        spans,
+        chain.span()
+    );
   }
 
   /** The module of a dotted qualifier whose first name an import binds. */
@@ -152,7 +163,6 @@ final class PythonFlowSites implements FlowSites {
 
   /** The running state of one atom and its trailers. */
   private static final class Chain {
-
     private final Span start;
     private Span end;
     private String path;
@@ -203,7 +213,8 @@ final class PythonFlowSites implements FlowSites {
           end.endLine(),
           end.endColumn(),
           start.startOffset(),
-          end.endOffset());
+          end.endOffset()
+      );
     }
 
     private static String text(final SyntaxNode node) {

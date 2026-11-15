@@ -23,9 +23,10 @@ class TaskRunnerStrategiesTest {
   @Test
   void turboStrategyRunsTheTaskThroughThePackageManager() {
     assertThat(
-            TaskRunnerStrategies.of(TaskRunner.TURBO)
-                .orElseThrow()
-                .rootTaskCommand(BuildTool.PNPM, "lint"))
+        TaskRunnerStrategies.of(TaskRunner.TURBO)
+            .orElseThrow()
+            .rootTaskCommand(BuildTool.PNPM, "lint")
+    )
         .containsExactly(
             "pnpm",
             "exec",
@@ -35,7 +36,8 @@ class TaskRunnerStrategiesTest {
             "--log-prefix=task",
             "--log-order=grouped",
             "--continue=always",
-            "--ui=stream");
+            "--ui=stream"
+        );
     assertThat(TaskRunnerStrategies.of(TaskRunner.TURBO).orElseThrow().packageFilter())
         .isEqualTo("--filter=...{package}");
   }

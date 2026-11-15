@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * only on files whose path matches {@code path}, and does nothing when there are no rules.
  */
 public final class ImportControlCheck implements RuleCheck {
-
   private static final String ALLOW = "allow";
   private static final String DISALLOW = "disallow";
   private static final String STAR_SUFFIX = ".*";
@@ -32,7 +31,6 @@ public final class ImportControlCheck implements RuleCheck {
    * @param pattern the exact name, or a package ending in {@code .*}
    */
   public record Rule(boolean allowed, String pattern) {
-
     /**
      * Checks the pattern.
      *
@@ -57,7 +55,8 @@ public final class ImportControlCheck implements RuleCheck {
         case DISALLOW -> new Rule(false, pattern);
         default ->
             throw new IllegalArgumentException(
-                "an import control rule starts with allow or disallow: '" + entry + "'");
+                "an import control rule starts with allow or disallow: '" + entry + "'"
+            );
       };
     }
 
@@ -89,7 +88,10 @@ public final class ImportControlCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return check(root, unit == null ? "" : unit.path());
   }
 
@@ -102,7 +104,10 @@ public final class ImportControlCheck implements RuleCheck {
       if (!permitted(declaration.fullName())) {
         matches.add(
             CheckSupport.at(
-                declaration.span(), CheckSupport.fill(message, declaration.fullName(), "")));
+                declaration.span(),
+                CheckSupport.fill(message, declaration.fullName(), "")
+            )
+        );
       }
     }
     return List.copyOf(matches);

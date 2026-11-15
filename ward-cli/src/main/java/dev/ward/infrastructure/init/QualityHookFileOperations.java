@@ -72,7 +72,8 @@ final class QualityHookFileOperations {
           path,
           Files.exists(path),
           Files.exists(path) ? Files.readString(path) : "",
-          Files.exists(path) && path.toFile().canExecute());
+          Files.exists(path) && path.toFile().canExecute()
+      );
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }

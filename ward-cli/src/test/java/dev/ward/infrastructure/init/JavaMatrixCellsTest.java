@@ -32,7 +32,8 @@ class JavaMatrixCellsTest {
             "8,maven,,standard,",
             "25,maven,,standard,",
             "8,gradle,groovy,standard,",
-            "25,gradle,groovy,standard,");
+            "25,gradle,groovy,standard,"
+        );
   }
 
   @Test
@@ -42,16 +43,17 @@ class JavaMatrixCellsTest {
             "17,maven,,strict,kotlin-basic",
             "21,maven,,strict,kotlin-basic",
             "17,gradle,kotlin,strict,kotlin-basic",
-            "21,gradle,kotlin,strict,kotlin-basic");
+            "21,gradle,kotlin,strict,kotlin-basic"
+        );
   }
 
   @Test
   void everyMatrixJdkHasAGradleVersion() throws IOException {
     final List<String> mapped =
-        Files.readAllLines(JDKS).stream().skip(1).map(row -> row.split(",")[0]).toList();
+        Files.readAllLines(JDKS).stream().skip(1).map(row -> row.split(",") [0]).toList();
 
     assertThat(mapped)
-        .containsAll(rows().stream().map(row -> row.split(",")[0]).distinct().toList());
+        .containsAll(rows().stream().map(row -> row.split(",") [0]).distinct().toList());
   }
 
   /** The cell rows, without the header. */

@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks the method mapping on a two-case sample written by hand in the shape of Juliet. */
 class JulietMethodsTest {
-
   // Zero-based lines of SAMPLE.
   private static final int BAD_FIRST = 2;
   private static final int BAD_LAST = 3;

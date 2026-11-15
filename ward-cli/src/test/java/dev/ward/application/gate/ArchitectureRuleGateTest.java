@@ -25,8 +25,7 @@ class ArchitectureRuleGateTest {
   @Test
   void namingAndLocationRulesRunOverFilesThatHaveNoEdges() throws IOException {
     ArchitectureGateRun.copy(SWIFT, root, file -> true);
-    write(
-        """
+    write("""
         [[rule]]
         name = "services-are-named"
         select = { directories = ["Service"] }
@@ -52,12 +51,14 @@ class ArchitectureRuleGateTest {
             finding -> {
               assertThat(finding.file()).isEqualTo("App/Service/OrderService.swift");
               assertThat(finding.line()).isEqualTo(1);
-            });
+            }
+        );
     assertThat(findings.stream().map(Finding::message))
         .anyMatch(
             message ->
                 message.startsWith("services-are-named: ")
-                    && message.endsWith("because services are stores"));
+                    && message.endsWith("because services are stores")
+        );
   }
 
   @Test
@@ -86,8 +87,7 @@ class ArchitectureRuleGateTest {
   @Test
   void aProblemInTheFileStopsTheRunAndNamesTheFileAndTheKey() throws IOException {
     ArchitectureGateRun.copy(SWIFT, root, file -> true);
-    write(
-        """
+    write("""
         [[rule]]
         name = "r"
         select = { directories = ["Service"] }
@@ -107,9 +107,7 @@ class ArchitectureRuleGateTest {
     ArchitectureGateRun.copy(SWIFT, root, file -> true);
     write("not valid toml = = =\n");
     Files.createDirectories(root.resolve("config"));
-    Files.writeString(
-        root.resolve("config/architecture.toml"),
-        """
+    Files.writeString(root.resolve("config/architecture.toml"), """
         version = 1
 
         [[rule]]
@@ -121,7 +119,8 @@ class ArchitectureRuleGateTest {
     final Path ward = root.resolve("ward.toml");
     Files.writeString(
         ward,
-        "version = 2\n[checks.ward]\nuses = \"ward\"\narchitecture-file = \"config/architecture.toml\"\n");
+        "version = 2\n[checks.ward]\nuses = \"ward\"\narchitecture-file = \"config/architecture.toml\"\n"
+    );
     final GateConfiguration check = new TomlConfigurationReader().read(ward).checks().get("ward");
 
     final GateResult result = ArchitectureGateRun.run(root, check);
@@ -137,7 +136,8 @@ class ArchitectureRuleGateTest {
     final Path ward = root.resolve("ward.toml");
     Files.writeString(
         ward,
-        "version = 2\n[checks.ward]\nuses = \"ward\"\narchitecture-file = \"config/missing.toml\"\n");
+        "version = 2\n[checks.ward]\nuses = \"ward\"\narchitecture-file = \"config/missing.toml\"\n"
+    );
     final GateConfiguration check = new TomlConfigurationReader().read(ward).checks().get("ward");
 
     final GateResult result = ArchitectureGateRun.run(root, check);
@@ -148,7 +148,9 @@ class ArchitectureRuleGateTest {
 
   private void write(final String text) throws IOException {
     Files.writeString(
-        root.resolve(RULE_FILE), text.startsWith("version") ? text : "version = 1\n\n" + text);
+        root.resolve(RULE_FILE),
+        text.startsWith("version") ? text : "version = 1\n\n" + text
+    );
   }
 
   private static String text(final GateResult result) {

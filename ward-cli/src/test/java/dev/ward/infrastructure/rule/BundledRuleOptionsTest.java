@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 
 /** Every bundled rule is in a category and the standard preset, and every option compiles. */
 class BundledRuleOptionsTest {
-
   private static final double FRACTION = 0.5;
 
   private static final AnalysisRuleLoad LOAD = new ClasspathRuleSource().load();
@@ -51,7 +50,8 @@ class BundledRuleOptionsTest {
                   .as(rule.id())
                   .containsAnyOf(RulePreset.STANDARD, RulePreset.STRICT);
               assertThat(RulePreset.STRICT.selects(rule.presets())).as(rule.id()).isTrue();
-            });
+            }
+        );
   }
 
   @Test

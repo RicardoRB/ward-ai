@@ -19,7 +19,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 /** Runs every javascript fixture folder through the shared format checks. */
 class JavaScriptFormatterFixturesTest {
-
   private static final Path ROOT = Path.of("src/test/resources/format/javascript");
 
   private static final SourceFormatter FORMATTER = new JavaScriptFormatter();

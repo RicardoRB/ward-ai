@@ -29,7 +29,6 @@ import java.util.regex.Pattern;
  * its dependents; upgrade by caching the summaries that {@code TaintFile} derives per rule.
  */
 final class FlowDigests {
-
   private static final Logger LOG = Logger.getLogger(FlowDigests.class.getName());
   private static final Pattern DIGEST = Pattern.compile("[0-9a-f]{64}");
 
@@ -42,7 +41,8 @@ final class FlowDigests {
   FlowDigests(
       final AnalysisCache cache,
       final String engineVersion,
-      final List<FrontendSupport> frontends) {
+      final List<FrontendSupport> frontends
+  ) {
     this.cache = cache;
     this.engineVersion = engineVersion;
     frontends.forEach(frontend -> support.put(frontend.language(), frontend));

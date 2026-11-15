@@ -10,7 +10,6 @@ import java.util.Optional;
  * format was widened or replaced.
  */
 final class HeaderTypeChanges {
-
   private static final String TYPE = "type";
   private static final String FORMAT = "format";
   private static final List<String> NARROWING_FORMATS = List.of("int64", "int32");
@@ -19,7 +18,10 @@ final class HeaderTypeChanges {
 
   /** The header type change of one schema pair, as the kind {@code header-type-changed}. */
   static List<SchemaChange> changes(
-      final SchemaSides sides, final DocNode base, final DocNode revision) {
+      final SchemaSides sides,
+      final DocNode base,
+      final DocNode revision
+  ) {
     if (sides.request() || !changed(base, revision)) {
       return List.of();
     }
@@ -39,7 +41,9 @@ final class HeaderTypeChanges {
 
   /** A format that was widened or swapped; adding a format or narrowing int64 to int32 is fine. */
   private static boolean formatChanged(
-      final Optional<String> before, final Optional<String> after) {
+      final Optional<String> before,
+      final Optional<String> after
+  ) {
     if (before.isEmpty() || before.equals(after)) {
       return false;
     }

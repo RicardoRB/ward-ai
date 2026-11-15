@@ -4,7 +4,6 @@ import java.util.function.BooleanSupplier;
 
 /** Runs keyword checks in order and stops at the first failure unless every error is wanted. */
 final class Chain {
-
   private Chain() {}
 
   /** Runs the steps; returns whether all of them held. */

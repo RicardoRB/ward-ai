@@ -16,8 +16,8 @@ public record TaintSpec(
     List<TaintEntry> sources,
     List<TaintEntry> sinks,
     List<TaintEntry> sanitizers,
-    List<TaintEntry> propagators) {
-
+    List<TaintEntry> propagators
+) {
   /**
    * Copies the lists.
    *

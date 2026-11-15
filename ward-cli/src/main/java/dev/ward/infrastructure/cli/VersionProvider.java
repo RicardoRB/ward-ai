@@ -11,7 +11,6 @@ import picocli.CommandLine.IVersionProvider;
 
 /** Supplies the Ward version for {@code --version} and the report header. */
 public class VersionProvider implements IVersionProvider {
-
   private static final Logger LOGGER = Logger.getLogger(VersionProvider.class.getName());
   private static final String RESOURCE = "version.properties";
   private static final String FALLBACK = "dev";

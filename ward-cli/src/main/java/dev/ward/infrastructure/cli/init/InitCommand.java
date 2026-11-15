@@ -29,7 +29,8 @@ import picocli.CommandLine.Spec;
     name = "init",
     description = "Create ward.toml with an interactive setup wizard.",
     mixinStandardHelpOptions = true,
-    versionProvider = VersionProvider.class)
+    versionProvider = VersionProvider.class
+)
 public class InitCommand implements Callable<Integer> {
   private static final RawTerminal UNAVAILABLE_TERMINAL = Optional::empty;
 
@@ -48,21 +49,24 @@ public class InitCommand implements Callable<Integer> {
       names = "--integration",
       split = ",",
       description =
-          "Agent integration(s): none, opencode, or claude-code. Repeat or comma-separate.")
+          "Agent integration(s): none, opencode, or claude-code. Repeat or comma-separate."
+  )
   private List<String> integrations;
 
   // Picocli assigns annotated fields reflectively, so they cannot be final.
   @Option(
       names = "--gate",
       split = ",",
-      description = "Quality gate(s) to enable. Repeat or comma-separate.")
+      description = "Quality gate(s) to enable. Repeat or comma-separate."
+  )
   private List<String> gates;
 
   @Option(
       names = "--install-tool",
       split = ",",
       description =
-          "Accepted for compatibility; init installs no gate executable, so it has no effect.")
+          "Accepted for compatibility; init installs no gate executable, so it has no effect."
+  )
   private List<String> installTools;
 
   @Option(names = "--preset", description = "Quality preset: standard or strict.")
@@ -70,19 +74,22 @@ public class InitCommand implements Callable<Integer> {
 
   @Option(
       names = "--quality-hooks",
-      description = "Install Ward pre-commit and pre-push quality hooks.")
+      description = "Install Ward pre-commit and pre-push quality hooks."
+  )
   private Boolean qualityHooks;
 
   @Option(
       names = "--remove-quality-hooks",
-      description = "Remove Ward-managed quality-hook sections without changing user content.")
+      description = "Remove Ward-managed quality-hook sections without changing user content."
+  )
   private boolean removeQualityHooks;
 
   @Option(
       names = "--project",
       paramLabel = "<dir>",
       description =
-          "Maven or Gradle project to configure, relative to -C. Repeat to configure several.")
+          "Maven or Gradle project to configure, relative to -C. Repeat to configure several."
+  )
   private List<String> projects;
 
   @Option(names = "--overwrite", description = "Overwrite an existing ward.toml without prompting.")
@@ -90,19 +97,22 @@ public class InitCommand implements Callable<Integer> {
 
   @Option(
       names = "--dry-run",
-      description = "Show the files init would change, then exit without changing anything.")
+      description = "Show the files init would change, then exit without changing anything."
+  )
   private boolean dryRun;
 
   @Option(
       names = "--accept-compatibility-updates",
-      description = "Approve validated Maven compatibility updates without prompting.")
+      description = "Approve validated Maven compatibility updates without prompting."
+  )
   private boolean acceptCompatibilityUpdates;
 
   @Option(
       names = "--yes",
       description =
           "Accept defaults for unanswered questions, skip the review, and approve validated"
-              + " compatibility updates.")
+              + " compatibility updates."
+  )
   private boolean yesOption;
 
   private final Supplier<InitService> service;
@@ -131,7 +141,10 @@ public class InitCommand implements Callable<Integer> {
    * is the console.
    */
   public InitCommand(
-      final InitService service, final InputStream input, final RawTerminal rawTerminal) {
+      final InitService service,
+      final InputStream input,
+      final RawTerminal rawTerminal
+  ) {
     this(service, input, rawTerminal, input.equals(System.in) && consoleIsTerminal());
   }
 
@@ -140,7 +153,8 @@ public class InitCommand implements Callable<Integer> {
       final InitService service,
       final InputStream input,
       final RawTerminal rawTerminal,
-      final boolean terminal) {
+      final boolean terminal
+  ) {
     this.service = () -> service;
     this.prompt =
         new LinePrompt(new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8)));
@@ -158,27 +172,30 @@ public class InitCommand implements Callable<Integer> {
     final InitWizard wizard = new InitWizard(prompt, this::openRawTerminal, output(), terminal);
     final List<Project> chosen =
         InitProjectChoice.choose(
-                init.targets(options.directory(), projects == null ? List.of() : projects),
-                options.directory(),
-                terminal && !yesOption,
-                wizard,
-                output())
+            init.targets(options.directory(), projects == null ? List.of() : projects),
+            options.directory(),
+            terminal && !yesOption,
+            wizard,
+            output()
+        )
             .stream()
             .map(project -> project.withXcodeScheme(schemeOptions.scheme()))
             .toList();
     if (removeQualityHooks) {
       chosen.forEach(
-          project -> output().println(init.catalog().removeQualityHooks(project).message()));
+          project -> output().println(init.catalog().removeQualityHooks(project).message())
+      );
       return ExitCodes.OK;
     }
     final InitConfirmations confirmations = new InitConfirmations(prompt, output(), terminal);
     final List<InitApply.Target> targets =
         new InitTargetAnswers(
-                answers(),
-                new InitPrompts(wizard, confirmations, new QuestionProgress(output())),
-                terminal,
-                overwriteOption,
-                output())
+            answers(),
+            new InitPrompts(wizard, confirmations, new QuestionProgress(output())),
+            terminal,
+            overwriteOption,
+            output()
+        )
             .resolve(init, chosen);
     final InitApply apply = new InitApply(init, confirmations, output());
     if (targets.isEmpty()) {
@@ -196,7 +213,8 @@ public class InitCommand implements Callable<Integer> {
         terminal && !yesOption,
         yesOption || acceptCompatibilityUpdates,
         overwrite,
-        yesOption || generatedFiles.replaceScripts());
+        yesOption || generatedFiles.replaceScripts()
+    );
   }
 
   private InitQuestions.Answers answers() {
@@ -210,7 +228,8 @@ public class InitCommand implements Callable<Integer> {
         generatedFiles.ci(),
         generatedFiles.agentRules(),
         yesOption,
-        schemeOptions.scheme());
+        schemeOptions.scheme()
+    );
   }
 
   private Optional<RawSession> openRawTerminal() {

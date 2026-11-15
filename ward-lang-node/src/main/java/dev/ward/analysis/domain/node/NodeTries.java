@@ -6,7 +6,6 @@ import java.util.List;
 
 /** Lowers a TypeScript or JavaScript {@code try} statement with its catch and finally clauses. */
 final class NodeTries {
-
   private static final String BLOCK = "block";
   private static final String IDENTIFIER = "identifier";
   private static final String ASSIGNABLE = "assignable";
@@ -16,7 +15,10 @@ final class NodeTries {
   private final NodeAccesses accesses;
 
   NodeTries(
-      final ControlFlowBuilder flow, final NodeStatements statements, final NodeAccesses accesses) {
+      final ControlFlowBuilder flow,
+      final NodeStatements statements,
+      final NodeAccesses accesses
+  ) {
     this.flow = flow;
     this.statements = statements;
     this.accesses = accesses;
@@ -39,7 +41,8 @@ final class NodeTries {
     flow.tries().beginFinally();
     if (finallyClause != null) {
       statements.blockStatements(
-          NodeFlowSyntax.firstOf(NodeFlowSyntax.parts(finallyClause), BLOCK));
+          NodeFlowSyntax.firstOf(NodeFlowSyntax.parts(finallyClause), BLOCK)
+      );
     }
     flow.tries().popTry();
     return true;

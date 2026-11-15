@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks the flow-site records and the block constructors that keep sites optional. */
 class FlowSiteModelTest {
-
   private static final Span SPAN = new Span(1, 1, 1, 5, 0, 4);
 
   /** A block built with the older constructors has no flow sites. */
@@ -62,7 +61,10 @@ class FlowSiteModelTest {
                     Optional.of("java.sql.Statement"),
                     List.of(),
                     List.of(SPAN),
-                    SPAN)));
+                    SPAN
+                )
+            )
+        );
     final BasicBlock exit = new BasicBlock(1, List.of(), List.of());
     final ControlFlowGraph graph = new ControlFlowGraph("m", SPAN, List.of(block, exit), 0, 1);
     assertThat(ControlFlowDump.render(graph))
@@ -77,6 +79,7 @@ class FlowSiteModelTest {
         Optional.empty(),
         List.of("Untrusted"),
         List.of(SPAN),
-        SPAN);
+        SPAN
+    );
   }
 }

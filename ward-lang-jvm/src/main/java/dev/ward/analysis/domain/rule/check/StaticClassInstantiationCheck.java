@@ -20,7 +20,6 @@ import java.util.Set;
  * the class are unknown.
  */
 public final class StaticClassInstantiationCheck extends FactsCheck {
-
   private static final String EXPRESSION = "expression";
   private static final String CREATOR = "creator";
   private static final String OBJECT = "java.lang.Object";

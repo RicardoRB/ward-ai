@@ -15,7 +15,6 @@ import java.util.Set;
  * rules are reported as not run, never as passed.
  */
 public final class TypeFactsRun {
-
   private final Map<AnalysisLanguage, TypeFacts> sources;
 
   /** Creates the run over the native sources registered per language. */
@@ -48,6 +47,7 @@ public final class TypeFactsRun {
         support.scopes(),
         facts(support.language()),
         support.manifests(),
-        support.projectLanguages());
+        support.projectLanguages()
+    );
   }
 }

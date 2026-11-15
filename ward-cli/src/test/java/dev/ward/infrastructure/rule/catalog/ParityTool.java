@@ -5,7 +5,6 @@ import java.util.List;
 
 /** A real Java tool that is run over the fixtures of every rule it has a counterpart for. */
 interface ParityTool {
-
   /** The catalog key of the tool's counterparts. */
   String name();
 

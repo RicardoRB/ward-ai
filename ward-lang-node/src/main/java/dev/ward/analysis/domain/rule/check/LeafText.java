@@ -8,7 +8,6 @@ import java.util.List;
  * The source text of a syntax node, read from its leaves, for the TypeScript and JavaScript checks.
  */
 final class LeafText {
-
   private LeafText() {}
 
   /** The text of the leaves below a node, in order; a leaf's own text is its text. */

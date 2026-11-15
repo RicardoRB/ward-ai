@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class PomToolConfiguratorValidationTest {
-
   /** Well-formed apart from an undefined entity, so only the pre-write check can reject it. */
   private static final String UNDEFINED_ENTITY_POM =
       "<project>\n  <name>&undefined;</name>\n  <build>\n    <plugins>\n    </plugins>\n"
@@ -31,7 +30,8 @@ class PomToolConfiguratorValidationTest {
     final byte[] original = Files.readAllBytes(pom);
 
     assertThatThrownBy(
-            () -> new PomToolConfigurator().apply(project(root), List.of(gate("coverage"))))
+        () -> new PomToolConfigurator().apply(project(root), List.of(gate("coverage")))
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("while adding jacoco-maven-plugin")
         .hasMessageContaining("not well-formed XML (line 2");

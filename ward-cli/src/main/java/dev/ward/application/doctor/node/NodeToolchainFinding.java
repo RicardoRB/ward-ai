@@ -13,20 +13,25 @@ import java.util.List;
 
 /** Checks node and the package manager's executable on PATH; Bun runs JavaScript itself. */
 public final class NodeToolchainFinding implements ToolchainFinding {
-
   @Override
   public List<Finding> findings(
-      final Project detected, final EnvironmentFacts facts, final ToolchainContext context) {
+      final Project detected,
+      final EnvironmentFacts facts,
+      final ToolchainContext context
+  ) {
     if (detected.buildTool() == BuildTool.BUN) {
       return List.of(
           executableFinding(detected.buildExecutable(), facts),
-          TypeScriptTypeInputsFinding.finding(facts));
+          TypeScriptTypeInputsFinding.finding(facts)
+      );
     }
     final List<Finding> findings =
         new ArrayList<>(
             List.of(
                 executableFinding("node", facts),
-                executableFinding(detected.buildExecutable(), facts)));
+                executableFinding(detected.buildExecutable(), facts)
+            )
+        );
     NodeSupport.warning(detected)
         .map(message -> new Finding("node-version", Status.WARNING, message))
         .ifPresent(findings::add);

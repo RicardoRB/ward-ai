@@ -10,7 +10,6 @@ import org.tomlj.Toml;
 import org.tomlj.TomlTable;
 
 class CatalogStatusFilesTest {
-
   private static final CatalogStatusFiles.Entry IMPLEMENTED =
       new CatalogStatusFiles.Entry("implemented", "");
   private static final CatalogStatusFiles.Entry PLANNED =
@@ -26,9 +25,14 @@ class CatalogStatusFilesTest {
         CatalogTables.statuses(
             row("not-applicable = { swift = \"no\" }"),
             Map.of(
-                AnalysisLanguage.JAVA, IMPLEMENTED,
-                AnalysisLanguage.PYTHON, PLANNED,
-                AnalysisLanguage.SWIFT, new CatalogStatusFiles.Entry("not-applicable", "")));
+                AnalysisLanguage.JAVA,
+                IMPLEMENTED,
+                AnalysisLanguage.PYTHON,
+                PLANNED,
+                AnalysisLanguage.SWIFT,
+                new CatalogStatusFiles.Entry("not-applicable", "")
+            )
+        );
 
     assertThat(statuses.get(AnalysisLanguage.JAVA).status()).isEqualTo(CatalogStatus.IMPLEMENTED);
     assertThat(statuses.get(AnalysisLanguage.PYTHON).issue()).isEqualTo("#12");
@@ -38,10 +42,12 @@ class CatalogStatusFilesTest {
   @Test
   void aLanguageInTheRowAndInAStatusFileIsRejected() {
     assertThatThrownBy(
-            () ->
-                CatalogTables.statuses(
-                    row("status = { java = \"implemented\" }"),
-                    Map.of(AnalysisLanguage.JAVA, IMPLEMENTED)))
+        () ->
+            CatalogTables.statuses(
+                row("status = { java = \"implemented\" }"),
+                Map.of(AnalysisLanguage.JAVA, IMPLEMENTED)
+            )
+    )
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("java");
   }
@@ -49,10 +55,12 @@ class CatalogStatusFilesTest {
   @Test
   void aReasonForALanguageWithoutStatusIsRejected() {
     assertThatThrownBy(
-            () ->
-                CatalogTables.statuses(
-                    row("not-applicable = { swift = \"no\" }"),
-                    Map.of(AnalysisLanguage.JAVA, IMPLEMENTED)))
+        () ->
+            CatalogTables.statuses(
+                row("not-applicable = { swift = \"no\" }"),
+                Map.of(AnalysisLanguage.JAVA, IMPLEMENTED)
+            )
+    )
         .isInstanceOf(IllegalArgumentException.class);
   }
 

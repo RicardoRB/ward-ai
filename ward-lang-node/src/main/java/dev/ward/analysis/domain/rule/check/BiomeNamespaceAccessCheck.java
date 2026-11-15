@@ -22,7 +22,6 @@ import java.util.Set;
  * resolves to its own binding, so it is not reported either.
  */
 public final class BiomeNamespaceAccessCheck implements RuleCheck {
-
   private static final String CALL = "singleExpression";
   private static final String NAMESPACE = "*";
   private static final String OPEN_BRACKET = "'['";
@@ -52,7 +51,11 @@ public final class BiomeNamespaceAccessCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final Map<Long, NameReference> byName = referencesByName(view.scopes());
     return SyntaxWalk.visits(root, Set.of(CALL)).stream()
         .filter(visit -> computedAccess(visit.node()))
@@ -71,7 +74,7 @@ public final class BiomeNamespaceAccessCheck implements RuleCheck {
   }
 
   private static long key(final Span span) {
-    return ((long) span.startOffset() << Integer.SIZE) | span.endOffset();
+    return ((long)span.startOffset() << Integer.SIZE) | span.endOffset();
   }
 
   /** The node indexes a value: a bracket after its base, or a name followed by an array literal. */
@@ -79,12 +82,15 @@ public final class BiomeNamespaceAccessCheck implements RuleCheck {
     final List<SyntaxNode> parts = node.children();
     return BiomeTree.hasChild(node, OPEN_BRACKET)
         || parts.size() == 2
-            && BiomeTree.isKind(parts.get(1), CALL)
-            && BiomeTree.hasChild(parts.get(1), ARRAY);
+        && BiomeTree.isKind(parts.get(1), CALL)
+        && BiomeTree.hasChild(parts.get(1), ARRAY);
   }
 
   private static boolean resolvesToNamespace(
-      final SyntaxNode node, final Map<Long, NameReference> byName) {
+      final SyntaxNode node,
+      final Map<Long,
+      NameReference> byName
+  ) {
     final NameReference reference = byName.get(key(node.children().get(0).span()));
     return reference != null
         && reference.resolved().filter(BiomeNamespaceAccessCheck::isNamespace).isPresent();

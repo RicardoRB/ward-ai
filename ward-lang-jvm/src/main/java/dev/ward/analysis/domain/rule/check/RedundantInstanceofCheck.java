@@ -52,7 +52,8 @@ public final class RedundantInstanceofCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts facts,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(EXPRESSION)).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(test -> redundant(test, facts))
@@ -71,7 +72,10 @@ public final class RedundantInstanceofCheck implements RuleCheck {
   }
 
   private static boolean same(
-      final SyntaxNode operand, final SyntaxNode target, final UnitTypeFacts facts) {
+      final SyntaxNode operand,
+      final SyntaxNode target,
+      final UnitTypeFacts facts
+  ) {
     final Optional<SyntaxNode> type =
         TYPE_TYPE.equals(target.kind())
             ? Optional.of(target)

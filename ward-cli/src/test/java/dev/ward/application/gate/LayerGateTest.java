@@ -49,7 +49,8 @@ class LayerGateTest {
     Files.createDirectories(testSource.getParent());
     Files.writeString(
         testSource,
-        "package shop.legacy;\n\nimport shop.domain.Discount;\n\nclass CouponTest {}\n");
+        "package shop.legacy;\n\nimport shop.domain.Discount;\n\nclass CouponTest {}\n"
+    );
 
     final List<Finding> findings = run(new LayerBoundary(List.of("legacy"), List.of("domain")));
 
@@ -67,7 +68,8 @@ class LayerGateTest {
     return LayerPorts.findings(
         new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE),
         boundary,
-        new ProjectDependencyAdapters(List.of(new JvmDependencyAdapters())));
+        new ProjectDependencyAdapters(List.of(new JvmDependencyAdapters()))
+    );
   }
 
   private void copyFixture() throws IOException {

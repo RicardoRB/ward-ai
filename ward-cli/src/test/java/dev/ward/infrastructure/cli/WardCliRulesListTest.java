@@ -20,7 +20,8 @@ class WardCliRulesListTest extends WardCliIntegrationSupport {
   @Test
   void jsonListWritesOnlyOneDocumentToStdout() {
     assertThat(
-            run(RULES, LIST, PRESET, "standard", "--format", "json", DIRECTORY, project.toString()))
+        run(RULES, LIST, PRESET, "standard", "--format", "json", DIRECTORY, project.toString())
+    )
         .isEqualTo(ExitCodes.OK);
 
     final JsonTree document = JsonTree.parse(out.toString());
@@ -32,7 +33,8 @@ class WardCliRulesListTest extends WardCliIntegrationSupport {
   @Test
   void listFilterByLanguageKeepsOnlyThatLanguage() {
     assertThat(
-            run(RULES, LIST, LANGUAGE, "python", "--format", "json", DIRECTORY, project.toString()))
+        run(RULES, LIST, LANGUAGE, "python", "--format", "json", DIRECTORY, project.toString())
+    )
         .isEqualTo(ExitCodes.OK);
 
     final JsonTree rules = JsonTree.parse(out.toString()).get("rules");
@@ -46,15 +48,8 @@ class WardCliRulesListTest extends WardCliIntegrationSupport {
   @Test
   void theOpenApiRulesAreListedUnderTheOpenApiLanguage() {
     assertThat(
-            run(
-                RULES,
-                LIST,
-                LANGUAGE,
-                "openapi",
-                "--format",
-                "json",
-                DIRECTORY,
-                project.toString()))
+        run(RULES, LIST, LANGUAGE, "openapi", "--format", "json", DIRECTORY, project.toString())
+    )
         .isEqualTo(ExitCodes.OK);
 
     final JsonTree rules = JsonTree.parse(out.toString()).get("rules");

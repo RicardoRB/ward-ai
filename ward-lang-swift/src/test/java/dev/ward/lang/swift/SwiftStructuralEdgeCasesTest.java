@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 /** Edge cases of the Swift rules: tree shapes that the fixtures do not isolate. */
 final class SwiftStructuralEdgeCasesTest {
-
   private static final String FIXTURES = "fixtures/swift-structural/edge/";
 
   @Test
@@ -29,7 +28,9 @@ final class SwiftStructuralEdgeCasesTest {
     // Nine ifs in the function make 10; the closure's three ifs must not push it over the limit.
     final List<AnalysisFinding> findings =
         SwiftRuleRuns.run(
-                "complexity", SwiftRuleRuns.read(FIXTURES + "closure-outside-function.swift"))
+            "complexity",
+            SwiftRuleRuns.read(FIXTURES + "closure-outside-function.swift")
+        )
             .findings();
 
     assertThat(findings).isEmpty();
@@ -46,7 +47,9 @@ final class SwiftStructuralEdgeCasesTest {
   void initializerWithDefaultValuesCountsEachParameter() throws Exception {
     final List<AnalysisFinding> findings =
         SwiftRuleRuns.run(
-                "parameter-count", SwiftRuleRuns.read(FIXTURES + "initializer-defaults.swift"))
+            "parameter-count",
+            SwiftRuleRuns.read(FIXTURES + "initializer-defaults.swift")
+        )
             .findings();
 
     assertThat(findings)

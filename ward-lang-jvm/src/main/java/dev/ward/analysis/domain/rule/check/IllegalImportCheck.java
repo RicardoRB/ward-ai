@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
  * matches when it is found in it.
  */
 public final class IllegalImportCheck implements RuleCheck {
-
   private final List<String> packages;
   private final List<String> classes;
   private final boolean regexp;
@@ -32,7 +31,8 @@ public final class IllegalImportCheck implements RuleCheck {
       final List<String> packages,
       final List<String> classes,
       final boolean regexp,
-      final String message) {
+      final String message
+  ) {
     this.packages = List.copyOf(packages);
     this.classes = List.copyOf(classes);
     this.regexp = regexp;
@@ -50,7 +50,10 @@ public final class IllegalImportCheck implements RuleCheck {
       if (illegal(declaration.name())) {
         matches.add(
             CheckSupport.at(
-                declaration.span(), CheckSupport.fill(message, declaration.fullName(), "")));
+                declaration.span(),
+                CheckSupport.fill(message, declaration.fullName(), "")
+            )
+        );
       }
     }
     return List.copyOf(matches);

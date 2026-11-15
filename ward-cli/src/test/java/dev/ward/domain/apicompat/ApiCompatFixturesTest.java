@@ -43,7 +43,8 @@ class ApiCompatFixturesTest {
           if (Boolean.getBoolean(WRITE)) {
             Files.writeString(
                 fixture.resolve(EXPECTED),
-                String.join("\n", actual.get(name)) + (actual.get(name).isEmpty() ? "" : "\n"));
+                String.join("\n", actual.get(name)) + (actual.get(name).isEmpty() ? "" : "\n")
+            );
           }
           expected.put(name, Files.readAllLines(fixture.resolve(EXPECTED)));
         }
@@ -59,7 +60,9 @@ class ApiCompatFixturesTest {
   /** The changes Ward reports between the {@code baseline} and {@code revision} of a fixture. */
   static List<ApiChange> compare(final Path fixture) throws IOException {
     return ApiComparison.compare(
-        read(fixture.resolve("baseline")), read(fixture.resolve("revision")));
+        read(fixture.resolve("baseline")),
+        read(fixture.resolve("revision"))
+    );
   }
 
   private static String line(final ApiChange change) {
@@ -89,7 +92,8 @@ class ApiCompatFixturesTest {
       final List<Path> paths,
       final String extension,
       final AnalysisLanguage language,
-      final ApiSurfaceReader reader) {
+      final ApiSurfaceReader reader
+  ) {
     final List<SourceUnit> units =
         paths.stream()
             .filter(path -> path.toString().endsWith(extension))
@@ -100,14 +104,21 @@ class ApiCompatFixturesTest {
         : reader.read(
             units,
             new AntlrLanguageFrontend(),
-            name -> ClassLoader.getSystemResource(name.replace('.', '/') + ".class") != null);
+            name -> ClassLoader.getSystemResource(name.replace('.', '/') + ".class") != null
+        );
   }
 
   private static SourceUnit unit(
-      final Path side, final Path path, final AnalysisLanguage language) {
+      final Path side,
+      final Path path,
+      final AnalysisLanguage language
+  ) {
     try {
       return new SourceUnit(
-          side.relativize(path).toString().replace('\\', '/'), language, Files.readString(path));
+          side.relativize(path).toString().replace('\\', '/'),
+          language,
+          Files.readString(path)
+      );
     } catch (IOException e) {
       throw new UncheckedIOException(e);
     }

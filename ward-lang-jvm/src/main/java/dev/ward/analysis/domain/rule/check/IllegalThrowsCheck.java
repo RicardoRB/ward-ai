@@ -14,7 +14,6 @@ import java.util.Set;
  * and {@code ignore-overridden-methods}.
  */
 public final class IllegalThrowsCheck implements UnitCheck {
-
   private static final String QUALIFIED_NAME = "qualifiedName";
   private static final String QUALIFIED_NAME_LIST = "qualifiedNameList";
   private static final String CLASS_BODY_DECLARATION = "classBodyDeclaration";
@@ -40,7 +39,8 @@ public final class IllegalThrowsCheck implements UnitCheck {
       final Set<String> illegalClasses,
       final Set<String> ignoredMethodNames,
       final boolean ignoreOverridden,
-      final String message) {
+      final String message
+  ) {
     this.illegalClasses = Set.copyOf(illegalClasses);
     this.ignoredMethodNames = Set.copyOf(ignoredMethodNames);
     this.ignoreOverridden = ignoreOverridden;
@@ -84,7 +84,8 @@ public final class IllegalThrowsCheck implements UnitCheck {
             c ->
                 ANNOTATION.equals(c.kind())
                     ? OVERRIDE.contains(SyntaxWalk.text(c))
-                    : c.kind().endsWith(MODIFIER) && hasOverride(c));
+                    : c.kind().endsWith(MODIFIER) && hasOverride(c)
+        );
   }
 
   private void addIllegal(final SyntaxNode method, final List<RuleMatch> matches) {
@@ -97,7 +98,11 @@ public final class IllegalThrowsCheck implements UnitCheck {
                 c ->
                     matches.add(
                         CheckSupport.at(
-                            c.span(), CheckSupport.fill(message, SyntaxWalk.text(c), ""))));
+                            c.span(),
+                            CheckSupport.fill(message, SyntaxWalk.text(c), "")
+                        )
+                    )
+            );
       }
     }
   }

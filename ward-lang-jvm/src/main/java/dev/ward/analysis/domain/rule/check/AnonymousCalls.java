@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 
 /** Finds the methods that a file calls or references, as {@code name/arity} and {@code name/*}. */
 final class AnonymousCalls {
-
   private static final String METHOD_CALL = "methodCall";
   private static final Pattern REFERENCE = Pattern.compile("::([A-Za-z_$][A-Za-z0-9_$]*)");
 

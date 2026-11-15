@@ -115,10 +115,11 @@ class CrossFileTaintCacheTest {
 
   private List<AnalysisFinding> run(final AnalysisCache cache, final List<SourceUnit> units) {
     return new UnitResultCache(
-            new RuleEngine(new DeclarativeRuleMatcher()),
-            AnalysisCacheFixtures.codec(),
-            "test",
-            new JvmDependencyAdapters().forProject(root, units))
+        new RuleEngine(new DeclarativeRuleMatcher()),
+        AnalysisCacheFixtures.codec(),
+        "test",
+        new JvmDependencyAdapters().forProject(root, units)
+    )
         .run(cache, units, frontends, rules)
         .findings();
   }
@@ -129,7 +130,8 @@ class CrossFileTaintCacheTest {
         unit(MIDDLE, MIDDLE_TEXT),
         unit(SINK, sink),
         unit(SOURCE, source),
-        unit(UNRELATED, UNRELATED_TEXT));
+        unit(UNRELATED, UNRELATED_TEXT)
+    );
   }
 
   private static SourceUnit unit(final String path, final String text) {
@@ -164,7 +166,8 @@ class CrossFileTaintCacheTest {
     final List<SourceUnit> commented =
         units(
             "// a note\n\n" + SINK_UNSAFE.replace("{\n    response", "{\n    // why\n    response"),
-            SOURCE_TAINTED + "\n// end\n");
+            SOURCE_TAINTED + "\n// end\n"
+        );
     final List<AnalysisFinding> second = run(warm, commented);
 
     assertThat(second).isEqualTo(first);

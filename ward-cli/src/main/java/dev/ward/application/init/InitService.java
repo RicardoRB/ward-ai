@@ -48,7 +48,8 @@ public class InitService {
       final ProjectDetector detector,
       final Set<AgentIntegration> integrations,
       final InitSetupCatalog catalog,
-      final InitProjectFiles files) {
+      final InitProjectFiles files
+  ) {
     this.detector = detector;
     this.installer = new IntegrationInstaller(integrations, catalog);
     this.catalog = () -> catalog;
@@ -79,7 +80,12 @@ public class InitService {
    */
   public InitTargets targets(final Path start, final List<String> explicit) {
     return InitTargets.resolve(
-        detector, start, explicit, catalog.get()::isSupported, catalog.get().inputs.members());
+        detector,
+        start,
+        explicit,
+        catalog.get()::isSupported,
+        catalog.get().inputs.members()
+    );
   }
 
   /** Returns whether {@code project} already has a {@code ward.toml}. */
@@ -114,7 +120,8 @@ public class InitService {
       final InitSelection selection,
       final boolean overwrite,
       final boolean replaceScripts,
-      final Predicate<? super CompatibilityFinding> approval) {
+      final Predicate<? super CompatibilityFinding> approval
+  ) {
     LOGGER.log(Level.INFO, () -> "event=initialization-start overwrite=" + overwrite);
     final Project project = project(start).withXcodeScheme(selection.scheme());
     installer.validate(selection.integrations());
@@ -169,14 +176,16 @@ public class InitService {
       final List<InitGateOption> gates,
       final InitSelection selection,
       final InitChanges changes,
-      final boolean overwrite) {
+      final boolean overwrite
+  ) {
     final Path file = project.root().resolve("ward.toml");
     final String content =
         ConfigurationTemplate.render(
             gates,
             selection.preset(),
             project,
-            WardArchitecture.of(selection, project, files.architectureTables()));
+            WardArchitecture.of(selection, project, files.architectureTables())
+        );
     final boolean created;
     if (overwrite) {
       files.configuration().replace(file, content);

@@ -11,8 +11,10 @@ import java.util.Objects;
  * @param settings the settings that apply to the file
  */
 public record FormatTarget(
-    String relativePath, AnalysisLanguage language, FormatSettings settings) {
-
+    String relativePath,
+    AnalysisLanguage language,
+    FormatSettings settings
+) {
   /**
    * Checks the components.
    *

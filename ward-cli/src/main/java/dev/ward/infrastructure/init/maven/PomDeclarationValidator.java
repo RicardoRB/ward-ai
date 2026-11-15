@@ -37,7 +37,8 @@ final class PomDeclarationValidator {
           "dependencies",
           "goals",
           "inherited",
-          "configuration");
+          "configuration"
+      );
 
   /** Direct children of {@code <dependency>} in the Maven 4.0.0 POM model. */
   private static final Set<String> DEPENDENCY_CHILDREN =
@@ -50,7 +51,8 @@ final class PomDeclarationValidator {
           "scope",
           "systemPath",
           "exclusions",
-          "optional");
+          "optional"
+      );
 
   private PomDeclarationValidator() {}
 
@@ -113,7 +115,9 @@ final class PomDeclarationValidator {
                         declaration,
                         "declaration is not in the project-level <"
                             + declaration.section()
-                            + ">."));
+                            + ">."
+                    )
+            );
     final Set<String> allowed = declaration.dependency() ? DEPENDENCY_CHILDREN : PLUGIN_CHILDREN;
     for (final Element child : PomElements.children(pom, element)) {
       if (!allowed.contains(child.name())) {
@@ -123,7 +127,8 @@ final class PomDeclarationValidator {
                 + child.name()
                 + ">, which Maven does not allow directly inside <"
                 + element.name()
-                + ">.");
+                + ">."
+        );
       }
     }
   }
@@ -134,12 +139,15 @@ final class PomDeclarationValidator {
       section = section.flatMap(parent -> PomElements.child(pom, parent, name));
     }
     return section.flatMap(
-        parent -> PomElements.declaration(pom, parent, declaration.artifactId()));
+        parent -> PomElements.declaration(pom, parent, declaration.artifactId())
+    );
   }
 
   private static WardException failure(final Declaration declaration, final String reason) {
     LOGGER.log(
-        Level.WARNING, () -> "event=pom-validation status=failed tool=" + declaration.artifactId());
+        Level.WARNING,
+        () -> "event=pom-validation status=failed tool=" + declaration.artifactId()
+    );
     return new WardException(UNSAFE + "generated " + declaration.artifactId() + " " + reason);
   }
 

@@ -13,7 +13,6 @@ import java.util.Optional;
  * id whether an operation or a whole path went away.
  */
 final class RemovalRules {
-
   private static final String PARSE = "api-path-sunset-parse";
 
   private RemovalRules() {}
@@ -25,7 +24,8 @@ final class RemovalRules {
         rule("api-removed-before-sunset", Level.OPERATION, Verdict.BEFORE_SUNSET),
         rule("api-path-removed-without-deprecation", Level.PATH, Verdict.NOT_DEPRECATED),
         rule("api-path-removed-before-sunset", Level.PATH, Verdict.BEFORE_SUNSET),
-        RowRule.of(PARSE, pair -> removals(pair, null, Verdict.SUNSET_INVALID)));
+        RowRule.of(PARSE, pair -> removals(pair, null, Verdict.SUNSET_INVALID))
+    );
   }
 
   private static BreakingRule rule(final String id, final Level level, final Verdict verdict) {
@@ -33,7 +33,10 @@ final class RemovalRules {
   }
 
   private static List<BreakingFinding> removals(
-      final DocumentPair pair, final Level level, final Verdict verdict) {
+      final DocumentPair pair,
+      final Level level,
+      final Verdict verdict
+  ) {
     final OperationIndex revision = new OperationIndex(pair.revision());
     final List<BreakingFinding> findings = new ArrayList<>();
     for (final Operation removed : new OperationIndex(pair.base()).all()) {
@@ -44,7 +47,8 @@ final class RemovalRules {
           final DocNode at =
               path.map(DocNode.Entry::value)
                   .orElseGet(
-                      () -> pair.revision().root().get("paths").orElse(pair.revision().root()));
+                      () -> pair.revision().root().get("paths").orElse(pair.revision().root())
+                  );
           findings.add(finding(removed, actual, verdict, at));
         }
       }
@@ -53,7 +57,11 @@ final class RemovalRules {
   }
 
   private static BreakingFinding finding(
-      final Operation removed, final Level level, final Verdict verdict, final DocNode at) {
+      final Operation removed,
+      final Level level,
+      final Verdict verdict,
+      final DocNode at
+  ) {
     final String id = RowRule.PREFIX + idOf(level, verdict);
     final String what = level == Level.PATH ? "path " + removed.path() : "operation";
     return new BreakingFinding(
@@ -67,7 +75,8 @@ final class RemovalRules {
             + verdict.reason,
         OperationIndex.method(removed),
         removed.path(),
-        at);
+        at
+    );
   }
 
   private static String idOf(final Level level, final Verdict verdict) {

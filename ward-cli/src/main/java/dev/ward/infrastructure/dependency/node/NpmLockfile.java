@@ -69,7 +69,8 @@ final class NpmLockfile {
           if (value instanceof Map<?, ?> body) {
             entries.put(String.valueOf(key), NpmEntry.of(String.valueOf(key), body));
           }
-        });
+        }
+    );
   }
 
   private NodeLock toLock() {
@@ -82,9 +83,11 @@ final class NpmLockfile {
             collector.add(
                 id(entry),
                 entry.resolved().isEmpty() || NodeLock.registryTarball(entry.resolved()),
-                required);
+                required
+            );
           }
-        });
+        }
+    );
     return new NodeLock(collector.packages(), (member, name, range) -> idOf(lookup(member, name)));
   }
 

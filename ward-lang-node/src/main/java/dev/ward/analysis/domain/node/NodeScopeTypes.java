@@ -11,7 +11,6 @@ import java.util.Set;
 
 /** Handles classes, TypeScript type declarations and exports. */
 final class NodeScopeTypes {
-
   private static final String IDENTIFIER = "identifier";
 
   private final NodeScopeWalk walk;

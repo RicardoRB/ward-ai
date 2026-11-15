@@ -54,7 +54,8 @@ final class KotlinFixtures {
           .filter(
               path ->
                   path.endsWith(Path.of("src", "main", "java"))
-                      || path.endsWith(Path.of("src", "test", "java")))
+                      || path.endsWith(Path.of("src", "test", "java"))
+          )
           .map(path -> path.toAbsolutePath().toString())
           .sorted()
           .reduce((first, second) -> first + File.pathSeparator + second)
@@ -66,8 +67,8 @@ final class KotlinFixtures {
   static Set<String> goldenEdges(final Path golden) throws IOException {
     final Object parsed = new ForyJsonCodec().fromJson(Files.readString(golden), Object.class);
     final Set<String> edges = new TreeSet<>();
-    for (final Object pair : (List<?>) parsed) {
-      final List<?> ends = (List<?>) pair;
+    for (final Object pair : (List<?>)parsed) {
+      final List<?> ends = (List<?>)pair;
       edges.add(ends.get(0) + ARROW + ends.get(1));
     }
     return edges;

@@ -11,11 +11,11 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class JsonSchemaValidatorTest {
-
   private static DocNode node(final String text) {
     return OpenApiDocuments.fromTrees(
-            "a.yaml",
-            Map.of("a.yaml", YamlParser.parse("openapi: 3.0.3\nx: " + text + "\n").tree()))
+        "a.yaml",
+        Map.of("a.yaml", YamlParser.parse("openapi: 3.0.3\nx: " + text + "\n").tree())
+    )
         .document()
         .orElseThrow()
         .root()
@@ -24,7 +24,11 @@ class JsonSchemaValidatorTest {
   }
 
   private static List<String> messages(
-      final Dialect dialect, final boolean all, final String schema, final String data) {
+      final Dialect dialect,
+      final boolean all,
+      final String schema,
+      final String data
+  ) {
     return new JsonSchemaValidator(dialect, all, holder -> java.util.Optional.empty())
         .validate(node(schema), node(data)).stream().map(SchemaError::message).toList();
   }
@@ -67,18 +71,18 @@ class JsonSchemaValidatorTest {
     assertThat(draft4("{format: unknown}", "x")).isEmpty();
     for (final String[] pair :
         new String[][] {
-          {"date", "2020-02-30"},
-          {"time", "10:00:00"},
-          {"date-time", "2020-01-01T10:00:00"},
-          {"uri", "nope"},
-          {"uri-reference", "a b"},
-          {"email", "x"},
-          {"hostname", "a b"},
-          {"ipv4", "300.1.1." + "1"},
-          {"ipv6", "zz"},
-          {"byte", "***"},
-          {"json-pointer", "a"},
-          {"regex", "("}
+            {"date", "2020-02-30"},
+            {"time", "10:00:00"},
+            {"date-time", "2020-01-01T10:00:00"},
+            {"uri", "nope"},
+            {"uri-reference", "a b"},
+            {"email", "x"},
+            {"hostname", "a b"},
+            {"ipv4", "300.1.1." + "1"},
+            {"ipv6", "zz"},
+            {"byte", "***"},
+            {"json-pointer", "a"},
+            {"regex", "("}
         }) {
       assertThat(draft4("{format: " + pair[0] + "}", "\"" + pair[1] + "\"")).as(pair[0]).hasSize(1);
     }
@@ -100,9 +104,11 @@ class JsonSchemaValidatorTest {
         .containsExactly("must NOT have duplicate items (items ## 2 and 0 are identical)");
     assertThat(draft4("{items: {type: string}}", "[a, 1]")).containsExactly("must be string");
     assertThat(
-            draft4(
-                "{items: [{type: string}, {type: integer}], additionalItems: {type: boolean}}",
-                "[a, 1, 2]"))
+        draft4(
+            "{items: [{type: string}, {type: integer}], additionalItems: {type: boolean}}",
+            "[a, 1, 2]"
+        )
+    )
         .containsExactly("must be boolean");
     assertThat(draft4("{minProperties: 2}", "{a: 1}"))
         .containsExactly("must NOT have fewer than 2 properties");
@@ -110,15 +116,17 @@ class JsonSchemaValidatorTest {
         .containsExactly("must NOT have more than 1 properties");
     assertThat(draft4("{required: [a]}", "{}")).containsExactly("must have required property 'a'");
     assertThat(
-            draft4(
-                "{properties: {a: {type: string}}, additionalProperties: false}", "{a: 1, b: 2}"))
+        draft4("{properties: {a: {type: string}}, additionalProperties: false}", "{a: 1, b: 2}")
+    )
         .containsExactly("must NOT have additional properties");
     assertThat(draft4("{additionalProperties: {type: integer}}", "{a: x}"))
         .containsExactly("must be integer");
     assertThat(
-            draft4(
-                "{patternProperties: {'^x-': {type: string}}, additionalProperties: false}",
-                "{x-a: 1}"))
+        draft4(
+            "{patternProperties: {'^x-': {type: string}}, additionalProperties: false}",
+            "{x-a: 1}"
+        )
+    )
         .containsExactly("must be string");
   }
 
@@ -138,45 +146,54 @@ class JsonSchemaValidatorTest {
     assertThat(messages(Dialect.DRAFT4, true, "{allOf: [{required: [a]}, {required: [b]}]}", "{}"))
         .containsExactly("must have required property 'a'", "must have required property 'b'");
     assertThat(
-            messages(
-                Dialect.DRAFT2020,
-                false,
-                "{if: {required: [t]}, then: {required: [y]}, else: {required: [z]}}",
-                "{t: 1}"))
+        messages(
+            Dialect.DRAFT2020,
+            false,
+            "{if: {required: [t]}, then: {required: [y]}, else: {required: [z]}}",
+            "{t: 1}"
+        )
+    )
         .containsExactly("must have required property 'y'", "must match \"then\" schema");
     assertThat(
-            messages(
-                Dialect.DRAFT2020,
-                false,
-                "{if: {required: [t]}, then: {required: [y]}, else: {required: [z]}}",
-                "{}"))
+        messages(
+            Dialect.DRAFT2020,
+            false,
+            "{if: {required: [t]}, then: {required: [y]}, else: {required: [z]}}",
+            "{}"
+        )
+    )
         .containsExactly("must have required property 'z'", "must match \"else\" schema");
   }
 
   @Test
   void draft2020ReadsTuplesBoundsAndUnevaluatedProperties() {
     assertThat(
-            messages(
-                Dialect.DRAFT2020,
-                false,
-                "{prefixItems: [{type: string}], items: {type: boolean}}",
-                "[1, x]"))
+        messages(
+            Dialect.DRAFT2020,
+            false,
+            "{prefixItems: [{type: string}], items: {type: boolean}}",
+            "[1, x]"
+        )
+    )
         .containsExactly("must be string");
     assertThat(
-            messages(Dialect.DRAFT2020, false, "{exclusiveMinimum: 5, exclusiveMaximum: 6}", "5"))
+        messages(Dialect.DRAFT2020, false, "{exclusiveMinimum: 5, exclusiveMaximum: 6}", "5")
+    )
         .containsExactly("must be > 5");
     assertThat(messages(Dialect.DRAFT2020, false, "{exclusiveMaximum: 6}", "6"))
         .containsExactly("must be < 6");
     assertThat(
-            messages(
-                Dialect.DRAFT2020,
-                false,
-                "{properties: {a: {}}, unevaluatedProperties: false}",
-                "{a: 1, b: 2}"))
+        messages(
+            Dialect.DRAFT2020,
+            false,
+            "{properties: {a: {}}, unevaluatedProperties: false}",
+            "{a: 1, b: 2}"
+        )
+    )
         .containsExactly("must NOT have unevaluated properties");
     assertThat(
-            messages(
-                Dialect.DRAFT2020, false, "{unevaluatedProperties: {type: integer}}", "{b: x}"))
+        messages(Dialect.DRAFT2020, false, "{unevaluatedProperties: {type: integer}}", "{b: x}")
+    )
         .containsExactly("must be integer");
     assertThat(messages(Dialect.DRAFT2020, false, "false", "1"))
         .containsExactly("boolean schema is false");

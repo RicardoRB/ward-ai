@@ -36,7 +36,8 @@ class NodeVitestPinTest {
             tool -> {
               assertThat(tool.name()).isEqualTo("@vitest/coverage-v8");
               assertThat(tool.version()).isEqualTo("4.0.18");
-            });
+            }
+        );
   }
 
   private static List<String> pins(final PackageManifest manifest) {

@@ -35,7 +35,8 @@ class MypyJsonFindingsTest {
     return source.extract(
         FindingFixtures.python(root),
         FindingFixtures.failed(GATE, stdout),
-        FindingFixtures.justBefore());
+        FindingFixtures.justBefore()
+    );
   }
 
   @Test
@@ -52,7 +53,8 @@ class MypyJsonFindingsTest {
               assertThat(finding.file()).isEqualTo("pkg/typed.py");
               assertThat(finding.line()).isEqualTo(ERROR_LINE);
               assertThat(finding.column()).isEqualTo(ERROR_COLUMN);
-            });
+            }
+        );
   }
 
   @Test
@@ -77,7 +79,8 @@ class MypyJsonFindingsTest {
             finding -> {
               assertThat(finding.ruleId()).isEqualTo(GATE);
               assertThat(finding.column()).isEqualTo(1);
-            });
+            }
+        );
   }
 
   @Test
@@ -92,6 +95,7 @@ class MypyJsonFindingsTest {
             finding -> {
               assertThat(finding.line()).isNull();
               assertThat(finding.column()).isNull();
-            });
+            }
+        );
   }
 }

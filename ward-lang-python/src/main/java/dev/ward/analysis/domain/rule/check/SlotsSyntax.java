@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 
 /** Reads the parts of a class body that the slot checks need: slots, class names and bases. */
 final class SlotsSyntax {
-
   static final String SLOTS = "__slots__";
   static final String DICT = "__dict__";
   static final Set<String> SCOPES = Set.of("funcdef", "async_funcdef", "lambdef", "classdef");
@@ -43,7 +42,8 @@ final class SlotsSyntax {
   static SyntaxNode unwrap(final SyntaxNode statement) {
     return SyntaxWalk.visits(statement, Set.of("expr_stmt")).stream()
         .filter(
-            visit -> visit.ancestors().stream().skip(1).noneMatch(a -> SCOPES.contains(a.kind())))
+            visit -> visit.ancestors().stream().skip(1).noneMatch(a -> SCOPES.contains(a.kind()))
+        )
         .findFirst()
         .map(SyntaxWalk.Visit::node)
         .orElse(null);

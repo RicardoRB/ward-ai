@@ -18,7 +18,6 @@ import org.junit.jupiter.params.provider.MethodSource;
  * An option of each generic check kind, changed in {@code ward-rules.toml}, changes the finding.
  */
 class GenericRuleOptionsGateTest {
-
   private static final String SOURCE =
       """
       import a.B;
@@ -45,7 +44,8 @@ class GenericRuleOptionsGateTest {
         Arguments.of("nested-if", "max = 3"),
         Arguments.of("todo-comment", "pattern = \"FIXME:\""),
         Arguments.of("modifier-order", "order = [\"static\", \"public\"]"),
-        Arguments.of("magic-number", "ignore = [\"0\", \"1\", \"2\", \"5\", \"7\"]"));
+        Arguments.of("magic-number", "ignore = [\"0\", \"1\", \"2\", \"5\", \"7\"]")
+    );
   }
 
   @ParameterizedTest

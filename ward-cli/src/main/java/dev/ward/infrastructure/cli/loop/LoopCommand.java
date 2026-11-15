@@ -24,7 +24,8 @@ import picocli.CommandLine.Spec;
 @Command(
     name = "loop",
     description = "Run bounded agent attempts followed by quality checks.",
-    mixinStandardHelpOptions = true)
+    mixinStandardHelpOptions = true
+)
 public final class LoopCommand implements Callable<Integer> {
   private final QualityLoopService service;
 
@@ -39,7 +40,8 @@ public final class LoopCommand implements Callable<Integer> {
   @Option(
       names = "--agent-command",
       required = true,
-      description = "Agent executable and arguments; never run through a shell.")
+      description = "Agent executable and arguments; never run through a shell."
+  )
   private String agentCommand;
 
   @Option(names = "--max-iterations", defaultValue = "3")
@@ -65,12 +67,16 @@ public final class LoopCommand implements Callable<Integer> {
             root,
             CommandLineTokenizer.tokenize(agentCommand),
             task,
-            new LoopConfiguration(maxIterations, timeoutSeconds, allowDirty));
+            new LoopConfiguration(maxIterations, timeoutSeconds, allowDirty)
+        );
     final LoopResult result = service.run(request);
     output()
         .printf(
             "%s after %d iteration(s): %s%n",
-            result.state(), result.iterations(), result.message());
+            result.state(),
+            result.iterations(),
+            result.message()
+        );
     return result.state() == LoopTerminalState.PASSED ? ExitCodes.OK : ExitCodes.FAILED;
   }
 

@@ -35,7 +35,8 @@ class MavenReaderTest {
             POM,
             "<!DOCTYPE project [<!ENTITY x SYSTEM \"file:///etc/passwd\">]>"
                 + ReaderProject.HEAD
-                + "</project>");
+                + "</project>"
+        );
     assertThatThrownBy(project()::all)
         .isInstanceOf(BuildFileException.class)
         .hasMessageContaining(POM);
@@ -46,7 +47,8 @@ class MavenReaderTest {
     project()
         .write(
             ".mvn/wrapper/maven-wrapper.properties",
-            "distributionUrl=https://example.com/maven.zip\n");
+            "distributionUrl=https://example.com/maven.zip\n"
+        );
     assertThatThrownBy(project()::all)
         .isInstanceOf(BuildFileException.class)
         .hasMessageContaining("maven-wrapper.properties");
@@ -60,13 +62,15 @@ class MavenReaderTest {
             ReaderProject.HEAD
                 + "<packaging>pom</packaging><modules><module>api</module></modules><build>"
                 + "<pluginManagement><plugins><plugin><artifactId>maven-compiler-plugin</artifactId>"
-                + "<version>3.13.0</version></plugin></plugins></pluginManagement></build></project>");
+                + "<version>3.13.0</version></plugin></plugins></pluginManagement></build></project>"
+        );
     project()
         .write(
             "api/pom.xml",
             "<project><parent><groupId>g</groupId><artifactId>a</artifactId><version>1</version></parent>"
                 + "<artifactId>api</artifactId><build><plugins><plugin>"
-                + "<artifactId>maven-compiler-plugin</artifactId></plugin></plugins></build></project>");
+                + "<artifactId>maven-compiler-plugin</artifactId></plugin></plugins></build></project>"
+        );
     final List<Declaration> compiler = project().named("maven-compiler-plugin");
     assertThat(compiler).extracting(Declaration::file).contains("api/pom.xml");
     assertThat(compiler)
@@ -81,14 +85,16 @@ class MavenReaderTest {
             POM,
             "<project><parent><groupId>org.springframework.boot</groupId>"
                 + "<artifactId>spring-boot-starter-parent</artifactId><version>3.3.0</version></parent>"
-                + "<artifactId>a</artifactId></project>");
+                + "<artifactId>a</artifactId></project>"
+        );
     assertThat(project().named("maven-jar-plugin"))
         .singleElement()
         .satisfies(
             d -> {
               assertThat(d.version()).isNull();
               assertThat(d.flag()).isEqualTo(Declaration.Flag.EXTERNAL_PARENT);
-            });
+            }
+        );
   }
 
   @Test

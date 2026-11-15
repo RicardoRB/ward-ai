@@ -26,7 +26,6 @@ import org.junit.jupiter.api.Test;
  * is skipped when the property is not set.
  */
 class EslintParitySmokeTest {
-
   private static final String BINARY_PROPERTY = "ward.eslint.binary";
   private static final String PARSER = "@typescript-eslint/parser/dist/index.js";
   private static final String FORMATTER = "formatter.mjs";
@@ -62,7 +61,8 @@ class EslintParitySmokeTest {
           "no-octal",
           "no-octal-escape",
           "no-nonoctal-decimal-escape",
-          "no-with");
+          "no-with"
+      );
 
   /** Globals that the rules read as environment names; the parity fixtures use them as globals. */
   private static final String GLOBALS = "{ setTimeout: \"readonly\", setInterval: \"readonly\" }";
@@ -72,7 +72,6 @@ class EslintParitySmokeTest {
 
   /** One implemented pair with its catalog row and language. */
   private record Pair(CatalogRow row, AnalysisLanguage language) {
-
     String folder() {
       return language == AnalysisLanguage.TYPESCRIPT ? "typescript" : "javascript";
     }
@@ -122,7 +121,11 @@ class EslintParitySmokeTest {
    * options are recorded per copied violating file, so its config applies them.
    */
   private static Map<String, List<String>> copyFixtures(
-      final Path workspace, final List<Pair> pairs, final Map<String, CaseOptions> caseOptions)
+      final Path workspace,
+      final List<Pair> pairs,
+      final Map<String,
+      CaseOptions> caseOptions
+  )
       throws IOException {
     final Map<String, List<String>> expected = new HashMap<>();
     for (final Pair pair : pairs) {
@@ -134,7 +137,8 @@ class EslintParitySmokeTest {
             violating,
             set.expected(name).stream()
                 .map(position -> position.substring(0, position.indexOf(':')))
-                .toList());
+                .toList()
+        );
         recordOptions(caseOptions, pair, violating, set.options(name));
       }
       // The passing fixture is shared by every case of the rule.
@@ -156,10 +160,13 @@ class EslintParitySmokeTest {
 
   /** Records a case's options against its copied violating file, for the config to apply. */
   private static void recordOptions(
-      final Map<String, CaseOptions> caseOptions,
+      final Map<String,
+      CaseOptions> caseOptions,
       final Pair pair,
       final String violating,
-      final Map<String, Object> options) {
+      final Map<String,
+      Object> options
+  ) {
     if (!options.isEmpty()) {
       caseOptions.put(violating, new CaseOptions(pair.rule(), options));
     }
@@ -169,7 +176,9 @@ class EslintParitySmokeTest {
       final Path workspace,
       final Path eslint,
       final List<Pair> pairs,
-      final Map<String, CaseOptions> caseOptions)
+      final Map<String,
+      CaseOptions> caseOptions
+  )
       throws IOException {
     final Path parser = eslint.getParent().getParent().getParent().resolve(PARSER);
     final String rules = rulesObject(pairs);
@@ -178,15 +187,18 @@ class EslintParitySmokeTest {
     lines.add("export default [");
     lines.add(
         "  { files: [\"**/*.ts\"], languageOptions: { parser: tsParser, sourceType: \"module\", globals: %s }, rules: %s },"
-            .formatted(GLOBALS, rules));
+            .formatted(GLOBALS, rules)
+    );
     lines.add(
         "  { files: [\"**/*.js\"], languageOptions: { sourceType: \"module\", parserOptions: { ecmaFeatures: { jsx: true } }, globals: %s }, rules: %s },"
-            .formatted(GLOBALS, rules));
+            .formatted(GLOBALS, rules)
+    );
     for (final Pair pair : pairs) {
       if (SCRIPT_RULES.contains(pair.rule())) {
         lines.add(
             "  { files: [\"%s/%s/**\"], languageOptions: { sourceType: \"script\" } },"
-                .formatted(pair.folder(), pair.rule()));
+                .formatted(pair.folder(), pair.rule())
+        );
       }
     }
     for (final Map.Entry<String, CaseOptions> entry : caseOptions.entrySet()) {
@@ -195,7 +207,9 @@ class EslintParitySmokeTest {
               .formatted(
                   entry.getKey(),
                   entry.getValue().rule(),
-                  EslintParityOptions.arguments(entry.getValue().values())));
+                  EslintParityOptions.arguments(entry.getValue().values())
+              )
+      );
     }
     lines.add("];");
     Files.writeString(workspace.resolve(CONFIG), String.join("\n", lines) + "\n");
@@ -229,7 +243,11 @@ class EslintParitySmokeTest {
 
   /** Compares the lines per file and rule; each file's findings must match its expected lines. */
   private static List<String> compare(
-      final List<Pair> pairs, final Map<String, List<String>> expected, final List<String> output) {
+      final List<Pair> pairs,
+      final Map<String,
+      List<String>> expected,
+      final List<String> output
+  ) {
     final Map<String, Set<String>> found =
         output.stream()
             .map(line -> line.split(SEPARATOR))
@@ -239,7 +257,11 @@ class EslintParitySmokeTest {
                     fields -> fields[FILE] + "#" + fields[RULE],
                     TreeMap::new,
                     Collectors.mapping(
-                        fields -> fields[LINE], Collectors.toCollection(TreeSet::new))));
+                        fields -> fields[LINE],
+                        Collectors.toCollection(TreeSet::new)
+                    )
+                )
+            );
     final Map<String, Set<String>> wanted =
         expected.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> new TreeSet<>(entry.getValue())));
@@ -251,7 +273,8 @@ class EslintParitySmokeTest {
           final Set<String> actual = found.getOrDefault(file + "#" + pair.rule(), Set.of());
           if (!actual.equals(wanted.get(file))) {
             problems.add(
-                file + " ESLint lines " + actual + " but fixture expects " + wanted.get(file));
+                file + " ESLint lines " + actual + " but fixture expects " + wanted.get(file)
+            );
           }
         }
       }

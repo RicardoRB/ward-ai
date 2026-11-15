@@ -12,7 +12,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class NativeJvmTypeFactsMembersTest {
-
   private static final String SAFE_VARARGS = "java.lang.SafeVarargs";
   private static final String FUNCTIONAL = "java.lang.FunctionalInterface";
 
@@ -55,7 +54,8 @@ class NativeJvmTypeFactsMembersTest {
             target -> {
               assertThat(target.declaringType().name()).isEqualTo("java.lang.Runnable");
               assertThat(target.declaringAnnotations()).contains(FUNCTIONAL);
-            });
+            }
+        );
   }
 
   @Test
@@ -96,7 +96,9 @@ class NativeJvmTypeFactsMembersTest {
             body("    app.Helper h = null;\n    var n = h;"),
             Map.of(
                 "app.Helper",
-                "package app;\n@Deprecated\npublic class Helper {\n  public static final int SIZE = 3;\n  @Deprecated public void old() {}\n}\n"));
+                "package app;\n@Deprecated\npublic class Helper {\n  public static final int SIZE = 3;\n  @Deprecated public void old() {}\n}\n"
+            )
+        );
 
     final TypeMembers members = probe.at(probe.span("h")).membersOf(probe.span("h")).orElseThrow();
 
@@ -106,7 +108,8 @@ class NativeJvmTypeFactsMembersTest {
         .filteredOn(method -> "old".equals(method.name()))
         .singleElement()
         .satisfies(
-            method -> assertThat(method.annotations()).containsExactly("java.lang.Deprecated"));
+            method -> assertThat(method.annotations()).containsExactly("java.lang.Deprecated")
+        );
   }
 
   @Test

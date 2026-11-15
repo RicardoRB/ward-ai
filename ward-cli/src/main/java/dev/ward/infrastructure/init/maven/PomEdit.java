@@ -42,7 +42,9 @@ final class PomEdit {
       return new PomEdit(pom, Files.readString(pom));
     } catch (IOException e) {
       throw new WardException(
-          "Could not configure Maven tools in " + pom + ": " + e.getMessage(), e);
+          "Could not configure Maven tools in " + pom + ": " + e.getMessage(),
+          e
+      );
     }
   }
 
@@ -90,19 +92,25 @@ final class PomEdit {
             + tool.artifact()
             + " "
             + tool.version(preset, selectedVersion)
-            + " (pluginManagement)");
+            + " (pluginManagement)"
+    );
   }
 
   void updateVersion(final String artifact, final CompatibilityFinding finding) {
     final Optional<String> updated =
         PomXml.replacePluginVersion(
-            content, artifact, finding.currentVersion(), finding.selectedVersion());
+            content,
+            artifact,
+            finding.currentVersion(),
+            finding.selectedVersion()
+        );
     if (updated.isEmpty()) {
       warnings.add(
           "Compatibility update skipped for "
               + artifact
               + " because it is not declared in the project-level build; selected gate was not"
-              + " reconfigured.");
+              + " reconfigured."
+      );
       return;
     }
     final String change = finding.currentVersion() + " -> " + finding.selectedVersion();

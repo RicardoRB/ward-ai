@@ -33,7 +33,6 @@ import org.tomlj.TomlParseResult;
  * style) rules use (issue #296).
  */
 final class StyleChecks {
-
   private static final String MESSAGE = "message";
 
   private StyleChecks() {}
@@ -48,16 +47,20 @@ final class StyleChecks {
     return List.of(
         Map.entry(
             "node-constructor-group",
-            toml -> new NodeConstructorGroupCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new NodeConstructorGroupCheck(TomlValues.required(toml, MESSAGE))
+        ),
         Map.entry(
             "node-overload-grouping",
-            toml -> new NodeOverloadGroupingCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new NodeOverloadGroupingCheck(TomlValues.required(toml, MESSAGE))
+        ),
         Map.entry(
             "node-else-after-jump",
             toml ->
                 new NodeElseAfterJumpCheck(
                     toml.getBoolean("allow-else-if", () -> true),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         Map.entry(
             "node-illegal-token",
             toml ->
@@ -65,33 +68,44 @@ final class StyleChecks {
                     TomlValues.strings(toml, "tokens"),
                     TomlValues.required(toml, "format"),
                     toml.getBoolean("ignore-case", () -> false),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         Map.entry(
             "node-hidden-field",
             toml ->
                 new NodeHiddenFieldCheck(
                     toml.getBoolean("ignore-constructor-parameter", () -> false),
                     toml.getBoolean("ignore-setter", () -> false),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         Map.entry(
             "node-javadoc-method",
             toml ->
                 new NodeJavadocMethodCheck(
                     toml.getBoolean("allow-missing-param-tags", () -> false),
                     toml.getBoolean("allow-missing-return-tag", () -> false),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         Map.entry(
             "node-missing-javadoc-type",
             toml ->
                 new NodeMissingJavadocTypeCheck(
                     "public".equals(toml.getString("required")),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         Map.entry(
             "node-javadoc-position",
-            toml -> new NodeJavadocPositionCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new NodeJavadocPositionCheck(TomlValues.required(toml, MESSAGE))
+        ),
         Map.entry(
             "node-javadoc-align",
-            toml -> new NodeJavadocAlignCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new NodeJavadocAlignCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 
   /** Reads a list of numbers; an entry that is not a decimal number is a configuration error. */
@@ -104,7 +118,9 @@ final class StyleChecks {
       return new BigDecimal(entry);
     } catch (NumberFormatException malformed) {
       throw new RuleConfigurationException(
-          "'" + key + "' entry '" + entry + "' is not a number", malformed);
+          "'" + key + "' entry '" + entry + "' is not a number",
+          malformed
+      );
     }
   }
 
@@ -116,25 +132,33 @@ final class StyleChecks {
                 new NodeArrowCallbackCheck(
                     toml.getBoolean("allow-named-functions", () -> false),
                     toml.getBoolean("allow-unbound-this", () -> true),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         Map.entry(
             "node-string-concat",
-            toml -> new NodeStringConcatCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new NodeStringConcatCheck(TomlValues.required(toml, MESSAGE))
+        ),
         Map.entry(
             "node-type-only-export",
             toml ->
                 new NodeTypeOnlyExportCheck(
                     TomlValues.required(toml, MESSAGE),
-                    TomlValues.required(toml, "partial-message"))),
+                    TomlValues.required(toml, "partial-message")
+                )
+        ),
         Map.entry(
             "node-type-only-import",
             toml ->
                 new NodeTypeOnlyImportCheck(
                     TomlValues.required(toml, MESSAGE),
-                    TomlValues.required(toml, "partial-message"))),
+                    TomlValues.required(toml, "partial-message")
+                )
+        ),
         Map.entry(
             "node-useless-constructor",
-            toml -> new NodeUselessConstructorCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new NodeUselessConstructorCheck(TomlValues.required(toml, MESSAGE))
+        ),
         Map.entry(
             "node-magic-number",
             toml ->
@@ -145,20 +169,29 @@ final class StyleChecks {
                         toml.getBoolean("ignore-array-indexes", () -> false),
                         toml.getBoolean("ignore-default-values", () -> false),
                         toml.getBoolean("ignore-class-field-initial-values", () -> false),
-                        toml.getBoolean("enforce-const", () -> false)),
+                        toml.getBoolean("enforce-const", () -> false)
+                    ),
                     TomlValues.required(toml, MESSAGE),
-                    TomlValues.required(toml, "const-message"))),
+                    TomlValues.required(toml, "const-message")
+                )
+        ),
         Map.entry(
             "node-prefer-const",
             toml ->
                 new NodePreferConstCheck(
                     "all".equals(toml.getString("destructuring")),
                     toml.getBoolean("ignore-read-before-assign", () -> false),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         Map.entry(
             "node-variable-distance",
             toml ->
                 new VariableDistanceCheck(
-                    TomlValues.integer(toml, "max"), TomlValues.required(toml, MESSAGE))));
+                    TomlValues.integer(toml, "max"),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        )
+    );
   }
 }

@@ -34,7 +34,8 @@ class NodeSvelteKitSyncTest {
     final NodeCompatibility compatibility =
         check(
             new PackageManifest(Map.of("@sveltejs/kit", "^3.1.0"), null, null),
-            Set.of("svelte-check"));
+            Set.of("svelte-check")
+        );
 
     assertThat(compatibility.notes()).containsExactly(KIT_NOTE);
     assertThat(compatibility.incompatible()).isFalse();
@@ -76,6 +77,7 @@ class NodeSvelteKitSyncTest {
         Set.of(),
         "24",
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 }

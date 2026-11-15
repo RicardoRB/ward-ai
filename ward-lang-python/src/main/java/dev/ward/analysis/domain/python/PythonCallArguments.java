@@ -6,7 +6,6 @@ import java.util.List;
 
 /** Reads the arguments of a Python call trailer. */
 final class PythonCallArguments {
-
   private PythonCallArguments() {}
 
   /** The values of the arguments of a call trailer, in order; a keyword's value is the argument. */

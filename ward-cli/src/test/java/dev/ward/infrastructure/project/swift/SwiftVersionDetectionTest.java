@@ -29,7 +29,8 @@ class SwiftVersionDetectionTest {
   void highestXcodeBuildSettingIsTheVersion() throws IOException {
     write(
         APP_XCODEPROJ + "/project.pbxproj",
-        "\t\t\t\tSWIFT_VERSION = 5.0;\n\t\t\t\tSWIFT_VERSION = 6.0;\n\t\t\t\tSWIFT_VERSION = 5.9;\n");
+        "\t\t\t\tSWIFT_VERSION = 5.0;\n\t\t\t\tSWIFT_VERSION = 6.0;\n\t\t\t\tSWIFT_VERSION = 5.9;\n"
+    );
 
     assertThat(project().languageVersion()).isEqualTo("6.0");
   }

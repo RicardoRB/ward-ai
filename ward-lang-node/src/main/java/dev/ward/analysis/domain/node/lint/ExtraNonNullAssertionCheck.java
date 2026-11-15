@@ -7,7 +7,6 @@ import java.util.List;
 
 /** Reports a non-null assertion applied to another non-null assertion, such as {@code a!!}. */
 public final class ExtraNonNullAssertionCheck implements RuleCheck {
-
   private static final String ASSERTION = "!";
   private static final String EXPRESSION = "singleExpression";
 

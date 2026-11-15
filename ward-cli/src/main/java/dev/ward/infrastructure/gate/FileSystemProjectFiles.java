@@ -30,7 +30,8 @@ public final class FileSystemProjectFiles implements ProjectFiles {
     } catch (IOException exception) {
       LOGGER.log(
           Level.WARNING,
-          () -> "event=project-file-read-failed error=" + exception.getClass().getSimpleName());
+          () -> "event=project-file-read-failed error=" + exception.getClass().getSimpleName()
+      );
       return false;
     }
   }
@@ -46,7 +47,8 @@ public final class FileSystemProjectFiles implements ProjectFiles {
     } catch (IOException exception) {
       LOGGER.log(
           Level.FINE,
-          () -> "event=project-file-read-failed error=" + exception.getClass().getSimpleName());
+          () -> "event=project-file-read-failed error=" + exception.getClass().getSimpleName()
+      );
       return Optional.empty();
     }
   }

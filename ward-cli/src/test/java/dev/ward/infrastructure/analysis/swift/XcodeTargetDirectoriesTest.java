@@ -6,19 +6,19 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class XcodeTargetDirectoriesTest {
-
   @Test
   void aTargetFilesInOneFolderOwnThatFolder() {
     assertThat(
-            XcodeTargetDirectories.of(List.of("ShopKit/Domain/A.swift", "ShopKit/Domain/B.swift")))
+        XcodeTargetDirectories.of(List.of("ShopKit/Domain/A.swift", "ShopKit/Domain/B.swift"))
+    )
         .containsExactly("ShopKit/Domain");
   }
 
   @Test
   void aTargetWithFilesInSiblingFoldersOwnsTheirDeepestCommonFolder() {
     assertThat(
-            XcodeTargetDirectories.of(
-                List.of("ShopKit/Domain/A.swift", "ShopKit/Application/B.swift")))
+        XcodeTargetDirectories.of(List.of("ShopKit/Domain/A.swift", "ShopKit/Application/B.swift"))
+    )
         .containsExactly("ShopKit");
   }
 

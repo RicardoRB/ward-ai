@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * name, and a {@code moduleDirective} per directive.
  */
 final class ImportTrees {
-
   private static final Pattern TOKEN = Pattern.compile("[A-Za-z_][A-Za-z0-9_]*|\\S");
   private static final String STAR = "*";
   private static final String PACKAGE_WORD = "package";
@@ -33,13 +32,13 @@ final class ImportTrees {
 
   /** A token of a line, with its absolute offset and its 1-based line and column. */
   private record Token(String text, int offset, int line, int column) {
-
     SyntaxNode leaf(final String kind) {
       return new SyntaxNode(
           kind,
           new Span(line, column, line, column + text.length(), offset, offset + text.length()),
           Map.of("text", text),
-          List.of());
+          List.of()
+      );
     }
   }
 
@@ -76,7 +75,11 @@ final class ImportTrees {
       offset += text.length() + 1;
     }
     return new SyntaxNode(
-        "compilationUnit", new Span(1, 1, lines.length, 1, 0, source.length()), Map.of(), children);
+        "compilationUnit",
+        new Span(1, 1, lines.length, 1, 0, source.length()),
+        Map.of(),
+        children
+    );
   }
 
   private static SyntaxNode packageLine(final List<Token> tokens) {
@@ -140,9 +143,11 @@ final class ImportTrees {
             close.line(),
             close.column() + 1,
             first.startOffset(),
-            close.offset() + 1),
+            close.offset() + 1
+        ),
         Map.of(),
-        children);
+        children
+    );
   }
 
   /** A qualified name made of identifier leaves and dots, or nothing when the list is empty. */
@@ -162,13 +167,18 @@ final class ImportTrees {
             last.line(),
             last.column() + last.text().length(),
             first.offset(),
-            last.offset() + last.text().length()),
+            last.offset() + last.text().length()
+        ),
         Map.of(),
-        children);
+        children
+    );
   }
 
   private static SyntaxNode node(
-      final String kind, final List<Token> tokens, final List<SyntaxNode> children) {
+      final String kind,
+      final List<Token> tokens,
+      final List<SyntaxNode> children
+  ) {
     final Token first = tokens.get(0);
     final Token last = tokens.get(tokens.size() - 1);
     return new SyntaxNode(
@@ -179,9 +189,11 @@ final class ImportTrees {
             last.line(),
             last.column() + last.text().length(),
             first.offset(),
-            last.offset() + last.text().length()),
+            last.offset() + last.text().length()
+        ),
         Map.of(),
-        children);
+        children
+    );
   }
 
   private static List<Token> tokens(final String text, final int offset, final int line) {

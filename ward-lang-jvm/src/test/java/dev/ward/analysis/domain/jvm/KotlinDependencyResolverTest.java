@@ -17,14 +17,18 @@ class KotlinDependencyResolverTest {
             file(
                 KotlinResolverFixtures.DOMAIN_PRICE,
                 List.of("shop.domain.Price"),
-                List.of("package:shop.domain")),
+                List.of("package:shop.domain")
+            ),
             file(
                 KotlinResolverFixtures.SERVICE_CHECKOUT,
                 List.of(KotlinResolverFixtures.CHECKOUT_DECLARATION),
                 List.of(
                     KotlinResolverFixtures.PACKAGE_SERVICE,
                     "import:shop.domain.Price",
-                    "name:Price")));
+                    "name:Price"
+                )
+            )
+        );
 
     assertThat(targets(edges, KotlinResolverFixtures.SERVICE_CHECKOUT))
         .containsExactly(KotlinResolverFixtures.DOMAIN_PRICE);
@@ -42,7 +46,10 @@ class KotlinDependencyResolverTest {
                     KotlinResolverFixtures.PACKAGE_SERVICE,
                     "import:shop.domain.Price",
                     "alias:Money=shop.domain.Price",
-                    "name:Money")));
+                    "name:Money"
+                )
+            )
+        );
 
     assertThat(targets(edges, KotlinResolverFixtures.SERVICE_CHECKOUT))
         .containsExactly(KotlinResolverFixtures.DOMAIN_PRICE);
@@ -55,11 +62,14 @@ class KotlinDependencyResolverTest {
             file(
                 KotlinResolverFixtures.UTIL_FORMAT,
                 List.of("shop.util.formatPrice", "shop.util.FormatKt"),
-                List.of()),
+                List.of()
+            ),
             file(
                 KotlinResolverFixtures.SERVICE_CHECKOUT,
                 List.of(KotlinResolverFixtures.CHECKOUT_DECLARATION),
-                List.of(KotlinResolverFixtures.PACKAGE_SERVICE, "import:shop.util.formatPrice")));
+                List.of(KotlinResolverFixtures.PACKAGE_SERVICE, "import:shop.util.formatPrice")
+            )
+        );
 
     assertThat(targets(edges, KotlinResolverFixtures.SERVICE_CHECKOUT))
         .containsExactly(KotlinResolverFixtures.UTIL_FORMAT);
@@ -71,14 +81,20 @@ class KotlinDependencyResolverTest {
         resolve(
             file(KotlinResolverFixtures.DOMAIN_PRICE, List.of("shop.domain.Price"), List.of()),
             file(
-                KotlinResolverFixtures.DOMAIN_DISCOUNT, List.of("shop.domain.Discount"), List.of()),
+                KotlinResolverFixtures.DOMAIN_DISCOUNT,
+                List.of("shop.domain.Discount"),
+                List.of()
+            ),
             file(
                 KotlinResolverFixtures.SERVICE_CHECKOUT,
                 List.of(KotlinResolverFixtures.CHECKOUT_DECLARATION),
                 List.of(
                     KotlinResolverFixtures.PACKAGE_SERVICE,
                     "on-demand:shop.domain",
-                    "name:Price")));
+                    "name:Price"
+                )
+            )
+        );
 
     assertThat(targets(edges, KotlinResolverFixtures.SERVICE_CHECKOUT))
         .containsExactly(KotlinResolverFixtures.DOMAIN_PRICE);
@@ -91,11 +107,14 @@ class KotlinDependencyResolverTest {
             file(
                 KotlinResolverFixtures.SERVICE_CART,
                 List.of("shop.service.Cart"),
-                List.of(KotlinResolverFixtures.PACKAGE_SERVICE)),
+                List.of(KotlinResolverFixtures.PACKAGE_SERVICE)
+            ),
             file(
                 KotlinResolverFixtures.SERVICE_CHECKOUT,
                 List.of(KotlinResolverFixtures.CHECKOUT_DECLARATION),
-                List.of(KotlinResolverFixtures.PACKAGE_SERVICE, "name:Cart")));
+                List.of(KotlinResolverFixtures.PACKAGE_SERVICE, "name:Cart")
+            )
+        );
 
     assertThat(targets(edges, KotlinResolverFixtures.SERVICE_CHECKOUT))
         .containsExactly(KotlinResolverFixtures.SERVICE_CART);
@@ -108,14 +127,18 @@ class KotlinDependencyResolverTest {
             file(
                 KotlinResolverFixtures.UTIL_FORMAT,
                 List.of("shop.service.toMoney"),
-                List.of(KotlinResolverFixtures.PACKAGE_SERVICE)),
+                List.of(KotlinResolverFixtures.PACKAGE_SERVICE)
+            ),
             file(
                 KotlinResolverFixtures.SERVICE_CHECKOUT,
                 List.of(KotlinResolverFixtures.CHECKOUT_DECLARATION),
                 List.of(
                     KotlinResolverFixtures.PACKAGE_SERVICE,
                     "name:total.toMoney",
-                    "member:toMoney")));
+                    "member:toMoney"
+                )
+            )
+        );
 
     assertThat(targets(edges, KotlinResolverFixtures.SERVICE_CHECKOUT))
         .containsExactly(KotlinResolverFixtures.UTIL_FORMAT);
@@ -129,14 +152,18 @@ class KotlinDependencyResolverTest {
             file(
                 KotlinResolverFixtures.SERVICE_CART,
                 List.of("shop.service.Cart"),
-                List.of(KotlinResolverFixtures.PACKAGE_SERVICE)),
+                List.of(KotlinResolverFixtures.PACKAGE_SERVICE)
+            ),
             file(
                 KotlinResolverFixtures.SERVICE_CHECKOUT,
                 List.of(KotlinResolverFixtures.CHECKOUT_DECLARATION),
                 List.of(
                     KotlinResolverFixtures.PACKAGE_SERVICE,
                     "import:shop.domain.Cart",
-                    "name:Cart")));
+                    "name:Cart"
+                )
+            )
+        );
 
     assertThat(targets(edges, KotlinResolverFixtures.SERVICE_CHECKOUT))
         .containsExactly(KotlinResolverFixtures.DOMAIN_PRICE);
@@ -149,7 +176,8 @@ class KotlinDependencyResolverTest {
             file(
                 KotlinResolverFixtures.DOMAIN_PRICE,
                 List.of("shop.domain.Order", "shop.domain.Order.Line"),
-                List.of()),
+                List.of()
+            ),
             file(
                 KotlinResolverFixtures.SERVICE_CHECKOUT,
                 List.of(KotlinResolverFixtures.CHECKOUT_DECLARATION),
@@ -157,7 +185,10 @@ class KotlinDependencyResolverTest {
                     KotlinResolverFixtures.PACKAGE_SERVICE,
                     "import:shop.domain.Order",
                     "name:Order.Line",
-                    "name:Order.Companion")));
+                    "name:Order.Companion"
+                )
+            )
+        );
 
     assertThat(targets(edges, KotlinResolverFixtures.SERVICE_CHECKOUT))
         .containsExactly(KotlinResolverFixtures.DOMAIN_PRICE);

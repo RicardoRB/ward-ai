@@ -14,7 +14,6 @@ import java.util.Map;
 
 /** The checks of the Android rules, named {@code android-} followed by what they look for. */
 public final class AndroidCheckProvider implements CheckProvider {
-
   private static final String MESSAGE = "message";
 
   @Override
@@ -25,7 +24,9 @@ public final class AndroidCheckProvider implements CheckProvider {
         "android-application-flag",
         toml ->
             new ApplicationFlagCheck(
-                TomlValues.required(toml, "attribute"), TomlValues.required(toml, MESSAGE)),
+                TomlValues.required(toml, "attribute"),
+                TomlValues.required(toml, MESSAGE)
+            ),
         "android-cleartext-traffic",
         toml -> new NetworkConfigCleartextCheck(),
         "android-allow-backup",
@@ -35,6 +36,7 @@ public final class AndroidCheckProvider implements CheckProvider {
         "android-content-description",
         toml -> new ContentDescriptionCheck(),
         "android-unused-resources",
-        toml -> new UnusedResourcesCheck());
+        toml -> new UnusedResourcesCheck()
+    );
   }
 }

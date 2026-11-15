@@ -16,7 +16,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** Rule options, severity, paths and validation through {@code ward-rules.toml}. */
 class RuleTuningGateTest {
-
   private static final String METHOD_LENGTH = "ward:java/method-length";
   private static final String TYPE_NAME = "ward:java/type-name";
   private static final String TABLE = "[rules.java.method-length]\n";
@@ -60,7 +59,8 @@ class RuleTuningGateTest {
     assertThat(result.stderr())
         .contains(
             "ward-rules.toml: [rules.\"ward:java/method-length\"]: name the table"
-                + " [rules.<language>.<rule-name>]; write [rules.java.method-length]");
+                + " [rules.<language>.<rule-name>]; write [rules.java.method-length]"
+        );
   }
 
   @Test
@@ -103,17 +103,20 @@ class RuleTuningGateTest {
             finding -> {
               assertThat(finding.ruleId()).isEqualTo(METHOD_LENGTH);
               assertThat(finding.file()).isEqualTo(FixtureProject.SRC_A);
-            })
+            }
+        )
         .noneSatisfy(
             finding ->
                 assertThat(METHOD_LENGTH.equals(finding.ruleId()))
                     .isTrue()
-                    .isEqualTo(finding.file().contains("generated")))
+                    .isEqualTo(finding.file().contains("generated"))
+        )
         .anySatisfy(
             finding -> {
               assertThat(finding.ruleId()).isEqualTo(TYPE_NAME);
               assertThat(finding.file()).isEqualTo("src/generated/G.java");
-            });
+            }
+        );
   }
 
   @Test
@@ -127,7 +130,8 @@ class RuleTuningGateTest {
     assertThat(result.stderr())
         .contains(
             "ward-rules.toml: [rules.java.method-length] max: expected an integer >= 1,"
-                + " got \"sixty\"");
+                + " got \"sixty\""
+        );
   }
 
   @Test
@@ -137,7 +141,8 @@ class RuleTuningGateTest {
         "version = 1\n[rules.java.nope]\nmax = 1\n"
             + "[rules.java.type-name]\npattern = \"[\"\n"
             + TABLE
-            + "exclude-paths = [\"[a\"]\nseverity = \"fatal\"\ncolor = 1\n");
+            + "exclude-paths = [\"[a\"]\nseverity = \"fatal\"\ncolor = 1\n"
+    );
 
     final String stderr = f.run(List.of(), null, new HashMap<>()).stderr();
 
@@ -158,7 +163,8 @@ class RuleTuningGateTest {
         f.root().resolve(FixtureProject.SRC_A),
         "class A {\n  @SuppressWarnings(\"checkstyle:MethodLength\")\n  void run() {\n"
             + body
-            + "  }\n}\n");
+            + "  }\n}\n"
+    );
     f.config(FixtureProject.VERSION);
 
     assertThat(FixtureProject.ids(f.run(List.of(), null, new HashMap<>()))).contains(METHOD_LENGTH);

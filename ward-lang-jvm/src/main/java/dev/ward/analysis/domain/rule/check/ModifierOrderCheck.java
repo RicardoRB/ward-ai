@@ -13,7 +13,6 @@ import java.util.Set;
  * keyword modifier. Each holder checks its own modifier children, in source order.
  */
 public final class ModifierOrderCheck implements RuleCheck {
-
   private static final Set<String> MODIFIER_KINDS =
       Set.of("modifier", "classOrInterfaceModifier", "variableModifier", "interfaceMethodModifier");
   private static final Map<String, Integer> RANK =
@@ -31,7 +30,8 @@ public final class ModifierOrderCheck implements RuleCheck {
           Map.entry("volatile", 10),
           Map.entry("synchronized", 11),
           Map.entry("native", 12),
-          Map.entry("strictfp", 13));
+          Map.entry("strictfp", 13)
+      );
 
   private final String message;
 

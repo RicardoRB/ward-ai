@@ -15,20 +15,15 @@ import org.junit.jupiter.params.provider.EnumSource;
  * The bundled TypeScript and JavaScript security rules, on the scenarios of their specification.
  */
 class NodeSecurityRulesTest {
-
   private static final String COMMAND = "/command-injection";
   private static final int COMMAND_LINE = 5;
 
   /** Scenario: Command injection from an Express query, through an assignment to a variable. */
   @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = AnalysisLanguage.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void commandInjectionFromExpressQuery(final AnalysisLanguage language) {
     final List<AnalysisFinding> found =
-        findings(
-            language,
-            """
+        findings(language, """
             import { exec } from 'child_process';
             export function handle(req) {
               const cmd = req.query.cmd;
@@ -45,14 +40,10 @@ class NodeSecurityRulesTest {
 
   /** A value read straight into a variable keeps the two steps that #206 records for it. */
   @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = AnalysisLanguage.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void directlyAssignedSourceHasTwoSteps(final AnalysisLanguage language) {
     final List<AnalysisFinding> found =
-        findings(
-            language,
-            """
+        findings(language, """
             import { exec } from 'child_process';
             export function handle(req) {
               const cmd = req.query.cmd;
@@ -67,9 +58,7 @@ class NodeSecurityRulesTest {
   @Test
   void typedRequestUnderAnyNameIsASource() {
     final List<AnalysisFinding> found =
-        findings(
-            AnalysisLanguage.TYPESCRIPT,
-            """
+        findings(AnalysisLanguage.TYPESCRIPT, """
             import { exec } from 'child_process';
             import { Request } from 'express';
             export function handle(incoming: Request) {
@@ -83,19 +72,19 @@ class NodeSecurityRulesTest {
 
   /** Scenario: The same flow through a require() binding and a namespace import. */
   @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = AnalysisLanguage.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void commandInjectionThroughRequireAndNamespaceImport(final AnalysisLanguage language) {
     final String body = "  const cmd = req.query.cmd;\n  cp.exec(cmd);\n}\n";
     final List<AnalysisFinding> required =
         findings(
             language,
-            "const cp = require('child_process');\nexport function handle(req) {\n" + body);
+            "const cp = require('child_process');\nexport function handle(req) {\n" + body
+        );
     final List<AnalysisFinding> namespaced =
         findings(
             language,
-            "import * as cp from 'node:child_process';\nexport function handle(req) {\n" + body);
+            "import * as cp from 'node:child_process';\nexport function handle(req) {\n" + body
+        );
     assertThat(required).hasSize(1);
     assertThat(namespaced).hasSize(1);
     assertThat(required.get(0).ruleId()).endsWith(COMMAND);
@@ -103,14 +92,10 @@ class NodeSecurityRulesTest {
 
   /** Scenario: Same name from another module is not matched. */
   @ParameterizedTest
-  @EnumSource(
-      value = AnalysisLanguage.class,
-      names = {"TYPESCRIPT", "JAVASCRIPT"})
+  @EnumSource(value = AnalysisLanguage.class, names = {"TYPESCRIPT", "JAVASCRIPT"})
   void sameNameFromAnotherModuleIsNotReported(final AnalysisLanguage language) {
     final List<AnalysisFinding> found =
-        findings(
-            language,
-            """
+        findings(language, """
             import { exec } from 'shelljs';
             export function handle(req) {
               const cmd = req.query.cmd;
@@ -121,7 +106,9 @@ class NodeSecurityRulesTest {
   }
 
   private static List<AnalysisFinding> findings(
-      final AnalysisLanguage language, final String text) {
+      final AnalysisLanguage language,
+      final String text
+  ) {
     final String path = language == AnalysisLanguage.TYPESCRIPT ? "src/a.ts" : "src/a.js";
     return NodeSecurityRules.run(new SourceUnit(path, language, text));
   }

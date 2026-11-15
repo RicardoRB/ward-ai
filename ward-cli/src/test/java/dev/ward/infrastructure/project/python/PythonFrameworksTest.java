@@ -17,7 +17,8 @@ class PythonFrameworksTest {
   void djangoDeclaredInPyprojectIsDjango() throws IOException {
     Files.writeString(
         root.resolve("pyproject.toml"),
-        "[project]\nname = \"shop\"\ndependencies = [\"Django>=5.2\"]\n");
+        "[project]\nname = \"shop\"\ndependencies = [\"Django>=5.2\"]\n"
+    );
 
     assertThat(PythonFrameworks.of(root)).isEqualTo(Framework.DJANGO);
   }
@@ -40,7 +41,8 @@ class PythonFrameworksTest {
   void projectWithoutAFrameworkIsNone() throws IOException {
     Files.writeString(
         root.resolve("pyproject.toml"),
-        "[project]\nname = \"shop\"\ndependencies = [\"requests\"]\n");
+        "[project]\nname = \"shop\"\ndependencies = [\"requests\"]\n"
+    );
 
     assertThat(PythonFrameworks.of(root)).isEqualTo(Framework.NONE);
   }
@@ -49,7 +51,8 @@ class PythonFrameworksTest {
   void fastapiDeclaredIsFastApi() throws IOException {
     Files.writeString(
         root.resolve("pyproject.toml"),
-        "[project]\nname = \"app\"\ndependencies = [\"fastapi==0.143.2\"]\n");
+        "[project]\nname = \"app\"\ndependencies = [\"fastapi==0.143.2\"]\n"
+    );
 
     assertThat(PythonFrameworks.of(root)).isEqualTo(Framework.FASTAPI);
   }
@@ -67,7 +70,8 @@ class PythonFrameworksTest {
   void settingsModuleComesFromManagePy() throws IOException {
     Files.writeString(
         root.resolve("manage.py"),
-        "os.environ.setdefault(\"DJANGO_SETTINGS_MODULE\", \"mysite.settings\")\n");
+        "os.environ.setdefault(\"DJANGO_SETTINGS_MODULE\", \"mysite.settings\")\n"
+    );
 
     assertThat(PythonFrameworks.djangoSettings(root)).contains("mysite.settings");
   }

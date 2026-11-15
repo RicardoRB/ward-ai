@@ -58,7 +58,8 @@ public class InitGeneralCatalog {
     return List.of(
         new InitArchitectureOption("layered", "Layered (controller -> service -> repository)"),
         new InitArchitectureOption("hexagonal", "Hexagonal (domain isolated from adapters)"),
-        new InitArchitectureOption("clean", "Clean (domain isolated from outer layers)"));
+        new InitArchitectureOption("clean", "Clean (domain isolated from outer layers)")
+    );
   }
 
   /**
@@ -75,7 +76,9 @@ public class InitGeneralCatalog {
                 new WardException(
                     "Unknown architecture '"
                         + id
-                        + "'. Supported architectures: layered, hexagonal, clean"));
+                        + "'. Supported architectures: layered, hexagonal, clean"
+                )
+        );
   }
 
   /** Returns whether init can configure {@code project}. */
@@ -103,7 +106,9 @@ public class InitGeneralCatalog {
             "Matches the resolved dependencies against OSV advisories (opt-in).",
             List.of(),
             true,
-            "Downloads advisory data from osv.dev, and sends no project data."));
+            "Downloads advisory data from osv.dev, and sends no project data."
+        )
+    );
     options.add(
         new InitGateOption(
             SupportedQualityGates.LICENSE,
@@ -111,7 +116,9 @@ public class InitGeneralCatalog {
             List.of(),
             true,
             "Reads installed dependency metadata, so install dependencies before it runs;"
-                + " a license it cannot find is a finding."));
+                + " a license it cannot find is a finding."
+        )
+    );
     return List.copyOf(options);
   }
 
@@ -130,7 +137,9 @@ public class InitGeneralCatalog {
             .collect(Collectors.toSet());
     final List<String> kept = gates.stream().filter(gate -> !omitted.contains(gate)).toList();
     return Stream.concat(
-            kept.stream(), OpenApiPresetGates.of(environment, project, preset).stream())
+        kept.stream(),
+        OpenApiPresetGates.of(environment, project, preset).stream()
+    )
         .toList();
   }
 
@@ -149,7 +158,9 @@ public class InitGeneralCatalog {
                     "Unknown integration '"
                         + id
                         + "'. Supported integrations: none, "
-                        + SupportedAgents.idsText()));
+                        + SupportedAgents.idsText()
+                )
+        );
   }
 
   /**
@@ -173,8 +184,10 @@ public class InitGeneralCatalog {
                       + id
                       + "' cannot run on this project's JDK: "
                       + omission.reason()
-                      + ".");
-            });
+                      + "."
+              );
+            }
+        );
     return gates(project, null).stream()
         .filter(option -> option.id().equals(id))
         .findFirst()
@@ -184,7 +197,9 @@ public class InitGeneralCatalog {
                     "Unknown quality gate '"
                         + id
                         + "'. Supported gates: "
-                        + SupportedQualityGates.IDS));
+                        + SupportedQualityGates.IDS
+                )
+        );
   }
 
   /**
@@ -192,7 +207,9 @@ public class InitGeneralCatalog {
    * available, runs no command, or has no guidance in the catalog. Init installs nothing itself.
    */
   public Optional<PlannedGateInstallation> gateInstallation(
-      final Project project, final InitGateOption gate) {
+      final Project project,
+      final InitGateOption gate
+  ) {
     if (gate.available() || gate.command().isEmpty()) {
       return Optional.empty();
     }
@@ -218,6 +235,8 @@ public class InitGeneralCatalog {
         .orElseThrow(
             () ->
                 new WardException(
-                    "Unknown preset '" + id + "'. Supported presets: standard, strict"));
+                    "Unknown preset '" + id + "'. Supported presets: standard, strict"
+                )
+        );
   }
 }

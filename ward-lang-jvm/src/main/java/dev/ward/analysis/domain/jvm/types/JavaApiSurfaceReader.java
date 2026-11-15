@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
  * members that code outside the package can use.
  */
 public final class JavaApiSurfaceReader implements ApiSurfaceReader {
-
   @Override
   public AnalysisLanguage language() {
     return AnalysisLanguage.JAVA;
@@ -31,7 +30,8 @@ public final class JavaApiSurfaceReader implements ApiSurfaceReader {
   public List<ApiType> read(
       final List<SourceUnit> units,
       final LanguageFrontend frontend,
-      final Predicate<String> libraryExists) {
+      final Predicate<String> libraryExists
+  ) {
     final List<ParsedUnit> parsed = units.stream().map(unit -> parse(unit, frontend)).toList();
     final Set<String> project = new HashSet<>();
     parsed.forEach(unit -> project.addAll(unit.names()));
@@ -45,12 +45,14 @@ public final class JavaApiSurfaceReader implements ApiSurfaceReader {
       final ParsedUnit unit,
       final Set<String> project,
       final Predicate<String> libraryExists,
-      final List<ApiType> found) {
+      final List<ApiType> found
+  ) {
     final Set<String> imported = imported(unit);
     final JavaUnitModel model =
         JavaUnitModel.of(
             unit.result().tree(),
-            name -> project.contains(name) || imported.contains(name) || libraryExists.test(name));
+            name -> project.contains(name) || imported.contains(name) || libraryExists.test(name)
+        );
     final JavaApiTypeReader reader = new JavaApiTypeReader(unit.path());
     model
         .classes()
@@ -67,7 +69,9 @@ public final class JavaApiSurfaceReader implements ApiSurfaceReader {
     if (!result.diagnostics().isEmpty()) {
       final AnalysisFinding first = result.diagnostics().getFirst();
       throw new ApiSurfaceException(
-          unit.path(), "syntax error" + (first.line() == null ? "" : " at line " + first.line()));
+          unit.path(),
+          "syntax error" + (first.line() == null ? "" : " at line " + first.line())
+      );
     }
     return new ParsedUnit(unit.path(), result, topLevelNames(result));
   }
@@ -83,7 +87,10 @@ public final class JavaApiSurfaceReader implements ApiSurfaceReader {
                     .ifPresent(
                         entry ->
                             names.addAll(
-                                nested(entry, BinaryNames.qualified(imports.packageName(), "")))));
+                                nested(entry, BinaryNames.qualified(imports.packageName(), ""))
+                            )
+                    )
+        );
     return names;
   }
 

@@ -4,7 +4,6 @@ import java.nio.file.Path;
 
 /** Reads the coverage of each line of each source file from one coverage report file. */
 public interface LineCoverageReport {
-
   /** Tells whether a report that starts with {@code head} is in the format this reader parses. */
   boolean accepts(String head);
 

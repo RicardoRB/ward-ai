@@ -12,7 +12,6 @@ import java.util.Set;
  * @throws} or {@code @exception} tag names its argument first, so the name alone is no description.
  */
 public final class NonEmptyAtclauseDescriptionCheck implements RuleCheck {
-
   private static final Set<String> NAMED = Set.of("@param", "@throws", "@exception");
 
   private final Set<String> tags;

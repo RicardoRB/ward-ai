@@ -9,7 +9,6 @@ import java.util.Set;
  * kind of declaration, which files they scan and which declarations they leave alone.
  */
 interface UnusedDefinitionStrategy {
-
   /** The kind of declaration the rule {@code ruleId} reports, or empty if the language has none. */
   Optional<UnusedDefinitionKind> kindOf(String ruleId);
 

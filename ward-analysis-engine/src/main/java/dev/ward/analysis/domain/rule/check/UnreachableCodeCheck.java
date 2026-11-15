@@ -20,7 +20,6 @@ import java.util.Set;
  * at a block that no unreachable block leads to.
  */
 public final class UnreachableCodeCheck implements RuleCheck {
-
   private final String message;
 
   /**

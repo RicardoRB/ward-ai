@@ -33,7 +33,8 @@ public record Dependency(
     String source,
     String declaredIn,
     Set<PackageId> requiredBy,
-    Set<RequestedVersion> requested) {
+    Set<RequestedVersion> requested
+) {
   /**
    * Copies the sets and checks that a source is named.
    *

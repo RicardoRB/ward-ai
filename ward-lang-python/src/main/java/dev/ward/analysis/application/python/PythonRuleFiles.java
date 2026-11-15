@@ -8,7 +8,6 @@ import java.util.List;
  * no other module lists it.
  */
 public final class PythonRuleFiles implements RuleFileProvider {
-
   private static final List<String> FILES =
       List.of(
           "rules/duplication-python.toml",
@@ -43,7 +42,8 @@ public final class PythonRuleFiles implements RuleFileProvider {
           "rules/python/refurb.toml",
           "rules/python/ruff-pylint.toml",
           "rules/python/security-taint.toml",
-          "rules/python/security.toml");
+          "rules/python/security.toml"
+      );
 
   @Override
   public List<String> ruleFiles() {

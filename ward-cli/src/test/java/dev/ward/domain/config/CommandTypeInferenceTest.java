@@ -9,46 +9,46 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 /** Each inference row maps the command shapes it names to one type, and nothing else. */
 class CommandTypeInferenceTest {
-
   @ParameterizedTest(name = "{1} -> {0}")
   @CsvSource(
       delimiter = '|',
       value = {
-        "coverage|./mvnw jacoco:report",
-        "coverage|./gradlew jacocoTestReport",
-        "coverage|uv run coverage lcov -o .ward/reports/coverage.lcov",
-        "command|./mvnw jacoco:check",
-        "command|./gradlew jacocoTestCoverageVerification",
-        "command|uv run coverage report --fail-under=85",
-        "mypy|uv run mypy src",
-        "mypy|python -m mypy src",
-        "pytest|uv run pytest -q",
-        "pytest|uv run coverage run -m pytest",
-        "mutmut|uv run mutmut run",
-        "mutmut|poetry run mutmut run",
-        "command|uv run pip-audit",
-        "mutation|./mvnw pitest:mutationCoverage",
-        "stryker|npx stryker run",
-        "tests|./mvnw test",
-        "tests|./mvnw -q -DskipITs test",
-        "tests|./gradlew test",
-        "compile|./mvnw compile",
-        "command|gitleaks detect --no-git",
-        "command|trivy fs .",
-        "command|npx eslint . --format json",
-        "tsc|pnpm exec tsc --noEmit",
-        "command|npx biome check .",
-        "command|openspec validate --all",
-        "command|/usr/local/bin/openspec validate --all",
-        "command|./mvnw enforcer:enforce",
-        "command|swiftlint lint --reporter json",
-        "command|swift run --package-path .ward/swift-tools SwiftLintBinary lint --reporter json",
-        "swift-build|swift build --build-tests",
-        "swift-test|swift test --enable-code-coverage",
-        "swift-test|swift test --show-codecov-path",
-        "xcodebuild-test|xcodebuild test -scheme Shop",
-        "xcodebuild-test|/usr/bin/xcodebuild test -workspace Shop.xcworkspace -scheme Shop"
-      })
+          "coverage|./mvnw jacoco:report",
+          "coverage|./gradlew jacocoTestReport",
+          "coverage|uv run coverage lcov -o .ward/reports/coverage.lcov",
+          "command|./mvnw jacoco:check",
+          "command|./gradlew jacocoTestCoverageVerification",
+          "command|uv run coverage report --fail-under=85",
+          "mypy|uv run mypy src",
+          "mypy|python -m mypy src",
+          "pytest|uv run pytest -q",
+          "pytest|uv run coverage run -m pytest",
+          "mutmut|uv run mutmut run",
+          "mutmut|poetry run mutmut run",
+          "command|uv run pip-audit",
+          "mutation|./mvnw pitest:mutationCoverage",
+          "stryker|npx stryker run",
+          "tests|./mvnw test",
+          "tests|./mvnw -q -DskipITs test",
+          "tests|./gradlew test",
+          "compile|./mvnw compile",
+          "command|gitleaks detect --no-git",
+          "command|trivy fs .",
+          "command|npx eslint . --format json",
+          "tsc|pnpm exec tsc --noEmit",
+          "command|npx biome check .",
+          "command|openspec validate --all",
+          "command|/usr/local/bin/openspec validate --all",
+          "command|./mvnw enforcer:enforce",
+          "command|swiftlint lint --reporter json",
+          "command|swift run --package-path .ward/swift-tools SwiftLintBinary lint --reporter json",
+          "swift-build|swift build --build-tests",
+          "swift-test|swift test --enable-code-coverage",
+          "swift-test|swift test --show-codecov-path",
+          "xcodebuild-test|xcodebuild test -scheme Shop",
+          "xcodebuild-test|/usr/bin/xcodebuild test -workspace Shop.xcworkspace -scheme Shop"
+      }
+  )
   void infersTypeFromCommand(final String type, final String command) {
     assertThat(CommandTypeInference.infer(List.of(command.split(" ")))).isEqualTo(type);
   }
@@ -57,16 +57,17 @@ class CommandTypeInferenceTest {
   @CsvSource(
       delimiter = '|',
       value = {
-        "./mvnw -Dtest=ArchitectureBoundaryTest test",
-        "./gradlew test --tests com.acme.OrderTest",
-        "./scripts/lint-docs.sh",
-        "npm run lint",
-        "./mvnw lint:check pmd-free:check",
-        "uv run mutmut results",
-        "swift format --in-place Sources",
-        "xcodebuild build -scheme Shop",
-        "xcrun xccov view --report --json .ward/reports/xcode/tests.xcresult"
-      })
+          "./mvnw -Dtest=ArchitectureBoundaryTest test",
+          "./gradlew test --tests com.acme.OrderTest",
+          "./scripts/lint-docs.sh",
+          "npm run lint",
+          "./mvnw lint:check pmd-free:check",
+          "uv run mutmut results",
+          "swift format --in-place Sources",
+          "xcodebuild build -scheme Shop",
+          "xcrun xccov view --report --json .ward/reports/xcode/tests.xcresult"
+      }
+  )
   void unrecognizedOrAmbiguousCommandsFallBackToCommand(final String command) {
     assertThat(CommandTypeInference.infer(List.of(command.split(" "))))
         .isEqualTo(CommandTypeInference.COMMAND);

@@ -17,4 +17,5 @@ record DeclInfo(
     Optional<JvmMethod> method,
     Optional<JvmField> field,
     Optional<JvmClass> owner,
-    List<String> scopes) {}
+    List<String> scopes
+) {}

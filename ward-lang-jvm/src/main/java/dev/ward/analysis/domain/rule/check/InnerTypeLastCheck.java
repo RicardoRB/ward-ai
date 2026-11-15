@@ -13,7 +13,6 @@ import java.util.Set;
  * constructors, methods and initializer blocks come before the inner types, which go last.
  */
 public final class InnerTypeLastCheck implements RuleCheck {
-
   private static final Set<String> BODY_WRAPPERS =
       Set.of("classBodyDeclaration", "interfaceBodyDeclaration");
   private static final Set<String> HOLDERS =

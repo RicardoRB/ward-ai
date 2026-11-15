@@ -9,7 +9,6 @@ import java.util.Set;
 
 /** Reports annotations on a package declaration outside {@code package-info.java}. */
 public final class PackageAnnotationCheck implements UnitCheck {
-
   private static final String PACKAGE = "packageDeclaration";
   private static final String PACKAGE_INFO = "package-info.java";
   private static final String ANNOTATION = "annotation";

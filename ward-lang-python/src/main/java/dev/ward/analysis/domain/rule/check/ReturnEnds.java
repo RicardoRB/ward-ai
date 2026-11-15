@@ -11,7 +11,6 @@ import java.util.Set;
  * returns, the way Pylint's return-ended test decides it.
  */
 final class ReturnEnds {
-
   private static final String RETURN = "return_stmt";
   private static final String RAISE = "raise_stmt";
   private static final String ASSERT = "assert_stmt";

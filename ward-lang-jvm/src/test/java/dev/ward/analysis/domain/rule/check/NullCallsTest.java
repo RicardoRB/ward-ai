@@ -8,27 +8,31 @@ import dev.ward.analysis.domain.types.SpanFacts;
 import org.junit.jupiter.api.Test;
 
 class NullCallsTest {
-
   @Test
   void aNullPassedForAParameterThatMustNotBeNullIsReported() {
     final String body = "  void t(Api api) {\n    api.take(null);\n  }\n";
     final SpanFacts annotated = target("Api", "take", 1, "javax.annotation.Nonnull");
     assertThat(
-            run(NullDataflowCheck.Mode.NONNULL_PARAM_VIOLATION, body, "api.take(null)", annotated))
+        run(NullDataflowCheck.Mode.NONNULL_PARAM_VIOLATION, body, "api.take(null)", annotated)
+    )
         .containsExactly("3:5");
     assertThat(
-            run(
-                NullDataflowCheck.Mode.NONNULL_PARAM_VIOLATION,
-                body,
-                "api.take(null)",
-                target("Api", "take", 1)))
+        run(
+            NullDataflowCheck.Mode.NONNULL_PARAM_VIOLATION,
+            body,
+            "api.take(null)",
+            target("Api", "take", 1)
+        )
+    )
         .isEmpty();
     assertThat(
-            run(
-                NullDataflowCheck.Mode.NONNULL_PARAM_VIOLATION,
-                body.replace("null", "\"x\""),
-                "api.take(\"x\")",
-                annotated))
+        run(
+            NullDataflowCheck.Mode.NONNULL_PARAM_VIOLATION,
+            body.replace("null", "\"x\""),
+            "api.take(\"x\")",
+            annotated
+        )
+    )
         .isEmpty();
     assertThat(run(NullDataflowCheck.Mode.NONNULL_PARAM_VIOLATION, body)).isEmpty();
   }
@@ -44,25 +48,26 @@ class NullCallsTest {
     assertThat(run(NullDataflowCheck.Mode.NULL_PARAM_DEREF_NONVIRTUAL, open, "use(null)", call))
         .isEmpty();
     assertThat(
-            run(
-                NullDataflowCheck.Mode.NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS,
-                open,
-                "use(null)",
-                call))
+        run(NullDataflowCheck.Mode.NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS, open, "use(null)", call)
+    )
         .isEmpty();
     assertThat(
-            run(
-                NullDataflowCheck.Mode.NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS,
-                open.replace("void use", "final void use"),
-                "use(null)",
-                call))
+        run(
+            NullDataflowCheck.Mode.NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS,
+            open.replace("void use", "final void use"),
+            "use(null)",
+            call
+        )
+    )
         .containsExactly("6:5");
     assertThat(
-            run(
-                NullDataflowCheck.Mode.NULL_PARAM_DEREF_NONVIRTUAL,
-                body.replace("s.length();", "if (s != null) {\n      s.length();\n    }"),
-                "use(null)",
-                call))
+        run(
+            NullDataflowCheck.Mode.NULL_PARAM_DEREF_NONVIRTUAL,
+            body.replace("s.length();", "if (s != null) {\n      s.length();\n    }"),
+            "use(null)",
+            call
+        )
+    )
         .isEmpty();
     assertThat(run(NullDataflowCheck.Mode.NULL_PARAM_DEREF_NONVIRTUAL, body)).isEmpty();
   }
@@ -73,17 +78,21 @@ class NullCallsTest {
     assertThat(run(NullDataflowCheck.Mode.NONNULL_RETURN_VIOLATION, returned))
         .containsExactly("4:12");
     assertThat(
-            run(NullDataflowCheck.Mode.NONNULL_RETURN_VIOLATION, returned.replace("@NonNull ", "")))
+        run(NullDataflowCheck.Mode.NONNULL_RETURN_VIOLATION, returned.replace("@NonNull ", ""))
+    )
         .isEmpty();
     assertThat(
-            run(
-                NullDataflowCheck.Mode.NONNULL_RETURN_VIOLATION,
-                returned.replace("String t()", "String toString()")))
+        run(
+            NullDataflowCheck.Mode.NONNULL_RETURN_VIOLATION,
+            returned.replace("String t()", "String toString()")
+        )
+    )
         .isEmpty();
     final String stored = "  @NonNull String f;\n  void t() {\n    this.f = null;\n  }\n";
     assertThat(run(NullDataflowCheck.Mode.STORE_INTO_NONNULL_FIELD, stored)).containsExactly("4:5");
     assertThat(
-            run(NullDataflowCheck.Mode.STORE_INTO_NONNULL_FIELD, stored.replace("@NonNull ", "")))
+        run(NullDataflowCheck.Mode.STORE_INTO_NONNULL_FIELD, stored.replace("@NonNull ", ""))
+    )
         .isEmpty();
   }
 }

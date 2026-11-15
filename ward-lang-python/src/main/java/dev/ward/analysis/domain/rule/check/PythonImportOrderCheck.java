@@ -23,7 +23,6 @@ import java.util.regex.Pattern;
  * project's trees to find the first-party packages.
  */
 public final class PythonImportOrderCheck implements RuleCheck, ProjectCheck {
-
   private static final Set<String> IMPORTS = Set.of("import_name", "import_from");
   private static final Set<String> SCOPES = Set.of("funcdef", "classdef");
   private static final Pattern FROM = Pattern.compile("^from([\\w.]+)import");
@@ -76,7 +75,8 @@ public final class PythonImportOrderCheck implements RuleCheck, ProjectCheck {
       packages.add(
           first.endsWith(PYTHON_SUFFIX)
               ? first.substring(0, first.length() - PYTHON_SUFFIX.length())
-              : first);
+              : first
+      );
     }
     return packages;
   }
@@ -99,7 +99,9 @@ public final class PythonImportOrderCheck implements RuleCheck, ProjectCheck {
 
   /** The group of a module-level import, or empty for an import inside a function or class. */
   private static Optional<Integer> groupOf(
-      final SyntaxWalk.Visit visit, final Set<String> firstParty) {
+      final SyntaxWalk.Visit visit,
+      final Set<String> firstParty
+  ) {
     if (visit.ancestors().stream().anyMatch(ancestor -> SCOPES.contains(ancestor.kind()))) {
       return Optional.empty();
     }
@@ -109,7 +111,8 @@ public final class PythonImportOrderCheck implements RuleCheck, ProjectCheck {
       return Optional.of(
           from.group(1).startsWith(PACKAGE_SEPARATOR)
               ? RELATIVE_GROUP
-              : groupOfModule(from.group(1), firstParty));
+              : groupOfModule(from.group(1), firstParty)
+      );
     }
     final Matcher plain = PLAIN.matcher(text);
     return plain.find() ? Optional.of(groupOfModule(plain.group(1), firstParty)) : Optional.empty();

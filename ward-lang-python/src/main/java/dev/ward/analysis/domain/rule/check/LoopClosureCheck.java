@@ -21,7 +21,6 @@ import java.util.Set;
  * function was made.
  */
 public final class LoopClosureCheck implements RuleCheck {
-
   private static final String NAME = "{value}";
   private static final Set<String> LOOPS = Set.of("for_stmt");
   private static final Set<ScopeKind> CLOSURES = Set.of(ScopeKind.FUNCTION, ScopeKind.LAMBDA);
@@ -44,7 +43,11 @@ public final class LoopClosureCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes(Set.of());
     final List<Span> targets = loopTargets(root);
     final List<RuleMatch> found = new ArrayList<>();
@@ -71,12 +74,16 @@ public final class LoopClosureCheck implements RuleCheck {
         .anyMatch(
             target ->
                 target.startOffset() <= binding.declaration().startOffset()
-                    && binding.declaration().endOffset() <= target.endOffset());
+                    && binding.declaration().endOffset() <= target.endOffset()
+        );
   }
 
   /** Whether the read sits in a closure that is not the scope that binds the variable. */
   private static boolean isOwnScopeOf(
-      final UnitScopes scopes, final NameReference reference, final Binding binding) {
+      final UnitScopes scopes,
+      final NameReference reference,
+      final Binding binding
+  ) {
     return reference.scope() != binding.scope() && closure(scopes, reference.scope());
   }
 

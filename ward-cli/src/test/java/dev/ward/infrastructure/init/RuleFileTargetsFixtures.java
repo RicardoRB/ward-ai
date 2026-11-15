@@ -29,7 +29,9 @@ public final class RuleFileTargetsFixtures {
    * Returns the Node, Python and Swift targets, with Node reading the given manifest and configs.
    */
   public static Map<Toolchain, RuleFileTargets> of(
-      final PackageManifests manifests, final NodeToolConfigs configs) {
+      final PackageManifests manifests,
+      final NodeToolConfigs configs
+  ) {
     return of(manifests, configs, (root, tool) -> Optional.empty());
   }
 
@@ -37,13 +39,15 @@ public final class RuleFileTargetsFixtures {
   public static Map<Toolchain, RuleFileTargets> of(
       final PackageManifests manifests,
       final NodeToolConfigs configs,
-      final PythonToolConfigs pythonConfigs) {
+      final PythonToolConfigs pythonConfigs
+  ) {
     return Map.of(
         Toolchain.NODE,
         new NodeRuleFileTargets(configs),
         Toolchain.PYTHON,
         new PythonRuleFileTargets(pythonConfigs),
         Toolchain.SWIFT,
-        new SwiftRuleFileTargets());
+        new SwiftRuleFileTargets()
+    );
   }
 }

@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * Simplification: a branch is a call when it ends with a parenthesised argument list.
  */
 public final class SwiftVoidFunctionInTernaryCheck implements RuleCheck {
-
   private static final String BINARY_EXPRESSIONS = "binary_expressions";
   private static final String BINARY_EXPRESSION = "binary_expression";
   private static final String CONDITIONAL = "conditional_operator";
@@ -42,7 +41,10 @@ public final class SwiftVoidFunctionInTernaryCheck implements RuleCheck {
   }
 
   private void collect(
-      final SyntaxNode node, final List<SyntaxNode> ancestors, final List<RuleMatch> matches) {
+      final SyntaxNode node,
+      final List<SyntaxNode> ancestors,
+      final List<RuleMatch> matches
+  ) {
     if (BINARY_EXPRESSIONS.equals(node.kind()) && isVoidTernary(node, ancestors)) {
       ternaryQuestion(node).ifPresent(question -> matches.add(SwiftTrees.at(question, message)));
     }

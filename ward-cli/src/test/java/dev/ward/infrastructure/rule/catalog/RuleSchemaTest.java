@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
  * Regenerate it with: {@code ./mvnw -Dtest=RuleSchemaTest -Dward.rules.schema.write=true test}.
  */
 class RuleSchemaTest {
-
   private static final String WRITE = "ward.rules.schema.write";
   private static final Path COMMITTED =
       Path.of("..", "website", "public", "schemas", "ward-rules.schema.json");

@@ -59,9 +59,11 @@ class BundledLicenseDataTest {
         .hasValue("Apache-2.0");
     assertThat(catalog.alias("  The   MIT   License ")).hasValue("MIT");
     assertThat(
-            catalog.classifier(
-                "License :: OSI Approved :: MIT License"
-                    .substring("License :: OSI Approved :: ".length())))
+        catalog.classifier(
+            "License :: OSI Approved :: MIT License"
+                .substring("License :: OSI Approved :: ".length())
+        )
+    )
         .hasValue("MIT");
   }
 

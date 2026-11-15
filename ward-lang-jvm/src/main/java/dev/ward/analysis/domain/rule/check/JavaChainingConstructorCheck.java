@@ -18,7 +18,6 @@ import java.util.Set;
  * the same here when their text is the same, which is narrower than Error Prone's assignability.
  */
 public final class JavaChainingConstructorCheck implements RuleCheck {
-
   private static final String THIS = "'this'";
 
   private final String message;
@@ -57,9 +56,12 @@ public final class JavaChainingConstructorCheck implements RuleCheck {
   }
 
   private static boolean ignores(
-      final Map<String, String> own,
-      final Map<String, String> target,
-      final List<SyntaxNode> args) {
+      final Map<String,
+      String> own,
+      final Map<String,
+      String> target,
+      final List<SyntaxNode> args
+  ) {
     final List<Map.Entry<String, String>> formals = List.copyOf(target.entrySet());
     for (int index = 0; index < formals.size() && index < args.size(); index++) {
       final Map.Entry<String, String> formal = formals.get(index);
@@ -108,7 +110,8 @@ public final class JavaChainingConstructorCheck implements RuleCheck {
               JavaNodes.kids(list, "formalParameterList")
                   .forEach(rest -> all.addAll(JavaNodes.kids(rest, "formalParameter")));
               all.forEach(parameter -> found.put(name(parameter), type(parameter)));
-            });
+            }
+        );
     return found;
   }
 

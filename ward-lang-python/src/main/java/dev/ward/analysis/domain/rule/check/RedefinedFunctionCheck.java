@@ -22,7 +22,6 @@ import java.util.Set;
  * the enclosing statement kind, not the branch structure.
  */
 public final class RedefinedFunctionCheck implements RuleCheck {
-
   private static final Set<BindingKind> DEFINITIONS =
       Set.of(BindingKind.FUNCTION, BindingKind.CLASS);
   private static final Set<String> CONDITIONAL =
@@ -54,7 +53,11 @@ public final class RedefinedFunctionCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> found = new ArrayList<>();
     for (final Scope scope : view.scopes().scopes()) {
       addRedefinitions(root, scope.bindings(), found);
@@ -64,7 +67,10 @@ public final class RedefinedFunctionCheck implements RuleCheck {
   }
 
   private void addRedefinitions(
-      final SyntaxNode root, final List<Binding> bindings, final List<RuleMatch> found) {
+      final SyntaxNode root,
+      final List<Binding> bindings,
+      final List<RuleMatch> found
+  ) {
     for (int index = 0; index < bindings.size(); index++) {
       final Binding current = bindings.get(index);
       if (!DEFINITIONS.contains(current.kind())) {
@@ -77,8 +83,8 @@ public final class RedefinedFunctionCheck implements RuleCheck {
         final Definition definition = definitionAt(root, current);
         if (definition != null && !exempt(definition, current.name())) {
           found.add(
-              new RuleMatch(
-                  definition.node().span(), message.replace(MESSAGE_NAME, current.name())));
+              new RuleMatch(definition.node().span(), message.replace(MESSAGE_NAME, current.name()))
+          );
         }
       }
     }
@@ -94,7 +100,10 @@ public final class RedefinedFunctionCheck implements RuleCheck {
 
   /** The innermost definition that contains the offset, with the nodes above it. */
   private static Definition find(
-      final SyntaxNode node, final int offset, final List<SyntaxNode> ancestors) {
+      final SyntaxNode node,
+      final int offset,
+      final List<SyntaxNode> ancestors
+  ) {
     for (final SyntaxNode child : node.children()) {
       if (contains(child, offset)) {
         ancestors.add(node);

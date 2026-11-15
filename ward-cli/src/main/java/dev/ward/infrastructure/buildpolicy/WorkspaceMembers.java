@@ -19,13 +19,18 @@ public final class WorkspaceMembers {
    * expanded.
    */
   public static List<String> expand(
-      final Path root, final String dir, final List<String> patterns, final String marker) {
+      final Path root,
+      final String dir,
+      final List<String> patterns,
+      final String marker
+  ) {
     final List<String> members = new ArrayList<>();
     for (final String pattern : patterns) {
       if (pattern.endsWith(STAR)) {
         members.addAll(children(root, dir, pattern.substring(0, pattern.length() - 2), marker));
       } else if (Files.isRegularFile(
-          root.resolve(BuildPaths.relative(dir, pattern)).resolve(marker))) {
+          root.resolve(BuildPaths.relative(dir, pattern)).resolve(marker)
+      )) {
         members.add(BuildPaths.relative(dir, pattern));
       }
     }
@@ -33,7 +38,11 @@ public final class WorkspaceMembers {
   }
 
   private static List<String> children(
-      final Path root, final String dir, final String parent, final String marker) {
+      final Path root,
+      final String dir,
+      final String parent,
+      final String marker
+  ) {
     final Path base = root.resolve(BuildPaths.relative(dir, parent));
     if (!Files.isDirectory(base)) {
       return List.of();

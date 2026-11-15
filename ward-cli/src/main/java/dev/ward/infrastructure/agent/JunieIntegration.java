@@ -23,7 +23,8 @@ public final class JunieIntegration implements NativeHarnessAdapter {
           ".junie/config.json",
           ".junie/hooks/ward.sh",
           "Stop",
-          Set.of(IntegrationCapability.TURN_END, IntegrationCapability.FEEDBACK));
+          Set.of(IntegrationCapability.TURN_END, IntegrationCapability.FEEDBACK)
+      );
 
   @Override
   public NativeAgentIntegration.Definition definition() {
@@ -123,7 +124,8 @@ public final class JunieIntegration implements NativeHarnessAdapter {
           arguments.patch,
           null,
           false,
-          Boolean.TRUE.equals(stopHookActive));
+          Boolean.TRUE.equals(stopHookActive)
+      );
     }
   }
 

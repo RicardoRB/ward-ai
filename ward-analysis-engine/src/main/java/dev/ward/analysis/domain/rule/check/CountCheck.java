@@ -11,7 +11,6 @@ import java.util.Set;
  * counted kinds, not entering {@code skip} subtrees. The user option is {@code max}.
  */
 public final class CountCheck implements UnitCheck {
-
   private final NodeFilter scope;
   private final Set<String> counted;
   private final Set<String> skip;
@@ -33,7 +32,8 @@ public final class CountCheck implements UnitCheck {
       final Set<String> counted,
       final Set<String> skip,
       final int max,
-      final String message) {
+      final String message
+  ) {
     this.scope = Objects.requireNonNull(scope, "scope");
     this.counted = Set.copyOf(counted);
     this.skip = Set.copyOf(skip);
@@ -50,7 +50,12 @@ public final class CountCheck implements UnitCheck {
                 CheckSupport.at(
                     visit.node().span(),
                     CheckSupport.fill(
-                        message, String.valueOf(count(visit.node())), String.valueOf(max))))
+                        message,
+                        String.valueOf(count(visit.node())),
+                        String.valueOf(max)
+                    )
+                )
+        )
         .toList();
   }
 

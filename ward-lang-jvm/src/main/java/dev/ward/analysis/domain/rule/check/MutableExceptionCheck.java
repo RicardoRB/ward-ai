@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
  * its name matches the format, or when the class it extends matches the extended format.
  */
 public final class MutableExceptionCheck implements RuleCheck {
-
   private static final String CLASS = "classDeclaration";
   private static final String FIELD = "fieldDeclaration";
 
@@ -28,7 +27,10 @@ public final class MutableExceptionCheck implements RuleCheck {
    * @param message the message; {@code {value}} is the field name
    */
   public MutableExceptionCheck(
-      final Pattern format, final Pattern extendedClassNameFormat, final String message) {
+      final Pattern format,
+      final Pattern extendedClassNameFormat,
+      final String message
+  ) {
     this.format = Objects.requireNonNull(format, "format");
     this.extendedClassNameFormat =
         Objects.requireNonNull(extendedClassNameFormat, "extendedClassNameFormat");

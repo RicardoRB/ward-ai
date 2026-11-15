@@ -16,7 +16,8 @@ public record CompatibilityPlan(List<CompatibilityFinding> findings) {
             finding ->
                 finding.outcome() == CompatibilityOutcome.UNKNOWN
                     || finding.outcome() == CompatibilityOutcome.UNRESOLVABLE
-                    || finding.outcome() == CompatibilityOutcome.INCOMPATIBLE);
+                    || finding.outcome() == CompatibilityOutcome.INCOMPATIBLE
+        );
   }
 
   /** Returns the findings that change a plugin version. */

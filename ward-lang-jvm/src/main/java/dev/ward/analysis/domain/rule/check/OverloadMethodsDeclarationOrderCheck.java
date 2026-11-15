@@ -16,14 +16,14 @@ import java.util.Set;
  * overloads must also be in increasing order of parameter count.
  */
 public final class OverloadMethodsDeclarationOrderCheck implements UnitCheck {
-
   private static final Set<String> BODIES = Set.of("classBody", "interfaceBody");
   private static final Set<String> METHODS =
       Set.of(
           "methodDeclaration",
           "genericMethodDeclaration",
           "interfaceMethodDeclaration",
-          "genericInterfaceMethodDeclaration");
+          "genericInterfaceMethodDeclaration"
+      );
   private static final Set<String> NOT_ENTERED = Set.of("block", "classBody", "interfaceBody");
   private static final Set<String> NAME_SKIPPED =
       Set.of("typeTypeOrVoid", "typeType", "typeParameters", "formalParameters", "annotation");
@@ -94,9 +94,10 @@ public final class OverloadMethodsDeclarationOrderCheck implements UnitCheck {
         .map(
             formals ->
                 (int)
-                    SyntaxWalk.descendants(formals).stream()
-                        .filter(node -> "formalParameter".equals(node.kind()))
-                        .count())
+                SyntaxWalk.descendants(formals).stream()
+                    .filter(node -> "formalParameter".equals(node.kind()))
+                    .count()
+        )
         .orElse(0);
   }
 }

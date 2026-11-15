@@ -15,7 +15,6 @@ import java.util.Set;
 
 /** Reports each declaration of the given kinds that a {@link DeclarationFactTest} accepts. */
 public final class DeclarationFactsCheck implements RuleCheck {
-
   private final Set<String> kinds;
   private final FactNeed need;
   private final DeclarationFactTest test;
@@ -33,7 +32,8 @@ public final class DeclarationFactsCheck implements RuleCheck {
       final Set<String> kinds,
       final Set<FactKind> facts,
       final DeclarationFactTest test,
-      final String message) {
+      final String message
+  ) {
     this.kinds = Set.copyOf(kinds);
     this.need = new FactNeed(this.kinds, facts);
     this.test = Objects.requireNonNull(test, "test");
@@ -56,7 +56,8 @@ public final class DeclarationFactsCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, kinds)) {
       final SyntaxNode declaration = visit.node();

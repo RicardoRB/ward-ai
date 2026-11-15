@@ -15,7 +15,6 @@ import java.util.TreeMap;
  * so the check sees a fixed view of the run.
  */
 public final class ProjectFiles {
-
   private final SortedMap<String, String> texts;
   private final Set<String> existing;
 
@@ -73,7 +72,8 @@ public final class ProjectFiles {
     final SortedMap<String, String> copy = new TreeMap<>();
     texts.forEach(
         (path, text) ->
-            copy.put(Objects.requireNonNull(path, "path"), Objects.requireNonNull(text, "text")));
+            copy.put(Objects.requireNonNull(path, "path"), Objects.requireNonNull(text, "text"))
+    );
     return Collections.unmodifiableSortedMap(copy);
   }
 }

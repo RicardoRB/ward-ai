@@ -33,7 +33,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** The {@code ward} gate with the bundled TypeScript and JavaScript rules, on a real project. */
 class NodeStructuralGateTest {
-
   private static final String NAMING = "ward:typescript/naming";
   private static final String UNKNOWN = "ward:typescript/no-such-rule";
 
@@ -55,7 +54,8 @@ class NodeStructuralGateTest {
               assertThat(finding.ruleId()).isEqualTo(NAMING);
               assertThat(finding.file()).isEqualTo("src/app.ts");
               assertThat(finding.line()).isEqualTo(1);
-            });
+            }
+        );
   }
 
   @Test
@@ -103,7 +103,8 @@ class NodeStructuralGateTest {
             null,
             null,
             null,
-            null);
+            null
+        );
     return AnalysisGates.create(check, ports());
   }
 
@@ -116,12 +117,14 @@ class NodeStructuralGateTest {
         new FileSystemSourceUnits(new ProcessCommandExecutor()),
         List.of(
             new FrontendSupport(AnalysisLanguage.TYPESCRIPT, frontend, syntax),
-            new FrontendSupport(AnalysisLanguage.JAVASCRIPT, frontend, syntax)),
+            new FrontendSupport(AnalysisLanguage.JAVASCRIPT, frontend, syntax)
+        ),
         root -> new FileAnalysisCache(root.resolve(".ward/cache/analysis")),
         AnalysisCacheFixtures.codec(),
         "test",
         DependencyAdapters.none(),
-        (unused, classpath) -> Map.of());
+        (unused, classpath) -> Map.of()
+    );
   }
 
   private Project project() {
@@ -135,6 +138,7 @@ class NodeStructuralGateTest {
         Set.of(),
         null,
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 }

@@ -32,8 +32,15 @@ final class NodeCrap {
   }
 
   private static List<InitGateOption> place(
-      final List<InitGateOption> gates, final NodeTools tools) {
+      final List<InitGateOption> gates,
+      final NodeTools tools
+  ) {
     return CrapInit.place(
-        gates, tools.testGate(), List.of(SupportedQualityGates.COVERAGE), List.of(), Map.of());
+        gates,
+        tools.testGate(),
+        List.of(SupportedQualityGates.COVERAGE),
+        List.of(),
+        Map.of()
+    );
   }
 }

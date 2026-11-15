@@ -19,7 +19,6 @@ import org.tomlj.TomlTable;
 
 /** Reads which catalog rows this repository's {@code config/} files enforce. */
 final class RepositoryRuleMapping {
-
   static final Path ROOT = Path.of("..").toAbsolutePath().normalize();
   static final String JAVA = "java";
   private static final Path CATALOG = ROOT.resolve("ward-cli/src/test/resources/catalog");
@@ -45,7 +44,8 @@ final class RepositoryRuleMapping {
       List<String> checkstyle,
       List<String> pmd,
       List<String> presets,
-      boolean spotbugs) {}
+      boolean spotbugs
+  ) {}
 
   static Set<String> checkstyleModules() throws IOException {
     final Matcher matcher =
@@ -119,7 +119,8 @@ final class RepositoryRuleMapping {
         strings(rule, "checkstyle"),
         strings(rule, "pmd"),
         strings(rule, "presets"),
-        rule.get("spotbugs") != null);
+        rule.get("spotbugs") != null
+    );
   }
 
   private static String statusOf(final String name, final TomlTable statuses) {

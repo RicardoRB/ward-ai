@@ -11,7 +11,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class ToArrayCastCheckTest {
-
   private static final ToArrayCastCheck CHECK = new ToArrayCastCheck("message");
   private static final String SOURCE =
       "final class C {\n  Object t(java.util.List<String> l) {\n    return (String[]) l.toArray();\n  }\n}\n";
@@ -38,13 +37,15 @@ class ToArrayCastCheckTest {
             null,
             Map.of(),
             Map.of(),
-            null),
+            null
+        ),
         List.of(),
         List.of(),
         List.of(),
         List.of(),
         null,
-        null);
+        null
+    );
   }
 
   private static List<String> run(final String source, final SpanFacts call, final TypeRef target) {
@@ -68,10 +69,8 @@ class ToArrayCastCheckTest {
     assertThat(run(SOURCE, call("java.util.Collection", List.of(OBJECTS)), STRINGS)).isEmpty();
     assertThat(run(SOURCE, ParsedFacts.type(STRINGS), STRINGS)).isEmpty();
     assertThat(
-            run(
-                SOURCE.replace("(String[]) ", ""),
-                call("java.util.Collection", List.of()),
-                STRINGS))
+        run(SOURCE.replace("(String[]) ", ""), call("java.util.Collection", List.of()), STRINGS)
+    )
         .isEmpty();
     assertThat(new ParsedFacts(SOURCE).run(CHECK)).isEmpty();
     assertThat(new ParsedFacts(SOURCE).plain(CHECK)).isEmpty();

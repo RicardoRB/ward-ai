@@ -18,10 +18,13 @@ import java.util.Set;
  * recognized, and {@code var} declarations are never reported.
  */
 public final class IllegalTypeCheck implements UnitCheck {
-
   private static final Set<String> DECLARATIONS =
       Set.of(
-          "localVariableDeclaration", "fieldDeclaration", "formalParameter", "methodDeclaration");
+          "localVariableDeclaration",
+          "fieldDeclaration",
+          "formalParameter",
+          "methodDeclaration"
+      );
   private static final Set<String> NOT_ENTERED = Set.of("block", "classBody");
   private static final String METHOD = "methodDeclaration";
 
@@ -50,7 +53,10 @@ public final class IllegalTypeCheck implements UnitCheck {
                   matches.add(
                       CheckSupport.at(
                           SyntaxWalk.leaves(type).get(0).span(),
-                          CheckSupport.fill(message, rawName(SyntaxWalk.text(type)), ""))));
+                          CheckSupport.fill(message, rawName(SyntaxWalk.text(type)), "")
+                      )
+                  )
+          );
     }
     return List.copyOf(matches);
   }

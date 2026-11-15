@@ -11,16 +11,17 @@ import org.junit.jupiter.api.Test;
 
 /** The checks that read the native type facts, each with facts that the fixtures also use. */
 class TypedChecksTest {
-
   private static final String MESSAGE = "message";
 
   @Test
   void awaitOfAPrimitiveIsReported() {
     assertThat(
-            positions(
-                new AwaitThenableCheck(false, MESSAGE),
-                "async function f(n: number) {\n  await (n);\n}\n",
-                new LintFixtures.Facts().typed("2:9", LintFixtures.primitive("number")).build()))
+        positions(
+            new AwaitThenableCheck(false, MESSAGE),
+            "async function f(n: number) {\n  await (n);\n}\n",
+            new LintFixtures.Facts().typed("2:9", LintFixtures.primitive("number")).build()
+        )
+    )
         .containsExactly("2:3");
   }
 
@@ -120,10 +121,12 @@ class TypedChecksTest {
     assertThat(positions(new OnlyThrowErrorCheck(true, true, true, Set.of(), MESSAGE), text, facts))
         .isEmpty();
     assertThat(
-            positions(new OnlyThrowErrorCheck(true, false, true, Set.of(), MESSAGE), text, facts))
+        positions(new OnlyThrowErrorCheck(true, false, true, Set.of(), MESSAGE), text, facts)
+    )
         .containsExactly("2:7");
     assertThat(
-            positions(new OnlyThrowErrorCheck(true, true, false, Set.of(), MESSAGE), text, facts))
+        positions(new OnlyThrowErrorCheck(true, true, false, Set.of(), MESSAGE), text, facts)
+    )
         .containsExactly("4:7");
   }
 
@@ -139,8 +142,8 @@ class TypedChecksTest {
             .build();
 
     assertThat(
-            positions(
-                new OnlyThrowErrorCheck(true, true, true, Set.of("Ticket"), MESSAGE), text, facts))
+        positions(new OnlyThrowErrorCheck(true, true, true, Set.of("Ticket"), MESSAGE), text, facts)
+    )
         .containsExactly("4:7");
   }
 
@@ -153,7 +156,8 @@ class TypedChecksTest {
     assertThat(positions(new OnlyThrowErrorCheck(true, true, true, Set.of(), MESSAGE), text, facts))
         .isEmpty();
     assertThat(
-            positions(new OnlyThrowErrorCheck(false, true, true, Set.of(), MESSAGE), text, facts))
+        positions(new OnlyThrowErrorCheck(false, true, true, Set.of(), MESSAGE), text, facts)
+    )
         .containsExactly("4:9");
   }
 }

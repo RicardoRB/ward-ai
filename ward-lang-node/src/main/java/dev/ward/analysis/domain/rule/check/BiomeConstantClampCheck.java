@@ -13,10 +13,10 @@ import java.util.regex.Pattern;
  * must be a number literal; the rule compares the two literals.
  */
 public final class BiomeConstantClampCheck implements RuleCheck {
-
   private static final Pattern CLAMP =
       Pattern.compile(
-          "^Math\\.(min|max)\\((-?\\d+(?:\\.\\d+)?),Math\\.(min|max)\\((-?\\d+(?:\\.\\d+)?),");
+          "^Math\\.(min|max)\\((-?\\d+(?:\\.\\d+)?),Math\\.(min|max)\\((-?\\d+(?:\\.\\d+)?),"
+      );
   private static final String CALL = "singleExpression";
 
   private final String message;

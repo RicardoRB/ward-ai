@@ -19,7 +19,6 @@ import java.util.Set;
  * the type of an operand is unknown.
  */
 public final class IntegerArithmeticCheck extends FactsCheck {
-
   /** What the check looks for. */
   public enum Mode {
     /** {@code (double) (a / b)} with integral operands. */
@@ -110,7 +109,8 @@ public final class IntegerArithmeticCheck extends FactsCheck {
         && integral(visit.node(), TIMES, types)
         && up.get(up.size() - DECLARATION_DEPTH).children().stream()
             .anyMatch(
-                child -> TYPE_TYPE.equals(child.kind()) && LONG.equals(SyntaxWalk.text(child)));
+                child -> TYPE_TYPE.equals(child.kind()) && LONG.equals(SyntaxWalk.text(child))
+            );
   }
 
   private boolean average(final SyntaxNode node, final UnitTypeFacts types) {
@@ -130,7 +130,10 @@ public final class IntegerArithmeticCheck extends FactsCheck {
 
   /** Tells whether {@code node} is {@code left operator right} over two integral operands. */
   private static boolean integral(
-      final SyntaxNode node, final String operator, final UnitTypeFacts types) {
+      final SyntaxNode node,
+      final String operator,
+      final UnitTypeFacts types
+  ) {
     final List<SyntaxNode> parts = node.children();
     return parts.size() == BINARY_PARTS
         && operator.equals(parts.get(1).kind())
@@ -138,7 +141,10 @@ public final class IntegerArithmeticCheck extends FactsCheck {
   }
 
   private static boolean integral(
-      final SyntaxNode left, final SyntaxNode right, final UnitTypeFacts types) {
+      final SyntaxNode left,
+      final SyntaxNode right,
+      final UnitTypeFacts types
+  ) {
     return INTEGRAL.contains(primitive(left, types)) && INTEGRAL.contains(primitive(right, types));
   }
 

@@ -13,7 +13,6 @@ import java.util.Set;
 
 /** The package manifests of a project, by directory, for the dependency checks of dead code. */
 final class NodeManifests {
-
   private static final String MANIFEST = "package.json";
   private static final String NODE_MODULES = "node_modules/";
 
@@ -77,7 +76,8 @@ final class NodeManifests {
               if (entry.value() instanceof Value.Text text) {
                 texts.add(text.value());
               }
-            });
+            }
+        );
     return texts;
   }
 

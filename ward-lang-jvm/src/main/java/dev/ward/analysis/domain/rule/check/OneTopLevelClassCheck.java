@@ -10,7 +10,6 @@ import java.util.Objects;
  * the file; every later one has to move to a file of its own.
  */
 public final class OneTopLevelClassCheck implements RuleCheck {
-
   private final String message;
 
   /**
@@ -31,7 +30,9 @@ public final class OneTopLevelClassCheck implements RuleCheck {
             visit ->
                 CheckSupport.at(
                     visit.node().span(),
-                    CheckSupport.fill(message, JUnitMembers.name(visit.node()), "")))
+                    CheckSupport.fill(message, JUnitMembers.name(visit.node()), "")
+                )
+        )
         .toList();
   }
 }

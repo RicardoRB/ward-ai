@@ -13,7 +13,6 @@ import java.util.Set;
  * assignments. A literal in a lambda, an array size, an index or a negation is not waived.
  */
 final class ConstantContext {
-
   private static final String LOCAL = "localVariableDeclaration";
   private static final String MEMBER = "classBodyDeclaration";
   private static final Set<String> DECLARATIONS =
@@ -33,7 +32,8 @@ final class ConstantContext {
           "typeType",
           "literal",
           "integerLiteral",
-          "floatLiteral");
+          "floatLiteral"
+      );
   private static final String EXPRESSION = "expression";
   private static final String FINAL = "final";
   private static final Set<String> BLOCKING_OPERATORS = Set.of("'['", "'!'", "'~'", "'++'", "'--'");

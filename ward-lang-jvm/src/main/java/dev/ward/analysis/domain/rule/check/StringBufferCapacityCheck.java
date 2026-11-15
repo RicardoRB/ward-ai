@@ -17,14 +17,14 @@ import java.util.regex.Pattern;
  * literal as written; appends of other values count as nothing, and nested blocks are not searched.
  */
 public final class StringBufferCapacityCheck implements UnitCheck {
-
   /** The capacity of a StringBuilder or StringBuffer built with no argument. */
   static final int DEFAULT_CAPACITY = 16;
 
   private static final String BLOCK = "block";
   private static final Pattern DECLARATION =
       Pattern.compile(
-          "^(?:java\\.lang\\.)?(StringBuilder|StringBuffer)(\\w+)=new(?:java\\.lang\\.)?\\1\\(\\);$");
+          "^(?:java\\.lang\\.)?(StringBuilder|StringBuffer)(\\w+)=new(?:java\\.lang\\.)?\\1\\(\\);$"
+      );
   private static final String LITERAL_APPEND = "\\.append\\(\"((?:[^\"\\\\]|\\\\.)*)\"\\);$";
 
   private final String message;
@@ -48,8 +48,10 @@ public final class StringBufferCapacityCheck implements UnitCheck {
         final Matcher declaration = DECLARATION.matcher(SyntaxWalk.text(statements.get(index)));
         if (declaration.matches()
             && appendedLength(
-                    statements.subList(index + 1, statements.size()), declaration.group(2))
-                > DEFAULT_CAPACITY) {
+                statements.subList(index + 1, statements.size()),
+                declaration.group(2)
+            )
+            > DEFAULT_CAPACITY) {
           matches.add(CheckSupport.at(statements.get(index).span(), message));
         }
       }

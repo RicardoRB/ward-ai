@@ -10,7 +10,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class SwiftRedundantVoidReturnCheckTest {
-
   private static final int EXPECTED_COLUMN = 11;
 
   private static List<RuleMatch> run(final String source) {

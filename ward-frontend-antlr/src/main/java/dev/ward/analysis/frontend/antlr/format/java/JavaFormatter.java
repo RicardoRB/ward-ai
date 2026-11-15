@@ -18,7 +18,6 @@ import java.util.logging.Logger;
  * token and comment is written as it was, and {@code FormatSafety} checks that before any write.
  */
 public final class JavaFormatter implements SourceFormatter {
-
   private static final Logger LOG = Logger.getLogger(JavaFormatter.class.getName());
   private static final String LINE_WIDTH = "line-width";
   private static final String INDENT_STYLE = "indent-style";
@@ -45,9 +44,13 @@ public final class JavaFormatter implements SourceFormatter {
         new FormatOption(INDENT_STYLE, FormatOptionType.TEXT, SPACE, List.of(SPACE, TAB)),
         new FormatOption(INDENT_WIDTH, FormatOptionType.INTEGER, DEFAULT_INDENT, List.of()),
         new FormatOption(
-            CONTINUATION_INDENT_SIZE, FormatOptionType.INTEGER, DEFAULT_CONTINUATION, List.of()),
-        new FormatOption(
-            MAX_BLANK_LINES, FormatOptionType.INTEGER, DEFAULT_BLANK_LINES, List.of()));
+            CONTINUATION_INDENT_SIZE,
+            FormatOptionType.INTEGER,
+            DEFAULT_CONTINUATION,
+            List.of()
+        ),
+        new FormatOption(MAX_BLANK_LINES, FormatOptionType.INTEGER, DEFAULT_BLANK_LINES, List.of())
+    );
   }
 
   @Override
@@ -63,14 +66,16 @@ public final class JavaFormatter implements SourceFormatter {
             options.integer(LINE_WIDTH),
             indentStyle(options.get(INDENT_STYLE)),
             indent,
-            EndOfLine.LF);
+            EndOfLine.LF
+        );
     final int continuationLevels = options.integer(CONTINUATION_INDENT_SIZE) / indent;
     final JavaDocBuilder builder =
         new JavaDocBuilder(
             JavaAtom.of(parsed.tokens()),
             parsed.facts(),
             options.integer(MAX_BLANK_LINES),
-            continuationLevels);
+            continuationLevels
+        );
     final String printed = new DocPrinter(style).print(builder.build());
     return printed.equals(source)
         ? new FormatResult.Unchanged()

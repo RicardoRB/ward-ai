@@ -15,7 +15,6 @@ import java.util.Set;
  * assignment writes after its right side; a compound one and an increment read first.
  */
 final class NodeReferences {
-
   private static final String EQUALS = "=";
   private static final int PAIR = 2;
   private static final int TRIPLE = 3;
@@ -31,7 +30,10 @@ final class NodeReferences {
   private final NodePatternWrites patterns;
 
   NodeReferences(
-      final NodeScopes scopes, final NodeWalker walker, final NodeDeclarations declarations) {
+      final NodeScopes scopes,
+      final NodeWalker walker,
+      final NodeDeclarations declarations
+  ) {
     this.scopes = scopes;
     this.walker = walker;
     this.declarations = declarations;
@@ -57,7 +59,10 @@ final class NodeReferences {
 
   /** An operand with an increment or decrement reads and writes it; any other pair is plain. */
   private void unary(
-      final SyntaxNode node, final List<SyntaxNode> parts, final List<VariableAccess> found) {
+      final SyntaxNode node,
+      final List<SyntaxNode> parts,
+      final List<VariableAccess> found
+  ) {
     if (INCREMENTS.contains(NodeFlowSyntax.text(parts.get(1)))) {
       increment(parts.get(0), found);
     } else if (INCREMENTS.contains(NodeFlowSyntax.text(parts.get(0)))) {
@@ -97,7 +102,12 @@ final class NodeReferences {
       if (declaration != null && captured.add(declaration)) {
         found.add(
             new VariableAccess(
-                NodeFlowSyntax.text(name), AccessKind.CAPTURE, node.span(), declaration));
+                NodeFlowSyntax.text(name),
+                AccessKind.CAPTURE,
+                node.span(),
+                declaration
+            )
+        );
       }
     }
   }

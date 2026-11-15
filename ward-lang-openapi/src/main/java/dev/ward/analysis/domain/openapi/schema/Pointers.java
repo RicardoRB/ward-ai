@@ -5,7 +5,6 @@ import java.util.Optional;
 
 /** Reads a value of a document by JSON pointer. */
 public final class Pointers {
-
   private Pointers() {}
 
   /** The node at the pointer below {@code root}, or empty when a segment does not exist. */

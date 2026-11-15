@@ -27,7 +27,8 @@ class PythonLicenseMetadataTest {
         .lookup(
             project(root, Language.PYTHON, BuildTool.UV),
             "",
-            dependency(Ecosystem.PYPI, name, version));
+            dependency(Ecosystem.PYPI, name, version)
+        );
   }
 
   private void metadata(final String directory, final String headers) throws IOException {
@@ -39,7 +40,8 @@ class PythonLicenseMetadataTest {
     metadata(
         "requests-2.32.3.dist-info",
         "Name: requests\nVersion: 2.32.3\nLicense-Expression: Apache-2.0\nLicense: ignored\n"
-            + "Classifier: License :: OSI Approved :: MIT License");
+            + "Classifier: License :: OSI Approved :: MIT License"
+    );
 
     assertThat(lookup(null, "requests", "2.32.3").license().describe()).isEqualTo("Apache-2.0");
   }
@@ -58,7 +60,8 @@ class PythonLicenseMetadataTest {
         "Name: pkg\nVersion: 1.0\nLicense: Permission is hereby granted, free of charge, to any person"
             + " obtaining a copy of this software and associated documentation files\n"
             + "Classifier: Programming Language :: Python\n"
-            + "Classifier: License :: OSI Approved :: MIT License");
+            + "Classifier: License :: OSI Approved :: MIT License"
+    );
 
     assertThat(lookup(null, "pkg", VERSION).license().describe()).isEqualTo("MIT");
   }
@@ -68,7 +71,8 @@ class PythonLicenseMetadataTest {
     metadata(
         "pkg-1.0.dist-info",
         "Name: pkg\nVersion: 1.0\nClassifier: License :: OSI Approved :: MIT License\n"
-            + "Classifier: License :: OSI Approved :: Apache Software License");
+            + "Classifier: License :: OSI Approved :: Apache Software License"
+    );
 
     assertThat(lookup(null, "pkg", VERSION).license().entries()).hasSize(2);
   }

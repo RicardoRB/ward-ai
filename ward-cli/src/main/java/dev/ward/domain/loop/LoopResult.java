@@ -12,7 +12,11 @@ import java.util.List;
  * @param message a summary for the user
  */
 public record LoopResult(
-    LoopTerminalState state, int iterations, List<CheckReport> history, String message) {
+    LoopTerminalState state,
+    int iterations,
+    List<CheckReport> history,
+    String message
+) {
   /** Copies the history. */
   public LoopResult {
     history = List.copyOf(history);

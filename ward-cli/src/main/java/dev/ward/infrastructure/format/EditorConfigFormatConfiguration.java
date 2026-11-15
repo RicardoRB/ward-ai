@@ -20,7 +20,6 @@ import java.util.Optional;
  * part of the format configuration that touches the file system.
  */
 public final class EditorConfigFormatConfiguration implements FormatConfiguration {
-
   private static final char BYTE_ORDER_MARK = '﻿';
 
   private final Path projectRoot;
@@ -39,7 +38,8 @@ public final class EditorConfigFormatConfiguration implements FormatConfiguratio
   public FormatSettings resolve(
       final String relativePath,
       final AnalysisLanguage language,
-      final List<FormatOption> declared) {
+      final List<FormatOption> declared
+  ) {
     return EditorConfigSettings.resolve(relativePath, declared, applicableFiles(relativePath));
   }
 
@@ -96,7 +96,9 @@ public final class EditorConfigFormatConfiguration implements FormatConfiguratio
       return Optional.of(EditorConfigParser.parse(directory, body));
     } catch (final IOException exception) {
       throw new FormatConfigurationException(
-          "Could not read " + relative + " as UTF-8.", exception);
+          "Could not read " + relative + " as UTF-8.",
+          exception
+      );
     }
   }
 }

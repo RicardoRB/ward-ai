@@ -20,7 +20,6 @@ import org.antlr.v4.runtime.Token;
  * inside brackets, and every token, comment and backslash continuation is kept as written.
  */
 public final class PythonFormatter implements SourceFormatter {
-
   private static final String INDENT_WIDTH = "indent-width";
   private static final String INDENT_STYLE = "indent-style";
   private static final String LINE_WIDTH = "line-width";
@@ -45,7 +44,12 @@ public final class PythonFormatter implements SourceFormatter {
         new FormatOption(INDENT_STYLE, FormatOptionType.TEXT, SPACE, List.of(SPACE, TAB)),
         new FormatOption(LINE_WIDTH, FormatOptionType.INTEGER, DEFAULT_LINE_WIDTH, List.of()),
         new FormatOption(
-            MAX_BLANK_LINES, FormatOptionType.INTEGER, DEFAULT_MAX_BLANK_LINES, List.of()));
+            MAX_BLANK_LINES,
+            FormatOptionType.INTEGER,
+            DEFAULT_MAX_BLANK_LINES,
+            List.of()
+        )
+    );
   }
 
   @Override
@@ -64,12 +68,14 @@ public final class PythonFormatter implements SourceFormatter {
             options.integer(LINE_WIDTH),
             tabs ? IndentStyle.TAB : IndentStyle.SPACE,
             indentWidth,
-            EndOfLine.LF);
+            EndOfLine.LF
+        );
     final String indentUnit = tabs ? TAB_UNIT : " ".repeat(indentWidth);
     final List<PythonChunk> chunks =
         PythonBlankLines.apply(
             new PythonChunker(source, indentUnit, maxBlank).run(PythonEntries.of(source, tokens)),
-            maxBlank);
+            maxBlank
+        );
     final String formatted = render(chunks, new DocPrinter(style));
     return formatted.equals(source)
         ? new FormatResult.Unchanged()

@@ -15,7 +15,6 @@ import java.util.Set;
  * OverloadMethodsDeclarationOrder requires.
  */
 public final class KotlinOverloadOrderCheck implements UnitCheck {
-
   private static final String CLASS_BODY = "classBody";
   private static final String MEMBER = "classMemberDeclaration";
   private static final String FUNCTION = "functionDeclaration";

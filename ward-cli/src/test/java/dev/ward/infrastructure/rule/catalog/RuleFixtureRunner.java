@@ -35,7 +35,6 @@ import java.util.stream.Collectors;
  * the frontend is not thread-safe.
  */
 final class RuleFixtureRunner {
-
   private final List<FrontendSupport> frontends;
 
   /** Creates a runner whose frontends match the {@code ward} gate. */
@@ -50,7 +49,11 @@ final class RuleFixtureRunner {
    * resolver's (see {@link FixtureTypeFacts}).
    */
   List<AnalysisFinding> run(
-      final RuleDefinition rule, final String path, final String text, final TypeFacts typeFacts) {
+      final RuleDefinition rule,
+      final String path,
+      final String text,
+      final TypeFacts typeFacts
+  ) {
     return run(rule, path, text, typeFacts, FixtureProject.alone());
   }
 
@@ -63,11 +66,15 @@ final class RuleFixtureRunner {
       final String path,
       final String text,
       final TypeFacts typeFacts,
-      final FixtureProject project) {
+      final FixtureProject project
+  ) {
     final AnalysisLanguage language = rule.languages().iterator().next();
     if (DuplicateCodeRule.isDuplicateRule(rule)) {
       return DuplicateCodeFindings.findings(
-          List.of(rule), List.of(new SourceUnit(path, language, text)), frontends);
+          List.of(rule),
+          List.of(new SourceUnit(path, language, text)),
+          frontends
+      );
     }
     if (UnusedDefinitionFindings.isUnusedDefinitionRule(rule)) {
       return unusedDefinitions(rule, new SourceUnit(path, language, text));
@@ -83,7 +90,12 @@ final class RuleFixtureRunner {
     projectUnits.addAll(project.sources());
     all.addAll(
         engine.runProject(
-            projectUnits, frontendsFor(rule, typeFacts), List.of(rule), project.manifests()));
+            projectUnits,
+            frontendsFor(rule, typeFacts),
+            List.of(rule),
+            project.manifests()
+        )
+    );
     final Set<String> otherPaths =
         project.sources().stream().map(SourceUnit::path).collect(Collectors.toSet());
     return all.stream()
@@ -99,7 +111,9 @@ final class RuleFixtureRunner {
 
   /** A fixture is one file, so a definition is used when the file itself uses it. */
   private List<AnalysisFinding> unusedDefinitions(
-      final RuleDefinition rule, final SourceUnit unit) {
+      final RuleDefinition rule,
+      final SourceUnit unit
+  ) {
     final FrontendSupport support =
         frontends.stream()
             .filter(candidate -> candidate.language() == unit.language())

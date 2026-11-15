@@ -38,7 +38,8 @@ class TurborepoGatePlanTest {
             "--log-prefix=task",
             "--log-order=grouped",
             "--continue=always",
-            "--ui=stream");
+            "--ui=stream"
+        );
     assertThat(gates).doesNotContainKey("eslint");
   }
 
@@ -54,32 +55,41 @@ class TurborepoGatePlanTest {
         List.of(
             TurborepoFixtures.memberOf(root, TurborepoFixtures.WEB, Framework.NONE),
             TurborepoFixtures.memberOf(root, TurborepoFixtures.API, Framework.NONE),
-            TurborepoFixtures.memberOf(root, "apps/jobs", Framework.NONE));
+            TurborepoFixtures.memberOf(root, "apps/jobs", Framework.NONE)
+        );
     final Map<Path, PackageManifest> jest =
         Map.of(
             root.resolve(TurborepoFixtures.WEB),
-                new PackageManifest(Map.of("jest", "29.0.0"), null, null),
+            new PackageManifest(Map.of("jest", "29.0.0"), null, null),
             root.resolve(TurborepoFixtures.API),
-                new PackageManifest(Map.of("jest", "29.0.0"), null, null));
+            new PackageManifest(Map.of("jest", "29.0.0"), null, null)
+        );
 
     assertThat(
-            TurborepoPlan.testGate(
-                TurborepoFixtures.rootProject(root, BuildTool.PNPM),
-                TurborepoFixtures.inputs(root, members, jest)))
+        TurborepoPlan.testGate(
+            TurborepoFixtures.rootProject(root, BuildTool.PNPM),
+            TurborepoFixtures.inputs(root, members, jest)
+        )
+    )
         .isEqualTo("jest");
     assertThat(
-            TurborepoPlan.testGate(
-                TurborepoFixtures.rootProject(root, BuildTool.PNPM),
-                TurborepoFixtures.inputs(
-                    root,
-                    List.of(
-                        TurborepoFixtures.memberOf(root, TurborepoFixtures.WEB, Framework.NONE),
-                        TurborepoFixtures.memberOf(root, TurborepoFixtures.API, Framework.NONE)),
-                    Map.of(
-                        root.resolve(TurborepoFixtures.WEB),
-                        new PackageManifest(Map.of("jest", "29.0.0"), null, null),
-                        root.resolve(TurborepoFixtures.API),
-                        TurborepoFixtures.EMPTY))))
+        TurborepoPlan.testGate(
+            TurborepoFixtures.rootProject(root, BuildTool.PNPM),
+            TurborepoFixtures.inputs(
+                root,
+                List.of(
+                    TurborepoFixtures.memberOf(root, TurborepoFixtures.WEB, Framework.NONE),
+                    TurborepoFixtures.memberOf(root, TurborepoFixtures.API, Framework.NONE)
+                ),
+                Map.of(
+                    root.resolve(TurborepoFixtures.WEB),
+                    new PackageManifest(Map.of("jest", "29.0.0"), null, null),
+                    root.resolve(TurborepoFixtures.API),
+                    TurborepoFixtures.EMPTY
+                )
+            )
+        )
+    )
         .isEqualTo("vitest");
   }
 
@@ -92,7 +102,12 @@ class TurborepoGatePlanTest {
             TurborepoFixtures.rootProject(root, manager),
             QualityPreset.STANDARD,
             TurborepoFixtures.inputs(
-                root, List.of(web), Map.of(web.directory(), TYPESCRIPT), Set.of(web.directory())))
+                root,
+                List.of(web),
+                Map.of(web.directory(), TYPESCRIPT),
+                Set.of(web.directory())
+            )
+        )
         .analysis()
         .forEach(gate -> gates.put(gate.id(), gate));
     return gates;

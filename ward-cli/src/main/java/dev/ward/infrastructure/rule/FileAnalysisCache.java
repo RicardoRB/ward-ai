@@ -56,7 +56,11 @@ public final class FileAnalysisCache implements AnalysisCache {
   private static void move(final Path temporary, final Path file) throws IOException {
     try {
       Files.move(
-          temporary, file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+          temporary,
+          file,
+          StandardCopyOption.ATOMIC_MOVE,
+          StandardCopyOption.REPLACE_EXISTING
+      );
     } catch (final AtomicMoveNotSupportedException exception) {
       Files.move(temporary, file, StandardCopyOption.REPLACE_EXISTING);
     }

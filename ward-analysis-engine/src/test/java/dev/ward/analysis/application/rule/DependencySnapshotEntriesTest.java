@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 /** The snapshot keeps the entry files of its run, and has none when built without them. */
 class DependencySnapshotEntriesTest {
-
   @Test
   void theTwoArgumentFormHasNoEntries() {
     final DependencySnapshot snapshot =

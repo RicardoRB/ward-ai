@@ -21,13 +21,15 @@ final class PomModulePlacement {
       final Tool tool,
       final QualityPreset preset,
       final PomToolVersions versions,
-      final PomEdit aggregator) {
+      final PomEdit aggregator
+  ) {
     if (PomXml.hasProjectPlugin(aggregator.content, tool.artifact())) {
       aggregator.warnings.add(
           tool.artifact()
               + " is declared in the aggregator's build/plugins, so "
               + tool.gate()
-              + " is not placed in modules.");
+              + " is not placed in modules."
+      );
       return;
     }
     final CompatibilityFinding finding = versions.plugin(tool);

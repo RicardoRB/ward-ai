@@ -36,15 +36,23 @@ public final class UnrelatedArgumentCheck implements RuleCheck {
           "java.lang.Comparable",
           "java.io.Serializable",
           "java.lang.constant.Constable",
-          "java.lang.constant.ConstantDesc");
+          "java.lang.constant.ConstantDesc"
+      );
   private static final Map<String, String> BOXES =
       Map.of(
-          "int", "java.lang.Integer",
-          "long", "java.lang.Long",
-          "short", "java.lang.Short",
-          "byte", "java.lang.Byte",
-          "double", "java.lang.Double",
-          "float", "java.lang.Float");
+          "int",
+          "java.lang.Integer",
+          "long",
+          "java.lang.Long",
+          "short",
+          "java.lang.Short",
+          "byte",
+          "java.lang.Byte",
+          "double",
+          "java.lang.Double",
+          "float",
+          "java.lang.Float"
+      );
   private static final FactNeed NEED =
       new FactNeed(Set.of(EXPRESSION), Set.of(FactKind.TYPE, FactKind.SHAPE, FactKind.MEMBERS));
 
@@ -75,7 +83,8 @@ public final class UnrelatedArgumentCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(EXPRESSION)).stream()
         .map(SyntaxWalk.Visit::node)
         .filter(call -> unrelated(call, types))
@@ -104,7 +113,10 @@ public final class UnrelatedArgumentCheck implements RuleCheck {
 
   /** Returns whether the argument can never be equal to a value of the element type. */
   static boolean excludes(
-      final TypeRef element, final SyntaxNode argument, final UnitTypeFacts types) {
+      final TypeRef element,
+      final SyntaxNode argument,
+      final UnitTypeFacts types
+  ) {
     final Optional<TypeRef> type = types.typeOf(argument.span());
     if (type.isEmpty() || type.get().arrayDepth() > 0 || !element.name().contains(".")) {
       return false;

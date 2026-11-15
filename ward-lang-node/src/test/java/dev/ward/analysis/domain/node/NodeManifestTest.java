@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 /** The package.json reader: key positions and the keys dead-code rules read. */
 final class NodeManifestTest {
-
   private static final int MAIN_LINE = 3;
   private static final int MAIN_COLUMN = 3;
   private static final int REACT_LINE = 6;

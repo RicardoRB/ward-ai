@@ -27,11 +27,15 @@ class SarifPrerequisiteReportTest {
   private JsonTree render(final GateResult... results) {
     return JsonTree.parse(
         new SarifReportRenderer(new ForyJsonCodec())
-            .render(new CheckReport(project, List.of(results))));
+            .render(new CheckReport(project, List.of(results)))
+    );
   }
 
   private static GateResult withPrerequisite(
-      final String name, final GatePrerequisite prerequisite, final String summary) {
+      final String name,
+      final GatePrerequisite prerequisite,
+      final String summary
+  ) {
     return GateResult.builder(name, GateStatus.UNAVAILABLE)
         .command(List.of("x"))
         .exitCode(-1)
@@ -47,15 +51,18 @@ class SarifPrerequisiteReportTest {
   void missingToolIsFailedInvocationWithoutResults() {
     final JsonTree run =
         render(
-                withPrerequisite(
+            withPrerequisite(
+                "custom-lint",
+                new GatePrerequisite(
+                    GatePrerequisite.Kind.EXECUTABLE,
                     "custom-lint",
-                    new GatePrerequisite(
-                        GatePrerequisite.Kind.EXECUTABLE,
-                        "custom-lint",
-                        null,
-                        null,
-                        "Install custom-lint: https://lint.example"),
-                    "Gate 'custom-lint' could not start 'custom-lint'. Install custom-lint: https://lint.example"))
+                    null,
+                    null,
+                    "Install custom-lint: https://lint.example"
+                ),
+                "Gate 'custom-lint' could not start 'custom-lint'. Install custom-lint: https://lint.example"
+            )
+        )
             .get(RUNS)
             .get(0);
 
@@ -71,11 +78,18 @@ class SarifPrerequisiteReportTest {
   void oldJdkIsFailedInvocationNamingBothVersions() {
     final JsonTree run =
         render(
-                withPrerequisite(
-                    "compile",
-                    new GatePrerequisite(
-                        GatePrerequisite.Kind.RUNTIME, null, "25", "17", "Run on JDK 25."),
-                    "Gate 'compile' needs Java 25 but the build runs on Java 17. Run on JDK 25."))
+            withPrerequisite(
+                "compile",
+                new GatePrerequisite(
+                    GatePrerequisite.Kind.RUNTIME,
+                    null,
+                    "25",
+                    "17",
+                    "Run on JDK 25."
+                ),
+                "Gate 'compile' needs Java 25 but the build runs on Java 17. Run on JDK 25."
+            )
+        )
             .get(RUNS)
             .get(0);
 

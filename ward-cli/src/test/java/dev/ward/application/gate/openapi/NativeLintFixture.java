@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Optional;
 
 final class NativeLintFixture {
-
   static final String SPEC = "api/openapi.yaml";
   static final String CLEAN =
       "openapi: 3.0.3\npaths:\n  /pets:\n    get:\n      operationId: listPets\n";
@@ -78,7 +77,8 @@ final class NativeLintFixture {
             new JsonAnalysisResultCodec(new ForyJsonCodec()),
             "test",
             DependencyAdapters.none(),
-            (unused, classpath) -> Map.of());
+            (unused, classpath) -> Map.of()
+        );
     return new OpenApiNativeLintGate(GATE, SPEC, null, ports, new FileSystemProjectFiles())
         .execute(new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.SPRING_BOOT));
   }

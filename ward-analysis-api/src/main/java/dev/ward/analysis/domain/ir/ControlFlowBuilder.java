@@ -11,7 +11,6 @@ import java.util.Objects;
  * stack of enclosing frames.
  */
 public final class ControlFlowBuilder {
-
   /** The index of the entry block. */
   public static final int ENTRY = 0;
 
@@ -153,7 +152,12 @@ public final class ControlFlowBuilder {
   public ControlFlowGraph build(final String body, final Span span) {
     edge(current, EXIT, FlowEdgeKind.NORMAL);
     return new ControlFlowGraph(
-        body, span, ControlFlowCompaction.compact(nodes, edges, accesses, sites), ENTRY, EXIT);
+        body,
+        span,
+        ControlFlowCompaction.compact(nodes, edges, accesses, sites),
+        ENTRY,
+        EXIT
+    );
   }
 
   /**

@@ -47,13 +47,17 @@ final class EditorConfigTemplate {
    * that appears before the write blocks it.
    */
   static Optional<OwnedSection> section(
-      final Project project, final List<InitGateOption> gates, final Optional<String> existing) {
+      final Project project,
+      final List<InitGateOption> gates,
+      final Optional<String> existing
+  ) {
     if (existing.isPresent()
         || gates.stream().noneMatch(gate -> FormatGates.WARD_FORMAT.equals(gate.id()))) {
       return Optional.empty();
     }
     return Optional.of(
-        new OwnedSection(path(project), BEGIN, END, body(project.languages()), true));
+        new OwnedSection(path(project), BEGIN, END, body(project.languages()), true)
+    );
   }
 
   /** Returns the text between the markers: the root flag, the shared defaults, then the groups. */
@@ -102,7 +106,8 @@ final class EditorConfigTemplate {
       final StringBuilder body,
       final List<String> extensions,
       final Set<String> group,
-      final String setting) {
+      final String setting
+  ) {
     final List<String> present =
         extensions.stream().filter(group::contains).collect(Collectors.toList());
     if (present.isEmpty()) {

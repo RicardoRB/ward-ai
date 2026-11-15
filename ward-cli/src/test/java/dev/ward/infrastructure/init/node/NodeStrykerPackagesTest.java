@@ -70,7 +70,9 @@ class NodeStrykerPackagesTest {
   void nodeTwentyIsIncompatibleWithStryker() {
     final PlannedFileChange plan =
         new NodeBuildToolConfigurator(
-                new FileSystemPackageManifests(), new FakeCommandExecutor(0, "", ""))
+            new FileSystemPackageManifests(),
+            new FakeCommandExecutor(0, "", "")
+        )
             .plan(project("20"), gates("bun-test", "stryker"), QualityPreset.STRICT, false);
 
     assertThat(plan.action()).isEqualTo(PlannedFileChange.Action.CONFLICT);
@@ -85,7 +87,9 @@ class NodeStrykerPackagesTest {
   void nodeTwentyFourAddsStryker() {
     final PlannedFileChange plan =
         new NodeBuildToolConfigurator(
-                new FileSystemPackageManifests(), new FakeCommandExecutor(0, "", ""))
+            new FileSystemPackageManifests(),
+            new FakeCommandExecutor(0, "", "")
+        )
             .plan(project("24"), gates("bun-test", "stryker"), QualityPreset.STRICT, false);
 
     assertThat(plan.action()).isEqualTo(PlannedFileChange.Action.MODIFY);
@@ -103,7 +107,8 @@ class NodeStrykerPackagesTest {
         Set.of(),
         node,
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 
   private static List<InitGateOption> gates(final String... ids) {

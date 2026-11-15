@@ -5,7 +5,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 
 /** Lowers {@code return}, {@code throw}, {@code break} and {@code continue} of a Kotlin body. */
 final class KotlinJumpLowering {
-
   private static final String EXPRESSION = "expression";
   private static final String RETURN = "return";
   private static final String AT = "@";

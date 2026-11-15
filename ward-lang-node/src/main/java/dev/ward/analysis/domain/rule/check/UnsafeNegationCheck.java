@@ -16,7 +16,6 @@ import java.util.Set;
  * in} and {@code instanceof} one level deeper than the JavaScript grammar, so both shapes are read.
  */
 public final class UnsafeNegationCheck implements RuleCheck {
-
   private static final String SINGLE = "singleExpression";
   private static final String NOT = "'!'";
   private static final String IDENTIFIER = "identifierName";
@@ -61,7 +60,11 @@ public final class UnsafeNegationCheck implements RuleCheck {
               op ->
                   matches.add(
                       new RuleMatch(
-                          node.span(), message.replace(VALUE, op.substring(1, op.length() - 1)))));
+                          node.span(),
+                          message.replace(VALUE, op.substring(1, op.length() - 1))
+                      )
+                  )
+          );
     }
     for (final SyntaxNode child : node.children()) {
       collect(child, matches);

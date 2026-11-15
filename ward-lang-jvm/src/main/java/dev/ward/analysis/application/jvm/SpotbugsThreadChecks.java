@@ -13,7 +13,6 @@ import java.util.Map;
 
 /** The checks of the SpotBugs thread-safety ports for Java, which read field access and locks. */
 final class SpotbugsThreadChecks {
-
   private static final String MESSAGE = "message";
   private static final String MODE = "mode";
 
@@ -27,16 +26,22 @@ final class SpotbugsThreadChecks {
             toml ->
                 new JavaSharedVariableCheck(
                     JavaSharedVariableCheck.Mode.valueOf(upper(TomlValues.required(toml, MODE))),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE)
+                )
+        ),
         entry(
             "concurrent-sequence",
-            toml -> new JavaConcurrentSequenceCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavaConcurrentSequenceCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "privileged-parameter-call",
-            toml -> new JavaPrivilegedParameterCheck(TomlValues.required(toml, MESSAGE))),
+            toml -> new JavaPrivilegedParameterCheck(TomlValues.required(toml, MESSAGE))
+        ),
         entry(
             "thread-resource",
-            toml -> new JavaThreadResourceCheck(TomlValues.required(toml, MESSAGE))));
+            toml -> new JavaThreadResourceCheck(TomlValues.required(toml, MESSAGE))
+        )
+    );
   }
 
   private static String upper(final String value) {

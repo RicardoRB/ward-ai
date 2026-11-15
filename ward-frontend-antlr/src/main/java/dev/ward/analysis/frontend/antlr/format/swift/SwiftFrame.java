@@ -8,7 +8,6 @@ import java.util.List;
  * One open region while the document is built: a block, a case body, a bracket list or the root.
  */
 final class SwiftFrame {
-
   /** Marks a frame that has no closing token. */
   static final int NO_CLOSE = -1;
 
@@ -32,7 +31,11 @@ final class SwiftFrame {
   private boolean labelOpen;
 
   private SwiftFrame(
-      final Kind kind, final int closeIndex, final String openText, final String closeText) {
+      final Kind kind,
+      final int closeIndex,
+      final String openText,
+      final String closeText
+  ) {
     this.kind = kind;
     this.closeIndex = closeIndex;
     this.openText = openText;
@@ -122,7 +125,9 @@ final class SwiftFrame {
                   Document.text(openText),
                   Document.indent(body()),
                   Document.softLine(),
-                  Document.text(closeText)));
+                  Document.text(closeText)
+              )
+          );
       case SWITCH -> body();
       default -> Document.indent(body());
     };

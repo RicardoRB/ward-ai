@@ -26,7 +26,6 @@ import java.util.SortedMap;
  * barrel; upgrade by following export-from chains.
  */
 public final class NodeUnusedMemberCheck implements RuleCheck, ProjectCheck {
-
   private static final String VALUE = "{value}";
 
   private final String message;
@@ -55,7 +54,10 @@ public final class NodeUnusedMemberCheck implements RuleCheck, ProjectCheck {
 
   @Override
   public List<ProjectMatch> project(
-      final SortedMap<String, SyntaxNode> trees, final ProjectFiles files) {
+      final SortedMap<String,
+      SyntaxNode> trees,
+      final ProjectFiles files
+  ) {
     final NodeModuleResolver resolver =
         new NodeModuleResolver(new NodeProjectLayout(trees.keySet(), List.of(), List.of()));
     final List<ProjectMatch> found = new ArrayList<>();
@@ -64,7 +66,8 @@ public final class NodeUnusedMemberCheck implements RuleCheck, ProjectCheck {
           for (final String name : declaredNames(tree)) {
             found.addAll(unusedMembers(path, name, trees, resolver));
           }
-        });
+        }
+    );
     return List.copyOf(found);
   }
 
@@ -83,8 +86,10 @@ public final class NodeUnusedMemberCheck implements RuleCheck, ProjectCheck {
   private List<ProjectMatch> unusedMembers(
       final String path,
       final String name,
-      final SortedMap<String, SyntaxNode> trees,
-      final NodeModuleResolver resolver) {
+      final SortedMap<String,
+      SyntaxNode> trees,
+      final NodeModuleResolver resolver
+  ) {
     final MemberUsage usage = NodeMemberUses.of(path, name, trees, resolver);
     final List<ProjectMatch> found = new ArrayList<>();
     if (!usage.escaped()) {

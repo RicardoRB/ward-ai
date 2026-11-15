@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the type-only import check on parsed TypeScript with the scopes of each unit. */
 class NodeTypeOnlyImportCheckTest {
-
   @Test
   void importUsedOnlyInATypeAnnotationIsReported() {
     assertThat(run("import { Shape } from './shape';\nexport function f(s: Shape) { return s; }\n"))
@@ -27,15 +26,16 @@ class NodeTypeOnlyImportCheckTest {
   @Test
   void importUsedAsATypeArgumentIsReported() {
     assertThat(
-            run(
-                "import { Shape } from './shape';\nexport function g(): Array<Shape> { return []; }\n"))
+        run("import { Shape } from './shape';\nexport function g(): Array<Shape> { return []; }\n")
+    )
         .hasSize(1);
   }
 
   @Test
   void importUsedInAnImplementsClauseIsReported() {
     assertThat(
-            run("import { Shape } from './shape';\nexport class C implements Shape { x = 1; }\n"))
+        run("import { Shape } from './shape';\nexport class C implements Shape { x = 1; }\n")
+    )
         .hasSize(1);
   }
 
@@ -43,7 +43,8 @@ class NodeTypeOnlyImportCheckTest {
   void mixedDeclarationIsReportedOnceNamingItsTypeOnlyBindings() {
     final List<RuleMatch> found =
         run(
-            "import { A, C, b } from './m';\nexport function f(x: A, y: C): number { return b(x, y); }\n");
+            "import { A, C, b } from './m';\nexport function f(x: A, y: C): number { return b(x, y); }\n"
+        );
 
     assertThat(found).hasSize(1);
     assertThat(found.get(0).message()).isEqualTo("partial \"A\" and \"C\"");

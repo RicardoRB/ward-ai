@@ -8,7 +8,6 @@ import java.util.List;
  */
 @FunctionalInterface
 public interface FlowSites {
-
   /** Finds no sites. */
   FlowSites NONE = node -> List.of();
 

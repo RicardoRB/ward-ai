@@ -14,7 +14,6 @@ import java.util.Optional;
  * file is in the longest listed module that is a directory above it.
  */
 public final class IndependenceRule implements GraphRule {
-
   /** The id of the rule, the same in every language. */
   public static final String ID = "ward:architecture/independence";
 
@@ -48,7 +47,9 @@ public final class IndependenceRule implements GraphRule {
   }
 
   private static Optional<GraphMatch> violation(
-      final DependencyEdge edge, final List<String> modules) {
+      final DependencyEdge edge,
+      final List<String> modules
+  ) {
     final Optional<String> from = moduleOf(edge.from(), modules);
     final Optional<String> to = moduleOf(edge.to(), modules);
     if (from.isEmpty() || to.isEmpty() || from.equals(to)) {
@@ -57,8 +58,9 @@ public final class IndependenceRule implements GraphRule {
     return Optional.of(
         new GraphMatch(
             edge.from(),
-            new RuleMatch(
-                edge.reference().span(), from.get() + " must not depend on " + to.get())));
+            new RuleMatch(edge.reference().span(), from.get() + " must not depend on " + to.get())
+        )
+    );
   }
 
   /** The longest module that is a directory above {@code path}, or empty when none is. */

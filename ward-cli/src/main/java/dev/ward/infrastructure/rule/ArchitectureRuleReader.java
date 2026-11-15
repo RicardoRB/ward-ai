@@ -57,7 +57,10 @@ final class ArchitectureRuleReader {
   }
 
   private Optional<ArchitectureRule> rule(
-      final TomlTable table, final int index, final Set<String> names) {
+      final TomlTable table,
+      final int index,
+      final Set<String> names
+  ) {
     final int before = problems.count();
     final String named = table.isString(NAME) ? table.getString(NAME) : null;
     final String label = named == null ? "#" + (index + 1) : named;
@@ -112,7 +115,8 @@ final class ArchitectureRuleReader {
               : kinds.stream().map(ArchitectureConstraint.Kind::key).toList().toString(),
           kinds.isEmpty()
               ? "expected one of " + keys()
-              : "a rule has exactly one constraint, got " + kinds.size());
+              : "a rule has exactly one constraint, got " + kinds.size()
+      );
       return null;
     }
     final ArchitectureConstraint.Kind kind = kinds.getFirst();

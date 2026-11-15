@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks which file each Python import form resolves to, on a src layout and a uv workspace. */
 final class PythonImportResolutionTest {
-
   private static final PythonProjectLayout SRC = new PythonProjectLayout(List.of("src/"));
 
   @Test
@@ -22,7 +21,8 @@ final class PythonImportResolutionTest {
             file("src/shop/__init__.py"),
             file("src/shop/repository/__init__.py"),
             file("src/shop/repository/store.py"),
-            file("src/shop/app.py", "from:0:shop.repository:store"));
+            file("src/shop/app.py", "from:0:shop.repository:store")
+        );
 
     assertThat(targets(edges)).containsExactly("src/shop/repository/store.py");
   }
@@ -33,7 +33,8 @@ final class PythonImportResolutionTest {
         resolve(
             SRC,
             file("src/shop/repository/__init__.py"),
-            file("src/shop/app.py", "from:0:shop.repository:Store"));
+            file("src/shop/app.py", "from:0:shop.repository:Store")
+        );
 
     assertThat(targets(edges)).containsExactly("src/shop/repository/__init__.py");
   }
@@ -44,7 +45,8 @@ final class PythonImportResolutionTest {
         resolve(
             SRC,
             file("src/shop/repository/store.py"),
-            file("src/shop/app.py", "abs:shop.repository.store"));
+            file("src/shop/app.py", "abs:shop.repository.store")
+        );
 
     assertThat(targets(edges)).containsExactly("src/shop/repository/store.py");
   }
@@ -63,7 +65,8 @@ final class PythonImportResolutionTest {
         resolve(
             SRC,
             file("src/shop/controller/views.py"),
-            file("src/shop/controller/clean.py", "from:1::views"));
+            file("src/shop/controller/clean.py", "from:1::views")
+        );
 
     assertThat(targets(edges)).containsExactly("src/shop/controller/views.py");
   }
@@ -74,7 +77,8 @@ final class PythonImportResolutionTest {
         resolve(
             SRC,
             file("src/shop/repository/store.py"),
-            file("src/shop/controller/clean.py", "from:2:repository.store:Store"));
+            file("src/shop/controller/clean.py", "from:2:repository.store:Store")
+        );
 
     assertThat(targets(edges)).containsExactly("src/shop/repository/store.py");
   }
@@ -94,7 +98,8 @@ final class PythonImportResolutionTest {
             SRC,
             file("src/shop/price/__init__.py"),
             file("src/shop/price.py"),
-            file("src/shop/app.py", "abs:shop.price"));
+            file("src/shop/app.py", "abs:shop.price")
+        );
 
     assertThat(targets(edges)).containsExactly("src/shop/price/__init__.py");
   }
@@ -107,7 +112,8 @@ final class PythonImportResolutionTest {
         resolve(
             workspace,
             file("packages/billing/src/billing/invoice.py"),
-            file("packages/shop/src/shop/checkout.py", "abs:billing.invoice"));
+            file("packages/shop/src/shop/checkout.py", "abs:billing.invoice")
+        );
 
     assertThat(targets(edges)).containsExactly("packages/billing/src/billing/invoice.py");
   }

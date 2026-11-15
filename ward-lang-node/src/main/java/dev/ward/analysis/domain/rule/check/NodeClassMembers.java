@@ -9,7 +9,6 @@ import java.util.Set;
 
 /** The class members of the tree that the hidden-field check compares with local bindings. */
 final class NodeClassMembers {
-
   private static final String CLASS_TAIL = "classTail";
   private static final String ELEMENT = "classElement";
   private static final String CALL_SIGNATURE = "callSignature";
@@ -50,13 +49,14 @@ final class NodeClassMembers {
 
   static boolean isConstructor(final SyntaxNode element) {
     return NodeSyntax.code(element).stream()
-            .anyMatch(part -> "constructorDeclaration".equals(part.kind()))
+        .anyMatch(part -> "constructorDeclaration".equals(part.kind()))
         || NodeSyntax.code(element).stream()
-            .anyMatch(
-                part ->
-                    "methodDefinition".equals(part.kind())
-                        && "constructor"
-                            .equals(NodeSyntax.leaves(part).stream().findFirst().orElse("")));
+        .anyMatch(
+            part ->
+                "methodDefinition".equals(part.kind())
+                    && "constructor"
+                        .equals(NodeSyntax.leaves(part).stream().findFirst().orElse(""))
+        );
   }
 
   /** The parameter nodes of a function or constructor element: children of its parameter list. */

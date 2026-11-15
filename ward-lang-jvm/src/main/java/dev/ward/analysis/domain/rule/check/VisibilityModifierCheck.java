@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * pattern or carry an ignored annotation.
  */
 public final class VisibilityModifierCheck implements RuleCheck {
-
   private static final String CLASS = "classDeclaration";
   private static final String FIELD = "fieldDeclaration";
   private static final String PUBLIC = "public";
@@ -108,8 +107,8 @@ public final class VisibilityModifierCheck implements RuleCheck {
       boolean protectedAllowed,
       Pattern publicMemberPattern,
       Set<String> ignoredAnnotations,
-      Set<String> immutableTypes) {
-
+      Set<String> immutableTypes
+  ) {
     /**
      * Copies the sets and checks the pattern.
      *

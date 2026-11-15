@@ -37,7 +37,8 @@ class TypeRuleChecksTest {
           Set.of(AnalysisLanguage.JAVA),
           RuleCapability.TYPES,
           AnalysisSeverity.ERROR,
-          "body");
+          "body"
+      );
 
   /** Reports each call whose type is known to be String, and asks for it. */
   private static final class StringCalls implements RuleCheck {
@@ -57,7 +58,8 @@ class TypeRuleChecksTest {
         final dev.ward.analysis.domain.rule.FlowView flow,
         final dev.ward.analysis.domain.rule.ScopeView scopes,
         final UnitTypeFacts types,
-        final SourceUnit unit) {
+        final SourceUnit unit
+    ) {
       return types.typeOf(CALL).map(type -> new RuleMatch(CALL, type.name())).stream().toList();
     }
   }
@@ -80,7 +82,10 @@ class TypeRuleChecksTest {
                       List.of(),
                       List.of(),
                       null,
-                      null)));
+                      null
+                  )
+              )
+          );
         };
 
     final RuleRunResult result = run(new TypeFactsRun(Map.of(AnalysisLanguage.JAVA, resolver)));
@@ -130,14 +135,18 @@ class TypeRuleChecksTest {
             "file",
             new Span(1, 1, 1, 5, 0, 4),
             Map.of(),
-            List.of(new SyntaxNode("call", CALL, Map.of(), List.of())));
+            List.of(new SyntaxNode("call", CALL, Map.of(), List.of()))
+        );
     final List<FrontendSupport> frontends =
         types.withTypes(
             List.of(
                 new FrontendSupport(
                     AnalysisLanguage.JAVA,
                     unit -> new ParseResult(root, List.of()),
-                    Set.of(RuleCapability.SYNTAX))));
+                    Set.of(RuleCapability.SYNTAX)
+                )
+            )
+        );
     return new RuleEngine(definition -> new CheckedRule(definition, new StringCalls()))
         .run(List.of(UNIT), frontends, List.of(RULE));
   }

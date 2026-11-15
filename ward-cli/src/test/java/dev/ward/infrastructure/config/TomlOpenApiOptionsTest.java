@@ -27,7 +27,8 @@ class TomlOpenApiOptionsTest {
             "version = 2\n[checks.openapi-lint]\nuses = \"openapi-lint\"\n"
                 + "spec = \""
                 + SPEC
-                + "\"\n");
+                + "\"\n"
+        );
 
     assertThat(configuration.checks().get("openapi-lint").openApi())
         .isEqualTo(new OpenApiGateOptions(SPEC, "origin/main"));
@@ -36,12 +37,14 @@ class TomlOpenApiOptionsTest {
   @Test
   void rejectsACommandOnTheLintGate() {
     assertThatThrownBy(
-            () ->
-                read(
-                    reader,
-                    dir,
-                    "version = 2\n[checks.openapi-lint]\nuses = \"openapi-lint\"\n"
-                        + "command = \"anything\"\nspec = \"openapi.yml\"\n"))
+        () ->
+            read(
+                reader,
+                dir,
+                "version = 2\n[checks.openapi-lint]\nuses = \"openapi-lint\"\n"
+                    + "command = \"anything\"\nspec = \"openapi.yml\"\n"
+            )
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("checks.openapi-lint.command")
         .hasMessageContaining("not allowed");
@@ -53,7 +56,8 @@ class TomlOpenApiOptionsTest {
         read(
             reader,
             dir,
-            "version = 2\n[checks.openapi-compat]\nuses = \"openapi-compat\"\nspec = \"openapi.yaml\"\nbase = \"upstream/develop\"\n");
+            "version = 2\n[checks.openapi-compat]\nuses = \"openapi-compat\"\nspec = \"openapi.yaml\"\nbase = \"upstream/develop\"\n"
+        );
 
     assertThat(configuration.checks().get("openapi-compat").openApi().base())
         .isEqualTo("upstream/develop");
@@ -62,8 +66,9 @@ class TomlOpenApiOptionsTest {
   @Test
   void rejectsEnabledOpenApiGateWithoutSpec() {
     assertThatThrownBy(
-            () ->
-                read(reader, dir, "version = 2\n[checks.openapi-diff]\nuses = \"openapi-diff\"\n"))
+        () ->
+            read(reader, dir, "version = 2\n[checks.openapi-diff]\nuses = \"openapi-diff\"\n")
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("checks.openapi-diff.spec");
   }
@@ -74,7 +79,8 @@ class TomlOpenApiOptionsTest {
         read(
             reader,
             dir,
-            "version = 2\n[checks.openapi-diff]\nuses = \"openapi-diff\"\nenabled = false\n");
+            "version = 2\n[checks.openapi-diff]\nuses = \"openapi-diff\"\nenabled = false\n"
+        );
 
     assertThat(configuration.checks().get("openapi-diff").openApi()).isNull();
   }
@@ -82,21 +88,25 @@ class TomlOpenApiOptionsTest {
   @Test
   void rejectsNonStringOptions() {
     assertThatThrownBy(
-            () ->
-                read(
-                    reader,
-                    dir,
-                    "version = 2\n[checks.openapi-lint]\nuses = \"openapi-lint\"\nspec = 5\n"))
+        () ->
+            read(
+                reader,
+                dir,
+                "version = 2\n[checks.openapi-lint]\nuses = \"openapi-lint\"\nspec = 5\n"
+            )
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("checks.openapi-lint.spec")
         .hasMessageContaining("non-blank string");
     assertThatThrownBy(
-            () ->
-                read(
-                    reader,
-                    dir,
-                    "version = 2\n[checks.openapi-compat]\nuses = \"openapi-compat\"\n"
-                        + "spec = \"openapi.yml\"\nbase = \" \"\n"))
+        () ->
+            read(
+                reader,
+                dir,
+                "version = 2\n[checks.openapi-compat]\nuses = \"openapi-compat\"\n"
+                    + "spec = \"openapi.yml\"\nbase = \" \"\n"
+            )
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("checks.openapi-compat.base");
   }

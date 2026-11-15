@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks the variable accesses that the Java lowering records on each block. */
 class JavaVariableAccessTest {
-
   @Test
   void selfAssignmentReadsBeforeItWrites() {
     final String source = "class A { void f() { int x = 0; x = x + 1; } }";
@@ -32,7 +31,8 @@ class JavaVariableAccessTest {
             "READ p",
             "WRITE x",
             "READ x",
-            "WRITE x");
+            "WRITE x"
+        );
   }
 
   @Test

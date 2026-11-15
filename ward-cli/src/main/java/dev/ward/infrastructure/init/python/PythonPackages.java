@@ -61,7 +61,9 @@ final class PythonPackages {
             () ->
                 new WardException(
                     "The architecture tables need the project's root package, and init finds none:"
-                        + " keep one package under src/ or set [project] name to it."));
+                        + " keep one package under src/ or set [project] name to it."
+                )
+        );
   }
 
   /** Returns the Django apps: the top-level packages that define an {@code apps.py}. */
@@ -77,7 +79,10 @@ final class PythonPackages {
    * is a feature that strict keeps independent. Sorted, so the config is stable.
    */
   static List<String> features(
-      final Project project, final String rootPackage, final Set<String> layers) {
+      final Project project,
+      final String rootPackage,
+      final Set<String> layers
+  ) {
     final Path base = packageDirectory(project.root(), rootPackage);
     return packages(base).stream()
         .filter(name -> !layers.contains(name) && !NOT_ROOT.contains(name))

@@ -27,7 +27,8 @@ public final class ProjectDetector {
     final Optional<Project> result = inspection.detect(start);
     LOGGER.log(
         Level.INFO,
-        () -> "event=project-detection status=" + (result.isPresent() ? "found" : "not-found"));
+        () -> "event=project-detection status=" + (result.isPresent() ? "found" : "not-found")
+    );
     return result;
   }
 

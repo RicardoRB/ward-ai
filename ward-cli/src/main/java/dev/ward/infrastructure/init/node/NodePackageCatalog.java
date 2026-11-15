@@ -26,9 +26,13 @@ public final class NodePackageCatalog {
    */
   static final Map<String, String> CHECKER_SUPPORTED =
       Map.of(
-          "vue-tsc", ">=3.3.12 <4.0.0",
-          "svelte-check", ">=4.7.6 <5.0.0",
-          "@astrojs/check", ">=0.9.10 <1.0.0");
+          "vue-tsc",
+          ">=3.3.12 <4.0.0",
+          "svelte-check",
+          ">=4.7.6 <5.0.0",
+          "@astrojs/check",
+          ">=0.9.10 <1.0.0"
+      );
 
   static final String ANGULAR_CORE = "@angular/core";
   static final String NG_TEST = "ng-test";
@@ -61,7 +65,8 @@ public final class NodePackageCatalog {
           // Vitest 5, so every strict run scored 0. 10.1.1 supports Vitest 4 and 5.
           entry(new Package(STRYKER_CORE, STRYKER_VERSION, STRYKER_NODE, null)),
           entry(new Package(STRYKER_RUNNERS.get("vitest"), STRYKER_VERSION, STRYKER_NODE, null)),
-          entry(new Package(STRYKER_RUNNERS.get("jest"), STRYKER_VERSION, STRYKER_NODE, null)));
+          entry(new Package(STRYKER_RUNNERS.get("jest"), STRYKER_VERSION, STRYKER_NODE, null))
+      );
 
   private static final Map<String, List<String>> GATES =
       Map.ofEntries(
@@ -73,7 +78,8 @@ public final class NodePackageCatalog {
           Map.entry(STRYKER, List.of(STRYKER_CORE)),
           Map.entry("vue-tsc", List.of("vue-tsc", TYPESCRIPT)),
           Map.entry("svelte-check", List.of("svelte-check", TYPESCRIPT)),
-          Map.entry("astro-check", List.of("@astrojs/check", TYPESCRIPT)));
+          Map.entry("astro-check", List.of("@astrojs/check", TYPESCRIPT))
+      );
 
   /**
    * One pinned package.
@@ -129,7 +135,8 @@ public final class NodePackageCatalog {
   static List<Package> missing(
       final List<InitGateOption> gates,
       final PackageManifest manifest,
-      final Optional<String> runnerPackage) {
+      final Optional<String> runnerPackage
+  ) {
     final Set<String> names = new LinkedHashSet<>();
     runnerPackage.ifPresent(names::add);
     gates.forEach(gate -> names.addAll(packages(gate.id())));

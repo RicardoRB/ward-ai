@@ -27,7 +27,10 @@ abstract class DependencyBindingsModule {
 
   @Provides
   static Map<BuildTool, DependencySource> dependencySources(
-      final CommandExecutor executor, final GraphCache cache, final JsonCodec codec) {
+      final CommandExecutor executor,
+      final GraphCache cache,
+      final JsonCodec codec
+  ) {
     final DependencySource node = new NodeDependencySource(codec);
     final DependencySource python = new PythonDependencySource();
     final DependencySource swift = new SwiftDependencySource(codec);

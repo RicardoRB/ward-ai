@@ -26,7 +26,6 @@ import java.util.regex.Pattern;
  * unknown is never reported.
  */
 public final class CallFactsCheck implements RuleCheck {
-
   private static final String EXPRESSION = "expression";
   private static final String STATEMENT = "statement";
   private static final String RESOURCE = "resource";
@@ -66,8 +65,8 @@ public final class CallFactsCheck implements RuleCheck {
       Set<String> receiverAncestors,
       Pattern text,
       boolean ignored,
-      boolean outsideResource) {
-
+      boolean outsideResource
+  ) {
     /** Copies the sets. */
     public Criteria {
       declaringTypes = Set.copyOf(declaringTypes);
@@ -106,7 +105,8 @@ public final class CallFactsCheck implements RuleCheck {
       final FlowView flow,
       final ScopeView scopes,
       final UnitTypeFacts types,
-      final SourceUnit unit) {
+      final SourceUnit unit
+  ) {
     final List<RuleMatch> matches = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(EXPRESSION))) {
       final SyntaxNode call = visit.node();
@@ -122,7 +122,8 @@ public final class CallFactsCheck implements RuleCheck {
       final SyntaxNode call,
       final SyntaxWalk.Visit visit,
       final CallTarget target,
-      final UnitTypeFacts types) {
+      final UnitTypeFacts types
+  ) {
     return targetMeets(target)
         && receiverMeets(call, types)
         && criteria.text().matcher(SyntaxWalk.text(call)).find()
@@ -132,7 +133,7 @@ public final class CallFactsCheck implements RuleCheck {
 
   private boolean targetMeets(final CallTarget target) {
     return (criteria.declaringTypes().isEmpty()
-            || criteria.declaringTypes().contains(target.declaringType().name()))
+        || criteria.declaringTypes().contains(target.declaringType().name()))
         && (criteria.names().isEmpty() || criteria.names().contains(target.name()))
         && shares(criteria.methodAnnotations(), target.annotations())
         && shares(criteria.declaringAnnotations(), target.declaringAnnotations());

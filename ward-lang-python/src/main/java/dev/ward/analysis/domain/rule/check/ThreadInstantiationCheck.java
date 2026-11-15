@@ -14,7 +14,6 @@ import java.util.Set;
  * its name, not by inference.
  */
 public final class ThreadInstantiationCheck implements RuleCheck {
-
   private static final Set<String> CALLS = Set.of("atom_expr");
   private static final Set<String> NAMES = Set.of("Thread", "threading.Thread");
   private static final String TARGET = "target=";

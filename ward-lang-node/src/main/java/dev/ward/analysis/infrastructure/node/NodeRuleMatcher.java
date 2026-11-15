@@ -18,7 +18,6 @@ import dev.ward.analysis.domain.rule.check.UnusedAssignmentCheck;
  * names the metric after its slash; the body holds the limit, as {@link NodeRuleBody} reads it.
  */
 public final class NodeRuleMatcher implements RuleMatcher {
-
   private static final String FUNCTION_LENGTH = "function-length";
   private static final String PARAMETER_COUNT = "parameter-count";
   private static final String COMPLEXITY = "complexity";

@@ -39,16 +39,24 @@ public final class NullnessAnnotations {
           Map.entry("org.eclipse.jdt.annotation.Nullable", Nullness.NULLABLE),
           Map.entry("org.eclipse.jdt.annotation.NonNull", Nullness.NON_NULL),
           Map.entry("edu.umd.cs.findbugs.annotations.Nullable", Nullness.NULLABLE),
-          Map.entry("edu.umd.cs.findbugs.annotations.NonNull", Nullness.NON_NULL));
+          Map.entry("edu.umd.cs.findbugs.annotations.NonNull", Nullness.NON_NULL)
+      );
 
   private static final Map<String, Nullness> SCOPES =
       Map.of(
-          "org.jspecify.annotations.NullMarked", Nullness.NON_NULL,
-          "org.jspecify.annotations.NullUnmarked", Nullness.UNKNOWN,
-          "javax.annotation.ParametersAreNonnullByDefault", Nullness.NON_NULL,
-          "org.eclipse.jdt.annotation.NonNullByDefault", Nullness.NON_NULL,
-          "org.springframework.lang.NonNullApi", Nullness.NON_NULL,
-          "org.springframework.lang.NonNullFields", Nullness.NON_NULL);
+          "org.jspecify.annotations.NullMarked",
+          Nullness.NON_NULL,
+          "org.jspecify.annotations.NullUnmarked",
+          Nullness.UNKNOWN,
+          "javax.annotation.ParametersAreNonnullByDefault",
+          Nullness.NON_NULL,
+          "org.eclipse.jdt.annotation.NonNullByDefault",
+          Nullness.NON_NULL,
+          "org.springframework.lang.NonNullApi",
+          Nullness.NON_NULL,
+          "org.springframework.lang.NonNullFields",
+          Nullness.NON_NULL
+      );
 
   private NullnessAnnotations() {}
 

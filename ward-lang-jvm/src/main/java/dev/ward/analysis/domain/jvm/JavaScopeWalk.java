@@ -15,7 +15,6 @@ import java.util.function.Consumer;
  * they inherit names the file does not spell, and so is a file with a static wildcard import.
  */
 final class JavaScopeWalk {
-
   private static final Set<String> TYPE_DECLARATIONS =
       Set.of("classDeclaration", "interfaceDeclaration", "enumDeclaration", "recordDeclaration");
   private static final Set<String> METHODS =
@@ -23,7 +22,8 @@ final class JavaScopeWalk {
           "methodDeclaration",
           "interfaceCommonBodyDeclaration",
           "constructorDeclaration",
-          "compactConstructorDeclaration");
+          "compactConstructorDeclaration"
+      );
   private static final String IDENTIFIER = "identifier";
   private static final String EXPRESSION = "expression";
   private static final String PRIMARY = "primary";

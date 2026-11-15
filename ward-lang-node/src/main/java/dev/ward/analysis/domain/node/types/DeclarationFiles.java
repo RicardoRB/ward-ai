@@ -9,7 +9,6 @@ import java.util.Optional;
  * and use {@code /}; a path outside the project is never readable.
  */
 public interface DeclarationFiles {
-
   /** Returns the text of the file, or empty when it is missing or unreadable. */
   Optional<String> read(String path);
 

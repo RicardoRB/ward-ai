@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 /** StopIteration raised inside a generator, and the raises that do not match. */
 final class StopIterationReturnCheckTest {
-
   private static final StopIterationReturnCheck CHECK = new StopIterationReturnCheck("m");
 
   @Test
@@ -25,8 +24,8 @@ final class StopIterationReturnCheckTest {
     assertThat(CHECK.matches(ParsedPython.tree("def g():\n    yield 1\n    raise ValueError\n")))
         .isEmpty();
     assertThat(
-            CHECK.matches(
-                ParsedPython.tree("def g():\n    yield 1\n    raise StopIterationError()\n")))
+        CHECK.matches(ParsedPython.tree("def g():\n    yield 1\n    raise StopIterationError()\n"))
+    )
         .isEmpty();
   }
 }

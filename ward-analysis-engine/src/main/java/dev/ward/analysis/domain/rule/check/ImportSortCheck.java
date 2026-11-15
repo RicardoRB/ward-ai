@@ -11,7 +11,6 @@ import java.util.Set;
  * plain text, like Checkstyle's {@code CustomImportOrder} for one group of imports.
  */
 public final class ImportSortCheck implements RuleCheck {
-
   private static final String IMPORT = "import_declaration";
   private static final String KEYWORD = "import";
   private final String message;

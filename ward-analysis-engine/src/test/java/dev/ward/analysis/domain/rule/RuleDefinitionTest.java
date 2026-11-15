@@ -11,7 +11,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class RuleDefinitionTest {
-
   @Test
   void acceptsIdNamingItsLanguage() {
     assertThatCode(() -> definition("ward:java/method-length", AnalysisLanguage.JAVA))
@@ -27,12 +26,13 @@ class RuleDefinitionTest {
   @ParameterizedTest
   @ValueSource(
       strings = {
-        "method-length",
-        "ward:java/",
-        "ward:java/Method-Length",
-        "ward:python/method-length",
-        "ward:java/method length"
-      })
+          "method-length",
+          "ward:java/",
+          "ward:java/Method-Length",
+          "ward:python/method-length",
+          "ward:java/method length"
+      }
+  )
   void rejectsMalformedOrForeignId(final String id) {
     assertThatThrownBy(() -> definition(id, AnalysisLanguage.JAVA))
         .isInstanceOf(IllegalArgumentException.class)
@@ -42,13 +42,15 @@ class RuleDefinitionTest {
   @Test
   void rejectsMissingCapability() {
     assertThatThrownBy(
-            () ->
-                new RuleDefinition(
-                    "ward:java/method-length",
-                    AnalysisLanguage.JAVA,
-                    null,
-                    AnalysisSeverity.WARNING,
-                    ""))
+        () ->
+            new RuleDefinition(
+                "ward:java/method-length",
+                AnalysisLanguage.JAVA,
+                null,
+                AnalysisSeverity.WARNING,
+                ""
+            )
+    )
         .isInstanceOf(NullPointerException.class);
   }
 
@@ -67,13 +69,15 @@ class RuleDefinitionTest {
   @Test
   void rejectsLanguageRuleWithNoLanguage() {
     assertThatThrownBy(
-            () ->
-                new RuleDefinition(
-                    "ward:java/method-length",
-                    Set.of(),
-                    RuleCapability.SYNTAX,
-                    AnalysisSeverity.WARNING,
-                    "body"))
+        () ->
+            new RuleDefinition(
+                "ward:java/method-length",
+                Set.of(),
+                RuleCapability.SYNTAX,
+                AnalysisSeverity.WARNING,
+                "body"
+            )
+    )
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("at least one language");
   }
@@ -91,6 +95,11 @@ class RuleDefinitionTest {
 
   private static RuleDefinition definition(final String id, final AnalysisLanguage language) {
     return new RuleDefinition(
-        id, language, RuleCapability.SYNTAX, AnalysisSeverity.WARNING, "body");
+        id,
+        language,
+        RuleCapability.SYNTAX,
+        AnalysisSeverity.WARNING,
+        "body"
+    );
   }
 }

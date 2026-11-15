@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the type-aware checks over trees whose nodes carry facts keyed by their start. */
 class TypedChecksTest {
-
   private static final String LOGGER = "org.slf4j.Logger";
   private static final String RESULT_SET = "java.sql.ResultSet";
   private static final String MESSAGE = "message {value}";
@@ -31,10 +30,8 @@ class TypedChecksTest {
     final SyntaxNode call = trees.logCall(layout, DEBUG, true);
     final SyntaxNode root = node(COMPILATION_UNIT, call);
     assertThat(
-            run(
-                new GuardLogStatementCheck(MESSAGE),
-                root,
-                trees.at(call, trees.callOf(LOGGER, DEBUG))))
+        run(new GuardLogStatementCheck(MESSAGE), root, trees.at(call, trees.callOf(LOGGER, DEBUG)))
+    )
         .hasSize(1);
   }
 
@@ -48,16 +45,20 @@ class TypedChecksTest {
     final SyntaxNode plainCall = trees.logCall(plainLayout, DEBUG, false);
     final SyntaxNode plain = node(COMPILATION_UNIT, plainCall);
     assertThat(
-            run(
-                new GuardLogStatementCheck(MESSAGE),
-                guarded,
-                trees.at(guardedCall, trees.callOf(LOGGER, DEBUG))))
+        run(
+            new GuardLogStatementCheck(MESSAGE),
+            guarded,
+            trees.at(guardedCall, trees.callOf(LOGGER, DEBUG))
+        )
+    )
         .isEmpty();
     assertThat(
-            run(
-                new GuardLogStatementCheck(MESSAGE),
-                plain,
-                trees.at(plainCall, trees.callOf(LOGGER, DEBUG))))
+        run(
+            new GuardLogStatementCheck(MESSAGE),
+            plain,
+            trees.at(plainCall, trees.callOf(LOGGER, DEBUG))
+        )
+    )
         .isEmpty();
   }
 
@@ -66,18 +67,22 @@ class TypedChecksTest {
     final Layout infoLayout = new Layout();
     final SyntaxNode info = trees.logCall(infoLayout, "info", true);
     assertThat(
-            run(
-                new GuardLogStatementCheck(MESSAGE),
-                node(COMPILATION_UNIT, info),
-                trees.at(info, trees.callOf(LOGGER, "info"))))
+        run(
+            new GuardLogStatementCheck(MESSAGE),
+            node(COMPILATION_UNIT, info),
+            trees.at(info, trees.callOf(LOGGER, "info"))
+        )
+    )
         .isEmpty();
     final Layout listLayout = new Layout();
     final SyntaxNode list = trees.logCall(listLayout, DEBUG, true);
     assertThat(
-            run(
-                new GuardLogStatementCheck(MESSAGE),
-                node(COMPILATION_UNIT, list),
-                trees.at(list, trees.callOf("java.util.List", DEBUG))))
+        run(
+            new GuardLogStatementCheck(MESSAGE),
+            node(COMPILATION_UNIT, list),
+            trees.at(list, trees.callOf("java.util.List", DEBUG))
+        )
+    )
         .isEmpty();
   }
 
@@ -88,22 +93,28 @@ class TypedChecksTest {
     final SyntaxNode root = node(COMPILATION_UNIT, call);
     final SyntaxNode argument = call.children().get(0);
     assertThat(
-            run(
-                new EnumComparisonCheck(MESSAGE),
-                root,
-                trees.at(
-                    call,
-                    trees.callOf("java.lang.Object", "equals"),
-                    trees.shape(TypeShape.Kind.ENUM))))
+        run(
+            new EnumComparisonCheck(MESSAGE),
+            root,
+            trees.at(
+                call,
+                trees.callOf("java.lang.Object", "equals"),
+                trees.shape(TypeShape.Kind.ENUM)
+            )
+        )
+    )
         .hasSize(1);
     assertThat(
-            run(
-                new EnumComparisonCheck(MESSAGE),
-                root,
-                trees.at(
-                    call,
-                    trees.callOf("java.lang.Object", "equals"),
-                    trees.shape(TypeShape.Kind.CLASS))))
+        run(
+            new EnumComparisonCheck(MESSAGE),
+            root,
+            trees.at(
+                call,
+                trees.callOf("java.lang.Object", "equals"),
+                trees.shape(TypeShape.Kind.CLASS)
+            )
+        )
+    )
         .isEmpty();
     assertThat(argument).isNotNull();
   }
@@ -113,26 +124,32 @@ class TypedChecksTest {
     final Layout enumLayout = new Layout();
     final SyntaxNode enumKey = trees.creator(enumLayout, "HashMap", "Color");
     assertThat(
-            run(
-                new UseEnumCollectionsCheck(MESSAGE),
-                node(COMPILATION_UNIT, enumKey),
-                trees.at(enumKey.children().get(2), trees.shape(TypeShape.Kind.ENUM))))
+        run(
+            new UseEnumCollectionsCheck(MESSAGE),
+            node(COMPILATION_UNIT, enumKey),
+            trees.at(enumKey.children().get(2), trees.shape(TypeShape.Kind.ENUM))
+        )
+    )
         .hasSize(1);
     final Layout stringLayout = new Layout();
     final SyntaxNode stringKey = trees.creator(stringLayout, "HashMap", "String");
     assertThat(
-            run(
-                new UseEnumCollectionsCheck(MESSAGE),
-                node(COMPILATION_UNIT, stringKey),
-                trees.at(stringKey.children().get(2), trees.shape(TypeShape.Kind.CLASS))))
+        run(
+            new UseEnumCollectionsCheck(MESSAGE),
+            node(COMPILATION_UNIT, stringKey),
+            trees.at(stringKey.children().get(2), trees.shape(TypeShape.Kind.CLASS))
+        )
+    )
         .isEmpty();
     final Layout listLayout = new Layout();
     final SyntaxNode list = trees.creator(listLayout, "ArrayList", "Color");
     assertThat(
-            run(
-                new UseEnumCollectionsCheck(MESSAGE),
-                node(COMPILATION_UNIT, list),
-                trees.at(list.children().get(2), trees.shape(TypeShape.Kind.ENUM))))
+        run(
+            new UseEnumCollectionsCheck(MESSAGE),
+            node(COMPILATION_UNIT, list),
+            trees.at(list.children().get(2), trees.shape(TypeShape.Kind.ENUM))
+        )
+    )
         .isEmpty();
   }
 
@@ -143,16 +160,20 @@ class TypedChecksTest {
     final SyntaxNode statement = node("statement", next, layout.token("';'", ";"));
     final SyntaxNode root = node(COMPILATION_UNIT, statement);
     assertThat(
-            run(
-                new CheckResultSetCheck(MESSAGE),
-                root,
-                trees.at(next, trees.callOf(RESULT_SET, "next"))))
+        run(
+            new CheckResultSetCheck(MESSAGE),
+            root,
+            trees.at(next, trees.callOf(RESULT_SET, "next"))
+        )
+    )
         .hasSize(1);
     assertThat(
-            run(
-                new CheckResultSetCheck(MESSAGE),
-                root,
-                trees.at(next, trees.callOf("java.util.Iterator", "next"))))
+        run(
+            new CheckResultSetCheck(MESSAGE),
+            root,
+            trees.at(next, trees.callOf("java.util.Iterator", "next"))
+        )
+    )
         .isEmpty();
   }
 
@@ -163,10 +184,12 @@ class TypedChecksTest {
         node("statement", layout.token("'return'", "return"), trees.nextExpression(layout));
     final SyntaxNode root = node(COMPILATION_UNIT, returned);
     assertThat(
-            run(
-                new CheckResultSetCheck(MESSAGE),
-                root,
-                trees.at(returned.children().get(1), trees.callOf(RESULT_SET, "next"))))
+        run(
+            new CheckResultSetCheck(MESSAGE),
+            root,
+            trees.at(returned.children().get(1), trees.callOf(RESULT_SET, "next"))
+        )
+    )
         .isEmpty();
   }
 
@@ -185,7 +208,10 @@ class TypedChecksTest {
   }
 
   private static List<RuleMatch> run(
-      final RuleCheck check, final SyntaxNode root, final UnitTypeFacts facts) {
+      final RuleCheck check,
+      final SyntaxNode root,
+      final UnitTypeFacts facts
+  ) {
     return check.matches(root, null, ScopeView.NONE, facts, UNIT);
   }
 }

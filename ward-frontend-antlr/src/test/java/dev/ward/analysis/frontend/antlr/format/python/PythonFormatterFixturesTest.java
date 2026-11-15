@@ -24,7 +24,6 @@ import org.junit.jupiter.params.provider.MethodSource;
  * refused.
  */
 class PythonFormatterFixturesTest {
-
   private static final String FIXTURE_ROOT = "/format/python";
   private static final String INPUT = "input.py";
   private static final String EXPECTED = "expected.py";
@@ -39,7 +38,9 @@ class PythonFormatterFixturesTest {
               "line-width",
               "100",
               "max-blank-lines",
-              "2"));
+              "2"
+          )
+      );
 
   @ParameterizedTest(name = "{0}")
   @MethodSource("cases")
@@ -50,7 +51,10 @@ class PythonFormatterFixturesTest {
         Files.exists(expectedFile) ? Optional.of(Files.readString(expectedFile)) : Optional.empty();
     final FormatFixtureChecks checks =
         new FormatFixtureChecks(
-            new PythonFormatter(), new FormatSafety(new PythonFormatSyntax()), OPTIONS);
+            new PythonFormatter(),
+            new FormatSafety(new PythonFormatSyntax()),
+            OPTIONS
+        );
 
     assertThat(checks.problems(input, expected)).isEmpty();
   }

@@ -25,7 +25,10 @@ public final class GradleBuildBlocks {
               "",
               (kotlin, preset, versions, selected) ->
                   GradleQualityBlocks.coverage(
-                      kotlin, versions.version(GradleToolCatalog.JACOCO_ENGINE))),
+                      kotlin,
+                      versions.version(GradleToolCatalog.JACOCO_ENGINE)
+                  )
+          ),
           new Block(
               "coverage",
               false,
@@ -33,7 +36,8 @@ public final class GradleBuildBlocks {
               "xml.required",
               "jacoco-xml-report",
               "",
-              (kotlin, preset, versions, selected) -> GradleCoverageData.xmlReport(kotlin)),
+              (kotlin, preset, versions, selected) -> GradleCoverageData.xmlReport(kotlin)
+          ),
           new Block(
               "mutation",
               false,
@@ -43,7 +47,11 @@ public final class GradleBuildBlocks {
               "",
               (kotlin, preset, versions, selected) ->
                   GradleQualityBlocks.pitest(
-                      kotlin, versions.version(GradleToolCatalog.PITEST_ENGINE))));
+                      kotlin,
+                      versions.version(GradleToolCatalog.PITEST_ENGINE)
+                  )
+          )
+      );
 
   private GradleBuildBlocks() {}
 
@@ -57,7 +65,8 @@ public final class GradleBuildBlocks {
       final Set<String> selected,
       final QualityPreset preset,
       final GradleToolVersions versions,
-      final boolean module) {
+      final boolean module
+  ) {
     final boolean kotlin = edit.buildFile().toString().endsWith(".kts");
     for (final Block block : BLOCKS) {
       if (selected.contains(block.gate())
@@ -66,7 +75,8 @@ public final class GradleBuildBlocks {
         edit.append(
             "\n" + MARKER + "\n" + block.body().render(kotlin, preset, versions, selected),
             block.tool(),
-            block.versionOf().isEmpty() ? "" : versions.version(block.versionOf()));
+            block.versionOf().isEmpty() ? "" : versions.version(block.versionOf())
+        );
       }
     }
   }
@@ -82,12 +92,17 @@ public final class GradleBuildBlocks {
       String present,
       String tool,
       String versionOf,
-      BlockBody body) {}
+      BlockBody body
+  ) {}
 
   /** Renders a block for the DSL, the preset, and the versions chosen for the project. */
   @FunctionalInterface
   private interface BlockBody {
     String render(
-        boolean kotlin, QualityPreset preset, GradleToolVersions versions, Set<String> selected);
+        boolean kotlin,
+        QualityPreset preset,
+        GradleToolVersions versions,
+        Set<String> selected
+    );
   }
 }

@@ -6,7 +6,6 @@ import java.util.List;
 
 /** Builders for the interface trees that the class design check tests run over. */
 class DesignInterfaceTrees extends DesignMemberTrees {
-
   private static final String VOID = "void";
   private static final String INT = "int";
 
@@ -19,7 +18,8 @@ class DesignInterfaceTrees extends DesignMemberTrees {
         "interfaceDeclaration",
         t("'interface'", "interface"),
         id(name),
-        n("interfaceBody", members));
+        n("interfaceBody", members)
+    );
   }
 
   static SyntaxNode interfaceMethod(final String name) {
@@ -27,7 +27,9 @@ class DesignInterfaceTrees extends DesignMemberTrees {
         "interfaceBodyDeclaration",
         n(
             "interfaceMemberDeclaration",
-            n("interfaceMethodDeclaration", t("'void'", VOID), id(name))));
+            n("interfaceMethodDeclaration", t("'void'", VOID), id(name))
+        )
+    );
   }
 
   static SyntaxNode interfaceConstant(final String name) {
@@ -38,7 +40,10 @@ class DesignInterfaceTrees extends DesignMemberTrees {
             n(
                 "constDeclaration",
                 n("typeType", t(TOKEN_IDENTIFIER, INT)),
-                n("constantDeclarator", id(name)))));
+                n("constantDeclarator", id(name))
+            )
+        )
+    );
   }
 
   static SyntaxNode sealedInterface(final String name, final boolean permits) {
@@ -52,6 +57,7 @@ class DesignInterfaceTrees extends DesignMemberTrees {
     return n(
         "typeDeclaration",
         n("classOrInterfaceModifier", t("'sealed'", "sealed")),
-        n("interfaceDeclaration", children.toArray(SyntaxNode[]::new)));
+        n("interfaceDeclaration", children.toArray(SyntaxNode[]::new))
+    );
   }
 }

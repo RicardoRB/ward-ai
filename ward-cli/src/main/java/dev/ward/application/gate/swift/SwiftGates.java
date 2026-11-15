@@ -20,7 +20,8 @@ public final class SwiftGates {
   public static QualityGate create(
       final GateConfiguration check,
       final CommandExecutor executor,
-      final GateReportPorts reports) {
+      final GateReportPorts reports
+  ) {
     return SupportedQualityGates.XCODEBUILD_TEST.equals(check.type())
         ? xcodeTestGate(check, executor, reports)
         : coverageGate(check, executor, reports);
@@ -29,17 +30,19 @@ public final class SwiftGates {
   private static QualityGate xcodeTestGate(
       final GateConfiguration check,
       final CommandExecutor executor,
-      final GateReportPorts reports) {
+      final GateReportPorts reports
+  ) {
     if (!check.command().contains(XcodeTestGate.DESTINATION)
         && (check.platform() == null
             || check.platform() == XcodePlatform.IOS_SIMULATOR
-                && reports.swift().simulators() == null)) {
+            && reports.swift().simulators() == null)) {
       throw new WardException(
           "The '"
               + check.name()
               + "' check needs a platform, one of "
               + XcodePlatform.labels()
-              + ", or a -destination in its command.");
+              + ", or a -destination in its command."
+      );
     }
     return new XcodeTestGate(check.name(), executor, check.command(), check.platform(), reports);
   }
@@ -48,7 +51,8 @@ public final class SwiftGates {
   private static QualityGate coverageGate(
       final GateConfiguration check,
       final CommandExecutor executor,
-      final GateReportPorts reports) {
+      final GateReportPorts reports
+  ) {
     final CoverageReport report =
         check.command().stream().anyMatch(token -> token.endsWith(XCCOV))
             ? reports.swift().xccov()

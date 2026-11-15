@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
  * there.
  */
 public final class FinalClassCheck implements RuleCheck {
-
   private static final String CLASS = "classDeclaration";
   private static final String CONSTRUCTOR = "constructorDeclaration";
 
@@ -43,7 +42,8 @@ public final class FinalClassCheck implements RuleCheck {
           && !extended.contains(JUnitMembers.name(type))
           && onlyPrivateConstructors(type)) {
         matches.add(
-            CheckSupport.at(type.span(), CheckSupport.fill(message, JUnitMembers.name(type), "")));
+            CheckSupport.at(type.span(), CheckSupport.fill(message, JUnitMembers.name(type), ""))
+        );
       }
     }
     return List.copyOf(matches);

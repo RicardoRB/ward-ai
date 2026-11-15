@@ -7,14 +7,13 @@ import org.junit.jupiter.api.Test;
 
 /** Lint checks of declarations and expressions, run over real Swift source. */
 class SwiftStatementLintChecksTest {
-
   @Test
   void duplicateConditionsReportsRepeatedLinksAndCases() {
     final RuleCheck check = new SwiftDuplicateConditionsCheck(LintRuns.MESSAGE);
 
     assertThat(
-            LintRuns.lines(
-                LintRuns.run(check, "if a < 5 {\n} else if b {\n} else if a < 5 {\n}\n")))
+        LintRuns.lines(LintRuns.run(check, "if a < 5 {\n} else if b {\n} else if a < 5 {\n}\n"))
+    )
         .containsExactly(1, LintRuns.THIRD_LINE);
     assertThat(LintRuns.run(check, "if a < 5, b {\n} else if a < 5 {\n}\n")).isEmpty();
     assertThat(LintRuns.lines(LintRuns.run(check, "switch x {\ncase 1:\n y()\ncase 1:\n z()\n}\n")))
@@ -38,8 +37,11 @@ class SwiftStatementLintChecksTest {
     assertThat(LintRuns.lines(LintRuns.run(check, "// swiftlint:disable unused_import\n")))
         .containsExactly(1);
     assertThat(
-            LintRuns.run(
-                check, "// swiftlint:disable unused_import\n// swiftlint:enable unused_import\n"))
+        LintRuns.run(
+            check,
+            "// swiftlint:disable unused_import\n// swiftlint:enable unused_import\n"
+        )
+    )
         .isEmpty();
     assertThat(LintRuns.lines(LintRuns.run(check, "// swiftlint:enable unused_import\n")))
         .containsExactly(1);
@@ -65,8 +67,8 @@ class SwiftStatementLintChecksTest {
     final RuleCheck check = new SwiftVoidFunctionInTernaryCheck(LintRuns.MESSAGE);
 
     assertThat(
-            LintRuns.lines(
-                LintRuns.run(check, "func run() {\n flag ? doA() : doB()\n done()\n}\n")))
+        LintRuns.lines(LintRuns.run(check, "func run() {\n flag ? doA() : doB()\n done()\n}\n"))
+    )
         .containsExactly(2);
     assertThat(LintRuns.run(check, "func run() -> Int {\n return flag ? doA() : doB()\n}\n"))
         .isEmpty();
@@ -78,12 +80,14 @@ class SwiftStatementLintChecksTest {
     final RuleCheck check = new SwiftUnneededSynthesizedInitializerCheck(LintRuns.MESSAGE);
 
     assertThat(
-            LintRuns.lines(
-                LintRuns.run(
-                    check, "struct S {\n let a: Int\n init(a: Int) {\n self.a = a\n }\n}\n")))
+        LintRuns.lines(
+            LintRuns.run(check, "struct S {\n let a: Int\n init(a: Int) {\n self.a = a\n }\n}\n")
+        )
+    )
         .containsExactly(LintRuns.THIRD_LINE);
     assertThat(
-            LintRuns.run(check, "struct S {\n let a: Int\n init(b: Int) {\n self.a = b\n }\n}\n"))
+        LintRuns.run(check, "struct S {\n let a: Int\n init(b: Int) {\n self.a = b\n }\n}\n")
+    )
         .isEmpty();
   }
 
@@ -92,13 +96,14 @@ class SwiftStatementLintChecksTest {
     final RuleCheck check = new SwiftUnusedSetterValueCheck(LintRuns.MESSAGE);
 
     assertThat(
-            LintRuns.lines(
-                LintRuns.run(
-                    check, "var v: Int {\n get {\n return 1\n }\n set {\n x = 2\n }\n}\n")))
+        LintRuns.lines(
+            LintRuns.run(check, "var v: Int {\n get {\n return 1\n }\n set {\n x = 2\n }\n}\n")
+        )
+    )
         .containsExactly(LintRuns.FIFTH_LINE);
     assertThat(
-            LintRuns.run(
-                check, "var v: Int {\n get {\n return 1\n }\n set {\n x = newValue\n }\n}\n"))
+        LintRuns.run(check, "var v: Int {\n get {\n return 1\n }\n set {\n x = newValue\n }\n}\n")
+    )
         .isEmpty();
   }
 
@@ -107,15 +112,19 @@ class SwiftStatementLintChecksTest {
     final RuleCheck check = new SwiftCaptureVariableCheck(LintRuns.MESSAGE);
 
     assertThat(
-            LintRuns.lines(
-                LintRuns.runScoped(check, "var j = 0\nlet c: () -> Void = { [j] in print(j) }\n")))
+        LintRuns.lines(
+            LintRuns.runScoped(check, "var j = 0\nlet c: () -> Void = { [j] in print(j) }\n")
+        )
+    )
         .containsExactly(2);
     assertThat(LintRuns.runScoped(check, "let k = 0\nlet c: () -> Void = { [k] in print(k) }\n"))
         .isEmpty();
     assertThat(
-            LintRuns.runScoped(
-                check,
-                "func f() {\n var local = 0\n let c: () -> Void = { [local] in print(local) }\n}\n"))
+        LintRuns.runScoped(
+            check,
+            "func f() {\n var local = 0\n let c: () -> Void = { [local] in print(local) }\n}\n"
+        )
+    )
         .isEmpty();
   }
 

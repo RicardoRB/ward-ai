@@ -16,7 +16,6 @@ import javax.inject.Inject;
 
 /** Reads the API of JVM source files with the bundled readers and the JDK image. */
 public final class JvmApiSurfaces implements ApiSurfaces {
-
   /** Creates the adapter. */
   @Inject
   public JvmApiSurfaces() {}
@@ -30,8 +29,11 @@ public final class JvmApiSurfaces implements ApiSurfaces {
             root,
             List.of(),
             JvmClassLibraries.jdkHome(
-                Optional.empty(), Optional.ofNullable(System.getProperty("java.home"))),
-            Optional.empty())) {
+                Optional.empty(),
+                Optional.ofNullable(System.getProperty("java.home"))
+            ),
+            Optional.empty()
+        )) {
       for (final ApiSurfaceReader reader : BundledLanguages.apiSurfaceReaders()) {
         final List<SourceUnit> own = ofLanguage(units, reader.language());
         if (!own.isEmpty()) {
@@ -43,7 +45,9 @@ public final class JvmApiSurfaces implements ApiSurfaces {
   }
 
   private static List<SourceUnit> ofLanguage(
-      final List<SourceUnit> units, final AnalysisLanguage language) {
+      final List<SourceUnit> units,
+      final AnalysisLanguage language
+  ) {
     return units.stream().filter(unit -> unit.language() == language).collect(Collectors.toList());
   }
 }

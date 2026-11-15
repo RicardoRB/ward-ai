@@ -47,14 +47,16 @@ final class GradleLockSource {
     final GradleDeclarations declarations = new GradleDeclarations(root);
     final DependencyInventory inventory =
         new DependencyInventory(
-            modules.stream().map(module -> module(project, module, declarations)).toList());
+            modules.stream().map(module -> module(project, module, declarations)).toList()
+        );
     LOGGER.log(
         Level.FINE,
         () ->
             "event=dependency-source source=gradle-lock modules="
                 + inventory.modules().size()
                 + " entries="
-                + inventory.entryCount());
+                + inventory.entryCount()
+    );
     return Optional.of(inventory);
   }
 
@@ -97,7 +99,10 @@ final class GradleLockSource {
   }
 
   private static ModuleDependencies module(
-      final Project project, final String module, final GradleDeclarations declarations) {
+      final Project project,
+      final String module,
+      final GradleDeclarations declarations
+  ) {
     final Path dir = dir(project.root(), module);
     final String scriptName = GradleModules.buildScript(dir);
     final Set<String> declared =
@@ -107,7 +112,8 @@ final class GradleLockSource {
     GradleLockfiles.read(project.root().toString(), dir)
         .forEach(
             (coordinate, configurations) ->
-                add(builder, coordinate, configurations, declared, script));
+                add(builder, coordinate, configurations, declared, script)
+        );
     return builder.build(module);
   }
 
@@ -116,7 +122,8 @@ final class GradleLockSource {
       final String coordinate,
       final Set<String> configurations,
       final Set<String> declared,
-      final String script) {
+      final String script
+  ) {
     final String[] parts = coordinate.split(":", 3);
     final PackageId id = new PackageId(Ecosystem.MAVEN, parts[0] + ":" + parts[1], parts[2]);
     final DependencyScope scope = GradleLockfiles.scope(configurations);

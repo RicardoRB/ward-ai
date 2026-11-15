@@ -15,9 +15,11 @@ import java.util.Map;
  */
 record NullGraph(
     ControlFlowGraph graph,
-    Map<Integer, java.util.List<NullEvent>> events,
-    Map<Integer, NullEvents.Test> tests) {
-
+    Map<Integer,
+    java.util.List<NullEvent>> events,
+    Map<Integer,
+    NullEvents.Test> tests
+) {
   NullGraph {
     events = Map.copyOf(events);
     tests = Map.copyOf(tests);

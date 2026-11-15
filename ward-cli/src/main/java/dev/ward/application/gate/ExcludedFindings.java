@@ -20,7 +20,9 @@ final class ExcludedFindings {
     final List<AnalysisFinding> kept =
         run.findings().stream().filter(finding -> !isExcluded(finding, set)).toList();
     return new UnitResultCache.CachedRun(
-        new RuleRunResult(kept, run.executionErrors(), run.notRun()), cached.graph());
+        new RuleRunResult(kept, run.executionErrors(), run.notRun()),
+        cached.graph()
+    );
   }
 
   /** Returns {@code run} without the findings that the rule set leaves out. */

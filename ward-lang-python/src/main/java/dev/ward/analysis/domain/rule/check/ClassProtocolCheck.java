@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
  * this module is unknown, and nothing is reported for it.
  */
 public final class ClassProtocolCheck implements RuleCheck {
-
   /** The mistakes the check tells apart, one per rule. */
   public enum Problem {
     /** A {@code with} on a class that has no {@code __enter__} and {@code __exit__}. */
@@ -75,7 +74,11 @@ public final class ClassProtocolCheck implements RuleCheck {
   private record Protocol(Pattern call, String enter, String exit) {}
 
   private List<RuleMatch> withCalls(
-      final SyntaxNode root, final Protocol protocol, final Map<String, ClassIndex.Info> classes) {
+      final SyntaxNode root,
+      final Protocol protocol,
+      final Map<String,
+      ClassIndex.Info> classes
+  ) {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, WITHS)) {
       final Matcher named = protocol.call().matcher(SyntaxWalk.text(visit.node()));
@@ -91,7 +94,10 @@ public final class ClassProtocolCheck implements RuleCheck {
   }
 
   private List<RuleMatch> nonIterators(
-      final SyntaxNode root, final Map<String, ClassIndex.Info> classes) {
+      final SyntaxNode root,
+      final Map<String,
+      ClassIndex.Info> classes
+  ) {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, FUNCTIONS)) {
       final String text = SyntaxWalk.text(visit.node());
@@ -111,7 +117,10 @@ public final class ClassProtocolCheck implements RuleCheck {
   }
 
   private List<RuleMatch> enumExtensions(
-      final SyntaxNode root, final Map<String, ClassIndex.Info> classes) {
+      final SyntaxNode root,
+      final Map<String,
+      ClassIndex.Info> classes
+  ) {
     final List<RuleMatch> found = new ArrayList<>();
     final Set<String> assigners = ClassIndex.classesWithAssignments(root, classes.keySet());
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, CLASSES)) {
@@ -126,7 +135,11 @@ public final class ClassProtocolCheck implements RuleCheck {
   }
 
   private static boolean enumWithMembers(
-      final String base, final Map<String, ClassIndex.Info> classes, final Set<String> assigners) {
+      final String base,
+      final Map<String,
+      ClassIndex.Info> classes,
+      final Set<String> assigners
+  ) {
     final ClassIndex.Info parent = classes.get(base);
     return parent != null
         && parent.bases().stream().anyMatch(name -> name.endsWith("Enum"))
@@ -134,7 +147,10 @@ public final class ClassProtocolCheck implements RuleCheck {
   }
 
   private List<RuleMatch> invalidMetaclasses(
-      final SyntaxNode root, final Map<String, ClassIndex.Info> classes) {
+      final SyntaxNode root,
+      final Map<String,
+      ClassIndex.Info> classes
+  ) {
     final List<RuleMatch> found = new ArrayList<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, CLASSES)) {
       final Matcher meta = METACLASS.matcher(SyntaxWalk.text(visit.node()));
@@ -153,7 +169,10 @@ public final class ClassProtocolCheck implements RuleCheck {
   }
 
   private static boolean invalidMetaclass(
-      final String name, final Map<String, ClassIndex.Info> classes) {
+      final String name,
+      final Map<String,
+      ClassIndex.Info> classes
+  ) {
     if (name.matches("\\d.*|None|True|False")) {
       return true;
     }

@@ -24,10 +24,11 @@ class TomlPlatformParserTest {
   @Test
   void bothPlatformsAreRead() throws IOException {
     assertThat(
-            read(reader, dir, XCODE + "platform = \"iOS Simulator\"")
-                .checks()
-                .get(CHECK)
-                .platform())
+        read(reader, dir, XCODE + "platform = \"iOS Simulator\"")
+            .checks()
+            .get(CHECK)
+            .platform()
+    )
         .isEqualTo(XcodePlatform.IOS_SIMULATOR);
     assertThat(read(reader, dir, XCODE + "platform = \"macOS\"").checks().get(CHECK).platform())
         .isEqualTo(XcodePlatform.MACOS);
@@ -59,12 +60,14 @@ class TomlPlatformParserTest {
   @Test
   void platformOnAnotherCheckIsRejected() {
     assertThatThrownBy(
-            () ->
-                read(
-                    reader,
-                    dir,
-                    "version = 2\n[checks.build]\ncommand = [\"swift\", \"build\"]\n"
-                        + "platform = \"macOS\""))
+        () ->
+            read(
+                reader,
+                dir,
+                "version = 2\n[checks.build]\ncommand = [\"swift\", \"build\"]\n"
+                    + "platform = \"macOS\""
+            )
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("checks.build.platform");
   }

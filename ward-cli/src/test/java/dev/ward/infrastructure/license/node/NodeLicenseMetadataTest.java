@@ -26,16 +26,22 @@ class NodeLicenseMetadataTest {
     return reader.lookup(
         project(root, Language.JAVASCRIPT, BuildTool.NPM),
         module,
-        dependency(Ecosystem.NPM, name, version));
+        dependency(Ecosystem.NPM, name, version)
+    );
   }
 
   private void packageJson(
-      final String where, final String name, final String version, final String extra)
+      final String where,
+      final String name,
+      final String version,
+      final String extra
+  )
       throws IOException {
     write(
         root,
         where + "/package.json",
-        "{\"name\":\"" + name + "\",\"version\":\"" + version + "\"" + extra + "}");
+        "{\"name\":\"" + name + "\",\"version\":\"" + version + "\"" + extra + "}"
+    );
   }
 
   @Test
@@ -55,7 +61,8 @@ class NodeLicenseMetadataTest {
         "node_modules/b",
         "b",
         VERSION,
-        ",\"licenses\":[{\"type\":\"MIT\"},{\"type\":\"Apache-2.0\"}]");
+        ",\"licenses\":[{\"type\":\"MIT\"},{\"type\":\"Apache-2.0\"}]"
+    );
 
     assertThat(lookup("", "a", VERSION).license().describe()).isEqualTo("ISC");
     assertThat(lookup("", "b", VERSION).license().entries()).hasSize(2);

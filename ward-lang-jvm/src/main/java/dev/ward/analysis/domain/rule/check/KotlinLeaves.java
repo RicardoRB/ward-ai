@@ -10,7 +10,6 @@ import java.util.List;
  * ktlint checks that compare neighbouring comments and lines.
  */
 final class KotlinLeaves {
-
   /** The kind of a newline token of the Kotlin grammar. */
   static final String NEWLINE = "NL";
 

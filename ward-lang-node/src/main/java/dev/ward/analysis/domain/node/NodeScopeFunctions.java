@@ -11,7 +11,6 @@ import java.util.Set;
 
 /** Handles functions, arrow functions and their parameters. */
 final class NodeScopeFunctions {
-
   private static final Set<String> DECLARATIONS =
       Set.of("functionDeclaration", "generatorFunctionDeclaration");
   private static final String SINGLE = "singleExpression";
@@ -94,14 +93,15 @@ final class NodeScopeFunctions {
 
   static boolean isPatternHolder(final SyntaxNode part) {
     return Set.of(
-            "assignable",
-            "identifierOrPattern",
-            IDENTIFIER,
-            "identifierName",
-            SINGLE,
-            "arrayLiteral",
-            "objectLiteral",
-            "bindingPattern")
+        "assignable",
+        "identifierOrPattern",
+        IDENTIFIER,
+        "identifierName",
+        SINGLE,
+        "arrayLiteral",
+        "objectLiteral",
+        "bindingPattern"
+    )
         .contains(part.kind());
   }
 
@@ -116,6 +116,12 @@ final class NodeScopeFunctions {
         .forEach(
             part ->
                 walk.names.declare(
-                    part, walk.builder.current(), BindingKind.PARAMETER, Set.of(), false));
+                    part,
+                    walk.builder.current(),
+                    BindingKind.PARAMETER,
+                    Set.of(),
+                    false
+                )
+        );
   }
 }

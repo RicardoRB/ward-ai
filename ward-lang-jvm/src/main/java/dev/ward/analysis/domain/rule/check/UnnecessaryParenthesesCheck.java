@@ -20,8 +20,19 @@ public final class UnnecessaryParenthesesCheck implements UnitCheck {
       Set.of("variableInitializer", "expressionList");
   private static final Set<String> ASSIGNMENTS =
       Set.of(
-          "'='", "'+='", "'-='", "'*='", "'/='", "'&='", "'|='", "'^='", "'>>='", "'>>>='", "'<<='",
-          "'%='");
+          "'='",
+          "'+='",
+          "'-='",
+          "'*='",
+          "'/='",
+          "'&='",
+          "'|='",
+          "'^='",
+          "'>>='",
+          "'>>>='",
+          "'<<='",
+          "'%='"
+      );
   private static final int WRAPPED = 3;
   private static final int INNER = 1;
   private static final int LAST = 2;

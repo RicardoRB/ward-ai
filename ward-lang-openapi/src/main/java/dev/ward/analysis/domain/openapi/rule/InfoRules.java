@@ -7,7 +7,6 @@ import java.util.List;
 
 /** The rules about the {@code info} object: contact, description and license. */
 final class InfoRules {
-
   private static final String INFO = "info";
   private static final String CONTACT = "contact";
   private static final String LICENSE = "license";
@@ -17,7 +16,12 @@ final class InfoRules {
   /** {@code info-contact}: {@code info.contact} is present. */
   static List<OpenApiFinding> contact(final OpenApiDocument document) {
     return Fields.requireTruthy(
-        document, document.root(), "Info object must have \"contact\" object.", INFO, CONTACT);
+        document,
+        document.root(),
+        "Info object must have \"contact\" object.",
+        INFO,
+        CONTACT
+    );
   }
 
   /** {@code contact-properties}: a {@code contact} has a name, a url and an email. */
@@ -30,7 +34,8 @@ final class InfoRules {
               for (final String property : List.of("name", "url", "email")) {
                 findings.addAll(Fields.requireTruthy(document, contact, message, property));
               }
-            });
+            }
+        );
     return Findings.distinct(findings);
   }
 
@@ -41,19 +46,31 @@ final class InfoRules {
         document.root(),
         "Info \"description\" must be present and non-empty string.",
         INFO,
-        "description");
+        "description"
+    );
   }
 
   /** {@code info-license}: {@code info.license} is present. */
   static List<OpenApiFinding> license(final OpenApiDocument document) {
     return Fields.requireTruthy(
-        document, document.root(), "Info object must have \"license\" object.", INFO, LICENSE);
+        document,
+        document.root(),
+        "Info object must have \"license\" object.",
+        INFO,
+        LICENSE
+    );
   }
 
   /** {@code license-url}: {@code info.license.url} is present. */
   static List<OpenApiFinding> licenseUrl(final OpenApiDocument document) {
     return Fields.requireTruthy(
-        document, document.root(), "License object must include \"url\".", INFO, LICENSE, "url");
+        document,
+        document.root(),
+        "License object must include \"url\".",
+        INFO,
+        LICENSE,
+        "url"
+    );
   }
 
   /** Tells whether the node is an object, for rules that read a section that may be a string. */

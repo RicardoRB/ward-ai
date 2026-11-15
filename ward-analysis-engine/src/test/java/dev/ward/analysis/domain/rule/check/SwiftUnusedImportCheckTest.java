@@ -9,7 +9,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class SwiftUnusedImportCheckTest {
-
   private static final int SECOND = 30;
   private static final int END = 100;
 
@@ -18,7 +17,8 @@ class SwiftUnusedImportCheckTest {
         "import_declaration",
         start,
         start + 1,
-        SwiftTestNodes.leaf("token", "import" + name, start));
+        SwiftTestNodes.leaf("token", "import" + name, start)
+    );
   }
 
   private static List<RuleMatch> run(final SyntaxNode... children) {
@@ -38,9 +38,11 @@ class SwiftUnusedImportCheckTest {
   @Test
   void acceptsAModuleNamedInAQualifiedTypeOrByAnotherImportedTypeName() {
     assertThat(
-            run(
-                importNode("Foundation.NSString", 0),
-                SwiftTestNodes.leaf("token", "Foundation", SECOND)))
+        run(
+            importNode("Foundation.NSString", 0),
+            SwiftTestNodes.leaf("token", "Foundation", SECOND)
+        )
+    )
         .isEmpty();
   }
 
@@ -51,7 +53,8 @@ class SwiftUnusedImportCheckTest {
             "comment",
             SwiftTestNodes.span(SECOND, SECOND + 1),
             Map.of("text", "// Foundation"),
-            List.of());
+            List.of()
+        );
 
     assertThat(run(importNode("Foundation", 0), comment)).hasSize(1);
   }

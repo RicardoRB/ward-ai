@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
 import org.junit.jupiter.api.Test;
 
 class BiomeMemberPropertyCheckTest {
-
   private static final Pattern INNER =
       Pattern.compile("^(innerText|[\\x22\\x27]innerText[\\x22\\x27])$");
 

@@ -52,12 +52,14 @@ public final class DoctorService {
       final ProjectDetector detector,
       final EnvironmentInspection environment,
       final WardConfigurationReader configurationReader,
-      final Set<AgentIntegration> integrations) {
+      final Set<AgentIntegration> integrations
+  ) {
     this(
         detector,
         environment,
         new DoctorPorts(configurationReader, null, null, null),
-        integrations);
+        integrations
+    );
   }
 
   /**
@@ -69,7 +71,8 @@ public final class DoctorService {
       final ProjectDetector detector,
       final EnvironmentInspection environment,
       final DoctorPorts ports,
-      final Set<AgentIntegration> integrations) {
+      final Set<AgentIntegration> integrations
+  ) {
     this.detector = detector;
     this.environment = environment;
     this.configurationReader = ports.configurationReader();
@@ -81,14 +84,15 @@ public final class DoctorService {
 
   /** Creates a service that checks only the project and environment. */
   public DoctorService(final ProjectDetector detector, final EnvironmentInspection environment) {
-    this(detector, environment, (WardConfigurationReader) null, Set.of());
+    this(detector, environment, (WardConfigurationReader)null, Set.of());
   }
 
   /** Creates a service that also checks {@code ward.toml}. */
   public DoctorService(
       final ProjectDetector detector,
       final EnvironmentInspection environment,
-      final WardConfigurationReader configurationReader) {
+      final WardConfigurationReader configurationReader
+  ) {
     this(detector, environment, configurationReader, Set.of());
   }
 
@@ -115,14 +119,19 @@ public final class DoctorService {
                     swift,
                     configurationReader,
                     root,
-                    flag(facts, "configurationPresent"))));
+                    flag(facts, "configurationPresent")
+                )
+            )
+    );
     findings.add(
         check(
             "configuration",
             flag(facts, "configurationPresent"),
             Status.ERROR,
             "Configuration is present.",
-            "Run 'ward init'."));
+            "Run 'ward init'."
+        )
+    );
     diagnoseIntegrations(project.get(), openCode, findings);
     findings.add(
         check(
@@ -130,7 +139,9 @@ public final class DoctorService {
             flag(facts, "nativeExecutablePresent"),
             Status.WARNING,
             "Native executable present.",
-            "Build with the native profile."));
+            "Build with the native profile."
+        )
+    );
     diagnoseConfiguration(root, facts, findings);
     CheckTypeFindings.diagnose(configurationReader, root, facts, findings);
     if (flag(facts, "configurationPresent")) {
@@ -140,11 +151,15 @@ public final class DoctorService {
   }
 
   private void diagnoseIntegrations(
-      final Project project, final boolean legacyOpenCode, final List<Finding> findings) {
+      final Project project,
+      final boolean legacyOpenCode,
+      final List<Finding> findings
+  ) {
     final List<AgentIntegration> configured =
         integrations.stream()
             .filter(
-                adapter -> health(project, adapter).status() != IntegrationHealth.Status.MISSING)
+                adapter -> health(project, adapter).status() != IntegrationHealth.Status.MISSING
+            )
             .toList();
     if (configured.isEmpty()) {
       findings.add(
@@ -153,7 +168,9 @@ public final class DoctorService {
               legacyOpenCode ? Status.OK : Status.WARNING,
               legacyOpenCode
                   ? "OpenCode integration present."
-                  : "No supported agent integration configured."));
+                  : "No supported agent integration configured."
+          )
+      );
       return;
     }
     final String summary =
@@ -168,21 +185,25 @@ public final class DoctorService {
                             .map(IntegrationCapability::name)
                             .sorted()
                             .toList()
-                        + "]")
+                        + "]"
+            )
             .sorted()
             .reduce((left, right) -> left + ", " + right)
             .orElse("none");
     final boolean healthy =
         configured.stream()
             .allMatch(
-                adapter -> health(project, adapter).status() == IntegrationHealth.Status.INSTALLED);
+                adapter -> health(project, adapter).status() == IntegrationHealth.Status.INSTALLED
+            );
     findings.add(
         new Finding(
             "integration",
             healthy ? Status.OK : Status.WARNING,
             "Configured integrations: "
                 + summary
-                + (healthy ? "." : "; re-run integrate to repair.")));
+                + (healthy ? "." : "; re-run integrate to repair.")
+        )
+    );
   }
 
   /** Nested projects find integrations that install at the repository root there. */
@@ -192,7 +213,10 @@ public final class DoctorService {
   }
 
   private void diagnoseConfiguration(
-      final Path root, final EnvironmentFacts facts, final List<Finding> findings) {
+      final Path root,
+      final EnvironmentFacts facts,
+      final List<Finding> findings
+  ) {
     if (configurationReader == null || !flag(facts, "configurationPresent")) {
       return;
     }
@@ -203,7 +227,9 @@ public final class DoctorService {
           new Finding(
               "configuration",
               Status.ERROR,
-              "Configuration could not be read. Fix ward.toml and run doctor again."));
+              "Configuration could not be read. Fix ward.toml and run doctor again."
+          )
+      );
     }
   }
 
@@ -216,7 +242,8 @@ public final class DoctorService {
       final boolean passed,
       final Status failure,
       final String passedMessage,
-      final String failedMessage) {
+      final String failedMessage
+  ) {
     return passed
         ? new Finding(name, Status.OK, passedMessage)
         : new Finding(name, failure, failedMessage);

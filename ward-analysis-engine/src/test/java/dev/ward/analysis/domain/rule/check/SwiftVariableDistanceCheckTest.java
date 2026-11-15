@@ -20,7 +20,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class SwiftVariableDistanceCheckTest {
-
   private static final SyntaxNode ROOT = SwiftTestNodes.node("file", 0, 0);
   private static final SourceUnit EMPTY = new SourceUnit("m.swift", AnalysisLanguage.SWIFT, "");
   private static final int VALUE_3 = 3;
@@ -53,7 +52,8 @@ class SwiftVariableDistanceCheckTest {
         SwiftTestNodes.node("statement", VALUE_10, VALUE_20),
         SwiftTestNodes.node("statement", VALUE_20, VALUE_30),
         SwiftTestNodes.node("statement", VALUE_30, VALUE_40),
-        SwiftTestNodes.node("statement", VALUE_40, VALUE_50));
+        SwiftTestNodes.node("statement", VALUE_40, VALUE_50)
+    );
   }
 
   private static List<RuleMatch> distance(final int max, final UnitScopes scopes) {

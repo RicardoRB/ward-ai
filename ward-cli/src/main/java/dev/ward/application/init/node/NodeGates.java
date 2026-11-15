@@ -22,7 +22,10 @@ public final class NodeGates {
    * test gate named after the members' majority runner.
    */
   static Gates turborepo(
-      final Project project, final QualityPreset preset, final InitInputs inputs) {
+      final Project project,
+      final QualityPreset preset,
+      final InitInputs inputs
+  ) {
     final PackageManifest manifest = inputs.manifests().read(project.root());
     final String testGate = TurborepoPlan.testGate(project, inputs);
     final NodeTools tools = NodeTools.of(project, manifest, inputs, preset).withTestGate(testGate);
@@ -30,18 +33,23 @@ public final class NodeGates {
         TurborepoPlan.rootGates(
             languages(project, testGate).analysisGates(tools),
             TaskRunnerStrategies.of(project).orElseThrow(),
-            project.buildTool()),
-        List.of());
+            project.buildTool()
+        ),
+        List.of()
+    );
   }
 
   /** Returns the source-language gates of a Node project, by its language. */
   public static SourceLanguages<NodeTools> languages(final Project project, final String testGate) {
     return SourceLanguages.of(
-        Map.<Language, SourceLanguageGates<NodeTools>>of(
+        Map.<Language,
+        SourceLanguageGates<NodeTools>> of(
             Language.TYPESCRIPT,
             new TypeScriptGates(project.framework(), testGate),
             Language.JAVASCRIPT,
-            new JavaScriptGates(testGate)),
-        project);
+            new JavaScriptGates(testGate)
+        ),
+        project
+    );
   }
 }

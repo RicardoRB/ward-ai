@@ -8,7 +8,6 @@ import java.util.function.Function;
 
 /** The rules about {@code x-stability-level}: an invalid level, a level that went down. */
 final class StabilityRules {
-
   private static final List<String> LEVELS = List.of("draft", "alpha", "beta", "stable");
 
   private StabilityRules() {}
@@ -19,14 +18,18 @@ final class StabilityRules {
         RowRule.of("api-invalid-stability-level", StabilityRules::invalidEverywhere),
         decreased("api-stability-decreased", Subjects::operations),
         decreased("request-property-stability-decreased", Subjects::requestProperties),
-        decreased("response-property-stability-decreased", Subjects::responseProperties));
+        decreased("response-property-stability-decreased", Subjects::responseProperties)
+    );
   }
 
   private static List<BreakingFinding> invalidEverywhere(final DocumentPair pair) {
     final List<BreakingFinding> findings = new ArrayList<>();
     for (final Function<DocumentPair, List<Subject>> subjects :
-        List.<Function<DocumentPair, List<Subject>>>of(
-            Subjects::operations, Subjects::requestProperties, Subjects::responseProperties)) {
+        List.<Function<DocumentPair, List<Subject>>> of(
+            Subjects::operations,
+            Subjects::requestProperties,
+            Subjects::responseProperties
+        )) {
       for (final Subject subject : subjects.apply(pair)) {
         invalid(subject).ifPresent(findings::add);
       }
@@ -35,13 +38,17 @@ final class StabilityRules {
   }
 
   private static BreakingRule decreased(
-      final String id, final Function<DocumentPair, List<Subject>> subjects) {
+      final String id,
+      final Function<DocumentPair,
+      List<Subject>> subjects
+  ) {
     return RowRule.of(
         id,
         pair ->
             subjects.apply(pair).stream()
                 .flatMap(subject -> decreased(id, subject).stream())
-                .toList());
+                .toList()
+    );
   }
 
   private static Optional<BreakingFinding> invalid(final Subject subject) {
@@ -57,7 +64,9 @@ final class StabilityRules {
               level.get(),
               "the stability level '"
                   + level.get().text()
-                  + "' is not draft, alpha, beta or stable"));
+                  + "' is not draft, alpha, beta or stable"
+          )
+      );
     }
     return Optional.empty();
   }
@@ -74,7 +83,9 @@ final class StabilityRules {
               "the stability level decreased from "
                   + LEVELS.get(before)
                   + " to "
-                  + LEVELS.get(after)));
+                  + LEVELS.get(after)
+          )
+      );
     }
     return Optional.empty();
   }

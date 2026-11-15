@@ -37,7 +37,10 @@ public final class TypeFactsPrePass {
    * matching node, the resolver is not asked at all.
    */
   public UnitTypeFacts run(
-      final SourceUnit unit, final SyntaxNode root, final Collection<FactNeed> needs) {
+      final SourceUnit unit,
+      final SyntaxNode root,
+      final Collection<FactNeed> needs
+  ) {
     final Set<String> nodeKinds = new HashSet<>();
     final Set<FactKind> kinds = EnumSet.noneOf(FactKind.class);
     for (final FactNeed need : needs) {

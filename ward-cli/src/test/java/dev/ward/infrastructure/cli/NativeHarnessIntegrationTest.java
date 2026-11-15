@@ -15,7 +15,10 @@ class NativeHarnessIntegrationTest extends WardCliIntegrationSupport {
   @ParameterizedTest
   @MethodSource("harnesses")
   void installsAndRemovesEachNativeHarness(
-      final String id, final String config, final String hook) {
+      final String id,
+      final String config,
+      final String hook
+  ) {
     assertThat(run("integrate", id, "-C", project.toString())).isZero();
     assertThat(project.resolve(config)).exists();
     assertThat(hook.isEmpty() || Files.exists(project.resolve(hook))).isTrue();
@@ -34,6 +37,7 @@ class NativeHarnessIntegrationTest extends WardCliIntegrationSupport {
         Arguments.of("cline", ".cline/hooks/PostToolUse", ""),
         Arguments.of("factory-droid", ".factory/hooks.json", ".factory/hooks/ward.sh"),
         Arguments.of("amp", ".amp/plugins/ward.ts", ".amp/plugins/ward.sh"),
-        Arguments.of("junie", ".junie/config.json", ".junie/hooks/ward.sh"));
+        Arguments.of("junie", ".junie/config.json", ".junie/hooks/ward.sh")
+    );
   }
 }

@@ -19,7 +19,6 @@ import java.util.Set;
 
 /** Runs the Python type facts over a snippet of source, for the type-fact tests. */
 final class PythonTypeFactsFixtures {
-
   private static final String PROJECT_STUB = "helpers";
   private static final String PROJECT_STUB_TEXT =
       "def make() -> str: ...\nclass Pool:\n    def size(self) -> int: ...\n";
@@ -42,7 +41,8 @@ final class PythonTypeFactsFixtures {
       final PythonStubs stubs,
       final String source,
       final String snippet,
-      final Set<FactKind> kinds) {
+      final Set<FactKind> kinds
+  ) {
     final Span span = spanOf(source, snippet);
     final SourceUnit unit = new SourceUnit(FILE, AnalysisLanguage.PYTHON, source);
     final UnitTypeFacts answered =
@@ -55,7 +55,9 @@ final class PythonTypeFactsFixtures {
     final Map<String, String> modules = new HashMap<>(project);
     modules.putIfAbsent(PROJECT_STUB, PROJECT_STUB_TEXT);
     return new PythonStubs(
-        FRONTEND, name -> Optional.ofNullable(modules.get(name)).or(() -> bundled(name)));
+        FRONTEND,
+        name -> Optional.ofNullable(modules.get(name)).or(() -> bundled(name))
+    );
   }
 
   private static Optional<String> bundled(final String name) {

@@ -22,12 +22,12 @@ import java.util.stream.Stream;
  * The projects that the catalog fixtures run in: manifests, other sources, and graph companions.
  */
 final class FixtureProjects {
-
   private static final String PASSING = "passing";
   private static final Set<String> MANIFEST_NAMES =
       Stream.concat(
-              Stream.of("package.json", "pnpm-workspace.yaml"),
-              NodeImplicitUse.configFileNames().stream())
+          Stream.of("package.json", "pnpm-workspace.yaml"),
+          NodeImplicitUse.configFileNames().stream()
+      )
           .collect(Collectors.toUnmodifiableSet());
 
   private FixtureProjects() {}
@@ -37,12 +37,19 @@ final class FixtureProjects {
    * modules named {@code violating_*.py} beside it. Only the findings in {@code file} are compared.
    */
   static List<AnalysisFinding> projectFindings(
-      final RuleFixtureRunner runner, final RuleDefinition rule, final Path file)
+      final RuleFixtureRunner runner,
+      final RuleDefinition rule,
+      final Path file
+  )
       throws IOException {
     final List<SourceUnit> units = new ArrayList<>();
     units.add(
         new SourceUnit(
-            file.getFileName().toString(), AnalysisLanguage.PYTHON, Files.readString(file)));
+            file.getFileName().toString(),
+            AnalysisLanguage.PYTHON,
+            Files.readString(file)
+        )
+    );
     try (Stream<Path> siblings = Files.list(file.getParent())) {
       for (final Path companion :
           siblings
@@ -52,7 +59,9 @@ final class FixtureProjects {
             new SourceUnit(
                 companion.getFileName().toString(),
                 AnalysisLanguage.PYTHON,
-                Files.readString(companion)));
+                Files.readString(companion)
+            )
+        );
       }
     }
     return GraphFixtureRunner.run(runner.frontends(), rule, units).stream()
@@ -67,7 +76,9 @@ final class FixtureProjects {
   static FixtureProject fixtureProject(final Path file, final RuleDefinition rule)
       throws IOException {
     return new FixtureProject(
-        manifests(file), otherSources(file, rule.languages().iterator().next()));
+        manifests(file),
+        otherSources(file, rule.languages().iterator().next())
+    );
   }
 
   /** The project folder of a case: {@code passing-project} for a passing case that has one. */
@@ -138,7 +149,8 @@ final class FixtureProjects {
         if (MANIFEST_NAMES.contains(name)) {
           texts.put(
               project.relativize(manifest).toString().replace('\\', '/'),
-              Files.readString(manifest));
+              Files.readString(manifest)
+          );
         }
       }
     }

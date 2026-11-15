@@ -22,7 +22,10 @@ public final class CommandQualityGate implements QualityGate {
 
   /** Creates a gate that runs {@code command} without collecting report files. */
   public CommandQualityGate(
-      final String name, final CommandExecutor executor, final List<String> command) {
+      final String name,
+      final CommandExecutor executor,
+      final List<String> command
+  ) {
     this(name, executor, command, ReportDirectories.NONE);
   }
 
@@ -34,7 +37,8 @@ public final class CommandQualityGate implements QualityGate {
       final String name,
       final CommandExecutor executor,
       final List<String> command,
-      final ReportDirectories reportDirectories) {
+      final ReportDirectories reportDirectories
+  ) {
     this.name = name;
     this.executor = executor;
     this.command = List.copyOf(command);
@@ -67,7 +71,8 @@ public final class CommandQualityGate implements QualityGate {
               "event=report-directory-failed gate="
                   + name
                   + " error="
-                  + exception.getClass().getSimpleName());
+                  + exception.getClass().getSimpleName()
+      );
     }
   }
 }

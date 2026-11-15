@@ -40,7 +40,8 @@ final class ArchitectureBoundarySupport {
           "dev.ward.config.ReportBindingsModule",
           "dev.ward.config.RulesBindingsModule",
           "dev.ward.config.RulesCommandBindingsModule",
-          "dev.ward.config.WardProvidesModule");
+          "dev.ward.config.WardProvidesModule"
+      );
 
   /** The analysis packages that every layer may hold. */
   static final Set<String> ANALYSIS_PACKAGES =
@@ -57,7 +58,8 @@ final class ArchitectureBoundarySupport {
           "dev.ward.analysis.domain.format",
           "dev.ward.analysis.domain.scope",
           "dev.ward.analysis.domain.types",
-          "dev.ward.analysis.application.rule");
+          "dev.ward.analysis.application.rule"
+      );
 
   /**
    * The ANTLR frontend is an outbound adapter in its own module, {@code ward-frontend-antlr}.
@@ -87,14 +89,17 @@ final class ArchitectureBoundarySupport {
           Map.entry("secrets", Set.of()),
           Map.entry("update", Set.of()),
           Map.entry("vulnerability", Set.of("dependency", "gate")),
-          Map.entry("rules", Set.of()));
+          Map.entry("rules", Set.of())
+      );
 
   static final Map<String, Set<String>> APPLICATION_ENTRY_POINTS =
       Map.ofEntries(
           Map.entry("loop", Set.of("dev.ward.application.gate.CheckService")),
           Map.entry("format", Set.of()),
           Map.entry(
-              "buildpolicy", Set.of("dev.ward.application.dependency.DependencyInventoryService")),
+              "buildpolicy",
+              Set.of("dev.ward.application.dependency.DependencyInventoryService")
+          ),
           Map.entry(
               "gate",
               Set.of(
@@ -114,33 +119,44 @@ final class ArchitectureBoundarySupport {
                   "dev.ward.application.vulnerability.VulnerabilityRunMode",
                   "dev.ward.application.vulnerability.VulnerabilityScan",
                   "dev.ward.application.license.LicenseService",
-                  "dev.ward.application.license.PackageLicense")),
+                  "dev.ward.application.license.PackageLicense"
+              )
+          ),
           Map.entry(
               "init",
               Set.of(
                   "dev.ward.application.project.ProjectDetector",
-                  "dev.ward.application.project.ProjectNotFoundException")),
+                  "dev.ward.application.project.ProjectNotFoundException"
+              )
+          ),
           Map.entry(
               "agent",
               Set.of(
                   "dev.ward.application.project.ProjectDetector",
-                  "dev.ward.application.project.ProjectNotFoundException")),
+                  "dev.ward.application.project.ProjectNotFoundException"
+              )
+          ),
           Map.entry(
               "doctor",
               Set.of(
                   "dev.ward.application.project.ProjectDetector",
                   "dev.ward.application.gate.AnalysisRuleSource",
                   "dev.ward.application.gate.RuleConfigurationCheck",
-                  "dev.ward.application.gate.RuleSet")),
+                  "dev.ward.application.gate.RuleSet"
+              )
+          ),
           Map.entry("dependency", Set.of()),
           Map.entry(
               "vulnerability",
-              Set.of("dev.ward.application.dependency.DependencyInventoryService")),
+              Set.of("dev.ward.application.dependency.DependencyInventoryService")
+          ),
           Map.entry(
               "license",
               Set.of(
                   "dev.ward.application.dependency.DependencyInventoryService",
-                  "dev.ward.application.project.ProjectDetector")),
+                  "dev.ward.application.project.ProjectDetector"
+              )
+          ),
           Map.entry("project", Set.of()),
           Map.entry("analysis", Set.of()),
           Map.entry("learning", Set.of()),
@@ -153,7 +169,10 @@ final class ArchitectureBoundarySupport {
                   "dev.ward.application.gate.RuleConfigFile",
                   "dev.ward.application.gate.RuleConfigFile$Select",
                   "dev.ward.application.gate.RuleSelection",
-                  "dev.ward.application.gate.RuleSelection$Result")));
+                  "dev.ward.application.gate.RuleSelection$Result"
+              )
+          )
+      );
   // dev.ward.domain.<feature>: the feature is the fourth package segment.
   private static final int FEATURE_SEGMENT = 3;
 
@@ -173,7 +192,9 @@ final class ArchitectureBoundarySupport {
                   return parts.length > FEATURE_SEGMENT
                       && !parts[FEATURE_SEGMENT].equals(sourceFeature)
                       && !allowedTargets.contains(parts[FEATURE_SEGMENT]);
-                }));
+                }
+            )
+    );
   }
 
   static void assertApplicationEntryPoints(final JavaClasses classes) {
@@ -188,16 +209,21 @@ final class ArchitectureBoundarySupport {
                   }
                   final String sourcePrefix = "dev.ward.application." + sourceFeature + ".";
                   return !target.startsWith(sourcePrefix) && !allowedTargets.contains(target);
-                }));
+                }
+            )
+    );
   }
 
   static void assertFeatureAllowlistCoverage(
-      final JavaClasses classes, final String layerPrefix, final Set<String> declaredFeatures) {
+      final JavaClasses classes,
+      final String layerPrefix,
+      final Set<String> declaredFeatures
+  ) {
     final Set<String> discoveredFeatures =
         classes.stream()
             .map(JavaClass::getPackageName)
             .filter(packageName -> packageName.startsWith(layerPrefix))
-            .map(packageName -> packageName.substring(layerPrefix.length()).split("\\.")[0])
+            .map(packageName -> packageName.substring(layerPrefix.length()).split("\\.") [0])
             .collect(Collectors.toSet());
     assertThat(declaredFeatures)
         .as("documented features for %s", layerPrefix)
@@ -232,7 +258,8 @@ final class ArchitectureBoundarySupport {
    */
   private static boolean isGeneratedFrontendPackage(final String packageName) {
     return packageName.matches(
-        "dev\\.ward\\.analysis\\.(frontend\\.antlr|domain\\.node|domain\\.jvm|domain\\.python|domain\\.swift|domain\\.openapi|domain\\.android|application\\.(?:jvm|node|python|swift|openapi|android)|infrastructure\\.node)(\\..*)?");
+        "dev\\.ward\\.analysis\\.(frontend\\.antlr|domain\\.node|domain\\.jvm|domain\\.python|domain\\.swift|domain\\.openapi|domain\\.android|application\\.(?:jvm|node|python|swift|openapi|android)|infrastructure\\.node)(\\..*)?"
+    );
   }
 
   static boolean isDaggerGenerated(final String name) {
@@ -250,14 +277,15 @@ final class ArchitectureBoundarySupport {
         || target.startsWith("java.nio.channels.")
         || target.startsWith("java.nio.file.spi.")
         || Set.of(
-                "java.lang.Process",
-                "java.lang.ProcessBuilder",
-                "java.lang.ProcessHandle",
-                "java.lang.Runtime",
-                "java.nio.file.Files",
-                "java.nio.file.FileSystem",
-                "java.nio.file.FileSystems",
-                "java.nio.file.WatchService")
+            "java.lang.Process",
+            "java.lang.ProcessBuilder",
+            "java.lang.ProcessHandle",
+            "java.lang.Runtime",
+            "java.nio.file.Files",
+            "java.nio.file.FileSystem",
+            "java.nio.file.FileSystems",
+            "java.nio.file.WatchService"
+        )
             .contains(target);
   }
 
@@ -268,10 +296,11 @@ final class ArchitectureBoundarySupport {
   static boolean isNativeImageIncompatibleApi(final String target) {
     return target.startsWith("java.lang.classfile.")
         || Set.of(
-                "java.lang.invoke.MethodHandleProxies",
-                "java.lang.invoke.MethodHandles$Lookup",
-                "java.net.URLClassLoader",
-                "java.security.SecureClassLoader")
+            "java.lang.invoke.MethodHandleProxies",
+            "java.lang.invoke.MethodHandles$Lookup",
+            "java.net.URLClassLoader",
+            "java.security.SecureClassLoader"
+        )
             .contains(target);
   }
 
@@ -280,21 +309,23 @@ final class ArchitectureBoundarySupport {
         || target.startsWith("java.nio.channels.")
         || target.startsWith("java.nio.file.spi.")
         || Set.of(
-                "java.lang.Process",
-                "java.lang.ProcessBuilder",
-                "java.lang.ProcessHandle",
-                "java.lang.Runtime",
-                "java.nio.file.Files",
-                "java.nio.file.FileSystem",
-                "java.nio.file.FileSystems",
-                "java.nio.file.WatchService")
+            "java.lang.Process",
+            "java.lang.ProcessBuilder",
+            "java.lang.ProcessHandle",
+            "java.lang.Runtime",
+            "java.nio.file.Files",
+            "java.nio.file.FileSystem",
+            "java.nio.file.FileSystems",
+            "java.nio.file.WatchService"
+        )
             .contains(target);
   }
 
   static void assertNoDependencies(
       final JavaClasses classes,
       final String sourcePackage,
-      final Predicate<String> forbiddenTarget) {
+      final Predicate<String> forbiddenTarget
+  ) {
     final ArchRule rule =
         com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses()
             .that()
@@ -306,7 +337,8 @@ final class ArchitectureBoundarySupport {
                   public boolean test(final JavaClass target) {
                     return forbiddenTarget.test(target.getName());
                   }
-                });
+                }
+            );
     rule.check(classes);
   }
 }

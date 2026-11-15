@@ -20,7 +20,10 @@ public final class LicenseReaderFixtures {
 
   /** Returns a runtime dependency of {@code ecosystem}. */
   public static Dependency dependency(
-      final Ecosystem ecosystem, final String name, final String version) {
+      final Ecosystem ecosystem,
+      final String name,
+      final String version
+  ) {
     return new Dependency(
         new PackageId(ecosystem, name, version),
         DependencyRelation.DIRECT,
@@ -29,7 +32,8 @@ public final class LicenseReaderFixtures {
         "lock",
         "manifest",
         Set.of(),
-        Set.of());
+        Set.of()
+    );
   }
 
   /** Returns a project rooted at {@code root}. */

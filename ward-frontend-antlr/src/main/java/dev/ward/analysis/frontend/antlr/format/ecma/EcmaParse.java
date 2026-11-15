@@ -20,8 +20,8 @@ record EcmaParse(
     List<EcmaToken> tokens,
     List<FormatToken> syntaxTokens,
     List<FormatRule> rules,
-    OptionalInt errorLine) {
-
+    OptionalInt errorLine
+) {
   private static final String COMMA = ",";
 
   /** Copies the lists. */

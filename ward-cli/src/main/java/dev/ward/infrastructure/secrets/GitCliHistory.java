@@ -42,7 +42,10 @@ public final class GitCliHistory implements GitHistory {
 
   @Override
   public void patches(
-      final Path root, final Optional<LocalDate> since, final Consumer<List<HistoryPatch>> sink) {
+      final Path root,
+      final Optional<LocalDate> since,
+      final Consumer<List<HistoryPatch>> sink
+  ) {
     requireFullHistory(root);
     int skip = 0;
     while (true) {
@@ -71,7 +74,8 @@ public final class GitCliHistory implements GitHistory {
     }
     if (SHALLOW.equals(result.stdout().strip())) {
       throw new HistoryUnavailableException(
-          "the clone is shallow; fetch the full history (for example fetch-depth: 0) to scan it");
+          "the clone is shallow; fetch the full history (for example fetch-depth: 0) to scan it"
+      );
     }
   }
 
@@ -89,7 +93,9 @@ public final class GitCliHistory implements GitHistory {
             "--no-textconv",
             "--format=" + MARKER + "%H",
             "--max-count=" + BATCH,
-            "--skip=" + skip));
+            "--skip=" + skip
+        )
+    );
     since.ifPresent(day -> command.add("--since=" + day));
     final CommandResult result = executor.execute(command, root);
     if (result.hasExecutionError()) {
@@ -102,7 +108,8 @@ public final class GitCliHistory implements GitHistory {
       throw new HistoryUnavailableException(
           "the history from commit "
               + PatchParser.firstCommit(result.stdout(), MARKER, SHORT_ID)
-              + " is larger than the batch limit");
+              + " is larger than the batch limit"
+      );
     }
     return result.stdout();
   }

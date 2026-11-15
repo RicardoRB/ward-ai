@@ -28,7 +28,8 @@ class JavaSourceVisibilityTest {
     final List<DependencyEdge> edges =
         resolve(
             file(CHECKOUT, List.of(), List.of(PACKAGE_A, "name:Fixtures")),
-            file(FIXTURES, List.of("a.Fixtures"), List.of(PACKAGE_A)));
+            file(FIXTURES, List.of("a.Fixtures"), List.of(PACKAGE_A))
+        );
 
     assertThat(edges).isEmpty();
   }
@@ -40,7 +41,8 @@ class JavaSourceVisibilityTest {
             new JavaSourceRoot("api/src/main/java", "api", false),
             new JavaSourceRoot("api/src/test/java", "api", true),
             new JavaSourceRoot("domain/src/main/java", "domain", false),
-            new JavaSourceRoot("domain/src/test/java", "domain", true));
+            new JavaSourceRoot("domain/src/test/java", "domain", true)
+        );
     final String apiTest = "api/src/test/java/a/ApiTest.java";
     final String domainPrice = "domain/src/main/java/shop/domain/Price.java";
     final String apiFixtures = "api/src/test/java/a/Fixtures.java";
@@ -55,13 +57,18 @@ class JavaSourceVisibilityTest {
                             PACKAGE_A,
                             "name:shop.domain.Price",
                             "name:a.Fixtures",
-                            "name:shop.domain.Fixtures")),
+                            "name:shop.domain.Fixtures"
+                        )
+                    ),
                     file(domainPrice, List.of("shop.domain.Price"), List.of()),
                     file(
                         "domain/src/test/java/shop/domain/Fixtures.java",
                         List.of("shop.domain.Fixtures"),
-                        List.of()),
-                    file(apiFixtures, List.of("a.Fixtures"), List.of(PACKAGE_A))));
+                        List.of()
+                    ),
+                    file(apiFixtures, List.of("a.Fixtures"), List.of(PACKAGE_A))
+                )
+            );
 
     assertThat(targets(edges, apiTest)).containsExactly(apiFixtures, domainPrice);
   }
@@ -73,8 +80,10 @@ class JavaSourceVisibilityTest {
             file(
                 "api/Checkout.java",
                 List.of(),
-                List.of(PACKAGE_A, "static:shop.domain.Prices.ZERO")),
-            file("domain/Prices.java", List.of("shop.domain.Prices"), List.of()));
+                List.of(PACKAGE_A, "static:shop.domain.Prices.ZERO")
+            ),
+            file("domain/Prices.java", List.of("shop.domain.Prices"), List.of())
+        );
 
     assertThat(targets(edges, "api/Checkout.java")).containsExactly("domain/Prices.java");
   }

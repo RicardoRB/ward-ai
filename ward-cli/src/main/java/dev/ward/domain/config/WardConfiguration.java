@@ -10,7 +10,6 @@ import java.util.Set;
 
 /** Parsed {@code ward.toml}. Gates keep their declaration order. */
 public record WardConfiguration(int version, Map<String, GateConfiguration> checks) {
-
   public static final String FILE_NAME = "ward.toml";
   public static final int SUPPORTED_VERSION = 2;
   public static final String DEFAULT_PROFILE = "default";
@@ -35,7 +34,8 @@ public record WardConfiguration(int version, Map<String, GateConfiguration> chec
           if (gate.enabled()) {
             enabled.put(name, gate);
           }
-        });
+        }
+    );
     return enabled;
   }
 
@@ -59,7 +59,8 @@ public record WardConfiguration(int version, Map<String, GateConfiguration> chec
           if (config.profiles().stream().anyMatch(selectedNames::contains)) {
             selected.put(gate, config);
           }
-        });
+        }
+    );
     return new WardConfiguration(version, selected);
   }
 
@@ -71,7 +72,8 @@ public record WardConfiguration(int version, Map<String, GateConfiguration> chec
           if (types.contains(check.type())) {
             selected.put(name, check);
           }
-        });
+        }
+    );
     return new WardConfiguration(version, selected);
   }
 
@@ -85,20 +87,23 @@ public record WardConfiguration(int version, Map<String, GateConfiguration> chec
           if (!types.contains(check.type())) {
             remaining.put(name, check);
           }
-        });
+        }
+    );
     return new WardConfiguration(version, remaining);
   }
 
   private void requireKnownProfiles(final Set<String> selectedNames) {
     if (selectedNames.contains(DEFAULT_PROFILE) && !profileNames().contains(DEFAULT_PROFILE)) {
       throw new WardException(
-          "Nothing belongs to the default profile; pass --profile or add default to a gate's profiles.");
+          "Nothing belongs to the default profile; pass --profile or add default to a gate's profiles."
+      );
     }
     final Set<String> unknown = new LinkedHashSet<>(selectedNames);
     unknown.removeAll(profileNames());
     if (!unknown.isEmpty()) {
       throw new WardException(
-          "Unknown profiles " + unknown + ". Available profiles: " + profileNames());
+          "Unknown profiles " + unknown + ". Available profiles: " + profileNames()
+      );
     }
   }
 }

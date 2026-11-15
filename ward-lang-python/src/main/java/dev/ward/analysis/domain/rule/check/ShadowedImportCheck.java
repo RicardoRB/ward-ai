@@ -14,7 +14,6 @@ import java.util.Set;
  * same name are left to the reimported check.
  */
 public final class ShadowedImportCheck implements RuleCheck {
-
   private static final Set<String> IMPORTS = Set.of("import_name", "import_from");
   private static final Set<String> WRAPPERS =
       Set.of("file_input", "stmt", "simple_stmts", "simple_stmt", "small_stmt", "import_stmt");
@@ -49,7 +48,10 @@ public final class ShadowedImportCheck implements RuleCheck {
 
   /** Binds the names of one import statement, reporting an alias that an earlier name occupies. */
   private void bindStatement(
-      final SyntaxNode statement, final Set<String> bound, final List<RuleMatch> found) {
+      final SyntaxNode statement,
+      final Set<String> bound,
+      final List<RuleMatch> found
+  ) {
     for (final String[] item : items(SyntaxWalk.leaves(statement))) {
       if (item[ALIAS] != null && bound.contains(item[ALIAS])) {
         found.add(new RuleMatch(statement.span(), message));

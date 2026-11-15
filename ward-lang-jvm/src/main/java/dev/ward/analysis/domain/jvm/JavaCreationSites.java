@@ -13,7 +13,6 @@ import java.util.Optional;
  * site.
  */
 final class JavaCreationSites {
-
   private static final String NEW = "new";
   private static final String CREATED_NAME = "createdName";
   private static final String CLASS_CREATOR_REST = "classCreatorRest";
@@ -30,7 +29,10 @@ final class JavaCreationSites {
    * @return the site, or empty when the creation is an array
    */
   static Optional<FlowSite> of(
-      final JavaTypeNames types, final SyntaxNode expression, final SyntaxNode creator) {
+      final JavaTypeNames types,
+      final SyntaxNode expression,
+      final SyntaxNode creator
+  ) {
     final List<SyntaxNode> parts = JavaFlowSyntax.parts(creator);
     final SyntaxNode created = JavaFlowSyntax.firstOf(parts, CREATED_NAME);
     final SyntaxNode rest = JavaFlowSyntax.firstOf(parts, CLASS_CREATOR_REST);
@@ -46,7 +48,9 @@ final class JavaCreationSites {
             types.resolve(written),
             List.of(),
             JavaCallArguments.spans(JavaCallArguments.of(rest)),
-            expression.span()));
+            expression.span()
+        )
+    );
   }
 
   /**

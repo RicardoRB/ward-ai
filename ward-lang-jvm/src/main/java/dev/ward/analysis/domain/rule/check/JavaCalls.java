@@ -9,7 +9,6 @@ import java.util.Set;
 
 /** Reads the arguments of a call expression for the type-aware Java checks. */
 final class JavaCalls {
-
   /** The needs of a check that reads the call targets and the types of expressions. */
   static final FactNeed CALLS_AND_TYPES =
       new FactNeed(Set.of("expression"), Set.of(FactKind.CALL, FactKind.TYPE));
@@ -18,7 +17,8 @@ final class JavaCalls {
   static final FactNeed WITH_MEMBERS =
       new FactNeed(
           Set.of("expression"),
-          Set.of(FactKind.CALL, FactKind.TYPE, FactKind.SHAPE, FactKind.MEMBERS));
+          Set.of(FactKind.CALL, FactKind.TYPE, FactKind.SHAPE, FactKind.MEMBERS)
+      );
 
   private JavaCalls() {}
 
@@ -26,8 +26,8 @@ final class JavaCalls {
   static Optional<SyntaxNode> receiver(final SyntaxNode call) {
     final List<SyntaxNode> parts = call.children();
     return !parts.isEmpty()
-            && "expression".equals(parts.get(0).kind())
-            && JavaNodes.kid(call, "methodCall").isPresent()
+        && "expression".equals(parts.get(0).kind())
+        && JavaNodes.kid(call, "methodCall").isPresent()
         ? Optional.of(parts.get(0))
         : Optional.empty();
   }

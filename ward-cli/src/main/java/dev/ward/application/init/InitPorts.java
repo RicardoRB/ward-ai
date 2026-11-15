@@ -19,13 +19,15 @@ public record InitPorts(
     NodeInputs node,
     BuildToolConfiguration buildTools,
     PythonToolConfigs python,
-    ToolchainPorts toolchains) {
+    ToolchainPorts toolchains
+) {
   /** Creates the ports for a catalog that reads no Swift project or module plan. */
   public InitPorts(
       final EnvironmentInspection environment,
       final NodeInputs node,
       final BuildToolConfiguration buildTools,
-      final PythonToolConfigs python) {
+      final PythonToolConfigs python
+  ) {
     this(environment, node, buildTools, python, ToolchainPorts.NONE);
   }
 
@@ -33,7 +35,8 @@ public record InitPorts(
   public InitPorts(
       final EnvironmentInspection environment,
       final NodeInputs node,
-      final BuildToolConfiguration buildTools) {
+      final BuildToolConfiguration buildTools
+  ) {
     this(environment, node, buildTools, (root, tool) -> Optional.empty(), ToolchainPorts.NONE);
   }
 }

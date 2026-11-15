@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
  * {@code urlpatterns = [...]} are variables.
  */
 public final class PythonConstantNameCheck implements RuleCheck {
-
   private static final String NAME = "{value}";
   private static final Pattern CONSTANT = Pattern.compile("[A-Z_][A-Z0-9_]*|__.*__");
   private static final String ASSIGNMENT = "expr_stmt";
@@ -36,7 +35,9 @@ public final class PythonConstantNameCheck implements RuleCheck {
    */
   private static final Pattern LITERAL_TOKEN =
       Pattern.compile(
-          "\\d[\\w.+-]*|\\.\\d\\w*|[rRbBuU]{0,2}['\"].*|True|False|None|[-+()]", Pattern.DOTALL);
+          "\\d[\\w.+-]*|\\.\\d\\w*|[rRbBuU]{0,2}['\"].*|True|False|None|[-+()]",
+          Pattern.DOTALL
+      );
 
   private final String message;
 
@@ -61,7 +62,11 @@ public final class PythonConstantNameCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes();
     final List<RuleMatch> found = new ArrayList<>();
     for (final Binding binding : scopes.module().bindings()) {

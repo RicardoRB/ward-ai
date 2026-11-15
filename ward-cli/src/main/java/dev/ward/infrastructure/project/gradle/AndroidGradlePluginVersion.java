@@ -17,10 +17,12 @@ public final class AndroidGradlePluginVersion {
   private static final Pattern PLUGIN_VERSION =
       Pattern.compile(
           "com\\.android\\.(?:application|library)[\"']\\s*\\)?\\s*version\\s*\\(?\\s*[\"']"
-              + "([0-9][^\"']*)[\"']");
+              + "([0-9][^\"']*)[\"']"
+      );
   private static final Pattern CATALOG_REF =
       Pattern.compile(
-          "com\\.android\\.(?:application|library)\"\\s*,\\s*version\\.ref\\s*=\\s*\"([^\"]+)\"");
+          "com\\.android\\.(?:application|library)\"\\s*,\\s*version\\.ref\\s*=\\s*\"([^\"]+)\""
+      );
 
   private AndroidGradlePluginVersion() {}
 
@@ -50,7 +52,9 @@ public final class AndroidGradlePluginVersion {
     }
     final Matcher value =
         Pattern.compile(
-                "^\\s*" + Pattern.quote(ref.group(1)) + "\\s*=\\s*\"([^\"]+)\"", Pattern.MULTILINE)
+            "^\\s*" + Pattern.quote(ref.group(1)) + "\\s*=\\s*\"([^\"]+)\"",
+            Pattern.MULTILINE
+        )
             .matcher(toml);
     return value.find() ? Optional.of(value.group(1)) : Optional.empty();
   }

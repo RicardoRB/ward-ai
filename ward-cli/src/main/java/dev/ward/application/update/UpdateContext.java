@@ -12,12 +12,16 @@ import java.util.function.UnaryOperator;
  * @param windows whether the notice should show {@code install.ps1} instead of {@code install.sh}
  */
 public record UpdateContext(
-    InstantSource clock, UnaryOperator<String> environment, boolean windows) {
+    InstantSource clock,
+    UnaryOperator<String> environment,
+    boolean windows
+) {
   /** Returns the context of the running process. */
   public static UpdateContext system() {
     return new UpdateContext(
         InstantSource.system(),
         System::getenv,
-        System.getProperty("os.name", "").toLowerCase(Locale.ROOT).startsWith("windows"));
+        System.getProperty("os.name", "").toLowerCase(Locale.ROOT).startsWith("windows")
+    );
   }
 }

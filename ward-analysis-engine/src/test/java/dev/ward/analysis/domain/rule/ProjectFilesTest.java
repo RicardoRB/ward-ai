@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 /** The manifest texts a project check reads. */
 final class ProjectFilesTest {
-
   @Test
   void readsTextByPathAndReportsAbsentPaths() {
     final ProjectFiles files = new ProjectFiles(Map.of("package.json", "{}"));
@@ -51,7 +50,7 @@ final class ProjectFilesTest {
     withNull.put("package.json", null);
 
     assertThatThrownBy(() -> new ProjectFiles(withNull)).isInstanceOf(NullPointerException.class);
-    assertThatThrownBy(() -> new ProjectFiles((Map<String, String>) null))
+    assertThatThrownBy(() -> new ProjectFiles((Map<String, String>)null))
         .isInstanceOf(NullPointerException.class);
   }
 }

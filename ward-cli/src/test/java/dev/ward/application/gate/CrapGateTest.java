@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 
 /** Scoring and logging of the {@code crap} gate. */
 class CrapGateTest {
-
   private static final int SIX = CrapGateFixture.SIX;
   private static final int NINE = CrapGateFixture.NINE;
   private static final int SIX_END = CrapGateFixture.SIX_END;
@@ -45,7 +44,8 @@ class CrapGateTest {
               assertThat(finding.file()).isEqualTo(CART);
               assertThat(finding.line()).isEqualTo(2);
               assertThat(finding.message()).contains("42", "30", "complexity 6", "coverage 0%");
-            });
+            }
+        );
     assertThat(result.summary()).contains("1 function(s) scored", "1 above 30");
   }
 
@@ -77,7 +77,8 @@ class CrapGateTest {
     fixture.source(
         "src/main/java/com/shop/Other.java",
         CrapGateFixture.method(NINE).replace("Cart", "Other"),
-        BEFORE);
+        BEFORE
+    );
     fixture.report(REPORT, AFTER, fixture.entry(2, SIX_END, CrapGateFixture.range(2, SIX_END)));
 
     final GateResult result = fixture.run();
@@ -123,7 +124,7 @@ class CrapGateTest {
         .contains(Level.INFO + " event=crap-reports gate=crap reports=1")
         .anyMatch(
             message ->
-                message.startsWith(
-                    Level.INFO + " event=crap-scored gate=crap functions=1 above=1"));
+                message.startsWith(Level.INFO + " event=crap-scored gate=crap functions=1 above=1")
+        );
   }
 }

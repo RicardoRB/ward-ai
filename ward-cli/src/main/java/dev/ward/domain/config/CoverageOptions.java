@@ -10,7 +10,6 @@ import java.util.List;
  * @param minimumBranches the least branch coverage in percent, or {@code null} to check none
  */
 public record CoverageOptions(List<String> reports, Integer minimumBranches) {
-
   /** Copies the report paths. */
   public CoverageOptions {
     reports = List.copyOf(reports);

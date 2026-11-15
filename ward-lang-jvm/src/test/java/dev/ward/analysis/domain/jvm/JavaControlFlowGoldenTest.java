@@ -16,7 +16,6 @@ import org.junit.jupiter.params.provider.MethodSource;
  * with {@code -Dward.cfg.update=true} to rewrite the goldens for review.
  */
 class JavaControlFlowGoldenTest {
-
   private static final Path FIXTURES = Path.of("src/test/resources/cfg/java");
   private static final String UPDATE_PROPERTY = "ward.cfg.update";
 

@@ -8,7 +8,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class FormatOptionTest {
-
   private static final int DEFAULT_INDENT = 4;
 
   private static final FormatOption INDENT =
@@ -40,9 +39,14 @@ class FormatOptionTest {
   @Test
   void rejectsDefaultThatItDoesNotAccept() {
     assertThatThrownBy(
-            () ->
-                new FormatOption(
-                    "indent-style", FormatOptionType.TEXT, "mixed", List.of("space", "tab")))
+        () ->
+            new FormatOption(
+                "indent-style",
+                FormatOptionType.TEXT,
+                "mixed",
+                List.of("space", "tab")
+            )
+    )
         .isInstanceOf(IllegalArgumentException.class);
   }
 

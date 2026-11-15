@@ -20,7 +20,6 @@ import org.junit.jupiter.api.Test;
 
 /** Runs the Kotlin name-shadowing check over hand-made scope models of a unit. */
 class KotlinNameShadowingCheckTest {
-
   private static final String MESSAGE = "name shadowed: {value}";
   private static final int MODULE = 1;
   private static final int FUNCTION = 2;
@@ -34,12 +33,20 @@ class KotlinNameShadowingCheckTest {
   }
 
   private static Binding binding(
-      final String name, final BindingKind kind, final int offset, final int scope) {
+      final String name,
+      final BindingKind kind,
+      final int offset,
+      final int scope
+  ) {
     return new Binding(name, kind, at(offset), Set.of(), scope, Optional.empty());
   }
 
   private static Scope scope(
-      final int id, final ScopeKind kind, final int parent, final List<Binding> bindings) {
+      final int id,
+      final ScopeKind kind,
+      final int parent,
+      final List<Binding> bindings
+  ) {
     return new Scope(id, kind, parent, at(0), bindings, false);
   }
 
@@ -47,7 +54,7 @@ class KotlinNameShadowingCheckTest {
     final ScopeView view =
         new ScopeView(new UnitScopes(scopes, List.of()), Map.of(), Set.of(), NoScopes.INSTANCE);
     final SyntaxNode root = TokenTrees.tok("token", "x", 1, 0);
-    return new KotlinNameShadowingCheck(MESSAGE).matches(root, null, view, (SourceUnit) null);
+    return new KotlinNameShadowingCheck(MESSAGE).matches(root, null, view, (SourceUnit)null);
   }
 
   private static List<Scope> outerWithInnerBlock(final int outerOffset, final int innerOffset) {
@@ -58,12 +65,15 @@ class KotlinNameShadowingCheckTest {
             FUNCTION,
             ScopeKind.FUNCTION,
             MODULE,
-            List.of(binding("total", BindingKind.PARAMETER, outerOffset, FUNCTION))),
+            List.of(binding("total", BindingKind.PARAMETER, outerOffset, FUNCTION))
+        ),
         scope(
             BLOCK,
             ScopeKind.BLOCK,
             FUNCTION,
-            List.of(binding("total", BindingKind.VARIABLE, innerOffset, BLOCK))));
+            List.of(binding("total", BindingKind.VARIABLE, innerOffset, BLOCK))
+        )
+    );
   }
 
   @Test
@@ -87,12 +97,15 @@ class KotlinNameShadowingCheckTest {
                 BLOCK,
                 ScopeKind.BLOCK,
                 FUNCTION,
-                List.of(binding("value", BindingKind.VARIABLE, 10, BLOCK))),
+                List.of(binding("value", BindingKind.VARIABLE, 10, BLOCK))
+            ),
             scope(
                 SIBLING,
                 ScopeKind.BLOCK,
                 FUNCTION,
-                List.of(binding("value", BindingKind.VARIABLE, 40, SIBLING))));
+                List.of(binding("value", BindingKind.VARIABLE, 40, SIBLING))
+            )
+        );
 
     assertThat(matches(scopes)).isEmpty();
   }
@@ -107,12 +120,15 @@ class KotlinNameShadowingCheckTest {
                 FUNCTION,
                 ScopeKind.CLASS,
                 MODULE,
-                List.of(binding("total", BindingKind.VARIABLE, 10, FUNCTION))),
+                List.of(binding("total", BindingKind.VARIABLE, 10, FUNCTION))
+            ),
             scope(
                 BLOCK,
                 ScopeKind.BLOCK,
                 FUNCTION,
-                List.of(binding("total", BindingKind.VARIABLE, 30, BLOCK))));
+                List.of(binding("total", BindingKind.VARIABLE, 30, BLOCK))
+            )
+        );
 
     assertThat(matches(scopes)).isEmpty();
   }

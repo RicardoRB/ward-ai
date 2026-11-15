@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
  * A {@code val} that holds a new object has that object's type, and calls on it name the object.
  */
 class KotlinConstructedReceiverTest {
-
   private static final String IMPORT = "import javax.naming.InitialContext\n";
 
   private static FlowSite lookup(final String body) {

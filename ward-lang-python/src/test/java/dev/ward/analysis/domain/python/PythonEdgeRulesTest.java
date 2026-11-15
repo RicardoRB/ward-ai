@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks when the Python resolver gives no edge, gives an edge to a test file, and is stable. */
 final class PythonEdgeRulesTest {
-
   private static final PythonProjectLayout SRC = new PythonProjectLayout(List.of("src/"));
 
   @Test
@@ -24,7 +23,8 @@ final class PythonEdgeRulesTest {
             SRC,
             file("src/shop/price.py"),
             file("src/shop/controller/clean.py", "from:3::price"),
-            file("src/shop/__init__.py", "from:2::price"));
+            file("src/shop/__init__.py", "from:2::price")
+        );
 
     assertThat(edges).isEmpty();
   }
@@ -40,7 +40,8 @@ final class PythonEdgeRulesTest {
         resolve(
             SRC,
             file("src/shop/price.py"),
-            file("tests/test_price.py", "abs:shop.price", "from:1::price"));
+            file("tests/test_price.py", "abs:shop.price", "from:1::price")
+        );
 
     assertThat(edgeKeys(edges)).containsExactly("tests/test_price.py -> src/shop/price.py");
   }
@@ -65,13 +66,15 @@ final class PythonEdgeRulesTest {
             file("src/shop/__init__.py"),
             file("src/shop/price.py", "abs:shop.repository"),
             file("src/shop/repository/__init__.py"),
-            file("src/shop/app.py", "from:0:shop:price", "from:0:shop.repository:Store"));
+            file("src/shop/app.py", "from:0:shop:price", "from:0:shop.repository:Store")
+        );
     final List<FileSummary> reversed = new ArrayList<>(summaries);
     Collections.reverse(reversed);
 
     assertThat(edgeKeys(new PythonDependencyResolver(SRC).resolve(reversed)))
         .containsExactlyInAnyOrderElementsOf(
-            edgeKeys(new PythonDependencyResolver(SRC).resolve(summaries)));
+            edgeKeys(new PythonDependencyResolver(SRC).resolve(summaries))
+        );
     assertThat(edgeKeys(resolve(SRC, summaries.toArray(FileSummary[]::new))))
         .contains("src/shop/app.py -> src/shop/repository/__init__.py");
   }

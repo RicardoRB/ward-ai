@@ -7,22 +7,23 @@ import org.w3c.dom.Element;
 
 /** Runs PMD once over every fixture with all of its Java rule categories. */
 final class PmdParity implements ParityTool {
-
   private static final String CATEGORIES =
       String.join(
           ",",
           List.of(
-                  "bestpractices",
-                  "codestyle",
-                  "design",
-                  "documentation",
-                  "errorprone",
-                  "multithreading",
-                  "performance",
-                  "security")
+              "bestpractices",
+              "codestyle",
+              "design",
+              "documentation",
+              "errorprone",
+              "multithreading",
+              "performance",
+              "security"
+          )
               .stream()
               .map(category -> "category/java/" + category + ".xml")
-              .toList());
+              .toList()
+      );
 
   @Override
   public String name() {
@@ -57,9 +58,11 @@ final class PmdParity implements ParityTool {
             "-r",
             report.toString(),
             "--no-fail-on-violation",
-            "--no-fail-on-error"),
+            "--no-fail-on-error"
+        ),
         folder.resolve("stdout.txt"),
-        folder.resolve("stderr.txt"));
+        folder.resolve("stderr.txt")
+    );
     final ParityRun run = new ParityRun();
     for (final Element file :
         ParityXml.elements(ParityXml.parse(report).getDocumentElement(), "file")) {
@@ -69,7 +72,8 @@ final class PmdParity implements ParityTool {
             fixture,
             violation.getAttribute("rule"),
             ParityXml.number(violation, "beginline"),
-            ParityXml.number(violation, "begincolumn"));
+            ParityXml.number(violation, "begincolumn")
+        );
       }
     }
     return run;

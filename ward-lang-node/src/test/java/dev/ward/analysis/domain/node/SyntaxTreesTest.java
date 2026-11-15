@@ -9,7 +9,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class SyntaxTreesTest {
-
   private static final Span LINE = new Span(1, 1, 1, 2, 0, 1);
 
   @Test
@@ -19,7 +18,8 @@ class SyntaxTreesTest {
             "functionBody",
             node("ifStatement", node("error")),
             node("error"),
-            node("singleExpression"));
+            node("singleExpression")
+        );
 
     final SyntaxNode pruned = SyntaxTrees.withoutErrors(tree);
 

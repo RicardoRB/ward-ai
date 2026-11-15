@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
  * assigned there yet, so the accessor returns the default value; the component parameter is meant.
  */
 public final class CompactConstructorAccessorCheck implements RuleCheck {
-
   private static final String RECORD = "recordDeclaration";
   private static final String RECORD_BODY = "recordBody";
   private static final String RECORD_HEADER = "recordHeader";
@@ -49,7 +48,10 @@ public final class CompactConstructorAccessorCheck implements RuleCheck {
   }
 
   private void report(
-      final SyntaxNode compact, final Pattern accessor, final List<RuleMatch> matches) {
+      final SyntaxNode compact,
+      final Pattern accessor,
+      final List<RuleMatch> matches
+  ) {
     SyntaxWalk.descendants(compact).stream()
         .filter(node -> EXPRESSION.equals(node.kind()))
         .filter(node -> accessor.matcher(SyntaxWalk.text(node)).matches())

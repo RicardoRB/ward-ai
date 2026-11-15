@@ -30,7 +30,8 @@ class TurborepoAgentRulesTest {
             Set.of(),
             "24",
             TaskRunner.TURBO,
-            null);
+            null
+        );
     final List<InitGateOption> gates =
         List.of(
             new InitGateOption(
@@ -38,7 +39,9 @@ class TurborepoAgentRulesTest {
                 "Type-checks.",
                 List.of("pnpm", "exec", "turbo", "run", "check-types"),
                 true,
-                ""));
+                ""
+            )
+        );
 
     final List<String> lines = NodeAgentRules.lines(root, gates, QualityPreset.STANDARD, Set.of());
 

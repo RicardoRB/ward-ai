@@ -15,7 +15,8 @@ final class IgnoredInstallTools {
     if (!selection.installTools().isEmpty()) {
       LOGGER.log(
           Level.WARNING,
-          () -> "event=init-install-tool-ignored count=" + selection.installTools().size());
+          () -> "event=init-install-tool-ignored count=" + selection.installTools().size()
+      );
     }
   }
 }

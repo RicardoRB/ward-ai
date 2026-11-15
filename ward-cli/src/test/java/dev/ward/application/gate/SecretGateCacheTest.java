@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 
 /** The {@code secrets} gate: SecretGateCacheTest. */
 final class SecretGateCacheTest extends SecretGateTestSupport {
-
   @Test
   void aSecondRunReadsTheCacheAndAChangedFileRunsAgain() throws IOException {
     write(CONFIG, TOKEN_LINE);
@@ -73,7 +72,8 @@ final class SecretGateCacheTest extends SecretGateTestSupport {
             null,
             null,
             null,
-            null);
+            null
+        );
 
     final GateResult wardResult =
         AnalysisGates.create(ward, ports)

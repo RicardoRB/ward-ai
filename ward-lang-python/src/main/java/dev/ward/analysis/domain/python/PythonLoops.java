@@ -11,7 +11,6 @@ import java.util.Set;
  * yields a value, and which names its target binds when the iterable may be empty.
  */
 public final class PythonLoops {
-
   private static final String FOR = "for_stmt";
   private static final String TARGET = "exprlist";
   private static final String NAME = "name";

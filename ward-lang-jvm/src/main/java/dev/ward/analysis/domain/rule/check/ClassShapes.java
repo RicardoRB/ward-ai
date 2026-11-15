@@ -7,7 +7,6 @@ import java.util.Set;
 
 /** Reads the header and the members of a class declaration for the SpotBugs ports. */
 final class ClassShapes {
-
   private static final String VARIABLE_ID = "variableDeclaratorId";
 
   private ClassShapes() {}

@@ -14,8 +14,13 @@ package dev.ward.analysis.domain.ir;
  * @param endOffset character offset after the last character
  */
 public record Span(
-    int startLine, int startColumn, int endLine, int endColumn, int startOffset, int endOffset) {
-
+    int startLine,
+    int startColumn,
+    int endLine,
+    int endColumn,
+    int startOffset,
+    int endOffset
+) {
   /**
    * Validates the positions.
    *

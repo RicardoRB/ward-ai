@@ -23,7 +23,8 @@ final class NativeArtifactPlans {
         adapter.configContent(),
         definition.hasHookFile() ? adapter.hookContent() : null,
         adapter.capabilities(),
-        definition.legacyFiles().stream().map(root::resolve).toList());
+        definition.legacyFiles().stream().map(root::resolve).toList()
+    );
   }
 
   /** Plans an install with the same ownership decision {@link #integrate} writes with. */
@@ -33,12 +34,16 @@ final class NativeArtifactPlans {
       changes.add(
           new PlannedFileChange(
               plan.configPath(),
-              IntegrationArtifacts.decide(plan.configPath(), plan.marker(), plan.configContent())));
+              IntegrationArtifacts.decide(plan.configPath(), plan.marker(), plan.configContent())
+          )
+      );
       if (plan.hasHook()) {
         changes.add(
             new PlannedFileChange(
                 plan.hookPath(),
-                IntegrationArtifacts.decide(plan.hookPath(), plan.marker(), plan.hookContent())));
+                IntegrationArtifacts.decide(plan.hookPath(), plan.marker(), plan.hookContent())
+            )
+        );
       }
       for (final Path legacy : plan.legacyPaths()) {
         changes.addAll(plan.legacy(legacy).plan());
@@ -46,7 +51,9 @@ final class NativeArtifactPlans {
       return changes;
     } catch (IOException exception) {
       throw new UncheckedIOException(
-          "Could not plan " + plan.id() + " integration: " + exception.getMessage(), exception);
+          "Could not plan " + plan.id() + " integration: " + exception.getMessage(),
+          exception
+      );
     }
   }
 }

@@ -27,12 +27,9 @@ class SvelteCheckCommandTest {
       "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json";
 
   @ParameterizedTest
-  @CsvSource({
-    "NPM, npm run check",
-    "PNPM, pnpm run check",
-    "YARN, yarn run check",
-    "BUN, bun run check"
-  })
+  @CsvSource(
+      {"NPM, npm run check", "PNPM, pnpm run check", "YARN, yarn run check", "BUN, bun run check"}
+  )
   void runsTheCheckScriptThatSyncsSvelteKit(final BuildTool manager, final String command) {
     assertThat(String.join(" ", command(manager, syncing()))).isEqualTo(command);
   }
@@ -56,14 +53,16 @@ class SvelteCheckCommandTest {
   private static List<String> command(final BuildTool manager, final PackageManifest manifest) {
     final InitGateOption gate =
         new InitGeneralCatalog(
-                new InitInputs(
-                    new FakeEnvironmentInspection("npm", "pnpm", "yarn", "bun"),
-                    root -> manifest,
-                    root -> false))
+            new InitInputs(
+                new FakeEnvironmentInspection("npm", "pnpm", "yarn", "bun"),
+                root -> manifest,
+                root -> false
+            )
+        )
             .gates(project(manager), null).stream()
-                .filter(option -> "svelte-check".equals(option.id()))
-                .findFirst()
-                .orElseThrow();
+            .filter(option -> "svelte-check".equals(option.id()))
+            .findFirst()
+            .orElseThrow();
     return gate.command();
   }
 
@@ -78,6 +77,7 @@ class SvelteCheckCommandTest {
         Set.of(),
         "24",
         TaskRunner.NONE,
-        null);
+        null
+    );
   }
 }

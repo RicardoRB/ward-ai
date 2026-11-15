@@ -8,12 +8,12 @@ import dev.ward.analysis.domain.port.ControlFlowResult;
 import org.junit.jupiter.api.Test;
 
 class NodeControlFlowTest {
-
   @Test
   void nestedArrowFunctionGetsItsOwnGraph() {
     final ControlFlowResult result =
         NodeFlowFixtures.lower(
-            "function outer() {\n  const inner = () => {\n    x();\n  };\n  inner();\n}\n");
+            "function outer() {\n  const inner = () => {\n    x();\n  };\n  inner();\n}\n"
+        );
 
     assertThat(NodeFlowFixtures.names(result)).containsExactlyInAnyOrder("outer", "inner");
   }
@@ -24,11 +24,13 @@ class NodeControlFlowTest {
     final ControlFlowGraph graph = NodeFlowFixtures.lowerNamed(source, "f");
 
     assertThat(
-            NodeFlowFixtures.hasEdge(
-                graph,
-                NodeFlowFixtures.blockWith(graph, source, "await h()"),
-                NodeFlowFixtures.blockWith(graph, source, "g(a)"),
-                FlowEdgeKind.NORMAL))
+        NodeFlowFixtures.hasEdge(
+            graph,
+            NodeFlowFixtures.blockWith(graph, source, "await h()"),
+            NodeFlowFixtures.blockWith(graph, source, "g(a)"),
+            FlowEdgeKind.NORMAL
+        )
+    )
         .isTrue();
   }
 
@@ -39,8 +41,13 @@ class NodeControlFlowTest {
 
     final int first = NodeFlowFixtures.blockWith(graph, source, "a");
     assertThat(
-            NodeFlowFixtures.hasEdge(
-                graph, first, NodeFlowFixtures.blockWith(graph, source, "b()"), FlowEdgeKind.TRUE))
+        NodeFlowFixtures.hasEdge(
+            graph,
+            first,
+            NodeFlowFixtures.blockWith(graph, source, "b()"),
+            FlowEdgeKind.TRUE
+        )
+    )
         .isTrue();
   }
 
@@ -50,11 +57,13 @@ class NodeControlFlowTest {
     final ControlFlowGraph graph = NodeFlowFixtures.lowerNamed(source, "f");
 
     assertThat(
-            NodeFlowFixtures.hasEdge(
-                graph,
-                NodeFlowFixtures.blockWith(graph, source, "throw"),
-                graph.exit(),
-                FlowEdgeKind.EXCEPTION))
+        NodeFlowFixtures.hasEdge(
+            graph,
+            NodeFlowFixtures.blockWith(graph, source, "throw"),
+            graph.exit(),
+            FlowEdgeKind.EXCEPTION
+        )
+    )
         .isTrue();
   }
 
@@ -65,11 +74,13 @@ class NodeControlFlowTest {
     final ControlFlowGraph graph = NodeFlowFixtures.lowerNamed(source, "f");
 
     assertThat(
-            NodeFlowFixtures.hasEdge(
-                graph,
-                NodeFlowFixtures.blockWith(graph, source, "return 1"),
-                NodeFlowFixtures.blockWith(graph, source, "cleanup()"),
-                FlowEdgeKind.NORMAL))
+        NodeFlowFixtures.hasEdge(
+            graph,
+            NodeFlowFixtures.blockWith(graph, source, "return 1"),
+            NodeFlowFixtures.blockWith(graph, source, "cleanup()"),
+            FlowEdgeKind.NORMAL
+        )
+    )
         .isTrue();
   }
 
@@ -85,7 +96,8 @@ class NodeControlFlowTest {
     final ControlFlowResult result =
         NodeFlowFixtures.lower(
             "function bad() { break; }\nfunction cont() { continue; }\n"
-                + "function lbl() { while (true) { break nowhere; } }\nfunction good() { x(); }\n");
+                + "function lbl() { while (true) { break nowhere; } }\nfunction good() { x(); }\n"
+        );
 
     assertThat(result.failures()).isEmpty();
     assertThat(NodeFlowFixtures.names(result)).contains("bad", "cont", "lbl", "good");

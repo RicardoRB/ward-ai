@@ -12,7 +12,6 @@ import java.util.Set;
  * do. A constructor is not a method, so it is never reported.
  */
 public final class MemberNamedAfterClassCheck implements UnitCheck {
-
   /** The member kind that selects fields. */
   public static final String FIELD = "field";
 

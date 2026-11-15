@@ -16,7 +16,6 @@ import java.util.Set;
  * closes it again; the built-in scope and the module scope exist from the start.
  */
 public final class ScopeBuilder extends ScopeDeclarations {
-
   private final ClassScopes classScopes;
   private final List<Pending> pending = new ArrayList<>();
   private final Deque<Integer> stack = new ArrayDeque<>();
@@ -80,7 +79,11 @@ public final class ScopeBuilder extends ScopeDeclarations {
 
   /** Records a use of {@code name} in scope {@code id}. */
   public void referenceIn(
-      final int id, final String name, final Span span, final ReferenceAccess access) {
+      final int id,
+      final String name,
+      final Span span,
+      final ReferenceAccess access
+  ) {
     pending.add(new Pending(name, span, access, id));
   }
 
@@ -89,8 +92,8 @@ public final class ScopeBuilder extends ScopeDeclarations {
     final List<Scope> scopes = new ArrayList<>();
     for (int id = 0; id < kinds.size(); id++) {
       scopes.add(
-          new Scope(
-              id, kinds.get(id), parents.get(id), spans.get(id), bindingsOf(id), open.get(id)));
+          new Scope(id, kinds.get(id), parents.get(id), spans.get(id), bindingsOf(id), open.get(id))
+      );
     }
     final ScopeResolver resolver = new ScopeResolver(scopes, classScopes);
     final List<NameReference> references =
@@ -110,7 +113,8 @@ public final class ScopeBuilder extends ScopeDeclarations {
         use.access(),
         use.scope(),
         found.map(ScopeResolver.Found::binding),
-        found.map(ScopeResolver.Found::before).orElse(false));
+        found.map(ScopeResolver.Found::before).orElse(false)
+    );
   }
 
   private record Pending(String name, Span span, ReferenceAccess access, int scope) {}

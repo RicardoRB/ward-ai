@@ -17,7 +17,6 @@ import org.junit.jupiter.params.provider.MethodSource;
  * .scopes} golden. Run with {@code -Dward.scopes.update=true} to rewrite the goldens for review.
  */
 class NodeScopeGoldenTest {
-
   private static final Path ROOT = Path.of("src/test/resources/scopes");
   private static final String UPDATE_PROPERTY = "ward.scopes.update";
 

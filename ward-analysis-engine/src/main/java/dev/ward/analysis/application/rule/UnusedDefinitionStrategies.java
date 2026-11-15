@@ -5,7 +5,6 @@ import java.util.Optional;
 
 /** The unused-definition strategy of each language that has unused-definition rules. */
 final class UnusedDefinitionStrategies {
-
   private UnusedDefinitionStrategies() {}
 
   /**

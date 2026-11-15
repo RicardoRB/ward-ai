@@ -15,7 +15,6 @@ import java.util.Set;
  * the attribute name. Dynamic values and unknown attributes are not checked.
  */
 public final class BiomeAriaValuesCheck implements RuleCheck {
-
   private static final String PREFIX = "aria-";
 
   private final AriaRoleTable table;
@@ -40,7 +39,10 @@ public final class BiomeAriaValuesCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final SourceUnit unit
+  ) {
     return SyntaxWalk.visits(root, Set.of(JsxAttributes.OPENING, JsxAttributes.SELF_CLOSING))
         .stream()
         .flatMap(visit -> invalid(visit.node(), unit.text()).stream())

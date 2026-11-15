@@ -73,8 +73,11 @@ class OwnedSectionWriterTest {
         .isEmpty();
     assertThat(OwnedSectionWriter.update(section("x\n", false), BEGIN + "\n")).isEmpty();
     assertThat(
-            OwnedSectionWriter.update(
-                section("x\n", false), BEGIN + "\n" + END + "\n" + BEGIN + "\n" + END + "\n"))
+        OwnedSectionWriter.update(
+            section("x\n", false),
+            BEGIN + "\n" + END + "\n" + BEGIN + "\n" + END + "\n"
+        )
+    )
         .isEmpty();
   }
 

@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.Test;
 
 class ExcludeGlobTest {
-
   @Test
   void doubleStarCrossesDirectoriesAndSingleStarDoesNot() {
     assertThat(ExcludeGlob.compile("src/generated/**").matcher("src/generated/a/B.java").matches())

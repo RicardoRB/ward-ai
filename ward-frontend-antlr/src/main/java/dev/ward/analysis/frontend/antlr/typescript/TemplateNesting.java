@@ -10,7 +10,6 @@ import java.util.Deque;
  * code around it.
  */
 public final class TemplateNesting {
-
   private int depth;
   private int braces;
   private final Deque<Integer> enclosingBraces = new ArrayDeque<>();

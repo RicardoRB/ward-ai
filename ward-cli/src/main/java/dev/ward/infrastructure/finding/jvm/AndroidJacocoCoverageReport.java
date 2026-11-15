@@ -50,7 +50,8 @@ public final class AndroidJacocoCoverageReport implements CoverageReport {
             .toList();
     if (reports.isEmpty()) {
       return LineCoverage.unusable(
-          "No JaCoCo XML report was found under build/reports." + RUN_TESTS_FIRST);
+          "No JaCoCo XML report was found under build/reports." + RUN_TESTS_FIRST
+      );
     }
     long covered = 0;
     long missed = 0;
@@ -58,7 +59,8 @@ public final class AndroidJacocoCoverageReport implements CoverageReport {
       final Optional<LineTotals> totals = lineTotals(report);
       if (totals.isEmpty()) {
         return LineCoverage.unusable(
-            report.getFileName() + " cannot be parsed as a JaCoCo report.");
+            report.getFileName() + " cannot be parsed as a JaCoCo report."
+        );
       }
       covered += totals.get().covered();
       missed += totals.get().missed();
@@ -66,7 +68,8 @@ public final class AndroidJacocoCoverageReport implements CoverageReport {
     if (covered + missed == 0) {
       return LineCoverage.unusable(
           "The JaCoCo report has no executable lines. Enable unit test coverage for the debug"
-              + " build type.");
+              + " build type."
+      );
     }
     return LineCoverage.of(covered, covered + missed);
   }
@@ -97,7 +100,8 @@ public final class AndroidJacocoCoverageReport implements CoverageReport {
           && LINE.equals(counter.getAttribute("type"))) {
         return new LineTotals(
             Long.parseLong(counter.getAttribute("covered")),
-            Long.parseLong(counter.getAttribute("missed")));
+            Long.parseLong(counter.getAttribute("missed"))
+        );
       }
     }
     return new LineTotals(0, 0);

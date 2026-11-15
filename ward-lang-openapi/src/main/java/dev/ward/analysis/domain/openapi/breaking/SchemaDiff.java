@@ -10,12 +10,14 @@ import java.util.Set;
 
 /** Compares a schema of the base with the same schema of the revision. */
 final class SchemaDiff {
-
   private SchemaDiff() {}
 
   /** The changes of the schema itself, not of what lies below it. */
   static List<SchemaChange> root(
-      final SchemaSides sides, final DocNode base, final DocNode revision) {
+      final SchemaSides sides,
+      final DocNode base,
+      final DocNode revision
+  ) {
     final List<SchemaChange> changes = new ArrayList<>();
     changes.addAll(LimitChanges.changes(sides, base, revision));
     changes.addAll(KeywordChanges.changes(sides, base, revision));
@@ -28,7 +30,10 @@ final class SchemaDiff {
 
   /** The changes of every schema below the root: its properties, items and extra properties. */
   static List<SchemaChange> below(
-      final SchemaSides sides, final DocNode base, final DocNode revision) {
+      final SchemaSides sides,
+      final DocNode base,
+      final DocNode revision
+  ) {
     final List<SchemaChange> changes = new ArrayList<>();
     for (final Pair pair : nested(sides, base, revision)) {
       changes.addAll(root(sides, pair.base(), pair.revision()));
@@ -38,7 +43,10 @@ final class SchemaDiff {
 
   /** The required-property changes of the root and of every schema below it. */
   static List<SchemaChange> required(
-      final SchemaSides sides, final DocNode base, final DocNode revision) {
+      final SchemaSides sides,
+      final DocNode base,
+      final DocNode revision
+  ) {
     final List<SchemaChange> changes =
         new ArrayList<>(RequiredChanges.changes(sides, base, revision));
     for (final Pair pair : nested(sides, base, revision)) {
@@ -63,7 +71,8 @@ final class SchemaDiff {
       final DocNode base,
       final DocNode revision,
       final Set<DocNode> seen,
-      final List<Pair> pairs) {
+      final List<Pair> pairs
+  ) {
     if (!seen.add(base)) {
       return;
     }
@@ -80,7 +89,8 @@ final class SchemaDiff {
               .flatMap(properties -> properties.get(property.key()))
               .map(sides.revision()::resolve),
           seen,
-          pairs);
+          pairs
+      );
     }
   }
 
@@ -89,7 +99,8 @@ final class SchemaDiff {
       final Optional<DocNode> base,
       final Optional<DocNode> revision,
       final Set<DocNode> seen,
-      final List<Pair> pairs) {
+      final List<Pair> pairs
+  ) {
     if (base.isPresent() && revision.isPresent()) {
       pairs.add(new Pair(base.get(), revision.get()));
       collect(sides, base.get(), revision.get(), seen, pairs);

@@ -8,7 +8,6 @@ import java.util.Optional;
 
 /** {@code oas3-valid-media-example}: the examples of a media type, header or parameter fit. */
 final class MediaExampleRules {
-
   private static final String EXAMPLE = "example";
   private static final String EXAMPLES = "examples";
 
@@ -32,7 +31,11 @@ final class MediaExampleRules {
   }
 
   private static void media(
-      final ExampleChecks checks, final DocNode node, final DocNode schema, final Relax relax) {
+      final ExampleChecks checks,
+      final DocNode node,
+      final DocNode schema,
+      final Relax relax
+  ) {
     final Optional<DocNode> single = node.get(EXAMPLE);
     if (single.isPresent()) {
       checks.validate(schema, single.get(), EXAMPLE, relax);
@@ -48,7 +51,8 @@ final class MediaExampleRules {
       final ExampleChecks checks,
       final DocNode schema,
       final DocNode.Entry entry,
-      final Relax relax) {
+      final Relax relax
+  ) {
     final DocNode example = entry.value();
     if (example.kind() != DocNode.Kind.OBJECT || example.get("externalValue").isPresent()) {
       return;

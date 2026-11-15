@@ -12,7 +12,6 @@ import java.util.List;
  *     for a rule that does not read them
  */
 public record FlowView(List<ControlFlowGraph> graphs, List<ControlFlowGraph> related) {
-
   /** The view of a rule that reads no graphs. */
   public static final FlowView NONE = new FlowView(List.of());
 

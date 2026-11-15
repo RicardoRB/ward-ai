@@ -4,7 +4,6 @@ import dev.ward.analysis.domain.format.Document;
 
 /** Places a break at an indent depth, for the layout's line breaks. */
 final class KotlinBreaks {
-
   private KotlinBreaks() {}
 
   /**

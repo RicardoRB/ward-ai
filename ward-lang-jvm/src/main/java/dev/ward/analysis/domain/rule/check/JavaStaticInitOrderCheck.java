@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
  * that never reads the late field is not harmed by being built first.
  */
 public final class JavaStaticInitOrderCheck implements RuleCheck {
-
   private static final Pattern CONSTANT =
       Pattern.compile("^-?(?:\\d[\\w.]*|\"[^\"]*\"|'[^']*'|true|false)$");
 
@@ -52,21 +51,24 @@ public final class JavaStaticInitOrderCheck implements RuleCheck {
         lateFinal(fields.subList(index + 1, fields.size()), setUp)
             .ifPresent(
                 late ->
-                    matches.add(
-                        CheckSupport.at(field.span(), CheckSupport.fill(message, late, ""))));
+                    matches.add(CheckSupport.at(field.span(), CheckSupport.fill(message, late, "")))
+            );
       }
     }
     return matches;
   }
 
   private static java.util.Optional<String> lateFinal(
-      final List<SyntaxNode> later, final Set<String> setUp) {
+      final List<SyntaxNode> later,
+      final Set<String> setUp
+  ) {
     return later.stream()
         .filter(JavaStaticInitOrderCheck::isStatic)
         .filter(field -> MemberDeclarations.modifiers(field).contains(MemberDeclarations.FINAL))
         .filter(
             field ->
-                !initializer(field).isEmpty() && !CONSTANT.matcher(initializer(field)).matches())
+                !initializer(field).isEmpty() && !CONSTANT.matcher(initializer(field)).matches()
+        )
         .flatMap(field -> ClassMembers.fieldNames(ClassMembers.declarationOf(field)).stream())
         .filter(setUp::contains)
         .findFirst();

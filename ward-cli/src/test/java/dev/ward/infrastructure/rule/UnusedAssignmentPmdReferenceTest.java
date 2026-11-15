@@ -33,7 +33,6 @@ import org.junit.jupiter.api.Test;
  * the data-flow section of AGENTS.md.
  */
 class UnusedAssignmentPmdReferenceTest {
-
   static final String FIXTURES = "dataflow/java";
   static final String REFERENCE = FIXTURES + "/pmd-unused-assignment.json";
   private static final String RULE_ID = "ward:java/unused-assignment";
@@ -70,7 +69,9 @@ class UnusedAssignmentPmdReferenceTest {
           row(
               entry.get("file").asString(),
               entry.get("line").asInt(),
-              entry.get("variable").asString()));
+              entry.get("variable").asString()
+          )
+      );
     }
     return rows.stream().sorted(Comparator.naturalOrder()).toList();
   }
@@ -88,7 +89,8 @@ class UnusedAssignmentPmdReferenceTest {
             AnalysisLanguage.JAVA,
             new AntlrLanguageFrontend(),
             Set.of(RuleCapability.SYNTAX, RuleCapability.CFG, RuleCapability.DATAFLOW),
-            new JavaControlFlow());
+            new JavaControlFlow()
+        );
     return new RuleEngine(BundledRuleMatchers.create()).run(units(), List.of(java), rules);
   }
 
@@ -105,7 +107,10 @@ class UnusedAssignmentPmdReferenceTest {
   private static SourceUnit unit(final Path path) {
     try {
       return new SourceUnit(
-          path.getFileName().toString(), AnalysisLanguage.JAVA, Files.readString(path));
+          path.getFileName().toString(),
+          AnalysisLanguage.JAVA,
+          Files.readString(path)
+      );
     } catch (final IOException exception) {
       throw new IllegalStateException("cannot read fixture " + path, exception);
     }

@@ -23,7 +23,6 @@ import java.util.Set;
  * companion objects are left alone.
  */
 public final class KotlinNestedClassesVisibilityCheck implements RuleCheck {
-
   private static final String NAME = "{value}";
   private static final String INTERNAL = "internal";
   private static final Set<String> EXPLICIT = Set.of("public", "protected");
@@ -49,7 +48,11 @@ public final class KotlinNestedClassesVisibilityCheck implements RuleCheck {
 
   @Override
   public List<RuleMatch> matches(
-      final SyntaxNode root, final FlowView flow, final ScopeView view, final SourceUnit unit) {
+      final SyntaxNode root,
+      final FlowView flow,
+      final ScopeView view,
+      final SourceUnit unit
+  ) {
     final UnitScopes scopes = view.scopes();
     final List<RuleMatch> found = new ArrayList<>();
     for (final Scope scope : scopes.scopes()) {
@@ -73,7 +76,10 @@ public final class KotlinNestedClassesVisibilityCheck implements RuleCheck {
   }
 
   private static boolean innerOfInternalTopLevel(
-      final Scope declaring, final UnitScopes scopes, final String text) {
+      final Scope declaring,
+      final UnitScopes scopes,
+      final String text
+  ) {
     if (declaring.kind() != ScopeKind.CLASS) {
       return false;
     }
@@ -81,6 +87,8 @@ public final class KotlinNestedClassesVisibilityCheck implements RuleCheck {
     return outer.isPresent()
         && outer.get().kind() == ScopeKind.MODULE
         && KotlinDeclarations.hasWord(
-            KotlinDeclarations.header(text, declaring.span().startOffset()), INTERNAL);
+            KotlinDeclarations.header(text, declaring.span().startOffset()),
+            INTERNAL
+        );
   }
 }

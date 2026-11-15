@@ -13,11 +13,18 @@ import java.util.List;
 public interface MemberPlanning {
   /** Returns the build-file changes of {@code project}, then of each module that would change. */
   List<PlannedFileChange> buildFiles(
-      Project project, List<InitGateOption> gates, QualityPreset preset, boolean approved);
+      Project project,
+      List<InitGateOption> gates,
+      QualityPreset preset,
+      boolean approved
+  );
 
   /** Returns the rule-file changes of {@code project}. */
   List<PlannedFileChange> ruleFiles(
-      Project project, QualityPreset preset, List<InitGateOption> gates);
+      Project project,
+      QualityPreset preset,
+      List<InitGateOption> gates
+  );
 
   /** Returns the inputs the planner reads the project through. */
   InitInputs inputs();

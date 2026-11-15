@@ -18,7 +18,6 @@ import java.util.Set;
  * whenever the statement runs.
  */
 final class NullEvents {
-
   private static final String EXPRESSION = "expression";
   private static final String METHOD_CALL = "methodCall";
   private static final String NEW = "new";
@@ -155,7 +154,8 @@ final class NullEvents {
       final List<SyntaxNode> args = NullFlow.arguments(parts.get(0));
       args.forEach(this::visit);
       out.add(
-          NullEvent.call(node, operands.arguments(args), NullOperands.methodName(parts.get(0))));
+          NullEvent.call(node, operands.arguments(args), NullOperands.methodName(parts.get(0)))
+      );
     } else if (parts.size() == CREATION && NEW.equals(SyntaxWalk.text(parts.get(0)))) {
       final List<SyntaxNode> args = NullFlow.arguments(parts.get(1));
       args.forEach(this::visit);
@@ -195,7 +195,8 @@ final class NullEvents {
     final String field = NullOperands.fieldName(target);
     if (local != null) {
       out.add(
-          plain ? NullEvent.write(local, value, operands.operand(value)) : NullEvent.kill(local));
+          plain ? NullEvent.write(local, value, operands.operand(value)) : NullEvent.kill(local)
+      );
     } else if (plain && field != null) {
       out.add(NullEvent.store(node, operands.operand(value), field));
     } else {

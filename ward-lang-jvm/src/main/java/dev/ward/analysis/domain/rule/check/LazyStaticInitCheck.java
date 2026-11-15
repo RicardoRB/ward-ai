@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * touched after it is stored ({@code F.x()}), the other when it is not.
  */
 public final class LazyStaticInitCheck implements RuleCheck {
-
   /** Which of the two bugs is reported. */
   public enum Mode {
     /** The object is only stored. */

@@ -12,11 +12,14 @@ import org.junit.jupiter.api.Test;
 
 /** Checks the provenance conditions of the security catalog on the real catalog and on fixtures. */
 class SecurityCatalogTest {
-
   private static final Set<String> CWE = Set.of("CWE-79", "CWE-89");
 
   private static CatalogRow row(
-      final String name, final String source, final List<String> cwe, final List<String> sources) {
+      final String name,
+      final String source,
+      final List<String> cwe,
+      final List<String> sources
+  ) {
     return new CatalogRow(
         name,
         "",
@@ -27,16 +30,19 @@ class SecurityCatalogTest {
         source,
         Optional.empty(),
         cwe,
-        sources);
+        sources
+    );
   }
 
   @Test
   void theCatalogSatisfiesEveryCondition() {
     assertThat(
-            SecurityCatalogRules.problems(
-                new RuleCatalogReader().load().rows(),
-                SecurityCatalogRules.pinnedCweIds(),
-                CatalogRuleDefinitions.all()))
+        SecurityCatalogRules.problems(
+            new RuleCatalogReader().load().rows(),
+            SecurityCatalogRules.pinnedCweIds(),
+            CatalogRuleDefinitions.all()
+        )
+    )
         .isEmpty();
   }
 

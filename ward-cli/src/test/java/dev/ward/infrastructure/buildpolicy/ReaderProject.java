@@ -27,11 +27,13 @@ final class ReaderProject {
 
   BuildModel all() {
     return new FileSystemBuildFiles(
-            List.<BuildModelReader>of(
-                new MavenBuildReader(),
-                new GradleBuildReader(),
-                new NodeBuildReader(new ForyJsonCodec()),
-                new PythonBuildReader()))
+        List.<BuildModelReader> of(
+            new MavenBuildReader(),
+            new GradleBuildReader(),
+            new NodeBuildReader(new ForyJsonCodec()),
+            new PythonBuildReader()
+        )
+    )
         .read(root);
   }
 

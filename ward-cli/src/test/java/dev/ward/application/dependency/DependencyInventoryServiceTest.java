@@ -37,7 +37,11 @@ class DependencyInventoryServiceTest {
     final DependencySource failing =
         project -> {
           throw new DependencyInventoryException(
-              "/work/app", "package-lock.json", "stale", "npm install");
+              "/work/app",
+              "package-lock.json",
+              "stale",
+              "npm install"
+          );
         };
     final DependencyInventoryService service =
         new DependencyInventoryService(Map.of(BuildTool.NPM, failing));
@@ -63,7 +67,8 @@ class DependencyInventoryServiceTest {
     try (PrintStream replacement = new PrintStream(captured, true, StandardCharsets.UTF_8)) {
       System.setOut(replacement);
       new DependencyInventoryService(
-              Map.of(BuildTool.NPM, project -> new DependencyInventory(List.of())))
+          Map.of(BuildTool.NPM, project -> new DependencyInventory(List.of()))
+      )
           .inventory(NPM);
     } finally {
       System.setOut(ORIGINAL_OUT);

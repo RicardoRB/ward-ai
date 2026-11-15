@@ -11,7 +11,6 @@ import java.util.Optional;
 
 /** The text rules of {@code $ref} values: where they point and how a pointer is followed. */
 final class ReferenceTargets {
-
   private static final String PARENT = "..";
   private static final List<String> SUPPORTED = List.of("3.0", "3.1");
 
@@ -22,7 +21,8 @@ final class ReferenceTargets {
     final String lower = reference.toLowerCase(Locale.ROOT);
     if (lower.startsWith("http://") || lower.startsWith("https://")) {
       return Optional.of(
-          "the reference '" + reference + "' is remote; Ward does not fetch remote references");
+          "the reference '" + reference + "' is remote; Ward does not fetch remote references"
+      );
     }
     final int colon = reference.indexOf(':');
     final int hash = reference.indexOf('#');

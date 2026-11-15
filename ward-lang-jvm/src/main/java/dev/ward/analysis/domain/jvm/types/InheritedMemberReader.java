@@ -7,7 +7,6 @@ import java.util.Optional;
 
 /** Reads the members of one ancestor class that a subtype can see: not private, not synthetic. */
 final class InheritedMemberReader {
-
   private InheritedMemberReader() {}
 
   /** Returns the methods of {@code owner} that a subtype sees, without constructors. */

@@ -14,7 +14,6 @@ import java.util.Set;
  * as one opaque node; its own body is lowered separately.
  */
 final class NodeBodyLowering implements NodeStatements {
-
   private static final String BLOCK = "block";
   private static final String EXPRESSION_STATEMENT = "expressionStatement";
   private static final String ITERATION = "iterationStatement";
@@ -40,7 +39,8 @@ final class NodeBodyLowering implements NodeStatements {
           "abstractDeclaration",
           "namespaceDeclaration",
           "importStatement",
-          "exportStatement");
+          "exportStatement"
+      );
 
   /** Plain statements, which may call or await and so may throw. */
   private static final Set<String> PLAIN =
@@ -86,7 +86,8 @@ final class NodeBodyLowering implements NodeStatements {
       final String body,
       final SyntaxNode function,
       final List<SyntaxNode> statements,
-      final Span span) {
+      final Span span
+  ) {
     flow.record(accesses.parameters(function), parameterSites.of(function));
     for (final SyntaxNode statement : statements) {
       statement(statement, null);
@@ -104,7 +105,11 @@ final class NodeBodyLowering implements NodeStatements {
    * @return the graph of the body
    */
   ControlFlowGraph lowerExpression(
-      final String body, final SyntaxNode function, final SyntaxNode expression, final Span span) {
+      final String body,
+      final SyntaxNode function,
+      final SyntaxNode expression,
+      final Span span
+  ) {
     flow.record(accesses.parameters(function), parameterSites.of(function));
     branches.emitValue(expression);
     return flow.build(body, span);

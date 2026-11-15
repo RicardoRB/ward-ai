@@ -22,8 +22,8 @@ public record FlowSite(
     Optional<String> receiverType,
     List<String> annotations,
     List<Span> arguments,
-    Span span) {
-
+    Span span
+) {
   /**
    * Copies the lists and validates the fields.
    *

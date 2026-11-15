@@ -68,7 +68,9 @@ public final class NodeBuildReader implements BuildModelReader {
         entries.forEach(
             (name, version) ->
                 declarations.add(
-                    declaration(new Source(text, start, shown, locked), section, name, version)));
+                    declaration(new Source(text, start, shown, locked), section, name, version)
+                )
+        );
       }
     }
     final List<ToolVersion> tools = new ArrayList<>();
@@ -80,7 +82,9 @@ public final class NodeBuildReader implements BuildModelReader {
                 matcher.group(1),
                 matcher.group(2),
                 shown,
-                BuildPaths.lineOf(text, "\"packageManager\"")));
+                BuildPaths.lineOf(text, "\"packageManager\"")
+            )
+        );
       }
     }
     return new BuildModel(declarations, tools);
@@ -90,7 +94,11 @@ public final class NodeBuildReader implements BuildModelReader {
   private record Source(String text, int start, String file, boolean locked) {}
 
   private static Declaration declaration(
-      final Source source, final String section, final Object name, final Object version) {
+      final Source source,
+      final String section,
+      final Object name,
+      final Object version
+  ) {
     final int index = source.text.indexOf("\"" + name + "\"", source.start);
     final int line = index < 0 ? 0 : BuildPaths.lineAt(source.text, index);
     return new Declaration(
@@ -102,7 +110,8 @@ public final class NodeBuildReader implements BuildModelReader {
         "",
         source.file,
         line,
-        source.locked ? Declaration.Flag.LOCKED : Declaration.Flag.NONE);
+        source.locked ? Declaration.Flag.LOCKED : Declaration.Flag.NONE
+    );
   }
 
   private Map<?, ?> json(final Path root, final String dir) {

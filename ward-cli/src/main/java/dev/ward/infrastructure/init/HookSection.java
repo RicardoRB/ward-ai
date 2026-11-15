@@ -56,7 +56,8 @@ record HookSection(String projectPath) {
       throw new WardException(
           "Cannot install quality hooks: the project path '"
               + projectPath.strip()
-              + "' contains a quote or line break.");
+              + "' contains a quote or line break."
+      );
     }
   }
 

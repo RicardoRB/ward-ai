@@ -30,10 +30,12 @@ class DependencyJvmParitySmokeTest {
   private static final int MEDIATED = 4;
   private static final Pattern MAVEN_LIST =
       Pattern.compile(
-          "^\\[INFO]\\s+([\\w.\\-]+):([\\w.\\-]+):[\\w\\-]+:(?:[\\w\\-]+:)?([^:\\s]+):\\w+");
+          "^\\[INFO]\\s+([\\w.\\-]+):([\\w.\\-]+):[\\w\\-]+:(?:[\\w\\-]+:)?([^:\\s]+):\\w+"
+      );
   private static final Pattern GRADLE_LINE =
       Pattern.compile(
-          "[+\\\\]--- ([\\w.\\-]+):([\\w.\\-]+):([^\\s]+?)(?: -> ([^\\s]+))?(?: \\(.\\))?$");
+          "[+\\\\]--- ([\\w.\\-]+):([\\w.\\-]+):([^\\s]+?)(?: -> ([^\\s]+))?(?: \\(.\\))?$"
+      );
 
   @Test
   void mavenMatchesDependencyList(@TempDir final Path work) throws IOException {
@@ -52,7 +54,11 @@ class DependencyJvmParitySmokeTest {
 
     final DependencyInventory inventory =
         new MavenDependencySource(
-                ParitySupport.PROCESSES, new FileGraphCache(), ParitySupport.CODEC, false)
+            ParitySupport.PROCESSES,
+            new FileGraphCache(),
+            ParitySupport.CODEC,
+            false
+        )
             .read(new Project(dir, Language.JAVA, BuildTool.MAVEN, Framework.NONE));
 
     assertThat(ParitySupport.inventorySet(inventory, Ecosystem.MAVEN)).isEqualTo(listed);
@@ -66,12 +72,13 @@ class DependencyJvmParitySmokeTest {
     for (final String project : List.of(":app", ":lib")) {
       for (final String configuration : List.of("runtimeClasspath", "compileClasspath")) {
         ParitySupport.run(
-                dir,
-                "gradle",
-                "--console=plain",
-                project + ":dependencies",
-                "--configuration",
-                configuration)
+            dir,
+            "gradle",
+            "--console=plain",
+            project + ":dependencies",
+            "--configuration",
+            configuration
+        )
             .lines()
             .forEach(line -> gradleLine(line, listed));
       }
@@ -79,7 +86,11 @@ class DependencyJvmParitySmokeTest {
 
     final DependencyInventory inventory =
         new GradleDependencySource(
-                ParitySupport.PROCESSES, new FileGraphCache(), ParitySupport.CODEC, false)
+            ParitySupport.PROCESSES,
+            new FileGraphCache(),
+            ParitySupport.CODEC,
+            false
+        )
             .read(new Project(dir, Language.JAVA, BuildTool.GRADLE, Framework.NONE));
     final Set<String> actual = ParitySupport.inventorySet(inventory, Ecosystem.MAVEN);
     actual.removeIf(
@@ -87,7 +98,8 @@ class DependencyJvmParitySmokeTest {
             coordinate.contains("junit")
                 || coordinate.contains("opentest4j")
                 || coordinate.contains("apiguardian")
-                || coordinate.contains("mapstruct"));
+                || coordinate.contains("mapstruct")
+    );
 
     assertThat(actual).isEqualTo(listed);
   }
@@ -99,13 +111,15 @@ class DependencyJvmParitySmokeTest {
     Files.writeString(
         dir.resolve("Package.swift"),
         Files.readString(dir.resolve("Package.swift"))
-            .replace("        .package(path: \"../Local\"),\n", ""));
+            .replace("        .package(path: \"../Local\"),\n", "")
+    );
     ParitySupport.run(dir, "swift", "package", "resolve");
     final Set<String> listed = new TreeSet<>();
     final Object tree =
         ParitySupport.CODEC.fromJson(
             ParitySupport.run(dir, "swift", "package", "show-dependencies", "--format", "json"),
-            Object.class);
+            Object.class
+        );
     collectSwift(tree, listed, true);
 
     final DependencyInventory inventory =
@@ -123,12 +137,16 @@ class DependencyJvmParitySmokeTest {
               + ":"
               + match.group(2)
               + "@"
-              + (match.group(MEDIATED) != null ? match.group(MEDIATED) : match.group(VERSION)));
+              + (match.group(MEDIATED) != null ? match.group(MEDIATED) : match.group(VERSION))
+      );
     }
   }
 
   private static void collectSwift(
-      final Object node, final Set<String> listed, final boolean root) {
+      final Object node,
+      final Set<String> listed,
+      final boolean root
+  ) {
     if (!(node instanceof Map<?, ?> map)) {
       return;
     }

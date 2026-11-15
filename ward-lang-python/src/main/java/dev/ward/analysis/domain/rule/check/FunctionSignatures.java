@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 
 /** The parameter lists of this module's top-level functions. */
 final class FunctionSignatures {
-
   private static final String SLASH = "/";
   private static final String DEF = "def";
 
@@ -25,14 +24,17 @@ final class FunctionSignatures {
       List<Param> positional,
       List<Param> keywordOnly,
       List<String> positionalOnly,
-      boolean hasKwargs) {}
+      boolean hasKwargs
+  ) {}
 
   static Map<String, Signature> topLevelFunctions(final SyntaxNode root) {
     final Map<String, Signature> functions = new HashMap<>();
     for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of("funcdef"))) {
       if (topLevel(visit.ancestors())) {
         functions.put(
-            functionName(visit.node()), signature(SyntaxWalk.text(parameters(visit.node()))));
+            functionName(visit.node()),
+            signature(SyntaxWalk.text(parameters(visit.node())))
+        );
       }
     }
     return functions;
@@ -89,7 +91,11 @@ final class FunctionSignatures {
       }
     }
     return new Signature(
-        List.copyOf(positional), List.copyOf(keywordOnly), List.copyOf(positionalOnly), kwargs);
+        List.copyOf(positional),
+        List.copyOf(keywordOnly),
+        List.copyOf(positionalOnly),
+        kwargs
+    );
   }
 
   static List<String> names(final List<Param> params) {

@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 
 /** The rules about {@code servers}: they exist, avoid example hosts and trailing slashes. */
 final class ServerRules {
-
   private static final Pattern EXAMPLE = Pattern.compile("example\\.com");
   private static final Pattern TRAILING_SLASH = Pattern.compile("./\\z");
   private static final String SERVERS_MESSAGE =
@@ -49,7 +48,10 @@ final class ServerRules {
   }
 
   private static List<OpenApiFinding> urlFindings(
-      final OpenApiDocument document, final Pattern pattern, final String message) {
+      final OpenApiDocument document,
+      final Pattern pattern,
+      final String message
+  ) {
     final List<OpenApiFinding> findings = new ArrayList<>();
     for (final DocNode server : document.parts().servers()) {
       document

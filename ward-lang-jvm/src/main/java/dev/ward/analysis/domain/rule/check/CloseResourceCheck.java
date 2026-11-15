@@ -21,7 +21,6 @@ import java.util.stream.Stream;
  * {@code finally} block; this check does not.
  */
 public final class CloseResourceCheck extends FactsCheck {
-
   private static final String AUTO_CLOSEABLE = "java.lang.AutoCloseable";
   private static final String TYPE_TYPE = "typeType";
   private static final String DECLARATION = "localVariableDeclaration";
@@ -63,7 +62,8 @@ public final class CloseResourceCheck extends FactsCheck {
       final Set<String> types,
       final Set<String> ignored,
       final boolean createdHere,
-      final boolean exceptionPath) {
+      final boolean exceptionPath
+  ) {
     super(NEED);
     this.message = Objects.requireNonNull(message, "message");
     this.resourceTypes = Set.copyOf(types);
@@ -116,12 +116,16 @@ public final class CloseResourceCheck extends FactsCheck {
         .filter(this::madeHere)
         .flatMap(
             declarator ->
-                ClassMembers.fieldNames(declarator).stream().map(name -> pair(declarator, name)))
+                ClassMembers.fieldNames(declarator).stream().map(name -> pair(declarator, name))
+        )
         .filter(named -> !closedOrHandedOn(named.name(), rest))
         .map(
             named ->
                 CheckSupport.at(
-                    named.declarator().span(), CheckSupport.fill(message, named.name(), "")))
+                    named.declarator().span(),
+                    CheckSupport.fill(message, named.name(), "")
+                )
+        )
         .toList();
   }
 
@@ -145,12 +149,16 @@ public final class CloseResourceCheck extends FactsCheck {
         .filter(this::madeHere)
         .flatMap(
             declarator ->
-                ClassMembers.fieldNames(declarator).stream().map(name -> pair(declarator, name)))
+                ClassMembers.fieldNames(declarator).stream().map(name -> pair(declarator, name))
+        )
         .filter(named -> CloseAfterCalls.closedAfterCalls(named.name(), rest))
         .map(
             named ->
                 CheckSupport.at(
-                    named.declarator().span(), CheckSupport.fill(message, named.name(), "")))
+                    named.declarator().span(),
+                    CheckSupport.fill(message, named.name(), "")
+                )
+        )
         .toList();
   }
 

@@ -30,7 +30,6 @@ import org.junit.jupiter.api.Test;
 
 /** Lazy and shared control-flow lowering in the rule engine. */
 class RuleEngineFlowTest {
-
   private static final Span AT = new Span(1, 1, 1, 2, 0, 1);
 
   @Test
@@ -51,7 +50,9 @@ class RuleEngineFlowTest {
             lowering,
             List.of(
                 rule("ward:java/flow-one", RuleCapability.DATAFLOW),
-                rule("ward:java/flow-two", RuleCapability.DATAFLOW)));
+                rule("ward:java/flow-two", RuleCapability.DATAFLOW)
+            )
+        );
 
     assertThat(lowering.calls()).isEqualTo(1);
     assertThat(result.findings()).hasSize(2);
@@ -68,7 +69,8 @@ class RuleEngineFlowTest {
             1,
             1,
             null,
-            List.of());
+            List.of()
+        );
     final CountingLowering lowering =
         new CountingLowering(List.of(graph("fine")), List.of(failure));
     final RuleRunResult result =
@@ -101,14 +103,17 @@ class RuleEngineFlowTest {
   }
 
   private static RuleRunResult run(
-      final CountingLowering lowering, final List<RuleDefinition> rules) {
+      final CountingLowering lowering,
+      final List<RuleDefinition> rules
+  ) {
     return run(new GraphMatcher(), lowering, rules);
   }
 
   private static RuleRunResult run(
       final RuleMatcher matcher,
       final CountingLowering lowering,
-      final List<RuleDefinition> rules) {
+      final List<RuleDefinition> rules
+  ) {
     final LanguageFrontend frontend =
         (unit) -> new ParseResult(new SyntaxNode("file", AT, Map.of(), List.of()), List.of());
     final FrontendSupport java =
@@ -116,7 +121,8 @@ class RuleEngineFlowTest {
             AnalysisLanguage.JAVA,
             frontend,
             Set.of(RuleCapability.SYNTAX, RuleCapability.CFG, RuleCapability.DATAFLOW),
-            lowering);
+            lowering
+        );
     return new RuleEngine(matcher)
         .run(List.of(RuleEngineFixtures.unit("src/X.java")), List.of(java), rules);
   }
@@ -133,7 +139,6 @@ class RuleEngineFlowTest {
 
   /** Counts the lowerings of a unit, and returns the same graphs and failures each time. */
   private static final class CountingLowering implements ControlFlowLowering {
-
     private final List<ControlFlowGraph> graphs;
     private final List<AnalysisFinding> failures;
     private int calls;
@@ -156,7 +161,6 @@ class RuleEngineFlowTest {
 
   /** Reports one match per graph the rule is given, naming the graph's body. */
   private static final class GraphMatcher implements RuleMatcher {
-
     @Override
     public CompiledRule compile(final RuleDefinition definition) {
       return new CompiledRule() {
@@ -172,7 +176,10 @@ class RuleEngineFlowTest {
 
         @Override
         public List<RuleMatch> matches(
-            final SyntaxNode root, final DependencyView dependencies, final FlowView flow) {
+            final SyntaxNode root,
+            final DependencyView dependencies,
+            final FlowView flow
+        ) {
           final List<RuleMatch> found = new ArrayList<>();
           for (final ControlFlowGraph graph : flow.graphs()) {
             found.add(new RuleMatch(graph.span(), "graph " + graph.body()));

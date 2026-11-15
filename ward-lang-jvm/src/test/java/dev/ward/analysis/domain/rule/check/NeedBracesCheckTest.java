@@ -11,7 +11,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class NeedBracesCheckTest {
-
   private static final String MESSAGE = "message";
   private static final String STATEMENT = "statement";
   private static final String IF = "'if'";

@@ -7,7 +7,6 @@ import java.util.OptionalDouble;
 import org.junit.jupiter.api.Test;
 
 class CrapScoreTest {
-
   private static final double EXACT = 1e-9;
   private static final int SIX = 6;
   private static final int FIVE = 5;

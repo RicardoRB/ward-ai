@@ -4,7 +4,6 @@ import dev.ward.analysis.domain.ir.SyntaxNode;
 
 /** The statement lowering that the construct lowerings call back into for nested statements. */
 interface JavaStatements {
-
   /**
    * Lowers one statement.
    *

@@ -22,7 +22,10 @@ class NoticeServiceTest {
 
   private final NoticeService notice =
       new NoticeService(
-          LicenseFixtures.detector(), LicenseFixtures.mixed(), new BundledLicenseTexts());
+          LicenseFixtures.detector(),
+          LicenseFixtures.mixed(),
+          new BundledLicenseTexts()
+      );
 
   @Test
   void listsPackagesUnderTheirLicenseAndEndsWithTheTexts() {
@@ -47,7 +50,8 @@ class NoticeServiceTest {
         new NoticeService(
             LicenseFixtures.detector(),
             LicenseFixtures.service(LicenseFixtures.inventory(), Map.of()),
-            new BundledLicenseTexts());
+            new BundledLicenseTexts()
+        );
 
     assertThat(notice.generate(DIRECTORY, Set.of()).content())
         .isEqualTo(notice.generate(DIRECTORY, Set.of()).content());
@@ -67,7 +71,10 @@ class NoticeServiceTest {
   void anUnusableInventoryProducesNoDocument() {
     final NoticeService failing =
         new NoticeService(
-            LicenseFixtures.detector(), LicenseFixtures.failing(), new BundledLicenseTexts());
+            LicenseFixtures.detector(),
+            LicenseFixtures.failing(),
+            new BundledLicenseTexts()
+        );
 
     assertThatThrownBy(() -> failing.generate(DIRECTORY, Set.of()))
         .isInstanceOf(WardException.class);
@@ -81,11 +88,14 @@ class NoticeServiceTest {
         new DependencyInventory(
             List.of(
                 new ModuleDependencies("", List.of(shared)),
-                new ModuleDependencies("packages/a", List.of(shared))));
+                new ModuleDependencies("packages/a", List.of(shared))
+            )
+        );
 
     assertThat(
-            LicenseFixtures.service(inventory, Map.of("shared", LicenseFixtures.declared("MIT")))
-                .licenses(LicenseFixtures.NPM, Set.of()))
+        LicenseFixtures.service(inventory, Map.of("shared", LicenseFixtures.declared("MIT")))
+            .licenses(LicenseFixtures.NPM, Set.of())
+    )
         .hasSize(1);
   }
 }

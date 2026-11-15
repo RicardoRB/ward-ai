@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 /** Checks that a literal entry matches literal sites by their contents. */
 class TaintLiteralEntryTest {
-
   private static final Span SPAN = new Span(1, 1, 1, 2, 0, 1);
 
   /** A literal entry with a pattern matches only a literal that the pattern finds. */
@@ -33,7 +32,13 @@ class TaintLiteralEntryTest {
 
   private static TaintEntry literalEntry(final Optional<Pattern> pattern) {
     return new TaintEntry(
-        FlowSiteKind.LITERAL, "", Optional.empty(), Optional.empty(), List.of(), pattern);
+        FlowSiteKind.LITERAL,
+        "",
+        Optional.empty(),
+        Optional.empty(),
+        List.of(),
+        pattern
+    );
   }
 
   private static FlowSite site(final FlowSiteKind kind, final String name) {

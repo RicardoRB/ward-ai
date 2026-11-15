@@ -35,8 +35,7 @@ class CheckServiceGateSelectionTest {
 
   @Test
   void gateSubsetRunsOnlyListedGatesInConfigurationOrder() throws IOException {
-    configure(
-        """
+    configure("""
         version = 2
         [checks.tests]
         command = "mvn test"
@@ -54,8 +53,7 @@ class CheckServiceGateSelectionTest {
 
   @Test
   void gateSubsetWithNothingEnabledIsAnEmptyPassingReport() throws IOException {
-    configure(
-        """
+    configure("""
         version = 2
         [checks.tests]
         command = "mvn test"
@@ -73,8 +71,7 @@ class CheckServiceGateSelectionTest {
 
   @Test
   void gateSubsetHonorsProfileSelection() throws IOException {
-    configure(
-        """
+    configure("""
         version = 2
         [checks.mypy]
         command = "mypy ."
@@ -93,8 +90,7 @@ class CheckServiceGateSelectionTest {
 
   @Test
   void excludedGatesDoNotRun() throws IOException {
-    configure(
-        """
+    configure("""
         version = 2
         [checks.tests]
         command = "mvn test"
@@ -126,10 +122,10 @@ class CheckServiceGateSelectionTest {
     configure("version = 2\n[checks.mypy]\nenabled = false\ncommand = \"mypy .\"\n");
 
     assertThatThrownBy(
-            () ->
-                service()
-                    .check(
-                        dir, List.of(), CheckProgressListener.NO_OP, false, Set.of(MYPY, PYTEST)))
+        () ->
+            service()
+                .check(dir, List.of(), CheckProgressListener.NO_OP, false, Set.of(MYPY, PYTEST))
+    )
         .isInstanceOf(WardException.class)
         .hasMessageContaining("No quality gates are enabled");
   }
@@ -145,6 +141,7 @@ class CheckServiceGateSelectionTest {
         new TomlConfigurationReader(),
         new QualityGateFactory(executor),
         new QualityGateRunner(),
-        new PartialPorts(new FilePathExistence(), new NodeWorkspaceMembers()));
+        new PartialPorts(new FilePathExistence(), new NodeWorkspaceMembers())
+    );
   }
 }

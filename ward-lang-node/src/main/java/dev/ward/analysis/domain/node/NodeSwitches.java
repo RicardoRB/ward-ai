@@ -10,7 +10,6 @@ import java.util.List;
  * Lowers a TypeScript or JavaScript {@code switch}, whose clauses fall through unless they break.
  */
 final class NodeSwitches {
-
   private static final String CASE_CLAUSE = "caseClause";
   private static final String DEFAULT_CLAUSE = "defaultClause";
   private static final String CASE_CLAUSES = "caseClauses";

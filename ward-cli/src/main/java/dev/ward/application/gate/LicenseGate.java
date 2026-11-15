@@ -45,7 +45,10 @@ public final class LicenseGate implements QualityGate {
 
   /** Creates the gate called {@code name} that applies {@code policy} through {@code service}. */
   public LicenseGate(
-      final String name, final LicenseService service, final LicenseSettings settings) {
+      final String name,
+      final LicenseService service,
+      final LicenseSettings settings
+  ) {
     this.name = name;
     this.service = service;
     this.settings = settings;
@@ -87,8 +90,8 @@ public final class LicenseGate implements QualityGate {
       final FindingSeverity severity =
           settings.unknownFails() ? FindingSeverity.ERROR : FindingSeverity.WARNING;
       return Optional.of(
-          finding(
-              license, UNKNOWN, severity, "has an unknown license: " + license.unknownReason()));
+          finding(license, UNKNOWN, severity, "has an unknown license: " + license.unknownReason())
+      );
     }
     final LicenseVerdict verdict = policy.check(license.expression().get());
     if (verdict.ok()) {
@@ -104,14 +107,16 @@ public final class LicenseGate implements QualityGate {
             + verdict.entry()
             + "]";
     return Optional.of(
-        finding(license, denied ? DENIED : NOT_ALLOWED, FindingSeverity.ERROR, message));
+        finding(license, denied ? DENIED : NOT_ALLOWED, FindingSeverity.ERROR, message)
+    );
   }
 
   private Finding finding(
       final PackageLicense license,
       final String rule,
       final FindingSeverity severity,
-      final String message) {
+      final String message
+  ) {
     final Dependency dependency = license.dependency();
     final String file =
         dependency.declaredIn().isEmpty() ? dependency.source() : dependency.declaredIn();
@@ -122,7 +127,17 @@ public final class LicenseGate implements QualityGate {
             + ":"
             + dependency.id().version();
     return new Finding(
-        name, TOOL, rule, severity, subject + " " + message, file, null, null, null, List.of());
+        name,
+        TOOL,
+        rule,
+        severity,
+        subject + " " + message,
+        file,
+        null,
+        null,
+        null,
+        List.of()
+    );
   }
 
   private static int count(final List<Finding> findings, final FindingSeverity severity) {

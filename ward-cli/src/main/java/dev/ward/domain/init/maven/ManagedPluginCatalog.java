@@ -21,7 +21,8 @@ public final class ManagedPluginCatalog {
       List.of(
           row("jacoco-maven-plugin", "0.8.13", JDK_8, JDK_25),
           row(PIT, "1.17.4", JDK_8, JDK_10),
-          row(PIT, "1.30.1", JDK_11, JDK_25));
+          row(PIT, "1.30.1", JDK_11, JDK_25)
+      );
 
   private ManagedPluginCatalog() {}
 
@@ -31,7 +32,11 @@ public final class ManagedPluginCatalog {
   }
 
   private static ManagedPluginCandidate row(
-      final String tool, final String version, final int minimumJdk, final int maximumJdk) {
+      final String tool,
+      final String version,
+      final int minimumJdk,
+      final int maximumJdk
+  ) {
     return new ManagedPluginCandidate(tool, version, minimumJdk, maximumJdk, MAVEN, "measured");
   }
 }

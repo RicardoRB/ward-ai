@@ -13,8 +13,11 @@ import java.util.Objects;
  *     accepted; copied on construction
  */
 public record FormatOption(
-    String key, FormatOptionType type, String defaultValue, List<String> allowedValues) {
-
+    String key,
+    FormatOptionType type,
+    String defaultValue,
+    List<String> allowedValues
+) {
   /**
    * Copies the allowed values and checks that the default value is itself accepted.
    *
@@ -43,7 +46,10 @@ public record FormatOption(
   }
 
   private static boolean accepts(
-      final FormatOptionType type, final List<String> allowedValues, final String value) {
+      final FormatOptionType type,
+      final List<String> allowedValues,
+      final String value
+  ) {
     if (!hasType(type, value)) {
       return false;
     }

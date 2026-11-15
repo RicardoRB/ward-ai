@@ -11,7 +11,6 @@ import java.util.TreeMap;
 import org.junit.jupiter.api.Test;
 
 class CloneDetectorTest {
-
   private static final int REPEAT_LENGTH = 8;
   private static final int TOO_LONG = 9;
 

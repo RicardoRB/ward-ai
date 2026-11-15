@@ -5,7 +5,6 @@ import java.nio.file.Path;
 /** Writes a formatted source file. An adapter does the file system work. */
 @FunctionalInterface
 public interface SourceSink {
-
   /**
    * Replaces a file's content in one step, keeping its permissions, so a reader never sees a
    * half-written file.

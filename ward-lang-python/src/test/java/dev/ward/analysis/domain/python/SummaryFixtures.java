@@ -11,7 +11,6 @@ import java.util.List;
 
 /** Parses Python source and summarizes it, for the summarizer tests. */
 final class SummaryFixtures {
-
   static final String PATH = "shop/controller/clean.py";
 
   private SummaryFixtures() {}

@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * statement with a call or a creation that does not throw, which ends the search as in PMD.
  */
 public final class PrematureDeclarationCheck implements RuleCheck {
-
   private static final String DECLARATOR = "variableDeclarator";
   private static final Pattern EXIT = Pattern.compile("(?:^|[^\\w$])(?:return|throw)(?![\\w$])");
 
@@ -45,7 +44,10 @@ public final class PrematureDeclarationCheck implements RuleCheck {
   }
 
   private void check(
-      final List<SyntaxNode> statements, final int index, final List<RuleMatch> matches) {
+      final List<SyntaxNode> statements,
+      final int index,
+      final List<RuleMatch> matches
+  ) {
     final SyntaxNode declaration =
         JavaNodes.kid(statements.get(index), JavaNodes.LOCAL_VARIABLE).orElse(null);
     final List<SyntaxNode> declarators =

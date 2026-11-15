@@ -21,7 +21,6 @@ import java.util.regex.Pattern;
  * and an array of a primitive for a parameter of another element type are skipped.
  */
 public final class UnnecessaryVarargsArrayCheck extends FactsCheck {
-
   private static final String EXPRESSION = "expression";
   private static final String CREATOR = "creator";
   private static final Pattern ARRAY = Pattern.compile("^new([^\\[(]+)((?:\\[\\])+)\\{");

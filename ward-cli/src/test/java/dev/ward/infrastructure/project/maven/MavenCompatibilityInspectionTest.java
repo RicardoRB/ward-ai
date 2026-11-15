@@ -25,9 +25,7 @@ class MavenCompatibilityInspectionTest {
   @Test
   void readsToolchainPropertiesAndDeclaredPluginVersions(@TempDir final Path root)
       throws Exception {
-    Files.writeString(
-        root.resolve(POM),
-        """
+    Files.writeString(root.resolve(POM), """
         <project>
           <properties><java.version>17</java.version></properties>
           <build><plugins><plugin>
@@ -51,17 +49,22 @@ class MavenCompatibilityInspectionTest {
   @ParameterizedTest
   @CsvSource({"1.8.0_412, 8", "17.0.15, 17", "25, 25", "25.0.5, 25"})
   void readsTheRuntimeJdkFromJavaVersion(
-      final String reported, final int feature, @TempDir final Path root) throws Exception {
+      final String reported,
+      final int feature,
+      @TempDir final Path root
+  ) throws Exception {
     Files.writeString(root.resolve(POM), NO_RELEASE);
 
     final CompatibilityProjectSnapshot snapshot =
         new MavenCompatibilityInspection(
-                new FakeCommandExecutor(
-                    0,
-                    "Apache Maven 3.9.11\nMaven home: /opt/maven\nJava version: "
-                        + reported
-                        + ", vendor: Eclipse Adoptium, runtime: /opt/jdk\n",
-                    ""))
+            new FakeCommandExecutor(
+                0,
+                "Apache Maven 3.9.11\nMaven home: /opt/maven\nJava version: "
+                    + reported
+                    + ", vendor: Eclipse Adoptium, runtime: /opt/jdk\n",
+                ""
+            )
+        )
             .inspect(project(root));
 
     assertThat(snapshot.toolchain().runtimeJdk()).contains(feature);
@@ -74,7 +77,8 @@ class MavenCompatibilityInspectionTest {
 
     final CompatibilityProjectSnapshot snapshot =
         new MavenCompatibilityInspection(
-                new FakeCommandExecutor(0, "Apache Maven 3.9.8\nJava version: 11.0.32\n", ""))
+            new FakeCommandExecutor(0, "Apache Maven 3.9.8\nJava version: 11.0.32\n", "")
+        )
             .inspect(project(root));
 
     assertThat(snapshot.toolchain().declaredRelease()).isEmpty();
@@ -99,7 +103,8 @@ class MavenCompatibilityInspectionTest {
     Files.writeString(
         root.resolve(POM),
         "<project><properties><maven.compiler.release>${missing.release}</maven.compiler.release>"
-            + "</properties></project>");
+            + "</properties></project>"
+    );
 
     final CompatibilityProjectSnapshot snapshot =
         new MavenCompatibilityInspection(new FakeCommandExecutor(0, "Apache Maven 3.9.8\n", ""))

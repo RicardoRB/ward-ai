@@ -14,7 +14,6 @@ import java.util.Map;
 
 /** The checks of the rules that follow fields and the control flow of a body. */
 final class FieldChecks {
-
   private FieldChecks() {}
 
   /** The checks this class provides, by name. */
@@ -27,11 +26,15 @@ final class FieldChecks {
                     FieldAccessCheck.Mode.valueOf(
                         TomlValues.required(toml, "mode")
                             .replace('-', '_')
-                            .toUpperCase(Locale.ROOT)),
-                    TomlValues.required(toml, "message"))),
+                            .toUpperCase(Locale.ROOT)
+                    ),
+                    TomlValues.required(toml, "message")
+                )
+        ),
         entry(
             "super-constructor-read",
-            toml -> new SuperConstructorReadCheck(TomlValues.required(toml, "message"))),
+            toml -> new SuperConstructorReadCheck(TomlValues.required(toml, "message"))
+        ),
         entry(
             "inherited-member",
             toml ->
@@ -39,13 +42,19 @@ final class FieldChecks {
                     InheritedMemberCheck.Mode.valueOf(
                         TomlValues.required(toml, "mode")
                             .replace('-', '_')
-                            .toUpperCase(Locale.ROOT)),
-                    TomlValues.required(toml, "message"))),
+                            .toUpperCase(Locale.ROOT)
+                    ),
+                    TomlValues.required(toml, "message")
+                )
+        ),
         entry(
             "more-than-one-logger",
-            toml -> new MoreThanOneLoggerCheck(TomlValues.required(toml, "message"))),
+            toml -> new MoreThanOneLoggerCheck(TomlValues.required(toml, "message"))
+        ),
         entry(
             "non-terminating-loop",
-            toml -> new NonTerminatingLoopCheck(TomlValues.required(toml, "message"))));
+            toml -> new NonTerminatingLoopCheck(TomlValues.required(toml, "message"))
+        )
+    );
   }
 }

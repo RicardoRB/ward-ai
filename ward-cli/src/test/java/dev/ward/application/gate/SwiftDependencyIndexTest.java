@@ -22,7 +22,6 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
 class SwiftDependencyIndexTest {
-
   private static final Path SWIFT_RESOLUTION =
       Path.of("src/test/resources/fixtures/swift-resolution");
   private static final String VERSION = "0.6.0";
@@ -35,7 +34,8 @@ class SwiftDependencyIndexTest {
             new RuleEngine(BundledRuleMatchers.create()),
             AnalysisCacheFixtures.codec(),
             VERSION,
-            new SwiftDependencyAdapters().forProject(SWIFT_RESOLUTION, units(SWIFT_RESOLUTION)));
+            new SwiftDependencyAdapters().forProject(SWIFT_RESOLUTION, units(SWIFT_RESOLUTION))
+        );
 
     results.run(
         AnalysisCacheFixtures.memory(entries),
@@ -44,8 +44,11 @@ class SwiftDependencyIndexTest {
             new FrontendSupport(
                 AnalysisLanguage.SWIFT,
                 new AntlrLanguageFrontend(),
-                Set.of(RuleCapability.SYNTAX))),
-        List.of());
+                Set.of(RuleCapability.SYNTAX)
+            )
+        ),
+        List.of()
+    );
 
     final String index = entries.get(AnalysisCacheKey.index());
     assertThat(index)

@@ -5,7 +5,6 @@ import java.util.Set;
 
 /** Counts the decision points of a function, the terms of its cyclomatic complexity. */
 final class Decisions {
-
   /** Statements and clauses that each add one decision point. */
   private static final Set<String> BRANCH =
       Set.of("ifStatement", "iterationStatement", "caseClause", "catchProduction");

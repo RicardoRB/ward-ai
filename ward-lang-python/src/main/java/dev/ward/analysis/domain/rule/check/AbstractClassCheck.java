@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
  * only {@code pass} is not counted as abstract, only one decorated with {@code abstractmethod}.
  */
 public final class AbstractClassCheck implements RuleCheck {
-
   /** The mistakes the check tells apart, one per rule. */
   public enum Problem {
     /** A call creates an instance of a class with an unimplemented abstract method. */
@@ -64,7 +63,9 @@ public final class AbstractClassCheck implements RuleCheck {
   }
 
   private static boolean isConcrete(
-      final PythonClassModel model, final PythonClassModel.ClassInfo info) {
+      final PythonClassModel model,
+      final PythonClassModel.ClassInfo info
+  ) {
     return model.order(info.name()).status() == PythonClassModel.Status.KNOWN
         && !info.declaresAbstract();
   }

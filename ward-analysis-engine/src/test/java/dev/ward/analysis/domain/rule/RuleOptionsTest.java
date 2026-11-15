@@ -11,7 +11,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class RuleOptionsTest {
-
   private static final long FOUR = 4L;
 
   private static final String ID = "ward:java/method-length";
@@ -79,7 +78,9 @@ class RuleOptionsTest {
         List.of(
             RuleOption.integer("max", 1),
             new RuleOption("pattern", RuleOptionType.STRING),
-            new RuleOption("names", RuleOptionType.STRING_LIST)),
-        0);
+            new RuleOption("names", RuleOptionType.STRING_LIST)
+        ),
+        0
+    );
   }
 }

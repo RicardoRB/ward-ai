@@ -13,20 +13,24 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 class AntlrLanguageFrontendTest {
-
   private static final String BROKEN_JAVA_PATH = "Broken.java";
 
   @ParameterizedTest
-  @CsvSource({
-    "JAVA, java-valid.java, compilationunit",
-    "KOTLIN, kotlin-valid.kt, kotlinFile",
-    "TYPESCRIPT, typescript-valid.ts, program",
-    "JAVASCRIPT, javascript-valid.js, program",
-    "PYTHON, python-valid.py, file_input",
-    "SWIFT, swift-valid.swift, top_level"
-  })
+  @CsvSource(
+      {
+          "JAVA, java-valid.java, compilationunit",
+          "KOTLIN, kotlin-valid.kt, kotlinFile",
+          "TYPESCRIPT, typescript-valid.ts, program",
+          "JAVASCRIPT, javascript-valid.js, program",
+          "PYTHON, python-valid.py, file_input",
+          "SWIFT, swift-valid.swift, top_level"
+      }
+  )
   void eachLanguageParsesItsFixtureWithoutDiagnostics(
-      final AnalysisLanguage language, final String fixture, final String rootKind)
+      final AnalysisLanguage language,
+      final String fixture,
+      final String rootKind
+  )
       throws IOException {
     final ParseResult result =
         new AntlrLanguageFrontend().parse(new SourceUnit(fixture, language, fixture(fixture)));
@@ -36,16 +40,20 @@ class AntlrLanguageFrontendTest {
   }
 
   @ParameterizedTest
-  @CsvSource({
-    "JAVA, java-broken.java",
-    "KOTLIN, kotlin-broken.kt",
-    "TYPESCRIPT, typescript-broken.ts",
-    "JAVASCRIPT, javascript-broken.js",
-    "PYTHON, python-broken.py",
-    "SWIFT, swift-broken.swift"
-  })
+  @CsvSource(
+      {
+          "JAVA, java-broken.java",
+          "KOTLIN, kotlin-broken.kt",
+          "TYPESCRIPT, typescript-broken.ts",
+          "JAVASCRIPT, javascript-broken.js",
+          "PYTHON, python-broken.py",
+          "SWIFT, swift-broken.swift"
+      }
+  )
   void eachLanguageReturnsPartialTreeAndDiagnosticsForBrokenFixture(
-      final AnalysisLanguage language, final String fixture) throws IOException {
+      final AnalysisLanguage language,
+      final String fixture
+  ) throws IOException {
     final ParseResult result =
         new AntlrLanguageFrontend().parse(new SourceUnit(fixture, language, fixture(fixture)));
 
@@ -60,8 +68,8 @@ class AntlrLanguageFrontendTest {
     final ParseResult result =
         new AntlrLanguageFrontend()
             .parse(
-                new SourceUnit(
-                    BROKEN_JAVA_PATH, AnalysisLanguage.JAVA, fixture("java-broken.java")));
+                new SourceUnit(BROKEN_JAVA_PATH, AnalysisLanguage.JAVA, fixture("java-broken.java"))
+            );
 
     assertThat(result.diagnostics()).isNotEmpty();
     assertThat(result.diagnostics().getFirst().line()).isEqualTo(2);
@@ -109,11 +117,13 @@ class AntlrLanguageFrontendTest {
   void diagnosticsDoNotCarryOverBetweenUnits() throws IOException {
     final AntlrLanguageFrontend frontend = new AntlrLanguageFrontend();
     frontend.parse(
-        new SourceUnit(BROKEN_JAVA_PATH, AnalysisLanguage.JAVA, fixture("java-broken.java")));
+        new SourceUnit(BROKEN_JAVA_PATH, AnalysisLanguage.JAVA, fixture("java-broken.java"))
+    );
 
     final ParseResult valid =
         frontend.parse(
-            new SourceUnit("ok.java", AnalysisLanguage.JAVA, fixture("java-valid.java")));
+            new SourceUnit("ok.java", AnalysisLanguage.JAVA, fixture("java-valid.java"))
+        );
 
     assertThat(valid.diagnostics()).isEmpty();
   }

@@ -8,7 +8,6 @@ import java.util.function.Predicate;
 
 /** Reads the declared API of the source files of one language. */
 public interface ApiSurfaceReader {
-
   /** Returns the language of the files this reader reads. */
   AnalysisLanguage language();
 
@@ -22,5 +21,8 @@ public interface ApiSurfaceReader {
    * @throws ApiSurfaceException if a unit has a syntax error
    */
   List<ApiType> read(
-      List<SourceUnit> units, LanguageFrontend frontend, Predicate<String> libraryExists);
+      List<SourceUnit> units,
+      LanguageFrontend frontend,
+      Predicate<String> libraryExists
+  );
 }

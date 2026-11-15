@@ -17,7 +17,6 @@ import java.util.Set;
  * React is imported from a React module, or when nothing binds it and it is spelled React.
  */
 final class ReactFragmentNames {
-
   private static final String OPENING = JsxAttributes.OPENING;
   private static final String NAME = "jsxElementName";
   private static final String KEY = "key";
@@ -40,7 +39,10 @@ final class ReactFragmentNames {
 
   /** Whether the element is React's Fragment and carries no key, which Biome keeps. */
   static boolean isFragmentElement(
-      final SyntaxNode element, final Map<Integer, NameReference> byStart) {
+      final SyntaxNode element,
+      final Map<Integer,
+      NameReference> byStart
+  ) {
     return openingName(element).filter(name -> namesReactFragment(name, byStart)).isPresent()
         && !hasKey(element);
   }
@@ -51,11 +53,15 @@ final class ReactFragmentNames {
         .findFirst()
         .flatMap(
             opening ->
-                opening.children().stream().filter(child -> NAME.equals(child.kind())).findFirst());
+                opening.children().stream().filter(child -> NAME.equals(child.kind())).findFirst()
+        );
   }
 
   private static boolean namesReactFragment(
-      final SyntaxNode name, final Map<Integer, NameReference> byStart) {
+      final SyntaxNode name,
+      final Map<Integer,
+      NameReference> byStart
+  ) {
     final NameReference reference = byStart.get(name.span().startOffset());
     final Optional<Binding> binding = reference == null ? Optional.empty() : reference.resolved();
     final String text = SyntaxWalk.text(name);

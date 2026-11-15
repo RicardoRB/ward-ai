@@ -36,7 +36,7 @@ class CoverageExecutionTest {
   void processAgentRunnerAddsTaskAndReportsSuccessOrFailure() {
     final CommandExecutor executor =
         (command, root) ->
-            new CommandResult(command.contains("fail") ? 1 : 0, "out", "err", Duration.ZERO);
+        new CommandResult(command.contains("fail") ? 1 : 0, "out", "err", Duration.ZERO);
     final ProcessAgentRunner runner =
         new ProcessAgentRunner(executor, Path.of("/tmp"), List.of("agent"));
     assertThat(runner.id()).isEqualTo("external");
@@ -50,9 +50,7 @@ class CoverageExecutionTest {
   void checkServiceSelectsProfilesAndRejectsInvalidOnes(@TempDir final Path root)
       throws IOException {
     ProjectFixtures.withPom(root, ProjectFixtures.PLAIN_POM);
-    Files.writeString(
-        root.resolve("ward.toml"),
-"""
+    Files.writeString(root.resolve("ward.toml"), """
                 version = 2
                  [checks.tests]
 uses = "tests"
@@ -70,13 +68,15 @@ uses = "compile"
             new TomlConfigurationReader(),
             new QualityGateFactory(executor),
             new QualityGateRunner(),
-            new PartialPorts(new FilePathExistence(), new NodeWorkspaceMembers()));
+            new PartialPorts(new FilePathExistence(), new NodeWorkspaceMembers())
+        );
     assertThat(service.check(root, List.of("tests-only")).results()).hasSize(1);
     assertThatThrownBy(() -> service.check(root, List.of("missing")))
         .isInstanceOf(WardException.class);
     Files.writeString(
         root.resolve("ward.toml"),
-        "version = 2\n[checks.tests]\nuses = \"tests\"\ncommand='test'\nprofiles=['bad']\n");
+        "version = 2\n[checks.tests]\nuses = \"tests\"\ncommand='test'\nprofiles=['bad']\n"
+    );
     assertThatThrownBy(() -> service.check(root))
         .isInstanceOf(WardException.class)
         .hasMessageContaining("--profile");
@@ -92,7 +92,8 @@ uses = "compile"
     assertThat(runner.run("detect", "-C", root.toString())).isZero();
     Files.writeString(
         root.resolve("ward.toml"),
-        "version = 2\n\n[checks.tests]\nuses = \"tests\"\nenabled = true\ncommand = \"echo ok\"\n");
+        "version = 2\n\n[checks.tests]\nuses = \"tests\"\nenabled = true\ncommand = \"echo ok\"\n"
+    );
     assertThat(runner.run("check", "-C", root.toString())).isZero();
     assertThat(runner.run("unknown-command")).isEqualTo(2);
   }

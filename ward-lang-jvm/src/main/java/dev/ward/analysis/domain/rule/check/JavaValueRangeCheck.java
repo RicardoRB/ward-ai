@@ -20,7 +20,6 @@ import java.util.regex.Pattern;
  * narrowed there, so a value the analysis cannot follow never produces a finding.
  */
 public final class JavaValueRangeCheck implements RuleCheck {
-
   private static final Pattern LITERAL = Pattern.compile("^-?\\d{1,9}$");
   private static final Set<String> INTEGRAL = Set.of("int", "long", "short", "byte");
   private static final Set<String> COMPARISONS =
@@ -58,9 +57,11 @@ public final class JavaValueRangeCheck implements RuleCheck {
 
   private void visit(
       final SyntaxNode node,
-      final Map<String, ValueRange> env,
+      final Map<String,
+      ValueRange> env,
       final Set<String> tracked,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     if (CLASS_BODY.equals(node.kind())) {
       return;
     }
@@ -79,9 +80,11 @@ public final class JavaValueRangeCheck implements RuleCheck {
 
   private void guard(
       final SyntaxNode statement,
-      final Map<String, ValueRange> env,
+      final Map<String,
+      ValueRange> env,
       final Set<String> tracked,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     final List<SyntaxNode> parts = statement.children();
     final SyntaxNode condition = parts.get(CONDITION);
     evaluate(condition, env, tracked, matches);
@@ -95,9 +98,11 @@ public final class JavaValueRangeCheck implements RuleCheck {
 
   private void evaluate(
       final SyntaxNode node,
-      final Map<String, ValueRange> env,
+      final Map<String,
+      ValueRange> env,
       final Set<String> tracked,
-      final List<RuleMatch> matches) {
+      final List<RuleMatch> matches
+  ) {
     final SyntaxNode condition = unwrap(node);
     final List<SyntaxNode> parts = condition.children();
     final String op = parts.size() == BINARY_PARTS ? parts.get(1).kind() : "";
@@ -113,22 +118,28 @@ public final class JavaValueRangeCheck implements RuleCheck {
               cmp ->
                   env.getOrDefault(cmp.variable(), ValueRange.ANY)
                       .decides(cmp.op(), cmp.constant())
-                      .isPresent())
+                      .isPresent()
+          )
           .ifPresent(
               cmp ->
                   matches.add(
                       CheckSupport.at(
                           condition.span(),
-                          CheckSupport.fill(message, SyntaxWalk.text(condition), ""))));
+                          CheckSupport.fill(message, SyntaxWalk.text(condition), "")
+                      )
+                  )
+          );
     }
   }
 
   private Map<String, ValueRange> narrowed(
       final SyntaxNode condition,
       final boolean truth,
-      final Map<String, ValueRange> env,
+      final Map<String,
+      ValueRange> env,
       final Set<String> tracked,
-      final SyntaxNode region) {
+      final SyntaxNode region
+  ) {
     final Map<String, ValueRange> next = new HashMap<>(narrow(condition, truth, env, tracked));
     final Set<String> assigned = assigned(region);
     assigned.addAll(assigned(condition));
@@ -139,8 +150,10 @@ public final class JavaValueRangeCheck implements RuleCheck {
   private Map<String, ValueRange> narrow(
       final SyntaxNode node,
       final boolean truth,
-      final Map<String, ValueRange> env,
-      final Set<String> tracked) {
+      final Map<String,
+      ValueRange> env,
+      final Set<String> tracked
+  ) {
     final SyntaxNode condition = unwrap(node);
     final List<SyntaxNode> parts = condition.children();
     final String op = parts.size() == BINARY_PARTS ? parts.get(1).kind() : "";
@@ -158,7 +171,8 @@ public final class JavaValueRangeCheck implements RuleCheck {
     final String held = truth ? cmp.get().op() : ValueRange.negate(cmp.get().op());
     next.put(
         cmp.get().variable(),
-        env.getOrDefault(cmp.get().variable(), ValueRange.ANY).holding(held, cmp.get().constant()));
+        env.getOrDefault(cmp.get().variable(), ValueRange.ANY).holding(held, cmp.get().constant())
+    );
     return next;
   }
 
@@ -170,7 +184,7 @@ public final class JavaValueRangeCheck implements RuleCheck {
     SyntaxNode current = node;
     while (current.children().size() == 1
         || current.children().size() == BINARY_PARTS
-            && "'('".equals(current.children().get(0).kind())) {
+        && "'('".equals(current.children().get(0).kind())) {
       current = current.children().get(current.children().size() / 2);
     }
     return current;
@@ -203,7 +217,8 @@ public final class JavaValueRangeCheck implements RuleCheck {
         .filter(
             node ->
                 Set.of("'++'", "'--'").contains(node.children().get(1).kind())
-                    || Set.of("'++'", "'--'").contains(node.children().get(0).kind()))
+                    || Set.of("'++'", "'--'").contains(node.children().get(0).kind())
+        )
         .forEach(node -> names.add(SyntaxWalk.text(node).replaceAll("[+-]", "")));
     return names;
   }
@@ -223,7 +238,8 @@ public final class JavaValueRangeCheck implements RuleCheck {
                   if (wanted) {
                     integral.add(name);
                   }
-                });
+                }
+            );
       }
     }
     integral.removeIf(name -> counts.get(name) > 1);

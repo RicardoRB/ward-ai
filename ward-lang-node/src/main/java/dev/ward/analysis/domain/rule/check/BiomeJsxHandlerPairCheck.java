@@ -12,7 +12,6 @@ import java.util.Set;
  * trigger:partner} or {@code trigger:partner1|partner2} when any of several partners will do.
  */
 public final class BiomeJsxHandlerPairCheck implements RuleCheck {
-
   private static final String PAIR_SEPARATOR = ":";
   private static final String PARTNER_SEPARATOR = "\\|";
 
@@ -22,12 +21,12 @@ public final class BiomeJsxHandlerPairCheck implements RuleCheck {
 
   /** A trigger handler and the partner handlers, any one of which must be present. */
   private record Pair(String trigger, Set<String> partners) {
-
     static Pair parse(final String text) {
       final int separator = text.indexOf(PAIR_SEPARATOR);
       return new Pair(
           text.substring(0, separator),
-          Set.of(text.substring(separator + 1).split(PARTNER_SEPARATOR)));
+          Set.of(text.substring(separator + 1).split(PARTNER_SEPARATOR))
+      );
     }
   }
 
@@ -39,7 +38,10 @@ public final class BiomeJsxHandlerPairCheck implements RuleCheck {
    * @param message the message of each finding
    */
   public BiomeJsxHandlerPairCheck(
-      final List<String> pairs, final List<String> exempt, final String message) {
+      final List<String> pairs,
+      final List<String> exempt,
+      final String message
+  ) {
     this.pairs = pairs.stream().map(Pair::parse).toList();
     this.exempt = exempt.stream().map(JsxElementSpec::parse).toList();
     this.message = Objects.requireNonNull(message, "message");
