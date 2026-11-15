@@ -84,8 +84,8 @@ final class MetricChecks {
             toml ->
                 new ClassCouplingCheck(
                     ClassCouplingCheck.Counting.valueOf(
-                        toml.getString("counting", () -> "checkstyle").toUpperCase(Locale.ROOT)),
-                    TomlValues.strings(toml, TYPES),
+                        toml.getString("count", () -> "references").toUpperCase(Locale.ROOT)),
+                    TomlValues.optionalStrings(toml, TYPES),
                     TomlValues.optionalStrings(toml, EXCLUDED_CLASSES),
                     TomlValues.integer(toml, MAX),
                     TomlValues.required(toml, MESSAGE))),

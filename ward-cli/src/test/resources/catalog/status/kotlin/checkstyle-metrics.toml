@@ -3,6 +3,7 @@
 boolean-expression-complexity = { status = "planned", issue = "#294" }
 class-data-abstraction-coupling = { status = "planned", issue = "#294" }
 class-fan-out-complexity = { status = "planned", issue = "#294" }
+coupling-between-objects = { status = "planned", issue = "#294" }
 cyclomatic-complexity = "implemented"
 java-ncss = { status = "planned", issue = "#294" }
 n-path-complexity = { status = "planned", issue = "#294" }

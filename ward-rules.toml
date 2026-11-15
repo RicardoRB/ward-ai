@@ -70,7 +70,6 @@ include = [
   "java.call-super-last",
   "java.check-result-set",
   "java.class-cast-exception-with-to-array",
-  "java.class-fan-out-complexity",
   "java.clone-method-must-be-public",
   "java.clone-method-must-implement-cloneable",
   "java.clone-method-return-type-must-match-class-name",
@@ -86,6 +85,7 @@ include = [
   "java.constants-in-interface",
   "java.constructor-calls-overridable-method",
   "java.control-statement-braces",
+  "java.coupling-between-objects",
   "java.cyclomatic-complexity",
   "java.data-class",
   "java.declaration-order",
@@ -500,11 +500,6 @@ exclude-paths = ["**/src/test/resources/**"]
 [rules.java.class-cast-exception-with-to-array]
 exclude-paths = ["**/src/test/resources/**"]
 
-[rules.java.class-fan-out-complexity]
-# This repository enforces PMD CouplingBetweenObjects, which counts declared types only.
-counting = "pmd"
-exclude-paths = ["**/src/test/resources/**"]
-
 [rules.java.clone-method-must-be-public]
 exclude-paths = ["**/src/test/resources/**"]
 
@@ -548,6 +543,9 @@ exclude-paths = ["**/src/test/resources/**"]
 exclude-paths = ["**/src/test/resources/**"]
 
 [rules.java.control-statement-braces]
+exclude-paths = ["**/src/test/resources/**"]
+
+[rules.java.coupling-between-objects]
 exclude-paths = ["**/src/test/resources/**"]
 
 [rules.java.cyclomatic-complexity]

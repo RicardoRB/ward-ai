@@ -10,7 +10,7 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ### Added
 
-- `ward:java/class-fan-out-complexity` gets the option `counting`: `checkstyle` (the default) counts every referenced or created type, `pmd` counts what PMD's `CouplingBetweenObjects` counts, the distinct declared types of fields, variables, parameters, loop variables, resources and return types, without primitives and `java.lang` types (#347).
+- `ward:java/coupling-between-objects` reports a class coupled to more than `max` (default 20) distinct types through its declarations: the types of fields, local variables, parameters, loop variables, resources and return types, without primitives and `java.lang` types (#347).
 
 ### Fixed
 

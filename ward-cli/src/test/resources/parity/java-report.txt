@@ -3,9 +3,9 @@
 # rule, tool, tool id, outcome, note. Regenerate with -Dward.parity.write=true.
 # - no-counterpart: 53
 # checkstyle agree: 79
-# checkstyle agree-lines: 44
+# checkstyle agree-lines: 43
 # checkstyle anchor-differs: 3
-# checkstyle approximation: 17
+# checkstyle approximation: 18
 # checkstyle tool-silent: 8
 # errorprone agree: 18
 # errorprone agree-lines: 63
@@ -18,13 +18,13 @@
 # nullaway approximation: 2
 # nullaway not-comparable: 18
 # nullaway tool-silent: 3
-# pmd agree: 103
-# pmd agree-lines: 109
-# pmd anchor-differs: 19
-# pmd approximation: 19
-# pmd tool-silent: 38
-# spotbugs agree-lines: 169
-# spotbugs anchor-differs: 41
+# pmd agree: 105
+# pmd agree-lines: 108
+# pmd anchor-differs: 20
+# pmd approximation: 20
+# pmd tool-silent: 35
+# spotbugs agree-lines: 168
+# spotbugs anchor-differs: 42
 # spotbugs approximation: 16
 # spotbugs not-comparable: 120
 # spotbugs tool-silent: 125
@@ -160,7 +160,6 @@ ci-confused-inheritance	spotbugs	CI_CONFUSED_INHERITANCE	agree-lines
 class-cast-exception-with-to-array	pmd	ClassCastExceptionWithToArray	agree-lines	
 class-data-abstraction-coupling	checkstyle	ClassDataAbstractionCoupling	agree	
 class-fan-out-complexity	checkstyle	ClassFanOutComplexity	agree	
-class-fan-out-complexity	pmd	CouplingBetweenObjects	agree-lines	
 class-member-implied-modifier	checkstyle	ClassMemberImpliedModifier	agree	
 class-name	errorprone	ClassName	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 class-type-parameter-name	checkstyle	ClassTypeParameterName	approximation	the passing fixture uses names such as KeyT, which Checkstyle's default pattern (one capital letter) rejects
@@ -206,6 +205,7 @@ constructor-calls-overridable-method	pmd	ConstructorCallsOverridableMethod	agree
 constructors-declaration-grouping	checkstyle	ConstructorsDeclarationGrouping	agree	
 control-statement-braces	pmd	ControlStatementBraces	anchor-differs	tool lines [3, 4, 5, 8], on passing [], fixture [3, 4, 5, 6]
 cookie-missing-secure	-	-	no-counterpart	
+coupling-between-objects	pmd	CouplingBetweenObjects	agree-lines	
 covariant-equals	checkstyle	CovariantEquals	agree	
 covariant-equals	spotbugs	EQ_OTHER_USE_OBJECT	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 cross-site-scripting	spotbugs	XSS_REQUEST_PARAMETER_TO_JSP_WRITER	not-comparable	the fixture does not compile
@@ -469,7 +469,7 @@ he-signature-declares-hashing-of-unhashable-class	spotbugs	HE_SIGNATURE_DECLARES
 he-use-of-unhashable-class	spotbugs	HE_USE_OF_UNHASHABLE_CLASS	not-comparable	the fixture does not compile
 header-splitting	-	-	no-counterpart	
 hidden-field	checkstyle	HiddenField	agree	
-hide-utility-class-constructor	checkstyle	HideUtilityClassConstructor	agree-lines	
+hide-utility-class-constructor	checkstyle	HideUtilityClassConstructor	approximation	Ward leaves a class that has an inner class, which needs an instance; Checkstyle reports it
 hide-utility-class-constructor	pmd	UseUtilityClass	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 hostname-verification-disabled	-	-	no-counterpart	
 hrs-request-parameter-to-cookie	spotbugs	HRS_REQUEST_PARAMETER_TO_COOKIE	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
@@ -660,7 +660,7 @@ method-name	pmd	MethodNamingConventions	agree
 method-no-init	nullaway	METHOD_NO_INIT	not-comparable	the fixture does not compile
 method-returns-internal-array	pmd	MethodReturnsInternalArray	agree	
 method-type-parameter-name	checkstyle	MethodTypeParameterName	approximation	the passing fixture uses names such as KeyT, which Checkstyle's default pattern (one capital letter) rejects
-method-with-same-name-as-enclosing-class	pmd	MethodWithSameNameAsEnclosingClass	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
+method-with-same-name-as-enclosing-class	pmd	MethodWithSameNameAsEnclosingClass	agree-lines	
 mf-class-masks-field	spotbugs	MF_CLASS_MASKS_FIELD	not-comparable	the fixture does not compile
 mf-method-masks-field	spotbugs	MF_METHOD_MASKS_FIELD	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 mislabeled-android-string	errorprone	MislabeledAndroidString	not-comparable	the fixture does not compile
@@ -774,7 +774,7 @@ np-clone-could-return-null	spotbugs	NP_CLONE_COULD_RETURN_NULL	not-comparable	th
 np-closing-null	spotbugs	NP_CLOSING_NULL	agree-lines	
 np-dereference-of-readline-value	spotbugs	NP_DEREFERENCE_OF_READLINE_VALUE	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 np-equals-should-handle-null-argument	spotbugs	NP_EQUALS_SHOULD_HANDLE_NULL_ARGUMENT	anchor-differs	tool lines [1], on passing [], fixture [2]
-np-guaranteed-deref	spotbugs	NP_GUARANTEED_DEREF	agree-lines	
+np-guaranteed-deref	spotbugs	NP_GUARANTEED_DEREF	anchor-differs	tool lines [9], on passing [], fixture [7]
 np-guaranteed-deref-on-exception-path	spotbugs	NP_GUARANTEED_DEREF_ON_EXCEPTION_PATH	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape
 np-immediate-dereference-of-readline	spotbugs	NP_IMMEDIATE_DEREFERENCE_OF_READLINE	agree-lines	
 np-load-of-known-null-value	spotbugs	NP_LOAD_OF_KNOWN_NULL_VALUE	agree-lines	
