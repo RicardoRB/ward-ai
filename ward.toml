@@ -133,8 +133,3 @@ enabled = true
 uses = "command"
 profiles = ["pre-push", "ci"]
 command = ["git", "diff", "--no-index", "--exit-code", "target/compliance", "compliance"]
-
-[checks.ward]
-enabled = true
-uses = "ward"
-profiles = ["probe"]
