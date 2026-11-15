@@ -168,6 +168,7 @@ body = '''
 check = "unit-test-lifecycle"
 method = "setUp"
 annotations = ["Before", "BeforeClass"]
+junit4-only = true
 message = "'{value}' is not annotated @Before or @BeforeClass, so JUnit 4 never runs it"
 '''
 
@@ -182,6 +183,7 @@ body = '''
 check = "unit-test-lifecycle"
 method = "tearDown"
 annotations = ["After", "AfterClass"]
+junit4-only = true
 message = "'{value}' is not annotated @After or @AfterClass, so JUnit 4 never runs it"
 '''
 
@@ -196,6 +198,7 @@ options.test-class-pattern = { type = "regex", parameter = "class-pattern" }
 body = '''
 check = "unit-test-missing-annotation"
 class-pattern = "Test"
+junit4-only = true
 message = "the public test method '{value}' has no @Test annotation, so JUnit 4 never runs it"
 '''
 

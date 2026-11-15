@@ -11,4 +11,11 @@ class Passing {
   int x() {
     return 1;
   }
+  record Address(String city) {}
+
+  record Customer(String name, Address address) {}
+
+  static Customer newCustomer(String n, Address a) {
+    return new Customer(n, a);
+  }
 }

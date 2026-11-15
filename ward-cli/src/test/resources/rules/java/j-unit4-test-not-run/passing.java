@@ -4,4 +4,7 @@ final class CounterTest {
   @Test
   public void testCounts() {
   }
+
+  public void testOrder(int first) {
+  }
 }

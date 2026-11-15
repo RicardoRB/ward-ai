@@ -9,7 +9,7 @@
       "supertypes": []
     }
   },
-  "5:5": {
+  "5:9": {
     "type": {
       "name": "sample.Other"
     },
@@ -19,7 +19,7 @@
       "supertypes": []
     }
   },
-  "5:9": {
+  "5:5-5:9": {
     "type": {
       "name": "sample.Other"
     },
@@ -27,6 +27,71 @@
       "kind": "class",
       "final": false,
       "supertypes": []
+    }
+  },
+  "5:5-5:15": {
+    "type": {
+      "name": "sample.Result"
+    },
+    "shape": {
+      "kind": "class",
+      "final": false,
+      "supertypes": []
+    }
+  },
+  "9:5-9:9": {
+    "type": {
+      "name": "sample.Other"
+    }
+  },
+  "9:5-9:19": {
+    "type": {
+      "name": "sample.Result"
+    }
+  },
+  "10:5-10:9": {
+    "type": {
+      "name": "sample.Other"
+    }
+  },
+  "10:5-10:16": {
+    "type": {
+      "name": "sample.Other"
+    }
+  },
+  "11:5-11:9": {
+    "type": {
+      "name": "java.util.List"
+    }
+  },
+  "11:5-11:18": {
+    "type": {
+      "name": "java.util.stream.Stream"
+    }
+  },
+  "12:5-12:9": {
+    "type": {
+      "name": "sample.Point"
+    },
+    "shape": {
+      "kind": "record",
+      "final": true,
+      "supertypes": []
+    }
+  },
+  "12:5-12:17": {
+    "type": {
+      "name": "sample.Result"
+    }
+  },
+  "13:5-13:9": {
+    "type": {
+      "name": "sample.Other"
+    }
+  },
+  "13:5-13:16": {
+    "type": {
+      "name": "java.util.Optional"
     }
   }
 }

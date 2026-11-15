@@ -94,9 +94,12 @@ limit it uses without the file:
 |---|---|---|---|
 | `file-length`, `*-length`, `parameter-count`, `*-complexity`, `complexity`, `nesting-depth` (every language) | `max` | integer | the limit in the [gates reference](/configuration/gates/) |
 | `type-name`, `method-name`, `member-name`, `parameter-name`, `local-variable-name` (Java); `type-name`, `function-name`, `property-name` (Kotlin) | `pattern` | regular expression | the default pattern |
+| `law-of-demeter` (Java) | `trusted-types` | list of regular expressions | none; each must match the whole qualified name of the type of a call's receiver, which the rule then trusts (`com\.acme\.dsl\..*`) |
 
 Option types are `integer` (with an allowed range), `boolean`, `string`, `regex`, `string-list` and
 `enum`. A `regex` is compiled when the file is read.
+
+`law-of-demeter` also trusts, without an option, a call that returns the type of its receiver (builders), a receiver, or a call result, whose type is in `java.` or `javax.`, a record receiver, and a getter without arguments (`getX()`, `isX()`).
 
 ## Duplicate code
 

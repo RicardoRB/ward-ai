@@ -19,9 +19,9 @@
 # nullaway not-comparable: 18
 # nullaway tool-silent: 3
 # pmd agree: 103
-# pmd agree-lines: 110
+# pmd agree-lines: 109
 # pmd anchor-differs: 19
-# pmd approximation: 17
+# pmd approximation: 18
 # pmd tool-silent: 39
 # spotbugs agree-lines: 168
 # spotbugs anchor-differs: 41
@@ -1127,7 +1127,7 @@ unit-test-contains-too-many-asserts	pmd	UnitTestContainsTooManyAsserts	agree-lin
 unit-test-should-include-assert	pmd	UnitTestShouldIncludeAssert	agree-lines	
 unit-test-should-use-after-annotation	pmd	UnitTestShouldUseAfterAnnotation	agree-lines	
 unit-test-should-use-before-annotation	pmd	UnitTestShouldUseBeforeAnnotation	agree-lines	
-unit-test-should-use-test-annotation	pmd	UnitTestShouldUseTestAnnotation	agree-lines	
+unit-test-should-use-test-annotation	pmd	UnitTestShouldUseTestAnnotation	approximation	PMD 7 also reports a public test method that takes parameters, as in a JUnit Jupiter class that has a helper named testOrder(int); a method with parameters can never be a test, so Ward skips it
 unnecessary-annotation-value-element	pmd	UnnecessaryAnnotationValueElement	agree-lines	
 unnecessary-block	pmd	UnnecessaryBlock	agree	
 unnecessary-boolean-assertion	pmd	UnnecessaryBooleanAssertion	tool-silent	the tool reports nothing on the fixture, which may need its configuration, resolved types or a bytecode shape

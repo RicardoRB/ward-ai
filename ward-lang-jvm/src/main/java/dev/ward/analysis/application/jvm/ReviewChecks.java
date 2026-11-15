@@ -38,6 +38,7 @@ final class ReviewChecks {
 
   private static final String MESSAGE = "message";
   private static final String MAX = "max";
+  private static final String JUNIT4_ONLY = "junit4-only";
 
   private ReviewChecks() {}
 
@@ -63,14 +64,16 @@ final class ReviewChecks {
             toml ->
                 new UnitTestMissingAnnotationCheck(
                     Pattern.compile(TomlValues.required(toml, "class-pattern")),
-                    TomlValues.required(toml, MESSAGE))),
+                    TomlValues.required(toml, MESSAGE),
+                    toml.getBoolean(JUNIT4_ONLY, () -> false))),
         entry(
             "unit-test-lifecycle",
             toml ->
                 new UnitTestLifecycleCheck(
                     TomlValues.required(toml, "method"),
                     TomlValues.strings(toml, "annotations"),
-                    TomlValues.required(toml, MESSAGE))));
+                    TomlValues.required(toml, MESSAGE),
+                    toml.getBoolean(JUNIT4_ONLY, () -> false))));
   }
 
   /** The checks over switch labels, abstract classes, interfaces and catch blocks. */

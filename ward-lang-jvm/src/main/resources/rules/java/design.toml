@@ -570,8 +570,10 @@ capability = "TYPES"
 severity = "error"
 category = "complexity"
 presets = ["standard", "strict"]
+options.trusted-types = { type = "string-list" }
 body = '''
 check = "law-of-demeter"
+trusted-types = []
 message = "call reaches through an object of another class; talk only to your friends"
 '''
 

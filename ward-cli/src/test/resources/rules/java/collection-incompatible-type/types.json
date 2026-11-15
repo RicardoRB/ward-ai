@@ -161,5 +161,38 @@
     "type": {
       "name": "java.lang.Object"
     }
+  },
+  "8:12-8:21": {
+    "call": {
+      "declaring": {
+        "name": "java.util.List"
+      },
+      "name": "get",
+      "params": [
+        {
+          "name": "int",
+          "primitive": true
+        }
+      ],
+      "returns": {
+        "name": "java.util.UUID"
+      }
+    }
+  },
+  "8:12-8:14": {
+    "type": {
+      "name": "java.util.List",
+      "args": [
+        {
+          "name": "java.util.UUID"
+        }
+      ]
+    }
+  },
+  "8:20-8:20": {
+    "type": {
+      "name": "int",
+      "primitive": true
+    }
   }
 }

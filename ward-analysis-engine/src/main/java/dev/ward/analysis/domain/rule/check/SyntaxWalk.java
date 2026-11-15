@@ -83,6 +83,13 @@ final class SyntaxWalk {
     return out.toString();
   }
 
+  /** Returns the text of the leaves below {@code node}, separated by one space. */
+  static String spacedText(final SyntaxNode node) {
+    return leaves(node).stream()
+        .map(leaf -> leaf.fields().get("text"))
+        .collect(java.util.stream.Collectors.joining(" "));
+  }
+
   /**
    * Returns the first node of {@code kind} below {@code node} in source order, not entering a
    * subtree whose kind is in {@code skip}.
