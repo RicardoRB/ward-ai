@@ -28,6 +28,7 @@ public final class LoopAllocationCheck extends FactsCheck {
   private static final Set<String> OUTSIDE_PARTS = Set.of("enhancedForControl", "forInit");
   private static final Set<String> EXITS = Set.of("'throw'", "'return'");
   private static final String BREAK = "'break'";
+  private static final String LAMBDA = "lambdaExpression";
   private static final String ASSIGN = "'='";
   private static final String INDEX = "'['";
   private static final String COLLECTION = "java.util.Collection";
@@ -59,6 +60,10 @@ public final class LoopAllocationCheck extends FactsCheck {
 
   private static boolean inLoop(final List<SyntaxNode> up) {
     for (int i = up.size() - 1; i >= 0; i--) {
+      // A lambda body runs when the lambda is called, not once per iteration of an outer loop.
+      if (LAMBDA.equals(up.get(i).kind())) {
+        return false;
+      }
       if (isLoop(up.get(i)) && !outsideBody(up.subList(i + 1, up.size()))) {
         return true;
       }
