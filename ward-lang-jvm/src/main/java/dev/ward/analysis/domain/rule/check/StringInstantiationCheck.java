@@ -59,7 +59,9 @@ public final class StringInstantiationCheck extends FactsCheck {
             .map(SyntaxWalk::text)
             .anyMatch(NAMES::contains);
     final List<SyntaxNode> arguments =
-        SyntaxWalk.descendants(creator).stream()
+        creator.children().stream()
+            .filter(part -> "classCreatorRest".equals(part.kind()))
+            .flatMap(rest -> SyntaxWalk.descendants(rest).stream())
             .filter(node -> EXPRESSION_LIST.equals(node.kind()))
             .findFirst()
             .map(list -> list.children().stream().filter(c -> EXPRESSION.equals(c.kind())).toList())

@@ -43,5 +43,26 @@
         "primitive": true
       }
     }
+  },
+  "18:17": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.String"
+      },
+      "name": "replace",
+      "params": [
+        {
+          "name": "char",
+          "primitive": true
+        },
+        {
+          "name": "char",
+          "primitive": true
+        }
+      ],
+      "returns": {
+        "name": "java.lang.String"
+      }
+    }
   }
 }

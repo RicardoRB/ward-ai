@@ -8,4 +8,8 @@ class Strings2 {
   String b(byte[] bytes, char[] chars) {
     return new String(bytes, StandardCharsets.UTF_8) + new String(chars);
   }
+
+  String[] pair(String text) {
+    return new String[] {strip(text.substring(1))};
+  }
 }

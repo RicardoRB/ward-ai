@@ -1,6 +1,11 @@
 import java.util.Enumeration;
 
-final class Legacy {
-  void visit(Enumeration<String> names) {
+final class Legacy implements Enumeration<String> {
+  public boolean hasMoreElements() {
+    return false;
+  }
+
+  public String nextElement() {
+    return "";
   }
 }

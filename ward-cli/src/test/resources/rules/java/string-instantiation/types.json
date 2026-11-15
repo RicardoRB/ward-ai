@@ -15,5 +15,10 @@
       "name": "char",
       "array": 1
     }
+  },
+  "13:32-13:48": {
+    "type": {
+      "name": "java.lang.String"
+    }
   }
 }

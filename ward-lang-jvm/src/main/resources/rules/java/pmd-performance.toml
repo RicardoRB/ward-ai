@@ -131,14 +131,15 @@ message = "trim() copies the string to check it is blank; use isBlank() instead"
 [[rules]]
 id = "ward:java/inefficient-string-buffering"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "performance"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["expression", "methodCall"]
-text = '^(?:new(?:java\.lang\.)?String(?:Buffer|Builder)|append)\((?=[^()]*?(?:"[^"\\]*+(?:\\.[^"\\]*+)*+"\+[A-Za-z_(]|[A-Za-z_)\]]\+))[^()]*+(?:\([^()]*\)[^()]*+)*+\)$'
+check = "call-facts"
+declaring-types = ["java.lang.StringBuilder", "java.lang.StringBuffer"]
+names = ["append", "<init>"]
+text = '(?:^new(?:java\.lang\.)?String(?:Buffer|Builder)|append)\((?=[^()]*?(?:"[^"\\]*+(?:\\.[^"\\]*+)*+"\+[A-Za-z_(]|[A-Za-z_)\]]\+))[^()]*+(?:\([^()]*\)[^()]*+)*+\)$'
 message = "a non-literal is concatenated inside a StringBuffer or StringBuilder call; append each part instead"
 '''
 
@@ -213,14 +214,15 @@ message = "elements are copied from an array into a list in a loop; use Arrays.a
 [[rules]]
 id = "ward:java/use-index-of-char"
 language = "java"
-capability = "SYNTAX"
+capability = "TYPES"
 severity = "error"
 category = "performance"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["methodCall"]
-text = '^(?:indexOf|lastIndexOf)\("(?:[^"\\]|\\.)"\)$'
+check = "call-facts"
+declaring-types = ["java.lang.String"]
+names = ["indexOf", "lastIndexOf"]
+text = '(?:indexOf|lastIndexOf)\("(?:[^"\\]|\\.)"\)$'
 message = "searching for a one-character string; pass a char instead"
 '''
 

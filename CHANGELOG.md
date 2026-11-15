@@ -48,6 +48,21 @@ still change behavior. Breaking changes are called out under **Changed**.
 - `ward:java/more-than-one-logger` counts logger fields, not logger variables in a method (#347).
 - `ward:java/method-with-same-name-as-enclosing-class` compares a method name with the class name as written, as PMD does; a field name is still compared ignoring case (#347).
 - `ward:java/linguistic-naming` no longer reports a `void` method named `is...`, `has...`, `can...`, `have...`, `will...` or `should...`, which PMD accepts (#347).
+- `ward:java/use-varargs` no longer reports an array parameter that is not the last one, a `byte[]` parameter or `main(String[])`, as PMD UseVarargs does.
+- `ward:java/loose-coupling` no longer reports a constructor reference such as `TreeSet::new` or a class literal such as `ArrayList.class`.
+- `ward:java/unnecessary-varargs-array-creation` reports an array only when the called method is varargs and the array has the type of the variadic parameter; it needs type facts now (`capability = "TYPES"`).
+- `ward:java/internal-api-usage` no longer reports the `com.sun` packages that a JDK module exports as supported API, such as `com.sun.net.httpserver`, `com.sun.management` and `com.sun.source`.
+- `ward:java/uc-useless-object` no longer reports a collection whose `add` result is used, as in `if (seen.add(x))`.
+- `ward:java/lambda-can-be-method-reference` no longer reports a lambda that only creates an object, which PMD does not report.
+- `ward:java/reliance-on-default-charset` no longer reports `new InputStreamReader(new GZIPInputStream(in), charset)`: the charset after a nested call counts as passed.
+- `ward:java/unused-return-value` no longer reports the value of a `case X -> value;` of a switch expression.
+- `ward:java/enum-comparison` reports an `equals` argument only when the argument itself is an enum, not when an enum is nested in it, as in `equals(List.of(RED))`.
+- `ward:java/double-brace-initialization` no longer reports the text of a string literal that looks like `new X() {{`.
+- `ward:java/string-instantiation` no longer reports `new String[] {f(text)}`: only the arguments of a class creation count.
+- `ward:java/inefficient-string-buffering` reports only calls of `StringBuilder` and `StringBuffer` (it needs type facts now), not an `append` of another type.
+- `ward:java/replace-enumeration-with-iterator` reports a class, enum or record that implements `Enumeration`, as PMD does, not each use of the type.
+- `ward:java/compare-objects-with-equals` no longer reports `this == other` inside a method named `equals`.
+- `ward:java/use-index-of-char` reports only `String.indexOf` and `lastIndexOf`, not `List.indexOf("/")`; it needs type facts now.
 
 ## [0.9.0] - 2026-11-14
 

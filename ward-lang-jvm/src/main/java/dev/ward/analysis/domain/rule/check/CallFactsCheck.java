@@ -30,6 +30,10 @@ public final class CallFactsCheck implements RuleCheck {
   private static final String EXPRESSION = "expression";
   private static final String STATEMENT = "statement";
   private static final String RESOURCE = "resource";
+  private static final String BLOCK_STATEMENT = "blockStatement";
+  private static final String SWITCH_OUTCOME = "switchRuleOutcome";
+  private static final String SWITCH_RULE = "switchLabeledRule";
+  private static final String SWITCH_EXPRESSION = "switchExpression";
   private static final String RETURN = "'return'";
   private static final String SEMICOLON = "';'";
   private static final int STATEMENT_PARTS = 2;
@@ -165,7 +169,20 @@ public final class CallFactsCheck implements RuleCheck {
     return STATEMENT.equals(parent.kind())
         && parts.size() == STATEMENT_PARTS
         && parts.get(0).span().equals(call.span())
-        && SEMICOLON.equals(parts.get(1).kind());
+        && SEMICOLON.equals(parts.get(1).kind())
+        && !yieldsSwitchValue(up);
+  }
+
+  /** Tells whether the statement is the value of a switch expression's {@code case X -> value;}. */
+  private static boolean yieldsSwitchValue(final List<SyntaxNode> up) {
+    int at = up.size() - 2;
+    while (at >= 0 && BLOCK_STATEMENT.equals(up.get(at).kind())) {
+      at--;
+    }
+    return at >= 2
+        && SWITCH_OUTCOME.equals(up.get(at).kind())
+        && SWITCH_RULE.equals(up.get(at - 1).kind())
+        && SWITCH_EXPRESSION.equals(up.get(at - 2).kind());
   }
 
   private static boolean outsideResource(final SyntaxWalk.Visit visit) {

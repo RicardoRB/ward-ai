@@ -21,6 +21,7 @@ public final class UnusedCollectionModifiedCheck implements RuleCheck {
   private static final String DECLARATOR_ID = "variableDeclaratorId";
   private static final String EXPRESSION = "expression";
   private static final String STATEMENT = "statement";
+  private static final String SEMICOLON = "';'";
   private static final Pattern COLLECTION =
       Pattern.compile(
           "^(?:final)?(?:java\\.util\\.)?(?:List|ArrayList|LinkedList|Set|HashSet|LinkedHashSet|"
@@ -94,6 +95,14 @@ public final class UnusedCollectionModifiedCheck implements RuleCheck {
     final int at = up.indexOf(invocation);
     return call.matcher(SyntaxWalk.text(invocation)).find()
         && at > 0
-        && STATEMENT.equals(up.get(at - 1).kind());
+        && isExpressionStatement(up.get(at - 1));
+  }
+
+  /** An expression statement is the expression and a semicolon; {@code if (x)} also has one. */
+  private static boolean isExpressionStatement(final SyntaxNode statement) {
+    final List<SyntaxNode> parts = statement.children();
+    return STATEMENT.equals(statement.kind())
+        && parts.size() == NAME_AND_CALL
+        && SEMICOLON.equals(parts.get(1).kind());
   }
 }

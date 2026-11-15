@@ -20,7 +20,7 @@ import java.util.Set;
  * the comparison tests identity where the values should be compared with {@code equals}. The set
  * {@code *} stands for any reference type except {@code java.lang.Class} and enums, whose identity
  * is their equality; an enum is known from the operand's ancestors. It reports nothing when a type
- * is unknown.
+ * is unknown, or inside a method named {@code equals}.
  */
 public final class ReferenceEqualityCheck implements RuleCheck {
 
@@ -28,6 +28,9 @@ public final class ReferenceEqualityCheck implements RuleCheck {
   private static final Set<String> OPERATORS = Set.of("'=='", "'!='");
   private static final int OPERANDS = 3;
   private static final int RIGHT = 2;
+  private static final String METHOD = "methodDeclaration";
+  private static final String IDENTIFIER = "identifier";
+  private static final String EQUALS = "equals";
   private static final String ANY = "*";
   private static final String CLASS = "java.lang.Class";
   private static final String ENUM = "java.lang.Enum";
@@ -70,12 +73,26 @@ public final class ReferenceEqualityCheck implements RuleCheck {
       final List<SyntaxNode> parts = visit.node().children();
       if (parts.size() == OPERANDS
           && OPERATORS.contains(parts.get(1).kind())
+          && !inEquals(visit)
           && listed(parts.get(0), facts)
           && listed(parts.get(RIGHT), facts)) {
         matches.add(CheckSupport.at(visit.node().span(), message));
       }
     }
     return List.copyOf(matches);
+  }
+
+  /** Tells whether the comparison is inside a method named {@code equals}. */
+  private static boolean inEquals(final SyntaxWalk.Visit visit) {
+    return visit.ancestors().stream()
+        .anyMatch(
+            node ->
+                METHOD.equals(node.kind())
+                    && node.children().stream()
+                        .anyMatch(
+                            part ->
+                                IDENTIFIER.equals(part.kind())
+                                    && EQUALS.equals(SyntaxWalk.text(part))));
   }
 
   private boolean listed(final SyntaxNode operand, final UnitTypeFacts facts) {
