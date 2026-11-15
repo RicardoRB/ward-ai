@@ -34,6 +34,8 @@ public final class ForLoopCanBeForeachCheck implements RuleCheck {
   private static final String ASSIGNED = "(?!(?:[-+*/%&|^]|<<|>>>?)?=(?!=)|\\+\\+|--)";
 
   private static final int CONTROL_PARTS = 3;
+  private static final int BOUND_KIND = 3;
+  private static final String ARRAY_LENGTH = ".length";
   private static final Pattern BOUND =
       Pattern.compile("^([A-Za-z_]\\w*)<([A-Za-z_][\\w.]*)(\\.size\\(\\)|\\.length)$");
 
@@ -110,7 +112,7 @@ public final class ForLoopCanBeForeachCheck implements RuleCheck {
     }
     final String collection = bound.group(2);
     final SyntaxNode body = loop.children().get(loop.children().size() - 1);
-    return onlyReads(body, index, collection, types, bound.group(3).equals(".length"))
+    return onlyReads(body, index, collection, types, ARRAY_LENGTH.equals(bound.group(BOUND_KIND)))
         ? Optional.of(collection)
         : Optional.empty();
   }

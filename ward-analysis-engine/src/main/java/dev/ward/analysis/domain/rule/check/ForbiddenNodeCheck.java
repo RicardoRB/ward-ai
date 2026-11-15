@@ -31,6 +31,7 @@ public final class ForbiddenNodeCheck implements UnitCheck {
           "catch",
           "else",
           "super");
+  private static final char ESCAPE = '\\';
   private static final Pattern LEADING_KEYWORD = Pattern.compile("^\\^([a-z]+)(?![a-zA-Z])");
 
   private final NodeFilter filter;
@@ -126,9 +127,10 @@ public final class ForbiddenNodeCheck implements UnitCheck {
       final List<String> parts = new ArrayList<>();
       int depth = 0;
       int start = 0;
-      for (int index = 0; index < regex.length(); index++) {
+      int index = 0;
+      while (index < regex.length()) {
         final char c = regex.charAt(index);
-        if (c == '\\') {
+        if (c == ESCAPE) {
           index++;
         } else if (c == '(' || c == '[') {
           depth++;
@@ -138,6 +140,7 @@ public final class ForbiddenNodeCheck implements UnitCheck {
           parts.add(regex.substring(start, index));
           start = index + 1;
         }
+        index++;
       }
       parts.add(regex.substring(start));
       return parts;

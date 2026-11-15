@@ -9,11 +9,11 @@ import dev.ward.analysis.domain.rule.RuleDefinition;
 import dev.ward.analysis.domain.rule.RuleExecutionError;
 import dev.ward.analysis.domain.rule.RuleMatcher;
 import dev.ward.analysis.domain.rule.RuleNotRun;
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * A rule compiled once, up front, with the languages it runs on, so the type needs of all rules are
@@ -46,21 +46,18 @@ record PreparedRule(Optional<CompiledRule> rule, List<AnalysisLanguage> runnable
 
   /** The type-fact needs of the prepared {@code TYPES} rules, by language. */
   static Map<AnalysisLanguage, List<FactNeed>> needs(final List<PreparedRule> prepared) {
-    final Map<AnalysisLanguage, List<FactNeed>> needs = new EnumMap<>(AnalysisLanguage.class);
-    for (final PreparedRule item : prepared) {
-      item.rule()
-          .filter(rule -> rule.definition().capability() == RuleCapability.TYPES)
-          .ifPresent(
-              rule ->
-                  rule.definition()
-                      .languages()
-                      .forEach(
-                          language ->
-                              needs
-                                  .computeIfAbsent(language, key -> new ArrayList<>())
-                                  .add(rule.factNeed())));
-    }
-    return needs;
+    return prepared.stream()
+        .flatMap(item -> item.rule().stream())
+        .filter(rule -> rule.definition().capability() == RuleCapability.TYPES)
+        .flatMap(
+            rule ->
+                rule.definition().languages().stream()
+                    .map(language -> Map.entry(language, rule.factNeed())))
+        .collect(
+            Collectors.groupingBy(
+                Map.Entry::getKey,
+                () -> new EnumMap<>(AnalysisLanguage.class),
+                Collectors.mapping(Map.Entry::getValue, Collectors.toList())));
   }
 
   private static PreparedRule of(

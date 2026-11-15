@@ -42,10 +42,4 @@ class Loops {
       n += each;
     }
   }
-
-  void lazily(java.util.Map<String, List<String>> groups, List<String> keys) {
-    for (String key : keys) {
-      groups.computeIfAbsent(key, missing -> new ArrayList<>()).add(key);
-    }
-  }
 }

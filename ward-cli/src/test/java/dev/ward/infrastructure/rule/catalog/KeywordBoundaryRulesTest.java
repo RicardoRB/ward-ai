@@ -6,6 +6,7 @@ import dev.ward.analysis.domain.ir.AnalysisFinding;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 import org.junit.jupiter.api.Test;
 import org.tomlj.Toml;
@@ -17,8 +18,7 @@ import org.tomlj.Toml;
  */
 class KeywordBoundaryRulesTest {
 
-  /** Fixed in another change of #347; remove it from here when that change lands. */
-  private static final String OWNED_ELSEWHERE = "ward:java/control-statement-braces";
+  private static final int MANY_RULES = 100;
 
   private static final String CALLS =
       """
@@ -60,7 +60,7 @@ class KeywordBoundaryRulesTest {
             .filter(rule -> "forbidden-node".equals(Toml.parse(rule.body()).getString("check")))
             .toList();
     final RuleFixtureRunner runner = new RuleFixtureRunner();
-    final TreeSet<String> reporting = new TreeSet<>();
+    final Set<String> reporting = new TreeSet<>();
     for (final RuleDefinition rule : rules) {
       final List<AnalysisFinding> findings =
           runner.run(rule, "Calls.java", CALLS, FixtureTypeFacts.of(java.util.Optional.empty()));
@@ -69,8 +69,7 @@ class KeywordBoundaryRulesTest {
       }
     }
 
-    assertThat(rules).hasSizeGreaterThan(100);
-    reporting.remove(OWNED_ELSEWHERE);
+    assertThat(rules).hasSizeGreaterThan(MANY_RULES);
     assertThat(reporting).isEmpty();
   }
 }
