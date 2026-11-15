@@ -7,4 +7,8 @@ final class CounterTest {
 
   public void testOrder(int first) {
   }
+
+  public int testValue() {
+    return 1;
+  }
 }

@@ -20,6 +20,7 @@ public final class InvalidJavadocPositionCheck implements UnitCheck {
           "typeDeclaration",
           "packageDeclaration",
           "enumConstant",
+          "enumConstants",
           "annotationTypeElementDeclaration",
           "compactConstructorDeclaration"
       );

@@ -5,4 +5,8 @@ final class Compare {
   boolean notMap(Object value) {
     return !(value instanceof java.util.Map<?, ?> map) || map.isEmpty();
   }
+
+  boolean missing(Object value) {
+    return !((java.util.Optional<?>) value).isPresent();
+  }
 }

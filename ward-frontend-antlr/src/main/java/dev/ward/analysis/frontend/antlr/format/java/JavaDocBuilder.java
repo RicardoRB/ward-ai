@@ -23,6 +23,7 @@ final class JavaDocBuilder {
   private final JavaSeparator separator;
   private boolean hasOutput;
   private JavaAtom previous;
+  private int position;
 
   /**
    * Creates the builder for one source.
@@ -52,7 +53,8 @@ final class JavaDocBuilder {
    * @throws IllegalStateException if the brackets do not balance
    */
   Document build() {
-    for (final JavaAtom atom : atoms) {
+    for (position = 0; position < atoms.size(); position++) {
+      final JavaAtom atom = atoms.get(position);
       if (atom.comment()) {
         emitComment(atom);
       } else {
@@ -73,13 +75,22 @@ final class JavaDocBuilder {
 
   private void emitComment(final JavaAtom atom) {
     if (previous != null && atom.newlines() == 0) {
-      stack.current().add(Document.text((atom.gapSpace() ? SPACE : EMPTY) + atom.text()));
+      // At the start of a list the comment opens the list's first line, where a space before it
+      // would not survive a second run.
+      final boolean spaced = atom.gapSpace() && !stack.current().startsList();
+      stack.current().add(Document.text((spaced ? SPACE : EMPTY) + atom.text()));
       separator.endComment(atom.lineComment());
       return;
     }
+    // A block comment that opens a list with the first item beside it keeps the item there, as it
+    // does when the comment follows the parenthesis on its line.
+    final boolean nextOnSameLine =
+        position + 1 < atoms.size() && atoms.get(position + 1).newlines() == 0;
+    final boolean besideItem =
+        !atom.lineComment() && stack.current().startsList() && nextOnSameLine;
     flush(JavaBreak.HARD, atom);
     stack.current().add(Document.text(atom.text()));
-    separator.endComment(true);
+    separator.endComment(!besideItem);
   }
 
   private void emitCode(final JavaAtom atom) {
@@ -181,7 +192,7 @@ final class JavaDocBuilder {
    */
   private void hardBreak(final JavaAtom next) {
     final JavaFrame frame = stack.current();
-    if (frame.kind() == JavaFrame.Kind.GROUP && frame.isEmpty()) {
+    if (stack.current().startsList()) {
       return;
     }
     final boolean insideStatement =

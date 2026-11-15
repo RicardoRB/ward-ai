@@ -52,7 +52,7 @@ public final class LiteralArgumentCheck implements RuleCheck {
     this.mode = Objects.requireNonNull(mode, "mode");
     this.argument =
         Pattern.compile(
-            "(?:" + Objects.requireNonNull(call, "call") + ")\\(\"((?:[^\"\\\\]|\\\\.)*)\"[,)]"
+            "(?:" + Objects.requireNonNull(call, "call") + ")\\(\"((?:[^\"\\\\]|\\\\.)*+)\"[,)]"
         );
     this.message = Objects.requireNonNull(message, "message");
   }

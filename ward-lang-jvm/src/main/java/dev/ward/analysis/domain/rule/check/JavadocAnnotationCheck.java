@@ -6,11 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * Compares the Javadoc of each class member with its annotation. A member whose Javadoc contains
  * {@code tag} must carry {@code annotation}; with {@code methodsOnly}, only methods are checked.
- * The Javadoc is read from the source text, because comments are not in the tree.
+ * The Javadoc is read from the source text, because comments are not in the tree: it is the comment
+ * that ends just before the member, when that comment is a Javadoc. A block tag such as {@code
+ * @deprecated} does not count when the prose names it inside {@code {@code ...}} or {@code
+ * {@literal ...}}.
  */
 public final class JavadocAnnotationCheck implements UnitCheck {
   private static final String CLASS_BODY = "classBodyDeclaration";
@@ -18,9 +22,11 @@ public final class JavadocAnnotationCheck implements UnitCheck {
   private static final Set<String> METHOD_KINDS =
       Set.of("methodDeclaration", "interfaceMethodDeclaration", "genericMethodDeclaration");
   private static final String JAVADOC_OPEN = "/**";
+  private static final String COMMENT_OPEN = "/*";
+  private static final String BLOCK_TAG_MARK = "@";
   private static final String JAVADOC_CLOSE = "*/";
 
-  private final String tag;
+  private final Pattern tag;
   private final String annotation;
   private final boolean methodsOnly;
   private final String message;
@@ -39,7 +45,12 @@ public final class JavadocAnnotationCheck implements UnitCheck {
       final boolean methodsOnly,
       final String message
   ) {
-    this.tag = Objects.requireNonNull(tag, "tag");
+    this.tag =
+        Pattern.compile(
+            tag.startsWith(BLOCK_TAG_MARK)
+                ? "(?<!\\{@code )(?<!\\{@literal )(?<![\\w{])" + Pattern.quote(tag) + "(?!\\w)"
+                : Pattern.quote(tag)
+        );
     this.annotation = Objects.requireNonNull(annotation, "annotation");
     this.methodsOnly = methodsOnly;
     this.message = Objects.requireNonNull(message, "message");
@@ -60,7 +71,7 @@ public final class JavadocAnnotationCheck implements UnitCheck {
 
   private boolean isBad(final SyntaxNode member, final String text) {
     final String javadoc = javadocBefore(member.children().get(0).span().startOffset(), text);
-    if (javadoc == null || !javadoc.contains(tag)) {
+    if (javadoc == null || !tag.matcher(javadoc).find()) {
       return false;
     }
     if (methodsOnly && !isMethod(member)) {
@@ -84,7 +95,7 @@ public final class JavadocAnnotationCheck implements UnitCheck {
     if (!before.endsWith(JAVADOC_CLOSE)) {
       return null;
     }
-    final int open = before.lastIndexOf(JAVADOC_OPEN);
-    return open < 0 ? null : before.substring(open);
+    final int open = before.lastIndexOf(COMMENT_OPEN);
+    return open < 0 || !before.startsWith(JAVADOC_OPEN, open) ? null : before.substring(open);
   }
 }

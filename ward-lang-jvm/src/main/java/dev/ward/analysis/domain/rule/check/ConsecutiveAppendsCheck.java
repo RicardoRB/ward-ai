@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 public final class ConsecutiveAppendsCheck implements UnitCheck {
   private static final String BLOCK = "block";
   private static final Pattern APPEND =
-      Pattern.compile("^(\\w+)\\.append\\((?:[^()]|\\([^()]*\\))*\\);$");
+      Pattern.compile("^(\\w+)\\.append\\((?:[^()]|\\([^()]*\\))*+\\);$");
 
   private final String message;
 

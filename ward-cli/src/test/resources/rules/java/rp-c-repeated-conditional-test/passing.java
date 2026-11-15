@@ -10,4 +10,8 @@ final class Check {
       a = 3;
     }
   }
+
+  String separator() {
+    return "||" + '&' + "&&";
+  }
 }

@@ -6,4 +6,12 @@ class Passing {
   /** Placed too. */
   void other() {
   }
+
+  enum Mode {
+    /** The first constant. */
+    FAST,
+
+    /** The second constant. */
+    SLOW
+  }
 }
