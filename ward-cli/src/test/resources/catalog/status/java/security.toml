@@ -2,6 +2,7 @@
 
 cleartext-transport = "implemented"
 constant-gcm-nonce = "implemented"
+cookie-missing-secure = "implemented"
 csrf-protection-disabled = "implemented"
 ecb-mode = "implemented"
 environment-injection = "implemented"

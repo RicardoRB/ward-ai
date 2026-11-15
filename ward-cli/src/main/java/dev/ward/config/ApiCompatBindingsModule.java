@@ -5,8 +5,10 @@ import dagger.Module;
 import dagger.Provides;
 import dev.ward.application.gate.apicompat.ApiSurfaces;
 import dev.ward.domain.gate.MainSourceRoots;
+import dev.ward.domain.gate.ModuleDirectories;
 import dev.ward.domain.gate.WorkingFiles;
 import dev.ward.infrastructure.analysis.jvm.JvmApiSurfaces;
+import dev.ward.infrastructure.analysis.jvm.JvmModuleLayouts;
 import dev.ward.infrastructure.analysis.jvm.JvmSourceLayouts;
 import dev.ward.infrastructure.gate.FileSystemWorkingFiles;
 
@@ -23,5 +25,11 @@ interface ApiCompatBindingsModule {
   @Provides
   static MainSourceRoots mainSourceRoots() {
     return JvmSourceLayouts::mainRoots;
+  }
+
+  /** The modules come from the text of the build file, read at any revision. */
+  @Provides
+  static ModuleDirectories moduleDirectories() {
+    return JvmModuleLayouts::listed;
   }
 }

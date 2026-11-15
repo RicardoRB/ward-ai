@@ -73,10 +73,10 @@ class PomLicenseParitySmokeTest {
             .map(PomLicenseParitySmokeTest::line)
             .collect(Collectors.toCollection(TreeSet::new));
 
-    assertThat(actual).isEqualTo(expected());
+    assertThat(actual).isEqualTo(expected(FIXTURE));
   }
 
-  private static String line(final PackageLicense entry) {
+  static String line(final PackageLicense entry) {
     final String names =
         entry.lookup().present()
             ? entry.lookup().license().entries().stream()
@@ -90,8 +90,8 @@ class PomLicenseParitySmokeTest {
         + names;
   }
 
-  private static Set<String> expected() throws IOException {
-    return Files.readAllLines(FIXTURE.resolve("expected.txt")).stream()
+  static Set<String> expected(final Path fixture) throws IOException {
+    return Files.readAllLines(fixture.resolve("expected.txt")).stream()
         .filter(line -> !line.startsWith(COMMENT) && !line.isBlank())
         .collect(Collectors.toCollection(TreeSet::new));
   }

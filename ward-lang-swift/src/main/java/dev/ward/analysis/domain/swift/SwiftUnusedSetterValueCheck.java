@@ -131,11 +131,15 @@ public final class SwiftUnusedSetterValueCheck implements RuleCheck {
       if (OVERRIDE.equals(text)) {
         return true;
       }
-      if ("var".equals(text) || "subscript".equals(text) || "func".equals(text)) {
+      if (isDeclarationKeyword(text)) {
         return false;
       }
     }
     return false;
+  }
+
+  private static boolean isDeclarationKeyword(final String text) {
+    return "var".equals(text) || "subscript".equals(text) || "func".equals(text);
   }
 
   private static String text(final List<SyntaxNode> tokens, final int index) {

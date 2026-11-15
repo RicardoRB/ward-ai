@@ -1,0 +1,11 @@
+# This is a Gradle generated file for dependency locking.
+# Manual edits can break the build and are not advised.
+# This file is expected to be part of source control.
+# To regenerate this file, run: ./gradlew :dependencies --write-locks
+ch.qos.logback:logback-classic:1.5.38=runtimeClasspath
+ch.qos.logback:logback-core:1.5.38=runtimeClasspath
+commons-io:commons-io:2.21.0=runtimeClasspath
+org.apache.commons:commons-lang3:3.19.0=runtimeClasspath
+org.codehaus.plexus:plexus-utils:4.1.0=runtimeClasspath
+org.slf4j:slf4j-api:2.0.17=runtimeClasspath
+empty=

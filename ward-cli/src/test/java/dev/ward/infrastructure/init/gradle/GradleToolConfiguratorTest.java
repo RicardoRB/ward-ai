@@ -38,7 +38,7 @@ class GradleToolConfiguratorTest {
     final Path build = root.resolve("build.gradle");
     Files.writeString(build, "plugins { id 'java' }\n");
     final Project project = new Project(root, Language.JAVA, BuildTool.GRADLE, Framework.NONE);
-    final List<String> ids = List.of("coverage", "mutation", "sonar");
+    final List<String> ids = List.of("coverage", "mutation");
 
     new GradleToolConfigurator()
         .apply(
@@ -48,8 +48,8 @@ class GradleToolConfiguratorTest {
             finding -> false);
 
     assertThat(Files.readString(build))
-        .contains("info.solidsoft.pitest", "org.sonarqube")
-        .doesNotContain("japicmp");
+        .contains("info.solidsoft.pitest")
+        .doesNotContain("org.sonarqube", "japicmp");
   }
 
   private static InitGateOption gate(final String id) {

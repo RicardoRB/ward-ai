@@ -62,6 +62,7 @@ final class TaintOrigins {
           changed = true;
         }
       }
+      changed |= TaintStores.apply(graph, reaching, spec, tainted);
     }
   }
 

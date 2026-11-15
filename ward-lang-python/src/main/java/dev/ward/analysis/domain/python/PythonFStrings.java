@@ -1,7 +1,12 @@
 package dev.ward.analysis.domain.python;
 
+import dev.ward.analysis.domain.ir.AccessKind;
+import dev.ward.analysis.domain.ir.Span;
+import dev.ward.analysis.domain.ir.SyntaxNode;
+import dev.ward.analysis.domain.ir.VariableAccess;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -24,6 +29,23 @@ final class PythonFStrings {
   /** Reports whether the string token is an f-string. */
   static boolean isFString(final String token) {
     return PREFIX.matcher(token).find();
+  }
+
+  /**
+   * Records a read of each name in the replacement fields of an f-string token, unless excluded.
+   */
+  static void reads(
+      final SyntaxNode token, final Set<String> excluded, final List<VariableAccess> out) {
+    final String text = PythonSyntax.text(token);
+    if (!isFString(text)) {
+      return;
+    }
+    for (final Use use : names(text)) {
+      if (!excluded.contains(use.name())) {
+        final Span span = PythonSpans.within(token.span(), text, use.from(), use.to());
+        out.add(new VariableAccess(use.name(), AccessKind.READ, span, span));
+      }
+    }
   }
 
   /** The names the replacement fields of the f-string token read, in order. */

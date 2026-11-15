@@ -27,9 +27,6 @@ class CompatibilityCatalogTest {
   private static final int JDK_25 = 25;
   private static final Path CELLS = Path.of("src/test/resources/java-matrix/cells.csv");
 
-  /** The tools of gates the matrix does not run, because they need network credentials. */
-  private static final Set<String> NOT_IN_MATRIX = Set.of("sonar-maven-plugin", "org.sonarqube");
-
   @Test
   void eachToolHasDisjointJdkRanges() {
     assertThat(overlaps(ManagedPluginCatalog.entries())).isEmpty();
@@ -100,7 +97,6 @@ class CompatibilityCatalogTest {
       final Map<String, List<ManagedPluginCandidate>> catalog, final Set<Integer> jdks) {
     return catalog.values().stream()
         .flatMap(List::stream)
-        .filter(row -> !NOT_IN_MATRIX.contains(row.tool()))
         .filter(row -> jdks.stream().noneMatch(row::runsOn))
         .map(row -> row.tool() + " " + row.version())
         .toList();

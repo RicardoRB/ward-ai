@@ -1,0 +1,35 @@
+# Dynamic code execution: the source text that eval and exec run, and the import of a computed module.
+
+[[sinks]]
+kind = "call"
+name = "eval"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "exec"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "import_module"
+receiver = "importlib"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "__import__"
+arguments = [0]
+
+[[sanitizers]]
+kind = "call"
+name = "int"
+
+[[sanitizers]]
+kind = "call"
+name = "float"
+
+[[sanitizers]]
+kind = "call"
+name = "bool"
+

@@ -1,0 +1,158 @@
+---
+title: ward-architecture.toml
+description: Write your own architecture rules once, with the same text for Java, Kotlin, TypeScript, JavaScript, Python and Swift.
+---
+
+`ward-architecture.toml` holds the architecture rules that you write for your project. A rule
+selects some files, states one constraint, and gives the reason. The [`ward` gate](/configuration/gates/#analysis-gate)
+checks it over the dependency graph that it already builds, so the same text works in every
+language. The file is optional and sits at the project root.
+
+```toml
+#:schema https://ricardorb.github.io/ward-ai/schemas/ward-architecture.schema.json
+version = 1
+
+[[rule]]
+name = "domain-is-pure"
+select = { directories = ["domain"] }
+must-not-depend-on = { directories = ["infrastructure", "adapter"] }
+because = "the domain must not know its adapters"
+
+[[rule]]
+name = "repositories-behind-services"
+select = { paths = ["src/**/repository/**"] }
+only-accessed-by = { paths = ["src/**/service/**"] }
+because = "only services decide when data is read or written"
+
+[[rule]]
+name = "controllers-in-controller-folder"
+select = { paths = ["src/**/*Controller.*"], exclude-paths = ["src/test/**"] }
+must-be-in = { directories = ["controller"] }
+because = "the web layer is found by its folder"
+```
+
+The `#:schema` line gives editors that use Taplo or Even Better TOML completion and checking from
+the published [`ward-architecture.schema.json`](/schemas/ward-architecture.schema.json).
+
+## How the file is found
+
+With no setting, Ward reads `ward-architecture.toml` at the project root when it exists. Without
+the file no general rule runs and the gate reports what it always did. To keep the file elsewhere,
+set `architecture-file` on the `ward` check. The path is relative to the project and must stay
+inside it:
+
+```toml
+[checks.ward]
+uses = "ward"
+architecture-file = "config/architecture.toml"
+```
+
+A named file that does not exist, a path outside the project, text that is not valid TOML, a
+`version` other than `1`, and an unknown key are configuration problems. Each names the file, and
+the rule and key where there is one, and no analysis rule runs until you fix it. The same applies
+to a `[[rule]]` with a missing part, two constraints, a repeated name, or a key such as
+`annotated-with` that this version does not know.
+
+The file is not executable configuration. `ward.toml` holds commands that Ward runs, so it is
+trusted code; `ward-architecture.toml` holds names, globs and text only. Reading it starts no
+process and reads no other file. A hostile file can add or hide architecture findings and nothing
+else. `ward.toml` does not accept these rules: an `architecture` table under the `ward` check is an
+unknown key.
+
+`ward init` does not create, change or mention this file. You write it. An edit of the file does not
+start a partial check of the whole project, so run `ward check` after you change it.
+
+## A rule
+
+Each `[[rule]]` table has these keys:
+
+| Key | Required | Meaning |
+|---|---|---|
+| `name` | yes | A name that is unique in the file. It starts every finding. |
+| `select` | yes | A selector: the files the rule is about. |
+| one constraint | yes, exactly one | `must-not-depend-on`, `may-only-depend-on`, `only-accessed-by`, `file-name` or `must-be-in`. |
+| `because` | yes | The reason. It ends every finding. |
+| `allow-empty` | no | `true` lets a rule that selects no file pass. Default `false`. |
+
+## Selectors
+
+A selector is an inline table with these keys. Every list holds non-empty strings.
+
+| Key | Meaning |
+|---|---|
+| `paths` | Globs on the project-relative path, with `/` separators: `*` inside a folder, `**` across folders, `?` one character, `{a,b}` either text. |
+| `directories` | Plain directory names. A file is selected when a directory of its path has one of these names, as a layer is in `[[checks.ward.layers]]`. Swift paths compare ignoring case. |
+| `exclude-paths` | Globs of the paths that are left out. |
+
+A file is selected when it matches an entry of each of `paths` and `directories` that is set, and no
+entry of `exclude-paths`. A selector needs `paths` or `directories`. Test sources are left out only
+through `exclude-paths`: a rule has no hidden exclusion, so `directories = ["domain"]` also selects
+`src/test/java/shop/domain/OrderTest.java` unless you add `exclude-paths = ["src/test/**"]`.
+
+## Constraints
+
+Let S be the files that `select` picks and T the files of the constraint's selector.
+
+| Constraint | Value | A finding is | Rule id |
+|---|---|---|---|
+| `must-not-depend-on` | selector | a dependency from a file of S to a file of T | `ward:architecture/dependencies` |
+| `may-only-depend-on` | selector | a dependency from a file of S to a project file in neither S nor T | `ward:architecture/dependencies` |
+| `only-accessed-by` | selector | a dependency into a file of S from a file in neither S nor T | `ward:architecture/dependencies` |
+| `file-name` | glob on the base name | a file of S whose name does not match | `ward:architecture/naming` |
+| `must-be-in` | selector | a file of S that T does not select | `ward:architecture/location` |
+
+A dependency finding sits at the import that creates the dependency, as the layer rule's does, and
+has severity `error`. A naming or location finding sits at the first line of the file. The rule id
+is the same in every language and for every rule of the family; the rule's `name` is in the message.
+
+The message is `<name>: <what is wrong>, because <reason>`, for example
+`domain-is-pure: src/main/java/shop/domain/Order.java must not depend on src/main/java/shop/infrastructure/Db.java, because the domain must not know its adapters`.
+
+Dependencies are the edges between project files that the gate resolves. An import of a library is
+not an edge, so `may-only-depend-on` limits dependencies on project code, and a rule such as "the
+domain must not import the framework" cannot be written yet.
+
+## A rule that cannot be checked fails the gate
+
+A rule never passes because Ward could not check it:
+
+- A rule that selects no file is an execution error that names the rule, unless it sets
+  `allow-empty = true`. This catches a typing error such as `directories = ["domian"]`.
+- A dependency rule over a file of a language that has no dependency edges in the run is an
+  execution error that names the rule, the language and one file. For Swift, edges exist only when
+  the folder is a SwiftPM or Xcode project. `file-name` and `must-be-in` need no edges, so they run
+  for every source file.
+
+## Languages
+
+| Language | Dependency rules | `file-name`, `must-be-in` |
+|---|---|---|
+| Java | yes | yes |
+| Kotlin | yes, including a Kotlin file that imports a Java file and the reverse | yes |
+| TypeScript, JavaScript | yes | yes |
+| Python | yes | yes |
+| Swift | only in a SwiftPM or Xcode project | yes |
+
+## Relation to the tables of ward.toml
+
+`[[checks.ward.layers]]`, `[checks.ward.cycles]` and `[[checks.ward.independence]]` stay in
+`ward.toml`, keep their rule ids and messages, and are what `ward init` writes. They are shorthands
+for part of what a rule here says:
+
+- A `layers` table with `from = ["A"]` and `forbidden = ["B"]` reports what this rule reports, except that the table skips Java and Swift test sources by itself:
+
+  ```toml
+  [[rule]]
+  name = "a-not-b"
+  select = { directories = ["A"], exclude-paths = ["src/test/**", "**/src/test/**", "Tests/**", "**/Tests/**"] }
+  must-not-depend-on = { directories = ["B"] }
+  because = "A must not depend on B"
+  ```
+
+- An `independence` table of modules that are not nested equals, for each module, a rule with
+  `select = { paths = ["<module>/**"] }` and `must-not-depend-on` the paths of the other modules.
+  Nested modules, where the longest module wins, stay in the table.
+- `cycles` has no longhand in this version.
+
+Both files can be used together; each reports its own findings. See
+[Quality gates](/configuration/gates/#which-rule-goes-in-which-file) for which file takes which rule.

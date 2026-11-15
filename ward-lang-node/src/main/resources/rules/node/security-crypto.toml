@@ -149,9 +149,9 @@ category = "security"
 presets = ["strict"]
 body = '''
 check = "forbidden-node"
-kinds = ["singleExpression"]
-text = '^Math\.random\(\)$'
-message = "Math.random is predictable; use crypto.randomBytes or crypto.randomUUID for tokens, keys and identifiers"
+kinds = ["variableDeclaration", "propertyAssignment", "functionDeclaration", "methodDefinition", "fieldDefinition", "singleExpression"]
+text = '(?s)^(?:\w+\s+|\*\s*)*[\w$.]*(?:(?i:token|secret|passw(?:or)?d|salt|nonce|session|csrf|uuid)|[Kk]ey(?![a-z])|KEY|(?:\bid|[a-z0-9]Id|_id|[a-z]ID)(?![a-z]))[\w$]*\s*[=:(].*?Math\.random\(\)'
+message = "Math.random is predictable and this name holds a token, key, secret, salt, session or identifier; use crypto.randomBytes or crypto.randomUUID"
 '''
 
 [[rules]]
@@ -163,9 +163,9 @@ category = "security"
 presets = ["strict"]
 body = '''
 check = "forbidden-node"
-kinds = ["singleExpression"]
-text = '^Math\.random\(\)$'
-message = "Math.random is predictable; use crypto.randomBytes or crypto.randomUUID for tokens, keys and identifiers"
+kinds = ["variableDeclaration", "propertyAssignment", "functionDeclaration", "propertyMemberDeclaration", "singleExpression"]
+text = '(?s)^(?:\w+\s+|\*\s*)*[\w$.]*(?:(?i:token|secret|passw(?:or)?d|salt|nonce|session|csrf|uuid)|[Kk]ey(?![a-z])|KEY|(?:\bid|[a-z0-9]Id|_id|[a-z]ID)(?![a-z]))[\w$]*\s*[=:(].*?Math\.random\(\)'
+message = "Math.random is predictable and this name holds a token, key, secret, salt, session or identifier; use crypto.randomBytes or crypto.randomUUID"
 '''
 
 [[rules]]

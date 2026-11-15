@@ -39,6 +39,15 @@ class EcmaSyntaxFixturesTest {
   private static final Map<String, List<String>> TYPESCRIPT_KINDS =
       Map.ofEntries(
           Map.entry("accessor-field.ts", List.of("accessorModifier")),
+          Map.entry("as-types.ts", List.of("asExpression", "tupleElementType")),
+          Map.entry("call-in-arrow-block.ts", List.of("arrowFunctionBody", "functionBody")),
+          Map.entry(
+              "class-members-no-semicolon.ts",
+              List.of("propertyMemberDeclaration", "indexMemberDeclaration", "getAccessor")),
+          Map.entry("contextual-keyword-names.ts", List.of("usingDeclaration", "inferType")),
+          Map.entry("generic-call.ts", List.of("typeArguments", "arguments")),
+          Map.entry("interface-members-newline.ts", List.of("typeMemberList", "propertySignatur")),
+          Map.entry("template-nested-braces.ts", List.of("TemplateStringStartExpression")),
           Map.entry("type-assertion-cast.ts", List.of("typeArguments")),
           Map.entry("ambient-string-module.ts", List.of("namespaceDeclaration")),
           Map.entry("const-type-params.ts", List.of("constModifier")),
@@ -88,6 +97,7 @@ class EcmaSyntaxFixturesTest {
           Map.entry("import-attributes.js", List.of("importAttributes")),
           Map.entry("import-meta.js", List.of("importMetaExpression")),
           Map.entry("regex-v.js", List.of("RegularExpressionLiteral")),
+          Map.entry("template-nested-braces.js", List.of("TemplateStringStartExpression")),
           Map.entry("private-names.js", List.of("privateIdentifier")),
           Map.entry("static-accessors.js", List.of("getter", "setter")),
           Map.entry("template-escapes.js", List.of("TemplateStringEscapeAtom")),

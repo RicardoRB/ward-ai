@@ -9,6 +9,7 @@ import dev.ward.analysis.domain.rule.CloneDetector;
 import dev.ward.analysis.domain.rule.DuplicateCodeOptions;
 import dev.ward.analysis.domain.rule.DuplicateCodeRule;
 import dev.ward.analysis.domain.rule.DuplicateTokens;
+import dev.ward.analysis.domain.rule.DuplicatedShare;
 import dev.ward.analysis.domain.rule.RuleDefinition;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +60,25 @@ public final class DuplicateCodeFindings {
       return List.of();
     }
     final DuplicateCodeOptions options = DuplicateCodeOptions.parse(rule.body());
+    final SortedMap<String, List<DuplicateTokens.Token>> files =
+        tokensByFile(units, frontend, options);
+    final List<AnalysisFinding> findings = new ArrayList<>();
+    final List<CloneDetector.Clone> clones = CloneDetector.detect(files, options.minTokens());
+    for (final CloneDetector.Clone clone : clones) {
+      findings.add(finding(rule, clone));
+    }
+    final DuplicatedShare share = DuplicatedShare.of(files, clones);
+    if (share.exceeds(options.maxDuplicatedPercent())) {
+      findings.add(shareFinding(rule, options, share, clones.get(0)));
+    }
+    return findings;
+  }
+
+  private static SortedMap<String, List<DuplicateTokens.Token>> tokensByFile(
+      final List<SourceUnit> units,
+      final FrontendSupport frontend,
+      final DuplicateCodeOptions options) {
+    final AnalysisLanguage language = frontend.language();
     final SortedMap<String, List<DuplicateTokens.Token>> files = new TreeMap<>();
     for (final SourceUnit unit : units) {
       if (unit.language() == language) {
@@ -66,11 +86,32 @@ public final class DuplicateCodeFindings {
         files.put(unit.path(), DuplicateTokens.of(tree, language, options));
       }
     }
-    final List<AnalysisFinding> findings = new ArrayList<>();
-    for (final CloneDetector.Clone clone : CloneDetector.detect(files, options.minTokens())) {
-      findings.add(finding(rule, clone));
-    }
-    return findings;
+    return files;
+  }
+
+  /** The project-level finding, placed at the start of the file of the first clone. */
+  private static AnalysisFinding shareFinding(
+      final RuleDefinition rule,
+      final DuplicateCodeOptions options,
+      final DuplicatedShare share,
+      final CloneDetector.Clone first) {
+    return new AnalysisFinding(
+        rule.id(),
+        rule.severity(),
+        "duplicated code covers "
+            + share.percent()
+            + "% of the tokens ("
+            + share.duplicatedTokens()
+            + " of "
+            + share.totalTokens()
+            + "), above the maximum of "
+            + options.maxDuplicatedPercent()
+            + "%",
+        first.copies().get(0).path(),
+        1,
+        1,
+        null,
+        List.of());
   }
 
   private static AnalysisFinding finding(

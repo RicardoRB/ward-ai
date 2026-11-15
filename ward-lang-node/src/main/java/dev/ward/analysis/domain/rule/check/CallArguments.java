@@ -30,7 +30,7 @@ final class CallArguments {
     int depth = 0;
     for (int i = 0; i < text.length(); i++) {
       final char c = text.charAt(i);
-      if (quote == 0 && depth == 0 && c == CLOSE) {
+      if (atTopLevel(quote, depth, c, CLOSE)) {
         return text.substring(0, i);
       }
       quote = nextQuote(quote, c);
@@ -39,13 +39,18 @@ final class CallArguments {
     return text;
   }
 
+  private static boolean atTopLevel(
+      final char quote, final int depth, final char c, final char wanted) {
+    return quote == 0 && depth == 0 && c == wanted;
+  }
+
   private static List<String> split(final String list) {
     final List<String> arguments = new ArrayList<>();
     final StringBuilder current = new StringBuilder();
     char quote = 0;
     int depth = 0;
     for (final char c : list.toCharArray()) {
-      if (quote == 0 && depth == 0 && c == COMMA) {
+      if (atTopLevel(quote, depth, c, COMMA)) {
         arguments.add(current.toString().trim());
         current.setLength(0);
       } else {

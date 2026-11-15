@@ -2,6 +2,7 @@ package dev.ward.analysis.domain.openapi.rule;
 
 import dev.ward.analysis.domain.openapi.DocNode;
 import java.util.List;
+import java.util.Locale;
 
 /** Compares nodes by what they hold, ignoring where they are written. */
 final class DocEquality {
@@ -18,14 +19,10 @@ final class DocEquality {
 
   /** The JSON type of a scalar or collection, as a schema validator names it. */
   static String typeName(final DocNode node) {
-    return switch (node.kind()) {
-      case OBJECT -> "object";
-      case ARRAY -> "array";
-      case STRING -> "string";
-      case BOOLEAN -> "boolean";
-      case NULL -> "null";
-      case NUMBER -> node.text().matches("[-+]?[0-9]+") ? "integer" : "number";
-    };
+    if (node.kind() == DocNode.Kind.NUMBER) {
+      return node.text().matches("[-+]?[0-9]+") ? "integer" : "number";
+    }
+    return node.kind().name().toLowerCase(Locale.ROOT);
   }
 
   private static boolean sameEntries(final DocNode left, final DocNode right) {

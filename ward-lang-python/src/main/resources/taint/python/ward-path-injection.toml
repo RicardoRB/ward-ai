@@ -1,0 +1,133 @@
+# File system calls whose first argument is a path: open, os, shutil and pathlib.Path, and Flask's send_file.
+
+[[sinks]]
+kind = "call"
+name = "open"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "send_file"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "Path"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "FileResponse"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "remove"
+receiver = "os"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "unlink"
+receiver = "os"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "rmdir"
+receiver = "os"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "removedirs"
+receiver = "os"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "listdir"
+receiver = "os"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "mkdir"
+receiver = "os"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "makedirs"
+receiver = "os"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "rename"
+receiver = "os"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "chmod"
+receiver = "os"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "scandir"
+receiver = "os"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "rmtree"
+receiver = "shutil"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "copy"
+receiver = "shutil"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "copyfile"
+receiver = "shutil"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "copytree"
+receiver = "shutil"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "move"
+receiver = "shutil"
+arguments = [0]
+
+[[sanitizers]]
+kind = "call"
+name = "int"
+
+[[sanitizers]]
+kind = "call"
+name = "float"
+
+[[sanitizers]]
+kind = "call"
+name = "bool"
+
+[[sanitizers]]
+kind = "call"
+name = "basename"
+receiver = "os.path"
+
+[[sanitizers]]
+kind = "call"
+name = "secure_filename"
+

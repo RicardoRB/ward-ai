@@ -11,7 +11,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 /** Overwriting an existing configuration starts from its recorded preset and gates. */
 class InitReconfigureTest {
-  private static final String MUTATION_ROW = "5";
+  private static final String MUTATION_ROW = "4";
 
   @TempDir Path root;
 

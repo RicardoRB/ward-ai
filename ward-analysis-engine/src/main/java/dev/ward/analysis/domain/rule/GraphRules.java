@@ -7,7 +7,14 @@ public final class GraphRules {
 
   /** The ids of the graph rules, which the per-unit engine never runs. */
   public static final List<String> IDS =
-      List.of(SliceCycleRule.ID, IndependenceRule.ID, UnusedFileRule.ID, CyclicImportRule.ID);
+      List.of(
+          SliceCycleRule.ID,
+          IndependenceRule.ID,
+          UnusedFileRule.ID,
+          CyclicImportRule.ID,
+          DependencyArchitectureRule.ID,
+          NamingArchitectureRule.ID,
+          LocationArchitectureRule.ID);
 
   private GraphRules() {}
 
@@ -30,6 +37,9 @@ public final class GraphRules {
       case UnusedFileRule.ID ->
           new UnusedFileRule(definition, GraphRuleBody.decodeNames(definition.body()));
       case CyclicImportRule.ID -> new CyclicImportRule(definition);
+      case DependencyArchitectureRule.ID -> new DependencyArchitectureRule(definition);
+      case NamingArchitectureRule.ID -> new NamingArchitectureRule(definition);
+      case LocationArchitectureRule.ID -> new LocationArchitectureRule(definition);
       default -> throw new IllegalArgumentException("not a graph rule: " + definition.id());
     };
   }

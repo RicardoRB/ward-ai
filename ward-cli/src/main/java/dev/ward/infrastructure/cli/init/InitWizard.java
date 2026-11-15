@@ -224,22 +224,29 @@ final class InitWizard {
           }
           out.printf("Choose a scheme [1-%d, Enter=1]: ", schemes.size());
           out.flush();
-          final Optional<String> answer = prompt.readOrDefault("scheme");
-          if (answer.isEmpty() || answer.get().isBlank()) {
-            return schemes.getFirst();
-          }
-          final int choice;
-          try {
-            choice = Integer.parseInt(answer.get().trim());
-          } catch (NumberFormatException e) {
-            throw new InvalidAnswerException("Invalid scheme selection '" + answer.get() + "'.", e);
-          }
-          if (choice <= 0 || choice > schemes.size()) {
-            throw new InvalidAnswerException(
-                "Invalid scheme selection. Choose a number from 1 to " + schemes.size() + ".");
-          }
-          return schemes.get(choice - 1);
+          return schemeAnswer(prompt.readOrDefault("scheme"), schemes);
         });
+  }
+
+  private static String schemeAnswer(final Optional<String> answer, final List<String> schemes) {
+    if (answer.isEmpty() || answer.get().isBlank()) {
+      return schemes.getFirst();
+    }
+    return schemes.get(schemeChoice(answer.get(), schemes.size()) - 1);
+  }
+
+  private static int schemeChoice(final String answer, final int count) {
+    final int choice;
+    try {
+      choice = Integer.parseInt(answer.trim());
+    } catch (NumberFormatException e) {
+      throw new InvalidAnswerException("Invalid scheme selection '" + answer + "'.", e);
+    }
+    if (choice <= 0 || choice > count) {
+      throw new InvalidAnswerException(
+          "Invalid scheme selection. Choose a number from 1 to " + count + ".");
+    }
+    return choice;
   }
 
   /**

@@ -5,6 +5,7 @@ import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -160,17 +161,24 @@ public final class NodeConstantBinaryExpressionCheck implements RuleCheck {
       if (children.size() == PREFIX_SIZE) {
         return nullish(node);
       }
-      if (children.size() == BINARY_SIZE && NULLISH.equals(LeafText.of(children.get(OPERATOR)))) {
-        return nullishConstant(children.get(RIGHT), true);
-      }
-      if (children.size() == BINARY_SIZE && ASSIGN.equals(LeafText.of(children.get(OPERATOR)))) {
-        return nullishConstant(children.get(RIGHT), false);
-      }
-      if (children.size() == BINARY_SIZE
-          && BINARY_VALUES.contains(LeafText.of(children.get(OPERATOR)))) {
-        return true;
+      final Optional<Boolean> binary =
+          children.size() == BINARY_SIZE ? binaryOperation(children) : Optional.empty();
+      if (binary.isPresent()) {
+        return binary.get();
       }
       return NEW.equals(LeafText.of(children.get(LEFT))) || constructorCall(children);
+    }
+
+    /** The verdict of a binary operation that decides it, or empty when the operator does not. */
+    private static Optional<Boolean> binaryOperation(final List<SyntaxNode> children) {
+      final String operator = LeafText.of(children.get(OPERATOR));
+      if (NULLISH.equals(operator)) {
+        return Optional.of(nullishConstant(children.get(RIGHT), true));
+      }
+      if (ASSIGN.equals(operator)) {
+        return Optional.of(nullishConstant(children.get(RIGHT), false));
+      }
+      return BINARY_VALUES.contains(operator) ? Optional.of(true) : Optional.empty();
     }
 
     private static boolean constructorCall(final List<SyntaxNode> children) {

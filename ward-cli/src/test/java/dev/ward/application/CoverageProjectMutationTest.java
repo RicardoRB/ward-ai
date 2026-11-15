@@ -59,11 +59,10 @@ class CoverageProjectMutationTest {
     final BuildFileChange change =
         configurator.apply(
             new Project(root, Language.JAVA, BuildTool.MAVEN, Framework.NONE), gates);
-    assertThat(change.tools())
-        .containsExactly("sonar-maven-plugin", "jacoco-maven-plugin", "pitest-maven");
+    assertThat(change.tools()).containsExactly("jacoco-maven-plugin", "pitest-maven");
     assertThat(Files.readString(root.resolve("pom.xml")))
-        .contains("jacoco-maven-plugin", "sonar-maven-plugin", "pitest-maven")
-        .doesNotContain("maven-enforcer-plugin");
+        .contains("jacoco-maven-plugin", "pitest-maven")
+        .doesNotContain("sonar-maven-plugin", "maven-enforcer-plugin");
     configurator.rollback(change);
     assertThat(Files.readString(root.resolve("pom.xml"))).isEqualTo(ProjectFixtures.PLAIN_POM);
     configurator.rollback(null);
@@ -100,7 +99,7 @@ class CoverageProjectMutationTest {
         new PomToolConfigurator()
             .apply(
                 project,
-                List.of(catalog.gate(project, "coverage"), catalog.gate(project, "sonar")));
+                List.of(catalog.gate(project, "coverage"), catalog.gate(project, "mutation")));
     assertThat(change.changed()).isTrue();
     assertThat(Files.readString(root.resolve("pom.xml"))).contains("<plugins>", "<dependencies>");
   }

@@ -1,0 +1,58 @@
+# SQL text that a DB-API cursor, Django's raw SQL or SQLAlchemy text() runs, which is argument 0. A DB-API cursor
+# has no declared type, so the method name matches on any receiver; parameter values are bound by the driver.
+
+[[sinks]]
+kind = "call"
+name = "execute"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "executemany"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "executescript"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "raw"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "mogrify"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "text"
+receiver = "sqlalchemy"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "RawSQL"
+receiver = "django.db.models.expressions"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "RawSQL"
+receiver = "django.db.models"
+arguments = [0]
+
+[[sanitizers]]
+kind = "call"
+name = "int"
+
+[[sanitizers]]
+kind = "call"
+name = "float"
+
+[[sanitizers]]
+kind = "call"
+name = "bool"
+

@@ -22,3 +22,8 @@ export function crossFunction(req: any, db: any) {
 function read(req: any) {
   return req.query.sql;
 }
+
+// One more member access on the receiver does not hide the sink.
+export function chained(req: any, models: any) {
+  models.sequelize.query(req.query.sql);
+}

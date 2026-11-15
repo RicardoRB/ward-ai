@@ -18,12 +18,20 @@ alias). The build tool stays Gradle, so the Gradle wrapper, JDK and module rules
 - **Blocks.** `android-coverage` writes `enableUnitTestCoverage = true` into the debug build type of
   each Android module script. Nothing else is written into Android module scripts.
 
+- **Native rules.** No init option. The `ward` gate reads `AndroidManifest.xml` and the XML files
+  under `res/` and runs the `ward:android/*` rules of the `standard` and `strict` presets (exported
+  components without permission, debuggable, cleartext traffic, `allowBackup`, hard-coded text,
+  missing content descriptions, unused resources). `android-lint` stays for checks that need the platform API.
+
 ## Blocking findings
 
-- None beyond the Gradle checks that apply to every Gradle project.
+- `ward:android/*` findings of the `ward` gate, with their file, line and column in the manifest or
+  resource file. Fix the file; `tools:ignore` is not honored.
+- The Gradle checks that apply to every Gradle project.
 
 ## Known limits
 
 - Java and Kotlin sources in an Android module do not get the `ward` gate in this version; it stays
   in the root, which applies no Java plugin.
+- `ward:android/unused-resources` reads `R.x` from Java and Kotlin and `@type/name` from XML; a resource read only through `getIdentifier` is reported.
 - Instrumented tests, PIT mutation testing and Kotlin Multiplatform are not covered.

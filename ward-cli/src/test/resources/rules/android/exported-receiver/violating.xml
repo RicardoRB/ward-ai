@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.app">
+    <application android:allowBackup="false">
+        <receiver android:name=".SyncReceiver" android:exported="true" />
+        <receiver android:name=".OpenReceiver">
+            <intent-filter>
+                <action android:name="com.example.OPEN" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>

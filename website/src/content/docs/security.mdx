@@ -13,8 +13,9 @@ globbing, and redirection do not occur. This is **not a sandbox**—a wrapper su
 itself execute arbitrary build code. Child processes receive no stdin. Agent hooks and plugins also
 execute repository-local configuration, so install integrations only in trusted projects.
 
-Dynamic scans (`zap`) run only against the target you put in `ward.toml`; Ward never infers
-or starts one, and you must be authorized to scan it. The native `secrets` check
+Ward offers no dynamic scanning and makes no request to your application or to any other target
+you configure. A scanner that you run as a plain `command` check is your
+responsibility: you must be authorized to scan its target. The native `secrets` check
 never puts a matched value in a finding, a report or a log: its findings carry only the rule, the
 file, the line and the column, never the secret or a snippet of the source.
 
@@ -29,11 +30,16 @@ collecting diagnostics:
 ward --verbose check > report.txt 2> ward-diagnostics.log
 ```
 
-## Update check
+## Network requests
 
-Ward makes one network request of its own: after an interactive command, at most once a day, it
+Ward makes two kinds of network request of its own. The `vulnerabilities` check downloads the OSV
+advisory archives of the ecosystems it finds, over HTTPS, and the request carries only the
+ecosystem, an `ETag` and the client name; `ward check --offline` skips it, and the check is
+enabled only when you choose it. The update check is the other one: after an interactive command, at most once a day, it
 sends an HTTPS `HEAD` request to `https://github.com/RicardoRB/ward-ai/releases/latest` and
 reads the release tag from the redirect.
+
+The update check:
 
 - The request carries no project, configuration, or environment data.
 - `ward doctor` makes the same request every time it runs.

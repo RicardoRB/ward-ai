@@ -4,7 +4,7 @@
 [[rules]]
 id = "ward:java/cross-site-scripting"
 language = "java"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
@@ -17,7 +17,7 @@ message = "untrusted data from {source} is written into the HTML response by {si
 [[rules]]
 id = "ward:java/untrusted-redirect"
 language = "java"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
@@ -30,7 +30,7 @@ message = "untrusted data from {source} decides where the response redirects, th
 [[rules]]
 id = "ward:java/server-side-request-forgery"
 language = "java"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
@@ -43,7 +43,7 @@ message = "untrusted data from {source} chooses the address that {sink} requests
 [[rules]]
 id = "ward:java/ldap-injection"
 language = "java"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
@@ -56,7 +56,7 @@ message = "untrusted data from {source} is part of the LDAP name or filter of {s
 [[rules]]
 id = "ward:java/xpath-injection"
 language = "java"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
@@ -69,7 +69,7 @@ message = "untrusted data from {source} is part of the XPath expression of {sink
 [[rules]]
 id = "ward:java/log-forging"
 language = "java"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
@@ -82,7 +82,7 @@ message = "untrusted data from {source} is written to the log by {sink}; line br
 [[rules]]
 id = "ward:java/header-splitting"
 language = "java"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
@@ -95,7 +95,7 @@ message = "untrusted data from {source} is written into a response header by {si
 [[rules]]
 id = "ward:java/untrusted-deserialization"
 language = "java"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
@@ -108,7 +108,7 @@ message = "untrusted data from {source} is deserialized by {sink}, which can run
 [[rules]]
 id = "ward:java/script-injection"
 language = "java"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
@@ -121,7 +121,7 @@ message = "untrusted data from {source} is run as code by {sink}; never build a 
 [[rules]]
 id = "ward:java/expression-injection"
 language = "java"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
@@ -134,7 +134,7 @@ message = "untrusted data from {source} is evaluated as an expression by {sink};
 [[rules]]
 id = "ward:java/jndi-injection"
 language = "java"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
@@ -147,7 +147,7 @@ message = "untrusted data from {source} names the JNDI object that {sink} looks 
 [[rules]]
 id = "ward:java/unsafe-reflection"
 language = "java"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
@@ -160,7 +160,7 @@ message = "untrusted data from {source} chooses the class or member that {sink} 
 [[rules]]
 id = "ward:java/regex-injection"
 language = "java"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
@@ -173,7 +173,7 @@ message = "untrusted data from {source} becomes a regular expression in {sink}; 
 [[rules]]
 id = "ward:java/environment-injection"
 language = "java"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "error"
 category = "security"
 presets = ["standard", "strict"]
@@ -186,7 +186,7 @@ message = "untrusted data from {source} sets an environment variable of the proc
 [[rules]]
 id = "ward:java/session-attribute-injection"
 language = "java"
-capability = "DATAFLOW"
+capability = "TAINT"
 severity = "warning"
 category = "security"
 presets = ["strict"]

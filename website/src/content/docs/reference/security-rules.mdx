@@ -14,6 +14,17 @@ deserialization or hard-coded credentials have severity `error` and run in the `
 random numbers, clear-text transport or dynamic markup, have severity `warning` and run in `strict`
 only. Change either with `severity` in `ward-rules.toml`, or skip paths with `exclude-paths`.
 
+## Test files and vendored code
+
+`ward:typescript/hard-coded-secret` and `ward:javascript/hard-coded-secret` skip test sources
+(`*.test.*`, `*.spec.*`, and files under `test`, `tests` or `__tests__`), where a literal is a mock
+value. Ward reads no minified script (`*.min.js`, `*.min.mjs`, `*.min.cjs`) for any rule. A
+vendored library that is not minified is still read: leave it out with `exclude-paths` in
+`ward-rules.toml`, for example `exclude-paths = ["frontend/src/assets/private/**"]` under
+`[rules.javascript.dom-xss]`. The two rules have no option to read test sources too; the
+[`secrets` gate](/configuration/secrets/) reads every text file, tests included, and is the
+way to look for real credentials committed in a test.
+
 ## How the rules look
 
 **Injection rules** follow untrusted data inside one file. A source, such as a request
@@ -97,12 +108,13 @@ function is imported from.
 | `ward:javascript/log-forging` | CWE-117 | error | standard, strict | Request data in a log message, inside one function |
 | `ward:javascript/header-injection` | CWE-113 | error | standard, strict | Request data in a response header, inside one function |
 | `ward:javascript/regex-injection` | CWE-1333, CWE-400 | error | standard, strict | Request data compiled as a regular expression, inside one function |
+| `ward:javascript/path-traversal` | CWE-22 | error | standard, strict | Untrusted data from a request reaches the path of an `fs` call, `res.sendFile` or `res.download`; `path.basename` is the only sanitizer, and a prefix check on `path.resolve` is not recognized |
 | `ward:javascript/weak-hash` | CWE-328, CWE-327 | error | standard, strict | MD2, MD4, MD5 and SHA-1 are broken for integrity and signatures; use SHA-256 or stronger |
 | `ward:javascript/weak-cipher` | CWE-327 | error | standard, strict | DES, 3DES, RC2, RC4 and Blowfish are broken or too weak; use aes-256-gcm |
 | `ward:javascript/ecb-mode` | CWE-327 | error | standard, strict | ECB mode encrypts equal blocks to equal output; use aes-256-gcm |
 | `ward:javascript/static-iv` | CWE-329 | error | standard, strict | A fixed initialization vector repeats across messages and leaks patterns; use crypto.randomBytes for each message |
 | `ward:javascript/weak-key-size` | CWE-326 | error | standard, strict | An RSA key of 1536 bits or fewer is too short; use at least 2048 bits |
-| `ward:javascript/insecure-random` | CWE-338, CWE-330 | warning | strict | Math.random is predictable; use crypto.randomBytes or crypto.randomUUID for tokens, keys and identifiers |
+| `ward:javascript/insecure-random` | CWE-338, CWE-330 | warning | strict | Math.random is predictable and this name holds a token, key, secret, salt, session or identifier; use crypto.randomBytes or crypto.randomUUID. A random value in any other name is not reported |
 | `ward:javascript/tls-verification-disabled` | CWE-295 | error | standard, strict | This setting turns off certificate checks, so anyone can impersonate the server; keep verification on |
 | `ward:javascript/cleartext-transport` | CWE-319 | warning | strict | This address uses http or ws, which send data in clear text; use https or wss |
 | `ward:javascript/jwt-without-verification` | CWE-347 | error | standard, strict | The none algorithm skips the signature, so anyone can forge the token; name a real algorithm |
@@ -126,9 +138,11 @@ function is imported from.
 
 ## Python
 
-Python has no taint analysis yet, so the Python rules match the call or assignment as written. The
-rules that look for request data use the names `request.args`, `request.form` and the like of Flask
-and Django.
+The Python injection rules are taint rules: a value read from a Flask, Django or FastAPI request
+(`request.args`, `request.form`, `request.GET`, a route parameter, a FastAPI `Query()` parameter) that
+reaches the sink of the rule in the same function, directly or through variables, is reported.
+`int`, `float`, `bool` and the sanitizers listed in the specifications clean a value. The other
+Python rules match the call or assignment as written.
 
 | Rule | CWE | Severity | Presets | What it reports |
 |---|---|---|---|---|
@@ -139,8 +153,78 @@ and Django.
 | `ward:python/flask-insecure-config` | CWE-798, CWE-614, CWE-1004 | warning | strict | This Flask setting is unsafe in production; read the secret from the environment and keep session cookies secure and HTTP-only |
 | `ward:python/server-side-request-forgery` | CWE-918 | error | standard, strict | The address comes straight from the request, so a caller can reach internal hosts; check it against an allow-list first |
 | `ward:python/path-traversal` | CWE-22 | error | standard, strict | A path is built from request data or an archive is extracted without a filter, so a caller can reach files outside the intended folder |
+| `ward:python/sql-injection` | CWE-89 | error | standard, strict | Request data is part of the SQL text of `execute`, `executemany`, `raw` or `text`; bind it as a parameter |
+| `ward:python/command-injection` | CWE-78 | error | standard, strict | Request data is part of a command run by `os.system`, `os.popen` or `subprocess`; pass an argument list and validate the value |
+| `ward:python/code-injection` | CWE-95 | error | standard, strict | Request data is run by `eval` or `exec` |
+| `ward:python/untrusted-deserialization` | CWE-502 | error | standard, strict | Request data is loaded by `pickle`, `marshal`, `shelve` or the full YAML loader |
+| `ward:python/path-injection` | CWE-22 | error | standard, strict | Request data chooses the path of `open`, `send_file`, `os` or `shutil` calls; use `secure_filename` or `os.path.basename` |
+| `ward:python/untrusted-request-url` | CWE-918 | error | standard, strict | Request data is the address of a `requests`, `httpx` or `urllib` request |
+| `ward:python/untrusted-redirect` | CWE-601 | error | standard, strict | Request data is the target of `redirect` or `HttpResponseRedirect` |
+| `ward:python/template-injection` | CWE-1336 | error | standard, strict | Request data is the template text of `render_template_string` or `Template` |
 | `ward:python/weak-password-hash` | CWE-916, CWE-328 | error | standard, strict | A plain or weak hash is not a password hash; use a slow, salted one such as scrypt, argon2 or the Django hashers |
+
+## Swift
+
+The Swift rules read the source lines, because Swift has no taint analysis yet, and report the line.
+A name that holds a literal and says token, secret or password is reported even when the literal is
+only a label.
+
+| Rule | CWE | Severity | Presets | What it reports |
+|---|---|---|---|---|
+| `ward:swift/cleartext-url` | CWE-319 | error | standard, strict | `URL(string:)` with an `http://` literal other than localhost |
+| `ward:swift/weak-hash` | CWE-328 | error | standard, strict | CryptoKit `Insecure.MD5` or `Insecure.SHA1`, or CommonCrypto `CC_MD5` or `CC_SHA1` |
+| `ward:swift/weak-cipher` | CWE-327 | error | standard, strict | CommonCrypto DES, 3DES, RC2, RC4 or ECB mode |
+| `ward:swift/weak-random` | CWE-338 | error | standard, strict | `rand`, `random`, `srand`, `drand48` and `lrand48` of the C library |
+| `ward:swift/hard-coded-credential` | CWE-798 | error | standard, strict | A password, secret, token or API key declared with a string literal |
+| `ward:swift/userdefaults-secret` | CWE-312 | error | standard, strict | A password, secret or token stored in `UserDefaults` |
+
+## Kotlin
+
+The Kotlin rules are the injection rules of Java for Kotlin code, and they are taint rules: a value that a
+Servlet request getter (`getParameter`, `getHeader`), a Spring handler parameter (`@RequestParam`,
+`@PathVariable`, `@RequestBody`), a Ktor call (`call.parameters`, `call.receiveText()`) or console input
+(`readLine()`) gives a function, and that reaches the sink of the rule in the same function, directly or
+through variables, string templates, safe calls and `?:`, is reported. A value that another function
+returns, or that is passed into another function that reaches a sink, is followed, also across Kotlin and
+Java files; a call in another file must name the class (`Helper.run(x)`, `Helper().run(x)`) or a `val`
+that holds a new object (`val helper = Helper()`, then `helper.run(x)`). A `var`, a declared type and a call
+that leaves out a parameter with a default value are not paired.
+The rules use the specifications of Java (the types are the same) and `taint/kotlin/sources.toml`.
+
+A lambda has its statements in blocks of its own, so a branch inside it keeps its paths apart. `it`, or the
+named parameter, takes the taint of the receiver, and the last expression of the lambda is its value: the
+value of the call for `let`, `run`, `with`, `use` and `synchronized`, the receiver for `also`, `apply`,
+`takeIf` and `takeUnless`, and both for any other call, so `request.getParameter("x").let { Integer.parseInt(it) }`
+is clean. A lambda runs once, where it is written, and may be skipped; a lambda that is stored and called
+later is analysed where it is written. An `if`, `when` or `try` that makes a value has its branches in
+blocks of their own and gives the value of each branch, and the operands of `&&`, `||` and `?:` follow each
+other with a skip edge. A property read such as `request.parameterMap` is also the call of the Java getter
+`getParameterMap()`, and the initializer, the delegate, the getter and the setter of a property are analysed
+as bodies. A `val` that holds a new object (`val context = InitialContext()`) has that type. A sink whose
+argument is a lambda's value is checked where the lambda is written, not inside the lambda. See
+[taint specifications](/reference/taint-specs/).
+
+| Rule | CWE | Severity | Presets | What it reports |
+|---|---|---|---|---|
+| `ward:kotlin/sql-injection` | CWE-89 | error | standard, strict | Request data in the SQL text of a query, inside one function |
+| `ward:kotlin/command-injection` | CWE-78 | error | standard, strict | Request data in the program or arguments of a process, inside one function |
+| `ward:kotlin/path-injection` | CWE-22 | error | standard, strict | Request data in a file path, inside one function |
+| `ward:kotlin/cross-site-scripting` | CWE-79 | error | standard, strict | Request data written to the HTML response (`PrintWriter`, `ServletOutputStream`), inside one function |
+| `ward:kotlin/untrusted-redirect` | CWE-601 | error | standard, strict | Request data as the target of a redirect, inside one function |
+| `ward:kotlin/server-side-request-forgery` | CWE-918 | error | standard, strict | Request data as the address of an outgoing request, inside one function |
+| `ward:kotlin/ldap-injection` | CWE-90 | error | standard, strict | Request data in an LDAP name or filter, inside one function |
+| `ward:kotlin/xpath-injection` | CWE-643 | error | standard, strict | Request data in an XPath expression, inside one function |
+| `ward:kotlin/log-forging` | CWE-117 | error | standard, strict | Request data in a log message, inside one function |
+| `ward:kotlin/header-splitting` | CWE-113 | error | standard, strict | Request data in a response header, inside one function |
+| `ward:kotlin/untrusted-deserialization` | CWE-502 | error | standard, strict | Request data given to a deserializer, inside one function |
+| `ward:kotlin/script-injection` | CWE-94, CWE-95 | error | standard, strict | Request data run as script or code, inside one function |
+| `ward:kotlin/expression-injection` | CWE-917 | error | standard, strict | Request data parsed as an expression language, inside one function |
+| `ward:kotlin/jndi-injection` | CWE-99, CWE-74 | error | standard, strict | Request data as a JNDI name, inside one function |
+| `ward:kotlin/unsafe-reflection` | CWE-470 | error | standard, strict | Request data as a class or member name, inside one function |
+| `ward:kotlin/regex-injection` | CWE-1333, CWE-400 | error | standard, strict | Request data compiled as a regular expression, inside one function |
+| `ward:kotlin/environment-injection` | CWE-15, CWE-454 | error | standard, strict | Untrusted data as an environment variable of a started process (`ProcessBuilder.environment().put`, the `envp` of `Runtime.exec`) |
+| `ward:kotlin/session-attribute-injection` | CWE-501 | warning | strict | Untrusted data stored with `HttpSession.setAttribute` or `putValue`, where the application treats it as trusted |
 
 ## Later
 
-Taint across files, taint rules for Python and Kotlin, and Swift rules are planned.
+Taint rules for Swift are planned.

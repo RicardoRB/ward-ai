@@ -54,7 +54,7 @@ class TaintEntryTest {
     assertThat(byQualifier.matches(call(QUERY, Optional.empty(), "other"))).isFalse();
   }
 
-  /** An entry without a receiver matches by name, and by qualifier when it names one. */
+  /** An entry without a receiver matches by name, and by qualifier at any depth of a chain. */
   @Test
   void entryWithoutReceiverMatchesByNameAndQualifier() {
     assertThat(
@@ -69,6 +69,11 @@ class TaintEntryTest {
             entry("sink", Optional.empty(), Optional.of("db"))
                 .matches(call("sink", Optional.empty(), "x")))
         .isFalse();
+    final TaintEntry chain = entry("query", Optional.empty(), Optional.of("sequelize"));
+    assertThat(chain.matches(call("query", Optional.empty(), "models.sequelize"))).isTrue();
+    assertThat(chain.matches(call("query", Optional.empty(), "sequelize.a.b"))).isTrue();
+    assertThat(chain.matches(call("query", Optional.empty(), "this?.sequelize"))).isTrue();
+    assertThat(chain.matches(call("query", Optional.empty(), "models.mysequelize"))).isFalse();
   }
 
   /** A site of another kind never matches, so a call entry does not match a member read. */

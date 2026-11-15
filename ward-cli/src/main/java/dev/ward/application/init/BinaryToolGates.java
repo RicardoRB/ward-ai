@@ -69,8 +69,8 @@ record BinaryToolGates(EnvironmentInspection environment, Project project) {
   }
 
   /**
-   * The security gates: native secret detection and ZAP. Ward's own security rules run in the
-   * {@code ward} gate, so no external source scanner is offered.
+   * The security gates: native secret detection. Ward's own security rules run in the {@code ward}
+   * gate, so no external source scanner is offered.
    */
   private List<InitGateOption> securityGates() {
     return List.of(
@@ -79,23 +79,6 @@ record BinaryToolGates(EnvironmentInspection environment, Project project) {
             "Detects committed secrets with Ward's native secret rules (no install needed).",
             List.of(),
             true,
-            "Runs inside Ward; nothing to install."),
-        option(
-            "zap",
-            "Runs an OWASP ZAP baseline DAST scan against a running application; replace <TARGET_URL> in -t with an authorized target before running.",
-            List.of("zap-baseline.py", "-t", SupportedQualityGates.ZAP_TARGET_PLACEHOLDER),
-            "Install ZAP and replace "
-                + SupportedQualityGates.ZAP_TARGET_PLACEHOLDER
-                + " with a target you are authorized to scan before running."));
-  }
-
-  private InitGateOption option(
-      final String id, final String description, final List<String> command, final String hint) {
-    final boolean available = environment.inspect(project.root()).hasExecutable(command.getFirst());
-    final String message =
-        available
-            ? "Executable available: " + command.getFirst()
-            : command.getFirst() + " is not on the path. " + hint;
-    return new InitGateOption(id, description, command, available, message);
+            "Runs inside Ward; nothing to install."));
   }
 }

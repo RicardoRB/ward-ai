@@ -27,6 +27,7 @@ final class PythonNameAccesses {
       Set.of(
           "funcdef", "classdef", "decorated", "lambdef", "lambdef_nocond", "comp_for", "comp_if");
 
+  private static final String STRING = "STRING";
   private static final Set<String> NOTHING = Set.of("global_stmt", "nonlocal_stmt", "pass_stmt");
 
   private final Set<String> excluded;
@@ -44,6 +45,8 @@ final class PythonNameAccesses {
   void reads(final SyntaxNode node, final List<VariableAccess> out) {
     if (NAME.equals(node.kind())) {
       add(node, AccessKind.READ, out);
+    } else if (STRING.equals(node.kind())) {
+      PythonFStrings.reads(node, excluded, out);
     } else if (NAMED_EXPR.equals(node.kind())) {
       walrus(node, out);
     } else if (TRAILER.equals(node.kind())) {

@@ -8,6 +8,7 @@ import dev.ward.application.license.SbomService;
 import dev.ward.infrastructure.cli.CommandFixtures;
 import dev.ward.infrastructure.cli.ExitCodes;
 import java.nio.file.Path;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class SbomCommandTest {
@@ -15,7 +16,7 @@ class SbomCommandTest {
 
   private SbomCommand command(final LicenseService licenses) {
     return new SbomCommand(
-        new SbomService(LicenseFixtures.detector(), licenses, "9.9"), fixtures.output);
+        new SbomService(LicenseFixtures.detector(), licenses, Map.of(), "9.9"), fixtures.output);
   }
 
   @Test
@@ -41,6 +42,13 @@ class SbomCommandTest {
     assertThat(code).isEqualTo(ExitCodes.OK);
     assertThat(fixtures.out.toString()).isEmpty();
     assertThat(fixtures.written).containsOnlyKeys(Path.of("sbom.json"));
+  }
+
+  @Test
+  void nameOverridesTheRootComponentName() {
+    fixtures.run(command(CommandFixtures.licenses()), "--name", "custom");
+
+    assertThat(fixtures.out.toString()).contains("\"name\": \"custom\"");
   }
 
   @Test

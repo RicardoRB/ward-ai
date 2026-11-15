@@ -1,0 +1,139 @@
+# Outgoing HTTP requests whose first argument is the address: requests, httpx, urllib and aiohttp.
+
+[[sinks]]
+kind = "call"
+name = "get"
+receiver = "requests"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "post"
+receiver = "requests"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "put"
+receiver = "requests"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "delete"
+receiver = "requests"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "patch"
+receiver = "requests"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "head"
+receiver = "requests"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "options"
+receiver = "requests"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "request"
+receiver = "requests"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "get"
+receiver = "httpx"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "post"
+receiver = "httpx"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "put"
+receiver = "httpx"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "delete"
+receiver = "httpx"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "patch"
+receiver = "httpx"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "head"
+receiver = "httpx"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "options"
+receiver = "httpx"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "request"
+receiver = "httpx"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "stream"
+receiver = "httpx"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "urlopen"
+receiver = "urllib.request"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "urlretrieve"
+receiver = "urllib.request"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "Request"
+receiver = "urllib.request"
+arguments = [0]
+
+[[sanitizers]]
+kind = "call"
+name = "int"
+
+[[sanitizers]]
+kind = "call"
+name = "float"
+
+[[sanitizers]]
+kind = "call"
+name = "bool"
+
+[[sanitizers]]
+kind = "call"
+name = "quote"
+receiver = "urllib.parse"
+

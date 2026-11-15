@@ -42,6 +42,7 @@ final class TaintSpecFiles {
   private static final String FROM = "from";
   private static final String PATTERN = "pattern";
   private static final String STRING = "string";
+  private static final String LITERAL = "literal";
   private static final Set<String> TABLES = Set.of(SOURCES, SINKS, SANITIZERS, PROPAGATORS);
   private static final Set<String> KEYS =
       Set.of(KIND, NAME, RECEIVER, QUALIFIER, ARGUMENTS, FROM, PATTERN);
@@ -56,8 +57,10 @@ final class TaintSpecFiles {
           "parameter",
           FlowSiteKind.PARAMETER,
           STRING,
-          FlowSiteKind.STRING_BUILD);
-  private static final Set<String> SOURCE_KINDS = Set.of("call", "member", "parameter");
+          FlowSiteKind.STRING_BUILD,
+          LITERAL,
+          FlowSiteKind.LITERAL);
+  private static final Set<String> SOURCE_KINDS = Set.of("call", "member", "parameter", LITERAL);
   private static final Set<String> SINK_KINDS = Set.of("call", "member-write", STRING);
   private static final Set<String> CALL_KIND = Set.of("call");
 
@@ -144,8 +147,8 @@ final class TaintSpecFiles {
       throw new RuleConfigurationException(
           where + " has kind '" + kind + "', which " + table + " do not accept");
     }
-    if (STRING.equals(kind)) {
-      return stringEntry(where, entry);
+    if (STRING.equals(kind) || LITERAL.equals(kind)) {
+      return patternEntry(where, KINDS.get(kind), entry);
     }
     return siteEntry(where, table, kind, entry);
   }
@@ -157,10 +160,10 @@ final class TaintSpecFiles {
       throw new RuleConfigurationException(
           where + " names a pattern, which only string sinks take");
     }
-    final List<Integer> arguments = TaintSpecOptions.arguments(where, table, entry);
-    if (PROPAGATORS.equals(table)) {
-      TaintSpecOptions.from(where, entry);
-    }
+    final List<Integer> arguments =
+        PROPAGATORS.equals(table)
+            ? TaintSpecOptions.from(where, entry)
+            : TaintSpecOptions.arguments(where, table, entry);
     return new TaintEntry(
         KINDS.get(kind),
         text(where, entry, NAME),
@@ -169,12 +172,13 @@ final class TaintSpecFiles {
         arguments);
   }
 
-  /** A string sink matches the literal text of a string-building site against its pattern. */
-  private static TaintEntry stringEntry(final String where, final TomlTable entry) {
+  /** A string sink or literal source matches the literal text of its site against its pattern. */
+  private static TaintEntry patternEntry(
+      final String where, final FlowSiteKind kind, final TomlTable entry) {
     final String pattern = text(where, entry, PATTERN);
     try {
       return new TaintEntry(
-          FlowSiteKind.STRING_BUILD,
+          kind,
           "",
           Optional.empty(),
           Optional.empty(),

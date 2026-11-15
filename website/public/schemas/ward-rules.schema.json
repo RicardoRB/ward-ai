@@ -5,6 +5,177 @@
   "type": "object",
   "additionalProperties": false,
   "$defs": {
+    "ward:android/allow-backup": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:android/cleartext-transport": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:android/debuggable-application": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:android/exported-content-provider": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:android/exported-receiver": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:android/exported-service": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:android/hardcoded-text": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:android/missing-content-description": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:android/unused-resources": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/aa-assertion-of-arguments": {
       "type": "object",
       "additionalProperties": false,
@@ -3523,6 +3694,25 @@
         }
       }
     },
+    "ward:java/cookie-missing-secure": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:java/covariant-equals": {
       "type": "object",
       "additionalProperties": false,
@@ -5506,6 +5696,11 @@
         },
         "ignore-annotations": {
           "type": "boolean"
+        },
+        "max-duplicated-percent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
         }
       }
     },
@@ -22720,6 +22915,11 @@
         },
         "ignore-annotations": {
           "type": "boolean"
+        },
+        "max-duplicated-percent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
         }
       }
     },
@@ -28567,6 +28767,25 @@
         }
       }
     },
+    "ward:kotlin/command-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:kotlin/complex-condition": {
       "type": "object",
       "additionalProperties": false,
@@ -28614,6 +28833,25 @@
       }
     },
     "ward:kotlin/constructors-declaration-grouping": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:kotlin/cross-site-scripting": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -28726,6 +28964,11 @@
         },
         "ignore-annotations": {
           "type": "boolean"
+        },
+        "max-duplicated-percent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
         }
       }
     },
@@ -29022,6 +29265,25 @@
         }
       }
     },
+    "ward:kotlin/environment-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:kotlin/equals-always-returns-true-or-false": {
       "type": "object",
       "additionalProperties": false,
@@ -29099,6 +29361,25 @@
       }
     },
     "ward:kotlin/explicit-it-lambda-parameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:kotlin/expression-injection": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -29301,6 +29582,25 @@
       }
     },
     "ward:kotlin/has-platform-type": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:kotlin/header-splitting": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -29629,6 +29929,25 @@
         }
       }
     },
+    "ward:kotlin/jndi-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:kotlin/kdoc": {
       "type": "object",
       "additionalProperties": false,
@@ -29672,6 +29991,44 @@
       }
     },
     "ward:kotlin/lateinit-usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:kotlin/ldap-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:kotlin/log-forging": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -30191,6 +30548,25 @@
         }
       }
     },
+    "ward:kotlin/path-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:kotlin/print-stack-trace": {
       "type": "object",
       "additionalProperties": false,
@@ -30253,6 +30629,25 @@
       }
     },
     "ward:kotlin/redundant-suspend-modifier": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:kotlin/regex-injection": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -30370,7 +30765,64 @@
         }
       }
     },
+    "ward:kotlin/script-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:kotlin/serial-version-uid-in-serializable-class": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:kotlin/server-side-request-forgery": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:kotlin/session-attribute-injection": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -30428,6 +30880,25 @@
       }
     },
     "ward:kotlin/spread-operator": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:kotlin/sql-injection": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -30939,6 +31410,63 @@
         }
       }
     },
+    "ward:kotlin/unsafe-reflection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:kotlin/untrusted-deserialization": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:kotlin/untrusted-redirect": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:kotlin/unused-local-variable": {
       "type": "object",
       "additionalProperties": false,
@@ -31320,6 +31848,25 @@
       }
     },
     "ward:kotlin/wrong-equals-type-parameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:kotlin/xpath-injection": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -33763,7 +34310,45 @@
         }
       }
     },
+    "ward:python/code-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:python/collapsible-if": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:python/command-injection": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -34575,6 +35160,11 @@
         },
         "ignore-annotations": {
           "type": "boolean"
+        },
+        "max-duplicated-percent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
         }
       }
     },
@@ -38003,6 +38593,25 @@
         }
       }
     },
+    "ward:python/path-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:python/path-traversal": {
       "type": "object",
       "additionalProperties": false,
@@ -39200,6 +39809,25 @@
         }
       }
     },
+    "ward:python/sql-injection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:python/sql-string-formatting": {
       "type": "object",
       "additionalProperties": false,
@@ -39885,6 +40513,25 @@
       }
     },
     "ward:python/template-autoescape-disabled": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:python/template-injection": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -41411,6 +42058,63 @@
       }
     },
     "ward:python/unsupported-membership-test": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:python/untrusted-deserialization": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:python/untrusted-redirect": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:python/untrusted-request-url": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -47256,6 +47960,25 @@
         }
       }
     },
+    "ward:swift/cleartext-url": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:swift/closure-parameter-position": {
       "type": "object",
       "additionalProperties": false,
@@ -47666,6 +48389,11 @@
         },
         "ignore-annotations": {
           "type": "boolean"
+        },
+        "max-duplicated-percent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
         }
       }
     },
@@ -48199,6 +48927,25 @@
       }
     },
     "ward:swift/google-right-curly": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:swift/hard-coded-credential": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -50496,6 +51243,25 @@
         }
       }
     },
+    "ward:swift/userdefaults-secret": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:swift/valid-ibinspectable": {
       "type": "object",
       "additionalProperties": false,
@@ -50591,7 +51357,64 @@
         }
       }
     },
+    "ward:swift/weak-cipher": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "ward:swift/weak-delegate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:swift/weak-hash": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "exclude-paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ward:swift/weak-random": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -51073,6 +51896,11 @@
         },
         "ignore-annotations": {
           "type": "boolean"
+        },
+        "max-duplicated-percent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
         }
       }
     },
@@ -58185,7 +59013,8 @@
               "javascript",
               "python",
               "swift",
-              "openapi"
+              "openapi",
+              "android"
             ]
           }
         },
@@ -58219,6 +59048,15 @@
           "items": {
             "type": "string",
             "enum": [
+              "android.allow-backup",
+              "android.cleartext-transport",
+              "android.debuggable-application",
+              "android.exported-content-provider",
+              "android.exported-receiver",
+              "android.exported-service",
+              "android.hardcoded-text",
+              "android.missing-content-description",
+              "android.unused-resources",
               "java.aa-assertion-of-arguments",
               "java.abbreviation-as-word-in-name",
               "java.abstract-class-name",
@@ -58395,6 +59233,7 @@
               "java.constructor-calls-overridable-method",
               "java.constructors-declaration-grouping",
               "java.control-statement-braces",
+              "java.cookie-missing-secure",
               "java.covariant-equals",
               "java.cross-site-scripting",
               "java.csrf-protection-disabled",
@@ -59670,9 +60509,11 @@
               "kotlin.avoid-referential-equality",
               "kotlin.backing-property-naming",
               "kotlin.cognitive-complexity",
+              "kotlin.command-injection",
               "kotlin.complex-condition",
               "kotlin.constructor-parameter-naming",
               "kotlin.constructors-declaration-grouping",
+              "kotlin.cross-site-scripting",
               "kotlin.cyclomatic-complexity",
               "kotlin.destructuring-declaration-with-too-many-entries",
               "kotlin.double-mutability-for-collection",
@@ -59692,11 +60533,13 @@
               "kotlin.empty-while-block",
               "kotlin.enum-entry-name-case",
               "kotlin.enum-naming",
+              "kotlin.environment-injection",
               "kotlin.equals-always-returns-true-or-false",
               "kotlin.equals-null-call",
               "kotlin.exception-raised-in-unexpected-location",
               "kotlin.explicit-garbage-collection-call",
               "kotlin.explicit-it-lambda-parameter",
+              "kotlin.expression-injection",
               "kotlin.file-length",
               "kotlin.filename",
               "kotlin.for-each-on-range",
@@ -59707,6 +60550,7 @@
               "kotlin.function-only-returning-constant",
               "kotlin.global-coroutine-usage",
               "kotlin.has-platform-type",
+              "kotlin.header-splitting",
               "kotlin.hidden-field",
               "kotlin.ignored-return-value",
               "kotlin.illegal-token-text",
@@ -59723,9 +60567,12 @@
               "kotlin.javadoc-method",
               "kotlin.javadoc-missing-leading-asterisk",
               "kotlin.javadoc-paragraph",
+              "kotlin.jndi-injection",
               "kotlin.kdoc",
               "kotlin.large-class",
               "kotlin.lateinit-usage",
+              "kotlin.ldap-injection",
+              "kotlin.log-forging",
               "kotlin.loop-with-too-many-jump-statements",
               "kotlin.magic-number",
               "kotlin.map-get-with-not-null-assertion-operator",
@@ -59751,19 +60598,25 @@
               "kotlin.optional-abstract-keyword",
               "kotlin.overload-methods-declaration-order",
               "kotlin.parameter-count",
+              "kotlin.path-injection",
               "kotlin.print-stack-trace",
               "kotlin.property-name",
               "kotlin.redundant-higher-order-map-usage",
               "kotlin.redundant-suspend-modifier",
+              "kotlin.regex-injection",
               "kotlin.regexp-singleline",
               "kotlin.require-empty-line-before-block-tag-group",
               "kotlin.rethrow-caught-exception",
               "kotlin.return-from-finally",
               "kotlin.safe-cast",
+              "kotlin.script-injection",
               "kotlin.serial-version-uid-in-serializable-class",
+              "kotlin.server-side-request-forgery",
+              "kotlin.session-attribute-injection",
               "kotlin.single-line-javadoc",
               "kotlin.sleep-instead-of-delay",
               "kotlin.spread-operator",
+              "kotlin.sql-injection",
               "kotlin.string-template",
               "kotlin.summary-javadoc",
               "kotlin.suspend-fun-with-coroutine-scope-receiver",
@@ -59788,6 +60641,9 @@
               "kotlin.unreachable-code",
               "kotlin.unsafe-call-on-nullable-type",
               "kotlin.unsafe-cast",
+              "kotlin.unsafe-reflection",
+              "kotlin.untrusted-deserialization",
+              "kotlin.untrusted-redirect",
               "kotlin.unused-local-variable",
               "kotlin.unused-parameter",
               "kotlin.unused-private-class",
@@ -59809,6 +60665,7 @@
               "kotlin.var-could-be-val",
               "kotlin.variable-declaration-usage-distance",
               "kotlin.wrong-equals-type-parameter",
+              "kotlin.xpath-injection",
               "openapi.array-items",
               "openapi.contact-properties",
               "openapi.duplicated-entry-in-enum",
@@ -59936,7 +60793,9 @@
               "python.chained-comparison",
               "python.chained-comparison-all-equal",
               "python.class-variable-slots-conflict",
+              "python.code-injection",
               "python.collapsible-if",
+              "python.command-injection",
               "python.comparison-of-constants",
               "python.comparison-with-callable",
               "python.comparison-with-itself",
@@ -60157,6 +61016,7 @@
               "python.overridden-final-method",
               "python.parameter-count",
               "python.parameter-name",
+              "python.path-injection",
               "python.path-traversal",
               "python.percent-format-expected-mapping",
               "python.percent-format-expected-sequence",
@@ -60220,6 +61080,7 @@
               "python.six-py3",
               "python.sorted-min-max",
               "python.split-static-string",
+              "python.sql-injection",
               "python.sql-string-formatting",
               "python.star-arg-unpacking-after-keyword-arg",
               "python.star-needs-assignment-target",
@@ -60257,6 +61118,7 @@
               "python.sys-version0",
               "python.sys-version2",
               "python.template-autoescape-disabled",
+              "python.template-injection",
               "python.todo-comment",
               "python.too-few-public-methods",
               "python.too-many-ancestors",
@@ -60335,6 +61197,9 @@
               "python.unsupported-assignment-operation",
               "python.unsupported-delete-operation",
               "python.unsupported-membership-test",
+              "python.untrusted-deserialization",
+              "python.untrusted-redirect",
+              "python.untrusted-request-url",
               "python.unused-annotation",
               "python.unused-argument",
               "python.unused-attribute",
@@ -60606,6 +61471,7 @@
               "swift.catch-parameter-name",
               "swift.class-delegate-protocol",
               "swift.class-type-parameter-name",
+              "swift.cleartext-url",
               "swift.closure-parameter-position",
               "swift.comment-spacing",
               "swift.compiler-protocol-init",
@@ -60654,6 +61520,7 @@
               "swift.google-method-name",
               "swift.google-non-constant-field-name",
               "swift.google-right-curly",
+              "swift.hard-coded-credential",
               "swift.hidden-field",
               "swift.ibinspectable-in-extension",
               "swift.identical-operands",
@@ -60771,12 +61638,16 @@
               "swift.unused-optional-binding",
               "swift.unused-parameter",
               "swift.unused-setter-value",
+              "swift.userdefaults-secret",
               "swift.valid-ibinspectable",
               "swift.variable-declaration-usage-distance",
               "swift.vertical-parameter-alignment",
               "swift.void-function-in-ternary",
               "swift.void-return",
+              "swift.weak-cipher",
               "swift.weak-delegate",
+              "swift.weak-hash",
+              "swift.weak-random",
               "swift.xctfail-message",
               "typescript.adjacent-overload-signatures",
               "typescript.array-callback-return",
@@ -61162,6 +62033,15 @@
           "items": {
             "type": "string",
             "enum": [
+              "android.allow-backup",
+              "android.cleartext-transport",
+              "android.debuggable-application",
+              "android.exported-content-provider",
+              "android.exported-receiver",
+              "android.exported-service",
+              "android.hardcoded-text",
+              "android.missing-content-description",
+              "android.unused-resources",
               "java.aa-assertion-of-arguments",
               "java.abbreviation-as-word-in-name",
               "java.abstract-class-name",
@@ -61338,6 +62218,7 @@
               "java.constructor-calls-overridable-method",
               "java.constructors-declaration-grouping",
               "java.control-statement-braces",
+              "java.cookie-missing-secure",
               "java.covariant-equals",
               "java.cross-site-scripting",
               "java.csrf-protection-disabled",
@@ -62613,9 +63494,11 @@
               "kotlin.avoid-referential-equality",
               "kotlin.backing-property-naming",
               "kotlin.cognitive-complexity",
+              "kotlin.command-injection",
               "kotlin.complex-condition",
               "kotlin.constructor-parameter-naming",
               "kotlin.constructors-declaration-grouping",
+              "kotlin.cross-site-scripting",
               "kotlin.cyclomatic-complexity",
               "kotlin.destructuring-declaration-with-too-many-entries",
               "kotlin.double-mutability-for-collection",
@@ -62635,11 +63518,13 @@
               "kotlin.empty-while-block",
               "kotlin.enum-entry-name-case",
               "kotlin.enum-naming",
+              "kotlin.environment-injection",
               "kotlin.equals-always-returns-true-or-false",
               "kotlin.equals-null-call",
               "kotlin.exception-raised-in-unexpected-location",
               "kotlin.explicit-garbage-collection-call",
               "kotlin.explicit-it-lambda-parameter",
+              "kotlin.expression-injection",
               "kotlin.file-length",
               "kotlin.filename",
               "kotlin.for-each-on-range",
@@ -62650,6 +63535,7 @@
               "kotlin.function-only-returning-constant",
               "kotlin.global-coroutine-usage",
               "kotlin.has-platform-type",
+              "kotlin.header-splitting",
               "kotlin.hidden-field",
               "kotlin.ignored-return-value",
               "kotlin.illegal-token-text",
@@ -62666,9 +63552,12 @@
               "kotlin.javadoc-method",
               "kotlin.javadoc-missing-leading-asterisk",
               "kotlin.javadoc-paragraph",
+              "kotlin.jndi-injection",
               "kotlin.kdoc",
               "kotlin.large-class",
               "kotlin.lateinit-usage",
+              "kotlin.ldap-injection",
+              "kotlin.log-forging",
               "kotlin.loop-with-too-many-jump-statements",
               "kotlin.magic-number",
               "kotlin.map-get-with-not-null-assertion-operator",
@@ -62694,19 +63583,25 @@
               "kotlin.optional-abstract-keyword",
               "kotlin.overload-methods-declaration-order",
               "kotlin.parameter-count",
+              "kotlin.path-injection",
               "kotlin.print-stack-trace",
               "kotlin.property-name",
               "kotlin.redundant-higher-order-map-usage",
               "kotlin.redundant-suspend-modifier",
+              "kotlin.regex-injection",
               "kotlin.regexp-singleline",
               "kotlin.require-empty-line-before-block-tag-group",
               "kotlin.rethrow-caught-exception",
               "kotlin.return-from-finally",
               "kotlin.safe-cast",
+              "kotlin.script-injection",
               "kotlin.serial-version-uid-in-serializable-class",
+              "kotlin.server-side-request-forgery",
+              "kotlin.session-attribute-injection",
               "kotlin.single-line-javadoc",
               "kotlin.sleep-instead-of-delay",
               "kotlin.spread-operator",
+              "kotlin.sql-injection",
               "kotlin.string-template",
               "kotlin.summary-javadoc",
               "kotlin.suspend-fun-with-coroutine-scope-receiver",
@@ -62731,6 +63626,9 @@
               "kotlin.unreachable-code",
               "kotlin.unsafe-call-on-nullable-type",
               "kotlin.unsafe-cast",
+              "kotlin.unsafe-reflection",
+              "kotlin.untrusted-deserialization",
+              "kotlin.untrusted-redirect",
               "kotlin.unused-local-variable",
               "kotlin.unused-parameter",
               "kotlin.unused-private-class",
@@ -62752,6 +63650,7 @@
               "kotlin.var-could-be-val",
               "kotlin.variable-declaration-usage-distance",
               "kotlin.wrong-equals-type-parameter",
+              "kotlin.xpath-injection",
               "openapi.array-items",
               "openapi.contact-properties",
               "openapi.duplicated-entry-in-enum",
@@ -62879,7 +63778,9 @@
               "python.chained-comparison",
               "python.chained-comparison-all-equal",
               "python.class-variable-slots-conflict",
+              "python.code-injection",
               "python.collapsible-if",
+              "python.command-injection",
               "python.comparison-of-constants",
               "python.comparison-with-callable",
               "python.comparison-with-itself",
@@ -63100,6 +64001,7 @@
               "python.overridden-final-method",
               "python.parameter-count",
               "python.parameter-name",
+              "python.path-injection",
               "python.path-traversal",
               "python.percent-format-expected-mapping",
               "python.percent-format-expected-sequence",
@@ -63163,6 +64065,7 @@
               "python.six-py3",
               "python.sorted-min-max",
               "python.split-static-string",
+              "python.sql-injection",
               "python.sql-string-formatting",
               "python.star-arg-unpacking-after-keyword-arg",
               "python.star-needs-assignment-target",
@@ -63200,6 +64103,7 @@
               "python.sys-version0",
               "python.sys-version2",
               "python.template-autoescape-disabled",
+              "python.template-injection",
               "python.todo-comment",
               "python.too-few-public-methods",
               "python.too-many-ancestors",
@@ -63278,6 +64182,9 @@
               "python.unsupported-assignment-operation",
               "python.unsupported-delete-operation",
               "python.unsupported-membership-test",
+              "python.untrusted-deserialization",
+              "python.untrusted-redirect",
+              "python.untrusted-request-url",
               "python.unused-annotation",
               "python.unused-argument",
               "python.unused-attribute",
@@ -63549,6 +64456,7 @@
               "swift.catch-parameter-name",
               "swift.class-delegate-protocol",
               "swift.class-type-parameter-name",
+              "swift.cleartext-url",
               "swift.closure-parameter-position",
               "swift.comment-spacing",
               "swift.compiler-protocol-init",
@@ -63597,6 +64505,7 @@
               "swift.google-method-name",
               "swift.google-non-constant-field-name",
               "swift.google-right-curly",
+              "swift.hard-coded-credential",
               "swift.hidden-field",
               "swift.ibinspectable-in-extension",
               "swift.identical-operands",
@@ -63714,12 +64623,16 @@
               "swift.unused-optional-binding",
               "swift.unused-parameter",
               "swift.unused-setter-value",
+              "swift.userdefaults-secret",
               "swift.valid-ibinspectable",
               "swift.variable-declaration-usage-distance",
               "swift.vertical-parameter-alignment",
               "swift.void-function-in-ternary",
               "swift.void-return",
+              "swift.weak-cipher",
               "swift.weak-delegate",
+              "swift.weak-hash",
+              "swift.weak-random",
               "swift.xctfail-message",
               "typescript.adjacent-overload-signatures",
               "typescript.array-callback-return",
@@ -64106,6 +65019,39 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "android": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "allow-backup": {
+              "$ref": "#/$defs/ward:android~1allow-backup"
+            },
+            "cleartext-transport": {
+              "$ref": "#/$defs/ward:android~1cleartext-transport"
+            },
+            "debuggable-application": {
+              "$ref": "#/$defs/ward:android~1debuggable-application"
+            },
+            "exported-content-provider": {
+              "$ref": "#/$defs/ward:android~1exported-content-provider"
+            },
+            "exported-receiver": {
+              "$ref": "#/$defs/ward:android~1exported-receiver"
+            },
+            "exported-service": {
+              "$ref": "#/$defs/ward:android~1exported-service"
+            },
+            "hardcoded-text": {
+              "$ref": "#/$defs/ward:android~1hardcoded-text"
+            },
+            "missing-content-description": {
+              "$ref": "#/$defs/ward:android~1missing-content-description"
+            },
+            "unused-resources": {
+              "$ref": "#/$defs/ward:android~1unused-resources"
+            }
+          }
+        },
         "java": {
           "type": "object",
           "additionalProperties": false,
@@ -64637,6 +65583,9 @@
             },
             "control-statement-braces": {
               "$ref": "#/$defs/ward:java~1control-statement-braces"
+            },
+            "cookie-missing-secure": {
+              "$ref": "#/$defs/ward:java~1cookie-missing-secure"
             },
             "covariant-equals": {
               "$ref": "#/$defs/ward:java~1covariant-equals"
@@ -68475,6 +69424,9 @@
             "cognitive-complexity": {
               "$ref": "#/$defs/ward:kotlin~1cognitive-complexity"
             },
+            "command-injection": {
+              "$ref": "#/$defs/ward:kotlin~1command-injection"
+            },
             "complex-condition": {
               "$ref": "#/$defs/ward:kotlin~1complex-condition"
             },
@@ -68483,6 +69435,9 @@
             },
             "constructors-declaration-grouping": {
               "$ref": "#/$defs/ward:kotlin~1constructors-declaration-grouping"
+            },
+            "cross-site-scripting": {
+              "$ref": "#/$defs/ward:kotlin~1cross-site-scripting"
             },
             "cyclomatic-complexity": {
               "$ref": "#/$defs/ward:kotlin~1cyclomatic-complexity"
@@ -68541,6 +69496,9 @@
             "enum-naming": {
               "$ref": "#/$defs/ward:kotlin~1enum-naming"
             },
+            "environment-injection": {
+              "$ref": "#/$defs/ward:kotlin~1environment-injection"
+            },
             "equals-always-returns-true-or-false": {
               "$ref": "#/$defs/ward:kotlin~1equals-always-returns-true-or-false"
             },
@@ -68555,6 +69513,9 @@
             },
             "explicit-it-lambda-parameter": {
               "$ref": "#/$defs/ward:kotlin~1explicit-it-lambda-parameter"
+            },
+            "expression-injection": {
+              "$ref": "#/$defs/ward:kotlin~1expression-injection"
             },
             "file-length": {
               "$ref": "#/$defs/ward:kotlin~1file-length"
@@ -68585,6 +69546,9 @@
             },
             "has-platform-type": {
               "$ref": "#/$defs/ward:kotlin~1has-platform-type"
+            },
+            "header-splitting": {
+              "$ref": "#/$defs/ward:kotlin~1header-splitting"
             },
             "hidden-field": {
               "$ref": "#/$defs/ward:kotlin~1hidden-field"
@@ -68634,6 +69598,9 @@
             "javadoc-paragraph": {
               "$ref": "#/$defs/ward:kotlin~1javadoc-paragraph"
             },
+            "jndi-injection": {
+              "$ref": "#/$defs/ward:kotlin~1jndi-injection"
+            },
             "kdoc": {
               "$ref": "#/$defs/ward:kotlin~1kdoc"
             },
@@ -68642,6 +69609,12 @@
             },
             "lateinit-usage": {
               "$ref": "#/$defs/ward:kotlin~1lateinit-usage"
+            },
+            "ldap-injection": {
+              "$ref": "#/$defs/ward:kotlin~1ldap-injection"
+            },
+            "log-forging": {
+              "$ref": "#/$defs/ward:kotlin~1log-forging"
             },
             "loop-with-too-many-jump-statements": {
               "$ref": "#/$defs/ward:kotlin~1loop-with-too-many-jump-statements"
@@ -68718,6 +69691,9 @@
             "parameter-count": {
               "$ref": "#/$defs/ward:kotlin~1parameter-count"
             },
+            "path-injection": {
+              "$ref": "#/$defs/ward:kotlin~1path-injection"
+            },
             "print-stack-trace": {
               "$ref": "#/$defs/ward:kotlin~1print-stack-trace"
             },
@@ -68729,6 +69705,9 @@
             },
             "redundant-suspend-modifier": {
               "$ref": "#/$defs/ward:kotlin~1redundant-suspend-modifier"
+            },
+            "regex-injection": {
+              "$ref": "#/$defs/ward:kotlin~1regex-injection"
             },
             "regexp-singleline": {
               "$ref": "#/$defs/ward:kotlin~1regexp-singleline"
@@ -68745,8 +69724,17 @@
             "safe-cast": {
               "$ref": "#/$defs/ward:kotlin~1safe-cast"
             },
+            "script-injection": {
+              "$ref": "#/$defs/ward:kotlin~1script-injection"
+            },
             "serial-version-uid-in-serializable-class": {
               "$ref": "#/$defs/ward:kotlin~1serial-version-uid-in-serializable-class"
+            },
+            "server-side-request-forgery": {
+              "$ref": "#/$defs/ward:kotlin~1server-side-request-forgery"
+            },
+            "session-attribute-injection": {
+              "$ref": "#/$defs/ward:kotlin~1session-attribute-injection"
             },
             "single-line-javadoc": {
               "$ref": "#/$defs/ward:kotlin~1single-line-javadoc"
@@ -68756,6 +69744,9 @@
             },
             "spread-operator": {
               "$ref": "#/$defs/ward:kotlin~1spread-operator"
+            },
+            "sql-injection": {
+              "$ref": "#/$defs/ward:kotlin~1sql-injection"
             },
             "string-template": {
               "$ref": "#/$defs/ward:kotlin~1string-template"
@@ -68829,6 +69820,15 @@
             "unsafe-cast": {
               "$ref": "#/$defs/ward:kotlin~1unsafe-cast"
             },
+            "unsafe-reflection": {
+              "$ref": "#/$defs/ward:kotlin~1unsafe-reflection"
+            },
+            "untrusted-deserialization": {
+              "$ref": "#/$defs/ward:kotlin~1untrusted-deserialization"
+            },
+            "untrusted-redirect": {
+              "$ref": "#/$defs/ward:kotlin~1untrusted-redirect"
+            },
             "unused-local-variable": {
               "$ref": "#/$defs/ward:kotlin~1unused-local-variable"
             },
@@ -68891,6 +69891,9 @@
             },
             "wrong-equals-type-parameter": {
               "$ref": "#/$defs/ward:kotlin~1wrong-equals-type-parameter"
+            },
+            "xpath-injection": {
+              "$ref": "#/$defs/ward:kotlin~1xpath-injection"
             }
           }
         },
@@ -69285,8 +70288,14 @@
             "class-variable-slots-conflict": {
               "$ref": "#/$defs/ward:python~1class-variable-slots-conflict"
             },
+            "code-injection": {
+              "$ref": "#/$defs/ward:python~1code-injection"
+            },
             "collapsible-if": {
               "$ref": "#/$defs/ward:python~1collapsible-if"
+            },
+            "command-injection": {
+              "$ref": "#/$defs/ward:python~1command-injection"
             },
             "comparison-of-constants": {
               "$ref": "#/$defs/ward:python~1comparison-of-constants"
@@ -69948,6 +70957,9 @@
             "parameter-name": {
               "$ref": "#/$defs/ward:python~1parameter-name"
             },
+            "path-injection": {
+              "$ref": "#/$defs/ward:python~1path-injection"
+            },
             "path-traversal": {
               "$ref": "#/$defs/ward:python~1path-traversal"
             },
@@ -70137,6 +71149,9 @@
             "split-static-string": {
               "$ref": "#/$defs/ward:python~1split-static-string"
             },
+            "sql-injection": {
+              "$ref": "#/$defs/ward:python~1sql-injection"
+            },
             "sql-string-formatting": {
               "$ref": "#/$defs/ward:python~1sql-string-formatting"
             },
@@ -70247,6 +71262,9 @@
             },
             "template-autoescape-disabled": {
               "$ref": "#/$defs/ward:python~1template-autoescape-disabled"
+            },
+            "template-injection": {
+              "$ref": "#/$defs/ward:python~1template-injection"
             },
             "todo-comment": {
               "$ref": "#/$defs/ward:python~1todo-comment"
@@ -70481,6 +71499,15 @@
             },
             "unsupported-membership-test": {
               "$ref": "#/$defs/ward:python~1unsupported-membership-test"
+            },
+            "untrusted-deserialization": {
+              "$ref": "#/$defs/ward:python~1untrusted-deserialization"
+            },
+            "untrusted-redirect": {
+              "$ref": "#/$defs/ward:python~1untrusted-redirect"
+            },
+            "untrusted-request-url": {
+              "$ref": "#/$defs/ward:python~1untrusted-request-url"
             },
             "unused-annotation": {
               "$ref": "#/$defs/ward:python~1unused-annotation"
@@ -71307,6 +72334,9 @@
             "class-type-parameter-name": {
               "$ref": "#/$defs/ward:swift~1class-type-parameter-name"
             },
+            "cleartext-url": {
+              "$ref": "#/$defs/ward:swift~1cleartext-url"
+            },
             "closure-parameter-position": {
               "$ref": "#/$defs/ward:swift~1closure-parameter-position"
             },
@@ -71450,6 +72480,9 @@
             },
             "google-right-curly": {
               "$ref": "#/$defs/ward:swift~1google-right-curly"
+            },
+            "hard-coded-credential": {
+              "$ref": "#/$defs/ward:swift~1hard-coded-credential"
             },
             "hidden-field": {
               "$ref": "#/$defs/ward:swift~1hidden-field"
@@ -71802,6 +72835,9 @@
             "unused-setter-value": {
               "$ref": "#/$defs/ward:swift~1unused-setter-value"
             },
+            "userdefaults-secret": {
+              "$ref": "#/$defs/ward:swift~1userdefaults-secret"
+            },
             "valid-ibinspectable": {
               "$ref": "#/$defs/ward:swift~1valid-ibinspectable"
             },
@@ -71817,8 +72853,17 @@
             "void-return": {
               "$ref": "#/$defs/ward:swift~1void-return"
             },
+            "weak-cipher": {
+              "$ref": "#/$defs/ward:swift~1weak-cipher"
+            },
             "weak-delegate": {
               "$ref": "#/$defs/ward:swift~1weak-delegate"
+            },
+            "weak-hash": {
+              "$ref": "#/$defs/ward:swift~1weak-hash"
+            },
+            "weak-random": {
+              "$ref": "#/$defs/ward:swift~1weak-random"
             },
             "xctfail-message": {
               "$ref": "#/$defs/ward:swift~1xctfail-message"

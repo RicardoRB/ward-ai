@@ -55,7 +55,7 @@ CloseBracket               : ']';
 OpenParen                  : '(';
 CloseParen                 : ')';
 OpenBrace                  : '{' {this.processOpenBrace();};
-TemplateCloseBrace         :     {this.isInTemplateString()}? '}' -> popMode;
+TemplateCloseBrace         :     {this.templates.atSubstitutionEnd()}? '}' {this.templates.endSubstitution();} -> popMode;
 CloseBrace                 : '}' {this.processCloseBrace();};
 SemiColon                  : ';';
 Comma                      : ',';
@@ -168,6 +168,15 @@ Delete     : 'delete';
 In         : 'in';
 Try        : 'try';
 As         : 'as';
+Satisfies  : 'satisfies';
+Accessor   : 'accessor';
+Get        : 'get';
+Set        : 'set';
+Using      : 'using';
+Asserts    : 'asserts';
+Infer      : 'infer';
+Out        : 'out';
+Global     : 'global';
 From       : 'from';
 ReadOnly   : 'readonly';
 Async      : 'async';
@@ -237,7 +246,7 @@ StringLiteral:
     ('"' DoubleStringCharacter* '"' | '\'' SingleStringCharacter* '\'') {this.processStringLiteral();}
 ;
 
-BackTick: '`' {this.increaseTemplateDepth();} -> pushMode(TEMPLATE);
+BackTick: '`' {this.templates.enterLiteral();} -> pushMode(TEMPLATE);
 
 WhiteSpaces: [\t\u000B\u000C\u0020\u00A0]+ -> channel(HIDDEN);
 
@@ -252,8 +261,8 @@ UnexpectedCharacter : .                     -> channel(ERROR);
 mode TEMPLATE;
 
 TemplateStringEscapeAtom      : '\\' .;
-BackTickInside                : '`'  {this.decreaseTemplateDepth();} -> type(BackTick), popMode;
-TemplateStringStartExpression : '${' {this.startTemplateString();} -> pushMode(DEFAULT_MODE);
+BackTickInside                : '`'  {this.templates.leaveLiteral();} -> type(BackTick), popMode;
+TemplateStringStartExpression : '${' {this.templates.startSubstitution();} -> pushMode(DEFAULT_MODE);
 TemplateStringAtom            : ~[`\\];
 
 // Fragment rules

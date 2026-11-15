@@ -53,11 +53,13 @@ class ApiCompatFixturesTest {
   }
 
   private static List<String> changes(final Path fixture) throws IOException {
+    return compare(fixture).stream().map(ApiCompatFixturesTest::line).toList();
+  }
+
+  /** The changes Ward reports between the {@code baseline} and {@code revision} of a fixture. */
+  static List<ApiChange> compare(final Path fixture) throws IOException {
     return ApiComparison.compare(
-            read(fixture.resolve("baseline")), read(fixture.resolve("revision")))
-        .stream()
-        .map(ApiCompatFixturesTest::line)
-        .toList();
+        read(fixture.resolve("baseline")), read(fixture.resolve("revision")));
   }
 
   private static String line(final ApiChange change) {

@@ -15,23 +15,44 @@ final class DependencyKeywords {
       final DocNode data,
       final String path) {
     final Optional<DocNode> rules = schema.get("dependentRequired");
-    if (rules.isEmpty()
-        || rules.get().kind() != DocNode.Kind.OBJECT
-        || validator.getDialect() != JsonSchemaValidator.Dialect.DRAFT2020) {
+    if (!appliesDependentRequired(validator, rules)) {
       return true;
     }
     boolean valid = true;
     for (final DocNode.Entry rule : rules.get().entries()) {
-      if (data.get(rule.key()).isEmpty()) {
-        continue;
+      if (!ruleHolds(validator, data, rule, path)) {
+        if (!validator.isAllErrors()) {
+          return false;
+        }
+        valid = false;
       }
-      for (final DocNode needed : rule.value().items()) {
-        if (data.get(needed.text()).isEmpty()) {
-          validator.getErrors().add(neededProperty(path, rule.key(), needed.text()));
-          valid = false;
-          if (!validator.isAllErrors()) {
-            return false;
-          }
+    }
+    return valid;
+  }
+
+  private static boolean appliesDependentRequired(
+      final JsonSchemaValidator validator, final Optional<DocNode> rules) {
+    return rules.isPresent()
+        && rules.get().kind() == DocNode.Kind.OBJECT
+        && validator.getDialect() == JsonSchemaValidator.Dialect.DRAFT2020;
+  }
+
+  /** Whether the properties a present property needs are present; stops at the first miss. */
+  private static boolean ruleHolds(
+      final JsonSchemaValidator validator,
+      final DocNode data,
+      final DocNode.Entry rule,
+      final String path) {
+    if (data.get(rule.key()).isEmpty()) {
+      return true;
+    }
+    boolean valid = true;
+    for (final DocNode needed : rule.value().items()) {
+      if (data.get(needed.text()).isEmpty()) {
+        validator.getErrors().add(neededProperty(path, rule.key(), needed.text()));
+        valid = false;
+        if (!validator.isAllErrors()) {
+          return false;
         }
       }
     }

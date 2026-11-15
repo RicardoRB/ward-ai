@@ -29,7 +29,7 @@ class InitPlanPrinterTest {
                 change(".claude/settings.json", Action.CONFLICT),
                 change(".claude/hooks/old", Action.REMOVE),
                 change("config/pmd-ruleset.xml", Action.UNCHANGED)),
-            List.of(new PlannedGateInstallation("zap-baseline.py", "https://zap.example/docs")));
+            List.of(new PlannedGateInstallation("custom-lint", "https://lint.example/docs")));
 
     new InitResultPrinter(new PrintWriter(output, true)).printPlan(plan, ROOT);
 
@@ -42,7 +42,7 @@ class InitPlanPrinterTest {
             "  keep       config/checkstyle.xml  (user-owned, not changed)",
             "  conflict   .claude/settings.json  (user-owned, blocks initialization)",
             "  remove     .claude/hooks/old",
-            "  guidance   zap-baseline.py: https://zap.example/docs")
+            "  guidance   custom-lint: https://lint.example/docs")
         .doesNotContain("pmd-ruleset.xml");
   }
 

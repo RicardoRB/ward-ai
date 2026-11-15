@@ -16,27 +16,6 @@ import org.junit.jupiter.api.Test;
 class ExecutableGatePrerequisitesTest {
 
   @Test
-  void missingKnownExecutableGetsCatalogHint() {
-    final GateResult result =
-        GatePrerequisiteFixtures.only(
-            GatePrerequisiteFixtures.runner(
-                    GatePrerequisiteFixtures.failing(), GatePrerequisiteFixtures.failing())
-                .run(
-                    GatePrerequisiteFixtures.MAVEN,
-                    List.of(
-                        GatePrerequisiteFixtures.gate(
-                            "zap-baseline.py", GatePrerequisiteFixtures.MISSING))));
-
-    assertThat(result.status()).isEqualTo(GateStatus.UNAVAILABLE);
-    assertThat(result.summary())
-        .startsWith("Gate 'zap-baseline.py' could not start 'zap-baseline.py'.")
-        .contains("Install zap-baseline.py:");
-    assertThat(result.prerequisite().kind()).isEqualTo(GatePrerequisite.Kind.EXECUTABLE);
-    assertThat(result.prerequisite().executable()).isEqualTo("zap-baseline.py");
-    assertThat(result.prerequisite().remediation()).contains("zap-baseline.py");
-  }
-
-  @Test
   void missingUnknownExecutableGetsPathFallback() {
     final GateResult result =
         GatePrerequisiteFixtures.only(
@@ -79,7 +58,7 @@ class ExecutableGatePrerequisitesTest {
                     GatePrerequisiteFixtures.MAVEN,
                     List.of(
                         GatePrerequisiteFixtures.gate(
-                            "zap-baseline.py", GatePrerequisiteFixtures.MISSING))));
+                            "custom-lint", GatePrerequisiteFixtures.MISSING))));
 
     assertThat(result.prerequisite().kind()).isEqualTo(GatePrerequisite.Kind.EXECUTABLE);
   }
@@ -108,13 +87,12 @@ class ExecutableGatePrerequisitesTest {
           .run(
               GatePrerequisiteFixtures.MAVEN,
               List.of(
-                  GatePrerequisiteFixtures.gate(
-                      "zap-baseline.py", GatePrerequisiteFixtures.MISSING)));
+                  GatePrerequisiteFixtures.gate("custom-lint", GatePrerequisiteFixtures.MISSING)));
     } finally {
       logger.removeHandler(handler);
     }
 
     assertThat(messages)
-        .containsExactly("event=gate-prerequisite gate=zap-baseline.py kind=executable");
+        .containsExactly("event=gate-prerequisite gate=custom-lint kind=executable");
   }
 }

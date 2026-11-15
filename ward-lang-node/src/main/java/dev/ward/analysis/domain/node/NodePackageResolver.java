@@ -98,12 +98,16 @@ final class NodePackageResolver {
     if (exports.containsKey(subpath)) {
       return Optional.of(new Entries(exports.get(subpath), ""));
     }
+    return longestPattern(exports, subpath);
+  }
+
+  private static Optional<Entries> longestPattern(
+      final Map<String, List<ExportEntry>> exports, final String subpath) {
     String bestKey = null;
     String bestCapture = null;
     for (final String key : exports.keySet()) {
       final Optional<String> capture = NodeSpecifiers.capture(key, subpath);
-      if (capture.isPresent()
-          && (bestKey == null || key.indexOf(WILDCARD) > bestKey.indexOf(WILDCARD))) {
+      if (capture.isPresent() && moreSpecific(key, bestKey)) {
         bestKey = key;
         bestCapture = capture.get();
       }
@@ -111,6 +115,10 @@ final class NodePackageResolver {
     return bestKey == null
         ? Optional.empty()
         : Optional.of(new Entries(exports.get(bestKey), bestCapture));
+  }
+
+  private static boolean moreSpecific(final String key, final String bestKey) {
+    return bestKey == null || key.indexOf(WILDCARD) > bestKey.indexOf(WILDCARD);
   }
 
   private static String nullToEmpty(final String value) {

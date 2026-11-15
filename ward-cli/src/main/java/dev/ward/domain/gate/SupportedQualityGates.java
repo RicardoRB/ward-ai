@@ -33,8 +33,6 @@ public final class SupportedQualityGates {
 
   public static final List<String> LEGACY_IDS = List.of("architecture");
 
-  public static final String ZAP_TARGET_PLACEHOLDER = "<TARGET_URL>";
-
   private SupportedQualityGates() {}
 
   /** The gates that check a committed OpenAPI spec and take OpenAPI options. */

@@ -1,0 +1,15 @@
+# rule, case, status: agree, tool-silent, anchor-differs, count-differs, tool-extra, or approximation (reason in android-lint-approximations.txt).
+# Written from a real lint run. Regenerate with -Dward.parity.write=true.
+allow-backup	default	approximation
+allow-backup	missing	approximation
+cleartext-transport	default	approximation
+cleartext-transport	network-config	approximation
+debuggable-application	default	approximation
+exported-content-provider	default	approximation
+exported-receiver	default	approximation
+exported-service	default	approximation
+hardcoded-text	default	agree
+hardcoded-text	menu	agree
+missing-content-description	default	agree
+missing-content-description	tools-ignore	approximation
+unused-resources	default	approximation

@@ -1,3 +1,7 @@
 # Status of the ward-own rows in kotlin: "implemented", "not-applicable" (the reason is in the row) or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
 
 cognitive-complexity = "implemented"
+command-injection = "implemented"
+path-traversal = "implemented"
+sql-injection = "implemented"
+xss = "implemented"

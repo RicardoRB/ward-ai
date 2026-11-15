@@ -49,9 +49,10 @@ final class JavaBodyLowering implements JavaStatements {
    * Starts the lowering of one body.
    *
    * @param types the imports and package of the file the body is in
+   * @param fields the fields of the classes around the body
    */
-  JavaBodyLowering(final JavaTypeNames types) {
-    this.sites = new JavaFlowSites(types, accesses::isSkipped);
+  JavaBodyLowering(final JavaTypeNames types, final List<JavaClassFields.Field> fields) {
+    this.sites = new JavaFlowSites(types, accesses::isSkipped, fields);
     this.flow = new ControlFlowBuilder(accesses, sites);
     this.branches = new JavaBranches(flow, accesses);
     this.loops = new JavaLoops(flow, branches, this);

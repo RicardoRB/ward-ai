@@ -18,6 +18,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 class FileSystemSourceUnitsTest {
   private static final String SOURCE = "class A {}\n";
+  private static final String APP_JS = "src/App.js";
 
   @TempDir Path root;
 
@@ -33,6 +34,15 @@ class FileSystemSourceUnitsTest {
   }
 
   @Test
+  void skipsMinifiedScripts() throws IOException {
+    write(APP_JS);
+    write("assets/private/dat.gui.min.js");
+    write("assets/lib.min.mjs");
+
+    assertThat(paths(Set.of(AnalysisLanguage.JAVASCRIPT))).containsExactly(APP_JS);
+  }
+
+  @Test
   void keepsOtherLanguagesInAResourcesFolder() throws IOException {
     write("src/pkg/resources/tool.py");
 
@@ -41,33 +51,33 @@ class FileSystemSourceUnitsTest {
 
   @Test
   void skipsSourcesThatGitIgnores() throws IOException {
-    write("src/App.js");
+    write(APP_JS);
     write("coverage/lcov-report/index.js");
     final FakeCommandExecutor git =
         new FakeCommandExecutor(
             new CommandResult(
                 0, "coverage/lcov-report/index.js\u0000", "", FakeCommandExecutor.DURATION, null));
 
-    assertThat(paths(git, Set.of(AnalysisLanguage.JAVASCRIPT))).containsExactly("src/App.js");
+    assertThat(paths(git, Set.of(AnalysisLanguage.JAVASCRIPT))).containsExactly(APP_JS);
   }
 
   @Test
   void skipsSourcesInAnIgnoredDirectory() throws IOException {
-    write("src/App.js");
+    write(APP_JS);
     write("coverage/lcov-report/index.js");
     final FakeCommandExecutor git =
         new FakeCommandExecutor(
             new CommandResult(0, "coverage/\u0000", "", FakeCommandExecutor.DURATION, null));
 
-    assertThat(paths(git, Set.of(AnalysisLanguage.JAVASCRIPT))).containsExactly("src/App.js");
+    assertThat(paths(git, Set.of(AnalysisLanguage.JAVASCRIPT))).containsExactly(APP_JS);
   }
 
   @Test
   void keepsEverySourceWhenGitFails() throws IOException {
-    write("src/App.js");
+    write(APP_JS);
     final FakeCommandExecutor git = new FakeCommandExecutor(128, "", "not a git repository");
 
-    assertThat(paths(git, Set.of(AnalysisLanguage.JAVASCRIPT))).containsExactly("src/App.js");
+    assertThat(paths(git, Set.of(AnalysisLanguage.JAVASCRIPT))).containsExactly(APP_JS);
   }
 
   private void write(final String path) throws IOException {

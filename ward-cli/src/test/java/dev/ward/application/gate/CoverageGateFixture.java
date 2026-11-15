@@ -152,6 +152,7 @@ final class CoverageGateFixture {
         options,
         null,
         null,
+        null,
         null);
   }
 }

@@ -52,6 +52,17 @@ public abstract class TypeScriptParserBase extends Parser {
         && lexer.isJsx();
   }
 
+  /**
+   * Whether the {@code <} at the current token is a comparison rather than the start of the type
+   * arguments of a call such as {@code f<T[]>(x)}; see {@link TypeArgumentsLookahead}. The grammar
+   * cannot tell the two apart by itself: both parse, and the comparison would win.
+   *
+   * @return {@code false} iff the current token is a {@code <} that opens type arguments of a call
+   */
+  protected boolean notTypeArgumentsCallAhead() {
+    return !TypeArgumentsLookahead.opensCall(_input);
+  }
+
   protected boolean notLineTerminator() {
     return !lineTerminatorAhead();
   }

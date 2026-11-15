@@ -33,9 +33,7 @@ An invalid option value is a usage error and produces no partial report.
 - Every selected gate runs, even after an earlier one fails, unless you pass `--fail-fast`.
 - With `--fail-fast`, Ward stops after the first gate that fails, is unavailable, or hits an
   execution error. Later gates are listed as skipped (`not run (fail-fast)`).
-- A gate whose standalone tool is missing, such as `zap-baseline.py`, is reported as unavailable with
-  install guidance.
-- An enabled `zap` gate without an explicit `-t <url>` target is a configuration error.
+- A gate whose standalone tool is missing is reported as unavailable.
 
 For Maven and Gradle projects, built-in test commands prefer the project wrapper (`./mvnw` or
 `./gradlew`) and fall back to `mvn` or `gradle`. Commands configured explicitly in `ward.toml` are
@@ -126,7 +124,9 @@ executed gate:
 - Locations are relative to the Git repository root, so a project in `apps/api` reports
   `apps/api/src/...`. Outside a Git work tree they are relative to the project root.
 - At most 50 results are listed per gate. The run's `properties.findingsTotal` and
-  `findingsHidden` hold the full and hidden counts.
+  `findingsHidden` hold the full and hidden counts, and `properties.findingsTruncated` is `true`
+  when results were left out. The number left out is `findingsTotal` minus `findingsHidden` minus
+  the results listed for that run; the text format prints it as `… N more`.
 - When Ward cannot run at all, SARIF mode writes nothing to stdout and reports the error on stderr.
 
 ### Severity
@@ -186,9 +186,7 @@ A gate is `UNAVAILABLE` when the environment, not the code, stopped it. Ward exp
 how to fix it:
 
 - **Missing executable.** The gate's command could not start. The summary names the gate and the
-  executable. For the tools in Ward's install catalog (zap-baseline.py) it gives the
-  install command or link; for any other tool it says to install
-  it or add it to `PATH`.
+  executable. It says to install the tool or add it to `PATH`.
 - **JDK older than the project.** When a Maven or Gradle gate fails and the build declares a Java
   release newer than the JDK that runs it, the gate is `UNAVAILABLE`. The summary names both
   versions. Ward reads the JDK only after a build gate fails, once per run. A gate that passes, and a
@@ -207,12 +205,12 @@ Each prerequisite is reported in every output format:
 
 ```json
 {
-  "name": "zap",
+  "name": "custom-lint",
   "status": "UNAVAILABLE",
   "prerequisite": {
     "kind": "executable",
-    "executable": "zap-baseline.py",
-    "remediation": "Install zap-baseline.py: https://www.zaproxy.org/docs/docker/baseline-scan/"
+    "executable": "custom-lint",
+    "remediation": "Install custom-lint or add it to PATH."
   }
 }
 ```

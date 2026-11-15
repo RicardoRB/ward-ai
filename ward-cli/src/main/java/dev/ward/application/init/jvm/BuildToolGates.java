@@ -74,11 +74,6 @@ record BuildToolGates(
     return String.valueOf(Math.round(ratio * PERCENT));
   }
 
-  /** Checks code quality, smells, and duplication with Sonar. */
-  InitGateOption sonar() {
-    return option("sonar", "Checks code quality, smells, and duplication.", "", "sonar");
-  }
-
   /** Measures test strength with PIT mutation testing. */
   InitGateOption mutation() {
     return tool(

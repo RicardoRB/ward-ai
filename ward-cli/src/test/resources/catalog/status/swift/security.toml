@@ -1,0 +1,8 @@
+# Status of the security rows in swift: "implemented" or { status = "planned", issue = "#N" }. Keep the rows sorted by name.
+
+cleartext-url = "implemented"
+hard-coded-credential = "implemented"
+userdefaults-secret = "implemented"
+weak-cipher = "implemented"
+weak-hash = "implemented"
+weak-random = "implemented"

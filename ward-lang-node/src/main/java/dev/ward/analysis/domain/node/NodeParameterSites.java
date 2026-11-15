@@ -10,7 +10,8 @@ import java.util.Set;
 
 /**
  * Finds the flow sites at the entry of a TypeScript or JavaScript function: its decorated
- * parameters. Every parameter's type is recorded for the receiver types of later calls.
+ * parameters, and the request members that a parameter typed {@code Request} destructures. Every
+ * parameter's type is recorded for the receiver types of later calls.
  */
 final class NodeParameterSites {
 
@@ -21,6 +22,16 @@ final class NodeParameterSites {
   private static final String TYPE_ANNOTATION = "typeAnnotation";
   private static final Set<String> NOT_BINDINGS =
       Set.of(DECORATOR_LIST, DECORATOR, TYPE_ANNOTATION, "accessibilityModifier");
+
+  /**
+   * The annotation of a destructured Express request member, such as {@code params} in {@code ({
+   * params }: Request)}.
+   */
+  static final String EXPRESS_REQUEST = "express-request";
+
+  private static final Set<String> REQUEST_MEMBERS =
+      Set.of("query", "params", "body", "headers", "cookies");
+  private static final Set<String> REQUEST_TYPES = Set.of("Request", "express.Request");
 
   private final NodeTypes types;
 
@@ -61,6 +72,12 @@ final class NodeParameterSites {
     final String name = NodeFlowSyntax.text(names.get(0));
     types.declareParameter(name, formal);
     final List<String> decorators = decoratorsOf(formal);
+    if (isRequest(formal)) {
+      names.stream()
+          .map(NodeFlowSyntax::text)
+          .filter(REQUEST_MEMBERS::contains)
+          .forEach(member -> found.add(requestMember(member, formal)));
+    }
     if (!decorators.isEmpty()) {
       found.add(
           new FlowSite(
@@ -72,6 +89,24 @@ final class NodeParameterSites {
               List.of(),
               formal.span()));
     }
+  }
+
+  /** A parameter typed {@code Request} or {@code express.Request}. */
+  private static boolean isRequest(final SyntaxNode formal) {
+    final SyntaxNode type = NodeFlowSyntax.firstOf(NodeFlowSyntax.parts(formal), TYPE_ANNOTATION);
+    return type != null
+        && REQUEST_TYPES.contains(NodeFlowSyntax.text(type).replaceFirst("^:", "").trim());
+  }
+
+  private static FlowSite requestMember(final String member, final SyntaxNode formal) {
+    return new FlowSite(
+        FlowSiteKind.PARAMETER,
+        member,
+        "",
+        Optional.empty(),
+        List.of(EXPRESS_REQUEST),
+        List.of(),
+        formal.span());
   }
 
   private static List<SyntaxNode> formalsIn(final SyntaxNode node, final List<SyntaxNode> found) {

@@ -1,10 +1,12 @@
 package dev.ward.infrastructure.analysis;
 
+import dev.ward.analysis.application.android.AndroidXmlFrontend;
 import dev.ward.analysis.application.openapi.OpenApiLanguageFrontend;
 import dev.ward.analysis.application.rule.FrontendSupport;
 import dev.ward.analysis.domain.ir.AnalysisLanguage;
 import dev.ward.analysis.domain.jvm.JavaControlFlow;
 import dev.ward.analysis.domain.jvm.JavaScopeAnalysis;
+import dev.ward.analysis.domain.jvm.KotlinControlFlow;
 import dev.ward.analysis.domain.jvm.KotlinScopeAnalysis;
 import dev.ward.analysis.domain.node.NodeControlFlow;
 import dev.ward.analysis.domain.node.NodeScopeAnalysis;
@@ -42,17 +44,9 @@ public final class GateFrontends {
 
   /** Creates the support of every language over one parser. */
   public static List<FrontendSupport> create(final LanguageFrontend frontend) {
-    // The sets are built here, not in static fields: a native image must not freeze enum sets.
-    final Set<RuleCapability> syntax = Set.of(RuleCapability.SYNTAX, RuleCapability.SCOPES);
-    final Set<RuleCapability> symbols =
-        Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS, RuleCapability.SCOPES);
-    final Set<RuleCapability> flow =
-        Set.of(
-            RuleCapability.SYNTAX,
-            RuleCapability.SYMBOLS,
-            RuleCapability.CFG,
-            RuleCapability.DATAFLOW,
-            RuleCapability.SCOPES);
+    final Set<RuleCapability> symbols = symbolCapabilities();
+    final Set<RuleCapability> graphs = graphCapabilities();
+    final Set<RuleCapability> flow = flowCapabilities();
     return List.of(
         new FrontendSupport(
             AnalysisLanguage.JAVA,
@@ -90,12 +84,37 @@ public final class GateFrontends {
         new FrontendSupport(
             AnalysisLanguage.KOTLIN,
             frontend,
-            syntax,
-            NO_GRAPHS,
+            graphs,
+            new KotlinControlFlow(),
             new CachedScopes(new KotlinScopeAnalysis(ClasspathBuiltinNames.kotlin()))),
         new FrontendSupport(
-            AnalysisLanguage.OPENAPI,
-            new OpenApiLanguageFrontend(),
-            Set.of(RuleCapability.SYNTAX)));
+            AnalysisLanguage.OPENAPI, new OpenApiLanguageFrontend(), Set.of(RuleCapability.SYNTAX)),
+        new FrontendSupport(
+                AnalysisLanguage.ANDROID, new AndroidXmlFrontend(), Set.of(RuleCapability.SYNTAX))
+            .withProjectLanguages(Set.of(AnalysisLanguage.JAVA, AnalysisLanguage.KOTLIN)));
+  }
+
+  // The sets are built per call, not in static fields: a native image must not freeze enum sets.
+  private static Set<RuleCapability> symbolCapabilities() {
+    return Set.of(RuleCapability.SYNTAX, RuleCapability.SYMBOLS, RuleCapability.SCOPES);
+  }
+
+  private static Set<RuleCapability> graphCapabilities() {
+    return Set.of(
+        RuleCapability.SYNTAX,
+        RuleCapability.CFG,
+        RuleCapability.DATAFLOW,
+        RuleCapability.TAINT,
+        RuleCapability.SCOPES);
+  }
+
+  private static Set<RuleCapability> flowCapabilities() {
+    return Set.of(
+        RuleCapability.SYNTAX,
+        RuleCapability.SYMBOLS,
+        RuleCapability.CFG,
+        RuleCapability.DATAFLOW,
+        RuleCapability.TAINT,
+        RuleCapability.SCOPES);
   }
 }

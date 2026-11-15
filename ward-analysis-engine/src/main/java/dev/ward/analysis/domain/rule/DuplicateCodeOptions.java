@@ -14,12 +14,21 @@ import java.util.regex.Pattern;
  * @param ignoreLiterals whether literals compare equal whatever their text
  * @param ignoreIdentifiers whether identifiers compare equal whatever their name
  * @param ignoreAnnotations whether annotations are left out of the comparison
+ * @param maxDuplicatedPercent the largest share of tokens, in percent, that copies may cover before
+ *     one more finding reports the project; 100 turns the limit off
  */
 public record DuplicateCodeOptions(
-    int minTokens, boolean ignoreLiterals, boolean ignoreIdentifiers, boolean ignoreAnnotations) {
+    int minTokens,
+    boolean ignoreLiterals,
+    boolean ignoreIdentifiers,
+    boolean ignoreAnnotations,
+    int maxDuplicatedPercent) {
 
   /** The copy length that PMD CPD and jscpd default to. */
   public static final int DEFAULT_MIN_TOKENS = 100;
+
+  /** The share limit that never trips. */
+  public static final int NO_SHARE_LIMIT = 100;
 
   private static final int MIN_LENGTH = 1;
 
@@ -29,15 +38,20 @@ public record DuplicateCodeOptions(
   private static final String IGNORE_LITERALS = "ignore-literals";
   private static final String IGNORE_IDENTIFIERS = "ignore-identifiers";
   private static final String IGNORE_ANNOTATIONS = "ignore-annotations";
+  private static final String MAX_PERCENT = "max-duplicated-percent";
 
   /**
    * Checks the fields.
    *
-   * @throws IllegalArgumentException if the minimum is below one
+   * @throws IllegalArgumentException if the minimum is below one or the share limit is outside 0 to
+   *     100
    */
   public DuplicateCodeOptions {
     if (minTokens < MIN_LENGTH) {
       throw new IllegalArgumentException("min-tokens must be at least 1");
+    }
+    if (maxDuplicatedPercent < 0 || maxDuplicatedPercent > NO_SHARE_LIMIT) {
+      throw new IllegalArgumentException("max-duplicated-percent must be from 0 to 100");
     }
   }
 
@@ -58,7 +72,8 @@ public record DuplicateCodeOptions(
         number(values, MIN_TOKENS, DEFAULT_MIN_TOKENS),
         flag(values, IGNORE_LITERALS),
         flag(values, IGNORE_IDENTIFIERS),
-        flag(values, IGNORE_ANNOTATIONS));
+        flag(values, IGNORE_ANNOTATIONS),
+        number(values, MAX_PERCENT, NO_SHARE_LIMIT));
   }
 
   private static int number(

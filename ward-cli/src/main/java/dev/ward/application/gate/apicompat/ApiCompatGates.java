@@ -4,6 +4,7 @@ import dev.ward.domain.config.ApiCompatOptions;
 import dev.ward.domain.config.GateConfiguration;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.gate.MainSourceRoots;
+import dev.ward.domain.gate.ModuleDirectories;
 import dev.ward.domain.gate.QualityGate;
 import dev.ward.domain.gate.RevisionFiles;
 import dev.ward.domain.gate.WorkingFiles;
@@ -28,8 +29,9 @@ public final class ApiCompatGates {
       final RevisionFiles revisions,
       final WorkingFiles working,
       final MainSourceRoots layout,
+      final ModuleDirectories modules,
       final ApiSurfaces surfaces) {
-    this.ports = new ApiCompatPorts(revisions, working, layout, surfaces);
+    this.ports = new ApiCompatPorts(revisions, working, layout, modules, surfaces);
   }
 
   /**

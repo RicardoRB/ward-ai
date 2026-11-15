@@ -43,4 +43,10 @@ class ArchitectureLayersTest {
     assertThat(ArchitectureLayers.ENGINE_LANGUAGES)
         .contains(dev.ward.analysis.domain.ir.AnalysisLanguage.SWIFT);
   }
+
+  @Test
+  void engineLanguagesIncludeKotlin() {
+    assertThat(ArchitectureLayers.ENGINE_LANGUAGES)
+        .contains(dev.ward.analysis.domain.ir.AnalysisLanguage.KOTLIN);
+  }
 }

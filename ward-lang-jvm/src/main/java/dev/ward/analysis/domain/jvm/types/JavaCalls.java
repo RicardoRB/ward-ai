@@ -47,14 +47,16 @@ final class JavaCalls {
       case JType.ClassType named -> Optional.of(named);
       case JType.ArrayType array -> Optional.of(JType.ClassType.of(Types.OBJECT));
       case JType.TypeVariable variable -> {
-        final JType bound = ctx.bounds().get(variable.name());
         final Ctx outer = new Ctx(ctx.scope(), Map.of(), List.of(), Optional.empty());
-        yield bound == null ? Optional.of(JType.ClassType.of(Types.OBJECT)) : siteOf(bound, outer);
+        yield Optional.ofNullable(ctx.bounds().get(variable.name()))
+            .map(bound -> siteOf(bound, outer))
+            .orElseGet(() -> Optional.of(JType.ClassType.of(Types.OBJECT)));
       }
       case JType.Wildcard wildcard ->
-          wildcard.bound() != null && wildcard.upper()
-              ? siteOf(wildcard.bound(), ctx)
-              : Optional.of(JType.ClassType.of(Types.OBJECT));
+          wildcard
+              .upperBound()
+              .map(bound -> siteOf(bound, ctx))
+              .orElseGet(() -> Optional.of(JType.ClassType.of(Types.OBJECT)));
       case JType.Primitive primitive -> Optional.empty();
     };
   }

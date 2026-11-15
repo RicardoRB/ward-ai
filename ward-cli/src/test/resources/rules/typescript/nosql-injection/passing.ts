@@ -6,3 +6,7 @@ export function coerced(req: any, User: any) {
 export function constant(User: any) {
   User.find({ active: true });
 }
+
+export function chainedConstant(db: any) {
+  db.ordersCollection.find({ active: true });
+}

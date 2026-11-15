@@ -56,25 +56,8 @@ public abstract class TypeScriptLexerBase extends WardLexerBase {
    */
   private boolean useStrictCurrent;
 
-  /**
-   * Keeps track of the current depth of nested template string backticks. E.g. after the X in:
-   *
-   * <p>`${a ? `${X
-   *
-   * <p>templateDepth will be 2. This variable is needed to determine if a `}` is a plain
-   * CloseBrace, or one that closes an expression inside a template string.
-   */
-  private int templateDepth;
-
-  /**
-   * Keeps track of the depth of open- and close-braces. Used for expressions like:
-   *
-   * <p>`${[1, 2, 3].map(x => { return x * 2;}).join("")}`
-   *
-   * <p>where the '}' from `return x * 2;}` should not become a `TemplateCloseBrace` token but
-   * rather a `CloseBrace` token.
-   */
-  private int bracesDepth;
+  /** The template literals the lexer is inside, and the braces inside their substitutions. */
+  protected final TemplateNesting templates = new TemplateNesting();
 
   /**
    * Counts every open brace of the default mode, so a JSX container knows its own closing brace.
@@ -167,20 +150,6 @@ public abstract class TypeScriptLexerBase extends WardLexerBase {
     return useStrictCurrent;
   }
 
-  /** Resets the brace count when a template literal starts. */
-  public void startTemplateString() {
-    this.bracesDepth = 0;
-  }
-
-  /**
-   * Tells whether the lexer is directly inside a template literal's substitution.
-   *
-   * @return {@code true} if a closing brace ends a template substitution
-   */
-  public boolean isInTemplateString() {
-    return this.templateDepth > 0 && this.bracesDepth == 0;
-  }
-
   /**
    * Return the next token from the character stream and records this last token in case it resides
    * on the default channel. This recorded token is used to determine when the lexer could possibly
@@ -202,14 +171,14 @@ public abstract class TypeScriptLexerBase extends WardLexerBase {
   }
 
   protected void processOpenBrace() {
-    bracesDepth++;
+    templates.braceOpened();
     braceNesting++;
     useStrictCurrent = !scopeStrictModes.isEmpty() && scopeStrictModes.peek() || useStrictDefault;
     scopeStrictModes.push(useStrictCurrent);
   }
 
   protected void processCloseBrace() {
-    bracesDepth--;
+    templates.braceClosed();
     useStrictCurrent = scopeStrictModes.isEmpty() ? useStrictDefault : scopeStrictModes.pop();
     if (!jsxContainers.isEmpty() && jsxContainers.peek() == braceNesting) {
       jsxContainers.pop();
@@ -225,8 +194,7 @@ public abstract class TypeScriptLexerBase extends WardLexerBase {
     lastToken = Optional.empty();
     useStrictDefault = false;
     useStrictCurrent = false;
-    templateDepth = 0;
-    bracesDepth = 0;
+    templates.reset();
     braceNesting = 0;
     jsxContainers.clear();
     super.reset();
@@ -249,15 +217,6 @@ public abstract class TypeScriptLexerBase extends WardLexerBase {
   }
 
   /** Enters one more template literal. */
-  protected void increaseTemplateDepth() {
-    this.templateDepth++;
-  }
-
-  /** Leaves one template literal. */
-  protected void decreaseTemplateDepth() {
-    this.templateDepth--;
-  }
-
   /**
    * Tells whether the lexer can match a regex literal. At the start of the input a regex is
    * possible; after one of the tokens in {@code NO_REGEX_AFTER} it is not.

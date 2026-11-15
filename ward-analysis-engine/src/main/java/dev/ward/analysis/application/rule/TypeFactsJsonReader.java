@@ -4,10 +4,17 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /** A recursive-descent reader for objects, arrays, strings, numbers and literals. */
 final class TypeFactsJsonReader {
-  private static final String NUMBER_CHARACTERS = "0123456789.eE+-";
+  private static final char UNICODE_ESCAPE = 'u';
+  private static final String ESCAPE_KEYS = "nrtbf";
+  private static final String ESCAPE_VALUES = "\n\r\t\b\f";
+  private static final Pattern NUMBER = Pattern.compile("[-0-9][0-9.eE+-]*");
+  private static final List<String> KEYWORDS = List.of("true", "false", "null");
   private static final int HEX_RADIX = 16;
   private static final int HEX_WIDTH = 4;
 
@@ -90,38 +97,29 @@ final class TypeFactsJsonReader {
   private char escaped() {
     final char code = text.charAt(position);
     position++;
-    return switch (code) {
-      case 'n' -> '\n';
-      case 'r' -> '\r';
-      case 't' -> '\t';
-      case 'b' -> '\b';
-      case 'f' -> '\f';
-      case 'u' -> {
-        final char value =
-            (char) Integer.parseInt(text.substring(position, position + HEX_WIDTH), HEX_RADIX);
-        position += HEX_WIDTH;
-        yield value;
-      }
-      default -> code;
-    };
+    if (code == UNICODE_ESCAPE) {
+      final char value =
+          (char) Integer.parseInt(text.substring(position, position + HEX_WIDTH), HEX_RADIX);
+      position += HEX_WIDTH;
+      return value;
+    }
+    final int index = ESCAPE_KEYS.indexOf(code);
+    return index < 0 ? code : ESCAPE_VALUES.charAt(index);
   }
 
   private Object literal() {
-    if (text.charAt(position) == '-' || Character.isDigit(text.charAt(position))) {
-      final int start = position;
-      position++;
-      while (position < text.length() && NUMBER_CHARACTERS.indexOf(text.charAt(position)) >= 0) {
-        position++;
-      }
-      return JsonValues.parseNumber(text.substring(start, position));
+    final Matcher number = NUMBER.matcher(text).region(position, text.length());
+    if (number.lookingAt()) {
+      position = number.end();
+      return JsonValues.parseNumber(number.group());
     }
-    for (final String word : List.of("true", "false", "null")) {
-      if (text.startsWith(word, position)) {
-        position += word.length();
-        return "null".equals(word) ? null : Boolean.valueOf(word);
-      }
+    final Optional<String> word =
+        KEYWORDS.stream().filter(candidate -> text.startsWith(candidate, position)).findFirst();
+    if (word.isEmpty()) {
+      throw new IllegalArgumentException("unsupported value");
     }
-    throw new IllegalArgumentException("unsupported value");
+    position += word.get().length();
+    return "null".equals(word.get()) ? null : Boolean.valueOf(word.get());
   }
 
   private void skipSpace() {

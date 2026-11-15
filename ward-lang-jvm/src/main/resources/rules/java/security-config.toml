@@ -69,3 +69,19 @@ kinds = ["expression"]
 text = '^.*\.(?:setSecure|setHttpOnly)\(false\)$|^(?:org\.springframework\.http\.)?ResponseCookie\..*\.(?:secure|httpOnly)\(false\)$'
 message = "this cookie is allowed over plain http or from scripts; set Secure and HttpOnly"
 '''
+
+[[rules]]
+id = "ward:java/cookie-missing-secure"
+language = "java"
+capability = "SYNTAX"
+severity = "warning"
+category = "security"
+presets = ["strict"]
+body = '''
+check = "companion-node"
+kinds = ["methodDeclaration", "constructorDeclaration"]
+node = "expression"
+match = '^(?:\w+\.)*addCookie\((\w+)\)$'
+companion = '^{1}\.setSecure\(true\)$'
+message = "this cookie is added to the response without the Secure attribute, so a browser also sends it over plain http; call setSecure(true) on it first"
+'''

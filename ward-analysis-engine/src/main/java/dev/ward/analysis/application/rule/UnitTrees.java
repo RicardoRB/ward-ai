@@ -70,7 +70,9 @@ final class UnitTrees {
       final SyntaxNode root,
       final RuleRunCollector collector) {
     final RuleCapability capability = rule.definition().capability();
-    if (capability != RuleCapability.CFG && capability != RuleCapability.DATAFLOW) {
+    if (capability != RuleCapability.CFG
+        && capability != RuleCapability.DATAFLOW
+        && capability != RuleCapability.TAINT) {
       return FlowView.NONE;
     }
     final String ruleId = rule.definition().id();

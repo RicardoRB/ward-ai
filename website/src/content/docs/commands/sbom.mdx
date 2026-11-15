@@ -17,6 +17,7 @@ ward licenses [-C <dir>] [-o <file>] [--scopes runtime,provided,test,development
 | `-C`, `--directory` | Run as if started in `<dir>`. |
 | `-o`, `--output` | Write the document to a file (relative to the current directory) instead of standard output. The file is replaced only after the whole document is written. |
 | `--scopes` | Only include packages of these inventory scopes. Default: every scope. |
+| `--name` | `ward sbom` only: the name of the root component. Default: the name the build file declares, else the folder name. |
 
 Exit codes: `0` the document was written, `2` an error, for example a project whose dependencies
 cannot be resolved (nothing is written). Diagnostics, such as a package whose license is unknown, go
@@ -31,7 +32,17 @@ license has no `licenses`: the SBOM states facts and the gate applies policy. Th
 no edges between packages, so transitive packages are components without outgoing edges.
 
 The document has no serial number and no timestamp, and components are sorted by Package URL, so
-the same inputs give the same bytes.
+the same inputs give the same bytes, in any folder.
+
+The root component is named after the project, not its folder: the `artifactId` of the root
+`pom.xml`, `rootProject.name` of `settings.gradle(.kts)`, the `name` of `package.json`, the project
+name of `pyproject.toml` (`project.name` or `tool.poetry.name`) or the package name of
+`Package.swift`. When the build file declares none (an Xcode project, for example) the folder name
+is used. `--name <name>` overrides both.
+
+```sh
+ward sbom [-C <dir>] [-o <file>] [--scopes <scope,...>] [--name <name>]
+```
 
 ## `ward licenses`
 

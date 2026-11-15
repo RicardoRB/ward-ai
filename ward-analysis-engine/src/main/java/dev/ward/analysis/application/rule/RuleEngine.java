@@ -59,7 +59,11 @@ public final class RuleEngine {
     final List<PreparedRule> prepared = PreparedRule.all(rules, support, matcher, collector);
     final RunState state =
         new RunState(
-            support, new UnitTrees(support, PreparedRule.needs(prepared)), collector, snapshot);
+            support,
+            new UnitTrees(support, PreparedRule.needs(prepared)),
+            collector,
+            snapshot,
+            new RelatedFlows(support, snapshot));
     for (final PreparedRule rule : prepared) {
       runRule(rule, units, state);
     }
@@ -126,7 +130,8 @@ public final class RuleEngine {
       Map<AnalysisLanguage, FrontendSupport> support,
       UnitTrees trees,
       RuleRunCollector collector,
-      DependencySnapshot snapshot) {}
+      DependencySnapshot snapshot,
+      RelatedFlows related) {}
 
   private static Map<AnalysisLanguage, FrontendSupport> supportByLanguage(
       final List<FrontendSupport> frontends) {
@@ -157,7 +162,9 @@ public final class RuleEngine {
       final DependencyView dependencies = view(rule, unit, state);
       final UnitViews views =
           new UnitViews(
-              state.trees().flows(rule, unit, root.get(), collector),
+              state
+                  .related()
+                  .with(rule, unit, state.trees().flows(rule, unit, root.get(), collector)),
               state.trees().scopes(rule, unit, root.get(), dependencies, collector),
               state.trees().types(rule, unit, root.get(), collector));
       rule.matches(root.get(), dependencies, views, unit)

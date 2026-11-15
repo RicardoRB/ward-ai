@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Shop</string>
+    <string name="used_in_java">Java</string>
+    <string name="used_in_kotlin">Kotlin</string>
+    <string name="used_in_layout">Layout</string>
+    <style name="Theme.Shop" parent="Theme.Material3.Light" />
+</resources>

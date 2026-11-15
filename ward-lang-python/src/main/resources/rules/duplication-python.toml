@@ -12,10 +12,12 @@ options.min-tokens = { type = "integer", min = 1 }
 options.ignore-literals = { type = "boolean" }
 options.ignore-identifiers = { type = "boolean" }
 options.ignore-annotations = { type = "boolean" }
+options.max-duplicated-percent = { type = "integer", min = 0, max = 100 }
 body = '''
 check = "duplicate-code"
 min-tokens = 100
 ignore-literals = false
 ignore-identifiers = false
 ignore-annotations = false
+max-duplicated-percent = 100
 '''

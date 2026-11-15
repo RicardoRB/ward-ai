@@ -41,6 +41,23 @@ class TomlApiCompatOptionsTest {
   }
 
   @Test
+  void readsModulesAndRejectsBadOnes() throws IOException {
+    assertThat(
+            read(reader, dir, HEADER + "modules = [\"core\", \"api/spi\"]\n")
+                .checks()
+                .get("api-compat")
+                .apiCompat()
+                .modules())
+        .containsExactly("core", "api/spi");
+    assertThatThrownBy(() -> read(reader, dir, HEADER + "modules = []\n"))
+        .isInstanceOf(WardException.class)
+        .hasMessageContaining("checks.api-compat.modules");
+    assertThatThrownBy(() -> read(reader, dir, HEADER + "modules = \"core\"\n"))
+        .isInstanceOf(WardException.class)
+        .hasMessageContaining("checks.api-compat.modules");
+  }
+
+  @Test
   void rejectsBlankBaseAndBadInclude() {
     assertThatThrownBy(() -> read(reader, dir, HEADER + "base = \" \"\n"))
         .isInstanceOf(WardException.class)

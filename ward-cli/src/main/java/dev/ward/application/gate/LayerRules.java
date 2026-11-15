@@ -22,7 +22,7 @@ final class LayerRules {
     return new RuleDefinition(
         LayerDependencyRule.ID,
         ArchitectureLayers.ENGINE_LANGUAGES,
-        RuleCapability.SYMBOLS,
+        RuleCapability.SCOPES,
         AnalysisSeverity.ERROR,
         LayerRuleBody.encode(boundaries));
   }

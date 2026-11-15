@@ -69,7 +69,8 @@ class CatalogModelTest {
             AnalysisLanguage.JAVASCRIPT,
             AnalysisLanguage.PYTHON,
             AnalysisLanguage.SWIFT,
-            AnalysisLanguage.OPENAPI);
+            AnalysisLanguage.OPENAPI,
+            AnalysisLanguage.ANDROID);
   }
 
   @Test

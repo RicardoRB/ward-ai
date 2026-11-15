@@ -14,6 +14,8 @@ import java.util.Set;
  */
 public final class NodeInvalidRegexpCheck implements RuleCheck {
 
+  private static final String ESCAPE_KEYS = "ntrbfv0";
+  private static final String ESCAPE_VALUES = "\n\t\r\b\f\u000B\0";
   private static final String ARGUMENTS = "arguments";
   private static final String ARGUMENT = "argument";
   private static final String ARGUMENT_LIST = "argumentList";
@@ -147,15 +149,7 @@ public final class NodeInvalidRegexpCheck implements RuleCheck {
 
   /** The character that a backslash escape stands for; other escapes stand for themselves. */
   private static char escaped(final char next) {
-    return switch (next) {
-      case 'n' -> '\n';
-      case 't' -> '\t';
-      case 'r' -> '\r';
-      case 'b' -> '\b';
-      case 'f' -> '\f';
-      case 'v' -> '\u000B';
-      case '0' -> '\0';
-      default -> next;
-    };
+    final int index = ESCAPE_KEYS.indexOf(next);
+    return index < 0 ? next : ESCAPE_VALUES.charAt(index);
   }
 }

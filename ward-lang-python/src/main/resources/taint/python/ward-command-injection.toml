@@ -1,0 +1,139 @@
+# Operating-system commands: os.system and friends, subprocess, and the shell helpers. Argument 0 is the command.
+
+[[sinks]]
+kind = "call"
+name = "system"
+receiver = "os"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "popen"
+receiver = "os"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execl"
+receiver = "os"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execle"
+receiver = "os"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execlp"
+receiver = "os"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execv"
+receiver = "os"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execve"
+receiver = "os"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execvp"
+receiver = "os"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "execvpe"
+receiver = "os"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "spawnl"
+receiver = "os"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "spawnv"
+receiver = "os"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "startfile"
+receiver = "os"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "run"
+receiver = "subprocess"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "call"
+receiver = "subprocess"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "check_call"
+receiver = "subprocess"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "check_output"
+receiver = "subprocess"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "Popen"
+receiver = "subprocess"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "getoutput"
+receiver = "subprocess"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "getstatusoutput"
+receiver = "subprocess"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "create_subprocess_shell"
+receiver = "asyncio"
+arguments = [0]
+
+[[sanitizers]]
+kind = "call"
+name = "int"
+
+[[sanitizers]]
+kind = "call"
+name = "float"
+
+[[sanitizers]]
+kind = "call"
+name = "bool"
+
+[[sanitizers]]
+kind = "call"
+name = "quote"
+receiver = "shlex"
+

@@ -1,0 +1,86 @@
+# Deserialization of bytes or text into objects: pickle and friends, marshal, shelve, and the full YAML loader.
+
+[[sinks]]
+kind = "call"
+name = "load"
+receiver = "pickle"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "loads"
+receiver = "pickle"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "load"
+receiver = "cPickle"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "loads"
+receiver = "cPickle"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "load"
+receiver = "dill"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "loads"
+receiver = "dill"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "load"
+receiver = "marshal"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "loads"
+receiver = "marshal"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "open"
+receiver = "shelve"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "decode"
+receiver = "jsonpickle"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "load"
+receiver = "yaml"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "load_all"
+receiver = "yaml"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "unsafe_load"
+receiver = "yaml"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "full_load"
+receiver = "yaml"
+arguments = [0]
+

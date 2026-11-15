@@ -75,7 +75,7 @@ constModifier
 // `in` and `out` variance annotations; `out` is not a reserved word
 varianceModifier
     : In
-    | {this.n("out")}? identifier
+    | Out
     ;
 constraint
     : 'extends' type_
@@ -123,7 +123,7 @@ primaryType
     | '[' tupleElementTypes ']'                  # TuplePrimType
     | typeQuery                                  # QueryPrimType
     | This                                       # ThisPrimType
-    | {this.n("asserts")}? identifier (This | typeReference) (Is primaryType)? # AssertsPrimType
+    | Asserts (This | typeReference) (Is primaryType)? # AssertsPrimType
     | typeReference Is primaryType               # RedefinitionOfType
     | KeyOf primaryType                          # KeyOfType
     | ReadOnly primaryType                       # ReadonlyPrimType
@@ -157,7 +157,7 @@ templateStringTypeAtom
     | TemplateStringStartExpression type_ TemplateCloseBrace
     ;
 inferType
-    : {this.n("infer")}? identifier identifier constraint?
+    : Infer identifier constraint?
     ;
 typeReference
     : typeName typeGeneric?
@@ -180,17 +180,19 @@ typeBody
     ;
 
 typeMemberList
-    : typeMember ((SemiColon | ',') typeMember)*
+    : typeMember ((SemiColon | ',' | {this.lineTerminatorAhead()}?) typeMember)*
     ;
 
+// The property comes last: members may end at a line break, so `run` followed by `(): void` on the
+// next line could be read as two members, and the earlier alternative wins when both parse.
 typeMember
-    : propertySignatur
-    | callSignature
+    : callSignature
     | constructSignature
     | indexSignature
     | getter '(' ')' typeAnnotation?
     | setter '(' parameterList? ')'
     | methodSignature ('=>' type_)?
+    | propertySignatur
     ;
 
 arrayType
@@ -339,7 +341,7 @@ enumMember
 // A.8 Namespaces
 
 namespaceDeclaration
-    : Declare? (Namespace namespaceName | Module (StringLiteral | namespaceName) | {this.n("global")}? identifier) '{' statementList? '}'
+    : Declare? (Namespace namespaceName | Module (StringLiteral | namespaceName) | Global) '{' statementList? '}'
     ;
 
 namespaceName
@@ -501,7 +503,7 @@ declaration
 
 // `using` and `await using` declarations; `using` is not a reserved word
 usingDeclaration
-    : Await? {this.n("using")}? identifier variableDeclarationList eos
+    : Await? Using variableDeclarationList eos
     ;
 variableStatement
     : bindingPattern typeAnnotation? initializer SemiColon?
@@ -649,28 +651,31 @@ implementsClause
 // Classes modified
 classElement
     : constructorDeclaration
+    | Static block
     | decoratorList? propertyMemberDeclaration
     | indexMemberDeclaration
-    | Static block
     | statement
     ;
 
 propertyMemberDeclaration
     : propertyMemberBase (getAccessor | setAccessor)                                     # GetterSetterDeclarationExpression
-    | propertyMemberBase (propertyName | privateIdentifier) '?'? typeAnnotation? initializer? SemiColon # PropertyDeclarationExpression
-    | propertyMemberBase (propertyName | privateIdentifier) callSignature (('{' functionBody '}') | SemiColon) # MethodDeclarationExpression
+    // Methods and accessors come before the property: a property ends at a line break, so `get`
+    // followed by `size(): number;` could be read as two members, and the earlier alternative wins.
+    | propertyMemberBase '*'? (propertyName | privateIdentifier) callSignature (('{' functionBody '}') | eos) # MethodDeclarationExpression
+    | propertyMemberBase (getter | setter) callSignature SemiColon                         # AccessorSignatureDeclaration
+    | propertyMemberBase (propertyName | privateIdentifier) ('?' | '!')? typeAnnotation? initializer? eos # PropertyDeclarationExpression
     | abstractDeclaration                                                                # AbstractMemberDeclaration
     ;
 
 propertyMemberBase
-    : accessibilityModifier? Abstract? Async? Static? ReadOnly? accessorModifier?
+    : accessibilityModifier? Declare? Abstract? Static? Async? ReadOnly? accessorModifier?
     ;
 accessorModifier
-    : {this.n("accessor")}? identifier
+    : Accessor
     ;
 
 indexMemberDeclaration
-    : indexSignature SemiColon
+    : indexSignature eos
     ;
 
 generatorMethod
@@ -803,7 +808,7 @@ singleExpression
     | New identifier typeArguments? arguments                         # NewExpression
     | New singleExpression typeArguments? arguments                   # NewExpression
     | New singleExpression typeArguments?                             # NewExpression
-    | singleExpression arguments                                      # ArgumentsExpression
+    | singleExpression typeArguments? arguments                       # ArgumentsExpression
     | singleExpression {this.notLineTerminator()}? '++'               # PostIncrementExpression
     | singleExpression {this.notLineTerminator()}? '--'               # PostDecreaseExpression
     | Delete singleExpression                                         # DeleteExpression
@@ -821,7 +826,7 @@ singleExpression
     | singleExpression ('+' | '-') singleExpression                   # AdditiveExpression
     | singleExpression '??' singleExpression                          # CoalesceExpression
     | singleExpression ('<<' | '>' '>' | '>' '>' '>') singleExpression # BitShiftExpression
-    | singleExpression ('<' | '>' | '<=' | '>=') singleExpression     # RelationalExpression
+    | singleExpression {this.notTypeArgumentsCallAhead()}? ('<' | '>' | '<=' | '>=') singleExpression # RelationalExpression
     | singleExpression Instanceof singleExpression                    # InstanceofExpression
     | singleExpression In singleExpression                            # InExpression
     | singleExpression ('==' | '!=' | '===' | '!==') singleExpression # EqualityExpression
@@ -855,9 +860,10 @@ singleExpression
     | singleExpression '!'                                            # NonNullAssertionExpression
     ;
 
-// `satisfies` is not a reserved word, so it is matched by its text
+// `satisfies` is a contextual keyword: a lexer token that `identifier` also accepts, because a predicate
+// that is not leftmost is invisible to prediction and made `return g(x)` look like `return satisfies (x)`
 satisfiesClause
-    : {this.n("satisfies")}? identifier type_
+    : Satisfies type_
     ;
 // `import x = require('m')` and `import x = A.B`
 importEqualsDeclaration
@@ -868,8 +874,8 @@ importMetaExpression
     : Import '.' identifierName
     ;
 asExpression
-    : predefinedType ('[' ']')?
-    | singleExpression
+    : Const
+    | type_
     ;
 
 assignable
@@ -951,11 +957,11 @@ bigintLiteral
     ;
 
 getter
-    : {this.n("get")}? identifier classElementName
+    : Get classElementName
     ;
 
 setter
-    : {this.n("set")}? identifier classElementName
+    : Set classElementName
     ;
 
 identifierName
@@ -967,6 +973,16 @@ identifier
     : Identifier
     | Async
     | As
+    | Is
+    | Satisfies
+    | Accessor
+    | Get
+    | Set
+    | Using
+    | Asserts
+    | Infer
+    | Out
+    | Global
     | From
     | Yield
     | Of
@@ -1047,6 +1063,15 @@ keyword
     | ReadOnly
     | From
     | As
+    | Satisfies
+    | Accessor
+    | Get
+    | Set
+    | Using
+    | Asserts
+    | Infer
+    | Out
+    | Global
     | Require
     | TypeAlias
     | String

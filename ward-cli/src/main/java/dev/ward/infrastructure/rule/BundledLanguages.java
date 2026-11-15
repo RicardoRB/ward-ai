@@ -1,5 +1,7 @@
 package dev.ward.infrastructure.rule;
 
+import dev.ward.analysis.application.android.AndroidCheckProvider;
+import dev.ward.analysis.application.android.AndroidRuleFiles;
 import dev.ward.analysis.application.jvm.JvmCheckProvider;
 import dev.ward.analysis.application.jvm.JvmRuleFiles;
 import dev.ward.analysis.application.node.NodeCheckProvider;
@@ -36,7 +38,8 @@ public final class BundledLanguages {
         new PythonRuleFiles(),
         new SwiftRuleFiles(),
         new SecretRuleFiles(),
-        new OpenApiRuleFiles());
+        new OpenApiRuleFiles(),
+        new AndroidRuleFiles());
   }
 
   /** Returns the check providers of the shared checks and of every bundled language module. */
@@ -48,7 +51,8 @@ public final class BundledLanguages {
         new PythonCheckProvider(),
         new SwiftCheckProvider(),
         new SwiftLintCheckProvider(),
-        new OpenApiCheckProvider());
+        new OpenApiCheckProvider(),
+        new AndroidCheckProvider());
   }
 
   /** Returns the API readers of the languages that can be compared by {@code api-compat}. */

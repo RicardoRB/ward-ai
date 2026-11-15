@@ -63,11 +63,11 @@ public final class AntlrLanguageFrontend implements LanguageFrontend {
       case JAVASCRIPT -> javaScriptSession();
       case PYTHON -> pythonSession();
       case SWIFT -> swiftSession();
-      // OpenAPI documents are YAML or JSON data that the OpenAPI frontend reads, not ANTLR.
-      case OPENAPI ->
+      // OpenAPI documents and Android XML are data that their own frontends read, not ANTLR.
+      case OPENAPI, ANDROID ->
           unit -> {
             throw new IllegalArgumentException(
-                "the ANTLR frontend does not parse OpenAPI: " + unit.path());
+                "the ANTLR frontend does not parse " + language + ": " + unit.path());
           };
     };
   }

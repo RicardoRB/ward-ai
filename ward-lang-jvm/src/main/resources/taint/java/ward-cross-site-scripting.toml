@@ -74,6 +74,63 @@ receiver = "jakarta.servlet.ServletOutputStream"
 arguments = [0]
 
 
+# A chained receiver has no known type, so it is matched by the text of its qualifier.
+
+[[sinks]]
+kind = "call"
+name = "print"
+qualifier = "*.getWriter()"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "println"
+qualifier = "*.getWriter()"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "write"
+qualifier = "*.getWriter()"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "append"
+qualifier = "*.getWriter()"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "printf"
+qualifier = "*.getWriter()"
+arguments = [0, 1, 2]
+
+[[sinks]]
+kind = "call"
+name = "format"
+qualifier = "*.getWriter()"
+arguments = [0, 1, 2]
+
+[[sinks]]
+kind = "call"
+name = "print"
+qualifier = "*.getOutputStream()"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "println"
+qualifier = "*.getOutputStream()"
+arguments = [0]
+
+[[sinks]]
+kind = "call"
+name = "write"
+qualifier = "*.getOutputStream()"
+arguments = [0]
+
+
 [[sanitizers]]
 kind = "call"
 name = "htmlEscape"

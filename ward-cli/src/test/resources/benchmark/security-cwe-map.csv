@@ -15,5 +15,5 @@
 338,Weak PRNG,ward:java/insecure-random
 470,Unsafe Reflection,ward:java/unsafe-reflection
 601,Open Redirect,ward:java/untrusted-redirect
-614,Sensitive Cookie Without Secure,ward:java/insecure-cookie
+614,Sensitive Cookie Without Secure,ward:java/insecure-cookie;ward:java/cookie-missing-secure
 643,XPath Injection,ward:java/xpath-injection

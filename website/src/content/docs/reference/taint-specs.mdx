@@ -61,8 +61,10 @@ from = ["receiver", 0]
   any qualifier that ends with the rest, so `*.environment()` matches `builder.environment()`.
 - `arguments` is required for a sink and lists the argument positions it guards, counted from 0.
   Other entries cannot name arguments.
-- `from` on a propagator lists its inputs, as argument positions or `"receiver"`. It is checked but
-  does not narrow the analysis yet.
+- `from` on a propagator lists its inputs, as argument positions or `"receiver"`. The argument
+  positions are the arguments that the call stores into its receiver variable, so `list.add(v)`
+  with `from = [0]` taints `list` when `v` is tainted. `"receiver"` is checked but does not change
+  the analysis yet.
 
 Unknown keys and unknown tables are errors, so a misspelt key cannot silently match nothing.
 
@@ -107,18 +109,45 @@ that order. The path is deterministic for the same source and specifications. It
 ## Bundled specifications
 
 Ward's own security rules use one specification file per weakness: `taint/java/ward-<weakness>.toml`
-and `taint/node/ward-<weakness>.toml`. Each lists the sinks of the platform documentation that the
+`taint/node/ward-<weakness>.toml` and `taint/python/ward-<weakness>.toml`. Each lists the sinks of the platform documentation that the
 [security rules](/reference/security-rules/) page names, the argument positions each sink guards,
 and the sanitizers of that weakness. The sources are shared: `taint/java/sources.toml` and
-`taint/node/sources.toml`.
+`taint/node/sources.toml` and `taint/python/sources.toml`.
+
+In Python a receiver type is the module that an `import` names, so `import subprocess as sp` makes
+`sp.run(...)` a call of `run` on `subprocess`, and `from os import system` makes `system(...)` a call
+of `system` on `os`. A request object (`request.args`, `request.GET`) is matched by the qualifier
+`request`, and a parameter of a function that a route decorator or a FastAPI default such as
+`Query()` fills is a source through the annotation `@route`, `@get` or `Query`. A DB-API cursor has
+no declared type, so the SQL sinks match the method name on any receiver.
 
 ## Limits
 
-- A taint rule follows calls between the functions of one file, to a depth of four calls: a function
-  that returns a source value is a source for its callers, and a function whose parameter reaches a
-  sink is a sink for that argument. Calls are matched by name and argument count, with no qualifier,
-  `this` or the owner's name, and a name that two functions of the file share is not followed. Values
-  that cross into another file, or are read from a field or property of an object, are not followed.
+- A taint rule follows calls between the functions of one file, and into the files it depends on
+  when the rule has the `TAINT` capability (the bundled Java taint rules do), to a depth of four
+  calls: a function that returns a source value is a source for its callers, and a function whose
+  parameter reaches a sink is a sink for that argument. A call is matched by name and argument
+  count. Within a file it has no qualifier, `this` or the owner's name; into another file it names
+  the owner, as `Owner.m(x)` and `(new Owner()).m(x)` do. A name that two functions of the file
+  share is not followed. In Java the owner carries its package, so two classes with one simple name,
+  method name and argument count in different packages are told apart by the import or package that
+  the call's type resolves through.
+- In Java, a call through a variable, a field or a parameter is followed when the class of the
+  receiver is decided: the class the receiver was created as (`Base b = new Impl(); b.run(x)` calls
+  `Impl.run`, when every value assigned to `b` in the body is a creation of that class, or a final
+  field is initialized so), or else the declared class, when it has a body for the method. A
+  receiver declared as an interface or an abstract class and not created in the body is not
+  followed, and a method that a subclass overrides is not followed when the receiver is declared as
+  the superclass. When several implementations are possible, none is followed, so a flow that only
+  one implementation carries is never reported through the others.
+- A container that receives a tainted value is tainted: an element or member assignment
+  (`a[i] = v`, `box.f = v`, in Java) or a call that a propagator names (`list.add(v)`,
+  `map.put(k, v)`, `sb.append(v)`) taints the variable, so a callee that reads it from its
+  parameter sees the taint. One tainted element taints the whole container, the order of stores and
+  reads is ignored, and a store of a clean value afterwards does not clean it, so this reports more
+  than a precise model would. Only a variable named by itself is a container: `this.items`, nested
+  members such as `a.b.c`, a static field that another method reads, and a value that is serialized
+  and read back are not followed.
 - Implicit flows through control conditions are not reported.
 - A variable's receiver type comes from the last declaration of its name in the function, which can
   differ from the declaration in scope when block-scoped names are reused.

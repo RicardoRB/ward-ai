@@ -5,6 +5,7 @@ import dev.ward.analysis.domain.api.ApiType;
 import dev.ward.analysis.domain.ir.SourceUnit;
 import dev.ward.domain.apicompat.ApiChange;
 import dev.ward.domain.apicompat.ApiComparison;
+import dev.ward.domain.apicompat.ApiModules;
 import dev.ward.domain.config.ApiCompatOptions;
 import dev.ward.domain.gate.Finding;
 import dev.ward.domain.gate.FindingSeverity;
@@ -15,9 +16,11 @@ import dev.ward.domain.gate.QualityGate;
 import dev.ward.domain.gate.RevisionReadException;
 import dev.ward.domain.project.Project;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -63,24 +66,34 @@ final class ApiCompatGate implements QualityGate {
   private GateResult compare(final Path root) {
     final Baseline baseline = new BaselineResolver(ports.revisions()).resolve(root, options.base());
     final ApiSources sources = new ApiSources(ports, root);
-    final List<SourceUnit> before = sources.atBaseline(baseline);
-    if (before.isEmpty()) {
+    final ApiSources.Sources before = sources.atBaseline(baseline);
+    if (before.units().isEmpty()) {
       throw new ApiCompatException(
           "The baseline " + baseline.ref() + " has no sources for this project.");
     }
-    final List<ApiType> baselineApi = surface(root, before, baseline.ref());
-    final List<ApiType> currentApi = surface(root, sources.inWorkingTree(), "the working tree");
-    requireIncludesMatch(baselineApi);
+    final ApiSources.Sources now = sources.inWorkingTree();
+    final List<ApiType> baselineApi = surface(root, before.units(), baseline.ref());
+    final List<ApiType> currentApi = surface(root, now.units(), "the working tree");
+    final ApiScope apiScope = new ApiScope(options);
+    apiScope.require(baselineApi, before.modules(), now.modules());
+    final Predicate<String> scope = apiScope.of(baselineApi, before.modules());
     if (LOGGER.isLoggable(Level.INFO)) {
       LOGGER.info(
           "event=api-compat-types baseline="
               + baselineApi.size()
               + " working="
-              + currentApi.size());
+              + currentApi.size()
+              + " modules="
+              + before.modules().size());
     }
-    final List<ApiChange> changes = ApiComparison.compare(baselineApi, currentApi, this::included);
+    final List<ApiChange> changes =
+        new ArrayList<>(ApiComparison.compare(baselineApi, currentApi, scope));
+    changes.addAll(
+        ApiModules.moved(baselineApi, currentApi, before.modules(), now.modules(), scope));
+    final List<String> modules = new ArrayList<>(before.modules());
+    modules.addAll(now.modules());
     logCounts(changes);
-    return result(baseline, baselineApi, changes);
+    return result(baseline, baselineApi, scope, modules, changes);
   }
 
   private List<ApiType> surface(final Path root, final List<SourceUnit> units, final String where) {
@@ -93,26 +106,6 @@ final class ApiCompatGate implements QualityGate {
     }
   }
 
-  private boolean included(final String typeName) {
-    return options.include().isEmpty()
-        || options.include().stream().anyMatch(prefix -> matches(prefix, typeName));
-  }
-
-  private static boolean matches(final String prefix, final String typeName) {
-    return typeName.equals(prefix) || typeName.startsWith(prefix + ".");
-  }
-
-  private void requireIncludesMatch(final List<ApiType> baselineApi) {
-    for (final String prefix : options.include()) {
-      if (baselineApi.stream().noneMatch(type -> matches(prefix, type.name()))) {
-        throw new ApiCompatException(
-            "The include prefix '"
-                + prefix
-                + "' of api-compat matches no type at the baseline; check the package name.");
-      }
-    }
-  }
-
   private static void logCounts(final List<ApiChange> changes) {
     if (LOGGER.isLoggable(Level.INFO)) {
       final Map<String, Integer> counts = new TreeMap<>();
@@ -122,10 +115,15 @@ final class ApiCompatGate implements QualityGate {
   }
 
   private GateResult result(
-      final Baseline baseline, final List<ApiType> baselineApi, final List<ApiChange> changes) {
-    final List<Finding> findings = changes.stream().map(this::finding).toList();
+      final Baseline baseline,
+      final List<ApiType> baselineApi,
+      final Predicate<String> scope,
+      final List<String> modules,
+      final List<ApiChange> changes) {
+    final List<Finding> findings =
+        changes.stream().map(change -> finding(change, modules)).toList();
     final long compared =
-        baselineApi.stream().filter(type -> included(type.name()) && type.isVisible()).count();
+        baselineApi.stream().filter(type -> scope.test(type.name()) && type.isVisible()).count();
     final GateStatus status = findings.isEmpty() ? GateStatus.PASSED : GateStatus.FAILED;
     final String summary =
         findings.isEmpty()
@@ -139,13 +137,14 @@ final class ApiCompatGate implements QualityGate {
         .withFindings(GateFindings.of(findings));
   }
 
-  private Finding finding(final ApiChange change) {
+  private Finding finding(final ApiChange change, final List<String> modules) {
+    final String module = ApiModules.owner(change.location().path(), modules);
     return new Finding(
         name,
         TOOL,
         RULE_PREFIX + change.kind(),
         FindingSeverity.ERROR,
-        change.message(),
+        module.isEmpty() ? change.message() : "[" + module + "] " + change.message(),
         change.location().path(),
         change.location().line(),
         change.location().column(),

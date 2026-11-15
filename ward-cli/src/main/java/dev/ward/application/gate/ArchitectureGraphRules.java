@@ -73,11 +73,11 @@ final class ArchitectureGraphRules {
         match.match().path());
   }
 
-  private static RuleDefinition definition(final String id, final String body) {
+  static RuleDefinition definition(final String id, final String body) {
     return new RuleDefinition(
         id,
         ArchitectureLayers.ENGINE_LANGUAGES,
-        RuleCapability.SYMBOLS,
+        RuleCapability.SCOPES,
         AnalysisSeverity.ERROR,
         body);
   }

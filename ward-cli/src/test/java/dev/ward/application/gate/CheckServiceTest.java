@@ -88,10 +88,10 @@ class CheckServiceTest {
                 [checks.tests]
                 uses = "tests"
                 command = "./mvnw test"
-                [checks.sonar]
-                uses = "sonar"
+                [checks.mutation]
+                uses = "mutation"
                 enabled = false
-                command = "sonar analyze agentic"
+                command = "mutate agentic"
                 """);
     final FakeCommandExecutor executor = new FakeCommandExecutor(0, "", "");
 
@@ -117,12 +117,12 @@ class CheckServiceTest {
     withPom(dir, PLAIN_POM);
     Files.writeString(
         dir.resolve("ward.toml"),
-        "version = 2\n[checks.sonar]\nuses = \"sonar\"\ncommand = \"sonar analyze agentic\"\n");
+        "version = 2\n[checks.mutation]\nuses = \"mutation\"\ncommand = \"mutate agentic\"\n");
 
     assertThat(service(new FakeCommandExecutor(0, "", "")).check(dir).results())
         .singleElement()
         .extracting(result -> result.name())
-        .isEqualTo("sonar");
+        .isEqualTo("mutation");
   }
 
   @Test

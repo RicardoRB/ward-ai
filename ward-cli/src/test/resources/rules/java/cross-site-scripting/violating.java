@@ -1,5 +1,7 @@
+import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 class Greeting {
   void direct(HttpServletRequest request, PrintWriter out) {
@@ -20,5 +22,10 @@ class Greeting {
 
   String read(HttpServletRequest request) {
     return request.getParameter("name");
+  }
+
+  // The writer is the result of a call, so its type is not known.
+  void chained(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    response.getWriter().println("<p>" + request.getParameter("name") + "</p>");
   }
 }

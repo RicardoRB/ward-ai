@@ -105,6 +105,7 @@ public final class JvmRuleFiles implements RuleFileProvider {
           "rules/kotlin/naming.toml",
           "rules/kotlin/performance.toml",
           "rules/kotlin/potential-bugs.toml",
+          "rules/kotlin/security-taint.toml",
           "rules/kotlin/size.toml",
           "rules/kotlin/style-checkstyle.toml",
           "rules/kotlin/style.toml");

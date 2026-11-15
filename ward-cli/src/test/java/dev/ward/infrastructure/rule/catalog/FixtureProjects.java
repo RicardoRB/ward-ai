@@ -91,14 +91,31 @@ final class FixtureProjects {
     final List<SourceUnit> units = new ArrayList<>();
     try (Stream<Path> files = Files.walk(project)) {
       for (final Path source : files.filter(Files::isRegularFile).toList()) {
-        final String name = source.getFileName().toString();
-        if (FileSystemSourceUnits.language(name) == language) {
+        final AnalysisLanguage found = languageOf(source.getFileName().toString(), language);
+        if (found != null) {
           final String path = project.relativize(source).toString().replace('\\', '/');
-          units.add(new SourceUnit(path, language, Files.readString(source)));
+          units.add(new SourceUnit(path, found, Files.readString(source)));
         }
       }
     }
     return units;
+  }
+
+  /**
+   * The language a project file has for a rule of {@code language}: the rule's own language, and
+   * for an Android rule also the Java and Kotlin sources whose {@code R} references it reads.
+   */
+  private static AnalysisLanguage languageOf(final String name, final AnalysisLanguage language) {
+    final AnalysisLanguage byExtension = FileSystemSourceUnits.language(name);
+    if (language != AnalysisLanguage.ANDROID) {
+      return byExtension == language ? language : null;
+    }
+    if (name.endsWith(".xml")) {
+      return AnalysisLanguage.ANDROID;
+    }
+    final boolean jvm =
+        byExtension == AnalysisLanguage.JAVA || byExtension == AnalysisLanguage.KOTLIN;
+    return jvm ? byExtension : null;
   }
 
   /**

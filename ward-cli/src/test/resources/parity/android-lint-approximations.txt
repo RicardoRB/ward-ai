@@ -1,0 +1,11 @@
+# rule	case	reason. A reviewed difference between a Ward Android rule and Android Lint 9.4.0-rc01 on the fixtures; the report lists it as an approximation.
+exported-service	default	Lint reports only the component with android:exported="true"; Ward also reports one that has an intent filter and no exported attribute, which is exported before Android 12 and a build error from it.
+exported-receiver	default	Lint reports only the component with android:exported="true"; Ward also reports one that has an intent filter and no exported attribute, which is exported before Android 12 and a build error from it.
+exported-content-provider	default	Lint also reports a provider with no exported attribute, whose default was exported before API 17; Ward follows the default of API 17 and later (not exported). Lint reports the element, Ward the exported attribute.
+debuggable-application	default	Lint reports any value of android:debuggable, false included, because the build tools set it; Ward reports only true, the weakness.
+cleartext-transport	default	Lint reported nothing for android:usesCleartextTraffic="true" in the manifest (checked with the ids InsecureBaseConfiguration and UsesCleartextTraffic); Ward reports it.
+cleartext-transport	network-config	Lint reports only base-config; Ward also reports a domain-config that permits cleartext traffic.
+allow-backup	default	Lint reports nothing for allowBackup="true" here, in a project that has no Gradle build (the cause was not established); Ward reports it.
+allow-backup	missing	As for the default case, Lint reports nothing for a missing allowBackup in a project with no Gradle build (the cause was not established); Ward reports it when no fullBackupContent or dataExtractionRules is set.
+missing-content-description	tools-ignore	Lint honors tools:ignore; Ward does not read it, by design.
+unused-resources	default	Lint also reports a resource that only an unused layout refers to; Ward does not follow references through unused files.

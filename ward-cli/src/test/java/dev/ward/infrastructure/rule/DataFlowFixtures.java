@@ -29,7 +29,8 @@ import java.util.Set;
 final class DataFlowFixtures {
 
   static final Set<RuleCapability> FLOW =
-      Set.of(RuleCapability.SYNTAX, RuleCapability.CFG, RuleCapability.DATAFLOW);
+      Set.of(
+          RuleCapability.SYNTAX, RuleCapability.CFG, RuleCapability.DATAFLOW, RuleCapability.TAINT);
 
   private DataFlowFixtures() {}
 

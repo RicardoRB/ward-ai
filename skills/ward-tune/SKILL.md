@@ -65,7 +65,7 @@ List the gates with `enabled = true`. This skill tunes these:
 | `mypy` | mypy strict mode and the pydantic and Django plugins in `mypy.ini` | [references/mypy.md](references/mypy.md) |
 | `mutmut` | mutmut's source paths and its 60% minimum | [references/mutation.md](references/mutation.md#mutmut-python) |
 | `ward` | The Ward rules that `ward-rules.toml` selects for the project's languages (Java, Kotlin, TypeScript, JavaScript, Python, Swift), their severities and options | [references/ward-rules.md](references/ward-rules.md) |
-| `ward` (architecture) | `[[checks.ward.layers]]` boundaries, `[checks.ward.cycles]` source roots and `[[checks.ward.independence]]` module lists, written by `ward init`; the layer, slice cycle and feature independence rules | Not tuned here; edit the tables by hand or re-run `ward init` |
+| `ward` (architecture) | `[[checks.ward.layers]]` boundaries, `[checks.ward.cycles]` source roots and `[[checks.ward.independence]]` module lists, written by `ward init`; the layer, slice cycle and feature independence rules | Not tuned here; edit the tables by hand or re-run `ward init`. The project's own architecture rules (`ward:architecture/dependencies`, `naming` and `location`) are `[[rule]]` tables of `ward-architecture.toml`, which the user writes and `ward init` never touches |
 | `vitest`, `jest`, `bun-test` | Their coverage minimums are on the `coverage` check, not on the test gate | [references/coverage.md](references/coverage.md) |
 | `stryker` | Stryker's `thresholds.break` and run settings | [references/mutation.md](references/mutation.md#stryker-typescript-and-javascript) |
 | `crap` | `max` on the `crap` check in `ward.toml` (default 30). Raising it is a weakening | The gates page of the Ward docs, CRAP gate |

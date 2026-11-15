@@ -84,6 +84,24 @@ final class JavaTypeNames {
   }
 
   /**
+   * Creates the names of a file from imports that another frontend read, as the Kotlin one does.
+   *
+   * @param imports the fully qualified name of each simple name an import binds
+   * @param wildcards the packages of the wildcard imports
+   * @param packageName the package of the file, or an empty string
+   * @return the names of the file
+   */
+  static JavaTypeNames of(
+      final Map<String, String> imports, final List<String> wildcards, final String packageName) {
+    return new JavaTypeNames(Map.copyOf(imports), List.copyOf(wildcards), packageName);
+  }
+
+  /** The package of the file, or an empty string. */
+  String packageName() {
+    return packageName;
+  }
+
+  /**
    * Resolves a written type, such as {@code List<String>} or {@code Statement}, to its fully
    * qualified name.
    *

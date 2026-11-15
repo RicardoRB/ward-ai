@@ -1,7 +1,9 @@
 package dev.ward.infrastructure.rule;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import dev.ward.analysis.domain.flow.taint.TaintSpec;
 import dev.ward.analysis.domain.rule.RuleConfigurationException;
 import org.junit.jupiter.api.Test;
 
@@ -85,5 +87,16 @@ class TaintSpecEntryTest {
                     "[[propagators]]\nkind = \"call\"\nname = \"x\"\nfrom = [\"qualifier\"]\n"))
         .isInstanceOf(RuleConfigurationException.class)
         .hasMessageContaining("neither a position nor 'receiver'");
+  }
+
+  @Test
+  void propagatorFromPositionsAreTheArgumentsItStores() {
+    final TaintSpec spec =
+        TaintSpecFiles.parse(
+            FILE,
+            "[[propagators]]\nkind = \"call\"\nname = \"put\"\nfrom = [\"receiver\", 0, 1]\n");
+
+    assertThat(spec.propagators()).hasSize(1);
+    assertThat(spec.propagators().get(0).arguments()).containsExactly(0, 1);
   }
 }

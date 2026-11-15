@@ -85,7 +85,6 @@ final class GradleToolVersions {
     final Map<String, List<String>> tools = new LinkedHashMap<>();
     tools.put("coverage", List.of(GradleToolCatalog.JACOCO_ENGINE));
     tools.put("mutation", List.of(GradleToolCatalog.PITEST, GradleToolCatalog.PITEST_ENGINE));
-    tools.put("sonar", List.of("org.sonarqube"));
     return Collections.unmodifiableMap(tools);
   }
 }

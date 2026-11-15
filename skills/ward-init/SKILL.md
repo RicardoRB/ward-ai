@@ -147,8 +147,6 @@ order:
      advisories. No preset enables it and it needs no tool or key. It downloads advisory data on
      every online run, so offer it for the `ci` profile and mention `ward check --offline` and
      `ward vulnerabilities update` for offline use.
-   - `zap` needs a running application and a `<TARGET_URL>` that the user is authorized to scan.
-     `check` fails until it is replaced.
    - `openapi-lint`, `openapi-diff`, and `openapi-compat` are offered only when Git tracks an
      `openapi.yml`, `openapi.yaml`, or `openapi.json` in `src/main/resources` or the project root.
      When one is found, the `standard` and `strict` presets include `openapi-lint` and
@@ -197,7 +195,7 @@ order:
    gate tools, and uploads SARIF to code scanning. Recommend it when the project has no workflow that
    runs Ward. If `.github/workflows/ward.yml` already exists and is not Ward's, the plan
    shows a `conflict`. When `vulnerabilities` is selected the workflow caches
-   `.ward/cache/vulnerabilities/`. Mention that `zap` is not run by the workflow.
+   `.ward/cache/vulnerabilities/`.
 9. **Agent rules** (offer when an agent integration is selected). `--agent-rules` writes a
    Ward-owned section into `AGENTS.md` that lists the limits the gates enforce (file and method
    length, parameters, coverage and mutation minimums), so agents meet them before the first check
@@ -304,7 +302,7 @@ Tell the user:
    files changed since the branch's upstream, and runs in full without an upstream; CI always checks the
    whole project.
 2. Every manual step still open, taken from the output. For example: tools that are still
-   `UNAVAILABLE`, replacing `<TARGET_URL>` for `zap`, committing the generated workflow, or a
+   `UNAVAILABLE`, committing the generated workflow, or a
    declined compatibility update.
 3. How to run the gates: `ward check` (the `default` profile, fast gates) and
    `ward check --profile ci` (every gate). Offer to run the fast profile now. This session wrote
