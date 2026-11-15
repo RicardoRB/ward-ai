@@ -228,15 +228,28 @@ severity = "error"
 category = "complexity"
 presets = ["strict"]
 options.max = { type = "integer", min = 0 }
-options.counting = { type = "enum", values = ["checkstyle", "pmd"] }
 options.excluded-classes = { type = "string-list" }
 body = '''
 check = "class-coupling"
-counting = "checkstyle"
 types = ["classOrInterfaceType", "createdName"]
 excluded-classes = ["ArrayIndexOutOfBoundsException", "ArrayList", "Boolean", "Byte", "Character", "Class", "Collection", "Deprecated", "Deque", "Double", "EnumSet", "Exception", "Float", "FunctionalInterface", "HashMap", "HashSet", "IllegalArgumentException", "IllegalStateException", "IndexOutOfBoundsException", "IOException", "Integer", "LinkedHashMap", "LinkedHashSet", "LinkedList", "List", "Long", "Map", "NullPointerException", "Object", "Optional", "OutOfMemoryError", "Override", "Queue", "RuntimeException", "SafeVarargs", "SecurityException", "Set", "Short", "SortedMap", "SortedSet", "Stream", "String", "StringBuffer", "StringBuilder", "SuppressWarnings", "Throwable", "TreeMap", "TreeSet", "UnsupportedOperationException", "Void", "boolean", "byte", "char", "double", "float", "int", "long", "short", "void"]
 max = 20
 message = "class depends on {value} types; the limit is {max}"
+'''
+
+[[rules]]
+id = "ward:java/coupling-between-objects"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "complexity"
+presets = ["strict"]
+options.max = { type = "integer", min = 0 }
+body = '''
+check = "class-coupling"
+count = "declarations"
+max = 20
+message = "class is coupled to {value} types through its declarations; the limit is {max}"
 '''
 
 [[rules]]

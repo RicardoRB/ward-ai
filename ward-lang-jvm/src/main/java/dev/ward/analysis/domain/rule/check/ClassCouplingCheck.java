@@ -13,6 +13,11 @@ import java.util.Set;
  * names: instantiated types for data abstraction coupling, or every referenced type for fan-out
  * complexity. The members of a nested type belong to that type. A class fails when the count is
  * above the limit. The class itself and the type arguments of a generic type do not count.
+ *
+ * <p>With {@link Counting#DECLARATIONS} it counts instead the distinct types of the fields, local
+ * variables, parameters, loop variables, resources and return types of the class; a parameterized
+ * type counts as written ({@code List<Row>} and {@code List<Item>} are two), and primitives and
+ * {@code java.lang} types do not count. The node kinds and the excluded names are not used then.
  */
 public final class ClassCouplingCheck implements RuleCheck {
 
@@ -24,16 +29,16 @@ public final class ClassCouplingCheck implements RuleCheck {
 
   /** How the types of a class are counted. */
   public enum Counting {
-    /** Every referenced or created type, as Checkstyle's class fan-out complexity does. */
-    CHECKSTYLE,
-    /** The declared types of fields, variables, parameters and returns, as PMD does. */
-    PMD
+    /** Every referenced or created type. */
+    REFERENCES,
+    /** The declared types of fields, variables, parameters, resources and returns. */
+    DECLARATIONS
   }
 
   private static final String TYPE_TYPE = "typeType";
   private static final String METHOD = "methodDeclaration";
   private static final String ARRAY = "[]";
-  private static final Set<String> DECLARATIONS =
+  private static final Set<String> DECLARING_KINDS =
       Set.of(
           "fieldDeclaration",
           "localVariableDeclaration",
@@ -111,15 +116,16 @@ public final class ClassCouplingCheck implements RuleCheck {
       final Set<String> excluded,
       final int max,
       final String message) {
-    this(Counting.CHECKSTYLE, typeKinds, excluded, max, message);
+    this(Counting.REFERENCES, typeKinds, excluded, max, message);
   }
 
   /**
    * Creates the check with the given way of counting.
    *
    * @param counting how the types are counted
-   * @param typeKinds the node kinds whose text names a type; unused for {@link Counting#PMD}
-   * @param excluded the simple names that do not count; unused for {@link Counting#PMD}
+   * @param typeKinds the node kinds whose text names a type; unused for {@link
+   *     Counting#DECLARATIONS}
+   * @param excluded the simple names that do not count; unused for {@link Counting#DECLARATIONS}
    * @param max the largest allowed count
    * @param message the message; {@code {value}} and {@code {max}} are filled in
    * @throws IllegalArgumentException if {@code max} is negative
@@ -160,7 +166,7 @@ public final class ClassCouplingCheck implements RuleCheck {
 
   private Set<String> typesOf(final SyntaxNode node) {
     final Set<String> types = new HashSet<>();
-    if (counting == Counting.PMD) {
+    if (counting == Counting.DECLARATIONS) {
       declared(node, types);
     } else {
       collect(node, types);
@@ -183,7 +189,7 @@ public final class ClassCouplingCheck implements RuleCheck {
   /** Collects the declared types of the class, leaving the nested types to themselves. */
   private static void declared(final SyntaxNode node, final Set<String> types) {
     for (final SyntaxNode child : node.children()) {
-      if (DECLARATIONS.contains(child.kind())) {
+      if (DECLARING_KINDS.contains(child.kind())) {
         child.children().stream()
             .filter(part -> TYPE_PARTS.contains(part.kind()))
             .findFirst()
