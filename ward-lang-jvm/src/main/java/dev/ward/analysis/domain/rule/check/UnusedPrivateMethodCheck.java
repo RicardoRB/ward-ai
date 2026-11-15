@@ -52,7 +52,7 @@ public final class UnusedPrivateMethodCheck implements UnitCheck {
         .filter(method -> !SERIALIZATION_METHODS.contains(JUnitMembers.name(method)))
         .filter(
             method ->
-                !(JUnitMembers.hasNoParameters(method)
+                !(JUnitMethods.hasNoParameters(method)
                     && sources.contains(JUnitMembers.name(method))))
         .map(
             method ->

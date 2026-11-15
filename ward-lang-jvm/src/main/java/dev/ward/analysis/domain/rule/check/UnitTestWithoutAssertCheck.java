@@ -26,7 +26,7 @@ public final class UnitTestWithoutAssertCheck implements UnitCheck {
         .flatMap(visit -> JUnitMembers.members(visit.node()).stream())
         .filter(JUnitMembers::isTest)
         .flatMap(member -> JUnitMembers.method(member).stream())
-        .filter(method -> !JUnitMembers.callsProbableAssertion(method))
+        .filter(method -> !JUnitMethods.callsProbableAssertion(method))
         .map(
             method ->
                 CheckSupport.at(

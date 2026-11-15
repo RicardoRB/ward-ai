@@ -9,7 +9,6 @@ import dev.ward.analysis.domain.rule.ScopeView;
 import dev.ward.analysis.domain.types.FactKind;
 import dev.ward.analysis.domain.types.UnitTypeFacts;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -69,12 +68,13 @@ public final class UnlockWithoutLockCheck implements RuleCheck {
       final SourceUnit unit) {
     final List<RuleMatch> matches = new ArrayList<>();
     final List<SyntaxWalk.Visit> methods = SyntaxWalk.visits(root, Set.of(METHOD));
-    final Map<String, Set<String>> acquiredByName = new HashMap<>();
-    for (final SyntaxWalk.Visit visit : methods) {
-      acquiredByName
-          .computeIfAbsent(JavaNodes.name(visit.node()), name -> new HashSet<>())
-          .addAll(acquires(visit.node()));
-    }
+    final Map<String, Set<String>> acquiredByName =
+        methods.stream()
+            .collect(
+                Collectors.toMap(
+                    visit -> JavaNodes.name(visit.node()),
+                    visit -> acquires(visit.node()),
+                    UnlockWithoutLockCheck::union));
     for (final SyntaxWalk.Visit visit : methods) {
       if (!JavaNodes.name(visit.node()).toLowerCase(Locale.ROOT).contains(LOCK_WORD)) {
         inMethod(visit.node(), acquiredByName, types, matches);
@@ -104,6 +104,12 @@ public final class UnlockWithoutLockCheck implements RuleCheck {
   }
 
   /** The receivers on which the method itself calls {@code lock}, {@code tryLock} and the like. */
+  private static Set<String> union(final Set<String> first, final Set<String> second) {
+    final Set<String> both = new HashSet<>(first);
+    both.addAll(second);
+    return both;
+  }
+
   private static Set<String> acquires(final SyntaxNode method) {
     return SyntaxWalk.descendants(method).stream()
         .filter(UnlockWithoutLockCheck::isQualified)

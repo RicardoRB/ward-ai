@@ -37,7 +37,7 @@ public final class UnitTestMissingAnnotationCheck implements UnitCheck {
 
   @Override
   public List<RuleMatch> check(final SyntaxNode root, final SourceFile file) {
-    if (junit4Only && !JUnitMembers.usesJunit4(root)) {
+    if (junit4Only && !JUnitMethods.usesJunit4(root)) {
       return List.of();
     }
     return SyntaxWalk.visits(root, Set.of("classDeclaration")).stream()
@@ -49,7 +49,7 @@ public final class UnitTestMissingAnnotationCheck implements UnitCheck {
         .filter(member -> !JUnitMembers.isTest(member))
         .flatMap(member -> JUnitMembers.method(member).stream())
         .filter(method -> JUnitMembers.name(method).startsWith("test"))
-        .filter(JUnitMembers::hasNoParameters)
+        .filter(JUnitMethods::hasNoParameters)
         .map(
             method ->
                 CheckSupport.at(
