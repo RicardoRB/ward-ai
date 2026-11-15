@@ -49,7 +49,11 @@ final class RepositoryRuleMapping {
 
   static Set<String> checkstyleModules() throws IOException {
     final Matcher matcher =
-        CHECKSTYLE_MODULE.matcher(Files.readString(ROOT.resolve("config/checkstyle.xml")));
+        CHECKSTYLE_MODULE.matcher(
+            Files.readString(
+                ROOT.resolve("ward-cli/src/test/resources/repository-rules/checkstyle.xml")
+            )
+        );
     final Set<String> modules = new HashSet<>();
     while (matcher.find()) {
       if (!CHECKSTYLE_CONTAINERS.contains(matcher.group(1))) {
@@ -64,7 +68,9 @@ final class RepositoryRuleMapping {
    */
   static List<Row> mappedRows() throws IOException {
     final Set<String> checkstyle = checkstyleModules();
-    final String pmdXml = Files.readString(ROOT.resolve("config/pmd-ruleset.xml"));
+    final String pmdXml = Files.readString(
+        ROOT.resolve("ward-cli/src/test/resources/repository-rules/pmd-ruleset.xml")
+    );
     final Set<String> groups = matches(PMD_GROUP_REF, pmdXml);
     final Set<String> excluded = matches(PMD_EXCLUDE, pmdXml);
     excluded.removeAll(matches(PMD_TUNED_REF, pmdXml));

@@ -1,5 +1,5 @@
 # Checkstyle concepts for Python (#297). Each row is the Python form of one Checkstyle check that
-# google_checks.xml or config/checkstyle.xml enables. Naming follows PEP 8: functions and parameters
+# google_checks.xml or ward-cli/src/test/resources/repository-rules/checkstyle.xml enables. Naming follows PEP 8: functions and parameters
 # are snake_case, classes are CapWords.
 
 [[rules]]

@@ -1,5 +1,5 @@
 # Style rules for Swift, the standard preset: Checkstyle's default checks (google_checks.xml and
-# config/checkstyle.xml) applied to Swift's syntax tree, its lines and its comments. Compact node
+# ward-cli/src/test/resources/repository-rules/checkstyle.xml) applied to Swift's syntax tree, its lines and its comments. Compact node
 # text drops whitespace, so spacing and line breaks are read from the lines or comments instead.
 
 [[rules]]

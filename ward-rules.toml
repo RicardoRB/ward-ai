@@ -1,7 +1,7 @@
 # Ward rules of this repository's own `ward` gate, replacing the Checkstyle, PMD and SpotBugs gates (#347 part B).
-# Each include is a Ward rule that mirrors a check of config/checkstyle.xml, config/pmd-ruleset.xml or a
+# Each include is a Ward rule that mirrors a check of ward-cli/src/test/resources/repository-rules/checkstyle.xml, ward-cli/src/test/resources/repository-rules/pmd-ruleset.xml or a
 # standard SpotBugs row; RepositoryWardRulesTest derives the list from the rule catalog and fails when one is missing.
-# Thresholds match config/checkstyle.xml and config/pmd-ruleset.xml. PMD AvoidDuplicateLiterals flags a literal
+# Thresholds match ward-cli/src/test/resources/repository-rules/checkstyle.xml and ward-cli/src/test/resources/repository-rules/pmd-ruleset.xml. PMD AvoidDuplicateLiterals flags a literal
 # repeated 8 times or more, which is max-repeats = 7 here (flagged above the maximum).
 version = 1
 

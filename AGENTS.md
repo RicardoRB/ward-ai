@@ -89,10 +89,10 @@ Tests:
 
 ## Quality Gate Rules
 
-Gates in `ward.toml`; edit hooks run the `default` profile (format, ward, secrets) on edited files. The `ward` gate runs Ward's own Java rules, listed in `ward-rules.toml`, on main and test sources. They mirror `config/checkstyle.xml`, `config/pmd-ruleset.xml` and the standard SpotBugs rules, which stay as the reference: `RepositoryWardRulesTest` fails when a check of `config/` has no included Ward rule. The Checkstyle, PMD, SpotBugs and Spotless Maven plugins no longer run as gates.
+Gates in `ward.toml`; edit hooks run the `default` profile (format, ward, secrets) on edited files. The `ward` gate runs Ward's own Java rules, listed in `ward-rules.toml`, on main and test sources. They mirror the Checkstyle and PMD configuration this repository used, kept as test references in `ward-cli/src/test/resources/repository-rules/` (`checkstyle.xml`, `pmd-ruleset.xml`), and the standard SpotBugs rules: `RepositoryWardRulesTest` fails when a check of those files has no included Ward rule. The Checkstyle, PMD, SpotBugs and Spotless Maven plugins are no longer in the build.
 
-- From `config/checkstyle.xml`: file ≤500 lines, method ≤60, ≤5 params, cyclomatic ≤10; Javadoc on public types and methods; no magic numbers (use named constants); no star/unused imports; no `catch (Exception|RuntimeException|Throwable)`; no empty catch; `switch` needs `default`; one declaration/statement per line; no field-hiding locals/params except constructors and setters.
-- From `config/pmd-ruleset.xml`: all errorprone, bestpractices, design, codestyle, multithreading, performance, security categories minus listed excludes. Mark locals and parameters `final`; no `var`; compare against named constants, not literals, in `if` conditions; do not call `new` inside a loop body (map with a stream or extract a factory method); ≤8 duplicate literals per file; keep classes small (design rules flag god classes, too many methods/imports, coupling, cognitive complexity).
+- From `checkstyle.xml`: file ≤500 lines, method ≤60, ≤5 params, cyclomatic ≤10; Javadoc on public types and methods; no magic numbers (use named constants); no star/unused imports; no `catch (Exception|RuntimeException|Throwable)`; no empty catch; `switch` needs `default`; one declaration/statement per line; no field-hiding locals/params except constructors and setters.
+- From `pmd-ruleset.xml`: all errorprone, bestpractices, design, codestyle, multithreading, performance, security categories minus listed excludes. Mark locals and parameters `final`; no `var`; compare against named constants, not literals, in `if` conditions; do not call `new` inside a loop body (map with a stream or extract a factory method); ≤8 duplicate literals per file; keep classes small (design rules flag god classes, too many methods/imports, coupling, cognitive complexity).
 - From the standard SpotBugs rules: copy mutable collections in and out of records/constructors.
 - Coverage: the `coverage` check of `ward.toml` (≥85% line, ≥75% branch) sums the JaCoCo XML report of every module; the minimum is in `ward.toml`, not in `pom.xml`. Mutation (PIT, `ci`): ≥60%; pull request CI mutates only the domain/application classes the change touches (`PIT_TARGET_CLASSES`), releases mutate all. New code needs tests that assert behavior.
 - ArchUnit gate runs a fixed test list; add any new architecture/native contract test to that command.
@@ -141,7 +141,7 @@ Gates in `ward.toml`; edit hooks run the `default` profile (format, ward, secret
 
 ## Verification (non-negotiable)
 
-- Do not modify anything under `/config`.
+- Do not weaken the rule set: do not remove a rule from `ward-rules.toml`, raise a limit in it, or change the reference files under `ward-cli/src/test/resources/repository-rules/`.
 - Run `ward check --profile pre-push` before finishing. Gates and profiles are defined in `ward.toml`; `ward check --profile ci` runs every gate.
 - Claude Code and OpenCode edit/write hooks must invoke `ward check` through the Ward integration: `.claude/hooks/ward-edit-write` (registered in `.claude/settings.json`) and `.opencode/plugins/ward-edit-write.js`.
 - `check --format json` must write only JSON to stdout; diagnostics go to stderr.

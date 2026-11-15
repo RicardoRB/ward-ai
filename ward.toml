@@ -11,7 +11,7 @@ match = ["**/*.java"]
 full = [".editorconfig", "ward.toml"]
 
 # Ward's own rules replace the Checkstyle, PMD and SpotBugs gates (#347). ward-rules.toml lists the
-# rules that mirror config/checkstyle.xml, config/pmd-ruleset.xml and the standard SpotBugs rows;
+# rules that mirror ward-cli/src/test/resources/repository-rules/checkstyle.xml, ward-cli/src/test/resources/repository-rules/pmd-ruleset.xml and the standard SpotBugs rows;
 # RepositoryWardRulesTest fails when one is missing.
 [checks.ward]
 enabled = true

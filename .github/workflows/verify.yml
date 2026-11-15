@@ -79,7 +79,7 @@ jobs:
           java-version: '25'
 
       # Its own key: the shorter matrix jobs finish first and would save setup-java's shared key
-      # without the gate plugins (PMD, SpotBugs, PIT, ...). Saved separately so a failing gate keeps it.
+      # without the gate plugins (JaCoCo, PIT, ...). Saved separately so a failing gate keeps it.
       - name: Restore Maven cache
         id: maven-cache
         uses: actions/cache/restore@v5
