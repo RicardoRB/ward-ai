@@ -8,6 +8,8 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+## [0.9.1] - 2026-11-15
+
 ### Added
 
 - `ward:java/coupling-between-objects` reports a class coupled to more than `max` (default 20) distinct types through its declarations: the types of fields, local variables, parameters, loop variables, resources and return types, without primitives and `java.lang` types (#347).
@@ -481,6 +483,7 @@ Initial release, published as `sentinel-ai`.
 - A bounded quality loop and a typed gate registry.
 - Starlight documentation site.
 
+[0.9.1]: https://github.com/RicardoRB/ward-ai/compare/v0.9.0...v0.9.1
 [0.9.0]: https://github.com/RicardoRB/ward-ai/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/RicardoRB/ward-ai/compare/v0.7.1...v0.8.0
 [0.7.1]: https://github.com/RicardoRB/ward-ai/compare/v0.7.0...v0.7.1
