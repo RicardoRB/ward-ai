@@ -16,7 +16,7 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ### Changed
 
-- Apache Fory is updated from 1.7.7 to 1.7.8. Its native-image feature now ignores the JSON codecs that the annotation processor generated, including those packaged in dependencies (apache/fory#4146).
+- Apache Fory is updated from 1.7.7 to 1.7.8. Its native-image feature now ignores the JSON codecs that the annotation processor generated, including those packaged in dependencies (apache/fory#4146). Ward's native-image configuration no longer lists the generated codecs, Fory's internal types or the packages to initialize at build time.
 
 ### Fixed
 
