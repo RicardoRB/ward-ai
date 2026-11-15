@@ -46,7 +46,6 @@ include = [
   "java.avoid-literals-in-if-condition",
   "java.avoid-message-digest-field",
   "java.avoid-multiple-unary-operators",
-  "java.avoid-no-argument-super-constructor-call",
   "java.avoid-print-stack-trace",
   "java.avoid-reassigning-catch-variables",
   "java.avoid-reassigning-loop-variables",
@@ -427,9 +426,6 @@ exclude-paths = ["**/src/test/resources/**"]
 exclude-paths = ["**/src/test/resources/**"]
 
 [rules.java.avoid-multiple-unary-operators]
-exclude-paths = ["**/src/test/resources/**"]
-
-[rules.java.avoid-no-argument-super-constructor-call]
 exclude-paths = ["**/src/test/resources/**"]
 
 [rules.java.avoid-print-stack-trace]
