@@ -252,10 +252,18 @@ jobs:
         with:
           distribution: temurin
           java-version: '25'
-          cache: maven
-          cache-dependency-path: |
-            pom.xml
-            ward-*/pom.xml
+
+      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
+      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
+      # folder holds the Maven distribution, which every job would download too.
+      - name: Cache the Maven repository
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-${{ runner.os }}-
 
       - name: Set up Node.js
         uses: actions/setup-node@v5
@@ -327,10 +335,18 @@ jobs:
         with:
           distribution: temurin
           java-version: '25'
-          cache: maven
-          cache-dependency-path: |
-            pom.xml
-            ward-*/pom.xml
+
+      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
+      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
+      # folder holds the Maven distribution, which every job would download too.
+      - name: Cache the Maven repository
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-${{ runner.os }}-
 
       # The runner's interpreter is the cell's version, so uv and Poetry pick it up on the PATH.
       - name: Set up Python
@@ -372,10 +388,18 @@ jobs:
         with:
           distribution: temurin
           java-version: '25'
-          cache: maven
-          cache-dependency-path: |
-            pom.xml
-            ward-*/pom.xml
+
+      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
+      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
+      # folder holds the Maven distribution, which every job would download too.
+      - name: Cache the Maven repository
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-${{ runner.os }}-
 
       - name: Resolve the tools
         run: ward-cli/src/test/resources/parity/resolve-tools.sh "$RUNNER_TEMP/parity-tools"
@@ -413,10 +437,18 @@ jobs:
         with:
           distribution: temurin
           java-version: '25'
-          cache: maven
-          cache-dependency-path: |
-            pom.xml
-            ward-*/pom.xml
+
+      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
+      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
+      # folder holds the Maven distribution, which every job would download too.
+      - name: Cache the Maven repository
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-${{ runner.os }}-
 
       - name: Install oasdiff
         run: |
@@ -447,10 +479,18 @@ jobs:
         with:
           distribution: temurin
           java-version: '25'
-          cache: maven
-          cache-dependency-path: |
-            pom.xml
-            ward-*/pom.xml
+
+      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
+      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
+      # folder holds the Maven distribution, which every job would download too.
+      - name: Cache the Maven repository
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-${{ runner.os }}-
 
       # The jar is checked against the SHA-1 that Maven Central publishes beside it.
       - name: Install japicmp
@@ -501,10 +541,18 @@ jobs:
         with:
           distribution: temurin
           java-version: '25'
-          cache: maven
-          cache-dependency-path: |
-            pom.xml
-            ward-*/pom.xml
+
+      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
+      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
+      # folder holds the Maven distribution, which every job would download too.
+      - name: Cache the Maven repository
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-${{ runner.os }}-
 
       - name: Install Trivy
         run: |
@@ -548,10 +596,18 @@ jobs:
         with:
           distribution: temurin
           java-version: '25'
-          cache: maven
-          cache-dependency-path: |
-            pom.xml
-            ward-*/pom.xml
+
+      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
+      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
+      # folder holds the Maven distribution, which every job would download too.
+      - name: Cache the Maven repository
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-${{ runner.os }}-
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v5
@@ -584,10 +640,18 @@ jobs:
         with:
           distribution: temurin
           java-version: '25'
-          cache: maven
-          cache-dependency-path: |
-            pom.xml
-            ward-*/pom.xml
+
+      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
+      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
+      # folder holds the Maven distribution, which every job would download too.
+      - name: Cache the Maven repository
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-${{ runner.os }}-
 
       - name: Install the reference implementations
         run: |
@@ -623,10 +687,18 @@ jobs:
         with:
           distribution: temurin
           java-version: '25'
-          cache: maven
-          cache-dependency-path: |
-            pom.xml
-            ward-*/pom.xml
+
+      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
+      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
+      # folder holds the Maven distribution, which every job would download too.
+      - name: Cache the Maven repository
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-${{ runner.os }}-
 
       - name: Resolve cyclonedx-core-java
         run: |
@@ -664,10 +736,18 @@ jobs:
         with:
           distribution: temurin
           java-version: '25'
-          cache: maven
-          cache-dependency-path: |
-            pom.xml
-            ward-*/pom.xml
+
+      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
+      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
+      # folder holds the Maven distribution, which every job would download too.
+      - name: Cache the Maven repository
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-${{ runner.os }}-
 
       - name: Set up Node
         uses: actions/setup-node@v5
@@ -703,10 +783,18 @@ jobs:
         with:
           distribution: temurin
           java-version: '25'
-          cache: maven
-          cache-dependency-path: |
-            pom.xml
-            ward-*/pom.xml
+
+      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
+      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
+      # folder holds the Maven distribution, which every job would download too.
+      - name: Cache the Maven repository
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-${{ runner.os }}-
 
       - name: Install Gitleaks
         run: |
@@ -764,10 +852,18 @@ jobs:
         with:
           distribution: temurin
           java-version: '25'
-          cache: maven
-          cache-dependency-path: |
-            pom.xml
-            ward-*/pom.xml
+
+      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
+      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
+      # folder holds the Maven distribution, which every job would download too.
+      - name: Cache the Maven repository
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-${{ runner.os }}-
 
       # Keyed on the tool catalog so a pinned version change refetches the packages.
       - name: Restore SwiftPM cache
@@ -836,10 +932,18 @@ jobs:
         with:
           distribution: temurin
           java-version: '25'
-          cache: maven
-          cache-dependency-path: |
-            pom.xml
-            ward-*/pom.xml
+
+      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
+      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
+      # folder holds the Maven distribution, which every job would download too.
+      - name: Cache the Maven repository
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-${{ runner.os }}-
 
       - name: Set up Gradle ${{ matrix.cell.gradle }}
         uses: gradle/actions/setup-gradle@v5
@@ -889,7 +993,18 @@ jobs:
           version: '25.5'
           distribution: graalvm-community
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          cache: maven
+
+      # The key changes with the POMs. The restore key lets a run with new POMs start from the last
+      # cache instead of downloading everything at once, which Maven Central limits (429). The wrapper
+      # folder holds the Maven distribution, which every job would download too.
+      - name: Cache the Maven repository
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: maven-${{ runner.os }}-${{ hashFiles('pom.xml', 'ward-*/pom.xml', '.mvn/wrapper/maven-wrapper.properties') }}
+          restore-keys: maven-${{ runner.os }}-
 
       # native:test resolves its prefix per module, so ward-cli takes the analysis modules from the
       # local repository instead of the reactor. ward-cli depends on the ANTLR frontend and the Java,
