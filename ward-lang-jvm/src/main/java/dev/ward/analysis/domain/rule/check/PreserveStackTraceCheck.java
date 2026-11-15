@@ -79,7 +79,8 @@ public final class PreserveStackTraceCheck implements UnitCheck {
     final List<SyntaxNode> parts = node.children();
     return parts.size() > 1
         && THROW.equals(parts.get(0).kind())
-        && SyntaxWalk.text(parts.get(1)).startsWith("new");
+        && (SyntaxWalk.text(parts.get(1)).startsWith("new")
+            || parts.get(1).children().stream().anyMatch(c -> "creator".equals(c.kind())));
   }
 
   private static boolean preserves(final SyntaxNode throwing, final String caught) {
