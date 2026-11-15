@@ -14,10 +14,10 @@ final class PythonSyntax {
   /** The kind of a comment node, which is not part of the program. */
   static final String COMMENT_KIND = "comment";
 
-  private static final String DOT = ".";
-
   /** The number of parts of a binary node such as an assignment, a walrus or a keyword argument. */
   static final int THREE_PARTS = 3;
+
+  private static final String DOT = ".";
 
   private PythonSyntax() {}
 

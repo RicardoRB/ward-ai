@@ -15,8 +15,8 @@ import java.util.function.Predicate;
 
 /** Parses and safely merges Ward hook registrations in a shared Claude Code settings file. */
 final class ClaudeSettingsDocument {
-  private static final String OWNERSHIP_KEY = "wardOwnership";
   static final String HOOKS_KEY = "hooks";
+  private static final String OWNERSHIP_KEY = "wardOwnership";
 
   private final JsonCodec codec;
 

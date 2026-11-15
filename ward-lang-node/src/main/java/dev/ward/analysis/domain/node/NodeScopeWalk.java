@@ -50,12 +50,12 @@ final class NodeScopeWalk {
   private static final String SINGLE = "singleExpression";
 
   final ScopeBuilder builder;
-  private final List<Span> imports;
   final NodeScopeNames names;
   final NodeScopeExpressions expressions;
-  private final Map<String, Consumer<SyntaxNode>> handlers = new HashMap<>();
   boolean exporting;
   boolean expressionFunction;
+  private final List<Span> imports;
+  private final Map<String, Consumer<SyntaxNode>> handlers = new HashMap<>();
   private final NodeScopeStatements statements;
   private final NodeScopeFunctions functions;
   private final NodeScopeTypes types;

@@ -8,10 +8,10 @@ import java.util.regex.Matcher;
 
 /** The Maven tools init can add to pom.xml, one row per gate, with their default declarations. */
 final class PomTools {
-  private static final String JACOCO = "jacoco-maven-plugin";
-  private static final String PIT = "pitest-maven";
+  static final String JACOCO = "jacoco-maven-plugin";
+  static final String PIT = "pitest-maven";
 
-  private static final String JACOCO_PLUGIN =
+  static final String JACOCO_PLUGIN =
       """
               <plugin>
                 <groupId>org.jacoco</groupId>

@@ -4,4 +4,7 @@ final class T {
     boolean b = ids.containsKey("b");
     return a || b || names.contains(any);
   }
+  UUID first(List<UUID> ids) {
+    return ids.get(0);
+  }
 }

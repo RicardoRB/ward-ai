@@ -9,4 +9,12 @@ class Scan {
   }
 
   void log(int value) {}
+
+  void each(int[] values) {
+    for (int value : values) {
+      returnsOf(value);
+    }
+  }
+
+  void returnsOf(int value) {}
 }

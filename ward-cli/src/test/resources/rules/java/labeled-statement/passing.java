@@ -10,3 +10,9 @@ final class Search {
     return false;
   }
 }
+
+final class Refs {
+  java.util.function.Predicate<String> empty() {
+    return String::isEmpty;
+  }
+}

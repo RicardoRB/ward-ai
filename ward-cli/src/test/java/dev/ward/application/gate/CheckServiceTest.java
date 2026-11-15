@@ -13,6 +13,7 @@ import dev.ward.domain.config.GateConfiguration;
 import dev.ward.domain.config.WardConfiguration;
 import dev.ward.domain.config.WardException;
 import dev.ward.domain.gate.CheckReport;
+import dev.ward.domain.gate.GateResult;
 import dev.ward.domain.process.CommandExecutor;
 import dev.ward.domain.process.CommandResult;
 import dev.ward.domain.project.BuildTool;
@@ -121,7 +122,7 @@ class CheckServiceTest {
 
     assertThat(service(new FakeCommandExecutor(0, "", "")).check(dir).results())
         .singleElement()
-        .extracting(result -> result.name())
+        .extracting(GateResult::name)
         .isEqualTo("mutation");
   }
 

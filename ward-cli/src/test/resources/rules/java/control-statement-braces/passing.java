@@ -20,3 +20,27 @@ class Passing {
   void go() {
   }
 }
+class PassingNames {
+  void run(String s, int c) {
+    document();
+    doStatement();
+    while (peek() != ')') {
+      go();
+    }
+    if (s.endsWith(")")) {
+      go();
+    }
+    for (final String v : java.util.List.of("[1,2)", "x")) {
+      go();
+    }
+  }
+  int peek() {
+    return 0;
+  }
+  void document() {
+  }
+  void doStatement() {
+  }
+  void go() {
+  }
+}

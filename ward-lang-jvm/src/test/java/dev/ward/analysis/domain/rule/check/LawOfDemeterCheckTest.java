@@ -8,7 +8,7 @@ import dev.ward.analysis.domain.types.UnitTypeFacts;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-class LawOfDemeterCheckTest extends ClassStatementTrees {
+class LawOfDemeterCheckTest extends LawOfDemeterTrees {
 
   private static final String MESSAGE = "{value}";
   private static final String RUN_METHOD = "run";
@@ -19,7 +19,7 @@ class LawOfDemeterCheckTest extends ClassStatementTrees {
   @Test
   void reportsCallOnTheResultOfACallOnAForeignValue() {
     final SyntaxNode root =
-        compilationUnit(classNamed(CLASS_NAME, member(method(RUN_METHOD, 0, 0, chainOn(FOREIGN)))));
+        compilationUnit(classNamed(CLASS_NAME, member(method(RUN_METHOD, 0, 0, chainOf(FOREIGN)))));
 
     assertThat(lawOfDemeter(root, typesOf(OTHER))).containsExactly(display(OTHER));
   }
@@ -27,11 +27,11 @@ class LawOfDemeterCheckTest extends ClassStatementTrees {
   @Test
   void skipsLawOfDemeterOnThisAndUnknownTypesAndNestedChains() {
     final SyntaxNode onThis =
-        compilationUnit(classNamed(CLASS_NAME, member(method(RUN_METHOD, 0, 0, chainOn(THIS)))));
+        compilationUnit(classNamed(CLASS_NAME, member(method(RUN_METHOD, 0, 0, chainOf(THIS)))));
     final SyntaxNode unknown =
-        compilationUnit(classNamed(CLASS_NAME, member(method(RUN_METHOD, 0, 0, chainOn(FOREIGN)))));
+        compilationUnit(classNamed(CLASS_NAME, member(method(RUN_METHOD, 0, 0, chainOf(FOREIGN)))));
     final SyntaxNode nested =
-        compilationUnit(classNamed(CLASS_NAME, member(method(RUN_METHOD, 0, 0, nestedChain()))));
+        compilationUnit(classNamed(CLASS_NAME, member(method(RUN_METHOD, 0, 0, nestedChainOf()))));
 
     assertThat(lawOfDemeter(onThis, typesOf(OTHER))).isEmpty();
     assertThat(lawOfDemeter(unknown, UnitTypeFacts.none())).isEmpty();
@@ -41,7 +41,7 @@ class LawOfDemeterCheckTest extends ClassStatementTrees {
   @Test
   void skipsLawOfDemeterOnAValueOfTheOwnClass() {
     final SyntaxNode root =
-        compilationUnit(classNamed(CLASS_NAME, member(method(RUN_METHOD, 0, 0, chainOn(FOREIGN)))));
+        compilationUnit(classNamed(CLASS_NAME, member(method(RUN_METHOD, 0, 0, chainOf(FOREIGN)))));
 
     assertThat(lawOfDemeter(root, typesOf(OWN))).isEmpty();
   }
@@ -85,6 +85,7 @@ class LawOfDemeterCheckTest extends ClassStatementTrees {
   }
 
   private static List<String> lawOfDemeter(final SyntaxNode root, final UnitTypeFacts types) {
-    return Trees.messages(new LawOfDemeterCheck(MESSAGE).matches(root, null, null, types, null));
+    return Trees.messages(
+        new LawOfDemeterCheck(MESSAGE, List.of()).matches(root, null, null, types, null));
   }
 }

@@ -40,6 +40,30 @@ final class NodeFixtureFrontends {
   private static final String BROWSER = "browser";
   private static final String NODE = "node";
 
+  /** No declaration files: the native resolver knows only what the fixture declares itself. */
+  private static final DeclarationFiles NO_DECLARATIONS =
+      new DeclarationFiles() {
+        @Override
+        public Optional<String> read(final String path) {
+          return Optional.empty();
+        }
+
+        @Override
+        public boolean exists(final String path) {
+          return false;
+        }
+
+        @Override
+        public List<String> list(final String directory) {
+          return List.of();
+        }
+
+        @Override
+        public Optional<String> packageHash(final String directory) {
+          return Optional.empty();
+        }
+      };
+
   private NodeFixtureFrontends() {}
 
   /** The frontends of a fixture folder: its types.json, when it has one, gives the type facts. */
@@ -110,30 +134,6 @@ final class NodeFixtureFrontends {
     return new NativeNodeTypeFacts(
         program, frontend, new NodeScopeAnalysis(names(ES, TYPESCRIPT_ENVIRONMENT, BROWSER, NODE)));
   }
-
-  /** No declaration files: the native resolver knows only what the fixture declares itself. */
-  private static final DeclarationFiles NO_DECLARATIONS =
-      new DeclarationFiles() {
-        @Override
-        public Optional<String> read(final String path) {
-          return Optional.empty();
-        }
-
-        @Override
-        public boolean exists(final String path) {
-          return false;
-        }
-
-        @Override
-        public List<String> list(final String directory) {
-          return List.of();
-        }
-
-        @Override
-        public Optional<String> packageHash(final String directory) {
-          return Optional.empty();
-        }
-      };
 
   /** The names of the given environment files, one name per line; the same set for any request. */
   private static BuiltinNames names(final String... environments) {

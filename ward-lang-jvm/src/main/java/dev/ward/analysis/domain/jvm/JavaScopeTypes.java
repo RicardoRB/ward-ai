@@ -87,7 +87,11 @@ final class JavaScopeTypes {
     final boolean initialized = parts.size() > 1;
     final boolean constant = walk.finalMember || walk.finalLocal;
     declare(
-        name, constant ? BindingKind.CONSTANT : BindingKind.VARIABLE, constant, initialized, false);
+        name,
+        constant ? BindingKind.CONSTANT : BindingKind.VARIABLE,
+        constant,
+        initialized,
+        walk.inPattern);
     parts.stream().filter(part -> !DECLARATOR_ID.equals(part.kind())).forEach(walk::visit);
   }
 

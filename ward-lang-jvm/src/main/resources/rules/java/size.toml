@@ -238,6 +238,21 @@ message = "class depends on {value} types; the limit is {max}"
 '''
 
 [[rules]]
+id = "ward:java/coupling-between-objects"
+language = "java"
+capability = "SYNTAX"
+severity = "error"
+category = "complexity"
+presets = ["strict"]
+options.max = { type = "integer", min = 0 }
+body = '''
+check = "class-coupling"
+count = "declarations"
+max = 20
+message = "class is coupled to {value} types through its declarations; the limit is {max}"
+'''
+
+[[rules]]
 id = "ward:java/java-ncss"
 language = "java"
 capability = "SYNTAX"

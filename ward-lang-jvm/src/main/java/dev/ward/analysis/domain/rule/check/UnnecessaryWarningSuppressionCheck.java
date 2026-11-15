@@ -7,9 +7,10 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Reports each suppression: a {@code @SuppressWarnings} annotation and a comment that names PMD's
- * {@code NOPMD} marker. PMD reports only suppressions that suppress nothing, which needs the
- * results of the other rules. Ward allows no suppression, so every one is reported.
+ * Reports each suppression: a {@code @SuppressWarnings} annotation and a comment, other than
+ * Javadoc, that names PMD's {@code NOPMD} marker. PMD reports only suppressions that suppress
+ * nothing, which needs the results of the other rules. Ward allows no suppression, so every one is
+ * reported.
  */
 public final class UnnecessaryWarningSuppressionCheck implements UnitCheck {
 
@@ -38,7 +39,7 @@ public final class UnnecessaryWarningSuppressionCheck implements UnitCheck {
               : SyntaxWalk.text(node);
       if ("annotation".equals(node.kind()) && text.contains(SUPPRESS)) {
         matches.add(CheckSupport.at(node.span(), CheckSupport.fill(message, text, "")));
-      } else if (COMMENT.equals(node.kind()) && text.contains(NO_PMD)) {
+      } else if (COMMENT.equals(node.kind()) && !text.startsWith("/**") && text.contains(NO_PMD)) {
         matches.add(CheckSupport.at(node.span(), CheckSupport.fill(message, text, "")));
       }
     }

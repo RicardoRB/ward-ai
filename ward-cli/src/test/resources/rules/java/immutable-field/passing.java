@@ -35,3 +35,15 @@ final class Counter {
 final class Holder {
   private int size = 1;
 }
+
+final class Outer {
+  private static final class Pending {
+    private boolean seen = true;
+    private String name = "";
+  }
+
+  void touch(final Pending pending) {
+    pending.seen = false;
+    pending.name = "x";
+  }
+}

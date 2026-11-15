@@ -14,8 +14,8 @@ import org.junit.jupiter.api.Test;
 /** Picks an iPhone of the newest iOS runtime and boots it through {@code xcrun simctl}. */
 class SimctlSimulatorsTest {
   static final Path ROOT = Path.of("/repo/shop");
-  private static final String IOS_26 = "com.apple.CoreSimulator.SimRuntime.iOS-26-5";
-  private static final String IOS_27 = "com.apple.CoreSimulator.SimRuntime.iOS-27-0";
+  static final String IOS_26 = "com.apple.CoreSimulator.SimRuntime.iOS-26-5";
+  static final String IOS_27 = "com.apple.CoreSimulator.SimRuntime.iOS-27-0";
   static final String RUNTIMES =
       """
       {"runtimes": [
@@ -28,8 +28,8 @@ class SimctlSimulatorsTest {
       ]}
       """
           .formatted(IOS_26, IOS_27);
-  private static final String NEW_PRO = "84D0A34E-0000-0000-0000-000000000001";
   static final String NEW_BASE = "84D0A34E-0000-0000-0000-000000000002";
+  private static final String NEW_PRO = "84D0A34E-0000-0000-0000-000000000001";
 
   static String devices(final String newestState) {
     return """

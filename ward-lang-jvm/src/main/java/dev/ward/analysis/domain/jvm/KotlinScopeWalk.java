@@ -42,10 +42,10 @@ final class KotlinScopeWalk {
   private static final String MULTI_LINE_STRING_REF = "MultiLineStrRef";
 
   final ScopeBuilder builder;
-  private final Map<String, Consumer<SyntaxNode>> handlers = new HashMap<>();
   final KotlinScopeTypes types;
   final KotlinScopeBodies bodies;
   final KotlinScopeExpressions expressions;
+  private final Map<String, Consumer<SyntaxNode>> handlers = new HashMap<>();
 
   KotlinScopeWalk(final ScopeBuilder builder) {
     this.types = new KotlinScopeTypes(this);

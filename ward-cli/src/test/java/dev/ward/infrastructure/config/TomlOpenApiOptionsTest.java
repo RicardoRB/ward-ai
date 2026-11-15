@@ -14,9 +14,9 @@ import org.junit.jupiter.api.io.TempDir;
 
 class TomlOpenApiOptionsTest {
   private static final String SPEC = "src/main/resources/openapi.yml";
-  private final TomlConfigurationReader reader = new TomlConfigurationReader();
 
   @TempDir Path dir;
+  private final TomlConfigurationReader reader = new TomlConfigurationReader();
 
   @Test
   void readsSpecAndDefaultsBaseToOriginMain() throws IOException {

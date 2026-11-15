@@ -17,10 +17,10 @@ import org.junit.jupiter.api.io.TempDir;
 @DisabledOnOs(OS.WINDOWS)
 class GitRevisionFilesRepositoryTest {
   private static final String PROJECT = "services/lib";
-  private final ProcessCommandExecutor executor = new ProcessCommandExecutor();
-  private final GitRevisionFiles files = new GitRevisionFiles(executor);
 
   @TempDir Path repository;
+  private final ProcessCommandExecutor executor = new ProcessCommandExecutor();
+  private final GitRevisionFiles files = new GitRevisionFiles(executor);
 
   private Path project;
 

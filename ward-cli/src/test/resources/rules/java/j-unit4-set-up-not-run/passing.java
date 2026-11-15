@@ -1,12 +1,15 @@
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 final class CounterTest {
   @Test
   public void countsUp() {
   }
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
+  }
+
+  void tearDown() {
   }
 }

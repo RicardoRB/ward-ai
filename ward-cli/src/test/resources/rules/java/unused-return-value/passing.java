@@ -11,3 +11,12 @@ class Sample {
     return joined;
   }
 }
+
+class Other {
+  String pick(int kind, String text) {
+    return switch (kind) {
+      case 1 -> text.replace(':', '/');
+      default -> text;
+    };
+  }
+}

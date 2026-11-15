@@ -11,6 +11,7 @@ import dev.ward.analysis.domain.rule.check.InvalidJavaBeanCheck;
 import dev.ward.analysis.domain.rule.check.LawOfDemeterCheck;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Builds the class-level design checks, the PMD metrics and bean rules, and the internal JDK API
@@ -28,7 +29,14 @@ final class ClassDesignChecks {
     return Map.ofEntries(
         entry("god-class", toml -> new GodClassCheck(TomlValues.required(toml, MESSAGE))),
         entry("data-class", toml -> new DataClassCheck(TomlValues.required(toml, MESSAGE))),
-        entry("law-of-demeter", toml -> new LawOfDemeterCheck(TomlValues.required(toml, MESSAGE))),
+        entry(
+            "law-of-demeter",
+            toml ->
+                new LawOfDemeterCheck(
+                    TomlValues.required(toml, MESSAGE),
+                    TomlValues.optionalStrings(toml, "trusted-types").stream()
+                        .map(Pattern::compile)
+                        .toList())),
         entry(
             "invalid-java-bean",
             toml ->

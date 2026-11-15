@@ -12,8 +12,12 @@ checkstyle = ["ClassDataAbstractionCoupling"]
 [[rule]]
 name = "class-fan-out-complexity"
 not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
-pmd = ["CouplingBetweenObjects"]
 checkstyle = ["ClassFanOutComplexity"]
+
+[[rule]]
+name = "coupling-between-objects"
+not-applicable = { typescript = "JVM-specific construct with no counterpart in this language", javascript = "JVM-specific construct with no counterpart in this language", python = "JVM-specific construct with no counterpart in this language", swift = "JVM-specific construct with no counterpart in this language" }
+pmd = ["CouplingBetweenObjects"]
 
 [[rule]]
 name = "cyclomatic-complexity"

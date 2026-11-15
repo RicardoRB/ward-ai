@@ -9,9 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 class FileSystemProjectPathsTest {
-  private final FileSystemProjectPaths paths = new FileSystemProjectPaths();
-
   @TempDir Path temp;
+  private final FileSystemProjectPaths paths = new FileSystemProjectPaths();
 
   @Test
   void existenceChecksDistinguishDirectoriesAndFiles() throws IOException {

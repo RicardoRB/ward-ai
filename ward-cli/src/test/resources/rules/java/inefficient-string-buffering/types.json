@@ -1,0 +1,50 @@
+{
+  "3:12": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.StringBuffer"
+      },
+      "name": "<init>",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "void"
+      }
+    }
+  },
+  "6:5": {
+    "call": {
+      "declaring": {
+        "name": "java.lang.StringBuilder"
+      },
+      "name": "append",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "void"
+      }
+    }
+  },
+  "8:5": {
+    "call": {
+      "declaring": {
+        "name": "Edit"
+      },
+      "name": "append",
+      "params": [
+        {
+          "name": "java.lang.String"
+        }
+      ],
+      "returns": {
+        "name": "void"
+      }
+    }
+  }
+}

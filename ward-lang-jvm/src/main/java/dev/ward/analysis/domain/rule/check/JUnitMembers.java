@@ -23,7 +23,6 @@ final class JUnitMembers {
   private static final String TYPE_MODIFIER = "classOrInterfaceModifier";
   private static final String ANNOTATION = "annotation";
   private static final String IDENTIFIER = "identifier";
-  private static final String METHOD_CALL = "methodCall";
 
   private JUnitMembers() {}
 
@@ -82,27 +81,6 @@ final class JUnitMembers {
   /** Returns whether a member is a test method: it has one of the test annotations. */
   static boolean isTest(final SyntaxNode member) {
     return annotations(member).stream().anyMatch(TEST_ANNOTATIONS::contains);
-  }
-
-  /** Returns how many assertion calls a method body has: calls whose name starts with assert. */
-  static long assertionCount(final SyntaxNode method) {
-    return SyntaxWalk.descendants(method).stream()
-        .filter(node -> METHOD_CALL.equals(node.kind()))
-        .filter(
-            node ->
-                node.children().stream()
-                    .anyMatch(
-                        c ->
-                            IDENTIFIER.equals(c.kind()) && SyntaxWalk.text(c).startsWith("assert")))
-        .count();
-  }
-
-  /** Returns whether a method has no formal parameters. */
-  static boolean hasNoParameters(final SyntaxNode method) {
-    return method.children().stream()
-        .filter(child -> "formalParameters".equals(child.kind()))
-        .allMatch(
-            child -> child.children().stream().noneMatch(c -> "formalParameter".equals(c.kind())));
   }
 
   /** Returns the class body of a class declaration, when it has one. */

@@ -49,9 +49,9 @@ public final class SelfRecursiveMethodCheck implements UnitCheck {
         method.children().stream()
             .filter(child -> BODY.equals(child.kind()))
             .findFirst()
-            .map(SyntaxWalk::text)
+            .map(SyntaxWalk::spacedText)
             .orElse("");
     return !name.isEmpty()
-        && (body.startsWith("{" + name + "(") || body.startsWith("{return" + name + "("));
+        && (body.startsWith("{ " + name + " (") || body.startsWith("{ return " + name + " ("));
   }
 }

@@ -19,6 +19,9 @@ import java.util.regex.Pattern;
  */
 final class SwiftMemberDeclarations {
 
+  /** A header that carries the {@code public} or {@code open} access modifier. */
+  static final Pattern PUBLIC_HEADER = Pattern.compile("(^|\\s)(public|open)\\s");
+
   private static final String FUNCTION = "function_declaration";
   private static final String FUNCTION_NAME = "function_name";
   private static final String VARIABLE_NAME = "variable_name";
@@ -40,9 +43,6 @@ final class SwiftMemberDeclarations {
   /** A stored property header with plain modifiers and {@code var}, which no attribute fixes. */
   private static final Pattern PLAIN_VARIABLE_HEADER =
       Pattern.compile("\\s*((private|fileprivate|internal|static|final)\\s+)*var\\s*");
-
-  /** A header that carries the {@code public} or {@code open} access modifier. */
-  static final Pattern PUBLIC_HEADER = Pattern.compile("(^|\\s)(public|open)\\s");
 
   private static final Set<String> TYPE_DECLARATIONS =
       Set.of(

@@ -32,6 +32,17 @@ class InternalApiUsageCheckTest extends ClassTreeNodes {
   }
 
   @Test
+  void doesNotReportTheSupportedComSunPackages() {
+    final SyntaxNode root =
+        compilationUnit(
+            importOf("importcom.sun.net.httpserver.HttpServer;"),
+            importOf("importcom.sun.management.OperatingSystemMXBean;"),
+            importOf("importcom.sun.netx.Other;"));
+
+    assertThat(internalApi(root, UnitTypeFacts.none())).containsExactly("com.sun.netx.Other");
+  }
+
+  @Test
   void reportsCallsWhoseTargetIsInTheInternalJdkApi() {
     final SyntaxNode root =
         compilationUnit(node(EXPRESSION, LINE, COLUMN, leaf(TOKEN_IDENTIFIER, RUN, LINE, COLUMN)));

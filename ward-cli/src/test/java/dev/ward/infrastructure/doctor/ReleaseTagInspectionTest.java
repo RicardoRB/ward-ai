@@ -12,10 +12,9 @@ import org.junit.jupiter.api.io.TempDir;
 
 @DisabledOnOs(OS.WINDOWS)
 class ReleaseTagInspectionTest {
+  @TempDir Path root;
   private final ProcessCommandExecutor executor = new ProcessCommandExecutor();
   private final SystemEnvironmentInspection inspection = new SystemEnvironmentInspection(executor);
-
-  @TempDir Path root;
 
   @Test
   void seesAReleaseTagButNotAPreReleaseOrNoRepository() {

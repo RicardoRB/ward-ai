@@ -16,8 +16,6 @@ class MypyJsonFindingsTest {
   private static final int ERROR_LINE = 5;
   private static final int ERROR_COLUMN = 3;
 
-  @TempDir Path root;
-
   private static final String ARG_TYPE =
       "{\"file\": \"pkg/typed.py\", \"line\": 5, \"column\": 2, \"end_line\": 5, "
           + "\"end_column\": 5, \"message\": \"Argument 1 to \\\"f\\\" has incompatible type "
@@ -28,6 +26,8 @@ class MypyJsonFindingsTest {
       "{\"file\": \"pkg/typed.py\", \"line\": 6, \"column\": 12, \"end_line\": 6, "
           + "\"end_column\": 13, \"message\": \"Revealed type is \\\"def (x: int) -> str\\\"\", "
           + "\"hint\": null, \"code\": \"misc\", \"severity\": \"note\"}";
+
+  @TempDir Path root;
 
   private final MypyJsonFindings source = new MypyJsonFindings(new ForyJsonCodec());
 

@@ -8,8 +8,8 @@ import java.util.logging.Logger;
 
 /** Decides what the {@code edit} profile runs when no edited paths narrow it. */
 final class EditProfile {
-  private static final Logger LOGGER = Logger.getLogger(EditProfile.class.getName());
   static final String NAME = "edit";
+  private static final Logger LOGGER = Logger.getLogger(EditProfile.class.getName());
 
   private EditProfile() {}
 

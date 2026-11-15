@@ -17,9 +17,9 @@ import org.tomlj.TomlParseResult;
  */
 final class DeclarativeChecks {
 
-  private final CheckRegistry registry;
-
   private static final String CHECK = "check";
+
+  private final CheckRegistry registry;
 
   /** Creates the builder over the checks of {@code registry}. */
   DeclarativeChecks(final CheckRegistry registry) {

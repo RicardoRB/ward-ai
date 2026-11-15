@@ -3,6 +3,7 @@
 boolean-expression-complexity = "implemented"
 class-data-abstraction-coupling = "implemented"
 class-fan-out-complexity = "implemented"
+coupling-between-objects = "implemented"
 cyclomatic-complexity = "implemented"
 java-ncss = "implemented"
 n-path-complexity = "implemented"

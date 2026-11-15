@@ -4,4 +4,7 @@ class Buffers {
     sb.append(name);
     return sb;
   }
+  void c(Edit edit, String x) {
+    edit.append("\n" + x);
+  }
 }

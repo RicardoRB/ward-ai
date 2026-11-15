@@ -8,6 +8,82 @@ still change behavior. Breaking changes are called out under **Changed**.
 
 ## [Unreleased]
 
+## [0.9.1] - 2026-11-15
+
+### Added
+
+- `ward:java/coupling-between-objects` reports a class coupled to more than `max` (default 20) distinct types through its declarations: the types of fields, local variables, parameters, loop variables, resources and return types, without primitives and `java.lang` types (#347).
+
+### Changed
+
+- Apache Fory is updated from 1.7.7 to 1.7.8. Its native-image feature now ignores the JSON codecs that the annotation processor generated, including those packaged in dependencies (apache/fory#4146). Ward's native-image configuration no longer lists the generated codecs, Fory's internal types or the packages to initialize at build time.
+
+### Fixed
+
+- `ward:java/collection-incompatible-type` no longer reports `List<UUID>.get(int)`: `get`, `getOrDefault`, `containsKey` and `containsValue` apply only to `Map` types and `indexOf` and `lastIndexOf` only to `List` types (#573). A `methods` entry of `incompatible-argument` may end with `@key` to name the declaring types it applies to.
+- `ward:java/infinite-recursion` and `ward:java/il-infinite-recursive-loop` no longer report `return new Customer(...)` in a method named `newCustomer`: the check compares tokens, not the text of the statement without whitespace (#573).
+- `ward:java/j-unit4-test-not-run`, `j-unit4-set-up-not-run` and `j-unit4-tear-down-not-run` report only a file that uses JUnit 4 (an import of `org.junit` other than Jupiter, or of `junit.framework`) and stay silent when it imports `org.junit.jupiter`; a public `test...` method with parameters is never a missing `@Test` for `unit-test-should-use-test-annotation` either (#573).
+- `ward:java/law-of-demeter` trusts a call that returns the type of its receiver (builders), a receiver or call result whose type is in `java.` or `javax.` (`Optional`, streams, strings), a record receiver and a getter without arguments. The new option `trusted-types` lists patterns of further types to trust (#573).
+- `ward:java/static-or-default-interface-method`, which is about Android before 7.0, moves from the `standard` preset to `strict`: a rule sees one file and not the project, so it cannot tell an Android project from another (#573).
+- `ward:java/cwo-closed-without-opened` no longer reports `lock.unlock()` in a method that calls a method of the same file that acquires that lock, such as a private `tryLock()` (#573).
+- A `forbidden-node` rule whose pattern starts with a keyword (`^new(...)`, `^if(`, `^for`, ...) now needs that keyword as the node's first token, so a call to `newBoolean(...)` or `iffy(...)` is no longer read as `new Boolean(` or `if(`. This stops `ban-class-loader`, `dead-thread`, `dm-boolean-ctor`, `dm-number-ctor`, `dm-string-ctor` and `dp-create-classloader-inside-do-privileged` from reporting calls to methods named `newX` (#573).
+- `ward:java/control-statement-braces` decides on the statement's syntax nodes instead of its text, so a call such as `document.parts()` or `doStatement(...)`, and a string with a parenthesis such as `endsWith(")")`, are no longer reported as a body without braces.
+- `ward:java/while-loop-with-literal-boolean` reports `while (false)` and `do ... while (true)` or `while (false)`, as PMD does, and no longer a plain `while (true)`.
+- `ward:java/for-loop-can-be-foreach` reports only a loop that starts at `0`, whose element is not assigned, and whose `.get(i)` receiver is known to be an `Iterable` (an array needs no type); `JsonTree.get(i)` and `array[i] += x` are no longer reported. The rule now has the `TYPES` capability.
+- `ward:java/logic-inversion` no longer reports `!(x instanceof Map<?, ?> m)`, whose `<` and `>` are type arguments.
+- `ward:java/confusing-ternary` no longer reports `if (x != null) ... else ...`, as PMD does not.
+- `ward:java/labeled-statement` no longer reports a statement that starts with a method reference such as `Type::method`.
+- `ward:java/premature-declaration` stops at a statement with a call or a creation that does not throw, as PMD does, and no longer reads the words `return` and `throw` inside string literals and text blocks.
+- `ward:java/assignment-in-operand` ignores `=`, `++` and `--` inside string and character literals of the condition.
+- `ward:java/avoid-branching-statement-as-last-in-loop` decides on the last statement's syntax node, so a call such as `returnsOf(x);` is no longer taken for a `return`; it also covers `do` loops.
+- `ward:java/preserve-stack-trace` reports only `throw new ...` in a catch block, not the rethrow of an existing exception, and a nested catch clause answers for its own throws.
+- `ward:java/use-try-with-resources` reports `x.close()` in a `finally` block only when the type of `x` is known to be `AutoCloseable`; an `XMLStreamReader` is no longer reported. The rule now has the `TYPES` capability.
+- `ward:java/avoid-throwing-new-instance-of-same-exception` reports only `throw new X(e)` with the caught exception as the sole argument; `throw new X("context", e)` adds context and is not reported.
+- `ward:java/j-unit-use-expected` no longer reports a `try` that calls `cursor.fail(...)` or another method named `fail` on an object; only `fail(...)` and `Assert.fail(...)`.
+- `ward:java/unit-test-should-include-assert` counts a call to a method named `check...`, `verify...` or `fail` as an assertion, as PMD does.
+- `ward:java/do-not-terminate-vm` does not report `System.exit` in a method named `main`, as PMD does.
+- `ward:java/unnecessary-warning-suppression` no longer reports a Javadoc comment that only names `NOPMD`.
+- `ward:java/test-class-without-test-cases` no longer takes the interface named after `implements` or `extends` for the class's own name (`class Facts implements FactTest`).
+- `ward:java/hide-utility-class-constructor` no longer reports a class that extends another class (an exception class), a private class, or a class with an inner class (#347).
+- `ward:java/instantiable-utility-class` no longer reports a private nested class, which no other code can construct (#347).
+- `ward:java/class-fan-out-complexity` no longer counts the class itself, the types named only as type arguments (`List<Row>`), or the types of a nested record, interface or enum, which are counted for that type (#347).
+- `ward:java/data-class` takes the weight of class over the non-private methods, static ones included, as PMD does, and counts `&&` and `||` in its complexity only inside a condition (#347).
+- `ward:java/god-class` counts `&&` and `||` in its complexity only inside a condition, as PMD does (#347).
+- `ward:java/abstract-class-without-abstract-method` no longer reports an abstract class that extends or implements a type (#347).
+- `ward:java/implicit-functional-interface` no longer counts a `static` or `private` method as abstract when its modifier sits before an annotation, and leaves an interface that extends another one, whose inherited methods are unknown (#347).
+- `ward:java/override-both-equals-and-hashcode` reads `equals(final Object other)` and no longer matches the text of a string literal (#347).
+- `ward:java/missing-static-method-in-non-instantiatable-class` no longer reports a nested class, which its enclosing class can construct (#347).
+- `ward:java/suspicious-hashcode-method-name` reports only a method whose whole name is `hashCode` in some letter case, not a longer name that ends in `HashCode` (#347).
+- `ward:java/more-than-one-logger` counts logger fields, not logger variables in a method (#347).
+- `ward:java/method-with-same-name-as-enclosing-class` compares a method name with the class name as written, as PMD does; a field name is still compared ignoring case (#347).
+- `ward:java/linguistic-naming` no longer reports a `void` method named `is...`, `has...`, `can...`, `have...`, `will...` or `should...`, which PMD accepts (#347).
+- `ward:java/use-varargs` no longer reports an array parameter that is not the last one, a `byte[]` parameter or `main(String[])`, as PMD UseVarargs does.
+- `ward:java/loose-coupling` no longer reports a constructor reference such as `TreeSet::new` or a class literal such as `ArrayList.class`.
+- `ward:java/unnecessary-varargs-array-creation` reports an array only when the called method is varargs and the array has the type of the variadic parameter; it needs type facts now (`capability = "TYPES"`).
+- `ward:java/internal-api-usage` no longer reports the `com.sun` packages that a JDK module exports as supported API, such as `com.sun.net.httpserver`, `com.sun.management` and `com.sun.source`.
+- `ward:java/uc-useless-object` no longer reports a collection whose `add` result is used, as in `if (seen.add(x))`.
+- `ward:java/lambda-can-be-method-reference` no longer reports a lambda that only creates an object, which PMD does not report.
+- `ward:java/reliance-on-default-charset` no longer reports `new InputStreamReader(new GZIPInputStream(in), charset)`: the charset after a nested call counts as passed.
+- `ward:java/unused-return-value` no longer reports the value of a `case X -> value;` of a switch expression.
+- `ward:java/enum-comparison` reports an `equals` argument only when the argument itself is an enum, not when an enum is nested in it, as in `equals(List.of(RED))`.
+- `ward:java/double-brace-initialization` no longer reports the text of a string literal that looks like `new X() {{`.
+- `ward:java/string-instantiation` no longer reports `new String[] {f(text)}`: only the arguments of a class creation count.
+- `ward:java/inefficient-string-buffering` reports only calls of `StringBuilder` and `StringBuffer` (it needs type facts now), not an `append` of another type.
+- `ward:java/replace-enumeration-with-iterator` reports a class, enum or record that implements `Enumeration`, as PMD does, not each use of the type.
+- `ward:java/compare-objects-with-equals` no longer reports `this == other` inside a method named `equals`.
+- `ward:java/use-index-of-char` reports only `String.indexOf` and `lastIndexOf`, not `List.indexOf("/")`; it needs type facts now.
+- `ward:java/constants-in-interface` leaves an interface that declares a method alone, as PMD's `ignoreIfHasMethods` does.
+- `ward:java/explicit-initialization` skips `final` fields, as Checkstyle's `ExplicitInitialization` does.
+- `ward:java/unused-local-variable` no longer reports the binding of a `case` pattern such as `case Str str -> 1;`, which Checkstyle's `UnusedLocalVariable` does not support either.
+- `ward:java/uwf-field-not-initialized-in-constructor` has the severity `note`: SpotBugs always reports `UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR` at low priority, so the Medium threshold never shows it.
+- `ward:java/singular-field` skips fields a picocli annotation fills, requires that the method assigns the field unconditionally before it reads it, and skips a field the enclosing class of a nested class mentions.
+- `ward:java/immutable-field` skips a private field of a nested class that the enclosing class assigns, as PMD reads every use in the file.
+- `ward:java/missing-serial-version-uid` reports only a class that implements `Serializable`, not a class whose name contains it.
+- `ward:java/hidden-field` does not report a parameter where no instance of the class is in reach: in an anonymous class of a static method, or in a nested interface, enum or record.
+- `ward:java/null-assignment` skips the assignment of `null` to a `final` field, as PMD does.
+- `ward:java/si-instance-before-finals-assigned` reports only when a constructor or instance initializer reads the static final field assigned late, as SpotBugs does.
+- `ward:java/array-is-stored-directly` skips private methods and constructors, as PMD's default `allowPrivate` does.
+
 ## [0.9.0] - 2026-11-14
 
 ### Added
@@ -411,6 +487,7 @@ Initial release, published as `sentinel-ai`.
 - A bounded quality loop and a typed gate registry.
 - Starlight documentation site.
 
+[0.9.1]: https://github.com/RicardoRB/ward-ai/compare/v0.9.0...v0.9.1
 [0.9.0]: https://github.com/RicardoRB/ward-ai/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/RicardoRB/ward-ai/compare/v0.7.1...v0.8.0
 [0.7.1]: https://github.com/RicardoRB/ward-ai/compare/v0.7.0...v0.7.1

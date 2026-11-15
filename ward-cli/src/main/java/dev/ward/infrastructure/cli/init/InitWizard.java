@@ -29,8 +29,8 @@ final class InitWizard {
 
   final LinePrompt prompt;
   final Answering answering;
-  private final Supplier<Optional<RawSession>> rawTerminal;
   final PrintWriter out;
+  private final Supplier<Optional<RawSession>> rawTerminal;
 
   InitWizard(
       final LinePrompt prompt,

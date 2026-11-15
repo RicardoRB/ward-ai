@@ -13,9 +13,8 @@ import org.junit.jupiter.api.io.TempDir;
 
 // Configuration syntax cases share one reader fixture and are kept as one contract suite.
 class TomlValidationTest {
-  private final TomlConfigurationReader reader = new TomlConfigurationReader();
-
   @TempDir Path dir;
+  private final TomlConfigurationReader reader = new TomlConfigurationReader();
 
   @Test
   void rejectsInvalidToml() {

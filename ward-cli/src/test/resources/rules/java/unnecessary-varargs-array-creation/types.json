@@ -1,0 +1,70 @@
+{
+  "6:12": {
+    "call": {
+      "declaring": {
+        "name": "java.util.Arrays"
+      },
+      "name": "asList",
+      "params": [
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "varargs": true,
+      "typeParameters": [
+        "T"
+      ]
+    }
+  },
+  "11:12": {
+    "call": {
+      "declaring": {
+        "name": "java.util.Arrays"
+      },
+      "name": "asList",
+      "params": [
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "varargs": true,
+      "typeParameters": [
+        "T"
+      ]
+    }
+  },
+  "15:5": {
+    "call": {
+      "declaring": {
+        "name": "java.util.List"
+      },
+      "name": "add",
+      "params": [
+        {
+          "name": "java.lang.Object"
+        }
+      ],
+      "varargs": false
+    }
+  },
+  "20:12": {
+    "call": {
+      "declaring": {
+        "name": "java.util.Arrays"
+      },
+      "name": "asList",
+      "params": [
+        {
+          "name": "java.lang.Object",
+          "array": 1
+        }
+      ],
+      "varargs": true,
+      "typeParameters": [
+        "T"
+      ]
+    }
+  }
+}

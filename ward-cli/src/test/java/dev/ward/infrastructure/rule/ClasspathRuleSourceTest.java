@@ -81,15 +81,19 @@ class ClasspathRuleSourceTest {
               assertThat(rule.languages()).containsExactly(AnalysisLanguage.JAVA);
               assertThat(rule.capability()).isEqualTo(capabilityOf(rule));
               // Ward's own hardening rules, strict only, are warnings; every other rule is an
-              // error.
+              // error, except the one SpotBugs only reports at low priority.
               final boolean hardening =
                   "security".equals(rule.category())
                       && rule.presets().equals(Set.of(RulePreset.STRICT));
+              final boolean lowPriority =
+                  "ward:java/uwf-field-not-initialized-in-constructor".equals(rule.id());
               assertThat(rule.severity())
                   .isIn(
                       hardening
                           ? List.of(AnalysisSeverity.ERROR, AnalysisSeverity.WARNING)
-                          : List.of(AnalysisSeverity.ERROR));
+                          : lowPriority
+                              ? List.of(AnalysisSeverity.NOTE)
+                              : List.of(AnalysisSeverity.ERROR));
             });
   }
 

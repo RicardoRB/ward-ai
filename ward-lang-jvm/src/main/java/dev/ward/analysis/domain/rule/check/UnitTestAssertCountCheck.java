@@ -29,14 +29,14 @@ public final class UnitTestAssertCountCheck implements UnitCheck {
         .flatMap(visit -> JUnitMembers.members(visit.node()).stream())
         .filter(JUnitMembers::isTest)
         .flatMap(member -> JUnitMembers.method(member).stream())
-        .filter(method -> JUnitMembers.assertionCount(method) > max)
+        .filter(method -> JUnitMethods.assertionCount(method) > max)
         .map(
             method ->
                 CheckSupport.at(
                     method.span(),
                     CheckSupport.fill(
                         message,
-                        String.valueOf(JUnitMembers.assertionCount(method)),
+                        String.valueOf(JUnitMethods.assertionCount(method)),
                         String.valueOf(max))))
         .toList();
   }

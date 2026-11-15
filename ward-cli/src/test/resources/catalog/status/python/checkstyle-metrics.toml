@@ -3,6 +3,7 @@
 boolean-expression-complexity = { status = "planned", issue = "#297" }
 class-data-abstraction-coupling = "not-applicable"
 class-fan-out-complexity = "not-applicable"
+coupling-between-objects = "not-applicable"
 cyclomatic-complexity = "implemented"
 java-ncss = "not-applicable"
 n-path-complexity = { status = "planned", issue = "#297" }

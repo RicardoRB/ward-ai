@@ -17,9 +17,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 class TomlLicenseParserTest {
-  private final TomlConfigurationReader reader = new TomlConfigurationReader();
-
   @TempDir Path dir;
+  private final TomlConfigurationReader reader = new TomlConfigurationReader();
 
   private LicenseSettings settings(final String body) throws IOException {
     return read(reader, dir, "version = 2\n\n[checks.license]\nuses = \"license\"\n" + body)

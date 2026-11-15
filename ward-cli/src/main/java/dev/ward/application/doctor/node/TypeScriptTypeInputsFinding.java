@@ -9,10 +9,10 @@ import dev.ward.domain.doctor.EnvironmentFacts;
  * in the project's {@code node_modules}. A missing input is a hint, never a failure.
  */
 public final class TypeScriptTypeInputsFinding {
-  private static final String NAME = "typescript-type-inputs";
-
   /** Set by the environment inspection when {@code typescript} resolves from the project root. */
   static final String TYPESCRIPT_RESOLVABLE = "typescriptResolvable";
+
+  private static final String NAME = "typescript-type-inputs";
 
   private TypeScriptTypeInputsFinding() {}
 

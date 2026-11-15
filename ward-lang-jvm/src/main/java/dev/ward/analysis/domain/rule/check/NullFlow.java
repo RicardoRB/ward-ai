@@ -14,13 +14,13 @@ import java.util.regex.Pattern;
  */
 final class NullFlow {
 
+  /** The assignment operator. */
+  static final String ASSIGN = "=";
+
   private static final Pattern NAME = Pattern.compile("[A-Za-z_$][A-Za-z0-9_$]*");
   private static final Set<String> CHECKS = Set.of("requireNonNull", "nonNull", "isNull");
   private static final String EXPRESSION = "expression";
   private static final String METHOD_CALL = "methodCall";
-
-  /** The assignment operator. */
-  static final String ASSIGN = "=";
 
   private static final String ARGUMENTS = "arguments";
 

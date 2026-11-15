@@ -26,7 +26,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["statement"]
-text = '^(?:if|while)\([^{};]*?(?:\w=[^=]|\w(?:\+\+|--)|(?:\+\+|--)\w)'
+text = '^(?:if|while)\((?:"(?:[^"\\]|\\.)*"|\x27(?:[^\x27\\]|\\.)*\x27|[^{};"\x27])*?(?:\w=[^=]|\w(?:\+\+|--)|(?:\+\+|--)\w)'
 message = "assignment or increment inside an if or while condition; move it out of the operand"
 '''
 
@@ -52,9 +52,7 @@ severity = "error"
 category = "correctness"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["statement"]
-text = '^(?:for|while)\(.*\)\{.*(?:break|continue|return[^;]*);\}$'
+check = "loop-ends-with-branch"
 message = "loop ends with a branching statement, so it never repeats; check that this is not a bug"
 '''
 
@@ -464,7 +462,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["classDeclaration"]
-text = '(?s)^(?!.*serialVersionUID)class\w+[^{]*Serializable'
+text = '(?s)^(?!.*serialVersionUID)class\w+[^{]*implements[^{]*Serializable'
 message = "Serializable class has no serialVersionUID field"
 '''
 
@@ -479,6 +477,7 @@ body = '''
 check = "forbidden-node"
 kinds = ["classDeclaration"]
 text = '(?s)^class(\w+)[^{]*\{(?=.*private\1\()(?!.*static)(?!.*(?<!private)\1\()'
+parent = ["typeDeclaration"]
 message = "class has only private constructors and no static member, so it can never be used"
 '''
 
@@ -490,9 +489,7 @@ severity = "error"
 category = "correctness"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["classDeclaration"]
-text = '(?s)^class\w+[^{]*\{.*(?:LoggerFactory\.getLogger|LogFactory\.getLog|Logger\.getLogger)\(.*(?:LoggerFactory\.getLogger|LogFactory\.getLog|Logger\.getLogger)\('
+check = "more-than-one-logger"
 message = "class declares more than one logger"
 '''
 
@@ -532,9 +529,7 @@ severity = "error"
 category = "correctness"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["expression"]
-text = '^[\w.\[\]]+=null$'
+check = "null-assignment"
 message = "assigning null outside a declaration; reconsider the design"
 '''
 
@@ -548,7 +543,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["classDeclaration"]
-text = '(?s)^(?:(?=.*booleanequals\(Object)(?!.*inthashCode\(\))|(?=.*inthashCode\(\))(?!.*booleanequals\(Object))'
+text = '(?s)^(?:(?=.*booleanequals\((?:final)?Object\w+\)\{)(?!.*inthashCode\(\)\{)|(?=.*inthashCode\(\)\{)(?!.*booleanequals\((?:final)?Object\w+\)\{))'
 message = "class overrides only one of equals and hashCode"
 '''
 
@@ -675,9 +670,7 @@ severity = "error"
 category = "correctness"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["methodDeclaration"]
-text = '^(?:(?!int)[^({])*(?i:hashcode)\(\)'
+check = "suspicious-hashcode-name"
 message = "method named hashCode does not return int, so it does not override Object.hashCode"
 '''
 
@@ -705,7 +698,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["classDeclaration"]
-text = '(?s)^(?!.*(?:@Test|@ParameterizedTest|@RepeatedTest|@TestFactory|@Nested|voidtest\w*\())class\w*?(?:Test|Tests|TestCase)(?:<[^{]*>)?(?:extends[^{]*)?(?:implements[^{]*)?\{'
+text = '(?s)^(?!.*(?:@Test|@ParameterizedTest|@RepeatedTest|@TestFactory|@Nested|voidtest\w*\())class(?:(?!extends|implements|permits)\w)*?(?:Test|Tests|TestCase)(?:<[^{]*>)?(?:extends[^{]*)?(?:implements[^{]*)?\{'
 message = "class named as a test has no test methods"
 '''
 
@@ -872,9 +865,7 @@ severity = "error"
 category = "correctness"
 presets = ["strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["expression"]
-text = '^(?:(?:java\.lang\.)?System|Runtime\.getRuntime\(\))\.(?:exit|halt)\([^()]*\)$'
+check = "terminate-vm"
 message = "System.exit terminates the JVM; only the application entry point should do it"
 '''
 

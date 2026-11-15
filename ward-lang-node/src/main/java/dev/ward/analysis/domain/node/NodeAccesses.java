@@ -16,6 +16,17 @@ import java.util.Set;
  */
 final class NodeAccesses implements VariableAccesses {
 
+  /** Nodes that bind a name of their own, so the body is walked for captures of outer names. */
+  static final Set<String> CAPTURERS =
+      Set.of(
+          "functionDeclaration",
+          "anonymousFunction",
+          "arrowFunctionDeclaration",
+          "methodDefinition",
+          "propertyMemberDeclaration",
+          "classDeclaration",
+          "classExpression");
+
   private static final String VARIABLE_STATEMENT = "variableStatement";
   private static final String VARIABLE_LIST = "variableDeclarationList";
   private static final String SINGLE_VARIABLE = "singleVariableDeclaration";
@@ -29,17 +40,6 @@ final class NodeAccesses implements VariableAccesses {
 
   /** Property keys and labels, which name no variable. */
   private static final Set<String> NAMELESS = Set.of(PROPERTY_NAME, LABELLED, BREAK, CONTINUE);
-
-  /** Nodes that bind a name of their own, so the body is walked for captures of outer names. */
-  static final Set<String> CAPTURERS =
-      Set.of(
-          "functionDeclaration",
-          "anonymousFunction",
-          "arrowFunctionDeclaration",
-          "methodDefinition",
-          "propertyMemberDeclaration",
-          "classDeclaration",
-          "classExpression");
 
   private final NodeScopes scopes = new NodeScopes();
   private final NodeDeclarations declarations = new NodeDeclarations(scopes, this::walk);

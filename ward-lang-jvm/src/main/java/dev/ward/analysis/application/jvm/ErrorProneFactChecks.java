@@ -5,6 +5,7 @@ import static java.util.Map.entry;
 import dev.ward.analysis.application.rule.CheckFactory;
 import dev.ward.analysis.application.rule.TomlValues;
 import dev.ward.analysis.domain.rule.check.CallSuperCheck;
+import dev.ward.analysis.domain.rule.check.CloseInFinallyCheck;
 import dev.ward.analysis.domain.rule.check.CloseResourceCheck;
 import dev.ward.analysis.domain.rule.check.CollectionTypeMismatchCheck;
 import dev.ward.analysis.domain.rule.check.ConfusingArgumentToVarargsMethodCheck;
@@ -43,6 +44,9 @@ final class ErrorProneFactChecks {
             "invalid-log-message-format",
             toml -> new InvalidLogMessageFormatCheck(TomlValues.required(toml, MESSAGE))),
         entry("close-resource", ErrorProneFactChecks::closeResource),
+        entry(
+            "close-in-finally",
+            toml -> new CloseInFinallyCheck(TomlValues.required(toml, MESSAGE))),
         entry(
             "non-serializable-class",
             toml -> new NonSerializableClassCheck(TomlValues.required(toml, MESSAGE))),

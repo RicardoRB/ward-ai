@@ -9,16 +9,20 @@ import dev.ward.analysis.domain.rule.ScopeView;
 import dev.ward.analysis.domain.types.FactKind;
 import dev.ward.analysis.domain.types.UnitTypeFacts;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Reports a call of {@code unlock()} on a {@code java.util.concurrent.locks} lock in a method that
  * never acquires that lock: no {@code lock()}, {@code lockInterruptibly()} or {@code tryLock()} on
  * the same receiver. A method whose name contains {@code lock} is skipped, as SpotBugs does, and so
- * is a call whose receiver type is unknown.
+ * is a call whose receiver type is unknown. A method that calls a method of the file that acquires
+ * the same lock, such as a private {@code tryLock()} helper, counts as acquiring it.
  */
 public final class UnlockWithoutLockCheck implements RuleCheck {
 
@@ -63,30 +67,70 @@ public final class UnlockWithoutLockCheck implements RuleCheck {
       final UnitTypeFacts types,
       final SourceUnit unit) {
     final List<RuleMatch> matches = new ArrayList<>();
-    for (final SyntaxWalk.Visit visit : SyntaxWalk.visits(root, Set.of(METHOD))) {
+    final List<SyntaxWalk.Visit> methods = SyntaxWalk.visits(root, Set.of(METHOD));
+    final Map<String, Set<String>> acquiredByName =
+        methods.stream()
+            .collect(
+                Collectors.toMap(
+                    visit -> JavaNodes.name(visit.node()),
+                    visit -> acquires(visit.node()),
+                    UnlockWithoutLockCheck::union));
+    for (final SyntaxWalk.Visit visit : methods) {
       if (!JavaNodes.name(visit.node()).toLowerCase(Locale.ROOT).contains(LOCK_WORD)) {
-        inMethod(visit.node(), types, matches);
+        inMethod(visit.node(), acquiredByName, types, matches);
       }
     }
     return List.copyOf(matches);
   }
 
   private void inMethod(
-      final SyntaxNode method, final UnitTypeFacts types, final List<RuleMatch> matches) {
+      final SyntaxNode method,
+      final Map<String, Set<String>> acquiredByName,
+      final UnitTypeFacts types,
+      final List<RuleMatch> matches) {
     final List<SyntaxNode> calls =
         SyntaxWalk.descendants(method).stream()
             .filter(UnlockWithoutLockCheck::isQualified)
             .toList();
-    final Set<String> acquired = new java.util.HashSet<>();
-    calls.stream()
-        .filter(call -> ACQUIRES.contains(MemberDeclarations.name(last(call))))
-        .forEach(call -> acquired.add(receiver(call)));
+    final Set<String> acquired = new HashSet<>(acquires(method));
+    localCallNames(method)
+        .forEach(name -> acquired.addAll(acquiredByName.getOrDefault(name, Set.of())));
     for (final SyntaxNode call : calls) {
       final boolean unlock = UNLOCK.equals(MemberDeclarations.name(last(call)));
       if (unlock && !acquired.contains(receiver(call)) && isLock(call, types)) {
         matches.add(CheckSupport.at(call.span(), CheckSupport.fill(message, receiver(call), "")));
       }
     }
+  }
+
+  /** The receivers on which the method itself calls {@code lock}, {@code tryLock} and the like. */
+  private static Set<String> union(final Set<String> first, final Set<String> second) {
+    final Set<String> both = new HashSet<>(first);
+    both.addAll(second);
+    return both;
+  }
+
+  private static Set<String> acquires(final SyntaxNode method) {
+    return SyntaxWalk.descendants(method).stream()
+        .filter(UnlockWithoutLockCheck::isQualified)
+        .filter(call -> ACQUIRES.contains(MemberDeclarations.name(last(call))))
+        .map(UnlockWithoutLockCheck::receiver)
+        .collect(Collectors.toSet());
+  }
+
+  /** The names of the methods the method calls on itself: {@code m()} and {@code this.m()}. */
+  private static List<String> localCallNames(final SyntaxNode method) {
+    return SyntaxWalk.descendants(method).stream()
+        .filter(node -> EXPRESSION.equals(node.kind()))
+        .filter(UnlockWithoutLockCheck::isOwnCall)
+        .map(call -> MemberDeclarations.name(last(call)))
+        .toList();
+  }
+
+  private static boolean isOwnCall(final SyntaxNode node) {
+    final List<SyntaxNode> parts = node.children();
+    return METHOD_CALL.equals(last(node).kind())
+        && (parts.size() == 1 || isQualified(node) && "this".equals(receiver(node)));
   }
 
   private boolean isLock(final SyntaxNode call, final UnitTypeFacts types) {

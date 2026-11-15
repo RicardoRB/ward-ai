@@ -18,6 +18,9 @@ import java.util.regex.Pattern;
  * in a class annotated with Lombok's {@code @Builder}, {@code @Data}, {@code @Setter} or
  * {@code @Value}.
  *
+ * <p>A private field of a nested class is also assigned when the enclosing class writes it, as PMD
+ * reads every use in the file; such a field is not reported.
+ *
  * <p>shortcut: PMD's data flow is approximated by "exactly one top-level assignment per
  * constructor"; a field assigned conditionally is not reported.
  */
@@ -49,7 +52,7 @@ public final class ImmutableFieldCheck implements UnitCheck {
     return SyntaxWalk.visits(root, Set.of(MemberDeclarations.CLASS)).stream()
         .filter(visit -> !injectedClass(visit.ancestors()))
         .flatMap(visit -> MemberDeclarations.body(visit.node()).stream())
-        .flatMap(body -> reportOf(body).stream())
+        .flatMap(body -> reportOf(body, root).stream())
         .toList();
   }
 
@@ -60,7 +63,7 @@ public final class ImmutableFieldCheck implements UnitCheck {
         .isPresent();
   }
 
-  private List<RuleMatch> reportOf(final SyntaxNode body) {
+  private List<RuleMatch> reportOf(final SyntaxNode body, final SyntaxNode root) {
     final List<SyntaxNode> members = MemberDeclarations.members(body);
     final List<SyntaxNode> constructors =
         members.stream()
@@ -71,7 +74,9 @@ public final class ImmutableFieldCheck implements UnitCheck {
         .filter(ImmutableFieldCheck::isCandidate)
         .flatMap(field -> MemberDeclarations.declaration(field).stream())
         .filter(
-            field -> declarators(field).stream().anyMatch(d -> couldBeFinal(d, body, constructors)))
+            field ->
+                declarators(field).stream()
+                    .anyMatch(d -> couldBeFinal(d, body, constructors, root)))
         .map(field -> CheckSupport.at(field.span(), message))
         .toList();
   }
@@ -95,7 +100,10 @@ public final class ImmutableFieldCheck implements UnitCheck {
   }
 
   private static boolean couldBeFinal(
-      final SyntaxNode declarator, final SyntaxNode body, final List<SyntaxNode> constructors) {
+      final SyntaxNode declarator,
+      final SyntaxNode body,
+      final List<SyntaxNode> constructors,
+      final SyntaxNode root) {
     final Optional<String> name = name(declarator);
     if (name.isEmpty()) {
       return false;
@@ -105,11 +113,25 @@ public final class ImmutableFieldCheck implements UnitCheck {
         SyntaxWalk.visits(body, Set.of(EXPRESSION)).stream()
             .filter(visit -> assignment.matcher(SyntaxWalk.text(visit.node())).find())
             .toList();
+    if (writtenOutside(assignment, body, root)) {
+      return false;
+    }
     if (writes.isEmpty()) {
       return declarator.children().size() > 1;
     }
     return writes.stream().allMatch(visit -> ConstructorWrites.topLevel(visit.ancestors()))
         && ConstructorWrites.eachAssignsOnce(writes, constructors);
+  }
+
+  private static boolean writtenOutside(
+      final Pattern assignment, final SyntaxNode body, final SyntaxNode root) {
+    return SyntaxWalk.visits(root, Set.of(EXPRESSION)).stream()
+        .map(SyntaxWalk.Visit::node)
+        .filter(
+            node ->
+                node.span().startOffset() < body.span().startOffset()
+                    || node.span().endOffset() > body.span().endOffset())
+        .anyMatch(node -> assignment.matcher(SyntaxWalk.text(node)).find());
   }
 
   private static Optional<String> name(final SyntaxNode declarator) {

@@ -68,12 +68,15 @@ public final class IncompatibleArgumentCheck implements RuleCheck {
    *     not the element type of the array argument at {@code source}
    * @param source the index of the receiver's type argument, or of the array argument
    * @param value the index of the argument that must have the expected type
+   * @param only the declaring types the entry applies to; empty for every declaring type
    */
-  public record Entry(String name, int arity, boolean fromReceiver, int source, int value) {
+  public record Entry(
+      String name, int arity, boolean fromReceiver, int source, int value, Set<String> only) {
 
-    /** Checks the name. */
+    /** Checks the name and copies the types. */
     public Entry {
       Objects.requireNonNull(name, "name");
+      only = Set.copyOf(only);
     }
   }
 
@@ -127,6 +130,10 @@ public final class IncompatibleArgumentCheck implements RuleCheck {
     return entries.stream()
         .filter(entry -> entry.name().equals(target.get().name()))
         .filter(entry -> entry.arity() == arguments.size())
+        .filter(
+            entry ->
+                entry.only().isEmpty()
+                    || entry.only().contains(target.get().declaringType().name()))
         .anyMatch(entry -> entryIncompatible(entry, call, arguments, types));
   }
 

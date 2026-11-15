@@ -13,6 +13,7 @@ import dev.ward.analysis.domain.rule.check.MethodCountCheck;
 import dev.ward.analysis.domain.rule.check.NPathCheck;
 import dev.ward.analysis.domain.rule.check.NcssCheck;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /** Builds the Java size and metric checks that a rule body names, with their parameters. */
@@ -82,7 +83,9 @@ final class MetricChecks {
             "class-coupling",
             toml ->
                 new ClassCouplingCheck(
-                    TomlValues.strings(toml, TYPES),
+                    ClassCouplingCheck.Counting.valueOf(
+                        toml.getString("count", () -> "references").toUpperCase(Locale.ROOT)),
+                    TomlValues.optionalStrings(toml, TYPES),
                     TomlValues.optionalStrings(toml, EXCLUDED_CLASSES),
                     TomlValues.integer(toml, MAX),
                     TomlValues.required(toml, MESSAGE))),

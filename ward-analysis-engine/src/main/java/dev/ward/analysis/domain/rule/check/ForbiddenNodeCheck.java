@@ -2,10 +2,12 @@ package dev.ward.analysis.domain.rule.check;
 
 import dev.ward.analysis.domain.ir.SyntaxNode;
 import dev.ward.analysis.domain.rule.RuleMatch;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -13,6 +15,24 @@ import java.util.regex.Pattern;
  * The user options are {@code text} and the filters' {@code kinds}.
  */
 public final class ForbiddenNodeCheck implements UnitCheck {
+
+  private static final Set<String> KEYWORDS =
+      Set.of(
+          "new",
+          "if",
+          "for",
+          "while",
+          "do",
+          "return",
+          "throw",
+          "try",
+          "switch",
+          "synchronized",
+          "catch",
+          "else",
+          "super");
+  private static final char ESCAPE = '\\';
+  private static final Pattern LEADING_KEYWORD = Pattern.compile("^\\^([a-z]+)(?![a-zA-Z])");
 
   private final NodeFilter filter;
   private final Condition condition;
@@ -72,11 +92,58 @@ public final class ForbiddenNodeCheck implements UnitCheck {
 
     boolean holds(final SyntaxWalk.Visit visit) {
       final SyntaxNode node = visit.node();
-      final boolean textOk = text.map(p -> p.matcher(SyntaxWalk.text(node)).find()).orElse(true);
+      final boolean textOk =
+          text.map(p -> keywordStarts(p, node) && p.matcher(SyntaxWalk.text(node)).find())
+              .orElse(true);
       final boolean childOk =
           withChild.isEmpty()
               || node.children().stream().anyMatch(c -> withChild.contains(c.kind()));
       return textOk && childOk && parentOk(visit) && pathOk(visit);
+    }
+
+    /**
+     * Tells whether a pattern whose every alternative starts with a keyword, such as {@code
+     * ^new(...)}, sees that keyword as a token of its own. The text has no whitespace, so {@code
+     * new Boolean(} and a call to {@code newBoolean(} read the same; the first token tells them
+     * apart.
+     */
+    private static boolean keywordStarts(final Pattern pattern, final SyntaxNode node) {
+      final List<String> keywords = new ArrayList<>();
+      for (final String alternative : alternatives(pattern.pattern())) {
+        final Matcher keyword = LEADING_KEYWORD.matcher(alternative);
+        if (!keyword.find() || !KEYWORDS.contains(keyword.group(1))) {
+          return true;
+        }
+        keywords.add(keyword.group(1));
+      }
+      return SyntaxWalk.leaves(node).stream()
+          .findFirst()
+          .map(first -> keywords.contains(String.valueOf(first.fields().get("text"))))
+          .orElse(true);
+    }
+
+    /** Splits a regular expression at its top-level {@code |}. */
+    private static List<String> alternatives(final String regex) {
+      final List<String> parts = new ArrayList<>();
+      int depth = 0;
+      int start = 0;
+      int index = 0;
+      while (index < regex.length()) {
+        final char c = regex.charAt(index);
+        if (c == ESCAPE) {
+          index++;
+        } else if (c == '(' || c == '[') {
+          depth++;
+        } else if (c == ')' || c == ']') {
+          depth--;
+        } else if (c == '|' && depth == 0) {
+          parts.add(regex.substring(start, index));
+          start = index + 1;
+        }
+        index++;
+      }
+      parts.add(regex.substring(start));
+      return parts;
     }
 
     private boolean parentOk(final SyntaxWalk.Visit visit) {

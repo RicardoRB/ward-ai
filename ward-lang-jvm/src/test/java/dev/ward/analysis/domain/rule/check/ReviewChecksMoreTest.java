@@ -73,8 +73,8 @@ class ReviewChecksMoreTest extends TreeBuilders {
   void aCountingLoopThatOnlyReadsElementsIsReported() {
     final SyntaxNode reads = unit(MethodTrees.countingLoop("values[i];"));
     final SyntaxNode scales = unit(MethodTrees.countingLoop("values[i] * i;"));
-    assertThat(run(new ForLoopCanBeForeachCheck(MESSAGE), reads)).hasSize(1);
-    assertThat(run(new ForLoopCanBeForeachCheck(MESSAGE), scales)).isEmpty();
+    assertThat(new ForLoopCanBeForeachCheck(MESSAGE).matches(reads)).hasSize(1);
+    assertThat(new ForLoopCanBeForeachCheck(MESSAGE).matches(scales)).isEmpty();
   }
 
   @Test
@@ -106,11 +106,16 @@ class ReviewChecksMoreTest extends TreeBuilders {
         unit(MethodTrees.namedClass("CounterTest", List.of(MethodTrees.publicTestMethod(true))));
     final SyntaxNode other =
         unit(MethodTrees.namedClass("Helpers", List.of(MethodTrees.publicTestMethod(false))));
-    assertThat(run(new UnitTestMissingAnnotationCheck(Pattern.compile("Test"), MESSAGE), bare))
+    assertThat(
+            run(new UnitTestMissingAnnotationCheck(Pattern.compile("Test"), MESSAGE, false), bare))
         .hasSize(1);
-    assertThat(run(new UnitTestMissingAnnotationCheck(Pattern.compile("Test"), MESSAGE), annotated))
+    assertThat(
+            run(
+                new UnitTestMissingAnnotationCheck(Pattern.compile("Test"), MESSAGE, false),
+                annotated))
         .isEmpty();
-    assertThat(run(new UnitTestMissingAnnotationCheck(Pattern.compile("Test"), MESSAGE), other))
+    assertThat(
+            run(new UnitTestMissingAnnotationCheck(Pattern.compile("Test"), MESSAGE, false), other))
         .isEmpty();
   }
 
@@ -126,11 +131,18 @@ class ReviewChecksMoreTest extends TreeBuilders {
                 List.of(MethodTrees.testMethod(1), MethodTrees.lifecycle("tearDown", true))));
     final SyntaxNode noTests =
         unit(MethodTrees.testClass(List.of(MethodTrees.lifecycle("tearDown", false))));
-    assertThat(run(new UnitTestLifecycleCheck("tearDown", Set.of("AfterEach"), MESSAGE), bare))
+    assertThat(
+            run(new UnitTestLifecycleCheck("tearDown", Set.of("AfterEach"), MESSAGE, false), bare))
         .hasSize(1);
-    assertThat(run(new UnitTestLifecycleCheck("tearDown", Set.of("AfterEach"), MESSAGE), annotated))
+    assertThat(
+            run(
+                new UnitTestLifecycleCheck("tearDown", Set.of("AfterEach"), MESSAGE, false),
+                annotated))
         .isEmpty();
-    assertThat(run(new UnitTestLifecycleCheck("tearDown", Set.of("AfterEach"), MESSAGE), noTests))
+    assertThat(
+            run(
+                new UnitTestLifecycleCheck("tearDown", Set.of("AfterEach"), MESSAGE, false),
+                noTests))
         .isEmpty();
   }
 

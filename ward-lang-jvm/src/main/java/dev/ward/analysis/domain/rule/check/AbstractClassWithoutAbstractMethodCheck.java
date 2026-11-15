@@ -7,14 +7,15 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Reports each abstract class that declares no abstract method. The abstract modifier sits on the
- * declaration wrapper, either a top-level {@code typeDeclaration} or a member's {@code
- * classBodyDeclaration}.
+ * Reports each abstract class that declares no abstract method and has no superclass or interface.
+ * The abstract modifier sits on the declaration wrapper, either a top-level {@code typeDeclaration}
+ * or a member's {@code classBodyDeclaration}.
  */
 public final class AbstractClassWithoutAbstractMethodCheck implements UnitCheck {
 
   private static final String CLASS_DECLARATION = "classDeclaration";
   private static final String MEMBER_DECLARATION = "memberDeclaration";
+  private static final Set<String> HIERARCHY = Set.of("extends", "implements");
 
   private final String message;
 
@@ -33,7 +34,7 @@ public final class AbstractClassWithoutAbstractMethodCheck implements UnitCheck 
         .map(SyntaxWalk.Visit::node)
         .filter(wrapper -> hasChildText(wrapper, "abstract"))
         .flatMap(wrapper -> classOf(wrapper).stream())
-        .filter(clazz -> !hasAbstractMethod(clazz))
+        .filter(clazz -> !hasSuperType(clazz) && !hasAbstractMethod(clazz))
         .map(clazz -> CheckSupport.at(clazz.span(), message))
         .toList();
   }
@@ -54,6 +55,11 @@ public final class AbstractClassWithoutAbstractMethodCheck implements UnitCheck 
       }
     }
     return java.util.Optional.empty();
+  }
+
+  /** PMD leaves a class that extends or implements a type, which may leave the methods open. */
+  private static boolean hasSuperType(final SyntaxNode clazz) {
+    return clazz.children().stream().anyMatch(child -> HIERARCHY.contains(SyntaxWalk.text(child)));
   }
 
   private static boolean hasAbstractMethod(final SyntaxNode clazz) {

@@ -3,6 +3,7 @@ abbreviation-as-word-in-name	checkstyle	AbbreviationAsWordInName	Ward's default 
 atclause-order	checkstyle	AtclauseOrder	Checkstyle reports both misplaced @param tags, Ward the first
 avoid-string-buffer-field	pmd	AvoidStringBufferField	PMD also reports a StringBuilder field; Ward reports StringBuffer fields only
 class-type-parameter-name	checkstyle	ClassTypeParameterName	the passing fixture uses names such as KeyT, which Checkstyle's default pattern (one capital letter) rejects
+hide-utility-class-constructor	checkstyle	HideUtilityClassConstructor	Ward leaves a class that has an inner class, which needs an instance; Checkstyle reports it
 interface-type-parameter-name	checkstyle	InterfaceTypeParameterName	the passing fixture uses names such as KeyT, which Checkstyle's default pattern (one capital letter) rejects
 java8-api-checker	errorprone	Java8ApiChecker	Error Prone reports List.of(1); Ward has no finding there
 method-type-parameter-name	checkstyle	MethodTypeParameterName	the passing fixture uses names such as KeyT, which Checkstyle's default pattern (one capital letter) rejects
@@ -57,3 +58,7 @@ final-parameters	checkstyle	FinalParameters	Checkstyle also reports a parameter 
 simplify-boolean-expression	pmd	SimplifyBooleanExpressions	PMD reports only the comparison with a boolean literal (line 3); Ward and Checkstyle also report && true, !false and the ternary of literals
 unnecessary-parentheses	errorprone	UnnecessaryParentheses	Error Prone does not report the parentheses around an initializer (line 4); Ward and PMD do
 unused-private-field	checkstyle	UnusedPrivateField	Checkstyle also reports an annotated private field (line 4 of the passing fixture); Ward and PMD leave it alone
+unit-test-should-use-test-annotation	pmd	UnitTestShouldUseTestAnnotation	PMD 7 also reports a public test method that takes parameters, as in a JUnit Jupiter class that has a helper named testOrder(int); a method with parameters can never be a test, so Ward skips it
+singular-field	pmd	SingularField	Ward skips a field a picocli annotation fills; PMD without picocli on its classpath reports it
+unused-local-variable	checkstyle	UnusedLocalVariable	Ward skips the bindings of case patterns, as PMD's UnusedLocalVariable does; Checkstyle reports them
+unused-local-variable	pmd	UnusedLocalVariable	PMD reports nothing on the fixture's unused local; Ward reports it and skips the case-pattern bindings, as PMD does

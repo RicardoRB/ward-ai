@@ -7,3 +7,10 @@ class Passing {
   void setFoo(int a) {
   }
 }
+
+class Checks {
+  void isByteIdentical() {
+  }
+  void hasNoModule() {
+  }
+}

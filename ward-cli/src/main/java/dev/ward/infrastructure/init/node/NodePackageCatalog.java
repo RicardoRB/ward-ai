@@ -14,15 +14,10 @@ import java.util.Set;
  * old on 2026-10-24, with the Node and TypeScript versions each supports.
  */
 public final class NodePackageCatalog {
-  static final String TYPESCRIPT = "typescript";
-  static final String TURBO = "turbo";
   // The newest release at least 14 days old on 2026-10-30. npm publishes no engines range for it.
   public static final String TURBO_VERSION = "2.11.9";
-  private static final String STRYKER = "stryker";
-  private static final String STRYKER_CORE = "@stryker-mutator/core";
-  private static final String STRYKER_VERSION = "10.1.1";
-  private static final String STRYKER_NODE = ">=22.0.0";
-  private static final String VITEST_NODE = "^20.0.0 || ^22.0.0 || >=24.0.0";
+  static final String TYPESCRIPT = "typescript";
+  static final String TURBO = "turbo";
   static final String VITEST_VERSION = "4.0.18";
 
   /**
@@ -40,6 +35,11 @@ public final class NodePackageCatalog {
   static final String VITEST = "vitest";
   static final String VITE = "vite";
   static final String COVERAGE_V8 = "@vitest/coverage-v8";
+  private static final String STRYKER = "stryker";
+  private static final String STRYKER_CORE = "@stryker-mutator/core";
+  private static final String STRYKER_VERSION = "10.1.1";
+  private static final String STRYKER_NODE = ">=22.0.0";
+  private static final String VITEST_NODE = "^20.0.0 || ^22.0.0 || >=24.0.0";
 
   /** Stryker's runner plugin for each test gate; Bun's command runner is built into the core. */
   private static final Map<String, String> STRYKER_RUNNERS =

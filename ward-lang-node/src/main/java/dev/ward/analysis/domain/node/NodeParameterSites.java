@@ -15,6 +15,12 @@ import java.util.Set;
  */
 final class NodeParameterSites {
 
+  /**
+   * The annotation of a destructured Express request member, such as {@code params} in {@code ({
+   * params }: Request)}.
+   */
+  static final String EXPRESS_REQUEST = "express-request";
+
   private static final Set<String> FORMALS =
       Set.of("formalParameterArg", "requiredParameter", "optionalParameter");
   private static final String DECORATOR = "decorator";
@@ -22,12 +28,6 @@ final class NodeParameterSites {
   private static final String TYPE_ANNOTATION = "typeAnnotation";
   private static final Set<String> NOT_BINDINGS =
       Set.of(DECORATOR_LIST, DECORATOR, TYPE_ANNOTATION, "accessibilityModifier");
-
-  /**
-   * The annotation of a destructured Express request member, such as {@code params} in {@code ({
-   * params }: Request)}.
-   */
-  static final String EXPRESS_REQUEST = "express-request";
 
   private static final Set<String> REQUEST_MEMBERS =
       Set.of("query", "params", "body", "headers", "cookies");

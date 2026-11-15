@@ -28,13 +28,14 @@ import javax.inject.Inject;
  * installs them with the project's manager. A failed install restores the files it changed.
  */
 public final class PythonBuildToolConfigurator implements BuildToolConfiguration {
+  static final String REQUIREMENTS = "requirements-ward.txt";
   private static final Logger LOGGER =
       Logger.getLogger(PythonBuildToolConfigurator.class.getName());
   private static final String PYPROJECT = "pyproject.toml";
   private static final String SRC_NOTE =
       "src/ layout without [build-system]: pip will not install the package, so tests cannot import"
           + " it. Add a [build-system] table to pyproject.toml.";
-  static final String REQUIREMENTS = "requirements-ward.txt";
+
   private final CommandExecutor executor;
 
   /** Creates the adapter; {@code executor} runs the package manager's install. */

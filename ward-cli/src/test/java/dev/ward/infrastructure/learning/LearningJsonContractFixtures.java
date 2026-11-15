@@ -24,13 +24,13 @@ import java.util.List;
 import java.util.Map;
 
 final class LearningJsonContractFixtures {
-  private static final Duration TESTS_DURATION = Duration.ofMillis(3847);
-  private static final long CHECKSTYLE_FIRST_SEEN_SECONDS = 5;
-  private static final long CHECKSTYLE_LAST_SEEN_SECONDS = 9;
   static final String CONTRACTS = "fixtures/learning-contracts/";
   static final Instant TIME = Instant.parse("2026-01-01T00:00:00Z");
   static final Project PROJECT =
       new Project(Path.of("/project"), Language.JAVA, BuildTool.MAVEN, Framework.SPRING_BOOT);
+  private static final Duration TESTS_DURATION = Duration.ofMillis(3847);
+  private static final long CHECKSTYLE_FIRST_SEEN_SECONDS = 5;
+  private static final long CHECKSTYLE_LAST_SEEN_SECONDS = 9;
 
   private LearningJsonContractFixtures() {}
 

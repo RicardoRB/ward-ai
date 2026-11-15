@@ -7,4 +7,8 @@ final class Maps {
     counts.put("a", 1);
     return counts;
   }
+
+  Object parse() {
+    return new StringBuilder().append("function f() { { return 2 } }");
+  }
 }

@@ -15,9 +15,9 @@ import org.junit.jupiter.api.io.TempDir;
 
 class TomlApiCompatOptionsTest {
   private static final String HEADER = "version = 2\n[checks.api-compat]\nuses = \"api-compat\"\n";
-  private final TomlConfigurationReader reader = new TomlConfigurationReader();
 
   @TempDir Path dir;
+  private final TomlConfigurationReader reader = new TomlConfigurationReader();
 
   @Test
   void gateNeedsNoCommandAndDefaultsEverything() throws IOException {

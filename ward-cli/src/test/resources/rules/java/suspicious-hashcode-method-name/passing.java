@@ -3,3 +3,11 @@ class Point {
     return 0;
   }
 }
+
+class Checks {
+  void magicNumberSkipsHashCode() {}
+
+  int hashCode() {
+    return 1;
+  }
+}

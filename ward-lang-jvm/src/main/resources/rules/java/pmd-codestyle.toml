@@ -68,7 +68,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["statement"]
-text = '^if\((?:[^()&|?]*!=[^()&|?]*|![^()&|?=]*)\)\{[^{}]*\}else(?!if)'
+text = '^if\((?:(?![^()&|?]*(?:!=null\)|null!=))[^()&|?]*!=[^()&|?]*|![^()&|?=]*)\)\{[^{}]*\}else(?!if)'
 message = "a negated condition with an else branch is hard to read; swap the branches"
 '''
 
@@ -80,9 +80,7 @@ severity = "error"
 category = "style"
 presets = ["standard", "strict"]
 body = '''
-check = "forbidden-node"
-kinds = ["statement"]
-text = '^(?:(?:if|while|for)(\((?:[^()]|\([^()]*+(?:\([^()]*\)[^()]*+)*+\))*\))(?!\{)|do(?!\{)|if(\((?:[^()]|\([^()]*+(?:\([^()]*\)[^()]*+)*+\))*\))\{(?:[^{}]|\{[^{}]*\})*\}else(?!\{|if))'
+check = "control-body-braces"
 message = "this control statement has no braces; put its body in a block"
 '''
 
@@ -139,7 +137,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["lambdaExpression"]
-text = '^(?:\(\)->(?:[\w$.]+|new[\w$.]+)\(\)|\(?([\w$]+)\)?->(?:[\w$.]+\(\1\)|\1\.[\w$]+\(\)|new[\w$.]+\(\1\)))$'
+text = '^(?:\(\)->(?!new[A-Z])[\w$.]+\(\)|\(?([\w$]+)\)?->(?:(?!new[A-Z])[\w$.]+\(\1\)|\1\.[\w$]+\(\)))$'
 message = "the lambda only calls a method; use a method reference"
 '''
 
@@ -153,7 +151,7 @@ presets = ["standard", "strict"]
 body = '''
 check = "forbidden-node"
 kinds = ["methodDeclaration"]
-text = '^void(?:get|is|has|can|have|will|should|to)[A-Z]'
+text = '^void(?:get|to)[A-Z]'
 message = "the method name says it returns a value, but it returns void"
 '''
 

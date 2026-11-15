@@ -25,6 +25,7 @@ import dev.ward.analysis.domain.rule.check.UseEnumCollectionsCheck;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 import org.tomlj.TomlParseResult;
 
@@ -117,19 +118,22 @@ final class TypeAwareChecks {
 
   /**
    * Reads each {@code methods} entry {@code name/arity:source:value}, a source being {@code r0} or
-   * {@code a0}.
+   * {@code a0}. An entry may end with {@code @key}, naming the body key that lists the only
+   * declaring types it applies to.
    */
   private static IncompatibleArgumentCheck incompatibleArgument(final TomlParseResult toml) {
     final List<IncompatibleArgumentCheck.Entry> entries = new ArrayList<>();
     for (final String text : TomlValues.strings(toml, "methods")) {
-      final String[] parts = text.split("[/:]");
+      final String[] scoped = text.split("@");
+      final String[] parts = scoped[0].split("[/:]");
       entries.add(
           new IncompatibleArgumentCheck.Entry(
               parts[NAME],
               Integer.parseInt(parts[ARITY]),
               parts[SOURCE].startsWith("r"),
               Integer.parseInt(parts[SOURCE].substring(1)),
-              Integer.parseInt(parts[VALUE])));
+              Integer.parseInt(parts[VALUE]),
+              scoped.length > 1 ? TomlValues.strings(toml, scoped[1]) : Set.of()));
     }
     return new IncompatibleArgumentCheck(
         TomlValues.strings(toml, "declaring-types"), entries, TomlValues.required(toml, MESSAGE));

@@ -82,6 +82,14 @@ final class JavaScopeExpressions {
     }
   }
 
+  /** A {@code case} pattern binds like an {@code instanceof} pattern, so its names are exempt. */
+  void pattern(final SyntaxNode node) {
+    final boolean outer = walk.inPattern;
+    walk.inPattern = true;
+    walk.generic(node);
+    walk.inPattern = outer;
+  }
+
   static SyntaxNode findKind(final SyntaxNode node, final String kind) {
     if (kind.equals(node.kind())) {
       return node;

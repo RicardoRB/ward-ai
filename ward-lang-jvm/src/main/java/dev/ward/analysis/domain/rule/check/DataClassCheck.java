@@ -5,13 +5,14 @@ import dev.ward.analysis.domain.rule.RuleMatch;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * Reports a class that reveals its data through public fields and accessors, and has little
- * functionality, as PMD's data class does. The class is reported when its weight of class (WOC) is
- * below one third and its public fields and accessors (NOPA + NOAM) and its complexity (WMC) pass
- * PMD's levels: more than three of the first, and either under 31 complexity or over five of the
- * first with under 47.
+ * functionality, as PMD's data class does. The class is reported when its weight of class (WOC,
+ * over the non-private methods) is below one third and its public fields and accessors (NOPA +
+ * NOAM) and its complexity (WMC) pass PMD's levels: more than three of the first, and either under
+ * 31 complexity or over five of the first with under 47.
  */
 public final class DataClassCheck implements UnitCheck {
 
@@ -67,27 +68,34 @@ public final class DataClassCheck implements UnitCheck {
         .sum();
   }
 
-  /** Returns the share of public methods that do more than a getter or setter. */
+  /**
+   * Returns the share of the non-private methods that do more than a getter or setter; PMD counts
+   * every method the rest of the package can call, static ones too.
+   */
   private static double weightOfClass(final List<SyntaxNode> members) {
-    final List<SyntaxNode> publicMethods = publicMethods(members);
-    if (publicMethods.isEmpty()) {
+    final List<SyntaxNode> visibleMethods = methods(members, member -> !isPrivate(member));
+    if (visibleMethods.isEmpty()) {
       return 0;
     }
     final long functional =
-        publicMethods.stream().filter(method -> !ClassMetrics.isAccessor(method)).count();
-    return (double) functional / publicMethods.size();
+        visibleMethods.stream().filter(method -> !ClassMetrics.isAccessor(method)).count();
+    return (double) functional / visibleMethods.size();
   }
 
-  private static List<SyntaxNode> publicMethods(final List<SyntaxNode> members) {
+  private static List<SyntaxNode> methods(
+      final List<SyntaxNode> members, final Predicate<SyntaxNode> visibility) {
     return members.stream()
-        .filter(DataClassCheck::isPublic)
+        .filter(visibility)
         .map(ClassMembers::declarationOf)
         .filter(declaration -> MemberDeclarations.METHOD.equals(declaration.kind()))
         .toList();
   }
 
   private static int publicAccessors(final List<SyntaxNode> members) {
-    return (int) publicMethods(members).stream().filter(ClassMetrics::isAccessor).count();
+    return (int)
+        methods(members, DataClassCheck::isPublic).stream()
+            .filter(ClassMetrics::isAccessor)
+            .count();
   }
 
   private static int publicFields(final List<SyntaxNode> members) {
@@ -97,6 +105,10 @@ public final class DataClassCheck implements UnitCheck {
         .filter(declaration -> MemberDeclarations.FIELD.equals(declaration.kind()))
         .mapToInt(field -> ClassMembers.fieldNames(field).size())
         .sum();
+  }
+
+  private static boolean isPrivate(final SyntaxNode member) {
+    return MemberDeclarations.modifiers(member).contains(MemberDeclarations.PRIVATE);
   }
 
   private static boolean isPublic(final SyntaxNode member) {

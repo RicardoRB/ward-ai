@@ -6,4 +6,9 @@ class Sample {
   boolean kind(Color a, Color b) {
     return a == b;
   }
+
+  @Override
+  public boolean equals(final Object other) {
+    return this == other;
+  }
 }
